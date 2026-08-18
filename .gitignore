@@ -1,0 +1,12 @@
+# OS metadata
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Scratch images used when testing the URL importer
+__test-*.png
