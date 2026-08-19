@@ -210,6 +210,11 @@ New-OgImage -Path 'exif-editor\og.png' `
   -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'compress-image\og.png' `
+  -Title 'Image Compressor' `
+  -Subtitle 'Name the size you need and it finds the least compression that gets there.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 <#
 .SYNOPSIS
   Draws icon-180.png, the home-screen icon.
