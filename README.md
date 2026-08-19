@@ -56,8 +56,10 @@ mounted — every path in it is relative, so it works at the domain root, at
 /                        the hub page, listing tools by category
   index.html
   site.css
-  _headers               security headers (Cloudflare Pages / Netlify)
+  _headers               security headers (Cloudflare Pages / Netlify only)
+  CNAME                  the custom domain, read by GitHub Pages
   .nojekyll              stops GitHub Pages running the content through Jekyll
+  cloudflare/            the edge config that adds the security headers
   serve.ps1              local dev server
   images-to-video/       one tool, entirely self-contained
     index.html
@@ -98,48 +100,66 @@ Two things to hold the line on, because the whole site rests on them:
 
 ## Deploying
 
-The site is one domain, `abox.tools`, served from this repository.
+The site is one domain, `abox.tools`. It is served by **GitHub Pages** from the
+`main` branch of this repository, behind **Cloudflare's proxy**.
 
-### Host: Cloudflare Pages (or Netlify)
+```
+visitor  ->  Cloudflare (DNS, TLS, response headers)  ->  GitHub Pages (static files)
+```
 
-Both read the `_headers` file, and both serve a plain static directory with no
-build step:
+### GitHub Pages
 
-1. Create a project and connect this repository.
-2. Build command: none. Output directory: `/` (the repo root).
-3. Add `abox.tools` as the custom domain (and `www.abox.tools` if you want it,
-   redirecting to the apex).
+*Settings → Pages → Deploy from a branch → `main` → `/ (root)`.* The
+[`CNAME`](CNAME) file at the root holds the custom domain, and `.nojekyll` stops
+Pages running the content through Jekyll. There is no build step, so a push to
+`main` is a deploy.
 
-**GitHub Pages is the weaker option.** It cannot set response headers at all, so
-`_headers` would be ignored and `frame-ancestors` would be lost. The meta-tag CSP
-in each page still carries the load-bearing rules, so the site would be safe, but
-defence in depth goes away.
+### DNS at Cloudflare
+
+Four `A` records on the apex pointing at GitHub's Pages addresses, and a `CNAME`
+for `www`. Two things about the order they are set up in:
+
+- Add the records **DNS only** (grey cloud) first, wait for *Enforce HTTPS* to
+  become available in the Pages settings, and tick it. With the proxy on from the
+  start, GitHub cannot complete its certificate challenge and the site gets stuck
+  on a redirect loop.
+- Only then switch to **proxied** (orange cloud), with SSL/TLS set to *Full
+  (strict)*.
 
 ### Response headers
 
-`_headers` sets these. They are defence in depth — the meta-tag CSP inside each page
-already covers the important part — but `frame-ancestors` is header-only, since a
-`<meta>` tag cannot express it:
+**GitHub Pages cannot set response headers at all**, so [`_headers`](_headers) —
+which Cloudflare Pages and Netlify would read — does nothing on this deployment.
+The same headers are applied at the edge by a Cloudflare response header transform
+rule, kept in [`cloudflare/response-headers.json`](cloudflare/response-headers.json)
+and applied with the script beside it. See [cloudflare/README.md](cloudflare/README.md).
 
+They are defence in depth — the `<meta>` CSP inside each page already carries the
+load-bearing rules — except for `frame-ancestors`, which a `<meta>` tag cannot
+express and which therefore only exists as a header.
+
+Check what is actually being served, from anywhere, with no credentials:
+
+```powershell
+.\cloudflare\apply-headers.ps1 -VerifyOnly
 ```
-Content-Security-Policy: frame-ancestors 'none'
-Referrer-Policy: no-referrer
-X-Content-Type-Options: nosniff
-```
+
+Two configurations to keep in step: if you change `_headers`, change
+`cloudflare/response-headers.json` too, or the two deployments stop agreeing.
 
 ### Canonical URLs
 
 Every page carries a `<link rel="canonical">` pointing at its `https://abox.tools/`
 address. If the site ever answers on a second hostname — a staging deployment, a
-mirror, `www` — this keeps search engines treating one of them as the original
-rather than splitting the ranking between duplicates.
+mirror, `www`, the `github.io` address — this keeps search engines treating one of
+them as the original rather than splitting the ranking between duplicates.
 
 ### HTTPS
 
 Service workers require a secure context, so offline mode activates on `https://`
 or `localhost`, but not on a plain `http://` host. `.tools` is not on the HSTS
-preload list, so turning on **Always Use HTTPS** and an HSTS header at the host is
-worth doing.
+preload list, so **Always Use HTTPS** and HSTS, both under *SSL/TLS → Edge
+Certificates* in Cloudflare, are worth turning on.
 
 ### The source link
 

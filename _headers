@@ -1,6 +1,13 @@
 # Response headers for Cloudflare Pages and Netlify (both read this file).
-# GitHub Pages ignores it - it cannot set custom headers at all, which is one
-# more reason this site is deployed elsewhere.
+#
+# NOTE: this site is currently served by GitHub Pages, which ignores this file
+# entirely - it cannot set custom headers at all. On that deployment the same
+# headers are applied at the edge by a Cloudflare response header transform
+# rule, kept in cloudflare/response-headers.json. If you change anything here,
+# change it there too, or the two deployments stop agreeing.
+#
+# This file is kept because it is the whole configuration if the site ever moves
+# to a host that reads it, and because it documents the intent in one place.
 #
 # These are defence in depth. The Content-Security-Policy inside each page's
 # <meta> tag already carries the load-bearing rules; frame-ancestors is the one

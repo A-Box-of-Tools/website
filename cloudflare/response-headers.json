@@ -1,0 +1,35 @@
+{
+  "description": "Security response headers for abox.tools. Mirrors /_headers, which GitHub Pages ignores. See cloudflare/README.md.",
+  "rules": [
+    {
+      "description": "Security headers (mirrors /_headers)",
+      "expression": "true",
+      "action": "rewrite",
+      "enabled": true,
+      "action_parameters": {
+        "headers": {
+          "Content-Security-Policy": {
+            "operation": "set",
+            "value": "frame-ancestors 'none'"
+          },
+          "X-Frame-Options": {
+            "operation": "set",
+            "value": "DENY"
+          },
+          "X-Content-Type-Options": {
+            "operation": "set",
+            "value": "nosniff"
+          },
+          "Referrer-Policy": {
+            "operation": "set",
+            "value": "no-referrer"
+          },
+          "Permissions-Policy": {
+            "operation": "set",
+            "value": "camera=(), microphone=(), geolocation=(), usb=(), payment=()"
+          }
+        }
+      }
+    }
+  ]
+}

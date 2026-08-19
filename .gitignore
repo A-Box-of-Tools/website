@@ -10,3 +10,7 @@ desktop.ini
 
 # Scratch images used when testing the URL importer
 __test-*.png
+
+# Cloudflare API tokens and anything else local
+.env
+*.token
