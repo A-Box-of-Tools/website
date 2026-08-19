@@ -1,56 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="abox.tools">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="abox.tools">
   <title>abox.tools</title>
   <!--
-    The site mark: an open tool box with a screwdriver, a claw hammer and an
-    open-end wrench standing in it. Drawn on a 32x32 grid, because the size
-    this has to survive is 16px in a browser tab - hence the chunky shapes and
-    the fact that the three tools differ in silhouette rather than in detail.
-    A closed box with a handle was tried first and read as a briefcase; the
-    tools are what say "tools".
+    The site mark: an open tool box with the lid up and five tools standing in
+    it - a claw hammer, an open-end wrench, a screwdriver, pliers, and an
+    adjustable wrench. Drawn on a 64x64 grid: bigger than the 32 the first
+    version used, because five tools need the room to stay distinct.
+
+    Everything is built from rounded rectangles and a couple of paths, most of
+    them rotated a few degrees so the tools fan rather than stand to attention.
+    The gaps between them are transparent, not white, so the mark sits on any
+    background.
 
     Colours are baked in rather than inherited, because this file is also the
-    favicon, and none of the page's CSS reaches it there. The box is a darker
-    shade of the site accent, the tools are the accent itself, and the thin
-    pale line is the inside edge of the open box. The dark-theme block swaps in
-    lighter values for tab strips drawn on a near-black background.
+    favicon, and none of the page's CSS reaches it there. Two tones of the site
+    accent carry the whole thing, with a pale tint for the latch, the plier
+    pivot and the wrench knurl. The dark-theme block swaps in lighter values
+    for tab strips drawn on a near-black background.
 
-    The header copy of this mark is inlined in index.html so that it can take
-    its colours from the page. Same shape, same coordinates: if one changes,
-    change the other.
+    og-image.ps1 rasterises this file rather than redrawing it, so this is the
+    only copy of the shape that has to be right. The tool pages inline a copy
+    of the markup so that they keep working offline; if the shape changes here,
+    change it there too.
   -->
   <style>
-    .box    { fill: #1d4f83; }
-    .rim    { fill: #d7e7f7; }
-    .tool   { fill: #2b6cb0; }
-    .tool-s { stroke: #2b6cb0; }
+    .logo-lid      { stroke: #2b6cb0; }
+    .logo-tool     { fill: #1d4f83; }
+    .logo-tool-alt { fill: #2b6cb0; }
+    .logo-box      { fill: #1d4f83; }
+    .logo-band     { fill: #2b6cb0; }
+    .logo-latch    { fill: #d7e7f7; }
     @media (prefers-color-scheme: dark) {
-      .box    { fill: #3772ab; }
-      .rim    { fill: #cfe3f8; }
-      .tool   { fill: #7cb2e6; }
-      .tool-s { stroke: #7cb2e6; }
+      .logo-lid      { stroke: #5b9bd8; }
+      .logo-tool     { fill: #3772ab; }
+      .logo-tool-alt { fill: #5b9bd8; }
+      .logo-box      { fill: #3772ab; }
+      .logo-band     { fill: #5b9bd8; }
+      .logo-latch    { fill: #cfe3f8; }
     }
   </style>
 
-  <!-- screwdriver -->
-  <g transform="rotate(-11 9.3 17)">
-    <rect class="tool" x="8.2" y="9.6" width="2.2" height="8.6" rx="0.9"/>
-    <rect class="tool" x="7.2" y="5.4" width="4.2" height="5" rx="1.5"/>
+  <!-- the raised lid, behind everything else -->
+  <path class="logo-lid" d="M14 31V13.5A4.5 4.5 0 0 1 18.5 9h27a4.5 4.5 0 0 1 4.5 4.5V31"
+        fill="none" stroke-width="3.2" stroke-linejoin="round"/>
+
+  <!-- claw hammer: head, handle, and the spur that makes it a claw -->
+  <g transform="rotate(-12 18 30)">
+    <rect class="logo-tool" x="16.6" y="17" width="3.2" height="17" rx="1.4"/>
+    <rect class="logo-tool" x="16.2" y="12.2" width="6.8" height="5" rx="1.5"/>
+    <rect class="logo-tool" x="14" y="12.6" width="2.6" height="6.6" rx="1.2" transform="rotate(26 16.2 13)"/>
   </g>
 
-  <!-- claw hammer: the notch in the left end of the head is the claw -->
-  <path class="tool" d="M13.6 5.4h5.2a1.3 1.3 0 0 1 1.3 1.3v1.5a1.3 1.3 0 0 1-1.3 1.3h-5.2a1 1 0 0 1-1-1l.7-1-.7-1a1 1 0 0 1 1-1z"/>
-  <rect class="tool" x="15.5" y="8.8" width="2.4" height="9.4" rx="1"/>
-
-  <!-- open-end wrench: an arc with the gap at the top makes the jaws -->
-  <g transform="rotate(12 22.6 17)">
-    <rect class="tool" x="21.4" y="8.6" width="2.4" height="9.6" rx="1"/>
-    <path class="tool-s" d="M20.65 5.6A2.75 2.75 0 1 0 24.55 5.6"
-          fill="none" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- open-end wrench: two prongs on a yoke -->
+  <g transform="rotate(-3 26 30)">
+    <rect class="logo-tool-alt" x="24.6" y="17" width="3.1" height="17" rx="1.4"/>
+    <rect class="logo-tool-alt" x="23.2" y="12" width="2.3" height="6.5" rx="1.1"/>
+    <rect class="logo-tool-alt" x="26.8" y="12" width="2.3" height="6.5" rx="1.1"/>
+    <rect class="logo-tool-alt" x="23.2" y="16.2" width="5.9" height="3.6" rx="1.5"/>
   </g>
 
-  <!-- the box: a wide rim over a tapered front, drawn last so it covers the
-       ends of the tools and they read as standing inside it -->
-  <path class="box" d="M5.2 19.8h21.6l-1.2 6.3a2.2 2.2 0 0 1-2.2 1.8H8.6a2.2 2.2 0 0 1-2.2-1.8z"/>
-  <rect class="box" x="2.6" y="16.2" width="26.8" height="4" rx="1.5"/>
-  <rect class="rim" x="5" y="17.1" width="22" height="1.3" rx="0.65"/>
+  <!-- screwdriver: pale handle, ferrule, shaft -->
+  <rect class="logo-tool-alt" x="30.6" y="12" width="5" height="8.4" rx="2.2"/>
+  <rect class="logo-tool" x="31.5" y="19.2" width="3.2" height="2.2" rx="0.7"/>
+  <rect class="logo-tool" x="32.1" y="20.5" width="2.1" height="13.5" rx="1"/>
+
+  <!-- pliers: tapered jaws above the pivot, handles splayed below it -->
+  <g>
+    <path class="logo-tool" d="M39.4 20.4 37.9 13a1.15 1.15 0 0 1 2.25-.45l1.15 7.6z" transform="rotate(-4 40.5 21)"/>
+    <path class="logo-tool" d="M41.6 20.4 43.1 13a1.15 1.15 0 0 0-2.25-.45l-1.15 7.6z" transform="rotate(4 40.5 21)"/>
+    <rect class="logo-tool" x="38.2" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(-8 40.5 21)"/>
+    <rect class="logo-tool" x="40.4" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(8 40.5 21)"/>
+    <circle class="logo-latch" cx="40.5" cy="20.8" r="1.5"/>
+  </g>
+
+  <!-- adjustable wrench: fixed lower jaw, shorter upper jaw, knurl on the neck -->
+  <g transform="rotate(14 48 30)">
+    <rect class="logo-tool" x="46.6" y="17.5" width="3.2" height="16.5" rx="1.4"/>
+    <rect class="logo-tool" x="44.6" y="14.2" width="7.4" height="3.4" rx="1.3"/>
+    <rect class="logo-tool" x="44.6" y="9.6" width="4.4" height="3.6" rx="1.1"/>
+    <rect class="logo-latch" x="46.4" y="17.4" width="3.6" height="1.9" rx="0.6"/>
+  </g>
+
+  <!-- the box itself, drawn last so it covers the ends of the tools -->
+  <rect class="logo-box" x="8" y="38" width="48" height="15" rx="1.6"/>
+  <rect class="logo-band" x="4" y="31" width="56" height="7.5" rx="1.6"/>
+  <rect class="logo-latch" x="27.5" y="33.5" width="9" height="9" rx="1.8"/>
 </svg>

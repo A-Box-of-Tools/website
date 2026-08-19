@@ -17,8 +17,9 @@
   to, and the palette is the dark theme from site.css so a shared card looks
   like the page behind it.
 
-  The site mark on the cards is the same drawing as logo.svg, redone here in
-  System.Drawing calls; see Draw-Mark.
+  The site mark on the cards is logo.svg itself. System.Drawing cannot read
+  SVG, and a hand-drawn copy of the mark would drift away from the file it was
+  copied from, so a headless Edge rasterises it instead; see Get-MarkImage.
 
 .EXAMPLE
   .\og-image.ps1
@@ -34,113 +35,97 @@ $bg     = [System.Drawing.ColorTranslator]::FromHtml('#14171b')
 $text   = [System.Drawing.ColorTranslator]::FromHtml('#e8eaed')
 $dim    = [System.Drawing.ColorTranslator]::FromHtml('#9aa4b2')
 $accent = [System.Drawing.ColorTranslator]::FromHtml('#5b9bd8')
+# The two palettes the mark is drawn in, as CSS the rasteriser can inject. They
+# are the same values logo.svg carries; they have to be repeated here because a
+# headless browser screenshotting the file cannot be told which colour scheme to
+# pretend to be in, so the choice is made by overriding the classes instead.
+$markPaletteDark = @'
+svg .logo-lid{stroke:#5b9bd8}svg .logo-tool{fill:#3772ab}svg .logo-tool-alt{fill:#5b9bd8}
+svg .logo-box{fill:#3772ab}svg .logo-band{fill:#5b9bd8}svg .logo-latch{fill:#cfe3f8}
+'@
 
-# Extra tones the mark needs: a darker shade of the accent for the box, and a
-# pale tint for the inside edge of it. These are the dark-theme values from
-# logo.svg, because the cards are drawn on the dark background.
-$boxDark  = [System.Drawing.ColorTranslator]::FromHtml('#3772ab')
-$toolDark = [System.Drawing.ColorTranslator]::FromHtml('#7cb2e6')
-$rimDark  = [System.Drawing.ColorTranslator]::FromHtml('#cfe3f8')
+$markPaletteLight = @'
+svg .logo-lid{stroke:#2b6cb0}svg .logo-tool{fill:#1d4f83}svg .logo-tool-alt{fill:#2b6cb0}
+svg .logo-box{fill:#1d4f83}svg .logo-band{fill:#2b6cb0}svg .logo-latch{fill:#d7e7f7}
+'@
 
-# ...and the light-theme values, for the iOS icon, which is drawn on the light
-# background rather than the dark one.
-$boxLight  = [System.Drawing.ColorTranslator]::FromHtml('#1d4f83')
-$toolLight = [System.Drawing.ColorTranslator]::FromHtml('#2b6cb0')
-$rimLight  = [System.Drawing.ColorTranslator]::FromHtml('#d7e7f7')
+<#
+.SYNOPSIS
+  Finds a Chromium to rasterise SVG with.
 
-function New-RoundedRect {
-  param([float]$X, [float]$Y, [float]$W, [float]$H, [float]$R)
+.DESCRIPTION
+  Edge ships with Windows, so in practice this always finds one and the script
+  keeps its "nothing to install" promise. Chrome is checked too, for machines
+  where Edge has been removed.
+#>
+function Find-Chromium {
+  $candidates = @(
+    "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe",
+    "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe",
+    "$env:ProgramFiles\Google\Chrome\Application\chrome.exe",
+    "${env:ProgramFiles(x86)}\Google\Chrome\Application\chrome.exe"
+  )
 
-  $d = $R * 2
-  $p = New-Object System.Drawing.Drawing2D.GraphicsPath
-  $p.AddArc($X, $Y, $d, $d, 180, 90)
-  $p.AddArc(($X + $W - $d), $Y, $d, $d, 270, 90)
-  $p.AddArc(($X + $W - $d), ($Y + $H - $d), $d, $d, 0, 90)
-  $p.AddArc($X, ($Y + $H - $d), $d, $d, 90, 90)
-  $p.CloseFigure()
-  return $p
+  foreach ($c in $candidates) { if (Test-Path $c) { return $c } }
+
+  throw "No Edge or Chrome found to render logo.svg. Install either, or draw the mark by hand."
 }
 
 <#
 .SYNOPSIS
-  Draws the site mark - the open tool box - at ($X,$Y), $Size pixels square.
+  Renders logo.svg to a bitmap, $Size pixels square, on a transparent ground.
 
 .DESCRIPTION
-  This is the same drawing as logo.svg, in the same 32x32 coordinate space: the
-  transform below scales that space to $Size, so every number here can be read
-  straight off that file. If the shape changes there, change it here too.
+  System.Drawing cannot read SVG, and hand-porting the mark into GraphicsPath
+  calls means two drawings that drift apart. So the mark is rasterised from the
+  one file that defines it: the SVG is inlined into a scrap of HTML with the
+  wanted palette forced on top of it, and a headless browser screenshots it.
+
+  The window is exactly the size asked for and the SVG is stretched to fill it,
+  so the whole 64x64 view box lands in the frame with no cropping.
 #>
-function Draw-Mark {
+function Get-MarkImage {
   param(
-    [Parameter(Mandatory)][System.Drawing.Graphics]$G,
-    [Parameter(Mandatory)][float]$X,
-    [Parameter(Mandatory)][float]$Y,
-    [Parameter(Mandatory)][float]$Size,
-    [Parameter(Mandatory)][System.Drawing.Color]$BoxColour,
-    [Parameter(Mandatory)][System.Drawing.Color]$ToolColour,
-    [Parameter(Mandatory)][System.Drawing.Color]$RimColour,
-    # The flat colour behind the mark. The hammer claw is painted in it rather
-    # than cut out, so this has to match what the mark is drawn on.
-    [Parameter(Mandatory)][System.Drawing.Color]$Backdrop
+    [Parameter(Mandatory)][int]$Size,
+    [Parameter(Mandatory)][ValidateSet('light', 'dark')][string]$Palette
   )
 
-  $box  = New-Object System.Drawing.SolidBrush $BoxColour
-  $tool = New-Object System.Drawing.SolidBrush $ToolColour
-  $rim  = New-Object System.Drawing.SolidBrush $RimColour
+  $svg = Get-Content (Join-Path $PSScriptRoot 'logo.svg') -Raw
+  $css = if ($Palette -eq 'dark') { $markPaletteDark } else { $markPaletteLight }
 
-  # Round caps, so the wrench jaws end the way they do in the SVG.
-  $jaws = New-Object System.Drawing.Pen $ToolColour, 2.2
-  $jaws.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
-  $jaws.EndCap   = [System.Drawing.Drawing2D.LineCap]::Round
+  $html = @"
+<!doctype html><meta charset="utf-8">
+<style>html,body{margin:0;background:transparent}
+svg{display:block;width:${Size}px;height:${Size}px}
+$css</style>
+$svg
+"@
 
-  $state = $G.Save()
-  $G.TranslateTransform($X, $Y)
-  $G.ScaleTransform(($Size / 32), ($Size / 32))
+  $htmlPath = Join-Path ([System.IO.Path]::GetTempPath()) 'abox-mark.html'
+  $pngPath  = Join-Path ([System.IO.Path]::GetTempPath()) 'abox-mark.png'
+  Set-Content -Path $htmlPath -Value $html -Encoding utf8
 
-  # screwdriver, leaning left
-  $s = $G.Save()
-  $G.TranslateTransform(9.3, 17.0)
-  $G.RotateTransform(-11)
-  $G.TranslateTransform(-9.3, -17.0)
-  $G.FillPath($tool, (New-RoundedRect 8.2 9.6 2.2 8.6 0.9))
-  $G.FillPath($tool, (New-RoundedRect 7.2 5.4 4.2 5.0 1.5))
-  $G.Restore($s)
+  # --default-background-color=00000000 is what keeps the ground transparent;
+  # without it the shot comes back on opaque white and the mark cannot be laid
+  # over a card.
+  $args = @(
+    '--headless', '--disable-gpu', '--default-background-color=00000000',
+    "--screenshot=$pngPath", "--window-size=$Size,$Size",
+    ('file:///' + $htmlPath.Replace('\', '/'))
+  )
+  & (Find-Chromium) $args | Out-Null
 
-  # hammer: head, then the claw notch punched back out of its left end, then
-  # the handle. The notch is painted rather than cut, which only works because
-  # both callers draw the mark on a flat background.
-  $G.FillPath($tool, (New-RoundedRect 12.6 5.4 7.5 4.1 1.3))
-  $claw = New-Object System.Drawing.Drawing2D.GraphicsPath
-  $claw.AddPolygon(@(
-    (New-Object System.Drawing.PointF 12.5, 5.9),
-    (New-Object System.Drawing.PointF 13.6, 7.45),
-    (New-Object System.Drawing.PointF 12.5, 9.0)
-  ))
-  $G.FillPath((New-Object System.Drawing.SolidBrush $Backdrop), $claw)
-  $G.FillPath($tool, (New-RoundedRect 15.5 8.8 2.4 9.4 1.0))
+  if (-not (Test-Path $pngPath)) { throw "The headless browser wrote no screenshot to $pngPath." }
 
-  # wrench, leaning right. The jaws are an arc with the gap at the top: centre
-  # (22.6, 7.54), radius 2.75, swept the long way round through the bottom.
-  $s = $G.Save()
-  $G.TranslateTransform(22.6, 17.0)
-  $G.RotateTransform(12)
-  $G.TranslateTransform(-22.6, -17.0)
-  $G.FillPath($tool, (New-RoundedRect 21.4 8.6 2.4 9.6 1.0))
-  $G.DrawArc($jaws, (22.6 - 2.75), (7.54 - 2.75), 5.5, 5.5, 224.85, -269.7)
-  $G.Restore($s)
+  # Copied into a new bitmap so the file on disk can be deleted straight away -
+  # Image::FromFile keeps the file locked for as long as the image lives.
+  $shot = [System.Drawing.Image]::FromFile($pngPath)
+  $mark = New-Object System.Drawing.Bitmap $shot
+  $shot.Dispose()
 
-  # the box, last, so it covers the ends of the tools
-  $front = New-Object System.Drawing.Drawing2D.GraphicsPath
-  $front.AddLine(5.2, 19.8, 26.8, 19.8)
-  $front.AddLine(26.8, 19.8, 25.6, 25.7)
-  $front.AddArc(21.2, 23.5, 4.4, 4.4, 0, 90)
-  $front.AddArc(6.4, 23.5, 4.4, 4.4, 90, 90)
-  $front.CloseFigure()
-  $G.FillPath($box, $front)
-  $G.FillPath($box, (New-RoundedRect 2.6 16.2 26.8 4.0 1.5))
-  $G.FillPath($rim, (New-RoundedRect 5.0 17.1 22.0 1.3 0.65))
+  Remove-Item $htmlPath, $pngPath -Force
 
-  $G.Restore($state)
+  return $mark
 }
 
 function New-OgImage {
@@ -183,9 +168,11 @@ function New-OgImage {
   $fmt.Trimming = [System.Drawing.StringTrimming]::Word
 
   # Brand line: the mark, then the name beside it, sitting on the same baseline.
-  Draw-Mark -G $g -X $margin -Y 60 -Size 52 `
-            -BoxColour $boxDark -ToolColour $toolDark -RimColour $rimDark -Backdrop $bg
-  $g.DrawString('abox.tools', $fontBrand, $accentBrush, ($margin + 64), 74)
+  # It is rasterised at twice the size it is drawn at, so the edges stay clean.
+  $mark = Get-MarkImage -Size 144 -Palette dark
+  $g.DrawImage($mark, $margin, 34, 72, 72)
+  $mark.Dispose()
+  $g.DrawString('abox.tools', $fontBrand, $accentBrush, ($margin + 84), 74)
 
   $titleRect = New-Object System.Drawing.RectangleF $margin, 160, ($w - ($margin * 2)), 260
   $g.DrawString($Title, $fontTitle, $textBrush, $titleRect, $fmt)
@@ -243,8 +230,10 @@ function New-IconPng {
   # A margin of about a tenth, so the mark is not jammed against the rounded
   # corners iOS crops the tile to.
   $inset = 18
-  Draw-Mark -G $g -X $inset -Y $inset -Size ($size - ($inset * 2)) `
-            -BoxColour $boxLight -ToolColour $toolLight -RimColour $rimLight -Backdrop $tile
+  $side  = $size - ($inset * 2)
+  $mark  = Get-MarkImage -Size $side -Palette light
+  $g.DrawImage($mark, $inset, $inset, $side, $side)
+  $mark.Dispose()
 
   $full = Join-Path $PSScriptRoot $Path
   $bmp.Save($full, [System.Drawing.Imaging.ImageFormat]::Png)

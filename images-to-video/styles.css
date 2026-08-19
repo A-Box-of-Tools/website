@@ -1007,16 +1007,18 @@ footer {
 .home-link { white-space: nowrap; }
 
 .site-logo {
-  width: 1.1em;
-  height: 1.1em;
-  vertical-align: -0.25em;
+  width: 1.35em;
+  height: 1.35em;
+  vertical-align: -0.35em;
   margin-right: 0.15em;
 }
 
-.logo-tool { fill: var(--accent); }
-.logo-jaws { stroke: var(--accent); }
+.logo-lid { stroke: var(--accent); }
+.logo-tool { fill: var(--accent-deep); }
+.logo-tool-alt { fill: var(--accent); }
 .logo-box { fill: var(--accent-deep); }
-.logo-rim { fill: var(--accent-pale); }
+.logo-band { fill: var(--accent); }
+.logo-latch { fill: var(--accent-pale); }
 
 
 /* ------------------------------------------------------------- ad placement */
