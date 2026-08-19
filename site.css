@@ -10,11 +10,6 @@
   --text: #16191d;
   --text-dim: #5d6672;
   --accent: #2b6cb0;
-  /* Three companions for the site mark: a darker shade for the box, a pale
-     tint for the inside edge of it, and nothing else. Keep them in step with
-     logo.svg, which carries its own copy of the same colours. */
-  --accent-deep: #1d4f83;
-  --accent-pale: #d7e7f7;
   --radius: 10px;
   --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 12px rgb(16 24 40 / 4%);
 }
@@ -28,8 +23,6 @@
     --text: #e8eaed;
     --text-dim: #9aa4b2;
     --accent: #5b9bd8;
-    --accent-deep: #3772ab;
-    --accent-pale: #cfe3f8;
     --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 20%);
   }
 }
@@ -51,9 +44,6 @@ body {
 .hub-head { padding: 2.75rem 0 0.5rem; }
 
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   margin: 0 0 0.9rem;
   font-size: 0.9rem;
   font-weight: 600;
@@ -61,14 +51,7 @@ body {
   color: var(--text-dim);
 }
 
-/* The site mark. The parts are coloured from here rather than from attributes
-   in the markup, so that both themes are handled in one place; logo.svg draws
-   the same shape with the same colours baked in, for use as the favicon. */
-.brand-logo { width: 1.5rem; height: 1.5rem; flex: none; }
-.logo-tool { fill: var(--accent); }
-.logo-jaws { stroke: var(--accent); }
-.logo-box { fill: var(--accent-deep); }
-.logo-rim { fill: var(--accent-pale); }
+.brand-mark { font-size: 1.05rem; }
 
 .hub-head h1 {
   margin: 0;
