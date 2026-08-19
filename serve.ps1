@@ -79,6 +79,21 @@ try {
         continue
       }
 
+      # Directory requests, so tools can live at their own subpath the way they
+      # will on GitHub Pages. The redirect matters as much as the index lookup:
+      # without a trailing slash the page's relative links resolve one level too
+      # high, and styles.css would be fetched from the site root.
+      if (Test-Path -LiteralPath $fullPath -PathType Container) {
+        if (-not $request.Url.AbsolutePath.EndsWith('/')) {
+          $response.StatusCode = 301
+          $response.RedirectLocation = $request.Url.AbsolutePath + '/'
+          $response.Close()
+          Write-Host "  301  $relative/" -ForegroundColor DarkCyan
+          continue
+        }
+        $fullPath = Join-Path $fullPath 'index.html'
+      }
+
       if (-not (Test-Path -LiteralPath $fullPath -PathType Leaf)) {
         $response.StatusCode = 404
         $body = [System.Text.Encoding]::UTF8.GetBytes("404 - $relative not found")

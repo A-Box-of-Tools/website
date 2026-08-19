@@ -28,6 +28,74 @@ GitHub Pages, Netlify…). There is nothing to compile.
 
 ---
 
+## Layout
+
+The repo is a multi-tool site. Each tool is a self-contained folder that assumes
+nothing about where it is mounted — every path in it is relative, so it works at
+the domain root, at `/images-to-video/`, or nested deeper, with no configuration.
+
+```
+/                        the hub page
+  index.html
+  site.css
+  _headers               security headers (Cloudflare Pages / Netlify)
+  .nojekyll              stops GitHub Pages running the content through Jekyll
+  serve.ps1              local dev server
+  images-to-video/       one tool, entirely self-contained
+    index.html
+    styles.css
+    sw.js
+    src/*.js
+```
+
+Adding a tool means dropping in a folder and adding a card to the hub. Tools do
+not share a stylesheet or a script bundle on purpose: it keeps each one readable
+and auditable on its own, which is the point when the selling proposition is
+"read the code and see that it never uploads anything".
+
+The service worker registers with the scope of its own folder, so each tool
+caches only itself and cannot interfere with its neighbours.
+
+---
+
+## Deploying to two subdomains
+
+The goal is the same site answering on both `video.<domain>` and
+`image.<domain>`.
+
+**GitHub Pages cannot do this.** A Pages site serves exactly one custom domain,
+set by a single `CNAME` file. Pointing a second domain at the same Pages site
+gets you a redirect to the canonical one, or a 404 — not a second live copy.
+Pages also cannot set response headers, so `_headers` would be ignored.
+
+### Recommended: Cloudflare Pages (or Netlify)
+
+Source stays on GitHub; the host builds from it and allows many custom domains
+per project.
+
+1. Create a project and connect this repository.
+2. Build command: none. Output directory: `/` (the repo root).
+3. Add **both** `video.<domain>` and `image.<domain>` as custom domains.
+4. Point both subdomains at the host with the CNAME records it gives you.
+
+`_headers` is picked up automatically by both hosts.
+
+### If you must stay on GitHub Pages
+
+Use two repositories, each with its own `CNAME`, and sync the tool folder into
+the second with a GitHub Action on push. It works, but you are maintaining two
+deployments of identical files and losing the `_headers` file. Ask and I can
+write that workflow.
+
+### Either way: set the canonical URL
+
+Identical content on two domains is duplicate content. Both `index.html` files
+carry a `<link rel="canonical">` pointing at a placeholder domain — set it to
+whichever subdomain you consider primary, and leave it the same in the copy
+served from the other one.
+
+---
+
 ## Before you publish it: set the repository URL
 
 The page links to its own source in three places, because "read the code" is the
@@ -38,12 +106,21 @@ placeholder:
 https://github.com/your-name/images-to-video
 ```
 
-Replace every occurrence in `index.html` — the header button, the privacy panel
-link and its visible text, and the footer — before deploying. There is a comment
+Replace every occurrence in `images-to-video/index.html` — the header button, the
+privacy panel link and its visible text, and the footer. There is a comment
 marking it near the top of `<body>`.
 
+This replaces both placeholders, the repository URL and the canonical domain, in
+every file that carries them:
+
 ```bash
-sed -i 's|your-name/images-to-video|YOUR-USER/YOUR-REPO|g' index.html
+sed -i 's|your-name/images-to-video|YOUR-USER/YOUR-REPO|g; s|your-domain\.example|YOUR-DOMAIN.com|g' index.html images-to-video/index.html
+```
+
+Then check nothing was missed:
+
+```bash
+grep -rn 'your-name/\|your-domain\.example' --include=*.html .
 ```
 
 Shipping with a dead source link is worse than having no link, since the claims on

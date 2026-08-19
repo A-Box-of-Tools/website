@@ -1,0 +1,83 @@
+/* Styles for the hub page only. Each tool ships its own stylesheet so that it
+   stays self-contained and can be read, audited, or moved on its own. */
+
+:root {
+  color-scheme: light dark;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --border: #d9dee5;
+  --text: #16191d;
+  --text-dim: #5d6672;
+  --accent: #2b6cb0;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 12px rgb(16 24 40 / 4%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171b;
+    --surface: #1c2027;
+    --border: #333a44;
+    --text: #e8eaed;
+    --text-dim: #9aa4b2;
+    --accent: #5b9bd8;
+    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 20%);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0 1rem 3rem;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.hub-head, main, footer { max-width: 940px; margin-inline: auto; }
+
+.hub-head { padding: 2.5rem 0 1.5rem; }
+.hub-head h1 { margin: 0; font-size: 1.7rem; letter-spacing: -0.02em; }
+.hub-head p { margin: 0.4rem 0 0; color: var(--text-dim); }
+
+.tool-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.tool-card {
+  display: grid;
+  gap: 0.35rem;
+  height: 100%;
+  padding: 1.15rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.tool-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.tool-icon { font-size: 1.6rem; line-height: 1; }
+.tool-name { font-weight: 600; font-size: 1.02rem; }
+.tool-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.5; }
+
+footer {
+  margin-top: 2.5rem;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

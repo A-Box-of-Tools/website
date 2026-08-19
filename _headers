@@ -1,0 +1,17 @@
+# Response headers for Cloudflare Pages and Netlify (both read this file).
+# GitHub Pages ignores it - it cannot set custom headers at all, which is one
+# more reason this site is deployed elsewhere.
+#
+# These are defence in depth. The Content-Security-Policy inside each page's
+# <meta> tag already carries the load-bearing rules; frame-ancestors is the one
+# directive a meta tag cannot express, so it has to live here.
+
+/*
+  Content-Security-Policy: frame-ancestors 'none'
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), usb=(), payment=()
+
+# Deliberately NOT set: Cross-Origin-Embedder-Policy. Enabling it would block
+# the cross-origin <img> loads that "Add from a web address" depends on.
