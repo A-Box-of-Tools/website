@@ -78,7 +78,11 @@ function New-OgImage {
   $subRect = New-Object System.Drawing.RectangleF $margin, 420, ($w - ($margin * 2)), 120
   $g.DrawString($Subtitle, $fontSubtitle, $dimBrush, $subRect, $fmt)
 
-  $g.DrawString($Footer, $fontFooter, $accentBrush, $margin, ($h - 96))
+  # The separator is built from a code point rather than typed literally, so
+  # this script stays pure ASCII on disk the way the HTML files do. Callers
+  # write "|" and get a middot.
+  $sep = [string][char]0x00B7
+  $g.DrawString(($Footer -replace '\|', $sep), $fontFooter, $accentBrush, $margin, ($h - 88))
 
   $full = Join-Path $PSScriptRoot $Path
   $bmp.Save($full, [System.Drawing.Imaging.ImageFormat]::Png)
@@ -92,9 +96,9 @@ function New-OgImage {
 New-OgImage -Path 'og.png' `
   -Title 'Tools that never touch a server' `
   -Subtitle 'Small, single-purpose utilities that do all of their work inside your browser.' `
-  -Footer 'No uploads . No accounts . Works offline'
+  -Footer 'No uploads | No accounts | Works offline'
 
 New-OgImage -Path 'images-to-video\og.png' `
   -Title 'Images to Video' `
   -Subtitle 'Turn a folder of images into an MP4 slideshow, encoded on your own machine.' `
-  -Footer 'No uploads . No accounts . Works offline'
+  -Footer 'No uploads | No accounts | Works offline'

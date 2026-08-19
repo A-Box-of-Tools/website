@@ -69,7 +69,14 @@
 <!-- Google tag (gtag.js). The configuration half lives in analytics.js. -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script>
 <script src="analytics.js" defer></script>
-<title>Images to Video &mdash; offline slideshow maker</title>
+<!--
+  The title leads with the phrase people search for and keeps the thing that
+  makes this different - that it is local and offline - for the description and
+  the page itself. "Offline slideshow maker" alone matched almost nothing
+  anybody types.
+-->
+<title>Images to Video Converter &mdash; Free MP4 Slideshow Maker</title>
+<meta name="description" content="Turn JPG, PNG or WebP images into an MP4 slideshow video, free and entirely in your browser. Nothing is uploaded, no sign-up, and it works offline.">
 
 <!--
   The canonical URL keeps this page pointing at one address even if the site
@@ -77,6 +84,146 @@
   search engine sees two identical pages and splits the ranking between them.
 -->
 <link rel="canonical" href="https://abox.tools/images-to-video/">
+
+<!--
+  Share card. See the note in the hub page's head: og-image.ps1 draws these,
+  and the URLs have to be absolute.
+-->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="A Box of Tools">
+<meta property="og:url" content="https://abox.tools/images-to-video/">
+<meta property="og:title" content="Images to Video &mdash; free MP4 slideshow maker">
+<meta property="og:description" content="Turn a folder of images into an MP4 slideshow. Encoding runs on your own machine; nothing is uploaded.">
+<meta property="og:image" content="https://abox.tools/images-to-video/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Images to Video - turn a folder of images into an MP4 slideshow">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Images to Video &mdash; free MP4 slideshow maker">
+<meta name="twitter:description" content="Turn a folder of images into an MP4 slideshow. Encoding runs on your own machine; nothing is uploaded.">
+<meta name="twitter:image" content="https://abox.tools/images-to-video/og.png">
+
+<!--
+  Structured data. SoftwareApplication is what a browser tool is in schema.org
+  terms, and the FAQPage half is generated from the questions at the foot of
+  this page - if you edit one, edit the other, because answers that disagree
+  with the visible page are a manual-action risk, not just untidy.
+
+  Inline is deliberate and does not need 'unsafe-inline'; the hub page's head
+  explains why. Validate at https://validator.schema.org/ after changes.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Images to Video",
+      "url": "https://abox.tools/images-to-video/",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any (runs in a web browser)",
+      "browserRequirements": "Requires JavaScript. MP4 output needs a browser with WebCodecs; others fall back to WebM.",
+      "description": "Turn a folder of images into an MP4 slideshow video. Every step runs in your browser, so no image is ever uploaded.",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Converts JPG, PNG, WebP, GIF and AVIF images to video",
+        "MP4 (H.264) output, with WebM as a fallback",
+        "Resolutions up to 3840x2160, frame rates from 12 to 60 fps",
+        "Per-image hold time in frames or seconds",
+        "Runs offline; no upload, no account"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "A Box of Tools",
+          "item": "https://abox.tools/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Images to Video",
+          "item": "https://abox.tools/images-to-video/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are my images uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Your images are read, composited and encoded by your own browser on your own hardware. There is no server side to this tool, and the page's Content-Security-Policy names every address it may contact - none of them belongs to this site. The one exception is the optional \"add from a web address\" feature, which fetches an image you paste in, and that server sees your IP address."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which image formats can I use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Any still image format your browser can decode, which in practice means JPG, PNG, WebP, GIF, AVIF and, on Apple devices, HEIC. There is no separate list to keep up to date here, because the decoding is the browser's job rather than ours."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What video format does it produce?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MP4 with H.264 video, which plays on essentially anything. In a browser without WebCodecs the tool falls back to recording WebM instead - the same footage in a container that fewer editors accept."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a limit on how many images, or how long the video can be?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There is no limit built into the tool. The practical ceiling is your own machine's memory, because the finished video is assembled there before you download it. Very large 4K slideshows are the first thing to feel it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it free, and do I need an account?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is free, and there is no account, no sign-in and no trial. The site carries advertising, which is what pays for it; the ads are not given anything about your images."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Load the page once, then disconnect from the internet and it keeps working. That is also the simplest way to prove nothing is being uploaded: a tool that sent your images away to be processed would stop the moment you unplugged."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add music or a soundtrack?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not yet. The tool produces video only: the MP4 it writes has a single video track and no audio track. Add a soundtrack afterwards in a video editor if you need one."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#127902;</text></svg>">
@@ -425,6 +572,113 @@
     </div>
   </section>
 </main>
+
+<!--
+  ============================================================================
+  THE WRITTEN PART OF THE PAGE
+
+  Everything above this is interface. A search engine ranking a page about
+  converting images to video has nothing to read in a row of buttons, which is
+  why this section exists: it answers, in words, the questions people actually
+  type into a search box before they find a tool like this.
+
+  It is not filler. Every answer here is true of the code in src/, and the
+  same answers are repeated as FAQPage structured data in the head. EDIT BOTH
+  OR NEITHER - an answer here that disagrees with the one in the head is worse
+  than having no structured data at all.
+  ============================================================================
+-->
+<section class="faq" aria-labelledby="how-to-h">
+  <h2 id="how-to-h">How to turn images into a video</h2>
+  <ol class="how-to">
+    <li>
+      <strong>Choose your images.</strong> Drop a folder onto the picker, or
+      select the files by hand. They are read straight off your disk by the
+      browser; nothing is sent anywhere while you do it.
+    </li>
+    <li>
+      <strong>Put them in order and set how long each one is held.</strong> Drag
+      to reorder. Hold time can be given in frames or in seconds, either for
+      every image at once or one image at a time.
+    </li>
+    <li>
+      <strong>Pick a resolution and frame rate.</strong> "Match highest
+      resolution" follows your largest image; the presets cover 4K, 1080p, 720p,
+      square and vertical, and there is a custom size if none of those fit.
+    </li>
+    <li>
+      <strong>Create the video and download it.</strong> Encoding runs on your
+      own hardware, so how long it takes depends on your machine rather than on
+      a queue. The finished MP4 is handed straight to your browser's downloads.
+    </li>
+  </ol>
+
+  <h2 id="faq-h">Questions</h2>
+  <div class="faq-list">
+    <details>
+      <summary>Are my images uploaded anywhere?</summary>
+      <p>
+        No. Your images are read, composited and encoded by your own browser on
+        your own hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. The one exception is the
+        optional "add from a web address" feature, which fetches an image you
+        paste in, and that server sees your IP address.
+      </p>
+    </details>
+    <details>
+      <summary>Which image formats can I use?</summary>
+      <p>
+        Any still image format your browser can decode, which in practice means
+        JPG, PNG, WebP, GIF, AVIF and, on Apple devices, HEIC. There is no
+        separate list to keep up to date here, because the decoding is the
+        browser's job rather than ours.
+      </p>
+    </details>
+    <details>
+      <summary>What video format does it produce?</summary>
+      <p>
+        MP4 with H.264 video, which plays on essentially anything. In a browser
+        without WebCodecs the tool falls back to recording WebM instead &mdash;
+        the same footage in a container that fewer editors accept.
+      </p>
+    </details>
+    <details>
+      <summary>Is there a limit on how many images, or how long the video can be?</summary>
+      <p>
+        There is no limit built into the tool. The practical ceiling is your own
+        machine's memory, because the finished video is assembled there before
+        you download it. Very large 4K slideshows are the first thing to feel
+        it.
+      </p>
+    </details>
+    <details>
+      <summary>Is it free, and do I need an account?</summary>
+      <p>
+        It is free, and there is no account, no sign-in and no trial. The site
+        carries advertising, which is what pays for it; the ads are not given
+        anything about your images.
+      </p>
+    </details>
+    <details>
+      <summary>Does it work offline?</summary>
+      <p>
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your images away to be processed would stop
+        the moment you unplugged.
+      </p>
+    </details>
+    <details>
+      <summary>Can I add music or a soundtrack?</summary>
+      <p>
+        Not yet. The tool produces video only: the MP4 it writes has a single
+        video track and no audio track. Add a soundtrack afterwards in a video
+        editor if you need one.
+      </p>
+    </details>
+  </div>
+</section>
 
 <footer>
   <p>

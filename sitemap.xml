@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  One entry per page. When a tool ships, add its folder here and move its name
+  out of the "Planned" list in index.html at the same time.
+
+  lastmod is a date, not a timestamp: it only has to be honest about the day
+  the page's content changed. Bumping it on every deploy, including deploys
+  that changed nothing on the page, teaches crawlers to ignore it.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://abox.tools/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/images-to-video/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

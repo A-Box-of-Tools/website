@@ -38,6 +38,9 @@ $mimeTypes = @{
   '.woff2'= 'font/woff2'
   '.md'   = 'text/markdown; charset=utf-8'
   '.txt'  = 'text/plain; charset=utf-8'
+  # Added for sitemap.xml. GitHub Pages already serves .xml correctly; this
+  # only stops the local server handing it back as a binary download.
+  '.xml'  = 'application/xml; charset=utf-8'
 }
 
 $listener = New-Object System.Net.HttpListener

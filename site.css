@@ -201,4 +201,20 @@ footer {
 footer p { margin: 0.35rem 0; }
 footer a { color: var(--accent); }
 
+
+/* ------------------------------------------------------------- ad placement */
+
+/* Auto ads inject their own <ins> elements wherever Google decides, so their
+   position cannot be reserved from here the way a hand-placed slot could be.
+   What this rule does fix is the after-effect: a slot Google fails to fill
+   otherwise sits on the page as an empty box, pushing real content down for
+   nothing. Collapsing unfilled slots removes that.
+
+   If layout shift ever needs to be eliminated rather than reduced, the answer
+   is hand-placed <ins> units inside containers with a fixed height, not more
+   CSS here - auto ads and a stable layout are close to mutually exclusive. */
+
+ins.adsbygoogle { display: block; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
+
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
