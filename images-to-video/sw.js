@@ -8,7 +8,7 @@
  * Bump CACHE_NAME whenever any listed file changes.
  */
 
-const CACHE_NAME = 'images-to-video-v6';
+const CACHE_NAME = 'images-to-video-v7';
 
 const ASSETS = [
   './',

@@ -1168,7 +1168,12 @@ el.privacyToggle.addEventListener('click', () => {
 // The CSP blocks it from running, but a blocked script still leaves a resource
 // timing entry, and reporting that as an unexplained request would be alarming
 // and wrong. Anything the page can pull in without the user asking belongs here.
-const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|analytics\.google\.com|gstatic\.com|google\.com|cloudflareinsights\.com)$/;
+// google.com is written as a pattern because Google's measurement pixel uses
+// the visitor's own country domain - www.google.ca, www.google.co.uk - and a
+// list of literal hostnames turns the panel red for a visitor in the wrong
+// country. That is the worst possible failure for this particular panel: the
+// one place on the page meant to be checkable, saying something untrue.
+const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
 
 /**
  * Report what this page has actually fetched.
