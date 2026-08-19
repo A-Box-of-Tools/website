@@ -844,7 +844,13 @@ el.privacyToggle.addEventListener('click', () => {
 // one image. Reporting them together would turn a precise, checkable claim into
 // a vague one - and would wrongly describe a Google request as an image you
 // asked for, which is the opposite of what this panel is for.
-const GOOGLE_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|analytics\.google\.com|gstatic\.com|google\.com)$/;
+// cloudflareinsights.com is here because the host injects its own beacon into
+// the page. The CSP blocks it from running, but a blocked script still leaves a
+// resource timing entry, and an unknown host in that list would be reported as
+// an address the user pasted - which would be a false statement on the one
+// panel that exists to be checked. Anything the page can pull in without the
+// user asking belongs in this list, whether or not it is allowed to execute.
+const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|analytics\.google\.com|gstatic\.com|google\.com|cloudflareinsights\.com)$/;
 
 /**
  * Report what this page has actually fetched, split three ways: files from this
@@ -855,7 +861,7 @@ const GOOGLE_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadser
  * that matters, and the part a sceptical visitor can watch hold in real time.
  */
 function monitorNetwork() {
-  const google = new Set();
+  const platform = new Set();
   const external = new Set();
 
   const inspect = (entries) => {
@@ -863,20 +869,20 @@ function monitorNetwork() {
       if (entry.name.startsWith('blob:') || entry.name.startsWith('data:')) continue;
       const url = new URL(entry.name, location.href);
       if (url.origin === location.origin) continue;
-      if (GOOGLE_HOSTS.test(url.hostname)) google.add(url.hostname);
+      if (PLATFORM_HOSTS.test(url.hostname)) platform.add(url.hostname);
       else external.add(url.hostname);
     }
     const total = performance.getEntriesByType('resource')
       .filter((e) => !e.name.startsWith('blob:') && !e.name.startsWith('data:')).length;
 
     const clean = external.size === 0;
-    const googleNote = google.size === 0
+    const platformNote = platform.size === 0
       ? ''
-      : ` Google's ad and measurement scripts loaded from ${google.size} host${google.size === 1 ? '' : 's'}; none of them was given a file.`;
+      : ` The page's own ad and measurement scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
 
     el.networkCount.textContent = clean
-      ? `your images have gone nowhere. ${total} files loaded.${googleNote}`
-      : `fetched images from ${[...external].join(', ')} — addresses you pasted in.${googleNote}`;
+      ? `your images have gone nowhere. ${total} files loaded.${platformNote}`
+      : `fetched images from ${[...external].join(', ')} — addresses you pasted in.${platformNote}`;
 
     el.networkCount.className = clean ? 'good' : 'warn';
     el.networkDot.className = `live-dot ${clean ? 'good' : 'warn'}`;
