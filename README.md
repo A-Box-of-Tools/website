@@ -2,11 +2,17 @@
 
 The source for **[abox.tools](https://abox.tools/)** — a small collection of
 single-purpose web tools that do all of their work **in the browser**. No server,
-no upload, no account, no dependencies, no build step.
+no upload, no account.
 
 The selling proposition is not "we promise not to look at your files", it is
-"there is no code path that could send them anywhere, and you can check that
-yourself in a minute". Everything below is written to keep that true.
+"there is no code path that could send them anywhere". Everything below is
+written to keep that true.
+
+Most of these tools are also small enough to read in one sitting, and that is
+worth keeping wherever it is free. It is not the promise, though. Where the
+browser cannot do a job on its own, a vendored engine that runs on the
+visitor's own machine beats not shipping the tool at all — see
+[What can be built here](#what-can-be-built-here).
 
 ---
 
@@ -95,6 +101,10 @@ only itself and cannot interfere with its neighbours.
 3. If it belongs to a category that does not exist yet, copy a whole
    `<section class="category">` block and move that name out of the "Planned" list.
 
+   Before adding a *new* name to the Planned list, put it through
+   [What can be built here](#what-can-be-built-here) first. That section is
+   where the ruled-out ones, and the reasons they were ruled out, live.
+
 Two things to hold the line on, because the whole site rests on them:
 
 - **Nothing about a user's file is ever read out.** Not to Google, not to
@@ -176,6 +186,90 @@ Each tool page links to this repository in four places — the header button, th
 privacy panel (twice), and the footer — plus once in the hub footer. "Read the code"
 is the only real answer to "why should I trust this", so if the repository ever
 moves, all of them move with it. A dead source link is worse than no link at all.
+
+---
+
+## What can be built here
+
+The "Planned" list on the front page is not a wishlist. It was drawn up by going
+through the tool list of the largest online GIF and video site — the closest
+thing there is to a complete catalogue of what people actually want done to a
+media file — and putting every entry through one test:
+
+> Does all of the work happen on the visitor's own machine, with the file never
+> leaving it, and does the tool still run with the network unplugged?
+
+Note what that test does **not** ask. It does not ask whether the code is small,
+or hand-written, or readable in one sitting. Those are good properties — most of
+this repository has all three, and `src/mp4.js` is why the first tool needed no
+dependency at all — but they are a preference, not the promise. The promise is
+that your file stays on your machine. A tool that keeps that promise with thirty
+megabytes of vendored WebAssembly keeps it exactly as completely as one that
+keeps it with four hundred lines of hand-written muxer.
+
+### What the browser can do on its own
+
+Reach for this first. Where a native API does the job there is no reason to ship
+an engine to do it instead, and these all stay small enough to read.
+
+| Group | What does the work |
+|---|---|
+| Image resize, crop, rotate, convert, compress, filters, text | `createImageBitmap` → `<canvas>` → `canvas.toBlob`. PNG, JPEG and WebP are encoders the browser already has |
+| Metadata viewer and remover | EXIF is a byte structure inside the file: reading it is parsing, and removing it is re-encoding through a canvas, which drops every tag on the way |
+| PNG to ICO, images to PDF | Containers, not codecs — a header wrapped around images that are already encoded. The same trick `src/mp4.js` plays |
+| SVG to PNG | An `<img>` holding an SVG draws to a canvas. Only for SVGs with no external references, which is also what keeps it offline |
+| GIF: make, split, resize, reverse, retime, analyze | LZW and a color quantizer, written out the way the MP4 muxer was. Reading animated GIFs is `ImageDecoder` where it exists and a hand-written parser where it does not |
+| APNG | PNG chunks, with `CompressionStream('deflate')` for the pixel data — the compressor is already in the browser |
+| Video: trim, resize, crop, rotate, reverse, frame grabs, filters, subtitles | `VideoDecoder` and `VideoEncoder`, plus an MP4 *de*muxer to sit beside the muxer that already exists |
+| Audio: trim, fade, speed, volume, waveform | `decodeAudioData` and `OfflineAudioContext`. WAV out is a 44-byte header in front of the samples |
+| QR codes and barcodes | Arithmetic over a string. There is no input file at all |
+
+### What needs a vendored FFmpeg
+
+Everything below is out of reach of the browser's own APIs and in reach of an
+`ffmpeg.wasm` build. It passes the test at the top of this section — the file
+never leaves the machine and the tool works with the network unplugged — so it
+is on the roadmap on that basis.
+
+| Tool | Why it needs the build |
+|---|---|
+| HEIC to JPG or PNG | Only Safari decodes HEIC natively. FFmpeg's HEIF demuxer and HEVC decoder cover everyone else, so the iPhone-photo problem stops being Safari-only. Images to Video currently skips HEIC with a message; that message becomes a link to the converter |
+| Encoding MP3 | No browser ships an MP3 encoder. `libmp3lame` is one, so "anything to MP3" becomes a real converter instead of only "MP3 in, WAV out" |
+| Encoding AVIF | Chromium's `canvas.toBlob` is the only native writer, and everywhere else it quietly hands back a PNG. `libaom` writes it the same way in every browser |
+| Animated WebP | Every browser decodes it and none encode it. `libwebp` does both |
+| JPEG XL, both directions | Chrome 145 and Firefox 152 carry a decoder behind a flag, and only Safari turns it on by default. `libjxl` in the build makes the browser's own support irrelevant |
+
+**What it costs, and what has to change to pay it.** None of this is free, and
+all of it is knowable up front:
+
+- **The core is roughly 25–30 MB, and it is served from this origin.** A CDN
+  copy would put a third party in the path of every visit and could not be
+  cached for offline use, which is the whole point. Vendor it, commit it, and
+  put it in that tool's service worker precache. A tool that downloads its own
+  engine the first time you press the button is not an offline tool.
+- **Two CSP changes, in the tool that needs them and nowhere else.**
+  `script-src` needs `'wasm-unsafe-eval'`, and `connect-src` needs `'self'` —
+  which no page here currently grants. Today `connect-src` names Google's
+  endpoints and nothing else, so an FFmpeg worker could not fetch the `.wasm`
+  file sitting in its own folder. Do not add either to the hub page.
+- **Use the single-threaded core.** The multi-threaded one needs
+  `SharedArrayBuffer`, which needs `Cross-Origin-Opener-Policy: same-origin` and
+  `Cross-Origin-Embedder-Policy: require-corp`. `require-corp` breaks AdSense:
+  Google's scripts and frames do not send the CORP header it demands. It is
+  threads or ads, not both. If a tool ever genuinely needs the threaded build,
+  it gets those two headers *and* no ad slots, and the ad section of this file
+  has to say so out loud.
+- **Say it on the tool's page.** The privacy panel already reports what the page
+  loaded. A tool carrying an engine should name it, give its size, and say
+  plainly that it came from this origin once and contacted nothing afterwards.
+
+### What is still left out
+
+| Ruled out | Why |
+|---|---|
+| Background removal | A segmentation model, not a codec. FFmpeg does not do it and would not help — this needs weights and an inference runtime, which is a separate argument on a separate day |
+| Camera RAW (CR2, NEF, ARW) | FFmpeg does not decode these either. It would take LibRaw or dcraw on top: a second engine, for one family of formats |
+| Raster to vector (image to SVG) | A tracing algorithm, not a conversion: large, and the output disappoints everyone who expected their photo back as shapes |
 
 ---
 

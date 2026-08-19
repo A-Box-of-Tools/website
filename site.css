@@ -165,6 +165,22 @@ code {
 
 .planned .category-head h2 { color: var(--text-dim); }
 
+/* The planned list is grouped once it is longer than a handful of lines: a
+   flat run of forty names reads as a wishlist, the same names under Images /
+   Video / Audio read as a shape. The heading is deliberately quieter than a
+   category's <h2> so a shipped tool still outranks a planned one visually. */
+
+.planned-group + .planned-group { margin-top: 1.35rem; }
+
+.planned-group h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
 .planned-list {
   list-style: none;
   margin: 0;
