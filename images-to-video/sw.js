@@ -8,7 +8,7 @@
  * Bump CACHE_NAME whenever any listed file changes.
  */
 
-const CACHE_NAME = 'images-to-video-v2';
+const CACHE_NAME = 'images-to-video-v3';
 
 const ASSETS = [
   './',
@@ -22,6 +22,10 @@ const ASSETS = [
   'src/support.js',
   'src/remote.js',
   'src/mp4.js',
+  // Same-origin, so it is cached like everything else. Offline it simply
+  // queues a measurement call that never goes out - the app does not depend
+  // on it, and nothing about your files is in it either way.
+  'analytics.js',
 ];
 
 self.addEventListener('install', (event) => {

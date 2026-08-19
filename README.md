@@ -16,10 +16,15 @@ yourself in a minute". Everything below is written to keep that true.
 |---|---|---|
 | Images to Video | `/images-to-video/` | Turns a sequence of images into an MP4, encoded locally |
 
-The hub page (`index.html`) lists them by category. It loads **no JavaScript at
-all** — its CSP has no `script-src`, so the browser will refuse to run any. A
-page that only lists links does not need code, and one that cannot execute code
-cannot leak anything either.
+The hub page (`index.html`) lists them by category.
+
+Every page loads Google's ad and measurement scripts, which is why the
+Content-Security-Policy in each page names Google origins rather than being the
+flat `default-src 'none'` it started as. Neither script is given anything about
+a user's files: no file, thumbnail, filename, size, or count is read out to
+them, and there is no custom event anywhere in this repository that would carry
+one. The claims on the pages were rewritten to match when the scripts went in;
+if they ever come out, tighten the policies and put the stronger wording back.
 
 ---
 
@@ -80,8 +85,8 @@ only itself and cannot interfere with its neighbours.
 ## Adding a tool
 
 1. Drop the tool's folder in beside `index.html`. Give it its own CSP with
-   `connect-src 'none'`, its own stylesheet, and its own service worker scoped to
-   the folder.
+   the same Google-only `connect-src` allowlist the other tools use, its own
+   stylesheet, and its own service worker scoped to the folder.
 2. Add one `<li>` card to the matching category in `index.html`. The markup for a
    card is spelled out in a comment right above the categories.
 3. If it belongs to a category that does not exist yet, copy a whole
@@ -89,8 +94,9 @@ only itself and cannot interfere with its neighbours.
 
 Two things to hold the line on, because the whole site rests on them:
 
-- **No third-party requests.** No CDN, no web fonts, no analytics — every byte comes
-  from this origin.
+- **Nothing about a user's file is ever read out.** Not to Google, not to
+  anywhere. Every byte that touches a file comes from this origin, and the
+  processing happens in the visitor's own browser.
 - **If a tool genuinely needs the network**, it says so on its own page, in plain
   language, and explains exactly what leaves the machine. Images to Video does this
   for its "add from a web address" feature (see below). What it must not do is
@@ -180,12 +186,19 @@ The first tool in the box. Everything below is specific to it.
 
 The point of this app is that it is *checkable*, not that it is promised.
 
+> **This changed when advertising was added.** `connect-src` used to be `'none'`,
+> which made uploading impossible rather than merely absent - the browser enforced
+> it, and no bug or later edit could get around it. Ad code has to reach Google, so
+> that absolute form is gone. What is in the table is what is true now. Reinstating
+> `connect-src 'none'` means removing the ads, and vice versa.
+
 | Claim | How you verify it |
 |---|---|
-| Your images can never be uploaded | `index.html` sets `connect-src 'none'`, which disables `fetch`, `XHR`, `WebSocket` and `sendBeacon`. This is enforced by the browser, not by the code |
-| Nothing is sent during an export | Open DevTools → Network, create a video, watch it stay empty |
-| No third-party code | Every script and style is served from this origin. No CDN, no fonts, no analytics |
-| It works with no network at all | Load once, disconnect, reload. Everything except web-address loading still works |
+| Your images have nowhere to be uploaded **to** | `index.html` names every address this page may contact, and not one of them belongs to this site. There is no endpoint here that your files could be collected at |
+| The encoder never touches the network | Read `src/encoder.js` and `src/compose.js`. Neither imports anything that can make a request |
+| Nothing is sent during an export | Open DevTools, Network tab, create a video. No request carries image data |
+| Google is never handed an image | Read `analytics.js` - it configures a page-visit counter and nothing else. Nothing in `src/` passes a file, thumbnail, name, or dimension to any script |
+| It works with no network at all | Load once, disconnect, reload. Everything except web-address loading still works; the ads simply do not appear |
 
 ### The one exception: "Add from a web address"
 
@@ -196,9 +209,10 @@ and it only ever happens for addresses you type in yourself.
 It is built so that opening this door does not weaken the rest:
 
 - It uses `<img crossorigin="anonymous">`, **not** `fetch`. Only `img-src` is opened
-  up in the CSP; `connect-src` stays `'none'`.
+  up in the CSP for this; `connect-src` does not name the address you paste.
 - That distinction is the whole design: images can come **in**, data cannot go **out**.
-  There is no API left that could carry your files anywhere.
+  The only `connect-src` entries are Google's ad endpoints, which the ad script alone
+  talks to.
 - The image is copied into a local blob the moment it arrives, so the address is never
   requested again — not for the preview, not for the export.
 - `referrerPolicy="no-referrer"` means the remote server is not told where you came from.

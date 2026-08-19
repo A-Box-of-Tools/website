@@ -4,24 +4,79 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--
-  This page loads no scripts at all - there is no script-src, so the browser
-  will refuse to run any. A hub that only lists links has no need for one, and
-  a page that cannot execute code cannot leak anything either.
+  This page carries advertising, and ad code cannot run under default-src
+  'none'. The allowlist is as narrow as AdSense can be made to work with:
+  Google's own script, frame and measurement origins, and no wildcards except
+  on img-src, where creatives legitimately come from anywhere.
+
+  Each tool carries its own copy of the same allowlist. Keep them in step: a
+  tool that is missing an origin shows a blank ad slot, and one that has an
+  extra origin is a wider hole than this page ever agreed to.
+
+  AdSense does not officially support a strict CSP. If an ad renders blank,
+  open DevTools and look for a violation naming an origin not listed here.
+  Add the origin, do not widen a directive to https: to make it go away.
 
   Punctuation is written as HTML entities throughout, so this file stays pure
   ASCII on disk and cannot be mangled by a tool that guesses the encoding.
 -->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'none';
-  style-src 'self';
-  img-src 'self' data:;
+  script-src 'self'
+    https://www.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://tpc.googlesyndication.com
+    https://partner.googleadservices.com
+    https://www.googletagservices.com
+    https://adservice.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google;
+  frame-src
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://www.google.com;
+  connect-src
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://googleads.g.doubleclick.net
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://csi.gstatic.com;
+  img-src 'self' data: https:;
+  style-src 'self' 'unsafe-inline';
+  font-src https://fonts.gstatic.com;
   form-action 'none';
   base-uri 'none';
 ">
 <title>A Box of Tools &mdash; browser-only utilities that never upload your files</title>
-<meta name="description" content="Small, single-purpose tools that run entirely in your browser. Your files stay on your machine - nothing is uploaded, no account, no tracking.">
+<meta name="description" content="Small, single-purpose tools that run entirely in your browser. Your files stay on your machine - nothing is uploaded, no account, no sign-in.">
 
 <link rel="canonical" href="https://abox.tools/">
+
+<!--
+  AdSense site verification. This is an inert tag - it loads nothing and runs
+  nothing - which is why it is the only one of Google's three verification
+  methods that works here. The other two are the ads.txt entry (correct, but it
+  verifies only when Google next recrawls the file) and a script snippet, which
+  the Content-Security-Policy above forbids outright.
+-->
+<meta name="google-adsense-account" content="ca-pub-5997711677062324">
+
+<!--
+  AdSense. Async, so it cannot delay the list of links; crossorigin="anonymous"
+  is Google's own snippet, unchanged.
+-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5997711677062324"
+        crossorigin="anonymous"></script>
+
+<!-- Google tag (gtag.js). The configuration half lives in analytics.js. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script>
+<script src="analytics.js" defer></script>
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="A Box of Tools">
@@ -53,25 +108,27 @@
   -->
   <ul class="guarantees">
     <li>
-      <span class="g-title">Nothing is uploaded</span>
+      <span class="g-title">Your files never leave your machine</span>
       <span class="g-body">
-        Each tool sets <code>connect-src 'none'</code>, which switches off
-        <code>fetch</code>, <code>XHR</code>, <code>WebSocket</code> and
-        <code>sendBeacon</code>. The browser enforces it, not the code.
+        They are opened, read, and processed by your own browser, using your own
+        hardware. Each tool's <code>Content-Security-Policy</code> names every
+        address it may contact, and not one of them belongs to us.
       </span>
     </li>
     <li>
-      <span class="g-title">Nothing is loaded from elsewhere</span>
+      <span class="g-title">Nothing about your files is sent anywhere</span>
       <span class="g-body">
-        No CDN, no web fonts, no analytics. Every file a page uses is served
-        from this origin, so there is no third party to trust.
+        Not the file, not a thumbnail, not the name, the size, or how many you
+        chose. No tool here reads any of that out. There is no server on the
+        other end of these tools to read it.
       </span>
     </li>
     <li>
       <span class="g-title">It works offline</span>
       <span class="g-body">
-        Open a tool once, disconnect from the internet, and it keeps working.
-        That is hard to fake &mdash; a tool that needed a server would stop.
+        Open a tool once, disconnect from the internet, and it keeps working on
+        your files exactly as before. That is hard to fake: a tool that sent your
+        files somewhere to be processed would simply stop.
       </span>
     </li>
   </ul>
@@ -143,7 +200,8 @@
 
 <footer>
   <p>
-    Everything here runs locally in your browser. No accounts, no uploads, no tracking.
+    Your files stay on your machine. Every tool here does its work in your browser,
+    on your own hardware, and uploads nothing &mdash; no accounts, no sign-in.
   </p>
   <p>
     <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">

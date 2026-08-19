@@ -837,29 +837,46 @@ el.privacyToggle.addEventListener('click', () => {
   el.privacyToggle.setAttribute('aria-expanded', String(open));
 });
 
+// Hosts belonging to the ad and measurement scripts. Kept separate from the
+// "external" bucket rather than lumped in with it, because the two mean
+// entirely different things: these requests carry nothing about your images,
+// while a request to an address you pasted says exactly one thing about exactly
+// one image. Reporting them together would turn a precise, checkable claim into
+// a vague one - and would wrongly describe a Google request as an image you
+// asked for, which is the opposite of what this panel is for.
+const GOOGLE_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|analytics\.google\.com|gstatic\.com|google\.com)$/;
+
 /**
- * Report what this page has actually fetched. Every entry should be a file
- * from this origin, loaded before the app started; blob: URLs are local
- * object URLs and never touch the network. If anything else ever appears
- * here, that is worth knowing about.
+ * Report what this page has actually fetched, split three ways: files from this
+ * origin, advertising, and images pulled from addresses the user typed in.
+ *
+ * The claim on trial here is not "this page is silent" - it is not silent, it
+ * carries ads - but "nothing has carried your images away". That is the part
+ * that matters, and the part a sceptical visitor can watch hold in real time.
  */
 function monitorNetwork() {
+  const google = new Set();
   const external = new Set();
 
   const inspect = (entries) => {
     for (const entry of entries) {
       if (entry.name.startsWith('blob:') || entry.name.startsWith('data:')) continue;
-      if (new URL(entry.name, location.href).origin !== location.origin) {
-        external.add(new URL(entry.name, location.href).hostname);
-      }
+      const url = new URL(entry.name, location.href);
+      if (url.origin === location.origin) continue;
+      if (GOOGLE_HOSTS.test(url.hostname)) google.add(url.hostname);
+      else external.add(url.hostname);
     }
     const total = performance.getEntriesByType('resource')
       .filter((e) => !e.name.startsWith('blob:') && !e.name.startsWith('data:')).length;
 
     const clean = external.size === 0;
+    const googleNote = google.size === 0
+      ? ''
+      : ` Google's ad and measurement scripts loaded from ${google.size} host${google.size === 1 ? '' : 's'}; none of them was given a file.`;
+
     el.networkCount.textContent = clean
-      ? `no requests to any other server. ${total} files loaded, all from this site.`
-      : `contacted ${[...external].join(', ')} — only images you asked for by address.`;
+      ? `your images have gone nowhere. ${total} files loaded.${googleNote}`
+      : `fetched images from ${[...external].join(', ')} — addresses you pasted in.${googleNote}`;
 
     el.networkCount.className = clean ? 'good' : 'warn';
     el.networkDot.className = `live-dot ${clean ? 'good' : 'warn'}`;

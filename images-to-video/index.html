@@ -4,29 +4,71 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--
-  connect-src 'none' is the load-bearing line: it makes fetch(), XHR, WebSocket
-  and sendBeacon impossible from this page. Nothing you add here can be sent
-  anywhere, and that holds no matter what the rest of the code does.
+  connect-src USED TO BE 'none', which made fetch(), XHR, WebSocket and
+  sendBeacon impossible from this page - the single line that turned "your
+  images cannot be uploaded" from a promise into something the browser
+  enforced. Advertising ended that: ad code has to talk to Google, so
+  connect-src now names Google's ad origins.
+
+  What survives is narrower but still real. The list below is an allowlist of
+  five Google endpoints. There is no origin here under this site's control, so
+  the app still has nowhere of its own to send your images - and src/encoder.js
+  still never touches the network at all. What is gone is the absolute form of
+  the claim, and every place that stated it has been reworded to match. If you
+  ever remove the ads, put connect-src 'none' back and change those words back
+  with it.
 
   img-src allows http/https so the "add from web address" feature can pull an
-  image IN. That is a deliberate one-way door: images can arrive, data cannot
-  leave. A remote image is copied to a local blob on arrival and the address is
-  never requested again.
+  image IN, and because ad creatives come from anywhere.
 
   Punctuation is written as HTML entities throughout, so this file stays pure
   ASCII on disk and cannot be mangled by a tool that guesses the encoding.
 -->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'none';
-  script-src 'self';
-  style-src 'self';
+  script-src 'self'
+    https://www.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://tpc.googlesyndication.com
+    https://partner.googleadservices.com
+    https://www.googletagservices.com
+    https://adservice.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google;
+  frame-src
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://www.google.com;
+  connect-src
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://googleads.g.doubleclick.net
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://csi.gstatic.com;
+  style-src 'self' 'unsafe-inline';
   img-src 'self' blob: data: https: http:;
   media-src 'self' blob:;
   worker-src 'self' blob:;
-  connect-src 'none';
   form-action 'none';
   base-uri 'none';
 ">
+
+<!--
+  AdSense. Async so it cannot delay the app; crossorigin="anonymous" is
+  Google's own snippet, unchanged.
+-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5997711677062324"
+        crossorigin="anonymous"></script>
+
+<!-- Google tag (gtag.js). The configuration half lives in analytics.js. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script>
+<script src="analytics.js" defer></script>
 <title>Images to Video &mdash; offline slideshow maker</title>
 
 <!--
@@ -117,17 +159,16 @@
   </p>
   <p class="pledge-sub">
     Every frame is encoded by your own browser and the video is built in memory on
-    this machine. It is never transmitted, because this page is not permitted to
-    transmit anything.
+    this machine. The encoder never touches the network, and there is no server on
+    the other end of this page to send an image to even if it did.
   </p>
 
   <ul class="pledge-facts">
     <li><span aria-hidden="true">&#10007;</span> No upload</li>
     <li><span aria-hidden="true">&#10007;</span> No account</li>
-    <li><span aria-hidden="true">&#10007;</span> No tracking</li>
-    <li><span aria-hidden="true">&#10007;</span> No cookies</li>
     <li><span aria-hidden="true">&#10003;</span> Works offline</li>
     <li><span aria-hidden="true">&#10003;</span> Open source</li>
+    <li><span aria-hidden="true">&#10003;</span> Files stay on your device</li>
   </ul>
 
   <!-- Live, measured, and wrong-provable: this is the part that turns the
@@ -143,7 +184,8 @@
     </p>
     <p class="live-hint">
       Don't take our word for it: open DevTools, watch the Network tab, and make a
-      video. Nothing will appear. Or unplug from the internet and use it anyway.
+      video. Not one request carries an image, a thumbnail, or a filename. Or
+      unplug from the internet and make one anyway.
     </p>
   </div>
 </section>
@@ -151,14 +193,19 @@
 <section id="privacy-panel" class="privacy" hidden>
   <h2>How the privacy claim is verifiable</h2>
   <ul>
-    <li><strong>Nothing can be uploaded.</strong> A Content-Security-Policy of
-      <code>connect-src 'none'</code> makes <code>fetch</code>, <code>XHR</code>,
-      <code>WebSocket</code> and <code>sendBeacon</code> impossible from this page.
-      Your images have no route out, whatever the code does.</li>
+    <li><strong>Your images have nowhere to go.</strong> The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were. This used to read <code>connect-src 'none'</code>, which was absolute;
+      adding advertising cost that, and saying so is part of the deal.</li>
     <li><strong>Encoding is local.</strong> WebCodecs runs in your browser and the finished
       file is handed straight to a download. There is no server side to this app.</li>
-    <li><strong>No third-party code.</strong> No CDN, no fonts, no analytics &mdash; every
-      script and style is served from this site's own origin.</li>
+    <li><strong>What Google loads, and what it is not given.</strong> The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      images: not a file, not a thumbnail, not a name, a size, or a count. Every
+      line that reads, decodes, composites or encodes an image is served from this
+      origin and listed in the repository.</li>
     <li><strong>One deliberate exception.</strong> If you use "Add from a web address",
       that server is contacted to fetch the image and will see your IP address. Only
       images you paste in are ever fetched, and only inbound: <code>img-src</code> is
@@ -381,7 +428,7 @@
 
 <footer>
   <p>
-    Runs entirely in your browser. No accounts, no uploads, no tracking.
+    Runs in your browser. No accounts, no uploads. Ads by Google.
     &middot;
     <a href="../">All tools</a>
     &middot;
