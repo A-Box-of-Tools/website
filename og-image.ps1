@@ -205,6 +205,11 @@ New-OgImage -Path 'images-to-video\og.png' `
   -Subtitle 'Turn a folder of images into an MP4 slideshow, encoded on your own machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'exif-editor\og.png' `
+  -Title 'EXIF Viewer & Remover' `
+  -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 <#
 .SYNOPSIS
   Draws icon-180.png, the home-screen icon.
