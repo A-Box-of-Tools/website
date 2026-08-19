@@ -269,18 +269,106 @@
     Written as plain text on purpose. A card that links nowhere, or a category
     heading with nothing under it, reads as a broken page rather than an
     honest one. Move a name out of this list when the tool actually ships.
+
+    The media groups below are what is left after walking the tool list of the
+    best-known online GIF and video site and keeping every entry that can be
+    built so that the work happens on the visitor's own machine, and keeps
+    happening with the network unplugged. Most of them run on APIs the browser
+    already ships. A few need an FFmpeg build vendored into the one tool that
+    uses it, which is allowed - the file still never leaves the machine. What
+    that costs, and what was left out anyway, is written down in README.md
+    under "What can be built here". Read it before adding a name back: a few
+    of the obvious-looking gaps are gaps on purpose.
   -->
   <section class="category planned" id="planned" aria-labelledby="planned-h">
     <div class="category-head">
       <h2 id="planned-h">Planned</h2>
       <p class="category-note">Not built yet. Listed so you can see where this is going.</p>
     </div>
-    <ul class="planned-list">
-      <li><span class="p-name">Documents &amp; PDF</span> <span class="p-desc">merge, split, rotate, extract pages</span></li>
-      <li><span class="p-name">Text &amp; code</span> <span class="p-desc">format, diff, encode, convert between formats</span></li>
-      <li><span class="p-name">Data</span> <span class="p-desc">CSV and JSON conversion, cleaning, inspection</span></li>
-      <li><span class="p-name">Privacy &amp; security</span> <span class="p-desc">hashes, checksums, metadata stripping</span></li>
-    </ul>
+
+    <div class="planned-group">
+      <h3>Images</h3>
+      <ul class="planned-list">
+        <li><span class="p-name">Resize</span> <span class="p-desc">one image or a whole folder, by pixels or by percent</span></li>
+        <li><span class="p-name">Crop</span> <span class="p-desc">free, fixed ratio, or an exact pixel box</span></li>
+        <li><span class="p-name">Rotate &amp; flip</span> <span class="p-desc">quarter turns, or straightening by a few degrees</span></li>
+        <li><span class="p-name">Convert format</span> <span class="p-desc">PNG, JPG and WebP, in any direction</span></li>
+        <li><span class="p-name">Compress</span> <span class="p-desc">a quality dial, with the new size shown before you save</span></li>
+        <li><span class="p-name">Add text</span> <span class="p-desc">over the picture, or in a caption box above it</span></li>
+        <li><span class="p-name">Filters</span> <span class="p-desc">brightness, contrast, saturation, blur, grayscale</span></li>
+        <li><span class="p-name">Image to data URI</span> <span class="p-desc">paste the result straight into CSS or HTML</span></li>
+        <li><span class="p-name">Metadata viewer</span> <span class="p-desc">read what a photo says about you, without sending it anywhere</span></li>
+        <li><span class="p-name">Metadata remover</span> <span class="p-desc">EXIF, GPS and camera details out of a photo</span></li>
+        <li><span class="p-name">PNG to ICO</span> <span class="p-desc">a favicon at every size a browser asks for</span></li>
+        <li><span class="p-name">SVG to PNG</span> <span class="p-desc">rasterize a vector at any size</span></li>
+        <li><span class="p-name">HEIC to JPG</span> <span class="p-desc">the photos an iPhone makes, in a format everything opens</span></li>
+        <li><span class="p-name">AVIF &amp; JPEG XL</span> <span class="p-desc">convert either way, in whichever browser you happen to use</span></li>
+      </ul>
+    </div>
+
+    <div class="planned-group">
+      <h3>GIF &amp; animation</h3>
+      <ul class="planned-list">
+        <li><span class="p-name">GIF maker</span> <span class="p-desc">images into an animated GIF</span></li>
+        <li><span class="p-name">Video to GIF</span> <span class="p-desc">pick the section, the size, and the frame rate</span></li>
+        <li><span class="p-name">GIF to MP4 or WebM</span> <span class="p-desc">the same animation, usually a tenth of the size</span></li>
+        <li><span class="p-name">Split a GIF</span> <span class="p-desc">every frame out as its own PNG</span></li>
+        <li><span class="p-name">Resize, crop &amp; rotate GIFs</span> <span class="p-desc">frame by frame, with the timing kept</span></li>
+        <li><span class="p-name">Reverse a GIF</span> <span class="p-desc">last frame first</span></li>
+        <li><span class="p-name">Change GIF speed</span> <span class="p-desc">retime it without re-rendering the frames</span></li>
+        <li><span class="p-name">GIF analyzer</span> <span class="p-desc">frames, delays, palette, and where the bytes went</span></li>
+        <li><span class="p-name">APNG maker</span> <span class="p-desc">animation with real transparency and full color</span></li>
+        <li><span class="p-name">Animated WebP</span> <span class="p-desc">the same animation again, at a fraction of the size</span></li>
+      </ul>
+    </div>
+
+    <div class="planned-group">
+      <h3>Video</h3>
+      <ul class="planned-list">
+        <li><span class="p-name">Trim</span> <span class="p-desc">cut a section out and keep the original quality</span></li>
+        <li><span class="p-name">Resize</span> <span class="p-desc">down to a size that will actually send</span></li>
+        <li><span class="p-name">Crop</span> <span class="p-desc">including squaring up a clip for a feed</span></li>
+        <li><span class="p-name">Rotate</span> <span class="p-desc">for the clip that was filmed sideways</span></li>
+        <li><span class="p-name">Reverse</span> <span class="p-desc">play it backwards</span></li>
+        <li><span class="p-name">Mute, or save the audio</span> <span class="p-desc">drop the sound, or keep it on its own</span></li>
+        <li><span class="p-name">Grab a frame</span> <span class="p-desc">a full-quality still from any point</span></li>
+        <li><span class="p-name">Convert to MP4 or WebM</span> <span class="p-desc">whichever one the site you are posting to insists on</span></li>
+        <li><span class="p-name">Filters</span> <span class="p-desc">brightness, contrast, saturation, blur</span></li>
+        <li><span class="p-name">Burn in subtitles</span> <span class="p-desc">an SRT file drawn into the picture</span></li>
+      </ul>
+    </div>
+
+    <div class="planned-group">
+      <h3>Audio</h3>
+      <ul class="planned-list">
+        <li><span class="p-name">Trim</span> <span class="p-desc">keep the part you wanted</span></li>
+        <li><span class="p-name">Fade in &amp; out</span> <span class="p-desc">so it does not start and stop on a cliff</span></li>
+        <li><span class="p-name">Change speed</span> <span class="p-desc">with or without moving the pitch</span></li>
+        <li><span class="p-name">Normalize or boost volume</span> <span class="p-desc">bring a quiet recording up to a usable level</span></li>
+        <li><span class="p-name">Waveform image</span> <span class="p-desc">draw a track as a picture</span></li>
+        <li><span class="p-name">Convert format</span> <span class="p-desc">MP3, WAV and Opus, in any direction</span></li>
+      </ul>
+    </div>
+
+    <div class="planned-group">
+      <h3>Documents &amp; PDF</h3>
+      <ul class="planned-list">
+        <li><span class="p-name">Images to PDF</span> <span class="p-desc">photos or scans gathered into one document</span></li>
+        <li><span class="p-name">Merge, split &amp; reorder</span> <span class="p-desc">pages moved around without a round trip to a server</span></li>
+        <li><span class="p-name">Rotate &amp; crop pages</span> <span class="p-desc">fix a scan that came in sideways, or trim its margins</span></li>
+        <li><span class="p-name">Extract images</span> <span class="p-desc">pull the pictures back out of a document</span></li>
+      </ul>
+    </div>
+
+    <div class="planned-group">
+      <h3>Beyond media</h3>
+      <ul class="planned-list">
+        <li><span class="p-name">Text &amp; code</span> <span class="p-desc">format, diff, encode, convert between formats</span></li>
+        <li><span class="p-name">Data</span> <span class="p-desc">CSV and JSON conversion, cleaning, inspection</span></li>
+        <li><span class="p-name">Privacy &amp; security</span> <span class="p-desc">hashes, checksums, metadata stripping</span></li>
+        <li><span class="p-name">QR &amp; barcodes</span> <span class="p-desc">generated from a string, with nothing sent to make one</span></li>
+      </ul>
+    </div>
   </section>
 
 </main>
