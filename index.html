@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  This page loads no scripts at all - there is no script-src, so the browser
+  will refuse to run any. A hub that only lists links has no need for one, and
+  a page that cannot execute code cannot leak anything either.
+
+  Punctuation is written as HTML entities throughout, so this file stays pure
+  ASCII on disk and cannot be mangled by a tool that guesses the encoding.
+-->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'none';
   style-src 'self';
@@ -10,45 +18,140 @@
   form-action 'none';
   base-uri 'none';
 ">
-<title>Tools</title>
+<title>A Box of Tools &mdash; browser-only utilities that never upload your files</title>
+<meta name="description" content="Small, single-purpose tools that run entirely in your browser. Your files stay on your machine - nothing is uploaded, no account, no tracking.">
 
-<!-- PLACEHOLDER: replace your-domain.example. See images-to-video/index.html
-     for why this matters when one site answers on two subdomains. -->
-<link rel="canonical" href="https://video.your-domain.example/">
+<link rel="canonical" href="https://abox.tools/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="A Box of Tools">
+<meta property="og:url" content="https://abox.tools/">
+<meta property="og:title" content="A Box of Tools">
+<meta property="og:description" content="Small, single-purpose tools that run entirely in your browser. Your files never leave your machine.">
 
 <link rel="stylesheet" href="site.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#128736;</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#129520;</text></svg>">
 </head>
 <body>
 
-<!--
-  Placeholder hub page. Replace the copy and add a card per tool as you build
-  them; each tool lives in its own folder alongside this file and is entirely
-  self-contained, so adding one is a matter of dropping in a directory.
--->
-
 <header class="hub-head">
-  <h1>Tools</h1>
-  <p>Small, single-purpose utilities that run entirely in your browser.</p>
+  <p class="brand"><span class="brand-mark" aria-hidden="true">&#129520;</span> abox.tools</p>
+  <h1>A box of tools that never touch a server</h1>
+  <p class="lede">
+    Small, single-purpose utilities that do all of their work inside your
+    browser. Your files stay on your machine: there is nothing to upload,
+    no account to make, and nothing to track.
+  </p>
 </header>
 
 <main>
-  <ul class="tool-grid">
+
+  <!--
+    The guarantee, stated as three checkable facts rather than a promise.
+    Every tool here is expected to hold all three; if one ever cannot, it says
+    so on its own page instead of quietly weakening this claim.
+  -->
+  <ul class="guarantees">
     <li>
-      <a class="tool-card" href="images-to-video/">
-        <span class="tool-icon" aria-hidden="true">&#127902;&#65039;</span>
-        <span class="tool-name">Images to Video</span>
-        <span class="tool-desc">
-          Turn a folder of images into an MP4. Encoding happens on your own
-          machine &mdash; nothing is uploaded.
-        </span>
-      </a>
+      <span class="g-title">Nothing is uploaded</span>
+      <span class="g-body">
+        Each tool sets <code>connect-src 'none'</code>, which switches off
+        <code>fetch</code>, <code>XHR</code>, <code>WebSocket</code> and
+        <code>sendBeacon</code>. The browser enforces it, not the code.
+      </span>
+    </li>
+    <li>
+      <span class="g-title">Nothing is loaded from elsewhere</span>
+      <span class="g-body">
+        No CDN, no web fonts, no analytics. Every file a page uses is served
+        from this origin, so there is no third party to trust.
+      </span>
+    </li>
+    <li>
+      <span class="g-title">It works offline</span>
+      <span class="g-body">
+        Open a tool once, disconnect from the internet, and it keeps working.
+        That is hard to fake &mdash; a tool that needed a server would stop.
+      </span>
     </li>
   </ul>
+
+  <!--
+    ==========================================================================
+    ADDING A TOOL
+
+    Drop the tool's folder in next to this file, then add one <li> to the
+    matching category below. Nothing else needs changing: tools share no
+    stylesheet and no script bundle, so a new one cannot break its neighbours.
+
+    A card is:
+
+      <li>
+        <a class="tool-card" href="FOLDER/">
+          <span class="tool-icon" aria-hidden="true">EMOJI-ENTITY</span>
+          <span class="tool-name">NAME</span>
+          <span class="tool-desc">ONE SENTENCE ON WHAT IT DOES.</span>
+        </a>
+      </li>
+
+    ADDING A CATEGORY
+
+    Copy a whole <section class="category"> block, give it a new id, and move
+    its name out of "Planned" further down. Once there are three or more
+    categories, add a jump nav under the header - with one or two it is noise.
+    ==========================================================================
+  -->
+
+  <section class="category" id="images-and-video" aria-labelledby="images-and-video-h">
+    <div class="category-head">
+      <h2 id="images-and-video-h">Images &amp; video</h2>
+      <p class="category-note">Work with pictures and footage without handing them to anyone.</p>
+    </div>
+    <ul class="tool-grid">
+      <li>
+        <a class="tool-card" href="images-to-video/">
+          <span class="tool-icon" aria-hidden="true">&#127902;&#65039;</span>
+          <span class="tool-name">Images to Video</span>
+          <span class="tool-desc">
+            Turn a folder of images into an MP4 slideshow. Encoding runs on
+            your own machine, using your own hardware.
+          </span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!--
+    Written as plain text on purpose. A card that links nowhere, or a category
+    heading with nothing under it, reads as a broken page rather than an
+    honest one. Move a name out of this list when the tool actually ships.
+  -->
+  <section class="category planned" id="planned" aria-labelledby="planned-h">
+    <div class="category-head">
+      <h2 id="planned-h">Planned</h2>
+      <p class="category-note">Not built yet. Listed so you can see where this is going.</p>
+    </div>
+    <ul class="planned-list">
+      <li><span class="p-name">Documents &amp; PDF</span> <span class="p-desc">merge, split, rotate, extract pages</span></li>
+      <li><span class="p-name">Text &amp; code</span> <span class="p-desc">format, diff, encode, convert between formats</span></li>
+      <li><span class="p-name">Data</span> <span class="p-desc">CSV and JSON conversion, cleaning, inspection</span></li>
+      <li><span class="p-name">Privacy &amp; security</span> <span class="p-desc">hashes, checksums, metadata stripping</span></li>
+    </ul>
+  </section>
+
 </main>
 
 <footer>
-  <p>Everything here runs locally in your browser. No accounts, no uploads, no tracking.</p>
+  <p>
+    Everything here runs locally in your browser. No accounts, no uploads, no tracking.
+  </p>
+  <p>
+    <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
+      Read the source
+    </a>
+    &middot;
+    Every claim on this site is meant to be checked, not believed.
+  </p>
 </footer>
 
 </body>

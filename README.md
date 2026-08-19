@@ -1,7 +1,25 @@
-# Images to Video
+# A Box of Tools
 
-A static web app that turns a sequence of images into a video **entirely in the browser**.
-No server, no upload, no dependencies, no build step.
+The source for **[abox.tools](https://abox.tools/)** — a small collection of
+single-purpose web tools that do all of their work **in the browser**. No server,
+no upload, no account, no dependencies, no build step.
+
+The selling proposition is not "we promise not to look at your files", it is
+"there is no code path that could send them anywhere, and you can check that
+yourself in a minute". Everything below is written to keep that true.
+
+---
+
+## The tools
+
+| Tool | Lives at | What it does |
+|---|---|---|
+| Images to Video | `/images-to-video/` | Turns a sequence of images into an MP4, encoded locally |
+
+The hub page (`index.html`) lists them by category. It loads **no JavaScript at
+all** — its CSP has no `script-src`, so the browser will refuse to run any. A
+page that only lists links does not need code, and one that cannot execute code
+cannot leak anything either.
 
 ---
 
@@ -18,11 +36,11 @@ powershell -ExecutionPolicy Bypass -File serve.ps1
 Then open <http://localhost:8080/>. Use `-Port 3000` to pick a different port.
 
 Any static server works just as well (`npx serve`, `python -m http.server`, nginx,
-GitHub Pages, Netlify…). There is nothing to compile.
+Cloudflare Pages, Netlify…). There is nothing to compile.
 
-> **Do not open `index.html` by double-clicking it.** Browsers block ES modules on
-> `file://` URLs, so `main.js` never runs. The page still renders and the file
-> picker still opens — that part is plain HTML — but choosing images does nothing
+> **Do not open a tool's `index.html` by double-clicking it.** Browsers block ES
+> modules on `file://` URLs, so `main.js` never runs. The page still renders and the
+> file picker still opens — that part is plain HTML — but choosing images does nothing
 > and "Create video" stays greyed out. The app detects this and shows a red banner
 > explaining it, but the failure is easy to hit, so it is worth knowing about.
 
@@ -30,12 +48,12 @@ GitHub Pages, Netlify…). There is nothing to compile.
 
 ## Layout
 
-The repo is a multi-tool site. Each tool is a self-contained folder that assumes
-nothing about where it is mounted — every path in it is relative, so it works at
-the domain root, at `/images-to-video/`, or nested deeper, with no configuration.
+Each tool is a self-contained folder that assumes nothing about where it is
+mounted — every path in it is relative, so it works at the domain root, at
+`/images-to-video/`, or nested deeper, with no configuration.
 
 ```
-/                        the hub page
+/                        the hub page, listing tools by category
   index.html
   site.css
   _headers               security headers (Cloudflare Pages / Netlify)
@@ -48,83 +66,93 @@ the domain root, at `/images-to-video/`, or nested deeper, with no configuration
     src/*.js
 ```
 
-Adding a tool means dropping in a folder and adding a card to the hub. Tools do
-not share a stylesheet or a script bundle on purpose: it keeps each one readable
-and auditable on its own, which is the point when the selling proposition is
+Tools do not share a stylesheet or a script bundle on purpose: it keeps each one
+readable and auditable on its own, which is the point when the claim being made is
 "read the code and see that it never uploads anything".
 
-The service worker registers with the scope of its own folder, so each tool
-caches only itself and cannot interfere with its neighbours.
+The service worker registers with the scope of its own folder, so each tool caches
+only itself and cannot interfere with its neighbours.
 
 ---
 
-## Deploying to two subdomains
+## Adding a tool
 
-The goal is the same site answering on both `video.<domain>` and
-`image.<domain>`.
+1. Drop the tool's folder in beside `index.html`. Give it its own CSP with
+   `connect-src 'none'`, its own stylesheet, and its own service worker scoped to
+   the folder.
+2. Add one `<li>` card to the matching category in `index.html`. The markup for a
+   card is spelled out in a comment right above the categories.
+3. If it belongs to a category that does not exist yet, copy a whole
+   `<section class="category">` block and move that name out of the "Planned" list.
 
-**GitHub Pages cannot do this.** A Pages site serves exactly one custom domain,
-set by a single `CNAME` file. Pointing a second domain at the same Pages site
-gets you a redirect to the canonical one, or a 404 — not a second live copy.
-Pages also cannot set response headers, so `_headers` would be ignored.
+Two things to hold the line on, because the whole site rests on them:
 
-### Recommended: Cloudflare Pages (or Netlify)
+- **No third-party requests.** No CDN, no web fonts, no analytics — every byte comes
+  from this origin.
+- **If a tool genuinely needs the network**, it says so on its own page, in plain
+  language, and explains exactly what leaves the machine. Images to Video does this
+  for its "add from a web address" feature (see below). What it must not do is
+  weaken the site-wide claim quietly.
 
-Source stays on GitHub; the host builds from it and allows many custom domains
-per project.
+---
+
+## Deploying
+
+The site is one domain, `abox.tools`, served from this repository.
+
+### Host: Cloudflare Pages (or Netlify)
+
+Both read the `_headers` file, and both serve a plain static directory with no
+build step:
 
 1. Create a project and connect this repository.
 2. Build command: none. Output directory: `/` (the repo root).
-3. Add **both** `video.<domain>` and `image.<domain>` as custom domains.
-4. Point both subdomains at the host with the CNAME records it gives you.
+3. Add `abox.tools` as the custom domain (and `www.abox.tools` if you want it,
+   redirecting to the apex).
 
-`_headers` is picked up automatically by both hosts.
+**GitHub Pages is the weaker option.** It cannot set response headers at all, so
+`_headers` would be ignored and `frame-ancestors` would be lost. The meta-tag CSP
+in each page still carries the load-bearing rules, so the site would be safe, but
+defence in depth goes away.
 
-### If you must stay on GitHub Pages
+### Response headers
 
-Use two repositories, each with its own `CNAME`, and sync the tool folder into
-the second with a GitHub Action on push. It works, but you are maintaining two
-deployments of identical files and losing the `_headers` file. Ask and I can
-write that workflow.
+`_headers` sets these. They are defence in depth — the meta-tag CSP inside each page
+already covers the important part — but `frame-ancestors` is header-only, since a
+`<meta>` tag cannot express it:
 
-### Either way: set the canonical URL
+```
+Content-Security-Policy: frame-ancestors 'none'
+Referrer-Policy: no-referrer
+X-Content-Type-Options: nosniff
+```
 
-Identical content on two domains is duplicate content. Both `index.html` files
-carry a `<link rel="canonical">` pointing at a placeholder domain — set it to
-whichever subdomain you consider primary, and leave it the same in the copy
-served from the other one.
+### Canonical URLs
+
+Every page carries a `<link rel="canonical">` pointing at its `https://abox.tools/`
+address. If the site ever answers on a second hostname — a staging deployment, a
+mirror, `www` — this keeps search engines treating one of them as the original
+rather than splitting the ranking between duplicates.
+
+### HTTPS
+
+Service workers require a secure context, so offline mode activates on `https://`
+or `localhost`, but not on a plain `http://` host. `.tools` is not on the HSTS
+preload list, so turning on **Always Use HTTPS** and an HSTS header at the host is
+worth doing.
+
+### The source link
+
+Each tool page links to this repository in four places — the header button, the
+privacy panel (twice), and the footer — plus once in the hub footer. "Read the code"
+is the only real answer to "why should I trust this", so if the repository ever
+moves, all of them move with it. A dead source link is worse than no link at all.
 
 ---
 
-## Before you publish it: set the repository URL
+# Images to Video
 
-The page links to its own source in three places, because "read the code" is the
-only real answer to "why should I trust this". They currently point at a
-placeholder:
-
-```
-https://github.com/your-name/images-to-video
-```
-
-Replace every occurrence in `images-to-video/index.html` — the header button, the
-privacy panel link and its visible text, and the footer. There is a comment
-marking it near the top of `<body>`.
-
-This replaces both placeholders, the repository URL and the canonical domain, in
-every file that carries them:
-
-```bash
-sed -i 's|your-name/images-to-video|YOUR-USER/YOUR-REPO|g; s|your-domain\.example|YOUR-DOMAIN.com|g' index.html images-to-video/index.html
-```
-
-Then check nothing was missed:
-
-```bash
-grep -rn 'your-name/\|your-domain\.example' --include=*.html .
-```
-
-Shipping with a dead source link is worse than having no link, since the claims on
-the page depend on being checkable.
+The first tool in the box. Everything below is specific to it.
 
 ---
 
@@ -277,25 +305,6 @@ library. It is deliberately narrow:
 - 32-bit offsets, which caps output at 4 GB — the app raises a clear error past that
 
 Adding audio, or transitions that need reordered frames, would mean extending it.
-
----
-
-## Deploying
-
-Copy the folder to any static host. Two things worth setting if your host allows
-response headers — they are defence in depth, since the meta-tag CSP already covers
-the important part:
-
-```
-Content-Security-Policy: frame-ancestors 'none'
-Referrer-Policy: no-referrer
-```
-
-`frame-ancestors` cannot be set from a `<meta>` tag, which is why it is a header-only
-concern.
-
-Service workers require a secure context, so offline mode activates on `https://` or
-`localhost`, but not on a plain `http://` host.
 
 ---
 
