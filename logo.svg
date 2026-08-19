@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="abox.tools">
+  <title>abox.tools</title>
+  <!--
+    The site mark: an open tool box with a screwdriver, a claw hammer and an
+    open-end wrench standing in it. Drawn on a 32x32 grid, because the size
+    this has to survive is 16px in a browser tab - hence the chunky shapes and
+    the fact that the three tools differ in silhouette rather than in detail.
+    A closed box with a handle was tried first and read as a briefcase; the
+    tools are what say "tools".
+
+    Colours are baked in rather than inherited, because this file is also the
+    favicon, and none of the page's CSS reaches it there. The box is a darker
+    shade of the site accent, the tools are the accent itself, and the thin
+    pale line is the inside edge of the open box. The dark-theme block swaps in
+    lighter values for tab strips drawn on a near-black background.
+
+    The header copy of this mark is inlined in index.html so that it can take
+    its colours from the page. Same shape, same coordinates: if one changes,
+    change the other.
+  -->
+  <style>
+    .box    { fill: #1d4f83; }
+    .rim    { fill: #d7e7f7; }
+    .tool   { fill: #2b6cb0; }
+    .tool-s { stroke: #2b6cb0; }
+    @media (prefers-color-scheme: dark) {
+      .box    { fill: #3772ab; }
+      .rim    { fill: #cfe3f8; }
+      .tool   { fill: #7cb2e6; }
+      .tool-s { stroke: #7cb2e6; }
+    }
+  </style>
+
+  <!-- screwdriver -->
+  <g transform="rotate(-11 9.3 17)">
+    <rect class="tool" x="8.2" y="9.6" width="2.2" height="8.6" rx="0.9"/>
+    <rect class="tool" x="7.2" y="5.4" width="4.2" height="5" rx="1.5"/>
+  </g>
+
+  <!-- claw hammer: the notch in the left end of the head is the claw -->
+  <path class="tool" d="M13.6 5.4h5.2a1.3 1.3 0 0 1 1.3 1.3v1.5a1.3 1.3 0 0 1-1.3 1.3h-5.2a1 1 0 0 1-1-1l.7-1-.7-1a1 1 0 0 1 1-1z"/>
+  <rect class="tool" x="15.5" y="8.8" width="2.4" height="9.4" rx="1"/>
+
+  <!-- open-end wrench: an arc with the gap at the top makes the jaws -->
+  <g transform="rotate(12 22.6 17)">
+    <rect class="tool" x="21.4" y="8.6" width="2.4" height="9.6" rx="1"/>
+    <path class="tool-s" d="M20.65 5.6A2.75 2.75 0 1 0 24.55 5.6"
+          fill="none" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+
+  <!-- the box: a wide rim over a tapered front, drawn last so it covers the
+       ends of the tools and they read as standing inside it -->
+  <path class="box" d="M5.2 19.8h21.6l-1.2 6.3a2.2 2.2 0 0 1-2.2 1.8H8.6a2.2 2.2 0 0 1-2.2-1.8z"/>
+  <rect class="box" x="2.6" y="16.2" width="26.8" height="4" rx="1.5"/>
+  <rect class="rim" x="5" y="17.1" width="22" height="1.3" rx="0.65"/>
+</svg>

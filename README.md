@@ -61,6 +61,9 @@ mounted — every path in it is relative, so it works at the domain root, at
 /                        the hub page, listing tools by category
   index.html
   site.css
+  logo.svg               the site mark; also the favicon, and inlined in the pages
+  icon-180.png           the same mark drawn as a PNG, for iOS home screens
+  og-image.ps1           redraws the share cards and that icon
   _headers               security headers (Cloudflare Pages / Netlify only)
   CNAME                  the custom domain, read by GitHub Pages
   .nojekyll              stops GitHub Pages running the content through Jekyll

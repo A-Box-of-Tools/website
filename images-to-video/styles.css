@@ -11,6 +11,10 @@
   --text-dim: #5d6672;
   --accent: #2b6cb0;
   --accent-text: #ffffff;
+  /* The two extra tones the site mark needs: a darker shade for the box and a
+     pale tint for its inside edge. Same values as the hub's logo.svg. */
+  --accent-deep: #1d4f83;
+  --accent-pale: #d7e7f7;
   --danger: #b02b2b;
   --ok: #1f7a4d;
   --radius: 10px;
@@ -27,6 +31,8 @@
     --text-dim: #9aa4b2;
     --accent: #5b9bd8;
     --accent-text: #0d1117;
+    --accent-deep: #3772ab;
+    --accent-pale: #cfe3f8;
     --danger: #e07777;
     --ok: #6cc79b;
     --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 20%);
@@ -995,6 +1001,22 @@ footer {
   font-size: 0.82rem;
   padding-top: 0.5rem;
 }
+
+/* The way back to the hub, with the site mark on it. The link is inline in a
+   sentence, so the two sit on the text baseline rather than in a flex row. */
+.home-link { white-space: nowrap; }
+
+.site-logo {
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.25em;
+  margin-right: 0.15em;
+}
+
+.logo-tool { fill: var(--accent); }
+.logo-jaws { stroke: var(--accent); }
+.logo-box { fill: var(--accent-deep); }
+.logo-rim { fill: var(--accent-pale); }
 
 
 /* ------------------------------------------------------------- ad placement */
