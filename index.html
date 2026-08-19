@@ -57,18 +57,88 @@
   </div>
 </noscript>
 
+<!--
+  ============================================================================
+  PLACEHOLDER: replace every occurrence of
+
+      https://github.com/your-name/images-to-video
+
+  with your own repository URL. It appears four times: the header button, the
+  privacy panel (twice - once as the link, once as the visible text), and the
+  footer. Being able to read the source is the whole point of the claims on
+  this page, so do not ship it pointing at a repository that does not exist.
+  ============================================================================
+-->
+
 <header class="topbar">
   <div class="brand">
     <span class="brand-mark" aria-hidden="true">&#127902;&#65039;</span>
     <div>
       <h1>Images&nbsp;to&nbsp;Video</h1>
-      <p class="tagline">Your photos never leave this device.</p>
+      <p class="tagline">Turn a folder of images into a video.</p>
     </div>
   </div>
-  <button type="button" id="privacy-toggle" class="ghost" aria-expanded="false" aria-controls="privacy-panel">
-    Privacy details
-  </button>
+  <div class="topbar-actions">
+    <a class="source-link" href="https://github.com/your-name/images-to-video"
+       target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+          0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+          1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+          0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2
+          .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65
+          3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      View source
+    </a>
+    <button type="button" id="privacy-toggle" class="ghost" aria-expanded="false" aria-controls="privacy-panel">
+      How this is verified
+    </button>
+  </div>
 </header>
+
+<!--
+  The headline claim, always on screen. It used to sit behind the "Privacy
+  details" toggle, which meant the single thing that distinguishes this app
+  from every upload-based converter was invisible until you went looking.
+-->
+<section class="pledge">
+  <p class="pledge-line">
+    <span class="pledge-mark" aria-hidden="true">&#9679;</span>
+    Your images are <strong>never uploaded</strong>. There is no server.
+  </p>
+  <p class="pledge-sub">
+    Every frame is encoded by your own browser and the video is built in memory on
+    this machine. It is never transmitted, because this page is not permitted to
+    transmit anything.
+  </p>
+
+  <ul class="pledge-facts">
+    <li><span aria-hidden="true">&#10007;</span> No upload</li>
+    <li><span aria-hidden="true">&#10007;</span> No account</li>
+    <li><span aria-hidden="true">&#10007;</span> No tracking</li>
+    <li><span aria-hidden="true">&#10007;</span> No cookies</li>
+    <li><span aria-hidden="true">&#10003;</span> Works offline</li>
+    <li><span aria-hidden="true">&#10003;</span> Open source</li>
+  </ul>
+
+  <!-- Live, measured, and wrong-provable: this is the part that turns the
+       claim above into something a sceptical visitor can check. -->
+  <div class="pledge-live">
+    <p class="live-row">
+      <span id="network-dot" class="live-dot" aria-hidden="true"></span>
+      <span><strong>Live check:</strong> <span id="network-count">checking&hellip;</span></span>
+    </p>
+    <p class="live-row">
+      <span id="offline-dot" class="live-dot" aria-hidden="true"></span>
+      <span><strong>Offline:</strong> <span id="offline-status">checking&hellip;</span></span>
+    </p>
+    <p class="live-hint">
+      Don't take our word for it: open DevTools, watch the Network tab, and make a
+      video. Nothing will appear. Or unplug from the internet and use it anyway.
+    </p>
+  </div>
+</section>
 
 <section id="privacy-panel" class="privacy" hidden>
   <h2>How the privacy claim is verifiable</h2>
@@ -90,8 +160,21 @@
       web-address loading still functions. That is the simplest proof of all.</li>
   </ul>
   <div class="privacy-status">
-    <p><strong>Network requests since page load:</strong> <span id="network-count">checking&hellip;</span></p>
-    <p><strong>Offline availability:</strong> <span id="offline-status">checking&hellip;</span></p>
+    <p>
+      <strong>Check it yourself.</strong> None of the above has to be taken on trust.
+      There is no build step, so the files served to your browser are the source
+      &mdash; view-source on this page, or read the repository:
+    </p>
+    <p>
+      <a href="https://github.com/your-name/images-to-video" target="_blank" rel="noopener noreferrer">
+        github.com/your-name/images-to-video
+      </a>
+    </p>
+    <p>
+      The files worth reading first are <code>index.html</code> for the
+      Content-Security-Policy, and <code>src/encoder.js</code> for the encoding loop
+      that never touches the network.
+    </p>
   </div>
 </section>
 
@@ -289,7 +372,13 @@
 </main>
 
 <footer>
-  <p>Runs entirely offline. No accounts, no uploads, no tracking.</p>
+  <p>
+    Runs entirely in your browser. No accounts, no uploads, no tracking.
+    &middot;
+    <a href="https://github.com/your-name/images-to-video" target="_blank" rel="noopener noreferrer">
+      Read the source
+    </a>
+  </p>
 </footer>
 
 <script type="module" src="src/main.js"></script>

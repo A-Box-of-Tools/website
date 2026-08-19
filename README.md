@@ -28,6 +28,29 @@ GitHub Pages, Netlify…). There is nothing to compile.
 
 ---
 
+## Before you publish it: set the repository URL
+
+The page links to its own source in three places, because "read the code" is the
+only real answer to "why should I trust this". They currently point at a
+placeholder:
+
+```
+https://github.com/your-name/images-to-video
+```
+
+Replace every occurrence in `index.html` — the header button, the privacy panel
+link and its visible text, and the footer — before deploying. There is a comment
+marking it near the top of `<body>`.
+
+```bash
+sed -i 's|your-name/images-to-video|YOUR-USER/YOUR-REPO|g' index.html
+```
+
+Shipping with a dead source link is worse than having no link, since the claims on
+the page depend on being checkable.
+
+---
+
 ## How the privacy claim holds up
 
 The point of this app is that it is *checkable*, not that it is promised.

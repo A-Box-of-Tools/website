@@ -50,7 +50,7 @@ body {
 
 h1, h2 { line-height: 1.25; }
 
-main, .topbar, .privacy, footer {
+main, .topbar, .privacy, .pledge, footer {
   max-width: 940px;
   margin-inline: auto;
 }
@@ -102,6 +102,141 @@ main, .topbar, .privacy, footer {
 .brand-mark { font-size: 2rem; line-height: 1; }
 .brand h1 { margin: 0; font-size: 1.4rem; letter-spacing: -0.01em; }
 .tagline { margin: 0.15rem 0 0; color: var(--text-dim); font-size: 0.9rem; }
+
+.topbar-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.source-link:hover { border-color: var(--accent); color: var(--accent); }
+.source-link svg { flex: none; }
+
+/* ------------------------------------------------------------- the pledge */
+
+.pledge {
+  margin-bottom: 1.25rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--ok) 40%, var(--border));
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--ok) 9%, var(--surface)),
+      var(--surface) 65%);
+  box-shadow: var(--shadow);
+}
+
+.pledge-line {
+  margin: 0;
+  font-size: 1.18rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+.pledge-line strong { color: var(--ok); }
+.pledge-mark { color: var(--ok); font-size: 0.7em; flex: none; }
+
+.pledge-sub {
+  margin: 0.5rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 66ch;
+}
+
+.pledge-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+}
+
+.pledge-facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.22rem 0.6rem;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.pledge-facts li span { color: var(--ok); font-weight: 700; }
+
+/* The live, measured half of the claim. */
+.pledge-live {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed color-mix(in srgb, var(--ok) 35%, var(--border));
+}
+
+.live-row {
+  margin: 0 0 0.3rem;
+  font-size: 0.86rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.live-row strong { font-weight: 600; }
+
+.live-dot {
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--text-dim);
+  align-self: center;
+}
+
+.live-dot.good {
+  background: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent);
+}
+
+.live-dot.warn {
+  background: var(--danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 22%, transparent);
+}
+
+.live-hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 66ch;
+}
+
+/* On a phone the full-size pledge pushed the drop zone off screen entirely.
+   Tighten it rather than dropping anything: the "check it yourself" line is
+   exactly what a privacy-minded visitor on mobile came to read. */
+@media (max-width: 620px) {
+  .pledge { padding: 0.95rem 1rem; }
+  .pledge-line { font-size: 1.02rem; gap: 0.4rem; }
+  .pledge-sub { font-size: 0.85rem; margin-top: 0.4rem; }
+  .pledge-facts { margin-top: 0.7rem; gap: 0.3rem 0.35rem; }
+  .pledge-facts li { font-size: 0.74rem; padding: 0.16rem 0.5rem; }
+  .pledge-live { margin-top: 0.75rem; padding-top: 0.65rem; }
+  .live-row { font-size: 0.8rem; }
+  .live-hint { font-size: 0.76rem; margin-top: 0.45rem; }
+}
 
 /* ----------------------------------------------------------------- privacy */
 

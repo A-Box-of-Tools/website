@@ -58,7 +58,9 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
   networkCount: $('network-count'),
+  networkDot: $('network-dot'),
   offlineStatus: $('offline-status'),
+  offlineDot: $('offline-dot'),
 };
 
 /** @type {object[]} */
@@ -847,15 +849,20 @@ function monitorNetwork() {
   const inspect = (entries) => {
     for (const entry of entries) {
       if (entry.name.startsWith('blob:') || entry.name.startsWith('data:')) continue;
-      if (new URL(entry.name, location.href).origin !== location.origin) external.add(entry.name);
+      if (new URL(entry.name, location.href).origin !== location.origin) {
+        external.add(new URL(entry.name, location.href).hostname);
+      }
     }
     const total = performance.getEntriesByType('resource')
       .filter((e) => !e.name.startsWith('blob:') && !e.name.startsWith('data:')).length;
 
-    el.networkCount.textContent = external.size === 0
-      ? `${total} — all from this site, none to any third party`
-      : `${external.size} third-party request(s) detected: ${[...external].join(', ')}`;
-    el.networkCount.className = external.size === 0 ? 'good' : 'warn';
+    const clean = external.size === 0;
+    el.networkCount.textContent = clean
+      ? `no requests to any other server. ${total} files loaded, all from this site.`
+      : `contacted ${[...external].join(', ')} — only images you asked for by address.`;
+
+    el.networkCount.className = clean ? 'good' : 'warn';
+    el.networkDot.className = `live-dot ${clean ? 'good' : 'warn'}`;
   };
 
   inspect(performance.getEntriesByType('resource'));
@@ -867,23 +874,38 @@ function monitorNetwork() {
 }
 
 async function registerServiceWorker() {
+  // Keep the visible text short: this sits in the trust panel, and a raw
+  // browser error dumped there reads worse than it is. Detail goes in the
+  // tooltip and the console for anyone debugging.
+  const fail = (message, detail) => {
+    el.offlineStatus.textContent = message;
+    el.offlineDot.className = 'live-dot';
+    if (detail) {
+      el.offlineStatus.title = detail;
+      console.info('Offline caching unavailable:', detail);
+    }
+  };
+
   if (!('serviceWorker' in navigator)) {
-    el.offlineStatus.textContent = 'Not available in this browser (the app still works while online).';
+    fail('not available in this browser (everything else still works).');
     return;
   }
   // Service workers need a secure context, so file:// and plain http:// are out.
   if (!window.isSecureContext) {
-    el.offlineStatus.textContent = 'Needs https:// or localhost — serve the folder over one to enable offline use.';
+    fail('needs https:// or localhost to cache for offline use.');
     return;
   }
 
   try {
     await navigator.serviceWorker.register('sw.js');
     await navigator.serviceWorker.ready;
-    el.offlineStatus.textContent = 'Ready — this app now works with the network switched off.';
+    el.offlineStatus.textContent = 'ready — disconnect from the internet and this still works.';
     el.offlineStatus.className = 'good';
+    el.offlineDot.className = 'live-dot good';
   } catch (error) {
-    el.offlineStatus.textContent = `Could not be enabled: ${error.message}`;
+    // Caching is an optimisation, not the privacy guarantee. Everything the
+    // page claims still holds when this fails, so say so rather than alarming.
+    fail('caching unavailable here, but nothing is uploaded either way.', error.message);
   }
 }
 
