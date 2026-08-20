@@ -170,6 +170,11 @@ function buildItemNode(item, index) {
   remove.title = `Remove ${item.name}`;
   remove.setAttribute('aria-label', `Remove ${item.name}`);
   remove.addEventListener('click', () => {
+    // Every control that changes the queue stands down while a document is
+    // being written from it. The Images to Video tool hands its encoder a
+    // snapshot for the same reason; the belt goes with those braces, because a
+    // result that no longer matches the tiles above it is worse than a wait.
+    if (exporting) return;
     releaseItem(item);
     items.splice(index, 1);
     render();
@@ -195,18 +200,22 @@ function buildItemNode(item, index) {
   controls.className = 'image-controls';
   controls.append(
     tileButton('↺', `Rotate ${item.name} anticlockwise`, false, () => {
+      if (exporting) return;
       rotateItem(item, -1);
       render();
     }),
     tileButton('↻', `Rotate ${item.name} clockwise`, false, () => {
+      if (exporting) return;
       rotateItem(item, 1);
       render();
     }),
     tileButton('‹', `Move ${item.name} earlier`, index === 0, () => {
+      if (exporting) return;
       moveItem(items, index, index - 1);
       render();
     }),
     tileButton('›', `Move ${item.name} later`, index === items.length - 1, () => {
+      if (exporting) return;
       moveItem(items, index, index + 1);
       render();
     }),
@@ -216,6 +225,7 @@ function buildItemNode(item, index) {
   li.append(handle, thumbWrap, meta);
 
   const startDrag = (event) => {
+    if (exporting) { event.preventDefault(); return; }
     dragIndex = index;
     li.classList.add('dragging');
     event.dataTransfer.effectAllowed = 'move';
@@ -325,13 +335,14 @@ el.list.addEventListener('drop', (event) => {
 
 for (const button of document.querySelectorAll('[data-sort]')) {
   button.addEventListener('click', () => {
+    if (exporting) return;
     sortItems(items, button.dataset.sort);
     render();
   });
 }
 
 el.clearAll.addEventListener('click', () => {
-  if (!items.length) return;
+  if (!items.length || exporting) return;
   for (const item of items) releaseItem(item);
   items = [];
   clearLoadError();
@@ -624,8 +635,14 @@ async function runExport() {
   el.progressBar.style.width = '0%';
   el.progressLabel.textContent = 'Starting...';
 
+  // The document is built from a copy of the queue, the way the Images to
+  // Video tool hands its encoder one: buildDocument yields to the page between
+  // pictures, and a queue edit landing in one of those gaps would shift the
+  // list under the iteration - a page skipped, or written twice.
+  const queue = items.map((item) => ({ ...item }));
+
   try {
-    const { blob, pages, copied } = await buildDocument(items, currentSettings(), {
+    const { blob, pages, copied } = await buildDocument(queue, currentSettings(), {
       signal: abortController.signal,
       onProgress: ({ done, total, name }) => {
         el.progressBar.style.width = `${Math.round((done / total) * 100)}%`;
