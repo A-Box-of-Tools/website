@@ -1,0 +1,33 @@
+#
+# Guide: is it safe to upload files to online converters?
+#
+# The first page on this site written to be found rather than to be used. It
+# answers the question somebody asks just before they hand a photo to a website
+# they have never heard of, and it is the one subject where this site can show
+# its working instead of asserting it: every check in it can be run against this
+# site, or against any other.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/is-it-safe-to-upload-files"
+kind = "guide"
+nav = "Is it safe to upload files?"
+
+title = "Is It Safe to Upload Files to Online Converters?"
+description = "Most online converters send your file to a server. What that means, what happens to it there, and four checks that tell you whether a tool needs to."
+
+heading = "Is it safe to upload files to online converters?"
+lede = """
+    Usually the honest answer is &ldquo;probably, but you cannot check.&rdquo;
+    This explains what uploading actually does with your file, why most tools
+    still do it, and four tests that tell you whether the one in front of you
+    has to."""
+
+updated = "20 August 2026"
+published = "2026-08-20"
+lastmod = "2026-08-20"
+
+og_title = "Is it safe to upload files to online converters?"
+og_description = "What happens to a file you upload to a converter, why most tools still ask for one, and four checks you can run yourself."
+og_image_alt = "abox.tools - tools that never touch a server"

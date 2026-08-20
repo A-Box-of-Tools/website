@@ -152,6 +152,51 @@ def tool_jsonld(site, tool):
     return dumps_ld(graph)
 
 
+def page_jsonld(site, page):
+    """Structured data for a prose page, or nothing for a legal one.
+
+    A guide is an Article and says so; a privacy policy is not, and inventing
+    schema for it would be describing the page as something it is not. The
+    template asks for this unconditionally and writes nothing when it is empty,
+    which keeps the "is this page an Article?" decision here rather than in
+    markup."""
+    if page['kind'] != 'guide':
+        return ''
+
+    graph = [
+        {
+            '@type': 'Article',
+            'headline': to_text(page['heading']),
+            'description': to_text(page['description']),
+            'url': page['url'],
+            'datePublished': page['published'],
+            'dateModified': page['lastmod'],
+            'inLanguage': site['lang'],
+            'mainEntityOfPage': {'@type': 'WebPage', '@id': page['url']},
+            'author': {
+                '@type': 'Organization',
+                'name': site['name'],
+                'url': site['domain'],
+            },
+            'publisher': {
+                '@type': 'Organization',
+                'name': site['name'],
+                'url': site['domain'],
+            },
+        },
+        {
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                {'@type': 'ListItem', 'position': 1,
+                 'name': site['name'], 'item': site['domain']},
+                {'@type': 'ListItem', 'position': 2,
+                 'name': to_text(page['nav']), 'item': page['url']},
+            ],
+        },
+    ]
+    return dumps_ld(graph)
+
+
 def hub_jsonld(site, tools):
     graph = [
         {
@@ -237,24 +282,56 @@ def load_tool(path, site):
     return tool
 
 
-def load_page(path, site):
+PAGE_KINDS = ('legal', 'guide')
+
+
+def load_page(path, site, root):
     """Read one pages/<slug>/page.toml.
 
-    A page is a prose page that is neither a tool nor the hub - the legal ones.
-    It needs far less than a tool does: no words, no FAQ, no schema, no service
+    A page is a prose page that is neither a tool nor the hub. There are two
+    kinds and they differ only in where they are meant to be read:
+
+      legal - privacy and terms. They matter for trust, not for search, which
+              is why the sitemap gives them the lowest priority it has.
+      guide - written to be found. Same frame, same policy, but it carries
+              Article structured data and sits above the legal pages in the
+              sitemap and the footer.
+
+    Either way it needs far less than a tool does: no words, no FAQ, no service
     worker, and no CSP of its own, because it does nothing the site policy does
-    not already allow."""
+    not already allow.
+
+    The slug is a path, not a name, so a page can live at a depth: `guides/x`
+    is a folder pages/guides/x/ and a URL /guides/x/. It has to match the folder
+    it was found in, the same rule as before, only measured from pages/ rather
+    than from the immediate parent."""
     page = load_toml(path)
     missing = [key for key in REQUIRED_PAGE_KEYS if key not in page]
     if missing:
         raise ConfigError(f'{path}: missing {", ".join(missing)}')
 
-    if page['slug'] != path.parent.name:
+    where = path.parent.relative_to(root).as_posix()
+    if page['slug'] != where:
         raise ConfigError(
-            f'{path}: slug is {page["slug"]!r} but the folder is {path.parent.name!r}')
+            f'{path}: slug is {page["slug"]!r} but the folder is {where!r}')
+
+    page.setdefault('kind', 'legal')
+    if page['kind'] not in PAGE_KINDS:
+        raise ConfigError(
+            f'{path}: kind is {page["kind"]!r}, expected one of {", ".join(PAGE_KINDS)}')
+
+    # A guide is an Article, and an Article has a date it was published as well
+    # as a date it last changed. Required rather than defaulted to `lastmod`,
+    # because the two drift apart the first time a guide is corrected and a
+    # silent default would quietly claim the correction was the original.
+    if page['kind'] == 'guide' and 'published' not in page:
+        raise ConfigError(f'{path}: a guide needs `published`')
 
     page['url'] = f'{site["domain"]}{page["slug"]}/'
     page['dir'] = path.parent
+    # How far this page sits below the root, so the frame around it can point at
+    # the stylesheet and the hub without knowing where it was put.
+    page['depth'] = page['slug'].count('/') + 1
     return page
 
 

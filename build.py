@@ -136,8 +136,13 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
         raise sitelib.ConfigError(f'no tools found under {TOOLS}')
     by_slug = {tool['slug']: tool for tool in tools}
 
-    prose = [sitelib.load_page(path, site)
-             for path in sorted(PAGES.glob('*/page.toml'))]
+    # ** rather than *, because a guide lives at pages/guides/<slug>/ and a
+    # legal page at pages/<slug>/. The slug in each page.toml has to match the
+    # folder either way, so a page cannot end up at a URL nobody wrote down.
+    prose = [sitelib.load_page(path, site, PAGES)
+             for path in sorted(PAGES.glob('**/page.toml'))]
+    guides = [page for page in prose if page['kind'] == 'guide']
+    legal = [page for page in prose if page['kind'] == 'legal']
 
     # What the footer on every page is built from. Derived from the folders that
     # exist rather than written down anywhere, so a new tool or a new legal page
@@ -150,7 +155,8 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
                for slug in category['order'] if slug in by_slug]
     footer = {
         'tools': [{'name': tool['name'], 'slug': tool['slug']} for tool in ordered],
-        'pages': [{'nav': page['nav'], 'slug': page['slug']} for page in prose],
+        'guides': [{'nav': page['nav'], 'slug': page['slug']} for page in guides],
+        'pages': [{'nav': page['nav'], 'slug': page['slug']} for page in legal],
     }
 
     written = []
@@ -165,7 +171,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     build_hub(out, templates, site, planned, by_slug, footer, css_v, emit)
     written.append('index.html')
 
-    build_sitemap(out, templates, site, tools, prose)
+    build_sitemap(out, templates, site, tools, guides, legal)
     written.append('sitemap.xml')
 
     copy_shared(out)
@@ -272,17 +278,20 @@ def tool_css(tool):
 
 
 # ---------------------------------------------------------------------------
-# One prose page (the legal ones)
+# One prose page (a legal page or a guide)
 
 
 def build_page(out, templates, site, page, footer, css_v, emit):
-    """A legal page: the site frame around a body.html, and nothing else.
+    """A prose page: the site frame around a body.html, and nothing else.
 
     No service worker, because there is nothing here worth keeping offline, and
     no CSP of its own - it gets the site policy unchanged, which is the point.
     When these pages were written by hand they carried a hand-narrowed copy that
     left out the donate button's origins; one policy in one file ended that
-    argument by making it impossible to have."""
+    argument by making it impossible to have.
+
+    `up` is how the frame climbs back to the root. A legal page sits one level
+    down and a guide two, and neither template should have to know which."""
     dest = out / page['slug']
     dest.mkdir(parents=True, exist_ok=True)
 
@@ -290,12 +299,15 @@ def build_page(out, templates, site, page, footer, css_v, emit):
     if not body_path.is_file():
         raise sitelib.ConfigError(f'{page["slug"]}: no body.html')
 
+    up = '../' * page['depth']
+
     emit.html(dest / 'index.html', templates.render('page.html', {
         'site': site,
         'page': page,
         'footer': footer,
-        'base': '../',
-        'css_href': f'../site.css?v={css_v}',
+        'base': up,
+        'css_href': f'{up}site.css?v={css_v}',
+        'jsonld': sitelib.page_jsonld(site, page),
         'csp': sitelib.render_csp(site['csp']),
         'body': body_path.read_text(encoding='utf-8').rstrip('\n'),
     }))
@@ -356,14 +368,18 @@ def build_hub(out, templates, site, planned, by_slug, footer, css_v, emit):
     }), where='analytics.js')
 
 
-def build_sitemap(out, templates, site, tools, prose):
+def build_sitemap(out, templates, site, tools, guides, legal):
     pages = [{'url': site['domain'], 'lastmod': site['lastmod'],
               'changefreq': 'weekly', 'priority': '1.0'}]
     pages += [{'url': tool['url'], 'lastmod': tool['lastmod'],
                'changefreq': 'monthly', 'priority': '0.8'} for tool in tools]
+    # Guides below the tools and above the legal pages. A tool is what somebody
+    # came for; a guide is how they find out this site exists.
+    pages += [{'url': page['url'], 'lastmod': page['lastmod'],
+               'changefreq': 'monthly', 'priority': '0.6'} for page in guides]
     # The legal pages last, and low: they matter for trust, not for search.
     pages += [{'url': page['url'], 'lastmod': page['lastmod'],
-               'changefreq': 'yearly', 'priority': '0.3'} for page in prose]
+               'changefreq': 'yearly', 'priority': '0.3'} for page in legal]
     write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': pages}))
 
 
