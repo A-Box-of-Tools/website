@@ -85,59 +85,71 @@
   <p class="lede">
 {{ site.roadmap.lede }}
   </p>
+  <!--
+    Counted by the build from the two lists themselves, so they cannot be wrong
+    the way a number typed into a sentence goes wrong the first time a tool
+    ships and nobody remembers this page exists.
+  -->
+  <p class="roadmap-count">
+    <strong>{{ planned_count }}</strong> planned
+    &middot;
+    <strong>{{ built_count }}</strong> built
+  </p>
 </header>
 
-<main>
+<!--
+  One narrow column, the same frame the guides wear. This page is read rather
+  than scanned: somebody is here to find out whether the thing they need is
+  coming, which is a question you answer by reading a list, not by looking at a
+  grid of cards for tools you already saw on the front page.
+-->
+<main class="prose">
 
-  <!--
-    The built half first. A roadmap that opens on what does not exist yet is a
-    wishlist; opening on what does makes the rest of it a promise with a track
-    record behind it. These are real links, so this page also spreads crawl
-    depth across every tool rather than being a dead end.
-  -->
-  <section class="category" id="built" aria-labelledby="built-h">
-    <div class="category-head">
-      <h2 id="built-h">{{ site.roadmap.built_heading }}</h2>
-      <p class="category-note">{{ site.roadmap.built_note }}</p>
-    </div>
-    <ul class="tool-grid">
-{% for tool in tools %}      <li>
-        <a class="tool-card" href="{{ base }}{{ tool.slug }}/">
-          <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
-          <span class="tool-name">{{ tool.name | e }}</span>
-          <span class="tool-desc">
-{{ tool.card }}
-          </span>
-        </a>
-      </li>
-{% endfor %}    </ul>
+  <section>
+    <h2>{{ site.roadmap.intro_heading }}</h2>
+{{ site.roadmap.intro }}
   </section>
 
   <!--
     ==========================================================================
-    THE PLANNED LIST
+    THE PLANNED LIST - the substance of this page, and first for that reason.
 
-    Written as plain text on purpose. A card that links nowhere reads as a
+    Written as plain text on purpose. A name that links nowhere reads as a
     broken page rather than an honest one, so nothing here is a link until it
     ships. Move a name out of config/planned.toml when the tool actually
-    exists, and add its folder to tools/ at the same time - it will appear in
-    the section above, in the hub, in the footer and in the sitemap without
-    anybody editing this template.
+    exists, and add its folder to tools/ at the same time - it will leave this
+    list and join the one below it, and appear on the hub, in every footer and
+    in the sitemap, without anybody editing this template.
     ==========================================================================
   -->
-  <section class="category planned" id="planned" aria-labelledby="planned-h">
-    <div class="category-head">
-      <h2 id="planned-h">{{ site.roadmap.planned_heading }}</h2>
-      <p class="category-note">{{ planned.note }}</p>
-    </div>
+  <section id="planned" aria-labelledby="planned-h">
+    <h2 id="planned-h">{{ site.roadmap.planned_heading }}</h2>
+    <p>{{ planned.note }}</p>
 {% for group in planned.group %}
-    <div class="planned-group">
+    <div class="plan-group">
       <h3>{{ group.name }}</h3>
-      <ul class="planned-list">
-{% for item in group.items %}        <li><span class="p-name">{{ item.name }}</span> <span class="p-desc">{{ item.desc }}</span></li>
+      <ul class="plan-list">
+{% for item in group.items %}        <li><span class="p-name">{{ item.name }}</span> <span class="p-desc">&mdash; {{ item.desc }}</span></li>
 {% endfor %}      </ul>
     </div>
 {% endfor %}  </section>
+
+  <!--
+    The built half, and deliberately quiet. Every one of these already has a
+    card on the hub and a link in the footer of every page; giving them the same
+    weight again here made the roadmap look like a second front page and pushed
+    the list above - the part somebody actually came for - below the fold.
+
+    Still real links, so this page is not a dead end and still spreads crawl
+    depth across every tool.
+  -->
+  <section id="built" aria-labelledby="built-h">
+    <h2 id="built-h">{{ site.roadmap.built_heading }}</h2>
+    <p>{{ site.roadmap.built_note }}</p>
+    <ul class="built-list">
+{% for tool in tools %}      <li><a href="{{ base }}{{ tool.slug }}/">{{ tool.name | e }}</a> <span class="b-desc">&mdash; {{ tool.tagline }}</span></li>
+{% endfor %}    </ul>
+  </section>
 
 </main>
 

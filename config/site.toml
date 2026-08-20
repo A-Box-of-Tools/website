@@ -241,19 +241,43 @@ slug = "roadmap"
 nav = "Roadmap"
 lastmod = "2026-08-20"
 
-title = "Roadmap &mdash; what abox.tools has built, and what is next"
-description = "Every tool on abox.tools that is finished, and the ones planned next. All of them run in your browser, and none of them upload your files."
+title = "Roadmap &mdash; what abox.tools is building next"
+description = "Every tool planned for abox.tools, grouped and in the open, plus the ones already finished. All of them run in your browser and upload nothing."
 
-heading = "What is built, and what is coming"
+heading = "What is coming next"
 lede = """
-    Everything here runs in your browser and uploads nothing, the ones that
-    exist today and the ones that do not yet. This is the whole list, kept in
-    the open so you can see whether the thing you need is coming."""
+    Everything on both lists below does its work inside your browser and
+    uploads nothing &mdash; that is the rule a name has to pass before it goes
+    on here at all. The counts are not written down anywhere; the build reads
+    them off the two lists."""
 
-built_heading = "Built and working"
-built_note = "Finished, and linked from every page on the site."
+intro_heading = "How this list was drawn up"
+intro = """
+    <p>
+      It is not a wishlist. It was drawn up by going through the tool list of
+      the largest online GIF and video site, the closest thing there is to a
+      catalogue of what people actually want done to a file, and keeping every
+      entry that can be built so the work happens on your own machine and keeps
+      happening with the network unplugged.
+    </p>
+    <p>
+      Most of what survived runs on APIs the browser already ships. A few need
+      a codec vendored into the one tool that uses it, which is allowed &mdash;
+      the file still never leaves the machine. Anything that cannot clear that
+      bar was left off rather than promised, so a few of the obvious-looking
+      gaps below are gaps on purpose.
+    </p>
+    <p>
+      Nothing here is a link until it exists. When a tool ships it moves out of
+      this list and into the one at the foot of the page.
+    </p>"""
 
 planned_heading = "Planned"
+
+built_heading = "Already built"
+built_note = """
+      Each one has its own page, and every page on this site links to all of
+      them from the footer."""
 
 og_title = "abox.tools roadmap"
 og_description = "What is built, and what is next. Everything runs in your browser and uploads nothing."
