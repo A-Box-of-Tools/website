@@ -46,6 +46,9 @@ if (-not (Test-Path $Root)) {
 }
 
 $root = (Resolve-Path $Root).Path
+# Compared with a trailing separator on it, so a sibling folder whose name
+# merely starts with the root's - dist-evil beside dist - cannot pass the check.
+$rootPrefix = if ($root.EndsWith('\')) { $root } else { "$root\" }
 
 $mimeTypes = @{
   '.html' = 'text/html; charset=utf-8'
@@ -81,7 +84,7 @@ try {
 }
 
 Write-Host ""
-Write-Host "  Images to Video" -ForegroundColor Cyan
+Write-Host "  A Box of Tools" -ForegroundColor Cyan
 Write-Host "  Serving $root"
 Write-Host "  http://localhost:$Port/" -ForegroundColor Green
 Write-Host "  Press Ctrl+C to stop."
@@ -101,7 +104,7 @@ try {
       $candidate = Join-Path $root ($relative -replace '/', '\')
       $fullPath = [System.IO.Path]::GetFullPath($candidate)
 
-      if (-not $fullPath.StartsWith([System.IO.Path]::GetFullPath($root), [StringComparison]::OrdinalIgnoreCase)) {
+      if (-not $fullPath.StartsWith($rootPrefix, [StringComparison]::OrdinalIgnoreCase)) {
         $response.StatusCode = 403
         $response.Close()
         continue
