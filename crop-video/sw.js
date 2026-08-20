@@ -3,26 +3,27 @@
  *
  * Beyond convenience, this is the app's strongest privacy proof: once the
  * worker is installed you can disconnect from the network entirely and every
- * feature still works, which no design that uploaded your images could manage.
+ * feature still works, which no design that uploaded your videos could manage.
  *
  * CACHE_NAME carries a hash of the files listed below, so it changes exactly
  * when one of them changes and never otherwise. That used to be a comment
  * asking whoever edited a file to remember to bump a number by hand.
  */
 
-const CACHE_NAME = 'compress-image-95af514dad';
+const CACHE_NAME = 'crop-video-46099b2988';
 
 const ASSETS = [
   './',
   'index.html',
-  'styles.css?v=1167009c82',
-  'src/codecs.js',
-  'src/compress.js',
-  'src/crc32.js',
-  'src/files.js',
+  'styles.css?v=1545910fc1',
+  'src/cropper.js',
+  'src/demux.js',
+  'src/draw.js',
   'src/main.js',
-  'src/measure.js',
-  'src/zip.js',
+  'src/mp4.js',
+  'src/record.js',
+  'src/support.js',
+  'src/transcode.js',
   // Same-origin, so it is cached like everything else. Offline it simply
   // queues a measurement call that never goes out - the app does not depend
   // on it, and nothing about your files is in it either way.

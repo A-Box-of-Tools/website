@@ -60,7 +60,7 @@
   Keep it under about 60 characters or Google truncates the tail.
 -->
 <title>Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools</title>
-<meta name="description" content="Free online tools that run entirely in your browser. Compress an image to a size you name, convert images to video, strip the EXIF and GPS data out of a photo - nothing is uploaded, no account needed, and it works offline.">
+<meta name="description" content="Free online tools that run entirely in your browser. Compress an image to a size you name, crop a video to any shape, convert images to video, strip the EXIF and GPS data out of a photo - nothing is uploaded, no account needed, and it works offline.">
 
 <link rel="canonical" href="https://abox.tools/">
 
@@ -167,12 +167,18 @@
           {
             "@type": "ListItem",
             "position": 2,
+            "url": "https://abox.tools/crop-video/",
+            "name": "Video Cropper"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
             "url": "https://abox.tools/exif-editor/",
             "name": "EXIF Viewer & Remover"
           },
           {
             "@type": "ListItem",
-            "position": 3,
+            "position": 4,
             "url": "https://abox.tools/compress-image/",
             "name": "Image Compressor"
           }
@@ -301,6 +307,18 @@
         </a>
       </li>
       <li>
+        <a class="tool-card" href="crop-video/">
+          <span class="tool-icon" aria-hidden="true">&#9986;&#65039;</span>
+          <!-- `name` is the tool's plain-text name, the one that also goes into
+               the structured data above, so it is escaped on the way in here. -->
+          <span class="tool-name">Video Cropper</span>
+          <span class="tool-desc">
+            Drag a box over a clip and cut it down to that shape &mdash; square
+            for a feed, tall for a phone, or an exact pixel box.
+          </span>
+        </a>
+      </li>
+      <li>
         <a class="tool-card" href="exif-editor/">
           <span class="tool-icon" aria-hidden="true">&#127991;&#65039;</span>
           <!-- `name` is the tool's plain-text name, the one that also goes into
@@ -371,7 +389,6 @@
       <ul class="planned-list">
         <li><span class="p-name">Trim</span> <span class="p-desc">cut a section out and keep the original quality</span></li>
         <li><span class="p-name">Resize</span> <span class="p-desc">down to a size that will actually send</span></li>
-        <li><span class="p-name">Crop</span> <span class="p-desc">including squaring up a clip for a feed</span></li>
         <li><span class="p-name">Rotate</span> <span class="p-desc">for the clip that was filmed sideways</span></li>
         <li><span class="p-name">Reverse</span> <span class="p-desc">play it backwards</span></li>
         <li><span class="p-name">Mute, or save the audio</span> <span class="p-desc">drop the sound, or keep it on its own</span></li>
@@ -481,6 +498,7 @@
       <strong>Tools</strong>
       <ul>
         <li><a href="./images-to-video/">Images to Video</a></li>
+        <li><a href="./crop-video/">Video Cropper</a></li>
         <li><a href="./exif-editor/">EXIF Viewer &amp; Remover</a></li>
         <li><a href="./compress-image/">Image Compressor</a></li>
       </ul>

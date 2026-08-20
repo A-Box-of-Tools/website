@@ -7,8 +7,8 @@
   GENERATED FILE - do not edit. Built by build.py from:
 
       templates/tool.html
-      tools/images-to-video/tool.toml
-      tools/images-to-video/body.html
+      tools/crop-video/tool.toml
+      tools/crop-video/body.html
       config/site.toml
 
   Edit those and run `python build.py`. An edit made here is lost on the next
@@ -31,10 +31,10 @@
   Punctuation is written as HTML entities throughout, so this file stays pure
   ASCII on disk and cannot be mangled by a tool that guesses the encoding.
 
-  img-src allows http/https so the "add from web address" feature can pull an
-  image IN, and because ad creatives come from anywhere. media-src and
-  worker-src need blob: because the finished video and the encoder both live in
-  memory on this machine rather than at a URL.
+  media-src needs blob: because both the clip you chose and the cropped result
+  are played from memory on this machine rather than from a URL. That is the
+  only addition: this tool fetches nothing, so connect-src is left exactly as
+  the site sets it.
 -->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'none';
@@ -69,11 +69,10 @@
     https://csi.gstatic.com;
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src https://fonts.gstatic.com;
-  img-src 'self' data: https: blob: http:;
+  img-src 'self' data: https: blob:;
   form-action 'none';
   base-uri 'none';
   media-src 'self' blob:;
-  worker-src 'self' blob:;
 ">
 
 <!--
@@ -88,10 +87,10 @@
 <script src="analytics.js" defer></script>
 
 
-<title>Images to Video Converter &mdash; Free MP4 Slideshow Maker</title>
-<meta name="description" content="Turn JPG, PNG or WebP images into an MP4 slideshow video, free and entirely in your browser. Nothing is uploaded, no sign-up, and it works offline.">
+<title>Crop a Video Online &mdash; Free, No Upload, Works Offline</title>
+<meta name="description" content="Crop an MP4, MOV or WebM to any shape - square for a feed, 9:16 for a phone, or an exact pixel box - entirely in your browser. Nothing is uploaded, the sound is kept, and it works offline.">
 
-<link rel="canonical" href="https://abox.tools/images-to-video/">
+<link rel="canonical" href="https://abox.tools/crop-video/">
 
 <!--
   Share card. og-image.ps1 draws these, and the URLs have to be absolute -
@@ -99,17 +98,17 @@
 -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="A Box of Tools">
-<meta property="og:url" content="https://abox.tools/images-to-video/">
-<meta property="og:title" content="Images to Video &mdash; free MP4 slideshow maker">
-<meta property="og:description" content="Turn a folder of images into an MP4 slideshow. Encoding runs on your own machine; nothing is uploaded.">
-<meta property="og:image" content="https://abox.tools/images-to-video/og.png">
+<meta property="og:url" content="https://abox.tools/crop-video/">
+<meta property="og:title" content="Video Cropper &mdash; crop a clip without uploading it">
+<meta property="og:description" content="Drag a box over your clip and crop it to any shape. The frames are decoded and re-encoded on your own machine, and the original sound is carried across untouched.">
+<meta property="og:image" content="https://abox.tools/crop-video/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Images to Video - turn a folder of images into an MP4 slideshow">
+<meta property="og:image:alt" content="Video Cropper - crop a clip in your browser, with nothing uploaded">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Images to Video &mdash; free MP4 slideshow maker">
-<meta name="twitter:description" content="Turn a folder of images into an MP4 slideshow. Encoding runs on your own machine; nothing is uploaded.">
-<meta name="twitter:image" content="https://abox.tools/images-to-video/og.png">
+<meta name="twitter:title" content="Video Cropper &mdash; crop a clip without uploading it">
+<meta name="twitter:description" content="Drag a box over your clip and crop it to any shape. The frames are decoded and re-encoded on your own machine, and the original sound is carried across untouched.">
+<meta name="twitter:image" content="https://abox.tools/crop-video/og.png">
 
 <!--
   Structured data. The FAQPage half is built from the same [[faq]] entries in
@@ -130,12 +129,12 @@
   "@graph": [
     {
       "@type": "SoftwareApplication",
-      "name": "Images to Video",
-      "url": "https://abox.tools/images-to-video/",
+      "name": "Video Cropper",
+      "url": "https://abox.tools/crop-video/",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "Any (runs in a web browser)",
-      "browserRequirements": "Requires JavaScript. MP4 output needs a browser with WebCodecs; others fall back to WebM.",
-      "description": "Turn a folder of images into an MP4 slideshow video. Every step runs in your browser, so no image is ever uploaded.",
+      "browserRequirements": "Requires JavaScript. MP4 output needs a browser with WebCodecs; others fall back to recording WebM.",
+      "description": "Crop a video to any shape or exact pixel box in the browser. MP4, MOV and M4V are decoded and re-encoded frame by frame with the original audio carried across untouched; anything else the browser can play is cropped by recording it. Nothing is uploaded.",
       "isAccessibleForFree": true,
       "offers": {
         "@type": "Offer",
@@ -143,11 +142,11 @@
         "priceCurrency": "USD"
       },
       "featureList": [
-        "Converts JPG, PNG, WebP, GIF and AVIF images to video",
-        "MP4 (H.264) output, with WebM as a fallback",
-        "Resolutions up to 3840x2160, frame rates from 12 to 60 fps",
-        "Per-image hold time in frames or seconds",
-        "Runs offline; no upload, no account"
+        "Crops MP4, MOV, M4V and WebM video",
+        "H.264, HEVC, AV1 and VP9 sources, decoded through WebCodecs",
+        "Free-form crop, locked ratios (1:1, 4:5, 9:16, 16:9, 4:3, 3:2) or an exact pixel box",
+        "Keeps the original audio without re-encoding it",
+        "Runs offline; no upload, no account, no watermark"
       ],
       "publisher": {
         "@type": "Organization",
@@ -167,8 +166,8 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "Images to Video",
-          "item": "https://abox.tools/images-to-video/"
+          "name": "Video Cropper",
+          "item": "https://abox.tools/crop-video/"
         }
       ]
     },
@@ -177,34 +176,58 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "Are my images uploaded anywhere?",
+          "name": "Is my video uploaded anywhere?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. Your images are read, composited and encoded by your own browser on your own hardware. There is no server side to this tool, and the page's Content-Security-Policy names every address it may contact - none of them belongs to this site. The one exception is the optional \"add from a web address\" feature, which fetches an image you paste in, and that server sees your IP address."
+            "text": "No. It is read, decoded, cropped and encoded by your own browser on your own hardware. There is no server side to this tool, and the page's Content-Security-Policy names every address it may contact - none of them belongs to this site. Unplug from the internet and crop a clip anyway if you would rather check than be told."
           }
         },
         {
           "@type": "Question",
-          "name": "Which image formats can I use?",
+          "name": "Which video formats can I crop?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Any still image format your browser can decode, which in practice means JPG, PNG, WebP, GIF, AVIF and, on Apple devices, HEIC. There is no separate list to keep up to date here, because the decoding is the browser's job rather than ours."
+            "text": "MP4, M4V and MOV are read directly, whatever is inside them: H.264, HEVC, AV1 or VP9, as long as your browser can decode that codec. Anything else your browser can play - WebM most obviously - is cropped by playing it and recording the result instead, which works but takes as long as the clip is long. A file the browser can neither read nor play, which in practice means AVI, WMV, FLV and most MKVs, is refused with a message saying so rather than failing halfway through."
           }
         },
         {
           "@type": "Question",
-          "name": "What video format does it produce?",
+          "name": "Is there a limit on the size or length of the video?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "MP4 with H.264 video, which plays on essentially anything. In a browser without WebCodecs the tool falls back to recording WebM instead - the same footage in a container that fewer editors accept."
+            "text": "There is no limit built into the tool, and the file is not read into memory all at once - it is walked through a few megabytes at a time. The practical ceiling is the finished video, which is assembled in memory before you download it, and the time your machine takes to encode it."
           }
         },
         {
           "@type": "Question",
-          "name": "Is there a limit on how many images, or how long the video can be?",
+          "name": "Does the sound survive?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "There is no limit built into the tool. The practical ceiling is your own machine's memory, because the finished video is assembled there before you download it. Very large 4K slideshows are the first thing to feel it."
+            "text": "On the MP4 path, exactly: the audio is copied across sample by sample without ever being decoded, so it is byte for byte what was in the file. On the recording path it is captured from playback and encoded again, which costs a little quality. Either way there is a checkbox to leave it out entirely."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does cropping lose quality?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The picture is encoded again, because a cropped frame is a different picture and there is no way to store it without writing the pixels out afresh. What the tool will not do is spend more than the original did on the same area, since re-encoding above that only makes the file bigger without making it look better."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I trim the length as well?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not here. This tool changes the shape of the picture and nothing else: the clip that comes out is exactly as long as the one that went in, with its timing and its sound intact. Trimming is a separate job and will be a separate tool."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do the width and height move in steps of two?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "H.264, the codec in an MP4, stores the picture in blocks and has no way to describe a frame with an odd number of pixels on a side. Rather than quietly rounding your crop after you set it, the box only ever offers even numbers in the first place."
           }
         },
         {
@@ -212,23 +235,7 @@
           "name": "Is it free, and do I need an account?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "It is free, and there is no account, no sign-in and no trial. The site carries advertising, which is what pays for it; the ads are not given anything about your images."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does it work offline?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Load the page once, then disconnect from the internet and it keeps working. That is also the simplest way to prove nothing is being uploaded: a tool that sent your images away to be processed would stop the moment you unplugged."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I add music or a soundtrack?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Not yet. The tool produces video only: the MP4 it writes has a single video track and no audio track. Add a soundtrack afterwards in a video editor if you need one."
+            "text": "It is free, and there is no account, no sign-in, no trial and no watermark. The site carries advertising, which is what pays for it; the ads are not given anything about your video."
           }
         }
       ]
@@ -242,8 +249,8 @@
   HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
   reaches a returning visitor as new markup wearing a four-hour-old sheet.
 -->
-<link rel="stylesheet" href="styles.css?v=a8bf09f096">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#127902;</text></svg>">
+<link rel="stylesheet" href="styles.css?v=1545910fc1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#9986;</text></svg>">
 </head>
 <body>
 
@@ -252,13 +259,13 @@
   run - opening this file straight from disk blocks ES modules, and so does a
   CSP or network failure - this stays on screen and explains why. Without it the
   page looks fine, the file picker still opens (that part is pure HTML), and
-  nothing at all happens when you choose images.
+  nothing at all happens when you choose a video.
 -->
 <div id="boot-warning" class="boot-warning">
   <strong>This page's code did not start.</strong>
   <p>
     Opening <code>index.html</code> directly from a folder blocks JavaScript modules,
-    so nothing will happen when you choose images. Serve the folder over http instead:
+    so nothing will happen when you choose a video. Serve the folder over http instead:
   </p>
   <pre>powershell -ExecutionPolicy Bypass -File serve.ps1</pre>
   <p>Then open <code>http://localhost:8080/</code>.</p>
@@ -281,10 +288,10 @@
 
 <header class="topbar">
   <div class="brand">
-    <span class="brand-mark" aria-hidden="true">&#127902;&#65039;</span>
+    <span class="brand-mark" aria-hidden="true">&#9986;&#65039;</span>
     <div>
-      <h1>Images&nbsp;to&nbsp;Video</h1>
-      <p class="tagline">Turn a folder of images into a video.</p>
+      <h1>Video&nbsp;Cropper</h1>
+      <p class="tagline">Cut a clip down to the part that matters.</p>
     </div>
   </div>
   <div class="topbar-actions">
@@ -335,20 +342,21 @@
 <section class="pledge">
   <p class="pledge-line">
     <span class="pledge-mark" aria-hidden="true">&#9679;</span>
-    Your images are <strong>never uploaded</strong>. There is no server.
+    Your videos are <strong>never uploaded</strong>. There is no server.
   </p>
   <p class="pledge-sub">
-    Every frame is encoded by your own browser and the video is built in memory on
-    this machine. The encoder never touches the network, and there is no server on
-    the other end of this page to send an image to even if it did.
+    Every frame is decoded, cropped and encoded by your own browser, on your own
+    hardware. Nothing here can fetch or send anything &mdash; there is no network
+    feature in this tool at all &mdash; and there is no server on the other end of
+    this page to send a video to even if there were.
   </p>
 
   <ul class="pledge-facts">
     <li><span aria-hidden="true">&#10007;</span> No upload</li>
     <li><span aria-hidden="true">&#10007;</span> No account</li>
+    <li><span aria-hidden="true">&#10007;</span> No watermark</li>
+    <li><span aria-hidden="true">&#10003;</span> Keeps the sound</li>
     <li><span aria-hidden="true">&#10003;</span> Works offline</li>
-    <li><span aria-hidden="true">&#10003;</span> Open source</li>
-    <li><span aria-hidden="true">&#10003;</span> Files stay on your device</li>
   </ul>
 
   <!-- Live, measured, and wrong-provable: this is the part that turns the
@@ -363,9 +371,10 @@
       <span><strong>Offline:</strong> <span id="offline-status">checking&hellip;</span></span>
     </p>
     <p class="live-hint">
-      Don't take our word for it: open DevTools, watch the Network tab, and make a
-      video. Not one request carries an image, a thumbnail, or a filename. Or
-      unplug from the internet and make one anyway.
+      Don't take our word for it: open DevTools, watch the Network tab, and crop a
+      clip. Not one request carries a frame, a filename, or a byte of what you
+      chose. Or unplug from the internet and crop one anyway &mdash; a tool that
+      sent your video away to be processed would simply stop.
     </p>
   </div>
 </section>
@@ -373,32 +382,35 @@
 <section id="privacy-panel" class="privacy" hidden>
   <h2>How the privacy claim is verifiable</h2>
   <ul>
-    <li><strong>Your images have nowhere to go.</strong> The
+    <li><strong>Your videos have nowhere to go.</strong> The
       Content-Security-Policy names every address this page may contact, and not
-      one of them belongs to this site. There is no endpoint here that your files
-      could be collected at, and nothing in the code that would send them if there
-      were. This used to read <code>connect-src 'none'</code>, which was absolute;
-      adding advertising cost that, and saying so is part of the deal.</li>
-    <li><strong>Encoding is local.</strong> WebCodecs runs in your browser and the finished
-      file is handed straight to a download. There is no server side to this app.</li>
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were.</li>
+    <li><strong>Nothing here fetches anything.</strong> This tool has no network feature at
+      all: no address to paste, nothing to download, no engine fetched on first
+      use. Every byte that touches your video came from this origin when the page
+      loaded.</li>
+    <li><strong>The decoding and encoding are local.</strong> The frames go through
+      WebCodecs in your own browser, or through the same playback engine that
+      would show you the clip anyway. The finished file is built in memory on
+      this machine and handed straight to a download.</li>
+    <li><strong>The sound is copied, not listened to.</strong> On the MP4 path the
+      audio samples are moved across without being decoded at all &mdash; nothing
+      here ever turns them back into sound, and nothing could pass them anywhere
+      if it did.</li>
     <li><strong>What Google loads, and what it is not given.</strong> The ad and
       measurement scripts come from Google. Neither is handed anything about your
-      images: not a file, not a thumbnail, not a name, a size, or a count. Every
-      line that reads, decodes, composites or encodes an image is served from this
-      origin and listed in the repository.</li>
+      video: not a file, not a frame, not a name, a size, a length, or the shape
+      you cropped it to. Every line that reads, decodes, crops or encodes is
+      served from this origin and listed in the repository.</li>
     <li><strong>What the donate button loads, and what it is not given.</strong>
       The "Buy me a coffee" button in the header is drawn by a script from
       cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
-      and nothing more: it reports no visit, and it is handed nothing about
-      you or your images. Nothing happens unless you click it, and what you
-      would be clicking through to is somebody else's site.</li>
-    <li><strong>One deliberate exception.</strong> If you use "Add from a web address",
-      that server is contacted to fetch the image and will see your IP address. Only
-      images you paste in are ever fetched, and only inbound: <code>img-src</code> is
-      opened, <code>connect-src</code> is not. The counter below lists every outside
-      origin contacted.</li>
-    <li><strong>It works offline.</strong> Disconnect from the network and everything except
-      web-address loading still functions. That is the simplest proof of all.</li>
+      and nothing more: it reports no visit, and it is handed nothing about you
+      or your video.</li>
+    <li><strong>It works offline.</strong> Disconnect from the network and everything on
+      this page still works. That is the simplest proof of all.</li>
   </ul>
   <div class="privacy-status">
     <p>
@@ -415,16 +427,18 @@
     </p>
     <p>
       The files worth reading first are <code>config/site.toml</code> for the
-      Content-Security-Policy, and <code>src/encoder.js</code> for the encoding loop
-      that never touches the network.
+      Content-Security-Policy, <code>src/demux.js</code> for the reader that finds
+      the frames in an MP4, and <code>src/transcode.js</code> for the loop that
+      decodes, crops and encodes them. Neither imports anything that can make a
+      request.
     </p>
   </div>
 </section>
 
 <main>
-  <!-- Step 1 &mdash; images -->
+  <!-- Step 1 &mdash; the file -->
   <section class="card">
-    <h2><span class="step">1</span> Choose images</h2>
+    <h2><span class="step">1</span> Choose a video</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -432,127 +446,95 @@
       so the input stays in the layout: visually hidden, still focusable, and
       reachable by keyboard. There is no JavaScript in this path at all.
     -->
-    <input type="file" id="file-input" class="visually-hidden" accept="image/*" multiple>
+    <input type="file" id="file-input" class="visually-hidden" accept="video/*">
     <label id="dropzone" class="dropzone" for="file-input">
-      <span class="dropzone-title">Drop images here</span>
-      <span class="dropzone-hint">or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF</span>
+      <span class="dropzone-title">Drop a video here</span>
+      <span class="dropzone-hint">
+        or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays
+      </span>
     </label>
 
-    <details id="url-panel" class="url-panel">
-      <summary>Add from a web address</summary>
-      <div class="url-body">
-        <p class="url-warning">
-          <strong>This is the one feature that touches the network.</strong>
-          Fetching an address tells that server your IP address and which image you
-          asked for. The image is copied to local memory on arrival and never
-          requested again. Nothing of yours is ever sent out &mdash; this page still
-          cannot make an upload of any kind.
-        </p>
-        <label for="url-input">One address per line</label>
-        <textarea id="url-input" rows="3" spellcheck="false"
-                  placeholder="https://example.com/photo1.jpg&#10;https://example.com/photo2.jpg"></textarea>
-        <div class="url-actions">
-          <button type="button" id="fetch-urls" class="primary">Download images</button>
-          <span id="url-status" class="url-status" role="status" aria-live="polite"></span>
-        </div>
-        <p class="url-note">
-          The server must permit cross-origin use of its images. Many sites do not,
-          and those will fail with a message rather than silently breaking later.
-        </p>
-      </div>
-    </details>
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Size</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Frame</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Length</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
 
-    <div id="list-toolbar" class="toolbar" hidden>
-      <span id="count-label" class="count"></span>
-      <div class="toolbar-actions">
-        <div class="view-switch" role="group" aria-label="Change how the list is shown">
-          <button type="button" data-view="large" class="active">Large</button>
-          <button type="button" data-view="small">Small</button>
-          <button type="button" data-view="list">List</button>
-          <button type="button" data-view="details">Details</button>
-        </div>
-        <button type="button" data-sort="name" class="ghost">Sort by name</button>
-        <button type="button" data-sort="date" class="ghost">Sort by date</button>
-        <button type="button" data-sort="reverse" class="ghost">Reverse</button>
-        <button type="button" id="clear-all" class="ghost danger">Remove all</button>
-      </div>
-    </div>
-
-    <p id="reorder-hint" class="reorder-hint" hidden>
-      Drag any image by its <span class="grip" aria-hidden="true">&#8942;&#8942;</span> handle to
-      reorder, or use the arrows on each one.
-    </p>
-
-    <ul id="image-list" class="image-list view-large"></ul>
-
-    <div id="bulk-duration" class="bulk" hidden>
-      <label for="bulk-amount">Hold every image for</label>
-      <input type="number" id="bulk-amount" min="1" max="3600" step="1" value="1">
-      <select id="duration-unit" aria-label="Unit for how long each image is held">
-        <option value="frames" selected>frames</option>
-        <option value="seconds">seconds</option>
-      </select>
-      <button type="button" id="apply-bulk" class="ghost">Apply to all</button>
-      <span class="bulk-note" id="bulk-note"></span>
-    </div>
+    <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; settings -->
-  <section class="card">
-    <h2><span class="step">2</span> Video settings</h2>
+  <!-- Step 2 &mdash; the crop -->
+  <section class="card" id="crop-card" hidden>
+    <h2><span class="step">2</span> Set the crop</h2>
+
+    <p class="stage-hint">
+      Drag inside the box to move it, or any corner to resize. With the box
+      focused, the arrow keys nudge it a pixel at a time,
+      <kbd>Alt</kbd>&nbsp;+&nbsp;arrows resize it, and holding
+      <kbd>Shift</kbd> makes each step ten.
+    </p>
+
+    <!-- The crop box itself is added here by src/cropper.js. The stage is given
+         the video's own shape, so the box can be positioned in percentages and
+         needs no recalculating when the window is resized. -->
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <div class="crop-controls">
+      <div class="aspect-row" role="group" aria-label="Lock the crop to a shape">
+        <button type="button" data-aspect="free" class="active">Free</button>
+        <button type="button" data-aspect="source">Original</button>
+        <button type="button" data-aspect="1:1">1:1</button>
+        <button type="button" data-aspect="4:5">4:5</button>
+        <button type="button" data-aspect="9:16">9:16</button>
+        <button type="button" data-aspect="16:9">16:9</button>
+        <button type="button" data-aspect="4:3">4:3</button>
+        <button type="button" data-aspect="3:2">3:2</button>
+        <button type="button" id="swap-aspect" class="ghost" title="Turn the locked shape on its side">
+          Swap
+        </button>
+      </div>
+
+      <div class="numbers">
+        <label>Left<input type="number" id="crop-x" min="0" step="1"></label>
+        <label>Top<input type="number" id="crop-y" min="0" step="1"></label>
+        <label>Width<input type="number" id="crop-w" min="16" step="2"></label>
+        <label>Height<input type="number" id="crop-h" min="16" step="2"></label>
+        <div class="number-actions">
+          <button type="button" id="crop-max" class="ghost">Largest</button>
+          <button type="button" id="crop-centre" class="ghost">Centre</button>
+          <button type="button" id="crop-reset" class="ghost">Whole frame</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="even-note">
+      Width and height move in steps of two, because H.264 has no way to store
+      an odd-sided frame.
+    </p>
+  </section>
+
+  <!-- Step 3 &mdash; the export -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Crop it</h2>
 
     <div class="settings">
       <div class="field">
-        <label for="resolution">Resolution</label>
-        <select id="resolution">
-          <option value="auto" selected>Match highest resolution</option>
-          <option value="3840x2160">3840 &times; 2160 &mdash; 4K</option>
-          <option value="1920x1080">1920 &times; 1080 &mdash; 1080p</option>
-          <option value="1280x720">1280 &times; 720 &mdash; 720p</option>
-          <option value="1080x1080">1080 &times; 1080 &mdash; square</option>
-          <option value="1080x1920">1080 &times; 1920 &mdash; vertical</option>
-          <option value="custom">Custom&hellip;</option>
+        <label for="format">Output</label>
+        <select id="format">
+          <option value="mp4" selected>MP4 &mdash; re-encoded frame by frame</option>
+          <option value="webm">WebM &mdash; recorded as it plays</option>
         </select>
-        <div id="resolution-custom" class="inline-pair" hidden>
-          <input type="number" id="custom-width" min="16" max="7680" step="2" value="1920"
-                 aria-label="Custom output width in pixels">
-          <span aria-hidden="true">&times;</span>
-          <input type="number" id="custom-height" min="16" max="7680" step="2" value="1080"
-                 aria-label="Custom output height in pixels">
-        </div>
-        <p class="field-note" id="resolution-note"></p>
-      </div>
-
-      <div class="field">
-        <label for="fps">Frame rate</label>
-        <select id="fps">
-          <option value="12">12 fps</option>
-          <option value="15">15 fps</option>
-          <option value="24">24 fps &mdash; film</option>
-          <option value="25">25 fps &mdash; PAL</option>
-          <option value="30" selected>30 fps</option>
-          <option value="50">50 fps</option>
-          <option value="60">60 fps</option>
-          <option value="custom">Custom&hellip;</option>
-        </select>
-        <input type="number" id="fps-custom" class="spaced" min="1" max="120" step="1" value="30"
-               aria-label="Custom frame rate in frames per second" hidden>
-        <p class="field-note" id="fps-note"></p>
-      </div>
-
-      <div class="field">
-        <label for="fit">Image fit</label>
-        <select id="fit">
-          <option value="contain" selected>Fit inside (letterbox)</option>
-          <option value="blur">Fit inside, blurred backdrop</option>
-          <option value="cover">Fill frame (crops edges)</option>
-          <option value="stretch">Stretch to fill (distorts)</option>
-        </select>
-      </div>
-
-      <div class="field" id="background-field">
-        <label for="background">Backdrop colour</label>
-        <input type="color" id="background" value="#000000">
+        <p class="field-note" id="format-note"></p>
       </div>
 
       <div class="field">
@@ -562,38 +544,30 @@
           <option value="medium" selected>Balanced</option>
           <option value="high">Best quality</option>
         </select>
+        <p class="field-note">
+          Never more than the original spent on the same area &mdash; re-encoding
+          above that only makes the file bigger.
+        </p>
       </div>
 
       <div class="field">
-        <label for="format">Format</label>
-        <select id="format">
-          <option value="auto" selected>MP4 (recommended)</option>
-          <option value="webm">WebM (fallback)</option>
-        </select>
-        <p class="field-note" id="format-note"></p>
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Keep the sound
+        </label>
+        <p class="field-note" id="audio-note"></p>
       </div>
     </div>
 
-    <div class="preview-row">
-      <div class="preview-frame">
-        <canvas id="preview" width="640" height="360" aria-label="Preview of the first frame"></canvas>
-        <p id="preview-empty" class="preview-empty">Add images to see a preview</p>
-      </div>
-      <dl class="summary" id="summary">
-        <div><dt>Images</dt><dd id="sum-images">&mdash;</dd></div>
-        <div><dt>Duration</dt><dd id="sum-duration">&mdash;</dd></div>
-        <div><dt>Output size</dt><dd id="sum-size">&mdash;</dd></div>
-        <div><dt>Total frames</dt><dd id="sum-frames">&mdash;</dd></div>
-      </dl>
-    </div>
-  </section>
-
-  <!-- Step 3 &mdash; export -->
-  <section class="card">
-    <h2><span class="step">3</span> Create the video</h2>
+    <dl class="summary" id="summary">
+      <div><dt>Output frame</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Kept</dt><dd id="sum-kept">&mdash;</dd></div>
+      <div><dt>Length</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>How</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
 
     <div class="export-row">
-      <button type="button" id="export" class="primary" disabled>Create video</button>
+      <button type="button" id="export" class="primary" disabled>Crop video</button>
       <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
     </div>
 
@@ -629,92 +603,110 @@
   ============================================================================
 -->
 <section class="faq" aria-labelledby="how-to-h">
-  <h2 id="how-to-h">How to turn images into a video</h2>
+  <h2 id="how-to-h">How to crop a video</h2>
   <ol class="how-to">
     <li>
-      <strong>Choose your images.</strong> Drop a folder onto the picker, or
-      select the files by hand. They are read straight off your disk by the
+      <strong>Choose a video.</strong> Drop an MP4, MOV, M4V or WebM onto
+      the picker, or select one by hand. It is read straight off your disk by the
       browser; nothing is sent anywhere while you do it.
     </li>
     <li>
-      <strong>Put them in order and set how long each one is held.</strong> Drag
-      to reorder. Hold time can be given in frames or in seconds, either for
-      every image at once or one image at a time.
+      <strong>Drag the box over the part you want to keep.</strong> Drag
+      inside it to move it and any corner to resize. Lock it to a shape first
+      &mdash; 1:1 for a square post, 9:16 for a phone, 16:9 for a wide frame
+      &mdash; or type an exact pixel box into the four fields underneath.
     </li>
     <li>
-      <strong>Pick a resolution and frame rate.</strong> "Match highest
-      resolution" follows your largest image; the presets cover 4K, 1080p, 720p,
-      square and vertical, and there is a custom size if none of those fit.
+      <strong>Choose how much quality to spend.</strong> The picture has to
+      be encoded again, because a cropped frame is a different picture. "Balanced"
+      keeps it close to what the file already spent on that area; "Best quality"
+      spends more. The sound is kept unless you turn it off.
     </li>
     <li>
-      <strong>Create the video and download it.</strong> Encoding runs on your
-      own hardware, so how long it takes depends on your machine rather than on
-      a queue. The finished MP4 is handed straight to your browser's downloads.
+      <strong>Crop it and download.</strong> The work happens on your own
+      hardware, so how long it takes depends on your machine rather than on a
+      queue. The finished video is handed straight to your browser's downloads.
     </li>
   </ol>
 
   <h2 id="faq-h">Questions</h2>
   <div class="faq-list">
     <details>
-      <summary>Are my images uploaded anywhere?</summary>
+      <summary>Is my video uploaded anywhere?</summary>
       <p>
-        No. Your images are read, composited and encoded by your own browser on
-        your own hardware. There is no server side to this tool, and the page's
+        No. It is read, decoded, cropped and encoded by your own browser on your
+        own hardware. There is no server side to this tool, and the page's
         <code>Content-Security-Policy</code> names every address it may contact
-        &mdash; none of them belongs to this site. The one exception is the
-        optional "add from a web address" feature, which fetches an image you
-        paste in, and that server sees your IP address.
+        &mdash; none of them belongs to this site. Unplug from the internet and
+        crop a clip anyway if you would rather check than be told.
       </p>
     </details>
     <details>
-      <summary>Which image formats can I use?</summary>
+      <summary>Which video formats can I crop?</summary>
       <p>
-        Any still image format your browser can decode, which in practice means
-        JPG, PNG, WebP, GIF, AVIF and, on Apple devices, HEIC. There is no
-        separate list to keep up to date here, because the decoding is the
-        browser's job rather than ours.
+        MP4, M4V and MOV are read directly, whatever is inside them: H.264,
+        HEVC, AV1 or VP9, as long as your browser can decode that codec. Anything
+        else your browser can play &mdash; WebM most obviously &mdash; is cropped
+        by playing it and recording the result instead, which works but takes as
+        long as the clip is long. A file the browser can neither read nor play,
+        which in practice means AVI, WMV, FLV and most MKVs, is refused with a
+        message saying so rather than failing halfway through.
       </p>
     </details>
     <details>
-      <summary>What video format does it produce?</summary>
+      <summary>Is there a limit on the size or length of the video?</summary>
       <p>
-        MP4 with H.264 video, which plays on essentially anything. In a browser
-        without WebCodecs the tool falls back to recording WebM instead &mdash;
-        the same footage in a container that fewer editors accept.
-      </p>
-    </details>
-    <details>
-      <summary>Is there a limit on how many images, or how long the video can be?</summary>
-      <p>
-        There is no limit built into the tool. The practical ceiling is your own
-        machine's memory, because the finished video is assembled there before
-        you download it. Very large 4K slideshows are the first thing to feel
+        There is no limit built into the tool, and the file is not read into
+        memory all at once &mdash; it is walked through a few megabytes at a
+        time. The practical ceiling is the finished video, which is assembled in
+        memory before you download it, and the time your machine takes to encode
         it.
+      </p>
+    </details>
+    <details>
+      <summary>Does the sound survive?</summary>
+      <p>
+        On the MP4 path, exactly: the audio is copied across sample by sample
+        without ever being decoded, so it is byte for byte what was in the file.
+        On the recording path it is captured from playback and encoded again,
+        which costs a little quality. Either way there is a checkbox to leave it
+        out entirely.
+      </p>
+    </details>
+    <details>
+      <summary>Does cropping lose quality?</summary>
+      <p>
+        The picture is encoded again, because a cropped frame is a different
+        picture and there is no way to store it without writing the pixels out
+        afresh. What the tool will not do is spend more than the original did on
+        the same area, since re-encoding above that only makes the file bigger
+        without making it look better.
+      </p>
+    </details>
+    <details>
+      <summary>Can I trim the length as well?</summary>
+      <p>
+        Not here. This tool changes the shape of the picture and nothing else:
+        the clip that comes out is exactly as long as the one that went in, with
+        its timing and its sound intact. Trimming is a separate job and will be a
+        separate tool.
+      </p>
+    </details>
+    <details>
+      <summary>Why do the width and height move in steps of two?</summary>
+      <p>
+        H.264, the codec in an MP4, stores the picture in blocks and has no way
+        to describe a frame with an odd number of pixels on a side. Rather than
+        quietly rounding your crop after you set it, the box only ever offers
+        even numbers in the first place.
       </p>
     </details>
     <details>
       <summary>Is it free, and do I need an account?</summary>
       <p>
-        It is free, and there is no account, no sign-in and no trial. The site
-        carries advertising, which is what pays for it; the ads are not given
-        anything about your images.
-      </p>
-    </details>
-    <details>
-      <summary>Does it work offline?</summary>
-      <p>
-        Yes. Load the page once, then disconnect from the internet and it keeps
-        working. That is also the simplest way to prove nothing is being
-        uploaded: a tool that sent your images away to be processed would stop
-        the moment you unplugged.
-      </p>
-    </details>
-    <details>
-      <summary>Can I add music or a soundtrack?</summary>
-      <p>
-        Not yet. The tool produces video only: the MP4 it writes has a single
-        video track and no audio track. Add a soundtrack afterwards in a video
-        editor if you need one.
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your video.
       </p>
     </details>
   </div>
