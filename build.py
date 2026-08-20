@@ -418,13 +418,16 @@ def build_sitemap(out, templates, site, tools, guides, legal):
 
 
 def copy_shared(out):
-    """Everything in shared/ that is served as-is. shared/css is not: it is an
-    input to the stylesheets the build assembles, not a file anyone fetches."""
+    """Everything in shared/ that is served as-is. shared/css and shared/js are
+    not: they are inputs to what the build assembles, not files anyone fetches."""
     for path in sorted(SHARED.iterdir()):
-        # shared/css is an input to the stylesheets the build assembles, not a
-        # file anyone fetches; site.css is written separately, minified, by the
-        # caller - copying the source over it here would undo that.
-        if path.name in ('css', 'site.css'):
+        # shared/css feeds the stylesheets the build assembles, and shared/js is
+        # copied into each tool's src/shared/ by build_tool - minified, cached by
+        # that tool's service worker. Copying either here would publish a second,
+        # raw copy at the site root that nothing references; site.css is written
+        # separately, minified, by the caller - copying the source over it here
+        # would undo that.
+        if path.name in ('css', 'js', 'site.css'):
             continue
         if path.is_dir():
             shutil.copytree(path, out / path.name, dirs_exist_ok=True)
