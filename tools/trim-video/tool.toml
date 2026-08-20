@@ -8,11 +8,11 @@
 #
 
 slug = "trim-video"
-name = "Video Trimmer"
+name = "Video Trimmer & Joiner"
 # The trailing span is the phrase people search for. The product name stays the
 # loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
-heading = "Video&nbsp;Trimmer <span class=\"h1-kw\">&mdash; cut a video online</span>"
-tagline = "Keep the part that matters, without losing a single byte of it."
+heading = "Video&nbsp;Trimmer &amp; Joiner <span class=\"h1-kw\">&mdash; cut and combine video online</span>"
+tagline = "Keep the parts that matter, in the order you want them, without losing a single byte."
 icon = "&#127902;&#65039;"        # the mark beside the page heading
 favicon = "&#127902;"     # the tab icon, drawn into an inline SVG
 category = "images-and-video"
@@ -28,11 +28,11 @@ lastmod = "2026-08-20"
 
 # --- what search engines and chat apps are told ------------------------------
 
-title = "Trim a Video Online &mdash; Free, No Upload, No Quality Lost"
-description = "Cut an MP4, MOV or WebM down to the part you want, or take a piece out of the middle. Runs in your browser: nothing uploaded, nothing re-encoded, works offline."
-og_title = "Video Trimmer &mdash; cut a clip without uploading or re-encoding it"
-og_description = "Mark a start and an end and cut. The frames are moved into the new file exactly as they were, so the result is the quality you started with. Nothing is uploaded."
-og_image_alt = "Video Trimmer - cut a clip in your browser, with nothing uploaded"
+title = "Trim &amp; Join Videos Online &mdash; Free, No Upload, No Quality Lost"
+description = "Cut MP4, MOV or WebM clips down to the parts you want and combine them into one video. Runs in your browser: nothing uploaded, nothing re-encoded, works offline."
+og_title = "Video Trimmer &amp; Joiner &mdash; cut and combine clips without uploading them"
+og_description = "Add your clips, mark what to keep in each, put them in order, and save one video. The frames are moved into the new file exactly as they were. Nothing is uploaded."
+og_image_alt = "Video Trimmer and Joiner - cut and combine clips in your browser, with nothing uploaded"
 
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
@@ -45,8 +45,8 @@ csp_note = """
 # --- the pledge block --------------------------------------------------------
 
 pledge = """
-    Your video is read, cut and written by your own browser, on your own
-    hardware. Nothing here can fetch or send anything &mdash; there is no network
+    Your videos are read, cut, joined and written by your own browser, on your
+    own hardware. Nothing here can fetch or send anything &mdash; there is no network
     feature in this tool at all &mdash; and there is no server on the other end of
     this page to send a video to even if there were."""
 
@@ -61,9 +61,10 @@ live_hint = """
 read_first = """
 , <code>src/demux.js</code> for the reader that finds
       the frames in an MP4, <code>src/ranges.js</code> for the arithmetic that
-      decides which of them a cut consists of, and <code>src/copy.js</code> for
-      the twenty lines that move them into the new file. None of them imports
-      anything that can make a request."""
+      decides which of them a cut consists of, <code>src/clips.js</code> for the
+      rules that say whether two clips can share a track, and
+      <code>src/copy.js</code> for the loop that moves the frames into the new
+      file. None of them imports anything that can make a request."""
 
 # --- the written half of the page --------------------------------------------
 
@@ -72,9 +73,8 @@ howto_heading = "How to trim a video"
 # --- the card on the hub page ------------------------------------------------
 
 card = """
-            Mark a start and an end and cut &mdash; or take a piece out of the
-            middle. The frames are copied rather than re-encoded, so nothing is
-            lost."""
+            Cut clips down to the parts you want and combine them into one. The
+            frames are copied rather than re-encoded, so nothing is lost."""
 
 # The nouns this tool uses for the things it works on. They appear in the boot
 # warning, the pledge line and the analytics comment, which is why they are a
@@ -96,6 +96,10 @@ text = "No account"
 [[facts]]
 mark = "&#10007;"
 text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Joins clips"
 
 [[facts]]
 mark = "&#10003;"
@@ -142,6 +146,15 @@ body = """
       if it did."""
 
 [[privacy]]
+title = "Joining reads no more than trimming does."
+body = """
+ Putting several
+      clips into one file does not read them any harder: the frames of each are
+      pointed at where they already sit on your disk, and the browser reads those
+      bytes for the first time as it writes the download. Nothing is gathered up
+      anywhere in between."""
+
+[[privacy]]
 title = "Where frames are decoded, it happens here."
 body = """
  The exact
@@ -174,45 +187,48 @@ body = """
       this page still works. That is the simplest proof of all."""
 
 [[howto]]
-title = "Choose a video."
+title = "Add your clips."
 body = """
- Drop an MP4, MOV, M4V or WebM onto
-      the picker, or select one by hand. It is read straight off your disk by the
-      browser; nothing is sent anywhere while you do it."""
+ Drop one MP4, MOV, M4V or WebM onto
+      the picker, or drop several at once. They are read straight off your disk
+      by the browser; nothing is sent anywhere while you do it. Adding more than
+      one turns the job into a join."""
 
 [[howto]]
-title = "Mark the start and the end."
+title = "Mark what to keep in each one."
 body = """
- Play the clip and press
-      <kbd>I</kbd> where it should start and <kbd>O</kbd> where it should end, or
-      drag the two marks along the bar. The arrow keys step one frame at a time,
-      so a cut can be placed exactly rather than nearly. The faint lines under
-      the bar are the keyframes, which matter for the next step."""
+ Click a clip in the list to
+      point the timeline at it, then play it and press <kbd>I</kbd> where it
+      should start and <kbd>O</kbd> where it should end &mdash; or drag the two
+      marks along the bar. The arrow keys step one frame at a time, so a cut can
+      be placed exactly rather than nearly. Every clip keeps its own marks."""
 
 [[howto]]
-title = "Keep that part, or take it out."
+title = "Keep the section, or take it out."
 body = """
  Keeping it is a trim:
       everything outside the marks goes. Taking it out is the other job people
-      want and rarely find &mdash; the marked section is removed and what is left
-      on either side is joined up, in one pass, with the sound still in step."""
+      want and rarely find &mdash; the marked part is removed and what is left
+      on either side is joined up, with the sound still in step."""
 
 [[howto]]
-title = "Choose how much to spend."
+title = "Put them in the order you want."
+body = """
+ The arrows beside each clip
+      move it up and down the list, and the list is the running order. The faint
+      lines under the timeline are the keyframes, which matter for the next
+      step."""
+
+[[howto]]
+title = "Choose how to write it, and save."
 body = """
  "Keep every byte" moves the
-      frames across untouched: quick, and it cannot cost quality, but it begins
-      at the keyframe before your mark. "Cut exactly here" starts on the frame
-      you chose and encodes the picture again. The page says which one you are
-      about to get and what it will cost, before you press the button."""
-
-[[howto]]
-title = "Trim it and download."
-body = """
- The work happens on your own
-      hardware, so how long it takes depends on your machine rather than on a
-      queue &mdash; and a copy is usually over before you have let go of the
-      mouse. The finished video is handed straight to your browser's downloads."""
+      frames across untouched: quick, and it cannot cost quality, but it needs
+      every clip to have been encoded the same way and it begins at the keyframe
+      before your mark. "Cut exactly here" decodes and writes the picture again,
+      which is what lets clips that disagree be joined at all. The page says
+      which one you are about to get, and what it will cost, before you press
+      the button."""
 
 # Each answer renders twice: as the <details> block at the foot of the page, and
 # as FAQPage structured data in the head. The build derives the plain-text half
@@ -220,10 +236,10 @@ body = """
 # when both were written out by hand.
 
 [[faq]]
-q = "Is my video uploaded anywhere?"
+q = "Are my videos uploaded anywhere?"
 a = """
-        No. It is read, cut and written by your own browser on your own
-        hardware. There is no server side to this tool, and the page's
+        No. They are read, cut, joined and written by your own browser on your
+        own hardware. There is no server side to this tool, and the page's
         <code>Content-Security-Policy</code> names every address it may contact
         &mdash; none of them belongs to this site. Unplug from the internet and
         trim a clip anyway if you would rather check than be told."""
@@ -252,6 +268,29 @@ a = """
         are in and by how much before you export."""
 
 [[faq]]
+q = "Can I join several clips into one video?"
+a = """
+        Yes. Add them all, mark what to keep in each, drag them into the order
+        you want, and save one file. Where the clips were encoded the same way
+        &mdash; several recordings off the same phone, camera or screen recorder
+        &mdash; the join costs nothing at all: the frames of every clip are
+        moved into the new file exactly as they are. Where they were not, the
+        page says so, names which clip disagrees and about what, and offers to
+        write the picture out again instead."""
+
+[[faq]]
+q = "Why can my clips not be joined without re-encoding?"
+a = """
+        Because a track in an MP4 is described once, at the front &mdash; which
+        codec, which profile, which resolution &mdash; and every frame in that
+        track is decoded against that one description. Two clips can share a
+        track only if they share that description exactly. Handing a player the
+        wrong one does not produce an error; it produces a smear of green blocks
+        halfway through, which is why this tool checks rather than hopes. The
+        usual culprits are a different resolution, a different camera, or one
+        clip that has been through some other tool on the way here."""
+
+[[faq]]
 q = "Can I cut a piece out of the middle?"
 a = """
         Yes. Mark the part you do not want and choose "Cut the section out": what
@@ -275,22 +314,26 @@ a = """
 [[faq]]
 q = "Is there a limit on the size or length of the video?"
 a = """
-        There is no limit built into the tool, and on the copy path the file is
-        barely read at all: the frames you keep are pointed at rather than loaded,
-        so cutting a minute out of a four-gigabyte recording costs about what
-        writing that minute to disk costs. The exact cut walks the file a few
+        There is no limit built into the tool, and on the copy path the files
+        are barely read at all: the frames you keep are pointed at rather than
+        loaded, so cutting a minute out of a four-gigabyte recording costs about
+        what writing that minute to disk costs, however many clips it came
+        from. The exact cut walks the file a few
         megabytes at a time. Either way the practical ceiling is the finished
         file, which is assembled in memory before you download it."""
 
 [[faq]]
 q = "Does the sound survive?"
 a = """
-        On both MP4 paths, exactly: the audio is copied across sample by sample
-        without ever being decoded, so it is byte for byte what was in the file,
-        and an edit mark keeps it lined up with the picture to within a
-        thousandth of a second. On the recording path it is captured from
-        playback and encoded again, which costs a little quality. Either way
-        there is a checkbox to leave it out entirely."""
+        On both MP4 paths it is copied across sample by sample without ever
+        being decoded, so it is byte for byte what was in the file, and an edit
+        mark keeps it lined up with the picture to within a thousandth of a
+        second. The one exception is a join between clips whose sound is
+        described differently &mdash; different sample rates, say &mdash; where
+        there is no way to put both into one track without decoding them, and
+        the page says so before it does. On the recording path it is captured
+        from playback and encoded again. Either way there is a checkbox to leave
+        it out entirely."""
 
 [[faq]]
 q = "Does it keep the video the right way up?"
@@ -310,12 +353,13 @@ a = """
         ads are not given anything about your video."""
 
 [schema]
-browser_requirements = "Requires JavaScript. Copying frames needs no video codec support at all; the exact cut needs a browser with WebCodecs, and other formats fall back to recording."
+browser_requirements = "Requires JavaScript. Copying frames needs no video codec support at all; the exact cut and joining clips that differ need a browser with WebCodecs, and other formats fall back to recording."
 category = "MultimediaApplication"
-description = "Trim a video, or cut a section out of the middle of one, in the browser. MP4, MOV and M4V are cut by moving the encoded frames into a new file untouched, with the original audio carried across sample by sample; nothing is uploaded and nothing is re-encoded."
+description = "Trim a video, cut a section out of the middle of one, or join several clips into a single file, in the browser. MP4, MOV and M4V are cut and joined by moving the encoded frames into a new file untouched, with the original audio carried across sample by sample; nothing is uploaded and nothing is re-encoded."
 features = [
   "Trims MP4, MOV, M4V and WebM video",
-  "Cuts without re-encoding, so no quality is lost",
+  "Joins several clips into one file, in any order",
+  "Cuts and joins without re-encoding, so no quality is lost",
   "Removes a section from the middle and joins what is left",
   "Frame-accurate marks, with keyframes shown on the timeline",
   "Keeps the original audio without re-encoding it",
@@ -334,6 +378,6 @@ features = [
 # body.html includes, and driven by src/shared/file-picker.js.
 [picker]
 accept = "video/*"
-multiple = false
-title = "Drop a video here"
-hint = "or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays"
+multiple = true
+title = "Drop your videos here"
+hint = "or click to browse &mdash; add more than one to join them"

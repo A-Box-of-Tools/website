@@ -1,7 +1,7 @@
 <main>
-  <!-- Step 1 &mdash; the file -->
+  <!-- Step 1 &mdash; the clips -->
   <section class="card">
-    <h2><span class="step">1</span> Choose a video</h2>
+    <h2><span class="step">1</span> Add your clips</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -11,27 +11,27 @@
     -->
     {% include "partials/file-picker.html" %}
 
-    <dl class="source" id="source" hidden>
-      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
-      <div><dt>Size</dt><dd id="src-size">&mdash;</dd></div>
-      <div><dt>Frame</dt><dd id="src-frame">&mdash;</dd></div>
-      <div><dt>Length</dt><dd id="src-length">&mdash;</dd></div>
-      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
-      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
-    </dl>
+    <!-- One row a clip, built by src/main.js. Empty until something is added,
+         and hidden rather than showing an empty box. -->
+    <ol class="clip-list" id="clip-list" hidden></ol>
 
+    <p id="join-note" class="path-note" hidden></p>
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
   <!-- Step 2 &mdash; the section -->
   <section class="card" id="section-card" hidden>
-    <h2><span class="step">2</span> Mark the section</h2>
+    <h2>
+      <span class="step">2</span> Mark the section
+      <span class="editing" id="editing" hidden></span>
+    </h2>
 
     <p class="stage-hint">
       Play the clip and press <kbd>I</kbd> where it should start and <kbd>O</kbd>
       where it should end, or drag the two marks on the bar. <kbd>Space</kbd>
       plays and pauses, the arrow keys step a frame, and
-      <kbd>Shift</kbd>&nbsp;+&nbsp;arrows step a second.
+      <kbd>Shift</kbd>&nbsp;+&nbsp;arrows step a second. Each clip keeps its own
+      marks.
     </p>
 
     <div class="stage-wrap">
@@ -94,7 +94,7 @@
     </p>
 
     <fieldset class="modes">
-      <legend>What to do with it</legend>
+      <legend>What to do with this clip</legend>
       <label class="mode">
         <input type="radio" name="mode" value="keep" checked>
         <span>
@@ -114,7 +114,7 @@
 
   <!-- Step 3 &mdash; the export -->
   <section class="card" id="export-card" hidden>
-    <h2><span class="step">3</span> Trim it</h2>
+    <h2><span class="step">3</span> <span id="export-heading">Trim it</span></h2>
 
     <div class="settings">
       <div class="field">
@@ -125,6 +125,20 @@
           <option value="record">Record it as it plays</option>
         </select>
         <p class="field-note" id="method-note"></p>
+      </div>
+
+      <div class="field" id="frame-field" hidden>
+        <label for="frame">Frame size</label>
+        <select id="frame">
+          <option value="first" selected>Match the first clip</option>
+          <option value="largest">Match the largest clip</option>
+          <option value="1080p">1920 &times; 1080</option>
+          <option value="720p">1280 &times; 720</option>
+        </select>
+        <p class="field-note">
+          One size covers the whole file. A clip of another shape is fitted
+          inside it with bars, never stretched.
+        </p>
       </div>
 
       <div class="field" id="quality-field">
@@ -150,7 +164,7 @@
     </div>
 
     <dl class="summary" id="summary">
-      <div><dt>Keeping</dt><dd id="sum-keeping">&mdash;</dd></div>
+      <div><dt>Clips</dt><dd id="sum-clips">&mdash;</dd></div>
       <div><dt>Finished length</dt><dd id="sum-length">&mdash;</dd></div>
       <div><dt>Starts at</dt><dd id="sum-start">&mdash;</dd></div>
       <div><dt>Roughly</dt><dd id="sum-size">&mdash;</dd></div>

@@ -1,27 +1,32 @@
 /**
- * The exact path: decode from the keyframe in front of the cut, throw away the
- * frames before it, and encode the rest.
+ * The exact path: decode from the keyframe in front of each cut, throw away
+ * the frames before it, and encode the rest into one stream.
  *
- * This is the path for a cut that has to land where you put it. The copy path
- * next door cannot start anywhere but a keyframe, and a keyframe can be several
- * seconds away; this one starts on the frame you chose, at the cost of writing
- * the picture out again.
+ * This is the path for a cut that has to land where you put it, and the only
+ * path for a join whose clips do not already agree with each other. The copy
+ * path next door cannot start anywhere but a keyframe, and cannot put two
+ * differently-encoded clips into one track at all; this one starts on the frame
+ * you chose and re-describes everything it touches, at the cost of writing the
+ * picture out again.
  *
  * What it costs, stated plainly because the page states it plainly:
  *   - The picture is encoded a second time, so it is a generation further from
- *     the camera than the file you started with.
+ *     the camera than the files you started with.
  *   - It takes as long as the machine takes, which is faster than real time on
  *     most hardware but is not instant the way a copy is.
  *
- * What it does not cost is the sound. The audio samples are chosen by the same
- * arithmetic the copy path uses and written out without being decoded, so on
- * both MP4 paths the sound that comes out is the sound that went in.
+ * What it does not cost is the sound, whenever the clips describe theirs the
+ * same way: those samples are chosen by the same arithmetic the copy path uses
+ * and written out without being decoded. Only a join between clips that
+ * disagree about their sound has to re-encode it, and audio.js does that.
  */
 
 import { FileWindow } from './demux.js';
 import { Mp4Writer, MOVIE_TIMESCALE, avcSampleEntry } from './mp4.js';
 import { planRanges } from './ranges.js';
-import { drawCropped } from './draw.js';
+import { closeDurations, audioSamplesFor } from './copy.js';
+import { encodeJoinedAudio, targetAudioFormat } from './audio.js';
+import { drawFitted } from './draw.js';
 import { pickH264Codec } from './support.js';
 
 /** Divides evenly by 24, 25, 30, 50 and 60 fps. */
@@ -74,8 +79,8 @@ export function averageFps(video) {
   return Math.min(240, Math.max(1, video.samples.length / seconds));
 }
 
-/** The output frame size: the picture as watched, rounded to the even numbers
- *  H.264 can describe. */
+/** The output frame size for one clip: the picture as watched, rounded to the
+ *  even numbers H.264 can describe. */
 export function outputSize(video) {
   return {
     width: Math.max(2, Math.floor(video.displayWidth / 2) * 2),
@@ -107,6 +112,24 @@ export function chooseBitrate({ video, size, fps, quality }) {
   return Math.round(Math.min(MAX_BITRATE, Math.max(MIN_BITRATE, ceiling)));
 }
 
+/**
+ * The same, over a join.
+ *
+ * The busiest clip decides, because one bitrate has to cover all of them and
+ * choosing the average would spend the quiet clips' headroom on nothing while
+ * starving the one that needed it.
+ */
+export function chooseJoinBitrate({ clips, frame, fps, quality }) {
+  let best = MIN_BITRATE;
+  for (const clip of clips) {
+    if (!clip.media) continue;
+    best = Math.max(best, chooseBitrate({
+      video: clip.media.video, size: frame, fps, quality,
+    }));
+  }
+  return best;
+}
+
 /** Wait until both queues have drained below the limit. */
 async function settle(decoder, encoder) {
   while (decoder.decodeQueueSize > QUEUE_LIMIT || encoder.encodeQueueSize > QUEUE_LIMIT) {
@@ -134,82 +157,53 @@ function micros(ticks, timescale) {
 }
 
 /**
- * Copy the chosen audio samples into the writer, without decoding one of them.
- *
- * Identical in effect to what the copy path does, and deliberately so: which
- * export path was chosen decides what happens to the picture and nothing else.
- */
-function writeAudio({ file, audio, audioTrack, plans, audioDurations }) {
-  for (const plan of plans) {
-    if (!plan.audio) continue;
-    for (let i = plan.audio.from; i <= plan.audio.to; i++) {
-      const sample = audio.samples[i];
-      audioTrack.addSample({
-        data: file.slice(sample.offset, sample.offset + sample.size),
-        isKey: true,
-        dts: sample.dts - plan.audio.base + plan.audio.offset,
-        pts: sample.dts - plan.audio.base + plan.audio.offset,
-        duration: audioDurations[i],
-      });
-    }
-  }
-}
-
-/**
  * @param {object} args
- * @param {File} args.file
- * @param {object} args.media  what demux() returned
- * @param {{start: number, end: number}[]} args.ranges  in seconds
- * @returns {Promise<{blob: Blob, extension: string, codec: string,
- *                    frames: number, exact: boolean, preRoll: number}>}
+ * @param {{file: File, media: object, ranges: object[], name?: string}[]} args.clips
+ * @param {{width: number, height: number}} args.frame  the joined frame size
+ * @param {'copy'|'encode'|'none'} args.audioMode  what to do about the sound
+ * @returns {Promise<{blob: Blob, extension: string, codec: string, frames: number,
+ *                    exact: boolean, preRoll: number, clips: number,
+ *                    warning: string|null}>}
  */
-export async function trimExact({
-  file, media, ranges, quality = 'medium', keepAudio = true, onProgress, signal,
+export async function joinExact({
+  clips, frame, quality = 'medium', audioMode = 'copy', onProgress, signal,
 }) {
-  const { video, audio } = media;
-  if (!ranges.length) throw new Error('There is nothing selected to keep.');
+  const usable = clips.filter((clip) => clip.ranges.length && clip.media);
+  if (!usable.length) throw new Error('There is nothing selected to keep.');
 
-  const size = outputSize(video);
-  const fps = averageFps(video);
-  const bitrate = chooseBitrate({ video, size, fps, quality });
+  const fps = Math.max(...usable.map((clip) => averageFps(clip.media.video)));
+  const bitrate = chooseJoinBitrate({ clips: usable, frame, fps, quality });
 
   const codec = await pickH264Codec({
-    width: size.width, height: size.height, framerate: Math.round(fps), bitrate,
+    width: frame.width, height: frame.height, framerate: Math.round(fps), bitrate,
   });
   if (!codec) {
-    throw new Error(`This browser will not encode H.264 at ${size.width}x${size.height}. `
-      + 'Use "Keep every byte" instead, which encodes nothing at all.');
+    throw new Error(`This browser will not encode H.264 at ${frame.width}x${frame.height}. `
+      + 'Choose a smaller frame, or use "Keep every byte", which encodes nothing at all.');
   }
-
-  const useAudio = Boolean(keepAudio && audio && audio.samples.length);
-  const { plans, audioDurations } = planRanges({
-    video,
-    audio: useAudio ? audio : null,
-    ranges,
-    // The picture really does begin where you asked, so the sound is cut from
-    // there too rather than from the keyframe behind it.
-    anchor: 'start',
-  });
 
   onProgress?.({ phase: 'preparing', done: 0, total: 1 });
 
   const canvas = document.createElement('canvas');
-  canvas.width = size.width;
-  canvas.height = size.height;
+  canvas.width = frame.width;
+  canvas.height = frame.height;
   const ctx = canvas.getContext('2d', { alpha: false });
 
   /** The encoded frames, held until their durations can be worked out. */
   const encoded = [];
   let avcC = null;
   let failure = null;
-  let decoded = 0;
+  let drawn = 0;
   let lastKeyframeUs = -Infinity;
   let wantKeyframe = true;
 
   /** Which section is being fed in, and what its frames are re-timed against. */
   let rangeStartSeconds = 0;
-  let rangeOffsetUs = 0;
   let rangeEndSeconds = 0;
+  let rangeOffsetUs = 0;
+  let rotation = 0;
+  let sourceWidth = frame.width;
+  let sourceHeight = frame.height;
 
   const encoder = new VideoEncoder({
     output: (chunk, metadata) => {
@@ -239,8 +233,8 @@ export async function trimExact({
 
   encoder.configure({
     codec,
-    width: size.width,
-    height: size.height,
+    width: frame.width,
+    height: frame.height,
     bitrate,
     framerate: Math.round(fps),
     avc: { format: 'avc' },   // length-prefixed NALUs and an avcC record, which is what MP4 wants
@@ -248,164 +242,259 @@ export async function trimExact({
     latencyMode: 'quality',
   });
 
-  const decoder = new VideoDecoder({
-    output: (frame) => {
-      try {
-        if (failure) return;
+  const onFrame = (videoFrame) => {
+    try {
+      if (failure) return;
 
-        // Frames in front of the cut were decoded only because the ones after
-        // them need them. They are not part of what was asked for.
-        const seconds = frame.timestamp / 1_000_000;
-        if (seconds < rangeStartSeconds - 1e-6 || seconds >= rangeEndSeconds - 1e-6) return;
+      // Frames in front of the cut were decoded only because the ones after
+      // them need them. They are not part of what was asked for.
+      const seconds = videoFrame.timestamp / 1_000_000;
+      if (seconds < rangeStartSeconds - 1e-6 || seconds >= rangeEndSeconds - 1e-6) return;
 
-        drawCropped(ctx, frame, {
-          rotation: video.rotation,
-          displayWidth: video.displayWidth,
-          displayHeight: video.displayHeight,
-          crop: { x: 0, y: 0, width: size.width, height: size.height },
-        });
+      drawFitted(ctx, videoFrame, {
+        rotation,
+        displayWidth: sourceWidth,
+        displayHeight: sourceHeight,
+        frame,
+      });
 
-        const timestamp = Math.round(
-          (seconds - rangeStartSeconds) * 1_000_000 + rangeOffsetUs);
+      const timestamp = Math.round((seconds - rangeStartSeconds) * 1_000_000 + rangeOffsetUs);
 
-        // Every section begins on a keyframe, so the joins are clean and the
-        // result can be seeked to; after that, one every couple of seconds.
-        const keyFrame = wantKeyframe
-          || timestamp - lastKeyframeUs >= KEYFRAME_SECONDS * 1_000_000;
-        if (keyFrame) {
-          lastKeyframeUs = timestamp;
-          wantKeyframe = false;
-        }
-
-        const picture = new VideoFrame(canvas, {
-          timestamp,
-          duration: frame.duration ?? undefined,
-        });
-        try {
-          encoder.encode(picture, { keyFrame });
-        } finally {
-          picture.close();
-        }
-        decoded++;
-      } catch (error) {
-        failure ??= error;
-      } finally {
-        frame.close();
+      // Every section begins on a keyframe, so the joins are clean and the
+      // result can be seeked to; after that, one every couple of seconds.
+      const keyFrame = wantKeyframe
+        || timestamp - lastKeyframeUs >= KEYFRAME_SECONDS * 1_000_000;
+      if (keyFrame) {
+        lastKeyframeUs = timestamp;
+        wantKeyframe = false;
       }
-    },
-    error: (error) => { failure ??= error; },
-  });
 
-  decoder.configure(decoderConfig(video));
+      const picture = new VideoFrame(canvas, {
+        timestamp,
+        duration: videoFrame.duration ?? undefined,
+      });
+      try {
+        encoder.encode(picture, { keyFrame });
+      } finally {
+        picture.close();
+      }
+      drawn++;
+    } catch (error) {
+      failure ??= error;
+    } finally {
+      videoFrame.close();
+    }
+  };
 
-  const window = new FileWindow(file);
-  const total = plans.reduce(
-    (count, plan) => count + (plan.video.to - plan.video.from + 1), 0);
+  const total = usable.reduce((count, clip) => count + clip.media.video.samples.length, 0);
   let fed = 0;
 
+  /** Everything the sound needs, gathered as the picture is walked. */
+  const audioOut = [];
+  const audioEdits = [];
+  const forEncoding = [];
+  let outAudioTs = 0;
+  let seamSeconds = 0;
+
   try {
-    for (const plan of plans) {
-      rangeStartSeconds = plan.start;
-      rangeEndSeconds = plan.end;
-      wantKeyframe = true;
+    for (const clip of usable) {
+      const { video, audio } = clip.media;
+      const hasAudio = Boolean(audio?.samples.length);
+      // The sound is planned whenever it is wanted, not only when it is being
+      // copied: the re-encoding path needs the same sample ranges to know what
+      // to decode. Planning it only for the copy is how a join between clips
+      // that disagree ends up silent.
+      const planAudio = audioMode !== 'none' && hasAudio ? audio : null;
+      const useAudio = audioMode === 'copy' && hasAudio;
 
-      for (let i = plan.video.from; i <= plan.video.to; i++) {
-        throwIfAborted(signal);
-        if (failure) throw failure;
+      const { plans, audioDurations } = planRanges({
+        video,
+        audio: planAudio,
+        ranges: clip.ranges,
+        // The picture really does begin where you asked, so the sound is cut
+        // from there too rather than from the keyframe behind it.
+        anchor: 'start',
+      });
 
-        await settle(decoder, encoder);
-
-        const sample = video.samples[i];
-        const bytes = await window.read(sample.offset, sample.size);
-
-        decoder.decode(new EncodedVideoChunk({
-          type: sample.isKey ? 'key' : 'delta',
-          timestamp: micros(sample.pts, video.timescale),
-          data: bytes,   // EncodedVideoChunk copies, so the window may move on
-        }));
-
-        fed++;
-        if (fed % 10 === 0 || fed === total) {
-          onProgress?.({ phase: 'trimming', done: decoded, total });
-        }
+      if (audioMode === 'encode') {
+        forEncoding.push({ file: clip.file, media: clip.media, plans });
       }
+      if (useAudio && !outAudioTs) outAudioTs = audio.timescale;
 
-      // Each section is finished before the next one is fed in, so no frame of
-      // one is ever re-timed against another's clock.
-      await decoder.flush();
-      if (failure) throw failure;
-      rangeOffsetUs += Math.round((plan.end - plan.start) * 1_000_000);
+      const audioSeam = outAudioTs ? Math.round(seamSeconds * outAudioTs) : 0;
+
+      rotation = video.rotation;
+      sourceWidth = video.displayWidth;
+      sourceHeight = video.displayHeight;
+
+      const decoder = new VideoDecoder({
+        output: onFrame,
+        error: (error) => { failure ??= error; },
+      });
+      decoder.configure(decoderConfig(video));
+
+      const window = new FileWindow(clip.file);
+
+      try {
+        for (const plan of plans) {
+          rangeStartSeconds = plan.start;
+          rangeEndSeconds = plan.end;
+          wantKeyframe = true;
+
+          for (let i = plan.video.from; i <= plan.video.to; i++) {
+            throwIfAborted(signal);
+            if (failure) throw failure;
+
+            await settle(decoder, encoder);
+
+            const sample = video.samples[i];
+            const data = await window.read(sample.offset, sample.size);
+
+            decoder.decode(new EncodedVideoChunk({
+              type: sample.isKey ? 'key' : 'delta',
+              timestamp: micros(sample.pts, video.timescale),
+              data,   // EncodedVideoChunk copies, so the window may move on
+            }));
+
+            fed++;
+            if (fed % 10 === 0 || fed === total) {
+              onProgress?.({ phase: 'trimming', done: drawn, total });
+            }
+          }
+
+          // Each section is finished before the next is fed in, so no frame of
+          // one is ever re-timed against another's clock.
+          await decoder.flush();
+          if (failure) throw failure;
+
+          if (useAudio && plan.audio) {
+            for (const sample of audioSamplesFor({
+              file: clip.file, audio, plan, durations: audioDurations,
+              seam: audioSeam, outTimescale: outAudioTs,
+            })) {
+              audioOut.push(sample);
+            }
+            audioEdits.push({
+              mediaTime: audioSeam + Math.round(
+                (plan.audio.offset + plan.audio.editStart) * outAudioTs / audio.timescale),
+              duration: Math.round((plan.end - plan.start) * MOVIE_TIMESCALE),
+            });
+          }
+
+          rangeOffsetUs += Math.round((plan.end - plan.start) * 1_000_000);
+          seamSeconds += plan.end - plan.start;
+        }
+      } finally {
+        if (decoder.state !== 'closed') decoder.close();
+      }
     }
 
-    onProgress?.({ phase: 'finishing', done: decoded, total });
+    onProgress?.({ phase: 'finishing', done: drawn, total });
     await encoder.flush();
     if (failure) throw failure;
-    if (!encoded.length) throw new Error('No frames could be decoded from the section you chose.');
+    if (!encoded.length) throw new Error('No frames could be decoded from what you chose.');
     if (!avcC) throw new Error('The encoder never reported a decoder configuration.');
-
-    const writer = new Mp4Writer();
-    const videoTrack = writer.addTrack({
-      kind: 'vide',
-      timescale: VIDEO_TIMESCALE,
-      sampleEntry: avcSampleEntry(size.width, size.height, avcC),
-      // The frames were drawn the right way up on their way through the canvas,
-      // so there is nothing left for a matrix to turn.
-      matrix: null,
-      width: size.width << 16,
-      height: size.height << 16,
-    });
-
-    // Durations come from the gap to the next frame, which is what keeps a clip
-    // whose frame rate wanders intact: a phone that dropped from 30 to 24 fps
-    // halfway through is written back with exactly the frame times it had.
-    encoded.sort((a, b) => a.time - b.time);
-    for (let i = 0; i < encoded.length; i++) {
-      const next = encoded[i + 1];
-      const duration = next
-        ? Math.max(1, next.time - encoded[i].time)
-        : Math.max(1, Math.round(VIDEO_TIMESCALE / Math.max(1, fps)));
-      videoTrack.addSample({
-        data: encoded[i].data,
-        isKey: encoded[i].isKey,
-        dts: encoded[i].time,
-        pts: encoded[i].time,
-        duration,
-      });
-    }
-
-    if (useAudio) {
-      const audioTrack = writer.addTrack({
-        kind: 'soun',
-        timescale: audio.timescale,
-        sampleEntry: audio.sampleEntry,
-      });
-      writeAudio({ file, audio, audioTrack, plans, audioDurations });
-
-      // The picture needs no edit list - it starts where it starts - but the
-      // sound does: the audio sample that covers the cut generally begins a
-      // fraction before it, and this is what stops that fraction being heard.
-      let offsetMs = 0;
-      for (const plan of plans) {
-        const playMs = Math.round((plan.end - plan.start) * MOVIE_TIMESCALE);
-        videoTrack.addEdit(
-          Math.round(offsetMs / MOVIE_TIMESCALE * VIDEO_TIMESCALE), playMs);
-        if (plan.audio) audioTrack.addEdit(plan.audio.offset + plan.audio.editStart, playMs);
-        offsetMs += playMs;
-      }
-    }
-
-    return {
-      blob: writer.finalize(),
-      extension: 'mp4',
-      codec,
-      frames: encoded.length,
-      exact: true,
-      preRoll: 0,
-    };
   } finally {
-    if (decoder.state !== 'closed') decoder.close();
     if (encoder.state !== 'closed') encoder.close();
   }
+
+  /* --------------------------------------------------------------- writing */
+
+  const writer = new Mp4Writer();
+  const videoTrack = writer.addTrack({
+    kind: 'vide',
+    timescale: VIDEO_TIMESCALE,
+    sampleEntry: avcSampleEntry(frame.width, frame.height, avcC),
+    // The frames were drawn the right way up on their way through the canvas,
+    // so there is nothing left for a matrix to turn.
+    matrix: null,
+    width: frame.width << 16,
+    height: frame.height << 16,
+  });
+
+  // Durations come from the gap to the next frame, which is what keeps a clip
+  // whose frame rate wanders intact: a phone that dropped from 30 to 24 fps
+  // halfway through is written back with exactly the frame times it had.
+  encoded.sort((a, b) => a.time - b.time);
+  const tail = Math.max(1, Math.round(VIDEO_TIMESCALE / Math.max(1, fps)));
+  for (const sample of closeDurations(encoded.map((chunk) => ({
+    data: chunk.data, isKey: chunk.isKey, dts: chunk.time, pts: chunk.time, tailDuration: tail,
+  })))) {
+    videoTrack.addSample(sample);
+  }
+
+  let warning = null;
+
+  if (audioMode === 'copy' && audioOut.length) {
+    const audioTrack = writer.addTrack({
+      kind: 'soun',
+      timescale: outAudioTs,
+      sampleEntry: usable.find((clip) => clip.media.audio?.samples.length).media.audio.sampleEntry,
+    });
+    for (const sample of closeDurations(audioOut)) audioTrack.addSample(sample);
+
+    // The picture needs no edit list - it starts where it starts - but the
+    // sound does: the audio sample covering the cut generally begins a fraction
+    // before it, and this is what stops that fraction being heard.
+    let offsetMs = 0;
+    for (const edit of audioEdits) {
+      videoTrack.addEdit(Math.round(offsetMs / MOVIE_TIMESCALE * VIDEO_TIMESCALE), edit.duration);
+      audioTrack.addEdit(edit.mediaTime, edit.duration);
+      offsetMs += edit.duration;
+    }
+  } else if (audioMode === 'encode') {
+    onProgress?.({ phase: 'sound', done: 0, total: forEncoding.length });
+    const format = targetAudioFormat(usable);
+    const sound = await encodeJoinedAudio({ clips: forEncoding, format, onProgress, signal });
+
+    if (sound) {
+      const audioTrack = writer.addTrack({
+        kind: 'soun',
+        timescale: sound.timescale,
+        sampleEntry: sound.sampleEntry,
+      });
+      // One continuous stream, made to be exactly as long as the picture, so
+      // neither track needs an edit list to line them up.
+      for (const sample of sound.samples) {
+        audioTrack.addSample({
+          data: sample.data,
+          isKey: true,
+          dts: sample.dts,
+          pts: sample.dts,
+          duration: sample.duration,
+        });
+      }
+    } else {
+      warning = 'These clips describe their sound differently, so it had to be re-encoded '
+        + 'to be joined - and this browser will not encode AAC. The video has been joined '
+        + 'without sound. Chrome and Edge will do it.';
+    }
+  }
+
+  return {
+    blob: writer.finalize(),
+    extension: 'mp4',
+    codec,
+    frames: encoded.length,
+    clips: usable.length,
+    exact: true,
+    preRoll: 0,
+    warning,
+  };
+}
+
+/** One clip, which is what a trim is. */
+export function trimExact({
+  file, media, ranges, quality = 'medium', keepAudio = true, onProgress, signal,
+}) {
+  return joinExact({
+    clips: [{ file, media, ranges }],
+    frame: outputSize(media.video),
+    quality,
+    audioMode: keepAudio && media.audio?.samples.length ? 'copy' : 'none',
+    onProgress,
+    signal,
+  });
 }
 
 /**
@@ -415,7 +504,7 @@ export async function trimExact({
  * This is what the timeline is lined up against when the browser will not play
  * the file itself - an iPhone HEVC clip in a browser without a licence for it,
  * say, which WebCodecs will still happily decode through the machine's own
- * hardware.
+ * hardware. It is also where a clip's thumbnail comes from.
  */
 export async function grabFrame({ file, media, atSeconds = 0, maxWidth = 960, signal }) {
   const { video } = media;
@@ -439,26 +528,25 @@ export async function grabFrame({ file, media, atSeconds = 0, maxWidth = 960, si
   const targetUs = micros(targetTicks, video.timescale);
 
   const decoder = new VideoDecoder({
-    output: (frame) => {
+    output: (videoFrame) => {
       try {
         // Frames arrive in presentation order, so the last one at or before the
         // target is the one wanted; anything later is only used if nothing
         // earlier turned up.
-        if (!drawn || (frame.timestamp <= targetUs && frame.timestamp > bestUs)) {
-          drawCropped(ctx, frame, {
+        if (!drawn || (videoFrame.timestamp <= targetUs && videoFrame.timestamp > bestUs)) {
+          drawFitted(ctx, videoFrame, {
             rotation: video.rotation,
             displayWidth: video.displayWidth,
             displayHeight: video.displayHeight,
-            crop: { x: 0, y: 0, width: video.displayWidth, height: video.displayHeight },
-            scale,
+            frame: { width: canvas.width, height: canvas.height },
           });
-          bestUs = frame.timestamp;
+          bestUs = videoFrame.timestamp;
           drawn = true;
         }
       } catch (error) {
         failure ??= error;
       } finally {
-        frame.close();
+        videoFrame.close();
       }
     },
     error: (error) => { failure ??= error; },
@@ -476,11 +564,11 @@ export async function grabFrame({ file, media, atSeconds = 0, maxWidth = 960, si
       if (failure) throw failure;
 
       const sample = video.samples[i];
-      const bytes = await window.read(sample.offset, sample.size);
+      const data = await window.read(sample.offset, sample.size);
       decoder.decode(new EncodedVideoChunk({
         type: sample.isKey ? 'key' : 'delta',
         timestamp: micros(sample.pts, video.timescale),
-        data: bytes,
+        data,
       }));
 
       if (sample.pts > targetTicks + video.timescale * 0.4) break;

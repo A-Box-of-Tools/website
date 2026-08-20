@@ -25,7 +25,7 @@ visitor's own machine beats not shipping the tool at all — see
 | Image Compressor | `/compress-image/` | Compresses an image to a file size you name, spending as little quality as the target allows |
 | Image Resizer | `/resize-image/` | Resizes, crops and converts a picture — or a whole folder of them — to dimensions you choose |
 | Video Cropper | `/crop-video/` | Cuts a clip down to a rectangle, keeping its timing and its sound |
-| Video Trimmer | `/trim-video/` | Cuts a clip down to a section, or takes a section out of it, without re-encoding a frame |
+| Video Trimmer & Joiner | `/trim-video/` | Cuts clips down to the sections you mark and combines them into one file, without re-encoding a frame |
 | Images to PDF | `/images-to-pdf/` | Gathers pictures into one document, copying JPEGs in without re-encoding them |
 | PDF Compressor | `/compress-pdf/` | Shows where a document's size actually is, then shrinks it by recompressing the pictures against how large they are drawn |
 
@@ -690,7 +690,7 @@ an engine to do it instead, and these all stay small enough to read.
 | SVG to PNG | An `<img>` holding an SVG draws to a canvas. Only for SVGs with no external references, which is also what keeps it offline |
 | GIF: make, split, resize, reverse, retime, analyze | LZW and a color quantizer, written out the way the MP4 muxer was. Reading animated GIFs is `ImageDecoder` where it exists and a hand-written parser where it does not |
 | APNG | PNG chunks, with `CompressionStream('deflate')` for the pixel data — the compressor is already in the browser |
-| Video: trim, resize, crop, rotate, reverse, frame grabs, filters, subtitles | `VideoDecoder` and `VideoEncoder`, plus an MP4 *de*muxer to sit beside the muxer that already exists. Cropping is built: `/crop-video/`, where the demuxer turned out to be the whole job and the crop itself is six lines of canvas. Trimming is built: `/trim-video/`, and it is the one job in this column that needs no codec at all &mdash; the frames are moved, not decoded |
+| Video: trim, resize, crop, rotate, reverse, frame grabs, filters, subtitles | `VideoDecoder` and `VideoEncoder`, plus an MP4 *de*muxer to sit beside the muxer that already exists. Cropping is built: `/crop-video/`, where the demuxer turned out to be the whole job and the crop itself is six lines of canvas. Trimming and joining are built: `/trim-video/`, and they are the one job in this column that needs no codec at all &mdash; the frames are moved, not decoded |
 | Audio: trim, fade, speed, volume, waveform | `decodeAudioData` and `OfflineAudioContext`. WAV out is a 44-byte header in front of the samples |
 | QR codes and barcodes | Arithmetic over a string. There is no input file at all |
 
@@ -1377,7 +1377,7 @@ what covers the loss of a second pass: 0.8× on "smaller file", 1.25× on
 - **The picture is re-encoded.** Unavoidable, as above. The sound is not.
 - **It crops and nothing else.** No resizing, no rotating. The clip that comes
   out is exactly as long as the one that went in; trimming is
-  [its own tool](#video-trimmer) now, at `/trim-video/`.
+  [its own tool](#video-trimmer--joiner) now, at `/trim-video/`.
 - **Edit lists on the way in are ignored.** A file that says "start playing 40
   milliseconds in" is read from the first sample instead. Honouring one properly
   means honouring all of them, including the ones that reorder a track.
@@ -1823,11 +1823,11 @@ purpose, so that each file is exactly the shape the check needs:
 
 ---
 
-# Video Trimmer
+# Video Trimmer & Joiner
 
-The seventh tool. It cuts a clip down to the section you mark, or takes that
-section out and joins what is left — and on the normal path it does it without
-decoding a single frame.
+The seventh tool. It cuts clips down to the sections you mark, takes sections
+out of the middle of them, and puts several of them together into one file —
+and on the normal path it does all of it without decoding a single frame.
 
 ---
 
@@ -1864,12 +1864,14 @@ an iPhone clip losslessly; it simply cannot show you a preview of one.
 | Needs | the MP4 reader | the reader, plus WebCodecs | a browser that plays the file |
 | Reads | MP4, M4V, MOV | the same | anything playable |
 | Picture | untouched | re-encoded to H.264 | re-encoded, from playback |
-| Sound | untouched | untouched | re-encoded |
+| Sound | untouched | untouched, unless the clips disagree | re-encoded |
 | Starts | at your mark, through an edit list | at your mark | at your mark |
 | Speed | as fast as the file writes | faster than real time | real time |
 | Sections | any number | any number | one |
+| Clips | any number, if they agree | any number | one |
 
-The page picks the leftmost one the file allows, and says which it picked.
+The page picks the leftmost one the files allow, and says which it picked. The
+"if they agree" is the whole of what joining adds, and is spelled out below.
 
 ## The keyframe problem, and the edit list that solves it
 
@@ -1915,6 +1917,67 @@ The recording path cannot do it, because a recording is made in one pass from
 one playhead, and seeking mid-recording would leave a hole in the sound where
 the seek was. The tool disables that combination and says why rather than
 producing a clip with a gap in it.
+
+## Joining, which is the same trick asking a second question
+
+Trimming asks one thing of a file: *which samples*. Joining asks that and then a
+harder one — **may these samples share a track at all?**
+
+A track in an MP4 is described once, at the front: which codec, which profile,
+which resolution, which parameter sets. Every sample in that track is decoded
+against that one description. So two clips can share a track only if they share
+it byte for byte, and where they do, joining costs exactly what trimming costs,
+which is nothing: the frames of every clip are moved into the new file as they
+are, one clip after another.
+
+Where they do not, there is no honest way to avoid decoding, and `src/clips.js`
+refuses rather than guesses. That refusal is the point of the file. Handing a
+player the wrong sample entry does not raise an error — it shows a smear of
+green blocks halfway through, which is far worse than a message saying *tall.mp4
+is 120x240 and the first clip is 320x120*. The checks are strict on purpose: a
+sample entry differing by one byte is a different SPS.
+
+### The seam
+
+Two files need not count time at the same rate — 30000 ticks a second and 90000
+are both ordinary — so there is no shared tick to lay them out on. The seam is
+measured in seconds and each clip is rescaled onto the output's clock as it is
+written.
+
+Durations are then taken from the times rather than rescaled one at a time,
+because `stts` defines the timeline as a *sum of durations*: if the durations and
+the decode times disagree, the times lose and the sound walks away from the
+picture, one clip at a time. Taking each duration as the gap to the next sample
+makes the two agree by construction, and the rounding of a seam lands in a single
+sample instead of accumulating.
+
+### Clips that are not the same shape
+
+A joined file has one frame size for all of it, so a portrait clip in a landscape
+join has to go somewhere. It goes in the middle, at the largest size that fits,
+with the rest of the frame painted first — never stretched, because a face made
+30% wider for the middle third of a video cannot be undone afterwards.
+
+The painting is not decoration. One canvas is reused for every frame of every
+clip, so a bar left unpainted is not black; it is whatever was drawn there last,
+which is the previous clip. That bug shipped into a test run here and is the
+reason `drawFitted` fills before it draws.
+
+### The sound, when the clips disagree about it
+
+Different sample rates, or channel counts, or encoder settings, cannot share one
+audio track either — and unlike the picture there is no "fit it inside" to fall
+back on. So `src/audio.js` does the one thing the rest of this tool never does:
+opens the sound. `mp4a` wraps an `esds`, which wraps a chain of MPEG-4
+descriptors, the innermost of which is the AudioSpecificConfig an AAC decoder
+needs. Each clip's sound is decoded, resampled to a common rate through the
+browser's own `OfflineAudioContext`, laid end to end, and encoded once — and a
+clip with no sound at all contributes silence for exactly as long as its picture
+runs, so nothing after it drifts.
+
+That path is the exception the page is careful to name. Everywhere else, "keep
+the sound" means the samples are moved without ever being turned back into
+sound.
 
 ## Keeping the sound in step
 
@@ -1985,7 +2048,18 @@ but the tables.
   frame-exact; it is the scrubber that is approximate, and the file itself is
   correct — `elst`, `stts` and `stss` all check out when it is read back.
 - **The exact path re-encodes the picture**, which the copy path never does.
-  The sound is untouched either way.
+  The sound is untouched either way, unless the clips being joined disagree
+  about theirs.
+- **A lossless join needs clips that already agree.** Same codec, same
+  resolution, same rotation, byte-identical sample entry. Clips off one camera
+  or one screen recorder normally do; clips from different places normally do
+  not, and are re-encoded instead. The page names which clip disagrees and about
+  what, rather than reporting a generic failure.
+- **A join between clips whose sound differs re-encodes the sound**, because one
+  track carries one description and there is no way to put two sample rates into
+  it. That is the only path in this tool where the audio is decoded at all, and
+  it needs a browser that will encode AAC — Chrome and Edge will; where one will
+  not, the join is written without sound and says so.
 - **Edit lists on the way *in* are ignored.** A source that says "start playing
   40 milliseconds in" is read from its first sample instead. Honouring one
   properly means honouring all of them, including the ones that reorder a track.
@@ -2033,6 +2107,29 @@ it needs doing again:
   fields in both `1:07.5` and `67.5` form, the mode switched with the marks
   already set, and the "cut the section out" option correctly disabling the
   recording path.
+
+Joining added a second round, and `tests/js/trim-video-join.test.js` holds the
+part that can be checked without a browser — the refusals, the seam arithmetic,
+and a round trip through the `mp4a`/`esds` writer and reader. What needed a real
+browser, run against clips generated in the page:
+
+- two clips off the same encoder joined by copying: 2.0 s out, the seam exactly
+  at 1.0 s, and sampling pixels back to frame numbers shows both clips playing
+  in full and in order;
+- reordering the clips reordering the file, and a clip with nothing marked
+  dropping out of the join rather than contributing nothing;
+- a 320x120 clip joined with a 120x240 one, which must refuse to copy and say
+  which clip disagrees and about what — then re-encode, with the tall clip
+  fitted inside the wide frame. **This is where the letterbox bug was found**:
+  the bars carried the previous clip's pixels, because the canvas was never
+  cleared;
+- a join between clips at 48 kHz and 44.1 kHz, which must decode both, resample,
+  and write one 48 kHz AAC track — read back afterwards by this repository's own
+  demuxer and parsed to a valid decoder configuration. **This is where the second
+  bug was found**: the audio ranges were being planned only for the copy path, so
+  the encoder was handed nothing and then blamed the browser for it;
+- the single-clip trim, run again after all of the above, to prove a join of one
+  is still just a trim.
 
 ---
 
