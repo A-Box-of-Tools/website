@@ -173,7 +173,9 @@ tools/
     src/*.js             the app itself; minified into dist/, renamed only by --mangle
     og.png               its share card
   crop-video/            the same five things
+  trim-video/            and again
   exif-editor/           and again
+  resize-image/          and again
   images-to-video/       and again
   images-to-pdf/         and again
   compress-pdf/          and again
@@ -182,6 +184,7 @@ pages/
     page.toml            title, description, dates - the frame, not the prose
     body.html            the <main> of the page
   terms/                 the same two things
+  guides/<slug>/         the same two things, plus a group and usually a tool
 tests/
   python/                the generator: unittest, standard library only
   js/                    the tools: node --test, built in since Node 18
@@ -296,12 +299,15 @@ something the build does, and cannot forget to do:
 | Four copies of the repository URL per page | `source_url` in `config/site.toml`. |
 | A cache name to bump by hand when minification changed the bytes | The cache name hashes the files **as emitted**, so turning minifying on or off invalidates the cache by itself. |
 | Nothing at all, which is how a stylesheet change reached returning visitors four hours late | Every page asks for its stylesheet by a URL carrying a hash of that stylesheet, so changing the CSS changes the URL and there is no stale copy to serve. |
-| Three different footers, none of which linked to a privacy policy because there was nowhere to put one | One `templates/partials/footer.html`. Its tool list and legal-page list come from `tools/` and `pages/`, and the only thing that differs per page is whether links start `./` or `../`. |
+| Three different footers, none of which linked to a privacy policy because there was nowhere to put one | One `templates/partials/footer.html`. Its tool list, guide list and legal-page list come from `tools/` and `pages/`, and the only thing that differs per page is whether links start `./` or `../`. |
 
 The build refuses to produce a site rather than produce a broken one. A missing
 config key, a tool whose folder and `slug` disagree, a tool listed on the hub
 that does not exist, and a tool that exists but is on no category list — so
-nothing would link to it — are all errors, not warnings.
+nothing would link to it — are all errors, not warnings. The guides index makes
+the same three checks about guides and groups, and one more: a guide naming a
+tool that does not exist, or a second guide claiming a tool that already has
+one.
 
 ---
 
@@ -321,6 +327,11 @@ nothing would link to it — are all errors, not warnings.
    and writes nothing.
 4. If it belongs to a category that does not exist yet, add a
    `[[hub.categories]]` table and move that name out of `config/planned.toml`.
+5. Set `roadmap_group` to one of the groups in `config/planned.toml`, so the
+   tool crosses from the planned half of that group to the built half. A tool
+   without one fails the build rather than quietly going missing.
+6. Write it a guide. See [The guides](#the-guides) — one folder under
+   `pages/guides/`, and the link between the two pages is a single `tool` key.
 
    You do **not** have to touch the footer, the sitemap, or the other pages. The
    footer's tool list is derived from `tools/` in the order the hub shows them,
@@ -444,23 +455,35 @@ Two things to hold the line on, because the whole site rests on them:
 
 ---
 
-## The legal pages
+## The prose pages
 
-`pages/` holds the prose pages that are neither the hub nor a tool: Privacy and
-Terms. One is built exactly like a tool page, minus everything a tool needs and
-a page does not.
+`pages/` holds everything that is neither the hub nor a tool. There are two
+kinds, and they differ only in where they are meant to be read.
 
 ```
-pages/privacy/
+pages/privacy/                      kind = "legal"
   page.toml    slug, nav label, title, description, dates, share-card text
   body.html    the <main> - sections of prose and nothing else
+pages/guides/trim-a-video/          kind = "guide"
+  page.toml    the same, plus `published`, `group`, and usually `tool`
+  body.html    the same
 ```
 
-`nav` is the label the footer uses. The page gets the site frame, the site's
-Content-Security-Policy unchanged, an entry in `sitemap.xml` at a low priority,
-and a link in the footer of every page on the site. It gets no service worker,
-because there is nothing here worth keeping offline, and no `blob:` in
-`img-src`, because it never makes one.
+`nav` is the label the footer uses. Either kind gets the site frame, the site's
+Content-Security-Policy unchanged, an entry in `sitemap.xml`, and a link in the
+footer of every page on the site. Neither gets a service worker, because there
+is nothing here worth keeping offline, or `blob:` in `img-src`, because neither
+ever makes one.
+
+A **legal** page is Privacy or Terms. It matters for trust rather than for
+search, which is why it sits at the lowest priority the sitemap has and carries
+no structured data at all — inventing an `Article` for a privacy policy would be
+describing the page as something it is not.
+
+A **guide** is written to be found. Same frame, same policy, and three things a
+legal page does not get: `Article` structured data, a breadcrumb through the
+guides index (visible as well as in the markup, which is the rule Google asks
+for), and — when it names a tool — a link to that tool under the heading.
 
 **These pages get the same CSP as everywhere else, and that is the point.**
 Written by hand, they carried a narrowed copy that left out the donate button's
@@ -491,6 +514,59 @@ Two things it does **not** claim, deliberately:
   laws of Canada and of the province in which the site is operated". Naming the
   province outright is one line in `pages/terms/body.html` and makes the clause
   easier to rely on; it was left open rather than guessed at.
+
+---
+
+## The guides
+
+Every tool has one, and there is an index of them at `/guides/`. A tool page
+answers "which button do I press"; a guide answers "what does the setting I am
+about to move actually do, and what does it cost me". They are also the half of
+the site that can be found by somebody who does not yet know it exists.
+
+### Adding one
+
+Make a folder under `pages/guides/`, and set four things in its `page.toml` that
+a legal page does not have:
+
+| key | what it does |
+|---|---|
+| `kind = "guide"` | `Article` structured data, a breadcrumb, `prose` styling |
+| `published` | the date the guide first appeared, for the `Article` |
+| `group` | which `[[guides.groups]]` in `config/site.toml` it appears under |
+| `tool` | optional: the slug of the tool it is about |
+
+Then name the folder in that group's `order` list. Everything else follows: the
+card on the index, the entry in the footer of every page, the line in
+`sitemap.xml`, and both halves of the link between the guide and its tool.
+
+### The three refusals
+
+The build stops rather than quietly producing a page nothing links to. A guide
+that names no `group`, a group that lists a guide that does not exist, and a
+guide that exists and that no group lists are each an error with a message
+naming the file. They are the same three checks `build_hub` already makes about
+tools and categories, and they matter slightly more here: a tool missing from
+the hub would be noticed the first time anybody looked at the front page, while
+a guide that fell out of the index is only ever missed by the reader who never
+found it.
+
+`tool` is checked too — it has to name a tool that exists, and two guides cannot
+claim the same one, because a tool page has room for exactly one link.
+
+### Why the link between a guide and its tool is one setting
+
+`tool` in the guide's `page.toml` produces both directions: the "Open the …"
+button under the guide's lede, and "The longer version" under the tool's
+questions. Written the other way round — a `guide` key in each `tool.toml` —
+it would be two settings that could disagree about which page is about which,
+and the way that shows up in public is a tool linking to a guide that never
+mentions it. `tests/python/test_build.py` checks both halves land in the built
+HTML.
+
+Neither link's text is written twice either. The tool page shows the guide's own
+`heading` and `description`; the guide shows the tool's own `name` and
+`tagline`. So neither page can promise something the other does not deliver.
 
 ---
 

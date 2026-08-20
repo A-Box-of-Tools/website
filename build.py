@@ -144,9 +144,21 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     guides = [page for page in prose if page['kind'] == 'guide']
     legal = [page for page in prose if page['kind'] == 'legal']
 
+    # The guides, grouped and in the order config/site.toml puts them in, and
+    # every check that says the grouping is complete. Done here rather than
+    # inside build_guides because the footer needs the same order, and an order
+    # worked out twice is an order that can differ.
+    groups = guide_groups(site, guides)
+    ordered_guides = [guide for group in groups for guide in group['guides']]
+
+    # Which guide belongs to which tool, so that a tool page can link to its
+    # guide and the guide back to the tool. The owning line is `tool` in the
+    # guide's page.toml - one place, both directions.
+    guide_of = tie_guides_to_tools(ordered_guides, by_slug)
+
     # What the footer on every page is built from. Derived from the folders that
-    # exist rather than written down anywhere, so a new tool or a new legal page
-    # reaches every footer on the site without a second edit.
+    # exist rather than written down anywhere, so a new tool, a new guide or a
+    # new legal page reaches every footer on the site without a second edit.
     # Tools in the order the hub shows them, not the order the folders happen to
     # sort in, so the footer and the cards above it agree. A slug named here that
     # has no tool, or a tool named nowhere, is caught by build_hub below.
@@ -155,18 +167,23 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
                for slug in category['order'] if slug in by_slug]
     footer = {
         'tools': [{'name': tool['name'], 'slug': tool['slug']} for tool in ordered],
-        'guides': [{'nav': page['nav'], 'slug': page['slug']} for page in guides],
+        'guides': [{'nav': page['nav'], 'slug': page['slug']}
+                   for page in ordered_guides],
         'pages': [{'nav': page['nav'], 'slug': page['slug']} for page in legal],
     }
 
     written = []
     for tool in tools:
-        build_tool(out, templates, site, tool, footer, emit)
+        build_tool(out, templates, site, tool, footer,
+                   guide_of.get(tool['slug'], {}), emit)
         written.append(f'{tool["slug"]}/index.html')
 
     for page in prose:
-        build_page(out, templates, site, page, footer, css_v, emit)
+        build_page(out, templates, site, page, footer, css_v, by_slug, emit)
         written.append(f'{page["slug"]}/index.html')
+
+    build_guides(out, templates, site, groups, ordered_guides, footer, css_v, emit)
+    written.append(f'{site["guides"]["slug"]}/index.html')
 
     build_hub(out, templates, site, by_slug, footer, css_v, emit)
     written.append('index.html')
@@ -180,7 +197,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     # After the sitemap and deliberately not passed to it: the 404 has no
     # address of its own to list, and inviting a crawler to index it would be
     # inviting it to serve "not found" in place of a real page.
-    build_sitemap(out, templates, site, tools, guides, legal)
+    build_sitemap(out, templates, site, tools, ordered_guides, legal)
     written.append('sitemap.xml')
 
     copy_shared(out)
@@ -189,10 +206,116 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
 
 
 # ---------------------------------------------------------------------------
+# The guides, and how they are tied to the tools
+
+
+def guide_groups(site, guides):
+    """The guides, in the groups and the order config/site.toml gives them.
+
+    Three things are checked, and each of them is a way a guide could end up
+    written and then linked to from nowhere:
+
+      * a guide naming a group that does not exist;
+      * a group listing a guide that does not exist;
+      * a guide that exists and that no group lists.
+
+    The same three the hub already makes about tools and categories. A page
+    nothing links to is a page that might as well not have been written, and
+    the point of checking here is that the build says so rather than the
+    silence of a missing card.
+    """
+    by_name = {guide['slug'].rsplit('/', 1)[-1]: guide for guide in guides}
+    groups, listed = [], set()
+    for group in site['guides']['groups']:
+        chosen = []
+        for name in group['order']:
+            if name not in by_name:
+                raise sitelib.ConfigError(
+                    f'config/site.toml lists {name!r} in guide group '
+                    f'{group["id"]!r}, but there is no '
+                    f'pages/{site["guides"]["slug"]}/{name}/page.toml')
+            guide = by_name[name]
+            if guide['group'] != group['id']:
+                raise sitelib.ConfigError(
+                    f'{guide["slug"]} says group = {guide["group"]!r} but is listed '
+                    f'under {group["id"]!r} in config/site.toml')
+            chosen.append(guide)
+            listed.add(name)
+        groups.append({**group, 'guides': chosen})
+
+    stray = sorted(set(by_name) - listed)
+    if stray:
+        raise sitelib.ConfigError(
+            'these guides exist but are not listed in any [[guides.groups]] order, '
+            f'so nothing would link to them: {", ".join(stray)}')
+    return groups
+
+
+def tie_guides_to_tools(guides, by_slug):
+    """Map a tool's slug to the guide about it, from the guides' own `tool`.
+
+    One line in one file makes both links: the guide gets a link to the tool
+    under its heading, and the tool gets a link to the guide under its
+    questions. Written the other way round - a `guide` key in each tool.toml -
+    it would be two lines that could disagree about which page is about which.
+
+    A slug that names no tool is an error, because it is a link to a page that
+    is not there. Two guides claiming one tool is an error as well: the tool
+    page has room for one, so the second would be written and never linked.
+    """
+    owned = {}
+    for guide in guides:
+        slug = guide['tool']
+        if not slug:
+            continue
+        if slug not in by_slug:
+            raise sitelib.ConfigError(
+                f'{guide["slug"]}: tool is {slug!r}, but there is no '
+                f'tools/{slug}/tool.toml')
+        if slug in owned:
+            raise sitelib.ConfigError(
+                f'{guide["slug"]} and {owned[slug]["slug"]} both say they are the '
+                f'guide for {slug}, and a tool page links to one guide')
+        owned[slug] = guide
+    return owned
+
+
+def build_guides(out, templates, site, groups, guides, footer, css_v, emit):
+    """The index of the written half of the site.
+
+    Built like the roadmap and for the same reason: it is a frame around a list
+    that lives somewhere else. Nothing on the page is written in the template or
+    in config/site.toml except the grouping - every card is a guide's own
+    heading and description, the two strings that also draw that guide's <h1>
+    and its <meta name="description">, so the index cannot promise something the
+    guide does not deliver.
+    """
+    dest = out / site['guides']['slug']
+    dest.mkdir(parents=True, exist_ok=True)
+
+    emit.html(dest / 'index.html', templates.render('guides.html', {
+        'site': site,
+        'groups': groups,
+        'guide_count': len(guides),
+        'guide_noun': 'guide' if len(guides) == 1 else 'guides',
+        'footer': footer,
+        'base': '../',
+        'css_href': f'../site.css?v={css_v}',
+        'csp': sitelib.render_csp(site['csp']),
+        'jsonld': sitelib.guides_jsonld(site, guides),
+    }))
+
+    emit.js(dest / 'analytics.js', templates.render('analytics.js', {
+        'site': site,
+        'words': {'plural': 'files', 'analytics_extra': ''},
+    }), where=f'{site["guides"]["slug"]}/analytics.js')
+
+
+# ---------------------------------------------------------------------------
 # One tool
 
 
-def build_tool(out, templates, site, tool, footer, emit):
+def build_tool(out, templates, site, tool, footer, guide, emit):
     dest = out / tool['slug']
     dest.mkdir(parents=True, exist_ok=True)
 
@@ -254,6 +377,7 @@ def build_tool(out, templates, site, tool, footer, emit):
     emit.html(dest / 'index.html', templates.render('tool.html', {
         'site': site,
         'tool': tool,
+        'guide': guide,
         'footer': footer,
         'base': '../',
         'csp': sitelib.render_csp(site['csp'], site.get('tool_csp', {}),
@@ -335,7 +459,7 @@ def tool_css(tool):
 # One prose page (a legal page or a guide)
 
 
-def build_page(out, templates, site, page, footer, css_v, emit):
+def build_page(out, templates, site, page, footer, css_v, by_slug, emit):
     """A prose page: the site frame around a body.html, and nothing else.
 
     No service worker, because there is nothing here worth keeping offline, and
@@ -345,7 +469,13 @@ def build_page(out, templates, site, page, footer, css_v, emit):
     argument by making it impossible to have.
 
     `up` is how the frame climbs back to the root. A legal page sits one level
-    down and a guide two, and neither template should have to know which."""
+    down and a guide two, and neither template should have to know which.
+
+    A guide gets two things a legal page does not, and both are worked out here
+    rather than tested for in markup: a breadcrumb through the guides index -
+    the visible half of the trail the structured data describes - and, when it
+    names a tool, the tool itself, so the page can offer a way to go and use the
+    thing it has just spent two thousand words explaining."""
     dest = out / page['slug']
     dest.mkdir(parents=True, exist_ok=True)
 
@@ -355,9 +485,20 @@ def build_page(out, templates, site, page, footer, css_v, emit):
 
     up = '../' * page['depth']
 
+    crumbs = []
+    if page['kind'] == 'guide':
+        crumbs = [
+            {'name': 'All tools', 'href': up},
+            {'name': site['guides']['heading'],
+             'href': f'{up}{site["guides"]["slug"]}/'},
+        ]
+
     emit.html(dest / 'index.html', templates.render('page.html', {
         'site': site,
         'page': page,
+        'tool': by_slug.get(page['tool'], {}),
+        'crumbs': crumbs,
+        'main_class': 'prose' if page['kind'] == 'guide' else 'legal',
         'footer': footer,
         'base': up,
         'css_href': f'{up}site.css?v={css_v}',
@@ -514,7 +655,12 @@ def build_sitemap(out, templates, site, tools, guides, legal):
     pages += [{'url': tool['url'], 'lastmod': tool['lastmod'],
                'changefreq': 'monthly', 'priority': '0.8'} for tool in tools]
     # Guides below the tools and above the legal pages. A tool is what somebody
-    # came for; a guide is how they find out this site exists.
+    # came for; a guide is how they find out this site exists. The index they
+    # are listed on goes first and slightly higher: it is the page that gains
+    # from being crawled as a set rather than as nine unrelated articles.
+    pages.append({'url': f'{site["domain"]}{site["guides"]["slug"]}/',
+                  'lastmod': site['guides']['lastmod'],
+                  'changefreq': 'monthly', 'priority': '0.7'})
     pages += [{'url': page['url'], 'lastmod': page['lastmod'],
                'changefreq': 'monthly', 'priority': '0.6'} for page in guides]
     # The roadmap: a real page, but not one anybody searches for. Below the

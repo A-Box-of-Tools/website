@@ -258,7 +258,25 @@
       </p>
     </details>
 {% endfor %}  </div>
-</section>
+
+  <!--
+    The guide for this tool, if one has been written. The steps above say which
+    button to press; the guide is for the reader who wants to know what the
+    setting they are about to move actually does, and why the answer is what it
+    is. It is not written twice: the link's text is the guide's own heading and
+    the line under it is the guide's own description, so it cannot promise
+    something the guide does not go on to say.
+
+    Which guide belongs to which tool is one line - `tool` in that guide's
+    page.toml - and the build turns it into both halves of the link, this one
+    and the one back. A tool with no guide yet renders nothing here.
+  -->
+{% if guide %}  <h2 id="guide-h">The longer version</h2>
+  <p class="tool-guide">
+    <a href="{{ base }}{{ guide.slug }}/">{{ guide.heading }}</a>
+    <span class="tool-guide-note">{{ guide.description }}</span>
+  </p>
+{% endif %}</section>
 
 {% include "partials/footer.html" %}
 

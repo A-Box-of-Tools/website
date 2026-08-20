@@ -173,6 +173,17 @@
   </section>
 {% endfor %}
   <!--
+    The guides: the written half of the site, one per tool, explaining what a
+    setting costs rather than which button it is. Reachable from the footer of
+    every page as well; this is the line that offers it to somebody who has
+    just read the cards above and is not sure which of them they want.
+  -->
+  <p class="page-note">
+    Not sure which setting to move, or what it costs?
+    <a href="{{ base }}{{ site.guides.slug }}/">There is a guide for every tool</a>.
+  </p>
+
+  <!--
     The planned list used to be spelled out here, and had grown to about fifty
     names across six groups. That meant the last thing anybody saw on the front
     page was a long list of things this site cannot do yet, below the fold and
@@ -181,7 +192,7 @@
     It still exists, in full, on the roadmap - see templates/roadmap.html and
     config/planned.toml. This is the one line that points at it.
   -->
-  <p class="roadmap-note">
+  <p class="page-note">
     More is coming, and the list is public:
     <a href="{{ base }}{{ site.roadmap.slug }}/">see what is planned next</a>.
   </p>

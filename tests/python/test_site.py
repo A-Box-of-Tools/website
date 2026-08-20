@@ -20,7 +20,9 @@ from pathlib import Path
 
 from buildlib import site as sitelib
 
-SITE = {'domain': 'https://example.test/', 'name': 'Site', 'lang': 'en'}
+SITE = {'domain': 'https://example.test/', 'name': 'Site', 'lang': 'en',
+        'guides': {'slug': 'guides', 'heading': 'Guides',
+                   'description': 'every guide'}}
 
 TOOL_TOML = '''
 slug = "widget"
@@ -243,6 +245,28 @@ class StructuredData(unittest.TestCase):
         self.assertEqual(graph[0]['datePublished'], '2026-01-01')
         self.assertEqual(graph[0]['dateModified'], '2026-02-01')
 
+    def test_a_guides_breadcrumb_goes_through_the_index(self):
+        # Three steps, because the visible trail on the page has three. Markup
+        # is meant to describe what a visitor can see.
+        page = {'kind': 'guide', 'heading': 'H', 'description': 'd', 'nav': 'N',
+                'url': 'https://example.test/guides/x/',
+                'published': '2026-01-01', 'lastmod': '2026-02-01'}
+        graph = json.loads(sitelib.page_jsonld(SITE, page))['@graph']
+        trail = graph[1]['itemListElement']
+        self.assertEqual([step['position'] for step in trail], [1, 2, 3])
+        self.assertEqual([step['item'] for step in trail],
+                         ['https://example.test/',
+                          'https://example.test/guides/',
+                          'https://example.test/guides/x/'])
+
+    def test_the_guides_index_lists_the_guides_in_order(self):
+        guides = [{'heading': 'First', 'url': 'https://example.test/guides/a/'},
+                  {'heading': 'Second', 'url': 'https://example.test/guides/b/'}]
+        graph = json.loads(sitelib.guides_jsonld(SITE, guides))['@graph']
+        items = graph[0]['mainEntity']['itemListElement']
+        self.assertEqual([item['position'] for item in items], [1, 2])
+        self.assertEqual([item['name'] for item in items], ['First', 'Second'])
+
     def test_a_legal_page_gets_no_structured_data(self):
         # Inventing schema for a privacy policy would describe the page as
         # something it is not.
@@ -305,7 +329,7 @@ class LoadPage(TempTree):
 
     def test_a_guide_sits_one_level_deeper(self):
         body = (PAGE_TOML.replace('slug = "privacy"', 'slug = "guides/why"')
-                + 'kind = "guide"\npublished = "2026-01-01"\n')
+                + 'kind = "guide"\npublished = "2026-01-01"\ngroup = "g"\n')
         page = sitelib.load_page(self.page_at('guides/why', body), SITE,
                                  self.root / 'pages')
         self.assertEqual(page['depth'], 2)
@@ -329,11 +353,27 @@ class LoadPage(TempTree):
         # Defaulting to lastmod would quietly claim a correction was the
         # original.
         body = (PAGE_TOML.replace('slug = "privacy"', 'slug = "guides/why"')
-                + 'kind = "guide"\n')
+                + 'kind = "guide"\ngroup = "g"\n')
         with self.assertRaises(sitelib.ConfigError) as caught:
             sitelib.load_page(self.page_at('guides/why', body), SITE,
                               self.root / 'pages')
         self.assertIn('published', str(caught.exception))
+
+    def test_a_guide_must_name_the_group_it_appears_under(self):
+        # A guide with no group would be built, sit at a URL, and be linked to
+        # from nowhere at all.
+        body = (PAGE_TOML.replace('slug = "privacy"', 'slug = "guides/why"')
+                + 'kind = "guide"\npublished = "2026-01-01"\n')
+        with self.assertRaises(sitelib.ConfigError) as caught:
+            sitelib.load_page(self.page_at('guides/why', body), SITE,
+                              self.root / 'pages')
+        self.assertIn('group', str(caught.exception))
+
+    def test_a_page_that_names_no_tool_gets_an_empty_one(self):
+        # Falsy rather than missing, so the template can ask without a page
+        # having to declare that it is about nothing.
+        page = sitelib.load_page(self.page_at('privacy'), SITE, self.root / 'pages')
+        self.assertEqual(page['tool'], '')
 
     def test_a_missing_key_is_named(self):
         body = PAGE_TOML.replace('lede = "l"\n', '')

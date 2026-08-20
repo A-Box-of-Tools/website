@@ -13,6 +13,10 @@
 slug = "guides/is-it-safe-to-upload-files"
 kind = "guide"
 nav = "Is it safe to upload files?"
+# Which group on the guides index this joins, by the id in
+# config/site.toml. A guide that named no group would be built, sit at a
+# URL, and be linked to from nowhere.
+group = "before-you-upload"
 
 title = "Is It Safe to Upload Files to Online Converters?"
 description = "Most online converters send your file to a server. What that means, what happens to it there, and four checks that tell you whether a tool needs to."

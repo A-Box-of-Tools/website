@@ -156,6 +156,74 @@ class EmitterOutput(unittest.TestCase):
                          source)
 
 
+class GuideGroups(unittest.TestCase):
+    """Every way a guide could be written and then linked to from nowhere.
+
+    The same three refusals the hub already makes about tools and categories,
+    and they matter more here: a tool that vanished from the hub would be
+    noticed the first time somebody looked at the front page, whereas a guide
+    that fell out of the index is only ever missed by the reader who never
+    found it.
+    """
+
+    SITE = {'guides': {'slug': 'guides', 'groups': [
+        {'id': 'g', 'name': 'G', 'note': 'n', 'order': ['a', 'b']}]}}
+
+    def guide(self, name, group='g'):
+        return {'slug': f'guides/{name}', 'group': group, 'tool': ''}
+
+    def test_the_order_in_the_config_is_the_order_on_the_page(self):
+        guides = [self.guide('b'), self.guide('a')]
+        groups = buildmod.guide_groups(self.SITE, guides)
+        self.assertEqual([g['slug'] for g in groups[0]['guides']],
+                         ['guides/a', 'guides/b'])
+
+    def test_a_guide_no_group_lists_is_refused(self):
+        guides = [self.guide('a'), self.guide('b'), self.guide('c')]
+        with self.assertRaises(buildmod.sitelib.ConfigError) as caught:
+            buildmod.guide_groups(self.SITE, guides)
+        self.assertIn('c', str(caught.exception))
+
+    def test_a_group_naming_a_guide_that_does_not_exist_is_refused(self):
+        with self.assertRaises(buildmod.sitelib.ConfigError) as caught:
+            buildmod.guide_groups(self.SITE, [self.guide('a')])
+        self.assertIn('b', str(caught.exception))
+
+    def test_the_two_halves_have_to_agree_on_the_group(self):
+        guides = [self.guide('a'), self.guide('b', group='elsewhere')]
+        with self.assertRaises(buildmod.sitelib.ConfigError) as caught:
+            buildmod.guide_groups(self.SITE, guides)
+        self.assertIn('elsewhere', str(caught.exception))
+
+
+class GuidesAndTools(unittest.TestCase):
+    """One line in a guide's page.toml makes both halves of the link."""
+
+    def test_a_guide_is_found_by_the_slug_of_its_tool(self):
+        guide = {'slug': 'guides/a', 'tool': 'widget'}
+        owned = buildmod.tie_guides_to_tools([guide], {'widget': {}})
+        self.assertIs(owned['widget'], guide)
+
+    def test_a_guide_about_no_tool_claims_none(self):
+        guide = {'slug': 'guides/a', 'tool': ''}
+        self.assertEqual(buildmod.tie_guides_to_tools([guide], {'widget': {}}), {})
+
+    def test_a_tool_that_does_not_exist_is_refused(self):
+        guide = {'slug': 'guides/a', 'tool': 'gadget'}
+        with self.assertRaises(buildmod.sitelib.ConfigError) as caught:
+            buildmod.tie_guides_to_tools([guide], {'widget': {}})
+        self.assertIn('gadget', str(caught.exception))
+
+    def test_two_guides_cannot_claim_one_tool(self):
+        # A tool page links to one guide, so the second would be written and
+        # never linked.
+        guides = [{'slug': 'guides/a', 'tool': 'widget'},
+                  {'slug': 'guides/b', 'tool': 'widget'}]
+        with self.assertRaises(buildmod.sitelib.ConfigError) as caught:
+            buildmod.tie_guides_to_tools(guides, {'widget': {}})
+        self.assertIn('guides/b', str(caught.exception))
+
+
 class BuildTheSite(unittest.TestCase):
     """A whole plain build, into a temporary directory.
 
@@ -281,6 +349,48 @@ class BuildTheSite(unittest.TestCase):
         for path in ROOT.glob('tools/*/tool.toml'):
             with self.subTest(tool=path.parent.name):
                 self.assertIn(f'/{path.parent.name}/', page)
+
+    def test_every_guide_in_the_repository_got_a_page(self):
+        slugs = sorted(p.parent.name for p in ROOT.glob('pages/guides/*/page.toml'))
+        self.assertTrue(slugs)
+        for slug in slugs:
+            with self.subTest(guide=slug):
+                self.assertIn(f'guides/{slug}/index.html', self.written)
+
+    def test_the_guides_index_links_every_guide(self):
+        index = (self.out / 'guides' / 'index.html').read_text(encoding='utf-8')
+        for path in ROOT.glob('pages/guides/*/page.toml'):
+            with self.subTest(guide=path.parent.name):
+                self.assertIn(f'guides/{path.parent.name}/', index)
+
+    def test_every_page_footer_reaches_the_guides_index(self):
+        # The footer is the second navigation, and the index is the one link in
+        # it that keeps working however long the list of guides grows.
+        for name in self.written:
+            if not name.endswith('.html'):
+                continue
+            with self.subTest(page=name):
+                text = (self.out / name).read_text(encoding='utf-8')
+                self.assertRegex(text, r'href="(\.\./|\./|/)*guides/"')
+
+    def test_a_guide_and_its_tool_link_to_each_other(self):
+        """One line - `tool` in the guide's page.toml - makes both halves.
+
+        Checking both directions is the point: written as two settings they
+        could disagree about which page is about which, and the way that shows
+        up is a tool page pointing at a guide that never mentions it."""
+        pages = ROOT.glob('pages/guides/*/page.toml')
+        pairs = [(p.parent.name, buildmod.sitelib.load_toml(p).get('tool'))
+                 for p in pages]
+        pairs = [(guide, tool) for guide, tool in pairs if tool]
+        self.assertTrue(pairs)
+        for guide, tool in pairs:
+            with self.subTest(guide=guide):
+                tool_page = (self.out / tool / 'index.html').read_text(encoding='utf-8')
+                self.assertIn(f'../guides/{guide}/', tool_page)
+                guide_page = (self.out / 'guides' / guide / 'index.html'
+                              ).read_text(encoding='utf-8')
+                self.assertIn(f'../../{tool}/', guide_page)
 
     def test_shared_files_are_copied_but_the_css_sources_are_not(self):
         self.assertTrue((self.out / 'robots.txt').is_file())

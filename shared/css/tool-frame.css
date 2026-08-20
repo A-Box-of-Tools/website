@@ -509,6 +509,7 @@ button, .as-button {
 }
 
 .faq h2 + .faq-list,
+.faq-list + h2,
 .how-to + h2 { margin-top: 1.6rem; }
 
 .how-to {
@@ -561,6 +562,22 @@ button, .as-button {
   border-radius: 4px;
   font-size: 0.88em;
 }
+
+/* The link to this tool's guide, under the questions. One line, because that
+   is what it is: the steps above say which button to press, and the guide is
+   for the reader who wants to know what the setting they are about to move
+   actually does. A card here would compete with the tool. */
+
+.tool-guide {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  max-width: 68ch;
+  font-size: 0.93rem;
+}
+
+.tool-guide a { color: var(--accent); font-weight: 600; }
+.tool-guide-note { font-size: 0.88rem; color: var(--text-dim); }
 
 /* ---- footer ------------------------------------------------------------ */
 

@@ -12,6 +12,11 @@
   --accent: #2b6cb0;
   --accent-deep: #1d4f83;
   --accent-pale: #d7e7f7;
+  /* What is legible on top of --accent. Not white in both themes: the dark
+     accent is a pale blue, and white on it is the kind of contrast that passes
+     a glance and fails a measurement. Same values as shared/css/tool-frame.css,
+     which defines it for the tool pages. */
+  --accent-text: #ffffff;
   /* Green means "this is true" across the site: the pledge ticks on a tool page
      use it, and so does the Built tag on the roadmap. Same values as
      shared/css/tool-frame.css, which defines it for the tool pages. */
@@ -31,6 +36,7 @@
     --accent: #5b9bd8;
     --accent-deep: #3772ab;
     --accent-pale: #cfe3f8;
+    --accent-text: #0d1117;
     --ok: #6cc79b;
     --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 20%);
   }
@@ -217,30 +223,36 @@ code {
 .tool-name { font-weight: 600; font-size: 1.02rem; }
 .tool-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.5; }
 
-/* ---- the line that replaced the planned list on the hub ----------------- */
+/* ---- the quiet pointer line, and the count under a heading -------------- */
 
-/* Sits under the last category, where fifty planned names used to be. Quiet on
-   purpose: it is a pointer, and the tools above it are the point. */
-.roadmap-note {
+/* Both of these began on the roadmap and are now used by the guides index as
+   well, which is why neither is named after the roadmap any more. A class that
+   says `roadmap` on a page of guides is a class nobody can search for.
+
+   The pointer sits under the last section of a page, where the planned list
+   used to be on the hub. Quiet on purpose: it is a pointer, and what is above
+   it is the point. Two in a row - the hub has the guides and the roadmap -
+   need a little air between them. */
+.page-note {
   margin: 0;
   padding-top: 0.25rem;
   font-size: 0.9rem;
   color: var(--text-dim);
 }
 
-.roadmap-note a { color: var(--accent); }
+.page-note a { color: var(--accent); }
+.page-note + .page-note { padding-top: 0.55rem; }
 
-/* ---- the roadmap ------------------------------------------------------- */
-
-/* The two counts under the lede. Read off the lists by the build, so they are
-   a fact about the page rather than a claim in a sentence. */
-.roadmap-count {
+/* The count under a lede: how many planned, how many built, how many guides.
+   Read off the lists by the build, so it is a fact about the page rather than
+   a claim in a sentence. */
+.page-count {
   margin: 0.9rem 0 0;
   font-size: 0.85rem;
   color: var(--text-dim);
 }
 
-.roadmap-count strong {
+.page-count strong {
   color: var(--text);
   font-variant-numeric: tabular-nums;
 }
@@ -336,11 +348,98 @@ code {
 .logo-band { fill: var(--accent); }
 .logo-latch { fill: var(--accent-pale); }
 
+/* The trail above a guide's heading. A tool page gets the same three rules from
+   shared/css/tool-frame.css; they are repeated here for the same reason the
+   site mark above is, which is that site.css is a whole stylesheet rather than
+   one of the parts the build assembles. If one changes, change the other.
+
+   Legal pages are passed an empty trail and never render the element, so these
+   rules apply to guides and to nothing else. */
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-top: 0.9rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.crumbs a { color: var(--text-dim); text-decoration: none; }
+.crumbs a:hover { color: var(--accent); text-decoration: underline; }
+.crumbs [aria-current="page"] { color: var(--text); }
+
+/* A guide with a crumb above it does not also need the header's usual gap. */
+.crumbs + .hub-head { padding-top: 1.5rem; }
+
 .legal-date {
   margin: 1rem 0 0;
   font-size: 0.82rem;
   color: var(--text-dim);
 }
+
+/* ---- the guides index --------------------------------------------------- */
+
+/* One column rather than the hub's grid of cards. A tool card is a name and an
+   icon and can sit beside three others; a guide card is a sentence, and a row
+   of sentences is a wall. Reading down a list is also how somebody decides
+   which of nine guides is the one they came for. */
+
+.guide-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.guide-card {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.95rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.12s ease, transform 0.12s ease;
+}
+
+.guide-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.guide-name { font-weight: 600; font-size: 1rem; color: var(--accent); }
+.guide-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.5; }
+
+/* The link from a guide to the tool it is about, under the lede. Loud enough
+   to be the way out for somebody who already knows what they want, quiet
+   enough not to be the first thing read on a page of prose. */
+
+.guide-cta {
+  margin: 1.25rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 0.6rem;
+}
+
+.guide-cta-link {
+  display: inline-block;
+  padding: 0.45rem 0.85rem;
+  background: var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent-text);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.guide-cta-link:hover { filter: brightness(1.08); }
+
+.guide-cta-note { font-size: 0.85rem; color: var(--text-dim); }
 
 .legal, .prose { max-width: 68ch; }
 
