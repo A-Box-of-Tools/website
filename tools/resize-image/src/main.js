@@ -25,10 +25,10 @@ const el = {
   clearAll: $('clear-all'),
   loadError: $('load-error'),
 
-  cropMode: $('crop-mode'),
   cropEmpty: $('crop-empty'),
   cropControls: $('crop-controls'),
   stage: $('stage'),
+  stageName: $('stage-name'),
   preview: $('preview'),
   stageNote: $('stage-note'),
   aspectRow: $('aspect-row'),
@@ -40,6 +40,9 @@ const el = {
   cropMax: $('crop-max'),
   cropCentre: $('crop-centre'),
   cropReset: $('crop-reset'),
+  applyRow: $('apply-row'),
+  applyNote: $('apply-note'),
+  cropApplyAll: $('crop-apply-all'),
 
   resizeMode: $('resize-mode'),
   pixelsFields: $('pixels-fields'),
@@ -76,6 +79,15 @@ const el = {
   downloadZip: $('download-zip'),
   resultsSummary: $('results-summary'),
 
+  viewer: $('viewer'),
+  viewerName: $('viewer-name'),
+  viewerClose: $('viewer-close'),
+  viewerImage: $('viewer-image'),
+  viewerCaption: $('viewer-caption'),
+  viewerFacts: $('viewer-facts'),
+  viewerCompare: $('viewer-compare'),
+  viewerDownload: $('viewer-download'),
+
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
   networkCount: $('network-count'),
@@ -90,6 +102,10 @@ const el = {
  * @property {File} file
  * @property {string} thumbUrl an object URL, revoked when the item is dropped
  * @property {{width: number, height: number}|null} size in pixels
+ * @property {{x: number, y: number, width: number, height: number}} crop
+ *   this image's own box, in its own pixels. Opens on the whole picture, so an
+ *   image nobody has drawn on is not cropped at all.
+ * @property {string} aspectKey which shape its box is locked to, if any
  */
 
 /** @type {Item[]} */
@@ -97,17 +113,10 @@ let items = [];
 let nextId = 1;
 let busy = false;
 
-/** Which image the crop box is drawn on. Everything else in the batch is
- *  cropped to the same *relative* area, which the page says out loud. */
+/** Which image the crop box is currently drawn on. Only the preview: every
+ *  image carries its own box, so this decides what you are looking at and
+ *  nothing about what the others get. */
 let referenceId = null;
-
-/** The crop box as fractions of the picture it was drawn on. Fractions rather
- *  than pixels so that it survives the preview being pointed at a different
- *  image, and so applying it to a batch needs no special case. */
-let cropFractions = null;
-
-/** Which shape the box is locked to, as the value on the button. */
-let aspectKey = 'free';
 
 /** Everything the run produced, kept so the rows can be redrawn and the zip
  *  built without encoding anything twice. */
@@ -121,11 +130,19 @@ let resultUrls = [];
 /** Which formats this browser will actually write. Filled in at boot. */
 let writable = new Set([JPEG, PNG]);
 
+/** Set while the preview is being pointed at another image. The three calls
+ *  that do it each move the box, and none of those movements is the visitor
+ *  editing a crop - so they must not overwrite one, and must not throw away
+ *  results that are still perfectly true of the files that produced them. */
+let loadingPreview = false;
+
 const cropper = new Cropper(el.stage, {
   onChange(rect) {
-    const reference = referenceItem();
-    if (reference?.size) cropFractions = toFractions(rect, reference.size);
     writeCropFields(rect);
+    if (loadingPreview) return;
+
+    const reference = referenceItem();
+    if (reference?.size) reference.crop = rect;
     clearResults();
     // Everything a moved box changes, and nothing else. This runs on every
     // pointermove of a drag, so the file list is updated in place rather than
@@ -170,6 +187,8 @@ async function addFiles(files) {
         file,
         thumbUrl: URL.createObjectURL(file),
         size: null,
+        crop: null,
+        aspectKey: 'free',
       };
       nextId += 1;
 
@@ -182,6 +201,10 @@ async function addFiles(files) {
         continue;
       }
 
+      // The box opens on the whole picture. That is what makes cropping the
+      // default without making it something that happens to you: the step is
+      // always there, and until you drag it, it takes nothing off.
+      item.crop = wholeOf(item.size);
       items.push(item);
     }
   } finally {
@@ -237,22 +260,18 @@ el.clearAll.addEventListener('click', () => {
 const referenceItem = () => items.find((i) => i.id === referenceId) ?? null;
 
 /**
- * Keep the preview pointed at something that still exists.
+ * Point the preview at an image, and load that image's own box into it.
  *
- * When the picture under the box changes, the box is carried across as
- * fractions rather than pixels, so a crop drawn on a 4000px photograph is the
- * same *area* when the preview moves to a 1000px one. That is the same rule
- * the batch is processed under, so what you see is what every file gets.
+ * Nothing is carried across. Each image owns its rectangle, in its own pixels,
+ * so moving the preview from one to another puts back exactly the box that was
+ * left there - including the shape it was locked to, so the buttons under the
+ * preview describe what you are looking at rather than what you last pressed.
  */
 function ensureReference() {
-  const had = referenceId;
   if (!items.some((i) => i.id === referenceId)) referenceId = items[0]?.id ?? null;
 
   const reference = referenceItem();
-  if (!reference?.size) {
-    cropFractions = null;
-    return;
-  }
+  if (!reference?.size) return;
 
   el.preview.src = reference.thumbUrl;
   el.preview.alt = `Preview of ${reference.file.name}`;
@@ -261,15 +280,25 @@ function ensureReference() {
   // styles.css: a max-height on a box that has a width and a ratio breaks the
   // ratio, and the crop box would then sit over the wrong part of the picture.
   el.stage.style.maxWidth = `calc(62vh * ${reference.size.width / reference.size.height})`;
-  cropper.setSource(reference.size.width, reference.size.height, had !== null && cropFractions !== null);
-  applyAspect(aspectKey, { silent: true });
+
+  // Source, then shape, then rectangle. The shape has to be in place before
+  // the rectangle so that a later drag is constrained the way the buttons say
+  // it is; the rectangle goes in last because setting a shape moves the box.
+  loadingPreview = true;
+  try {
+    cropper.setSource(reference.size.width, reference.size.height);
+    cropper.setAspect(aspectValue(reference.aspectKey, reference));
+    cropper.setRect(reference.crop);
+  } finally {
+    loadingPreview = false;
+  }
+  markAspect();
 }
 
 function showItem(id) {
-  if (id === referenceId) return;
+  if (id === referenceId || busy) return;
   referenceId = id;
   ensureReference();
-  clearResults();
   render();
 }
 
@@ -308,13 +337,35 @@ const totalBytes = () => items.reduce((n, i) => n + i.file.size, 0);
 function renderList() {
   el.fileList.replaceChildren();
 
+  const choosable = items.length > 1;
+
   for (const item of items) {
     const li = document.createElement('li');
     li.className = 'file-row';
-    if (item.id === referenceId && items.length > 1) li.classList.add('file-shown');
+    const shown = item.id === referenceId && choosable;
+    if (shown) li.classList.add('file-shown');
 
-    const main = document.createElement('div');
+    // The whole row is the control that points the preview at this image.
+    // There used to be a "Show"/"Shown" button on the end, and the two words
+    // were a letter apart at the same size in the same place - so the one that
+    // did nothing looked exactly like the one that did something. The row
+    // being the target is a larger, more obvious hit area, and the state is
+    // now said by the row's own appearance rather than by a verb.
+    //
+    // A <div> rather than a <button> when there is only one image: a control
+    // that cannot do anything should not be reachable by keyboard and should
+    // not announce itself to a screen reader as a thing to press.
+    const main = document.createElement(choosable ? 'button' : 'div');
     main.className = 'file-main-wrap';
+    if (choosable) {
+      main.type = 'button';
+      main.setAttribute('aria-pressed', String(shown));
+      main.title = shown
+        ? `${item.file.name} is the one in the crop preview`
+        : `Draw the crop box on ${item.file.name}`;
+      main.disabled = busy;
+      main.addEventListener('click', () => showItem(item.id));
+    }
 
     const thumb = document.createElement('img');
     thumb.className = 'file-thumb';
@@ -346,25 +397,17 @@ function renderList() {
     }
 
     main.appendChild(text);
-    li.appendChild(main);
 
-    const actions = document.createElement('div');
-    actions.className = 'row-actions';
-
-    // Only worth offering when there is a choice to make. With one image on
-    // the list the box is already drawn on it.
-    if (items.length > 1) {
-      const show = document.createElement('button');
-      show.type = 'button';
-      show.className = 'ghost';
-      show.textContent = item.id === referenceId ? 'Shown' : 'Show';
-      show.disabled = busy || item.id === referenceId;
-      show.title = `Draw the crop box on ${item.file.name}`;
-      show.addEventListener('click', () => showItem(item.id));
-      actions.appendChild(show);
+    // The badge only ever appears on the row that is showing, so there is no
+    // pair of near-identical words to tell apart at a glance.
+    if (shown) {
+      const badge = document.createElement('span');
+      badge.className = 'file-badge';
+      badge.textContent = 'In the preview';
+      main.appendChild(badge);
     }
 
-    li.appendChild(actions);
+    li.appendChild(main);
 
     const remove = document.createElement('button');
     remove.type = 'button';
@@ -398,53 +441,86 @@ function refreshOutcomes() {
 }
 
 function renderCropCard() {
-  const cropping = el.cropMode.value === 'box';
   const reference = referenceItem();
 
   el.cropEmpty.hidden = Boolean(items.length);
-  el.cropControls.hidden = !cropping || !reference;
-  cropper.setEnabled(cropping && Boolean(reference));
+  el.cropControls.hidden = !reference;
+  cropper.setEnabled(Boolean(reference) && !busy);
 
-  if (!cropping || !reference) {
+  if (!reference) {
     el.stageNote.hidden = true;
     return;
   }
 
-  // Only said when it is actually true of this batch, rather than as a
-  // standing disclaimer nobody reads.
   const others = items.filter((i) => i.id !== referenceId);
-  const differing = others.filter((i) => i.size
-    && (i.size.width !== reference.size.width || i.size.height !== reference.size.height));
+  el.stageName.textContent = others.length ? `Drawing on ${reference.file.name}. ` : '';
+  el.applyRow.hidden = !others.length;
+  el.applyNote.textContent = others.length
+    ? applyNoteText(reference, others.length)
+    : '';
 
+  // Said only when there is another image it could be true of, rather than as
+  // a standing disclaimer nobody reads.
   if (!others.length) {
     el.stageNote.hidden = true;
     return;
   }
 
   el.stageNote.hidden = false;
-  const drawn = `The box is drawn on ${reference.file.name}.`;
+  el.stageNote.textContent = `Every image keeps its own box. ${othersNoteText(others)}`;
+}
 
-  if (!differing.length) {
-    el.stageNote.textContent = `${drawn} Every other image on the list is exactly the same `
-      + 'size, so they all get exactly this box.';
-    return;
+/** How many of the others have actually been cropped, said as a sentence. */
+function othersNoteText(others) {
+  const cropped = others.filter(isCropped);
+
+  if (others.length === 1) {
+    return cropped.length
+      ? `${others[0].file.name} has a box of its own.`
+      : `${others[0].file.name} is still on the whole picture - pick it from the list above to crop that one too.`;
   }
 
-  const one = others.length === 1;
-  const rest = one ? 'The other image is' : `The other ${countOf(others.length)} are`;
-  const own = one ? 'its own' : 'their own';
+  if (!cropped.length) {
+    return `The other ${countOf(others.length)} are still on the whole picture - pick one from `
+      + 'the list above to crop it.';
+  }
 
-  el.stageNote.textContent = aspectKey === 'free'
-    ? `${drawn} ${rest} cropped to the same relative area - the same fractions of ${own} `
-      + `width and height - because ${one ? 'it is' : 'they are'} not the same size as this one.`
-    : `${drawn} ${rest} cropped to the largest ${aspectLabel()} box that fits the same area of `
-      + `${own} picture, so every result comes out the shape you locked even though `
-      + `${one ? 'it is' : 'they are'} not the same size as this one.`;
+  if (cropped.length === others.length) {
+    return others.length === 2
+      ? 'Both of the others have a box of their own.'
+      : `All ${others.length} of the others have a box of their own.`;
+  }
+
+  return `${cropped.length} of the other ${others.length} ${cropped.length === 1 ? 'has' : 'have'} `
+    + 'a box of its own; the rest are still on the whole picture.';
+}
+
+/** What the "use this crop on every image" button is about to do. */
+function applyNoteText(reference, count) {
+  const same = items.every((i) => i.size
+    && i.size.width === reference.size.width && i.size.height === reference.size.height);
+
+  if (same) {
+    return `Every image on the list is exactly this size, so ${count === 1 ? 'the other one gets' : 'they all get'} `
+      + 'exactly this box.';
+  }
+
+  return reference.aspectKey === 'free'
+    ? 'The same relative area on each - the same fractions of its own width and height - because '
+      + 'they are not all the same size.'
+    : `The largest ${aspectLabel(reference.aspectKey)} box that fits the same relative area of each, `
+      + 'so every result comes out the shape you locked even though they are not all the same size.';
+}
+
+/** Has anything actually been taken off this picture? */
+function isCropped(item) {
+  return Boolean(item.size && item.crop
+    && (item.crop.width !== item.size.width || item.crop.height !== item.size.height));
 }
 
 /** The locked shape, in the words on the button that set it. */
-function aspectLabel() {
-  return aspectKey === 'source' ? "picture's own shape" : aspectKey;
+function aspectLabel(key) {
+  return key === 'source' ? "picture's own shape" : key;
 }
 
 function renderSizeFields() {
@@ -523,16 +599,22 @@ function renderSummaries() {
 
   // The numbers above belong to the picture on screen, so the sentence that
   // generalises to the rest of the batch says whose numbers they were rather
-  // than claiming every file comes out the same size. With images of different
-  // shapes on the list, they do not.
+  // than claiming every file comes out the same size. They do not: the size
+  // and format settings are shared, and every crop is the image's own.
   const mime = outputMime(reference.file.type);
   const rest = items.length === 1
     ? ''
     : items.length === 2
-      ? ' The other image goes through the same steps at its own size.'
-      : ` The other ${countOf(items.length - 1)} go through the same steps at their own sizes.`;
+      ? ' The other image gets the same size and format settings, with its own crop.'
+      : ` The other ${countOf(items.length - 1)} get the same size and format settings, each with its own crop.`;
 
-  el.planSummary.textContent = outcome.untouched && el.format.value === 'keep'
+  // "Nothing is being changed" is only true of the whole batch when it is true
+  // of every file in it - one image with a box drawn on it is a change, even
+  // if the one in the preview has none.
+  const nothingAtAll = el.format.value === 'keep'
+    && items.every((i) => i.size && previewOf(i).untouched);
+
+  el.planSummary.textContent = nothingAtAll
     ? 'Nothing is cropped, nothing is resized and the format is unchanged, so there is nothing '
       + 'to re-encode: every file is handed straight back byte for byte, EXIF tags and all, '
       + 'because none of them is ever opened up.'
@@ -556,7 +638,6 @@ const settled = () => {
   render();
 };
 
-el.cropMode.addEventListener('change', settled);
 el.resizeMode.addEventListener('change', settled);
 el.format.addEventListener('change', settled);
 el.fit.addEventListener('change', settled);
@@ -611,11 +692,9 @@ el.aspectRow.addEventListener('click', (event) => {
 
 /** Turn the locked shape on its side: 16:9 becomes 9:16. */
 el.swapAspect.addEventListener('click', () => {
-  const aspect = cropper.aspect;
-  if (!aspect) return;
-  aspectKey = flipKey(aspectKey);
-  markAspect();
-  cropper.setAspect(1 / aspect);
+  const reference = referenceItem();
+  if (!reference || !cropper.aspect) return;
+  applyAspect(flipKey(reference.aspectKey));
 });
 
 const flipKey = (key) => {
@@ -623,32 +702,32 @@ const flipKey = (key) => {
   return pair ? `${pair[2]}:${pair[1]}` : key;
 };
 
-function applyAspect(key, { silent = false } = {}) {
-  aspectKey = key;
-  markAspect();
+/** Which shape a key means, for one particular picture. "Original" is the only
+ *  one that depends on the picture, and it is the reason this takes an item. */
+function aspectValue(key, item) {
+  if (key === 'source') return item.size.width / item.size.height;
+  return key === 'free' ? null : parseRatio(key);
+}
 
+/** The shape the visitor pressed, applied to the image on screen and stored on
+ *  it - so coming back to this picture later finds the same lock still on. */
+function applyAspect(key) {
   const reference = referenceItem();
   if (!reference?.size) return;
 
-  const aspect = key === 'free'
-    ? null
-    : key === 'source'
-      ? reference.size.width / reference.size.height
-      : parseRatio(key);
-
-  // On a reference change the shape is re-applied to keep the buttons honest,
-  // but the box itself has just been carried across and should not be moved.
-  if (silent && !aspect) return;
-  cropper.setAspect(aspect);
+  reference.aspectKey = key;
+  markAspect();
+  cropper.setAspect(aspectValue(key, reference));
 }
 
 function markAspect() {
+  const key = referenceItem()?.aspectKey ?? 'free';
   for (const button of el.aspectRow.querySelectorAll('button[data-aspect]')) {
-    const active = button.dataset.aspect === aspectKey;
+    const active = button.dataset.aspect === key;
     button.classList.toggle('active', active);
     button.setAttribute('aria-pressed', String(active));
   }
-  el.swapAspect.disabled = !/^\d+:\d+$/.test(aspectKey);
+  el.swapAspect.disabled = !/^\d+:\d+$/.test(key);
 }
 
 for (const control of [el.cropX, el.cropY, el.cropW, el.cropH]) {
@@ -667,6 +746,35 @@ el.cropCentre.addEventListener('click', () => cropper.centre());
 el.cropReset.addEventListener('click', () => {
   applyAspect('free');
   cropper.reset();
+});
+
+/**
+ * Put this box on every other image as well.
+ *
+ * Each image owning its own rectangle is the point of the step, and it would
+ * be a poor trade if a folder of exports that all want the same framing cost
+ * one drag each. So this is the one place the old batch rule survives, now as
+ * something asked for rather than something that happens: every other image
+ * takes the same relative area - the same fractions of its own width and
+ * height - and, if a shape is locked, the largest box of that shape inside it,
+ * because somebody who pressed 1:1 wants squares.
+ */
+el.cropApplyAll.addEventListener('click', () => {
+  const reference = referenceItem();
+  if (!reference?.size || busy) return;
+
+  const fractions = toFractions(reference.crop, reference.size);
+
+  for (const item of items) {
+    if (item.id === reference.id || !item.size) continue;
+    const rect = fromFractions(fractions, item.size);
+    item.aspectKey = reference.aspectKey;
+    const aspect = aspectValue(reference.aspectKey, item);
+    item.crop = aspect ? ratioCrop(rect, aspect) : rect;
+  }
+
+  clearResults();
+  render();
 });
 
 function writeCropFields(rect) {
@@ -698,29 +806,16 @@ function resizeSettings() {
 }
 
 /**
- * The crop for one image.
+ * The crop for one image: its own box.
  *
- * On the image the box was drawn on it is the box, exactly. On the rest it is
- * the same relative area - the same fractions of their own width and height -
- * which for a batch that is all one size is the same rectangle again.
- *
- * With a shape locked there is one more step, and it is the difference between
- * a tool that works and one that is technically correct: somebody who pressed
- * 1:1 wants squares, and the same relative area of a picture with a different
- * shape is not a square. So the relative area is taken as the region of
- * interest and the largest box of the locked shape inside it is what is kept.
+ * There is no shared rectangle and no reference image any more. Each item owns
+ * a rectangle in its own pixels, opened on the whole picture when the file was
+ * read, so an image nobody has drawn on is passed through whole. "Use this
+ * crop on every image" is the one thing that writes another image's box, and
+ * it writes it here, once, rather than being re-derived on every render.
  */
 function cropFor(item) {
-  if (el.cropMode.value !== 'box' || !cropFractions) return wholeOf(item.size);
-
-  const rect = fromFractions(cropFractions, item.size);
-  if (item.id === referenceId || aspectKey === 'free') return rect;
-
-  const aspect = aspectKey === 'source'
-    ? item.size.width / item.size.height
-    : parseRatio(aspectKey);
-
-  return aspect ? ratioCrop(rect, aspect) : rect;
+  return item.crop ?? wholeOf(item.size);
 }
 
 /** What one image becomes, worked out without touching a pixel. */
@@ -839,6 +934,9 @@ async function processOne(item) {
 /* ---------------------------------------------------------------- results */
 
 function clearResults() {
+  // The viewer is showing one of the URLs about to be revoked, so it cannot be
+  // left open over a picture that no longer exists.
+  if (el.viewer.open) el.viewer.close();
   for (const url of resultUrls) URL.revokeObjectURL(url);
   resultUrls = [];
   results = [];
@@ -854,7 +952,14 @@ function showResults() {
 
   el.results.hidden = false;
 
-  for (const result of results) el.resultList.appendChild(resultRow(result));
+  for (const result of results) {
+    // One object URL per result, made here and kept on the result itself: the
+    // row, the download link and the viewer all want the same picture, and
+    // three URLs for one blob would be three things to remember to revoke.
+    result.url = URL.createObjectURL(result.blob);
+    resultUrls.push(result.url);
+    el.resultList.appendChild(resultRow(result));
+  }
 
   const before = results.reduce((n, r) => n + r.before, 0);
   const after = results.reduce((n, r) => n + r.after, 0);
@@ -887,15 +992,22 @@ function resultRow(result) {
   li.className = 'result-row';
   if (result.untouched) li.classList.add('result-untouched');
 
-  const url = URL.createObjectURL(result.blob);
-  resultUrls.push(url);
+  // The thumbnail is the obvious thing to click for a closer look, so it is a
+  // real button rather than a picture that happens to have a handler on it.
+  const open = document.createElement('button');
+  open.type = 'button';
+  open.className = 'result-open';
+  open.title = `Look at ${result.outName} full size`;
+  open.setAttribute('aria-label', `Look at ${result.outName} full size`);
+  open.addEventListener('click', () => openViewer(result));
 
   const thumb = document.createElement('img');
   thumb.className = 'result-thumb';
-  thumb.src = url;
+  thumb.src = result.url;
   thumb.alt = '';
   thumb.loading = 'lazy';
-  li.appendChild(thumb);
+  open.appendChild(thumb);
+  li.appendChild(open);
 
   const text = document.createElement('div');
   text.className = 'result-text';
@@ -907,17 +1019,12 @@ function resultRow(result) {
 
   const headline = document.createElement('p');
   headline.className = 'result-headline';
-  headline.textContent = result.untouched
-    ? `${dimensions(result.size.width, result.size.height)} · ${humanBytes(result.before)} - unchanged`
-    : `${dimensions(result.size.width, result.size.height)} → ${dimensions(result.canvas.width, result.canvas.height)}`
-      + ` · ${humanBytes(result.before)} → ${humanBytes(result.after)} · ${change(result.before, result.after)}`;
+  headline.textContent = headlineOf(result);
   text.appendChild(headline);
 
   const detail = document.createElement('p');
   detail.className = 'result-detail';
-  detail.textContent = result.untouched
-    ? 'Passed through byte for byte, metadata and all: nothing about this file was being changed.'
-    : describePlan(result.size, result.crop, result, result.mime);
+  detail.textContent = detailOf(result);
   text.appendChild(detail);
 
   li.appendChild(text);
@@ -925,9 +1032,16 @@ function resultRow(result) {
   const actions = document.createElement('div');
   actions.className = 'result-actions';
 
+  const view = document.createElement('button');
+  view.type = 'button';
+  view.className = 'ghost';
+  view.textContent = 'View';
+  view.addEventListener('click', () => openViewer(result));
+  actions.appendChild(view);
+
   const link = document.createElement('a');
   link.className = 'primary as-button';
-  link.href = url;
+  link.href = result.url;
   link.download = result.outName;
   link.textContent = 'Download';
   actions.appendChild(link);
@@ -935,6 +1049,133 @@ function resultRow(result) {
   li.appendChild(actions);
   return li;
 }
+
+/** The before-and-after line, used on the row and again in the viewer. */
+function headlineOf(result) {
+  return result.untouched
+    ? `${dimensions(result.size.width, result.size.height)} · ${humanBytes(result.before)} - unchanged`
+    : `${dimensions(result.size.width, result.size.height)} → ${dimensions(result.canvas.width, result.canvas.height)}`
+      + ` · ${humanBytes(result.before)} → ${humanBytes(result.after)} · ${change(result.before, result.after)}`;
+}
+
+function detailOf(result) {
+  return result.untouched
+    ? 'Passed through byte for byte, metadata and all: nothing about this file was being changed.'
+    : describePlan(result.size, result.crop, result, result.mime);
+}
+
+/* ------------------------------------------------------------------ viewer */
+
+/*
+  The big look at one result.
+
+  A <dialog> opened with showModal(), not a div pretending to be one: Escape,
+  the focus trap and an inert background all come free and all come correct.
+
+  Everything in it is already on this page - the result's own object URL, and
+  the original's, which has existed since the thumbnail was drawn - so opening
+  it fetches nothing and decodes nothing that was not already decoded.
+*/
+
+/** Which result the viewer is showing, and whether it is showing the original
+ *  rather than the result. Held here so the compare toggle has something to
+ *  toggle without the dialog being rebuilt. */
+let viewing = null;
+let viewingOriginal = false;
+
+function openViewer(result) {
+  viewing = result;
+  viewingOriginal = false;
+  paintViewer();
+  el.viewer.showModal();
+}
+
+function paintViewer() {
+  const result = viewing;
+  if (!result) return;
+  const original = viewingOriginal;
+
+  el.viewerName.textContent = result.outName;
+  el.viewerImage.src = original ? result.item.thumbUrl : result.url;
+  el.viewerImage.alt = `${original ? 'The original' : 'The result'}: ${result.name}`;
+
+  el.viewerCaption.textContent = original
+    ? `The original ${result.name}, at ${dimensions(result.size.width, result.size.height)}. Both are shown at the size this dialog has room for, which is the only fair way to compare them.`
+    : detailOf(result);
+
+  // A file that was passed through untouched *is* the original, so there is
+  // nothing to compare it against and the toggle would swap in the same
+  // picture twice.
+  el.viewerCompare.hidden = result.untouched;
+  el.viewerCompare.textContent = original ? 'Show the result' : 'Show the original';
+  el.viewerCompare.setAttribute('aria-pressed', String(original));
+
+  el.viewerDownload.href = result.url;
+  el.viewerDownload.download = result.outName;
+
+  el.viewerFacts.replaceChildren();
+  for (const [term, value] of viewerFacts(result)) {
+    const row = document.createElement('div');
+    const dt = document.createElement('dt');
+    dt.textContent = term;
+    const dd = document.createElement('dd');
+    dd.textContent = value;
+    row.append(dt, dd);
+    el.viewerFacts.appendChild(row);
+  }
+}
+
+/** Everything worth knowing about one finished file, as pairs. */
+function viewerFacts(result) {
+  const facts = [
+    ['Saved as', result.outName],
+    ['Format', FORMATS[result.mime]?.label ?? result.mime],
+    ['Before', `${dimensions(result.size.width, result.size.height)} · ${humanBytes(result.before)}`],
+  ];
+
+  if (result.untouched) {
+    facts.push(['After', 'the same file, byte for byte']);
+    facts.push(['Metadata', 'kept - this file was never opened up']);
+    return facts;
+  }
+
+  facts.push(['After', `${dimensions(result.canvas.width, result.canvas.height)} · ${humanBytes(result.after)}`]);
+  facts.push(['File size', change(result.before, result.after)]);
+
+  const cropped = result.crop.width !== result.size.width || result.crop.height !== result.size.height;
+  facts.push(['Cropped', cropped
+    ? `${dimensions(result.crop.width, result.crop.height)}, from ${result.crop.x} across and ${result.crop.y} down`
+    : 'no - the whole picture went through']);
+
+  facts.push(['Scale', `${scaleText(result.scale)} of ${cropped ? 'the crop' : 'the original'}`]);
+  if (result.padded) facts.push(['Padding', 'yes - the picture sits on the background colour']);
+  if (FORMATS[result.mime]?.lossy) facts.push(['Quality', el.quality.value]);
+  facts.push(['Metadata', 'not carried over - a canvas holds pixels and nothing else']);
+
+  return facts;
+}
+
+el.viewerCompare.addEventListener('click', () => {
+  viewingOriginal = !viewingOriginal;
+  paintViewer();
+});
+
+el.viewerClose.addEventListener('click', () => el.viewer.close());
+
+// A click that lands on the <dialog> itself rather than on anything inside it
+// is a click on the backdrop, which is the other way people expect to close
+// one. Escape is the browser's, and needs nothing here.
+el.viewer.addEventListener('click', (event) => {
+  if (event.target === el.viewer) el.viewer.close();
+});
+
+el.viewer.addEventListener('close', () => {
+  viewing = null;
+  viewingOriginal = false;
+  // Let go of the picture rather than leaving a decoded copy attached to a
+  // hidden element for as long as the tab is open.
+  el.viewerImage.removeAttribute('src');
+});
 
 /** Hand a blob to the browser's downloads. */
 function saveBlob(blob, name) {

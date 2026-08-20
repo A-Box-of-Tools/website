@@ -158,13 +158,14 @@ body = """
       anywhere while you do it."""
 
 [[howto]]
-title = "Crop first, if you want to."
+title = "Crop, if you want to."
 body = """
- Drag the box over the preview, or
-      lock it to a shape &mdash; 1:1 for a profile picture, 9:16 for a story, 16:9
-      for a thumbnail &mdash; and press "Largest" for the biggest one that fits.
-      With several images on the list, the box is drawn on one of them and the
-      rest get the same relative area."""
+ The box starts on the whole picture, so
+      leaving it alone crops nothing. Drag it, or lock it to a shape &mdash; 1:1
+      for a profile picture, 9:16 for a story, 16:9 for a thumbnail &mdash; and
+      press "Largest" for the biggest one that fits. Every image keeps its own
+      box: click any row in the list to draw on that one instead. If they should
+      all be framed the same way, one button does that too."""
 
 [[howto]]
 title = "Say what size it should come out."
@@ -179,7 +180,9 @@ title = "Pick the format, then press the button."
 body = """
  Keep what each file
       arrived as, or write everything as JPEG, PNG or WebP. Each result says what
-      it became and how much smaller it got, and a batch comes down as one zip."""
+      it became and how much smaller it got; click one to open it full size with
+      every figure behind it, and the original beside it to compare against. A
+      batch comes down as one zip."""
 
 # Each answer renders twice: as the <details> block at the foot of the page, and
 # as FAQPage structured data in the head. The build derives the plain-text half
@@ -218,15 +221,24 @@ a = """
         and the quality slider is what you spend there."""
 
 [[faq]]
-q = "Can it crop a whole batch at once?"
+q = "Can I crop each image differently?"
 a = """
-        Yes. The box is drawn on one image &mdash; the one in the preview, and you
-        can point that at any file on the list &mdash; and every other image is
-        cropped to the same relative area: the same fractions of its own width and
-        height. For a set of screenshots or exports that are all the same size, that
-        is the same box exactly, and the page says so. For a mixed batch it is the
-        same framing rather than the same rectangle, and the page says that
-        instead."""
+        Yes &mdash; that is the default. Every image on the list carries its own box,
+        in its own pixels, and clicking a row puts that image in the preview with its
+        own box and its own locked shape back on it. Nothing you do to one affects
+        another. Every box also starts on the whole picture, so an image you never
+        draw on is not cropped at all."""
+
+[[faq]]
+q = "Can it crop a whole batch the same way at once?"
+a = """
+        Yes, with the button under the preview. It gives every other image the same
+        relative area &mdash; the same fractions of its own width and height &mdash;
+        which for a set of screenshots or exports that are all the same size is the
+        same box exactly, and the page says so. With a shape locked it gives each one
+        the largest box of that shape inside that area instead, so pressing 1:1 and
+        then that button gets you squares out of a folder of mixed portrait and
+        landscape shots. Every box stays editable afterwards."""
 
 [[faq]]
 q = "Which formats can it read and write?"
@@ -293,8 +305,9 @@ features = [
   "Resize by exact pixels, by a long edge, or by a percentage",
   "Fill in one side and the other follows the picture's own shape",
   "Fit inside, fill and crop, pad to an exact frame, or stretch",
-  "A draggable crop box, lockable to 1:1, 4:5, 9:16, 16:9, 4:3 or 3:2",
-  "One crop box applied across a whole batch",
+  "A draggable crop box per image, lockable to 1:1, 4:5, 9:16, 16:9, 4:3 or 3:2",
+  "Crops every image differently, or puts one framing across the whole batch in a click",
+  "Opens each finished picture full size, with every figure behind it and the original to compare against",
   "Converts between JPEG, PNG and WebP, with a quality control and a background colour",
   "Never enlarges a picture unless you ask it to",
   "Hands back untouched any file it was not asked to change",

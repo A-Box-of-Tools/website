@@ -28,24 +28,18 @@
     <h2><span class="step">2</span> Crop, if you want to</h2>
 
     <p class="card-lede">
-      Cropping happens first and resizing happens to what is left, which is the
-      only order that makes sense: a picture cut down after it has been shrunk
-      has already thrown away the pixels it needed. Skip this step entirely and
-      the whole picture goes through.
+      The box starts on the whole picture, so leaving this step alone crops
+      nothing. Every image keeps its own box &mdash; pick one from the list
+      above to draw on it. Cropping happens before resizing, which is the only
+      order that makes sense: a picture cut down after it has been shrunk has
+      already thrown away the pixels it needed.
     </p>
-
-    <div class="option-row">
-      <label for="crop-mode">Crop</label>
-      <select id="crop-mode">
-        <option value="none" selected>No &mdash; keep the whole picture</option>
-        <option value="box">Yes &mdash; to the box below</option>
-      </select>
-    </div>
 
     <p id="crop-empty" class="field-summary">Add an image and the box appears here.</p>
 
     <div id="crop-controls" hidden>
       <p class="stage-hint">
+        <span id="stage-name" class="stage-name"></span>
         Drag inside the box to move it, or any corner to resize. With the box
         focused, the arrow keys nudge it a pixel at a time,
         <kbd>Alt</kbd>&nbsp;+&nbsp;arrows resize it, and holding
@@ -88,6 +82,16 @@
             <button type="button" id="crop-centre" class="ghost">Centre</button>
             <button type="button" id="crop-reset" class="ghost">Whole picture</button>
           </div>
+        </div>
+
+        <!--
+          Every image keeps its own box, which is the point. This is for the
+          case that is still worth one click: a folder of exports that all want
+          the same framing.
+        -->
+        <div class="apply-row" id="apply-row" hidden>
+          <button type="button" id="crop-apply-all" class="ghost">Use this crop on every image</button>
+          <p class="hint-line" id="apply-note"></p>
         </div>
       </div>
     </div>
@@ -243,4 +247,33 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    The big look at one result. A <dialog> opened with showModal() rather than
+    a div pretending to be one: the browser gives the focus trap, the Escape
+    key and the inert background for nothing, and gets all three right.
+
+    Both pictures in it are object URLs made on this page - the result, and the
+    original that was already decoded for the thumbnail. Opening this fetches
+    nothing and decodes nothing that was not already decoded.
+  -->
+  <dialog id="viewer" class="viewer" aria-labelledby="viewer-name">
+    <div class="viewer-head">
+      <h2 id="viewer-name" class="viewer-name"></h2>
+      <button type="button" id="viewer-close" class="ghost" aria-label="Close">Close</button>
+    </div>
+
+    <div class="viewer-stage">
+      <img id="viewer-image" alt="">
+    </div>
+
+    <p id="viewer-caption" class="viewer-caption"></p>
+
+    <dl class="viewer-facts" id="viewer-facts"></dl>
+
+    <div class="viewer-actions">
+      <button type="button" id="viewer-compare" class="ghost" aria-pressed="false">Show the original</button>
+      <a id="viewer-download" class="primary as-button" download>Download</a>
+    </div>
+  </dialog>
 </main>
