@@ -1,4 +1,4 @@
-/* Styles for the hub page only. Each tool ships its own stylesheet so that it
+/* Styles for the hub page and the legal pages under pages/. Each tool ships its own stylesheet so that it
    stays self-contained and can be read, audited, or moved on its own. */
 
 :root {
@@ -10,6 +10,8 @@
   --text: #16191d;
   --text-dim: #5d6672;
   --accent: #2b6cb0;
+  --accent-deep: #1d4f83;
+  --accent-pale: #d7e7f7;
   --radius: 10px;
   --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 12px rgb(16 24 40 / 4%);
 }
@@ -23,6 +25,8 @@
     --text: #e8eaed;
     --text-dim: #9aa4b2;
     --accent: #5b9bd8;
+    --accent-deep: #3772ab;
+    --accent-pale: #cfe3f8;
     --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 20%);
   }
 }
@@ -239,19 +243,132 @@ code {
 .p-name { font-weight: 600; color: var(--text); }
 .p-desc { font-size: 0.85rem; }
 
+/* ---- legal pages ------------------------------------------------------- */
+
+/* Privacy and Terms. Narrower than the hub, because these are read as prose
+   rather than scanned as a grid.
+
+   The site mark below is drawn by the footer's home link. Its rules are the
+   same ones tool pages get from shared/css/tool-frame.css; they are repeated
+   here because site.css is a whole stylesheet rather than one of the parts the
+   build assembles, and the two are small enough that a copy beats a build
+   step. If one changes, change the other. */
+
+.brand-home { color: inherit; text-decoration: none; }
+.brand-home:hover { color: var(--accent); }
+
+.site-logo {
+  width: 1.35em;
+  height: 1.35em;
+  margin-right: 0.15em;
+}
+
+.logo-lid { stroke: var(--accent); }
+.logo-tool { fill: var(--accent-deep); }
+.logo-tool-alt { fill: var(--accent); }
+.logo-box { fill: var(--accent-deep); }
+.logo-band { fill: var(--accent); }
+.logo-latch { fill: var(--accent-pale); }
+
+.legal-date {
+  margin: 1rem 0 0;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+.legal { max-width: 68ch; }
+
+.legal section { margin: 0 0 2.25rem; }
+
+.legal h2 {
+  margin: 0 0 0.7rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.legal h3 {
+  margin: 1.5rem 0 0.45rem;
+  font-size: 0.95rem;
+}
+
+.legal p { margin: 0 0 0.85rem; }
+.legal ul { margin: 0 0 0.95rem; padding-left: 1.25rem; }
+.legal li { margin: 0.3rem 0; }
+.legal a { color: var(--accent); }
+
 /* ---- footer ------------------------------------------------------------ */
 
+/* A link footer in the shape the large media-tool sites use: a few columns of
+   plain links, left aligned, each under a quiet heading. It is the second
+   navigation, for anyone who scrolled to the bottom looking for one, and it is
+   the only route to the legal pages - a centred line of prose had nowhere to
+   put them.
+
+   Flex rather than grid, so the columns fall to two-up and then one-up on a
+   narrow screen without a media query. The brand column gets twice the basis of
+   a link column, because it carries a sentence rather than a list. */
+
 footer {
-  margin-top: 2.5rem;
-  padding-top: 1.5rem;
+  margin-top: 3rem;
+  padding-top: 1.75rem;
   border-top: 1px solid var(--border);
   color: var(--text-dim);
-  font-size: 0.82rem;
+  font-size: 0.85rem;
+}
+
+.footer-cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+}
+
+.footer-col { flex: 1 1 150px; min-width: 0; }
+.footer-brand { flex: 2 1 240px; }
+
+.footer-col strong {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.footer-brand p { margin: 0.55rem 0 0; max-width: 34ch; }
+
+footer p { margin: 0.35rem 0; }
+footer a { color: var(--accent); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+.footer-base {
+  margin: 1.75rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
   text-align: center;
 }
 
-footer p { margin: 0.35rem 0; }
-footer a { color: var(--accent); }
+/* The way back to the hub, with the site mark on it. It heads the brand column
+   now rather than sitting inline in a sentence, so it is a flex row and carries
+   its own weight and colour. */
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--text);
+  font-weight: 600;
+}
 
 
 /* ------------------------------------------------------------- ad placement */

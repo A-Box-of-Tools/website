@@ -1,0 +1,60 @@
+<!--
+  The footer every page wears: a few columns of plain links, left aligned under
+  quiet headings, in the shape the large media-tool sites use. It is the second
+  navigation, for anyone who scrolled to the bottom looking for one, and it is
+  the only route to the legal pages.
+
+  This used to be three different footers kept in step by hand. It is one now,
+  and the only thing that differs between a hub, a tool and a legal page is
+  `base`: './' at the root, '../' one level down. Every link below is built from
+  it, so nothing here has to know which kind of page it landed on.
+
+  The tool list and the legal-page list are passed in by build.py from the
+  folders that exist, so a new tool or a new page appears here without anybody
+  remembering to add it.
+-->
+<footer>
+  <div class="footer-cols">
+    <div class="footer-col footer-brand">
+      <a class="home-link" href="{{ base }}">
+{% include "partials/site-mark.html" %}
+        abox.tools
+      </a>
+      <p>
+{{ site.footer.blurb }}
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <strong>Tools</strong>
+      <ul>
+{% for t in footer.tools %}        <li><a href="{{ base }}{{ t.slug }}/">{{ t.name | e }}</a></li>
+{% endfor %}      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>This site</strong>
+      <ul>
+        <li><a href="{{ base }}">All tools</a></li>
+{% for p in footer.pages %}        <li><a href="{{ base }}{{ p.slug }}/">{{ p.nav }}</a></li>
+{% endfor %}        <li><a href="/sitemap.xml">Sitemap</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>Get in touch</strong>
+      <ul>
+        <li>
+          <a href="{{ site.source_url }}" target="_blank" rel="noopener noreferrer">
+            Read the code on GitHub
+          </a>
+        </li>
+        <li><a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="footer-base">
+{{ site.footer.base }}
+  </p>
+</footer>

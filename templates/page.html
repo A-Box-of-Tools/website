@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  GENERATED FILE - do not edit. Built by build.py from templates/page.html,
+  config/site.toml, and pages/{{ page.slug }}/{page.toml,body.html}.
+  Edit those and run `python build.py`.
+
+  A "page" here is a prose page that is not a tool and not the hub: the legal
+  pages. It gets the site frame, the same Content-Security-Policy as everywhere
+  else, and the same footer, and nothing else - no service worker, because there
+  is nothing to keep working offline, and no blob: in img-src, because it never
+  makes one.
+-->
+<!--
+  This page carries advertising, and ad code cannot run under default-src
+  'none'. The allowlist below is generated from config/site.toml, the same one
+  every other page is built from, so they cannot drift apart. The reasoning
+  behind each entry is written down beside the list in that file.
+-->
+{{ csp }}
+<title>{{ page.title }}</title>
+<meta name="description" content="{{ page.description }}">
+
+<link rel="canonical" href="{{ page.url }}">
+
+<meta name="google-adsense-account" content="{{ site.adsense_client }}">
+
+{% include "partials/head-scripts.html" %}
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:url" content="{{ page.url }}">
+<meta property="og:title" content="{{ page.og_title }}">
+<meta property="og:description" content="{{ page.og_description }}">
+<meta property="og:image" content="{{ site.domain }}og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ page.og_image_alt }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page.og_title }}">
+<meta name="twitter:description" content="{{ page.og_description }}">
+<meta name="twitter:image" content="{{ site.domain }}og.png">
+
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+</head>
+<body>
+
+<header class="hub-head">
+  <p class="brand">
+    <a class="brand-home" href="../">
+      <span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools
+    </a>
+  </p>
+  <h1>{{ page.heading }}</h1>
+  <p class="lede">
+{{ page.lede }}
+  </p>
+  <p class="legal-date">Last updated {{ page.updated }}</p>
+</header>
+
+<main class="legal">
+{{ body }}
+</main>
+
+{% include "partials/footer.html" %}
+
+</body>
+</html>

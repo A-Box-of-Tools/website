@@ -1,0 +1,180 @@
+  <section>
+    <h2>Your files</h2>
+    <p>
+      Every tool on this site does its work inside your own browser, on your own
+      hardware. When you choose a file, it is read by the page you already have
+      open. It is not sent to us, because there is no server of ours for it to be
+      sent to &mdash; this site is a set of static files, with no backend, no
+      database, and no storage.
+    </p>
+    <p>
+      That means we never receive, see, store, log, or process:
+    </p>
+    <ul>
+      <li>your files, in whole or in part</li>
+      <li>thumbnails or previews of them</li>
+      <li>their names, sizes, dimensions, or formats</li>
+      <li>how many you chose, or what you did with them</li>
+      <li>anything read out of them, including EXIF and GPS data</li>
+    </ul>
+    <p>
+      This is not a promise about our intentions. Each page carries a
+      <code>Content-Security-Policy</code> that names every address the page is
+      allowed to contact, and the browser enforces it. None of those addresses
+      belong to us. You can read the policy at the top of any page's source, or
+      open your browser's Network tab and watch: no request carries your file.
+    </p>
+    <p>
+      Files you produce with a tool are handed to your browser's own download
+      mechanism and saved wherever you tell it to. We are not involved in that
+      step either.
+    </p>
+  </section>
+
+  <section>
+    <h2>The one exception, and where it applies</h2>
+    <p>
+      The <a href="../images-to-video/">Images to Video</a> tool has an
+      &ldquo;add from a web address&rdquo; feature. If you paste an address into
+      it, your browser fetches that image from whatever server you named, and
+      <strong>that server sees your IP address</strong> and which file you asked
+      for. That is unavoidable, and it is the whole nature of the feature.
+    </p>
+    <p>
+      It only ever happens for addresses you type in yourself, it is built so
+      that images can come in but data cannot go out, and that tool's own page
+      explains it in more detail. No other tool on this site can make an outbound
+      request with anything of yours in it.
+    </p>
+  </section>
+
+  <section>
+    <h2>What is collected, and by whom</h2>
+    <p>
+      This site is free and is paid for by advertising. That means two Google
+      products run on these pages, and a donate button runs on most of them.
+      Here is the whole list.
+    </p>
+
+    <h3>Google AdSense &mdash; the ads</h3>
+    <p>
+      Google serves the ads and decides which ones you see. To do that it may
+      set and read cookies or similar identifiers in your browser, and it
+      receives your IP address, an approximate location derived from it, your
+      user agent, and which page you were on. Depending on your settings and
+      where you are, the ads may be personalised using a profile Google holds
+      about you, built largely from your activity on other sites.
+    </p>
+    <p>
+      We do not receive any of that, we cannot see it, and we never send Google
+      anything about your files. Google's own account of how it uses data from
+      sites that run its ads is at
+      <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
+    </p>
+
+    <h3>Google Analytics &mdash; the visit counter</h3>
+    <p>
+      We use Google Analytics 4 to count page visits, so we know which tools are
+      worth working on. It records the page you viewed, roughly when, a randomly
+      generated identifier stored in your browser, an approximate location, your
+      device and browser type, and the site that referred you.
+    </p>
+    <p>
+      It is configured to do nothing else, and the configuration is a file you
+      can read: <code>analytics.js</code> beside each page sets up a page-view
+      counter and contains no custom events at all. Nothing on this site passes
+      it a file, a filename, a dimension or a count &mdash; there is no code here
+      that could.
+    </p>
+
+    <h3>Buy Me a Coffee &mdash; the donate button</h3>
+    <p>
+      The hub page and the tool pages carry a donate button, which loads from
+      Buy Me a Coffee's servers. Loading it means their CDN sees your IP address
+      and that you were on this site, and the button's lettering is fetched from
+      Google Fonts, which likewise sees your IP address. Nothing else is sent,
+      and nothing further happens unless you actually click it, at which point
+      you are on their site under their policies. This page and the
+      <a href="../terms/">Terms page</a> do not draw the button.
+    </p>
+
+    <h3>Hosting</h3>
+    <p>
+      The site is served by GitHub Pages, behind Cloudflare. Like any web host,
+      they process the requests your browser makes &mdash; which includes your IP
+      address, the page requested, and your user agent &mdash; in order to deliver
+      the page and to keep the service up and secure. We do not have access to
+      per-visitor logs from either of them.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cookies</h2>
+    <p>
+      We do not set any cookies of our own. We have no login, no session, no
+      preferences to remember, and no reason to.
+    </p>
+    <p>
+      Every cookie or similar identifier you may find here belongs to Google and
+      is set by the advertising and analytics scripts described above. They are
+      used to measure visits, and to select and cap ads.
+    </p>
+    <h3>How to switch it off</h3>
+    <ul>
+      <li>
+        Ad personalisation can be turned off, for all sites at once, at
+        <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer nofollow">My Ad Center</a>.
+      </li>
+      <li>
+        Google Analytics can be blocked everywhere with Google's
+        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer nofollow">opt-out browser add-on</a>.
+      </li>
+      <li>
+        Your browser's own settings can block or clear third-party cookies, and
+        any content blocker will stop these scripts loading in the first place.
+      </li>
+    </ul>
+    <p>
+      Blocking all of it is fine by us. <strong>Every tool on this site works
+      with the scripts blocked, and works with the network disconnected
+      entirely.</strong> Nothing here is held back behind an ad.
+    </p>
+  </section>
+
+  <section>
+    <h2>Your rights over the data</h2>
+    <p>
+      We hold no personal data about you, so there is nothing for us to show you,
+      correct, export, or delete &mdash; a request to us would come back empty,
+      honestly.
+    </p>
+    <p>
+      The data described above is held by Google, who act as their own controller
+      for it. Requests about it have to go to them, through
+      <a href="https://myaccount.google.com/" target="_blank" rel="noopener noreferrer nofollow">your Google account</a>
+      or their privacy contacts.
+    </p>
+  </section>
+
+  <section>
+    <h2>Children</h2>
+    <p>
+      This site is not directed at children and asks nobody for their age,
+      because it asks nobody for anything. We knowingly collect no personal data
+      from anyone, of any age.
+    </p>
+  </section>
+
+  <section>
+    <h2>Changes, and how to reach us</h2>
+    <p>
+      If this page changes, the date at the top changes with it, and the edit is
+      in the public commit history along with everything else.
+    </p>
+    <p>
+      Questions about any of this can go to
+      <a href="mailto:hi@abox.tools">hi@abox.tools</a>, or be raised as an issue
+      on <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">the repository</a>,
+      where the answer is visible to everyone else wondering the same thing.
+    </p>
+  </section>

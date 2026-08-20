@@ -1,0 +1,22 @@
+#
+# The Terms page. Prose lives next door in body.html.
+#
+
+slug = "terms"
+nav = "Terms of Use"
+
+title = "Terms of Use &mdash; abox.tools"
+description = "The terms this site is offered under: free, as-is, no account, no warranty, and your files remain entirely your own because they are never sent to us."
+
+heading = "Terms of Use"
+lede = """
+    There is no account to open and no agreement to sign, so these are short.
+    They describe what you may expect from this site, and what it does not
+    promise."""
+
+updated = "19 August 2026"
+lastmod = "2026-08-19"
+
+og_title = "Terms of Use &mdash; abox.tools"
+og_description = "Free, as-is, no account, no warranty. Your files remain entirely your own."
+og_image_alt = "abox.tools - tools that never touch a server"

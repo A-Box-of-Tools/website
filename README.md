@@ -96,15 +96,16 @@ config/
 templates/
   hub.html               the hub page
   tool.html              the frame every tool page wears
+  page.html              the frame a prose page wears - the legal ones
   sw.js                  the offline service worker
   analytics.js           the Google Analytics bootstrap
   sitemap.xml
-  partials/              the pieces shared between hub and tool pages
+  partials/              the pieces shared between all three, incl. the footer
 shared/
   css/
     tool-frame.css       the stylesheet every tool page starts from
     file-list.css        an optional part, for tools that show a list of files
-  site.css               the hub's own stylesheet
+  site.css               the stylesheet for the hub and the legal pages
   logo.svg               the site mark; also the favicon, and inlined in the pages
   icon-180.png           the same mark as a PNG, for iOS home screens
   og.png                 the hub's share card
@@ -119,6 +120,11 @@ tools/
     og.png               its share card
   exif-editor/           the same five things
   images-to-video/       and again
+pages/
+  privacy/
+    page.toml            title, description, dates - the frame, not the prose
+    body.html            the <main> of the page
+  terms/                 the same two things
 og-image.ps1             draws the share cards and the icon from shared/logo.svg
 serve.ps1                builds, then serves dist/ locally
 cloudflare/              the edge config that adds the security headers
@@ -150,6 +156,7 @@ something the build does, and cannot forget to do:
 | "Bump `CACHE_NAME` whenever any listed file changes" | The service worker's asset list is read off the disk, and its cache name is a hash of those files, so it changes exactly when they do. |
 | "Add one `<li>` card to the matching category, and an entry to `sitemap.xml`" | The hub's cards, its `ItemList` structured data and `sitemap.xml` all come from the tools that exist in `tools/`. |
 | Four copies of the repository URL per page | `source_url` in `config/site.toml`. |
+| Three different footers, none of which linked to a privacy policy because there was nowhere to put one | One `templates/partials/footer.html`. Its tool list and legal-page list come from `tools/` and `pages/`, and the only thing that differs per page is whether links start `./` or `../`. |
 
 The build refuses to produce a site rather than produce a broken one. A missing
 config key, a tool whose folder and `slug` disagree, a tool listed on the hub
@@ -175,6 +182,11 @@ nothing would link to it — are all errors, not warnings.
 4. If it belongs to a category that does not exist yet, add a
    `[[hub.categories]]` table and move that name out of `config/planned.toml`.
 
+   You do **not** have to touch the footer, the sitemap, or the other pages. The
+   footer's tool list is derived from `tools/` in the order the hub shows them,
+   so a new tool appears in the footer of every page - hub, tool and legal - as
+   soon as it exists.
+
    Before adding a *new* name to the planned list, put it through
    [What can be built here](#what-can-be-built-here) first. That section is
    where the ruled-out ones, and the reasons they were ruled out, live.
@@ -198,6 +210,56 @@ Two things to hold the line on, because the whole site rests on them:
   language, and explains exactly what leaves the machine. Images to Video does this
   for its "add from a web address" feature (see below). What it must not do is
   weaken the site-wide claim quietly.
+
+---
+
+## The legal pages
+
+`pages/` holds the prose pages that are neither the hub nor a tool: Privacy and
+Terms. One is built exactly like a tool page, minus everything a tool needs and
+a page does not.
+
+```
+pages/privacy/
+  page.toml    slug, nav label, title, description, dates, share-card text
+  body.html    the <main> - sections of prose and nothing else
+```
+
+`nav` is the label the footer uses. The page gets the site frame, the site's
+Content-Security-Policy unchanged, an entry in `sitemap.xml` at a low priority,
+and a link in the footer of every page on the site. It gets no service worker,
+because there is nothing here worth keeping offline, and no `blob:` in
+`img-src`, because it never makes one.
+
+**These pages get the same CSP as everywhere else, and that is the point.**
+Written by hand, they carried a narrowed copy that left out the donate button's
+two origins, on the reasoning that a page which never draws the button should
+not name them. That is a defensible argument and it is also exactly the kind of
+argument that produces four policies which disagree. One list in one file ends
+it. If the difference ever matters enough to want back, it belongs in
+`config/site.toml` as a `[page_csp]` table the way `[tool_csp]` already works —
+not as a hand-edit.
+
+### What is in them, and what is not
+
+The Privacy page describes what actually happens rather than what would be
+reassuring: files never leave the browser, with the CSP offered as proof, and
+then every third party named in turn — AdSense, Analytics, the donate button's
+CDN, Google Fonts, and the hosting — each with the way to switch it off, and the
+line that makes those safe to take: every tool still works with all of it
+blocked and the network unplugged.
+
+Two things it does **not** claim, deliberately:
+
+- **There is no cookie consent banner.** The page is honest about the cookies
+  and links to Google's opt-outs, which is not the same thing as consent. If
+  this site takes meaningful EU or UK traffic, AdSense's own policy expects a
+  consent management platform, and that is a real piece of work rather than a
+  paragraph.
+- **The governing-law clause names Canada but not a province.** It says "the
+  laws of Canada and of the province in which the site is operated". Naming the
+  province outright is one line in `pages/terms/body.html` and makes the clause
+  easier to rely on; it was left open rather than guessed at.
 
 ---
 

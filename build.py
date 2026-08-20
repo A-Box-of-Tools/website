@@ -56,6 +56,7 @@ ROOT = Path(__file__).parent.resolve()
 TEMPLATES = ROOT / 'templates'
 CONFIG = ROOT / 'config'
 TOOLS = ROOT / 'tools'
+PAGES = ROOT / 'pages'
 SHARED = ROOT / 'shared'
 
 
@@ -98,26 +99,47 @@ def build(out, clean=False):
         raise sitelib.ConfigError(f'no tools found under {TOOLS}')
     by_slug = {tool['slug']: tool for tool in tools}
 
-    pages = []
+    prose = [sitelib.load_page(path, site)
+             for path in sorted(PAGES.glob('*/page.toml'))]
+
+    # What the footer on every page is built from. Derived from the folders that
+    # exist rather than written down anywhere, so a new tool or a new legal page
+    # reaches every footer on the site without a second edit.
+    # Tools in the order the hub shows them, not the order the folders happen to
+    # sort in, so the footer and the cards above it agree. A slug named here that
+    # has no tool, or a tool named nowhere, is caught by build_hub below.
+    ordered = [by_slug[slug]
+               for category in site['hub']['categories']
+               for slug in category['order'] if slug in by_slug]
+    footer = {
+        'tools': [{'name': tool['name'], 'slug': tool['slug']} for tool in ordered],
+        'pages': [{'nav': page['nav'], 'slug': page['slug']} for page in prose],
+    }
+
+    written = []
     for tool in tools:
-        build_tool(out, templates, site, tool)
-        pages.append(f'{tool["slug"]}/index.html')
+        build_tool(out, templates, site, tool, footer)
+        written.append(f'{tool["slug"]}/index.html')
 
-    build_hub(out, templates, site, planned, by_slug)
-    pages.append('index.html')
+    for page in prose:
+        build_page(out, templates, site, page, footer)
+        written.append(f'{page["slug"]}/index.html')
 
-    build_sitemap(out, templates, site, tools)
-    pages.append('sitemap.xml')
+    build_hub(out, templates, site, planned, by_slug, footer)
+    written.append('index.html')
+
+    build_sitemap(out, templates, site, tools, prose)
+    written.append('sitemap.xml')
 
     copy_shared(out)
-    return pages
+    return written
 
 
 # ---------------------------------------------------------------------------
 # One tool
 
 
-def build_tool(out, templates, site, tool):
+def build_tool(out, templates, site, tool, footer):
     dest = out / tool['slug']
     dest.mkdir(parents=True, exist_ok=True)
 
@@ -137,6 +159,8 @@ def build_tool(out, templates, site, tool):
     write(dest / 'index.html', templates.render('tool.html', {
         'site': site,
         'tool': tool,
+        'footer': footer,
+        'base': '../',
         'csp': sitelib.render_csp(site['csp'], site.get('tool_csp', {}), tool['csp']),
         'jsonld': sitelib.tool_jsonld(site, tool),
         'body': body_path.read_text(encoding='utf-8').rstrip('\n'),
@@ -188,10 +212,44 @@ def tool_css(tool):
 
 
 # ---------------------------------------------------------------------------
+# One prose page (the legal ones)
+
+
+def build_page(out, templates, site, page, footer):
+    """A legal page: the site frame around a body.html, and nothing else.
+
+    No service worker, because there is nothing here worth keeping offline, and
+    no CSP of its own - it gets the site policy unchanged, which is the point.
+    When these pages were written by hand they carried a hand-narrowed copy that
+    left out the donate button's origins; one policy in one file ended that
+    argument by making it impossible to have."""
+    dest = out / page['slug']
+    dest.mkdir(parents=True, exist_ok=True)
+
+    body_path = page['dir'] / 'body.html'
+    if not body_path.is_file():
+        raise sitelib.ConfigError(f'{page["slug"]}: no body.html')
+
+    write(dest / 'index.html', templates.render('page.html', {
+        'site': site,
+        'page': page,
+        'footer': footer,
+        'base': '../',
+        'csp': sitelib.render_csp(site['csp']),
+        'body': body_path.read_text(encoding='utf-8').rstrip('\n'),
+    }))
+
+    write(dest / 'analytics.js', templates.render('analytics.js', {
+        'site': site,
+        'words': {'plural': 'files', 'analytics_extra': ''},
+    }))
+
+
+# ---------------------------------------------------------------------------
 # The hub
 
 
-def build_hub(out, templates, site, planned, by_slug):
+def build_hub(out, templates, site, planned, by_slug, footer):
     categories = []
     listed = set()
     for category in site['hub']['categories']:
@@ -224,6 +282,8 @@ def build_hub(out, templates, site, planned, by_slug):
         'site': site,
         'planned': planned,
         'categories': categories,
+        'footer': footer,
+        'base': './',
         'csp': sitelib.render_csp(site['csp']),
         'jsonld': sitelib.hub_jsonld(site, ordered),
     }))
@@ -234,11 +294,14 @@ def build_hub(out, templates, site, planned, by_slug):
     }))
 
 
-def build_sitemap(out, templates, site, tools):
+def build_sitemap(out, templates, site, tools, prose):
     pages = [{'url': site['domain'], 'lastmod': site['lastmod'],
               'changefreq': 'weekly', 'priority': '1.0'}]
     pages += [{'url': tool['url'], 'lastmod': tool['lastmod'],
                'changefreq': 'monthly', 'priority': '0.8'} for tool in tools]
+    # The legal pages last, and low: they matter for trust, not for search.
+    pages += [{'url': page['url'], 'lastmod': page['lastmod'],
+               'changefreq': 'yearly', 'priority': '0.3'} for page in prose]
     write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': pages}))
 
 

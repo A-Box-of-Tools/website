@@ -22,6 +22,12 @@ REQUIRED_TOOL_KEYS = (
 )
 
 
+REQUIRED_PAGE_KEYS = (
+    'slug', 'nav', 'title', 'description', 'heading', 'lede', 'updated',
+    'lastmod', 'og_title', 'og_description', 'og_image_alt',
+)
+
+
 class ConfigError(Exception):
     pass
 
@@ -229,6 +235,27 @@ def load_tool(path, site):
     tool['dir'] = path.parent
     tool.setdefault('csp', {})
     return tool
+
+
+def load_page(path, site):
+    """Read one pages/<slug>/page.toml.
+
+    A page is a prose page that is neither a tool nor the hub - the legal ones.
+    It needs far less than a tool does: no words, no FAQ, no schema, no service
+    worker, and no CSP of its own, because it does nothing the site policy does
+    not already allow."""
+    page = load_toml(path)
+    missing = [key for key in REQUIRED_PAGE_KEYS if key not in page]
+    if missing:
+        raise ConfigError(f'{path}: missing {", ".join(missing)}')
+
+    if page['slug'] != path.parent.name:
+        raise ConfigError(
+            f'{path}: slug is {page["slug"]!r} but the folder is {path.parent.name!r}')
+
+    page['url'] = f'{site["domain"]}{page["slug"]}/'
+    page['dir'] = path.parent
+    return page
 
 
 def cache_hash(paths):
