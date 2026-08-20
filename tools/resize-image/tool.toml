@@ -1,0 +1,308 @@
+#
+# Image Resizer
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "resize-image"
+name = "Image Resizer"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Image&nbsp;Resizer <span class=\"h1-kw\">&mdash; resize, crop and convert</span>"
+tagline = "Say the size. Draw the box. Pick the format."
+icon = "&#128208;"          # the mark beside the page heading
+favicon = "&#128208;"       # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. file-list is the drop-a-file-then-see-a-row widget that
+# more than one tool needs and that no tool should own.
+css_parts = ["file-list"]
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Resize an Image &mdash; Crop and Convert Too, No Upload"
+description = "Resize, crop and convert JPEG, PNG and WebP images in your browser. Exact pixels, a percentage, or a long edge - one image or a whole folder. Nothing is uploaded."
+og_title = "Resize, crop and convert an image without uploading it"
+og_description = "Set the size in pixels or as a percentage, drag a crop box, change the format - for one picture or a whole batch. It all runs on your own machine."
+og_image_alt = "Image Resizer - resize, crop and convert without uploading"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  img-src needs blob: for the crop preview and the results this page draws from
+  the files you chose, and https: because ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The resizing, the cropping and the format change all run in your own
+    browser, on your own hardware, using the image encoders it already ships
+    with. This tool has no network feature of any kind &mdash; nothing to fetch,
+    nothing to send &mdash; and there is no server on the other end of this page
+    to send a picture to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and resize
+      a photo. Not one request carries an image, a thumbnail, a filename, or a byte
+      of what you chose. Or unplug from the internet and resize one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/geometry.js</code> for the arithmetic
+      that decides what is kept and how large it comes out, and
+      <code>src/codecs.js</code> for the single <code>drawImage</code> call that
+      does the crop and the resize together."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to resize an image without uploading it"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Exact pixels, a percentage, or a long edge &mdash; with a crop box
+            and a format change on the way through. One picture or a folder."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "images"
+choose = "an image"
+analytics_extra = """, and none of the
+  sizes, crops or formats this tool works out"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your images have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The resizing is one
+      <code>drawImage</code> onto a canvas and one <code>canvas.toBlob</code>
+      &mdash; the scaler and the encoder that are already installed in your
+      browser."""
+
+[[privacy]]
+title = "A file nobody asked to change is not changed."
+body = """
+ With no crop, no
+      resize and no format change, the file you chose is handed straight back to
+      you byte for byte rather than re-saved. That is not only politeness: it is
+      why this tool cannot quietly re-encode a picture, or quietly drop the
+      metadata of one you only wanted to look at."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your pictures. Every line that
+      reads, crops, scales or writes a file is served from this origin and listed
+      in the repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Choose your images."
+body = """
+ Drop them onto the picker or select them
+      by hand. They are read straight off your disk by the browser; nothing is sent
+      anywhere while you do it."""
+
+[[howto]]
+title = "Crop first, if you want to."
+body = """
+ Drag the box over the preview, or
+      lock it to a shape &mdash; 1:1 for a profile picture, 9:16 for a story, 16:9
+      for a thumbnail &mdash; and press "Largest" for the biggest one that fits.
+      With several images on the list, the box is drawn on one of them and the
+      rest get the same relative area."""
+
+[[howto]]
+title = "Say what size it should come out."
+body = """
+ A width, a height, or
+      both; a long edge, which keeps portrait and landscape shots the same size as
+      each other; or a plain percentage. Leave one of the two boxes blank and the
+      picture keeps its own shape."""
+
+[[howto]]
+title = "Pick the format, then press the button."
+body = """
+ Keep what each file
+      arrived as, or write everything as JPEG, PNG or WebP. Each result says what
+      it became and how much smaller it got, and a batch comes down as one zip."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my image uploaded anywhere?"
+a = """
+        No. The file is decoded, cropped, scaled and written by your own browser on
+        your own hardware, using the JPEG, PNG and WebP encoders the browser already
+        ships with. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site."""
+
+[[faq]]
+q = "What happens if I give it a width but not a height?"
+a = """
+        The height follows from the picture's own shape, which is almost always what
+        was wanted: "1920 wide" means "1920 wide and whatever tall that makes it".
+        Fill in both and the two can disagree with the shape of the picture, which
+        is the only time the "if the shapes disagree" choice appears &mdash; fit
+        inside the box, fill it and cut the overflow off, pad it out with a
+        background, or stretch it and accept the distortion."""
+
+[[faq]]
+q = "Does resizing an image lose quality?"
+a = """
+        Making a picture smaller does not, in any way you can see: there are more
+        pixels going in than coming out, so the detail that is kept is real detail.
+        Making one bigger cannot add what was never photographed &mdash; the result
+        is a softer copy of the same picture, not a sharper one &mdash; which is why
+        "never make a picture bigger than it started" is on by default. What does
+        cost a little is the re-encode afterwards, if the format is JPEG or WebP,
+        and the quality slider is what you spend there."""
+
+[[faq]]
+q = "Can it crop a whole batch at once?"
+a = """
+        Yes. The box is drawn on one image &mdash; the one in the preview, and you
+        can point that at any file on the list &mdash; and every other image is
+        cropped to the same relative area: the same fractions of its own width and
+        height. For a set of screenshots or exports that are all the same size, that
+        is the same box exactly, and the page says so. For a mixed batch it is the
+        same framing rather than the same rectangle, and the page says that
+        instead."""
+
+[[faq]]
+q = "Which formats can it read and write?"
+a = """
+        It reads anything your browser can decode, which in practice means JPEG,
+        PNG, WebP, GIF, BMP and &mdash; on most current browsers &mdash; AVIF. It
+        writes JPEG, PNG and WebP, because those are the encoders browsers ship. On
+        "keep the format" a JPEG stays a JPEG and a PNG stays a PNG; anything the
+        browser cannot write, such as a GIF or a BMP, comes out as PNG, which is the
+        one that keeps transparency and flat colour intact."""
+
+[[faq]]
+q = "What happens to transparency when I save as JPEG?"
+a = """
+        It is filled in with the background colour, because JPEG has no alpha
+        channel to store it in. The colour is yours to pick and starts at white,
+        which is what most people want and what almost every other tool does without
+        telling you. The same colour is used behind a padded frame. Save as PNG or
+        WebP instead and the transparency comes through untouched."""
+
+[[faq]]
+q = "Does it remove EXIF and GPS data?"
+a = """
+        Anything it actually processes, yes, as a side effect: cropping or resizing
+        means decoding the picture to pixels and encoding those pixels again, and a
+        canvas full of pixels carries no tags, so the location, camera model and
+        timestamps are simply not written to the new file. A file you are not
+        changing at all is a different case &mdash; it is handed back byte for byte,
+        tags and all. If you want the metadata gone but the picture untouched, use
+        the <a href="../exif-editor/">EXIF Viewer &amp; Remover</a>, which rewrites
+        the container without re-compressing anything."""
+
+[[faq]]
+q = "How is this different from the image compressor?"
+a = """
+        This one is about dimensions: you say how many pixels you want and it gives
+        you that. The <a href="../compress-image/">Image Compressor</a> is about
+        file size: you say how many kilobytes you are allowed and it searches for
+        the highest quality that fits, resizing only if quality alone cannot get
+        there. If you were told "1200 pixels wide", you are in the right place. If
+        you were told "under 500 KB", the other one will get you closer."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no watermark.
+        There is no limit on the number or the size of the files either, because
+        there is no server paying for them &mdash; the work happens on your own
+        machine. The site carries advertising, which is what pays for it; the ads
+        are not given anything about your images."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being uploaded:
+        a tool that sent your images away to be resized would stop the moment you
+        unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Resize, crop and convert JPEG, PNG and WebP images in the browser. Set an exact pixel size, a percentage or a long edge, drag a crop box or lock it to a shape, and write the result as JPEG, PNG or WebP. Batches supported, and nothing is uploaded."
+features = [
+  "Resize by exact pixels, by a long edge, or by a percentage",
+  "Fill in one side and the other follows the picture's own shape",
+  "Fit inside, fill and crop, pad to an exact frame, or stretch",
+  "A draggable crop box, lockable to 1:1, 4:5, 9:16, 16:9, 4:3 or 3:2",
+  "One crop box applied across a whole batch",
+  "Converts between JPEG, PNG and WebP, with a quality control and a background colour",
+  "Never enlarges a picture unless you ask it to",
+  "Hands back untouched any file it was not asked to change",
+  "Batches, with all results in one zip",
+  "Runs offline; no upload, no account",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/*,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif"
+multiple = true
+title = "Drop images here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP and anything else your browser can open"

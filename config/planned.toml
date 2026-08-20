@@ -22,10 +22,7 @@ note = "Not built yet. Listed so you can see where this is going."
 [[group]]
 name = "Images"
 items = [
-  ["Resize", "one image or a whole folder, by pixels or by percent"],
-  ["Crop", "free, fixed ratio, or an exact pixel box"],
   ["Rotate &amp; flip", "quarter turns, or straightening by a few degrees"],
-  ["Convert format", "PNG, JPG and WebP, in any direction"],
   ["Add text", "over the picture, or in a caption box above it"],
   ["Filters", "brightness, contrast, saturation, blur, grayscale"],
   ["Image to data URI", "paste the result straight into CSS or HTML"],
