@@ -72,6 +72,16 @@ That builds, then compares the result file by file with the `dist` branch —
 the branch GitHub Pages serves. If they differ, the deployed site is not what
 this repository says it is, and that is worth knowing.
 
+The output is minified, so it is not pleasant reading, but it is still
+*checkable*: the build is deterministic, so the same sources produce the same
+bytes on any machine, and that is what makes the comparison above mean
+something. Every generated file also keeps one banner comment naming the
+repository and this command. To read the output instead of verifying it:
+
+```bash
+python build.py --no-minify
+```
+
 > **Do not open a page's `index.html` by double-clicking it.** Browsers block ES
 > modules on `file://` URLs, so `main.js` never runs. The page still renders and the
 > file picker still opens — that part is plain HTML — but choosing images does nothing.
@@ -117,7 +127,7 @@ tools/
     tool.toml            everything particular to this tool: prose, FAQ, metadata
     body.html            the <main> of the page - the interface, and only that
     styles.css           the rules only this tool needs
-    src/*.js             the app itself, copied into dist/ byte for byte
+    src/*.js             the app itself; minified into dist/, never renamed
     og.png               its share card
   crop-video/            the same five things
   exif-editor/           and again
@@ -138,11 +148,38 @@ the domain root, at `/compress-image/`, or nested deeper, with no configuration.
 The service worker registers with the scope of its own folder, so each tool
 caches only itself and cannot interfere with its neighbours.
 
-**The JavaScript is not touched.** `src/*.js` is copied byte for byte — no
-bundler, no minifier, no transpiler — so the code a visitor's browser runs is
-still, character for character, the code in this repository. The build only ever
-assembles HTML, CSS, and the two small generated JS files (`sw.js`,
-`analytics.js`), and it never reaches the network.
+**The JavaScript keeps its shape.** The build strips comments and indentation
+from `src/*.js` and does nothing else to it. There is no bundler and no
+transpiler: every module is still its own file, still an ES module, still
+running the same statements in the same order on the same lines. **Nothing is
+renamed**, so the served code can still be read and grepped — there is no
+`fetch` in it for the same reason there is none in the sources.
+
+That stopping point is deliberate. Renaming identifiers is the part of
+minification that makes code genuinely unreadable, and doing it safely needs a
+real parser with scope analysis, because a name is only safe to change once you
+know every place it is bound and every place it is read. Guessing at that is how
+a build silently corrupts a hand-written EXIF parser, and the failure would not
+show up until somebody's photo came out wrong. If mangled names are ever wanted,
+the honest way to get them is a real toolchain (esbuild, terser) run over
+`dist/`, accepting the dependency and the loss of a build anyone can reproduce
+with nothing installed.
+
+`buildlib/minify.py` checks its own work on every file it writes, and the build
+fails rather than shipping something it is not sure about:
+
+- **Line breaks never move.** JavaScript inserts semicolons at line breaks, so a
+  minifier that joins lines has to know where a statement ends — which again
+  means parsing. Every newline stays exactly where it was, which costs about a
+  byte per line and buys certainty.
+- **The output must re-tokenise to the input's tokens**, in order, with a break
+  between the same pairs of them. A dropped space that turned `a in b` into
+  `ainb`, or `x + +y` into `x++y`, changes that stream and stops the build.
+
+Roughly: HTML 28% smaller, JavaScript 40% smaller. CSS is left alone.
+
+`python build.py --no-minify` gives the readable output back while debugging.
+Whichever way it runs, the build never reaches the network.
 
 ### What the build stopped anyone having to remember
 
@@ -158,6 +195,7 @@ something the build does, and cannot forget to do:
 | "Bump `CACHE_NAME` whenever any listed file changes" | The service worker's asset list is read off the disk, and its cache name is a hash of those files, so it changes exactly when they do. |
 | "Add one `<li>` card to the matching category, and an entry to `sitemap.xml`" | The hub's cards, its `ItemList` structured data and `sitemap.xml` all come from the tools that exist in `tools/`. |
 | Four copies of the repository URL per page | `source_url` in `config/site.toml`. |
+| A cache name to bump by hand when minification changed the bytes | The cache name hashes the files **as emitted**, so turning minifying on or off invalidates the cache by itself. |
 | Nothing at all, which is how a stylesheet change reached returning visitors four hours late | Every page asks for its stylesheet by a URL carrying a hash of that stylesheet, so changing the CSS changes the URL and there is no stale copy to serve. |
 | Three different footers, none of which linked to a privacy policy because there was nowhere to put one | One `templates/partials/footer.html`. Its tool list and legal-page list come from `tools/` and `pages/`, and the only thing that differs per page is whether links start `./` or `../`. |
 
@@ -641,7 +679,8 @@ background tabs. The app warns you if the tab was hidden mid-recording.
 ### About the MP4 muxer
 
 `src/mp4.js` writes the container by hand because there is no bundler to pull in a
-library — the build assembles pages, and never touches `src/`. It is deliberately narrow:
+library — the build assembles pages and minifies them, and never adds code that
+was not written here. It is deliberately narrow:
 
 - one H.264 video track, no audio
 - samples in presentation order, no B-frames, so no `ctts` box is needed
