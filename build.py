@@ -168,8 +168,11 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
         build_page(out, templates, site, page, footer, css_v, emit)
         written.append(f'{page["slug"]}/index.html')
 
-    build_hub(out, templates, site, planned, by_slug, footer, css_v, emit)
+    build_hub(out, templates, site, by_slug, footer, css_v, emit)
     written.append('index.html')
+
+    build_roadmap(out, templates, site, planned, ordered, footer, css_v, emit)
+    written.append(f'{site["roadmap"]["slug"]}/index.html')
 
     build_404(out, templates, site, ordered, footer, css_v, emit)
     written.append('404.html')
@@ -373,7 +376,7 @@ def build_page(out, templates, site, page, footer, css_v, emit):
 # The hub
 
 
-def build_hub(out, templates, site, planned, by_slug, footer, css_v, emit):
+def build_hub(out, templates, site, by_slug, footer, css_v, emit):
     categories = []
     listed = set()
     for category in site['hub']['categories']:
@@ -399,12 +402,9 @@ def build_hub(out, templates, site, planned, by_slug, footer, css_v, emit):
             f'so nothing would link to them: {", ".join(stray)}')
 
     ordered = [tool for category in categories for tool in category['tools']]
-    for group in planned['group']:
-        group['items'] = [{'name': name, 'desc': desc} for name, desc in group['items']]
 
     emit.html(out / 'index.html', templates.render('hub.html', {
         'site': site,
-        'planned': planned,
         'categories': categories,
         'footer': footer,
         'base': './',
@@ -414,6 +414,48 @@ def build_hub(out, templates, site, planned, by_slug, footer, css_v, emit):
     }))
 
     emit.js(out / 'analytics.js', templates.render('analytics.js', {
+        'site': site,
+        'words': {'plural': 'files', 'analytics_extra': ''},
+    }), where='analytics.js')
+
+
+def build_roadmap(out, templates, site, planned, ordered, footer, css_v, emit):
+    """The roadmap: what is built, then what is planned.
+
+    This was the last section of the hub until the planned list passed about
+    fifty names. A front page that ends on a long list of things the site cannot
+    do reads as an apology, and it pushed the tools that do exist off the bottom
+    of the screen. Moving it here keeps the list - saying out loud where this is
+    going is the same habit as saying out loud what the tools do with your files
+    - without letting it be the last word on the hub.
+
+    Neither half is written here. The built half is `ordered`, the same tool
+    list the hub and the footer are drawn from; the planned half is
+    config/planned.toml. A tool that ships moves from one to the other by
+    appearing in tools/ and leaving that file."""
+    roadmap = site['roadmap']
+
+    # planned.toml stores each entry as a two-item array, which is compact to
+    # write by hand and unusable in a template. Named here rather than in the
+    # file so the file stays a list of names and descriptions.
+    for group in planned['group']:
+        group['items'] = [{'name': name, 'desc': desc} for name, desc in group['items']]
+
+    dest = out / roadmap['slug']
+    dest.mkdir(parents=True, exist_ok=True)
+
+    emit.html(dest / 'index.html', templates.render('roadmap.html', {
+        'site': site,
+        'planned': planned,
+        'tools': ordered,
+        'footer': footer,
+        'base': '../',
+        'css_href': f'../site.css?v={css_v}',
+        'csp': sitelib.render_csp(site['csp']),
+        'jsonld': sitelib.roadmap_jsonld(site),
+    }))
+
+    emit.js(dest / 'analytics.js', templates.render('analytics.js', {
         'site': site,
         'words': {'plural': 'files', 'analytics_extra': ''},
     }), where='analytics.js')
@@ -453,6 +495,11 @@ def build_sitemap(out, templates, site, tools, guides, legal):
     # came for; a guide is how they find out this site exists.
     pages += [{'url': page['url'], 'lastmod': page['lastmod'],
                'changefreq': 'monthly', 'priority': '0.6'} for page in guides]
+    # The roadmap: a real page, but not one anybody searches for. Below the
+    # guides, above the legal pages.
+    pages.append({'url': f'{site["domain"]}{site["roadmap"]["slug"]}/',
+                  'lastmod': site['roadmap']['lastmod'],
+                  'changefreq': 'monthly', 'priority': '0.5'})
     # The legal pages last, and low: they matter for trust, not for search.
     pages += [{'url': page['url'], 'lastmod': page['lastmod'],
                'changefreq': 'yearly', 'priority': '0.3'} for page in legal]
