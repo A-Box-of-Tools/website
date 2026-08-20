@@ -153,30 +153,25 @@ def tool_jsonld(site, tool):
 
 
 def roadmap_jsonld(site):
-    """CollectionPage + BreadcrumbList for the roadmap.
+    """CollectionPage for the roadmap, and nothing else.
 
-    Not an ItemList: the hub already publishes one naming the tools that exist,
-    and a second list here that mixed shipped tools with names nobody can click
-    would be describing products that are not products yet."""
+    No ItemList: the hub already publishes one naming the tools that exist, and
+    a list here mixing those with names nobody can click would be describing
+    products that are not products yet.
+
+    No BreadcrumbList either. There was one, until the visible trail above the
+    heading went - it repeated a journey the header's own brand link already
+    offers. Markup is meant to describe what a visitor can see, so the two left
+    together."""
     roadmap = site['roadmap']
-    url = f'{site["domain"]}{roadmap["slug"]}/'
     graph = [
         {
             '@type': 'CollectionPage',
-            'url': url,
+            'url': f'{site["domain"]}{roadmap["slug"]}/',
             'name': to_text(roadmap['heading']),
             'description': to_text(roadmap['description']),
             'inLanguage': site['lang'],
             'isPartOf': {'@id': site['domain'] + '#website'},
-        },
-        {
-            '@type': 'BreadcrumbList',
-            'itemListElement': [
-                {'@type': 'ListItem', 'position': 1,
-                 'name': site['name'], 'item': site['domain']},
-                {'@type': 'ListItem', 'position': 2,
-                 'name': to_text(roadmap['nav']), 'item': url},
-            ],
         },
     ]
     return dumps_ld(graph)

@@ -69,12 +69,13 @@
 </head>
 <body>
 
-<nav class="crumbs" aria-label="Breadcrumb">
-  <a href="{{ base }}">All tools</a>
-  <span aria-hidden="true">&rsaquo;</span>
-  <span aria-current="page">{{ site.roadmap.nav }}</span>
-</nav>
-
+<!--
+  No breadcrumb here, deliberately. The header underneath already carries the
+  brand as a link back to the hub, so a trail above it was the same journey
+  written twice - and the BreadcrumbList that used to describe it has gone from
+  the structured data with it, because markup is meant to describe what a
+  visitor can actually see.
+-->
 <header class="hub-head">
   <p class="brand">
     <a class="brand-home" href="{{ base }}">
@@ -112,14 +113,20 @@
 
   <!--
     ==========================================================================
-    THE PLANNED LIST - the substance of this page, and first for that reason.
+    THE LIST - every kind of file this site works on, in one place.
 
-    Written as plain text on purpose. A name that links nowhere reads as a
-    broken page rather than an honest one, so nothing here is a link until it
-    ships. Move a name out of config/planned.toml when the tool actually
-    exists, and add its folder to tools/ at the same time - it will leave this
-    list and join the one below it, and appear on the hub, in every footer and
-    in the sitemap, without anybody editing this template.
+    Each group holds the tools that exist for that kind of file, as links and
+    marked Built, and under them the ones still to come as plain text. A name
+    that links nowhere reads as a broken page rather than an honest one, so
+    nothing is a link until it ships.
+
+    When a tool ships: add its folder to tools/, give it a `roadmap_group`
+    naming the group it belongs to, and take its name out of
+    config/planned.toml. It crosses from the bottom half of that group to the
+    top of it, and appears on the hub, in every footer and in the sitemap,
+    without anybody editing this template. A tool with no roadmap_group, or one
+    naming a group that does not exist, fails the build rather than quietly
+    going missing from this page.
     ==========================================================================
   -->
   <section id="planned" aria-labelledby="planned-h">
@@ -129,27 +136,11 @@
     <div class="plan-group">
       <h3>{{ group.name }}</h3>
       <ul class="plan-list">
-{% for item in group.items %}        <li><span class="p-name">{{ item.name }}</span> <span class="p-desc">&mdash; {{ item.desc }}</span></li>
+{% for tool in group.built %}        <li class="is-built"><a href="{{ base }}{{ tool.slug }}/">{{ tool.name | e }}</a> <span class="p-desc">&mdash; {{ tool.tagline }}</span> <span class="built-tag">Built</span></li>
+{% endfor %}{% for item in group.items %}        <li><span class="p-name">{{ item.name }}</span> <span class="p-desc">&mdash; {{ item.desc }}</span></li>
 {% endfor %}      </ul>
     </div>
 {% endfor %}  </section>
-
-  <!--
-    The built half, and deliberately quiet. Every one of these already has a
-    card on the hub and a link in the footer of every page; giving them the same
-    weight again here made the roadmap look like a second front page and pushed
-    the list above - the part somebody actually came for - below the fold.
-
-    Still real links, so this page is not a dead end and still spreads crawl
-    depth across every tool.
-  -->
-  <section id="built" aria-labelledby="built-h">
-    <h2 id="built-h">{{ site.roadmap.built_heading }}</h2>
-    <p>{{ site.roadmap.built_note }}</p>
-    <ul class="built-list">
-{% for tool in tools %}      <li><a href="{{ base }}{{ tool.slug }}/">{{ tool.name | e }}</a> <span class="b-desc">&mdash; {{ tool.tagline }}</span></li>
-{% endfor %}    </ul>
-  </section>
 
 </main>
 

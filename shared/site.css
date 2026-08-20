@@ -12,6 +12,10 @@
   --accent: #2b6cb0;
   --accent-deep: #1d4f83;
   --accent-pale: #d7e7f7;
+  /* Green means "this is true" across the site: the pledge ticks on a tool page
+     use it, and so does the Built tag on the roadmap. Same values as
+     shared/css/tool-frame.css, which defines it for the tool pages. */
+  --ok: #1f7a4d;
   --radius: 10px;
   --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 12px rgb(16 24 40 / 4%);
 }
@@ -27,6 +31,7 @@
     --accent: #5b9bd8;
     --accent-deep: #3772ab;
     --accent-pale: #cfe3f8;
+    --ok: #6cc79b;
     --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 20%);
   }
 }
@@ -281,31 +286,28 @@ code {
 .p-name { font-weight: 600; color: var(--text); }
 .p-desc { color: var(--text-dim); }
 
-/* The built half, deliberately quiet. Every one of these already has a card on
-   the hub and a link in the footer of every page; repeating them here at that
-   weight made the roadmap look like a second front page and pushed the part
-   somebody came to read below the fold. */
+/* A tool that exists, at the top of its group. It is the same row as the ones
+   below it - same size, same rhythm - because the point of putting the two in
+   one list is that a group reads as one story. What separates them is that this
+   one is a link and carries a tag; that is enough, and a heavier treatment
+   would just rebuild the two-lists-in-two-places problem inside one list. */
 
-.built-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.05rem;
+.plan-list li.is-built { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.4rem; }
+.plan-list li.is-built a { font-weight: 600; text-decoration: none; }
+.plan-list li.is-built a:hover { text-decoration: underline; }
+
+.built-tag {
+  flex: none;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.1rem 0.4rem;
+  border-radius: 99px;
+  color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ok) 35%, transparent);
 }
-
-.built-list li {
-  margin: 0;
-  padding: 0.45rem 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.92rem;
-  line-height: 1.5;
-}
-
-.built-list li:last-child { border-bottom: 0; }
-.built-list a { font-weight: 600; text-decoration: none; }
-.built-list a:hover { text-decoration: underline; }
-.b-desc { color: var(--text-dim); }
 
 /* ---- legal pages ------------------------------------------------------- */
 
