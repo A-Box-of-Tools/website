@@ -14,7 +14,7 @@ name = "A Box of Tools"
 domain = "https://abox.tools/"
 brand_mark = "&#129520;"          # the toolbox emoji, used on the hub header
 lang = "en"
-lastmod = "2026-08-19"     # the hub page's own sitemap date
+lastmod = "2026-08-20"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
@@ -115,7 +115,7 @@ font = "Cookie"
 
 [hub]
 title = "Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools"
-description = "Free online tools that run entirely in your browser. Compress an image to a size you name, convert images to video, strip the EXIF and GPS data out of a photo - nothing is uploaded, no account needed, and it works offline."
+description = "Free online tools that run entirely in your browser. Compress an image to a size you name, crop a video to any shape, convert images to video, strip the EXIF and GPS data out of a photo - nothing is uploaded, no account needed, and it works offline."
 heading = "A box of tools that never touch a server"
 og_title = "A Box of Tools &mdash; tools that never touch a server"
 og_description = "Small, single-purpose tools that run entirely in your browser. Your files never leave your machine."
@@ -163,7 +163,7 @@ body = """
 id = "images-and-video"
 name = "Images &amp; video"
 note = "Work with pictures and footage without handing them to anyone."
-order = ["images-to-video", "exif-editor", "compress-image"]
+order = ["images-to-video", "crop-video", "exif-editor", "compress-image"]
 
 #
 # ---------------------------------------------------------------------------

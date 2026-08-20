@@ -55,7 +55,6 @@ name = "Video"
 items = [
   ["Trim", "cut a section out and keep the original quality"],
   ["Resize", "down to a size that will actually send"],
-  ["Crop", "including squaring up a clip for a feed"],
   ["Rotate", "for the clip that was filmed sideways"],
   ["Reverse", "play it backwards"],
   ["Mute, or save the audio", "drop the sound, or keep it on its own"],
