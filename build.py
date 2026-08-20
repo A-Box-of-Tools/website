@@ -171,6 +171,12 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     build_hub(out, templates, site, planned, by_slug, footer, css_v, emit)
     written.append('index.html')
 
+    build_404(out, templates, site, ordered, footer, css_v, emit)
+    written.append('404.html')
+
+    # After the sitemap and deliberately not passed to it: the 404 has no
+    # address of its own to list, and inviting a crawler to index it would be
+    # inviting it to serve "not found" in place of a real page.
     build_sitemap(out, templates, site, tools, guides, legal)
     written.append('sitemap.xml')
 
@@ -411,6 +417,31 @@ def build_hub(out, templates, site, planned, by_slug, footer, css_v, emit):
         'site': site,
         'words': {'plural': 'files', 'analytics_extra': ''},
     }), where='analytics.js')
+
+
+def build_404(out, templates, site, tools, footer, css_v, emit):
+    """The page GitHub Pages returns for anything it cannot find.
+
+    One file, at the root of the publishing source, per its documentation:
+    docs.github.com -> Pages -> Creating a custom 404 page. For this site that
+    root is the root of the dist branch, which is what the build writes.
+
+    `base` is '/' rather than './' or '../'. Every other page here knows where
+    it is standing; this one does not, because it is served at whatever address
+    was asked for. A visitor who mistypes /compress-imag/ gets this file while
+    the browser still believes it is in a folder of that name, so a relative
+    link would resolve against a folder that does not exist and the error page
+    would arrive unstyled. Absolute is the only form that works from every
+    depth at once.
+    """
+    emit.html(out / '404.html', templates.render('404.html', {
+        'site': site,
+        'tools': tools,
+        'footer': footer,
+        'base': '/',
+        'css_href': f'/site.css?v={css_v}',
+        'csp': sitelib.render_csp(site['csp']),
+    }))
 
 
 def build_sitemap(out, templates, site, tools, guides, legal):

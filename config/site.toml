@@ -127,6 +127,32 @@ font = "Cookie"
 # ---------------------------------------------------------------------------
 #
 
+#
+# ---------------------------------------------------------------------------
+# The 404 page.
+#
+# GitHub Pages serves one file, at the root of the publishing source, for every
+# address it cannot find. It is the only page on the site that is read at an
+# address it was not built for, which is why every URL on it is root-absolute -
+# templates/404.html says more about that.
+#
+# It carries no advertising and is not indexed. Both on purpose, both explained
+# in the template.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "Page not found &mdash; abox.tools"
+description = "That address does not exist on abox.tools. Here are the tools that do - all of them free, and none of them uploading your files anywhere."
+heading = "That page is not here"
+tools_heading = "Every tool, in one place"
+tools_note = "All free, all running in your browser, none of them uploading anything."
+
+lede = """
+    Either the address has a typo in it, or something that used to be at that
+    address has moved. Nothing is wrong with your file and nothing was lost:
+    this site has never held anything of yours to lose."""
+
 [hub]
 title = "Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools"
 # Kept under 155 characters. Google truncates a description around there, and

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  GENERATED FILE - do not edit. Built by build.py from templates/404.html and
+  the [not_found] table in config/site.toml. Edit those and run `python build.py`.
+
+  GitHub Pages serves this for any address it cannot find, from one file at the
+  root of the publishing source - which for this site is the root of the dist
+  branch. See README.md under "The 404 page".
+
+  EVERY URL ON THIS PAGE IS ROOT-ABSOLUTE, AND HAS TO BE
+
+  This is the one page on the site that is served at an address it was not
+  built for. A visitor who mistypes /compress-imag/ gets this file back while
+  the browser still believes it is sitting in a folder called compress-imag, so
+  a relative "styles.css" would be fetched from there and 404 in its turn -
+  leaving an unstyled error page, which is a worse first impression than the
+  error itself. `base` is passed in as "/" for this page alone, so every link
+  the shared footer builds is absolute too.
+-->
+<!--
+  The same Content-Security-Policy as every other page, from config/site.toml.
+  It is wider than this page needs, because this page carries no advertising -
+  see below - but one policy for the whole site is worth more than a bespoke
+  one here: a second list would be a second thing to keep in step.
+-->
+{{ csp }}
+<title>{{ site.not_found.title }}</title>
+<meta name="description" content="{{ site.not_found.description }}">
+
+<!--
+  Not indexed, and no canonical. This page has no address of its own: it is what
+  a thousand different wrong addresses return. Telling a search engine to file it
+  under one of them would be inviting it to serve this in place of a real page.
+-->
+<meta name="robots" content="noindex, follow">
+
+<!--
+  No AdSense on this page, deliberately. Google asks that ads not be placed on
+  error pages and pages without content of their own, and an advert on top of
+  "we could not find that" is a poor way to meet somebody either way.
+
+  The measurement tag stays, because knowing which addresses people arrive at
+  and fail to find is the entire operational reason to have a custom 404 rather
+  than the stock one. It is given the same thing as everywhere else on this
+  site, which is a page view and nothing more.
+
+  Both paths are absolute for the reason in the head comment above.
+-->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics_id }}"></script>
+<script src="/analytics.js" defer></script>
+
+<link rel="stylesheet" href="{{ css_href }}">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+</head>
+<body>
+
+<header class="hub-head">
+  <p class="brand">
+    <a class="brand-home" href="{{ base }}">
+      <span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools
+    </a>
+  </p>
+  <h1>{{ site.not_found.heading }}</h1>
+  <p class="lede">
+{{ site.not_found.lede }}
+  </p>
+</header>
+
+<main>
+  <!--
+    The tools, drawn from the same list the hub is built from. Somebody who
+    landed here was looking for one of them, and a list of the things that do
+    exist is more use than an apology and a link back to the front page.
+  -->
+  <section class="category" aria-labelledby="tools-h">
+    <div class="category-head">
+      <h2 id="tools-h">{{ site.not_found.tools_heading }}</h2>
+      <p class="category-note">{{ site.not_found.tools_note }}</p>
+    </div>
+    <ul class="tool-grid">
+{% for tool in tools %}      <li>
+        <a class="tool-card" href="{{ base }}{{ tool.slug }}/">
+          <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
+          <span class="tool-name">{{ tool.name | e }}</span>
+          <span class="tool-desc">
+{{ tool.card }}
+          </span>
+        </a>
+      </li>
+{% endfor %}    </ul>
+  </section>
+</main>
+
+{% include "partials/footer.html" %}
+
+</body>
+</html>
