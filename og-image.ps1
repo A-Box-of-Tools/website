@@ -215,6 +215,11 @@ New-OgImage -Path 'tools\exif-editor\og.png' `
   -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\images-to-pdf\og.png' `
+  -Title 'Images to PDF' `
+  -Subtitle 'Gather pictures into one document. JPEG photos go in exactly as they are.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\compress-image\og.png' `
   -Title 'Image Compressor' `
   -Subtitle 'Name the size you need and it finds the least compression that gets there.' `

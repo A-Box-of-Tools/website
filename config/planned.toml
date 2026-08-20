@@ -78,7 +78,6 @@ items = [
 [[group]]
 name = "Documents &amp; PDF"
 items = [
-  ["Images to PDF", "photos or scans gathered into one document"],
   ["Merge, split &amp; reorder", "pages moved around without a round trip to a server"],
   ["Rotate &amp; crop pages", "fix a scan that came in sideways, or trim its margins"],
   ["Extract images", "pull the pictures back out of a document"],

@@ -132,7 +132,7 @@ title = "Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools"
 # Kept under 155 characters. Google truncates a description around there, and
 # the tail of this one is the part that sells the site, so it cannot be the
 # part that gets cut.
-description = "Free browser tools that never upload your files. Compress an image to an exact size, crop a video, convert images to video, or strip a photo's EXIF data."
+description = "Free browser tools that never upload your files. Combine images into a PDF or an MP4, compress an image to an exact size, crop a video, or strip EXIF data."
 heading = "A box of tools that never touch a server"
 og_title = "A Box of Tools &mdash; tools that never touch a server"
 og_description = "Small, single-purpose tools that run entirely in your browser. Your files never leave your machine."
@@ -184,6 +184,12 @@ id = "images-and-video"
 name = "Images &amp; video"
 note = "Work with pictures and footage without handing them to anyone."
 order = ["images-to-video", "crop-video", "exif-editor", "compress-image"]
+
+[[hub.categories]]
+id = "documents-and-pdf"
+name = "Documents &amp; PDF"
+note = "Make and rearrange documents without sending them to be processed."
+order = ["images-to-pdf"]
 
 #
 # ---------------------------------------------------------------------------
