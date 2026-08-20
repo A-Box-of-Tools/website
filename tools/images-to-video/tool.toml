@@ -28,10 +28,10 @@ lastmod = "2026-08-19"
 
 # --- what search engines and chat apps are told ------------------------------
 
-title = "Images to Video Converter &mdash; Free MP4 Slideshow Maker"
+title = "Image Sequence to MP4 &mdash; Free, No Upload, Works Offline"
 description = "Turn JPG, PNG or WebP images into an MP4 slideshow video, free and entirely in your browser. Nothing is uploaded, no sign-up, and it works offline."
-og_title = "Images to Video &mdash; free MP4 slideshow maker"
-og_description = "Turn a folder of images into an MP4 slideshow. Encoding runs on your own machine; nothing is uploaded."
+og_title = "Image Sequence to MP4 &mdash; free, in your browser"
+og_description = "Turn a render sequence, a timelapse or a folder of photos into an MP4. Encoding runs on your own machine; nothing is uploaded."
 og_image_alt = "Images to Video - turn a folder of images into an MP4 slideshow"
 
 # Appended to the Content-Security-Policy comment in the generated page, for
@@ -205,6 +205,33 @@ a = """
         MP4 with H.264 video, which plays on essentially anything. In a browser
         without WebCodecs the tool falls back to recording WebM instead &mdash;
         the same footage in a container that fewer editors accept."""
+
+[[faq]]
+q = "Can I use this for a Blender or After Effects render sequence?"
+a = """
+        Yes &mdash; a numbered render sequence is exactly what this is for. Add
+        the frames your renderer wrote, leave the hold time at one frame each,
+        and set the frame rate to match the render. "Sort by name" counts the
+        way you would expect, so <code>frame_2</code> lands before
+        <code>frame_10</code> rather than after it.
+        <br><br>
+        One thing worth knowing before you start: H.264 has no alpha channel,
+        so transparency is flattened onto the backdrop colour rather than
+        carried through. If you need to keep the alpha, composite the frames in
+        your editor instead."""
+
+[[faq]]
+q = "Can I make a timelapse from photos?"
+a = """
+        Yes, and it is the same job as a render sequence: hold each photo for a
+        single frame and pick a frame rate. At 30 fps every thirty photos
+        becomes one second of video; at 12 fps those same photos run for two
+        and a half seconds.
+        <br><br>
+        "Sort by date" puts a camera roll back into the order it was shot,
+        which matters when the filenames have restarted at 0001. Photos of
+        different sizes are fine &mdash; "Match highest resolution" sizes the
+        video so that none of them is scaled down."""
 
 [[faq]]
 q = "Is there a limit on how many images, or how long the video can be?"
