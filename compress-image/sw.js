@@ -10,12 +10,12 @@
  * asking whoever edited a file to remember to bump a number by hand.
  */
 
-const CACHE_NAME = 'compress-image-96eedd8be6';
+const CACHE_NAME = 'compress-image-fbe17512cd';
 
 const ASSETS = [
   './',
   'index.html',
-  'styles.css',
+  'styles.css?v=1167009c82',
   'src/codecs.js',
   'src/compress.js',
   'src/crc32.js',

@@ -10,12 +10,12 @@
  * asking whoever edited a file to remember to bump a number by hand.
  */
 
-const CACHE_NAME = 'exif-editor-e3af6290cf';
+const CACHE_NAME = 'exif-editor-161981fe95';
 
 const ASSETS = [
   './',
   'index.html',
-  'styles.css',
+  'styles.css?v=b0226fb729',
   'src/container.js',
   'src/crc32.js',
   'src/jpeg.js',

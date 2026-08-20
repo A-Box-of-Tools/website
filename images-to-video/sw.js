@@ -10,12 +10,12 @@
  * asking whoever edited a file to remember to bump a number by hand.
  */
 
-const CACHE_NAME = 'images-to-video-862ed66ac7';
+const CACHE_NAME = 'images-to-video-5dd2818975';
 
 const ASSETS = [
   './',
   'index.html',
-  'styles.css',
+  'styles.css?v=a8bf09f096',
   'src/compose.js',
   'src/encoder.js',
   'src/images.js',

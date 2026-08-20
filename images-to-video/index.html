@@ -237,7 +237,12 @@
 }
 </script>
 
-<link rel="stylesheet" href="styles.css">
+<!--
+  The stylesheet URL carries a hash of the stylesheet. GitHub Pages serves
+  HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
+  reaches a returning visitor as new markup wearing a four-hour-old sheet.
+-->
+<link rel="stylesheet" href="styles.css?v=a8bf09f096">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#127902;</text></svg>">
 </head>
 <body>
