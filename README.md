@@ -51,9 +51,12 @@ python build.py
 ```
 
 Python 3.11 or newer, and nothing to install: the build uses only the standard
-library. There is no `package.json` and no lockfile. The one exception is
-`--mangle`, which renames identifiers and needs esbuild; it is what CI runs and
-what gets deployed, and it is described under
+library. There is no lockfile and no dependency to fetch. The `package.json` at
+the root declares one thing — that the `.js` files here are ES modules, which
+is what they already were — so that `node --test` can import them; nothing
+installs it and the build never reads it. The one exception is `--mangle`,
+which renames identifiers and needs esbuild; it is what CI runs and what gets
+deployed, and it is described under
 [What the build does to the output](#what-the-build-does-to-the-output). The
 command above is not that, and never needs it.
 
@@ -98,6 +101,32 @@ python build.py --no-minify
 > file picker still opens — that part is plain HTML — but choosing images does nothing.
 > The app detects this and shows a red banner explaining it, but the failure is easy
 > to hit, so it is worth knowing about.
+
+### The tests
+
+Both suites need nothing installed, for the same reason the build does not:
+
+```bash
+python -m unittest discover -t . -s tests/python
+```
+
+```bash
+node --test "tests/js/*.test.js"
+```
+
+The first covers `build.py` and `buildlib/` — the template engine, the two
+minifiers and their refusals, the config loading, and a whole build into a
+temporary directory, including the 404 page and the root-absolute URLs it has
+to carry. The second covers what the browser actually runs: the EXIF and TIFF
+parsers, the three container formats, the PDF object grammar, reader and
+rewriter, the three MP4 writers, the trimmer's keyframe arithmetic, the PDF
+writer, the layout maths and the ZIP writer. Mostly round trips — read a file,
+write it back, and check the picture came through byte for byte with only the
+metadata gone.
+
+Both run in CI on every push and every pull request, and nothing is published
+if either fails. `tests/README.md` says what is covered and what deliberately
+is not.
 
 ---
 
@@ -151,6 +180,12 @@ pages/
     page.toml            title, description, dates - the frame, not the prose
     body.html            the <main> of the page
   terms/                 the same two things
+tests/
+  python/                the generator: unittest, standard library only
+  js/                    the tools: node --test, built in since Node 18
+    helpers.js           image fixtures, built rather than checked in as binary
+    pdf-fixtures.js      the same for PDFs, with real byte offsets
+package.json             says the .js files are ES modules; no dependencies
 og-image.ps1             draws the share cards and the icon from shared/logo.svg
 serve.ps1                builds, then serves dist/ locally
 cloudflare/              the edge config that adds the security headers

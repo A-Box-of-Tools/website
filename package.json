@@ -1,0 +1,9 @@
+{
+  "name": "abox-tools",
+  "private": true,
+  "type": "module",
+  "description": "Declares what the .js files in this repository already are: ES modules. There are no dependencies and there is no lockfile - this exists so that `node --test` can import tools/*/src/*.js directly, rather than reading a bare .js as CommonJS and failing on the first `import`. Nothing installs it, and the build does not read it.",
+  "scripts": {
+    "test": "node --test \"tests/js/*.test.js\""
+  }
+}

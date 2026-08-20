@@ -14,6 +14,10 @@
 # On a pull request this builds but does not publish, so a change that breaks
 # the build is caught before it reaches main.
 #
+# The unit tests run first, in their own job, and the build waits on them. They
+# cover the hand-written code on both sides: the generator in Python and the
+# parsers and writers the browser runs. See tests/README.md.
+#
 
 name: Build
 
@@ -33,7 +37,38 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # The unit tests, for the code in this repository that was written by hand:
+  # the site generator in Python, and the parsers and writers the browser runs.
+  # Neither suite needs anything installed - unittest and node:test are both
+  # standard library - so this job installs nothing at all. See tests/README.md.
+  #
+  # It runs before the build rather than beside it, and the build needs it, so
+  # a failing test cannot deploy.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Newer than the build job's Node, and deliberately: `node --test` only
+      # learned to take a glob in 21, and on 20 the same argument is read as a
+      # path that does not exist. Nothing is installed with it, so the version
+      # here is free to differ from the one esbuild is pinned against below.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: The build (Python)
+        run: python -m unittest discover -t . -s tests/python -v
+
+      - name: The tools (JavaScript)
+        run: node --test "tests/js/*.test.js"
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
