@@ -5,6 +5,7 @@ Build the site into dist/.
     python build.py              build into dist/
     python build.py --clean      empty dist/ first
     python build.py --no-minify  leave the output readable, for debugging
+    python build.py --mangle     rename identifiers too (needs esbuild)
     python build.py --check      build, then fail if dist/ differs from git's
                                  copy of the branch it is committed on
 
@@ -32,22 +33,27 @@ Every one of those is now a thing the build does:
   * a service worker's asset list is read off the disk, and its cache name is a
     hash of those files, so it changes exactly when they do.
 
-WHAT IT DOES TO THE JAVASCRIPT
+WHAT IT DOES TO THE HTML, CSS AND JAVASCRIPT
 
-It strips comments and indentation, and nothing else. There is no bundler and
-no transpiler: every module is still its own file, still an ES module, still
-running the same statements in the same order on the same lines. Names are not
-rewritten, so the served code can still be read and grepped - there is no
-`fetch` in it for the same reason there is none in the sources.
+By default: strips comments and whitespace, and nothing else. No bundler, no
+transpiler, no renaming. Every module is still its own file, still an ES module,
+still running the same statements in the same order on the same lines, and the
+served code can still be read and grepped. buildlib/minify.py and
+buildlib/cssmin.py do that work and explain what they will not touch and why;
+minify.py checks its own output on every file, and the build fails rather than
+ship something whose tokens moved.
 
-That is a deliberate stopping point, not a limitation to be fixed later.
-Renaming identifiers needs a real parser with scope analysis; guessing at it is
-how a build silently corrupts a hand-written EXIF parser. buildlib/minify.py
-says more, and checks its own work on every file: if minifying ever changed a
-token or moved a line break, the build fails instead of shipping it.
+With --mangle: identifiers are renamed as well, by esbuild, pinned to the
+version in config/site.toml. That is what CI runs and what gets deployed, and it
+is the one thing here that needs something installed. Plain `python build.py`
+still needs nothing but Python and still produces a working, readable site -
+which is the point, because a claim nobody can reproduce is not a claim.
+buildlib/mangle.py sets out what that costs.
 
-Pass --no-minify to get the readable output back while debugging. The site
-never reaches the network at build time either way.
+--check implies --mangle, because the deployed branch is mangled and comparing
+against it any other way would report a difference on every file.
+
+The build never reaches the network, whichever way it runs.
 """
 
 import argparse
@@ -59,6 +65,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from buildlib import cssmin
+from buildlib import mangle
 from buildlib import minify
 from buildlib import site as sitelib
 from buildlib.template import Loader, TemplateError
@@ -77,14 +85,22 @@ def main(argv=None):
     parser.add_argument('--clean', action='store_true', help='empty the output first')
     parser.add_argument('--no-minify', dest='minify', action='store_false',
                         help='leave the output readable, for debugging')
+    parser.add_argument('--mangle', action='store_true',
+                        help='also rename identifiers, using the pinned esbuild')
     parser.add_argument('--check', action='store_true',
                         help='fail if the output differs from the committed dist branch')
     args = parser.parse_args(argv)
 
     out = (ROOT / args.out).resolve()
+    # --check compares against the deployed branch, and the deployed branch is
+    # mangled, so checking without mangling would report a difference on every
+    # file and mean nothing.
+    want_mangle = args.mangle or args.check
     try:
-        pages = build(out, clean=args.clean, minify_output=args.minify)
-    except (sitelib.ConfigError, TemplateError, minify.MinifyError) as err:
+        pages = build(out, clean=args.clean, minify_output=args.minify,
+                      mangle_names=want_mangle)
+    except (sitelib.ConfigError, TemplateError, minify.MinifyError,
+            cssmin.CssError, mangle.MangleError) as err:
         print(f'build failed: {err}', file=sys.stderr)
         return 1
 
@@ -97,17 +113,21 @@ def main(argv=None):
     return 0
 
 
-def build(out, clean=False, minify_output=True):
+def build(out, clean=False, minify_output=True, mangle_names=False):
     if clean and out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True)
 
     templates = Loader(TEMPLATES)
     site = sitelib.load_toml(CONFIG / 'site.toml')
-    emit = Emitter(minify_output, site)
+    emit = Emitter(minify_output, site, mangle_names)
     # The hub and the legal pages share one stylesheet, so they share one
     # version for it. Tool pages each hash their own assembled sheet.
-    css_v = sitelib.text_hash((SHARED / 'site.css').read_text(encoding='utf-8'))
+    # Minified first, then hashed: the version in the URL has to be a hash of
+    # the bytes a browser actually receives, or turning minifying on would serve
+    # new CSS under the old version and leave returning visitors on the stale one.
+    site_css = emit.css_text((SHARED / 'site.css').read_text(encoding='utf-8'))
+    css_v = sitelib.text_hash(site_css)
     planned = sitelib.load_toml(CONFIG / 'planned.toml')
 
     tools = [sitelib.load_tool(path, site)
@@ -149,6 +169,7 @@ def build(out, clean=False, minify_output=True):
     written.append('sitemap.xml')
 
     copy_shared(out)
+    write(out / 'site.css', site_css)
     return written
 
 
@@ -185,7 +206,7 @@ def build_tool(out, templates, site, tool, footer, emit):
     # what is in it. The service worker below precaches that same URL: it
     # matches on the whole request, query and all, so a mismatch would leave a
     # tool styled online and bare offline.
-    css = tool_css(tool)
+    css = emit.css_text(tool_css(tool))
     css_href = f'styles.css?v={sitelib.text_hash(css)}'
 
     emit.html(dest / 'index.html', templates.render('tool.html', {
@@ -350,7 +371,10 @@ def copy_shared(out):
     """Everything in shared/ that is served as-is. shared/css is not: it is an
     input to the stylesheets the build assembles, not a file anyone fetches."""
     for path in sorted(SHARED.iterdir()):
-        if path.name == 'css':
+        # shared/css is an input to the stylesheets the build assembles, not a
+        # file anyone fetches; site.css is written separately, minified, by the
+        # caller - copying the source over it here would undo that.
+        if path.name in ('css', 'site.css'):
             continue
         if path.is_dir():
             shutil.copytree(path, out / path.name, dirs_exist_ok=True)
@@ -369,7 +393,7 @@ def write(path, text):
 
 
 class Emitter:
-    """Writes the HTML and JavaScript, minified or not.
+    """Writes the HTML, CSS and JavaScript, minified or not.
 
     One object rather than a flag threaded everywhere, because the two things
     that have to stay together - whether to minify, and what banner to leave
@@ -381,20 +405,53 @@ class Emitter:
     where it came from and how to prove it.
     """
 
-    def __init__(self, minify_output, site):
+    def __init__(self, minify_output, site, mangle_names=False):
         self.enabled = bool(minify_output)
         source = site['source_url']
-        self.js_banner = (f'/* Built from {source} by build.py. '
-                          f'Comments and indentation removed; nothing renamed. '
-                          f'Verify with: python build.py --check */')
-        self.html_banner = (f' Built from {source} by build.py. '
-                            f'Verify with: python build.py --check ')
+
+        # Mangling is opt-in and needs esbuild at the pinned version. Resolved
+        # once, here, so a missing or wrong esbuild stops the build before it
+        # has written half a site rather than partway through.
+        self.esbuild = None
+        if mangle_names:
+            if not self.enabled:
+                raise mangle.MangleError(
+                    '--mangle and --no-minify contradict each other: mangling is '
+                    'minifying, and more of it.')
+            pinned = site.get('build', {}).get('esbuild_version')
+            if not pinned:
+                raise mangle.MangleError(
+                    'no esbuild_version pinned under [build] in config/site.toml, '
+                    'so the build could not be reproduced from it.')
+            self.esbuild = mangle.resolve(pinned)
+            mangle.require_version(self.esbuild, pinned)
+        # The same sentence in three comment syntaxes. Each minifier wraps it
+        # itself, so what is kept here is the text with no delimiters on it.
+        verify = (f'Built from {source} by build.py. '
+                  f'Verify with: python build.py --check')
+        self.js_banner = f'/* {verify} */'
+        self.js_mangled_banner = f'/* {verify} (names mangled by esbuild) */'
+        self.html_banner = f' {verify} '
+        self.css_banner = f' {verify} '
 
     def html(self, path, text):
         write(path, minify.html(text, self.html_banner) if self.enabled else text)
 
     def js(self, path, text, where):
-        write(path, minify.js(text, self.js_banner, where) if self.enabled else text)
+        if self.esbuild:
+            # esbuild does the whitespace as well as the names, so the Python
+            # minifier stands aside rather than running first and being redone.
+            write(path, mangle.js(text, self.esbuild, self.js_mangled_banner, where))
+        elif self.enabled:
+            write(path, minify.js(text, self.js_banner, where))
+        else:
+            write(path, text)
+
+    def css_text(self, text):
+        """Returns rather than writes, because a stylesheet has to be hashed
+        after minifying and before being written - the hash goes in the URL the
+        page asks for it by."""
+        return cssmin.css(text, self.css_banner) if self.enabled else text
 
 
 def check_against_branch(out, branch='dist'):

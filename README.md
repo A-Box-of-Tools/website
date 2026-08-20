@@ -48,8 +48,11 @@ python build.py
 ```
 
 Python 3.11 or newer, and nothing to install: the build uses only the standard
-library. There is no `package.json`, no lockfile, and no third-party code
-anywhere between these sources and the site.
+library. There is no `package.json` and no lockfile. The one exception is
+`--mangle`, which renames identifiers and needs esbuild; it is what CI runs and
+what gets deployed, and it is described under
+[What the build does to the output](#what-the-build-does-to-the-output). The
+command above is not that, and never needs it.
 
 To build and serve in one step:
 
@@ -71,6 +74,11 @@ python build.py --check
 That builds, then compares the result file by file with the `dist` branch —
 the branch GitHub Pages serves. If they differ, the deployed site is not what
 this repository says it is, and that is worth knowing.
+
+`--check` implies `--mangle`, so it needs esbuild at the pinned version: the
+deployed branch is mangled, and comparing against it any other way would report
+a difference on every file and mean nothing. The build says which version to
+install if it is missing.
 
 The output is minified, so it is not pleasant reading, but it is still
 *checkable*: the build is deterministic, so the same sources produce the same
@@ -127,7 +135,7 @@ tools/
     tool.toml            everything particular to this tool: prose, FAQ, metadata
     body.html            the <main> of the page - the interface, and only that
     styles.css           the rules only this tool needs
-    src/*.js             the app itself; minified into dist/, never renamed
+    src/*.js             the app itself; minified into dist/, renamed only by --mangle
     og.png               its share card
   crop-video/            the same five things
   exif-editor/           and again
@@ -148,37 +156,85 @@ the domain root, at `/compress-image/`, or nested deeper, with no configuration.
 The service worker registers with the scope of its own folder, so each tool
 caches only itself and cannot interfere with its neighbours.
 
-**The JavaScript keeps its shape.** The build strips comments and indentation
-from `src/*.js` and does nothing else to it. There is no bundler and no
-transpiler: every module is still its own file, still an ES module, still
-running the same statements in the same order on the same lines. **Nothing is
-renamed**, so the served code can still be read and grepped — there is no
-`fetch` in it for the same reason there is none in the sources.
+### What the build does to the output
 
-That stopping point is deliberate. Renaming identifiers is the part of
-minification that makes code genuinely unreadable, and doing it safely needs a
-real parser with scope analysis, because a name is only safe to change once you
-know every place it is bound and every place it is read. Guessing at that is how
-a build silently corrupts a hand-written EXIF parser, and the failure would not
-show up until somebody's photo came out wrong. If mangled names are ever wanted,
-the honest way to get them is a real toolchain (esbuild, terser) run over
-`dist/`, accepting the dependency and the loss of a build anyone can reproduce
-with nothing installed.
+There are two builds, and the difference between them is the point.
 
-`buildlib/minify.py` checks its own work on every file it writes, and the build
-fails rather than shipping something it is not sure about:
+| | `python build.py` | `python build.py --mangle` |
+|---|---|---|
+| Needs | Python 3.11+, nothing else | …and esbuild, at the pinned version |
+| HTML | comments and whitespace out | same |
+| CSS | comments and whitespace out | same |
+| JavaScript | comments and whitespace out, **nothing renamed** | renamed as well |
+| Used by | anyone, anywhere | CI, and so the deployed site |
 
-- **Line breaks never move.** JavaScript inserts semicolons at line breaks, so a
-  minifier that joins lines has to know where a statement ends — which again
-  means parsing. Every newline stays exactly where it was, which costs about a
-  byte per line and buys certainty.
-- **The output must re-tokenise to the input's tokens**, in order, with a break
+The plain build is the default and stays the default. It produces a working,
+readable site with nothing installed, which is what makes the claims on these
+pages checkable by someone who has not already agreed to trust a toolchain.
+
+**Sizes.** HTML 28% smaller, CSS 39%, JavaScript 40% before renaming — about
+36% off the text weight of the site. Renaming takes more off on top of that.
+
+**Nothing is reordered, merged or rewritten.** No shorthand is collapsed, no
+colour re-spelled, no rule moved. Those are the transformations that make a
+minifier impressive and also the ones that occasionally change a page.
+
+#### How it avoids breaking things
+
+`buildlib/minify.py` (HTML and JavaScript) and `buildlib/cssmin.py` check their
+own work, and the build fails rather than write something it is unsure of:
+
+- **Line breaks never move in JavaScript.** The language inserts semicolons at
+  line breaks, so a minifier that joins lines has to know where a statement
+  ends — which means parsing. Every newline stays where it was: about a byte per
+  line, in exchange for certainty.
+- **The JavaScript must re-tokenise to the same tokens**, in order, with a break
   between the same pairs of them. A dropped space that turned `a in b` into
   `ainb`, or `x + +y` into `x++y`, changes that stream and stops the build.
+- **CSS whitespace collapses, it does not vanish.** A space between two
+  selectors is the descendant combinator, and a space between two values is what
+  separates them. A custom property's value is copied across untouched, because
+  it is an unparsed token stream where `--op: +` is a real thing people write.
+- **HTML whitespace collapses to one space** rather than being removed, because
+  between two inline elements it is the space between two words. `pre`,
+  `textarea`, `script` and `style` are copied through whole.
 
-Roughly: HTML 28% smaller, JavaScript 40% smaller. CSS is left alone.
+The CSS is also checked against a real CSS parser rather than against this
+repository's own idea of the answer: load the minified and the readable sheet
+into a browser, and every rule and every custom property comes back the same.
 
-`python build.py --no-minify` gives the readable output back while debugging.
+#### Renaming, and what it costs
+
+`--mangle` hands each module to **esbuild**, which has the parser and the scope
+analysis that renaming safely requires — a name is only safe to change once you
+know every place it is bound and every place it is read. That is not something
+to hand-roll: guessing at it is how a build silently corrupts a hand-written
+EXIF parser, and the failure would not show up until somebody's photo came out
+wrong. Exported names are never renamed, so the module graph is untouched;
+nothing is bundled, so every module keeps its own file.
+
+The cost is real and worth stating. It is the only step in this repository that
+needs something installed, and it is why the plain build still exists.
+
+The version is **pinned in `config/site.toml` and verified**, not merely
+requested. Two versions of esbuild need not invent the same names, and if the
+checker and the deploy disagree then `--check` reports tampering where there was
+none — worse than having no checker. The build refuses to run against any other
+version, and says which one to install.
+
+```bash
+npm install --global esbuild@0.25.0
+```
+
+#### Which command to run
+
+```bash
+python build.py              # readable, no dependencies, the default
+python build.py --no-minify  # readable and unminified, for debugging
+python build.py --mangle     # what CI builds and what is deployed
+python build.py --check      # implies --mangle: it compares against the deploy
+```
+
 Whichever way it runs, the build never reaches the network.
 
 ### What the build stopped anyone having to remember
