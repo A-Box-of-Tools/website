@@ -1,0 +1,98 @@
+#
+# Build the site and publish it to the `dist` branch.
+#
+# The repository holds the sources: templates/, config/, tools/ and shared/.
+# The `dist` branch holds what a browser is actually served. GitHub Pages is
+# pointed at `dist`, so a push to `main` becomes a deploy once this finishes.
+#
+# Why a separate branch rather than Pages' own build: the point of this site is
+# that a reader can check its claims, and the strongest form of that is being
+# able to run `python build.py` locally and diff the result against the branch
+# that is being served. `python build.py --check` does exactly that. That is
+# only meaningful if the served files are committed somewhere a reader can see.
+#
+# On a pull request this builds but does not publish, so a change that breaks
+# the build is caught before it reaches main.
+#
+
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Only what is needed: the publish step writes one branch.
+permissions:
+  contents: write
+
+# A second push while the first is still deploying should not race it.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The build uses tomllib, which is standard library from 3.11 onwards.
+      # There is nothing to install: no package.json, no requirements.txt, no
+      # lockfile, and no third-party code between these sources and the site.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build
+        run: python build.py --out _site --clean
+
+      - name: Publish to the dist branch
+        if: github.event_name != 'pull_request'
+        env:
+          SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          # Check out the dist branch beside the working tree, creating it as an
+          # orphan the first time. A worktree rather than a second clone, so the
+          # push reuses the credentials actions/checkout already configured.
+          if git ls-remote --exit-code --heads origin dist >/dev/null 2>&1; then
+            git fetch origin dist
+            git worktree add .publish FETCH_HEAD
+            git -C .publish switch -C dist
+          else
+            git worktree add --detach .publish
+            git -C .publish checkout --orphan dist
+          fi
+
+          # Replace the tree wholesale rather than copying over it: a page that
+          # was deleted from the sources has to disappear from the branch too.
+          git -C .publish rm -rq --cached . --ignore-unmatch
+          find .publish -mindepth 1 -maxdepth 1 -not -name .git -exec rm -rf {} +
+          cp -a _site/. .publish/
+
+          git -C .publish add -A
+          if git -C .publish diff --cached --quiet; then
+            echo 'The build is identical to what is already deployed; nothing to push.'
+            exit 0
+          fi
+
+          subject=$(git log -1 --pretty=%s "$SHA")
+          git -C .publish commit -m "Build ${SHA:0:7}: ${subject}"
+          git -C .publish push origin dist
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo '### Build'
+            echo
+            echo '```'
+            find _site -type f | sort | sed 's|^_site/|  |'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

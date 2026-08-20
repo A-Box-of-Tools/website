@@ -1,0 +1,17 @@
+<!--
+  Buy Me a Coffee's own snippet, unchanged, and deliberately neither async nor
+  deferred: it ends in document.writeln, which appends here only while the
+  parser is still at this point in the page. Deferred, it would run after
+  parsing and document.write would blank the document instead. The cost of that
+  is honest and worth stating - this tag blocks the parser until the script
+  arrives, so what follows it waits on a third party.
+
+  The two origins it reaches, cdnjs.buymeacoffee.com and fonts.googleapis.com
+  (then fonts.gstatic.com for the face itself), are named in the
+  Content-Security-Policy above, so a live check counts them as part of the page
+  rather than as an unexplained request. The cup is an inline SVG, so no image
+  is fetched, and nothing about your files goes out with any of it: the button
+  is a link, followed only if somebody clicks it. Offline the request fails and
+  nothing is written - the tool is unaffected.
+-->
+<script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="{{ site.bmc.slug }}" data-color="{{ site.bmc.color }}" data-emoji="" data-font="{{ site.bmc.font }}" data-text="{{ site.bmc.text }}" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>

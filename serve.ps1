@@ -1,26 +1,51 @@
 <#
 .SYNOPSIS
-  Serves this folder over http://localhost:8080 so you can run the app locally.
+  Builds the site and serves it over http://localhost:8080.
 
 .DESCRIPTION
-  The app is plain static files, but browsers refuse to load ES modules and
-  service workers from file:// URLs, so it needs to come from a real origin.
-  This uses only .NET types built into Windows — nothing to install.
+  The site is plain static files, but they are generated: everything under dist\
+  is built from templates\, config\ and tools\ by build.py. This script runs
+  that build first and then serves the result, so what you look at is what
+  would be deployed.
 
-  http://localhost counts as a secure context, so the offline service worker
-  registers here exactly as it would on an https:// host.
+  Browsers refuse to load ES modules and service workers from file:// URLs, so
+  the folder has to come from a real origin. The server itself uses only .NET
+  types built into Windows — nothing to install. http://localhost counts as a
+  secure context, so the offline service worker registers here exactly as it
+  would on an https:// host.
 
 .EXAMPLE
   .\serve.ps1
   .\serve.ps1 -Port 3000
+  .\serve.ps1 -NoBuild        # serve dist\ as it stands, without rebuilding
 #>
 
 param(
-  [int]$Port = 8080
+  [int]$Port = 8080,
+  [switch]$NoBuild,
+  [string]$Root
 )
 
 $ErrorActionPreference = 'Stop'
-$root = $PSScriptRoot
+
+if (-not $Root) { $Root = Join-Path $PSScriptRoot 'dist' }
+
+if (-not $NoBuild) {
+  $python = (Get-Command python -ErrorAction SilentlyContinue)
+  if (-not $python) { $python = (Get-Command python3 -ErrorAction SilentlyContinue) }
+  if (-not $python) {
+    throw "Python 3.11+ is needed to build the site. Install it, or pass -NoBuild to serve dist\ as it stands."
+  }
+  Write-Host "  Building..." -ForegroundColor DarkGray
+  & $python.Source (Join-Path $PSScriptRoot 'build.py')
+  if ($LASTEXITCODE -ne 0) { throw 'build failed' }
+}
+
+if (-not (Test-Path $Root)) {
+  throw "$Root does not exist. Run 'python build.py' first, or drop -NoBuild."
+}
+
+$root = (Resolve-Path $Root).Path
 
 $mimeTypes = @{
   '.html' = 'text/html; charset=utf-8'

@@ -1,0 +1,300 @@
+/* ----------------------------------------------------- buy me a coffee */
+
+/* The one button on the page big enough to be found without reading. */
+.big { font-size: 1.02rem; padding: 0.7rem 1.3rem; }
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+  color: var(--danger);
+  font-size: 0.9rem;
+  /* Files that could not be read are reported one per line. */
+  white-space: pre-line;
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+/* --------------------------------------------------------------- file list */
+
+.card-lede {
+  margin: -0.4rem 0 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 68ch;
+}
+
+.file-main-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.7rem;
+}
+
+.file-name {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.92rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-sub { margin: 0; font-size: 0.8rem; color: var(--text-dim); }
+
+/* Said on the row itself rather than only in the results, so that "nothing
+   happened to this one" is expected rather than a surprise afterwards. */
+.file-note { margin: 0.1rem 0 0; font-size: 0.78rem; color: var(--ok); font-weight: 600; }
+
+.row-remove:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
+.row-remove:disabled { opacity: 0.4; cursor: default; }
+
+/* ------------------------------------------------------------- the target */
+
+.target-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.target-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.inline-pair { display: flex; gap: 0.4rem; }
+
+/* Wide enough for "1024" and no wider: this is the number the whole page turns
+   on, and a full-width box makes it look like a search field. */
+.inline-pair input[type="number"] { width: 7rem; font-size: 1.05rem; font-weight: 600; }
+
+.presets { display: flex; gap: 0.4rem; flex-wrap: wrap; padding-bottom: 0.15rem; }
+
+/* The sentence under a control, restating what it is about to do. Every
+   setting on this page has one, because "quality 0.78, scale 0.61" means
+   nothing to somebody who came here to get under 500 KB. */
+.field-summary {
+  margin: 0.9rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.field-summary.warn { color: var(--danger); font-weight: 600; }
+
+.options {
+  margin: 1.2rem 0 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.options legend {
+  padding: 0 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+}
+
+.option-row label { font-size: 0.9rem; font-weight: 600; }
+.option-row select { max-width: 100%; }
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.check input { margin-top: 0.25rem; flex: none; }
+.check strong { display: block; font-size: 0.9rem; }
+
+.check-note {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 70ch;
+}
+
+.options .field-summary {
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--border);
+}
+
+/* ----------------------------------------------------------------- running */
+
+.run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+
+.progress { margin-top: 1rem; }
+
+.progress-track {
+  height: 6px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Width is set from script as each image finishes. There is no animation on
+   purpose: a bar that slides while an encode is running suggests progress the
+   tool cannot actually measure part-way through. */
+.progress-bar { height: 100%; width: 0; background: var(--accent); }
+
+.progress-label {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+/* ----------------------------------------------------------------- results */
+
+.results { margin-top: 1.4rem; }
+
+.results-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+
+.results-head h3 { margin: 0; font-size: 0.95rem; }
+
+.results-summary {
+  margin: 0 0 0.8rem;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.result-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+
+.result-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--ok) 35%, var(--border));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--ok) 6%, var(--surface));
+}
+
+/* Left alone rather than compressed: a good outcome, but not the same one, so
+   it does not wear the same green as a result that did some work. */
+.result-untouched {
+  border-color: var(--border);
+  background: var(--surface-2);
+}
+
+/* Came out over the target. Amber rather than red - the file is still usable
+   and still smaller, it simply did not reach the number that was asked for. */
+.result-missed {
+  border-color: color-mix(in srgb, var(--danger) 40%, transparent);
+  background: color-mix(in srgb, var(--danger) 7%, var(--surface));
+}
+
+.result-text { min-width: 0; flex: 1 1 24rem; }
+
+.result-name { margin: 0; font-weight: 600; font-size: 0.9rem; word-break: break-all; }
+
+.result-headline {
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.result-detail,
+.result-match {
+  margin: 0.25rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 68ch;
+}
+
+.result-match { color: var(--ok); font-weight: 600; }
+.result-untouched .result-match { color: var(--text-dim); }
+
+.result-warn {
+  margin: 0.4rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--danger);
+  max-width: 68ch;
+}
+
+.result-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+
+/* ---------------------------------------------------------------- compare */
+
+/*
+  Both pictures at the same width, which is the only fair way to look at them:
+  a compressed copy shown smaller always wins. The originals are object URLs
+  that already exist for the thumbnails, so opening this panel fetches nothing
+  and decodes nothing that was not already decoded.
+*/
+.compare {
+  flex-basis: 100%;
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.compare-side { margin: 0; min-width: 0; }
+
+.compare-side img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.compare-side figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.compare-side figcaption strong { color: var(--text); }
+
+.compare-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+@media (max-width: 620px) {
+  .compare { grid-template-columns: 1fr; }
+  .target-row { gap: 0.8rem; }
+}

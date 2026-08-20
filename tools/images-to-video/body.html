@@ -1,0 +1,192 @@
+<main>
+  <!-- Step 1 &mdash; images -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose images</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    <input type="file" id="file-input" class="visually-hidden" accept="image/*" multiple>
+    <label id="dropzone" class="dropzone" for="file-input">
+      <span class="dropzone-title">Drop images here</span>
+      <span class="dropzone-hint">or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF</span>
+    </label>
+
+    <details id="url-panel" class="url-panel">
+      <summary>Add from a web address</summary>
+      <div class="url-body">
+        <p class="url-warning">
+          <strong>This is the one feature that touches the network.</strong>
+          Fetching an address tells that server your IP address and which image you
+          asked for. The image is copied to local memory on arrival and never
+          requested again. Nothing of yours is ever sent out &mdash; this page still
+          cannot make an upload of any kind.
+        </p>
+        <label for="url-input">One address per line</label>
+        <textarea id="url-input" rows="3" spellcheck="false"
+                  placeholder="https://example.com/photo1.jpg&#10;https://example.com/photo2.jpg"></textarea>
+        <div class="url-actions">
+          <button type="button" id="fetch-urls" class="primary">Download images</button>
+          <span id="url-status" class="url-status" role="status" aria-live="polite"></span>
+        </div>
+        <p class="url-note">
+          The server must permit cross-origin use of its images. Many sites do not,
+          and those will fail with a message rather than silently breaking later.
+        </p>
+      </div>
+    </details>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="Change how the list is shown">
+          <button type="button" data-view="large" class="active">Large</button>
+          <button type="button" data-view="small">Small</button>
+          <button type="button" data-view="list">List</button>
+          <button type="button" data-view="details">Details</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">Sort by name</button>
+        <button type="button" data-sort="date" class="ghost">Sort by date</button>
+        <button type="button" data-sort="reverse" class="ghost">Reverse</button>
+        <button type="button" id="clear-all" class="ghost danger">Remove all</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Drag any image by its <span class="grip" aria-hidden="true">&#8942;&#8942;</span> handle to
+      reorder, or use the arrows on each one.
+    </p>
+
+    <ul id="image-list" class="image-list view-large"></ul>
+
+    <div id="bulk-duration" class="bulk" hidden>
+      <label for="bulk-amount">Hold every image for</label>
+      <input type="number" id="bulk-amount" min="1" max="3600" step="1" value="1">
+      <select id="duration-unit" aria-label="Unit for how long each image is held">
+        <option value="frames" selected>frames</option>
+        <option value="seconds">seconds</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">Apply to all</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; settings -->
+  <section class="card">
+    <h2><span class="step">2</span> Video settings</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="resolution">Resolution</label>
+        <select id="resolution">
+          <option value="auto" selected>Match highest resolution</option>
+          <option value="3840x2160">3840 &times; 2160 &mdash; 4K</option>
+          <option value="1920x1080">1920 &times; 1080 &mdash; 1080p</option>
+          <option value="1280x720">1280 &times; 720 &mdash; 720p</option>
+          <option value="1080x1080">1080 &times; 1080 &mdash; square</option>
+          <option value="1080x1920">1080 &times; 1920 &mdash; vertical</option>
+          <option value="custom">Custom&hellip;</option>
+        </select>
+        <div id="resolution-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="7680" step="2" value="1920"
+                 aria-label="Custom output width in pixels">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="7680" step="2" value="1080"
+                 aria-label="Custom output height in pixels">
+        </div>
+        <p class="field-note" id="resolution-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fps">Frame rate</label>
+        <select id="fps">
+          <option value="12">12 fps</option>
+          <option value="15">15 fps</option>
+          <option value="24">24 fps &mdash; film</option>
+          <option value="25">25 fps &mdash; PAL</option>
+          <option value="30" selected>30 fps</option>
+          <option value="50">50 fps</option>
+          <option value="60">60 fps</option>
+          <option value="custom">Custom&hellip;</option>
+        </select>
+        <input type="number" id="fps-custom" class="spaced" min="1" max="120" step="1" value="30"
+               aria-label="Custom frame rate in frames per second" hidden>
+        <p class="field-note" id="fps-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">Image fit</label>
+        <select id="fit">
+          <option value="contain" selected>Fit inside (letterbox)</option>
+          <option value="blur">Fit inside, blurred backdrop</option>
+          <option value="cover">Fill frame (crops edges)</option>
+          <option value="stretch">Stretch to fill (distorts)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Backdrop colour</label>
+        <input type="color" id="background" value="#000000">
+      </div>
+
+      <div class="field">
+        <label for="quality">Quality</label>
+        <select id="quality">
+          <option value="low">Smaller file</option>
+          <option value="medium" selected>Balanced</option>
+          <option value="high">Best quality</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="auto" selected>MP4 (recommended)</option>
+          <option value="webm">WebM (fallback)</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="640" height="360" aria-label="Preview of the first frame"></canvas>
+        <p id="preview-empty" class="preview-empty">Add images to see a preview</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Images</dt><dd id="sum-images">&mdash;</dd></div>
+        <div><dt>Duration</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>Output size</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Total frames</dt><dd id="sum-frames">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; export -->
+  <section class="card">
+    <h2><span class="step">3</span> Create the video</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Create video</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Download video</a>
+      </div>
+    </div>
+  </section>
+</main>

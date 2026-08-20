@@ -1,0 +1,272 @@
+#
+# EXIF Viewer & Remover
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "exif-editor"
+name = "EXIF Viewer & Remover"
+heading = "EXIF&nbsp;Viewer &amp; Remover"
+tagline = "See what a photo says about you. Then take it out."
+icon = "&#127991;&#65039;"          # the mark beside the page heading
+favicon = "&#127991;"      # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. file-list is the drop-a-file-then-see-a-row widget that
+# more than one tool needs and that no tool should own.
+css_parts = ["file-list"]
+lastmod = "2026-08-19"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "EXIF Viewer &amp; Remover &mdash; Free Photo Metadata Editor"
+description = "See the EXIF, GPS and hidden metadata in a photo, edit any of it, or strip the lot in one click. JPEG, PNG and WebP, entirely in your browser - no upload, and the picture is never re-encoded."
+og_title = "EXIF Viewer &amp; Remover &mdash; see it, edit it, or strip it"
+og_description = "Read the metadata hidden in a photo and remove all of it in one click. Runs on your own machine; the picture itself is never re-encoded."
+og_image_alt = "EXIF Viewer and Remover - read, edit or strip the metadata in a photo"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  img-src needs blob: for the previews this page draws from the file you chose,
+  and https: because ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The file is opened, parsed and rewritten by your own browser. This tool has
+    no network feature of any kind &mdash; nothing to fetch, nothing to send &mdash;
+    and there is no server on the other end of this page to send a photo to even
+    if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and clean a
+      photo. Not one request carries an image, a thumbnail, a filename, or a tag we
+      read out of your file. Or unplug from the internet and clean one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/tiff.js</code> for the EXIF parser, and
+      <code>src/jpeg.js</code> for the proof that the picture itself is only ever
+      copied."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to remove EXIF data from a photo"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            See the location, camera and serial numbers hidden in a photo,
+            edit any of it, or strip the lot in one click."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "photos"
+choose = "a photo"
+analytics_extra = """, and none of the tags
+  this tool reads out of your files"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Never re-encodes the picture"
+
+[[privacy]]
+title = "Your photos have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ Unlike the other tools in
+      this box, this one has no "load from a web address" feature and no optional
+      network step at all. There is no <code>fetch</code>, no <code>XMLHttpRequest</code>
+      and no <code>sendBeacon</code> anywhere in <code>src/</code>."""
+
+[[privacy]]
+title = "The metadata we read is never read out."
+body = """
+ Your GPS position
+      is displayed on this page and goes nowhere else. There is no custom analytics
+      event in this repository that carries a tag, a filename, a size or a count."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      photos. Every line that reads, parses or rewrites a file is served from this
+      origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your files. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Choose your photos."
+body = """
+ Drop them onto the picker or select them
+      by hand. They are read straight off your disk by the browser; nothing is sent
+      anywhere while you do it."""
+
+[[howto]]
+title = "Read what is in them, if you want to."
+body = """
+ The findings list names
+      the things worth knowing about &mdash; the GPS position, the timestamps, the
+      serial numbers &mdash; before the full table of every tag."""
+
+[[howto]]
+title = "Press \"Remove all metadata\"."
+body = """
+ That is the whole job for most
+      people. Every tag, the XMP and IPTC blocks, the comments and the embedded
+      thumbnail all go, on every photo on the list at once."""
+
+[[howto]]
+title = "Or edit instead of removing."
+body = """
+ Change a date, correct a
+      copyright line, drop the location and keep the camera settings &mdash; then
+      save that photo on its own."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my photo uploaded anywhere?"
+a = """
+        No. The file is read, parsed and rewritten by your own browser on your own
+        hardware. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site."""
+
+[[faq]]
+q = "What is EXIF, and what else is hiding in a photo?"
+a = """
+        EXIF is a block of tags a camera writes beside the picture: the make and
+        model, the exposure settings, the date and time to the second, often a GPS
+        position, and sometimes a serial number. Photos frequently carry more
+        besides &mdash; an XMP packet of XML from an editor, an IPTC block of caption
+        and byline fields, a colour profile, a small second copy of the image as a
+        thumbnail, and a maker note of undocumented manufacturer data. This tool
+        lists all of it."""
+
+[[faq]]
+q = "Does removing metadata reduce the image quality?"
+a = """
+        No, and this is the main reason to use a tool like this rather than
+        re-saving the photo. Metadata sits in the container around the compressed
+        picture, not inside it. Removing it means deleting items from a list and
+        writing the list back out; the compressed image data is copied across byte
+        for byte, so the result decodes to exactly the same pixels. Nothing is
+        decoded and nothing is re-compressed."""
+
+[[faq]]
+q = "Which file formats does it handle?"
+a = """
+        JPEG, PNG and WebP. HEIC and AVIF are recognised but not rewritten: they
+        are box formats built from nested atoms and need a different parser, so the
+        tool says so rather than producing a broken file. A bare TIFF is not handled
+        either, because in a TIFF the metadata and the pixels are addressed by the
+        same offsets."""
+
+[[faq]]
+q = "Will my photo appear rotated after the metadata is removed?"
+a = """
+        It can, and there is a setting for it. Phones usually record the picture the
+        way the sensor saw it and add an Orientation tag saying how to turn it.
+        Remove that tag and some viewers show the photo sideways. The "keep the
+        orientation tag" option, which is on by default, writes back a tiny EXIF
+        block containing nothing but that one tag &mdash; and only when the photo
+        actually needed it. Turn it off if you would rather the file carry no EXIF
+        whatsoever."""
+
+[[faq]]
+q = "Does it remove the GPS location?"
+a = """
+        Yes. Removing everything removes the whole GPS directory, and you can also
+        delete the location on its own and keep the rest. The position is shown in
+        decimal degrees first, because "51 degrees, 30 minutes, 26 seconds" does not
+        make it obvious that a photo names the building it was taken in."""
+
+[[faq]]
+q = "Can I change a tag instead of deleting it?"
+a = """
+        Yes. Text tags, dates, the ISO, the orientation and the resolution can all
+        be edited, and a few common tags can be added to a photo that has none. One
+        caveat: writing the file rebuilds the EXIF block, and a maker note contains
+        offsets into the original block, so a rebuilt maker note may not be readable
+        by the manufacturer's own software afterwards. Delete it or leave the file
+        unedited if that matters to you."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in and no trial. The site
+        carries advertising, which is what pays for it; the ads are not given
+        anything about your photos."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being uploaded:
+        a tool that sent your photos away to be processed would stop the moment you
+        unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Read the EXIF, GPS, XMP and IPTC metadata inside a photo, edit individual tags, or remove all of it in one click. JPEG, PNG and WebP, processed in the browser without re-encoding the image."
+features = [
+  "Shows every EXIF tag, including GPS position, camera serial numbers and maker notes",
+  "Edits or deletes individual tags and writes the file back",
+  "Removes EXIF, GPS, XMP, IPTC, comments and the embedded thumbnail in one click",
+  "JPEG, PNG and WebP",
+  "Rewrites the container only, so the image is never re-compressed",
+  "Runs offline; no upload, no account",
+]

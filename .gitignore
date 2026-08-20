@@ -1,3 +1,11 @@
+# Build output. The site is generated; what is served lives on the dist branch,
+# which the GitHub Action writes. Nothing generated belongs on main.
+/dist/
+/_site/
+/.publish/
+/.dist-check/
+__pycache__/
+
 # OS metadata
 Thumbs.db
 desktop.ini

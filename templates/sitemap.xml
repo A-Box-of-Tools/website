@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/sitemap.xml.
+
+  One entry per page, built from the tool list, so a tool cannot ship without
+  appearing here.
+
+  lastmod is a date, not a timestamp: it only has to be honest about the day the
+  page's content changed. Bumping it on every deploy, including deploys that
+  changed nothing on the page, teaches crawlers to ignore it - so it comes from
+  `lastmod` in each tool.toml and in config/site.toml, and is changed by hand
+  when the wording on a page actually changes.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% for page in pages %}  <url>
+    <loc>{{ page.url }}</loc>
+    <lastmod>{{ page.lastmod }}</lastmod>
+    <changefreq>{{ page.changefreq }}</changefreq>
+    <priority>{{ page.priority }}</priority>
+  </url>
+{% endfor %}</urlset>
