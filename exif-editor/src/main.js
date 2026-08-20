@@ -1160,10 +1160,11 @@ el.privacyToggle.addEventListener('click', () => {
   el.privacyToggle.setAttribute('aria-expanded', String(open));
 });
 
-// Hosts belonging to the ad and measurement scripts. This tool has no network
-// feature of its own, so unlike Images to Video there is no legitimate third
-// bucket here: anything that is not this origin and not on this list would be a
-// request nobody asked for, and the panel says so in those words.
+// Hosts belonging to the ad, measurement and donate-button scripts. This tool
+// has no network feature of its own, so unlike Images to Video there is no
+// legitimate third bucket here: anything that is not this origin and not on
+// this list would be a request nobody asked for, and the panel says so in
+// those words.
 // cloudflareinsights.com is included because the host injects its own beacon.
 // The CSP blocks it from running, but a blocked script still leaves a resource
 // timing entry, and reporting that as an unexplained request would be alarming
@@ -1173,7 +1174,13 @@ el.privacyToggle.addEventListener('click', () => {
 // list of literal hostnames turns the panel red for a visitor in the wrong
 // country. That is the worst possible failure for this particular panel: the
 // one place on the page meant to be checkable, saying something untrue.
-const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+// buymeacoffee.com and googleapis.com are here for the donate button in the
+// header: the button's script comes from cdnjs.buymeacoffee.com and it pulls
+// its lettering from fonts.googleapis.com and fonts.gstatic.com. Like the ad
+// scripts, it is something the page loads without the visitor asking, and it
+// is handed nothing - so it belongs in this bucket rather than being reported
+// as an intruder.
+const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
 
 /**
  * Report what this page has actually fetched.
@@ -1201,7 +1208,7 @@ function monitorNetwork() {
     const clean = unexplained.size === 0;
     const platformNote = platform.size === 0
       ? ''
-      : ` The page's own ad and measurement scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a file or a tag.`;
+      : ` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a file or a tag.`;
 
     el.networkCount.textContent = clean
       ? `your photos have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`

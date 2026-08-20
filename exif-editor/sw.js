@@ -8,7 +8,7 @@
  * Bump CACHE_NAME whenever any listed file changes.
  */
 
-const CACHE_NAME = 'exif-editor-v2';
+const CACHE_NAME = 'exif-editor-v3';
 
 const ASSETS = [
   './',

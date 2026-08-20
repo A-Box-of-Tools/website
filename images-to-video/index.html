@@ -11,12 +11,13 @@
   connect-src now names Google's ad origins.
 
   What survives is narrower but still real. The list below is an allowlist of
-  five Google endpoints. There is no origin here under this site's control, so
-  the app still has nowhere of its own to send your images - and src/encoder.js
-  still never touches the network at all. What is gone is the absolute form of
-  the claim, and every place that stated it has been reworded to match. If you
-  ever remove the ads, put connect-src 'none' back and change those words back
-  with it.
+  Google's ad endpoints, plus cdnjs.buymeacoffee.com and the two Google Fonts
+  Google Fonts origins behind the donate button in the header. There is no
+  origin here under this site's control, so the app still has nowhere of its own
+  to send your images - and src/encoder.js still never touches the network at
+  all. What is gone is the absolute form of the claim, and every place that
+  stated it has been reworded to match. If you ever remove the ads, put
+  connect-src 'none' back and change those words back with it.
 
   img-src allows http/https so the "add from web address" feature can pull an
   image IN, and because ad creatives come from anywhere.
@@ -34,7 +35,8 @@
     https://www.googletagservices.com
     https://adservice.google.com
     https://ep1.adtrafficquality.google
-    https://ep2.adtrafficquality.google;
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
   frame-src
     https://googleads.g.doubleclick.net
     https://tpc.googlesyndication.com
@@ -51,7 +53,8 @@
     https://ep1.adtrafficquality.google
     https://ep2.adtrafficquality.google
     https://csi.gstatic.com;
-  style-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
   img-src 'self' blob: data: https: http:;
   media-src 'self' blob:;
   worker-src 'self' blob:;
@@ -291,6 +294,26 @@
     <button type="button" id="privacy-toggle" class="ghost" aria-expanded="false" aria-controls="privacy-panel">
       How this is verified
     </button>
+    <!--
+      Buy Me a Coffee's own snippet, unchanged, and deliberately neither async
+      nor deferred: it ends in document.writeln, which appends here only while
+      the parser is still at this point in the page. Deferred, it would run
+      after parsing and document.write would blank the document instead. The
+      cost of that is honest and worth stating - this tag blocks the parser
+      until the script arrives, so the tool below it waits on a third party.
+
+      The two origins it reaches, cdnjs.buymeacoffee.com and
+      fonts.googleapis.com (then fonts.gstatic.com for the face itself), are
+      named in the Content-Security-Policy above and in PLATFORM_HOSTS in
+      src/main.js, so the live check below counts them as part of the page
+      rather than as an unexplained request. The cup is an inline SVG, so no
+      image is fetched, and nothing about your photos goes out with any of it:
+      the button is a link, followed only if somebody clicks it. Offline the
+      request fails and nothing is written - the tool is unaffected.
+    -->
+    <div class="support-cta">
+      <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="aboxtools" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+    </div>
   </div>
 </header>
 
@@ -353,6 +376,12 @@
       images: not a file, not a thumbnail, not a name, a size, or a count. Every
       line that reads, decodes, composites or encodes an image is served from this
       origin and listed in the repository.</li>
+    <li><strong>What the donate button loads, and what it is not given.</strong>
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your images. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site.</li>
     <li><strong>One deliberate exception.</strong> If you use "Add from a web address",
       that server is contacted to fetch the image and will see your IP address. Only
       images you paste in are ever fetched, and only inbound: <code>img-src</code> is
@@ -683,6 +712,7 @@
 <footer>
   <p>
     Runs in your browser. No accounts, no uploads. Ads by Google.
+    Tips are welcome and change nothing.
     &middot;
     <!--
       The site mark, inlined so that this page stays self-contained and works

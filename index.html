@@ -9,6 +9,12 @@
   Google's own script, frame and measurement origins, and no wildcards except
   on img-src, where creatives legitimately come from anywhere.
 
+  Two origins in the list are not Google's and not the ads': the donate button
+  further down loads from cdnjs.buymeacoffee.com and draws its lettering from
+  fonts.googleapis.com, which in turn fetches the face from fonts.gstatic.com.
+  They are named for the same reason as the rest - so that everything this page
+  can reach is written down in one place a reader can check.
+
   Each tool carries its own copy of the same allowlist. Keep them in step: a
   tool that is missing an origin shows a blank ad slot, and one that has an
   extra origin is a wider hole than this page ever agreed to.
@@ -30,7 +36,8 @@
     https://www.googletagservices.com
     https://adservice.google.com
     https://ep1.adtrafficquality.google
-    https://ep2.adtrafficquality.google;
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
   frame-src
     https://googleads.g.doubleclick.net
     https://tpc.googlesyndication.com
@@ -48,7 +55,7 @@
     https://ep2.adtrafficquality.google
     https://csi.gstatic.com;
   img-src 'self' data: https:;
-  style-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src https://fonts.gstatic.com;
   form-action 'none';
   base-uri 'none';
@@ -196,6 +203,36 @@
     browser. Your files stay on your machine: there is nothing to upload,
     no account to make, and nothing to track.
   </p>
+
+  <!--
+    ==========================================================================
+    Buy Me a Coffee.
+
+    Buy Me a Coffee's own snippet, unchanged. It is deliberately not async and
+    not deferred: the script ends in document.writeln, which appends to the
+    page only while the parser is still standing here. Add async or defer and
+    it runs after parsing has finished, when document.write means "throw the
+    whole document away and start again" - a blank page, not a missing button.
+    So the tag has to sit exactly where the button should appear, and it blocks
+    the parser for as long as the request takes.
+
+    It reaches two origins, both named in the Content-Security-Policy above:
+    cdnjs.buymeacoffee.com for the script, and fonts.googleapis.com (then
+    fonts.gstatic.com) for the Cookie face it draws the label in. The coffee
+    cup is an inline SVG, so no image is fetched. Offline the request simply
+    fails and nothing is written - the page is whole, just without the button.
+
+    Nothing about a visitor or their files goes out with any of this: the
+    button is a link, and it is only followed if somebody clicks it.
+    ==========================================================================
+  -->
+  <div class="support-cta">
+    <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="aboxtools" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+    <p class="support-note">
+      These tools are free and always will be. If one saved you a job, this is
+      the only thing on the site that asks you for anything.
+    </p>
+  </div>
 </header>
 
 <main>
