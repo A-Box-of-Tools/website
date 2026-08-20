@@ -23,6 +23,7 @@ visitor's own machine beats not shipping the tool at all — see
 | Images to Video | `/images-to-video/` | Turns a sequence of images into an MP4, encoded locally |
 | EXIF Viewer & Remover | `/exif-editor/` | Reads, edits and strips the metadata in a JPEG, PNG or WebP |
 | Image Compressor | `/compress-image/` | Compresses an image to a file size you name, spending as little quality as the target allows |
+| Image Resizer | `/resize-image/` | Resizes, crops and converts a picture — or a whole folder of them — to dimensions you choose |
 | Video Cropper | `/crop-video/` | Cuts a clip down to a rectangle, keeping its timing and its sound |
 | Video Trimmer | `/trim-video/` | Cuts a clip down to a section, or takes a section out of it, without re-encoding a frame |
 | Images to PDF | `/images-to-pdf/` | Gathers pictures into one document, copying JPEGs in without re-encoding them |
@@ -682,7 +683,7 @@ an engine to do it instead, and these all stay small enough to read.
 
 | Group | What does the work |
 |---|---|
-| Image resize, crop, rotate, convert, compress, filters, text | `createImageBitmap` → `<canvas>` → `canvas.toBlob`. PNG, JPEG and WebP are encoders the browser already has. Compression is built: `/compress-image/`, where the interesting part turned out to be not the encoding but the search that decides what quality to ask for |
+| Image resize, crop, rotate, convert, compress, filters, text | `createImageBitmap` → `<canvas>` → `canvas.toBlob`. PNG, JPEG and WebP are encoders the browser already has. Compression is built: `/compress-image/`, where the interesting part turned out to be not the encoding but the search that decides what quality to ask for. Resize, crop and convert are built too, as one tool rather than three: `/resize-image/`, where they are one `drawImage` call and the work is entirely in deciding which rectangle goes where |
 | Metadata viewer and remover | EXIF is a byte structure inside the file, so reading it is parsing and removing it is deleting bytes. Built: `/exif-editor/`. Note that it does **not** re-encode through a canvas, which was the original plan here — going through a canvas drops every tag, but it also re-compresses the picture. Rewriting the container instead leaves the image data untouched |
 | PNG to ICO, images to PDF | Containers, not codecs — a header wrapped around images that are already encoded. The same trick `src/mp4.js` plays. PDF is built: `/images-to-pdf/`, where the payoff is that a JPEG can go into the document byte for byte and never be decoded at all |
 | Reading and rewriting a PDF | Object syntax, a cross-reference table and `DecompressionStream` for the Flate that nearly every stream in one is wrapped in. Built: `/compress-pdf/`, which needed the reader `/images-to-pdf/` never had. Merging, splitting, reordering, rotating and pulling the images back out are all small tools on top of it now that it exists |
@@ -2032,3 +2033,187 @@ it needs doing again:
   fields in both `1:07.5` and `67.5` form, the mode switched with the marks
   already set, and the "cut the section out" option correctly disabling the
   recording path.
+
+---
+
+# Image Resizer
+
+The eighth tool. It resizes a picture to dimensions you choose, crops it to a
+box you drag, and writes it out as whichever of JPEG, PNG and WebP you asked
+for — one file or a folder of them, and none of them going anywhere.
+
+---
+
+## Why this is one tool and not three
+
+Resize, crop and convert were three separate names on the planned list, and
+building them as three tools would have been the obvious reading of it. They are
+one tool here for a reason that only shows up once you write the code: they are
+the same operation.
+
+A crop is a source rectangle. A resize is a destination rectangle. A format
+change is the argument to `toBlob`. All three are one `drawImage` and one
+`toBlob`, and a browser asked to do them separately does the expensive part —
+decode, scale, encode — once per tool instead of once in total. Three tools
+would have meant three decodes of the same photograph, two intermediate files,
+and two re-encodes that cost quality for nothing.
+
+The other half of the argument is what people actually arrive wanting. "Make
+this a 500 x 500 profile picture" is a crop *and* a resize *and*, half the time,
+a JPEG. Splitting that across three pages would have made the common job the
+awkward one.
+
+## The order, and why it is not negotiable
+
+Crop first, resize second, encode third. Always, and the page says so out loud
+in step 2.
+
+Cropping after a resize would be cutting a rectangle out of a picture that has
+already thrown away most of its pixels: ask for a 500 x 500 crop of a photograph
+that has just been scaled to 800 x 600 and you get 500 x 500 pixels interpolated
+from a quarter of the detail that was available. Doing it the other way round —
+take the region, then scale what is in it — spends the original pixels on the
+part you kept.
+
+It also makes the numbers on the page mean something. "The box keeps 1800 x 1800
+of it. It comes out 800 x 800" is two sentences about two rectangles, and the
+second is a percentage of the first.
+
+## One `drawImage`
+
+`src/geometry.js` is the whole of what this tool decides, and it decides it
+without touching a pixel:
+
+```js
+plan(crop, resize)
+  → { source: {x, y, width, height},   // the region read out of the picture
+      canvas: {width, height},         // the canvas that is created
+      draw:   {x, y, width, height},   // where that region lands on it
+      padded, scale }
+```
+
+`src/codecs.js` then does exactly this with it:
+
+```js
+ctx.drawImage(source,
+  plan.source.x, plan.source.y, plan.source.width, plan.source.height,
+  plan.draw.x,   plan.draw.y,   plan.draw.width,   plan.draw.height);
+```
+
+Crop, resize and pad are all in that one call, which is why there is no
+intermediate bitmap anywhere in the tool, and why a crop followed by a resize
+costs exactly what a resize alone costs. It is also why `geometry.js` is the
+file the tests are about: nothing else in the tool makes a decision, so a
+mistake there is a mistake in the output and there is nowhere else it could be
+caught.
+
+## The four fits, and the case where none of them applies
+
+Give the tool a width and leave the height blank — or the other way round — and
+there is no decision to make: the blank side follows from the shape of the
+picture. That is the common case, it is what "1920 wide" means, and the "if the
+shapes disagree" control does not even appear.
+
+It appears when both boxes have a number in them and the two disagree with the
+shape of the picture, which is the only time anything has to be reconciled:
+
+| Fit | What comes out | What it costs |
+|---|---|---|
+| Fit inside | The whole picture, inside the box | One side is shorter than asked for |
+| Fill it | Exactly the size asked for | The overflow on the long side is cut off |
+| Pad it | Exactly the size asked for | A background around the picture |
+| Stretch it | Exactly the size asked for | The shape is distorted |
+
+"Fill it" takes its overflow out of the *source* rectangle rather than drawing
+the picture off the edge of the canvas. The result is identical either way, and
+this way the crop the page reports is the region that was actually read.
+
+## Enlarging, which is off by default
+
+Scaling a picture up cannot add detail that was never photographed. It can only
+produce a larger, softer copy — and the person who typed 1920 into a box was
+usually trying to make things smaller, and did not think about the one file in
+the batch that was already 800 wide.
+
+So "never make a picture bigger than it started" is on by default, and honoured
+by every mode that could enlarge by accident. Two deliberate exceptions, both of
+them somebody stating a size rather than a limit:
+
+- **A percentage.** 200% means 200%. The checkbox is not even shown in that mode.
+- **Stretch.** "Exactly this size" is exact in both directions.
+
+Padding is the interesting middle case: the frame stays exactly the size asked
+for, because an exact frame is the entire point of padding, and the picture
+inside it simply is not blown up to fill it.
+
+## One box, a whole batch
+
+The crop box is drawn on one image — whichever the preview is pointed at, and
+any row on the list can take that place. Every other file is cropped from the
+same relative area: the same fractions of its own width and height. For a folder
+of screenshots or exports that are all one size, that is the same rectangle
+exactly, and the page says so rather than hedging.
+
+With a shape locked there is one further step, and it is the difference between
+a tool that works and one that is merely correct. Somebody who pressed **1:1**
+wants squares. The same relative area of a picture with a different shape is not
+a square — so the relative area is treated as the region of interest, and the
+largest box of the locked shape *inside* it is what is kept. A 1:1 box on a
+landscape photograph comes out as a square on the portrait one beside it, framed
+on the same part of the picture.
+
+The note under the preview says which of those three is happening, and only when
+it is actually true of the files on the list.
+
+## A file nobody asked to change is not changed
+
+With no crop, no resize and no format change, the file you chose is handed back
+as the `File` object it arrived as. Not re-saved, not "optimised": the same
+bytes.
+
+That is not politeness. Re-encoding costs a little quality every time, and a
+canvas holds pixels and nothing else — so a re-save would silently drop the
+EXIF, the GPS, the timestamps and the colour profile of a picture whose owner
+had changed nothing about it. `isUntouched()` is checked before the file is
+opened at all, and the result row says which of the two happened.
+
+Anything the tool *does* process loses its metadata, for the same reason and
+unavoidably. The page says that too, and points at `/exif-editor/` for anyone
+who wanted the tags gone without the picture being touched.
+
+## Limitations
+
+- **Enlarging is a plain bilinear scale.** The browser's, at
+  `imageSmoothingQuality: 'high'`. There is no sharpening pass and no upscaling
+  model, and there is not going to be one — that is a different tool with a
+  different argument behind it.
+- **The formats are what the browser writes.** JPEG, PNG and WebP. AVIF is
+  written only by Chromium's `canvas.toBlob`, so it is not offered; the tool
+  checks what this browser will actually encode by asking it to encode a single
+  pixel, because Safari quietly returns a PNG when handed a type it cannot write.
+- **A GIF comes out as a still.** Its first frame, as PNG. Animated GIF is its
+  own group on the planned list and needs a real GIF writer.
+- **Rotation is not here.** Straightening a scan by two degrees needs a
+  transform, a background, and a decision about what happens to the corners, and
+  it is a separate name on the planned list for that reason.
+- **The crop box is drawn on one image at a time.** There is no per-file box. A
+  batch that genuinely needs a different rectangle for each file is a batch that
+  wants running twice.
+
+## Testing it
+
+`tests/js/resize-image.test.js` covers `geometry.js`, `files.js` and the format
+table, which is everything in the tool that is not a canvas call. The cases that
+get the most attention are the ones with a decision in them: what a blank height
+means, what each fit does to a 4:3 photograph in a 3:2 box, whether every fit
+that could enlarge honours the checkbox that says not to, and whether the four
+fits are four genuinely different answers — if two of them ever agreed, one of
+them would be a control on the page that does nothing.
+
+The rest was checked by hand in the browser, the same way the compressor's was:
+images generated on a canvas and fed to the file input through a `DataTransfer`,
+then a mixed landscape-and-portrait batch run through a locked 1:1 box (900 x 900
+out of the portrait, 1800 x 1800 out of the landscape, both landing on 500 x 500);
+a transparent PNG padded into a square JPEG and its pixels read back to confirm
+the background colour reached both the padding *and* the transparency; and a file
+with nothing asked of it coming back as the identical `File`, name and all.

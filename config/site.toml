@@ -209,7 +209,7 @@ body = """
 id = "images-and-video"
 name = "Images &amp; video"
 note = "Work with pictures and footage without handing them to anyone."
-order = ["images-to-video", "trim-video", "crop-video", "exif-editor", "compress-image"]
+order = ["images-to-video", "trim-video", "crop-video", "exif-editor", "resize-image", "compress-image"]
 
 [[hub.categories]]
 id = "documents-and-pdf"

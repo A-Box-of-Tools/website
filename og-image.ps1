@@ -232,6 +232,11 @@ New-OgImage -Path 'tools\images-to-pdf\og.png' `
   -Subtitle 'Gather pictures into one document. JPEG photos go in exactly as they are.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\resize-image\og.png' `
+  -Title 'Image Resizer' `
+  -Subtitle 'Resize, crop and convert a picture - or a whole folder - on your own machine.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\compress-image\og.png' `
   -Title 'Image Compressor' `
   -Subtitle 'Name the size you need and it finds the least compression that gets there.' `
