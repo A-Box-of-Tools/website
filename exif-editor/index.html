@@ -719,17 +719,25 @@
   </div>
 </section>
 
+<!--
+  The footer every page wears: a few columns of plain links, left aligned under
+  quiet headings, in the shape the large media-tool sites use. It is the second
+  navigation, for anyone who scrolled to the bottom looking for one, and it is
+  the only route to the legal pages.
+
+  This used to be three different footers kept in step by hand. It is one now,
+  and the only thing that differs between a hub, a tool and a legal page is
+  `base`: './' at the root, '../' one level down. Every link below is built from
+  it, so nothing here has to know which kind of page it landed on.
+
+  The tool list and the legal-page list are passed in by build.py from the
+  folders that exist, so a new tool or a new page appears here without anybody
+  remembering to add it.
+-->
 <footer>
-  <p>
-    Runs in your browser. No accounts, no uploads. Ads by Google.
-    Tips are welcome and change nothing.
-    &middot;
-    <!--
-      The site mark, inlined so that this page stays self-contained and works
-      offline. Same shape as the hub's logo.svg; colours come from this page's
-      own stylesheet.
-    -->
-    <a class="home-link" href="../">
+  <div class="footer-cols">
+    <div class="footer-col footer-brand">
+      <a class="home-link" href="../">
       <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
         <path class="logo-lid" d="M14 31V13.5A4.5 4.5 0 0 1 18.5 9h27a4.5 4.5 0 0 1 4.5 4.5V31"
               fill="none" stroke-width="3.2" stroke-linejoin="round"/>
@@ -763,14 +771,51 @@
         <rect class="logo-latch" x="27.5" y="33.5" width="9" height="9" rx="1.8"/>
       </svg>
 
-      All tools
-    </a>
-    &middot;
-    <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
-      Read the source
-    </a>
+        abox.tools
+      </a>
+      <p>
+        Tools that never touch a server. Your files stay on your machine &mdash;
+        nothing to upload, no account to make.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <strong>Tools</strong>
+      <ul>
+        <li><a href="../images-to-video/">Images to Video</a></li>
+        <li><a href="../exif-editor/">EXIF Viewer &amp; Remover</a></li>
+        <li><a href="../compress-image/">Image Compressor</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>This site</strong>
+      <ul>
+        <li><a href="../">All tools</a></li>
+        <li><a href="../privacy/">Privacy &amp; Cookies</a></li>
+        <li><a href="../terms/">Terms of Use</a></li>
+        <li><a href="/sitemap.xml">Sitemap</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>Get in touch</strong>
+      <ul>
+        <li>
+          <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
+            Read the code on GitHub
+          </a>
+        </li>
+        <li><a href="mailto:hi@abox.tools">hi@abox.tools</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="footer-base">
+Every claim on this site is meant to be checked, not believed.
   </p>
 </footer>
+
 
 <script type="module" src="src/main.js"></script>
 </body>

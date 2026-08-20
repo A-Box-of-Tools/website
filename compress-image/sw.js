@@ -10,7 +10,7 @@
  * asking whoever edited a file to remember to bump a number by hand.
  */
 
-const CACHE_NAME = 'compress-image-7b9c32fb28';
+const CACHE_NAME = 'compress-image-96eedd8be6';
 
 const ASSETS = [
   './',

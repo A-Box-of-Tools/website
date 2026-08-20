@@ -10,7 +10,7 @@
  * asking whoever edited a file to remember to bump a number by hand.
  */
 
-const CACHE_NAME = 'images-to-video-90a7c57feb';
+const CACHE_NAME = 'images-to-video-862ed66ac7';
 
 const ASSETS = [
   './',

@@ -10,7 +10,7 @@
  * asking whoever edited a file to remember to bump a number by hand.
  */
 
-const CACHE_NAME = 'exif-editor-f130f983a9';
+const CACHE_NAME = 'exif-editor-e3af6290cf';
 
 const ASSETS = [
   './',
