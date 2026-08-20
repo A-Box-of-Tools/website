@@ -90,7 +90,7 @@ function Get-MarkImage {
     [Parameter(Mandatory)][ValidateSet('light', 'dark')][string]$Palette
   )
 
-  $svg = Get-Content (Join-Path $PSScriptRoot 'logo.svg') -Raw
+  $svg = Get-Content (Join-Path $PSScriptRoot 'shared\logo.svg') -Raw
   $css = if ($Palette -eq 'dark') { $markPaletteDark } else { $markPaletteLight }
 
   $html = @"
@@ -195,22 +195,22 @@ function New-OgImage {
   Write-Host "wrote $full"
 }
 
-New-OgImage -Path 'og.png' `
+New-OgImage -Path 'shared\og.png' `
   -Title 'Tools that never touch a server' `
   -Subtitle 'Small, single-purpose utilities that do all of their work inside your browser.' `
   -Footer 'No uploads | No accounts | Works offline'
 
-New-OgImage -Path 'images-to-video\og.png' `
+New-OgImage -Path 'tools\images-to-video\og.png' `
   -Title 'Images to Video' `
   -Subtitle 'Turn a folder of images into an MP4 slideshow, encoded on your own machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
-New-OgImage -Path 'exif-editor\og.png' `
+New-OgImage -Path 'tools\exif-editor\og.png' `
   -Title 'EXIF Viewer & Remover' `
   -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
   -Footer 'No uploads | No accounts | Works offline'
 
-New-OgImage -Path 'compress-image\og.png' `
+New-OgImage -Path 'tools\compress-image\og.png' `
   -Title 'Image Compressor' `
   -Subtitle 'Name the size you need and it finds the least compression that gets there.' `
   -Footer 'No uploads | No accounts | Works offline'
@@ -254,4 +254,4 @@ function New-IconPng {
   Write-Host "wrote $full"
 }
 
-New-IconPng -Path 'icon-180.png'
+New-IconPng -Path 'shared\icon-180.png'

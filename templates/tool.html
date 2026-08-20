@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  GENERATED FILE - do not edit. Built by build.py from:
+
+      templates/tool.html
+      tools/{{ tool.slug }}/tool.toml
+      tools/{{ tool.slug }}/body.html
+      config/site.toml
+
+  Edit those and run `python build.py`. An edit made here is lost on the next
+  build, and the deployed site is built from the sources, not from this file.
+-->
+<!--
+  This tool has no network feature of its own, so the only origins named below
+  are Google's ad and measurement endpoints and the donate button, which are the
+  price of the site being free. There is no origin here under this site's
+  control, so a file dropped on this page has nowhere to go even if something
+  tried to send it.
+
+  The list is not written here. It comes from config/site.toml, which every page
+  on the site is built from, so the pages cannot drift apart: a tool missing an
+  origin would show a blank ad slot, and a tool with an extra one would be a
+  wider hole than the site agreed to. A tool may widen its own policy in the
+  [csp] table of its tool.toml, and that widening is visible in one small file
+  rather than buried in a wall of markup.
+
+  Punctuation is written as HTML entities throughout, so this file stays pure
+  ASCII on disk and cannot be mangled by a tool that guesses the encoding.
+{% if tool.csp_note %}
+{{ tool.csp_note }}
+{% endif %}-->
+{{ csp }}
+
+{% include "partials/head-scripts.html" %}
+
+<title>{{ tool.title }}</title>
+<meta name="description" content="{{ tool.description }}">
+
+<link rel="canonical" href="{{ tool.url }}">
+
+<!--
+  Share card. og-image.ps1 draws these, and the URLs have to be absolute -
+  unfurlers do not resolve relative paths.
+-->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:url" content="{{ tool.url }}">
+<meta property="og:title" content="{{ tool.og_title }}">
+<meta property="og:description" content="{{ tool.og_description }}">
+<meta property="og:image" content="{{ tool.url }}og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ tool.og_image_alt }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ tool.og_title }}">
+<meta name="twitter:description" content="{{ tool.og_description }}">
+<meta name="twitter:image" content="{{ tool.url }}og.png">
+
+<!--
+  Structured data. The FAQPage half is built from the same [[faq]] entries in
+  tool.toml that draw the questions at the foot of this page, so the two cannot
+  disagree - which they could, and once did, when both were written by hand.
+  Answers that contradict the visible page are a manual-action risk, not just
+  untidy.
+
+  Inline is deliberate and does not need 'unsafe-inline'. A <script> whose type
+  is not a JavaScript type is a data block: the HTML parser hands it to nobody
+  and never executes it, so script-src does not apply. It is the one kind of
+  inline <script> a closed policy still allows. Do not "fix" this by widening
+  the policy. Validate at https://validator.schema.org/ after changes.
+-->
+<script type="application/ld+json">
+{{ jsonld }}
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>{{ tool.favicon }}</text></svg>">
+</head>
+<body>
+
+<!--
+  Visible by default and removed by main.js once it boots. If the scripts never
+  run - opening this file straight from disk blocks ES modules, and so does a
+  CSP or network failure - this stays on screen and explains why. Without it the
+  page looks fine, the file picker still opens (that part is pure HTML), and
+  nothing at all happens when you choose {{ tool.words.choose }}.
+-->
+<div id="boot-warning" class="boot-warning">
+  <strong>This page's code did not start.</strong>
+  <p>
+    Opening <code>index.html</code> directly from a folder blocks JavaScript modules,
+    so nothing will happen when you choose {{ tool.words.choose }}. Serve the folder over http instead:
+  </p>
+  <pre>powershell -ExecutionPolicy Bypass -File serve.ps1</pre>
+  <p>Then open <code>http://localhost:8080/</code>.</p>
+</div>
+
+<noscript>
+  <div class="boot-warning">
+    <strong>JavaScript is disabled.</strong>
+    <p>This app does all of its work in your browser, so it cannot run without it.</p>
+  </div>
+</noscript>
+
+<!--
+  The source link appears four times on this page: the header button, the
+  privacy panel (twice - once as the link, once as the visible text), and the
+  footer. Being able to read the source is the whole point of the claims made
+  here, so a dead link is worse than none at all. All four come from
+  `source_url` in config/site.toml, so moving the repository is one edit.
+-->
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">{{ tool.icon }}</span>
+    <div>
+      <h1>{{ tool.heading }}</h1>
+      <p class="tagline">{{ tool.tagline }}</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <a class="source-link" href="{{ site.source_url }}"
+       target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+          0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+          1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+          0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2
+          .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65
+          3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      View source
+    </a>
+    <button type="button" id="privacy-toggle" class="ghost" aria-expanded="false" aria-controls="privacy-panel">
+      How this is verified
+    </button>
+    <div class="support-cta">
+      {% include "partials/bmc.html" %}
+    </div>
+  </div>
+</header>
+
+<!--
+  The headline claim, always on screen. Every other site that offers to do this
+  to your files does it by taking them off you first, so the difference is worth
+  stating before the first file is asked for, not in a panel you have to go
+  looking for.
+-->
+<section class="pledge">
+  <p class="pledge-line">
+    <span class="pledge-mark" aria-hidden="true">&#9679;</span>
+    Your {{ tool.words.plural }} are <strong>never uploaded</strong>. There is no server.
+  </p>
+  <p class="pledge-sub">
+{{ tool.pledge }}
+  </p>
+
+  <ul class="pledge-facts">
+{% for fact in tool.facts %}    <li><span aria-hidden="true">{{ fact.mark }}</span> {{ fact.text }}</li>
+{% endfor %}  </ul>
+
+  <!-- Live, measured, and wrong-provable: this is the part that turns the
+       claim above into something a sceptical visitor can check. -->
+  <div class="pledge-live">
+    <p class="live-row">
+      <span id="network-dot" class="live-dot" aria-hidden="true"></span>
+      <span><strong>Live check:</strong> <span id="network-count">checking&hellip;</span></span>
+    </p>
+    <p class="live-row">
+      <span id="offline-dot" class="live-dot" aria-hidden="true"></span>
+      <span><strong>Offline:</strong> <span id="offline-status">checking&hellip;</span></span>
+    </p>
+    <p class="live-hint">
+{{ tool.live_hint }}
+    </p>
+  </div>
+</section>
+
+<section id="privacy-panel" class="privacy" hidden>
+  <h2>How the privacy claim is verifiable</h2>
+  <ul>
+{% for point in tool.privacy %}    <li><strong>{{ point.title }}</strong>{{ point.body }}</li>
+{% endfor %}  </ul>
+  <div class="privacy-status">
+    <p>
+      <strong>Check it yourself.</strong> None of the above has to be taken on trust.
+      This page is generated from the templates and config in the repository by a
+      build script you can read and run yourself, and the result is committed to
+      the <code>dist</code> branch &mdash; so you can diff what is served against
+      what a build of the sources produces:
+    </p>
+    <p>
+      <a href="{{ site.source_url }}" target="_blank" rel="noopener noreferrer">
+        {{ site.source_label }}
+      </a>
+    </p>
+    <p>
+      The files worth reading first are <code>config/site.toml</code> for the
+      Content-Security-Policy{{ tool.read_first }}
+    </p>
+  </div>
+</section>
+
+{{ body }}
+
+<!--
+  ============================================================================
+  THE WRITTEN PART OF THE PAGE
+
+  Everything above this is interface. A search engine ranking a page about this
+  job has nothing to read in a row of buttons, which is why this section
+  exists: it answers, in words, the questions people actually type into a search
+  box before they find a tool like this.
+
+  It is not filler, and it is not hand-maintained twice over. The same [[faq]]
+  entries in tool.toml render here and as FAQPage structured data in the head,
+  so the two agree by construction.
+  ============================================================================
+-->
+<section class="faq" aria-labelledby="how-to-h">
+  <h2 id="how-to-h">{{ tool.howto_heading }}</h2>
+  <ol class="how-to">
+{% for step in tool.howto %}    <li>
+      <strong>{{ step.title }}</strong>{{ step.body }}
+    </li>
+{% endfor %}  </ol>
+
+  <h2 id="faq-h">Questions</h2>
+  <div class="faq-list">
+{% for entry in tool.faq %}    <details>
+      <summary>{{ entry.q }}</summary>
+      <p>
+{{ entry.a }}
+      </p>
+    </details>
+{% endfor %}  </div>
+</section>
+
+<footer>
+  <p>
+    Runs in your browser. No accounts, no uploads. Ads by Google.
+    Tips are welcome and change nothing.
+    &middot;
+    <!--
+      The site mark, inlined so that this page stays self-contained and works
+      offline. Same shape as the hub's logo.svg; colours come from this page's
+      own stylesheet.
+    -->
+    <a class="home-link" href="../">
+{% include "partials/site-mark.html" %}
+      All tools
+    </a>
+    &middot;
+    <a href="{{ site.source_url }}" target="_blank" rel="noopener noreferrer">
+      Read the source
+    </a>
+  </p>
+</footer>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

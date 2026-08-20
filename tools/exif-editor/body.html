@@ -1,0 +1,152 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose photos</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    <input type="file" id="file-input" class="visually-hidden"
+           accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" multiple>
+    <label id="dropzone" class="dropzone" for="file-input">
+      <span class="dropzone-title">Drop photos here</span>
+      <span class="dropzone-hint">or click to browse &mdash; JPEG, PNG and WebP</span>
+    </label>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Take all off the list</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the one click -->
+  <section class="card" id="strip-card">
+    <h2><span class="step">2</span> Remove everything</h2>
+
+    <p class="card-lede">
+      One button, every photo on the list. The picture is not decoded, re-drawn or
+      re-compressed &mdash; the compressed image data is copied across untouched and
+      only the metadata around it is dropped, so the result is the same photo with
+      nothing attached.
+    </p>
+
+    <div class="strip-row">
+      <button type="button" id="strip-all" class="primary big" disabled>Remove all metadata</button>
+      <span id="strip-status" class="strip-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Two things are kept by default, and both are stated on the button's own
+      line rather than buried in a settings panel. "Remove all" that quietly
+      keeps things is a broken promise; "remove all except these two, and here
+      they are" is a choice.
+    -->
+    <fieldset class="keep-options">
+      <legend>What to keep</legend>
+      <label class="check">
+        <input type="checkbox" id="keep-orientation" checked>
+        <span>
+          <strong>The orientation tag</strong>
+          <span class="check-note">
+            Phones store a photo the way the sensor saw it and add one tag saying which
+            way up it goes. Remove that and some viewers show it sideways. Kept, a new
+            EXIF block is written holding this tag and nothing else &mdash; and only when
+            the photo was not already the right way up.
+          </span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keep-icc" checked>
+        <span>
+          <strong>The colour profile</strong>
+          <span class="check-note">
+            The ICC profile says what the numbers in the picture mean as colours.
+            It says nothing about you. Dropping it can visibly shift the colours of a
+            wide-gamut photo, which is why it is kept unless you say otherwise.
+          </span>
+        </span>
+      </label>
+      <p class="keep-summary" id="keep-summary"></p>
+    </fieldset>
+
+    <div id="clean-results" class="results" hidden>
+      <div class="results-head">
+        <h3>Cleaned</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Download all as a zip</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; reading and editing -->
+  <section class="card" id="inspect-card">
+    <h2><span class="step">3</span> Look inside, and change what you like</h2>
+
+    <p id="inspect-empty" class="empty-note">
+      Choose a photo above and everything in it appears here: what it says about
+      where you were, when, and on what. Nothing is sent anywhere to work that out.
+    </p>
+
+    <div id="inspector" hidden>
+      <div class="inspect-head">
+        <div class="inspect-file">
+          <img id="inspect-thumb" class="inspect-thumb" alt="" hidden>
+          <div>
+            <p class="inspect-name" id="inspect-name"></p>
+            <p class="inspect-sub" id="inspect-sub"></p>
+          </div>
+        </div>
+        <div class="inspect-switch">
+          <label for="inspect-select" class="visually-hidden">Which photo to inspect</label>
+          <select id="inspect-select"></select>
+        </div>
+      </div>
+
+      <!-- The findings: the part of this page that answers the actual question. -->
+      <section class="findings" aria-labelledby="findings-h">
+        <h3 id="findings-h">What this file gives away</h3>
+        <ul id="findings-list" class="findings-list"></ul>
+      </section>
+
+      <!-- Whole blocks, each removable on its own. -->
+      <section class="blocks" aria-labelledby="blocks-h">
+        <h3 id="blocks-h">Blocks in this file</h3>
+        <ul id="block-list" class="block-list"></ul>
+      </section>
+
+      <!-- Every tag, editable. -->
+      <section class="tags" aria-labelledby="tags-h">
+        <h3 id="tags-h">Every tag</h3>
+        <p class="tags-note" id="tags-note"></p>
+        <div id="tag-groups"></div>
+
+        <details class="add-tag" id="add-tag">
+          <summary>Add a tag</summary>
+          <div class="add-tag-body">
+            <label for="add-tag-select">Tag</label>
+            <select id="add-tag-select"></select>
+            <label for="add-tag-value">Value</label>
+            <input type="text" id="add-tag-value" spellcheck="false">
+            <button type="button" id="add-tag-go" class="ghost">Add</button>
+          </div>
+        </details>
+      </section>
+
+      <div class="save-row">
+        <button type="button" id="save-edits" class="primary" disabled>Save this photo</button>
+        <button type="button" id="revert-edits" class="ghost" disabled>Undo my changes</button>
+        <span id="save-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+      <p id="edit-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+</main>

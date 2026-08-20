@@ -1,0 +1,252 @@
+#
+# Images to Video
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "images-to-video"
+name = "Images to Video"
+heading = "Images&nbsp;to&nbsp;Video"
+tagline = "Turn a folder of images into a video."
+icon = "&#127902;&#65039;"          # the mark beside the page heading
+favicon = "&#127902;"      # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+lastmod = "2026-08-19"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Images to Video Converter &mdash; Free MP4 Slideshow Maker"
+description = "Turn JPG, PNG or WebP images into an MP4 slideshow video, free and entirely in your browser. Nothing is uploaded, no sign-up, and it works offline."
+og_title = "Images to Video &mdash; free MP4 slideshow maker"
+og_description = "Turn a folder of images into an MP4 slideshow. Encoding runs on your own machine; nothing is uploaded."
+og_image_alt = "Images to Video - turn a folder of images into an MP4 slideshow"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  img-src allows http/https so the "add from web address" feature can pull an
+  image IN, and because ad creatives come from anywhere. media-src and
+  worker-src need blob: because the finished video and the encoder both live in
+  memory on this machine rather than at a URL."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Every frame is encoded by your own browser and the video is built in memory on
+    this machine. The encoder never touches the network, and there is no server on
+    the other end of this page to send an image to even if it did."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and make a
+      video. Not one request carries an image, a thumbnail, or a filename. Or
+      unplug from the internet and make one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, and <code>src/encoder.js</code> for the encoding loop
+      that never touches the network."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to turn images into a video"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Turn a folder of images into an MP4 slideshow. Encoding runs on
+            your own machine, using your own hardware."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "images"
+choose = "images"
+analytics_extra = """"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "Your images have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were. This used to read <code>connect-src 'none'</code>, which was absolute;
+      adding advertising cost that, and saying so is part of the deal."""
+
+[[privacy]]
+title = "Encoding is local."
+body = """
+ WebCodecs runs in your browser and the finished
+      file is handed straight to a download. There is no server side to this app."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      images: not a file, not a thumbnail, not a name, a size, or a count. Every
+      line that reads, decodes, composites or encodes an image is served from this
+      origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your images. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "One deliberate exception."
+body = """
+ If you use "Add from a web address",
+      that server is contacted to fetch the image and will see your IP address. Only
+      images you paste in are ever fetched, and only inbound: <code>img-src</code> is
+      opened, <code>connect-src</code> is not. The counter below lists every outside
+      origin contacted."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything except
+      web-address loading still functions. That is the simplest proof of all."""
+
+[[howto]]
+title = "Choose your images."
+body = """
+ Drop a folder onto the picker, or
+      select the files by hand. They are read straight off your disk by the
+      browser; nothing is sent anywhere while you do it."""
+
+[[howto]]
+title = "Put them in order and set how long each one is held."
+body = """
+ Drag
+      to reorder. Hold time can be given in frames or in seconds, either for
+      every image at once or one image at a time."""
+
+[[howto]]
+title = "Pick a resolution and frame rate."
+body = """
+ "Match highest
+      resolution" follows your largest image; the presets cover 4K, 1080p, 720p,
+      square and vertical, and there is a custom size if none of those fit."""
+
+[[howto]]
+title = "Create the video and download it."
+body = """
+ Encoding runs on your
+      own hardware, so how long it takes depends on your machine rather than on
+      a queue. The finished MP4 is handed straight to your browser's downloads."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Are my images uploaded anywhere?"
+a = """
+        No. Your images are read, composited and encoded by your own browser on
+        your own hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. The one exception is the
+        optional "add from a web address" feature, which fetches an image you
+        paste in, and that server sees your IP address."""
+
+[[faq]]
+q = "Which image formats can I use?"
+a = """
+        Any still image format your browser can decode, which in practice means
+        JPG, PNG, WebP, GIF, AVIF and, on Apple devices, HEIC. There is no
+        separate list to keep up to date here, because the decoding is the
+        browser's job rather than ours."""
+
+[[faq]]
+q = "What video format does it produce?"
+a = """
+        MP4 with H.264 video, which plays on essentially anything. In a browser
+        without WebCodecs the tool falls back to recording WebM instead &mdash;
+        the same footage in a container that fewer editors accept."""
+
+[[faq]]
+q = "Is there a limit on how many images, or how long the video can be?"
+a = """
+        There is no limit built into the tool. The practical ceiling is your own
+        machine's memory, because the finished video is assembled there before
+        you download it. Very large 4K slideshows are the first thing to feel
+        it."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in and no trial. The site
+        carries advertising, which is what pays for it; the ads are not given
+        anything about your images."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your images away to be processed would stop
+        the moment you unplugged."""
+
+[[faq]]
+q = "Can I add music or a soundtrack?"
+a = """
+        Not yet. The tool produces video only: the MP4 it writes has a single
+        video track and no audio track. Add a soundtrack afterwards in a video
+        editor if you need one."""
+
+[schema]
+# Overrides the default "Requires JavaScript." - this tool needs more than
+# that to produce its headline output format.
+browser_requirements = "Requires JavaScript. MP4 output needs a browser with WebCodecs; others fall back to WebM."
+category = "MultimediaApplication"
+description = "Turn a folder of images into an MP4 slideshow video. Every step runs in your browser, so no image is ever uploaded."
+features = [
+  "Converts JPG, PNG, WebP, GIF and AVIF images to video",
+  "MP4 (H.264) output, with WebM as a fallback",
+  "Resolutions up to 3840x2160, frame rates from 12 to 60 fps",
+  "Per-image hold time in frames or seconds",
+  "Runs offline; no upload, no account",
+]
+
+# This tool needs three things the rest of the site does not: http: on img-src,
+# because "add from a web address" is allowed to pull an image IN from a plain
+# http host; and blob: on media-src and worker-src, because the finished video
+# and the encoder that makes it live in memory on this machine rather than at a
+# URL. A tool can only ever widen its own page this way - it cannot narrow the
+# site policy, and it cannot touch any other tool's.
+[csp]
+"img-src" = ["http:"]
+"media-src" = ["'self'", "blob:"]
+"worker-src" = ["'self'", "blob:"]

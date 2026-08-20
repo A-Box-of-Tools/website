@@ -1,0 +1,276 @@
+#
+# Image Compressor
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "compress-image"
+name = "Image Compressor"
+heading = "Image&nbsp;Compressor"
+tagline = "Name the size. It works out the rest."
+icon = "&#128476;&#65039;"          # the mark beside the page heading
+favicon = "&#128476;"      # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. file-list is the drop-a-file-then-see-a-row widget that
+# more than one tool needs and that no tool should own.
+css_parts = ["file-list"]
+lastmod = "2026-08-19"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Compress Image to a Target Size &mdash; Free, No Upload"
+description = "Say the size you need - 100 KB, 2 MB, anything - and this finds the least compression that gets there. JPEG, PNG and WebP, entirely in your browser: no upload, no account, and it shows you exactly what the compression cost."
+og_title = "Compress an image to a size you choose"
+og_description = "Name a target size and this finds the least compression that reaches it, then measures what that cost. Runs on your own machine; nothing is uploaded."
+og_image_alt = "Image Compressor - name a size, keep the quality"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  img-src needs blob: for the previews and the compressed results this page
+  draws from the files you chose, and https: because ad creatives come from
+  anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The compression runs in your own browser, on your own hardware, using the
+    encoders it already ships with. This tool has no network feature of any kind
+    &mdash; nothing to fetch, nothing to send &mdash; and there is no server on
+    the other end of this page to send a picture to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and compress
+      a photo. Not one request carries an image, a thumbnail, a filename, or a byte
+      of what you chose. Or unplug from the internet and compress one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/compress.js</code> for the search that
+      decides how much quality to spend, and <code>src/measure.js</code> for the
+      comparison behind the "visual match" figure."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to compress an image to a specific size"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Say the size you need &mdash; 100 KB, 2 MB, anything &mdash; and it
+            finds the least compression that gets there."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "images"
+choose = "an image"
+analytics_extra = """, and none of the
+  sizes or quality figures this tool works out"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No size limit"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your images have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The compression is
+      <code>canvas.toBlob</code> &mdash; the encoder that is already installed in
+      your browser."""
+
+[[privacy]]
+title = "The numbers are measured, not reported."
+body = """
+ The sizes, the
+      quality figure and the SSIM comparison are all computed on this page and
+      shown to you. There is no custom analytics event in this repository that
+      carries a filename, a size, a count or a result."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your pictures. Every line that
+      reads, compresses or measures a file is served from this origin and listed
+      in the repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Choose your images."
+body = """
+ Drop them onto the picker or select them
+      by hand. They are read straight off your disk by the browser; nothing is sent
+      anywhere while you do it."""
+
+[[howto]]
+title = "Type the size you were told to hit."
+body = """
+ 100 KB for the upload
+      form that keeps refusing your photo, 500 KB for the application portal, 2 MB
+      for a page that has to load quickly. The four common ones are buttons."""
+
+[[howto]]
+title = "Press \"Compress to the target\"."
+body = """
+ Each image is encoded
+      several times while the tool narrows in on the highest quality that fits.
+      Anything already under the target is left exactly as it is."""
+
+[[howto]]
+title = "Check what it cost, then download."
+body = """
+ Every result says what it
+      was written as, at what quality, whether the dimensions changed, and how
+      closely it matches the original when measured. "Compare" puts the two
+      pictures side by side."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my image uploaded anywhere?"
+a = """
+        No. The file is decoded, compressed and measured by your own browser on your
+        own hardware, using the JPEG, PNG and WebP encoders the browser already
+        ships with. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site."""
+
+[[faq]]
+q = "How does it hit an exact size?"
+a = """
+        By trying. There is no formula that turns a quality setting into a byte
+        count &mdash; it depends entirely on the picture &mdash; so the tool encodes
+        the image several times and searches for the answer. It starts at the top of
+        the quality range and narrows in by halving, which finds the highest quality
+        that fits in about eight encodes. Every size you see on the page is a real
+        encoded file, not an estimate."""
+
+[[faq]]
+q = "What does \"minimal loss\" actually mean here?"
+a = """
+        Three specific things. First, an image already under your target is passed
+        through byte for byte rather than re-encoded. Second, quality is spent
+        before resolution, and only down to a floor where compression artefacts
+        start to show &mdash; past that point the tool makes the picture smaller and
+        puts the quality back up, because fewer good pixels look better than more
+        ruined ones. Third, once a fitting result is found the search pushes back up
+        until the budget is used, so you do not get a 300 KB file when you asked for
+        500 KB."""
+
+[[faq]]
+q = "What are the SSIM and PSNR figures on each result?"
+a = """
+        They are a measurement of what the compression cost, taken by decoding the
+        result and comparing it with the original picture. SSIM compares local
+        brightness, contrast and structure, which is much closer to what an eye
+        objects to than counting changed pixels; above about 0.98 the two are hard
+        to tell apart side by side. PSNR is the traditional decibel figure. Both are
+        computed on your machine, and both are shown so that the claim of low loss
+        is checkable rather than just asserted."""
+
+[[faq]]
+q = "Which formats can it read and write?"
+a = """
+        It reads anything your browser can decode, which in practice means JPEG,
+        PNG, WebP, GIF, BMP and &mdash; on most current browsers &mdash; AVIF. It
+        writes JPEG, PNG and WebP, because those are the encoders browsers ship. On
+        "auto" it keeps the format your file arrived in, and switches to WebP only
+        when keeping it would have meant a resize or a visible drop in quality."""
+
+[[faq]]
+q = "Why can it not compress a PNG very far?"
+a = """
+        Because PNG is lossless: it has no quality dial to turn. The only way to
+        make a PNG smaller is to give it fewer pixels or fewer colours, so with PNG
+        selected the tool reaches a target by resizing alone. If the picture is a
+        photograph, JPEG or WebP will get far closer to your target at a size you
+        can see is fine &mdash; and if it is a logo or a screenshot with
+        transparency, WebP keeps the transparency that JPEG would fill in with
+        white."""
+
+[[faq]]
+q = "Does compressing an image remove its EXIF and GPS data?"
+a = """
+        Yes, as a side effect. Compressing means decoding the picture to pixels and
+        encoding those pixels again, and a canvas full of pixels carries no tags, so
+        the location, camera model, timestamps and everything else are simply not
+        written to the new file. If you want the metadata gone but the picture
+        untouched, use the <a href="../exif-editor/">EXIF Viewer &amp; Remover</a>
+        instead &mdash; it rewrites the container without re-compressing anything."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no watermark.
+        There is no limit on the number or the size of the files either, because
+        there is no server paying for them &mdash; the work happens on your own
+        machine. The site carries advertising, which is what pays for it; the ads
+        are not given anything about your images."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being uploaded:
+        a tool that sent your images away to be compressed would stop the moment you
+        unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Compress JPEG, PNG and WebP images to a size you name. The tool searches for the highest quality that fits the target, resizing only when quality alone cannot get there, and measures the result against the original. Runs entirely in the browser with no upload."
+features = [
+  "Compresses to a target file size you choose, not a quality number you have to guess",
+  "Keeps full resolution where it can, and resizes only when quality alone cannot reach the target",
+  "Spends the whole budget: the result lands just under the target rather than far below it",
+  "Measures the result against the original with SSIM and PSNR",
+  "Leaves files that are already under the target completely untouched",
+  "JPEG, PNG and WebP, with an automatic format choice",
+  "Batches, with all results in one zip",
+  "Runs offline; no upload, no account",
+]

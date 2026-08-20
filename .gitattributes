@@ -1,0 +1,24 @@
+# Every text file in this repository is LF, in the working tree as well as in
+# the object store.
+#
+# This is not a style preference. build.py copies shared/ and each tool's src/
+# into dist/ byte for byte, so if a checkout on Windows had CRLF and a checkout
+# in CI had LF, the same sources would produce two different sites and
+# `python build.py --check` would report a difference that is not really there.
+# The whole point of that command is that a reader can prove the deployed site
+# is a build of these sources, so the build has to be reproducible on any
+# machine.
+#
+# Files build.py writes itself are already forced to LF in code; this covers
+# the ones it only copies.
+
+* text=auto eol=lf
+
+# Binary, so Git must not touch them at all.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.woff2 binary

@@ -1,0 +1,124 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose images</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    <input type="file" id="file-input" class="visually-hidden"
+           accept="image/*,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif" multiple>
+    <label id="dropzone" class="dropzone" for="file-input">
+      <span class="dropzone-title">Drop images here</span>
+      <span class="dropzone-hint">or click to browse &mdash; JPEG, PNG, WebP and anything else your browser can open</span>
+    </label>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Take all off the list</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the number that matters -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> Say how big it may be</h2>
+
+    <p class="card-lede">
+      This is the part other compressors get backwards. They give you a quality
+      slider and leave you to guess which setting lands under the limit you were
+      given. Name the limit instead, and the tool searches for the highest quality
+      that fits it &mdash; then spends whatever is left of the budget rather than
+      handing back a file half the size you asked for.
+    </p>
+
+    <div class="target-row">
+      <div class="target-field">
+        <label for="target-value">Target size, per image</label>
+        <div class="inline-pair">
+          <input type="number" id="target-value" value="500" min="1" step="1" inputmode="decimal">
+          <label for="target-unit" class="visually-hidden">Unit</label>
+          <select id="target-unit">
+            <option value="KB" selected>KB</option>
+            <option value="MB">MB</option>
+          </select>
+        </div>
+      </div>
+
+      <!--
+        The four numbers people are actually given: an upload form that says
+        100 KB, a forum avatar or a job application at 500 KB, an email
+        attachment at 1 MB, and a web page hero at 2 MB.
+      -->
+      <div class="presets" id="presets" role="group" aria-label="Common targets">
+        <button type="button" class="ghost" data-bytes="102400">100 KB</button>
+        <button type="button" class="ghost" data-bytes="512000">500 KB</button>
+        <button type="button" class="ghost" data-bytes="1048576">1 MB</button>
+        <button type="button" class="ghost" data-bytes="2097152">2 MB</button>
+      </div>
+    </div>
+
+    <p id="target-summary" class="field-summary"></p>
+
+    <fieldset class="options">
+      <legend>How it is allowed to get there</legend>
+
+      <div class="option-row">
+        <label for="format-select">Output format</label>
+        <select id="format-select">
+          <option value="auto" selected>Auto &mdash; keep the format unless another one looks better</option>
+          <option value="keep">Always keep the original format</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/webp">WebP</option>
+          <option value="image/png">PNG (lossless, so size comes out of the dimensions)</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="allow-resize" checked>
+        <span>
+          <strong>May make the picture smaller if it has to</strong>
+          <span class="check-note">
+            Only used once quality alone would have to drop past the point where
+            compression starts to show. Below that, fewer good pixels look better
+            than more ruined ones. Turn this off to keep the exact dimensions and
+            pay for a tight target out of quality instead.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Compress</h2>
+
+    <div class="run-row">
+      <button type="button" id="compress-all" class="primary big" disabled>Compress to the target</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Compressed</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Download all as a zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

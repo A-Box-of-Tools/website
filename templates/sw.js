@@ -1,30 +1,21 @@
 /**
- * Offline cache.
+ * Offline cache. GENERATED FILE - do not edit; see templates/sw.js.
  *
  * Beyond convenience, this is the app's strongest privacy proof: once the
  * worker is installed you can disconnect from the network entirely and every
- * feature still works, which no design that uploaded your photos could manage.
+ * feature still works, which no design that uploaded your {{ tool.words.plural }} could manage.
  *
- * Bump CACHE_NAME whenever any listed file changes.
+ * CACHE_NAME carries a hash of the files listed below, so it changes exactly
+ * when one of them changes and never otherwise. That used to be a comment
+ * asking whoever edited a file to remember to bump a number by hand.
  */
 
-const CACHE_NAME = 'exif-editor-v4';
+const CACHE_NAME = '{{ tool.slug }}-{{ cache_hash }}';
 
 const ASSETS = [
   './',
-  'index.html',
-  'styles.css',
-  'src/main.js',
-  'src/container.js',
-  'src/jpeg.js',
-  'src/png.js',
-  'src/webp.js',
-  'src/tiff.js',
-  'src/tags.js',
-  'src/report.js',
-  'src/crc32.js',
-  'src/zip.js',
-  // Same-origin, so it is cached like everything else. Offline it simply
+{% for asset in assets %}  '{{ asset }}',
+{% endfor %}  // Same-origin, so it is cached like everything else. Offline it simply
   // queues a measurement call that never goes out - the app does not depend
   // on it, and nothing about your files is in it either way.
   'analytics.js',

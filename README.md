@@ -24,7 +24,8 @@ visitor's own machine beats not shipping the tool at all — see
 | EXIF Viewer & Remover | `/exif-editor/` | Reads, edits and strips the metadata in a JPEG, PNG or WebP |
 | Image Compressor | `/compress-image/` | Compresses an image to a file size you name, spending as little quality as the target allows |
 
-The hub page (`index.html`) lists them by category.
+The hub page lists them by category. It, and every tool page, is generated —
+see [Layout](#layout).
 
 Every page loads Google's ad and measurement scripts, which is why the
 Content-Security-Policy in each page names Google origins rather than being the
@@ -38,84 +39,155 @@ if they ever come out, tighten the policies and put the stronger wording back.
 
 ## Running it
 
-Browsers refuse to load ES modules and service workers from `file://` URLs, so the
-folder needs to be served over an origin. A small server is included that uses only
-what ships with Windows:
+The site is generated. The pages a browser is served are built from
+`templates/`, `config/` and `tools/` by `build.py`, into `dist/`:
+
+```bash
+python build.py
+```
+
+Python 3.11 or newer, and nothing to install: the build uses only the standard
+library. There is no `package.json`, no lockfile, and no third-party code
+anywhere between these sources and the site.
+
+To build and serve in one step:
 
 ```bash
 powershell -ExecutionPolicy Bypass -File serve.ps1
 ```
 
-Then open <http://localhost:8080/>. Use `-Port 3000` to pick a different port.
+Then open <http://localhost:8080/>. `-Port 3000` picks a different port, and
+`-NoBuild` serves `dist/` as it stands. Any static server works just as well
+once the build has run (`npx serve dist`, `python -m http.server -d dist`,
+nginx, Cloudflare Pages, Netlify…).
 
-Any static server works just as well (`npx serve`, `python -m http.server`, nginx,
-Cloudflare Pages, Netlify…). There is nothing to compile.
+To check that the deployed site really is a build of these sources:
 
-> **Do not open a tool's `index.html` by double-clicking it.** Browsers block ES
+```bash
+python build.py --check
+```
+
+That builds, then compares the result file by file with the `dist` branch —
+the branch GitHub Pages serves. If they differ, the deployed site is not what
+this repository says it is, and that is worth knowing.
+
+> **Do not open a page's `index.html` by double-clicking it.** Browsers block ES
 > modules on `file://` URLs, so `main.js` never runs. The page still renders and the
-> file picker still opens — that part is plain HTML — but choosing images does nothing
-> and "Create video" stays greyed out. The app detects this and shows a red banner
-> explaining it, but the failure is easy to hit, so it is worth knowing about.
+> file picker still opens — that part is plain HTML — but choosing images does nothing.
+> The app detects this and shows a red banner explaining it, but the failure is easy
+> to hit, so it is worth knowing about.
 
 ---
 
 ## Layout
 
-Each tool is a self-contained folder that assumes nothing about where it is
-mounted — every path in it is relative, so it works at the domain root, at
-`/images-to-video/`, or nested deeper, with no configuration.
+There are two halves: the sources, which are what you edit, and `dist/`, which
+is what a browser gets. Nothing in `dist/` is ever edited by hand — every file
+in it carries a "GENERATED FILE" banner saying which sources it came from.
 
 ```
-/                        the hub page, listing tools by category
-  index.html
-  site.css
+build.py                 the generator; run it to produce dist/
+buildlib/
+  template.py            an eighty-line template engine, so this has no dependencies
+  site.py                config loading, the CSP, the structured data, the checks
+config/
+  site.toml              everything true of every page: the CSP, the ids, the hub
+  planned.toml           the "Planned" list on the hub page
+templates/
+  hub.html               the hub page
+  tool.html              the frame every tool page wears
+  sw.js                  the offline service worker
+  analytics.js           the Google Analytics bootstrap
+  sitemap.xml
+  partials/              the pieces shared between hub and tool pages
+shared/
+  css/
+    tool-frame.css       the stylesheet every tool page starts from
+    file-list.css        an optional part, for tools that show a list of files
+  site.css               the hub's own stylesheet
   logo.svg               the site mark; also the favicon, and inlined in the pages
-  icon-180.png           the same mark drawn as a PNG, for iOS home screens
-  og-image.ps1           renders the share cards and that icon from logo.svg
-  _headers               security headers (Cloudflare Pages / Netlify only)
-  CNAME                  the custom domain, read by GitHub Pages
-  .nojekyll              stops GitHub Pages running the content through Jekyll
-  cloudflare/            the edge config that adds the security headers
-  serve.ps1              local dev server
-  images-to-video/       one tool, entirely self-contained
-    index.html
-    styles.css
-    sw.js
-    src/*.js
-  exif-editor/           another, with no shared code between them
-    index.html
-    styles.css
-    sw.js
-    src/*.js
-  compress-image/        and a third
-    index.html
-    styles.css
-    sw.js
-    src/*.js
+  icon-180.png           the same mark as a PNG, for iOS home screens
+  og.png                 the hub's share card
+  CNAME .nojekyll        read by GitHub Pages
+  _headers robots.txt ads.txt
+tools/
+  compress-image/
+    tool.toml            everything particular to this tool: prose, FAQ, metadata
+    body.html            the <main> of the page - the interface, and only that
+    styles.css           the rules only this tool needs
+    src/*.js             the app itself, copied into dist/ byte for byte
+    og.png               its share card
+  exif-editor/           the same five things
+  images-to-video/       and again
+og-image.ps1             draws the share cards and the icon from shared/logo.svg
+serve.ps1                builds, then serves dist/ locally
+cloudflare/              the edge config that adds the security headers
 ```
 
-Tools do not share a stylesheet or a script bundle on purpose: it keeps each one
-readable and auditable on its own, which is the point when the claim being made is
-"read the code and see that it never uploads anything".
+Each generated tool folder is still entirely self-contained and still assumes
+nothing about where it is mounted: every path in it is relative, so it works at
+the domain root, at `/compress-image/`, or nested deeper, with no configuration.
+The service worker registers with the scope of its own folder, so each tool
+caches only itself and cannot interfere with its neighbours.
 
-The service worker registers with the scope of its own folder, so each tool caches
-only itself and cannot interfere with its neighbours.
+**The JavaScript is not touched.** `src/*.js` is copied byte for byte — no
+bundler, no minifier, no transpiler — so the code a visitor's browser runs is
+still, character for character, the code in this repository. The build only ever
+assembles HTML, CSS, and the two small generated JS files (`sw.js`,
+`analytics.js`), and it never reaches the network.
+
+### What the build stopped anyone having to remember
+
+The three tool pages used to be written out by hand, and the frame around them
+was the same on all three give or take a noun. Keeping them in step was a manual
+job, and this repository was full of comments admitting it. Each of those is now
+something the build does, and cannot forget to do:
+
+| Used to say | Now |
+|---|---|
+| "Keep this list in step with the other pages" (the CSP, in four files) | One list in `config/site.toml`, copied to every page. A tool can widen its own policy in its `[csp]` table, and never narrow it or reach another page. |
+| "EDIT BOTH OR NEITHER" (the FAQ, written once as HTML and again as JSON-LD) | One set of `[[faq]]` entries per tool. The visible questions and the `FAQPage` structured data are both derived from them. |
+| "Bump `CACHE_NAME` whenever any listed file changes" | The service worker's asset list is read off the disk, and its cache name is a hash of those files, so it changes exactly when they do. |
+| "Add one `<li>` card to the matching category, and an entry to `sitemap.xml`" | The hub's cards, its `ItemList` structured data and `sitemap.xml` all come from the tools that exist in `tools/`. |
+| Four copies of the repository URL per page | `source_url` in `config/site.toml`. |
+
+The build refuses to produce a site rather than produce a broken one. A missing
+config key, a tool whose folder and `slug` disagree, a tool listed on the hub
+that does not exist, and a tool that exists but is on no category list — so
+nothing would link to it — are all errors, not warnings.
 
 ---
 
 ## Adding a tool
 
-1. Drop the tool's folder in beside `index.html`. Give it its own CSP with
-   the same Google-only `connect-src` allowlist the other tools use, its own
-   stylesheet, and its own service worker scoped to the folder.
-2. Add one `<li>` card to the matching category in `index.html`. The markup for a
-   card is spelled out in a comment right above the categories.
-3. If it belongs to a category that does not exist yet, copy a whole
-   `<section class="category">` block and move that name out of the "Planned" list.
+1. Make `tools/<slug>/` with five things: `tool.toml`, `body.html` (the `<main>`
+   of the page, and only that), `styles.css` (the rules only this tool needs),
+   `src/*.js` including a `main.js`, and `og.png`. Copying the nearest existing
+   tool and editing it is the fastest way in — `tool.toml` is commented
+   throughout, and every key in it is required, so nothing can be silently
+   forgotten.
+2. Add the slug to the `order` of the matching `[[hub.categories]]` in
+   `config/site.toml`, and set the same category id in the tool's `category`.
+   The card on the hub, the sitemap entry and the structured data follow from
+   that; there is no second place to remember.
+3. Run `python build.py`. If the tool is missing something, the build says so
+   and writes nothing.
+4. If it belongs to a category that does not exist yet, add a
+   `[[hub.categories]]` table and move that name out of `config/planned.toml`.
 
-   Before adding a *new* name to the Planned list, put it through
+   Before adding a *new* name to the planned list, put it through
    [What can be built here](#what-can-be-built-here) first. That section is
    where the ruled-out ones, and the reasons they were ruled out, live.
+
+The frame — the header, the pledge, the live network check, the privacy panel,
+the FAQ layout, the footer, the Content-Security-Policy, the service worker,
+the analytics bootstrap — you get for free and should not reimplement. What a
+tool writes for itself is its interface (`body.html`), its own rules
+(`styles.css`), its own code (`src/`), and its own words (`tool.toml`).
+
+A tool that needs a stylesheet part more than one tool wants, but that no tool
+should own, puts it in `shared/css/` and names it in `css_parts`. The file-list
+widget — drop a file, see a row — works that way.
 
 Two things to hold the line on, because the whole site rests on them:
 
@@ -132,18 +204,43 @@ Two things to hold the line on, because the whole site rests on them:
 ## Deploying
 
 The site is one domain, `abox.tools`. It is served by **GitHub Pages** from the
-`main` branch of this repository, behind **Cloudflare's proxy**.
+`dist` branch of this repository, behind **Cloudflare's proxy**.
 
 ```
-visitor  ->  Cloudflare (DNS, TLS, response headers)  ->  GitHub Pages (static files)
+push to main  ->  GitHub Action runs build.py  ->  dist branch
+
+visitor  ->  Cloudflare (DNS, TLS, response headers)  ->  GitHub Pages (dist branch)
 ```
+
+`main` holds the sources. `dist` holds the built site, and nothing else: it is
+written only by [the Build workflow](.github/workflows/build.yml), never by
+hand. A pull request builds without publishing, so a change that breaks the
+build is caught before it can reach `main`.
+
+To see what would be deployed before pushing, run `python build.py` and look at
+`dist/`. To check that what *is* deployed matches these sources, run
+`python build.py --check`, which diffs a fresh build against the `dist` branch.
 
 ### GitHub Pages
 
-*Settings → Pages → Deploy from a branch → `main` → `/ (root)`.* The
-[`CNAME`](CNAME) file at the root holds the custom domain, and `.nojekyll` stops
-Pages running the content through Jekyll. There is no build step, so a push to
-`main` is a deploy.
+*Settings → Pages → Deploy from a branch → `dist` → `/ (root)`.* The
+`CNAME` file, which lives in [`shared/`](shared/) and is copied into every
+build, holds the custom domain; `.nojekyll` beside it stops Pages running the
+content through Jekyll.
+
+**If you are moving this from the old setup**, the Pages source has to be
+changed from `main` to `dist` by hand, once. Until it is, the workflow will
+publish to `dist` and Pages will keep serving `main`, which no longer contains
+an `index.html` — so the site would 404. Change the branch first, or in the
+same sitting.
+
+### Why the built site is committed
+
+Pages could build this itself, and most static sites let it. Committing the
+output instead buys one specific thing: a reader can run `python build.py` on
+their own machine and diff the result against the branch that is actually being
+served. A site whose entire pitch is "check this rather than believe it" should
+not ask anyone to take the deployment on trust either.
 
 ### DNS at Cloudflare
 
@@ -159,7 +256,8 @@ for `www`. Two things about the order they are set up in:
 
 ### Response headers
 
-**GitHub Pages cannot set response headers at all**, so [`_headers`](_headers) —
+**GitHub Pages cannot set response headers at all**, so
+[`_headers`](shared/_headers) —
 which Cloudflare Pages and Netlify would read — does nothing on this deployment.
 The same headers are applied at the edge by a Cloudflare response header transform
 rule, kept in [`cloudflare/response-headers.json`](cloudflare/response-headers.json)
@@ -196,8 +294,9 @@ Certificates* in Cloudflare, are worth turning on.
 
 Each tool page links to this repository in four places — the header button, the
 privacy panel (twice), and the footer — plus once in the hub footer. "Read the code"
-is the only real answer to "why should I trust this", so if the repository ever
-moves, all of them move with it. A dead source link is worse than no link at all.
+is the only real answer to "why should I trust this", so a dead source link is
+worse than no link at all. All five come from `source_url` in
+[`config/site.toml`](config/site.toml), so moving the repository is one edit.
 
 ---
 
@@ -303,7 +402,7 @@ The point of this app is that it is *checkable*, not that it is promised.
 
 | Claim | How you verify it |
 |---|---|
-| Your images have nowhere to be uploaded **to** | `index.html` names every address this page may contact, and not one of them belongs to this site. There is no endpoint here that your files could be collected at |
+| Your images have nowhere to be uploaded **to** | The page names every address it may contact, from the one list in `config/site.toml`, and not one of them belongs to this site. There is no endpoint here that your files could be collected at |
 | The encoder never touches the network | Read `src/encoder.js` and `src/compose.js`. Neither imports anything that can make a request |
 | Nothing is sent during an export | Open DevTools, Network tab, create a video. No request carries image data |
 | Google is never handed an image | Read `analytics.js` - it configures a page-visit counter and nothing else. Nothing in `src/` passes a file, thumbnail, name, or dimension to any script |
@@ -413,8 +512,9 @@ File  →  createImageBitmap  →  <canvas>  →  VideoFrame  →  VideoEncoder 
 
 | File | Role |
 |---|---|
-| `index.html` | Markup, CSP policy |
-| `styles.css` | Styling, light/dark aware |
+| `tool.toml` | The page's words, metadata and FAQ; the page itself is generated from them |
+| `body.html` | The `<main>` of the page — the interface, and only that |
+| `styles.css` | The rules only this tool needs, appended to the shared frame |
 | `src/main.js` | UI state, event wiring, export orchestration |
 | `src/images.js` | Import, decode, thumbnails, ordering |
 | `src/compose.js` | Canvas compositing — fit modes, output sizing |
@@ -423,7 +523,9 @@ File  →  createImageBitmap  →  <canvas>  →  VideoFrame  →  VideoEncoder 
 | `src/recorder.js` | MediaRecorder → WebM (fallback path) |
 | `src/remote.js` | Downloading images from web addresses into local blobs |
 | `src/support.js` | Codec and API feature detection |
-| `sw.js` | Offline cache |
+
+`index.html`, `sw.js` and `analytics.js` are generated; the CSP comes from
+`config/site.toml`, and the frame from `templates/tool.html`.
 
 ### Two export paths
 
@@ -438,8 +540,8 @@ background tabs. The app warns you if the tab was hidden mid-recording.
 
 ### About the MP4 muxer
 
-`src/mp4.js` writes the container by hand because there is no build step to pull in a
-library. It is deliberately narrow:
+`src/mp4.js` writes the container by hand because there is no bundler to pull in a
+library — the build assembles pages, and never touches `src/`. It is deliberately narrow:
 
 - one H.264 video track, no audio
 - samples in presentation order, no B-frames, so no `ctts` box is needed
@@ -593,7 +695,7 @@ some CMYK and YCCK JPEGs inside out.
 
 ## Testing it
 
-There is no test runner in this repository and no build step, so the checks that
+There is no test runner in this repository, so the checks that
 were used while writing this are not checked in. What they covered, if it needs
 doing again: a JPEG and a PNG built by hand with known tag values, asserting the
 parsed values match; the EXIF block round-tripping through

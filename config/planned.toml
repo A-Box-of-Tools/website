@@ -1,0 +1,95 @@
+#
+# The "Planned" section of the hub page.
+#
+# Written as plain text on purpose. A card that links nowhere, or a category
+# heading with nothing under it, reads as a broken page rather than an honest
+# one. Move a name out of this file when the tool actually ships, and add its
+# folder to tools/ at the same time.
+#
+# The media groups below are what is left after walking the tool list of the
+# best-known online GIF and video site and keeping every entry that can be built
+# so that the work happens on the visitor's own machine, and keeps happening
+# with the network unplugged. Most of them run on APIs the browser already
+# ships. A few need an FFmpeg build vendored into the one tool that uses it,
+# which is allowed - the file still never leaves the machine. What that costs,
+# and what was left out anyway, is written down in README.md under "What can be
+# built here". Read it before adding a name back: a few of the obvious-looking
+# gaps are gaps on purpose.
+#
+
+note = "Not built yet. Listed so you can see where this is going."
+
+[[group]]
+name = "Images"
+items = [
+  ["Resize", "one image or a whole folder, by pixels or by percent"],
+  ["Crop", "free, fixed ratio, or an exact pixel box"],
+  ["Rotate &amp; flip", "quarter turns, or straightening by a few degrees"],
+  ["Convert format", "PNG, JPG and WebP, in any direction"],
+  ["Add text", "over the picture, or in a caption box above it"],
+  ["Filters", "brightness, contrast, saturation, blur, grayscale"],
+  ["Image to data URI", "paste the result straight into CSS or HTML"],
+  ["PNG to ICO", "a favicon at every size a browser asks for"],
+  ["SVG to PNG", "rasterize a vector at any size"],
+  ["HEIC to JPG", "the photos an iPhone makes, in a format everything opens"],
+  ["AVIF &amp; JPEG XL", "convert either way, in whichever browser you happen to use"],
+]
+
+[[group]]
+name = "GIF &amp; animation"
+items = [
+  ["GIF maker", "images into an animated GIF"],
+  ["Video to GIF", "pick the section, the size, and the frame rate"],
+  ["GIF to MP4 or WebM", "the same animation, usually a tenth of the size"],
+  ["Split a GIF", "every frame out as its own PNG"],
+  ["Resize, crop &amp; rotate GIFs", "frame by frame, with the timing kept"],
+  ["Reverse a GIF", "last frame first"],
+  ["Change GIF speed", "retime it without re-rendering the frames"],
+  ["GIF analyzer", "frames, delays, palette, and where the bytes went"],
+  ["APNG maker", "animation with real transparency and full color"],
+  ["Animated WebP", "the same animation again, at a fraction of the size"],
+]
+
+[[group]]
+name = "Video"
+items = [
+  ["Trim", "cut a section out and keep the original quality"],
+  ["Resize", "down to a size that will actually send"],
+  ["Crop", "including squaring up a clip for a feed"],
+  ["Rotate", "for the clip that was filmed sideways"],
+  ["Reverse", "play it backwards"],
+  ["Mute, or save the audio", "drop the sound, or keep it on its own"],
+  ["Grab a frame", "a full-quality still from any point"],
+  ["Convert to MP4 or WebM", "whichever one the site you are posting to insists on"],
+  ["Filters", "brightness, contrast, saturation, blur"],
+  ["Burn in subtitles", "an SRT file drawn into the picture"],
+]
+
+[[group]]
+name = "Audio"
+items = [
+  ["Trim", "keep the part you wanted"],
+  ["Fade in &amp; out", "so it does not start and stop on a cliff"],
+  ["Change speed", "with or without moving the pitch"],
+  ["Normalize or boost volume", "bring a quiet recording up to a usable level"],
+  ["Waveform image", "draw a track as a picture"],
+  ["Convert format", "MP3, WAV and Opus, in any direction"],
+]
+
+[[group]]
+name = "Documents &amp; PDF"
+items = [
+  ["Images to PDF", "photos or scans gathered into one document"],
+  ["Merge, split &amp; reorder", "pages moved around without a round trip to a server"],
+  ["Rotate &amp; crop pages", "fix a scan that came in sideways, or trim its margins"],
+  ["Extract images", "pull the pictures back out of a document"],
+]
+
+[[group]]
+name = "Beyond media"
+items = [
+  ["Text &amp; code", "format, diff, encode, convert between formats"],
+  ["Data", "CSV and JSON conversion, cleaning, inspection"],
+  ["Privacy &amp; security", "hashes, checksums, metadata stripping"],
+  ["QR &amp; barcodes", "generated from a string, with nothing sent to make one"],
+]

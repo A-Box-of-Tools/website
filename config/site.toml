@@ -1,0 +1,171 @@
+#
+# Site-wide configuration. Everything here is true of every page; anything that
+# differs between tools lives in that tool's own tools/<slug>/tool.toml.
+#
+# This file is the single source of truth for the things that used to have to be
+# kept in step by hand across four hand-written HTML files: the ad and analytics
+# ids, the source-code link, and above all the Content-Security-Policy. A tool
+# missing an origin showed a blank ad slot; a tool with an extra one was a wider
+# hole than the site had agreed to. Now there is one list and the build copies
+# it, so they cannot drift.
+#
+
+name = "A Box of Tools"
+domain = "https://abox.tools/"
+brand_mark = "&#129520;"          # the toolbox emoji, used on the hub header
+lang = "en"
+lastmod = "2026-08-19"     # the hub page's own sitemap date
+source_url = "https://github.com/A-Box-of-Tools/website"
+source_label = "github.com/A-Box-of-Tools/website"
+
+adsense_client = "ca-pub-5997711677062324"
+analytics_id = "G-SCBN29XZ31"
+
+[bmc]
+# Buy Me a Coffee. The build writes their snippet out unchanged; these are the
+# data- attributes it is configured with.
+slug = "aboxtools"
+text = "Buy me a coffee"
+color = "#FFDD00"
+font = "Cookie"
+
+#
+# ---------------------------------------------------------------------------
+# The Content-Security-Policy every page carries.
+#
+# As narrow as AdSense can be made to work with: Google's own script, frame and
+# measurement origins, plus the two the donate button needs, and no wildcards
+# except on img-src where creatives legitimately come from anywhere.
+#
+# A CSP wildcard stands in for a whole label, so https://*.analytics.google.com
+# does NOT cover the bare host analytics.google.com - and the bare host is where
+# gtag sends its measurement hit. Both forms are listed. Adding a Google origin
+# here means checking whether the bare host is needed as well as the wildcard.
+#
+# Known gap: Google sends the ads conversion ping to the visitor's own country
+# domain - www.google.ca, www.google.co.uk - and CSP cannot wildcard a TLD. Only
+# www.google.com can be named, so that one ping is still refused for a visitor
+# routed to a country domain. Nothing short of widening the directive to https:
+# would express it, which is not a trade worth making for a conversion ping.
+#
+# AdSense does not officially support a strict CSP. If an ad renders blank, open
+# DevTools and look for a violation naming an origin not listed here. Add the
+# origin; do not widen a directive to https: to make it go away.
+#
+# A tool may add values to any of these, and may add directives of its own, in
+# its tool.toml [csp] table. It can only ever widen its own page - there is no
+# way for a tool to remove an origin the site has decided on, and no way for one
+# tool's policy to affect another's.
+# ---------------------------------------------------------------------------
+#
+
+[csp]
+"default-src" = ["'none'"]
+"script-src" = [
+  "'self'",
+  "https://www.googletagmanager.com",
+  "https://pagead2.googlesyndication.com",
+  "https://tpc.googlesyndication.com",
+  "https://partner.googleadservices.com",
+  "https://www.googletagservices.com",
+  "https://adservice.google.com",
+  "https://ep1.adtrafficquality.google",
+  "https://ep2.adtrafficquality.google",
+  "https://cdnjs.buymeacoffee.com",
+]
+"frame-src" = [
+  "https://googleads.g.doubleclick.net",
+  "https://tpc.googlesyndication.com",
+  "https://ep1.adtrafficquality.google",
+  "https://ep2.adtrafficquality.google",
+  "https://www.google.com",
+]
+"connect-src" = [
+  "https://www.google-analytics.com",
+  "https://*.google-analytics.com",
+  "https://analytics.google.com",
+  "https://*.analytics.google.com",
+  "https://*.googletagmanager.com",
+  "https://pagead2.googlesyndication.com",
+  "https://googleads.g.doubleclick.net",
+  "https://stats.g.doubleclick.net",
+  "https://www.google.com",
+  "https://ep1.adtrafficquality.google",
+  "https://ep2.adtrafficquality.google",
+  "https://csi.gstatic.com",
+]
+"style-src" = ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"]
+"font-src" = ["https://fonts.gstatic.com"]
+"img-src" = ["'self'", "data:", "https:"]
+"form-action" = ["'none'"]
+"base-uri" = ["'none'"]
+
+# Added to every tool page, and not to the hub. Every tool draws previews and
+# results from the file you chose, and those are blob: URLs made in the page;
+# the hub has no such thing and does not need the permission.
+[tool_csp]
+"img-src" = ["blob:"]
+
+#
+# ---------------------------------------------------------------------------
+# The hub page at the root of the site.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools"
+description = "Free online tools that run entirely in your browser. Compress an image to a size you name, convert images to video, strip the EXIF and GPS data out of a photo - nothing is uploaded, no account needed, and it works offline."
+heading = "A box of tools that never touch a server"
+og_title = "A Box of Tools &mdash; tools that never touch a server"
+og_description = "Small, single-purpose tools that run entirely in your browser. Your files never leave your machine."
+og_image_alt = "abox.tools - tools that never touch a server"
+schema_description = "Small, single-purpose utilities that do all of their work inside your browser. Nothing is uploaded and no account is needed."
+schema_about = "Browser-based file utilities that process files locally without uploading them"
+
+lede = """
+    Small, single-purpose utilities that do all of their work inside your
+    browser. Your files stay on your machine: there is nothing to upload,
+    no account to make, and nothing to track."""
+
+support_note = """
+      These tools are free and always will be. If one saved you a job, this is
+      the only thing on the site that asks you for anything."""
+
+# The guarantee, stated as three checkable facts rather than a promise. Every
+# tool here is expected to hold all three; if one ever cannot, it says so on its
+# own page instead of quietly weakening this claim.
+[[hub.guarantees]]
+title = "Your files never leave your machine"
+body = """
+        They are opened, read, and processed by your own browser, using your own
+        hardware. Each tool's <code>Content-Security-Policy</code> names every
+        address it may contact, and not one of them belongs to us."""
+
+[[hub.guarantees]]
+title = "Nothing about your files is sent anywhere"
+body = """
+        Not the file, not a thumbnail, not the name, the size, or how many you
+        chose. No tool here reads any of that out. There is no server on the
+        other end of these tools to read it."""
+
+[[hub.guarantees]]
+title = "It works offline"
+body = """
+        Open a tool once, disconnect from the internet, and it keeps working on
+        your files exactly as before. That is hard to fake: a tool that sent your
+        files somewhere to be processed would simply stop."""
+
+# Categories the shipped tools are grouped under. A tool joins one by naming its
+# id in `category` in its own tool.toml; the order of tools within a category is
+# the order they are listed in `order` below.
+[[hub.categories]]
+id = "images-and-video"
+name = "Images &amp; video"
+note = "Work with pictures and footage without handing them to anyone."
+order = ["images-to-video", "exif-editor", "compress-image"]
+
+[hub.footer]
+line1 = """
+    Your files stay on your machine. Every tool here does its work in your browser,
+    on your own hardware, and uploads nothing &mdash; no accounts, no sign-in."""
+line2 = "Every claim on this site is meant to be checked, not believed."
