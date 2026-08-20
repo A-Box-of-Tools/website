@@ -77,6 +77,12 @@ function stripExifId(data) {
   return latin1.decode(data.subarray(0, 6)) === 'Exif\0\0' ? data.slice(6) : data;
 }
 
+/** Every chunk this file knows the meaning of: the picture and its structure,
+ *  plus the three metadata chunks handled by name. Anything else is metadata of
+ *  unknown make - the same bucket the JPEG and PNG readers call "extras" - and
+ *  has to be reported and removable, or "remove everything" would quietly not. */
+const KNOWN_CHUNKS = new Set(['VP8X', 'VP8 ', 'VP8L', 'ALPH', 'ANIM', 'ANMF', 'ICCP', 'EXIF', 'XMP ']);
+
 /** @returns {import('./container.js').Meta} */
 export function collect(doc) {
   const meta = {
@@ -88,6 +94,10 @@ export function collect(doc) {
     if (chunk.fourcc === 'EXIF' && !meta.exif) meta.exif = stripExifId(chunk.data);
     else if (chunk.fourcc === 'XMP ') meta.xmp = new TextDecoder('utf-8').decode(chunk.data);
     else if (chunk.fourcc === 'ICCP') meta.icc = chunk.data;
+    else if (!KNOWN_CHUNKS.has(chunk.fourcc)) {
+      const name = chunk.fourcc.replace(/[^\x20-\x7e]/g, '?');
+      meta.extras.push({ label: `"${name}" chunk`, size: chunk.data.length });
+    }
   }
 
   return meta;
@@ -112,7 +122,7 @@ function makeVp8x(width, height) {
  * @param {object} doc `doc.canvas` holds the decoded width and height, which is
  *   needed only in the one case where metadata is added to a file that had none
  *   and therefore has no VP8X header to put the flags in.
- * @param {{exif?: Uint8Array|null, xmp?: string|null, icc?: null}} plan
+ * @param {{exif?: Uint8Array|null, xmp?: string|null, icc?: null, extras?: null}} plan
  */
 export function apply(doc, plan) {
   const keep = [];
@@ -123,6 +133,7 @@ export function apply(doc, plan) {
     if (chunk.fourcc === 'EXIF' && plan.exif !== undefined) continue;
     if (chunk.fourcc === 'XMP ' && plan.xmp !== undefined) continue;
     if (chunk.fourcc === 'ICCP' && plan.icc === null) continue;
+    if (!KNOWN_CHUNKS.has(chunk.fourcc) && plan.extras === null) continue;
     keep.push(chunk);
   }
 
