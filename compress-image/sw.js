@@ -1,9 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Comments and indentation removed; nothing renamed. Verify with: python build.py --check */
-const CACHE_NAME='compress-image-93144bbf94';
+const CACHE_NAME='compress-image-8a6f0b1e89';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=1167009c82',
+'styles.css?v=e56360000f',
 'src/codecs.js',
 'src/compress.js',
 'src/crc32.js',

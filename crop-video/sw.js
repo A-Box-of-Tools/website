@@ -1,9 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Comments and indentation removed; nothing renamed. Verify with: python build.py --check */
-const CACHE_NAME='crop-video-c0f8135865';
+const CACHE_NAME='crop-video-46cea85717';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=1545910fc1',
+'styles.css?v=c51594dc48',
 'src/cropper.js',
 'src/demux.js',
 'src/draw.js',

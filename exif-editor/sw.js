@@ -1,9 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Comments and indentation removed; nothing renamed. Verify with: python build.py --check */
-const CACHE_NAME='exif-editor-4ed9d91725';
+const CACHE_NAME='exif-editor-40ecf7bdab';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=b0226fb729',
+'styles.css?v=ae1236d14e',
 'src/container.js',
 'src/crc32.js',
 'src/jpeg.js',
