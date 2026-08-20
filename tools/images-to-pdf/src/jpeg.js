@@ -66,6 +66,10 @@ export function inspectJpeg(bytes) {
 
     const marker = bytes[at + 1];
     at += 2;
+    // 0xff is a fill byte in front of the real marker, not a marker itself.
+    // Step past one and look again, or the next two bytes would be read as a
+    // length and a padded but valid photo would lose its copied-in path.
+    if (marker === 0xff) { at -= 1; continue; }
     if (marker === 0xd8 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) continue;
     if (marker === 0xd9 || marker === 0xda) break; // end of image, or start of scan
 
