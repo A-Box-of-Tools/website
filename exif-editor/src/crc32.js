@@ -1,18 +1,2 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Comments and indentation removed; nothing renamed. Verify with: python build.py --check */
-let table=null;
-function build(){
-table=new Uint32Array(256);
-for(let n=0;n<256;n+=1){
-let c=n;
-for(let k=0;k<8;k+=1)c=(c&1)?(0xedb88320^(c>>>1)):(c>>>1);
-table[n]=c>>>0;
-}
-}
-export function crc32(parts){
-if(!table)build();
-let c=0xffffffff;
-for(const part of parts){
-for(let i=0;i<part.length;i+=1)c=table[(c^part[i])&0xff]^(c>>>8);
-}
-return(c^0xffffffff)>>>0;
-}
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
+let l=null;function r(){l=new Uint32Array(256);for(let t=0;t<256;t+=1){let f=t;for(let e=0;e<8;e+=1)f=f&1?3988292384^f>>>1:f>>>1;l[t]=f>>>0}}function o(t){l||r();let f=4294967295;for(const e of t)for(let n=0;n<e.length;n+=1)f=l[(f^e[n])&255]^f>>>8;return(f^4294967295)>>>0}export{o as crc32};
