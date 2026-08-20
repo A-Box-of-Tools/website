@@ -6,6 +6,11 @@
 /.dist-check/
 __pycache__/
 
+# Nothing here has a dependency to install, and package.json declares no
+# packages - but `npm install` is a reflex, and its output does not belong here.
+node_modules/
+package-lock.json
+
 # OS metadata
 Thumbs.db
 desktop.ini
