@@ -1,0 +1,337 @@
+#
+# Audio Editor
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "edit-audio"
+name = "Audio Editor"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Audio&nbsp;Editor <span class=\"h1-kw\">&mdash; reverse, speed up or amplify a track</span>"
+tagline = "Play it backwards, change the speed, lift a quiet recording &mdash; all of it here, on your machine."
+icon = "&#127898;&#65039;"        # the mark beside the page heading
+favicon = "&#127898;"     # the tab icon, drawn into an inline SVG
+category = "audio"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "audio"
+
+# Shared modules this tool asks for. The same arrangement as css_parts, and for
+# the same reason: a component more than one tool needs and no tool should own.
+# file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Reverse Audio, Change Speed &amp; Boost Volume &mdash; Free, No Upload"
+description = "Play a track backwards, speed it up or slow it down, and make a quiet recording louder. Takes the sound out of a video too. Runs in your browser: nothing uploaded."
+og_title = "Audio Editor &mdash; reverse, retime and amplify without uploading anything"
+og_description = "Reverse a track, change its speed with or without moving the pitch, and set the level - then download a WAV. The file is read and written by your own browser."
+og_image_alt = "Audio Editor - reverse, retime and amplify audio in your browser"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src needs blob: because both the file you chose and the edited result
+  are played from memory on this machine rather than from a URL. That is the
+  only addition: this tool fetches nothing, so connect-src is left exactly as
+  the site sets it."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Your file is read, edited and written by your own browser, on your own
+    hardware. Nothing here can fetch or send anything &mdash; there is no network
+    feature in this tool at all &mdash; and there is no server on the other end of
+    this page to send a recording to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      reverse something. Not one request carries a sample, a filename, or a byte
+      of what you chose. Or unplug from the internet and edit a track anyway
+      &mdash; a tool that sent your audio away to be processed would simply
+      stop."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/decode.js</code> for the twenty lines
+      that hand your file to the browser's own decoder, <code>src/stretch.js</code>
+      for the time-stretcher, <code>src/speed.js</code> for the resampler, and
+      <code>src/wav.js</code> for the header that goes in front of the samples.
+      None of them imports anything that can make a request."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to edit an audio file"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Reverse a track, change its speed with or without moving the pitch,
+            and bring a quiet recording up. Takes the sound out of a video
+            too."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "recordings"
+choose = "a file"
+analytics_extra = """, and no
+  waveform, length or level"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Video in, audio out"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[privacy]]
+title = "Your recordings have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ This tool has no network feature at
+      all: no address to paste, nothing to download, no engine fetched on first
+      use. Every byte that touches your audio came from this origin when the page
+      loaded."""
+
+[[privacy]]
+title = "The decoder is the one already in your browser."
+body = """
+
+      The file is handed to <code>decodeAudioData</code>, the same code that
+      plays a track in an <code>&lt;audio&gt;</code> element. Nothing is shipped
+      here to read your format, and nothing is asked of anything outside this
+      page to read it either."""
+
+[[privacy]]
+title = "A video's picture is never decoded at all."
+body = """
+ When you drop a video
+      in, only its audio track is asked for. The frames are not read, not
+      decoded, not drawn and not looked at &mdash; there is no code on this page
+      that could, and the file that comes out holds sound and nothing else."""
+
+[[privacy]]
+title = "The samples are written down, not encoded again."
+body = """
+
+      A WAV is the samples this page computed with a header in front of them.
+      There is no encoder in the loop making decisions about your recording, and
+      nothing that could be described as an upload for one to happen on."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      recording: not a file, not a sample, not a name, a size, a length, or how
+      loud it was. Every line that reads, edits and writes is served from this
+      origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about you
+      or your file."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on
+      this page still works. That is the simplest proof of all."""
+
+[[howto]]
+title = "Choose a file."
+body = """
+ Drop an MP3, WAV, FLAC, M4A, Ogg or
+      Opus file onto the picker &mdash; or a video, if what you want is the sound
+      out of it. It is read straight off your disk by the browser; nothing is
+      sent anywhere while you do it."""
+
+[[howto]]
+title = "Turn it around, if that is what you came for."
+body = """
+ One
+      checkbox. The samples are written out last one first, which is exactly
+      reversible: do it twice and you have the file you started with, sample for
+      sample."""
+
+[[howto]]
+title = "Set the speed."
+body = """
+ Drag the slider, type a multiple, or press
+      one of the presets. Then choose what happens to the pitch: hold it where it
+      is, which is what you want for a lecture at 1.5&times;, or let it move with
+      the speed, which is what a tape does and what makes a voice go up or
+      down."""
+
+[[howto]]
+title = "Set the level."
+body = """
+ Either name a change in decibels, or ask for
+      the recording to be brought up until its loudest moment sits just under the
+      ceiling. The page says where that moment will land before you press
+      anything, and warns you if the setting you chose would push it past
+      full scale."""
+
+[[howto]]
+title = "Save it."
+body = """
+ The work happens on your own hardware, so how long
+      it takes depends on your machine rather than on a queue. What comes out is
+      a WAV &mdash; the samples themselves, with a header in front &mdash; played
+      back on the page first, and then handed straight to your browser's
+      downloads."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my audio uploaded anywhere?"
+a = """
+        No. It is read, edited and written by your own browser on your own
+        hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. Unplug from the internet and
+        reverse a track anyway if you would rather check than be told."""
+
+[[faq]]
+q = "Can I get the audio out of a video?"
+a = """
+        Yes, and that is the same job here as opening an MP3. Drop an MP4, MOV
+        or WebM in and only its audio track is decoded: the picture is never
+        read, and what comes out is a sound file with no video in it. It is also
+        how to save the sound from a clip without editing it at all &mdash;
+        leave every setting alone and press the button."""
+
+[[faq]]
+q = "Does changing the speed change the pitch?"
+a = """
+        Only if you ask it to. "Keep the pitch" cuts the recording into
+        overlapping windows about fifty milliseconds long and lays them back
+        down closer together or further apart, choosing each position so the
+        waves line up where they cross &mdash; a voice stays the same voice at
+        1.5&times;. "Let it move" resamples instead, which is what playing a
+        tape faster does: two times the speed is exactly one octave up."""
+
+[[faq]]
+q = "Why does it save a WAV rather than an MP3?"
+a = """
+        Because no browser ships an MP3 encoder, and this tool refuses to send
+        your recording to a server that has one. A WAV needs no encoder at all
+        &mdash; it is the samples with a forty-four-byte header in front &mdash;
+        so it is both the honest option and the only one that cannot cost
+        quality. It is larger: about ten megabytes a minute in stereo. Every
+        player, phone and editor opens one, and anything that wants an MP3 can
+        make one from it."""
+
+[[faq]]
+q = "Which formats can I open?"
+a = """
+        Whatever your browser decodes, which in practice means MP3, WAV, FLAC,
+        M4A and AAC, Ogg Vorbis and Opus, and the audio inside MP4, M4V, MOV and
+        WebM video. What is left out is the same short list as everywhere else:
+        AVI, WMA, and most MKVs. A file this browser will not read is refused
+        with a message saying so, rather than failing halfway through."""
+
+[[faq]]
+q = "Will making it louder distort it?"
+a = """
+        Only if you take it past full scale, and the page tells you before you
+        do. Digital audio has a hard ceiling: a sample cannot be louder than
+        full scale, so anything above it is flattened against the ceiling, which
+        is what distortion sounds like. "As loud as it will go" is the setting
+        that cannot do that &mdash; it works out how much room the recording has
+        left and uses exactly that much. Everything below the ceiling is
+        multiplication and nothing else: turn it up 6 dB and back down 6 dB and
+        the samples are where they started."""
+
+[[faq]]
+q = "Does reversing or retiming lose quality?"
+a = """
+        Reversing does not: the same samples come out in the other order, which
+        is exact. Changing the speed moves every sample, so it is arithmetic
+        rather than a copy &mdash; the resampler filters properly on the way, so
+        speeding up does not fold high notes back down as a metallic ring, and
+        the stretcher's windows are placed where the waves line up rather than
+        wherever the arithmetic landed. Neither path re-encodes anything,
+        because there is no encoder here to re-encode with."""
+
+[[faq]]
+q = "Is there a limit on the length of the file?"
+a = """
+        There is no limit built into the tool. The practical ceiling is memory:
+        the whole recording is decoded into this page at once, and a WAV is
+        assembled in memory before you download it, so an hour of stereo needs
+        something under a gigabyte to work in. A four-gigabyte WAV is refused
+        outright, because the format's own size field cannot describe one."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your recording."""
+
+[schema]
+browser_requirements = "Requires JavaScript and a browser with Web Audio, which is every current one. No codec support beyond what the browser already has for playing the file."
+category = "MultimediaApplication"
+description = "Reverse an audio track, change its speed with or without moving the pitch, and set its level, in the browser. Works on the audio inside a video too. Nothing is uploaded and the result is written as a WAV, so nothing is re-encoded."
+features = [
+  "Plays a track backwards, exactly",
+  "Changes speed from a quarter to four times, keeping the pitch or moving it",
+  "Raises or lowers the level, or normalises it to just under full scale",
+  "Takes the audio out of an MP4, MOV or WebM without touching the picture",
+  "Writes 16-bit or 32-bit float WAV, with no encoder in the loop",
+  "Runs offline; no upload, no account, no watermark",
+]
+
+# This tool needs one thing the rest of the site does not: blob: on media-src,
+# because both the file you chose and the edited result are played from memory
+# on this machine rather than from a URL. A tool can only ever widen its own
+# page this way - it cannot narrow the site policy, and it cannot touch any
+# other tool's.
+[csp]
+"media-src" = ["'self'", "blob:"]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "audio/*,video/*"
+multiple = false
+title = "Drop an audio file or a video here"
+hint = "or click to browse &mdash; MP3, WAV, FLAC, M4A, Ogg, and the sound inside MP4, MOV or WebM"

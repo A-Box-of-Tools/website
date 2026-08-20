@@ -227,6 +227,11 @@ New-OgImage -Path 'tools\exif-editor\og.png' `
   -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\edit-audio\og.png' `
+  -Title 'Audio Editor' `
+  -Subtitle 'Reverse a track, change its speed, or lift a quiet recording - on your own machine.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\images-to-pdf\og.png' `
   -Title 'Images to PDF' `
   -Subtitle 'Gather pictures into one document. JPEG photos go in exactly as they are.' `
