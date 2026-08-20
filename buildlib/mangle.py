@@ -32,17 +32,22 @@ WHAT IS PASSED TO IT, AND WHY
   --target=esnext     no lowering. The output uses the same syntax the source
                       does, so nothing is rewritten for a browser that is not
                       being targeted anyway
-  --legal-comments=none   the banner below is the only comment that survives
+  --legal-comments=none   no comment survives; the banner is added afterwards,
+                      here, rather than through esbuild's own flag for it
   --sourcefile=       gives esbuild a name to put in an error message, since the
                       source arrives on stdin
 
 Exported names are never renamed - they cannot be, because another module
 imports them - so the module graph is untouched. What changes is the names of
-things inside a function, which nothing outside can see.
+things inside a function, which nothing outside can see. That is asserted rather
+than assumed: check_imports below reads the imports back off the output and
+fails the build if a single specifier moved.
 """
 
 import shutil
 import subprocess
+
+from buildlib import minify
 
 
 class MangleError(Exception):
@@ -101,8 +106,6 @@ def js(source, command, banner=None, sourcefile='input.js'):
         f'--sourcefile={sourcefile}',
         '--log-level=warning',
     ]
-    if banner:
-        argv.append(f'--banner:js={banner}')
 
     try:
         result = subprocess.run(argv, input=source, capture_output=True,
@@ -117,4 +120,61 @@ def js(source, command, banner=None, sourcefile='input.js'):
         print(f'  esbuild on {sourcefile}: {result.stderr.strip()}')
     if not result.stdout.strip():
         raise MangleError(f'esbuild produced nothing for {sourcefile}')
-    return result.stdout
+
+    output = result.stdout
+    check_imports(source, output, sourcefile)
+
+    # The banner is put on here rather than asked of esbuild.
+    #
+    # esbuild spells that flag two ways: `--banner:js=` when it is building
+    # files, and `--banner=` when it is transforming a stream, which is what
+    # this is. Getting it wrong is not a quiet failure - it refused outright -
+    # but its own advice for the mistake is to write `--banner=js=...`, which
+    # would set the banner to the literal text `js=/* ... */` and put a syntax
+    # error at the top of every module on the site. A comment is one string
+    # concatenation; it does not need to be somebody else's flag.
+    if banner:
+        output = banner + '\n' + output.lstrip('\n')
+    return output
+
+
+def specifiers(text, where):
+    """Every module path this file pulls in: `from "x"`, a bare `import "x"`,
+    and `import("x")`.
+
+    Read off the token stream rather than matched in the raw text. `from` is not
+    a reserved word and the word turns up inside strings and template literals
+    all over this repository - "...data from 'this block is unreadable'" is a
+    real line in the EXIF parser - so a regular expression finds imports that
+    are not there, and finds different ones before and after the comments have
+    been taken out. The tokeniser steps over strings and comments by
+    construction, which is the whole reason it exists.
+    """
+    tokens = [text for _, text in minify.tokenize_js(text, where)]
+    found = []
+    for index, token in enumerate(tokens):
+        rest = tokens[index + 1:index + 3]
+        if token in ('from', 'import') and rest and rest[0][:1] in '"\'':
+            found.append(rest[0][1:-1])
+        elif token == 'import' and len(rest) == 2 and rest[0] == '(' and rest[1][:1] in '"\'':
+            found.append(rest[1][1:-1])
+    return sorted(found)
+
+
+def check_imports(source, output, sourcefile):
+    """Every module this file pulled in, it must still pull in.
+
+    Renaming is safe for the names a module keeps to itself and must not touch
+    the ones it shares. If a specifier went missing, or a new one appeared, then
+    something was bundled or dropped, and the service worker's list of files no
+    longer describes the site. Cheap to check, and it is the one invariant the
+    separate-modules design rests on.
+    """
+    before = specifiers(source, sourcefile)
+    after = specifiers(output, sourcefile + ' (mangled)')
+    if before != after:
+        raise MangleError(
+            f'esbuild changed what {sourcefile} imports.\n'
+            f'    before: {before}\n'
+            f'    after:  {after}\n'
+            '    Every module here keeps its own file; nothing should be bundled.')
