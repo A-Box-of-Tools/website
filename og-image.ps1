@@ -217,6 +217,11 @@ New-OgImage -Path 'tools\crop-video\og.png' `
   -Subtitle 'Cut a clip down to the part that matters, without it ever leaving your machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\trim-video\og.png' `
+  -Title 'Video Trimmer' `
+  -Subtitle 'Cut a clip down to the section you want, without re-encoding a frame of it.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\exif-editor\og.png' `
   -Title 'EXIF Viewer & Remover' `
   -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `

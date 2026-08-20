@@ -242,10 +242,12 @@ a = """
 [[faq]]
 q = "Can I trim the length as well?"
 a = """
-        Not here. This tool changes the shape of the picture and nothing else:
-        the clip that comes out is exactly as long as the one that went in, with
-        its timing and its sound intact. Trimming is a separate job and will be a
-        separate tool."""
+        Not here, but next door. This tool changes the shape of the picture and
+        nothing else: the clip that comes out is exactly as long as the one that
+        went in, with its timing and its sound intact. Trimming is a separate
+        job and is a separate tool &mdash; the
+        <a href="../trim-video/">Video Trimmer</a> cuts a clip down to a section
+        without re-encoding a frame of it."""
 
 [[faq]]
 q = "Why do the width and height move in steps of two?"
