@@ -16,6 +16,11 @@ tagline = "Cut a clip down to the part that matters."
 icon = "&#9986;&#65039;"          # the mark beside the page heading
 favicon = "&#9986;"      # the tab icon, drawn into an inline SVG
 category = "images-and-video"
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
 lastmod = "2026-08-20"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -276,3 +281,11 @@ features = [
 # other tool's.
 [csp]
 "media-src" = ["'self'", "blob:"]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "video/*"
+multiple = false
+title = "Drop a video here"
+hint = "or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays"

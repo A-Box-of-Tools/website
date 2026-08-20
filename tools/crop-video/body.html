@@ -9,13 +9,7 @@
       so the input stays in the layout: visually hidden, still focusable, and
       reachable by keyboard. There is no JavaScript in this path at all.
     -->
-    <input type="file" id="file-input" class="visually-hidden" accept="video/*">
-    <label id="dropzone" class="dropzone" for="file-input">
-      <span class="dropzone-title">Drop a video here</span>
-      <span class="dropzone-hint">
-        or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays
-      </span>
-    </label>
+    {% include "partials/file-picker.html" %}
 
     <dl class="source" id="source" hidden>
       <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>

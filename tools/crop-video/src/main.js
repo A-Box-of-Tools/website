@@ -1,5 +1,6 @@
 /** UI wiring and application state. */
 
+import { wireFilePicker } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './demux.js';
 import { cropExact, grabFrame, decoderConfig, averageFps } from './transcode.js';
 import { cropByRecording } from './record.js';
@@ -81,36 +82,19 @@ const cropper = new Cropper(el.stage, { onChange: onCropChanged });
 
 /* ------------------------------------------------------------------ adding */
 
-const dropzoneTitle = el.dropzone.querySelector('.dropzone-title');
-
-// No click handler on the drop zone on purpose: it is a <label for="file-input">,
-// so the browser opens the picker itself.
-el.fileInput.addEventListener('change', () => {
-  const [picked] = el.fileInput.files;
-  el.fileInput.value = '';
-  if (picked) loadFile(picked);
+// The drop zone and the picker: shared, because every tool here needs the
+// same one. src/shared/file-picker.js, copied in from shared/js/ by the
+// build. The resting label comes off the markup, so it is written once,
+// in this tool.toml, rather than here as well.
+const picker = wireFilePicker({
+  input: el.fileInput,
+  dropzone: el.dropzone,
+  onFiles(files) {
+    const [file] = files;
+    if (file) loadFile(file);
+  },
 });
 
-for (const type of ['dragenter', 'dragover']) {
-  el.dropzone.addEventListener(type, (event) => {
-    event.preventDefault();
-    el.dropzone.classList.add('dragover');
-  });
-}
-
-for (const type of ['dragleave', 'drop']) {
-  el.dropzone.addEventListener(type, () => el.dropzone.classList.remove('dragover'));
-}
-
-el.dropzone.addEventListener('drop', (event) => {
-  event.preventDefault();
-  const [picked] = event.dataTransfer?.files ?? [];
-  if (picked) loadFile(picked);
-});
-
-// Dropping anywhere else on the page should not navigate away from the app.
-window.addEventListener('dragover', (event) => event.preventDefault());
-window.addEventListener('drop', (event) => event.preventDefault());
 
 /* ------------------------------------------------------------------ loading */
 
@@ -150,8 +134,7 @@ async function loadFile(picked) {
   releaseFile();
 
   file = picked;
-  el.dropzone.classList.add('busy');
-  dropzoneTitle.textContent = 'Reading the file...';
+  picker.busy('Reading the file...');
 
   try {
     objectUrl = URL.createObjectURL(picked);
@@ -220,8 +203,7 @@ async function loadFile(picked) {
     showError(error?.message || 'That file could not be opened.');
     resetView();
   } finally {
-    el.dropzone.classList.remove('busy');
-    dropzoneTitle.textContent = 'Drop a video here';
+    picker.done();
   }
 }
 

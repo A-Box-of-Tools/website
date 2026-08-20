@@ -1,5 +1,6 @@
 /** UI wiring and application state. */
 
+import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { loadImages, decodeFull, releaseItem, sortItems, moveItem } from './images.js';
 import { drawFrame, resolveOutputSize } from './compose.js';
 import { encodeToMp4, countFrames } from './encoder.js';
@@ -80,15 +81,24 @@ let previewToken = 0;
 
 /* ------------------------------------------------------------------ adding */
 
-const dropzoneTitle = el.dropzone.querySelector('.dropzone-title');
+// The drop zone and the picker: shared, because every tool here needs the
+// same one. src/shared/file-picker.js, copied in from shared/js/ by the
+// build. The resting label comes off the markup, so it is written once,
+// in this tool.toml, rather than here as well.
+const picker = wireFilePicker({
+  input: el.fileInput,
+  dropzone: el.dropzone,
+  onFiles(files) {
+    addFiles(files);
+  },
+});
 
 async function addFiles(files) {
   if (!files?.length) return;
 
   // Decoding a batch of large photos takes a few seconds, so say so rather
   // than leaving the drop zone looking inert.
-  el.dropzone.classList.add('busy');
-  dropzoneTitle.textContent = `Reading ${files.length} file${files.length === 1 ? '' : 's'}…`;
+  picker.busy(readingLabel(files.length));
 
   try {
     const typed = Number(el.bulkAmount.value);
@@ -104,45 +114,12 @@ async function addFiles(files) {
       clearError();
     }
   } finally {
-    el.dropzone.classList.remove('busy');
-    dropzoneTitle.textContent = 'Drop images here';
+    picker.done();
   }
 
   render();
 }
 
-// No click handler here on purpose: the drop zone is a <label for="file-input">,
-// so the browser opens the picker itself. Driving it from JS via input.click()
-// on a display:none input is what broke this before.
-
-el.fileInput.addEventListener('change', () => {
-  // `input.files` is a live list and resetting `value` empties it, so take a
-  // real array first. Clearing the input is what lets the same file be picked
-  // twice in a row.
-  const picked = Array.from(el.fileInput.files);
-  el.fileInput.value = '';
-  addFiles(picked);
-});
-
-for (const type of ['dragenter', 'dragover']) {
-  el.dropzone.addEventListener(type, (event) => {
-    event.preventDefault();
-    el.dropzone.classList.add('dragover');
-  });
-}
-
-for (const type of ['dragleave', 'drop']) {
-  el.dropzone.addEventListener(type, () => el.dropzone.classList.remove('dragover'));
-}
-
-el.dropzone.addEventListener('drop', (event) => {
-  event.preventDefault();
-  addFiles(event.dataTransfer?.files);
-});
-
-// Dropping anywhere else on the page should not navigate away from the app.
-window.addEventListener('dragover', (event) => event.preventDefault());
-window.addEventListener('drop', (event) => event.preventDefault());
 
 /* ------------------------------------------------------------ web addresses */
 

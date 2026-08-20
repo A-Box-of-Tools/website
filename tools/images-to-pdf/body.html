@@ -9,11 +9,7 @@
       so the input stays in the layout: visually hidden, still focusable, and
       reachable by keyboard. There is no JavaScript in this path at all.
     -->
-    <input type="file" id="file-input" class="visually-hidden" accept="image/*" multiple>
-    <label id="dropzone" class="dropzone" for="file-input">
-      <span class="dropzone-title">Drop images here</span>
-      <span class="dropzone-hint">or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF</span>
-    </label>
+    {% include "partials/file-picker.html" %}
 
     <p id="load-error" class="error" role="alert" hidden></p>
 

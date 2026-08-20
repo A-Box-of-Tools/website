@@ -16,6 +16,11 @@ tagline = "Put your pictures into one document."
 icon = "&#128196;"                  # the page mark beside the heading
 favicon = "&#128196;"      # the tab icon, drawn into an inline SVG
 category = "documents-and-pdf"
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
 lastmod = "2026-08-20"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -249,3 +254,11 @@ features = [
   "Optional lossless storage for scans and screenshots",
   "Runs offline; no upload, no account",
 ]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/*"
+multiple = true
+title = "Drop images here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"

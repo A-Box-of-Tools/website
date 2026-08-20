@@ -16,6 +16,11 @@ tagline = "Turn a folder of images into a video."
 icon = "&#127902;&#65039;"          # the mark beside the page heading
 favicon = "&#127902;"      # the tab icon, drawn into an inline SVG
 category = "images-and-video"
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
 lastmod = "2026-08-19"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -252,3 +257,11 @@ features = [
 "img-src" = ["http:"]
 "media-src" = ["'self'", "blob:"]
 "worker-src" = ["'self'", "blob:"]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/*"
+multiple = true
+title = "Drop images here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"
