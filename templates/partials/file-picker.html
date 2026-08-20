@@ -1,0 +1,16 @@
+<!--
+  The drop zone. Filled in from the [picker] table in this tool's tool.toml, and
+  driven by src/shared/file-picker.js, which the build copies in from
+  shared/js/.
+
+  A real <label> opens the file picker natively. Calling .click() on a
+  display:none input is refused by Safari and by some Chrome configurations, so
+  the input stays in the layout: visually hidden, still focusable, and reachable
+  by keyboard. There is no JavaScript in that path at all.
+-->
+<input type="file" id="file-input" class="visually-hidden"
+       accept="{{ tool.picker.accept }}"{% if tool.picker.multiple %} multiple{% endif %}>
+<label id="dropzone" class="dropzone" for="file-input">
+  <span class="dropzone-title">{{ tool.picker.title }}</span>
+  <span class="dropzone-hint">{{ tool.picker.hint }}</span>
+</label>

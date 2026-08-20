@@ -21,6 +21,11 @@ category = "images-and-video"
 # tool's own rules. file-list is the drop-a-file-then-see-a-row widget that
 # more than one tool needs and that no tool should own.
 css_parts = ["file-list"]
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
 lastmod = "2026-08-19"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -276,3 +281,11 @@ features = [
   "Batches, with all results in one zip",
   "Runs offline; no upload, no account",
 ]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/*,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif"
+multiple = true
+title = "Drop images here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP and anything else your browser can open"

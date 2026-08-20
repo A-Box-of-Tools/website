@@ -192,14 +192,24 @@ def build_tool(out, templates, site, tool, footer, emit):
     src_dir = tool['dir'] / 'src'
     if not src_dir.is_dir():
         raise sitelib.ConfigError(f'{tool["slug"]}: no src/ folder')
-    assets = sorted(src_dir.glob('*.js'))
-    if not any(path.name == 'main.js' for path in assets):
+    own = sorted(src_dir.glob('*.js'))
+    if not any(path.name == 'main.js' for path in own):
         raise sitelib.ConfigError(f'{tool["slug"]}: src/main.js is required')
-    (dest / 'src').mkdir(exist_ok=True)
-    for asset in assets:
-        emit.js(dest / 'src' / asset.name,
-                asset.read_text(encoding='utf-8'),
-                where=f'{tool["slug"]}/src/{asset.name}')
+
+    # Shared modules land in src/shared/ rather than beside the tool's own
+    # files, so that an import in main.js says where the thing came from. A tool
+    # folder in dist/ is still complete on its own - nothing is bundled, nothing
+    # is fetched from a neighbour, and the service worker below caches these
+    # exactly like the rest.
+    shared = shared_js(tool)
+    assets = [(f'src/shared/{path.name}', path) for path in shared]
+    assets += [(f'src/{path.name}', path) for path in own]
+
+    for name, path in assets:
+        (dest / name).parent.mkdir(parents=True, exist_ok=True)
+        emit.js(dest / name, path.read_text(encoding='utf-8'),
+                where=f'{tool["slug"]}/{name}')
+
     for extra in sorted(src_dir.iterdir()):
         if extra.is_file() and extra.suffix != '.js':
             shutil.copy2(extra, dest / 'src' / extra.name)
@@ -215,6 +225,13 @@ def build_tool(out, templates, site, tool, footer, emit):
     css = emit.css_text(tool_css(tool))
     css_href = f'styles.css?v={sitelib.text_hash(css)}'
 
+    # body.html goes through the template engine before it is dropped into the
+    # page, so a tool can {% include %} a shared partial - the drop zone being
+    # the one every tool wants - instead of copying the markup for it.
+    body = templates.render_source(
+        body_path.read_text(encoding='utf-8'), f'{tool["slug"]}/body.html',
+        {'site': site, 'tool': tool}).rstrip('\n')
+
     emit.html(dest / 'index.html', templates.render('tool.html', {
         'site': site,
         'tool': tool,
@@ -223,7 +240,7 @@ def build_tool(out, templates, site, tool, footer, emit):
         'csp': sitelib.render_csp(site['csp'], site.get('tool_csp', {}), tool['csp']),
         'css_href': css_href,
         'jsonld': sitelib.tool_jsonld(site, tool),
-        'body': body_path.read_text(encoding='utf-8').rstrip('\n'),
+        'body': body,
     }))
 
     write(dest / 'styles.css', css)
@@ -242,16 +259,33 @@ def build_tool(out, templates, site, tool, footer, emit):
     # cache. Hashing the sources instead would leave a visitor holding the old
     # copy of a file that had genuinely changed.
     cached = ([dest / 'index.html', dest / 'styles.css', dest / 'analytics.js']
-              + [dest / 'src' / asset.name for asset in assets])
+              + [dest / name for name, _ in assets])
     emit.js(dest / 'sw.js', templates.render('sw.js', {
         'tool': tool,
-        'assets': ['index.html', css_href] + [f'src/{p.name}' for p in assets],
+        'assets': ['index.html', css_href] + [name for name, _ in assets],
         'cache_hash': sitelib.cache_hash(cached),
     }), where=f'{tool["slug"]}/sw.js')
 
     og = tool['dir'] / 'og.png'
     if og.is_file():
         shutil.copy2(og, dest / 'og.png')
+
+
+def shared_js(tool):
+    """The shared modules this tool asked for, in `js_parts`.
+
+    The same arrangement as `css_parts` and for the same reason: a component
+    more than one tool needs, and no tool should own. Opt-in rather than given
+    to everybody, so a tool that has no use for a drop zone does not ship one.
+    """
+    chosen = []
+    for name in tool.get('js_parts', []):
+        path = SHARED / 'js' / f'{name}.js'
+        if not path.is_file():
+            raise sitelib.ConfigError(
+                f'{tool["slug"]}: no such js part: {name} (looked in shared/js)')
+        chosen.append(path)
+    return chosen
 
 
 def tool_css(tool):

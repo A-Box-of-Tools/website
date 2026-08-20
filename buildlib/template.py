@@ -188,3 +188,13 @@ class Loader:
 
     def render(self, name, context):
         return self.get(name).render(context)
+
+    def render_source(self, source, name, context):
+        """Render text that did not come from the template directory, but which
+        may still {% include %} something that did.
+
+        A tool's body.html goes through here: it lives beside the tool rather
+        than in templates/, because it is the one part of the page that is only
+        about that tool - but it should still be able to reach for a shared
+        partial like the drop zone instead of copying the markup for it."""
+        return Template(source, loader=self.source, name=name).render(context)

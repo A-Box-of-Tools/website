@@ -296,9 +296,60 @@ the analytics bootstrap — you get for free and should not reimplement. What a
 tool writes for itself is its interface (`body.html`), its own rules
 (`styles.css`), its own code (`src/`), and its own words (`tool.toml`).
 
-A tool that needs a stylesheet part more than one tool wants, but that no tool
-should own, puts it in `shared/css/` and names it in `css_parts`. The file-list
-widget — drop a file, see a row — works that way.
+### Shared parts
+
+A component more than one tool needs, and that no tool should own, lives under
+`shared/` and is named in the tool's `tool.toml`. Three of them exist:
+
+| Part | Named in | Becomes |
+|---|---|---|
+| `shared/css/file-list.css` | `css_parts = ["file-list"]` | appended to the tool's stylesheet |
+| `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
+| `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
+
+The **file picker** is all three at once, and is the reason the arrangement
+exists: the drop zone, the hidden input, the drag highlighting, and the "Reading
+3 files…" label were the same in every tool, written out five times.
+
+```toml
+js_parts = ["file-picker"]
+
+[picker]
+accept = "image/*"
+multiple = true
+title = "Drop images here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"
+```
+
+```html
+<!-- in body.html -->
+{% include "partials/file-picker.html" %}
+```
+
+```js
+// in src/main.js
+import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+
+const picker = wireFilePicker({
+  input: el.fileInput,
+  dropzone: el.dropzone,
+  onFiles(files) { addFiles(files); },
+});
+```
+
+`picker.busy(readingLabel(files.length))` while reading, `picker.done()` after.
+The resting label is read off the markup, so it is written once, in `tool.toml`,
+rather than there and in the JavaScript as well.
+
+**Shared JavaScript is copied, not linked.** It lands in the tool's own
+`src/shared/`, so every tool folder in `dist/` is still complete on its own,
+cached by its own service worker, and works offline with nothing fetched from a
+neighbour. That is also why a tool's source folder imports a file it does not
+contain — the import path says `./shared/` to make where it came from obvious.
+
+Only *choosing* the files is shared. What a tool does with them afterwards — the
+list, the thumbnails, the reordering, the per-row buttons — differs enough per
+tool that sharing it would cost more than it saved.
 
 Two things to hold the line on, because the whole site rests on them:
 

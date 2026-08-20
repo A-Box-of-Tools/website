@@ -1,5 +1,6 @@
 /** UI wiring and application state. */
 
+import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { readImage, readBytes, serialize, exifBytes, outputType, KIND_NAMES } from './container.js';
 import { serializeExif, setEntryValue, createEntry, TYPE } from './tiff.js';
 import { describeTag } from './tags.js';
@@ -75,13 +76,22 @@ let resultUrls = [];
 
 /* ------------------------------------------------------------------ adding */
 
-const dropzoneTitle = el.dropzone.querySelector('.dropzone-title');
+// The drop zone and the picker: shared, because every tool here needs the
+// same one. src/shared/file-picker.js, copied in from shared/js/ by the
+// build. The resting label comes off the markup, so it is written once,
+// in this tool.toml, rather than here as well.
+const picker = wireFilePicker({
+  input: el.fileInput,
+  dropzone: el.dropzone,
+  onFiles(files) {
+    addFiles(files);
+  },
+});
 
 async function addFiles(files) {
   if (!files?.length) return;
 
-  el.dropzone.classList.add('busy');
-  dropzoneTitle.textContent = `Reading ${files.length} file${files.length === 1 ? '' : 's'}...`;
+  picker.busy(readingLabel(files.length));
 
   const failures = [];
 
@@ -139,8 +149,7 @@ async function addFiles(files) {
       if (!item.ok) failures.push(`${file.name}: ${item.error}`);
     }
   } finally {
-    el.dropzone.classList.remove('busy');
-    dropzoneTitle.textContent = 'Drop photos here';
+    picker.done();
   }
 
   if (failures.length) showLoadError(failures.join('\n'));
@@ -183,30 +192,6 @@ function measure(url) {
   });
 }
 
-// No click handler here on purpose: the drop zone is a <label for="file-input">,
-// so the browser opens the picker itself.
-
-el.fileInput.addEventListener('change', () => {
-  const picked = Array.from(el.fileInput.files);
-  el.fileInput.value = ''; // lets the same file be picked twice in a row
-  addFiles(picked);
-});
-
-for (const type of ['dragenter', 'dragover']) {
-  el.dropzone.addEventListener(type, (event) => {
-    event.preventDefault();
-    el.dropzone.classList.add('dragover');
-  });
-}
-
-for (const type of ['dragleave', 'drop']) {
-  el.dropzone.addEventListener(type, () => el.dropzone.classList.remove('dragover'));
-}
-
-el.dropzone.addEventListener('drop', (event) => {
-  event.preventDefault();
-  addFiles(event.dataTransfer?.files);
-});
 
 function removeItem(id) {
   const at = items.findIndex((i) => i.id === id);
