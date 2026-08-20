@@ -1,0 +1,276 @@
+#
+# Video Cropper
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "crop-video"
+name = "Video Cropper"
+heading = "Video&nbsp;Cropper"
+tagline = "Cut a clip down to the part that matters."
+icon = "&#9986;&#65039;"          # the mark beside the page heading
+favicon = "&#9986;"      # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Crop a Video Online &mdash; Free, No Upload, Works Offline"
+description = "Crop an MP4, MOV or WebM to any shape - square for a feed, 9:16 for a phone, or an exact pixel box - entirely in your browser. Nothing is uploaded, the sound is kept, and it works offline."
+og_title = "Video Cropper &mdash; crop a clip without uploading it"
+og_description = "Drag a box over your clip and crop it to any shape. The frames are decoded and re-encoded on your own machine, and the original sound is carried across untouched."
+og_image_alt = "Video Cropper - crop a clip in your browser, with nothing uploaded"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src needs blob: because both the clip you chose and the cropped result
+  are played from memory on this machine rather than from a URL. That is the
+  only addition: this tool fetches nothing, so connect-src is left exactly as
+  the site sets it."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Every frame is decoded, cropped and encoded by your own browser, on your own
+    hardware. Nothing here can fetch or send anything &mdash; there is no network
+    feature in this tool at all &mdash; and there is no server on the other end of
+    this page to send a video to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and crop a
+      clip. Not one request carries a frame, a filename, or a byte of what you
+      chose. Or unplug from the internet and crop one anyway &mdash; a tool that
+      sent your video away to be processed would simply stop."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/demux.js</code> for the reader that finds
+      the frames in an MP4, and <code>src/transcode.js</code> for the loop that
+      decodes, crops and encodes them. Neither imports anything that can make a
+      request."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to crop a video"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Drag a box over a clip and cut it down to that shape &mdash; square
+            for a feed, tall for a phone, or an exact pixel box."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "videos"
+choose = "a video"
+analytics_extra = """, and no
+  frame, duration or crop size"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Keeps the sound"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[privacy]]
+title = "Your videos have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ This tool has no network feature at
+      all: no address to paste, nothing to download, no engine fetched on first
+      use. Every byte that touches your video came from this origin when the page
+      loaded."""
+
+[[privacy]]
+title = "The decoding and encoding are local."
+body = """
+ The frames go through
+      WebCodecs in your own browser, or through the same playback engine that
+      would show you the clip anyway. The finished file is built in memory on
+      this machine and handed straight to a download."""
+
+[[privacy]]
+title = "The sound is copied, not listened to."
+body = """
+ On the MP4 path the
+      audio samples are moved across without being decoded at all &mdash; nothing
+      here ever turns them back into sound, and nothing could pass them anywhere
+      if it did."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      video: not a file, not a frame, not a name, a size, a length, or the shape
+      you cropped it to. Every line that reads, decodes, crops or encodes is
+      served from this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about you
+      or your video."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on
+      this page still works. That is the simplest proof of all."""
+
+[[howto]]
+title = "Choose a video."
+body = """
+ Drop an MP4, MOV, M4V or WebM onto
+      the picker, or select one by hand. It is read straight off your disk by the
+      browser; nothing is sent anywhere while you do it."""
+
+[[howto]]
+title = "Drag the box over the part you want to keep."
+body = """
+ Drag
+      inside it to move it and any corner to resize. Lock it to a shape first
+      &mdash; 1:1 for a square post, 9:16 for a phone, 16:9 for a wide frame
+      &mdash; or type an exact pixel box into the four fields underneath."""
+
+[[howto]]
+title = "Choose how much quality to spend."
+body = """
+ The picture has to
+      be encoded again, because a cropped frame is a different picture. "Balanced"
+      keeps it close to what the file already spent on that area; "Best quality"
+      spends more. The sound is kept unless you turn it off."""
+
+[[howto]]
+title = "Crop it and download."
+body = """
+ The work happens on your own
+      hardware, so how long it takes depends on your machine rather than on a
+      queue. The finished video is handed straight to your browser's downloads."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my video uploaded anywhere?"
+a = """
+        No. It is read, decoded, cropped and encoded by your own browser on your
+        own hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. Unplug from the internet and
+        crop a clip anyway if you would rather check than be told."""
+
+[[faq]]
+q = "Which video formats can I crop?"
+a = """
+        MP4, M4V and MOV are read directly, whatever is inside them: H.264,
+        HEVC, AV1 or VP9, as long as your browser can decode that codec. Anything
+        else your browser can play &mdash; WebM most obviously &mdash; is cropped
+        by playing it and recording the result instead, which works but takes as
+        long as the clip is long. A file the browser can neither read nor play,
+        which in practice means AVI, WMV, FLV and most MKVs, is refused with a
+        message saying so rather than failing halfway through."""
+
+[[faq]]
+q = "Is there a limit on the size or length of the video?"
+a = """
+        There is no limit built into the tool, and the file is not read into
+        memory all at once &mdash; it is walked through a few megabytes at a
+        time. The practical ceiling is the finished video, which is assembled in
+        memory before you download it, and the time your machine takes to encode
+        it."""
+
+[[faq]]
+q = "Does the sound survive?"
+a = """
+        On the MP4 path, exactly: the audio is copied across sample by sample
+        without ever being decoded, so it is byte for byte what was in the file.
+        On the recording path it is captured from playback and encoded again,
+        which costs a little quality. Either way there is a checkbox to leave it
+        out entirely."""
+
+[[faq]]
+q = "Does cropping lose quality?"
+a = """
+        The picture is encoded again, because a cropped frame is a different
+        picture and there is no way to store it without writing the pixels out
+        afresh. What the tool will not do is spend more than the original did on
+        the same area, since re-encoding above that only makes the file bigger
+        without making it look better."""
+
+[[faq]]
+q = "Can I trim the length as well?"
+a = """
+        Not here. This tool changes the shape of the picture and nothing else:
+        the clip that comes out is exactly as long as the one that went in, with
+        its timing and its sound intact. Trimming is a separate job and will be a
+        separate tool."""
+
+[[faq]]
+q = "Why do the width and height move in steps of two?"
+a = """
+        H.264, the codec in an MP4, stores the picture in blocks and has no way
+        to describe a frame with an odd number of pixels on a side. Rather than
+        quietly rounding your crop after you set it, the box only ever offers
+        even numbers in the first place."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your video."""
+
+[schema]
+browser_requirements = "Requires JavaScript. MP4 output needs a browser with WebCodecs; others fall back to recording WebM."
+category = "MultimediaApplication"
+description = "Crop a video to any shape or exact pixel box in the browser. MP4, MOV and M4V are decoded and re-encoded frame by frame with the original audio carried across untouched; anything else the browser can play is cropped by recording it. Nothing is uploaded."
+features = [
+  "Crops MP4, MOV, M4V and WebM video",
+  "H.264, HEVC, AV1 and VP9 sources, decoded through WebCodecs",
+  "Free-form crop, locked ratios (1:1, 4:5, 9:16, 16:9, 4:3, 3:2) or an exact pixel box",
+  "Keeps the original audio without re-encoding it",
+  "Runs offline; no upload, no account, no watermark",
+]
+
+# This tool needs one thing the rest of the site does not: blob: on media-src,
+# because both the clip you chose and the cropped result are played from memory
+# on this machine rather than from a URL. A tool can only ever widen its own
+# page this way - it cannot narrow the site policy, and it cannot touch any
+# other tool's.
+[csp]
+"media-src" = ["'self'", "blob:"]

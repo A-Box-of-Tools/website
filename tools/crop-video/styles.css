@@ -1,0 +1,356 @@
+/* Rules only the video cropper needs. The frame around it - the header, the
+   pledge, the cards, the buttons - is shared/css/tool-frame.css. */
+
+/* -------------------------------------------------------------- the source */
+
+.source {
+  margin: 1rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0 1.2rem;
+  font-size: 0.88rem;
+}
+
+.source > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.source dt { color: var(--text-dim); flex: none; }
+.source dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.path-note,
+.stage-note {
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 7px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.84rem;
+}
+
+/* --------------------------------------------------------------- the stage */
+
+.stage-hint {
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.stage-hint kbd {
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 0.05rem 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+
+.stage-wrap {
+  display: flex;
+  justify-content: center;
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* The stage is given the video's own shape by main.js, so the crop box can be
+   positioned in percentages: one rectangle, in the video's own pixels, that
+   needs no recalculating when the window is resized or the phone is turned.
+   main.js sets `max-width` along with the ratio, because capping the height of
+   a box that has both a width and an aspect ratio is what breaks the ratio -
+   and a stage that is not exactly the shape of the video puts the crop box over
+   the wrong part of it. */
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  touch-action: none;
+}
+
+.stage video,
+.stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  background: #000;
+}
+
+/* ------------------------------------------------------------ the crop box */
+
+/* Everything outside the box is dimmed by one enormous shadow rather than four
+   overlay elements, which keeps the markup to a single div and the dimming
+   exactly in step with the box as it moves. */
+.crop-box {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid rgb(255 255 255 / 90%);
+  box-shadow: 0 0 0 100vmax rgb(0 0 0 / 45%);
+  cursor: move;
+  touch-action: none;
+}
+
+.crop-box:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.crop-box.disabled { pointer-events: none; opacity: 0.7; }
+
+/* Thirds, the way a viewfinder draws them. Two gradients, no extra elements. */
+.crop-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    linear-gradient(to right, transparent calc(33.333% - 0.5px), rgb(255 255 255 / 55%) calc(33.333% - 0.5px) calc(33.333% + 0.5px), transparent calc(33.333% + 0.5px), transparent calc(66.667% - 0.5px), rgb(255 255 255 / 55%) calc(66.667% - 0.5px) calc(66.667% + 0.5px), transparent calc(66.667% + 0.5px)),
+    linear-gradient(to bottom, transparent calc(33.333% - 0.5px), rgb(255 255 255 / 55%) calc(33.333% - 0.5px) calc(33.333% + 0.5px), transparent calc(33.333% + 0.5px), transparent calc(66.667% - 0.5px), rgb(255 255 255 / 55%) calc(66.667% - 0.5px) calc(66.667% + 0.5px), transparent calc(66.667% + 0.5px));
+}
+
+.crop-box.dragging::before { opacity: 0.9; }
+
+.crop-size {
+  position: absolute;
+  left: 50%;
+  bottom: 0.4rem;
+  transform: translateX(-50%);
+  padding: 0.1rem 0.45rem;
+  border-radius: 99px;
+  background: rgb(0 0 0 / 65%);
+  color: #fff;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.crop-handle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 1px solid rgb(0 0 0 / 45%);
+  border-radius: 3px;
+}
+
+/* A touch target larger than the dot it draws, so a handle can be grabbed with
+   a finger without making the dot itself cover the picture. */
+.crop-handle::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+}
+
+.handle-n  { top: -7px; left: 50%; margin-left: -7px; cursor: ns-resize; }
+.handle-s  { bottom: -7px; left: 50%; margin-left: -7px; cursor: ns-resize; }
+.handle-e  { right: -7px; top: 50%; margin-top: -7px; cursor: ew-resize; }
+.handle-w  { left: -7px; top: 50%; margin-top: -7px; cursor: ew-resize; }
+.handle-ne { top: -7px; right: -7px; cursor: nesw-resize; }
+.handle-nw { top: -7px; left: -7px; cursor: nwse-resize; }
+.handle-se { bottom: -7px; right: -7px; cursor: nwse-resize; }
+.handle-sw { bottom: -7px; left: -7px; cursor: nesw-resize; }
+
+@media (max-width: 620px) {
+  .crop-handle { width: 18px; height: 18px; }
+  .handle-n, .handle-s { margin-left: -9px; }
+  .handle-e, .handle-w { margin-top: -9px; }
+}
+
+/* --------------------------------------------------------- crop controls */
+
+.crop-controls {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.aspect-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.aspect-row button {
+  padding: 0.32rem 0.7rem;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.aspect-row button:hover { border-color: var(--accent); }
+
+.aspect-row button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.numbers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.6rem;
+}
+
+.numbers label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.numbers input {
+  width: 6rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.number-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.even-note {
+  margin: 0.8rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+/* ---------------------------------------------------------------- settings */
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.9rem;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.3rem; }
+.field > label { font-size: 0.85rem; font-weight: 600; }
+.field-note { margin: 0; font-size: 0.78rem; color: var(--text-dim); }
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.check input { margin: 0; }
+
+.summary {
+  margin: 1.2rem 0;
+  font-size: 0.88rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0 1.2rem;
+}
+
+.summary > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary dt { color: var(--text-dim); flex: none; }
+.summary dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ export */
+
+.export-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+
+.progress-wrap { margin-top: 1rem; }
+
+.progress {
+  height: 8px;
+  background: var(--surface-2);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.15s linear;
+}
+
+.progress-label {
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+  color: var(--danger);
+  font-size: 0.9rem;
+  white-space: pre-line;
+}
+
+.result { margin-top: 1.25rem; }
+
+.result video {
+  width: 100%;
+  max-height: 60vh;
+  border-radius: var(--radius);
+  background: #000;
+  display: block;
+}
+
+.result-meta {
+  margin-top: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.result-meta p { margin: 0; font-size: 0.88rem; color: var(--text-dim); }
+
+/* The element the recording path plays into. It has to be in the page and it
+   has to be painted - a browser that never composites it never presents a
+   frame, and the callback that drives the recording never fires - so it is
+   present and tiny rather than hidden. */
+.recording-player {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  height: 2px;
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: -1;
+}
