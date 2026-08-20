@@ -11,13 +11,26 @@
   connect-src now names Google's ad origins.
 
   What survives is narrower but still real. The list below is an allowlist of
-  Google's ad endpoints, plus cdnjs.buymeacoffee.com and the two Google Fonts
+  Google's ad and measurement endpoints, plus cdnjs.buymeacoffee.com and the two
   Google Fonts origins behind the donate button in the header. There is no
   origin here under this site's control, so the app still has nowhere of its own
   to send your images - and src/encoder.js still never touches the network at
   all. What is gone is the absolute form of the claim, and every place that
   stated it has been reworded to match. If you ever remove the ads, put
   connect-src 'none' back and change those words back with it.
+
+  A CSP wildcard stands in for a whole label, so https://*.analytics.google.com
+  does NOT cover the bare host analytics.google.com - and the bare host is where
+  gtag sends its measurement hit. The wildcard was for a long time the only
+  entry for that endpoint, so every page view was refused and Analytics recorded
+  nothing whatsoever. Both forms are listed now. Adding a Google origin here
+  means checking whether the bare host is needed as well as the wildcard.
+
+  Known gap: Google sends the ads conversion ping to the visitor's own country
+  domain - www.google.ca, www.google.co.uk - and CSP cannot wildcard a TLD. Only
+  www.google.com can be named, so that one ping is still refused for a visitor
+  routed to a country domain. Nothing short of widening the directive to https:
+  would express it, which is not a trade worth making for a conversion ping.
 
   img-src allows http/https so the "add from web address" feature can pull an
   image IN, and because ad creatives come from anywhere.
@@ -46,10 +59,13 @@
   connect-src
     https://www.google-analytics.com
     https://*.google-analytics.com
+    https://analytics.google.com
     https://*.analytics.google.com
     https://*.googletagmanager.com
     https://pagead2.googlesyndication.com
     https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
     https://ep1.adtrafficquality.google
     https://ep2.adtrafficquality.google
     https://csi.gstatic.com;

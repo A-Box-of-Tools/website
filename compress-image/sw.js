@@ -8,7 +8,7 @@
  * Bump CACHE_NAME whenever any listed file changes.
  */
 
-const CACHE_NAME = 'compress-image-v1';
+const CACHE_NAME = 'compress-image-v2';
 
 const ASSETS = [
   './',

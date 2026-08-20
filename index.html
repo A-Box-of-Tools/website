@@ -19,6 +19,19 @@
   tool that is missing an origin shows a blank ad slot, and one that has an
   extra origin is a wider hole than this page ever agreed to.
 
+  A CSP wildcard stands in for a whole label, so https://*.analytics.google.com
+  does NOT cover the bare host analytics.google.com - and the bare host is where
+  gtag sends its measurement hit. The wildcard was for a long time the only
+  entry for that endpoint, so every page view was refused and Analytics recorded
+  nothing whatsoever. Both forms are listed now. Adding a Google origin here
+  means checking whether the bare host is needed as well as the wildcard.
+
+  Known gap: Google sends the ads conversion ping to the visitor's own country
+  domain - www.google.ca, www.google.co.uk - and CSP cannot wildcard a TLD. Only
+  www.google.com can be named, so that one ping is still refused for a visitor
+  routed to a country domain. Nothing short of widening the directive to https:
+  would express it, which is not a trade worth making for a conversion ping.
+
   AdSense does not officially support a strict CSP. If an ad renders blank,
   open DevTools and look for a violation naming an origin not listed here.
   Add the origin, do not widen a directive to https: to make it go away.
@@ -47,10 +60,13 @@
   connect-src
     https://www.google-analytics.com
     https://*.google-analytics.com
+    https://analytics.google.com
     https://*.analytics.google.com
     https://*.googletagmanager.com
     https://pagead2.googlesyndication.com
     https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
     https://ep1.adtrafficquality.google
     https://ep2.adtrafficquality.google
     https://csi.gstatic.com;

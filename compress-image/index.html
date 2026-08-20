@@ -15,6 +15,19 @@
   to. If the ads ever come out, put connect-src 'none' back - this tool would
   then be able to claim the absolute form of the promise again.
 
+  A CSP wildcard stands in for a whole label, so https://*.analytics.google.com
+  does NOT cover the bare host analytics.google.com - and the bare host is where
+  gtag sends its measurement hit. The wildcard was for a long time the only
+  entry for that endpoint, so every page view was refused and Analytics recorded
+  nothing whatsoever. Both forms are listed now. Adding a Google origin here
+  means checking whether the bare host is needed as well as the wildcard.
+
+  Known gap: Google sends the ads conversion ping to the visitor's own country
+  domain - www.google.ca, www.google.co.uk - and CSP cannot wildcard a TLD. Only
+  www.google.com can be named, so that one ping is still refused for a visitor
+  routed to a country domain. Nothing short of widening the directive to https:
+  would express it, which is not a trade worth making for a conversion ping.
+
   img-src needs blob: for the previews and the compressed results this page
   draws from the files you chose, and https: because ad creatives come from
   anywhere.
@@ -43,10 +56,13 @@
   connect-src
     https://www.google-analytics.com
     https://*.google-analytics.com
+    https://analytics.google.com
     https://*.analytics.google.com
     https://*.googletagmanager.com
     https://pagead2.googlesyndication.com
     https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
     https://ep1.adtrafficquality.google
     https://ep2.adtrafficquality.google
     https://csi.gstatic.com;
