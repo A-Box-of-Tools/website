@@ -189,7 +189,7 @@ order = ["images-to-video", "crop-video", "exif-editor", "compress-image"]
 id = "documents-and-pdf"
 name = "Documents &amp; PDF"
 note = "Make and rearrange documents without sending them to be processed."
-order = ["images-to-pdf"]
+order = ["compress-pdf", "images-to-pdf"]
 
 #
 # ---------------------------------------------------------------------------
