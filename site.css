@@ -1,5 +1,6 @@
-/* Styles for the hub page only. Each tool ships its own stylesheet so that it
-   stays self-contained and can be read, audited, or moved on its own. */
+/* Styles for the hub page and the Privacy and Terms pages. Each tool ships
+   its own stylesheet so that it stays self-contained and can be read,
+   audited, or moved on its own. */
 
 :root {
   color-scheme: light dark;
@@ -239,19 +240,110 @@ code {
 .p-name { font-weight: 600; color: var(--text); }
 .p-desc { font-size: 0.85rem; }
 
-/* ---- footer ------------------------------------------------------------ */
+/* ---- legal pages ------------------------------------------------------- */
 
-footer {
-  margin-top: 2.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
-  color: var(--text-dim);
+/* Privacy and Terms. Narrower than the hub, because these are read as prose
+   rather than scanned as a grid. */
+
+.brand-home { color: inherit; text-decoration: none; }
+.brand-home:hover { color: var(--accent); }
+
+.legal-date {
+  margin: 1rem 0 0;
   font-size: 0.82rem;
-  text-align: center;
+  color: var(--text-dim);
 }
 
+.legal { max-width: 68ch; }
+
+.legal section { margin: 0 0 2.25rem; }
+
+.legal h2 {
+  margin: 0 0 0.7rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.legal h3 {
+  margin: 1.5rem 0 0.45rem;
+  font-size: 0.95rem;
+}
+
+.legal p { margin: 0 0 0.85rem; }
+.legal ul { margin: 0 0 0.95rem; padding-left: 1.25rem; }
+.legal li { margin: 0.3rem 0; }
+.legal a { color: var(--accent); }
+
+/* ---- footer ------------------------------------------------------------ */
+
+/* A link footer in the shape the large media-tool sites use: a few columns of
+   plain links, left aligned, each under a quiet heading. It is the second
+   navigation, for people who scrolled to the bottom looking for one, and it is
+   where the legal pages live - a centred line of prose had nowhere to put
+   them.
+
+   Flex rather than grid, so the columns collapse two-up and then one-up on a
+   narrow screen without a media query. The brand column is given twice the
+   basis of a link column, since it carries a sentence rather than a list. */
+
+footer {
+  margin-top: 3rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.footer-cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+}
+
+.footer-col { flex: 1 1 150px; min-width: 0; }
+.footer-brand { flex: 2 1 240px; }
+
+.footer-col strong {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.footer-brand .home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.footer-brand p { margin: 0.55rem 0 0; max-width: 34ch; }
+
 footer p { margin: 0.35rem 0; }
-footer a { color: var(--accent); }
+footer a { color: var(--accent); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+.footer-base {
+  margin: 1.75rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  text-align: center;
+}
 
 
 /* ------------------------------------------------------------- ad placement */

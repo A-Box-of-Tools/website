@@ -870,16 +870,70 @@ button, .as-button {
   font-size: 0.88em;
 }
 
+/* A link footer in the same shape the hub uses: a few columns of plain links,
+   left aligned, each under a quiet heading, with the legal pages among them.
+   Tools deliberately share no stylesheet, so this block is copied into each of
+   them - if it changes in one, change it in the others and in site.css too. */
+
 footer {
-  text-align: center;
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
   color: var(--text-dim);
-  font-size: 0.82rem;
-  padding-top: 0.5rem;
+  font-size: 0.85rem;
 }
 
-/* The way back to the hub, with the site mark on it. The link is inline in a
-   sentence, so the two sit on the text baseline rather than in a flex row. */
-.home-link { white-space: nowrap; }
+.footer-cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+}
+
+.footer-col { flex: 1 1 150px; min-width: 0; }
+.footer-brand { flex: 2 1 240px; }
+
+.footer-col strong {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.footer-brand p { margin: 0.55rem 0 0; max-width: 36ch; }
+
+footer p { margin: 0.35rem 0; }
+footer a { color: var(--accent); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+.footer-base {
+  margin: 1.75rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* The way back to the hub, with the site mark on it. It heads the brand
+   column now rather than sitting inline in a sentence, so it is a flex row
+   and carries its own weight and colour. */
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--text);
+  font-weight: 600;
+}
 
 .site-logo {
   width: 1.35em;

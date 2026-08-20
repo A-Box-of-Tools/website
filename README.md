@@ -77,6 +77,10 @@ mounted — every path in it is relative, so it works at the domain root, at
   .nojekyll              stops GitHub Pages running the content through Jekyll
   cloudflare/            the edge config that adds the security headers
   serve.ps1              local dev server
+  privacy/               Privacy and Cookies; uses site.css, not a tool
+    index.html
+  terms/                 Terms of Use; likewise
+    index.html
   images-to-video/       one tool, entirely self-contained
     index.html
     styles.css
@@ -101,6 +105,29 @@ readable and auditable on its own, which is the point when the claim being made 
 The service worker registers with the scope of its own folder, so each tool caches
 only itself and cannot interfere with its neighbours.
 
+## The footer
+
+Every page ends with the same footer: a few columns of plain links, left
+aligned, each under a quiet heading — the tools in one column, Privacy, Terms
+and the source in another. It is the second navigation, for anyone who scrolled
+to the bottom looking for one, and it is the only route to the legal pages.
+
+It exists **six times over** — in `index.html`, in `privacy/` and `terms/`, and
+once in each of the three tools — because tools deliberately share no markup and
+no stylesheet. That is the price of the self-contained rule, paid knowingly:
+
+- The markup is identical everywhere bar two details: the hub links to its
+  neighbours directly while every other page reaches them through `../`, and the
+  three tool pages carry the inlined site mark in the brand column, since they
+  cannot load `logo.svg` from a stylesheet they do not share.
+- The CSS lives in `site.css` for the hub and the legal pages, and is copied into
+  each tool's `styles.css` under a comment saying so.
+
+**A new tool has to be added to six footers, not one.** If that ever becomes the
+thing that stops a tool shipping, the fix is a generated site with one template,
+not a shared stylesheet quietly reintroduced into the tools — the whole point of
+the tools being self-contained is that each can be read on its own.
+
 ---
 
 ## Adding a tool
@@ -110,7 +137,11 @@ only itself and cannot interfere with its neighbours.
    stylesheet, and its own service worker scoped to the folder.
 2. Add one `<li>` card to the matching category in `index.html`. The markup for a
    card is spelled out in a comment right above the categories.
-3. If it belongs to a category that does not exist yet, copy a whole
+3. Add it to the **Tools** column of the footer. That footer is repeated on
+   every page, so this means `index.html`, `privacy/index.html`,
+   `terms/index.html`, and each tool's own `index.html` - six files. See
+   [The footer](#the-footer) for why it is copied rather than shared.
+4. If it belongs to a category that does not exist yet, copy a whole
    `<section class="category">` block and move that name out of the "Planned" list.
 
    Before adding a *new* name to the Planned list, put it through

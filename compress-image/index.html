@@ -704,53 +704,81 @@
 </section>
 
 <footer>
-  <p>
-    Runs in your browser. No accounts, no uploads. Ads by Google.
-    &middot;
-    <!--
-      The site mark, inlined so that this page stays self-contained and works
-      offline. Same shape as the hub's logo.svg; colours come from this page's
-      own stylesheet.
-    -->
-    <a class="home-link" href="../">
-      <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-        <path class="logo-lid" d="M14 31V13.5A4.5 4.5 0 0 1 18.5 9h27a4.5 4.5 0 0 1 4.5 4.5V31"
-              fill="none" stroke-width="3.2" stroke-linejoin="round"/>
-        <g transform="rotate(-12 18 30)">
-          <rect class="logo-tool" x="16.6" y="17" width="3.2" height="17" rx="1.4"/>
-          <rect class="logo-tool" x="16.2" y="12.2" width="6.8" height="5" rx="1.5"/>
-          <rect class="logo-tool" x="14" y="12.6" width="2.6" height="6.6" rx="1.2" transform="rotate(26 16.2 13)"/>
-        </g>
-        <g transform="rotate(-3 26 30)">
-          <rect class="logo-tool-alt" x="24.6" y="17" width="3.1" height="17" rx="1.4"/>
-          <rect class="logo-tool-alt" x="23.2" y="12" width="2.3" height="6.5" rx="1.1"/>
-          <rect class="logo-tool-alt" x="26.8" y="12" width="2.3" height="6.5" rx="1.1"/>
-          <rect class="logo-tool-alt" x="23.2" y="16.2" width="5.9" height="3.6" rx="1.5"/>
-        </g>
-        <rect class="logo-tool-alt" x="30.6" y="12" width="5" height="8.4" rx="2.2"/>
-        <rect class="logo-tool" x="31.5" y="19.2" width="3.2" height="2.2" rx="0.7"/>
-        <rect class="logo-tool" x="32.1" y="20.5" width="2.1" height="13.5" rx="1"/>
-        <path class="logo-tool" d="M39.4 20.4 37.9 13a1.15 1.15 0 0 1 2.25-.45l1.15 7.6z" transform="rotate(-4 40.5 21)"/>
-        <path class="logo-tool" d="M41.6 20.4 43.1 13a1.15 1.15 0 0 0-2.25-.45l-1.15 7.6z" transform="rotate(4 40.5 21)"/>
-        <rect class="logo-tool" x="38.2" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(-8 40.5 21)"/>
-        <rect class="logo-tool" x="40.4" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(8 40.5 21)"/>
-        <circle class="logo-latch" cx="40.5" cy="20.8" r="1.5"/>
-        <g transform="rotate(14 48 30)">
-          <rect class="logo-tool" x="46.6" y="17.5" width="3.2" height="16.5" rx="1.4"/>
-          <rect class="logo-tool" x="44.6" y="14.2" width="7.4" height="3.4" rx="1.3"/>
-          <rect class="logo-tool" x="44.6" y="9.6" width="4.4" height="3.6" rx="1.1"/>
-          <rect class="logo-latch" x="46.4" y="17.4" width="3.6" height="1.9" rx="0.6"/>
-        </g>
-        <rect class="logo-box" x="8" y="38" width="48" height="15" rx="1.6"/>
-        <rect class="logo-band" x="4" y="31" width="56" height="7.5" rx="1.6"/>
-        <rect class="logo-latch" x="27.5" y="33.5" width="9" height="9" rx="1.8"/>
-      </svg>
-      All tools
-    </a>
-    &middot;
-    <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
-      Read the source
-    </a>
+  <div class="footer-cols">
+    <div class="footer-col footer-brand">
+      <a class="home-link" href="../">
+        <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <path class="logo-lid" d="M14 31V13.5A4.5 4.5 0 0 1 18.5 9h27a4.5 4.5 0 0 1 4.5 4.5V31"
+                fill="none" stroke-width="3.2" stroke-linejoin="round"/>
+          <g transform="rotate(-12 18 30)">
+            <rect class="logo-tool" x="16.6" y="17" width="3.2" height="17" rx="1.4"/>
+            <rect class="logo-tool" x="16.2" y="12.2" width="6.8" height="5" rx="1.5"/>
+            <rect class="logo-tool" x="14" y="12.6" width="2.6" height="6.6" rx="1.2" transform="rotate(26 16.2 13)"/>
+          </g>
+          <g transform="rotate(-3 26 30)">
+            <rect class="logo-tool-alt" x="24.6" y="17" width="3.1" height="17" rx="1.4"/>
+            <rect class="logo-tool-alt" x="23.2" y="12" width="2.3" height="6.5" rx="1.1"/>
+            <rect class="logo-tool-alt" x="26.8" y="12" width="2.3" height="6.5" rx="1.1"/>
+            <rect class="logo-tool-alt" x="23.2" y="16.2" width="5.9" height="3.6" rx="1.5"/>
+          </g>
+          <rect class="logo-tool-alt" x="30.6" y="12" width="5" height="8.4" rx="2.2"/>
+          <rect class="logo-tool" x="31.5" y="19.2" width="3.2" height="2.2" rx="0.7"/>
+          <rect class="logo-tool" x="32.1" y="20.5" width="2.1" height="13.5" rx="1"/>
+          <path class="logo-tool" d="M39.4 20.4 37.9 13a1.15 1.15 0 0 1 2.25-.45l1.15 7.6z" transform="rotate(-4 40.5 21)"/>
+          <path class="logo-tool" d="M41.6 20.4 43.1 13a1.15 1.15 0 0 0-2.25-.45l-1.15 7.6z" transform="rotate(4 40.5 21)"/>
+          <rect class="logo-tool" x="38.2" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(-8 40.5 21)"/>
+          <rect class="logo-tool" x="40.4" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(8 40.5 21)"/>
+          <circle class="logo-latch" cx="40.5" cy="20.8" r="1.5"/>
+          <g transform="rotate(14 48 30)">
+            <rect class="logo-tool" x="46.6" y="17.5" width="3.2" height="16.5" rx="1.4"/>
+            <rect class="logo-tool" x="44.6" y="14.2" width="7.4" height="3.4" rx="1.3"/>
+            <rect class="logo-tool" x="44.6" y="9.6" width="4.4" height="3.6" rx="1.1"/>
+            <rect class="logo-latch" x="46.4" y="17.4" width="3.6" height="1.9" rx="0.6"/>
+          </g>
+          <rect class="logo-box" x="8" y="38" width="48" height="15" rx="1.6"/>
+          <rect class="logo-band" x="4" y="31" width="56" height="7.5" rx="1.6"/>
+          <rect class="logo-latch" x="27.5" y="33.5" width="9" height="9" rx="1.8"/>
+        </svg>
+        All tools
+      </a>
+      <p>
+        Runs in your browser. No accounts, no uploads. Ads by Google.
+        Tips are welcome and change nothing.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <strong>Tools</strong>
+      <ul>
+        <li><a href="../images-to-video/">Images to Video</a></li>
+        <li><a href="../compress-image/">Compress Image</a></li>
+        <li><a href="../exif-editor/">EXIF Editor</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>This site</strong>
+      <ul>
+        <li><a href="../">All tools</a></li>
+        <li><a href="../privacy/">Privacy &amp; Cookies</a></li>
+        <li><a href="../terms/">Terms of Use</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>The source</strong>
+      <ul>
+        <li>
+          <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
+            Read the code on GitHub
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="footer-base">
+    Every claim on this site is meant to be checked, not believed.
   </p>
 </footer>
 
