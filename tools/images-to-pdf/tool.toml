@@ -1,0 +1,251 @@
+#
+# Images to PDF
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "images-to-pdf"
+name = "Images to PDF"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Images&nbsp;to&nbsp;PDF <span class=\"h1-kw\">&mdash; JPG to PDF converter</span>"
+tagline = "Put your pictures into one document."
+icon = "&#128196;"                  # the page mark beside the heading
+favicon = "&#128196;"      # the tab icon, drawn into an inline SVG
+category = "documents-and-pdf"
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Images to PDF Converter &mdash; Free JPG to PDF, No Upload"
+description = "Combine JPG, PNG or WebP images into one PDF, free and entirely in your browser. Photos go in without being re-encoded, and nothing is uploaded."
+og_title = "Images to PDF &mdash; free JPG to PDF converter"
+og_description = "Combine images into one PDF on your own machine. JPEG photos are copied in untouched, so nothing loses quality and nothing is uploaded."
+og_image_alt = "Images to PDF - combine pictures into one document without uploading them"
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The document is written in memory on this machine, a page at a time, by code
+    served from this address. Nothing here can make an upload, and there is no
+    server on the other end of this page to receive one."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and make a
+      PDF. Not one request carries an image, a thumbnail, or a filename. Or unplug
+      from the internet and make one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, and <code>src/pdf.js</code> and <code>src/document.js</code>
+      for the whole of the file-writing, which never touches the network."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to turn images into a PDF"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Combine images into one PDF, one picture per page. JPEG photos are
+            copied in exactly as they are, so nothing loses quality."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "images"
+choose = "images"
+analytics_extra = """"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "Your images have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. This tool adds nothing to that list: it
+      has no network feature of its own, not even an optional one. There is no
+      endpoint here that your files could be collected at, and nothing in the code
+      that would send them if there were."""
+
+[[privacy]]
+title = "The PDF is written here."
+body = """
+ A PDF is a list of objects and a table of where
+      each one starts, and <code>src/pdf.js</code> writes both. No library is
+      fetched, nothing is rendered on a server, and the finished file is handed
+      straight to a download from memory."""
+
+[[privacy]]
+title = "The document is told nothing about you."
+body = """
+ Most tools stamp a
+      PDF with a timestamp and the name of the program that made it. This one
+      writes a title, an author and a date only if you type them in; the file
+      names of your pictures never appear in the document, and neither does
+      anything about your machine."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      images: not a file, not a thumbnail, not a name, a size, or a count. Every
+      line that reads, decodes or writes a picture is served from this origin and
+      listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your images. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your pictures away to be made into a document would stop."""
+
+[[howto]]
+title = "Choose your images."
+body = """
+ Drop a folder onto the picker, or
+      select the files by hand. They are read straight off your disk by the
+      browser; nothing is sent anywhere while you do it."""
+
+[[howto]]
+title = "Put the pages in order, and turn any that need it."
+body = """
+ One
+      image becomes one page, in the order shown. Drag a tile by its handle to
+      move it, or use the arrows; the rotate buttons turn a page a quarter at a
+      time, which is what a sideways scan usually needs."""
+
+[[howto]]
+title = "Choose a page size."
+body = """
+ "Fit the page to each image" makes every
+      page exactly its picture, with nothing cropped and no white bands. The
+      named sizes &mdash; A4, Letter, Legal and the rest &mdash; place each
+      picture on a fixed page instead, with a margin if you want one."""
+
+[[howto]]
+title = "Create the PDF and download it."
+body = """
+ The document is written on
+      your own machine, so how long it takes depends on your hardware rather than
+      on a queue. The finished file is handed straight to your browser's
+      downloads."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Are my images uploaded anywhere?"
+a = """
+        No. Your images are read and the PDF is written by your own browser on
+        your own hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. Unlike some of the other tools
+        here, this one has no optional network feature at all."""
+
+[[faq]]
+q = "Does converting to PDF lose quality?"
+a = """
+        Not for a JPEG, on the default setting. PDF can carry JPEG data directly,
+        so a photograph is copied into the document byte for byte: it is never
+        decoded and never compressed again, and the picture in the PDF is the
+        picture in the file. Other formats have to be re-encoded, because PDF has
+        no filter for them &mdash; unless you choose the lossless setting, which
+        stores them exactly at the cost of a larger file."""
+
+[[faq]]
+q = "Which image formats can I use?"
+a = """
+        Any still image your browser can decode, which in practice means JPG,
+        PNG, WebP, GIF, AVIF and, on Apple devices, HEIC. There is no separate
+        list to keep up to date here, because the decoding is the browser's job
+        rather than ours."""
+
+[[faq]]
+q = "Can I choose the page size and the order of the pages?"
+a = """
+        Yes. Pages can be A4, Letter, Legal, A3, A5, Tabloid, a size you type in,
+        or exactly the size of each picture. Drag the tiles to reorder them, sort
+        them by name or date, rotate any of them a quarter turn, and set a margin
+        in millimetres."""
+
+[[faq]]
+q = "How many images can I put in one PDF?"
+a = """
+        There is no limit built into the tool. The practical ceiling is your own
+        machine's memory, because the finished document is assembled there before
+        you download it. A few hundred phone photos at full resolution is the
+        first thing to feel it; shrinking the longest side, in the settings,
+        moves that ceiling a long way."""
+
+[[faq]]
+q = "Does the PDF contain my file names or a timestamp?"
+a = """
+        No, unless you ask for one. The document information block is left empty
+        except for the name of this tool: no file names, no machine name, no user
+        name, and no creation date unless you tick the box for it. That is
+        deliberate &mdash; a PDF is a thing people send to other people."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in and no trial. The site
+        carries advertising, which is what pays for it; the ads are not given
+        anything about your images."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your images away to be made into a document
+        would stop the moment you unplugged."""
+
+[schema]
+category = "UtilitiesApplication"
+description = "Combine JPG, PNG and WebP images into a single PDF document. Every page is written in your browser, so no image is ever uploaded."
+features = [
+  "Combines JPG, PNG, WebP, GIF and AVIF images into one PDF",
+  "JPEG photos are embedded without being re-encoded",
+  "Page sizes from A5 to Tabloid, or a page fitted to each image",
+  "Reorder, rotate, set margins and a page colour",
+  "Optional lossless storage for scans and screenshots",
+  "Runs offline; no upload, no account",
+]
