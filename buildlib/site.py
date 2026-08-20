@@ -348,6 +348,46 @@ def text_hash(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()[:10]
 
 
+# ---------------------------------------------------------------------------
+# Shared parts
+#
+# A tool names the parts it wants in `js_parts` and `css_parts`. Some parts are
+# not a free choice, though: switching the URL importer on means its module, its
+# stylesheet and a widened img-src, and a tool that had to remember all three
+# would eventually remember two. So the flag implies the rest.
+
+URL_IMPORT_PART = 'url-import'
+
+
+def wants_urls(tool):
+    return bool(tool.get('picker', {}).get('urls'))
+
+
+def js_parts(tool):
+    parts = list(tool.get('js_parts', []))
+    if wants_urls(tool) and URL_IMPORT_PART not in parts:
+        parts.append(URL_IMPORT_PART)
+    return parts
+
+
+def css_parts(tool):
+    parts = list(tool.get('css_parts', []))
+    if wants_urls(tool) and URL_IMPORT_PART not in parts:
+        parts.append(URL_IMPORT_PART)
+    return parts
+
+
+def picker_csp(tool):
+    """What the importer needs, and only for the page that uses it.
+
+    img-src rather than connect-src, and that distinction is the whole design:
+    pictures can come in, and nothing can go out. See shared/js/url-import.js.
+    """
+    if not wants_urls(tool):
+        return {}
+    return {'img-src': ['http:']}
+
+
 def cache_hash(paths):
     """A short digest of everything the service worker caches, used as its cache
     name. It changes exactly when one of the cached files changes, which is what

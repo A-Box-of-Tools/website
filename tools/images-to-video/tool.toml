@@ -254,7 +254,6 @@ features = [
 # URL. A tool can only ever widen its own page this way - it cannot narrow the
 # site policy, and it cannot touch any other tool's.
 [csp]
-"img-src" = ["http:"]
 "media-src" = ["'self'", "blob:"]
 "worker-src" = ["'self'", "blob:"]
 
@@ -265,3 +264,13 @@ accept = "image/*"
 multiple = true
 title = "Drop images here"
 hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"
+
+# Switching this on ships the importer module, its stylesheet and the widened
+# img-src this page needs, together - see shared/js/url-import.js. It is only
+# honest here because the pictures are headed into a lossy video codec anyway,
+# so arriving as a re-encoded JPEG costs nothing a viewer could see. A tool that
+# would have to tell the truth about the bytes it was given must go without.
+[picker.urls]
+summary = "Add from a web address"
+button = "Download images"
+noun = "image"

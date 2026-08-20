@@ -6,7 +6,7 @@ import { drawFrame, resolveOutputSize } from './compose.js';
 import { encodeToMp4, countFrames } from './encoder.js';
 import { recordToWebm } from './recorder.js';
 import { hasWebCodecs, hasMediaRecorder } from './support.js';
-import { fetchImages, parseImageUrl } from './remote.js';
+import { wireUrlImport } from './shared/url-import.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -123,75 +123,33 @@ async function addFiles(files) {
 
 /* ------------------------------------------------------------ web addresses */
 
-let fetching = false;
 
-el.fetchUrls.addEventListener('click', async () => {
-  if (fetching) return;
+// The importer itself is shared - src/shared/url-import.js, brought in by
+// [picker.urls] in this tool's tool.toml. What stays here is the one part that
+// is this tool's own business: remembering which address each image came from,
+// so a row can say so.
+wireUrlImport({
+  input: el.urlInput,
+  button: el.fetchUrls,
+  status: el.urlStatus,
+  onError: showError,
+  onClear: clearError,
+  async onFiles(downloaded) {
+    const before = items.length;
+    await addFiles(downloaded.map((d) => d.file));
 
-  const lines = el.urlInput.value.split('\n').map((s) => s.trim()).filter(Boolean);
-  if (!lines.length) {
-    el.urlStatus.textContent = 'Paste at least one address first.';
-    return;
-  }
-
-  // Reject malformed addresses before touching the network at all.
-  const valid = [];
-  const rejected = [];
-  for (const line of lines) {
-    try {
-      parseImageUrl(line);
-      valid.push(line);
-    } catch (error) {
-      rejected.push(error.message);
-    }
-  }
-
-  if (!valid.length) {
-    showError(rejected.join(' '));
-    el.urlStatus.textContent = 'Nothing to download.';
-    return;
-  }
-
-  fetching = true;
-  el.fetchUrls.disabled = true;
-  clearError();
-
-  try {
-    const { downloaded, failures } = await fetchImages(valid, ({ done, total }) => {
-      el.urlStatus.textContent = `Downloading ${Math.min(done + 1, total)} of ${total}...`;
-    });
-
-    el.urlStatus.textContent = downloaded.length
-      ? `Downloaded ${downloaded.length} of ${valid.length}.`
-      : 'Nothing could be downloaded.';
-
-    if (downloaded.length) {
-      const before = items.length;
-      await addFiles(downloaded.map((d) => d.file));
-
-      // Tag each new item with the address it actually came from. loadImages
-      // can itself skip a file, so match on the File object rather than
-      // assuming the two lists line up.
-      for (let i = before; i < items.length; i++) {
-        const origin = downloaded.find((d) => d.file === items[i].file);
-        if (origin) {
-          items[i].sourceUrl = origin.url.href;
-          items[i].sourceHost = origin.url.hostname;
-        }
+    // addFiles can itself skip a file, so match on the File object rather than
+    // assuming the two lists still line up: attributing an image to the wrong
+    // site would be worse than saying nothing.
+    for (let i = before; i < items.length; i++) {
+      const origin = downloaded.find((d) => d.file === items[i].file);
+      if (origin) {
+        items[i].sourceUrl = origin.url.href;
+        items[i].sourceHost = origin.url.hostname;
       }
-      render();
-      el.urlInput.value = '';
     }
-
-    const problems = [...rejected, ...failures.map((f) => `${f.url}: ${f.reason}`)];
-    if (problems.length) showError(problems.join('\n'));
-  } catch (error) {
-    showError(error.message);
-    el.urlStatus.textContent = 'Download failed.';
-  } finally {
-    fetching = false;
-    el.fetchUrls.disabled = false;
-  }
+    render();
+  },
 });
 
 /* --------------------------------------------------------- image durations */
