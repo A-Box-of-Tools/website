@@ -447,6 +447,8 @@ def build_roadmap(out, templates, site, planned, ordered, footer, css_v, emit):
     emit.html(dest / 'index.html', templates.render('roadmap.html', {
         'site': site,
         'planned': planned,
+        'planned_count': sum(len(group['items']) for group in planned['group']),
+        'built_count': len(ordered),
         'tools': ordered,
         'footer': footer,
         'base': '../',

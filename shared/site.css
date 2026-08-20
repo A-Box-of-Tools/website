@@ -225,47 +225,87 @@ code {
 
 .roadmap-note a { color: var(--accent); }
 
-/* ---- planned ----------------------------------------------------------- */
+/* ---- the roadmap ------------------------------------------------------- */
 
-.planned .category-head h2 { color: var(--text-dim); }
-
-/* The planned list is grouped once it is longer than a handful of lines: a
-   flat run of forty names reads as a wishlist, the same names under Images /
-   Video / Audio read as a shape. The heading is deliberately quieter than a
-   category's <h2> so a shipped tool still outranks a planned one visually. */
-
-.planned-group + .planned-group { margin-top: 1.35rem; }
-
-.planned-group h3 {
-  margin: 0 0 0.5rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+/* The two counts under the lede. Read off the lists by the build, so they are
+   a fact about the page rather than a claim in a sentence. */
+.roadmap-count {
+  margin: 0.9rem 0 0;
+  font-size: 0.85rem;
   color: var(--text-dim);
 }
 
-.planned-list {
+.roadmap-count strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Read as prose, not scanned as a grid, so it wears the same frame the guides
+   do - one narrow column, headings with a rule under them, ordinary lists.
+
+   The planned list is the substance of this page and comes first. It used to
+   sit in a grid of dashed boxes, which made forty-two names look like forty-two
+   things going wrong; as a plain list under its group heading it reads like a
+   plan. Grouping matters for the same reason: a flat run of forty names is a
+   wishlist, the same names under Images / Video / Audio are a shape. */
+
+.plan-group + .plan-group { margin-top: 1.6rem; }
+
+.plan-group h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.plan-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.4rem;
-  font-size: 0.9rem;
+  gap: 0.05rem;
 }
 
-.planned-list li {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.15rem 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-  color: var(--text-dim);
+.plan-list li {
+  margin: 0;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
+
+.plan-list li:last-child { border-bottom: 0; }
 
 .p-name { font-weight: 600; color: var(--text); }
-.p-desc { font-size: 0.85rem; }
+.p-desc { color: var(--text-dim); }
+
+/* The built half, deliberately quiet. Every one of these already has a card on
+   the hub and a link in the footer of every page; repeating them here at that
+   weight made the roadmap look like a second front page and pushed the part
+   somebody came to read below the fold. */
+
+.built-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.05rem;
+}
+
+.built-list li {
+  margin: 0;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.built-list li:last-child { border-bottom: 0; }
+.built-list a { font-weight: 600; text-decoration: none; }
+.built-list a:hover { text-decoration: underline; }
+.b-desc { color: var(--text-dim); }
 
 /* ---- legal pages ------------------------------------------------------- */
 
@@ -300,11 +340,11 @@ code {
   color: var(--text-dim);
 }
 
-.legal { max-width: 68ch; }
+.legal, .prose { max-width: 68ch; }
 
-.legal section { margin: 0 0 2.25rem; }
+.legal section, .prose section { margin: 0 0 2.25rem; }
 
-.legal h2 {
+.legal h2, .prose h2 {
   margin: 0 0 0.7rem;
   padding-bottom: 0.4rem;
   border-bottom: 1px solid var(--border);
@@ -312,15 +352,15 @@ code {
   letter-spacing: -0.01em;
 }
 
-.legal h3 {
+.legal h3, .prose h3 {
   margin: 1.5rem 0 0.45rem;
   font-size: 0.95rem;
 }
 
-.legal p { margin: 0 0 0.85rem; }
-.legal ul { margin: 0 0 0.95rem; padding-left: 1.25rem; }
-.legal li { margin: 0.3rem 0; }
-.legal a { color: var(--accent); }
+.legal p, .prose p { margin: 0 0 0.85rem; }
+.legal ul, .prose ul { margin: 0 0 0.95rem; padding-left: 1.25rem; }
+.legal li, .prose li { margin: 0.3rem 0; }
+.legal a, .prose a { color: var(--accent); }
 
 /* ---- footer ------------------------------------------------------------ */
 
