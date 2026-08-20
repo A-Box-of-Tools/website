@@ -49,6 +49,19 @@
   HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
   reaches a returning visitor as new markup wearing a four-hour-old sheet.
 -->
+<!--
+  Structured data, and only for a guide. A guide is an Article and says so; a
+  privacy policy is not one, and describing it as an Article would be claiming
+  the page is something it is not. buildlib/site.py decides which, and returns
+  nothing for a legal page, so this block simply does not appear on one.
+
+  Inline is deliberate and does not need 'unsafe-inline': a <script> whose type
+  is not a JavaScript type is a data block the parser never executes.
+-->
+{% if jsonld %}<script type="application/ld+json">
+{{ jsonld }}
+</script>
+{% endif %}
 <link rel="stylesheet" href="{{ css_href }}">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icon-180.png">
@@ -57,7 +70,7 @@
 
 <header class="hub-head">
   <p class="brand">
-    <a class="brand-home" href="../">
+    <a class="brand-home" href="{{ base }}">
       <span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools
     </a>
   </p>

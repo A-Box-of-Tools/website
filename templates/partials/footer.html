@@ -36,7 +36,8 @@
       <strong>This site</strong>
       <ul>
         <li><a href="{{ base }}">All tools</a></li>
-{% for p in footer.pages %}        <li><a href="{{ base }}{{ p.slug }}/">{{ p.nav }}</a></li>
+{% for g in footer.guides %}        <li><a href="{{ base }}{{ g.slug }}/">{{ g.nav }}</a></li>
+{% endfor %}{% for p in footer.pages %}        <li><a href="{{ base }}{{ p.slug }}/">{{ p.nav }}</a></li>
 {% endfor %}        <li><a href="/sitemap.xml">Sitemap</a></li>
       </ul>
     </div>
