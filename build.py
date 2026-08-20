@@ -91,6 +91,9 @@ def build(out, clean=False):
 
     templates = Loader(TEMPLATES)
     site = sitelib.load_toml(CONFIG / 'site.toml')
+    # The hub and the legal pages share one stylesheet, so they share one
+    # version for it. Tool pages each hash their own assembled sheet.
+    css_v = sitelib.text_hash((SHARED / 'site.css').read_text(encoding='utf-8'))
     planned = sitelib.load_toml(CONFIG / 'planned.toml')
 
     tools = [sitelib.load_tool(path, site)
@@ -122,10 +125,10 @@ def build(out, clean=False):
         written.append(f'{tool["slug"]}/index.html')
 
     for page in prose:
-        build_page(out, templates, site, page, footer)
+        build_page(out, templates, site, page, footer, css_v)
         written.append(f'{page["slug"]}/index.html')
 
-    build_hub(out, templates, site, planned, by_slug, footer)
+    build_hub(out, templates, site, planned, by_slug, footer, css_v)
     written.append('index.html')
 
     build_sitemap(out, templates, site, tools, prose)
@@ -156,17 +159,25 @@ def build_tool(out, templates, site, tool, footer):
     if not body_path.is_file():
         raise sitelib.ConfigError(f'{tool["slug"]}: no body.html')
 
+    # Assembled first, so the page can ask for it by a URL carrying a hash of
+    # what is in it. The service worker below precaches that same URL: it
+    # matches on the whole request, query and all, so a mismatch would leave a
+    # tool styled online and bare offline.
+    css = tool_css(tool)
+    css_href = f'styles.css?v={sitelib.text_hash(css)}'
+
     write(dest / 'index.html', templates.render('tool.html', {
         'site': site,
         'tool': tool,
         'footer': footer,
         'base': '../',
         'csp': sitelib.render_csp(site['csp'], site.get('tool_csp', {}), tool['csp']),
+        'css_href': css_href,
         'jsonld': sitelib.tool_jsonld(site, tool),
         'body': body_path.read_text(encoding='utf-8').rstrip('\n'),
     }))
 
-    write(dest / 'styles.css', tool_css(tool))
+    write(dest / 'styles.css', css)
 
     write(dest / 'analytics.js', templates.render('analytics.js', {
         'site': site,
@@ -179,7 +190,7 @@ def build_tool(out, templates, site, tool, footer):
     cached = [dest / 'index.html', dest / 'styles.css', dest / 'analytics.js'] + assets
     write(dest / 'sw.js', templates.render('sw.js', {
         'tool': tool,
-        'assets': ['index.html', 'styles.css'] + [f'src/{p.name}' for p in assets],
+        'assets': ['index.html', css_href] + [f'src/{p.name}' for p in assets],
         'cache_hash': sitelib.cache_hash(cached),
     }))
 
@@ -215,7 +226,7 @@ def tool_css(tool):
 # One prose page (the legal ones)
 
 
-def build_page(out, templates, site, page, footer):
+def build_page(out, templates, site, page, footer, css_v):
     """A legal page: the site frame around a body.html, and nothing else.
 
     No service worker, because there is nothing here worth keeping offline, and
@@ -235,6 +246,7 @@ def build_page(out, templates, site, page, footer):
         'page': page,
         'footer': footer,
         'base': '../',
+        'css_href': f'../site.css?v={css_v}',
         'csp': sitelib.render_csp(site['csp']),
         'body': body_path.read_text(encoding='utf-8').rstrip('\n'),
     }))
@@ -249,7 +261,7 @@ def build_page(out, templates, site, page, footer):
 # The hub
 
 
-def build_hub(out, templates, site, planned, by_slug, footer):
+def build_hub(out, templates, site, planned, by_slug, footer, css_v):
     categories = []
     listed = set()
     for category in site['hub']['categories']:
@@ -284,6 +296,7 @@ def build_hub(out, templates, site, planned, by_slug, footer):
         'categories': categories,
         'footer': footer,
         'base': './',
+        'css_href': f'site.css?v={css_v}',
         'csp': sitelib.render_csp(site['csp']),
         'jsonld': sitelib.hub_jsonld(site, ordered),
     }))

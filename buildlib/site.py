@@ -258,6 +258,19 @@ def load_page(path, site):
     return page
 
 
+def text_hash(text):
+    """A short digest of one generated file's contents, used to version the URL
+    a page asks for it by.
+
+    GitHub Pages serves HTML with max-age=600 and everything else with
+    max-age=14400. A deploy that changes a stylesheet therefore reaches a
+    returning visitor as new markup wearing the stylesheet from four hours ago,
+    which is how the footer arrived on a page unstyled. Naming the file with a
+    hash of what is in it makes that impossible: change the CSS and the URL
+    changes, so there is nothing stale to hand back."""
+    return hashlib.sha256(text.encode('utf-8')).hexdigest()[:10]
+
+
 def cache_hash(paths):
     """A short digest of everything the service worker caches, used as its cache
     name. It changes exactly when one of the cached files changes, which is what
