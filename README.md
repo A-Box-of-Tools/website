@@ -143,9 +143,10 @@ buildlib/
   site.py                config loading, the CSP, the structured data, the checks
 config/
   site.toml              everything true of every page: the CSP, the ids, the hub
-  planned.toml           the "Planned" list on the hub page
+  planned.toml           the "Planned" list on the roadmap page
 templates/
   hub.html               the hub page
+  roadmap.html           the roadmap: what is built, then what is planned
   tool.html              the frame every tool page wears
   page.html              the frame a prose page wears - the legal ones
   404.html               what GitHub Pages returns for an address that is not here
@@ -658,7 +659,7 @@ worse than no link at all. All five come from `source_url` in
 
 ## What can be built here
 
-The "Planned" list on the front page is not a wishlist. It was drawn up by going
+The "Planned" list on the roadmap is not a wishlist. It was drawn up by going
 through the tool list of the largest online GIF and video site — the closest
 thing there is to a complete catalogue of what people actually want done to a
 media file — and putting every entry through one test:

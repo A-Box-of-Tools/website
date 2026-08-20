@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--
   GENERATED FILE - do not edit. Built by build.py from templates/hub.html,
-  config/site.toml, config/planned.toml, and one tool.toml per shipped tool.
+  config/site.toml and one tool.toml per shipped tool. The planned list moved to
+  templates/roadmap.html.
   Edit those and run `python build.py`.
 -->
 <!--
@@ -171,19 +172,19 @@
 {% endfor %}    </ul>
   </section>
 {% endfor %}
-  <section class="category planned" id="planned" aria-labelledby="planned-h">
-    <div class="category-head">
-      <h2 id="planned-h">Planned</h2>
-      <p class="category-note">{{ planned.note }}</p>
-    </div>
-{% for group in planned.group %}
-    <div class="planned-group">
-      <h3>{{ group.name }}</h3>
-      <ul class="planned-list">
-{% for item in group.items %}        <li><span class="p-name">{{ item.name }}</span> <span class="p-desc">{{ item.desc }}</span></li>
-{% endfor %}      </ul>
-    </div>
-{% endfor %}  </section>
+  <!--
+    The planned list used to be spelled out here, and had grown to about fifty
+    names across six groups. That meant the last thing anybody saw on the front
+    page was a long list of things this site cannot do yet, below the fold and
+    below the tools that do exist. It reads as an apology.
+
+    It still exists, in full, on the roadmap - see templates/roadmap.html and
+    config/planned.toml. This is the one line that points at it.
+  -->
+  <p class="roadmap-note">
+    More is coming, and the list is public:
+    <a href="{{ base }}{{ site.roadmap.slug }}/">see what is planned next</a>.
+  </p>
 
 </main>
 

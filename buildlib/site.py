@@ -152,6 +152,36 @@ def tool_jsonld(site, tool):
     return dumps_ld(graph)
 
 
+def roadmap_jsonld(site):
+    """CollectionPage + BreadcrumbList for the roadmap.
+
+    Not an ItemList: the hub already publishes one naming the tools that exist,
+    and a second list here that mixed shipped tools with names nobody can click
+    would be describing products that are not products yet."""
+    roadmap = site['roadmap']
+    url = f'{site["domain"]}{roadmap["slug"]}/'
+    graph = [
+        {
+            '@type': 'CollectionPage',
+            'url': url,
+            'name': to_text(roadmap['heading']),
+            'description': to_text(roadmap['description']),
+            'inLanguage': site['lang'],
+            'isPartOf': {'@id': site['domain'] + '#website'},
+        },
+        {
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                {'@type': 'ListItem', 'position': 1,
+                 'name': site['name'], 'item': site['domain']},
+                {'@type': 'ListItem', 'position': 2,
+                 'name': to_text(roadmap['nav']), 'item': url},
+            ],
+        },
+    ]
+    return dumps_ld(graph)
+
+
 def page_jsonld(site, page):
     """Structured data for a prose page, or nothing for a legal one.
 

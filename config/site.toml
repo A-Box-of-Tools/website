@@ -219,6 +219,48 @@ order = ["compress-pdf", "images-to-pdf"]
 
 #
 # ---------------------------------------------------------------------------
+# The roadmap page.
+#
+# The planned list used to sit at the foot of the hub, under the shipped tools.
+# It had grown to about fifty names across six groups, which meant the last
+# thing a visitor saw on the front page was a long list of things this site
+# cannot do yet. It reads as an apology, and it pushed the tools that do exist
+# off the bottom of the screen.
+#
+# It is worth keeping - saying out loud where this is going is the same habit as
+# saying out loud what the tools do with your files - so it moved here instead
+# of being deleted. The page lists what is built first and what is planned
+# second, which is the honest order and also the useful one.
+#
+# The content itself is still config/planned.toml. This is only the frame.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+slug = "roadmap"
+nav = "Roadmap"
+lastmod = "2026-08-20"
+
+title = "Roadmap &mdash; what abox.tools has built, and what is next"
+description = "Every tool on abox.tools that is finished, and the ones planned next. All of them run in your browser, and none of them upload your files."
+
+heading = "What is built, and what is coming"
+lede = """
+    Everything here runs in your browser and uploads nothing, the ones that
+    exist today and the ones that do not yet. This is the whole list, kept in
+    the open so you can see whether the thing you need is coming."""
+
+built_heading = "Built and working"
+built_note = "Finished, and linked from every page on the site."
+
+planned_heading = "Planned"
+
+og_title = "abox.tools roadmap"
+og_description = "What is built, and what is next. Everything runs in your browser and uploads nothing."
+og_image_alt = "abox.tools - tools that never touch a server"
+
+#
+# ---------------------------------------------------------------------------
 # The footer, which is now the same on every page - hub, tool and legal alike.
 #
 # The tool list and the legal-page list in it are not written here: build.py

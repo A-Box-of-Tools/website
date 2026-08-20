@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  GENERATED FILE - do not edit. Built by build.py from templates/roadmap.html,
+  config/site.toml, config/planned.toml, and one tool.toml per shipped tool.
+  Edit those and run `python build.py`.
+
+  This page used to be the last section of the hub. It was moved out when the
+  planned list passed about fifty names: the front page ended on a long list of
+  things the site cannot do, which reads as an apology and pushed the tools that
+  do exist off the bottom of the screen.
+
+  Nothing here is written twice. The built half is the same tool list the hub
+  and the footer are drawn from, and the planned half is config/planned.toml, so
+  a tool that ships moves between the two halves by being added to tools/ and
+  taken out of that file - never by editing this page.
+-->
+<!--
+  This page carries advertising, and ad code cannot run under default-src
+  'none'. The allowlist below is generated from config/site.toml, the same one
+  every other page is built from, so the pages cannot drift apart.
+-->
+{{ csp }}
+<title>{{ site.roadmap.title }}</title>
+<meta name="description" content="{{ site.roadmap.description }}">
+
+<link rel="canonical" href="{{ site.domain }}{{ site.roadmap.slug }}/">
+
+<meta name="google-adsense-account" content="{{ site.adsense_client }}">
+
+{% include "partials/head-scripts.html" %}
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:url" content="{{ site.domain }}{{ site.roadmap.slug }}/">
+<meta property="og:title" content="{{ site.roadmap.og_title }}">
+<meta property="og:description" content="{{ site.roadmap.og_description }}">
+<meta property="og:image" content="{{ site.domain }}og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ site.roadmap.og_image_alt }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ site.roadmap.og_title }}">
+<meta name="twitter:description" content="{{ site.roadmap.og_description }}">
+<meta name="twitter:image" content="{{ site.domain }}og.png">
+
+<!--
+  Structured data. The breadcrumb is here and so is the visible trail below it,
+  because markup is meant to describe what a visitor can actually see.
+
+  Inline is deliberate and does not need 'unsafe-inline': a <script> whose type
+  is not a JavaScript type is a data block the parser never executes.
+-->
+<script type="application/ld+json">
+{{ jsonld }}
+</script>
+
+<!--
+  The stylesheet URL carries a hash of the stylesheet. GitHub Pages serves
+  HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
+  reaches a returning visitor as new markup wearing a four-hour-old sheet.
+-->
+<link rel="stylesheet" href="{{ css_href }}">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+</head>
+<body>
+
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="{{ base }}">All tools</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <span aria-current="page">{{ site.roadmap.nav }}</span>
+</nav>
+
+<header class="hub-head">
+  <p class="brand">
+    <a class="brand-home" href="{{ base }}">
+      <span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools
+    </a>
+  </p>
+  <h1>{{ site.roadmap.heading }}</h1>
+  <p class="lede">
+{{ site.roadmap.lede }}
+  </p>
+</header>
+
+<main>
+
+  <!--
+    The built half first. A roadmap that opens on what does not exist yet is a
+    wishlist; opening on what does makes the rest of it a promise with a track
+    record behind it. These are real links, so this page also spreads crawl
+    depth across every tool rather than being a dead end.
+  -->
+  <section class="category" id="built" aria-labelledby="built-h">
+    <div class="category-head">
+      <h2 id="built-h">{{ site.roadmap.built_heading }}</h2>
+      <p class="category-note">{{ site.roadmap.built_note }}</p>
+    </div>
+    <ul class="tool-grid">
+{% for tool in tools %}      <li>
+        <a class="tool-card" href="{{ base }}{{ tool.slug }}/">
+          <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
+          <span class="tool-name">{{ tool.name | e }}</span>
+          <span class="tool-desc">
+{{ tool.card }}
+          </span>
+        </a>
+      </li>
+{% endfor %}    </ul>
+  </section>
+
+  <!--
+    ==========================================================================
+    THE PLANNED LIST
+
+    Written as plain text on purpose. A card that links nowhere reads as a
+    broken page rather than an honest one, so nothing here is a link until it
+    ships. Move a name out of config/planned.toml when the tool actually
+    exists, and add its folder to tools/ at the same time - it will appear in
+    the section above, in the hub, in the footer and in the sitemap without
+    anybody editing this template.
+    ==========================================================================
+  -->
+  <section class="category planned" id="planned" aria-labelledby="planned-h">
+    <div class="category-head">
+      <h2 id="planned-h">{{ site.roadmap.planned_heading }}</h2>
+      <p class="category-note">{{ planned.note }}</p>
+    </div>
+{% for group in planned.group %}
+    <div class="planned-group">
+      <h3>{{ group.name }}</h3>
+      <ul class="planned-list">
+{% for item in group.items %}        <li><span class="p-name">{{ item.name }}</span> <span class="p-desc">{{ item.desc }}</span></li>
+{% endfor %}      </ul>
+    </div>
+{% endfor %}  </section>
+
+</main>
+
+{% include "partials/footer.html" %}
+
+</body>
+</html>
