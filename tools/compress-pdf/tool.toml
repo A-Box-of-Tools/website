@@ -1,0 +1,290 @@
+#
+# Compress PDF
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "compress-pdf"
+name = "PDF Compressor"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Compress&nbsp;PDF <span class=\"h1-kw\">&mdash; make a PDF smaller</span>"
+tagline = "Shrink a document without sending it anywhere."
+icon = "&#128200;"                  # the page mark beside the heading
+favicon = "&#128200;"      # the tab icon, drawn into an inline SVG
+category = "documents-and-pdf"
+
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Compress PDF &mdash; Free, In Your Browser, No Upload"
+description = "Make a PDF smaller without uploading it. The file is read, recompressed and rewritten by your own browser, and the tool shows you where its size actually is before it touches anything."
+og_title = "Compress PDF &mdash; free, and nothing is uploaded"
+og_description = "Shrink a PDF on your own machine. It measures how big each picture is drawn on the page, so it only throws away pixels nobody could see."
+og_image_alt = "Compress PDF - make a document smaller without uploading it"
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The document is opened, taken apart and written back out in memory on this
+    machine, by code served from this address. Nothing here can make an upload,
+    and there is no server on the other end of this page to receive one."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      compress a file. Not one request carries a page, a picture, or a filename.
+      Or unplug from the internet and compress one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, and <code>src/reader.js</code> and <code>src/writer.js</code>
+      for the whole of the reading and rewriting, neither of which can reach the
+      network."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to make a PDF smaller"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Make a document smaller by recompressing the pictures inside it. It
+            shows you where the size actually is first, and says plainly when
+            there is nothing to be had."""
+
+# The nouns this tool uses for the things it works on.
+[words]
+plural = "documents"
+choose = "a PDF"
+analytics_extra = """"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "Your document has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. This tool adds nothing to that list: it
+      has no network feature of its own, not even an optional one. There is no
+      endpoint here that your file could be collected at, and nothing in the code
+      that would send it if there were."""
+
+[[privacy]]
+title = "The whole format is in this repository."
+body = """
+ A PDF is a list of
+      objects and a table of where each one starts. <code>src/objects.js</code>
+      reads that syntax, <code>src/reader.js</code> follows the table,
+      <code>src/writer.js</code> writes a new one, and none of the three imports
+      anything that can make a request. No library is fetched and nothing is
+      rendered on a server."""
+
+[[privacy]]
+title = "Encrypted files are turned away rather than opened."
+body = """
+
+      A PDF with a password on it is refused, including the kind that scanners
+      produce with an empty password and that would technically open. Stripping a
+      document's protection is a different job from making it smaller, and doing
+      it quietly would be a surprising thing for a tool to do on your behalf."""
+
+[[privacy]]
+title = "It takes things out rather than putting them in."
+body = """
+ The finished file carries no
+      creation date, no producer line, and no name for the tool that made it.
+      With the box ticked it also loses the XMP packet and the private blocks
+      that layout applications leave behind &mdash; the same argument the EXIF
+      tool makes, applied to a different container."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      document: not a file, not a page, not a name, a size, or a page count.
+      Every line that reads, decodes or writes a PDF is served from this origin
+      and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your document. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your document away to be compressed would stop."""
+
+[[howto]]
+title = "Choose a PDF."
+body = """
+ Drop it on the picker or select it by
+      hand. It is read straight off your disk by the browser; nothing is sent
+      anywhere while you do it."""
+
+[[howto]]
+title = "Look at where the size is."
+body = """
+ The breakdown is the
+      point of the second step. If the bar is mostly images, this tool has
+      something to work with. If it is mostly fonts and page content, it will
+      say so, and the honest saving is a few per cent &mdash; better to know
+      that before you spend a minute on it."""
+
+[[howto]]
+title = "Say how hard to squeeze."
+body = """
+ The named settings are
+      resolutions, not vague grades: 96 DPI for reading on a screen, 130 for
+      emailing, 220 for something that still has to print. Each one is measured
+      against how large the picture is actually drawn on the page, so a photo
+      placed as a thumbnail is not treated like a full-page scan."""
+
+[[howto]]
+title = "Compress it, and check the line that says it was checked."
+body = """
+
+      When the rewrite is done the finished file is opened again by the same
+      reader on this page and its pages counted. If that disagrees with the
+      original, the run is reported as failed and no download is offered."""
+
+[[faq]]
+q = "Is my PDF uploaded anywhere?"
+a = """
+        No. The file is read, recompressed and written by your own browser on
+        your own hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. This tool has no optional
+        network feature at all."""
+
+[[faq]]
+q = "How much smaller will my PDF get?"
+a = """
+        It depends entirely on what is in it, which is why the tool measures and
+        shows you before it compresses anything. A scanned document is almost
+        all photographs and commonly comes out 60&ndash;90% smaller. A contract
+        or a thesis is text, vector drawing and embedded fonts, all of which
+        were already compressed by whatever produced them; there the saving is
+        usually a few per cent, from repacking the file and dropping what is no
+        longer referenced. Any tool promising a fixed percentage without looking
+        at your file is guessing."""
+
+[[faq]]
+q = "Does compressing a PDF lose quality?"
+a = """
+        The pictures in it are re-encoded, so yes, for those. Nothing else is
+        touched: the text stays text, selectable and searchable, the fonts are
+        kept whole, and the vector drawing is copied across exactly. The tool
+        also refuses to make a picture worse for nothing &mdash; if a re-encode
+        does not come out smaller than the original, the original bytes go back
+        into the document untouched."""
+
+[[faq]]
+q = "What is DPI here, and why does it ask?"
+a = """
+        A PDF records how large each picture is drawn on the page, so the tool
+        can work out its effective resolution: a 4000-pixel scan placed across
+        eight inches of paper is carrying 500 pixels to the inch. Nothing on a
+        screen and very little on paper can use that, so the pixels above the
+        setting you choose are thrown away first &mdash; they cost quality
+        nobody can see. That measurement is why a logo placed small is not
+        treated the same as a full-page scan."""
+
+[[faq]]
+q = "Can it open a password-protected PDF?"
+a = """
+        No, and that is deliberate. An encrypted document is refused with a
+        message saying so, even when the password is blank &mdash; which is how
+        a lot of scanners and copiers save. Taking the protection off a file is
+        a different job from compressing it, and a tool that did it silently
+        would be doing something you did not ask for."""
+
+[[faq]]
+q = "Are there PDFs it cannot compress?"
+a = """
+        Some images inside them, yes. JPEG 2000, JBIG2 and fax-coded (CCITT)
+        images have no decoder in any browser, so they are passed through
+        untouched and reported as such &mdash; the last two are bilevel codecs
+        and are usually near their smallest anyway. CMYK images are left alone
+        too, because re-encoding them risks shifting the colours a printer would
+        produce. Everything the tool skips is named on the results, with the
+        reason."""
+
+[[faq]]
+q = "Will the compressed file still open everywhere?"
+a = """
+        Yes. The output is written as PDF 1.5, which every reader shipped since
+        2003 understands, and the tool proves the point on your own machine: it
+        opens the finished file again and counts its pages before offering it to
+        you. Forms, links, bookmarks, the accessibility structure and any
+        embedded attachments are carried across; what is left behind is the
+        material nothing in the document referred to any more."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no file
+        size limit beyond what your own machine's memory allows. The site
+        carries advertising, which is what pays for it; the ads are not given
+        anything about your document."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your document away to be compressed would
+        stop the moment you unplugged."""
+
+[schema]
+category = "UtilitiesApplication"
+description = "Compress a PDF in your browser. Images are recompressed against how large they are actually drawn on the page, and the document is rewritten locally, so no file is ever uploaded."
+features = [
+  "Shows where a document's size actually is before compressing anything",
+  "Recompresses images against their measured resolution on the page",
+  "Leaves an image alone when re-encoding would not make it smaller",
+  "Drops objects an earlier edit left behind, and optional metadata",
+  "Reopens and checks the finished file before offering it",
+  "Runs offline; no upload, no account, no file size limit",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "application/pdf,.pdf"
+multiple = false
+title = "Drop a PDF here"
+hint = "or click to browse &mdash; one document at a time"

@@ -113,7 +113,14 @@ $svg
     "--screenshot=$pngPath", "--window-size=$Size,$Size",
     ('file:///' + $htmlPath.Replace('\', '/'))
   )
+  # Edge writes a progress line to stderr even on success, and with
+  # $ErrorActionPreference = 'Stop' PowerShell turns that into a terminating
+  # error - the screenshot is already on disk by the time it throws. Only the
+  # preference is relaxed, and only around this one call.
+  $wasStopping = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
   & (Find-Chromium) $args | Out-Null
+  $ErrorActionPreference = $wasStopping
 
   if (-not (Test-Path $pngPath)) { throw "The headless browser wrote no screenshot to $pngPath." }
 
@@ -223,6 +230,11 @@ New-OgImage -Path 'tools\images-to-pdf\og.png' `
 New-OgImage -Path 'tools\compress-image\og.png' `
   -Title 'Image Compressor' `
   -Subtitle 'Name the size you need and it finds the least compression that gets there.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
+New-OgImage -Path 'tools\compress-pdf\og.png' `
+  -Title 'PDF Compressor' `
+  -Subtitle 'Shows you where a document''s size actually is, then shrinks it on your own machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
 <#
