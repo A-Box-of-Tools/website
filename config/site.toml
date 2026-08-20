@@ -115,7 +115,10 @@ font = "Cookie"
 
 [hub]
 title = "Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools"
-description = "Free online tools that run entirely in your browser. Compress an image to a size you name, crop a video to any shape, convert images to video, strip the EXIF and GPS data out of a photo - nothing is uploaded, no account needed, and it works offline."
+# Kept under 155 characters. Google truncates a description around there, and
+# the tail of this one is the part that sells the site, so it cannot be the
+# part that gets cut.
+description = "Free browser tools that never upload your files. Compress an image to an exact size, crop a video, convert images to video, or strip a photo's EXIF data."
 heading = "A box of tools that never touch a server"
 og_title = "A Box of Tools &mdash; tools that never touch a server"
 og_description = "Small, single-purpose tools that run entirely in your browser. Your files never leave your machine."
@@ -123,8 +126,11 @@ og_image_alt = "abox.tools - tools that never touch a server"
 schema_description = "Small, single-purpose utilities that do all of their work inside your browser. Nothing is uploaded and no account is needed."
 schema_about = "Browser-based file utilities that process files locally without uploading them"
 
+# "tools" rather than "utilities": this is the first line of body copy on the
+# site and the only place the phrase people actually search for can appear
+# early without being forced. The sentence is otherwise unchanged.
 lede = """
-    Small, single-purpose utilities that do all of their work inside your
+    Small, single-purpose tools that do all of their work inside your
     browser. Your files stay on your machine: there is nothing to upload,
     no account to make, and nothing to track."""
 

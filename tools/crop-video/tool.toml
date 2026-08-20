@@ -9,7 +9,9 @@
 
 slug = "crop-video"
 name = "Video Cropper"
-heading = "Video&nbsp;Cropper"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Video&nbsp;Cropper <span class=\"h1-kw\">&mdash; crop a video online</span>"
 tagline = "Cut a clip down to the part that matters."
 icon = "&#9986;&#65039;"          # the mark beside the page heading
 favicon = "&#9986;"      # the tab icon, drawn into an inline SVG
@@ -19,7 +21,7 @@ lastmod = "2026-08-20"
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Crop a Video Online &mdash; Free, No Upload, Works Offline"
-description = "Crop an MP4, MOV or WebM to any shape - square for a feed, 9:16 for a phone, or an exact pixel box - entirely in your browser. Nothing is uploaded, the sound is kept, and it works offline."
+description = "Crop an MP4, MOV or WebM to any shape - square, 9:16, or an exact pixel box. Runs in your browser: nothing uploaded, the sound is kept, works offline."
 og_title = "Video Cropper &mdash; crop a clip without uploading it"
 og_description = "Drag a box over your clip and crop it to any shape. The frames are decoded and re-encoded on your own machine, and the original sound is carried across untouched."
 og_image_alt = "Video Cropper - crop a clip in your browser, with nothing uploaded"

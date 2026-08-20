@@ -9,7 +9,9 @@
 
 slug = "images-to-video"
 name = "Images to Video"
-heading = "Images&nbsp;to&nbsp;Video"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Images&nbsp;to&nbsp;Video <span class=\"h1-kw\">&mdash; make an MP4 slideshow</span>"
 tagline = "Turn a folder of images into a video."
 icon = "&#127902;&#65039;"          # the mark beside the page heading
 favicon = "&#127902;"      # the tab icon, drawn into an inline SVG
