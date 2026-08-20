@@ -39,14 +39,71 @@ jobs:
       - uses: actions/checkout@v4
 
       # The build uses tomllib, which is standard library from 3.11 onwards.
-      # There is nothing to install: no package.json, no requirements.txt, no
-      # lockfile, and no third-party code between these sources and the site.
+      # Python alone produces a working, readable site: that is what plain
+      # `python build.py` does, and it needs nothing installed.
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Build
-        run: python build.py --out _site --clean
+      # esbuild is the one exception, and only for renaming identifiers. The
+      # version is read out of config/site.toml rather than written here as
+      # well, and build.py refuses to run against any other one: two versions of
+      # esbuild need not invent the same names, and `--check` is only worth
+      # something if a fresh build reproduces the deployed bytes exactly.
+      - name: Read the pinned esbuild version
+        id: pin
+        run: |
+          version=$(python -c "import tomllib; print(tomllib.load(open('config/site.toml','rb'))['build']['esbuild_version'])")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "pinned esbuild: $version"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install esbuild
+        run: npm install --global --no-audit --no-fund esbuild@${{ steps.pin.outputs.version }}
+
+      # The readable build, kept as the reference the mangled one is judged
+      # against. Cheap, and it means a file that went missing has something to
+      # go missing from.
+      - name: Build (readable)
+        run: python build.py --out _plain --clean --no-minify
+
+      - name: Build (deployed)
+        run: python build.py --out _site --clean --mangle
+
+      # Renaming is the one step here that could break the site quietly, so it
+      # is checked rather than assumed.
+      #
+      # Every emitted script is parsed by Node as a real ES module - copied to
+      # .mjs first, because a bare .js is read as CommonJS and `import` would be
+      # a syntax error for the wrong reason. A file esbuild had corrupted would
+      # fail here. Then the two builds are compared by filename, so a module
+      # that vanished is caught even if everything left behind parses.
+      - name: Check the mangled output
+        run: |
+          set -euo pipefail
+          work=$(mktemp -d)
+          status=0
+
+          count=0
+          while IFS= read -r script; do
+            cp "$script" "$work/check.mjs"
+            if ! node --check "$work/check.mjs" 2>"$work/err"; then
+              echo "::error file=$script::does not parse after mangling"
+              sed 's/^/    /' "$work/err"
+              status=1
+            fi
+            count=$((count + 1))
+          done < <(find _site -name '*.js' | sort)
+          echo "parsed $count scripts"
+
+          diff <(cd _plain && find . -type f | sort) \
+               <(cd _site  && find . -type f | sort) \
+            || { echo '::error::the two builds do not contain the same files'; status=1; }
+
+          exit $status
 
       - name: Publish to the dist branch
         if: github.event_name != 'pull_request'
