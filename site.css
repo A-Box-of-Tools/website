@@ -1,0 +1,272 @@
+/* Styles for the hub page only. Each tool ships its own stylesheet so that it
+   stays self-contained and can be read, audited, or moved on its own. */
+
+:root {
+  color-scheme: light dark;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #eef1f5;
+  --border: #d9dee5;
+  --text: #16191d;
+  --text-dim: #5d6672;
+  --accent: #2b6cb0;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 12px rgb(16 24 40 / 4%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171b;
+    --surface: #1c2027;
+    --surface-2: #21262e;
+    --border: #333a44;
+    --text: #e8eaed;
+    --text-dim: #9aa4b2;
+    --accent: #5b9bd8;
+    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 20%);
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0 1rem 3rem;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.hub-head, main, footer { max-width: 940px; margin-inline: auto; }
+
+/* ---- header ------------------------------------------------------------ */
+
+.hub-head { padding: 2.75rem 0 0.5rem; }
+
+.brand {
+  margin: 0 0 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--text-dim);
+}
+
+.brand-mark { font-size: 1.05rem; }
+
+.hub-head h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 1.15rem + 2vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  max-width: 22ch;
+}
+
+.lede {
+  margin: 0.7rem 0 0;
+  max-width: 62ch;
+  color: var(--text-dim);
+  font-size: 1.02rem;
+}
+
+/* ---- buy me a coffee ---------------------------------------------------- */
+
+/*
+  The button draws itself and brings its own stylesheet, which its script
+  writes into the page after this file - so a bare `.bmc-btn` rule here would
+  lose on document order whatever it said. These are scoped one level deeper
+  and win on specificity instead. The colours and the Cookie lettering are left
+  alone: they are what make the button recognisable at a glance, which is the
+  only reason to use somebody else's button rather than draw a link.
+*/
+.support-cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.1rem;
+  margin: 1.6rem 0 0.4rem;
+}
+
+.support-cta .bmc-btn {
+  height: 50px;
+  min-width: 0;
+  padding: 0 1.15rem;
+  border-radius: var(--radius);
+  font-size: 26px;
+  box-shadow: var(--shadow);
+}
+
+.support-cta .bmc-btn svg { height: 28px !important; }
+
+.support-note {
+  margin: 0;
+  max-width: 38ch;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+/* ---- the three guarantees ---------------------------------------------- */
+
+.guarantees {
+  list-style: none;
+  margin: 2rem 0 2.75rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.9rem;
+}
+
+.guarantees li {
+  display: grid;
+  gap: 0.3rem;
+  align-content: start;
+  padding: 0.95rem 1.1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.g-title { font-weight: 600; font-size: 0.92rem; }
+.g-body { font-size: 0.85rem; line-height: 1.5; color: var(--text-dim); }
+
+code {
+  font-family: ui-monospace, SFMono-Regular, "Cascadia Mono", Consolas, monospace;
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+
+/* ---- categories -------------------------------------------------------- */
+
+.category { margin: 0 0 2.5rem; }
+
+.category-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.category-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+.category-note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.tool-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.tool-card {
+  display: grid;
+  gap: 0.35rem;
+  height: 100%;
+  padding: 1.15rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.tool-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-card { transition: none; }
+  .tool-card:hover { transform: none; }
+}
+
+.tool-icon { font-size: 1.6rem; line-height: 1; }
+.tool-name { font-weight: 600; font-size: 1.02rem; }
+.tool-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.5; }
+
+/* ---- planned ----------------------------------------------------------- */
+
+.planned .category-head h2 { color: var(--text-dim); }
+
+/* The planned list is grouped once it is longer than a handful of lines: a
+   flat run of forty names reads as a wishlist, the same names under Images /
+   Video / Audio read as a shape. The heading is deliberately quieter than a
+   category's <h2> so a shipped tool still outranks a planned one visually. */
+
+.planned-group + .planned-group { margin-top: 1.35rem; }
+
+.planned-group h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.planned-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.planned-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+}
+
+.p-name { font-weight: 600; color: var(--text); }
+.p-desc { font-size: 0.85rem; }
+
+/* ---- footer ------------------------------------------------------------ */
+
+footer {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+footer p { margin: 0.35rem 0; }
+footer a { color: var(--accent); }
+
+
+/* ------------------------------------------------------------- ad placement */
+
+/* Auto ads inject their own <ins> elements wherever Google decides, so their
+   position cannot be reserved from here the way a hand-placed slot could be.
+   What this rule does fix is the after-effect: a slot Google fails to fill
+   otherwise sits on the page as an empty box, pushing real content down for
+   nothing. Collapsing unfilled slots removes that.
+
+   If layout shift ever needs to be eliminated rather than reduced, the answer
+   is hand-placed <ins> units inside containers with a fixed height, not more
+   CSS here - auto ads and a stable layout are close to mutually exclusive. */
+
+ins.adsbygoogle { display: block; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
