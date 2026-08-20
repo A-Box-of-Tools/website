@@ -156,6 +156,7 @@ something the build does, and cannot forget to do:
 | "Bump `CACHE_NAME` whenever any listed file changes" | The service worker's asset list is read off the disk, and its cache name is a hash of those files, so it changes exactly when they do. |
 | "Add one `<li>` card to the matching category, and an entry to `sitemap.xml`" | The hub's cards, its `ItemList` structured data and `sitemap.xml` all come from the tools that exist in `tools/`. |
 | Four copies of the repository URL per page | `source_url` in `config/site.toml`. |
+| Nothing at all, which is how a stylesheet change reached returning visitors four hours late | Every page asks for its stylesheet by a URL carrying a hash of that stylesheet, so changing the CSS changes the URL and there is no stale copy to serve. |
 | Three different footers, none of which linked to a privacy policy because there was nowhere to put one | One `templates/partials/footer.html`. Its tool list and legal-page list come from `tools/` and `pages/`, and the only thing that differs per page is whether links start `./` or `../`. |
 
 The build refuses to produce a site rather than produce a broken one. A missing
@@ -337,6 +338,41 @@ Check what is actually being served, from anywhere, with no credentials:
 
 Two configurations to keep in step: if you change `_headers`, change
 `cloudflare/response-headers.json` too, or the two deployments stop agreeing.
+
+### Cache lifetimes, and why the stylesheet URLs carry a hash
+
+GitHub Pages sets its own `Cache-Control`, and it does not set the same one for
+everything:
+
+| Served as | `max-age` |
+|---|---|
+| HTML | 600 (ten minutes) |
+| CSS, JS, images | 14400 (four hours) |
+
+Those two numbers disagreeing is a deploy hazard rather than a detail. A visitor
+who has been here before gets the new markup within ten minutes and keeps the
+old stylesheet for up to four hours, so any deploy that changes both arrives as
+a page wearing the wrong CSS. That is not hypothetical: it is exactly how the
+new footer first reached the live site, as an unstyled column with the site mark
+blown up to the full width of the page, while the deployed files were correct
+the whole time.
+
+So the build gives every stylesheet URL a hash of its own contents:
+
+```
+<link rel="stylesheet" href="site.css?v=cff5cc1753">      the hub, the legal pages
+<link rel="stylesheet" href="styles.css?v=1167009c82">    one per tool
+```
+
+Change the CSS and the URL changes with it, so there is no stale copy to hand
+back. Leave it alone and the URL is identical, so the four-hour cache keeps
+doing its job. Nothing has to be purged by hand at Cloudflare.
+
+**A tool's service worker must precache the versioned URL, not the bare one.**
+It matches on the whole request, query string included, so a worker that cached
+`styles.css` while the page asked for `styles.css?v=...` would leave the tool
+styled online and bare offline. `build.py` passes the same string to both, which
+is the only reason they cannot drift.
 
 ### Canonical URLs
 

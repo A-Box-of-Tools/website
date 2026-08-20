@@ -44,7 +44,12 @@
 <meta name="twitter:description" content="{{ page.og_description }}">
 <meta name="twitter:image" content="{{ site.domain }}og.png">
 
-<link rel="stylesheet" href="../site.css">
+<!--
+  The stylesheet URL carries a hash of the stylesheet. GitHub Pages serves
+  HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
+  reaches a returning visitor as new markup wearing a four-hour-old sheet.
+-->
+<link rel="stylesheet" href="{{ css_href }}">
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icon-180.png">
 </head>

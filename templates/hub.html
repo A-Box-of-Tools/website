@@ -77,7 +77,12 @@
 {{ jsonld }}
 </script>
 
-<link rel="stylesheet" href="site.css">
+<!--
+  The stylesheet URL carries a hash of the stylesheet. GitHub Pages serves
+  HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
+  reaches a returning visitor as new markup wearing a four-hour-old sheet.
+-->
+<link rel="stylesheet" href="{{ css_href }}">
 <!--
   The site mark. logo.svg themes itself - it carries a prefers-color-scheme
   block - so the tab icon stays legible in a dark tab strip as well as a light
