@@ -17,6 +17,7 @@ lang = "en"
 lastmod = "2026-08-19"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
+contact_email = "hi@abox.tools"
 
 adsense_client = "ca-pub-5997711677062324"
 analytics_id = "G-SCBN29XZ31"
@@ -164,8 +165,18 @@ name = "Images &amp; video"
 note = "Work with pictures and footage without handing them to anyone."
 order = ["images-to-video", "exif-editor", "compress-image"]
 
-[hub.footer]
-line1 = """
-    Your files stay on your machine. Every tool here does its work in your browser,
-    on your own hardware, and uploads nothing &mdash; no accounts, no sign-in."""
-line2 = "Every claim on this site is meant to be checked, not believed."
+#
+# ---------------------------------------------------------------------------
+# The footer, which is now the same on every page - hub, tool and legal alike.
+#
+# The tool list and the legal-page list in it are not written here: build.py
+# derives them from the folders under tools/ and pages/, so a new one appears
+# in the footer of every page without anybody remembering to add it.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        Tools that never touch a server. Your files stay on your machine &mdash;
+        nothing to upload, no account to make."""
+base = "Every claim on this site is meant to be checked, not believed."

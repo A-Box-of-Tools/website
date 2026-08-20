@@ -240,26 +240,7 @@
 {% endfor %}  </div>
 </section>
 
-<footer>
-  <p>
-    Runs in your browser. No accounts, no uploads. Ads by Google.
-    Tips are welcome and change nothing.
-    &middot;
-    <!--
-      The site mark, inlined so that this page stays self-contained and works
-      offline. Same shape as the hub's logo.svg; colours come from this page's
-      own stylesheet.
-    -->
-    <a class="home-link" href="../">
-{% include "partials/site-mark.html" %}
-      All tools
-    </a>
-    &middot;
-    <a href="{{ site.source_url }}" target="_blank" rel="noopener noreferrer">
-      Read the source
-    </a>
-  </p>
-</footer>
+{% include "partials/footer.html" %}
 
 <script type="module" src="src/main.js"></script>
 </body>
