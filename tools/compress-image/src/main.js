@@ -176,6 +176,10 @@ el.clearAll.addEventListener('click', () => {
 function render() {
   const any = items.length > 0;
   el.listToolbar.hidden = !any;
+  // Held off during a run for the same reason each row's remove button is: the
+  // run iterates the list, and emptying it mid-way would hand back results for
+  // files whose thumbnails have already been revoked.
+  el.clearAll.disabled = busy;
   el.countLabel.textContent = any
     ? `${items.length} image${items.length === 1 ? '' : 's'}, ${humanBytes(totalBytes())} in total`
     : '';
