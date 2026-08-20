@@ -306,6 +306,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/css/file-list.css` | `css_parts = ["file-list"]` | appended to the tool's stylesheet |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
 | `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
+| `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
 
 The **file picker** is all three at once, and is the reason the arrangement
 exists: the drop zone, the hidden input, the drag highlighting, and the "Reading
@@ -350,6 +351,45 @@ contain — the import path says `./shared/` to make where it came from obvious.
 Only *choosing* the files is shared. What a tool does with them afterwards — the
 list, the thumbnails, the reordering, the per-row buttons — differs enough per
 tool that sharing it would cost more than it saved.
+
+### Adding from a web address
+
+Setting `[picker.urls]` in a tool.toml switches on the one feature here that
+contacts anything. It is the only part of this repository that a tool must
+*qualify* for rather than simply ask for.
+
+```toml
+[picker.urls]
+summary = "Add from a web address"
+button = "Download images"
+noun = "image"
+```
+
+That one table pulls in the module, its stylesheet, and the widened `img-src`
+that page needs — together, so they cannot drift apart — and the build refuses
+to finish if the panel itself is then left off `body.html`, because a page would
+otherwise carry a network permission it never uses.
+
+**`<img>`, not `fetch()`.** `connect-src` stays closed, so fetch, XHR,
+WebSocket and `sendBeacon` remain impossible and nothing can ever be sent out.
+Only `img-src` opens, and that is a one-way door: pictures come in, data cannot
+go out. Keeping the original bytes would mean `fetch()`, which would mean
+opening `connect-src` to arbitrary origins — and the promise that there is
+nowhere for your files to go would stop being true.
+
+**Which is why most tools cannot have it.** The image is copied through a
+`<canvas>`, so it arrives as a re-encoded JPEG rather than the bytes the server
+sent. The test is not "would it work" but "would the answer still be true":
+
+| Tool | |
+|---|---|
+| Images to Video | **yes** — the frames are headed into a lossy codec anyway |
+| EXIF Viewer | no — a canvas destroys the tags the tool exists to show |
+| Image Compressor | no — it would report its saving against a re-encode |
+| Images to PDF | no — it would decode the JPEGs it exists to copy through untouched |
+| Crop Video | no — `<video>` yields a playback stream, not the bytes the demuxer needs, so the exact crop would silently drop to re-recording |
+
+A tool that would have to misdescribe what it was given goes without.
 
 Two things to hold the line on, because the whole site rests on them:
 

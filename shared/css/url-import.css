@@ -1,0 +1,52 @@
+/*
+  The "add from a web address" panel.
+
+  A shared part, named by the build whenever a tool sets [picker.urls] in
+  its tool.toml. See shared/js/url-import.js for what it may and may not be
+  used for.
+*/
+
+.url-panel {
+  margin-top: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.url-panel summary {
+  padding: 0.6rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  user-select: none;
+}
+
+.url-panel summary:hover { color: var(--accent); }
+.url-body { padding: 0 0.9rem 0.9rem; }
+
+.url-warning {
+  margin: 0 0 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
+}
+
+.url-body label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
+
+.url-body textarea {
+  width: 100%;
+  font: 0.85rem/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  resize: vertical;
+}
+
+.url-actions { display: flex; align-items: center; gap: 0.7rem; margin-top: 0.6rem; flex-wrap: wrap; }
+.url-status { font-size: 0.85rem; color: var(--text-dim); }
+.url-note { margin: 0.6rem 0 0; font-size: 0.78rem; color: var(--text-dim); }

@@ -11,29 +11,7 @@
     -->
     {% include "partials/file-picker.html" %}
 
-    <details id="url-panel" class="url-panel">
-      <summary>Add from a web address</summary>
-      <div class="url-body">
-        <p class="url-warning">
-          <strong>This is the one feature that touches the network.</strong>
-          Fetching an address tells that server your IP address and which image you
-          asked for. The image is copied to local memory on arrival and never
-          requested again. Nothing of yours is ever sent out &mdash; this page still
-          cannot make an upload of any kind.
-        </p>
-        <label for="url-input">One address per line</label>
-        <textarea id="url-input" rows="3" spellcheck="false"
-                  placeholder="https://example.com/photo1.jpg&#10;https://example.com/photo2.jpg"></textarea>
-        <div class="url-actions">
-          <button type="button" id="fetch-urls" class="primary">Download images</button>
-          <span id="url-status" class="url-status" role="status" aria-live="polite"></span>
-        </div>
-        <p class="url-note">
-          The server must permit cross-origin use of its images. Many sites do not,
-          and those will fail with a message rather than silently breaking later.
-        </p>
-      </div>
-    </details>
+    {% include "partials/url-import.html" %}
 
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>

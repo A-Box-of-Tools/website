@@ -232,12 +232,23 @@ def build_tool(out, templates, site, tool, footer, emit):
         body_path.read_text(encoding='utf-8'), f'{tool["slug"]}/body.html',
         {'site': site, 'tool': tool}).rstrip('\n')
 
+    # Setting [picker.urls] ships the module, the stylesheet and the widened
+    # img-src. If the panel itself were then left off the page, the tool would
+    # carry a network permission it never uses - which is exactly the kind of
+    # quiet over-reach the policy is written down to prevent.
+    if tool['picker'].get('urls') and 'id="url-panel"' not in body:
+        raise sitelib.ConfigError(
+            f'{tool["slug"]}: [picker.urls] is set, so this page is built with the '
+            'network permission the importer needs, but body.html never includes '
+            '{% include "partials/url-import.html" %}. Add it, or drop [picker.urls].')
+
     emit.html(dest / 'index.html', templates.render('tool.html', {
         'site': site,
         'tool': tool,
         'footer': footer,
         'base': '../',
-        'csp': sitelib.render_csp(site['csp'], site.get('tool_csp', {}), tool['csp']),
+        'csp': sitelib.render_csp(site['csp'], site.get('tool_csp', {}),
+                                  sitelib.picker_csp(tool), tool['csp']),
         'css_href': css_href,
         'jsonld': sitelib.tool_jsonld(site, tool),
         'body': body,
@@ -279,7 +290,7 @@ def shared_js(tool):
     to everybody, so a tool that has no use for a drop zone does not ship one.
     """
     chosen = []
-    for name in tool.get('js_parts', []):
+    for name in sitelib.js_parts(tool):
         path = SHARED / 'js' / f'{name}.js'
         if not path.is_file():
             raise sitelib.ConfigError(
@@ -293,7 +304,7 @@ def tool_css(tool):
     tool's own rules. Order matters: the tool's own rules come last so that a
     tool can override the frame, and never the other way round."""
     parts = [(SHARED / 'css' / 'tool-frame.css').read_text(encoding='utf-8')]
-    for name in tool.get('css_parts', []):
+    for name in sitelib.css_parts(tool):
         path = SHARED / 'css' / f'{name}.css'
         if not path.is_file():
             raise sitelib.ConfigError(f'{tool["slug"]}: no such css part: {name}')
