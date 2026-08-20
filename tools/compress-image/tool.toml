@@ -9,7 +9,9 @@
 
 slug = "compress-image"
 name = "Image Compressor"
-heading = "Image&nbsp;Compressor"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Image&nbsp;Compressor <span class=\"h1-kw\">&mdash; compress to an exact size</span>"
 tagline = "Name the size. It works out the rest."
 icon = "&#128476;&#65039;"          # the mark beside the page heading
 favicon = "&#128476;"      # the tab icon, drawn into an inline SVG
@@ -24,7 +26,7 @@ lastmod = "2026-08-19"
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Compress Image to a Target Size &mdash; Free, No Upload"
-description = "Say the size you need - 100 KB, 2 MB, anything - and this finds the least compression that gets there. JPEG, PNG and WebP, entirely in your browser: no upload, no account, and it shows you exactly what the compression cost."
+description = "Compress a JPEG, PNG or WebP to an exact size - 100 KB, 2 MB, anything. Runs entirely in your browser: nothing uploaded, no account, works offline."
 og_title = "Compress an image to a size you choose"
 og_description = "Name a target size and this finds the least compression that reaches it, then measures what that cost. Runs on your own machine; nothing is uploaded."
 og_image_alt = "Image Compressor - name a size, keep the quality"

@@ -119,6 +119,21 @@
   `source_url` in config/site.toml, so moving the repository is one edit.
 -->
 
+<!--
+  The visible half of the BreadcrumbList in the head. The structured data
+  described a trail that appeared nowhere on the page, which Google asks you not
+  to do: markup is meant to describe what a visitor can see.
+
+  `tool.name` is escaped rather than inserted raw because it is a plain string -
+  "EXIF Viewer & Remover" carries a bare ampersand - unlike `tool.heading`,
+  which is written as markup in tool.toml.
+-->
+<nav class="crumbs" aria-label="Breadcrumb">
+  <a href="../">All tools</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <span aria-current="page">{{ tool.name | e }}</span>
+</nav>
+
 <header class="topbar">
   <div class="brand">
     <span class="brand-mark" aria-hidden="true">{{ tool.icon }}</span>

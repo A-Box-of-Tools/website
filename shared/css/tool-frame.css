@@ -56,7 +56,7 @@ body {
 
 h1, h2 { line-height: 1.25; }
 
-main, .topbar, .privacy, .pledge, .faq, footer {
+main, .topbar, .crumbs, .privacy, .pledge, .faq, footer {
   max-width: 940px;
   margin-inline: auto;
 }
@@ -93,6 +93,26 @@ main, .topbar, .privacy, .pledge, .faq, footer {
   font-size: 0.88em;
 }
 
+/* -------------------------------------------------------------- breadcrumb */
+
+/* Every tool page already carried BreadcrumbList structured data describing a
+   trail that existed nowhere on the page. Google asks that the markup describe
+   what a visitor can actually see, so here is the trail. It doubles as the way
+   back to the hub from the top of the page rather than only from the footer. */
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-top: 0.9rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.crumbs a { color: var(--text-dim); text-decoration: none; }
+.crumbs a:hover { color: var(--accent); text-decoration: underline; }
+.crumbs [aria-current="page"] { color: var(--text); }
+
 /* ------------------------------------------------------------------ topbar */
 
 .topbar {
@@ -107,6 +127,22 @@ main, .topbar, .privacy, .pledge, .faq, footer {
 .brand { display: flex; align-items: center; gap: 0.85rem; }
 .brand-mark { font-size: 2rem; line-height: 1; }
 .brand h1 { margin: 0; font-size: 1.4rem; letter-spacing: -0.01em; }
+
+/* The keyword half of the heading. The <h1> has to contain the phrase people
+   search for, but the product name is what a returning visitor is looking for,
+   so the phrase is set quieter rather than given equal weight. On a narrow
+   screen it takes its own line instead of squeezing the name. */
+.brand h1 .h1-kw {
+  font-weight: 400;
+  font-size: 0.72em;
+  color: var(--text-dim);
+  letter-spacing: 0;
+}
+
+@media (max-width: 620px) {
+  .brand h1 .h1-kw { display: block; }
+}
+
 .tagline { margin: 0.15rem 0 0; color: var(--text-dim); font-size: 0.9rem; }
 
 .topbar-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }

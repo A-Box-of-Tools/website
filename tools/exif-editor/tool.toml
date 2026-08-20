@@ -9,7 +9,9 @@
 
 slug = "exif-editor"
 name = "EXIF Viewer & Remover"
-heading = "EXIF&nbsp;Viewer &amp; Remover"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "EXIF&nbsp;Viewer &amp; Remover <span class=\"h1-kw\">&mdash; remove photo metadata</span>"
 tagline = "See what a photo says about you. Then take it out."
 icon = "&#127991;&#65039;"          # the mark beside the page heading
 favicon = "&#127991;"      # the tab icon, drawn into an inline SVG
@@ -24,7 +26,7 @@ lastmod = "2026-08-19"
 # --- what search engines and chat apps are told ------------------------------
 
 title = "EXIF Viewer &amp; Remover &mdash; Free Photo Metadata Editor"
-description = "See the EXIF, GPS and hidden metadata in a photo, edit any of it, or strip the lot in one click. JPEG, PNG and WebP, entirely in your browser - no upload, and the picture is never re-encoded."
+description = "See the EXIF and GPS data hidden in a photo, edit it, or strip the lot in one click. In your browser: nothing uploaded, and the photo is never re-encoded."
 og_title = "EXIF Viewer &amp; Remover &mdash; see it, edit it, or strip it"
 og_description = "Read the metadata hidden in a photo and remove all of it in one click. Runs on your own machine; the picture itself is never re-encoded."
 og_image_alt = "EXIF Viewer and Remover - read, edit or strip the metadata in a photo"

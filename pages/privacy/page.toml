@@ -7,7 +7,7 @@ slug = "privacy"
 nav = "Privacy &amp; Cookies"          # the label used in the footer
 
 title = "Privacy &amp; Cookies &mdash; abox.tools"
-description = "What abox.tools does and does not collect. Your files are never uploaded; the ads, the visit counter and the donate button are described here in full, with the ways to switch each one off."
+description = "What abox.tools does and does not collect. Your files are never uploaded; the ads, the visit counter and the donate button are each described in full."
 
 heading = "Privacy &amp; Cookies"
 lede = """
