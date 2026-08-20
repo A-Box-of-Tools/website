@@ -1,0 +1,183 @@
+<main>
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose a video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Size</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Frame</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Length</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the section -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> Mark the section</h2>
+
+    <p class="stage-hint">
+      Play the clip and press <kbd>I</kbd> where it should start and <kbd>O</kbd>
+      where it should end, or drag the two marks on the bar. <kbd>Space</kbd>
+      plays and pauses, the arrow keys step a frame, and
+      <kbd>Shift</kbd>&nbsp;+&nbsp;arrows step a second.
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/timeline.js: the two marks, the playhead,
+         and a tick for every keyframe in the file. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">Play</button>
+      <button type="button" id="play-section" class="ghost">Play the section</button>
+      <button type="button" id="go-start" class="ghost">Go to start</button>
+      <button type="button" id="go-end" class="ghost">Go to end</button>
+    </div>
+
+    <div class="marks">
+      <div class="mark-field">
+        <label for="mark-start">Start</label>
+        <div class="mark-row">
+          <input type="text" id="mark-start" inputmode="decimal" spellcheck="false"
+                 autocomplete="off" aria-describedby="mark-help">
+          <button type="button" id="set-start" class="ghost">Set here</button>
+        </div>
+      </div>
+
+      <div class="mark-field">
+        <label for="mark-end">End</label>
+        <div class="mark-row">
+          <input type="text" id="mark-end" inputmode="decimal" spellcheck="false"
+                 autocomplete="off" aria-describedby="mark-help">
+          <button type="button" id="set-end" class="ghost">Set here</button>
+        </div>
+      </div>
+
+      <div class="mark-field">
+        <span class="mark-label">Section</span>
+        <p class="mark-length" id="mark-length">&mdash;</p>
+      </div>
+
+      <div class="mark-actions">
+        <button type="button" id="mark-all" class="ghost">Whole clip</button>
+      </div>
+    </div>
+
+    <p class="field-note" id="mark-help">
+      Times are written as minutes, seconds and thousandths &mdash; type
+      <code>1:07.5</code> or <code>67.5</code>, whichever you find easier.
+    </p>
+
+    <fieldset class="modes">
+      <legend>What to do with it</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>Keep the section</strong>
+          Everything outside the marks is thrown away.
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="remove">
+        <span>
+          <strong>Cut the section out</strong>
+          The marked part goes, and what is left either side is joined up.
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the export -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Trim it</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="method">How to cut it</label>
+        <select id="method">
+          <option value="copy" selected>Keep every byte &mdash; nothing re-encoded</option>
+          <option value="exact">Cut exactly here &mdash; re-encodes the picture</option>
+          <option value="record">Record it as it plays</option>
+        </select>
+        <p class="field-note" id="method-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Quality</label>
+        <select id="quality">
+          <option value="low">Smaller file</option>
+          <option value="medium" selected>Balanced</option>
+          <option value="high">Best quality</option>
+        </select>
+        <p class="field-note">
+          Never more than the original spent &mdash; re-encoding above that only
+          makes the file bigger.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Keep the sound
+        </label>
+        <p class="field-note" id="audio-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Keeping</dt><dd id="sum-keeping">&mdash;</dd></div>
+      <div><dt>Finished length</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Starts at</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>Roughly</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Picture</dt><dd id="sum-picture">&mdash;</dd></div>
+      <div><dt>Sound</dt><dd id="sum-sound">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Trim video</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Download video</a>
+      </div>
+    </div>
+  </section>
+</main>
