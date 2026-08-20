@@ -118,6 +118,7 @@ templates/
   hub.html               the hub page
   tool.html              the frame every tool page wears
   page.html              the frame a prose page wears - the legal ones
+  404.html               what GitHub Pages returns for an address that is not here
   sw.js                  the offline service worker
   analytics.js           the Google Analytics bootstrap
   sitemap.xml
@@ -564,6 +565,36 @@ It matches on the whole request, query string included, so a worker that cached
 `styles.css` while the page asked for `styles.css?v=...` would leave the tool
 styled online and bare offline. `build.py` passes the same string to both, which
 is the only reason they cannot drift.
+
+### The 404 page
+
+`build.py` writes `404.html` to the root of the output, which is where
+[GitHub Pages looks for it](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-custom-404-page-for-your-github-pages-site).
+For this site that root is the root of the `dist` branch, so the deploy needs no
+extra step. The wording lives in `[not_found]` in `config/site.toml`, and the
+tool cards on it come from the same list the hub is built from.
+
+**Every URL on that page is root-absolute, and has to be.** It is the only page
+here that is served at an address it was not built for: someone who mistypes
+`/compress-imag/` gets this file back while the browser still believes it is
+sitting in a folder of that name. A relative `styles.css` would be fetched from
+that folder, 404 in its turn, and the error page would arrive unstyled — a worse
+first impression than the error. The build passes `base = "/"` for this page
+alone, which is what makes the shared footer's links absolute too.
+
+Two more things it does differently, both on purpose:
+
+- **No advertising.** Google asks that ads not be placed on error pages, and an
+  advert on top of "we could not find that" is a poor way to meet somebody. The
+  measurement tag stays, because knowing which addresses people arrive at and
+  fail to find is the whole operational reason to have a custom 404.
+- **`noindex`, and no canonical.** The page has no address of its own — it is
+  what a thousand wrong addresses return. Giving it a canonical would invite a
+  search engine to serve "not found" in place of a real page. It is left out of
+  `sitemap.xml` for the same reason.
+
+`serve.ps1` serves it for a miss as well, so the mistake it invites shows up
+locally rather than in production.
 
 ### Canonical URLs
 

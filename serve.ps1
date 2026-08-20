@@ -126,9 +126,20 @@ try {
       }
 
       if (-not (Test-Path -LiteralPath $fullPath -PathType Leaf)) {
+        # Serve the built 404 page, the way GitHub Pages will. Doing it here as
+        # well is what makes the page testable at all: it is the one page on the
+        # site that is only ever read at an address it was not built for, and
+        # the mistake it invites - a relative link resolving against a folder
+        # that does not exist - shows up nowhere else.
+        $notFound = Join-Path $root '404.html'
         $response.StatusCode = 404
-        $body = [System.Text.Encoding]::UTF8.GetBytes("404 - $relative not found")
-        $response.ContentType = 'text/plain; charset=utf-8'
+        if (Test-Path -LiteralPath $notFound -PathType Leaf) {
+          $body = [System.IO.File]::ReadAllBytes($notFound)
+          $response.ContentType = 'text/html; charset=utf-8'
+        } else {
+          $body = [System.Text.Encoding]::UTF8.GetBytes("404 - $relative not found")
+          $response.ContentType = 'text/plain; charset=utf-8'
+        }
         $response.ContentLength64 = $body.Length
         $response.OutputStream.Write($body, 0, $body.Length)
         $response.Close()
