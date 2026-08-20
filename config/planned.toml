@@ -20,6 +20,7 @@
 note = "Not built yet. Listed so you can see where this is going."
 
 [[group]]
+id = "images"
 name = "Images"
 items = [
   ["Resize", "one image or a whole folder, by pixels or by percent"],
@@ -36,6 +37,7 @@ items = [
 ]
 
 [[group]]
+id = "gif"
 name = "GIF &amp; animation"
 items = [
   ["GIF maker", "images into an animated GIF"],
@@ -51,6 +53,7 @@ items = [
 ]
 
 [[group]]
+id = "video"
 name = "Video"
 items = [
   ["Resize", "down to a size that will actually send"],
@@ -64,6 +67,7 @@ items = [
 ]
 
 [[group]]
+id = "audio"
 name = "Audio"
 items = [
   ["Trim", "keep the part you wanted"],
@@ -75,6 +79,7 @@ items = [
 ]
 
 [[group]]
+id = "documents"
 name = "Documents &amp; PDF"
 items = [
   ["Merge, split &amp; reorder", "pages moved around without a round trip to a server"],
@@ -83,6 +88,7 @@ items = [
 ]
 
 [[group]]
+id = "beyond"
 name = "Beyond media"
 items = [
   ["Text &amp; code", "format, diff, encode, convert between formats"],

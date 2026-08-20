@@ -441,6 +441,26 @@ def build_roadmap(out, templates, site, planned, ordered, footer, css_v, emit):
     for group in planned['group']:
         group['items'] = [{'name': name, 'desc': desc} for name, desc in group['items']]
 
+    # The shipped tools go into the group each one names, at the top of it, as
+    # links. A group is then the whole story for that kind of file - what exists
+    # and what is still to come - rather than two lists in different places that
+    # a reader has to hold together in their head.
+    by_group = {group['id']: group for group in planned['group']}
+    for tool in ordered:
+        gid = tool.get('roadmap_group')
+        if gid is None:
+            raise sitelib.ConfigError(
+                f'{tool["slug"]}: no roadmap_group, so it would appear nowhere on '
+                f'the roadmap. Name one of: {", ".join(by_group)}')
+        if gid not in by_group:
+            raise sitelib.ConfigError(
+                f'{tool["slug"]}: roadmap_group is {gid!r}, which is not a group in '
+                f'config/planned.toml. Name one of: {", ".join(by_group)}')
+        by_group[gid].setdefault('built', []).append(tool)
+
+    for group in planned['group']:
+        group.setdefault('built', [])
+
     dest = out / roadmap['slug']
     dest.mkdir(parents=True, exist_ok=True)
 

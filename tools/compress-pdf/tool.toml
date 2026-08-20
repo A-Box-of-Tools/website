@@ -16,6 +16,9 @@ tagline = "Shrink a document without sending it anywhere."
 icon = "&#128200;"                  # the page mark beside the heading
 favicon = "&#128200;"      # the tab icon, drawn into an inline SVG
 category = "documents-and-pdf"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "documents"
 
 js_parts = ["file-picker"]
 lastmod = "2026-08-20"

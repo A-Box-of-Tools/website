@@ -268,16 +268,12 @@ intro = """
       gaps below are gaps on purpose.
     </p>
     <p>
-      Nothing here is a link until it exists. When a tool ships it moves out of
-      this list and into the one at the foot of the page.
+      The tools that already exist sit at the top of their group, marked
+      <em>Built</em> and linked to their own page. Everything under them is
+      still to come, and nothing is a link until it is.
     </p>"""
 
-planned_heading = "Planned"
-
-built_heading = "Already built"
-built_note = """
-      Each one has its own page, and every page on this site links to all of
-      them from the footer."""
+planned_heading = "Every kind of file, and what can be done to it"
 
 og_title = "abox.tools roadmap"
 og_description = "What is built, and what is next. Everything runs in your browser and uploads nothing."
