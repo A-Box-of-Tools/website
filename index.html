@@ -9,9 +9,28 @@
   Google's own script, frame and measurement origins, and no wildcards except
   on img-src, where creatives legitimately come from anywhere.
 
+  Two origins in the list are not Google's and not the ads': the donate button
+  further down loads from cdnjs.buymeacoffee.com and draws its lettering from
+  fonts.googleapis.com, which in turn fetches the face from fonts.gstatic.com.
+  They are named for the same reason as the rest - so that everything this page
+  can reach is written down in one place a reader can check.
+
   Each tool carries its own copy of the same allowlist. Keep them in step: a
   tool that is missing an origin shows a blank ad slot, and one that has an
   extra origin is a wider hole than this page ever agreed to.
+
+  A CSP wildcard stands in for a whole label, so https://*.analytics.google.com
+  does NOT cover the bare host analytics.google.com - and the bare host is where
+  gtag sends its measurement hit. The wildcard was for a long time the only
+  entry for that endpoint, so every page view was refused and Analytics recorded
+  nothing whatsoever. Both forms are listed now. Adding a Google origin here
+  means checking whether the bare host is needed as well as the wildcard.
+
+  Known gap: Google sends the ads conversion ping to the visitor's own country
+  domain - www.google.ca, www.google.co.uk - and CSP cannot wildcard a TLD. Only
+  www.google.com can be named, so that one ping is still refused for a visitor
+  routed to a country domain. Nothing short of widening the directive to https:
+  would express it, which is not a trade worth making for a conversion ping.
 
   AdSense does not officially support a strict CSP. If an ad renders blank,
   open DevTools and look for a violation naming an origin not listed here.
@@ -30,7 +49,8 @@
     https://www.googletagservices.com
     https://adservice.google.com
     https://ep1.adtrafficquality.google
-    https://ep2.adtrafficquality.google;
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
   frame-src
     https://googleads.g.doubleclick.net
     https://tpc.googlesyndication.com
@@ -40,15 +60,18 @@
   connect-src
     https://www.google-analytics.com
     https://*.google-analytics.com
+    https://analytics.google.com
     https://*.analytics.google.com
     https://*.googletagmanager.com
     https://pagead2.googlesyndication.com
     https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
     https://ep1.adtrafficquality.google
     https://ep2.adtrafficquality.google
     https://csi.gstatic.com;
   img-src 'self' data: https:;
-  style-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src https://fonts.gstatic.com;
   form-action 'none';
   base-uri 'none';
@@ -60,7 +83,7 @@
   Keep it under about 60 characters or Google truncates the tail.
 -->
 <title>Free Browser Tools &mdash; No Upload, No Sign-In | abox.tools</title>
-<meta name="description" content="Free online tools that run entirely in your browser. Convert images to video, strip the EXIF and GPS data out of a photo, and more - nothing is uploaded, no account needed, and it works offline.">
+<meta name="description" content="Free online tools that run entirely in your browser. Compress an image to a size you name, convert images to video, strip the EXIF and GPS data out of a photo - nothing is uploaded, no account needed, and it works offline.">
 
 <link rel="canonical" href="https://abox.tools/">
 
@@ -162,6 +185,12 @@
             "position": 2,
             "url": "https://abox.tools/exif-editor/",
             "name": "EXIF Viewer & Remover"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "url": "https://abox.tools/compress-image/",
+            "name": "Image Compressor"
           }
         ]
       }
@@ -190,6 +219,36 @@
     browser. Your files stay on your machine: there is nothing to upload,
     no account to make, and nothing to track.
   </p>
+
+  <!--
+    ==========================================================================
+    Buy Me a Coffee.
+
+    Buy Me a Coffee's own snippet, unchanged. It is deliberately not async and
+    not deferred: the script ends in document.writeln, which appends to the
+    page only while the parser is still standing here. Add async or defer and
+    it runs after parsing has finished, when document.write means "throw the
+    whole document away and start again" - a blank page, not a missing button.
+    So the tag has to sit exactly where the button should appear, and it blocks
+    the parser for as long as the request takes.
+
+    It reaches two origins, both named in the Content-Security-Policy above:
+    cdnjs.buymeacoffee.com for the script, and fonts.googleapis.com (then
+    fonts.gstatic.com) for the Cookie face it draws the label in. The coffee
+    cup is an inline SVG, so no image is fetched. Offline the request simply
+    fails and nothing is written - the page is whole, just without the button.
+
+    Nothing about a visitor or their files goes out with any of this: the
+    button is a link, and it is only followed if somebody clicks it.
+    ==========================================================================
+  -->
+  <div class="support-cta">
+    <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="aboxtools" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+    <p class="support-note">
+      These tools are free and always will be. If one saved you a job, this is
+      the only thing on the site that asks you for anything.
+    </p>
+  </div>
 </header>
 
 <main>
@@ -278,6 +337,16 @@
           </span>
         </a>
       </li>
+      <li>
+        <a class="tool-card" href="compress-image/">
+          <span class="tool-icon" aria-hidden="true">&#128476;&#65039;</span>
+          <span class="tool-name">Image Compressor</span>
+          <span class="tool-desc">
+            Say the size you need &mdash; 100 KB, 2 MB, anything &mdash; and it
+            finds the least compression that gets there.
+          </span>
+        </a>
+      </li>
     </ul>
   </section>
 
@@ -309,7 +378,6 @@
         <li><span class="p-name">Crop</span> <span class="p-desc">free, fixed ratio, or an exact pixel box</span></li>
         <li><span class="p-name">Rotate &amp; flip</span> <span class="p-desc">quarter turns, or straightening by a few degrees</span></li>
         <li><span class="p-name">Convert format</span> <span class="p-desc">PNG, JPG and WebP, in any direction</span></li>
-        <li><span class="p-name">Compress</span> <span class="p-desc">a quality dial, with the new size shown before you save</span></li>
         <li><span class="p-name">Add text</span> <span class="p-desc">over the picture, or in a caption box above it</span></li>
         <li><span class="p-name">Filters</span> <span class="p-desc">brightness, contrast, saturation, blur, grayscale</span></li>
         <li><span class="p-name">Image to data URI</span> <span class="p-desc">paste the result straight into CSS or HTML</span></li>

@@ -68,6 +68,42 @@ body {
   font-size: 1.02rem;
 }
 
+/* ---- buy me a coffee ---------------------------------------------------- */
+
+/*
+  The button draws itself and brings its own stylesheet, which its script
+  writes into the page after this file - so a bare `.bmc-btn` rule here would
+  lose on document order whatever it said. These are scoped one level deeper
+  and win on specificity instead. The colours and the Cookie lettering are left
+  alone: they are what make the button recognisable at a glance, which is the
+  only reason to use somebody else's button rather than draw a link.
+*/
+.support-cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.1rem;
+  margin: 1.6rem 0 0.4rem;
+}
+
+.support-cta .bmc-btn {
+  height: 50px;
+  min-width: 0;
+  padding: 0 1.15rem;
+  border-radius: var(--radius);
+  font-size: 26px;
+  box-shadow: var(--shadow);
+}
+
+.support-cta .bmc-btn svg { height: 28px !important; }
+
+.support-note {
+  margin: 0;
+  max-width: 38ch;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
 /* ---- the three guarantees ---------------------------------------------- */
 
 .guarantees {

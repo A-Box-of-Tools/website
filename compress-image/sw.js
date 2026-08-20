@@ -3,25 +3,22 @@
  *
  * Beyond convenience, this is the app's strongest privacy proof: once the
  * worker is installed you can disconnect from the network entirely and every
- * feature still works, which no design that uploaded your photos could manage.
+ * feature still works, which no design that uploaded your images could manage.
  *
  * Bump CACHE_NAME whenever any listed file changes.
  */
 
-const CACHE_NAME = 'exif-editor-v4';
+const CACHE_NAME = 'compress-image-v2';
 
 const ASSETS = [
   './',
   'index.html',
   'styles.css',
   'src/main.js',
-  'src/container.js',
-  'src/jpeg.js',
-  'src/png.js',
-  'src/webp.js',
-  'src/tiff.js',
-  'src/tags.js',
-  'src/report.js',
+  'src/codecs.js',
+  'src/compress.js',
+  'src/measure.js',
+  'src/files.js',
   'src/crc32.js',
   'src/zip.js',
   // Same-origin, so it is cached like everything else. Offline it simply

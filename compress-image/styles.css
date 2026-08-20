@@ -497,31 +497,14 @@ button, .as-button {
   overflow: hidden;
 }
 
-.file-row.selected {
-  border-color: var(--accent);
-  box-shadow: inset 3px 0 0 var(--accent);
-}
-
-.file-row.unreadable { border-color: color-mix(in srgb, var(--danger) 45%, var(--border)); }
-
-/* The whole row is the target, so choosing a photo does not require aiming at
-   a link-sized piece of it. */
-.file-pick {
+.file-main-wrap {
   flex: 1;
   min-width: 0;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.6rem 0.7rem;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  text-align: left;
-  cursor: pointer;
 }
-
-.file-pick:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 7%, transparent); }
-.file-pick:disabled { cursor: default; opacity: 0.75; }
 
 .file-thumb {
   flex: none;
@@ -536,6 +519,7 @@ button, .as-button {
 .file-main { min-width: 0; display: flex; flex-direction: column; gap: 0.2rem; }
 
 .file-name {
+  margin: 0;
   font-weight: 600;
   font-size: 0.92rem;
   overflow: hidden;
@@ -543,40 +527,11 @@ button, .as-button {
   white-space: nowrap;
 }
 
-.file-sub { font-size: 0.8rem; color: var(--text-dim); }
+.file-sub { margin: 0; font-size: 0.8rem; color: var(--text-dim); }
 
-.badges { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.1rem; }
-
-.badge {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  padding: 0.1rem 0.4rem;
-  border-radius: 99px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text-dim);
-}
-
-/* Three levels, and the colours mean the same thing everywhere on this page:
-   red identifies a person or a place, amber narrows one down, grey is neither. */
-.badge-high {
-  color: var(--danger);
-  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
-  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
-}
-
-.badge-medium {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
-}
-
-.badge-clean {
-  color: var(--ok);
-  border-color: color-mix(in srgb, var(--ok) 45%, transparent);
-  background: color-mix(in srgb, var(--ok) 10%, var(--surface));
-}
+/* Said on the row itself rather than only in the results, so that "nothing
+   happened to this one" is expected rather than a surprise afterwards. */
+.file-note { margin: 0.1rem 0 0; font-size: 0.78rem; color: var(--ok); font-weight: 600; }
 
 .row-remove {
   flex: none;
@@ -593,38 +548,75 @@ button, .as-button {
 }
 
 .row-remove:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
+.row-remove:disabled { opacity: 0.4; cursor: default; }
 
-/* ------------------------------------------------------------- remove card */
+/* ------------------------------------------------------------- the target */
 
-.strip-row {
+.target-row {
   display: flex;
-  align-items: center;
-  gap: 0.9rem;
+  align-items: flex-end;
+  gap: 1.2rem;
   flex-wrap: wrap;
 }
 
-.strip-status { font-size: 0.88rem; color: var(--ok); font-weight: 600; }
+.target-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
 
-.keep-options {
-  margin: 1.1rem 0 0;
+.inline-pair { display: flex; gap: 0.4rem; }
+
+/* Wide enough for "1024" and no wider: this is the number the whole page turns
+   on, and a full-width box makes it look like a search field. */
+.inline-pair input[type="number"] { width: 7rem; font-size: 1.05rem; font-weight: 600; }
+
+.presets { display: flex; gap: 0.4rem; flex-wrap: wrap; padding-bottom: 0.15rem; }
+
+/* The sentence under a control, restating what it is about to do. Every
+   setting on this page has one, because "quality 0.78, scale 0.61" means
+   nothing to somebody who came here to get under 500 KB. */
+.field-summary {
+  margin: 0.9rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.field-summary.warn { color: var(--danger); font-weight: 600; }
+
+.options {
+  margin: 1.2rem 0 0;
   padding: 0.9rem 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface-2);
 }
 
-.keep-options legend {
+.options legend {
   padding: 0 0.4rem;
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-dim);
 }
 
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+}
+
+.option-row label { font-size: 0.9rem; font-weight: 600; }
+.option-row select { max-width: 100%; }
+
 .check {
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
-  margin-bottom: 0.7rem;
   cursor: pointer;
 }
 
@@ -640,22 +632,39 @@ button, .as-button {
   max-width: 70ch;
 }
 
-/* The exact bargain the button above is offering, restated as one sentence
-   that changes with the boxes. "Remove all" that keeps things without saying so
-   would be the one dishonest line on the page. */
-.keep-summary {
-  margin: 0.2rem 0 0;
+.options .field-summary {
   padding-top: 0.7rem;
   border-top: 1px dashed var(--border);
-  font-size: 0.84rem;
-  line-height: 1.55;
-  color: var(--text);
-  max-width: 74ch;
+}
+
+/* ----------------------------------------------------------------- running */
+
+.run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+
+.progress { margin-top: 1rem; }
+
+.progress-track {
+  height: 6px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Width is set from script as each image finishes. There is no animation on
+   purpose: a bar that slides while an encode is running suggests progress the
+   tool cannot actually measure part-way through. */
+.progress-bar { height: 100%; width: 0; background: var(--accent); }
+
+.progress-label {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
 }
 
 /* ----------------------------------------------------------------- results */
 
-.results { margin-top: 1.3rem; }
+.results { margin-top: 1.4rem; }
 
 .results-head {
   display: flex;
@@ -663,349 +672,128 @@ button, .as-button {
   justify-content: space-between;
   gap: 0.75rem;
   flex-wrap: wrap;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.4rem;
 }
 
 .results-head h3 { margin: 0; font-size: 0.95rem; }
 
-.result-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+.results-summary {
+  margin: 0 0 0.8rem;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.result-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
 
 .result-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 0.9rem;
   flex-wrap: wrap;
-  padding: 0.7rem 0.9rem;
+  padding: 0.8rem 0.95rem;
   border: 1px solid color-mix(in srgb, var(--ok) 35%, var(--border));
   border-radius: var(--radius);
   background: color-mix(in srgb, var(--ok) 6%, var(--surface));
 }
 
-.result-row.result-failed {
+/* Left alone rather than compressed: a good outcome, but not the same one, so
+   it does not wear the same green as a result that did some work. */
+.result-untouched {
+  border-color: var(--border);
+  background: var(--surface-2);
+}
+
+/* Came out over the target. Amber rather than red - the file is still usable
+   and still smaller, it simply did not reach the number that was asked for. */
+.result-missed {
   border-color: color-mix(in srgb, var(--danger) 40%, transparent);
-  background: color-mix(in srgb, var(--danger) 8%, var(--surface));
-}
-
-.result-name { margin: 0; font-weight: 600; font-size: 0.9rem; word-break: break-all; }
-.result-detail { margin: 0.2rem 0 0; font-size: 0.82rem; color: var(--text-dim); max-width: 62ch; }
-
-/* --------------------------------------------------------------- inspector */
-
-.empty-note {
-  margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 66ch;
-}
-
-.inspect-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.inspect-file { display: flex; align-items: center; gap: 0.8rem; min-width: 0; }
-
-.inspect-thumb {
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-  flex: none;
-}
-
-.inspect-name { margin: 0; font-weight: 600; word-break: break-all; }
-.inspect-sub { margin: 0.15rem 0 0; font-size: 0.83rem; color: var(--text-dim); }
-
-.inspector h3 {
-  margin: 1.5rem 0 0.2rem;
-  font-size: 0.98rem;
-  letter-spacing: -0.01em;
-}
-
-/* ---------------------------------------------------------------- findings */
-
-/* The answer to the question people actually came with. Louder than the tables
-   below it on purpose: a list of ninety tags is not an answer, and this is. */
-.findings-list {
-  list-style: none;
-  margin: 0.7rem 0 0;
-  padding: 0;
-  display: grid;
-  gap: 0.45rem;
-}
-
-.finding {
-  padding: 0.7rem 0.9rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-  border-left-width: 4px;
-}
-
-.finding-high {
-  border-left-color: var(--danger);
   background: color-mix(in srgb, var(--danger) 7%, var(--surface));
 }
 
-.finding-medium {
-  border-left-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
-}
+.result-text { min-width: 0; flex: 1 1 24rem; }
 
-.finding-low { border-left-color: var(--text-dim); }
+.result-name { margin: 0; font-weight: 600; font-size: 0.9rem; word-break: break-all; }
 
-.finding-clean {
-  border-left-color: var(--ok);
-  background: color-mix(in srgb, var(--ok) 7%, var(--surface));
-}
-
-.finding-title { margin: 0; font-weight: 600; font-size: 0.9rem; }
-
-.finding-detail {
+.result-headline {
   margin: 0.25rem 0 0;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 72ch;
-  overflow-wrap: anywhere;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
-/* ------------------------------------------------------------------ blocks */
-
-.block-list {
-  list-style: none;
-  margin: 0.7rem 0 0;
-  padding: 0;
-  display: grid;
-  gap: 0.4rem;
-}
-
-.block {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.9rem;
-  flex-wrap: wrap;
-  padding: 0.65rem 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface-2);
-}
-
-.block-title { margin: 0; font-weight: 600; font-size: 0.88rem; }
-
-.block-detail {
-  margin: 0.2rem 0 0;
+.result-detail,
+.result-match {
+  margin: 0.25rem 0 0;
   font-size: 0.82rem;
+  line-height: 1.55;
   color: var(--text-dim);
-  max-width: 66ch;
-  overflow-wrap: anywhere;
+  max-width: 68ch;
 }
 
-/* Removed rows stay on the list, struck through. A row that vanished would
-   leave you unsure whether the button had done anything. */
-.block-gone { opacity: 0.62; }
-.block-gone .block-title { text-decoration: line-through; }
+.result-match { color: var(--ok); font-weight: 600; }
+.result-untouched .result-match { color: var(--text-dim); }
 
-.block-removed,
-.block-kept-pill {
-  flex: none;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 0.2rem 0.55rem;
-  border-radius: 99px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-}
-
-.block-removed { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, transparent); }
-.block-kept-pill { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, transparent); }
-.block-none { color: var(--text-dim); font-size: 0.88rem; }
-
-/* -------------------------------------------------------------- tag tables */
-
-.tags-note {
+.result-warn {
   margin: 0.4rem 0 0;
-  font-size: 0.84rem;
-  color: var(--text-dim);
-  max-width: 70ch;
-}
-
-.tag-group { margin-top: 1.1rem; }
-
-.tag-group h4 {
-  margin: 0;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-}
-
-.group-count { font-size: 0.76rem; font-weight: 400; color: var(--text-dim); }
-.group-note { margin: 0.1rem 0 0.45rem; font-size: 0.8rem; color: var(--text-dim); }
-
-/* A table of tag values is genuinely wide, and a page that scrolls sideways as
-   a whole is worse than one panel that does. */
-.table-scroll {
-  overflow-x: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface-2);
-}
-
-.tag-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-}
-
-.tag-table thead th {
-  text-align: left;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-dim);
-  padding: 0.5rem 0.7rem;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-}
-
-.tag-table tbody th,
-.tag-table td {
-  padding: 0.4rem 0.7rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
-  vertical-align: middle;
-}
-
-.tag-table tbody tr:last-child th,
-.tag-table tbody tr:last-child td { border-bottom: none; }
-
-.tag-table tbody th {
-  text-align: left;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.tag-name { margin-right: 0.4rem; }
-
-.tag-id {
-  font: 0.74rem/1 ui-monospace, SFMono-Regular, Consolas, monospace;
-  color: var(--text-dim);
-}
-
-/* Same three levels as the badges, so a colour means one thing on this page. */
-.tag-risk {
-  display: inline-block;
-  margin-right: 0.4rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 0.05rem 0.35rem;
-  border-radius: 99px;
-  cursor: help;
-}
-
-.tag-risk-high {
+  font-size: 0.82rem;
+  line-height: 1.55;
   color: var(--danger);
-  background: color-mix(in srgb, var(--danger) 14%, transparent);
+  max-width: 68ch;
 }
 
-.tag-risk-medium {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+.result-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+
+/* ---------------------------------------------------------------- compare */
+
+/*
+  Both pictures at the same width, which is the only fair way to look at them:
+  a compressed copy shown smaller always wins. The originals are object URLs
+  that already exist for the thumbnails, so opening this panel fetches nothing
+  and decodes nothing that was not already decoded.
+*/
+.compare {
+  flex-basis: 100%;
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
 }
 
-.tag-input {
+.compare-side { margin: 0; min-width: 0; }
+
+.compare-side img {
+  display: block;
   width: 100%;
-  min-width: 12rem;
-  background: var(--surface);
+  height: auto;
+  border-radius: 8px;
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.3rem 0.45rem;
-  font-size: 0.85rem;
-}
-
-.tag-input.bad { border-color: var(--danger); }
-
-.tag-readonly {
-  color: var(--text-dim);
-  overflow-wrap: anywhere;
-}
-
-.tag-actions { text-align: right; }
-
-.tag-delete {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text-dim);
-  font-size: 0.76rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 6px;
-  white-space: nowrap;
-}
-
-.tag-delete:hover { border-color: var(--danger); color: var(--danger); }
-
-/* --------------------------------------------------------------- add a tag */
-
-.add-tag {
-  margin-top: 1.1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
   background: var(--surface-2);
 }
 
-.add-tag summary {
-  padding: 0.55rem 0.9rem;
-  cursor: pointer;
-  font-size: 0.87rem;
-  font-weight: 600;
-  user-select: none;
+.compare-side figcaption {
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-dim);
 }
 
-.add-tag summary:hover { color: var(--accent); }
+.compare-side figcaption strong { color: var(--text); }
 
-.add-tag-body {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  padding: 0 0.9rem 0.9rem;
+.compare-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--text-dim);
 }
 
-.add-tag-body label { font-size: 0.82rem; font-weight: 600; }
-.add-tag-body input[type="text"] {
-  flex: 1;
-  min-width: 12rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.35rem 0.5rem;
+@media (max-width: 620px) {
+  .compare { grid-template-columns: 1fr; }
+  .target-row { gap: 0.8rem; }
 }
-
-/* ------------------------------------------------------------------ saving */
-
-.save-row {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  margin-top: 1.4rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
-}
-
-.save-status { font-size: 0.85rem; color: var(--text-dim); }
 
 /* --------------------------------------------------------------------- faq */
 

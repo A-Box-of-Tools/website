@@ -837,13 +837,14 @@ el.privacyToggle.addEventListener('click', () => {
   el.privacyToggle.setAttribute('aria-expanded', String(open));
 });
 
-// Hosts belonging to the ad and measurement scripts. Kept separate from the
-// "external" bucket rather than lumped in with it, because the two mean
-// entirely different things: these requests carry nothing about your images,
-// while a request to an address you pasted says exactly one thing about exactly
-// one image. Reporting them together would turn a precise, checkable claim into
-// a vague one - and would wrongly describe a Google request as an image you
-// asked for, which is the opposite of what this panel is for.
+// Hosts belonging to the ad, measurement and donate-button scripts. Kept
+// separate from the "external" bucket rather than lumped in with it, because
+// the two mean entirely different things: these carry nothing about your
+// images, while a request to an address you pasted says exactly one thing
+// about exactly one image. Reporting them together would turn a precise,
+// checkable claim into a vague one - and would wrongly describe a Google
+// request as an image you asked for, which is the opposite of what this
+// panel is for.
 // cloudflareinsights.com is here because the host injects its own beacon into
 // the page. The CSP blocks it from running, but a blocked script still leaves a
 // resource timing entry, and an unknown host in that list would be reported as
@@ -855,7 +856,13 @@ el.privacyToggle.addEventListener('click', () => {
 // list of literal hostnames turns the panel red for a visitor in the wrong
 // country. That is the worst possible failure for this particular panel: the
 // one place on the page meant to be checkable, saying something untrue.
-const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+// buymeacoffee.com and googleapis.com are here for the donate button in the
+// header: the button's script comes from cdnjs.buymeacoffee.com and it pulls
+// its lettering from fonts.googleapis.com and fonts.gstatic.com. Like the ad
+// scripts, it is something the page loads without the visitor asking, and it
+// is handed nothing - so it belongs in this bucket rather than being reported
+// as an intruder.
+const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
 
 /**
  * Report what this page has actually fetched, split three ways: files from this
@@ -883,7 +890,7 @@ function monitorNetwork() {
     const clean = external.size === 0;
     const platformNote = platform.size === 0
       ? ''
-      : ` The page's own ad and measurement scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+      : ` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
 
     el.networkCount.textContent = clean
       ? `your images have gone nowhere. ${total} files loaded.${platformNote}`

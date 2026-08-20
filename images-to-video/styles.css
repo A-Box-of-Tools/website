@@ -863,6 +863,33 @@ button, .as-button {
 .ghost.danger { color: var(--danger); }
 .ghost.danger:hover { border-color: var(--danger); }
 
+/* ----------------------------------------------------- buy me a coffee */
+
+/*
+  The Buy Me a Coffee button draws itself and brings its own stylesheet, which
+  the script writes into the page after this file - so a bare `.bmc-btn` rule
+  here would lose on document order no matter what it said. Everything below is
+  scoped one level deeper, which wins on specificity instead, and needs
+  !important only where the button's own rule already used it.
+
+  Only the size is touched. The yellow, the black outline and the Cookie
+  lettering are the button's own and are the whole point of it: people
+  recognise it at a glance. Left at its native 60px it is twice the height of
+  the controls beside it and pushes the tool itself off a small screen, so it
+  is brought down to something that still shouts but does not take over.
+*/
+.support-cta { display: flex; }
+
+.support-cta .bmc-btn {
+  height: 44px;
+  min-width: 0;
+  padding: 0 1rem;
+  border-radius: 8px;
+  font-size: 24px;
+}
+
+.support-cta .bmc-btn svg { height: 26px !important; }
+
 .progress-wrap { margin-top: 1rem; }
 
 .progress {

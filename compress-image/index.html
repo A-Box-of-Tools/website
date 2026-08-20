@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  This tool has no network feature at all. It never fetches anything, so the
+  only origins named below are Google's ad and measurement endpoints and the
+  donate button, which are the price of the site being free. There is no origin
+  here under this site's control, so a picture dropped on this page has nowhere
+  to go even if something tried to send it.
+
+  Keep this list in step with the other pages. A tool missing an origin shows a
+  blank ad slot; a tool with an extra one is a wider hole than the site agreed
+  to. If the ads ever come out, put connect-src 'none' back - this tool would
+  then be able to claim the absolute form of the promise again.
+
+  A CSP wildcard stands in for a whole label, so https://*.analytics.google.com
+  does NOT cover the bare host analytics.google.com - and the bare host is where
+  gtag sends its measurement hit. The wildcard was for a long time the only
+  entry for that endpoint, so every page view was refused and Analytics recorded
+  nothing whatsoever. Both forms are listed now. Adding a Google origin here
+  means checking whether the bare host is needed as well as the wildcard.
+
+  Known gap: Google sends the ads conversion ping to the visitor's own country
+  domain - www.google.ca, www.google.co.uk - and CSP cannot wildcard a TLD. Only
+  www.google.com can be named, so that one ping is still refused for a visitor
+  routed to a country domain. Nothing short of widening the directive to https:
+  would express it, which is not a trade worth making for a conversion ping.
+
+  img-src needs blob: for the previews and the compressed results this page
+  draws from the files you chose, and https: because ad creatives come from
+  anywhere.
+
+  Punctuation is written as HTML entities throughout, so this file stays pure
+  ASCII on disk and cannot be mangled by a tool that guesses the encoding.
+-->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self'
+    https://www.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://tpc.googlesyndication.com
+    https://partner.googleadservices.com
+    https://www.googletagservices.com
+    https://adservice.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
+  frame-src
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://www.google.com;
+  connect-src
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://analytics.google.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://csi.gstatic.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' blob: data: https:;
+  form-action 'none';
+  base-uri 'none';
+">
+
+<!--
+  AdSense. Async so it cannot delay the app; crossorigin="anonymous" is
+  Google's own snippet, unchanged.
+-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5997711677062324"
+        crossorigin="anonymous"></script>
+
+<!-- Google tag (gtag.js). The configuration half lives in analytics.js. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script>
+<script src="analytics.js" defer></script>
+
+<!--
+  The title leads with the thing people actually type, which is almost never
+  "image compressor" on its own - it is "compress image to 100kb", because the
+  size is the reason they are looking. Keep it under about 60 characters or
+  Google truncates the tail.
+-->
+<title>Compress Image to a Target Size &mdash; Free, No Upload</title>
+<meta name="description" content="Say the size you need - 100 KB, 2 MB, anything - and this finds the least compression that gets there. JPEG, PNG and WebP, entirely in your browser: no upload, no account, and it shows you exactly what the compression cost.">
+
+<link rel="canonical" href="https://abox.tools/compress-image/">
+
+<!--
+  Share card. See the note in the hub page's head: og-image.ps1 draws these,
+  and the URLs have to be absolute.
+-->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="A Box of Tools">
+<meta property="og:url" content="https://abox.tools/compress-image/">
+<meta property="og:title" content="Compress an image to a size you choose">
+<meta property="og:description" content="Name a target size and this finds the least compression that reaches it, then measures what that cost. Runs on your own machine; nothing is uploaded.">
+<meta property="og:image" content="https://abox.tools/compress-image/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Image Compressor - name a size, keep the quality">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Compress an image to a size you choose">
+<meta name="twitter:description" content="Name a target size and this finds the least compression that reaches it, then measures what that cost. Runs on your own machine; nothing is uploaded.">
+<meta name="twitter:image" content="https://abox.tools/compress-image/og.png">
+
+<!--
+  Structured data. The FAQPage half is generated from the questions at the foot
+  of this page - if you edit one, edit the other, because answers that disagree
+  with the visible page are a manual-action risk, not just untidy.
+
+  Inline is deliberate and does not need 'unsafe-inline'; the hub page's head
+  explains why. Validate at https://validator.schema.org/ after changes.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Image Compressor",
+      "url": "https://abox.tools/compress-image/",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any (runs in a web browser)",
+      "browserRequirements": "Requires JavaScript.",
+      "description": "Compress JPEG, PNG and WebP images to a size you name. The tool searches for the highest quality that fits the target, resizing only when quality alone cannot get there, and measures the result against the original. Runs entirely in the browser with no upload.",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Compresses to a target file size you choose, not a quality number you have to guess",
+        "Keeps full resolution where it can, and resizes only when quality alone cannot reach the target",
+        "Spends the whole budget: the result lands just under the target rather than far below it",
+        "Measures the result against the original with SSIM and PSNR",
+        "Leaves files that are already under the target completely untouched",
+        "JPEG, PNG and WebP, with an automatic format choice",
+        "Batches, with all results in one zip",
+        "Runs offline; no upload, no account"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "A Box of Tools",
+          "item": "https://abox.tools/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Image Compressor",
+          "item": "https://abox.tools/compress-image/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is my image uploaded anywhere?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The file is decoded, compressed and measured by your own browser on your own hardware, using the JPEG, PNG and WebP encoders the browser already ships with. This tool has no network feature of any kind - it never fetches anything and never sends anything - and the page's Content-Security-Policy names every address it may contact, none of which belongs to this site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does it hit an exact size?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By trying. There is no formula that turns a quality setting into a byte count - it depends entirely on the picture - so the tool encodes the image several times and searches for the answer. It starts at the top of the quality range and narrows in by halving, which finds the highest quality that fits in about eight encodes. Every size you see on the page is a real encoded file, not an estimate."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does \"minimal loss\" actually mean here?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Three specific things. First, an image already under your target is passed through byte for byte rather than re-encoded. Second, quality is spent before resolution, and only down to a floor where compression artefacts start to show - past that point the tool makes the picture smaller and puts the quality back up, because fewer good pixels look better than more ruined ones. Third, once a fitting result is found the search pushes back up until the budget is used, so you do not get a 300 KB file when you asked for 500 KB."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the SSIM and PSNR figures on each result?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "They are a measurement of what the compression cost, taken by decoding the result and comparing it with the original picture. SSIM compares local brightness, contrast and structure, which is much closer to what an eye objects to than counting changed pixels; above about 0.98 the two are hard to tell apart side by side. PSNR is the traditional decibel figure. Both are computed on your machine, and both are shown so that the claim of low loss is checkable rather than just asserted."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which formats can it read and write?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It reads anything your browser can decode, which in practice means JPEG, PNG, WebP, GIF, BMP and - on most current browsers - AVIF. It writes JPEG, PNG and WebP, because those are the encoders browsers ship. On \"auto\" it keeps the format your file arrived in, and switches to WebP only when keeping it would have meant a resize or a visible drop in quality."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why can it not compress a PNG very far?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because PNG is lossless: it has no quality dial to turn. The only way to make a PNG smaller is to give it fewer pixels or fewer colours, so with PNG selected the tool reaches a target by resizing alone. If the picture is a photograph, JPEG or WebP will get far closer to your target at a size you can see is fine - and if it is a logo or a screenshot with transparency, WebP keeps the transparency that JPEG would fill in with white."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does compressing an image remove its EXIF and GPS data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, as a side effect. Compressing means decoding the picture to pixels and encoding those pixels again, and a canvas full of pixels carries no tags, so the location, camera model, timestamps and everything else are simply not written to the new file. If you want the metadata gone but the picture untouched, use the EXIF Viewer and Remover instead - it rewrites the container without re-compressing anything."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it free, and do I need an account?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is free, and there is no account, no sign-in, no trial and no watermark. There is no limit on the number or the size of the files either, because there is no server paying for them - the work happens on your own machine. The site carries advertising, which is what pays for it; the ads are not given anything about your images."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Load the page once, then disconnect from the internet and it keeps working. That is also the simplest way to prove nothing is being uploaded: a tool that sent your images away to be compressed would stop the moment you unplugged."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#128476;</text></svg>">
+</head>
+<body>
+
+<!--
+  Visible by default and removed by main.js once it boots. If the scripts never
+  run - opening this file straight from disk blocks ES modules, and so does a
+  CSP or network failure - this stays on screen and explains why. Without it the
+  page looks fine, the file picker still opens (that part is pure HTML), and
+  nothing at all happens when you choose an image.
+-->
+<div id="boot-warning" class="boot-warning">
+  <strong>This page's code did not start.</strong>
+  <p>
+    Opening <code>index.html</code> directly from a folder blocks JavaScript modules,
+    so nothing will happen when you choose an image. Serve the folder over http instead:
+  </p>
+  <pre>powershell -ExecutionPolicy Bypass -File serve.ps1</pre>
+  <p>Then open <code>http://localhost:8080/</code>.</p>
+</div>
+
+<noscript>
+  <div class="boot-warning">
+    <strong>JavaScript is disabled.</strong>
+    <p>This app does all of its work in your browser, so it cannot run without it.</p>
+  </div>
+</noscript>
+
+<!--
+  ============================================================================
+  The source link
+
+      https://github.com/A-Box-of-Tools/website
+
+  appears four times: the header button, the privacy panel (twice - once as the
+  link, once as the visible text), and the footer. Being able to read the source
+  is the whole point of the claims on this page, so if the repository ever moves,
+  all four have to move with it. A dead source link is worse than none at all.
+  ============================================================================
+-->
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">&#128476;&#65039;</span>
+    <div>
+      <h1>Image&nbsp;Compressor</h1>
+      <p class="tagline">Name the size. It works out the rest.</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <a class="source-link" href="https://github.com/A-Box-of-Tools/website"
+       target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+          0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+          1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+          0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2
+          .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65
+          3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      View source
+    </a>
+    <button type="button" id="privacy-toggle" class="ghost" aria-expanded="false" aria-controls="privacy-panel">
+      How this is verified
+    </button>
+    <!--
+      Buy Me a Coffee's own snippet, unchanged, and deliberately neither async
+      nor deferred: it ends in document.writeln, which appends here only while
+      the parser is still at this point in the page. Deferred, it would run
+      after parsing and document.write would blank the document instead. The
+      cost of that is honest and worth stating - this tag blocks the parser
+      until the script arrives, so the tool below it waits on a third party.
+
+      The two origins it reaches, cdnjs.buymeacoffee.com and
+      fonts.googleapis.com (then fonts.gstatic.com for the face itself), are
+      named in the Content-Security-Policy above and in PLATFORM_HOSTS in
+      src/main.js, so the live check below counts them as part of the page
+      rather than as an unexplained request. The cup is an inline SVG, so no
+      image is fetched, and nothing about your pictures goes out with any of
+      it: the button is a link, followed only if somebody clicks it. Offline
+      the request fails and nothing is written - the tool is unaffected.
+    -->
+    <div class="support-cta">
+      <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="aboxtools" data-color="#FFDD00" data-emoji="" data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+    </div>
+  </div>
+</header>
+
+<!--
+  The headline claim, always on screen. Every other site that offers to make
+  your pictures smaller does it by taking them off you first, so the difference
+  is worth stating before the first file is asked for, not in a panel you have
+  to go looking for.
+-->
+<section class="pledge">
+  <p class="pledge-line">
+    <span class="pledge-mark" aria-hidden="true">&#9679;</span>
+    Your images are <strong>never uploaded</strong>. There is no server.
+  </p>
+  <p class="pledge-sub">
+    The compression runs in your own browser, on your own hardware, using the
+    encoders it already ships with. This tool has no network feature of any kind
+    &mdash; nothing to fetch, nothing to send &mdash; and there is no server on
+    the other end of this page to send a picture to even if there were.
+  </p>
+
+  <ul class="pledge-facts">
+    <li><span aria-hidden="true">&#10007;</span> No upload</li>
+    <li><span aria-hidden="true">&#10007;</span> No account</li>
+    <li><span aria-hidden="true">&#10007;</span> No size limit</li>
+    <li><span aria-hidden="true">&#10003;</span> Works offline</li>
+    <li><span aria-hidden="true">&#10003;</span> Open source</li>
+  </ul>
+
+  <!-- Live, measured, and wrong-provable: this is the part that turns the
+       claim above into something a sceptical visitor can check. -->
+  <div class="pledge-live">
+    <p class="live-row">
+      <span id="network-dot" class="live-dot" aria-hidden="true"></span>
+      <span><strong>Live check:</strong> <span id="network-count">checking&hellip;</span></span>
+    </p>
+    <p class="live-row">
+      <span id="offline-dot" class="live-dot" aria-hidden="true"></span>
+      <span><strong>Offline:</strong> <span id="offline-status">checking&hellip;</span></span>
+    </p>
+    <p class="live-hint">
+      Don't take our word for it: open DevTools, watch the Network tab, and compress
+      a photo. Not one request carries an image, a thumbnail, a filename, or a byte
+      of what you chose. Or unplug from the internet and compress one anyway.
+    </p>
+  </div>
+</section>
+
+<section id="privacy-panel" class="privacy" hidden>
+  <h2>How the privacy claim is verifiable</h2>
+  <ul>
+    <li><strong>Your images have nowhere to go.</strong> The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were.</li>
+    <li><strong>Nothing here fetches anything.</strong> There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The compression is
+      <code>canvas.toBlob</code> &mdash; the encoder that is already installed in
+      your browser.</li>
+    <li><strong>The numbers are measured, not reported.</strong> The sizes, the
+      quality figure and the SSIM comparison are all computed on this page and
+      shown to you. There is no custom analytics event in this repository that
+      carries a filename, a size, a count or a result.</li>
+    <li><strong>What Google loads, and what it is not given.</strong> The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your pictures. Every line that
+      reads, compresses or measures a file is served from this origin and listed
+      in the repository.</li>
+    <li><strong>It works offline.</strong> Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all.</li>
+  </ul>
+  <div class="privacy-status">
+    <p>
+      <strong>Check it yourself.</strong> None of the above has to be taken on trust.
+      There is no build step, so the files served to your browser are the source
+      &mdash; view-source on this page, or read the repository:
+    </p>
+    <p>
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
+        github.com/A-Box-of-Tools/website
+      </a>
+    </p>
+    <p>
+      The files worth reading first are <code>index.html</code> for the
+      Content-Security-Policy, <code>src/compress.js</code> for the search that
+      decides how much quality to spend, and <code>src/measure.js</code> for the
+      comparison behind the "visual match" figure.
+    </p>
+  </div>
+</section>
+
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose images</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    <input type="file" id="file-input" class="visually-hidden"
+           accept="image/*,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif" multiple>
+    <label id="dropzone" class="dropzone" for="file-input">
+      <span class="dropzone-title">Drop images here</span>
+      <span class="dropzone-hint">or click to browse &mdash; JPEG, PNG, WebP and anything else your browser can open</span>
+    </label>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Take all off the list</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the number that matters -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> Say how big it may be</h2>
+
+    <p class="card-lede">
+      This is the part other compressors get backwards. They give you a quality
+      slider and leave you to guess which setting lands under the limit you were
+      given. Name the limit instead, and the tool searches for the highest quality
+      that fits it &mdash; then spends whatever is left of the budget rather than
+      handing back a file half the size you asked for.
+    </p>
+
+    <div class="target-row">
+      <div class="target-field">
+        <label for="target-value">Target size, per image</label>
+        <div class="inline-pair">
+          <input type="number" id="target-value" value="500" min="1" step="1" inputmode="decimal">
+          <label for="target-unit" class="visually-hidden">Unit</label>
+          <select id="target-unit">
+            <option value="KB" selected>KB</option>
+            <option value="MB">MB</option>
+          </select>
+        </div>
+      </div>
+
+      <!--
+        The four numbers people are actually given: an upload form that says
+        100 KB, a forum avatar or a job application at 500 KB, an email
+        attachment at 1 MB, and a web page hero at 2 MB.
+      -->
+      <div class="presets" id="presets" role="group" aria-label="Common targets">
+        <button type="button" class="ghost" data-bytes="102400">100 KB</button>
+        <button type="button" class="ghost" data-bytes="512000">500 KB</button>
+        <button type="button" class="ghost" data-bytes="1048576">1 MB</button>
+        <button type="button" class="ghost" data-bytes="2097152">2 MB</button>
+      </div>
+    </div>
+
+    <p id="target-summary" class="field-summary"></p>
+
+    <fieldset class="options">
+      <legend>How it is allowed to get there</legend>
+
+      <div class="option-row">
+        <label for="format-select">Output format</label>
+        <select id="format-select">
+          <option value="auto" selected>Auto &mdash; keep the format unless another one looks better</option>
+          <option value="keep">Always keep the original format</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/webp">WebP</option>
+          <option value="image/png">PNG (lossless, so size comes out of the dimensions)</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="allow-resize" checked>
+        <span>
+          <strong>May make the picture smaller if it has to</strong>
+          <span class="check-note">
+            Only used once quality alone would have to drop past the point where
+            compression starts to show. Below that, fewer good pixels look better
+            than more ruined ones. Turn this off to keep the exact dimensions and
+            pay for a tight target out of quality instead.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Compress</h2>
+
+    <div class="run-row">
+      <button type="button" id="compress-all" class="primary big" disabled>Compress to the target</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Compressed</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Download all as a zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
+
+<!--
+  ============================================================================
+  THE WRITTEN PART OF THE PAGE
+
+  Everything above this is interface. A search engine ranking a page about
+  compressing an image to 100 KB has nothing to read in a row of buttons, which
+  is why this section exists: it answers, in words, the questions people
+  actually type into a search box before they find a tool like this.
+
+  It is not filler. Every answer here is true of the code in src/, and the same
+  answers are repeated as FAQPage structured data in the head. EDIT BOTH OR
+  NEITHER - an answer here that disagrees with the one in the head is worse than
+  having no structured data at all.
+  ============================================================================
+-->
+<section class="faq" aria-labelledby="how-to-h">
+  <h2 id="how-to-h">How to compress an image to a specific size</h2>
+  <ol class="how-to">
+    <li>
+      <strong>Choose your images.</strong> Drop them onto the picker or select them
+      by hand. They are read straight off your disk by the browser; nothing is sent
+      anywhere while you do it.
+    </li>
+    <li>
+      <strong>Type the size you were told to hit.</strong> 100 KB for the upload
+      form that keeps refusing your photo, 500 KB for the application portal, 2 MB
+      for a page that has to load quickly. The four common ones are buttons.
+    </li>
+    <li>
+      <strong>Press "Compress to the target".</strong> Each image is encoded
+      several times while the tool narrows in on the highest quality that fits.
+      Anything already under the target is left exactly as it is.
+    </li>
+    <li>
+      <strong>Check what it cost, then download.</strong> Every result says what it
+      was written as, at what quality, whether the dimensions changed, and how
+      closely it matches the original when measured. "Compare" puts the two
+      pictures side by side.
+    </li>
+  </ol>
+
+  <h2 id="faq-h">Questions</h2>
+  <div class="faq-list">
+    <details>
+      <summary>Is my image uploaded anywhere?</summary>
+      <p>
+        No. The file is decoded, compressed and measured by your own browser on your
+        own hardware, using the JPEG, PNG and WebP encoders the browser already
+        ships with. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site.
+      </p>
+    </details>
+    <details>
+      <summary>How does it hit an exact size?</summary>
+      <p>
+        By trying. There is no formula that turns a quality setting into a byte
+        count &mdash; it depends entirely on the picture &mdash; so the tool encodes
+        the image several times and searches for the answer. It starts at the top of
+        the quality range and narrows in by halving, which finds the highest quality
+        that fits in about eight encodes. Every size you see on the page is a real
+        encoded file, not an estimate.
+      </p>
+    </details>
+    <details>
+      <summary>What does "minimal loss" actually mean here?</summary>
+      <p>
+        Three specific things. First, an image already under your target is passed
+        through byte for byte rather than re-encoded. Second, quality is spent
+        before resolution, and only down to a floor where compression artefacts
+        start to show &mdash; past that point the tool makes the picture smaller and
+        puts the quality back up, because fewer good pixels look better than more
+        ruined ones. Third, once a fitting result is found the search pushes back up
+        until the budget is used, so you do not get a 300 KB file when you asked for
+        500 KB.
+      </p>
+    </details>
+    <details>
+      <summary>What are the SSIM and PSNR figures on each result?</summary>
+      <p>
+        They are a measurement of what the compression cost, taken by decoding the
+        result and comparing it with the original picture. SSIM compares local
+        brightness, contrast and structure, which is much closer to what an eye
+        objects to than counting changed pixels; above about 0.98 the two are hard
+        to tell apart side by side. PSNR is the traditional decibel figure. Both are
+        computed on your machine, and both are shown so that the claim of low loss
+        is checkable rather than just asserted.
+      </p>
+    </details>
+    <details>
+      <summary>Which formats can it read and write?</summary>
+      <p>
+        It reads anything your browser can decode, which in practice means JPEG,
+        PNG, WebP, GIF, BMP and &mdash; on most current browsers &mdash; AVIF. It
+        writes JPEG, PNG and WebP, because those are the encoders browsers ship. On
+        "auto" it keeps the format your file arrived in, and switches to WebP only
+        when keeping it would have meant a resize or a visible drop in quality.
+      </p>
+    </details>
+    <details>
+      <summary>Why can it not compress a PNG very far?</summary>
+      <p>
+        Because PNG is lossless: it has no quality dial to turn. The only way to
+        make a PNG smaller is to give it fewer pixels or fewer colours, so with PNG
+        selected the tool reaches a target by resizing alone. If the picture is a
+        photograph, JPEG or WebP will get far closer to your target at a size you
+        can see is fine &mdash; and if it is a logo or a screenshot with
+        transparency, WebP keeps the transparency that JPEG would fill in with
+        white.
+      </p>
+    </details>
+    <details>
+      <summary>Does compressing an image remove its EXIF and GPS data?</summary>
+      <p>
+        Yes, as a side effect. Compressing means decoding the picture to pixels and
+        encoding those pixels again, and a canvas full of pixels carries no tags, so
+        the location, camera model, timestamps and everything else are simply not
+        written to the new file. If you want the metadata gone but the picture
+        untouched, use the <a href="../exif-editor/">EXIF Viewer &amp; Remover</a>
+        instead &mdash; it rewrites the container without re-compressing anything.
+      </p>
+    </details>
+    <details>
+      <summary>Is it free, and do I need an account?</summary>
+      <p>
+        It is free, and there is no account, no sign-in, no trial and no watermark.
+        There is no limit on the number or the size of the files either, because
+        there is no server paying for them &mdash; the work happens on your own
+        machine. The site carries advertising, which is what pays for it; the ads
+        are not given anything about your images.
+      </p>
+    </details>
+    <details>
+      <summary>Does it work offline?</summary>
+      <p>
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being uploaded:
+        a tool that sent your images away to be compressed would stop the moment you
+        unplugged.
+      </p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <p>
+    Runs in your browser. No accounts, no uploads. Ads by Google.
+    &middot;
+    <!--
+      The site mark, inlined so that this page stays self-contained and works
+      offline. Same shape as the hub's logo.svg; colours come from this page's
+      own stylesheet.
+    -->
+    <a class="home-link" href="../">
+      <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <path class="logo-lid" d="M14 31V13.5A4.5 4.5 0 0 1 18.5 9h27a4.5 4.5 0 0 1 4.5 4.5V31"
+              fill="none" stroke-width="3.2" stroke-linejoin="round"/>
+        <g transform="rotate(-12 18 30)">
+          <rect class="logo-tool" x="16.6" y="17" width="3.2" height="17" rx="1.4"/>
+          <rect class="logo-tool" x="16.2" y="12.2" width="6.8" height="5" rx="1.5"/>
+          <rect class="logo-tool" x="14" y="12.6" width="2.6" height="6.6" rx="1.2" transform="rotate(26 16.2 13)"/>
+        </g>
+        <g transform="rotate(-3 26 30)">
+          <rect class="logo-tool-alt" x="24.6" y="17" width="3.1" height="17" rx="1.4"/>
+          <rect class="logo-tool-alt" x="23.2" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="26.8" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="23.2" y="16.2" width="5.9" height="3.6" rx="1.5"/>
+        </g>
+        <rect class="logo-tool-alt" x="30.6" y="12" width="5" height="8.4" rx="2.2"/>
+        <rect class="logo-tool" x="31.5" y="19.2" width="3.2" height="2.2" rx="0.7"/>
+        <rect class="logo-tool" x="32.1" y="20.5" width="2.1" height="13.5" rx="1"/>
+        <path class="logo-tool" d="M39.4 20.4 37.9 13a1.15 1.15 0 0 1 2.25-.45l1.15 7.6z" transform="rotate(-4 40.5 21)"/>
+        <path class="logo-tool" d="M41.6 20.4 43.1 13a1.15 1.15 0 0 0-2.25-.45l-1.15 7.6z" transform="rotate(4 40.5 21)"/>
+        <rect class="logo-tool" x="38.2" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(-8 40.5 21)"/>
+        <rect class="logo-tool" x="40.4" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(8 40.5 21)"/>
+        <circle class="logo-latch" cx="40.5" cy="20.8" r="1.5"/>
+        <g transform="rotate(14 48 30)">
+          <rect class="logo-tool" x="46.6" y="17.5" width="3.2" height="16.5" rx="1.4"/>
+          <rect class="logo-tool" x="44.6" y="14.2" width="7.4" height="3.4" rx="1.3"/>
+          <rect class="logo-tool" x="44.6" y="9.6" width="4.4" height="3.6" rx="1.1"/>
+          <rect class="logo-latch" x="46.4" y="17.4" width="3.6" height="1.9" rx="0.6"/>
+        </g>
+        <rect class="logo-box" x="8" y="38" width="48" height="15" rx="1.6"/>
+        <rect class="logo-band" x="4" y="31" width="56" height="7.5" rx="1.6"/>
+        <rect class="logo-latch" x="27.5" y="33.5" width="9" height="9" rx="1.8"/>
+      </svg>
+      All tools
+    </a>
+    &middot;
+    <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
+      Read the source
+    </a>
+  </p>
+</footer>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
