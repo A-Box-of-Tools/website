@@ -177,6 +177,12 @@ def _scan_string(source, i, quote, where, line):
 
 def _scan_template(source, i, where, line):
     j, depth = i + 1, 0
+    # Did the last thing inside the substitution end a value? It decides whether
+    # a `/` divides or opens a regular expression, the same question the main
+    # loop asks of the previous token. A character is enough here because the
+    # answer only turns on what kind of thing came immediately before.
+    after_value = False
+
     while j < len(source):
         c = source[j]
         if c == '\\':
@@ -185,21 +191,44 @@ def _scan_template(source, i, where, line):
         if depth == 0 and c == '`':
             return j + 1
         if depth == 0 and source.startswith('${', j):
-            depth, j = depth + 1, j + 2
+            depth, j, after_value = depth + 1, j + 2, False
             continue
         if depth:
-            # Inside ${...}: nested strings and templates have to be skipped
-            # whole, or a `}` inside one would close the substitution early.
+            # Inside ${...}: strings, templates, comments and regular
+            # expressions all have to be skipped whole. A `}` inside any of them
+            # would close the substitution early, and a quote inside a regular
+            # expression would open a string that is not there - which is how a
+            # minifier's `${x.replace(/["]/g, '')}` used to bring the build down.
             if c in '\'"':
                 j = _scan_string(source, j, c, where, line)
+                after_value = True
                 continue
             if c == '`':
                 j = _scan_template(source, j, where, line)
+                after_value = True
+                continue
+            if source.startswith('//', j):
+                end = source.find('\n', j)
+                j = len(source) if end < 0 else end
+                continue
+            if source.startswith('/*', j):
+                end = source.find('*/', j + 2)
+                if end < 0:
+                    raise MinifyError(f'{where}:{line}: unterminated block comment')
+                j = end + 2
+                continue
+            if c == '/' and not after_value:
+                j = _scan_regex(source, j, where, line)
+                after_value = True
                 continue
             if c == '{':
                 depth += 1
             elif c == '}':
                 depth -= 1
+            if not c.isspace():
+                # A name, a number or a closing bracket ends a value; anything
+                # else - an operator, an opening bracket, a comma - does not.
+                after_value = _word_char(c) or c in ')]}'
         j += 1
     raise MinifyError(f'{where}:{line}: unterminated template literal')
 
