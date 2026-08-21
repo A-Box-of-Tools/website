@@ -222,6 +222,11 @@ New-OgImage -Path 'tools\trim-video\og.png' `
   -Subtitle 'Mark the parts worth keeping as it plays, and save them as one video.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\video-to-gif\og.png' `
+  -Title 'Video to GIF' `
+  -Subtitle 'Pick the section, the size and the frame rate - and never upload the clip.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\exif-editor\og.png' `
   -Title 'EXIF Viewer & Remover' `
   -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
