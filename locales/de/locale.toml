@@ -137,6 +137,10 @@ name = "Bilder &amp; Video"
 note = "Mit Fotos und Aufnahmen arbeiten, ohne sie aus der Hand zu geben."
 
 [[hub.categories]]
+name = "GIF &amp; Animation"
+note = "Eine Animation bauen oder zerlegen, ohne dass sie den Rechner verlaesst."
+
+[[hub.categories]]
 name = "Audio"
 note = "An einer Aufnahme arbeiten, ohne sie aus der Hand zu geben - auch am Ton in einem Video."
 

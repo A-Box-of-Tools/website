@@ -220,6 +220,12 @@ note = "Work with pictures and footage without handing them to anyone."
 order = ["images-to-video", "trim-video", "crop-video", "exif-editor", "image-to-ico", "resize-image", "compress-image"]
 
 [[hub.categories]]
+id = "gif-and-animation"
+name = "GIF &amp; animation"
+note = "Build an animation, or take one apart, without it leaving your machine."
+order = ["gif-maker"]
+
+[[hub.categories]]
 id = "audio"
 name = "Audio"
 note = "Work on a recording without handing it to anyone, including the sound inside a video."
@@ -346,6 +352,7 @@ order = [
   "make-a-pdf-smaller",
   "combine-images-into-a-pdf",
   "turn-images-into-a-video",
+  "make-a-gif-from-images",
   "trim-a-video",
   "crop-a-video",
 ]

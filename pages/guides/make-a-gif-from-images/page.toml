@@ -1,0 +1,34 @@
+#
+# Guide: making a GIF out of a set of images.
+#
+# The job is three clicks and the disappointment is always the same one: the
+# file is enormous, and there is no quality slider to fix it. So this guide
+# leads with why that happens and what actually moves it, then covers the two
+# settings nobody guesses right the first time - the palette and the delay
+# floor browsers impose.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/make-a-gif-from-images"
+kind = "guide"
+nav = "Images into a GIF"
+group = "doing-the-job"
+tool = "gif-maker"
+
+title = "How to Make an Animated GIF From Images"
+description = "Turn a set of pictures into one animated GIF: how fast a GIF can really play, what the palette setting changes, and the three things that actually make the file smaller."
+
+heading = "How to make an animated GIF from images"
+lede = """
+    Making the GIF is the easy part. Getting one that is small enough to
+    actually post is the part worth reading about, because a GIF has no quality
+    slider and only three things move its size at all."""
+
+updated = "20 August 2026"
+published = "2026-08-20"
+lastmod = "2026-08-20"
+
+og_title = "How to make an animated GIF from images"
+og_description = "How fast a GIF can really play, what the palette setting changes, and the three things that actually make the file smaller."
+og_image_alt = "abox.tools - tools that never touch a server"

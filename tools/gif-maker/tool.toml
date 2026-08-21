@@ -1,0 +1,291 @@
+#
+# GIF Maker
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "gif-maker"
+name = "GIF Maker"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "GIF&nbsp;Maker <span class=\"h1-kw\">&mdash; images into an animated GIF</span>"
+tagline = "Turn a set of pictures into one animation."
+icon = "&#127916;"         # the mark beside the page heading
+favicon = "&#127916;"      # the tab icon, drawn into an inline SVG
+category = "gif-and-animation"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "gif"
+
+# Shared modules this tool asks for. The same arrangement as css_parts, and for
+# the same reason: a component more than one tool needs and no tool should own.
+# file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "GIF Maker &mdash; Images to Animated GIF, Free and No Upload"
+description = "Turn JPG, PNG or WebP images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline."
+og_title = "GIF Maker &mdash; images into an animated GIF, in your browser"
+og_description = "Order the frames, set how long each one is held, pick a size, and get a GIF. The palette and the compression are worked out on your own machine; nothing is uploaded."
+og_image_alt = "GIF Maker - turn a set of images into one animated GIF"
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Every frame is drawn, quantized and compressed by your own browser, and the
+    finished GIF is assembled in memory on this machine. There is no server on the
+    other end of this page to send a picture to even if anything here wanted to."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and make a
+      GIF. Not one request carries an image, a thumbnail, or a filename. Or unplug
+      from the internet and make one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/quantize.js</code> for the palette every
+      frame is reduced to, and <code>src/lzw.js</code> and <code>src/gif.js</code>
+      for the compressor and the file it goes into &mdash; none of which has a line
+      that could reach the network."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to make a GIF from images"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Put pictures in order, say how long each one is held, and get one
+            animated GIF. The colours and the compression are worked out on
+            your own machine."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "images"
+choose = "images"
+analytics_extra = """"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "Your images have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were. This used to read <code>connect-src 'none'</code>, which was absolute;
+      adding advertising cost that, and saying so is part of the deal."""
+
+[[privacy]]
+title = "The encoder is four files in this repository."
+body = """
+ A GIF needs a colour
+      quantizer and an LZW compressor, and the browser ships neither &mdash; so both
+      are written out here, in <code>src/quantize.js</code> and
+      <code>src/lzw.js</code>, with the container in <code>src/gif.js</code>. Nothing
+      is fetched to make one, and there is no engine downloaded on first use."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      images: not a file, not a thumbnail, not a name, a size, or a count. Every
+      line that reads, decodes, draws or compresses an image is served from this
+      origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your images. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and every part of this
+      page still works. That is the simplest proof of all: a tool that sent your
+      pictures away to be turned into a GIF would stop the moment you unplugged."""
+
+[[howto]]
+title = "Choose your images."
+body = """
+ Drop a folder onto the picker, or
+      select the files by hand. They are read straight off your disk by the
+      browser; nothing is sent anywhere while you do it."""
+
+[[howto]]
+title = "Put them in the order they should play."
+body = """
+ Drag by
+      the handle, or use the arrows. "Sort by name" counts the way you would
+      expect, so <code>frame_2</code> lands before <code>frame_10</code>."""
+
+[[howto]]
+title = "Set how long each frame is held."
+body = """
+ Half a second
+      each is a slideshow; a twentieth is animation. Give every frame the same
+      hold time at once, or set one of them apart to linger."""
+
+[[howto]]
+title = "Pick a size, and how the colours are chosen."
+body = """
+ A GIF
+      grows with its area and its frame count and there is no quality slider to
+      bring it back down, so the size is the setting that matters most. 256
+      colours per frame is the best-looking default; one shared palette is
+      smaller and steadier."""
+
+[[howto]]
+title = "Make the GIF and download it."
+body = """
+ It is built on your own
+      hardware, so how long it takes depends on your machine rather than on a
+      queue. The finished animation plays on the page before you save it."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Are my images uploaded anywhere?"
+a = """
+        No. Your images are read, drawn, quantized and compressed by your own
+        browser on your own hardware. There is no server side to this tool, and
+        the page's <code>Content-Security-Policy</code> names every address it
+        may contact &mdash; none of them belongs to this site. Unplug from the
+        network and it still makes GIFs."""
+
+[[faq]]
+q = "Which image formats can I use?"
+a = """
+        Any still image format your browser can decode, which in practice means
+        JPG, PNG, WebP, GIF, AVIF and, on Apple devices, HEIC. There is no
+        separate list to keep up to date here, because the decoding is the
+        browser's job rather than ours."""
+
+[[faq]]
+q = "Why is my GIF so large?"
+a = """
+        Because a GIF stores every frame as whole pixels. There is no motion
+        compensation, nothing is stored as "the same as last time but shifted",
+        and there is no quality dial: the size is roughly the area times the
+        number of frames, and only three things bring it down.
+        <br><br>
+        Make it smaller &mdash; halving the size quarters the file. Use fewer
+        frames, or hold each one for longer. Drop to 64 or 32 colours, and turn
+        dithering off, which costs less than it sounds like on flat artwork and
+        a great deal on photographs. If it still will not fit, the honest answer
+        is that the thing you are making is a video, and an MP4 of it will be
+        perhaps a tenth of the size."""
+
+[[faq]]
+q = "How fast can a GIF play?"
+a = """
+        Not as fast as the number suggests. The format stores each frame's delay
+        in hundredths of a second, and browsers have clamped anything under two
+        of them to a tenth of a second since the 1990s &mdash; a rule written for
+        the spinning globes of the time and never removed. So a delay of 0.01s
+        does not play at 100 frames a second; it plays at 10. This tool will not
+        offer you anything under 0.02s for that reason, and 0.05s (20 frames a
+        second) is about as fast as it is worth asking for."""
+
+[[faq]]
+q = "What does the palette setting change?"
+a = """
+        A GIF frame holds at most 256 colours, and something has to choose them.
+        <br><br>
+        <strong>Best colours for each frame</strong> picks 256 for every picture
+        separately, which looks sharpest and is the right answer for a set of
+        unrelated photographs. <strong>One palette for the whole GIF</strong>
+        builds a single table from every frame at once. It makes a smaller file,
+        and it stops the flicker you get when the palette lurches between frames
+        of the same scene &mdash; so it is what to reach for when the frames are
+        a sequence rather than a collection."""
+
+[[faq]]
+q = "Can I keep a transparent background?"
+a = """
+        Yes, if your images have one: switch "Transparency" to "Keep transparent
+        areas". One thing to know before you do. GIF transparency is a single
+        bit &mdash; a pixel is either invisible or fully painted, with nothing in
+        between &mdash; so anti-aliased edges, soft shadows and anything faded
+        get a hard edge instead. If your animation is going onto a background you
+        know the colour of, flattening it onto that colour will look better."""
+
+[[faq]]
+q = "Is there a limit on how many images I can use?"
+a = """
+        There is no limit built into the tool. The practical ceiling is your own
+        machine's memory and your patience with the file that comes out: the
+        pictures are read one at a time, so a hundred frames is fine, but a
+        hundred frames at 640 px is also a very large GIF. See "Why is my GIF so
+        large?" above."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in and no trial. There is no
+        watermark on the output either. The site carries advertising, which is
+        what pays for it; the ads are not given anything about your images."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your images away to be processed would stop
+        the moment you unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Turn a set of images into an animated GIF. The frames, the palette and the compression are all worked out in your browser, so no image is ever uploaded."
+features = [
+  "Combines JPG, PNG, WebP, GIF and AVIF images into one animated GIF",
+  "Per-frame hold time, drag to reorder, sort by name or date",
+  "256, 128, 64 or 32 colours, with optional Floyd-Steinberg dithering",
+  "One shared palette or the best colours for each frame",
+  "Optional one-bit transparency, and loop forever, once or a set number of times",
+  "Runs offline; no upload, no account, no watermark",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/*"
+multiple = true
+title = "Drop images here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"
