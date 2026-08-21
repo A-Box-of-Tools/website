@@ -152,6 +152,10 @@ note = "Dokumente erstellen und umsortieren, ohne sie zum Verarbeiten wegzuschic
 name = "Codes &amp; Daten"
 note = "Aus Getipptem etwas machen, das eine Maschine lesen kann - ohne dass es die Seite verlaesst."
 
+[[hub.categories]]
+name = "Text &amp; Code"
+note = "Lesbar machen, vergleichen, kodieren - ohne ein Token oder eine Konfigurationsdatei bei einem fremden Dienst einzufuegen."
+
 #
 # ---------------------------------------------------------------------------
 # The guides index.

@@ -246,6 +246,14 @@ name = "Codes &amp; data"
 note = "Turn something you typed into something a machine can read, without it leaving the page."
 order = ["qr-barcode"]
 
+# The second of those, and the one where the promise matters most: what people
+# paste into an online formatter is tokens, config files and customer records.
+[[hub.categories]]
+id = "text-and-code"
+name = "Text &amp; code"
+note = "Read it, compare it, encode it - without pasting a token or a config file into somebody else's server."
+order = ["text-tools"]
+
 #
 # ---------------------------------------------------------------------------
 # The roadmap page.
@@ -369,6 +377,7 @@ order = [
   "crop-a-video",
   "make-a-qr-code",
   "turn-a-video-into-a-gif",
+  "format-json-without-uploading-it",
 ]
 
 [[guides.groups]]

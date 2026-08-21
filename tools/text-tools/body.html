@@ -1,0 +1,200 @@
+<main>
+  <!-- Step 1 &mdash; which of the four jobs this is -->
+  <section class="card">
+    <h2><span class="step">1</span> Pick the job</h2>
+
+    <!--
+      A tab strip rather than four pages, because the four jobs share an input:
+      the JSON you just formatted is the JSON you want to diff against the one
+      from the other branch, and retyping it into a second tool is the thing
+      this arrangement exists to avoid. `role="tablist"` and the arrow keys are
+      wired in main.js.
+    -->
+    <div class="tabs" role="tablist" aria-label="What to do with the text">
+      <button type="button" role="tab" id="tab-format" class="tab" data-mode="format"
+              aria-selected="true" aria-controls="options-format">Format</button>
+      <button type="button" role="tab" id="tab-convert" class="tab" data-mode="convert"
+              aria-selected="false" tabindex="-1" aria-controls="options-convert">Convert</button>
+      <button type="button" role="tab" id="tab-encode" class="tab" data-mode="encode"
+              aria-selected="false" tabindex="-1" aria-controls="options-encode">Encode</button>
+      <button type="button" role="tab" id="tab-diff" class="tab" data-mode="diff"
+              aria-selected="false" tabindex="-1" aria-controls="options-diff">Compare</button>
+    </div>
+
+    <div class="settings" id="options-format" role="tabpanel" aria-labelledby="tab-format">
+      <div class="field">
+        <label for="language">Language</label>
+        <select id="language">
+          <option value="auto" selected>Work it out from the text</option>
+          <option value="json">JSON</option>
+          <option value="xml">XML</option>
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
+          <option value="yaml">YAML</option>
+        </select>
+        <p class="field-note" id="language-note">
+          The guess is only a starting point, and it is one click to correct.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="indent">Indentation</label>
+        <select id="indent">
+          <option value="2" selected>Two spaces</option>
+          <option value="4">Four spaces</option>
+          <option value="tab">A tab</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="style">Layout</label>
+        <select id="style">
+          <option value="pretty" selected>Lay it out</option>
+          <option value="minify">Squeeze it flat</option>
+        </select>
+        <p class="field-note" id="style-note"></p>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="sort-keys">
+          <input type="checkbox" id="sort-keys">
+          Sort the keys of every object
+        </label>
+        <p class="field-note">
+          By how the keys read rather than by their code points, so
+          <code>item2</code> comes before <code>item10</code>. JSON only.
+        </p>
+      </div>
+    </div>
+
+    <div class="settings" id="options-convert" role="tabpanel" aria-labelledby="tab-convert" hidden>
+      <div class="field">
+        <label for="conversion">Convert</label>
+        <select id="conversion"></select>
+        <p class="field-note" id="conversion-note"></p>
+      </div>
+
+      <div class="field" id="root-field" hidden>
+        <label for="root-name">Name for the outer element</label>
+        <input type="text" id="root-name" value="root" spellcheck="false" autocomplete="off">
+        <p class="field-note">
+          XML has one element at the top and JSON does not, so one has to be
+          invented.
+        </p>
+      </div>
+    </div>
+
+    <div class="settings" id="options-encode" role="tabpanel" aria-labelledby="tab-encode" hidden>
+      <div class="field">
+        <label for="codec">Encoding</label>
+        <select id="codec"></select>
+        <p class="field-note" id="codec-note"></p>
+      </div>
+
+      <div class="field">
+        <fieldset class="modes">
+          <legend>Which way</legend>
+          <label class="mode">
+            <input type="radio" name="direction" value="encode" checked>
+            <span><strong>Encode</strong> Plain text in, encoded out.</span>
+          </label>
+          <label class="mode">
+            <input type="radio" name="direction" value="decode">
+            <span><strong>Decode</strong> Encoded in, plain text out.</span>
+          </label>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="settings" id="options-diff" role="tabpanel" aria-labelledby="tab-diff" hidden>
+      <div class="field">
+        <label for="view">How to show it</label>
+        <select id="view">
+          <option value="split" selected>Side by side</option>
+          <option value="unified">One column</option>
+        </select>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="only-changes">
+          <input type="checkbox" id="only-changes" checked>
+          Show only what changed, with three lines either side
+        </label>
+        <label class="check" for="ignore-whitespace">
+          <input type="checkbox" id="ignore-whitespace">
+          Ignore whitespace
+        </label>
+        <label class="check" for="ignore-case">
+          <input type="checkbox" id="ignore-case">
+          Ignore upper and lower case
+        </label>
+        <label class="check" for="ignore-blank">
+          <input type="checkbox" id="ignore-blank">
+          Ignore blank lines
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the text itself -->
+  <section class="card">
+    <h2><span class="step">2</span> Paste it in</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes" id="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input" id="input-label">Your text</label>
+          <span class="count" id="input-count">empty</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Paste JSON, XML, HTML, CSS or YAML here - or drop a file above."></textarea>
+      </div>
+
+      <div class="pane" id="pane-b" hidden>
+        <div class="pane-head">
+          <label for="input-b">The other one</label>
+          <span class="count" id="input-b-count">empty</span>
+        </div>
+        <textarea id="input-b" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Paste the version to compare against."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count" id="detected"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">Try an example</button>
+        <button type="button" id="swap" class="ghost" hidden>Swap sides</button>
+        <button type="button" id="clear" class="ghost danger">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out -->
+  <section class="card">
+    <h2><span class="step">3</span> Take the result</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">Nothing yet.</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>Copy</button>
+        <a id="download" class="ghost as-button" hidden download>Download</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+
+    <div id="diff-view" class="diff" hidden></div>
+  </section>
+</main>
