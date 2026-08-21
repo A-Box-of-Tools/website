@@ -1,0 +1,185 @@
+<main>
+  <!-- Step 1 &mdash; which kind of code -->
+  <section class="card">
+    <h2><span class="step">1</span> Pick the kind of code</h2>
+
+    <p class="card-lede">
+      A QR code holds anything and is what a phone camera looks for. A barcode
+      holds a number, and which one you need is usually decided for you &mdash;
+      by the shop, the warehouse or the shipping company asking for it.
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">Kind of code</label>
+      <select id="symbology">
+        <optgroup label="Square">
+          <option value="qr" selected>QR code</option>
+        </optgroup>
+        <optgroup label="Bars">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">Interleaved 2 of 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- Step 2 &mdash; the string itself -->
+  <section class="card">
+    <h2><span class="step">2</span> Say what goes in it</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">What it holds</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>The exact string this code will hold</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- Step 3 &mdash; how it is drawn -->
+  <section class="card">
+    <h2><span class="step">3</span> Choose how it looks</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>The QR code</legend>
+
+      <div class="option-row">
+        <label for="level">How much damage it can take</label>
+        <select id="level">
+          <option value="L">L &mdash; about 7% recoverable, smallest code</option>
+          <option value="M" selected>M &mdash; about 15%, the usual choice</option>
+          <option value="Q">Q &mdash; about 25%</option>
+          <option value="H">H &mdash; about 30%, for a print that will get worn</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">Margin, in modules</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        The margin is part of the code, not space around it. Four modules is
+        what the specification asks for, and a code trimmed to its edge is one
+        many scanners will not see at all.
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>The barcode</legend>
+
+      <div class="option-row">
+        <label for="bar-width">Narrowest bar, in pixels</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">Height of the bars, in pixels</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>Print the characters underneath</strong>
+          <span class="check-note">
+            What a person reads when the scanner will not. On a retail code the
+            digits sit in the margins as well, which is deliberate: they mark
+            out the white space nobody should trim off.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>Add a check character</strong>
+          <span class="check-note">
+            Code 39 does not normally carry one. Some systems insist on it; add
+            it only if yours does, because a reader that is not expecting one
+            will read it as an extra character on the end.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Colour and size</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">The code</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">Behind it</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>No background at all</strong>
+          <span class="check-note">
+            Transparent, for putting on something that already has a colour.
+            The SVG and the PNG both keep it; whatever ends up behind it has to
+            be pale, or a scanner will find no contrast.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">Size of the picture, in pixels</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Step 4 &mdash; the result -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> Take it</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="The code you have made"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Download the SVG</button>
+      <button type="button" id="download-png" class="primary">Download the PNG</button>
+      <button type="button" id="copy-png" class="ghost">Copy the image</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      The SVG is the one to keep. It is the code as instructions rather than as
+      pixels, so it prints at any size without going soft &mdash; which matters
+      more here than in most pictures, because a blurred edge is exactly what a
+      scanner cannot resolve.
+    </p>
+  </section>
+</main>

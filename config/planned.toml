@@ -26,6 +26,7 @@ items = [
   ["Rotate &amp; flip", "quarter turns, or straightening by a few degrees"],
   ["Add text", "over the picture, or in a caption box above it"],
   ["Filters", "brightness, contrast, saturation, blur, grayscale"],
+  ["Image to data URI", "paste the result straight into CSS or HTML"],
   ["HEIC to JPG", "the photos an iPhone makes, in a format everything opens"],
   ["AVIF &amp; JPEG XL", "convert either way, in whichever browser you happen to use"],
 ]
@@ -84,5 +85,4 @@ items = [
   ["Text &amp; code", "format, diff, encode, convert between formats"],
   ["Data", "CSV and JSON conversion, cleaning, inspection"],
   ["Privacy &amp; security", "hashes, checksums, metadata stripping"],
-  ["QR &amp; barcodes", "generated from a string, with nothing sent to make one"],
 ]

@@ -297,6 +297,34 @@ class BuildTheSite(unittest.TestCase):
         version = page.split('styles.css?v=')[1].split('"')[0].split("'")[0]
         self.assertIn(f'styles.css?v={version}', worker)
 
+    def test_a_vendored_engine_is_copied_and_precached(self):
+        """Any tool with a vendor/ folder gets it byte for byte, and cached.
+
+        Read off the repository rather than naming the one tool that has one:
+        the rule is about the folder, not about libheif, and a second vendored
+        engine should not also mean remembering to edit a test.
+        """
+        vendored = sorted(ROOT.glob('tools/*/vendor'))
+        if not vendored:
+            self.skipTest('no tool vendors anything')
+
+        for folder in vendored:
+            slug = folder.parent.name
+            worker = (self.out / slug / 'sw.js').read_text(encoding='utf-8')
+            for source in sorted(folder.rglob('*')):
+                if not source.is_file():
+                    continue
+                name = f'vendor/{source.relative_to(folder).as_posix()}'
+                with self.subTest(file=f'{slug}/{name}'):
+                    built = self.out / slug / name
+                    self.assertTrue(built.is_file(), name)
+                    # Byte for byte: a codec that went through the minifier, or
+                    # through anything else, is not the codec that was audited.
+                    self.assertEqual(built.read_bytes(), source.read_bytes())
+                    # And offline, or the tool stops working with the network
+                    # unplugged, which is the one thing it promises.
+                    self.assertIn(f"'{name}'", worker)
+
     def test_no_template_tag_survives_into_the_output(self):
         for name in self.written:
             if not name.endswith('.html'):
@@ -334,11 +362,17 @@ class BuildTheSite(unittest.TestCase):
         i18n.published - and this checks the first of the three.
         """
         sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
         hidden = [name for name in self.written if self.unpublished(name)]
         self.assertTrue(hidden, 'no unfinished locale in the tree to check')
         for name in hidden:
+            slug = name[:-len('index.html')]
             with self.subTest(page=name):
-                self.assertNotIn(name[:-len('index.html')], sitemap)
+                # The whole <loc>, not the slug on its own: a bare "de/" is a
+                # substring of an English address that happens to end in those
+                # letters - /qr-barcode/ does - and this test spent an
+                # afternoon reporting one of those as a leaked translation.
+                self.assertNotIn(f'<loc>{site["domain"]}{slug}</loc>', sitemap)
 
     def test_an_unfinished_language_is_never_offered(self):
         """The other two of the three: no page anywhere points at it.

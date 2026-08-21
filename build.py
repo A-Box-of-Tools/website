@@ -543,6 +543,8 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         if extra.is_file() and extra.suffix != '.js':
             shutil.copy2(extra, dest / 'src' / extra.name)
 
+    vendored = vendor_files(tool, dest)
+
     body_path = tool['dir'] / 'body.html'
     if not body_path.is_file():
         raise sitelib.ConfigError(f'{tool["slug"]}: no body.html')
@@ -592,7 +594,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     # img-src. If the panel itself were then left off the page, the tool would
     # carry a network permission it never uses - which is exactly the kind of
     # quiet over-reach the policy is written down to prevent.
-    if tool['picker'].get('urls') and 'id="url-panel"' not in body:
+    if sitelib.wants_urls(tool) and 'id="url-panel"' not in body:
         raise sitelib.ConfigError(
             f'{tool["slug"]}: [picker.urls] is set, so this page is built with the '
             'network permission the importer needs, but body.html never includes '
@@ -627,16 +629,57 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     # cache. Hashing the sources instead would leave a visitor holding the old
     # copy of a file that had genuinely changed.
     cached = ([dest / 'index.html', dest / 'styles.css', dest / 'analytics.js']
-              + [dest / name for name, _ in assets])
+              + [dest / name for name, _ in assets]
+              + [dest / name for name in vendored])
     emit.js(dest / 'sw.js', templates.render('sw.js', {
         'tool': tool,
-        'assets': ['index.html', css_href] + [name for name, _ in assets],
+        'assets': ['index.html', css_href] + [name for name, _ in assets] + vendored,
         'cache_hash': sitelib.cache_hash(cached),
     }), where=f'{locale["prefix"]}{tool["out_slug"]}/sw.js')
 
     og = tool['dir'] / 'og.png'
     if og.is_file():
         shutil.copy2(og, dest / 'og.png')
+
+
+def vendor_files(tool, dest):
+    """A vendored engine: `tools/<slug>/vendor/` copied byte for byte.
+
+    Most tools need nothing here, and that is the point - `src/` is code written
+    in this repository and is read, minified and token-checked as such. A codec
+    nobody here wrote is a different kind of file and gets a different door:
+
+      - **It is never minified.** buildlib/minify.py is a tokeniser, and it
+        refuses anything it cannot tokenise exactly - a compiled bundle carries
+        strings with line continuations in them, which is legal JavaScript and
+        not something that minifier will touch. That refusal is correct. The
+        answer is not to loosen it for third-party code; it is to copy the file.
+      - **It is precached with everything else**, so a tool carrying an engine
+        still works with the network unplugged. An engine downloaded on first
+        use would make the offline promise conditional, which is no promise.
+      - **Its licence rides along**, because a vendored library is only vendored
+        honestly if what it is and what it is licensed under arrive with it.
+
+    Everything in the folder is copied and everything is cached; there is no
+    list to keep in step, and a file that is here but not wanted is a file that
+    should not have been committed.
+
+    Returns the paths, relative to the tool's folder in dist/, in the order the
+    service worker should list them.
+    """
+    root = tool['dir'] / 'vendor'
+    if not root.is_dir():
+        return []
+
+    shipped = []
+    for path in sorted(root.rglob('*')):
+        if not path.is_file():
+            continue
+        name = f'vendor/{path.relative_to(root).as_posix()}'
+        (dest / name).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(path, dest / name)
+        shipped.append(name)
+    return shipped
 
 
 def shared_js(tool):

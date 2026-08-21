@@ -237,6 +237,11 @@ New-OgImage -Path 'tools\exif-editor\og.png' `
   -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\heic-to-jpg\og.png' `
+  -Title 'HEIC to JPG' `
+  -Subtitle 'iPhone photos in a format everything opens - decoded on your own machine.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\edit-audio\og.png' `
   -Title 'Audio Editor' `
   -Subtitle 'Reverse a track, change its speed, or lift a quiet recording - on your own machine.' `
@@ -270,6 +275,11 @@ New-OgImage -Path 'tools\image-to-data-uri\og.png' `
 New-OgImage -Path 'tools\compress-image\og.png' `
   -Title 'Image Compressor' `
   -Subtitle 'Name the size you need and it finds the least compression that gets there.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
+New-OgImage -Path 'tools\qr-barcode\og.png' `
+  -Title 'QR & Barcode Generator' `
+  -Subtitle 'A QR code for a link, a Wi-Fi network or a contact card - drawn on your own machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
 New-OgImage -Path 'tools\compress-pdf\og.png' `
