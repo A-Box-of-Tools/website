@@ -144,6 +144,10 @@ note = "An einer Aufnahme arbeiten, ohne sie aus der Hand zu geben - auch am Ton
 name = "Dokumente &amp; PDF"
 note = "Dokumente erstellen und umsortieren, ohne sie zum Verarbeiten wegzuschicken."
 
+[[hub.categories]]
+name = "Codes &amp; Daten"
+note = "Aus Getipptem etwas machen, das eine Maschine lesen kann - ohne dass es die Seite verlaesst."
+
 #
 # ---------------------------------------------------------------------------
 # The guides index.

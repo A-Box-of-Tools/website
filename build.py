@@ -592,7 +592,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     # img-src. If the panel itself were then left off the page, the tool would
     # carry a network permission it never uses - which is exactly the kind of
     # quiet over-reach the policy is written down to prevent.
-    if tool['picker'].get('urls') and 'id="url-panel"' not in body:
+    if sitelib.wants_urls(tool) and 'id="url-panel"' not in body:
         raise sitelib.ConfigError(
             f'{tool["slug"]}: [picker.urls] is set, so this page is built with the '
             'network permission the importer needs, but body.html never includes '

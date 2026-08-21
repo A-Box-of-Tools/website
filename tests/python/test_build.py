@@ -334,11 +334,17 @@ class BuildTheSite(unittest.TestCase):
         i18n.published - and this checks the first of the three.
         """
         sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
         hidden = [name for name in self.written if self.unpublished(name)]
         self.assertTrue(hidden, 'no unfinished locale in the tree to check')
         for name in hidden:
+            slug = name[:-len('index.html')]
             with self.subTest(page=name):
-                self.assertNotIn(name[:-len('index.html')], sitemap)
+                # The whole <loc>, not the slug on its own: a bare "de/" is a
+                # substring of an English address that happens to end in those
+                # letters - /qr-barcode/ does - and this test spent an
+                # afternoon reporting one of those as a leaked translation.
+                self.assertNotIn(f'<loc>{site["domain"]}{slug}</loc>', sitemap)
 
     def test_an_unfinished_language_is_never_offered(self):
         """The other two of the three: no page anywhere points at it.
