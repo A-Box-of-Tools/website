@@ -27,7 +27,6 @@ items = [
   ["Add text", "over the picture, or in a caption box above it"],
   ["Filters", "brightness, contrast, saturation, blur, grayscale"],
   ["Image to data URI", "paste the result straight into CSS or HTML"],
-  ["PNG to ICO", "a favicon at every size a browser asks for"],
   ["SVG to PNG", "rasterize a vector at any size"],
   ["HEIC to JPG", "the photos an iPhone makes, in a format everything opens"],
   ["AVIF &amp; JPEG XL", "convert either way, in whichever browser you happen to use"],

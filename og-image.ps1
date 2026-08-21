@@ -242,6 +242,11 @@ New-OgImage -Path 'tools\resize-image\og.png' `
   -Subtitle 'Resize, crop and convert a picture - or a whole folder - on your own machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\image-to-ico\og.png' `
+  -Title 'Image to ICO' `
+  -Subtitle 'Make a favicon, a Windows app icon or a macOS .icns - every size in one file.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\compress-image\og.png' `
   -Title 'Image Compressor' `
   -Subtitle 'Name the size you need and it finds the least compression that gets there.' `

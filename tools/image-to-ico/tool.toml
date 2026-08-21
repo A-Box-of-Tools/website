@@ -1,0 +1,396 @@
+#
+# Image to ICO
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "image-to-ico"
+name = "Image to ICO"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Image&nbsp;to&nbsp;ICO <span class=\"h1-kw\">&mdash; favicon, Windows and macOS icon maker</span>"
+tagline = "One picture in. Every size a browser, Windows or a Mac asks for, out."
+icon = "&#128278;"          # the mark beside the page heading
+favicon = "&#128278;"       # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "images"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. file-list is the drop-a-file-then-see-a-row widget that
+# more than one tool needs and that no tool should own.
+css_parts = ["file-list"]
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Image to ICO &mdash; Make a Favicon, App Icon or ICNS, No Upload"
+description = "Convert a PNG, JPEG or SVG into a real multi-size .ico or a macOS .icns in your browser. Favicon, Windows app icon, Mac app icon, plus the Apple and Android files a site needs. Nothing is uploaded."
+og_title = "Make an .ico or an .icns with every size in it, without uploading anything"
+og_description = "A favicon.ico for a website, an app.ico for a Windows program, an .icns for a Mac - with a preview at 16 pixels before you download. It all runs on your own machine."
+og_image_alt = "Image to ICO - favicon, Windows and macOS icon maker, no upload"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  img-src needs blob: for the thumbnails this page draws from the files you
+  chose, and https: because ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The scaling and the icon files themselves are both made in your own
+    browser. The picture is drawn by the canvas your browser already ships
+    with, and each container &mdash; the Windows <code>.ico</code>, the macOS
+    <code>.icns</code> &mdash; is assembled from those pixels by a couple of
+    hundred lines in <code>src/ico.js</code> and <code>src/icns.js</code> that
+    you can read. This tool has no network feature
+    of any kind &mdash; nothing to fetch, nothing to send &mdash; and there is no
+    server on the other end of this page to send a logo to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and make
+      an icon. Not one request carries an image, a thumbnail, a filename, or a byte
+      of what you chose. Or unplug from the internet and make one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/ico.js</code> and
+      <code>src/icns.js</code> for the two icon formats &mdash; the directory,
+      the entries and the mask in one, Apple's ten named slots in the other
+      &mdash; and <code>src/sizes.js</code> for where every size on the page
+      comes from."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to make an .ico file without uploading anything"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            A favicon, a Windows app icon or a macOS .icns &mdash; every size in
+            one file, with a preview at 16 pixels before you download."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "images"
+choose = "a picture"
+analytics_extra = """, and none of the
+  sizes, formats or file names this tool works out"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your logo has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The scaling is a
+      <code>drawImage</code> onto a canvas; each icon is a header written in
+      front of those pixels by <code>src/ico.js</code> or
+      <code>src/icns.js</code>, in this page."""
+
+[[privacy]]
+title = "The file is described from its own bytes."
+body = """
+ The list of sizes shown
+      beside a finished icon is not the list of sizes you asked for. It is read
+      back out of the file that was just written, by
+      <code>readIcoDirectory</code> or <code>readIcnsElements</code>, so if a
+      writer ever disagreed with the settings the page would say so rather than
+      you finding out when Windows drew nothing and macOS drew a blank sheet of
+      paper."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your picture. Every line that
+      reads, scales or writes a file is served from this origin and listed in the
+      repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Choose the picture."
+body = """
+ Drop a PNG, JPEG, WebP or SVG onto the
+      picker, or pick several and convert them in one go. Square is easiest, and
+      anything from 256 pixels up has enough detail for every size. It is read
+      straight off your disk by the browser; nothing is sent anywhere while you
+      do it."""
+
+[[howto]]
+title = "Pick the files you need."
+body = """
+ Windows and a browser read
+      <code>.ico</code>; a Mac reads <code>.icns</code> and will not look at the
+      other one. Tick either, or both if the thing you are making ships on both.
+      A website wants the extra Apple, Android and tile images as well, and that
+      is the third box."""
+
+[[howto]]
+title = "Say what the icon is for."
+body = """
+ A website favicon is 16, 32 and 48
+      pixels; a Windows application wants 256 as well; an application that has to
+      look right on a high-DPI laptop wants the in-between sizes Windows asks for
+      at 125% and 150% scaling. Pick the one that matches the job, or tick the
+      sizes yourself. Every size on the list says what asks for it. The
+      <code>.icns</code> has no such choice: Apple names exactly ten slots and
+      all ten go in."""
+
+[[howto]]
+title = "Deal with the shape and the background."
+body = """
+ An icon is square and most
+      logos are not. Pad it out and the whole picture is kept with space above and
+      below; crop and the middle is taken; stretch and it is squashed. Transparency
+      is kept as transparency unless you pick a colour to sit behind it."""
+
+[[howto]]
+title = "Look at the 16 pixel one before you download."
+body = """
+ That is the size the
+      icon will be seen at most often, and it is where thin strokes and small
+      lettering disappear. Every square in the preview is drawn at its real size
+      from your own file. If the smallest one is a smudge, the fix is a simpler
+      drawing, not a different setting."""
+
+[[howto]]
+title = "Take the files."
+body = """
+ One .ico with every size inside it,
+      named <code>favicon.ico</code> when that is what you asked for, because
+      that is the address browsers look for. One .icns beside it if you ticked
+      that, ready to go into a Mac application bundle. Tick the website set as
+      well and you also get the Apple, Android and Windows tile images, the
+      manifest, and the block of HTML to paste into your page. Anything more
+      than a single file comes down as one zip."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my image uploaded anywhere?"
+a = """
+        No. The picture is decoded and scaled by your own browser on your own
+        hardware, and the .ico is assembled from those pixels by code served from
+        this page. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site."""
+
+[[faq]]
+q = "What sizes should a favicon.ico contain?"
+a = """
+        16, 32 and 48. That is not a preference: 16 is what a browser draws in a
+        tab, 32 is what Windows uses for a desktop shortcut and what several
+        browsers use for a bookmark, and 48 is the size Google reads a site icon
+        at. Anything larger belongs in a PNG beside the .ico rather than inside it
+        &mdash; which is what the website set here produces."""
+
+[[faq]]
+q = "What sizes does a Windows application icon need?"
+a = """
+        16, 32, 48 and 256, which is what Visual Studio's own default app.ico
+        holds. 16 is the title bar and the small Explorer view, 32 the desktop and
+        the taskbar, 48 Explorer's medium icons, and 256 the Start menu and the
+        extra-large view. On a high-DPI display Windows also asks for 20, 24, 40,
+        64 and 96, and resamples them from the nearest size it has if they are not
+        there &mdash; the "every scale" preset puts them in."""
+
+[[faq]]
+q = "Why is the file bigger than the picture I started with?"
+a = """
+        Because an .ico is not one picture, it is several, and the small ones are
+        stored uncompressed so that anything can read them. A 32x32 entry is
+        exactly 4,264 bytes whatever is in it, and a 256x256 uncompressed entry is
+        264 KB &mdash; which is why sizes above 64 are stored as PNG by default.
+        Choosing "PNG for every size" makes the smallest file there is; choosing
+        uncompressed for every size makes the most compatible one."""
+
+[[faq]]
+q = "What is the difference between the PNG and uncompressed entries?"
+a = """
+        Only how the pixels are stored inside the .ico. An uncompressed entry is
+        the original Windows arrangement &mdash; a bitmap header, the pixels
+        upside down, and a one-bit transparency mask &mdash; and every version of
+        Windows ever released can read it. A PNG entry is a whole PNG file tucked
+        inside the icon, which is three to ten times smaller at the large sizes but
+        was only understood from Windows Vista onwards. The default uses each where
+        it wins: uncompressed up to 64 pixels, PNG above."""
+
+[[faq]]
+q = "Can it make an icon larger than 256 pixels?"
+a = """
+        No, and nothing can. The format stores each side in a single byte, and 0
+        is spoken for &mdash; it means 256. That is the ceiling, so an .ico
+        containing a 512 pixel image is not a bigger icon, it is a broken one. If
+        you need 512, you need a PNG, which is what the website set includes for
+        Android and for a web app's splash screen."""
+
+[[faq]]
+q = "Does it keep transparency?"
+a = """
+        Yes, in both kinds of entry, and it also writes the old one-bit mask beside
+        the alpha channel so that software too old to read the alpha still cuts the
+        icon out instead of drawing a black box. The one file that is deliberately
+        made opaque is the Apple touch icon in the website set: iOS composites that
+        onto its own tile and turns transparency into black, so it is flattened
+        onto your background colour, white by default."""
+
+[[faq]]
+q = "My logo is a wide wordmark. What happens to it?"
+a = """
+        Something has to, because an icon is square. Padding keeps the whole thing
+        and makes it small &mdash; a wordmark padded into a 16 pixel square is
+        about three pixels tall and unreadable. Cropping to the middle usually
+        works better: take the symbol out of the lockup and use that, the way
+        almost every brand does for its favicon. The preview shows you which one
+        survives before you download anything."""
+
+[[faq]]
+q = "What is in the website set, and do I need all of it?"
+a = """
+        Seven PNGs, a web app manifest, a browserconfig.xml and a block of HTML to
+        paste. You need them because an .ico covers browsers and Windows and
+        nothing else: an iPhone home screen reads a 180 pixel PNG by a name of its
+        own, Android and every install prompt read the manifest, and a tile pinned
+        to the Start menu reads the XML. None of those will look inside an .ico.
+        Everything is generated here, on your machine, and the zip has a note in it
+        saying what each file is for."""
+
+[[faq]]
+q = "Can it make a macOS icon as well?"
+a = """
+        Yes &mdash; tick <em>macOS icon</em> and you get an <code>.icns</code>
+        beside the <code>.ico</code>, or instead of it. It is a different
+        container for the same idea, and neither system will read the other's:
+        Windows wants .ico and a Mac application bundle wants .icns. The sizes
+        are not a choice there, because Apple publishes exactly ten slots
+        &mdash; 16, 32, 64, 128, 256, 512 and 1024 pixels, with three of those
+        appearing twice as the Retina version of the size below. All ten go in,
+        drawn from seven renders, which is why an .icns is the larger file."""
+
+[[faq]]
+q = "How do I use the .icns file?"
+a = """
+        For an application, it goes in the bundle at
+        <code>YourApp.app/Contents/Resources/</code> and is named in
+        <code>Info.plist</code> under <code>CFBundleIconFile</code>; every Mac
+        packaging tool has a field for it. For anything else, select the file in
+        Finder, press Command-C, then Get Info on the folder or disk image you
+        want to change, click the small icon at the top left and press
+        Command-V."""
+
+[[faq]]
+q = "Is the .icns the same as what iconutil makes?"
+a = """
+        The same ten slots with the same four-letter types, and PNG in each one,
+        which is what <code>iconutil</code> produces from a
+        <code>.iconset</code> folder. One deliberate difference: Apple's tool
+        also writes a <code>TOC&nbsp;</code> element, an index of the types and
+        lengths that follow. It is an optimisation rather than part of the
+        format &mdash; a reader without one walks the elements end to end and
+        arrives at the same answer &mdash; and a wrong index is worse than no
+        index, so it is left out."""
+
+[[faq]]
+q = "Can I convert several pictures at once?"
+a = """
+        Yes. Every picture on the list becomes its own .ico with the same settings,
+        and the batch comes down as one zip with a folder per picture &mdash;
+        otherwise two of them would both be called favicon.ico and one would
+        overwrite the other. Every output you ticked is made for every picture.
+        Click any row to put that picture in the preview."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no watermark.
+        There is no limit on the number or the size of the files either, because
+        there is no server paying for them &mdash; the work happens on your own
+        machine. The site carries advertising, which is what pays for it; the ads
+        are not given anything about your images."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being uploaded:
+        a tool that sent your logo away to be converted would stop the moment you
+        unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Convert an image into a multi-size Windows ICO file or a macOS ICNS file in the browser. Presets for a website favicon, a Windows application icon and a high-DPI application icon, Apple's ten icns slots, a preview of every size at its real pixel size, and an optional set of the Apple, Android and Windows tile files a website needs. Nothing is uploaded."
+features = [
+  "Writes a real multi-size .ico, from 16 to 256 pixels",
+  "Writes a macOS .icns with all ten of Apple's slots, from 16 to 1024 pixels",
+  "Both formats from one picture, in one pass, with each size drawn only once",
+  "Presets for a website favicon, a Windows app icon, high-DPI Windows, and maximum compatibility",
+  "Every size says what asks for it, so nothing goes in for no reason",
+  "Uncompressed entries for the small sizes and PNG for the large ones, or all of either",
+  "Keeps transparency, and writes the pre-Vista transparency mask as well",
+  "Pad, crop or stretch a picture that is not square, on a colour or on nothing",
+  "Shows every size at its real pixel size before you download",
+  "Optional website set: Apple touch icon, Android icons, maskable icon, Windows tile, manifest and the HTML to paste",
+  "Batches, with all results in one zip",
+  "Runs offline; no upload, no account",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/*,.png,.jpg,.jpeg,.webp,.gif,.bmp,.avif,.svg"
+multiple = true
+title = "Drop a picture here"
+hint = "or click to browse &mdash; PNG, SVG, JPEG, WebP and anything else your browser can open"
