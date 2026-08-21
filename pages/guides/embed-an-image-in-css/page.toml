@@ -1,0 +1,35 @@
+#
+# Guide: putting a picture inside a stylesheet.
+#
+# Written for the person who has found `url(data:image/png;base64,...)` in
+# somebody else's CSS, understood roughly what it does, and now has to decide
+# whether to do it themselves. What a data URI costs, where the cost lands, the
+# quoting mistake that only breaks SVGs, and the metadata nobody meant to
+# publish.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/embed-an-image-in-css"
+kind = "guide"
+nav = "Embedding an image in CSS"
+group = "doing-the-job"
+tool = "image-to-data-uri"
+
+title = "Data URIs in CSS: When to Embed an Image, and When Not To"
+description = "What a data URI costs, why base64 adds a third and gzip does not give it back, why an SVG should never be base64, and the quoting mistake that breaks inlined SVGs silently."
+
+heading = "When to put a picture inside your CSS, and when not to"
+lede = """
+    An image written into a stylesheet arrives with it: no second request, no
+    waiting. It also stops being a file &mdash; so it cannot be cached on its
+    own, and it is downloaded again every time anything around it changes. This
+    is where that trade is worth making, and where it quietly is not."""
+
+updated = "20 August 2026"
+published = "2026-08-20"
+lastmod = "2026-08-20"
+
+og_title = "When to put a picture inside your CSS"
+og_description = "What a data URI costs, why an SVG should never be base64, and the quoting mistake that breaks inlined SVGs silently."
+og_image_alt = "abox.tools - tools that never touch a server"

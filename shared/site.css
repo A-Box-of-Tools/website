@@ -463,6 +463,22 @@ code {
 .legal li, .prose li { margin: 0.3rem 0; }
 .legal a, .prose a { color: var(--accent); }
 
+/* Code blocks. The first guide that needed them is the one about data URIs,
+   whose examples are single unbreakable lines a mile long - so these wrap
+   rather than scroll sideways, and break mid-token, which is the only thing
+   that works on a string with no spaces in it to break at. */
+.legal pre, .prose pre {
+  margin: 0 0 0.95rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 /* ---- footer ------------------------------------------------------------ */
 
 /* A link footer in the shape the large media-tool sites use: a few columns of
