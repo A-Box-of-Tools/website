@@ -1,0 +1,169 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> 파일 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>파일</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>용량</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>길이</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>소리</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>가장 큰 순간</dt><dd id="src-peak">&mdash;</dd></div>
+      <div><dt>읽어들인 형식</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <div class="wave-wrap" id="src-wave-wrap" hidden>
+      <canvas id="src-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="preview" controls preload="metadata"></audio>
+    </div>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 편집 -->
+  <section class="card" id="edit-card" hidden>
+    <h2><span class="step">2</span> 손보기</h2>
+
+    <div class="edit-block">
+      <label class="check" for="reverse">
+        <input type="checkbox" id="reverse">
+        거꾸로 재생하기
+      </label>
+      <p class="field-note">
+        샘플을 마지막 것부터 차례로 적어 냅니다. 그 밖에 달라지는 것은 없어서,
+        두 번 거꾸로 돌리면 처음 파일이 그대로 돌아옵니다.
+      </p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="speed">속도</label>
+        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+               spellcheck="false" autocomplete="off" aria-label="속도, 배수로">
+      </div>
+
+      <!-- The slider is in octaves, not multiples: half speed and double speed
+           are then the same distance either side of the middle, which is how
+           they sound. main.js does the conversion. -->
+      <input type="range" id="speed" min="-2" max="2" step="0.01" value="0"
+             aria-describedby="speed-note">
+
+      <div class="presets" role="group" aria-label="자주 쓰는 배속">
+        <button type="button" class="ghost" data-speed="0.5">0.5&times;</button>
+        <button type="button" class="ghost" data-speed="0.75">0.75&times;</button>
+        <button type="button" class="ghost" data-speed="1">1&times;</button>
+        <button type="button" class="ghost" data-speed="1.25">1.25&times;</button>
+        <button type="button" class="ghost" data-speed="1.5">1.5&times;</button>
+        <button type="button" class="ghost" data-speed="2">2&times;</button>
+      </div>
+
+      <fieldset class="modes">
+        <legend>음정은 어떻게 할지</legend>
+        <label class="mode">
+          <input type="radio" name="pitch" value="keep" checked>
+          <span>
+            <strong>음정 유지</strong>
+            목소리는 여전히 같은 목소리로 들리고, 빨라지거나 느려지기만 합니다.
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="pitch" value="move">
+          <span>
+            <strong>함께 움직이게</strong>
+            빠르면 높아지고 느리면 낮아집니다. 테이프가 하던 그대로요.
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="speed-note"></p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="volume">음량</label>
+        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+               spellcheck="false" aria-label="음량 변화, 데시벨로">
+      </div>
+
+      <input type="range" id="volume" min="-24" max="24" step="0.5" value="0"
+             aria-describedby="volume-note">
+
+      <fieldset class="modes">
+        <legend>얼마나 크게 만들지</legend>
+        <label class="mode">
+          <input type="radio" name="level" value="gain" checked>
+          <span>
+            <strong>이만큼</strong>
+            모든 샘플에 같은 수를 곱합니다. 그 밖에 달라지는 것은 없습니다.
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="level" value="normalize">
+          <span>
+            <strong>최대한 크게</strong>
+            가장 큰 순간이 천장 바로 아래에 놓일 때까지 올립니다.
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="volume-note"></p>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>길이</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>속도</dt><dd id="sum-speed">&mdash;</dd></div>
+      <div><dt>가장 큰 순간</dt><dd id="sum-peak">&mdash;</dd></div>
+      <div><dt>대략</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="clip-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 3단계 &mdash; 나오는 파일 -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 저장하기</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">무엇으로 쓸지</label>
+        <select id="depth">
+          <option value="16" selected>16비트 WAV &mdash; 어디서나 재생됩니다</option>
+          <option value="32">32비트 부동소수 WAV &mdash; 잘려 나가는 것이 없습니다</option>
+        </select>
+        <p class="field-note" id="depth-note">
+          WAV는 샘플을 있는 그대로 담기 때문에, WAV로 쓰는 것 자체가 품질을
+          깎을 수 없습니다. 작은 파일은 아닙니다. 위의 예상 용량을 보세요.
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary">오디오 편집하기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>오디오 내려받기</a>
+      </div>
+    </div>
+  </section>
+</main>

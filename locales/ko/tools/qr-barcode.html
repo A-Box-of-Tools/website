@@ -1,0 +1,184 @@
+<main>
+  <!-- 1단계 &mdash; 어떤 종류의 코드인지 -->
+  <section class="card">
+    <h2><span class="step">1</span> 코드 종류 고르기</h2>
+
+    <p class="card-lede">
+      QR 코드는 무엇이든 담고, 휴대폰 카메라가 찾는 것도 그것입니다. 바코드는
+      숫자를 담는데, 어느 것이 필요한지는 대개 여러분이 정하지 않습니다
+      &mdash; 그것을 요구하는 매장이나 창고, 운송사가 정합니다.
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">코드 종류</label>
+      <select id="symbology">
+        <optgroup label="정사각형">
+          <option value="qr" selected>QR 코드</option>
+        </optgroup>
+        <optgroup label="막대">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">Interleaved 2 of 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- 2단계 &mdash; 문자열 자체 -->
+  <section class="card">
+    <h2><span class="step">2</span> 무엇을 담을지 말하기</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">무엇을 담는지</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>이 코드가 담게 될 정확한 문자열</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- 3단계 &mdash; 어떻게 그릴지 -->
+  <section class="card">
+    <h2><span class="step">3</span> 생김새 고르기</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>QR 코드</legend>
+
+      <div class="option-row">
+        <label for="level">얼마나 상해도 되는지</label>
+        <select id="level">
+          <option value="L">L &mdash; 약 7% 복구, 코드가 가장 작습니다</option>
+          <option value="M" selected>M &mdash; 약 15%, 보통 이것을 고릅니다</option>
+          <option value="Q">Q &mdash; 약 25%</option>
+          <option value="H">H &mdash; 약 30%, 닳게 될 인쇄물에</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">여백, 모듈 단위</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        여백은 코드 둘레의 빈자리가 아니라 코드의 일부입니다. 규격이 요구하는
+        것은 네 모듈이고, 가장자리까지 바짝 잘라 낸 코드는 많은 스캐너가 아예
+        보지 못합니다.
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>바코드</legend>
+
+      <div class="option-row">
+        <label for="bar-width">가장 가는 막대, 픽셀</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">막대 높이, 픽셀</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>아래에 글자 인쇄하기</strong>
+          <span class="check-note">
+            스캐너가 못 읽을 때 사람이 읽는 것입니다. 유통용 코드에서는 숫자가
+            여백에도 놓이는데, 일부러 그렇게 합니다. 아무도 잘라 내면 안 되는
+            빈 공간을 표시해 주거든요.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>검사 문자 추가하기</strong>
+          <span class="check-note">
+            Code 39는 보통 검사 문자를 달지 않습니다. 어떤 시스템은 그것을
+            고집하는데, 여러분 쪽이 그럴 때만 넣으세요. 기대하지 않는 리더는
+            그것을 끝에 붙은 글자 하나로 읽어 버립니다.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>색과 크기</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">코드</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">그 뒤</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>배경 없음</strong>
+          <span class="check-note">
+            이미 색이 있는 것 위에 올릴 때를 위한 투명 배경입니다. SVG도 PNG도
+            그대로 유지합니다. 뒤에 오게 되는 것은 밝아야 하고, 아니면 스캐너가
+            대비를 찾지 못합니다.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">그림 크기, 픽셀</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- 4단계 &mdash; 결과 -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> 가져가기</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="방금 만든 코드"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG 내려받기</button>
+      <button type="button" id="download-png" class="primary">PNG 내려받기</button>
+      <button type="button" id="copy-png" class="ghost">이미지 복사</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      간직할 것은 SVG입니다. 픽셀이 아니라 지시로 적힌 코드라서 어떤 크기로
+      인쇄해도 뭉개지지 않습니다 &mdash; 다른 그림보다 여기서 더 중요한
+      점인데, 흐려진 가장자리야말로 스캐너가 못 읽는 것이기 때문입니다.
+    </p>
+  </section>
+</main>

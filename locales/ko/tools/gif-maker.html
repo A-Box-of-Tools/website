@@ -1,0 +1,174 @@
+<main>
+  <!-- 1단계 &mdash; 프레임 -->
+  <section class="card">
+    <h2><span class="step">1</span> 이미지 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="프레임을 보여 주는 방식 바꾸기">
+          <button type="button" data-view="large" class="active" aria-pressed="true">크게</button>
+          <button type="button" data-view="small" aria-pressed="false">작게</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">이름순 정렬</button>
+        <button type="button" data-sort="date" class="ghost">날짜순 정렬</button>
+        <button type="button" data-sort="reverse" class="ghost">역순</button>
+        <button type="button" id="clear-all" class="ghost danger">전부 빼기</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      프레임의 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 손잡이를
+      끌어 순서를 바꾸거나, 각 프레임의 화살표를 쓰세요. 여기 순서가 재생되는 순서입니다.
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">모든 프레임을 이만큼 머무르게</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="각 프레임이 머무는 시간의 단위">
+        <option value="seconds" selected>초</option>
+        <option value="fps">초당 프레임 수</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">전체에 적용</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- 2단계 &mdash; 설정 -->
+  <section class="card">
+    <h2><span class="step">2</span> GIF 설정</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">크기</label>
+        <select id="size">
+          <option value="480" selected>480 px &mdash; 무난한 기본값</option>
+          <option value="640">640 px</option>
+          <option value="320">320 px</option>
+          <option value="240">240 px</option>
+          <option value="original">이미지에 맞추기</option>
+          <option value="custom">직접 입력&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="직접 입력한 너비, 픽셀">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="직접 입력한 높이, 픽셀">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">이미지 맞춤</label>
+        <select id="fit">
+          <option value="contain" selected>안쪽에 맞추기 (레터박스)</option>
+          <option value="cover">화면 채우기 (가장자리가 잘립니다)</option>
+          <option value="stretch">늘여서 채우기 (찌그러집니다)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">배경색</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">색</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; GIF가 담는 최대치</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; 가장 작은 파일</option>
+        </select>
+        <p class="field-note">색이 적을수록 파일은 작아지고 띠는 늘어납니다.</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">팔레트</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>프레임마다 최적의 색</option>
+          <option value="shared">GIF 전체에 하나의 팔레트</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">디더링</label>
+        <select id="dither">
+          <option value="on" selected>켜기 &mdash; 그러데이션이 매끈해집니다</option>
+          <option value="off">끄기 &mdash; 더 평평하고 가장자리가 깔끔합니다</option>
+        </select>
+        <p class="field-note">로고와 선화, 스크린샷에는 꺼 두세요.</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">반복</label>
+        <select id="loop-mode">
+          <option value="forever" selected>무한 반복</option>
+          <option value="once">한 번만 재생</option>
+          <option value="times">정해진 횟수만큼 재생&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="움직임을 몇 번 재생할지" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">투명도</label>
+        <select id="transparent">
+          <option value="off" selected>배경색 위에 눌러 두기</option>
+          <option value="on">투명한 영역 유지</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="첫 프레임 미리보기"></canvas>
+        <p id="preview-empty" class="preview-empty">이미지를 넣으면 미리보기가 나옵니다</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>프레임</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>재생 길이</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>화면 크기</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>재생 횟수</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 3단계 &mdash; 내보내기 -->
+  <section class="card">
+    <h2><span class="step">3</span> GIF 만들기</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>GIF 만들기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="완성된 애니메이션, 재생 중"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>GIF 내려받기</a>
+      </div>
+    </div>
+  </section>
+</main>

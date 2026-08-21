@@ -1,0 +1,158 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> PDF 고르기</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">다른 파일 고르기</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 하나만 남길 수 있다면 이 도구가 남길 화면 -->
+  <section class="card" id="inventory-card" hidden>
+    <h2><span class="step">2</span> 용량이 어디에 있는지 보기</h2>
+
+    <p class="card-lede">
+      "PDF 압축"은 이름 하나를 나눠 쓰는 서로 다른 두 가지 일입니다. 스캔한
+      문서는 사진 더미라서 그것들을 다시 인코딩하면 파일 대부분을 건집니다.
+      계약서는 글자와 글꼴인데, 그것을 만든 프로그램이 이미 압축해 두었습니다
+      &mdash; 안에 80%가 숨어 있지 않고, 어떤 도구도 찾아낼 수 없습니다. 둘 중
+      어느 쪽인지는 의견의 문제가 아니라서, 무엇에도 손대기 전에 여기 먼저
+      보여 드립니다.
+    </p>
+
+    <p id="verdict" class="verdict"></p>
+
+    <div class="breakdown">
+      <div id="breakdown-bar" class="breakdown-bar" role="img" aria-labelledby="breakdown-list"></div>
+      <ul id="breakdown-list" class="breakdown-list"></ul>
+    </div>
+
+    <p id="inventory-notes" class="field-summary"></p>
+  </section>
+
+  <!-- 3단계 &mdash; 얼마를 쓸지 -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">3</span> 얼마나 세게 짤지 정하기</h2>
+
+    <p class="card-lede">
+      PDF에는 각 이미지가 얼마나 크게 그려지는지가 기록되어 있어서, 이 도구는
+      지면이 실제로 쓰는 만큼을 짐작하지 않고 잴 수 있습니다. 4000픽셀짜리
+      스캔을 종이 8인치 폭에 놓았다면 인치당 500픽셀을 싣고 있는 셈인데,
+      150이어도 인쇄 결과는 같고 화면에서도 똑같아 보입니다. 아무도 볼 수 없는
+      픽셀부터 씁니다. 그건 아무 대가도 아니니까요.
+    </p>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">화질을 얼마나 쓸지</legend>
+      <div class="presets" id="presets" role="radiogroup" aria-label="화질을 얼마나 쓸지">
+        <label class="preset">
+          <input type="radio" name="preset" value="smallest">
+          <span class="preset-body">
+            <strong>가장 작게</strong>
+            <span class="preset-note">96 DPI. 화면에서 읽기만 하면 되는 문서에.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="screen" checked>
+          <span class="preset-body">
+            <strong>화면에서 보기 좋게</strong>
+            <span class="preset-note">130 DPI. 메일로 보내야 하는 파일이라면 대개 이것.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="print">
+          <span class="preset-body">
+            <strong>종이에서도 괜찮게</strong>
+            <span class="preset-note">220 DPI. 작아지면서도 제대로 인쇄됩니다.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="gentle">
+          <span class="preset-body">
+            <strong>사진은 거의 건드리지 않기</strong>
+            <span class="preset-note">크기 조절을 아예 하지 않습니다. 절감분은 대부분 파일을 다시 묶는 데서 나옵니다.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <details class="advanced">
+      <summary>두 숫자를 직접 정하기</summary>
+      <div class="option-row">
+        <label for="dpi-value">그려지는 공간 1인치당 최대 픽셀 수</label>
+        <div class="inline-pair">
+          <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
+          <span class="unit">DPI &mdash; 0이면 모든 이미지를 원래 크기 그대로 둡니다</span>
+        </div>
+      </div>
+      <div class="option-row">
+        <label for="quality-value">JPEG 화질</label>
+        <div class="inline-pair">
+          <input type="range" id="quality-value" min="30" max="95" step="1" value="68">
+          <output id="quality-out" for="quality-value">68</output>
+        </div>
+      </div>
+    </details>
+
+    <label class="check">
+      <input type="checkbox" id="strip-meta" checked>
+      <span>
+        <strong>이 파일이 기억하고 있는 출신 정보를 빼내기</strong>
+        <span class="check-note">
+          이 파일을 만든 프로그램의 이름과 버전, 만든 날짜와 마지막으로 고친
+          날짜, XMP 패킷, 그리고 편집 프로그램이 자기 작업을 다시 불러오려고
+          남겨 둔 비공개 덩어리 &mdash; 가끔 몇 메가바이트나 됩니다. 문서를
+          보여 주는 데 필요한 것은 하나도 없습니다.
+        </span>
+      </span>
+    </label>
+
+    <p id="settings-summary" class="field-summary"></p>
+  </section>
+
+  <!-- 4단계 &mdash; 한 번의 클릭 -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> 압축</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">이 PDF 압축하기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>내려받기</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <details id="per-image" class="advanced" hidden>
+        <summary>각 이미지에 무슨 일이 있었는지</summary>
+        <ul id="image-list" class="image-list"></ul>
+      </details>
+    </div>
+  </section>
+</main>

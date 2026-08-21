@@ -1,0 +1,88 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> 동영상 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>파일</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>용량</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>화면</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>길이</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>영상</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>소리</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <div class="stage-wrap" id="preview-wrap" hidden>
+      <video id="preview" class="stage" playsinline controls></video>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 뒤집기 -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">2</span> 거꾸로 돌리기</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="quality">화질</label>
+        <select id="quality">
+          <option value="low">더 작은 파일</option>
+          <option value="medium" selected>균형</option>
+          <option value="high">최고 화질</option>
+        </select>
+        <p class="field-note">
+          같은 화면에 원본이 쓴 것보다 더 쓰지는 않습니다 &mdash; 거꾸로 된
+          영상은 같은 프레임을 담고 있으므로, 더 써 봐야 파일만 커집니다.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          소리도 뒤집기
+        </label>
+        <p class="field-note" id="audio-note">
+          샘플 단위로 돌려놓은 다음 AAC로 다시 인코딩합니다. 소리 없는 영상이면
+          꺼 두세요. 그편이 빠릅니다.
+        </p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>출력 화면</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>길이</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>프레임</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>방식</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>동영상 거꾸로 돌리기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>동영상 내려받기</a>
+      </div>
+    </div>
+  </section>
+</main>

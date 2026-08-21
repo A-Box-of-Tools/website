@@ -1,0 +1,146 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> 동영상 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>파일</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>용량</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>화면</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>길이</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>영상</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>소리</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 자를 영역 -->
+  <section class="card" id="crop-card" hidden>
+    <h2><span class="step">2</span> 자를 영역 정하기</h2>
+
+    <p class="stage-hint">
+      상자 안쪽을 끌면 옮겨지고, 모서리를 끌면 크기가 바뀝니다. 상자에 초점이
+      있을 때 방향키는 1픽셀씩 밀고,
+      <kbd>Alt</kbd>&nbsp;+&nbsp;방향키는 크기를 바꾸며,
+      <kbd>Shift</kbd>를 누른 채면 한 번에 10픽셀씩 움직입니다.
+    </p>
+
+    <!-- The crop box itself is added here by src/cropper.js. The stage is given
+         the video's own shape, so the box can be positioned in percentages and
+         needs no recalculating when the window is resized. -->
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <div class="crop-controls">
+      <div class="aspect-row" role="group" aria-label="자를 영역의 비율 고정">
+        <button type="button" data-aspect="free" class="active">자유</button>
+        <button type="button" data-aspect="source">원본</button>
+        <button type="button" data-aspect="1:1">1:1</button>
+        <button type="button" data-aspect="4:5">4:5</button>
+        <button type="button" data-aspect="9:16">9:16</button>
+        <button type="button" data-aspect="16:9">16:9</button>
+        <button type="button" data-aspect="4:3">4:3</button>
+        <button type="button" data-aspect="3:2">3:2</button>
+        <button type="button" id="swap-aspect" class="ghost" title="고정한 비율을 가로세로 바꾸기">
+          가로세로 바꾸기
+        </button>
+      </div>
+
+      <div class="numbers">
+        <label>왼쪽<input type="number" id="crop-x" min="0" step="1"></label>
+        <label>위<input type="number" id="crop-y" min="0" step="1"></label>
+        <label>너비<input type="number" id="crop-w" min="16" step="2"></label>
+        <label>높이<input type="number" id="crop-h" min="16" step="2"></label>
+        <div class="number-actions">
+          <button type="button" id="crop-max" class="ghost">최대</button>
+          <button type="button" id="crop-centre" class="ghost">가운데</button>
+          <button type="button" id="crop-reset" class="ghost">화면 전체</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="even-note">
+      너비와 높이는 2씩 움직입니다. H.264에는 한 변이 홀수인 프레임을 저장할
+      방법이 없기 때문입니다.
+    </p>
+  </section>
+
+  <!-- 3단계 &mdash; 내보내기 -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 잘라내기</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">출력</label>
+        <select id="format">
+          <option value="mp4" selected>MP4 &mdash; 프레임마다 다시 인코딩</option>
+          <option value="webm">WebM &mdash; 재생하면서 녹화</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="quality">화질</label>
+        <select id="quality">
+          <option value="low">더 작은 파일</option>
+          <option value="medium" selected>균형</option>
+          <option value="high">최고 화질</option>
+        </select>
+        <p class="field-note">
+          같은 영역에 원본이 쓴 것보다 더 쓰지는 않습니다 &mdash; 그 위로 다시
+          인코딩해 봐야 파일만 커집니다.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          소리 유지
+        </label>
+        <p class="field-note" id="audio-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>출력 화면</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>남는 비율</dt><dd id="sum-kept">&mdash;</dd></div>
+      <div><dt>길이</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>방식</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>동영상 잘라내기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>동영상 내려받기</a>
+      </div>
+    </div>
+  </section>
+</main>

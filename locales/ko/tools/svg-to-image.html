@@ -1,0 +1,206 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> SVG 파일 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">목록에서 전부 빼기</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 크기 -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> 얼마나 크게 할지 말하기</h2>
+
+    <p class="card-lede">
+      벡터가 대신 답해 줄 수 없는 유일한 질문입니다. SVG 안에는 픽셀이 없습니다
+      &mdash; 그리는 방법이 적혀 있을 뿐이고, 어떤 크기를 말하든 그대로
+      따릅니다. 아래의 숫자는 사진에서라면 그랬을 법한, 밀어붙이고 있는 한계가
+      아닙니다. 24&nbsp;픽셀 아이콘에서 뽑은 4000픽셀은 24픽셀만큼이나
+      선명합니다.
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">크기를 정하는 기준</label>
+      <select id="size-mode">
+        <option value="scale" selected>파일이 요구하는 크기의 배수</option>
+        <option value="width">너비, 픽셀</option>
+        <option value="height">높이, 픽셀</option>
+        <option value="longest">긴 변</option>
+        <option value="box">양쪽을 다 준 상자</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>곱할 값<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="자주 쓰는 배수">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        목록의 모든 파일이 자기 크기에서 곱해지므로, 서로 다른 크기로 그려진
+        아이콘 묶음도 서로의 비례를 그대로 지킵니다.
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>너비<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="자주 쓰는 너비">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">높이는 그림의 비율을 따라갑니다.</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>높이<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">너비는 그림의 비율을 따라갑니다.</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>긴 변<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        더 긴 쪽이 이 값이 되고 나머지가 따라갑니다. 그래서 가로로 넓은 로고와
+        세로로 긴 로고가 긴 변 기준으로 같은 크기가 됩니다.
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>너비<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>높이<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">그림의 비율이 다르면</label>
+        <select id="box-fit">
+          <option value="fit" selected>안에 맞추기 &mdash; 그림은 전부 남고, 한 변이 짧게 나옵니다</option>
+          <option value="pad">여백 넣기 &mdash; 정확히 이 크기로, 양옆에 배경이 들어갑니다</option>
+          <option value="stretch">늘이기 &mdash; 정확히 이 크기로, 비율은 찌그러집니다</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">고해상도 사본도 함께 쓰기</label>
+      <select id="density">
+        <option value="1" selected>아니요 &mdash; 그림 하나당 파일 하나</option>
+        <option value="2">@2x도 &mdash; 레티나 화면용</option>
+        <option value="3">@2x와 @3x &mdash; 휴대폰이 요구하는 한 벌 전부</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- 3단계 &mdash; 형식 -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> 형식 고르기</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">형식</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; 투명도를 지키고 가장자리가 정확합니다</option>
+          <option value="image/jpeg">JPEG &mdash; 투명도가 없고, 사진은 더 작습니다</option>
+          <option value="image/webp">WebP &mdash; 투명도도 되고 파일도 더 작습니다</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">화질 &mdash; <output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          JPEG와 WebP에만 해당합니다. PNG는 무손실이라 화질 다이얼이 없습니다.
+          단색 면과 또렷한 가장자리 &mdash; SVG를 이루는 것 대부분이 그것입니다
+          &mdash; 는 손실 인코더가 가장 못 다루는 것이라, 사진일 때보다 이 값을
+          높게 잡아 두었습니다.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">배경</label>
+        <select id="background-mode">
+          <option value="transparent" selected>투명</option>
+          <option value="colour">색 지정</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="배경색" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4단계 &mdash; 보고 나서 가져가기 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> 보고 나서 저장하기</h2>
+
+    <p class="card-lede">
+      미리보기는 파일을 쓰는 바로 그 코드가, 여러분이 고른 파일에서, 이 기기에서
+      그린 것입니다. 확인할 만한 것은 그림이 픽셀이 될 때 달라지는 두 가지입니다.
+      반 픽셀 굵기였다가 회색이 되어 버린 머리카락 선, 그리고 웹에서 가져온
+      글꼴이 아니라 이 기기에 있는 글꼴로 그려지는 글자.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">SVG를 넣으면 여기 나타납니다.</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>래스터화</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>완료</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>전부 zip으로 내려받기</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

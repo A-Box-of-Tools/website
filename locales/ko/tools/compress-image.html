@@ -1,0 +1,119 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> 이미지 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">목록에서 전부 빼기</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 중요한 숫자 -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> 얼마까지 허용할지 말하기</h2>
+
+    <p class="card-lede">
+      다른 압축 도구들이 거꾸로 하고 있는 부분입니다. 화질 슬라이더를 주고,
+      어느 설정이 주어진 한도 아래로 떨어지는지는 여러분이 짐작하게 둡니다.
+      대신 한도를 말해 주세요. 그러면 도구가 그 안에 들어가는 가장 높은 화질을
+      찾습니다 &mdash; 그리고 요청한 용량의 절반짜리 파일을 돌려주는 대신,
+      예산에 남은 만큼을 마저 씁니다.
+    </p>
+
+    <div class="target-row">
+      <div class="target-field">
+        <label for="target-value">이미지 한 장당 목표 용량</label>
+        <div class="inline-pair">
+          <input type="number" id="target-value" value="500" min="1" step="1" inputmode="decimal">
+          <label for="target-unit" class="visually-hidden">단위</label>
+          <select id="target-unit">
+            <option value="KB" selected>KB</option>
+            <option value="MB">MB</option>
+          </select>
+        </div>
+      </div>
+
+      <!--
+        The four numbers people are actually given: an upload form that says
+        100 KB, a forum avatar or a job application at 500 KB, an email
+        attachment at 1 MB, and a web page hero at 2 MB.
+      -->
+      <div class="presets" id="presets" role="group" aria-label="자주 쓰는 목표 용량">
+        <button type="button" class="ghost" data-bytes="102400">100 KB</button>
+        <button type="button" class="ghost" data-bytes="512000">500 KB</button>
+        <button type="button" class="ghost" data-bytes="1048576">1 MB</button>
+        <button type="button" class="ghost" data-bytes="2097152">2 MB</button>
+      </div>
+    </div>
+
+    <p id="target-summary" class="field-summary"></p>
+
+    <fieldset class="options">
+      <legend>거기에 닿기 위해 허용할 방법</legend>
+
+      <div class="option-row">
+        <label for="format-select">출력 형식</label>
+        <select id="format-select">
+          <option value="auto" selected>자동 &mdash; 더 나은 형식이 없으면 원래 형식 유지</option>
+          <option value="keep">원래 형식을 항상 유지</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/webp">WebP</option>
+          <option value="image/png">PNG (무손실이라 용량은 가로세로에서 나옵니다)</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="allow-resize" checked>
+        <span>
+          <strong>필요하면 사진을 더 작게 만들어도 됨</strong>
+          <span class="check-note">
+            화질만으로는 압축 흔적이 보이기 시작하는 지점 아래까지 내려가야 할
+            때만 씁니다. 그 아래에서는 망가진 픽셀이 많은 것보다 멀쩡한 픽셀이
+            적은 편이 낫습니다. 이 항목을 끄면 가로세로를 그대로 지키고, 빠듯한
+            목표는 화질로 치릅니다.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- 3단계 &mdash; 한 번의 클릭 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 압축</h2>
+
+    <div class="run-row">
+      <button type="button" id="compress-all" class="primary big" disabled>목표 용량으로 압축</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>압축 완료</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>전부 zip으로 내려받기</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
