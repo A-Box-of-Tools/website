@@ -122,9 +122,9 @@ confetti somewhere in the middle of the picture — which looks like a problem w
 the image rather than with the file around it. The check therefore happens
 *after* each code is written, against the count as it stood before that code's
 entry was added, which is exactly where the `compress.c` every GIF writer
-descends from puts it. `tests/js/gif.test.js` decodes what this produces with an
-independently written decoder, because self-consistency is the only thing a
-round trip against one's own code would prove.
+descends from puts it. `tests/js/gif-maker.test.js` decodes what this produces
+with an independently written decoder, because self-consistency is the only
+thing a round trip against one's own code would prove.
 
 ## The file, in `src/gif.js`
 
@@ -232,7 +232,7 @@ the actual cost.
 
 ## Testing it
 
-`tests/js/gif.test.js` and `tests/js/gif-quantize.test.js`, run by
+`tests/js/gif-maker.test.js` and `tests/js/gif-maker-quantize.test.js`, run by
 `node --test "tests/js/*.test.js"`.
 
 The GIF tests are round trips through a **separately written decoder** in the
