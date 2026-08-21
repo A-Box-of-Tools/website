@@ -295,7 +295,7 @@ something the build does, and cannot forget to do:
 | Four copies of the repository URL per page | `source_url` in `config/site.toml`. |
 | A cache name to bump by hand when minification changed the bytes | The cache name hashes the files **as emitted**, so turning minifying on or off invalidates the cache by itself. |
 | Nothing at all, which is how a stylesheet change reached returning visitors four hours late | Every page asks for its stylesheet by a URL carrying a hash of that stylesheet, so changing the CSS changes the URL and there is no stale copy to serve. |
-| Three different footers, none of which linked to a privacy policy because there was nowhere to put one | One `templates/partials/footer.html`. Its tool list, guide list and legal-page list come from `tools/` and `pages/`, and the only thing that differs per page is whether links start `./` or `../`. |
+| Three different footers, none of which linked to a privacy policy because there was nowhere to put one | One `templates/partials/footer.html`. Its tool list and legal-page list come from `tools/` and `pages/`, and the only thing that differs per page is whether links start `./` or `../`. |
 
 The build refuses to produce a site rather than produce a broken one. A missing
 config key, a tool whose folder and `slug` disagree, a tool listed on the hub
@@ -487,11 +487,14 @@ pages/guides/trim-a-video/          kind = "guide"
   body.html    the same
 ```
 
-`nav` is the label the footer uses. Either kind gets the site frame, the site's
-Content-Security-Policy unchanged, an entry in `sitemap.xml`, and a link in the
-footer of every page on the site. Neither gets a service worker, because there
-is nothing here worth keeping offline, or `blob:` in `img-src`, because neither
+Either kind gets the site frame, the site's Content-Security-Policy unchanged,
+and an entry in `sitemap.xml`. Neither gets a service worker, because there is
+nothing here worth keeping offline, or `blob:` in `img-src`, because neither
 ever makes one.
+
+`nav` is the short label. A legal page uses it for its own link in the footer;
+a guide uses it for the last step of its breadcrumb, because guides are reached
+through their index rather than listed one by one down there.
 
 A **legal** page is Privacy or Terms. It matters for trust rather than for
 search, which is why it sits at the lowest priority the sitemap has and carries
@@ -555,8 +558,10 @@ a legal page does not have:
 | `tool` | optional: the slug of the tool it is about |
 
 Then name the folder in that group's `order` list. Everything else follows: the
-card on the index, the entry in the footer of every page, the line in
-`sitemap.xml`, and both halves of the link between the guide and its tool.
+card on the index, the line in `sitemap.xml`, and both halves of the link
+between the guide and its tool. The footer needs nothing — it carries one link
+to the index, not an entry per guide, so it does not grow by a line every time
+somebody writes one.
 
 ### The three refusals
 
