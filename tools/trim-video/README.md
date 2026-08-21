@@ -1,19 +1,65 @@
-# Video Trimmer & Joiner
+# Video Cutter
 
-*Keep the parts that matter, in the order you want them, without losing a single byte.*  ·  lives at `/trim-video/`  ·  [all tools](../)  ·  [how the site is built](../../README.md)
+*Mark the parts worth keeping as it plays. Get them back as one video.*  ·  lives at `/trim-video/`  ·  [all tools](../)  ·  [how the site is built](../../README.md)
 
-The seventh tool. It cuts clips down to the sections you mark, takes sections
-out of the middle of them, and puts several of them together into one file —
-and on the normal path it does all of it without decoding a single frame.
+The seventh tool. You watch a video and mark every part worth keeping as it
+plays; it gives those parts back as one file. On the normal path it does that
+without decoding a single frame.
 
 ---
 
-## Why this one is not just the cropper with different arithmetic
+## The shape of it, which is the whole point
+
+Most online cutters give you one pair of handles and ask which single stretch to
+keep. That is fine for topping and tailing a clip and no use at all for the job
+people actually sit down to do: watch an hour of footage **once**, mark the six
+moments worth having as they go past, and get those six back as one video with
+the rest gone.
+
+So a video here holds a *list* of marks rather than a selection:
+
+- **`i`** opens a part at the playhead. Pressing it again before you have closed
+  that part moves the start rather than opening a second one — which is what you
+  want when you meant to catch the run-up and pressed a beat too early.
+- **`o`** closes the open part at the playhead.
+- **`u`** takes the last one back. **Space** plays and pauses, the arrow keys
+  jump five seconds, and the playback speed drops to a quarter for a moment that
+  is hard to catch.
+
+Every closed pair becomes a row you can replay on its own, retime by typing an
+exact time, reorder or delete, and a band on the timeline you can drag by either
+end. The total of their lengths is what the finished video will run to.
+
+The same list answers the opposite question. **Cut them out** inverts it: mark
+the adverts, the silences or the false starts, and what is left is joined up
+without them. `invertRanges` in `src/ranges.js` is the whole of that, and it is
+the same nine lines whether one part was marked or twenty.
+
+## The marks are a file
+
+Marking is careful work, and a closed tab should not cost it. **Save marks**
+writes a plain text file — one line a part — and **Load marks** reads one back:
+
+```
+seconds,talk.mp4              HHMMSSmmm,talk.mp4
+207.687,347.737               00:03:27.687,00:05:47.737
+630.284,668.796               00:10:30.284,00:11:08.796
+```
+
+Both layouts are the ones tools that work this way already use, deliberately, so
+a file written here can be handed to one of those and a file written there can
+be dropped onto this page. `src/segments.js` is the reader and the writer, and
+`tests/js/trim-video-segments.test.js` is mostly about it being neither too
+strict nor too clever: a file with no header at all is still a list of times, a
+line that cannot be read is counted rather than fatal, and a marked part that
+starts past the end of the video you loaded is dropped with a message saying so.
+
+## Why this is not just the cropper with different arithmetic
 
 A crop changes what every frame looks like, so every frame has to be written
 again. That is unavoidable, and the cropper's page says so.
 
-A trim changes nothing about any frame. The picture you keep is the picture that
+A cut changes nothing about any frame. The picture you keep is the picture that
 was already there, already encoded, sitting in the file. So the honest
 implementation is not "decode, cut, encode" — it is "work out which samples,
 and write them back":
@@ -285,7 +331,25 @@ it needs doing again:
   already set, and the "cut the section out" option correctly disabling the
   recording path.
 
-Joining added a second round, and `tests/js/trim-video-join.test.js` holds the
+The segment model added a round of its own. `tests/js/trim-video-segments.test.js`
+covers the marks and the file they save to — the clock both ways, a file written
+here reading back as the same times, a file in the layout other tools write
+loading as it stands, and the several ways a hand-edited file can be wrong
+without being fatal. `invertRanges` is tested there too, including the case that
+matters most: marks that overlap must collapse into one gap rather than produce
+a section of negative length.
+
+In the browser, against a six-second video whose colour encodes the second it
+came from: marking 1s–2s and 3s–4s with `i` and `o`, exporting, and sampling the
+result back to source seconds — 0.1s in the result showing source 1.18s and 1.1s
+showing source 2.98s, which is the two parts joined with the middle gone.
+Switching to "cut them out" and getting three parts and four seconds from the
+same marks. Saving the marks and reading the file back. Loading one through the
+picker, including a segment past the end of the video, which is dropped with a
+message. `i` twice in a row moving the open start rather than opening a second
+part; `o` before the start refused with a reason.
+
+Joining added a round too, and `tests/js/trim-video-join.test.js` holds the
 part that can be checked without a browser — the refusals, the seam arithmetic,
 and a round trip through the `mp4a`/`esds` writer and reader. What needed a real
 browser, run against clips generated in the page:

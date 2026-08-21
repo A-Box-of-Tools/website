@@ -249,8 +249,8 @@ a = """
         nothing else: the clip that comes out is exactly as long as the one that
         went in, with its timing and its sound intact. Trimming is a separate
         job and is a separate tool &mdash; the
-        <a href="../trim-video/">Video Trimmer</a> cuts a clip down to a section
-        without re-encoding a frame of it."""
+        <a href="../trim-video/">Video Cutter</a> marks the parts of a clip
+        worth keeping and saves them as one file, without re-encoding a frame."""
 
 [[faq]]
 q = "Why do the width and height move in steps of two?"

@@ -16,7 +16,7 @@ browser and uploads nothing; how the site around them is built is in the
 | Tool | Lives at | What it does |
 |---|---|---|
 | [Images to Video](images-to-video/) | `/images-to-video/` | Turn a folder of images into a video. |
-| [Video Trimmer & Joiner](trim-video/) | `/trim-video/` | Keep the parts that matter, in the order you want them, without losing a single byte. |
+| [Video Cutter](trim-video/) | `/trim-video/` | Mark the parts worth keeping as it plays. Get them back as one video. |
 | [Video Cropper](crop-video/) | `/crop-video/` | Cut a clip down to the part that matters. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
 | [Image Resizer](resize-image/) | `/resize-image/` | Say the size. Draw the box. Pick the format. |

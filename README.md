@@ -789,7 +789,7 @@ an engine to do it instead, and these all stay small enough to read.
 | SVG to PNG | An `<img>` holding an SVG draws to a canvas. Only for SVGs with no external references, which is also what keeps it offline |
 | GIF: make, split, resize, reverse, retime, analyze | LZW and a color quantizer, written out the way the MP4 muxer was. Reading animated GIFs is `ImageDecoder` where it exists and a hand-written parser where it does not |
 | APNG | PNG chunks, with `CompressionStream('deflate')` for the pixel data — the compressor is already in the browser |
-| Video: trim, resize, crop, rotate, reverse, frame grabs, filters, subtitles | `VideoDecoder` and `VideoEncoder`, plus an MP4 *de*muxer to sit beside the muxer that already exists. Cropping is built: `/crop-video/`, where the demuxer turned out to be the whole job and the crop itself is six lines of canvas. Trimming and joining are built: `/trim-video/`, and they are the one job in this column that needs no codec at all &mdash; the frames are moved, not decoded |
+| Video: trim, resize, crop, rotate, reverse, frame grabs, filters, subtitles | `VideoDecoder` and `VideoEncoder`, plus an MP4 *de*muxer to sit beside the muxer that already exists. Cropping is built: `/crop-video/`, where the demuxer turned out to be the whole job and the crop itself is six lines of canvas. Cutting is built: `/trim-video/`, and it is the one job in this column that needs no codec at all &mdash; the frames are moved, not decoded |
 | Audio: trim, fade, speed, volume, waveform | `decodeAudioData` and `OfflineAudioContext`. WAV out is a 44-byte header in front of the samples |
 | QR codes and barcodes | Arithmetic over a string. There is no input file at all |
 

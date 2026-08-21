@@ -234,9 +234,38 @@ export function planRanges({ video, audio, ranges, anchor }) {
   return { plans, videoDurations, audioDurations };
 }
 
+/** The shortest section worth keeping - under a frame at any sane rate. */
+const MIN_SECTION = 0.02;
+
 /**
- * The sections of the source that a "keep this" or "cut this out" choice comes
- * down to.
+ * Everything that is *not* in these sections.
+ *
+ * This is what "remove the parts I marked" comes down to, and it is the same
+ * arithmetic whether one section was marked or twenty: walk them in time order,
+ * and every gap between the end of one and the start of the next is a section
+ * of its own. Overlapping marks collapse into one gap rather than producing a
+ * negative-length section, which is what makes it safe to hand this the marks
+ * exactly as they were made rather than tidied first.
+ *
+ * @returns {{start: number, end: number}[]}
+ */
+export function invertRanges(ranges, duration) {
+  const ordered = [...ranges].sort((a, b) => a.start - b.start);
+  const gaps = [];
+  let at = 0;
+
+  for (const range of ordered) {
+    if (range.start > at) gaps.push({ start: at, end: Math.min(range.start, duration) });
+    at = Math.max(at, range.end);
+  }
+  if (at < duration) gaps.push({ start: at, end: duration });
+
+  return gaps.filter((gap) => gap.end - gap.start > MIN_SECTION);
+}
+
+/**
+ * The sections one pair of marks comes down to, given what is to be done with
+ * them.
  *
  * Keeping is the section itself. Cutting is everything either side of it, which
  * is one section when the mark touches an end of the clip and two when it does
@@ -246,16 +275,8 @@ export function planRanges({ video, audio, ranges, anchor }) {
  * @returns {{start: number, end: number}[]}
  */
 export function rangesFor({ mode, start, end, duration }) {
-  const MIN = 0.02;   // shorter than one frame at any frame rate worth naming
-
-  if (mode === 'keep') {
-    return end - start > MIN ? [{ start, end }] : [];
-  }
-
-  return [
-    { start: 0, end: start },
-    { start: end, end: duration },
-  ].filter((range) => range.end - range.start > MIN);
+  const kept = end - start > MIN_SECTION ? [{ start, end }] : [];
+  return mode === 'keep' ? kept : invertRanges(kept, duration);
 }
 
 /** How long the finished video will be, in seconds. */
