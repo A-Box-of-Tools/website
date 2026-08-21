@@ -1,0 +1,33 @@
+#
+# Guide: taking a still out of a video.
+#
+# The counterpart to the cropping and trimming guides, and the one with the most
+# widely-believed wrong answer in front of it: that a screenshot of a paused
+# player is the same picture. It is not, and the difference is easy to show,
+# which is what most of this page does.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/grab-a-frame-from-a-video"
+kind = "guide"
+nav = "Grabbing a frame"
+group = "doing-the-job"
+tool = "grab-frame"
+
+title = "How to Save a Frame From a Video as a Picture"
+description = "Get a still out of a clip at its real resolution: why a screenshot of a paused player is not the same picture, which format to save it in, and how to land on the exact frame you meant."
+
+heading = "How to save a frame from a video as a picture"
+lede = """
+    Pausing the player and pressing the screenshot key gives you a picture of a
+    window. Sometimes that is all you need. This is what the difference is, and
+    how to get the frame itself when it matters."""
+
+updated = "20 August 2026"
+published = "2026-08-20"
+lastmod = "2026-08-20"
+
+og_title = "How to save a frame from a video as a picture"
+og_description = "Why a screenshot of a paused player is not the frame, which format to save a still in, and how to land on the exact frame you meant."
+og_image_alt = "abox.tools - tools that never touch a server"
