@@ -10,7 +10,10 @@ import { trimByRecording, estimateRecording } from './record.js';
 import { joinability, outputFrame } from './clips.js';
 import { fittedBox } from './draw.js';
 import { Timeline, formatTime, parseTime } from './timeline.js';
-import { keyframeTimes, keyframeBefore, rangesFor, totalSeconds } from './ranges.js';
+import {
+  openSegment, readTimestamps, segmentRanges, totalCaptured, writeTimestamps,
+} from './segments.js';
+import { keyframeTimes, keyframeBefore, invertRanges, totalSeconds } from './ranges.js';
 import { hasWebCodecs, hasMediaRecorder, canDecode } from './support.js';
 
 const $ = (id) => document.getElementById(id);
@@ -31,17 +34,24 @@ const el = {
   tlNow: $('tl-now'),
   tlTotal: $('tl-total'),
   play: $('play'),
-  playSection: $('play-section'),
-  goStart: $('go-start'),
-  goEnd: $('go-end'),
-  markStart: $('mark-start'),
-  markEnd: $('mark-end'),
-  setStart: $('set-start'),
-  setEnd: $('set-end'),
-  markLength: $('mark-length'),
-  markAll: $('mark-all'),
+  back5: $('back-5'),
+  forward5: $('forward-5'),
+  markIn: $('mark-in'),
+  markOut: $('mark-out'),
+  undo: $('undo'),
+  speedRow: document.querySelector('.speed-row'),
+  segmentCount: $('segment-count'),
+  totalKept: $('total-kept'),
+  segmentTable: $('segment-table'),
+  segmentRows: $('segment-rows'),
+  segmentsEmpty: $('segments-empty'),
+  addSegment: $('add-segment'),
+  resetSegments: $('reset-segments'),
+  importMarks: $('import-marks'),
+  marksInput: $('marks-input'),
+  marksFormat: $('marks-format'),
+  exportMarks: $('export-marks'),
   exportCard: $('export-card'),
-  exportHeading: $('export-heading'),
   method: $('method'),
   methodNote: $('method-note'),
   frameField: $('frame-field'),
@@ -76,34 +86,37 @@ const el = {
 };
 
 /**
- * The clips, in the order they will be joined.
+ * The videos, in the order they will be joined, each holding its own list of
+ * marked segments.
  *
- * One of these is a trim, which is what this tool was before it could hold two.
- * Everything below treats that as the ordinary case of a list rather than as a
- * mode of its own, so there is no second code path to keep in step.
+ * One video with one segment is a trim; one video with eight is what this tool
+ * is for; several videos is a join. All three are the same list, so there is no
+ * second code path to keep in step.
  *
  * @type {object[]}
  */
 let clips = [];
-/** Which clip the timeline and the preview are pointed at. */
+/** Which video the timeline and the preview are pointed at. */
 let selected = -1;
-/** Set while the timeline is being repointed, so the marks it emits on the way
- *  are not written back over the clip they came from. */
-let restoring = false;
+/** Which segment of it carries the handles. */
+let selectedSegment = null;
+/** What happens to the marked parts: keep them, or cut them out. */
+let mode = 'keep';
 
 let exporting = false;
 let abortController = null;
 let lastResultUrl = null;
 let nextId = 1;
-/** Set while "Play the section" is running, so playback stops at the mark. */
-let watchingSection = false;
 /** Where the playhead is, in seconds. Read off the element where there is one,
  *  and kept here where there is not. */
 let playAt = 0;
+/** Set while a segment is being previewed, so playback stops at its end. */
+let watchUntil = null;
 
 const timeline = new Timeline(el.timeline, {
-  onChange: onRangeChanged,
   onSeek: seekTo,
+  onSelect: (id) => { selectedSegment = id; renderSegments(); },
+  onAdjust: adjustSegment,
 });
 
 const clip = () => (selected >= 0 ? clips[selected] : null);
@@ -197,7 +210,7 @@ async function addClip(file) {
 
     if (!media && !canRecord) {
       showError(played.ok
-        ? `${file.name} cannot be recorded by this browser, so it cannot be trimmed.`
+        ? `${file.name} cannot be recorded by this browser, so it cannot be cut.`
         : `${file.name} could not be opened: ${fallbackReason ?? 'the format is not one this browser plays.'}`);
       URL.revokeObjectURL(objectUrl);
       return false;
@@ -206,7 +219,6 @@ async function addClip(file) {
     const source = media
       ? { width: media.video.displayWidth, height: media.video.displayHeight }
       : { width: played.width, height: played.height };
-    const duration = media ? Math.max(media.duration, played.duration) : played.duration;
 
     const entry = {
       id: nextId++,
@@ -217,14 +229,13 @@ async function addClip(file) {
       fallbackReason,
       playable: played.ok,
       source,
-      duration,
+      duration: media ? Math.max(media.duration, played.duration) : played.duration,
       fps: media ? averageFps(media.video) : 30,
-      start: 0,
-      end: duration,
-      mode: 'keep',
       canExact,
       canRecord,
       thumbnail: null,
+      segments: [],
+      nextSegmentId: 1,
     };
 
     clips.push(entry);
@@ -277,16 +288,17 @@ async function makeThumbnail(entry, probe) {
   }
 }
 
-/* -------------------------------------------------------------- the list */
+/* --------------------------------------------------------- the video list */
 
 function renderClips() {
-  el.clipList.hidden = clips.length === 0;
+  // One video needs no list: the heading already says which one it is.
+  el.clipList.hidden = clips.length < 2;
   el.clipList.innerHTML = '';
+  if (clips.length < 2) return;
 
   clips.forEach((entry, index) => {
     const row = document.createElement('li');
     row.className = `clip${index === selected ? ' selected' : ''}`;
-    row.dataset.index = String(index);
 
     const shot = document.createElement('div');
     shot.className = 'clip-shot';
@@ -307,21 +319,17 @@ function renderClips() {
     title.type = 'button';
     title.className = 'clip-name';
     title.textContent = entry.name;
-    title.title = 'Mark this clip';
+    title.title = 'Mark this video';
     title.addEventListener('click', () => selectClip(index));
 
-    const kept = totalSeconds(rangesOf(entry));
+    const marked = segmentRanges(entry.segments).length;
     const facts = document.createElement('p');
     facts.className = 'clip-facts';
     facts.textContent = [
       `${entry.source.width} x ${entry.source.height}`,
       formatDuration(entry.duration),
-      kept >= entry.duration - 0.005
-        ? 'all of it'
-        : `${formatDuration(kept)} kept`,
-      entry.media
-        ? (entry.media.audio ? 'with sound' : 'no sound')
-        : 'recorded to trim',
+      marked ? `${marked} segment${marked === 1 ? '' : 's'}` : 'not marked',
+      entry.media ? (entry.media.audio ? 'with sound' : 'no sound') : 'recorded to cut',
     ].join(' · ');
 
     body.append(title, facts);
@@ -329,9 +337,9 @@ function renderClips() {
     const actions = document.createElement('div');
     actions.className = 'clip-actions';
     actions.append(
-      button('↑', 'Move up', () => move(index, -1), index === 0),
-      button('↓', 'Move down', () => move(index, 1), index === clips.length - 1),
-      button('✕', 'Remove', () => remove(index), false, 'danger'),
+      iconButton('↑', 'Move up', () => moveClip(index, -1), index === 0),
+      iconButton('↓', 'Move down', () => moveClip(index, 1), index === clips.length - 1),
+      iconButton('✕', 'Remove', () => removeClip(index), false, 'danger'),
     );
 
     row.append(shot, body, actions);
@@ -339,7 +347,7 @@ function renderClips() {
   });
 }
 
-function button(label, title, onClick, disabled = false, extra = '') {
+function iconButton(label, title, onClick, disabled = false, extra = '') {
   const element = document.createElement('button');
   element.type = 'button';
   element.className = `clip-button ghost${extra ? ` ${extra}` : ''}`;
@@ -351,18 +359,19 @@ function button(label, title, onClick, disabled = false, extra = '') {
   return element;
 }
 
-function move(index, by) {
+function moveClip(index, by) {
   const to = index + by;
   if (to < 0 || to >= clips.length) return;
   const [moved] = clips.splice(index, 1);
   clips.splice(to, 0, moved);
   if (selected === index) selected = to;
   else if (selected === to) selected = index;
+  describeSelection();
   renderClips();
-  updateMethodOptions();
+  updateSummary();
 }
 
-function remove(index) {
+function removeClip(index) {
   const [gone] = clips.splice(index, 1);
   URL.revokeObjectURL(gone.objectUrl);
 
@@ -376,15 +385,13 @@ function remove(index) {
     return;
   }
 
-  if (selected >= clips.length) selected = clips.length - 1;
-  selectClip(Math.max(0, selected === index ? Math.min(index, clips.length - 1) : selected));
-  renderClips();
+  selectClip(Math.min(index, clips.length - 1));
   updateMethodOptions();
 }
 
-/* -------------------------------------------------------- the chosen clip */
+/* ------------------------------------------------------- the chosen video */
 
-/** Which clip the timeline is pointed at, said out loud once there are two. */
+/** Which video is being marked, said out loud once there are two. */
 function describeSelection() {
   const entry = clip();
   el.editing.hidden = clips.length < 2 || !entry;
@@ -395,10 +402,10 @@ function selectClip(index) {
   if (index < 0 || index >= clips.length) return;
   selected = index;
   const entry = clips[index];
+  selectedSegment = entry.segments.length ? entry.segments[entry.segments.length - 1].id : null;
 
   describeSelection();
 
-  restoring = true;
   if (entry.playable) {
     if (el.preview.src !== entry.objectUrl) el.preview.src = entry.objectUrl;
     el.preview.hidden = false;
@@ -410,13 +417,13 @@ function selectClip(index) {
     el.preview.hidden = true;
     el.stageNote.hidden = false;
     setTransportEnabled(false);
-    el.stageNote.textContent = 'This browser will not play this clip, so the frames below are '
-      + 'decoded one at a time to show you where the marks are. The trim itself is unaffected.';
+    el.stageNote.textContent = 'This browser will not play this video, so the frames below are '
+      + 'decoded one at a time to show you where the marks are. The cut itself is unaffected.';
     drawStill(entry, 0);
   }
 
   el.stage.style.aspectRatio = `${entry.source.width} / ${entry.source.height}`;
-  // Height is capped through the width, so the stage keeps the clip's exact
+  // Height is capped through the width, so the stage keeps the video's exact
   // shape - see the note on .stage in styles.css.
   el.stage.style.maxWidth = `calc(52vh * ${entry.source.width / entry.source.height})`;
 
@@ -425,14 +432,6 @@ function selectClip(index) {
     keyframes: entry.media ? keyframeTimes(entry.media.video) : null,
     frameTimes: entry.media ? frameTimesOf(entry.media.video) : null,
   });
-  // Not snapped: these marks were snapped when they were set, and putting the
-  // end of a whole clip through the snapper again lands it on the last frame's
-  // start time - which is one frame short of the end of the clip.
-  timeline.setRange({ start: entry.start, end: entry.end }, { snap: false });
-  timeline.setMode(entry.mode);
-  restoring = false;
-
-  document.querySelector(`input[name="mode"][value="${entry.mode}"]`).checked = true;
   playAt = 0;
   timeline.setPlayhead(0);
   el.tlTotal.textContent = formatTime(entry.duration);
@@ -440,13 +439,13 @@ function selectClip(index) {
 
   el.pathNote.hidden = Boolean(entry.media);
   if (!entry.media) {
-    el.pathNote.textContent = `${entry.name} is trimmed by playing it and recording the `
-      + `result, because ${entry.fallbackReason ?? 'its layout is not one the reader here understands.'} `
-      + 'That takes as long as the section is long, everything is re-encoded rather than '
-      + 'copied, and it cannot be joined with anything else.';
+    el.pathNote.textContent = `${entry.name} is cut by playing it and recording the result, `
+      + `because ${entry.fallbackReason ?? 'its layout is not one the reader here understands.'} `
+      + 'That takes as long as the result is long, everything is re-encoded rather than copied, '
+      + 'and it can only keep one segment.';
   }
 
-  onRangeChanged(timeline.range);
+  renderSegments();
   renderClips();
 }
 
@@ -458,9 +457,8 @@ function frameTimesOf(video) {
 }
 
 function setTransportEnabled(enabled) {
-  for (const control of [el.play, el.playSection, el.goStart, el.goEnd]) {
-    control.disabled = !enabled;
-  }
+  for (const control of [el.play, el.back5, el.forward5]) control.disabled = !enabled;
+  for (const control of el.speedRow.querySelectorAll('.speed')) control.disabled = !enabled;
 }
 
 /* -------------------------------------------------- the still-frame preview */
@@ -492,7 +490,7 @@ async function drawStill(entry, atSeconds) {
       el.still.hidden = false;
     }
   } catch (error) {
-    el.stageNote.textContent = 'This browser will not play this clip and no frame could be '
+    el.stageNote.textContent = 'This browser will not play this video and no frame could be '
       + `decoded from it either (${error.message}). The marks below still work on its length.`;
   } finally {
     stillBusy = false;
@@ -505,7 +503,7 @@ function seekTo(seconds) {
   const entry = clip();
   if (!entry) return;
   const at = Math.max(0, Math.min(seconds, entry.duration));
-  watchingSection = false;
+  watchUntil = null;
   playAt = at;
   if (entry.playable) el.preview.currentTime = at;
   else scheduleStill(entry, at);
@@ -530,9 +528,9 @@ el.preview.addEventListener('timeupdate', () => {
   timeline.setPlayhead(at);
   el.tlNow.textContent = formatTime(at);
 
-  if (watchingSection && at >= timeline.range.end) {
+  if (watchUntil !== null && at >= watchUntil) {
     el.preview.pause();
-    watchingSection = false;
+    watchUntil = null;
   }
 });
 
@@ -541,77 +539,331 @@ el.preview.addEventListener('pause', () => { el.play.textContent = 'Play'; });
 
 function togglePlay() {
   if (!clip()?.playable) return;
-  watchingSection = false;
+  watchUntil = null;
   if (el.preview.paused) el.preview.play().catch(() => {});
   else el.preview.pause();
 }
 
 el.play.addEventListener('click', togglePlay);
+el.back5.addEventListener('click', () => seekTo(currentTime() - 5));
+el.forward5.addEventListener('click', () => seekTo(currentTime() + 5));
 
-el.playSection.addEventListener('click', () => {
-  if (!clip()?.playable) return;
-  el.preview.currentTime = timeline.range.start;
-  watchingSection = true;
-  el.preview.play().catch(() => {});
+el.speedRow.addEventListener('click', (event) => {
+  const button = event.target.closest('.speed');
+  if (!button) return;
+  for (const other of el.speedRow.querySelectorAll('.speed')) {
+    other.classList.toggle('active', other === button);
+  }
+  el.preview.playbackRate = Number(button.dataset.speed);
 });
 
-el.goStart.addEventListener('click', () => seekTo(timeline.range.start));
-el.goEnd.addEventListener('click', () => seekTo(timeline.range.end));
+/* ------------------------------------------------------------- the marking */
 
-/* ---------------------------------------------------------------- the marks */
-
-function onRangeChanged({ start, end }) {
-  const entry = clip();
-  if (entry && !restoring) {
-    entry.start = start;
-    entry.end = end;
-  }
-
-  // Not while the field is being typed in: rewriting it under the cursor is
-  // how a half-typed "1:0" becomes "1:00.000" before the rest arrives.
-  if (document.activeElement !== el.markStart) el.markStart.value = formatTime(start);
-  if (document.activeElement !== el.markEnd) el.markEnd.value = formatTime(end);
-  el.markLength.textContent = formatDuration(Math.max(0, end - start));
-
-  if (!restoring) {
-    renderClips();
-    updateSummary();
-  }
-}
-
-el.setStart.addEventListener('click', () => timeline.setRange({ start: currentTime() }));
-el.setEnd.addEventListener('click', () => timeline.setRange({ end: currentTime() }));
-
-el.markAll.addEventListener('click', () => {
+/**
+ * `i`: open a segment here.
+ *
+ * Pressing it again while one is still open moves that start rather than
+ * opening a second - which is what you want when you meant to mark the run-up
+ * and pressed a beat too early.
+ */
+function markIn() {
   const entry = clip();
   if (!entry) return;
-  timeline.setRange({ start: 0, end: entry.duration });
-  seekTo(0);
-});
+  const at = timeline.snap(currentTime());
+  const open = openSegment(entry.segments);
 
-for (const [input, which] of [[el.markStart, 'start'], [el.markEnd, 'end']]) {
-  const commit = () => {
-    const seconds = parseTime(input.value);
-    if (seconds === null) {
-      input.value = formatTime(timeline.range[which]);
-      return;
-    }
-    timeline.setRange({ [which]: seconds });
-    input.value = formatTime(timeline.range[which]);
-  };
-  input.addEventListener('change', commit);
-  input.addEventListener('blur', commit);
+  if (open) open.start = at;
+  else entry.segments.push({ id: entry.nextSegmentId++, start: at, end: null });
+
+  selectedSegment = entry.segments[entry.segments.length - 1].id;
+  clearError();
+  renderSegments();
 }
 
-document.querySelectorAll('input[name="mode"]').forEach((radio) => {
-  radio.addEventListener('change', () => {
-    const entry = clip();
-    if (!entry) return;
-    entry.mode = radio.value;
-    timeline.setMode(radio.value);
-    renderClips();
-    updateMethodOptions();
+/** `o`: close the last segment here. */
+function markOut() {
+  const entry = clip();
+  if (!entry) return;
+  const last = entry.segments[entry.segments.length - 1];
+  if (!last) {
+    showError('Nothing is open yet. Press I where the part should start, then O where it ends.');
+    return;
+  }
+
+  const at = timeline.snap(currentTime());
+  if (at <= last.start) {
+    showError(`That would end the segment at ${formatTime(at)}, which is before it starts `
+      + `at ${formatTime(last.start)}. Move the playhead past the start first.`);
+    return;
+  }
+
+  last.end = at;
+  selectedSegment = last.id;
+  clearError();
+  renderSegments();
+}
+
+/** `u`: take the last one back. */
+function undoSegment() {
+  const entry = clip();
+  if (!entry?.segments.length) return;
+  entry.segments.pop();
+  selectedSegment = entry.segments.length
+    ? entry.segments[entry.segments.length - 1].id
+    : null;
+  renderSegments();
+}
+
+el.markIn.addEventListener('click', markIn);
+el.markOut.addEventListener('click', markOut);
+el.undo.addEventListener('click', undoSegment);
+
+el.addSegment.addEventListener('click', () => {
+  const entry = clip();
+  if (!entry) return;
+  const start = timeline.snap(currentTime());
+  const end = Math.min(entry.duration, start + Math.min(5, entry.duration - start));
+  if (end - start < 0.05) {
+    showError('There is not enough video left here to add a segment. Move the playhead back.');
+    return;
+  }
+  entry.segments.push({ id: entry.nextSegmentId++, start, end });
+  selectedSegment = entry.segments[entry.segments.length - 1].id;
+  renderSegments();
+});
+
+el.resetSegments.addEventListener('click', () => {
+  const entry = clip();
+  if (!entry?.segments.length) return;
+  // eslint-disable-next-line no-alert
+  if (!window.confirm(`Clear all ${entry.segments.length} segments of ${entry.name}?`)) return;
+  entry.segments = [];
+  selectedSegment = null;
+  renderSegments();
+});
+
+function adjustSegment(id, { start, end }) {
+  const entry = clip();
+  const segment = entry?.segments.find((one) => one.id === id);
+  if (!segment) return;
+  segment.start = start;
+  segment.end = end;
+  renderSegments();
+}
+
+/* ------------------------------------------------------- the segment table */
+
+function renderSegments() {
+  const entry = clip();
+  const segments = entry?.segments ?? [];
+  const finished = segmentRanges(segments);
+
+  el.segmentTable.hidden = segments.length === 0;
+  el.segmentsEmpty.hidden = segments.length > 0;
+  el.segmentRows.innerHTML = '';
+
+  el.segmentCount.textContent = segments.length === 0
+    ? 'none yet — the whole video'
+    : `${finished.length} of ${segments.length}`;
+  el.totalKept.textContent = formatTime(
+    mode === 'keep' && finished.length
+      ? totalCaptured(segments)
+      : totalSeconds(rangesOf(entry ?? { segments: [], duration: 0 })));
+
+  segments.forEach((segment, index) => {
+    const row = document.createElement('tr');
+    row.className = `segment${segment.id === selectedSegment ? ' selected' : ''}`;
+    if (segment.end === null) row.classList.add('open');
+    row.addEventListener('click', () => {
+      selectedSegment = segment.id;
+      renderSegments();
+    });
+
+    const number = document.createElement('td');
+    number.className = 'col-index';
+    number.textContent = String(index + 1);
+
+    row.append(
+      number,
+      timeCell(segment, 'start'),
+      timeCell(segment, 'end'),
+      lengthCell(segment),
+      actionsCell(segment, index),
+    );
+    el.segmentRows.append(row);
   });
+
+  timeline.setSegments(segments, selectedSegment);
+  timeline.setPending(openSegment(segments)?.start ?? null);
+  renderClips();
+  updateSummary();
+}
+
+/** A start or an end, typed as freely as it is read. */
+function timeCell(segment, which) {
+  const cell = document.createElement('td');
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'segment-time';
+  input.inputMode = 'decimal';
+  input.spellcheck = false;
+  input.autocomplete = 'off';
+  input.setAttribute('aria-label', which === 'start' ? 'Start time' : 'End time');
+  input.value = segment[which] === null ? '' : formatTime(segment[which]);
+  input.placeholder = which === 'end' ? 'press O' : '';
+
+  const commit = () => {
+    const entry = clip();
+    const seconds = parseTime(input.value);
+    if (seconds === null) {
+      input.value = segment[which] === null ? '' : formatTime(segment[which]);
+      return;
+    }
+    const at = Math.max(0, Math.min(seconds, entry.duration));
+    if (which === 'start' && segment.end !== null && at >= segment.end) {
+      input.value = formatTime(segment.start);
+      return;
+    }
+    if (which === 'end' && at <= segment.start) {
+      input.value = segment.end === null ? '' : formatTime(segment.end);
+      return;
+    }
+    segment[which] = at;
+    renderSegments();
+  };
+
+  input.addEventListener('change', commit);
+  input.addEventListener('blur', commit);
+  cell.append(input);
+  return cell;
+}
+
+function lengthCell(segment) {
+  const cell = document.createElement('td');
+  cell.className = 'segment-length';
+  cell.textContent = segment.end === null ? '—' : formatTime(segment.end - segment.start);
+  return cell;
+}
+
+function actionsCell(segment, index) {
+  const cell = document.createElement('td');
+  cell.className = 'segment-buttons';
+  const entry = clip();
+
+  cell.append(
+    iconButton('▶', 'Play this segment', () => playSegment(segment), segment.end === null),
+    iconButton('↑', 'Move up', () => moveSegment(index, -1), index === 0),
+    iconButton('↓', 'Move down', () => moveSegment(index, 1), index === entry.segments.length - 1),
+    iconButton('✕', 'Remove', () => removeSegment(index), false, 'danger'),
+  );
+  return cell;
+}
+
+function playSegment(segment) {
+  const entry = clip();
+  if (!entry?.playable || segment.end === null) return;
+  el.preview.currentTime = segment.start;
+  watchUntil = segment.end;
+  selectedSegment = segment.id;
+  el.preview.play().catch(() => {});
+  renderSegments();
+}
+
+function moveSegment(index, by) {
+  const entry = clip();
+  const to = index + by;
+  if (!entry || to < 0 || to >= entry.segments.length) return;
+  const [moved] = entry.segments.splice(index, 1);
+  entry.segments.splice(to, 0, moved);
+  renderSegments();
+}
+
+function removeSegment(index) {
+  const entry = clip();
+  if (!entry) return;
+  const [gone] = entry.segments.splice(index, 1);
+  if (selectedSegment === gone.id) {
+    selectedSegment = entry.segments.length
+      ? entry.segments[Math.min(index, entry.segments.length - 1)].id
+      : null;
+  }
+  renderSegments();
+}
+
+/* ----------------------------------------------------- saving the marks */
+
+el.exportMarks.addEventListener('click', () => {
+  const entry = clip();
+  if (!entry) return;
+  const ranges = segmentRanges(entry.segments);
+  if (!ranges.length) {
+    showError('There is nothing marked to save yet.');
+    return;
+  }
+
+  const text = writeTimestamps(entry.segments, {
+    format: el.marksFormat.value,
+    name: entry.name,
+  });
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${entry.name.replace(/\.[^.]+$/, '')}-marks.txt`;
+  link.click();
+  // Revoked on the next turn of the loop: the click has to have been handled
+  // before the URL stops meaning anything.
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+
+el.importMarks.addEventListener('click', () => el.marksInput.click());
+
+el.marksInput.addEventListener('change', async () => {
+  const [file] = el.marksInput.files ?? [];
+  el.marksInput.value = '';
+  const entry = clip();
+  if (!file || !entry) return;
+
+  try {
+    const parsed = readTimestamps(await file.text());
+    const kept = parsed.segments.filter((segment) => segment.start < entry.duration);
+
+    if (!kept.length) {
+      showError(`Every segment in ${file.name} starts after this video ends. `
+        + 'It was probably marked against a different one.');
+      return;
+    }
+
+    entry.segments = kept.map((segment) => ({
+      id: entry.nextSegmentId++,
+      start: segment.start,
+      end: Math.min(segment.end, entry.duration),
+    }));
+    selectedSegment = entry.segments[entry.segments.length - 1].id;
+    el.marksFormat.value = parsed.format;
+
+    // Nothing to say when the whole file loaded: the rows appearing is the
+    // report. The box below is red, and red should mean something went wrong.
+    const dropped = parsed.segments.length - kept.length;
+    clearError();
+    if (dropped || parsed.skipped) {
+      const says = [];
+      if (dropped) {
+        says.push(`${dropped} segment${dropped === 1 ? '' : 's'} in ${file.name} `
+          + `${dropped === 1 ? 'starts' : 'start'} past the end of this video, so `
+          + `${dropped === 1 ? 'it was' : 'they were'} left out.`);
+      }
+      if (parsed.skipped) {
+        says.push(`${parsed.skipped} line${parsed.skipped === 1 ? '' : 's'} could not be `
+          + 'read as a segment.');
+      }
+      says.push(`${kept.length} loaded.`);
+      showError(says.join(' '));
+    }
+    renderSegments();
+  } catch (error) {
+    showError(`${file.name} could not be read: ${error.message}`);
+  }
 });
 
 /* --------------------------------------------------------------- shortcuts */
@@ -632,32 +884,35 @@ window.addEventListener('keydown', (event) => {
 
   if (key === 'i') {
     event.preventDefault();
-    timeline.setRange({ start: currentTime() });
+    markIn();
   } else if (key === 'o') {
     event.preventDefault();
-    timeline.setRange({ end: currentTime() });
+    markOut();
+  } else if (key === 'u') {
+    event.preventDefault();
+    undoSegment();
   } else if (event.key === ' ' && !(event.target instanceof HTMLButtonElement)) {
     event.preventDefault();
     togglePlay();
-  } else if (event.key === 'ArrowLeft' && !event.target.closest?.('.tl-handle')) {
+  } else if (event.key === 'ArrowLeft') {
     event.preventDefault();
-    seekTo(currentTime() - (event.shiftKey ? 1 : timeline.frameStep));
-  } else if (event.key === 'ArrowRight' && !event.target.closest?.('.tl-handle')) {
+    seekTo(currentTime() - (event.shiftKey ? timeline.frameStep : 5));
+  } else if (event.key === 'ArrowRight') {
     event.preventDefault();
-    seekTo(currentTime() + (event.shiftKey ? 1 : timeline.frameStep));
+    seekTo(currentTime() + (event.shiftKey ? timeline.frameStep : 5));
   }
 });
 
 /* ------------------------------------------------------------- the output */
 
-/** The sections of one clip its marks and mode come down to. */
+/** The sections of one video its marks and the chosen mode come down to. */
 function rangesOf(entry) {
-  return rangesFor({
-    mode: entry.mode, start: entry.start, end: entry.end, duration: entry.duration,
-  });
+  const marked = segmentRanges(entry.segments);
+  if (mode === 'cut') return invertRanges(marked, entry.duration);
+  return marked.length ? marked : [{ start: 0, end: entry.duration }];
 }
 
-/** The clips, in order, as the export functions want them. */
+/** The videos, in order, as the export functions want them. */
 function exportClips() {
   return clips
     .map((entry) => ({
@@ -670,17 +925,28 @@ function exportClips() {
     .filter((entry) => entry.ranges.length);
 }
 
+document.querySelectorAll('input[name="mode"]').forEach((radio) => {
+  radio.addEventListener('change', () => {
+    mode = radio.value;
+    renderSegments();
+    updateMethodOptions();
+  });
+});
+
 function updateMethodOptions() {
   const chosen = exportClips();
   const keepAudio = el.keepAudio.checked;
-  const join = chosen.length ? joinability(chosen, { keepAudio }) : { copy: false, reason: null, sound: 'none' };
+  const join = chosen.length
+    ? joinability(chosen, { keepAudio })
+    : { copy: false, reason: null, sound: 'none' };
 
   const everyDemuxed = chosen.length > 0 && chosen.every((entry) => entry.media);
   const canCopy = everyDemuxed && join.copy;
   const canExact = clips.length > 0 && clips.every((entry) => entry.canExact) && chosen.length > 0;
   // A recording is made in one pass from one playhead: it can keep one section
-  // of one clip and nothing else.
-  const canRecord = clips.length === 1 && clips[0].canRecord && clips[0].mode === 'keep';
+  // of one video and nothing else.
+  const canRecord = clips.length === 1 && clips[0].canRecord && chosen.length === 1
+    && chosen[0].ranges.length === 1;
 
   el.method.querySelector('option[value="copy"]').disabled = !canCopy;
   el.method.querySelector('option[value="exact"]').disabled = !canExact;
@@ -693,65 +959,59 @@ function updateMethodOptions() {
   ].filter(Boolean);
   if (!available.includes(el.method.value)) el.method.value = available[0] ?? 'copy';
 
-  // Why the quick path is unavailable, said once, in the terms that let
-  // somebody act on it - which usually means reordering or dropping a clip.
+  // Why the quick path is unavailable, said once, in terms somebody can act on
+  // - which usually means dropping or reordering a video.
   el.joinNote.hidden = clips.length < 2 || canCopy || !join.reason;
   if (!el.joinNote.hidden) {
-    el.joinNote.textContent = `These clips cannot be joined without re-encoding: ${join.reason} `
-      + 'One track carries one description of what is in it, so clips that disagree have to be '
+    el.joinNote.textContent = `These videos cannot be joined without re-encoding: ${join.reason} `
+      + 'One track carries one description of what is in it, so videos that disagree have to be '
       + 'written out again to share one.';
   }
 
-  // Taking a piece out of the middle needs a path that can write two sections
-  // into one file, and only the two MP4 paths can.
-  const removeRadio = document.querySelector('input[name="mode"][value="remove"]');
-  removeRadio.disabled = !(clip()?.media);
-
-  el.exportHeading.textContent = clips.length > 1 ? 'Join them' : 'Trim it';
   updateMethodNote();
 }
 
 function updateMethodNote() {
   const method = el.method.value;
-  const many = exportClips().length > 1;
+  const chosen = exportClips();
+  const sections = chosen.reduce((total, entry) => total + entry.ranges.length, 0);
+  const many = chosen.length > 1;
 
   if (method === 'copy') {
-    el.methodNote.textContent = many
-      ? 'The frames of every clip are moved into the new file exactly as they are, one clip '
-        + 'after another. Nothing is decoded and nothing is encoded.'
+    el.methodNote.textContent = sections > 1
+      ? 'Every marked part is moved into the new file exactly as it is, one after another. '
+        + 'Nothing is decoded and nothing is encoded, so no part of this costs quality.'
       : 'The frames are moved into the new file exactly as they are, so nothing is decoded '
-        + 'and nothing is encoded. Quick, and it cannot cost quality. The cut starts at the '
+        + 'and nothing is encoded. Quick, and it cannot cost quality. Each part starts at the '
         + 'nearest keyframe before your mark.';
   } else if (method === 'exact') {
     el.methodNote.textContent = many
-      ? 'Every clip is decoded and written out again into one stream, so clips that disagree '
-        + 'about size or codec can still be joined. The sound is copied where the clips agree '
-        + 'about it and re-encoded where they do not.'
-      : 'Starts on the frame you chose, by decoding from the keyframe in front of it and '
-        + 'encoding the picture again. The sound is still copied rather than re-encoded.';
+      ? 'Every video is decoded and written out again into one stream, so videos that disagree '
+        + 'about size or codec can still be joined. The sound is copied where they agree about '
+        + 'it and re-encoded where they do not.'
+      : 'Every part starts on the frame you marked, by decoding from the keyframe in front of '
+        + 'it and encoding the picture again. The sound is still copied rather than re-encoded.';
   } else {
-    el.methodNote.textContent = 'Plays the section through and records it, so it takes as '
-      + 'long as the section is long and everything is re-encoded. Keep this tab in front '
-      + 'while it runs.';
+    el.methodNote.textContent = 'Plays the marked part through and records it, so it takes as '
+      + 'long as that part is long and everything is re-encoded. Keep this tab in front while '
+      + 'it runs.';
   }
 
   el.qualityField.hidden = method === 'copy';
   el.frameField.hidden = !(method === 'exact' && many);
 
-  const chosen = exportClips();
   const anySound = chosen.some((entry) => entry.media?.audio?.samples.length)
     || clips.some((entry) => !entry.media);
   const sound = joinability(chosen, { keepAudio: el.keepAudio.checked }).sound;
 
   if (!anySound) {
-    el.audioNote.textContent = 'None of these clips has an audio track, so there is nothing '
-      + 'to keep.';
+    el.audioNote.textContent = 'There is no audio track here, so there is nothing to keep.';
   } else if (method === 'record') {
     el.audioNote.textContent = 'Captured from playback and re-encoded, because that is all '
       + 'a recording can do.';
   } else if (sound === 'encode' && method === 'exact') {
-    el.audioNote.textContent = 'These clips describe their sound differently, so it is decoded '
-      + 'and encoded once for the whole join. That is the only case in this tool where the '
+    el.audioNote.textContent = 'These videos describe their sound differently, so it is decoded '
+      + 'and encoded once for the whole result. That is the only case in this tool where the '
       + 'sound is not carried across untouched.';
   } else {
     el.audioNote.textContent = 'Copied from the file sample by sample, without ever being '
@@ -771,6 +1031,10 @@ function updateSummary() {
   const chosen = exportClips();
   if (!chosen.length) {
     el.exportBtn.disabled = true;
+    el.sumLength.textContent = '0s';
+    el.sumClips.textContent = mode === 'cut'
+      ? 'nothing — the marks cover the whole video'
+      : 'nothing marked';
     return;
   }
 
@@ -779,9 +1043,10 @@ function updateSummary() {
   const kept = chosen.reduce((total, entry) => total + totalSeconds(entry.ranges), 0);
   const sections = chosen.reduce((total, entry) => total + entry.ranges.length, 0);
 
+  const parts = `${sections} part${sections === 1 ? '' : 's'}`;
   el.sumClips.textContent = chosen.length === 1
-    ? (sections === 1 ? 'one section of one clip' : `${sections} sections of one clip`)
-    : `${chosen.length} clips, ${sections} section${sections === 1 ? '' : 's'}`;
+    ? (mode === 'cut' ? `${parts}, once the marked ones are gone` : parts)
+    : `${parts} from ${chosen.length} videos`;
   el.sumLength.textContent = formatDuration(kept);
 
   // Where the result will begin, which is the one number a copy can surprise
@@ -834,22 +1099,22 @@ function updateSummary() {
       displayWidth: entry.source.width, displayHeight: entry.source.height, frame,
     }).fits).length;
     el.sumPicture.textContent = `re-encoded to H.264, ${frame.width} x ${frame.height}`
-      + (bars ? ` (${bars} clip${bars === 1 ? '' : 's'} fitted with bars)` : '');
+      + (bars ? ` (${bars} fitted with bars)` : '');
   } else {
     el.sumPicture.textContent = 'recorded as it plays';
   }
 
+  // "There is none" comes before "you turned it off": no audio track at all is
+  // not a choice anybody made.
   const sound = joinability(chosen, { keepAudio: true }).sound;
-  if (sound === 'none') el.sumSound.textContent = 'none in these clips';
+  if (sound === 'none') el.sumSound.textContent = 'none in this video';
   else if (!keepAudio) el.sumSound.textContent = 'left out';
   else if (method === 'record') el.sumSound.textContent = 're-encoded from playback';
   else if (sound === 'encode' && method === 'exact') el.sumSound.textContent = 'decoded and re-encoded once';
   else el.sumSound.textContent = 'copied, sample for sample';
 
   el.exportBtn.disabled = exporting;
-  el.exportBtn.textContent = chosen.length > 1
-    ? 'Join the clips'
-    : (clips[0]?.mode === 'remove' ? 'Cut the section out' : 'Trim video');
+  el.exportBtn.textContent = sections > 1 ? `Cut and join ${sections} parts` : 'Cut video';
 }
 
 /* ------------------------------------------------------------------ export */
@@ -873,7 +1138,7 @@ function setProgress({ phase, done, total, realtime }) {
   } else if (phase === 'finishing') {
     el.progressLabel.textContent = 'Writing the file...';
   } else if (phase === 'sound') {
-    el.progressLabel.textContent = `Encoding the sound - clip ${done + 1} of ${total}`;
+    el.progressLabel.textContent = `Encoding the sound - ${done + 1} of ${total}`;
   } else if (phase === 'copying') {
     el.progressLabel.textContent = `Copying sample ${done.toLocaleString()} `
       + `of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
@@ -888,7 +1153,7 @@ function setProgress({ phase, done, total, realtime }) {
 
 function outputFilename(extension) {
   const base = (clips[0]?.name ?? 'video').replace(/\.[^.]+$/, '');
-  return `${base}-${clips.length > 1 ? 'joined' : 'trimmed'}.${extension}`;
+  return `${base}-cut.${extension}`;
 }
 
 function formatBytes(bytes) {
@@ -910,7 +1175,9 @@ async function runExport() {
 
   const chosen = exportClips();
   if (!chosen.length) {
-    showError('There is nothing selected to keep. Drag the marks further apart, or add a clip.');
+    showError(mode === 'cut'
+      ? 'The marks cover the whole video, so cutting them out would leave nothing.'
+      : 'There is nothing marked to keep. Press I and O while it plays.');
     return;
   }
 
@@ -924,7 +1191,6 @@ async function runExport() {
   el.result.hidden = true;
   timeline.setEnabled(false);
   el.preview.pause();
-  renderClips();
   setProgress({ phase: 'preparing', done: 0, total: 1 });
 
   const method = el.method.value;
@@ -968,12 +1234,13 @@ async function runExport() {
     if (lastResultUrl) URL.revokeObjectURL(lastResultUrl);
     lastResultUrl = URL.createObjectURL(result.blob);
 
+    const sections = chosen.reduce((total, entry) => total + entry.ranges.length, 0);
     el.resultVideo.src = lastResultUrl;
     el.download.href = lastResultUrl;
     el.download.download = outputFilename(result.extension);
     el.resultInfo.textContent = [
       result.extension.toUpperCase(),
-      chosen.length > 1 ? `${chosen.length} clips` : null,
+      sections > 1 ? `${sections} parts` : null,
       formatDuration(chosen.reduce((total, entry) => total + totalSeconds(entry.ranges), 0)),
       formatBytes(result.blob.size),
       method === 'copy' ? 'not re-encoded' : result.codec,
@@ -993,7 +1260,7 @@ async function runExport() {
     el.cancelBtn.hidden = true;
     el.exportBtn.disabled = false;
     timeline.setEnabled(true);
-    renderClips();
+    renderSegments();
   }
 }
 

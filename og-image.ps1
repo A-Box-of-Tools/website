@@ -218,8 +218,8 @@ New-OgImage -Path 'tools\crop-video\og.png' `
   -Footer 'No uploads | No accounts | Works offline'
 
 New-OgImage -Path 'tools\trim-video\og.png' `
-  -Title 'Video Trimmer & Joiner' `
-  -Subtitle 'Cut clips down and combine them into one, without re-encoding a frame.' `
+  -Title 'Video Cutter' `
+  -Subtitle 'Mark the parts worth keeping as it plays, and save them as one video.' `
   -Footer 'No uploads | No accounts | Works offline'
 
 New-OgImage -Path 'tools\exif-editor\og.png' `

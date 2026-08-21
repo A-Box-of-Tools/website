@@ -1,32 +1,33 @@
 /**
- * The timeline: the bar under the preview with a start mark, an end mark and a
- * playhead.
+ * The timeline: the bar under the picture, with every segment drawn on it.
  *
- * It keeps its state in seconds, because that is what the fields underneath it
- * show and what the export is given, and it draws itself in percentages, so the
- * same pair of marks survives the window being resized and a phone being
- * turned.
+ * It shows the whole video once and the marks in place on it, which is the
+ * thing a table of times cannot do - whether you have covered the middle
+ * twenty minutes or left a gap in it is a question about shapes, and this is
+ * the shape.
  *
- * Two things here are worth more than the drag handling, which is ordinary:
+ * What is drawn:
  *
- *   - **The marks snap to frames.** Where the file has been read, every frame's
- *     time is known, and a mark is put on the nearest one rather than on
- *     whatever fraction of a second the pointer happened to land on. A cut
- *     between two frames does not exist - it has to become one or the other -
- *     so it may as well become the one you were shown.
- *   - **The keyframes are drawn.** They are the only places a lossless cut can
- *     begin, so the page shows where they are instead of explaining afterwards
- *     why the result started early.
+ *   - **A band for every finished segment.** The one being edited carries a
+ *     handle at each end; the rest are one click away from becoming it. Handles
+ *     on all of them at once would be a row of grips too close together to hit.
+ *   - **The segment still being marked**, from where `i` was pressed to wherever
+ *     the playhead has got to, so an open mark is visibly open.
+ *   - **A tick for every keyframe**, because those are the only places a
+ *     lossless cut can begin, and showing them beats explaining afterwards why
+ *     a cut started early.
+ *   - **The playhead.**
  *
- * Nothing here reads the file. It is handed a list of times and returns a pair
- * of them.
+ * It keeps its state in seconds and draws in percentages, so the same marks
+ * survive the window being resized and a phone being turned. Nothing here reads
+ * the file; it is handed times and hands times back.
  */
 
-/** The shortest section the marks will make, in seconds. */
-const MIN_SECTION = 0.05;
+/** The shortest segment a drag will leave behind. */
+const MIN_SEGMENT = 0.05;
 
-/** Above this many keyframes the marks are thinned out, because a tick every
- *  pixel is a solid bar rather than a set of marks. */
+/** Above this many keyframes the ticks are thinned, because a tick every pixel
+ *  is a solid bar rather than a set of marks. */
 const MAX_TICKS = 400;
 
 function clamp(value, low, high) {
@@ -70,32 +71,30 @@ export class Timeline {
   #root;
   #track;
   #ticks;
-  #selection;
-  #startHandle;
-  #endHandle;
-  #shadeBefore;
-  #shadeAfter;
+  #bands;
+  #pendingBand;
   #playhead;
-  #onChange;
   #onSeek;
+  #onSelect;
+  #onAdjust;
 
   #duration = 0;
   #frameTimes = null;
-  #start = 0;
-  #end = 0;
+  #segments = [];
+  #selectedId = null;
+  #pending = null;
   #playAt = 0;
-  #mode = 'keep';
   #enabled = true;
-  #drag = null;
 
   /**
    * @param {HTMLElement} root
-   * @param {{onChange: Function, onSeek: Function}} options
+   * @param {{onSeek: Function, onSelect: Function, onAdjust: Function}} options
    */
-  constructor(root, { onChange, onSeek } = {}) {
+  constructor(root, { onSeek, onSelect, onAdjust } = {}) {
     this.#root = root;
-    this.#onChange = onChange;
     this.#onSeek = onSeek;
+    this.#onSelect = onSelect;
+    this.#onAdjust = onAdjust;
 
     root.innerHTML = '';
     root.classList.add('timeline');
@@ -107,46 +106,24 @@ export class Timeline {
     this.#ticks.className = 'tl-ticks';
     this.#ticks.setAttribute('aria-hidden', 'true');
 
-    this.#shadeBefore = document.createElement('div');
-    this.#shadeBefore.className = 'tl-shade tl-shade-before';
-    this.#shadeAfter = document.createElement('div');
-    this.#shadeAfter.className = 'tl-shade tl-shade-after';
+    this.#bands = document.createElement('div');
+    this.#bands.className = 'tl-bands';
 
-    this.#selection = document.createElement('div');
-    this.#selection.className = 'tl-selection';
-
-    this.#startHandle = this.#makeHandle('start', 'Start of the section');
-    this.#endHandle = this.#makeHandle('end', 'End of the section');
+    this.#pendingBand = document.createElement('div');
+    this.#pendingBand.className = 'tl-pending';
+    this.#pendingBand.hidden = true;
 
     this.#playhead = document.createElement('div');
     this.#playhead.className = 'tl-playhead';
     this.#playhead.setAttribute('aria-hidden', 'true');
 
-    this.#selection.append(this.#startHandle, this.#endHandle);
-    this.#track.append(
-      this.#ticks, this.#shadeBefore, this.#shadeAfter, this.#selection, this.#playhead);
+    this.#track.append(this.#ticks, this.#bands, this.#pendingBand, this.#playhead);
     root.append(this.#track);
 
-    this.#track.addEventListener('pointerdown', this.#onTrackDown);
-  }
-
-  #makeHandle(which, label) {
-    const handle = document.createElement('div');
-    handle.className = `tl-handle tl-handle-${which}`;
-    handle.dataset.handle = which;
-    handle.tabIndex = 0;
-    handle.setAttribute('role', 'slider');
-    handle.setAttribute('aria-label',
-      `${label}. The arrow keys move it one frame, Shift and the arrow keys one second.`);
-    handle.addEventListener('keydown', this.#onKeyDown);
-    return handle;
+    this.#track.addEventListener('pointerdown', this.#onPointerDown);
   }
 
   /* ---------------------------------------------------------------- state */
-
-  get range() {
-    return { start: this.#start, end: this.#end };
-  }
 
   get duration() {
     return this.#duration;
@@ -161,17 +138,25 @@ export class Timeline {
   setSource({ duration, keyframes = null, frameTimes = null }) {
     this.#duration = Math.max(0, duration || 0);
     this.#frameTimes = frameTimes && frameTimes.length ? frameTimes : null;
-    this.#start = 0;
-    this.#end = this.#duration;
     this.#playAt = 0;
+    this.#pending = null;
+    this.#segments = [];
+    this.#selectedId = null;
     this.#drawTicks(keyframes);
     this.#paint();
-    this.#emit();
   }
 
-  setMode(mode) {
-    this.#mode = mode;
-    this.#root.classList.toggle('removing', mode === 'remove');
+  /** @param {object[]} segments  [{ id, start, end }], end null while open. */
+  setSegments(segments, selectedId = null) {
+    this.#segments = segments;
+    this.#selectedId = selectedId;
+    this.#paint();
+  }
+
+  /** Where `i` was pressed, while `o` has not been. */
+  setPending(startSeconds) {
+    this.#pending = startSeconds;
+    this.#paintPending();
   }
 
   setEnabled(enabled) {
@@ -182,15 +167,7 @@ export class Timeline {
   setPlayhead(seconds) {
     this.#playAt = clamp(seconds || 0, 0, this.#duration);
     this.#playhead.style.left = `${this.#fraction(this.#playAt) * 100}%`;
-  }
-
-  /** Move one mark, from a typed field or a button. */
-  setRange({ start, end }, { snap = true } = {}) {
-    const next = {
-      start: start === undefined ? this.#start : start,
-      end: end === undefined ? this.#end : end,
-    };
-    this.#apply(next, { snap, moved: start !== undefined ? 'start' : 'end' });
+    this.#paintPending();
   }
 
   /** The nearest frame to a time, where the frames are known. */
@@ -212,7 +189,7 @@ export class Timeline {
     return clamp(nearest, 0, this.#duration);
   }
 
-  /** One frame, in seconds - the step the arrow keys take. */
+  /** One frame, in seconds - the step the fine controls take. */
   get frameStep() {
     const times = this.#frameTimes;
     if (!times || times.length < 2) return 1 / 30;
@@ -239,104 +216,107 @@ export class Timeline {
   }
 
   #paint() {
-    const from = this.#fraction(this.#start) * 100;
-    const to = this.#fraction(this.#end) * 100;
+    this.#bands.innerHTML = '';
 
-    this.#selection.style.left = `${from}%`;
-    this.#selection.style.width = `${Math.max(0, to - from)}%`;
-    this.#shadeBefore.style.width = `${from}%`;
-    this.#shadeAfter.style.left = `${to}%`;
-    this.#shadeAfter.style.width = `${Math.max(0, 100 - to)}%`;
-    this.#playhead.style.left = `${this.#fraction(this.#playAt) * 100}%`;
+    this.#segments.forEach((segment, index) => {
+      if (segment.end === null) return;   // still open; drawn as the pending band
 
-    for (const [handle, value] of [[this.#startHandle, this.#start], [this.#endHandle, this.#end]]) {
-      handle.setAttribute('aria-valuemin', '0');
-      handle.setAttribute('aria-valuemax', this.#duration.toFixed(3));
-      handle.setAttribute('aria-valuenow', value.toFixed(3));
-      handle.setAttribute('aria-valuetext', formatTime(value));
-    }
-  }
+      const from = this.#fraction(segment.start) * 100;
+      const to = this.#fraction(segment.end) * 100;
+      const band = document.createElement('div');
+      band.className = `tl-band${segment.id === this.#selectedId ? ' selected' : ''}`;
+      band.dataset.id = String(segment.id);
+      band.style.left = `${from}%`;
+      band.style.width = `${Math.max(0.4, to - from)}%`;
+      band.title = `Segment ${index + 1}: ${formatTime(segment.start)} to ${formatTime(segment.end)}`;
 
-  /**
-   * Round, keep the marks in order and inside the clip, draw, and report.
-   *
-   * Which mark moved decides which one gives way when they meet: dragging the
-   * start past the end should push the end along, not silently swap the two.
-   */
-  #apply({ start, end }, { snap = true, moved = 'start' } = {}) {
-    if (!this.#duration) return;
+      const number = document.createElement('span');
+      number.className = 'tl-band-number';
+      number.textContent = String(index + 1);
+      band.append(number);
 
-    let from = clamp(snap ? this.snap(start) : start, 0, this.#duration);
-    let to = clamp(snap ? this.snap(end) : end, 0, this.#duration);
-
-    if (to - from < MIN_SECTION) {
-      if (moved === 'start') from = Math.max(0, Math.min(from, to - MIN_SECTION));
-      else to = Math.min(this.#duration, Math.max(to, from + MIN_SECTION));
-      if (to - from < MIN_SECTION) {
-        from = Math.max(0, Math.min(from, this.#duration - MIN_SECTION));
-        to = Math.min(this.#duration, from + MIN_SECTION);
+      if (segment.id === this.#selectedId) {
+        for (const which of ['start', 'end']) {
+          const handle = document.createElement('span');
+          handle.className = `tl-handle tl-handle-${which}`;
+          handle.dataset.handle = which;
+          band.append(handle);
+        }
       }
-    }
 
-    this.#start = from;
-    this.#end = to;
-    this.#paint();
-    this.#emit();
+      this.#bands.append(band);
+    });
+
+    this.setPlayhead(this.#playAt);
   }
 
-  #emit() {
-    this.#onChange?.({ start: this.#start, end: this.#end });
+  /** The open segment, from where it began to wherever the playhead is now. */
+  #paintPending() {
+    if (this.#pending === null || !this.#duration) {
+      this.#pendingBand.hidden = true;
+      return;
+    }
+    const from = this.#fraction(Math.min(this.#pending, this.#playAt)) * 100;
+    const to = this.#fraction(Math.max(this.#pending, this.#playAt)) * 100;
+    this.#pendingBand.hidden = false;
+    this.#pendingBand.style.left = `${from}%`;
+    this.#pendingBand.style.width = `${Math.max(0.3, to - from)}%`;
   }
 
   /* ---------------------------------------------------------- interaction */
 
-  /** Where along the clip a pointer is, in seconds. */
+  /** Where along the video a pointer is, in seconds. */
   #timeAt(event) {
     const box = this.#track.getBoundingClientRect();
     if (!box.width) return 0;
     return clamp((event.clientX - box.left) / box.width, 0, 1) * this.#duration;
   }
 
-  #onTrackDown = (event) => {
+  #onPointerDown = (event) => {
     if (!this.#enabled || !this.#duration || event.button !== 0) return;
 
     const handle = event.target.closest('.tl-handle');
-    const onSelection = !handle && event.target.closest('.tl-selection');
+    const band = event.target.closest('.tl-band');
     const at = this.#timeAt(event);
 
-    // Anywhere that is not a mark or the band between them is a scrub: the
-    // playhead goes there and follows the pointer until it is let go.
-    if (!handle && !onSelection) {
-      this.#onSeek?.(at);
-      this.#drag = { kind: 'seek' };
-    } else if (handle) {
-      this.#drag = { kind: handle.dataset.handle, grabbedAt: at };
-      handle.focus();
-    } else {
-      this.#drag = {
-        kind: 'move', grabbedAt: at, start: this.#start, end: this.#end,
-      };
+    event.preventDefault();
+
+    // A band that is not the one being edited becomes it, and nothing else
+    // happens - the first click on a segment should never also move it.
+    if (band && !handle && band.dataset.id !== String(this.#selectedId)) {
+      this.#onSelect?.(Number(band.dataset.id));
+      return;
     }
 
-    event.preventDefault();
+    if (!handle) {
+      this.#onSeek?.(at);
+      this.#drag = { kind: 'seek' };
+    } else {
+      const segment = this.#segments.find((one) => one.id === this.#selectedId);
+      if (!segment) return;
+      this.#drag = { kind: handle.dataset.handle, segment };
+    }
+
     this.#track.setPointerCapture?.(event.pointerId);
 
     const move = (moveEvent) => {
       const now = this.#timeAt(moveEvent);
       if (this.#drag.kind === 'seek') {
         this.#onSeek?.(now);
-      } else if (this.#drag.kind === 'start') {
-        this.#apply({ start: now, end: this.#end }, { moved: 'start' });
-        this.#onSeek?.(this.#start);
-      } else if (this.#drag.kind === 'end') {
-        this.#apply({ start: this.#start, end: now }, { moved: 'end' });
-        this.#onSeek?.(this.#end);
-      } else {
-        const shift = now - this.#drag.grabbedAt;
-        const span = this.#drag.end - this.#drag.start;
-        const from = clamp(this.#drag.start + shift, 0, this.#duration - span);
-        this.#apply({ start: from, end: from + span }, { snap: false });
+        return;
       }
+
+      const { segment } = this.#drag;
+      const snapped = this.snap(now);
+      const next = this.#drag.kind === 'start'
+        ? { start: Math.min(snapped, segment.end - MIN_SEGMENT), end: segment.end }
+        : { start: segment.start, end: Math.max(snapped, segment.start + MIN_SEGMENT) };
+
+      this.#onAdjust?.(segment.id, {
+        start: clamp(next.start, 0, this.#duration),
+        end: clamp(next.end, 0, this.#duration),
+      });
+      this.#onSeek?.(this.#drag.kind === 'start' ? next.start : next.end);
     };
 
     const up = () => {
@@ -352,22 +332,5 @@ export class Timeline {
     window.addEventListener('pointercancel', up);
   };
 
-  #onKeyDown = (event) => {
-    if (!this.#enabled) return;
-
-    const direction = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
-    if (!direction) return;
-    event.preventDefault();
-
-    const step = direction * (event.shiftKey ? 1 : this.frameStep);
-    const which = event.currentTarget.dataset.handle;
-
-    if (which === 'start') {
-      this.#apply({ start: this.#start + step, end: this.#end }, { moved: 'start' });
-      this.#onSeek?.(this.#start);
-    } else {
-      this.#apply({ start: this.#start, end: this.#end + step }, { moved: 'end' });
-      this.#onSeek?.(this.#end);
-    }
-  };
+  #drag = null;
 }

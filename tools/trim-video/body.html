@@ -1,7 +1,7 @@
 <main>
-  <!-- Step 1 &mdash; the clips -->
+  <!-- Step 1 &mdash; the video -->
   <section class="card">
-    <h2><span class="step">1</span> Add your clips</h2>
+    <h2><span class="step">1</span> Choose a video</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -11,27 +11,27 @@
     -->
     {% include "partials/file-picker.html" %}
 
-    <!-- One row a clip, built by src/main.js. Empty until something is added,
-         and hidden rather than showing an empty box. -->
+    <!-- One row a video, in the order they will be joined. Hidden until there
+         is more than one, because a list of one is furniture. -->
     <ol class="clip-list" id="clip-list" hidden></ol>
 
     <p id="join-note" class="path-note" hidden></p>
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; the section -->
+  <!-- Step 2 &mdash; the marks -->
   <section class="card" id="section-card" hidden>
     <h2>
-      <span class="step">2</span> Mark the section
+      <span class="step">2</span> Mark the parts you want
       <span class="editing" id="editing" hidden></span>
     </h2>
 
     <p class="stage-hint">
-      Play the clip and press <kbd>I</kbd> where it should start and <kbd>O</kbd>
-      where it should end, or drag the two marks on the bar. <kbd>Space</kbd>
-      plays and pauses, the arrow keys step a frame, and
-      <kbd>Shift</kbd>&nbsp;+&nbsp;arrows step a second. Each clip keeps its own
-      marks.
+      Play it through and press <kbd>I</kbd> where a part should start and
+      <kbd>O</kbd> where it should end. Do that as many times as you like &mdash;
+      every pair becomes a row below, and the finished video is those rows, one
+      after another. <kbd>U</kbd> undoes the last one, <kbd>Space</kbd> plays and
+      pauses, and the arrow keys jump five seconds.
     </p>
 
     <div class="stage-wrap">
@@ -43,8 +43,8 @@
 
     <p id="stage-note" class="stage-note" hidden></p>
 
-    <!-- The bar itself is built by src/timeline.js: the two marks, the playhead,
-         and a tick for every keyframe in the file. -->
+    <!-- Built by src/timeline.js: a band for every segment, the one being
+         marked, a tick for every keyframe, and the playhead. -->
     <div id="timeline"></div>
 
     <div class="tl-scale">
@@ -54,59 +54,85 @@
 
     <div class="transport">
       <button type="button" id="play" class="primary">Play</button>
-      <button type="button" id="play-section" class="ghost">Play the section</button>
-      <button type="button" id="go-start" class="ghost">Go to start</button>
-      <button type="button" id="go-end" class="ghost">Go to end</button>
+      <button type="button" id="back-5" class="ghost" title="Back five seconds">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="Forward five seconds">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> Mark in</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> Mark out</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> Undo</button>
     </div>
 
-    <div class="marks">
-      <div class="mark-field">
-        <label for="mark-start">Start</label>
-        <div class="mark-row">
-          <input type="text" id="mark-start" inputmode="decimal" spellcheck="false"
-                 autocomplete="off" aria-describedby="mark-help">
-          <button type="button" id="set-start" class="ghost">Set here</button>
-        </div>
-      </div>
-
-      <div class="mark-field">
-        <label for="mark-end">End</label>
-        <div class="mark-row">
-          <input type="text" id="mark-end" inputmode="decimal" spellcheck="false"
-                 autocomplete="off" aria-describedby="mark-help">
-          <button type="button" id="set-end" class="ghost">Set here</button>
-        </div>
-      </div>
-
-      <div class="mark-field">
-        <span class="mark-label">Section</span>
-        <p class="mark-length" id="mark-length">&mdash;</p>
-      </div>
-
-      <div class="mark-actions">
-        <button type="button" id="mark-all" class="ghost">Whole clip</button>
-      </div>
+    <div class="speed-row" role="group" aria-label="Playback speed">
+      <span class="speed-label">Speed</span>
+      <button type="button" class="speed" data-speed="0.25">0.25&times;</button>
+      <button type="button" class="speed" data-speed="0.5">0.5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0.75&times;</button>
+      <button type="button" class="speed active" data-speed="1">Normal</button>
+      <button type="button" class="speed" data-speed="1.25">1.25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1.5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
     </div>
 
-    <p class="field-note" id="mark-help">
-      Times are written as minutes, seconds and thousandths &mdash; type
-      <code>1:07.5</code> or <code>67.5</code>, whichever you find easier.
-    </p>
+    <!-- The segments themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>Segments <span class="segment-count" id="segment-count">none yet</span></h3>
+        <p class="segments-total">
+          Total kept <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">Start</th>
+            <th scope="col">End</th>
+            <th scope="col">Length</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        Nothing marked yet. Press <kbd>I</kbd> then <kbd>O</kbd> while it plays,
+        or use the buttons above.
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">Add a row by hand</button>
+        <button type="button" id="reset-segments" class="ghost danger">Clear them all</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">Load marks&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="Timestamp file format">
+          <option value="seconds" selected>seconds</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">Save marks</button>
+      </div>
+
+      <p class="field-note">
+        The marks save as a plain text file &mdash; one line a segment, the
+        format above &mdash; so a long marking session survives a closed tab, and
+        the same file can be handed to any tool that reads that layout.
+      </p>
+    </div>
 
     <fieldset class="modes">
-      <legend>What to do with this clip</legend>
+      <legend>What to do with the marked parts</legend>
       <label class="mode">
         <input type="radio" name="mode" value="keep" checked>
         <span>
-          <strong>Keep the section</strong>
-          Everything outside the marks is thrown away.
+          <strong>Keep them</strong>
+          The finished video is the marked parts, joined in order.
         </span>
       </label>
       <label class="mode">
-        <input type="radio" name="mode" value="remove">
+        <input type="radio" name="mode" value="cut">
         <span>
-          <strong>Cut the section out</strong>
-          The marked part goes, and what is left either side is joined up.
+          <strong>Cut them out</strong>
+          The marked parts go, and everything else is joined up.
         </span>
       </label>
     </fieldset>
@@ -114,7 +140,7 @@
 
   <!-- Step 3 &mdash; the export -->
   <section class="card" id="export-card" hidden>
-    <h2><span class="step">3</span> <span id="export-heading">Trim it</span></h2>
+    <h2><span class="step">3</span> Cut it</h2>
 
     <div class="settings">
       <div class="field">
@@ -130,13 +156,13 @@
       <div class="field" id="frame-field" hidden>
         <label for="frame">Frame size</label>
         <select id="frame">
-          <option value="first" selected>Match the first clip</option>
-          <option value="largest">Match the largest clip</option>
+          <option value="first" selected>Match the first video</option>
+          <option value="largest">Match the largest</option>
           <option value="1080p">1920 &times; 1080</option>
           <option value="720p">1280 &times; 720</option>
         </select>
         <p class="field-note">
-          One size covers the whole file. A clip of another shape is fitted
+          One size covers the whole file. A video of another shape is fitted
           inside it with bars, never stretched.
         </p>
       </div>
@@ -164,7 +190,7 @@
     </div>
 
     <dl class="summary" id="summary">
-      <div><dt>Clips</dt><dd id="sum-clips">&mdash;</dd></div>
+      <div><dt>Keeping</dt><dd id="sum-clips">&mdash;</dd></div>
       <div><dt>Finished length</dt><dd id="sum-length">&mdash;</dd></div>
       <div><dt>Starts at</dt><dd id="sum-start">&mdash;</dd></div>
       <div><dt>Roughly</dt><dd id="sum-size">&mdash;</dd></div>
@@ -175,7 +201,7 @@
     <p id="cut-note" class="path-note" hidden></p>
 
     <div class="export-row">
-      <button type="button" id="export" class="primary" disabled>Trim video</button>
+      <button type="button" id="export" class="primary" disabled>Cut video</button>
       <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
     </div>
 

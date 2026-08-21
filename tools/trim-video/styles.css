@@ -1,31 +1,5 @@
-/* Rules only the video trimmer needs. The frame around it - the header, the
+/* Rules only the video cutter needs. The frame around it - the header, the
    pledge, the cards, the buttons - is shared/css/tool-frame.css. */
-
-/* -------------------------------------------------------------- the source */
-
-.source {
-  margin: 1rem 0 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 0 1.2rem;
-  font-size: 0.88rem;
-}
-
-.source > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.6rem;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.source dt { color: var(--text-dim); flex: none; }
-.source dd {
-  margin: 0;
-  font-weight: 600;
-  text-align: right;
-  overflow-wrap: anywhere;
-}
 
 .path-note,
 .stage-note {
@@ -38,10 +12,10 @@
   font-size: 0.84rem;
 }
 
-/* ---------------------------------------------------------------- the clips */
+/* ---------------------------------------------------------------- the list */
 
-/* One row a clip, in the order they will be joined. The list is an <ol>, which
-   is what it is: the numbers are the running order and not decoration. */
+/* One row a video, in the order they will be joined. Only drawn when there is
+   more than one: a list of one is furniture. */
 
 .clip-list {
   margin: 1.1rem 0 0;
@@ -61,7 +35,7 @@
   background: var(--surface-2);
 }
 
-/* The clip the timeline is pointed at. A left edge rather than a fill, so the
+/* The video the timeline is pointed at. A left edge rather than a fill, so the
    thumbnail beside it still reads as a picture. */
 .clip.selected {
   border-color: var(--accent);
@@ -80,12 +54,7 @@
   justify-content: center;
 }
 
-.clip-shot img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
+.clip-shot img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 .clip-shot-empty {
   color: var(--text-dim);
@@ -95,12 +64,9 @@
   border: 1px solid var(--border);
 }
 
-.clip-body {
-  flex: 1 1 auto;
-  min-width: 0;
-}
+.clip-body { flex: 1 1 auto; min-width: 0; }
 
-/* A button rather than a label: choosing which clip to mark is an action, and
+/* A button rather than a label: choosing which video to mark is an action, and
    making it one means the keyboard reaches it without any extra wiring. */
 .clip-name {
   display: block;
@@ -121,23 +87,15 @@
 
 .clip-name:hover { color: var(--accent); }
 
-.clip-facts {
-  margin: 0.15rem 0 0;
-  font-size: 0.78rem;
-  color: var(--text-dim);
-}
+.clip-facts { margin: 0.15rem 0 0; font-size: 0.78rem; color: var(--text-dim); }
 
-.clip-actions {
-  flex: none;
-  display: flex;
-  gap: 0.25rem;
-}
+.clip-actions { flex: none; display: flex; gap: 0.25rem; }
 
 .clip-button {
-  padding: 0.25rem 0.5rem;
+  padding: 0.22rem 0.45rem;
   font-size: 0.85rem;
   line-height: 1.2;
-  min-width: 2rem;
+  min-width: 1.9rem;
 }
 
 .editing {
@@ -150,13 +108,9 @@
 
 /* --------------------------------------------------------------- the stage */
 
-.stage-hint {
-  margin: 0 0 0.9rem;
-  font-size: 0.85rem;
-  color: var(--text-dim);
-}
+.stage-hint { margin: 0 0 0.9rem; font-size: 0.85rem; color: var(--text-dim); }
 
-.stage-hint kbd {
+kbd {
   font: inherit;
   font-size: 0.8rem;
   padding: 0.05rem 0.3rem;
@@ -195,11 +149,6 @@
 
 /* ------------------------------------------------------------ the timeline */
 
-/* The bar under the picture: a tick for every keyframe, a shaded region either
-   side of the marks, two handles, and the playhead. Everything in it is placed
-   in percentages of the clip's length, so it needs no recalculating when the
-   window is resized. */
-
 .timeline {
   margin: 1rem 0 0.35rem;
   padding: 0.75rem 0;
@@ -213,20 +162,21 @@
   border-radius: 8px;
   background: var(--surface-2);
   cursor: crosshair;
-  overflow: visible;
 }
 
 .timeline.disabled { opacity: 0.6; pointer-events: none; }
 
-.tl-ticks {
+.tl-ticks,
+.tl-bands {
   position: absolute;
   inset: 0;
-  overflow: hidden;
   border-radius: inherit;
 }
 
-/* Where a lossless cut is allowed to begin. Faint on purpose: they are useful
-   to know about and are not what you are looking at. */
+.tl-ticks { overflow: hidden; }
+
+/* Where a lossless cut is allowed to begin. Faint on purpose: useful to know
+   about, and not what you are looking at. */
 .tl-tick {
   position: absolute;
   top: 0;
@@ -235,64 +185,68 @@
   background: color-mix(in srgb, var(--text-dim) 40%, transparent);
 }
 
-/* One shade either side of the marks. In "keep" they cover what is being thrown
-   away; in "remove" the meaning is inverted and the band between the marks is
-   the part that goes, so the shading swaps rather than the marks moving. */
-.tl-shade {
+/* One band a marked segment. */
+.tl-band {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent) 34%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  cursor: pointer;
+}
+
+.tl-band.selected {
+  top: 0;
+  bottom: 0;
+  background: color-mix(in srgb, var(--accent) 46%, transparent);
+  border-color: var(--accent);
+  z-index: 2;
+}
+
+.tl-band-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text);
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+/* The segment opened with I and not yet closed with O, drawn from its start to
+   wherever the playhead has got to - so an open mark is visibly open. */
+.tl-pending {
   position: absolute;
   top: 0;
   bottom: 0;
-  background: color-mix(in srgb, var(--bg) 72%, transparent);
-  pointer-events: none;
-  border-radius: inherit;
-}
-
-.tl-shade-before { left: 0; }
-
-.tl-selection {
-  position: absolute;
-  top: -1px;
-  bottom: -1px;
-  min-width: 2px;
-  background: color-mix(in srgb, var(--accent) 26%, transparent);
-  border-left: 2px solid var(--accent);
-  border-right: 2px solid var(--accent);
-  cursor: grab;
-}
-
-.timeline.removing .tl-shade {
-  background: none;
-}
-
-.timeline.removing .tl-selection {
   background: repeating-linear-gradient(
     45deg,
-    color-mix(in srgb, var(--danger) 30%, transparent) 0 6px,
+    color-mix(in srgb, var(--ok) 42%, transparent) 0 6px,
     transparent 6px 12px);
-  border-color: var(--danger);
+  border-left: 2px solid var(--ok);
+  border-right: 1px dashed var(--ok);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .tl-handle {
   position: absolute;
   top: 50%;
-  width: 14px;
+  width: 10px;
   height: 30px;
   margin-top: -15px;
-  border-radius: 4px;
+  border-radius: 3px;
   background: var(--accent);
   border: 1px solid color-mix(in srgb, var(--text) 25%, transparent);
   cursor: ew-resize;
 }
 
-.timeline.removing .tl-handle { background: var(--danger); }
-
-.tl-handle-start { left: -8px; }
-.tl-handle-end { right: -8px; }
-
-.tl-handle:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
+.tl-handle-start { left: -6px; }
+.tl-handle-end { right: -6px; }
 
 /* A touch target larger than the grip it draws, so a mark can be caught with a
    finger without making the grip itself cover the bar. */
@@ -310,6 +264,7 @@
   margin-left: -1px;
   background: var(--text);
   pointer-events: none;
+  z-index: 3;
 }
 
 .tl-scale {
@@ -320,57 +275,159 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ------------------------------------------------------------- the marks */
+/* ------------------------------------------------------------- transport */
 
 .transport {
   margin-top: 1rem;
   display: flex;
   gap: 0.4rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .transport button { padding: 0.4rem 0.9rem; font-size: 0.86rem; }
+.transport kbd { margin-right: 0.3rem; }
 
-.marks {
-  margin-top: 1rem;
+.speed-row {
+  margin-top: 0.6rem;
   display: flex;
+  gap: 0.3rem;
   flex-wrap: wrap;
-  align-items: end;
-  gap: 0.8rem;
+  align-items: center;
 }
 
-.mark-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
+.speed-label { font-size: 0.8rem; color: var(--text-dim); margin-right: 0.2rem; }
 
-.mark-field > label,
-.mark-label {
+.speed {
+  padding: 0.25rem 0.6rem;
   font-size: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.speed:hover { border-color: var(--accent); }
+
+.speed.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------- segments */
+
+.segments {
+  margin-top: 1.4rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--border);
+}
+
+.segments-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.segments-head h3 { margin: 0; font-size: 1rem; }
+
+.segment-count {
+  margin-left: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 400;
   color: var(--text-dim);
 }
 
-.mark-row { display: flex; gap: 0.35rem; }
-
-.mark-row input {
-  width: 8.5rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.mark-length {
+.segments-total {
   margin: 0;
-  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-dim);
   font-variant-numeric: tabular-nums;
-  padding: 0.42rem 0;
 }
 
-.mark-actions { margin-left: auto; }
+.segments-total strong { color: var(--text); }
+
+.segment-table {
+  width: 100%;
+  margin-top: 0.7rem;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.segment-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  padding: 0.2rem 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.segment-table td {
+  padding: 0.25rem 0.4rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.segment-table .col-index { width: 2rem; color: var(--text-dim); }
+
+.segment.selected td { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+
+/* A segment opened with I and not closed. Marked rather than hidden, because
+   the reason the total has not moved is that this row is unfinished. */
+.segment.open td { background: color-mix(in srgb, var(--ok) 12%, transparent); }
+
+.segment-time {
+  width: 7.5rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.83rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.segment-length {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.segment-buttons {
+  display: flex;
+  gap: 0.2rem;
+  justify-content: flex-end;
+  border-bottom: 0;
+}
+
+.segments-empty {
+  margin: 0.8rem 0 0;
+  padding: 0.8rem;
+  border: 1px dashed var(--border);
+  border-radius: 7px;
+  text-align: center;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+}
+
+.segment-actions {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.segment-actions-spacer { flex: 1 1 auto; }
+
+.segment-actions button { padding: 0.3rem 0.7rem; font-size: 0.82rem; }
+.segment-actions select { padding: 0.25rem 0.4rem; font-size: 0.82rem; }
 
 /* --------------------------------------------------------------- the modes */
 
 .modes {
-  margin: 1.2rem 0 0;
+  margin: 1.4rem 0 0;
   padding: 0.9rem 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -379,11 +436,7 @@
   gap: 0.7rem;
 }
 
-.modes legend {
-  padding: 0 0.35rem;
-  font-size: 0.8rem;
-  color: var(--text-dim);
-}
+.modes legend { padding: 0 0.35rem; font-size: 0.8rem; color: var(--text-dim); }
 
 .mode {
   display: flex;
@@ -396,7 +449,6 @@
 .mode input { margin: 0.15rem 0 0; flex: none; }
 .mode span { display: flex; flex-direction: column; gap: 0.1rem; color: var(--text-dim); }
 .mode strong { color: var(--text); font-size: 0.9rem; }
-.mode input:disabled ~ span { opacity: 0.5; }
 
 /* ---------------------------------------------------------------- settings */
 
@@ -436,12 +488,7 @@
 }
 
 .summary dt { color: var(--text-dim); flex: none; }
-.summary dd {
-  margin: 0;
-  font-weight: 600;
-  text-align: right;
-  overflow-wrap: anywhere;
-}
+.summary dd { margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere; }
 
 /* ------------------------------------------------------------------ export */
 
@@ -528,9 +575,11 @@
   .clip { flex-wrap: wrap; }
   .clip-body { flex-basis: 100%; order: 3; }
   .clip-actions { margin-left: auto; }
-  .tl-handle { width: 18px; margin-left: 0; }
-  .tl-handle-start { left: -10px; }
-  .tl-handle-end { right: -10px; }
-  .mark-actions { margin-left: 0; }
-  .mark-row input { width: 7.5rem; }
+  .tl-handle { width: 16px; }
+  .tl-handle-start { left: -9px; }
+  .tl-handle-end { right: -9px; }
+  .segment-time { width: 5.6rem; }
+  .segment-table { font-size: 0.8rem; }
+  .segment-buttons { flex-wrap: wrap; }
+  .segment-actions-spacer { flex-basis: 100%; }
 }
