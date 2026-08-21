@@ -123,10 +123,17 @@ button.file-main-wrap:focus-visible {
 }
 
 /* Which file is under the box, said where the box is rather than only in the
-   list above it. Empty, and so invisible, when there is only one image. */
+   list above it. Empty, and so invisible, when there is only one image.
+
+   It wraps anywhere because a phone's filenames have no spaces in them -
+   Screenshot_2026-08-20-12-13-14-123_com.instagram.android.jpg is one
+   unbreakable word - and dropped into a sentence like this one it pushed the
+   whole page sideways. Breaking a name mid-word is ugly; a page that scrolls
+   sideways on a phone is worse. */
 .stage-name {
   color: var(--text);
   font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .stage-hint kbd {
@@ -321,6 +328,14 @@ button.file-main-wrap:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 
+/* The label is 0.8rem and the input inherits it, which is right on a desktop
+   and wrong on an iPhone: Safari zooms the page into any field it is asked to
+   focus whose text is under 16px, and then leaves it zoomed. Sixteen only where
+   there is a finger, so the desktop reading of these fields is unchanged. */
+@media (pointer: coarse) {
+  .numbers input { font-size: 16px; }
+}
+
 .number-actions {
   display: flex;
   gap: 0.4rem;
@@ -348,7 +363,12 @@ button.file-main-wrap:focus-visible {
 }
 
 .option-row label { font-size: 0.9rem; font-weight: 600; }
-.option-row select { max-width: 100%; }
+
+/* `max-width` alone loses: a flex item's automatic minimum is min-content, and
+   for a <select> that is its longest option - a whole sentence here. Without the
+   `min-width`, the row stayed as wide as that sentence on a narrow screen. */
+.option-row { min-width: 0; }
+.option-row select { min-width: 0; max-width: 100%; }
 
 /* ------------------------------------------------------------- the sizing */
 
@@ -385,7 +405,10 @@ button.file-main-wrap:focus-visible {
 
 /* The sentence under a group of controls, restating what they are about to do.
    Every step on this page has one, because "contain, 1920, no enlarge" means
-   nothing to somebody who came here to make a photograph fit an upload form. */
+   nothing to somebody who came here to make a photograph fit an upload form.
+
+   They name the file as well, so they wrap anywhere for the same reason
+   .stage-name does. */
 .field-summary {
   margin: 1.1rem 0 0;
   padding-top: 0.8rem;
@@ -394,6 +417,7 @@ button.file-main-wrap:focus-visible {
   line-height: 1.6;
   color: var(--text-dim);
   max-width: 74ch;
+  overflow-wrap: anywhere;
 }
 
 /* ---------------------------------------------------------------- settings */

@@ -46,6 +46,12 @@
    anyway. This keeps the attribute authoritative. */
 [hidden] { display: none !important; }
 
+/* A fieldset's automatic minimum width is min-content rather than zero, and no
+   author rule short of this one changes it. Every options fieldset on this site
+   holds a <select> whose longest option is a sentence, so the box refused to
+   shrink below that sentence and the whole page scrolled sideways on a phone. */
+fieldset { min-inline-size: 0; }
+
 body {
   margin: 0;
   padding: 0 1rem 3rem;

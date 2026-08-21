@@ -229,6 +229,13 @@
 .inspect-name { margin: 0; font-weight: 600; word-break: break-all; }
 .inspect-sub { margin: 0.15rem 0 0; font-size: 0.83rem; color: var(--text-dim); }
 
+/* Every option in this select is a filename, so the control's own idea of how
+   wide it wants to be is the longest one - which on a phone is wider than the
+   screen. Both rules are needed: a flex item's automatic minimum is min-content,
+   and until that is nought the max-width has nothing to clamp. */
+.inspect-switch { min-width: 0; }
+.inspect-switch select { min-width: 0; max-width: 100%; }
+
 .inspector h3 {
   margin: 1.5rem 0 0.2rem;
   font-size: 0.98rem;
@@ -440,6 +447,14 @@
 }
 
 .tag-input.bad { border-color: var(--danger); }
+
+/* Safari zooms the page into any field it is asked to focus whose text is under
+   16px, and then leaves it zoomed - and this table already scrolls sideways
+   inside its own panel, so being zoomed into it is a poor place to be. Sixteen
+   only where there is a finger; the desktop table is unchanged. */
+@media (pointer: coarse) {
+  .tag-input { font-size: 16px; }
+}
 
 .tag-readonly {
   color: var(--text-dim);

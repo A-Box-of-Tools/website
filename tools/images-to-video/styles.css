@@ -49,8 +49,14 @@
 .image-list.view-list,
 .image-list.view-details { grid-template-columns: 1fr; gap: 0.4rem; }
 
+/* `min-width` because this is a grid item, and a grid item's automatic minimum
+   is min-content. In the one-column views that is the whole filename, which
+   .image-name means to cut short with an ellipsis - so without this the column
+   grew to fit a name the ellipsis was there to hide, and the page went with
+   it. */
 .image-item {
   position: relative;
+  min-width: 0;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface-2);
@@ -241,18 +247,26 @@
   border-radius: 5px;
 }
 
+/* Wraps because a thumbnail, a name and a duration control do not fit across a
+   320px screen. The controls drop under the name rather than off the side of
+   it; on anything wider the row is unchanged, because wrapping only happens
+   when there is nothing left to give. */
 .view-list .image-meta,
 .view-details .image-meta {
   flex: 1;
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.8rem;
   min-width: 0;
 }
 
+/* `flex: 1` is `1 1 0%`, but the automatic minimum still holds the name at its
+   full width - and the name does not wrap. `min-width: 0` is what lets it
+   shrink and the ellipsis do its job. */
 .view-list .image-name,
-.view-details .image-name { margin: 0; flex: 1; font-size: 0.85rem; }
+.view-details .image-name { margin: 0; flex: 1; min-width: 0; font-size: 0.85rem; }
 
 .view-list .image-controls,
 .view-details .image-controls { flex: none; }
@@ -285,6 +299,16 @@
 }
 
 .image-controls .unit { font-size: 0.78rem; color: var(--text-dim); flex: 1; }
+
+/* Safari zooms the page into any field it is asked to focus whose text is under
+   16px, and then leaves it zoomed. Sixteen only where there is a finger, so the
+   desktop reading of these fields is unchanged. .bulk inherits its 0.9rem to
+   the two controls inside it, which is why they are named here too. */
+@media (pointer: coarse) {
+  .image-controls input[type="number"],
+  .bulk input,
+  .bulk select { font-size: 16px; }
+}
 
 .move-btn {
   border: 1px solid var(--border);
