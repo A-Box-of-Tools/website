@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ site.lang }}">
+<html lang="{{ locale.hreflang }}"{% if locale.rtl %} dir="rtl"{% endif %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,6 +31,7 @@
 <meta name="description" content="{{ page.description }}">
 
 <link rel="canonical" href="{{ page.url }}">
+{% include "partials/alternates.html" %}
 
 <meta name="google-adsense-account" content="{{ site.adsense_client }}">
 
@@ -81,7 +82,7 @@
   markup is meant to describe what a visitor can see, so a page with nothing to
   show describes nothing.
 -->
-{% if crumbs %}<nav class="crumbs" aria-label="Breadcrumb">
+{% if crumbs %}<nav class="crumbs" aria-label="{{ ui.breadcrumb }}">
 {% for crumb in crumbs %}  <a href="{{ crumb.href }}">{{ crumb.name }}</a>
   <span aria-hidden="true">&rsaquo;</span>
 {% endfor %}  <span aria-current="page">{{ page.nav }}</span>
@@ -104,10 +105,10 @@
     written at all.
   -->
 {% if tool %}  <p class="guide-cta">
-    <a class="guide-cta-link" href="{{ base }}{{ tool.slug }}/">Open the {{ tool.name | e }}</a>
+    <a class="guide-cta-link" href="{{ base }}{{ tool.out_slug }}/">{{ ui.guide.open_tool }}</a>
     <span class="guide-cta-note">{{ tool.tagline }}</span>
   </p>
-{% endif %}  <p class="legal-date">Last updated {{ page.updated }}</p>
+{% endif %}  <p class="legal-date">{{ ui.last_updated }} {{ page.updated }}</p>
 </header>
 
 <!--

@@ -1,0 +1,21 @@
+<!--
+  Every language this page is published in, this one included.
+
+  Google's rule for hreflang is that the set is reciprocal and self-inclusive:
+  a page lists every version of itself, its own among them, and each of those
+  pages lists the same set back. The list is built once, in buildlib/i18n.py,
+  and handed to every page from there - so reciprocity holds because there is
+  only one list, not because somebody checked.
+
+  x-default is English. It is what a reader whose language is none of these is
+  meant to be given, and it is the last entry rather than the first because it
+  is a fallback rather than a language.
+
+  A locale that is still being translated appears here in no form at all. It is
+  built, and readable at its own URL, and until its locale.toml says
+  complete = true it is not advertised to anybody - inviting a crawler to index
+  a half-translated page is how a site ends up with the untranslated half
+  ranking for the wrong language.
+-->
+{% for alt in alternates %}<link rel="alternate" hreflang="{{ alt.hreflang }}" href="{{ alt.href }}">
+{% endfor %}

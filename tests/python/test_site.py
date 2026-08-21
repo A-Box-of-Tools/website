@@ -20,7 +20,17 @@ from pathlib import Path
 
 from buildlib import site as sitelib
 
+# `home`, `guides_url` and `roadmap_url` are the absolute addresses the
+# structured data on a page is hung from. They are separate from `domain`
+# because they are the front door of one LANGUAGE rather than of the site:
+# under a locale they carry its prefix and its translated slugs, and a German
+# page whose WebSite node pointed at the English root would be telling a
+# crawler the two are one document. build.py fills them in per locale; a
+# fixture standing in for a site has to carry them too.
 SITE = {'domain': 'https://example.test/', 'name': 'Site', 'lang': 'en',
+        'home': 'https://example.test/',
+        'guides_url': 'https://example.test/guides/',
+        'roadmap_url': 'https://example.test/roadmap/',
         'guides': {'slug': 'guides', 'heading': 'Guides',
                    'description': 'every guide'}}
 

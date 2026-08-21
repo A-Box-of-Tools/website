@@ -119,6 +119,7 @@ def tool_jsonld(site, tool):
             'browserRequirements': tool['schema'].get(
                 'browser_requirements', 'Requires JavaScript.'),
             'description': tool['schema']['description'],
+            'inLanguage': site['lang'],
             'isAccessibleForFree': True,
             'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'USD'},
             'featureList': tool['schema']['features'],
@@ -132,7 +133,7 @@ def tool_jsonld(site, tool):
             '@type': 'BreadcrumbList',
             'itemListElement': [
                 {'@type': 'ListItem', 'position': 1,
-                 'name': site['name'], 'item': site['domain']},
+                 'name': site['name'], 'item': site['home']},
                 {'@type': 'ListItem', 'position': 2,
                  'name': tool['name'], 'item': tool['url']},
             ],
@@ -167,11 +168,11 @@ def roadmap_jsonld(site):
     graph = [
         {
             '@type': 'CollectionPage',
-            'url': f'{site["domain"]}{roadmap["slug"]}/',
+            'url': site['roadmap_url'],
             'name': to_text(roadmap['heading']),
             'description': to_text(roadmap['description']),
             'inLanguage': site['lang'],
-            'isPartOf': {'@id': site['domain'] + '#website'},
+            'isPartOf': {'@id': site['home'] + '#website'},
         },
     ]
     return dumps_ld(graph)
@@ -217,10 +218,10 @@ def page_jsonld(site, page):
             # asks for - markup describes what a visitor can see.
             'itemListElement': [
                 {'@type': 'ListItem', 'position': 1,
-                 'name': site['name'], 'item': site['domain']},
+                 'name': site['name'], 'item': site['home']},
                 {'@type': 'ListItem', 'position': 2,
                  'name': to_text(site['guides']['heading']),
-                 'item': f'{site["domain"]}{site["guides"]["slug"]}/'},
+                 'item': site['guides_url']},
                 {'@type': 'ListItem', 'position': 3,
                  'name': to_text(page['nav']), 'item': page['url']},
             ],
@@ -237,7 +238,7 @@ def guides_jsonld(site, guides):
     them is describing the page rather than advertising something that is not
     built yet.
     """
-    index_url = f'{site["domain"]}{site["guides"]["slug"]}/'
+    index_url = site['guides_url']
     graph = [
         {
             '@type': 'CollectionPage',
@@ -245,7 +246,7 @@ def guides_jsonld(site, guides):
             'name': to_text(site['guides']['heading']),
             'description': to_text(site['guides']['description']),
             'inLanguage': site['lang'],
-            'isPartOf': {'@id': site['domain'] + '#website'},
+            'isPartOf': {'@id': site['home'] + '#website'},
             'mainEntity': {
                 '@type': 'ItemList',
                 'itemListElement': [
@@ -263,7 +264,7 @@ def guides_jsonld(site, guides):
             '@type': 'BreadcrumbList',
             'itemListElement': [
                 {'@type': 'ListItem', 'position': 1,
-                 'name': site['name'], 'item': site['domain']},
+                 'name': site['name'], 'item': site['home']},
                 {'@type': 'ListItem', 'position': 2,
                  'name': to_text(site['guides']['heading']), 'item': index_url},
             ],
@@ -276,8 +277,8 @@ def hub_jsonld(site, tools):
     graph = [
         {
             '@type': 'WebSite',
-            '@id': site['domain'] + '#website',
-            'url': site['domain'],
+            '@id': site['home'] + '#website',
+            'url': site['home'],
             'name': site['name'],
             'description': site['hub']['schema_description'],
             'inLanguage': site['lang'],
@@ -297,10 +298,10 @@ def hub_jsonld(site, tools):
         },
         {
             '@type': 'CollectionPage',
-            '@id': site['domain'] + '#collection',
-            'url': site['domain'],
+            '@id': site['home'] + '#collection',
+            'url': site['home'],
             'name': site['name'],
-            'isPartOf': {'@id': site['domain'] + '#website'},
+            'isPartOf': {'@id': site['home'] + '#website'},
             'about': site['hub']['schema_about'],
             'mainEntity': {
                 '@type': 'ItemList',

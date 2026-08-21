@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ site.lang }}">
+<html lang="{{ locale.hreflang }}"{% if locale.rtl %} dir="rtl"{% endif %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -84,7 +84,7 @@
     </div>
     <ul class="tool-grid">
 {% for tool in tools %}      <li>
-        <a class="tool-card" href="{{ base }}{{ tool.slug }}/">
+        <a class="tool-card" href="{{ base }}{{ tool.out_slug }}/">
           <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
           <span class="tool-name">{{ tool.name | e }}</span>
           <span class="tool-desc">

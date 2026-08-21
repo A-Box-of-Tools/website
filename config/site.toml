@@ -19,6 +19,14 @@ source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
 
+# The one guide that is linked to from inside a sentence rather than from a
+# list. The hub's three guarantees end by pointing at it, so it cannot be moved
+# or renamed without the build noticing - which is the whole reason its slug is
+# written here and not in the middle of the markup. Not translatable: a locale
+# changes the address this resolves to through [slugs], and never which guide
+# the sentence is about.
+safety_guide = "guides/is-it-safe-to-upload-files"
+
 adsense_client = "ca-pub-5997711677062324"
 analytics_id = "G-SCBN29XZ31"
 
@@ -346,6 +354,152 @@ id = "before-you-upload"
 name = "Before you upload anything"
 note = "What handing a file to a website actually does, and how to tell whether it had to happen."
 order = ["is-it-safe-to-upload-files"]
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words.
+#
+# Everything below used to be typed into templates/. That was fine while the
+# site was written in one language and stopped being fine the moment it was not:
+# a string sitting in markup is a string no locale file can reach, so it renders
+# in English inside a German page with nothing to say why.
+#
+# These are read as small templates rather than as plain strings, using the same
+# {{ }} the rest of the build uses, so a translator can put the moving part
+# wherever their language puts it. "Your files are never uploaded" is
+# subject-verb-object; the German is not, and a string split into a before-half
+# and an after-half around {{ tool.words.plural }} could only ever be one or the
+# other. Written whole, it can be either.
+#
+# The names inside the braces are checked. buildlib/template.py refuses to
+# render a name it cannot resolve, so a translation that mistypes
+# {{ tool.words.plural }} fails the build rather than shipping a sentence with a
+# hole in it - which is the same bargain every other value here is on.
+#
+# [ui.tool] and [ui.picker] are separate because they are the ones that reach
+# for {{ tool }}, and only a tool page has one. A hub page rendering them would
+# be asking for a name that is not there.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+# The language switcher. `languages` labels it for a screen reader; the
+# languages themselves are never translated - each is written in its own
+# language, in locales/<lang>/locale.toml, because somebody looking for German
+# is looking for the word "Deutsch".
+languages = "Language"
+
+breadcrumb = "Breadcrumb"
+all_tools = "All tools"
+last_updated = "Last updated"
+built_tag = "Built"
+planned_count = "planned"
+built_count = "built"
+
+# The guides index counts itself. Two forms, because "1 guides" is the kind of
+# thing that is only ever noticed by the reader. Languages with more plural
+# forms than two would need more than this, and none of the ten this site is
+# translated into does for a count that starts at nine.
+guide_one = "guide"
+guide_many = "guides"
+
+footer_tools = "Tools"
+footer_site = "This site"
+footer_contact = "Get in touch"
+footer_sitemap = "Sitemap"
+footer_source = "Read the code on GitHub"
+
+# The three lines that carry a link inside a sentence. The <a> is part of the
+# translated string on purpose: which words are the link, and where in the
+# sentence they fall, is a decision only the translator can make.
+guarantees_note = """
+    None of that has to be taken on trust.
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      How to tell whether a tool really needs your files</a>
+    sets out four checks you can run yourself, on this site or any other."""
+
+hub_guides_note = """
+    Not sure which setting to move, or what it costs?
+    <a href="{{ base }}{{ links.guides }}/">There is a guide for every tool</a>."""
+
+hub_roadmap_note = """
+    More is coming, and the list is public:
+    <a href="{{ base }}{{ links.roadmap }}/">see what is planned next</a>."""
+
+guides_all_note = """
+    Every guide here describes a tool that runs on your own machine:
+    <a href="{{ base }}">see all of them</a>."""
+
+#
+# The tool page. Everything here may use {{ tool }}, and nothing outside a tool
+# page may use any of it.
+#
+
+[ui.tool]
+view_source = "View source"
+how_verified = "How this is verified"
+live_check = "Live check:"
+offline = "Offline:"
+checking = "checking&hellip;"
+questions_heading = "Questions"
+guide_heading = "The longer version"
+privacy_heading = "How the privacy claim is verifiable"
+
+# The headline claim. The noun in the middle is this tool's own - "files",
+# "pictures", "clips" - and the sentence is written round it rather than in two
+# pieces either side of it, so a language that puts the verb last can.
+pledge_line = """
+    Your {{ tool.words.plural }} are <strong>never uploaded</strong>. There is no server."""
+
+boot_title = "This page's code did not start."
+boot_body = """
+    Opening <code>index.html</code> directly from a folder blocks JavaScript modules,
+    so nothing will happen when you choose {{ tool.words.choose }}. Serve the folder over http instead:"""
+boot_then = "Then open <code>http://localhost:8080/</code>."
+
+noscript_title = "JavaScript is disabled."
+noscript_body = "This app does all of its work in your browser, so it cannot run without it."
+
+check_yourself = """
+      <strong>Check it yourself.</strong> None of the above has to be taken on trust.
+      This page is generated from the templates and config in the repository by a
+      build script you can read and run yourself, and the result is committed to
+      the <code>dist</code> branch &mdash; so you can diff what is served against
+      what a build of the sources produces:"""
+
+read_first_lead = """
+      The files worth reading first are <code>config/site.toml</code> for the
+      Content-Security-Policy"""
+
+#
+# The one line a guide carries that a legal page does not: the link to the
+# tool the guide is about. Its own table because it needs {{ tool }}, and a
+# guide about no tool in particular - "is it safe to upload files" - has not
+# got one.
+#
+
+[ui.guide]
+# The name goes inside the string rather than after it. English puts the verb
+# first and German puts it last, and a label built as "Open the" plus a name
+# can only ever be the first of those.
+open_tool = "Open the {{ tool.name | e }}"
+
+#
+# The "add from a web address" panel, on the tools that have one. It may use
+# {{ tool.picker.urls }}, which only those tools define.
+#
+
+[ui.picker]
+warning = """
+      <strong>This is the one feature that touches the network.</strong>
+      Fetching an address tells that server your IP address and which {{ tool.picker.urls.noun }} you
+      asked for. The {{ tool.picker.urls.noun }} is copied to local memory on arrival and never
+      requested again. Nothing of yours is ever sent out &mdash; this page still
+      cannot make an upload of any kind."""
+label = "One address per line"
+note = """
+      The server must permit cross-origin use of its {{ tool.picker.urls.noun }}s. Many sites do not,
+      and those will fail with a message rather than silently breaking later."""
 
 #
 # ---------------------------------------------------------------------------
