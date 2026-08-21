@@ -58,6 +58,7 @@ The build never reaches the network, whichever way it runs.
 
 import argparse
 import hashlib
+import html
 import shutil
 import subprocess
 import sys
@@ -190,6 +191,8 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
 
     build_roadmap(out, templates, site, planned, ordered, footer, css_v, emit)
     written.append(f'{site["roadmap"]["slug"]}/index.html')
+
+    write_tools_index(ordered)
 
     build_404(out, templates, site, ordered, footer, css_v, emit)
     written.append('404.html')
@@ -349,6 +352,16 @@ def build_tool(out, templates, site, tool, footer, guide, emit):
     body_path = tool['dir'] / 'body.html'
     if not body_path.is_file():
         raise sitelib.ConfigError(f'{tool["slug"]}: no body.html')
+
+    # A tool documents itself, in its own folder. The repository README covers
+    # the site and the build and is not the place for it, which is the whole
+    # reason this is checked rather than trusted: an explanation that went into
+    # the wrong file would read perfectly well there and leave its own folder
+    # bare for whoever came looking beside the code.
+    if not (tool['dir'] / 'README.md').is_file():
+        raise sitelib.ConfigError(
+            f'{tool["slug"]}: no README.md. Every tool explains itself in its own '
+            'folder; see "Adding a tool" in the repository README.')
 
     # Assembled first, so the page can ask for it by a URL carrying a hash of
     # what is in it. The service worker below precaches that same URL: it
@@ -647,6 +660,52 @@ def build_404(out, templates, site, tools, footer, css_v, emit):
         'css_href': f'/site.css?v={css_v}',
         'csp': sitelib.render_csp(site['csp']),
     }))
+
+
+def write_tools_index(tools):
+    """Write tools/README.md: the index GitHub shows when you browse to tools/.
+
+    The one file this build writes back into the repository rather than into the
+    output, and worth being deliberate about. It exists so that shipping a tool
+    never means editing the repository README: a tool documents itself in its
+    own folder, and the list of them is derived from the folders that exist
+    rather than kept in step by hand.
+
+    Rewritten only when it would actually change, so a build does not dirty the
+    working tree for nothing.
+    """
+    lines = [
+        '<!--',
+        '  GENERATED FILE - do not edit. Written by build.py from the tool.toml of',
+        '  every folder here, in the order the hub shows them.',
+        '',
+        '  It is generated so that shipping a tool never means editing a list kept',
+        '  somewhere else. Each tool explains itself in its own README, beside its',
+        '  own code; this is only the way in.',
+        '-->',
+        '',
+        '# The tools',
+        '',
+        'One folder each, and each with its own README. Everything here runs in the',
+        'browser and uploads nothing; how the site around them is built is in the',
+        '[repository README](../README.md).',
+        '',
+        '| Tool | Lives at | What it does |',
+        '|---|---|---|',
+    ]
+    for tool in tools:
+        # A tagline is written as HTML, for the page. This is markdown, so
+        # `&mdash;` arrives as an em dash rather than as five characters.
+        tagline = html.unescape(tool['tagline'])
+        lines.append(f'| [{tool["name"]}]({tool["slug"]}/) '
+                     f'| `/{tool["slug"]}/` '
+                     f'| {tagline} |')
+
+    text = '\n'.join(lines) + '\n'
+    path = TOOLS / 'README.md'
+    if not path.is_file() or path.read_text(encoding='utf-8') != text:
+        write(path, text)
+        print(f'  wrote {path.relative_to(ROOT).as_posix()}')
 
 
 def build_sitemap(out, templates, site, tools, guides, legal):
