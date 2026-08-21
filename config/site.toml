@@ -217,7 +217,7 @@ body = """
 id = "images-and-video"
 name = "Images &amp; video"
 note = "Work with pictures and footage without handing them to anyone."
-order = ["images-to-video", "trim-video", "crop-video", "exif-editor", "resize-image", "compress-image"]
+order = ["images-to-video", "trim-video", "crop-video", "exif-editor", "image-to-ico", "resize-image", "compress-image"]
 
 [[hub.categories]]
 id = "audio"
@@ -341,6 +341,7 @@ note = "One per tool: what the job involves, which setting matters, and what it 
 order = [
   "compress-an-image-to-a-target-size",
   "resize-an-image",
+  "make-a-favicon",
   "remove-exif-and-gps-data",
   "make-a-pdf-smaller",
   "combine-images-into-a-pdf",
