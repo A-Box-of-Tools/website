@@ -16,6 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
+import build as buildmod
 from buildlib import i18n
 from buildlib.site import ConfigError
 
@@ -37,7 +38,7 @@ def locale(**over):
         'lang': 'de', 'name': 'German', 'endonym': 'Deutsch', 'hreflang': 'de',
         'dir': 'ltr', 'complete': False, 'is_base': False, 'prefix': 'de/',
         'slugs': {}, 'site': SITE, 'tools': {}, 'pages': {}, 'bodies': {},
-        'missing': [],
+        'planned': {}, 'missing': [],
     }
     base.update(over)
     return base
@@ -101,6 +102,37 @@ class Merging(unittest.TestCase):
         self.assertEqual(merged['order'], ['a'])
         self.assertEqual(merged['name'], 'Dings')
 
+    def test_what_counts_as_structure_is_per_file(self):
+        """Regression: the planned list could not be translated at all.
+
+        STRUCTURAL_KEYS is matched on the key name, and `group` is on it - it
+        names the guides group a guide joins, in that guide's page.toml. That
+        made [[group]] in config/planned.toml look structural, so the whole
+        roadmap list was skipped by the merge, no locale could translate it,
+        and - because a skipped key is not a missing one - no locale was ever
+        told.
+
+        The set is a parameter of the merge now. In planned.toml only `id` is
+        structure, because that is what a tool's roadmap_group matches on.
+        """
+        planned = {
+            'note': 'Not built yet.',
+            'group': [{'id': 'images', 'name': 'Images',
+                       'items': [['Rotate', 'quarter turns']]}],
+        }
+        missing = []
+        merged = i18n.merge(
+            planned,
+            {'group': [{'name': 'Bilder', 'items': [['Drehen', 'Vierteldrehungen']]}]},
+            'test', missing, 'planned', i18n.PLANNED_STRUCTURE)
+
+        self.assertEqual(merged['group'][0]['name'], 'Bilder')
+        self.assertEqual(merged['group'][0]['items'][0], ['Drehen', 'Vierteldrehungen'])
+        # The id is what roadmap_group matches on, so it survives.
+        self.assertEqual(merged['group'][0]['id'], 'images')
+        # And the one string left untranslated is reported, rather than skipped.
+        self.assertEqual(missing, ['planned.note'])
+
     def test_the_ui_table_is_all_words_however_it_is_named(self):
         """Regression: [ui.tool] was served in English on every translated page.
 
@@ -115,6 +147,31 @@ class Merging(unittest.TestCase):
         merged = i18n.merge(SITE, {'ui': {'tool': {'questions': 'Fragen'}}},
                             'test', [], 'site')
         self.assertEqual(merged['ui']['tool']['questions'], 'Fragen')
+
+
+class TheRoadmapList(unittest.TestCase):
+    """config/planned.toml, which is a page in the sitemap like any other.
+
+    A locale that called itself finished while this list was still English
+    would be advertising a half-translated page, which is the exact thing
+    `complete` exists to stop."""
+
+    def test_english_is_returned_unchanged(self):
+        planned = {'note': 'x', 'group': []}
+        self.assertIs(
+            i18n.localize_planned(planned, i18n.base_locale(SITE)), planned)
+
+    def test_an_untranslated_list_is_counted_against_the_locale(self):
+        planned = {
+            'note': 'Not built yet.',
+            'group': [{'id': 'images', 'name': 'Images',
+                       'items': [['Rotate', 'quarter turns'], ['Filters', 'blur']]}],
+        }
+        de = locale()
+        i18n.localize_planned(planned, de)
+        # note + name + two items of two strings each.
+        self.assertEqual(len(de['missing']), 6)
+        self.assertIn('planned.group[0].items[0][0]', de['missing'])
 
 
 class Slugs(unittest.TestCase):
@@ -208,15 +265,25 @@ class Advertising(unittest.TestCase):
 
 
 class Addresses(unittest.TestCase):
-    def test_a_page_sits_one_step_deeper_under_a_prefix(self):
-        """The frame works out where the stylesheet and the hub are from
-        `depth` alone, so it has to count the language as a level."""
+    def test_depth_is_measured_from_the_language_not_from_the_site(self):
+        """Regression: every prose page linked its way out of its own language.
+
+        `depth` becomes `base`, and `base` builds the footer, the breadcrumb
+        and the link to the guides index. Counting the locale prefix as another
+        level - which the first version did - sent all of those up one step too
+        far, so a German page's German footer linked to the English hub, the
+        English guides index and the English privacy page. Nothing 404'd,
+        because those pages exist; the links just quietly changed language.
+
+        So the same page is the same depth in every language, and each locale
+        root carries its own copy of site.css to keep it that way.
+        """
         page = {'slug': 'guides/resize', 'kind': 'guide', 'nav': 'Resize'}
         english = i18n.localize_page(page, i18n.base_locale(SITE), SITE)
         german = i18n.localize_page(
             page, locale(slugs={'guides/resize': 'ratgeber/skalieren'}), SITE)
         self.assertEqual(english['depth'], 2)
-        self.assertEqual(german['depth'], 3)
+        self.assertEqual(german['depth'], 2)
         self.assertEqual(german['url'],
                          'https://example.test/de/ratgeber/skalieren/')
 
@@ -231,6 +298,63 @@ class Addresses(unittest.TestCase):
                                     SITE)
         self.assertEqual(german['slug'], 'privacy')
         self.assertEqual(german['out_slug'], 'datenschutz')
+
+
+class LinksThatLeadNowhere(unittest.TestCase):
+    """build.check_links, added after two bugs that broke no build and threw no
+    error - they just left pages pointing at the wrong thing."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.out = Path(self.tmp.name)
+        self.locales = [i18n.base_locale(SITE),
+                        locale(complete=True), locale(lang='fr', complete=False)]
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def page(self, where, body):
+        path = self.out / where
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(body, encoding='utf-8', newline='\n')
+
+    def test_a_link_to_a_page_that_exists_passes(self):
+        self.page('index.html', '<a href="widget/">Widget</a>')
+        self.page('widget/index.html', '<a href="../">Home</a>')
+        buildmod.check_links(self.out, self.locales, SITE)
+
+    def test_a_link_to_a_page_that_was_never_built_fails(self):
+        self.page('index.html', '<a href="widget/">Widget</a>')
+        with self.assertRaises(ConfigError) as caught:
+            buildmod.check_links(self.out, self.locales, SITE)
+        self.assertIn('widget/', str(caught.exception))
+
+    def test_a_finished_locale_is_held_to_it(self):
+        # de says complete = true, so a link out of it that leads nowhere means
+        # the claim is false.
+        self.page('de/index.html', '<a href="../compress-image/">nope</a>')
+        with self.assertRaises(ConfigError):
+            buildmod.check_links(self.out, self.locales, SITE)
+
+    def test_an_unfinished_locale_is_not(self):
+        """fr is still serving English bodies, and an English body carries
+        English slugs. Broken cross-links are the expected state there until it
+        is translated, which is what complete = false says."""
+        self.page('fr/index.html', '<a href="../compress-image/">nope</a>')
+        buildmod.check_links(self.out, self.locales, SITE)
+
+    def test_off_site_and_inert_links_are_left_alone(self):
+        self.page('index.html',
+                  '<a href="https://example.test/x">x</a>'
+                  '<a href="mailto:a@b.test">mail</a>'
+                  '<img src="data:image/gif;base64,AA">')
+        buildmod.check_links(self.out, self.locales, SITE)
+
+    def test_a_query_string_does_not_count_as_part_of_the_name(self):
+        # The stylesheet is asked for by a URL carrying a hash of its contents.
+        self.page('index.html', '<link href="site.css?v=abc123">')
+        self.page('site.css', 'body{}')
+        buildmod.check_links(self.out, self.locales, SITE)
 
 
 class LoadingALocale(unittest.TestCase):

@@ -1,0 +1,74 @@
+#
+# Die geplante Liste auf der Roadmap - German.
+#
+# Overrides for config/planned.toml. Only words: the group `id` stays as it is,
+# because that is what a tool's roadmap_group matches on, and the order of the
+# groups and of the items inside them is decided once, in English.
+#
+# Every group and every item has to be here. They are merged in order, so a
+# missing entry would render in English in the middle of a German list with
+# nothing on the page to say which one it was - the build refuses a list whose
+# length has changed for exactly that reason.
+#
+
+note = "Noch nicht gebaut. Hier aufgeführt, damit Sie sehen, wohin das geht."
+
+[[group]]
+name = "Bilder"
+items = [
+  ["Drehen &amp; spiegeln", "in Vierteldrehungen oder um wenige Grad geradegerückt"],
+  ["Text hinzufügen", "über dem Bild oder in einem Textkasten darüber"],
+  ["Filter", "Helligkeit, Kontrast, Sättigung, Weichzeichnen, Graustufen"],
+  ["Bild als Data-URI", "das Ergebnis direkt in CSS oder HTML einfügen"],
+  ["HEIC zu JPG", "die Fotos eines iPhones in einem Format, das jedes Programm öffnet"],
+  ["AVIF &amp; JPEG XL", "in beide Richtungen umwandeln, in welchem Browser Sie auch sitzen"],
+]
+
+[[group]]
+name = "GIF &amp; Animation"
+items = [
+  ["GIF zu MP4 oder WebM", "dieselbe Animation, meist ein Zehntel der Größe"],
+  ["GIF zerlegen", "jedes Einzelbild als eigenes PNG"],
+  ["GIFs skalieren, zuschneiden &amp; drehen", "Bild für Bild, mit erhaltenem Timing"],
+  ["GIF rückwärts", "das letzte Einzelbild zuerst"],
+  ["GIF-Tempo ändern", "neu takten, ohne die Einzelbilder neu zu rendern"],
+  ["GIF-Analyse", "Einzelbilder, Verzögerungen, Palette - und wohin die Bytes gegangen sind"],
+  ["APNG erstellen", "Animation mit echter Transparenz und voller Farbtiefe"],
+  ["Animiertes WebP", "wieder dieselbe Animation, bei einem Bruchteil der Größe"],
+]
+
+[[group]]
+name = "Video"
+items = [
+  ["Skalieren", "herunter auf eine Größe, die sich wirklich verschicken lässt"],
+  ["Drehen", "für den Clip, der quer gefilmt wurde"],
+  ["Stummschalten oder Ton sichern", "den Ton weglassen oder ihn separat behalten"],
+  ["Einzelbild greifen", "ein Standbild in voller Qualität an beliebiger Stelle"],
+  ["In MP4 oder WebM umwandeln", "je nachdem, worauf die Seite besteht, auf der Sie posten"],
+  ["Filter", "Helligkeit, Kontrast, Sättigung, Weichzeichnen"],
+  ["Untertitel einbrennen", "eine SRT-Datei fest ins Bild gezeichnet"],
+]
+
+[[group]]
+name = "Audio"
+items = [
+  ["Kürzen", "die Stelle behalten, um die es Ihnen ging"],
+  ["Ein- &amp; ausblenden", "damit es nicht an einer Kante anfängt und aufhört"],
+  ["Wellenform als Bild", "eine Aufnahme als Grafik zeichnen"],
+  ["Format umwandeln", "MP3, WAV und Opus, in jede Richtung"],
+]
+
+[[group]]
+name = "Dokumente &amp; PDF"
+items = [
+  ["Zusammenführen, teilen &amp; umsortieren", "Seiten verschieben, ohne den Umweg über einen Server"],
+  ["Seiten drehen &amp; zuschneiden", "einen quer eingelesenen Scan geraderücken oder seine Ränder beschneiden"],
+  ["Bilder extrahieren", "die Bilder wieder aus einem Dokument herausholen"],
+]
+
+[[group]]
+name = "Jenseits von Medien"
+items = [
+  ["Daten", "CSV und JSON umwandeln, bereinigen, prüfen"],
+  ["Datenschutz &amp; Sicherheit", "Hashes, Prüfsummen, Metadaten entfernen"],
+]

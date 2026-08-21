@@ -1,0 +1,230 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie den
+      <a href="../../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>,
+      ziehen Sie die Fotos hinein und klicken Sie auf &bdquo;Alle Metadaten
+      entfernen&ldquo;. Jedes Tag, die XMP- und IPTC-Blöcke, die Kommentare und
+      das eingebettete Vorschaubild verschwinden &mdash; bei allen Fotos auf der
+      Liste auf einmal. Das Bild selbst wird nicht angefasst: nicht neu
+      komprimiert, nicht dekodiert, um kein einziges Pixel verändert.
+    </p>
+    <p>
+      Bevor Sie das tun, lohnt sich ein Blick darauf, was darin stand. Es ist
+      meist mehr, als Menschen erwarten, und die Liste ist das eigentliche
+      Argument, das hier überhaupt zu tun.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was wirklich in einem Foto steckt</h2>
+    <p>
+      Ein JPEG ist nicht nur ein komprimiertes Bild. Es ist ein Behälter, und
+      neben dem Bild sitzen mehrere Blöcke mit Angaben, die Ihre Kamera, Ihr
+      Telefon oder Ihr Bildbearbeitungsprogramm dort hineingeschrieben hat.
+    </p>
+    <ul>
+      <li>
+        <strong>EXIF.</strong> Der wichtigste. Hersteller und Modell der Kamera,
+        Objektiv, Belichtungseinstellungen, ISO, Datum und Uhrzeit auf die
+        Sekunde, die Ausrichtung, in der das Bild gezeigt werden soll, und
+        &mdash; auf einem Telefon mit eingeschalteten Ortungsdiensten für die
+        Kamera &mdash; eine GPS-Position auf wenige Meter genau. Häufig dazu eine
+        Seriennummer des Kameragehäuses.
+      </li>
+      <li>
+        <strong>GPS.</strong> Technisch ein Teil von EXIF, und es lohnt sich, ihn
+        eigens zu nennen, weil er am meisten zählt. Er steht in Grad, Minuten und
+        Sekunden &mdash; einem Format, das ausgezeichnet darin ist, nicht wie
+        eine Adresse auszusehen.
+      </li>
+      <li>
+        <strong>XMP.</strong> Ein Paket XML, das Bildbearbeitungsprogramme
+        schreiben. Es kann Ihren Namen, Ihre Software, Bewertungen, Stichwörter,
+        die Bearbeitungshistorie und eine Kopie einiger EXIF-Felder enthalten
+        &mdash; und deshalb reicht es nicht, allein EXIF zu entfernen.
+      </li>
+      <li>
+        <strong>IPTC.</strong> Ein älterer Block mit Feldern für Bildunterschrift,
+        Urheberzeile, Quelle und Copyright, in Presse und Bildagenturen üblich.
+      </li>
+      <li>
+        <strong>Das eingebettete Vorschaubild.</strong> Eine kleine zweite Kopie
+        des Bildes. Sie entsteht beim Schreiben der Datei und wird nicht immer
+        neu erzeugt, wenn das Bild bearbeitet wird &mdash; so kann ein
+        zugeschnittenes Foto mit einem Vorschaubild dessen reisen, was
+        weggeschnitten wurde.
+      </li>
+      <li>
+        <strong>Die Maker Note.</strong> Ein undokumentierter Block mit
+        Herstellerdaten. Niemand außerhalb des Herstellers weiß alles, was darin
+        steht.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Wer es tatsächlich sieht</h2>
+    <p>
+      Das ist der Teil, bei dem Genauigkeit zählt, denn sowohl die alarmierte als
+      auch die abwiegelnde Fassung ist falsch.
+    </p>
+    <p>
+      <strong>Die meisten großen sozialen Netzwerke entfernen Metadaten beim
+      Posten.</strong> Facebook, Instagram und X kodieren hochgeladene Bilder neu
+      und werfen die Tags dabei weg. Das ist keine Freundlichkeit &mdash; sie
+      behalten die Daten auf ihrer Seite &mdash;, aber es heißt, dass ein dort
+      gepostetes Foto seine Koordinaten nicht jedem Betrachter übergibt.
+    </p>
+    <p>
+      <strong>Fast alles andere behält sie.</strong> Ein E-Mail-Anhang. Eine
+      Datei, die über die meisten Chat-Apps als &bdquo;Dokument&ldquo; statt als
+      Foto verschickt wird. Ein Bild in einem Forum, in einer
+      Marktplatz-Anzeige, auf einer privaten Seite, in einem geteilten Laufwerk,
+      in einem Fehlerbericht, in einem Support-Ticket. Überall dort kommt die
+      Datei unversehrt an, und jeder, der sie herunterlädt, kann die Tags mit
+      Werkzeugen lesen, die sein Betriebssystem mitbringt.
+    </p>
+    <p>
+      Die realistischen Risiken sind alltäglich statt dramatisch: eine
+      Marktplatz-Anzeige, zu Hause fotografiert; ein Bild eines Kindes,
+      aufgenommen an seiner Schule; ein scheinbar anonymes Konto, dessen Fotos
+      alle dieselbe Kamera-Seriennummer teilen; ein &bdquo;letzte Woche
+      aufgenommen&ldquo;, das im März entstand.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum nicht einfach neu speichern?</h2>
+    <p>
+      Ein Foto durch ein Bildbearbeitungsprogramm oder einen Kompressor neu zu
+      speichern entfernt die Metadaten tatsächlich &mdash; das Bild wird zu
+      Pixeln dekodiert und erneut kodiert, und eine Leinwand voller Pixel trägt
+      keine Tags. Es funktioniert, und es kostet Sie Qualität, denn diese
+      Neukodierung ist verlustbehaftet.
+    </p>
+    <p>
+      Die Metadaten ordentlich zu entfernen kostet überhaupt nichts. Die Tags
+      sitzen im Behälter <em>um</em> das komprimierte Bild herum, nicht darin;
+      sie zu entfernen heißt also, Einträge aus einer Liste zu löschen und die
+      Liste wieder herauszuschreiben. Die komprimierten Bilddaten werden Byte für
+      Byte übernommen, und das Ergebnis dekodiert zu exakt denselben Pixeln. Das
+      ist der ganze Grund, ein Metadaten-Werkzeug zu nehmen statt eines
+      Konverters.
+    </p>
+    <p>
+      Die Ausnahme ist, wenn Sie ohnehin neu kodiert hätten. Komprimieren oder
+      skalieren Sie das Foto sowieso, verschwinden die Tags als Nebenwirkung, und
+      Sie brauchen keinen zweiten Schritt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Das eine, das bleiben sollte: die Ausrichtung</h2>
+    <p>
+      Telefone drehen das Bild nicht, wenn Sie das Telefon drehen. Sie nehmen es
+      so auf, wie der Sensor es gesehen hat, und ergänzen ein
+      Orientation-Tag, das sagt, wie es zur Anzeige gedreht werden soll.
+      Entfernen Sie jedes Tag, zeigen manche Betrachter Ihr Foto quer.
+    </p>
+    <p>
+      Deshalb hat das Werkzeug hier die Option &bdquo;das Orientierungs-Tag
+      behalten&ldquo;, standardmäßig aktiv. Sie schreibt einen winzigen
+      EXIF-Block zurück, der dieses eine Tag und sonst nichts enthält &mdash; und
+      nur bei Fotos, die es tatsächlich gebraucht haben. GPS, Zeitstempel,
+      Seriennummer und der Rest sind trotzdem weg.
+    </p>
+    <p>
+      Schalten Sie sie ab, wenn die Datei lieber gar kein EXIF tragen soll
+      &mdash; und prüfen Sie dann das Ergebnis, bevor Sie es verschicken, denn
+      ein quer liegendes Foto ist der übliche Ausgang.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bearbeiten statt entfernen</h2>
+    <p>
+      Alles zu entfernen ist für die meisten die richtige Antwort. Manchmal ist
+      es das nicht: Ein Fotograf möchte vielleicht die Copyright-Zeile und die
+      Kameraeinstellungen behalten und nur den Ort loswerden; ein Archivar muss
+      womöglich ein Datum korrigieren, das falsch war, weil die Kamerauhr es war.
+    </p>
+    <p>
+      Beides geht. Der Ort lässt sich einzeln löschen, und Text-Tags,
+      Datumsangaben, ISO, Ausrichtung und Auflösung lassen sich an Ort und Stelle
+      bearbeiten.
+    </p>
+    <p>
+      Ein Vorbehalt, der für jedes Werkzeug dieser Art gilt und nicht nur für
+      dieses: Beim Schreiben der Datei wird der EXIF-Block neu aufgebaut, und
+      eine Maker Note enthält Offsets in den <em>ursprünglichen</em> Block. Eine
+      neu aufgebaute Maker Note ist daher womöglich für die Software des
+      Herstellers nicht mehr lesbar. Falls das zählt, löschen Sie die Maker Note
+      oder lassen Sie die Datei unbearbeitet.
+    </p>
+  </section>
+
+  <section>
+    <h2>Formate, und die, bei denen es so nicht geht</h2>
+    <p>
+      JPEG, PNG und WebP lassen sich alle sauber neu schreiben, und das sind die
+      drei, die das Werkzeug hier verarbeitet.
+    </p>
+    <p>
+      HEIC &mdash; was ein iPhone standardmäßig speichert &mdash; und AVIF sind
+      Box-Formate aus verschachtelten Atomen und brauchen einen ganz anderen
+      Parser. Das Werkzeug erkennt sie und sagt das, statt eine kaputte Datei zu
+      erzeugen. Haben Sie ein HEIC, entfernt eine Umwandlung nach JPEG die
+      Metadaten als Nebenwirkung.
+    </p>
+    <p>
+      Ein reines TIFF wird ebenfalls nicht verarbeitet, und zwar aus einem
+      interessanteren Grund: In einem TIFF werden Metadaten und Bilddaten über
+      dieselben Offsets adressiert &mdash; Tags zu entfernen heißt also, die
+      Adressierung des Bildes selbst neu zu schreiben. Machbar, und eine andere
+      Aufgabe.
+    </p>
+  </section>
+
+  <section>
+    <h2>Eine Gewohnheit, die sich lohnt</h2>
+    <p>
+      Prüfen Sie vor dem Posten statt danach. Die Tags zu lesen dauert wenige
+      Sekunden, und die Fundliste nennt zuerst das Wissenswerte &mdash; die
+      Position, die Zeitstempel, die Seriennummern &mdash; und erst danach die
+      vollständige Tabelle jedes einzelnen Tags. Sie müssen also nicht wissen,
+      wonach Sie suchen.
+    </p>
+    <p>
+      Die Position wird zuerst in Dezimalgrad angezeigt, mit Absicht.
+      &bdquo;51 Grad, 30 Minuten, 26 Sekunden&ldquo; macht nicht auf den ersten
+      Blick deutlich, dass ein Foto das Gebäude benennt, in dem es aufgenommen
+      wurde. Ein Zahlenpaar, das Sie in eine Karte einfügen können, schon.
+    </p>
+  </section>
+
+  <section>
+    <h2>Laden Sie das Foto nicht hoch, um zu erfahren, was darin steckt</h2>
+    <p>
+      In der üblichen Art, dieses Problem zu lösen, liegt eine besondere Ironie:
+      Jemand, der sich sorgt, was sein Foto preisgibt, lädt es auf eine Website
+      hoch, um es herauszufinden. Die Seite hat nun das Foto, die Koordinaten,
+      den Zeitstempel und die Seriennummer &mdash; und eine Kopie des Bildes auf
+      einer Festplatte, die ihr gehört.
+    </p>
+    <p>
+      Dafür gibt es keinen Grund. Den Behälter um ein JPEG zu lesen und neu zu
+      schreiben sind ein paar hundert Zeilen Parserei, die ein Browser
+      hervorragend ausführt &mdash; und deshalb hat das Werkzeug hier überhaupt
+      keine Netzfunktion: kein <code>fetch</code>, kein
+      <code>XMLHttpRequest</code>, nichts, das eine Datei senden könnte, selbst
+      wenn etwas es versuchte. Einmal laden, Verbindung trennen, und es arbeitet
+      weiter.
+    </p>
+    <p>
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
+      zu Online-Konvertern hochzuladen?</a> legt dar, wie Sie diese Behauptung
+      auf dieser Seite und auf jeder anderen nachprüfen &mdash; und das hier ist
+      der Dateityp, bei dem sich Nachprüfen am meisten lohnt.
+    </p>
+  </section>

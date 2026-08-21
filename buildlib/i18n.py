@@ -113,21 +113,29 @@ STRUCTURAL_KEYS = frozenset({
     'accept', 'multiple',
 })
 
-# ...except under [ui], where the list does not apply at all, because [ui] is
-# nothing but words - that is what it is for.
+# The list above is matched on the key name, which is what keeps it short enough
+# to read. The cost is that a name meaning something structural in one file
+# means it everywhere, and this has now bitten twice:
 #
-# The list above is matched on the key name at any depth, which is what makes it
-# short enough to read. The cost is that a name meaning something structural in
-# one table means it everywhere, and [ui.tool] - the frame's words for a tool
-# page - collides with `tool` in a guide's page.toml, which names the tool the
-# guide is about. Left alone, that one collision quietly served the English
-# pledge and the English button labels on every translated tool page, while the
-# rest of the page around them came out correctly in German.
+#   * [ui.tool], the frame's words for a tool page, collided with `tool` in a
+#     guide's page.toml, which names the tool the guide is about. Every
+#     translated tool page quietly served the English pledge and the English
+#     button labels while the rest of the page came out correctly.
+#   * [[group]] in config/planned.toml collided with `group` in a guide's
+#     page.toml, which names the guides group it joins. The whole planned list
+#     was treated as structure, so no locale could translate it and none was
+#     ever told it had not.
 #
-# Exempting the subtree is the fix rather than renaming the table, because the
-# next such collision would otherwise be found the same way: by reading a
-# finished page and noticing a sentence in the wrong language.
-WORDS_ONLY = 'ui'
+# Neither raised. Both were found by reading a finished page. So the set is a
+# parameter of the merge rather than a global: each file says what counts as
+# structure inside it, and a name that is structural in one is free to be a
+# word in another.
+#
+# Nothing under [ui] is structure - that is what [ui] is for. In planned.toml
+# only the group `id` is, because that is what a tool's roadmap_group matches
+# on.
+NO_STRUCTURE = frozenset()
+PLANNED_STRUCTURE = frozenset({'id'})
 
 
 class LocaleError(ConfigError):
@@ -143,6 +151,15 @@ REQUIRED_LOCALE_KEYS = ('lang', 'name', 'endonym')
 RESERVED_LOCALE_KEYS = frozenset({
     'lang', 'name', 'endonym', 'hreflang', 'dir', 'complete', 'slugs',
 })
+
+# config/planned.toml, translated in locales/<lang>/planned.toml. It is a file
+# of its own rather than a table inside locale.toml because it is a file of its
+# own in English, and a locale that had to flatten it into a different shape
+# would be one more thing to keep in step.
+#
+# Only `note` and each group's `name` and `items` are words. The group `id` is
+# structural and is what a tool's roadmap_group matches on.
+PLANNED = 'planned.toml'
 
 
 def load_locales(root, site):
@@ -188,6 +205,7 @@ def base_locale(site):
         'tools': {},
         'pages': {},
         'bodies': {},
+        'planned': {},
         'missing': [],
     }
 
@@ -237,10 +255,22 @@ def load_locale(path, site):
             'config/site.toml. A locale supplies words and slugs; everything else '
             'about the site is decided once, in English, for every language.')
 
+    # Only the translatable tables go through the merge; everything else in
+    # config/site.toml is copied through untouched and uncounted.
+    #
+    # Merging the whole file was the first version, and it counted the
+    # Content-Security-Policy as forty-three untranslated strings, along with
+    # the domain, the AdSense id and the pinned esbuild version. A locale
+    # cannot translate any of them - they are not in TRANSLATABLE_SITE_PATHS,
+    # so it is refused if it tries - which made those fifty-one entries a debt
+    # no translator could ever pay off, sitting in the one report that is meant
+    # to say what is left to do.
     overrides = {key: value for key, value in config.items()
                  if key in TRANSLATABLE_SITE_PATHS}
-    locale['site'] = merge(site, overrides, f'{path.name}/locale.toml',
-                           locale['missing'], 'site')
+    locale['site'] = dict(site)
+    locale['site'].update(translate(site, overrides, TRANSLATABLE_SITE_PATHS,
+                                    f'{path.name}/locale.toml',
+                                    locale['missing'], 'site'))
 
     for kind_name, keys in (('tools', TRANSLATABLE_TOOL_KEYS),
                             ('pages', TRANSLATABLE_PAGE_KEYS)):
@@ -262,6 +292,9 @@ def load_locale(path, site):
             slug = entry.relative_to(folder).with_suffix('').as_posix()
             locale['bodies'][f'{kind_name}/{slug}'] = entry.read_text(encoding='utf-8')
 
+    planned = path / PLANNED
+    locale['planned'] = load_toml(planned) if planned.is_file() else {}
+
     return locale
 
 
@@ -269,7 +302,7 @@ def load_locale(path, site):
 # Merging
 
 
-def merge(base, over, where, missing, path, words_only=False):
+def merge(base, over, where, missing, path, structural=STRUCTURAL_KEYS):
     """English underneath, the translation on top, recursively.
 
     Records what was not translated in `missing` rather than raising, because
@@ -300,10 +333,9 @@ def merge(base, over, where, missing, path, words_only=False):
 
         merged = {}
         for key, value in base.items():
-            # Once inside [ui] the whole subtree is words, however deep it
-            # goes, so STRUCTURAL_KEYS stops applying from here down.
-            inner = words_only or (path == 'site' and key == WORDS_ONLY)
-            if key in STRUCTURAL_KEYS and not words_only:
+            # [ui] is words all the way down, however deep it goes.
+            inner = NO_STRUCTURE if (path == 'site' and key == 'ui') else structural
+            if key in structural:
                 merged[key] = value
             elif key in over:
                 merged[key] = merge(value, over[key], where, missing,
@@ -322,7 +354,7 @@ def merge(base, over, where, missing, path, words_only=False):
                 f'{len(base)}. They are merged in order, so the counts have to '
                 'match - a missing entry would render in English with nothing to '
                 'say which one it was.')
-        return [merge(a, b, where, missing, f'{path}[{index}]', words_only)
+        return [merge(a, b, where, missing, f'{path}[{index}]', structural)
                 for index, (a, b) in enumerate(zip(base, over))]
 
     if isinstance(over, (dict, list)):
@@ -331,7 +363,7 @@ def merge(base, over, where, missing, path, words_only=False):
     return over
 
 
-def note_missing(value, missing, path, words_only=False):
+def note_missing(value, missing, path, structural=STRUCTURAL_KEYS):
     """Record an untranslated string, and walk into a table or a list to record
     the strings inside it.
 
@@ -344,11 +376,11 @@ def note_missing(value, missing, path, words_only=False):
             missing.append(path)
     elif isinstance(value, dict):
         for key, inner in value.items():
-            if words_only or key not in STRUCTURAL_KEYS:
-                note_missing(inner, missing, f'{path}.{key}', words_only)
+            if key not in structural:
+                note_missing(inner, missing, f'{path}.{key}', structural)
     elif isinstance(value, list):
         for index, inner in enumerate(value):
-            note_missing(inner, missing, f'{path}[{index}]', words_only)
+            note_missing(inner, missing, f'{path}[{index}]', structural)
 
 
 def kind(value):
@@ -401,9 +433,20 @@ def localize_tool(tool, locale, site):
 def localize_page(page, locale, site):
     """One prose page, said in one language.
 
-    `depth` is recomputed rather than carried over: a guide sits two levels down
-    in English and three under a locale prefix, and the frame around it works
-    out where the stylesheet and the hub are from that number alone.
+    `depth` is how far this page sits below the root of ITS OWN LANGUAGE, and
+    not below the root of the site. The frame turns it into `base`, and every
+    link built from `base` - the footer, the breadcrumb, the guides index - has
+    to stay inside the language it was rendered in.
+
+    Counting the locale prefix as another level, which the first version did,
+    sent every one of those links up one level too far: the German privacy page
+    linked to the English hub, the English guides index and the English privacy
+    page, from a German footer. Nothing 404'd on the way out, because those
+    pages all exist - it just quietly left the language.
+
+    That is also why each locale root gets its own copy of site.css: it keeps
+    `base` pointing at the language and the stylesheet reachable from it with
+    the same number of steps in every language.
     """
     slug = page['slug']
     merged = dict(page)
@@ -413,9 +456,23 @@ def localize_page(page, locale, site):
                             locale['missing'], f'pages.{slug}'))
     merged['out_slug'] = locale['slugs'].get(slug, slug)
     merged['url'] = f'{site["domain"]}{locale["prefix"]}{merged["out_slug"]}/'
-    merged['depth'] = (merged['out_slug'].count('/') + 1
-                       + (0 if locale['is_base'] else 1))
+    merged['depth'] = merged['out_slug'].count('/') + 1
     return merged
+
+
+def localize_planned(planned, locale):
+    """config/planned.toml, said in one language.
+
+    The roadmap is a real page in the sitemap, so a locale that called itself
+    finished while this list was still English would be advertising a page that
+    is half translated - which is the exact thing `complete` exists to stop.
+    Counted with everything else, so it holds the flag shut until it is done.
+    """
+    if locale['is_base']:
+        return planned
+    return merge(planned, locale['planned'],
+                 f'locales/{locale["lang"]}/{PLANNED}',
+                 locale['missing'], 'planned', PLANNED_STRUCTURE)
 
 
 def body_for(locale, kind_name, slug, fallback):

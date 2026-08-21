@@ -1,0 +1,16 @@
+#
+# Ratgeber: Aus einem Ordner voller Bilder ein Video machen - German.
+#
+
+nav = "Bilder in ein Video"
+title = "Aus einem Ordner voller Bilder ein Video machen"
+description = "Eine MP4-Diashow aus Fotos machen: was Bildrate und Standzeit wirklich steuern, wie Sie mit Bildern im falschen Format umgehen, und warum das Ergebnis keine Tonspur hat."
+heading = "Wie Sie aus einem Ordner voller Bilder ein Video machen"
+lede = """
+    Eine Diashow ist schnell gemacht und ebenso schnell zweimal gerendert, weil
+    zwei der Einstellungen nicht das bedeuten, wonach sie klingen. Hier steht,
+    was jede davon steuert und wofür Sie sich entscheiden sollten."""
+updated = "20. August 2026"
+og_title = "Wie Sie aus einem Ordner voller Bilder ein Video machen"
+og_description = "Was Bildrate und Standzeit wirklich steuern, wie Sie mit Bildern im falschen Format umgehen, und warum es keine Tonspur gibt."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

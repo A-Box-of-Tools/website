@@ -1,0 +1,18 @@
+#
+# Ratgeber: EXIF- und GPS-Daten aus einem Foto entfernen - German.
+#
+
+nav = "EXIF- und GPS-Daten"
+title = "EXIF- und GPS-Daten aus einem Foto entfernen"
+description = "Ein Foto vom Telefon trägt meist den genauen Ort der Aufnahme, die Uhrzeit auf die Sekunde und die Seriennummer der Kamera. Was darin steckt, wer es lesen kann, und wie Sie es herausnehmen, ohne das Bild anzufassen."
+heading = "Was ein Foto über Sie verrät, und wie Sie es herausnehmen"
+lede = """
+    Ein Bild direkt vom Telefon trägt typischerweise die Koordinaten des Ortes,
+    an dem es aufgenommen wurde, die Uhrzeit auf die Sekunde genau, und genug
+    über die Kamera, um es mit jedem anderen Foto desselben Geräts zu
+    verknüpfen. Nichts davon ist auf dem Bildschirm zu sehen. Hier steht, was
+    darin steckt und wie Sie es entfernen."""
+updated = "20. August 2026"
+og_title = "Was ein Foto über Sie verrät, und wie Sie es herausnehmen"
+og_description = "GPS-Koordinaten, Zeitstempel und Seriennummern reisen in ganz gewöhnlichen Fotos mit. Was darin steckt, wer es lesen kann, und wie Sie es entfernen."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

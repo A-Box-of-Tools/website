@@ -1,0 +1,333 @@
+#
+# SVG zu Bild - German.
+#
+# Overrides for tools/svg-to-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "SVG zu Bild"
+heading = "SVG&nbsp;zu&nbsp;Bild <span class=\"h1-kw\">&mdash; einen Vektor in beliebiger Größe als PNG, JPEG oder WebP rastern</span>"
+tagline = "Nennen Sie die Größe. Ein Vektor hat keine eigene, die er verlieren könnte."
+
+title = "SVG zu PNG &mdash; einen Vektor in beliebiger Größe rastern, ohne Upload"
+description = "Ein SVG im Browser in beliebiger Größe in ein PNG, JPEG oder WebP umwandeln. Nennen Sie die Breite, einen Faktor oder einen Rahmen; @2x- und @3x-Kopien gibt es dazu. Transparenz bleibt, nichts wird hochgeladen."
+og_title = "Ein SVG in beliebiger Größe zu einem PNG machen, ohne es hochzuladen"
+og_description = "Ein Vektor hat keine eigene Pixelgröße, die Zahl gehört also Ihnen - 32 oder 8000, und beides gleich scharf. Alles läuft auf Ihrem eigenen Gerät."
+og_image_alt = "SVG zu Bild - einen Vektor in beliebiger Größe als PNG, JPEG oder WebP rastern"
+
+pledge = """
+    Gerastert wird von derselben Engine, die die Zeichnung eben auf Ihren
+    Bildschirm gebracht hat. Ihre Datei wird von Ihrer Festplatte gelesen, ihr
+    Wurzelelement wird von hundert Zeilen in <code>src/svg.js</code>, die Sie
+    lesen können, auf die von Ihnen verlangte Größe umgeschrieben, und dann wird
+    sie auf eine Leinwand gezeichnet, die Ihr Browser ohnehin mitbringt. Dieses
+    Werkzeug hat keinerlei Netzfunktion &mdash; nichts abzurufen, nichts zu
+    senden &mdash; und es gibt am anderen Ende dieser Seite keinen Server, an den
+    ein Logo ginge, selbst wenn es einen Weg dorthin gäbe."""
+
+live_hint = """
+      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
+      &bdquo;Netzwerk&ldquo; und rastern Sie etwas. Keine einzige Anfrage trägt
+      eine Datei, ein Vorschaubild, einen Dateinamen oder ein Byte Ihrer Auswahl.
+      Oder trennen Sie die Internetverbindung und wandeln Sie trotzdem eines
+      um."""
+
+read_first = """
+, <code>src/svg.js</code> dafür, wie die
+      eigene Größe einer Datei gelesen und ihr Wurzelelement umgeschrieben wird,
+      und <code>src/render.js</code> für die acht Zeilen, die das Rastern
+      erledigen &mdash; ein &lt;img&gt;, ein <code>drawImage</code> und ein
+      <code>toBlob</code>, und dazwischen nichts."""
+
+howto_heading = "Ein SVG in ein PNG umwandeln, ohne es hochzuladen"
+
+card = """
+            Ein SVG hat keine eigene Pixelgröße, die Zahl gehört also Ihnen
+            &mdash; 32 oder 8000, und beides gleich scharf."""
+
+[words]
+plural = "SVG-Dateien"
+choose = "ein SVG"
+analytics_extra = """, und auch keine der
+  Größen, Formate oder Dateinamen, die dieses Werkzeug ermittelt"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Ihre Grafik hat keinen Weg nach draußen."
+body = """
+ Die
+      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
+      an dem Ihre Dateien gesammelt werden könnten, und nichts im Code, das sie
+      senden würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Es gibt weder
+      <code>fetch</code> noch <code>XMLHttpRequest</code> noch
+      <code>sendBeacon</code> irgendwo in <code>src/</code>. Der ganze Rasterer
+      ist ein <code>&lt;img&gt;</code>, das einen Blob Ihrer eigenen Datei hält,
+      ein <code>drawImage</code> auf eine Leinwand und ein
+      <code>canvas.toBlob</code>."""
+
+[[privacy]]
+title = "Ein SVG ist ein Dokument - und dies ist der Modus, in dem es nicht handeln kann."
+body = """
+ Ein SVG kann ein
+      <code>&lt;script&gt;</code>, ein entferntes
+      <code>&lt;image href=&quot;https://&hellip;&quot;&gt;</code>, ein
+      Stylesheet und eine Webschrift enthalten. Durch ein
+      <code>&lt;img&gt;</code> gezeichnet, befindet es sich in dem, was die
+      Spezifikation <em>secure static mode</em> nennt: Das Skript läuft nicht,
+      und keine einzige dieser Adressen wird abgerufen. Das ist eine Zusicherung
+      des Browsers und kein Versprechen von uns &mdash; und es ist der Grund,
+      warum diese Seite eine nie gesehene Datei öffnen kann, ohne dass die Datei
+      nach Hause telefonieren könnte."""
+
+[[privacy]]
+title = "Was Google lädt - und was es nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
+      Keinem davon wird irgendetwas über Ihre Zeichnung übergeben. Jede Zeile,
+      die eine Datei liest, bemisst oder zeichnet, wird von dieser Herkunft
+      ausgeliefert und ist im Repository aufgeführt."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und das
+      Werkzeug bleibt unverändert, weil es nie einen Netzschritt darin gab. Das
+      ist der einfachste Beweis von allen."""
+
+[[howto]]
+title = "Wählen Sie das SVG."
+body = """
+ Ziehen Sie eines auf das Auswahlfeld,
+      oder nehmen Sie einen ganzen Ordner und wandeln Sie alles in einem Durchgang
+      um. Der Browser liest die Datei direkt von Ihrer Festplatte; dabei wird
+      nichts irgendwohin gesendet. Jede Zeile sagt, für wie groß die Datei sich
+      selbst hält &mdash; und sagt es anders, wenn diese Größe aus ihrer
+      <code>viewBox</code> stammt oder angenommen wurde, weil die Datei keine
+      angibt."""
+
+[[howto]]
+title = "Sagen Sie, wie groß."
+body = """
+ Ein Faktor der dateieigenen Größe ist die
+      schnellste Antwort und die richtige für einen Stapel: Jede Zeichnung wird
+      von ihrem eigenen Ausgangspunkt aus skaliert, ein Satz Symbole bleibt also
+      im Verhältnis. Sonst nennen Sie eine Breite, eine Höhe, die längste Seite
+      oder einen Rahmen mit beiden Seiten. Für eine große Zahl gibt es hier keine
+      Strafe, wie es sie bei einer Fotografie gäbe &mdash; die Zeichnung wird in
+      dieser Größe neu gezeichnet und nicht darauf gedehnt."""
+
+[[howto]]
+title = "Nehmen Sie die hochauflösenden Kopien dazu, wenn Sie sie brauchen."
+body = """
+ Ein Telefon und
+      ein Retina-Notebook zeichnen zwei oder drei Gerätepixel je CSS-Pixel, ein
+      200 Pixel großes Logo braucht also eine 400- oder 600-Pixel-Datei
+      dahinter. Verlangen Sie <code>@2x</code> und <code>@3x</code>, und sie
+      kommen so benannt heraus, wie Xcode, Androids Werkzeuge und CSS
+      <code>image-set()</code> es alle erwarten &mdash; und jede ist exakt das
+      Zwei- oder Dreifache der ersten statt getrennt gerundet."""
+
+[[howto]]
+title = "Wählen Sie das Format und entscheiden Sie über die Transparenz."
+body = """
+ PNG, sofern Sie
+      keinen Grund für etwas anderes haben: Es ist verlustfrei, es behält
+      Transparenz, und flache Farbflächen komprimieren sich darin gut. JPEG hat
+      überhaupt keine Transparenz, eine Hintergrundfarbe wird also gemalt, ob Sie
+      eine wählen oder nicht &mdash; ohne sie käme jedes transparente Pixel
+      schwarz heraus. WebP kann beides und macht die kleinere Datei, um den Preis
+      von Software, die alt genug ist, es nicht zu lesen."""
+
+[[howto]]
+title = "Sehen Sie sich die Vorschau an, bevor Sie herunterladen."
+body = """
+ Sie wird von demselben
+      Code aus Ihrer Datei auf Ihrem Gerät gezeichnet, der auch die Datei
+      schreibt. Zwei Dinge ändern sich, wenn eine Zeichnung zu Pixeln wird, und
+      beide zeigen sich hier: Eine Haarlinie, die ein halbes Pixel breit war,
+      wird grau, und Text wird in einer Schrift gezeichnet, die dieser Computer
+      hat, und nicht in einer aus dem Netz geholten."""
+
+[[howto]]
+title = "Nehmen Sie die Dateien."
+body = """
+ Ein Download je Datei, oder der ganze
+      Stapel als ein einziges ZIP. Die Namen folgen dem SVG, aus dem sie kamen,
+      mit <code>@2x</code> und <code>@3x</code> an den Kopien &mdash; und zwei
+      Dateien, die denselben Namen bekommen hätten, werden nummeriert, statt dass
+      eine die andere stillschweigend ersetzt."""
+
+[[faq]]
+q = "Wird mein SVG irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+        gelesen, von derselben Engine auf eine Leinwand gezeichnet, die jedes
+        andere Bild rendert, das Sie sehen, und als Download zurückgegeben.
+        Dieses Werkzeug hat keinerlei Netzfunktion &mdash; es ruft nie etwas ab
+        und sendet nie etwas &mdash; und die <code>Content-Security-Policy</code>
+        der Seite nennt jede Adresse, die sie kontaktieren darf; keine davon
+        gehört zu dieser Seite."""
+
+[[faq]]
+q = "In welcher Größe sollte ich ein SVG rastern?"
+a = """
+        In der, die das Lesende verlangt, multipliziert mit dem Pixelverhältnis
+        des Bildschirms, auf dem es zu sehen sein wird. Ein Logo, das 200
+        CSS-Pixel einnimmt, braucht 400 für ein Retina-Notebook und 600 für ein
+        neueres Telefon &mdash; und genau das sind hier die <code>@2x</code>- und
+        <code>@3x</code>-Kopien. Für ein App-Symbol oder einen Store-Eintrag nennt
+        der Store eine exakte Zahl, und das ist die Zahl. Hat Ihnen nichts etwas
+        gesagt, sind 1024 auf der längsten Seite ein nützlicher Standard: groß
+        genug für fast jeden Zweck und klein genug zum Verschicken."""
+
+[[faq]]
+q = "Verliert es Qualität, wenn ich es größer mache?"
+a = """
+        Nein &mdash; und das ist die eine Stelle, an der diese Antwort ehrlich
+        nein lautet. Ein Vektor besteht aus Anweisungen statt aus Pixeln, der
+        Browser zeichnet die Kurven also in jeder verlangten Größe neu. 4000 Pixel
+        aus einem 24-Pixel-Symbol sind genauso scharf wie 24. Was nicht geht, ist
+        der Weg zurück: Sobald es ein PNG ist, sind es Pixel wie überall sonst
+        &mdash; rastern Sie also in der Größe, die Sie brauchen, statt das
+        Ergebnis später zu skalieren."""
+
+[[faq]]
+q = "Mein SVG hat weder Breite noch Höhe. Welche Größe bekomme ich?"
+a = """
+        Die der <code>viewBox</code>, falls es eine gibt &mdash; ihre Breite und
+        Höhe sind Benutzereinheiten und keine Pixel, aber sie sind die einzigen
+        Zahlen in der Datei, und ein Browser behandelt sie als natürliche Größe
+        der Zeichnung. Gibt es auch keine viewBox, sagt die Seite
+        <em>angenommen</em> neben der Zeile und nimmt
+        300&nbsp;&times;&nbsp;150 &mdash; das, womit ein <code>&lt;img&gt;</code>
+        sie gezeichnet hätte. So oder so können Sie die gewünschte Größe nennen,
+        und die Datei wird in dieser gezeichnet."""
+
+[[faq]]
+q = "Warum sieht der Text im PNG anders aus?"
+a = """
+        Weil die Schrift nicht im SVG steckt. Ein SVG, das Text zeichnet, nennt
+        eine Schrift und überlässt es dem Gerät, sie zu finden &mdash; und eine
+        Datei, die sich mit einem <code>@import</code> eine von Google Fonts
+        holt, bekommt hier nichts: Ein durch ein <code>&lt;img&gt;</code>
+        gezeichnetes SVG darf nichts abrufen, und das ist dieselbe Regel, die es
+        daran hindert, mit Ihrer Datei nach Hause zu telefonieren. Die Lösung ist
+        die, die jeder Gestalter ohnehin kennt: Wandeln Sie den Text im
+        Zeichenprogramm vor dem Export in Pfade um. Dann ist es Geometrie, und es
+        sieht überall gleich aus."""
+
+[[faq]]
+q = "Kann es mehrere Dateien auf einmal umwandeln?"
+a = """
+        Ja. Jedes SVG auf der Liste wird mit denselben Einstellungen gerendert,
+        und der Stapel kommt als ein ZIP herunter. Ein Faktor &mdash;
+        &bdquo;4&times; die Größe, die die Datei verlangt&ldquo; &mdash; ist für
+        einen Stapel meist die richtige Einstellung, weil jede Zeichnung von
+        ihrer eigenen Größe aus skaliert wird, statt dass alle auf dieselbe
+        Pixelzahl gezwungen werden. Klicken Sie eine beliebige Zeile an, um jene
+        in die Vorschau zu holen."""
+
+[[faq]]
+q = "Gibt es eine Größengrenze?"
+a = """
+        Die des Browsers, nicht unsere. Eine Leinwand gibt irgendwo jenseits von
+        16.384 Pixeln Seitenlänge auf, und Safari auf einem iPhone oder iPad hört
+        bei etwa 16,7 Megapixeln Fläche auf &mdash;
+        4096&nbsp;&times;&nbsp;4096. Darüber warnt die Seite, statt Ihnen ein
+        leeres Bild zurückzugeben, und genau das tut ein Browser, wenn ihm die
+        Luft ausgeht: <code>toBlob</code> gibt überhaupt nichts zurück, ohne
+        Fehlermeldung, die sich erklärte. Jenseits von 100 Megapixeln weigert
+        sich das Werkzeug, denn das sind 400&nbsp;MB Leinwand, bevor ein einziges
+        Byte kodiert wurde."""
+
+[[faq]]
+q = "Was passiert mit der Transparenz?"
+a = """
+        Sie bleibt, in PNG und in WebP. JPEG hat überhaupt keinen Alphakanal,
+        also wird eine Farbe hinter das ganze Bild gemalt, ob Sie darum bitten
+        oder nicht &mdash; ohne sie käme alles Transparente schwarz heraus, und
+        das sieht nach einem Fehler aus statt nach JPEG. Bei PNG eine
+        Hintergrundfarbe zu wählen ist ebenfalls ein völlig gewöhnlicher Wunsch:
+        Es rechnet die Zeichnung auf diese Farbe herunter, statt ein Loch zu
+        lassen."""
+
+[[faq]]
+q = "Kann es ein SVG lesen, das ein Skript oder ein externes Bild enthält?"
+a = """
+        Lesen kann es eines, und es zeichnet genau die Teile, die ein Browser zu
+        zeichnen bereit ist. Ein über ein <code>&lt;img&gt;</code> geladenes SVG
+        ist im <em>secure static mode</em>: Skripte laufen nicht, externe
+        Verweise werden nicht abgerufen, und Animation spielt nicht &mdash; das
+        erste Einzelbild ist, was Sie bekommen. Eine Datei mit einem entfernten
+        <code>&lt;image&gt;</code> darin kommt also ohne diesen Teil heraus. Das
+        ist der Browser, der sich an Ihrer Stelle weigert, und es ist der Grund,
+        warum diese Seite gefahrlos eine nie gesehene Datei öffnen kann."""
+
+[[faq]]
+q = "Worin unterscheidet sich das vom Bildgrößen-Ändern?"
+a = """
+        In der Quelle. Das Bildgrößen-Ändern beginnt bei Pixeln &mdash; einem
+        JPEG, einem PNG &mdash;, es größer zu machen muss also Detail erfinden,
+        das nie da war. Dieses beginnt bei einer Zeichnung, es gibt also nichts
+        zu erfinden und keine erwähnenswerte Obergrenze. Haben Sie ein SVG, ist
+        dieses das, was Ihnen ein scharfes Ergebnis bringt; haben Sie eine
+        Fotografie, ist es jenes."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und kein Wasserzeichen. Es gibt auch keine Grenze für Anzahl
+        oder Größe der Dateien, weil es keinen Server gibt, der dafür zahlt
+        &mdash; die Arbeit passiert auf Ihrem eigenen Gerät. Die Seite trägt
+        Werbung, und die bezahlt sie; den Anzeigen wird nichts über Ihre Dateien
+        übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird: Ein Werkzeug, das Ihre Grafik zum Rendern
+        wegschickt, würde in dem Moment stehen bleiben, in dem Sie den Stecker
+        ziehen."""
+
+[schema]
+description = "Ein SVG im Browser in beliebiger Größe zu einem PNG, JPEG oder WebP rastern. Die Größe über einen Faktor, eine Breite, eine Höhe, die längste Seite oder einen Rahmen setzen, @2x- und @3x-Kopien ergänzen, Transparenz behalten oder herunterrechnen und einen ganzen Stapel auf einmal umwandeln. Es wird nichts hochgeladen."
+features = [
+  "Zeichnet den Vektor in jeder Größe neu, das Ergebnis ist also in jeder scharf",
+  "Größe über einen Faktor, eine Breite, eine Höhe, die längste Seite oder einen Rahmen mit Einpassung",
+  "@2x- und @3x-Kopien, jede ein exaktes Vielfaches der ersten statt zweimal gerundet",
+  "PNG, JPEG und WebP, mit erhaltener oder auf eine Farbe heruntergerechneter Transparenz",
+  "Liest die Größe aus width, height oder der viewBox und sagt, welche es genommen hat",
+  "Warnt vor einer Größe, die die Leinwand eines Browsers gar nicht erzeugen kann",
+  "Vorschau, gezeichnet von demselben Code, der die Datei schreibt",
+  "Stapelverarbeitung, alle Ergebnisse in einem ZIP",
+  "Skripte und entfernte Verweise in der Datei werden nie ausgeführt oder abgerufen",
+  "Läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "SVG hierher ziehen"
+hint = "oder klicken zum Auswählen &mdash; mehrere auf einmal sind in Ordnung"

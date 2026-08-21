@@ -1,0 +1,17 @@
+#
+# Ratgeber: Den Bildausschnitt eines Videos aendern - German.
+#
+
+nav = "Video zuschneiden"
+title = "Ein Video auf ein anderes Format zuschneiden"
+description = "Einen Clip auf ein Quadrat, ein 9:16-Hochformat oder ein exaktes Pixelfenster zurechtschneiden. Welches Verhältnis welche Plattform will, warum Zuschneiden neu kodieren muss und Kürzen nicht, und was das kostet."
+heading = "Wie Sie ein Video auf ein anderes Format zuschneiden"
+lede = """
+    Zuschneiden ändert die Form des Bildes, und das heißt: neue Einzelbilder
+    schreiben. Daran führt kein Weg vorbei, und jedes Werkzeug, das etwas
+    anderes behauptet, tut etwas anderes. Hier steht, was es kostet und wie Sie
+    es gut ausgeben."""
+updated = "20. August 2026"
+og_title = "Wie Sie ein Video auf ein anderes Format zuschneiden"
+og_description = "Welches Seitenverhältnis welche Plattform will, warum Zuschneiden neu kodieren muss und Kürzen nicht, und was das kostet."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

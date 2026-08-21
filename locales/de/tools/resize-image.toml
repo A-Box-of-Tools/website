@@ -1,0 +1,291 @@
+#
+# Bildgrößen-Ändern - German.
+#
+# Overrides for tools/resize-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Bildgrößen-Ändern"
+heading = "Bildgröße&nbsp;ändern <span class=\"h1-kw\">&mdash; skalieren, zuschneiden, umwandeln</span>"
+tagline = "Größe nennen. Rahmen ziehen. Format wählen."
+
+title = "Bildgröße ändern &mdash; auch zuschneiden und umwandeln, ohne Upload"
+description = "JPEG-, PNG- und WebP-Bilder im Browser skalieren, zuschneiden und umwandeln. Exakte Pixel, ein Prozentwert oder die lange Kante - ein Bild oder ein ganzer Ordner. Nichts wird hochgeladen."
+og_title = "Ein Bild skalieren, zuschneiden und umwandeln, ohne es hochzuladen"
+og_description = "Die Größe in Pixeln oder als Prozentwert setzen, einen Zuschnittrahmen ziehen, das Format wechseln - für ein Bild oder einen ganzen Stapel. Alles läuft auf Ihrem eigenen Gerät."
+og_image_alt = "Bildgrößen-Ändern - skalieren, zuschneiden und umwandeln ohne Upload"
+
+pledge = """
+    Das Skalieren, das Zuschneiden und der Formatwechsel laufen alle in Ihrem
+    eigenen Browser, auf Ihrer eigenen Hardware, mit den Bild-Encodern, die er
+    ohnehin mitbringt. Dieses Werkzeug hat keinerlei Netzfunktion &mdash; nichts
+    abzurufen, nichts zu senden &mdash; und es gibt am anderen Ende dieser Seite
+    keinen Server, an den ein Bild ginge, selbst wenn es einen Weg dorthin
+    gäbe."""
+
+live_hint = """
+      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
+      &bdquo;Netzwerk&ldquo; und skalieren Sie ein Foto. Keine einzige Anfrage
+      trägt ein Bild, ein Vorschaubild, einen Dateinamen oder ein Byte Ihrer
+      Auswahl. Oder trennen Sie die Internetverbindung und skalieren Sie trotzdem
+      eines."""
+
+read_first = """
+, <code>src/geometry.js</code> für die Rechnung, die
+      entscheidet, was behalten wird und wie groß es herauskommt, und
+      <code>src/codecs.js</code> für den einen <code>drawImage</code>-Aufruf, der
+      Zuschnitt und Skalierung in einem erledigt."""
+
+howto_heading = "Ein Bild skalieren, ohne es hochzuladen"
+
+card = """
+            Exakte Pixel, ein Prozentwert oder die lange Kante &mdash; mit einem
+            Zuschnittrahmen und einem Formatwechsel auf dem Weg. Ein Bild oder
+            ein ganzer Ordner."""
+
+[words]
+plural = "Bilder"
+choose = "ein Bild"
+analytics_extra = """, und auch keine der
+  Größen, Zuschnitte oder Formate, die dieses Werkzeug ermittelt"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Ihre Bilder haben keinen Weg nach draußen."
+body = """
+ Die
+      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
+      an dem Ihre Dateien gesammelt werden könnten, und nichts im Code, das sie
+      senden würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Es gibt weder
+      <code>fetch</code> noch <code>XMLHttpRequest</code> noch
+      <code>sendBeacon</code> irgendwo in <code>src/</code>. Das Skalieren ist ein
+      <code>drawImage</code> auf eine Leinwand und ein
+      <code>canvas.toBlob</code> &mdash; der Skalierer und der Encoder, die in
+      Ihrem Browser bereits installiert sind."""
+
+[[privacy]]
+title = "Eine Datei, um deren Änderung niemand gebeten hat, wird nicht geändert."
+body = """
+ Ohne
+      Zuschnitt, ohne Skalierung und ohne Formatwechsel wird die von Ihnen
+      gewählte Datei Byte für Byte zurückgereicht statt neu gespeichert. Das ist
+      nicht nur Höflichkeit: Es ist der Grund, warum dieses Werkzeug ein Bild
+      nicht stillschweigend neu kodieren kann &mdash; und auch nicht
+      stillschweigend die Metadaten eines Bildes wegwerfen, das Sie nur ansehen
+      wollten."""
+
+[[privacy]]
+title = "Was Google lädt - und was es nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
+      Keinem davon wird irgendetwas über Ihre Bilder übergeben. Jede Zeile, die
+      eine Datei liest, zuschneidet, skaliert oder schreibt, wird von dieser
+      Herkunft ausgeliefert und ist im Repository aufgeführt."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und das
+      Werkzeug bleibt unverändert, weil es nie einen Netzschritt darin gab. Das
+      ist der einfachste Beweis von allen."""
+
+[[howto]]
+title = "Wählen Sie Ihre Bilder."
+body = """
+ Ziehen Sie sie auf das Auswahlfeld
+      oder wählen Sie sie von Hand. Der Browser liest sie direkt von Ihrer
+      Festplatte; dabei wird nichts irgendwohin gesendet."""
+
+[[howto]]
+title = "Schneiden Sie zu, wenn Sie möchten."
+body = """
+ Der Rahmen beginnt auf dem
+      ganzen Bild, ihn in Ruhe zu lassen schneidet also nichts ab. Ziehen Sie
+      ihn, oder legen Sie ihn auf ein Format fest &mdash; 1:1 für ein Profilbild,
+      9:16 für eine Story, 16:9 für ein Vorschaubild &mdash; und klicken Sie auf
+      &bdquo;Größtmöglich&ldquo; für den größten Rahmen, der hineinpasst. Jedes
+      Bild behält seinen eigenen Rahmen: Klicken Sie eine beliebige Zeile in der
+      Liste an, um stattdessen auf jenem zu zeichnen. Sollen alle gleich
+      gerahmt sein, erledigt das ebenfalls eine Schaltfläche."""
+
+[[howto]]
+title = "Sagen Sie, wie groß es herauskommen soll."
+body = """
+ Eine Breite, eine Höhe
+      oder beides; eine lange Kante, die Hoch- und Querformataufnahmen gleich
+      groß hält; oder schlicht einen Prozentwert. Lassen Sie eines der beiden
+      Felder leer, und das Bild behält sein eigenes Seitenverhältnis."""
+
+[[howto]]
+title = "Wählen Sie das Format und klicken Sie auf die Schaltfläche."
+body = """
+ Behalten Sie,
+      womit jede Datei ankam, oder schreiben Sie alles als JPEG, PNG oder WebP.
+      Jedes Ergebnis nennt, was daraus geworden ist und wie viel kleiner es
+      wurde; klicken Sie eines an, um es in voller Größe zu öffnen &mdash; mit
+      allen Zahlen dahinter und dem Original daneben zum Vergleich. Ein Stapel
+      kommt als ein ZIP herunter."""
+
+[[faq]]
+q = "Wird mein Bild irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+        dekodiert, zugeschnitten, skaliert und geschrieben &mdash; mit den JPEG-,
+        PNG- und WebP-Encodern, die der Browser bereits mitbringt. Dieses Werkzeug
+        hat keinerlei Netzfunktion &mdash; es ruft nie etwas ab und sendet nie
+        etwas &mdash; und die <code>Content-Security-Policy</code> der Seite nennt
+        jede Adresse, die sie kontaktieren darf; keine davon gehört zu dieser
+        Seite."""
+
+[[faq]]
+q = "Was passiert, wenn ich eine Breite angebe, aber keine Höhe?"
+a = """
+        Die Höhe ergibt sich aus dem Seitenverhältnis des Bildes, und das ist fast
+        immer das Gewollte: &bdquo;1920 breit&ldquo; heißt &bdquo;1920 breit und
+        so hoch, wie das eben wird&ldquo;. Füllen Sie beide aus, können die zwei
+        dem Seitenverhältnis des Bildes widersprechen &mdash; und nur dann
+        erscheint die Wahl &bdquo;wenn die Verhältnisse nicht
+        zusammenpassen&ldquo;: hineinpassen, ausfüllen und den Überstand
+        abschneiden, mit einem Hintergrund auffüllen, oder verzerren und die
+        Verzerrung hinnehmen."""
+
+[[faq]]
+q = "Verliert ein Bild beim Skalieren an Qualität?"
+a = """
+        Ein Bild kleiner zu machen nicht, jedenfalls nicht sichtbar: Es gehen mehr
+        Pixel hinein als heraus, das, was bleibt, ist also echtes Detail. Ein Bild
+        größer zu machen kann nicht hinzufügen, was nie fotografiert wurde
+        &mdash; heraus kommt eine weichere Kopie desselben Bildes, keine schärfere
+        &mdash; und genau deshalb ist &bdquo;ein Bild nie größer machen, als es
+        angefangen hat&ldquo; standardmäßig aktiv. Etwas kostet die Neukodierung
+        danach, wenn das Format JPEG oder WebP ist, und der Qualitätsregler ist
+        das, was Sie dort ausgeben."""
+
+[[faq]]
+q = "Kann ich jedes Bild anders zuschneiden?"
+a = """
+        Ja &mdash; das ist die Voreinstellung. Jedes Bild auf der Liste trägt
+        seinen eigenen Rahmen, in seinen eigenen Pixeln, und ein Klick auf eine
+        Zeile holt jenes Bild mit seinem eigenen Rahmen und seinem eigenen
+        festgelegten Seitenverhältnis in die Vorschau zurück. Nichts, was Sie an
+        einem tun, wirkt sich auf ein anderes aus. Jeder Rahmen beginnt außerdem
+        auf dem ganzen Bild, ein Bild, auf dem Sie nie zeichnen, wird also
+        überhaupt nicht zugeschnitten."""
+
+[[faq]]
+q = "Kann es einen ganzen Stapel auf einmal gleich zuschneiden?"
+a = """
+        Ja, mit der Schaltfläche unter der Vorschau. Sie gibt jedem anderen Bild
+        denselben relativen Ausschnitt &mdash; dieselben Anteile seiner eigenen
+        Breite und Höhe &mdash; was bei einer Reihe gleich großer Screenshots oder
+        Exporte exakt derselbe Rahmen ist, und die Seite sagt das auch. Mit einem
+        festgelegten Seitenverhältnis gibt sie jedem stattdessen den größten
+        Rahmen dieses Verhältnisses innerhalb jenes Ausschnitts &mdash; wer also
+        1:1 und dann diese Schaltfläche drückt, bekommt aus einem Ordner mit
+        gemischten Hoch- und Querformaten lauter Quadrate. Jeder Rahmen bleibt
+        danach weiter bearbeitbar."""
+
+[[faq]]
+q = "Welche Formate kann es lesen und schreiben?"
+a = """
+        Es liest alles, was Ihr Browser dekodieren kann, in der Praxis also JPEG,
+        PNG, WebP, GIF, BMP und &mdash; in den meisten aktuellen Browsern &mdash;
+        AVIF. Es schreibt JPEG, PNG und WebP, weil das die Encoder sind, die
+        Browser mitbringen. Bei &bdquo;Format behalten&ldquo; bleibt ein JPEG ein
+        JPEG und ein PNG ein PNG; alles, was der Browser nicht schreiben kann,
+        etwa ein GIF oder ein BMP, kommt als PNG heraus &mdash; das Format, das
+        Transparenz und flache Farbflächen unversehrt lässt."""
+
+[[faq]]
+q = "Was passiert mit der Transparenz, wenn ich als JPEG speichere?"
+a = """
+        Sie wird mit der Hintergrundfarbe aufgefüllt, denn JPEG hat keinen
+        Alphakanal, in dem sie sich speichern ließe. Die Farbe wählen Sie selbst
+        und sie beginnt bei Weiß, was die meisten wollen und was fast jedes andere
+        Werkzeug tut, ohne es Ihnen zu sagen. Dieselbe Farbe steht auch hinter
+        einem aufgefüllten Rahmen. Speichern Sie stattdessen als PNG oder WebP,
+        und die Transparenz kommt unangetastet durch."""
+
+[[faq]]
+q = "Entfernt es EXIF- und GPS-Daten?"
+a = """
+        Bei allem, was es tatsächlich verarbeitet, ja &mdash; als Nebenwirkung:
+        Zuschneiden oder Skalieren heißt, das Bild zu Pixeln zu dekodieren und
+        diese Pixel erneut zu kodieren, und eine Leinwand voller Pixel trägt keine
+        Tags; Ort, Kameramodell und Zeitstempel werden also schlicht nicht in die
+        neue Datei geschrieben. Eine Datei, die Sie überhaupt nicht ändern, ist
+        ein anderer Fall &mdash; sie wird Byte für Byte zurückgereicht, samt Tags.
+        Sollen die Metadaten weg, das Bild aber unangetastet bleiben, nehmen Sie
+        den <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp;
+        -Entferner</a>, der den Container neu schreibt, ohne irgendetwas neu zu
+        komprimieren."""
+
+[[faq]]
+q = "Worin unterscheidet sich das vom Bildkompressor?"
+a = """
+        Hier geht es um Abmessungen: Sie sagen, wie viele Pixel Sie wollen, und
+        bekommen genau die. Beim <a href="../bild-komprimieren/">Bildkompressor</a>
+        geht es um die Dateigröße: Sie sagen, wie viele Kilobyte erlaubt sind, und
+        er sucht die höchste Qualität, die hineinpasst, und verkleinert nur dann,
+        wenn Qualität allein nicht reicht. Wurde Ihnen &bdquo;1200 Pixel
+        breit&ldquo; gesagt, sind Sie hier richtig. Hieß es &bdquo;unter
+        500 KB&ldquo;, bringt Sie das andere näher ans Ziel."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase
+        und kein Wasserzeichen. Es gibt auch keine Grenze für Anzahl oder Größe
+        der Dateien, weil es keinen Server gibt, der dafür zahlt &mdash; die
+        Arbeit passiert auf Ihrem eigenen Gerät. Die Seite trägt Werbung, und die
+        bezahlt sie; den Anzeigen wird nichts über Ihre Bilder übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird: Ein Werkzeug, das Ihre Bilder zum Skalieren
+        wegschickt, würde in dem Moment stehen bleiben, in dem Sie den Stecker
+        ziehen."""
+
+[schema]
+description = "JPEG-, PNG- und WebP-Bilder im Browser skalieren, zuschneiden und umwandeln. Eine exakte Pixelgröße, einen Prozentwert oder eine lange Kante setzen, einen Zuschnittrahmen ziehen oder auf ein Seitenverhältnis festlegen und das Ergebnis als JPEG, PNG oder WebP schreiben. Stapel werden unterstützt, und es wird nichts hochgeladen."
+features = [
+  "Skaliert nach exakten Pixeln, nach der langen Kante oder nach Prozent",
+  "Eine Seite ausfüllen, und die andere folgt dem Seitenverhältnis des Bildes",
+  "Hineinpassen, ausfüllen und zuschneiden, auf einen exakten Rahmen auffüllen, oder verzerren",
+  "Ein ziehbarer Zuschnittrahmen je Bild, festlegbar auf 1:1, 4:5, 9:16, 16:9, 4:3 oder 3:2",
+  "Schneidet jedes Bild anders zu, oder legt mit einem Klick eine Rahmung über den ganzen Stapel",
+  "Öffnet jedes fertige Bild in voller Größe, mit allen Zahlen dahinter und dem Original zum Vergleich",
+  "Wandelt zwischen JPEG, PNG und WebP um, mit Qualitätsregler und Hintergrundfarbe",
+  "Vergrößert ein Bild nie, sofern Sie nicht darum bitten",
+  "Reicht jede Datei unangetastet zurück, um deren Änderung nicht gebeten wurde",
+  "Stapelverarbeitung, alle Ergebnisse in einem ZIP",
+  "Läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "Bilder hierher ziehen"
+hint = "oder klicken zum Auswählen &mdash; JPEG, PNG, WebP und alles andere, was Ihr Browser öffnen kann"

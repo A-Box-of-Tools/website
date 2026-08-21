@@ -59,6 +59,7 @@ The build never reaches the network, whichever way it runs.
 import argparse
 import hashlib
 import html
+import re
 import shutil
 import subprocess
 import sys
@@ -215,6 +216,10 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
 
     copy_shared(out)
     write(out / 'site.css', site_css)
+
+    # Last, because it reads the finished tree rather than the sources. A link
+    # is only checkable once everything it could point at has been written.
+    check_links(out, locales, site)
     return written
 
 
@@ -327,7 +332,8 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
               links, css_v, emit)
     written.append(f'{locale["prefix"]}index.html')
 
-    build_roadmap(dest_root, templates, locale, locales, site, planned, ordered,
+    build_roadmap(dest_root, templates, locale, locales, site,
+                  i18n.localize_planned(planned, locale), ordered,
                   footer, links, css_v, emit)
     written.append(f'{locale["prefix"]}{links["roadmap"]}/index.html')
 
@@ -866,14 +872,26 @@ def build_roadmap(out, templates, locale, locales, site, planned, ordered,
     # planned.toml stores each entry as a two-item array, which is compact to
     # write by hand and unusable in a template. Named here rather than in the
     # file so the file stays a list of names and descriptions.
-    for group in planned['group']:
-        group['items'] = [{'name': name, 'desc': desc} for name, desc in group['items']]
+    #
+    # Built as a new list rather than by editing `planned` in place, and that is
+    # not tidiness. The first version did edit it, and the same dict is handed
+    # to every language in turn: the second language round found the arrays
+    # already turned into tables, unpacked those tables into their own key
+    # names, and rendered "name - desc" thirty-seven times down the page.
+    # Nothing raised. The page just quietly stopped saying anything, in every
+    # language but the first.
+    groups = [
+        {**group,
+         'items': [{'name': name, 'desc': desc} for name, desc in group['items']],
+         'built': []}
+        for group in planned['group']
+    ]
 
     # The shipped tools go into the group each one names, at the top of it, as
     # links. A group is then the whole story for that kind of file - what exists
     # and what is still to come - rather than two lists in different places that
     # a reader has to hold together in their head.
-    by_group = {group['id']: group for group in planned['group']}
+    by_group = {group['id']: group for group in groups}
     for tool in ordered:
         gid = tool.get('roadmap_group')
         if gid is None:
@@ -884,17 +902,14 @@ def build_roadmap(out, templates, locale, locales, site, planned, ordered,
             raise sitelib.ConfigError(
                 f'{tool["slug"]}: roadmap_group is {gid!r}, which is not a group in '
                 f'config/planned.toml. Name one of: {", ".join(by_group)}')
-        by_group[gid].setdefault('built', []).append(tool)
-
-    for group in planned['group']:
-        group.setdefault('built', [])
+        by_group[gid]['built'].append(tool)
 
     dest = out / links['roadmap']
     dest.mkdir(parents=True, exist_ok=True)
 
     context = frame(locale, locales, site, roadmap['slug'], '../', links, {
-        'planned': planned,
-        'planned_count': sum(len(group['items']) for group in planned['group']),
+        'planned': {**planned, 'group': groups},
+        'planned_count': sum(len(group['items']) for group in groups),
         'built_count': len(ordered),
         'tools': ordered,
         'footer': footer,
@@ -1054,6 +1069,70 @@ def build_sitemap(out, templates, site, locales, tools, prose):
                     for page in prose if page['kind'] == 'legal']
 
     write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': entries}))
+
+
+LINK = re.compile(r'(?:href|src)="([^"#?]+)(?:[#?][^"]*)?"')
+
+SKIP_LINK = ('http://', 'https://', 'mailto:', 'data:', 'blob:', '//')
+
+
+def check_links(out, locales, site):
+    """Every link on a finished page has to lead to a page that was built.
+
+    Added after two bugs that produced no error and no visible breakage, only
+    pages that quietly pointed at the wrong thing:
+
+      * a prose page counted the locale prefix as another level up, so every
+        link built from `base` - the whole footer, the breadcrumb, the guides
+        index - left the language it was rendered in and landed on the English
+        equivalent. Nothing 404'd, because those pages exist.
+      * a body.html reused as an English fallback inside a locale carries
+        English slugs, so its cross-links point at addresses that language does
+        not have.
+
+      Both are the kind of thing that only shows up when somebody clicks, which
+      on a translated page is somebody who does not read the language it went to.
+
+    Only published locales are checked, and that is the point rather than a
+    softening: an unfinished locale is still serving English bodies with English
+    slugs in them, so broken cross-links are the expected state until it is
+    translated. `complete = true` is the claim that the language is whole, and a
+    link out of it that leads nowhere means it is not.
+    """
+    published = {locale['lang'] for locale in i18n.published(locales)
+                 if not locale['is_base']}
+    # The prefixes whose pages are still serving English bodies, and so are
+    # expected to carry links this language does not have.
+    unpublished = {f'{locale["lang"]}/' for locale in locales
+                   if not locale['is_base'] and locale['lang'] not in published}
+
+    broken = []
+    for path in sorted(out.rglob('*.html')):
+        rel = path.relative_to(out).as_posix()
+        # Skip a locale that is not published yet, and the 404, whose links are
+        # root-absolute for a reason templates/404.html explains.
+        if rel == '404.html' or rel.startswith(tuple(unpublished)):
+            continue
+
+        text = path.read_text(encoding='utf-8')
+        for href in LINK.findall(text):
+            if href.startswith(SKIP_LINK) or not href:
+                continue
+            target = (out / href.lstrip('/')) if href.startswith('/') \
+                else (path.parent / href)
+            target = target.resolve()
+            if target.is_dir():
+                target = target / 'index.html'
+            if not target.is_file():
+                broken.append(f'{rel} -> {href}')
+
+    if broken:
+        shown = broken[:15]
+        more = len(broken) - len(shown)
+        tail = f'\n    ... and {more} more' if more > 0 else ''
+        raise sitelib.ConfigError(
+            f'{len(broken)} links lead to a page that was not built:\n    '
+            + '\n    '.join(shown) + tail)
 
 
 def copy_shared(out):

@@ -1,0 +1,249 @@
+#
+# Video-Zuschneider - German.
+#
+# Overrides for tools/crop-video/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Video-Zuschneider"
+heading = "Video&nbsp;zuschneiden <span class=\"h1-kw\">&mdash; den Bildausschnitt ändern</span>"
+tagline = "Einen Clip auf den Teil zurechtschneiden, auf den es ankommt."
+
+title = "Video online zuschneiden &mdash; kostenlos, ohne Upload, auch offline"
+description = "Ein MP4, MOV oder WebM auf jedes Format zuschneiden - quadratisch, 9:16 oder ein exaktes Pixelfenster. Läuft im Browser: kein Upload, der Ton bleibt erhalten, funktioniert offline."
+og_title = "Video-Zuschneider &mdash; einen Clip zuschneiden, ohne ihn hochzuladen"
+og_description = "Ziehen Sie einen Rahmen über Ihren Clip und schneiden Sie ihn auf jedes Format zu. Die Einzelbilder werden auf Ihrem eigenen Gerät dekodiert und neu kodiert, und der Originalton wird unangetastet übernommen."
+og_image_alt = "Video-Zuschneider - einen Clip im Browser zuschneiden, ohne dass etwas hochgeladen wird"
+
+pledge = """
+    Jedes Einzelbild wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+    dekodiert, zugeschnitten und kodiert. Nichts hier kann etwas abrufen oder
+    senden &mdash; dieses Werkzeug hat überhaupt keine Netzfunktion &mdash; und
+    am anderen Ende dieser Seite gibt es keinen Server, an den ein Video ginge,
+    selbst wenn es einen Weg dorthin gäbe."""
+
+live_hint = """
+      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
+      &bdquo;Netzwerk&ldquo; und schneiden Sie einen Clip zu. Keine einzige
+      Anfrage trägt ein Einzelbild, einen Dateinamen oder ein Byte Ihrer Auswahl.
+      Oder trennen Sie die Internetverbindung und schneiden Sie trotzdem einen zu
+      &mdash; ein Werkzeug, das Ihr Video zum Verarbeiten wegschickt, würde
+      schlicht stehen bleiben."""
+
+read_first = """
+, <code>src/demux.js</code> für den Leser, der die
+      Einzelbilder in einem MP4 findet, und <code>src/transcode.js</code> für die
+      Schleife, die sie dekodiert, zuschneidet und kodiert. Keines von beiden
+      importiert etwas, das eine Anfrage stellen könnte."""
+
+howto_heading = "Ein Video zuschneiden"
+
+card = """
+            Ziehen Sie einen Rahmen über einen Clip und schneiden Sie ihn auf
+            dieses Format zu &mdash; quadratisch für einen Feed, hochkant fürs
+            Handy oder ein exaktes Pixelfenster."""
+
+[words]
+plural = "Videos"
+choose = "ein Video"
+analytics_extra = """, und auch kein
+  Einzelbild, keine Dauer und keine Zuschnittgröße"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Ton bleibt erhalten"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[privacy]]
+title = "Ihre Videos haben keinen Weg nach draußen."
+body = """
+ Die
+      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
+      an dem Ihre Datei gesammelt werden könnte, und nichts im Code, das sie
+      senden würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Dieses Werkzeug hat überhaupt keine
+      Netzfunktion: keine Adresse zum Einfügen, nichts herunterzuladen, keine
+      Engine, die beim ersten Gebrauch nachgeladen wird. Jedes Byte, das Ihr
+      Video berührt, kam beim Laden der Seite von dieser Herkunft."""
+
+[[privacy]]
+title = "Dekodieren und Kodieren passieren lokal."
+body = """
+ Die Einzelbilder laufen
+      durch WebCodecs in Ihrem eigenen Browser oder durch dieselbe
+      Wiedergabe-Engine, die Ihnen den Clip ohnehin zeigen würde. Die fertige
+      Datei entsteht im Arbeitsspeicher dieses Geräts und wird direkt an einen
+      Download übergeben."""
+
+[[privacy]]
+title = "Der Ton wird kopiert, nicht angehört."
+body = """
+ Auf dem MP4-Weg werden die
+      Audio-Samples übernommen, ohne überhaupt dekodiert zu werden &mdash; nichts
+      hier macht daraus je wieder Klang, und nichts könnte ihn irgendwohin
+      weiterreichen, wenn doch."""
+
+[[privacy]]
+title = "Was Google lädt - und was es nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihr
+      Video übergeben: keine Datei, kein Einzelbild, kein Name, keine Größe,
+      keine Länge und nicht das Format, auf das Sie zugeschnitten haben. Jede
+      Zeile, die liest, dekodiert, zuschneidet oder kodiert, wird von dieser
+      Herkunft ausgeliefert und ist im Repository aufgeführt."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt - und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Er ist ein Link und nicht mehr: Er meldet keinen Besuch, und
+      ihm wird nichts über Sie oder Ihr Video übergeben."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Das ist der einfachste Beweis von allen."""
+
+[[howto]]
+title = "Wählen Sie ein Video."
+body = """
+ Ziehen Sie ein MP4, MOV, M4V oder WebM
+      auf das Auswahlfeld oder wählen Sie eines von Hand. Der Browser liest es
+      direkt von Ihrer Festplatte; dabei wird nichts irgendwohin gesendet."""
+
+[[howto]]
+title = "Ziehen Sie den Rahmen über den Teil, den Sie behalten wollen."
+body = """
+ Ziehen
+      Sie ihn innen, um ihn zu verschieben, und an jeder Ecke, um seine Größe zu
+      ändern. Legen Sie ihn vorher auf ein Format fest &mdash; 1:1 für einen
+      quadratischen Beitrag, 9:16 fürs Handy, 16:9 für ein breites Bild &mdash;
+      oder tippen Sie in die vier Felder darunter ein exaktes Pixelfenster."""
+
+[[howto]]
+title = "Entscheiden Sie, wie viel Qualität ausgegeben wird."
+body = """
+ Das Bild muss
+      neu kodiert werden, denn ein zugeschnittenes Einzelbild ist ein anderes
+      Bild. &bdquo;Ausgewogen&ldquo; bleibt nah an dem, was die Datei für diesen
+      Ausschnitt ohnehin schon ausgegeben hat; &bdquo;Beste Qualität&ldquo; gibt
+      mehr aus. Der Ton bleibt erhalten, sofern Sie ihn nicht abschalten."""
+
+[[howto]]
+title = "Zuschneiden und herunterladen."
+body = """
+ Die Arbeit passiert auf Ihrer
+      eigenen Hardware, wie lange sie dauert, hängt also von Ihrem Gerät ab und
+      nicht von einer Warteschlange. Das fertige Video geht direkt in die
+      Downloads Ihres Browsers."""
+
+[[faq]]
+q = "Wird mein Video irgendwohin hochgeladen?"
+a = """
+        Nein. Es wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+        gelesen, dekodiert, zugeschnitten und kodiert. Dieses Werkzeug hat keine
+        Serverseite, und die <code>Content-Security-Policy</code> der Seite nennt
+        jede Adresse, die sie kontaktieren darf &mdash; keine davon gehört zu
+        dieser Seite. Trennen Sie die Internetverbindung und schneiden Sie
+        trotzdem einen Clip zu, wenn Sie lieber prüfen als glauben."""
+
+[[faq]]
+q = "Welche Videoformate kann ich zuschneiden?"
+a = """
+        MP4, M4V und MOV werden direkt gelesen, egal was darin steckt: H.264,
+        HEVC, AV1 oder VP9, solange Ihr Browser diesen Codec dekodieren kann.
+        Alles andere, was Ihr Browser abspielen kann &mdash; allen voran WebM
+        &mdash; wird stattdessen zugeschnitten, indem es abgespielt und das
+        Ergebnis aufgezeichnet wird; das funktioniert, dauert aber so lange wie
+        der Clip lang ist. Eine Datei, die der Browser weder lesen noch abspielen
+        kann &mdash; in der Praxis AVI, WMV, FLV und die meisten MKVs &mdash;
+        wird mit einer entsprechenden Meldung abgelehnt, statt auf halbem Weg zu
+        scheitern."""
+
+[[faq]]
+q = "Gibt es eine Grenze für Größe oder Länge des Videos?"
+a = """
+        Im Werkzeug ist keine Grenze eingebaut, und die Datei wird nicht auf
+        einmal in den Arbeitsspeicher gelesen &mdash; sie wird in Häppchen von
+        wenigen Megabyte durchlaufen. Die praktische Obergrenze ist das fertige
+        Video, das vor dem Download im Arbeitsspeicher zusammengesetzt wird, und
+        die Zeit, die Ihr Gerät zum Kodieren braucht."""
+
+[[faq]]
+q = "Bleibt der Ton erhalten?"
+a = """
+        Auf dem MP4-Weg exakt: Das Audio wird Sample für Sample übernommen, ohne
+        je dekodiert zu werden, es ist also Byte für Byte das, was in der Datei
+        stand. Auf dem Aufzeichnungsweg wird es von der Wiedergabe abgegriffen
+        und neu kodiert, was ein wenig Qualität kostet. So oder so gibt es ein
+        Häkchen, um ihn ganz wegzulassen."""
+
+[[faq]]
+q = "Kostet das Zuschneiden Qualität?"
+a = """
+        Das Bild wird neu kodiert, denn ein zugeschnittenes Einzelbild ist ein
+        anderes Bild, und es gibt keine Möglichkeit, es zu speichern, ohne die
+        Pixel neu zu schreiben. Was das Werkzeug nicht tut, ist mehr auszugeben
+        als das Original für denselben Ausschnitt ausgegeben hat &mdash; eine
+        Neukodierung darüber hinaus macht die Datei nur größer, ohne sie besser
+        aussehen zu lassen."""
+
+[[faq]]
+q = "Kann ich auch die Länge kürzen?"
+a = """
+        Hier nicht, aber nebenan. Dieses Werkzeug ändert die Form des Bildes und
+        sonst nichts: Der Clip, der herauskommt, ist genauso lang wie der, der
+        hineinging, mit unversehrtem Timing und Ton. Kürzen ist eine eigene
+        Aufgabe und ein eigenes Werkzeug &mdash; der
+        <a href="../video-schneiden/">Video-Schneider</a> markiert die
+        behaltenswerten Teile eines Clips und speichert sie als eine Datei, ohne
+        ein einziges Einzelbild neu zu kodieren."""
+
+[[faq]]
+q = "Warum ändern sich Breite und Höhe in Zweierschritten?"
+a = """
+        H.264, der Codec in einem MP4, speichert das Bild in Blöcken und kann ein
+        Einzelbild mit einer ungeraden Pixelzahl je Seite gar nicht beschreiben.
+        Statt Ihren Zuschnitt hinterher stillschweigend zu runden, bietet der
+        Rahmen von vornherein nur gerade Zahlen an."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und kein Wasserzeichen. Die Seite trägt Werbung, und die
+        bezahlt sie; den Anzeigen wird nichts über Ihr Video übergeben."""
+
+[schema]
+browser_requirements = "Benötigt JavaScript. Für die MP4-Ausgabe braucht es einen Browser mit WebCodecs; sonst wird auf die Aufzeichnung als WebM zurückgegriffen."
+description = "Ein Video im Browser auf jedes Format oder ein exaktes Pixelfenster zuschneiden. MP4, MOV und M4V werden Einzelbild für Einzelbild dekodiert und neu kodiert, wobei der Originalton unangetastet übernommen wird; alles andere, was der Browser abspielen kann, wird durch Aufzeichnen zugeschnitten. Es wird nichts hochgeladen."
+features = [
+  "Schneidet MP4-, MOV-, M4V- und WebM-Videos zu",
+  "H.264-, HEVC-, AV1- und VP9-Quellen, dekodiert über WebCodecs",
+  "Freier Zuschnitt, feste Seitenverhältnisse (1:1, 4:5, 9:16, 16:9, 4:3, 3:2) oder ein exaktes Pixelfenster",
+  "Behält den Originalton, ohne ihn neu zu kodieren",
+  "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
+]
+
+[picker]
+title = "Video hierher ziehen"
+hint = "oder klicken zum Auswählen &mdash; MP4, MOV, M4V, WebM und alles andere, was dieser Browser abspielt"

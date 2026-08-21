@@ -1,0 +1,289 @@
+#
+# 简体中文.
+#
+# The frame: the hub, the guides index, the roadmap, the 404, the footer, and
+# the words the templates themselves use. Tools and guides are translated in
+# tools/ and pages/ beside this file.
+#
+# No [slugs] table, for the reason set out at length in locales/ja/locale.toml:
+# a Han slug has to be percent-encoded to survive being pasted around, and pinyin
+# is a phrase nobody searches for. The keyword weight goes into the title, the
+# description and the h1 instead.
+#
+# WORTH KNOWING BEFORE THIS ONE IS MARKED COMPLETE
+#
+# Google is blocked in mainland China, so both the ad script and the measurement
+# script fail there and neither the revenue nor the analytics that justify this
+# page will appear. What this locale actually serves is Chinese readers outside
+# the mainland - Singapore, Malaysia, and the diaspora - who read simplified
+# characters. Traditional Chinese for Taiwan and Hong Kong would be its own
+# folder (zh-TW), and is the variant that works end to end.
+#
+# `hreflang` is zh-Hans rather than zh-CN: the distinction that matters to a
+# reader here is the script, not the country, and zh-Hans is what tells Google
+# that.
+#
+
+lang = "zh"
+name = "Chinese (Simplified)"
+endonym = "简体中文"
+hreflang = "zh-Hans"
+
+complete = false
+
+#
+# ---------------------------------------------------------------------------
+# The hub.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "免费的浏览器工具 &mdash; 无需上传，无需注册 | abox.tools"
+# 中文搜索结果大约在这个长度截断。
+description = "永不上传你文件的免费工具。把图片合成 PDF 或 MP4、把图片压到指定大小、裁剪视频、清除 EXIF，全部在浏览器里完成。"
+heading = "不碰服务器的一套工具"
+og_title = "A Box of Tools &mdash; 不碰服务器的工具"
+og_description = "每个只做一件事的小工具，全部在你的浏览器里运行。你的文件不会离开你的设备。"
+og_image_alt = "abox.tools - 不碰服务器的工具"
+schema_description = "每个只做一件事的小工具，全部工作都在浏览器内完成。不上传任何东西，也不需要账号。"
+schema_about = "在浏览器中运行、在本地处理文件而不上传的文件工具"
+
+lede = """
+    每个只做一件事的小工具，全部工作都在你的浏览器里完成。你的文件留在你的
+    设备上：没有要上传的东西，没有要注册的账号，也没有任何追踪。"""
+
+support_note = """
+      这些工具是免费的，而且会一直免费。如果其中某一个帮你省了事，这是本站
+      唯一向你开口的地方。"""
+
+# 不是承诺，而是三条可以自己验证的事实（与英文版一致）。
+[[hub.guarantees]]
+title = "你的文件永远不会离开你的设备"
+body = """
+        打开、读取和处理它们的，是你自己的浏览器和你自己的硬件。每个工具的
+        <code>Content-Security-Policy</code> 都列出了它可以连接的全部地址，
+        而其中没有一个属于本站。"""
+
+[[hub.guarantees]]
+title = "关于你文件的信息也不会被发送"
+body = """
+        文件本身不会，缩略图、文件名、大小、你选了几个，都不会。这里没有任何
+        一个工具会把这些读出去。另一端根本不存在能接收它的服务器。"""
+
+[[hub.guarantees]]
+title = "它可以离线使用"
+body = """
+        把工具打开一次，然后断开网络，它照样处理你的文件，和之前完全一样。
+        这一点很难伪装：一个会把你的文件送去别处处理的工具，那一刻就会停下来。"""
+
+[[hub.categories]]
+name = "图片与视频"
+note = "处理你的照片和素材，不用交给任何人。"
+
+[[hub.categories]]
+name = "GIF 与动画"
+note = "制作一段动画，或者把动画拆开——文件不会离开你的设备。"
+
+[[hub.categories]]
+name = "音频"
+note = "处理一段录音而不用交给任何人，视频里的声音也一样。"
+
+[[hub.categories]]
+name = "文档与 PDF"
+note = "制作和重排文档，不用送去别处处理。"
+
+[[hub.categories]]
+name = "编码与数据"
+note = "把您输入的内容变成机器能读的东西，而且不离开这个页面。"
+
+[[hub.categories]]
+name = "文本与代码"
+note = "整理、比对、编码——无需把令牌或配置文件粘贴到别人的服务器上。"
+
+#
+# ---------------------------------------------------------------------------
+# The guides index.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+nav = "全部指南"
+title = "指南 &mdash; 这件事怎么做，以及每个选择的代价"
+description = "用平实的话讲清楚怎么压缩、缩放、裁剪、剪辑和转换自己的文件：设置是什么意思、代价是什么，以及为什么这些都不需要上传。"
+heading = "指南"
+lede = """
+    每个工具一篇，写给那些被要求达到某个大小或某种格式、又想知道自己即将
+    调整的那个设置到底在做什么的人。这里描述的一切都发生在你自己的设备上。"""
+og_title = "abox.tools 指南"
+og_description = "怎么压缩、缩放、裁剪、剪辑和转换自己的文件，以及每个设置的代价。全程不涉及上传。"
+og_image_alt = "abox.tools - 不碰服务器的工具"
+
+
+[[guides.groups]]
+name = "把事情做完"
+note = "每个工具一篇：这件事包含什么、哪个设置真正起作用、以及它的代价。"
+
+[[guides.groups]]
+name = "在你上传任何东西之前"
+note = "把文件交给一个网站究竟意味着什么，以及怎么判断这一步是不是非做不可。"
+
+#
+# ---------------------------------------------------------------------------
+# The roadmap. Only the frame - the list itself is config/planned.toml, which
+# has no locale file yet and is therefore still English on this page.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+nav = "路线图"
+title = "路线图 &mdash; abox.tools 接下来会做什么"
+description = "abox.tools 计划中的每一个工具，分好类、公开列出，连同已经完成的那些。它们都在浏览器里运行，都不上传任何东西。"
+heading = "接下来会有什么"
+lede = """
+    下面两份清单上的每一项，都在你的浏览器里完成工作，都不上传任何东西
+    &mdash; 这是一个名字能进到这里来必须先通过的规则。数字没有写在任何地方；
+    是构建脚本从这两份清单上数出来的。"""
+
+intro_heading = "这份清单是怎么来的"
+intro = """
+    <p>
+      它不是一份愿望清单。它是把网上最大的 GIF 和视频站点的工具列表
+      &mdash; 现存最接近“人们究竟想拿文件做什么”的一份目录 &mdash; 从头到尾
+      过了一遍，只保留那些可以做到让处理发生在你自己的设备上、并且在拔掉网线
+      之后仍然能继续工作的条目。
+    </p>
+    <p>
+      留下来的大多数依靠浏览器本来就带的接口。少数几个需要把编解码器打包进
+      唯一用到它的那个工具里，这是允许的 &mdash; 文件依然不会离开设备。达不到
+      这条线的，我们选择略过而不是许诺，所以下面某些看起来很明显的空缺，是
+      故意留下的空缺。
+    </p>
+    <p>
+      已经存在的工具排在各自分组的最前面，标记为<em>已完成</em>并链接到它们
+      自己的页面。下面的都还没做，没做出来之前不会变成链接。
+    </p>"""
+
+planned_heading = "每一类文件，以及可以拿它做什么"
+
+og_title = "abox.tools 路线图"
+og_description = "哪些已经完成，接下来是什么。全部在浏览器里运行，都不上传任何东西。"
+og_image_alt = "abox.tools - 不碰服务器的工具"
+
+#
+# ---------------------------------------------------------------------------
+# The 404. Built in English only today, but translated anyway.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "找不到该页面 &mdash; abox.tools"
+description = "abox.tools 上没有这个地址。这些是确实存在的工具 —— 全部免费，而且没有一个会把你的文件传到任何地方。"
+heading = "这个页面不在这里"
+tools_heading = "所有工具，都在这里"
+tools_note = "全部免费，全部在你的浏览器里，没有一个会上传任何东西。"
+
+lede = """
+    要么是地址打错了，要么是原本在那里的东西挪了地方。你的文件没出任何问题，
+    也没有丢失什么：本站从来没有拿到过你的任何东西，也就无从丢起。"""
+
+#
+# ---------------------------------------------------------------------------
+# The footer.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        不碰服务器的工具。你的文件留在你的设备上 &mdash; 没有要上传的东西，
+        也没有要注册的账号。"""
+base = "本站的每一句话都是写来给你核对的，不是写来让你相信的。"
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words. Everything with {{ }} in it is a name the build
+# resolves, and the build refuses to render a name it cannot find.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+languages = "语言"
+breadcrumb = "面包屑导航"
+all_tools = "全部工具"
+last_updated = "最后更新"
+built_tag = "已完成"
+planned_count = "项计划中"
+built_count = "项已完成"
+
+# 中文没有单复数之分，两者相同。
+guide_one = "篇指南"
+guide_many = "篇指南"
+
+footer_tools = "工具"
+footer_site = "本站"
+footer_contact = "联系我们"
+footer_sitemap = "站点地图"
+footer_source = "在 GitHub 上阅读代码"
+
+guarantees_note = """
+    以上没有一条需要你凭信任接受。
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      怎么判断一个工具是不是真的需要你的文件</a>
+    列出了四项你可以自己动手做的检查，对本站和对任何其他网站都适用。"""
+
+hub_guides_note = """
+    不确定该调哪个设置，或者它的代价是什么？
+    <a href="{{ base }}{{ links.guides }}/">每个工具都有一篇指南</a>。"""
+
+hub_roadmap_note = """
+    后面还有，清单是公开的：
+    <a href="{{ base }}{{ links.roadmap }}/">看看计划做什么</a>。"""
+
+guides_all_note = """
+    这里的每一篇指南讲的都是一个在你自己设备上运行的工具：
+    <a href="{{ base }}">全部查看</a>。"""
+
+[ui.tool]
+view_source = "查看源码"
+how_verified = "如何验证"
+live_check = "实时检查："
+offline = "离线："
+checking = "检查中&hellip;"
+questions_heading = "常见问题"
+guide_heading = "详细版本"
+privacy_heading = "这个说法要怎么验证"
+
+pledge_line = """
+    你的{{ tool.words.plural }}<strong>永远不会被上传</strong>。这里根本没有服务器。"""
+
+boot_title = "本页的代码没有启动。"
+boot_body = """
+    直接从文件夹里打开 <code>index.html</code> 会让浏览器拦下 JavaScript 模块，
+    因此选择{{ tool.words.choose }}时不会有任何反应。请改用 http 来提供这个文件夹："""
+boot_then = "然后打开 <code>http://localhost:8080/</code>。"
+
+noscript_title = "JavaScript 已被停用。"
+noscript_body = "这个应用的全部工作都在你的浏览器里完成，没有 JavaScript 就无法运行。"
+
+check_yourself = """
+      <strong>你可以自己核对。</strong>以上没有一条需要你凭信任接受。这个页面是由
+      仓库里的模板和配置，经过一个你可以阅读、也可以自己运行的构建脚本生成的，
+      结果提交在 <code>dist</code> 分支上 &mdash; 所以你可以把实际提供的内容，
+      和从源码构建出来的结果直接做比对："""
+
+read_first_lead = """
+      最值得先读的文件是讲 Content-Security-Policy 的
+      <code>config/site.toml</code>"""
+
+[ui.guide]
+open_tool = "打开{{ tool.name | e }}"
+
+[ui.picker]
+warning = """
+      <strong>这是唯一一个会碰到网络的功能。</strong>
+      抓取一个地址，会让那台服务器知道你的 IP 地址，以及你请求的是哪一{{ tool.picker.urls.noun }}。
+      {{ tool.picker.urls.noun }}到达后会被复制到本地内存，不会再次请求。你这边永远不会有东西发出去
+      &mdash; 这个页面依然做不了任何形式的上传。"""
+label = "每行一个地址"
+note = """
+      对方服务器必须允许其{{ tool.picker.urls.noun }}的跨域使用。很多站点并不允许，那些会带着一条提示
+      失败，而不是过一会儿悄无声息地出问题。"""

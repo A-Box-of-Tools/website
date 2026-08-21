@@ -1,0 +1,17 @@
+#
+# Datenschutz & Cookies - German. Overrides for pages/privacy/page.toml.
+#
+
+nav = "Datenschutz &amp; Cookies"
+title = "Datenschutz &amp; Cookies &mdash; abox.tools"
+description = "Was abox.tools erhebt und was nicht. Ihre Dateien werden nie hochgeladen; die Werbung, der Besuchszähler und der Spenden-Button sind hier vollständig beschrieben."
+heading = "Datenschutz &amp; Cookies"
+lede = """
+    Die kurze Fassung: Ihre Dateien werden nie hochgeladen, weil es nichts gibt,
+    wohin sie hochgeladen werden könnten. Alles Weitere auf dieser Seite betrifft
+    die Werbung, den Besuchszähler und das Hosting &mdash; die Teile also, an
+    denen andere Unternehmen beteiligt sind."""
+updated = "19. August 2026"
+og_title = "Datenschutz &amp; Cookies &mdash; abox.tools"
+og_description = "Ihre Dateien werden nie hochgeladen. Was erhoben wird, von wem, und wie Sie es abschalten."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

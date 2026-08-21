@@ -1,0 +1,17 @@
+#
+# Ratgeber: Ein SVG in ein PNG umwandeln - German.
+#
+
+nav = "SVG in PNG umwandeln"
+title = "Ein SVG in der richtigen Größe in ein PNG umwandeln"
+description = "Ein Vektor hat keine eigene Pixelgröße, die Zahl gehört also Ihnen. Woher diese Zahl für einen Bildschirm, ein App-Symbol und einen Drucker kommt, und was sich ändert, wenn eine Zeichnung zu Pixeln wird."
+heading = "Wie Sie ein SVG in der richtigen Größe in ein PNG umwandeln"
+lede = """
+    Das Umwandeln ist die leichte Hälfte. Die Frage, die entscheidet, ob das
+    Ergebnis zu etwas taugt, ist die, auf die Ihnen niemand eine Antwort in die
+    Hand gibt: wie viele Pixel? Hier steht, woher diese Zahl kommt, und was eine
+    Zeichnung auf dem Weg dahin verliert, eine zu werden."""
+updated = "20. August 2026"
+og_title = "Ein SVG in der richtigen Größe in ein PNG umwandeln"
+og_description = "Woher die Pixelzahl tatsächlich kommt, und die drei Dinge, die sich ändern, wenn eine Zeichnung zu Pixeln wird."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

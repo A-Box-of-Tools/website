@@ -1,0 +1,17 @@
+#
+# Ratgeber: Ein PDF kleiner machen - German.
+#
+
+nav = "Ein PDF kleiner machen"
+title = "Ein PDF kleiner machen (und warum manche nicht schrumpfen)"
+description = "Wo die Größe eines PDFs wirklich steckt, warum ein Scan um 80 Prozent schrumpft und ein Vertrag sich kaum rührt, was DPI hier bedeutet, und was ein Kompressor mit Ihrem Dokument niemals tun sollte."
+heading = "Wie Sie ein PDF kleiner machen - und warum manche nicht schrumpfen"
+lede = """
+    Ein PDF, das nicht unter ein E-Mail-Limit passt, ist fast immer ein PDF
+    voller Bilder. Hier steht, woran Sie erkennen, ob Ihres eines ist, was das
+    Komprimieren kostet, und warum jedes Werkzeug, das einen festen Prozentsatz
+    verspricht, Ihre Datei nicht angesehen hat."""
+updated = "20. August 2026"
+og_title = "Wie Sie ein PDF kleiner machen"
+og_description = "Wo die Größe eines PDFs wirklich steckt, warum ein Scan schrumpft und ein Vertrag nicht, und was DPI damit zu tun hat."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
