@@ -37,6 +37,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/edit-audio/</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/exif-editor/</loc>
     <lastmod>2026-08-19</lastmod>
     <changefreq>monthly</changefreq>
