@@ -1,0 +1,189 @@
+<main>
+  <!-- Step 1 &mdash; the photograph -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose the photograph</h2>
+
+    <p class="card-lede">
+      Any picture your browser can open. A phone photograph taken against a plain
+      wall, in daylight, from about a metre and a half away is what most of these
+      rules were written around &mdash; and it is read straight off your disk, not
+      sent anywhere.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">Choose a different one</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the rule -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> Pick the country and the document</h2>
+
+    <p class="card-lede">
+      Every figure below is the published requirement, transcribed from the
+      authority named under it. Nothing about this list is guessed at, and nothing
+      about it is fetched &mdash; it is a table in
+      <code>src/specs.js</code>, served with the page.
+    </p>
+
+    <div class="option-row">
+      <label for="spec">Specification</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>The numbers, to type in yourself</summary>
+      <div class="numbers">
+        <label>Width (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>Height (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>Head, smallest (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>Head, largest (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>Background
+          <select id="custom-background">
+            <option value="white">Plain white</option>
+            <option value="off-white">White or off-white</option>
+            <option value="light-grey" selected>Plain light grey</option>
+            <option value="cream">Light grey or cream</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>Upload width (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>Upload height (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>Smallest (KB)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>Largest (KB)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        KB here means 1024 bytes, which is what these forms mean by it.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 3 &mdash; the framing -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> Mark the face, and check the framing</h2>
+
+    <p id="frame-empty" class="field-summary">Choose a photograph and the crop box appears here.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        Drag the four dots onto the crown, the chin and each pupil, then press
+        <strong>Fit the box</strong>. Those four points are the whole of what the
+        rule measures, which is why this tool asks you to place them rather than
+        guessing at them with a face detector. The dots start in the place a
+        head-and-shoulders photo usually puts them &mdash; that is a starting
+        position, not a measurement.
+      </p>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">Fit the box to the rule</button>
+        <button type="button" id="reset-marks" class="ghost">Put the dots back</button>
+        <button type="button" id="whole-photo" class="ghost">Largest box that fits</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Step 4 &mdash; the background -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> The background</h2>
+
+    <p class="card-lede" id="background-lede">
+      Read from a band across the top of the crop and down each side, above the
+      shoulders &mdash; the parts of the frame that ought to be nothing but
+      background. Measured in CIE Lab rather than in RGB, because two greys forty
+      RGB units apart are indistinguishable and forty units of blue is a different
+      colour.
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">What yours reads as<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">What the rule asks for<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Step 5 &mdash; the files -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> Save it</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">Print resolution</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; the floor almost every rule states</option>
+          <option value="600">600 dpi &mdash; what a good photo lab will use</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">Sheet to print on</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>Make the files</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Finished</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

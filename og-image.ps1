@@ -272,6 +272,11 @@ New-OgImage -Path 'tools\image-to-data-uri\og.png' `
   -Subtitle 'Encode a picture as one line you can paste straight into CSS or HTML.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\id-photo\og.png' `
+  -Title 'ID Photo Maker' `
+  -Subtitle 'Pick a country and a document, and it applies that rule exactly - on your own machine.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\compress-image\og.png' `
   -Title 'Image Compressor' `
   -Subtitle 'Name the size you need and it finds the least compression that gets there.' `

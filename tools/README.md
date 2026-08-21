@@ -24,6 +24,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image to Data URI](image-to-data-uri/) | `/image-to-data-uri/` | The whole picture as one line of text. Paste it straight into CSS or HTML. |
 | [Image to ICO](image-to-ico/) | `/image-to-ico/` | One picture in. Every size a browser, Windows or a Mac asks for, out. |
 | [SVG to Image](svg-to-image/) | `/svg-to-image/` | Name the size. A vector has none of its own to lose. |
+| [ID Photo Maker](id-photo/) | `/id-photo/` | Pick the country. It applies that country's rule, exactly. |
 | [Image Resizer](resize-image/) | `/resize-image/` | Say the size. Draw the box. Pick the format. |
 | [Image Compressor](compress-image/) | `/compress-image/` | Name the size. It works out the rest. |
 | [GIF Maker](gif-maker/) | `/gif-maker/` | Turn a set of pictures into one animation. |
