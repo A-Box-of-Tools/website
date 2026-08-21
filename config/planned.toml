@@ -86,5 +86,4 @@ items = [
   ["Text &amp; code", "format, diff, encode, convert between formats"],
   ["Data", "CSV and JSON conversion, cleaning, inspection"],
   ["Privacy &amp; security", "hashes, checksums, metadata stripping"],
-  ["QR &amp; barcodes", "generated from a string, with nothing sent to make one"],
 ]

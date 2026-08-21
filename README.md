@@ -927,7 +927,7 @@ an engine to do it instead, and these all stay small enough to read.
 | APNG | PNG chunks, with `CompressionStream('deflate')` for the pixel data — the compressor is already in the browser |
 | Video: trim, resize, crop, rotate, reverse, frame grabs, filters, subtitles | `VideoDecoder` and `VideoEncoder`, plus an MP4 *de*muxer to sit beside the muxer that already exists. Cropping is built: `/crop-video/`, where the demuxer turned out to be the whole job and the crop itself is six lines of canvas. Cutting is built: `/trim-video/`, and it is the one job in this column that needs no codec at all &mdash; the frames are moved, not decoded |
 | Audio: trim, fade, speed, volume, waveform | `decodeAudioData` and `OfflineAudioContext`. WAV out is a 44-byte header in front of the samples |
-| QR codes and barcodes | Arithmetic over a string. There is no input file at all |
+| QR codes and barcodes | Arithmetic over a string: there is no input file at all, which makes this the one group here where the promise costs nothing to keep. Built: `/qr-barcode/`, where the work turned out to be the specification's two tables of block counts — checked against the published capacities rather than trusted — and the eight masks, one of which is chosen by scoring the picture each one draws |
 
 ### What needs a vendored engine
 

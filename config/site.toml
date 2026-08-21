@@ -231,6 +231,15 @@ name = "Documents &amp; PDF"
 note = "Make and rearrange documents without sending them to be processed."
 order = ["compress-pdf", "images-to-pdf"]
 
+# The first category here that is not about a file at all. Everything above
+# takes something off your disk; this one takes a string and hands back a
+# picture of it, which is why the note says "typed" rather than "chosen".
+[[hub.categories]]
+id = "codes-and-data"
+name = "Codes &amp; data"
+note = "Turn something you typed into something a machine can read, without it leaving the page."
+order = ["qr-barcode"]
+
 #
 # ---------------------------------------------------------------------------
 # The roadmap page.
@@ -351,6 +360,7 @@ order = [
   "turn-images-into-a-video",
   "trim-a-video",
   "crop-a-video",
+  "make-a-qr-code",
   "turn-a-video-into-a-gif",
 ]
 
