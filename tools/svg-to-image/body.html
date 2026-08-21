@@ -1,0 +1,207 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose the SVG files</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Take all off the list</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the size -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> Say how big it should be</h2>
+
+    <p class="card-lede">
+      This is the one question a vector cannot answer for you. An SVG has no
+      pixels in it &mdash; it has instructions for drawing, and it will follow
+      them at any size you name. The number below is not a limit you are pushing
+      against, the way it would be with a photograph; 4000 pixels from a
+      24&nbsp;pixel icon is exactly as sharp as 24 was.
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">Set the size by</label>
+      <select id="size-mode">
+        <option value="scale" selected>A multiple of the size the file asks for</option>
+        <option value="width">Width in pixels</option>
+        <option value="height">Height in pixels</option>
+        <option value="longest">The longest side</option>
+        <option value="box">A box, with both sides given</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>Multiply by<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="Common multiples">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        Every file on the list is multiplied from its own size, so a batch of
+        icons drawn at different sizes stays in proportion to each other.
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>Width<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="Common widths">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">The height follows from the shape of the drawing.</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>Height<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">The width follows from the shape of the drawing.</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>Longest side<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        Whichever side is longer becomes this and the other follows, so a wide
+        logo and a tall one come out the same size on their long edge.
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>Width<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>Height<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">If the drawing is a different shape</label>
+        <select id="box-fit">
+          <option value="fit" selected>Fit inside &mdash; the whole drawing, one side comes out short</option>
+          <option value="pad">Pad it &mdash; exactly this size, with the background either side</option>
+          <option value="stretch">Stretch it &mdash; exactly this size, and the shape distorted</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">Also write the high-DPI copies</label>
+      <select id="density">
+        <option value="1" selected>No &mdash; one file per drawing</option>
+        <option value="2">@2x as well &mdash; for a Retina screen</option>
+        <option value="3">@2x and @3x &mdash; the full set a phone asks for</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- Step 3 &mdash; the format -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> Pick the format</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; keeps transparency, exact edges</option>
+          <option value="image/jpeg">JPEG &mdash; no transparency, smaller photographs</option>
+          <option value="image/webp">WebP &mdash; transparency and a smaller file</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">Quality &mdash; <output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          JPEG and WebP only; PNG has no quality dial because it is lossless.
+          Flat colour and hard edges &mdash; which is most of what an SVG is
+          made of &mdash; are exactly what a lossy encoder handles worst, so
+          this sits higher here than it would for a photograph.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">Background</label>
+        <select id="background-mode">
+          <option value="transparent" selected>Transparent</option>
+          <option value="colour">A colour</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="Background colour" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 4 &mdash; look at it, then take it -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> Look at it, then save it</h2>
+
+    <p class="card-lede">
+      The preview is drawn by the same code that writes the file, from the file
+      you chose, on this machine. What it is worth checking for is the two
+      things that change when a drawing becomes pixels: a hairline that was half
+      a pixel wide and has gone grey, and any text, which is drawn in a font
+      this machine has rather than one fetched from the web.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">Add an SVG and it appears here.</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>Rasterize</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Finished</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Download all as a zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

@@ -247,6 +247,11 @@ New-OgImage -Path 'tools\image-to-ico\og.png' `
   -Subtitle 'Make a favicon, a Windows app icon or a macOS .icns - every size in one file.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\svg-to-image\og.png' `
+  -Title 'SVG to Image' `
+  -Subtitle 'Rasterize a vector to PNG, JPEG or WebP at any size, on your own machine.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\compress-image\og.png' `
   -Title 'Image Compressor' `
   -Subtitle 'Name the size you need and it finds the least compression that gets there.' `
