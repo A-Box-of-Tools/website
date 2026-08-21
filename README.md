@@ -593,6 +593,108 @@ Neither link's text is written twice either. The tool page shows the guide's own
 
 ---
 
+## Languages
+
+The site is written in English and served in as many languages as have been
+translated. English keeps the addresses it has always had - `/compress-image/`
+- and every other language sits under a prefix with slugs of its own:
+`/de/bild-komprimieren/`.
+
+The slug is translated on purpose, and it is the reason this is not simply
+`/de/compress-image/`. A slug is the one part of a page's markup that is also a
+keyword, and a German reader looking for this tool types "bild komprimieren".
+Leaving the English word in the URL throws that away in every market except the
+one the site was written for.
+
+### What a locale is, and what it is not
+
+A locale is **words and slugs**. It is not a copy of the site.
+
+Which tools exist, which category each one joins, which guide is about which
+tool, what the Content-Security-Policy allows - none of that is language, so
+none of it is repeated per language. It stays in `config/site.toml` and in each
+`tool.toml`, in English, once. A locale file that tries to restate any of it
+fails the build rather than becoming a second site to keep in step.
+
+The practical effect is that shipping a tool gives every language a page for it
+the same day - in English until somebody translates it, but present, linked,
+and in the right category, because the category was never a translated string.
+
+    locales/de/locale.toml            the language, its slugs, and every
+                                      translatable string in config/site.toml
+    locales/de/tools/<slug>.toml      overrides for tools/<slug>/tool.toml
+    locales/de/tools/<slug>.html      that tool's translated body.html
+    locales/de/pages/<slug>.toml      overrides for pages/<slug>/page.toml
+    locales/de/pages/<slug>.html      that page's translated body.html
+
+The slug in a locale's filename is always the **English** one. The translated
+slug is a value, in `[slugs]`, and never a filename - so every address a
+language changes can be read in one place, and a translation does not become
+impossible to find because somebody localized the folder it sits in too.
+
+English is not a folder under `locales/`. It is the sources themselves. The
+moment it became `locales/en/` it would be a translation of itself, free to
+drift from the `tool.toml` it was copied out of, and the build would lose the
+one text every other language is measured against.
+
+### Half-translated is allowed, and is never advertised
+
+`buildlib/template.py` refuses to render a name it cannot resolve, and that
+rule is not weakened for locales - it is moved. A locale may leave a key out
+and the English is used; what it may not do is leave a key out and still be
+offered as a translation.
+
+While a `locale.toml` says `complete = false`, the language is built and
+readable at its own address, and is kept out of all three places that would
+claim it exists:
+
+* no `<link rel="alternate" hreflang>` pointing at it, from any page;
+* no entry in `sitemap.xml`;
+* no link in the language switcher.
+
+All three are built from one list - `i18n.published` - so they cannot disagree
+about which languages the site has, which is the failure Google reports as
+"hreflang points to a page that is not indexed".
+
+Setting `complete = true` turns every remaining fallback into a build failure,
+naming the strings. A language therefore gets stricter as it gets more
+finished, which is the direction that helps. Every build says how far the
+unfinished ones have to go:
+
+    de: 738 strings still in English (not advertised until complete = true)
+
+### Adding a language
+
+1. Make `locales/<lang>/locale.toml` with `lang`, `name` (in English, for the
+   build log) and `endonym` (in its own language, which is what the switcher
+   shows - somebody looking for German is scanning for "Deutsch").
+2. Fill in `[slugs]`, keyed by the English slug. The build refuses a slug that
+   names nothing, and refuses two entries that would land on one address.
+3. Translate the rest of `locale.toml`, then the files under `tools/` and
+   `pages/`.
+4. Set `complete = true` when the build stops listing anything.
+
+Set `hreflang` where it differs from `lang` - `pt-BR` is a language and a
+region, and `hreflang` is the only place that distinction is expressed. Set
+`dir = "rtl"` for Arabic or Hebrew; note that the stylesheets have not been
+written for it yet, so that is a layout job as well as a translation one.
+
+### The strings still in the JavaScript
+
+Not done. There are about 380 user-facing strings inline in `tools/*/src/*.js`
+- 213 of them in `exif-editor` alone, most of those EXIF tag names - and they
+are still English in every language. They need extracting to a source of their
+own before a locale can reach them, which is a change to the tools' own code
+rather than to the build, and is the one part of this that cannot be checked by
+reading the output: it has to be exercised in a browser.
+
+Worth deciding when it is done: the long tail of EXIF tag names is probably
+better left in English. They are identifiers people cross-reference against
+ExifTool, Lightroom and Windows' own properties dialog, and localizing the
+obscure ones makes the tool harder to use rather than easier.
+
+---
+
 ## Deploying
 
 The site is one domain, `abox.tools`. It is served by **GitHub Pages** from the

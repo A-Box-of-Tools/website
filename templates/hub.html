@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ site.lang }}">
+<html lang="{{ locale.hreflang }}"{% if locale.rtl %} dir="rtl"{% endif %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +27,8 @@
 <title>{{ site.hub.title }}</title>
 <meta name="description" content="{{ site.hub.description }}">
 
-<link rel="canonical" href="{{ site.domain }}">
+<link rel="canonical" href="{{ canonical }}">
+{% include "partials/alternates.html" %}
 
 <!--
   AdSense site verification. This is an inert tag - it loads nothing and runs
@@ -128,10 +129,7 @@
     including the checks that can be run against this site.
   -->
   <p class="guarantees-note">
-    None of that has to be taken on trust.
-    <a href="{{ base }}guides/is-it-safe-to-upload-files/">
-      How to tell whether a tool really needs your files</a>
-    sets out four checks you can run yourself, on this site or any other.
+{{ ui.guarantees_note }}
   </p>
 
   <!--
@@ -159,7 +157,7 @@
     </div>
     <ul class="tool-grid">
 {% for tool in category.tools %}      <li>
-        <a class="tool-card" href="{{ tool.slug }}/">
+        <a class="tool-card" href="{{ tool.out_slug }}/">
           <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
           <!-- `name` is the tool's plain-text name, the one that also goes into
                the structured data above, so it is escaped on the way in here. -->
@@ -179,8 +177,7 @@
     just read the cards above and is not sure which of them they want.
   -->
   <p class="page-note">
-    Not sure which setting to move, or what it costs?
-    <a href="{{ base }}{{ site.guides.slug }}/">There is a guide for every tool</a>.
+{{ ui.hub_guides_note }}
   </p>
 
   <!--
@@ -193,8 +190,7 @@
     config/planned.toml. This is the one line that points at it.
   -->
   <p class="page-note">
-    More is coming, and the list is public:
-    <a href="{{ base }}{{ site.roadmap.slug }}/">see what is planned next</a>.
+{{ ui.hub_roadmap_note }}
   </p>
 
 </main>

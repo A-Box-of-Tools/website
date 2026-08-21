@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ site.lang }}">
+<html lang="{{ locale.hreflang }}"{% if locale.rtl %} dir="rtl"{% endif %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,6 +41,7 @@
 <meta name="description" content="{{ tool.description }}">
 
 <link rel="canonical" href="{{ tool.url }}">
+{% include "partials/alternates.html" %}
 
 <!--
   Share card. og-image.ps1 draws these, and the URLs have to be absolute -
@@ -95,19 +96,18 @@
   nothing at all happens when you choose {{ tool.words.choose }}.
 -->
 <div id="boot-warning" class="boot-warning">
-  <strong>This page's code did not start.</strong>
+  <strong>{{ ui.tool.boot_title }}</strong>
   <p>
-    Opening <code>index.html</code> directly from a folder blocks JavaScript modules,
-    so nothing will happen when you choose {{ tool.words.choose }}. Serve the folder over http instead:
+{{ ui.tool.boot_body }}
   </p>
   <pre>powershell -ExecutionPolicy Bypass -File serve.ps1</pre>
-  <p>Then open <code>http://localhost:8080/</code>.</p>
+  <p>{{ ui.tool.boot_then }}</p>
 </div>
 
 <noscript>
   <div class="boot-warning">
-    <strong>JavaScript is disabled.</strong>
-    <p>This app does all of its work in your browser, so it cannot run without it.</p>
+    <strong>{{ ui.tool.noscript_title }}</strong>
+    <p>{{ ui.tool.noscript_body }}</p>
   </div>
 </noscript>
 
@@ -128,8 +128,8 @@
   "EXIF Viewer & Remover" carries a bare ampersand - unlike `tool.heading`,
   which is written as markup in tool.toml.
 -->
-<nav class="crumbs" aria-label="Breadcrumb">
-  <a href="../">All tools</a>
+<nav class="crumbs" aria-label="{{ ui.breadcrumb }}">
+  <a href="../">{{ ui.all_tools }}</a>
   <span aria-hidden="true">&rsaquo;</span>
   <span aria-current="page">{{ tool.name | e }}</span>
 </nav>
@@ -153,10 +153,10 @@
           .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65
           3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
       </svg>
-      View source
+      {{ ui.tool.view_source }}
     </a>
     <button type="button" id="privacy-toggle" class="ghost" aria-expanded="false" aria-controls="privacy-panel">
-      How this is verified
+      {{ ui.tool.how_verified }}
     </button>
     <div class="support-cta">
       {% include "partials/bmc.html" %}
@@ -173,7 +173,7 @@
 <section class="pledge">
   <p class="pledge-line">
     <span class="pledge-mark" aria-hidden="true">&#9679;</span>
-    Your {{ tool.words.plural }} are <strong>never uploaded</strong>. There is no server.
+{{ ui.tool.pledge_line }}
   </p>
   <p class="pledge-sub">
 {{ tool.pledge }}
@@ -188,11 +188,11 @@
   <div class="pledge-live">
     <p class="live-row">
       <span id="network-dot" class="live-dot" aria-hidden="true"></span>
-      <span><strong>Live check:</strong> <span id="network-count">checking&hellip;</span></span>
+      <span><strong>{{ ui.tool.live_check }}</strong> <span id="network-count">{{ ui.tool.checking }}</span></span>
     </p>
     <p class="live-row">
       <span id="offline-dot" class="live-dot" aria-hidden="true"></span>
-      <span><strong>Offline:</strong> <span id="offline-status">checking&hellip;</span></span>
+      <span><strong>{{ ui.tool.offline }}</strong> <span id="offline-status">{{ ui.tool.checking }}</span></span>
     </p>
     <p class="live-hint">
 {{ tool.live_hint }}
@@ -201,17 +201,13 @@
 </section>
 
 <section id="privacy-panel" class="privacy" hidden>
-  <h2>How the privacy claim is verifiable</h2>
+  <h2>{{ ui.tool.privacy_heading }}</h2>
   <ul>
 {% for point in tool.privacy %}    <li><strong>{{ point.title }}</strong>{{ point.body }}</li>
 {% endfor %}  </ul>
   <div class="privacy-status">
     <p>
-      <strong>Check it yourself.</strong> None of the above has to be taken on trust.
-      This page is generated from the templates and config in the repository by a
-      build script you can read and run yourself, and the result is committed to
-      the <code>dist</code> branch &mdash; so you can diff what is served against
-      what a build of the sources produces:
+{{ ui.tool.check_yourself }}
     </p>
     <p>
       <a href="{{ site.source_url }}" target="_blank" rel="noopener noreferrer">
@@ -219,8 +215,7 @@
       </a>
     </p>
     <p>
-      The files worth reading first are <code>config/site.toml</code> for the
-      Content-Security-Policy{{ tool.read_first }}
+{{ ui.tool.read_first_lead }}{{ tool.read_first }}
     </p>
   </div>
 </section>
@@ -249,7 +244,7 @@
     </li>
 {% endfor %}  </ol>
 
-  <h2 id="faq-h">Questions</h2>
+  <h2 id="faq-h">{{ ui.tool.questions_heading }}</h2>
   <div class="faq-list">
 {% for entry in tool.faq %}    <details>
       <summary>{{ entry.q }}</summary>
@@ -271,7 +266,7 @@
     page.toml - and the build turns it into both halves of the link, this one
     and the one back. A tool with no guide yet renders nothing here.
   -->
-{% if guide %}  <h2 id="guide-h">The longer version</h2>
+{% if guide %}  <h2 id="guide-h">{{ ui.tool.guide_heading }}</h2>
   <p class="tool-guide">
     <a href="{{ base }}{{ guide.slug }}/">{{ guide.heading }}</a>
     <span class="tool-guide-note">{{ guide.description }}</span>

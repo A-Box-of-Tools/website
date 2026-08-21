@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ site.lang }}">
+<html lang="{{ locale.hreflang }}"{% if locale.rtl %} dir="rtl"{% endif %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +27,8 @@
 <title>{{ site.roadmap.title }}</title>
 <meta name="description" content="{{ site.roadmap.description }}">
 
-<link rel="canonical" href="{{ site.domain }}{{ site.roadmap.slug }}/">
+<link rel="canonical" href="{{ canonical }}">
+{% include "partials/alternates.html" %}
 
 <meta name="google-adsense-account" content="{{ site.adsense_client }}">
 
@@ -92,9 +93,9 @@
     ships and nobody remembers this page exists.
   -->
   <p class="page-count">
-    <strong>{{ planned_count }}</strong> planned
+    <strong>{{ planned_count }}</strong> {{ ui.planned_count }}
     &middot;
-    <strong>{{ built_count }}</strong> built
+    <strong>{{ built_count }}</strong> {{ ui.built_count }}
   </p>
 </header>
 
@@ -136,7 +137,7 @@
     <div class="plan-group">
       <h3>{{ group.name }}</h3>
       <ul class="plan-list">
-{% for tool in group.built %}        <li class="is-built"><a href="{{ base }}{{ tool.slug }}/">{{ tool.name | e }}</a> <span class="p-desc">&mdash; {{ tool.tagline }}</span> <span class="built-tag">Built</span></li>
+{% for tool in group.built %}        <li class="is-built"><a href="{{ base }}{{ tool.out_slug }}/">{{ tool.name | e }}</a> <span class="p-desc">&mdash; {{ tool.tagline }}</span> <span class="built-tag">{{ ui.built_tag }}</span></li>
 {% endfor %}{% for item in group.items %}        <li><span class="p-name">{{ item.name }}</span> <span class="p-desc">&mdash; {{ item.desc }}</span></li>
 {% endfor %}      </ul>
     </div>

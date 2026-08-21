@@ -12,13 +12,9 @@
   <summary>{{ tool.picker.urls.summary }}</summary>
   <div class="url-body">
     <p class="url-warning">
-      <strong>This is the one feature that touches the network.</strong>
-      Fetching an address tells that server your IP address and which {{ tool.picker.urls.noun }} you
-      asked for. The {{ tool.picker.urls.noun }} is copied to local memory on arrival and never
-      requested again. Nothing of yours is ever sent out &mdash; this page still
-      cannot make an upload of any kind.
+{{ ui.picker.warning }}
     </p>
-    <label for="url-input">One address per line</label>
+    <label for="url-input">{{ ui.picker.label }}</label>
     <textarea id="url-input" rows="3" spellcheck="false"
               placeholder="https://example.com/photo1.jpg&#10;https://example.com/photo2.jpg"></textarea>
     <div class="url-actions">
@@ -26,8 +22,7 @@
       <span id="url-status" class="url-status" role="status" aria-live="polite"></span>
     </div>
     <p class="url-note">
-      The server must permit cross-origin use of its {{ tool.picker.urls.noun }}s. Many sites do not,
-      and those will fail with a message rather than silently breaking later.
+{{ ui.picker.note }}
     </p>
   </div>
 </details>

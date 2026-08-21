@@ -1,0 +1,292 @@
+"""
+What a locale may do, and what it may not.
+
+The rules being checked here are the ones that fail quietly if they are wrong.
+A locale that silently drops a key ships an English sentence inside a German
+page; a locale that renames a slug onto another page's address ships a sitemap
+advertising a URL that serves somebody else's content. Neither shows up in a
+build log, and both show up in Search Console a fortnight later.
+"""
+
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+
+from buildlib import i18n
+from buildlib.site import ConfigError
+
+SITE = {
+    'lang': 'en',
+    'domain': 'https://example.test/',
+    'guides': {'slug': 'guides', 'heading': 'Guides'},
+    'roadmap': {'slug': 'roadmap', 'nav': 'Roadmap'},
+    'ui': {
+        'all_tools': 'All tools',
+        # Named `tool` on purpose - see the regression test below.
+        'tool': {'questions': 'Questions'},
+    },
+}
+
+
+def locale(**over):
+    base = {
+        'lang': 'de', 'name': 'German', 'endonym': 'Deutsch', 'hreflang': 'de',
+        'dir': 'ltr', 'complete': False, 'is_base': False, 'prefix': 'de/',
+        'slugs': {}, 'site': SITE, 'tools': {}, 'pages': {}, 'bodies': {},
+        'missing': [],
+    }
+    base.update(over)
+    return base
+
+
+class Merging(unittest.TestCase):
+    def merge(self, base, over, missing=None):
+        return i18n.merge(base, over, 'test', missing if missing is not None else [],
+                          'x')
+
+    def test_a_translated_value_wins(self):
+        self.assertEqual(self.merge({'a': 'one'}, {'a': 'eins'}), {'a': 'eins'})
+
+    def test_an_untranslated_value_falls_back_and_is_recorded(self):
+        missing = []
+        merged = self.merge({'a': 'one', 'b': 'two'}, {'a': 'eins'}, missing)
+        self.assertEqual(merged, {'a': 'eins', 'b': 'two'})
+        self.assertEqual(missing, ['x.b'])
+
+    def test_an_empty_string_is_not_counted_as_missing(self):
+        """A key that is blank in English is blank in every language.
+
+        Counting it would leave a locale permanently short of complete over a
+        string no translator will ever be given anything to translate."""
+        missing = []
+        self.merge({'a': ''}, {}, missing)
+        self.assertEqual(missing, [])
+
+    def test_a_key_the_english_does_not_have_is_refused(self):
+        # A locale translates what is there. Inventing a key means inventing a
+        # value no template asks for, which is a typo far more often than it is
+        # a feature.
+        with self.assertRaises(ConfigError) as caught:
+            self.merge({'a': 'one'}, {'a': 'eins', 'b': 'zwei'})
+        self.assertIn('b', str(caught.exception))
+
+    def test_a_list_of_a_different_length_is_refused(self):
+        # Merged in order, so five questions against four is not a shorter
+        # translation - it is one question that will render in English with
+        # nothing on the page to say which.
+        with self.assertRaises(ConfigError) as caught:
+            self.merge({'faq': ['a', 'b', 'c']}, {'faq': ['a', 'b']})
+        self.assertIn('3', str(caught.exception))
+
+    def test_a_changed_type_is_refused(self):
+        with self.assertRaises(ConfigError):
+            self.merge({'a': 'one'}, {'a': {'nested': 'x'}})
+
+    def test_structure_survives_translation(self):
+        """A slug, an id and an order are what a thing IS, not what it is called.
+
+        A locale that could redefine them could move a page to an address
+        nothing links to, and would be doing it in the middle of a wall of
+        prose rather than in [slugs] where every address it changes can be read
+        at once."""
+        merged = self.merge(
+            {'slug': 'widget', 'id': 'images', 'order': ['a'], 'name': 'Widget'},
+            {'slug': 'dings', 'id': 'bilder', 'order': ['b'], 'name': 'Dings'})
+        self.assertEqual(merged['slug'], 'widget')
+        self.assertEqual(merged['id'], 'images')
+        self.assertEqual(merged['order'], ['a'])
+        self.assertEqual(merged['name'], 'Dings')
+
+    def test_the_ui_table_is_all_words_however_it_is_named(self):
+        """Regression: [ui.tool] was served in English on every translated page.
+
+        STRUCTURAL_KEYS is matched on the key name at any depth, and `tool` is
+        on it - it names the tool a guide is about in that guide's page.toml.
+        That made [ui.tool], which is the frame's words for a tool page, look
+        structural, so the pledge and the button labels stayed English while
+        the page around them came out in German.
+
+        Nothing under [ui] is ever structure. That is what [ui] is for.
+        """
+        merged = i18n.merge(SITE, {'ui': {'tool': {'questions': 'Fragen'}}},
+                            'test', [], 'site')
+        self.assertEqual(merged['ui']['tool']['questions'], 'Fragen')
+
+
+class Slugs(unittest.TestCase):
+    def test_renaming_something_that_does_not_exist_is_refused(self):
+        with self.assertRaises(ConfigError) as caught:
+            i18n.check_slugs(locale(slugs={'widgit': 'dings'}),
+                             ['widget'], [], SITE)
+        self.assertIn('widgit', str(caught.exception))
+
+    def test_two_pages_may_not_land_on_one_address(self):
+        # Silent otherwise: one page is written over the other, and the sitemap
+        # goes on advertising an address that now serves the wrong content.
+        with self.assertRaises(ConfigError) as caught:
+            i18n.check_slugs(
+                locale(slugs={'widget': 'dings', 'gadget': 'dings'}),
+                ['widget', 'gadget'], [], SITE)
+        self.assertIn('dings', str(caught.exception))
+
+    def test_a_localized_slug_may_collide_with_nothing_and_pass(self):
+        i18n.check_slugs(locale(slugs={'widget': 'dings'}), ['widget'], [], SITE)
+
+    def test_english_slugs_are_the_keys(self):
+        # Keyed by what the thing IS. Keyed the other way, a locale could not
+        # be read without already knowing its own answer.
+        i18n.check_slugs(locale(slugs={'guides': 'ratgeber'}), [], [], SITE)
+
+
+class Completeness(unittest.TestCase):
+    def test_an_unfinished_locale_may_fall_back(self):
+        i18n.check_complete(locale(complete=False, missing=['x.y']))
+
+    def test_a_finished_locale_may_not(self):
+        with self.assertRaises(ConfigError) as caught:
+            i18n.check_complete(locale(complete=True, missing=['hub.lede']))
+        message = str(caught.exception)
+        self.assertIn('hub.lede', message)
+        # The error has to say what to do about it, because the right answer is
+        # often "not yet" rather than "translate this now".
+        self.assertIn('complete = false', message)
+
+    def test_english_is_complete_by_definition(self):
+        i18n.check_complete({'is_base': True, 'complete': True, 'missing': ['x']})
+
+
+class Advertising(unittest.TestCase):
+    """What the sitemap, the hreflang tags and the switcher are built from.
+
+    All three come from i18n.published, so they cannot disagree about which
+    languages the site claims to have - which is the failure Google reports as
+    "hreflang points to a page that is not indexed"."""
+
+    def setUp(self):
+        self.english = i18n.base_locale(SITE)
+        self.german = locale(complete=True, slugs={'widget': 'dings'})
+        self.draft = locale(lang='fr', hreflang='fr', prefix='fr/', complete=False)
+
+    def test_one_language_advertises_nothing(self):
+        # A lone hreflang="en" beside an x-default pointing at the same URL
+        # says nothing the canonical above it has not already said.
+        self.assertEqual(i18n.alternates([self.english], 'widget', SITE), [])
+        self.assertEqual(
+            i18n.switcher([self.english], self.english, 'widget', SITE), [])
+
+    def test_two_languages_point_at_each_other_and_at_themselves(self):
+        found = i18n.alternates([self.english, self.german], 'widget', SITE)
+        self.assertEqual(
+            [(entry['hreflang'], entry['href']) for entry in found],
+            [('en', 'https://example.test/widget/'),
+             ('de', 'https://example.test/de/dings/'),
+             ('x-default', 'https://example.test/widget/')])
+
+    def test_an_unfinished_language_is_never_advertised(self):
+        locales = [self.english, self.german, self.draft]
+        langs = [entry['hreflang']
+                 for entry in i18n.alternates(locales, 'widget', SITE)]
+        self.assertNotIn('fr', langs)
+        self.assertNotIn('fr', [entry['lang'] for entry in
+                                i18n.switcher(locales, self.english, 'widget', SITE)])
+
+    def test_the_switcher_stays_on_the_same_page(self):
+        """Not on the front door of the other language.
+
+        Somebody reading about a widget who wants it in German wants that page
+        in German. Dropping them on the hub to find it again is the commonest
+        way a switcher gets built wrong."""
+        found = i18n.switcher([self.english, self.german], self.english,
+                              'widget', SITE)
+        self.assertEqual([entry['href'] for entry in found],
+                         ['/widget/', '/de/dings/'])
+        self.assertEqual([entry['current'] for entry in found], [True, False])
+
+
+class Addresses(unittest.TestCase):
+    def test_a_page_sits_one_step_deeper_under_a_prefix(self):
+        """The frame works out where the stylesheet and the hub are from
+        `depth` alone, so it has to count the language as a level."""
+        page = {'slug': 'guides/resize', 'kind': 'guide', 'nav': 'Resize'}
+        english = i18n.localize_page(page, i18n.base_locale(SITE), SITE)
+        german = i18n.localize_page(
+            page, locale(slugs={'guides/resize': 'ratgeber/skalieren'}), SITE)
+        self.assertEqual(english['depth'], 2)
+        self.assertEqual(german['depth'], 3)
+        self.assertEqual(german['url'],
+                         'https://example.test/de/ratgeber/skalieren/')
+
+    def test_the_english_slug_is_kept_alongside_the_translated_one(self):
+        """`slug` names the thing and `out_slug` is where it is served.
+
+        Mixing the two is the one bug this arrangement can still have: every
+        lookup - which category lists this tool, which guide is about it -
+        matches on the first, and only the address uses the second."""
+        page = {'slug': 'privacy', 'kind': 'legal', 'nav': 'Privacy'}
+        german = i18n.localize_page(page, locale(slugs={'privacy': 'datenschutz'}),
+                                    SITE)
+        self.assertEqual(german['slug'], 'privacy')
+        self.assertEqual(german['out_slug'], 'datenschutz')
+
+
+class LoadingALocale(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def write(self, lang, text):
+        folder = self.root / lang
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / 'locale.toml').write_text(text, encoding='utf-8', newline='\n')
+
+    def test_english_is_first_and_is_not_a_folder(self):
+        """English is the sources, not a translation of itself.
+
+        The moment it becomes locales/en/ it is a copy free to drift from the
+        tool.toml it was made from, and the build loses the one text every
+        other language is measured against."""
+        found = i18n.load_locales(self.root, SITE)
+        self.assertEqual([entry['lang'] for entry in found], ['en'])
+        self.assertTrue(found[0]['is_base'])
+
+    def test_a_locale_folder_for_english_is_refused(self):
+        self.write('en', 'lang = "en"\nname = "English"\nendonym = "English"\n')
+        with self.assertRaises(ConfigError):
+            i18n.load_locales(self.root, SITE)
+
+    def test_the_folder_has_to_match_the_language(self):
+        self.write('de', 'lang = "fr"\nname = "French"\nendonym = "Francais"\n')
+        with self.assertRaises(ConfigError) as caught:
+            i18n.load_locales(self.root, SITE)
+        self.assertIn('folder', str(caught.exception))
+
+    def test_a_locale_may_not_restate_the_site(self):
+        # Words and slugs. Everything else about the site is decided once, in
+        # English, for every language - a locale that could set its own
+        # Content-Security-Policy would be a second site to keep in step.
+        self.write('de', 'lang = "de"\nname = "German"\nendonym = "Deutsch"\n'
+                         'domain = "https://evil.test/"\n')
+        with self.assertRaises(ConfigError) as caught:
+            i18n.load_locales(self.root, SITE)
+        self.assertIn('domain', str(caught.exception))
+
+    def test_hreflang_defaults_to_the_language_and_can_be_set(self):
+        # pt-BR is a language and a region, and hreflang is where that is said.
+        self.write('de', 'lang = "de"\nname = "German"\nendonym = "Deutsch"\n')
+        self.write('pt', 'lang = "pt"\nname = "Portuguese"\n'
+                         'endonym = "Portugues"\nhreflang = "pt-BR"\n')
+        found = {entry['lang']: entry['hreflang']
+                 for entry in i18n.load_locales(self.root, SITE)}
+        self.assertEqual(found['de'], 'de')
+        self.assertEqual(found['pt'], 'pt-BR')
+
+
+if __name__ == '__main__':
+    unittest.main()

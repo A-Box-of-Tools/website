@@ -27,7 +27,7 @@
     </div>
 
     <div class="footer-col">
-      <strong>Tools</strong>
+      <strong>{{ ui.footer_tools }}</strong>
       <ul>
 {% for t in footer.tools %}        <li><a href="{{ base }}{{ t.slug }}/">{{ t.name | e }}</a></li>
 {% endfor %}      </ul>
@@ -46,28 +46,30 @@
       thing - the front door to each half of the site.
     -->
     <div class="footer-col">
-      <strong>This site</strong>
+      <strong>{{ ui.footer_site }}</strong>
       <ul>
-        <li><a href="{{ base }}">All tools</a></li>
-        <li><a href="{{ base }}{{ site.guides.slug }}/">{{ site.guides.nav }}</a></li>
-        <li><a href="{{ base }}{{ site.roadmap.slug }}/">{{ site.roadmap.nav }}</a></li>
+        <li><a href="{{ base }}">{{ ui.all_tools }}</a></li>
+        <li><a href="{{ base }}{{ links.guides }}/">{{ site.guides.nav }}</a></li>
+        <li><a href="{{ base }}{{ links.roadmap }}/">{{ site.roadmap.nav }}</a></li>
 {% for p in footer.pages %}        <li><a href="{{ base }}{{ p.slug }}/">{{ p.nav }}</a></li>
-{% endfor %}        <li><a href="/sitemap.xml">Sitemap</a></li>
+{% endfor %}        <li><a href="/sitemap.xml">{{ ui.footer_sitemap }}</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
-      <strong>Get in touch</strong>
+      <strong>{{ ui.footer_contact }}</strong>
       <ul>
         <li>
           <a href="{{ site.source_url }}" target="_blank" rel="noopener noreferrer">
-            Read the code on GitHub
+            {{ ui.footer_source }}
           </a>
         </li>
         <li><a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a></li>
       </ul>
     </div>
   </div>
+
+{% include "partials/languages.html" %}
 
   <p class="footer-base">
 {{ site.footer.base }}

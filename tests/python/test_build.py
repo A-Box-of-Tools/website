@@ -238,9 +238,21 @@ class BuildTheSite(unittest.TestCase):
         cls.out = Path(cls.tmp.name) / 'dist'
         cls.written = buildmod.build(cls.out, clean=True, minify_output=False)
 
+        # Which languages are built but not yet advertised. Read off the locale
+        # files rather than written down here, so adding a language - or
+        # finishing one - does not also mean remembering to edit a test.
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        cls.locales = buildmod.i18n.load_locales(ROOT / 'locales', site)
+        cls.unfinished = [locale['lang'] for locale in cls.locales
+                          if not locale['is_base'] and not locale['complete']]
+
     @classmethod
     def tearDownClass(cls):
         cls.tmp.cleanup()
+
+    def unpublished(self, name):
+        """Whether a written page belongs to a language that is not finished."""
+        return any(name.startswith(f'{lang}/') for lang in self.unfinished)
 
     def test_it_reports_what_it_wrote(self):
         self.assertIn('index.html', self.written)
@@ -294,15 +306,56 @@ class BuildTheSite(unittest.TestCase):
                 self.assertNotIn('{{', text)
                 self.assertNotIn('{%', text)
 
-    def test_the_sitemap_lists_every_page(self):
+    def test_the_sitemap_lists_every_page_of_a_published_language(self):
+        """Every page that is offered to a reader is offered to a crawler.
+
+        Published, not built. A locale whose locale.toml says complete = false
+        is built - so it can be read and reviewed at a real address - and is
+        kept out of the sitemap until it is finished. The companion test below
+        checks the other half of that, which is the half that matters: nothing
+        half-translated is ever advertised.
+        """
         sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
         site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
         for name in self.written:
-            if not name.endswith('index.html'):
+            if not name.endswith('index.html') or self.unpublished(name):
                 continue
             slug = name[:-len('index.html')]
             with self.subTest(page=slug or '/'):
                 self.assertIn(f'{site["domain"]}{slug}', sitemap)
+
+    def test_an_unfinished_language_is_not_in_the_sitemap(self):
+        """The point of `complete = false`.
+
+        A half-translated page invited into an index is how a site ends up
+        ranking its untranslated half for the wrong language, and the damage
+        outlasts the fix. So the sitemap, the hreflang tags and the language
+        switcher are all built from one list of finished languages - see
+        i18n.published - and this checks the first of the three.
+        """
+        sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
+        hidden = [name for name in self.written if self.unpublished(name)]
+        self.assertTrue(hidden, 'no unfinished locale in the tree to check')
+        for name in hidden:
+            with self.subTest(page=name):
+                self.assertNotIn(name[:-len('index.html')], sitemap)
+
+    def test_an_unfinished_language_is_never_offered(self):
+        """The other two of the three: no page anywhere points at it.
+
+        Checked over every page of every language, English included, because
+        reciprocity is the property that matters - one page still advertising a
+        language the rest of the site has withdrawn is exactly the state Search
+        Console reports and nobody can reproduce by looking at one file.
+        """
+        for locale in self.unfinished:
+            for name in self.written:
+                if not name.endswith('.html'):
+                    continue
+                with self.subTest(page=name, lang=locale):
+                    text = (self.out / name).read_text(encoding='utf-8')
+                    self.assertNotIn(f'hreflang="{locale}"', text)
+                    self.assertNotIn(f'href="/{locale}/"', text)
 
     def test_the_404_page_is_written(self):
         self.assertIn('404.html', self.written)
@@ -366,12 +419,34 @@ class BuildTheSite(unittest.TestCase):
     def test_every_page_footer_reaches_the_guides_index(self):
         # The footer is the second navigation, and the index is the one link in
         # it that keeps working however long the list of guides grows.
-        for name in self.written:
-            if not name.endswith('.html'):
-                continue
-            with self.subTest(page=name):
-                text = (self.out / name).read_text(encoding='utf-8')
-                self.assertRegex(text, r'href="(\.\./|\./|/)*guides/"')
+        #
+        # In its OWN language. The index a German page links to is
+        # /de/ratgeber/, not /guides/, and a footer that reached across into
+        # English would be the one link on the page that changed the language
+        # without saying so.
+        for locale in self.locales:
+            index = locale['slugs'].get('guides', 'guides')
+            wanted = re.compile(r'href="(\.\./|\./|/)*' + re.escape(index) + '/"')
+            for name in self.written:
+                if not name.endswith('.html') or not self.belongs(name, locale):
+                    continue
+                with self.subTest(page=name):
+                    self.assertRegex(
+                        (self.out / name).read_text(encoding='utf-8'), wanted)
+
+    def belongs(self, name, locale):
+        """Whether a written page is a page of this language.
+
+        The 404 is nobody's: it is served for the whole domain and is built in
+        English, so it is left out rather than counted against every language
+        in turn.
+        """
+        if name == '404.html':
+            return False
+        if locale['is_base']:
+            return not any(name.startswith(f'{other["lang"]}/')
+                           for other in self.locales if not other['is_base'])
+        return name.startswith(f'{locale["lang"]}/')
 
     def test_the_footer_links_the_index_rather_than_every_guide(self):
         """One link, not a column that grows by a line per guide.

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ site.lang }}">
+<html lang="{{ locale.hreflang }}"{% if locale.rtl %} dir="rtl"{% endif %}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,7 +24,8 @@
 <title>{{ site.guides.title }}</title>
 <meta name="description" content="{{ site.guides.description }}">
 
-<link rel="canonical" href="{{ site.domain }}{{ site.guides.slug }}/">
+<link rel="canonical" href="{{ canonical }}">
+{% include "partials/alternates.html" %}
 
 <meta name="google-adsense-account" content="{{ site.adsense_client }}">
 
@@ -95,7 +96,7 @@
     </div>
     <ul class="guide-list">
 {% for guide in group.guides %}      <li>
-        <a class="guide-card" href="{{ base }}{{ guide.slug }}/">
+        <a class="guide-card" href="{{ base }}{{ guide.out_slug }}/">
           <span class="guide-name">{{ guide.heading }}</span>
           <span class="guide-desc">{{ guide.description }}</span>
         </a>
@@ -104,8 +105,7 @@
   </section>
 {% endfor %}
   <p class="page-note">
-    Every guide here describes a tool that runs on your own machine:
-    <a href="{{ base }}">see all of them</a>.
+{{ ui.guides_all_note }}
   </p>
 
 </main>

@@ -67,6 +67,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from buildlib import cssmin
+from buildlib import i18n
 from buildlib import mangle
 from buildlib import minify
 from buildlib import site as sitelib
@@ -78,6 +79,7 @@ CONFIG = ROOT / 'config'
 TOOLS = ROOT / 'tools'
 PAGES = ROOT / 'pages'
 SHARED = ROOT / 'shared'
+LOCALES = ROOT / 'locales'
 
 
 def main(argv=None):
@@ -135,21 +137,145 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
              for path in sorted(TOOLS.glob('*/tool.toml'))]
     if not tools:
         raise sitelib.ConfigError(f'no tools found under {TOOLS}')
-    by_slug = {tool['slug']: tool for tool in tools}
 
     # ** rather than *, because a guide lives at pages/guides/<slug>/ and a
     # legal page at pages/<slug>/. The slug in each page.toml has to match the
     # folder either way, so a page cannot end up at a URL nobody wrote down.
     prose = [sitelib.load_page(path, site, PAGES)
              for path in sorted(PAGES.glob('**/page.toml'))]
-    guides = [page for page in prose if page['kind'] == 'guide']
-    legal = [page for page in prose if page['kind'] == 'legal']
+
+    # Every language this site is written in, English first. English is the
+    # sources themselves rather than a folder under locales/ - buildlib/i18n.py
+    # says why at length, and the short version is that a translation of English
+    # into English is a copy free to drift from what it was copied out of.
+    locales = i18n.load_locales(LOCALES, site)
+    for locale in locales:
+        i18n.check_slugs(locale, [tool['slug'] for tool in tools],
+                         [page['slug'] for page in prose], site)
+
+    written = []
+    for locale in locales:
+        written += build_locale(out, templates, locale, locales, site, tools,
+                                prose, planned, css_v, site_css, emit)
+
+    # After every locale, because a locale only counts as finished once every
+    # page in it has been rendered and had the chance to fall back. Raising
+    # here rather than at load time is what makes the report a list of
+    # everything still to translate instead of the first thing missing.
+    for locale in locales:
+        i18n.check_complete(locale)
+
+    # How far along each unfinished language is, said out loud on every build.
+    # A translation that is 40 strings from done and a translation that has not
+    # been started look identical in a directory listing, and the difference is
+    # the only thing anybody wants to know about it.
+    for locale in locales:
+        if locale['is_base'] or locale['complete']:
+            continue
+        left = len(set(locale['missing']))
+        print(f'  {locale["lang"]}: {left} strings still in English '
+              f'(not advertised until complete = true)')
+
+    # One 404 for the whole domain, in English, because GitHub Pages serves one
+    # file for every address it cannot find and has no way to know which
+    # language the visitor was looking for. It carries the language switcher
+    # like every other page, so arriving here in the wrong language is still a
+    # click away from the right one.
+    base = locales[0]
+
+    # Everything in the order the site puts it in rather than the order the
+    # folders happen to sort in: tools as the hub groups them, guides as
+    # config/site.toml groups them, then the legal pages. Both orderings are
+    # structural rather than translated, so they are the same in every language
+    # and are worked out once, here, rather than once per locale.
+    by_slug = {tool['slug']: tool for tool in tools}
+    ordered_tools = [by_slug[slug]
+                     for category in site['hub']['categories']
+                     for slug in category['order'] if slug in by_slug]
+
+    groups = guide_groups(site, [page for page in prose if page['kind'] == 'guide'])
+    ordered_prose = [guide for group in groups for guide in group['guides']]
+    ordered_prose += [page for page in prose if page['kind'] == 'legal']
+
+    # tools/README.md, from the English list and only once. It is a file in the
+    # repository rather than a page of the site - the index GitHub shows when
+    # somebody browses to tools/ - so it has no language to be written in and
+    # no locale to be written per.
+    write_tools_index(ordered_tools)
+
+    build_404(out, templates, base, locales, site, ordered_tools, ordered_prose,
+              css_v, emit)
+    written.append('404.html')
+
+    # After the 404 and deliberately not passed it: the 404 has no address of
+    # its own to list, and inviting a crawler to index it would be inviting it
+    # to serve "not found" in place of a real page.
+    build_sitemap(out, templates, site, locales, tools, ordered_prose)
+    written.append('sitemap.xml')
+
+    copy_shared(out)
+    write(out / 'site.css', site_css)
+    return written
+
+
+# ---------------------------------------------------------------------------
+# One language
+#
+# Everything below the top of this function is the site as it was before there
+# were locales: the same tools, the same guides, the same checks, the same
+# order. What changed is that it now happens once per language rather than
+# once, and that every slug it writes to disk is `out_slug` - the localized
+# one - while every slug it looks something up by is `slug`, which stays
+# English in every language.
+#
+# That distinction is the whole trick, and it is worth stating plainly because
+# mixing the two is the one bug this arrangement can still have. `slug` is the
+# name of a thing: which tool this is, which category lists it, which guide is
+# about it. `out_slug` is an address. A German reader never sees the first and
+# a build never matches on the second.
+
+
+def build_locale(out, templates, locale, locales, site, tools, prose, planned,
+                 css_v, site_css, emit):
+    """The whole site, in one language, under out/<lang>/ - or at the root of
+    out/ for English, whose pages keep the addresses they have always had.
+
+    Nothing here re-reads a source file. The tools and the prose pages were
+    loaded once, in English, and are localized into copies, so eleven languages
+    cost eleven renders rather than eleven parses - and, more to the point, a
+    tool cannot exist in one language and not another, because there is only one
+    list of which tools there are.
+    """
+    root = locale['site']
+    dest_root = out / locale['prefix'] if locale['prefix'] else out
+    dest_root.mkdir(parents=True, exist_ok=True)
+
+    # Where this language's own front door, guides index and roadmap are. The
+    # structured data needs all three as absolute URLs, and needs them to be
+    # this language's rather than English's: a German page whose WebSite node
+    # points at the English root is telling a search engine the two are one
+    # document, which is the opposite of what hreflang beside it says.
+    #
+    # `lang` goes the same way. It is what every inLanguage in the graph is
+    # built from, and it is the one value in config/site.toml that is a fact
+    # about the language rather than about the site.
+    root['lang'] = locale['hreflang']
+    root['home'] = i18n.locale_url(locale, '', site)
+    root['guides_url'] = i18n.locale_url(locale, site['guides']['slug'], site)
+    root['roadmap_url'] = i18n.locale_url(locale, site['roadmap']['slug'], site)
+
+    ltools = [i18n.localize_tool(tool, locale, site) for tool in tools]
+    lprose = [i18n.localize_page(page, locale, site) for page in prose]
+    by_slug = {tool['slug']: tool for tool in ltools}
+
+    guides = [page for page in lprose if page['kind'] == 'guide']
+    legal = [page for page in lprose if page['kind'] == 'legal']
 
     # The guides, grouped and in the order config/site.toml puts them in, and
     # every check that says the grouping is complete. Done here rather than
     # inside build_guides because the footer needs the same order, and an order
     # worked out twice is an order that can differ.
-    groups = guide_groups(site, guides)
+    groups = guide_groups(root, guides)
     ordered_guides = [guide for group in groups for guide in group['guides']]
 
     # Which guide belongs to which tool, so that a tool page can link to its
@@ -157,59 +283,116 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     # guide's page.toml - one place, both directions.
     guide_of = tie_guides_to_tools(ordered_guides, by_slug)
 
+    # Tools in the order the hub shows them, not the order the folders happen to
+    # sort in, so the footer and the cards above it agree. A slug named here
+    # that has no tool, or a tool named nowhere, is caught by build_hub below.
+    ordered = [by_slug[slug]
+               for category in root['hub']['categories']
+               for slug in category['order'] if slug in by_slug]
+
     # What the footer on every page is built from. Derived from the folders that
     # exist rather than written down anywhere, so a new tool or a new legal page
     # reaches every footer on the site without a second edit.
-    # Tools in the order the hub shows them, not the order the folders happen to
-    # sort in, so the footer and the cards above it agree. A slug named here that
-    # has no tool, or a tool named nowhere, is caught by build_hub below.
     #
     # No guide list. The footer carries one link to the guides index instead of
     # an entry per guide - a column that grew by a line every time somebody
     # wrote one, in front of a reader who was looking for the privacy page. The
     # index is the link that keeps working however long the list gets, and it is
     # already built from the folders that exist.
-    ordered = [by_slug[slug]
-               for category in site['hub']['categories']
-               for slug in category['order'] if slug in by_slug]
+    #
+    # The slugs in it are localized, because a footer is a set of addresses.
     footer = {
-        'tools': [{'name': tool['name'], 'slug': tool['slug']} for tool in ordered],
-        'pages': [{'nav': page['nav'], 'slug': page['slug']} for page in legal],
+        'tools': [{'name': tool['name'], 'slug': tool['out_slug']} for tool in ordered],
+        'pages': [{'nav': page['nav'], 'slug': page['out_slug']} for page in legal],
     }
 
+    links = locale_links(locale, site, lprose)
+
     written = []
-    for tool in tools:
-        build_tool(out, templates, site, tool, footer,
-                   guide_of.get(tool['slug'], {}), emit)
-        written.append(f'{tool["slug"]}/index.html')
+    for tool in ltools:
+        build_tool(dest_root, templates, locale, locales, site, tool, footer,
+                   links, guide_of.get(tool['slug'], {}), emit)
+        written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
 
-    for page in prose:
-        build_page(out, templates, site, page, footer, css_v, by_slug, emit)
-        written.append(f'{page["slug"]}/index.html')
+    for page in lprose:
+        build_page(dest_root, templates, locale, locales, site, page, footer,
+                   links, css_v, by_slug, emit)
+        written.append(f'{locale["prefix"]}{page["out_slug"]}/index.html')
 
-    build_guides(out, templates, site, groups, ordered_guides, footer, css_v, emit)
-    written.append(f'{site["guides"]["slug"]}/index.html')
+    build_guides(dest_root, templates, locale, locales, site, groups,
+                 ordered_guides, footer, links, css_v, emit)
+    written.append(f'{locale["prefix"]}{links["guides"]}/index.html')
 
-    build_hub(out, templates, site, by_slug, footer, css_v, emit)
-    written.append('index.html')
+    build_hub(dest_root, templates, locale, locales, site, by_slug, footer,
+              links, css_v, emit)
+    written.append(f'{locale["prefix"]}index.html')
 
-    build_roadmap(out, templates, site, planned, ordered, footer, css_v, emit)
-    written.append(f'{site["roadmap"]["slug"]}/index.html')
+    build_roadmap(dest_root, templates, locale, locales, site, planned, ordered,
+                  footer, links, css_v, emit)
+    written.append(f'{locale["prefix"]}{links["roadmap"]}/index.html')
 
-    write_tools_index(ordered)
+    # A copy of the site stylesheet at the root of every language, so that the
+    # relative path from a page to it is the same number of steps up in every
+    # language and `depth` stays the only thing the frame has to know. It is the
+    # same bytes under the same hashed URL, so a reader who crosses from one
+    # language to another is served it from cache either way.
+    if locale['prefix']:
+        write(dest_root / 'site.css', site_css)
 
-    build_404(out, templates, site, ordered, footer, css_v, emit)
-    written.append('404.html')
-
-    # After the sitemap and deliberately not passed to it: the 404 has no
-    # address of its own to list, and inviting a crawler to index it would be
-    # inviting it to serve "not found" in place of a real page.
-    build_sitemap(out, templates, site, tools, ordered_guides, legal)
-    written.append('sitemap.xml')
-
-    copy_shared(out)
-    write(out / 'site.css', site_css)
     return written
+
+
+def locale_links(locale, site, pages):
+    """The handful of pages that are linked to from inside a sentence.
+
+    A link written into prose - "there is a guide for every tool" - cannot be
+    derived from the sentence around it, so the address is passed in beside the
+    words and the translated string points at it. Three of them, and every one
+    is checked here rather than discovered as a 404 later.
+    """
+    def address(slug):
+        return locale['slugs'].get(slug, slug)
+
+    known = {page['slug'] for page in pages}
+    if site['safety_guide'] not in known:
+        raise sitelib.ConfigError(
+            f'config/site.toml: safety_guide is {site["safety_guide"]!r}, but there '
+            f'is no pages/{site["safety_guide"]}/page.toml. The hub links to it in '
+            'the middle of a sentence, so it cannot simply be dropped.')
+
+    return {
+        'guides': address(site['guides']['slug']),
+        'roadmap': address(site['roadmap']['slug']),
+        'safety_guide': address(site['safety_guide']),
+    }
+
+
+def frame(locale, locales, site, slug, base, links, extra=None):
+    """The context every page shares: which language it is in, what the words of
+    the frame around it are, and where its own address is in every other
+    language.
+
+    Built in one place because the three have to agree. A page whose <html lang>
+    says German, whose hreflang set leaves German out, and whose switcher offers
+    German anyway is three different answers to one question, and each of them
+    is a separate afternoon in Search Console.
+    """
+    context = {
+        'site': locale['site'],
+        'locale': {
+            'lang': locale['lang'],
+            'hreflang': locale['hreflang'],
+            'endonym': locale['endonym'],
+            'rtl': locale['dir'] == 'rtl',
+        },
+        'base': base,
+        'links': links,
+        'canonical': i18n.locale_url(locale, slug, site),
+        'alternates': i18n.alternates(locales, slug, site),
+        'languages': i18n.switcher(locales, locale, slug, site),
+    }
+    context.update(extra or {})
+    return context
 
 
 # ---------------------------------------------------------------------------
@@ -287,7 +470,8 @@ def tie_guides_to_tools(guides, by_slug):
     return owned
 
 
-def build_guides(out, templates, site, groups, guides, footer, css_v, emit):
+def build_guides(out, templates, locale, locales, site, groups, guides, footer,
+                 links, css_v, emit):
     """The index of the written half of the site.
 
     Built like the roadmap and for the same reason: it is a frame around a list
@@ -297,33 +481,39 @@ def build_guides(out, templates, site, groups, guides, footer, css_v, emit):
     and its <meta name="description">, so the index cannot promise something the
     guide does not deliver.
     """
-    dest = out / site['guides']['slug']
+    root = locale['site']
+    dest = out / links['guides']
     dest.mkdir(parents=True, exist_ok=True)
 
-    emit.html(dest / 'index.html', templates.render('guides.html', {
-        'site': site,
+    context = frame(locale, locales, site, root['guides']['slug'], '../', links, {
         'groups': groups,
         'guide_count': len(guides),
-        'guide_noun': 'guide' if len(guides) == 1 else 'guides',
+        'guide_noun': (root['ui']['guide_one'] if len(guides) == 1
+                       else root['ui']['guide_many']),
         'footer': footer,
-        'base': '../',
         'css_href': f'../site.css?v={css_v}',
-        'csp': sitelib.render_csp(site['csp']),
-        'jsonld': sitelib.guides_jsonld(site, guides),
-    }))
+        'csp': sitelib.render_csp(root['csp']),
+        'jsonld': sitelib.guides_jsonld(root, guides),
+    })
+    context['ui'] = i18n.render_ui(templates, root['ui'], context,
+                                   f'ui [{locale["lang"]}]')
+
+    emit.html(dest / 'index.html', templates.render('guides.html', context))
 
     emit.js(dest / 'analytics.js', templates.render('analytics.js', {
-        'site': site,
+        'site': root,
         'words': {'plural': 'files', 'analytics_extra': ''},
-    }), where=f'{site["guides"]["slug"]}/analytics.js')
+    }), where=f'{locale["prefix"]}{links["guides"]}/analytics.js')
 
 
 # ---------------------------------------------------------------------------
 # One tool
 
 
-def build_tool(out, templates, site, tool, footer, guide, emit):
-    dest = out / tool['slug']
+def build_tool(out, templates, locale, locales, site, tool, footer, links,
+               guide, emit):
+    root = locale['site']
+    dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
 
     # The app code. Every module keeps its own file and its own name; only the
@@ -347,7 +537,7 @@ def build_tool(out, templates, site, tool, footer, guide, emit):
     for name, path in assets:
         (dest / name).parent.mkdir(parents=True, exist_ok=True)
         emit.js(dest / name, path.read_text(encoding='utf-8'),
-                where=f'{tool["slug"]}/{name}')
+                where=f'{locale["prefix"]}{tool["out_slug"]}/{name}')
 
     for extra in sorted(src_dir.iterdir()):
         if extra.is_file() and extra.suffix != '.js':
@@ -374,12 +564,29 @@ def build_tool(out, templates, site, tool, footer, guide, emit):
     css = emit.css_text(tool_css(tool))
     css_href = f'styles.css?v={sitelib.text_hash(css)}'
 
+    # The frame's own words, rendered before the body is, because the body can
+    # {% include %} a partial that uses them - the URL importer's warning being
+    # the one that does.
+    #
+    # [ui.tool] on every tool page and [ui.picker] only where there is a picker
+    # to describe. The second is not a tidiness: those strings name
+    # {{ tool.picker.urls.noun }}, which a tool that does not fetch addresses
+    # has never defined, so rendering them everywhere fails the build on the
+    # first tool that does not.
+    parts = ['tool'] + (['picker'] if sitelib.wants_urls(tool) else [])
+    ui_context = {'site': root, 'tool': tool, 'base': '../', 'links': links}
+    ui = i18n.render_ui(templates, root['ui'], ui_context,
+                        f'ui [{locale["lang"]}]', include=parts)
+
     # body.html goes through the template engine before it is dropped into the
     # page, so a tool can {% include %} a shared partial - the drop zone being
     # the one every tool wants - instead of copying the markup for it.
     body = templates.render_source(
-        body_path.read_text(encoding='utf-8'), f'{tool["slug"]}/body.html',
-        {'site': site, 'tool': tool}).rstrip('\n')
+        i18n.body_for(locale, 'tools', tool['slug'],
+                      body_path.read_text(encoding='utf-8')),
+        f'{tool["slug"]}/body.html [{locale["lang"]}]',
+        {'site': root, 'tool': tool, 'ui': ui, 'base': '../',
+         'links': links}).rstrip('\n')
 
     # Setting [picker.urls] ships the module, the stylesheet and the widened
     # img-src. If the panel itself were then left off the page, the tool would
@@ -391,25 +598,25 @@ def build_tool(out, templates, site, tool, footer, guide, emit):
             'network permission the importer needs, but body.html never includes '
             '{% include "partials/url-import.html" %}. Add it, or drop [picker.urls].')
 
-    emit.html(dest / 'index.html', templates.render('tool.html', {
-        'site': site,
-        'tool': tool,
-        'guide': guide,
-        'footer': footer,
-        'base': '../',
-        'csp': sitelib.render_csp(site['csp'], site.get('tool_csp', {}),
-                                  sitelib.picker_csp(tool), tool['csp']),
-        'css_href': css_href,
-        'jsonld': sitelib.tool_jsonld(site, tool),
-        'body': body,
-    }))
+    emit.html(dest / 'index.html', templates.render(
+        'tool.html', frame(locale, locales, site, tool['slug'], '../', links, {
+            'tool': tool,
+            'guide': guide,
+            'ui': ui,
+            'footer': footer,
+            'csp': sitelib.render_csp(root['csp'], root.get('tool_csp', {}),
+                                      sitelib.picker_csp(tool), tool['csp']),
+            'css_href': css_href,
+            'jsonld': sitelib.tool_jsonld(root, tool),
+            'body': body,
+        })))
 
     write(dest / 'styles.css', css)
 
     emit.js(dest / 'analytics.js', templates.render('analytics.js', {
-        'site': site,
+        'site': root,
         'words': tool['words'],
-    }), where=f'{tool["slug"]}/analytics.js')
+    }), where=f'{locale["prefix"]}{tool["out_slug"]}/analytics.js')
 
     # The service worker caches './', its own src/*.js, and analytics.js. The
     # list is read off the disk rather than written down, so a new module is
@@ -425,7 +632,7 @@ def build_tool(out, templates, site, tool, footer, guide, emit):
         'tool': tool,
         'assets': ['index.html', css_href] + [name for name, _ in assets],
         'cache_hash': sitelib.cache_hash(cached),
-    }), where=f'{tool["slug"]}/sw.js')
+    }), where=f'{locale["prefix"]}{tool["out_slug"]}/sw.js')
 
     og = tool['dir'] / 'og.png'
     if og.is_file():
@@ -476,7 +683,8 @@ def tool_css(tool):
 # One prose page (a legal page or a guide)
 
 
-def build_page(out, templates, site, page, footer, css_v, by_slug, emit):
+def build_page(out, templates, locale, locales, site, page, footer, links,
+               css_v, by_slug, emit):
     """A prose page: the site frame around a body.html, and nothing else.
 
     No service worker, because there is nothing here worth keeping offline, and
@@ -493,51 +701,66 @@ def build_page(out, templates, site, page, footer, css_v, by_slug, emit):
     the visible half of the trail the structured data describes - and, when it
     names a tool, the tool itself, so the page can offer a way to go and use the
     thing it has just spent two thousand words explaining."""
-    dest = out / page['slug']
+    root = locale['site']
+    dest = out / page['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
 
     body_path = page['dir'] / 'body.html'
     if not body_path.is_file():
         raise sitelib.ConfigError(f'{page["slug"]}: no body.html')
 
+    # How far this page sits below the root of its own language, which is one
+    # more step under a locale prefix than it is in English. `depth` was worked
+    # out for this locale when the page was localized, so the frame still does
+    # not have to know which language it is wearing.
     up = '../' * page['depth']
 
     crumbs = []
     if page['kind'] == 'guide':
         crumbs = [
-            {'name': 'All tools', 'href': up},
-            {'name': site['guides']['heading'],
-             'href': f'{up}{site["guides"]["slug"]}/'},
+            {'name': root['ui']['all_tools'], 'href': up},
+            {'name': root['guides']['heading'],
+             'href': f'{up}{links["guides"]}/'},
         ]
 
-    emit.html(dest / 'index.html', templates.render('page.html', {
-        'site': site,
+    context = frame(locale, locales, site, page['slug'], up, links, {
         'page': page,
         'tool': by_slug.get(page['tool'], {}),
         'crumbs': crumbs,
         'main_class': 'prose' if page['kind'] == 'guide' else 'legal',
         'footer': footer,
-        'base': up,
         'css_href': f'{up}site.css?v={css_v}',
-        'jsonld': sitelib.page_jsonld(site, page),
-        'csp': sitelib.render_csp(site['csp']),
-        'body': body_path.read_text(encoding='utf-8').rstrip('\n'),
-    }))
+        'jsonld': sitelib.page_jsonld(root, page),
+        'csp': sitelib.render_csp(root['csp']),
+        'body': i18n.body_for(
+            locale, 'pages', page['slug'],
+            body_path.read_text(encoding='utf-8')).rstrip('\n'),
+    })
+    # [ui.guide] only where the page names a tool. It reaches for {{ tool }},
+    # and a legal page has not got one - nor has a guide about no tool in
+    # particular, which is what "is it safe to upload files" is.
+    context['ui'] = i18n.render_ui(
+        templates, root['ui'], context, f'ui [{locale["lang"]}]',
+        include=['guide'] if context['tool'] else [])
+
+    emit.html(dest / 'index.html', templates.render('page.html', context))
 
     emit.js(dest / 'analytics.js', templates.render('analytics.js', {
-        'site': site,
+        'site': root,
         'words': {'plural': 'files', 'analytics_extra': ''},
-    }), where=f'{page["slug"]}/analytics.js')
+    }), where=f'{locale["prefix"]}{page["out_slug"]}/analytics.js')
 
 
 # ---------------------------------------------------------------------------
 # The hub
 
 
-def build_hub(out, templates, site, by_slug, footer, css_v, emit):
+def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
+              css_v, emit):
+    root = locale['site']
     categories = []
     listed = set()
-    for category in site['hub']['categories']:
+    for category in root['hub']['categories']:
         chosen = []
         for slug in category['order']:
             if slug not in by_slug:
@@ -561,23 +784,26 @@ def build_hub(out, templates, site, by_slug, footer, css_v, emit):
 
     ordered = [tool for category in categories for tool in category['tools']]
 
-    emit.html(out / 'index.html', templates.render('hub.html', {
-        'site': site,
+    context = frame(locale, locales, site, '', './', links, {
         'categories': categories,
         'footer': footer,
-        'base': './',
         'css_href': f'site.css?v={css_v}',
-        'csp': sitelib.render_csp(site['csp']),
-        'jsonld': sitelib.hub_jsonld(site, ordered),
-    }))
+        'csp': sitelib.render_csp(root['csp']),
+        'jsonld': sitelib.hub_jsonld(root, ordered),
+    })
+    context['ui'] = i18n.render_ui(templates, root['ui'], context,
+                                   f'ui [{locale["lang"]}]')
+
+    emit.html(out / 'index.html', templates.render('hub.html', context))
 
     emit.js(out / 'analytics.js', templates.render('analytics.js', {
-        'site': site,
+        'site': root,
         'words': {'plural': 'files', 'analytics_extra': ''},
-    }), where='analytics.js')
+    }), where=f'{locale["prefix"]}analytics.js')
 
 
-def build_roadmap(out, templates, site, planned, ordered, footer, css_v, emit):
+def build_roadmap(out, templates, locale, locales, site, planned, ordered,
+                  footer, links, css_v, emit):
     """The roadmap: what is built, then what is planned.
 
     This was the last section of the hub until the planned list passed about
@@ -591,7 +817,8 @@ def build_roadmap(out, templates, site, planned, ordered, footer, css_v, emit):
     list the hub and the footer are drawn from; the planned half is
     config/planned.toml. A tool that ships moves from one to the other by
     appearing in tools/ and leaving that file."""
-    roadmap = site['roadmap']
+    root = locale['site']
+    roadmap = root['roadmap']
 
     # planned.toml stores each entry as a two-item array, which is compact to
     # write by hand and unusable in a template. Named here rather than in the
@@ -619,29 +846,31 @@ def build_roadmap(out, templates, site, planned, ordered, footer, css_v, emit):
     for group in planned['group']:
         group.setdefault('built', [])
 
-    dest = out / roadmap['slug']
+    dest = out / links['roadmap']
     dest.mkdir(parents=True, exist_ok=True)
 
-    emit.html(dest / 'index.html', templates.render('roadmap.html', {
-        'site': site,
+    context = frame(locale, locales, site, roadmap['slug'], '../', links, {
         'planned': planned,
         'planned_count': sum(len(group['items']) for group in planned['group']),
         'built_count': len(ordered),
         'tools': ordered,
         'footer': footer,
-        'base': '../',
         'css_href': f'../site.css?v={css_v}',
-        'csp': sitelib.render_csp(site['csp']),
-        'jsonld': sitelib.roadmap_jsonld(site),
-    }))
+        'csp': sitelib.render_csp(root['csp']),
+        'jsonld': sitelib.roadmap_jsonld(root),
+    })
+    context['ui'] = i18n.render_ui(templates, root['ui'], context,
+                                   f'ui [{locale["lang"]}]')
+
+    emit.html(dest / 'index.html', templates.render('roadmap.html', context))
 
     emit.js(dest / 'analytics.js', templates.render('analytics.js', {
-        'site': site,
+        'site': root,
         'words': {'plural': 'files', 'analytics_extra': ''},
-    }), where='analytics.js')
+    }), where=f'{locale["prefix"]}{links["roadmap"]}/analytics.js')
 
 
-def build_404(out, templates, site, tools, footer, css_v, emit):
+def build_404(out, templates, locale, locales, site, tools, pages, css_v, emit):
     """The page GitHub Pages returns for anything it cannot find.
 
     One file, at the root of the publishing source, per its documentation:
@@ -656,14 +885,35 @@ def build_404(out, templates, site, tools, footer, css_v, emit):
     would arrive unstyled. Absolute is the only form that works from every
     depth at once.
     """
-    emit.html(out / '404.html', templates.render('404.html', {
-        'site': site,
-        'tools': tools,
+    root = locale['site']
+    links = locale_links(locale, site, pages)
+
+    # Built from the English lists, because this is the English page, and every
+    # link on it is root-absolute for the reason in the docstring above. `base`
+    # is '/', so a slug appended to it is already the English address.
+    footer = {
+        'tools': [{'name': tool['name'], 'slug': tool['slug']} for tool in tools],
+        'pages': [{'nav': page['nav'], 'slug': page['slug']}
+                  for page in pages if page['kind'] == 'legal'],
+    }
+
+    context = frame(locale, locales, site, '', '/', links, {
+        'tools': [dict(tool, out_slug=tool['slug']) for tool in tools],
         'footer': footer,
-        'base': '/',
         'css_href': f'/site.css?v={css_v}',
-        'csp': sitelib.render_csp(site['csp']),
-    }))
+        'csp': sitelib.render_csp(root['csp']),
+        # No hreflang set, deliberately. This file has no address of its own -
+        # it is what a thousand wrong addresses return - so there is no page
+        # for a German one to be the alternate of, and a set claiming otherwise
+        # would be pointing every language at the same error page. The switcher
+        # underneath still works: "take me to the German front door" is a
+        # useful answer even where "this page in German" is not.
+        'alternates': [],
+    })
+    context['ui'] = i18n.render_ui(templates, root['ui'], context,
+                                   f'ui [{locale["lang"]}]')
+
+    emit.html(out / '404.html', templates.render('404.html', context))
 
 
 def write_tools_index(tools):
@@ -712,29 +962,55 @@ def write_tools_index(tools):
         print(f'  wrote {path.relative_to(ROOT).as_posix()}')
 
 
-def build_sitemap(out, templates, site, tools, guides, legal):
-    pages = [{'url': site['domain'], 'lastmod': site['lastmod'],
-              'changefreq': 'weekly', 'priority': '1.0'}]
-    pages += [{'url': tool['url'], 'lastmod': tool['lastmod'],
-               'changefreq': 'monthly', 'priority': '0.8'} for tool in tools]
-    # Guides below the tools and above the legal pages. A tool is what somebody
-    # came for; a guide is how they find out this site exists. The index they
-    # are listed on goes first and slightly higher: it is the page that gains
-    # from being crawled as a set rather than as nine unrelated articles.
-    pages.append({'url': f'{site["domain"]}{site["guides"]["slug"]}/',
-                  'lastmod': site['guides']['lastmod'],
-                  'changefreq': 'monthly', 'priority': '0.7'})
-    pages += [{'url': page['url'], 'lastmod': page['lastmod'],
-               'changefreq': 'monthly', 'priority': '0.6'} for page in guides]
-    # The roadmap: a real page, but not one anybody searches for. Below the
-    # guides, above the legal pages.
-    pages.append({'url': f'{site["domain"]}{site["roadmap"]["slug"]}/',
-                  'lastmod': site['roadmap']['lastmod'],
-                  'changefreq': 'monthly', 'priority': '0.5'})
-    # The legal pages last, and low: they matter for trust, not for search.
-    pages += [{'url': page['url'], 'lastmod': page['lastmod'],
-               'changefreq': 'yearly', 'priority': '0.3'} for page in legal]
-    write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': pages}))
+def build_sitemap(out, templates, site, locales, tools, prose):
+    """One sitemap for the whole domain, listing every published language.
+
+    Published, not built. A locale still being translated is deliberately
+    absent: it carries no hreflang tag pointing at it and no link in the
+    switcher either, and a sitemap entry would be the one remaining way a
+    crawler could still be told to go and index a page that is half in English.
+
+    The order within a language is the order it always was - the hub, the
+    tools, the guides, the roadmap, the legal pages - and the languages follow
+    each other in the order locales/ sorts in, English first.
+
+    Priority does not decay down the list. It says what a page is worth against
+    the rest of the site, not against the rest of its own language: the German
+    hub is as much a front door as the English one, and marking it lower would
+    be saying the opposite of what the hreflang tags beside it say.
+    """
+    entries = []
+    for locale in i18n.published(locales):
+        def url(slug, locale=locale):
+            return i18n.locale_url(locale, slug, site)
+
+        entries.append({'url': url(''), 'lastmod': site['lastmod'],
+                        'changefreq': 'weekly', 'priority': '1.0'})
+        entries += [{'url': url(tool['slug']), 'lastmod': tool['lastmod'],
+                     'changefreq': 'monthly', 'priority': '0.8'}
+                    for tool in tools]
+        # Guides below the tools and above the legal pages. A tool is what
+        # somebody came for; a guide is how they find out this site exists. The
+        # index they are listed on goes first and slightly higher: it is the
+        # page that gains from being crawled as a set rather than as nine
+        # unrelated articles.
+        entries.append({'url': url(site['guides']['slug']),
+                        'lastmod': site['guides']['lastmod'],
+                        'changefreq': 'monthly', 'priority': '0.7'})
+        entries += [{'url': url(page['slug']), 'lastmod': page['lastmod'],
+                     'changefreq': 'monthly', 'priority': '0.6'}
+                    for page in prose if page['kind'] == 'guide']
+        # The roadmap: a real page, but not one anybody searches for. Below the
+        # guides, above the legal pages.
+        entries.append({'url': url(site['roadmap']['slug']),
+                        'lastmod': site['roadmap']['lastmod'],
+                        'changefreq': 'monthly', 'priority': '0.5'})
+        # The legal pages last, and low: they matter for trust, not for search.
+        entries += [{'url': url(page['slug']), 'lastmod': page['lastmod'],
+                     'changefreq': 'yearly', 'priority': '0.3'}
+                    for page in prose if page['kind'] == 'legal']
+
+    write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': entries}))
 
 
 def copy_shared(out):
