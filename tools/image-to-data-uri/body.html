@@ -1,0 +1,141 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose images</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Take all off the list</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the line that actually gets pasted -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> Say where it is going</h2>
+
+    <p class="card-lede">
+      A data URI on its own is rarely what anybody wants. What they want is the
+      line that goes in the stylesheet &mdash; so pick the line, and the picture
+      arrives inside it already quoted, which is the part that is easy to get
+      wrong and that fails only for SVGs.
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="What to paste">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>The data URI on its own</strong>
+          <span class="shape-note">
+            Everything after the comma is the file. Paste it anywhere a URL goes.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>A CSS rule</strong>
+          <span class="shape-note">
+            A whole rule, with a class named after the file. Change the selector
+            to whatever you are really styling.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>A CSS custom property</strong>
+          <span class="shape-note">
+            Declared once at the top of the stylesheet and used as
+            <code>var(--name)</code> as often as you like. This is the one to
+            pick when the picture appears in more than one rule.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>An HTML <code>&lt;img&gt;</code> tag</strong>
+          <span class="shape-note">
+            With the pixel size filled in, so the page does not jump while the
+            rest of it loads.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">
+            For a README or an issue: a picture that travels with the text
+            instead of needing somewhere to be hosted.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      The <code>alt</code> text is left empty on purpose. Only you know whether
+      the picture carries meaning or is decoration, and a description guessed
+      from a file name is worse for somebody using a screen reader than no
+      description at all.
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>Base64 the SVGs as well</strong>
+          <span class="check-note">
+            Off by default, because an SVG is text and base64 is for bytes.
+            Percent-encoding leaves the markup readable in the stylesheet and is
+            usually a fifth shorter. Turn this on for the rare toolchain that
+            insists on <code>;base64</code>.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the result. There is no button here on purpose: encoding
+       is instant, so there is nothing for a "convert" press to wait for. -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> Copy it</h2>
+
+    <p id="empty-note" class="card-lede">
+      Nothing chosen yet. Drop a picture above and the line to paste appears
+      here.
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">Copy all</button>
+          <button type="button" id="download-all" class="ghost">Download as one file</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

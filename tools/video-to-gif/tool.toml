@@ -1,0 +1,305 @@
+#
+# Video to GIF
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "video-to-gif"
+name = "Video to GIF"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Video&nbsp;to&nbsp;GIF <span class=\"h1-kw\">&mdash; convert a video to a GIF</span>"
+tagline = "Pick the section, the size, and the frame rate."
+icon = "&#127902;&#65039;"        # the mark beside the page heading
+favicon = "&#127902;"    # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "gif"
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Video to GIF Converter &mdash; Free, No Upload, Works Offline"
+description = "Turn part of an MP4, MOV or WebM into an animated GIF. Choose the section, the width and the frame rate; the frames are read and the GIF is written in your browser. Nothing uploaded."
+og_title = "Video to GIF &mdash; make a GIF without uploading the clip"
+og_description = "Mark the seconds you want, choose a width and a frame rate, and get an animated GIF. The frames are sampled and the palette, the dithering and the LZW are all done on your own machine."
+og_image_alt = "Video to GIF - make an animated GIF in your browser, with nothing uploaded"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src needs blob: because the clip you chose is played from memory on this
+  machine rather than from a URL. The finished GIF is a blob: image, which the
+  site policy already allows on a tool page. That is the whole addition: this
+  tool fetches nothing, so connect-src is left exactly as the site sets it."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Every frame is read, resized, quantized and written by your own browser, on
+    your own hardware. Nothing here can fetch or send anything &mdash; there is no
+    network feature in this tool at all &mdash; and there is no server on the other
+    end of this page to send a video to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and make a
+      GIF. Not one request carries a frame, a filename, or a byte of what you
+      chose. Or unplug from the internet and make one anyway &mdash; a tool that
+      sent your video away to be converted would simply stop."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/frames.js</code> for the two ways the
+      frames are read out of a video, <code>src/quantize.js</code> for the
+      palette, and <code>src/gif.js</code> for the file itself, LZW and all.
+      None of them imports anything that can make a request."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to turn a video into a GIF"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Mark the seconds you want, choose a width and a frame rate, and get
+            an animated GIF &mdash; palette, dithering and all."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "videos"
+choose = "a video"
+analytics_extra = """, and no
+  frame, duration or size"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Any length"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[privacy]]
+title = "Your videos have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ This tool has no network feature at
+      all: no address to paste, nothing to download, no engine fetched on first
+      use. Every byte that touches your video came from this origin when the page
+      loaded."""
+
+[[privacy]]
+title = "The decoding is local."
+body = """
+ The frames go through WebCodecs
+      in your own browser, or through the same playback engine that would show
+      you the clip anyway. Which one was used is written at the top of the page,
+      because it changes how the frames are chosen and you should be able to see
+      that."""
+
+[[privacy]]
+title = "The GIF is written here, in code you can read."
+body = """
+ The
+      palette, the dithering and the LZW compression are about six hundred lines
+      in this tool's own folder. There is no encoder service, no library fetched
+      at run time, and no place in any of it that a picture could be sent."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      video: not a file, not a frame, not a name, a size, a length, or the
+      section you marked. Every line that reads, samples, quantizes or encodes is
+      served from this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about you
+      or your video."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on
+      this page still works. That is the simplest proof of all."""
+
+[[howto]]
+title = "Choose a video."
+body = """
+ Drop an MP4, MOV, M4V or WebM onto
+      the picker, or select one by hand. It is read straight off your disk by the
+      browser; nothing is sent anywhere while you do it."""
+
+[[howto]]
+title = "Mark the section."
+body = """
+ Play the clip and press
+      <kbd>I</kbd> where it should start and <kbd>O</kbd> where it should end, or
+      drag the grips on the bar. A GIF is a few seconds long &mdash; this is the
+      setting that decides whether the file is small or enormous, far more than
+      the other two."""
+
+[[howto]]
+title = "Choose the width and the frame rate."
+body = """
+ 480 pixels
+      wide and 12 frames a second suits most things a GIF is for. Halving the
+      width quarters the pixels; twelve frames a second reads as motion without
+      paying for the ones nobody sees."""
+
+[[howto]]
+title = "Make it, and download."
+body = """
+ The frames are read, one
+      palette of 256 colours is chosen for the whole animation, and each frame is
+      written as only the part of the picture that changed. It plays on the page
+      when it is done, which is the same file the download gives you."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my video uploaded anywhere?"
+a = """
+        No. It is read, sampled and converted by your own browser on your own
+        hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. Unplug from the internet and
+        make a GIF anyway if you would rather check than be told."""
+
+[[faq]]
+q = "Which video formats can I convert?"
+a = """
+        MP4, M4V and MOV are read directly, whatever is inside them: H.264,
+        HEVC, AV1 or VP9, as long as your browser can decode that codec. Anything
+        else your browser can play &mdash; WebM most obviously &mdash; is read by
+        seeking the player to each instant instead, which is slower and slightly
+        less exact about which frame lands where. A file the browser can neither
+        read nor play, which in practice means AVI, WMV, FLV and most MKVs, is
+        refused with a message saying so rather than failing halfway through."""
+
+[[faq]]
+q = "Why is my GIF so big?"
+a = """
+        Because GIF is a format from 1987 that stores whole pictures rather than
+        motion. There is no way to make one of a five-second clip that is as
+        small as the five-second MP4 it came from &mdash; a GIF of a video is
+        routinely ten times the size of the video. The three settings that
+        actually decide it are, in order: how long the section is, how wide the
+        picture is, and how many frames a second. Halving the width quarters the
+        pixels, and it is pixels that cost."""
+
+[[faq]]
+q = "Why only 256 colours?"
+a = """
+        That is the format: a GIF carries one table of at most 256 colours and
+        stores each pixel as a number into it. This tool chooses those 256 by
+        counting the colours in every frame of your section and splitting them
+        into 256 groups &mdash; median cut, the standard method &mdash; so the
+        palette fits your clip rather than being a fixed set of colours. Where a
+        colour is missing, dithering mixes the two nearest ones so a gradient
+        stays a gradient instead of becoming stripes."""
+
+[[faq]]
+q = "What does the dithering setting do?"
+a = """
+        It trades a little noise for a lot of banding. With it on, a sky that
+        would otherwise become four flat bands stays a gradient, at the cost of a
+        faint texture and a larger file. With it off the picture is flatter and
+        the file smaller, which suits screen recordings, line art and anything
+        already made of flat colour. The dither used here is ordered rather than
+        the error-diffusion kind, so an unchanged background stays perfectly
+        still between frames instead of shimmering."""
+
+[[faq]]
+q = "Is there a limit on the length or the size?"
+a = """
+        The section is what is limited, and by memory rather than by a rule: every
+        frame of it is held at once while the palette is chosen, so the page works
+        out what your settings would cost and says so before you start. It
+        refuses rather than letting the tab run out of memory and vanish. A
+        shorter section, a smaller width or a lower frame rate all bring it
+        down."""
+
+[[faq]]
+q = "Does it keep the sound?"
+a = """
+        A GIF cannot carry sound. There is no version of the format that has
+        audio, which is the main reason the web mostly replaced GIFs with silent
+        looping video. If the sound matters, keep the video &mdash; the
+        <a href="../trim-video/">Video Cutter</a> will cut a section out of it
+        without re-encoding a frame."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your video."""
+
+[schema]
+browser_requirements = "Requires JavaScript. MP4 and MOV need a browser with WebCodecs; anything the browser can play works without it."
+category = "MultimediaApplication"
+description = "Convert a section of a video into an animated GIF in the browser. The frames are sampled at the chosen rate, one 256-colour palette is chosen for the whole animation by median cut, and each frame is written as only the region that changed. Nothing is uploaded."
+features = [
+  "Converts MP4, MOV, M4V and WebM video to animated GIF",
+  "H.264, HEVC, AV1 and VP9 sources, decoded through WebCodecs",
+  "Mark the section on a timeline, or type exact times",
+  "Any width, 5 to 25 frames a second, optional ordered dithering",
+  "Runs offline; no upload, no account, no watermark",
+]
+
+# This tool needs one thing the rest of the site does not: blob: on media-src,
+# because the clip you chose is played from memory on this machine rather than
+# from a URL. A tool can only ever widen its own page this way - it cannot
+# narrow the site policy, and it cannot touch any other tool's.
+[csp]
+"media-src" = ["'self'", "blob:"]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "video/*"
+multiple = false
+title = "Drop a video here"
+hint = "or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays"

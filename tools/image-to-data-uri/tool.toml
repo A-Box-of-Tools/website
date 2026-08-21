@@ -1,0 +1,365 @@
+#
+# Image to Data URI
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "image-to-data-uri"
+name = "Image to Data URI"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Image&nbsp;to&nbsp;Data&nbsp;URI <span class=\"h1-kw\">&mdash; base64 encode a picture for CSS or HTML</span>"
+tagline = "The whole picture as one line of text. Paste it straight into CSS or HTML."
+icon = "&#128203;"          # the mark beside the page heading
+favicon = "&#128203;"       # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "images"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. file-list is the drop-a-file-then-see-a-row widget that
+# more than one tool needs and that no tool should own.
+css_parts = ["file-list"]
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Image to Data URI &mdash; Base64 Encode for CSS, Free, No Upload"
+description = "Turn a PNG, JPEG, SVG or WebP into a data URI you can paste into CSS or HTML. SVGs are percent-encoded rather than base64, so they stay readable and shorter. Runs in your browser; nothing is uploaded."
+og_title = "Turn an image into a line you can paste into CSS"
+og_description = "Base64 for pictures, percent-encoding for SVG, and the ready-made rule, custom property or img tag around it. Runs on your own machine; nothing is uploaded."
+og_image_alt = "Image to Data URI - paste the picture into the stylesheet"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  img-src needs blob: for the thumbnails of the files you chose, data: for the
+  previews - which are drawn from the URI this page just built, so that what
+  you see is what you are about to paste - and https: because ad creatives come
+  from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The encoding runs in your own browser, on your own hardware. It is
+    arithmetic on bytes the page already has: no encoder, no server, and no
+    network step to leave out. This tool has no network feature of any kind
+    &mdash; nothing to fetch, nothing to send &mdash; and there is no server on
+    the other end of this page to send a picture to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and drop
+      in a picture. Not one request carries an image, a thumbnail, a filename, or
+      a byte of what you chose. Or unplug from the internet and encode one
+      anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/encode.js</code> for the two
+      encodings and the reasoning behind each, <code>src/sniff.js</code> for how
+      the media type is read out of the file rather than out of its name, and
+      <code>src/metadata.js</code> for the check that says how much of what you
+      are about to paste is not the picture."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to turn an image into a data URI"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Base64 for pictures, percent-encoding for SVG, and the CSS rule or
+            <code>&lt;img&gt;</code> tag already built around it."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "images"
+choose = "an image"
+analytics_extra = """, and none of the
+  file names, sizes or encoded text this tool produces"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No re-encoding"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your images have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The encoding is
+      <code>btoa</code> and <code>encodeURIComponent</code> &mdash; two functions
+      the browser has had since the beginning, both of which take bytes and
+      return text without going anywhere."""
+
+[[privacy]]
+title = "The preview is the proof."
+body = """
+ The picture beside each
+      result is drawn from the data URI this page just built, not from your file.
+      It renders because the URI is correct, on your machine, with no server
+      involved &mdash; and if it does not render, the page says so instead of
+      handing you something broken."""
+
+[[privacy]]
+title = "The metadata warning is on your side."
+body = """
+ A data URI copies the
+      file exactly, so a photograph's GPS fix travels into your stylesheet with
+      it. This page reads how much of that is there and tells you, because the
+      alternative is you finding out after it is committed."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your pictures. Every line that
+      reads or encodes a file is served from this origin and listed in the
+      repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Choose your images."
+body = """
+ Drop them onto the picker or select them
+      by hand. They are read straight off your disk by the browser; nothing is
+      sent anywhere while you do it."""
+
+[[howto]]
+title = "Say where the result is going."
+body = """
+ The URI on its own, a CSS
+      rule, a custom property, an <code>&lt;img&gt;</code> tag or Markdown. Every
+      one of them quotes the URI, which is the detail that decides whether an
+      inlined SVG works or silently does not."""
+
+[[howto]]
+title = "Read what it cost."
+body = """
+ Each result says how many characters
+      it became, how much larger that is than the file, and whether inlining
+      something this size is a good idea. Base64 adds a third; whether that third
+      is worth a saved request depends entirely on the size, so the page says
+      which side of the line you are on."""
+
+[[howto]]
+title = "Check the warnings."
+body = """
+ If the picture carries EXIF, a colour
+      profile or XMP, it is named along with how many bytes of your result are
+      it. If the extension disagrees with the actual format, the page uses the
+      format and tells you. If your browser cannot draw the result, it says that
+      too."""
+
+[[howto]]
+title = "Copy, or download."
+body = """
+ One button per result, and one for
+      all of them at once &mdash; the custom properties come out wrapped in a
+      <code>:root</code> block, ready to paste at the top of a stylesheet."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my image uploaded anywhere?"
+a = """
+        No. The file is read and encoded by your own browser on your own hardware,
+        with two functions the browser already has. This tool has no network
+        feature of any kind &mdash; it never fetches anything and never sends
+        anything &mdash; and the page's <code>Content-Security-Policy</code> names
+        every address it may contact, none of which belongs to this site."""
+
+[[faq]]
+q = "What is a data URI?"
+a = """
+        A way of writing a whole file where a web address would normally go. Instead
+        of <code>url("logo.png")</code>, which tells the browser to go and fetch
+        something, you write <code>url("data:image/png;base64,iVBORw0...")</code>,
+        which contains the picture itself. The browser decodes it on the spot. The
+        practical effect is one fewer request: the picture arrives with the
+        stylesheet or the page rather than after it."""
+
+[[faq]]
+q = "Why is my SVG not base64?"
+a = """
+        Because base64 is the wrong encoding for it. An SVG is text, and a URL can
+        carry text already &mdash; only a handful of characters have to be escaped.
+        Percent-encoding those and leaving the rest alone produces a URI that is
+        typically a fifth shorter than the base64 of the same file, and that you
+        can still read in your stylesheet: the element names, the colours and the
+        <code>viewBox</code> are all still there to edit. There is a checkbox to
+        force base64 for the rare toolchain that insists on it."""
+
+[[faq]]
+q = "How much bigger does base64 make my image?"
+a = """
+        About a third. Three bytes of file become four characters of base64, which
+        is 33% before the <code>data:image/png;base64,</code> in front. That is the
+        floor, and it is unavoidable: it is what it costs to write arbitrary bytes
+        using only the characters a URL permits. It is also why the page shows the
+        character count next to the file size rather than leaving you to find out
+        when the stylesheet is deployed."""
+
+[[faq]]
+q = "When is inlining an image actually a good idea?"
+a = """
+        When it is small and it is needed immediately. A 2 KB icon in a stylesheet
+        that every page loads is a clear win: one fewer round trip, and the picture
+        is there the moment the CSS is. Past about 10 KB the trade turns. An inlined
+        picture is no longer a separate file, so it cannot be cached on its own,
+        cannot be fetched in parallel with anything else, and is downloaded again in
+        full every time the file around it changes &mdash; a 200 KB photograph in a
+        stylesheet is 200 KB added to the critical path of every page on the site.
+        The page tells you which side of that line each result falls on."""
+
+[[faq]]
+q = "Does gzip undo the base64 overhead?"
+a = """
+        Less than people expect. Base64 of an already-compressed file &mdash; which
+        a PNG, a JPEG and a WebP all are &mdash; compresses badly, because there is
+        almost no redundancy left for the compressor to find; you typically get back
+        something like a tenth of the third that base64 added, not the whole of it.
+        A percent-encoded SVG is the opposite case: it is still text, so it
+        compresses about as well as it did before, which is another reason not to
+        base64 one."""
+
+[[faq]]
+q = "Does this change my image at all?"
+a = """
+        No, and that is a deliberate difference from most of the tools here. Nothing
+        is decoded into pixels and encoded again: the bytes that came off your disk
+        are the bytes that go into the URI. A JPEG stays exactly the JPEG it was, at
+        the same quality, with the same dimensions. It is the reason the result can
+        be described as the same file rather than a copy of it."""
+
+[[faq]]
+q = "So my EXIF and GPS data go into the stylesheet too?"
+a = """
+        Yes, and this is the part worth thinking about before you paste. Because
+        nothing is re-encoded, everything the camera wrote travels with the picture:
+        the location, the timestamp, the camera's serial number. On a phone
+        photograph that can be 30 KB of the file, which becomes 40 KB of base64 on
+        the critical path of your page, and a home address in something that will be
+        committed to a repository. The page reads how much metadata is in a JPEG,
+        PNG or WebP and says so. To take it out first, use the
+        <a href="../exif-editor/">EXIF Viewer &amp; Remover</a>."""
+
+[[faq]]
+q = "Why did it use a different type from my file's extension?"
+a = """
+        Because the extension can be wrong and the bytes cannot. A file named
+        <code>logo.png</code> that was actually exported as a JPEG is common enough
+        that every image tool has to cope with it, and a data URI that declares the
+        wrong type simply does not render &mdash; there is no fallback and no error
+        message worth reading. So the type is read from the first few bytes of the
+        file, which say what it is unambiguously in every format here, and the page
+        tells you when the two disagree."""
+
+[[faq]]
+q = "The preview is blank. What went wrong?"
+a = """
+        Probably nothing about the URI. HEIC and TIFF both make perfectly valid data
+        URIs that no browser except Safari will draw, so the picture is missing
+        wherever you paste it as well &mdash; convert it to PNG, JPEG or WebP first
+        with the <a href="../compress-image/">Image Compressor</a> or the
+        <a href="../resize-image/">Image Resizer</a>. If the format is an ordinary
+        one, the file itself is likely damaged: the preview is drawn from the URI
+        this page built, so a blank one means the picture did not decode."""
+
+[[faq]]
+q = "Is there a size limit on a data URI?"
+a = """
+        Not one you will meet in CSS or in an <code>&lt;img&gt;</code> tag; modern
+        browsers impose no practical cap there. What browsers do limit is typing a
+        data URI into the address bar, which most of them now refuse for anything
+        non-trivial, for security reasons that have nothing to do with this use. The
+        real limit is the one above: long before anything technical breaks, the page
+        it is in has become slower than it would have been with an ordinary image
+        file."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no watermark.
+        There is no limit on the number or the size of the files either, because
+        there is no server paying for them &mdash; the work happens on your own
+        machine. The site carries advertising, which is what pays for it; the ads
+        are not given anything about your images."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being uploaded:
+        a tool that sent your images away to be encoded would stop the moment you
+        unplugged."""
+
+[schema]
+category = "DeveloperApplication"
+description = "Convert a PNG, JPEG, SVG, WebP, GIF or ICO into a data URI ready to paste into CSS or HTML. Base64 for raster formats and percent-encoding for SVG, wrapped in a CSS rule, a custom property, an img tag or Markdown, with the size cost and any embedded metadata reported. Runs entirely in the browser with no upload."
+features = [
+  "Base64 data URIs for PNG, JPEG, WebP, GIF, ICO, AVIF and more",
+  "Percent-encoded SVG data URIs, which are shorter than base64 and stay readable",
+  "Ready-made CSS rule, CSS custom property, HTML img tag or Markdown, always correctly quoted",
+  "The media type read from the file's own bytes, not from its extension",
+  "Says what the encoding cost in characters, and whether inlining at that size is worth it",
+  "Warns when EXIF, XMP or a colour profile is about to be copied into your stylesheet",
+  "Copies the file byte for byte: no re-encoding and no quality loss",
+  "Batches, with everything copied or downloaded as one file",
+  "Runs offline; no upload, no account",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/*,.png,.jpg,.jpeg,.svg,.webp,.gif,.bmp,.ico,.avif"
+multiple = true
+title = "Drop images here"
+hint = "or click to browse &mdash; PNG, JPEG, SVG, WebP, GIF, ICO and more"
