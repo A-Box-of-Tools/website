@@ -1,0 +1,33 @@
+#
+# Guide: trimming a video.
+#
+# The one job on this site where the interesting thing is a genuine technical
+# constraint rather than a preference: keyframes, why a cut lands early, and
+# the two honest ways round it. Somebody who reads this understands the "why
+# did it not cut where I told it" question that every trimmer gets asked.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/trim-a-video"
+kind = "guide"
+nav = "Trimming a video"
+group = "doing-the-job"
+tool = "trim-video"
+
+title = "How to Trim a Video Without Re-Encoding It"
+description = "Cutting a clip need not lose a single byte of quality. Why a cut sometimes lands earlier than you marked it, what a keyframe has to do with it, and when to accept a re-encode."
+
+heading = "How to trim a video without re-encoding it"
+lede = """
+    Trimming does not change what any frame looks like, so a good trimmer does
+    not touch them &mdash; it moves them into a new file exactly as they were.
+    This explains what that buys you, and the one place it shows."""
+
+updated = "20 August 2026"
+published = "2026-08-20"
+lastmod = "2026-08-20"
+
+og_title = "How to trim a video without re-encoding it"
+og_description = "Why a cut sometimes lands earlier than you marked it, what a keyframe has to do with it, and when to accept a re-encode."
+og_image_alt = "abox.tools - tools that never touch a server"

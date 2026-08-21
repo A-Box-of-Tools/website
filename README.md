@@ -28,6 +28,7 @@ visitor's own machine beats not shipping the tool at all — see
 | Video Trimmer & Joiner | `/trim-video/` | Cuts clips down to the sections you mark and combines them into one file, without re-encoding a frame |
 | Images to PDF | `/images-to-pdf/` | Gathers pictures into one document, copying JPEGs in without re-encoding them |
 | PDF Compressor | `/compress-pdf/` | Shows where a document's size actually is, then shrinks it by recompressing the pictures against how large they are drawn |
+| Audio Editor | `/edit-audio/` | Plays a track backwards, changes its speed with or without moving the pitch, and sets its level — including the audio inside a video |
 
 The hub page lists them by category. It, and every tool page, is generated —
 see [Layout](#layout).
@@ -173,7 +174,9 @@ tools/
     src/*.js             the app itself; minified into dist/, renamed only by --mangle
     og.png               its share card
   crop-video/            the same five things
+  trim-video/            and again
   exif-editor/           and again
+  resize-image/          and again
   images-to-video/       and again
   images-to-pdf/         and again
   compress-pdf/          and again
@@ -182,6 +185,7 @@ pages/
     page.toml            title, description, dates - the frame, not the prose
     body.html            the <main> of the page
   terms/                 the same two things
+  guides/<slug>/         the same two things, plus a group and usually a tool
 tests/
   python/                the generator: unittest, standard library only
   js/                    the tools: node --test, built in since Node 18
@@ -296,12 +300,15 @@ something the build does, and cannot forget to do:
 | Four copies of the repository URL per page | `source_url` in `config/site.toml`. |
 | A cache name to bump by hand when minification changed the bytes | The cache name hashes the files **as emitted**, so turning minifying on or off invalidates the cache by itself. |
 | Nothing at all, which is how a stylesheet change reached returning visitors four hours late | Every page asks for its stylesheet by a URL carrying a hash of that stylesheet, so changing the CSS changes the URL and there is no stale copy to serve. |
-| Three different footers, none of which linked to a privacy policy because there was nowhere to put one | One `templates/partials/footer.html`. Its tool list and legal-page list come from `tools/` and `pages/`, and the only thing that differs per page is whether links start `./` or `../`. |
+| Three different footers, none of which linked to a privacy policy because there was nowhere to put one | One `templates/partials/footer.html`. Its tool list, guide list and legal-page list come from `tools/` and `pages/`, and the only thing that differs per page is whether links start `./` or `../`. |
 
 The build refuses to produce a site rather than produce a broken one. A missing
 config key, a tool whose folder and `slug` disagree, a tool listed on the hub
 that does not exist, and a tool that exists but is on no category list — so
-nothing would link to it — are all errors, not warnings.
+nothing would link to it — are all errors, not warnings. The guides index makes
+the same three checks about guides and groups, and one more: a guide naming a
+tool that does not exist, or a second guide claiming a tool that already has
+one.
 
 ---
 
@@ -321,6 +328,11 @@ nothing would link to it — are all errors, not warnings.
    and writes nothing.
 4. If it belongs to a category that does not exist yet, add a
    `[[hub.categories]]` table and move that name out of `config/planned.toml`.
+5. Set `roadmap_group` to one of the groups in `config/planned.toml`, so the
+   tool crosses from the planned half of that group to the built half. A tool
+   without one fails the build rather than quietly going missing.
+6. Write it a guide. See [The guides](#the-guides) — one folder under
+   `pages/guides/`, and the link between the two pages is a single `tool` key.
 
    You do **not** have to touch the footer, the sitemap, or the other pages. The
    footer's tool list is derived from `tools/` in the order the hub shows them,
@@ -444,23 +456,35 @@ Two things to hold the line on, because the whole site rests on them:
 
 ---
 
-## The legal pages
+## The prose pages
 
-`pages/` holds the prose pages that are neither the hub nor a tool: Privacy and
-Terms. One is built exactly like a tool page, minus everything a tool needs and
-a page does not.
+`pages/` holds everything that is neither the hub nor a tool. There are two
+kinds, and they differ only in where they are meant to be read.
 
 ```
-pages/privacy/
+pages/privacy/                      kind = "legal"
   page.toml    slug, nav label, title, description, dates, share-card text
   body.html    the <main> - sections of prose and nothing else
+pages/guides/trim-a-video/          kind = "guide"
+  page.toml    the same, plus `published`, `group`, and usually `tool`
+  body.html    the same
 ```
 
-`nav` is the label the footer uses. The page gets the site frame, the site's
-Content-Security-Policy unchanged, an entry in `sitemap.xml` at a low priority,
-and a link in the footer of every page on the site. It gets no service worker,
-because there is nothing here worth keeping offline, and no `blob:` in
-`img-src`, because it never makes one.
+`nav` is the label the footer uses. Either kind gets the site frame, the site's
+Content-Security-Policy unchanged, an entry in `sitemap.xml`, and a link in the
+footer of every page on the site. Neither gets a service worker, because there
+is nothing here worth keeping offline, or `blob:` in `img-src`, because neither
+ever makes one.
+
+A **legal** page is Privacy or Terms. It matters for trust rather than for
+search, which is why it sits at the lowest priority the sitemap has and carries
+no structured data at all — inventing an `Article` for a privacy policy would be
+describing the page as something it is not.
+
+A **guide** is written to be found. Same frame, same policy, and three things a
+legal page does not get: `Article` structured data, a breadcrumb through the
+guides index (visible as well as in the markup, which is the rule Google asks
+for), and — when it names a tool — a link to that tool under the heading.
 
 **These pages get the same CSP as everywhere else, and that is the point.**
 Written by hand, they carried a narrowed copy that left out the donate button's
@@ -491,6 +515,59 @@ Two things it does **not** claim, deliberately:
   laws of Canada and of the province in which the site is operated". Naming the
   province outright is one line in `pages/terms/body.html` and makes the clause
   easier to rely on; it was left open rather than guessed at.
+
+---
+
+## The guides
+
+Every tool has one, and there is an index of them at `/guides/`. A tool page
+answers "which button do I press"; a guide answers "what does the setting I am
+about to move actually do, and what does it cost me". They are also the half of
+the site that can be found by somebody who does not yet know it exists.
+
+### Adding one
+
+Make a folder under `pages/guides/`, and set four things in its `page.toml` that
+a legal page does not have:
+
+| key | what it does |
+|---|---|
+| `kind = "guide"` | `Article` structured data, a breadcrumb, `prose` styling |
+| `published` | the date the guide first appeared, for the `Article` |
+| `group` | which `[[guides.groups]]` in `config/site.toml` it appears under |
+| `tool` | optional: the slug of the tool it is about |
+
+Then name the folder in that group's `order` list. Everything else follows: the
+card on the index, the entry in the footer of every page, the line in
+`sitemap.xml`, and both halves of the link between the guide and its tool.
+
+### The three refusals
+
+The build stops rather than quietly producing a page nothing links to. A guide
+that names no `group`, a group that lists a guide that does not exist, and a
+guide that exists and that no group lists are each an error with a message
+naming the file. They are the same three checks `build_hub` already makes about
+tools and categories, and they matter slightly more here: a tool missing from
+the hub would be noticed the first time anybody looked at the front page, while
+a guide that fell out of the index is only ever missed by the reader who never
+found it.
+
+`tool` is checked too — it has to name a tool that exists, and two guides cannot
+claim the same one, because a tool page has room for exactly one link.
+
+### Why the link between a guide and its tool is one setting
+
+`tool` in the guide's `page.toml` produces both directions: the "Open the …"
+button under the guide's lede, and "The longer version" under the tool's
+questions. Written the other way round — a `guide` key in each `tool.toml` —
+it would be two settings that could disagree about which page is about which,
+and the way that shows up in public is a tool linking to a guide that never
+mentions it. `tests/python/test_build.py` checks both halves land in the built
+HTML.
+
+Neither link's text is written twice either. The tool page shows the guide's own
+`heading` and `description`; the guide shows the tool's own `name` and
+`tagline`. So neither page can promise something the other does not deliver.
 
 ---
 
@@ -2243,24 +2320,61 @@ Padding is the interesting middle case: the frame stays exactly the size asked
 for, because an exact frame is the entire point of padding, and the picture
 inside it simply is not blown up to fill it.
 
-## One box, a whole batch
+## Every image has its own box
 
-The crop box is drawn on one image — whichever the preview is pointed at, and
-any row on the list can take that place. Every other file is cropped from the
-same relative area: the same fractions of its own width and height. For a folder
-of screenshots or exports that are all one size, that is the same rectangle
-exactly, and the page says so rather than hedging.
+Cropping is not a mode. There is no "do you want to crop" question to answer,
+because the answer is in the box itself: it opens on the whole picture, so an
+image nobody drags on goes through whole. A step you can ignore costs nothing;
+a question you have to answer first costs everybody who only wanted a resize.
 
-With a shape locked there is one further step, and it is the difference between
-a tool that works and one that is merely correct. Somebody who pressed **1:1**
+Each image owns its rectangle, in its own pixels, along with the shape that
+rectangle is locked to. Clicking a row puts that image in the preview with its
+own box and its own lock back on it — so a batch can be cropped one way, another
+way, and not at all, and nothing you do to one image touches another.
+
+That leaves the case where a folder of exports all want the same framing, which
+would otherwise cost one drag each. **Use this crop on every image** is the one
+control that writes another image's box, and it does it once, when pressed,
+rather than deriving it on every render: every other image takes the same
+relative area — the same fractions of its own width and height — and the boxes
+stay editable afterwards.
+
+With a shape locked it does one thing more, and that is the difference between a
+tool that works and one that is merely correct. Somebody who pressed **1:1**
 wants squares. The same relative area of a picture with a different shape is not
 a square — so the relative area is treated as the region of interest, and the
-largest box of the locked shape *inside* it is what is kept. A 1:1 box on a
-landscape photograph comes out as a square on the portrait one beside it, framed
-on the same part of the picture.
+largest box of the locked shape *inside* it is what is kept. Press 1:1, press
+the button, and a folder of mixed portrait and landscape shots comes out square,
+each framed on the same part of its own picture.
 
-The note under the preview says which of those three is happening, and only when
-it is actually true of the files on the list.
+The note under the preview says how many of the others have a box of their own
+and how many are still on the whole picture, and only when there is another
+image for it to be true of.
+
+## Looking at the result
+
+Every finished file opens full size in a `<dialog>` — click the thumbnail, or
+the **View** button beside the download. A real `<dialog>` opened with
+`showModal()` rather than a `div` pretending to be one: Escape, the focus trap
+and an inert background all come free from the browser and all come correct.
+Only the backdrop click is written here, and it is one line, because a click
+that lands on the dialog element rather than on anything inside it *is* the
+backdrop.
+
+What it adds over the row is the part a thumbnail cannot answer: the picture at
+a size worth judging, on a chequerboard so that transparency reads as
+transparency rather than as whatever colour the theme happens to be, and every
+figure behind the result — before and after, the crop in source pixels and where
+it was taken from, the scale, the quality that was spent, and whether the
+metadata survived. **Show the original** swaps the two in place, which is the
+only fair way to compare them.
+
+It costs nothing to open. Both pictures are object URLs this page already holds
+— the result's, and the original's, which has existed since the thumbnail was
+drawn — so the dialog fetches nothing and decodes nothing that was not already
+decoded. A small picture is shown at its own size rather than blown up to fill
+the dialog, because this is the view people open to judge a result and scaling
+it up would be showing them something the file is not.
 
 ## A file nobody asked to change is not changed
 
@@ -2293,9 +2407,9 @@ who wanted the tags gone without the picture being touched.
 - **Rotation is not here.** Straightening a scan by two degrees needs a
   transform, a background, and a decision about what happens to the corners, and
   it is a separate name on the planned list for that reason.
-- **The crop box is drawn on one image at a time.** There is no per-file box. A
-  batch that genuinely needs a different rectangle for each file is a batch that
-  wants running twice.
+- **The size and the format are the whole batch's.** The crop is per-image; the
+  dimensions and the output format are not. A batch that genuinely wants two
+  different output sizes is a batch that wants running twice.
 
 ## Testing it
 
@@ -2309,8 +2423,218 @@ them would be a control on the page that does nothing.
 
 The rest was checked by hand in the browser, the same way the compressor's was:
 images generated on a canvas and fed to the file input through a `DataTransfer`,
-then a mixed landscape-and-portrait batch run through a locked 1:1 box (900 x 900
-out of the portrait, 1800 x 1800 out of the landscape, both landing on 500 x 500);
-a transparent PNG padded into a square JPEG and its pixels read back to confirm
-the background colour reached both the padding *and* the transparency; and a file
-with nothing asked of it coming back as the identical `File`, name and all.
+then
+
+- a three-image batch cropped three different ways — a locked 1:1 box on one, a
+  hand-typed rectangle on another, nothing at all on the third — with each box,
+  and each locked shape, still in place after clicking away to another row and
+  back;
+- **Use this crop on every image** over that batch, which put a 1:1 box on all
+  three at 1800 x 1800, 900 x 900 and 600 x 600, each centred on the same part
+  of its own picture;
+- a transparent PNG padded into a square JPEG and its pixels read back to
+  confirm the background colour reached both the padding *and* the
+  transparency;
+- a file with nothing asked of it coming back as the identical `File`, name and
+  all;
+- the viewer opened from the thumbnail and from the button, closed by Escape, by
+  the backdrop and by its own button, with the compare toggle swapping a 500 x
+  333 result for its 1200 x 1600 original in place;
+- and the whole of the above again against the **mangled** build, which is what
+  actually deploys.
+
+---
+
+# Audio Editor
+
+The ninth tool, and the first one here that is about sound. It plays a
+recording backwards, changes how fast it plays — with or without moving the
+pitch — and sets how loud it is. Drop a video on it and you get the sound out
+of it, with the picture never decoded at all.
+
+---
+
+## Why the file that comes out is a WAV
+
+Because no browser ships an encoder that could write anything else, and the
+alternative is sending the recording to a server that has one. That is the
+trade this site does not make, so the format follows from the promise rather
+than the other way round:
+
+```
+decodeAudioData  ->  Float32 per channel  ->  arithmetic  ->  header + samples
+```
+
+There is no encoder anywhere in that line. `src/wav.js` is a header builder and
+an interleaver, and the only lossy step in the whole tool is rounding a float to
+sixteen bits at the very end — which the page offers to skip, by writing 32-bit
+float instead.
+
+It costs size: about ten megabytes a minute in stereo, against one for an MP3.
+That is said on the page, next to the estimate, rather than discovered in the
+downloads folder. When an FFmpeg build is vendored for the reasons in
+[What needs a vendored FFmpeg](#what-needs-a-vendored-ffmpeg), `libmp3lame`
+turns this into a real choice; until then, offering "MP3" would mean either
+uploading or lying.
+
+## The bug that is not in this tool, and the file that keeps it out
+
+`decodeAudioData` does not hand back the samples in the file. It hands them
+back **resampled to the sample rate of the context it was called on** — that is
+what the specification says, and it is what browsers do. On a machine whose
+audio hardware runs at 48 kHz, the obvious two lines
+
+```js
+const context = new AudioContext();
+const audio = await context.decodeAudioData(bytes);   // 44.1 kHz file -> 48 kHz
+```
+
+quietly resample every 44.1 kHz recording in existence, invent one sample in
+every nine, and hand the result to a page that then writes it out claiming
+nothing was touched. Every "audio editor" that does this is wrong in a way
+nobody can hear and everybody would object to if it were written down.
+
+The fix needs the rate **before** the decode, so `src/samplerate.js` reads it
+out of the header and decodes on an `OfflineAudioContext` created at that rate,
+which resamples nothing:
+
+| Format | Where the rate is |
+|---|---|
+| WAV | the `fmt ` chunk, four bytes in |
+| FLAC | twenty bits, eighty bits into STREAMINFO — it ends mid-byte |
+| Ogg | the Vorbis identification header; Opus is 48 kHz by definition |
+| WebM, MKV | EBML: Segment → Tracks → the first audio TrackEntry → Audio |
+| MP4, M4A, MOV | the audio track's `stsd` entry, as a 16.16 fixed number |
+| AIFF | an eighty-bit extended float in `COMM`, which no JS number type has |
+| MP3, AAC | the frame header itself, after skipping any ID3 tag |
+
+A format not on that list returns null, the decode falls back to 48 kHz, and
+the page says so in as many words — because the honest failure is "this was
+resampled on the way in", not silence.
+
+**The interesting failure was the last row.** A raw MP3 has no header to find,
+only frames, so the fallback scans for a frame sync — and eleven bits of sync
+will eventually turn up inside anything. A WebM recorded by `MediaRecorder`
+fell straight through to that scanner, which found something shaped like an
+AAC header inside compressed Opus and reported 64 kHz for a file that is
+48 kHz, `guessedRate: false`, i.e. reported as read from the file. It was found
+by running the real thing in a browser rather than by a unit test, which is
+exactly the class of bug the note in `tests/README.md` is about. Three things
+came out of it: EBML is parsed properly, every field of a candidate frame
+header has to make sense before it is believed, and the scan only looks at the
+start of the file, where a raw stream keeps its first frame.
+
+## Two ways to change the speed, and why both are here
+
+| | **Keep the pitch** | **Let it move** |
+|---|---|---|
+| File | `src/stretch.js` | `src/speed.js` |
+| Method | WSOLA | windowed-sinc resampling |
+| 2× does | half as long, same voice | half as long, an octave up |
+| Wanted for | a lecture, a podcast, a rehearsal | a tape effect, a chipmunk, a slowed sample |
+| Costs | a little smearing on transients | nothing audible |
+
+**Keeping the pitch** means cutting the recording into overlapping windows about
+46 ms long and laying them back down closer together or further apart. The
+whole difficulty is *where* to cut: two windows whose waves are out of step
+partly cancel where they cross, which is the hollow, flanging sound that gives
+cheap time-stretching away. So each window may slide about 6 ms either side of
+where the arithmetic puts it, and the position taken is the one whose overlap
+best matches the natural continuation of the window already laid down.
+
+Searching every offset at full resolution is 22 million multiply-adds per second
+of output, which is a four-second wait on a three-minute track. Searching a
+signal averaged down by four and then refining over the few samples between the
+coarse steps finds the same offset for about a tenth of the arithmetic. The
+windows are added up into the output and then divided by how much window was
+actually laid down, which is what keeps the first and last fiftieth of a second
+at full level instead of fading in and out.
+
+**Letting the pitch move** is a resample, and the obvious implementation is the
+one that sounds bad. Reading every other sample to play something twice as fast
+folds everything above a quarter of the sampling rate back down into the
+audible band as a metallic ring, and nothing removes it afterwards. So the
+samples are read through a windowed sinc kernel whose cutoff moves with the
+speed — band-limit first, decimate second. Measured on a 15 kHz tone at 4×,
+that is 4.5 × 10⁻⁶ of full scale where the naive version leaves a clearly
+audible tone.
+
+The kernel is tabulated once at module load, because the alternative is a
+`Math.sin` per tap per output sample and a four-minute track has 600 million of
+those.
+
+## Reversing and the level, which are exact
+
+Both are claimed on the page to be perfectly reversible, and both are:
+
+- **Reversing** writes the samples out in the other order. Reverse twice and the
+  file is the one that went in, sample for sample. It is also the one edit here
+  that needs no decisions at all.
+- **The level** multiplies every sample by one number. Up 6 dB and back down
+  6 dB lands on the samples that went in. Nothing is clamped on the way — a
+  sample pushed past full scale stays past it, so a 32-bit float export carries
+  it out intact and it can be pulled back down in an editor.
+
+What the page adds is the warning. Digital audio has a hard ceiling, and a
+16-bit WAV has to flatten anything above it, which is what distortion sounds
+like. So the summary says where the loudest moment will land *before* the
+button is pressed, and the result line afterwards says how many samples went
+over. "As loud as it will go" is peak normalisation — the one form of "make it
+louder" that cannot clip, because it works out the room left and uses exactly
+that much.
+
+The three edits run in one order, and it is not a preference:
+
+```
+reverse  ->  speed  ->  level
+```
+
+Reversing first means the stretcher's windows are chosen on the samples that
+will actually be heard. The level goes last because it is the only step whose
+result can be measured against full scale, and measuring it before a resample
+would report a peak the file will not have.
+
+## Video in, audio out
+
+The same job as opening an MP3, and for a reason worth stating: only the audio
+track is ever asked for. There is no `VideoDecoder` on this page, no canvas, and
+no code that could look at a frame — the browser's own demuxer hands over the
+sound and the picture is never decoded. It is also how to save the audio from a
+clip without editing it at all: leave every setting alone and press the button.
+
+## Limitations
+
+- **Memory, not length.** The whole recording is decoded into the page at once
+  and the WAV is assembled in memory before the download, so an hour of stereo
+  wants something under a gigabyte to work in. A WAV over 4 GB is refused
+  outright rather than written, because the format's own size field cannot
+  describe one.
+- **Nothing is trimmed here.** Marking a section and keeping it is the next
+  audio tool, not a setting on this one.
+- **Peak normalisation, not loudness.** Matching two tracks by how loud they
+  *sound* is LUFS, and it involves deciding on the listener's behalf which parts
+  to squash. This tool only ever multiplies.
+- **A speed past 4× or under 0.25×** is not offered. The stretcher can do it;
+  what comes out stops being a speed change and starts being an effect.
+- **The formats are the browser's.** AVI, WMA and most MKVs are refused with a
+  message rather than failing halfway through, which is the same line every
+  other tool here draws.
+
+## Testing it
+
+`tests/js/audio-*.test.js`, run by `node --test` with everything else. The WAV
+writer is a round trip — write the file, read the header and the samples back,
+check they are what went in, including the two clamping limits. The sample-rate
+sniffer gets a hand-written fixture per format and a refusal per way of being
+wrong. The two speed paths are measured rather than inspected: a Goertzel filter
+asks what frequency is actually in the output, which is how "2× resampled puts
+the tone an octave up" and "2× stretched leaves it exactly where it was" are
+checked rather than asserted.
+
+What the tests cannot cover is `decodeAudioData`, which needs a browser. That
+half was run in one — modules imported into a page, a WAV built in the page and
+a WebM recorded by `MediaRecorder` fed through the whole pipeline, and the
+result decoded again by the browser to confirm the file is real: 2 s at 1.5×
+comes back as 1.3333 s, reversed so the quiet half is first, normalised to
+exactly −1 dBFS, with the tone still at 440 Hz and nothing at 660. That is also
+the run that caught the WebM sample-rate bug above.

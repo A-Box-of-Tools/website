@@ -1,0 +1,34 @@
+#
+# Guide: the metadata inside a photo, and how to remove it.
+#
+# The one guide here where the reader may not know they have a problem. Most
+# people who post a photo have no idea it names the building it was taken in,
+# and nothing on screen shows it to them - so this page leads with what is in
+# there rather than with which button to press.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/remove-exif-and-gps-data"
+kind = "guide"
+nav = "EXIF and GPS data"
+group = "doing-the-job"
+tool = "exif-editor"
+
+title = "How to Remove EXIF and GPS Data From a Photo"
+description = "A photo off a phone usually carries the exact spot it was taken, the time to the second, and the camera's serial number. What is in there, who can read it, and how to take it out without touching the picture."
+
+heading = "What a photo says about you, and how to take it out"
+lede = """
+    A picture straight off a phone typically carries the coordinates of the
+    place it was taken, the time to the second, and enough about the camera to
+    tie it to every other photo from the same device. None of it is visible on
+    screen. This is what is in there and how to remove it."""
+
+updated = "20 August 2026"
+published = "2026-08-20"
+lastmod = "2026-08-20"
+
+og_title = "What a photo says about you, and how to take it out"
+og_description = "GPS coordinates, timestamps and serial numbers travel inside ordinary photos. What is in there, who can read it, and how to strip it."
+og_image_alt = "abox.tools - tools that never touch a server"

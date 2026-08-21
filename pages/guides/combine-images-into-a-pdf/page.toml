@@ -1,0 +1,34 @@
+#
+# Guide: combining images into a PDF.
+#
+# Usually somebody has been asked to "send it as a PDF" and has photographs of
+# paper. The interesting parts are the ones nobody warns them about: that a
+# JPEG can go in without being re-encoded at all, and that a PDF carries author
+# and timestamp fields to whoever they send it to.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/combine-images-into-a-pdf"
+kind = "guide"
+nav = "Images into a PDF"
+group = "doing-the-job"
+tool = "images-to-pdf"
+
+title = "How to Combine Images Into One PDF"
+description = "Turn photos or scans into a single PDF: page size, order and rotation, why a JPEG need not lose any quality on the way in, and what a PDF tells the person you send it to."
+
+heading = "How to combine images into one PDF"
+lede = """
+    Somebody has asked for &ldquo;one PDF&rdquo; and you have eleven photographs
+    of paper. This covers the choices that actually change the result &mdash;
+    page size, order, quality and what the document says about you &mdash; and
+    which of them you can ignore."""
+
+updated = "20 August 2026"
+published = "2026-08-20"
+lastmod = "2026-08-20"
+
+og_title = "How to combine images into one PDF"
+og_description = "Page size, order and rotation, why a JPEG need not lose quality on the way in, and what a PDF tells the person you send it to."
+og_image_alt = "abox.tools - tools that never touch a server"

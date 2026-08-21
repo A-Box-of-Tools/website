@@ -8,11 +8,17 @@
   config/site.toml, and pages/{{ page.slug }}/{page.toml,body.html}.
   Edit those and run `python build.py`.
 
-  A "page" here is a prose page that is not a tool and not the hub: the legal
-  pages. It gets the site frame, the same Content-Security-Policy as everywhere
-  else, and the same footer, and nothing else - no service worker, because there
-  is nothing to keep working offline, and no blob: in img-src, because it never
-  makes one.
+  A "page" here is a prose page that is not a tool and not the hub: a legal page
+  or a guide. It gets the site frame, the same Content-Security-Policy as
+  everywhere else, and the same footer, and nothing else - no service worker,
+  because there is nothing to keep working offline, and no blob: in img-src,
+  because it never makes one.
+
+  The two differ in three places below, all of them driven by values build.py
+  passes in rather than by a test written here: a guide gets a visible
+  breadcrumb, Article structured data, and - when it is about one particular
+  tool - a link to that tool under the heading. A legal page gets none of the
+  three, and the blocks simply do not appear.
 -->
 <!--
   This page carries advertising, and ad code cannot run under default-src
@@ -68,6 +74,19 @@
 </head>
 <body>
 
+<!--
+  The visible half of the BreadcrumbList in the head, and only where there is
+  one: a guide sits two levels down, under an index, and saying so is worth the
+  line. A legal page is passed an empty trail and this block does not render -
+  markup is meant to describe what a visitor can see, so a page with nothing to
+  show describes nothing.
+-->
+{% if crumbs %}<nav class="crumbs" aria-label="Breadcrumb">
+{% for crumb in crumbs %}  <a href="{{ crumb.href }}">{{ crumb.name }}</a>
+  <span aria-hidden="true">&rsaquo;</span>
+{% endfor %}  <span aria-current="page">{{ page.nav }}</span>
+</nav>
+{% endif %}
 <header class="hub-head">
   <p class="brand">
     <a class="brand-home" href="{{ base }}">
@@ -78,10 +97,26 @@
   <p class="lede">
 {{ page.lede }}
   </p>
-  <p class="legal-date">Last updated {{ page.updated }}</p>
+  <!--
+    The tool this guide is about, named once at the top where somebody who
+    already knows what they want can leave immediately. `tool` is empty on a
+    legal page and on a guide about no tool in particular, and then this is not
+    written at all.
+  -->
+{% if tool %}  <p class="guide-cta">
+    <a class="guide-cta-link" href="{{ base }}{{ tool.slug }}/">Open the {{ tool.name | e }}</a>
+    <span class="guide-cta-note">{{ tool.tagline }}</span>
+  </p>
+{% endif %}  <p class="legal-date">Last updated {{ page.updated }}</p>
 </header>
 
-<main class="legal">
+<!--
+  `prose` on a guide and `legal` on a legal page. The two rule sets are the same
+  narrow column - they are written as one selector list in shared/site.css - and
+  the class is still worth getting right, because a stylesheet that calls a
+  guide a legal page is a stylesheet nobody can search.
+-->
+<main class="{{ main_class }}">
 {{ body }}
 </main>
 
