@@ -1,0 +1,5 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
+const e={format:{language:"json",a:'{"10":"ten","2":"two","name":"a box of tools","tags":["local","offline"],"limits":{"files":null,"size":1e999},"price":0.1,"free":true}'},convert:{conversion:"json-yaml",a:["{",'  "service": "renderer",','  "replicas": 2,','  "regions": ["eu-west", "us-east"],','  "flags": { "cache": true, "debug": false },','  "note": "no",','  "command": "run --watch\\nreload --graceful"',"}"].join(`
+`)},encode:{a:"A string with <angle brackets>, an ampersand & a caf\xE9."},diff:{a:["The tools here run in your browser.","Your files stay on your machine.","There is nothing to upload.","There is no account to make.","Everything is free."].join(`
+`),b:["The tools here run in your own browser.","Your files stay on your machine.","There is nothing to upload, and nowhere to upload it to.","There is no account to make.","It works offline.","Everything is free."].join(`
+`)}};export{e as SAMPLES};
