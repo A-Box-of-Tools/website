@@ -24,7 +24,7 @@
     <p>
       and the browser goes and fetches <code>logo.png</code>, a data URI says
     </p>
-    <pre><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <pre class="wrap"><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
     <p>
       and there is nothing to fetch: the picture is already there, written out in
       characters. There are three parts. <code>data:</code> is the scheme.
@@ -131,7 +131,7 @@
     <p>
       It is also still readable:
     </p>
-    <pre><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
     <p>
       You can see the <code>viewBox</code>. You can change the fill colour in
       your editor without decoding anything. Base64 the same file and it becomes

@@ -282,6 +282,11 @@ New-OgImage -Path 'tools\qr-barcode\og.png' `
   -Subtitle 'A QR code for a link, a Wi-Fi network or a contact card - drawn on your own machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\text-tools\og.png' `
+  -Title 'Text & Code' `
+  -Subtitle 'Format it, compare it, encode it - without pasting it into anyone else''s server.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\compress-pdf\og.png' `
   -Title 'PDF Compressor' `
   -Subtitle 'Shows you where a document''s size actually is, then shrinks it on your own machine.' `
