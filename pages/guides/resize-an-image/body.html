@@ -1,0 +1,235 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../resize-image/">Image Resizer</a>, drop your picture
+      in, type one number &mdash; the width, usually &mdash; and leave the other
+      blank. The height follows from the shape of the picture, which is almost
+      always what was wanted: &ldquo;1920 wide&rdquo; means &ldquo;1920 wide and
+      whatever tall that makes it&rdquo;.
+    </p>
+    <p>
+      Everything below is what to do when one number is not enough: when you have
+      been given a box with two sides, when the picture needs to get bigger, or
+      when a whole folder of files has to come out the same.
+    </p>
+  </section>
+
+  <section>
+    <h2>Shrinking is safe. Enlarging is not.</h2>
+    <p>
+      These are not two directions of the same operation, and it is worth being
+      clear about why.
+    </p>
+    <p>
+      <strong>Making a picture smaller</strong> throws information away, and in
+      the only benign sense: there are more pixels going in than coming out, so
+      every pixel of the result is averaged from real measured detail. A
+      well-resized smaller copy usually looks <em>better</em> than the original
+      viewed at that size, because the averaging removes noise. Nothing is
+      invented.
+    </p>
+    <p>
+      <strong>Making a picture bigger</strong> has to invent. The detail is not
+      missing from the file; it was never photographed. All any enlarger can do
+      is guess intermediate pixels from their neighbours, and a guess between
+      two known values is a smooth ramp &mdash; which is why an enlarged photo
+      looks soft rather than sharp. It is a bigger copy of the same picture, not
+      a more detailed one.
+    </p>
+    <p>
+      That is why &ldquo;never make a picture bigger than it started&rdquo; is
+      on by default in the tool here. Turn it off if you genuinely need the
+      pixel count &mdash; a print shop asking for a minimum size, a template
+      that refuses anything under a width &mdash; but do it knowing that you are
+      buying pixels, not detail.
+    </p>
+    <p>
+      The machine-learning upscalers that do appear to add detail are a
+      different thing entirely: they are inventing plausible texture from a model
+      of what pictures usually look like. For a wallpaper that is fine. For a
+      photograph of a person, a document, or anything anybody will draw a
+      conclusion from, understand that the extra detail is fiction.
+    </p>
+  </section>
+
+  <section>
+    <h2>Three ways to say what size you want</h2>
+    <p>
+      Most tools, including this one, accept the same three, and they suit
+      different jobs.
+    </p>
+    <ul>
+      <li>
+        <strong>Exact pixels.</strong> Use this when somebody has specified the
+        number: an avatar that must be 400&times;400, a banner that must be
+        1500 wide. Fill in one side and let the other follow unless you have
+        been given both.
+      </li>
+      <li>
+        <strong>A percentage.</strong> Use this when you want everything
+        proportionally smaller and do not care about the exact figure &mdash;
+        &ldquo;half size&rdquo; for a set of photos going into a document.
+      </li>
+      <li>
+        <strong>A long edge.</strong> The most useful of the three for a mixed
+        batch. &ldquo;Longest side 1600&rdquo; makes every picture fit inside a
+        1600-pixel square whether it is portrait or landscape, which is what
+        &ldquo;make these all a reasonable size&rdquo; usually means in
+        practice.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>When the box is a different shape from the picture</h2>
+    <p>
+      This is where resizing actually gets decided. If you give both a width and
+      a height and they do not match your picture's proportions, something has
+      to give, and there are exactly four things that can:
+    </p>
+    <ul>
+      <li>
+        <strong>Fit inside the box.</strong> The whole picture is kept and comes
+        out smaller than the box on one axis. Nothing is lost and nothing is
+        distorted; you just do not get the exact dimensions you asked for. This
+        is the right default for almost everything.
+      </li>
+      <li>
+        <strong>Fill the box and cut the overflow off.</strong> You get exactly
+        the dimensions you asked for, and the parts of the picture that hang
+        over the edges are gone. Right for thumbnails, avatars and covers, where
+        the shape is fixed and the subject is in the middle. Wrong when the
+        thing that matters is near an edge.
+      </li>
+      <li>
+        <strong>Pad it out.</strong> The whole picture is kept, centred, with
+        the leftover space filled with a colour you pick. Right when a system
+        demands exact dimensions and you cannot lose any of the image &mdash;
+        product listings often work this way.
+      </li>
+      <li>
+        <strong>Stretch it.</strong> The picture is squashed or pulled to fit.
+        This is never what you want unless you are doing it deliberately, and it
+        is the one that everyone recognises instantly as wrong.
+      </li>
+    </ul>
+    <p>
+      If you find yourself reaching for stretch, what you probably want is crop.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cropping is a different job, and often the right one</h2>
+    <p>
+      Resizing changes how many pixels describe the whole picture. Cropping
+      changes which part of the picture you keep. People reach for the first when
+      they mean the second surprisingly often &mdash; &ldquo;this needs to be
+      square&rdquo; is a cropping problem, not a resizing one.
+    </p>
+    <p>
+      Do them in that order: crop to the framing you want first, then resize the
+      result to the size you need. Doing it the other way round means choosing
+      the crop out of a picture that has already lost pixels.
+    </p>
+    <p>
+      The tool here does both in one pass for that reason &mdash; drag a box,
+      lock it to a shape if you need a specific ratio, then say what size the
+      result should come out. Doing it in one pass also means the picture is only
+      encoded once, which matters for the reason in the next section.
+    </p>
+    <h3>Cropping a whole batch</h3>
+    <p>
+      A box drawn on one picture is applied to the rest as the same
+      <em>relative</em> area: the same fractions of each file's own width and
+      height. For a folder of screenshots or exports that are all the same size,
+      that is the same rectangle exactly. For a mixed batch it is the same
+      framing rather than the same rectangle, which is usually what was wanted
+      but is worth knowing before you trust it with fifty files.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the re-encode costs, and how to keep it to one</h2>
+    <p>
+      Resizing a JPEG or a WebP means decoding it, scaling the pixels, and
+      encoding them again &mdash; and that last step is lossy. The scaling
+      itself is not what costs you quality; the re-encode is.
+    </p>
+    <p>
+      Two things follow. First, the quality setting on the way out matters:
+      somewhere around 80&ndash;85 is invisible for a photograph and considerably
+      smaller than 100. Second, do it once. Resizing a picture that has been
+      resized twice already means three generations of lossy encoding, and it
+      shows.
+    </p>
+    <p>
+      A PNG has no such cost, because it is lossless &mdash; a resized PNG is
+      exactly the scaled pixels. If you are working through several steps and
+      the final format has not been decided, working in PNG in the middle avoids
+      stacking up generations.
+    </p>
+    <p>
+      One detail worth knowing about the tool here: a file you are not actually
+      changing at all is handed back byte for byte rather than re-encoded. Ask
+      for &ldquo;longest side 1600&rdquo; on a batch and the ones that are
+      already under 1600 come out untouched, tags and all. A tool that quietly
+      re-encoded them would be costing you quality on files nobody asked it to
+      change.
+    </p>
+  </section>
+
+  <section>
+    <h2>Transparency, and what happens to it</h2>
+    <p>
+      PNG and WebP can store transparency. JPEG cannot &mdash; there is no alpha
+      channel in the format at all. So saving a transparent image as JPEG has to
+      put something behind it, and that something is a flat colour.
+    </p>
+    <p>
+      Most tools use white and do not mention it, which is fine until your logo
+      lands on a dark page with a white box around it. Pick the colour
+      deliberately, or save as PNG or WebP and keep the transparency. The same
+      colour is used behind a padded frame, which is the other place people meet
+      this by surprise.
+    </p>
+  </section>
+
+  <section>
+    <h2>Which tool, if you were given a number</h2>
+    <p>
+      Two different numbers get handed out, and they need different tools.
+    </p>
+    <p>
+      <strong>&ldquo;1200 pixels wide&rdquo;</strong> is a dimensions problem.
+      The <a href="../../resize-image/">Image Resizer</a> is the one: you say how
+      many pixels you want and it gives you that.
+    </p>
+    <p>
+      <strong>&ldquo;Under 500&nbsp;KB&rdquo;</strong> is a file size problem, and
+      resizing is only one of the ways to solve it. The
+      <a href="../../compress-image/">Image Compressor</a> searches for the
+      highest quality that fits your target and resizes only if quality alone
+      cannot get there;
+      <a href="../compress-an-image-to-a-target-size/">its guide</a> covers what
+      that costs.
+    </p>
+  </section>
+
+  <section>
+    <h2>None of this needs an upload</h2>
+    <p>
+      Decoding an image, scaling it and encoding it again are things every
+      browser has been able to do for years &mdash; it is the same machinery a
+      web page uses to draw a picture at a different size. There is no technical
+      reason for your photo to travel to a server and back to come out smaller,
+      and the tool here does not send it anywhere: the page's
+      <code>Content-Security-Policy</code> names every address it may contact,
+      and none of them belongs to this site.
+    </p>
+    <p>
+      Load the page, unplug from the internet, and resize something anyway if you
+      would rather check than be told.
+      <a href="../is-it-safe-to-upload-files/">Is it safe to upload files to
+      online converters?</a> sets out three more checks you can run on any tool.
+    </p>
+  </section>

@@ -211,11 +211,61 @@ def page_jsonld(site, page):
         },
         {
             '@type': 'BreadcrumbList',
+            # Three steps rather than two, because there are now three: the hub,
+            # the guides index, and this guide. The visible trail at the top of
+            # the page is built from the same list, which is the rule Google
+            # asks for - markup describes what a visitor can see.
             'itemListElement': [
                 {'@type': 'ListItem', 'position': 1,
                  'name': site['name'], 'item': site['domain']},
                 {'@type': 'ListItem', 'position': 2,
+                 'name': to_text(site['guides']['heading']),
+                 'item': f'{site["domain"]}{site["guides"]["slug"]}/'},
+                {'@type': 'ListItem', 'position': 3,
                  'name': to_text(page['nav']), 'item': page['url']},
+            ],
+        },
+    ]
+    return dumps_ld(graph)
+
+
+def guides_jsonld(site, guides):
+    """CollectionPage + ItemList for the guides index.
+
+    An ItemList here and not on the roadmap, and the difference is whether the
+    names can be clicked: every entry below is a page that exists, so listing
+    them is describing the page rather than advertising something that is not
+    built yet.
+    """
+    index_url = f'{site["domain"]}{site["guides"]["slug"]}/'
+    graph = [
+        {
+            '@type': 'CollectionPage',
+            'url': index_url,
+            'name': to_text(site['guides']['heading']),
+            'description': to_text(site['guides']['description']),
+            'inLanguage': site['lang'],
+            'isPartOf': {'@id': site['domain'] + '#website'},
+            'mainEntity': {
+                '@type': 'ItemList',
+                'itemListElement': [
+                    {
+                        '@type': 'ListItem',
+                        'position': position,
+                        'url': guide['url'],
+                        'name': to_text(guide['heading']),
+                    }
+                    for position, guide in enumerate(guides, start=1)
+                ],
+            },
+        },
+        {
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                {'@type': 'ListItem', 'position': 1,
+                 'name': site['name'], 'item': site['domain']},
+                {'@type': 'ListItem', 'position': 2,
+                 'name': to_text(site['guides']['heading']), 'item': index_url},
             ],
         },
     ]
@@ -351,6 +401,23 @@ def load_page(path, site, root):
     # silent default would quietly claim the correction was the original.
     if page['kind'] == 'guide' and 'published' not in page:
         raise ConfigError(f'{path}: a guide needs `published`')
+
+    # Which group on the guides index it joins. Required for the same reason a
+    # tool's `roadmap_group` is: a guide that named no group would be built,
+    # sit at a URL, and be linked to from nowhere at all. The group has to
+    # exist, and has to list this guide back; build.py checks both, because it
+    # is the only place that can see every guide at once.
+    if page['kind'] == 'guide' and 'group' not in page:
+        raise ConfigError(
+            f'{path}: a guide needs `group`, naming one of the [[guides.groups]] '
+            'in config/site.toml, or nothing would link to it')
+
+    # Optional, and in practice only a guide sets it: the slug of the tool this
+    # guide is about. It puts a link to the tool on the guide and to the guide on
+    # the tool, from one line rather than two edits that can disagree. A guide
+    # about no tool in particular - "is it safe to upload files" - leaves it
+    # out. build.py checks the slug names a tool that exists.
+    page.setdefault('tool', '')
 
     page['url'] = f'{site["domain"]}{page["slug"]}/'
     page['dir'] = path.parent

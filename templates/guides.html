@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  GENERATED FILE - do not edit. Built by build.py from templates/guides.html,
+  config/site.toml, and one page.toml per guide under pages/guides/.
+  Edit those and run `python build.py`.
+
+  The index of the written half of this site. Nothing on it is written here:
+  every card below is a guide's own `heading` and `description`, the same two
+  strings that draw its <h1> and its <meta name="description">, so the promise
+  this page makes about a guide is the promise that guide keeps. Adding a guide
+  is adding a folder under pages/guides/ and naming it in a [[guides.groups]]
+  `order`; this file does not change.
+-->
+<!--
+  This page carries advertising, and ad code cannot run under default-src
+  'none'. The allowlist below is generated from config/site.toml, the same one
+  every other page is built from, so the pages cannot drift apart.
+-->
+{{ csp }}
+<title>{{ site.guides.title }}</title>
+<meta name="description" content="{{ site.guides.description }}">
+
+<link rel="canonical" href="{{ site.domain }}{{ site.guides.slug }}/">
+
+<meta name="google-adsense-account" content="{{ site.adsense_client }}">
+
+{% include "partials/head-scripts.html" %}
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:url" content="{{ site.domain }}{{ site.guides.slug }}/">
+<meta property="og:title" content="{{ site.guides.og_title }}">
+<meta property="og:description" content="{{ site.guides.og_description }}">
+<meta property="og:image" content="{{ site.domain }}og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ site.guides.og_image_alt }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ site.guides.og_title }}">
+<meta name="twitter:description" content="{{ site.guides.og_description }}">
+<meta name="twitter:image" content="{{ site.domain }}og.png">
+
+<!--
+  Structured data. The ItemList is built from the same guides that draw the
+  cards below, so a guide cannot appear in one and not the other.
+
+  Inline is deliberate and does not need 'unsafe-inline': a <script> whose type
+  is not a JavaScript type is a data block the parser never executes.
+-->
+<script type="application/ld+json">
+{{ jsonld }}
+</script>
+
+<!--
+  The stylesheet URL carries a hash of the stylesheet. GitHub Pages serves
+  HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
+  reaches a returning visitor as new markup wearing a four-hour-old sheet.
+-->
+<link rel="stylesheet" href="{{ css_href }}">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+</head>
+<body>
+
+<header class="hub-head">
+  <p class="brand">
+    <a class="brand-home" href="{{ base }}">
+      <span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools
+    </a>
+  </p>
+  <h1>{{ site.guides.heading }}</h1>
+  <p class="lede">
+{{ site.guides.lede }}
+  </p>
+  <!-- Counted by the build off the list itself, so it cannot be the kind of
+       number that is right on the day it is typed and wrong ever after. The
+       noun comes with it rather than being written here, because a count
+       rendered into a fixed plural reads "1 guides" on the day it matters. -->
+  <p class="page-count">
+    <strong>{{ guide_count }}</strong> {{ guide_noun }}
+  </p>
+</header>
+
+<main>
+
+{% for group in groups %}
+  <section class="category" id="{{ group.id }}" aria-labelledby="{{ group.id }}-h">
+    <div class="category-head">
+      <h2 id="{{ group.id }}-h">{{ group.name }}</h2>
+      <p class="category-note">{{ group.note }}</p>
+    </div>
+    <ul class="guide-list">
+{% for guide in group.guides %}      <li>
+        <a class="guide-card" href="{{ base }}{{ guide.slug }}/">
+          <span class="guide-name">{{ guide.heading }}</span>
+          <span class="guide-desc">{{ guide.description }}</span>
+        </a>
+      </li>
+{% endfor %}    </ul>
+  </section>
+{% endfor %}
+  <p class="page-note">
+    Every guide here describes a tool that runs on your own machine:
+    <a href="{{ base }}">see all of them</a>.
+  </p>
+
+</main>
+
+{% include "partials/footer.html" %}
+
+</body>
+</html>

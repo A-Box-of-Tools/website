@@ -287,6 +287,63 @@ og_image_alt = "abox.tools - tools that never touch a server"
 
 #
 # ---------------------------------------------------------------------------
+# The guides index at /guides/.
+#
+# Guides themselves live under pages/guides/<slug>/, one folder each, and the
+# build finds them there - this is only the frame around the list, in exactly
+# the way [roadmap] above is only the frame around config/planned.toml.
+#
+# The one thing written here rather than derived is the grouping and the order
+# within each group, in [[guides.groups]] below. A guide names the group it
+# joins in its own page.toml, and the build refuses to finish if a guide names
+# a group that does not exist, if a group lists a guide that does not exist, or
+# if a guide exists that no group lists - the same three checks the hub makes
+# about tools, and for the same reason: a page nothing links to is a page that
+# might as well not have been written.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+slug = "guides"
+nav = "All guides"
+lastmod = "2026-08-20"
+
+title = "Guides &mdash; how to do the job, and what each choice costs"
+description = "Plain guides to compressing, resizing, cropping, trimming and converting your own files - what the settings mean, what they cost, and why none of it needs an upload."
+
+heading = "Guides"
+lede = """
+    One guide per tool, written for the person who has been told to hit a size
+    or a shape and would like to know what the setting they are about to move
+    actually does. Everything described here happens on your own machine."""
+
+og_title = "abox.tools guides"
+og_description = "How to compress, resize, crop, trim and convert your own files - and what each setting costs. No uploads involved."
+og_image_alt = "abox.tools - tools that never touch a server"
+
+[[guides.groups]]
+id = "doing-the-job"
+name = "Doing the job"
+note = "One per tool: what the job involves, which setting matters, and what it costs you."
+order = [
+  "compress-an-image-to-a-target-size",
+  "resize-an-image",
+  "remove-exif-and-gps-data",
+  "make-a-pdf-smaller",
+  "combine-images-into-a-pdf",
+  "turn-images-into-a-video",
+  "trim-a-video",
+  "crop-a-video",
+]
+
+[[guides.groups]]
+id = "before-you-upload"
+name = "Before you upload anything"
+note = "What handing a file to a website actually does, and how to tell whether it had to happen."
+order = ["is-it-safe-to-upload-files"]
+
+#
+# ---------------------------------------------------------------------------
 # The footer, which is now the same on every page - hub, tool and legal alike.
 #
 # The tool list and the legal-page list in it are not written here: build.py
