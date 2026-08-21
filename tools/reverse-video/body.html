@@ -1,0 +1,89 @@
+<main>
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose a video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Size</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Frame</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Length</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <div class="stage-wrap" id="preview-wrap" hidden>
+      <video id="preview" class="stage" playsinline controls></video>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the reversal -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">2</span> Reverse it</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="quality">Quality</label>
+        <select id="quality">
+          <option value="low">Smaller file</option>
+          <option value="medium" selected>Balanced</option>
+          <option value="high">Best quality</option>
+        </select>
+        <p class="field-note">
+          Never more than the original spent on the same picture &mdash; a
+          reversed clip holds the same frames, so spending more only makes the
+          file bigger.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Reverse the sound too
+        </label>
+        <p class="field-note" id="audio-note">
+          Turned round sample by sample, then encoded again as AAC. Leave it off
+          for a silent clip, which is quicker.
+        </p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Output frame</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Length</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Frames</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>How</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Reverse video</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Download video</a>
+      </div>
+    </div>
+  </section>
+</main>

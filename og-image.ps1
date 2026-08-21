@@ -232,6 +232,11 @@ New-OgImage -Path 'tools\video-to-gif\og.png' `
   -Subtitle 'Pick the section, the size and the frame rate - and never upload the clip.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\reverse-video\og.png' `
+  -Title 'Video Reverser' `
+  -Subtitle 'Play a clip backwards - the picture and the sound - without it leaving your machine.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\exif-editor\og.png' `
   -Title 'EXIF Viewer & Remover' `
   -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
