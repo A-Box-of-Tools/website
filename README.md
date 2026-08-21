@@ -2147,24 +2147,61 @@ Padding is the interesting middle case: the frame stays exactly the size asked
 for, because an exact frame is the entire point of padding, and the picture
 inside it simply is not blown up to fill it.
 
-## One box, a whole batch
+## Every image has its own box
 
-The crop box is drawn on one image — whichever the preview is pointed at, and
-any row on the list can take that place. Every other file is cropped from the
-same relative area: the same fractions of its own width and height. For a folder
-of screenshots or exports that are all one size, that is the same rectangle
-exactly, and the page says so rather than hedging.
+Cropping is not a mode. There is no "do you want to crop" question to answer,
+because the answer is in the box itself: it opens on the whole picture, so an
+image nobody drags on goes through whole. A step you can ignore costs nothing;
+a question you have to answer first costs everybody who only wanted a resize.
 
-With a shape locked there is one further step, and it is the difference between
-a tool that works and one that is merely correct. Somebody who pressed **1:1**
+Each image owns its rectangle, in its own pixels, along with the shape that
+rectangle is locked to. Clicking a row puts that image in the preview with its
+own box and its own lock back on it — so a batch can be cropped one way, another
+way, and not at all, and nothing you do to one image touches another.
+
+That leaves the case where a folder of exports all want the same framing, which
+would otherwise cost one drag each. **Use this crop on every image** is the one
+control that writes another image's box, and it does it once, when pressed,
+rather than deriving it on every render: every other image takes the same
+relative area — the same fractions of its own width and height — and the boxes
+stay editable afterwards.
+
+With a shape locked it does one thing more, and that is the difference between a
+tool that works and one that is merely correct. Somebody who pressed **1:1**
 wants squares. The same relative area of a picture with a different shape is not
 a square — so the relative area is treated as the region of interest, and the
-largest box of the locked shape *inside* it is what is kept. A 1:1 box on a
-landscape photograph comes out as a square on the portrait one beside it, framed
-on the same part of the picture.
+largest box of the locked shape *inside* it is what is kept. Press 1:1, press
+the button, and a folder of mixed portrait and landscape shots comes out square,
+each framed on the same part of its own picture.
 
-The note under the preview says which of those three is happening, and only when
-it is actually true of the files on the list.
+The note under the preview says how many of the others have a box of their own
+and how many are still on the whole picture, and only when there is another
+image for it to be true of.
+
+## Looking at the result
+
+Every finished file opens full size in a `<dialog>` — click the thumbnail, or
+the **View** button beside the download. A real `<dialog>` opened with
+`showModal()` rather than a `div` pretending to be one: Escape, the focus trap
+and an inert background all come free from the browser and all come correct.
+Only the backdrop click is written here, and it is one line, because a click
+that lands on the dialog element rather than on anything inside it *is* the
+backdrop.
+
+What it adds over the row is the part a thumbnail cannot answer: the picture at
+a size worth judging, on a chequerboard so that transparency reads as
+transparency rather than as whatever colour the theme happens to be, and every
+figure behind the result — before and after, the crop in source pixels and where
+it was taken from, the scale, the quality that was spent, and whether the
+metadata survived. **Show the original** swaps the two in place, which is the
+only fair way to compare them.
+
+It costs nothing to open. Both pictures are object URLs this page already holds
+— the result's, and the original's, which has existed since the thumbnail was
+drawn — so the dialog fetches nothing and decodes nothing that was not already
+decoded. A small picture is shown at its own size rather than blown up to fill
+the dialog, because this is the view people open to judge a result and scaling
+it up would be showing them something the file is not.
 
 ## A file nobody asked to change is not changed
 
@@ -2197,9 +2234,9 @@ who wanted the tags gone without the picture being touched.
 - **Rotation is not here.** Straightening a scan by two degrees needs a
   transform, a background, and a decision about what happens to the corners, and
   it is a separate name on the planned list for that reason.
-- **The crop box is drawn on one image at a time.** There is no per-file box. A
-  batch that genuinely needs a different rectangle for each file is a batch that
-  wants running twice.
+- **The size and the format are the whole batch's.** The crop is per-image; the
+  dimensions and the output format are not. A batch that genuinely wants two
+  different output sizes is a batch that wants running twice.
 
 ## Testing it
 
@@ -2213,11 +2250,25 @@ them would be a control on the page that does nothing.
 
 The rest was checked by hand in the browser, the same way the compressor's was:
 images generated on a canvas and fed to the file input through a `DataTransfer`,
-then a mixed landscape-and-portrait batch run through a locked 1:1 box (900 x 900
-out of the portrait, 1800 x 1800 out of the landscape, both landing on 500 x 500);
-a transparent PNG padded into a square JPEG and its pixels read back to confirm
-the background colour reached both the padding *and* the transparency; and a file
-with nothing asked of it coming back as the identical `File`, name and all.
+then
+
+- a three-image batch cropped three different ways — a locked 1:1 box on one, a
+  hand-typed rectangle on another, nothing at all on the third — with each box,
+  and each locked shape, still in place after clicking away to another row and
+  back;
+- **Use this crop on every image** over that batch, which put a 1:1 box on all
+  three at 1800 x 1800, 900 x 900 and 600 x 600, each centred on the same part
+  of its own picture;
+- a transparent PNG padded into a square JPEG and its pixels read back to
+  confirm the background colour reached both the padding *and* the
+  transparency;
+- a file with nothing asked of it coming back as the identical `File`, name and
+  all;
+- the viewer opened from the thumbnail and from the button, closed by Escape, by
+  the backdrop and by its own button, with the compare toggle swapping a 500 x
+  333 result for its 1200 x 1600 original in place;
+- and the whole of the above again against the **mangled** build, which is what
+  actually deploys.
 
 ---
 
