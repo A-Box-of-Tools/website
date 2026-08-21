@@ -1,0 +1,371 @@
+#
+# SVG to Image
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "svg-to-image"
+name = "SVG to Image"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "SVG&nbsp;to&nbsp;Image <span class=\"h1-kw\">&mdash; rasterize a vector to PNG, JPEG or WebP at any size</span>"
+tagline = "Name the size. A vector has none of its own to lose."
+icon = "&#128444;&#65039;"  # the mark beside the page heading
+favicon = "&#128444;"       # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "images"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. file-list is the drop-a-file-then-see-a-row widget that
+# more than one tool needs and that no tool should own.
+css_parts = ["file-list"]
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "SVG to PNG &mdash; Rasterize a Vector at Any Size, No Upload"
+description = "Convert an SVG to a PNG, JPEG or WebP at any size, in your browser. Say the width, a multiple, or a box; get @2x and @3x copies as well. Transparency kept, nothing uploaded."
+og_title = "Turn an SVG into a PNG at any size, without uploading it"
+og_description = "A vector has no pixel size of its own, so the number is yours to pick - 32 or 8000, with the same sharpness either way. It all runs on your own machine."
+og_image_alt = "SVG to Image - rasterize a vector to PNG, JPEG or WebP at any size"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  img-src needs blob: because the rasteriser is an &lt;img&gt; holding the SVG
+  this page rewrote to the size you asked for, and https: because ad creatives
+  come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The drawing is rasterised by the same engine that just put it on your
+    screen. Your file is read off your disk, its root tag is rewritten to the
+    size you asked for by a hundred lines in <code>src/svg.js</code> that you
+    can read, and it is drawn onto a canvas your browser already ships. This
+    tool has no network feature of any kind &mdash; nothing to fetch, nothing to
+    send &mdash; and there is no server on the other end of this page to send a
+    logo to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      rasterize something. Not one request carries a file, a thumbnail, a
+      filename, or a byte of what you chose. Or unplug from the internet and
+      convert one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/svg.js</code> for how a
+      file's own size is read and how its root tag is rewritten, and
+      <code>src/render.js</code> for the eight lines that do the rasterising
+      &mdash; an &lt;img&gt;, a <code>drawImage</code> and a
+      <code>toBlob</code>, with nothing in between."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to convert an SVG to a PNG without uploading it"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            An SVG has no pixel size of its own, so the number is yours to pick
+            &mdash; 32 or 8000, and the same sharpness either way."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "SVG files"
+choose = "an SVG"
+analytics_extra = """, and none of the
+  sizes, formats or file names this tool works out"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your artwork has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The whole
+      rasteriser is an <code>&lt;img&gt;</code> holding a blob of your own file,
+      one <code>drawImage</code> onto a canvas, and one
+      <code>canvas.toBlob</code>."""
+
+[[privacy]]
+title = "An SVG is a document, and this is the mode where it cannot act."
+body = """
+ An SVG can carry a
+      <code>&lt;script&gt;</code>, a remote
+      <code>&lt;image href=&quot;https://&hellip;&quot;&gt;</code>, a
+      stylesheet and a webfont. Drawn through an <code>&lt;img&gt;</code> it is
+      in what the specification calls <em>secure static mode</em>: the script
+      does not run and not one of those addresses is fetched. That is a
+      guarantee of the browser's, not a promise of ours, and it is the reason
+      this page can open a file it has never seen without the file being able to
+      phone home."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your drawing. Every line that
+      reads, sizes or draws a file is served from this origin and listed in the
+      repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Choose the SVG."
+body = """
+ Drop one onto the picker, or pick a
+      folder of them and convert the lot in one go. The file is read straight
+      off your disk by the browser; nothing is sent anywhere while you do it.
+      Each row says what size the file thinks it is &mdash; and says so
+      differently when that size came from its <code>viewBox</code>, or was
+      assumed because the file declares none."""
+
+[[howto]]
+title = "Say how big."
+body = """
+ A multiple of the file's own size is the
+      quickest answer and the right one for a batch: every drawing is scaled from
+      its own starting point, so a set of icons stays in proportion. Otherwise
+      name a width, a height, the longest side, or a box with both sides given.
+      There is no penalty for a large number here the way there is with a
+      photograph &mdash; the drawing is redrawn at that size, not stretched to
+      it."""
+
+[[howto]]
+title = "Add the high-DPI copies if you need them."
+body = """
+ A phone and a Retina laptop draw
+      two or three device pixels for every CSS pixel, so a 200 pixel logo needs a
+      400 or 600 pixel file behind it. Ask for <code>@2x</code> and
+      <code>@3x</code> and they come out named the way Xcode, Android's tooling
+      and CSS <code>image-set()</code> all expect, and each one is exactly twice
+      or three times the first rather than separately rounded."""
+
+[[howto]]
+title = "Pick the format and decide about transparency."
+body = """
+ PNG unless you have a
+      reason: it is lossless, it keeps transparency, and flat colour compresses
+      well in it. JPEG has no transparency at all, so a background colour is
+      painted in whether you pick one or not &mdash; without it every transparent
+      pixel comes out black. WebP does both and makes a smaller file, at the cost
+      of software old enough not to read it."""
+
+[[howto]]
+title = "Look at the preview before you download."
+body = """
+ It is drawn by the same code that
+      writes the file, from your file, on your machine. Two things change when a
+      drawing becomes pixels and both show up here: a hairline that was half a
+      pixel wide goes grey, and any text is drawn in a font this computer has
+      rather than one fetched from the web."""
+
+[[howto]]
+title = "Take the files."
+body = """
+ One download per file, or the whole
+      batch as a single zip. Names follow the SVG they came from, with
+      <code>@2x</code> and <code>@3x</code> on the copies, and two files that
+      would have had the same name are numbered instead of one quietly replacing
+      the other."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my SVG uploaded anywhere?"
+a = """
+        No. The file is read by your own browser on your own hardware, drawn
+        onto a canvas by the same engine that renders every other picture you
+        see, and handed back as a download. This tool has no network feature of
+        any kind &mdash; it never fetches anything and never sends anything
+        &mdash; and the page's <code>Content-Security-Policy</code> names every
+        address it may contact, none of which belongs to this site."""
+
+[[faq]]
+q = "What size should I rasterize an SVG at?"
+a = """
+        Whatever the thing reading it asks for, multiplied by the device pixel
+        ratio of the screen it will be seen on. A logo that occupies 200 CSS
+        pixels needs 400 for a Retina laptop and 600 for a recent phone, which is
+        what the <code>@2x</code> and <code>@3x</code> copies here are. For an
+        app icon or a store listing, the store names an exact number and that is
+        the number. When nothing has told you, 1024 on the longest side is a
+        useful default: large enough for almost any use and small enough to email."""
+
+[[faq]]
+q = "Does making it bigger lose quality?"
+a = """
+        No, and this is the one place where that answer is honestly no. A vector
+        is instructions rather than pixels, so the browser draws the curves again
+        at whatever size is asked for. 4000 pixels from a 24 pixel icon is exactly
+        as sharp as 24 was. What you cannot do is go the other way: once it is a
+        PNG it is pixels like anything else, so rasterize at the size you need
+        rather than resizing the result later."""
+
+[[faq]]
+q = "My SVG has no width or height. What size do I get?"
+a = """
+        The <code>viewBox</code>, if there is one &mdash; its width and height
+        are user units rather than pixels, but they are the only numbers in the
+        file and a browser treats them as the drawing's natural size. If there is
+        no viewBox either, the page says <em>assumed</em> beside the row and uses
+        300&nbsp;&times;&nbsp;150, which is what an <code>&lt;img&gt;</code> would
+        have drawn it at. Either way you can name the size you want and the file
+        is drawn at that."""
+
+[[faq]]
+q = "Why does the text look different in the PNG?"
+a = """
+        Because the font is not in the SVG. An SVG that draws text names a font
+        and leaves the machine to find it, and a file that pulls one from Google
+        Fonts with an <code>@import</code> gets nothing here: an SVG drawn through
+        an <code>&lt;img&gt;</code> is not allowed to fetch anything, which is the
+        same rule that stops it phoning home with your file. The fix is the one
+        every designer already knows &mdash; convert the text to paths in the
+        drawing program before exporting. Then it is geometry, and it looks the
+        same everywhere."""
+
+[[faq]]
+q = "Can it convert several files at once?"
+a = """
+        Yes. Every SVG on the list is rendered with the same settings and the
+        batch comes down as one zip. A multiple &mdash; &ldquo;4&times; the size
+        the file asks for&rdquo; &mdash; is usually the right setting for a batch,
+        because each drawing is scaled from its own size rather than all of them
+        being forced to the same number of pixels. Click any row to put that one
+        in the preview."""
+
+[[faq]]
+q = "Is there a size limit?"
+a = """
+        The browser's, not ours. A canvas gives up somewhere past 16,384 pixels
+        on a side, and Safari on an iPhone or iPad stops at about 16.7 megapixels
+        of area &mdash; 4096&nbsp;&times;&nbsp;4096. Above that the page warns you
+        rather than handing back a blank image, which is what a browser does when
+        it has run out: <code>toBlob</code> returns nothing at all, with no error
+        to explain itself. Past 100 megapixels the tool refuses, because that is
+        400&nbsp;MB of canvas before a byte has been encoded."""
+
+[[faq]]
+q = "What happens to transparency?"
+a = """
+        It is kept, in PNG and in WebP. JPEG has no alpha channel at all, so a
+        colour is painted behind the whole picture whether you ask for one or not
+        &mdash; without it, everything transparent would come out black, which
+        looks like a bug rather than like JPEG. Picking a background colour with
+        PNG is a perfectly ordinary thing to want too: it flattens the drawing
+        onto that colour rather than leaving a hole."""
+
+[[faq]]
+q = "Can it read an SVG that contains a script or an external image?"
+a = """
+        It can read one, and it will draw exactly the parts a browser is willing
+        to draw. An SVG loaded through an <code>&lt;img&gt;</code> is in
+        <em>secure static mode</em>: scripts do not run, external references are
+        not fetched, and animation does not play &mdash; the first frame is what
+        you get. So a file with a remote <code>&lt;image&gt;</code> in it comes
+        out with that part missing. That is the browser refusing on your behalf,
+        and it is the reason this page can safely open a file it has never seen."""
+
+[[faq]]
+q = "What is the difference between this and the Image Resizer?"
+a = """
+        What the source is. The Image Resizer starts from pixels &mdash; a JPEG,
+        a PNG &mdash; so making it bigger has to invent detail that was never
+        there. This starts from a drawing, so there is nothing to invent and no
+        upper limit worth worrying about. If what you have is an SVG, this is the
+        one that gets you a sharp result; if what you have is a photograph, that
+        is the one."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. There is no limit on the number or the size of the files
+        either, because there is no server paying for them &mdash; the work
+        happens on your own machine. The site carries advertising, which is what
+        pays for it; the ads are not given anything about your files."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your artwork away to be rendered would stop
+        the moment you unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Rasterize an SVG to a PNG, JPEG or WebP at any size, in the browser. Set the size by a multiple, a width, a height, the longest side or a box, add @2x and @3x copies, keep or flatten transparency, and convert a batch at once. Nothing is uploaded."
+features = [
+  "Renders the vector again at every size, so the result is sharp at any of them",
+  "Size by a multiple, a width, a height, the longest side, or a box with a fit",
+  "@2x and @3x copies, each an exact multiple of the first rather than rounded twice",
+  "PNG, JPEG and WebP, with transparency kept or flattened onto a colour",
+  "Reads the size out of width, height or the viewBox, and says which it used",
+  "Warns before a size a browser's canvas cannot actually produce",
+  "Preview drawn by the same code that writes the file",
+  "Batches, with all results in one zip",
+  "Scripts and remote references in the file are never run or fetched",
+  "Runs offline; no upload, no account",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/svg+xml,.svg"
+multiple = true
+title = "Drop an SVG here"
+hint = "or click to browse &mdash; several at once is fine"
