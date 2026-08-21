@@ -9,9 +9,10 @@
   `base`: './' at the root, '../' one level down. Every link below is built from
   it, so nothing here has to know which kind of page it landed on.
 
-  The tool list, the guide list and the legal-page list are passed in by
-  build.py from the folders that exist, so a new tool, a new guide or a new page
-  appears here without anybody remembering to add it.
+  The tool list and the legal-page list are passed in by build.py from the
+  folders that exist, so a new tool or a new page appears here without anybody
+  remembering to add it. The guides are reached through their index rather than
+  listed one by one - see the comment above that link.
 -->
 <footer>
   <div class="footer-cols">
@@ -33,28 +34,22 @@
     </div>
 
     <!--
-      The guides, with their own index at the top of the column. The index is
-      the entry that matters - it is the only one of these links that keeps
-      working as the list grows - but the guides themselves are listed under it
-      as well, because a footer link is how a reader who is already on a page
-      finds the next one without going back through an index first.
+      The guides get one link, not a column of their own. Every guide used to be
+      listed here, which made a fourth column that grew by a line every time one
+      was written and put nine near-identical entries in front of somebody who
+      wanted the privacy page. The index is the entry that matters: it is the
+      one link that keeps working however long the list gets, and it is where a
+      reader can see all of them side by side with a sentence each, which a
+      footer column cannot do.
 
-      Like the tool list, this comes from the folders that exist, in the order
-      config/site.toml groups them in, so a new guide reaches every footer on
-      the site without anybody editing this file.
+      It sits directly under "All tools" because the two are the same kind of
+      thing - the front door to each half of the site.
     -->
-    <div class="footer-col">
-      <strong>Guides</strong>
-      <ul>
-        <li><a href="{{ base }}{{ site.guides.slug }}/">{{ site.guides.nav }}</a></li>
-{% for g in footer.guides %}        <li><a href="{{ base }}{{ g.slug }}/">{{ g.nav }}</a></li>
-{% endfor %}      </ul>
-    </div>
-
     <div class="footer-col">
       <strong>This site</strong>
       <ul>
         <li><a href="{{ base }}">All tools</a></li>
+        <li><a href="{{ base }}{{ site.guides.slug }}/">{{ site.guides.nav }}</a></li>
         <li><a href="{{ base }}{{ site.roadmap.slug }}/">{{ site.roadmap.nav }}</a></li>
 {% for p in footer.pages %}        <li><a href="{{ base }}{{ p.slug }}/">{{ p.nav }}</a></li>
 {% endfor %}        <li><a href="/sitemap.xml">Sitemap</a></li>

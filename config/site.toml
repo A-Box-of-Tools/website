@@ -305,6 +305,11 @@ og_image_alt = "abox.tools - tools that never touch a server"
 
 [guides]
 slug = "guides"
+# The footer label, sitting directly under "All tools" and deliberately matching
+# it: the two are the front door to each half of the site. It is the only guide
+# link in the footer - the guides themselves are reached from the index rather
+# than listed one by one, which is what stops that column growing by a line
+# every time one is written.
 nav = "All guides"
 lastmod = "2026-08-20"
 

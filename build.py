@@ -157,18 +157,22 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     guide_of = tie_guides_to_tools(ordered_guides, by_slug)
 
     # What the footer on every page is built from. Derived from the folders that
-    # exist rather than written down anywhere, so a new tool, a new guide or a
-    # new legal page reaches every footer on the site without a second edit.
+    # exist rather than written down anywhere, so a new tool or a new legal page
+    # reaches every footer on the site without a second edit.
     # Tools in the order the hub shows them, not the order the folders happen to
     # sort in, so the footer and the cards above it agree. A slug named here that
     # has no tool, or a tool named nowhere, is caught by build_hub below.
+    #
+    # No guide list. The footer carries one link to the guides index instead of
+    # an entry per guide - a column that grew by a line every time somebody
+    # wrote one, in front of a reader who was looking for the privacy page. The
+    # index is the link that keeps working however long the list gets, and it is
+    # already built from the folders that exist.
     ordered = [by_slug[slug]
                for category in site['hub']['categories']
                for slug in category['order'] if slug in by_slug]
     footer = {
         'tools': [{'name': tool['name'], 'slug': tool['slug']} for tool in ordered],
-        'guides': [{'nav': page['nav'], 'slug': page['slug']}
-                   for page in ordered_guides],
         'pages': [{'nav': page['nav'], 'slug': page['slug']} for page in legal],
     }
 

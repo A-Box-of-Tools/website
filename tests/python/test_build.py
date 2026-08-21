@@ -373,6 +373,19 @@ class BuildTheSite(unittest.TestCase):
                 text = (self.out / name).read_text(encoding='utf-8')
                 self.assertRegex(text, r'href="(\.\./|\./|/)*guides/"')
 
+    def test_the_footer_links_the_index_rather_than_every_guide(self):
+        """One link, not a column that grows by a line per guide.
+
+        Checked on the privacy page, because it is the one kind of page whose
+        own prose links no guide at all - so anything matching here could only
+        have come from the footer."""
+        names = sorted(p.parent.name for p in ROOT.glob('pages/guides/*/page.toml'))
+        self.assertTrue(names)
+        legal = (self.out / 'privacy' / 'index.html').read_text(encoding='utf-8')
+        for guide in names:
+            with self.subTest(guide=guide):
+                self.assertNotIn(f'guides/{guide}/', legal)
+
     def test_a_guide_and_its_tool_link_to_each_other(self):
         """One line - `tool` in the guide's page.toml - makes both halves.
 
