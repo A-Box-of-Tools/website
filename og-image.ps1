@@ -212,6 +212,11 @@ New-OgImage -Path 'tools\images-to-video\og.png' `
   -Subtitle 'Turn a folder of images into an MP4 slideshow, encoded on your own machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\gif-maker\og.png' `
+  -Title 'GIF Maker' `
+  -Subtitle 'Put pictures in order, set the speed, and get one animated GIF.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\crop-video\og.png' `
   -Title 'Video Cropper' `
   -Subtitle 'Cut a clip down to the part that matters, without it ever leaving your machine.' `

@@ -1,0 +1,174 @@
+<main>
+  <!-- Step 1 &mdash; the frames -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose images</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="Change how the frames are shown">
+          <button type="button" data-view="large" class="active" aria-pressed="true">Large</button>
+          <button type="button" data-view="small" aria-pressed="false">Small</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">Sort by name</button>
+        <button type="button" data-sort="date" class="ghost">Sort by date</button>
+        <button type="button" data-sort="reverse" class="ghost">Reverse</button>
+        <button type="button" id="clear-all" class="ghost danger">Remove all</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Drag any frame by its <span class="grip" aria-hidden="true">&#8942;&#8942;</span> handle to
+      reorder, or use the arrows on each one. The order here is the order they play in.
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">Hold every frame for</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="Unit for how long each frame is held">
+        <option value="seconds" selected>seconds</option>
+        <option value="fps">frames per second</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">Apply to all</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; settings -->
+  <section class="card">
+    <h2><span class="step">2</span> GIF settings</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">Size</label>
+        <select id="size">
+          <option value="480" selected>480 px &mdash; a good default</option>
+          <option value="640">640 px</option>
+          <option value="320">320 px</option>
+          <option value="240">240 px</option>
+          <option value="original">Match the images</option>
+          <option value="custom">Custom&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="Custom width in pixels">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="Custom height in pixels">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">Image fit</label>
+        <select id="fit">
+          <option value="contain" selected>Fit inside (letterbox)</option>
+          <option value="cover">Fill frame (crops edges)</option>
+          <option value="stretch">Stretch to fill (distorts)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Backdrop colour</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">Colours</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; the most a GIF holds</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; smallest file</option>
+        </select>
+        <p class="field-note">Fewer colours, smaller file, more banding.</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">Palette</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>Best colours for each frame</option>
+          <option value="shared">One palette for the whole GIF</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">Dithering</label>
+        <select id="dither">
+          <option value="on" selected>On &mdash; smoother gradients</option>
+          <option value="off">Off &mdash; flatter, cleaner edges</option>
+        </select>
+        <p class="field-note">Turn it off for logos, line art and screenshots.</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">Looping</label>
+        <select id="loop-mode">
+          <option value="forever" selected>Loop forever</option>
+          <option value="once">Play once</option>
+          <option value="times">Play a set number of times&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="How many times the animation plays" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">Transparency</label>
+        <select id="transparent">
+          <option value="off" selected>Flatten onto the backdrop</option>
+          <option value="on">Keep transparent areas</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="Preview of the first frame"></canvas>
+        <p id="preview-empty" class="preview-empty">Add images to see a preview</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Frames</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>Runs for</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>Frame size</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Plays</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; export -->
+  <section class="card">
+    <h2><span class="step">3</span> Make the GIF</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Make GIF</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="The finished animation, playing"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Download GIF</a>
+      </div>
+    </div>
+  </section>
+</main>
