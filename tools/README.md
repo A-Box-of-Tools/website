@@ -19,6 +19,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Video Cutter](trim-video/) | `/trim-video/` | Mark the parts worth keeping as it plays. Get them back as one video. |
 | [Video Cropper](crop-video/) | `/crop-video/` | Cut a clip down to the part that matters. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
+| [HEIC to JPG](heic-to-jpg/) | `/heic-to-jpg/` | The photos an iPhone makes, in a format everything opens. |
 | [Image to ICO](image-to-ico/) | `/image-to-ico/` | One picture in. Every size a browser, Windows or a Mac asks for, out. |
 | [SVG to Image](svg-to-image/) | `/svg-to-image/` | Name the size. A vector has none of its own to lose. |
 | [Image Resizer](resize-image/) | `/resize-image/` | Say the size. Draw the box. Pick the format. |

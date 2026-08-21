@@ -297,6 +297,34 @@ class BuildTheSite(unittest.TestCase):
         version = page.split('styles.css?v=')[1].split('"')[0].split("'")[0]
         self.assertIn(f'styles.css?v={version}', worker)
 
+    def test_a_vendored_engine_is_copied_and_precached(self):
+        """Any tool with a vendor/ folder gets it byte for byte, and cached.
+
+        Read off the repository rather than naming the one tool that has one:
+        the rule is about the folder, not about libheif, and a second vendored
+        engine should not also mean remembering to edit a test.
+        """
+        vendored = sorted(ROOT.glob('tools/*/vendor'))
+        if not vendored:
+            self.skipTest('no tool vendors anything')
+
+        for folder in vendored:
+            slug = folder.parent.name
+            worker = (self.out / slug / 'sw.js').read_text(encoding='utf-8')
+            for source in sorted(folder.rglob('*')):
+                if not source.is_file():
+                    continue
+                name = f'vendor/{source.relative_to(folder).as_posix()}'
+                with self.subTest(file=f'{slug}/{name}'):
+                    built = self.out / slug / name
+                    self.assertTrue(built.is_file(), name)
+                    # Byte for byte: a codec that went through the minifier, or
+                    # through anything else, is not the codec that was audited.
+                    self.assertEqual(built.read_bytes(), source.read_bytes())
+                    # And offline, or the tool stops working with the network
+                    # unplugged, which is the one thing it promises.
+                    self.assertIn(f"'{name}'", worker)
+
     def test_no_template_tag_survives_into_the_output(self):
         for name in self.written:
             if not name.endswith('.html'):

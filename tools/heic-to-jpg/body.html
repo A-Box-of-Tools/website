@@ -1,0 +1,112 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose your HEIC photos</h2>
+
+    <p class="card-lede">
+      Straight off the phone, out of a backup, or copied from a memory card. The
+      file is read here, on this machine, and the picture is decoded here too
+      &mdash; there is no upload step in this page and no server behind it.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Take all off the list</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; what comes out -->
+  <section class="card" id="options-card">
+    <h2><span class="step">2</span> Say what you want back</h2>
+
+    <fieldset class="options">
+      <legend>The format</legend>
+
+      <div class="option-row">
+        <label for="format-select">Write the pictures as</label>
+        <select id="format-select">
+          <option value="image/jpeg" selected>JPEG &mdash; opens everywhere, including things made this century by mistake</option>
+          <option value="image/png">PNG &mdash; lossless, and several times the size</option>
+          <option value="image/webp">WebP &mdash; smaller than JPEG at the same quality, and modern browsers only</option>
+        </select>
+      </div>
+
+      <div class="option-row" id="quality-row">
+        <label for="quality">Quality</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="50" max="100" step="1" value="92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>The photo details</legend>
+
+      <label class="check">
+        <input type="checkbox" id="keep-exif" checked>
+        <span>
+          <strong>Keep the date, the camera and the settings</strong>
+          <span class="check-note">
+            Copied across exactly as the phone wrote them, so the converted photo
+            still sorts by the day it was taken rather than the day it was
+            converted. This includes the GPS coordinates when the photo has them
+            &mdash; the list above says which of yours do. Turn this off and the
+            JPEG comes out with nothing in it but the picture.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary">
+        Either way, nothing here is read out to anybody: the choice is about what
+        goes into the file you get back, not about what this page does with it.
+        If you want to look through the tags in detail, or strip them from photos
+        that are already JPEGs, the
+        <a href="../exif-editor/">EXIF Viewer &amp; Remover</a> is the tool for
+        that.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Convert</h2>
+
+    <div class="run-row">
+      <button type="button" id="convert-all" class="primary big" disabled>Convert</button>
+    </div>
+
+    <!--
+      The decoder's own status line. This page is the only one on the site that
+      carries a codec, so it is the only one with anything to report here, and
+      saying where the megabyte came from is the point: it is served from this
+      origin, it is cached with the rest of the page, and it is what makes the
+      offline promise hold on a browser that cannot open a HEIC at all.
+    -->
+    <p id="engine-status" class="engine-status" role="status" aria-live="polite"></p>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Converted</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Download all as a zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
