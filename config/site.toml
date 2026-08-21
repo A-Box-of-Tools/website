@@ -217,7 +217,7 @@ body = """
 id = "images-and-video"
 name = "Images &amp; video"
 note = "Work with pictures and footage without handing them to anyone."
-order = ["images-to-video", "trim-video", "crop-video", "exif-editor", "image-to-ico", "resize-image", "compress-image"]
+order = ["images-to-video", "trim-video", "crop-video", "video-to-gif", "exif-editor", "heic-to-jpg", "image-to-data-uri", "image-to-ico", "svg-to-image", "resize-image", "compress-image"]
 
 [[hub.categories]]
 id = "audio"
@@ -351,13 +351,17 @@ order = [
   "compress-an-image-to-a-target-size",
   "resize-an-image",
   "make-a-favicon",
+  "convert-an-svg-to-png",
+  "embed-an-image-in-css",
   "remove-exif-and-gps-data",
+  "convert-heic-to-jpg",
   "make-a-pdf-smaller",
   "combine-images-into-a-pdf",
   "turn-images-into-a-video",
   "trim-a-video",
   "crop-a-video",
   "make-a-qr-code",
+  "turn-a-video-into-a-gif",
 ]
 
 [[guides.groups]]

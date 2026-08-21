@@ -222,9 +222,19 @@ New-OgImage -Path 'tools\trim-video\og.png' `
   -Subtitle 'Mark the parts worth keeping as it plays, and save them as one video.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\video-to-gif\og.png' `
+  -Title 'Video to GIF' `
+  -Subtitle 'Pick the section, the size and the frame rate - and never upload the clip.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\exif-editor\og.png' `
   -Title 'EXIF Viewer & Remover' `
   -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
+New-OgImage -Path 'tools\heic-to-jpg\og.png' `
+  -Title 'HEIC to JPG' `
+  -Subtitle 'iPhone photos in a format everything opens - decoded on your own machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
 New-OgImage -Path 'tools\edit-audio\og.png' `
@@ -245,6 +255,16 @@ New-OgImage -Path 'tools\resize-image\og.png' `
 New-OgImage -Path 'tools\image-to-ico\og.png' `
   -Title 'Image to ICO' `
   -Subtitle 'Make a favicon, a Windows app icon or a macOS .icns - every size in one file.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
+New-OgImage -Path 'tools\svg-to-image\og.png' `
+  -Title 'SVG to Image' `
+  -Subtitle 'Rasterize a vector to PNG, JPEG or WebP at any size, on your own machine.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
+New-OgImage -Path 'tools\image-to-data-uri\og.png' `
+  -Title 'Image to Data URI' `
+  -Subtitle 'Encode a picture as one line you can paste straight into CSS or HTML.' `
   -Footer 'No uploads | No accounts | Works offline'
 
 New-OgImage -Path 'tools\compress-image\og.png' `

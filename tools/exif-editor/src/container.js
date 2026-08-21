@@ -70,7 +70,7 @@ export function sniff(bytes) {
 
 /** Why a format this tool can read is not one it can rewrite. */
 const REFUSALS = {
-  heic: 'HEIC is a box format built out of nested atoms, and rewriting one safely needs a different parser from the three here. Convert it to JPEG first.',
+  heic: 'HEIC is a box format built out of nested atoms, and rewriting one safely needs a different parser from the three here. Convert it to JPEG first - the HEIC to JPG tool on this site does that, and can leave the metadata out on the way.',
   avif: 'AVIF uses the same box format as HEIC, and the same applies: rewriting one needs a parser this tool does not have yet.',
   gif: 'GIF has comment and application blocks rather than EXIF, and almost never carries anything personal. It is not handled here.',
   tiff: 'A bare TIFF is all metadata and all image at once, with the pixels addressed by the same offsets this tool would have to move. Editing one is a different job from editing a photo.',
