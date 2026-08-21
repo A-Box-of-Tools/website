@@ -212,6 +212,12 @@ note = "Work with pictures and footage without handing them to anyone."
 order = ["images-to-video", "trim-video", "crop-video", "exif-editor", "resize-image", "compress-image"]
 
 [[hub.categories]]
+id = "audio"
+name = "Audio"
+note = "Work on a recording without handing it to anyone, including the sound inside a video."
+order = ["edit-audio"]
+
+[[hub.categories]]
 id = "documents-and-pdf"
 name = "Documents &amp; PDF"
 note = "Make and rearrange documents without sending them to be processed."
