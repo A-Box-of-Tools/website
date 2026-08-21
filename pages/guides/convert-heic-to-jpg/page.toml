@@ -1,0 +1,36 @@
+#
+# Guide: the format an iPhone saves in, and how to get out of it.
+#
+# The reader arriving here is usually not curious about HEIC. They have a photo
+# that will not open, or a form that will not accept it, and somebody has told
+# them to "convert it to JPG". So the page answers that first and explains
+# afterwards - and the part it explains hardest is the part every converter is
+# quiet about, which is where the decoding happens and who ends up holding the
+# photo.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/convert-heic-to-jpg"
+kind = "guide"
+nav = "HEIC to JPG"
+group = "doing-the-job"
+tool = "heic-to-jpg"
+
+title = "How to Convert HEIC to JPG (and What HEIC Actually Is)"
+description = "iPhones save photos as HEIC, and half the internet cannot open one. What the format is, why only Safari decodes it, what converting costs the picture, and how to do it without uploading the photos to anyone."
+
+heading = "The photo your phone saved, and the format nothing will open"
+lede = """
+    An iPhone saves photos as HEIC, which is smaller and better than JPEG and
+    which a great deal of software still refuses to open. This is what the
+    format actually is, what converting costs the picture, and why almost every
+    converter wants you to upload it first."""
+
+updated = "20 August 2026"
+published = "2026-08-20"
+lastmod = "2026-08-20"
+
+og_title = "How to convert HEIC to JPG"
+og_description = "Why iPhone photos will not open, what converting costs, and how to do it without handing the photos to anybody."
+og_image_alt = "abox.tools - tools that never touch a server"

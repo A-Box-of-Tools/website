@@ -422,6 +422,40 @@ Only *choosing* the files is shared. What a tool does with them afterwards — t
 list, the thumbnails, the reordering, the per-row buttons — differs enough per
 tool that sharing it would cost more than it saved.
 
+### A vendored engine
+
+A codec nobody here wrote goes in `tools/<slug>/vendor/`, and only one tool has
+one: `/heic-to-jpg/`, which carries `libheif` because HEIC is the one picture
+format a browser will not decode. `src/` is for code written in this repository
+and is read, minified and token-checked as such; `vendor/` is a different kind
+of file and gets a different door.
+
+    tools/<slug>/vendor/*     copied byte for byte into dist/<slug>/vendor/
+
+Three rules, all of them enforced by `vendor_files` in `build.py` rather than
+remembered:
+
+- **Never minified.** `buildlib/minify.py` is a tokeniser that verifies its own
+  output and refuses input it cannot tokenise exactly. A compiled bundle carries
+  strings with line continuations in them — legal JavaScript, and not something
+  that minifier will touch. That refusal is correct; the answer is to copy the
+  file, not to loosen the check for third-party code.
+- **Precached with everything else.** Every file in the folder goes into the
+  tool's service worker list, so a tool carrying an engine still works with the
+  network unplugged. An engine downloaded on first use is not an offline tool.
+- **The licence rides along.** Vendoring is only honest if what the thing is and
+  what it is licensed under arrive with it, so the whole folder ships and the
+  page links to it.
+
+Everything in the folder is copied and everything is cached. There is no list to
+keep in step, and a file that is in there but not wanted is a file that should
+not have been committed.
+
+The argument about *when* an engine is worth vendoring, and what it costs the
+Content-Security-Policy, is in [What can be built here](#what-can-be-built-here).
+
+---
+
 ### Adding from a web address
 
 Setting `[picker.urls]` in a tool.toml switches on the one feature here that
@@ -895,16 +929,27 @@ an engine to do it instead, and these all stay small enough to read.
 | Audio: trim, fade, speed, volume, waveform | `decodeAudioData` and `OfflineAudioContext`. WAV out is a 44-byte header in front of the samples |
 | QR codes and barcodes | Arithmetic over a string. There is no input file at all |
 
-### What needs a vendored FFmpeg
+### What needs a vendored engine
 
 Everything below is out of reach of the browser's own APIs and in reach of an
 `ffmpeg.wasm` build. It passes the test at the top of this section — the file
 never leaves the machine and the tool works with the network unplugged — so it
 is on the roadmap on that basis.
 
+**One of these has been built, and it did not need FFmpeg.** HEIC to JPG is
+`/heic-to-jpg/`, and it vendors `libheif` rather than FFmpeg: the same job at
+1.4 MB instead of 25–30 MB, because libheif is only that job. Read
+[its README](tools/heic-to-jpg/README.md) before reaching for the big build for
+anything else here — the lesson generalises, which is that the estimate below is
+the ceiling and not the price. It also settled the two costs this section warns
+about. `script-src` did need `'wasm-unsafe-eval'`, on that page and nowhere
+else. `connect-src` did **not** need `'self'`, because the engine ships as a
+script with its binary embedded rather than as a loader that has to go and fetch
+one — which costs about 140 KB over the wire and buys a policy with no asterisk
+on it.
+
 | Tool | Why it needs the build |
 |---|---|
-| HEIC to JPG or PNG | Only Safari decodes HEIC natively. FFmpeg's HEIF demuxer and HEVC decoder cover everyone else, so the iPhone-photo problem stops being Safari-only. Images to Video currently skips HEIC with a message; that message becomes a link to the converter |
 | Encoding MP3 | No browser ships an MP3 encoder. `libmp3lame` is one, so "anything to MP3" becomes a real converter instead of only "MP3 in, WAV out" |
 | Encoding AVIF | Chromium's `canvas.toBlob` is the only native writer, and everywhere else it quietly hands back a PNG. `libaom` writes it the same way in every browser |
 | Animated WebP | Every browser decodes it and none encode it. `libwebp` does both |

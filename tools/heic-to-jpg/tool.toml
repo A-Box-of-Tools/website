@@ -1,0 +1,372 @@
+#
+# HEIC to JPG
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# This is the first tool here that carries a codec of its own. What that means
+# for the policy is the [csp] table near the bottom; what it means for the
+# promise is the pledge, and it is said in plain words rather than buried.
+#
+
+slug = "heic-to-jpg"
+name = "HEIC to JPG"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "HEIC&nbsp;to&nbsp;JPG <span class=\"h1-kw\">&mdash; convert iPhone photos</span>"
+tagline = "The photos an iPhone makes, in a format everything opens."
+icon = "&#128241;"          # the mark beside the page heading
+favicon = "&#128247;"       # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+roadmap_group = "images"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. file-list is the drop-a-file-then-see-a-row widget that
+# more than one tool needs and that no tool should own.
+css_parts = ["file-list"]
+
+# Shared modules this tool asks for. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "HEIC to JPG Converter &mdash; Free, No Upload"
+description = "Convert iPhone HEIC photos to JPG in your browser. The decoder runs on your own machine: nothing is uploaded, no account, works offline, and the date and camera details can come along."
+og_title = "Turn HEIC photos into JPGs without uploading them"
+og_description = "The converter that does not want your photos. The HEIC decoder is served from this page and runs on your own machine, so the pictures never leave it."
+og_image_alt = "HEIC to JPG - iPhone photos in a format everything opens"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  script-src carries 'wasm-unsafe-eval' here and on no other page. This is the
+  one tool with a codec of its own - libheif, compiled to WebAssembly - because
+  HEIC is the one format no browser but Safari will decode. Instantiating a
+  WebAssembly module is what that keyword permits, and nothing else: it does not
+  allow eval, it does not allow inline script, and it does not open a single
+  network directive. connect-src is untouched, which is why the engine ships
+  with its binary inside it rather than fetching one.
+
+  img-src needs blob: for the converted pictures this page draws from the files
+  you chose, and https: because ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The decoding runs in your own browser, on your own hardware. HEIC is the one
+    picture format a browser will not open by itself, so this page carries the
+    decoder with it &mdash; about 1.4 MB, served from this site, cached after the
+    first visit. That is the entire reason every other HEIC converter asks you to
+    upload: they put the codec on a server and your photos have to go to it. This
+    one puts the codec here instead. There is no network feature on this page at
+    all, and no server on the other end of it to send a photo to."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      convert a photo. You will see this page's own files load, the decoder among
+      them, and not one request carrying a photo, a thumbnail, a filename, or a
+      byte of what you chose. Or load the page once, unplug from the internet,
+      and convert a folder of them anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/heif.js</code> for how the
+      decoder is loaded and what it is allowed to do, <code>src/boxes.js</code>
+      for the container parsing that finds the photo's metadata, and
+      <code>src/exif.js</code> for what happens to that metadata on the way into
+      a JPEG. The engine itself is <code>vendor/libheif.js</code>, unmodified,
+      with its licence beside it."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to convert HEIC photos to JPG"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            The photos an iPhone makes, in a format everything opens &mdash;
+            decoded on your own machine, not on somebody's server."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment.
+[words]
+plural = "photos"
+choose = "a photo"
+analytics_extra = """, and none of the
+  dates, camera models or coordinates this tool reads out of them"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No size limit"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+# --- the policy this page adds to the site's -------------------------------
+#
+# The only widening any tool here has ever asked for, and it is one keyword.
+# 'wasm-unsafe-eval' lets the page instantiate a WebAssembly module; without it
+# the decoder loads and then refuses to start. Note what is NOT here:
+# connect-src is left exactly as the site set it, so this page still cannot
+# fetch, XHR, WebSocket or beacon anything anywhere - which is the reason the
+# vendored engine is the build with its binary embedded rather than the smaller
+# one that would have to go and get it.
+[csp]
+"script-src" = ["'wasm-unsafe-eval'"]
+
+[[privacy]]
+title = "Your photos have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were."""
+
+[[privacy]]
+title = "The decoder came from here, and it goes nowhere."
+body = """
+ HEIC is HEVC
+      in a box format, and no browser but Safari will decode one, so this page
+      ships <code>libheif</code> compiled to WebAssembly &mdash; about 1.4 MB,
+      committed to this repository, served from this origin, and cached by the
+      service worker like every other file here. It is not fetched from a CDN,
+      because that would put a third party in the path of every visit and would
+      stop the tool working offline. The binary is inside the script rather than
+      beside it precisely so that no fetch is needed to start it."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> in any file written for this tool. The vendored
+      engine, like every Emscripten build, contains the loader paths that would
+      fetch a <code>.wasm</code> from a URL; they are not taken, because the
+      binary is already in hand &mdash; and if one were, <code>connect-src</code>
+      names Google's measurement endpoints and nothing else, so the browser would
+      refuse it. The policy is the proof, not the promise."""
+
+[[privacy]]
+title = "The metadata is read here and reported to you."
+body = """
+ The list on
+      the page says what each photo carries &mdash; the date, the camera, and
+      whether there are GPS coordinates in it &mdash; because that is a thing you
+      might want to know before you hand the JPEG to somebody. It is read out of
+      the file by <code>src/boxes.js</code> in this browser, shown on this page,
+      and written into your JPEG or left out, entirely as you choose. There is no
+      custom analytics event in this repository that carries a filename, a date,
+      a coordinate or a count."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your photos. Every line that
+      reads, decodes or writes a file is served from this origin and listed in
+      the repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Load the page once and disconnect from the
+      network, and the tool is unchanged &mdash; the decoder is cached with it.
+      That is the simplest proof of all, and it is a stronger one here than
+      anywhere else on this site: a converter that sent your photos away to be
+      decoded could not possibly manage it."""
+
+[[howto]]
+title = "Choose your HEIC photos."
+body = """
+ Drop them onto the picker or select them
+      by hand, straight out of a phone backup or a folder on the desktop. They
+      are read off your disk by the browser; nothing is sent anywhere while you
+      do it. The list says what each one is and what it has inside it."""
+
+[[howto]]
+title = "Check what the photos carry."
+body = """
+ Each row names the date it was
+      taken, the camera, and &mdash; in green, because it is the part worth
+      noticing &mdash; whether the file holds GPS coordinates. That is read out
+      of the container without decoding the picture, so it costs nothing and
+      appears immediately."""
+
+[[howto]]
+title = "Pick a format, and decide about the details."
+body = """
+ JPEG unless you have a
+      reason: it is the format that opens everywhere, which is the whole point of
+      converting. The quality slider is at 92, which is the setting at which a
+      photograph is hard to tell from the original. The checkbox decides whether
+      the date, camera and location come along."""
+
+[[howto]]
+title = "Press \"Convert\", and download."
+body = """
+ The decoder arrives on the
+      first conversion &mdash; about 1.4 MB, once &mdash; and every photo after
+      that is decoded and written on your own machine. One file gives you a
+      download button; several give you a zip as well."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree.
+
+[[faq]]
+q = "Is my photo uploaded anywhere?"
+a = """
+        No. The file is read, decoded and written by your own browser on your own
+        hardware. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site. The one thing that does load is the
+        decoder itself, and that comes from this site, once, before your photo is
+        ever involved."""
+
+[[faq]]
+q = "Why does this page download 1.4 MB the first time?"
+a = """
+        Because HEIC is the one picture format a browser will not open. It is an
+        HEVC frame in a box container, and only Safari, on Apple hardware, has a
+        decoder for it; Chrome, Firefox and Edge simply refuse the file. So a HEIC
+        converter needs a decoder from somewhere, and there are two places it can
+        come from: a server, or the page. Every other converter chose the server,
+        which is exactly why they all need your photos uploaded. This one carries
+        <code>libheif</code> compiled to WebAssembly instead. It is served from
+        this site, cached after the first visit, and it is the entire price of
+        your photos not going anywhere."""
+
+[[faq]]
+q = "Does the JPEG keep the date, the camera and the location?"
+a = """
+        If you want it to, and it is a checkbox on the page. Left on, the EXIF
+        block is copied out of the HEIC and written into the JPEG exactly as the
+        phone wrote it, so the converted photo still sorts by the day it was taken
+        rather than the day it was converted &mdash; which is the usual complaint
+        about HEIC converters. One tag is changed and only one: the orientation,
+        which is set to "upright", because the rotation has already been applied
+        to the pixels and a viewer that applied it again would turn every portrait
+        photo on its side. Turn the checkbox off and the JPEG comes out with the
+        picture and nothing else."""
+
+[[faq]]
+q = "Does it strip GPS coordinates?"
+a = """
+        It tells you they are there, and then it does whatever you ask. The row
+        for each photo says whether the file carries coordinates before you
+        convert anything, which is more than the phone does. Unticking "keep the
+        date, the camera and the settings" leaves them out of the JPEG along with
+        everything else; leaving it ticked carries them across. If what you want
+        is to look through the tags in detail, or to strip them from photos that
+        are already JPEGs, the <a href="../exif-editor/">EXIF Viewer &amp;
+        Remover</a> is the tool for that, and it does it without re-compressing
+        the picture."""
+
+[[faq]]
+q = "Is the picture re-compressed?"
+a = """
+        Yes, and it has to be: HEIC and JPEG are different codecs, so there is no
+        way to move from one to the other without decoding the picture and
+        encoding it again. What you can control is how much that costs. The
+        quality slider defaults to 92, at which a photograph is very hard to
+        distinguish from the original, and PNG is on the menu for the case where
+        you want no loss at all and do not mind the file being five to ten times
+        the size."""
+
+[[faq]]
+q = "What if the file is called .jpg but is really a HEIC?"
+a = """
+        It still works. Every file dropped here is identified by its first bytes
+        rather than by its name, because the name is whatever the last app to
+        touch the file decided to call it &mdash; and a HEIC that arrived called
+        ".jpg" is one of the commonest ways people end up looking for a tool like
+        this. A file that genuinely is a JPEG or a PNG is refused with a message
+        saying so, rather than being converted into a copy of itself."""
+
+[[faq]]
+q = "Can it convert a Live Photo, or a burst?"
+a = """
+        The still pictures in it, yes. A HEIC can hold more than one picture, and
+        every one it holds is converted and named after the original with a number
+        on the end. The video half of a Live Photo is a separate file that the
+        phone keeps beside the HEIC, so it is not in here to convert. Depth maps
+        and thumbnails are in the container but are not pictures anybody asked
+        for, and are left alone."""
+
+[[faq]]
+q = "Why will it not take my AVIF?"
+a = """
+        Because there is nothing to do to it. AVIF is the same container as HEIC
+        with AV1 inside instead of HEVC, and every current browser decodes one
+        natively &mdash; so a converter would be shipping a megabyte of engine to
+        solve a problem you do not have. If you need an AVIF as a JPEG, the
+        <a href="../compress-image/">Image Compressor</a> and the
+        <a href="../resize-image/">Image Resizer</a> both read AVIF and write
+        JPEG using the decoder your browser already has."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. There is no limit on the number or the size of the files
+        either, because there is no server paying for them &mdash; the work
+        happens on your own machine. The site carries advertising, which is what
+        pays for it; the ads are not given anything about your photos."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes, decoder included. Load the page once, then disconnect from the
+        internet and it keeps working on your photos exactly as before. That is
+        also the strongest proof available that nothing is being uploaded: a
+        converter that sent your HEICs away to be decoded would stop the moment
+        you unplugged, and this one does not."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Convert HEIC and HEIF photos from an iPhone into JPEG, PNG or WebP. The HEIC decoder is WebAssembly served from the page itself, so the pictures are decoded on your own machine and never uploaded. The date, camera and location can be carried into the JPEG or left out."
+features = [
+  "Converts HEIC and HEIF to JPEG, PNG or WebP",
+  "Decodes in the browser, on any browser - not only Safari",
+  "Nothing is uploaded, and the tool works with the network unplugged",
+  "Carries the date, camera and GPS across into the JPEG, or leaves them out",
+  "Says which photos hold GPS coordinates before anything is converted",
+  "Corrects the orientation tag, so portrait photos do not come out sideways",
+  "Identifies files by their contents, so a HEIC named .jpg still works",
+  "Converts every picture in a burst or Live Photo, not just the first",
+  "Batches, with all results in one zip",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+# Deliberately wider than ".heic". A HEIC that arrived called ".jpg" is one
+# of the commonest reasons somebody is on this page, and an accept list of
+# just the two extensions would hide that file in the browser's own dialog.
+# Every file is identified by its first bytes anyway, and anything that is
+# not a HEIC is refused with a message saying what it actually is.
+accept = "image/*,.heic,.heif"
+multiple = true
+title = "Drop HEIC photos here"
+hint = "or click to browse &mdash; .heic and .heif, whatever they happen to be named"

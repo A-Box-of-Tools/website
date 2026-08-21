@@ -20,6 +20,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Video Cropper](crop-video/) | `/crop-video/` | Cut a clip down to the part that matters. |
 | [Video to GIF](video-to-gif/) | `/video-to-gif/` | Pick the section, the size, and the frame rate. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
+| [HEIC to JPG](heic-to-jpg/) | `/heic-to-jpg/` | The photos an iPhone makes, in a format everything opens. |
 | [Image to ICO](image-to-ico/) | `/image-to-ico/` | One picture in. Every size a browser, Windows or a Mac asks for, out. |
 | [SVG to Image](svg-to-image/) | `/svg-to-image/` | Name the size. A vector has none of its own to lose. |
 | [Image to Data URI](image-to-data-uri/) | `/image-to-data-uri/` | The whole picture as one line of text. Paste it straight into CSS or HTML. |
