@@ -27,6 +27,7 @@ items = [
   ["Add text", "over the picture, or in a caption box above it"],
   ["Filters", "brightness, contrast, saturation, blur, grayscale"],
   ["Image to data URI", "paste the result straight into CSS or HTML"],
+  ["HEIC to JPG", "the photos an iPhone makes, in a format everything opens"],
   ["AVIF &amp; JPEG XL", "convert either way, in whichever browser you happen to use"],
 ]
 
@@ -35,7 +36,6 @@ id = "gif"
 name = "GIF &amp; animation"
 items = [
   ["GIF maker", "images into an animated GIF"],
-  ["Video to GIF", "pick the section, the size, and the frame rate"],
   ["GIF to MP4 or WebM", "the same animation, usually a tenth of the size"],
   ["Split a GIF", "every frame out as its own PNG"],
   ["Resize, crop &amp; rotate GIFs", "frame by frame, with the timing kept"],
