@@ -1,0 +1,2 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
+function m(n,t,{rotation:r=0,displayWidth:s,displayHeight:f,frame:e,background:w="#000"}){const o=Math.min(e.width/s,e.height/f),h=(e.width-s*o)/2,l=(e.height-f*o)/2;n.setTransform(1,0,0,1,0,0),n.fillStyle=w,n.fillRect(0,0,e.width,e.height),n.setTransform(o,0,0,o,h,l),r===90?n.transform(0,1,-1,0,s,0):r===180?n.transform(-1,0,0,-1,s,f):r===270&&n.transform(0,-1,1,0,0,f),n.drawImage(t,0,0),n.setTransform(1,0,0,1,0,0)}export{m as drawFitted};
