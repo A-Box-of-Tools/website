@@ -25,10 +25,16 @@
   gap: 0.5rem;
 }
 
+/* `min-width` because this is a grid item, and a grid item's automatic minimum
+   is min-content - here the clip's whole filename, which .clip-name is already
+   set up to cut short with an ellipsis but never got the chance to. Without it
+   the single column grew wider than the phone it is being read on. The file
+   rows on the other tools get this free from their `overflow: hidden`. */
 .clip {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  min-width: 0;
   padding: 0.5rem 0.6rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);

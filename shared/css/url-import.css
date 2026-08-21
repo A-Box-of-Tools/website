@@ -47,6 +47,14 @@
   resize: vertical;
 }
 
+/* Safari zooms the page into any field it is asked to focus whose text is under
+   16px, and then leaves it zoomed - which on the one field here somebody has to
+   type a whole URL into is worth avoiding. Only where there is a finger, so the
+   monospace column this panel is set in is unchanged on a desktop. */
+@media (pointer: coarse) {
+  .url-body textarea { font-size: 16px; }
+}
+
 .url-actions { display: flex; align-items: center; gap: 0.7rem; margin-top: 0.6rem; flex-wrap: wrap; }
 .url-status { font-size: 0.85rem; color: var(--text-dim); }
 .url-note { margin: 0.6rem 0 0; font-size: 0.78rem; color: var(--text-dim); }

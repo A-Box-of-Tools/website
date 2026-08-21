@@ -222,6 +222,14 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* The label is 0.8rem and the input inherits it, which is right on a desktop
+   and wrong on an iPhone: Safari zooms the page into any field it is asked to
+   focus whose text is under 16px, and then leaves it zoomed. Sixteen only where
+   there is a finger, so the desktop reading of these fields is unchanged. */
+@media (pointer: coarse) {
+  .numbers input { font-size: 16px; }
+}
+
 .number-actions {
   display: flex;
   gap: 0.4rem;

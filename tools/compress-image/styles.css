@@ -115,7 +115,12 @@
 }
 
 .option-row label { font-size: 0.9rem; font-weight: 600; }
-.option-row select { max-width: 100%; }
+
+/* `max-width` alone loses: a flex item's automatic minimum is min-content, and
+   for a <select> that is its longest option - a whole sentence here. Without the
+   `min-width`, the row stayed as wide as that sentence on a narrow screen. */
+.option-row { min-width: 0; }
+.option-row select { min-width: 0; max-width: 100%; }
 
 .check {
   display: flex;
