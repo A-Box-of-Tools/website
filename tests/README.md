@@ -53,12 +53,20 @@ somebody's file rather than throwing an error. So `tests/js/` is mostly round
 trips — read a file, write it back, and check that what came out is what went
 in, byte for byte, with only the metadata gone.
 
-The one thing that is neither a round trip nor a refusal is the video
-trimmer's `ranges.js`, and it is the most carefully tested file here. It turns
-seconds into ticks on two different clocks, and its answers decide where a
-lossless cut actually begins — which is at the keyframe in front of the mark,
-not at the mark. Getting that wrong does not throw; it desynchronises the
-sound.
+Two files are neither a round trip nor a refusal, and they are the most
+carefully tested here, for the same reason: both are arithmetic whose mistakes
+do not throw.
+
+The video trimmer's `ranges.js` turns seconds into ticks on two different
+clocks, and its answers decide where a lossless cut actually begins — which is
+at the keyframe in front of the mark, not at the mark. Getting that wrong
+desynchronises the sound.
+
+The video reverser's `timeline.js` decides which frame comes out when, and in
+which groups the file has to be decoded to get them. Getting that wrong gives
+you a video that plays backwards and is a frame too long, or one whose frames
+are reversed in the wrong groups — neither of which is an error anything could
+raise.
 
 On the Python side the same reasoning points at the minifiers. `buildlib/`
 already refuses to write output whose tokens moved; `tests/python/` checks the

@@ -1,0 +1,184 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../reverse-video/">Video Reverser</a>, drop the clip
+      in, decide whether you want the sound reversed too, and export. What comes
+      out is the same clip with its last frame first, exactly as long as the one
+      that went in.
+    </p>
+    <p>
+      Unlike trimming, this has to write every frame again &mdash; the sound as
+      well as the picture. That is not a shortcoming of a particular tool; it is
+      what reversing is. The rest of this page is why, and what it means for how
+      long you will be waiting.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why a video cannot simply be played backwards</h2>
+    <p>
+      A video file is not a stack of pictures. Roughly one frame in every fifty
+      is a whole picture &mdash; a <em>keyframe</em> &mdash; and everything
+      between them is a description of what changed since the frames around it.
+      That is why an hour of video fits on a phone.
+    </p>
+    <p>
+      It also means a decoder can only go forwards. To show you the last frame
+      of a clip it has to find the keyframe in front of it and decode
+      everything in between. Ask for the second-to-last frame and it does the
+      same work again.
+    </p>
+    <p>
+      So reversing is done a group at a time: decode a group forwards, hold the
+      frames, hand them to the encoder in the other order, move to the group
+      before it. The obvious alternative &mdash; decode the whole clip into a
+      list and walk the list backwards &mdash; needs about 3&nbsp;MB of memory
+      per 1080p frame, or 5&nbsp;GB a minute, which is why tools that do it that
+      way fall over on anything longer than a few seconds.
+    </p>
+  </section>
+
+  <section>
+    <h2>What happens to the sound</h2>
+    <p>
+      This is where reversing tools differ most, and where it is worth checking
+      what you actually got.
+    </p>
+    <p>
+      Sound is compressed in packets of a few tens of milliseconds, each coded
+      against the one before it. Writing those packets out back to front does
+      <em>not</em> play a track backwards &mdash; it plays short pieces forwards
+      in the wrong order, which sounds like a stutter or a fault rather than
+      like a reversal. The only way to reverse sound properly is to decode the
+      whole track, put the samples in the other order, and encode it again.
+    </p>
+    <p>
+      That is what happens here, and it is why the sound is re-encoded when the
+      <a href="../../trim-video/">Video Cutter</a> and the
+      <a href="../../crop-video/">Video Cropper</a> never touch it: those jobs do
+      not change <em>when</em> anything happens, and this one changes nothing
+      else.
+    </p>
+    <p>
+      If you want the picture backwards and no sound at all &mdash; which is the
+      usual choice for anything going into a feed that plays muted &mdash; turn
+      the checkbox off. It is quicker, and the file is smaller.
+    </p>
+  </section>
+
+  <section>
+    <h2>What it costs the picture</h2>
+    <p>
+      One re-encode. The frames come out in an order nothing in the original
+      file was coded for, so each of them has to be written afresh.
+    </p>
+    <p>
+      What a well-behaved tool will not do is spend <em>more</em> than the
+      original did. A reversed clip holds exactly the same pictures as the clip
+      that arrived, so a higher bitrate has nothing new to describe: it makes
+      the file bigger without making it look better. The quality setting here
+      moves within that ceiling rather than above it.
+    </p>
+    <p>
+      As always, lossy steps compound. Reversing an original is one generation.
+      Reversing an export of a download of a screen recording is four, and it
+      looks like it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Trim first, then reverse</h2>
+    <p>
+      If the clip needs both, cut it first. Trimming is free &mdash; a good
+      trimmer moves whole frames across without decoding them &mdash; and every
+      second you remove is a second nobody has to decode and encode again.
+    </p>
+    <p>
+      Doing it the other way round means reversing footage you are about to
+      throw away. On a long clip that is the difference between a job that takes
+      a few seconds and one that takes minutes. The
+      <a href="../trim-a-video/">trimming guide</a> covers why that first step
+      need not cost you any quality at all.
+    </p>
+    <p>
+      The same order applies to cropping: cut, crop, reverse, and you pay for one
+      re-encode of the shortest possible clip.
+    </p>
+  </section>
+
+  <section>
+    <h2>What people actually use it for</h2>
+    <ul>
+      <li>
+        <strong>The rewind gag.</strong> Something falls, breaks or splashes, and
+        reversing puts it back. It reads as a joke because real footage played
+        backwards is unmistakable &mdash; smoke gathers, water climbs.
+      </li>
+      <li>
+        <strong>Boomerangs by hand.</strong> Reverse a short clip and join it to
+        the original with the
+        <a href="../../trim-video/">Video Cutter</a>; you get the
+        forwards-then-backwards loop without the app that usually makes it, and
+        at your own length rather than its.
+      </li>
+      <li>
+        <strong>Reveals.</strong> Film the tidy end state and reverse it, so a
+        finished plate becomes ingredients or an assembled thing comes apart.
+        Easier to film than the forwards version, which is the point.
+      </li>
+      <li>
+        <strong>Reversed speech.</strong> Which is only interesting if the sound
+        is genuinely reversed &mdash; see above.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Formats, and how long it takes</h2>
+    <p>
+      <strong>MP4, M4V and MOV</strong> are read directly, whatever is inside
+      them &mdash; H.264, HEVC, AV1 or VP9 &mdash; as long as your browser can
+      decode that codec. This is the quick path: the file is walked backwards a
+      group of frames at a time, as fast as your machine goes.
+    </p>
+    <p>
+      <strong>Anything else your browser can play</strong>, WebM most obviously,
+      is reversed by stepping the browser's own player backwards through the
+      clip, one moment at a time. It works, and it is slower, because each of
+      those steps makes the browser decode from the keyframe in front of it. The
+      page says which of the two paths it is using before you start, and why.
+    </p>
+    <p>
+      <strong>AVI, WMV, FLV and most MKVs</strong> the browser can neither read
+      nor play, and the tool refuses them with a message rather than failing
+      halfway through.
+    </p>
+    <p>
+      Either way this is one of the slower jobs on this site, because every
+      frame is decoded and encoded and some frames are decoded more than once.
+      A short clip is seconds; a long 4K one is worth starting and leaving
+      alone.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why this does not need an upload</h2>
+    <p>
+      Decoding and re-encoding video in a browser is recent and it is real:
+      WebCodecs exposes the same hardware encoder your phone uses to record
+      video, and it is fast for the same reason. The work happens on the machine
+      that already has the file, which for a large video is also the only
+      arrangement that makes sense &mdash; uploading it and downloading the
+      result costs more time than the encoding does.
+    </p>
+    <p>
+      The tool here has no network feature of any kind, and the page's
+      <code>Content-Security-Policy</code> names every address it may contact,
+      none of which belongs to this site. Unplug from the internet and reverse a
+      clip anyway if you would rather check than be told.
+    </p>
+    <p>
+      <a href="../is-it-safe-to-upload-files/">Is it safe to upload files to
+      online converters?</a> sets out three more checks you can run on any tool.
+    </p>
+  </section>

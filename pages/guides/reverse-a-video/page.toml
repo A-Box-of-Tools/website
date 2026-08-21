@@ -1,0 +1,35 @@
+#
+# Guide: reversing a video.
+#
+# The counterpart to the cropping guide, and honest in the same way: reversing
+# re-encodes both halves of the file, the picture and the sound, and nothing
+# can avoid it. The useful content is why a decoder cannot simply run
+# backwards, what that means for how long the job takes, and the fact that
+# reversed speech is not the same thing as reversed video with the sound left
+# alone - which is what most tools quietly do.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/reverse-a-video"
+kind = "guide"
+nav = "Reversing a video"
+group = "doing-the-job"
+tool = "reverse-video"
+
+title = "How to Reverse a Video (and the Sound With It)"
+description = "Play a clip backwards: what reversing does to the picture and the sound, why it cannot be done without re-encoding, why it is slower than trimming, and what to do first."
+
+heading = "How to reverse a video"
+lede = """
+    Playing a clip backwards sounds like the simplest edit there is, and it is
+    the one a video file is least built for. This is what actually has to
+    happen, what it costs, and the one step worth doing before it."""
+
+updated = "20 August 2026"
+published = "2026-08-20"
+lastmod = "2026-08-20"
+
+og_title = "How to reverse a video"
+og_description = "Why a decoder cannot run backwards, what reversing costs the picture and the sound, and the one step worth doing first."
+og_image_alt = "abox.tools - tools that never touch a server"

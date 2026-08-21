@@ -18,6 +18,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Images to Video](images-to-video/) | `/images-to-video/` | Turn a folder of images into a video. |
 | [Video Cutter](trim-video/) | `/trim-video/` | Mark the parts worth keeping as it plays. Get them back as one video. |
 | [Video Cropper](crop-video/) | `/crop-video/` | Cut a clip down to the part that matters. |
+| [Video Reverser](reverse-video/) | `/reverse-video/` | Last frame first, sound and all. |
 | [Video to GIF](video-to-gif/) | `/video-to-gif/` | Pick the section, the size, and the frame rate. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
 | [HEIC to JPG](heic-to-jpg/) | `/heic-to-jpg/` | The photos an iPhone makes, in a format everything opens. |
