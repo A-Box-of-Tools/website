@@ -1,0 +1,173 @@
+<main>
+  <!-- ステップ1 &mdash; コードの種類 -->
+  <section class="card">
+    <h2><span class="step">1</span> コードの種類を選ぶ</h2>
+
+    <p class="card-lede">
+      QR コードは何でも入り、スマホのカメラが探しているのもこれです。バーコードに入れられるのは数字で、どれが必要かはたいてい向こうが決めています &mdash;
+      それを求める店、倉庫、運送会社がです。
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">コードの種類</label>
+      <select id="symbology">
+        <optgroup label="正方形">
+          <option value="qr" selected>QR コード</option>
+        </optgroup>
+        <optgroup label="縞模様">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">インターリーブド 2 of 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 文字列そのもの -->
+  <section class="card">
+    <h2><span class="step">2</span> 中に入れるものを指定する</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">中身の種類</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>このコードが抱えることになる文字列</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- ステップ3 &mdash; 見た目 -->
+  <section class="card">
+    <h2><span class="step">3</span> 見た目を決める</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>QR コード</legend>
+
+      <div class="option-row">
+        <label for="level">どれだけ傷んでよいか</label>
+        <select id="level">
+          <option value="L">L &mdash; 約7%まで復元可能、コードはいちばん小さい</option>
+          <option value="M" selected>M &mdash; 約15%。ふつうはこれ</option>
+          <option value="Q">Q &mdash; 約25%</option>
+          <option value="H">H &mdash; 約30%。すり減る印刷物向け</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">余白（モジュール数）</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        余白はコードの周りの空きではなく、コードの一部です。4モジュール分が仕様の求める値で、縁ぎりぎりまで切り詰めたコードは、多くのスキャナーがそもそも見つけられません。
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>バーコード</legend>
+
+      <div class="option-row">
+        <label for="bar-width">いちばん細いバーの幅（ピクセル）</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">バーの高さ（ピクセル）</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>下に文字を印字する</strong>
+          <span class="check-note">
+            スキャナーが読めないときに人が読むものです。流通用のコードでは数字が余白の中にも置かれますが、これは意図したものです。誰も削ってはいけない白い部分を、数字が示しています。
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>検査文字を付ける</strong>
+          <span class="check-note">
+            Code 39 はふつう検査文字を持ちません。要求するシステムもあります。お使いのものが要求する場合にだけ付けてください。想定していない読み取り機は、末尾の余分な1文字として読んでしまいます。
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>色と大きさ</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">コードの色</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">後ろの色</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>背景をなくす</strong>
+          <span class="check-note">
+            透過にします。すでに色の付いたものの上に置く場合に。SVG も PNG も透過を保ちますが、後ろに来るものは明るくなければなりません。そうでないとスキャナーが差を見つけられません。
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">画像の大きさ（ピクセル）</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- ステップ4 &mdash; 結果 -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> 受け取る</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="できあがったコード"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG をダウンロード</button>
+      <button type="button" id="download-png" class="primary">PNG をダウンロード</button>
+      <button type="button" id="copy-png" class="ghost">画像をコピー</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      取っておくべきは SVG のほうです。ピクセルではなく指示としてのコードなので、どんな大きさで印刷してもぼやけません &mdash; これはほかの画像より重い意味を持ちます。ぼやけた縁こそ、スキャナーが解像できないものだからです。
+    </p>
+  </section>
+</main>

@@ -1,0 +1,174 @@
+<main>
+  <!-- ステップ1 &mdash; 画像 -->
+  <section class="card">
+    <h2><span class="step">1</span> 画像を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="shape-note" class="field-summary" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; どの規格か -->
+  <section class="card" id="preset-card">
+    <h2><span class="step">2</span> そのアイコンが何のためのものかを言う</h2>
+
+    <p class="card-lede">
+      アイコンファイルは1枚の画像ではなく複数枚です。同じロゴを、それを読む相手が求める大きさごとに描き直したものです。どの大きさかは趣味の問題ではありません
+      &mdash; ブラウザは3つを求め、高DPIのノートPC上のアプリケーションは10個を求め、
+      Mac は Mac 独自の10個を求め、Windows Vista より前に書かれたものは、そもそも別の保存方法を求めます。
+    </p>
+
+    <!--
+      Which files to write. Windows and macOS read different containers and
+      neither will look at the other's, so this is a set of checkboxes rather
+      than a menu: wanting both is the normal case for anything shipped on both.
+    -->
+    <fieldset class="options outputs">
+      <legend>何を作るか</legend>
+
+      <label class="check">
+        <input type="checkbox" id="want-ico" checked>
+        <span>
+          <strong>Windows のアイコン &mdash; <code>.ico</code></strong>
+          <span class="check-note">
+            どのブラウザもファビコンとして読み、Windows はアプリケーション、ショートカット、フォルダーのために読みます。サイズは下で選べます。
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="want-icns">
+        <span>
+          <strong>macOS のアイコン &mdash; <code>.icns</code></strong>
+          <span class="check-note">
+            Mac のアプリケーションバンドルが抱えるものです。Apple が16ピクセルから
+            1024ピクセルまでちょうど10個の枠を定めているので、選ぶものはありません。
+            10個すべてが入り、描画は7回です。Retina の枠と1段上のサイズは同じ絵だからです。
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="pack-row">
+        <input type="checkbox" id="want-pack">
+        <span>
+          <strong>ウェブサイトのアイコン一式の残り</strong>
+          <span class="check-note">
+            .ico はブラウザのタブと Windows をカバーします。iPhone のホーム画面、
+            Android のインストール案内、スタートメニューに固定したタイルはカバーしません &mdash; それらが読むのは180pxの PNG、ウェブアプリのマニフェスト、
+            XML ファイルで、そのどれも .ico の中を見ません。ここにチェックを入れると、それらすべてと、マニフェストと、ページに貼る HTML のかたまりも付いてきます。
+          </span>
+        </span>
+      </label>
+
+      <p id="output-summary" class="field-summary"></p>
+    </fieldset>
+
+    <div id="ico-settings">
+      <div class="presets" id="preset-list" role="radiogroup" aria-label="そのアイコンが何のためのものか"></div>
+
+      <p id="preset-note" class="field-summary"></p>
+
+      <fieldset class="options" id="size-set">
+        <legend>.ico に入れるサイズ</legend>
+        <div class="size-grid" id="size-grid"></div>
+        <p id="size-summary" class="field-summary"></p>
+      </fieldset>
+    </div>
+
+    <fieldset class="options">
+      <legend>どう描くか</legend>
+
+      <div class="option-row">
+        <label for="fit-select">画像が正方形でない場合</label>
+        <select id="fit-select">
+          <option value="pad" selected>余白を足して正方形にする &mdash; 画像全体が残ります</option>
+          <option value="crop">中央の正方形を切り抜く</option>
+          <option value="stretch">正方形に引き伸ばす</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="background-mode">背景</label>
+        <select id="background-mode">
+          <option value="transparent" selected>透過</option>
+          <option value="colour">色を指定</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="背景色" hidden>
+      </div>
+
+      <div class="option-row" id="storage-row">
+        <label for="storage-select">.ico の中で各サイズをどう保存するか</label>
+        <select id="storage-select">
+          <option value="auto" selected>自動 &mdash; 安く済むうちは互換重視、そうでなくなったら PNG</option>
+          <option value="png">すべてのサイズを PNG に &mdash; いちばん小さいが、Vista 以降が必要</option>
+          <option value="bmp">すべてのサイズを非圧縮に &mdash; 何でも開けるが、数倍のサイズ</option>
+        </select>
+      </div>
+
+      <p id="storage-note" class="field-summary"></p>
+    </fieldset>
+
+  </section>
+
+  <!-- ステップ3 &mdash; 小さく見てから受け取る -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 実際に見られる大きさで確かめる</h2>
+
+    <p class="card-lede">
+      何かをダウンロードする前に見ておく価値があるのがここです。512ピクセルで完璧に読めるロゴも、ブラウザのタブでは横幅16ピクセルで、その細い部分
+      &mdash; ワードマークの線、髪の毛のような枠線、グラデーション &mdash; はそこを生き延びません。下の正方形はどれも、あなたが選んだファイルから実寸で描かれています。
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-strip" id="preview-strip"></div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make-icon" class="primary big" disabled>アイコンを作る</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>できました</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+
+      <!--
+        The block to paste into a page's <head>, shown rather than only zipped:
+        most people making a favicon are about to paste this into a template,
+        and a copy button is a shorter route than a download and a text editor.
+      -->
+      <div id="snippet" class="snippet" hidden>
+        <div class="snippet-head">
+          <h4>これを <code>&lt;head&gt;</code> に貼ってください</h4>
+          <button type="button" id="copy-snippet" class="ghost">コピー</button>
+        </div>
+        <pre id="snippet-text"></pre>
+      </div>
+    </div>
+  </section>
+</main>

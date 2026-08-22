@@ -1,0 +1,194 @@
+<main>
+  <!-- ステップ1 &mdash; ファイル -->
+  <section class="card">
+    <h2><span class="step">1</span> SVG ファイルを選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 大きさ -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> どの大きさにするかを言う</h2>
+
+    <p class="card-lede">
+      ベクターがあなたの代わりに答えられない唯一の問いが、これです。SVG の中にはピクセルがありません &mdash; あるのは描くための指示で、どんな大きさを指定されても、そのとおりに描きます。下の数値は、写真のように押し返してくる限界ではありません。24&nbsp;ピクセルのアイコンから作った4000ピクセルは、24のときとまったく同じだけ鮮明です。
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">サイズの決め方</label>
+      <select id="size-mode">
+        <option value="scale" selected>ファイルが求めるサイズに対する倍率</option>
+        <option value="width">幅をピクセルで</option>
+        <option value="height">高さをピクセルで</option>
+        <option value="longest">長いほうの辺で</option>
+        <option value="box">両辺を指定した枠で</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>倍率<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="よく使う倍率">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        リスト上のどのファイルも自分のサイズから掛け算されるので、違う大きさで描かれたアイコンの一式でも、互いの比率が保たれます。
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>幅<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="よく使う幅">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">高さは図の形から決まります。</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>高さ<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">幅は図の形から決まります。</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>長いほうの辺<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        長いほうの辺がこの値になり、もう一方はそれに従います。横長のロゴと縦長のロゴが、長辺で同じ大きさに揃います。
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>幅<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>高さ<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">図の形が違う場合</label>
+        <select id="box-fit">
+          <option value="fit" selected>内側に収める &mdash; 図全体が入り、一方の辺が短く出ます</option>
+          <option value="pad">余白で埋める &mdash; 指定どおりの大きさで、両側に背景が入ります</option>
+          <option value="stretch">引き伸ばす &mdash; 指定どおりの大きさで、形は歪みます</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">高DPI用の複製も書き出す</label>
+      <select id="density">
+        <option value="1" selected>いいえ &mdash; 図ごとに1ファイル</option>
+        <option value="2">@2x も &mdash; Retina の画面向け</option>
+        <option value="3">@2x と @3x &mdash; スマホが求める一式</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- ステップ3 &mdash; 形式 -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> 形式を選ぶ</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">形式</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; 透過を保ち、縁が正確</option>
+          <option value="image/jpeg">JPEG &mdash; 透過なし、写真なら小さい</option>
+          <option value="image/webp">WebP &mdash; 透過ありで、ファイルも小さい</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">画質 &mdash; <output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          JPEG と WebP のみ。PNG は可逆なので画質のつまみがありません。平坦な色とくっきりした縁 &mdash; SVG のほとんどはそれでできています &mdash; は、非可逆のエンコーダーがいちばん苦手とするものなので、ここでは写真の場合より高い値にしてあります。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">背景</label>
+        <select id="background-mode">
+          <option value="transparent" selected>透過</option>
+          <option value="colour">色を指定</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="背景色" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ステップ4 &mdash; 見てから受け取る -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> 見てから保存する</h2>
+
+    <p class="card-lede">
+      プレビューは、ファイルを書き出すのと同じコードが、あなたが選んだファイルから、この端末で描いたものです。確かめる価値があるのは、図がピクセルになるときに変わる2つです。幅が半ピクセルだった髪の毛のような線が灰色になっていないか、そして文字が、ウェブから取ってきたのではなくこの端末にあるフォントで描かれていないか。
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">SVG を追加すると、ここに出ます。</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>画像にする</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>できました</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

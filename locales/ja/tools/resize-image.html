@@ -1,0 +1,267 @@
+<main>
+  <!-- ステップ1 &mdash; ファイル -->
+  <section class="card">
+    <h2><span class="step">1</span> 画像を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 切り抜き -->
+  <section class="card" id="crop-card">
+    <h2><span class="step">2</span> 必要なら切り抜く</h2>
+
+    <p class="card-lede">
+      枠は画像全体に置かれた状態で始まるので、この段階に触れなければ何も切り取られません。画像はそれぞれ自分の枠を持っています &mdash; 上のリストから選べば、その画像の上に描けます。切り抜きはリサイズより先に行われます。意味の通る順序はそれだけです。縮めたあとで切り落とされた画像は、必要だったピクセルをすでに捨ててしまっているからです。
+    </p>
+
+    <p id="crop-empty" class="field-summary">画像を追加すると、ここに枠が出ます。</p>
+
+    <div id="crop-controls" hidden>
+      <p class="stage-hint">
+        <span id="stage-name" class="stage-name"></span>
+        枠の内側をドラッグすれば移動、四隅をドラッグすれば大きさが変わります。枠を選んだ状態では、矢印キーで1ピクセルずつ動かせ、
+        <kbd>Alt</kbd>&nbsp;+&nbsp;矢印で大きさを変えられます。
+        <kbd>Shift</kbd> を押しながらなら1回10ピクセルです。
+      </p>
+
+      <!-- The crop box itself is added here by src/cropper.js. The stage is
+           given the picture's own shape, so the box can be positioned in
+           percentages and needs no recalculating when the window is resized. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <p id="stage-note" class="stage-note" hidden></p>
+
+      <div class="crop-controls">
+        <div class="aspect-row" id="aspect-row" role="group" aria-label="切り抜きの形を固定する">
+          <button type="button" data-aspect="free" class="active">自由</button>
+          <button type="button" data-aspect="source">元のまま</button>
+          <button type="button" data-aspect="1:1">1:1</button>
+          <button type="button" data-aspect="4:5">4:5</button>
+          <button type="button" data-aspect="9:16">9:16</button>
+          <button type="button" data-aspect="16:9">16:9</button>
+          <button type="button" data-aspect="4:3">4:3</button>
+          <button type="button" data-aspect="3:2">3:2</button>
+          <button type="button" id="swap-aspect" class="ghost" title="固定した形を縦横入れ替える">
+            縦横を入れ替え
+          </button>
+        </div>
+
+        <div class="numbers">
+          <label>左<input type="number" id="crop-x" min="0" step="1"></label>
+          <label>上<input type="number" id="crop-y" min="0" step="1"></label>
+          <label>幅<input type="number" id="crop-w" min="8" step="1"></label>
+          <label>高さ<input type="number" id="crop-h" min="8" step="1"></label>
+          <div class="number-actions">
+            <button type="button" id="crop-max" class="ghost">最大</button>
+            <button type="button" id="crop-centre" class="ghost">中央</button>
+            <button type="button" id="crop-reset" class="ghost">画像全体</button>
+          </div>
+        </div>
+
+        <!--
+          Every image keeps its own box, which is the point. This is for the
+          case that is still worth one click: a folder of exports that all want
+          the same framing.
+        -->
+        <div class="apply-row" id="apply-row" hidden>
+          <button type="button" id="crop-apply-all" class="ghost">この切り抜きを全部の画像に使う</button>
+          <p class="hint-line" id="apply-note"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ステップ3 &mdash; 大きさ -->
+  <section class="card" id="resize-card">
+    <h2><span class="step">3</span> どの大きさにするかを言う</h2>
+
+    <div class="option-row">
+      <label for="resize-mode">サイズの決め方</label>
+      <select id="resize-mode">
+        <option value="pixels" selected>幅と高さをピクセルで</option>
+        <option value="longest">長いほうの辺で</option>
+        <option value="percent">いまの大きさに対する割合で</option>
+        <option value="none">指定しない &mdash; 大きさはそのまま</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="pixels-fields">
+      <div class="numbers">
+        <label>幅<input type="number" id="size-w" min="1" step="1" placeholder="自動" value="1920"></label>
+        <label>高さ<input type="number" id="size-h" min="1" step="1" placeholder="自動"></label>
+        <div class="number-actions">
+          <button type="button" id="swap-size" class="ghost">縦横を入れ替え</button>
+        </div>
+      </div>
+
+      <!--
+        Leaving one of them blank is the common case and the one worth
+        supporting properly: "1920 wide, whatever tall that makes it" needs no
+        decision about shapes at all.
+      -->
+      <p class="hint-line">
+        一方だけ埋めてもう一方を空にしておくと、画像は自分の縦横比を保ちます。
+      </p>
+
+      <div class="presets" id="size-presets" role="group" aria-label="よく使うサイズ">
+        <button type="button" class="ghost" data-w="1920" data-h="1080">1920 &times; 1080</button>
+        <button type="button" class="ghost" data-w="1280" data-h="720">1280 &times; 720</button>
+        <button type="button" class="ghost" data-w="1080" data-h="1080">1080 &times; 1080</button>
+        <button type="button" class="ghost" data-w="600" data-h="">幅600</button>
+      </div>
+
+      <div class="option-row" id="fit-row">
+        <label for="fit">縦横比が食い違う場合</label>
+        <select id="fit">
+          <option value="contain" selected>内側に収める &mdash; 画像全体が入り、一方の辺が短く出ます</option>
+          <option value="cover">いっぱいに広げる &mdash; 指定どおりの大きさで、はみ出しは切り落とします</option>
+          <option value="pad">余白で埋める &mdash; 指定どおりの大きさで、周りに背景が入ります</option>
+          <option value="stretch">引き伸ばす &mdash; 指定どおりの大きさで、形は歪みます</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>長いほうの辺<input type="number" id="size-longest" min="1" step="1" value="1920"></label>
+      </div>
+      <p class="hint-line">
+        長いほうの辺がこの値になり、もう一方はそれに従います。同じまとまりの中の縦位置と横位置の写真が、長辺で同じ大きさに揃います。ギャラリーではたいていこれが求められます。
+      </p>
+      <div class="presets" id="longest-presets" role="group" aria-label="よく使う長辺">
+        <button type="button" class="ghost" data-longest="640">640</button>
+        <button type="button" class="ghost" data-longest="1280">1280</button>
+        <button type="button" class="ghost" data-longest="1920">1920</button>
+        <button type="button" class="ghost" data-longest="2560">2560</button>
+      </div>
+    </div>
+
+    <div class="size-fields" id="percent-fields" hidden>
+      <div class="numbers">
+        <label>パーセント<input type="number" id="size-percent" min="1" max="1000" step="1" value="50"></label>
+      </div>
+      <div class="presets" id="percent-presets" role="group" aria-label="よく使う割合">
+        <button type="button" class="ghost" data-percent="25">25%</button>
+        <button type="button" class="ghost" data-percent="50">50%</button>
+        <button type="button" class="ghost" data-percent="75">75%</button>
+        <button type="button" class="ghost" data-percent="200">200%</button>
+      </div>
+    </div>
+
+    <label class="check" id="enlarge-row">
+      <input type="checkbox" id="no-enlarge" checked>
+      <span>
+        <strong>元より大きくしない</strong>
+        <span class="check-note">
+          拡大は、そもそも写っていなかったピクセルを発明することなので、小さな画像を大きな枠に入れると、細部が増えるのではなくぼやけて出てきます。これを入れておくと、指定した大きさよりすでに小さいものは、自分の大きさのまま残されます。
+        </span>
+      </span>
+    </label>
+
+    <p id="size-summary" class="field-summary"></p>
+  </section>
+
+  <!-- ステップ4 &mdash; 形式と、一度のクリック -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> 保存する</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">形式</label>
+        <select id="format">
+          <option value="keep" selected>それぞれのファイルが届いた形式を保つ</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">画質 &mdash; <output id="quality-value" for="quality">85</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="85">
+        <p class="field-note">
+          JPEG と WebP のみ。PNG に画質のつまみはありません。85 は、たいていの人が見分けられなくなるあたりです。60 を下回ると、平坦な部分に段が出始めます。
+        </p>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">背景</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          画像のないところに出る色です。余白で埋めた枠の周り、そして書き出し形式にアルファチャンネルがない場合の透過部分の後ろに出ます。
+        </p>
+      </div>
+    </div>
+
+    <p id="plan-summary" class="field-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>画像をリサイズする</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>できました</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The big look at one result. A <dialog> opened with showModal() rather than
+    a div pretending to be one: the browser gives the focus trap, the Escape
+    key and the inert background for nothing, and gets all three right.
+
+    Both pictures in it are object URLs made on this page - the result, and the
+    original that was already decoded for the thumbnail. Opening this fetches
+    nothing and decodes nothing that was not already decoded.
+  -->
+  <dialog id="viewer" class="viewer" aria-labelledby="viewer-name">
+    <div class="viewer-head">
+      <h2 id="viewer-name" class="viewer-name"></h2>
+      <button type="button" id="viewer-close" class="ghost" aria-label="閉じる">閉じる</button>
+    </div>
+
+    <div class="viewer-stage">
+      <img id="viewer-image" alt="">
+    </div>
+
+    <p id="viewer-caption" class="viewer-caption"></p>
+
+    <dl class="viewer-facts" id="viewer-facts"></dl>
+
+    <div class="viewer-actions">
+      <button type="button" id="viewer-compare" class="ghost" aria-pressed="false">元の画像を見る</button>
+      <a id="viewer-download" class="primary as-button" download>ダウンロード</a>
+    </div>
+  </dialog>
+</main>
