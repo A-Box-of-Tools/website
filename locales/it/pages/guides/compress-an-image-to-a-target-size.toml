@@ -4,14 +4,14 @@
 
 nav = "Comprimere un'immagine"
 title = "Come comprimere un'immagine a un peso esatto"
-description = "Un modulo di caricamento vuole 500 KB e la tua foto pesa 4 MB. Quanto costa davvero un limite di peso, quale impostazione muovere per prima, e perché un PNG non si rimpicciolisce come un JPEG."
+description = "Il modulo vuole 500 KB e la tua foto ne pesa 4 MB. Quanto costa davvero un limite di peso, quale impostazione muovere per prima e perché un PNG non cala come cala un JPEG."
 heading = "Come comprimere un'immagine a un peso esatto"
 lede = """
-    Qualcuno ti ha detto un numero &mdash; 100&nbsp;KB, 500&nbsp;KB, 2&nbsp;MB
-    &mdash; e la tua foto non ci si avvicina nemmeno. Qui c'è quanto costa quel
-    numero, su cosa spenderlo, e come capire se il risultato è ancora abbastanza
-    buono da mandare."""
+    Ti hanno detto un numero &mdash; 100&nbsp;KB, 500&nbsp;KB, 2&nbsp;MB
+    &mdash; e la tua foto non ci si avvicina nemmeno. Qui trovi quanto costa
+    quel numero, su cosa conviene spenderlo e come capire se quello che esce è
+    ancora abbastanza buono da mandare."""
 updated = "20 agosto 2026"
 og_title = "Comprimere un'immagine a un peso esatto"
-og_description = "Quanto costa davvero un limite di peso, quale impostazione muovere per prima, e perché un PNG non si rimpicciolisce come un JPEG."
+og_description = "Quanto costa davvero un limite di peso, quale impostazione muovere per prima e perché un PNG non cala come cala un JPEG."
 og_image_alt = "abox.tools - strumenti che non toccano nessun server"

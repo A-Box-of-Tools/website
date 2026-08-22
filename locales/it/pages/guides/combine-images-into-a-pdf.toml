@@ -4,14 +4,14 @@
 
 nav = "Immagini in un PDF"
 title = "Come unire delle immagini in un unico PDF"
-description = "Trasforma foto o scansioni in un unico PDF: dimensione della pagina, ordine e rotazione, perché un JPEG non deve perdere qualità entrando, e cosa dice un PDF alla persona a cui lo mandi."
+description = "Da foto o scansioni a un PDF solo: formato della pagina, ordine e rotazione, perché entrando un JPEG non deve perdere qualità e cosa racconta il documento a chi lo riceve."
 heading = "Come unire delle immagini in un unico PDF"
 lede = """
-    Qualcuno ha chiesto «un PDF solo» e tu hai undici fotografie di fogli di
-    carta. Qui ci sono le scelte che cambiano davvero il risultato &mdash;
-    dimensione della pagina, ordine, qualità e cosa il documento dice di te
-    &mdash; e quali puoi ignorare."""
+    Ti hanno chiesto «un PDF solo» e tu hai undici fotografie di fogli di
+    carta. Qui trovi le scelte che cambiano davvero il risultato &mdash;
+    formato della pagina, ordine, qualità e quello che il documento racconta di
+    te &mdash; e quali invece puoi lasciar perdere."""
 updated = "20 agosto 2026"
 og_title = "Come unire delle immagini in un unico PDF"
-og_description = "Dimensione della pagina, ordine e rotazione, perché un JPEG non deve perdere qualità entrando, e cosa dice un PDF alla persona a cui lo mandi."
+og_description = "Formato della pagina, ordine e rotazione, perché entrando un JPEG non deve perdere qualità e cosa racconta il documento a chi lo riceve."
 og_image_alt = "abox.tools - strumenti che non toccano nessun server"

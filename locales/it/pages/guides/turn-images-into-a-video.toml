@@ -3,14 +3,14 @@
 #
 
 nav = "Immagini in un video"
-title = "Come trasformare una cartella di immagini in un video"
-description = "Fai una presentazione in MP4 con delle foto: cosa controllano davvero la frequenza dei fotogrammi e la durata, come gestire le immagini della forma sbagliata, e perché il risultato non ha colonna sonora."
-heading = "Come trasformare una cartella di immagini in un video"
+title = "Come trasformare una cartella di foto in un video"
+description = "Una presentazione in MP4 partendo dalle tue foto: cosa cambiano davvero la durata e la frequenza dei fotogrammi, cosa fare con le immagini della forma sbagliata e perché non esce con la musica."
+heading = "Come trasformare una cartella di foto in un video"
 lede = """
-    Una presentazione è una cosa semplice da fare e facile da rifare due volte,
-    perché due delle impostazioni non vogliono dire quello che sembra. Qui c'è
-    cosa controlla ciascuna e cosa scegliere."""
+    Una presentazione si mette insieme in un attimo, e in un attimo la si rifà
+    da capo, perché due delle impostazioni non vogliono dire quello che sembra.
+    Qui trovi cosa comanda ciascuna e cosa conviene scegliere."""
 updated = "20 agosto 2026"
-og_title = "Come trasformare una cartella di immagini in un video"
-og_description = "Cosa controllano davvero la frequenza dei fotogrammi e la durata, come gestire le immagini della forma sbagliata, e perché non c'è colonna sonora."
+og_title = "Come trasformare una cartella di foto in un video"
+og_description = "Cosa cambiano davvero la durata e la frequenza dei fotogrammi, cosa fare con le immagini della forma sbagliata e perché non esce con la musica."
 og_image_alt = "abox.tools - strumenti che non toccano nessun server"

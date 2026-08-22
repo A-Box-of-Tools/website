@@ -1,63 +1,65 @@
   <section>
-    <h2>La risposta corta</h2>
+    <h2>In breve</h2>
     <p>
-      Apri il <a href="../../rimuovere-dati-exif/">visualizzatore e rimozione
-      EXIF</a>, trascinaci dentro le foto, e premi «Rimuovi tutti i metadati».
-      Ogni tag, i blocchi XMP e IPTC, i commenti e la miniatura incorporata se ne
-      vanno, su tutte le foto dell'elenco in una volta. L'immagine in sé non
-      viene toccata &mdash; non ricompressa, non decodificata, non cambiata di un
-      pixel.
+      Apri il <a href="../../rimuovere-dati-exif/">Visualizzatore e rimozione
+      EXIF</a>, trascina dentro le foto e premi «Rimuovi tutti i metadati». Se
+      ne vanno tutti i tag, i blocchi XMP e IPTC, i commenti e la miniatura
+      incorporata, su tutte le foto dell'elenco in un colpo solo. L'immagine,
+      invece, non viene toccata: non ricompressa, non decodificata, non cambiata
+      di un pixel.
     </p>
     <p>
-      Prima di farlo, vale la pena guardare cosa c'era là dentro. Di solito è più
-      di quanto la gente si aspetti, e quell'elenco è la ragione stessa per fare
-      tutto questo.
+      Prima di premere, però, vale la pena guardare cosa c'era là dentro. Di
+      solito è più roba di quanta ce ne si aspetti, e quell'elenco è esattamente
+      il motivo per cui si fa tutto questo.
     </p>
   </section>
 
   <section>
     <h2>Cosa c'è davvero dentro una foto</h2>
     <p>
-      Un JPEG non è solo un'immagine compressa. È un contenitore, e accanto
-      all'immagine stanno parecchi blocchi di informazioni che la tua fotocamera,
-      il tuo telefono o il tuo programma di ritocco ci hanno scritto.
+      Un JPEG non è soltanto un'immagine compressa: è un contenitore, e accanto
+      all'immagine ci stanno diversi blocchi di informazioni che la tua
+      fotocamera, il tuo telefono o il tuo programma di ritocco hanno scritto
+      lì dentro.
     </p>
     <ul>
       <li>
-        <strong>EXIF.</strong> Il principale. Marca e modello della fotocamera,
-        obiettivo, impostazioni di esposizione, ISO, la data e l'ora al secondo,
-        l'orientamento in cui l'immagine va mostrata, e &mdash; su un telefono
-        con i servizi di localizzazione attivi per la fotocamera &mdash; una
-        posizione GPS accurata a pochi metri. Spesso anche il numero di serie del
+        <strong>EXIF.</strong> Il blocco principale: marca e modello della
+        fotocamera, obiettivo, impostazioni di esposizione, ISO, data e ora al
+        secondo, l'orientamento con cui l'immagine va mostrata e &mdash; su un
+        telefono che ha la localizzazione attiva per la fotocamera &mdash; una
+        posizione GPS precisa a pochi metri. Spesso anche il numero di serie del
         corpo macchina.
       </li>
       <li>
-        <strong>GPS.</strong> Tecnicamente parte dell'EXIF, e vale la pena
-        nominarlo a parte perché è quello che conta di più. È scritto in gradi,
-        primi e secondi, un formato che riesce benissimo a non sembrare un
+        <strong>GPS.</strong> Tecnicamente fa parte dell'EXIF, ma vale la pena
+        nominarlo a parte perché è quello che pesa di più. È scritto in gradi,
+        primi e secondi, un formato che riesce benissimo a non somigliare a un
         indirizzo.
       </li>
       <li>
-        <strong>XMP.</strong> Un pacchetto di XML che scrivono i programmi di
-        ritocco. Può portare il tuo nome, il tuo software, valutazioni, parole
-        chiave, cronologia delle modifiche, e una copia di alcuni campi EXIF
-        &mdash; motivo per cui rimuovere solo l'EXIF non basta.
+        <strong>XMP.</strong> Un pacchetto di XML che ci scrivono i programmi di
+        ritocco. Può contenere il tuo nome, il software che hai usato,
+        valutazioni, parole chiave, la cronologia delle modifiche e una copia di
+        alcuni campi EXIF: ecco perché togliere solo l'EXIF non basta.
       </li>
       <li>
-        <strong>IPTC.</strong> Un blocco più vecchio con campi di didascalia,
-        firma, crediti e copyright, usato nella stampa e nella fotografia
+        <strong>IPTC.</strong> Un blocco più vecchio, con i campi di didascalia,
+        firma, crediti e copyright, usato nell'editoria e nella fotografia
         d'archivio.
       </li>
       <li>
-        <strong>La miniatura incorporata.</strong> Una piccola seconda copia
-        dell'immagine. Viene generata quando il file viene scritto, e non sempre
-        viene rigenerata quando l'immagine viene modificata &mdash; ed è così che
-        una foto ritagliata può viaggiare con una miniatura di quello che è stato
-        ritagliato via.
+        <strong>La miniatura incorporata.</strong> Una seconda copia in piccolo
+        dell'immagine, generata quando il file viene scritto e non sempre
+        rigenerata quando l'immagine viene modificata: è così che una foto
+        ritagliata può girare portandosi dietro la miniatura di quello che era
+        stato tagliato via.
       </li>
       <li>
-        <strong>La maker note.</strong> Un blocco non documentato di dati del
-        produttore. Nessuno fuori dal produttore sa tutto quello che c'è dentro.
+        <strong>La maker note.</strong> Un blocco di dati del produttore, non
+        documentato. Cosa ci sia davvero dentro, fuori dal produttore, non lo sa
+        nessuno.
       </li>
     </ul>
   </section>
@@ -65,162 +67,162 @@
   <section>
     <h2>Chi lo vede davvero</h2>
     <p>
-      È la parte su cui vale la pena essere precisi, perché sia la versione
-      allarmata sia quella sbrigativa sono sbagliate.
+      Qui conviene essere precisi, perché sbagliano sia la versione allarmata sia
+      quella sbrigativa.
     </p>
     <p>
-      <strong>Quasi tutti i grandi social network tolgono i metadati quando
-      pubblichi.</strong> Facebook, Instagram e X ricodificano le immagini
-      caricate e nel farlo buttano i tag. Non è una gentilezza &mdash; i dati
-      dalla loro parte se li tengono &mdash; ma vuol dire che una foto pubblicata
-      su quei servizi non consegna le proprie coordinate a chiunque la guardi.
+      <strong>Quasi tutti i grandi social tolgono i metadati quando
+      pubblichi.</strong> Facebook, Instagram e X ricodificano le immagini che
+      ricevono, e nel farlo buttano via i tag. Non è un favore che ti fanno,
+      perché dalla loro parte quei dati se li tengono, ma vuol dire che una foto
+      pubblicata lì le proprie coordinate non le consegna a chiunque passi.
     </p>
     <p>
-      <strong>Quasi tutto il resto li tiene.</strong> Un allegato di posta. Un
-      file mandato con quasi ogni applicazione di chat come «documento» invece
-      che come foto. Un'immagine su un forum, un annuncio di un mercatino, un
-      sito personale, un'unità condivisa, una segnalazione di bug, un ticket di
-      assistenza. In tutti questi casi il file arriva intatto, e chiunque lo
-      scarichi può leggerne i tag con strumenti che arrivano insieme al suo
-      sistema operativo.
+      <strong>Quasi tutto il resto se li tiene.</strong> Un allegato di posta. Un
+      file mandato con quasi tutte le chat come «documento» invece che come foto.
+      Un'immagine su un forum, un annuncio su un sito di compravendita, un sito
+      personale, una cartella condivisa, la segnalazione di un bug, un ticket di
+      assistenza. In tutti questi casi il file arriva intatto, e chi se lo scarica
+      può leggerne i tag con strumenti che gli sono arrivati insieme al sistema
+      operativo.
     </p>
     <p>
-      I rischi realistici sono banali più che drammatici: un annuncio fotografato
-      in casa, la foto di un bambino scattata a scuola, un account
-      apparentemente anonimo che pubblica foto che condividono tutte lo stesso
-      numero di serie della fotocamera, un «scattata la settimana scorsa» che era
-      di marzo.
+      I rischi concreti sono più banali che drammatici: l'annuncio fotografato in
+      casa, la foto di un bambino scattata a scuola, l'account in apparenza
+      anonimo le cui foto portano tutte lo stesso numero di serie della
+      fotocamera, lo «scattata la settimana scorsa» che era di marzo.
     </p>
   </section>
 
   <section>
-    <h2>Perché non risalvarla e basta?</h2>
+    <h2>Perché non basta risalvarla</h2>
     <p>
-      Risalvare una foto passando da un programma di ritocco o da un compressore
-      rimuove davvero i metadati &mdash; l'immagine viene decodificata in pixel e
-      ricodificata, e una tela piena di pixel non porta con sé alcun tag.
+      Risalvare una foto con un programma di ritocco o con un compressore i
+      metadati li toglie sul serio: l'immagine viene decodificata in pixel e
+      ricodificata, e un canvas pieno di pixel nessun tag se lo porta dietro.
       Funziona, e ti costa qualità, perché quella ricodifica è con perdita.
     </p>
     <p>
-      Rimuovere i metadati come si deve non costa proprio niente. I tag stanno
-      nel contenitore <em>attorno</em> all'immagine compressa, non dentro,
-      quindi toglierli è cancellare voci da un elenco e riscrivere l'elenco. I
-      dati compressi dell'immagine vengono copiati byte per byte e il risultato
-      decodifica esattamente gli stessi pixel. È tutto lì il motivo per usare uno
-      strumento per i metadati invece di un convertitore.
+      Toglierli come si deve, invece, non costa niente. I tag stanno nel
+      contenitore <em>attorno</em> all'immagine compressa e non dentro di essa,
+      quindi rimuoverli vuol dire cancellare voci da un elenco e riscrivere
+      l'elenco: i dati compressi dell'immagine vengono copiati byte per byte, e
+      quello che esce decodifica esattamente gli stessi pixel. È tutto qui il
+      motivo per usare uno strumento per i metadati invece di un convertitore.
     </p>
     <p>
-      L'eccezione è se dovevi ricodificare comunque. Se stai già comprimendo o
-      ridimensionando la foto, i tag se ne vanno come effetto collaterale e non
-      ti serve un secondo passaggio.
+      L'eccezione è quando la ricodifica la dovevi fare comunque: se stai già
+      comprimendo o ridimensionando la foto, i tag se ne vanno per conto loro e
+      un secondo passaggio non ti serve.
     </p>
   </section>
 
   <section>
     <h2>L'unica cosa da tenere: l'orientamento</h2>
     <p>
-      I telefoni non ruotano l'immagine quando giri il telefono. La registrano
-      come l'ha vista il sensore e aggiungono un tag Orientation che dice come va
-      girata per mostrarla. Togli tutti i tag e certi visualizzatori mostreranno
-      la tua foto di traverso.
+      I telefoni l'immagine non la ruotano quando ruoti tu: la registrano come
+      l'ha vista il sensore e aggiungono un tag Orientation che dice come va
+      girata per mostrarla. Togli tutti i tag e qualche visualizzatore ti
+      mostrerà la foto coricata.
     </p>
     <p>
-      È per questo che lo strumento di qui ha un'opzione «tieni il tag di
-      orientamento», attiva di default. Riscrive un minuscolo blocco EXIF che
-      contiene quel solo tag e nient'altro, e solo per le foto che ne avevano
-      davvero bisogno. Il GPS, gli orari, il numero di serie e il resto se ne
+      Per questo lo strumento di qui ha l'opzione «tieni il tag di
+      orientamento», attiva di default: riscrive un blocco EXIF minuscolo che
+      contiene quel tag e nient'altro, e solo per le foto che ne avevano davvero
+      bisogno. Il GPS, gli orari, il numero di serie e tutto il resto se ne
       vanno lo stesso.
     </p>
     <p>
-      Toglila se preferisci che il file non porti alcun EXIF, proprio nessuno
-      &mdash; e poi controlla il risultato prima di mandarlo, perché una foto di
-      traverso è l'esito abituale.
+      Toglila pure, se vuoi un file che di EXIF non ne abbia proprio &mdash; ma
+      poi guarda il risultato prima di mandarlo in giro, perché la foto coricata
+      è l'esito tipico.
     </p>
   </section>
 
   <section>
     <h2>Modificare invece di rimuovere</h2>
     <p>
-      Rimuovere tutto è la risposta giusta per quasi tutti. A volte non lo è: un
-      fotografo può volere che la riga di copyright e le impostazioni della
-      fotocamera restino e che se ne vada solo la posizione; un archivista può
-      aver bisogno di correggere una data sbagliata perché lo era l'orologio
-      della fotocamera.
+      Togliere tutto è la risposta giusta per la stragrande maggioranza delle
+      persone, ma non sempre: un fotografo può volersi tenere la riga di
+      copyright e le impostazioni della fotocamera e far sparire solo la
+      posizione, e un archivista può aver bisogno di correggere una data
+      sbagliata perché sbagliato era l'orologio della fotocamera.
     </p>
     <p>
-      Si può fare in entrambi i casi. La posizione si può cancellare per conto
-      suo, e tag di testo, date, ISO, orientamento e risoluzione si possono
-      modificare sul posto.
+      Si può fare in tutti e due i casi: la posizione si cancella per conto suo,
+      e i tag di testo, le date, gli ISO, l'orientamento e la risoluzione si
+      possono modificare sul posto.
     </p>
     <p>
-      Un avvertimento che vale per ogni strumento che fa questo, non solo per
-      questo: scrivere il file ricostruisce il blocco EXIF, e una maker note
-      contiene offset che puntano dentro il blocco <em>originale</em>. Una maker
-      note ricostruita potrebbe quindi non essere più leggibile dal software del
-      produttore. Se la cosa ti interessa, cancella la maker note o lascia il
-      file non modificato.
+      Un avvertimento che vale per qualunque strumento faccia questo lavoro, non
+      solo per il nostro: riscrivere il file ricostruisce il blocco EXIF, e la
+      maker note contiene offset che puntano dentro il blocco <em>originale</em>.
+      Una maker note ricostruita, quindi, potrebbe non essere più leggibile dal
+      software del produttore. Se la cosa ti interessa, o cancelli la maker note
+      o lasci il file com'è.
     </p>
   </section>
 
   <section>
-    <h2>I formati, e quelli che non si possono fare così</h2>
+    <h2>I formati, e quelli che così non si possono trattare</h2>
     <p>
-      JPEG, PNG e WebP si possono riscrivere tutti in modo pulito, e sono i tre
-      che lo strumento di qui gestisce.
+      JPEG, PNG e WebP si riscrivono tutti in modo pulito, e sono i tre che lo
+      strumento di qui gestisce.
     </p>
     <p>
       L'HEIC &mdash; quello che un iPhone salva di default &mdash; e l'AVIF sono
-      formati a scatole costruiti con atomi annidati, e hanno bisogno di un
-      analizzatore del tutto diverso. Lo strumento li riconosce e lo dice invece
-      di produrre un file rotto. Se hai un HEIC, convertirlo in JPEG ne rimuoverà
+      formati a scatole, costruiti con atomi annidati, e vogliono un parser
+      completamente diverso: lo strumento li riconosce e te lo dice, invece di
+      sputare fuori un file rotto. Se hai un HEIC, convertirlo in JPEG ne toglie
       i metadati come effetto collaterale della conversione.
     </p>
     <p>
-      Nemmeno un TIFF nudo viene gestito, e per un motivo più interessante: in un
-      TIFF i metadati e i dati dei pixel sono indirizzati dagli stessi offset,
-      quindi rimuovere dei tag vuol dire riscrivere l'indirizzamento stesso
-      dell'immagine. È fattibile ed è un altro lavoro.
+      Nemmeno un TIFF nudo viene gestito, e per un motivo più interessante: in
+      un TIFF i metadati e i dati dei pixel sono raggiunti dagli stessi offset,
+      quindi togliere dei tag vuol dire riscrivere l'indirizzamento
+      dell'immagine stessa. Si può fare, ma è un altro lavoro.
     </p>
   </section>
 
   <section>
-    <h2>Un'abitudine che vale la pena prendere</h2>
+    <h2>Un'abitudine che conviene prendere</h2>
     <p>
-      Controlla prima di pubblicare invece che dopo. Leggere i tag richiede
-      qualche secondo e l'elenco dei riscontri nomina le cose che vale la pena
-      sapere &mdash; la posizione, gli orari, i numeri di serie &mdash; prima
-      della tabella completa di tutti i tag, così non devi sapere cosa cercare.
+      Controlla prima di pubblicare, non dopo. Leggere i tag porta via qualche
+      secondo, e l'elenco che ti torna nomina per prime le cose che vale la pena
+      sapere &mdash; la posizione, gli orari, i numeri di serie &mdash; e solo
+      dopo mostra la tabella completa, così non devi sapere in anticipo cosa
+      cercare.
     </p>
     <p>
-      La posizione è mostrata prima in gradi decimali, di proposito. «51 gradi,
-      30 primi, 26 secondi» non rende evidente che una foto nomina l'edificio in
-      cui è stata scattata. Una coppia di decimali che puoi incollare in una
-      mappa sì.
+      La posizione viene mostrata prima in gradi decimali, ed è una scelta
+      voluta: «51 gradi, 30 primi, 26 secondi» non rende affatto evidente che
+      quella foto sta indicando l'edificio in cui è stata scattata, mentre una
+      coppia di numeri decimali che puoi incollare in una mappa sì.
     </p>
   </section>
 
   <section>
-    <h2>Non caricare la foto per scoprire cosa c'è dentro</h2>
+    <h2>Non caricare la foto per scoprire cosa contiene</h2>
     <p>
-      C'è un'ironia particolare nel modo abituale in cui questo problema viene
-      risolto: una persona preoccupata di cosa riveli la propria foto la carica
-      su un sito per scoprirlo. Adesso il sito ha la foto, le coordinate,
-      l'orario e il numero di serie, e una copia dell'immagine su un disco che è
-      suo.
+      Il modo consueto di risolvere questo problema ha qualcosa di
+      involontariamente comico: uno si preoccupa di cosa riveli la propria foto e
+      per scoprirlo la carica su un sito. Adesso quel sito ha la foto, le
+      coordinate, l'orario, il numero di serie e una copia dell'immagine su un
+      disco che è suo.
     </p>
     <p>
-      Non ce n'è motivo. Leggere e riscrivere il contenitore attorno a un JPEG
-      sono qualche centinaio di righe di analisi che un browser esegue
-      benissimo, ed è per questo che lo strumento di qui non ha proprio alcuna
-      funzione di rete: nessun <code>fetch</code>, nessun
-      <code>XMLHttpRequest</code>, niente che potrebbe spedire un file anche se
-      qualcosa ci provasse. Caricalo una volta, stacca la connessione, e continua
-      a funzionare.
+      Non ce n'è alcun bisogno. Leggere e riscrivere il contenitore attorno a un
+      JPEG sono qualche centinaio di righe di parsing che un browser esegue
+      benissimo, ed è per questo che lo strumento di qui non ha proprio nessuna
+      funzione di rete: niente <code>fetch</code>, niente
+      <code>XMLHttpRequest</code>, niente che potrebbe spedire un file nemmeno
+      se qualcosa ci provasse. Caricalo una volta, stacca la connessione, e
+      continua a funzionare.
     </p>
     <p>
       <a href="../e-sicuro-caricare-i-propri-file/">È sicuro caricare i propri
-      file sui convertitori online?</a> spiega come verificare quell'affermazione
-      su questo sito come su qualunque altro &mdash; e questo è il tipo di file
-      su cui vale più la pena verificare.
+      file sui convertitori online?</a> spiega come verificare questa
+      affermazione qui come su qualunque altro sito &mdash; e questo è il tipo
+      di file su cui conviene di più verificarla.
     </p>
   </section>

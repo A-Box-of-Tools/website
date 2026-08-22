@@ -3,15 +3,15 @@
 #
 
 nav = "Alleggerire un PDF"
-title = "Come alleggerire un PDF (e perché alcuni non si rimpiccioliscono)"
-description = "Dove sta davvero il peso di un PDF, perché una scansione si comprime dell'80% e un contratto quasi non si muove, cosa vogliono dire qui i DPI, e cosa un compressore non dovrebbe mai fare al tuo documento."
-heading = "Come alleggerire un PDF, e perché alcuni non si rimpiccioliscono"
+title = "Come alleggerire un PDF (e perché alcuni non calano)"
+description = "Dove sta davvero il peso di un PDF, perché una scansione cala dell'80% e un contratto non si muove, cosa c'entrano i DPI e cosa un compressore non dovrebbe mai fare al tuo documento."
+heading = "Come alleggerire un PDF, e perché alcuni non calano"
 lede = """
-    Un PDF che non entra nel limite di una mail è quasi sempre un PDF pieno di
-    immagini. Qui c'è come capire se il tuo lo è, quanto costa comprimerlo, e
-    perché qualunque strumento prometta una percentuale fissa non ha guardato il
-    tuo file."""
+    Il PDF che non entra nel limite di una mail è quasi sempre un PDF pieno di
+    immagini. Qui trovi come capire se il tuo lo è, quanto costa comprimerlo e
+    perché uno strumento che ti promette una percentuale fissa il tuo file non
+    l'ha nemmeno guardato."""
 updated = "20 agosto 2026"
 og_title = "Come alleggerire un PDF"
-og_description = "Dove sta davvero il peso di un PDF, perché una scansione si rimpicciolisce e un contratto no, e cosa c'entrano i DPI."
+og_description = "Dove sta davvero il peso di un PDF, perché una scansione cala e un contratto no, e cosa c'entrano i DPI."
 og_image_alt = "abox.tools - strumenti che non toccano nessun server"

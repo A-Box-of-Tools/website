@@ -1,248 +1,252 @@
   <section>
-    <h2>La risposta corta</h2>
+    <h2>In breve</h2>
     <p>
-      Apri il <a href="../../comprimere-immagine/">compressore di immagini</a>,
-      trascinaci dentro la foto, scrivi il numero che ti hanno dato, e premi il
-      pulsante. Codifica l'immagine più volte, tiene il risultato migliore che
-      sta sotto il tuo obiettivo, e ti dice quanto è costato. Per quasi tutte le
-      fotografie e quasi tutti gli obiettivi, il riassunto onesto è che la
-      differenza non riuscirai a vederla.
+      Apri il <a href="../../comprimere-immagine/">Compressore di immagini</a>,
+      trascina dentro la foto, scrivi il numero che ti hanno dato e premi il
+      pulsante. Lo strumento codifica l'immagine più volte, tiene il risultato
+      migliore che sta sotto il limite e ti dice quanto è costato. Per quasi
+      tutte le fotografie e quasi tutti i limiti, la verità è che la differenza
+      non la vedrai.
     </p>
     <p>
-      Il resto di questa pagina è per quando non va così: quando il risultato si
-      vede morbido, quando un PNG quasi non si muove, o quando vuoi sapere cosa
-      sta davvero facendo lo strumento alla tua immagine prima di mandarla a
-      qualcuno.
-    </p>
-  </section>
-
-  <section>
-    <h2>Cosa chiede davvero un limite di peso</h2>
-    <p>
-      Un JPEG o un WebP non conserva la tua fotografia. Conserva una descrizione
-      di essa, e l'impostazione della qualità decide quanto dettagliata quella
-      descrizione può essere. Abbassala e il file si alleggerisce perché la
-      descrizione si fa più vaga: la texture fine viene mediata via, le sfumature
-      fanno bande, e i bordi si prendono un lieve alone di blocchi.
-    </p>
-    <p>
-      Quindi un limite di peso è un budget di dettaglio. La domanda utile non è
-      «riesco a centrare i 500&nbsp;KB» &mdash; qualunque numero lo si centra
-      sempre &mdash; ma «quanta parte dell'immagine devo cedere per arrivarci, e
-      conta per quello che ci devo fare?».
-    </p>
-    <p>
-      Due regole spannometriche. La fotografia di una scena reale &mdash; volti,
-      fogliame, tessuti &mdash; nasconde bene la compressione, perché l'occhio
-      non ha alcuna zona perfettamente piatta in cui notare il danno. Uno
-      screenshot, un grafico, un logo o qualunque cosa con grandi tinte piatte e
-      bordi netti di testo la mostrano subito, e di solito dovrebbero essere un
-      PNG o un WebP invece che un JPEG.
+      Il resto della pagina serve per i casi in cui non fila così liscio: quando
+      il risultato viene morbido, quando un PNG non si sposta di un grammo, o
+      quando prima di mandare l'immagine a qualcuno vuoi sapere cosa le sta
+      succedendo davvero.
     </p>
   </section>
 
   <section>
-    <h2>Perché non esiste una formula, e cosa farci</h2>
+    <h2>Cosa ti chiede, in realtà, un limite di peso</h2>
     <p>
-      Non c'è modo di calcolare l'impostazione di qualità che produce un file da
-      500&nbsp;KB. Il rapporto tra le due cose dipende interamente da cosa c'è
-      nell'immagine: alla stessa impostazione, la fotografia di un muro liscio
-      potrebbe uscire un decimo della fotografia di un bosco. Qualunque strumento
-      ti proponga «qualità: 60» e speri sta tirando a indovinare per conto tuo.
+      Un JPEG o un WebP la tua fotografia non la conserva: ne conserva una
+      descrizione, e l'impostazione della qualità decide quanto quella
+      descrizione può essere minuziosa. Abbassala e il file cala perché la
+      descrizione si fa più vaga: le texture fini vengono mediate, le sfumature
+      si spezzano in bande e i bordi si portano dietro un piccolo alone di
+      blocchi.
     </p>
     <p>
-      L'unico metodo affidabile è provare. Codifica l'immagine, guarda il peso,
-      correggi, codifica di nuovo. Farlo a mano è noioso, ed è per questo che i
-      compressori chiedono invece un numero di qualità &mdash; sposta la noia
-      addosso a te. Farlo automaticamente sono all'incirca otto codifiche, e otto
-      codifiche di una foto da telefono sono una frazione di secondo su
-      qualunque dispositivo fatto in questo decennio, che è il motivo per cui lo
-      strumento di questo sito chiede il peso e fa la ricerca da sé.
+      Un limite di peso, quindi, è un budget di dettaglio. La domanda utile non
+      è «riesco a stare nei 500&nbsp;KB», perché in un numero ci si sta sempre,
+      ma «quanta immagine devo lasciare per strada per arrivarci, e per quello
+      che ci devo fare cambia qualcosa?».
     </p>
     <p>
-      Ogni peso che riporta è un file davvero codificato, non una stima. Conta
-      quando un modulo ha un limite rigido: una stima ottimista del 2% è un
-      caricamento rifiutato.
-    </p>
-  </section>
-
-  <section>
-    <h2>Spendi la qualità prima dei pixel</h2>
-    <p>
-      Ci sono solo due modi di alleggerire il file di un'immagine. Puoi
-      descrivere la stessa immagine in modo meno preciso, ed è la qualità.
-      Oppure puoi descrivere meno pixel, ed è il ridimensionamento. Non sono
-      equivalenti, e l'ordine conta.
-    </p>
-    <p>
-      Prima va la qualità, perché il primo 30% circa di riduzione è davvero
-      invisibile su una fotografia &mdash; stai buttando via dettaglio che il
-      formato conservava con più cura di quanta ne possa verificare un occhio.
-      Poi vanno i pixel, perché una volta che la qualità scende abbastanza da
-      rendere visibili gli artefatti, un'immagine più piccola a una qualità
-      decente si vede meglio di un'immagine a piena dimensione ma rovinata. Meno
-      pixel buoni battono più pixel cattivi.
-    </p>
-    <p>
-      È tutta lì la strategia, e vale la pena conoscerla anche se usi un altro
-      strumento: abbassa la qualità finché non comincia a venire male, poi
-      rimpicciolisci l'immagine invece di abbassarla ancora.
-    </p>
-    <h3>Quando ridimensionare di proposito</h3>
-    <p>
-      A volte i pixel non servivano proprio. Una foto larga 4000 pixel mostrata
-      in una colonna larga 600 pixel dentro una pagina web porta sei volte il
-      dettaglio che qualcuno vedrà. Se sai dove finirà l'immagine,
-      ridimensionala prima a quella misura e il problema del peso spesso sparisce
-      senza spendere alcuna qualità. Lo strumento per quel lavoro è il
-      <a href="../../ridimensionare-immagine/">ridimensionatore di immagini</a>,
-      e <a href="../ridimensionare-un-immagine/">la sua guida</a> spiega come
-      scegliere una dimensione.
+      Due regole spannometriche. Le fotografie di scene reali &mdash; volti,
+      fogliame, tessuti &mdash; nascondono bene la compressione, perché non
+      offrono all'occhio nessuna zona perfettamente piatta in cui accorgersi del
+      danno. Uno screenshot, un grafico, un logo, e in generale tutto quello che
+      ha campiture piatte e bordi netti di testo, la mostrano subito: roba del
+      genere dovrebbe essere un PNG o un WebP, non un JPEG.
     </p>
   </section>
 
   <section>
-    <h2>Scegliere un formato</h2>
+    <h2>Perché una formula non esiste, e come si fa lo stesso</h2>
     <p>
-      Vale la pena conoscere tre formati, e i browser sanno scriverli tutti e
+      Non c'è modo di calcolare quale impostazione di qualità produce un file da
+      500&nbsp;KB, perché il rapporto tra le due cose dipende per intero da cosa
+      c'è nell'immagine: alla stessa impostazione, la foto di un muro liscio può
+      pesare un decimo della foto di un bosco. Uno strumento che ti propone
+      «qualità: 60» e incrocia le dita sta tirando a indovinare al posto tuo.
+    </p>
+    <p>
+      L'unico metodo che funziona è provare: codifichi, guardi il peso,
+      correggi, ricodifichi. A mano è una noia mortale, e infatti quasi tutti i
+      compressori ti chiedono un numero di qualità, che è un modo elegante di
+      passare la noia a te. Fatta invece dalla macchina, la ricerca sono circa
+      otto codifiche, e otto codifiche di una foto scattata col telefono sono
+      una frazione di secondo su qualsiasi dispositivo di questo decennio: ecco
+      perché lo strumento di questo sito ti chiede il peso e la ricerca se la fa
+      da solo.
+    </p>
+    <p>
+      Ogni peso che ti riporta è un file davvero codificato, non una stima. Fa
+      differenza quando il limite del modulo è rigido, perché una stima ottimista
+      del 2% è un caricamento rifiutato.
+    </p>
+  </section>
+
+  <section>
+    <h2>Spendi prima la qualità, poi i pixel</h2>
+    <p>
+      I modi per alleggerire il file di un'immagine sono soltanto due: descrivere
+      la stessa immagine con meno precisione, cioè la qualità, oppure descrivere
+      meno pixel, cioè il ridimensionamento. Non sono equivalenti, e l'ordine
+      conta.
+    </p>
+    <p>
+      Prima la qualità, perché su una fotografia il primo 30% circa di riduzione
+      è davvero invisibile: stai buttando via dettaglio che il formato
+      conservava con più scrupolo di quanto un occhio riesca a verificare. Poi i
+      pixel, perché quando la qualità scende tanto da far comparire gli
+      artefatti, un'immagine più piccola con una qualità decente si guarda molto
+      meglio di un'immagine a piena dimensione ma sfregiata. Pochi pixel buoni
+      battono tanti pixel cattivi.
+    </p>
+    <p>
+      La strategia è tutta qui, e vale anche se usi un altro strumento: abbassa
+      la qualità finché il risultato non comincia a peggiorare, e da lì in poi
+      rimpicciolisci l'immagine invece di continuare ad abbassarla.
+    </p>
+    <h3>Quando conviene ridimensionare a monte</h3>
+    <p>
+      A volte quei pixel non servivano proprio a nessuno. Una foto larga 4000
+      pixel mostrata dentro una colonna larga 600 porta sei volte il dettaglio
+      che qualcuno vedrà. Se sai già dove finirà l'immagine, portala prima a
+      quella misura: il problema del peso spesso si scioglie da solo senza
+      spendere un grammo di qualità. Lo strumento per quel lavoro è il
+      <a href="../../ridimensionare-immagine/">Ridimensionatore di
+      immagini</a>, e <a href="../ridimensionare-un-immagine/">la sua guida</a>
+      spiega come si sceglie una misura.
+    </p>
+  </section>
+
+  <section>
+    <h2>Scegliere il formato</h2>
+    <p>
+      I formati da conoscere sono tre, e i browser li sanno scrivere tutti e
       tre.
     </p>
     <ul>
       <li>
-        <strong>Il JPEG</strong> è per le fotografie. È con perdita, lo capisce
-        qualunque cosa sia mai stata costruita, e per l'immagine di una scena
-        reale resta un'ottima scelta. Non sa conservare la trasparenza.
+        <strong>Il JPEG</strong> è quello delle fotografie: è con perdita, lo
+        apre qualunque cosa sia mai stata costruita, e per l'immagine di una
+        scena reale resta un'ottima scelta. La trasparenza non la sa conservare.
       </li>
       <li>
-        <strong>Il WebP</strong> è per lo stesso lavoro, fatto meglio: dal 25 al
-        35% circa più leggero del JPEG a una qualità che non si distingue, e
-        tiene la trasparenza. Lo legge ogni browser attuale. Qualche vecchia
-        applicazione da scrivania e qualche modulo di caricamento aziendale
-        ancora no, che è l'unico motivo vero per non usarlo.
+        <strong>Il WebP</strong> fa lo stesso lavoro meglio: dal 25 al 35% circa
+        più leggero del JPEG a una qualità che non si distingue, e la
+        trasparenza la tiene. Lo legge qualunque browser attuale; qualche vecchio
+        programma da scrivania e qualche modulo di caricamento aziendale ancora
+        no, ed è l'unico motivo serio per lasciarlo stare.
       </li>
       <li>
-        <strong>Il PNG</strong> è senza perdita, il che vuol dire che è esatto ed
-        è pesante. È la risposta giusta per screenshot, loghi, disegni al tratto
-        e qualunque cosa con bordi netti o tinte piatte, ed è la risposta
+        <strong>Il PNG</strong> è senza perdita, cioè esatto e pesante. È la
+        risposta giusta per screenshot, loghi, disegni al tratto e in generale
+        per tutto ciò che ha bordi netti o campiture piatte, ed è la risposta
         sbagliata per una fotografia.
       </li>
     </ul>
     <p>
-      Se non hai vincoli da parte di chi ti ha chiesto il file, il WebP ti porta
-      all'obiettivo con meno danno visibile del JPEG. Se il file va dentro
-      qualcosa di vecchio, o dentro un sistema che non puoi provare, il JPEG è la
-      risposta sicura.
+      Se chi ti ha chiesto il file non ti ha imposto nulla, il WebP ti porta al
+      limite con meno danni visibili del JPEG. Se invece il file deve entrare in
+      qualcosa di vecchio, o in un sistema che non puoi provare prima, la
+      risposta sicura è il JPEG.
     </p>
   </section>
 
   <section>
-    <h2>Perché il tuo PNG non si alleggerirà granché</h2>
+    <h2>Perché il tuo PNG non cala quasi per niente</h2>
     <p>
-      È la sorpresa più comune, e non è un difetto dello strumento che stai
-      usando. Il PNG è un formato senza perdita: conserva i pixel esatti, e non
-      ha una manopola della qualità da girare, perché girarne una lo renderebbe
-      un formato diverso. Tutto quello che un compressore PNG può fare è
-      impacchettare gli stessi pixel in modo più furbo, cosa che di solito vale
-      qualche punto percentuale.
+      È la sorpresa più diffusa, e non è colpa dello strumento che stai usando.
+      Il PNG è un formato senza perdita: conserva i pixel esatti e non ha
+      nessuna manopola della qualità da girare, perché girarne una ne farebbe un
+      formato diverso. Tutto quello che un compressore PNG può fare è
+      impacchettare gli stessi identici pixel in modo più furbo, e di solito
+      valgono qualche punto percentuale.
     </p>
     <p>
-      Quindi se ti serve per forza un file molto più leggero e deve restare un
-      PNG, l'unica leva che resta è la dimensione &mdash; meno pixel, o meno
-      colori. Se può smettere di essere un PNG, la domanda è cosa c'è dentro:
+      Se il file deve calare parecchio e deve restare un PNG, l'unica leva che
+      ti resta è la dimensione: meno pixel, o meno colori. Se invece può smettere
+      di essere un PNG, la domanda diventa cosa c'è dentro:
     </p>
     <ul>
       <li>
-        <strong>Una fotografia salvata come PNG.</strong> Comunissimo, di solito
-        per sbaglio, ed è il guadagno più facile di questa pagina: convertirla in
-        JPEG o WebP spesso la rende da cinque a dieci volte più leggera senza
-        alcun cambiamento visibile.
+        <strong>Una fotografia salvata come PNG.</strong> Capita di continuo, di
+        solito per sbaglio, ed è il guadagno più facile di tutta questa pagina:
+        convertirla in JPEG o in WebP la rende spesso da cinque a dieci volte
+        più leggera senza che si veda alcuna differenza.
       </li>
       <li>
-        <strong>Uno screenshot o uno schema.</strong> Converti in WebP, che è
-        anche senza perdita quando glielo chiedi, ed è in genere più leggero del
-        PNG a parità di pixel. Passare al JPEG rende sfocati i bordi del testo.
+        <strong>Uno screenshot o uno schema.</strong> Passa al WebP, che sa
+        essere senza perdita anche lui se glielo chiedi ed è in genere più
+        leggero del PNG a parità di pixel. Il JPEG, qui, ti sfoca i bordi del
+        testo.
       </li>
       <li>
-        <strong>Un logo con trasparenza.</strong> Il WebP tiene la trasparenza;
-        il JPEG la riempirà di un colore pieno, che non è quasi mai quello che
-        volevi.
+        <strong>Un logo con la trasparenza.</strong> Il WebP la trasparenza la
+        tiene; il JPEG te la riempie di un colore pieno, che non è quasi mai
+        quello che volevi.
       </li>
     </ul>
   </section>
 
   <section>
-    <h2>Come capire se il risultato è abbastanza buono</h2>
+    <h2>Come capire se il risultato regge</h2>
     <p>
-      Guardare una miniatura non dimostra niente &mdash; a dimensione miniatura
-      viene bene tutto. Due controlli migliori:
+      Guardare una miniatura non dimostra niente, perché a dimensione miniatura
+      viene bene tutto. Ci sono due controlli migliori.
     </p>
     <p>
-      <strong>Guardala a dimensione piena, sulla cosa più piatta
-      dell'inquadratura.</strong> Cielo, pelle, un muro dipinto. Il danno da
-      compressione si vede prima nelle sfumature morbide, come blocchi o bande
-      leggere, molto prima di toccare le zone dettagliate.
+      <strong>Guardala a dimensione piena, e proprio sulla parte più piatta
+      dell'inquadratura</strong>: il cielo, la pelle, un muro dipinto. Il danno
+      da compressione si vede prima nelle sfumature morbide, sotto forma di
+      blocchetti o di bande leggere, molto prima di arrivare alle zone
+      dettagliate.
     </p>
     <p>
       <strong>Leggi la misura, se lo strumento te ne dà una.</strong> Il
-      compressore di qui decodifica il proprio risultato e lo confronta con
-      l'originale, e riporta l'SSIM: un numero che confronta luminosità,
-      contrasto e struttura locali invece di contare i pixel cambiati, il che è
-      molto più vicino a ciò che dà fastidio a un occhio. Sopra lo 0,98 circa le
-      due immagini sono difficili da separare una accanto all'altra. Sotto lo
-      0,95 circa, guarda prima di mandare. Riporta anche il PSNR, il classico
-      valore in decibel, per chi lo preferisce.
+      compressore di qui decodifica il proprio risultato, lo confronta con
+      l'originale e ti riporta l'SSIM: un numero che mette a paragone luminosità,
+      contrasto e struttura locali invece di contare i pixel cambiati, ed è per
+      questo molto più vicino a ciò che a un occhio dà fastidio. Sopra lo 0,98
+      circa le due immagini sono difficili da distinguere anche affiancate; sotto
+      lo 0,95 circa, guardale prima di mandare qualcosa. Riporta anche il PSNR,
+      il classico valore in decibel, per chi preferisce quello.
     </p>
     <p>
-      Entrambi sono calcolati sul tuo dispositivo e mostrati a te, ed è tutto il
-      senso di averli: trasformano «perdita di qualità minima» da affermazione a
-      numero che puoi verificare.
+      Sono calcolati tutti e due sul tuo dispositivo e mostrati a te, ed è tutto
+      il senso di averli: trasformano «perdita di qualità minima» da
+      affermazione in un numero che puoi controllare.
     </p>
   </section>
 
   <section>
     <h2>Tre cose da sapere prima di mandare il file</h2>
     <p>
-      <strong>Comprimere toglie i metadati.</strong> Ricodificare vuol dire
-      decodificare l'immagine in pixel e ricodificare quei pixel, e una tela
-      piena di pixel non porta con sé alcun tag &mdash; quindi la posizione GPS,
-      il modello della fotocamera, gli orari e il resto semplicemente non
-      vengono scritti nel file nuovo. Di solito è un vantaggio. Se volevi via i
-      tag ma l'immagine intatta, è un altro lavoro: il
-      <a href="../../rimuovere-dati-exif/">visualizzatore e rimozione EXIF</a>
+      <strong>Comprimere porta via i metadati.</strong> Ricodificare vuol dire
+      decodificare l'immagine in pixel e ricodificare quei pixel, e un canvas
+      pieno di pixel non si porta dietro nessun tag: la posizione GPS, il modello
+      della fotocamera, le date e tutto il resto nel file nuovo non vengono
+      proprio scritti. Di solito è un vantaggio. Se però quello che volevi era
+      togliere i tag lasciando intatta l'immagine, è un altro lavoro: il
+      <a href="../../rimuovere-dati-exif/">Visualizzatore e rimozione EXIF</a>
       riscrive il contenitore senza ricomprimere niente, e
-      <a href="../rimuovere-i-dati-exif-e-gps/">la sua guida</a> spiega cosa c'è
-      là dentro.
+      <a href="../rimuovere-i-dati-exif-e-gps/">la sua guida</a> racconta cosa
+      c'è là dentro.
     </p>
     <p>
-      <strong>Non comprimere mai lo stesso file due volte.</strong> Ogni
-      codifica con perdita butta via dettaglio per sempre, e codificare
-      un'immagine già compressa ne butta via ancora &mdash; compresi gli
-      artefatti del primo passaggio, che conserva fedelmente a spese di
-      dettaglio vero. Torna sempre all'originale e comprimi una volta sola.
+      <strong>Non comprimere due volte lo stesso file.</strong> Ogni codifica
+      con perdita butta via dettaglio per sempre, e codificare un'immagine già
+      compressa ne butta via dell'altro, conservando per giunta con ogni cura
+      gli artefatti del primo giro a spese di dettaglio vero. Riparti sempre
+      dall'originale e comprimi una volta sola.
     </p>
     <p>
-      <strong>Tieni l'originale.</strong> Da una codifica con perdita non si
-      torna indietro. Qualunque cosa tu mandi, tieni da qualche parte il file da
-      cui sei partito.
+      <strong>Tieni da parte l'originale.</strong> Da una codifica con perdita
+      non si torna indietro, quindi qualunque cosa tu mandi, il file di partenza
+      conservalo da qualche parte.
     </p>
   </section>
 
   <section>
     <h2>Niente di tutto questo ha bisogno di un caricamento</h2>
     <p>
-      Ogni browser si porta dietro da anni un encoder JPEG, PNG e WebP &mdash; è
-      lo stesso codice che salva un'immagine da una tela. Comprimere un'immagine
-      è uno dei lavori che non hanno alcun motivo tecnico per coinvolgere un
-      server, ed è per questo che lo strumento di qui non ne ha uno: l'immagine
-      viene decodificata, codificata e misurata sul tuo dispositivo, e nella
-      <code>Content-Security-Policy</code> della pagina non c'è alcun indirizzo
-      appartenente a questo sito a cui spedirla.
+      Un encoder JPEG, PNG e WebP nei browser c'è da anni: è lo stesso codice che
+      salva un'immagine da un canvas. Comprimere un'immagine è uno di quei
+      lavori per cui non esiste alcuna ragione tecnica di tirare in ballo un
+      server, ed è per questo che lo strumento di qui un server non ce l'ha:
+      l'immagine viene decodificata, codificata e misurata sul tuo dispositivo,
+      e nella <code>Content-Security-Policy</code> della pagina non compare
+      nessun indirizzo nostro a cui spedirla.
     </p>
     <p>
-      Il modo più semplice per confermarlo, qui come altrove, è caricare la
-      pagina, staccare la connessione, e comprimere qualcosa lo stesso. Se
-      funziona ancora, non veniva caricato niente.
+      Il modo più semplice per verificarlo, qui come altrove, è caricare la
+      pagina, staccare la connessione e comprimere qualcosa lo stesso: se
+      funziona ancora, non stava andando via niente.
       <a href="../e-sicuro-caricare-i-propri-file/">È sicuro caricare i propri
-      file sui convertitori online?</a> propone altre tre verifiche come questa.
+      file sui convertitori online?</a> ne propone altre tre come questa.
     </p>
   </section>

@@ -1,202 +1,208 @@
   <section>
-    <h2>La risposta corta</h2>
+    <h2>In breve</h2>
     <p>
-      Apri il <a href="../../tagliare-video/">tagliavideo</a>, trascinaci dentro
-      la clip, premi <kbd>I</kbd> e <kbd>O</kbd> per segnare ogni pezzo che vuoi
-      &mdash; quanti ne vuoi &mdash; ed esporta. Su un MP4, un MOV o un M4V i
-      fotogrammi che tieni vengono spostati nel file nuovo esattamente com'erano
-      &mdash; gli stessi byte, le stesse impostazioni dell'encoder, tutto uguale
-      &mdash; e l'audio viene copiato campione per campione senza essere
-      decodificato.
+      Apri il <a href="../../tagliare-video/">Tagliavideo</a>, trascina dentro
+      la clip, premi <kbd>I</kbd> e <kbd>O</kbd> per segnare i pezzi che vuoi
+      tenere &mdash; quanti ne vuoi &mdash; ed esporta. Se il file è un MP4, un
+      MOV o un M4V i fotogrammi che tieni finiscono nel file nuovo esattamente
+      com'erano: gli stessi byte, le stesse impostazioni dell'encoder, nulla
+      toccato. L'audio viene copiato campione per campione, senza passare
+      nemmeno lui da un decodificatore.
     </p>
     <p>
-      Vuol dire che un taglio non ti costa niente in qualità, ed è veloce:
-      tirare fuori un minuto da una registrazione di quattro gigabyte costa più
-      o meno quanto costa scrivere quel minuto sul disco, perché i fotogrammi
-      vengono puntati invece che caricati. L'unico punto in cui la cosa si vede
-      è dove il tuo taglio cade davvero, ed è il resto di questa pagina.
-    </p>
-  </section>
-
-  <section>
-    <h2>Perché un taglio non deve far perdere alcuna qualità</h2>
-    <p>
-      Tagliare non cambia l'aspetto di alcun fotogramma. Ogni fotogramma che
-      tieni deve uscire identico a com'era entrato, quindi non c'è motivo di
-      decodificarlo e ricodificarlo &mdash; e ci sono tutti i motivi per non
-      farlo, visto che una ricodifica è con perdita e renderebbe tutta la clip
-      leggermente peggiore solo per accorciarla.
-    </p>
-    <p>
-      Quindi un buon tagliavideo non ricodifica. Legge l'indice del file, calcola
-      quali fotogrammi codificati cadono nel tuo intervallo, e scrive quei byte
-      dentro un contenitore nuovo con un indice nuovo davanti. Su quella via non
-      viene decodificato proprio niente.
-    </p>
-    <p>
-      Parecchi strumenti ricodificano lo stesso, perché decodificare e
-      ricodificare è molto più semplice da realizzare che analizzare il formato
-      del contenitore. Di solito riconosci quale dei due stai usando dal tempo
-      che ci mette: una copia è limitata da quanto in fretta scrive il tuo disco,
-      una ricodifica da quanto in fretta il tuo dispositivo codifica video, che è
-      cento volte più lento.
+      Il taglio, quindi, non ti costa un grammo di qualità, ed è anche svelto:
+      tirare fuori un minuto da una registrazione di quattro gigabyte prende
+      più o meno il tempo di scrivere quel minuto sul disco, perché i
+      fotogrammi vengono puntati e non caricati. L'unico punto in cui la cosa
+      si fa sentire è dove il taglio cade davvero, ed è di questo che parla il
+      resto della pagina.
     </p>
   </section>
 
   <section>
-    <h2>I fotogrammi chiave, e perché il tuo taglio può cadere prima</h2>
+    <h2>Perché un taglio non dovrebbe costare qualità</h2>
     <p>
-      Ecco il vincolo da cui discende tutto quello che riguarda il tagliare.
+      Quando accorci un video, l'aspetto dei fotogrammi non cambia: ognuno di
+      quelli che tieni deve uscire identico a com'è entrato. Non c'è quindi
+      alcuna ragione di decodificarlo e ricodificarlo, e ce ne sono parecchie
+      per non farlo, visto che la ricodifica è con perdita e peggiorerebbe un
+      po' tutta la clip solo per accorciarla.
     </p>
     <p>
-      Il video non è conservato come una sequenza di immagini complete. Sarebbe
-      enorme. Quasi tutti i fotogrammi sono conservati come una descrizione di
-      come differiscono dai vicini, il che vuol dire che non si possono
-      decodificare da soli &mdash; ti servono i fotogrammi attorno. Solo un
-      <strong>fotogramma chiave</strong> sta in piedi da solo come immagine
-      completa, e i fotogrammi chiave di solito distano da uno a dieci secondi.
+      Un buon tagliavideo, di conseguenza, non ricodifica: legge l'indice del
+      file, calcola quali fotogrammi codificati cadono dentro l'intervallo che
+      hai segnato e riscrive quei byte in un contenitore nuovo, con un indice
+      nuovo davanti. Lungo tutta questa strada non viene decodificato niente.
     </p>
     <p>
-      Quindi se segni un taglio due secondi dopo l'ultimo fotogramma chiave, un
-      tagliavideo che copia i fotogrammi non può cominciare lì. I fotogrammi in
-      corrispondenza del tuo segno sono illeggibili senza la serie che ci porta.
-      Deve portarsi tutto il tratto a partire dal fotogramma chiave davanti al
-      tuo segno.
-    </p>
-    <p>
-      Cosa ne fa è la parte interessante. Il formato del file ha un modo
-      standard per dire <em>comincia a riprodurre da questo punto</em> &mdash; i
-      fotogrammi in più stanno nel file ma il contenitore ordina al lettore di
-      saltarli. Ogni lettore diffuso lo rispetta, e la clip comincia esattamente
-      dove hai detto. Un lettore che lo ignora comincerà prima, fino a un
-      intervallo tra fotogrammi chiave.
-    </p>
-    <p>
-      Lo strumento di qui ti dice in quale dei due casi ti trovi e di quanto,
-      prima che tu esporti, così è una decisione e non una sorpresa.
+      Molti strumenti ricodificano lo stesso, semplicemente perché decodificare
+      e ricodificare è molto meno faticoso da programmare che leggere davvero
+      il formato del contenitore. Di solito capisci in quale dei due casi ti
+      trovi dal tempo che ci mette: una copia va veloce quanto scrive il tuo
+      disco, una ricodifica quanto il tuo dispositivo riesce a codificare
+      video, cioè cento volte più lentamente.
     </p>
   </section>
 
   <section>
-    <h2>Quando accettare una ricodifica</h2>
+    <h2>I fotogrammi chiave, e perché il taglio a volte cade prima</h2>
     <p>
-      C'è un taglio esatto, e funziona ricodificando il tratto iniziale &mdash;
-      decodificando dal fotogramma chiave, e riscrivendo una nuova serie di
-      fotogrammi che comincia davvero dove avevi segnato. È più lento, e costa un
-      po' di qualità, ma solo su quel tratto iniziale.
+      Qui c'è il vincolo da cui dipende tutto il resto.
     </p>
     <p>
-      Scegli quello quando la clip va in un posto che non rispetterà l'ordine del
-      contenitore, o dove non controlli il lettore: certi programmi di montaggio,
-      certi sistemi di trasmissione e videoconferenza, certi lettori hardware
-      vecchi. Scegli la copia per tutto il resto, che è quasi tutto &mdash; un
-      browser, un telefono, una piattaforma social, un lettore multimediale.
+      Un video non è conservato come una sequenza di immagini complete, perché
+      sarebbe enorme: quasi tutti i fotogrammi sono scritti come descrizione di
+      quanto differiscono da quelli vicini, e quindi da soli non si possono
+      decodificare, servono anche quelli intorno. Sta in piedi da solo, come
+      immagine completa, soltanto il <strong>fotogramma chiave</strong>, e tra
+      un fotogramma chiave e il successivo di solito passa da uno a dieci
+      secondi.
     </p>
     <p>
-      Una terza possibilità che non costa niente: sposta il tuo segno. Se lo
-      strumento ti mostra dove sono i fotogrammi chiave, portare il taglio sul
-      più vicino ti dà un taglio esatto senza alcuna ricodifica. Raramente vale
-      la pena rinunciare a una copia per un secondo di differenza.
+      Se segni il taglio due secondi dopo l'ultimo fotogramma chiave, dunque,
+      un tagliavideo che copia i fotogrammi da lì non può partire: i fotogrammi
+      che stanno in corrispondenza del tuo segno sono illeggibili senza la fila
+      che li precede. Deve per forza portarsi dietro anche il tratto che parte
+      dal fotogramma chiave prima del segno.
+    </p>
+    <p>
+      La parte interessante è cosa se ne fa. Il formato del file ha un modo
+      standard per dire <em>comincia a riprodurre da qui</em>: i fotogrammi in
+      più restano nel file, ma il contenitore dice al lettore di saltarli.
+      Qualunque lettore diffuso lo rispetta, e la clip parte esattamente dove
+      hai detto tu; se invece capita in mano a un lettore che lo ignora,
+      partirà prima, al massimo di un intervallo tra fotogrammi chiave.
+    </p>
+    <p>
+      Lo strumento ti dice in quale dei due casi ti trovi e di quanto, prima
+      che tu esporti, così è una decisione tua e non una sorpresa.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando conviene accettare la ricodifica</h2>
+    <p>
+      Il taglio al fotogramma esatto esiste, e si ottiene ricodificando solo il
+      tratto iniziale: si decodifica a partire dal fotogramma chiave e si
+      riscrive una serie di fotogrammi nuovi che comincia davvero dove avevi
+      segnato. È più lento e costa un po' di qualità, ma soltanto su quel primo
+      pezzetto.
+    </p>
+    <p>
+      Prendilo quando la clip finisce dove l'istruzione del contenitore non
+      verrà rispettata, o dove il lettore non lo decidi tu: certi programmi di
+      montaggio, certi sistemi di trasmissione e di videoconferenza, certi
+      lettori hardware di qualche anno fa. Per tutto il resto &mdash; un
+      browser, un telefono, un social, un lettore multimediale, cioè la quasi
+      totalità dei casi &mdash; va benissimo la copia.
+    </p>
+    <p>
+      C'è poi una terza strada che non costa niente: spostare il segno. Se lo
+      strumento ti fa vedere dove cadono i fotogrammi chiave, portare il taglio
+      su quello più vicino ti dà un taglio esatto senza nessuna ricodifica, e
+      per un secondo di differenza raramente vale la pena rinunciare alla
+      copia.
     </p>
   </section>
 
   <section>
     <h2>Togliere un pezzo in mezzo</h2>
     <p>
-      Togliere un pezzo è un'operazione diversa dal tenerne uno, e vale la pena
-      sapere che è supportata, perché parecchi tagliavideo fanno solo la seconda.
-      Segna la parte che non vuoi, scegli di toglierla, e quello che resta ai
-      due lati viene unito in una clip sola con l'audio portato dall'altra parte
-      in sincrono.
+      Togliere un pezzo non è la stessa cosa che tenerne uno, e vale la pena
+      dire che qui si può fare, perché parecchi tagliavideo sanno fare solo la
+      seconda. Segni la parte che non ti serve, scegli di eliminarla, e quello
+      che resta ai due lati viene ricucito in una clip sola, con l'audio
+      portato dall'altra parte in sincrono.
     </p>
     <p>
-      Nel punto in cui riprende la seconda metà, la giunzione ha lo stesso
-      vincolo dei fotogrammi chiave, per lo stesso motivo. Qui funziona su
-      entrambe le vie dell'MP4. È l'unica cosa che il ripiego della registrazione
-      qui sotto non sa fare, perché una registrazione si fa in un passaggio solo
-      da una sola testina.
+      Nel punto in cui riprende la seconda metà la giunzione ha lo stesso
+      vincolo dei fotogrammi chiave, per lo stesso motivo di prima. Con l'MP4
+      funziona in tutti e due i modi. È invece l'unica cosa che il ripiego
+      basato sulla registrazione, di cui si parla qui sotto, non riesce a fare:
+      una registrazione avviene in un passaggio solo, da una sola testina.
     </p>
   </section>
 
   <section>
-    <h2>I formati, e il ripiego</h2>
+    <h2>I formati, e cosa succede quando non basta</h2>
     <p>
       <strong>MP4, M4V e MOV</strong> vengono letti direttamente, qualunque
-      codec ci sia dentro &mdash; H.264, HEVC, AV1, VP9. Copiare i fotogrammi non
-      comporta decodificarli, quindi questa via funziona anche per un codec per
-      cui il tuo browser non ha proprio alcun decodificatore, che è una piacevole
-      conseguenza del non guardare le immagini.
+      codec ci sia dentro: H.264, HEVC, AV1, VP9. Copiare i fotogrammi non vuol
+      dire decodificarli, quindi si passa di qui anche con un codec per cui il
+      tuo browser non ha proprio alcun decodificatore &mdash; comodo effetto
+      collaterale del fatto che a nessuno serve guardare le immagini.
     </p>
     <p>
-      <strong>Tutto il resto che il tuo browser sa riprodurre</strong>, il WebM
-      in primis, viene tagliato riproducendolo e registrando il risultato.
-      Funziona, e ha due costi: richiede tanto tempo quanto è lungo il pezzo, e
-      l'immagine e il suono vengono ricodificati.
+      <strong>Tutto il resto che il tuo browser sa riprodurre</strong>, WebM in
+      testa, viene tagliato riproducendolo e registrando il risultato. Funziona,
+      e ha due prezzi: ci mette tanto tempo quanto è lungo il pezzo, e immagine
+      e suono passano da una ricodifica.
     </p>
     <p>
       <strong>AVI, WMV, FLV e quasi tutti gli MKV</strong> il browser non li sa
-      né leggere né riprodurre, e lo strumento lo dice invece di piantarsi a metà
-      strada. Convertili prima in MP4 con qualcosa che li gestisca.
+      né leggere né riprodurre, e lo strumento te lo dice subito invece di
+      piantarsi a metà. Convertili prima in MP4 con qualcosa che li gestisca.
     </p>
   </section>
 
   <section>
-    <h2>Due cose che altrove vanno storte in silenzio</h2>
+    <h2>Due cose che altrove si rovinano senza dire niente</h2>
     <p>
-      <strong>La rotazione.</strong> Un telefono filma in orizzontale e scrive
-      nel file un'istruzione di rotazione invece di girare i pixel. Un
-      tagliavideo che copia i fotogrammi deve portarsi dietro quell'istruzione, o
-      la tua clip verticale esce di traverso &mdash; che è il modo classico in
-      cui un video tagliato viene rovinato. La via esatta di qui gira i
-      fotogrammi mentre li ricodifica e scrive un file che non ha bisogno di
-      alcuna rotazione.
+      <strong>La rotazione.</strong> Un telefono riprende sempre in
+      orizzontale e nel file scrive un'istruzione di rotazione invece di girare
+      i pixel. Un tagliavideo che copia i fotogrammi deve portarsi dietro anche
+      quell'istruzione, altrimenti la tua clip verticale esce coricata: è il
+      modo classico in cui un video tagliato viene rovinato. La strada del
+      taglio esatto, qui, gira i fotogrammi mentre li ricodifica e produce un
+      file che di rotazioni non ha più bisogno.
     </p>
     <p>
-      <strong>Il sincrono dell'audio.</strong> Audio e video sono conservati come
-      flussi separati con tempi propri, e non vengono tagliati negli stessi
-      punti. Se i due non vengono allineati di proposito al taglio, il suono
-      slitta. Sulla via della copia di qui l'audio viene copiato campione per
-      campione senza essere decodificato, quindi è byte per byte quello che
-      c'era nel file, e un segno di montaggio lo tiene in sincrono con
-      l'immagine entro un millesimo di secondo.
+      <strong>Il sincrono dell'audio.</strong> Audio e video sono conservati
+      come flussi separati, ciascuno con i propri tempi, e non si tagliano
+      negli stessi punti. Se al taglio i due non vengono riallineati di
+      proposito, il suono slitta. Qui, sulla strada della copia, l'audio viene
+      copiato campione per campione senza essere decodificato, quindi è byte
+      per byte quello che stava nel file di partenza, e un segno di montaggio
+      lo tiene agganciato all'immagine entro il millesimo di secondo.
     </p>
   </section>
 
   <section>
     <h2>Tagliare non è ritagliare</h2>
     <p>
-      Due parole che vengono usate una per l'altra. Tagliare cambia la durata
-      della clip; ritagliare cambia la forma dell'immagine. Se quello che vuoi è
-      una versione quadrata di un video orizzontale, o le bande nere via dai
-      lati, è il <a href="../../ritagliare-video/">ritagliatore di video</a>
-      &mdash; e a differenza del tagliare, quello deve ricodificare, per il
-      motivo che spiega <a href="../ritagliare-un-video/">la sua guida</a>.
+      Sono due parole che si usano spesso una per l'altra: tagliare cambia la
+      durata della clip, ritagliare cambia la forma dell'immagine. Se quello
+      che ti serve è la versione quadrata di un video orizzontale, o le bande
+      nere tolte dai lati, il posto giusto è il
+      <a href="../../ritagliare-video/">Ritagliatore di video</a> &mdash; e
+      quello, a differenza del taglio, la ricodifica la deve fare per forza,
+      per il motivo che spiega <a href="../ritagliare-un-video/">la sua
+      guida</a>.
     </p>
   </section>
 
   <section>
-    <h2>Perché questo non ha bisogno di un caricamento &mdash; questo in particolare</h2>
+    <h2>Perché proprio qui non serve caricare niente</h2>
     <p>
-      Il video è il tipo di file per cui più di ogni altro ci si aspetta di dover
-      caricare qualcosa, perché i file sono pesanti e il lavoro suona gravoso.
-      Tagliare è il caso in cui è meno vero: sulla via della copia il file viene
-      letto a malapena. Lo strumento percorre l'indice, calcola quali intervalli
-      di byte tenere, e li riscrive. Caricare un file da quattro gigabyte su un
-      server perché possa fare questo sarebbe il modo più lento possibile di
-      organizzare la cosa.
+      Il video è il tipo di file per cui più di ogni altro si dà per scontato
+      di dover caricare qualcosa: i file pesano e il lavoro sembra impegnativo.
+      Tagliare è il caso in cui questo è meno vero di tutti, perché sulla
+      strada della copia il file viene appena sfiorato: lo strumento percorre
+      l'indice, calcola quali intervalli di byte tenere e li riscrive. Mandare
+      quattro gigabyte a un server perché faccia questo sarebbe il modo più
+      lento che si possa immaginare di organizzare la faccenda.
     </p>
     <p>
-      È anche il tipo di file in cui caricare costa di più, se preferiresti non
-      farlo: un video porta con sé volti, voci, case e luoghi in un modo in cui
-      un documento non lo fa. Lo strumento di qui non ha alcuna funzione di
+      Ed è anche il tipo di file che caricare costa di più, se preferiresti
+      evitarlo: in un video ci sono volti, voci, case e luoghi, cose che un
+      documento non si porta dietro. Lo strumento non ha alcuna funzione di
       rete, e la <code>Content-Security-Policy</code> della pagina nomina tutti
-      gli indirizzi che può contattare, nessuno dei quali appartiene a questo
-      sito.
+      gli indirizzi che può contattare, nessuno dei quali è nostro.
     </p>
     <p>
-      Stacca la connessione e taglia una clip lo stesso, se preferisci verificare
-      invece che crederci.
+      Stacca la connessione e taglia una clip lo stesso, se preferisci
+      verificare invece che crederci.
       <a href="../e-sicuro-caricare-i-propri-file/">È sicuro caricare i propri
-      file sui convertitori online?</a> propone altre tre verifiche come questa.
+      file sui convertitori online?</a> ne propone altre tre come questa.
     </p>
   </section>

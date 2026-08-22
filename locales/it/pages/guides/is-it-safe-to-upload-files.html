@@ -1,149 +1,148 @@
   <section>
-    <h2>La risposta corta</h2>
+    <h2>In breve</h2>
     <p>
-      Per quasi tutti i file, quasi sempre, caricare va bene. I convertitori
-      seri cancellano quello che mandi nel giro di qualche ora e non hanno alcun
-      interesse per le tue foto delle vacanze.
+      Per quasi tutti i file, quasi sempre, caricare va benissimo. I convertitori
+      seri cancellano quello che gli mandi nel giro di qualche ora, e delle tue
+      foto delle vacanze non se ne fanno niente.
     </p>
     <p>
-      Il problema non è che stiano mentendo. È che
+      Il punto non è che ti stiano mentendo. È che
       <strong>non hai modo di sapere se lo stanno facendo</strong>. Una volta che
-      un file lascia il tuo dispositivo, ogni promessa su quello che succede dopo
-      è una promessa che prendi sulla fiducia: per quanto viene tenuto, chi ci può
-      arrivare, se viene copiato in un backup che sopravvive al timer di
-      cancellazione, cosa gli succede se l'azienda viene venduta o violata.
-      Niente di tutto questo si vede da fuori.
+      un file ha lasciato il tuo dispositivo, qualunque promessa su cosa gli
+      succede dopo è una promessa che devi prendere per buona: quanto a lungo
+      resta lì, chi ci può arrivare, se finisce in un backup che sopravvive al
+      timer di cancellazione, cosa gli capita se l'azienda viene venduta o
+      bucata. Da fuori, di tutto questo, non si vede niente.
     </p>
     <p>
-      Quindi la domanda utile non è «mi fido di questo sito?». È
+      La domanda utile, quindi, non è «mi fido di questo sito?», ma
       <strong>«questo lavoro ha davvero bisogno che il mio file se ne
-      vada?»</strong>. Per un numero grande e crescente di lavori la risposta è
-      no, e quando la risposta è no, la domanda sulla fiducia smette di essere
-      una a cui devi rispondere.
+      vada?»</strong>. Per un numero di lavori grande e in continua crescita la
+      risposta è no, e quando la risposta è no la questione della fiducia
+      semplicemente non si pone più.
     </p>
   </section>
 
   <section>
-    <h2>Cosa fa davvero un «caricamento»</h2>
+    <h2>Cosa succede davvero quando «carichi»</h2>
     <p>
-      Quando un convertitore ti chiede di scegliere un file e poi ti mostra una
-      barra di avanzamento, il tuo browser sta copiando tutto il file, byte per
-      byte, attraverso internet, su un computer che è di qualcun altro. Quel
-      computer lo scrive su un disco, esegue la conversione, scrive il risultato
-      sullo stesso disco, e ti passa un link.
+      Quando un convertitore ti fa scegliere un file e poi ti mostra una barra di
+      avanzamento, il tuo browser sta copiando l'intero file, byte per byte,
+      attraverso internet, su un computer che è di qualcun altro. Quel computer
+      lo scrive su un disco, esegue la conversione, scrive il risultato sullo
+      stesso disco e ti passa un link.
     </p>
     <p>
       In quel momento il tuo file esiste in almeno tre posti che non hai scelto
-      tu: il disco del server, i registri che hanno annotato la richiesta, e
-      spesso una rete di distribuzione dei contenuti che ha messo in cache il
-      risultato perché lo scaricamento sia rapido. Una politica di cancellazione
+      tu: il disco del server, i log che hanno registrato la richiesta e, spesso,
+      una rete di distribuzione dei contenuti che ha messo in cache il risultato
+      per rendere veloce il download. Una politica di cancellazione, per valere,
       deve arrivare a tutti e tre. Quasi tutte dicono di arrivarci. Tu non ne
       puoi verificare nemmeno una.
     </p>
     <p>
-      Vale anche la pena saperlo: il file non è l'unica cosa che arriva. Il nome
-      del file va con lui, e ci va anche tutto quello che c'è dentro il file e
-      che tu non vedi. Una foto appena uscita da un telefono porta di solito le
-      coordinate GPS esatte del posto in cui è stata scattata, l'ora, il numero di
-      serie della fotocamera, e a volte una miniatura incorporata dell'immagine
-      originale, quella di prima che la ritagliassi. Chi sta attento all'immagine
-      spesso non sta attento a quello, perché sullo schermo non c'è niente che
-      glielo mostri.
+      Un'altra cosa che vale la pena sapere: il file non è l'unica cosa che
+      parte. Con lui va il nome, e va tutto quello che dentro al file c'è ma tu
+      non vedi. Una foto appena uscita da un telefono porta di solito le
+      coordinate GPS precise del posto in cui l'hai scattata, l'ora, il numero di
+      serie della fotocamera e a volte una miniatura incorporata dell'immagine
+      originale, cioè di prima che la ritagliassi. Chi sta attento all'immagine
+      spesso a tutto questo non pensa, perché sullo schermo non c'è niente che
+      glielo faccia vedere.
     </p>
   </section>
 
   <section>
     <h2>Perché quasi tutti gli strumenti caricano lo stesso</h2>
     <p>
-      Non perché vogliano i tuoi file. Perché per quasi tutta la vita del web non
-      c'era alternativa. Un browser non sapeva decodificare un video,
-      ricodificare un'immagine a una qualità scelta, o analizzare un formato di
-      file; un server con FFmpeg e ImageMagick sì. Caricare non era un modello di
-      business, era l'unico posto in cui il lavoro potesse avvenire.
+      Non perché vogliano i tuoi file, ma perché per quasi tutta la vita del web
+      non c'era altra strada. Un browser non sapeva decodificare un video,
+      ricodificare un'immagine a una qualità decisa da te o leggere il formato di
+      un file; un server con FFmpeg e ImageMagick sì. Caricare non era un modello
+      di business, era l'unico posto in cui il lavoro potesse succedere.
     </p>
     <p>
-      Ha smesso di essere vero di recente e in sordina. I browser ormai si
-      portano dietro WebAssembly, che esegue gli stessi codec compilati a una
-      velocità vicina a quella nativa, WebCodecs, che espone l'encoder video
-      hardware che il tuo dispositivo ha già, e un'API Canvas che sa decodificare
-      e ricodificare immagini direttamente. Il lavoro per cui serviva un server
-      adesso gira sul dispositivo che ha già il file.
+      Poi la cosa ha smesso di essere vera, di recente e senza far rumore. I
+      browser oggi si portano dietro WebAssembly, che esegue quegli stessi codec
+      compilati a velocità quasi nativa, WebCodecs, che mette a disposizione
+      l'encoder video hardware già presente nel tuo dispositivo, e un'API Canvas
+      che decodifica e ricodifica immagini direttamente. Il lavoro per cui
+      serviva un server, adesso, gira sul dispositivo che il file ce l'ha già.
     </p>
     <p>
-      Parecchi strumenti caricano ancora, e ci sono motivi onesti: una catena
-      esistente che nessuno vuole riscrivere, un formato senza decodificatore lato
-      browser, un lavoro davvero troppo pesante per un telefono. C'è anche un
-      motivo meno onesto, ed è che è sul server che vivono gli account, le quote e
-      i piani a pagamento. Uno strumento che gira interamente nel tuo browser è
-      difficile da contabilizzare.
+      Parecchi strumenti caricano ancora, e a volte per ragioni oneste: una
+      pipeline già in piedi che nessuno ha voglia di riscrivere, un formato per
+      cui nel browser un decodificatore non esiste, un lavoro davvero troppo
+      pesante per un telefono. E c'è anche una ragione meno onesta: è sul server
+      che vivono gli account, le quote e gli abbonamenti, e uno strumento che
+      gira per intero dentro il tuo browser è difficile da mettere a contatore.
     </p>
   </section>
 
   <section>
     <h2>Quattro verifiche che puoi fare da solo</h2>
     <p>
-      Funzionano su qualunque strumento, questo compreso. Nessuna richiede di
-      credere a nessuno sulla parola, e la prima richiede una decina di secondi.
+      Valgono per qualunque strumento, questo compreso. Nessuna ti chiede di
+      credere a qualcuno sulla parola, e la prima porta via una decina di
+      secondi.
     </p>
 
-    <h3>1. Stacca la spina</h3>
+    <h3>1. Stacca la connessione</h3>
     <p>
       Carica la pagina, poi spegni il wi-fi o stacca il cavo, e prova a usarla.
-      Uno strumento che fa il lavoro nel tuo browser continua esattamente come
-      prima. Uno strumento che carica si ferma subito, perché la cosa che faceva
-      il lavoro non è più raggiungibile.
+      Uno strumento che il lavoro lo fa nel tuo browser continua esattamente come
+      prima; uno strumento che carica si ferma subito, perché la cosa che
+      lavorava non è più raggiungibile.
     </p>
     <p>
-      È la prova più forte che ci sia, e la più difficile da falsificare, perché
-      non si può rispondere con una formulazione. O la conversione si completa
-      senza rete o non si completa.
+      È la prova più forte che ci sia, ed è la più difficile da aggirare, perché
+      non ci si può rispondere con una frase scritta bene: o la conversione
+      arriva in fondo senza rete, o non ci arriva.
     </p>
 
     <h3>2. Guarda la scheda Rete</h3>
     <p>
-      Apri gli strumenti di sviluppo del tuo browser, scegli Rete, poi usa lo
-      strumento. Ogni richiesta che la pagina fa è elencata con la sua
-      dimensione. Se la tua foto da 4&nbsp;MB è stata caricata, in quell'elenco
-      c'è una richiesta da 4&nbsp;MB. Se la cosa più grande che esce dalla pagina
-      sono qualche kilobyte di pubblicità, non lo è stata.
+      Apri gli strumenti di sviluppo del browser, vai su Rete e poi usa lo
+      strumento: ogni richiesta che la pagina fa compare in elenco con la propria
+      dimensione. Se la tua foto da 4&nbsp;MB è stata caricata, in
+      quell'elenco c'è una richiesta da 4&nbsp;MB; se la cosa più grossa che esce
+      dalla pagina sono pochi kilobyte di pubblicità, non lo è stata.
     </p>
     <p>
-      Ordina per dimensione e guarda in cima. Non ti serve capire le richieste;
-      ti serve accorgerti se una di loro è della dimensione del tuo file.
+      Ordina per dimensione e guarda in cima. Non ti serve capire le richieste,
+      ti serve accorgerti se una di esse è grande quanto il tuo file.
     </p>
 
     <h3>3. Leggi la Content-Security-Policy</h3>
     <p>
-      Guarda il sorgente della pagina e cerca
-      <code>Content-Security-Policy</code>, vicino alla cima. È l'elenco degli
-      indirizzi che quella pagina può contattare, e a farlo rispettare è il tuo
-      browser e non le buone intenzioni del sito &mdash; una richiesta verso
-      qualcosa che non è nell'elenco viene rifiutata, qualunque cosa provi a fare
-      il codice.
+      Apri il sorgente della pagina e cerca <code>Content-Security-Policy</code>,
+      che sta vicino all'inizio. È l'elenco degli indirizzi che quella pagina può
+      contattare, e a farlo rispettare è il tuo browser, non le buone intenzioni
+      del sito: una richiesta verso qualcosa che nell'elenco non c'è viene
+      rifiutata, qualunque cosa provi a fare il codice.
     </p>
     <p>
-      La direttiva che conta è <code>connect-src</code>, che regola dove la
-      pagina può mandare dati. Se nomina un indirizzo appartenente al sito su cui
-      ti trovi, la pagina può mandarci il tuo file. Se non nomina niente, o
-      nomina solo terze parti come una rete pubblicitaria, non può.
+      La direttiva che conta è <code>connect-src</code>, che decide dove la
+      pagina può mandare dati. Se lì compare un indirizzo del sito su cui ti
+      trovi, la pagina il tuo file te lo può spedire; se non compare niente, o
+      compaiono solo terze parti come una rete pubblicitaria, non può.
     </p>
     <p>
       Una pagina senza alcuna Content-Security-Policy non è la prova di niente di
-      brutto. Vuol dire solo che questa particolare verifica non ha niente da
-      dirti.
+      brutto: vuol dire soltanto che questa verifica, lì, non ha niente da dirti.
     </p>
 
     <h3>4. Leggi il codice</h3>
     <p>
-      La meno comoda, la più conclusiva. Se uno strumento pubblica il proprio
-      sorgente e lo serve senza un passaggio di compilazione, i file che il tuo
-      browser ha recuperato sono i file che puoi leggere. Cercaci
+      La più scomoda e la più definitiva. Se uno strumento pubblica il proprio
+      sorgente e lo serve senza passaggi di compilazione, i file che il tuo
+      browser ha scaricato sono esattamente i file che puoi leggere. Cercaci
       <code>fetch</code>, <code>XMLHttpRequest</code> e <code>sendBeacon</code>
-      &mdash; i tre modi in cui una pagina può mandare qualcosa &mdash; e guarda
-      cosa gli viene passato.
+      &mdash; i tre modi che una pagina ha per mandare via qualcosa &mdash; e
+      guarda cosa gli viene passato.
     </p>
     <p>
-      Quasi nessuno lo farà. Conta lo stesso che sia possibile, perché
+      Non lo farà quasi nessuno. Conta lo stesso che sia possibile farlo, perché
       un'affermazione che nessuno è in grado di verificare non è davvero
       un'affermazione.
     </p>
@@ -152,112 +151,111 @@
   <section>
     <h2>Cosa non vuol dire «gira nel tuo browser»</h2>
     <p>
-      Vale la pena essere precisi, perché l'espressione viene usata alla leggera
-      e questo sito deve tenersi allo stesso standard che sta proponendo.
+      Qui conviene essere precisi, perché l'espressione si usa con troppa
+      leggerezza, e questo sito deve reggere lo stesso metro che sta proponendo.
     </p>
     <ul>
       <li>
         <strong>Non vuol dire nessuna richiesta.</strong> La pagina stessa è
         arrivata dalla rete, e quasi tutti gli strumenti gratuiti hanno
-        pubblicità o statistiche che parlano con qualcuno. L'affermazione
+        pubblicità o statistiche che con qualcuno parlano. L'affermazione
         riguarda il tuo <em>file</em>, non il traffico in generale.
       </li>
       <li>
-        <strong>Non nasconde il tuo indirizzo IP.</strong> Lo vede ogni sito che
-        visiti, questo compreso. L'elaborazione locale riguarda il contenuto dei
-        tuoi file, non l'anonimato.
+        <strong>Non nasconde il tuo indirizzo IP.</strong> Lo vede qualunque sito
+        tu visiti, questo compreso. L'elaborazione in locale riguarda il
+        contenuto dei tuoi file, non l'anonimato.
       </li>
       <li>
-        <strong>Non sopravvive a una funzione che recupera qualcosa.</strong>
-        Uno strumento che ti lascia incollare un indirizzo web deve contattare
-        quell'indirizzo, e quel server viene a sapere il tuo IP e cosa hai
-        chiesto. È insito nella funzione, non un suo difetto &mdash; ma è
-        un'eccezione vera e uno strumento dovrebbe dirlo chiaramente invece di
-        arrotondarla.
+        <strong>Non regge se c'è una funzione che va a prendere qualcosa
+        online.</strong> Uno strumento che ti lascia incollare un indirizzo web
+        quell'indirizzo lo deve contattare, e quel server viene a sapere il tuo
+        IP e cosa hai chiesto. Fa parte di come è fatta la funzione, non è un suo
+        difetto, ma resta un'eccezione vera, che uno strumento dovrebbe dire
+        chiaramente invece di far sparire nella media.
       </li>
       <li>
         <strong>Non è la stessa cosa di «cancelliamo i tuoi file».</strong> La
-        seconda frase riguarda quello che un'azienda sceglie di fare. La prima
-        riguarda quello che è tecnicamente possibile. Solo una delle due è
-        verificabile.
+        seconda frase parla di quello che un'azienda decide di fare, la prima di
+        quello che è tecnicamente possibile. Solo una delle due si può
+        verificare.
       </li>
     </ul>
   </section>
 
   <section>
-    <h2>Quando caricare va davvero bene</h2>
+    <h2>Quando caricare va benissimo</h2>
     <p>
-      Questo non è un ragionamento per cui ogni caricamento è un errore. Manda il
-      file quando il contenuto non è delicato e il lavoro è più facile così;
-      quando il lavoro è davvero troppo pesante per il tuo dispositivo; quando il
-      formato non ha un decodificatore lato browser; o quando stai usando un
-      servizio con cui hai già un rapporto e di cui hai davvero letto le
-      condizioni.
+      Non è che ogni caricamento sia un errore. Manda pure il file quando il
+      contenuto non è delicato e così fai prima; quando il lavoro è davvero
+      troppo pesante per il tuo dispositivo; quando per quel formato un
+      decodificatore nel browser non c'è; o quando stai usando un servizio con
+      cui hai già un rapporto e di cui le condizioni le hai lette sul serio.
     </p>
     <p>
-      Stai più attento quando il file contiene qualcosa che non pubblicheresti:
-      documenti d'identità, esami medici, contratti, qualunque cosa con un
-      indirizzo o un volto che non avevi intenzione di condividere, o una foto di
-      cui non hai guardato i dati di posizione. Per quelli, uno strumento che
-      puoi verificare è da preferire a uno di cui ti devi fidare &mdash; non
-      perché quello di cui ti fidi sia probabile che ti tradisca, ma perché con
-      quello verificabile la domanda non si pone.
+      Stai più attento quando nel file c'è qualcosa che non pubblicheresti:
+      documenti d'identità, esami medici, contratti, qualsiasi cosa con un
+      indirizzo o un volto che non volevi condividere, o una foto di cui i dati
+      di posizione non li hai guardati. Per quelli, uno strumento che puoi
+      verificare è meglio di uno di cui ti devi fidare &mdash; non perché sia
+      probabile che quello di cui ti fidi ti tradisca, ma perché con quello
+      verificabile la domanda non te la devi proprio porre.
     </p>
   </section>
 
   <section>
-    <h2>Come risponde questo sito a quelle quattro verifiche</h2>
+    <h2>Come se la cava questo sito con quelle quattro verifiche</h2>
     <p>
-      Sarebbe una guida strana quella che ti dice di verificare e poi chiede
-      un'esenzione. Quindi, in ordine:
+      Sarebbe una guida curiosa quella che ti dice di verificare e poi chiede di
+      essere esentata. Quindi, in ordine:
     </p>
     <ul>
       <li>
-        <strong>Stacca la spina.</strong> Apri uno strumento qualsiasi di qui,
-        stacca la connessione, e continua a funzionare. La pagina di ogni
+        <strong>Stacca la connessione.</strong> Apri uno strumento qualsiasi di
+        qui, stacca la connessione, e continua a funzionare. La pagina di ogni
         strumento ha un indicatore dal vivo che ti dice se in questo momento sei
-        online, così puoi guardarlo cambiare.
+        online, così lo puoi guardare cambiare.
       </li>
       <li>
-        <strong>Scheda Rete.</strong> Converti qualcosa e leggi l'elenco. Non c'è
-        niente che porti con sé il tuo file, una sua miniatura, il suo nome, la
-        sua dimensione, o qualunque cosa ci sia stata letta dentro. Su questo
-        sito non esiste alcun evento di analytics personalizzato che abbia
-        qualcosa del genere da mandare.
+        <strong>Scheda Rete.</strong> Converti qualcosa e leggi l'elenco: non c'è
+        una sola richiesta che si porti dietro il tuo file, una sua miniatura, il
+        suo nome, la sua dimensione o qualunque cosa ci sia stata letta dentro.
+        Su questo sito non esiste alcun evento di analytics personalizzato che
+        avrebbe qualcosa del genere da mandare.
       </li>
       <li>
         <strong>Content-Security-Policy.</strong> Sta in cima al sorgente di ogni
         pagina. <code>connect-src</code> nomina gli endpoint pubblicitari e di
         misurazione di Google e il pulsante delle donazioni, e nient'altro.
-        <strong>Nessun indirizzo di quell'elenco appartiene a questo
-        sito</strong>, perché questo sito non ha un server &mdash; sono file
-        statici. Non c'è nessun posto dove un file potrebbe essere mandato, anche
-        se qualcosa ci provasse.
+        <strong>Nessuno degli indirizzi di quell'elenco è nostro</strong>,
+        perché questo sito un server non ce l'ha: sono file statici. Non esiste
+        un posto in cui un file possa essere mandato, nemmeno se qualcosa ci
+        provasse.
       </li>
       <li>
         <strong>Codice.</strong> Ogni riga è
         <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">pubblica</a>.
         La compilazione toglie i commenti e gli spazi e nient'altro, e la puoi
-        eseguire tu e confrontare il risultato con quello che viene servito.
+        eseguire tu, confrontando il risultato con quello che viene servito.
       </li>
     </ul>
     <p>
-      Le eccezioni, dichiarate invece che sepolte: questo sito ospita pubblicità
+      Le eccezioni, dichiarate invece che nascoste: questo sito ospita pubblicità
       di Google e un contatore delle visite, che parlano entrambi con Google e a
-      nessuno dei due viene passato niente sui tuoi file; e lo strumento
-      <a href="../../immagini-in-video/">Immagini in video</a> può recuperare
-      un'immagine da un indirizzo che incolli tu, il che vuol dire che quel
-      server vede il tuo IP. La <a href="../../privacy/">pagina sulla
-      privacy</a> le espone entrambe per intero.
+      cui dei tuoi file non viene passato niente; e lo strumento
+      <a href="../../immagini-in-video/">Immagini in video</a> può andare a
+      prendere un'immagine da un indirizzo che incolli tu, il che significa che
+      quel server vede il tuo IP. La <a href="../../privacy/">pagina sulla
+      privacy</a> le racconta tutte e due per esteso.
     </p>
     <p>
       Ogni strumento di qui funziona così: un
       <a href="../../comprimere-immagine/">compressore di immagini</a> che
-      centra un peso che dici tu, un
+      centra il peso che gli dici tu, un
       <a href="../../ritagliare-video/">ritagliatore di video</a>, un
       <a href="../../rimuovere-dati-exif/">visualizzatore e rimozione EXIF</a>
-      per i dati nascosti descritti più su in questa pagina,
-      <a href="../../immagini-in-video/">immagini in video</a>, e
+      per i dati nascosti di cui si parla più su,
+      <a href="../../immagini-in-video/">immagini in video</a> e
       <a href="../../immagini-in-pdf/">immagini in PDF</a>. Tutti gratuiti,
       nessun account, e nessuno di loro ha un posto dove mandare i tuoi file.
     </p>
