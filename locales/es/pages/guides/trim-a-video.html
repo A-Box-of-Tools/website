@@ -1,119 +1,119 @@
   <section>
     <h2>La respuesta corta</h2>
     <p>
-      Abre el <a href="../../cortar-video/">cortador de vídeo</a>, suelta el clip
-      dentro, pulsa <kbd>I</kbd> y <kbd>O</kbd> para marcar cada trozo que
-      quieras &mdash; tantos como te apetezca &mdash; y exporta. En un MP4, un MOV
-      o un M4V, los fotogramas que conservas se trasladan al archivo nuevo tal y
-      como estaban &mdash; los mismos bytes, los mismos ajustes de codificación,
-      lo mismo en todo &mdash; y el sonido se copia muestra a muestra sin
-      descodificarlo.
+      Abre el <a href="../../cortar-video/">cortador de vídeo</a>, arrastra el
+      clip dentro, pulsa <kbd>I</kbd> y <kbd>O</kbd> para marcar cada trozo que
+      quieras conservar &mdash; tantos como te apetezca &mdash; y exporta. En un
+      MP4, un MOV o un M4V, los fotogramas que conservas pasan al archivo nuevo
+      tal cual estaban: los mismos bytes, los mismos ajustes de codificación,
+      idénticos en todo. Y el sonido se copia muestra a muestra sin llegar a
+      descodificarse.
     </p>
     <p>
-      Eso significa que un corte no te cuesta nada de calidad, y es rápido: sacar
-      un minuto de una grabación de cuatro gigabytes cuesta más o menos lo que
-      cuesta escribir ese minuto en disco, porque a los fotogramas se les apunta en
-      vez de cargarlos. El único sitio donde esto se nota es dónde cae de verdad tu
-      corte, que es el resto de esta página.
+      Eso quiere decir que un corte no te cuesta nada de calidad. Y es rápido:
+      sacar un minuto de una grabación de cuatro gigabytes cuesta más o menos lo
+      que cueste escribir ese minuto en disco, porque a los fotogramas se los
+      señala dentro del archivo en vez de cargarlos. Lo único donde esto se nota
+      es en dónde cae de verdad tu corte, y de eso va el resto de la página.
     </p>
   </section>
 
   <section>
-    <h2>Por qué un corte no tiene por qué perder nada de calidad</h2>
+    <h2>Por qué un corte no tiene por qué costar calidad</h2>
     <p>
       Cortar no cambia el aspecto de ningún fotograma. Cada fotograma que
-      conservas debe salir idéntico a como entró, así que no hay ninguna razón
-      para descodificarlo y volver a codificarlo &mdash; y todas las razones para
-      no hacerlo, ya que una recodificación tiene pérdidas y empeoraría
-      ligeramente el clip entero solo para acortarlo.
+      conservas tiene que salir idéntico a como entró, así que no hay ninguna
+      razón para descodificarlo y volver a codificarlo, y sí todas las razones
+      para no hacerlo: recodificar tiene pérdidas y empeoraría un poco el clip
+      entero solo para acortarlo.
     </p>
     <p>
-      Así que un buen cortador no recodifica. Lee el índice del archivo, calcula
-      qué fotogramas codificados caen dentro de tu rango, y escribe esos bytes en
-      un contenedor nuevo con un índice nuevo delante. Por esa vía no se
+      Por eso un buen cortador no recodifica. Lee el índice del archivo, calcula
+      qué fotogramas codificados caen dentro de tu rango y escribe esos bytes en
+      un contenedor nuevo con un índice nuevo delante. Por ese camino no se
       descodifica absolutamente nada.
     </p>
     <p>
-      Muchas herramientas recodifican igualmente, porque descodificar y volver a
-      codificar es mucho más sencillo de implementar que analizar el formato del
-      contenedor. Normalmente puedes saber cuál estás usando por lo que tarda: una
-      copia está limitada por lo rápido que escriba tu disco, y una recodificación
-      está limitada por lo rápido que codifique vídeo tu equipo, que es cien veces
-      más lento.
+      Muchas herramientas recodifican de todos modos, porque descodificar y
+      volver a codificar es mucho más sencillo de programar que analizar el
+      formato del contenedor. Suele distinguirse por lo que tarda: una copia va a
+      la velocidad a la que escriba tu disco y una recodificación va a la
+      velocidad a la que tu equipo codifique vídeo, que es cien veces más lenta.
     </p>
   </section>
 
   <section>
     <h2>Los fotogramas clave, y por qué tu corte puede caer antes</h2>
     <p>
-      Aquí está la restricción de la que se deriva todo lo demás sobre cortar.
+      Esta es la limitación de la que se deriva todo lo demás sobre cortar.
     </p>
     <p>
-      El vídeo no se guarda como una secuencia de imágenes completas. Eso sería
+      El vídeo no se guarda como una secuencia de imágenes completas: sería
       enorme. Casi todos los fotogramas se guardan como una descripción de en qué
       se diferencian de sus vecinos, lo que significa que no se pueden
-      descodificar por su cuenta &mdash; hacen falta los fotogramas de alrededor.
-      Solo un <strong>fotograma clave</strong> se sostiene solo como imagen
-      completa, y los fotogramas clave suelen estar separados entre uno y diez
-      segundos.
+      descodificar solos, porque hacen falta los de alrededor. El único que se
+      sostiene por sí mismo, como imagen completa, es el <strong>fotograma
+      clave</strong>, y los fotogramas clave suelen estar separados entre uno y
+      diez segundos.
     </p>
     <p>
-      Así que si marcas un corte dos segundos después del último fotograma clave,
-      un cortador que copia fotogramas no puede empezar ahí. Los fotogramas de tu
-      marca son ilegibles sin la tirada que lleva hasta ellos. Tiene que arrastrar
-      todo el tramo desde el fotograma clave anterior a tu marca.
+      Así que, si marcas un corte dos segundos después del último fotograma
+      clave, un cortador que copia fotogramas no puede empezar ahí: los
+      fotogramas de tu marca son ilegibles sin la tirada que lleva hasta ellos.
+      Tiene que arrastrar todo el tramo desde el fotograma clave anterior.
     </p>
     <p>
-      Lo que hace al respecto es la parte interesante. El formato de archivo tiene
-      una manera estándar de decir <em>empieza a reproducir en este punto</em>
-      &mdash; los fotogramas de más están en el archivo pero el contenedor le
-      indica al reproductor que se los salte. Cualquier reproductor corriente lo
-      respeta, y el clip empieza exactamente donde dijiste. Un reproductor que lo
-      ignore empezará antes, hasta el hueco de un fotograma clave.
+      Y lo interesante es qué hace a continuación. El formato de archivo tiene una
+      manera normalizada de decir <em>empieza a reproducir en este punto</em>: los
+      fotogramas de más están en el archivo, pero el contenedor le indica al
+      reproductor que se los salte. Cualquier reproductor corriente lo respeta, y
+      el clip empieza exactamente donde dijiste. Uno que lo ignore empezará antes,
+      como mucho lo que dure el hueco entre fotogramas clave.
     </p>
     <p>
-      La herramienta de aquí te dice en qué caso estás y por cuánto antes de
-      exportar, así que es una decisión y no una sorpresa.
+      Este cortador te dice en cuál de los dos casos estás y por cuánto, antes de
+      exportar, para que sea una decisión y no una sorpresa.
     </p>
   </section>
 
   <section>
     <h2>Cuándo aceptar una recodificación</h2>
     <p>
-      Existe un corte exacto, y funciona recodificando el tramo inicial &mdash;
-      descodificando desde el fotograma clave y escribiendo una tirada nueva de
-      fotogramas que sí empieza donde lo marcaste. Es más lento, y cuesta un poco
-      de calidad solo en ese tramo inicial.
+      Existe el corte exacto, y funciona recodificando el tramo inicial:
+      descodifica desde el fotograma clave y escribe una tirada nueva de
+      fotogramas que sí empieza donde tú marcaste. Es más lento y cuesta un poco
+      de calidad, pero solo en ese tramo inicial.
     </p>
     <p>
       Elígelo cuando el clip vaya a un sitio que no vaya a respetar la instrucción
-      del contenedor, o donde no puedas controlar el reproductor: algunos editores
-      de vídeo, algunos sistemas de emisión y videoconferencia, algunos
-      reproductores por hardware antiguos. Elige la copia para todo lo demás, que
-      es casi todo &mdash; un navegador, un móvil, una plataforma social, un
-      reproductor multimedia.
+      del contenedor, o donde no controles el reproductor: algunos editores de
+      vídeo, algunos sistemas de emisión y videoconferencia, algunos reproductores
+      por hardware antiguos. Para todo lo demás, que es casi todo &mdash; un
+      navegador, un móvil, una plataforma social, un reproductor multimedia
+      &mdash;, elige la copia.
     </p>
     <p>
-      Una tercera opción que no cuesta nada: mueve tu marca. Si la herramienta te
-      enseña dónde están los fotogramas clave, desplazar el corte al más cercano te
-      da un corte exacto sin ninguna recodificación. Rara vez merece la pena
-      renunciar a una copia por un segundo de diferencia.
+      Y hay una tercera opción que no cuesta nada: mueve la marca. Si la
+      herramienta te enseña dónde están los fotogramas clave, desplazar el corte
+      hasta el más cercano te da un corte exacto sin ninguna recodificación. Rara
+      vez compensa renunciar a una copia por un segundo de diferencia.
     </p>
   </section>
 
   <section>
-    <h2>Sacar un trozo del medio</h2>
+    <h2>Sacar un trozo de en medio</h2>
     <p>
-      Quitar un tramo es una operación distinta de conservar uno, y conviene saber
-      que está soportada, porque muchos cortadores solo hacen lo segundo. Marca la
-      parte que no quieres, elige quitarla, y lo que queda a cada lado se une en un
-      solo clip con el sonido trasladado en sincronía.
+      Quitar un tramo no es lo mismo que conservar uno, y conviene saber que se
+      puede, porque muchos cortadores solo hacen lo segundo. Marca la parte que no
+      quieres, elige quitarla, y lo que queda a cada lado se une en un solo clip
+      con el sonido trasladado en sincronía.
     </p>
     <p>
-      La unión tiene la misma restricción de fotograma clave en el punto en que se
-      reanuda la segunda mitad, por el mismo motivo. Funciona por las dos vías de
-      MP4 de aquí. Es lo único que no puede hacer la alternativa por grabación de
-      más abajo, porque una grabación se hace de una pasada desde un solo cabezal.
+      La unión arrastra la misma limitación de fotograma clave en el punto donde
+      se reanuda la segunda mitad, y por el mismo motivo. Funciona por los dos
+      caminos de MP4 que hay aquí. Es lo único que no puede hacer la alternativa
+      por grabación que se describe más abajo, porque una grabación se hace de una
+      pasada desde un único cursor de reproducción.
     </p>
   </section>
 
@@ -121,78 +121,78 @@
     <h2>Formatos, y la alternativa</h2>
     <p>
       <strong>MP4, M4V y MOV</strong> se leen directamente, lleven el códec que
-      lleven dentro &mdash; H.264, HEVC, AV1, VP9. Copiar fotogramas no implica
-      descodificarlos, así que esta vía funciona incluso con un códec para el que
-      tu navegador no tenga ningún descodificador, que es una consecuencia
-      agradable de no mirar las imágenes.
+      lleven dentro: H.264, HEVC, AV1, VP9. Copiar fotogramas no implica
+      descodificarlos, así que este camino funciona incluso con un códec para el
+      que tu navegador no tenga descodificador, que es una consecuencia muy
+      cómoda de no mirar las imágenes.
     </p>
     <p>
-      <strong>Cualquier otra cosa que tu navegador sepa reproducir</strong>, WebM
-      la más evidente, se corta reproduciéndola y grabando el resultado. Eso
+      <strong>Cualquier otra cosa que tu navegador sepa reproducir</strong>, y
+      WebM es el caso claro, se corta reproduciéndola y grabando el resultado. Eso
       funciona, y tiene dos costes: tarda lo que dure el trozo, y la imagen y el
       sonido se vuelven a codificar.
     </p>
     <p>
       <strong>AVI, WMV, FLV y casi todos los MKV</strong> el navegador no los sabe
-      ni leer ni reproducir, y la herramienta lo dice en vez de fallar a mitad de
-      camino. Convierte esos primero a MP4 con algo que sí los maneje.
+      ni leer ni reproducir, y la herramienta lo dice en lugar de fallar a medio
+      camino. Convierte esos a MP4 antes, con algo que sepa manejarlos.
     </p>
   </section>
 
   <section>
-    <h2>Dos cosas que salen mal en silencio en otras herramientas</h2>
+    <h2>Dos cosas que otras herramientas estropean sin decirlo</h2>
     <p>
       <strong>La rotación.</strong> Un móvil graba en horizontal y escribe una
-      instrucción de rotación dentro del archivo en vez de girar los píxeles. Un
+      instrucción de rotación dentro del archivo en lugar de girar los píxeles. Un
       cortador que copia fotogramas tiene que trasladar esa instrucción, o tu clip
-      vertical sale de lado &mdash; que es la forma clásica de arruinar un vídeo
-      cortado. La vía exacta de aquí gira los fotogramas mientras los recodifica y
-      escribe un archivo que no necesita ninguna rotación.
+      vertical saldrá tumbado, que es la forma clásica de arruinar un vídeo
+      cortado. El camino del corte exacto gira los fotogramas mientras los
+      recodifica y escribe un archivo que ya no necesita ninguna rotación.
     </p>
     <p>
-      <strong>La sincronía del audio.</strong> El audio y el vídeo se guardan como
-      flujos separados con sus propios tiempos, y no se cortan en los mismos
-      puntos. Si los dos no se alinean a propósito en el corte, el sonido se va
-      desplazando. Por la vía de copia de aquí el audio se copia muestra a muestra
-      sin descodificarlo, así que es byte por byte lo que había en el archivo, y
-      una marca de edición lo mantiene sincronizado con la imagen con una precisión
-      de una milésima de segundo.
+      <strong>La sincronía del sonido.</strong> El audio y el vídeo se guardan
+      como flujos separados, con sus propios tiempos, y no se cortan por los
+      mismos puntos. Si no se alinean a propósito en el corte, el sonido se va
+      desfasando. Por el camino de la copia, el audio se copia muestra a muestra
+      sin descodificarlo, así que es byte a byte lo que había en el archivo, y una
+      marca de edición lo mantiene a la par de la imagen con una precisión de una
+      milésima de segundo.
     </p>
   </section>
 
   <section>
     <h2>Cortar no es recortar</h2>
     <p>
-      Dos palabras que se usan una por otra. Cortar cambia la duración del clip;
-      recortar cambia la forma de la imagen. Si lo que quieres es una versión
-      cuadrada de un vídeo horizontal, o quitar las bandas negras de los lados, eso
-      es el <a href="../../recortar-video/">recortador de vídeo</a> &mdash; y, a
-      diferencia de cortar, sí tiene que recodificar, por la razón que explica
+      Dos palabras que se usan la una por la otra. Cortar cambia la duración del
+      clip; recortar cambia la forma de la imagen. Si lo que quieres es una
+      versión cuadrada de un vídeo horizontal, o quitarle las bandas negras de los
+      lados, eso es el <a href="../../recortar-video/">recortador de vídeo</a>; y,
+      a diferencia de cortar, sí tiene que recodificar, por el motivo que explica
       <a href="../recortar-un-video/">su guía</a>.
     </p>
   </section>
 
   <section>
-    <h2>Por qué esto no necesita una subida &mdash; y menos esto</h2>
+    <h2>Por qué esto no necesita una subida, y menos que nada esto</h2>
     <p>
-      El vídeo es el tipo de archivo que la gente más espera tener que subir,
-      porque los archivos son grandes y el trabajo suena pesado. Cortar es el caso
-      en el que eso es menos cierto: por la vía de copia el archivo apenas se lee.
-      La herramienta recorre el índice, calcula qué rangos de bytes conservar y los
-      escribe. Subir un archivo de cuatro gigabytes a un servidor para que haga eso
-      sería la forma más lenta posible de organizarlo.
+      El vídeo es el tipo de archivo que la gente más da por hecho que hay que
+      subir, porque los archivos son enormes y el trabajo suena pesado. Cortar es
+      justo el caso donde eso es menos cierto: por el camino de la copia el
+      archivo apenas se lee. La herramienta recorre el índice, calcula qué rangos
+      de bytes hay que conservar y los escribe. Subir cuatro gigabytes a un
+      servidor para que haga eso sería la manera más lenta posible de organizarlo.
     </p>
     <p>
-      Es además el tipo de archivo en el que subir cuesta más si prefieres no
-      hacerlo: el vídeo lleva caras, voces, casas y ubicaciones de una forma en que
-      un documento no. La herramienta de aquí no tiene ninguna función de red, y la
-      <code>Content-Security-Policy</code> de la página nombra todas las
-      direcciones que puede contactar, ninguna de las cuales es de este sitio.
+      Y es también el tipo de archivo cuya subida sale más cara si prefieres
+      evitarla: un vídeo lleva caras, voces, casas y ubicaciones como no las lleva
+      un documento. Este cortador no tiene ninguna función de red, y la
+      <code>Content-Security-Policy</code> de la página enumera todas las
+      direcciones con las que puede hablar, y ninguna es de este sitio.
     </p>
     <p>
-      Desenchúfate de internet y corta un clip de todos modos si prefieres
-      comprobarlo a que te lo cuenten.
+      Si prefieres comprobarlo antes que creértelo, desconéctate de internet y
+      corta un clip de todos modos.
       <a href="../es-seguro-subir-archivos/">¿Es seguro subir archivos a los
-      conversores en línea?</a> plantea otras tres comprobaciones parecidas.
+      conversores en línea?</a> propone otras tres comprobaciones parecidas.
     </p>
   </section>

@@ -1,14 +1,14 @@
   <section>
     <h2>La respuesta corta</h2>
     <p>
-      Abre <a href="../../imagenes-a-video/">Imágenes a vídeo</a>, suelta las
-      fotos dentro, ponlas en orden, decide cuánto se mantiene cada una y crea el
-      vídeo. Te llevas un MP4 con vídeo H.264, que se reproduce prácticamente en
-      cualquier cosa.
+      Abre <a href="../../imagenes-a-video/">Imágenes a vídeo</a>, arrastra las
+      fotos dentro, ponlas en orden, decide cuánto se queda cada una en pantalla
+      y crea el vídeo. Te llevas un MP4 con vídeo H.264, que se reproduce
+      prácticamente en cualquier cosa.
     </p>
     <p>
-      Los dos ajustes que más veces obligan a una segunda pasada son la duración
-      y la resolución, y merece la pena entenderlos antes del primer renderizado
+      Los dos ajustes que más veces obligan a repetir el trabajo son la duración
+      y la resolución, así que conviene entenderlos antes del primer renderizado
       y no después.
     </p>
   </section>
@@ -21,39 +21,39 @@
     <p>
       <strong>La duración</strong> es cuánto tiempo se queda cada imagen en
       pantalla. Es el ajuste que de verdad te importa. Tres segundos es un valor
-      por defecto cómodo para un pase que alguien está mirando; uno o dos segundos
-      resulta ágil; cualquier cosa por encima de cinco se hace pesada, salvo que
-      haya una voz por encima.
+      cómodo para un pase que alguien está mirando; uno o dos segundos queda
+      ágil; a partir de cinco se hace pesado, salvo que haya una voz por encima.
     </p>
     <p>
       <strong>La cadencia</strong> es cuántas veces por segundo el vídeo repite
-      esa imagen. No cambia nada del aspecto del pase &mdash; una imagen fija
-      mantenida tres segundos se ve idéntica a 24 fotogramas por segundo y a 60
-      &mdash; y cambia bastante el tamaño del archivo y el tiempo de codificación.
+      esa misma imagen. No cambia nada del aspecto del pase &mdash; una imagen
+      fija que se queda tres segundos se ve idéntica a 24 fotogramas por segundo
+      que a 60 &mdash; y sí cambia bastante el peso del archivo y el tiempo de
+      codificación.
     </p>
     <p>
-      Así que para un pase de diapositivas normal, elige una cadencia baja. 24 o
-      30 sobran. La razón para subir es que haya movimiento en el vídeo: una
-      panorámica o un zoom sobre cada foto, o un fundido entre ellas, donde una
-      cadencia baja se ve como saltos.
+      Así que, para un pase de diapositivas normal, elige una cadencia baja: con
+      24 o 30 vas sobrado. El motivo para subirla es que haya movimiento en el
+      vídeo, una panorámica o un zoom sobre cada foto, o un fundido entre ellas,
+      porque ahí una cadencia baja se ve a saltos.
     </p>
   </section>
 
   <section>
-    <h2>La resolución, y las imágenes de otra forma</h2>
+    <h2>La resolución, y las imágenes que no tienen esa forma</h2>
     <p>
-      Un vídeo tiene un solo tamaño de fotograma para toda su duración. Tus
-      fotografías casi seguro que no comparten uno, así que algo tiene que
-      pasarles a las que no encajan &mdash; y ese algo es la decisión que merece
-      la pena tomar a propósito.
+      Un vídeo tiene un único tamaño de fotograma durante toda su duración. Tus
+      fotografías casi con seguridad no comparten uno, así que algo tiene que
+      pasarles a las que no encajan, y ese algo es una decisión que merece la pena
+      tomar a conciencia.
     </p>
     <p>
-      Empieza eligiendo la resolución según adónde va el vídeo:
+      Empieza eligiendo la resolución según adónde vaya el vídeo:
     </p>
     <ul>
       <li>
-        <strong>1920&times;1080</strong> para cualquier cosa general. Compatible
-        con todo, se reproduce en todas partes, y es lo que casi todo el mundo
+        <strong>1920&times;1080</strong> para cualquier uso general. Compatible
+        con todo, se reproduce en todas partes y es lo que casi todo el mundo
         entiende por HD.
       </li>
       <li>
@@ -63,131 +63,129 @@
       <li>
         <strong>3840&times;2160</strong> solo si las imágenes tienen de verdad
         tanto detalle y el destino lo va a mostrar. Son cuatro veces los píxeles,
-        cuatro veces el tiempo de codificación y más o menos cuatro veces el
-        archivo.
+        cuatro veces el tiempo de codificación y unas cuatro veces el archivo.
       </li>
     </ul>
     <p>
-      Después decide qué pasa con las que no encajan. Encajar cada imagen dentro
-      del fotograma la conserva entera y deja bandas a los lados &mdash; seguro, y
-      la respuesta correcta cuando las imágenes importan más que la presentación.
-      Llenar el fotograma y recortar lo que sobra queda mejor y le cortará la parte
-      de arriba a algunas. Mezclar fotografías verticales y horizontales en un
-      mismo vídeo es el caso en el que no hay ninguna buena respuesta; decidir de
-      antemano por qué lado prefieres equivocarte ahorra un renderizado.
+      Después decide qué pasa con las que no encajan. Ajustar cada imagen dentro
+      del fotograma la conserva entera y deja bandas a los lados: es lo seguro, y
+      lo acertado cuando las imágenes importan más que la presentación. Llenar el
+      fotograma y cortar lo que sobra queda mejor y le comerá la parte de arriba a
+      algunas. Mezclar fotografías verticales y horizontales en un mismo vídeo es
+      el caso en el que no hay ninguna respuesta buena; decidir de antemano por
+      qué lado prefieres equivocarte te ahorra un renderizado.
     </p>
   </section>
 
   <section>
-    <h2>El orden y la trampa de los nombres de archivo</h2>
+    <h2>El orden, y la trampa de los nombres de archivo</h2>
     <p>
       Como en cualquier trabajo por lotes, los nombres de archivo se ordenan de
-      una forma que no es la forma en que contaste. <code>foto2.jpg</code> va
-      después de <code>foto10.jpg</code> en una ordenación alfabética, porque la
-      comparación es carácter a carácter.
+      una manera que no es la manera en que tú contaste. En una ordenación
+      alfabética, <code>foto2.jpg</code> va detrás de <code>foto10.jpg</code>,
+      porque la comparación es carácter a carácter.
     </p>
     <p>
-      Ordenar por fecha de captura suele ser lo correcto para fotografías de un
-      evento, ya que las hiciste en el orden en que pasaron las cosas. Arrastrar
-      las fichas es lo correcto para cualquier cosa cuya historia no sea
-      cronológica. Compruébalo antes de renderizar: el vídeo es el único resultado
-      en el que arreglar el orden significa volver a hacer el trabajo entero.
+      Con fotografías de un evento, ordenar por fecha de captura suele ser lo
+      correcto, porque las hiciste en el orden en que fueron pasando las cosas.
+      Mover las fichas a mano es lo correcto cuando la historia no es cronológica.
+      Compruébalo antes de renderizar: el vídeo es el único resultado en el que
+      arreglar el orden significa repetir el trabajo entero.
     </p>
   </section>
 
   <section>
-    <h2>No hay banda sonora, y no es poca cosa</h2>
+    <h2>No hay banda sonora, y no es un detalle</h2>
     <p>
-      El MP4 que escribe esta herramienta tiene una única pista de vídeo y ninguna
-      pista de audio. Si tu pase necesita música o narración, harás falta un editor
-      de vídeo para ese paso.
+      El MP4 que escribe esta herramienta tiene una sola pista de vídeo y ninguna
+      de audio. Si tu pase necesita música o narración, para ese paso vas a
+      necesitar un editor de vídeo.
     </p>
     <p>
-      Merece la pena saber por qué, y no solo que es así: añadir audio significa
+      Y merece la pena saber por qué, no solo que es así: añadir audio significa
       descodificar un archivo de música, codificarlo a AAC e intercalarlo con el
       vídeo dentro del contenedor. Las tres cosas son trabajo de verdad, y hacerlas
-      mal produce un archivo que se va desincronizando mientras se reproduce. Está
-      en la lista en vez de estar a medio hacer.
+      mal produce un archivo que se va desincronizando conforme se reproduce. Está
+      en la lista de pendientes precisamente para no dejarlo a medias.
     </p>
     <p>
-      Una nota práctica si vas a añadir música después: elige primero la pista y
-      ajusta la duración por imagen para que el pase salga cerca de la duración de
-      la canción. Recortar la música para que quepa en el vídeo siempre suena peor
-      que ajustar el vídeo a la música.
+      Un consejo práctico si piensas ponerle música después: elige primero la
+      pista y ajusta la duración por imagen para que el pase se acerque a la
+      duración de la canción. Recortar la música para que quepa en el vídeo suena
+      siempre peor que ajustar el vídeo a la música.
     </p>
   </section>
 
   <section>
     <h2>Qué sale, y qué hacer si no se reproduce</h2>
     <p>
-      El objetivo es MP4 con H.264, y es la combinación más ampliamente
-      reproducible que hay. En un navegador sin WebCodecs la herramienta recurre a
-      grabar WebM &mdash; el mismo material en un contenedor que aceptan menos
-      editores y menos plataformas sociales.
+      El objetivo es MP4 con H.264, la combinación que se reproduce en más sitios
+      que ninguna otra. En un navegador sin WebCodecs, la herramienta recurre a
+      grabar WebM: el mismo material en un contenedor que aceptan menos editores y
+      menos plataformas sociales.
     </p>
     <p>
       Si acabas con un WebM y algo lo rechaza, la solución es un navegador
-      compatible con WebCodecs y no una conversión: las versiones actuales de
-      Chrome, Edge y Safari lo son todas. Volver a renderizar es mejor que
-      convertir, porque convertir significa otra generación de codificación con
-      pérdidas.
+      compatible con WebCodecs, no una conversión: las versiones actuales de
+      Chrome, Edge y Safari lo son. Volver a renderizar es mejor que convertir,
+      porque convertir significa otra generación de codificación con pérdidas.
     </p>
     <p>
-      La herramienta no lleva ningún límite dentro sobre cuántas imágenes puedes
-      usar. El techo es la memoria de tu propio equipo, porque el vídeo terminado
-      se monta ahí antes de que lo descargues &mdash; un pase largo en 4K es lo
-      primero que lo nota.
+      La herramienta no impone ningún límite de imágenes. El techo es la memoria
+      de tu propio equipo, porque el vídeo terminado se monta ahí antes de que te
+      lo descargues, y un pase largo en 4K es donde primero se nota.
     </p>
   </section>
 
   <section>
-    <h2>Hacer el archivo más pequeño</h2>
+    <h2>Aligerar el archivo</h2>
     <p>
-      Si el resultado es demasiado grande para donde vaya, por orden de lo que
+      Si el resultado es demasiado pesado para donde va, por orden de lo que
       ayuda de verdad:
     </p>
     <p>
       <strong>Baja la cadencia.</strong> En un pase de imágenes fijas esto no
-      cuesta nada visible y es el mayor ahorro que hay de una sola tacada.
+      cuesta nada visible y es el mayor ahorro que se consigue de una sola vez.
     </p>
     <p>
-      <strong>Baja la resolución.</strong> 1080p en vez de 4K es la cuarta parte
-      de los píxeles, y en la pantalla de un móvil nadie lo va a saber.
+      <strong>Baja la resolución.</strong> 1080p en lugar de 4K es la cuarta parte
+      de los píxeles, y en la pantalla de un móvil nadie va a notarlo.
     </p>
     <p>
-      <strong>Acórtalo.</strong> Tres segundos por imagen en vez de cinco es un
-      40&nbsp;% menos de duración y un 40&nbsp;% menos de archivo, y normalmente un
-      pase mejor.
+      <strong>Acórtalo.</strong> Tres segundos por imagen en lugar de cinco es un
+      40&nbsp;% menos de duración y un 40&nbsp;% menos de archivo, y normalmente
+      un pase mejor.
     </p>
     <p>
-      Reducir antes las fotografías de origen no ayuda mucho. El vídeo se codifica
-      a la resolución que elegiste, pase lo que pase, así que una foto de 4000
-      píxeles y una de 2000 producen casi el mismo número de bytes en un vídeo de
-      1080p. Sí hace la codificación más rápida, y mueve ese techo de memoria.
+      Reducir antes las fotografías de origen no ayuda gran cosa. El vídeo se
+      codifica a la resolución que elegiste pase lo que pase, así que una foto de
+      4000 píxeles y otra de 2000 dan casi los mismos bytes dentro de un vídeo de
+      1080p. Lo que sí hace es acelerar la codificación y alejar ese techo de
+      memoria.
     </p>
   </section>
 
   <section>
     <h2>Por qué esto no necesita un servidor, con una excepción declarada</h2>
     <p>
-      Codificar vídeo solía ser el caso más claro a favor de subir cosas: los
+      Codificar vídeo era el argumento más claro a favor de subir cosas: los
       navegadores no podían y una máquina con FFmpeg sí. WebCodecs cambió eso al
-      exponer el codificador por hardware que ya está en tu equipo, que es el mismo
-      que usa tu móvil para grabar vídeo en tiempo real. Componer los fotogramas es
-      un lienzo. Ninguno de los dos pasos necesita nada que no sea tu propio
+      dar acceso al codificador por hardware que ya está en tu equipo, el mismo
+      que usa tu móvil para grabar vídeo en tiempo real. Y componer los fotogramas
+      es un lienzo. Ninguno de los dos pasos necesita nada que no sea tu propio
       hardware.
     </p>
     <p>
-      Una excepción en esta herramienta en concreto, declarada en vez de escondida:
-      la función opcional de «añadir desde una dirección web» descarga una imagen
+      Esta herramienta tiene una excepción, dicha en voz alta y no escondida: la
+      función opcional de «añadir desde una dirección web» descarga una imagen
       desde una dirección que pegas tú, y el servidor de esa dirección ve tu IP y
-      qué has pedido. Eso es inherente a la función y no un defecto suyo, y es el
-      único paso de red que hay en toda la herramienta. No la uses y no sale nada
-      de tu equipo en absoluto.
+      qué le has pedido. Va con la función y no es un defecto suyo, y es el único
+      paso de red que hay en toda la herramienta. Si no la usas, de tu equipo no
+      sale absolutamente nada.
     </p>
     <p>
       <a href="../es-seguro-subir-archivos/">¿Es seguro subir archivos a los
-      conversores en línea?</a> plantea cuatro comprobaciones que te dirán lo mismo
-      sobre cualquier herramienta, esta incluida.
+      conversores en línea?</a> propone cuatro comprobaciones que te dirán lo
+      mismo sobre cualquier herramienta, esta incluida.
     </p>
   </section>
