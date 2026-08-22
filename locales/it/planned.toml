@@ -33,7 +33,6 @@ items = [
   ["Ridimensionare, ritagliare e ruotare le GIF", "fotogramma per fotogramma, con i tempi intatti"],
   ["GIF al contrario", "l'ultimo fotogramma per primo"],
   ["Cambiare la velocità di una GIF", "ritempificarla senza ridisegnare i fotogrammi"],
-  ["Analizzare una GIF", "fotogrammi, ritardi, tavolozza, e dove sono finiti i byte"],
   ["Creare un APNG", "animazione con trasparenza vera e colore pieno"],
   ["WebP animata", "ancora la stessa animazione, a una frazione del peso"],
 ]

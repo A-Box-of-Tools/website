@@ -1,0 +1,37 @@
+#
+# Guide: what is actually inside a GIF file.
+#
+# The useful content here is the byte arithmetic and the delay clamp, because
+# those are the two things that make a GIF behave in a way its maker did not
+# intend: a file three times the size it needed to be, and an animation playing
+# at a fifth of the speed it asks for. Both are invisible in a viewer and both
+# are obvious the moment somebody looks at the structure.
+#
+# It is also the guide that has to explain disposal, which is the field nobody
+# understands and the one that decides whether an animation smears. Prose lives
+# next door in body.html.
+#
+
+slug = "guides/whats-inside-a-gif"
+kind = "guide"
+nav = "What is inside a GIF"
+group = "doing-the-job"
+tool = "gif-analyzer"
+
+title = "What Is Actually Inside a GIF File (and Why Yours Is So Big)"
+description = "Frames, delays, disposal methods and colour tables explained, why browsers refuse the fastest delays, and how to work out where a GIF's file size really went."
+
+heading = "What is actually inside a GIF"
+lede = """
+    A GIF is a stack of rectangles, each with a timer and a colour table, and
+    almost every complaint people have about the format comes from one of those
+    three things. This is what each part does, and how to find out which one your
+    file is spending its size on."""
+
+updated = "22 August 2026"
+published = "2026-08-22"
+lastmod = "2026-08-22"
+
+og_title = "What is actually inside a GIF file"
+og_description = "Frames, delays, disposal and palettes - what each one does, why your GIF plays slower than it says, and where its file size went."
+og_image_alt = "abox.tools - tools that never touch a server"
