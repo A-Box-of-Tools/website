@@ -69,6 +69,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from buildlib import cssmin
 from buildlib import i18n
+from buildlib import imports
 from buildlib import mangle
 from buildlib import minify
 from buildlib import site as sitelib
@@ -577,6 +578,18 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     shared = shared_js(tool)
     assets = [(f'src/shared/{path.name}', path) for path in shared]
     assets += [(f'src/{path.name}', path) for path in own]
+
+    # Nothing is bundled, so the browser fetches every module by the name an
+    # import gives it. A specifier naming a file this tool does not ship is
+    # therefore not a build error but a 404 on the visitor's machine, after the
+    # page has rendered - and the commonest cause is a shared module that needs
+    # a second shared module the tool never asked for in js_parts. This is the
+    # one place that knows exactly what the tool ships, so it is where that is
+    # checked. See buildlib/imports.py.
+    sources = dict(assets)
+    imports.check(set(sources),
+                  lambda name: sources[name].read_text(encoding='utf-8'),
+                  tool['slug'])
 
     for name, path in assets:
         (dest / name).parent.mkdir(parents=True, exist_ok=True)

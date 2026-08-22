@@ -28,7 +28,7 @@ css_parts = ["file-list"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "zip", "crc32"]
 lastmod = "2026-08-19"
 
 # --- what search engines and chat apps are told ------------------------------

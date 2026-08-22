@@ -7,7 +7,7 @@ import {
   disposalLabel, encodePng, formatBytes, formatSeconds,
   frameName, thumbnail, timingList, zipName,
 } from './frames.js';
-import { makeZip } from './zip.js';
+import { makeZip } from './shared/zip.js';
 
 const $ = (id) => document.getElementById(id);
 
