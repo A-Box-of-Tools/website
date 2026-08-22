@@ -168,26 +168,32 @@ body = """
         도구라면 그 순간 멈춰 버릴 테니까요."""
 
 [[hub.categories]]
+id = "images-and-video"
 name = "이미지와 영상"
 note = "사진과 영상을 누구에게도 넘기지 않고 다룹니다."
 
 [[hub.categories]]
+id = "gif-and-animation"
 name = "GIF와 애니메이션"
 note = "애니메이션을 만들거나 분해합니다. 기기 밖으로 나가지 않습니다."
 
 [[hub.categories]]
+id = "audio"
 name = "오디오"
 note = "녹음을 누구에게도 넘기지 않고 다룹니다. 영상 속 소리도 마찬가지예요."
 
 [[hub.categories]]
+id = "documents-and-pdf"
 name = "문서와 PDF"
 note = "문서를 만들고 순서를 바꾸는 일을, 어딘가로 보내 처리하지 않고 합니다."
 
 [[hub.categories]]
+id = "codes-and-data"
 name = "코드와 데이터"
 note = "입력한 내용을 기계가 읽을 수 있는 형태로 바꿉니다. 페이지 밖으로 나가지 않습니다."
 
 [[hub.categories]]
+id = "text-and-code"
 name = "텍스트와 코드"
 note = "읽기 좋게 만들고, 비교하고, 인코딩합니다. 토큰이나 설정 파일을 남의 서버에 붙여넣지 않고."
 
@@ -212,10 +218,12 @@ og_image_alt = "abox.tools - 서버를 건드리지 않는 도구들"
 
 
 [[guides.groups]]
+id = "doing-the-job"
 name = "일을 해내기"
 note = "도구마다 하나씩. 어떤 작업인지, 어떤 설정이 중요한지, 그리고 그것이 무엇을 내주는지."
 
 [[guides.groups]]
+id = "before-you-upload"
 name = "무언가를 올리기 전에"
 note = "파일을 웹사이트에 건넨다는 것이 실제로 어떤 뜻인지, 그리고 그게 꼭 필요했는지 가려내는 법."
 

@@ -14,6 +14,7 @@
 note = "Nog niet gebouwd. Hier vermeld zodat je ziet waar dit heen gaat."
 
 [[group]]
+id = "images"
 name = "Afbeeldingen"
 items = [
   ["Draaien &amp; spiegelen", "kwartslagen, of een paar graden rechtzetten"],
@@ -25,6 +26,7 @@ items = [
 ]
 
 [[group]]
+id = "gif"
 name = "Gif &amp; animatie"
 items = [
   ["Gif naar mp4 of WebM", "dezelfde animatie, meestal een tiende van de grootte"],
@@ -37,6 +39,7 @@ items = [
 ]
 
 [[group]]
+id = "video"
 name = "Video"
 items = [
   ["Formaat wijzigen", "omlaag naar een grootte die er echt doorheen komt"],
@@ -48,6 +51,7 @@ items = [
 ]
 
 [[group]]
+id = "audio"
 name = "Audio"
 items = [
   ["In- &amp; uitfaden", "zodat het niet tegen een muur begint en eindigt"],
@@ -56,6 +60,7 @@ items = [
 ]
 
 [[group]]
+id = "documents"
 name = "Documenten &amp; pdf"
 items = [
   ["Pagina's draaien &amp; bijsnijden", "een scan rechtzetten die scheef binnenkwam, of de marges eraf halen"],
@@ -63,6 +68,7 @@ items = [
 ]
 
 [[group]]
+id = "beyond"
 name = "Verder dan media"
 items = [
   ["Gegevens", "csv en json omzetten, opschonen, inspecteren"],

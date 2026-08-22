@@ -18,6 +18,7 @@
 note = "아직 만들지 않았습니다. 어디로 가고 있는지 보시라고 적어 둡니다."
 
 [[group]]
+id = "images"
 name = "이미지"
 items = [
   ["회전과 반전", "90도씩 돌리거나, 몇 도만 기울여 수평 맞추기"],
@@ -29,6 +30,7 @@ items = [
 ]
 
 [[group]]
+id = "gif"
 name = "GIF와 애니메이션"
 items = [
   ["GIF를 MP4나 WebM으로", "같은 움직임을, 대개 10분의 1 용량으로"],
@@ -41,6 +43,7 @@ items = [
 ]
 
 [[group]]
+id = "video"
 name = "동영상"
 items = [
   ["크기 줄이기", "실제로 전송이 되는 크기까지"],
@@ -52,6 +55,7 @@ items = [
 ]
 
 [[group]]
+id = "audio"
 name = "오디오"
 items = [
   ["페이드 인과 아웃", "뚝 시작하고 뚝 끊기지 않도록"],
@@ -60,6 +64,7 @@ items = [
 ]
 
 [[group]]
+id = "documents"
 name = "문서와 PDF"
 items = [
   ["페이지 회전과 여백 자르기", "옆으로 들어온 스캔을 바로잡거나, 여백을 잘라내거나"],
@@ -67,6 +72,7 @@ items = [
 ]
 
 [[group]]
+id = "beyond"
 name = "미디어 너머"
 items = [
   ["데이터", "CSV와 JSON 변환, 정리, 살펴보기"],

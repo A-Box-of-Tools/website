@@ -77,26 +77,32 @@ body = """
         这一点很难伪装：一个会把你的文件送去别处处理的工具，那一刻就会停下来。"""
 
 [[hub.categories]]
+id = "images-and-video"
 name = "图片与视频"
 note = "处理你的照片和素材，不用交给任何人。"
 
 [[hub.categories]]
+id = "gif-and-animation"
 name = "GIF 与动画"
 note = "制作一段动画，或者把动画拆开——文件不会离开你的设备。"
 
 [[hub.categories]]
+id = "audio"
 name = "音频"
 note = "处理一段录音而不用交给任何人，视频里的声音也一样。"
 
 [[hub.categories]]
+id = "documents-and-pdf"
 name = "文档与 PDF"
 note = "制作和重排文档，不用送去别处处理。"
 
 [[hub.categories]]
+id = "codes-and-data"
 name = "编码与数据"
 note = "把您输入的内容变成机器能读的东西，而且不离开这个页面。"
 
 [[hub.categories]]
+id = "text-and-code"
 name = "文本与代码"
 note = "整理、比对、编码——无需把令牌或配置文件粘贴到别人的服务器上。"
 
@@ -120,10 +126,12 @@ og_image_alt = "abox.tools - 不碰服务器的工具"
 
 
 [[guides.groups]]
+id = "doing-the-job"
 name = "把事情做完"
 note = "每个工具一篇：这件事包含什么、哪个设置真正起作用、以及它的代价。"
 
 [[guides.groups]]
+id = "before-you-upload"
 name = "在你上传任何东西之前"
 note = "把文件交给一个网站究竟意味着什么，以及怎么判断这一步是不是非做不可。"
 
