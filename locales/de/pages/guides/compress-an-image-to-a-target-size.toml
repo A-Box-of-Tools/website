@@ -2,16 +2,16 @@
 # Ratgeber: Ein Bild auf eine exakte Dateigroesse komprimieren - German.
 #
 
-nav = "Ein Bild komprimieren"
+nav = "Bild komprimieren"
 title = "Ein Bild auf eine exakte Dateigröße komprimieren"
-description = "Ein Upload-Formular will 500 KB, und Ihr Foto hat 4 MB. Was eine Größengrenze wirklich kostet, welche Einstellung zuerst zu bewegen ist, und warum ein PNG nicht so schrumpft wie ein JPEG."
-heading = "Wie Sie ein Bild auf eine exakte Dateigröße komprimieren"
+description = "Das Upload-Formular will 500 KB, Ihr Foto hat 4 MB. Was so eine Grenze an Bildqualität kostet, an welcher Einstellung Sie zuerst drehen und warum ein PNG nicht schrumpft wie ein JPEG."
+heading = "So komprimieren Sie ein Bild auf eine exakte Dateigröße"
 lede = """
-    Jemand hat Ihnen eine Zahl genannt &mdash; 100&nbsp;KB, 500&nbsp;KB,
-    2&nbsp;MB &mdash; und Ihr Foto ist weit davon entfernt. Hier steht, was
-    diese Zahl kostet, wofür Sie sie ausgeben und woran Sie erkennen, ob das
-    Ergebnis noch gut genug zum Verschicken ist."""
+    Irgendjemand hat Ihnen eine Zahl genannt &mdash; 100&nbsp;KB, 500&nbsp;KB,
+    2&nbsp;MB &mdash;, und Ihr Foto liegt weit darüber. Hier steht, was diese
+    Zahl an Bildqualität kostet, wofür Sie sie am besten ausgeben und woran Sie
+    merken, ob das Ergebnis noch verschickbar ist."""
 updated = "20. August 2026"
 og_title = "Ein Bild auf eine exakte Dateigröße komprimieren"
-og_description = "Was eine Größengrenze wirklich kostet, welche Einstellung zuerst zu bewegen ist, und warum ein PNG nicht so schrumpft wie ein JPEG."
+og_description = "Was eine Größengrenze an Bildqualität kostet, an welcher Einstellung Sie zuerst drehen und warum ein PNG nicht schrumpft wie ein JPEG."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

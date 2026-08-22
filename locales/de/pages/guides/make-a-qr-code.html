@@ -4,52 +4,51 @@
       Öffnen Sie den
       <a href="../../qr-code-erstellen/">QR- &amp; Barcode-Generator</a>, fügen
       Sie Ihren Link ein, lassen Sie die Stufe auf <strong>M</strong> und den
-      Rand auf <strong>4</strong>, und laden Sie das SVG herunter. Drucken Sie
-      ihn mindestens zwei Zentimeter breit, auf etwas Mattem, dunkel auf hell.
-      Scannen Sie dann den gedruckten mit einem Telefon, das nicht Ihres ist,
-      bevor Sie tausend davon bestellen.
+      Rand auf <strong>4</strong> und laden Sie das SVG herunter. Drucken Sie ihn
+      mindestens zwei Zentimeter breit, auf etwas Mattem, dunkel auf hell. Und
+      scannen Sie den Andruck dann mit einem Handy, das nicht Ihres ist, bevor
+      Sie tausend Stück bestellen.
     </p>
     <p>
-      Das deckt fast jeden Fall ab. Der Rest dieser Seite handelt davon, was zu
-      tun ist, wenn es keiner davon ist: ein Code, der Behandlung überstehen
-      muss, ein Code mit einem Logo darauf, ein Code auf etwas Kleinem, und die
-      eine Entscheidung, die sich leicht so falsch treffen lässt, dass Sie es
-      erst ein Jahr später merken.
+      Damit ist fast jeder Fall abgedeckt. Der Rest dieser Seite handelt von
+      allem anderen: von einem Code, der etwas aushalten muss, von einem Code mit
+      Logo, von einem Code auf etwas sehr Kleinem &mdash; und von der einen
+      Entscheidung, die sich so falsch treffen lässt, dass Sie es erst ein Jahr
+      später merken.
     </p>
   </section>
 
   <section>
-    <h2>Was tatsächlich in einem QR-Code steckt</h2>
+    <h2>Was in einem QR-Code tatsächlich steckt</h2>
     <p>
-      Eine Zeichenkette. Das ist alles. Einen QR-Code zu scannen übergibt dem
-      Telefon ein Stück Text, und alles Weitere &mdash; eine Seite öffnen, einem
-      Netz beitreten, anbieten, einen Kontakt zu speichern &mdash; ist das
-      Telefon, das die Form dieses Textes erkennt und anbietet, darauf zu
-      reagieren.
+      Eine Zeichenkette. Mehr nicht. Beim Scannen bekommt das Handy ein Stück
+      Text gereicht, und alles Weitere &mdash; eine Seite öffnen, einem Netz
+      beitreten, einen Kontakt zum Speichern anbieten &mdash; ist das Handy, das
+      die Form dieses Textes erkennt und Ihnen anbietet, darauf zu reagieren.
     </p>
     <p>
-      Es gibt also so etwas wie einen &bdquo;WLAN-QR-Code&ldquo; als Art von Code
-      gar nicht. Es gibt einen QR-Code, der
-      <code>WIFI:T:WPA;S:Mein Netz;P:das Passwort;;</code> enthält, und das kann
-      jedes Telefon der letzten zehn Jahre lesen. Genau deshalb zeigt Ihnen der
-      Generator die fertige Zeichenkette: Wenn ein Code nicht das tut, was Sie
-      erwartet haben, ist die Zeichenkette das Einzige, was anzusehen sich lohnt.
+      Eine eigene Sorte &bdquo;WLAN-QR-Code&ldquo; gibt es deshalb gar nicht. Es
+      gibt einen QR-Code, in dem
+      <code>WIFI:T:WPA;S:Mein Netz;P:das Passwort;;</code> steht, und den liest
+      jedes Handy der letzten zehn Jahre. Genau dafür zeigt Ihnen der Generator
+      die fertige Zeichenkette: Wenn ein Code nicht das tut, was Sie erwartet
+      haben, ist die Zeichenkette das Einzige, was anzusehen sich lohnt.
     </p>
     <p>
-      Es heißt auch, dass ein QR-Code sich nach dem Druck nicht ändern lässt,
-      nicht nach Hause telefonieren kann und nicht ablaufen kann &mdash; es sei
-      denn, jemand hat einen Link auf seinen eigenen Server hineingelegt, und
-      davon handelt der letzte Abschnitt hier.
+      Daraus folgt auch: Ein QR-Code lässt sich nach dem Druck nicht mehr ändern,
+      er kann nicht nach Hause funken, und ablaufen kann er ebenfalls nicht
+      &mdash; es sei denn, jemand hat einen Link auf seinen eigenen Server
+      hineingelegt. Davon handelt der letzte Abschnitt.
     </p>
   </section>
 
   <section>
     <h2>Entscheidung eins: die Fehlerkorrekturstufe</h2>
     <p>
-      Ein QR-Code trägt neben den Daten einen Satz Prüfwörter, so berechnet, dass
-      ein Lesegerät wieder aufbauen kann, was es nicht sehen konnte. Deshalb
-      scannt ein Code mit abgerissener Ecke noch. Wie viele dieser Prüfwörter es
-      gibt, ist die Stufe, und es gibt vier:
+      Neben den Daten trägt ein QR-Code einen Satz Prüfwörter, berechnet so, dass
+      ein Lesegerät wieder aufbauen kann, was es nicht zu sehen bekam. Deshalb
+      lässt sich ein Code mit abgerissener Ecke noch scannen. Wie viele dieser
+      Prüfwörter mitfahren, ist die Stufe, und davon gibt es vier:
     </p>
     <ul>
       <li><strong>L</strong> &mdash; rund 7&nbsp;% des Codes dürfen verloren gehen.</li>
@@ -58,51 +57,51 @@
       <li><strong>H</strong> &mdash; rund 30&nbsp;%.</li>
     </ul>
     <p>
-      Mehr Korrektur gibt es nicht umsonst: Die Prüfdaten kommen in dasselbe
-      Quadrat, derselbe Text braucht bei H also einen größeren, dichteren Code
-      als bei L. Grob gesagt verdoppelt der Weg von L nach H die Modulzahl für
-      dieselbe Zeichenkette, und dichtere Module sind für eine Kamera schwerer
-      aufzulösen. Hier gibt es einen echten Handel, und die Antwort hängt davon
-      ab, wohin der Code geht.
+      Mehr Korrektur gibt es nicht umsonst: Die Prüfdaten müssen in dasselbe
+      Quadrat, derselbe Text braucht bei H also einen größeren und dichteren Code
+      als bei L. Grob gerechnet verdoppelt der Weg von L nach H die Zahl der
+      Module &mdash; und je dichter die Module, desto schwerer tut sich eine
+      Kamera. Hier steckt ein echter Handel, und wie er ausgeht, hängt daran, wo
+      der Code hinkommt.
     </p>
     <p>
-      <strong>L</strong> ist für einen Bildschirm: ein Code in einer Folie, einer
-      E-Mail, einer Webseite. Nichts wird ihn beschädigen, und jedes zusätzliche
-      Modul macht ihn aus der Entfernung schwerer lesbar.
+      <strong>L</strong> ist für den Bildschirm: ein Code auf einer Folie, in
+      einer E-Mail, auf einer Webseite. Beschädigen wird ihn nichts, und jedes
+      zusätzliche Modul macht ihn aus der Entfernung schwerer lesbar.
     </p>
     <p>
-      <strong>M</strong> ist die Voreinstellung und die richtige Antwort für die
-      meisten Drucksachen. Papier, das ein wenig angefasst wird, ein Flyer, eine
+      <strong>M</strong> ist die Voreinstellung und für die meisten Drucksachen
+      die richtige Wahl: Papier, das ein wenig angefasst wird, ein Flyer, eine
       Visitenkarte.
     </p>
     <p>
-      <strong>Q und H</strong> sind für Codes, die misshandelt werden: eine
-      täglich abgewischte Speisekarte, ein Aufkleber auf einer Maschine in der
-      Werkstatt, ein Etikett auf einer Kiste, ein Code in einem Fenster mit
-      direkter Sonne. H ist außerdem das, was ein Logo in der Mitte möglich macht
-      &mdash; siehe unten.
+      <strong>Q und H</strong> sind für Codes, denen übel mitgespielt wird: die
+      täglich abgewischte Speisekarte, der Aufkleber an einer Maschine in der
+      Werkstatt, das Etikett auf einer Kiste, der Code im Schaufenster mit
+      direkter Sonne. H ist außerdem das, was ein Logo in der Mitte überhaupt
+      möglich macht &mdash; dazu gleich mehr.
     </p>
   </section>
 
   <section>
-    <h2>Entscheidung zwei: der Rand, der Teil des Codes ist</h2>
+    <h2>Entscheidung zwei: der Rand, der zum Code gehört</h2>
     <p>
-      Der weiße Raum um einen QR-Code ist kein Abstand und keine
-      Gestaltungsentscheidung. Ein Lesegerät nutzt ihn, um zu finden, wo das
-      Symbol endet. Die Spezifikation verlangt vier Module ruhige Fläche auf
-      jeder Seite, und ein bis an die Kante beschnittener Code ist der mit
-      Abstand häufigste Grund, warum ein gedruckter Code scheitert.
+      Der weiße Bereich um einen QR-Code ist kein Abstand und keine
+      Gestaltungsfrage. Ein Lesegerät findet daran, wo das Symbol endet. Die
+      Spezifikation verlangt auf jeder Seite vier Module ruhige Fläche &mdash;
+      und ein bis an die Kante beschnittener Code ist mit Abstand der häufigste
+      Grund, warum ein gedruckter Code nicht funktioniert.
     </p>
     <p>
-      Das ist es wert, unverblümt gesagt zu werden, denn Beschneiden ist eine so
-      natürliche Handlung. Der Code sieht aus, als habe er zu viel Weiß um sich,
-      also wird er im Layout beschnitten, oder auf eine farbige Fläche gesetzt,
-      die bis an die Quadrate heranläuft, oder auf eine Fotografie gelegt. Jedes
-      davon nimmt die Grenze weg, die das Lesegerät benutzen wollte.
+      Das muss man deutlich sagen, denn Beschneiden ist eine so naheliegende
+      Handlung. Der Code sieht aus, als habe er zu viel Weiß um sich, also wird
+      er im Layout beschnitten, auf eine farbige Fläche gesetzt, die bis an die
+      Quadrate heranläuft, oder gleich auf ein Foto gelegt. Jedes Mal verschwindet
+      die Grenze, an der sich das Lesegerät orientieren wollte.
     </p>
     <p>
-      Sieht der Code mit seinem Rand zu groß aus, machen Sie den Code kleiner.
-      Nehmen Sie nicht den Rand weg.
+      Wirkt der Code mit seinem Rand zu groß, machen Sie den Code kleiner. Nur
+      den Rand nicht.
     </p>
   </section>
 
@@ -111,167 +110,166 @@
     <p>
       Die Faustregel, die den Kontakt mit der Wirklichkeit überstanden hat, heißt
       <strong>eins zu zehn</strong>: Ein Code muss etwa ein Zehntel so breit sein
-      wie die Entfernung, aus der er gescannt wird.
+      wie die Entfernung, aus der gescannt wird.
     </p>
     <ul>
-      <li>Eine Visitenkarte oder eine Speisekarte, aus 30 cm gelesen: etwa 2 cm breit.</li>
-      <li>Ein Plakat, aus zwei Metern gelesen: etwa 20 cm.</li>
-      <li>Ein Buswartehäuschen oder ein Schaufenster, aus fünf Metern gelesen: etwa 50 cm.</li>
+      <li>Visitenkarte oder Speisekarte, gelesen aus 30 cm: rund 2 cm breit.</li>
+      <li>Plakat, gelesen aus zwei Metern: rund 20 cm.</li>
+      <li>Buswartehäuschen oder Schaufenster, gelesen aus fünf Metern: rund 50 cm.</li>
     </ul>
     <p>
       Zwei Zentimeter sind eine Untergrenze und kein Ziel. Unterhalb von etwa
-      1,5 cm fängt ein gewöhnliches Telefon an zu kämpfen, ganz gleich wie gut
-      der Druck ist, denn die einzelnen Module nähern sich der Größe eines Pixels
-      in seiner Kamera.
+      1,5 cm kommt ein gewöhnliches Handy ins Straucheln, wie gut der Druck auch
+      sein mag: Die einzelnen Module nähern sich dann der Größe eines Pixels in
+      seiner Kamera.
     </p>
     <p>
-      Weniger Text heißt weniger Module heißt ein Code, der bei gegebener
-      Druckgröße aus der Entfernung liest &mdash; ein guter Grund, einen Code auf
-      <code>example.com/x</code> zeigen zu lassen und nicht auf eine URL mit
+      Weniger Text heißt weniger Module heißt ein Code, der sich bei gleicher
+      Druckgröße aus größerer Entfernung lesen lässt. Ein guter Grund, einen Code
+      auf <code>example.com/x</code> zeigen zu lassen statt auf eine URL mit
       hundert Zeichen Tracking-Parametern am Ende.
     </p>
     <p>
       Und drucken Sie aus dem <strong>SVG</strong>. Ein QR-Code besteht aus
-      Kanten, und ein PNG hat eine feste Pixelzahl, aus der es sie machen muss;
-      vergrößern Sie eines, und jede Kante wird weich &mdash; genau das, womit ein
-      Scanner Mühe hat. Ein SVG sind die Quadrate als Anweisungen, es kommt also
-      auf einer Visitenkarte wie auf einer Plakatwand scharf heraus.
+      Kanten, und ein PNG hat eine feste Zahl Pixel, aus denen es sie bauen muss;
+      vergrößern Sie eines, wird jede Kante weich &mdash; und genau damit tut
+      sich ein Scanner schwer. In einem SVG stehen die Quadrate als Anweisungen,
+      es kommt also auf der Visitenkarte so scharf heraus wie auf der Plakatwand.
     </p>
   </section>
 
   <section>
-    <h2>Farbe, Kontrast und die zwei Fehler</h2>
+    <h2>Farbe, Kontrast und die zwei üblichen Fehler</h2>
     <p>
-      Ein Lesegerät misst den Unterschied zwischen den dunklen und den hellen
-      Modulen, Kontrast ist also alles. Zwei Dinge gehen regelmäßig schief:
+      Ein Lesegerät misst den Unterschied zwischen dunklen und hellen Modulen
+      &mdash; alles hängt also am Kontrast. Zwei Dinge gehen regelmäßig schief:
     </p>
     <p>
-      <strong>Heller Code auf dunklem Hintergrund.</strong> Es sieht auffällig
-      aus, und eine ganze Reihe Lesegeräte weist es rundweg ab: Sie suchen nach
-      dunkel auf hell und probieren die Umkehrung nicht. Manche schon. Sie werden
-      nicht wissen, welche Ihre Kundschaft hat.
+      <strong>Heller Code auf dunklem Grund.</strong> Sieht auffällig aus, und
+      eine ganze Reihe Lesegeräte weist es rundheraus ab: Sie suchen dunkel auf
+      hell und probieren die Umkehrung gar nicht erst. Manche schon. Welche Ihre
+      Kundschaft im Handy hat, werden Sie nie erfahren.
     </p>
     <p>
-      <strong>Zu wenig Unterschied.</strong> Mittelgrau auf Weiß, oder zwei
-      Markenfarben ähnlicher Tiefe, können am Bildschirm einwandfrei messen und
-      auf Papier scheitern, sobald Tonwertzuwachs und die automatische Belichtung
-      eines Telefons ins Spiel kommen. Wenn Sie einen Code einfärben, halten Sie
-      den dunklen Teil wirklich dunkel.
+      <strong>Zu wenig Unterschied.</strong> Mittelgrau auf Weiß oder zwei
+      Hausfarben von ähnlicher Tiefe können sich am Bildschirm tadellos messen
+      lassen und auf Papier scheitern, sobald Tonwertzuwachs und die automatische
+      Belichtung eines Handys mitspielen. Wenn Sie einen Code einfärben, halten
+      Sie den dunklen Teil wirklich dunkel.
     </p>
     <p>
       Matt schlägt glänzend bei allem, was unter einer Lampe gescannt wird, und
-      beides schlägt den Druck auf eine Fotografie. Transparente Hintergründe
-      sind nützlich, um einen Code auf eine farbige Fläche zu setzen &mdash;
-      prüfen Sie aber, was am Ende dahinter landet, denn ein transparenter Code
-      auf einer dunklen Fläche ist der erste Fehler oben mit Zwischenschritten.
+      beides schlägt den Druck auf ein Foto. Transparente Hintergründe sind
+      praktisch, um einen Code auf eine farbige Fläche zu setzen &mdash; sehen
+      Sie aber nach, was am Ende wirklich dahinter landet: Ein transparenter Code
+      auf dunkler Fläche ist der erste Fehler von oben, nur auf Umwegen.
     </p>
   </section>
 
   <section>
     <h2>Ein Logo in der Mitte</h2>
     <p>
-      Das funktioniert, und es funktioniert wegen der Fehlerkorrektur und nicht
-      trotz ihr. Auf Stufe H lassen sich rund 30&nbsp;% der Module zerstören und
-      der Code ist noch lesbar &mdash; ein Logo, das deutlich weniger als das
-      verdeckt, in der Mitte, wo kein Suchmuster sitzt, ist also Schaden, den das
-      Lesegerät repariert.
+      Das funktioniert &mdash; und zwar wegen der Fehlerkorrektur und nicht ihr
+      zum Trotz. Auf Stufe H dürfen rund 30&nbsp;% der Module zerstört sein, ohne
+      dass der Code unlesbar wird. Ein Logo, das deutlich weniger verdeckt und
+      obendrein in der Mitte sitzt, wo kein Suchmuster liegt, ist also ein
+      Schaden, den das Lesegerät repariert.
     </p>
     <p>
-      Drei Dinge, an die Sie sich halten sollten. Nehmen Sie Stufe H. Halten Sie
-      das Logo unter etwa einem Fünftel der Fläche, gut unterhalb der
-      theoretischen Grenze, denn der Druck ist nicht das Einzige, was an Ihrer
-      Reserve knabbert. Und verdecken Sie nie die drei großen Quadrate in den
-      Ecken oder die kleineren daneben: An denen findet ein Lesegerät das Symbol
-      überhaupt erst und richtet es aus, und keine Fehlerkorrektur der Welt baut
-      sie wieder auf.
+      Drei Regeln dazu. Nehmen Sie Stufe H. Halten Sie das Logo unter etwa einem
+      Fünftel der Fläche, also mit deutlichem Abstand zur theoretischen Grenze
+      &mdash; denn der Druck ist nicht das Einzige, was an Ihrer Reserve knabbert.
+      Und verdecken Sie niemals die drei großen Quadrate in den Ecken oder die
+      kleineren daneben: Daran findet ein Lesegerät das Symbol überhaupt erst und
+      richtet es aus, und die baut keine Fehlerkorrektur der Welt wieder auf.
     </p>
     <p>
-      Testen Sie ihn dann an echten Telefonen. Ein Logo bringt einen Code von
+      Danach: an echten Handys ausprobieren. Ein Logo bringt einen Code von
       &bdquo;funktioniert immer&ldquo; auf &bdquo;funktioniert mit so viel
-      Reserve&ldquo;, und der einzige Weg herauszufinden, wie viel Reserve übrig
-      ist, ist auszuprobieren.
+      Reserve&ldquo;, und wie viel Reserve übrig ist, verrät nur der Versuch.
     </p>
   </section>
 
   <section>
-    <h2>Die Entscheidung, die Menschen bereuen: statisch oder &bdquo;dynamisch&ldquo;</h2>
+    <h2>Die Entscheidung, die später bereut wird: statisch oder &bdquo;dynamisch&ldquo;</h2>
     <p>
-      Suchen Sie nach einem QR-Generator, und die meisten Treffer wollen, dass
-      Sie ein Konto anlegen &mdash; denn sie verkaufen <em>dynamische</em> Codes.
-      Ein dynamischer Code enthält nicht Ihren Link. Er enthält einen Kurzlink
-      auf den eigenen Server des Generators, der auf Ihren weiterleitet.
+      Suchen Sie nach einem QR-Generator, wollen die meisten Treffer, dass Sie
+      ein Konto anlegen &mdash; denn sie verkaufen <em>dynamische</em> Codes. In
+      einem dynamischen Code steht nicht Ihr Link, sondern ein Kurzlink auf den
+      Server des Generators, der von dort auf Ihren weiterleitet.
     </p>
     <p>
       Was Sie dafür bekommen, ist echt: Sie können nach dem Druck ändern, wohin
-      der Code zeigt, und Sie bekommen eine Zählung jedes Scans. Für eine
-      Kampagne mit sechsstelliger Auflage ist das Geld wert.
+      der Code führt, und Sie bekommen jeden Scan gezählt. Bei einer Kampagne mit
+      sechsstelliger Auflage ist das sein Geld wert.
     </p>
     <p>
-      Was es kostet, ist ebenfalls echt und vorher wissenswert statt nachher:
+      Was es kostet, ist ebenso echt &mdash; und man sollte es vorher wissen und
+      nicht hinterher:
     </p>
     <ul>
       <li>
-        <strong>Der Code hört auf zu funktionieren, wenn die aufhören.</strong>
-        Schließt der Dienst, läuft die Domain aus oder endet die kostenlose
-        Stufe, ist jeder gedruckte Code tot &mdash; und bis dahin kleben sie auf
-        zehntausend Speisekarten.
+        <strong>Der Code hört auf zu funktionieren, wenn die anderen
+        aufhören.</strong> Macht der Dienst zu, läuft die Domain aus oder endet
+        die kostenlose Stufe, ist jeder gedruckte Code tot &mdash; und bis dahin
+        klebt er auf zehntausend Speisekarten.
       </li>
       <li>
-        <strong>Jeder Scan sind Daten von jemand anderem.</strong> Die
-        Weiterleitung sieht die IP-Adresse, die Uhrzeit und das Gerät jeder
-        Person, die Ihren Code scannt.
+        <strong>Jeder Scan sind Daten, die jemand anderem zufließen.</strong> Die
+        Weiterleitung sieht IP-Adresse, Uhrzeit und Gerät jedes Menschen, der
+        Ihren Code scannt.
       </li>
       <li>
-        <strong>Der Link gehört ihnen, nicht Ihnen.</strong> Wer ihn scannt,
-        sieht eine unbekannte Domain vorbeihuschen &mdash; und genau davor wird
-        Menschen gesagt, sie sollten misstrauisch sein.
+        <strong>Der Link gehört denen und nicht Ihnen.</strong> Wer scannt, sieht
+        eine fremde Domain vorbeihuschen &mdash; und genau davor wird allen
+        geraten, misstrauisch zu sein.
       </li>
     </ul>
     <p>
-      Der Mittelweg kostet nichts: Setzen Sie einen statischen QR-Code um eine
-      kurze URL <em>auf Ihrer eigenen Domain</em>, und leiten Sie die selbst
-      weiter. Sie behalten die Möglichkeit, das Ziel zu ändern, Sie behalten die
-      Auswertung, und nichts an dem Code hängt davon ab, dass es ein Unternehmen,
-      das Sie nie getroffen haben, nächstes Jahr noch gibt.
+      Der Mittelweg kostet nichts: einen statischen QR-Code um eine kurze URL
+      <em>auf Ihrer eigenen Domain</em> legen und diese selbst weiterleiten. Sie
+      können das Ziel weiterhin ändern, Sie behalten die Auswertung &mdash; und
+      nichts an dem Code hängt daran, ob es eine Firma, die Sie nie getroffen
+      haben, nächstes Jahr noch gibt.
     </p>
     <p>
       Der <a href="../../qr-code-erstellen/">Generator hier</a> erzeugt nur
-      statische Codes, und es gibt kein Konto anzulegen. Was Sie eintippen, ist
-      das, was der Code enthält.
+      statische Codes, und ein Konto gibt es nicht anzulegen. Was Sie eintippen,
+      ist das, was im Code steht.
     </p>
   </section>
 
   <section>
-    <h2>Bevor Sie tausend davon drucken</h2>
+    <h2>Bevor Sie tausend Stück drucken</h2>
     <p>
-      Scannen Sie den Code. Nicht den auf Ihrem Bildschirm &mdash; den gedruckten
-      Andruck, an dem Ort, an den er kommt, mit einem Telefon, das nicht das ist,
-      auf dem Sie ihn gemacht haben. Das dauert eine Minute und fängt die ganze
-      Sorte Probleme ab, von der diese Seite handelt: ein Rand, den das Layout
-      gefressen hat, ein Link ohne sein <code>https://</code>, eine Farbe, die
-      auf Papier anders gemessen hat, ein Code in einer Größe, die auf einem
-      Schreibtisch funktioniert und an einer Wand nicht.
+      Scannen Sie den Code. Nicht den auf Ihrem Bildschirm, sondern den
+      gedruckten Andruck, an dem Ort, an den er kommt, mit einem Handy, das nicht
+      das ist, auf dem Sie ihn gemacht haben. Das dauert eine Minute und fängt
+      die ganze Sorte Probleme ab, von der diese Seite handelt: einen Rand, den
+      das Layout gefressen hat, einen Link ohne sein <code>https://</code>, eine
+      Farbe, die sich auf Papier anders misst, eine Größe, die auf dem
+      Schreibtisch funktioniert und an der Wand nicht.
     </p>
     <p>
-      Und prüfen Sie, was nach dem Scan passiert. Ein Code, der eine Seite
-      öffnet, die auf einem Telefon unlesbar ist, ist ein gescheiterter Code
-      &mdash; auch wenn er gescannt hat.
+      Und sehen Sie nach, was nach dem Scan passiert. Ein Code, der eine Seite
+      öffnet, die auf einem Handy unlesbar ist, ist ein gescheiterter Code
+      &mdash; auch wenn das Scannen selbst geklappt hat.
     </p>
   </section>
 
   <section>
-    <h2>Nichts davon verlangt, irgendetwas hochzuladen</h2>
+    <h2>Nichts davon verlangt einen Upload</h2>
     <p>
       Ein QR-Code ist Rechnerei über einer Zeichenkette. Es gibt keine Datei zu
-      senden und nichts, was ein Server könnte und ein Browser nicht &mdash;
+      schicken und nichts, was ein Server könnte und ein Browser nicht &mdash;
       deshalb erledigt das <a href="../../qr-code-erstellen/">Werkzeug hier</a>
-      alles davon auf Ihrem eigenen Gerät und arbeitet mit getrennter
+      alles davon auf Ihrem eigenen Gerät und arbeitet auch mit gekappter
       Netzverbindung.
     </p>
     <p>
-      Das zählt mehr, als es klingt, wegen dessen, was Menschen in QR-Codes
-      legen. Die häufigste Verwendung des WLAN-Formats ist das tatsächliche
-      Passwort eines Netzes, in eine Webseite getippt. Es lohnt sich zu wissen,
-      ob diese Seite irgendwohin hatte, wo sie es hinschicken konnte.
+      Das wiegt schwerer, als es klingt, wegen dessen, was die Leute in QR-Codes
+      legen. Am häufigsten steht im WLAN-Format das tatsächliche Passwort eines
+      Netzes &mdash; getippt in eine Webseite. Ob diese Seite überhaupt einen Ort
+      hatte, an den sie es hätte schicken können, ist dann durchaus wissenswert.
     </p>
   </section>
