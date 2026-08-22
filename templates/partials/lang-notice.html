@@ -1,0 +1,22 @@
+<!--
+  "You were sent here." The one line a redirect owes the person it moved.
+
+  Hidden in the markup and unhidden by shared/lang.js only on a page it has just
+  sent somebody to - which is never the page they typed, and never a page they
+  reached by clicking. If that file does not run, this is a <div hidden> and
+  nothing else.
+
+  The sentence is written in the language of the page it appears on, because
+  that is the language the reader was judged to want; the link out of it is
+  written in the language it leads back to, because that is the word somebody
+  who wants to leave is looking for. Its text and its address are filled in from
+  the switcher at the bottom of this same page, so there is one list of
+  languages on the page and not two.
+-->
+{% if languages %}<div class="lang-auto" id="lang-auto" hidden>
+  <p>
+{{ ui.lang_auto }}
+    <a class="lang-auto-back" href="{{ base }}"></a>
+  </p>
+</div>
+{% endif %}

@@ -132,6 +132,16 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     # new CSS under the old version and leave returning visitors on the stale one.
     site_css = emit.css_text((SHARED / 'site.css').read_text(encoding='utf-8'))
     css_v = sitelib.text_hash(site_css)
+
+    # The language script, hashed the same way and for a sharper reason than the
+    # stylesheet. Every tool page installs a service worker that caches whatever
+    # same-origin file it is asked for, and its cache is only emptied when one of
+    # the files it was built with changes - which this one is not. Without a
+    # version in the URL, a visitor who used a tool before this file changed
+    # would keep the old copy of it until that tool shipped an update.
+    lang_js = emit.js_text((SHARED / 'lang.js').read_text(encoding='utf-8'), 'shared/lang.js')
+    lang_v = sitelib.text_hash(lang_js)
+
     planned = sitelib.load_toml(CONFIG / 'planned.toml')
 
     tools = [sitelib.load_tool(path, site)
@@ -165,7 +175,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     written = []
     for locale in locales:
         written += build_locale(out, templates, locale, locales, site, tools,
-                                prose, planned, css_v, site_css, emit)
+                                prose, planned, css_v, lang_v, site_css, emit)
 
     # After every locale, because a locale only counts as finished once every
     # page in it has been rendered and had the chance to fall back. Raising
@@ -228,7 +238,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     write_tools_index(ordered_tools)
 
     build_404(out, templates, base, locales, site, ordered_tools, ordered_prose,
-              css_v, emit)
+              css_v, lang_v, emit)
     written.append('404.html')
 
     # After the 404 and deliberately not passed it: the 404 has no address of
@@ -239,6 +249,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
 
     copy_shared(out)
     write(out / 'site.css', site_css)
+    write(out / 'lang.js', lang_js)
 
     # Last, because it reads the finished tree rather than the sources. A link
     # is only checkable once everything it could point at has been written.
@@ -264,7 +275,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
 
 
 def build_locale(out, templates, locale, locales, site, tools, prose, planned,
-                 css_v, site_css, emit):
+                 css_v, lang_v, site_css, emit):
     """The whole site, in one language, under out/<lang>/ - or at the root of
     out/ for English, whose pages keep the addresses they have always had.
 
@@ -339,25 +350,25 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written = []
     for tool in ltools:
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
-                   links, guide_of.get(tool['slug'], {}), emit)
+                   links, lang_v, guide_of.get(tool['slug'], {}), emit)
         written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
 
     for page in lprose:
         build_page(dest_root, templates, locale, locales, site, page, footer,
-                   links, css_v, by_slug, emit)
+                   links, css_v, lang_v, by_slug, emit)
         written.append(f'{locale["prefix"]}{page["out_slug"]}/index.html')
 
     build_guides(dest_root, templates, locale, locales, site, groups,
-                 ordered_guides, footer, links, css_v, emit)
+                 ordered_guides, footer, links, css_v, lang_v, emit)
     written.append(f'{locale["prefix"]}{links["guides"]}/index.html')
 
     build_hub(dest_root, templates, locale, locales, site, by_slug, footer,
-              links, css_v, emit)
+              links, css_v, lang_v, emit)
     written.append(f'{locale["prefix"]}index.html')
 
     build_roadmap(dest_root, templates, locale, locales, site,
                   i18n.localize_planned(planned, locale, site['roadmap']['slug']), ordered,
-                  footer, links, css_v, emit)
+                  footer, links, css_v, lang_v, emit)
     written.append(f'{locale["prefix"]}{links["roadmap"]}/index.html')
 
     # A copy of the site stylesheet at the root of every language, so that the
@@ -396,7 +407,7 @@ def locale_links(locale, site, pages):
     }
 
 
-def frame(locale, locales, site, slug, base, links, extra=None):
+def frame(locale, locales, site, slug, base, links, lang_v, extra=None):
     """The context every page shares: which language it is in, what the words of
     the frame around it are, and where its own address is in every other
     language.
@@ -419,6 +430,10 @@ def frame(locale, locales, site, slug, base, links, extra=None):
         'canonical': i18n.locale_url(locale, slug, site),
         'alternates': i18n.alternates(locales, slug, site),
         'languages': i18n.switcher(locales, locale, slug, site),
+        # Root-absolute, and the same URL on every page in every language, so
+        # that crossing from one language to another is not also a second copy
+        # of this file to fetch. shared/lang.js says what it does.
+        'lang_href': f'/lang.js?v={lang_v}',
     }
     context.update(extra or {})
     return context
@@ -500,7 +515,7 @@ def tie_guides_to_tools(guides, by_slug):
 
 
 def build_guides(out, templates, locale, locales, site, groups, guides, footer,
-                 links, css_v, emit):
+                 links, css_v, lang_v, emit):
     """The index of the written half of the site.
 
     Built like the roadmap and for the same reason: it is a frame around a list
@@ -514,7 +529,7 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
     dest = out / links['guides']
     dest.mkdir(parents=True, exist_ok=True)
 
-    context = frame(locale, locales, site, root['guides']['slug'], '../', links, {
+    context = frame(locale, locales, site, root['guides']['slug'], '../', links, lang_v, {
         'groups': groups,
         'guide_count': len(guides),
         'guide_noun': (root['ui']['guide_one'] if len(guides) == 1
@@ -540,7 +555,7 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
-               guide, emit):
+               lang_v, guide, emit):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -630,7 +645,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             '{% include "partials/url-import.html" %}. Add it, or drop [picker.urls].')
 
     emit.html(dest / 'index.html', templates.render(
-        'tool.html', frame(locale, locales, site, tool['slug'], '../', links, {
+        'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
             'tool': tool,
             'guide': guide,
             'ui': ui,
@@ -756,7 +771,7 @@ def tool_css(tool):
 
 
 def build_page(out, templates, locale, locales, site, page, footer, links,
-               css_v, by_slug, emit):
+               css_v, lang_v, by_slug, emit):
     """A prose page: the site frame around a body.html, and nothing else.
 
     No service worker, because there is nothing here worth keeping offline, and
@@ -795,7 +810,7 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
              'href': f'{up}{links["guides"]}/'},
         ]
 
-    context = frame(locale, locales, site, page['slug'], up, links, {
+    context = frame(locale, locales, site, page['slug'], up, links, lang_v, {
         'page': page,
         'tool': by_slug.get(page['tool'], {}),
         'crumbs': crumbs,
@@ -828,7 +843,7 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
 
 
 def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
-              css_v, emit):
+              css_v, lang_v, emit):
     root = locale['site']
     categories = []
     listed = set()
@@ -856,7 +871,7 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
 
     ordered = [tool for category in categories for tool in category['tools']]
 
-    context = frame(locale, locales, site, '', './', links, {
+    context = frame(locale, locales, site, '', './', links, lang_v, {
         'categories': categories,
         'footer': footer,
         'css_href': f'site.css?v={css_v}',
@@ -875,7 +890,7 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
 
 
 def build_roadmap(out, templates, locale, locales, site, planned, ordered,
-                  footer, links, css_v, emit):
+                  footer, links, css_v, lang_v, emit):
     """The roadmap: what is built, then what is planned.
 
     This was the last section of the hub until the planned list passed about
@@ -930,7 +945,7 @@ def build_roadmap(out, templates, locale, locales, site, planned, ordered,
     dest = out / links['roadmap']
     dest.mkdir(parents=True, exist_ok=True)
 
-    context = frame(locale, locales, site, roadmap['slug'], '../', links, {
+    context = frame(locale, locales, site, roadmap['slug'], '../', links, lang_v, {
         'planned': {**planned, 'group': groups},
         'planned_count': sum(len(group['items']) for group in groups),
         'built_count': len(ordered),
@@ -951,7 +966,8 @@ def build_roadmap(out, templates, locale, locales, site, planned, ordered,
     }), where=f'{locale["prefix"]}{links["roadmap"]}/analytics.js')
 
 
-def build_404(out, templates, locale, locales, site, tools, pages, css_v, emit):
+def build_404(out, templates, locale, locales, site, tools, pages, css_v, lang_v,
+              emit):
     """The page GitHub Pages returns for anything it cannot find.
 
     One file, at the root of the publishing source, per its documentation:
@@ -978,7 +994,7 @@ def build_404(out, templates, locale, locales, site, tools, pages, css_v, emit):
                   for page in pages if page['kind'] == 'legal'],
     }
 
-    context = frame(locale, locales, site, '', '/', links, {
+    context = frame(locale, locales, site, '', '/', links, lang_v, {
         'tools': [dict(tool, out_slug=tool['slug']) for tool in tools],
         'footer': footer,
         'css_href': f'/site.css?v={css_v}',
@@ -1178,10 +1194,10 @@ def copy_shared(out):
         # shared/css feeds the stylesheets the build assembles, and shared/js is
         # copied into each tool's src/shared/ by build_tool - minified, cached by
         # that tool's service worker. Copying either here would publish a second,
-        # raw copy at the site root that nothing references; site.css is written
-        # separately, minified, by the caller - copying the source over it here
-        # would undo that.
-        if path.name in ('css', 'js', 'site.css'):
+        # raw copy at the site root that nothing references; site.css and
+        # lang.js are written separately, minified, by the caller - copying the
+        # source over either here would undo that.
+        if path.name in ('css', 'js', 'site.css', 'lang.js'):
             continue
         if path.is_dir():
             shutil.copytree(path, out / path.name, dirs_exist_ok=True)
@@ -1245,14 +1261,19 @@ class Emitter:
         write(path, minify.html(text, self.html_banner) if self.enabled else text)
 
     def js(self, path, text, where):
+        write(path, self.js_text(text, where))
+
+    def js_text(self, text, where):
+        """Returns rather than writes, for the one script that is hashed before
+        it is written - see the note beside lang.js in build(). Everything else
+        goes through js() and never sees the string."""
         if self.esbuild:
             # esbuild does the whitespace as well as the names, so the Python
             # minifier stands aside rather than running first and being redone.
-            write(path, mangle.js(text, self.esbuild, self.js_mangled_banner, where))
-        elif self.enabled:
-            write(path, minify.js(text, self.js_banner, where))
-        else:
-            write(path, text)
+            return mangle.js(text, self.esbuild, self.js_mangled_banner, where)
+        if self.enabled:
+            return minify.js(text, self.js_banner, where)
+        return text
 
     def css_text(self, text):
         """Returns rather than writes, because a stylesheet has to be hashed

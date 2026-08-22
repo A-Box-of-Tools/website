@@ -868,10 +868,13 @@ def switcher(locales, current, slug, site):
     page; dropping them on the hub to find it again is the commonest way a
     switcher gets built wrong.
 
-    Plain links, with no JavaScript, no cookie and no redirect anywhere near
-    them. A crawler has to be able to walk from one language into the next, and
-    a site whose whole claim is that it does not track you cannot be storing a
-    preference in order to do it.
+    Plain links. A crawler has to be able to walk from one language into the
+    next, and every reader has to be able to leave a language whether or not
+    any script ran.
+
+    This list is also the data shared/lang.js works from - it is where the
+    endonyms and the per-page addresses come from - so a language offered here
+    is a language a visitor can be sent to, and no other list decides that.
 
     Offers only the languages this page exists in. A switcher that lists German
     on a page with no German behind it is a promise the next click breaks, and

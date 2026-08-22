@@ -68,6 +68,16 @@ you a video that plays backwards and is a frame too long, or one whose frames
 are reversed in the wrong groups — neither of which is an error anything could
 raise.
 
+One file in `tests/js/` is not about a tool at all. `lang.test.js` covers
+`shared/lang.js`, the script that decides which language a first-time visitor is
+served, and it runs the real file with a hand-built window in front of it — the
+hreflang links, the browser's language list and the stored choice are all values
+in the DOM, so faking them is how the question gets asked. That is a fake worth
+the trouble, unlike the ones ruled out above, because the thing being tested is
+a decision rather than a browser API: a mistake in it sends somebody to the
+wrong language, or sends a crawler out of the page it was asked to index, and
+neither raises anything.
+
 On the Python side the same reasoning points at the minifiers. `buildlib/`
 already refuses to write output whose tokens moved; `tests/python/` checks the
 refusals fire, and checks every stylesheet and every module in the repository

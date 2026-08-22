@@ -713,6 +713,35 @@ the one to read before starting another. Which locales are actually finished is
 not written here on purpose: every build prints it, and a sentence in a README
 goes stale the first time a tool ships.
 
+### The language a first-time visitor gets
+
+Somebody who types `abox.tools` and reads German used to be shown English and
+left to find the word "Deutsch" at the bottom of it. `shared/lang.js` - about a
+kilobyte, no dependencies, on every page - is the first arrival, and three rules
+keep it from becoming the redirect everybody has been trapped by:
+
+1. **It only ever leaves the `x-default` page.** If you are reading `/de/` you
+   are there because you asked to be, and being bounced out of it because your
+   browser is set to English would be the site overruling a decision you already
+   made. It is also what keeps Googlebot - which crawls as `en-US` - from being
+   redirected out of every translated page it is asked to index.
+2. **Nothing is stored unless you choose.** A detected language is used and
+   forgotten. Only a click on a switcher writes anything down, under
+   `abox-lang` in localStorage, because only a click says something the
+   browser's own settings did not. A stored choice then beats detection, in both
+   directions: pick English once and you are never moved again.
+3. **There is always a way back**, on the page you were moved to, labelled with
+   the name of the language you came from in that language.
+
+Nothing about the language set is compiled into that file. It reads the
+`rel="alternate" hreflang` links in the head, which are the same list the
+sitemap and the switcher come from, so a language becomes reachable this way on
+the day it is published and there is no second list to keep in step.
+
+The switcher itself is in two places and is plain links in both: a `<details>`
+control in the header of every page, and the row at the foot of the footer.
+Both work with the script blocked.
+
 ### Adding a language
 
 1. Make `locales/<lang>/locale.toml` with `lang`, `name` (in English, for the

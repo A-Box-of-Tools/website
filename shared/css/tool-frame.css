@@ -682,6 +682,127 @@ footer a:hover { text-decoration: underline; }
   color: var(--text);
 }
 
+/* ---- the language control in the header --------------------------------- */
+
+/* The same list as the footer's, at the top of the page, because a reader who
+   wants to change language should not have to read to the bottom of an article
+   to find out that they can. A <details>, so it opens with no JavaScript: this
+   whole control works with shared/lang.js blocked.
+
+   Everything from here to the end of the notice below is written twice, in this
+   sheet and in shared/site.css. See the note there. .visually-hidden is already
+   defined further up this file, for the file input, so it is not repeated. */
+
+.lang-pick {
+  position: relative;
+  font-size: 0.85rem;
+}
+
+.lang-pick > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+  /* Both are needed to lose the disclosure triangle: the second is Safari's,
+     and the first is everybody else's. The caret in the markup replaces it, so
+     that it sits after the language name rather than before the icon. */
+  list-style: none;
+}
+
+.lang-pick > summary::-webkit-details-marker { display: none; }
+
+.lang-pick > summary:hover,
+.lang-pick[open] > summary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lang-pick-caret {
+  font-size: 0.7em;
+  color: var(--text-dim);
+}
+
+.lang-pick-menu {
+  position: absolute;
+  z-index: 20;
+  /* Logical rather than `right`, so the panel hangs off the correct edge in a
+     right-to-left language without a second rule saying so. */
+  inset-inline-end: 0;
+  top: calc(100% + 0.35rem);
+  min-width: 10rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.3rem;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.lang-pick-menu li { margin: 0; }
+
+.lang-pick-menu a,
+.lang-pick-menu .lang-current {
+  display: block;
+  padding: 0.35rem 0.55rem;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.lang-pick-menu a:hover {
+  background: var(--surface-2);
+  color: var(--accent);
+}
+
+.lang-pick-menu .lang-current { color: var(--text-dim); }
+
+/* ---- "you were sent here" ------------------------------------------------ */
+
+/* Shown only on a page shared/lang.js has just redirected somebody to, and
+   hidden in the markup otherwise. No `display` is set on the box itself, so the
+   `hidden` attribute keeps working without an !important rule to enforce it. */
+
+.lang-auto {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: var(--surface);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.lang-auto p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  margin: 0;
+}
+
+.lang-auto-back {
+  color: var(--accent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* An arrow rather than a translated verb. The link is labelled with the name of
+   a language, in that language, and prefixing it with "go to" in the language
+   of the page around it would be the one word on the line the reader cannot
+   read. */
+.lang-auto-back::after { content: "\00a0\2192"; }
+
 /* The way back to the hub, with the site mark on it. It heads the brand column
    now rather than sitting inline in a sentence, so it is a flex row and carries
    its own weight and colour. */

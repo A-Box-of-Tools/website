@@ -11,7 +11,7 @@ lede = """
     wohin sie hochgeladen werden könnten. Alles Weitere auf dieser Seite betrifft
     die Werbung, den Besuchszähler und das Hosting &mdash; die Teile also, an
     denen andere Unternehmen beteiligt sind."""
-updated = "19. August 2026"
+updated = "22. August 2026"
 og_title = "Datenschutz &amp; Cookies &mdash; abox.tools"
 og_description = "Ihre Dateien werden nie hochgeladen. Was erhoben wird, von wem, und wie Sie es abschalten."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

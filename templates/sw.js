@@ -59,7 +59,17 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
         }
         return response;
-      }).catch(() => caches.match('index.html'));
+      }).catch(() => (
+        // Offline and not in the cache. A navigation gets the app shell, which
+        // is the whole point of this worker. Anything else gets the failure,
+        // because handing HTML back to something that asked for a script only
+        // turns "offline" into a MIME-type error in the console - which is
+        // exactly what /lang.js, the one root-absolute file a tool page asks
+        // for and does not precache, did before this line said `navigate`.
+        request.mode === 'navigate'
+          ? caches.match('index.html')
+          : Promise.reject(new Error('offline and not cached'))
+      ));
     }),
   );
 });

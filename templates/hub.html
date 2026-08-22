@@ -29,6 +29,7 @@
 
 <link rel="canonical" href="{{ canonical }}">
 {% include "partials/alternates.html" %}
+{% include "partials/lang-script.html" %}
 
 <!--
   AdSense site verification. This is an inert tag - it loads nothing and runs
@@ -96,8 +97,13 @@
 </head>
 <body>
 
+{% include "partials/lang-notice.html" %}
+
 <header class="hub-head">
-  <p class="brand"><span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools</p>
+  <div class="head-row">
+    <p class="brand"><span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools</p>
+    {% include "partials/lang-pick.html" %}
+  </div>
   <h1>{{ site.hub.heading }}</h1>
   <p class="lede">
 {{ site.hub.lede }}

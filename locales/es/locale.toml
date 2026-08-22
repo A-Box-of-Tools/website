@@ -270,6 +270,7 @@ base = "Cada afirmación de este sitio está pensada para comprobarse, no para c
 
 [ui]
 languages = "Idioma"
+lang_auto = "Esta página se muestra en español porque es el idioma que pide tu navegador."
 breadcrumb = "Ruta de navegación"
 all_tools = "Todas las herramientas"
 last_updated = "Última actualización"

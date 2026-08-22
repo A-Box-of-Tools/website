@@ -425,6 +425,13 @@ order = ["is-it-safe-to-upload-files"]
 # is looking for the word "Deutsch".
 languages = "Language"
 
+# The line the language script shows on a page it has just sent somebody to,
+# so that a redirect nobody asked for is at least a redirect they can see and
+# undo. Each language names ITSELF here - the reader is being told which
+# language they are looking at - and the link out of it is labelled with the
+# other language's own name, taken from the switcher rather than written here.
+lang_auto = "This page is shown in English, the language your browser asks for."
+
 breadcrumb = "Breadcrumb"
 all_tools = "All tools"
 last_updated = "Last updated"
