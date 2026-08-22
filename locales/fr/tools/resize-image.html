@@ -1,0 +1,282 @@
+<main>
+  <!-- Étape 1 &mdash; les fichiers -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisir des images</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Tout retirer de la liste</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Étape 2 &mdash; le recadrage -->
+  <section class="card" id="crop-card">
+    <h2><span class="step">2</span> Recadrer, si vous voulez</h2>
+
+    <p class="card-lede">
+      Le cadre part sur l'image entière&nbsp;: laisser cette étape tranquille ne
+      recadre donc rien. Chaque image garde son propre cadre &mdash; prenez-en
+      une dans la liste ci-dessus pour dessiner dessus. Le recadrage a lieu avant
+      le redimensionnement, seul ordre qui ait du sens&nbsp;: une image coupée
+      après avoir été réduite a déjà jeté les pixels dont elle avait besoin.
+    </p>
+
+    <p id="crop-empty" class="field-summary">Ajoutez une image et le cadre apparaît ici.</p>
+
+    <div id="crop-controls" hidden>
+      <p class="stage-hint">
+        <span id="stage-name" class="stage-name"></span>
+        Faites glisser depuis l'intérieur du cadre pour le déplacer, ou par un
+        coin pour le redimensionner. Le cadre étant sélectionné, les flèches le
+        déplacent d'un pixel à la fois,
+        <kbd>Alt</kbd>&nbsp;+&nbsp;flèches le redimensionnent, et maintenir
+        <kbd>Maj</kbd> fait passer chaque pas à dix.
+      </p>
+
+      <!-- The crop box itself is added here by src/cropper.js. The stage is
+           given the picture's own shape, so the box can be positioned in
+           percentages and needs no recalculating when the window is resized. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <p id="stage-note" class="stage-note" hidden></p>
+
+      <div class="crop-controls">
+        <div class="aspect-row" id="aspect-row" role="group" aria-label="Verrouiller le recadrage sur une forme">
+          <button type="button" data-aspect="free" class="active">Libre</button>
+          <button type="button" data-aspect="source">Original</button>
+          <button type="button" data-aspect="1:1">1:1</button>
+          <button type="button" data-aspect="4:5">4:5</button>
+          <button type="button" data-aspect="9:16">9:16</button>
+          <button type="button" data-aspect="16:9">16:9</button>
+          <button type="button" data-aspect="4:3">4:3</button>
+          <button type="button" data-aspect="3:2">3:2</button>
+          <button type="button" id="swap-aspect" class="ghost" title="Basculer la forme verrouillée sur le côté">
+            Basculer
+          </button>
+        </div>
+
+        <div class="numbers">
+          <label>Gauche<input type="number" id="crop-x" min="0" step="1"></label>
+          <label>Haut<input type="number" id="crop-y" min="0" step="1"></label>
+          <label>Largeur<input type="number" id="crop-w" min="8" step="1"></label>
+          <label>Hauteur<input type="number" id="crop-h" min="8" step="1"></label>
+          <div class="number-actions">
+            <button type="button" id="crop-max" class="ghost">Le plus grand</button>
+            <button type="button" id="crop-centre" class="ghost">Centrer</button>
+            <button type="button" id="crop-reset" class="ghost">Image entière</button>
+          </div>
+        </div>
+
+        <!--
+          Every image keeps its own box, which is the point. This is for the
+          case that is still worth one click: a folder of exports that all want
+          the same framing.
+        -->
+        <div class="apply-row" id="apply-row" hidden>
+          <button type="button" id="crop-apply-all" class="ghost">Utiliser ce recadrage sur toutes les images</button>
+          <p class="hint-line" id="apply-note"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Étape 3 &mdash; la taille -->
+  <section class="card" id="resize-card">
+    <h2><span class="step">3</span> Dire la taille voulue</h2>
+
+    <div class="option-row">
+      <label for="resize-mode">Régler la taille par</label>
+      <select id="resize-mode">
+        <option value="pixels" selected>Largeur et hauteur, en pixels</option>
+        <option value="longest">Le plus grand côté</option>
+        <option value="percent">Un pourcentage de la taille actuelle</option>
+        <option value="none">Rien &mdash; laisser la taille exactement telle quelle</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="pixels-fields">
+      <div class="numbers">
+        <label>Largeur<input type="number" id="size-w" min="1" step="1" placeholder="auto" value="1920"></label>
+        <label>Hauteur<input type="number" id="size-h" min="1" step="1" placeholder="auto"></label>
+        <div class="number-actions">
+          <button type="button" id="swap-size" class="ghost">Basculer</button>
+        </div>
+      </div>
+
+      <!--
+        Leaving one of them blank is the common case and the one worth
+        supporting properly: "1920 wide, whatever tall that makes it" needs no
+        decision about shapes at all.
+      -->
+      <p class="hint-line">
+        Remplissez-en un et laissez l'autre vide pour garder la forme même de l'image.
+      </p>
+
+      <div class="presets" id="size-presets" role="group" aria-label="Tailles courantes">
+        <button type="button" class="ghost" data-w="1920" data-h="1080">1920 &times; 1080</button>
+        <button type="button" class="ghost" data-w="1280" data-h="720">1280 &times; 720</button>
+        <button type="button" class="ghost" data-w="1080" data-h="1080">1080 &times; 1080</button>
+        <button type="button" class="ghost" data-w="600" data-h="">600 de large</button>
+      </div>
+
+      <div class="option-row" id="fit-row">
+        <label for="fit">Si les formes se contredisent</label>
+        <select id="fit">
+          <option value="contain" selected>Tenir dedans &mdash; l'image entière, un côté sort plus court</option>
+          <option value="cover">Remplir &mdash; exactement cette taille, le débord coupé</option>
+          <option value="pad">Compléter &mdash; exactement cette taille, avec un fond autour</option>
+          <option value="stretch">Étirer &mdash; exactement cette taille, et la forme déformée</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>Plus grand côté<input type="number" id="size-longest" min="1" step="1" value="1920"></label>
+      </div>
+      <p class="hint-line">
+        Le côté le plus long devient celui-ci, et l'autre suit. Les prises
+        verticales et horizontales d'un même lot ressortent toutes à la même
+        taille sur leur grand côté, ce qu'une galerie veut d'habitude.
+      </p>
+      <div class="presets" id="longest-presets" role="group" aria-label="Grands côtés courants">
+        <button type="button" class="ghost" data-longest="640">640</button>
+        <button type="button" class="ghost" data-longest="1280">1280</button>
+        <button type="button" class="ghost" data-longest="1920">1920</button>
+        <button type="button" class="ghost" data-longest="2560">2560</button>
+      </div>
+    </div>
+
+    <div class="size-fields" id="percent-fields" hidden>
+      <div class="numbers">
+        <label>Pourcentage<input type="number" id="size-percent" min="1" max="1000" step="1" value="50"></label>
+      </div>
+      <div class="presets" id="percent-presets" role="group" aria-label="Pourcentages courants">
+        <button type="button" class="ghost" data-percent="25">25 %</button>
+        <button type="button" class="ghost" data-percent="50">50 %</button>
+        <button type="button" class="ghost" data-percent="75">75 %</button>
+        <button type="button" class="ghost" data-percent="200">200 %</button>
+      </div>
+    </div>
+
+    <label class="check" id="enlarge-row">
+      <input type="checkbox" id="no-enlarge" checked>
+      <span>
+        <strong>Ne jamais agrandir une image au-delà de sa taille de départ</strong>
+        <span class="check-note">
+          Agrandir invente des pixels qui n'ont jamais été photographiés&nbsp;:
+          une petite image à qui l'on demande un grand cadre ressort molle plutôt
+          que détaillée. Avec ceci coché, tout ce qui est déjà plus petit que la
+          taille demandée est laissé à sa propre taille.
+        </span>
+      </span>
+    </label>
+
+    <p id="size-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Étape 4 &mdash; le format, et le clic unique -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> L'enregistrer</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="keep" selected>Garder le format d'arrivée de chaque fichier</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Qualité &mdash; <output id="quality-value" for="quality">85</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="85">
+        <p class="field-note">
+          JPEG et WebP seulement&nbsp;; le PNG n'a pas de molette de qualité. 85
+          est le point où la plupart des gens cessent de voir la différence. En
+          dessous de 60 environ, les aplats commencent à faire des bandes.
+        </p>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Fond</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          Ce qui apparaît là où l'image n'est pas&nbsp;: derrière un cadre
+          complété, et derrière la transparence quand le format de sortie n'a pas
+          de canal alpha.
+        </p>
+      </div>
+    </div>
+
+    <p id="plan-summary" class="field-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>Redimensionner les images</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Terminé</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Tout télécharger en zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The big look at one result. A <dialog> opened with showModal() rather than
+    a div pretending to be one: the browser gives the focus trap, the Escape
+    key and the inert background for nothing, and gets all three right.
+
+    Both pictures in it are object URLs made on this page - the result, and the
+    original that was already decoded for the thumbnail. Opening this fetches
+    nothing and decodes nothing that was not already decoded.
+  -->
+  <dialog id="viewer" class="viewer" aria-labelledby="viewer-name">
+    <div class="viewer-head">
+      <h2 id="viewer-name" class="viewer-name"></h2>
+      <button type="button" id="viewer-close" class="ghost" aria-label="Fermer">Fermer</button>
+    </div>
+
+    <div class="viewer-stage">
+      <img id="viewer-image" alt="">
+    </div>
+
+    <p id="viewer-caption" class="viewer-caption"></p>
+
+    <dl class="viewer-facts" id="viewer-facts"></dl>
+
+    <div class="viewer-actions">
+      <button type="button" id="viewer-compare" class="ghost" aria-pressed="false">Montrer l'original</button>
+      <a id="viewer-download" class="primary as-button" download>Télécharger</a>
+    </div>
+  </dialog>
+</main>

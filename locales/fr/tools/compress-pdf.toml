@@ -1,0 +1,267 @@
+#
+# Compresseur de PDF - French.
+#
+# Overrides for tools/compress-pdf/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Compresseur de PDF"
+heading = "Compresser&nbsp;un&nbsp;PDF <span class=\"h1-kw\">&mdash; alléger un document</span>"
+tagline = "Alléger un document sans l'envoyer où que ce soit."
+
+title = "Compresser un PDF &mdash; gratuit, dans votre navigateur, sans envoi"
+description = "Alléger un PDF sans l'envoyer. Le fichier est lu, recompressé et réécrit par votre propre navigateur, et l'outil vous montre où se trouve vraiment son poids avant de toucher à quoi que ce soit."
+og_title = "Compresser un PDF &mdash; gratuit, et rien n'est envoyé"
+og_description = "Allégez un PDF sur votre propre machine. L'outil mesure la taille à laquelle chaque image est réellement dessinée sur la page, et ne jette donc que des pixels que personne ne pouvait voir."
+og_image_alt = "Compresser un PDF - alléger un document sans l'envoyer"
+
+pledge = """
+    Le document est ouvert, démonté et réécrit en mémoire sur cette machine, par
+    du code servi depuis cette adresse. Rien ici ne sait faire un envoi, et il
+    n'y a à l'autre bout de cette page aucun serveur pour en recevoir un."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      gardez l'onglet Réseau à l'œil et compressez un fichier. Pas une seule
+      requête ne transporte de page, d'image ni de nom de fichier. Ou coupez
+      votre connexion et compressez-en un quand même."""
+
+read_first = """
+, ainsi que <code>src/reader.js</code> et <code>src/writer.js</code>
+      pour la totalité de la lecture et de la réécriture, dont aucun des deux ne
+      peut atteindre le réseau."""
+
+howto_heading = "Comment alléger un PDF"
+
+card = """
+            Alléger un document en recompressant les images qu'il contient. Il
+            vous montre d'abord où se trouve vraiment le poids, et dit
+            franchement quand il n'y a rien à gagner."""
+
+[words]
+plural = "documents"
+choose = "un PDF"
+analytics_extra = """"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[facts]]
+text = "Les fichiers restent sur votre appareil"
+
+[[privacy]]
+title = "Votre document n'a nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Cet outil n'ajoute rien à
+      cette liste&nbsp;: il n'a aucune fonction réseau propre, pas même
+      facultative. Il n'y a ici aucun point de collecte où votre fichier
+      pourrait arriver, et rien dans le code qui l'y enverrait s'il en existait
+      un."""
+
+[[privacy]]
+title = "Le format entier est dans ce dépôt."
+body = """
+ Un PDF, c'est une liste
+      d'objets et une table qui dit où chacun commence.
+      <code>src/objects.js</code> lit cette syntaxe, <code>src/reader.js</code>
+      suit la table, <code>src/writer.js</code> en écrit une nouvelle, et aucun
+      des trois n'importe quoi que ce soit capable de faire une requête. Aucune
+      bibliothèque n'est récupérée et rien n'est rendu sur un serveur."""
+
+[[privacy]]
+title = "Les fichiers chiffrés sont refusés plutôt qu'ouverts."
+body = """
+
+      Un PDF protégé par mot de passe est refusé, y compris celui que produisent
+      les scanners avec un mot de passe vide et qui s'ouvrirait techniquement.
+      Retirer la protection d'un document est un autre métier que l'alléger, et
+      le faire en douce serait une drôle d'initiative pour un outil."""
+
+[[privacy]]
+title = "Il enlève des choses plutôt qu'il n'en ajoute."
+body = """
+ Le fichier fini ne porte
+      ni date de création, ni ligne de producteur, ni nom de l'outil qui l'a
+      fabriqué. Avec la case cochée, il perd aussi le paquet XMP et les blocs
+      privés que laissent derrière elles les applications de mise en page
+      &mdash; le même argument que celui de l'outil EXIF, appliqué à un autre
+      conteneur."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Ni l'un ni l'autre ne
+      reçoit quoi que ce soit sur votre document&nbsp;: ni un fichier, ni une
+      page, ni un nom, une taille ou un nombre de pages. Chaque ligne qui lit,
+      décode ou écrit un PDF est servie depuis cette origine et figure dans le
+      dépôt."""
+
+[[privacy]]
+title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; dans l'en-tête est
+      dessiné par un script de cdnjs.buymeacoffee.com et se compose avec Google
+      Fonts. C'est un lien, rien de plus&nbsp;: il ne signale aucune visite, et
+      on ne lui donne rien sur vous ni sur votre document. Rien ne se passe tant
+      que vous ne cliquez pas, et ce vers quoi vous cliqueriez est le site de
+      quelqu'un d'autre."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Coupez le réseau et tout sur cette page
+      fonctionne encore. C'est la preuve la plus simple de toutes&nbsp;: un
+      outil qui expédierait votre document ailleurs pour le compresser
+      s'arrêterait."""
+
+[[howto]]
+title = "Choisissez un PDF."
+body = """
+ Déposez-le sur la zone prévue ou
+      sélectionnez-le à la main. Le navigateur le lit directement sur votre
+      disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+
+[[howto]]
+title = "Regardez où est le poids."
+body = """
+ La répartition est tout
+      l'intérêt de la deuxième étape. Si la barre est surtout faite d'images,
+      cet outil a de quoi travailler. Si elle est surtout faite de polices et de
+      contenu de page, il le dira, et l'économie honnête sera de quelques pour
+      cent &mdash; autant le savoir avant d'y passer une minute."""
+
+[[howto]]
+title = "Dites jusqu'où serrer."
+body = """
+ Les réglages nommés sont des
+      résolutions, pas des mentions vagues&nbsp;: 96 DPI pour lire à l'écran,
+      130 pour envoyer par courriel, 220 pour ce qui doit encore s'imprimer.
+      Chacun est comparé à la taille à laquelle l'image est réellement dessinée
+      sur la page, si bien qu'une photo posée en vignette n'est pas traitée
+      comme un scan pleine page."""
+
+[[howto]]
+title = "Compressez, puis lisez la ligne qui dit que c'est vérifié."
+body = """
+
+      Une fois la réécriture faite, le fichier fini est rouvert par le même
+      lecteur, sur cette page, et ses pages sont comptées. Si le compte ne
+      correspond pas à l'original, l'opération est signalée comme échouée et
+      aucun téléchargement n'est proposé."""
+
+[[faq]]
+q = "Mon PDF est-il envoyé quelque part&nbsp;?"
+a = """
+        Non. Le fichier est lu, recompressé et écrit par votre propre navigateur sur
+        votre propre matériel. Cet outil n'a pas de côté serveur, et la
+        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+        qu'elle peut contacter &mdash; aucune n'appartient à ce site. Cet outil n'a
+        aucune fonction réseau, pas même facultative."""
+
+[[faq]]
+q = "De combien mon PDF va-t-il maigrir&nbsp;?"
+a = """
+        Cela dépend entièrement de ce qu'il contient, et c'est pour cela que l'outil
+        mesure et vous montre avant de compresser quoi que ce soit. Un document
+        numérisé n'est presque que des photographies et ressort couramment 60 à 90&nbsp;%
+        plus léger. Un contrat ou une thèse, c'est du texte, du dessin vectoriel et
+        des polices incorporées, tous déjà compressés par ce qui les a produits&nbsp;;
+        là, l'économie est en général de quelques pour cent, obtenue en réempaquetant
+        le fichier et en jetant ce que plus rien ne référence. Tout outil qui promet
+        un pourcentage fixe sans regarder votre fichier devine."""
+
+[[faq]]
+q = "Compresser un PDF fait-il perdre de la qualité&nbsp;?"
+a = """
+        Les images qu'il contient sont réencodées, donc oui, pour elles. Rien d'autre
+        n'est touché&nbsp;: le texte reste du texte, sélectionnable et cherchable, les
+        polices sont gardées entières, et le dessin vectoriel est recopié à
+        l'identique. L'outil refuse aussi d'abîmer une image pour rien &mdash; si un
+        réencodage ne ressort pas plus petit que l'original, ce sont les octets
+        d'origine qui retournent dans le document, intacts."""
+
+[[faq]]
+q = "Qu'est-ce que le DPI ici, et pourquoi le demande-t-il&nbsp;?"
+a = """
+        Un PDF enregistre la taille à laquelle chaque image est dessinée sur la page,
+        ce qui permet à l'outil d'en déduire la résolution effective&nbsp;: un scan de
+        4000 pixels étalé sur vingt centimètres de papier transporte 500 pixels par
+        pouce. Rien à l'écran et très peu de choses sur le papier ne savent en faire
+        quoi que ce soit, alors les pixels au-dessus du réglage que vous choisissez
+        partent en premier &mdash; ils coûtent une qualité que personne ne voit. C'est
+        cette mesure qui fait qu'un logo posé en petit n'est pas traité comme un scan
+        pleine page."""
+
+[[faq]]
+q = "Peut-il ouvrir un PDF protégé par mot de passe&nbsp;?"
+a = """
+        Non, et c'est délibéré. Un document chiffré est refusé avec un message qui le
+        dit, même quand le mot de passe est vide &mdash; ce qui est la façon dont
+        enregistrent beaucoup de scanners et de photocopieurs. Retirer la protection
+        d'un fichier est un autre métier que le compresser, et un outil qui le ferait
+        en silence ferait quelque chose que vous n'avez pas demandé."""
+
+[[faq]]
+q = "Y a-t-il des PDF qu'il ne sait pas compresser&nbsp;?"
+a = """
+        Certaines images à l'intérieur, oui. Les images JPEG 2000, JBIG2 et codées fax
+        (CCITT) n'ont de décodeur dans aucun navigateur&nbsp;: elles sont transmises
+        intactes et signalées comme telles &mdash; les deux dernières sont des codecs
+        bitonaux et sont de toute façon en général déjà au plus petit. Les images CMJN
+        sont laissées tranquilles elles aussi, parce que les réencoder risquerait de
+        déplacer les couleurs qu'une imprimerie produirait. Tout ce que l'outil passe
+        est nommé dans les résultats, avec la raison."""
+
+[[faq]]
+q = "Le fichier compressé s'ouvrira-t-il encore partout&nbsp;?"
+a = """
+        Oui. La sortie est écrite en PDF 1.5, que comprend tout lecteur sorti depuis
+        2003, et l'outil le prouve sur votre propre machine&nbsp;: il rouvre le
+        fichier fini et compte ses pages avant de vous le proposer. Les formulaires,
+        les liens, les signets, la structure d'accessibilité et les pièces jointes
+        incorporées sont repris&nbsp;; ce qui reste en arrière est la matière à
+        laquelle plus rien dans le document ne renvoyait."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a pas de compte, pas de connexion, pas de période
+        d'essai et pas d'autre limite de taille que ce que permet la mémoire de votre
+        propre machine. Le site porte de la publicité, et c'est elle qui le
+        finance&nbsp;; les annonces ne reçoivent rien sur votre document."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
+        de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
+        envoyé&nbsp;: un outil qui expédierait votre document ailleurs pour le
+        compresser s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Compressez un PDF dans votre navigateur. Les images sont recompressées par rapport à la taille à laquelle elles sont réellement dessinées sur la page, et le document est réécrit localement, si bien qu'aucun fichier n'est jamais envoyé."
+features = [
+  "Montre où se trouve vraiment le poids d'un document avant de compresser quoi que ce soit",
+  "Recompresse les images par rapport à leur résolution mesurée sur la page",
+  "Laisse une image tranquille quand la réencoder ne l'allégerait pas",
+  "Jette les objets laissés par une modification précédente, et les métadonnées facultatives",
+  "Rouvre et vérifie le fichier fini avant de le proposer",
+  "Fonctionne hors ligne ; sans envoi, sans compte, sans limite de taille",
+]
+
+[picker]
+title = "Déposez un PDF ici"
+hint = "ou cliquez pour parcourir &mdash; un document à la fois"

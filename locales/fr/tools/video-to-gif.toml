@@ -1,0 +1,256 @@
+#
+# Vidéo en GIF - French.
+#
+# Overrides for tools/video-to-gif/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Vidéo en GIF"
+heading = "Vidéo&nbsp;en&nbsp;GIF <span class=\"h1-kw\">&mdash; convertir une vidéo en GIF</span>"
+tagline = "Choisissez le passage, la taille et la cadence."
+
+title = "Convertisseur de vidéo en GIF &mdash; gratuit, sans envoi, hors ligne"
+description = "Transformez un passage d'un MP4, d'un MOV ou d'un WebM en GIF animé. Choisissez le passage, la largeur et la cadence ; les images sont lues et le GIF est écrit dans votre navigateur. Rien n'est envoyé."
+og_title = "Vidéo en GIF &mdash; faire un GIF sans envoyer le clip"
+og_description = "Marquez les secondes voulues, choisissez une largeur et une cadence, et récupérez un GIF animé. L'échantillonnage des images, la palette, le tramage et le LZW se font tous sur votre propre machine."
+og_image_alt = "Vidéo en GIF - faire un GIF animé dans votre navigateur, sans rien envoyer"
+
+pledge = """
+    Chaque image est lue, redimensionnée, quantifiée et écrite par votre propre
+    navigateur, sur votre propre matériel. Rien ici ne sait récupérer ni envoyer
+    quoi que ce soit &mdash; cet outil n'a aucune fonction réseau &mdash; et il
+    n'y a à l'autre bout de cette page aucun serveur auquel envoyer une vidéo,
+    quand bien même il y en aurait une."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      gardez l'onglet Réseau à l'œil et fabriquez un GIF. Pas une seule requête
+      ne transporte d'image, de nom de fichier ni un octet de ce que vous avez
+      choisi. Ou coupez votre connexion et fabriquez-en un quand même &mdash; un
+      outil qui expédierait votre vidéo ailleurs pour la convertir s'arrêterait
+      tout simplement."""
+
+read_first = """
+, <code>src/frames.js</code> pour les deux façons de
+      lire les images d'une vidéo, <code>src/quantize.js</code> pour la palette,
+      et <code>src/gif.js</code> pour le fichier lui-même, LZW compris. Aucun
+      d'eux n'importe quoi que ce soit capable de faire une requête."""
+
+howto_heading = "Comment transformer une vidéo en GIF"
+
+card = """
+            Marquez les secondes voulues, choisissez une largeur et une cadence,
+            et récupérez un GIF animé &mdash; palette, tramage et tout le
+            reste."""
+
+[words]
+plural = "vidéos"
+choose = "une vidéo"
+analytics_extra = """, ni
+  image, durée ou taille"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans filigrane"
+
+[[facts]]
+text = "N'importe quelle durée"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[privacy]]
+title = "Vos vidéos n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
+      collecte où votre fichier pourrait arriver, et rien dans le code qui l'y
+      enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Rien ici ne va rien chercher."
+body = """
+ Cet outil n'a aucune fonction
+      réseau&nbsp;: pas d'adresse à coller, rien à télécharger, aucun moteur
+      récupéré à la première utilisation. Chaque octet qui touche à votre vidéo
+      vient de cette origine, au chargement de la page."""
+
+[[privacy]]
+title = "Le décodage est local."
+body = """
+ Les images passent par WebCodecs dans
+      votre propre navigateur, ou par le même moteur de lecture qui vous
+      montrerait le clip de toute façon. Lequel des deux a servi est écrit en
+      haut de la page, parce que cela change la façon dont les images sont
+      choisies et que vous devez pouvoir le voir."""
+
+[[privacy]]
+title = "Le GIF est écrit ici, dans du code que vous pouvez lire."
+body = """
+ La palette, le
+      tramage et la compression LZW font environ six cents lignes dans le dossier
+      propre à cet outil. Il n'y a aucun service d'encodage, aucune bibliothèque
+      récupérée à l'exécution, et aucun endroit dans tout cela où une image
+      pourrait être envoyée."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Ni l'un ni l'autre ne reçoit
+      quoi que ce soit sur votre vidéo&nbsp;: ni un fichier, ni une image, ni un
+      nom, une taille, une durée ou le passage que vous avez marqué. Chaque ligne
+      qui lit, échantillonne, quantifie ou encode est servie depuis cette origine
+      et figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; dans l'en-tête est
+      dessiné par un script de cdnjs.buymeacoffee.com et se compose avec Google
+      Fonts. C'est un lien, rien de plus&nbsp;: il ne signale aucune visite, et
+      on ne lui donne rien sur vous ni sur votre vidéo."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Coupez le réseau et tout sur cette
+      page fonctionne encore. C'est la preuve la plus simple de toutes."""
+
+[[howto]]
+title = "Choisissez une vidéo."
+body = """
+ Déposez un MP4, un MOV, un M4V ou un
+      WebM sur la zone prévue, ou sélectionnez-en un à la main. Le navigateur le
+      lit directement sur votre disque&nbsp;; rien n'est envoyé nulle part
+      pendant ce temps."""
+
+[[howto]]
+title = "Marquez le passage."
+body = """
+ Lisez le clip et appuyez sur
+      <kbd>I</kbd> là où il doit commencer et sur <kbd>O</kbd> là où il doit
+      finir, ou tirez les poignées sur la barre. Un GIF dure quelques secondes
+      &mdash; c'est le réglage qui décide si le fichier sera petit ou énorme,
+      bien plus que les deux autres."""
+
+[[howto]]
+title = "Choisissez la largeur et la cadence."
+body = """
+ 480 pixels de large et 12
+      images par seconde conviennent à la plupart des usages d'un GIF. Diviser la
+      largeur par deux divise les pixels par quatre&nbsp;; douze images par
+      seconde se lisent comme du mouvement sans payer pour celles que personne ne
+      voit."""
+
+[[howto]]
+title = "Fabriquez-le, et téléchargez."
+body = """
+ Les images sont lues, une seule
+      palette de 256 couleurs est choisie pour toute l'animation, et chaque image
+      n'est écrite que sur la partie qui a changé. Il joue sur la page une fois
+      prêt, et c'est le même fichier que celui du téléchargement."""
+
+[[faq]]
+q = "Ma vidéo est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non. Elle est lue, échantillonnée et convertie par votre propre navigateur sur
+        votre propre matériel. Cet outil n'a pas de côté serveur, et la
+        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+        qu'elle peut contacter &mdash; aucune n'appartient à ce site. Coupez votre
+        connexion et fabriquez un GIF quand même, si vous préférez vérifier plutôt
+        qu'on vous le dise."""
+
+[[faq]]
+q = "Quels formats vidéo puis-je convertir&nbsp;?"
+a = """
+        Le MP4, le M4V et le MOV sont lus directement, quel que soit leur
+        contenu&nbsp;: H.264, HEVC, AV1 ou VP9, du moment que votre navigateur sait
+        décoder ce codec. Tout le reste que votre navigateur sait lire &mdash; le WebM
+        au premier chef &mdash; est lu en déplaçant le lecteur jusqu'à chaque instant,
+        ce qui est plus lent et un peu moins exact sur l'image qui atterrit où. Un
+        fichier que le navigateur ne sait ni lire ni jouer, ce qui en pratique veut dire
+        l'AVI, le WMV, le FLV et la plupart des MKV, est refusé avec un message qui le
+        dit, plutôt que d'échouer à mi-course."""
+
+[[faq]]
+q = "Pourquoi mon GIF est-il si gros&nbsp;?"
+a = """
+        Parce que le GIF est un format de 1987 qui stocke des images entières plutôt
+        que du mouvement. Il n'y a aucun moyen d'en faire un, à partir d'un clip de cinq
+        secondes, qui soit aussi léger que le MP4 de cinq secondes dont il vient &mdash;
+        un GIF tiré d'une vidéo pèse couramment dix fois la vidéo. Les trois réglages
+        qui décident vraiment sont, dans l'ordre&nbsp;: la durée du passage, la largeur
+        de l'image, et le nombre d'images par seconde. Diviser la largeur par deux
+        divise les pixels par quatre, et ce sont les pixels qui coûtent."""
+
+[[faq]]
+q = "Pourquoi seulement 256 couleurs&nbsp;?"
+a = """
+        C'est le format&nbsp;: un GIF porte une table d'au plus 256 couleurs et stocke
+        chaque pixel comme un numéro dans cette table. Cet outil choisit ces 256 en
+        comptant les couleurs de chaque image de votre passage et en les répartissant en
+        256 groupes &mdash; la coupe médiane, la méthode classique &mdash; si bien que
+        la palette colle à votre clip au lieu d'être un jeu de couleurs figé. Là où une
+        couleur manque, le tramage mélange les deux plus proches pour qu'un dégradé
+        reste un dégradé au lieu de devenir des bandes."""
+
+[[faq]]
+q = "Que fait le réglage de tramage&nbsp;?"
+a = """
+        Il échange un peu de bruit contre beaucoup de bandes en moins. Activé, un ciel
+        qui serait sinon devenu quatre aplats reste un dégradé, au prix d'une légère
+        texture et d'un fichier plus gros. Désactivé, l'image est plus plate et le
+        fichier plus léger, ce qui convient aux captures d'écran, au dessin au trait et
+        à tout ce qui est déjà fait d'aplats. Le tramage employé ici est ordonné plutôt
+        que du type à diffusion d'erreur&nbsp;: un fond inchangé reste ainsi
+        parfaitement immobile d'une image à l'autre au lieu de scintiller."""
+
+[[faq]]
+q = "Y a-t-il une limite de durée ou de taille&nbsp;?"
+a = """
+        C'est le passage qui est limité, et par la mémoire plutôt que par une
+        règle&nbsp;: chacune de ses images est retenue en même temps pendant le choix de
+        la palette, alors la page calcule ce que vos réglages coûteraient et le dit
+        avant de commencer. Elle refuse plutôt que de laisser l'onglet manquer de
+        mémoire et disparaître. Un passage plus court, une largeur plus petite ou une
+        cadence plus basse font tous baisser le chiffre."""
+
+[[faq]]
+q = "Garde-t-il le son&nbsp;?"
+a = """
+        Un GIF ne sait pas transporter de son. Il n'existe aucune version du format qui
+        ait de l'audio, ce qui est la principale raison pour laquelle le web a
+        essentiellement remplacé les GIF par de la vidéo muette en boucle. Si le son
+        compte, gardez la vidéo &mdash; le
+        <a href="../couper-une-video/">coupeur de vidéos</a> en découpera un passage
+        sans réencoder une seule image."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a pas de compte, pas de connexion, pas de période
+        d'essai et pas de filigrane. Le site porte de la publicité, et c'est elle qui le
+        finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
+
+[schema]
+browser_requirements = "Nécessite JavaScript. Le MP4 et le MOV demandent un navigateur avec WebCodecs ; tout ce que le navigateur sait jouer fonctionne sans."
+description = "Convertissez un passage d'une vidéo en GIF animé, dans le navigateur. Les images sont échantillonnées à la cadence choisie, une seule palette de 256 couleurs est choisie pour toute l'animation par coupe médiane, et chaque image n'est écrite que sur la région qui a changé. Rien n'est envoyé."
+features = [
+  "Convertit des vidéos MP4, MOV, M4V et WebM en GIF animé",
+  "Sources H.264, HEVC, AV1 et VP9, décodées par WebCodecs",
+  "Marquez le passage sur une ligne de temps, ou tapez des temps exacts",
+  "N'importe quelle largeur, de 5 à 25 images par seconde, tramage ordonné facultatif",
+  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+]
+
+[picker]
+title = "Déposez une vidéo ici"
+hint = "ou cliquez pour parcourir &mdash; MP4, MOV, M4V, WebM, et tout ce que ce navigateur sait jouer"

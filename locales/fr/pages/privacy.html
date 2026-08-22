@@ -1,0 +1,196 @@
+  <section>
+    <h2>Vos fichiers</h2>
+    <p>
+      Chaque outil de ce site fait son travail à l'intérieur de votre propre
+      navigateur, sur votre propre matériel. Quand vous choisissez un fichier, il
+      est lu par la page que vous avez déjà ouverte. Il ne nous est pas envoyé,
+      parce qu'il n'existe aucun serveur à nous vers lequel l'envoyer &mdash; ce
+      site est un ensemble de fichiers statiques, sans backend, sans base de
+      données et sans stockage.
+    </p>
+    <p>
+      Cela veut dire que nous ne recevons, ne voyons, ne stockons, ne
+      journalisons et ne traitons jamais&nbsp;:
+    </p>
+    <ul>
+      <li>vos fichiers, en tout ou en partie</li>
+      <li>leurs vignettes ou leurs aperçus</li>
+      <li>leurs noms, tailles, dimensions ou formats</li>
+      <li>combien vous en avez choisi, ni ce que vous en avez fait</li>
+      <li>quoi que ce soit qui en est lu, données EXIF et GPS comprises</li>
+    </ul>
+    <p>
+      Ce n'est pas une promesse sur nos intentions. Chaque page porte une
+      <code>Content-Security-Policy</code> qui nomme toutes les adresses que la
+      page a le droit de contacter, et c'est le navigateur qui l'applique. Aucune
+      de ces adresses ne nous appartient. Vous pouvez lire la politique en tête
+      du source de n'importe quelle page, ou ouvrir l'onglet Réseau de votre
+      navigateur et regarder&nbsp;: aucune requête ne transporte votre fichier.
+    </p>
+    <p>
+      Les fichiers que vous produisez avec un outil sont remis au mécanisme de
+      téléchargement de votre propre navigateur et enregistrés là où vous le lui
+      dites. Nous ne sommes pas non plus impliqués dans cette étape.
+    </p>
+  </section>
+
+  <section>
+    <h2>La seule exception, et où elle s'applique</h2>
+    <p>
+      L'outil <a href="../images-en-video/">Images en vidéo</a> a une fonction
+      &laquo;&nbsp;ajouter depuis une adresse web&nbsp;&raquo;. Si vous y collez
+      une adresse, votre navigateur récupère cette image sur le serveur que vous
+      avez nommé, et <strong>ce serveur voit votre adresse IP</strong> ainsi que
+      le fichier que vous avez demandé. C'est incontournable, et c'est la nature
+      même de la fonction.
+    </p>
+    <p>
+      Cela n'arrive jamais que pour des adresses que vous tapez vous-même, c'est
+      construit de sorte que les images puissent entrer mais que les données ne
+      puissent pas sortir, et la page de cet outil l'explique plus en détail.
+      Aucun autre outil de ce site ne peut émettre une requête sortante avec quoi
+      que ce soit de vous dedans.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qui est collecté, et par qui</h2>
+    <p>
+      Ce site est gratuit et il est payé par la publicité. Cela veut dire que
+      deux produits Google tournent sur ces pages, et qu'un bouton de don tourne
+      sur la plupart d'entre elles. Voici la liste entière.
+    </p>
+
+    <h3>Google AdSense &mdash; les annonces</h3>
+    <p>
+      Google sert les annonces et décide de celles que vous voyez. Pour cela, il
+      peut poser et lire des cookies ou des identifiants similaires dans votre
+      navigateur, et il reçoit votre adresse IP, une localisation approximative
+      qui en découle, votre agent utilisateur, et la page sur laquelle vous
+      étiez. Selon vos réglages et l'endroit où vous vous trouvez, les annonces
+      peuvent être personnalisées à partir d'un profil que Google détient sur
+      vous, bâti pour l'essentiel sur votre activité sur d'autres sites.
+    </p>
+    <p>
+      Nous ne recevons rien de tout cela, nous ne pouvons pas le voir, et nous
+      n'envoyons jamais à Google quoi que ce soit sur vos fichiers. L'exposé de
+      Google sur la façon dont il utilise les données des sites qui affichent ses
+      annonces se trouve sur
+      <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
+    </p>
+
+    <h3>Google Analytics &mdash; le compteur de visites</h3>
+    <p>
+      Nous utilisons Google Analytics 4 pour compter les visites de pages, afin
+      de savoir quels outils méritent qu'on y travaille. Il enregistre la page
+      consultée, à peu près quand, un identifiant tiré au hasard et stocké dans
+      votre navigateur, une localisation approximative, le type de votre appareil
+      et de votre navigateur, et le site qui vous a envoyé ici.
+    </p>
+    <p>
+      Il est configuré pour ne rien faire d'autre, et cette configuration est un
+      fichier que vous pouvez lire&nbsp;: <code>analytics.js</code>, à côté de
+      chaque page, met en place un compteur de pages vues et ne contient aucun
+      événement personnalisé. Rien sur ce site ne lui passe un fichier, un nom de
+      fichier, une dimension ou un nombre &mdash; il n'y a ici aucun code qui le
+      pourrait.
+    </p>
+
+    <h3>Buy Me a Coffee &mdash; le bouton de don</h3>
+    <p>
+      La page d'accueil et les pages d'outils portent un bouton de don, qui se
+      charge depuis les serveurs de Buy Me a Coffee. Le charger implique que leur
+      CDN voie votre adresse IP et sache que vous étiez sur ce site, et le
+      lettrage du bouton est récupéré sur Google Fonts, qui voit lui aussi votre
+      adresse IP. Rien d'autre n'est transmis, et rien de plus ne se passe tant
+      que vous ne cliquez pas réellement dessus&nbsp;; à ce moment-là, vous êtes
+      sur leur site, sous leurs conditions. Cette page et la
+      <a href="../conditions-d-utilisation/">page des conditions</a> ne dessinent
+      pas le bouton.
+    </p>
+
+    <h3>Hébergement</h3>
+    <p>
+      Le site est servi par GitHub Pages, derrière Cloudflare. Comme tout
+      hébergeur web, ils traitent les requêtes que fait votre navigateur &mdash;
+      ce qui comprend votre adresse IP, la page demandée et votre agent
+      utilisateur &mdash; afin de livrer la page et de garder le service debout
+      et sûr. Nous n'avons accès aux journaux par visiteur d'aucun des deux.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cookies</h2>
+    <p>
+      Nous ne posons aucun cookie à nous. Nous n'avons ni connexion, ni session,
+      ni préférences à retenir, ni aucune raison d'en avoir.
+    </p>
+    <p>
+      Tout cookie ou identifiant similaire que vous pourriez trouver ici
+      appartient à Google et est posé par les scripts publicitaires et
+      d'analytique décrits ci-dessus. Ils servent à mesurer les visites, et à
+      choisir et plafonner les annonces.
+    </p>
+    <h3>Comment tout désactiver</h3>
+    <ul>
+      <li>
+        La personnalisation des annonces peut être désactivée, pour tous les
+        sites d'un coup, dans
+        <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer nofollow">Mon centre de préférences pour les annonces</a>.
+      </li>
+      <li>
+        Google Analytics peut être bloqué partout avec le
+        <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer nofollow">module de désactivation pour navigateur</a>
+        de Google.
+      </li>
+      <li>
+        Les réglages de votre propre navigateur peuvent bloquer ou effacer les
+        cookies tiers, et n'importe quel bloqueur de contenu empêchera ces
+        scripts de se charger tout court.
+      </li>
+    </ul>
+    <p>
+      Tout bloquer nous convient très bien. <strong>Chaque outil de ce site
+      fonctionne avec les scripts bloqués, et fonctionne avec le réseau
+      entièrement débranché.</strong> Rien ici n'est retenu derrière une annonce.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vos droits sur les données</h2>
+    <p>
+      Nous ne détenons aucune donnée personnelle sur vous&nbsp;: il n'y a donc
+      rien que nous puissions vous montrer, corriger, exporter ou supprimer
+      &mdash; une demande adressée à nous reviendrait vide, honnêtement.
+    </p>
+    <p>
+      Les données décrites ci-dessus sont détenues par Google, qui en est son
+      propre responsable de traitement. Les demandes à leur sujet doivent lui
+      être adressées, via
+      <a href="https://myaccount.google.com/" target="_blank" rel="noopener noreferrer nofollow">votre compte Google</a>
+      ou ses contacts en matière de confidentialité.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les enfants</h2>
+    <p>
+      Ce site ne s'adresse pas aux enfants et ne demande son âge à personne,
+      parce qu'il ne demande rien à personne. Nous ne collectons sciemment aucune
+      donnée personnelle, de qui que ce soit, à tout âge.
+    </p>
+  </section>
+
+  <section>
+    <h2>Modifications, et comment nous joindre</h2>
+    <p>
+      Si cette page change, la date en haut change avec elle, et la modification
+      figure dans l'historique public des commits, comme tout le reste.
+    </p>
+    <p>
+      Les questions sur tout cela peuvent aller à
+      <a href="mailto:hi@abox.tools">hi@abox.tools</a>, ou être posées comme
+      ticket sur <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">le dépôt</a>,
+      où la réponse est visible par tous ceux qui se posent la même question.
+    </p>
+  </section>

@@ -1,0 +1,171 @@
+<main>
+  <!-- Étape 1 &mdash; le fichier -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisir un fichier</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Fichier</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Taille</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Durée</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Son</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>Moment le plus fort</dt><dd id="src-peak">&mdash;</dd></div>
+      <div><dt>Lu comme</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <div class="wave-wrap" id="src-wave-wrap" hidden>
+      <canvas id="src-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="preview" controls preload="metadata"></audio>
+    </div>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Étape 2 &mdash; les modifications -->
+  <section class="card" id="edit-card" hidden>
+    <h2><span class="step">2</span> Le modifier</h2>
+
+    <div class="edit-block">
+      <label class="check" for="reverse">
+        <input type="checkbox" id="reverse">
+        Le passer à l'envers
+      </label>
+      <p class="field-note">
+        Les échantillons sont écrits du dernier au premier. Rien d'autre ne
+        change en eux&nbsp;: inverser deux fois rend donc exactement le fichier
+        de départ.
+      </p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="speed">Vitesse</label>
+        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+               spellcheck="false" autocomplete="off" aria-label="Vitesse, en multiple">
+      </div>
+
+      <!-- The slider is in octaves, not multiples: half speed and double speed
+           are then the same distance either side of the middle, which is how
+           they sound. main.js does the conversion. -->
+      <input type="range" id="speed" min="-2" max="2" step="0.01" value="0"
+             aria-describedby="speed-note">
+
+      <div class="presets" role="group" aria-label="Vitesses préréglées">
+        <button type="button" class="ghost" data-speed="0.5">0,5&times;</button>
+        <button type="button" class="ghost" data-speed="0.75">0,75&times;</button>
+        <button type="button" class="ghost" data-speed="1">1&times;</button>
+        <button type="button" class="ghost" data-speed="1.25">1,25&times;</button>
+        <button type="button" class="ghost" data-speed="1.5">1,5&times;</button>
+        <button type="button" class="ghost" data-speed="2">2&times;</button>
+      </div>
+
+      <fieldset class="modes">
+        <legend>Ce qui arrive à la hauteur</legend>
+        <label class="mode">
+          <input type="radio" name="pitch" value="keep" checked>
+          <span>
+            <strong>Garder la hauteur</strong>
+            Une voix reste la même voix, seulement plus rapide ou plus lente.
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="pitch" value="move">
+          <span>
+            <strong>La laisser suivre</strong>
+            Plus vite, c'est plus aigu ; plus lent, plus grave, comme une bande.
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="speed-note"></p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="volume">Volume</label>
+        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+               spellcheck="false" aria-label="Écart de volume, en décibels">
+      </div>
+
+      <input type="range" id="volume" min="-24" max="24" step="0.5" value="0"
+             aria-describedby="volume-note">
+
+      <fieldset class="modes">
+        <legend>À quel point le monter</legend>
+        <label class="mode">
+          <input type="radio" name="level" value="gain" checked>
+          <span>
+            <strong>De tant</strong>
+            Chaque échantillon multiplié par le même nombre. Rien d'autre ne change.
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="level" value="normalize">
+          <span>
+            <strong>Aussi fort que possible</strong>
+            Remonté jusqu'à ce que le moment le plus fort se pose juste sous le plafond.
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="volume-note"></p>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Durée</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Vitesse</dt><dd id="sum-speed">&mdash;</dd></div>
+      <div><dt>Moment le plus fort</dt><dd id="sum-peak">&mdash;</dd></div>
+      <div><dt>Environ</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="clip-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Étape 3 &mdash; le fichier qui sort -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> L'enregistrer</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">Ce qu'il faut écrire</label>
+        <select id="depth">
+          <option value="16" selected>WAV 16 bits &mdash; se lit partout</option>
+          <option value="32">WAV 32 bits flottant &mdash; rien n'est écrêté</option>
+        </select>
+        <p class="field-note" id="depth-note">
+          Un WAV garde les échantillons tels quels&nbsp;: en écrire un ne peut
+          donc pas coûter de qualité. Ce n'est pas un petit fichier&nbsp;: voyez
+          l'estimation ci-dessus.
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary">Modifier l'audio</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Télécharger l'audio</a>
+      </div>
+    </div>
+  </section>
+</main>

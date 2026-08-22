@@ -1,0 +1,18 @@
+#
+# Guide : les donnees EXIF et GPS d'une photo, et comment les retirer - French.
+#
+
+nav = "Données EXIF et GPS"
+title = "Comment supprimer les données EXIF et GPS d'une photo"
+description = "Une photo sortie d'un téléphone porte en général l'endroit exact où elle a été prise, l'heure à la seconde, et le numéro de série de l'appareil. Ce qu'il y a dedans, qui peut le lire, et comment le retirer sans toucher à l'image."
+heading = "Ce qu'une photo raconte sur vous, et comment le retirer"
+lede = """
+    Une image sortie tout droit d'un téléphone porte typiquement les coordonnées
+    du lieu où elle a été prise, l'heure à la seconde, et assez de choses sur
+    l'appareil pour la relier à toutes les autres photos du même téléphone. Rien
+    de tout cela n'est visible à l'écran. Voici ce qu'il y a dedans et comment le
+    supprimer."""
+updated = "20 août 2026"
+og_title = "Ce qu'une photo raconte sur vous, et comment le retirer"
+og_description = "Coordonnées GPS, horodatages et numéros de série voyagent à l'intérieur des photos ordinaires. Ce qu'il y a dedans, qui peut le lire, et comment l'effacer."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

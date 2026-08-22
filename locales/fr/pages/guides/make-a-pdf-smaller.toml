@@ -1,0 +1,17 @@
+#
+# Guide : reduire la taille d'un PDF - French.
+#
+
+nav = "Alléger un PDF"
+title = "Comment alléger un PDF (et pourquoi certains ne maigrissent pas)"
+description = "Où se trouve vraiment le poids d'un PDF, pourquoi un scan perd 80 % et un contrat bouge à peine, ce que veut dire le DPI ici, et ce qu'un compresseur ne devrait jamais faire à votre document."
+heading = "Comment alléger un PDF, et pourquoi certains ne maigrissent pas"
+lede = """
+    Un PDF qui ne passe pas la limite d'un courriel est presque toujours un PDF
+    plein d'images. Voici comment savoir si c'est le cas du vôtre, ce que le
+    compresser coûte, et pourquoi tout outil qui promet un pourcentage fixe n'a
+    pas regardé votre fichier."""
+updated = "20 août 2026"
+og_title = "Comment alléger un PDF"
+og_description = "Où se trouve vraiment le poids d'un PDF, pourquoi un scan maigrit et un contrat non, et ce que le DPI vient faire là-dedans."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

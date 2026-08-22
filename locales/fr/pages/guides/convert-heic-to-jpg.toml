@@ -1,0 +1,18 @@
+#
+# Guide : le format dans lequel un iPhone enregistre, et comment en sortir - French.
+#
+
+nav = "HEIC vers JPG"
+title = "Comment convertir un HEIC en JPG (et ce qu'est vraiment le HEIC)"
+description = "Les iPhone enregistrent les photos en HEIC, et la moitié d'internet n'en ouvre pas une. Ce qu'est ce format, pourquoi seul Safari le décode, ce que la conversion coûte à l'image, et comment le faire sans envoyer les photos à personne."
+heading = "La photo qu'a enregistrée votre téléphone, et le format que rien n'ouvre"
+lede = """
+    Un iPhone enregistre les photos en HEIC, format plus léger et meilleur que le
+    JPEG, et qu'une grande quantité de logiciels refuse toujours d'ouvrir. Voici
+    ce qu'est réellement ce format, ce que la conversion coûte à l'image, et
+    pourquoi presque tous les convertisseurs veulent que vous l'envoyiez
+    d'abord."""
+updated = "20 août 2026"
+og_title = "Comment convertir un HEIC en JPG"
+og_description = "Pourquoi les photos d'iPhone ne s'ouvrent pas, ce que la conversion coûte, et comment le faire sans remettre les photos à qui que ce soit."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

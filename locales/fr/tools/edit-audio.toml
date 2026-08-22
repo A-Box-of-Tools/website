@@ -1,0 +1,289 @@
+#
+# Éditeur audio - French.
+#
+# Overrides for tools/edit-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Éditeur audio"
+heading = "Éditeur&nbsp;audio <span class=\"h1-kw\">&mdash; inverser, accélérer ou amplifier une piste</span>"
+tagline = "La passer à l'envers, changer la vitesse, relever un enregistrement trop faible &mdash; tout cela ici, sur votre machine."
+
+title = "Inverser un audio, changer la vitesse et monter le volume &mdash; gratuit, sans envoi"
+description = "Passez une piste à l'envers, accélérez-la ou ralentissez-la, et rendez plus fort un enregistrement trop faible. Récupère aussi le son d'une vidéo. Tout se passe dans votre navigateur : rien n'est envoyé."
+og_title = "Éditeur audio &mdash; inverser, retimer et amplifier sans rien envoyer"
+og_description = "Inversez une piste, changez sa vitesse avec ou sans déplacer la hauteur, réglez le niveau, puis téléchargez un WAV. Le fichier est lu et écrit par votre propre navigateur."
+og_image_alt = "Éditeur audio - inverser, retimer et amplifier un son dans votre navigateur"
+
+pledge = """
+    Votre fichier est lu, modifié et écrit par votre propre navigateur, sur votre
+    propre matériel. Rien ici ne sait récupérer ni envoyer quoi que ce soit
+    &mdash; cet outil n'a aucune fonction réseau &mdash; et il n'y a à l'autre
+    bout de cette page aucun serveur auquel envoyer un enregistrement, quand bien
+    même il y en aurait une."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      gardez l'onglet Réseau à l'œil et inversez quelque chose. Pas une seule
+      requête ne transporte d'échantillon, de nom de fichier ni un octet de ce
+      que vous avez choisi. Ou coupez votre connexion et modifiez une piste quand
+      même &mdash; un outil qui expédierait votre audio ailleurs pour le traiter
+      s'arrêterait tout simplement."""
+
+read_first = """
+, <code>src/decode.js</code> pour les vingt lignes qui
+      remettent votre fichier au décodeur du navigateur,
+      <code>src/stretch.js</code> pour l'étirement temporel,
+      <code>src/speed.js</code> pour le rééchantillonneur, et
+      <code>src/wav.js</code> pour l'en-tête posé devant les échantillons. Aucun
+      d'eux n'importe quoi que ce soit capable de faire une requête."""
+
+howto_heading = "Comment modifier un fichier audio"
+
+card = """
+            Inversez une piste, changez sa vitesse avec ou sans déplacer la
+            hauteur, et remontez un enregistrement trop faible. Récupère aussi le
+            son d'une vidéo."""
+
+[words]
+plural = "enregistrements"
+choose = "un fichier"
+analytics_extra = """, ni
+  forme d'onde, durée ou niveau"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans filigrane"
+
+[[facts]]
+text = "Vidéo en entrée, audio en sortie"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[privacy]]
+title = "Vos enregistrements n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
+      collecte où votre fichier pourrait arriver, et rien dans le code qui l'y
+      enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Rien ici ne va rien chercher."
+body = """
+ Cet outil n'a aucune fonction
+      réseau&nbsp;: pas d'adresse à coller, rien à télécharger, aucun moteur
+      récupéré à la première utilisation. Chaque octet qui touche à votre audio
+      vient de cette origine, au chargement de la page."""
+
+[[privacy]]
+title = "Le décodeur est celui qui est déjà dans votre navigateur."
+body = """
+
+      Le fichier est remis à <code>decodeAudioData</code>, le code même qui joue
+      une piste dans un élément <code>&lt;audio&gt;</code>. Rien n'est livré ici
+      pour lire votre format, et rien n'est demandé non plus à quoi que ce soit
+      en dehors de cette page pour le lire."""
+
+[[privacy]]
+title = "L'image d'une vidéo n'est jamais décodée."
+body = """
+ Quand vous déposez une
+      vidéo, seule sa piste audio est demandée. Les images ne sont ni lues, ni
+      décodées, ni dessinées, ni regardées &mdash; il n'y a sur cette page aucun
+      code qui le pourrait, et le fichier qui en sort contient du son et rien
+      d'autre."""
+
+[[privacy]]
+title = "Les échantillons sont écrits, pas réencodés."
+body = """
+
+      Un WAV, ce sont les échantillons que cette page a calculés avec un en-tête
+      devant. Il n'y a dans la boucle aucun encodeur qui prendrait des décisions
+      sur votre enregistrement, et rien qu'on puisse décrire comme un envoi pour
+      qu'il s'en produise un."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Ni l'un ni l'autre ne reçoit
+      quoi que ce soit sur votre enregistrement&nbsp;: ni un fichier, ni un
+      échantillon, ni un nom, une taille, une durée ou son niveau sonore. Chaque
+      ligne qui lit, modifie et écrit est servie depuis cette origine et figure
+      dans le dépôt."""
+
+[[privacy]]
+title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; dans l'en-tête est
+      dessiné par un script de cdnjs.buymeacoffee.com et se compose avec Google
+      Fonts. C'est un lien, rien de plus&nbsp;: il ne signale aucune visite, et
+      on ne lui donne rien sur vous ni sur votre fichier."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Coupez le réseau et tout sur cette
+      page fonctionne encore. C'est la preuve la plus simple de toutes."""
+
+[[howto]]
+title = "Choisissez un fichier."
+body = """
+ Déposez un MP3, un WAV, un FLAC, un
+      M4A, un Ogg ou un Opus sur la zone prévue &mdash; ou une vidéo, si ce que
+      vous voulez, c'est le son qui est dedans. Le navigateur le lit directement
+      sur votre disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+
+[[howto]]
+title = "Retournez-la, si c'est pour cela que vous êtes venu."
+body = """
+ Une seule
+      case. Les échantillons sont écrits du dernier au premier, ce qui est
+      exactement réversible&nbsp;: faites-le deux fois et vous retrouvez le
+      fichier de départ, échantillon pour échantillon."""
+
+[[howto]]
+title = "Réglez la vitesse."
+body = """
+ Faites glisser le curseur, tapez un
+      multiple, ou appuyez sur l'un des préréglages. Choisissez ensuite ce qui
+      arrive à la hauteur&nbsp;: la tenir où elle est, ce que vous voulez pour un
+      cours à 1,5&times;, ou la laisser suivre la vitesse, ce que fait une bande
+      et ce qui fait monter ou descendre une voix."""
+
+[[howto]]
+title = "Réglez le niveau."
+body = """
+ Nommez un écart en décibels, ou demandez
+      que l'enregistrement soit remonté jusqu'à ce que son moment le plus fort se
+      pose juste sous le plafond. La page dit où ce moment atterrira avant que
+      vous appuyiez sur quoi que ce soit, et vous prévient si le réglage choisi
+      le pousserait au-delà de la pleine échelle."""
+
+[[howto]]
+title = "Enregistrez."
+body = """
+ Le travail se fait sur votre propre matériel&nbsp;:
+      la durée dépend donc de votre machine et non d'une file d'attente. Ce qui
+      sort est un WAV &mdash; les échantillons eux-mêmes, avec un en-tête devant
+      &mdash; d'abord rejoué sur la page, puis remis directement aux
+      téléchargements de votre navigateur."""
+
+[[faq]]
+q = "Mon audio est-il envoyé quelque part&nbsp;?"
+a = """
+        Non. Il est lu, modifié et écrit par votre propre navigateur sur votre propre
+        matériel. Cet outil n'a pas de côté serveur, et la
+        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+        qu'elle peut contacter &mdash; aucune n'appartient à ce site. Coupez votre
+        connexion et inversez une piste quand même, si vous préférez vérifier plutôt
+        qu'on vous le dise."""
+
+[[faq]]
+q = "Puis-je récupérer le son d'une vidéo&nbsp;?"
+a = """
+        Oui, et c'est ici le même travail qu'ouvrir un MP3. Déposez un MP4, un MOV ou
+        un WebM et seule sa piste audio est décodée&nbsp;: l'image n'est jamais lue,
+        et ce qui sort est un fichier son sans vidéo dedans. C'est aussi la façon
+        d'enregistrer le son d'un clip sans le modifier du tout &mdash; ne touchez à
+        aucun réglage et appuyez sur le bouton."""
+
+[[faq]]
+q = "Changer la vitesse change-t-il la hauteur&nbsp;?"
+a = """
+        Seulement si vous le demandez. &laquo;&nbsp;Garder la hauteur&nbsp;&raquo;
+        découpe l'enregistrement en fenêtres qui se chevauchent, d'une cinquantaine de
+        millisecondes, et les repose plus serrées ou plus espacées, en choisissant
+        chaque position pour que les ondes se rejoignent au croisement &mdash; une
+        voix reste la même voix à 1,5&times;. &laquo;&nbsp;La laisser
+        suivre&nbsp;&raquo; rééchantillonne à la place, ce que fait une bande jouée
+        plus vite&nbsp;: deux fois la vitesse, c'est exactement une octave au-dessus."""
+
+[[faq]]
+q = "Pourquoi enregistre-t-il un WAV plutôt qu'un MP3&nbsp;?"
+a = """
+        Parce qu'aucun navigateur n'embarque d'encodeur MP3, et que cet outil refuse
+        d'envoyer votre enregistrement à un serveur qui en aurait un. Un WAV ne
+        demande aucun encodeur &mdash; ce sont les échantillons avec un en-tête de
+        quarante-quatre octets devant &mdash; c'est donc à la fois l'option honnête et
+        la seule qui ne puisse pas coûter de qualité. Il est plus gros&nbsp;: environ
+        dix mégaoctets la minute en stéréo. Tous les lecteurs, téléphones et éditeurs
+        en ouvrent un, et tout ce qui veut un MP3 peut en fabriquer un à partir de
+        là."""
+
+[[faq]]
+q = "Quels formats puis-je ouvrir&nbsp;?"
+a = """
+        Tout ce que votre navigateur décode, ce qui en pratique veut dire le MP3, le
+        WAV, le FLAC, le M4A et l'AAC, l'Ogg Vorbis et l'Opus, et l'audio contenu dans
+        les vidéos MP4, M4V, MOV et WebM. Ce qui reste dehors, c'est la même courte
+        liste que partout ailleurs&nbsp;: l'AVI, le WMA et la plupart des MKV. Un
+        fichier que ce navigateur refuse de lire est écarté avec un message qui le
+        dit, plutôt que d'échouer à mi-course."""
+
+[[faq]]
+q = "Le monter plus fort va-t-il le distordre&nbsp;?"
+a = """
+        Seulement si vous le poussez au-delà de la pleine échelle, et la page vous le
+        dit avant. L'audio numérique a un plafond dur&nbsp;: un échantillon ne peut
+        pas être plus fort que la pleine échelle, alors tout ce qui dépasse est aplati
+        contre le plafond, et c'est à cela que ressemble la distorsion.
+        &laquo;&nbsp;Aussi fort que possible&nbsp;&raquo; est le réglage qui ne peut
+        pas faire cela &mdash; il calcule la marge qui reste à l'enregistrement et
+        utilise exactement celle-là. En dessous du plafond, tout n'est que
+        multiplication&nbsp;: montez de 6 dB, redescendez de 6 dB, et les échantillons
+        sont là où ils étaient."""
+
+[[faq]]
+q = "Inverser ou retimer fait-il perdre de la qualité&nbsp;?"
+a = """
+        Inverser, non&nbsp;: ce sont les mêmes échantillons qui ressortent dans
+        l'autre ordre, ce qui est exact. Changer la vitesse déplace chaque
+        échantillon, c'est donc de l'arithmétique et non une copie &mdash; le
+        rééchantillonneur filtre correctement en chemin, si bien qu'accélérer ne
+        replie pas les aigus en un sifflement métallique, et les fenêtres de
+        l'étireur sont posées là où les ondes se rejoignent plutôt que là où le calcul
+        les aurait laissées. Aucun des deux chemins ne réencode quoi que ce soit,
+        parce qu'il n'y a ici aucun encodeur avec quoi réencoder."""
+
+[[faq]]
+q = "Y a-t-il une limite à la durée du fichier&nbsp;?"
+a = """
+        Aucune limite n'est intégrée à l'outil. Le plafond pratique, c'est la
+        mémoire&nbsp;: tout l'enregistrement est décodé d'un coup dans cette page, et
+        un WAV est assemblé en mémoire avant que vous le téléchargiez&nbsp;; une heure
+        de stéréo demande donc un peu moins d'un gigaoctet pour travailler. Un WAV de
+        quatre gigaoctets est refusé d'emblée, parce que le champ de taille du format
+        lui-même ne sait pas en décrire un."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a pas de compte, pas de connexion, pas de période
+        d'essai et pas de filigrane. Le site porte de la publicité, et c'est elle qui
+        le finance&nbsp;; les annonces ne reçoivent rien sur votre enregistrement."""
+
+[schema]
+browser_requirements = "Nécessite JavaScript et un navigateur doté de Web Audio, ce qui est le cas de tous les navigateurs actuels. Aucune prise en charge de codec au-delà de ce que le navigateur a déjà pour lire le fichier."
+description = "Inversez une piste audio, changez sa vitesse avec ou sans déplacer la hauteur, et réglez son niveau, depuis le navigateur. Fonctionne aussi sur l'audio contenu dans une vidéo. Rien n'est envoyé et le résultat est écrit en WAV, si bien que rien n'est réencodé."
+features = [
+  "Passe une piste à l'envers, exactement",
+  "Change la vitesse d'un quart à quatre fois, en gardant la hauteur ou en la déplaçant",
+  "Monte ou baisse le niveau, ou le normalise juste sous la pleine échelle",
+  "Récupère l'audio d'un MP4, d'un MOV ou d'un WebM sans toucher à l'image",
+  "Écrit du WAV 16 bits ou 32 bits flottant, sans encodeur dans la boucle",
+  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+]
+
+[picker]
+title = "Déposez un fichier audio ou une vidéo ici"
+hint = "ou cliquez pour parcourir &mdash; MP3, WAV, FLAC, M4A, Ogg, et le son contenu dans un MP4, un MOV ou un WebM"

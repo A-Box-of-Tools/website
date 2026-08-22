@@ -1,0 +1,285 @@
+#
+# Redimensionneur d'images - French.
+#
+# Overrides for tools/resize-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Redimensionneur d'images"
+heading = "Redimensionner&nbsp;une&nbsp;image <span class=\"h1-kw\">&mdash; redimensionner, recadrer et convertir</span>"
+tagline = "Vous dites la taille. Vous tracez le cadre. Vous choisissez le format."
+
+title = "Redimensionner une image &mdash; recadrer et convertir aussi, sans envoi"
+description = "Redimensionnez, recadrez et convertissez des images JPEG, PNG et WebP dans votre navigateur. Pixels exacts, pourcentage, ou plus grand côté - une image ou un dossier entier. Rien n'est envoyé."
+og_title = "Redimensionner, recadrer et convertir une image sans l'envoyer"
+og_description = "Réglez la taille en pixels ou en pourcentage, tracez un cadre de recadrage, changez le format - pour une image ou tout un lot. Tout tourne sur votre propre machine."
+og_image_alt = "Redimensionneur d'images - redimensionner, recadrer et convertir sans envoi"
+
+pledge = """
+    Le redimensionnement, le recadrage et le changement de format se font tous
+    dans votre propre navigateur, sur votre propre matériel, avec les encodeurs
+    d'images qu'il embarque déjà. Cet outil n'a aucune fonction réseau &mdash;
+    rien à récupérer, rien à envoyer &mdash; et il n'y a à l'autre bout de cette
+    page aucun serveur auquel envoyer une image, quand bien même il y en aurait
+    une."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      gardez l'onglet Réseau à l'œil et redimensionnez une photo. Pas une seule
+      requête ne transporte d'image, de vignette, de nom de fichier ni un octet
+      de ce que vous avez choisi. Ou coupez votre connexion et redimensionnez-en
+      une quand même."""
+
+read_first = """
+, <code>src/geometry.js</code> pour l'arithmétique qui
+      décide de ce qui est gardé et de la taille de sortie, et
+      <code>src/codecs.js</code> pour l'unique appel à <code>drawImage</code> qui
+      fait le recadrage et le redimensionnement ensemble."""
+
+howto_heading = "Comment redimensionner une image sans l'envoyer"
+
+card = """
+            Pixels exacts, pourcentage, ou plus grand côté &mdash; avec un cadre
+            de recadrage et un changement de format au passage. Une image ou un
+            dossier."""
+
+[words]
+plural = "images"
+choose = "une image"
+analytics_extra = """, ni aucune des
+  tailles, des recadrages ou des formats que cet outil calcule"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans filigrane"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[privacy]]
+title = "Vos images n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
+      collecte où vos fichiers pourraient arriver, et rien dans le code qui les y
+      enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Rien ici ne va rien chercher."
+body = """
+ Il n'y a ni
+      <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
+      <code>sendBeacon</code> nulle part dans <code>src/</code>. Le
+      redimensionnement, c'est un <code>drawImage</code> sur un canvas et un
+      <code>canvas.toBlob</code> &mdash; le rééchantillonneur et l'encodeur déjà
+      installés dans votre navigateur."""
+
+[[privacy]]
+title = "Un fichier que personne n'a demandé de changer n'est pas changé."
+body = """
+ Sans recadrage,
+      sans redimensionnement et sans changement de format, le fichier que vous
+      avez choisi vous est rendu octet pour octet plutôt que réenregistré. Ce
+      n'est pas seulement de la politesse&nbsp;: c'est ce qui empêche cet outil
+      de réencoder discrètement une image, ou de jeter discrètement les
+      métadonnées d'une image que vous vouliez seulement regarder."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google, et le bouton de don de Buy
+      Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur vos images. Chaque
+      ligne qui lit, recadre, met à l'échelle ou écrit un fichier est servie
+      depuis cette origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Coupez le réseau et l'outil est
+      inchangé, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la
+      preuve la plus simple de toutes."""
+
+[[howto]]
+title = "Choisissez vos images."
+body = """
+ Déposez-les sur la zone prévue ou
+      sélectionnez-les à la main. Le navigateur les lit directement sur votre
+      disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+
+[[howto]]
+title = "Recadrez, si vous voulez."
+body = """
+ Le cadre part sur l'image entière&nbsp;:
+      le laisser tranquille ne recadre donc rien. Faites-le glisser, ou
+      verrouillez-le sur une forme &mdash; 1:1 pour une photo de profil, 9:16
+      pour une story, 16:9 pour une vignette &mdash; et appuyez sur
+      &laquo;&nbsp;Le plus grand&nbsp;&raquo; pour le plus grand qui tienne.
+      Chaque image garde son propre cadre&nbsp;: cliquez sur une ligne de la
+      liste pour dessiner sur celle-là. Si elles doivent toutes être cadrées de
+      la même façon, un bouton le fait aussi."""
+
+[[howto]]
+title = "Dites la taille de sortie."
+body = """
+ Une largeur, une hauteur, ou les
+      deux&nbsp;; un plus grand côté, qui met les prises verticales et
+      horizontales à la même taille&nbsp;; ou un simple pourcentage. Laissez
+      l'un des deux champs vide et l'image garde sa propre forme."""
+
+[[howto]]
+title = "Choisissez le format, puis appuyez sur le bouton."
+body = """
+ Gardez le format
+      d'arrivée de chaque fichier, ou écrivez tout en JPEG, en PNG ou en WebP.
+      Chaque résultat dit ce qu'il est devenu et de combien il a maigri&nbsp;;
+      cliquez dessus pour l'ouvrir en grand avec tous les chiffres derrière, et
+      l'original à côté pour comparer. Un lot arrive en un seul zip."""
+
+[[faq]]
+q = "Mon image est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non. Le fichier est décodé, recadré, mis à l'échelle et écrit par votre propre
+        navigateur sur votre propre matériel, avec les encodeurs JPEG, PNG et WebP que
+        le navigateur embarque déjà. Cet outil n'a aucune fonction réseau &mdash; il ne
+        récupère jamais rien et n'envoie jamais rien &mdash; et la
+        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+        qu'elle peut contacter, dont aucune n'appartient à ce site."""
+
+[[faq]]
+q = "Que se passe-t-il si je donne une largeur mais pas de hauteur&nbsp;?"
+a = """
+        La hauteur découle de la forme même de l'image, ce qui est presque toujours ce
+        que l'on voulait&nbsp;: &laquo;&nbsp;1920 de large&nbsp;&raquo; veut dire
+        &laquo;&nbsp;1920 de large et la hauteur que cela donne&nbsp;&raquo;.
+        Remplissez les deux et ils peuvent contredire la forme de l'image&nbsp;: c'est
+        le seul moment où apparaît le choix
+        &laquo;&nbsp;si les formes se contredisent&nbsp;&raquo; &mdash; tenir dans le
+        cadre, le remplir et couper ce qui dépasse, compléter avec un fond, ou étirer
+        et accepter la déformation."""
+
+[[faq]]
+q = "Redimensionner une image fait-il perdre de la qualité&nbsp;?"
+a = """
+        Réduire une image, non, d'aucune façon visible&nbsp;: il entre plus de pixels
+        qu'il n'en sort, et le détail conservé est du vrai détail. Agrandir ne peut pas
+        ajouter ce qui n'a jamais été photographié &mdash; le résultat est une copie
+        plus molle de la même image, pas une plus nette &mdash; et c'est pourquoi
+        &laquo;&nbsp;ne jamais agrandir une image au-delà de sa taille de
+        départ&nbsp;&raquo; est actif par défaut. Ce qui coûte un peu, c'est le
+        réencodage qui suit, si le format est du JPEG ou du WebP, et le curseur de
+        qualité est ce que vous y dépensez."""
+
+[[faq]]
+q = "Puis-je recadrer chaque image différemment&nbsp;?"
+a = """
+        Oui &mdash; c'est le comportement par défaut. Chaque image de la liste porte
+        son propre cadre, dans ses propres pixels, et cliquer sur une ligne met cette
+        image dans l'aperçu avec son cadre et sa forme verrouillée à elle. Ce que vous
+        faites à l'une n'affecte pas les autres. Chaque cadre part aussi de l'image
+        entière&nbsp;: une image sur laquelle vous ne dessinez jamais n'est pas
+        recadrée du tout."""
+
+[[faq]]
+q = "Peut-il recadrer tout un lot de la même façon d'un coup&nbsp;?"
+a = """
+        Oui, avec le bouton sous l'aperçu. Il donne à toutes les autres images la même
+        zone relative &mdash; les mêmes fractions de leur propre largeur et de leur
+        propre hauteur &mdash; ce qui, pour un jeu de captures ou d'exports tous de la
+        même taille, est exactement le même cadre, et la page le dit. Avec une forme
+        verrouillée, il donne à chacune le plus grand cadre de cette forme à
+        l'intérieur de cette zone&nbsp;: appuyer sur 1:1 puis sur ce bouton vous sort
+        donc des carrés d'un dossier mêlant portraits et paysages. Chaque cadre reste
+        modifiable ensuite."""
+
+[[faq]]
+q = "Quels formats sait-il lire et écrire&nbsp;?"
+a = """
+        Il lit tout ce que votre navigateur sait décoder, ce qui en pratique veut dire
+        JPEG, PNG, WebP, GIF, BMP et &mdash; sur la plupart des navigateurs actuels
+        &mdash; AVIF. Il écrit du JPEG, du PNG et du WebP, parce que ce sont les
+        encodeurs que les navigateurs embarquent. Avec
+        &laquo;&nbsp;garder le format&nbsp;&raquo;, un JPEG reste un JPEG et un PNG
+        reste un PNG&nbsp;; tout ce que le navigateur ne sait pas écrire, comme un GIF
+        ou un BMP, ressort en PNG, celui qui garde la transparence et les aplats
+        intacts."""
+
+[[faq]]
+q = "Qu'arrive-t-il à la transparence quand j'enregistre en JPEG&nbsp;?"
+a = """
+        Elle est remplie avec la couleur de fond, parce que le JPEG n'a pas de canal
+        alpha où la stocker. La couleur est à vous de la choisir et part du blanc, ce
+        que la plupart des gens veulent et ce que fait presque tout autre outil sans
+        vous le dire. La même couleur est utilisée derrière un cadre complété.
+        Enregistrez en PNG ou en WebP à la place et la transparence passe intacte."""
+
+[[faq]]
+q = "Supprime-t-il les données EXIF et GPS&nbsp;?"
+a = """
+        Pour tout ce qu'il traite réellement, oui, par effet de bord&nbsp;: recadrer ou
+        redimensionner, c'est décoder l'image en pixels puis réencoder ces pixels, et
+        un canvas plein de pixels ne porte aucune étiquette&nbsp;: le lieu, le modèle
+        d'appareil et les horodatages ne sont simplement pas écrits dans le nouveau
+        fichier. Un fichier que vous ne changez pas du tout est un autre cas &mdash; il
+        vous est rendu octet pour octet, étiquettes comprises. Si vous voulez que les
+        métadonnées disparaissent mais que l'image reste intacte, prenez le
+        <a href="../supprimer-les-donnees-exif/">lecteur et effaceur EXIF</a>, qui
+        réécrit le conteneur sans rien recompresser."""
+
+[[faq]]
+q = "En quoi est-ce différent du compresseur d'images&nbsp;?"
+a = """
+        Celui-ci parle de dimensions&nbsp;: vous dites combien de pixels vous voulez et
+        il vous les donne. Le <a href="../compresser-une-image/">compresseur
+        d'images</a> parle de taille de fichier&nbsp;: vous dites combien de kilooctets
+        vous avez le droit d'occuper et il cherche la meilleure qualité qui tienne, en
+        ne redimensionnant que si la qualité seule n'y suffit pas. Si on vous a dit
+        &laquo;&nbsp;1200 pixels de large&nbsp;&raquo;, vous êtes au bon endroit. Si on
+        vous a dit &laquo;&nbsp;sous 500 KB&nbsp;&raquo;, l'autre vous en approchera
+        davantage."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a pas de compte, pas de connexion, pas de période
+        d'essai et pas de filigrane. Il n'y a pas non plus de limite au nombre ni à la
+        taille des fichiers, parce qu'aucun serveur ne les paie &mdash; le travail se
+        fait sur votre propre machine. Le site porte de la publicité, et c'est elle qui
+        le finance&nbsp;; les annonces ne reçoivent rien sur vos images."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
+        de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
+        envoyé&nbsp;: un outil qui expédierait vos images ailleurs pour les
+        redimensionner s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Redimensionnez, recadrez et convertissez des images JPEG, PNG et WebP dans le navigateur. Réglez une taille exacte en pixels, un pourcentage ou un plus grand côté, tracez un cadre de recadrage ou verrouillez-le sur une forme, et écrivez le résultat en JPEG, PNG ou WebP. Traitement par lots pris en charge, et rien n'est envoyé."
+features = [
+  "Redimensionne en pixels exacts, par le plus grand côté, ou en pourcentage",
+  "Remplissez un côté et l'autre suit la forme même de l'image",
+  "Tenir dedans, remplir et recadrer, compléter jusqu'à un cadre exact, ou étirer",
+  "Un cadre de recadrage déplaçable par image, verrouillable en 1:1, 4:5, 9:16, 16:9, 4:3 ou 3:2",
+  "Recadre chaque image différemment, ou applique un même cadrage à tout le lot en un clic",
+  "Ouvre chaque image finie en grand, avec tous les chiffres derrière et l'original pour comparer",
+  "Convertit entre JPEG, PNG et WebP, avec un réglage de qualité et une couleur de fond",
+  "N'agrandit jamais une image sans qu'on le lui demande",
+  "Rend intact tout fichier qu'on ne lui a pas demandé de changer",
+  "Traitement par lots, tous les résultats dans un seul zip",
+  "Fonctionne hors ligne ; sans envoi, sans compte",
+]
+
+[picker]
+title = "Déposez vos images ici"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP et tout ce que votre navigateur sait ouvrir"

@@ -1,0 +1,230 @@
+<main>
+  <!-- Étape 1 &mdash; les images -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisir des images</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" data-sort="name" class="ghost">Trier par nom</button>
+        <button type="button" data-sort="date" class="ghost">Trier par date</button>
+        <button type="button" data-sort="reverse" class="ghost">Inverser</button>
+        <button type="button" id="clear-all" class="ghost danger">Tout retirer</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Une image par page, dans cet ordre. Faites glisser par la poignée
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> pour déplacer une page,
+      ou servez-vous des flèches qui s'y trouvent.
+    </p>
+
+    <ul id="image-list" class="image-list"></ul>
+  </section>
+
+  <!-- Étape 2 &mdash; les pages -->
+  <section class="card">
+    <h2><span class="step">2</span> Mise en page</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">Format de page</label>
+        <select id="page-size">
+          <option value="fit" selected>Ajuster la page à chaque image</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8,5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8,5 &times; 14 in</option>
+          <option value="a3">A3 &mdash; 297 &times; 420 mm</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+          <option value="tabloid">Tabloid &mdash; 11 &times; 17 in</option>
+          <option value="custom">Personnalisé&hellip;</option>
+        </select>
+        <div id="custom-size" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="1" max="5000" step="1" value="210"
+                 aria-label="Largeur de page personnalisée">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="1" max="5000" step="1" value="297"
+                 aria-label="Hauteur de page personnalisée">
+          <select id="custom-unit" aria-label="Unité du format de page personnalisé">
+            <option value="mm" selected>mm</option>
+            <option value="in">in</option>
+          </select>
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">Résolution d'impression</label>
+        <select id="dpi">
+          <option value="72">72 DPI &mdash; écran</option>
+          <option value="96">96 DPI</option>
+          <option value="150" selected>150 DPI</option>
+          <option value="200">200 DPI</option>
+          <option value="300">300 DPI &mdash; impression</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          Décide de la taille d'une page pour un nombre de pixels donné. Cela ne
+          change pas l'image.
+        </p>
+      </div>
+
+      <div class="field" id="orientation-field" hidden>
+        <label for="orientation">Orientation</label>
+        <select id="orientation">
+          <option value="auto" selected>Suivre chaque image</option>
+          <option value="portrait">Portrait</option>
+          <option value="landscape">Paysage</option>
+        </select>
+      </div>
+
+      <div class="field" id="fit-field" hidden>
+        <label for="fit">Comment l'image se pose sur la page</label>
+        <select id="fit">
+          <option value="contain" selected>Tenir dans les marges</option>
+          <option value="cover">Remplir la page (rogne les bords)</option>
+          <option value="stretch">Étirer jusqu'aux marges (déforme)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="margin">Marge</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="100" step="1" value="0"
+                 aria-label="Marge en millimètres">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="background">Couleur de page</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          Apparaît dans les marges, et derrière tout ce qui est transparent.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="mode">Qualité des images</label>
+        <select id="mode">
+          <option value="keep" selected>Garder les JPEG exactement tels quels</option>
+          <option value="jpeg">Tout réencoder en JPEG</option>
+          <option value="lossless">Sans perte &mdash; aucune perte de compression</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Qualité JPEG</label>
+        <select id="quality">
+          <option value="0.75">Fichier plus léger</option>
+          <option value="0.88" selected>Équilibré</option>
+          <option value="0.95">Meilleure qualité</option>
+        </select>
+        <p class="field-note">Utilisé seulement pour les images que cet outil doit réencoder.</p>
+      </div>
+
+      <div class="field">
+        <label for="max-side">Réduire les grandes images</label>
+        <select id="max-side">
+          <option value="0" selected>Jamais &mdash; garder la taille pleine</option>
+          <option value="4000">Plus grand côté 4000 px</option>
+          <option value="2000">Plus grand côté 2000 px</option>
+          <option value="1200">Plus grand côté 1200 px</option>
+        </select>
+        <p class="field-note" id="shrink-note"></p>
+      </div>
+    </div>
+
+    <details class="meta-panel">
+      <summary>Détails du document &mdash; tous facultatifs, tous vides par défaut</summary>
+      <div class="meta-body">
+        <p class="meta-note">
+          Un PDF porte un petit bloc d'informations sur lui-même, et la plupart
+          des outils le remplissent d'un horodatage et d'un nom de programme, que
+          vous l'ayez demandé ou non. Celui-ci écrit ce que vous tapez ici et rien
+          d'autre&nbsp;: pas de noms de fichiers, pas de nom de machine, et pas de
+          date sauf si vous cochez la case.
+        </p>
+        <div class="settings">
+          <div class="field">
+            <label for="doc-title">Titre</label>
+            <input type="text" id="doc-title" maxlength="200" spellcheck="false"
+                   placeholder="Omis si vide">
+          </div>
+          <div class="field">
+            <label for="doc-author">Auteur</label>
+            <input type="text" id="doc-author" maxlength="200" spellcheck="false"
+                   placeholder="Omis si vide">
+          </div>
+          <div class="field">
+            <label for="file-name">Nom du fichier</label>
+            <div class="inline-pair">
+              <input type="text" id="file-name" maxlength="120" spellcheck="false"
+                     value="images">
+              <span class="unit-label">.pdf</span>
+            </div>
+          </div>
+          <div class="field checkbox-field">
+            <label for="dated">
+              <input type="checkbox" id="dated">
+              Inscrire la date du jour dans le document
+            </label>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="480" height="640" aria-label="Aperçu d'une page"></canvas>
+        <p id="preview-empty" class="preview-empty">Ajoutez des images pour voir les pages</p>
+        <div id="preview-nav" class="preview-nav" hidden>
+          <button type="button" id="preview-prev" class="ghost" aria-label="Page précédente">&lsaquo;</button>
+          <span id="preview-label" class="preview-label"></span>
+          <button type="button" id="preview-next" class="ghost" aria-label="Page suivante">&rsaquo;</button>
+        </div>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Pages</dt><dd id="sum-pages">&mdash;</dd></div>
+        <div><dt>Format de page</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Images choisies</dt><dd id="sum-input">&mdash;</dd></div>
+        <div><dt>Recopiées intactes</dt><dd id="sum-copied">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Étape 3 &mdash; l'export -->
+  <section class="card">
+    <h2><span class="step">3</span> Créer le PDF</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Créer le PDF</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Télécharger le PDF</a>
+      </div>
+    </div>
+  </section>
+</main>

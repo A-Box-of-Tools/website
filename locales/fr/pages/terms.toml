@@ -1,0 +1,16 @@
+#
+# Conditions d'utilisation - French. Overrides for pages/terms/page.toml.
+#
+
+nav = "Conditions d'utilisation"
+title = "Conditions d'utilisation &mdash; abox.tools"
+description = "Les conditions auxquelles ce site est offert : gratuit, en l'état, sans compte, sans garantie, et vos fichiers restent entièrement les vôtres parce qu'ils ne nous sont jamais transmis."
+heading = "Conditions d'utilisation"
+lede = """
+    Il n'y a aucun compte à ouvrir et aucun contrat à signer&nbsp;: elles sont
+    donc courtes. Elles décrivent ce que vous pouvez attendre de ce site, et ce
+    qu'il ne promet pas."""
+updated = "19 août 2026"
+og_title = "Conditions d'utilisation &mdash; abox.tools"
+og_description = "Gratuit, en l'état, sans compte, sans garantie. Vos fichiers restent entièrement les vôtres."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

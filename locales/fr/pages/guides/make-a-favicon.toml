@@ -1,0 +1,18 @@
+#
+# Guide : creer un favicon (et une icone d'application Windows) - French.
+#
+
+nav = "Créer un favicon"
+title = "Comment créer un favicon (et une icône d'application Windows)"
+description = "Quelles tailles un favicon.ico réclame vraiment, quels fichiers supplémentaires demandent les iPhone, Android et un Mac, et pourquoi un logo qui marche sur une affiche disparaît à seize pixels."
+heading = "Comment créer un favicon qui se lise encore à seize pixels"
+lede = """
+    Un favicon n'est pas une petite image de votre logo. C'est un jeu d'images à
+    des tailles fixes, dans un conteneur que presque personne n'ouvre, et la plus
+    petite d'entre elles est celle que tout le monde voit réellement. Voici les
+    tailles qu'il vous faut, les fichiers qui les accompagnent, et quoi faire
+    quand votre logo ne survit pas au voyage."""
+updated = "20 août 2026"
+og_title = "Créer un favicon qui se lise encore à seize pixels"
+og_description = "Quelles tailles un favicon.ico réclame, les fichiers supplémentaires que demandent les iPhone et Android, et quoi faire quand votre logo ne survit pas à la réduction."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
