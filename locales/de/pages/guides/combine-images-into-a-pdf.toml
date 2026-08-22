@@ -1,0 +1,17 @@
+#
+# Ratgeber: Bilder zu einem PDF zusammenfuegen - German.
+#
+
+nav = "Bilder zu einem PDF"
+title = "Bilder zu einem PDF zusammenfügen"
+description = "Fotos oder Scans zu einem einzigen PDF machen: Seitengröße, Reihenfolge und Drehung, warum ein JPEG dabei keine Qualität verlieren muss, und was ein PDF dem verrät, dem Sie es schicken."
+heading = "Wie Sie Bilder zu einem PDF zusammenfügen"
+lede = """
+    Jemand hat um &bdquo;ein PDF&ldquo; gebeten, und Sie haben elf Fotos von
+    Papier. Hier stehen die Entscheidungen, die das Ergebnis wirklich verändern
+    &mdash; Seitengröße, Reihenfolge, Qualität und was das Dokument über Sie
+    aussagt &mdash; und welche davon Sie getrost ignorieren können."""
+updated = "20. August 2026"
+og_title = "Wie Sie Bilder zu einem PDF zusammenfügen"
+og_description = "Seitengröße, Reihenfolge und Drehung, warum ein JPEG dabei keine Qualität verlieren muss, und was ein PDF dem verrät, dem Sie es schicken."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

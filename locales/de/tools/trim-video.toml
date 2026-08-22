@@ -1,0 +1,334 @@
+#
+# Video-Schneider - German.
+#
+# Overrides for tools/trim-video/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Video-Schneider"
+heading = "Video&nbsp;schneiden <span class=\"h1-kw\">&mdash; online kürzen und zusammenfügen</span>"
+tagline = "Beim Abspielen markieren, was bleiben soll. Und alles davon als ein Video zurückbekommen."
+
+title = "Video online schneiden &mdash; nur behalten, was Sie wollen, ohne Upload"
+description = "Ein Video ansehen und beim Abspielen jeden behaltenswerten Teil markieren, dann diese Teile als eine Datei speichern. Läuft im Browser: kein Upload, nichts wird neu kodiert, funktioniert offline."
+og_title = "Video-Schneider &mdash; nur behalten, was Sie wollen, ohne etwas hochzuladen"
+og_description = "Drücken Sie beim Abspielen I und O, um jeden behaltenswerten Teil zu markieren. Die markierten Teile werden Einzelbild für Einzelbild als ein Video zurückgeschrieben, ohne dass etwas hochgeladen wird."
+og_image_alt = "Video-Schneider - die gewünschten Teile markieren und als ein Video speichern, im Browser"
+
+pledge = """
+    Ihr Video wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware gelesen,
+    markiert, geschnitten und geschrieben. Nichts hier kann etwas abrufen oder
+    senden &mdash; dieses Werkzeug hat überhaupt keine Netzfunktion &mdash; und
+    am anderen Ende dieser Seite gibt es keinen Server, an den ein Video ginge,
+    selbst wenn es einen Weg dorthin gäbe."""
+
+live_hint = """
+      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
+      &bdquo;Netzwerk&ldquo; und schneiden Sie ein Video. Keine einzige Anfrage
+      trägt ein Einzelbild, einen Dateinamen oder ein Byte Ihrer Auswahl. Oder
+      trennen Sie die Internetverbindung und schneiden Sie trotzdem eines
+      &mdash; ein Werkzeug, das Ihr Video zum Schneiden wegschickt, würde
+      schlicht stehen bleiben."""
+
+read_first = """
+, <code>src/segments.js</code> für die Markierungen und
+      die Datei, in die sie gespeichert werden, <code>src/demux.js</code> für den
+      Leser, der die Einzelbilder in einem MP4 findet, <code>src/ranges.js</code>
+      für die Rechnung, die aus einer Markierung eine Folge von Samples macht,
+      und <code>src/copy.js</code> für die Schleife, die diese Samples in die neue
+      Datei bewegt. Keines davon importiert etwas, das eine Anfrage stellen
+      könnte."""
+
+howto_heading = "Ein Video schneiden"
+
+card = """
+            Beim Abspielen jeden behaltenswerten Teil markieren und sie dann als
+            ein Video speichern. Die Einzelbilder werden kopiert statt neu
+            kodiert, es geht also nichts verloren."""
+
+[words]
+plural = "Videos"
+choose = "ein Video"
+analytics_extra = """, und auch kein
+  Einzelbild, keine Dauer und kein Schnittpunkt"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Beliebig viele Teile"
+
+[[facts]]
+text = "Kein Qualitätsverlust"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[privacy]]
+title = "Ihre Videos haben keinen Weg nach draußen."
+body = """
+ Die
+      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
+      an dem Ihre Datei gesammelt werden könnte, und nichts im Code, das sie
+      senden würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Dieses Werkzeug hat überhaupt keine
+      Netzfunktion: keine Adresse zum Einfügen, nichts herunterzuladen, keine
+      Engine, die beim ersten Gebrauch nachgeladen wird. Jedes Byte, das Ihr
+      Video berührt, kam beim Laden der Seite von dieser Herkunft."""
+
+[[privacy]]
+title = "Auf dem normalen Weg wird nicht einmal dekodiert."
+body = """
+      Schneiden ändert nichts daran, wie ein Einzelbild aussieht, also werden die
+      kodierten Einzelbilder der von Ihnen markierten Teile genau so in die neue
+      Datei bewegt, wie sie vorgefunden wurden. Jedes wird als Ausschnitt der
+      Datei auf Ihrer Festplatte gehalten &mdash; als Notiz, welche Bytes es
+      sind, nicht als die Bytes selbst &mdash; und Ihr Browser liest sie zum
+      ersten Mal, während er den Download schreibt. Nichts hier macht aus Ihrem
+      Video je wieder ein Bild."""
+
+[[privacy]]
+title = "Die Markierungsdatei entsteht in der Seite."
+body = """
+ Beim Speichern Ihrer
+      Markierungen wird aus den Zahlen, die ohnehin auf dem Bildschirm stehen,
+      eine Textdatei geschrieben &mdash; direkt in Ihre Downloads. Beim Laden
+      wird eine solche hier gelesen. Keines von beidem kommt einem Netz nahe, und
+      keines trägt etwas anderes als Zeiten."""
+
+[[privacy]]
+title = "Der Ton wird kopiert, nicht angehört."
+body = """
+ Auf beiden MP4-Wegen werden
+      die Audio-Samples übernommen, ohne überhaupt dekodiert zu werden &mdash;
+      nichts hier macht daraus je wieder Klang, und nichts könnte ihn irgendwohin
+      weiterreichen, wenn doch."""
+
+[[privacy]]
+title = "Wo Einzelbilder dekodiert werden, passiert das hier."
+body = """
+ Der exakte
+      Schnitt und die Vorschau für eine Datei, die dieser Browser nicht abspielt,
+      laufen über WebCodecs auf Ihrem eigenen Gerät. Das ist derselbe Decoder,
+      der Ihnen das Video ohnehin zeigen würde, am selben Ort ausgeführt."""
+
+[[privacy]]
+title = "Was Google lädt - und was es nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihr
+      Video übergeben: keine Datei, kein Einzelbild, kein Name, keine Größe,
+      keine Länge und nicht, wo Sie geschnitten haben. Jede Zeile, die liest,
+      schneidet und schreibt, wird von dieser Herkunft ausgeliefert und ist im
+      Repository aufgeführt."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt - und was er nicht bekommt."
+body = """
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Er ist ein Link und nicht mehr: Er meldet keinen Besuch, und
+      ihm wird nichts über Sie oder Ihr Video übergeben."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Das ist der einfachste Beweis von allen."""
+
+[[howto]]
+title = "Wählen Sie ein Video."
+body = """
+ Ziehen Sie ein MP4, MOV, M4V oder WebM
+      auf das Auswahlfeld. Der Browser liest es direkt von Ihrer Festplatte;
+      dabei wird nichts irgendwohin gesendet. Ziehen Sie mehrere hinein, und sie
+      werden zusammengefügt, in der Reihenfolge, in der Sie sie abgelegt
+      haben."""
+
+[[howto]]
+title = "Spielen Sie es ab und markieren Sie die gewünschten Teile."
+body = """
+ Drücken Sie
+      <kbd>I</kbd>, wo ein Teil beginnen soll, und <kbd>O</kbd>, wo er enden
+      soll. Tun Sie das so oft Sie wollen &mdash; jedes Paar wird zu einer Zeile
+      in der Tabelle darunter und zu einem Band auf der Zeitleiste. <kbd>U</kbd>
+      nimmt das letzte zurück, <kbd>Leertaste</kbd> spielt ab und pausiert, und
+      die Pfeiltasten springen in Fünf-Sekunden-Schritten. Verlangsamen Sie die
+      Wiedergabe, wenn der Moment schwer zu treffen ist."""
+
+[[howto]]
+title = "Bessern Sie die Markierungen nach."
+body = """
+ Jede Zeile lässt sich einzeln
+      abspielen, durch Eintippen einer genauen Zeit neu takten, in der
+      Reihenfolge nach oben oder unten schieben oder löschen. Die beiden Enden
+      des ausgewählten Teils lassen sich außerdem auf der Zeitleiste ziehen. Die
+      Summe oben ist die Laufzeit, auf die das fertige Video kommt."""
+
+[[howto]]
+title = "Behalten Sie sie - oder schneiden Sie sie heraus."
+body = """
+ Behalten ist der
+      übliche Weg: Das fertige Video besteht aus den markierten Teilen, der Reihe
+      nach zusammengefügt. Sie herauszuschneiden ist die andere Aufgabe, die
+      Menschen wollen und selten finden &mdash; markieren Sie die Werbung, die
+      Stillen oder die Fehlstarts, und was übrig bleibt, wird ohne sie
+      zusammengefügt."""
+
+[[howto]]
+title = "Schneiden und herunterladen."
+body = """
+ &bdquo;Jedes Byte behalten&ldquo;
+      bewegt die Einzelbilder unangetastet hinüber: schnell, und es kann keine
+      Qualität kosten &mdash; aber jeder Teil beginnt am Keyframe vor Ihrer
+      Markierung. &bdquo;Genau hier schneiden&ldquo; dekodiert und schreibt das
+      Bild neu, damit jeder Teil auf dem Einzelbild beginnt, das Sie gewählt
+      haben. Die Seite sagt Ihnen vor dem Klick, welches von beidem Sie gleich
+      bekommen und was es kostet."""
+
+[[faq]]
+q = "Wird mein Video irgendwohin hochgeladen?"
+a = """
+        Nein. Es wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+        gelesen, markiert, geschnitten und geschrieben. Dieses Werkzeug hat keine
+        Serverseite, und die <code>Content-Security-Policy</code> der Seite nennt
+        jede Adresse, die sie kontaktieren darf &mdash; keine davon gehört zu
+        dieser Seite. Trennen Sie die Internetverbindung und schneiden Sie
+        trotzdem ein Video, wenn Sie lieber prüfen als glauben."""
+
+[[faq]]
+q = "Kann ich mehrere Teile desselben Videos behalten?"
+a = """
+        Genau dafür ist das hier da. Drücken Sie <kbd>I</kbd> und <kbd>O</kbd> so
+        oft Sie wollen, während es läuft; jedes Paar wird zu einer Zeile, und das
+        fertige Video besteht aus allen Zeilen, der Reihe nach zusammengefügt,
+        während alles andere verschwindet. Die meisten Online-Schneider geben
+        Ihnen ein einziges Paar Griffe und fragen, welchen einen Abschnitt Sie
+        behalten wollen &mdash; das reicht, um einen Clip vorn und hinten zu
+        stutzen, und nützt überhaupt nichts, wenn man eine Stunde Material einmal
+        durchsieht und die sechs lohnenden Momente behalten will."""
+
+[[faq]]
+q = "Kostet das Schneiden Qualität?"
+a = """
+        Auf dem normalen Weg nicht, und nicht in der Hinsicht, auf die es
+        ankommt. Schneiden ändert nichts daran, wie ein Einzelbild aussieht, also
+        werden die Einzelbilder genau so in die neue Datei bewegt, wie sie waren:
+        dieselben Bytes, dieselben Encoder-Einstellungen, dasselbe alles. Der
+        einzige Weg hier, der überhaupt etwas neu kodiert, ist der exakte
+        Schnitt, und das steht auf der Schaltfläche."""
+
+[[faq]]
+q = "Warum beginnt ein Teil früher, als ich ihn markiert habe?"
+a = """
+        Wegen der Art, wie Video gespeichert wird &mdash; und nur bei Playern,
+        die einen genormten Teil des Formats ignorieren. Die meisten Einzelbilder
+        werden als Beschreibung dessen gehalten, worin sie sich von ihren
+        Nachbarn unterscheiden, lassen sich ohne diese also nicht dekodieren; nur
+        ein Keyframe steht für sich, und Keyframes liegen typischerweise eine bis
+        zehn Sekunden auseinander. Ein Schnitt, der Einzelbilder kopiert, muss
+        deshalb die Strecke ab dem Keyframe vor Ihrer Markierung mitnehmen
+        &mdash; und die Datei sagt <em>ab Ihrer Markierung abspielen</em>, was
+        jeder gängige Player befolgt. Brauchen Sie es in jedem Player exakt,
+        wählen Sie &bdquo;Genau hier schneiden&ldquo;, das neu kodiert. Die Seite
+        sagt Ihnen vor dem Export, in welchem Fall Sie sind und um wie viel."""
+
+[[faq]]
+q = "Kann ich stattdessen die Werbung herausschneiden?"
+a = """
+        Ja. Markieren Sie sie und wählen Sie dann &bdquo;Sie
+        herausschneiden&ldquo;: Alles, was Sie <em>nicht</em> markiert haben,
+        wird stattdessen zusammengefügt, der Reihe nach. Dieselbe Liste von
+        Markierungen beantwortet beide Fragen, Sie können also zwischen ihnen
+        hin- und herschalten und die Länge sich ändern sehen, ohne irgendetwas
+        zweimal zu markieren."""
+
+[[faq]]
+q = "Kann ich meine Markierungen speichern und später weitermachen?"
+a = """
+        Ja. &bdquo;Markierungen speichern&ldquo; schreibt eine reine Textdatei
+        &mdash; eine Zeile je Teil, Anfang und Ende durch ein Komma getrennt
+        &mdash; und &bdquo;Markierungen laden&ldquo; liest eine solche zurück.
+        Angeboten werden zwei Formate, glatte Sekunden und
+        <code>HH:MM:SS.mmm</code>, und beide halten sich an das Layout, das andere
+        Werkzeuge dieser Art bereits verwenden &mdash; eine hier geschriebene
+        Datei lässt sich also an eines von jenen übergeben, und eine dort
+        geschriebene auf diese Seite ziehen. Markieren ist sorgfältige Arbeit,
+        und niemand sollte sie zweimal machen müssen."""
+
+[[faq]]
+q = "Welche Videoformate kann ich schneiden?"
+a = """
+        MP4, M4V und MOV werden direkt gelesen, egal was darin steckt: H.264,
+        HEVC, AV1 oder VP9. Einzelbilder zu kopieren heißt nicht, sie zu
+        dekodieren, dieser Weg funktioniert also selbst bei einem Codec, für den
+        Ihr Browser überhaupt keinen Decoder hat. Alles andere, was Ihr Browser
+        abspielen kann &mdash; allen voran WebM &mdash; wird stattdessen
+        geschnitten, indem es abgespielt und das Ergebnis aufgezeichnet wird; das
+        funktioniert, dauert so lange wie das Ergebnis lang ist und kann nur
+        einen Teil behalten. Eine Datei, die der Browser weder lesen noch
+        abspielen kann &mdash; in der Praxis AVI, WMV, FLV und die meisten MKVs
+        &mdash; wird mit einer entsprechenden Meldung abgelehnt, statt auf halbem
+        Weg zu scheitern."""
+
+[[faq]]
+q = "Gibt es eine Grenze für Größe oder Länge des Videos?"
+a = """
+        Im Werkzeug ist keine Grenze eingebaut, und auf dem Kopierweg wird die
+        Datei kaum gelesen: Auf die Einzelbilder, die Sie behalten, wird gezeigt,
+        statt sie zu laden &mdash; vier Minuten aus einer vier Gigabyte großen
+        Aufnahme zu behalten kostet also etwa so viel, wie diese vier Minuten auf
+        die Festplatte zu schreiben. Der exakte Schnitt läuft die Datei in
+        Häppchen von wenigen Megabyte ab. So oder so ist die praktische
+        Obergrenze die fertige Datei, die vor dem Download im Arbeitsspeicher
+        zusammengesetzt wird."""
+
+[[faq]]
+q = "Bleibt der Ton erhalten?"
+a = """
+        Auf beiden MP4-Wegen wird er Sample für Sample übernommen, ohne je
+        dekodiert zu werden &mdash; er ist also Byte für Byte das, was in der
+        Datei stand &mdash; und eine Edit-Markierung hält jeden Teil auf eine
+        Tausendstelsekunde genau mit seinem Bild in Deckung. Die eine Ausnahme
+        ist das Zusammenfügen getrennter Videos, deren Ton unterschiedlich
+        beschrieben ist &mdash; etwa mit verschiedenen Abtastraten &mdash;, wo es
+        keine Möglichkeit gibt, beide ohne Dekodierung in eine Spur zu bringen;
+        die Seite sagt das, bevor sie es tut. Auf dem Aufzeichnungsweg wird er
+        von der Wiedergabe abgegriffen und neu kodiert. So oder so gibt es ein
+        Häkchen, um ihn ganz wegzulassen."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und kein Wasserzeichen. Die Seite trägt Werbung, und die
+        bezahlt sie; den Anzeigen wird nichts über Ihr Video übergeben."""
+
+[schema]
+browser_requirements = "Benötigt JavaScript. Das Kopieren von Einzelbildern braucht überhaupt keine Video-Codec-Unterstützung; der exakte Schnitt braucht einen Browser mit WebCodecs, und andere Formate weichen auf die Aufzeichnung aus."
+description = "Beliebig viele Teile eines Videos markieren, während es läuft, und diese Teile dann als eine einzige Datei speichern - oder sie herausschneiden und den Rest behalten. MP4, MOV und M4V werden geschnitten, indem die kodierten Einzelbilder unangetastet in eine neue Datei bewegt werden, wobei der Originalton Sample für Sample übernommen wird; es wird nichts hochgeladen und nichts neu kodiert."
+features = [
+  "Markiert beliebig viele Teile mit I und O, während das Video läuft",
+  "Fügt die markierten Teile zu einer Datei zusammen, in der Reihenfolge Ihrer Wahl",
+  "Schneidet die markierten Teile stattdessen heraus und behält alles andere",
+  "Schneidet ohne Neukodierung, es geht also keine Qualität verloren",
+  "Speichert die Markierungen als reine Zeitstempel-Textdatei und lädt sie wieder",
+  "Einzelbildgenaue Markierungen, mit Keyframes auf der Zeitleiste",
+  "Behält den Originalton, ohne ihn neu zu kodieren",
+  "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
+]
+
+[picker]
+title = "Video hierher ziehen"
+hint = "oder klicken zum Auswählen &mdash; MP4, MOV, M4V, WebM. Ziehen Sie mehrere hinein, um sie zusammenzufügen."

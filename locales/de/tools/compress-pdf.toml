@@ -1,0 +1,275 @@
+#
+# PDF-Kompressor - German.
+#
+# Overrides for tools/compress-pdf/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "PDF-Kompressor"
+heading = "PDF&nbsp;komprimieren <span class=\"h1-kw\">&mdash; ein PDF verkleinern</span>"
+tagline = "Ein Dokument verkleinern, ohne es irgendwohin zu schicken."
+
+title = "PDF komprimieren &mdash; kostenlos, im Browser, ohne Upload"
+description = "Ein PDF verkleinern, ohne es hochzuladen. Die Datei wird von Ihrem eigenen Browser gelesen, neu komprimiert und neu geschrieben, und das Werkzeug zeigt Ihnen zuerst, wo die Größe tatsächlich steckt."
+og_title = "PDF komprimieren &mdash; kostenlos, und nichts wird hochgeladen"
+og_description = "Ein PDF auf Ihrem eigenen Gerät verkleinern. Es misst, wie groß jedes Bild auf der Seite wirklich dargestellt wird, und wirft nur Pixel weg, die niemand sehen könnte."
+og_image_alt = "PDF komprimieren - ein Dokument verkleinern, ohne es hochzuladen"
+
+pledge = """
+    Das Dokument wird auf diesem Gerät im Arbeitsspeicher geöffnet, zerlegt und
+    wieder geschrieben &mdash; von Code, der von dieser Adresse ausgeliefert
+    wird. Nichts hier kann einen Upload durchführen, und am anderen Ende dieser
+    Seite gibt es keinen Server, der einen entgegennehmen könnte."""
+
+live_hint = """
+      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
+      &bdquo;Netzwerk&ldquo; und komprimieren Sie eine Datei. Keine einzige
+      Anfrage trägt eine Seite, ein Bild oder einen Dateinamen. Oder trennen Sie
+      die Internetverbindung und komprimieren Sie trotzdem eines."""
+
+read_first = """
+, sowie <code>src/reader.js</code> und <code>src/writer.js</code>
+      für das gesamte Lesen und Neuschreiben &mdash; keines von beiden kann das
+      Netz erreichen."""
+
+howto_heading = "Ein PDF verkleinern"
+
+card = """
+            Ein Dokument verkleinern, indem die Bilder darin neu komprimiert
+            werden. Es zeigt Ihnen zuerst, wo die Größe wirklich steckt, und
+            sagt klar, wenn nichts zu holen ist."""
+
+[words]
+plural = "Dokumente"
+choose = "ein PDF"
+analytics_extra = """"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Ihr Dokument hat keinen Weg nach draußen."
+body = """
+ Die
+      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört zu dieser Seite. Dieses Werkzeug fügt der
+      Liste nichts hinzu: Es hat keine eigene Netzfunktion, nicht einmal eine
+      optionale. Es gibt hier keinen Endpunkt, an dem Ihre Datei gesammelt
+      werden könnte, und nichts im Code, das sie senden würde, gäbe es einen."""
+
+[[privacy]]
+title = "Das ganze Format liegt in diesem Repository."
+body = """
+ Ein PDF ist eine
+      Liste von Objekten und eine Tabelle, wo jedes beginnt.
+      <code>src/objects.js</code> liest diese Syntax, <code>src/reader.js</code>
+      folgt der Tabelle, <code>src/writer.js</code> schreibt eine neue, und
+      keines der drei importiert irgendetwas, das eine Anfrage stellen könnte.
+      Es wird keine Bibliothek nachgeladen und nichts auf einem Server
+      gerendert."""
+
+[[privacy]]
+title = "Verschlüsselte Dateien werden abgewiesen statt geöffnet."
+body = """
+
+      Ein PDF mit Passwort wird abgelehnt &mdash; auch die Sorte, die Scanner
+      mit leerem Passwort erzeugen und die sich technisch öffnen ließe. Einem
+      Dokument den Schutz zu nehmen ist eine andere Aufgabe als es zu
+      verkleinern, und es stillschweigend zu tun wäre ein überraschender
+      Übergriff für ein Werkzeug."""
+
+[[privacy]]
+title = "Es nimmt heraus, statt hineinzuschreiben."
+body = """
+ Die fertige Datei trägt kein
+      Erstellungsdatum, keine Producer-Zeile und keinen Namen des Werkzeugs, das
+      sie gemacht hat. Mit gesetztem Häkchen verliert sie auch das XMP-Paket und
+      die privaten Blöcke, die Layout-Programme hinterlassen &mdash; dasselbe
+      Argument, das das EXIF-Werkzeug macht, auf einen anderen Container
+      angewendet."""
+
+[[privacy]]
+title = "Was Google lädt - und was es nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihr
+      Dokument übergeben: keine Datei, keine Seite, kein Name, keine Größe, keine
+      Seitenzahl. Jede Zeile, die ein PDF liest, dekodiert oder schreibt, wird
+      von dieser Herkunft ausgeliefert und ist im Repository aufgeführt."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt - und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Er ist ein Link und nicht mehr: Er meldet keinen Besuch, und
+      ihm wird nichts über Sie oder Ihr Dokument übergeben. Es passiert nichts,
+      solange Sie ihn nicht anklicken, und was Sie damit ansteuern, ist die Seite
+      von jemand anderem."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Das ist der einfachste Beweis von allen: Ein
+      Werkzeug, das Ihr Dokument zum Komprimieren wegschickt, würde stehen
+      bleiben."""
+
+[[howto]]
+title = "Wählen Sie ein PDF."
+body = """
+ Ziehen Sie es auf das Auswahlfeld oder
+      wählen Sie es von Hand. Der Browser liest es direkt von Ihrer Festplatte;
+      dabei wird nichts irgendwohin gesendet."""
+
+[[howto]]
+title = "Sehen Sie nach, wo die Größe steckt."
+body = """
+ Die Aufschlüsselung ist der
+      eigentliche Sinn des zweiten Schritts. Besteht der Balken überwiegend aus
+      Bildern, hat dieses Werkzeug etwas zu tun. Besteht er überwiegend aus
+      Schriften und Seiteninhalt, sagt es das, und die ehrliche Ersparnis liegt
+      bei wenigen Prozent &mdash; das sollten Sie wissen, bevor Sie eine Minute
+      dafür aufwenden."""
+
+[[howto]]
+title = "Sagen Sie, wie stark gepresst werden soll."
+body = """
+ Die benannten
+      Einstellungen sind Auflösungen, keine vagen Stufen: 96 DPI zum Lesen am
+      Bildschirm, 130 zum Verschicken per E-Mail, 220 für etwas, das noch
+      gedruckt werden muss. Jede wird daran gemessen, wie groß das Bild auf der
+      Seite tatsächlich dargestellt wird &mdash; ein als Miniatur platziertes
+      Foto wird also nicht behandelt wie ein ganzseitiger Scan."""
+
+[[howto]]
+title = "Komprimieren Sie, und achten Sie auf die Zeile, die die Prüfung meldet."
+body = """
+
+      Ist das Neuschreiben fertig, wird die fertige Datei von demselben Leser auf
+      dieser Seite erneut geöffnet und ihre Seiten werden gezählt. Weicht das vom
+      Original ab, gilt der Durchlauf als gescheitert und es wird kein Download
+      angeboten."""
+
+[[faq]]
+q = "Wird mein PDF irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+        gelesen, neu komprimiert und geschrieben. Dieses Werkzeug hat keine
+        Serverseite, und die <code>Content-Security-Policy</code> der Seite nennt
+        jede Adresse, die sie kontaktieren darf &mdash; keine davon gehört zu
+        dieser Seite. Dieses Werkzeug hat überhaupt keine optionale
+        Netzfunktion."""
+
+[[faq]]
+q = "Wie viel kleiner wird mein PDF?"
+a = """
+        Das hängt vollständig davon ab, was darin steckt &mdash; und genau
+        deshalb misst das Werkzeug und zeigt es Ihnen, bevor es irgendetwas
+        komprimiert. Ein gescanntes Dokument besteht fast nur aus Fotografien und
+        wird üblicherweise 60&ndash;90&nbsp;% kleiner. Ein Vertrag oder eine
+        Abschlussarbeit besteht aus Text, Vektorzeichnung und eingebetteten
+        Schriften, die alle schon von dem Programm komprimiert wurden, das sie
+        erzeugt hat; dort liegt die Ersparnis meist bei wenigen Prozent, aus dem
+        Neupacken der Datei und dem Wegfallen dessen, worauf nichts mehr
+        verweist. Jedes Werkzeug, das ohne Blick auf Ihre Datei einen festen
+        Prozentsatz verspricht, rät."""
+
+[[faq]]
+q = "Verliert ein PDF beim Komprimieren an Qualität?"
+a = """
+        Die Bilder darin werden neu kodiert, also ja &mdash; für die. Sonst wird
+        nichts angefasst: Text bleibt Text, markierbar und durchsuchbar, die
+        Schriften bleiben vollständig, und die Vektorzeichnung wird exakt
+        übernommen. Das Werkzeug weigert sich außerdem, ein Bild umsonst zu
+        verschlechtern: Wird eine Neukodierung nicht kleiner als das Original,
+        wandern die Originalbytes unangetastet zurück ins Dokument."""
+
+[[faq]]
+q = "Was ist hier DPI, und warum wird danach gefragt?"
+a = """
+        Ein PDF hält fest, wie groß jedes Bild auf der Seite dargestellt wird,
+        also kann das Werkzeug die effektive Auflösung ausrechnen: Ein Scan mit
+        4000 Pixeln, über zwanzig Zentimeter Papier gelegt, trägt rund 500 Pixel
+        pro Zoll. Nichts auf einem Bildschirm und sehr wenig auf Papier kann das
+        nutzen, also fallen die Pixel oberhalb der von Ihnen gewählten
+        Einstellung zuerst weg &mdash; sie kosten Qualität, die niemand sehen
+        kann. Diese Messung ist der Grund, warum ein klein platziertes Logo nicht
+        wie ein ganzseitiger Scan behandelt wird."""
+
+[[faq]]
+q = "Kann es ein passwortgeschütztes PDF öffnen?"
+a = """
+        Nein, und das ist Absicht. Ein verschlüsseltes Dokument wird mit einer
+        entsprechenden Meldung abgelehnt, selbst wenn das Passwort leer ist
+        &mdash; und genau so speichern viele Scanner und Kopierer. Einer Datei
+        den Schutz zu nehmen ist eine andere Aufgabe als sie zu komprimieren, und
+        ein Werkzeug, das es stillschweigend täte, würde etwas tun, worum Sie
+        nicht gebeten haben."""
+
+[[faq]]
+q = "Gibt es PDFs, die es nicht komprimieren kann?"
+a = """
+        Einzelne Bilder darin, ja. Für JPEG 2000, JBIG2 und faxkodierte
+        (CCITT-)Bilder gibt es in keinem Browser einen Decoder, also werden sie
+        unangetastet durchgereicht und als solche gemeldet &mdash; die letzten
+        beiden sind Zweiton-Codecs und ohnehin meist schon nahe an ihrem
+        Minimum. CMYK-Bilder bleiben ebenfalls unberührt, weil eine Neukodierung
+        die Farben verschieben könnte, die ein Drucker erzeugt. Alles, was das
+        Werkzeug auslässt, wird bei den Ergebnissen mit Begründung genannt."""
+
+[[faq]]
+q = "Lässt sich die komprimierte Datei überall noch öffnen?"
+a = """
+        Ja. Die Ausgabe wird als PDF 1.5 geschrieben, das jeder seit 2003
+        ausgelieferte Reader versteht, und das Werkzeug belegt das auf Ihrem
+        eigenen Gerät: Es öffnet die fertige Datei erneut und zählt ihre Seiten,
+        bevor es sie Ihnen anbietet. Formulare, Links, Lesezeichen, die
+        Barrierefreiheitsstruktur und eingebettete Anhänge werden mitgenommen;
+        zurück bleibt das Material, auf das im Dokument nichts mehr verwiesen
+        hat."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und keine Dateigrößengrenze außer der, die der Arbeitsspeicher
+        Ihres Geräts vorgibt. Die Seite trägt Werbung, und die bezahlt sie; den
+        Anzeigen wird nichts über Ihr Dokument übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird: Ein Werkzeug, das Ihr Dokument zum
+        Komprimieren wegschickt, würde in dem Moment stehen bleiben, in dem Sie
+        den Stecker ziehen."""
+
+[schema]
+description = "Ein PDF im Browser komprimieren. Bilder werden daran gemessen neu komprimiert, wie groß sie auf der Seite tatsächlich dargestellt werden, und das Dokument wird lokal neu geschrieben - es wird also nie eine Datei hochgeladen."
+features = [
+  "Zeigt vor jeder Kompression, wo die Größe eines Dokuments tatsächlich steckt",
+  "Komprimiert Bilder gemessen an ihrer tatsächlichen Auflösung auf der Seite neu",
+  "Lässt ein Bild unangetastet, wenn eine Neukodierung es nicht kleiner macht",
+  "Entfernt Objekte, die eine frühere Bearbeitung hinterlassen hat, und optional die Metadaten",
+  "Öffnet und prüft die fertige Datei, bevor sie angeboten wird",
+  "Läuft offline; kein Upload, kein Konto, keine Dateigrößengrenze",
+]
+
+[picker]
+title = "PDF hierher ziehen"
+hint = "oder klicken zum Auswählen &mdash; ein Dokument auf einmal"

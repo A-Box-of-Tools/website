@@ -1,0 +1,260 @@
+#
+# Bilder in Video - German.
+#
+# Overrides for tools/images-to-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# This is the one tool with a [picker.urls] table, so it is also the one whose
+# translation has to supply the noun the importer's warning in [ui.picker] is
+# written around. German needs it in the singular and with the right gender for
+# the article the sentence puts in front of it, which is why the warning is a
+# whole sentence in the locale file rather than two fragments.
+#
+
+name = "Bilder in Video"
+heading = "Bilder&nbsp;in&nbsp;Video <span class=\"h1-kw\">&mdash; eine MP4-Diashow erstellen</span>"
+tagline = "Aus einem Ordner voller Bilder ein Video machen."
+
+title = "Bildsequenz zu MP4 &mdash; kostenlos, ohne Upload, auch offline"
+description = "JPG-, PNG- oder WebP-Bilder in ein MP4-Diashow-Video verwandeln, kostenlos und vollständig in Ihrem Browser. Nichts wird hochgeladen, keine Anmeldung, und es funktioniert offline."
+og_title = "Bildsequenz zu MP4 &mdash; kostenlos, in Ihrem Browser"
+og_description = "Eine Render-Sequenz, einen Zeitraffer oder einen Ordner voller Fotos in ein MP4 verwandeln. Die Kodierung läuft auf Ihrem eigenen Gerät; nichts wird hochgeladen."
+og_image_alt = "Bilder in Video - aus einem Ordner voller Bilder eine MP4-Diashow machen"
+
+pledge = """
+    Jedes Einzelbild wird von Ihrem eigenen Browser kodiert, und das Video
+    entsteht im Arbeitsspeicher dieses Geräts. Der Encoder berührt nie das Netz,
+    und am anderen Ende dieser Seite gibt es keinen Server, an den ein Bild
+    ginge, selbst wenn er es täte."""
+
+live_hint = """
+      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
+      &bdquo;Netzwerk&ldquo; und erzeugen Sie ein Video. Keine einzige Anfrage
+      trägt ein Bild, ein Vorschaubild oder einen Dateinamen. Oder trennen Sie
+      die Internetverbindung und erzeugen Sie trotzdem eines."""
+
+read_first = """
+, sowie <code>src/encoder.js</code> für die
+      Kodierschleife, die nie das Netz berührt."""
+
+howto_heading = "Aus Bildern ein Video machen"
+
+card = """
+            Aus einem Ordner voller Bilder eine MP4-Diashow machen. Die
+            Kodierung läuft auf Ihrem eigenen Gerät, mit Ihrer eigenen
+            Hardware."""
+
+[words]
+plural = "Bilder"
+choose = "Bilder"
+analytics_extra = """"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Ihre Bilder haben keinen Weg nach draußen."
+body = """
+ Die
+      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
+      an dem Ihre Dateien gesammelt werden könnten, und nichts im Code, das sie
+      senden würde, gäbe es einen. Früher stand hier
+      <code>connect-src 'none'</code>, was absolut war; die Werbung hat das
+      gekostet, und das auszusprechen gehört zum Handel dazu."""
+
+[[privacy]]
+title = "Die Kodierung ist lokal."
+body = """
+ WebCodecs läuft in Ihrem Browser, und die
+      fertige Datei geht direkt an einen Download. Dieses Programm hat keine
+      Serverseite."""
+
+[[privacy]]
+title = "Was Google lädt - und was es nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihre
+      Bilder übergeben: keine Datei, kein Vorschaubild, kein Name, keine Größe,
+      keine Anzahl. Jede Zeile, die ein Bild liest, dekodiert, zusammensetzt oder
+      kodiert, wird von dieser Herkunft ausgeliefert und ist im Repository
+      aufgeführt."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt - und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Er ist ein Link und nicht mehr: Er meldet keinen Besuch, und
+      ihm wird nichts über Sie oder Ihre Bilder übergeben. Es passiert nichts,
+      solange Sie ihn nicht anklicken, und was Sie damit ansteuern, ist die Seite
+      von jemand anderem."""
+
+[[privacy]]
+title = "Eine bewusste Ausnahme."
+body = """
+ Wenn Sie &bdquo;Von einer Webadresse
+      hinzufügen&ldquo; benutzen, wird jener Server kontaktiert, um das Bild zu
+      holen, und sieht dabei Ihre IP-Adresse. Abgerufen werden nur Bilder, die
+      Sie selbst einfügen, und nur herein: <code>img-src</code> ist geöffnet,
+      <code>connect-src</code> nicht. Der Zähler weiter unten führt jede
+      kontaktierte fremde Herkunft auf."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles
+      außer dem Laden per Webadresse arbeitet weiter. Das ist der einfachste
+      Beweis von allen."""
+
+[[howto]]
+title = "Wählen Sie Ihre Bilder."
+body = """
+ Ziehen Sie einen Ordner auf das
+      Auswahlfeld oder wählen Sie die Dateien von Hand. Der Browser liest sie
+      direkt von Ihrer Festplatte; dabei wird nichts irgendwohin gesendet."""
+
+[[howto]]
+title = "Bringen Sie sie in die Reihenfolge und legen Sie die Standzeit fest."
+body = """
+ Ziehen
+      Sie zum Umsortieren. Die Standzeit lässt sich in Einzelbildern oder in
+      Sekunden angeben, entweder für alle Bilder auf einmal oder Bild für
+      Bild."""
+
+[[howto]]
+title = "Wählen Sie Auflösung und Bildrate."
+body = """
+ &bdquo;An höchste Auflösung
+      anpassen&ldquo; richtet sich nach Ihrem größten Bild; die Voreinstellungen
+      decken 4K, 1080p, 720p, quadratisch und hochkant ab, und es gibt eine
+      eigene Größe, falls nichts davon passt."""
+
+[[howto]]
+title = "Video erzeugen und herunterladen."
+body = """
+ Die Kodierung läuft auf Ihrer
+      eigenen Hardware, wie lange sie dauert, hängt also von Ihrem Gerät ab und
+      nicht von einer Warteschlange. Das fertige MP4 geht direkt in die Downloads
+      Ihres Browsers."""
+
+[[faq]]
+q = "Werden meine Bilder irgendwohin hochgeladen?"
+a = """
+        Nein. Ihre Bilder werden von Ihrem eigenen Browser auf Ihrer eigenen
+        Hardware gelesen, zusammengesetzt und kodiert. Dieses Werkzeug hat keine
+        Serverseite, und die <code>Content-Security-Policy</code> der Seite nennt
+        jede Adresse, die sie kontaktieren darf &mdash; keine davon gehört zu
+        dieser Seite. Die eine Ausnahme ist die optionale Funktion &bdquo;Von
+        einer Webadresse hinzufügen&ldquo;, die ein von Ihnen eingefügtes Bild
+        abruft; jener Server sieht dabei Ihre IP-Adresse."""
+
+[[faq]]
+q = "Welche Bildformate kann ich verwenden?"
+a = """
+        Jedes Standbildformat, das Ihr Browser dekodieren kann, in der Praxis
+        also JPG, PNG, WebP, GIF, AVIF und auf Apple-Geräten HEIC. Es gibt hier
+        keine eigene Liste, die aktuell gehalten werden müsste, denn das
+        Dekodieren ist Sache des Browsers und nicht unsere."""
+
+[[faq]]
+q = "Welches Videoformat kommt heraus?"
+a = """
+        MP4 mit H.264-Video, das praktisch überall abspielt. In einem Browser
+        ohne WebCodecs weicht das Werkzeug darauf aus, stattdessen WebM
+        aufzuzeichnen &mdash; dasselbe Material in einem Container, den weniger
+        Schnittprogramme annehmen."""
+
+[[faq]]
+q = "Kann ich das für eine Render-Sequenz aus Blender oder After Effects nutzen?"
+a = """
+        Ja &mdash; eine durchnummerierte Render-Sequenz ist genau das, wofür das
+        hier da ist. Fügen Sie die Einzelbilder hinzu, die Ihr Renderer
+        geschrieben hat, lassen Sie die Standzeit bei einem Einzelbild und stellen
+        Sie die Bildrate passend zum Render ein. &bdquo;Nach Name sortieren&ldquo;
+        zählt so, wie Sie es erwarten würden: <code>frame_2</code> landet vor
+        <code>frame_10</code> und nicht dahinter.
+        <br><br>
+        Eines sollten Sie vorher wissen: H.264 hat keinen Alphakanal, Transparenz
+        wird also auf die Hintergrundfarbe heruntergerechnet statt mitgenommen.
+        Wenn das Alpha erhalten bleiben muss, setzen Sie die Einzelbilder
+        stattdessen in Ihrem Schnittprogramm zusammen."""
+
+[[faq]]
+q = "Kann ich aus Fotos einen Zeitraffer machen?"
+a = """
+        Ja, und das ist dieselbe Aufgabe wie eine Render-Sequenz: Halten Sie
+        jedes Foto ein einzelnes Einzelbild lang und wählen Sie eine Bildrate. Bei
+        30 fps werden aus je dreißig Fotos eine Sekunde Video; bei 12 fps laufen
+        dieselben Fotos zweieinhalb Sekunden.
+        <br><br>
+        &bdquo;Nach Datum sortieren&ldquo; bringt eine Kamerarolle zurück in die
+        Reihenfolge, in der sie aufgenommen wurde &mdash; was zählt, wenn die
+        Dateinamen wieder bei 0001 angefangen haben. Fotos unterschiedlicher
+        Größe sind kein Problem: &bdquo;An höchste Auflösung anpassen&ldquo; legt
+        das Video so aus, dass keines von ihnen verkleinert wird."""
+
+[[faq]]
+q = "Gibt es eine Grenze für die Zahl der Bilder oder die Länge des Videos?"
+a = """
+        Im Werkzeug ist keine Grenze eingebaut. Die praktische Obergrenze ist der
+        Arbeitsspeicher Ihres Geräts, denn das fertige Video wird dort
+        zusammengesetzt, bevor Sie es herunterladen. Sehr große 4K-Diashows sind
+        das Erste, was sie zu spüren bekommt."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung und keine
+        Testphase. Die Seite trägt Werbung, und die bezahlt sie; den Anzeigen
+        wird nichts über Ihre Bilder übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird: Ein Werkzeug, das Ihre Bilder zum
+        Verarbeiten wegschickt, würde in dem Moment stehen bleiben, in dem Sie
+        den Stecker ziehen."""
+
+[[faq]]
+q = "Kann ich Musik oder eine Tonspur hinzufügen?"
+a = """
+        Noch nicht. Das Werkzeug erzeugt reines Video: Das MP4, das es schreibt,
+        hat eine einzige Videospur und keine Tonspur. Legen Sie eine Tonspur
+        hinterher in einem Schnittprogramm darunter, wenn Sie eine brauchen."""
+
+[schema]
+browser_requirements = "Benötigt JavaScript. Für die MP4-Ausgabe braucht es einen Browser mit WebCodecs; sonst wird auf WebM zurückgegriffen."
+description = "Aus einem Ordner voller Bilder ein MP4-Diashow-Video machen. Jeder Schritt läuft in Ihrem Browser, es wird also nie ein Bild hochgeladen."
+features = [
+  "Wandelt JPG-, PNG-, WebP-, GIF- und AVIF-Bilder in Video um",
+  "MP4-Ausgabe (H.264), mit WebM als Rückfalloption",
+  "Auflösungen bis 3840x2160, Bildraten von 12 bis 60 fps",
+  "Standzeit je Bild, in Einzelbildern oder Sekunden",
+  "Läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "Bilder hierher ziehen"
+hint = "oder klicken zum Auswählen &mdash; JPEG, PNG, WebP, GIF, AVIF"
+
+[picker.urls]
+summary = "Von einer Webadresse hinzufügen"
+button = "Bilder herunterladen"
+# Singular, and the gender the sentences in [ui.picker] were written around.
+noun = "Bild"

@@ -1,0 +1,332 @@
+#
+# Nederlands.
+#
+# The frame: the hub, the guides index, the roadmap, the 404, the footer, and
+# the words the templates themselves use. Tools and guides are translated in
+# tools/ and pages/ beside this file.
+#
+# "je" rather than "u" throughout. The English is plain and direct and the
+# formal register would make the Dutch read like a bank letter, which is the
+# opposite of what this site sounds like.
+#
+
+lang = "nl"
+name = "Dutch"
+endonym = "Nederlands"
+
+complete = false
+
+#
+# ---------------------------------------------------------------------------
+# The addresses. Keyed by the ENGLISH slug; the Dutch is an address and appears
+# only on the right.
+#
+# Noun first, verb last - "afbeelding-comprimeren" - which is both the Dutch
+# word order and the way the search is typed.
+# ---------------------------------------------------------------------------
+#
+
+[slugs]
+"compress-image" = "afbeelding-comprimeren"
+"compress-pdf" = "pdf-verkleinen"
+"crop-video" = "video-bijsnijden"
+"edit-audio" = "audio-bewerken"
+# Vrijwel niemand zoekt op "EXIF-editor"; men zoekt hoe je de gegevens uit een foto haalt.
+"exif-editor" = "exif-gegevens-verwijderen"
+"images-to-pdf" = "afbeeldingen-naar-pdf"
+"images-to-video" = "afbeeldingen-naar-video"
+"resize-image" = "afbeelding-formaat-wijzigen"
+"trim-video" = "video-knippen"
+
+"guides" = "gidsen"
+"roadmap" = "roadmap"
+"privacy" = "privacy"
+"terms" = "voorwaarden"
+
+"guides/compress-an-image-to-a-target-size" = "gidsen/afbeelding-naar-exact-formaat-comprimeren"
+"guides/resize-an-image" = "gidsen/formaat-van-een-afbeelding-wijzigen"
+"guides/remove-exif-and-gps-data" = "gidsen/exif-en-gps-gegevens-verwijderen"
+"guides/make-a-pdf-smaller" = "gidsen/een-pdf-kleiner-maken"
+"guides/combine-images-into-a-pdf" = "gidsen/afbeeldingen-samenvoegen-tot-een-pdf"
+"guides/turn-images-into-a-video" = "gidsen/van-afbeeldingen-een-video-maken"
+"guides/trim-a-video" = "gidsen/een-video-inkorten"
+"guides/crop-a-video" = "gidsen/een-video-bijsnijden"
+"guides/is-it-safe-to-upload-files" = "gidsen/is-bestanden-uploaden-veilig"
+
+#
+# ---------------------------------------------------------------------------
+# The hub.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "Gratis browsertools &mdash; zonder uploaden, zonder account | abox.tools"
+# Onder de 155 tekens, net als in het Engels: Google kapt een beschrijving daar
+# af, en het staartje is hier het stuk dat de site verkoopt.
+description = "Gratis browsertools die je bestanden nooit uploaden. Afbeeldingen samenvoegen tot pdf of mp4, een afbeelding exact comprimeren, video bijsnijden, EXIF wissen."
+heading = "Gereedschap dat geen server aanraakt"
+og_title = "A Box of Tools &mdash; gereedschap dat geen server aanraakt"
+og_description = "Kleine tools, elk voor één klus, die volledig in je browser draaien. Je bestanden verlaten je apparaat niet."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+schema_description = "Kleine tools, elk voor één klus, die al hun werk binnen de browser doen. Er wordt niets geüpload en een account is niet nodig."
+schema_about = "Bestandstools die in de browser draaien en bestanden lokaal verwerken zonder ze te uploaden"
+
+lede = """
+    Kleine tools, elk voor één klus, die al hun werk binnen je browser doen. Je
+    bestanden blijven op je apparaat: er valt niets te uploaden, er is geen
+    account aan te maken en er wordt niets bijgehouden."""
+
+support_note = """
+      Deze tools zijn gratis en dat blijven ze. Als er eentje je werk heeft
+      bespaard: dit is het enige op de site dat je iets vraagt."""
+
+# Drie controleerbare feiten in plaats van een belofte, net als in het Engels.
+[[hub.guarantees]]
+title = "Je bestanden verlaten je apparaat nooit"
+body = """
+        Ze worden geopend, gelezen en verwerkt door je eigen browser, op je
+        eigen hardware. De <code>Content-Security-Policy</code> van elke tool
+        noemt elk adres dat hij mag benaderen, en geen daarvan is van ons."""
+
+[[hub.guarantees]]
+title = "Over je bestanden wordt niets doorgegeven"
+body = """
+        Niet het bestand, niet een miniatuur, niet de naam, de grootte of
+        hoeveel je er koos. Geen enkele tool hier geeft daar iets van door. Aan
+        de andere kant staat geen server die het zou kunnen lezen."""
+
+[[hub.guarantees]]
+title = "Het werkt offline"
+body = """
+        Open een tool één keer, verbreek je internetverbinding, en hij werkt
+        precies zo door aan je bestanden. Dat is lastig te veinzen: een tool die
+        je bestanden ergens heen stuurde om ze te verwerken zou domweg
+        stoppen."""
+
+[[hub.categories]]
+name = "Afbeeldingen &amp; video"
+note = "Werk aan je foto's en opnames zonder ze aan iemand af te staan."
+
+[[hub.categories]]
+name = "GIF &amp; animatie"
+note = "Bouw een animatie, of haal er een uit elkaar, zonder dat die je computer verlaat."
+
+[[hub.categories]]
+name = "Audio"
+note = "Werk aan een opname zonder hem af te staan, ook aan het geluid in een video."
+
+[[hub.categories]]
+name = "Documenten &amp; pdf"
+note = "Maak en herschik documenten zonder ze ergens heen te sturen om verwerkt te worden."
+
+[[hub.categories]]
+name = "Codes &amp; gegevens"
+note = "Maak van wat u typt iets dat een machine kan lezen, zonder dat het de pagina verlaat."
+
+[[hub.categories]]
+name = "Tekst &amp; code"
+note = "Lees het, vergelijk het, codeer het, zonder een token of een configuratiebestand op de server van iemand anders te plakken."
+
+#
+# ---------------------------------------------------------------------------
+# The guides index.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+nav = "Alle gidsen"
+title = "Gidsen &mdash; hoe de klus werkt en wat elke keuze kost"
+description = "Heldere gidsen over comprimeren, formaat wijzigen, bijsnijden, inkorten en converteren van je eigen bestanden: wat de instellingen betekenen en waarom er niets geüpload hoeft te worden."
+heading = "Gidsen"
+lede = """
+    Eén gids per tool, geschreven voor wie een formaat of een bestandsgrootte
+    opgelegd heeft gekregen en wil weten wat de instelling die hij zo gaat
+    verzetten eigenlijk doet. Alles wat hier beschreven wordt gebeurt op je
+    eigen apparaat."""
+og_title = "De gidsen van abox.tools"
+og_description = "Hoe je je eigen bestanden comprimeert, verkleint, bijsnijdt, inkort en converteert, en wat elke instelling kost. Zonder uploaden."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+
+
+[[guides.groups]]
+name = "De klus klaren"
+note = "Eén per tool: waar de klus uit bestaat, welke instelling telt, en wat die je kost."
+
+[[guides.groups]]
+name = "Voordat je iets uploadt"
+note = "Wat een bestand aan een website geven werkelijk betekent, en hoe je ziet of het nodig was."
+
+#
+# ---------------------------------------------------------------------------
+# The roadmap. Only the frame - the list itself is config/planned.toml, which
+# has no locale file yet and is therefore still English on this page.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+nav = "Roadmap"
+title = "Roadmap &mdash; wat abox.tools hierna bouwt"
+description = "Elke tool die voor abox.tools gepland staat, gegroepeerd en in de open lucht, plus de tools die al klaar zijn. Ze draaien allemaal in de browser en uploaden niets."
+heading = "Wat hierna komt"
+lede = """
+    Alles op beide lijsten hieronder doet zijn werk binnen je browser en uploadt
+    niets &mdash; dat is de regel die een naam moet halen voordat hij hier
+    überhaupt op komt. De aantallen staan nergens opgeschreven; de build telt ze
+    op de lijsten zelf."""
+
+intro_heading = "Hoe deze lijst is opgesteld"
+intro = """
+    <p>
+      Het is geen verlanglijst. Hij is opgesteld door de toolslijst van de
+      grootste online gif- en videosite door te lopen &mdash; het dichtste wat
+      er bestaat bij een catalogus van wat mensen werkelijk met een bestand
+      gedaan willen hebben &mdash; en elke regel te houden die zo gebouwd kan
+      worden dat het werk op je eigen apparaat gebeurt en blijft gebeuren met
+      de stekker eruit.
+    </p>
+    <p>
+      Het meeste wat overbleef leunt op interfaces die de browser al meelevert.
+      Een enkeling heeft een codec nodig die in de ene tool wordt ingebouwd die
+      hem gebruikt, en dat mag &mdash; het bestand verlaat het apparaat nog
+      steeds niet. Wat die lat niet haalde is weggelaten in plaats van beloofd,
+      dus een paar van de gaten die hieronder voor de hand liggen zijn gaten met
+      opzet.
+    </p>
+    <p>
+      De tools die al bestaan staan bovenaan hun groep, gemarkeerd als
+      <em>Klaar</em> en gelinkt aan hun eigen pagina. Alles daaronder moet nog
+      komen, en niets is een link voordat het zover is.
+    </p>"""
+
+planned_heading = "Elk soort bestand, en wat je ermee kunt"
+
+og_title = "De roadmap van abox.tools"
+og_description = "Wat klaar is en wat hierna komt. Alles draait in de browser en uploadt niets."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+
+#
+# ---------------------------------------------------------------------------
+# The 404. Built in English only today, but translated anyway.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "Pagina niet gevonden &mdash; abox.tools"
+description = "Dat adres bestaat niet op abox.tools. Dit zijn de tools die er wel zijn - allemaal gratis, en geen ervan uploadt je bestanden ergens heen."
+heading = "Deze pagina is hier niet"
+tools_heading = "Alle tools, op één plek"
+tools_note = "Allemaal gratis, allemaal in je browser, geen ervan uploadt iets."
+
+lede = """
+    Of het adres bevat een typefout, of wat er stond is verhuisd. Er is niets
+    met je bestand en er is niets kwijt: deze site heeft nooit iets van jou
+    gehad om kwijt te raken."""
+
+#
+# ---------------------------------------------------------------------------
+# The footer.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        Gereedschap dat geen server aanraakt. Je bestanden blijven op je
+        apparaat &mdash; niets te uploaden, geen account aan te maken."""
+base = "Elke bewering op deze site is bedoeld om gecontroleerd te worden, niet om geloofd te worden."
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words. Everything with {{ }} in it is a name the build
+# resolves, and the build refuses to render a name it cannot find. Dutch sends
+# the verb to the end of the clause as readily as German does, which is why
+# these are whole sentences rather than fragments.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+languages = "Taal"
+breadcrumb = "Kruimelpad"
+all_tools = "Alle tools"
+last_updated = "Laatst bijgewerkt"
+built_tag = "Klaar"
+planned_count = "gepland"
+built_count = "klaar"
+
+guide_one = "gids"
+guide_many = "gidsen"
+
+footer_tools = "Tools"
+footer_site = "Deze site"
+footer_contact = "Contact"
+footer_sitemap = "Sitemap"
+footer_source = "Lees de code op GitHub"
+
+guarantees_note = """
+    Niets daarvan hoef je op ons woord aan te nemen.
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      Hoe je ziet of een tool je bestanden echt nodig heeft</a>
+    zet vier controles op een rij die je zelf kunt doen, op deze site en op elke
+    andere."""
+
+hub_guides_note = """
+    Weet je niet welke instelling je moet verzetten, of wat die kost?
+    <a href="{{ base }}{{ links.guides }}/">Bij elke tool hoort een
+    gids</a>."""
+
+hub_roadmap_note = """
+    Er komt meer aan, en de lijst is openbaar:
+    <a href="{{ base }}{{ links.roadmap }}/">bekijk wat er gepland staat</a>."""
+
+guides_all_note = """
+    Elke gids hier beschrijft een tool die op je eigen apparaat draait:
+    <a href="{{ base }}">bekijk ze allemaal</a>."""
+
+[ui.tool]
+view_source = "Bekijk de code"
+how_verified = "Hoe dit te controleren is"
+live_check = "Live controle:"
+offline = "Offline:"
+checking = "bezig met controleren&hellip;"
+questions_heading = "Vragen"
+guide_heading = "De uitgebreide versie"
+privacy_heading = "Hoe de privacybelofte te controleren is"
+
+pledge_line = """
+    Je {{ tool.words.plural }} worden <strong>nooit geüpload</strong>. Er is geen server."""
+
+boot_title = "De code van deze pagina is niet gestart."
+boot_body = """
+    <code>index.html</code> rechtstreeks uit een map openen blokkeert JavaScript-modules,
+    dus er gebeurt niets wanneer je {{ tool.words.choose }} kiest. Serveer de map in plaats daarvan
+    over http:"""
+boot_then = "Open daarna <code>http://localhost:8080/</code>."
+
+noscript_title = "JavaScript staat uit."
+noscript_body = "Deze app doet al zijn werk in je browser en kan er dus niet zonder."
+
+check_yourself = """
+      <strong>Controleer het zelf.</strong> Niets van het bovenstaande hoef je op
+      ons woord aan te nemen. Deze pagina wordt uit de sjablonen en de configuratie
+      in de repository gegenereerd door een buildscript dat je kunt lezen en zelf
+      kunt draaien, en het resultaat staat op de branch <code>dist</code> &mdash;
+      je kunt dus vergelijken wat er geserveerd wordt met wat een build van de
+      bronnen oplevert:"""
+
+read_first_lead = """
+      De bestanden die je het eerst wilt lezen zijn <code>config/site.toml</code>
+      voor de Content-Security-Policy"""
+
+[ui.guide]
+open_tool = "{{ tool.name | e }} openen"
+
+[ui.picker]
+warning = """
+      <strong>Dit is de enige functie die het netwerk aanraakt.</strong>
+      Een adres ophalen vertelt die server je IP-adres en welke {{ tool.picker.urls.noun }} je
+      hebt opgevraagd. De {{ tool.picker.urls.noun }} wordt bij aankomst naar het lokale geheugen
+      gekopieerd en nooit opnieuw opgevraagd. Er gaat nooit iets van jou naar
+      buiten &mdash; deze pagina kan nog steeds geen enkele upload doen."""
+label = "Eén adres per regel"
+note = """
+      De server moet cross-origin gebruik van zijn {{ tool.picker.urls.noun }}s toestaan. Veel sites doen dat
+      niet, en die mislukken met een melding in plaats van later stil kapot te gaan."""

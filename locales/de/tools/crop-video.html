@@ -1,0 +1,147 @@
+<main>
+  <!-- Schritt 1 &mdash; die Datei -->
+  <section class="card">
+    <h2><span class="step">1</span> Ein Video wählen</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Datei</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Größe</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Bild</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Länge</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Schritt 2 &mdash; der Zuschnitt -->
+  <section class="card" id="crop-card" hidden>
+    <h2><span class="step">2</span> Den Zuschnitt festlegen</h2>
+
+    <p class="stage-hint">
+      Ziehen Sie innen im Rahmen, um ihn zu verschieben, oder an einer Ecke, um
+      seine Größe zu ändern. Ist der Rahmen fokussiert, verschieben ihn die
+      Pfeiltasten um je ein Pixel,
+      <kbd>Alt</kbd>&nbsp;+&nbsp;Pfeiltasten ändern seine Größe, und mit
+      gehaltener <kbd>Umschalttaste</kbd> wird jeder Schritt zehn Pixel groß.
+    </p>
+
+    <!-- The crop box itself is added here by src/cropper.js. The stage is given
+         the video's own shape, so the box can be positioned in percentages and
+         needs no recalculating when the window is resized. -->
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <div class="crop-controls">
+      <div class="aspect-row" role="group" aria-label="Den Zuschnitt auf ein Seitenverhältnis festlegen">
+        <button type="button" data-aspect="free" class="active">Frei</button>
+        <button type="button" data-aspect="source">Original</button>
+        <button type="button" data-aspect="1:1">1:1</button>
+        <button type="button" data-aspect="4:5">4:5</button>
+        <button type="button" data-aspect="9:16">9:16</button>
+        <button type="button" data-aspect="16:9">16:9</button>
+        <button type="button" data-aspect="4:3">4:3</button>
+        <button type="button" data-aspect="3:2">3:2</button>
+        <button type="button" id="swap-aspect" class="ghost" title="Das festgelegte Seitenverhältnis auf die Seite legen">
+          Tauschen
+        </button>
+      </div>
+
+      <div class="numbers">
+        <label>Links<input type="number" id="crop-x" min="0" step="1"></label>
+        <label>Oben<input type="number" id="crop-y" min="0" step="1"></label>
+        <label>Breite<input type="number" id="crop-w" min="16" step="2"></label>
+        <label>Höhe<input type="number" id="crop-h" min="16" step="2"></label>
+        <div class="number-actions">
+          <button type="button" id="crop-max" class="ghost">Größtmöglich</button>
+          <button type="button" id="crop-centre" class="ghost">Zentrieren</button>
+          <button type="button" id="crop-reset" class="ghost">Ganzes Bild</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="even-note">
+      Breite und Höhe ändern sich in Zweierschritten, weil H.264 ein Einzelbild
+      mit ungerader Seitenlänge gar nicht speichern kann.
+    </p>
+  </section>
+
+  <!-- Schritt 3 &mdash; der Export -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Zuschneiden</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Ausgabe</label>
+        <select id="format">
+          <option value="mp4" selected>MP4 &mdash; Einzelbild für Einzelbild neu kodiert</option>
+          <option value="webm">WebM &mdash; beim Abspielen aufgezeichnet</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="quality">Qualität</label>
+        <select id="quality">
+          <option value="low">Kleinere Datei</option>
+          <option value="medium" selected>Ausgewogen</option>
+          <option value="high">Beste Qualität</option>
+        </select>
+        <p class="field-note">
+          Nie mehr, als das Original für denselben Ausschnitt ausgegeben hat
+          &mdash; eine Neukodierung darüber hinaus macht die Datei nur größer.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Den Ton behalten
+        </label>
+        <p class="field-note" id="audio-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Ausgabebild</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Behalten</dt><dd id="sum-kept">&mdash;</dd></div>
+      <div><dt>Länge</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Wie</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Video zuschneiden</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Video herunterladen</a>
+      </div>
+    </div>
+  </section>
+</main>

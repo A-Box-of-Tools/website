@@ -1,0 +1,294 @@
+#
+# 한국어.
+#
+# The frame: the hub, the guides index, the roadmap, the 404, the footer, and
+# the words the templates themselves use. Tools and guides are translated in
+# tools/ and pages/ beside this file.
+#
+# No [slugs] table, for the reason set out at length in locales/ja/locale.toml:
+# a Hangul slug would have to be percent-encoded to survive being pasted around,
+# and a romanised one is a phrase nobody searches for. Korean sites use ASCII
+# slugs. The keyword weight goes into the title, the description and the h1,
+# which are translated below.
+#
+# 해요체 rather than 합니다체 - warm without being casual, which is the register
+# a consumer tool speaks in Korean and the closest match to the plain, direct
+# English.
+#
+
+lang = "ko"
+name = "Korean"
+endonym = "한국어"
+
+complete = false
+
+#
+# ---------------------------------------------------------------------------
+# The hub.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "무료 브라우저 도구 &mdash; 업로드 없이, 가입 없이 | abox.tools"
+# 한국어 검색 결과는 대략 이 길이에서 잘립니다.
+description = "파일을 절대 업로드하지 않는 무료 도구. 이미지를 PDF나 MP4로 묶고, 원하는 용량으로 압축하고, 영상을 잘라내고, EXIF를 지웁니다. 모두 브라우저 안에서."
+heading = "서버를 건드리지 않는 도구들"
+og_title = "A Box of Tools &mdash; 서버를 건드리지 않는 도구들"
+og_description = "한 가지 일만 하는 작은 도구들이 브라우저 안에서 전부 처리합니다. 파일이 기기를 떠나지 않아요."
+og_image_alt = "abox.tools - 서버를 건드리지 않는 도구들"
+schema_description = "한 가지 일만 하는 작은 도구들이 모든 작업을 브라우저 안에서 끝냅니다. 아무것도 업로드되지 않고 계정도 필요 없습니다."
+schema_about = "파일을 업로드하지 않고 로컬에서 처리하는, 브라우저에서 동작하는 파일 도구"
+
+lede = """
+    한 가지 일만 하는 작은 도구들이 모든 작업을 여러분의 브라우저 안에서
+    처리합니다. 파일은 기기에 그대로 남아요. 업로드할 것도, 만들 계정도,
+    추적할 것도 없습니다."""
+
+support_note = """
+      이 도구들은 무료이고 앞으로도 그렇습니다. 덕분에 일이 줄었다면, 이곳이
+      이 사이트에서 여러분에게 무언가를 부탁하는 유일한 자리예요."""
+
+# 약속이 아니라 확인할 수 있는 세 가지 사실로 적었습니다(영어판과 같습니다).
+[[hub.guarantees]]
+title = "파일이 기기를 떠나는 일은 없습니다"
+body = """
+        파일을 열고 읽고 처리하는 것은 여러분의 브라우저와 여러분의 하드웨어
+        입니다. 각 도구의 <code>Content-Security-Policy</code>는 연결할 수 있는
+        주소를 모두 적어 두는데, 그중 우리 것은 하나도 없습니다."""
+
+[[hub.guarantees]]
+title = "파일에 관한 어떤 정보도 전송되지 않습니다"
+body = """
+        파일은 물론이고 미리보기 이미지도, 이름도, 용량도, 몇 개를 골랐는지도
+        보내지 않습니다. 여기 어떤 도구도 그것을 읽어 내보내지 않아요. 애초에
+        받아 갈 서버가 반대편에 없습니다."""
+
+[[hub.guarantees]]
+title = "오프라인에서도 동작합니다"
+body = """
+        도구를 한 번 연 뒤 인터넷을 끊어도 파일 작업은 그대로 이어집니다.
+        이건 흉내 내기 어려운 사실이에요. 처리하려고 파일을 어딘가로 보내는
+        도구라면 그 순간 멈춰 버릴 테니까요."""
+
+[[hub.categories]]
+name = "이미지와 영상"
+note = "사진과 영상을 누구에게도 넘기지 않고 다룹니다."
+
+[[hub.categories]]
+name = "GIF와 애니메이션"
+note = "애니메이션을 만들거나 분해합니다. 기기 밖으로 나가지 않습니다."
+
+[[hub.categories]]
+name = "오디오"
+note = "녹음을 누구에게도 넘기지 않고 다룹니다. 영상 속 소리도 마찬가지예요."
+
+[[hub.categories]]
+name = "문서와 PDF"
+note = "문서를 만들고 순서를 바꾸는 일을, 어딘가로 보내 처리하지 않고 합니다."
+
+[[hub.categories]]
+name = "코드와 데이터"
+note = "입력한 내용을 기계가 읽을 수 있는 형태로 바꿉니다. 페이지 밖으로 나가지 않습니다."
+
+[[hub.categories]]
+name = "텍스트와 코드"
+note = "읽기 좋게 만들고, 비교하고, 인코딩합니다. 토큰이나 설정 파일을 남의 서버에 붙여넣지 않고."
+
+#
+# ---------------------------------------------------------------------------
+# The guides index.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+nav = "가이드 전체"
+title = "가이드 &mdash; 어떻게 하는지, 그리고 각 선택이 무엇을 내주는지"
+description = "내 파일을 압축하고 크기를 바꾸고 잘라내고 다듬고 변환하는 방법을 쉬운 말로. 설정이 무슨 뜻인지, 무엇을 내주는지, 그리고 왜 업로드가 필요 없는지."
+heading = "가이드"
+lede = """
+    도구마다 하나씩. 용량이나 형식을 맞추라는 말을 듣고, 지금 움직이려는 그
+    설정이 실제로 무슨 일을 하는지 알고 싶은 분을 위해 썼습니다. 여기서 설명
+    하는 모든 일은 여러분의 기기 안에서 일어납니다."""
+og_title = "abox.tools 가이드"
+og_description = "내 파일을 압축하고 크기를 바꾸고 잘라내고 다듬고 변환하는 방법, 그리고 각 설정이 무엇을 내주는지. 업로드는 전혀 없습니다."
+og_image_alt = "abox.tools - 서버를 건드리지 않는 도구들"
+
+
+[[guides.groups]]
+name = "일을 해내기"
+note = "도구마다 하나씩. 어떤 작업인지, 어떤 설정이 중요한지, 그리고 그것이 무엇을 내주는지."
+
+[[guides.groups]]
+name = "무언가를 올리기 전에"
+note = "파일을 웹사이트에 건넨다는 것이 실제로 어떤 뜻인지, 그리고 그게 꼭 필요했는지 가려내는 법."
+
+#
+# ---------------------------------------------------------------------------
+# The roadmap. Only the frame - the list itself is config/planned.toml, which
+# has no locale file yet and is therefore still English on this page.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+nav = "로드맵"
+title = "로드맵 &mdash; abox.tools가 다음에 만들 것"
+description = "abox.tools에 예정된 도구를 묶어서 전부 공개합니다. 이미 완성된 것도 함께. 모두 브라우저에서 돌아가고 아무것도 업로드하지 않습니다."
+heading = "다음에 오는 것"
+lede = """
+    아래 두 목록에 있는 것은 모두 여러분의 브라우저 안에서 일을 하고 아무것도
+    업로드하지 않습니다 &mdash; 이름이 여기에 오르기 위해 통과해야 하는 규칙
+    이에요. 숫자는 어디에도 적어 두지 않았고, 빌드가 두 목록에서 세어 옵니다."""
+
+intro_heading = "이 목록을 만든 방법"
+intro = """
+    <p>
+      바람 목록이 아닙니다. 온라인에서 가장 큰 GIF·영상 사이트의 도구 목록
+      &mdash; 사람들이 파일에 대해 실제로 하고 싶어 하는 일의 목록에 가장
+      가까운 것 &mdash; 을 훑으면서, 작업이 여러분의 기기에서 일어나고 네트워크
+      를 뽑아도 계속 돌아가도록 만들 수 있는 항목만 남겼습니다.
+    </p>
+    <p>
+      남은 것 대부분은 브라우저가 이미 갖춘 API로 돌아갑니다. 몇 가지는 그것을
+      쓰는 하나의 도구 안에 코덱을 함께 넣어야 하는데, 그건 허용합니다 &mdash;
+      파일이 기기를 떠나지 않는다는 점은 변하지 않으니까요. 그 기준을 넘지
+      못한 것은 약속하지 않고 그냥 빼 두었습니다. 그래서 아래에서 뻔해 보이는
+      빈칸 몇 개는 일부러 비워 둔 것입니다.
+    </p>
+    <p>
+      이미 있는 도구는 각 묶음의 맨 위에 <em>완성</em> 표시와 함께 자기 페이지로
+      연결해 두었습니다. 그 아래는 아직 오지 않은 것들이고, 만들어지기 전까지는
+      링크가 되지 않습니다.
+    </p>"""
+
+planned_heading = "모든 종류의 파일과, 그것으로 할 수 있는 일"
+
+og_title = "abox.tools 로드맵"
+og_description = "무엇이 완성되었고 무엇이 다음인지. 모두 브라우저에서 돌아가고 아무것도 업로드하지 않습니다."
+og_image_alt = "abox.tools - 서버를 건드리지 않는 도구들"
+
+#
+# ---------------------------------------------------------------------------
+# The 404. Built in English only today, but translated anyway.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "페이지를 찾을 수 없습니다 &mdash; abox.tools"
+description = "그 주소는 abox.tools에 없습니다. 여기 있는 도구들은 이렇습니다. 모두 무료이고, 어느 것도 여러분의 파일을 어디로도 보내지 않습니다."
+heading = "이 페이지는 여기에 없습니다"
+tools_heading = "모든 도구를 한자리에"
+tools_note = "모두 무료, 모두 브라우저 안에서, 어느 것도 아무것도 올리지 않습니다."
+
+lede = """
+    주소에 오타가 있거나, 거기 있던 것이 자리를 옮겼습니다. 여러분의 파일에는
+    아무 일도 없었고 잃어버린 것도 없어요. 이 사이트는 잃어버릴 만한 것을
+    여러분에게서 받아 둔 적이 한 번도 없습니다."""
+
+#
+# ---------------------------------------------------------------------------
+# The footer.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        서버를 건드리지 않는 도구들. 파일은 여러분의 기기에 남습니다 &mdash;
+        업로드할 것도, 만들 계정도 없습니다."""
+base = "이 사이트의 모든 주장은 믿으라고가 아니라 확인하라고 쓴 것입니다."
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words. Everything with {{ }} in it is a name the build
+# resolves, and the build refuses to render a name it cannot find.
+#
+# Korean is verb-final without exception, so a sentence assembled from two
+# fragments either side of a value could never come out right. Written whole,
+# the value sits where Korean puts it.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+languages = "언어"
+breadcrumb = "탐색 경로"
+all_tools = "모든 도구"
+last_updated = "마지막 업데이트"
+built_tag = "완성"
+planned_count = "개 예정"
+built_count = "개 완성"
+
+# 한국어에는 단수·복수 구분이 없어 둘 다 같은 말입니다.
+guide_one = "개의 가이드"
+guide_many = "개의 가이드"
+
+footer_tools = "도구"
+footer_site = "이 사이트"
+footer_contact = "문의"
+footer_sitemap = "사이트맵"
+footer_source = "GitHub에서 코드 읽기"
+
+guarantees_note = """
+    이 가운데 어느 것도 그냥 믿으실 필요는 없습니다.
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      어떤 도구가 정말로 내 파일을 필요로 하는지 가려내는 법</a>
+    에서, 이 사이트든 다른 어떤 사이트든 직접 해 보실 수 있는 네 가지 확인
+    방법을 소개합니다."""
+
+hub_guides_note = """
+    어떤 설정을 움직여야 할지, 그게 무엇을 내주는지 모르겠다면.
+    <a href="{{ base }}{{ links.guides }}/">도구마다 가이드가 있습니다</a>."""
+
+hub_roadmap_note = """
+    더 나올 예정이고, 목록은 공개되어 있습니다:
+    <a href="{{ base }}{{ links.roadmap }}/">무엇이 예정되어 있는지 보기</a>."""
+
+guides_all_note = """
+    여기 가이드는 모두 여러분의 기기에서 돌아가는 도구에 대한 것입니다:
+    <a href="{{ base }}">전부 보기</a>."""
+
+[ui.tool]
+view_source = "소스 보기"
+how_verified = "확인하는 방법"
+live_check = "실시간 확인:"
+offline = "오프라인:"
+checking = "확인 중&hellip;"
+questions_heading = "자주 묻는 질문"
+guide_heading = "자세한 설명"
+privacy_heading = "이 약속을 확인하는 방법"
+
+pledge_line = """
+    여러분의 {{ tool.words.plural }}은 <strong>절대 업로드되지 않습니다</strong>. 서버 자체가 없습니다."""
+
+boot_title = "이 페이지의 코드가 시작되지 않았습니다."
+boot_body = """
+    <code>index.html</code>을 폴더에서 바로 열면 브라우저가 JavaScript 모듈을 막기 때문에,
+    {{ tool.words.choose }}을 골라도 아무 일도 일어나지 않습니다. 대신 폴더를 http로 제공해 주세요:"""
+boot_then = "그런 다음 <code>http://localhost:8080/</code>을 여세요."
+
+noscript_title = "JavaScript가 꺼져 있습니다."
+noscript_body = "이 앱은 모든 작업을 브라우저 안에서 하기 때문에 JavaScript 없이는 동작할 수 없습니다."
+
+check_yourself = """
+      <strong>직접 확인해 보세요.</strong> 위의 어느 것도 그냥 믿으실 필요는
+      없습니다. 이 페이지는 저장소 안의 템플릿과 설정으로부터, 여러분이 읽고 직접
+      실행할 수 있는 빌드 스크립트가 만들어 냅니다. 그 결과는 <code>dist</code>
+      브랜치에 올라가 있고요 &mdash; 그래서 실제로 제공되는 것과 소스를 빌드한
+      결과를 서로 비교해 보실 수 있습니다:"""
+
+read_first_lead = """
+      먼저 읽어 볼 만한 파일은 Content-Security-Policy를 담은
+      <code>config/site.toml</code>"""
+
+[ui.guide]
+open_tool = "{{ tool.name | e }} 열기"
+
+[ui.picker]
+warning = """
+      <strong>네트워크를 건드리는 기능은 이것 하나뿐입니다.</strong>
+      주소를 불러오면 그쪽 서버가 여러분의 IP 주소와 어떤 {{ tool.picker.urls.noun }}을 요청했는지를
+      알게 됩니다. {{ tool.picker.urls.noun }}은 도착하는 즉시 로컬 메모리로 복사되고 다시 요청되지
+      않습니다. 여러분 쪽에서 나가는 것은 아무것도 없습니다 &mdash; 이 페이지는
+      여전히 어떤 업로드도 할 수 없습니다."""
+label = "한 줄에 주소 하나"
+note = """
+      상대 서버가 {{ tool.picker.urls.noun }}의 교차 출처 사용을 허용해야 합니다. 허용하지 않는 사이트도
+      많은데, 그런 경우에는 나중에 조용히 망가지지 않고 메시지와 함께 실패합니다."""

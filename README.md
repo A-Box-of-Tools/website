@@ -690,12 +690,24 @@ All three are built from one list - `i18n.published` - so they cannot disagree
 about which languages the site has, which is the failure Google reports as
 "hreflang points to a page that is not indexed".
 
+A published language is also held to one more rule: every link on every one of
+its pages has to lead to a page that was actually built. That check exists
+because three separate bugs produced no error and no visible breakage, only
+pages quietly pointing at the wrong thing - a body.html reused as an English
+fallback carries English slugs, and a locale prefix counted as another level up
+sent every footer link out of its own language. Unfinished locales are exempt,
+because serving English bodies is exactly what they are doing on purpose.
+
 Setting `complete = true` turns every remaining fallback into a build failure,
 naming the strings. A language therefore gets stricter as it gets more
 finished, which is the direction that helps. Every build says how far the
 unfinished ones have to go:
 
-    de: 738 strings still in English (not advertised until complete = true)
+    es: 834 strings still in English (not advertised until complete = true)
+
+German is finished and is the worked example: `locales/de/` is what a complete
+locale looks like, and the nine others are framed but still fall back for their
+tools and guides.
 
 ### Adding a language
 

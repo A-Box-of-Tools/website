@@ -1,0 +1,306 @@
+#
+# 日本語.
+#
+# The frame: the hub, the guides index, the roadmap, the 404, the footer, and
+# the words the templates themselves use. Tools and guides are translated in
+# tools/ and pages/ beside this file.
+#
+# WHY THERE IS NO [slugs] TABLE
+#
+# Every other language here renames its URLs, because a slug is the one part of
+# a page's markup that is also a keyword. Japanese does not, and the omission is
+# deliberate rather than unfinished.
+#
+# A Japanese slug would have to be either percent-encoded UTF-8 -
+# /ja/%E7%94%BB%E5%83%8F%E5%9C%A7%E7%B8%AE/ - or romaji nobody types. The first
+# is unreadable the moment it is pasted anywhere that does not decode it, which
+# is most places, and would need the sitemap writer to learn percent-encoding.
+# The second gets the worst of both: not English, not Japanese, and not a phrase
+# anybody searches for. Japanese sites overwhelmingly use ASCII slugs for
+# exactly this reason.
+#
+# The keyword weight that a slug would have carried is carried by the title, the
+# description and the h1 instead, which are translated below and which matter
+# far more in Japanese search than the URL does. Same for ko, zh and hi.
+#
+# The register is です・ます throughout, which is what a consumer tool speaks.
+#
+
+lang = "ja"
+name = "Japanese"
+endonym = "日本語"
+
+complete = false
+
+#
+# ---------------------------------------------------------------------------
+# The hub.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "無料のブラウザツール &mdash; アップロード不要・登録不要 | abox.tools"
+# 全角で約60字。日本語の検索結果はこのあたりで切られます。
+description = "ファイルを一切アップロードしない無料ツール。画像をPDFやMP4にまとめる、指定サイズに圧縮する、動画を切り抜く、EXIFを削除する。すべてブラウザ内で完結します。"
+heading = "サーバーに触れない道具箱"
+og_title = "A Box of Tools &mdash; サーバーに触れない道具"
+og_description = "ひとつの用途だけを持つ小さな道具が、すべての処理をブラウザの中で行います。ファイルが手元の端末から出ることはありません。"
+og_image_alt = "abox.tools - サーバーに触れない道具"
+schema_description = "ひとつの用途だけを持つ小さなユーティリティが、すべての処理をブラウザの中で完結させます。何もアップロードされず、アカウントも不要です。"
+schema_about = "ファイルをアップロードせずにローカルで処理する、ブラウザ内で動くファイルユーティリティ"
+
+lede = """
+    ひとつの用途だけを持つ小さな道具が、すべての処理をあなたのブラウザの中で
+    行います。ファイルは手元の端末に残ります。アップロードするものはなく、
+    作るアカウントもなく、追跡するものもありません。"""
+
+support_note = """
+      これらの道具は無料で、これからも無料のままです。もし手間が省けたなら、
+      このサイトであなたに何かをお願いするのはここだけです。"""
+
+# 約束ではなく、確かめられる三つの事実として書いています（英語版と同じ）。
+[[hub.guarantees]]
+title = "ファイルが端末から出ることはありません"
+body = """
+        ファイルを開き、読み、処理するのは、あなた自身のブラウザとハードウェア
+        です。各ツールの <code>Content-Security-Policy</code> は接続してよい
+        アドレスをすべて明記していますが、そのどれも当サイトのものではありま
+        せん。"""
+
+[[hub.guarantees]]
+title = "ファイルに関する情報も一切送信されません"
+body = """
+        ファイル本体はもちろん、サムネイルも、ファイル名も、サイズも、選んだ
+        枚数も送られません。ここのどのツールもそれを読み出しません。そもそも
+        受け取る側にサーバーが存在しません。"""
+
+[[hub.guarantees]]
+title = "オフラインでも動きます"
+body = """
+        一度ツールを開いてから通信を切っても、これまでどおりファイルの処理を
+        続けられます。これは偽装しにくい事実です。処理のためにファイルをどこか
+        へ送っている道具なら、その時点で止まってしまうからです。"""
+
+[[hub.categories]]
+name = "画像と動画"
+note = "写真や映像を、誰にも預けずに扱えます。"
+
+[[hub.categories]]
+name = "GIFとアニメーション"
+note = "アニメーションを作る、あるいは分解する。どちらも端末の外には出ません。"
+
+[[hub.categories]]
+name = "音声"
+note = "録音を誰にも預けずに扱えます。動画の中の音声も同じです。"
+
+[[hub.categories]]
+name = "書類とPDF"
+note = "書類の作成や並べ替えを、どこかへ送って処理してもらうことなく行えます。"
+
+[[hub.categories]]
+name = "コードとデータ"
+note = "入力した内容を、機械が読み取れる形に変えます。ページの外には出ません。"
+
+[[hub.categories]]
+name = "テキストとコード"
+note = "読みやすくして、比べて、符号化する。トークンや設定ファイルを他人のサーバーに貼り付けることなく。"
+
+#
+# ---------------------------------------------------------------------------
+# The guides index.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+nav = "ガイド一覧"
+title = "ガイド &mdash; 作業の進め方と、それぞれの選択の代償"
+description = "自分のファイルを圧縮・リサイズ・切り抜き・カット・変換するための平易なガイド。設定が何を意味し、何を犠牲にするのか、そしてなぜアップロードが要らないのか。"
+heading = "ガイド"
+lede = """
+    ツールごとに一本。サイズや形式を指定されて、これから動かす設定が実際に
+    何をするのかを知っておきたい人のために書いています。ここで説明することは
+    すべて、あなた自身の端末の中で起こります。"""
+og_title = "abox.tools のガイド"
+og_description = "自分のファイルを圧縮・リサイズ・切り抜き・カット・変換する方法と、それぞれの設定の代償。アップロードは一切ありません。"
+og_image_alt = "abox.tools - サーバーに触れない道具"
+
+
+[[guides.groups]]
+name = "作業を進める"
+note = "ツールごとに一本。何をする作業なのか、どの設定が効くのか、そして何を犠牲にするのか。"
+
+[[guides.groups]]
+name = "アップロードする前に"
+note = "ファイルをウェブサイトに渡すとは実際どういうことか。そして、それが本当に必要だったかを見分ける方法。"
+
+#
+# ---------------------------------------------------------------------------
+# The roadmap. Only the frame - the list itself is config/planned.toml, which
+# has no locale file yet and is therefore still English on this page.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+nav = "ロードマップ"
+title = "ロードマップ &mdash; abox.tools が次に作るもの"
+description = "abox.tools で予定しているツールを分類してすべて公開しています。完成済みのものも併記。どれもブラウザ内で動き、何もアップロードしません。"
+heading = "次に来るもの"
+lede = """
+    以下の二つのリストに載るものはすべて、あなたのブラウザの中で処理を行い、
+    何もアップロードしません &mdash; それが、名前がここに載るために通らなけ
+    ればならない条件です。件数はどこにも書いていません。ビルドが二つのリスト
+    から数えています。"""
+
+intro_heading = "このリストの作り方"
+intro = """
+    <p>
+      願望リストではありません。オンラインで最大のGIF・動画サイトのツール一覧
+      &mdash; 人々がファイルに対して実際に何をしたがっているかの目録に最も近い
+      もの &mdash; を一通り見て、処理があなた自身の端末で行われ、しかも回線を
+      抜いたままでも動き続けるように作れる項目だけを残しました。
+    </p>
+    <p>
+      残ったものの大半は、ブラウザがすでに備えているAPIで動きます。いくつかは
+      それを使う一つのツールの中にコーデックを同梱する必要がありますが、それは
+      許容しています &mdash; ファイルが端末から出ないことに変わりはありません。
+      この条件を満たせないものは、約束せずに外しました。ですから、以下で一見
+      明らかに見える欠落のいくつかは、意図的な欠落です。
+    </p>
+    <p>
+      すでに存在するツールは各グループの先頭に <em>完成</em> と付けて、それぞれ
+      のページへのリンクとして並べています。その下にあるものはこれからで、
+      できあがるまでリンクにはなりません。
+    </p>"""
+
+planned_heading = "あらゆる種類のファイルと、それに対してできること"
+
+og_title = "abox.tools のロードマップ"
+og_description = "できているものと、次に来るもの。すべてブラウザ内で動き、何もアップロードしません。"
+og_image_alt = "abox.tools - サーバーに触れない道具"
+
+#
+# ---------------------------------------------------------------------------
+# The 404. Built in English only today, but translated anyway.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "ページが見つかりません &mdash; abox.tools"
+description = "そのアドレスは abox.tools には存在しません。存在するツールはこちらです。すべて無料で、どれもあなたのファイルをどこかへ送ることはありません。"
+heading = "このページはここにはありません"
+tools_heading = "すべてのツールを一か所に"
+tools_note = "すべて無料、すべてブラウザ内、どれも何もアップロードしません。"
+
+lede = """
+    アドレスに打ち間違いがあるか、そこにあったものが移動したかのどちらかです。
+    あなたのファイルには何も起きていませんし、何も失われていません。このサイト
+    は、失うようなものをあなたから預かったことが一度もありません。"""
+
+#
+# ---------------------------------------------------------------------------
+# The footer.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        サーバーに触れない道具。ファイルは手元の端末に残ります &mdash;
+        アップロードするものはなく、作るアカウントもありません。"""
+base = "このサイトのすべての主張は、信じるためではなく、確かめるために書かれています。"
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words. Everything with {{ }} in it is a name the build
+# resolves, and the build refuses to render a name it cannot find.
+#
+# Japanese puts the verb last without exception, so a sentence built by gluing
+# two fragments either side of a value could never come out right. Written
+# whole, the value sits where Japanese puts it.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+languages = "言語"
+breadcrumb = "パンくずリスト"
+all_tools = "すべてのツール"
+last_updated = "最終更新"
+built_tag = "完成"
+planned_count = "件が予定"
+built_count = "件が完成"
+
+# 日本語に単複の区別はないので、両方とも同じ語です。
+guide_one = "本のガイド"
+guide_many = "本のガイド"
+
+footer_tools = "ツール"
+footer_site = "このサイト"
+footer_contact = "お問い合わせ"
+footer_sitemap = "サイトマップ"
+footer_source = "GitHub でコードを読む"
+
+guarantees_note = """
+    以上のどれも、鵜呑みにしていただく必要はありません。
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      そのツールが本当にファイルを必要としているかの見分け方</a>
+    では、このサイトでも他のどのサイトでも、ご自分で試せる四つの確認方法を
+    紹介しています。"""
+
+hub_guides_note = """
+    どの設定を動かせばよいか、それが何を犠牲にするか迷ったら。
+    <a href="{{ base }}{{ links.guides }}/">ツールごとにガイドがあります</a>。"""
+
+hub_roadmap_note = """
+    まだ増えます。予定は公開しています:
+    <a href="{{ base }}{{ links.roadmap }}/">何を予定しているかを見る</a>。"""
+
+guides_all_note = """
+    ここのガイドはどれも、あなた自身の端末で動くツールについて書かれています:
+    <a href="{{ base }}">すべて見る</a>。"""
+
+[ui.tool]
+view_source = "ソースを見る"
+how_verified = "確かめ方"
+live_check = "実時間チェック:"
+offline = "オフライン:"
+checking = "確認中&hellip;"
+questions_heading = "よくある質問"
+guide_heading = "詳しい解説"
+privacy_heading = "この主張をどう確かめられるか"
+
+pledge_line = """
+    あなたの{{ tool.words.plural }}が<strong>アップロードされることはありません</strong>。サーバーがそもそも存在しません。"""
+
+boot_title = "このページのコードが起動しませんでした。"
+boot_body = """
+    <code>index.html</code> をフォルダーから直接開くと、ブラウザが JavaScript モジュールを
+    ブロックするため、{{ tool.words.choose }}を選んでも何も起きません。代わりに http で配信してください:"""
+boot_then = "そのうえで <code>http://localhost:8080/</code> を開いてください。"
+
+noscript_title = "JavaScript が無効になっています。"
+noscript_body = "このアプリはすべての処理をブラウザの中で行うため、JavaScript なしでは動作しません。"
+
+check_yourself = """
+      <strong>ご自分で確かめてください。</strong>以上のどれも、鵜呑みにしていただく
+      必要はありません。このページは、リポジトリ内のテンプレートと設定から、あなた
+      が読んで自分で実行できるビルドスクリプトによって生成され、その結果が
+      <code>dist</code> ブランチに置かれています &mdash; つまり、配信されている
+      ものと、ソースをビルドした結果とを差分で比べられます:"""
+
+read_first_lead = """
+      まず読む価値があるのは、Content-Security-Policy については
+      <code>config/site.toml</code>"""
+
+[ui.guide]
+open_tool = "{{ tool.name | e }} を開く"
+
+[ui.picker]
+warning = """
+      <strong>これは唯一、ネットワークに触れる機能です。</strong>
+      アドレスを取得すると、その相手のサーバーにあなたのIPアドレスと、どの{{ tool.picker.urls.noun }}を
+      要求したかが伝わります。{{ tool.picker.urls.noun }}は到着時にローカルメモリへ複製され、二度と
+      要求されません。あなたの側から何かが出ていくことはありません &mdash;
+      このページは相変わらず、いかなるアップロードもできません。"""
+label = "1行につき1つのアドレス"
+note = """
+      相手のサーバーが{{ tool.picker.urls.noun }}のクロスオリジン利用を許可している必要があります。許可して
+      いないサイトも多く、その場合は後で静かに壊れるのではなく、メッセージを出して失敗します。"""

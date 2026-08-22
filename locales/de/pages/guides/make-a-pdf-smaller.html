@@ -1,0 +1,240 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie den <a href="../../pdf-verkleinern/">PDF-Kompressor</a>, ziehen
+      Sie das Dokument hinein, und sehen Sie sich an, was er Ihnen sagt, bevor
+      Sie irgendetwas ändern. Er liest die Datei und zeigt, wo die Größe
+      tatsächlich steckt &mdash; Bilder, Schriften, Text und Zeichnung, und
+      alles, worauf im Dokument nichts mehr verweist. Dieser eine Bildschirm
+      beantwortet die Frage meistens.
+    </p>
+    <p>
+      Steckt der Großteil der Größe in Bildern, können Sie eine große Ersparnis
+      erwarten. Sind es Schriften und Text, können Sie das nicht, und kein
+      Werkzeug kann es. Welches von beiden Sie vor sich haben, ist die ganze
+      Geschichte, und es lohnt zehn Sekunden Hinsehen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wo die Größe eines PDFs wirklich steckt</h2>
+    <p>
+      Ein PDF ist ein Behälter für mehrere ganz verschiedene Dinge, und die
+      lassen sich nicht gleich gut komprimieren.
+    </p>
+    <ul>
+      <li>
+        <strong>Bilder.</strong> Fotografien und Scans. Fast immer der Großteil
+        eines großen PDFs, und der einzige Teil mit echtem Spielraum.
+      </li>
+      <li>
+        <strong>Eingebettete Schriften.</strong> Eine vollständige Schrift kann
+        hunderte Kilobyte groß sein; eine Teilmenge der tatsächlich benutzten
+        Zeichen ist weit weniger. So oder so wurden sie von dem Programm
+        komprimiert, das die Datei erzeugt hat.
+      </li>
+      <li>
+        <strong>Text und Vektorzeichnung.</strong> Anweisungen statt Pixel:
+        zeichne diese Linie, setze dieses Wort hierhin. Ohnehin kompakt und
+        ohnehin komprimiert.
+      </li>
+      <li>
+        <strong>Objekte, auf die nichts mehr zeigt.</strong> PDFs sammeln davon
+        an. Ein Dokument zu bearbeiten hängt die Änderung oft an, statt die Datei
+        neu zu schreiben &mdash; eine alte Fassung einer Seite kann also
+        unbegrenzt darin sitzen bleiben. Das Neupacken der Datei wirft sie weg.
+      </li>
+    </ul>
+    <p>
+      Die beiden Dokumente, die Menschen zu einem PDF-Kompressor bringen, haben
+      also völlig verschiedene Aussichten. Ein gescanntes Dokument ist im
+      Wesentlichen ein Stapel Fotografien und wird üblicherweise 60&ndash;90&nbsp;%
+      kleiner. Ein Vertrag, eine Abschlussarbeit oder ein exportierter Bericht
+      besteht aus Text, Zeichnung und Schriften &mdash; alle bereits von der
+      Software komprimiert, die sie geschrieben hat &mdash; und die Ersparnis
+      liegt dort meist bei wenigen Prozent, aus dem Neupacken und dem Wegfallen
+      des Unverwiesenen.
+    </p>
+    <p>
+      Jedes Werkzeug, das &bdquo;bis zu 90&nbsp;% kleiner&ldquo; verspricht, ohne
+      Ihre Datei anzusehen, nennt den besten Fall der ersten Sorte für die
+      zweite.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was DPI damit zu tun hat</h2>
+    <p>
+      Ein PDF hält nicht nur ein Bild; es hält fest, wie groß dieses Bild auf der
+      Seite gezeichnet wird. Das gibt Ihnen etwas Nützlicheres als die Pixelzahl:
+      die effektive Auflösung.
+    </p>
+    <p>
+      Ein 4000 Pixel breiter Scan, über zwanzig Zentimeter Papier gelegt, trägt
+      rund 500 Pixel pro Zoll. Ein Bildschirm zeigt etwa 100. Ein guter
+      Bürodrucker arbeitet mit 300 und kann kaum mehr nutzen. Alles darüber ist
+      Detail, das nichts in der Zukunft dieses Dokuments je darstellen wird
+      &mdash; und es ist meist der Großteil der Datei.
+    </p>
+    <p>
+      Deshalb fragt ein vernünftiger PDF-Kompressor nach einer DPI-Zahl und nicht
+      nach einem Qualitätsprozentsatz. Er wirft zuerst die Pixel oberhalb Ihres
+      Wertes weg, weil die nichts kosten, was irgendjemand sehen kann, und
+      beginnt erst danach, echte Qualität auszugeben.
+    </p>
+    <p>
+      Grobe Richtschnur: <strong>150 DPI</strong> für ein Dokument, das am
+      Bildschirm gelesen wird, <strong>200&ndash;300</strong> für etwas, das
+      gedruckt wird, <strong>72&ndash;100</strong> für einen Entwurf, den niemand
+      aufhebt. Daran zu messen, wie groß das Bild gezeichnet wird, ist auch der
+      Grund, warum ein klein platziertes Logo nicht wie ein ganzseitiger Scan
+      behandelt wird &mdash; das Logo ist schon nahe an seiner effektiven
+      Auflösung, da ist nichts zu holen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was das Komprimieren anfassen sollte und was nicht</h2>
+    <p>
+      Die Bilder werden neu kodiert, die verlieren also ein wenig. Sonst sollte
+      überhaupt nichts angefasst werden, und es lohnt sich zu prüfen, ob das
+      Werkzeug, das Sie benutzen, sich daran hält:
+    </p>
+    <ul>
+      <li>
+        <strong>Text bleibt Text.</strong> Markierbar, durchsuchbar, kopierbar.
+        Ein Kompressor, der Seiten zu Bildern plattdrückt, erzeugt eine sehr
+        kleine Datei und zerstört das Dokument &mdash; Sie können es nicht
+        durchsuchen, Screenreader können es nicht lesen, und rückgängig machen
+        lässt es sich nie.
+      </li>
+      <li>
+        <strong>Schriften bleiben vollständig.</strong> Schriften zu ersetzen
+        ändert, wie das Dokument auf dem Gerät eines anderen aussieht &mdash; und
+        genau das zu verhindern ist der einzige Zweck von PDF.
+      </li>
+      <li>
+        <strong>Vektorzeichnung wird exakt übernommen.</strong> Sie ist ohnehin
+        klein, und sie zu rastern würde sie größer und schlechter machen.
+      </li>
+      <li>
+        <strong>Formulare, Links, Lesezeichen, Barrierefreiheitsstruktur und
+        Anhänge werden mitgenommen.</strong> Die gehen bei einem Neuschreiben
+        leicht verloren und fallen selten auf, bis jemand eines davon braucht.
+      </li>
+    </ul>
+    <p>
+      Eine verwandte Regel, an die sich ein Kompressor halten sollte und viele
+      sich nicht halten: Wird eine neu kodierte Datei nicht tatsächlich kleiner
+      als das Original, gehören die Originalbytes zurück. Ein Bild ohne Ersparnis
+      zu verschlechtern ist der Fall reinen Verlusts, und er passiert häufiger,
+      als man denkt &mdash; bei Bildern, die schon gut komprimiert waren.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Bilder, die sich nicht komprimieren lassen</h2>
+    <p>
+      Manche Bilder in einem PDF werden übersprungen, und ein gutes Werkzeug
+      benennt sie, statt sie stillschweigend aus der Rechnung zu lassen:
+    </p>
+    <ul>
+      <li>
+        <strong>JPEG&nbsp;2000, JBIG2 und faxkodierte (CCITT-)Bilder.</strong>
+        Kein Browser bringt für eines davon einen Decoder mit, sie werden also
+        unangetastet durchgereicht. Die letzten beiden sind Zweiton-Formate
+        &mdash; nur Schwarz und Weiß &mdash; und ohnehin meist schon nahe an
+        ihrem Minimum.
+      </li>
+      <li>
+        <strong>CMYK-Bilder.</strong> Bewusst unberührt gelassen. Sie neu zu
+        kodieren riskiert, die Farben zu verschieben, die ein Drucker erzeugen
+        würde &mdash; ein überraschender Eingriff in ein Dokument, das jemand
+        drucken wird.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Was Sie vor dem Komprimieren versuchen sollten</h2>
+    <p>
+      Manchmal ist die Datei aus einem Grund groß, auf den Komprimieren die
+      falsche Antwort ist.
+    </p>
+    <p>
+      <strong>Wurde gescannt, wo es nicht nötig war?</strong> Ein gedrucktes und
+      dann gescanntes Dokument ist ein Stapel Fotografien von Text. Existiert das
+      Original irgendwo noch als Dokument, ergibt ein PDF-Export daraus eine
+      Datei, die einen Bruchteil so groß und dazu durchsuchbar ist.
+    </p>
+    <p>
+      <strong>Wurde mit Druckeinstellungen exportiert?</strong>
+      Textverarbeitungen und Layoutprogramme wählen oft standardmäßig einen
+      Export in Druckqualität. Aus der Quelldatei neu für den Bildschirm zu
+      exportieren schlägt meist das Komprimieren des Exports.
+    </p>
+    <p>
+      <strong>Muss es eine Datei sein?</strong> Ein E-Mail-Limit gilt je
+      Nachricht. Ein 200-seitiges Dokument in Kapitel zu teilen ist manchmal die
+      ehrliche Lösung.
+    </p>
+  </section>
+
+  <section>
+    <h2>Verschlüsselte Dateien, und warum ein Kompressor sie ablehnen sollte</h2>
+    <p>
+      Ein passwortgeschütztes PDF wird vom Werkzeug hier abgelehnt, und das ist
+      Absicht und keine fehlende Funktion &mdash; auch dann, wenn das Passwort
+      leer ist, und genau so speichern viele Scanner und Kopierer.
+    </p>
+    <p>
+      Einem Dokument den Schutz zu nehmen ist eine andere Aufgabe als es zu
+      komprimieren. Ein Werkzeug, das es stillschweigend täte, würde etwas tun,
+      worum Sie nicht gebeten haben &mdash; an einer Datei, die jemand bewusst
+      verschlossen hat &mdash; und Ihnen eine Kopie zurückgeben, die jene
+      Eigenschaft nicht mehr hat, die sie haben sollte. Nehmen Sie den Schutz
+      vorher selbst weg, bewusst, wenn Sie das wollen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Das Ergebnis prüfen</h2>
+    <p>
+      Öffnen Sie es. Sehen Sie sich die Bilder bei voller Vergrößerung an, prüfen
+      Sie, ob der Text noch markierbar ist, und bestätigen Sie die Seitenzahl.
+    </p>
+    <p>
+      Das Werkzeug hier erledigt das Letzte für Sie, bevor es die Datei anbietet:
+      Es öffnet das eben geschriebene Dokument erneut und zählt die Seiten, auf
+      Ihrem eigenen Gerät. Es schreibt außerdem PDF 1.5, das jeder seit 2003
+      ausgelieferte Reader versteht &mdash; &bdquo;es öffnet auf meinem
+      Gerät&ldquo; ist damit ein vernünftiger Ersatz für &bdquo;es öffnet auf
+      ihrem&ldquo;.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum das keinen Server braucht</h2>
+    <p>
+      Ein PDF zu komprimieren klingt nach Serverarbeit, und den größten Teil der
+      Geschichte des Web war es das auch. Tatsächlich besteht es darin, die
+      Dateistruktur zu zerlegen, die Bildströme zu finden, diese mit den Codecs
+      zu dekodieren und neu zu kodieren, die ein Browser ohnehin mitbringt, und
+      das Dokument wieder herauszuschreiben. Das alles läuft heute in einem
+      Browser.
+    </p>
+    <p>
+      Und das zählt bei diesem Dateityp mehr als bei den meisten, wegen dessen,
+      was Menschen komprimieren: Verträge, Arztbriefe, Kontoauszüge,
+      Ausweispapiere, Steuererklärungen. Das Werkzeug hier hat überhaupt keine
+      Netzfunktion, und die <code>Content-Security-Policy</code> der Seite nennt
+      jede Adresse, die sie kontaktieren darf; keine davon gehört zu dieser
+      Seite. Laden Sie sie, ziehen Sie den Stecker, und komprimieren Sie trotzdem
+      etwas.
+    </p>
+    <p>
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
+      zu Online-Konvertern hochzuladen?</a> nennt drei weitere Prüfungen dieser
+      Art.
+    </p>
+  </section>

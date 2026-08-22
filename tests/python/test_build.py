@@ -366,12 +366,11 @@ class BuildTheSite(unittest.TestCase):
         hidden = [name for name in self.written if self.unpublished(name)]
         self.assertTrue(hidden, 'no unfinished locale in the tree to check')
         for name in hidden:
+            # The whole URL, not the path fragment. A bare "es/" is a substring
+            # of "guides/", so a locale prefix that happens to fall inside an
+            # English slug would report itself as published when it is not.
             slug = name[:-len('index.html')]
-            with self.subTest(page=name):
-                # The whole <loc>, not the slug on its own: a bare "de/" is a
-                # substring of an English address that happens to end in those
-                # letters - /qr-barcode/ does - and this test spent an
-                # afternoon reporting one of those as a leaked translation.
+            with self.subTest(page=slug):
                 self.assertNotIn(f'<loc>{site["domain"]}{slug}</loc>', sitemap)
 
     def test_an_unfinished_language_is_never_offered(self):

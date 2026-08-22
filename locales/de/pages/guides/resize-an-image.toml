@@ -1,0 +1,17 @@
+#
+# Ratgeber: Ein Bild skalieren, ohne es zu ruinieren - German.
+#
+
+nav = "Ein Bild skalieren"
+title = "Ein Bild skalieren, ohne es zu ruinieren"
+description = "Was mit einem Bild passiert, wenn Sie seine Pixelmaße ändern: warum Verkleinern unbedenklich ist und Vergrößern nicht, was zu tun ist, wenn der Rahmen das falsche Verhältnis hat, und wann Sie besser zuschneiden."
+heading = "Wie Sie ein Bild skalieren, ohne es zu ruinieren"
+lede = """
+    Skalieren ist die eine Bildaufgabe, bei der der Schaden schon vor dem Klick
+    feststeht &mdash; durch die Zahl, die Sie eintippen, und das Verhältnis, das
+    Sie verlangen. Hier steht, was jede dieser Entscheidungen mit dem Bild macht
+    und welche davon sich rückgängig machen lässt."""
+updated = "20. August 2026"
+og_title = "Ein Bild skalieren, ohne es zu ruinieren"
+og_description = "Warum Verkleinern unbedenklich ist und Vergrößern nicht, was zu tun ist, wenn der Rahmen das falsche Verhältnis hat, und wann Sie besser zuschneiden."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

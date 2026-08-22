@@ -1,0 +1,16 @@
+#
+# Nutzungsbedingungen - German. Overrides for pages/terms/page.toml.
+#
+
+nav = "Nutzungsbedingungen"
+title = "Nutzungsbedingungen &mdash; abox.tools"
+description = "Die Bedingungen, unter denen diese Seite angeboten wird: kostenlos, wie sie ist, ohne Konto, ohne Gewährleistung - und Ihre Dateien bleiben ganz die Ihren, weil sie uns nie erreichen."
+heading = "Nutzungsbedingungen"
+lede = """
+    Es gibt kein Konto zu eröffnen und keine Vereinbarung zu unterschreiben,
+    also fallen diese kurz aus. Sie beschreiben, was Sie von dieser Seite
+    erwarten dürfen und was sie nicht verspricht."""
+updated = "19. August 2026"
+og_title = "Nutzungsbedingungen &mdash; abox.tools"
+og_description = "Kostenlos, wie sie ist, ohne Konto, ohne Gewährleistung. Ihre Dateien bleiben ganz die Ihren."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

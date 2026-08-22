@@ -1,0 +1,199 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie <a href="../../bilder-in-video-umwandeln/">Bilder in Video</a>,
+      ziehen Sie die Bilder hinein, bringen Sie sie in die Reihenfolge, legen Sie
+      fest, wie lange jedes stehen bleibt, und erzeugen Sie das Video. Sie
+      bekommen ein MP4 mit H.264-Video, das praktisch überall abspielt.
+    </p>
+    <p>
+      Die beiden Einstellungen, die am häufigsten einen zweiten Durchgang nötig
+      machen, sind die Standzeit und die Auflösung &mdash; und es lohnt sich,
+      sie vor dem ersten Rendern zu verstehen statt danach.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bildrate und Standzeit sind nicht dasselbe</h2>
+    <p>
+      Das ist die Verwechslung, die Menschen einen zweiten Render kostet.
+    </p>
+    <p>
+      Die <strong>Standzeit</strong> ist, wie lange jedes Bild auf dem Schirm
+      bleibt. Das ist die Einstellung, um die es Ihnen wirklich geht. Drei
+      Sekunden sind ein bequemer Standardwert für eine Diashow, die jemand
+      ansieht; ein bis zwei Sekunden wirken flott; alles über fünf zieht sich,
+      sofern nicht jemand darüber spricht.
+    </p>
+    <p>
+      Die <strong>Bildrate</strong> ist, wie oft pro Sekunde das Video dieses
+      Bild wiederholt. Am Aussehen der Diashow ändert sie nichts &mdash; ein
+      Standbild, das drei Sekunden steht, sieht bei 24 Bildern pro Sekunde
+      genauso aus wie bei 60 &mdash;, an Dateigröße und Kodierzeit aber eine
+      ganze Menge.
+    </p>
+    <p>
+      Für eine schlichte Diashow wählen Sie also eine niedrige Bildrate. 24 oder
+      30 sind reichlich. Höher zu gehen lohnt nur, wenn Bewegung im Video ist:
+      ein Schwenk oder Zoom über jedes Foto, oder eine Überblendung dazwischen
+      &mdash; dort zeigt sich eine niedrige Bildrate als sichtbares Ruckeln.
+    </p>
+  </section>
+
+  <section>
+    <h2>Auflösung, und Bilder im falschen Format</h2>
+    <p>
+      Ein Video hat über seine ganze Länge eine einzige Bildgröße. Ihre Fotos
+      teilen sich mit ziemlicher Sicherheit nicht alle eine, also muss mit denen,
+      die nicht hineinpassen, etwas geschehen &mdash; und dieses Etwas ist die
+      Entscheidung, die man bewusst treffen sollte.
+    </p>
+    <p>
+      Fangen Sie damit an, die Auflösung danach zu wählen, wohin das Video geht:
+    </p>
+    <ul>
+      <li>
+        <strong>1920&times;1080</strong> für alles Allgemeine. Universell
+        unterstützt, spielt überall, und ist das, was die meisten mit HD meinen.
+      </li>
+      <li>
+        <strong>1080&times;1920</strong> &mdash; dieselben Zahlen andersherum
+        &mdash; für ein Ziel, das zuerst aufs Telefon schaut: Stories, Reels,
+        Shorts.
+      </li>
+      <li>
+        <strong>3840&times;2160</strong> nur dann, wenn die Bilder wirklich so
+        viel Detail haben und das Ziel es auch zeigt. Es sind viermal so viele
+        Pixel, viermal die Kodierzeit und ungefähr viermal die Datei.
+      </li>
+    </ul>
+    <p>
+      Entscheiden Sie dann, was mit den Abweichlern passiert. Jedes Bild in den
+      Rahmen einzupassen behält es vollständig und lässt Balken an den Seiten
+      &mdash; sicher, und die richtige Antwort, wenn die Bilder wichtiger sind
+      als die Präsentation. Den Rahmen auszufüllen und den Überstand
+      abzuschneiden sieht besser aus und schneidet manchen davon oben etwas ab.
+      Hoch- und Querformatfotos in einem Video zu mischen ist der Fall, für den
+      es keine gute Antwort gibt; vorher zu entscheiden, in welche Richtung Sie
+      lieber falsch liegen, erspart einen zweiten Render.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Reihenfolge, und die Dateinamen-Falle</h2>
+    <p>
+      Wie bei jeder Stapelverarbeitung sortieren sich Dateinamen anders, als Sie
+      gezählt haben. <code>foto2.jpg</code> kommt in einer alphabetischen
+      Sortierung nach <code>foto10.jpg</code>, weil Zeichen für Zeichen
+      verglichen wird.
+    </p>
+    <p>
+      Nach Aufnahmedatum zu sortieren ist bei Fotos von einem Ereignis meist
+      richtig, denn Sie haben sie in der Reihenfolge aufgenommen, in der es
+      geschah. Die Kacheln zu ziehen ist richtig für alles, wo die Geschichte
+      nicht chronologisch ist. Prüfen Sie es vor dem Rendern: Das Video ist das
+      eine Erzeugnis, bei dem eine Korrektur der Reihenfolge bedeutet, die ganze
+      Arbeit noch einmal zu machen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Es gibt keine Tonspur, und das ist keine Kleinigkeit</h2>
+    <p>
+      Das MP4, das dieses Werkzeug schreibt, hat eine einzige Videospur und
+      überhaupt keine Tonspur. Braucht Ihre Diashow Musik oder eine Erzählstimme,
+      brauchen Sie für diesen Schritt ein Schnittprogramm.
+    </p>
+    <p>
+      Es lohnt sich zu wissen, warum, und nicht nur, dass: Ton hinzuzufügen
+      heißt, eine Musikdatei zu dekodieren, sie nach AAC zu kodieren und sie im
+      Container mit dem Video zu verschachteln. Alle drei sind echte Arbeit, und
+      schlecht gemacht ergeben sie eine Datei, die beim Abspielen aus dem Takt
+      läuft. Es steht auf der Liste, statt halbfertig dazustehen.
+    </p>
+    <p>
+      Ein praktischer Hinweis, falls Sie die Musik hinterher hinzufügen: Wählen
+      Sie zuerst das Stück und stellen Sie die Standzeit je Bild so ein, dass die
+      Diashow ungefähr auf die Länge des Liedes kommt. Die Musik auf das Video zu
+      kürzen klingt immer schlechter, als das Video auf die Musik zu legen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was herauskommt, und was zu tun ist, wenn es nicht abspielt</h2>
+    <p>
+      MP4 mit H.264 ist das Ziel, und es ist die am breitesten abspielbare
+      Kombination, die es gibt. In einem Browser ohne WebCodecs weicht das
+      Werkzeug darauf aus, stattdessen WebM aufzuzeichnen &mdash; dasselbe
+      Material in einem Container, den weniger Schnittprogramme und soziale
+      Plattformen annehmen.
+    </p>
+    <p>
+      Landen Sie bei einem WebM und irgendetwas weist es zurück, ist die Lösung
+      ein Browser mit WebCodecs und keine Umwandlung: Aktuelle Fassungen von
+      Chrome, Edge und Safari können es alle. Neu zu rendern ist besser als
+      umzuwandeln, denn Umwandeln heißt eine weitere Generation verlustbehafteter
+      Kodierung.
+    </p>
+    <p>
+      Im Werkzeug ist keine Grenze dafür eingebaut, wie viele Bilder Sie
+      verwenden können. Die Obergrenze ist der Arbeitsspeicher Ihres Geräts, denn
+      das fertige Video wird dort zusammengesetzt, bevor Sie es herunterladen
+      &mdash; eine lange 4K-Diashow ist das Erste, was sie zu spüren bekommt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Datei kleiner machen</h2>
+    <p>
+      Ist das Ergebnis zu groß für sein Ziel, in der Reihenfolge dessen, was
+      wirklich hilft:
+    </p>
+    <p>
+      <strong>Die Bildrate senken.</strong> Bei einer Diashow aus Standbildern
+      kostet das nichts Sichtbares und ist die größte einzelne Ersparnis, die zu
+      haben ist.
+    </p>
+    <p>
+      <strong>Die Auflösung senken.</strong> 1080p statt 4K ist ein Viertel der
+      Pixel, und auf einem Telefonbildschirm merkt es niemand.
+    </p>
+    <p>
+      <strong>Es kürzen.</strong> Drei Sekunden je Bild statt fünf sind
+      40&nbsp;% weniger Länge und 40&nbsp;% weniger Datei &mdash; und meist die
+      bessere Diashow.
+    </p>
+    <p>
+      Die Ausgangsfotos vorher zu verkleinern hilft kaum. Das Video wird ohnehin
+      in der von Ihnen gewählten Auflösung kodiert, ein Foto mit 4000 Pixeln und
+      eines mit 2000 ergeben in einem 1080p-Video also fast dieselbe Byte-Zahl.
+      Es macht die Kodierung schneller, und es verschiebt jene
+      Speicher-Obergrenze.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum das keinen Server braucht - mit einer genannten Ausnahme</h2>
+    <p>
+      Video zu kodieren war einmal der klarste Fall fürs Hochladen: Browser
+      konnten es nicht, und eine Maschine mit FFmpeg schon. WebCodecs hat das
+      geändert, indem es den Hardware-Encoder zugänglich macht, der ohnehin in
+      Ihrem Gerät steckt &mdash; denselben, mit dem Ihr Telefon Video in Echtzeit
+      aufnimmt. Die Einzelbilder zusammenzusetzen ist eine Leinwand. Keiner der
+      beiden Schritte braucht etwas anderes als Ihre eigene Hardware.
+    </p>
+    <p>
+      Eine Ausnahme bei genau diesem Werkzeug, ausgesprochen statt vergraben: Die
+      optionale Funktion &bdquo;von einer Webadresse hinzufügen&ldquo; holt ein
+      Bild von einer Adresse, die Sie einfügen, und der Server an jener Adresse
+      sieht Ihre IP und was Sie angefordert haben. Das gehört zur Funktion und
+      ist kein Fehler darin, und es ist der einzige Netzschritt im ganzen
+      Werkzeug. Benutzen Sie sie nicht, und es verlässt überhaupt nichts Ihr
+      Gerät.
+    </p>
+    <p>
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
+      zu Online-Konvertern hochzuladen?</a> nennt vier Prüfungen, die Ihnen
+      dasselbe über jedes Werkzeug sagen &mdash; auch über dieses.
+    </p>
+  </section>

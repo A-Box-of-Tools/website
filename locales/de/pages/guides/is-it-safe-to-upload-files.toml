@@ -1,0 +1,17 @@
+#
+# Ratgeber: Ist das Hochladen von Dateien sicher? - German.
+#
+
+nav = "Ist das Hochladen sicher?"
+title = "Ist es sicher, Dateien zu Online-Konvertern hochzuladen?"
+description = "Die meisten Online-Konverter schicken Ihre Datei an einen Server. Was das bedeutet, was dort damit geschieht, und vier Prüfungen, die zeigen, ob ein Werkzeug es überhaupt nötig hat."
+heading = "Ist es sicher, Dateien zu Online-Konvertern hochzuladen?"
+lede = """
+    Die ehrliche Antwort lautet meist: &bdquo;Wahrscheinlich schon, aber Sie
+    können es nicht nachprüfen.&ldquo; Hier steht, was das Hochladen mit Ihrer
+    Datei tatsächlich macht, warum die meisten Werkzeuge es trotzdem tun, und
+    vier Tests, die zeigen, ob das Werkzeug vor Ihnen es nötig hat."""
+updated = "20. August 2026"
+og_title = "Ist es sicher, Dateien zu Online-Konvertern hochzuladen?"
+og_description = "Was mit einer Datei geschieht, die Sie zu einem Konverter hochladen, warum die meisten Werkzeuge danach fragen, und vier Prüfungen, die Sie selbst durchführen können."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

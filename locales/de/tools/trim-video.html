@@ -1,0 +1,225 @@
+<main>
+  <!-- Schritt 1 &mdash; das Video -->
+  <section class="card">
+    <h2><span class="step">1</span> Ein Video wählen</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <!-- One row a video, in the order they will be joined. Hidden until there
+         is more than one, because a list of one is furniture. -->
+    <ol class="clip-list" id="clip-list" hidden></ol>
+
+    <p id="join-note" class="path-note" hidden></p>
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Schritt 2 &mdash; die Markierungen -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> Die gewünschten Teile markieren
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      Spielen Sie es durch und drücken Sie <kbd>I</kbd>, wo ein Teil beginnen
+      soll, und <kbd>O</kbd>, wo er enden soll. Tun Sie das so oft Sie wollen
+      &mdash; jedes Paar wird zu einer Zeile darunter, und das fertige Video
+      besteht aus diesen Zeilen, eine nach der anderen. <kbd>U</kbd> macht die
+      letzte rückgängig, <kbd>Leertaste</kbd> spielt ab und pausiert, und die
+      Pfeiltasten springen fünf Sekunden.
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- Built by src/timeline.js: a band for every segment, the one being
+         marked, a tick for every keyframe, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">Abspielen</button>
+      <button type="button" id="back-5" class="ghost" title="Fünf Sekunden zurück">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="Fünf Sekunden vor">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> Anfang setzen</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> Ende setzen</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> Rückgängig</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="Wiedergabetempo">
+      <span class="speed-label">Tempo</span>
+      <button type="button" class="speed" data-speed="0.25">0,25&times;</button>
+      <button type="button" class="speed" data-speed="0.5">0,5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0,75&times;</button>
+      <button type="button" class="speed active" data-speed="1">Normal</button>
+      <button type="button" class="speed" data-speed="1.25">1,25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1,5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The segments themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>Abschnitte <span class="segment-count" id="segment-count">noch keine</span></h3>
+        <p class="segments-total">
+          Behalten insgesamt <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">Anfang</th>
+            <th scope="col">Ende</th>
+            <th scope="col">Länge</th>
+            <th scope="col"><span class="visually-hidden">Aktionen</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        Noch nichts markiert. Drücken Sie <kbd>I</kbd> und dann <kbd>O</kbd>,
+        während es läuft, oder nehmen Sie die Schaltflächen oben.
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">Eine Zeile von Hand hinzufügen</button>
+        <button type="button" id="reset-segments" class="ghost danger">Alle löschen</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">Markierungen laden&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="Format der Zeitstempeldatei">
+          <option value="seconds" selected>Sekunden</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">Markierungen speichern</button>
+      </div>
+
+      <p class="field-note">
+        Die Markierungen werden als reine Textdatei gespeichert &mdash; eine
+        Zeile je Abschnitt, im Format oben &mdash; damit eine lange
+        Markierungssitzung einen geschlossenen Tab überlebt und dieselbe Datei
+        an jedes Werkzeug übergeben werden kann, das dieses Layout liest.
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>Was mit den markierten Teilen geschehen soll</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>Sie behalten</strong>
+          Das fertige Video besteht aus den markierten Teilen, der Reihe nach zusammengefügt.
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>Sie herausschneiden</strong>
+          Die markierten Teile verschwinden, und alles andere wird zusammengefügt.
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Schritt 3 &mdash; der Export -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Schneiden</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="method">Wie geschnitten wird</label>
+        <select id="method">
+          <option value="copy" selected>Jedes Byte behalten &mdash; nichts wird neu kodiert</option>
+          <option value="exact">Genau hier schneiden &mdash; kodiert das Bild neu</option>
+          <option value="record">Beim Abspielen aufzeichnen</option>
+        </select>
+        <p class="field-note" id="method-note"></p>
+      </div>
+
+      <div class="field" id="frame-field" hidden>
+        <label for="frame">Bildgröße</label>
+        <select id="frame">
+          <option value="first" selected>An das erste Video anpassen</option>
+          <option value="largest">An das größte anpassen</option>
+          <option value="1080p">1920 &times; 1080</option>
+          <option value="720p">1280 &times; 720</option>
+        </select>
+        <p class="field-note">
+          Eine Größe gilt für die ganze Datei. Ein Video mit anderem
+          Seitenverhältnis wird mit Balken hineingepasst, nie gedehnt.
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Qualität</label>
+        <select id="quality">
+          <option value="low">Kleinere Datei</option>
+          <option value="medium" selected>Ausgewogen</option>
+          <option value="high">Beste Qualität</option>
+        </select>
+        <p class="field-note">
+          Nie mehr, als das Original ausgegeben hat &mdash; eine Neukodierung
+          darüber hinaus macht die Datei nur größer.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Den Ton behalten
+        </label>
+        <p class="field-note" id="audio-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Behalten</dt><dd id="sum-clips">&mdash;</dd></div>
+      <div><dt>Fertige Länge</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Beginnt bei</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>Ungefähr</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Bild</dt><dd id="sum-picture">&mdash;</dd></div>
+      <div><dt>Ton</dt><dd id="sum-sound">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Video schneiden</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Video herunterladen</a>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,343 @@
+#
+# Français.
+#
+# The frame: the hub, the guides index, the roadmap, the 404, the footer, and
+# the words the templates themselves use. Tools and guides are translated in
+# tools/ and pages/ beside this file.
+#
+# Nothing structural is repeated here - no list of which tools exist, no
+# category ids, no ordering, no Content-Security-Policy. See buildlib/i18n.py.
+#
+
+lang = "fr"
+name = "French"
+endonym = "Français"
+
+complete = false
+
+#
+# ---------------------------------------------------------------------------
+# The addresses.
+#
+# Keyed by the ENGLISH slug, which is the name of the thing. The French is an
+# address and appears only on the right.
+#
+# Written as the infinitive verb phrase a French speaker types - "compresser
+# une image" - because that is how the search is phrased in French, where an
+# English speaker would type the bare noun phrase. The articles are kept:
+# "compresser-image" is the sort of French nobody writes and nobody searches.
+#
+# Unaccented, and only here. Accents survive a modern URL bar and do not
+# survive being pasted around, so addresses drop them; the prose below does
+# not.
+# ---------------------------------------------------------------------------
+#
+
+[slugs]
+"compress-image" = "compresser-une-image"
+"compress-pdf" = "compresser-un-pdf"
+"crop-video" = "recadrer-une-video"
+"edit-audio" = "modifier-un-audio"
+# Nobody searches for an "éditeur EXIF" in French; they search for how to get
+# the data out of a photo.
+"exif-editor" = "supprimer-les-donnees-exif"
+"images-to-pdf" = "images-en-pdf"
+"images-to-video" = "images-en-video"
+"resize-image" = "redimensionner-une-image"
+"trim-video" = "couper-une-video"
+
+"guides" = "guides"
+"roadmap" = "feuille-de-route"
+"privacy" = "confidentialite"
+"terms" = "conditions-d-utilisation"
+
+"guides/compress-an-image-to-a-target-size" = "guides/compresser-une-image-a-une-taille-precise"
+"guides/resize-an-image" = "guides/redimensionner-une-image"
+"guides/remove-exif-and-gps-data" = "guides/supprimer-les-donnees-exif-et-gps"
+"guides/make-a-pdf-smaller" = "guides/reduire-la-taille-d-un-pdf"
+"guides/combine-images-into-a-pdf" = "guides/reunir-des-images-dans-un-pdf"
+"guides/turn-images-into-a-video" = "guides/transformer-des-images-en-video"
+"guides/trim-a-video" = "guides/couper-une-video"
+"guides/crop-a-video" = "guides/recadrer-une-video"
+"guides/is-it-safe-to-upload-files" = "guides/est-il-sur-d-envoyer-ses-fichiers"
+
+#
+# ---------------------------------------------------------------------------
+# The hub.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "Outils en ligne gratuits &mdash; sans envoi, sans compte | abox.tools"
+# Sous 155 caractères, comme en anglais : Google coupe une description à peu
+# près là, et la fin est ici la partie qui vend le site.
+description = "Des outils gratuits qui n'envoient jamais vos fichiers. Réunir des images en PDF ou en MP4, compresser une image à une taille précise, recadrer une vidéo."
+heading = "Des outils qui ne touchent jamais un serveur"
+og_title = "A Box of Tools &mdash; des outils qui ne touchent jamais un serveur"
+og_description = "De petits outils à usage unique qui fonctionnent entièrement dans votre navigateur. Vos fichiers ne quittent pas votre machine."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+schema_description = "De petits outils à usage unique qui font tout leur travail dans votre navigateur. Rien n'est envoyé et aucun compte n'est nécessaire."
+schema_about = "Des utilitaires de fichiers qui s'exécutent dans le navigateur et traitent les fichiers localement, sans les envoyer"
+
+lede = """
+    De petits outils à usage unique qui font tout leur travail dans votre
+    navigateur. Vos fichiers restent sur votre machine : il n'y a rien à
+    envoyer, aucun compte à créer et rien qui vous suive."""
+
+support_note = """
+      Ces outils sont gratuits et le resteront. Si l'un d'eux vous a évité du
+      travail, c'est la seule chose sur ce site qui vous demande quoi que ce
+      soit."""
+
+# Trois faits vérifiables plutôt qu'une promesse, comme en anglais.
+[[hub.guarantees]]
+title = "Vos fichiers ne quittent jamais votre machine"
+body = """
+        Ils sont ouverts, lus et traités par votre propre navigateur, sur votre
+        propre matériel. La <code>Content-Security-Policy</code> de chaque outil
+        nomme toutes les adresses qu'il peut contacter, et aucune ne nous
+        appartient."""
+
+[[hub.guarantees]]
+title = "Rien de vos fichiers n'est transmis"
+body = """
+        Ni le fichier, ni une vignette, ni le nom, la taille ou le nombre que
+        vous avez choisi. Aucun outil ici n'en communique quoi que ce soit. Il
+        n'y a, à l'autre bout, aucun serveur pour le lire."""
+
+[[hub.guarantees]]
+title = "Cela fonctionne hors ligne"
+body = """
+        Ouvrez un outil une fois, coupez votre connexion, et il continue de
+        travailler sur vos fichiers exactement comme avant. C'est difficile à
+        simuler : un outil qui enverrait vos fichiers ailleurs pour les traiter
+        s'arrêterait tout simplement."""
+
+[[hub.categories]]
+name = "Images &amp; vidéo"
+note = "Travailler ses photos et ses séquences sans les confier à personne."
+
+[[hub.categories]]
+name = "GIF &amp; animation"
+note = "Créez une animation, ou décomposez-la, sans qu'elle quitte votre machine."
+
+[[hub.categories]]
+name = "Audio"
+note = "Travailler un enregistrement sans le confier à personne, y compris le son d'une vidéo."
+
+[[hub.categories]]
+name = "Documents &amp; PDF"
+note = "Créer et réorganiser des documents sans les envoyer se faire traiter ailleurs."
+
+[[hub.categories]]
+name = "Codes &amp; données"
+note = "Transformer ce que vous avez tapé en quelque chose qu'une machine sait lire, sans que cela quitte la page."
+
+[[hub.categories]]
+name = "Texte &amp; code"
+note = "Mettez-le en forme, comparez-le, encodez-le, sans coller un jeton ou un fichier de configuration sur le serveur de quelqu'un d'autre."
+
+#
+# ---------------------------------------------------------------------------
+# The guides index.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+nav = "Tous les guides"
+title = "Guides &mdash; comment faire, et ce que chaque choix coûte"
+description = "Des guides clairs pour compresser, redimensionner, recadrer, couper et convertir vos fichiers : ce que les réglages veulent dire et pourquoi rien n'a besoin d'être envoyé."
+heading = "Guides"
+lede = """
+    Un guide par outil, écrit pour qui s'est vu imposer une taille ou un format
+    et aimerait savoir ce que fait vraiment le réglage qu'il s'apprête à
+    déplacer. Tout ce qui est décrit ici se passe sur votre propre machine."""
+og_title = "Les guides d'abox.tools"
+og_description = "Compresser, redimensionner, recadrer, couper et convertir ses fichiers, et ce que chaque réglage coûte. Sans aucun envoi."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+
+
+[[guides.groups]]
+name = "Faire le travail"
+note = "Un par outil : en quoi consiste la tâche, quel réglage compte, et ce qu'il vous coûte."
+
+[[guides.groups]]
+name = "Avant d'envoyer quoi que ce soit"
+note = "Ce que confier un fichier à un site implique vraiment, et comment savoir si c'était nécessaire."
+
+#
+# ---------------------------------------------------------------------------
+# The roadmap. Only the frame - the list itself is config/planned.toml, which
+# has no locale file yet and is therefore still English on this page.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+nav = "Feuille de route"
+title = "Feuille de route &mdash; ce qu'abox.tools construit ensuite"
+description = "Tous les outils prévus pour abox.tools, groupés et à découvert, avec ceux qui sont déjà finis. Tous s'exécutent dans le navigateur et n'envoient rien."
+heading = "Ce qui arrive ensuite"
+lede = """
+    Tout ce qui figure sur les deux listes ci-dessous fait son travail dans
+    votre navigateur et n'envoie rien &mdash; c'est la règle qu'un nom doit
+    passer avant même d'y entrer. Les nombres ne sont écrits nulle part ; la
+    compilation les compte sur les listes elles-mêmes."""
+
+intro_heading = "Comment cette liste a été établie"
+intro = """
+    <p>
+      Ce n'est pas une liste de souhaits. Elle a été établie en parcourant le
+      catalogue d'outils du plus grand site de GIF et de vidéo en ligne &mdash;
+      ce qui se rapproche le plus d'un inventaire de ce que les gens veulent
+      réellement faire à un fichier &mdash; et en gardant chaque entrée qui
+      peut être construite de sorte que le travail se fasse sur votre propre
+      machine et continue de se faire une fois le réseau débranché.
+    </p>
+    <p>
+      L'essentiel de ce qui a survécu repose sur des interfaces que le
+      navigateur fournit déjà. Quelques-unes demandent un codec embarqué dans
+      le seul outil qui l'utilise, ce qui est permis &mdash; le fichier ne
+      quitte toujours pas la machine. Ce qui ne franchissait pas cette barre a
+      été écarté plutôt que promis, si bien que certains des manques évidents
+      ci-dessous sont voulus.
+    </p>
+    <p>
+      Les outils qui existent déjà figurent en haut de leur groupe, marqués
+      <em>Terminé</em> et reliés à leur propre page. Tout ce qui se trouve en
+      dessous reste à venir, et rien n'est un lien tant que ce n'est pas le
+      cas.
+    </p>"""
+
+planned_heading = "Chaque type de fichier, et ce qu'on peut en faire"
+
+og_title = "La feuille de route d'abox.tools"
+og_description = "Ce qui est fait, et ce qui arrive ensuite. Tout s'exécute dans le navigateur et n'envoie rien."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+
+#
+# ---------------------------------------------------------------------------
+# The 404. Built in English only today - GitHub Pages serves one file for the
+# whole domain - but translated anyway, because the day that changes should not
+# also be the day somebody has to find this file.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "Page introuvable &mdash; abox.tools"
+description = "Cette adresse n'existe pas sur abox.tools. Voici les outils qui existent - tous gratuits, et aucun n'envoie vos fichiers où que ce soit."
+heading = "Cette page n'est pas ici"
+tools_heading = "Tous les outils, au même endroit"
+tools_note = "Tous gratuits, tous dans votre navigateur, aucun n'envoie quoi que ce soit."
+
+lede = """
+    Soit l'adresse contient une faute de frappe, soit ce qui s'y trouvait a
+    déménagé. Votre fichier n'a rien et rien n'a été perdu : ce site n'a jamais
+    rien détenu de vous qu'il puisse perdre."""
+
+#
+# ---------------------------------------------------------------------------
+# The footer.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        Des outils qui ne touchent jamais un serveur. Vos fichiers restent sur
+        votre machine &mdash; rien à envoyer, aucun compte à créer."""
+base = "Chaque affirmation de ce site est faite pour être vérifiée, pas pour être crue."
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words. Everything with {{ }} in it is a name the build
+# resolves, and the build refuses to render a name it cannot find - so these
+# may be moved anywhere in the sentence, and may not be renamed.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+languages = "Langue"
+breadcrumb = "Fil d'Ariane"
+all_tools = "Tous les outils"
+last_updated = "Dernière mise à jour"
+built_tag = "Terminé"
+planned_count = "prévus"
+built_count = "terminés"
+
+guide_one = "guide"
+guide_many = "guides"
+
+footer_tools = "Outils"
+footer_site = "Ce site"
+footer_contact = "Nous écrire"
+footer_sitemap = "Plan du site"
+footer_source = "Lire le code sur GitHub"
+
+guarantees_note = """
+    Rien de tout cela n'est à croire sur parole.
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      Comment savoir si un outil a vraiment besoin de vos fichiers</a>
+    présente quatre vérifications que vous pouvez faire vous-même, sur ce site
+    comme sur n'importe quel autre."""
+
+hub_guides_note = """
+    Vous ne savez pas quel réglage déplacer, ni ce qu'il coûte ?
+    <a href="{{ base }}{{ links.guides }}/">Il y a un guide pour chaque
+    outil</a>."""
+
+hub_roadmap_note = """
+    Il en arrive d'autres, et la liste est publique :
+    <a href="{{ base }}{{ links.roadmap }}/">voir ce qui est prévu</a>."""
+
+guides_all_note = """
+    Chaque guide décrit ici un outil qui s'exécute sur votre propre machine :
+    <a href="{{ base }}">les voir tous</a>."""
+
+[ui.tool]
+view_source = "Voir le code"
+how_verified = "Comment c'est vérifiable"
+live_check = "Vérification en direct :"
+offline = "Hors ligne :"
+checking = "vérification&hellip;"
+questions_heading = "Questions"
+guide_heading = "La version longue"
+privacy_heading = "Comment cette promesse se vérifie"
+
+pledge_line = """
+    Vos {{ tool.words.plural }} ne sont <strong>jamais envoyés</strong>. Il n'y a pas de serveur."""
+
+boot_title = "Le code de cette page n'a pas démarré."
+boot_body = """
+    Ouvrir <code>index.html</code> directement depuis un dossier bloque les modules
+    JavaScript : rien ne se passera au moment de choisir {{ tool.words.choose }}. Servez plutôt le dossier
+    en http :"""
+boot_then = "Ouvrez ensuite <code>http://localhost:8080/</code>."
+
+noscript_title = "JavaScript est désactivé."
+noscript_body = "Cette application fait tout son travail dans votre navigateur ; elle ne peut pas fonctionner sans."
+
+check_yourself = """
+      <strong>Vérifiez vous-même.</strong> Rien de ce qui précède n'est à croire sur
+      parole. Cette page est produite à partir des gabarits et de la configuration
+      du dépôt par un script de compilation que vous pouvez lire et exécuter
+      vous-même, et le résultat est déposé sur la branche <code>dist</code>
+      &mdash; vous pouvez donc comparer ce qui est servi à ce qu'une compilation
+      des sources produit :"""
+
+read_first_lead = """
+      Les fichiers à lire en premier sont <code>config/site.toml</code> pour la
+      Content-Security-Policy"""
+
+[ui.guide]
+open_tool = "Ouvrir {{ tool.name | e }}"
+
+[ui.picker]
+warning = """
+      <strong>C'est la seule fonction qui touche au réseau.</strong>
+      Récupérer une adresse indique au serveur concerné votre adresse IP et quelle {{ tool.picker.urls.noun }} vous
+      avez demandée. La {{ tool.picker.urls.noun }} est copiée en mémoire locale à son arrivée et n'est jamais
+      redemandée. Rien de vous ne sort jamais &mdash; cette page reste
+      incapable du moindre envoi."""
+label = "Une adresse par ligne"
+note = """
+      Le serveur doit autoriser l'usage multi-origine de ses {{ tool.picker.urls.noun }}s. Beaucoup de sites ne le
+      font pas, et ceux-là échoueront avec un message plutôt que de casser en silence plus tard."""

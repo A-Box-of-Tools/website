@@ -1,0 +1,161 @@
+<main>
+  <!-- Schritt 1 &mdash; die Datei -->
+  <section class="card">
+    <h2><span class="step">1</span> Ein PDF wählen</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Ein anderes wählen</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Schritt 2 &mdash; der Bildschirm, den dieses Werkzeug behalten würde, wenn es nur einen behalten dürfte -->
+  <section class="card" id="inventory-card" hidden>
+    <h2><span class="step">2</span> Sehen, wo die Größe steckt</h2>
+
+    <p class="card-lede">
+      &bdquo;Ein PDF komprimieren&ldquo; sind zwei verschiedene Aufgaben unter
+      einem Namen. Ein Scan ist ein Stapel Fotografien, und sie neu zu kodieren
+      ist den Großteil der Datei wert. Ein Vertrag besteht aus Text und
+      Schriften, die das erzeugende Programm bereits komprimiert hat &mdash; da
+      versteckt sich keine achtzig Prozent, und kein Werkzeug kann eine finden.
+      Welches von beiden Sie vor sich haben, ist keine Ansichtssache, also steht
+      es hier, bevor irgendetwas angefasst wird.
+    </p>
+
+    <p id="verdict" class="verdict"></p>
+
+    <div class="breakdown">
+      <div id="breakdown-bar" class="breakdown-bar" role="img" aria-labelledby="breakdown-list"></div>
+      <ul id="breakdown-list" class="breakdown-list"></ul>
+    </div>
+
+    <p id="inventory-notes" class="field-summary"></p>
+  </section>
+
+  <!-- Schritt 3 &mdash; wie viel ausgegeben werden darf -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">3</span> Sagen, wie stark gepresst wird</h2>
+
+    <p class="card-lede">
+      Ein PDF hält fest, wie groß jedes Bild gezeichnet wird, dieses Werkzeug
+      kann also messen, was die Seite tatsächlich nutzt, statt zu raten. Ein Scan
+      mit 4000 Pixeln, über zwanzig Zentimeter Papier gelegt, trägt rund 500
+      Pixel pro Zoll; bei 150 druckt er genauso und sieht am Bildschirm genauso
+      aus. Pixel, die niemand sehen kann, werden zuerst ausgegeben, weil sie
+      nichts kosten.
+    </p>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">Wie viel Qualität ausgegeben werden darf</legend>
+      <div class="presets" id="presets" role="radiogroup" aria-label="Wie viel Qualität ausgegeben werden darf">
+        <label class="preset">
+          <input type="radio" name="preset" value="smallest">
+          <span class="preset-body">
+            <strong>Am kleinsten</strong>
+            <span class="preset-note">96 DPI. Für etwas, das nur am Bildschirm gelesen werden muss.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="screen" checked>
+          <span class="preset-body">
+            <strong>Gut am Bildschirm</strong>
+            <span class="preset-note">130 DPI. Die übliche Antwort für eine Datei, die Sie verschicken müssen.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="print">
+          <span class="preset-body">
+            <strong>Auf Papier noch gut</strong>
+            <span class="preset-note">220 DPI. Kleiner, und es druckt trotzdem ordentlich.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="gentle">
+          <span class="preset-body">
+            <strong>Die Bilder kaum anfassen</strong>
+            <span class="preset-note">Überhaupt keine Verkleinerung. Der größte Teil der Ersparnis kommt aus dem Neupacken der Datei.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <details class="advanced">
+      <summary>Die beiden Zahlen selbst setzen</summary>
+      <div class="option-row">
+        <label for="dpi-value">Höchstens Pixel pro Zoll gezeichneter Fläche</label>
+        <div class="inline-pair">
+          <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
+          <span class="unit">DPI &mdash; 0 lässt jedes Bild in voller Größe</span>
+        </div>
+      </div>
+      <div class="option-row">
+        <label for="quality-value">JPEG-Qualität</label>
+        <div class="inline-pair">
+          <input type="range" id="quality-value" min="30" max="95" step="1" value="68">
+          <output id="quality-out" for="quality-value">68</output>
+        </div>
+      </div>
+    </details>
+
+    <label class="check">
+      <input type="checkbox" id="strip-meta" checked>
+      <span>
+        <strong>Herausnehmen, woran sich die Datei über ihre Herkunft erinnert</strong>
+        <span class="check-note">
+          Name und Version des Programms, das sie erzeugt hat, wann sie erstellt
+          und zuletzt bearbeitet wurde, das XMP-Paket und der private Datenklumpen,
+          den ein Layout-Programm hinterlässt, um seine eigene Arbeit wieder
+          importieren zu können &mdash; und der gelegentlich Megabyte groß ist.
+          Nichts davon wird gebraucht, um das Dokument anzuzeigen.
+        </span>
+      </span>
+    </label>
+
+    <p id="settings-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Schritt 4 &mdash; der eine Klick -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Komprimieren</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Dieses PDF komprimieren</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Herunterladen</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <details id="per-image" class="advanced" hidden>
+        <summary>Was mit jedem Bild passiert ist</summary>
+        <ul id="image-list" class="image-list"></ul>
+      </details>
+    </div>
+  </section>
+</main>
