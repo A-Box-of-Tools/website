@@ -27,6 +27,33 @@
 /** Shorter than this and there is nothing to keep. One millisecond. */
 const MIN_SECTION = 0.001;
 
+/**
+ * How long to work before handing the page back, in milliseconds.
+ *
+ * A frame at 60 Hz is 16.7 ms; twelve leaves room for the repaint itself. It is
+ * a budget rather than a count of sections because sections are not the same
+ * size: one part of an hour-long recording is more work than two hundred parts
+ * of a jingle, and neither should decide how often the page gets a turn.
+ */
+const BUDGET_MS = 12;
+
+/**
+ * Hand the page back - properly.
+ *
+ * `await Promise.resolve()` does not do this, and that is the trap this
+ * constant exists to name. Awaiting an already-resolved promise queues a
+ * *microtask*, and microtasks run to exhaustion at the end of the task that
+ * queued them: the browser never gets between them to repaint, and it never
+ * gets between them to deliver a click. A loop that yields that way looks like
+ * it is being polite and is in fact one uninterruptible block of work - so the
+ * progress bar stays where it was, and the Cancel button cannot be pressed
+ * because the click event has nowhere to be dispatched until the loop is over.
+ *
+ * A timer is a new task. That is the whole difference, and it is the difference
+ * between a progress bar that means something and one that is decoration.
+ */
+const handBack = () => new Promise((resolve) => { setTimeout(resolve, 0); });
+
 /* --------------------------------------------------------------- the marks */
 
 /**
@@ -190,21 +217,30 @@ export function cutChannels(channels, sections) {
  *
  * The work is fast - a copy and a few hundred multiplications a join - but
  * "fast" on a two-hour recording still means a moment, and a page that stops
- * answering looks broken. One section per turn, with a yield between them,
- * keeps the progress bar honest and the Cancel button live.
+ * answering looks broken. So the page is handed back whenever this has been
+ * working for longer than a frame: see `handBack` above for why that has to be
+ * a timer and cannot be a resolved promise.
+ *
+ * The budget is an argument because the tests set it to zero. A test that
+ * cancels from inside `onProgress` proves nothing about the Cancel button -
+ * that path never returns to the event loop either - so the tests here abort
+ * from a timer, the way a person's click does, and that only means something
+ * if this loop really yields.
  *
  * @param {{channels: Float32Array[], sampleRate: number, frames: number}} source
  * @param {ReturnType<typeof planSections>} sections
- * @param {{onProgress?: (done: number, label: string) => void, signal?: AbortSignal}} options
+ * @param {{onProgress?: (done: number, label: string) => void,
+ *          signal?: AbortSignal, budgetMs?: number}} options
  * @returns {Promise<{channels: Float32Array[], frames: number}>}
  */
-export async function trim(source, sections, { onProgress, signal } = {}) {
+export async function trim(source, sections, { onProgress, signal, budgetMs = BUDGET_MS } = {}) {
   const frames = sectionFrames(sections);
   if (!frames) throw new Error('There is nothing marked to keep.');
 
   const out = source.channels.map(() => new Float32Array(frames));
   let at = 0;
   let done = 0;
+  let since = performance.now();
 
   for (const section of sections) {
     signal?.throwIfAborted();
@@ -212,10 +248,14 @@ export async function trim(source, sections, { onProgress, signal } = {}) {
     at += section.frames;
     done += 1;
     onProgress?.(at / frames, `Copying part ${done} of ${sections.length}…`);
-    // Back to the event loop, so the bar repaints and Cancel is answerable.
-    await Promise.resolve();
+
+    if (performance.now() - since >= budgetMs) {
+      await handBack();
+      since = performance.now();
+    }
   }
 
+  signal?.throwIfAborted();
   return { channels: out, frames };
 }
 

@@ -32,6 +32,17 @@ test('formatClock always writes hours, minutes, seconds and thousandths', () => 
   assert.equal(formatClock(36000), '10:00:00.000');
 });
 
+test('a fraction that rounds up carries into the seconds', () => {
+  // Rounding the fraction on its own writes 3.9996 as "00:00:03.1000" - four
+  // digits in a three-digit field, which reads back as 3.1. The marks file is
+  // shared with the audio trimmer, so both sides round the instant once,
+  // before taking it apart.
+  assert.equal(formatClock(3.9996), '00:00:04.000');
+  assert.equal(formatClock(59.9999), '00:01:00.000');
+  assert.equal(formatClock(3599.9999), '01:00:00.000');
+  assert.equal(parseClock(formatClock(59.9999)), 60);
+});
+
 test('formatClock never writes a negative time', () => {
   assert.equal(formatClock(-5), '00:00:00.000');
   assert.equal(formatClock(null), '00:00:00.000');

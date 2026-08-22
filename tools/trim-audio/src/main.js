@@ -3,7 +3,8 @@
 import { wireFilePicker } from './shared/file-picker.js';
 import { decodeAudio, UnreadableFile } from './decode.js';
 import {
-  openSegment, readTimestamps, segmentRanges, totalCaptured, writeTimestamps,
+  formatDuration, openSegment, readTimestamps, segmentRanges, totalCaptured,
+  writeTimestamps,
 } from './segments.js';
 import { Timeline, formatTime, parseTime } from './timeline.js';
 import {
@@ -847,16 +848,6 @@ function clearResult() {
 
 const channelWord = (count) => (
   count === 1 ? 'mono' : count === 2 ? 'stereo' : `${count} channels`);
-
-function formatDuration(seconds) {
-  if (!Number.isFinite(seconds)) return '-';
-  const whole = Math.floor(seconds);
-  const hours = Math.floor(whole / 3600);
-  const minutes = Math.floor((whole % 3600) / 60);
-  const rest = seconds - hours * 3600 - minutes * 60;
-  const shown = rest.toFixed(1).padStart(4, '0');
-  return hours ? `${hours}:${String(minutes).padStart(2, '0')}:${shown}` : `${minutes}:${shown}`;
-}
 
 function formatBytes(bytes) {
   if (bytes < 1024) return `${bytes} B`;
