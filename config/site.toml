@@ -223,7 +223,7 @@ order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "grab-f
 id = "gif-and-animation"
 name = "GIF &amp; animation"
 note = "Build an animation, or take one apart, without it leaving your machine."
-order = ["gif-maker"]
+order = ["gif-maker", "split-gif"]
 
 [[hub.categories]]
 id = "audio"
@@ -380,6 +380,7 @@ order = [
   "grab-a-frame-from-a-video",
   "make-a-qr-code",
   "turn-a-video-into-a-gif",
+  "split-a-gif-into-frames",
   "format-json-without-uploading-it",
 ]
 

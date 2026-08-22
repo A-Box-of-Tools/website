@@ -217,6 +217,11 @@ New-OgImage -Path 'tools\gif-maker\og.png' `
   -Subtitle 'Put pictures in order, set the speed, and get one animated GIF.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\split-gif\og.png' `
+  -Title 'GIF Splitter' `
+  -Subtitle 'Every frame of an animation as its own PNG, with the timing written down.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\crop-video\og.png' `
   -Title 'Video Cropper' `
   -Subtitle 'Cut a clip down to the part that matters, without it ever leaving your machine.' `

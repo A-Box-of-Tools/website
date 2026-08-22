@@ -32,7 +32,6 @@ items = [
 name = "GIF e animação"
 items = [
   ["GIF para MP4 ou WebM", "a mesma animação, em geral com um décimo do tamanho"],
-  ["Separar um GIF", "cada quadro sai como um PNG"],
   ["Redimensionar, cortar e girar GIFs", "quadro a quadro, mantendo o tempo de cada um"],
   ["Inverter um GIF", "o último quadro primeiro"],
   ["Mudar a velocidade do GIF", "retemporizar sem renderizar os quadros de novo"],
