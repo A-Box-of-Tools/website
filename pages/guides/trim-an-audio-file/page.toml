@@ -1,0 +1,35 @@
+#
+# Guide: trimming an audio file.
+#
+# The mirror of guides/trim-a-video. That one is about a constraint - keyframes,
+# and why a cut lands early. This one is about the absence of that constraint,
+# and about the problem that takes its place: a join in audio is a discontinuity
+# and a discontinuity is a click. Somebody who reads this understands why an
+# audio cut can be exact when a video cut cannot, and why the answer is a fade
+# of five milliseconds rather than a longer one.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/trim-an-audio-file"
+kind = "guide"
+nav = "Trimming an audio file"
+group = "doing-the-job"
+tool = "trim-audio"
+
+title = "How to Trim Audio Without Losing Quality"
+description = "Where an audio cut actually lands, why it can be exact when a video cut cannot, why a join sometimes clicks, and what a five-millisecond fade is really doing."
+
+heading = "How to trim audio without losing quality"
+lede = """
+    An audio cut can land on the exact instant you marked, in every player,
+    always &mdash; which is not true of video. This explains why, what the one
+    real catch is, and what to do about it."""
+
+updated = "21 August 2026"
+published = "2026-08-21"
+lastmod = "2026-08-21"
+
+og_title = "How to trim audio without losing quality"
+og_description = "Why an audio cut can be exact when a video cut cannot, why a join sometimes clicks, and what a five-millisecond fade is really doing."
+og_image_alt = "abox.tools - tools that never touch a server"
