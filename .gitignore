@@ -4,6 +4,11 @@
 /_site/
 /.publish/
 /.dist-check/
+/dist-check/
+# Any other name somebody points --out at. The build writes wherever it
+# is told, and a generated tree that lands in a commit is worse than a
+# tidy ignore list.
+dist-*/
 __pycache__/
 
 # Nothing here has a dependency to install, and package.json declares no

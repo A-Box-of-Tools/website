@@ -22,17 +22,16 @@ lang = "de"
 name = "German"
 endonym = "Deutsch"
 
-# Not finished: the guides are still English prose, and so is the planned list
-# on the roadmap, which lives in config/planned.toml and has no locale file yet.
-# While this is false the German pages are built and readable, and are kept out
-# of the sitemap, out of every hreflang set, and out of the language switcher.
-# Turning it true makes every remaining fallback a build failure, which is the
-# point - see check_complete in buildlib/i18n.py.
-# Temporarily false: main gained four tools and four guides (HEIC to JPG,
-# image to data URI, QR/barcode, video to GIF) after this locale was
-# finished, and a finished language cannot silently fall behind the
-# English it was finished against. Flipped back the moment those eight
-# files are translated.
+# The frame is finished: the nav, the footer, the hub and every [ui] word in
+# this file are German. That is all this flag claims, and it is a set that does
+# not grow when a tool ships - which is why it can stay true while tools and
+# guides are still arriving untranslated.
+#
+# Those are held back one page at a time instead. A page that still falls back
+# is built and readable at its own address, and is kept out of the sitemap,
+# every hreflang set and the switcher until it is translated. See the note at
+# the top of buildlib/i18n.py for why the unit is the page rather than the
+# language.
 complete = true
 
 #

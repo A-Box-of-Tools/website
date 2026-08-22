@@ -698,16 +698,20 @@ fallback carries English slugs, and a locale prefix counted as another level up
 sent every footer link out of its own language. Unfinished locales are exempt,
 because serving English bodies is exactly what they are doing on purpose.
 
-Setting `complete = true` turns every remaining fallback into a build failure,
-naming the strings. A language therefore gets stricter as it gets more
-finished, which is the direction that helps. Every build says how far the
-unfinished ones have to go:
+Setting `complete = true` claims the **frame** is translated — the nav, the
+footer, the hub, the `[ui]` words — and a remaining fallback in any of those is
+a build failure that names the strings. It does not claim the tools and guides
+are done: those are held back a page at a time, so a page that still falls back
+is built and readable at its own address and stays out of the sitemap, the
+hreflang sets and the switcher until it is translated. Every build says how far
+each language has to go:
 
     es: 834 strings still in English (not advertised until complete = true)
 
-German is finished and is the worked example: `locales/de/` is what a complete
-locale looks like, and the nine others are framed but still fall back for their
-tools and guides.
+`locales/de/` is the worked example — the fullest translation in the tree, and
+the one to read before starting another. Which locales are actually finished is
+not written here on purpose: every build prints it, and a sentence in a README
+goes stale the first time a tool ships.
 
 ### Adding a language
 

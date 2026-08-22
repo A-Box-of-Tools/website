@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  GENERATED FILE - do not edit. Built by build.py from templates/page.html,
+  config/site.toml, and pages/guides/convert-heic-to-jpg/{page.toml,body.html}.
+  Edit those and run `python build.py`.
+
+  A "page" here is a prose page that is not a tool and not the hub: a legal page
+  or a guide. It gets the site frame, the same Content-Security-Policy as
+  everywhere else, and the same footer, and nothing else - no service worker,
+  because there is nothing to keep working offline, and no blob: in img-src,
+  because it never makes one.
+
+  The two differ in three places below, all of them driven by values build.py
+  passes in rather than by a test written here: a guide gets a visible
+  breadcrumb, Article structured data, and - when it is about one particular
+  tool - a link to that tool under the heading. A legal page gets none of the
+  three, and the blocks simply do not appear.
+-->
+<!--
+  This page carries advertising, and ad code cannot run under default-src
+  'none'. The allowlist below is generated from config/site.toml, the same one
+  every other page is built from, so they cannot drift apart. The reasoning
+  behind each entry is written down beside the list in that file.
+-->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self'
+    https://www.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://tpc.googlesyndication.com
+    https://partner.googleadservices.com
+    https://www.googletagservices.com
+    https://adservice.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
+  frame-src
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://www.google.com;
+  connect-src
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://analytics.google.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://csi.gstatic.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  form-action 'none';
+  base-uri 'none';
+">
+<title>How to Convert HEIC to JPG (and What HEIC Actually Is)</title>
+<meta name="description" content="iPhones save photos as HEIC, and half the internet cannot open one. What the format is, why only Safari decodes it, what converting costs the picture, and how to do it without uploading the photos to anyone.">
+
+<link rel="canonical" href="https://abox.tools/ja/guides/convert-heic-to-jpg/">
+<!--
+  Every language this page is published in, this one included.
+
+  Google's rule for hreflang is that the set is reciprocal and self-inclusive:
+  a page lists every version of itself, its own among them, and each of those
+  pages lists the same set back. The list is built once, in buildlib/i18n.py,
+  and handed to every page from there - so reciprocity holds because there is
+  only one list, not because somebody checked.
+
+  x-default is English. It is what a reader whose language is none of these is
+  meant to be given, and it is the last entry rather than the first because it
+  is a fallback rather than a language.
+
+  A locale that is still being translated appears here in no form at all. It is
+  built, and readable at its own URL, and until its locale.toml says
+  complete = true it is not advertised to anybody - inviting a crawler to index
+  a half-translated page is how a site ends up with the untranslated half
+  ranking for the wrong language.
+-->
+<link rel="alternate" hreflang="en" href="https://abox.tools/guides/convert-heic-to-jpg/">
+<link rel="alternate" hreflang="de" href="https://abox.tools/de/ratgeber/heic-in-jpg-umwandeln/">
+<link rel="alternate" hreflang="x-default" href="https://abox.tools/guides/convert-heic-to-jpg/">
+
+
+<meta name="google-adsense-account" content="ca-pub-5997711677062324">
+
+<!--
+  AdSense. Async so it cannot delay the app; crossorigin="anonymous" is
+  Google's own snippet, unchanged.
+-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5997711677062324"
+        crossorigin="anonymous"></script>
+
+<!-- Google tag (gtag.js). The configuration half lives in analytics.js. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script>
+<script src="analytics.js" defer></script>
+
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="A Box of Tools">
+<meta property="og:url" content="https://abox.tools/ja/guides/convert-heic-to-jpg/">
+<meta property="og:title" content="How to convert HEIC to JPG">
+<meta property="og:description" content="Why iPhone photos will not open, what converting costs, and how to do it without handing the photos to anybody.">
+<meta property="og:image" content="https://abox.tools/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="abox.tools - tools that never touch a server">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to convert HEIC to JPG">
+<meta name="twitter:description" content="Why iPhone photos will not open, what converting costs, and how to do it without handing the photos to anybody.">
+<meta name="twitter:image" content="https://abox.tools/og.png">
+
+<!--
+  The stylesheet URL carries a hash of the stylesheet. GitHub Pages serves
+  HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
+  reaches a returning visitor as new markup wearing a four-hour-old sheet.
+-->
+<!--
+  Structured data, and only for a guide. A guide is an Article and says so; a
+  privacy policy is not one, and describing it as an Article would be claiming
+  the page is something it is not. buildlib/site.py decides which, and returns
+  nothing for a legal page, so this block simply does not appear on one.
+
+  Inline is deliberate and does not need 'unsafe-inline': a <script> whose type
+  is not a JavaScript type is a data block the parser never executes.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "The photo your phone saved, and the format nothing will open",
+      "description": "iPhones save photos as HEIC, and half the internet cannot open one. What the format is, why only Safari decodes it, what converting costs the picture, and how to do it without uploading the photos to anyone.",
+      "url": "https://abox.tools/ja/guides/convert-heic-to-jpg/",
+      "datePublished": "2026-08-20",
+      "dateModified": "2026-08-20",
+      "inLanguage": "ja",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://abox.tools/ja/guides/convert-heic-to-jpg/"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "A Box of Tools",
+          "item": "https://abox.tools/ja/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "\u30ac\u30a4\u30c9",
+          "item": "https://abox.tools/ja/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "HEIC to JPG",
+          "item": "https://abox.tools/ja/guides/convert-heic-to-jpg/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="../../site.css?v=82d928ad5b">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+</head>
+<body>
+
+<!--
+  The visible half of the BreadcrumbList in the head, and only where there is
+  one: a guide sits two levels down, under an index, and saying so is worth the
+  line. A legal page is passed an empty trail and this block does not render -
+  markup is meant to describe what a visitor can see, so a page with nothing to
+  show describes nothing.
+-->
+<nav class="crumbs" aria-label="パンくずリスト">
+  <a href="../../">すべてのツール</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <a href="../../guides/">ガイド</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <span aria-current="page">HEIC to JPG</span>
+</nav>
+
+<header class="hub-head">
+  <p class="brand">
+    <a class="brand-home" href="../../">
+      <span class="brand-mark" aria-hidden="true">&#129520;</span> abox.tools
+    </a>
+  </p>
+  <h1>The photo your phone saved, and the format nothing will open</h1>
+  <p class="lede">
+    An iPhone saves photos as HEIC, which is smaller and better than JPEG and
+    which a great deal of software still refuses to open. This is what the
+    format actually is, what converting costs the picture, and why almost every
+    converter wants you to upload it first.
+  </p>
+  <!--
+    The tool this guide is about, named once at the top where somebody who
+    already knows what they want can leave immediately. `tool` is empty on a
+    legal page and on a guide about no tool in particular, and then this is not
+    written at all.
+  -->
+  <p class="guide-cta">
+    <a class="guide-cta-link" href="../../heic-to-jpg/">HEIC to JPG を開く</a>
+    <span class="guide-cta-note">The photos an iPhone makes, in a format everything opens.</span>
+  </p>
+  <p class="legal-date">最終更新 20 August 2026</p>
+</header>
+
+<!--
+  `prose` on a guide and `legal` on a legal page. The two rule sets are the same
+  narrow column - they are written as one selector list in shared/site.css - and
+  the class is still worth getting right, because a stylesheet that calls a
+  guide a legal page is a stylesheet nobody can search.
+-->
+<main class="prose">
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="/ja/heic-to-jpg/">HEIC to JPG converter</a>, drop the
+      photos in, and press &ldquo;Convert&rdquo;. Leave the quality slider where
+      it is and leave &ldquo;keep the date, the camera and the settings&rdquo;
+      ticked unless you have a reason not to. You get JPEGs back, one download
+      button each, or a zip if there are several.
+    </p>
+    <p>
+      Nothing is uploaded while you do it. That is unusual for this particular
+      job, and the reason why is the interesting half of this page.
+    </p>
+  </section>
+
+  <section>
+    <h2>What HEIC actually is</h2>
+    <p>
+      HEIC is not really an image format in the way JPEG is. It is a container
+      &mdash; the same box structure an MP4 is built out of &mdash; with a still
+      frame of <strong>HEVC</strong> video inside it. HEVC, also called H.265, is
+      the codec that replaced the one your old camcorder used, and it is very
+      good: an iPhone photo in HEIC is roughly half the size of the same photo as
+      a JPEG at the same quality.
+    </p>
+    <p>
+      Apple switched to it in iOS 11, in 2017, and set it as the default. Which
+      means that unless somebody has been into Settings and chosen &ldquo;Most
+      Compatible&rdquo;, every photo their phone has taken for the better part of
+      a decade is in a format that:
+    </p>
+    <ul>
+      <li>Windows will not preview without an extension from the Store;</li>
+      <li>most web upload forms reject outright;</li>
+      <li>a great deal of older desktop software has never heard of;</li>
+      <li>and no web browser except Safari will display.</li>
+    </ul>
+    <p>
+      The photo is fine. It is a better file than the JPEG would have been. It
+      is simply written in a language most of the world never learned.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why only Safari opens one</h2>
+    <p>
+      This is the part that explains every converter you have ever used, so it is
+      worth a paragraph.
+    </p>
+    <p>
+      Decoding HEVC needs an HEVC decoder, and HEVC is patented. The licensing is
+      administered by more than one patent pool, and shipping a decoder means
+      paying somebody. Browsers deal with this by leaning on the operating system
+      &mdash; Chrome will play HEVC <em>video</em> on a machine whose hardware
+      already has a licensed decoder &mdash; but that route is wired up for video
+      playback and not for still images. So a HEIC handed to
+      <code>&lt;img&gt;</code> is refused, in Chrome, Firefox and Edge alike, on
+      every operating system.
+    </p>
+    <p>
+      Safari on Apple hardware is the exception, because macOS and iOS have the
+      decoder and Safari is allowed to ask it. Everywhere else, the picture is
+      simply undecodable by the browser.
+    </p>
+    <p>
+      Which leaves a converter with exactly two options, and the choice between
+      them is the whole story of this kind of tool.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why almost every HEIC converter wants an upload</h2>
+    <p>
+      Option one: put the decoder on a server. The photo is uploaded, decoded on
+      a machine you have never seen, re-encoded as a JPEG, and sent back. This is
+      what nearly every &ldquo;free online HEIC converter&rdquo; does, and it is
+      why they all need your files. It is not laziness &mdash; the browser
+      genuinely cannot do it unaided.
+    </p>
+    <p>
+      What it costs is worth being blunt about. Photos from a phone are the most
+      personal files most people own, and a HEIC straight off an iPhone typically
+      carries the coordinates of where it was taken, accurate to a few metres,
+      along with the date to the second and a camera identifier. Uploading a
+      folder of them to a free service means handing over both the pictures and
+      that. What happens next is governed by a privacy policy you did not read,
+      on a server you cannot inspect, in a jurisdiction you did not choose.
+    </p>
+    <p>
+      Option two: put the decoder on the page. That is what
+      <a href="/ja/heic-to-jpg/">this one</a> does. It carries
+      <code>libheif</code>, compiled to WebAssembly, as a file served from this
+      site &mdash; about 1.4 MB, downloaded once and then cached. Your browser
+      runs it on your own machine, on your own hardware, and the photo never goes
+      anywhere. Load the page once and you can unplug from the internet
+      altogether and it keeps working, which is a thing no uploading converter
+      can do and the simplest proof there is.
+    </p>
+    <p>
+      The 1.4 MB is the entire price. If you are on a metered connection it is a
+      real cost and worth knowing about; that is why the page says so out loud
+      rather than downloading it quietly.
+    </p>
+  </section>
+
+  <section>
+    <h2>What converting costs the picture</h2>
+    <p>
+      HEIC and JPEG are different codecs, so there is no way across that does not
+      involve decoding the picture and encoding it again. That second encode is
+      lossy. In practice this matters much less than it sounds:
+    </p>
+    <ul>
+      <li>
+        <strong>At quality 92</strong> &mdash; where the converter starts &mdash;
+        a photograph is very hard to tell from the original at any normal viewing
+        size. You are looking for differences in smooth gradients, like a clear
+        sky, and you will generally not find them.
+      </li>
+      <li>
+        <strong>The JPEG will be bigger.</strong> Usually somewhere between a
+        third larger and twice the size, because JPEG is a codec from 1992 and
+        HEVC is not. That is the trade: a bigger file that everything opens.
+      </li>
+      <li>
+        <strong>Converting twice is what to avoid.</strong> Every lossy encode
+        costs a little. Convert from the original HEIC, not from a JPEG somebody
+        already made for you, and do it once.
+      </li>
+    </ul>
+    <p>
+      If you want no loss at all, PNG is on the format menu. Be ready for the
+      file: a photograph as a PNG is commonly five to ten times the size of the
+      JPEG, because PNG's compression was designed for flat colour and line art
+      rather than for grass and skin.
+    </p>
+  </section>
+
+  <section>
+    <h2>The date, the camera and the coordinates</h2>
+    <p>
+      The usual complaint about HEIC converters is that the photos come back
+      having lost the day they were taken, so a holiday's worth of pictures sorts
+      to the bottom of the library under today's date. That happens because
+      converting through a canvas gives you pixels and nothing else &mdash; a
+      canvas holds no tags &mdash; so unless a converter goes and fetches the
+      metadata separately, it is simply gone.
+    </p>
+    <p>
+      The tool here copies the EXIF block out of the HEIC and writes it into the
+      JPEG, so the date survives. There is a checkbox, and it is ticked by
+      default. Untick it and the JPEG comes out with the picture and nothing
+      else.
+    </p>
+    <p>
+      Before you decide, look at the list: each photo's row says whether the file
+      carries GPS coordinates, and it says so before anything is converted. If
+      the photos are going somewhere public, that is the line to read. If they
+      are going into your own library, keeping the metadata is almost certainly
+      what you want.
+    </p>
+    <p>
+      One tag is changed whatever you choose, and it is worth knowing why. A HEIC
+      records its rotation in two places: in the container, and in the EXIF
+      block. The decoder applies the container's rotation while decoding, so the
+      pixels handed over are already the right way up. If the EXIF then still
+      said &ldquo;rotate this 90 degrees&rdquo;, a viewer would do it again and
+      every portrait photo would come out on its side. So the orientation tag is
+      set to upright and everything else is copied exactly as the phone wrote it.
+    </p>
+    <p>
+      If what you want is to go through the tags in detail, or to strip them from
+      photos that are already JPEGs, that is a different job and there is a
+      <a href="/ja/guides/remove-exif-and-gps-data/">guide for it</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Things that catch people out</h2>
+    <ul>
+      <li>
+        <strong>A HEIC called &ldquo;.jpg&rdquo;.</strong> Extremely common:
+        something along the way renamed it without converting it, which is why it
+        still will not open. Every file dropped on the converter is identified by
+        its first bytes rather than its name, so one of these works fine. It is
+        also why a file that genuinely is a JPEG gets told so rather than being
+        converted into a copy of itself.
+      </li>
+      <li>
+        <strong>One file, several pictures.</strong> A burst or a Live Photo can
+        hold more than one still. All of them are converted, and the extra ones
+        are numbered after the original name. The video half of a Live Photo is a
+        separate file the phone keeps beside the HEIC, so it is not in there to
+        convert.
+      </li>
+      <li>
+        <strong>AVIF is not HEIC.</strong> They look alike &mdash; the same
+        container, different codec inside &mdash; but every current browser opens
+        an AVIF natively, so there is nothing to convert and the tool says so
+        rather than pretending to work.
+      </li>
+      <li>
+        <strong>Stopping the problem at the source.</strong> On the phone:
+        Settings &rarr; Camera &rarr; Formats &rarr; Most Compatible. New photos
+        are JPEGs from then on. It uses more storage and it does not touch the
+        photos you already have, but it means never doing this again.
+      </li>
+      <li>
+        <strong>Sharing already converts, sometimes.</strong> AirDropping or
+        emailing a photo to a non-Apple device often hands over a JPEG, because
+        iOS converts on the way out. If a photo has arrived as a HEIC anyway, it
+        came across by a route that did not.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>How to tell whether a converter is uploading</h2>
+    <p>
+      This applies to any tool, not only this one, and it takes about fifteen
+      seconds.
+    </p>
+    <ol>
+      <li>
+        Open the page, then open your browser's developer tools and go to the
+        Network tab.
+      </li>
+      <li>
+        Convert a photo, and watch. A tool that decodes on your machine makes no
+        request at all at that moment. A tool that uploads makes one the size of
+        your photo, and you can see the size.
+      </li>
+      <li>
+        Or, more simply: load the page, disconnect from the internet, and try to
+        convert something. A tool that sent your photo away to be decoded stops
+        working. One that carries the decoder does not.
+      </li>
+    </ol>
+    <p>
+      The converter here is built to pass both checks, and there is a longer
+      version of this argument in
+      <a href="/ja/guides/is-it-safe-to-upload-files/">is it safe to upload files</a>.
+    </p>
+  </section>
+</main>
+
+<!--
+  The footer every page wears: a few columns of plain links, left aligned under
+  quiet headings, in the shape the large media-tool sites use. It is the second
+  navigation, for anyone who scrolled to the bottom looking for one, and it is
+  the only route to the legal pages.
+
+  This used to be three different footers kept in step by hand. It is one now,
+  and the only thing that differs between a hub, a tool and a legal page is
+  `base`: './' at the root, '../' one level down. Every link below is built from
+  it, so nothing here has to know which kind of page it landed on.
+
+  The tool list and the legal-page list are passed in by build.py from the
+  folders that exist, so a new tool or a new page appears here without anybody
+  remembering to add it. The guides are reached through their index rather than
+  listed one by one - see the comment above that link.
+-->
+<footer>
+  <div class="footer-cols">
+    <div class="footer-col footer-brand">
+      <a class="home-link" href="../../">
+      <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <path class="logo-lid" d="M14 31V13.5A4.5 4.5 0 0 1 18.5 9h27a4.5 4.5 0 0 1 4.5 4.5V31"
+              fill="none" stroke-width="3.2" stroke-linejoin="round"/>
+        <g transform="rotate(-12 18 30)">
+          <rect class="logo-tool" x="16.6" y="17" width="3.2" height="17" rx="1.4"/>
+          <rect class="logo-tool" x="16.2" y="12.2" width="6.8" height="5" rx="1.5"/>
+          <rect class="logo-tool" x="14" y="12.6" width="2.6" height="6.6" rx="1.2" transform="rotate(26 16.2 13)"/>
+        </g>
+        <g transform="rotate(-3 26 30)">
+          <rect class="logo-tool-alt" x="24.6" y="17" width="3.1" height="17" rx="1.4"/>
+          <rect class="logo-tool-alt" x="23.2" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="26.8" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="23.2" y="16.2" width="5.9" height="3.6" rx="1.5"/>
+        </g>
+        <rect class="logo-tool-alt" x="30.6" y="12" width="5" height="8.4" rx="2.2"/>
+        <rect class="logo-tool" x="31.5" y="19.2" width="3.2" height="2.2" rx="0.7"/>
+        <rect class="logo-tool" x="32.1" y="20.5" width="2.1" height="13.5" rx="1"/>
+        <path class="logo-tool" d="M39.4 20.4 37.9 13a1.15 1.15 0 0 1 2.25-.45l1.15 7.6z" transform="rotate(-4 40.5 21)"/>
+        <path class="logo-tool" d="M41.6 20.4 43.1 13a1.15 1.15 0 0 0-2.25-.45l-1.15 7.6z" transform="rotate(4 40.5 21)"/>
+        <rect class="logo-tool" x="38.2" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(-8 40.5 21)"/>
+        <rect class="logo-tool" x="40.4" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(8 40.5 21)"/>
+        <circle class="logo-latch" cx="40.5" cy="20.8" r="1.5"/>
+        <g transform="rotate(14 48 30)">
+          <rect class="logo-tool" x="46.6" y="17.5" width="3.2" height="16.5" rx="1.4"/>
+          <rect class="logo-tool" x="44.6" y="14.2" width="7.4" height="3.4" rx="1.3"/>
+          <rect class="logo-tool" x="44.6" y="9.6" width="4.4" height="3.6" rx="1.1"/>
+          <rect class="logo-latch" x="46.4" y="17.4" width="3.6" height="1.9" rx="0.6"/>
+        </g>
+        <rect class="logo-box" x="8" y="38" width="48" height="15" rx="1.6"/>
+        <rect class="logo-band" x="4" y="31" width="56" height="7.5" rx="1.6"/>
+        <rect class="logo-latch" x="27.5" y="33.5" width="9" height="9" rx="1.8"/>
+      </svg>
+
+        abox.tools
+      </a>
+      <p>
+        サーバーに触れない道具。ファイルは手元の端末に残ります &mdash;
+        アップロードするものはなく、作るアカウントもありません。
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <strong>ツール</strong>
+      <ul>
+        <li><a href="../../images-to-video/">Images to Video</a></li>
+        <li><a href="../../trim-video/">Video Cutter</a></li>
+        <li><a href="../../crop-video/">Video Cropper</a></li>
+        <li><a href="../../reverse-video/">Video Reverser</a></li>
+        <li><a href="../../grab-frame/">Video Frame Grabber</a></li>
+        <li><a href="../../video-to-gif/">Video to GIF</a></li>
+        <li><a href="../../exif-editor/">EXIF Viewer &amp; Remover</a></li>
+        <li><a href="../../heic-to-jpg/">HEIC to JPG</a></li>
+        <li><a href="../../image-to-data-uri/">Image to Data URI</a></li>
+        <li><a href="../../image-to-ico/">Image to ICO</a></li>
+        <li><a href="../../svg-to-image/">SVG to Image</a></li>
+        <li><a href="../../id-photo/">ID Photo Maker</a></li>
+        <li><a href="../../resize-image/">Image Resizer</a></li>
+        <li><a href="../../compress-image/">Image Compressor</a></li>
+        <li><a href="../../gif-maker/">GIF Maker</a></li>
+        <li><a href="../../edit-audio/">Audio Editor</a></li>
+        <li><a href="../../compress-pdf/">PDF Compressor</a></li>
+        <li><a href="../../images-to-pdf/">Images to PDF</a></li>
+        <li><a href="../../qr-barcode/">QR &amp; Barcode Generator</a></li>
+        <li><a href="../../text-tools/">Text &amp; Code</a></li>
+      </ul>
+    </div>
+
+    <!--
+      The guides get one link, not a column of their own. Every guide used to be
+      listed here, which made a fourth column that grew by a line every time one
+      was written and put nine near-identical entries in front of somebody who
+      wanted the privacy page. The index is the entry that matters: it is the
+      one link that keeps working however long the list gets, and it is where a
+      reader can see all of them side by side with a sentence each, which a
+      footer column cannot do.
+
+      It sits directly under "All tools" because the two are the same kind of
+      thing - the front door to each half of the site.
+    -->
+    <div class="footer-col">
+      <strong>このサイト</strong>
+      <ul>
+        <li><a href="../../">すべてのツール</a></li>
+        <li><a href="../../guides/">ガイド一覧</a></li>
+        <li><a href="../../roadmap/">ロードマップ</a></li>
+        <li><a href="../../privacy/">Privacy &amp; Cookies</a></li>
+        <li><a href="../../terms/">Terms of Use</a></li>
+        <li><a href="/sitemap.xml">サイトマップ</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>お問い合わせ</strong>
+      <ul>
+        <li>
+          <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
+            GitHub でコードを読む
+          </a>
+        </li>
+        <li><a href="mailto:hi@abox.tools">hi@abox.tools</a></li>
+      </ul>
+    </div>
+  </div>
+
+<!--
+  The language switcher.
+
+  Plain links, and that is the whole design. No JavaScript, no cookie, no
+  redirect and no guess made from Accept-Language: a site whose entire claim is
+  that it does not track you cannot be storing a preference in order to do it,
+  and a crawler has to be able to walk from one language into the next on foot.
+
+  Every link points at THIS page in that language, not at that language's front
+  door. Somebody reading about compressing an image who wants it in German wants
+  that page in German; dropping them on the hub to find it again is the
+  commonest way a switcher gets built wrong.
+
+  Each language is written in its own language - Deutsch, not German - because
+  that is the word a reader looking for it will be scanning for. `lang` and
+  `hreflang` are on every link so that a screen reader announces the name in the
+  language it belongs to rather than in the language of the page around it.
+
+  Root-absolute hrefs, unlike everything else in this footer. The slug in each
+  URL is itself localized, so there is no relative path from
+  /de/bild-komprimieren/ to /es/comprimir-imagen/ that could be worked out from
+  `base`.
+-->
+<nav class="lang-switch" aria-label="言語">
+  <ul>
+    <li>
+      <a href="/guides/convert-heic-to-jpg/" lang="en" hreflang="en">English</a>
+    </li>
+    <li>
+      <a href="/de/ratgeber/heic-in-jpg-umwandeln/" lang="de" hreflang="de">Deutsch</a>
+    </li>
+  </ul>
+</nav>
+
+
+  <p class="footer-base">
+このサイトのすべての主張は、信じるためではなく、確かめるために書かれています。
+  </p>
+</footer>
+
+
+</body>
+</html>

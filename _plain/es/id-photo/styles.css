@@ -1,0 +1,1252 @@
+/*
+  GENERATED FILE - do not edit.
+
+  Assembled by build.py from shared/css/tool-frame.css (the frame every
+  tool page wears), any shared/css parts this tool asked for, and
+  tools/id-photo/styles.css (the rules only this tool needs).
+*/
+
+/* System fonts only — loading a webfont would mean a third-party request. */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f0f2f5;
+  --border: #d9dee5;
+  --text: #16191d;
+  --text-dim: #5d6672;
+  --accent: #2b6cb0;
+  --accent-text: #ffffff;
+  /* The two extra tones the site mark needs: a darker shade for the box and a
+     pale tint for its inside edge. Same values as the hub's logo.svg. */
+  --accent-deep: #1d4f83;
+  --accent-pale: #d7e7f7;
+  --danger: #b02b2b;
+  --ok: #1f7a4d;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 12px rgb(16 24 40 / 4%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171b;
+    --surface: #1c2027;
+    --surface-2: #23282f;
+    --border: #333a44;
+    --text: #e8eaed;
+    --text-dim: #9aa4b2;
+    --accent: #5b9bd8;
+    --accent-text: #0d1117;
+    --accent-deep: #3772ab;
+    --accent-pale: #cfe3f8;
+    --danger: #e07777;
+    --ok: #6cc79b;
+    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 20%);
+  }
+}
+
+* { box-sizing: border-box; }
+
+/* Any author rule that sets `display` (.toolbar, .bulk, .inline-pair …) outranks
+   the user-agent's `[hidden] { display: none }`, so hidden elements would render
+   anyway. This keeps the attribute authoritative. */
+[hidden] { display: none !important; }
+
+/* A fieldset's automatic minimum width is min-content rather than zero, and no
+   author rule short of this one changes it. Every options fieldset on this site
+   holds a <select> whose longest option is a sentence, so the box refused to
+   shrink below that sentence and the whole page scrolled sideways on a phone. */
+fieldset { min-inline-size: 0; }
+
+body {
+  margin: 0;
+  padding: 0 1rem 3rem;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+h1, h2 { line-height: 1.25; }
+
+main, .topbar, .crumbs, .privacy, .pledge, .faq, footer {
+  max-width: 940px;
+  margin-inline: auto;
+}
+
+/* ------------------------------------------------------------ boot warning */
+
+.boot-warning {
+  max-width: 940px;
+  margin: 1.5rem auto 0;
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent);
+  color: var(--text);
+}
+
+.boot-warning strong { color: var(--danger); }
+.boot-warning p { margin: 0.5rem 0; font-size: 0.9rem; }
+
+.boot-warning pre {
+  margin: 0.5rem 0;
+  padding: 0.6rem 0.8rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  overflow-x: auto;
+}
+
+.boot-warning code {
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* -------------------------------------------------------------- breadcrumb */
+
+/* Every tool page already carried BreadcrumbList structured data describing a
+   trail that existed nowhere on the page. Google asks that the markup describe
+   what a visitor can actually see, so here is the trail. It doubles as the way
+   back to the hub from the top of the page rather than only from the footer. */
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-top: 0.9rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.crumbs a { color: var(--text-dim); text-decoration: none; }
+.crumbs a:hover { color: var(--accent); text-decoration: underline; }
+.crumbs [aria-current="page"] { color: var(--text); }
+
+/* ------------------------------------------------------------------ topbar */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 0 1rem;
+  flex-wrap: wrap;
+}
+
+.brand { display: flex; align-items: center; gap: 0.85rem; }
+.brand-mark { font-size: 2rem; line-height: 1; }
+.brand h1 { margin: 0; font-size: 1.4rem; letter-spacing: -0.01em; }
+
+/* The keyword half of the heading. The <h1> has to contain the phrase people
+   search for, but the product name is what a returning visitor is looking for,
+   so the phrase is set quieter rather than given equal weight. On a narrow
+   screen it takes its own line instead of squeezing the name. */
+.brand h1 .h1-kw {
+  font-weight: 400;
+  font-size: 0.72em;
+  color: var(--text-dim);
+  letter-spacing: 0;
+}
+
+@media (max-width: 620px) {
+  .brand h1 .h1-kw { display: block; }
+}
+
+.tagline { margin: 0.15rem 0 0; color: var(--text-dim); font-size: 0.9rem; }
+
+.topbar-actions { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.source-link:hover { border-color: var(--accent); color: var(--accent); }
+.source-link svg { flex: none; }
+
+/* ------------------------------------------------------------- the pledge */
+
+.pledge {
+  margin-bottom: 1.25rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--ok) 40%, var(--border));
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--ok) 9%, var(--surface)),
+      var(--surface) 65%);
+  box-shadow: var(--shadow);
+}
+
+.pledge-line {
+  margin: 0;
+  font-size: 1.18rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+.pledge-line strong { color: var(--ok); }
+.pledge-mark { color: var(--ok); font-size: 0.7em; flex: none; }
+
+.pledge-sub {
+  margin: 0.5rem 0 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 66ch;
+}
+
+.pledge-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+}
+
+.pledge-facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.22rem 0.6rem;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.pledge-facts li span { color: var(--ok); font-weight: 700; }
+
+/* The live, measured half of the claim. */
+.pledge-live {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed color-mix(in srgb, var(--ok) 35%, var(--border));
+}
+
+.live-row {
+  margin: 0 0 0.3rem;
+  font-size: 0.86rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.live-row strong { font-weight: 600; }
+
+.live-dot {
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--text-dim);
+  align-self: center;
+}
+
+.live-dot.good {
+  background: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent);
+}
+
+.live-dot.warn {
+  background: var(--danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 22%, transparent);
+}
+
+.live-hint {
+  margin: 0.6rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 66ch;
+}
+
+/* On a phone the full-size pledge pushed the drop zone off screen entirely.
+   Tighten it rather than dropping anything: the "check it yourself" line is
+   exactly what a privacy-minded visitor on mobile came to read. */
+@media (max-width: 620px) {
+  .pledge { padding: 0.95rem 1rem; }
+  .pledge-line { font-size: 1.02rem; gap: 0.4rem; }
+  .pledge-sub { font-size: 0.85rem; margin-top: 0.4rem; }
+  .pledge-facts { margin-top: 0.7rem; gap: 0.3rem 0.35rem; }
+  .pledge-facts li { font-size: 0.74rem; padding: 0.16rem 0.5rem; }
+  .pledge-live { margin-top: 0.75rem; padding-top: 0.65rem; }
+  .live-row { font-size: 0.8rem; }
+  .live-hint { font-size: 0.76rem; margin-top: 0.45rem; }
+}
+
+/* ----------------------------------------------------------------- privacy */
+
+.privacy {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.3rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.privacy h2 { margin: 0 0 0.6rem; font-size: 1rem; }
+.privacy ul { margin: 0; padding-left: 1.1rem; }
+.privacy li { margin-bottom: 0.35rem; font-size: 0.92rem; }
+.privacy code {
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+.privacy-status {
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+.privacy-status p { margin: 0.2rem 0; color: var(--text-dim); }
+.privacy-status .good { color: var(--ok); font-weight: 600; }
+.privacy-status .warn { color: var(--danger); font-weight: 600; }
+
+/* -------------------------------------------------------------------- card */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.4rem 1.4rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.card > h2 {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.step {
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex: none;
+}
+
+/* ---------------------------------------------------------------- dropzone */
+
+.dropzone {
+  /* Required: this is a <label>, which is inline by default. */
+  display: block;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 2rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  background: var(--surface-2);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.dropzone:hover,
+.dropzone:focus-visible,
+.dropzone.dragover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface-2));
+  outline: none;
+}
+
+/* The file input must stay in the layout — a display:none input cannot reliably
+   open the picker, and could not be focused by keyboard. This hides it visually
+   while leaving it functional. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The input is invisible, so its focus ring has to be drawn on the label. */
+.visually-hidden:focus-visible + .dropzone {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: var(--accent);
+}
+
+.dropzone.busy {
+  pointer-events: none;
+  border-style: solid;
+  border-color: var(--accent);
+  opacity: 0.75;
+  cursor: progress;
+}
+
+/* Spans rather than paragraphs, because <label> may only contain phrasing content. */
+.dropzone-title { display: block; font-weight: 600; }
+.dropzone-hint { display: block; margin-top: 0.3rem; color: var(--text-dim); font-size: 0.88rem; }
+
+/* ----------------------------------------------------------------- toolbar */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.toolbar-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.count { color: var(--text-dim); font-size: 0.9rem; }
+
+/* ------------------------------------------------------------ form controls */
+
+input, select, button {
+  font: inherit;
+  color: var(--text);
+}
+
+select, input[type="number"], input[type="color"] {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+}
+
+input[type="color"] { height: 2.2rem; padding: 0.2rem; cursor: pointer; }
+
+/* ----------------------------------------------------------------- buttons */
+
+button, .as-button {
+  border-radius: 7px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-size: 0.92rem;
+}
+
+.primary {
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  border-color: var(--accent);
+  text-decoration: none;
+  display: inline-block;
+}
+.primary:hover:not(:disabled) { filter: brightness(1.08); }
+.primary:disabled { opacity: 0.45; cursor: default; }
+
+.ghost {
+  background: var(--surface);
+  border-color: var(--border);
+  font-size: 0.85rem;
+  padding: 0.35rem 0.7rem;
+}
+.ghost:hover { border-color: var(--accent); }
+.ghost.danger { color: var(--danger); }
+.ghost.danger:hover { border-color: var(--danger); }
+
+/* ----------------------------------------------------- buy me a coffee */
+
+/*
+  The Buy Me a Coffee button draws itself and brings its own stylesheet, which
+  the script writes into the page after this file - so a bare `.bmc-btn` rule
+  here would lose on document order no matter what it said. Everything below is
+  scoped one level deeper, which wins on specificity instead, and needs
+  !important only where the button's own rule already used it.
+
+  Only the size is touched. The yellow, the black outline and the Cookie
+  lettering are the button's own and are the whole point of it: people
+  recognise it at a glance. Left at its native 60px it is twice the height of
+  the controls beside it and pushes the tool itself off a small screen, so it
+  is brought down to something that still shouts but does not take over.
+*/
+.support-cta { display: flex; }
+
+.support-cta .bmc-btn {
+  height: 44px;
+  min-width: 0;
+  padding: 0 1rem;
+  border-radius: 8px;
+  font-size: 24px;
+}
+
+.support-cta .bmc-btn svg { height: 26px !important; }
+
+/* --------------------------------------------------------------------- faq */
+
+/* The written half of the page: how-to steps and the questions, both of which
+   exist so that there is something here to read - by a person deciding whether
+   to trust this, and by a search engine that cannot rank a row of buttons.
+
+   Deliberately quieter than the cards above it. This sits below the tool and
+   should not compete with it for attention. */
+
+.faq {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.faq h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.faq h2 + .faq-list,
+.faq-list + h2,
+.how-to + h2 { margin-top: 1.6rem; }
+
+.how-to {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  max-width: 68ch;
+}
+
+.how-to strong { color: var(--text); font-weight: 600; }
+
+.faq-list {
+  display: grid;
+  gap: 0.4rem;
+}
+
+/* <details> rather than a plain list: seven open answers would bury the footer,
+   and collapsed text is still in the DOM, so it is still read and indexed. */
+.faq-list details {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.95rem;
+}
+
+.faq-list summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.93rem;
+  list-style-position: outside;
+}
+
+.faq-list summary:hover { color: var(--accent); }
+
+.faq-list details[open] summary { margin-bottom: 0.5rem; }
+
+.faq-list p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  max-width: 68ch;
+}
+
+.faq-list code {
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* The link to this tool's guide, under the questions. One line, because that
+   is what it is: the steps above say which button to press, and the guide is
+   for the reader who wants to know what the setting they are about to move
+   actually does. A card here would compete with the tool. */
+
+.tool-guide {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  max-width: 68ch;
+  font-size: 0.93rem;
+}
+
+.tool-guide a { color: var(--accent); font-weight: 600; }
+.tool-guide-note { font-size: 0.88rem; color: var(--text-dim); }
+
+/* ---- footer ------------------------------------------------------------ */
+
+/* A link footer in the shape the large media-tool sites use: a few columns of
+   plain links, left aligned, each under a quiet heading. It is the second
+   navigation, for anyone who scrolled to the bottom looking for one, and it is
+   the only route to the legal pages - a centred line of prose had nowhere to
+   put them.
+
+   Flex rather than grid, so the columns fall to two-up and then one-up on a
+   narrow screen without a media query. The brand column gets twice the basis of
+   a link column, because it carries a sentence rather than a list. */
+
+footer {
+  margin-top: 3rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.footer-cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+}
+
+.footer-col { flex: 1 1 150px; min-width: 0; }
+.footer-brand { flex: 2 1 240px; }
+
+.footer-col strong {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.footer-col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.footer-brand p { margin: 0.55rem 0 0; max-width: 34ch; }
+
+footer p { margin: 0.35rem 0; }
+footer a { color: var(--accent); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+.footer-base {
+  margin: 1.75rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* The language switcher, across the foot of the page above the closing line.
+
+   A row of plain links and nothing else: no JavaScript, no cookie, no
+   redirect. A site whose whole claim is that it does not track you cannot be
+   storing a preference in order to do it, and a crawler has to be able to walk
+   from one language into the next on foot.
+
+   It sits below the columns rather than inside one because it is not a fifth
+   category of link - it is the same page again, in another language, and a
+   reader scanning for their own is scanning a single line rather than hunting
+   a column. It renders at all only once a second language is finished; see
+   templates/partials/languages.html. */
+.lang-switch {
+  margin: 1.5rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.lang-switch ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+/* The language being read is not a link. Marked by weight and colour rather
+   than by being removed, so the row does not reflow as you move through it. */
+.lang-current {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* The way back to the hub, with the site mark on it. It heads the brand column
+   now rather than sitting inline in a sentence, so it is a flex row and carries
+   its own weight and colour. */
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.site-logo {
+  width: 1.35em;
+  height: 1.35em;
+  margin-right: 0.15em;
+}
+
+.logo-lid { stroke: var(--accent); }
+.logo-tool { fill: var(--accent-deep); }
+.logo-tool-alt { fill: var(--accent); }
+.logo-box { fill: var(--accent-deep); }
+.logo-band { fill: var(--accent); }
+.logo-latch { fill: var(--accent-pale); }
+
+/* ------------------------------------------------------------- ad placement */
+
+/* Auto ads inject their own <ins> elements wherever Google decides, so their
+   position cannot be reserved from here the way a hand-placed slot could be.
+   What this rule does fix is the after-effect: a slot Google fails to fill
+   otherwise sits on the page as an empty box, pushing real content down for
+   nothing. Collapsing unfilled slots removes that.
+
+   If layout shift ever needs to be eliminated rather than reduced, the answer
+   is hand-placed <ins> units inside containers with a fixed height, not more
+   CSS here - auto ads and a stable layout are close to mutually exclusive. */
+
+ins.adsbygoogle { display: block; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/*
+  The rules only this tool needs. The frame around the page - the header, the
+  pledge, the privacy panel, the cards, the buttons and the drop zone - comes
+  from shared/css/tool-frame.css. Only what is particular to placing a face
+  inside a government's rectangle is here.
+*/
+
+/* The one button on the page big enough to be found without reading. */
+.big { font-size: 1.02rem; padding: 0.7rem 1.3rem; }
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+  color: var(--danger);
+  font-size: 0.9rem;
+  white-space: pre-line;
+}
+
+.card-lede {
+  margin: -0.4rem 0 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 68ch;
+}
+
+.hint-line {
+  margin: 0.5rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.field-summary {
+  margin: 0.9rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+  min-width: 0;
+}
+
+.option-row label { font-size: 0.9rem; font-weight: 600; }
+
+/* `max-width` alone loses: a flex item's automatic minimum is min-content, and
+   for a <select> that is its longest option - a whole sentence here. */
+.option-row select { min-width: 0; max-width: 100%; flex: 1 1 20rem; }
+
+/* --------------------------------------------------------- the chosen file */
+
+.loaded-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+/* A phone's filenames have no spaces in them, so a long one is a single
+   unbreakable word and pushes the whole page sideways if it is not told it may
+   break anywhere. */
+.loaded-name { margin: 0; font-size: 0.88rem; overflow-wrap: anywhere; }
+
+/* ------------------------------------------------------ the specification */
+
+/* The published figures. A definition list because that is what it is: a term
+   and the number that goes with it, which also gives a screen reader the pairs
+   rather than a run of sentences. */
+.spec-facts {
+  display: grid;
+  grid-template-columns: minmax(9rem, auto) 1fr;
+  gap: 0.35rem 1rem;
+  margin: 0 0 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  font-size: 0.88rem;
+}
+
+.spec-facts dt { color: var(--text-dim); }
+.spec-facts dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+.spec-notes {
+  margin: 0 0 0.9rem;
+  padding-left: 1.1rem;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 74ch;
+}
+
+.spec-notes li { margin-bottom: 0.4rem; }
+
+/* Where the numbers came from, said on the page rather than only in the
+   source. A specification without a date on it is a rumour. */
+.spec-source {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 74ch;
+  border-left: 3px solid var(--border);
+  padding-left: 0.7rem;
+}
+
+.custom-panel {
+  margin-top: 1rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.custom-panel summary { cursor: pointer; font-size: 0.88rem; font-weight: 600; }
+.custom-panel[open] summary { margin-bottom: 0.8rem; }
+.custom-panel .numbers + .numbers { margin-top: 0.7rem; }
+
+.numbers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.6rem;
+}
+
+.numbers label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.numbers input { width: 6.5rem; font-variant-numeric: tabular-nums; }
+
+/* Safari zooms the page into any field it focuses whose text is under 16px,
+   and then leaves it zoomed. Sixteen only where there is a finger. */
+@media (pointer: coarse) {
+  .numbers input { font-size: 16px; }
+}
+
+/* --------------------------------------------------------------- the stage */
+
+.stage-hint {
+  margin: 0.4rem 0 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 74ch;
+}
+
+.stage-wrap {
+  display: flex;
+  justify-content: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* The stage is given the picture's own shape by main.js, so everything on it -
+   the crop box, the guide lines, the four marks - can be positioned in
+   percentages and needs no recalculating when the window is resized. */
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  touch-action: none;
+}
+
+.stage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* `fill` rather than `contain`: the stage already has the picture's own
+     shape, and any other value would put letterboxing inside the coordinate
+     space everything else is measured in. */
+  object-fit: fill;
+}
+
+.frame-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+}
+
+/* ------------------------------------------------------------ the crop box */
+
+/* Everything outside the box is dimmed by one enormous shadow rather than four
+   overlay elements, which keeps the markup to a single div and the dimming
+   exactly in step with the box as it moves. */
+.crop-box {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid rgb(255 255 255 / 90%);
+  box-shadow: 0 0 0 100vmax rgb(0 0 0 / 45%);
+  cursor: move;
+  touch-action: none;
+}
+
+.crop-box:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.crop-size {
+  position: absolute;
+  left: 50%;
+  bottom: 0.4rem;
+  transform: translateX(-50%);
+  padding: 0.1rem 0.45rem;
+  border-radius: 99px;
+  background: rgb(0 0 0 / 65%);
+  color: #fff;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.crop-handle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 1px solid rgb(0 0 0 / 45%);
+  border-radius: 3px;
+}
+
+/* A touch target larger than the dot it draws, so a handle can be grabbed with
+   a finger without the dot itself covering the picture. */
+.crop-handle::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+}
+
+.handle-n  { top: -7px; left: 50%; margin-left: -7px; cursor: ns-resize; }
+.handle-s  { bottom: -7px; left: 50%; margin-left: -7px; cursor: ns-resize; }
+.handle-e  { right: -7px; top: 50%; margin-top: -7px; cursor: ew-resize; }
+.handle-w  { left: -7px; top: 50%; margin-top: -7px; cursor: ew-resize; }
+.handle-ne { top: -7px; right: -7px; cursor: nesw-resize; }
+.handle-nw { top: -7px; left: -7px; cursor: nwse-resize; }
+.handle-se { bottom: -7px; right: -7px; cursor: nwse-resize; }
+.handle-sw { bottom: -7px; left: -7px; cursor: nesw-resize; }
+
+@media (pointer: coarse) {
+  .crop-handle { width: 18px; height: 18px; }
+  .handle-n, .handle-s { margin-left: -9px; }
+  .handle-e, .handle-w { margin-top: -9px; }
+}
+
+/* ---------------------------------------------------------- the guide lines */
+
+/* The bands where the rule says the eyes and the chin have to fall. Amber
+   until the measurement passes, green once it does, so the overlay answers the
+   question without anybody reading the list underneath it. */
+.guide-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  background: rgb(230 160 30 / 26%);
+  border-top: 1px dashed rgb(255 210 120 / 90%);
+  border-bottom: 1px dashed rgb(255 210 120 / 90%);
+}
+
+.guide-band.guide-pass {
+  background: rgb(60 200 130 / 22%);
+  border-color: rgb(140 240 190 / 90%);
+}
+
+.guide-caption {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 80%);
+}
+
+/* Where the crown and the chin actually are, once they have been marked. */
+.guide-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1px solid rgb(120 220 255 / 95%);
+  pointer-events: none;
+}
+
+.guide-line.guide-fail { border-top-color: rgb(255 130 130 / 95%); }
+
+.guide-centre {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  border-left: 1px dashed rgb(255 255 255 / 45%);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------- the marks */
+
+/* A dot on the picture, in the picture's own coordinates, not the crop box's:
+   the marks describe the face, and the face does not move when the framing
+   changes. */
+.face-mark {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 55%);
+  cursor: grab;
+  touch-action: none;
+}
+
+.face-mark::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+}
+
+.face-mark.dragging { cursor: grabbing; }
+.face-mark:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+.face-mark-label {
+  position: absolute;
+  left: 50%;
+  top: -1.55rem;
+  transform: translateX(-50%);
+  padding: 0.05rem 0.35rem;
+  border-radius: 99px;
+  background: rgb(0 0 0 / 70%);
+  color: #fff;
+  font-size: 0.68rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@media (pointer: coarse) {
+  .face-mark { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+}
+
+/* ------------------------------------------------------------- the checks */
+
+/* One line per rule, with the direction to drag in. A list rather than a
+   paragraph, because these are read at a glance and acted on one at a time. */
+.checks { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.4rem; }
+
+.check {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.check-mark { flex: none; font-weight: 700; }
+
+.check-good {
+  border-color: color-mix(in srgb, var(--ok) 35%, var(--border));
+  background: color-mix(in srgb, var(--ok) 7%, var(--surface));
+}
+.check-good .check-mark { color: var(--ok); }
+
+.check-warn {
+  border-color: color-mix(in srgb, #c98a00 40%, var(--border));
+  background: color-mix(in srgb, #c98a00 8%, var(--surface));
+}
+.check-warn .check-mark { color: #c98a00; }
+
+.check-bad {
+  border-color: color-mix(in srgb, var(--danger) 38%, var(--border));
+  background: color-mix(in srgb, var(--danger) 7%, var(--surface));
+}
+.check-bad .check-mark { color: var(--danger); }
+
+/* --------------------------------------------------------- the background */
+
+.swatches {
+  display: flex;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+
+.swatch { display: flex; align-items: center; gap: 0.6rem; }
+
+/* The checkerboard is not decoration: an off-white and a white swatch side by
+   side are indistinguishable against a white card, and the border is what
+   makes the difference between them visible at all. */
+.swatch-chip {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 8%);
+}
+
+.swatch-label { font-size: 0.82rem; color: var(--text-dim); line-height: 1.5; }
+.swatch-label output { color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------- settings */
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 1.1rem;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field > label { font-size: 0.85rem; font-weight: 600; }
+
+.field-note {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+/* ----------------------------------------------------------------- running */
+
+.run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+
+.progress { margin-top: 1rem; }
+
+.progress-track {
+  height: 6px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Width is set from script as each file finishes. There is no animation on
+   purpose: a bar that slides while an encode is running suggests progress the
+   tool cannot actually measure part-way through. */
+.progress-bar { height: 100%; width: 0; background: var(--accent); }
+
+.progress-label { margin: 0.5rem 0 0; font-size: 0.85rem; color: var(--text-dim); }
+
+/* ----------------------------------------------------------------- results */
+
+.results { margin-top: 1.4rem; }
+.results-head { margin-bottom: 0.6rem; }
+.results-head h3 { margin: 0; font-size: 0.95rem; }
+
+.result-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+
+.result-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--ok) 35%, var(--border));
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--ok) 6%, var(--surface));
+}
+
+/* A file that could not be brought inside the band it was given. It is still
+   handed over - it is your photograph - and the row says what it is instead of
+   pretending. */
+.result-warn {
+  border-color: color-mix(in srgb, var(--danger) 38%, var(--border));
+  background: color-mix(in srgb, var(--danger) 6%, var(--surface));
+}
+
+.result-text { flex: 1 1 20rem; min-width: 0; }
+.result-title { margin: 0; font-weight: 600; font-size: 0.92rem; }
+
+.result-detail {
+  margin: 0.25rem 0 0;
+  font-size: 0.83rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.result-name {
+  margin: 0.3rem 0 0;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+
+.result-row .as-button { flex: none; text-decoration: none; }
