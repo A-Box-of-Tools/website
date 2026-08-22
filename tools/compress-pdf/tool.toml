@@ -31,6 +31,11 @@ og_title = "Compress PDF &mdash; free, and nothing is uploaded"
 og_description = "Shrink a PDF on your own machine. It measures how big each picture is drawn on the page, so it only throws away pixels nobody could see."
 og_image_alt = "Compress PDF - make a document smaller without uploading it"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Shrink a document on your own machine, throwing away only pixels nobody could see."
+
 # --- the pledge block --------------------------------------------------------
 
 pledge = """

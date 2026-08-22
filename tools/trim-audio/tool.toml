@@ -42,6 +42,11 @@ og_title = "Audio Trimmer &mdash; keep only the parts you want, without uploadin
 og_description = "Press I and O as it plays to mark each part worth keeping. The marked parts are written back out as one file, cut on the exact sample, with nothing uploaded."
 og_image_alt = "Audio Trimmer - mark the parts you want and save them as one recording, in your browser"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Mark the parts worth keeping as it plays, and save them as one recording."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

@@ -34,6 +34,11 @@ og_title = "Video Frame Grabber &mdash; a still from any point, without uploadin
 og_description = "Find the moment, step to the exact frame, and save it at the video's own resolution. The frames are decoded on your own machine and the picture is never re-encoded twice."
 og_image_alt = "Video Frame Grabber - save a frame from a video in your browser, with nothing uploaded"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Save any frame of a clip as a picture, at the size the video really is."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

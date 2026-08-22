@@ -31,6 +31,11 @@ og_title = "Make a passport photo to your country's exact rule, without uploadin
 og_description = "Pick a country and a document and the crop box takes that rule's head height and eye line. Prints at the mandated size and DPI, and writes the upload file inside the KB band the form insists on."
 og_image_alt = "ID Photo Maker - passport and visa photos to spec, without uploading"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Pick a country and a document, and it applies that rule exactly - on your own machine."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

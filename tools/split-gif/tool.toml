@@ -34,6 +34,11 @@ og_title = "GIF Splitter &mdash; take an animation apart, in your browser"
 og_description = "Every frame of a GIF as its own PNG, with the delays and the transparency intact. The file is read on your own machine and never uploaded."
 og_image_alt = "GIF Splitter - every frame of a GIF as its own PNG"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Every frame of an animation as its own PNG, with the timing written down."
+
 # --- the pledge block --------------------------------------------------------
 
 pledge = """

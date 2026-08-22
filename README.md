@@ -332,10 +332,13 @@ one.
    merged by position: a locale list longer than the English one is a hard
    failure, and a line removed at the wrong index silently moves every
    translation after it onto the wrong entry.
-7. Draw the share card. `og-image.ps1` holds one `New-OgImage` entry per tool
-   and writes `tools/<slug>/og.png`; add yours and run it. It redraws every
-   card, and the redraws are not byte-identical, so `git checkout --` the ones
-   you did not mean to touch afterwards.
+7. Draw the share card: `.\og-image.ps1 -Only <slug>`. It reads the heading
+   from `name` and the subtitle from `og_card`, both in your `tool.toml`, so
+   there is no list to add yourself to. The build refuses a tool with no
+   `og.png`, because every tool page claims one in its `og:image` whether or
+   not it is there. Run it without `-Only` and it redraws all of them, which
+   is worth avoiding: the mark is rasterised through a headless Edge that
+   flakes about once a run.
 8. Write it a guide. See [The guides](#the-guides) — one folder under
    `pages/guides/`, and the link between the two pages is a single `tool` key.
 9. Write `tools/<slug>/README.md`: how the tool works and why it works that way,

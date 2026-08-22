@@ -39,6 +39,11 @@ og_title = "Turn an SVG into a PNG at any size, without uploading it"
 og_description = "A vector has no pixel size of its own, so the number is yours to pick - 32 or 8000, with the same sharpness either way. It all runs on your own machine."
 og_image_alt = "SVG to Image - rasterize a vector to PNG, JPEG or WebP at any size"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Rasterize a vector to PNG, JPEG or WebP at any size, on your own machine."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

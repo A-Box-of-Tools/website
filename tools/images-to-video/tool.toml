@@ -34,6 +34,11 @@ og_title = "Image Sequence to MP4 &mdash; free, in your browser"
 og_description = "Turn a render sequence, a timelapse or a folder of photos into an MP4. Encoding runs on your own machine; nothing is uploaded."
 og_image_alt = "Images to Video - turn a folder of images into an MP4 slideshow"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Turn a folder of images into an MP4 slideshow, encoded on your own machine."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

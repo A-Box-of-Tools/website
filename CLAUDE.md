@@ -59,9 +59,9 @@ silently writes CRLF on Windows: use `write_bytes()` on anything in this repo.
 paths and check `git diff --cached --name-only | wc -l` first — a tool change is
 around 20 files, a locale around 66.
 
-**`og-image.ps1` redraws every share card**, and the redraws are not
-byte-identical because it rasterises the logo through headless Edge and that
-flakes. Run it, then `git checkout --` the cards you did not mean to touch.
+**`og-image.ps1` without `-Only <slug>` redraws every share card**, and the
+redraws are not byte-identical because it rasterises the logo through headless
+Edge and that flakes. Name the tool you changed.
 
 **A shared module cannot be imported by a unit-tested leaf module.**
 `js_parts` copies `shared/js/x.js` into a tool at `src/shared/x.js` *at build
@@ -76,7 +76,8 @@ The checklist is [README.md → Adding a tool](README.md#adding-a-tool). Two
 steps that section does not spell out, and that every real tool change has
 needed:
 
-- an entry in `og-image.ps1`, to draw `tools/<slug>/og.png`;
+- `.\og-image.ps1 -Only <slug>`, to draw `tools/<slug>/og.png`. The build
+  refuses a tool without one;
 - if the tool was on the roadmap, drop its line from `config/planned.toml`
   **and** from every `locales/*/planned.toml`. Those lists are matched
   positionally; a locale list longer than English fails the build.

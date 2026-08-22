@@ -34,6 +34,11 @@ og_title = "Video Cropper &mdash; crop a clip without uploading it"
 og_description = "Drag a box over your clip and crop it to any shape. The frames are decoded and re-encoded on your own machine, and the original sound is carried across untouched."
 og_image_alt = "Video Cropper - crop a clip in your browser, with nothing uploaded"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Cut a clip down to the part that matters, without it ever leaving your machine."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

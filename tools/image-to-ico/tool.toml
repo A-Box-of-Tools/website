@@ -39,6 +39,11 @@ og_title = "Make an .ico or an .icns with every size in it, without uploading an
 og_description = "A favicon.ico for a website, an app.ico for a Windows program, an .icns for a Mac - with a preview at 16 pixels before you download. It all runs on your own machine."
 og_image_alt = "Image to ICO - favicon, Windows and macOS icon maker, no upload"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Make a favicon, a Windows app icon or a macOS .icns - every size in one file."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

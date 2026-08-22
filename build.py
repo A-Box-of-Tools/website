@@ -694,9 +694,18 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         'cache_hash': sitelib.cache_hash(cached),
     }), where=f'{locale["prefix"]}{tool["out_slug"]}/sw.js')
 
+    # Required, not optional. templates/tool.html writes og:image and
+    # twitter:image on every tool page whether or not the file is there, and
+    # check_links only reads <a href>, so a tool without one used to build
+    # clean and serve a share card that 404s - in ten languages, and visible
+    # only to whoever pasted the link somewhere. Draw it with
+    # `.\og-image.ps1 -Only <slug>`.
     og = tool['dir'] / 'og.png'
-    if og.is_file():
-        shutil.copy2(og, dest / 'og.png')
+    if not og.is_file():
+        raise sitelib.ConfigError(
+            f'{tool["slug"]}: no og.png. Every tool page claims one in its '
+            f'og:image; draw it with .\\og-image.ps1 -Only {tool["slug"]}')
+    shutil.copy2(og, dest / 'og.png')
 
 
 def vendor_files(tool, dest):
