@@ -52,7 +52,6 @@ items = [
   ["Resize", "down to a size that will actually send"],
   ["Rotate", "for the clip that was filmed sideways"],
   ["Mute, or save the audio", "drop the sound, or keep it on its own"],
-  ["Grab a frame", "a full-quality still from any point"],
   ["Convert to MP4 or WebM", "whichever one the site you are posting to insists on"],
   ["Filters", "brightness, contrast, saturation, blur"],
   ["Burn in subtitles", "an SRT file drawn into the picture"],

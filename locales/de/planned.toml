@@ -43,7 +43,6 @@ items = [
   ["Skalieren", "herunter auf eine Größe, die sich wirklich verschicken lässt"],
   ["Drehen", "für den Clip, der quer gefilmt wurde"],
   ["Stummschalten oder Ton sichern", "den Ton weglassen oder ihn separat behalten"],
-  ["Einzelbild greifen", "ein Standbild in voller Qualität an beliebiger Stelle"],
   ["In MP4 oder WebM umwandeln", "je nachdem, worauf die Seite besteht, auf der Sie posten"],
   ["Filter", "Helligkeit, Kontrast, Sättigung, Weichzeichnen"],
   ["Untertitel einbrennen", "eine SRT-Datei fest ins Bild gezeichnet"],

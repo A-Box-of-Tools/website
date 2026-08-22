@@ -1,0 +1,302 @@
+#
+# Video Frame Grabber
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "grab-frame"
+name = "Video Frame Grabber"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Video&nbsp;Frame&nbsp;Grabber <span class=\"h1-kw\">&mdash; save a frame from a video</span>"
+tagline = "A full-quality still from any point."
+icon = "&#127902;&#65039;"          # the mark beside the page heading
+favicon = "&#127902;"      # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "video"
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-20"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Grab a Frame From a Video &mdash; Free, No Upload, Works Offline"
+description = "Save any frame of an MP4, MOV or WebM as a full-size PNG or JPEG. Step frame by frame, or take one every few seconds. Runs in your browser: nothing uploaded."
+og_title = "Video Frame Grabber &mdash; a still from any point, without uploading the clip"
+og_description = "Find the moment, step to the exact frame, and save it at the video's own resolution. The frames are decoded on your own machine and the picture is never re-encoded twice."
+og_image_alt = "Video Frame Grabber - save a frame from a video in your browser, with nothing uploaded"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src needs blob: because the clip you chose is played from memory on this
+  machine rather than from a URL. That is the only addition: this tool fetches
+  nothing, so connect-src is left exactly as the site sets it."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The frames are found, decoded and drawn by your own browser, on your own
+    hardware. Nothing here can fetch or send anything &mdash; there is no network
+    feature in this tool at all &mdash; and there is no server on the other end of
+    this page to send a video to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and grab a
+      frame. Not one request carries a picture, a filename, or a byte of what you
+      chose. Or unplug from the internet and grab one anyway &mdash; a tool that
+      sent your video away to be processed would simply stop."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/demux.js</code> for the reader that finds
+      the frames in an MP4, and <code>src/frames.js</code> for the part that
+      decodes the one you asked for. Neither imports anything that can make a
+      request."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to grab a frame from a video"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Save any frame of a clip as a picture, at the video's own size
+            &mdash; one at a time, or one every few seconds."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "videos"
+choose = "a video"
+analytics_extra = """, and no
+  frame, timecode or picture"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Full resolution"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[privacy]]
+title = "Your videos have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ This tool has no network feature at
+      all: no address to paste, nothing to download, no engine fetched on first
+      use. Every byte that touches your video came from this origin when the page
+      loaded."""
+
+[[privacy]]
+title = "The decoding is local."
+body = """
+ The frames go through WebCodecs in
+      your own browser, or through the same playback engine that would show you
+      the clip anyway. The picture is drawn onto a canvas on this machine and
+      handed straight to a download."""
+
+[[privacy]]
+title = "The file is read a few megabytes at a time."
+body = """
+ A video
+      is the one kind of file here that will not reliably fit in memory, so it is
+      never loaded whole. The reader takes a window around whatever frame you
+      asked for &mdash; which is also why a two-gigabyte clip opens as quickly as
+      a small one."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      video: not a file, not a frame, not a name, a size, a length, or the moment
+      you stopped on. Every line that reads, decodes or draws is served from this
+      origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about you
+      or your video."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on
+      this page still works. That is the simplest proof of all."""
+
+[[howto]]
+title = "Choose a video."
+body = """
+ Drop an MP4, MOV, M4V or WebM onto
+      the picker, or select one by hand. It is read straight off your disk by the
+      browser; nothing is sent anywhere while you do it."""
+
+[[howto]]
+title = "Find the moment."
+body = """
+ Play it and stop where you want, or drag
+      the slider &mdash; on an MP4 the slider moves one frame per step, so there
+      is no rounding between what you see and what you save. The arrow keys step
+      a frame at a time, and hold <kbd>Shift</kbd> for ten."""
+
+[[howto]]
+title = "Pick a format."
+body = """
+ PNG stores the frame exactly as it decoded,
+      which is what "full quality" means here. JPEG and WebP are smaller and are
+      a second compression on top of the video's own, which is fine for a preview
+      and not for anything that gets edited afterwards."""
+
+[[howto]]
+title = "Grab it, or grab a series."
+body = """
+ One frame goes straight to
+      your downloads. "Every N seconds" walks the clip once and takes a still at
+      each mark &mdash; useful for contact sheets and thumbnails &mdash; and they
+      come out as one ZIP rather than a hundred save prompts."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my video uploaded anywhere?"
+a = """
+        No. It is read and decoded by your own browser on your own hardware.
+        There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. Unplug from the internet and
+        grab a frame anyway if you would rather check than be told."""
+
+[[faq]]
+q = "What does &quot;full quality&quot; actually mean?"
+a = """
+        Two things. The still is saved at the video's own resolution, not at the
+        size of the preview on the page &mdash; a 4K clip gives a 3840 x 2160
+        picture. And with PNG chosen, the frame is stored exactly as it came out
+        of the decoder, so the file holds the picture the video holds, with no
+        second round of compression on top of it. A screenshot of a player
+        window gives you neither: it is the size of the window, taken after the
+        player has scaled and colour-managed it."""
+
+[[faq]]
+q = "Which video formats can I take a frame from?"
+a = """
+        MP4, M4V and MOV are read directly, whatever is inside them: H.264,
+        HEVC, AV1 or VP9, as long as your browser can decode that codec. That is
+        the exact path, where the tool addresses individual frames. Anything else
+        your browser can play &mdash; WebM most obviously &mdash; is handled by
+        seeking the player and drawing what it shows, which still saves a
+        full-size picture but lands on the frame the player picked rather than
+        the one you asked for. A file the browser can neither read nor play,
+        which in practice means AVI, WMV, FLV and most MKVs, is refused with a
+        message saying so."""
+
+[[faq]]
+q = "Can I step one frame at a time?"
+a = """
+        On an MP4, yes, exactly: the tool reads the file's own list of frames, so
+        the arrow keys move between the pictures that are actually in it &mdash;
+        including on a clip whose frame rate wanders, where a fixed step of a
+        thirtieth of a second would drift. On the playback path there is no such
+        list, so a step is a nudge of about a frame and the page says so."""
+
+[[faq]]
+q = "Why is my portrait phone video the right way up here?"
+a = """
+        Because the rotation was applied on purpose. A phone films in landscape
+        and writes a quarter turn into the file rather than turning the pixels,
+        so the frame a decoder hands over is on its side and every player turns
+        it on the way to your screen. A tool that skips that step saves a
+        plausible picture of the right moment, sideways. This one reads the turn
+        off the track and applies it before anything is drawn."""
+
+[[faq]]
+q = "Is there a limit on the size or length of the video?"
+a = """
+        There is no limit built into the tool, and the file is not read into
+        memory all at once &mdash; it is walked a few megabytes at a time, which
+        is why a long clip opens as quickly as a short one. The stills you take
+        are held in the page until you download them, so a few hundred 4K PNGs
+        is the practical ceiling rather than the video itself."""
+
+[[faq]]
+q = "Can I resize or crop the still afterwards?"
+a = """
+        Not here, but next door. This tool saves the frame as it is; changing its
+        size or its shape is a separate job with its own decisions in it, and the
+        <a href="../resize-image/">Image Resizer</a> does both, also without
+        uploading anything. Making the file smaller without changing the picture
+        is the <a href="../compress-image/">Image Compressor</a>."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your video."""
+
+[schema]
+browser_requirements = "Requires JavaScript. Frame-exact grabbing needs a browser with WebCodecs; others fall back to seeking the player."
+category = "MultimediaApplication"
+description = "Save any frame of a video as a full-size PNG, JPEG or WebP in the browser. MP4, MOV and M4V are read frame by frame through WebCodecs so the exact frame asked for is the one saved; anything else the browser plays is captured from the player. Nothing is uploaded."
+features = [
+  "Saves a still from MP4, MOV, M4V and WebM video",
+  "H.264, HEVC, AV1 and VP9 sources, decoded through WebCodecs",
+  "Frame-by-frame stepping through the file's own frame list",
+  "PNG for an exact copy of the frame, or JPEG and WebP for a smaller one",
+  "One still every N seconds, downloaded together as a ZIP",
+  "Runs offline; no upload, no account, no watermark",
+]
+
+# This tool needs one thing the rest of the site does not: blob: on media-src,
+# because the clip you chose is played from memory on this machine rather than
+# from a URL. A tool can only ever widen its own page this way - it cannot
+# narrow the site policy, and it cannot touch any other tool's.
+[csp]
+"media-src" = ["'self'", "blob:"]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "video/*"
+multiple = false
+title = "Drop a video here"
+hint = "or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays"

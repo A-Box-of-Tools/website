@@ -222,6 +222,11 @@ New-OgImage -Path 'tools\crop-video\og.png' `
   -Subtitle 'Cut a clip down to the part that matters, without it ever leaving your machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\grab-frame\og.png' `
+  -Title 'Video Frame Grabber' `
+  -Subtitle 'Save any frame of a clip as a picture, at the size the video really is.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\trim-video\og.png' `
   -Title 'Video Cutter' `
   -Subtitle 'Mark the parts worth keeping as it plays, and save them as one video.' `
