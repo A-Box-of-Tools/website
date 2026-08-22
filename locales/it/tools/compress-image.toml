@@ -1,0 +1,252 @@
+#
+# Compressore di immagini - Italian.
+#
+# Overrides for tools/compress-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Compressore di immagini"
+# La coda è l'espressione che si cerca. Come in inglese, il nome del prodotto
+# resta la metà che grida.
+heading = "Comprimere&nbsp;un'immagine <span class=\"h1-kw\">&mdash; a una dimensione esatta</span>"
+tagline = "Dici tu la dimensione. Il resto lo calcola lui."
+
+title = "Comprimere un'immagine a una dimensione esatta &mdash; gratis, senza caricare nulla"
+description = "Comprimi un JPEG, un PNG o un WebP a una dimensione esatta: 100 KB, 2 MB, quello che serve. Gira tutto nel browser: niente da caricare, nessun account, anche offline."
+og_title = "Comprimere un'immagine alla dimensione che scegli tu"
+og_description = "Dici una dimensione e lui trova la compressione minima che ci arriva, poi misura quanto è costata. Gira sul tuo dispositivo; non viene caricato nulla."
+og_image_alt = "Compressore di immagini - dici la dimensione, la qualità resta"
+
+pledge = """
+    La compressione avviene nel tuo browser, sul tuo hardware, con gli encoder
+    che si porta già dietro. Questo strumento non ha alcuna funzione di rete
+    &mdash; niente da recuperare, niente da spedire &mdash; e dall'altra parte
+    di questa pagina non c'è alcun server a cui mandare una foto, anche se ci
+    fosse un modo per farlo."""
+
+live_hint = """
+      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
+      scheda Rete e comprimi una foto. Non una sola richiesta porta con sé
+      un'immagine, una miniatura, un nome di file o un byte di quello che hai
+      scelto. Oppure stacca la connessione e comprimine una lo stesso."""
+
+read_first = """
+, <code>src/compress.js</code> per la ricerca che
+      decide quanta qualità spendere, e <code>src/measure.js</code> per il
+      confronto dietro il valore di «corrispondenza visiva»."""
+
+howto_heading = "Come comprimere un'immagine a una dimensione precisa"
+
+card = """
+            Di' la dimensione che ti serve &mdash; 100 KB, 2 MB, qualunque
+            &mdash; e trova la compressione minima che ci arriva."""
+
+[words]
+plural = "immagini"
+choose = "un'immagine"
+analytics_extra = """, e nemmeno una delle
+  dimensioni o dei valori di qualità che questo strumento calcola"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessun limite di dimensione"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Le tue immagini non hanno dove andare."
+body = """
+ La
+      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di questi appartiene a questo sito. Qui non esiste
+      un punto di raccolta dove i tuoi file potrebbero finire, e nel codice non
+      c'è nulla che ce li manderebbe se esistesse."""
+
+[[privacy]]
+title = "Qui dentro niente recupera niente."
+body = """
+ Non c'è né un
+      <code>fetch</code>, né un <code>XMLHttpRequest</code>, né un
+      <code>sendBeacon</code> da nessuna parte in <code>src/</code>. La
+      compressione è <code>canvas.toBlob</code> &mdash; l'encoder che è già
+      installato nel tuo browser."""
+
+[[privacy]]
+title = "I numeri sono misurati, non riferiti."
+body = """
+ Le dimensioni, il
+      valore di qualità e il confronto SSIM vengono calcolati tutti su questa
+      pagina e mostrati a te. In questo repository non esiste alcun evento di
+      analytics che porti con sé un nome di file, una dimensione, un conteggio
+      o un risultato."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli viene dato."
+body = """
+ Gli script
+      pubblicitari e di misurazione arrivano da Google, e il pulsante delle
+      donazioni da Buy Me a Coffee. A nessuno di loro viene passato niente
+      sulle tue immagini. Ogni riga che legge, comprime o misura un file è
+      servita da questa origine ed è elencata nel repository."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e lo strumento resta
+      identico, perché al suo interno non c'è mai stato un passaggio di rete.
+      È la prova più semplice di tutte."""
+
+[[howto]]
+title = "Scegli le tue immagini."
+body = """
+ Trascinale sul riquadro o
+      selezionale a mano. Il browser le legge direttamente dal tuo disco;
+      mentre lo fai non viene mandato niente da nessuna parte."""
+
+[[howto]]
+title = "Scrivi la dimensione che ti hanno imposto."
+body = """
+ 100 KB per il modulo
+      di caricamento che continua a rifiutare la tua foto, 500 KB per il
+      portale delle domande, 2 MB per una pagina che deve caricarsi in fretta.
+      Le quattro più comuni sono pulsanti."""
+
+[[howto]]
+title = "Premi «Comprimi alla dimensione obiettivo»."
+body = """
+ Ogni immagine viene
+      codificata più volte mentre lo strumento si avvicina alla qualità più
+      alta che ci sta dentro. Quello che è già sotto l'obiettivo resta
+      esattamente com'è."""
+
+[[howto]]
+title = "Guarda quanto è costato, poi scarica."
+body = """
+ Ogni risultato dice in
+      che formato è stato scritto, a che qualità, se le dimensioni in pixel
+      sono cambiate e quanto somiglia all'originale una volta misurato.
+      «Confronta» mette le due immagini una accanto all'altra."""
+
+[[faq]]
+q = "La mia immagine viene caricata da qualche parte?"
+a = """
+        No. Il file viene decodificato, compresso e misurato dal tuo browser sul
+        tuo hardware, con gli encoder JPEG, PNG e WebP che il browser si porta
+        già dietro. Questo strumento non ha alcuna funzione di rete &mdash; non
+        recupera mai niente e non spedisce mai niente &mdash; e la
+        <code>Content-Security-Policy</code> della pagina nomina tutti gli
+        indirizzi che può contattare, nessuno dei quali appartiene a questo
+        sito."""
+
+[[faq]]
+q = "Come fa a centrare una dimensione esatta?"
+a = """
+        Provando. Non esiste una formula che trasformi un'impostazione di qualità
+        in un numero di byte &mdash; dipende interamente dall'immagine &mdash;
+        quindi lo strumento la codifica più volte e cerca la risposta. Parte
+        dall'estremo alto della scala di qualità e si avvicina dimezzando, il che
+        trova la qualità più alta che ci sta in una decina di codifiche. Ogni
+        dimensione che vedi sulla pagina è un file davvero codificato, non una
+        stima."""
+
+[[faq]]
+q = "Cosa vuol dire qui «perdita minima»?"
+a = """
+        Tre cose precise. Primo: un'immagine già sotto il tuo obiettivo viene
+        passata byte per byte invece di essere ricodificata. Secondo: si spende
+        prima la qualità e poi la risoluzione, e solo fino a una soglia sotto la
+        quale gli artefatti di compressione cominciano a vedersi &mdash; oltre
+        quel punto lo strumento rimpicciolisce l'immagine e rialza la qualità,
+        perché meno pixel buoni si vedono meglio di più pixel rovinati. Terzo:
+        una volta trovato un risultato che ci sta, la ricerca risale finché il
+        budget non è speso, così non ti ritrovi con un file da 300 KB quando ne
+        avevi chiesti 500."""
+
+[[faq]]
+q = "Cosa sono i valori SSIM e PSNR su ogni risultato?"
+a = """
+        Sono la misura di quanto è costata la compressione, presa decodificando
+        il risultato e confrontandolo con l'immagine originale. SSIM confronta
+        luminosità, contrasto e struttura locali, il che è molto più vicino a
+        quello che dà fastidio a un occhio che non contare i pixel cambiati;
+        sopra lo 0,98 circa le due immagini sono difficili da distinguere una
+        accanto all'altra. PSNR è il classico valore in decibel. Entrambi sono
+        calcolati sul tuo dispositivo, ed entrambi sono mostrati perché
+        l'affermazione di perdita minima sia verificabile invece che solo
+        dichiarata."""
+
+[[faq]]
+q = "Quali formati sa leggere e scrivere?"
+a = """
+        Legge tutto quello che il tuo browser sa decodificare, che in pratica
+        vuol dire JPEG, PNG, WebP, GIF, BMP e &mdash; sulla maggior parte dei
+        browser attuali &mdash; AVIF. Scrive JPEG, PNG e WebP, perché quelli
+        sono gli encoder che i browser si portano dietro. Su «automatico»
+        mantiene il formato con cui è arrivato il tuo file, e passa a WebP solo
+        quando mantenerlo avrebbe voluto dire ridimensionare o perdere qualità
+        in modo visibile."""
+
+[[faq]]
+q = "Perché un PNG non si riesce a comprimere granché?"
+a = """
+        Perché il PNG è senza perdita: non ha una manopola della qualità da
+        girare. L'unico modo di rimpicciolire un PNG è dargli meno pixel o meno
+        colori, quindi con il PNG selezionato lo strumento raggiunge l'obiettivo
+        solo ridimensionando. Se l'immagine è una fotografia, JPEG o WebP ci
+        arrivano molto più vicino a una qualità che si vede bene &mdash; e se è
+        un logo o uno screenshot con trasparenza, WebP conserva la trasparenza
+        che il JPEG riempirebbe di bianco."""
+
+[[faq]]
+q = "Comprimere un'immagine ne rimuove i dati EXIF e GPS?"
+a = """
+        Sì, come effetto collaterale. Comprimere vuol dire decodificare
+        l'immagine in pixel e ricodificare quei pixel, e una tela piena di pixel
+        non porta con sé alcun tag: posizione, modello della fotocamera, orari e
+        tutto il resto semplicemente non vengono scritti nel file nuovo. Se
+        vuoi via i metadati ma l'immagine intatta, usa invece il
+        <a href="../rimuovere-dati-exif/">visualizzatore e rimozione EXIF</a>
+        &mdash; riscrive il contenitore senza ricomprimere niente."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è accesso, non c'è periodo di prova e
+        non c'è filigrana. Non c'è nemmeno un limite al numero o alla dimensione
+        dei file, perché non c'è un server che li paga &mdash; il lavoro avviene
+        sul tuo dispositivo. Il sito ha della pubblicità, ed è quella che lo
+        paga; agli annunci non viene dato niente sulle tue immagini."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la connessione e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene
+        caricato niente: uno strumento che spedisse via le tue immagini per
+        comprimerle si fermerebbe nel momento in cui stacchi la spina."""
+
+[schema]
+description = "Comprimi immagini JPEG, PNG e WebP a una dimensione che scegli tu. Lo strumento cerca la qualità più alta che sta nell'obiettivo, ridimensiona solo quando la qualità da sola non basta, e misura il risultato contro l'originale. Gira interamente nel browser, senza caricare nulla."
+features = [
+  "Comprime a una dimensione di file scelta da te, non a un numero di qualità da indovinare",
+  "Mantiene la piena risoluzione dove può, e ridimensiona solo quando la qualità da sola non raggiunge l'obiettivo",
+  "Spende tutto il budget: il risultato finisce appena sotto l'obiettivo invece che molto più in basso",
+  "Misura il risultato contro l'originale con SSIM e PSNR",
+  "Lascia del tutto intatti i file già sotto l'obiettivo",
+  "JPEG, PNG e WebP, con scelta automatica del formato",
+  "Lavora a lotti, con tutti i risultati in un unico zip",
+  "Funziona offline; niente caricamenti, nessun account",
+]
+
+[picker]
+title = "Trascina qui le immagini"
+hint = "oppure clicca per scegliere &mdash; JPEG, PNG, WebP e qualunque altra cosa il tuo browser sappia aprire"

@@ -1,0 +1,292 @@
+#
+# Editor audio - Italian.
+#
+# Overrides for tools/edit-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Editor audio"
+# La coda è l'espressione che si cerca; il nome del prodotto resta la metà che
+# grida.
+heading = "Modificare&nbsp;l'audio <span class=\"h1-kw\">&mdash; invertire, accelerare o alzare una traccia</span>"
+tagline = "Riproducila al contrario, cambiale velocità, tira su una registrazione bassa &mdash; tutto qui, sul tuo dispositivo."
+
+title = "Invertire l'audio, cambiare velocità e alzare il volume &mdash; gratis, senza caricare nulla"
+description = "Riproduci una traccia al contrario, accelerala o rallentala, e alza una registrazione troppo bassa. Tira fuori anche l'audio da un video. Gira nel browser: niente caricamenti."
+og_title = "Editor audio &mdash; invertire, ritempificare e alzare senza caricare nulla"
+og_description = "Inverti una traccia, cambiale velocità con o senza spostare l'intonazione, e imposta il livello: poi scarichi un WAV. Il file viene letto e scritto dal tuo browser."
+og_image_alt = "Editor audio - invertire, ritempificare e alzare l'audio nel browser"
+
+pledge = """
+    Il tuo file viene letto, modificato e scritto dal tuo browser, sul tuo
+    hardware. Qui dentro non c'è niente che possa recuperare o spedire qualcosa
+    &mdash; questo strumento non ha proprio alcuna funzione di rete &mdash; e
+    dall'altra parte di questa pagina non c'è alcun server a cui mandare una
+    registrazione, anche se ci fosse un modo per farlo."""
+
+live_hint = """
+      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
+      scheda Rete e inverti qualcosa. Non una sola richiesta porta con sé un
+      campione, un nome di file o un byte di quello che hai scelto. Oppure
+      stacca la connessione e modifica una traccia lo stesso &mdash; uno
+      strumento che spedisse via il tuo audio per elaborarlo si fermerebbe e
+      basta."""
+
+read_first = """
+, <code>src/decode.js</code> per le venti righe
+      che consegnano il tuo file al decodificatore del browser,
+      <code>src/stretch.js</code> per lo stiratore temporale,
+      <code>src/speed.js</code> per il ricampionatore, e <code>src/wav.js</code>
+      per l'intestazione che va davanti ai campioni. Nessuno di loro importa
+      qualcosa in grado di fare una richiesta."""
+
+howto_heading = "Come modificare un file audio"
+
+card = """
+            Inverti una traccia, cambiale velocità con o senza spostare
+            l'intonazione, e tira su una registrazione troppo bassa. Tira
+            fuori anche l'audio da un video."""
+
+[words]
+plural = "registrazioni"
+choose = "un file"
+analytics_extra = """, e nessuna
+  forma d'onda, durata o livello"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessuna filigrana"
+
+[[facts]]
+text = "Video dentro, audio fuori"
+
+[[facts]]
+text = "Funziona offline"
+
+[[privacy]]
+title = "Le tue registrazioni non hanno dove andare."
+body = """
+ La
+      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di questi appartiene a questo sito. Qui non esiste
+      un punto di raccolta dove il tuo file potrebbe finire, e nel codice non
+      c'è nulla che ce lo manderebbe se esistesse."""
+
+[[privacy]]
+title = "Qui dentro niente recupera niente."
+body = """
+ Questo strumento non ha proprio
+      alcuna funzione di rete: nessun indirizzo da incollare, niente da
+      scaricare, nessun motore recuperato al primo utilizzo. Ogni byte che tocca
+      il tuo audio è arrivato da questa origine quando la pagina si è
+      caricata."""
+
+[[privacy]]
+title = "Il decodificatore è quello che hai già nel browser."
+body = """
+
+      Il file viene consegnato a <code>decodeAudioData</code>, lo stesso codice
+      che riproduce una traccia dentro un elemento <code>&lt;audio&gt;</code>.
+      Qui non viene spedito niente per leggere il tuo formato, e non viene
+      chiesto niente a nulla fuori da questa pagina per leggerlo."""
+
+[[privacy]]
+title = "L'immagine di un video non viene mai decodificata."
+body = """
+ Quando trascini qui
+      dentro un video, viene chiesta solo la sua traccia audio. I fotogrammi non
+      vengono letti, né decodificati, né disegnati, né guardati &mdash; su questa
+      pagina non c'è codice che potrebbe farlo, e il file che esce contiene suono
+      e nient'altro."""
+
+[[privacy]]
+title = "I campioni vengono scritti, non ricodificati."
+body = """
+
+      Un WAV sono i campioni che questa pagina ha calcolato, con un'intestazione
+      davanti. Nel ciclo non c'è un encoder che prende decisioni sulla tua
+      registrazione, e non c'è niente che si possa chiamare caricamento su cui
+      farne avvenire uno."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli viene dato."
+body = """
+ Gli script
+      pubblicitari e di misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sulla tua registrazione: né un file, né un campione, né un
+      nome, una dimensione, una durata o quanto era forte. Ogni riga che legge,
+      modifica e scrive è servita da questa origine ed è elencata nel
+      repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli viene dato."
+body = """
+
+      Il pulsante «Buy me a coffee» in cima è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. È un link e
+      niente di più: non riferisce alcuna visita, e non gli viene passato niente
+      su di te o sul tuo file."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e tutto quello che sta su
+      questa pagina continua a funzionare. È la prova più semplice di tutte."""
+
+[[howto]]
+title = "Scegli un file."
+body = """
+ Trascina sul riquadro un file MP3,
+      WAV, FLAC, M4A, Ogg o Opus &mdash; oppure un video, se quello che vuoi è
+      il suono che c'è dentro. Il browser lo legge direttamente dal tuo disco;
+      mentre lo fai non viene mandato niente da nessuna parte."""
+
+[[howto]]
+title = "Girala al contrario, se è per questo che sei venuto."
+body = """
+ Una
+      casella sola. I campioni vengono scritti dall'ultimo al primo, il che è
+      esattamente reversibile: fallo due volte e ti ritrovi il file da cui sei
+      partito, campione per campione."""
+
+[[howto]]
+title = "Imposta la velocità."
+body = """
+ Trascina il cursore, scrivi un
+      moltiplicatore, o premi uno dei valori pronti. Poi scegli cosa succede
+      all'intonazione: tenerla dov'è, che è quello che vuoi per una lezione a
+      1,5&times;, oppure lasciarla muovere con la velocità, che è quello che fa
+      un nastro e che fa salire o scendere una voce."""
+
+[[howto]]
+title = "Imposta il livello."
+body = """
+ Puoi indicare una variazione in
+      decibel, oppure chiedere che la registrazione venga tirata su finché il
+      suo momento più forte non sta appena sotto il tetto. La pagina dice dove
+      finirà quel momento prima che tu prema qualcosa, e ti avverte se
+      l'impostazione che hai scelto lo spingerebbe oltre il fondo scala."""
+
+[[howto]]
+title = "Salvala."
+body = """
+ Il lavoro avviene sul tuo hardware, quindi quanto
+      ci mette dipende dal tuo dispositivo e non da una coda. Quello che esce è
+      un WAV &mdash; i campioni stessi, con un'intestazione davanti &mdash;
+      prima riprodotto sulla pagina, e poi consegnato direttamente ai download
+      del tuo browser."""
+
+[[faq]]
+q = "Il mio audio viene caricato da qualche parte?"
+a = """
+        No. Viene letto, modificato e scritto dal tuo browser sul tuo hardware.
+        Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina nomina tutti gli
+        indirizzi che può contattare &mdash; nessuno di questi appartiene a
+        questo sito. Se preferisci verificare invece che crederci, stacca la
+        connessione e inverti una traccia lo stesso."""
+
+[[faq]]
+q = "Posso tirare fuori l'audio da un video?"
+a = """
+        Sì, e qui è lo stesso lavoro che aprire un MP3. Trascina dentro un MP4,
+        un MOV o un WebM e viene decodificata solo la sua traccia audio:
+        l'immagine non viene mai letta, e quello che esce è un file sonoro senza
+        video dentro. È anche il modo di salvare il suono di una clip senza
+        modificarlo per niente &mdash; lascia stare ogni impostazione e premi il
+        pulsante."""
+
+[[faq]]
+q = "Cambiare la velocità cambia l'intonazione?"
+a = """
+        Solo se glielo chiedi. «Tieni l'intonazione» taglia la registrazione in
+        finestre sovrapposte lunghe una cinquantina di millisecondi e le
+        riappoggia più vicine o più lontane, scegliendo ogni posizione in modo
+        che le onde si allineino dove si incrociano &mdash; una voce resta la
+        stessa voce a 1,5&times;. «Lasciala muovere» ricampiona invece, che è
+        quello che succede a riprodurre un nastro più in fretta: al doppio
+        della velocità sale esattamente di un'ottava."""
+
+[[faq]]
+q = "Perché salva un WAV invece di un MP3?"
+a = """
+        Perché nessun browser si porta dietro un encoder MP3, e questo strumento
+        si rifiuta di mandare la tua registrazione a un server che ce l'ha. Un
+        WAV non ha bisogno di alcun encoder &mdash; sono i campioni con
+        un'intestazione di quarantaquattro byte davanti &mdash; quindi è insieme
+        l'opzione onesta e l'unica che non può costare qualità. Pesa di più:
+        una decina di megabyte al minuto in stereo. Lo apre qualunque lettore,
+        telefono ed editor, e qualunque cosa voglia un MP3 può farsene uno."""
+
+[[faq]]
+q = "Quali formati posso aprire?"
+a = """
+        Quelli che il tuo browser decodifica, il che in pratica vuol dire MP3,
+        WAV, FLAC, M4A e AAC, Ogg Vorbis e Opus, e l'audio dentro i video MP4,
+        M4V, MOV e WebM. Quello che resta fuori è il solito elenco corto: AVI,
+        WMA e quasi tutti gli MKV. Un file che questo browser non legge viene
+        rifiutato con un messaggio che lo dice, invece di piantarsi a metà
+        strada."""
+
+[[faq]]
+q = "Alzarla la distorcerà?"
+a = """
+        Solo se la porti oltre il fondo scala, e la pagina te lo dice prima che
+        succeda. L'audio digitale ha un tetto rigido: un campione non può essere
+        più forte del fondo scala, quindi tutto quello che sta sopra viene
+        schiacciato contro il tetto, ed è così che suona la distorsione. «Il più
+        forte possibile» è l'impostazione che non può farlo &mdash; calcola
+        quanto spazio è rimasto alla registrazione e usa esattamente quello.
+        Tutto quello che sta sotto il tetto è una moltiplicazione e nient'altro:
+        alzala di 6 dB e riabbassala di 6 dB e i campioni sono dove erano
+        partiti."""
+
+[[faq]]
+q = "Invertire o ritempificare fa perdere qualità?"
+a = """
+        Invertire no: escono gli stessi campioni nell'altro ordine, il che è
+        esatto. Cambiare la velocità sposta ogni campione, quindi è aritmetica e
+        non una copia &mdash; il ricampionatore filtra come si deve strada
+        facendo, così accelerare non ripiega le note alte verso il basso come un
+        ronzio metallico, e le finestre dello stiratore vengono messe dove le
+        onde si allineano invece che dove è capitato all'aritmetica. Nessuna
+        delle due vie ricodifica niente, perché qui non c'è un encoder con cui
+        ricodificare."""
+
+[[faq]]
+q = "C'è un limite alla durata del file?"
+a = """
+        Nello strumento non c'è alcun limite. Il tetto pratico è la memoria:
+        tutta la registrazione viene decodificata dentro questa pagina in una
+        volta, e un WAV viene assemblato in memoria prima che tu lo scarichi,
+        quindi un'ora di stereo ha bisogno di poco meno di un gigabyte per
+        lavorare. Un WAV da quattro gigabyte viene rifiutato subito, perché il
+        campo delle dimensioni del formato non sa descriverne uno."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è accesso, non c'è periodo di prova e
+        non c'è filigrana. Il sito ha della pubblicità, ed è quella che lo paga;
+        agli annunci non viene dato niente sulla tua registrazione."""
+
+[schema]
+browser_requirements = "Richiede JavaScript e un browser con Web Audio, cioè qualunque browser attuale. Non serve alcun supporto ai codec oltre a quello che il browser ha già per riprodurre il file."
+description = "Inverti una traccia audio, cambiale velocità con o senza spostare l'intonazione, e impostane il livello, nel browser. Funziona anche sull'audio dentro un video. Non viene caricato nulla e il risultato è scritto come WAV, quindi non viene ricodificato niente."
+features = [
+  "Riproduce una traccia al contrario, esattamente",
+  "Cambia velocità da un quarto a quattro volte, tenendo o spostando l'intonazione",
+  "Alza o abbassa il livello, o lo normalizza appena sotto il fondo scala",
+  "Tira fuori l'audio da un MP4, un MOV o un WebM senza toccare l'immagine",
+  "Scrive WAV a 16 bit o in virgola mobile a 32 bit, senza encoder nel ciclo",
+  "Funziona offline; niente caricamenti, nessun account, nessuna filigrana",
+]
+
+[picker]
+title = "Trascina qui un file audio o un video"
+hint = "oppure clicca per scegliere &mdash; MP3, WAV, FLAC, M4A, Ogg, e il suono dentro un MP4, un MOV o un WebM"

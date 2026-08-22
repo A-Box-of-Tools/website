@@ -1,0 +1,142 @@
+<main>
+  <!-- Passo 1 &mdash; i file -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli le immagini</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Togli tutto dalla lista</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; la riga che si incolla davvero -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> Di' dove va a finire</h2>
+
+    <p class="card-lede">
+      Un data URI da solo è raramente quello che si vuole. Quello che si vuole è
+      la riga che va nel foglio di stile &mdash; quindi scegli la riga, e
+      l'immagine ci arriva dentro già tra virgolette, che è la parte facile da
+      sbagliare e che si rompe solo con gli SVG.
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="Cosa incollare">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>Il data URI da solo</strong>
+          <span class="shape-note">
+            Tutto quello che sta dopo la virgola è il file. Incollalo ovunque vada un URL.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>Una regola CSS</strong>
+          <span class="shape-note">
+            Una regola intera, con una classe che prende il nome dal file. Cambia
+            il selettore con quello che stai davvero stilando.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>Una proprietà personalizzata CSS</strong>
+          <span class="shape-note">
+            Dichiarata una volta in cima al foglio di stile e usata come
+            <code>var(--nome)</code> tutte le volte che vuoi. È quella da
+            scegliere quando l'immagine compare in più di una regola.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>Un tag HTML <code>&lt;img&gt;</code></strong>
+          <span class="shape-note">
+            Con la dimensione in pixel già compilata, così la pagina non salta
+            mentre il resto si carica.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">
+            Per un README o una issue: un'immagine che viaggia insieme al testo
+            invece di aver bisogno di un posto dove stare.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      Il testo <code>alt</code> è lasciato vuoto di proposito. Solo tu sai se
+      l'immagine porta un significato o è decorazione, e una descrizione
+      indovinata da un nome di file è peggio, per chi usa uno screen reader, che
+      nessuna descrizione.
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>Metti in base64 anche gli SVG</strong>
+          <span class="check-note">
+            Disattivo di default, perché un SVG è testo e il base64 è per i byte.
+            La codifica in percentuale lascia il markup leggibile nel foglio di
+            stile ed è di solito un quinto più corta. Attivalo per la rara catena
+            di strumenti che insiste su <code>;base64</code>.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Passo 3 &mdash; il risultato. Qui non c'è un pulsante di proposito: la
+       codifica è istantanea, quindi non c'è niente che un clic su «converti»
+       debba aspettare. -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> Copialo</h2>
+
+    <p id="empty-note" class="card-lede">
+      Non hai ancora scelto niente. Trascina qui sopra un'immagine e la riga da
+      incollare compare qui.
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">Copia tutto</button>
+          <button type="button" id="download-all" class="ghost">Scarica in un file solo</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

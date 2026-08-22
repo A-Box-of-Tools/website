@@ -1,0 +1,18 @@
+#
+# Guida: i metadati dentro una foto, e come toglierli - Italian.
+#
+
+nav = "Dati EXIF e GPS"
+title = "Come rimuovere i dati EXIF e GPS da una foto"
+description = "Una foto fatta con un telefono di solito porta con sé il punto esatto in cui è stata scattata, l'ora al secondo e il numero di serie della fotocamera. Cosa c'è là dentro, chi può leggerlo, e come toglierlo senza toccare l'immagine."
+heading = "Cosa dice di te una foto, e come toglierlo"
+lede = """
+    Un'immagine appena uscita da un telefono porta di solito le coordinate del
+    posto in cui è stata scattata, l'ora al secondo, e abbastanza sulla
+    fotocamera da legarla a ogni altra foto dello stesso dispositivo. Niente di
+    tutto questo si vede sullo schermo. Qui c'è cosa c'è là dentro e come
+    rimuoverlo."""
+updated = "20 agosto 2026"
+og_title = "Cosa dice di te una foto, e come toglierlo"
+og_description = "Coordinate GPS, orari e numeri di serie viaggiano dentro foto comunissime. Cosa c'è là dentro, chi può leggerlo, e come toglierlo."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"

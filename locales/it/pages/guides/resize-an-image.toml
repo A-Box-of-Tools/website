@@ -1,0 +1,17 @@
+#
+# Guida: ridimensionare un'immagine senza rovinarla - Italian.
+#
+
+nav = "Ridimensionare un'immagine"
+title = "Come ridimensionare un'immagine senza rovinarla"
+description = "Cosa succede a un'immagine quando ne cambi le misure in pixel: perché rimpicciolire è sicuro e ingrandire no, cosa fare quando il riquadro ha la forma sbagliata, e quando conviene invece ritagliare."
+heading = "Come ridimensionare un'immagine senza rovinarla"
+lede = """
+    Ridimensionare è l'unico lavoro sulle immagini in cui il danno è deciso
+    prima di premere il pulsante, da quale numero scrivi e da quale forma
+    chiedi. Qui c'è cosa fa all'immagine ognuna di quelle scelte, e quali di
+    esse si possono disfare."""
+updated = "20 agosto 2026"
+og_title = "Ridimensionare un'immagine senza rovinarla"
+og_description = "Perché rimpicciolire è sicuro e ingrandire no, cosa fare quando il riquadro ha la forma sbagliata, e quando conviene invece ritagliare."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"

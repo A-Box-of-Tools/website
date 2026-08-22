@@ -1,0 +1,167 @@
+<main>
+  <!-- Passo 1 &mdash; le immagini -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli le immagini</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    {% include "partials/url-import.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="Cambia come viene mostrata la lista">
+          <button type="button" data-view="large" class="active">Grandi</button>
+          <button type="button" data-view="small">Piccole</button>
+          <button type="button" data-view="list">Elenco</button>
+          <button type="button" data-view="details">Dettagli</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">Ordina per nome</button>
+        <button type="button" data-sort="date" class="ghost">Ordina per data</button>
+        <button type="button" data-sort="reverse" class="ghost">Inverti</button>
+        <button type="button" id="clear-all" class="ghost danger">Togli tutto</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Trascina un'immagine qualsiasi per la sua maniglia
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> per riordinare, oppure usa
+      le frecce su ciascuna.
+    </p>
+
+    <ul id="image-list" class="image-list view-large"></ul>
+
+    <div id="bulk-duration" class="bulk" hidden>
+      <label for="bulk-amount">Tieni ogni immagine per</label>
+      <input type="number" id="bulk-amount" min="1" max="3600" step="1" value="1">
+      <select id="duration-unit" aria-label="Unità per quanto viene tenuta ogni immagine">
+        <option value="frames" selected>fotogrammi</option>
+        <option value="seconds">secondi</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">Applica a tutte</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Passo 2 &mdash; le impostazioni -->
+  <section class="card">
+    <h2><span class="step">2</span> Impostazioni del video</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="resolution">Risoluzione</label>
+        <select id="resolution">
+          <option value="auto" selected>Segui la risoluzione più alta</option>
+          <option value="3840x2160">3840 &times; 2160 &mdash; 4K</option>
+          <option value="1920x1080">1920 &times; 1080 &mdash; 1080p</option>
+          <option value="1280x720">1280 &times; 720 &mdash; 720p</option>
+          <option value="1080x1080">1080 &times; 1080 &mdash; quadrato</option>
+          <option value="1080x1920">1080 &times; 1920 &mdash; verticale</option>
+          <option value="custom">Personalizzata&hellip;</option>
+        </select>
+        <div id="resolution-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="7680" step="2" value="1920"
+                 aria-label="Larghezza personalizzata in uscita, in pixel">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="7680" step="2" value="1080"
+                 aria-label="Altezza personalizzata in uscita, in pixel">
+        </div>
+        <p class="field-note" id="resolution-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fps">Frequenza dei fotogrammi</label>
+        <select id="fps">
+          <option value="12">12 fps</option>
+          <option value="15">15 fps</option>
+          <option value="24">24 fps &mdash; cinema</option>
+          <option value="25">25 fps &mdash; PAL</option>
+          <option value="30" selected>30 fps</option>
+          <option value="50">50 fps</option>
+          <option value="60">60 fps</option>
+          <option value="custom">Personalizzata&hellip;</option>
+        </select>
+        <input type="number" id="fps-custom" class="spaced" min="1" max="120" step="1" value="30"
+               aria-label="Frequenza personalizzata, in fotogrammi al secondo" hidden>
+        <p class="field-note" id="fps-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">Adattamento dell'immagine</label>
+        <select id="fit">
+          <option value="contain" selected>Dentro il riquadro (bande nere)</option>
+          <option value="blur">Dentro il riquadro, sfondo sfocato</option>
+          <option value="cover">Riempi il fotogramma (ritaglia i bordi)</option>
+          <option value="stretch">Stira per riempire (deforma)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Colore dello sfondo</label>
+        <input type="color" id="background" value="#000000">
+      </div>
+
+      <div class="field">
+        <label for="quality">Qualità</label>
+        <select id="quality">
+          <option value="low">File più leggero</option>
+          <option value="medium" selected>Equilibrata</option>
+          <option value="high">Massima qualità</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="format">Formato</label>
+        <select id="format">
+          <option value="auto" selected>MP4 (consigliato)</option>
+          <option value="webm">WebM (ripiego)</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="640" height="360" aria-label="Anteprima del primo fotogramma"></canvas>
+        <p id="preview-empty" class="preview-empty">Aggiungi delle immagini per vedere un'anteprima</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Immagini</dt><dd id="sum-images">&mdash;</dd></div>
+        <div><dt>Durata</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>Dimensione in uscita</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Fotogrammi totali</dt><dd id="sum-frames">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Passo 3 &mdash; l'esportazione -->
+  <section class="card">
+    <h2><span class="step">3</span> Crea il video</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Crea il video</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annulla</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Scarica il video</a>
+      </div>
+    </div>
+  </section>
+</main>
