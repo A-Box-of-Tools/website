@@ -229,7 +229,7 @@ order = ["gif-maker", "split-gif"]
 id = "audio"
 name = "Audio"
 note = "Work on a recording without handing it to anyone, including the sound inside a video."
-order = ["edit-audio"]
+order = ["trim-audio", "edit-audio"]
 
 [[hub.categories]]
 id = "documents-and-pdf"
@@ -378,6 +378,7 @@ order = [
   "crop-a-video",
   "reverse-a-video",
   "grab-a-frame-from-a-video",
+  "trim-an-audio-file",
   "make-a-qr-code",
   "turn-a-video-into-a-gif",
   "split-a-gif-into-frames",

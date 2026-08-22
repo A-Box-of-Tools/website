@@ -1,0 +1,388 @@
+#
+# Audio Trimmer
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# This is the video cutter's shape applied to sound: a list of marks rather
+# than one pair of handles. What it is not is a copy of that tool's caveats.
+# A decoded recording has no keyframes, so a cut lands on the sample you
+# marked, in every player, always - and the one thing that does need saying is
+# the opposite problem, the click at a join, which is why "soften the joins"
+# is a setting on the page rather than a footnote.
+#
+
+slug = "trim-audio"
+name = "Audio Trimmer"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Audio&nbsp;Trimmer <span class=\"h1-kw\">&mdash; trim audio online</span>"
+tagline = "Mark the parts worth keeping as it plays. Get them back as one file, cut where you said."
+icon = "&#127911;&#65039;"        # the mark beside the page heading
+favicon = "&#127911;"     # the tab icon, drawn into an inline SVG
+category = "audio"
+
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "audio"
+
+# Shared modules this tool asks for. The same arrangement as css_parts, and for
+# the same reason: a component more than one tool needs and no tool should own.
+# file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-21"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Trim Audio Online &mdash; Keep Only the Parts You Want, No Upload"
+description = "Play a recording and mark every part worth keeping as it goes past, then save those parts as one file. Sample-exact cuts, no clicks at the joins, nothing uploaded."
+og_title = "Audio Trimmer &mdash; keep only the parts you want, without uploading anything"
+og_description = "Press I and O as it plays to mark each part worth keeping. The marked parts are written back out as one file, cut on the exact sample, with nothing uploaded."
+og_image_alt = "Audio Trimmer - mark the parts you want and save them as one recording, in your browser"
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src needs blob: because both the recording you chose and the finished
+  result are played from memory on this machine rather than from a URL. That is
+  the only addition: this tool fetches nothing, so connect-src is left exactly
+  as the site sets it."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Your recording is read, marked, cut and written by your own browser, on your
+    own hardware. Nothing here can fetch or send anything &mdash; there is no
+    network feature in this tool at all &mdash; and there is no server on the
+    other end of this page to send a recording to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and trim
+      something. Not one request carries a sample, a filename, or a byte of what
+      you chose. Or unplug from the internet and trim a recording anyway &mdash;
+      a tool that sent your audio away to be cut would simply stop."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/segments.js</code> for the marks and the
+      file they save to, <code>src/decode.js</code> for the twenty lines that
+      hand your file to the browser's own decoder, <code>src/trim.js</code> for
+      the arithmetic that turns a mark into a run of samples and the loop that
+      copies them, and <code>src/wav.js</code> for the header that goes in front
+      of them. None of them imports anything that can make a request."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to trim an audio file"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Mark every part worth keeping as it plays, then save them as one
+            recording. Cuts land on the exact sample, and the joins do not
+            click."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "recordings"
+choose = "a recording"
+analytics_extra = """, and no
+  waveform, length or cut point"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "As many parts as you like"
+
+[[facts]]
+mark = "&#10003;"
+text = "Cuts exactly where you marked"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[privacy]]
+title = "Your recordings have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ This tool has no network feature at
+      all: no address to paste, nothing to download, no engine fetched on first
+      use. Every byte that touches your audio came from this origin when the page
+      loaded."""
+
+[[privacy]]
+title = "The decoder is the one already in your browser."
+body = """
+
+      The file is handed to <code>decodeAudioData</code>, the same code that
+      plays a track in an <code>&lt;audio&gt;</code> element. Nothing is shipped
+      here to read your format, and nothing is asked of anything outside this
+      page to read it either."""
+
+[[privacy]]
+title = "A video's picture is never decoded at all."
+body = """
+ When you drop a video
+      in, only its audio track is asked for. The frames are not read, not
+      decoded, not drawn and not looked at &mdash; there is no code on this page
+      that could, and the file that comes out holds sound and nothing else."""
+
+[[privacy]]
+title = "The cut is a copy, in memory, on this machine."
+body = """
+
+      Trimming is one <code>set</code> per part per channel: the samples you
+      kept are moved into a new array in the order you put them in. The only
+      samples multiplied by anything are the few hundred inside each fade, and
+      the page says how many before you press the button."""
+
+[[privacy]]
+title = "The samples are written down, not encoded again."
+body = """
+
+      A WAV is the samples this page holds with a header in front of them. There
+      is no encoder in the loop making decisions about your recording, and
+      nothing that could be described as an upload for one to happen on."""
+
+[[privacy]]
+title = "The marks file is made in the page."
+body = """
+ Saving your marks
+      writes a text file out of the numbers already on screen, straight to your
+      downloads. Loading one reads it here. Neither goes near a network, and
+      neither carries anything but times."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      recording: not a file, not a sample, not a name, a size, a length, or where
+      you cut it. Every line that reads, cuts and writes is served from this
+      origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about you
+      or your recording."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on
+      this page still works. That is the simplest proof of all."""
+
+[[howto]]
+title = "Choose a recording."
+body = """
+ Drop an MP3, WAV, FLAC, M4A, Ogg or
+      Opus file onto the picker &mdash; or a video, if what you want is a piece
+      of its sound. It is read straight off your disk by the browser and drawn
+      as a waveform; nothing is sent anywhere while you do it."""
+
+[[howto]]
+title = "Play it, and mark the parts you want."
+body = """
+ Press
+      <kbd>I</kbd> where a part should start and <kbd>O</kbd> where it should
+      end. Do that as many times as you like &mdash; every pair becomes a row in
+      the table underneath, and a band on the waveform. <kbd>U</kbd> takes the
+      last one back, <kbd>Space</kbd> plays and pauses, the arrow keys jump five
+      seconds, and holding <kbd>Shift</kbd> with one moves ten milliseconds.
+      Slow the playback down if the moment is hard to catch."""
+
+[[howto]]
+title = "Fix up the marks."
+body = """
+ Each row can be played back on its own,
+      retimed by typing an exact time into it, moved up or down the order, or
+      deleted. The two ends of the selected part can also be dragged along the
+      waveform, which is the quickest way to put a mark on the silence rather
+      than on the breath before it. The total at the top is what the finished
+      recording will run to."""
+
+[[howto]]
+title = "Keep them, or cut them out."
+body = """
+ Keeping is the usual way
+      round: the finished recording is the parts you marked, joined in order.
+      Cutting them out is the other job people want and rarely find &mdash; mark
+      the ums, the phone ringing or the false starts, and what is left is joined
+      up without them."""
+
+[[howto]]
+title = "Trim it, and download."
+body = """
+ Every cut lands on the sample you
+      marked; there is no rounding to a keyframe here, because sound has none.
+      The one thing worth choosing is how much of a fade to put on each join
+      &mdash; five milliseconds is enough to stop a click and far too short to
+      hear as a fade. What comes out is a WAV, played back on the page first,
+      and then handed straight to your browser's downloads."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my audio uploaded anywhere?"
+a = """
+        No. It is read, marked, cut and written by your own browser on your own
+        hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. Unplug from the internet and
+        trim a recording anyway if you would rather check than be told."""
+
+[[faq]]
+q = "Can I keep several parts of the same recording?"
+a = """
+        That is what this is for. Press <kbd>I</kbd> and <kbd>O</kbd> as many
+        times as you like while it plays; each pair becomes a row, and the
+        finished file is every row joined in order with everything else gone.
+        Most online trimmers give you one pair of handles and ask which single
+        stretch to keep, which is fine for topping and tailing a jingle and no
+        use at all for listening to an hour of interview once and keeping the
+        six answers worth having."""
+
+[[faq]]
+q = "Does the cut land exactly where I marked it?"
+a = """
+        Yes, on every part, in every player. This is the one place where audio
+        is simpler than video: a decoded recording is a run of numbers and each
+        one stands on its own, so there is no equivalent of a keyframe to round
+        back to and no reason for a cut to start early. The page shows the
+        sample number the result begins at, which is the mark you made
+        multiplied by the sample rate and rounded to the nearest whole
+        sample."""
+
+[[faq]]
+q = "Why would a join click, and what is the fade for?"
+a = """
+        Because cutting from the middle of one word to the middle of another
+        puts two unrelated waveforms next to each other, and a speaker asked to
+        jump between them makes a click. It is not a fault in the cut &mdash; it
+        is what a discontinuity sounds like. The fix is a fade of a few
+        milliseconds either side of each join: long enough for the cone to get
+        there, far too short to be heard as a fade. Five milliseconds is the
+        default and can be turned off. A fade is only put on an edge that is
+        actually a cut, so an edge at the very start or end of the recording is
+        left exactly as it was."""
+
+[[faq]]
+q = "Can I cut the bad bits out instead?"
+a = """
+        Yes. Mark them, then choose "Cut them out": everything you did
+        <em>not</em> mark is joined up instead, in order. The same list of marks
+        answers both questions, so you can switch between them and see the length
+        change without marking anything twice."""
+
+[[faq]]
+q = "Can I save my marks and come back to them?"
+a = """
+        Yes. "Save marks" writes a plain text file &mdash; one line a part, a
+        start and an end separated by a comma &mdash; and "Load marks" reads one
+        back. Two formats are offered, plain seconds and
+        <code>HH:MM:SS.mmm</code>, and both are the layout the video cutter on
+        this site writes, so a file made against the video can be dropped onto
+        its audio and the other way round. Marking is careful work and nobody
+        should have to do it twice."""
+
+[[faq]]
+q = "Which formats can I open?"
+a = """
+        Whatever your browser decodes, which in practice means MP3, WAV, FLAC,
+        M4A and AAC, Ogg Vorbis and Opus, and the audio inside MP4, M4V, MOV and
+        WebM video. What is left out is the same short list as everywhere else:
+        AVI, WMA, and most MKVs. A file this browser will not read is refused
+        with a message saying so, rather than failing halfway through."""
+
+[[faq]]
+q = "Why does it save a WAV rather than an MP3?"
+a = """
+        Because no browser ships an MP3 encoder, and this tool refuses to send
+        your recording to a server that has one. A WAV needs no encoder at all
+        &mdash; it is the samples with a short header in front &mdash; so it is
+        both the honest option and the only one that cannot cost quality on the
+        way out. It is larger: about ten megabytes a minute in stereo. Every
+        player, phone and editor opens one, and anything that wants an MP3 can
+        make one from it. Trimming an MP3 by copying its frames instead would
+        keep the file small, but it would also move every cut to the nearest
+        frame boundary, which is the rounding this tool exists not to do."""
+
+[[faq]]
+q = "Is there a limit on the length of the recording?"
+a = """
+        There is no limit built into the tool. The practical ceiling is memory:
+        the whole recording is decoded into this page at once, and a WAV is
+        assembled in memory before you download it, so an hour of stereo needs
+        something under a gigabyte to work in. A four-gigabyte WAV is refused
+        outright, because the format's own size field cannot describe one."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your recording."""
+
+[schema]
+browser_requirements = "Requires JavaScript and a browser with Web Audio, which is every current one. No codec support beyond what the browser already has for playing the file."
+category = "MultimediaApplication"
+description = "Mark any number of parts of a recording while it plays, then save those parts as a single file - or cut them out and keep the rest. Cuts land on the exact sample marked, with an optional few-millisecond fade so the joins do not click. Nothing is uploaded and the result is written as a WAV, so nothing is re-encoded."
+features = [
+  "Marks any number of parts with I and O while the recording plays",
+  "Joins the marked parts into one file, in the order you choose",
+  "Cuts the marked parts out instead, keeping everything else",
+  "Cuts on the exact sample, with no rounding to a frame or keyframe",
+  "Fades each join by a few milliseconds so it cannot click",
+  "Draws the waveform, so silences and gaps can be marked by eye",
+  "Saves and reloads the marks as a plain text timestamps file",
+  "Trims the audio inside an MP4, MOV or WebM without touching the picture",
+  "Runs offline; no upload, no account, no watermark",
+]
+
+# This tool needs one thing the rest of the site does not: blob: on media-src,
+# because both the recording you chose and the finished result are played from
+# memory on this machine rather than from a URL. A tool can only ever widen its
+# own page this way - it cannot narrow the site policy, and it cannot touch any
+# other tool's.
+[csp]
+"media-src" = ["'self'", "blob:"]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "audio/*,video/*"
+multiple = false
+title = "Drop an audio file or a video here"
+hint = "or click to browse &mdash; MP3, WAV, FLAC, M4A, Ogg, and the sound inside MP4, MOV or WebM"

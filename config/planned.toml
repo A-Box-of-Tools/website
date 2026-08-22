@@ -60,7 +60,6 @@ items = [
 id = "audio"
 name = "Audio"
 items = [
-  ["Trim", "keep the part you wanted"],
   ["Fade in &amp; out", "so it does not start and stop on a cliff"],
   ["Waveform image", "draw a track as a picture"],
   ["Convert format", "MP3, WAV and Opus, in any direction"],

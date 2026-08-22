@@ -50,7 +50,6 @@ items = [
 [[group]]
 name = "Audio"
 items = [
-  ["Kürzen", "die Stelle behalten, um die es Ihnen ging"],
   ["Ein- &amp; ausblenden", "damit es nicht an einer Kante anfängt und aufhört"],
   ["Wellenform als Bild", "eine Aufnahme als Grafik zeichnen"],
   ["Format umwandeln", "MP3, WAV und Opus, in jede Richtung"],

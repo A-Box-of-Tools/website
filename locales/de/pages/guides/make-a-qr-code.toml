@@ -3,16 +3,16 @@
 #
 
 nav = "Einen QR-Code erzeugen"
-title = "Einen QR-Code erzeugen, der jedes Mal scannt"
-description = "Welche Fehlerkorrekturstufe Sie nehmen sollten, warum der weiße Rand um einen QR-Code Teil des Codes ist, wie groß Sie ihn drucken müssen, und was Sie der 'dynamische' Code eines kostenlosen Generators später kostet."
-heading = "Wie Sie einen QR-Code erzeugen, der auch auf dem Telefon eines anderen noch scannt"
+title = "Einen QR-Code erzeugen, der sich jedes Mal scannen lässt"
+description = "Welche Fehlerkorrekturstufe die richtige ist, warum der weiße Rand zum Code gehört, wie groß Sie ihn drucken müssen und was Sie der 'dynamische' Code eines Gratis-Generators ein Jahr später kostet."
+heading = "So erzeugen Sie einen QR-Code, der sich auch mit fremden Handys scannen lässt"
 lede = """
     Einen QR-Code zu erzeugen dauert eine Sekunde. Einen zu erzeugen, der auf
-    einer nassen Speisekarte, an einem Buswartehäuschen oder auf einem bei
-    schlechtem Licht auf Armlänge gehaltenen Telefon funktioniert, kostet vier
-    Entscheidungen &mdash; und alle vier fallen, bevor Sie irgendetwas drucken.
-    Hier steht, was jede davon tut."""
+    einer feuchten Speisekarte funktioniert, am Buswartehäuschen und auf einem
+    bei schlechtem Licht auf Armlänge gehaltenen Handy, kostet vier
+    Entscheidungen &mdash; und alle vier fallen, bevor irgendetwas gedruckt
+    wird. Hier steht, was jede davon bewirkt."""
 updated = "20. August 2026"
-og_title = "Einen QR-Code erzeugen, der auch auf dem Telefon eines anderen noch scannt"
-og_description = "Die vier Entscheidungen, die darüber bestimmen, ob ein gedruckter QR-Code funktioniert: die Stufe, der Rand, die Größe, und wessen Adresse eigentlich darin steht."
+og_title = "Einen QR-Code erzeugen, der sich auch mit fremden Handys scannen lässt"
+og_description = "Die vier Entscheidungen, an denen hängt, ob ein gedruckter QR-Code funktioniert: die Stufe, der Rand, die Größe und wessen Adresse eigentlich darin steht."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

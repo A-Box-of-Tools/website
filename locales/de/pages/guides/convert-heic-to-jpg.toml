@@ -3,15 +3,15 @@
 #
 
 nav = "HEIC zu JPG"
-title = "HEIC in JPG umwandeln (und was HEIC eigentlich ist)"
-description = "iPhones speichern Fotos als HEIC, und das halbe Internet kann keines öffnen. Was das Format ist, warum nur Safari es dekodiert, was das Umwandeln das Bild kostet, und wie es geht, ohne die Fotos irgendjemandem hochzuladen."
-heading = "Das Foto, das Ihr Telefon gespeichert hat, und das Format, das nichts öffnet"
+title = "HEIC in JPG umwandeln (und was HEIC überhaupt ist)"
+description = "iPhones speichern Fotos als HEIC, und das halbe Internet bekommt keines auf. Was hinter dem Format steckt, warum nur Safari es dekodiert, was die Umwandlung das Bild kostet und wie sie ohne Upload gelingt."
+heading = "Das Foto, das Ihr Handy gespeichert hat, und das Format, das niemand öffnet"
 lede = """
-    Ein iPhone speichert Fotos als HEIC &mdash; kleiner und besser als JPEG, und
-    von einer ganzen Menge Software noch immer verweigert. Hier steht, was das
-    Format wirklich ist, was das Umwandeln das Bild kostet, und warum fast jeder
-    Umwandler es zuerst von Ihnen hochgeladen haben will."""
+    Ein iPhone speichert Fotos als HEIC: kleiner und besser als JPEG &mdash;
+    und von erstaunlich viel Software bis heute verweigert. Hier steht, was
+    hinter dem Format steckt, was die Umwandlung das Bild kostet und warum
+    beinahe jeder Konverter die Fotos erst einmal hochgeladen haben will."""
 updated = "20. August 2026"
-og_title = "Wie Sie HEIC in JPG umwandeln"
-og_description = "Warum iPhone-Fotos nicht öffnen, was das Umwandeln kostet, und wie es geht, ohne die Fotos jemandem zu übergeben."
+og_title = "So wandeln Sie HEIC in JPG um"
+og_description = "Warum iPhone-Fotos nirgends aufgehen, was die Umwandlung kostet und wie sie gelingt, ohne die Fotos aus der Hand zu geben."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
