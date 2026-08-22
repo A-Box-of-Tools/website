@@ -1,0 +1,152 @@
+<!--
+  tools/compress-pdf/body.html, in Simplified Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步 &mdash; 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选一个 PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">换一个</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- 第 2 步 &mdash; 如果只能留一个界面，这个工具会留这个 -->
+  <section class="card" id="inventory-card" hidden>
+    <h2><span class="step">2</span> 看清体积堆在哪儿</h2>
+
+    <p class="card-lede">
+      “压缩 PDF”其实是共用一个名字的两件事。扫描件是一摞照片，把它们重新编码能省下文件的大半。合同是文字和字体，生成它的软件早就压过了 &mdash; 里面没有藏着一个百分之八十，任何工具也变不出来。你手上是哪一种，这不是见仁见智的事，所以在动任何东西之前，先摆在这里。
+    </p>
+
+    <p id="verdict" class="verdict"></p>
+
+    <div class="breakdown">
+      <div id="breakdown-bar" class="breakdown-bar" role="img" aria-labelledby="breakdown-list"></div>
+      <ul id="breakdown-list" class="breakdown-list"></ul>
+    </div>
+
+    <p id="inventory-notes" class="field-summary"></p>
+  </section>
+
+  <!-- 第 3 步 &mdash; 打算花多少 -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">3</span> 说明要压多狠</h2>
+
+    <p class="card-lede">
+      PDF 里记着每张图片画多大，所以这个工具能量出页面实际用到多少，而不是靠猜。一张 4000 像素的扫描件铺在八英寸纸上，就是每英寸 500 个像素；降到 150，打印出来一样，屏幕上看也一样。谁也看不见的像素先花掉，因为它们不值钱。
+    </p>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">可以花掉多少质量</legend>
+      <div class="presets" id="presets" role="radiogroup" aria-label="可以花掉多少质量">
+        <label class="preset">
+          <input type="radio" name="preset" value="smallest">
+          <span class="preset-body">
+            <strong>最小</strong>
+            <span class="preset-note">96 DPI。给只需要在屏幕上读的东西。</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="screen" checked>
+          <span class="preset-body">
+            <strong>屏幕上够好</strong>
+            <span class="preset-note">130 DPI。要发邮件的文件，通常选这个。</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="print">
+          <span class="preset-body">
+            <strong>打印出来也还行</strong>
+            <span class="preset-note">220 DPI。小一些，而且印出来仍然像样。</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="gentle">
+          <span class="preset-body">
+            <strong>几乎不动图片</strong>
+            <span class="preset-note">完全不改尺寸。省下来的大部分来自重新打包文件。</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <details class="advanced">
+      <summary>这两个数字自己定</summary>
+      <div class="option-row">
+        <label for="dpi-value">每英寸绘制空间最多放多少像素</label>
+        <div class="inline-pair">
+          <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
+          <span class="unit">DPI &mdash; 填 0 则每张图片都保持原尺寸</span>
+        </div>
+      </div>
+      <div class="option-row">
+        <label for="quality-value">JPEG 质量</label>
+        <div class="inline-pair">
+          <input type="range" id="quality-value" min="30" max="95" step="1" value="68">
+          <output id="quality-out" for="quality-value">68</output>
+        </div>
+      </div>
+    </details>
+
+    <label class="check">
+      <input type="checkbox" id="strip-meta" checked>
+      <span>
+        <strong>把文件记住的来历清掉</strong>
+        <span class="check-note">做出它的程序的名字和版本、什么时候做的、什么时候最后改过、XMP 数据包，以及排版软件为了以后能把自己的活儿再导回去而留下的那一坨私有数据 &mdash; 那东西偶尔有好几兆。显示这个文档，一样都用不上。
+        </span>
+      </span>
+    </label>
+
+    <p id="settings-summary" class="field-summary"></p>
+  </section>
+
+  <!-- 第 4 步 &mdash; 只按一下 -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> 压缩</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">压缩这个 PDF</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>下载</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <details id="per-image" class="advanced" hidden>
+        <summary>每张图片经历了什么</summary>
+        <ul id="image-list" class="image-list"></ul>
+      </details>
+    </div>
+  </section>
+</main>

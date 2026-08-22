@@ -1,0 +1,144 @@
+<!--
+  tools/exif-editor/body.html, in Simplified Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步 &mdash; 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选择照片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">全部从列表移除</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步 &mdash; 只按一下 -->
+  <section class="card" id="strip-card">
+    <h2><span class="step">2</span> 全部删掉</h2>
+
+    <p class="card-lede">
+      一个按钮，列表上的每一张照片。画面不会被解码、重绘或重新压缩 &mdash; 压缩过的图像数据原样复制过去，只丢掉围在它外面的元数据，所以结果是同一张照片，什么都没挂着。
+    </p>
+
+    <div class="strip-row">
+      <button type="button" id="strip-all" class="primary big" disabled>删除全部元数据</button>
+      <span id="strip-status" class="strip-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Two things are kept by default, and both are stated on the button's own
+      line rather than buried in a settings panel. "Remove all" that quietly
+      keeps things is a broken promise; "remove all except these two, and here
+      they are" is a choice.
+    -->
+    <fieldset class="keep-options">
+      <legend>保留什么</legend>
+      <label class="check">
+        <input type="checkbox" id="keep-orientation" checked>
+        <span>
+          <strong>方向标签</strong>
+          <span class="check-note">手机按传感器看到的样子存照片，再加一个标签说明哪边朝上。把它删掉，有些看图软件就会把照片横着显示。选择保留时，会写入一块新的 EXIF，里面只有这一个标签，别的都没有 &mdash; 而且只在照片本来就不是正着的时候才写。
+          </span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keep-icc" checked>
+        <span>
+          <strong>色彩配置</strong>
+          <span class="check-note">
+            ICC 配置说明画面里那些数字作为颜色是什么意思。它没有说你任何事。丢掉它，一张广色域照片的颜色可能会明显偏掉，所以除非你另有交代，它会被保留。
+          </span>
+        </span>
+      </label>
+      <p class="keep-summary" id="keep-summary"></p>
+    </fieldset>
+
+    <div id="clean-results" class="results" hidden>
+      <div class="results-head">
+        <h3>已清理</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下载</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!-- 第 3 步 &mdash; 查看与编辑 -->
+  <section class="card" id="inspect-card">
+    <h2><span class="step">3</span> 看看里面，想改什么改什么</h2>
+
+    <p id="inspect-empty" class="empty-note">
+      在上面选一张照片，它里面的一切就会出现在这里：它说了你在哪儿、什么时候、用什么拍的。为了弄清这些，没有任何东西被送去哪里。
+    </p>
+
+    <div id="inspector" hidden>
+      <div class="inspect-head">
+        <div class="inspect-file">
+          <img id="inspect-thumb" class="inspect-thumb" alt="" hidden>
+          <div>
+            <p class="inspect-name" id="inspect-name"></p>
+            <p class="inspect-sub" id="inspect-sub"></p>
+          </div>
+        </div>
+        <div class="inspect-switch">
+          <label for="inspect-select" class="visually-hidden">查看哪一张照片</label>
+          <select id="inspect-select"></select>
+        </div>
+      </div>
+
+      <!-- The findings: the part of this page that answers the actual question. -->
+      <section class="findings" aria-labelledby="findings-h">
+        <h3 id="findings-h">这个文件泄露了什么</h3>
+        <ul id="findings-list" class="findings-list"></ul>
+      </section>
+
+      <!-- Whole blocks, each removable on its own. -->
+      <section class="blocks" aria-labelledby="blocks-h">
+        <h3 id="blocks-h">这个文件里的数据块</h3>
+        <ul id="block-list" class="block-list"></ul>
+      </section>
+
+      <!-- Every tag, editable. -->
+      <section class="tags" aria-labelledby="tags-h">
+        <h3 id="tags-h">全部标签</h3>
+        <p class="tags-note" id="tags-note"></p>
+        <div id="tag-groups"></div>
+
+        <details class="add-tag" id="add-tag">
+          <summary>添加一个标签</summary>
+          <div class="add-tag-body">
+            <label for="add-tag-select">标签</label>
+            <select id="add-tag-select"></select>
+            <label for="add-tag-value">值</label>
+            <input type="text" id="add-tag-value" spellcheck="false">
+            <button type="button" id="add-tag-go" class="ghost">添加</button>
+          </div>
+        </details>
+      </section>
+
+      <div class="save-row">
+        <button type="button" id="save-edits" class="primary" disabled>保存这张照片</button>
+        <button type="button" id="revert-edits" class="ghost" disabled>撤销我的改动</button>
+        <span id="save-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+      <p id="edit-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+</main>

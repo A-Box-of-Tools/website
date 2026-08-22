@@ -1,0 +1,187 @@
+<!--
+  pages/guides/embed-an-image-in-css/body.html, in Simplified Chinese.
+
+  Chinese keeps the English slug, so every href here is exactly the one the
+  English source wrote; only the link text is translated.
+-->
+  <section>
+    <h2>短答案</h2>
+    <p>
+      打开<a href="../../image-to-data-uri/">图片转 data URI</a>，把图片拖进去，选<em>一个 CSS 自定义属性</em>，把那一行粘到你样式表最上面。然后在需要的地方用 <code>background-image: var(--logo)</code>。
+    </p>
+    <p>
+      当图片很小 &mdash; 一个图标、一个项目符号、一个箭头、一块底纹 &mdash; 而且每个页面都要用到它时，就这么做。别拿一张照片这么做。下面全部内容，讲的是这两句话为什么不同，以及怎么判断你手上是哪一种。
+    </p>
+  </section>
+
+  <section>
+    <h2>data URI 究竟是什么</h2>
+    <p>
+      一个装着东西本身、而不是指向那个东西的地址。样式表通常会写
+    </p>
+    <pre><code>background-image: url("logo.png");</code></pre>
+    <p>
+      然后浏览器去取 <code>logo.png</code>；而一个 data URI 写的是
+    </p>
+    <pre><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <p>
+      于是没有什么可取的了：图片已经在那儿了，以字符的形式写了出来。它有三个部分。<code>data:</code> 是协议。<code>image/png</code> 是媒体类型，而浏览器对它深信不疑 &mdash; 下面还会说到这一点。逗号之后的全部内容就是这个文件。
+    </p>
+    <p>
+      整个想法就是这样。它不是什么把戏或者奇技淫巧；它从 1998 年起就在标准里了，此后发布的每一个浏览器都支持。
+    </p>
+  </section>
+
+  <section>
+    <h2>它能给你换来什么：少一次往返</h2>
+    <p>
+      省下的不是带宽。省下的是那次请求。
+    </p>
+    <p>
+      浏览器在读到提到 <code>logo.png</code> 的那份样式表之前，没法去要它；而在取到那份样式表之前，它也读不了。所以一张普通的背景图，在页面加载里至少要往后排两次往返，而在慢速网络上的手机里，一次往返可能是两百多毫秒 —— 不管那个文件有多小。一个 600 字节的箭头传输起来几乎不花什么，却仍然可能要花四分之一秒才到。
+    </p>
+    <p>
+      内联之后，它和样式表一起到。这就是全部好处，而对一个出现在首屏的小图标来说，这个好处是真的。
+    </p>
+  </section>
+
+  <section>
+    <h2>它的代价：三分之一，然后是缓存</h2>
+    <p>
+      <strong>base64 会多出大约三分之一。</strong>文件里三个字节变成四个字符，因为用 URL 允许的那些字符去写任意字节，就得付这个代价。没有哪个聪明的编码器能绕开它。一个 9 KB 的 PNG，会变成 12 KB 的样式表。
+    </p>
+    <p>
+      <strong>压缩还不回来。</strong>这是人们想当然略过的那一部分。gzip 和 Brotli 靠找冗余干活，而 PNG、JPEG 和 WebP 都已经被压过了 &mdash; 它们里面剩下的冗余非常少，而 base64 也不会添上任何冗余。实践中你能拿回来的大约是那三分之一里的十分之一，不是全部。（SVG 恰好相反，下一节就讲它。）
+    </p>
+    <p>
+      <strong>它不再是一个文件了。</strong>这是那种不会出现在你大概率会做的任何一次测量里的代价，也是规模一上去就要紧的那一个：
+    </p>
+    <ul>
+      <li>
+        <strong>它没法被单独缓存。</strong>一张普通图片取一次就能复用一年。一张内联的图片是样式表的一部分，所以它和样式表那条缓存记录同生共死。
+      </li>
+      <li>
+        <strong>改任何东西都会让全部重新下载一遍。</strong>调一个页边距，发一份新样式表，于是每一个访客都会连同那张内联图片一起重新下载 &mdash; 一张两年没变过的图片。
+      </li>
+      <li>
+        <strong>它在关键路径上。</strong>样式表会阻塞渲染。图片不会。把一张图片内联进去，等于把它从第二类挪进了第一类：整份东西、连图片一起到齐之前，页面画不出来。
+      </li>
+      <li>
+        <strong>它没法被并行取回。</strong>浏览器会同时下载很多东西。一张内联的图片不是一个独立的东西，所以这些它一样都摊不上。
+      </li>
+    </ul>
+    <p>
+      粗略的分界线 —— 那是建议发生变化的地方，不是浏览器行为发生变化的地方：大约 2 KB 以下明显划算；到大约 10 KB，对一个每页都要用的东西来说通常还值得；过了 50 KB 就是一个不会报错的错误。<a href="../../image-to-data-uri/">这个工具</a>会告诉你每个结果落在哪个区间，旁边还有字符数。
+    </p>
+  </section>
+
+  <section>
+    <h2>永远不要给 SVG 上 base64</h2>
+    <p>
+      这是内联图片里最常见的单一错误，而犯它的既有人，也有导出工具和构建插件，频率不相上下。
+    </p>
+    <p>
+      SVG 是文本。URL 本来就能装文本。只有少数几个字符需要转义 &mdash; <code>%</code>、<code>#</code>、<code>&lt;</code>、<code>&gt;</code>，以及你用来包住它的那个引号 &mdash; 其余一切都可以原样留下。这样编出来的 URI，通常比同一个文件的 base64 短五分之一左右，而且之后它像文本一样被压缩，不像噪声。
+    </p>
+    <p>
+      而且它还读得懂：
+    </p>
+    <pre><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <p>
+      你看得见那个 <code>viewBox</code>。你可以在编辑器里改填充色，不用解码任何东西。给同一个文件上 base64，它就变成一堵再也不会有人去碰的字母墙。<a href="../../image-to-data-uri/">图片转 data URI</a> 对任何认出是 SVG 的东西都自动这么做，并且为那些非要 <code>;base64</code> 不可的工具链准备了一个勾选框。
+    </p>
+  </section>
+
+  <section>
+    <h2>那个只让 SVG 翻车的引号错误</h2>
+    <p>
+      CSS 允许你写不带引号的 <code>url()</code>，而对一个普通文件名来说那没问题：
+    </p>
+    <pre><code>background-image: url(logo.png);</code></pre>
+    <p>
+      对一个百分号编码的 SVG 这么做，它就坏了。一个不带引号的 <code>url()</code> 记号在第一个空格、括号、引号或控制字符处就结束了 &mdash; 而 SVG 里全是空格，每两个属性之间、路径里每两个数字之间都有。于是这条声明无效，而 CSS 会不吭声地丢掉无效声明，你既拿不到背景，也拿不到错误。
+    </p>
+    <p>
+      解法是引号，每一次都加：
+    </p>
+    <pre><code>background-image: url("data:image/svg+xml,%3Csvg ... %3E");</code></pre>
+    <p>
+      这也是为什么编码器不需要转义空格 &mdash; 在一个带引号的 URL 里，空格完全合法，而把每一个都转成 <code>%20</code>，等于为文件里每一个空格多花三个字符。这两个决定是配套的：给 URI 加引号，你就可以让空格原样待着。这个工具产出的每一种形式都带引号，正是为了这个。
+    </p>
+  </section>
+
+  <section>
+    <h2>媒体类型必须写对</h2>
+    <p>
+      一个 data URI 自己声明自己的类型，而浏览器照单全收。这里没有像取回一个文件时那样的嗅探回退：对一个其实是 JPEG 的东西声明 <code>image/png</code>，图片就画不出来，而且哪儿都不会有一条有用的提示。
+    </p>
+    <p>
+      这一点要紧，因为扩展名会撒谎。一张按 JPEG 导出、又被改名成 <code>logo.png</code> 的照片，是硬盘上一件很平常的东西。而另一方面，一个图片文件开头那几个字节说得毫不含糊 &mdash; 每一种格式都有自己的签名 &mdash; 所以工具应该读文件，而不是读文件名。这里的这一个就是这么做的，并且在两者对不上时告诉你。
+    </p>
+    <p>
+      有两种格式值得知道，因为它们失败的方式很让人困惑。<strong>HEIC</strong>，也就是 iPhone 拍照用的那个，和 <strong>TIFF</strong>，也就是扫描仪产出的那个，都能生成完全合法的 data URI，而除了 Safari 没有哪个浏览器画得出来。URI 没坏；只是这个格式不在网页支持的范围内。先转换一下。
+    </p>
+  </section>
+
+  <section>
+    <h2>你并不打算发布的那些元数据</h2>
+    <p>
+      一个 data URI 是这个文件逐字节的一份副本。没有任何东西被解码再重新编码，而这通常正是重点 &mdash; 不损失质量 &mdash; 但它同时也意味着文件里其余的一切都跟着来了。
+    </p>
+    <p>
+      一张刚从手机里出来的照片带着 EXIF：拍摄地点的 GPS 坐标、时间戳、相机型号，往往还有它的序列号。那可能占到文件的 30 KB。内联之后，它就变成你样式表里 40 KB 的 base64，压在每个页面的关键路径上 &mdash; 而且是一个被提交进代码仓库的家庭住址，以一种没人会想到去看的形式。
+    </p>
+    <p>
+      先用 <a href="../../exif-editor/">EXIF 查看与清除</a>把它清掉，它重写容器而不动画面；那也<a href="../remove-exif-and-gps-data/">有一篇指南</a>。图片转 data URI 会读出一个 JPEG、PNG 或 WebP 里有多少元数据，并在你复制任何东西之前就说出来。
+    </p>
+  </section>
+
+  <section>
+    <h2>拿到它之后，该把它放在哪儿</h2>
+    <p>
+      如果这张图片只出现在一条规则里，就把 URI 放进那条规则。如果它出现在不止一条里 &mdash; 而图标通常都会，把悬停状态和深色主题一数就有了 &mdash; 那就用自定义属性声明一次：
+    </p>
+    <pre><code>:root {
+  --icon-search: url("data:image/svg+xml,%3Csvg ... %3E");
+}
+
+.search-field { background-image: var(--icon-search); }
+.search-button::before { content: var(--icon-search); }</code></pre>
+    <p>
+      一个 3 KB 的 URI 粘进四条规则，就是 12 KB 的样式表，以及图标一变就要改的四个地方。自定义属性把这两个数都变成一。它也是让主题切换行得通的那种写法：在一条媒体查询里重新定义 <code>--icon-search</code>，用到它的每一处都会跟着变。
+    </p>
+    <p>
+      如果用的是 <code>&lt;img&gt;</code> 标签而不是 CSS，请把 <code>width</code> 和 <code>height</code> 写上。内联的图片是瞬间加载的，所以缺了尺寸就是一次快到看不见、但照样算在你头上的布局抖动。例外是 SVG：一个只带 <code>viewBox</code> 的 SVG 没有自己的像素尺寸，而把浏览器那个 300&times;150 的默认值写到标签上，等于把一张可缩放的图片钉在一个没人选过的尺寸上。
+    </p>
+    <p>
+      除非你有一句真话可写，否则把 <code>alt</code> 留空。这张图片是有含义还是纯装饰，只有你知道，而一段从文件名猜出来的描述，对用读屏软件的人来说比没有描述更糟。
+    </p>
+  </section>
+
+  <section>
+    <h2>什么时候答案是“别这么做”</h2>
+    <p>
+      如果这张图片编码之后超过大约 50 KB，内联就是错的工具，而且在编码上再怎么下功夫也补不回来。替代方案，按值得一试的顺序：
+    </p>
+    <ul>
+      <li>
+        <strong>把它做小。</strong>大多数大到不能内联的图片，本来就是普遍意义上的太大了。<a href="../../compress-image/">图片压缩</a>能把一张照片压到你指定的大小，而<a href="../../resize-image/">图片缩放</a>能把像素尺寸砍到版式实际用到的那个 &mdash; 而那往往才是真正的问题。
+      </li>
+      <li>
+        <strong>把它重画成 SVG。</strong>一个导出成 40 KB PNG 的图标，常常是一个 900 字节的 SVG。那不是压缩率的差别，那是格式的差别，而且它顺带解决了高分屏问题。
+      </li>
+      <li>
+        <strong>让它继续当一个文件，并预加载它。</strong><code>&lt;link rel="preload" as="image"&gt;</code> 会立刻开始取它，同时不把那些字节挪到关键路径上。它拿到了内联的大部分好处，一分缓存代价都不付。
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>这些没有一样需要上传</h2>
+    <p>
+      把一个文件编码成 base64 是算术。它是浏览器从一开始就有的两个函数 &mdash; <code>btoa</code> 和 <code>encodeURIComponent</code> &mdash; 而为了把一张图片换个写法，让它跑一趟服务器再回来，在技术上毫无理由。任何为了这件事而上传你文件的转换器，都是为它自己的理由上传的，不是为你的。
+    </p>
+    <p>
+      <a href="../../image-to-data-uri/">这里的工具</a>没有把它送去任何地方：这个页面的 <code>Content-Security-Policy</code> 列出了它可能联系的每一个地址，其中没有一个属于本站。与其听我们说，不如把页面加载出来，拔掉网线，照样编一个试试。<a href="../is-it-safe-to-upload-files/">把文件传给在线转换器安全吗？</a>还列出了另外三个你可以对任何工具做的检查。
+    </p>
+  </section>

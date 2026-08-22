@@ -1,0 +1,79 @@
+#
+# 路线图上的计划清单 - Simplified Chinese.
+#
+# Overrides for config/planned.toml. Only words: the group `id` stays as it is,
+# because that is what a tool's roadmap_group matches on, and the order of the
+# groups and of the items inside them is decided once, in English.
+#
+# Every group and every item has to be here. They are merged in order, so a
+# missing entry would render in English in the middle of a Chinese list with
+# nothing on the page to say which one it was - the build refuses a list whose
+# length has changed for exactly that reason.
+#
+# 条目里的格式名（GIF、MP4、WebM、APNG、SRT、CSV、JSON）一律不译：它们是
+# 文件格式的名字，不是词。
+#
+
+note = "还没做。列在这里，是为了让你看清这个站要往哪走。"
+
+[[group]]
+id = "images"
+name = "图片"
+items = [
+  ["旋转与翻转", "整格旋转，或者把歪掉的几度扶正"],
+  ["加文字", "压在图片上，或者放进图片上方的文字条里"],
+  ["滤镜", "亮度、对比度、饱和度、模糊、黑白"],
+  ["图片转 data URI", "结果可以直接粘进 CSS 或 HTML"],
+  ["HEIC 转 JPG", "iPhone 拍出来的照片，换成什么都打得开的格式"],
+  ["AVIF 与 JPEG XL", "两个方向都能转，不管你用的是哪个浏览器"],
+]
+
+[[group]]
+id = "gif"
+name = "GIF 与动图"
+items = [
+  ["GIF 转 MP4 或 WebM", "同一段动画，通常只有原来的十分之一大"],
+  ["GIF 缩放、裁剪与旋转", "逐帧处理，时间轴保持不变"],
+  ["GIF 倒放", "最后一帧排到最前面"],
+  ["改 GIF 速度", "重新定时，不用把每一帧再渲染一遍"],
+  ["GIF 分析", "帧数、延时、调色板，以及字节都花在哪了"],
+  ["APNG 制作", "带真正的透明通道和完整色彩的动画"],
+  ["动态 WebP", "还是那段动画，体积只剩零头"],
+]
+
+[[group]]
+id = "video"
+name = "视频"
+items = [
+  ["缩放", "压到一个真的发得出去的尺寸"],
+  ["旋转", "给那些拍歪了的片段"],
+  ["静音，或者把声音单独存下来", "去掉声音，或者让它自己成一个文件"],
+  ["转成 MP4 或 WebM", "看你要发的那个网站认哪一个"],
+  ["滤镜", "亮度、对比度、饱和度、模糊"],
+  ["压制字幕", "把一个 SRT 文件画进画面里"],
+]
+
+[[group]]
+id = "audio"
+name = "音频"
+items = [
+  ["淡入与淡出", "免得开头和结尾都是一刀切下去的"],
+  ["波形图", "把一段录音画成一张图"],
+  ["格式转换", "MP3、WAV 和 Opus，任意方向"],
+]
+
+[[group]]
+id = "documents"
+name = "文档与 PDF"
+items = [
+  ["旋转与裁剪页面", "把扫歪的扫描件扶正，或者切掉页边"],
+  ["提取图片", "把文档里的图片重新取出来"],
+]
+
+[[group]]
+id = "beyond"
+name = "媒体之外"
+items = [
+  ["数据", "CSV 和 JSON 的转换、清理、检查"],
+  ["隐私与安全", "哈希、校验和、清除元数据"],
+]

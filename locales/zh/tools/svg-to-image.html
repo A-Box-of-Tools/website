@@ -1,0 +1,201 @@
+<!--
+  tools/svg-to-image/body.html, in Simplified Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步 &mdash; 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选择 SVG 文件</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">全部从列表移除</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步 &mdash; 尺寸 -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> 说明它该有多大</h2>
+
+    <p class="card-lede">
+      这是矢量图唯一没法替你回答的问题。SVG 里没有像素 &mdash; 里面是绘制的指令，你说多大它就按多大画。下面这个数字不是一堵你在往上顶的墙，不像处理照片那样；从一个 24&nbsp;像素的图标出发画到 4000 像素，和 24 像素时一样锐利。
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">按什么定尺寸</label>
+      <select id="size-mode">
+        <option value="scale" selected>文件自己要求尺寸的一个倍数</option>
+        <option value="width">宽度，以像素计</option>
+        <option value="height">高度，以像素计</option>
+        <option value="longest">最长的那条边</option>
+        <option value="box">一个两边都给定的框</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>乘以<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="常见倍数">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        列表上每个文件都从它自己的尺寸乘上去，所以一批画在不同尺寸上的图标，彼此之间的比例不会乱。
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>宽<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="常见宽度">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">高度跟着这幅图的形状走。</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>高<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">宽度跟着这幅图的形状走。</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>最长边<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        哪条边更长，哪条边就变成这个数，另一条跟着走，所以一个宽 logo 和一个高 logo，长边尺寸是一样的。
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>宽<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>高<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">如果这幅图是另一种形状</label>
+        <select id="box-fit">
+          <option value="fit" selected>装进去 &mdash; 整幅图都在，有一边会短一点</option>
+          <option value="pad">补白 &mdash; 正好这个尺寸，两侧垫上背景</option>
+          <option value="stretch">拉伸 &mdash; 正好这个尺寸，比例变形</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">同时写出高 DPI 副本</label>
+      <select id="density">
+        <option value="1" selected>不要 &mdash; 一幅图一个文件</option>
+        <option value="2">再来一个 @2x &mdash; 给 Retina 屏幕</option>
+        <option value="3">@2x 和 @3x &mdash; 手机要的那一整套</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- 第 3 步 &mdash; 格式 -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> 挑格式</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">格式</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; 保留透明，边缘精确</option>
+          <option value="image/jpeg">JPEG &mdash; 没有透明，照片更小</option>
+          <option value="image/webp">WebP &mdash; 既有透明，文件又更小</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">质量 &mdash; <output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          只对 JPEG 和 WebP 起作用；PNG 没有质量旋钮，因为它是无损的。纯色块和硬边缘 &mdash; 也就是 SVG 的大部分内容 &mdash; 恰恰是有损编码器处理得最差的东西，所以这里的默认值比处理照片时更高。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">背景</label>
+        <select id="background-mode">
+          <option value="transparent" selected>透明</option>
+          <option value="colour">某个颜色</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="背景颜色" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第 4 步 &mdash; 先看，再拿走 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> 看一眼，然后保存</h2>
+
+    <p class="card-lede">
+      预览是由写文件的同一套代码、从你选的那个文件、在这台机器上画出来的。值得检查的是一幅图变成像素时会变的那两件事：一条本来只有半个像素宽、现在变灰了的发丝线，以及任何文字 —— 它是用这台机器上有的字体画的，不是从网上取来的那一个。
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">加一个 SVG，它就会出现在这里。</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>栅格化</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>完成</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下载</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,177 @@
+<!--
+  tools/qr-barcode/body.html, in Simplified Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步 &mdash; 哪一种码 -->
+  <section class="card">
+    <h2><span class="step">1</span> 挑一种码</h2>
+
+    <p class="card-lede">
+      二维码什么都能装，也是手机摄像头会去找的那一种。条形码装的是一个数字，而你需要哪一种通常轮不到你决定 &mdash; 是那个要它的商店、仓库或者物流公司决定的。
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">码的种类</label>
+      <select id="symbology">
+        <optgroup label="方块">
+          <option value="qr" selected>二维码</option>
+        </optgroup>
+        <optgroup label="条纹">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">交叉二五码</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- 第 2 步 &mdash; 那串字符本身 -->
+  <section class="card">
+    <h2><span class="step">2</span> 说明里面装什么</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">它装的是什么</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>这个码里将要装的那串字符，一字不差</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- 第 3 步 &mdash; 怎么画 -->
+  <section class="card">
+    <h2><span class="step">3</span> 决定它长什么样</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>二维码</legend>
+
+      <div class="option-row">
+        <label for="level">它能扛多少损伤</label>
+        <select id="level">
+          <option value="L">L &mdash; 约 7% 可恢复，码最小</option>
+          <option value="M" selected>M &mdash; 约 15%，通常选它</option>
+          <option value="Q">Q &mdash; 约 25%</option>
+          <option value="H">H &mdash; 约 30%，给会被磨损的印刷品</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">留白，以模块计</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        留白是码的一部分，不是码周围的空地。规范要求的是四个模块，而一个被裁到边的码，相当多的扫描器压根看不见。
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>条形码</legend>
+
+      <div class="option-row">
+        <label for="bar-width">最窄的条，以像素计</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">条的高度，以像素计</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>在下面印出那些字符</strong>
+          <span class="check-note">扫描器不肯读的时候，人读的就是它。零售条码上，数字还会落在留白区里，那是故意的：它们标出了那片谁都不该裁掉的空白。
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>加一个校验字符</strong>
+          <span class="check-note">
+            Code 39 通常不带校验字符。有些系统非要不可；只有在你那套系统要的时候才加，因为一个没准备接收它的读取器，会把它当成末尾多出来的一个字符读进去。
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>颜色与尺寸</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">码本身</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">它后面</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>完全不要背景</strong>
+          <span class="check-note">透明，用于放到本来就有颜色的东西上。SVG 和 PNG 都会保留它；最后垫在它后面的东西必须够浅，否则扫描器找不到对比。
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">图片尺寸，以像素计</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- 第 4 步 &mdash; 拿走 -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> 拿走</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="你做出来的这个码"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">下载 SVG</button>
+      <button type="button" id="download-png" class="primary">下载 PNG</button>
+      <button type="button" id="copy-png" class="ghost">复制图片</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      该留下的是 SVG。它是以指令而不是以像素表达的码，所以印成任何尺寸都不会发虚 &mdash; 这一点在这里比在大多数图片上更要紧，因为发虚的边缘正是扫描器分辨不了的东西。
+    </p>
+  </section>
+</main>

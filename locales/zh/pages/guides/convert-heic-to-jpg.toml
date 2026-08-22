@@ -1,0 +1,16 @@
+#
+# 指南：iPhone 存出来的那个格式，以及怎么从里面出来 - Simplified Chinese.
+#
+
+nav = "HEIC 转 JPG"
+title = "怎么把 HEIC 转成 JPG（以及 HEIC 到底是什么）"
+description = "iPhone 把照片存成 HEIC，而半个互联网打不开它。这个格式是什么、为什么只有 Safari 解得了、转换要付出什么代价，以及怎么在不把照片上传给任何人的前提下完成它。"
+heading = "你手机存下的那张照片，和那个什么都打不开的格式"
+lede = """
+    iPhone 把照片存成 HEIC，它比 JPEG 更小也更好，而大量软件至今拒绝打开它。\
+    这里讲的是这个格式到底是什么、转换要让画面付出什么代价，以及为什么几乎\
+    每一个转换器都要你先把它传上去。"""
+updated = "2026 年 8 月 20 日"
+og_title = "怎么把 HEIC 转成 JPG"
+og_description = "为什么 iPhone 的照片打不开、转换要付出什么代价，以及怎么在不把照片交给任何人的前提下完成它。"
+og_image_alt = "abox.tools - 不碰服务器的工具"

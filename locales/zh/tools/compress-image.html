@@ -1,0 +1,123 @@
+<!--
+  tools/compress-image/body.html, in Simplified Chinese.
+
+  Prose paragraphs are written on one line each. A line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page - so the wrapping that makes English sources readable
+  would print a gap here instead. Line breaks are kept only where English would
+  have put a space anyway.
+
+  Comments that explain the markup are left in English: they are for whoever
+  reads the repository, and the repository is written in English.
+-->
+<main>
+  <!-- 第 1 步 &mdash; 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选择图片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">全部从列表移除</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步 &mdash; 真正要紧的那个数字 -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> 说明可以有多大</h2>
+
+    <p class="card-lede">
+      这一步是别的压缩工具搞反了的地方。它们给你一个质量滑块，让你自己猜哪一档能落在别人给你的限制以下。这里反过来：你说出限制，工具去搜索塞得进去的最高质量 &mdash; 然后把预算里剩下的也花掉，而不是还给你一个只有你要求一半大小的文件。
+    </p>
+
+    <div class="target-row">
+      <div class="target-field">
+        <label for="target-value">每张图片的目标大小</label>
+        <div class="inline-pair">
+          <input type="number" id="target-value" value="500" min="1" step="1" inputmode="decimal">
+          <label for="target-unit" class="visually-hidden">单位</label>
+          <select id="target-unit">
+            <option value="KB" selected>KB</option>
+            <option value="MB">MB</option>
+          </select>
+        </div>
+      </div>
+
+      <!--
+        The four numbers people are actually given: an upload form that says
+        100 KB, a forum avatar or a job application at 500 KB, an email
+        attachment at 1 MB, and a web page hero at 2 MB.
+      -->
+      <div class="presets" id="presets" role="group" aria-label="常见目标">
+        <button type="button" class="ghost" data-bytes="102400">100 KB</button>
+        <button type="button" class="ghost" data-bytes="512000">500 KB</button>
+        <button type="button" class="ghost" data-bytes="1048576">1 MB</button>
+        <button type="button" class="ghost" data-bytes="2097152">2 MB</button>
+      </div>
+    </div>
+
+    <p id="target-summary" class="field-summary"></p>
+
+    <fieldset class="options">
+      <legend>允许它用什么办法压到那儿</legend>
+
+      <div class="option-row">
+        <label for="format-select">输出格式</label>
+        <select id="format-select">
+          <option value="auto" selected>自动 &mdash; 保持原格式，除非换一个更划算</option>
+          <option value="keep">始终保持原格式</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/webp">WebP</option>
+          <option value="image/png">PNG（无损，所以体积只能从尺寸里省）</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="allow-resize" checked>
+        <span>
+          <strong>必要时允许把画面改小</strong>
+          <span class="check-note">只有在光靠降质量就得掉到压缩痕迹开始显现的那条线以下时才会用上。过了那条线，少一些好像素比多一些烂像素好看。关掉它，尺寸就一分不动，紧张的目标全部由质量来买单。
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- 第 3 步 &mdash; 只按一下 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 压缩</h2>
+
+    <div class="run-row">
+      <button type="button" id="compress-all" class="primary big" disabled>压缩到目标大小</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>已压缩</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下载</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
