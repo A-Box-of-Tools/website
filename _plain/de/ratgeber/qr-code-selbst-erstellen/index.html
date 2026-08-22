@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  GENERATED FILE - do not edit. Built by build.py from templates/page.html,
+  config/site.toml, and pages/guides/make-a-qr-code/{page.toml,body.html}.
+  Edit those and run `python build.py`.
+
+  A "page" here is a prose page that is not a tool and not the hub: a legal page
+  or a guide. It gets the site frame, the same Content-Security-Policy as
+  everywhere else, and the same footer, and nothing else - no service worker,
+  because there is nothing to keep working offline, and no blob: in img-src,
+  because it never makes one.
+
+  The two differ in three places below, all of them driven by values build.py
+  passes in rather than by a test written here: a guide gets a visible
+  breadcrumb, Article structured data, and - when it is about one particular
+  tool - a link to that tool under the heading. A legal page gets none of the
+  three, and the blocks simply do not appear.
+-->
+<!--
+  This page carries advertising, and ad code cannot run under default-src
+  'none'. The allowlist below is generated from config/site.toml, the same one
+  every other page is built from, so they cannot drift apart. The reasoning
+  behind each entry is written down beside the list in that file.
+-->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self'
+    https://www.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://tpc.googlesyndication.com
+    https://partner.googleadservices.com
+    https://www.googletagservices.com
+    https://adservice.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
+  frame-src
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://www.google.com;
+  connect-src
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://analytics.google.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://csi.gstatic.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  form-action 'none';
+  base-uri 'none';
+">
+<title>Einen QR-Code erzeugen, der jedes Mal scannt</title>
+<meta name="description" content="Welche Fehlerkorrekturstufe Sie nehmen sollten, warum der weiße Rand um einen QR-Code Teil des Codes ist, wie groß Sie ihn drucken müssen, und was Sie der 'dynamische' Code eines kostenlosen Generators später kostet.">
+
+<link rel="canonical" href="https://abox.tools/de/ratgeber/qr-code-selbst-erstellen/">
+<!--
+  Every language this page is published in, this one included.
+
+  Google's rule for hreflang is that the set is reciprocal and self-inclusive:
+  a page lists every version of itself, its own among them, and each of those
+  pages lists the same set back. The list is built once, in buildlib/i18n.py,
+  and handed to every page from there - so reciprocity holds because there is
+  only one list, not because somebody checked.
+
+  x-default is English. It is what a reader whose language is none of these is
+  meant to be given, and it is the last entry rather than the first because it
+  is a fallback rather than a language.
+
+  A locale that is still being translated appears here in no form at all. It is
+  built, and readable at its own URL, and until its locale.toml says
+  complete = true it is not advertised to anybody - inviting a crawler to index
+  a half-translated page is how a site ends up with the untranslated half
+  ranking for the wrong language.
+-->
+<link rel="alternate" hreflang="en" href="https://abox.tools/guides/make-a-qr-code/">
+<link rel="alternate" hreflang="de" href="https://abox.tools/de/ratgeber/qr-code-selbst-erstellen/">
+<link rel="alternate" hreflang="x-default" href="https://abox.tools/guides/make-a-qr-code/">
+
+
+<meta name="google-adsense-account" content="ca-pub-5997711677062324">
+
+<!--
+  AdSense. Async so it cannot delay the app; crossorigin="anonymous" is
+  Google's own snippet, unchanged.
+-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5997711677062324"
+        crossorigin="anonymous"></script>
+
+<!-- Google tag (gtag.js). The configuration half lives in analytics.js. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script>
+<script src="analytics.js" defer></script>
+
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="A Box of Tools">
+<meta property="og:url" content="https://abox.tools/de/ratgeber/qr-code-selbst-erstellen/">
+<meta property="og:title" content="Einen QR-Code erzeugen, der auch auf dem Telefon eines anderen noch scannt">
+<meta property="og:description" content="Die vier Entscheidungen, die darüber bestimmen, ob ein gedruckter QR-Code funktioniert: die Stufe, der Rand, die Größe, und wessen Adresse eigentlich darin steht.">
+<meta property="og:image" content="https://abox.tools/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="abox.tools - Werkzeuge, die keinen Server anfassen">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Einen QR-Code erzeugen, der auch auf dem Telefon eines anderen noch scannt">
+<meta name="twitter:description" content="Die vier Entscheidungen, die darüber bestimmen, ob ein gedruckter QR-Code funktioniert: die Stufe, der Rand, die Größe, und wessen Adresse eigentlich darin steht.">
+<meta name="twitter:image" content="https://abox.tools/og.png">
+
+<!--
+  The stylesheet URL carries a hash of the stylesheet. GitHub Pages serves
+  HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
+  reaches a returning visitor as new markup wearing a four-hour-old sheet.
+-->
+<!--
+  Structured data, and only for a guide. A guide is an Article and says so; a
+  privacy policy is not one, and describing it as an Article would be claiming
+  the page is something it is not. buildlib/site.py decides which, and returns
+  nothing for a legal page, so this block simply does not appear on one.
+
+  Inline is deliberate and does not need 'unsafe-inline': a <script> whose type
+  is not a JavaScript type is a data block the parser never executes.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Wie Sie einen QR-Code erzeugen, der auch auf dem Telefon eines anderen noch scannt",
+      "description": "Welche Fehlerkorrekturstufe Sie nehmen sollten, warum der wei\u00dfe Rand um einen QR-Code Teil des Codes ist, wie gro\u00df Sie ihn drucken m\u00fcssen, und was Sie der 'dynamische' Code eines kostenlosen Generators sp\u00e4ter kostet.",
+      "url": "https://abox.tools/de/ratgeber/qr-code-selbst-erstellen/",
+      "datePublished": "2026-08-20",
+      "dateModified": "2026-08-20",
+      "inLanguage": "de",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://abox.tools/de/ratgeber/qr-code-selbst-erstellen/"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "A Box of Tools",
+          "item": "https://abox.tools/de/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Ratgeber",
+          "item": "https://abox.tools/de/ratgeber/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Einen QR-Code erzeugen",
+          "item": "https://abox.tools/de/ratgeber/qr-code-selbst-erstellen/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="../../site.css?v=82d928ad5b">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+</head>
+<body>
+
+<!--
+  The visible half of the BreadcrumbList in the head, and only where there is
+  one: a guide sits two levels down, under an index, and saying so is worth the
+  line. A legal page is passed an empty trail and this block does not render -
+  markup is meant to describe what a visitor can see, so a page with nothing to
+  show describes nothing.
+-->
+<nav class="crumbs" aria-label="Brotkrumennavigation">
+  <a href="../../">Alle Werkzeuge</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <a href="../../ratgeber/">Ratgeber</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <span aria-current="page">Einen QR-Code erzeugen</span>
+</nav>
+
+<header class="hub-head">
+  <p class="brand">
+    <a class="brand-home" href="../../">
+      <span class="brand-mark" aria-hidden="true">&#129520;</span> abox.tools
+    </a>
+  </p>
+  <h1>Wie Sie einen QR-Code erzeugen, der auch auf dem Telefon eines anderen noch scannt</h1>
+  <p class="lede">
+    Einen QR-Code zu erzeugen dauert eine Sekunde. Einen zu erzeugen, der auf
+    einer nassen Speisekarte, an einem Buswartehäuschen oder auf einem bei
+    schlechtem Licht auf Armlänge gehaltenen Telefon funktioniert, kostet vier
+    Entscheidungen &mdash; und alle vier fallen, bevor Sie irgendetwas drucken.
+    Hier steht, was jede davon tut.
+  </p>
+  <!--
+    The tool this guide is about, named once at the top where somebody who
+    already knows what they want can leave immediately. `tool` is empty on a
+    legal page and on a guide about no tool in particular, and then this is not
+    written at all.
+  -->
+  <p class="guide-cta">
+    <a class="guide-cta-link" href="../../qr-code-erstellen/">QR- &amp; Barcode-Generator öffnen</a>
+    <span class="guide-cta-note">Eintippen, und es wird ein Code. Zum Erzeugen wird nichts gesendet.</span>
+  </p>
+  <p class="legal-date">Zuletzt aktualisiert 20. August 2026</p>
+</header>
+
+<!--
+  `prose` on a guide and `legal` on a legal page. The two rule sets are the same
+  narrow column - they are written as one selector list in shared/site.css - and
+  the class is still worth getting right, because a stylesheet that calls a
+  guide a legal page is a stylesheet nobody can search.
+-->
+<main class="prose">
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie den
+      <a href="../../qr-code-erstellen/">QR- &amp; Barcode-Generator</a>, fügen
+      Sie Ihren Link ein, lassen Sie die Stufe auf <strong>M</strong> und den
+      Rand auf <strong>4</strong>, und laden Sie das SVG herunter. Drucken Sie
+      ihn mindestens zwei Zentimeter breit, auf etwas Mattem, dunkel auf hell.
+      Scannen Sie dann den gedruckten mit einem Telefon, das nicht Ihres ist,
+      bevor Sie tausend davon bestellen.
+    </p>
+    <p>
+      Das deckt fast jeden Fall ab. Der Rest dieser Seite handelt davon, was zu
+      tun ist, wenn es keiner davon ist: ein Code, der Behandlung überstehen
+      muss, ein Code mit einem Logo darauf, ein Code auf etwas Kleinem, und die
+      eine Entscheidung, die sich leicht so falsch treffen lässt, dass Sie es
+      erst ein Jahr später merken.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was tatsächlich in einem QR-Code steckt</h2>
+    <p>
+      Eine Zeichenkette. Das ist alles. Einen QR-Code zu scannen übergibt dem
+      Telefon ein Stück Text, und alles Weitere &mdash; eine Seite öffnen, einem
+      Netz beitreten, anbieten, einen Kontakt zu speichern &mdash; ist das
+      Telefon, das die Form dieses Textes erkennt und anbietet, darauf zu
+      reagieren.
+    </p>
+    <p>
+      Es gibt also so etwas wie einen &bdquo;WLAN-QR-Code&ldquo; als Art von Code
+      gar nicht. Es gibt einen QR-Code, der
+      <code>WIFI:T:WPA;S:Mein Netz;P:das Passwort;;</code> enthält, und das kann
+      jedes Telefon der letzten zehn Jahre lesen. Genau deshalb zeigt Ihnen der
+      Generator die fertige Zeichenkette: Wenn ein Code nicht das tut, was Sie
+      erwartet haben, ist die Zeichenkette das Einzige, was anzusehen sich lohnt.
+    </p>
+    <p>
+      Es heißt auch, dass ein QR-Code sich nach dem Druck nicht ändern lässt,
+      nicht nach Hause telefonieren kann und nicht ablaufen kann &mdash; es sei
+      denn, jemand hat einen Link auf seinen eigenen Server hineingelegt, und
+      davon handelt der letzte Abschnitt hier.
+    </p>
+  </section>
+
+  <section>
+    <h2>Entscheidung eins: die Fehlerkorrekturstufe</h2>
+    <p>
+      Ein QR-Code trägt neben den Daten einen Satz Prüfwörter, so berechnet, dass
+      ein Lesegerät wieder aufbauen kann, was es nicht sehen konnte. Deshalb
+      scannt ein Code mit abgerissener Ecke noch. Wie viele dieser Prüfwörter es
+      gibt, ist die Stufe, und es gibt vier:
+    </p>
+    <ul>
+      <li><strong>L</strong> &mdash; rund 7&nbsp;% des Codes dürfen verloren gehen.</li>
+      <li><strong>M</strong> &mdash; rund 15&nbsp;%.</li>
+      <li><strong>Q</strong> &mdash; rund 25&nbsp;%.</li>
+      <li><strong>H</strong> &mdash; rund 30&nbsp;%.</li>
+    </ul>
+    <p>
+      Mehr Korrektur gibt es nicht umsonst: Die Prüfdaten kommen in dasselbe
+      Quadrat, derselbe Text braucht bei H also einen größeren, dichteren Code
+      als bei L. Grob gesagt verdoppelt der Weg von L nach H die Modulzahl für
+      dieselbe Zeichenkette, und dichtere Module sind für eine Kamera schwerer
+      aufzulösen. Hier gibt es einen echten Handel, und die Antwort hängt davon
+      ab, wohin der Code geht.
+    </p>
+    <p>
+      <strong>L</strong> ist für einen Bildschirm: ein Code in einer Folie, einer
+      E-Mail, einer Webseite. Nichts wird ihn beschädigen, und jedes zusätzliche
+      Modul macht ihn aus der Entfernung schwerer lesbar.
+    </p>
+    <p>
+      <strong>M</strong> ist die Voreinstellung und die richtige Antwort für die
+      meisten Drucksachen. Papier, das ein wenig angefasst wird, ein Flyer, eine
+      Visitenkarte.
+    </p>
+    <p>
+      <strong>Q und H</strong> sind für Codes, die misshandelt werden: eine
+      täglich abgewischte Speisekarte, ein Aufkleber auf einer Maschine in der
+      Werkstatt, ein Etikett auf einer Kiste, ein Code in einem Fenster mit
+      direkter Sonne. H ist außerdem das, was ein Logo in der Mitte möglich macht
+      &mdash; siehe unten.
+    </p>
+  </section>
+
+  <section>
+    <h2>Entscheidung zwei: der Rand, der Teil des Codes ist</h2>
+    <p>
+      Der weiße Raum um einen QR-Code ist kein Abstand und keine
+      Gestaltungsentscheidung. Ein Lesegerät nutzt ihn, um zu finden, wo das
+      Symbol endet. Die Spezifikation verlangt vier Module ruhige Fläche auf
+      jeder Seite, und ein bis an die Kante beschnittener Code ist der mit
+      Abstand häufigste Grund, warum ein gedruckter Code scheitert.
+    </p>
+    <p>
+      Das ist es wert, unverblümt gesagt zu werden, denn Beschneiden ist eine so
+      natürliche Handlung. Der Code sieht aus, als habe er zu viel Weiß um sich,
+      also wird er im Layout beschnitten, oder auf eine farbige Fläche gesetzt,
+      die bis an die Quadrate heranläuft, oder auf eine Fotografie gelegt. Jedes
+      davon nimmt die Grenze weg, die das Lesegerät benutzen wollte.
+    </p>
+    <p>
+      Sieht der Code mit seinem Rand zu groß aus, machen Sie den Code kleiner.
+      Nehmen Sie nicht den Rand weg.
+    </p>
+  </section>
+
+  <section>
+    <h2>Entscheidung drei: wie groß gedruckt wird</h2>
+    <p>
+      Die Faustregel, die den Kontakt mit der Wirklichkeit überstanden hat, heißt
+      <strong>eins zu zehn</strong>: Ein Code muss etwa ein Zehntel so breit sein
+      wie die Entfernung, aus der er gescannt wird.
+    </p>
+    <ul>
+      <li>Eine Visitenkarte oder eine Speisekarte, aus 30 cm gelesen: etwa 2 cm breit.</li>
+      <li>Ein Plakat, aus zwei Metern gelesen: etwa 20 cm.</li>
+      <li>Ein Buswartehäuschen oder ein Schaufenster, aus fünf Metern gelesen: etwa 50 cm.</li>
+    </ul>
+    <p>
+      Zwei Zentimeter sind eine Untergrenze und kein Ziel. Unterhalb von etwa
+      1,5 cm fängt ein gewöhnliches Telefon an zu kämpfen, ganz gleich wie gut
+      der Druck ist, denn die einzelnen Module nähern sich der Größe eines Pixels
+      in seiner Kamera.
+    </p>
+    <p>
+      Weniger Text heißt weniger Module heißt ein Code, der bei gegebener
+      Druckgröße aus der Entfernung liest &mdash; ein guter Grund, einen Code auf
+      <code>example.com/x</code> zeigen zu lassen und nicht auf eine URL mit
+      hundert Zeichen Tracking-Parametern am Ende.
+    </p>
+    <p>
+      Und drucken Sie aus dem <strong>SVG</strong>. Ein QR-Code besteht aus
+      Kanten, und ein PNG hat eine feste Pixelzahl, aus der es sie machen muss;
+      vergrößern Sie eines, und jede Kante wird weich &mdash; genau das, womit ein
+      Scanner Mühe hat. Ein SVG sind die Quadrate als Anweisungen, es kommt also
+      auf einer Visitenkarte wie auf einer Plakatwand scharf heraus.
+    </p>
+  </section>
+
+  <section>
+    <h2>Farbe, Kontrast und die zwei Fehler</h2>
+    <p>
+      Ein Lesegerät misst den Unterschied zwischen den dunklen und den hellen
+      Modulen, Kontrast ist also alles. Zwei Dinge gehen regelmäßig schief:
+    </p>
+    <p>
+      <strong>Heller Code auf dunklem Hintergrund.</strong> Es sieht auffällig
+      aus, und eine ganze Reihe Lesegeräte weist es rundweg ab: Sie suchen nach
+      dunkel auf hell und probieren die Umkehrung nicht. Manche schon. Sie werden
+      nicht wissen, welche Ihre Kundschaft hat.
+    </p>
+    <p>
+      <strong>Zu wenig Unterschied.</strong> Mittelgrau auf Weiß, oder zwei
+      Markenfarben ähnlicher Tiefe, können am Bildschirm einwandfrei messen und
+      auf Papier scheitern, sobald Tonwertzuwachs und die automatische Belichtung
+      eines Telefons ins Spiel kommen. Wenn Sie einen Code einfärben, halten Sie
+      den dunklen Teil wirklich dunkel.
+    </p>
+    <p>
+      Matt schlägt glänzend bei allem, was unter einer Lampe gescannt wird, und
+      beides schlägt den Druck auf eine Fotografie. Transparente Hintergründe
+      sind nützlich, um einen Code auf eine farbige Fläche zu setzen &mdash;
+      prüfen Sie aber, was am Ende dahinter landet, denn ein transparenter Code
+      auf einer dunklen Fläche ist der erste Fehler oben mit Zwischenschritten.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ein Logo in der Mitte</h2>
+    <p>
+      Das funktioniert, und es funktioniert wegen der Fehlerkorrektur und nicht
+      trotz ihr. Auf Stufe H lassen sich rund 30&nbsp;% der Module zerstören und
+      der Code ist noch lesbar &mdash; ein Logo, das deutlich weniger als das
+      verdeckt, in der Mitte, wo kein Suchmuster sitzt, ist also Schaden, den das
+      Lesegerät repariert.
+    </p>
+    <p>
+      Drei Dinge, an die Sie sich halten sollten. Nehmen Sie Stufe H. Halten Sie
+      das Logo unter etwa einem Fünftel der Fläche, gut unterhalb der
+      theoretischen Grenze, denn der Druck ist nicht das Einzige, was an Ihrer
+      Reserve knabbert. Und verdecken Sie nie die drei großen Quadrate in den
+      Ecken oder die kleineren daneben: An denen findet ein Lesegerät das Symbol
+      überhaupt erst und richtet es aus, und keine Fehlerkorrektur der Welt baut
+      sie wieder auf.
+    </p>
+    <p>
+      Testen Sie ihn dann an echten Telefonen. Ein Logo bringt einen Code von
+      &bdquo;funktioniert immer&ldquo; auf &bdquo;funktioniert mit so viel
+      Reserve&ldquo;, und der einzige Weg herauszufinden, wie viel Reserve übrig
+      ist, ist auszuprobieren.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Entscheidung, die Menschen bereuen: statisch oder &bdquo;dynamisch&ldquo;</h2>
+    <p>
+      Suchen Sie nach einem QR-Generator, und die meisten Treffer wollen, dass
+      Sie ein Konto anlegen &mdash; denn sie verkaufen <em>dynamische</em> Codes.
+      Ein dynamischer Code enthält nicht Ihren Link. Er enthält einen Kurzlink
+      auf den eigenen Server des Generators, der auf Ihren weiterleitet.
+    </p>
+    <p>
+      Was Sie dafür bekommen, ist echt: Sie können nach dem Druck ändern, wohin
+      der Code zeigt, und Sie bekommen eine Zählung jedes Scans. Für eine
+      Kampagne mit sechsstelliger Auflage ist das Geld wert.
+    </p>
+    <p>
+      Was es kostet, ist ebenfalls echt und vorher wissenswert statt nachher:
+    </p>
+    <ul>
+      <li>
+        <strong>Der Code hört auf zu funktionieren, wenn die aufhören.</strong>
+        Schließt der Dienst, läuft die Domain aus oder endet die kostenlose
+        Stufe, ist jeder gedruckte Code tot &mdash; und bis dahin kleben sie auf
+        zehntausend Speisekarten.
+      </li>
+      <li>
+        <strong>Jeder Scan sind Daten von jemand anderem.</strong> Die
+        Weiterleitung sieht die IP-Adresse, die Uhrzeit und das Gerät jeder
+        Person, die Ihren Code scannt.
+      </li>
+      <li>
+        <strong>Der Link gehört ihnen, nicht Ihnen.</strong> Wer ihn scannt,
+        sieht eine unbekannte Domain vorbeihuschen &mdash; und genau davor wird
+        Menschen gesagt, sie sollten misstrauisch sein.
+      </li>
+    </ul>
+    <p>
+      Der Mittelweg kostet nichts: Setzen Sie einen statischen QR-Code um eine
+      kurze URL <em>auf Ihrer eigenen Domain</em>, und leiten Sie die selbst
+      weiter. Sie behalten die Möglichkeit, das Ziel zu ändern, Sie behalten die
+      Auswertung, und nichts an dem Code hängt davon ab, dass es ein Unternehmen,
+      das Sie nie getroffen haben, nächstes Jahr noch gibt.
+    </p>
+    <p>
+      Der <a href="../../qr-code-erstellen/">Generator hier</a> erzeugt nur
+      statische Codes, und es gibt kein Konto anzulegen. Was Sie eintippen, ist
+      das, was der Code enthält.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bevor Sie tausend davon drucken</h2>
+    <p>
+      Scannen Sie den Code. Nicht den auf Ihrem Bildschirm &mdash; den gedruckten
+      Andruck, an dem Ort, an den er kommt, mit einem Telefon, das nicht das ist,
+      auf dem Sie ihn gemacht haben. Das dauert eine Minute und fängt die ganze
+      Sorte Probleme ab, von der diese Seite handelt: ein Rand, den das Layout
+      gefressen hat, ein Link ohne sein <code>https://</code>, eine Farbe, die
+      auf Papier anders gemessen hat, ein Code in einer Größe, die auf einem
+      Schreibtisch funktioniert und an einer Wand nicht.
+    </p>
+    <p>
+      Und prüfen Sie, was nach dem Scan passiert. Ein Code, der eine Seite
+      öffnet, die auf einem Telefon unlesbar ist, ist ein gescheiterter Code
+      &mdash; auch wenn er gescannt hat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Nichts davon verlangt, irgendetwas hochzuladen</h2>
+    <p>
+      Ein QR-Code ist Rechnerei über einer Zeichenkette. Es gibt keine Datei zu
+      senden und nichts, was ein Server könnte und ein Browser nicht &mdash;
+      deshalb erledigt das <a href="../../qr-code-erstellen/">Werkzeug hier</a>
+      alles davon auf Ihrem eigenen Gerät und arbeitet mit getrennter
+      Netzverbindung.
+    </p>
+    <p>
+      Das zählt mehr, als es klingt, wegen dessen, was Menschen in QR-Codes
+      legen. Die häufigste Verwendung des WLAN-Formats ist das tatsächliche
+      Passwort eines Netzes, in eine Webseite getippt. Es lohnt sich zu wissen,
+      ob diese Seite irgendwohin hatte, wo sie es hinschicken konnte.
+    </p>
+  </section>
+</main>
+
+<!--
+  The footer every page wears: a few columns of plain links, left aligned under
+  quiet headings, in the shape the large media-tool sites use. It is the second
+  navigation, for anyone who scrolled to the bottom looking for one, and it is
+  the only route to the legal pages.
+
+  This used to be three different footers kept in step by hand. It is one now,
+  and the only thing that differs between a hub, a tool and a legal page is
+  `base`: './' at the root, '../' one level down. Every link below is built from
+  it, so nothing here has to know which kind of page it landed on.
+
+  The tool list and the legal-page list are passed in by build.py from the
+  folders that exist, so a new tool or a new page appears here without anybody
+  remembering to add it. The guides are reached through their index rather than
+  listed one by one - see the comment above that link.
+-->
+<footer>
+  <div class="footer-cols">
+    <div class="footer-col footer-brand">
+      <a class="home-link" href="../../">
+      <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <path class="logo-lid" d="M14 31V13.5A4.5 4.5 0 0 1 18.5 9h27a4.5 4.5 0 0 1 4.5 4.5V31"
+              fill="none" stroke-width="3.2" stroke-linejoin="round"/>
+        <g transform="rotate(-12 18 30)">
+          <rect class="logo-tool" x="16.6" y="17" width="3.2" height="17" rx="1.4"/>
+          <rect class="logo-tool" x="16.2" y="12.2" width="6.8" height="5" rx="1.5"/>
+          <rect class="logo-tool" x="14" y="12.6" width="2.6" height="6.6" rx="1.2" transform="rotate(26 16.2 13)"/>
+        </g>
+        <g transform="rotate(-3 26 30)">
+          <rect class="logo-tool-alt" x="24.6" y="17" width="3.1" height="17" rx="1.4"/>
+          <rect class="logo-tool-alt" x="23.2" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="26.8" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="23.2" y="16.2" width="5.9" height="3.6" rx="1.5"/>
+        </g>
+        <rect class="logo-tool-alt" x="30.6" y="12" width="5" height="8.4" rx="2.2"/>
+        <rect class="logo-tool" x="31.5" y="19.2" width="3.2" height="2.2" rx="0.7"/>
+        <rect class="logo-tool" x="32.1" y="20.5" width="2.1" height="13.5" rx="1"/>
+        <path class="logo-tool" d="M39.4 20.4 37.9 13a1.15 1.15 0 0 1 2.25-.45l1.15 7.6z" transform="rotate(-4 40.5 21)"/>
+        <path class="logo-tool" d="M41.6 20.4 43.1 13a1.15 1.15 0 0 0-2.25-.45l-1.15 7.6z" transform="rotate(4 40.5 21)"/>
+        <rect class="logo-tool" x="38.2" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(-8 40.5 21)"/>
+        <rect class="logo-tool" x="40.4" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(8 40.5 21)"/>
+        <circle class="logo-latch" cx="40.5" cy="20.8" r="1.5"/>
+        <g transform="rotate(14 48 30)">
+          <rect class="logo-tool" x="46.6" y="17.5" width="3.2" height="16.5" rx="1.4"/>
+          <rect class="logo-tool" x="44.6" y="14.2" width="7.4" height="3.4" rx="1.3"/>
+          <rect class="logo-tool" x="44.6" y="9.6" width="4.4" height="3.6" rx="1.1"/>
+          <rect class="logo-latch" x="46.4" y="17.4" width="3.6" height="1.9" rx="0.6"/>
+        </g>
+        <rect class="logo-box" x="8" y="38" width="48" height="15" rx="1.6"/>
+        <rect class="logo-band" x="4" y="31" width="56" height="7.5" rx="1.6"/>
+        <rect class="logo-latch" x="27.5" y="33.5" width="9" height="9" rx="1.8"/>
+      </svg>
+
+        abox.tools
+      </a>
+      <p>
+        Werkzeuge, die keinen Server anfassen. Ihre Dateien bleiben auf Ihrem
+        Gerät &mdash; nichts hochzuladen, kein Konto anzulegen.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <strong>Werkzeuge</strong>
+      <ul>
+        <li><a href="../../bilder-in-video-umwandeln/">Bilder in Video</a></li>
+        <li><a href="../../video-schneiden/">Video-Schneider</a></li>
+        <li><a href="../../video-zuschneiden/">Video-Zuschneider</a></li>
+        <li><a href="../../reverse-video/">Video Reverser</a></li>
+        <li><a href="../../grab-frame/">Video Frame Grabber</a></li>
+        <li><a href="../../video-in-gif-umwandeln/">Video zu GIF</a></li>
+        <li><a href="../../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a></li>
+        <li><a href="../../heic-in-jpg-umwandeln/">HEIC zu JPG</a></li>
+        <li><a href="../../bild-als-base64/">Bild als Data-URI</a></li>
+        <li><a href="../../favicon-erstellen/">Bild zu ICO</a></li>
+        <li><a href="../../svg-in-png-umwandeln/">SVG zu Bild</a></li>
+        <li><a href="../../id-photo/">ID Photo Maker</a></li>
+        <li><a href="../../bildgroesse-aendern/">Bildgrößen-Ändern</a></li>
+        <li><a href="../../bild-komprimieren/">Bildkompressor</a></li>
+        <li><a href="../../gif-maker/">GIF Maker</a></li>
+        <li><a href="../../audio-bearbeiten/">Audio-Editor</a></li>
+        <li><a href="../../pdf-verkleinern/">PDF-Kompressor</a></li>
+        <li><a href="../../bilder-in-pdf-umwandeln/">Bilder in PDF</a></li>
+        <li><a href="../../qr-code-erstellen/">QR- &amp; Barcode-Generator</a></li>
+        <li><a href="../../text-tools/">Text &amp; Code</a></li>
+      </ul>
+    </div>
+
+    <!--
+      The guides get one link, not a column of their own. Every guide used to be
+      listed here, which made a fourth column that grew by a line every time one
+      was written and put nine near-identical entries in front of somebody who
+      wanted the privacy page. The index is the entry that matters: it is the
+      one link that keeps working however long the list gets, and it is where a
+      reader can see all of them side by side with a sentence each, which a
+      footer column cannot do.
+
+      It sits directly under "All tools" because the two are the same kind of
+      thing - the front door to each half of the site.
+    -->
+    <div class="footer-col">
+      <strong>Diese Seite</strong>
+      <ul>
+        <li><a href="../../">Alle Werkzeuge</a></li>
+        <li><a href="../../ratgeber/">Alle Ratgeber</a></li>
+        <li><a href="../../roadmap/">Roadmap</a></li>
+        <li><a href="../../datenschutz/">Datenschutz &amp; Cookies</a></li>
+        <li><a href="../../nutzungsbedingungen/">Nutzungsbedingungen</a></li>
+        <li><a href="/sitemap.xml">Sitemap</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>Kontakt</strong>
+      <ul>
+        <li>
+          <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
+            Den Quellcode auf GitHub lesen
+          </a>
+        </li>
+        <li><a href="mailto:hi@abox.tools">hi@abox.tools</a></li>
+      </ul>
+    </div>
+  </div>
+
+<!--
+  The language switcher.
+
+  Plain links, and that is the whole design. No JavaScript, no cookie, no
+  redirect and no guess made from Accept-Language: a site whose entire claim is
+  that it does not track you cannot be storing a preference in order to do it,
+  and a crawler has to be able to walk from one language into the next on foot.
+
+  Every link points at THIS page in that language, not at that language's front
+  door. Somebody reading about compressing an image who wants it in German wants
+  that page in German; dropping them on the hub to find it again is the
+  commonest way a switcher gets built wrong.
+
+  Each language is written in its own language - Deutsch, not German - because
+  that is the word a reader looking for it will be scanning for. `lang` and
+  `hreflang` are on every link so that a screen reader announces the name in the
+  language it belongs to rather than in the language of the page around it.
+
+  Root-absolute hrefs, unlike everything else in this footer. The slug in each
+  URL is itself localized, so there is no relative path from
+  /de/bild-komprimieren/ to /es/comprimir-imagen/ that could be worked out from
+  `base`.
+-->
+<nav class="lang-switch" aria-label="Sprache">
+  <ul>
+    <li>
+      <a href="/guides/make-a-qr-code/" lang="en" hreflang="en">English</a>
+    </li>
+    <li>
+      <span class="lang-current" lang="de" aria-current="true">Deutsch</span>
+    </li>
+  </ul>
+</nav>
+
+
+  <p class="footer-base">
+Jede Behauptung auf dieser Seite ist zum Nachprüfen gedacht, nicht zum Glauben.
+  </p>
+</footer>
+
+
+</body>
+</html>

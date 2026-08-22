@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  GENERATED FILE - do not edit. Built by build.py from templates/page.html,
+  config/site.toml, and pages/guides/grab-a-frame-from-a-video/{page.toml,body.html}.
+  Edit those and run `python build.py`.
+
+  A "page" here is a prose page that is not a tool and not the hub: a legal page
+  or a guide. It gets the site frame, the same Content-Security-Policy as
+  everywhere else, and the same footer, and nothing else - no service worker,
+  because there is nothing to keep working offline, and no blob: in img-src,
+  because it never makes one.
+
+  The two differ in three places below, all of them driven by values build.py
+  passes in rather than by a test written here: a guide gets a visible
+  breadcrumb, Article structured data, and - when it is about one particular
+  tool - a link to that tool under the heading. A legal page gets none of the
+  three, and the blocks simply do not appear.
+-->
+<!--
+  This page carries advertising, and ad code cannot run under default-src
+  'none'. The allowlist below is generated from config/site.toml, the same one
+  every other page is built from, so they cannot drift apart. The reasoning
+  behind each entry is written down beside the list in that file.
+-->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self'
+    https://www.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://tpc.googlesyndication.com
+    https://partner.googleadservices.com
+    https://www.googletagservices.com
+    https://adservice.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
+  frame-src
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://www.google.com;
+  connect-src
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://analytics.google.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://csi.gstatic.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  form-action 'none';
+  base-uri 'none';
+">
+<title>How to Save a Frame From a Video as a Picture</title>
+<meta name="description" content="Get a still out of a clip at its real resolution: why a screenshot of a paused player is not the same picture, which format to save it in, and how to land on the exact frame you meant.">
+
+<link rel="canonical" href="https://abox.tools/fr/guides/grab-a-frame-from-a-video/">
+<!--
+  Every language this page is published in, this one included.
+
+  Google's rule for hreflang is that the set is reciprocal and self-inclusive:
+  a page lists every version of itself, its own among them, and each of those
+  pages lists the same set back. The list is built once, in buildlib/i18n.py,
+  and handed to every page from there - so reciprocity holds because there is
+  only one list, not because somebody checked.
+
+  x-default is English. It is what a reader whose language is none of these is
+  meant to be given, and it is the last entry rather than the first because it
+  is a fallback rather than a language.
+
+  A locale that is still being translated appears here in no form at all. It is
+  built, and readable at its own URL, and until its locale.toml says
+  complete = true it is not advertised to anybody - inviting a crawler to index
+  a half-translated page is how a site ends up with the untranslated half
+  ranking for the wrong language.
+-->
+
+
+<meta name="google-adsense-account" content="ca-pub-5997711677062324">
+
+<!--
+  AdSense. Async so it cannot delay the app; crossorigin="anonymous" is
+  Google's own snippet, unchanged.
+-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5997711677062324"
+        crossorigin="anonymous"></script>
+
+<!-- Google tag (gtag.js). The configuration half lives in analytics.js. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script>
+<script src="analytics.js" defer></script>
+
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="A Box of Tools">
+<meta property="og:url" content="https://abox.tools/fr/guides/grab-a-frame-from-a-video/">
+<meta property="og:title" content="How to save a frame from a video as a picture">
+<meta property="og:description" content="Why a screenshot of a paused player is not the frame, which format to save a still in, and how to land on the exact frame you meant.">
+<meta property="og:image" content="https://abox.tools/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="abox.tools - tools that never touch a server">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to save a frame from a video as a picture">
+<meta name="twitter:description" content="Why a screenshot of a paused player is not the frame, which format to save a still in, and how to land on the exact frame you meant.">
+<meta name="twitter:image" content="https://abox.tools/og.png">
+
+<!--
+  The stylesheet URL carries a hash of the stylesheet. GitHub Pages serves
+  HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
+  reaches a returning visitor as new markup wearing a four-hour-old sheet.
+-->
+<!--
+  Structured data, and only for a guide. A guide is an Article and says so; a
+  privacy policy is not one, and describing it as an Article would be claiming
+  the page is something it is not. buildlib/site.py decides which, and returns
+  nothing for a legal page, so this block simply does not appear on one.
+
+  Inline is deliberate and does not need 'unsafe-inline': a <script> whose type
+  is not a JavaScript type is a data block the parser never executes.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "How to save a frame from a video as a picture",
+      "description": "Get a still out of a clip at its real resolution: why a screenshot of a paused player is not the same picture, which format to save it in, and how to land on the exact frame you meant.",
+      "url": "https://abox.tools/fr/guides/grab-a-frame-from-a-video/",
+      "datePublished": "2026-08-20",
+      "dateModified": "2026-08-20",
+      "inLanguage": "fr",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://abox.tools/fr/guides/grab-a-frame-from-a-video/"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "A Box of Tools",
+          "item": "https://abox.tools/fr/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "https://abox.tools/fr/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Grabbing a frame",
+          "item": "https://abox.tools/fr/guides/grab-a-frame-from-a-video/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="../../site.css?v=82d928ad5b">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+</head>
+<body>
+
+<!--
+  The visible half of the BreadcrumbList in the head, and only where there is
+  one: a guide sits two levels down, under an index, and saying so is worth the
+  line. A legal page is passed an empty trail and this block does not render -
+  markup is meant to describe what a visitor can see, so a page with nothing to
+  show describes nothing.
+-->
+<nav class="crumbs" aria-label="Fil d'Ariane">
+  <a href="../../">Tous les outils</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <a href="../../guides/">Guides</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <span aria-current="page">Grabbing a frame</span>
+</nav>
+
+<header class="hub-head">
+  <p class="brand">
+    <a class="brand-home" href="../../">
+      <span class="brand-mark" aria-hidden="true">&#129520;</span> abox.tools
+    </a>
+  </p>
+  <h1>How to save a frame from a video as a picture</h1>
+  <p class="lede">
+    Pausing the player and pressing the screenshot key gives you a picture of a
+    window. Sometimes that is all you need. This is what the difference is, and
+    how to get the frame itself when it matters.
+  </p>
+  <!--
+    The tool this guide is about, named once at the top where somebody who
+    already knows what they want can leave immediately. `tool` is empty on a
+    legal page and on a guide about no tool in particular, and then this is not
+    written at all.
+  -->
+  <p class="guide-cta">
+    <a class="guide-cta-link" href="../../grab-frame/">Ouvrir Video Frame Grabber</a>
+    <span class="guide-cta-note">A full-quality still from any point.</span>
+  </p>
+  <p class="legal-date">Dernière mise à jour 20 August 2026</p>
+</header>
+
+<!--
+  `prose` on a guide and `legal` on a legal page. The two rule sets are the same
+  narrow column - they are written as one selector list in shared/site.css - and
+  the class is still worth getting right, because a stylesheet that calls a
+  guide a legal page is a stylesheet nobody can search.
+-->
+<main class="prose">
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="/fr/grab-frame/">Video Frame Grabber</a>, drop the clip
+      in, find the moment, and press <em>Grab this frame</em>. What lands in your
+      downloads is the frame at the video's own resolution &mdash; 3840 &times;
+      2160 out of a 4K clip, whatever size the preview on the page was.
+    </p>
+    <p>
+      Leave the format on PNG unless the file size is a problem. The rest of this
+      page is about why those two sentences are not the same thing as a
+      screenshot, and when the difference is worth caring about.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why a screenshot of a paused player is a different picture</h2>
+    <p>
+      Everybody already has a way to do this: pause, press the screenshot key,
+      crop off the controls. It works, and for a quick share it is the right
+      amount of effort. But four things have happened to the picture by then, and
+      none of them are reversible:
+    </p>
+    <ul>
+      <li>
+        <strong>It is the size of the window, not the size of the video.</strong>
+        A 4K clip in a half-screen player gives you a picture of a half-screen
+        player. Every pixel that was in the file and not on the screen is gone.
+      </li>
+      <li>
+        <strong>It has been scaled.</strong> Whatever the player did to fit the
+        frame into that window &mdash; smoothing, sharpening, or plain
+        resampling &mdash; is baked in.
+      </li>
+      <li>
+        <strong>It has been through the display pipeline.</strong> Colour
+        management, and on an HDR clip a tone-mapping pass chosen for your
+        monitor rather than for the file.
+      </li>
+      <li>
+        <strong>It usually includes furniture.</strong> Controls, a progress bar,
+        a subtitle track, the cursor.
+      </li>
+    </ul>
+    <p>
+      A frame grabber skips all four: it decodes the frame the file actually
+      holds and writes those pixels out. The picture is the size the video is,
+      and nothing has drawn on it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Landing on the frame you meant</h2>
+    <p>
+      This is the part most tools quietly get wrong, and it is worth knowing what
+      to look for in any of them.
+    </p>
+    <p>
+      Video is not a strip of pictures in the order you watch them. Most frames
+      are stored as a description of how they differ from other frames, and in
+      any file with B-frames the order they are stored in is not the order they
+      are shown in. A tool that seeks a player to a timestamp and grabs whatever
+      appears is at the mercy of how that player rounds, and one that steps
+      "forward one frame" by adding a thirtieth of a second is wrong on every
+      clip that is not exactly 30 fps &mdash; which includes almost every phone
+      video, because they vary their frame rate as the light changes.
+    </p>
+    <p>
+      The fix is to read the file's own list of frames and address them by their
+      place in it. On an MP4, the tool here does that: the slider moves one
+      frame per step, the arrow keys move one frame, and it can tell you that you
+      are on frame 812 of 3,540 because it counted them. On formats it cannot
+      read directly it says so, and steps by roughly a frame instead of
+      pretending.
+    </p>
+    <p>
+      A quick way to test any frame grabber: step forward through a few frames of
+      something with fast motion. If the picture sometimes does not change, or
+      jumps by two, the tool is guessing at timestamps.
+    </p>
+  </section>
+
+  <section>
+    <h2>Which format to save it in</h2>
+    <p>
+      There are only really three answers, and the choice is about what happens
+      to the picture next.
+    </p>
+    <ul>
+      <li>
+        <strong>PNG</strong> &mdash; the default, and the only one that stores
+        the frame exactly. Choose it if the still is going to be edited, printed,
+        compared against another frame, or kept. It is also the largest: expect a
+        few megabytes from 1080p and around eight from 4K, because a
+        photographic image is not what PNG's compression is good at.
+      </li>
+      <li>
+        <strong>JPEG</strong> &mdash; a tenth of the size, and universally
+        accepted. Choose it for a thumbnail, a preview, or anything going
+        straight into a document or a chat. It is a second round of lossy
+        compression on top of the video's own, so it is the wrong starting point
+        for further editing.
+      </li>
+      <li>
+        <strong>WebP</strong> &mdash; smaller again at the same visual quality,
+        and supported everywhere that matters now. The one caveat is old
+        software: some desktop applications still will not open one.
+      </li>
+    </ul>
+    <p>
+      One thing worth being clear about: a frame out of a video is already a
+      compressed picture. Saving it as a PNG does not undo that, and cannot
+      recover detail the codec threw away when the clip was made. What PNG buys
+      you is that nothing is thrown away <em>twice</em>. If you are going to
+      colour-correct or crop the still afterwards, that matters; if you are
+      sending it to somebody, it does not.
+    </p>
+  </section>
+
+  <section>
+    <h2>Grabbing a lot of them at once</h2>
+    <p>
+      A still every few seconds is a different job from a still at one moment,
+      and it comes up more often than it sounds: a contact sheet of a long
+      recording, thumbnails to pick a cover image from, an even sample of
+      footage to check focus or exposure across a shoot.
+    </p>
+    <p>
+      Set an interval, press the series button, and the tool walks the clip once
+      and takes a still at each mark. Two practical notes. Keep the interval
+      generous on a long clip &mdash; a still every second from an hour of
+      footage is 3,600 pictures, which is why the tool caps a run at 500. And
+      choose JPEG for this unless you have a reason not to: a hundred 4K PNGs is
+      most of a gigabyte held in the page before you have downloaded any of them.
+    </p>
+    <p>
+      They come back as a single ZIP, named by their timecode, so they sort into
+      the order they happened in and each one can be found in the video again.
+    </p>
+  </section>
+
+  <section>
+    <h2>Portrait videos, and the classic sideways still</h2>
+    <p>
+      If you have ever pulled a frame out of a phone video and got it on its
+      side, this is why. A phone films in landscape and writes a quarter turn
+      into the file rather than turning the pixels. Players read that turn and
+      apply it; a tool that reads only the pixels does not, and the result is a
+      perfectly good picture of the right moment, rotated 90 degrees.
+    </p>
+    <p>
+      Nothing about the file is wrong, and re-rotating the still afterwards costs
+      you nothing but the annoyance. The tool here reads the rotation off the
+      track and applies it before drawing, so a portrait clip gives a portrait
+      picture.
+    </p>
+  </section>
+
+  <section>
+    <h2>What you cannot get back</h2>
+    <p>
+      A still can only be as good as the frame it came from, and two things
+      limit that no matter which tool you use.
+    </p>
+    <p>
+      <strong>Motion blur is in the frame.</strong> If the subject was moving
+      during the exposure, every frame of that movement is blurred, and there is
+      no sharp frame in there to find. Filming at a higher shutter speed is the
+      only fix, and it has to happen before the recording.
+    </p>
+    <p>
+      <strong>Compression is in the frame too.</strong> Video is compressed far
+      harder than a photograph, and much harder on the frames between keyframes.
+      If a still looks blocky, try stepping a frame or two either way: a keyframe
+      is stored in full and often looks noticeably cleaner than its neighbours.
+    </p>
+    <p>
+      And if the still needs to be a different size or shape afterwards, do that
+      as a separate step: the <a href="/fr/redimensionner-une-image/">Image Resizer</a>
+      resizes, crops and converts, and <a href="/fr/guides/redimensionner-une-image/">its
+      guide</a> covers what each of those costs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why this does not need an upload</h2>
+    <p>
+      Decoding video in a browser is recent and it is real: WebCodecs exposes the
+      same hardware decoder your phone uses to play video back. The work happens
+      on the machine that already has the file, which for a multi-gigabyte clip
+      is also the only arrangement that makes sense &mdash; uploading an hour of
+      4K to get back one 8 MB picture is a poor trade in every direction.
+    </p>
+    <p>
+      The tool here has no network feature of any kind, and the page's
+      <code>Content-Security-Policy</code> names every address it may contact,
+      none of which belongs to this site. Unplug from the internet and grab a
+      frame anyway if you would rather check than be told.
+    </p>
+    <p>
+      <a href="/fr/guides/est-il-sur-d-envoyer-ses-fichiers/">Is it safe to upload files to
+      online converters?</a> sets out three more checks you can run on any tool.
+    </p>
+  </section>
+</main>
+
+<!--
+  The footer every page wears: a few columns of plain links, left aligned under
+  quiet headings, in the shape the large media-tool sites use. It is the second
+  navigation, for anyone who scrolled to the bottom looking for one, and it is
+  the only route to the legal pages.
+
+  This used to be three different footers kept in step by hand. It is one now,
+  and the only thing that differs between a hub, a tool and a legal page is
+  `base`: './' at the root, '../' one level down. Every link below is built from
+  it, so nothing here has to know which kind of page it landed on.
+
+  The tool list and the legal-page list are passed in by build.py from the
+  folders that exist, so a new tool or a new page appears here without anybody
+  remembering to add it. The guides are reached through their index rather than
+  listed one by one - see the comment above that link.
+-->
+<footer>
+  <div class="footer-cols">
+    <div class="footer-col footer-brand">
+      <a class="home-link" href="../../">
+      <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <path class="logo-lid" d="M14 31V13.5A4.5 4.5 0 0 1 18.5 9h27a4.5 4.5 0 0 1 4.5 4.5V31"
+              fill="none" stroke-width="3.2" stroke-linejoin="round"/>
+        <g transform="rotate(-12 18 30)">
+          <rect class="logo-tool" x="16.6" y="17" width="3.2" height="17" rx="1.4"/>
+          <rect class="logo-tool" x="16.2" y="12.2" width="6.8" height="5" rx="1.5"/>
+          <rect class="logo-tool" x="14" y="12.6" width="2.6" height="6.6" rx="1.2" transform="rotate(26 16.2 13)"/>
+        </g>
+        <g transform="rotate(-3 26 30)">
+          <rect class="logo-tool-alt" x="24.6" y="17" width="3.1" height="17" rx="1.4"/>
+          <rect class="logo-tool-alt" x="23.2" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="26.8" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="23.2" y="16.2" width="5.9" height="3.6" rx="1.5"/>
+        </g>
+        <rect class="logo-tool-alt" x="30.6" y="12" width="5" height="8.4" rx="2.2"/>
+        <rect class="logo-tool" x="31.5" y="19.2" width="3.2" height="2.2" rx="0.7"/>
+        <rect class="logo-tool" x="32.1" y="20.5" width="2.1" height="13.5" rx="1"/>
+        <path class="logo-tool" d="M39.4 20.4 37.9 13a1.15 1.15 0 0 1 2.25-.45l1.15 7.6z" transform="rotate(-4 40.5 21)"/>
+        <path class="logo-tool" d="M41.6 20.4 43.1 13a1.15 1.15 0 0 0-2.25-.45l-1.15 7.6z" transform="rotate(4 40.5 21)"/>
+        <rect class="logo-tool" x="38.2" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(-8 40.5 21)"/>
+        <rect class="logo-tool" x="40.4" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(8 40.5 21)"/>
+        <circle class="logo-latch" cx="40.5" cy="20.8" r="1.5"/>
+        <g transform="rotate(14 48 30)">
+          <rect class="logo-tool" x="46.6" y="17.5" width="3.2" height="16.5" rx="1.4"/>
+          <rect class="logo-tool" x="44.6" y="14.2" width="7.4" height="3.4" rx="1.3"/>
+          <rect class="logo-tool" x="44.6" y="9.6" width="4.4" height="3.6" rx="1.1"/>
+          <rect class="logo-latch" x="46.4" y="17.4" width="3.6" height="1.9" rx="0.6"/>
+        </g>
+        <rect class="logo-box" x="8" y="38" width="48" height="15" rx="1.6"/>
+        <rect class="logo-band" x="4" y="31" width="56" height="7.5" rx="1.6"/>
+        <rect class="logo-latch" x="27.5" y="33.5" width="9" height="9" rx="1.8"/>
+      </svg>
+
+        abox.tools
+      </a>
+      <p>
+        Des outils qui ne touchent jamais un serveur. Vos fichiers restent sur
+        votre machine &mdash; rien à envoyer, aucun compte à créer.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <strong>Outils</strong>
+      <ul>
+        <li><a href="../../images-en-video/">Images to Video</a></li>
+        <li><a href="../../couper-une-video/">Video Cutter</a></li>
+        <li><a href="../../recadrer-une-video/">Video Cropper</a></li>
+        <li><a href="../../reverse-video/">Video Reverser</a></li>
+        <li><a href="../../grab-frame/">Video Frame Grabber</a></li>
+        <li><a href="../../video-to-gif/">Video to GIF</a></li>
+        <li><a href="../../supprimer-les-donnees-exif/">EXIF Viewer &amp; Remover</a></li>
+        <li><a href="../../heic-to-jpg/">HEIC to JPG</a></li>
+        <li><a href="../../image-to-data-uri/">Image to Data URI</a></li>
+        <li><a href="../../image-to-ico/">Image to ICO</a></li>
+        <li><a href="../../svg-to-image/">SVG to Image</a></li>
+        <li><a href="../../id-photo/">ID Photo Maker</a></li>
+        <li><a href="../../redimensionner-une-image/">Image Resizer</a></li>
+        <li><a href="../../compresser-une-image/">Image Compressor</a></li>
+        <li><a href="../../gif-maker/">GIF Maker</a></li>
+        <li><a href="../../modifier-un-audio/">Audio Editor</a></li>
+        <li><a href="../../compresser-un-pdf/">PDF Compressor</a></li>
+        <li><a href="../../images-en-pdf/">Images to PDF</a></li>
+        <li><a href="../../qr-barcode/">QR &amp; Barcode Generator</a></li>
+        <li><a href="../../text-tools/">Text &amp; Code</a></li>
+      </ul>
+    </div>
+
+    <!--
+      The guides get one link, not a column of their own. Every guide used to be
+      listed here, which made a fourth column that grew by a line every time one
+      was written and put nine near-identical entries in front of somebody who
+      wanted the privacy page. The index is the entry that matters: it is the
+      one link that keeps working however long the list gets, and it is where a
+      reader can see all of them side by side with a sentence each, which a
+      footer column cannot do.
+
+      It sits directly under "All tools" because the two are the same kind of
+      thing - the front door to each half of the site.
+    -->
+    <div class="footer-col">
+      <strong>Ce site</strong>
+      <ul>
+        <li><a href="../../">Tous les outils</a></li>
+        <li><a href="../../guides/">Tous les guides</a></li>
+        <li><a href="../../feuille-de-route/">Feuille de route</a></li>
+        <li><a href="../../confidentialite/">Privacy &amp; Cookies</a></li>
+        <li><a href="../../conditions-d-utilisation/">Terms of Use</a></li>
+        <li><a href="/sitemap.xml">Plan du site</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>Nous écrire</strong>
+      <ul>
+        <li>
+          <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
+            Lire le code sur GitHub
+          </a>
+        </li>
+        <li><a href="mailto:hi@abox.tools">hi@abox.tools</a></li>
+      </ul>
+    </div>
+  </div>
+
+<!--
+  The language switcher.
+
+  Plain links, and that is the whole design. No JavaScript, no cookie, no
+  redirect and no guess made from Accept-Language: a site whose entire claim is
+  that it does not track you cannot be storing a preference in order to do it,
+  and a crawler has to be able to walk from one language into the next on foot.
+
+  Every link points at THIS page in that language, not at that language's front
+  door. Somebody reading about compressing an image who wants it in German wants
+  that page in German; dropping them on the hub to find it again is the
+  commonest way a switcher gets built wrong.
+
+  Each language is written in its own language - Deutsch, not German - because
+  that is the word a reader looking for it will be scanning for. `lang` and
+  `hreflang` are on every link so that a screen reader announces the name in the
+  language it belongs to rather than in the language of the page around it.
+
+  Root-absolute hrefs, unlike everything else in this footer. The slug in each
+  URL is itself localized, so there is no relative path from
+  /de/bild-komprimieren/ to /es/comprimir-imagen/ that could be worked out from
+  `base`.
+-->
+
+
+  <p class="footer-base">
+Chaque affirmation de ce site est faite pour être vérifiée, pas pour être crue.
+  </p>
+</footer>
+
+
+</body>
+</html>

@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  GENERATED FILE - do not edit. Built by build.py from templates/page.html,
+  config/site.toml, and pages/guides/embed-an-image-in-css/{page.toml,body.html}.
+  Edit those and run `python build.py`.
+
+  A "page" here is a prose page that is not a tool and not the hub: a legal page
+  or a guide. It gets the site frame, the same Content-Security-Policy as
+  everywhere else, and the same footer, and nothing else - no service worker,
+  because there is nothing to keep working offline, and no blob: in img-src,
+  because it never makes one.
+
+  The two differ in three places below, all of them driven by values build.py
+  passes in rather than by a test written here: a guide gets a visible
+  breadcrumb, Article structured data, and - when it is about one particular
+  tool - a link to that tool under the heading. A legal page gets none of the
+  three, and the blocks simply do not appear.
+-->
+<!--
+  This page carries advertising, and ad code cannot run under default-src
+  'none'. The allowlist below is generated from config/site.toml, the same one
+  every other page is built from, so they cannot drift apart. The reasoning
+  behind each entry is written down beside the list in that file.
+-->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'none';
+  script-src 'self'
+    https://www.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://tpc.googlesyndication.com
+    https://partner.googleadservices.com
+    https://www.googletagservices.com
+    https://adservice.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://cdnjs.buymeacoffee.com;
+  frame-src
+    https://googleads.g.doubleclick.net
+    https://tpc.googlesyndication.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://www.google.com;
+  connect-src
+    https://www.google-analytics.com
+    https://*.google-analytics.com
+    https://analytics.google.com
+    https://*.analytics.google.com
+    https://*.googletagmanager.com
+    https://pagead2.googlesyndication.com
+    https://googleads.g.doubleclick.net
+    https://stats.g.doubleclick.net
+    https://www.google.com
+    https://ep1.adtrafficquality.google
+    https://ep2.adtrafficquality.google
+    https://csi.gstatic.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src https://fonts.gstatic.com;
+  img-src 'self' data: https:;
+  form-action 'none';
+  base-uri 'none';
+">
+<title>Data URIs in CSS: When to Embed an Image, and When Not To</title>
+<meta name="description" content="What a data URI costs, why base64 adds a third and gzip does not give it back, why an SVG should never be base64, and the quoting mistake that breaks inlined SVGs silently.">
+
+<link rel="canonical" href="https://abox.tools/pt/guides/embed-an-image-in-css/">
+<!--
+  Every language this page is published in, this one included.
+
+  Google's rule for hreflang is that the set is reciprocal and self-inclusive:
+  a page lists every version of itself, its own among them, and each of those
+  pages lists the same set back. The list is built once, in buildlib/i18n.py,
+  and handed to every page from there - so reciprocity holds because there is
+  only one list, not because somebody checked.
+
+  x-default is English. It is what a reader whose language is none of these is
+  meant to be given, and it is the last entry rather than the first because it
+  is a fallback rather than a language.
+
+  A locale that is still being translated appears here in no form at all. It is
+  built, and readable at its own URL, and until its locale.toml says
+  complete = true it is not advertised to anybody - inviting a crawler to index
+  a half-translated page is how a site ends up with the untranslated half
+  ranking for the wrong language.
+-->
+<link rel="alternate" hreflang="en" href="https://abox.tools/guides/embed-an-image-in-css/">
+<link rel="alternate" hreflang="de" href="https://abox.tools/de/ratgeber/bild-in-css-einbetten/">
+<link rel="alternate" hreflang="x-default" href="https://abox.tools/guides/embed-an-image-in-css/">
+
+
+<meta name="google-adsense-account" content="ca-pub-5997711677062324">
+
+<!--
+  AdSense. Async so it cannot delay the app; crossorigin="anonymous" is
+  Google's own snippet, unchanged.
+-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5997711677062324"
+        crossorigin="anonymous"></script>
+
+<!-- Google tag (gtag.js). The configuration half lives in analytics.js. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SCBN29XZ31"></script>
+<script src="analytics.js" defer></script>
+
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="A Box of Tools">
+<meta property="og:url" content="https://abox.tools/pt/guides/embed-an-image-in-css/">
+<meta property="og:title" content="When to put a picture inside your CSS">
+<meta property="og:description" content="What a data URI costs, why an SVG should never be base64, and the quoting mistake that breaks inlined SVGs silently.">
+<meta property="og:image" content="https://abox.tools/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="abox.tools - tools that never touch a server">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="When to put a picture inside your CSS">
+<meta name="twitter:description" content="What a data URI costs, why an SVG should never be base64, and the quoting mistake that breaks inlined SVGs silently.">
+<meta name="twitter:image" content="https://abox.tools/og.png">
+
+<!--
+  The stylesheet URL carries a hash of the stylesheet. GitHub Pages serves
+  HTML with max-age=600 and CSS with max-age=14400, so without this a deploy
+  reaches a returning visitor as new markup wearing a four-hour-old sheet.
+-->
+<!--
+  Structured data, and only for a guide. A guide is an Article and says so; a
+  privacy policy is not one, and describing it as an Article would be claiming
+  the page is something it is not. buildlib/site.py decides which, and returns
+  nothing for a legal page, so this block simply does not appear on one.
+
+  Inline is deliberate and does not need 'unsafe-inline': a <script> whose type
+  is not a JavaScript type is a data block the parser never executes.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "When to put a picture inside your CSS, and when not to",
+      "description": "What a data URI costs, why base64 adds a third and gzip does not give it back, why an SVG should never be base64, and the quoting mistake that breaks inlined SVGs silently.",
+      "url": "https://abox.tools/pt/guides/embed-an-image-in-css/",
+      "datePublished": "2026-08-20",
+      "dateModified": "2026-08-20",
+      "inLanguage": "pt-BR",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://abox.tools/pt/guides/embed-an-image-in-css/"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "A Box of Tools",
+        "url": "https://abox.tools/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "A Box of Tools",
+          "item": "https://abox.tools/pt/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guias",
+          "item": "https://abox.tools/pt/guias/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Embedding an image in CSS",
+          "item": "https://abox.tools/pt/guides/embed-an-image-in-css/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="../../site.css?v=82d928ad5b">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon-180.png">
+</head>
+<body>
+
+<!--
+  The visible half of the BreadcrumbList in the head, and only where there is
+  one: a guide sits two levels down, under an index, and saying so is worth the
+  line. A legal page is passed an empty trail and this block does not render -
+  markup is meant to describe what a visitor can see, so a page with nothing to
+  show describes nothing.
+-->
+<nav class="crumbs" aria-label="Trilha de navegação">
+  <a href="../../">Todas as ferramentas</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <a href="../../guias/">Guias</a>
+  <span aria-hidden="true">&rsaquo;</span>
+  <span aria-current="page">Embedding an image in CSS</span>
+</nav>
+
+<header class="hub-head">
+  <p class="brand">
+    <a class="brand-home" href="../../">
+      <span class="brand-mark" aria-hidden="true">&#129520;</span> abox.tools
+    </a>
+  </p>
+  <h1>When to put a picture inside your CSS, and when not to</h1>
+  <p class="lede">
+    An image written into a stylesheet arrives with it: no second request, no
+    waiting. It also stops being a file &mdash; so it cannot be cached on its
+    own, and it is downloaded again every time anything around it changes. This
+    is where that trade is worth making, and where it quietly is not.
+  </p>
+  <!--
+    The tool this guide is about, named once at the top where somebody who
+    already knows what they want can leave immediately. `tool` is empty on a
+    legal page and on a guide about no tool in particular, and then this is not
+    written at all.
+  -->
+  <p class="guide-cta">
+    <a class="guide-cta-link" href="../../image-to-data-uri/">Abrir Image to Data URI</a>
+    <span class="guide-cta-note">The whole picture as one line of text. Paste it straight into CSS or HTML.</span>
+  </p>
+  <p class="legal-date">Última atualização 20 August 2026</p>
+</header>
+
+<!--
+  `prose` on a guide and `legal` on a legal page. The two rule sets are the same
+  narrow column - they are written as one selector list in shared/site.css - and
+  the class is still worth getting right, because a stylesheet that calls a
+  guide a legal page is a stylesheet nobody can search.
+-->
+<main class="prose">
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open <a href="/pt/image-to-data-uri/">Image to Data URI</a>, drop the
+      picture in, choose <em>A CSS custom property</em>, and paste the line into
+      the top of your stylesheet. Then use it as
+      <code>background-image: var(--logo)</code> wherever you need it.
+    </p>
+    <p>
+      Do that when the picture is small &mdash; an icon, a bullet, a chevron, a
+      pattern &mdash; and it is needed on every page. Do not do it with a
+      photograph. Everything below is why those two sentences differ, and how to
+      tell which one you are looking at.
+    </p>
+  </section>
+
+  <section>
+    <h2>What a data URI actually is</h2>
+    <p>
+      An address that contains the thing instead of pointing at it. Where a
+      stylesheet would normally say
+    </p>
+    <pre><code>background-image: url("logo.png");</code></pre>
+    <p>
+      and the browser goes and fetches <code>logo.png</code>, a data URI says
+    </p>
+    <pre class="wrap"><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <p>
+      and there is nothing to fetch: the picture is already there, written out in
+      characters. There are three parts. <code>data:</code> is the scheme.
+      <code>image/png</code> is the media type, and the browser believes it
+      completely &mdash; more on that below. Everything after the comma is the
+      file.
+    </p>
+    <p>
+      That is the whole idea. It is not a trick or a hack; it has been in the
+      standards since 1998 and works in every browser that has shipped since.
+    </p>
+  </section>
+
+  <section>
+    <h2>What it buys you: one fewer round trip</h2>
+    <p>
+      The saving is not bandwidth. It is the request.
+    </p>
+    <p>
+      A browser cannot ask for <code>logo.png</code> until it has read the
+      stylesheet that mentions it, and it cannot read the stylesheet until it has
+      fetched that. So an ordinary background image is at least two round trips
+      deep in the page load, and on a phone on a slow network a round trip can be
+      a couple of hundred milliseconds regardless of how small the file is. A
+      600-byte chevron costs almost nothing to transfer and can still cost a
+      quarter of a second to arrive.
+    </p>
+    <p>
+      Inlined, it arrives with the stylesheet. That is the entire benefit, and
+      for a small icon that appears above the fold it is a real one.
+    </p>
+  </section>
+
+  <section>
+    <h2>What it costs: a third, and then the caching</h2>
+    <p>
+      <strong>Base64 adds about a third.</strong> Three bytes of file become four
+      characters, because that is what it takes to write arbitrary bytes using
+      only the characters a URL permits. There is no clever encoder that avoids
+      it. A 9 KB PNG is 12 KB of stylesheet.
+    </p>
+    <p>
+      <strong>Compression does not give it back.</strong> This is the part people
+      assume away. Gzip and Brotli work by finding redundancy, and a PNG, a JPEG
+      and a WebP have already been compressed &mdash; there is very little
+      redundancy left in them, and base64 does not add any. In practice you get
+      back something like a tenth of the third, not the whole of it. (An SVG is
+      the opposite case, and the next section is about that.)
+    </p>
+    <p>
+      <strong>It stops being a file.</strong> This is the cost that does not show
+      up in any measurement you are likely to take, and it is the one that
+      matters at size:
+    </p>
+    <ul>
+      <li>
+        <strong>It cannot be cached on its own.</strong> An ordinary image is
+        fetched once and reused for a year. An inlined one is part of the
+        stylesheet, so it lives and dies by the stylesheet's cache entry.
+      </li>
+      <li>
+        <strong>Changing anything re-downloads everything.</strong> Fix a
+        margin, ship a new stylesheet, and every visitor downloads the
+        inlined picture again along with it &mdash; a picture that has not
+        changed in two years.
+      </li>
+      <li>
+        <strong>It is on the critical path.</strong> A stylesheet blocks
+        rendering. An image does not. Inlining a picture moves it from the
+        second category into the first: the page cannot paint until the whole
+        thing, picture included, has arrived.
+      </li>
+      <li>
+        <strong>It cannot be fetched in parallel.</strong> Browsers download
+        many things at once. An inlined picture is not a separate thing, so it
+        gets none of that.
+      </li>
+    </ul>
+    <p>
+      Rough thresholds, which are where the advice changes rather than where a
+      browser does anything different: under about 2 KB it is a clear win; up to
+      about 10 KB it is usually still worth it for something on every page; past
+      50 KB it is a mistake with no error message.
+      <a href="/pt/image-to-data-uri/">The tool</a> tells you which band each
+      result lands in, with the character count next to it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Never base64 an SVG</h2>
+    <p>
+      This is the single most common mistake in inlined images, and it is made by
+      exporters and build plugins as often as by people.
+    </p>
+    <p>
+      An SVG is text. A URL carries text already. Only a handful of characters
+      have to be escaped &mdash; <code>%</code>, <code>#</code>,
+      <code>&lt;</code>, <code>&gt;</code> and the quote you wrapped it in
+      &mdash; and everything else can be left exactly as it is. Encoding it that
+      way gives you a URI that is typically about a fifth shorter than the base64
+      of the same file, and that compresses like text afterwards rather than like
+      noise.
+    </p>
+    <p>
+      It is also still readable:
+    </p>
+    <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <p>
+      You can see the <code>viewBox</code>. You can change the fill colour in
+      your editor without decoding anything. Base64 the same file and it becomes
+      a wall of letters that nobody will ever touch again.
+      <a href="/pt/image-to-data-uri/">Image to Data URI</a> does this
+      automatically for anything that turns out to be an SVG, and has a checkbox
+      for the rare toolchain that insists on <code>;base64</code>.
+    </p>
+  </section>
+
+  <section>
+    <h2>The quoting mistake that only breaks SVGs</h2>
+    <p>
+      CSS lets you write <code>url()</code> without quotes, and for an ordinary
+      file name that is fine:
+    </p>
+    <pre><code>background-image: url(logo.png);</code></pre>
+    <p>
+      Do the same with a percent-encoded SVG and it breaks. An unquoted
+      <code>url()</code> token ends at the first space, parenthesis, quote or
+      control character &mdash; and an SVG is full of spaces, between every
+      attribute and every number in a path. The declaration is then invalid, CSS
+      discards invalid declarations silently, and you get no background and no
+      error.
+    </p>
+    <p>
+      The fix is quotes, every time:
+    </p>
+    <pre><code>background-image: url("data:image/svg+xml,%3Csvg ... %3E");</code></pre>
+    <p>
+      That is also why an encoder does not need to escape spaces &mdash; they are
+      perfectly legal inside a quoted URL, and escaping each one as
+      <code>%20</code> would cost three characters for every space in the file.
+      The two decisions go together: quote the URI, and you can leave the spaces
+      alone. Every shape the tool produces is quoted for exactly this reason.
+    </p>
+  </section>
+
+  <section>
+    <h2>The media type has to be right</h2>
+    <p>
+      A data URI declares its own type, and the browser takes it at its word.
+      There is no sniffing fallback the way there is for a fetched file: say
+      <code>image/png</code> about something that is really a JPEG and the
+      picture does not render, with no message anywhere useful.
+    </p>
+    <p>
+      Which matters because file extensions lie. A photo exported as a JPEG and
+      renamed <code>logo.png</code> is an ordinary thing to find on a disk. The
+      first few bytes of an image file, on the other hand, say what it is
+      unambiguously &mdash; every format has a signature &mdash; so a tool should
+      read the file rather than its name. The one here does, and tells you when
+      the two disagree.
+    </p>
+    <p>
+      Two formats are worth knowing about because they fail in a confusing way.
+      <strong>HEIC</strong>, which is what an iPhone photographs in, and
+      <strong>TIFF</strong>, which is what scanners produce, both make perfectly
+      valid data URIs that no browser except Safari will draw. The URI is not
+      broken; the format is simply not one the web supports. Convert first.
+    </p>
+  </section>
+
+  <section>
+    <h2>The metadata you did not mean to publish</h2>
+    <p>
+      A data URI is a copy of the file, byte for byte. Nothing is decoded and
+      re-encoded, which is usually the point &mdash; no quality is lost &mdash;
+      but it also means everything else in the file comes along.
+    </p>
+    <p>
+      A photograph straight off a phone carries EXIF: the GPS coordinates where
+      it was taken, the timestamp, the camera model and often its serial number.
+      That can be 30 KB of the file. Inlined, it becomes 40 KB of base64 in your
+      stylesheet, on the critical path of every page &mdash; and a home address
+      committed to a repository, in a form nobody will ever think to look at.
+    </p>
+    <p>
+      Strip it first with the
+      <a href="/pt/remover-dados-exif/">EXIF Viewer &amp; Remover</a>, which rewrites
+      the container without touching the picture; there is a
+      <a href="/pt/guias/remover-dados-exif-e-gps/">guide to that</a> too. Image to Data
+      URI reads how much metadata is in a JPEG, PNG or WebP and says so before
+      you copy anything.
+    </p>
+  </section>
+
+  <section>
+    <h2>Where to put it, once you have it</h2>
+    <p>
+      If the picture appears in one rule, put the URI in that rule. If it appears
+      in more than one &mdash; and icons usually do, once you count the hover
+      state and the dark theme &mdash; declare it once as a custom property:
+    </p>
+    <pre><code>:root {
+  --icon-search: url("data:image/svg+xml,%3Csvg ... %3E");
+}
+
+.search-field { background-image: var(--icon-search); }
+.search-button::before { content: var(--icon-search); }</code></pre>
+    <p>
+      A 3 KB URI pasted into four rules is 12 KB of stylesheet and four places to
+      edit when the icon changes. The custom property is one of each. It is also
+      the shape that makes theming work: redefine <code>--icon-search</code>
+      inside a media query and every use of it follows.
+    </p>
+    <p>
+      For an <code>&lt;img&gt;</code> tag rather than CSS, include
+      <code>width</code> and <code>height</code>. An inlined image loads
+      instantly, so a missing size is a layout shift that happens too fast to see
+      and still counts against you. The exception is SVG: one that carries only a
+      <code>viewBox</code> has no pixel size of its own, and writing the
+      browser&rsquo;s 300&times;150 default onto the tag pins a scalable picture
+      at a size nobody chose.
+    </p>
+    <p>
+      Leave the <code>alt</code> empty unless you have something true to put in
+      it. Only you know whether the picture carries meaning or is decoration, and
+      a description guessed from a file name is worse for somebody using a screen
+      reader than no description at all.
+    </p>
+  </section>
+
+  <section>
+    <h2>When the answer is &ldquo;don&rsquo;t&rdquo;</h2>
+    <p>
+      If the picture is over about 50 KB encoded, inlining is the wrong tool and
+      no amount of care with the encoding fixes it. The alternatives, in the
+      order worth trying:
+    </p>
+    <ul>
+      <li>
+        <strong>Make it smaller.</strong> Most images that are too big to inline
+        are too big generally. The
+        <a href="/pt/comprimir-imagem/">Image Compressor</a> will take a
+        photograph to a size you name, and the
+        <a href="/pt/redimensionar-imagem/">Image Resizer</a> will cut the pixel
+        dimensions down to what the layout actually uses &mdash; which is very
+        often the real problem.
+      </li>
+      <li>
+        <strong>Redraw it as an SVG.</strong> An icon exported as a 40 KB PNG is
+        frequently a 900-byte SVG. That is not a compression difference, it is a
+        format difference, and it also solves the retina problem.
+      </li>
+      <li>
+        <strong>Leave it as a file and preload it.</strong>
+        <code>&lt;link rel="preload" as="image"&gt;</code> starts the fetch
+        immediately without moving the bytes onto the critical path. It gets most
+        of the benefit of inlining and none of the caching cost.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>None of this needs an upload</h2>
+    <p>
+      Encoding a file as base64 is arithmetic. It is two functions the browser
+      has had since the beginning &mdash; <code>btoa</code> and
+      <code>encodeURIComponent</code> &mdash; and there is no technical reason
+      whatsoever for a picture to travel to a server and back in order to be
+      written down differently. Any converter that uploads your file to do this
+      is uploading it for its own reasons, not for yours.
+    </p>
+    <p>
+      <a href="/pt/image-to-data-uri/">The tool here</a> does not send it
+      anywhere: the page's <code>Content-Security-Policy</code> names every
+      address it may contact, and none of them belongs to this site. Load the
+      page, unplug from the internet, and encode something anyway if you would
+      rather check than be told.
+      <a href="/pt/guias/e-seguro-enviar-arquivos/">Is it safe to upload files to
+      online converters?</a> sets out three more checks you can run on any tool.
+    </p>
+  </section>
+</main>
+
+<!--
+  The footer every page wears: a few columns of plain links, left aligned under
+  quiet headings, in the shape the large media-tool sites use. It is the second
+  navigation, for anyone who scrolled to the bottom looking for one, and it is
+  the only route to the legal pages.
+
+  This used to be three different footers kept in step by hand. It is one now,
+  and the only thing that differs between a hub, a tool and a legal page is
+  `base`: './' at the root, '../' one level down. Every link below is built from
+  it, so nothing here has to know which kind of page it landed on.
+
+  The tool list and the legal-page list are passed in by build.py from the
+  folders that exist, so a new tool or a new page appears here without anybody
+  remembering to add it. The guides are reached through their index rather than
+  listed one by one - see the comment above that link.
+-->
+<footer>
+  <div class="footer-cols">
+    <div class="footer-col footer-brand">
+      <a class="home-link" href="../../">
+      <svg class="site-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <path class="logo-lid" d="M14 31V13.5A4.5 4.5 0 0 1 18.5 9h27a4.5 4.5 0 0 1 4.5 4.5V31"
+              fill="none" stroke-width="3.2" stroke-linejoin="round"/>
+        <g transform="rotate(-12 18 30)">
+          <rect class="logo-tool" x="16.6" y="17" width="3.2" height="17" rx="1.4"/>
+          <rect class="logo-tool" x="16.2" y="12.2" width="6.8" height="5" rx="1.5"/>
+          <rect class="logo-tool" x="14" y="12.6" width="2.6" height="6.6" rx="1.2" transform="rotate(26 16.2 13)"/>
+        </g>
+        <g transform="rotate(-3 26 30)">
+          <rect class="logo-tool-alt" x="24.6" y="17" width="3.1" height="17" rx="1.4"/>
+          <rect class="logo-tool-alt" x="23.2" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="26.8" y="12" width="2.3" height="6.5" rx="1.1"/>
+          <rect class="logo-tool-alt" x="23.2" y="16.2" width="5.9" height="3.6" rx="1.5"/>
+        </g>
+        <rect class="logo-tool-alt" x="30.6" y="12" width="5" height="8.4" rx="2.2"/>
+        <rect class="logo-tool" x="31.5" y="19.2" width="3.2" height="2.2" rx="0.7"/>
+        <rect class="logo-tool" x="32.1" y="20.5" width="2.1" height="13.5" rx="1"/>
+        <path class="logo-tool" d="M39.4 20.4 37.9 13a1.15 1.15 0 0 1 2.25-.45l1.15 7.6z" transform="rotate(-4 40.5 21)"/>
+        <path class="logo-tool" d="M41.6 20.4 43.1 13a1.15 1.15 0 0 0-2.25-.45l-1.15 7.6z" transform="rotate(4 40.5 21)"/>
+        <rect class="logo-tool" x="38.2" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(-8 40.5 21)"/>
+        <rect class="logo-tool" x="40.4" y="20.5" width="2.9" height="13.5" rx="1.3" transform="rotate(8 40.5 21)"/>
+        <circle class="logo-latch" cx="40.5" cy="20.8" r="1.5"/>
+        <g transform="rotate(14 48 30)">
+          <rect class="logo-tool" x="46.6" y="17.5" width="3.2" height="16.5" rx="1.4"/>
+          <rect class="logo-tool" x="44.6" y="14.2" width="7.4" height="3.4" rx="1.3"/>
+          <rect class="logo-tool" x="44.6" y="9.6" width="4.4" height="3.6" rx="1.1"/>
+          <rect class="logo-latch" x="46.4" y="17.4" width="3.6" height="1.9" rx="0.6"/>
+        </g>
+        <rect class="logo-box" x="8" y="38" width="48" height="15" rx="1.6"/>
+        <rect class="logo-band" x="4" y="31" width="56" height="7.5" rx="1.6"/>
+        <rect class="logo-latch" x="27.5" y="33.5" width="9" height="9" rx="1.8"/>
+      </svg>
+
+        abox.tools
+      </a>
+      <p>
+        Ferramentas que não encostam em servidor nenhum. Seus arquivos ficam no
+        seu aparelho &mdash; nada para enviar, nenhuma conta para criar.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <strong>Ferramentas</strong>
+      <ul>
+        <li><a href="../../imagens-para-video/">Images to Video</a></li>
+        <li><a href="../../aparar-video/">Video Cutter</a></li>
+        <li><a href="../../cortar-video/">Video Cropper</a></li>
+        <li><a href="../../reverse-video/">Video Reverser</a></li>
+        <li><a href="../../grab-frame/">Video Frame Grabber</a></li>
+        <li><a href="../../video-to-gif/">Video to GIF</a></li>
+        <li><a href="../../remover-dados-exif/">EXIF Viewer &amp; Remover</a></li>
+        <li><a href="../../heic-to-jpg/">HEIC to JPG</a></li>
+        <li><a href="../../image-to-data-uri/">Image to Data URI</a></li>
+        <li><a href="../../image-to-ico/">Image to ICO</a></li>
+        <li><a href="../../svg-to-image/">SVG to Image</a></li>
+        <li><a href="../../id-photo/">ID Photo Maker</a></li>
+        <li><a href="../../redimensionar-imagem/">Image Resizer</a></li>
+        <li><a href="../../comprimir-imagem/">Image Compressor</a></li>
+        <li><a href="../../gif-maker/">GIF Maker</a></li>
+        <li><a href="../../editar-audio/">Audio Editor</a></li>
+        <li><a href="../../comprimir-pdf/">PDF Compressor</a></li>
+        <li><a href="../../imagens-para-pdf/">Images to PDF</a></li>
+        <li><a href="../../qr-barcode/">QR &amp; Barcode Generator</a></li>
+        <li><a href="../../text-tools/">Text &amp; Code</a></li>
+      </ul>
+    </div>
+
+    <!--
+      The guides get one link, not a column of their own. Every guide used to be
+      listed here, which made a fourth column that grew by a line every time one
+      was written and put nine near-identical entries in front of somebody who
+      wanted the privacy page. The index is the entry that matters: it is the
+      one link that keeps working however long the list gets, and it is where a
+      reader can see all of them side by side with a sentence each, which a
+      footer column cannot do.
+
+      It sits directly under "All tools" because the two are the same kind of
+      thing - the front door to each half of the site.
+    -->
+    <div class="footer-col">
+      <strong>Este site</strong>
+      <ul>
+        <li><a href="../../">Todas as ferramentas</a></li>
+        <li><a href="../../guias/">Todos os guias</a></li>
+        <li><a href="../../roteiro/">Roteiro</a></li>
+        <li><a href="../../privacidade/">Privacy &amp; Cookies</a></li>
+        <li><a href="../../termos/">Terms of Use</a></li>
+        <li><a href="/sitemap.xml">Mapa do site</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <strong>Fale com a gente</strong>
+      <ul>
+        <li>
+          <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">
+            Ler o código no GitHub
+          </a>
+        </li>
+        <li><a href="mailto:hi@abox.tools">hi@abox.tools</a></li>
+      </ul>
+    </div>
+  </div>
+
+<!--
+  The language switcher.
+
+  Plain links, and that is the whole design. No JavaScript, no cookie, no
+  redirect and no guess made from Accept-Language: a site whose entire claim is
+  that it does not track you cannot be storing a preference in order to do it,
+  and a crawler has to be able to walk from one language into the next on foot.
+
+  Every link points at THIS page in that language, not at that language's front
+  door. Somebody reading about compressing an image who wants it in German wants
+  that page in German; dropping them on the hub to find it again is the
+  commonest way a switcher gets built wrong.
+
+  Each language is written in its own language - Deutsch, not German - because
+  that is the word a reader looking for it will be scanning for. `lang` and
+  `hreflang` are on every link so that a screen reader announces the name in the
+  language it belongs to rather than in the language of the page around it.
+
+  Root-absolute hrefs, unlike everything else in this footer. The slug in each
+  URL is itself localized, so there is no relative path from
+  /de/bild-komprimieren/ to /es/comprimir-imagen/ that could be worked out from
+  `base`.
+-->
+<nav class="lang-switch" aria-label="Idioma">
+  <ul>
+    <li>
+      <a href="/guides/embed-an-image-in-css/" lang="en" hreflang="en">English</a>
+    </li>
+    <li>
+      <a href="/de/ratgeber/bild-in-css-einbetten/" lang="de" hreflang="de">Deutsch</a>
+    </li>
+  </ul>
+</nav>
+
+
+  <p class="footer-base">
+Toda afirmação deste site foi feita para ser conferida, não para ser acreditada.
+  </p>
+</footer>
+
+
+</body>
+</html>
