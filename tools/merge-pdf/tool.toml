@@ -31,6 +31,11 @@ og_title = "Merge, split &amp; reorder PDF pages &mdash; nothing is uploaded"
 og_description = "Put documents together, cut one into pieces, move pages, turn them, take them out. Your own browser does it, so the file never leaves your machine."
 og_image_alt = "Merge, split and reorder PDF pages without uploading them"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Merge documents, split one into several, reorder pages - all on your own machine."
+
 # --- the pledge block --------------------------------------------------------
 
 pledge = """

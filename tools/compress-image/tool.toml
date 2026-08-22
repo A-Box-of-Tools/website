@@ -28,7 +28,7 @@ css_parts = ["file-list"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "zip", "crc32"]
 lastmod = "2026-08-19"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -38,6 +38,11 @@ description = "Compress a JPEG, PNG or WebP to an exact size - 100 KB, 2 MB, any
 og_title = "Compress an image to a size you choose"
 og_description = "Name a target size and this finds the least compression that reaches it, then measures what that cost. Runs on your own machine; nothing is uploaded."
 og_image_alt = "Image Compressor - name a size, keep the quality"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Name the size you need and it finds the least compression that gets there."
 
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.

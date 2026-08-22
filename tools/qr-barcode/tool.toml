@@ -32,6 +32,11 @@ og_title = "Make a QR code or a barcode without sending anything to anyone"
 og_description = "Links, Wi-Fi passwords, contact cards and the retail barcodes, drawn in your own browser and downloaded as SVG or PNG. No account, no watermark, no tracking pixel in the middle of your code."
 og_image_alt = "QR & Barcode Generator - make a QR code or barcode, nothing uploaded"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "A QR code for a link, a Wi-Fi network or a contact card - drawn on your own machine."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

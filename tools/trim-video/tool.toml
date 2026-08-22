@@ -35,6 +35,11 @@ og_title = "Video Cutter &mdash; keep only the parts you want, without uploading
 og_description = "Press I and O as it plays to mark each part worth keeping. The marked parts are written back out as one video, frame for frame, with nothing uploaded."
 og_image_alt = "Video Cutter - mark the parts you want and save them as one video, in your browser"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Mark the parts worth keeping as it plays, and save them as one video."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

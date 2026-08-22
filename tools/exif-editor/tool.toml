@@ -39,6 +39,11 @@ og_title = "EXIF Viewer &amp; Remover &mdash; see it, edit it, or strip it"
 og_description = "Read the metadata hidden in a photo and remove all of it in one click. Runs on your own machine; the picture itself is never re-encoded."
 og_image_alt = "EXIF Viewer and Remover - read, edit or strip the metadata in a photo"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "See what a photo says about you, then take it out - without re-encoding the picture."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

@@ -13,7 +13,7 @@ import {
   bytes as humanBytes, countOf, describeSource, dimensions, outName, uniqueNames,
 } from './files.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
-import { makeZip } from './zip.js';
+import { makeZip } from './shared/zip.js';
 
 const $ = (id) => document.getElementById(id);
 
