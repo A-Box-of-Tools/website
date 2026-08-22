@@ -4,14 +4,14 @@
 
 nav = "Redimensionner une image"
 title = "Comment redimensionner une image sans l'abîmer"
-description = "Ce qui arrive à une image quand on change ses dimensions en pixels : pourquoi réduire est sans danger et agrandir ne l'est pas, que faire quand le cadre n'a pas la bonne forme, et quand recadrer plutôt."
+description = "Ce qui arrive à une image quand on change ses dimensions en pixels : pourquoi réduire ne coûte rien et agrandir se paie, que faire quand le cadre n'a pas la bonne forme, et quand recadrer plutôt."
 heading = "Comment redimensionner une image sans l'abîmer"
 lede = """
     Le redimensionnement est le seul travail d'image où les dégâts sont décidés
     avant d'appuyer sur le bouton, par le chiffre que vous tapez et la forme que
-    vous demandez. Voici ce que chaque choix fait à l'image, et lesquels vous
-    pouvez défaire."""
+    vous réclamez. Voici ce que chaque choix fait à l'image, et lesquels se
+    rattrapent."""
 updated = "20 août 2026"
 og_title = "Redimensionner une image sans l'abîmer"
-og_description = "Pourquoi réduire est sans danger et agrandir ne l'est pas, que faire quand le cadre n'a pas la bonne forme, et quand recadrer plutôt."
+og_description = "Pourquoi réduire ne coûte rien et agrandir se paie, que faire quand le cadre n'a pas la bonne forme, et quand recadrer plutôt."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

@@ -1,17 +1,20 @@
 #
 # Guide : creer un QR code qui se scanne vraiment - French.
 #
+# La description evite les guillemets : elle part telle quelle dans une balise
+# meta, ou l'entite &laquo; ne serait pas interpretee.
+#
 
 nav = "Créer un QR code"
 title = "Comment créer un QR code qui se scanne à tous les coups"
-description = "Quel niveau de correction d'erreurs choisir, pourquoi la marge blanche autour d'un QR code fait partie du code, à quelle taille l'imprimer, et ce que le code « dynamique » d'un générateur gratuit vous coûtera plus tard."
+description = "Quel niveau de correction d'erreurs choisir, pourquoi la marge blanche fait partie du code, à quelle taille l'imprimer, et ce qu'un code dynamique de générateur gratuit vous coûtera plus tard."
 heading = "Comment créer un QR code qui se scanne encore sur le téléphone d'un autre"
 lede = """
-    Créer un QR code prend une seconde. En créer un qui fonctionne sur un menu
-    mouillé, un abribus, ou un téléphone tenu à bout de bras dans une mauvaise
-    lumière demande quatre décisions, et toutes les quatre se prennent avant que
-    vous imprimiez quoi que ce soit. Voici ce que chacune fait."""
+    Créer un QR code prend une seconde. En créer un qui fonctionne sur une carte
+    de restaurant mouillée, un abribus ou un téléphone tenu à bout de bras dans
+    une mauvaise lumière demande quatre décisions &mdash; et toutes se prennent
+    avant l'impression. Voici ce que chacune change."""
 updated = "20 août 2026"
 og_title = "Créer un QR code qui se scanne encore sur le téléphone d'un autre"
-og_description = "Les quatre décisions qui font qu'un QR code imprimé fonctionne : le niveau, la marge, la taille, et l'adresse de qui se trouve réellement dedans."
+og_description = "Les quatre décisions qui font qu'un QR code imprimé fonctionne : le niveau, la marge, la taille, et l'adresse de qui se trouve vraiment dedans."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

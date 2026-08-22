@@ -2,178 +2,179 @@
     <h2>La réponse courte</h2>
     <p>
       Ouvrez le <a href="../../compresser-une-image/">compresseur d'images</a>,
-      déposez-y la photo, tapez le chiffre qu'on vous a donné et appuyez sur le
-      bouton. Il encode l'image plusieurs fois, garde le meilleur résultat qui
-      tienne sous votre cible, et vous dit ce que cela a coûté. Pour la plupart
-      des photographies et la plupart des cibles, le résumé honnête est que vous
+      déposez-y votre photo, tapez le chiffre qu'on vous a imposé et lancez.
+      L'outil encode l'image plusieurs fois, retient le meilleur résultat qui
+      tienne sous la cible et vous dit ce que cela a coûté. Pour la plupart des
+      photographies et la plupart des cibles, disons-le franchement&nbsp;: vous
       ne verrez pas la différence.
     </p>
     <p>
-      Le reste de cette page est pour les fois où cela ne se passe pas ainsi
-      &nbsp;: quand le résultat paraît mou, quand un PNG bouge à peine, ou quand
-      vous voulez savoir ce que l'outil fait réellement à votre image avant de
-      l'envoyer à quelqu'un.
+      Le reste de cette page est là pour les autres cas&nbsp;: quand le résultat
+      paraît mou, quand un PNG ne bouge presque pas, ou quand vous voulez savoir
+      ce que l'outil fait vraiment à votre image avant de l'envoyer à quelqu'un.
     </p>
   </section>
 
   <section>
     <h2>Ce qu'une limite de taille demande vraiment</h2>
     <p>
-      Un JPEG ou un WebP ne stocke pas votre photographie. Il en stocke une
-      description, et le réglage de qualité décide du niveau de détail auquel
-      cette description a droit. Baissez-le et le fichier rétrécit parce que la
-      description devient plus vague&nbsp;: les textures fines sont moyennées,
-      les dégradés se mettent en bandes, et les bords se couvrent d'un léger halo
-      de blocs.
+      Un JPEG ou un WebP n'enregistre pas votre photographie&nbsp;: il en
+      enregistre une description, et le réglage de qualité décide du degré de
+      détail auquel cette description a droit. Baissez-le, et le fichier
+      s'allège parce que la description devient plus vague &mdash; les textures
+      fines sont moyennées, les dégradés se cassent en bandes, et les contours
+      s'entourent d'un léger halo de blocs.
     </p>
     <p>
-      Une limite de taille est donc un budget de détail. La question utile n'est
-      pas &laquo;&nbsp;puis-je atteindre 500&nbsp;KB&nbsp;&raquo; &mdash; on peut
-      toujours atteindre n'importe quel chiffre &mdash; mais
-      &laquo;&nbsp;quelle part de l'image dois-je abandonner pour y arriver, et
-      est-ce que cela compte pour l'usage que j'en fais&nbsp;?&nbsp;&raquo;
+      Une limite de taille est donc un budget de détail. La bonne question n'est
+      pas &laquo;&nbsp;puis-je descendre à 500&nbsp;KB&nbsp;?&nbsp;&raquo; (on
+      atteint toujours n'importe quel chiffre) mais &laquo;&nbsp;quelle part de
+      l'image faut-il abandonner pour y arriver, et cela change-t-il quelque
+      chose à l'usage que j'en fais&nbsp;?&nbsp;&raquo;
     </p>
     <p>
-      Deux règles empiriques. Une photographie d'une scène réelle &mdash;
-      visages, feuillages, tissus &mdash; cache bien la compression, parce que
-      l'œil n'y trouve aucune zone parfaitement plate où remarquer les dégâts.
-      Une capture d'écran, un graphique, un logo ou tout ce qui a de grands
-      aplats et des bords de texte francs la montre immédiatement, et devrait en
-      général être un PNG ou un WebP plutôt qu'un JPEG.
+      Deux repères. Une photographie de scène réelle &mdash; des visages, du
+      feuillage, du tissu &mdash; encaisse très bien la compression, faute d'une
+      surface parfaitement lisse où l'œil pourrait repérer les dégâts. Une
+      capture d'écran, un graphique, un logo, tout ce qui mêle grands aplats et
+      contours de texte nets, la révèle aussitôt&nbsp;: ces images-là ont presque
+      toujours leur place en PNG ou en WebP, pas en JPEG.
     </p>
   </section>
 
   <section>
-    <h2>Pourquoi il n'y a pas de formule, et que faire à la place</h2>
+    <h2>Pourquoi il n'existe pas de formule, et comment s'en passer</h2>
     <p>
-      Il n'existe aucun moyen de calculer le réglage de qualité qui produit un
-      fichier de 500&nbsp;KB. Le rapport entre les deux dépend entièrement du
-      contenu de l'image&nbsp;: au même réglage, une photographie d'un mur nu
-      peut ressortir dix fois plus légère qu'une photographie de forêt. Tout
-      outil qui vous propose &laquo;&nbsp;qualité&nbsp;: 60&nbsp;&raquo; et croise
-      les doigts devine à votre place.
+      Aucun calcul ne donne le réglage de qualité qui produira un fichier de
+      500&nbsp;KB. Le rapport entre les deux dépend entièrement du contenu de
+      l'image&nbsp;: au même réglage, la photo d'un mur nu peut peser dix fois
+      moins que celle d'un sous-bois. Un outil qui vous propose
+      &laquo;&nbsp;qualité&nbsp;: 60&nbsp;&raquo; et espère que cela passera
+      devine à votre place.
     </p>
     <p>
-      La seule méthode fiable est d'essayer. Encoder l'image, regarder la taille,
-      ajuster, encoder à nouveau. Le faire à la main est fastidieux, et c'est
-      pourquoi les compresseurs demandent un chiffre de qualité à la place
-      &mdash; cela vous refile le fastidieux. Le faire automatiquement, c'est
-      environ huit encodages, et huit encodages d'une photo de téléphone
-      représentent une fraction de seconde sur toute machine construite cette
-      décennie&nbsp;: c'est pourquoi l'outil de ce site demande la taille et fait
-      la recherche lui-même.
+      La seule méthode qui tienne consiste à essayer&nbsp;: encoder, regarder la
+      taille, corriger, recommencer. À la main, c'est fastidieux, et c'est bien
+      pour cela que les compresseurs vous réclament un chiffre de qualité
+      &mdash; la corvée vous revient. Automatisée, la même chose représente
+      environ huit encodages, soit une fraction de seconde sur n'importe quelle
+      machine de cette décennie pour une photo de téléphone. D'où le parti pris
+      de l'outil de ce site&nbsp;: vous donnez la taille, il se charge de
+      chercher.
     </p>
     <p>
-      Chaque taille qu'il rapporte est un vrai fichier encodé, pas une
-      estimation. Cela compte quand un formulaire a une limite dure&nbsp;: une
-      estimation optimiste de 2&nbsp;%, c'est un envoi refusé.
+      Chaque taille annoncée correspond à un vrai fichier encodé, pas à une
+      estimation. La nuance compte devant un formulaire à limite stricte&nbsp;:
+      une estimation optimiste de 2&nbsp;%, c'est un envoi refusé.
     </p>
   </section>
 
   <section>
     <h2>Dépensez la qualité avant de dépenser les pixels</h2>
     <p>
-      Il n'y a que deux façons d'alléger un fichier image. Décrire la même image
-      moins précisément, c'est la qualité. Ou décrire moins de pixels, c'est le
-      redimensionnement. Ce n'est pas équivalent, et l'ordre compte.
+      Il n'y a que deux façons d'alléger un fichier image&nbsp;: décrire la même
+      image moins précisément, c'est la qualité&nbsp;; ou décrire moins de
+      pixels, c'est le redimensionnement. Les deux ne se valent pas, et l'ordre
+      compte.
     </p>
     <p>
-      La qualité passe en premier, parce que les 30&nbsp;% premiers de réduction
-      de qualité sont réellement invisibles sur une photographie &mdash; vous
-      jetez du détail que le format conservait plus soigneusement qu'aucun œil ne
-      peut le vérifier. Les pixels passent en second, parce qu'une fois la
-      qualité descendue assez bas pour que les artefacts se voient, une image
-      plus petite à une qualité correcte est plus belle qu'une image en taille
-      pleine mais abîmée. Moins de bons pixels valent mieux que davantage de
+      La qualité passe en premier, parce que sur une photographie on peut en
+      retirer près d'un tiers sans que cela se voie&nbsp;: le détail ainsi
+      abandonné, le format le conservait avec plus de soin qu'aucun œil n'est
+      capable d'en vérifier. Les pixels viennent en second, parce qu'une fois la
+      qualité descendue assez bas pour que les artefacts affleurent, une image
+      plus petite à une qualité correcte est plus belle qu'une image en pleine
+      taille mais abîmée. Peu de bons pixels valent mieux que beaucoup de
       mauvais.
     </p>
     <p>
-      C'est toute la stratégie, et elle vaut d'être connue même si vous utilisez
-      un autre outil&nbsp;: baissez la qualité jusqu'à ce que cela commence à
-      avoir l'air faux, puis réduisez l'image au lieu de la baisser davantage.
+      Voilà toute la stratégie, et elle vaut d'être connue même si vous employez
+      un autre outil&nbsp;: baissez la qualité jusqu'au moment où quelque chose
+      commence à sonner faux, puis réduisez l'image au lieu de baisser encore.
     </p>
-    <h3>Quand redimensionner exprès</h3>
+    <h3>Quand redimensionner délibérément</h3>
     <p>
-      Parfois, les pixels n'ont jamais été nécessaires. Une photo de 4000 pixels
-      de large affichée dans une colonne de 600 pixels sur une page web transporte
-      six fois le détail que quiconque verra. Si vous connaissez la destination
-      finale de l'image, redimensionnez-la d'abord et le problème de taille
-      disparaît souvent sans qu'une once de qualité soit dépensée. Le
-      <a href="../../redimensionner-une-image/">redimensionneur d'images</a> est
-      l'outil pour cela, et <a href="../redimensionner-une-image/">son propre
-      guide</a> traite du choix d'une taille.
+      Il arrive que les pixels n'aient jamais servi à rien. Une photo de 4000
+      pixels de large affichée dans une colonne de 600 pixels transporte six fois
+      le détail que qui que ce soit verra. Si vous connaissez la destination
+      finale de l'image, commencez par la mettre à cette taille&nbsp;: le
+      problème de poids disparaît souvent tout seul, sans avoir dépensé un gramme
+      de qualité. C'est le travail du
+      <a href="../../redimensionner-une-image/">redimensionneur d'images</a>, et
+      <a href="../redimensionner-une-image/">son guide</a> explique comment
+      choisir la bonne taille.
     </p>
   </section>
 
   <section>
     <h2>Choisir un format</h2>
     <p>
-      Trois formats valent d'être connus, et les navigateurs savent écrire les
+      Trois formats méritent d'être connus, et les navigateurs savent écrire les
       trois.
     </p>
     <ul>
       <li>
-        <strong>Le JPEG</strong> est fait pour les photographies. Il est avec
-        perte, il est compris par tout ce qui a jamais été fabriqué, et pour une
-        image de scène réelle il reste un excellent choix. Il ne sait pas stocker
-        de transparence.
+        <strong>Le JPEG</strong> est fait pour la photographie. Il travaille avec
+        perte, tout ce qui a jamais été fabriqué sait le lire, et pour une scène
+        réelle il reste un excellent choix. En revanche il ignore la
+        transparence.
       </li>
       <li>
-        <strong>Le WebP</strong> fait le même travail, en mieux&nbsp;: environ 25
-        à 35&nbsp;% plus léger que le JPEG à une qualité qu'on ne distingue pas,
-        et il garde la transparence. Tous les navigateurs actuels le lisent.
-        Quelques vieilles applications de bureau et certains formulaires d'envoi
-        d'entreprise ne le font toujours pas, ce qui est la seule vraie raison de
-        ne pas s'en servir.
+        <strong>Le WebP</strong> fait le même travail en mieux&nbsp;: de 25 à
+        35&nbsp;% plus léger qu'un JPEG à une qualité qu'on ne sait pas
+        distinguer, et il conserve la transparence. Tous les navigateurs actuels
+        le lisent&nbsp;; quelques logiciels de bureau anciens et certains
+        formulaires d'entreprise, non, et c'est la seule vraie raison de s'en
+        priver.
       </li>
       <li>
-        <strong>Le PNG</strong> est sans perte, c'est-à-dire exact et lourd.
-        C'est la bonne réponse pour les captures d'écran, les logos, le dessin au
-        trait et tout ce qui a des bords francs ou des aplats, et la mauvaise
-        réponse pour une photographie.
+        <strong>Le PNG</strong> est sans perte, donc exact et lourd. C'est la
+        bonne réponse pour une capture d'écran, un logo, un dessin au trait, tout
+        ce qui a des contours nets ou des aplats &mdash; et la mauvaise pour une
+        photographie.
       </li>
     </ul>
     <p>
-      Si celui qui vous a demandé le fichier ne vous impose rien, le WebP vous
-      amènera à la cible avec moins de dégâts visibles que le JPEG. Si le fichier
-      part dans quelque chose d'ancien, ou dans un système que vous ne pouvez pas
-      tester, le JPEG est la réponse sûre.
+      Si la personne qui vous réclame le fichier ne vous impose rien, le WebP
+      atteindra la cible avec moins de casse visible que le JPEG. Si le fichier
+      part dans un logiciel ancien, ou dans un système que vous n'avez aucun
+      moyen d'essayer, le JPEG reste la valeur sûre.
     </p>
   </section>
 
   <section>
     <h2>Pourquoi votre PNG ne maigrira pas beaucoup</h2>
     <p>
-      C'est la surprise la plus courante, et ce n'est pas un défaut de l'outil
-      que vous utilisez. Le PNG est un format sans perte&nbsp;: il stocke les
-      pixels exacts, et il n'a aucune molette de qualité à tourner, parce que
-      tourner une telle molette en ferait un autre format. Tout ce qu'un
-      compresseur PNG peut faire, c'est empaqueter les mêmes pixels plus
-      astucieusement, ce qui vaut en général quelques pour cent.
+      C'est la déconvenue la plus fréquente, et elle ne vient pas de l'outil que
+      vous utilisez. Le PNG est un format sans perte&nbsp;: il enregistre les
+      pixels exacts et n'a aucun curseur de qualité à baisser, puisqu'un tel
+      curseur en ferait un autre format. Tout ce qu'un compresseur de PNG peut
+      faire, c'est ranger les mêmes pixels plus habilement, ce qui rapporte en
+      général quelques pour cent.
     </p>
     <p>
-      Donc, s'il vous faut un fichier bien plus léger et qu'il doit rester un
-      PNG, le seul levier restant est la taille &mdash; moins de pixels, ou moins
-      de couleurs. S'il a le droit de cesser d'être un PNG, la question est ce
-      qu'il y a dedans&nbsp;:
+      S'il vous faut donc un fichier nettement plus léger et qu'il doit rester un
+      PNG, il ne reste qu'un levier&nbsp;: moins de pixels, ou moins de couleurs.
+      Si en revanche il a le droit de changer de format, tout dépend de ce qu'il
+      contient.
     </p>
     <ul>
       <li>
-        <strong>Une photographie enregistrée en PNG.</strong> Très courant, en
-        général par accident, et le gain le plus facile de cette page&nbsp;: la
-        convertir en JPEG ou en WebP la rendra souvent cinq à dix fois plus
-        légère sans changement visible.
+        <strong>Une photographie enregistrée en PNG.</strong> C'est fréquent,
+        c'est presque toujours involontaire, et c'est le gain le plus facile de
+        cette page&nbsp;: la convertir en JPEG ou en WebP la rend souvent cinq à
+        dix fois plus légère, sans changement visible.
       </li>
       <li>
-        <strong>Une capture d'écran ou un schéma.</strong> Convertissez en WebP,
-        qui est sans perte lui aussi quand vous le lui demandez, et qui est
-        généralement plus léger que le PNG pour les mêmes pixels. Passer en JPEG
-        rendra les bords du texte flous.
+        <strong>Une capture d'écran ou un schéma.</strong> Passez en WebP, qui
+        sait travailler sans perte lui aussi quand on le lui demande, et qui est
+        en général plus léger que le PNG à pixels égaux. Le JPEG, lui, rendrait
+        les contours du texte flous.
       </li>
       <li>
         <strong>Un logo avec transparence.</strong> Le WebP garde la
-        transparence&nbsp;; le JPEG la remplira d'une couleur unie, ce qui n'est
-        presque jamais ce que vous vouliez.
+        transparence&nbsp;; le JPEG la remplace par un aplat de couleur, ce qui
+        n'est presque jamais ce que vous cherchiez.
       </li>
     </ul>
   </section>
@@ -181,30 +182,30 @@
   <section>
     <h2>Comment savoir si le résultat est assez bon</h2>
     <p>
-      Regarder une vignette ne prouve rien &mdash; tout a l'air correct en
-      vignette. Deux vérifications valent mieux&nbsp;:
+      Juger sur une vignette ne prouve rien&nbsp;: à cette taille, tout paraît
+      correct. Deux vérifications valent mieux.
     </p>
     <p>
-      <strong>Regardez-la en taille réelle, sur la zone la plus plate de
-      l'image.</strong> Le ciel, la peau, un mur peint. Les dégâts de compression
-      apparaissent d'abord dans les dégradés doux, sous forme de blocs ou de
-      bandes légères, bien avant de toucher les zones détaillées.
+      <strong>Regardez l'image en taille réelle, à l'endroit le plus lisse du
+      cadre&nbsp;:</strong> un ciel, une peau, un mur peint. Les dégâts de la
+      compression se voient d'abord dans les dégradés doux, sous forme de bandes
+      ou de blocs à peine marqués, bien avant d'atteindre les zones détaillées.
     </p>
     <p>
-      <strong>Lisez la mesure, si l'outil vous en donne une.</strong> Le
-      compresseur d'ici décode son propre résultat et le compare à l'original, et
-      rapporte le SSIM&nbsp;: un chiffre qui compare la luminosité, le contraste
-      et la structure locales plutôt que de compter les pixels modifiés, ce qui
-      est bien plus proche de ce qui gêne un œil. Au-dessus de 0,98 environ, les
-      deux images sont difficiles à séparer côte à côte. En dessous de 0,95
-      environ, regardez avant d'envoyer. Il rapporte aussi le PSNR, le chiffre en
-      décibels traditionnel, pour qui le préfère.
+      <strong>Lisez la mesure, si l'outil vous en fournit une.</strong> Le
+      compresseur de ce site décode son propre résultat, le compare à l'original
+      et affiche le SSIM&nbsp;: un indice qui rapproche luminosité, contraste et
+      structure locales au lieu de compter les pixels modifiés, ce qui colle bien
+      mieux à ce qui gêne un œil. Au-dessus de 0,98 environ, les deux images sont
+      difficiles à départager côte à côte&nbsp;; en dessous de 0,95, regardez
+      avant d'envoyer. Le PSNR, le vieil indice en décibels, est affiché aussi,
+      pour qui le préfère.
     </p>
     <p>
-      Les deux sont calculés sur votre propre machine et vous sont montrés, et
-      c'est tout l'intérêt de les avoir&nbsp;: cela transforme
-      &laquo;&nbsp;perte de qualité minimale&nbsp;&raquo; d'une affirmation en un
-      chiffre vérifiable.
+      Les deux sont calculés sur votre machine et vous sont montrés, et c'est
+      tout leur intérêt&nbsp;: ils font d'une
+      &laquo;&nbsp;perte de qualité minime&nbsp;&raquo; annoncée un chiffre que
+      vous pouvez vérifier.
     </p>
   </section>
 
@@ -212,48 +213,46 @@
     <h2>Trois choses à savoir avant d'envoyer le fichier</h2>
     <p>
       <strong>Compresser efface les métadonnées.</strong> Réencoder, c'est
-      décoder l'image en pixels puis réencoder ces pixels, et un canvas plein de
-      pixels ne porte aucune étiquette &mdash; la position GPS, le modèle
-      d'appareil, les horodatages et le reste ne sont donc simplement pas écrits
-      dans le nouveau fichier. C'est généralement un bonus. Si vous vouliez les
-      étiquettes disparues mais l'image intacte, c'est un autre travail&nbsp;: le
+      décoder l'image en pixels puis réencoder ces pixels&nbsp;; or une toile
+      pleine de pixels ne porte aucune étiquette, si bien que la position GPS, le
+      modèle d'appareil, les horodatages et tout le reste ne sont tout simplement
+      pas réécrits. En général, tant mieux. Mais si vous vouliez les étiquettes
+      en moins et l'image intacte, c'est un autre travail&nbsp;: le
       <a href="../../supprimer-les-donnees-exif/">lecteur et effaceur EXIF</a>
       réécrit le conteneur sans rien recompresser, et
-      <a href="../supprimer-les-donnees-exif-et-gps/">son guide</a> explique ce
-      qu'il y a dedans.
+      <a href="../supprimer-les-donnees-exif-et-gps/">son guide</a> détaille ce
+      qui s'y trouve.
     </p>
     <p>
       <strong>Ne compressez jamais deux fois le même fichier.</strong> Chaque
-      encodage avec perte jette du détail définitivement, et encoder une image
-      déjà compressée en jette davantage &mdash; y compris les artefacts de la
-      première passe, qu'il conserve fidèlement au prix du vrai détail. Repartez
-      toujours de l'original et compressez une seule fois.
+      encodage avec perte abandonne du détail pour de bon, et encoder une image
+      déjà compressée en abandonne davantage &mdash; en préservant fidèlement,
+      qui plus est, les artefacts du premier passage, au prix du détail qui
+      restait. Repartez toujours de l'original, et compressez une seule fois.
     </p>
     <p>
-      <strong>Gardez l'original.</strong> Il n'y a pas de retour possible après
-      un encodage avec perte. Quoi que vous envoyiez, gardez quelque part le
-      fichier de départ.
+      <strong>Gardez l'original.</strong> Un encodage avec perte ne se défait
+      pas. Quoi que vous envoyiez, conservez quelque part le fichier de départ.
     </p>
   </section>
 
   <section>
-    <h2>Rien de tout cela ne demande un envoi</h2>
+    <h2>Rien de tout cela n'exige un envoi</h2>
     <p>
-      Tous les navigateurs livrent un encodeur JPEG, PNG et WebP depuis des
-      années &mdash; c'est le même code qui enregistre une image depuis un
-      canvas. Compresser une image fait partie des travaux qui n'ont aucune
-      raison technique de faire intervenir un serveur, et c'est pourquoi l'outil
-      d'ici n'en a pas&nbsp;: l'image est décodée, encodée et mesurée sur votre
-      propre machine, et il n'y a dans la
-      <code>Content-Security-Policy</code> de la page aucune adresse appartenant
-      à ce site vers laquelle elle pourrait être envoyée.
+      Les navigateurs embarquent un encodeur JPEG, PNG et WebP depuis des années
+      &mdash; c'est le même code qui enregistre une image depuis une toile.
+      Compresser une image fait partie des travaux qui n'ont aucune raison
+      technique de passer par un serveur, et c'est pourquoi l'outil de ce site
+      n'en a pas&nbsp;: l'image est décodée, encodée et mesurée sur votre propre
+      machine, et la <code>Content-Security-Policy</code> de la page ne contient
+      aucune adresse appartenant à ce site vers laquelle elle pourrait partir.
     </p>
     <p>
-      La façon la plus simple de le confirmer, ici comme ailleurs, est de charger
-      la page, de couper la connexion, et de compresser quelque chose quand même.
-      Si cela fonctionne encore, rien n'était envoyé.
+      Le moyen le plus simple de le vérifier, ici comme ailleurs&nbsp;: chargez
+      la page, coupez la connexion, et compressez quelque chose quand même. Si
+      cela marche encore, c'est que rien ne partait.
       <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
-      fichiers à un convertisseur en ligne&nbsp;?</a> expose trois autres
-      vérifications du même genre.
+      fichiers à un convertisseur en ligne&nbsp;?</a> présente trois autres
+      vérifications du même ordre.
     </p>
   </section>

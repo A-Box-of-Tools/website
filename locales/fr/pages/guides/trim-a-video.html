@@ -1,123 +1,123 @@
   <section>
     <h2>La réponse courte</h2>
     <p>
-      Ouvrez le <a href="../../couper-une-video/">coupeur de vidéos</a>, déposez-y
-      le clip, appuyez sur <kbd>I</kbd> et <kbd>O</kbd> pour marquer chaque
-      passage voulu &mdash; autant que vous voulez &mdash; et exportez. Sur un
-      MP4, un MOV ou un M4V, les images que vous gardez sont déplacées dans le
-      nouveau fichier exactement telles qu'elles étaient &mdash; mêmes octets,
-      mêmes réglages d'encodeur, même tout &mdash; et le son est recopié
-      échantillon par échantillon sans être décodé.
+      Ouvrez le <a href="../../couper-une-video/">coupeur de vidéos</a>,
+      déposez-y votre clip, marquez chaque passage à garder avec les touches
+      <kbd>I</kbd> et <kbd>O</kbd> &mdash; autant de passages que vous voulez
+      &mdash; puis exportez. Sur un MP4, un MOV ou un M4V, les images conservées
+      passent dans le nouveau fichier telles quelles&nbsp;: mêmes octets, mêmes
+      réglages d'encodeur, rien de retouché. Le son, lui, est recopié échantillon
+      par échantillon, sans jamais être décodé.
     </p>
     <p>
-      Cela veut dire qu'une coupe ne vous coûte rien en qualité, et qu'elle est
-      rapide&nbsp;: sortir une minute d'un enregistrement de quatre gigaoctets
-      coûte à peu près ce que coûte l'écriture de cette minute sur le disque,
-      parce que les images sont pointées plutôt que chargées. Le seul endroit où
-      cela se voit, c'est là où votre coupe tombe réellement, et c'est le reste
-      de cette page.
-    </p>
-  </section>
-
-  <section>
-    <h2>Pourquoi une coupe n'a pas à perdre de qualité</h2>
-    <p>
-      Couper ne change l'aspect d'aucune image. Chaque image que vous gardez est
-      censée ressortir identique à ce qu'elle était en entrant&nbsp;: il n'y a
-      donc aucune raison de la décoder et de la réencoder &mdash; et toutes les
-      raisons de ne pas le faire, puisqu'un réencodage est avec perte et
-      dégraderait légèrement tout le clip dans le seul but de le raccourcir.
-    </p>
-    <p>
-      Un bon coupeur ne réencode donc pas. Il lit l'index du fichier, détermine
-      quelles images encodées tombent dans votre intervalle, et écrit ces octets
-      dans un nouveau conteneur avec un nouvel index devant. Rien n'est décodé du
-      tout sur ce chemin.
-    </p>
-    <p>
-      Bien des outils réencodent quand même, parce que décoder et réencoder est
-      bien plus simple à implémenter que d'analyser le format du conteneur. On
-      reconnaît en général lequel des deux on utilise à la durée&nbsp;: une copie
-      est limitée par la vitesse d'écriture de votre disque, et un réencodage par
-      la vitesse à laquelle votre machine encode de la vidéo, ce qui est cent
-      fois plus lent.
+      Une découpe ne coûte donc rien en qualité, et elle est presque
+      instantanée&nbsp;: extraire une minute d'un enregistrement de quatre
+      gigaoctets revient à peu près à écrire cette minute sur le disque, puisque
+      les images sont désignées et non chargées. Reste un seul endroit où la
+      découpe se voit, celui où votre coupe tombe vraiment&nbsp;; c'est tout le
+      sujet de cette page.
     </p>
   </section>
 
   <section>
-    <h2>Les images clés, et pourquoi votre coupe peut tomber plus tôt</h2>
+    <h2>Pourquoi une découpe n'a aucune raison de dégrader l'image</h2>
     <p>
-      Voici la contrainte dont découle tout ce qui concerne la coupe.
+      Découper ne modifie l'aspect d'aucune image. Chaque image gardée doit
+      ressortir identique à ce qu'elle était en entrant&nbsp;: la décoder pour la
+      réencoder ne sert à rien et nuit à tout, puisque le réencodage est
+      destructif et abîmerait légèrement l'ensemble du clip au seul motif de le
+      raccourcir.
     </p>
     <p>
-      La vidéo n'est pas stockée comme une suite d'images complètes. Ce serait
-      énorme. La plupart des images sont stockées comme une description de ce qui
-      les différencie de leurs voisines, ce qui veut dire qu'elles ne peuvent pas
-      être décodées seules &mdash; il vous faut les images autour d'elles. Seule
-      une <strong>image clé</strong> se tient toute seule comme une image
-      complète, et les images clés sont typiquement espacées d'une à dix
-      secondes.
+      Un bon outil de découpe s'en abstient donc. Il lit l'index du fichier,
+      repère les images encodées qui tombent dans l'intervalle demandé, et
+      recopie ces octets dans un nouveau conteneur précédé d'un nouvel index. Sur
+      ce chemin-là, rien n'est décodé.
     </p>
     <p>
-      Donc, si vous marquez une coupe deux secondes après la dernière image clé,
-      un coupeur qui recopie les images ne peut pas commencer là. Les images à
-      votre marque sont illisibles sans la suite qui y mène. Il doit emporter
-      toute la portion depuis l'image clé qui précède votre marque.
+      Beaucoup d'outils réencodent quand même, tout simplement parce que décoder
+      puis réencoder demande bien moins de travail que d'analyser le format du
+      conteneur. La durée trahit en général celui des deux que vous avez sous la
+      main&nbsp;: une copie va aussi vite que votre disque écrit, un réencodage
+      aussi vite que votre machine encode de la vidéo, c'est-à-dire cent fois
+      plus lentement.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les images clés, et pourquoi votre coupe tombe parfois trop tôt</h2>
+    <p>
+      Tout ce qui concerne la découpe découle d'une seule contrainte, la voici.
     </p>
     <p>
-      Ce qu'il en fait est la partie intéressante. Le format de fichier a une
-      façon standard de dire <em>commencer la lecture à ce point</em> &mdash; les
-      images supplémentaires sont dans le fichier mais le conteneur ordonne au
-      lecteur de les sauter. Tout lecteur grand public le respecte, et le clip
-      commence exactement là où vous l'avez dit. Un lecteur qui l'ignore
-      démarrera plus tôt, de l'écart entre images clés au maximum.
+      Une vidéo n'est pas une suite d'images complètes&nbsp;; ce serait démesuré.
+      La plupart des images ne sont enregistrées que par ce qui les distingue de
+      leurs voisines, si bien qu'elles sont indécodables isolément&nbsp;: il faut
+      celles qui les entourent. Seule une <strong>image clé</strong> se suffit à
+      elle-même, et les images clés sont espacées d'une à dix secondes selon les
+      fichiers.
     </p>
     <p>
-      L'outil d'ici vous dit dans quel cas vous êtes et de combien avant
-      l'export&nbsp;: c'est donc une décision plutôt qu'une surprise.
+      Si vous placez donc une coupe deux secondes après la dernière image clé, un
+      outil qui recopie les images ne peut pas commencer là&nbsp;: à cet endroit,
+      les images sont illisibles sans la série qui y conduit. Il lui faut
+      emporter toute la portion depuis l'image clé qui précède votre marque.
+    </p>
+    <p>
+      Ce qu'il en fait ensuite est la partie intéressante. Le format de fichier
+      prévoit une manière normalisée de dire <em>la lecture commence
+      ici</em>&nbsp;: les images excédentaires restent dans le fichier, mais le
+      conteneur ordonne au lecteur de les sauter. Tous les lecteurs courants
+      respectent cette consigne, et le clip démarre exactement là où vous l'avez
+      demandé. Un lecteur qui l'ignore démarrera plus tôt, d'un écart entre
+      images clés au maximum.
+    </p>
+    <p>
+      L'outil proposé ici vous indique avant l'export dans quel cas vous êtes, et
+      de combien&nbsp;: vous décidez, au lieu de découvrir.
     </p>
   </section>
 
   <section>
     <h2>Quand accepter un réencodage</h2>
     <p>
-      Il existe une coupe exacte, et elle fonctionne en réencodant la portion
-      d'ouverture &mdash; en décodant depuis l'image clé, et en écrivant une
-      nouvelle suite d'images qui commence réellement là où vous avez marqué.
-      Elle est plus lente, et elle coûte un peu de qualité sur cette portion
-      d'ouverture seulement.
+      Il existe aussi une coupe exacte. Elle réencode la portion
+      d'ouverture&nbsp;: décodage à partir de l'image clé, puis écriture d'une
+      nouvelle série d'images qui commence réellement à votre marque. C'est plus
+      lent, et cela coûte un peu de qualité &mdash; sur cette seule portion
+      d'ouverture.
     </p>
     <p>
-      Choisissez-la quand le clip part quelque part qui ne respectera pas
-      l'instruction du conteneur, ou quand vous ne maîtrisez pas le
-      lecteur&nbsp;: certains logiciels de montage, certains systèmes de
-      diffusion et de visioconférence, certains lecteurs matériels plus anciens.
-      Choisissez la copie pour tout le reste, c'est-à-dire pour presque tout
-      &mdash; un navigateur, un téléphone, une plateforme sociale, un lecteur
-      multimédia.
+      Choisissez-la lorsque le clip part vers un endroit qui ne respectera pas la
+      consigne du conteneur, ou dont vous ne maîtrisez pas le lecteur&nbsp;:
+      certains logiciels de montage, certaines chaînes de diffusion ou de
+      visioconférence, certains lecteurs matériels anciens. Partout ailleurs
+      &mdash; c'est-à-dire presque partout, du navigateur au téléphone en passant
+      par les réseaux sociaux et les lecteurs multimédias &mdash; la copie fait
+      l'affaire.
     </p>
     <p>
-      Une troisième option qui ne coûte rien&nbsp;: déplacez votre marque. Si
-      l'outil vous montre où sont les images clés, pousser la coupe jusqu'à la
-      plus proche vous donne une coupe exacte sans le moindre réencodage. Il est
-      rare qu'une seconde d'écart vaille qu'on renonce à une copie.
+      Il reste une troisième solution, gratuite celle-là&nbsp;: déplacer votre
+      marque. Si l'outil vous montre où se trouvent les images clés, amener la
+      coupe jusqu'à la plus proche donne une coupe exacte sans le moindre
+      réencodage. Une seconde d'écart vaut rarement qu'on renonce à une copie.
     </p>
   </section>
 
   <section>
-    <h2>Retirer un morceau du milieu</h2>
+    <h2>Supprimer un passage au milieu</h2>
     <p>
-      Couper un passage est une opération différente d'en garder un, et il vaut
-      la peine de savoir que c'est possible, parce que bien des coupeurs ne font
-      que la seconde. Marquez la partie dont vous ne voulez pas, choisissez de la
-      couper, et ce qui reste de part et d'autre est raccordé en un seul clip,
-      avec le son repris au pas.
+      Retirer un passage n'est pas la même opération qu'en garder un, et il vaut
+      la peine de savoir que c'est possible ici&nbsp;: beaucoup d'outils ne
+      savent faire que la seconde. Marquez la partie dont vous ne voulez pas,
+      demandez sa suppression, et ce qui subsiste de part et d'autre est raccordé
+      en un seul clip, son compris et sans décalage.
     </p>
     <p>
       Le raccord subit la même contrainte d'image clé à l'endroit où la seconde
-      moitié reprend, pour la même raison. Cela fonctionne sur les deux chemins
-      MP4 d'ici. C'est la seule chose que le repli par enregistrement, plus bas,
-      ne sait pas faire, parce qu'un enregistrement se fait en une passe depuis
+      moitié reprend, et pour la même raison. Les deux chemins MP4 le savent
+      faire. C'est la seule chose hors de portée du repli par enregistrement
+      décrit plus bas, parce qu'un enregistrement se fait en une passe, depuis
       une seule tête de lecture.
     </p>
   </section>
@@ -125,84 +125,85 @@
   <section>
     <h2>Les formats, et le repli</h2>
     <p>
-      <strong>Le MP4, le M4V et le MOV</strong> sont lus directement, quel que
-      soit le codec à l'intérieur &mdash; H.264, HEVC, AV1, VP9. Recopier des
-      images n'implique pas de les décoder&nbsp;: ce chemin fonctionne donc même
-      pour un codec dont votre navigateur n'a aucun décodeur, agréable
-      conséquence du fait de ne pas regarder les images.
+      <strong>MP4, M4V et MOV</strong> sont lus directement, quel que soit le
+      codec qu'ils contiennent&nbsp;: H.264, HEVC, AV1, VP9. Recopier des images
+      ne suppose pas de les décoder, si bien que ce chemin fonctionne même avec
+      un codec dont votre navigateur n'a aucun décodeur &mdash; l'avantage
+      inattendu de ne jamais regarder les images.
     </p>
     <p>
-      <strong>Tout le reste que votre navigateur sait lire</strong>, le WebM au
-      premier chef, est coupé en le jouant et en enregistrant le résultat. Cela
-      marche, et cela coûte deux choses&nbsp;: cela prend le temps que dure le
-      passage, et l'image et le son sont réencodés.
+      <strong>Tout autre format que votre navigateur sait lire</strong>, le WebM
+      en premier lieu, est découpé en le jouant et en enregistrant le résultat.
+      Cela fonctionne, à deux frais près&nbsp;: l'opération dure aussi longtemps
+      que le passage lui-même, et l'image comme le son sont réencodés.
     </p>
     <p>
-      <strong>L'AVI, le WMV, le FLV et la plupart des MKV</strong>, le navigateur
-      ne sait ni les lire ni les jouer, et l'outil le dit plutôt que d'échouer à
-      mi-course. Convertissez-les d'abord en MP4 avec quelque chose qui les
-      prend en charge.
-    </p>
-  </section>
-
-  <section>
-    <h2>Deux choses qui tournent mal en silence ailleurs</h2>
-    <p>
-      <strong>La rotation.</strong> Un téléphone filme à l'horizontale et écrit
-      une instruction de rotation dans le fichier plutôt que de tourner les
-      pixels. Un coupeur qui recopie les images doit reporter cette instruction,
-      sinon votre clip vertical ressort couché &mdash; c'est la façon classique
-      dont une vidéo coupée est gâchée. Le chemin exact d'ici tourne les images en
-      les réencodant et écrit un fichier qui n'a besoin d'aucune rotation.
-    </p>
-    <p>
-      <strong>La synchronisation du son.</strong> L'audio et la vidéo sont
-      stockés comme des flux séparés avec leur propre rythme, et ils ne sont pas
-      découpés aux mêmes points. Si les deux ne sont pas alignés délibérément à
-      la coupe, le son dérive. Sur le chemin par copie d'ici, l'audio est recopié
-      échantillon par échantillon sans être décodé&nbsp;: il est donc octet pour
-      octet ce qu'il y avait dans le fichier, et une marque de montage le garde
-      au pas de l'image au millième de seconde près.
+      <strong>AVI, WMV, FLV et la plupart des MKV</strong>, le navigateur ne sait
+      ni les lire ni les jouer&nbsp;; l'outil vous le dit d'emblée au lieu
+      d'abandonner à mi-parcours. Convertissez-les d'abord en MP4 avec un
+      logiciel qui les prend en charge.
     </p>
   </section>
 
   <section>
-    <h2>Couper n'est pas recadrer</h2>
+    <h2>Deux pièges qui passent inaperçus ailleurs</h2>
     <p>
-      Deux mots qu'on emploie l'un pour l'autre. Couper change la durée du
-      clip&nbsp;; recadrer change la forme de l'image. Si ce que vous voulez est
-      une version carrée d'une vidéo horizontale, ou les bandes noires enlevées
-      sur les côtés, c'est le
-      <a href="../../recadrer-une-video/">recadreur de vidéos</a> &mdash; et,
-      contrairement à la coupe, lui doit réencoder, pour la raison
-      qu'<a href="../recadrer-une-video/">expose son guide</a>.
+      <strong>La rotation.</strong> Un téléphone filme à l'horizontale et inscrit
+      dans le fichier une consigne de rotation plutôt que de faire pivoter les
+      pixels. Un outil qui recopie les images doit reporter cette consigne&nbsp;;
+      sinon votre clip vertical ressort couché, et c'est la façon classique de
+      gâcher une vidéo découpée. Le chemin exact proposé ici fait pivoter les
+      images pendant qu'il les réencode, et écrit un fichier qui n'a plus besoin
+      d'aucune rotation.
+    </p>
+    <p>
+      <strong>La synchronisation du son.</strong> Le son et l'image forment deux
+      flux distincts, chacun avec sa cadence propre, et ils ne se découpent pas
+      aux mêmes endroits. Sans un alignement délibéré au point de coupe, le son
+      se décale. Sur le chemin par copie, l'audio est recopié échantillon par
+      échantillon sans être décodé&nbsp;: il est donc octet pour octet celui du
+      fichier d'origine, et une marque de montage le maintient calé sur l'image
+      au millième de seconde près.
     </p>
   </section>
 
   <section>
-    <h2>Pourquoi cela ne demande pas d'envoi &mdash; celui-ci surtout</h2>
+    <h2>Découper n'est pas recadrer</h2>
     <p>
-      La vidéo est le type de fichier pour lequel les gens s'attendent le plus à
-      devoir faire un envoi, parce que les fichiers sont gros et que le travail a
-      l'air lourd. La coupe est le cas où c'est le moins vrai&nbsp;: sur le
-      chemin par copie, le fichier est à peine lu. L'outil parcourt l'index,
-      détermine quelles plages d'octets garder, et les écrit. Envoyer un fichier
-      de quatre gigaoctets à un serveur pour qu'il fasse cela serait la façon la
-      plus lente possible de s'y prendre.
+      Deux mots qu'on emploie souvent l'un pour l'autre. Découper change la durée
+      du clip&nbsp;; recadrer change la forme de l'image. Si ce que vous cherchez
+      est une version carrée d'une vidéo horizontale, ou des bandes noires
+      enlevées sur les côtés, allez voir le
+      <a href="../../recadrer-une-video/">recadreur de vidéos</a> &mdash;
+      lequel, contrairement à la découpe, doit bel et bien réencoder, pour la
+      raison qu'<a href="../recadrer-une-video/">expose son guide</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi rien de tout cela n'exige un envoi &mdash; et celui-ci moins que tout</h2>
+    <p>
+      La vidéo est le type de fichier pour lequel on s'attend le plus à devoir
+      passer par un envoi&nbsp;: les fichiers sont gros et le travail paraît
+      lourd. La découpe est justement le cas où c'est le moins vrai. Sur le
+      chemin par copie, le fichier est à peine lu&nbsp;: l'outil parcourt
+      l'index, détermine les plages d'octets à garder, et les écrit. Expédier
+      quatre gigaoctets à un serveur pour lui faire faire cela serait la manière
+      la plus lente de s'y prendre.
     </p>
     <p>
-      C'est aussi le type de fichier où l'envoi coûte le plus cher si vous
-      préférez l'éviter&nbsp;: la vidéo porte des visages, des voix, des
-      logements et des lieux d'une façon qu'un document ne connaît pas. L'outil
-      d'ici n'a aucune fonction réseau, et la
-      <code>Content-Security-Policy</code> de la page nomme toutes les adresses
-      qu'elle peut contacter, dont aucune n'appartient à ce site.
+      C'est aussi le type de fichier dont l'envoi coûte le plus cher, si vous
+      préférez l'éviter&nbsp;: une vidéo transporte des visages, des voix, des
+      logements et des lieux comme aucun document ne le fait. L'outil proposé ici
+      n'a aucune fonction réseau, et la <code>Content-Security-Policy</code> de
+      la page énumère toutes les adresses qu'elle peut contacter, dont aucune
+      n'appartient à ce site.
     </p>
     <p>
-      Coupez votre connexion et coupez un clip quand même, si vous préférez
+      Coupez votre connexion et découpez un clip quand même, si vous préférez
       vérifier plutôt qu'on vous le dise.
       <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
-      fichiers à un convertisseur en ligne&nbsp;?</a> expose trois autres
-      vérifications du même genre.
+      fichiers à un convertisseur en ligne&nbsp;?</a> présente trois autres
+      vérifications du même ordre.
     </p>
   </section>

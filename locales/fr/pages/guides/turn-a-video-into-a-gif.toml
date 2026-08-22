@@ -3,15 +3,15 @@
 #
 
 nav = "Faire un GIF depuis une vidéo"
-title = "Comment transformer une vidéo en GIF (et le garder léger)"
-description = "Quel passage, quelle largeur et quelle cadence choisir, pourquoi un GIF tiré d'une vidéo pèse dix fois la vidéo, et quand en faire un tout court."
+title = "Comment transformer une vidéo en GIF (sans qu'il pèse une tonne)"
+description = "Quel passage, quelle largeur et quelle cadence choisir, pourquoi un GIF tiré d'une vidéo pèse dix fois la vidéo, et quand il vaut mieux ne pas en faire du tout."
 heading = "Comment transformer une vidéo en GIF"
 lede = """
-    Le GIF est un format de 1987 qui stocke des images entières plutôt que du
-    mouvement&nbsp;: celui qu'on tire d'une vidéo est donc toujours gros. Voici
-    lequel des trois réglages déplacer quand il est trop gros, et ce que chacun
-    vous rapporte."""
+    Le GIF est un format de 1987 qui enregistre des images entières plutôt que
+    du mouvement&nbsp;: celui qu'on tire d'une vidéo est donc toujours lourd.
+    Voici lequel des trois réglages déplacer quand il l'est trop, et ce que
+    chacun rapporte."""
 updated = "20 août 2026"
-og_title = "Comment transformer une vidéo en GIF, et le garder léger"
-og_description = "Les trois réglages qui décident du poids d'un GIF, ce que chacun coûte, et quand le GIF est carrément la mauvaise réponse."
+og_title = "Transformer une vidéo en GIF, sans qu'il pèse une tonne"
+og_description = "Les trois réglages qui décident du poids d'un GIF, ce que chacun coûte, et les cas où le GIF est carrément la mauvaise réponse."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

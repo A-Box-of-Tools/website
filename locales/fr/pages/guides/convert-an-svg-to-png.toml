@@ -4,14 +4,14 @@
 
 nav = "Convertir un SVG en PNG"
 title = "Comment convertir un SVG en PNG à la bonne taille"
-description = "Un vectoriel n'a pas de taille en pixels à lui : le nombre est à vous de le choisir. D'où vient ce nombre pour un écran, une icône d'application et une imprimante, et ce qui change quand un dessin devient des pixels."
+description = "Un fichier vectoriel n'a pas de taille en pixels : ce chiffre, c'est à vous de le donner. D'où il vient pour un écran, pour une icône d'application et pour une imprimante, et ce qui change quand un dessin devient des pixels."
 heading = "Comment convertir un SVG en PNG à la bonne taille"
 lede = """
-    Convertir est la moitié facile. La question qui décide si le résultat sert à
-    quelque chose est celle dont personne ne vous donne la réponse&nbsp;: combien
-    de pixels&nbsp;? Voici d'où vient ce nombre, et ce qu'un dessin perd en
-    chemin."""
+    Convertir est la partie facile. Ce qui décide si le résultat sert à quelque
+    chose, c'est la question dont personne ne vous donne la réponse&nbsp;:
+    combien de pixels&nbsp;? Voici d'où vient ce chiffre, et ce qu'un dessin
+    perd en route."""
 updated = "20 août 2026"
 og_title = "Convertir un SVG en PNG à la bonne taille"
-og_description = "D'où vient vraiment le nombre de pixels, et les trois choses qui changent quand un dessin devient des pixels."
+og_description = "D'où vient vraiment le nombre de pixels, et les trois choses qui changent dès qu'un dessin devient des pixels."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

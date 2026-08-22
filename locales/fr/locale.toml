@@ -151,7 +151,7 @@ note = "Travailler ses photos et ses séquences sans les confier à personne."
 [[hub.categories]]
 id = "gif-and-animation"
 name = "GIF &amp; animation"
-note = "Créez une animation, ou décomposez-la, sans qu'elle quitte votre machine."
+note = "Fabriquer une animation, ou la décomposer image par image, sans qu'elle quitte votre machine."
 
 [[hub.categories]]
 id = "audio"
@@ -168,10 +168,13 @@ id = "codes-and-data"
 name = "Codes &amp; données"
 note = "Transformer ce que vous avez tapé en quelque chose qu'une machine sait lire, sans que cela quitte la page."
 
+# La seconde catégorie qui ne part pas d'un fichier, et la seule dont l'anglais
+# nomme les trois verbes ; le français les garde à l'infinitif comme les cinq
+# autres, et leur donne l'objet que l'anglais laisse au pronom.
 [[hub.categories]]
 id = "text-and-code"
 name = "Texte &amp; code"
-note = "Mettez-le en forme, comparez-le, encodez-le, sans coller un jeton ou un fichier de configuration sur le serveur de quelqu'un d'autre."
+note = "Lire, comparer et encoder ce que vous avez écrit, sans coller un jeton ni un fichier de configuration sur le serveur de quelqu'un d'autre."
 
 #
 # ---------------------------------------------------------------------------

@@ -2,232 +2,230 @@
     <h2>La réponse courte</h2>
     <p>
       Ouvrez le <a href="../../supprimer-les-donnees-exif/">lecteur et effaceur
-      EXIF</a>, déposez-y les photos, et appuyez sur
-      &laquo;&nbsp;Tout supprimer&nbsp;&raquo;. Chaque étiquette, les blocs XMP
-      et IPTC, les commentaires et la vignette incorporée partent, sur toutes les
-      photos de la liste d'un coup. L'image elle-même n'est pas touchée &mdash;
-      ni recompressée, ni décodée, ni changée d'un seul pixel.
+      EXIF</a>, déposez-y vos photos et appuyez sur
+      &laquo;&nbsp;Tout supprimer&nbsp;&raquo;. Toutes les étiquettes, les blocs
+      XMP et IPTC, les commentaires et la vignette incorporée disparaissent d'un
+      coup, sur toutes les photos de la liste. L'image, elle, n'est pas
+      touchée&nbsp;: ni recompressée, ni décodée, pas un pixel de changé.
     </p>
     <p>
-      Avant de le faire, cela vaut la peine de regarder ce qu'il y avait dedans.
-      C'est en général plus que ce que les gens imaginent, et cette liste est
-      l'argument même en faveur de l'opération.
+      Avant d'appuyer, jetez un œil à ce qu'il y avait là. Il y a d'ordinaire
+      plus qu'on ne l'imagine, et cette liste est à elle seule l'argument en
+      faveur de l'opération.
     </p>
   </section>
 
   <section>
-    <h2>Ce qu'il y a réellement dans une photo</h2>
+    <h2>Ce qu'une photo contient réellement</h2>
     <p>
-      Un JPEG n'est pas seulement une image compressée. C'est un conteneur, et à
-      côté de l'image se trouvent plusieurs blocs d'informations que votre
-      appareil, votre téléphone ou votre logiciel de retouche y ont écrits.
+      Un JPEG n'est pas qu'une image compressée&nbsp;: c'est un conteneur, et à
+      côté de l'image s'y trouvent plusieurs blocs d'informations écrits par
+      votre appareil, votre téléphone ou votre logiciel de retouche.
     </p>
     <ul>
       <li>
         <strong>L'EXIF.</strong> Le principal. Marque et modèle de l'appareil,
-        objectif, réglages d'exposition, ISO, date et heure à la seconde,
-        orientation dans laquelle l'image doit être montrée, et &mdash; sur un
-        téléphone dont la localisation est active pour l'appareil photo &mdash;
-        une position GPS précise à quelques mètres. Souvent aussi un numéro de
-        série de boîtier.
+        objectif, réglages d'exposition, sensibilité ISO, date et heure à la
+        seconde, orientation d'affichage &mdash; et, sur un téléphone dont la
+        localisation est activée pour l'appareil photo, une position GPS précise
+        à quelques mètres. Souvent aussi le numéro de série du boîtier.
       </li>
       <li>
-        <strong>Le GPS.</strong> Techniquement une partie de l'EXIF, et qui vaut
-        d'être nommée à part parce que c'est celle qui compte le plus. Elle est
-        écrite en degrés, minutes et secondes, format qui réussit très bien à ne
-        pas ressembler à une adresse.
+        <strong>Le GPS.</strong> Techniquement une partie de l'EXIF, qu'il vaut
+        la peine de nommer à part parce que c'est la plus lourde de conséquences.
+        Elle est écrite en degrés, minutes et secondes, un format qui réussit
+        remarquablement bien à ne pas ressembler à une adresse.
       </li>
       <li>
         <strong>Le XMP.</strong> Un paquet de XML qu'écrivent les logiciels de
-        retouche. Il peut porter votre nom, votre logiciel, des notes, des
-        mots-clés, un historique de modifications, et une copie de certains
-        champs EXIF &mdash; c'est pourquoi supprimer l'EXIF seul ne suffit pas.
+        retouche. Il peut porter votre nom, celui de votre logiciel, des notes,
+        des mots-clés, un historique de modifications et une copie de certains
+        champs EXIF &mdash; raison pour laquelle effacer l'EXIF seul ne suffit
+        pas.
       </li>
       <li>
-        <strong>L'IPTC.</strong> Un bloc plus ancien de champs de légende, de
-        signature, de crédit et de copyright, utilisé dans la presse et la photo
-        de stock.
+        <strong>L'IPTC.</strong> Un bloc plus ancien&nbsp;: légende, signature,
+        crédit, mentions de droits. On le trouve dans la presse et les banques
+        d'images.
       </li>
       <li>
-        <strong>La vignette incorporée.</strong> Une petite deuxième copie de
-        l'image. Elle est produite au moment de l'écriture du fichier, et elle
-        n'est pas toujours refaite quand l'image est modifiée &mdash; c'est ainsi
-        qu'une photo recadrée peut voyager avec une vignette de ce qui a été
-        coupé.
+        <strong>La vignette incorporée.</strong> Une petite seconde copie de
+        l'image, fabriquée au moment où le fichier est écrit et pas toujours
+        refaite quand l'image est modifiée. C'est ainsi qu'une photo recadrée
+        peut voyager avec une vignette montrant ce qu'on venait d'en retirer.
       </li>
       <li>
-        <strong>La note de fabricant.</strong> Un bloc de données non documenté.
-        Personne en dehors du fabricant ne sait tout ce qu'il contient.
+        <strong>La note du fabricant.</strong> Un bloc de données non documenté.
+        Personne, hors du fabricant, ne sait tout ce qui s'y trouve.
       </li>
     </ul>
   </section>
 
   <section>
-    <h2>Qui le voit réellement</h2>
+    <h2>Qui le voit vraiment</h2>
     <p>
-      C'est la partie où il vaut la peine d'être exact, parce que la version
-      alarmiste et la version dédaigneuse sont fausses toutes les deux.
+      C'est le passage où il faut être exact, parce que la version alarmiste et
+      la version désinvolte sont fausses toutes les deux.
     </p>
     <p>
-      <strong>La plupart des grands réseaux sociaux effacent les métadonnées
-      quand vous publiez.</strong> Facebook, Instagram et X réencodent les images
-      envoyées et jettent les étiquettes au passage. Ce n'est pas une gentillesse
-      &mdash; ils gardent les données de leur côté &mdash; mais cela veut bien
-      dire qu'une photo publiée sur ces services ne remet pas ses coordonnées à
-      chaque personne qui la regarde.
+      <strong>La plupart des grands réseaux sociaux effacent les métadonnées à
+      la publication.</strong> Facebook, Instagram et X réencodent les images
+      reçues et jettent les étiquettes au passage. Ce n'est pas une amabilité
+      &mdash; ils conservent les données de leur côté &mdash; mais cela veut dire
+      qu'une photo publiée là ne livre pas ses coordonnées à tous ceux qui la
+      regardent.
     </p>
     <p>
       <strong>Presque tout le reste les conserve.</strong> Une pièce jointe de
-      courriel. Un fichier envoyé sur la plupart des messageries comme
+      courriel. Un fichier transmis par messagerie en tant que
       &laquo;&nbsp;document&nbsp;&raquo; plutôt que comme photo. Une image sur un
-      forum, une annonce de petites annonces, un site personnel, un disque
-      partagé, un rapport de bug, un ticket de support. Dans tous ces cas le
-      fichier arrive intact, et quiconque le télécharge peut en lire les
-      étiquettes avec des outils livrés avec son système d'exploitation.
+      forum, une annonce sur un site de petites annonces, un site personnel, un
+      disque partagé, un rapport de bug, un ticket d'assistance. Dans tous ces
+      cas, le fichier arrive intact et quiconque le télécharge en lit les
+      étiquettes avec les outils fournis d'origine par son système.
     </p>
     <p>
-      Les risques réalistes sont banals plutôt que spectaculaires&nbsp;: une
-      annonce photographiée à la maison, une photo d'enfant prise dans son école,
-      un compte apparemment anonyme qui publie des photos partageant toutes le
-      même numéro de série d'appareil, un
-      &laquo;&nbsp;pris la semaine dernière&nbsp;&raquo; qui a été pris en mars.
+      Les risques réalistes sont ordinaires plutôt que spectaculaires&nbsp;: une
+      annonce photographiée chez soi, une photo d'enfant prise dans son école, un
+      compte prétendument anonyme dont toutes les images portent le même numéro
+      de série d'appareil, un &laquo;&nbsp;pris la semaine
+      dernière&nbsp;&raquo; qui date en réalité de mars.
     </p>
   </section>
 
   <section>
-    <h2>Pourquoi ne pas simplement réenregistrer&nbsp;?</h2>
+    <h2>Pourquoi ne pas simplement réenregistrer la photo&nbsp;?</h2>
     <p>
       Réenregistrer une photo dans un logiciel de retouche ou un compresseur
-      supprime bien les métadonnées &mdash; l'image est décodée en pixels puis
-      réencodée, et un canvas plein de pixels ne porte aucune étiquette. Cela
-      fonctionne, et cela vous coûte de la qualité, parce que ce réencodage est
+      efface bien les métadonnées&nbsp;: l'image est décodée en pixels puis
+      réencodée, et une toile pleine de pixels ne porte aucune étiquette. Cela
+      marche, et cela vous coûte de la qualité, puisque ce réencodage se fait
       avec perte.
     </p>
     <p>
-      Supprimer les métadonnées proprement ne coûte rien du tout. Les étiquettes
-      se trouvent dans le conteneur <em>autour</em> de l'image compressée, pas
-      dedans&nbsp;: les retirer, c'est effacer des entrées d'une liste et
-      réécrire la liste. Les données d'image compressées sont recopiées octet
-      pour octet et le résultat décode exactement les mêmes pixels. C'est là
-      toute la raison d'utiliser un outil de métadonnées plutôt qu'un
-      convertisseur.
+      Effacer les métadonnées proprement, en revanche, ne coûte rien. Les
+      étiquettes se tiennent dans le conteneur, <em>autour</em> de l'image
+      compressée et non dedans&nbsp;; les retirer revient à supprimer des lignes
+      d'une liste et à réécrire la liste. Les données d'image compressées, elles,
+      sont recopiées octet pour octet, et le résultat redonne exactement les
+      mêmes pixels. Voilà toute la raison de préférer un outil de métadonnées à
+      un convertisseur.
     </p>
     <p>
-      L'exception est le cas où vous alliez réencoder de toute façon. Si vous
-      compressez ou redimensionnez déjà la photo, les étiquettes partent par
-      effet de bord et vous n'avez pas besoin d'une seconde étape.
+      Une exception&nbsp;: si vous alliez réencoder de toute façon. Quand vous
+      compressez ou redimensionnez déjà la photo, les étiquettes tombent
+      d'elles-mêmes et la seconde étape est inutile.
     </p>
   </section>
 
   <section>
-    <h2>La seule chose à garder&nbsp;: l'orientation</h2>
+    <h2>La seule à garder&nbsp;: l'orientation</h2>
     <p>
-      Les téléphones ne font pas pivoter l'image quand vous tournez le téléphone.
-      Ils l'enregistrent telle que le capteur l'a vue et ajoutent une étiquette
-      d'orientation qui dit comment la tourner pour l'affichage. Retirez toutes
-      les étiquettes et certains afficheurs montreront votre photo couchée.
+      Un téléphone ne fait pas pivoter l'image quand vous le tournez. Il
+      l'enregistre telle que le capteur l'a vue et y ajoute une étiquette
+      d'orientation qui indique comment la redresser à l'affichage. Retirez
+      toutes les étiquettes, et certaines visionneuses vous montreront une photo
+      couchée.
     </p>
     <p>
-      C'est pourquoi l'outil d'ici a une option
-      &laquo;&nbsp;garder l'étiquette d'orientation&nbsp;&raquo;, active par
-      défaut. Elle réécrit un minuscule bloc EXIF contenant cette seule étiquette
-      et rien d'autre, et seulement pour les photos qui en avaient réellement
-      besoin. Le GPS, les horodatages, le numéro de série et le reste ont toujours
-      disparu.
+      D'où l'option &laquo;&nbsp;garder l'étiquette
+      d'orientation&nbsp;&raquo;, active par défaut. Elle réécrit un minuscule
+      bloc EXIF contenant cette seule étiquette et rien d'autre, et seulement
+      pour les photos qui en avaient besoin. Le GPS, les horodatages, le numéro
+      de série et tout le reste ont bel et bien disparu.
     </p>
     <p>
-      Décochez-la si vous préférez que le fichier ne porte plus le moindre EXIF
-      &mdash; et vérifiez alors le résultat avant de l'envoyer, parce qu'une
-      photo couchée est le dénouement habituel.
+      Décochez-la si vous tenez à ce que le fichier ne porte plus le moindre
+      EXIF &mdash; mais vérifiez alors le résultat avant l'envoi, car la photo
+      couchée est l'issue habituelle.
     </p>
   </section>
 
   <section>
     <h2>Modifier au lieu de supprimer</h2>
     <p>
-      Tout supprimer est la bonne réponse pour la plupart des gens. Parfois non
-      &nbsp;: un photographe peut vouloir garder la ligne de copyright et les
-      réglages de l'appareil et n'effacer que le lieu&nbsp;; un archiviste peut
-      avoir besoin de corriger une date fausse parce que l'horloge de l'appareil
+      Tout effacer est la bonne réponse pour la plupart des gens. Pas pour
+      tous&nbsp;: un photographe voudra parfois conserver la mention de droits et
+      les réglages de prise de vue et n'effacer que le lieu&nbsp;; un archiviste
+      aura besoin de corriger une date fausse parce que l'horloge du boîtier
       l'était.
     </p>
     <p>
-      Les deux sont possibles. Le lieu peut être supprimé seul, et les étiquettes
-      de texte, les dates, l'ISO, l'orientation et la résolution peuvent être
-      modifiés sur place.
+      Les deux sont possibles. Le lieu se supprime seul, et les étiquettes de
+      texte, les dates, la sensibilité, l'orientation et la résolution se
+      modifient sur place.
     </p>
     <p>
-      Une réserve qui vaut pour tous les outils qui font cela, pas seulement pour
-      celui-ci&nbsp;: écrire le fichier reconstruit le bloc EXIF, et une note de
-      fabricant contient des décalages vers le bloc <em>d'origine</em>. Une note
-      reconstruite peut donc ne plus être lisible par le logiciel du fabricant.
-      Si cela compte, supprimez la note de fabricant ou laissez le fichier tel
-      quel.
+      Une réserve, qui vaut pour tous les outils du genre et pas seulement pour
+      celui-ci&nbsp;: écrire le fichier reconstruit le bloc EXIF, or une note de
+      fabricant contient des décalages qui pointent vers le bloc
+      <em>d'origine</em>. Une note reconstruite risque donc de n'être plus
+      lisible par le logiciel du fabricant. Si cela compte pour vous, supprimez
+      la note de fabricant, ou laissez le fichier tel quel.
     </p>
   </section>
 
   <section>
     <h2>Les formats, et ceux qui ne se traitent pas ainsi</h2>
     <p>
-      Le JPEG, le PNG et le WebP peuvent tous être réécrits proprement, et ce
-      sont les trois que prend en charge l'outil d'ici.
+      Le JPEG, le PNG et le WebP se réécrivent proprement&nbsp;; ce sont les
+      trois que l'outil prend en charge.
     </p>
     <p>
       Le HEIC &mdash; ce qu'un iPhone enregistre par défaut &mdash; et l'AVIF
-      sont des formats à boîtes faits d'atomes imbriqués, et demandent un tout
-      autre analyseur. L'outil les reconnaît et le dit plutôt que de produire un
-      fichier cassé. Si vous avez un HEIC, le convertir en JPEG supprimera les
-      métadonnées par effet de bord de la conversion.
+      sont des formats à boîtes, faits d'atomes imbriqués, et réclament un tout
+      autre analyseur. L'outil les reconnaît et le dit, plutôt que de produire un
+      fichier cassé. Si vous avez un HEIC, le convertir en JPEG effacera les
+      métadonnées au passage.
     </p>
     <p>
-      Un TIFF nu n'est pas pris en charge non plus, et pour une raison plus
-      intéressante&nbsp;: dans un TIFF, les métadonnées et les données de pixels
-      sont adressées par les mêmes décalages, si bien que retirer des étiquettes
-      revient à réécrire l'adressage de l'image elle-même. C'est faisable, et
-      c'est un autre travail.
-    </p>
-  </section>
-
-  <section>
-    <h2>Une habitude qui vaut la peine</h2>
-    <p>
-      Vérifiez avant de publier plutôt qu'après. Lire les étiquettes prend
-      quelques secondes et la liste des trouvailles nomme ce qui vaut d'être su
-      &mdash; la position, les horodatages, les numéros de série &mdash; avant le
-      tableau complet de toutes les étiquettes&nbsp;: vous n'avez donc pas besoin
-      de savoir quoi chercher.
-    </p>
-    <p>
-      La position est d'abord montrée en degrés décimaux, exprès.
-      &laquo;&nbsp;51 degrés, 30 minutes, 26 secondes&nbsp;&raquo; ne rend pas
-      évident qu'une photo nomme le bâtiment où elle a été prise. Une paire de
-      décimaux que vous pouvez coller dans une carte, si.
+      Le TIFF nu n'est pas pris en charge non plus, et pour une raison plus
+      intéressante&nbsp;: dans un TIFF, les métadonnées et les pixels sont
+      repérés par les mêmes décalages, si bien qu'ôter des étiquettes revient à
+      réécrire l'adressage de l'image elle-même. C'est faisable&nbsp;; c'est un
+      autre travail.
     </p>
   </section>
 
   <section>
-    <h2>N'envoyez pas la photo pour savoir ce qu'il y a dedans</h2>
+    <h2>Une bonne habitude</h2>
     <p>
-      Il y a une ironie particulière dans la façon dont ce problème se résout
-      d'habitude&nbsp;: quelqu'un qui s'inquiète de ce que révèle sa photo
-      l'envoie à un site web pour le savoir. Le site a maintenant la photo, les
-      coordonnées, l'horodatage et le numéro de série, plus une copie de l'image
-      sur un disque qui lui appartient.
+      Vérifiez avant de publier, pas après. Lire les étiquettes prend quelques
+      secondes, et la liste des trouvailles met en tête ce qui mérite votre
+      attention &mdash; la position, les horodatages, les numéros de série
+      &mdash; avant le tableau exhaustif&nbsp;: vous n'avez donc pas besoin de
+      savoir quoi chercher.
     </p>
     <p>
-      Il n'y a aucune raison à cela. Lire et réécrire le conteneur autour d'un
-      JPEG représente quelques centaines de lignes d'analyse qu'un navigateur
-      exécute parfaitement, et c'est pourquoi l'outil d'ici n'a aucune fonction
+      La position est affichée d'abord en degrés décimaux, et c'est
+      délibéré&nbsp;: &laquo;&nbsp;51 degrés, 30 minutes, 26
+      secondes&nbsp;&raquo; ne laisse pas deviner qu'une photo désigne le
+      bâtiment où elle a été prise. Deux nombres à coller dans une carte, si.
+    </p>
+  </section>
+
+  <section>
+    <h2>N'envoyez pas la photo pour savoir ce qu'elle contient</h2>
+    <p>
+      La façon dont ce problème se règle d'ordinaire ne manque pas
+      d'ironie&nbsp;: inquiet de ce que sa photo révèle, on l'envoie à un site
+      web pour le découvrir. Le site dispose désormais de la photo, des
+      coordonnées, de l'horodatage et du numéro de série, plus d'une copie de
+      l'image sur un disque qui lui appartient.
+    </p>
+    <p>
+      Rien ne le justifie. Lire et réécrire le conteneur qui entoure un JPEG,
+      c'est quelques centaines de lignes d'analyse qu'un navigateur exécute sans
+      broncher&nbsp;; c'est pourquoi l'outil de ce site n'a aucune fonction
       réseau&nbsp;: pas de <code>fetch</code>, pas de
-      <code>XMLHttpRequest</code>, rien qui puisse envoyer un fichier même si
-      quelque chose essayait. Chargez-le une fois, coupez la connexion, et il
+      <code>XMLHttpRequest</code>, rien qui pourrait envoyer un fichier même si
+      quelque chose s'y essayait. Chargez-le une fois, coupez la connexion, il
       continue de fonctionner.
     </p>
     <p>
       <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
-      fichiers à un convertisseur en ligne&nbsp;?</a> expose comment vérifier
-      cette affirmation, sur ce site comme sur n'importe quel autre &mdash; et
-      c'est le type de fichier pour lequel cela vaut le plus la peine de
-      vérifier.
+      fichiers à un convertisseur en ligne&nbsp;?</a> explique comment vérifier
+      cette promesse, ici comme ailleurs &mdash; et c'est avec ce type de fichier
+      que la vérification vaut le plus la peine.
     </p>
   </section>

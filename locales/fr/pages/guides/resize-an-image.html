@@ -3,84 +3,83 @@
     <p>
       Ouvrez le <a href="../../redimensionner-une-image/">redimensionneur
       d'images</a>, déposez-y votre image, tapez un seul chiffre &mdash; la
-      largeur, en général &mdash; et laissez l'autre vide. La hauteur découle de
-      la forme de l'image, ce qui est presque toujours ce qu'on
-      voulait&nbsp;: &laquo;&nbsp;1920 de large&nbsp;&raquo; veut dire
-      &laquo;&nbsp;1920 de large et la hauteur que cela donne&nbsp;&raquo;.
+      largeur, le plus souvent &mdash; et laissez l'autre champ vide. La hauteur
+      se déduit des proportions de l'image, ce qui est presque toujours ce qu'on
+      attendait&nbsp;: &laquo;&nbsp;1920 de large&nbsp;&raquo; veut dire
+      &laquo;&nbsp;1920 de large, et la hauteur qui va avec&nbsp;&raquo;.
     </p>
     <p>
-      Tout ce qui suit est pour les cas où un seul chiffre ne suffit pas&nbsp;:
-      quand on vous a donné un cadre à deux côtés, quand l'image doit grossir, ou
-      quand tout un dossier de fichiers doit ressortir pareil.
+      Tout ce qui suit concerne les cas où un seul chiffre ne suffit pas&nbsp;:
+      quand on vous impose un cadre à deux côtés, quand l'image doit grossir, ou
+      quand un dossier entier doit ressortir uniforme.
     </p>
   </section>
 
   <section>
-    <h2>Réduire est sans danger. Agrandir ne l'est pas.</h2>
+    <h2>Réduire ne coûte rien. Agrandir, si.</h2>
     <p>
-      Ce ne sont pas deux sens d'une même opération, et il vaut la peine de dire
-      clairement pourquoi.
+      Ce ne sont pas les deux sens d'une même opération, et il vaut la peine
+      d'expliquer pourquoi.
     </p>
     <p>
-      <strong>Réduire une image</strong> jette de l'information, et dans le seul
-      sens bénin du terme&nbsp;: il entre plus de pixels qu'il n'en sort, et
-      chaque pixel du résultat est donc une moyenne de détail réellement mesuré.
-      Une copie réduite proprement est en général <em>plus belle</em> que
-      l'original regardé à cette taille, parce que le moyennage supprime le
-      bruit. Rien n'est inventé.
+      <strong>Réduire une image</strong> jette de l'information, mais dans le
+      seul sens inoffensif du mot&nbsp;: il entre plus de pixels qu'il n'en sort,
+      et chaque pixel du résultat est donc la moyenne de détails réellement
+      mesurés. Une réduction bien faite est même souvent <em>plus belle</em> que
+      l'original regardé à cette taille, parce que la moyenne efface le bruit.
+      Rien n'est inventé.
     </p>
     <p>
-      <strong>Agrandir une image</strong> doit inventer. Le détail ne manque pas
-      dans le fichier&nbsp;; il n'a jamais été photographié. Tout ce qu'un
-      agrandisseur peut faire, c'est deviner les pixels intermédiaires d'après
-      leurs voisins, et une supposition entre deux valeurs connues est une rampe
-      douce &mdash; c'est pourquoi une photo agrandie paraît molle plutôt que
-      nette. C'est une copie plus grande de la même image, pas une copie plus
+      <strong>Agrandir une image</strong> oblige à inventer. Le détail ne manque
+      pas au fichier&nbsp;: il n'a jamais été photographié. Tout ce qu'un
+      logiciel peut faire, c'est deviner les pixels intermédiaires d'après leurs
+      voisins, et une hypothèse entre deux valeurs connues donne une transition
+      douce &mdash; d'où l'aspect mou, jamais net, d'une photo agrandie. Vous
+      obtenez une copie plus grande de la même image, pas une image plus
       détaillée.
     </p>
     <p>
-      C'est pourquoi &laquo;&nbsp;ne jamais agrandir une image au-delà de sa
-      taille de départ&nbsp;&raquo; est actif par défaut dans l'outil d'ici.
-      Décochez-le si vous avez réellement besoin du nombre de pixels &mdash; une
-      imprimerie qui exige une taille minimale, un gabarit qui refuse tout ce qui
-      est sous une largeur &mdash; mais faites-le en sachant que vous achetez des
-      pixels, pas du détail.
+      D'où le garde-fou activé par défaut dans l'outil&nbsp;: ne jamais dépasser
+      la taille de départ. Désactivez-le si le nombre de pixels vous est
+      réellement imposé &mdash; une imprimerie qui exige un minimum, un gabarit
+      qui refuse en dessous d'une certaine largeur &mdash; mais sachez alors que
+      vous achetez des pixels, pas du détail.
     </p>
     <p>
-      Les agrandisseurs par apprentissage automatique qui semblent, eux, ajouter
-      du détail sont une tout autre chose&nbsp;: ils inventent une texture
-      plausible à partir d'un modèle de ce à quoi les images ressemblent
-      d'habitude. Pour un fond d'écran, c'est très bien. Pour la photographie
-      d'une personne, d'un document, ou de tout ce dont quelqu'un tirera une
-      conclusion, comprenez que le détail supplémentaire est une fiction.
+      Les agrandissements par apprentissage automatique, qui semblent bel et bien
+      ajouter du détail, relèvent d'autre chose&nbsp;: ils inventent une texture
+      vraisemblable à partir d'un modèle de ce à quoi les images ressemblent
+      d'ordinaire. Pour un fond d'écran, aucun problème. Pour la photo d'une
+      personne, d'un document, ou de quoi que ce soit dont quelqu'un tirera une
+      conclusion, gardez en tête que le détail ajouté est une fiction.
     </p>
   </section>
 
   <section>
-    <h2>Trois façons de dire la taille voulue</h2>
+    <h2>Trois façons d'indiquer la taille voulue</h2>
     <p>
       La plupart des outils, celui-ci compris, acceptent les mêmes trois, et
-      elles conviennent à des travaux différents.
+      chacune convient à un usage.
     </p>
     <ul>
       <li>
-        <strong>Des pixels exacts.</strong> À utiliser quand quelqu'un a précisé
-        le nombre&nbsp;: un avatar qui doit faire 400&times;400, une bannière qui
-        doit faire 1500 de large. Remplissez un côté et laissez l'autre suivre,
-        sauf si on vous a donné les deux.
+        <strong>Des pixels exacts.</strong> Quand on vous a donné le
+        nombre&nbsp;: un avatar de 400&times;400, une bannière de 1500 de large.
+        Renseignez un seul côté et laissez l'autre suivre, sauf si on vous a
+        imposé les deux.
       </li>
       <li>
-        <strong>Un pourcentage.</strong> À utiliser quand vous voulez tout
-        proportionnellement plus petit sans vous soucier du chiffre exact &mdash;
-        &laquo;&nbsp;moitié moins&nbsp;&raquo; pour un jeu de photos destinées à
-        un document.
+        <strong>Un pourcentage.</strong> Quand vous voulez tout réduire dans les
+        mêmes proportions sans vous soucier du chiffre final &mdash;
+        &laquo;&nbsp;deux fois plus petit&nbsp;&raquo; pour une série de photos
+        destinées à un document.
       </li>
       <li>
-        <strong>Un plus grand côté.</strong> La plus utile des trois pour un lot
-        mêlé. &laquo;&nbsp;Plus grand côté 1600&nbsp;&raquo; fait tenir chaque
-        image dans un carré de 1600 pixels, qu'elle soit verticale ou
-        horizontale, ce qui est en pratique ce que veut dire
-        &laquo;&nbsp;mets-moi tout ça à une taille raisonnable&nbsp;&raquo;.
+        <strong>Le plus grand côté.</strong> La plus commode des trois pour un
+        lot hétéroclite. &laquo;&nbsp;Plus grand côté à 1600&nbsp;&raquo; fait
+        tenir chaque image dans un carré de 1600 pixels, qu'elle soit verticale
+        ou horizontale&nbsp;: c'est ce que veut dire, en pratique,
+        &laquo;&nbsp;remets-moi tout ça à une taille raisonnable&nbsp;&raquo;.
       </li>
     </ul>
   </section>
@@ -88,72 +87,71 @@
   <section>
     <h2>Quand le cadre n'a pas la forme de l'image</h2>
     <p>
-      C'est là que le redimensionnement se décide réellement. Si vous donnez une
-      largeur et une hauteur qui ne correspondent pas aux proportions de votre
-      image, quelque chose doit céder, et il n'y a exactement que quatre choses
-      qui le peuvent&nbsp;:
+      C'est là que tout se joue. Si vous donnez une largeur et une hauteur qui ne
+      correspondent pas aux proportions de votre image, quelque chose doit
+      céder&nbsp;; il n'existe que quatre manières de céder.
     </p>
     <ul>
       <li>
-        <strong>Tenir dans le cadre.</strong> L'image entière est gardée et
-        ressort plus petite que le cadre sur un axe. Rien n'est perdu et rien
-        n'est déformé&nbsp;; vous n'obtenez simplement pas les dimensions exactes
-        demandées. C'est le bon comportement par défaut pour à peu près tout.
+        <strong>Tenir dans le cadre.</strong> L'image entière est conservée et
+        ressort plus petite que le cadre sur un des deux axes. Rien n'est perdu,
+        rien n'est déformé&nbsp;; simplement, vous n'obtenez pas exactement les
+        dimensions demandées. C'est le bon réglage par défaut dans presque tous les cas.
       </li>
       <li>
         <strong>Remplir le cadre et couper ce qui dépasse.</strong> Vous obtenez
-        exactement les dimensions demandées, et les parties de l'image qui
-        débordent ont disparu. Bon pour les vignettes, les avatars et les
-        couvertures, où la forme est imposée et le sujet est au milieu. Mauvais
-        quand ce qui compte est près d'un bord.
+        les dimensions exactes, et ce qui débordait a disparu. Parfait pour une
+        vignette, un avatar ou une couverture, où la forme est imposée et le
+        sujet occupe le centre. Mauvais dès que l'essentiel se trouve près d'un
+        bord.
       </li>
       <li>
-        <strong>Compléter.</strong> L'image entière est gardée, centrée, et
-        l'espace restant est rempli d'une couleur que vous choisissez. Bon quand
-        un système exige des dimensions exactes et que vous ne pouvez rien perdre
-        de l'image &mdash; les fiches produit fonctionnent souvent ainsi.
+        <strong>Compléter par une marge.</strong> L'image entière est conservée
+        et centrée, l'espace restant étant rempli d'une couleur de votre choix.
+        Indiqué quand un système exige des dimensions au pixel près et que vous
+        ne pouvez rien sacrifier de l'image &mdash; les fiches produit
+        fonctionnent souvent ainsi.
       </li>
       <li>
-        <strong>Étirer.</strong> L'image est écrasée ou tirée pour entrer. Ce
-        n'est jamais ce que vous voulez, sauf à le faire exprès, et c'est celui
-        que tout le monde reconnaît instantanément comme faux.
+        <strong>Étirer.</strong> L'image est écrasée ou tirée pour entrer dans le
+        cadre. Ce n'est jamais ce qu'on veut, sauf à le faire exprès, et c'est le
+        seul défaut que tout le monde repère au premier coup d'œil.
       </li>
     </ul>
     <p>
-      Si vous vous surprenez à tendre la main vers l'étirement, ce que vous
-      voulez sans doute, c'est recadrer.
+      Si l'étirement vous tente, c'est probablement un recadrage qu'il vous faut.
     </p>
   </section>
 
   <section>
     <h2>Recadrer est un autre travail, et souvent le bon</h2>
     <p>
-      Redimensionner change le nombre de pixels qui décrivent l'image entière.
-      Recadrer change la partie de l'image que vous gardez. Les gens tendent la
-      main vers le premier en pensant au second étonnamment souvent &mdash;
-      &laquo;&nbsp;il faut que ce soit carré&nbsp;&raquo; est un problème de
-      recadrage, pas de redimensionnement.
+      Redimensionner change le nombre de pixels qui décrivent toute l'image.
+      Recadrer change la portion d'image que vous gardez. On confond les deux
+      étonnamment souvent&nbsp;: &laquo;&nbsp;il me le faut carré&nbsp;&raquo;
+      est un problème de recadrage, pas de redimensionnement.
     </p>
     <p>
-      Faites-les dans cet ordre&nbsp;: recadrez d'abord selon le cadrage voulu,
-      puis redimensionnez le résultat à la taille voulue. Faire l'inverse revient
-      à choisir le recadrage dans une image qui a déjà perdu des pixels.
+      Procédez dans cet ordre&nbsp;: recadrez d'abord pour obtenir le cadrage
+      voulu, redimensionnez ensuite le résultat. Dans l'autre sens, vous
+      choisissez votre cadrage dans une image qui a déjà perdu des pixels.
     </p>
     <p>
-      L'outil d'ici fait les deux en une passe pour cette raison &mdash; tracez
-      un cadre, verrouillez-le sur une forme s'il vous faut une proportion
-      précise, puis dites la taille de sortie voulue. Le faire en une passe veut
-      aussi dire que l'image n'est encodée qu'une fois, ce qui compte pour la
-      raison exposée dans la section suivante.
+      C'est pour cette raison que l'outil enchaîne les deux en une seule
+      passe&nbsp;: tracez un cadre, verrouillez-le sur une proportion si on vous
+      en impose une, puis indiquez la taille de sortie. Une seule passe veut
+      aussi dire un seul encodage, ce qui compte pour la raison exposée juste
+      après.
     </p>
     <h3>Recadrer tout un lot</h3>
     <p>
-      Un cadre tracé sur une image est appliqué aux autres comme la même zone
+      Le cadre tracé sur une image est reporté sur les autres comme une zone
       <em>relative</em>&nbsp;: les mêmes fractions de la largeur et de la hauteur
-      propres à chaque fichier. Pour un dossier de captures ou d'exports tous de
-      la même taille, c'est exactement le même rectangle. Pour un lot mêlé, c'est
-      le même cadrage plutôt que le même rectangle, ce qui est en général ce
-      qu'on voulait, mais vaut d'être su avant de lui confier cinquante fichiers.
+      propres à chaque fichier. Sur un dossier de captures ou d'exports tous de
+      même taille, cela revient au même rectangle exactement. Sur un lot
+      hétéroclite, c'est le même cadrage et non le même rectangle &mdash;
+      généralement ce qu'on cherchait, mais mieux vaut le savoir avant de lui
+      confier cinquante fichiers.
     </p>
   </section>
 
@@ -161,90 +159,91 @@
     <h2>Ce que coûte le réencodage, et comment n'en faire qu'un</h2>
     <p>
       Redimensionner un JPEG ou un WebP, c'est le décoder, mettre les pixels à
-      l'échelle, et les réencoder &mdash; et cette dernière étape est avec perte.
-      Ce n'est pas la mise à l'échelle elle-même qui vous coûte de la
-      qualité&nbsp;; c'est le réencodage.
+      l'échelle, puis les réencoder &mdash; et c'est cette dernière étape qui se
+      paie. La mise à l'échelle, en elle-même, ne coûte pas de qualité&nbsp;; le
+      réencodage, si.
     </p>
     <p>
       Deux conséquences. D'abord, le réglage de qualité en sortie compte&nbsp;:
-      quelque part autour de 80 à 85, c'est invisible pour une photographie et
-      considérablement plus léger que 100. Ensuite, ne le faites qu'une fois.
-      Redimensionner une image déjà redimensionnée deux fois, ce sont trois
-      générations d'encodage avec perte, et cela se voit.
+      autour de 80 à 85, c'est invisible sur une photographie et nettement plus
+      léger que 100. Ensuite, faites-le une seule fois. Redimensionner une image
+      qui l'a déjà été deux fois, cela fait trois générations d'encodage avec
+      perte, et cela finit par se voir.
     </p>
     <p>
-      Un PNG n'a pas ce coût, parce qu'il est sans perte &mdash; un PNG
+      Le PNG échappe à cette dépense, puisqu'il est sans perte&nbsp;: un PNG
       redimensionné, ce sont exactement les pixels mis à l'échelle. Si vous
-      travaillez en plusieurs étapes et que le format final n'est pas encore
-      décidé, passer par du PNG au milieu évite d'empiler les générations.
+      enchaînez plusieurs étapes et que le format final n'est pas encore arrêté,
+      travailler en PNG entre-temps évite d'empiler les générations.
     </p>
     <p>
-      Un détail vaut d'être connu à propos de l'outil d'ici&nbsp;: un fichier que
-      vous ne changez pas réellement vous est rendu octet pour octet plutôt que
-      réencodé. Demandez &laquo;&nbsp;plus grand côté 1600&nbsp;&raquo; sur un
-      lot et ceux qui sont déjà sous 1600 ressortent intacts, étiquettes
-      comprises. Un outil qui les réencoderait discrètement vous coûterait de la
-      qualité sur des fichiers que personne ne lui avait demandé de changer.
+      Un détail à connaître sur l'outil de ce site&nbsp;: un fichier auquel il
+      n'a rien à changer vous est rendu octet pour octet, sans réencodage.
+      Demandez &laquo;&nbsp;plus grand côté à 1600&nbsp;&raquo; sur un lot, et
+      ceux qui sont déjà en dessous ressortent intacts, étiquettes comprises. Un
+      outil qui les réencoderait sans le dire vous coûterait de la qualité sur
+      des fichiers que personne ne lui avait demandé de toucher.
     </p>
   </section>
 
   <section>
     <h2>La transparence, et ce qu'elle devient</h2>
     <p>
-      Le PNG et le WebP savent stocker la transparence. Le JPEG non &mdash; il
-      n'y a aucun canal alpha dans ce format. Enregistrer une image transparente
-      en JPEG oblige donc à mettre quelque chose derrière, et ce quelque chose
-      est une couleur unie.
+      Le PNG et le WebP savent enregistrer la transparence. Le JPEG, non&nbsp;:
+      le format n'a pas de canal alpha du tout. Enregistrer une image
+      transparente en JPEG oblige donc à mettre quelque chose derrière, et ce
+      quelque chose est un aplat de couleur.
     </p>
     <p>
-      La plupart des outils prennent du blanc sans le dire, ce qui va très bien
-      jusqu'au jour où votre logo atterrit sur une page sombre avec un rectangle
-      blanc autour. Choisissez la couleur délibérément, ou enregistrez en PNG ou
-      en WebP et gardez la transparence. La même couleur sert derrière un cadre
-      complété, l'autre endroit où l'on rencontre cela par surprise.
+      La plupart des outils prennent du blanc sans vous prévenir&nbsp;; tout va
+      bien jusqu'au jour où votre logo se retrouve sur une page sombre, cerné
+      d'un rectangle blanc. Choisissez la couleur vous-même, ou enregistrez en
+      PNG ou en WebP et gardez la transparence. C'est la même couleur qui remplit
+      les marges d'un cadre complété, l'autre occasion de découvrir la chose par
+      surprise.
     </p>
   </section>
 
   <section>
-    <h2>Quel outil, si on vous a donné un chiffre</h2>
+    <h2>Quel outil, selon le chiffre qu'on vous a donné</h2>
     <p>
-      Deux chiffres différents circulent, et ils appellent des outils différents.
+      Deux sortes de chiffres circulent, et elles n'appellent pas le même outil.
     </p>
     <p>
       <strong>&laquo;&nbsp;1200 pixels de large&nbsp;&raquo;</strong> est un
-      problème de dimensions. Le
-      <a href="../../redimensionner-une-image/">redimensionneur d'images</a> est
-      le bon&nbsp;: vous dites combien de pixels vous voulez et il vous les
-      donne.
+      problème de dimensions&nbsp;: c'est l'affaire du
+      <a href="../../redimensionner-une-image/">redimensionneur d'images</a>,
+      qui vous donne le nombre de pixels que vous demandez.
     </p>
     <p>
-      <strong>&laquo;&nbsp;Sous 500&nbsp;KB&nbsp;&raquo;</strong> est un problème
-      de taille de fichier, et le redimensionnement n'est qu'une des façons de le
-      résoudre. Le <a href="../../compresser-une-image/">compresseur d'images</a>
-      cherche la meilleure qualité qui tienne dans votre cible et ne
-      redimensionne que si la qualité seule n'y arrive pas&nbsp;;
+      <strong>&laquo;&nbsp;Moins de 500&nbsp;KB&nbsp;&raquo;</strong> est un
+      problème de poids de fichier, et le redimensionnement n'est qu'un des
+      moyens de le régler. Le
+      <a href="../../compresser-une-image/">compresseur d'images</a> cherche la
+      meilleure qualité qui tienne dans la cible et ne redimensionne que si la
+      qualité seule n'y suffit pas&nbsp;;
       <a href="../compresser-une-image-a-une-taille-precise/">son guide</a>
-      traite de ce que cela coûte.
+      explique ce que cela coûte.
     </p>
   </section>
 
   <section>
-    <h2>Rien de tout cela ne demande un envoi</h2>
+    <h2>Rien de tout cela n'exige un envoi</h2>
     <p>
-      Décoder une image, la mettre à l'échelle et la réencoder sont des choses
-      que tous les navigateurs savent faire depuis des années &mdash; c'est la
-      machinerie même dont une page web se sert pour dessiner une image à une
-      autre taille. Il n'y a aucune raison technique pour que votre photo voyage
-      jusqu'à un serveur et en revienne pour ressortir plus petite, et l'outil
-      d'ici ne l'envoie nulle part&nbsp;: la
-      <code>Content-Security-Policy</code> de la page nomme toutes les adresses
-      qu'elle peut contacter, et aucune n'appartient à ce site.
+      Décoder une image, la mettre à l'échelle et la réencoder&nbsp;: les
+      navigateurs savent le faire depuis des années, et c'est exactement la
+      machinerie qu'une page web emploie pour afficher une image à une autre
+      taille. Rien, techniquement, n'oblige votre photo à faire l'aller-retour
+      jusqu'à un serveur pour ressortir plus petite &mdash; et l'outil de ce site
+      ne l'envoie nulle part&nbsp;: la
+      <code>Content-Security-Policy</code> de la page énumère toutes les adresses
+      qu'elle peut contacter, dont aucune n'appartient à ce site.
     </p>
     <p>
-      Chargez la page, coupez votre connexion, et redimensionnez quelque chose
+      Chargez la page, coupez votre connexion et redimensionnez quelque chose
       quand même, si vous préférez vérifier plutôt qu'on vous le dise.
       <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
-      fichiers à un convertisseur en ligne&nbsp;?</a> expose trois autres
-      vérifications applicables à n'importe quel outil.
+      fichiers à un convertisseur en ligne&nbsp;?</a> présente trois autres
+      vérifications valables pour n'importe quel outil.
     </p>
   </section>

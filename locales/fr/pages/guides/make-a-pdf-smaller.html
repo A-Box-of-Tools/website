@@ -2,240 +2,243 @@
     <h2>La réponse courte</h2>
     <p>
       Ouvrez le <a href="../../compresser-un-pdf/">compresseur de PDF</a>,
-      déposez-y le document, et regardez ce qu'il vous dit avant de changer quoi
-      que ce soit. Il lit le fichier et montre où se trouve vraiment le poids
-      &mdash; images, polices, texte et dessin, et tout ce à quoi plus rien dans
-      le document ne renvoie. Cet écran répond en général à la question.
+      déposez-y votre document et lisez ce qu'il vous dit avant de toucher au
+      moindre réglage. Il lit le fichier et vous montre où le poids se trouve
+      vraiment&nbsp;: images, polices, texte et tracés, et tout ce que plus rien
+      dans le document ne référence. Cet écran-là suffit en général à répondre à
+      la question.
     </p>
     <p>
-      Si l'essentiel du poids est fait d'images, vous pouvez espérer une grosse
-      économie. Si c'est des polices et du texte, non, et aucun outil ne le peut.
-      Lequel des deux vous avez est toute l'histoire, et cela vaut dix secondes
-      de regard.
+      Si le poids est surtout dans les images, attendez-vous à une belle
+      économie. S'il est dans les polices et le texte, il n'y en aura pas, et
+      aucun outil n'y changera rien. Savoir dans quel cas vous êtes, c'est toute
+      l'affaire, et cela mérite dix secondes de lecture.
     </p>
   </section>
 
   <section>
     <h2>Où se trouve vraiment le poids d'un PDF</h2>
     <p>
-      Un PDF est un conteneur pour plusieurs sortes de choses, et elles ne se
-      compressent pas pareil.
+      Un PDF est un conteneur pour plusieurs sortes de contenus, et elles ne se
+      compressent pas de la même façon.
     </p>
     <ul>
       <li>
-        <strong>Les images.</strong> Photographies et scans. Presque toujours
-        l'essentiel d'un gros PDF, et la seule partie où il y ait vraiment de la
-        marge.
+        <strong>Les images.</strong> Photographies et numérisations. Presque
+        toujours le gros d'un PDF volumineux, et la seule partie où il reste
+        vraiment de la place.
       </li>
       <li>
-        <strong>Les polices incorporées.</strong> Une police complète peut faire
-        des centaines de kilooctets&nbsp;; un sous-ensemble des caractères
-        réellement utilisés, bien moins. Dans les deux cas, elles ont été
-        compressées par ce qui a produit le fichier.
+        <strong>Les polices incorporées.</strong> Une police complète peut peser
+        quelques centaines de kilooctets&nbsp;; réduite aux seuls caractères
+        employés, bien moins. Dans les deux cas, le logiciel qui a produit le
+        fichier les a déjà compressées.
       </li>
       <li>
-        <strong>Le texte et le dessin vectoriel.</strong> Des instructions
-        plutôt que des pixels&nbsp;: trace cette ligne, pose ce mot ici. Déjà
+        <strong>Le texte et les tracés vectoriels.</strong> Des instructions, pas
+        des pixels&nbsp;: tirer cette ligne, poser ce mot ici. C'est déjà
         compact, et déjà compressé.
       </li>
       <li>
-        <strong>Les objets vers lesquels plus rien ne pointe.</strong> Les PDF en
-        accumulent. Modifier un document ajoute souvent le changement à la suite
-        plutôt que de réécrire le fichier&nbsp;: une ancienne version d'une page
-        peut donc y rester indéfiniment. Réempaqueter le fichier les jette.
+        <strong>Les objets que plus rien ne désigne.</strong> Les PDF en
+        accumulent&nbsp;: modifier un document ajoute souvent la correction à la
+        fin au lieu de réécrire le fichier, si bien qu'une ancienne version d'une
+        page peut y séjourner indéfiniment. Réempaqueter le fichier les élimine.
       </li>
     </ul>
     <p>
-      Les deux documents que les gens apportent à un compresseur de PDF ont donc
-      des perspectives complètement différentes. Un document numérisé est pour
-      l'essentiel une pile de photographies, et ressort couramment 60 à 90&nbsp;%
-      plus léger. Un contrat, une thèse ou un rapport exporté, c'est du texte, du
-      dessin et des polices &mdash; tous déjà compressés par le logiciel qui les
-      a écrits &mdash; et l'économie y est en général de quelques pour cent,
-      obtenue en réempaquetant et en jetant ce qui n'est plus référencé.
+      Les deux documents qu'on apporte à un compresseur de PDF n'ont donc pas du
+      tout les mêmes perspectives. Un document numérisé est pour l'essentiel une
+      pile de photographies&nbsp;: il ressort couramment 60 à 90&nbsp;% plus
+      léger. Un contrat, un mémoire ou un rapport exporté, ce sont du texte, des
+      tracés et des polices, tous déjà compressés par le logiciel qui les a
+      écrits&nbsp;; l'économie s'y compte en quelques pour cent, gagnés au
+      réempaquetage et à l'élimination de ce qui ne sert plus.
     </p>
     <p>
-      Tout outil qui promet &laquo;&nbsp;jusqu'à 90&nbsp;% plus
-      léger&nbsp;&raquo; sans regarder votre fichier cite le meilleur cas du
-      premier type à propos du second.
+      Tout outil qui promet &laquo;&nbsp;jusqu'à 90&nbsp;% de
+      réduction&nbsp;&raquo; sans avoir regardé votre fichier annonce le meilleur
+      cas du premier type à quelqu'un qui apporte le second.
     </p>
   </section>
 
   <section>
     <h2>Ce que le DPI vient faire là-dedans</h2>
     <p>
-      Un PDF ne contient pas seulement une image&nbsp;; il enregistre la taille à
-      laquelle cette image est dessinée sur la page. Cela vous donne quelque
-      chose de plus utile que le nombre de pixels&nbsp;: la résolution effective.
+      Un PDF ne se contente pas de contenir une image&nbsp;: il note aussi la
+      taille à laquelle elle est dessinée sur la page. On obtient donc mieux
+      qu'un nombre de pixels &mdash; une résolution effective.
     </p>
     <p>
-      Un scan de 4000 pixels de large étalé sur vingt centimètres de papier
-      transporte 500 pixels par pouce. Un écran en montre environ 100. Une bonne
-      imprimante de bureau travaille à 300 et ne sait guère faire plus. Tout ce
-      qui dépasse est du détail que rien dans l'avenir du document n'affichera
-      jamais &mdash; et c'est en général l'essentiel du fichier.
+      Une numérisation de 4000 pixels de large étalée sur une vingtaine de
+      centimètres de papier fait environ 500 DPI. Un écran en affiche une
+      centaine.
+      Une bonne imprimante de bureau travaille à 300 et ne sait guère faire
+      mieux. Tout ce qui dépasse est du détail que rien, dans l'avenir du
+      document, n'affichera jamais &mdash; et c'est en général l'essentiel du
+      fichier.
     </p>
     <p>
-      C'est pourquoi un compresseur de PDF sensé demande un DPI plutôt qu'un
-      pourcentage de qualité. Il jette d'abord les pixels au-dessus de votre
-      chiffre, parce qu'ils ne coûtent rien que quiconque puisse voir, et ce
-      n'est qu'ensuite qu'il commence à dépenser de la vraie qualité.
+      D'où le choix, chez un compresseur de PDF sensé, de vous demander un DPI
+      plutôt qu'un pourcentage de qualité. Il commence par jeter les pixels
+      au-dessus de votre chiffre, puisque ceux-là ne coûtent rien que l'œil
+      puisse voir&nbsp;; ce n'est qu'ensuite qu'il entame la qualité pour de
+      bon.
     </p>
     <p>
-      Repère approximatif&nbsp;: <strong>150 DPI</strong> pour un document qui
-      sera lu à l'écran, <strong>200 à 300</strong> pour ce qui sera imprimé,
-      <strong>72 à 100</strong> pour un brouillon que personne ne gardera. Mesurer
-      par rapport à la taille à laquelle l'image est dessinée est aussi ce qui
-      fait qu'un logo posé en petit n'est pas traité comme un scan pleine page
-      &mdash; le logo est déjà proche de sa résolution effective et il n'y a rien
-      à y prendre.
+      En pratique&nbsp;: <strong>150 DPI</strong> pour un document destiné à
+      l'écran, <strong>200 à 300</strong> pour quelque chose qui sera imprimé,
+      <strong>72 à 100</strong> pour un brouillon que personne ne conservera. Se
+      régler sur la taille à laquelle l'image est dessinée explique aussi qu'un
+      logo posé en petit ne soit pas traité comme une numérisation pleine
+      page&nbsp;: le logo est déjà proche de sa résolution effective, il n'y a
+      rien à lui prendre.
     </p>
   </section>
 
   <section>
-    <h2>Ce que compresser doit et ne doit pas toucher</h2>
+    <h2>Ce qu'une compression doit toucher, et ce qu'elle doit laisser</h2>
     <p>
-      Les images sont réencodées&nbsp;: elles perdent donc un peu. Rien d'autre
-      ne devrait être touché, et il vaut la peine de vérifier que l'outil que
-      vous utilisez s'y tient&nbsp;:
+      Les images sont réencodées, donc elles perdent un peu. Rien d'autre ne
+      devrait bouger, et il vaut la peine de vérifier que l'outil que vous
+      employez s'y tient.
     </p>
     <ul>
       <li>
         <strong>Le texte reste du texte.</strong> Sélectionnable, cherchable,
         copiable. Un compresseur qui aplatit les pages en images produira un
-        fichier très léger et détruira le document &mdash; vous ne pouvez plus le
-        chercher, les lecteurs d'écran ne peuvent plus le lire, et cela ne se
-        défait jamais.
+        fichier très léger et détruira le document&nbsp;: plus de recherche, plus
+        rien de lisible pour un lecteur d'écran, et aucun retour en arrière
+        possible.
       </li>
       <li>
-        <strong>Les polices restent entières.</strong> Remplacer des polices
-        change l'aspect du document sur la machine de quelqu'un d'autre, ce qui
-        est la seule chose que le PDF existe pour empêcher.
+        <strong>Les polices restent entières.</strong> Substituer une police
+        change l'allure du document sur la machine d'un autre, ce que le PDF
+        existe précisément pour empêcher.
       </li>
       <li>
-        <strong>Le dessin vectoriel est recopié à l'identique.</strong> Il est
-        déjà léger, et le rastériser le rendrait à la fois plus lourd et moins
-        bon.
+        <strong>Les tracés vectoriels sont recopiés à l'identique.</strong> Ils
+        sont déjà légers, et les transformer en pixels les rendrait à la fois
+        plus lourds et moins beaux.
       </li>
       <li>
-        <strong>Les formulaires, les liens, les signets, la structure
-        d'accessibilité et les pièces jointes sont repris.</strong> Ce sont des
-        choses faciles à perdre dans une réécriture et qu'on remarque rarement
-        avant que quelqu'un en ait besoin.
+        <strong>Formulaires, liens, signets, structure d'accessibilité et pièces
+        jointes suivent.</strong> Ce sont les premières choses qu'une réécriture
+        fait perdre, et on ne s'en aperçoit qu'au moment où quelqu'un en a
+        besoin.
       </li>
     </ul>
     <p>
-      Une règle voisine qu'un compresseur devrait suivre et que beaucoup ne
-      suivent pas&nbsp;: si le réencodage d'une image ne ressort pas réellement
-      plus petit que l'original, il faut remettre les octets d'origine. Abîmer une
-      image sans rien économiser est le cas de perte pure, et cela arrive plus
-      souvent qu'on ne le croirait sur des images déjà bien compressées.
+      Une règle voisine, qu'un compresseur devrait suivre et que beaucoup
+      ignorent&nbsp;: si le réencodage d'une image ne la rend pas réellement plus
+      légère que l'originale, il faut remettre les octets d'origine. Abîmer une
+      image sans rien gagner, c'est de la perte sèche, et cela arrive plus
+      souvent qu'on ne croit sur des images déjà bien compressées.
     </p>
   </section>
 
   <section>
-    <h2>Les images qui ne peuvent pas être compressées</h2>
+    <h2>Les images qu'on ne peut pas compresser</h2>
     <p>
-      Certaines images à l'intérieur d'un PDF sont passées, et un bon outil les
-      nomme plutôt que de les laisser discrètement hors du calcul&nbsp;:
+      Certaines images d'un PDF sont laissées de côté, et un bon outil les nomme
+      au lieu de les faire disparaître discrètement de ses calculs.
     </p>
     <ul>
       <li>
-        <strong>Les images JPEG&nbsp;2000, JBIG2 et codées fax (CCITT).</strong>
-        Aucun navigateur ne livre de décodeur pour l'une d'elles&nbsp;: elles
-        sont donc transmises intactes. Les deux dernières sont bitonales &mdash;
-        noir et blanc seulement &mdash; et sont en général déjà proches de leur
-        plus petite taille.
+        <strong>Les images JPEG&nbsp;2000, JBIG2 et fax (CCITT).</strong> Aucun
+        navigateur n'embarque de décodeur pour l'une ou l'autre&nbsp;: elles sont
+        transmises telles quelles. Les deux dernières sont en noir et blanc pur
+        et sont d'ordinaire déjà au plus léger.
       </li>
       <li>
-        <strong>Les images CMJN.</strong> Laissées tranquilles délibérément. Les
-        réencoder risquerait de déplacer les couleurs qu'une imprimerie
-        produirait, ce qui est une drôle d'initiative à prendre sur un document
-        que quelqu'un va imprimer.
+        <strong>Les images CMJN.</strong> Laissées intactes à dessein. Les
+        réencoder risquerait de déplacer les couleurs qu'une imprimante
+        produira, ce qui est une drôle de chose à faire à un document destiné à
+        l'impression.
       </li>
     </ul>
   </section>
 
   <section>
-    <h2>Choses à essayer avant de compresser</h2>
+    <h2>À essayer avant de compresser</h2>
     <p>
-      Parfois, le fichier est gros pour une raison à laquelle la compression est
-      la mauvaise réponse.
+      Il arrive que le fichier soit lourd pour une raison à laquelle la
+      compression n'est pas la bonne réponse.
     </p>
     <p>
-      <strong>A-t-il été scanné alors que ce n'était pas nécessaire&nbsp;?</strong>
-      Un document imprimé puis scanné est une pile de photographies de texte. Si
-      l'original existe encore quelque part comme document, l'exporter en PDF
-      produira un fichier d'une fraction du poids, et cherchable en prime.
+      <strong>A-t-il été numérisé alors qu'il n'y avait pas lieu&nbsp;?</strong>
+      Un document imprimé puis passé au scanner est une pile de photographies de
+      texte. Si l'original existe encore quelque part sous forme de document,
+      l'exporter en PDF donnera un fichier bien plus léger &mdash; et cherchable
+      par-dessus le marché.
     </p>
     <p>
-      <strong>A-t-il été exporté aux réglages d'impression&nbsp;?</strong> Les
-      traitements de texte et les logiciels de mise en page proposent souvent par
-      défaut un export en qualité d'impression. Réexporter pour l'écran depuis le
-      fichier source bat en général la compression de l'export.
+      <strong>A-t-il été exporté en qualité impression&nbsp;?</strong> Les
+      traitements de texte et les logiciels de mise en page choisissent souvent
+      l'export imprimable par défaut. Réexporter depuis le fichier source en
+      réglage écran fait presque toujours mieux que compresser l'export.
     </p>
     <p>
-      <strong>Faut-il vraiment que ce soit un seul fichier&nbsp;?</strong> Une
-      limite de courriel est par message. Découper un document de 200 pages en
-      chapitres est parfois le remède honnête.
+      <strong>Faut-il vraiment un seul fichier&nbsp;?</strong> La limite d'un
+      courriel s'applique au message. Découper un document de 200 pages en
+      chapitres est parfois la solution honnête.
     </p>
   </section>
 
   <section>
-    <h2>Les fichiers chiffrés, et pourquoi un compresseur devrait les refuser</h2>
+    <h2>Les fichiers chiffrés, et pourquoi un compresseur doit les refuser</h2>
     <p>
-      Un PDF protégé par mot de passe est refusé par l'outil d'ici, et c'est
-      délibéré et non une fonction manquante &mdash; y compris quand le mot de
-      passe est vide, ce qui est la façon dont enregistrent beaucoup de scanners
-      et de photocopieurs.
+      Un PDF protégé par mot de passe est refusé ici, et c'est délibéré, non pas
+      une fonction manquante &mdash; y compris quand le mot de passe est vide, ce
+      que produisent quantité de scanners et de photocopieurs.
     </p>
     <p>
-      Retirer la protection d'un document est un autre métier que le compresser.
-      Un outil qui le ferait en silence ferait quelque chose que vous n'avez pas
-      demandé, à un fichier que quelqu'un avait délibérément verrouillé, et vous
-      rendrait une copie qui n'aurait plus la propriété qu'on avait voulu lui
-      donner. Retirez la protection vous-même d'abord, délibérément, si c'est ce
-      que vous voulez.
+      Ôter la protection d'un document n'est pas le même travail que le
+      compresser. Un outil qui le ferait en silence agirait sans qu'on le lui
+      demande, sur un fichier que quelqu'un avait délibérément verrouillé, et
+      vous rendrait une copie dépourvue de la propriété qu'on avait voulu lui
+      donner. Si c'est ce que vous cherchez, retirez la protection d'abord, en
+      connaissance de cause.
     </p>
   </section>
 
   <section>
     <h2>Vérifier le résultat</h2>
     <p>
-      Ouvrez-le. Regardez les images en zoom maximal, vérifiez que le texte est
-      toujours sélectionnable, et confirmez le nombre de pages.
+      Ouvrez-le. Regardez les images au zoom maximum, assurez-vous que le texte
+      reste sélectionnable, et comptez les pages.
     </p>
     <p>
-      L'outil d'ici fait le dernier point pour vous avant de proposer le
-      fichier&nbsp;: il rouvre le document qu'il vient d'écrire et compte les
-      pages, sur votre propre machine. Il écrit en outre du PDF 1.5, que comprend
-      tout lecteur sorti depuis 2003&nbsp;: &laquo;&nbsp;il s'ouvre sur ma
-      machine&nbsp;&raquo; est donc un indice raisonnable de
-      &laquo;&nbsp;il s'ouvre sur la leur&nbsp;&raquo;.
+      L'outil fait ce dernier point à votre place avant même de vous proposer le
+      fichier&nbsp;: il rouvre le document qu'il vient d'écrire et en compte les
+      pages, sur votre machine. Il écrit par ailleurs du PDF 1.5, que toutes les
+      liseuses parues depuis 2003 comprennent&nbsp;: &laquo;&nbsp;il s'ouvre chez
+      moi&nbsp;&raquo; est donc un indice raisonnable qu'il s'ouvrira chez
+      l'autre.
     </p>
   </section>
 
   <section>
     <h2>Pourquoi cela ne demande pas de serveur</h2>
     <p>
-      Compresser un PDF a l'air d'un travail de serveur, et pendant l'essentiel
-      de la vie du web ç'en a été un. Ce que cela implique réellement, c'est
-      analyser la structure du fichier, trouver les flux d'images, les décoder et
-      les réencoder avec les codecs qu'un navigateur embarque déjà, et réécrire
-      le document. Tout cela tourne dans un navigateur aujourd'hui.
+      Compresser un PDF a des airs de travail de serveur, et pendant la plus
+      grande partie de l'histoire du web c'en était un. Concrètement, il s'agit
+      d'analyser la structure du fichier, d'y trouver les flux d'images, de les
+      décoder et de les réencoder avec des codecs que le navigateur embarque
+      déjà, puis de réécrire le document. Tout cela s'exécute désormais dans un
+      navigateur.
     </p>
     <p>
-      Ce qui compte plus pour ce type de fichier que pour la plupart, à cause de
-      ce que les gens compressent&nbsp;: contrats, courriers médicaux, relevés
-      bancaires, pièces d'identité, déclarations d'impôts. L'outil d'ici n'a
-      aucune fonction réseau, et la <code>Content-Security-Policy</code> de la
-      page nomme toutes les adresses qu'elle peut contacter, dont aucune
-      n'appartient à ce site. Chargez-le, débranchez, et compressez quelque chose
-      quand même.
+      Ce qui compte plus ici qu'ailleurs, vu ce qu'on compresse&nbsp;: des
+      contrats, des courriers médicaux, des relevés bancaires, des pièces
+      d'identité, des déclarations d'impôts. L'outil de ce site n'a aucune
+      fonction réseau, et la <code>Content-Security-Policy</code> de la page
+      énumère toutes les adresses qu'elle peut contacter, dont aucune n'appartient
+      à ce site. Chargez-le, débranchez, et compressez quelque chose quand même.
     </p>
     <p>
       <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
-      fichiers à un convertisseur en ligne&nbsp;?</a> expose trois autres
-      vérifications du même genre.
+      fichiers à un convertisseur en ligne&nbsp;?</a> présente trois autres
+      vérifications du même ordre.
     </p>
   </section>

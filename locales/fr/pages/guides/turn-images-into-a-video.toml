@@ -3,14 +3,14 @@
 #
 
 nav = "Des images en vidéo"
-title = "Comment transformer un dossier d'images en vidéo"
-description = "Faire un diaporama MP4 à partir de photos : ce que contrôlent vraiment la cadence et la durée, comment traiter les images qui n'ont pas la bonne forme, et pourquoi le résultat n'a pas de bande-son."
-heading = "Comment transformer un dossier d'images en vidéo"
+title = "Comment faire une vidéo à partir d'un dossier de photos"
+description = "Fabriquer un diaporama MP4 : ce que contrôlent vraiment la cadence et la durée, que faire des images qui n'ont pas la bonne forme, et pourquoi le résultat n'a pas de bande-son."
+heading = "Comment faire une vidéo à partir d'un dossier de photos"
 lede = """
-    Un diaporama est une chose simple à fabriquer et facile à fabriquer deux
-    fois, parce que deux des réglages ne veulent pas dire ce qu'ils ont l'air de
-    vouloir dire. Voici ce que chacun contrôle et lequel choisir."""
+    Un diaporama est simple à fabriquer, et facile à fabriquer deux fois&nbsp;:
+    deux de ses réglages ne veulent pas dire ce qu'ils ont l'air de vouloir
+    dire. Voici ce que chacun commande, et lequel choisir."""
 updated = "20 août 2026"
-og_title = "Comment transformer un dossier d'images en vidéo"
-og_description = "Ce que contrôlent vraiment la cadence et la durée, comment traiter les images qui n'ont pas la bonne forme, et pourquoi il n'y a pas de bande-son."
+og_title = "Faire une vidéo à partir d'un dossier de photos"
+og_description = "Ce que contrôlent vraiment la cadence et la durée, que faire des images qui n'ont pas la bonne forme, et pourquoi il n'y a pas de bande-son."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

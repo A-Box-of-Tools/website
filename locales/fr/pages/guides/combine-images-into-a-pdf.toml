@@ -3,15 +3,15 @@
 #
 
 nav = "Des images dans un PDF"
-title = "Comment réunir des images dans un seul PDF"
-description = "Transformer des photos ou des scans en un seul PDF : format de page, ordre et rotation, pourquoi un JPEG n'a pas à perdre de qualité en entrant, et ce qu'un PDF raconte à la personne à qui vous l'envoyez."
-heading = "Comment réunir des images dans un seul PDF"
+title = "Comment réunir plusieurs images dans un seul PDF"
+description = "Transformer des photos ou des scans en un seul PDF : format de page, ordre et rotation, pourquoi un JPEG n'a rien à perdre en entrant, et ce que le document raconte à celui qui le reçoit."
+heading = "Comment réunir plusieurs images dans un seul PDF"
 lede = """
     On vous a demandé &laquo;&nbsp;un seul PDF&nbsp;&raquo; et vous avez onze
-    photographies de papier. Voici les choix qui changent vraiment le résultat
-    &mdash; format de page, ordre, qualité, et ce que le document dit de vous
-    &mdash; et ceux que vous pouvez ignorer."""
+    photos de feuilles de papier. Voici les choix qui changent vraiment le
+    résultat &mdash; ordre, format de page, qualité, et ce que le document dit
+    de vous &mdash; et ceux que vous pouvez ignorer."""
 updated = "20 août 2026"
-og_title = "Comment réunir des images dans un seul PDF"
-og_description = "Format de page, ordre et rotation, pourquoi un JPEG n'a pas à perdre de qualité en entrant, et ce qu'un PDF raconte à la personne à qui vous l'envoyez."
+og_title = "Comment réunir plusieurs images dans un seul PDF"
+og_description = "Format de page, ordre et rotation, pourquoi un JPEG n'a rien à perdre en entrant, et ce que le document raconte à celui qui le reçoit."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

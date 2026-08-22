@@ -3,15 +3,16 @@
 #
 
 nav = "Couper une vidéo"
-title = "Comment couper une vidéo sans la réencoder"
-description = "Couper un clip n'a pas à perdre un seul octet de qualité. Pourquoi une coupe tombe parfois plus tôt que là où vous l'avez marquée, ce qu'une image clé vient y faire, et quand accepter un réencodage."
-heading = "Comment couper une vidéo sans la réencoder"
+# En français, la recherche porte sur la perte de qualité plutôt que sur le
+# réencodage, qui est le mot du métier ; le réencodage arrive au sous-titre.
+title = "Comment couper une vidéo sans perte de qualité"
+description = "Raccourcir un clip ne devrait pas coûter un seul octet. Pourquoi la coupe tombe parfois avant votre marque, ce que les images clés viennent y faire, et quand réencoder."
+heading = "Comment couper une vidéo sans perte de qualité"
 lede = """
-    Couper ne change l'aspect d'aucune image&nbsp;: un bon coupeur n'y touche
-    donc pas &mdash; il les déplace dans un nouveau fichier exactement telles
-    qu'elles étaient. Voici ce que cela vous rapporte, et le seul endroit où cela
-    se voit."""
+    Couper ne change l'aspect d'aucune image. Un bon outil n'y touche donc pas,
+    il les déplace telles quelles dans un nouveau fichier. Voici ce que cela
+    vous fait gagner, et le seul endroit où cela se voit."""
 updated = "20 août 2026"
-og_title = "Comment couper une vidéo sans la réencoder"
-og_description = "Pourquoi une coupe tombe parfois plus tôt que là où vous l'avez marquée, ce qu'une image clé vient y faire, et quand accepter un réencodage."
+og_title = "Couper une vidéo sans perdre en qualité"
+og_description = "Pourquoi la coupe tombe parfois avant votre marque, ce que les images clés viennent y faire, et quand accepter un réencodage."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
