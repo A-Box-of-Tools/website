@@ -38,7 +38,7 @@ def locale(**over):
         'lang': 'de', 'name': 'German', 'endonym': 'Deutsch', 'hreflang': 'de',
         'dir': 'ltr', 'complete': False, 'is_base': False, 'prefix': 'de/',
         'slugs': {}, 'site': SITE, 'tools': {}, 'pages': {}, 'bodies': {},
-        'planned': {}, 'missing': [],
+        'planned': {}, 'frame': [], 'debt': {},
     }
     base.update(over)
     return base
@@ -75,13 +75,26 @@ class Merging(unittest.TestCase):
             self.merge({'a': 'one'}, {'a': 'eins', 'b': 'zwei'})
         self.assertIn('b', str(caught.exception))
 
-    def test_a_list_of_a_different_length_is_refused(self):
-        # Merged in order, so five questions against four is not a shorter
-        # translation - it is one question that will render in English with
-        # nothing on the page to say which.
+    def test_a_list_longer_than_the_english_is_refused(self):
+        # Merged in order, so a locale may be behind the English but cannot be
+        # ahead of it: the extra entry has nothing to translate.
         with self.assertRaises(ConfigError) as caught:
-            self.merge({'faq': ['a', 'b', 'c']}, {'faq': ['a', 'b']})
+            self.merge({'faq': ['a', 'b']}, {'faq': ['a', 'b', 'c']})
         self.assertIn('3', str(caught.exception))
+
+    def test_a_shorter_list_falls_back_and_is_counted(self):
+        """English grows a category; ten locales do not break that afternoon.
+
+        This used to raise, and raising was wrong. A list that is short is a
+        locale that was finished before English added an entry - which is the
+        ordinary state of every locale here, most weeks. The tail falls back and
+        is counted like any other untranslated string.
+        """
+        missing = []
+        merged = self.merge({'cats': ['one', 'two', 'three']},
+                            {'cats': ['eins']}, missing)
+        self.assertEqual(merged['cats'], ['eins', 'two', 'three'])
+        self.assertEqual(missing, ['x.cats[1]', 'x.cats[2]'])
 
     def test_a_changed_type_is_refused(self):
         with self.assertRaises(ConfigError):
@@ -159,7 +172,8 @@ class TheRoadmapList(unittest.TestCase):
     def test_english_is_returned_unchanged(self):
         planned = {'note': 'x', 'group': []}
         self.assertIs(
-            i18n.localize_planned(planned, i18n.base_locale(SITE)), planned)
+            i18n.localize_planned(planned, i18n.base_locale(SITE), 'roadmap'),
+            planned)
 
     def test_an_untranslated_list_is_counted_against_the_locale(self):
         planned = {
@@ -168,10 +182,11 @@ class TheRoadmapList(unittest.TestCase):
                        'items': [['Rotate', 'quarter turns'], ['Filters', 'blur']]}],
         }
         de = locale()
-        i18n.localize_planned(planned, de)
-        # note + name + two items of two strings each.
-        self.assertEqual(len(de['missing']), 6)
-        self.assertIn('planned.group[0].items[0][0]', de['missing'])
+        i18n.localize_planned(planned, de, 'roadmap')
+        # note + name + two items of two strings each, charged to the roadmap
+        # page rather than to the language as a whole.
+        self.assertEqual(len(de['debt']['roadmap']), 6)
+        self.assertIn('planned.group[0].items[0][0]', de['debt']['roadmap'])
 
 
 class Slugs(unittest.TestCase):
@@ -200,20 +215,91 @@ class Slugs(unittest.TestCase):
 
 
 class Completeness(unittest.TestCase):
-    def test_an_unfinished_locale_may_fall_back(self):
-        i18n.check_complete(locale(complete=False, missing=['x.y']))
+    """What `complete = true` claims, and what it no longer claims.
 
-    def test_a_finished_locale_may_not(self):
+    It used to mean "every string in this language is translated", and English
+    grows a tool most weeks, so it was a claim that expired on its own. Now it
+    means "the frame around every page is translated" - a set that does not grow
+    when a tool ships - and an untranslated PAGE is held back by itself.
+    """
+
+    def test_an_unfinished_locale_may_fall_back(self):
+        i18n.check_complete(locale(complete=False, frame=['x.y']))
+
+    def test_a_finished_locale_may_not_fall_back_on_the_frame(self):
         with self.assertRaises(ConfigError) as caught:
-            i18n.check_complete(locale(complete=True, missing=['hub.lede']))
+            i18n.check_complete(locale(complete=True, frame=['hub.lede']))
         message = str(caught.exception)
         self.assertIn('hub.lede', message)
         # The error has to say what to do about it, because the right answer is
         # often "not yet" rather than "translate this now".
         self.assertIn('complete = false', message)
 
+    def test_a_finished_locale_may_still_owe_whole_pages(self):
+        """The change that lets English ship a tool without breaking ten builds.
+
+        A page nobody has translated yet is not an error. It falls back, it is
+        readable at its own URL, and `translated` is what keeps it out of the
+        sitemap and out of every hreflang set until somebody gets to it.
+        """
+        de = locale(complete=True, debt={'gif-maker': ['tools.gif-maker.body']})
+        i18n.check_complete(de)
+        self.assertFalse(i18n.translated(de, 'gif-maker'))
+        self.assertTrue(i18n.translated(de, 'compress-image'))
+
+    def test_an_unfinished_locale_publishes_no_page_at_all(self):
+        """Every page in it would be wearing an English nav."""
+        de = locale(complete=False)
+        self.assertFalse(i18n.translated(de, 'compress-image'))
+
     def test_english_is_complete_by_definition(self):
-        i18n.check_complete({'is_base': True, 'complete': True, 'missing': ['x']})
+        i18n.check_complete({'is_base': True, 'complete': True, 'frame': ['x']})
+        self.assertTrue(i18n.translated({'is_base': True}, 'anything'))
+
+
+class FallingBackInsideALanguage(unittest.TestCase):
+    """An English body sitting at a German address.
+
+    This could not happen before: a language with a fallback left in it was
+    never published, so nobody could reach the page. Holding pages back one at a
+    time means English prose now appears inside a published language, and the
+    links inside it were written for the English tree.
+    """
+
+    def relocate(self, html, slug, slugs=None):
+        de = locale(slugs=slugs if slugs is not None else
+                    {'trim-video': 'video-schneiden'})
+        return i18n.relocate(html, de, slug)
+
+    def test_a_link_is_pointed_at_the_translated_address(self):
+        found = self.relocate('<a href="../trim-video/">Trim</a>', 'reverse-video')
+        self.assertIn('href="/de/video-schneiden/"', found)
+
+    def test_a_page_with_no_translated_slug_keeps_its_english_one(self):
+        """It is falling back too, and lives at its English address here."""
+        found = self.relocate('<a href="../gif-maker/">GIF</a>', 'reverse-video')
+        self.assertIn('href="/de/gif-maker/"', found)
+
+    def test_a_guide_two_levels_down_resolves_from_its_own_folder(self):
+        found = self.relocate('<a href="../../trim-video/">Trim</a>',
+                              'guides/reverse-a-video')
+        self.assertIn('href="/de/video-schneiden/"', found)
+
+    def test_an_asset_is_left_where_it_is(self):
+        found = self.relocate('<img src="../../assets/x.svg">', 'guides/a-guide')
+        self.assertIn('src="/assets/x.svg"', found)
+
+    def test_an_absolute_or_external_link_is_untouched(self):
+        for href in ('https://example.com/x/', '/de/already/', '#section',
+                     'mailto:a@b.c'):
+            with self.subTest(href=href):
+                found = self.relocate(f'<a href="{href}">x</a>', 'a-tool')
+                self.assertIn(f'href="{href}"', found)
+
+    def test_a_fragment_survives_the_rewrite(self):
+        found = self.relocate('<a href="../trim-video/#faq">Trim</a>',
+                              'reverse-video')
+        self.assertIn('href="/de/video-schneiden/#faq"', found)
 
 
 class Advertising(unittest.TestCase):

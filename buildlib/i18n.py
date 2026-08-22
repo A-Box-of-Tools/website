@@ -39,19 +39,54 @@ build is meant to make impossible". That rule is not weakened below - it is
 moved. A locale may leave a key out, and the English text is used; what a locale
 may NOT do is leave a key out and still be advertised as a translation.
 
-An incomplete locale is built, so it can be read and reviewed at a real URL, and
-is then held back from every place that would claim it exists:
+Anything not translated is built, so it can be read and reviewed at a real URL,
+and is then held back from every place that would claim it exists:
 
   * no <link rel="alternate" hreflang> pointing at it, from any page;
   * no entry in sitemap.xml;
   * no link in the language switcher.
 
-So a half-translated German site is a thing the author can open, and a thing
-Google is never invited to index. Setting `complete = true` turns the fallback
-back into an error: from then on a missing key fails the build, exactly as a
-missing name does in a template. A locale therefore gets more strict as it gets
-more finished, which is the direction that helps.
+So a half-translated German page is a thing the author can open, and a thing
+Google is never invited to index.
+
+WHAT "FINISHED" IS MEASURED IN, AND WHY IT IS NOT THE LANGUAGE
+
+It is measured a PAGE at a time. That is the second version of this rule, and
+the first one was wrong in a way worth recording, because the failure was not
+in the code.
+
+`complete = true` used to mean "every string in this language is translated",
+enforced by failing the build on any fallback at all. It reads like the strict
+option, and it is - but English is not finished either. This site ships a tool
+most weeks, and each one arrives untranslated in every language at once, so the
+rule failed the build for ten languages every time English grew. German hit it
+three times while it was being written; the third time it was also holding up
+nine other languages that had nothing to do with it. A rule that turns a normal
+Tuesday into a broken build is not strictness, it is a rule measuring the wrong
+thing.
+
+So the unit is the page:
+
+  * a PAGE that still falls back is built, and kept out of the sitemap, the
+    hreflang sets and the switcher until it is translated - the treatment an
+    unfinished language used to get, given to the part that is unfinished;
+  * the FRAME - the nav, the footer, the hub, the [ui] words - is still judged
+    whole, because it is drawn around every page and there is no per-page way to
+    hold it back. That is what `complete = true` now claims, and it is a set
+    that does not grow when a tool ships;
+  * a list SHORTER than the English one falls back entry by entry instead of
+    raising, which is the same rule again: a locale is allowed to be behind
+    English, and is never allowed to be ahead of it.
+
+Two things follow that are easy to get wrong, and both have their own tests.
+Every language's debt is worked out by `survey` BEFORE any page is rendered,
+because the hreflang set on the English page is a fact about German. And an
+English body falling back inside German has its links rewritten by `relocate`,
+because it was written for a tree whose addresses are English.
 """
+
+import posixpath
+import re
 
 from buildlib.site import ConfigError, load_toml
 
@@ -206,7 +241,8 @@ def base_locale(site):
         'pages': {},
         'bodies': {},
         'planned': {},
-        'missing': [],
+        'frame': [],
+        'debt': {},
     }
 
 
@@ -245,7 +281,15 @@ def load_locale(path, site):
         'tools': {},
         'pages': {},
         'bodies': {},
-        'missing': [],
+        # What the frame still owes, settled once when this file is read. The
+        # nav, the footer, the hub and the [ui] words are drawn around every
+        # page, so there is no per-page way to hold them back.
+        'frame': [],
+        # What fell back, bucketed by the slug of the page it fell back on, so
+        # one untranslated guide costs that guide its place in the sitemap
+        # rather than costing the whole language its place. `missing` stays as
+        # the flat list, because the end-of-build report counts strings.
+        'debt': {},
     }
 
     stray = sorted(set(config) - RESERVED_LOCALE_KEYS - set(TRANSLATABLE_SITE_PATHS))
@@ -270,7 +314,7 @@ def load_locale(path, site):
     locale['site'] = dict(site)
     locale['site'].update(translate(site, overrides, TRANSLATABLE_SITE_PATHS,
                                     f'{path.name}/locale.toml',
-                                    locale['missing'], 'site'))
+                                    locale['frame'], 'site'))
 
     for kind_name, keys in (('tools', TRANSLATABLE_TOOL_KEYS),
                             ('pages', TRANSLATABLE_PAGE_KEYS)):
@@ -302,7 +346,8 @@ def load_locale(path, site):
 # Merging
 
 
-def merge(base, over, where, missing, path, structural=STRUCTURAL_KEYS):
+def merge(base, over, where, missing, path, structural=STRUCTURAL_KEYS,
+          transform=None):
     """English underneath, the translation on top, recursively.
 
     Records what was not translated in `missing` rather than raising, because
@@ -312,10 +357,12 @@ def merge(base, over, where, missing, path, structural=STRUCTURAL_KEYS):
 
     Two shapes are refused outright, because neither is a translation:
 
-      * a list whose length changed. [[faq]] and [[hub.guarantees]] are merged
-        entry by entry, in order, so five questions in English and four in
-        German is not a shorter translation, it is a question that will render
-        in English inside a German page with nothing to say which one it was.
+      * a list LONGER than the English. [[faq]] and [[hub.guarantees]] are
+        merged entry by entry, in order, so six questions in German against
+        five in English is not a fuller translation, it is an entry with
+        nothing to translate. A SHORTER list is fine, and is the ordinary state
+        of a locale that was finished before English grew another entry: the
+        tail falls back and is counted with everything else.
       * a value whose type changed. A table where the English has a string is a
         translator having restructured the page, which the templates cannot
         follow.
@@ -339,28 +386,57 @@ def merge(base, over, where, missing, path, structural=STRUCTURAL_KEYS):
                 merged[key] = value
             elif key in over:
                 merged[key] = merge(value, over[key], where, missing,
-                                    f'{path}.{key}', inner)
+                                    f'{path}.{key}', inner, transform)
             else:
-                merged[key] = value
+                merged[key] = fell_back(value, transform, inner)
                 note_missing(value, missing, f'{path}.{key}', inner)
         return merged
 
     if isinstance(base, list):
         if not isinstance(over, list):
             raise LocaleError(f'{where}: {path} should be a list, not a {kind(over)}')
-        if len(base) != len(over):
+        if len(over) > len(base):
             raise LocaleError(
-                f'{where}: {path} has {len(over)} entries and the English has '
-                f'{len(base)}. They are merged in order, so the counts have to '
-                'match - a missing entry would render in English with nothing to '
-                'say which one it was.')
-        return [merge(a, b, where, missing, f'{path}[{index}]', structural)
-                for index, (a, b) in enumerate(zip(base, over))]
+                f'{where}: {path} has {len(over)} entries and the English has only '
+                f'{len(base)}. They are merged in order, so a locale can be behind '
+                'the English but it cannot be ahead of it - there is nothing for '
+                'the extra entries to translate.')
+        # Short is allowed, and is the ordinary state of a locale that was
+        # finished before English grew another entry. The tail falls back and is
+        # counted, exactly like any other untranslated string, which is what
+        # keeps a new [[hub.categories]] from breaking ten builds at once.
+        merged = [merge(a, b, where, missing, f'{path}[{index}]', structural,
+                        transform)
+                  for index, (a, b) in enumerate(zip(base, over))]
+        for index in range(len(over), len(base)):
+            merged.append(fell_back(base[index], transform, structural))
+            note_missing(base[index], missing, f'{path}[{index}]', structural)
+        return merged
 
     if isinstance(over, (dict, list)):
         raise LocaleError(
             f'{where}: {path} should be a {kind(base)}, not a {kind(over)}')
     return over
+
+
+def fell_back(value, transform, structural=STRUCTURAL_KEYS):
+    """A copy of some English, with `transform` applied to every string in it.
+
+    Walks the same shapes note_missing walks, and skips the same structural
+    keys - a slug or a category id is not prose and must come through a
+    fallback untouched.
+    """
+    if transform is None:
+        return value
+    if isinstance(value, str):
+        return transform(value)
+    if isinstance(value, dict):
+        return {key: (inner if key in structural
+                      else fell_back(inner, transform, structural))
+                for key, inner in value.items()}
+    if isinstance(value, list):
+        return [fell_back(inner, transform, structural) for inner in value]
+    return value
 
 
 def note_missing(value, missing, path, structural=STRUCTURAL_KEYS):
@@ -392,7 +468,43 @@ def kind(value):
 # Applying a locale to one tool or one page
 
 
-def translate(source, over, keys, where, missing, path):
+def charge(locale, slug):
+    """Start this page's tally again, and hand back the list to fill.
+
+    Assigned rather than appended to, because the tally is worked out twice:
+    once by `survey` before any page is rendered, and again as each page is
+    rendered. Appending would count everything in a published language twice.
+    """
+    debt = locale['debt'][slug] = []
+    return debt
+
+
+def all_debt(locale):
+    """Every string this language still owes, frame and pages together."""
+    return locale['frame'] + [entry for debt in locale['debt'].values()
+                              for entry in debt]
+
+
+def survey(locales, tools, prose, planned, site):
+    """Work out what every language owes, before a single page is written.
+
+    Rendering a page needs to know which OTHER languages have finished it, so
+    no page can be the thing that works it out. Cheap: it is the same merge the
+    render does, over tables already in memory, and it runs once per language.
+    """
+    for locale in locales:
+        if locale['is_base']:
+            continue
+        for tool in tools:
+            localize_tool(tool, locale, site)
+            body_for(locale, 'tools', tool['slug'], '')
+        for page in prose:
+            localize_page(page, locale, site)
+            body_for(locale, 'pages', page['slug'], '')
+        localize_planned(planned, locale, site['roadmap']['slug'])
+
+
+def translate(source, over, keys, where, missing, path, transform=None):
     """Merge a translation over just the keys that are words.
 
     Merging over the whole table instead was the first version, and it counted
@@ -408,7 +520,7 @@ def translate(source, over, keys, where, missing, path):
     and what is counted as untranslated cannot drift apart.
     """
     return merge({key: source[key] for key in keys if key in source},
-                 over, where, missing, path)
+                 over, where, missing, path, STRUCTURAL_KEYS, transform)
 
 
 def localize_tool(tool, locale, site):
@@ -421,10 +533,12 @@ def localize_tool(tool, locale, site):
     """
     slug = tool['slug']
     merged = dict(tool)
+    debt = charge(locale, slug)
     merged.update(translate(tool, locale['tools'].get(slug, {}),
                             TRANSLATABLE_TOOL_KEYS,
                             f'locales/{locale["lang"]}/tools/{slug}.toml',
-                            locale['missing'], f'tools.{slug}'))
+                            debt, f'tools.{slug}',
+                            lambda text: relocate(text, locale, slug)))
     merged['out_slug'] = locale['slugs'].get(slug, slug)
     merged['url'] = f'{site["domain"]}{locale["prefix"]}{merged["out_slug"]}/'
     return merged
@@ -450,17 +564,19 @@ def localize_page(page, locale, site):
     """
     slug = page['slug']
     merged = dict(page)
+    debt = charge(locale, slug)
     merged.update(translate(page, locale['pages'].get(slug, {}),
                             TRANSLATABLE_PAGE_KEYS,
                             f'locales/{locale["lang"]}/pages/{slug}.toml',
-                            locale['missing'], f'pages.{slug}'))
+                            debt, f'pages.{slug}',
+                            lambda text: relocate(text, locale, slug)))
     merged['out_slug'] = locale['slugs'].get(slug, slug)
     merged['url'] = f'{site["domain"]}{locale["prefix"]}{merged["out_slug"]}/'
     merged['depth'] = merged['out_slug'].count('/') + 1
     return merged
 
 
-def localize_planned(planned, locale):
+def localize_planned(planned, locale, slug):
     """config/planned.toml, said in one language.
 
     The roadmap is a real page in the sitemap, so a locale that called itself
@@ -470,9 +586,67 @@ def localize_planned(planned, locale):
     """
     if locale['is_base']:
         return planned
-    return merge(planned, locale['planned'],
-                 f'locales/{locale["lang"]}/{PLANNED}',
-                 locale['missing'], 'planned', PLANNED_STRUCTURE)
+    debt = charge(locale, slug)
+    merged = merge(planned, locale['planned'],
+                   f'locales/{locale["lang"]}/{PLANNED}',
+                   debt, 'planned', PLANNED_STRUCTURE)
+    return merged
+
+
+BODY_LINK = re.compile(r'\b(href|src)="([^"]+)"')
+
+# Hrefs that are already pointing somewhere absolute, or at nothing on the
+# filesystem at all. None of them is written relative to the page.
+ABSOLUTE_LINK = ('http://', 'https://', '//', '/', '#', 'mailto:', 'tel:', 'data:')
+
+
+def relocate(html, locale, slug):
+    """Point an English body's links at the language it is falling back into.
+
+    A body that falls back is English prose sitting at a German URL, and the
+    links inside it were written relative to the ENGLISH page - `../trim-video/`
+    from `/guides/reverse-a-video/`. Dropped into `/de/` unchanged they lead to
+    pages that do not exist, because German addresses are German: the tool is at
+    `/de/video-schneiden/`.
+
+    This is a problem the old arrangement never had, and only because it never
+    published a language that had a fallback left in it. Holding pages back one
+    at a time means English bodies now appear inside a published language, so
+    their links have to be made to work there.
+
+    Each one is resolved against the English page's own folder, turned back into
+    the slug it names, and re-emitted as a root-absolute address in this locale -
+    root-absolute because the English tree and the German tree are not the same
+    shape, and a relative path counted from the wrong one is how this broke in
+    the first place. Anything that is not a page keeps its resolved path, which
+    is what assets want anyway.
+    """
+    here = '/' + (f'{slug}/' if slug else '')
+
+    def fix(match):
+        attr, href = match.group(1), match.group(2)
+        if href.startswith(ABSOLUTE_LINK) or not href:
+            return match.group(0)
+        # Keep a fragment or a query on the end of whatever the path becomes.
+        cut = min((i for i in (href.find('#'), href.find('?')) if i >= 0),
+                  default=len(href))
+        path, tail = href[:cut], href[cut:]
+        if not path:
+            return match.group(0)
+        resolved = posixpath.normpath(posixpath.join(here, path))
+        if path.endswith('/') and not resolved.endswith('/'):
+            resolved += '/'
+        # A page of this site is a folder and ends in a slash; an asset is a
+        # file and has an extension. Only the first kind has an address that
+        # differs between languages.
+        if resolved.endswith('/'):
+            # A slug with no translation maps to itself, which is right rather
+            # than a gap: that page is falling back too, and in this language it
+            # lives at its English address under this language's prefix.
+            return f'{attr}="{locale_path(locale, resolved.strip("/"))}{tail}"'
+        return f'{attr}="{resolved}{tail}"'
+
+    return BODY_LINK.sub(fix, html)
 
 
 def body_for(locale, kind_name, slug, fallback):
@@ -486,7 +660,8 @@ def body_for(locale, kind_name, slug, fallback):
     if key in locale['bodies']:
         return locale['bodies'][key]
     if not locale['is_base']:
-        locale['missing'].append(f'{kind_name}.{slug}.body')
+        locale['debt'].setdefault(slug, []).append(f'{kind_name}.{slug}.body')
+        return relocate(fallback, locale, slug)
     return fallback
 
 
@@ -570,39 +745,88 @@ def check_slugs(locale, tool_slugs, page_slugs, site):
 
 
 def check_complete(locale):
-    """A locale that claims to be finished has to be finished.
+    """A locale that claims to be finished has to have finished the FRAME.
 
-    Called after every page has been localized, so `missing` holds everything
-    that fell back across the whole site rather than whatever happened to have
-    been reached by the time some earlier check ran.
+    This used to be judged over the whole language, and the whole language is
+    the wrong unit. English is not finished either - it grows a tool most
+    weeks - and a rule that fails the build the moment it does makes every new
+    English tool wait for ten translations before the site will build at all.
+    That happened three times to German while it was being written, and the
+    third time it was holding up nine other languages that had nothing to do
+    with it.
+
+    So an untranslated PAGE is no longer an error. It falls back, it is built
+    and readable at its own URL, and it is kept out of the sitemap, out of
+    every hreflang set and out of the switcher until it is translated - the
+    same treatment an unfinished locale used to get, applied to the page that
+    is actually unfinished. See `translated`.
+
+    What is still an error is claiming a language and not having said the words
+    around every page in it. That set is small, it is stable, and it does not
+    grow when a new tool ships.
     """
     if locale['is_base'] or not locale['complete']:
         return
-    if not locale['missing']:
+    debt = locale['frame']
+    if not debt:
         return
 
-    shown = sorted(set(locale['missing']))
+    shown = sorted(set(debt))
     more = len(shown) - 12
     tail = f'\n    ... and {more} more' if more > 0 else ''
     raise LocaleError(
         f'locales/{locale["lang"]}/ says complete = true, but {len(shown)} strings '
-        'still fall back to English:\n    '
+        'in the frame around every page still fall back to English:\n    '
         + '\n    '.join(shown[:12]) + tail
-        + '\n  Translate them, or set complete = false: the locale is then still '
-          'built and still readable at its own URL, and is kept out of the '
-          'sitemap, the hreflang tags and the language switcher until it is ready.')
+        + '\n  The frame is the nav, the footer, the hub and the [ui] words, and it '
+          'is drawn around every page in the language, so there is no per-page way '
+          'to hold it back. Translate these, or set complete = false: the locale is '
+          'then still built and still readable at its own URL, and is kept out of '
+          'the sitemap, the hreflang tags and the switcher until it is ready.')
 
 
-def published(locales):
-    """The locales fit to be advertised: English, and every locale that says it
-    is finished.
+def translated(locale, slug):
+    """Is this one page finished in this one language?
+
+    English is finished by definition. A locale that has not finished its frame
+    publishes nothing at all, however many of its pages are done, because every
+    one of them would be wearing an English nav.
+    """
+    if locale['is_base']:
+        return True
+    if not locale['complete']:
+        return False
+    return not locale['debt'].get(slug)
+
+
+def published(locales, slug=None):
+    """The locales fit to be advertised - for the whole site, or for one page.
 
     The sitemap, the hreflang tags and the switcher are all built from this one
-    list, so the three cannot disagree about which languages the site claims to
-    be available in - which is the failure Google reports as "hreflang tags
-    point to a page that is not indexed".
+    function, so the three cannot disagree about which languages the site
+    claims a page to be available in - which is the failure Google reports as
+    "hreflang tags point to a page that is not indexed".
+
+    Without a slug this is the set of locales that have finished their frame,
+    which is what the language switcher on the 404 has to work from. With one,
+    it is the narrower set that has also finished that page.
     """
-    return [locale for locale in locales if locale['is_base'] or locale['complete']]
+    ready = [locale for locale in locales if locale['is_base'] or locale['complete']]
+    if slug is None:
+        return ready
+    return [locale for locale in ready if translated(locale, slug)]
+
+
+def debt_report(locale, tools, prose):
+    """One line per language about what is left, for the end of a build.
+
+    Counted in pages rather than strings, because pages are the unit that now
+    decides anything: a page with one string left is as unpublished as a page
+    with four hundred.
+    """
+    slugs = [tool['slug'] for tool in tools] + [page['slug'] for page in prose]
+    behind = [slug for slug in slugs if locale['debt'].get(slug)]
+    return behind
 
 
 def alternates(locales, slug, site):
@@ -616,8 +840,13 @@ def alternates(locales, slug, site):
 
     x-default points at English, which is what a reader whose language is not
     one of these is meant to be given.
+
+    Judged for THIS page, not for the site. A language that has translated the
+    hub but not this guide does not appear in this guide's set, and the guide it
+    has not translated does not appear in anyone else's - which is the
+    reciprocity rule holding at the level the translation actually happens at.
     """
-    ready = published(locales)
+    ready = published(locales, slug)
     # One language is not a set of alternates, it is a page. A lone
     # hreflang="en" beside an x-default pointing at the same URL says nothing
     # that the canonical above it has not already said, so until there is a
@@ -643,8 +872,12 @@ def switcher(locales, current, slug, site):
     them. A crawler has to be able to walk from one language into the next, and
     a site whose whole claim is that it does not track you cannot be storing a
     preference in order to do it.
+
+    Offers only the languages this page exists in. A switcher that lists German
+    on a page with no German behind it is a promise the next click breaks, and
+    it is worse than not offering German at all.
     """
-    ready = published(locales)
+    ready = published(locales, slug)
     # Nothing to switch to. A control offering only the language you are already
     # reading is furniture, so it is not rendered until a second language is
     # finished enough to be offered.

@@ -1,0 +1,18 @@
+#
+# Ratgeber: Ein Bild in CSS einbetten - German.
+#
+
+nav = "Ein Bild in CSS einbetten"
+title = "Data-URIs in CSS: wann ein Bild eingebettet gehört und wann nicht"
+description = "Was eine Data-URI kostet, warum Base64 ein Drittel drauflegt und gzip es nicht zurückgibt, warum ein SVG nie base64 sein sollte, und der Anführungszeichen-Fehler, der eingebettete SVGs stillschweigend kaputtmacht."
+heading = "Wann ein Bild in Ihr CSS gehört - und wann nicht"
+lede = """
+    Ein ins Stylesheet geschriebenes Bild kommt mit ihm an: keine zweite
+    Anfrage, kein Warten. Es hört damit aber auch auf, eine Datei zu sein
+    &mdash; es kann also nicht für sich zwischengespeichert werden und wird jedes
+    Mal neu geladen, wenn sich irgendetwas drumherum ändert. Hier steht, wo
+    dieser Handel sich lohnt und wo er es stillschweigend nicht tut."""
+updated = "20. August 2026"
+og_title = "Wann ein Bild in Ihr CSS gehört"
+og_description = "Was eine Data-URI kostet, warum ein SVG nie base64 sein sollte, und der Anführungszeichen-Fehler, der eingebettete SVGs stillschweigend kaputtmacht."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

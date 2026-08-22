@@ -33,7 +33,7 @@ endonym = "Deutsch"
 # finished, and a finished language cannot silently fall behind the
 # English it was finished against. Flipped back the moment those eight
 # files are translated.
-complete = false
+complete = true
 
 #
 # ---------------------------------------------------------------------------
@@ -74,6 +74,12 @@ complete = false
 # and a great many people search for how to make a favicon.
 "image-to-ico" = "favicon-erstellen"
 "svg-to-image" = "svg-in-png-umwandeln"
+# Named for the job once more. "base64" rather than "data-uri" is what
+# gets typed, even by the people who know it is a data URI.
+"heic-to-jpg" = "heic-in-jpg-umwandeln"
+"image-to-data-uri" = "bild-als-base64"
+"qr-barcode" = "qr-code-erstellen"
+"video-to-gif" = "video-in-gif-umwandeln"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of
@@ -96,6 +102,10 @@ complete = false
 "guides/is-it-safe-to-upload-files" = "ratgeber/ist-das-hochladen-von-dateien-sicher"
 "guides/make-a-favicon" = "ratgeber/favicon-selbst-erstellen"
 "guides/convert-an-svg-to-png" = "ratgeber/svg-in-png-umwandeln"
+"guides/convert-heic-to-jpg" = "ratgeber/heic-in-jpg-umwandeln"
+"guides/embed-an-image-in-css" = "ratgeber/bild-in-css-einbetten"
+"guides/make-a-qr-code" = "ratgeber/qr-code-selbst-erstellen"
+"guides/turn-a-video-into-a-gif" = "ratgeber/aus-einem-video-ein-gif-machen"
 
 #
 # ---------------------------------------------------------------------------

@@ -1,0 +1,17 @@
+#
+# Ratgeber: Aus einem Video ein GIF machen - German.
+#
+
+nav = "Aus einem Video ein GIF"
+title = "Aus einem Video ein GIF machen (und es klein halten)"
+description = "Welchen Abschnitt, welche Breite und welche Bildrate Sie wählen sollten, warum ein GIF eines Videos zehnmal so groß ist wie das Video, und wann Sie überhaupt eines nehmen sollten."
+heading = "Wie Sie aus einem Video ein GIF machen"
+lede = """
+    Ein GIF ist ein Format von 1987, das ganze Bilder speichert und keine
+    Bewegung &mdash; eines aus einem Video ist deshalb immer groß. Hier steht,
+    welche der drei Einstellungen Sie bewegen sollten, wenn es zu groß ist, und
+    wie viel jede davon bringt."""
+updated = "20. August 2026"
+og_title = "Aus einem Video ein GIF machen, und es klein halten"
+og_description = "Die drei Einstellungen, die die Größe eines GIFs bestimmen, was jede davon kostet, und wann ein GIF die ganz falsche Antwort ist."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

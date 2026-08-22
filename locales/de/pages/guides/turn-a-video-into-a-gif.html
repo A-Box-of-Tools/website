@@ -1,0 +1,236 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie den
+      <a href="../../video-in-gif-umwandeln/">Video-zu-GIF-Umwandler</a>, ziehen
+      Sie den Clip hinein, markieren Sie die gewünschten Sekunden und lassen Sie
+      die Breite bei 480 und die Rate bei 12 Bildern pro Sekunde. Das ist die
+      Einstellung, die die meisten GIFs wollen. Kommt die Datei zu groß heraus,
+      nehmen Sie die Breite herunter, bevor Sie irgendetwas anderes anfassen
+      &mdash; das ist die Einstellung, die doppelt zahlt.
+    </p>
+    <p>
+      Der Rest dieser Seite handelt vom Warum, denn &bdquo;mein GIF hat
+      14&nbsp;MB&ldquo; ist das Problem, das alle tatsächlich haben, und welcher
+      Regler zu drehen ist, liegt nicht auf der Hand.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum ein GIF eines Videos so riesig ist</h2>
+    <p>
+      Ein Video-Codec speichert <em>Bewegung</em>. Er schreibt alle paar Sekunden
+      ein volles Bild und für jedes Einzelbild dazwischen eine Beschreibung
+      davon, wie dieses Bild sich bewegt hat: Dieser Pixelblock ist vier nach
+      links gerutscht, dieser Bereich ist etwas dunkler geworden. Ein fünf
+      Sekunden langer Clip kann ein paar hundert Kilobyte groß sein, weil das
+      meiste davon Anweisungen zu einem Bild sind, das Sie schon haben.
+    </p>
+    <p>
+      GIF hat davon nichts. Es war 1989 fertig, bevor es irgendetwas davon gab.
+      Jedes Einzelbild ist ein Bild, für sich komprimiert, mit einem Verfahren,
+      das für Bildschirmfotos einer Tabellenkalkulation entworfen wurde. In dem
+      Format gibt es nirgends eine Bewegungsschätzung, und es gibt keine
+      Möglichkeit, eine hinzuzufügen.
+    </p>
+    <p>
+      Die Zahl, mit der zu rechnen ist, lautet also
+      <strong>das Zehnfache der Größe des Videos</strong>, und kein Umwandler
+      redet Sie davon herunter. Was ein guter tun kann, ist, nichts obendrauf zu
+      verschwenden und Ihnen die drei Einstellungen zu geben, die es tatsächlich
+      entscheiden.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die drei Einstellungen, und was jede kostet</h2>
+    <p>
+      Alles an der Größe eines GIFs läuft darauf hinaus, wie viele Pixel darin
+      stecken &mdash; und das ist die Länge mal die Rate mal die Fläche eines
+      Einzelbildes.
+    </p>
+    <ul>
+      <li>
+        <strong>Der Abschnitt &mdash; linear.</strong> Doppelt so lang sind
+        doppelt so viele Einzelbilder und etwa die doppelte Datei. Das ist die,
+        die die meisten schon verstehen, und es lohnt sich, dabei rücksichtslos
+        zu sein: Ein GIF, das seinen Punkt in drei Sekunden macht, ist ein
+        besseres GIF und obendrein ein kleineres.
+      </li>
+      <li>
+        <strong>Die Breite &mdash; quadratisch.</strong> Die Breite zu halbieren
+        halbiert die Höhe mit, es ist also ein <em>Viertel</em> der Pixel. Von
+        640 auf 320 zu gehen spart nicht etwas weniger als die Hälfte, sondern
+        rund drei Viertel. Das ist die Einstellung, nach der niemand zuerst
+        greift, und die, die sich am besten auszahlt.
+      </li>
+      <li>
+        <strong>Die Bildrate &mdash; linear.</strong> Zehn Bilder pro Sekunde
+        sind zwei Drittel der Größe von fünfzehn. Es ist auch die Einstellung,
+        bei der der Verlust am sichtbarsten ist, denn zu langsame Bewegung liest
+        sich als kaputt und nicht als klein.
+      </li>
+    </ul>
+    <p>
+      Ein durchgerechnetes Beispiel. Sechs Sekunden eines Handy-Clips in seinen
+      eigenen 1080&times;1920 bei 30 fps sind 180 Einzelbilder zu zwei Millionen
+      Pixeln: rund 350 Millionen Pixel, und das ist kein GIF, das ist eine
+      Geiselnahme. Dieselben sechs Sekunden mit 480 Breite und 12 fps sind 72
+      Einzelbilder zu 400.000 Pixeln &mdash; 30 Millionen, etwa ein Zwölftel
+      &mdash; und es sieht aus wie das, was Menschen mit einem GIF meinen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Welche Bildrate zu wählen ist</h2>
+    <p>
+      Zwölf ist hier die Voreinstellung und überraschend oft die richtige
+      Antwort. Es ist die Rate, die handgezeichnete Animation seit einem
+      Jahrhundert verwendet: schnell genug, dass das Auge sie als
+      zusammenhängende Bewegung liest, langsam genug, dass Sie nicht für
+      Einzelbilder zahlen, die niemand sehen kann.
+    </p>
+    <ul>
+      <li><strong>5&ndash;8</strong> &mdash; wirkt wie eine Diashow. Passt für
+        einen langsamen Schwenk oder eine Bildschirmaufnahme, in der sich nichts
+        schnell bewegt.</li>
+      <li><strong>10&ndash;15</strong> &mdash; normal. Liest sich als Bewegung.
+        Fast jedes lohnende GIF liegt hier.</li>
+      <li><strong>20&ndash;25</strong> &mdash; flüssig, und rund doppelt so groß
+        wie 12 für einen Unterschied, den die meisten Betrachter nicht benennen
+        könnten. Lohnt sich bei schneller Bewegung, einem Sportclip, allem mit
+        einem Reißschwenk darin.</li>
+    </ul>
+    <p>
+      Es gibt eine harte Obergrenze, die Sie ruhig kennen dürfen: GIF speichert
+      die Standzeit jedes Einzelbildes in Hundertstelsekunden, und jeder Browser
+      behandelt eine Verzögerung unter zwei Hundertsteln als zehn. 50 Bilder pro
+      Sekunde sind also das echte Maximum, und eine Datei, die 100 verlangt,
+      spielt stillschweigend mit 10. Ein Umwandler, der Ihnen 60 fps anbietet,
+      ignoriert das entweder oder wird Sie gleich überraschen.
+    </p>
+  </section>
+
+  <section>
+    <h2>256 Farben, und wofür Dithering da ist</h2>
+    <p>
+      Die andere Hälfte des Alters dieses Formats: Ein GIF trägt eine Tabelle mit
+      höchstens 256 Farben, und jedes Pixel ist eine Nummer, die darauf zeigt.
+      Ein Videobild hat bis zu sechzehn Millionen. Fast alles davon wird
+      weggeworfen, und wie es weggeworfen wird, ist das meiste dessen, wie ein
+      GIF aussieht.
+    </p>
+    <p>
+      Ein guter Umwandler zählt die Farben in <em>Ihrem</em> Clip und wählt 256,
+      die dazu passen, statt einen festen Satz zu nehmen. Eine Aufnahme eines
+      Waldes bekommt 256 Grüntöne; eine Aufnahme eines Sonnenuntergangs 256
+      Orangetöne. Genau das tut das Werkzeug hier, und zwar über jedes
+      Einzelbild des Abschnitts statt nur über das erste &mdash; eine Farbe, die
+      erst am Ende auftaucht, bekommt also trotzdem einen Platz.
+    </p>
+    <p>
+      <strong>Dithering</strong> ist das, was dort passiert, wo die benötigte
+      Farbe trotzdem fehlt. Statt eine ganze Fläche auf die nächstgelegene
+      verfügbare Farbe zu runden &mdash; was einen weichen Himmel in vier flache
+      Bänder mit sichtbaren Stufen dazwischen verwandelt &mdash;, wechselt es die
+      beiden nächstgelegenen Farben in einem feinen Muster ab, und aus normalem
+      Betrachtungsabstand mischt Ihr Auge sie zu der, die es nicht gibt.
+    </p>
+    <ul>
+      <li><strong>Lassen Sie es an</strong> für alles Fotografische: Himmel,
+        Haut, Verläufe, Schatten, Film.</li>
+      <li><strong>Schalten Sie es ab</strong> für flache Farbflächen:
+        Bildschirmaufnahmen, Strichzeichnungen, Logos, Zeichentrick, alles mit
+        großen Flächen eines Tons. Da gibt es keinen Verlauf zu schützen, und die
+        Datei wird ohne kleiner und sauberer.</li>
+    </ul>
+    <p>
+      Ein Detail, das wissenswert ist, wenn Sie Umwandler vergleichen. Die
+      naheliegende Art zu dithern &mdash; Fehlerverteilung, die die meisten
+      Bildbearbeitungsprogramme verwenden &mdash; macht das Ergebnis jedes Pixels
+      von den Pixeln ringsherum abhängig. In einer Animation heißt das, dass ein
+      unbewegter Hintergrund in jedem Einzelbild anders dithert, also sichtbar
+      kribbelt &mdash; und jedes Einzelbild muss vollständig gespeichert werden,
+      weil sich technisch jedes Pixel geändert hat. Die Alternative, ein
+      geordnetes Dithering, hängt nur davon ab, wo ein Pixel liegt, ein stehender
+      Hintergrund bleibt also vollkommen still. Das ist es, was dieses Werkzeug
+      verwendet, und es ist der Grund, warum seine Dateien kleiner und ruhiger
+      zugleich sind.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wann Sie besser gar kein GIF machen</h2>
+    <p>
+      Eine Frage, die sich lohnt, denn die ehrliche Antwort lautet oft
+      &bdquo;lieber nicht&ldquo;. Ein stummes, endlos laufendes MP4 oder WebM ist
+      etwa ein Zehntel so groß wie dieselbe Animation als GIF, spielt genauso ab
+      und ist ohnehin das, worin jede soziale Plattform Ihr GIF nach dem Hochladen
+      umwandelt.
+    </p>
+    <p>Behalten Sie das GIF dort, wo das Ziel wirklich eines braucht:</p>
+    <ul>
+      <li>irgendwo, wo nur ein Bild angenommen wird &mdash; eine Menge Chat-,
+        Forum-, Wiki- und E-Mail-Software;</li>
+      <li>eine README oder eine Dokumentationsseite, wo ein GIF direkt abspielt
+        und ein Video einen Player braucht;</li>
+      <li>eine Präsentation oder ein Dokument, das auch offline in Bewegung
+        bleiben muss;</li>
+      <li>ein Emoji, ein Sticker, eine Reaktion &mdash; klein genug, dass nichts
+        von der Rechnerei oben eine Rolle spielt.</li>
+    </ul>
+    <p>
+      Wo der Ton zählt, beantwortet sich die Frage von selbst: GIF hatte nie Ton
+      und wird nie welchen haben. Schneiden Sie stattdessen das Video &mdash; der
+      <a href="../../video-schneiden/">Video-Schneider</a> nimmt einen Abschnitt
+      heraus, ohne ein einziges Einzelbild davon neu zu kodieren.
+    </p>
+  </section>
+
+  <section>
+    <h2>Unter eine Größengrenze kommen</h2>
+    <p>
+      Der häufigste Grund, ein GIF überhaupt zu justieren, ist eine Grenze am
+      anderen Ende. Grob in der Reihenfolge, wie sehr sie beißen:
+    </p>
+    <ul>
+      <li><strong>E-Mail</strong> &mdash; 10 bis 25 MB für die ganze Nachricht,
+        und ein Anhang nahe daran wird von irgendetwas unterwegs entfernt oder
+        zurückgewiesen. Zielen Sie deutlich darunter.</li>
+      <li><strong>Chat und Foren</strong> &mdash; üblicherweise 8 bis 10 MB,
+        manchmal deutlich weniger für eine eingebettete Vorschau statt eines
+        Downloads.</li>
+      <li><strong>Eine GitHub-README</strong> &mdash; 10 MB je Datei, und alles
+        über ein paar Megabyte lässt die Seite auf einem Telefon kaputt
+        wirken.</li>
+      <li><strong>Sticker- und Emoji-Plätze</strong> &mdash; oft ein paar hundert
+        Kilobyte, was eine kleine Breite und einen kurzen Abschnitt bedeutet und
+        nicht eine niedrigere Bildrate.</li>
+    </ul>
+    <p>
+      Die Reihenfolge zum Ausprobieren, wenn Sie darüber liegen: den Abschnitt
+      kürzen, dann die Breite halbieren, dann die Rate senken, dann das Dithering
+      abschalten. Die ersten beiden sind mehr wert als die letzten beiden
+      zusammen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Nichts davon braucht einen Upload</h2>
+    <p>
+      Ein Video in ein GIF umzuwandeln heißt dekodieren, skalieren, Farben zählen
+      und komprimieren &mdash; vier Dinge, die ein Browser seit Jahren von allein
+      kann. Das oben verlinkte Werkzeug erledigt alles davon auf Ihrem Gerät: Die
+      Datei wird von Ihrer Festplatte gelesen, die Einzelbilder werden von Ihrem
+      Browser dekodiert, und das GIF wird im Arbeitsspeicher zusammengesetzt und
+      an Ihre Downloads übergeben.
+    </p>
+    <p>
+      Und darum lohnt es sich hier mehr zu kümmern als sonst. Die Clips, aus
+      denen Menschen GIFs machen, sind persönliche &mdash; ein Moment aus einem
+      Familienvideo, eine Bildschirmaufnahme von etwas bei der Arbeit, ein paar
+      Sekunden eines Gesprächs. Ein Umwandler, der die hochgeladen haben will,
+      bittet um eine Kopie davon &mdash; und es gibt keinen technischen Grund
+      mehr, Ja zu sagen.
+    </p>
+  </section>

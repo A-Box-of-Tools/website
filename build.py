@@ -154,6 +154,14 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
         i18n.check_slugs(locale, [tool['slug'] for tool in tools],
                          [page['slug'] for page in prose], site)
 
+    # Before anything is written, because rendering one page needs to know which
+    # OTHER languages have finished that same page - the hreflang set on the
+    # English tool page is the set of languages it exists in. English is
+    # rendered first, so if the answer were worked out as each language went by,
+    # English would be asking the question before any language had answered it,
+    # and would advertise a German page that is still English.
+    i18n.survey(locales, tools, prose, planned, site)
+
     written = []
     for locale in locales:
         written += build_locale(out, templates, locale, locales, site, tools,
@@ -166,16 +174,31 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     for locale in locales:
         i18n.check_complete(locale)
 
-    # How far along each unfinished language is, said out loud on every build.
-    # A translation that is 40 strings from done and a translation that has not
-    # been started look identical in a directory listing, and the difference is
-    # the only thing anybody wants to know about it.
+    # How far along each language is, said out loud on every build. A
+    # translation that is 40 strings from done and one that has not been started
+    # look identical in a directory listing, and the difference is the only
+    # thing anybody wants to know about it.
+    #
+    # Two different states are worth two different sentences. A locale that has
+    # not finished its frame is not published at all. A locale that has is
+    # published, and owes a number of PAGES - which is the unit that decides
+    # anything now, since a page with one string left is as held back as a page
+    # with four hundred.
     for locale in locales:
-        if locale['is_base'] or locale['complete']:
+        if locale['is_base']:
             continue
-        left = len(set(locale['missing']))
-        print(f'  {locale["lang"]}: {left} strings still in English '
-              f'(not advertised until complete = true)')
+        if not locale['complete']:
+            left = len(set(i18n.all_debt(locale)))
+            print(f'  {locale["lang"]}: {left} strings still in English '
+                  f'(not advertised until complete = true)')
+            continue
+        behind = i18n.debt_report(locale, tools, prose)
+        if behind:
+            print(f'  {locale["lang"]}: published, {len(behind)} of '
+                  f'{len(tools) + len(prose)} pages still in English '
+                  f'(built and readable, kept out of the sitemap): '
+                  + ', '.join(sorted(behind)[:4])
+                  + (' ...' if len(behind) > 4 else ''))
 
     # One 404 for the whole domain, in English, because GitHub Pages serves one
     # file for every address it cannot find and has no way to know which
@@ -333,7 +356,7 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written.append(f'{locale["prefix"]}index.html')
 
     build_roadmap(dest_root, templates, locale, locales, site,
-                  i18n.localize_planned(planned, locale), ordered,
+                  i18n.localize_planned(planned, locale, site['roadmap']['slug']), ordered,
                   footer, links, css_v, emit)
     written.append(f'{locale["prefix"]}{links["roadmap"]}/index.html')
 
@@ -1042,31 +1065,44 @@ def build_sitemap(out, templates, site, locales, tools, prose):
         def url(slug, locale=locale):
             return i18n.locale_url(locale, slug, site)
 
-        entries.append({'url': url(''), 'lastmod': site['lastmod'],
-                        'changefreq': 'weekly', 'priority': '1.0'})
+        # A page this language has not translated yet is built and readable,
+        # but it is not listed here. Inviting a crawler to index an English
+        # page sitting at a German URL is how a site ends up ranking its own
+        # untranslated half for the wrong language, and it is the single
+        # failure this whole arrangement exists to avoid.
+        def ready(slug, locale=locale):
+            return i18n.translated(locale, slug)
+
+        if ready(''):
+            entries.append({'url': url(''), 'lastmod': site['lastmod'],
+                            'changefreq': 'weekly', 'priority': '1.0'})
         entries += [{'url': url(tool['slug']), 'lastmod': tool['lastmod'],
                      'changefreq': 'monthly', 'priority': '0.8'}
-                    for tool in tools]
+                    for tool in tools if ready(tool['slug'])]
         # Guides below the tools and above the legal pages. A tool is what
         # somebody came for; a guide is how they find out this site exists. The
         # index they are listed on goes first and slightly higher: it is the
         # page that gains from being crawled as a set rather than as nine
         # unrelated articles.
-        entries.append({'url': url(site['guides']['slug']),
-                        'lastmod': site['guides']['lastmod'],
-                        'changefreq': 'monthly', 'priority': '0.7'})
+        if ready(site['guides']['slug']):
+            entries.append({'url': url(site['guides']['slug']),
+                            'lastmod': site['guides']['lastmod'],
+                            'changefreq': 'monthly', 'priority': '0.7'})
         entries += [{'url': url(page['slug']), 'lastmod': page['lastmod'],
                      'changefreq': 'monthly', 'priority': '0.6'}
-                    for page in prose if page['kind'] == 'guide']
+                    for page in prose
+                    if page['kind'] == 'guide' and ready(page['slug'])]
         # The roadmap: a real page, but not one anybody searches for. Below the
         # guides, above the legal pages.
-        entries.append({'url': url(site['roadmap']['slug']),
-                        'lastmod': site['roadmap']['lastmod'],
-                        'changefreq': 'monthly', 'priority': '0.5'})
+        if ready(site['roadmap']['slug']):
+            entries.append({'url': url(site['roadmap']['slug']),
+                            'lastmod': site['roadmap']['lastmod'],
+                            'changefreq': 'monthly', 'priority': '0.5'})
         # The legal pages last, and low: they matter for trust, not for search.
         entries += [{'url': url(page['slug']), 'lastmod': page['lastmod'],
                      'changefreq': 'yearly', 'priority': '0.3'}
-                    for page in prose if page['kind'] == 'legal']
+                    for page in prose
+                    if page['kind'] == 'legal' and ready(page['slug'])]
 
     write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': entries}))
 
