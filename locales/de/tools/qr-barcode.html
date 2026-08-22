@@ -1,0 +1,187 @@
+<main>
+  <!-- Schritt 1 &mdash; welche Art Code -->
+  <section class="card">
+    <h2><span class="step">1</span> Die Art des Codes wählen</h2>
+
+    <p class="card-lede">
+      Ein QR-Code fasst alles und ist das, wonach eine Telefonkamera sucht. Ein
+      Barcode fasst eine Zahl, und welcher es sein muss, wird meist für Sie
+      entschieden &mdash; vom Geschäft, vom Lager oder von der Spedition, die ihn
+      verlangt.
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">Art des Codes</label>
+      <select id="symbology">
+        <optgroup label="Quadratisch">
+          <option value="qr" selected>QR-Code</option>
+        </optgroup>
+        <optgroup label="Balken">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">Interleaved 2 of 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- Schritt 2 &mdash; die Zeichenkette selbst -->
+  <section class="card">
+    <h2><span class="step">2</span> Sagen, was hineinkommt</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">Was er enthält</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>Die exakte Zeichenkette, die dieser Code enthalten wird</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- Schritt 3 &mdash; wie er gezeichnet wird -->
+  <section class="card">
+    <h2><span class="step">3</span> Das Aussehen wählen</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>Der QR-Code</legend>
+
+      <div class="option-row">
+        <label for="level">Wie viel Schaden er aushält</label>
+        <select id="level">
+          <option value="L">L &mdash; rund 7 % wiederherstellbar, kleinster Code</option>
+          <option value="M" selected>M &mdash; rund 15 %, die übliche Wahl</option>
+          <option value="Q">Q &mdash; rund 25 %</option>
+          <option value="H">H &mdash; rund 30 %, für einen Druck, der abgenutzt wird</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">Rand, in Modulen</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        Der Rand ist Teil des Codes und nicht Platz darum herum. Vier Module
+        verlangt die Spezifikation, und ein bis an die Kante beschnittener Code
+        ist einer, den viele Scanner überhaupt nicht sehen.
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>Der Barcode</legend>
+
+      <div class="option-row">
+        <label for="bar-width">Schmalster Balken, in Pixeln</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">Höhe der Balken, in Pixeln</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>Die Zeichen darunter drucken</strong>
+          <span class="check-note">
+            Was ein Mensch liest, wenn der Scanner nicht will. Bei einem
+            Handels-Code stehen die Ziffern zusätzlich in den Rändern, und das
+            ist Absicht: Sie markieren den weißen Raum, den niemand abschneiden
+            sollte.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>Ein Prüfzeichen ergänzen</strong>
+          <span class="check-note">
+            Code 39 trägt normalerweise keines. Manche Systeme bestehen darauf;
+            ergänzen Sie es nur, wenn Ihres das tut &mdash; ein Lesegerät, das
+            keines erwartet, liest es als zusätzliches Zeichen am Ende.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Farbe und Größe</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">Der Code</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">Dahinter</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Gar kein Hintergrund</strong>
+          <span class="check-note">
+            Transparent, zum Aufsetzen auf etwas, das schon eine Farbe hat. Das
+            SVG und das PNG behalten ihn beide; was am Ende dahinter liegt, muss
+            hell sein, sonst findet ein Scanner keinen Kontrast.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">Größe des Bildes, in Pixeln</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Schritt 4 &mdash; das Ergebnis -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> Nehmen</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Der Code, den Sie erzeugt haben"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Das SVG herunterladen</button>
+      <button type="button" id="download-png" class="primary">Das PNG herunterladen</button>
+      <button type="button" id="copy-png" class="ghost">Das Bild kopieren</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      Das SVG ist das, was Sie aufheben sollten. Es ist der Code als Anweisungen
+      statt als Pixel, druckt also in jeder Größe, ohne weich zu werden &mdash;
+      was hier mehr zählt als bei den meisten Bildern, denn eine verwaschene
+      Kante ist genau das, was ein Scanner nicht auflösen kann.
+    </p>
+  </section>
+</main>
