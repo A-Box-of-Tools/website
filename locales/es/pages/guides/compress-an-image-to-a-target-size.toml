@@ -1,0 +1,25 @@
+#
+# Guía: comprimir una imagen a un tamaño exacto - Spanish.
+#
+# Overrides for pages/guides/compress-an-image-to-a-target-size/page.toml.
+# Only words: the slug, the kind, the group and the tool this guide is about
+# stay where they are.
+#
+
+nav = "Comprimir una imagen"
+
+title = "Cómo comprimir una imagen a un tamaño de archivo exacto"
+description = "Un formulario pide 500 KB y tu foto ocupa 4 MB. Lo que cuesta de verdad un límite de tamaño, qué ajuste mover primero, y por qué un PNG no va a encoger como lo hace un JPEG."
+
+heading = "Cómo comprimir una imagen a un tamaño de archivo exacto"
+lede = """
+    Alguien te ha dado un número &mdash; 100&nbsp;KB, 500&nbsp;KB, 2&nbsp;MB
+    &mdash; y tu foto no se acerca ni de lejos. Esto es lo que cuesta ese
+    número, en qué gastarlo, y cómo saber si el resultado sigue siendo lo
+    bastante bueno para enviarlo."""
+
+updated = "20 de agosto de 2026"
+
+og_title = "Comprimir una imagen a un tamaño de archivo exacto"
+og_description = "Lo que cuesta de verdad un límite de tamaño, qué ajuste mover primero, y por qué un PNG no va a encoger como lo hace un JPEG."
+og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

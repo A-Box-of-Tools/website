@@ -1,0 +1,23 @@
+#
+# Guía: redimensionar una imagen - Spanish.
+#
+# Overrides for pages/guides/resize-an-image/page.toml. Only words: the slug,
+# the kind, the group and the tool this guide is about stay where they are.
+#
+
+nav = "Redimensionar una imagen"
+
+title = "Cómo redimensionar una imagen sin destrozarla"
+description = "Qué le pasa a una foto cuando cambias sus dimensiones en píxeles: por qué encogerla es seguro y agrandarla no, qué hacer cuando la caja tiene otra forma, y cuándo conviene recortar en su lugar."
+
+heading = "Cómo redimensionar una imagen sin destrozarla"
+lede = """
+    Redimensionar es el único trabajo de imagen en el que el daño se decide
+    antes de pulsar el botón, según qué número escribas y qué forma pidas. Esto
+    es lo que le hace cada elección a la foto, y cuáles se pueden deshacer."""
+
+updated = "20 de agosto de 2026"
+
+og_title = "Redimensionar una imagen sin destrozarla"
+og_description = "Por qué encogerla es seguro y agrandarla no, qué hacer cuando la caja tiene otra forma, y cuándo conviene recortar en su lugar."
+og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

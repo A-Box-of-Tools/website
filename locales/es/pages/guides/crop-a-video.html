@@ -1,0 +1,210 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Abre el <a href="../../recortar-video/">recortador de vídeo</a>, suelta el
+      clip dentro, arrastra la caja sobre la parte que quieras conservar &mdash;
+      o fíjala a una forma si te han dado una &mdash; y exporta. El clip que sale
+      dura exactamente lo mismo que el que entró, con su sincronía y su sonido
+      intactos.
+    </p>
+    <p>
+      A diferencia de cortar, esto sí tiene que escribir fotogramas nuevos. No es
+      una carencia de ninguna herramienta en concreto; es lo que es recortar. El
+      resto de esta página va de lo que cuesta eso y de cómo mantenerlo bajo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué recortar no puede evitar una recodificación</h2>
+    <p>
+      Un corte conserva fotogramas enteros, así que un buen cortador los traslada
+      intactos y no se descodifica nada. Un recorte conserva parte de cada
+      fotograma &mdash; y parte de un fotograma es otra imagen distinta. No hay
+      forma de guardar otra imagen sin escribir los píxeles de nuevo.
+    </p>
+    <p>
+      Hay una excepción muy estrecha, y conviene conocerla para reconocer cuándo
+      alguien la invoca. El vídeo se codifica en bloques, y si un recorte cayera
+      exactamente sobre los límites de bloque por los cuatro lados, parte de los
+      datos podría en principio reutilizarse. En la práctica, las propias
+      dimensiones del fotograma, los vectores de movimiento y la predicción hay
+      que reescribirlos igualmente, así que no se construye nada real de esa
+      manera. Da por hecho que un recorte significa una recodificación.
+    </p>
+    <p>
+      Lo que sí hará un recortador que se porte bien es no gastar <em>más</em> de
+      lo que gastaba el original en esa misma zona. Codificar una región recortada
+      a más bitrate que su origen solo hace el archivo más grande; no puede
+      devolver detalle que el original no tenía.
+    </p>
+  </section>
+
+  <section>
+    <h2>Las formas que te están pidiendo de verdad</h2>
+    <p>
+      Casi todos los recortes se hacen porque en algún sitio exigen una proporción
+      concreta. La lista corta:
+    </p>
+    <ul>
+      <li>
+        <strong>9:16 &mdash; vertical.</strong> Historias, reels, shorts, TikTok.
+        Pantalla completa en un móvil sostenido normalmente. La razón más común
+        por la que alguien recorta un vídeo.
+      </li>
+      <li>
+        <strong>1:1 &mdash; cuadrado.</strong> Publicaciones de feed en varias
+        plataformas. Funciona sostengas el móvil como lo sostengas, que es por lo
+        que sigue vivo.
+      </li>
+      <li>
+        <strong>4:5 &mdash; ligeramente vertical.</strong> La forma más grande que
+        permiten algunos feeds, así que ocupa más pantalla que un cuadrado sin ser
+        un vídeo vertical completo.
+      </li>
+      <li>
+        <strong>16:9 &mdash; horizontal.</strong> El estándar del vídeo en
+        general. Normalmente recortas <em>hacia</em> esto solo para quitar bandas
+        negras, o <em>desde</em> esto para llegar a alguna de las anteriores.
+      </li>
+    </ul>
+    <p>
+      Fija la caja a la proporción en vez de arrastrar a ojo. Quedarte a unos
+      pocos píxeles significa que la plataforma recorta tu recorte, y no te va a
+      consultar por dónde.
+    </p>
+  </section>
+
+  <section>
+    <h2>Convertir un clip horizontal en vertical</h2>
+    <p>
+      Este es el caso común más difícil, y conviene tener claro que recortar es un
+      apaño más que una solución.
+    </p>
+    <p>
+      Un vídeo 16:9 recortado a 9:16 conserva alrededor del 32&nbsp;% del ancho de
+      la imagen. Lo que haya a los lados desaparece &mdash; y en un plano
+      horizontal, los lados suelen ser donde está el contexto. Si hay dos personas
+      hablando en lados opuestos del encuadre, ningún recorte único conserva a las
+      dos.
+    </p>
+    <p>
+      Elige el recorte viendo el clip una vez y preguntándote dónde está de verdad
+      el sujeto la mayor parte del tiempo. Si la respuesta es «se mueve», un
+      recorte estático es la herramienta equivocada y lo que quieres es un editor
+      que pueda desplazar el recorte con el tiempo. Si la respuesta es «en el
+      centro, casi siempre», un recorte centrado sirve y lleva diez segundos.
+    </p>
+    <p>
+      La alternativa que conviene recordar: muchas plataformas aceptan un vídeo
+      horizontal y le ponen ellas las bandas. Recortar es para cuando quieres la
+      pantalla completa, no para cuando quieres que te acepten el vídeo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué el ancho y el alto se mueven de dos en dos</h2>
+    <p>
+      Si notas que la caja de recorte rechaza los números impares, es el códec y no
+      la interfaz lo que se está poniendo difícil.
+    </p>
+    <p>
+      H.264 &mdash; el códec que hay dentro de un MP4 &mdash; guarda el color a la
+      mitad de resolución en horizontal y en vertical, porque el ojo es mucho menos
+      sensible al detalle de color que al de brillo. Eso significa que la imagen se
+      maneja en unidades de dos píxeles y no hay forma de describir un fotograma
+      con un número impar de píxeles de lado.
+    </p>
+    <p>
+      Las herramientas se apañan con esto redondeando tu recorte después de que lo
+      fijes, lo que mueve tu caja un píxel sin decírtelo, o no ofreciendo nunca más
+      que números pares desde el principio. Lo segundo es lo que pasa aquí.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué le pasa al sonido</h2>
+    <p>
+      Nada, por la vía de MP4. Recortar cambia la imagen y no tiene ninguna razón
+      para tocar el audio, así que el audio se copia muestra a muestra sin
+      descodificarlo nunca &mdash; byte por byte lo que había en el archivo.
+    </p>
+    <p>
+      Por la alternativa de grabación, descrita más abajo, el sonido se captura de
+      la reproducción y se vuelve a codificar, lo que cuesta algo de calidad. En
+      cualquiera de los dos casos hay una casilla para dejarlo fuera del todo, que
+      merece la pena usar cuando el clip va a un sitio donde se reproduce sin
+      sonido igualmente y quieres el archivo más pequeño posible.
+    </p>
+  </section>
+
+  <section>
+    <h2>Formatos, y cuánto tarda</h2>
+    <p>
+      <strong>MP4, M4V y MOV</strong> se leen directamente, lleven lo que lleven
+      dentro &mdash; H.264, HEVC, AV1 o VP9 &mdash;, siempre que tu navegador sepa
+      descodificar ese códec. A diferencia de cortar, recortar sí tiene que
+      descodificar, así que aquí el códec importa de una manera en que allí no.
+    </p>
+    <p>
+      <strong>Cualquier otra cosa que tu navegador sepa reproducir</strong>, WebM
+      la más evidente, se recorta reproduciéndola y grabando el resultado, lo que
+      funciona y tarda lo que dure el clip.
+    </p>
+    <p>
+      <strong>AVI, WMV, FLV y casi todos los MKV</strong> el navegador no los sabe
+      ni leer ni reproducir, y la herramienta los rechaza con un mensaje en vez de
+      fallar a mitad de camino.
+    </p>
+    <p>
+      Cuenta con que un recorte lleve su tiempo en un clip largo, porque cada
+      fotograma se está descodificando y recodificando. La herramienta no lleva
+      ningún límite dentro, y el archivo se recorre de unos pocos megabytes en unos
+      pocos megabytes en vez de cargarlo entero; el techo práctico es el vídeo
+      terminado, que se monta en memoria antes de que lo descargues.
+    </p>
+  </section>
+
+  <section>
+    <h2>Recorta antes de hacer cualquier otra cosa</h2>
+    <p>
+      Si un clip necesita corte y recorte, corta primero &mdash; es gratis, y cada
+      segundo que quitas es un segundo que nadie tiene que recodificar. Después
+      recorta el clip más corto una sola vez.
+    </p>
+    <p>
+      Hacerlo al revés significa recortar material que estás a punto de tirar, lo
+      que cuesta tiempo y calidad para nada. El
+      <a href="../../cortar-video/">cortador de vídeo</a> está al lado, y
+      <a href="../cortar-un-video/">su guía</a> explica por qué ese paso no tiene
+      por qué costarte nada en absoluto.
+    </p>
+    <p>
+      Y en general: cada paso con pérdidas se acumula. Un recorte de un original es
+      una generación. Un recorte de un corte de una exportación de una descarga son
+      cuatro, y se nota.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué esto no necesita una subida</h2>
+    <p>
+      Descodificar y recodificar vídeo en un navegador es reciente y es real:
+      WebCodecs expone el mismo codificador por hardware que usa tu móvil para
+      grabar vídeo, y es rápido por la misma razón. El trabajo ocurre en el equipo
+      que ya tiene el archivo, que para un vídeo de varios gigabytes es además la
+      única disposición con sentido &mdash; subirlo y descargar el resultado cuesta
+      más tiempo que la propia codificación.
+    </p>
+    <p>
+      La herramienta de aquí no tiene ninguna función de red, y la
+      <code>Content-Security-Policy</code> de la página nombra todas las
+      direcciones que puede contactar, ninguna de las cuales es de este sitio.
+      Desenchúfate de internet y recorta un clip de todos modos si prefieres
+      comprobarlo a que te lo cuenten.
+    </p>
+    <p>
+      <a href="../es-seguro-subir-archivos/">¿Es seguro subir archivos a los
+      conversores en línea?</a> plantea otras tres comprobaciones que puedes
+      hacerle a cualquier herramienta.
+    </p>
+  </section>

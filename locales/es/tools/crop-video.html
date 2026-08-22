@@ -1,0 +1,146 @@
+<main>
+  <!-- Paso 1 &mdash; el archivo -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige un vídeo</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Archivo</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Tamaño</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Fotograma</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Duración</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Vídeo</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Paso 2 &mdash; el recorte -->
+  <section class="card" id="crop-card" hidden>
+    <h2><span class="step">2</span> Define el recorte</h2>
+
+    <p class="stage-hint">
+      Arrastra dentro de la caja para moverla, o desde cualquier esquina para
+      cambiarle el tamaño. Con la caja enfocada, las flechas la desplazan un
+      píxel cada vez, <kbd>Alt</kbd>&nbsp;+&nbsp;flechas la redimensionan, y
+      mantener <kbd>Mayús</kbd> hace que cada paso sean diez.
+    </p>
+
+    <!-- The crop box itself is added here by src/cropper.js. The stage is given
+         the video's own shape, so the box can be positioned in percentages and
+         needs no recalculating when the window is resized. -->
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <div class="crop-controls">
+      <div class="aspect-row" role="group" aria-label="Fijar el recorte a una forma">
+        <button type="button" data-aspect="free" class="active">Libre</button>
+        <button type="button" data-aspect="source">Original</button>
+        <button type="button" data-aspect="1:1">1:1</button>
+        <button type="button" data-aspect="4:5">4:5</button>
+        <button type="button" data-aspect="9:16">9:16</button>
+        <button type="button" data-aspect="16:9">16:9</button>
+        <button type="button" data-aspect="4:3">4:3</button>
+        <button type="button" data-aspect="3:2">3:2</button>
+        <button type="button" id="swap-aspect" class="ghost" title="Poner de lado la forma fijada">
+          Girar
+        </button>
+      </div>
+
+      <div class="numbers">
+        <label>Izquierda<input type="number" id="crop-x" min="0" step="1"></label>
+        <label>Arriba<input type="number" id="crop-y" min="0" step="1"></label>
+        <label>Ancho<input type="number" id="crop-w" min="16" step="2"></label>
+        <label>Alto<input type="number" id="crop-h" min="16" step="2"></label>
+        <div class="number-actions">
+          <button type="button" id="crop-max" class="ghost">Lo más grande</button>
+          <button type="button" id="crop-centre" class="ghost">Centrar</button>
+          <button type="button" id="crop-reset" class="ghost">Fotograma entero</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="even-note">
+      El ancho y el alto se mueven de dos en dos, porque H.264 no tiene forma de
+      guardar un fotograma con un lado impar.
+    </p>
+  </section>
+
+  <!-- Paso 3 &mdash; la exportación -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Recórtalo</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Salida</label>
+        <select id="format">
+          <option value="mp4" selected>MP4 &mdash; recodificado fotograma a fotograma</option>
+          <option value="webm">WebM &mdash; grabado mientras se reproduce</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="quality">Calidad</label>
+        <select id="quality">
+          <option value="low">Archivo más pequeño</option>
+          <option value="medium" selected>Equilibrado</option>
+          <option value="high">Mejor calidad</option>
+        </select>
+        <p class="field-note">
+          Nunca más de lo que gastaba el original en esa misma zona &mdash;
+          recodificar por encima de eso solo hace el archivo más grande.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Conservar el sonido
+        </label>
+        <p class="field-note" id="audio-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Fotograma de salida</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Conservado</dt><dd id="sum-kept">&mdash;</dd></div>
+      <div><dt>Duración</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Cómo</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Recortar vídeo</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Descargar vídeo</a>
+      </div>
+    </div>
+  </section>
+</main>

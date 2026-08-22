@@ -1,0 +1,25 @@
+#
+# Guía: reducir el tamaño de un PDF - Spanish.
+#
+# Overrides for pages/guides/make-a-pdf-smaller/page.toml. Only words: the
+# slug, the kind, the group and the tool this guide is about stay where they
+# are.
+#
+
+nav = "Reducir un PDF"
+
+title = "Cómo reducir el tamaño de un PDF (y por qué algunos no encogen)"
+description = "Dónde está de verdad el tamaño de un PDF, por qué un escaneo se comprime un 80&nbsp;% y un contrato apenas se mueve, qué significan aquí los PPP, y qué no debería hacerle nunca un compresor a tu documento."
+
+heading = "Cómo reducir el tamaño de un PDF, y por qué algunos no encogen"
+lede = """
+    Un PDF que no cabe en el límite de un correo es casi siempre un PDF lleno de
+    imágenes. Esto explica cómo saber si el tuyo lo es, qué cuesta comprimirlo, y
+    por qué cualquier herramienta que prometa un porcentaje fijo no ha mirado tu
+    archivo."""
+
+updated = "20 de agosto de 2026"
+
+og_title = "Cómo reducir el tamaño de un PDF"
+og_description = "Dónde está de verdad el tamaño de un PDF, por qué un escaneo encoge y un contrato no, y qué tienen que ver los PPP con esto."
+og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

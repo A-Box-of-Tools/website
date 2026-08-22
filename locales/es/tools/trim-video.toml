@@ -1,0 +1,322 @@
+#
+# Cortador de vídeo - Spanish.
+#
+# Overrides for tools/trim-video/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Cortador de vídeo"
+heading = "Cortar&nbsp;vídeo <span class=\"h1-kw\">&mdash; cortar un vídeo en línea</span>"
+tagline = "Marca lo que merece la pena mientras se reproduce. Te lo devuelve como un solo vídeo."
+
+title = "Cortar un vídeo en línea &mdash; quédate solo con lo que quieras, sin subir nada"
+description = "Mira un vídeo y marca cada trozo que merezca la pena mientras se reproduce; después guarda esos trozos como un solo archivo. Funciona en tu navegador: no se sube nada, no se recodifica nada y funciona sin conexión."
+og_title = "Cortador de vídeo &mdash; quédate solo con lo que quieras, sin subir nada"
+og_description = "Pulsa I y O mientras se reproduce para marcar cada trozo que quieras conservar. Los trozos marcados se vuelven a escribir como un solo vídeo, fotograma a fotograma, sin subir nada."
+og_image_alt = "Cortador de vídeo - marca lo que quieras y guárdalo como un solo vídeo, en tu navegador"
+
+pledge = """
+    Tu propio navegador lee, marca, corta y escribe tu vídeo, en tu propio
+    hardware. Aquí nada puede descargar ni enviar nada &mdash; esta herramienta
+    no tiene ninguna función de red &mdash; y al otro lado de esta página no hay
+    ningún servidor al que mandar un vídeo aunque lo hubiera."""
+
+live_hint = """
+      No hace falta que nos creas: abre las herramientas de desarrollo, mira la
+      pestaña «Red» y corta un vídeo. Ni una sola petición lleva un fotograma, un
+      nombre de archivo ni un byte de lo que has elegido. O desconéctate de
+      internet y corta uno de todos modos &mdash; una herramienta que mandara tu
+      vídeo fuera a cortar sencillamente se detendría."""
+
+read_first = """
+, <code>src/segments.js</code> para las marcas y el
+      archivo en que se guardan, <code>src/demux.js</code> para el lector que
+      encuentra los fotogramas dentro de un MP4, <code>src/ranges.js</code> para
+      la aritmética que convierte una marca en una tirada de muestras, y
+      <code>src/copy.js</code> para el bucle que mueve esas muestras al archivo
+      nuevo. Ninguno importa nada capaz de hacer una petición."""
+
+howto_heading = "Cómo cortar un vídeo"
+
+card = """
+            Marca cada trozo que merezca la pena mientras se reproduce y
+            guárdalos como un solo vídeo. Los fotogramas se copian en vez de
+            recodificarse, así que no se pierde nada."""
+
+[words]
+plural = "vídeos"
+choose = "un vídeo"
+analytics_extra = """, ni ningún
+  fotograma, duración o punto de corte"""
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin marca de agua"
+
+[[facts]]
+text = "Tantos trozos como quieras"
+
+[[facts]]
+text = "Sin pérdida de calidad"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[privacy]]
+title = "Tus vídeos no tienen adónde ir."
+body = """
+ La
+      Content-Security-Policy nombra todas las direcciones que esta página puede
+      contactar, y ninguna es de este sitio. Aquí no hay ningún punto final donde
+      pudiera recogerse tu archivo, ni nada en el código que lo enviara si lo
+      hubiera."""
+
+[[privacy]]
+title = "Aquí nada descarga nada."
+body = """
+ Esta herramienta no tiene ninguna
+      función de red: ninguna dirección que pegar, nada que descargar, ningún
+      motor que se baje en el primer uso. Cada byte que toca tu vídeo vino de
+      este origen cuando se cargó la página."""
+
+[[privacy]]
+title = "Por la vía normal ni siquiera se descodifica nada."
+body = """
+
+      Cortar no cambia el aspecto de ningún fotograma, así que los fotogramas
+      codificados de los trozos que has marcado se mueven al archivo nuevo tal y
+      como se encontraron. Cada uno se guarda como un trozo del archivo de tu
+      disco &mdash; una nota que dice qué bytes, no los bytes en sí &mdash; y tu
+      navegador los lee por primera vez mientras escribe la descarga. Aquí nada
+      convierte nunca tu vídeo de vuelta en una imagen."""
+
+[[privacy]]
+title = "El archivo de marcas se hace en la página."
+body = """
+ Guardar tus marcas
+      escribe un archivo de texto a partir de los números que ya están en
+      pantalla, directamente a tus descargas. Cargar uno lo lee aquí. Ninguno de
+      los dos se acerca a una red, y ninguno lleva más que tiempos."""
+
+[[privacy]]
+title = "El sonido se copia, no se escucha."
+body = """
+ Por las dos vías de MP4,
+      las muestras de audio se trasladan sin descodificarlas siquiera &mdash;
+      aquí nada las vuelve a convertir en sonido, y nada podría pasarlas a
+      ninguna parte si lo hiciera."""
+
+[[privacy]]
+title = "Donde sí se descodifican fotogramas, ocurre aquí."
+body = """
+ El corte
+      exacto, y la vista previa de un archivo que este navegador no reproduce,
+      pasan por WebCodecs en tu propio equipo. Es el mismo descodificador que te
+      enseñaría el vídeo de todas formas, funcionando en el mismo sitio."""
+
+[[privacy]]
+title = "Qué carga Google y qué no se le da."
+body = """
+ Los scripts de
+      publicidad y medición vienen de Google. A ninguno se le entrega nada sobre
+      tu vídeo: ni un archivo, ni un fotograma, ni un nombre, un tamaño, una
+      duración o dónde lo cortaste. Cada línea que lee, corta y escribe se sirve
+      desde este origen y está listada en el repositorio."""
+
+[[privacy]]
+title = "Qué carga el botón de donación y qué no se le da."
+body = """
+
+      El botón «Buy me a coffee» de la cabecera lo dibuja un script de
+      cdnjs.buymeacoffee.com y se compone con Google Fonts. Es un enlace y nada
+      más: no informa de ninguna visita, y no se le entrega nada sobre ti ni
+      sobre tu vídeo."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Desconéctate de la red y todo lo de esta
+      página sigue funcionando. Es la prueba más sencilla de todas."""
+
+[[howto]]
+title = "Elige un vídeo."
+body = """
+ Suelta un MP4, MOV, M4V o WebM sobre
+      el selector. Tu navegador lo lee directamente del disco; mientras lo haces
+      no se envía nada a ninguna parte. Suelta varios y se unen, en el orden en
+      que los pusiste."""
+
+[[howto]]
+title = "Reprodúcelo y marca los trozos que quieras."
+body = """
+ Pulsa
+      <kbd>I</kbd> donde debe empezar un trozo y <kbd>O</kbd> donde debe
+      terminar. Hazlo tantas veces como quieras &mdash; cada pareja se convierte
+      en una fila de la tabla de abajo y en una banda de la línea de tiempo.
+      <kbd>U</kbd> deshace la última, <kbd>Espacio</kbd> reproduce y pausa, y las
+      flechas saltan cinco segundos cada vez. Baja la velocidad de reproducción
+      si el momento es difícil de pillar."""
+
+[[howto]]
+title = "Retoca las marcas."
+body = """
+ Cada fila se puede reproducir por su
+      cuenta, retimar escribiendo dentro un tiempo exacto, subir o bajar de orden,
+      o borrar. Los dos extremos del trozo seleccionado también se pueden
+      arrastrar por la línea de tiempo. El total de arriba es lo que va a durar el
+      vídeo terminado."""
+
+[[howto]]
+title = "Consérvalos, o quítalos."
+body = """
+ Conservar es lo habitual: el
+      vídeo terminado son los trozos que has marcado, unidos en orden. Quitarlos
+      es el otro trabajo que la gente quiere y casi nunca encuentra &mdash; marca
+      los anuncios, los silencios o los arranques en falso, y lo que queda se une
+      sin ellos."""
+
+[[howto]]
+title = "Córtalo y descárgalo."
+body = """
+ «Conservar cada byte» traslada los
+      fotogramas intactos: es rápido y no puede costar calidad, pero cada trozo
+      empieza en el fotograma clave anterior a tu marca. «Cortar exactamente
+      aquí» descodifica y vuelve a escribir la imagen para que cada trozo empiece
+      en el fotograma que elegiste. La página dice cuál de los dos vas a obtener,
+      y lo que cuesta, antes de que pulses el botón."""
+
+[[faq]]
+q = "¿Se sube mi vídeo a alguna parte?"
+a = """
+        No. Tu propio navegador lo lee, lo marca, lo corta y lo escribe en tu
+        propio hardware. Esta herramienta no tiene lado servidor, y la
+        <code>Content-Security-Policy</code> de la página nombra todas las
+        direcciones que puede contactar &mdash; ninguna es de este sitio.
+        Desenchúfate de internet y corta un vídeo de todos modos si prefieres
+        comprobarlo a que te lo cuenten."""
+
+[[faq]]
+q = "¿Puedo conservar varios trozos del mismo vídeo?"
+a = """
+        Para eso está esto. Pulsa <kbd>I</kbd> y <kbd>O</kbd> tantas veces como
+        quieras mientras se reproduce; cada pareja se convierte en una fila, y el
+        vídeo terminado son todas las filas unidas en orden con todo lo demás
+        fuera. Casi todos los cortadores en línea te dan una sola pareja de
+        tiradores y preguntan qué tramo único quieres conservar, lo cual está bien
+        para recortar la entrada y la salida de un clip y no sirve de nada para
+        ver una hora de material una vez y quedarse con los seis momentos que
+        valen."""
+
+[[faq]]
+q = "¿Cortar hace perder calidad?"
+a = """
+        Por la vía normal no, y no en lo que importa. Cortar no cambia el aspecto
+        de ningún fotograma, así que los fotogramas se mueven al archivo nuevo tal
+        y como estaban: los mismos bytes, los mismos ajustes de codificación, lo
+        mismo en todo. La única vía de aquí que recodifica algo es el corte
+        exacto, y lo dice en el botón."""
+
+[[faq]]
+q = "¿Por qué un trozo empieza antes de donde lo marqué?"
+a = """
+        Por cómo se guarda el vídeo, y solo en reproductores que ignoran una parte
+        estándar del formato. Casi todos los fotogramas se guardan como una
+        descripción de en qué se diferencian de sus vecinos, así que no se pueden
+        descodificar sin ellos; solo un fotograma clave se sostiene solo, y los
+        fotogramas clave suelen estar separados entre uno y diez segundos. Un
+        corte que copia fotogramas tiene que arrastrar por tanto la tirada desde
+        el fotograma clave anterior a tu marca &mdash; y el archivo dice
+        <em>empieza a reproducir en tu marca</em>, cosa que respeta cualquier
+        reproductor corriente. Si lo necesitas exacto en todos los reproductores,
+        elige «Cortar exactamente aquí», que recodifica. La página te dice en qué
+        caso estás, y por cuánto, antes de exportar."""
+
+[[faq]]
+q = "¿Puedo quitar los anuncios en vez de conservarlos?"
+a = """
+        Sí. Márcalos y elige «Quitarlos»: se une todo lo que <em>no</em> marcaste,
+        en orden. La misma lista de marcas responde a las dos preguntas, así que
+        puedes cambiar de una a otra y ver cómo cambia la duración sin marcar nada
+        dos veces."""
+
+[[faq]]
+q = "¿Puedo guardar mis marcas y volver a ellas?"
+a = """
+        Sí. «Guardar marcas» escribe un archivo de texto plano &mdash; una línea
+        por trozo, un inicio y un final separados por una coma &mdash; y «Cargar
+        marcas» lee uno de vuelta. Se ofrecen dos formatos, segundos pelados y
+        <code>HH:MM:SS.mmm</code>, y los dos respetan la disposición que ya usan
+        otras herramientas que trabajan así, de modo que un archivo escrito aquí
+        se le puede pasar a una de ellas y un archivo escrito allí se puede soltar
+        en esta página. Marcar es un trabajo cuidadoso y nadie debería tener que
+        hacerlo dos veces."""
+
+[[faq]]
+q = "¿Qué formatos de vídeo puedo cortar?"
+a = """
+        MP4, M4V y MOV se leen directamente, lleven lo que lleven dentro: H.264,
+        HEVC, AV1 o VP9. Copiar fotogramas no implica descodificarlos, así que
+        esta vía funciona incluso con un códec para el que tu navegador no tenga
+        ningún descodificador. Cualquier otra cosa que tu navegador sepa
+        reproducir &mdash; WebM la más evidente &mdash; se corta reproduciéndola y
+        grabando el resultado, lo que funciona, tarda lo que dure el resultado y
+        solo puede conservar un trozo. Un archivo que el navegador no sabe ni leer
+        ni reproducir, que en la práctica significa AVI, WMV, FLV y casi todos los
+        MKV, se rechaza con un mensaje que lo dice, en vez de fallar a mitad de
+        camino."""
+
+[[faq]]
+q = "¿Hay algún límite de tamaño o duración del vídeo?"
+a = """
+        La herramienta no lleva ningún límite dentro, y por la vía de copia el
+        archivo apenas se lee: a los fotogramas que conservas se les apunta en vez
+        de cargarlos, así que quedarse con cuatro minutos de una grabación de
+        cuatro gigabytes cuesta más o menos lo que cuesta escribir esos cuatro
+        minutos en disco. El corte exacto recorre el archivo de unos pocos
+        megabytes en unos pocos megabytes. En cualquiera de los dos casos el techo
+        práctico es el archivo terminado, que se monta en memoria antes de que lo
+        descargues."""
+
+[[faq]]
+q = "¿Sobrevive el sonido?"
+a = """
+        Por las dos vías de MP4 se copia muestra a muestra sin descodificarlo
+        nunca, así que es byte por byte lo que había en el archivo, y una marca de
+        edición mantiene cada trozo alineado con su imagen con una precisión de
+        una milésima de segundo. La única excepción es unir vídeos distintos cuyo
+        sonido esté descrito de otra forma &mdash; frecuencias de muestreo
+        distintas, por ejemplo &mdash;, donde no hay manera de meter los dos en
+        una sola pista sin descodificarlos, y la página lo dice antes de hacerlo.
+        Por la vía de la grabación se captura de la reproducción y se vuelve a
+        codificar. En cualquiera de los dos casos hay una casilla para dejarlo
+        fuera del todo."""
+
+[[faq]]
+q = "¿Es gratis? ¿Necesito una cuenta?"
+a = """
+        Es gratis, y no hay cuenta, ni inicio de sesión, ni prueba, ni marca de
+        agua. El sitio lleva publicidad, que es lo que lo paga; a los anuncios no
+        se les da nada sobre tu vídeo."""
+
+[schema]
+browser_requirements = "Necesita JavaScript. Copiar fotogramas no requiere ningún soporte de códec de vídeo; el corte exacto necesita un navegador con WebCodecs, y los demás formatos recurren a la grabación."
+description = "Marca cuantos trozos quieras de un vídeo mientras se reproduce y guarda esos trozos como un único archivo, o quítalos y quédate con el resto. MP4, MOV y M4V se cortan trasladando los fotogramas codificados a un archivo nuevo sin tocarlos, con el audio original copiado muestra a muestra; no se sube nada y no se recodifica nada."
+features = [
+  "Marca cuantos trozos quieras con I y O mientras el vídeo se reproduce",
+  "Une los trozos marcados en un solo archivo, en el orden que elijas",
+  "O quita los trozos marcados y conserva todo lo demás",
+  "Corta sin recodificar, así que no se pierde calidad",
+  "Guarda y vuelve a cargar las marcas como un archivo de tiempos en texto plano",
+  "Marcas exactas al fotograma, con los fotogramas clave visibles en la línea de tiempo",
+  "Conserva el audio original sin volver a codificarlo",
+  "Funciona sin conexión; sin subidas, sin cuenta y sin marca de agua",
+]
+
+[picker]
+title = "Suelta aquí un vídeo"
+hint = "o haz clic para buscarlo &mdash; MP4, MOV, M4V, WebM. Suelta varios para unirlos."

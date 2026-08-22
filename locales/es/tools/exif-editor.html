@@ -1,0 +1,150 @@
+<main>
+  <!-- Paso 1 &mdash; los archivos -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige las fotos</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Quitar todo de la lista</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Paso 2 &mdash; el único clic -->
+  <section class="card" id="strip-card">
+    <h2><span class="step">2</span> Quítalo todo</h2>
+
+    <p class="card-lede">
+      Un botón, todas las fotos de la lista. La imagen no se descodifica, no se
+      vuelve a dibujar ni se vuelve a comprimir &mdash; los datos de imagen
+      comprimidos se copian intactos y solo se tiran los metadatos que hay
+      alrededor, así que el resultado es la misma foto sin nada pegado.
+    </p>
+
+    <div class="strip-row">
+      <button type="button" id="strip-all" class="primary big" disabled>Quitar todos los metadatos</button>
+      <span id="strip-status" class="strip-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Two things are kept by default, and both are stated on the button's own
+      line rather than buried in a settings panel. "Remove all" that quietly
+      keeps things is a broken promise; "remove all except these two, and here
+      they are" is a choice.
+    -->
+    <fieldset class="keep-options">
+      <legend>Qué conservar</legend>
+      <label class="check">
+        <input type="checkbox" id="keep-orientation" checked>
+        <span>
+          <strong>La etiqueta de orientación</strong>
+          <span class="check-note">
+            Los móviles guardan la foto tal como la vio el sensor y añaden una
+            etiqueta que dice para qué lado va. Quítala y algunos visores la
+            enseñan de lado. Si se conserva, se escribe un bloque EXIF nuevo que
+            lleva esta etiqueta y nada más &mdash; y solo cuando la foto no
+            estaba ya derecha.
+          </span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keep-icc" checked>
+        <span>
+          <strong>El perfil de color</strong>
+          <span class="check-note">
+            El perfil ICC dice qué colores significan los números de la imagen.
+            No dice nada sobre ti. Tirarlo puede desplazar visiblemente los
+            colores de una foto de gama amplia, y por eso se conserva salvo que
+            digas lo contrario.
+          </span>
+        </span>
+      </label>
+      <p class="keep-summary" id="keep-summary"></p>
+    </fieldset>
+
+    <div id="clean-results" class="results" hidden>
+      <div class="results-head">
+        <h3>Limpias</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Descargar todo en un zip</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!-- Paso 3 &mdash; leer y editar -->
+  <section class="card" id="inspect-card">
+    <h2><span class="step">3</span> Mira dentro y cambia lo que quieras</h2>
+
+    <p id="inspect-empty" class="empty-note">
+      Elige una foto arriba y aquí aparece todo lo que lleva: lo que dice sobre
+      dónde estabas, cuándo y con qué. No se envía nada a ninguna parte para
+      averiguarlo.
+    </p>
+
+    <div id="inspector" hidden>
+      <div class="inspect-head">
+        <div class="inspect-file">
+          <img id="inspect-thumb" class="inspect-thumb" alt="" hidden>
+          <div>
+            <p class="inspect-name" id="inspect-name"></p>
+            <p class="inspect-sub" id="inspect-sub"></p>
+          </div>
+        </div>
+        <div class="inspect-switch">
+          <label for="inspect-select" class="visually-hidden">Qué foto inspeccionar</label>
+          <select id="inspect-select"></select>
+        </div>
+      </div>
+
+      <!-- The findings: the part of this page that answers the actual question. -->
+      <section class="findings" aria-labelledby="findings-h">
+        <h3 id="findings-h">Lo que este archivo delata</h3>
+        <ul id="findings-list" class="findings-list"></ul>
+      </section>
+
+      <!-- Whole blocks, each removable on its own. -->
+      <section class="blocks" aria-labelledby="blocks-h">
+        <h3 id="blocks-h">Bloques de este archivo</h3>
+        <ul id="block-list" class="block-list"></ul>
+      </section>
+
+      <!-- Every tag, editable. -->
+      <section class="tags" aria-labelledby="tags-h">
+        <h3 id="tags-h">Todas las etiquetas</h3>
+        <p class="tags-note" id="tags-note"></p>
+        <div id="tag-groups"></div>
+
+        <details class="add-tag" id="add-tag">
+          <summary>Añadir una etiqueta</summary>
+          <div class="add-tag-body">
+            <label for="add-tag-select">Etiqueta</label>
+            <select id="add-tag-select"></select>
+            <label for="add-tag-value">Valor</label>
+            <input type="text" id="add-tag-value" spellcheck="false">
+            <button type="button" id="add-tag-go" class="ghost">Añadir</button>
+          </div>
+        </details>
+      </section>
+
+      <div class="save-row">
+        <button type="button" id="save-edits" class="primary" disabled>Guardar esta foto</button>
+        <button type="button" id="revert-edits" class="ghost" disabled>Deshacer mis cambios</button>
+        <span id="save-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+      <p id="edit-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+</main>

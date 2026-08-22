@@ -16,7 +16,10 @@ lang = "es"
 name = "Spanish"
 endonym = "Español"
 
-complete = false
+# Every tool, every guide, both legal pages and the roadmap list are
+# translated, so the fallback is now an error rather than a silence, and
+# Spanish is advertised in the sitemap, the hreflang tags and the switcher.
+complete = true
 
 #
 # ---------------------------------------------------------------------------
@@ -45,6 +48,15 @@ complete = false
 "images-to-video" = "imagenes-a-video"
 "resize-image" = "redimensionar-imagen"
 "trim-video" = "cortar-video"
+# Nombradas por la tarea, no por el formato: casi nadie busca "imagen a ICO",
+# y muchísima gente busca cómo hacerse un favicon.
+"image-to-ico" = "crear-favicon"
+"svg-to-image" = "convertir-svg-a-png"
+"heic-to-jpg" = "convertir-heic-a-jpg"
+# "Base64" es la palabra que se teclea; "data URI" es la que sale después.
+"image-to-data-uri" = "imagen-a-base64"
+"qr-barcode" = "generar-codigo-qr"
+"video-to-gif" = "convertir-video-a-gif"
 
 "guides" = "guias"
 "roadmap" = "hoja-de-ruta"
@@ -60,6 +72,12 @@ complete = false
 "guides/trim-a-video" = "guias/cortar-un-video"
 "guides/crop-a-video" = "guias/recortar-un-video"
 "guides/is-it-safe-to-upload-files" = "guias/es-seguro-subir-archivos"
+"guides/make-a-favicon" = "guias/como-hacer-un-favicon"
+"guides/convert-an-svg-to-png" = "guias/convertir-un-svg-a-png"
+"guides/convert-heic-to-jpg" = "guias/convertir-heic-a-jpg"
+"guides/embed-an-image-in-css" = "guias/incrustar-una-imagen-en-css"
+"guides/make-a-qr-code" = "guias/como-hacer-un-codigo-qr"
+"guides/turn-a-video-into-a-gif" = "guias/convertir-un-video-en-gif"
 
 #
 # ---------------------------------------------------------------------------
@@ -130,7 +148,7 @@ note = "Crea y reordena documentos sin mandarlos a procesar a ninguna parte."
 
 [[hub.categories]]
 name = "Códigos y datos"
-note = "Convertir lo que ha escrito en algo que una máquina puede leer, sin que salga de la página."
+note = "Convierte lo que escribes en algo que una máquina puede leer, sin que salga de la página."
 
 [[hub.categories]]
 name = "Texto y código"
@@ -334,6 +352,8 @@ warning = """
       pedir. De ti no sale nunca nada &mdash; esta página sigue sin poder hacer
       ninguna subida."""
 label = "Una dirección por línea"
+# El inglés forma el plural añadiendo una "s" al nombre; en español eso daría
+# «imagens», así que la frase se escribe alrededor del singular.
 note = """
-      El servidor debe permitir el uso entre orígenes de sus {{ tool.picker.urls.noun }}s. Muchos sitios no lo
+      El servidor debe permitir el uso entre orígenes de sus archivos de {{ tool.picker.urls.noun }}. Muchos sitios no lo
       hacen, y esos fallarán con un mensaje en vez de romperse en silencio más tarde."""

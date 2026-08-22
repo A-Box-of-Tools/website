@@ -1,0 +1,225 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Abre el <a href="../../convertir-video-a-gif/">convertidor de vídeo a
+      GIF</a>, suelta el clip dentro, marca los segundos que quieras, y deja el
+      ancho en 480 y la cadencia en 12 fotogramas por segundo. Ese es el ajuste
+      que quiere casi cualquier GIF. Si el archivo sale demasiado grande, baja el
+      ancho antes de tocar nada más &mdash; es el ajuste que paga dos veces.
+    </p>
+    <p>
+      El resto de esta página va de por qué, porque «mi GIF ocupa 14 MB» es el
+      problema que tiene todo el mundo de verdad, y cuál es el mando que hay que
+      girar no es evidente.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué un GIF de un vídeo es tan enorme</h2>
+    <p>
+      Un códec de vídeo guarda <em>movimiento</em>. Escribe una imagen completa
+      cada par de segundos y después, para cada fotograma intermedio, una
+      descripción de cómo se movió esa imagen: este bloque de píxeles se deslizó
+      cuatro a la izquierda, esta zona se oscureció un poco. Un clip de cinco
+      segundos puede ser de unos cientos de kilobytes porque casi todo él son
+      instrucciones sobre una imagen que ya tienes.
+    </p>
+    <p>
+      GIF no tiene nada de eso. Se terminó en 1989, antes de que existiera nada de
+      aquello. Cada fotograma es una imagen, comprimida por su cuenta con un
+      esquema diseñado para capturas de pantalla de una hoja de cálculo. En el
+      formato no hay ninguna estimación de movimiento por ninguna parte, y no hay
+      forma de añadirla.
+    </p>
+    <p>
+      Así que el número que hay que esperar es <strong>diez veces el tamaño del
+      vídeo</strong>, y ningún conversor te va a librar de eso. Lo que sí puede
+      hacer uno bueno es no desperdiciar nada por encima, y darte los tres ajustes
+      que de verdad lo deciden.
+    </p>
+  </section>
+
+  <section>
+    <h2>Los tres ajustes, y lo que cuesta cada uno</h2>
+    <p>
+      Todo lo relativo al tamaño de un GIF se reduce a cuántos píxeles contiene,
+      que es la duración por la cadencia por el área de un fotograma.
+    </p>
+    <ul>
+      <li>
+        <strong>El trozo &mdash; lineal.</strong> El doble de largo son el doble
+        de fotogramas y más o menos el doble de archivo. Este es el que casi todo
+        el mundo ya entiende, y merece la pena ser implacable: un GIF que dice lo
+        que tiene que decir en tres segundos es además de más pequeño, un GIF
+        mejor.
+      </li>
+      <li>
+        <strong>El ancho &mdash; cuadrático.</strong> Reducir el ancho a la mitad
+        reduce el alto con él, así que son <em>la cuarta parte</em> de los
+        píxeles. Pasar de 640 a 320 no ahorra un poco menos de la mitad; ahorra
+        alrededor de tres cuartas partes. Este es el ajuste que nadie toca primero
+        y el que mejor paga.
+      </li>
+      <li>
+        <strong>La cadencia &mdash; lineal.</strong> Diez fotogramas por segundo
+        son dos tercios del tamaño de quince. Es además el ajuste en el que la
+        pérdida se ve más, porque un movimiento demasiado lento se lee como roto y
+        no como pequeño.
+      </li>
+    </ul>
+    <p>
+      Un ejemplo hecho. Seis segundos de un clip de móvil a sus propios
+      1080&times;1920 y 30 fps son 180 fotogramas de dos millones de píxeles: unos
+      350 millones de píxeles, que no es un GIF, es un secuestro. Los mismos seis
+      segundos a 480 de ancho y 12 fps son 72 fotogramas de 400 000 píxeles
+      &mdash; 30 millones, más o menos la doceava parte &mdash; y se parece a lo
+      que la gente entiende por un GIF.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué cadencia elegir</h2>
+    <p>
+      Doce es el valor por defecto de aquí y la respuesta correcta
+      sorprendentemente a menudo. Es la cadencia que lleva usando un siglo la
+      animación dibujada a mano: lo bastante rápida como para que el ojo la lea
+      como movimiento continuo, lo bastante lenta como para no estar pagando por
+      fotogramas que nadie ve.
+    </p>
+    <ul>
+      <li><strong>5&ndash;8</strong> &mdash; sensación de pase de diapositivas.
+        Vale para una panorámica lenta o para una grabación de pantalla donde no
+        se mueve nada rápido.</li>
+      <li><strong>10&ndash;15</strong> &mdash; normal. Se lee como movimiento.
+        Casi todos los GIF que merece la pena hacer están aquí.</li>
+      <li><strong>20&ndash;25</strong> &mdash; fluido, y más o menos el doble de
+        tamaño que 12 por una diferencia que casi ningún espectador va a saber
+        nombrar. Merece la pena para movimiento rápido, un clip deportivo o
+        cualquier cosa con una panorámica de latigazo.</li>
+    </ul>
+    <p>
+      Hay un techo duro que más vale conocer: GIF guarda cuánto se queda cada
+      fotograma en pantalla en centésimas de segundo, y todos los navegadores
+      tratan un retardo por debajo de dos centésimas como si fueran diez. Así que
+      50 fotogramas por segundo es el máximo real, y un archivo que pida 100 se
+      reproducirá a 10 sin decir nada. Un conversor que te ofrezca 60 fps o está
+      ignorando eso o está a punto de darte una sorpresa.
+    </p>
+  </section>
+
+  <section>
+    <h2>256 colores, y para qué sirve el tramado</h2>
+    <p>
+      La otra mitad de la edad del formato: un GIF lleva una tabla de 256 colores
+      como mucho, y cada píxel es un número que apunta dentro de ella. Un
+      fotograma de vídeo tiene hasta dieciséis millones. Casi todo eso se tira, y
+      cómo se tira es casi todo el aspecto que tiene un GIF.
+    </p>
+    <p>
+      Un buen conversor cuenta los colores de <em>tu</em> clip y elige 256 que le
+      vayan bien, en vez de usar un conjunto fijo. Un plano de un bosque se lleva
+      256 verdes; un plano de un atardecer se lleva 256 naranjas. Eso es lo que
+      hace la herramienta de aquí, a lo largo de todos los fotogramas del trozo y
+      no solo del primero, así que un color que solo aparece al final también tiene
+      su sitio.
+    </p>
+    <p>
+      El <strong>tramado</strong> es lo que pasa donde el color que necesitas sigue
+      sin estar. En vez de redondear una zona entera al color más cercano
+      disponible &mdash; que convierte un cielo suave en cuatro franjas planas con
+      escalones visibles entre ellas &mdash;, alterna los dos colores más cercanos
+      en un patrón fino, y desde una distancia normal de visionado tu ojo los
+      mezcla y ve el que no está.
+    </p>
+    <ul>
+      <li><strong>Déjalo activado</strong> para cualquier cosa fotográfica:
+        cielos, piel, degradados, sombras, cine.</li>
+      <li><strong>Desactívalo</strong> para el color plano: grabaciones de
+        pantalla, dibujo de línea, logotipos, dibujos animados, cualquier cosa con
+        grandes zonas de un solo tono. No hay ningún degradado que proteger, y el
+        archivo queda más pequeño y más limpio sin él.</li>
+    </ul>
+    <p>
+      Un detalle que conviene conocer si comparas conversores. La forma evidente de
+      tramar &mdash; la difusión de error, que es la que usan casi todos los
+      editores de imagen &mdash; hace que el resultado de cada píxel dependa de los
+      píxeles de alrededor. En una animación eso significa que un fondo que no se
+      mueve trama distinto en cada fotograma, así que hormiguea a la vista, y hay
+      que guardar cada fotograma entero porque técnicamente ha cambiado cada píxel.
+      La alternativa, un tramado ordenado, depende solo de dónde está un píxel, así
+      que un fondo quieto se queda perfectamente quieto. Eso es lo que usa esta
+      herramienta, y es por lo que sus archivos son además de más tranquilos, más
+      pequeños.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cuándo no hacer un GIF en absoluto</h2>
+    <p>
+      Merece la pena preguntárselo, porque la respuesta honesta muchas veces es «no
+      lo hagas». Un MP4 o un WebM mudo en bucle ocupa alrededor de la décima parte
+      que la misma animación en GIF, se reproduce igual, y es en lo que cualquier
+      plataforma social convierte tu GIF después de que lo subas de todas formas.
+    </p>
+    <p>Quédate con el GIF cuando el destino necesite uno de verdad:</p>
+    <ul>
+      <li>un sitio que solo acepta una imagen &mdash; mucho software de chat, de
+        foros, de wikis y de correo;</li>
+      <li>un README o una página de documentación, donde un GIF se reproduce en
+        línea y un vídeo necesita un reproductor;</li>
+      <li>una presentación o un documento que tiene que seguir moviéndose sin
+        conexión;</li>
+      <li>un emoji, una pegatina, una reacción &mdash; lo bastante pequeños como
+        para que nada de la aritmética de arriba importe.</li>
+    </ul>
+    <p>
+      Cuando el sonido importa, la pregunta se responde sola: GIF nunca ha tenido
+      audio y nunca lo tendrá. Corta el vídeo en su lugar &mdash; el
+      <a href="../../cortar-video/">cortador de vídeo</a> te saca un trozo sin
+      recodificar ni un fotograma.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bajar de un límite de tamaño</h2>
+    <p>
+      Casi todo el motivo por el que alguien afina un GIF es un límite al otro
+      lado. Por orden aproximado de cuánto aprietan:
+    </p>
+    <ul>
+      <li><strong>Correo</strong> &mdash; de 10 a 25 MB para el mensaje entero, y
+        un adjunto cerca de eso se lo quita o lo rebota algo por el camino.
+        Apunta bastante por debajo.</li>
+      <li><strong>Chat y foros</strong> &mdash; normalmente de 8 a 10 MB, a veces
+        mucho menos para una vista previa en línea en lugar de una descarga.</li>
+      <li><strong>Un README de GitHub</strong> &mdash; 10 MB por archivo, y
+        cualquier cosa por encima de un par de megabytes hace que la página
+        parezca rota en un móvil.</li>
+      <li><strong>Los huecos de pegatinas y emojis</strong> &mdash; muchas veces
+        unos cientos de kilobytes, lo que significa un ancho pequeño y un trozo
+        corto, no una cadencia más baja.</li>
+    </ul>
+    <p>
+      El orden en que hay que probar, cuando te pasas: acorta el trozo, después
+      reduce el ancho a la mitad, después baja la cadencia, después desactiva el
+      tramado. Los dos primeros valen más que los dos últimos juntos.
+    </p>
+  </section>
+
+  <section>
+    <h2>Nada de esto necesita una subida</h2>
+    <p>
+      Convertir un vídeo en un GIF es descodificar, redimensionar, contar colores y
+      comprimir &mdash; cuatro cosas que un navegador lleva años sabiendo hacer por
+      su cuenta. La herramienta enlazada arriba lo hace todo en tu equipo: el
+      archivo se lee de tu disco, los fotogramas los descodifica tu navegador, y el
+      GIF se monta en memoria y se entrega a tus descargas.
+    </p>
+    <p>
+      Y aquí eso merece más preocupación de lo habitual. Los clips que la gente
+      convierte en GIF son personales &mdash; un momento de un vídeo familiar, una
+      grabación de pantalla de algo del trabajo, unos segundos de una llamada. Un
+      conversor que quiere que se los subas está pidiendo una copia de ellos, y ya
+      no queda ninguna razón técnica para decir que sí.
+    </p>
+  </section>

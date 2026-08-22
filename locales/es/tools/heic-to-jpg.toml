@@ -1,0 +1,299 @@
+#
+# HEIC a JPG - Spanish.
+#
+# Overrides for tools/heic-to-jpg/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "HEIC a JPG"
+heading = "HEIC&nbsp;a&nbsp;JPG <span class=\"h1-kw\">&mdash; convertir fotos de iPhone</span>"
+tagline = "Las fotos que hace un iPhone, en un formato que abre todo."
+
+title = "Convertidor de HEIC a JPG &mdash; gratis y sin subir nada"
+description = "Convierte las fotos HEIC de un iPhone en JPG desde tu navegador. El descodificador funciona en tu propio equipo: no se sube nada, no hay cuenta, funciona sin conexión, y la fecha y los datos de la cámara pueden venirse contigo."
+og_title = "Convierte fotos HEIC en JPG sin subirlas"
+og_description = "El convertidor que no quiere tus fotos. El descodificador de HEIC se sirve desde esta página y funciona en tu propio equipo, así que las fotos no salen de él."
+og_image_alt = "HEIC a JPG - las fotos de iPhone en un formato que abre todo"
+
+pledge = """
+    La descodificación ocurre en tu propio navegador, en tu propio hardware. HEIC
+    es el único formato de imagen que un navegador no abre por su cuenta, así que
+    esta página lleva el descodificador consigo &mdash; unos 1,4 MB, servidos
+    desde este sitio y guardados en caché tras la primera visita. Esa es la razón
+    entera de que todos los demás convertidores de HEIC te pidan que subas algo:
+    ponen el códec en un servidor y tus fotos tienen que ir hasta él. Este pone el
+    códec aquí. En esta página no hay ninguna función de red, ni ningún servidor
+    al otro lado al que mandar una foto."""
+
+live_hint = """
+      No hace falta que nos creas: abre las herramientas de desarrollo, mira la
+      pestaña «Red» y convierte una foto. Verás cargarse los archivos propios de
+      esta página, el descodificador entre ellos, y ni una sola petición que lleve
+      una foto, una miniatura, un nombre de archivo o un byte de lo que has
+      elegido. O carga la página una vez, desconéctate de internet y convierte una
+      carpeta entera de todos modos."""
+
+read_first = """
+, <code>src/heif.js</code> para ver cómo se carga
+      el descodificador y qué se le permite hacer, <code>src/boxes.js</code> para
+      el análisis del contenedor que encuentra los metadatos de la foto, y
+      <code>src/exif.js</code> para lo que le pasa a esos metadatos camino de un
+      JPEG. El motor en sí es <code>vendor/libheif.js</code>, sin modificar y con
+      su licencia al lado."""
+
+howto_heading = "Cómo convertir fotos HEIC a JPG"
+
+card = """
+            Las fotos que hace un iPhone, en un formato que abre todo &mdash;
+            descodificadas en tu propio equipo, no en el servidor de nadie."""
+
+[words]
+plural = "fotos"
+choose = "una foto"
+analytics_extra = """, ni ninguna de las
+  fechas, modelos de cámara o coordenadas que esta herramienta lee de ellas"""
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin límite de tamaño"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[privacy]]
+title = "Tus fotos no tienen adónde ir."
+body = """
+ La
+      Content-Security-Policy nombra todas las direcciones que esta página puede
+      contactar, y ninguna es de este sitio. Aquí no hay ningún punto final donde
+      pudieran recogerse tus archivos, ni nada en el código que los enviara si lo
+      hubiera."""
+
+[[privacy]]
+title = "El descodificador vino de aquí, y no va a ninguna parte."
+body = """
+ HEIC es HEVC
+      dentro de un formato de cajas, y ningún navegador salvo Safari sabe
+      descodificar uno, así que esta página distribuye <code>libheif</code>
+      compilado a WebAssembly &mdash; unos 1,4 MB, guardados en este repositorio,
+      servidos desde este origen y cacheados por el service worker como cualquier
+      otro archivo de aquí. No se descarga de una CDN, porque eso pondría a un
+      tercero en el camino de cada visita y dejaría a la herramienta sin
+      funcionar sin conexión. El binario está dentro del script y no al lado
+      precisamente para que no haga falta ninguna descarga para arrancarlo."""
+
+[[privacy]]
+title = "Aquí nada descarga nada."
+body = """
+ No hay ningún
+      <code>fetch</code>, ningún <code>XMLHttpRequest</code> ni ningún
+      <code>sendBeacon</code> en ningún archivo escrito para esta herramienta. El
+      motor incorporado, como cualquier compilación de Emscripten, contiene las
+      rutas de carga que descargarían un <code>.wasm</code> desde una URL; no se
+      toman, porque el binario ya está en la mano &mdash; y si se tomara,
+      <code>connect-src</code> nombra los puntos finales de medición de Google y
+      nada más, así que el navegador lo rechazaría. La prueba es la política, no
+      la promesa."""
+
+[[privacy]]
+title = "Los metadatos se leen aquí y se te cuentan a ti."
+body = """
+ La lista de
+      la página dice qué lleva cada foto &mdash; la fecha, la cámara y si hay
+      coordenadas GPS dentro &mdash; porque es algo que quizá quieras saber antes
+      de darle el JPEG a alguien. Los lee del archivo <code>src/boxes.js</code> en
+      este navegador, se muestran en esta página, y se escriben en tu JPEG o se
+      dejan fuera, exactamente como tú elijas. En este repositorio no hay ningún
+      evento de analítica propio que lleve un nombre de archivo, una fecha, una
+      coordenada o un recuento."""
+
+[[privacy]]
+title = "Qué carga Google y qué no se le da."
+body = """
+ Los scripts de
+      publicidad y medición vienen de Google, y el botón de donación de Buy Me a
+      Coffee. A ninguno se le entrega nada sobre tus fotos. Cada línea que lee,
+      descodifica o escribe un archivo se sirve desde este origen y está listada
+      en el repositorio."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Carga la página una vez y desconéctate de
+      la red, y la herramienta sigue igual &mdash; el descodificador se guarda en
+      caché con ella. Es la prueba más sencilla de todas, y aquí es más fuerte que
+      en ninguna otra parte de este sitio: un convertidor que mandara tus fotos
+      fuera a descodificar no podría apañárselas de ninguna manera."""
+
+[[howto]]
+title = "Elige tus fotos HEIC."
+body = """
+ Suéltalas sobre el selector o
+      escógelas a mano, directamente de una copia de seguridad del móvil o de una
+      carpeta del escritorio. Tu navegador las lee del disco; mientras lo haces no
+      se envía nada a ninguna parte. La lista dice qué es cada una y qué lleva
+      dentro."""
+
+[[howto]]
+title = "Comprueba qué llevan las fotos."
+body = """
+ Cada fila nombra la fecha en
+      que se tomó, la cámara y &mdash; en verde, porque es la parte que merece la
+      pena notar &mdash; si el archivo lleva coordenadas GPS. Eso se lee del
+      contenedor sin descodificar la imagen, así que no cuesta nada y aparece de
+      inmediato."""
+
+[[howto]]
+title = "Elige un formato y decide sobre los datos."
+body = """
+ JPEG salvo que tengas un
+      motivo: es el formato que se abre en todas partes, que es el sentido entero
+      de convertir. El control de calidad está en 92, que es el ajuste en el que
+      una fotografía cuesta distinguirla del original. La casilla decide si la
+      fecha, la cámara y la ubicación se vienen contigo."""
+
+[[howto]]
+title = "Pulsa «Convertir» y descarga."
+body = """
+ El descodificador llega en la
+      primera conversión &mdash; unos 1,4 MB, una vez &mdash; y cada foto a partir
+      de ahí se descodifica y se escribe en tu propio equipo. Un archivo te da un
+      botón de descarga; varios te dan además un zip."""
+
+[[faq]]
+q = "¿Se sube mi foto a alguna parte?"
+a = """
+        No. Tu propio navegador lee, descodifica y escribe el archivo en tu propio
+        hardware. Esta herramienta no tiene ninguna función de red &mdash; nunca
+        descarga nada y nunca envía nada &mdash; y la
+        <code>Content-Security-Policy</code> de la página nombra todas las
+        direcciones que puede contactar, ninguna de las cuales es de este sitio. Lo
+        único que sí se carga es el propio descodificador, y viene de este sitio,
+        una vez, antes de que tu foto entre siquiera en la ecuación."""
+
+[[faq]]
+q = "¿Por qué esta página descarga 1,4 MB la primera vez?"
+a = """
+        Porque HEIC es el único formato de imagen que un navegador no abre. Es un
+        fotograma HEVC dentro de un contenedor de cajas, y solo Safari, sobre
+        hardware de Apple, tiene un descodificador para él; Chrome, Firefox y Edge
+        sencillamente rechazan el archivo. Así que un convertidor de HEIC necesita
+        un descodificador de alguna parte, y hay dos sitios de los que puede venir:
+        un servidor o la página. Todos los demás convertidores eligieron el
+        servidor, que es justamente por lo que todos necesitan que subas tus fotos.
+        Este lleva <code>libheif</code> compilado a WebAssembly en su lugar. Se
+        sirve desde este sitio, se guarda en caché tras la primera visita, y es el
+        precio entero de que tus fotos no vayan a ninguna parte."""
+
+[[faq]]
+q = "¿El JPEG conserva la fecha, la cámara y la ubicación?"
+a = """
+        Si tú quieres, y es una casilla de la página. Si la dejas activada, el
+        bloque EXIF se copia del HEIC y se escribe en el JPEG exactamente como lo
+        escribió el móvil, así que la foto convertida sigue ordenándose por el día
+        en que se tomó y no por el día en que se convirtió &mdash; que es la queja
+        habitual con los convertidores de HEIC. Se cambia una etiqueta y solo una:
+        la orientación, que se pone en «derecha», porque la rotación ya se ha
+        aplicado a los píxeles y un visor que volviera a aplicarla pondría de lado
+        todas las fotos verticales. Desactiva la casilla y el JPEG sale con la
+        imagen y nada más."""
+
+[[faq]]
+q = "¿Quita las coordenadas GPS?"
+a = """
+        Te dice que están ahí, y después hace lo que le pidas. La fila de cada foto
+        dice si el archivo lleva coordenadas antes de que conviertas nada, que es
+        más de lo que hace el móvil. Desmarcar «conservar la fecha, la cámara y los
+        ajustes» las deja fuera del JPEG junto con todo lo demás; dejarla marcada
+        las traslada. Si lo que quieres es repasar las etiquetas en detalle, o
+        quitarlas de fotos que ya son JPEG, el
+        <a href="../eliminar-datos-exif/">visor y eliminador de EXIF</a> es la
+        herramienta para eso, y lo hace sin volver a comprimir la imagen."""
+
+[[faq]]
+q = "¿Se vuelve a comprimir la imagen?"
+a = """
+        Sí, y tiene que hacerlo: HEIC y JPEG son códecs distintos, así que no hay
+        forma de pasar de uno a otro sin descodificar la imagen y volver a
+        codificarla. Lo que sí puedes controlar es cuánto cuesta eso. El control de
+        calidad viene en 92, donde una fotografía es muy difícil de distinguir del
+        original, y PNG está en el menú para el caso en que no quieras ninguna
+        pérdida y no te importe que el archivo sea de cinco a diez veces más
+        grande."""
+
+[[faq]]
+q = "¿Y si el archivo se llama .jpg pero en realidad es un HEIC?"
+a = """
+        Funciona igual. Todo archivo que se suelte aquí se identifica por sus
+        primeros bytes y no por su nombre, porque el nombre es lo que decidiera
+        llamarlo la última aplicación que tocó el archivo &mdash; y un HEIC que
+        llegó llamándose «.jpg» es una de las formas más comunes de acabar buscando
+        una herramienta como esta. Un archivo que sea de verdad un JPEG o un PNG se
+        rechaza con un mensaje que lo dice, en vez de convertirse en una copia de
+        sí mismo."""
+
+[[faq]]
+q = "¿Puede convertir una Live Photo o una ráfaga?"
+a = """
+        Las imágenes fijas que lleve dentro, sí. Un HEIC puede contener más de una
+        imagen, y todas las que contenga se convierten y se nombran a partir del
+        original con un número al final. La mitad de vídeo de una Live Photo es un
+        archivo aparte que el móvil guarda junto al HEIC, así que no está aquí para
+        convertirlo. Los mapas de profundidad y las miniaturas están en el
+        contenedor pero no son imágenes que nadie haya pedido, y se dejan en
+        paz."""
+
+[[faq]]
+q = "¿Por qué no me acepta un AVIF?"
+a = """
+        Porque no hay nada que hacerle. AVIF es el mismo contenedor que HEIC con AV1
+        dentro en lugar de HEVC, y cualquier navegador actual descodifica uno de
+        forma nativa &mdash; así que un convertidor estaría enviando un megabyte de
+        motor para resolver un problema que no tienes. Si necesitas un AVIF como
+        JPEG, el <a href="../comprimir-imagen/">compresor de imágenes</a> y el
+        <a href="../redimensionar-imagen/">redimensionador de imágenes</a> leen
+        AVIF y escriben JPEG usando el descodificador que tu navegador ya tiene."""
+
+[[faq]]
+q = "¿Es gratis? ¿Necesito una cuenta?"
+a = """
+        Es gratis, y no hay cuenta, ni inicio de sesión, ni prueba, ni marca de
+        agua. Tampoco hay límite en el número ni en el tamaño de los archivos,
+        porque no hay ningún servidor pagándolos &mdash; el trabajo ocurre en tu
+        propio equipo. El sitio lleva publicidad, que es lo que lo paga; a los
+        anuncios no se les da nada sobre tus fotos."""
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = """
+        Sí, descodificador incluido. Carga la página una vez, desconéctate de
+        internet y sigue trabajando con tus fotos exactamente igual que antes. Esa
+        es además la prueba más fuerte que hay de que no se sube nada: un
+        convertidor que mandara tus HEIC fuera a descodificar se detendría en el
+        momento en que desenchufaras, y este no."""
+
+[schema]
+description = "Convierte fotos HEIC y HEIF de un iPhone en JPEG, PNG o WebP. El descodificador de HEIC es WebAssembly servido desde la propia página, así que las imágenes se descodifican en tu propio equipo y nunca se suben. La fecha, la cámara y la ubicación pueden trasladarse al JPEG o dejarse fuera."
+features = [
+  "Convierte HEIC y HEIF a JPEG, PNG o WebP",
+  "Descodifica en el navegador, en cualquier navegador y no solo en Safari",
+  "No se sube nada, y la herramienta funciona con la red desenchufada",
+  "Traslada al JPEG la fecha, la cámara y el GPS, o los deja fuera",
+  "Dice qué fotos llevan coordenadas GPS antes de convertir nada",
+  "Corrige la etiqueta de orientación, para que las fotos verticales no salgan de lado",
+  "Identifica los archivos por su contenido, así que un HEIC llamado .jpg funciona igual",
+  "Convierte todas las imágenes de una ráfaga o de una Live Photo, no solo la primera",
+  "Por lotes, con todos los resultados en un zip",
+]
+
+[picker]
+title = "Suelta aquí las fotos HEIC"
+hint = "o haz clic para buscarlas &mdash; .heic y .heif, se llamen como se llamen"
