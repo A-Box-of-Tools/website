@@ -1,0 +1,138 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> 이미지 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">목록에서 전부 빼기</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 실제로 붙여 넣게 되는 줄 -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> 어디로 갈지 말하기</h2>
+
+    <p class="card-lede">
+      데이터 URI 자체를 원하는 사람은 드뭅니다. 원하는 것은 스타일시트에 들어갈
+      그 줄이죠 &mdash; 그러니 줄을 고르세요. 사진이 따옴표까지 씌워진 채로 그
+      안에 담겨 나옵니다. 틀리기 쉬운 데다 SVG에서만 실패하는 부분이 바로
+      그것입니다.
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="무엇을 붙여 넣을지">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>데이터 URI만</strong>
+          <span class="shape-note">
+            쉼표 뒤가 전부 파일입니다. URL이 들어갈 곳이면 어디든 붙여 넣으세요.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>CSS 규칙</strong>
+          <span class="shape-note">
+            파일 이름을 딴 클래스가 붙은 규칙 하나입니다. 선택자는 실제로
+            꾸미려는 것에 맞게 바꾸세요.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>CSS 사용자 지정 속성</strong>
+          <span class="shape-note">
+            스타일시트 맨 위에 한 번 선언해 두고 <code>var(--name)</code>으로
+            얼마든지 씁니다. 사진이 규칙 여러 곳에 나온다면 이것을 고르세요.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>HTML <code>&lt;img&gt;</code> 태그</strong>
+          <span class="shape-note">
+            픽셀 크기를 채워 넣으므로, 나머지가 불러오는 동안 페이지가 튀지
+            않습니다.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>마크다운</strong>
+          <span class="shape-note">
+            README나 이슈에 쓰기 좋습니다. 어딘가에 올려 둘 필요 없이 글과 함께
+            움직이는 사진이 됩니다.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      <code>alt</code> 텍스트는 일부러 비워 둡니다. 그 사진이 뜻을 담고 있는지
+      장식인지는 여러분만 알고, 파일 이름에서 짐작한 설명은 화면 낭독기를 쓰는
+      사람에게 설명이 아예 없는 것보다 나쁩니다.
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>SVG도 base64로</strong>
+          <span class="check-note">
+            기본은 꺼져 있습니다. SVG는 텍스트이고 base64는 바이트를 위한
+            것이니까요. 퍼센트 인코딩은 스타일시트 안에서 마크업을 읽을 수 있게
+            남기고 대개 5분의 1쯤 짧습니다. <code>;base64</code>를 고집하는 드문
+            도구 체인을 위해서만 켜세요.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- 3단계 &mdash; 결과. 여기 버튼이 없는 것은 일부러입니다. 인코딩이 즉시
+       끝나므로 "변환" 버튼이 기다릴 것이 없습니다. -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> 복사하기</h2>
+
+    <p id="empty-note" class="card-lede">
+      아직 고른 것이 없습니다. 위에 사진을 놓으면 붙여 넣을 줄이 여기 나타납니다.
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">전부 복사</button>
+          <button type="button" id="download-all" class="ghost">한 파일로 내려받기</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

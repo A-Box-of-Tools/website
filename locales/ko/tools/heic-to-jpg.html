@@ -1,0 +1,112 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> HEIC 사진 고르기</h2>
+
+    <p class="card-lede">
+      휴대폰에서 바로 꺼낸 것이든, 백업에서 나온 것이든, 메모리 카드에서 복사한
+      것이든 좋습니다. 파일을 읽는 것도 여기, 이 기기이고, 사진을 디코딩하는 것도
+      여기입니다 &mdash; 이 페이지에는 업로드 단계가 없고 뒤에 서버도 없습니다.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">목록에서 전부 빼기</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 무엇이 나올지 -->
+  <section class="card" id="options-card">
+    <h2><span class="step">2</span> 무엇을 돌려받을지 정하기</h2>
+
+    <fieldset class="options">
+      <legend>형식</legend>
+
+      <div class="option-row">
+        <label for="format-select">사진을 이 형식으로 쓰기</label>
+        <select id="format-select">
+          <option value="image/jpeg" selected>JPEG &mdash; 어디서나 열립니다. 실수로 이 세기에 만들어진 것들까지 포함해서</option>
+          <option value="image/png">PNG &mdash; 무손실이고, 용량은 몇 배</option>
+          <option value="image/webp">WebP &mdash; 같은 화질에서 JPEG보다 작고, 요즘 브라우저 전용</option>
+        </select>
+      </div>
+
+      <div class="option-row" id="quality-row">
+        <label for="quality">화질</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="50" max="100" step="1" value="92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>사진의 세부 정보</legend>
+
+      <label class="check">
+        <input type="checkbox" id="keep-exif" checked>
+        <span>
+          <strong>날짜와 카메라, 설정 유지</strong>
+          <span class="check-note">
+            휴대폰이 쓴 그대로 옮기기 때문에, 변환한 사진이 변환한 날이 아니라
+            찍은 날 기준으로 정렬됩니다. 사진에 GPS 좌표가 있다면 그것도
+            포함됩니다 &mdash; 여러분의 사진 중 어느 것이 그런지는 위 목록에
+            적혀 있습니다. 이 항목을 끄면 JPEG에는 사진 말고 아무것도 들어가지
+            않습니다.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary">
+        어느 쪽을 고르든 여기서 누군가에게 읽혀 나가는 것은 없습니다. 이 선택은
+        여러분이 돌려받는 파일에 무엇이 들어가느냐에 대한 것이지, 이 페이지가
+        그것으로 무엇을 하느냐에 대한 것이 아닙니다. 태그를 자세히 들여다보거나
+        이미 JPEG인 사진에서 태그를 지우고 싶다면
+        <a href="../exif-정보-삭제/">EXIF 확인 및 제거</a>가 그 일을 하는
+        도구입니다.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- 3단계 &mdash; 한 번의 클릭 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 변환</h2>
+
+    <div class="run-row">
+      <button type="button" id="convert-all" class="primary big" disabled>변환</button>
+    </div>
+
+    <!--
+      The decoder's own status line. This page is the only one on the site that
+      carries a codec, so it is the only one with anything to report here, and
+      saying where the megabyte came from is the point: it is served from this
+      origin, it is cached with the rest of the page, and it is what makes the
+      offline promise hold on a browser that cannot open a HEIC at all.
+    -->
+    <p id="engine-status" class="engine-status" role="status" aria-live="polite"></p>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>변환 완료</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>전부 zip으로 내려받기</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

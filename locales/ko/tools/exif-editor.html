@@ -1,0 +1,149 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> 사진 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">목록에서 전부 빼기</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 한 번의 클릭 -->
+  <section class="card" id="strip-card">
+    <h2><span class="step">2</span> 전부 지우기</h2>
+
+    <p class="card-lede">
+      버튼 하나로 목록의 모든 사진을 처리합니다. 사진은 디코딩되지도, 다시
+      그려지지도, 다시 압축되지도 않습니다 &mdash; 압축된 이미지 데이터는 손대지
+      않고 그대로 옮기고 그것을 둘러싼 메타데이터만 떨어냅니다. 그래서 결과는
+      아무것도 붙어 있지 않은 같은 사진입니다.
+    </p>
+
+    <div class="strip-row">
+      <button type="button" id="strip-all" class="primary big" disabled>메타데이터 전부 지우기</button>
+      <span id="strip-status" class="strip-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Two things are kept by default, and both are stated on the button's own
+      line rather than buried in a settings panel. "Remove all" that quietly
+      keeps things is a broken promise; "remove all except these two, and here
+      they are" is a choice.
+    -->
+    <fieldset class="keep-options">
+      <legend>남길 것</legend>
+      <label class="check">
+        <input type="checkbox" id="keep-orientation" checked>
+        <span>
+          <strong>방향 태그</strong>
+          <span class="check-note">
+            휴대폰은 센서가 본 그대로 사진을 저장하고 어느 쪽이 위인지를 태그
+            하나로 적어 둡니다. 그것을 지우면 일부 뷰어가 사진을 옆으로 보여
+            줍니다. 남기면 이 태그 하나만 담은 새 EXIF 블록을 씁니다 &mdash;
+            그것도 사진이 이미 바로 서 있지 않을 때만요.
+          </span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keep-icc" checked>
+        <span>
+          <strong>색 프로파일</strong>
+          <span class="check-note">
+            ICC 프로파일은 사진 속 숫자가 어떤 색을 뜻하는지를 알려 줍니다.
+            여러분에 대해서는 아무것도 말하지 않습니다. 이것을 버리면 넓은 색
+            영역으로 찍은 사진의 색이 눈에 띄게 틀어질 수 있어서, 따로 말하지
+            않는 한 남깁니다.
+          </span>
+        </span>
+      </label>
+      <p class="keep-summary" id="keep-summary"></p>
+    </fieldset>
+
+    <div id="clean-results" class="results" hidden>
+      <div class="results-head">
+        <h3>정리 완료</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>전부 zip으로 내려받기</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!-- 3단계 &mdash; 읽고 고치기 -->
+  <section class="card" id="inspect-card">
+    <h2><span class="step">3</span> 안을 들여다보고, 원하는 것을 고치기</h2>
+
+    <p id="inspect-empty" class="empty-note">
+      위에서 사진을 고르면 그 안의 모든 것이 여기 나타납니다. 여러분이 어디에
+      있었는지, 언제였는지, 무엇으로 찍었는지까지요. 그걸 알아내려고 어디로도
+      아무것도 보내지 않습니다.
+    </p>
+
+    <div id="inspector" hidden>
+      <div class="inspect-head">
+        <div class="inspect-file">
+          <img id="inspect-thumb" class="inspect-thumb" alt="" hidden>
+          <div>
+            <p class="inspect-name" id="inspect-name"></p>
+            <p class="inspect-sub" id="inspect-sub"></p>
+          </div>
+        </div>
+        <div class="inspect-switch">
+          <label for="inspect-select" class="visually-hidden">어느 사진을 살펴볼지</label>
+          <select id="inspect-select"></select>
+        </div>
+      </div>
+
+      <!-- The findings: the part of this page that answers the actual question. -->
+      <section class="findings" aria-labelledby="findings-h">
+        <h3 id="findings-h">이 파일이 흘리고 있는 것</h3>
+        <ul id="findings-list" class="findings-list"></ul>
+      </section>
+
+      <!-- Whole blocks, each removable on its own. -->
+      <section class="blocks" aria-labelledby="blocks-h">
+        <h3 id="blocks-h">이 파일 안의 블록</h3>
+        <ul id="block-list" class="block-list"></ul>
+      </section>
+
+      <!-- Every tag, editable. -->
+      <section class="tags" aria-labelledby="tags-h">
+        <h3 id="tags-h">모든 태그</h3>
+        <p class="tags-note" id="tags-note"></p>
+        <div id="tag-groups"></div>
+
+        <details class="add-tag" id="add-tag">
+          <summary>태그 추가하기</summary>
+          <div class="add-tag-body">
+            <label for="add-tag-select">태그</label>
+            <select id="add-tag-select"></select>
+            <label for="add-tag-value">값</label>
+            <input type="text" id="add-tag-value" spellcheck="false">
+            <button type="button" id="add-tag-go" class="ghost">추가</button>
+          </div>
+        </details>
+      </section>
+
+      <div class="save-row">
+        <button type="button" id="save-edits" class="primary" disabled>이 사진 저장하기</button>
+        <button type="button" id="revert-edits" class="ghost" disabled>바꾼 것 되돌리기</button>
+        <span id="save-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+      <p id="edit-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+</main>

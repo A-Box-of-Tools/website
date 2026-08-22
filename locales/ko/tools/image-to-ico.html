@@ -1,0 +1,183 @@
+<main>
+  <!-- 1단계 &mdash; 그림 -->
+  <section class="card">
+    <h2><span class="step">1</span> 그림 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">목록에서 전부 빼기</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="shape-note" class="field-summary" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 어느 규격인지 -->
+  <section class="card" id="preset-card">
+    <h2><span class="step">2</span> 아이콘의 용도 말하기</h2>
+
+    <p class="card-lede">
+      아이콘 파일은 그림 하나가 아니라 여럿입니다. 같은 로고를 그것을 읽는 쪽이
+      요구하는 크기마다 다시 그려 넣은 것이죠. 그 크기가 무엇인지는 취향의 문제가
+      아닙니다 &mdash; 브라우저는 셋을 원하고, 고해상도 노트북의 프로그램은 열을
+      원하며, 맥은 자기만의 열을 원하고, 윈도우 비스타 이전에 만들어진 것은
+      아예 다른 방식으로 저장되기를 원합니다.
+    </p>
+
+    <!--
+      Which files to write. Windows and macOS read different containers and
+      neither will look at the other's, so this is a set of checkboxes rather
+      than a menu: wanting both is the normal case for anything shipped on both.
+    -->
+    <fieldset class="options outputs">
+      <legend>무엇을 만들지</legend>
+
+      <label class="check">
+        <input type="checkbox" id="want-ico" checked>
+        <span>
+          <strong>윈도우 아이콘 &mdash; <code>.ico</code></strong>
+          <span class="check-note">
+            모든 브라우저가 파비콘으로 읽고, 윈도우가 프로그램과 바로 가기,
+            폴더에 씁니다. 크기는 아래에서 직접 고릅니다.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="want-icns">
+        <span>
+          <strong>macOS 아이콘 &mdash; <code>.icns</code></strong>
+          <span class="check-note">
+            맥 애플리케이션 번들이 싣고 다니는 것입니다. 애플이 16픽셀부터
+            1024픽셀까지 정확히 열 개의 슬롯을 정해 두어 고를 것이 없습니다.
+            열 개가 전부 들어가는데, 레티나 슬롯과 그 위 크기가 같은 그림이라
+            일곱 번만 그리면 됩니다.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="pack-row">
+        <input type="checkbox" id="want-pack">
+        <span>
+          <strong>웹사이트 아이콘 세트의 나머지</strong>
+          <span class="check-note">
+            .ico는 브라우저 탭과 윈도우까지만 감당합니다. 아이폰 홈 화면,
+            안드로이드 설치 안내, 시작 메뉴에 고정한 타일은 감당하지 못합니다
+            &mdash; 그것들은 180px PNG와 웹 앱 매니페스트, XML 파일을 읽는데,
+            어느 것도 .ico 안을 들여다보지 않습니다. 이걸 체크하면 그 전부와
+            매니페스트, 그리고 페이지에 붙여 넣을 HTML 덩어리까지 받습니다.
+          </span>
+        </span>
+      </label>
+
+      <p id="output-summary" class="field-summary"></p>
+    </fieldset>
+
+    <div id="ico-settings">
+      <div class="presets" id="preset-list" role="radiogroup" aria-label="아이콘의 용도"></div>
+
+      <p id="preset-note" class="field-summary"></p>
+
+      <fieldset class="options" id="size-set">
+        <legend>.ico에 들어갈 크기</legend>
+        <div class="size-grid" id="size-grid"></div>
+        <p id="size-summary" class="field-summary"></p>
+      </fieldset>
+    </div>
+
+    <fieldset class="options">
+      <legend>어떻게 그릴지</legend>
+
+      <div class="option-row">
+        <label for="fit-select">그림이 정사각형이 아니라면</label>
+        <select id="fit-select">
+          <option value="pad" selected>여백을 넣어 정사각형으로 &mdash; 그림 전체가 남습니다</option>
+          <option value="crop">가운데 정사각형만 잘라내기</option>
+          <option value="stretch">정사각형으로 늘이기</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="background-mode">배경</label>
+        <select id="background-mode">
+          <option value="transparent" selected>투명</option>
+          <option value="colour">색 지정</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="배경색" hidden>
+      </div>
+
+      <div class="option-row" id="storage-row">
+        <label for="storage-select">.ico 안에 각 크기를 저장하는 방식</label>
+        <select id="storage-select">
+          <option value="auto" selected>자동 &mdash; 값이 싸면 호환 방식으로, 아니면 PNG로</option>
+          <option value="png">모든 크기를 PNG로 &mdash; 가장 작은 파일, 비스타 이상 필요</option>
+          <option value="bmp">모든 크기를 압축 없이 &mdash; 어디서나 열리고, 용량은 몇 배</option>
+        </select>
+      </div>
+
+      <p id="storage-note" class="field-summary"></p>
+    </fieldset>
+
+  </section>
+
+  <!-- 3단계 &mdash; 작게 본 다음 가져가기 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 실제로 보일 크기에서 확인하기</h2>
+
+    <p class="card-lede">
+      아무것도 내려받기 전에 볼 만한 대목입니다. 512픽셀에서 완벽하게 읽히는
+      로고도 브라우저 탭에서는 가로 16픽셀이고, 그 안의 가는 부분 &mdash;
+      워드마크의 획, 머리카락 같은 테두리, 그라데이션 &mdash; 은 그 크기를 견디지
+      못합니다. 아래의 모든 사각형은 여러분이 고른 파일에서 실제 크기 그대로
+      그려집니다.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-strip" id="preview-strip"></div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make-icon" class="primary big" disabled>아이콘 만들기</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>완성</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>전부 zip으로 내려받기</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+
+      <!--
+        The block to paste into a page's <head>, shown rather than only zipped:
+        most people making a favicon are about to paste this into a template,
+        and a copy button is a shorter route than a download and a text editor.
+      -->
+      <div id="snippet" class="snippet" hidden>
+        <div class="snippet-head">
+          <h4><code>&lt;head&gt;</code>에 이것을 붙여 넣으세요</h4>
+          <button type="button" id="copy-snippet" class="ghost">복사</button>
+        </div>
+        <pre id="snippet-text"></pre>
+      </div>
+    </div>
+  </section>
+</main>

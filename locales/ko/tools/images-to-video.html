@@ -1,0 +1,166 @@
+<main>
+  <!-- 1단계 &mdash; 이미지 -->
+  <section class="card">
+    <h2><span class="step">1</span> 이미지 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    {% include "partials/url-import.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="목록을 보여 주는 방식 바꾸기">
+          <button type="button" data-view="large" class="active">크게</button>
+          <button type="button" data-view="small">작게</button>
+          <button type="button" data-view="list">목록</button>
+          <button type="button" data-view="details">자세히</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">이름순 정렬</button>
+        <button type="button" data-sort="date" class="ghost">날짜순 정렬</button>
+        <button type="button" data-sort="reverse" class="ghost">역순</button>
+        <button type="button" id="clear-all" class="ghost danger">전부 빼기</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      이미지의 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 손잡이를
+      끌어 순서를 바꾸거나, 각 이미지의 화살표를 쓰세요.
+    </p>
+
+    <ul id="image-list" class="image-list view-large"></ul>
+
+    <div id="bulk-duration" class="bulk" hidden>
+      <label for="bulk-amount">모든 이미지를 이만큼 머무르게</label>
+      <input type="number" id="bulk-amount" min="1" max="3600" step="1" value="1">
+      <select id="duration-unit" aria-label="각 이미지가 머무는 시간의 단위">
+        <option value="frames" selected>프레임</option>
+        <option value="seconds">초</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">전체에 적용</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- 2단계 &mdash; 설정 -->
+  <section class="card">
+    <h2><span class="step">2</span> 영상 설정</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="resolution">해상도</label>
+        <select id="resolution">
+          <option value="auto" selected>가장 높은 해상도에 맞추기</option>
+          <option value="3840x2160">3840 &times; 2160 &mdash; 4K</option>
+          <option value="1920x1080">1920 &times; 1080 &mdash; 1080p</option>
+          <option value="1280x720">1280 &times; 720 &mdash; 720p</option>
+          <option value="1080x1080">1080 &times; 1080 &mdash; 정사각형</option>
+          <option value="1080x1920">1080 &times; 1920 &mdash; 세로</option>
+          <option value="custom">직접 입력&hellip;</option>
+        </select>
+        <div id="resolution-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="7680" step="2" value="1920"
+                 aria-label="직접 입력한 출력 너비, 픽셀">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="7680" step="2" value="1080"
+                 aria-label="직접 입력한 출력 높이, 픽셀">
+        </div>
+        <p class="field-note" id="resolution-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fps">프레임 레이트</label>
+        <select id="fps">
+          <option value="12">12 fps</option>
+          <option value="15">15 fps</option>
+          <option value="24">24 fps &mdash; 영화</option>
+          <option value="25">25 fps &mdash; PAL</option>
+          <option value="30" selected>30 fps</option>
+          <option value="50">50 fps</option>
+          <option value="60">60 fps</option>
+          <option value="custom">직접 입력&hellip;</option>
+        </select>
+        <input type="number" id="fps-custom" class="spaced" min="1" max="120" step="1" value="30"
+               aria-label="직접 입력한 프레임 레이트, 초당 프레임 수" hidden>
+        <p class="field-note" id="fps-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">이미지 맞춤</label>
+        <select id="fit">
+          <option value="contain" selected>안쪽에 맞추기 (레터박스)</option>
+          <option value="blur">안쪽에 맞추고 배경은 흐리게</option>
+          <option value="cover">화면 채우기 (가장자리가 잘립니다)</option>
+          <option value="stretch">늘여서 채우기 (찌그러집니다)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">배경색</label>
+        <input type="color" id="background" value="#000000">
+      </div>
+
+      <div class="field">
+        <label for="quality">화질</label>
+        <select id="quality">
+          <option value="low">더 작은 파일</option>
+          <option value="medium" selected>균형</option>
+          <option value="high">최고 화질</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="format">형식</label>
+        <select id="format">
+          <option value="auto" selected>MP4 (권장)</option>
+          <option value="webm">WebM (대체용)</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="640" height="360" aria-label="첫 프레임 미리보기"></canvas>
+        <p id="preview-empty" class="preview-empty">이미지를 넣으면 미리보기가 나옵니다</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>이미지</dt><dd id="sum-images">&mdash;</dd></div>
+        <div><dt>길이</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>출력 크기</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>전체 프레임</dt><dd id="sum-frames">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 3단계 &mdash; 내보내기 -->
+  <section class="card">
+    <h2><span class="step">3</span> 동영상 만들기</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>동영상 만들기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>동영상 내려받기</a>
+      </div>
+    </div>
+  </section>
+</main>

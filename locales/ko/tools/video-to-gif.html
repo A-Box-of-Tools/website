@@ -1,0 +1,169 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> 동영상 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>파일</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>용량</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>화면</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>길이</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>영상</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>읽은 방식</dt><dd id="src-path">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 구간 -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> 구간 고르기</h2>
+
+    <p class="hint">
+      영상을 재생하면서 원하는 부분을 표시하세요. <kbd>I</kbd>는 재생 위치를
+      시작으로, <kbd>O</kbd>는 끝으로 잡고, 막대의 양쪽 손잡이는 끌어 옮길 수
+      있습니다.
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/range.js. -->
+    <div id="rangebar"></div>
+    <div class="rb-scale">
+      <span>0:00.000</span>
+      <span id="scale-end">&mdash;</span>
+    </div>
+
+    <div class="marks">
+      <label>시작
+        <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-in" class="ghost" title="재생 위치를 시작으로 잡기 (I)">
+        재생 위치로
+      </button>
+
+      <label>끝
+        <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-out" class="ghost" title="재생 위치를 끝으로 잡기 (O)">
+        재생 위치로
+      </button>
+
+      <div class="mark-actions">
+        <button type="button" id="play-section" class="ghost">구간 재생</button>
+        <button type="button" id="whole-clip" class="ghost">영상 전체</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3단계 &mdash; GIF -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 크기와 프레임 레이트</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="width">너비</label>
+        <select id="width">
+          <option value="240">240 px</option>
+          <option value="320">320 px</option>
+          <option value="480" selected>480 px</option>
+          <option value="640">640 px</option>
+          <option value="source">원본 크기</option>
+          <option value="custom">정확히&hellip;</option>
+        </select>
+        <p class="field-note">
+          높이는 따라오므로 비율은 절대 바뀌지 않습니다. GIF의 값을 치르는 것은
+          너비입니다. 너비가 절반이면 픽셀은 4분의 1입니다.
+        </p>
+        <p class="field-note" id="width-note" hidden></p>
+      </div>
+
+      <div class="field" id="custom-width-field" hidden>
+        <label for="custom-width">정확한 너비</label>
+        <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
+        <p class="field-note">픽셀 단위로 16에서 1920 사이.</p>
+      </div>
+
+      <div class="field">
+        <label for="fps">초당 프레임 수</label>
+        <select id="fps">
+          <option value="5">5 &mdash; 가장 작음</option>
+          <option value="10">10</option>
+          <option value="12" selected>12 &mdash; 충분히 부드러움</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25 &mdash; 가장 부드러움</option>
+        </select>
+        <p class="field-note">
+          영상 자신의 레이트가 아닙니다. 거기서 프레임을 뽑아 오는 것입니다.
+          12면 움직임으로 읽히고, 20을 넘으면 부드러움이 드러나는 것보다 파일이
+          더 빨리 커집니다.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="dither">디더링</label>
+        <select id="dither">
+          <option value="on" selected>켜기 &mdash; 그러데이션이 매끈해집니다</option>
+          <option value="off">끄기 &mdash; 더 평평하고 더 작습니다</option>
+        </select>
+        <p class="field-note">
+          맞는 색이 없는 자리에서 팔레트의 두 색을 섞습니다. 정렬 방식이라
+          가만히 있는 배경이 일렁이지 않습니다.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="loop">
+          <input type="checkbox" id="loop" checked>
+          무한 반복
+        </label>
+        <p class="field-note">끄면 한 번 재생하고 멈춥니다.</p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>구간</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>출력</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>프레임</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>대략적인 용량</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="memory-note" class="field-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>GIF 만들기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <img id="result-image" alt="완성된 애니메이션, 재생 중">
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>GIF 내려받기</a>
+      </div>
+    </div>
+  </section>
+</main>

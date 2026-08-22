@@ -5,22 +5,119 @@
 # the words the templates themselves use. Tools and guides are translated in
 # tools/ and pages/ beside this file.
 #
-# No [slugs] table, for the reason set out at length in locales/ja/locale.toml:
-# a Hangul slug would have to be percent-encoded to survive being pasted around,
-# and a romanised one is a phrase nobody searches for. Korean sites use ASCII
-# slugs. The keyword weight goes into the title, the description and the h1,
-# which are translated below.
+# The addresses are Hangul, in [slugs] below. That is the same decision every
+# other language here made and for the same reason: the slug is the one part of
+# a page's markup that is also a keyword, and a Korean reader looking for this
+# tool types 이미지 압축, not "compress image". Leaving the English word in the
+# URL throws that away in the one market the page was translated for.
 #
-# 해요체 rather than 합니다체 - warm without being casual, which is the register
-# a consumer tool speaks in Korean and the closest match to the plain, direct
-# English.
+# The alternative considered and rejected was a romanised slug -
+# "imiji-apchuk" - which is readable in a URL bar and is a phrase nobody has
+# ever typed into a search box. Percent-encoding is a display detail: a browser
+# shows 한국어 in the bar and encodes it on the wire, and Naver, Daum and Google
+# all index Hangul URLs.
+#
+# 합니다체 throughout, softened with the occasional 해요 ending where a sentence
+# is an aside rather than a statement of fact. That mixture is the register a
+# consumer tool speaks in Korean: formal enough to be believed on the sentences
+# that make a promise, warm enough not to read as a legal notice. Every file
+# under this folder holds to it; nothing drifts into 한다체 or plain 해요체.
 #
 
 lang = "ko"
 name = "Korean"
 endonym = "한국어"
 
-complete = false
+# Finished: every tool, every guide, the two prose pages and the roadmap list
+# are Korean. While this is true a missing key is a build failure rather than a
+# quiet fall back to English, and the link check runs over the Korean pages as
+# well - see check_complete in buildlib/i18n.py.
+complete = true
+
+#
+# ---------------------------------------------------------------------------
+# The addresses.
+#
+# Keyed by the ENGLISH slug on the left, which is the name of the thing, and
+# never by the Korean one. The Korean is an address and appears only on the
+# right.
+#
+# These are the words a Korean speaker actually types into a search box, not
+# translations of the English slug. Where the English names a format and the
+# search names a job, the job wins: "image-to-ico" is 파비콘-만들기, because
+# nobody looks for "image to ICO" and a great many people look for how to make
+# a favicon.
+#
+# Hangul as itself, hyphens between words, and a Latin token wherever the Latin
+# token is what gets typed - pdf, heic, svg, gif, json, qr, base64. Korean
+# search queries are written that way and a slug that spelled them out in
+# Hangul would be a slug for a query nobody makes.
+# ---------------------------------------------------------------------------
+#
+
+[slugs]
+# The tools.
+"compress-image" = "이미지-압축"
+"compress-pdf" = "pdf-용량-줄이기"
+"crop-video" = "동영상-화면-자르기"
+"edit-audio" = "오디오-편집"
+# Named for the job rather than for the format, like the German. "EXIF 편집기"
+# is not a thing anybody searches for; deleting the data out of a photo is.
+"exif-editor" = "exif-정보-삭제"
+"gif-maker" = "gif-만들기"
+"heic-to-jpg" = "heic-jpg-변환"
+# The job again, and the clearest case of it: 증명사진 is a word every Korean
+# adult has typed, and "ID photo" is not.
+"id-photo" = "증명사진-만들기"
+# base64 rather than "data URI": the encoding is what gets searched, and the
+# URI is what the result happens to be called.
+"image-to-data-uri" = "이미지-base64-변환"
+"image-to-ico" = "파비콘-만들기"
+"images-to-pdf" = "이미지-pdf-변환"
+"images-to-video" = "사진으로-동영상-만들기"
+# QR rather than barcode. The page makes both and the description says so, but
+# the searches are not close: one address has to pick the louder half.
+"qr-barcode" = "qr코드-만들기"
+"resize-image" = "이미지-크기-조절"
+"reverse-video" = "동영상-거꾸로-재생"
+"svg-to-image" = "svg-png-변환"
+# Four jobs, one address, and the one people arrive looking for is the JSON
+# formatter. 포맷터 rather than the standard 포매터, because the slug follows
+# what is typed and dev writing types 포맷터.
+"text-tools" = "json-포맷터"
+# 자르기 on its own reads as trimming in Korean, which is what this tool does.
+# Cropping the picture is 화면-자르기, above.
+"trim-video" = "동영상-자르기"
+"video-to-gif" = "동영상-gif-변환"
+
+# The indexes and the legal pages. 개인정보처리방침 is the name that page has in
+# Korean law and on every Korean site, so it is what a reader scans for.
+"guides" = "가이드"
+"roadmap" = "로드맵"
+"privacy" = "개인정보처리방침"
+"terms" = "이용약관"
+
+# The guides. Each one is the question its readers ask, in the words they ask it
+# in, rather than a translation of the English title.
+"guides/combine-images-into-a-pdf" = "가이드/이미지-pdf-합치기"
+"guides/compress-an-image-to-a-target-size" = "가이드/이미지-용량-줄이기"
+"guides/convert-an-svg-to-png" = "가이드/svg-png-변환하기"
+"guides/convert-heic-to-jpg" = "가이드/heic-jpg-변환하기"
+"guides/crop-a-video" = "가이드/동영상-화면-자르기"
+"guides/embed-an-image-in-css" = "가이드/css-이미지-넣기"
+"guides/format-json-without-uploading-it" = "가이드/json-정렬하기"
+"guides/is-it-safe-to-upload-files" = "가이드/파일-업로드-안전한가"
+"guides/make-a-favicon" = "가이드/파비콘-만드는-법"
+"guides/make-a-gif-from-images" = "가이드/사진으로-gif-만들기"
+"guides/make-a-passport-photo" = "가이드/여권사진-집에서-찍기"
+"guides/make-a-pdf-smaller" = "가이드/pdf-용량-줄이는-법"
+"guides/make-a-qr-code" = "가이드/qr코드-만드는-법"
+"guides/remove-exif-and-gps-data" = "가이드/사진-위치정보-삭제"
+"guides/resize-an-image" = "가이드/이미지-크기-바꾸기"
+"guides/reverse-a-video" = "가이드/동영상-거꾸로-돌리기"
+"guides/trim-a-video" = "가이드/동영상-구간-자르기"
+"guides/turn-a-video-into-a-gif" = "가이드/동영상-gif-만들기"
+"guides/turn-images-into-a-video" = "가이드/사진으로-동영상-만들기"
 
 #
 # ---------------------------------------------------------------------------
@@ -124,8 +221,8 @@ note = "파일을 웹사이트에 건넨다는 것이 실제로 어떤 뜻인지
 
 #
 # ---------------------------------------------------------------------------
-# The roadmap. Only the frame - the list itself is config/planned.toml, which
-# has no locale file yet and is therefore still English on this page.
+# The roadmap. Only the frame here; the list itself is config/planned.toml,
+# translated in planned.toml beside this file.
 # ---------------------------------------------------------------------------
 #
 
@@ -204,6 +301,15 @@ base = "이 사이트의 모든 주장은 믿으라고가 아니라 확인하라
 # Korean is verb-final without exception, so a sentence assembled from two
 # fragments either side of a value could never come out right. Written whole,
 # the value sits where Korean puts it.
+#
+# One consequence worth writing down, because it reaches into every file in
+# tools/ beside this one. Korean particles agree with the sound before them:
+# 은/는, 을/를. The sentences below put 은 and 을 straight after a value the
+# build substitutes, so every noun those values may hold has to end in a
+# 받침 - "이미지 파일", not "이미지". That is why the [words] tables under
+# tools/ read the way they do. Writing the particle both ways in the frame was
+# the alternative, and it puts a slash in the middle of the one sentence on the
+# page that has to sound like a person said it.
 # ---------------------------------------------------------------------------
 #
 
