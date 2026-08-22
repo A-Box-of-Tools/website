@@ -51,7 +51,6 @@ items = [
 [[group]]
 name = "Audio"
 items = [
-  ["Inkorten", "het stuk overhouden waar het je om ging"],
   ["In- &amp; uitfaden", "zodat het niet tegen een muur begint en eindigt"],
   ["Golfvorm als afbeelding", "een opname als plaatje tekenen"],
   ["Formaat omzetten", "mp3, wav en Opus, alle kanten op"],
