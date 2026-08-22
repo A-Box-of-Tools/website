@@ -1,0 +1,141 @@
+<main>
+  <!-- Stap 1 &mdash; de bestanden -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies afbeeldingen</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Alles van de lijst halen</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; de regel die daadwerkelijk geplakt wordt -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> Zeg waar het heen gaat</h2>
+
+    <p class="card-lede">
+      Een data-URI op zichzelf is zelden wat iemand wil hebben. Wat men wil is de
+      regel die in de stylesheet komt &mdash; kies dus de regel, en het plaatje
+      komt er al netjes tussen aanhalingstekens in aan, en dat is het stuk dat
+      makkelijk fout gaat en dat alleen bij SVG's misgaat.
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="Wat je wilt plakken">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>De data-URI op zichzelf</strong>
+          <span class="shape-note">
+            Alles na de komma is het bestand. Plak hem overal waar een URL komt.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>Een CSS-regel</strong>
+          <span class="shape-note">
+            Een hele regel, met een class die naar het bestand genoemd is. Zet de
+            selector op wat je werkelijk aan het stylen bent.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>Een CSS custom property</strong>
+          <span class="shape-note">
+            Eén keer boven aan de stylesheet gedeclareerd en zo vaak als je wilt
+            gebruikt als <code>var(--naam)</code>. Dit is de keuze wanneer het
+            plaatje in meer dan één regel voorkomt.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>Een HTML-<code>&lt;img&gt;</code>-tag</strong>
+          <span class="shape-note">
+            Met de pixelmaten ingevuld, zodat de pagina niet verspringt terwijl de
+            rest laadt.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">
+            Voor een README of een issue: een plaatje dat met de tekst meereist in
+            plaats van ergens gehost te moeten worden.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      De <code>alt</code>-tekst blijft met opzet leeg. Alleen jij weet of het
+      plaatje betekenis draagt of versiering is, en een beschrijving die uit een
+      bestandsnaam geraden is, is voor iemand met een schermlezer erger dan
+      helemaal geen beschrijving.
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>Maak ook van de SVG's base64</strong>
+          <span class="check-note">
+            Standaard uit, want een SVG is tekst en base64 is voor bytes.
+            Procentcodering laat de opmaak leesbaar in de stylesheet staan en is
+            meestal een vijfde korter. Zet dit aan voor de zeldzame toolchain die
+            op <code>;base64</code> staat.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Stap 3 &mdash; het resultaat. Hier staat met opzet geen knop: coderen is
+       ogenblikkelijk, dus er is niets waar een "omzetten"-druk op zou wachten. -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> Kopieer hem</h2>
+
+    <p id="empty-note" class="card-lede">
+      Nog niets gekozen. Sleep hierboven een plaatje naar binnen en de regel om
+      te plakken verschijnt hier.
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">Alles kopiëren</button>
+          <button type="button" id="download-all" class="ghost">Als één bestand downloaden</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

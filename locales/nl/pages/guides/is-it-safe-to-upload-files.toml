@@ -1,0 +1,17 @@
+#
+# Gids: is het veilig om bestanden naar online omzetters te uploaden? - Dutch.
+#
+
+nav = "Is uploaden veilig?"
+title = "Is het veilig om bestanden naar online omzetters te uploaden?"
+description = "De meeste online omzetters sturen je bestand naar een server. Wat dat betekent, wat er daar mee gebeurt, en vier controles die je vertellen of een tool dat nodig heeft."
+heading = "Is het veilig om bestanden naar online omzetters te uploaden?"
+lede = """
+    Meestal is het eerlijke antwoord &ldquo;waarschijnlijk wel, maar je kunt het
+    niet nagaan&rdquo;. Hier staat wat uploaden werkelijk met je bestand doet,
+    waarom de meeste tools het nog steeds doen, en vier tests die je vertellen of
+    degene vóór je het nodig heeft."""
+updated = "20 augustus 2026"
+og_title = "Is het veilig om bestanden naar online omzetters te uploaden?"
+og_description = "Wat er gebeurt met een bestand dat je naar een omzetter uploadt, waarom de meeste tools er nog steeds om vragen, en vier controles die je zelf kunt doen."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"

@@ -1,0 +1,113 @@
+<main>
+  <!-- Stap 1 &mdash; de bestanden -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies je HEIC-foto's</h2>
+
+    <p class="card-lede">
+      Zo van de telefoon, uit een back-up, of gekopieerd van een geheugenkaart.
+      Het bestand wordt hier gelezen, op dit apparaat, en het plaatje wordt hier
+      ook gedecodeerd &mdash; er zit geen uploadstap in deze pagina en er staat
+      geen server achter.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Alles van de lijst halen</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; wat eruit komt -->
+  <section class="card" id="options-card">
+    <h2><span class="step">2</span> Zeg wat je terug wilt</h2>
+
+    <fieldset class="options">
+      <legend>Het formaat</legend>
+
+      <div class="option-row">
+        <label for="format-select">Schrijf de plaatjes als</label>
+        <select id="format-select">
+          <option value="image/jpeg" selected>JPEG &mdash; gaat overal open, ook in dingen die per ongeluk deze eeuw gemaakt zijn</option>
+          <option value="image/png">PNG &mdash; verliesloos, en een paar keer zo groot</option>
+          <option value="image/webp">WebP &mdash; kleiner dan JPEG bij dezelfde kwaliteit, en alleen moderne browsers</option>
+        </select>
+      </div>
+
+      <div class="option-row" id="quality-row">
+        <label for="quality">Kwaliteit</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="50" max="100" step="1" value="92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>De fotogegevens</legend>
+
+      <label class="check">
+        <input type="checkbox" id="keep-exif" checked>
+        <span>
+          <strong>Hou de datum, de camera en de instellingen</strong>
+          <span class="check-note">
+            Precies overgenomen zoals de telefoon ze schreef, zodat de omgezette
+            foto nog sorteert op de dag waarop hij gemaakt is in plaats van de dag
+            waarop hij omgezet is. Daar horen de gps-coördinaten bij wanneer de foto
+            ze heeft &mdash; de lijst hierboven zegt welke van jou dat zijn. Zet dit
+            uit en de JPEG komt eruit met niets erin dan het plaatje.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary">
+        Hoe dan ook wordt hier niets aan iemand doorgegeven: de keuze gaat over
+        wat er in het bestand komt dat je terugkrijgt, niet over wat deze pagina
+        ermee doet. Wil je de tags in detail doorlopen, of ze weghalen bij foto's
+        die al JPEG zijn, dan is de
+        <a href="../exif-gegevens-verwijderen/">EXIF-lezer &amp; -wisser</a> de
+        tool daarvoor.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Stap 3 &mdash; de ene klik -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Omzetten</h2>
+
+    <div class="run-row">
+      <button type="button" id="convert-all" class="primary big" disabled>Omzetten</button>
+    </div>
+
+    <!--
+      The decoder's own status line. This page is the only one on the site that
+      carries a codec, so it is the only one with anything to report here, and
+      saying where the megabyte came from is the point: it is served from this
+      origin, it is cached with the rest of the page, and it is what makes the
+      offline promise hold on a browser that cannot open a HEIC at all.
+    -->
+    <p id="engine-status" class="engine-status" role="status" aria-live="polite"></p>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Omgezet</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Alles als zip downloaden</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

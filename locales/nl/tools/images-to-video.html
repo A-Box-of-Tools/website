@@ -1,0 +1,166 @@
+<main>
+  <!-- Stap 1 &mdash; afbeeldingen -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies afbeeldingen</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    {% include "partials/url-import.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="Verander hoe de lijst getoond wordt">
+          <button type="button" data-view="large" class="active">Groot</button>
+          <button type="button" data-view="small">Klein</button>
+          <button type="button" data-view="list">Lijst</button>
+          <button type="button" data-view="details">Details</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">Sorteer op naam</button>
+        <button type="button" data-sort="date" class="ghost">Sorteer op datum</button>
+        <button type="button" data-sort="reverse" class="ghost">Omkeren</button>
+        <button type="button" id="clear-all" class="ghost danger">Alles verwijderen</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Sleep een afbeelding aan zijn <span class="grip" aria-hidden="true">&#8942;&#8942;</span>-handvat om
+      te herordenen, of gebruik de pijltjes erop.
+    </p>
+
+    <ul id="image-list" class="image-list view-large"></ul>
+
+    <div id="bulk-duration" class="bulk" hidden>
+      <label for="bulk-amount">Hou elke afbeelding vast</label>
+      <input type="number" id="bulk-amount" min="1" max="3600" step="1" value="1">
+      <select id="duration-unit" aria-label="Eenheid voor hoe lang elke afbeelding wordt vastgehouden">
+        <option value="frames" selected>frames</option>
+        <option value="seconds">seconden</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">Op alles toepassen</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Stap 2 &mdash; instellingen -->
+  <section class="card">
+    <h2><span class="step">2</span> Video-instellingen</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="resolution">Resolutie</label>
+        <select id="resolution">
+          <option value="auto" selected>Volg de hoogste resolutie</option>
+          <option value="3840x2160">3840 &times; 2160 &mdash; 4K</option>
+          <option value="1920x1080">1920 &times; 1080 &mdash; 1080p</option>
+          <option value="1280x720">1280 &times; 720 &mdash; 720p</option>
+          <option value="1080x1080">1080 &times; 1080 &mdash; vierkant</option>
+          <option value="1080x1920">1080 &times; 1920 &mdash; staand</option>
+          <option value="custom">Zelf instellen&hellip;</option>
+        </select>
+        <div id="resolution-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="7680" step="2" value="1920"
+                 aria-label="Eigen uitvoerbreedte in pixels">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="7680" step="2" value="1080"
+                 aria-label="Eigen uitvoerhoogte in pixels">
+        </div>
+        <p class="field-note" id="resolution-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fps">Beeldsnelheid</label>
+        <select id="fps">
+          <option value="12">12 fps</option>
+          <option value="15">15 fps</option>
+          <option value="24">24 fps &mdash; film</option>
+          <option value="25">25 fps &mdash; PAL</option>
+          <option value="30" selected>30 fps</option>
+          <option value="50">50 fps</option>
+          <option value="60">60 fps</option>
+          <option value="custom">Zelf instellen&hellip;</option>
+        </select>
+        <input type="number" id="fps-custom" class="spaced" min="1" max="120" step="1" value="30"
+               aria-label="Eigen beeldsnelheid in frames per seconde" hidden>
+        <p class="field-note" id="fps-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">Passing van de afbeelding</label>
+        <select id="fit">
+          <option value="contain" selected>Binnen passen (met balken)</option>
+          <option value="blur">Binnen passen, met vervaagde achtergrond</option>
+          <option value="cover">Beeld vullen (snijdt de randen af)</option>
+          <option value="stretch">Uitrekken tot het vult (vervormt)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Achtergrondkleur</label>
+        <input type="color" id="background" value="#000000">
+      </div>
+
+      <div class="field">
+        <label for="quality">Kwaliteit</label>
+        <select id="quality">
+          <option value="low">Kleiner bestand</option>
+          <option value="medium" selected>In balans</option>
+          <option value="high">Beste kwaliteit</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="format">Formaat</label>
+        <select id="format">
+          <option value="auto" selected>MP4 (aanbevolen)</option>
+          <option value="webm">WebM (terugval)</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="640" height="360" aria-label="Voorvertoning van het eerste frame"></canvas>
+        <p id="preview-empty" class="preview-empty">Voeg afbeeldingen toe om een voorvertoning te zien</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Afbeeldingen</dt><dd id="sum-images">&mdash;</dd></div>
+        <div><dt>Duur</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>Uitvoerformaat</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Frames in totaal</dt><dd id="sum-frames">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Stap 3 &mdash; export -->
+  <section class="card">
+    <h2><span class="step">3</span> Maak de video</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Video maken</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Video downloaden</a>
+      </div>
+    </div>
+  </section>
+</main>

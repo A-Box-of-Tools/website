@@ -1,0 +1,186 @@
+<main>
+  <!-- Stap 1 &mdash; welk soort code -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies het soort code</h2>
+
+    <p class="card-lede">
+      Een qr-code bevat van alles en is waar een telefooncamera naar zoekt. Een
+      barcode bevat een nummer, en welke je nodig hebt wordt meestal voor je
+      bepaald &mdash; door de winkel, het magazijn of de vervoerder die erom
+      vraagt.
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">Soort code</label>
+      <select id="symbology">
+        <optgroup label="Vierkant">
+          <option value="qr" selected>Qr-code</option>
+        </optgroup>
+        <optgroup label="Strepen">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">Interleaved 2 of 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- Stap 2 &mdash; de tekenreeks zelf -->
+  <section class="card">
+    <h2><span class="step">2</span> Zeg wat erin gaat</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">Wat het bevat</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>De exacte tekenreeks die deze code gaat bevatten</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- Stap 3 &mdash; hoe hij getekend wordt -->
+  <section class="card">
+    <h2><span class="step">3</span> Kies hoe hij eruitziet</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>De qr-code</legend>
+
+      <div class="option-row">
+        <label for="level">Hoeveel schade hij mag oplopen</label>
+        <select id="level">
+          <option value="L">L &mdash; zo'n 7% herstelbaar, kleinste code</option>
+          <option value="M" selected>M &mdash; zo'n 15%, de gebruikelijke keuze</option>
+          <option value="Q">Q &mdash; zo'n 25%</option>
+          <option value="H">H &mdash; zo'n 30%, voor een druk die te lijden krijgt</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">Marge, in modules</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        De marge hoort bij de code, het is geen ruimte eromheen. Vier modules is
+        wat de specificatie vraagt, en een code die tot de rand teruggeknipt is,
+        is er een die veel scanners helemaal niet zien.
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>De barcode</legend>
+
+      <div class="option-row">
+        <label for="bar-width">Smalste streep, in pixels</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">Hoogte van de strepen, in pixels</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>Druk de tekens eronder af</strong>
+          <span class="check-note">
+            Wat een mens leest wanneer de scanner het niet doet. Op een winkelcode
+            staan de cijfers ook in de marges, en dat is met opzet: ze bakenen de
+            witruimte af die niemand eraf hoort te knippen.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>Voeg een controleteken toe</strong>
+          <span class="check-note">
+            Code 39 draagt er normaal geen. Sommige systemen staan erop; voeg het
+            alleen toe als het jouwe dat doet, want een lezer die er geen verwacht,
+            leest het als een extra teken op het eind.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Kleur en formaat</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">De code</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">Erachter</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Helemaal geen achtergrond</strong>
+          <span class="check-note">
+            Transparant, om op iets te zetten dat al een kleur heeft. De svg en de
+            png houden het allebei; wat er uiteindelijk achter komt moet bleek
+            zijn, anders vindt een scanner geen contrast.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">Grootte van het plaatje, in pixels</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Stap 4 &mdash; het resultaat -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> Neem hem mee</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="De code die je gemaakt hebt"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">De svg downloaden</button>
+      <button type="button" id="download-png" class="primary">De png downloaden</button>
+      <button type="button" id="copy-png" class="ghost">De afbeelding kopiëren</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      De svg is degene om te bewaren. Dat is de code als instructies in plaats
+      van als pixels, dus hij drukt op elk formaat af zonder zacht te worden
+      &mdash; en dat telt hier zwaarder dan bij de meeste plaatjes, want een
+      vervaagde rand is precies wat een scanner niet kan onderscheiden.
+    </p>
+  </section>
+</main>

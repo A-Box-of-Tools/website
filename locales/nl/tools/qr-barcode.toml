@@ -1,0 +1,344 @@
+#
+# QR- & barcodegenerator - Dutch.
+#
+# Overrides for tools/qr-barcode/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# The one tool here whose input is typed rather than dropped, so there is no
+# [picker] table to translate - and [words].choose has to fit "wanneer je ...
+# kiest" in the boot warning, which is why it is a noun phrase rather than the
+# English clause.
+#
+
+name = "QR- & barcodegenerator"
+# Het staartje is de zoekterm. Net als in het Engels blijft de productnaam de
+# luide helft.
+heading = "QR&nbsp;&amp;&nbsp;barcode <span class=\"h1-kw\">&mdash; een qr-code of barcode maken, offline</span>"
+tagline = "Tik het in, en het wordt een code. Er wordt niets verstuurd om er een te maken."
+
+title = "Qr-code- &amp; barcodegenerator &mdash; gratis, zonder aanmelden, niets geüpload"
+description = "Maak een qr-code voor een link, een wifinetwerk of een visitekaartje, of een EAN-13-, UPC-A-, Code 128- of Code 39-barcode. Download als svg of png. Het gebeurt allemaal in je browser."
+og_title = "Een qr-code of barcode maken zonder iets naar iemand te sturen"
+og_description = "Links, wifiwachtwoorden, visitekaartjes en de winkelbarcodes, in je eigen browser getekend en als svg of png gedownload. Geen account, geen watermerk, geen trackingpixel midden in je code."
+og_image_alt = "QR- & barcodegenerator - een qr-code of barcode maken, niets geüpload"
+
+pledge = """
+    Een qr-code is rekenwerk op een tekenreeks: er is geen bestand te versturen
+    en geen dienst om iets aan te vragen. Elke stap &mdash; de modus kiezen, de
+    versie bepalen, de Reed-Solomon-foutcorrectie, het masker, de strepen van
+    een barcode en het controlecijfer eronder &mdash; gebeurt in zo'n duizend
+    regels JavaScript in deze pagina die je kunt lezen. Deze tool heeft geen
+    enkele netwerkfunctie, en dat telt hier zwaarder dan op de meeste pagina's:
+    wat er gecodeerd wordt is vaak een wifiwachtwoord."""
+
+live_hint = """
+      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
+      gaten en tik een wachtwoord in het wififormulier. Geen enkel verzoek draagt
+      er één teken van. Of trek de stekker uit het internet en maak de code
+      toch."""
+
+read_first = """
+, <code>src/qr-encode.js</code>
+      en <code>src/qr.js</code> voor de qr-code zelf &mdash; de modi, de versie
+      en de blokken in het ene, de patronen, het masker en de formaatbits in het
+      andere &mdash; <code>src/gf256.js</code> voor de foutcorrectie, en
+      <code>src/barcode.js</code> voor de gestreepte."""
+
+howto_heading = "Een qr-code maken zonder iets te uploaden"
+
+card = """
+            Een qr-code voor een link, een wifinetwerk of een visitekaartje
+            &mdash; of een winkelbarcode met zijn controlecijfer erbij
+            uitgerekend. Svg of png."""
+
+[words]
+plural = "codes en de tekst erin"
+# Zelfstandig naamwoord, want de zin in de opstartwaarschuwing luidt "wanneer je
+# ... kiest".
+choose = "de inhoud"
+analytics_extra = """, en geen
+  enkel teken van wat je typt"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Verloopt niet"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Wat je typt kan nergens heen."
+body = """
+ De
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen ervan hoort bij deze site. Er is hier geen eindpunt waar een
+      wifiwachtwoord verzameld zou kunnen worden, en niets in de code dat het zou
+      versturen als dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er staat nergens in
+      <code>src/</code> een <code>fetch</code>, een <code>XMLHttpRequest</code>
+      of een <code>sendBeacon</code>. De code wordt met rekenwerk uit de
+      tekenreeks opgebouwd en als svg getekend, in deze pagina, op jouw
+      apparaat."""
+
+[[privacy]]
+title = "De code wijst niet naar ons."
+body = """
+ Wat je typt is wat de code
+      bevat. Verschillende gratis generatoren geven je een code terug met daarin
+      een link naar hun eigen site, die daarna naar de jouwe doorstuurt &mdash;
+      zodat elke scan door hen geteld wordt, en de code stopt met werken op de
+      dag dat zij het domein niet meer betalen of besluiten dat de gratis laag
+      verlopen is. Hier wordt niets ingekort, doorgestuurd of gevolgd: de
+      tekenreeks die op de pagina staat, is de tekenreeks in het plaatje."""
+
+[[privacy]]
+title = "De png wordt gemaakt uit de svg die op het scherm staat."
+body = """
+ De download
+      is geen tweede rendering die het met de voorvertoning oneens zou kunnen
+      zijn. Dezelfde opmaak wordt aan de browser gegeven en op een canvas
+      geschilderd, en dat is ook waarom het kan zonder ergens contact mee te
+      leggen: er is geen lettertype op te halen en geen plaatje in te laden."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen ervan
+      krijgt iets van wat je typt mee. Elke regel die een tekenreeks in een code
+      verandert, wordt vanaf deze herkomst geserveerd en staat in de
+      repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en de tool is
+      onveranderd, want er zat nooit een netwerkstap in. Dat is het eenvoudigste
+      bewijs van allemaal."""
+
+[[howto]]
+title = "Kies het soort code."
+body = """
+ Een qr-code bevat van alles en is
+      waar een telefooncamera naar zoekt, dus dat is het antwoord tenzij iemand
+      je iets anders verteld heeft. Een barcode bevat een nummer, en welke je
+      nodig hebt bepaalt degene die hem gaat scannen &mdash; een winkel wil een
+      EAN-13 of een UPC-A, een verzenddoos een ITF-14, en alles wat intern is, is
+      meestal Code 128."""
+
+[[howto]]
+title = "Zeg wat erin gaat."
+body = """
+ Een link is het gebruikelijke geval, en
+      de vakjes erboven bouwen de andere formaten die telefoons kennen: een
+      wifinetwerk dat aanbiedt zichzelf te verbinden, een visitekaartje dat
+      aanbiedt bewaard te worden, een e-mail, een sms, een telefoonnummer, een
+      plek op de kaart. Wat je ook kiest, de uiteindelijke tekenreeks staat op de
+      pagina &mdash; en dat is alles wat een qr-code ooit bevat."""
+
+[[howto]]
+title = "Kies hoeveel schade hij mag oplopen."
+body = """
+ De vier niveaus stoppen er
+      meer of minder foutcorrectie in, en meer correctie betekent een grotere,
+      dichtere code. L is genoeg voor een scherm, M voor gewoon papier, en H voor
+      iets dat betast, klein gedrukt of in de zon voor een raam geplakt wordt.
+      Een code op een menukaart die elke dag afgenomen wordt, is Q of H waard."""
+
+[[howto]]
+title = "Zet de grootte, de marge en de kleuren."
+body = """
+ De marge hoort bij de code:
+      vier modules stille ruimte eromheen is wat de specificatie vraagt, en die
+      wegknippen is veruit de meest voorkomende reden dat een gedrukte code niet
+      scant. Donker op licht, met echt contrast &mdash; een scanner leest het
+      verschil tussen de twee, dus lichtgrijs op wit gaat niet werken, en licht
+      op donker faalt ronduit bij een flink aantal lezers."""
+
+[[howto]]
+title = "Controleer hem met de telefoon die je hebt."
+body = """
+ Voordat je er duizend
+      afdrukt: scan die op je scherm. Dat kost tien seconden en vangt de hele
+      soort fouten die een voorvertoning niet kan vangen: een wifiwachtwoord met
+      een teken dat ontsnapt moest worden, een link die zijn
+      <code>https://</code> miste, een barcodenummer dat een cijfer tekortkomt."""
+
+[[howto]]
+title = "Neem de svg."
+body = """
+ Dat is de code als instructies in plaats van
+      als pixels, dus hij drukt op elk formaat af zonder zacht te worden, en een
+      zachte rand is precies wat een scanner niet kan onderscheiden. Neem de png
+      er ook bij als datgene waar je in plakt geen svg accepteert; die wordt
+      getekend op een heel aantal pixels per module, dus die heeft ook geen
+      vervaagde randen."""
+
+[[faq]]
+q = "Wordt er iets van wat ik typ ergens heen gestuurd?"
+a = """
+        Nee. Een qr-code is rekenwerk op een tekenreeks, en dat rekenwerk draait
+        in je eigen browser op je eigen apparaat. Deze tool heeft geen enkele
+        netwerkfunctie &mdash; hij haalt nooit iets op en verstuurt nooit iets
+        &mdash; en de <code>Content-Security-Policy</code> van de pagina noemt elk
+        adres dat hij mag benaderen; geen ervan hoort bij deze site. Dat is hier
+        meer waard dan op de meeste pagina's, want wat mensen het vaakst in een
+        qr-code zetten, is het wachtwoord van hun wifi."""
+
+[[faq]]
+q = "Verlopen deze codes, of stoppen ze later met werken?"
+a = """
+        Nee, en dat kan ook niet. Wat je typt is wat de code bevat, dus hem scannen
+        geeft precies die tekenreeks terug, voor altijd. De codes die verlopen zijn
+        die met het adres van iemand anders erin: een &ldquo;dynamische&rdquo;
+        qr-code bevat een link naar de server van de generator, die naar de jouwe
+        doorstuurt, wat betekent dat zij elke scan kunnen tellen, kunnen veranderen
+        waar hij heen gaat, of hem uit kunnen zetten wanneer een proefperiode
+        eindigt. Hier wordt nergens doorheen doorgestuurd."""
+
+[[faq]]
+q = "Is het gratis, en mag ik het commercieel gebruiken?"
+a = """
+        Het is gratis, er is geen account, geen watermerk en geen limiet op hoeveel
+        je er maakt, en je mag het resultaat op een product, een poster of een
+        winkelpui zetten. QR Code is een geregistreerd handelsmerk van Denso Wave,
+        dat verklaard heeft het niet te zullen inzetten tegen mensen die de codes
+        gebruiken &mdash; de specificatie is gepubliceerd als ISO/IEC 18004 en is
+        vrij te implementeren, en dat is wat deze pagina doet. De site draagt
+        advertenties, en die betalen hem."""
+
+[[faq]]
+q = "Welk foutcorrectieniveau moet ik kiezen?"
+a = """
+        M, tenzij je een reden hebt. L maakt de kleinste code en is prima op een
+        scherm; M overleeft gewoon gebruik; Q en H zijn voor een code die klein
+        gedrukt, gelamineerd, op een raam geplakt of deels door een logo bedekt
+        wordt. Elke stap omhoog stopt er meer controlegegevens in, en dat vraagt
+        bij dezelfde hoeveelheid tekst om een groter symbool &mdash; van L naar H
+        gaan verdubbelt ruwweg het aantal modules voor dezelfde tekenreeks."""
+
+[[faq]]
+q = "Hoeveel kan er in een qr-code?"
+a = """
+        Op het grootste formaat, 177 modules in het vierkant, tot 7.089 cijfers,
+        4.296 hoofdletters en cijfers, of 2.953 bytes van al het andere &mdash; en
+        dat is bij de zwakste foutcorrectie; bij de sterkste is het ongeveer een
+        derde daarvan. In de praktijk is de grens niet het formaat maar de scanner:
+        voorbij een paar honderd tekens worden de modules zo klein dat een gewone
+        telefooncamera ze op armlengte niet meer kan onderscheiden. Een lange code
+        is meestal een teken dat er een korte link in hoort."""
+
+[[faq]]
+q = "Waarom is mijn code groter als ik de link in kleine letters schrijf?"
+a = """
+        Omdat een qr-code een modus heeft voor hoofdletters en cijfers die twee
+        tekens in elf bits propt, en zo'n modus niet heeft voor kleine letters, die
+        elk acht bits kosten. Een url geschreven als
+        <code>HTTPS://EXAMPLE.COM/PAGE</code> kan een derde kleiner zijn dan
+        dezelfde url in kleine letters. Het schema en de host zijn
+        hoofdletterongevoelig, dus ze schreeuwen verandert niets behalve de
+        grootte; het pad achter de host is dat niet, dus laat dat met rust."""
+
+[[faq]]
+q = "Kan het een qr-code ook lezen, en niet alleen maken?"
+a = """
+        Nog niet. Er een lezen betekent een afbeelding decoderen &mdash; het
+        symbool in een foto vinden, corrigeren voor de hoek waaronder hij genomen
+        is, en de schade repareren &mdash; en dat is een andere en aanzienlijk
+        grotere klus dan er een tekenen. Het zou hier op dezelfde voorwaarden als
+        al het andere gebouwd kunnen worden, en het staat op de lijst. Ondertussen
+        doet de camera van je telefoon het al, en goed ook."""
+
+[[faq]]
+q = "Waar is de marge voor, en kan ik hem kleiner maken?"
+a = """
+        De witruimte om een qr-code heen hoort bij de code. Een lezer gebruikt hem
+        om te vinden waar het symbool ophoudt, en de specificatie vraagt om vier
+        modules aan elke kant; een barcode wil er zo'n tien. Je kunt hem hier op
+        nul zetten en het plaatje ziet er dan netter uit, en een flink aantal
+        scanners ziet hem dan helemaal niet meer &mdash; zeker tegen een drukke
+        achtergrond. Is ruimte het probleem, maak de code dan kleiner in plaats van
+        zijn marge weg te knippen."""
+
+[[faq]]
+q = "Welke barcode heb ik nodig?"
+a = """
+        Die waar degene die hem scant om vraagt. EAN-13 is de winkelbarcode buiten
+        Noord-Amerika en UPC-A de Noord-Amerikaanse &mdash; voor allebei heb je een
+        nummer nodig dat GS1 aan jou uitgeeft, want het nummer identificeert je
+        bedrijf en niet alleen het product. EAN-8 is de korte versie voor kleine
+        verpakkingen. ITF-14 gaat op de verzenddoos. Code 128 en Code 39 bevatten
+        naast cijfers ook tekst en hebben helemaal geen registratie nodig, wat ze
+        het juiste antwoord maakt voor alles wat intern is: bedrijfsmiddelen,
+        schappen, werkbonnen."""
+
+[[faq]]
+q = "Wat is een controlecijfer, en waarom voegde de tool er een toe?"
+a = """
+        Het is het laatste cijfer van een winkelbarcode, uitgerekend uit de cijfers
+        ervoor, zodat een scanner een misleze van een leze kan onderscheiden.
+        EAN-13 wil twaalf cijfers en rekent het dertiende uit; UPC-A wil er elf en
+        rekent het twaalfde uit. Tik het korte nummer en deze pagina zet het
+        erbij. Tik het volledige nummer en hij controleert het cijfer dat je gaf
+        &mdash; en weigert, in plaats van het stilletjes te corrigeren, want een
+        fout cijfer dat stil hersteld wordt, is een etiket dat scant als het
+        product van iemand anders."""
+
+[[faq]]
+q = "Kan ik een logo midden in een qr-code zetten?"
+a = """
+        Hier niet, maar waarom het elders werkt is het weten waard: de foutcorrectie
+        maakt het mogelijk. Op niveau H mag ruwweg 30% van de modules vernield zijn
+        en is de code nog steeds leesbaar, dus een logo dat wat minder dan dat in
+        het midden bedekt &mdash; waar geen zoekpatroon zit &mdash; is
+        herstelbare schade. Haal de code op niveau H door je beeldbewerker, hou het
+        logo onder ongeveer een vijfde van de oppervlakte, en test het met een
+        echte telefoon in plaats van erop te vertrouwen."""
+
+[[faq]]
+q = "Waarom is de svg beter dan de png?"
+a = """
+        Omdat een code uit randen bestaat, en een png een vast aantal pixels heeft
+        om ze van te maken. Vergroot er een en elke rand wordt zacht; een zachte
+        rand is precies waar een scanner moeite mee heeft, en een printer op 1200
+        dpi die een png van 512 pixels krijgt, wordt gevraagd het verschil te
+        verzinnen. Een svg is de vierkantjes als instructies, dus die drukt scherp
+        af op een visitekaartje of een billboard. De png hier wordt getekend op een
+        heel aantal pixels per module, en dat is het beste wat een png kan doen."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek dan je internetverbinding, en hij
+        werkt door. Dat is ook de eenvoudigste manier om te bewijzen dat er niets
+        geüpload wordt: een tool die je tekst wegstuurde om er een code van te
+        laten tekenen, zou stoppen op het moment dat je de stekker eruit trok."""
+
+[schema]
+description = "Genereer een qr-code of een streepjescode uit een tekenreeks in de browser. Qr-codes voor links, wifinetwerken, visitekaartjes, e-mail, sms, telefoonnummers en coördinaten, met alle vier de foutcorrectieniveaus; EAN-13-, EAN-8-, UPC-A-, ITF-14-, Interleaved 2 of 5-, Code 128- en Code 39-barcodes met hun controlecijfers. Download als svg of png. Er wordt niets geüpload."
+features = [
+  "Qr-codes in elke versie van 1 tot 40, in numerieke, alfanumerieke en bytemodus",
+  "Alle vier de foutcorrectieniveaus, met hardop gezegd wat elk ervan kost",
+  "Kant-en-klare formaten: wifinetwerk, visitekaartje, e-mail, sms, telefoonnummer, plek op de kaart",
+  "Toont de exacte tekenreeks die de code gaat bevatten, in plaats van hem te verbergen",
+  "EAN-13, EAN-8 en UPC-A, met het controlecijfer uitgerekend of gecontroleerd",
+  "ITF-14 en Interleaved 2 of 5 voor dozen en magazijnwerk",
+  "Code 128 met automatisch gebruik van zijn numerieke modus, en Code 39 met een optioneel controleteken",
+  "Leesbare cijfers onder een barcode gedrukt, op de juiste plekken",
+  "Svg eruit, dus het drukt scherp af op elk formaat, en een png getekend op hele pixels per module",
+  "Twee kleuren naar keuze, of helemaal geen achtergrond",
+  "Stuurt nooit door: geen korte link, geen tracking, niets dat kan verlopen",
+  "Draait offline; geen upload, geen account",
+]

@@ -1,0 +1,246 @@
+#
+# EXIF-lezer & -wisser - Dutch.
+#
+# Overrides for tools/exif-editor/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "EXIF-lezer & -wisser"
+# Het staartje is de zoekterm. Net als in het Engels blijft de productnaam de
+# luide helft.
+heading = "EXIF-lezer&nbsp;&amp; -wisser <span class=\"h1-kw\">&mdash; metagegevens uit een foto halen</span>"
+tagline = "Zie wat een foto over je zegt. Haal het er dan uit."
+
+title = "EXIF-lezer &amp; -wisser &mdash; gratis metagegevens uit foto's halen"
+description = "Bekijk de EXIF- en gps-gegevens die in een foto verstopt zitten, bewerk ze, of wis alles in één klik. In je browser: niets geüpload, en de foto wordt nooit opnieuw gecodeerd."
+og_title = "EXIF-lezer &amp; -wisser &mdash; bekijk het, bewerk het, of wis het"
+og_description = "Lees de metagegevens die in een foto verstopt zitten en haal ze er in één klik allemaal uit. Draait op je eigen apparaat; het plaatje zelf wordt nooit opnieuw gecodeerd."
+og_image_alt = "EXIF-lezer en -wisser - metagegevens in een foto lezen, bewerken of wissen"
+
+pledge = """
+    Het bestand wordt geopend, ontleed en herschreven door je eigen browser. Deze
+    tool heeft geen enkele netwerkfunctie &mdash; niets op te halen, niets te
+    versturen &mdash; en er staat aan de andere kant van deze pagina geen server
+    om een foto heen te sturen, ook al was er een weg."""
+
+live_hint = """
+      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
+      gaten en maak een foto schoon. Geen enkel verzoek draagt een afbeelding, een
+      miniatuur, een bestandsnaam of een tag die we uit je bestand lazen. Of trek
+      de stekker uit het internet en maak er toch een schoon."""
+
+read_first = """
+, <code>src/tiff.js</code> voor de EXIF-parser, en
+      <code>src/jpeg.js</code> voor het bewijs dat het plaatje zelf alleen maar
+      gekopieerd wordt."""
+
+howto_heading = "EXIF-gegevens uit een foto verwijderen"
+
+card = """
+            Zie de locatie, de camera en de serienummers die in een foto verstopt
+            zitten, bewerk wat je wilt, of wis alles in één klik."""
+
+[words]
+plural = "foto's"
+choose = "een foto"
+analytics_extra = """, en ook geen van de tags
+  die deze tool uit je bestanden leest"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Codeert het plaatje nooit opnieuw"
+
+[[privacy]]
+title = "Je foto's kunnen nergens heen."
+body = """
+ De
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen ervan hoort bij deze site. Er is hier geen eindpunt waar je bestanden
+      verzameld zouden kunnen worden, en niets in de code dat ze zou versturen
+      als dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Anders dan de andere tools in
+      deze doos heeft deze geen &ldquo;laden vanaf een webadres&rdquo;-functie en
+      helemaal geen optionele netwerkstap. Er staat nergens in <code>src/</code>
+      een <code>fetch</code>, een <code>XMLHttpRequest</code> of een
+      <code>sendBeacon</code>."""
+
+[[privacy]]
+title = "De metagegevens die we lezen, worden nooit doorgegeven."
+body = """
+ Je gps-positie
+      wordt op deze pagina getoond en gaat nergens anders heen. Er zit in deze
+      repository geen eigen analytics-gebeurtenis die een tag, een bestandsnaam,
+      een grootte of een aantal meedraagt."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je foto's
+      mee. Elke regel die een bestand leest, ontleedt of herschrijft, wordt vanaf
+      deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat hij niet krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een
+      script van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts.
+      Het is een link en verder niets: hij meldt geen bezoek, en hij krijgt niets
+      over jou of je bestanden mee. Er gebeurt niets tenzij je erop klikt, en
+      waar je dan naartoe klikt is de site van iemand anders."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en de tool is
+      onveranderd, want er zat nooit een netwerkstap in. Dat is het eenvoudigste
+      bewijs van allemaal."""
+
+[[howto]]
+title = "Kies je foto's."
+body = """
+ Sleep ze op het keuzevak of kies ze met
+      de hand. De browser leest ze rechtstreeks van je schijf; er wordt daarbij
+      niets ergens heen gestuurd."""
+
+[[howto]]
+title = "Lees wat erin zit, als je dat wilt."
+body = """
+ De bevindingenlijst
+      noemt de dingen die het weten waard zijn &mdash; de gps-positie, de
+      tijdstempels, de serienummers &mdash; vóór de volledige tabel met elke
+      tag."""
+
+[[howto]]
+title = "Druk op &ldquo;Alle metagegevens verwijderen&rdquo;."
+body = """
+ Dat is voor de meeste
+      mensen de hele klus. Elke tag, de XMP- en IPTC-blokken, de opmerkingen en
+      de ingesloten miniatuur gaan er in één keer af, bij elke foto op de
+      lijst."""
+
+[[howto]]
+title = "Of bewerk in plaats van te wissen."
+body = """
+ Wijzig een datum,
+      corrigeer een auteursrechtregel, laat de locatie vallen en hou de
+      camera-instellingen &mdash; en sla die foto dan apart op."""
+
+[[faq]]
+q = "Wordt mijn foto ergens heen geüpload?"
+a = """
+        Nee. Het bestand wordt gelezen, ontleed en herschreven door je eigen
+        browser op je eigen hardware. Deze tool heeft geen enkele netwerkfunctie
+        &mdash; hij haalt nooit iets op en verstuurt nooit iets &mdash; en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
+        mag benaderen; geen ervan hoort bij deze site."""
+
+[[faq]]
+q = "Wat is EXIF, en wat zit er nog meer in een foto verstopt?"
+a = """
+        EXIF is een blok tags dat een camera naast het plaatje schrijft: het merk
+        en model, de belichtingsinstellingen, de datum en tijd op de seconde
+        nauwkeurig, vaak een gps-positie, en soms een serienummer. Foto's dragen
+        vaak nog meer mee &mdash; een XMP-pakket met XML uit een fotobewerker, een
+        IPTC-blok met bijschrift- en naamsvermeldingsvelden, een kleurprofiel, een
+        kleine tweede kopie van het beeld als miniatuur, en een makernotitie met
+        ongedocumenteerde fabrikantgegevens. Deze tool zet het allemaal op een
+        rij."""
+
+[[faq]]
+q = "Gaat er beeldkwaliteit verloren als de metagegevens eruit gaan?"
+a = """
+        Nee, en dat is de belangrijkste reden om zo'n tool te gebruiken in plaats
+        van de foto opnieuw op te slaan. Metagegevens zitten in de container om
+        het gecomprimeerde plaatje heen, niet erin. Ze verwijderen betekent items
+        uit een lijst schrappen en de lijst weer wegschrijven; de gecomprimeerde
+        beeldgegevens gaan byte voor byte mee, dus het resultaat decodeert naar
+        precies dezelfde pixels. Er wordt niets gedecodeerd en niets opnieuw
+        gecomprimeerd."""
+
+[[faq]]
+q = "Welke bestandsformaten kan het aan?"
+a = """
+        JPEG, PNG en WebP. HEIC en AVIF worden herkend maar niet herschreven: het
+        zijn doosformaten die uit geneste atomen zijn opgebouwd en die een andere
+        parser nodig hebben, dus zegt de tool dat in plaats van een kapot bestand
+        te maken. Een kale TIFF gaat ook niet, want in een TIFF worden de
+        metagegevens en de pixels door dezelfde offsets aangewezen."""
+
+[[faq]]
+q = "Staat mijn foto gedraaid nadat de metagegevens eruit zijn?"
+a = """
+        Dat kan, en daar is een instelling voor. Telefoons leggen een foto meestal
+        vast zoals de sensor hem zag en voegen een Orientation-tag toe die zegt
+        hoe hij gedraaid moet worden. Haal die tag eruit en sommige kijkers tonen
+        de foto op zijn kant. De optie &ldquo;hou de oriëntatietag&rdquo;, die
+        standaard aanstaat, schrijft een piepklein EXIF-blok terug met niets
+        anders dan die ene tag &mdash; en alleen wanneer de foto hem echt nodig
+        had. Zet hem uit als je liever hebt dat het bestand helemaal geen EXIF
+        draagt."""
+
+[[faq]]
+q = "Haalt het de gps-locatie eruit?"
+a = """
+        Ja. Alles verwijderen verwijdert de hele gps-directory, en je kunt de
+        locatie ook los weghalen en de rest houden. De positie wordt eerst in
+        decimale graden getoond, omdat &ldquo;51 graden, 30 minuten, 26
+        seconden&rdquo; niet duidelijk maakt dat een foto het gebouw noemt waarin
+        hij genomen is."""
+
+[[faq]]
+q = "Kan ik een tag wijzigen in plaats van hem te verwijderen?"
+a = """
+        Ja. Teksttags, datums, de ISO, de oriëntatie en de resolutie zijn allemaal
+        te bewerken, en een paar veelvoorkomende tags kunnen worden toegevoegd aan
+        een foto die er geen heeft. Eén kanttekening: het bestand schrijven bouwt
+        het EXIF-blok opnieuw op, en een makernotitie bevat offsets naar het
+        originele blok, dus een herbouwde makernotitie is daarna misschien niet
+        meer leesbaar voor de eigen software van de fabrikant. Verwijder hem, of
+        laat het bestand onbewerkt, als dat voor jou uitmaakt."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen en geen proefperiode.
+        De site draagt advertenties, en die betalen hem; de advertenties krijgen
+        niets over je foto's mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek dan je internetverbinding, en hij
+        werkt door. Dat is ook de eenvoudigste manier om te bewijzen dat er niets
+        geüpload wordt: een tool die je foto's wegstuurde om ze te verwerken, zou
+        stoppen op het moment dat je de stekker eruit trok."""
+
+[schema]
+description = "Lees de EXIF-, gps-, XMP- en IPTC-metagegevens in een foto, bewerk losse tags, of haal alles er in één klik uit. JPEG, PNG en WebP, verwerkt in de browser zonder het beeld opnieuw te coderen."
+features = [
+  "Toont elke EXIF-tag, inclusief gps-positie, serienummers van camera's en makernotities",
+  "Bewerkt of verwijdert losse tags en schrijft het bestand terug",
+  "Verwijdert EXIF, gps, XMP, IPTC, opmerkingen en de ingesloten miniatuur in één klik",
+  "JPEG, PNG en WebP",
+  "Herschrijft alleen de container, dus het beeld wordt nooit opnieuw gecomprimeerd",
+  "Draait offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep foto's hierheen"
+hint = "of klik om te bladeren &mdash; JPEG, PNG en WebP"

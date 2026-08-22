@@ -1,0 +1,18 @@
+#
+# Gids: de metagegevens in een foto, en hoe je ze eruit haalt - Dutch.
+#
+
+nav = "EXIF- en gps-gegevens"
+title = "EXIF- en gps-gegevens uit een foto verwijderen"
+description = "Een foto van een telefoon draagt meestal de exacte plek waar hij genomen is, de tijd op de seconde, en het serienummer van de camera. Wat erin zit, wie het kan lezen, en hoe je het eruit haalt zonder het plaatje aan te raken."
+heading = "Wat een foto over je zegt, en hoe je het eruit haalt"
+lede = """
+    Een plaatje dat zo van een telefoon komt, draagt doorgaans de coördinaten
+    van de plek waar het genomen is, de tijd op de seconde, en genoeg over de
+    camera om het aan elke andere foto van hetzelfde apparaat te knopen. Niets
+    daarvan is op het scherm te zien. Dit is wat erin zit en hoe je het
+    verwijdert."""
+updated = "20 augustus 2026"
+og_title = "Wat een foto over je zegt, en hoe je het eruit haalt"
+og_description = "Gps-coördinaten, tijdstempels en serienummers reizen mee in gewone foto's. Wat erin zit, wie het kan lezen, en hoe je het wist."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"

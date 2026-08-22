@@ -1,0 +1,251 @@
+#
+# Afbeeldingen naar video - Dutch.
+#
+# Overrides for tools/images-to-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# This is the one tool with a [picker.urls] table, so it is also the one whose
+# translation has to supply the noun the importer's warning in [ui.picker] is
+# written around. Dutch needs it in the singular, and the sentences there were
+# written so the bare noun fits without an ending - Dutch does not make a plural
+# with a lone "s".
+#
+
+name = "Afbeeldingen naar video"
+heading = "Afbeeldingen&nbsp;naar&nbsp;video <span class=\"h1-kw\">&mdash; een mp4-diavoorstelling maken</span>"
+tagline = "Maak van een map vol afbeeldingen een video."
+
+title = "Beeldreeks naar mp4 &mdash; gratis, zonder uploaden, werkt offline"
+description = "Maak van jpg-, png- of WebP-afbeeldingen een mp4-diavoorstelling, gratis en volledig in je browser. Er wordt niets geüpload, je hoeft je niet aan te melden, en het werkt offline."
+og_title = "Beeldreeks naar mp4 &mdash; gratis, in je browser"
+og_description = "Maak van een renderreeks, een timelapse of een map vol foto's een mp4. Het coderen gebeurt op je eigen apparaat; er wordt niets geüpload."
+og_image_alt = "Afbeeldingen naar video - van een map vol afbeeldingen een mp4-diavoorstelling maken"
+
+pledge = """
+    Elk frame wordt door je eigen browser gecodeerd en de video wordt op dit
+    apparaat in het geheugen opgebouwd. De encoder raakt het netwerk nooit aan,
+    en er staat aan de andere kant van deze pagina geen server om een afbeelding
+    heen te sturen, ook al deed hij dat wel."""
+
+live_hint = """
+      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
+      gaten en maak een video. Geen enkel verzoek draagt een afbeelding, een
+      miniatuur of een bestandsnaam. Of trek de stekker uit het internet en maak
+      er toch een."""
+
+read_first = """
+, en <code>src/encoder.js</code> voor de codeerlus die
+      het netwerk nooit aanraakt."""
+
+howto_heading = "Van afbeeldingen een video maken"
+
+card = """
+            Maak van een map vol afbeeldingen een mp4-diavoorstelling. Het
+            coderen gebeurt op je eigen apparaat, met je eigen hardware."""
+
+[words]
+plural = "afbeeldingen"
+choose = "afbeeldingen"
+analytics_extra = """"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Bestanden blijven op je apparaat"
+
+[[privacy]]
+title = "Je afbeeldingen kunnen nergens heen."
+body = """
+ De
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen ervan hoort bij deze site. Er is hier geen eindpunt waar je bestanden
+      verzameld zouden kunnen worden, en niets in de code dat ze zou versturen
+      als dat er wel was. Hier stond ooit <code>connect-src 'none'</code>, en dat
+      was absoluut; advertenties toevoegen heeft dat gekost, en dat hardop zeggen
+      hoort bij de afspraak."""
+
+[[privacy]]
+title = "Het coderen gebeurt lokaal."
+body = """
+ WebCodecs draait in je browser en het
+      gereedgekomen bestand gaat rechtstreeks naar een download. Deze app heeft
+      geen serverkant."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je
+      afbeeldingen mee: geen bestand, geen miniatuur, geen naam, geen grootte,
+      geen aantal. Elke regel die een afbeelding leest, decodeert, samenstelt of
+      codeert, wordt vanaf deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat hij niet krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een
+      script van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts.
+      Het is een link en verder niets: hij meldt geen bezoek, en hij krijgt niets
+      over jou of je afbeeldingen mee. Er gebeurt niets tenzij je erop klikt, en
+      waar je dan naartoe klikt is de site van iemand anders."""
+
+[[privacy]]
+title = "Eén bewuste uitzondering."
+body = """
+ Gebruik je &ldquo;Toevoegen vanaf een
+      webadres&rdquo;, dan wordt die server benaderd om de afbeelding op te halen
+      en ziet hij je IP-adres. Alleen afbeeldingen die jij erin plakt worden ooit
+      opgehaald, en alleen naar binnen: <code>img-src</code> is opengezet,
+      <code>connect-src</code> niet. De teller hieronder noemt elke herkomst van
+      buiten die benaderd is."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles behalve het
+      laden vanaf een webadres doet het nog. Dat is het eenvoudigste bewijs van
+      allemaal."""
+
+[[howto]]
+title = "Kies je afbeeldingen."
+body = """
+ Sleep een map op het keuzevak, of kies
+      de bestanden met de hand. De browser leest ze rechtstreeks van je schijf; er
+      wordt daarbij niets ergens heen gestuurd."""
+
+[[howto]]
+title = "Zet ze op volgorde en bepaal hoe lang elke wordt vastgehouden."
+body = """
+ Sleep
+      om te herordenen. De vasthoudtijd kan in frames of in seconden, voor alle
+      afbeeldingen tegelijk of per afbeelding."""
+
+[[howto]]
+title = "Kies een resolutie en beeldsnelheid."
+body = """
+ &ldquo;Volg de hoogste
+      resolutie&rdquo; houdt je grootste afbeelding aan; de voorkeuzes dekken 4K,
+      1080p, 720p, vierkant en staand, en er is een eigen formaat als geen ervan
+      past."""
+
+[[howto]]
+title = "Maak de video en download hem."
+body = """
+ Het coderen gebeurt op je eigen
+      hardware, dus hoe lang het duurt hangt af van je apparaat en niet van een
+      wachtrij. De gereedgekomen mp4 gaat rechtstreeks naar de downloads van je
+      browser."""
+
+[[faq]]
+q = "Worden mijn afbeeldingen ergens heen geüpload?"
+a = """
+        Nee. Je afbeeldingen worden gelezen, samengesteld en gecodeerd door je
+        eigen browser op je eigen hardware. Deze tool heeft geen serverkant, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
+        mag benaderen &mdash; geen ervan hoort bij deze site. De ene uitzondering
+        is de optionele functie &ldquo;toevoegen vanaf een webadres&rdquo;, die een
+        afbeelding ophaalt die jij erin plakt, en die server ziet je IP-adres."""
+
+[[faq]]
+q = "Welke afbeeldingsformaten kan ik gebruiken?"
+a = """
+        Elk formaat voor stilstaand beeld dat je browser kan decoderen, in de
+        praktijk dus jpg, png, WebP, gif, AVIF en, op Apple-apparaten, HEIC. Er is
+        hier geen aparte lijst om bij te houden, omdat het decoderen het werk van
+        de browser is en niet het onze."""
+
+[[faq]]
+q = "Welk videoformaat levert het op?"
+a = """
+        Mp4 met H.264-video, wat vrijwel overal afspeelt. In een browser zonder
+        WebCodecs valt de tool terug op het opnemen van WebM &mdash; hetzelfde
+        beeld in een container die minder editors accepteren."""
+
+[[faq]]
+q = "Kan ik dit gebruiken voor een renderreeks uit Blender of After Effects?"
+a = """
+        Ja &mdash; een genummerde renderreeks is precies waar dit voor is. Voeg de
+        frames toe die je renderer schreef, laat de vasthoudtijd op één frame per
+        stuk staan, en zet de beeldsnelheid gelijk aan die van de render.
+        &ldquo;Sorteer op naam&rdquo; telt zoals je zou verwachten, dus
+        <code>frame_2</code> landt vóór <code>frame_10</code> in plaats van erna.
+        <br><br>
+        Eén ding is het weten waard voordat je begint: H.264 heeft geen alfakanaal,
+        dus transparantie wordt op de achtergrondkleur platgeslagen in plaats van
+        doorgegeven. Moet het alfa blijven, stel de frames dan in je editor
+        samen."""
+
+[[faq]]
+q = "Kan ik een timelapse van foto's maken?"
+a = """
+        Ja, en dat is dezelfde klus als een renderreeks: hou elke foto één frame
+        vast en kies een beeldsnelheid. Op 30 fps wordt elke dertig foto's één
+        seconde video; op 12 fps lopen diezelfde foto's tweeënhalve seconde.
+        <br><br>
+        &ldquo;Sorteer op datum&rdquo; zet een camerarol terug in de volgorde
+        waarin hij geschoten is, en dat telt wanneer de bestandsnamen weer bij
+        0001 begonnen zijn. Foto's van verschillende formaten zijn geen probleem
+        &mdash; &ldquo;Volg de hoogste resolutie&rdquo; kiest de videogrootte zo
+        dat er geen van verkleind wordt."""
+
+[[faq]]
+q = "Zit er een limiet op het aantal afbeeldingen of de lengte van de video?"
+a = """
+        In de tool zit geen limiet ingebouwd. Het praktische plafond is het
+        geheugen van je eigen apparaat, want de gereedgekomen video wordt daar
+        opgebouwd voordat je hem downloadt. Heel grote 4K-diavoorstellingen merken
+        dat het eerst."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen en geen proefperiode.
+        De site draagt advertenties, en die betalen hem; de advertenties krijgen
+        niets over je afbeeldingen mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek dan je internetverbinding, en hij
+        werkt door. Dat is ook de eenvoudigste manier om te bewijzen dat er niets
+        geüpload wordt: een tool die je afbeeldingen wegstuurde om ze te
+        verwerken, zou stoppen op het moment dat je de stekker eruit trok."""
+
+[[faq]]
+q = "Kan ik muziek of een soundtrack toevoegen?"
+a = """
+        Nog niet. De tool levert alleen beeld: de mp4 die hij schrijft heeft één
+        videospoor en geen audiospoor. Voeg achteraf een soundtrack toe in een
+        video-editor als je er een nodig hebt."""
+
+[schema]
+browser_requirements = "Vereist JavaScript. Voor mp4-uitvoer is een browser met WebCodecs nodig; andere vallen terug op WebM."
+description = "Maak van een map vol afbeeldingen een mp4-diavoorstelling. Elke stap draait in je browser, dus er wordt nooit een afbeelding geüpload."
+features = [
+  "Zet jpg-, png-, WebP-, gif- en AVIF-afbeeldingen om naar video",
+  "Mp4-uitvoer (H.264), met WebM als terugval",
+  "Resoluties tot 3840x2160, beeldsnelheden van 12 tot 60 fps",
+  "Vasthoudtijd per afbeelding in frames of seconden",
+  "Draait offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep afbeeldingen hierheen"
+hint = "of klik om te bladeren &mdash; JPEG, PNG, WebP, GIF, AVIF"
+
+[picker.urls]
+summary = "Toevoegen vanaf een webadres"
+button = "Afbeeldingen downloaden"
+# Enkelvoud, en onvervoegd: de zinnen in [ui.picker] zijn eromheen geschreven.
+noun = "afbeelding"

@@ -1,0 +1,230 @@
+<main>
+  <!-- Stap 1 &mdash; afbeeldingen -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies afbeeldingen</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" data-sort="name" class="ghost">Sorteer op naam</button>
+        <button type="button" data-sort="date" class="ghost">Sorteer op datum</button>
+        <button type="button" data-sort="reverse" class="ghost">Omkeren</button>
+        <button type="button" id="clear-all" class="ghost danger">Alles verwijderen</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Eén afbeelding per pagina, in deze volgorde. Sleep aan het
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span>-handvat om een pagina te
+      verplaatsen, of gebruik de pijltjes erop.
+    </p>
+
+    <ul id="image-list" class="image-list"></ul>
+  </section>
+
+  <!-- Stap 2 &mdash; de pagina's -->
+  <section class="card">
+    <h2><span class="step">2</span> Pagina-instellingen</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">Paginaformaat</label>
+        <select id="page-size">
+          <option value="fit" selected>Pas de pagina op elke afbeelding aan</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8,5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8,5 &times; 14 in</option>
+          <option value="a3">A3 &mdash; 297 &times; 420 mm</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+          <option value="tabloid">Tabloid &mdash; 11 &times; 17 in</option>
+          <option value="custom">Zelf instellen&hellip;</option>
+        </select>
+        <div id="custom-size" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="1" max="5000" step="1" value="210"
+                 aria-label="Eigen paginabreedte">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="1" max="5000" step="1" value="297"
+                 aria-label="Eigen paginahoogte">
+          <select id="custom-unit" aria-label="Eenheid voor het eigen paginaformaat">
+            <option value="mm" selected>mm</option>
+            <option value="in">in</option>
+          </select>
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">Printresolutie</label>
+        <select id="dpi">
+          <option value="72">72 dpi &mdash; scherm</option>
+          <option value="96">96 dpi</option>
+          <option value="150" selected>150 dpi</option>
+          <option value="200">200 dpi</option>
+          <option value="300">300 dpi &mdash; druk</option>
+          <option value="600">600 dpi</option>
+        </select>
+        <p class="field-note">
+          Bepaalt hoe groot een pagina is bij een gegeven aantal pixels. Het
+          verandert niets aan het plaatje.
+        </p>
+      </div>
+
+      <div class="field" id="orientation-field" hidden>
+        <label for="orientation">Richting</label>
+        <select id="orientation">
+          <option value="auto" selected>Volg elke afbeelding</option>
+          <option value="portrait">Staand</option>
+          <option value="landscape">Liggend</option>
+        </select>
+      </div>
+
+      <div class="field" id="fit-field" hidden>
+        <label for="fit">Hoe de afbeelding op de pagina staat</label>
+        <select id="fit">
+          <option value="contain" selected>Binnen de marges passen</option>
+          <option value="cover">De pagina vullen (snijdt de randen af)</option>
+          <option value="stretch">Uitrekken tot de marges (vervormt)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="margin">Marge</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="100" step="1" value="0"
+                 aria-label="Marge in millimeters">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="background">Paginakleur</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          Zichtbaar in de marges, en achter alles wat doorzichtig is.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="mode">Beeldkwaliteit</label>
+        <select id="mode">
+          <option value="keep" selected>Hou JPEG's precies zoals ze zijn</option>
+          <option value="jpeg">Codeer alles opnieuw als JPEG</option>
+          <option value="lossless">Verliesloos &mdash; helemaal geen compressieverlies</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">JPEG-kwaliteit</label>
+        <select id="quality">
+          <option value="0.75">Kleiner bestand</option>
+          <option value="0.88" selected>In balans</option>
+          <option value="0.95">Beste kwaliteit</option>
+        </select>
+        <p class="field-note">Alleen gebruikt voor plaatjes die deze tool opnieuw moet coderen.</p>
+      </div>
+
+      <div class="field">
+        <label for="max-side">Grote afbeeldingen verkleinen</label>
+        <select id="max-side">
+          <option value="0" selected>Nooit &mdash; hou de volle grootte</option>
+          <option value="4000">Langste zijde 4000 px</option>
+          <option value="2000">Langste zijde 2000 px</option>
+          <option value="1200">Langste zijde 1200 px</option>
+        </select>
+        <p class="field-note" id="shrink-note"></p>
+      </div>
+    </div>
+
+    <details class="meta-panel">
+      <summary>Documentgegevens &mdash; allemaal optioneel, allemaal standaard leeg</summary>
+      <div class="meta-body">
+        <p class="meta-note">
+          Een pdf draagt een klein blok informatie over zichzelf mee, en de meeste
+          tools vullen dat met een tijdstempel en een programmanaam, of je erom
+          vroeg of niet. Deze schrijft wat je hier intikt en verder niets: geen
+          bestandsnamen, geen apparaatnaam, en geen datum tenzij je het vinkje
+          aanzet.
+        </p>
+        <div class="settings">
+          <div class="field">
+            <label for="doc-title">Titel</label>
+            <input type="text" id="doc-title" maxlength="200" spellcheck="false"
+                   placeholder="Blijft weg als het leeg is">
+          </div>
+          <div class="field">
+            <label for="doc-author">Auteur</label>
+            <input type="text" id="doc-author" maxlength="200" spellcheck="false"
+                   placeholder="Blijft weg als het leeg is">
+          </div>
+          <div class="field">
+            <label for="file-name">Bestandsnaam</label>
+            <div class="inline-pair">
+              <input type="text" id="file-name" maxlength="120" spellcheck="false"
+                     value="afbeeldingen">
+              <span class="unit-label">.pdf</span>
+            </div>
+          </div>
+          <div class="field checkbox-field">
+            <label for="dated">
+              <input type="checkbox" id="dated">
+              Leg de datum van vandaag in het document vast
+            </label>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="480" height="640" aria-label="Voorvertoning van één pagina"></canvas>
+        <p id="preview-empty" class="preview-empty">Voeg afbeeldingen toe om de pagina's te zien</p>
+        <div id="preview-nav" class="preview-nav" hidden>
+          <button type="button" id="preview-prev" class="ghost" aria-label="Vorige pagina">&lsaquo;</button>
+          <span id="preview-label" class="preview-label"></span>
+          <button type="button" id="preview-next" class="ghost" aria-label="Volgende pagina">&rsaquo;</button>
+        </div>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Pagina's</dt><dd id="sum-pages">&mdash;</dd></div>
+        <div><dt>Paginaformaat</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Afbeeldingen gekozen</dt><dd id="sum-input">&mdash;</dd></div>
+        <div><dt>Onaangeroerd overgenomen</dt><dd id="sum-copied">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Stap 3 &mdash; export -->
+  <section class="card">
+    <h2><span class="step">3</span> Maak de pdf</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Pdf maken</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Pdf downloaden</a>
+      </div>
+    </div>
+  </section>
+</main>

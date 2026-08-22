@@ -1,0 +1,16 @@
+#
+# Gebruiksvoorwaarden - Dutch. Overrides for pages/terms/page.toml.
+#
+
+nav = "Gebruiksvoorwaarden"
+title = "Gebruiksvoorwaarden &mdash; abox.tools"
+description = "De voorwaarden waaronder deze site wordt aangeboden: gratis, zoals hij is, geen account, geen garantie, en je bestanden blijven volledig van jou omdat ze nooit naar ons gestuurd worden."
+heading = "Gebruiksvoorwaarden"
+lede = """
+    Er is geen account te openen en geen overeenkomst te tekenen, dus deze zijn
+    kort. Ze beschrijven wat je van deze site mag verwachten, en wat hij niet
+    belooft."""
+updated = "19 augustus 2026"
+og_title = "Gebruiksvoorwaarden &mdash; abox.tools"
+og_description = "Gratis, zoals hij is, geen account, geen garantie. Je bestanden blijven volledig van jou."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"

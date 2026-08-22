@@ -1,0 +1,18 @@
+#
+# Gids: een plaatje in een stylesheet zetten - Dutch.
+#
+
+nav = "Een afbeelding in CSS zetten"
+title = "Data-URI's in CSS: wanneer je een afbeelding insluit, en wanneer niet"
+description = "Wat een data-URI kost, waarom base64 er een derde bij doet en gzip dat niet teruggeeft, waarom een svg nooit base64 hoort te zijn, en de aanhalingsfout die ingesloten svg's stilletjes breekt."
+heading = "Wanneer je een plaatje in je CSS zet, en wanneer niet"
+lede = """
+    Een afbeelding die in een stylesheet geschreven staat, komt ermee mee: geen
+    tweede verzoek, geen wachten. Hij houdt ook op een bestand te zijn &mdash;
+    dus hij kan niet los in de cache, en hij wordt opnieuw gedownload elke keer
+    dat er iets eromheen verandert. Dit gaat over waar die ruil het waard is, en
+    waar hij dat stilletjes niet is."""
+updated = "20 augustus 2026"
+og_title = "Wanneer je een plaatje in je CSS zet"
+og_description = "Wat een data-URI kost, waarom een svg nooit base64 hoort te zijn, en de aanhalingsfout die ingesloten svg's stilletjes breekt."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"

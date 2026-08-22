@@ -1,0 +1,17 @@
+#
+# Gids: het formaat waarin een iPhone opslaat, en hoe je eruit komt - Dutch.
+#
+
+nav = "HEIC naar JPG"
+title = "HEIC naar JPG omzetten (en wat HEIC eigenlijk is)"
+description = "iPhones slaan foto's op als HEIC, en het halve internet kan er geen openen. Wat het formaat is, waarom alleen Safari het decodeert, wat omzetten het plaatje kost, en hoe je het doet zonder de foto's aan iemand te uploaden."
+heading = "De foto die je telefoon opsloeg, en het formaat dat niets wil openen"
+lede = """
+    Een iPhone slaat foto's op als HEIC, wat kleiner en beter is dan jpeg en wat
+    een hoop software nog steeds weigert te openen. Dit gaat over wat het
+    formaat werkelijk is, wat omzetten het plaatje kost, en waarom vrijwel elke
+    omzetter wil dat je het eerst uploadt."""
+updated = "20 augustus 2026"
+og_title = "HEIC naar JPG omzetten"
+og_description = "Waarom iPhone-foto's niet opengaan, wat omzetten kost, en hoe je het doet zonder de foto's aan iemand te geven."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"

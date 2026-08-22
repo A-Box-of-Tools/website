@@ -1,0 +1,16 @@
+#
+# Gids: van afbeeldingen een video maken - Dutch.
+#
+
+nav = "Afbeeldingen naar een video"
+title = "Van een map vol afbeeldingen een video maken"
+description = "Maak een mp4-diavoorstelling van foto's: wat beeldsnelheid en duur werkelijk regelen, wat je doet met plaatjes van de verkeerde vorm, en waarom er geen geluidsspoor in zit."
+heading = "Hoe je van een map vol afbeeldingen een video maakt"
+lede = """
+    Een diavoorstelling is eenvoudig te maken en makkelijk twee keer te
+    renderen, want twee van de instellingen betekenen niet wat ze lijken te
+    betekenen. Hier staat wat ze allebei regelen en wat je kiest."""
+updated = "20 augustus 2026"
+og_title = "Hoe je van een map vol afbeeldingen een video maakt"
+og_description = "Wat beeldsnelheid en duur werkelijk regelen, wat je doet met plaatjes van de verkeerde vorm, en waarom er geen geluidsspoor in zit."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"

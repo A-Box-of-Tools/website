@@ -1,0 +1,351 @@
+#
+# Afbeelding naar ICO - Dutch.
+#
+# Overrides for tools/image-to-ico/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Afbeelding naar ICO"
+# Het staartje is de zoekterm. Net als in het Engels blijft de productnaam de
+# luide helft.
+heading = "Afbeelding&nbsp;naar&nbsp;ICO <span class=\"h1-kw\">&mdash; favicon-, Windows- en macOS-icoonmaker</span>"
+tagline = "Eén plaatje erin. Elk formaat dat een browser, Windows of een Mac vraagt eruit."
+
+title = "Afbeelding naar ICO &mdash; favicon, app-icoon of icns maken, zonder uploaden"
+description = "Zet een PNG, JPEG of SVG om in een echte .ico met meerdere formaten, of in een macOS-.icns, in je browser. Favicon, Windows-app-icoon, Mac-app-icoon, plus de Apple- en Android-bestanden die een site nodig heeft. Er wordt niets geüpload."
+og_title = "Een .ico of .icns maken met elk formaat erin, zonder iets te uploaden"
+og_description = "Een favicon.ico voor een website, een app.ico voor een Windows-programma, een .icns voor een Mac - met een voorvertoning op 16 pixels vóór je downloadt. Het draait allemaal op je eigen apparaat."
+og_image_alt = "Afbeelding naar ICO - favicon-, Windows- en macOS-icoonmaker, zonder upload"
+
+pledge = """
+    Het schalen en de icoonbestanden zelf worden allebei in je eigen browser
+    gemaakt. Het plaatje wordt getekend door het canvas dat je browser toch al
+    meelevert, en elke container &mdash; de Windows-<code>.ico</code>, de
+    macOS-<code>.icns</code> &mdash; wordt uit die pixels opgebouwd door een paar
+    honderd regels in <code>src/ico.js</code> en <code>src/icns.js</code> die je
+    kunt lezen. Deze tool heeft geen enkele netwerkfunctie &mdash; niets op te
+    halen, niets te versturen &mdash; en er staat aan de andere kant van deze
+    pagina geen server om een logo heen te sturen, ook al was er een weg."""
+
+live_hint = """
+      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
+      gaten en maak een icoon. Geen enkel verzoek draagt een afbeelding, een
+      miniatuur, een bestandsnaam of één byte van wat je koos. Of trek de stekker
+      uit het internet en maak er toch een."""
+
+read_first = """
+, <code>src/ico.js</code> en
+      <code>src/icns.js</code> voor de twee icoonformaten &mdash; de directory,
+      de items en het masker in het ene, de tien benoemde plekken van Apple in
+      het andere &mdash; en <code>src/sizes.js</code> voor waar elk formaat op de
+      pagina vandaan komt."""
+
+howto_heading = "Een .ico-bestand maken zonder iets te uploaden"
+
+card = """
+            Een favicon, een Windows-app-icoon of een macOS-.icns &mdash; elk
+            formaat in één bestand, met een voorvertoning op 16 pixels vóór je
+            downloadt."""
+
+[words]
+plural = "afbeeldingen"
+choose = "een plaatje"
+analytics_extra = """, en ook geen van de
+  formaten, bestandstypen of bestandsnamen die deze tool uitrekent"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Je logo kan nergens heen."
+body = """
+ De
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen ervan hoort bij deze site. Er is hier geen eindpunt waar je bestanden
+      verzameld zouden kunnen worden, en niets in de code dat ze zou versturen
+      als dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er staat nergens in
+      <code>src/</code> een <code>fetch</code>, een <code>XMLHttpRequest</code>
+      of een <code>sendBeacon</code>. Het schalen is een <code>drawImage</code>
+      op een canvas; elk icoon is een kop die door <code>src/ico.js</code> of
+      <code>src/icns.js</code> vóór die pixels geschreven wordt, in deze
+      pagina."""
+
+[[privacy]]
+title = "Het bestand wordt beschreven vanuit zijn eigen bytes."
+body = """
+ De lijst formaten die naast
+      een klaar icoon staat, is niet de lijst formaten waar je om vroeg. Hij wordt
+      teruggelezen uit het bestand dat zojuist geschreven is, door
+      <code>readIcoDirectory</code> of <code>readIcnsElements</code>, dus als een
+      schrijver het ooit met de instellingen oneens was, zou de pagina dat zeggen
+      in plaats van dat jij erachter kwam toen Windows niets tekende en macOS een
+      leeg vel papier."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen ervan
+      krijgt iets over je plaatje mee. Elke regel die een bestand leest, schaalt
+      of schrijft, wordt vanaf deze herkomst geserveerd en staat in de
+      repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en de tool is
+      onveranderd, want er zat nooit een netwerkstap in. Dat is het eenvoudigste
+      bewijs van allemaal."""
+
+[[howto]]
+title = "Kies het plaatje."
+body = """
+ Sleep een PNG, JPEG, WebP of SVG op het
+      keuzevak, of kies er meerdere en zet ze in één keer om. Vierkant is het
+      makkelijkst, en alles vanaf 256 pixels heeft genoeg detail voor elk
+      formaat. De browser leest het rechtstreeks van je schijf; er wordt daarbij
+      niets ergens heen gestuurd."""
+
+[[howto]]
+title = "Kies de bestanden die je nodig hebt."
+body = """
+ Windows en een browser lezen
+      <code>.ico</code>; een Mac leest <code>.icns</code> en kijkt niet naar het
+      andere. Vink er een aan, of allebei als het ding dat je maakt op allebei
+      uitkomt. Een website wil ook de extra Apple-, Android- en tegelplaatjes, en
+      dat is het derde vakje."""
+
+[[howto]]
+title = "Zeg waar het icoon voor is."
+body = """
+ Een website-favicon is 16, 32 en 48
+      pixels; een Windows-programma wil 256 er ook bij; een programma dat op een
+      hi-dpi-laptop goed moet staan, wil de tussenformaten die Windows op 125% en
+      150% schaling vraagt. Kies degene die bij de klus past, of vink de formaten
+      zelf aan. Bij elk formaat op de lijst staat wat erom vraagt. De
+      <code>.icns</code> heeft die keuze niet: Apple noemt precies tien plekken en
+      alle tien gaan erin."""
+
+[[howto]]
+title = "Regel de vorm en de achtergrond."
+body = """
+ Een icoon is vierkant en de
+      meeste logo's zijn dat niet. Vul het op en het hele plaatje blijft, met
+      ruimte erboven en eronder; snijd bij en het midden wordt genomen; rek uit en
+      het wordt platgedrukt. Transparantie blijft transparantie, tenzij je een
+      kleur kiest om erachter te zetten."""
+
+[[howto]]
+title = "Kijk naar die van 16 pixels vóór je downloadt."
+body = """
+ Dat is het formaat waarop
+      het icoon het vaakst gezien wordt, en daar verdwijnen dunne lijnen en kleine
+      letters. Elk vierkantje in de voorvertoning wordt op zijn echte formaat uit
+      je eigen bestand getekend. Is de kleinste een vlek, dan is de oplossing een
+      eenvoudiger tekening, niet een andere instelling."""
+
+[[howto]]
+title = "Neem de bestanden mee."
+body = """
+ Eén .ico met elk formaat erin,
+      <code>favicon.ico</code> genoemd wanneer je daarom vroeg, want dat is het
+      adres waar browsers naar kijken. Eén .icns ernaast als je die aanvinkte,
+      klaar om in een Mac-applicatiebundel te gaan. Vink je ook de websiteset aan,
+      dan krijg je er de Apple-, Android- en Windows-tegelplaatjes, het manifest
+      en het blok HTML bij om in je pagina te plakken. Alles wat meer is dan één
+      bestand komt binnen als één zip."""
+
+[[faq]]
+q = "Wordt mijn afbeelding ergens heen geüpload?"
+a = """
+        Nee. Het plaatje wordt gedecodeerd en geschaald door je eigen browser op je
+        eigen hardware, en de .ico wordt uit die pixels opgebouwd door code die
+        vanaf deze pagina geserveerd wordt. Deze tool heeft geen enkele
+        netwerkfunctie &mdash; hij haalt nooit iets op en verstuurt nooit iets
+        &mdash; en de <code>Content-Security-Policy</code> van de pagina noemt elk
+        adres dat hij mag benaderen; geen ervan hoort bij deze site."""
+
+[[faq]]
+q = "Welke formaten horen er in een favicon.ico?"
+a = """
+        16, 32 en 48. Dat is geen voorkeur: 16 is wat een browser in een tabblad
+        tekent, 32 is wat Windows voor een bureaubladsnelkoppeling gebruikt en wat
+        verschillende browsers voor een bladwijzer gebruiken, en 48 is het formaat
+        waarop Google een site-icoon leest. Alles wat groter is hoort in een PNG
+        naast de .ico in plaats van erin &mdash; en dat is wat de websiteset hier
+        oplevert."""
+
+[[faq]]
+q = "Welke formaten heeft een Windows-app-icoon nodig?"
+a = """
+        16, 32, 48 en 256, en dat is wat de standaard-app.ico van Visual Studio
+        zelf bevat. 16 is de titelbalk en de kleine Verkennerweergave, 32 het
+        bureaublad en de taakbalk, 48 de middelgrote pictogrammen van Verkenner, en
+        256 het startmenu en de extra grote weergave. Op een hi-dpi-scherm vraagt
+        Windows ook om 20, 24, 40, 64 en 96, en herbemonstert die vanaf het
+        dichtstbijzijnde formaat dat het heeft als ze er niet zijn &mdash; de
+        voorkeuze &ldquo;elke schaal&rdquo; zet ze erin."""
+
+[[faq]]
+q = "Waarom is het bestand groter dan het plaatje waarmee ik begon?"
+a = """
+        Omdat een .ico niet één plaatje is maar meerdere, en de kleine
+        ongecomprimeerd worden opgeslagen zodat alles ze kan lezen. Een item van
+        32x32 is precies 4.264 bytes, wat er ook in zit, en een ongecomprimeerd
+        item van 256x256 is 264 kB &mdash; en daarom worden formaten boven 64
+        standaard als PNG opgeslagen. &ldquo;PNG voor elk formaat&rdquo; kiezen
+        levert het kleinste bestand op; ongecomprimeerd voor elk formaat kiezen
+        levert het best leesbare op."""
+
+[[faq]]
+q = "Wat is het verschil tussen de PNG- en de ongecomprimeerde items?"
+a = """
+        Alleen hoe de pixels binnen de .ico opgeslagen worden. Een ongecomprimeerd
+        item is de oorspronkelijke Windows-indeling &mdash; een bitmapkop, de
+        pixels ondersteboven, en een transparantiemasker van één bit &mdash; en
+        elke Windows-versie die ooit is uitgekomen kan het lezen. Een PNG-item is
+        een heel PNG-bestand dat in het icoon gestopt is, wat op de grote formaten
+        drie tot tien keer zo klein is maar pas vanaf Windows Vista begrepen werd.
+        De standaard gebruikt elk waar het wint: ongecomprimeerd tot 64 pixels, PNG
+        daarboven."""
+
+[[faq]]
+q = "Kan het een icoon groter dan 256 pixels maken?"
+a = """
+        Nee, en niets kan dat. Het formaat slaat elke zijde in één byte op, en 0 is
+        vergeven &mdash; dat betekent 256. Dat is het plafond, dus een .ico met een
+        plaatje van 512 pixels erin is geen groter icoon, het is een kapot icoon.
+        Heb je 512 nodig, dan heb je een PNG nodig, en die zit in de websiteset
+        voor Android en voor het startscherm van een webapp."""
+
+[[faq]]
+q = "Blijft de transparantie behouden?"
+a = """
+        Ja, in beide soorten items, en het schrijft daarnaast het oude masker van
+        één bit naast het alfakanaal, zodat software die te oud is om het alfa te
+        lezen het icoon toch uitknipt in plaats van een zwart blok te tekenen. Het
+        ene bestand dat met opzet ondoorzichtig gemaakt wordt, is het
+        Apple-touch-icoon in de websiteset: iOS zet dat op zijn eigen tegel en
+        maakt transparantie zwart, dus wordt het op je achtergrondkleur
+        platgeslagen, standaard wit."""
+
+[[faq]]
+q = "Mijn logo is een breed woordmerk. Wat gebeurt daarmee?"
+a = """
+        Er moet iets gebeuren, want een icoon is vierkant. Opvullen houdt het geheel
+        en maakt het klein &mdash; een woordmerk dat in een vierkant van 16 pixels
+        gepast wordt, is zo'n drie pixels hoog en onleesbaar. Bijsnijden naar het
+        midden werkt meestal beter: haal het symbool uit het geheel en gebruik dat,
+        zoals vrijwel elk merk voor zijn favicon doet. De voorvertoning laat je zien
+        welke van de twee het overleeft voordat je iets downloadt."""
+
+[[faq]]
+q = "Wat zit er in de websiteset, en heb ik het allemaal nodig?"
+a = """
+        Zeven PNG's, een webapp-manifest, een browserconfig.xml en een blok HTML om
+        te plakken. Je hebt ze nodig omdat een .ico browsers en Windows dekt en
+        verder niets: een iPhone-beginscherm leest een PNG van 180 pixels onder een
+        eigen naam, Android en elke installatievraag lezen het manifest, en een
+        tegel die aan het startmenu is vastgezet leest de XML. Geen daarvan kijkt in
+        een .ico. Alles wordt hier gemaakt, op jouw apparaat, en in de zip zit een
+        briefje waarin staat waar elk bestand voor is."""
+
+[[faq]]
+q = "Kan het ook een macOS-icoon maken?"
+a = """
+        Ja &mdash; vink <em>macOS-icoon</em> aan en je krijgt een
+        <code>.icns</code> naast de <code>.ico</code>, of in plaats daarvan. Het is
+        een andere container voor hetzelfde idee, en geen van beide systemen leest
+        die van de ander: Windows wil .ico en een Mac-applicatiebundel wil .icns.
+        De formaten zijn daar geen keuze, want Apple publiceert precies tien
+        plekken &mdash; 16, 32, 64, 128, 256, 512 en 1024 pixels, waarvan er drie
+        twee keer voorkomen als de Retina-versie van het formaat eronder. Alle tien
+        gaan erin, getekend uit zeven renders, en daarom is een .icns het grotere
+        bestand."""
+
+[[faq]]
+q = "Hoe gebruik ik het .icns-bestand?"
+a = """
+        Voor een programma gaat het in de bundel in
+        <code>JouwApp.app/Contents/Resources/</code> en wordt het in
+        <code>Info.plist</code> genoemd onder <code>CFBundleIconFile</code>; elke
+        Mac-inpaktool heeft er een veld voor. Voor al het andere: selecteer het
+        bestand in de Finder, druk op Command-C, kies daarna Toon info op de map of
+        schijfkopie die je wilt wijzigen, klik op het kleine icoon linksboven en
+        druk op Command-V."""
+
+[[faq]]
+q = "Is de .icns hetzelfde als wat iconutil maakt?"
+a = """
+        Dezelfde tien plekken met dezelfde vierlettertypen, en PNG in elk ervan, en
+        dat is wat <code>iconutil</code> uit een <code>.iconset</code>-map maakt.
+        Eén bewust verschil: de tool van Apple schrijft ook een
+        <code>TOC&nbsp;</code>-element, een index van de types en lengtes die
+        volgen. Dat is een optimalisatie in plaats van een deel van het formaat
+        &mdash; een lezer zonder index loopt de elementen van begin tot eind door
+        en komt op hetzelfde antwoord uit &mdash; en een verkeerde index is erger
+        dan geen index, dus hij blijft weg."""
+
+[[faq]]
+q = "Kan ik meerdere plaatjes tegelijk omzetten?"
+a = """
+        Ja. Elk plaatje op de lijst wordt zijn eigen .ico met dezelfde
+        instellingen, en de stapel komt binnen als één zip met een map per plaatje
+        &mdash; anders zouden er twee favicon.ico heten en zou de een de ander
+        overschrijven. Elke uitvoer die je aanvinkte wordt voor elk plaatje
+        gemaakt. Klik op een regel om dat plaatje in de voorvertoning te zetten."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
+        geen watermerk. Er is ook geen limiet op het aantal of de grootte van de
+        bestanden, want er is geen server die ervoor betaalt &mdash; het werk
+        gebeurt op je eigen apparaat. De site draagt advertenties, en die betalen
+        hem; de advertenties krijgen niets over je afbeeldingen mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek dan je internetverbinding, en hij
+        werkt door. Dat is ook de eenvoudigste manier om te bewijzen dat er niets
+        geüpload wordt: een tool die je logo wegstuurde om het om te zetten, zou
+        stoppen op het moment dat je de stekker eruit trok."""
+
+[schema]
+description = "Zet een afbeelding om in een Windows-ICO-bestand met meerdere formaten of een macOS-ICNS-bestand, in de browser. Voorkeuzes voor een website-favicon, een Windows-app-icoon en een hi-dpi-app-icoon, de tien icns-plekken van Apple, een voorvertoning van elk formaat op zijn echte pixelgrootte, en een optionele set met de Apple-, Android- en Windows-tegelbestanden die een website nodig heeft. Er wordt niets geüpload."
+features = [
+  "Schrijft een echte .ico met meerdere formaten, van 16 tot 256 pixels",
+  "Schrijft een macOS-.icns met alle tien plekken van Apple, van 16 tot 1024 pixels",
+  "Beide formaten uit één plaatje, in één ronde, met elk formaat maar één keer getekend",
+  "Voorkeuzes voor een website-favicon, een Windows-app-icoon, hi-dpi-Windows, en maximale leesbaarheid",
+  "Bij elk formaat staat wat erom vraagt, dus er gaat niets voor niets in",
+  "Ongecomprimeerde items voor de kleine formaten en PNG voor de grote, of overal een van beide",
+  "Houdt transparantie, en schrijft daarnaast het transparantiemasker van vóór Vista",
+  "Opvullen, bijsnijden of uitrekken van een plaatje dat niet vierkant is, op een kleur of op niets",
+  "Toont elk formaat op zijn echte pixelgrootte vóór je downloadt",
+  "Optionele websiteset: Apple-touch-icoon, Android-iconen, maskeerbaar icoon, Windows-tegel, manifest en de HTML om te plakken",
+  "Verwerkt hele stapels, met alle resultaten in één zip",
+  "Draait offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep een plaatje hierheen"
+hint = "of klik om te bladeren &mdash; PNG, SVG, JPEG, WebP en al het andere dat je browser kan openen"

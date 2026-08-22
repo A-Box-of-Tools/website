@@ -1,0 +1,250 @@
+#
+# Afbeeldingscompressor - Dutch.
+#
+# Overrides for tools/compress-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Afbeeldingscompressor"
+# Het staartje is de zoekterm. Net als in het Engels blijft de productnaam de
+# luide helft.
+heading = "Afbeelding&nbsp;comprimeren <span class=\"h1-kw\">&mdash; naar een exacte grootte</span>"
+tagline = "Jij noemt de grootte. De rest rekent het uit."
+
+title = "Afbeelding naar exacte grootte comprimeren &mdash; gratis, zonder uploaden"
+description = "Comprimeer een JPEG, PNG of WebP naar een exacte grootte - 100 kB, 2 MB, wat je wilt. Draait volledig in je browser: niets geüpload, geen account, werkt offline."
+og_title = "Een afbeelding comprimeren naar een grootte die je zelf kiest"
+og_description = "Noem een doelgrootte; deze tool zoekt de minste compressie die daar komt en meet daarna wat dat heeft gekost. Draait op je eigen apparaat; er wordt niets geüpload."
+og_image_alt = "Afbeeldingscompressor - noem een grootte, hou de kwaliteit"
+
+pledge = """
+    Het comprimeren gebeurt in je eigen browser, op je eigen hardware, met de
+    encoders die hij toch al meelevert. Deze tool heeft geen enkele
+    netwerkfunctie &mdash; niets op te halen, niets te versturen &mdash; en er
+    staat aan de andere kant van deze pagina geen server om een foto heen te
+    sturen, ook al was er een weg."""
+
+live_hint = """
+      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
+      gaten en comprimeer een foto. Geen enkel verzoek draagt een afbeelding, een
+      miniatuur, een bestandsnaam of één byte van wat je koos. Of trek de stekker
+      uit het internet en comprimeer er toch een."""
+
+read_first = """
+, <code>src/compress.js</code> voor de zoektocht die
+      bepaalt hoeveel kwaliteit eraan wordt uitgegeven, en
+      <code>src/measure.js</code> voor de vergelijking achter het cijfer
+      &ldquo;visuele overeenkomst&rdquo;."""
+
+howto_heading = "Een afbeelding naar een bepaalde grootte comprimeren"
+
+card = """
+            Noem de grootte die je nodig hebt &mdash; 100 kB, 2 MB, wat dan
+            ook &mdash; en het zoekt de minste compressie die daar komt."""
+
+[words]
+plural = "afbeeldingen"
+choose = "een afbeelding"
+analytics_extra = """, en ook geen van de
+  groottes of kwaliteitscijfers die deze tool uitrekent"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen groottelimiet"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Je afbeeldingen kunnen nergens heen."
+body = """
+ De
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen ervan hoort bij deze site. Er is hier geen eindpunt waar je bestanden
+      verzameld zouden kunnen worden, en niets in de code dat ze zou versturen
+      als dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er staat nergens in
+      <code>src/</code> een <code>fetch</code>, een
+      <code>XMLHttpRequest</code> of een <code>sendBeacon</code>. Het
+      comprimeren is <code>canvas.toBlob</code> &mdash; de encoder die al in je
+      browser zit."""
+
+[[privacy]]
+title = "De getallen worden gemeten, niet gemeld."
+body = """
+ De groottes, het
+      kwaliteitscijfer en de SSIM-vergelijking worden allemaal op deze pagina
+      berekend en aan jou getoond. Er zit in deze repository geen eigen
+      analytics-gebeurtenis die een bestandsnaam, een grootte, een aantal of een
+      resultaat meedraagt."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen
+      ervan krijgt iets over je foto's mee. Elke regel die een bestand leest,
+      comprimeert of meet, wordt vanaf deze herkomst geserveerd en staat in de
+      repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en de tool is
+      onveranderd, want er zat nooit een netwerkstap in. Dat is het eenvoudigste
+      bewijs van allemaal."""
+
+[[howto]]
+title = "Kies je afbeeldingen."
+body = """
+ Sleep ze op het keuzevak of kies ze met
+      de hand. De browser leest ze rechtstreeks van je schijf; er wordt daarbij
+      niets ergens heen gestuurd."""
+
+[[howto]]
+title = "Tik de grootte in die je is opgelegd."
+body = """
+ 100 kB voor het
+      uploadformulier dat je foto steeds weigert, 500 kB voor het sollicitatieportaal,
+      2 MB voor een pagina die snel moet laden. De vier meest voorkomende zijn
+      knoppen."""
+
+[[howto]]
+title = "Klik op &ldquo;Comprimeren naar het doel&rdquo;."
+body = """
+ Elke afbeelding wordt
+      een paar keer gecodeerd terwijl de tool inzoomt op de hoogste kwaliteit die
+      er nog in past. Wat al onder het doel zit, blijft precies zoals het is."""
+
+[[howto]]
+title = "Kijk wat het gekost heeft en download."
+body = """
+ Elk resultaat vertelt
+      in welk formaat het geschreven is, op welke kwaliteit, of de afmetingen
+      veranderd zijn en hoe dicht het gemeten bij het origineel blijft.
+      &ldquo;Vergelijken&rdquo; zet de twee plaatjes naast elkaar."""
+
+[[faq]]
+q = "Wordt mijn afbeelding ergens heen geüpload?"
+a = """
+        Nee. Het bestand wordt gedecodeerd, gecomprimeerd en gemeten door je eigen
+        browser op je eigen hardware, met de JPEG-, PNG- en WebP-encoders die de
+        browser al meelevert. Deze tool heeft geen enkele netwerkfunctie &mdash; hij
+        haalt nooit iets op en verstuurt nooit iets &mdash; en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
+        mag benaderen; geen ervan hoort bij deze site."""
+
+[[faq]]
+q = "Hoe raakt het een exacte grootte?"
+a = """
+        Door te proberen. Er bestaat geen formule die een kwaliteitsinstelling in
+        een aantal bytes omrekent &mdash; dat hangt volledig van het plaatje af
+        &mdash; dus codeert de tool de afbeelding een aantal keer en zoekt hij het
+        antwoord. Hij begint bovenaan het kwaliteitsbereik en halveert zich naar
+        beneden, wat de hoogste passende kwaliteit in een stuk of acht rondes
+        vindt. Elke grootte die je op de pagina ziet, is een echt gecodeerd bestand
+        en geen schatting."""
+
+[[faq]]
+q = "Wat betekent &ldquo;minimaal verlies&rdquo; hier eigenlijk?"
+a = """
+        Drie concrete dingen. Ten eerste: een afbeelding die al onder je doel zit,
+        wordt byte voor byte doorgegeven in plaats van opnieuw gecodeerd. Ten
+        tweede wordt er eerst kwaliteit uitgegeven en pas daarna resolutie, en
+        alleen tot een ondergrens waaronder compressie zichtbaar wordt &mdash;
+        voorbij dat punt maakt de tool het plaatje kleiner en draait hij de
+        kwaliteit weer omhoog, want minder goede pixels zien er beter uit dan meer
+        verpeste. Ten derde kruipt de zoektocht, zodra er een passend resultaat is,
+        weer omhoog tot het budget op is &mdash; je krijgt dus geen bestand van
+        300 kB als je om 500 kB vroeg."""
+
+[[faq]]
+q = "Wat zijn die SSIM- en PSNR-cijfers bij elk resultaat?"
+a = """
+        Een meting van wat de compressie gekost heeft, gedaan door het resultaat te
+        decoderen en met het originele plaatje te vergelijken. SSIM vergelijkt
+        plaatselijke helderheid, contrast en structuur, wat veel dichter ligt bij
+        waar een oog zich aan stoort dan het tellen van veranderde pixels; boven
+        ongeveer 0,98 zijn de twee naast elkaar nauwelijks uit elkaar te houden.
+        PSNR is het klassieke decibelgetal. Beide worden op je eigen apparaat
+        berekend, en beide worden getoond zodat de bewering van weinig verlies te
+        controleren valt in plaats van alleen geponeerd."""
+
+[[faq]]
+q = "Welke formaten kan het lezen en schrijven?"
+a = """
+        Het leest alles wat je browser kan decoderen, in de praktijk dus JPEG, PNG,
+        WebP, GIF, BMP en &mdash; in de meeste huidige browsers &mdash; AVIF. Het
+        schrijft JPEG, PNG en WebP, want dat zijn de encoders die browsers
+        meeleveren. Op &ldquo;automatisch&rdquo; houdt het het formaat waarin je
+        bestand binnenkwam, en stapt het alleen over op WebP wanneer vasthouden een
+        verkleining of een zichtbaar kwaliteitsverlies had betekend."""
+
+[[faq]]
+q = "Waarom valt een PNG niet ver te comprimeren?"
+a = """
+        Omdat PNG verliesloos is: er zit geen kwaliteitsknop aan om aan te draaien.
+        Een PNG kleiner maken kan alleen met minder pixels of minder kleuren, dus
+        met PNG geselecteerd haalt de tool een doel puur via het formaat. Is het
+        plaatje een foto, dan komen JPEG of WebP veel dichter bij je doel op een
+        kwaliteit waarvan je kunt zien dat hij prima is &mdash; en is het een logo
+        of een schermafbeelding met transparantie, dan houdt WebP de transparantie
+        die JPEG met wit zou opvullen."""
+
+[[faq]]
+q = "Haalt comprimeren de EXIF- en gps-gegevens uit een afbeelding?"
+a = """
+        Ja, als bijwerking. Comprimeren betekent het plaatje decoderen tot pixels en
+        die pixels opnieuw coderen, en een canvas vol pixels draagt geen tags, dus
+        de locatie, het cameramodel, de tijdstempels en al het andere worden domweg
+        niet in het nieuwe bestand geschreven. Wil je de metagegevens weg maar het
+        plaatje onaangeroerd, gebruik dan de
+        <a href="../exif-gegevens-verwijderen/">EXIF-lezer &amp; -wisser</a>
+        &mdash; die schrijft de container opnieuw zonder ook maar iets opnieuw te
+        comprimeren."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
+        geen watermerk. Er is ook geen limiet op het aantal of de grootte van de
+        bestanden, want er is geen server die ervoor betaalt &mdash; het werk
+        gebeurt op je eigen apparaat. De site draagt advertenties, en die betalen
+        hem; de advertenties krijgen niets over je afbeeldingen mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek dan je internetverbinding, en hij
+        werkt door. Dat is ook de eenvoudigste manier om te bewijzen dat er niets
+        geüpload wordt: een tool die je afbeeldingen wegstuurde om ze te
+        comprimeren, zou stoppen op het moment dat je de stekker eruit trok."""
+
+[schema]
+description = "Comprimeer JPEG-, PNG- en WebP-afbeeldingen naar een grootte die je zelf noemt. De tool zoekt de hoogste kwaliteit die binnen het doel past, verkleint alleen wanneer kwaliteit alleen er niet komt, en meet het resultaat tegen het origineel. Draait volledig in de browser, zonder uploaden."
+features = [
+  "Comprimeert naar een doelbestandsgrootte die jij kiest, niet naar een kwaliteitsgetal dat je moet raden",
+  "Houdt de volle resolutie waar het kan, en verkleint alleen wanneer kwaliteit alleen het doel niet haalt",
+  "Maakt het budget op: het resultaat landt net onder het doel in plaats van ver eronder",
+  "Meet het resultaat tegen het origineel met SSIM en PSNR",
+  "Laat bestanden die al onder het doel zitten volledig met rust",
+  "JPEG, PNG en WebP, met een automatische formaatkeuze",
+  "Verwerkt hele stapels, met alle resultaten in één zip",
+  "Draait offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep afbeeldingen hierheen"
+hint = "of klik om te bladeren &mdash; JPEG, PNG, WebP en al het andere dat je browser kan openen"
