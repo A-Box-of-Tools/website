@@ -1,0 +1,17 @@
+#
+# 指南：把图片塞进样式表里 - Simplified Chinese.
+#
+
+nav = "把图片嵌进 CSS"
+title = "CSS 里的 data URI：什么时候该内联图片，什么时候不该"
+description = "一个 data URI 的代价是什么、为什么 base64 会多出三分之一而 gzip 又还不回来、为什么 SVG 绝不该用 base64，以及那个只让内联 SVG 悄无声息失效的引号错误。"
+heading = "什么时候该把图片放进 CSS 里，什么时候不该"
+lede = """
+    写进样式表里的图片会跟着样式表一起到：不用再发一次请求，也不用等。\
+    但它同时也不再是一个文件 &mdash; 所以它没法被单独缓存，而且外面的东西\
+    一变，它就要被整个重新下载一遍。这里讲的是这笔交易在哪儿划算，又在\
+    哪儿悄悄地不划算。"""
+updated = "2026 年 8 月 20 日"
+og_title = "什么时候该把图片放进 CSS 里"
+og_description = "一个 data URI 的代价是什么、为什么 SVG 绝不该用 base64，以及那个让内联 SVG 悄无声息失效的引号错误。"
+og_image_alt = "abox.tools - 不碰服务器的工具"

@@ -1,0 +1,172 @@
+<!--
+  tools/image-to-ico/body.html, in Simplified Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步 &mdash; 图片 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选一张图片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">全部从列表移除</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="shape-note" class="field-summary" hidden></p>
+  </section>
+
+  <!-- 第 2 步 &mdash; 按哪套标准 -->
+  <section class="card" id="preset-card">
+    <h2><span class="step">2</span> 说明这个图标是干什么用的</h2>
+
+    <p class="card-lede">
+      一个图标文件不是一张图，是好几张：同一个 logo 按读它的那个东西索取的每一个尺寸重画一遍。是哪些尺寸不是口味问题 &mdash; 浏览器要三个，高 DPI 笔记本上的应用要十个，Mac 要它自己那十个，而 Windows Vista 之前写的东西要的是完全另一种存法。
+    </p>
+
+    <!--
+      Which files to write. Windows and macOS read different containers and
+      neither will look at the other's, so this is a set of checkboxes rather
+      than a menu: wanting both is the normal case for anything shipped on both.
+    -->
+    <fieldset class="options outputs">
+      <legend>要做什么</legend>
+
+      <label class="check">
+        <input type="checkbox" id="want-ico" checked>
+        <span>
+          <strong>Windows 图标 &mdash; <code>.ico</code></strong>
+          <span class="check-note">每个浏览器都把它当 favicon 读，Windows 也用它做应用、快捷方式和文件夹的图标。尺寸由你在下面挑。
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="want-icns">
+        <span>
+          <strong>macOS 图标 &mdash; <code>.icns</code></strong>
+          <span class="check-note">
+            Mac 应用包里装的就是它。苹果明确规定了十个槽位，从 16 像素到 1024，所以没什么可挑的：十个全都进去，由七次渲染画出来，因为一个 Retina 槽位和上一档尺寸是同一张图。
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="pack-row">
+        <input type="checkbox" id="want-pack">
+        <span>
+          <strong>网站图标整套里剩下的部分</strong>
+          <span class="check-note">一个 .ico 管的是浏览器标签页和 Windows。它管不了 iPhone 主屏幕、Android 安装提示，或者钉在开始菜单上的磁贴 &mdash; 那些读的是一个 180px 的 PNG、一个 web app manifest 和一个 XML 文件，它们没有一个会往 .ico 里面看。勾上这个，你会把它们、manifest，以及要粘进你页面的那段 HTML 一并拿到。
+          </span>
+        </span>
+      </label>
+
+      <p id="output-summary" class="field-summary"></p>
+    </fieldset>
+
+    <div id="ico-settings">
+      <div class="presets" id="preset-list" role="radiogroup" aria-label="这个图标是干什么用的"></div>
+
+      <p id="preset-note" class="field-summary"></p>
+
+      <fieldset class="options" id="size-set">
+        <legend>装进 .ico 里的尺寸</legend>
+        <div class="size-grid" id="size-grid"></div>
+        <p id="size-summary" class="field-summary"></p>
+      </fieldset>
+    </div>
+
+    <fieldset class="options">
+      <legend>怎么画</legend>
+
+      <div class="option-row">
+        <label for="fit-select">如果图片不是正方形</label>
+        <select id="fit-select">
+          <option value="pad" selected>留白补成正方形 &mdash; 整张图都保住</option>
+          <option value="crop">裁中间那块正方形</option>
+          <option value="stretch">拉伸成正方形</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="background-mode">背景</label>
+        <select id="background-mode">
+          <option value="transparent" selected>透明</option>
+          <option value="colour">某个颜色</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="背景颜色" hidden>
+      </div>
+
+      <div class="option-row" id="storage-row">
+        <label for="storage-select">每个尺寸在 .ico 里怎么存</label>
+        <select id="storage-select">
+          <option value="auto" selected>自动 &mdash; 代价不大时选兼容的，否则用 PNG</option>
+          <option value="png">所有尺寸都用 PNG &mdash; 文件最小，需要 Vista 或更新</option>
+          <option value="bmp">所有尺寸都不压缩 &mdash; 什么都打得开，体积是好几倍</option>
+        </select>
+      </div>
+
+      <p id="storage-note" class="field-summary"></p>
+    </fieldset>
+
+  </section>
+
+  <!-- 第 3 步 &mdash; 先看小的，再拿走 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 按它真正会被看到的尺寸检查一遍</h2>
+
+    <p class="card-lede">
+      这是下载任何东西之前最值得看一眼的地方。一个在 512 像素下清清楚楚的 logo，在浏览器标签页里只有十六个像素宽，而它上面那些细的部分 &mdash; 文字标的笔画、一条发丝边框、一个渐变 &mdash; 撑不过这一下。下面每一个方块，都是按真实尺寸、从你选的那个文件画出来的。
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-strip" id="preview-strip"></div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make-icon" class="primary big" disabled>制作图标</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>好了</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下载</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+
+      <!--
+        The block to paste into a page's <head>, shown rather than only zipped:
+        most people making a favicon are about to paste this into a template,
+        and a copy button is a shorter route than a download and a text editor.
+      -->
+      <div id="snippet" class="snippet" hidden>
+        <div class="snippet-head">
+          <h4>把这段粘进你的 <code>&lt;head&gt;</code></h4>
+          <button type="button" id="copy-snippet" class="ghost">复制</button>
+        </div>
+        <pre id="snippet-text"></pre>
+      </div>
+    </div>
+  </section>
+</main>

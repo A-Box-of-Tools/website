@@ -1,0 +1,17 @@
+#
+# 指南：做一个 favicon 和一个应用图标 - Simplified Chinese.
+#
+
+nav = "制作 favicon"
+title = "怎么做一个 favicon（以及一个 Windows 应用图标）"
+description = "一个 favicon.ico 到底需要哪些尺寸、iPhone、Android 和 Mac 还要哪些额外文件，以及为什么一个在海报上好好的 logo 到了十六像素就没了。"
+heading = "怎么做一个在十六像素下还认得出来的 favicon"
+lede = """
+    favicon 不是你 logo 的一张小图。它是一组固定尺寸的图片，装在一个大多数\
+    人从来没打开过的容器里，而其中最小的那张，才是所有人真正看到的那张。\
+    这里讲的是你需要哪些尺寸、旁边还要放哪些文件，以及你的 logo 撑不过这\
+    一路缩小时该怎么办。"""
+updated = "2026 年 8 月 20 日"
+og_title = "做一个在十六像素下还认得出来的 favicon"
+og_description = "一个 favicon.ico 需要哪些尺寸、iPhone 和 Android 还要哪些额外文件，以及 logo 缩小之后活不下来时该怎么办。"
+og_image_alt = "abox.tools - 不碰服务器的工具"

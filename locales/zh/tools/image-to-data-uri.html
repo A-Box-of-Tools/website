@@ -1,0 +1,127 @@
+<!--
+  tools/image-to-data-uri/body.html, in Simplified Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步 &mdash; 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选择图片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">全部从列表移除</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步 &mdash; 真正被粘出去的那一行 -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> 说明它要用在哪儿</h2>
+
+    <p class="card-lede">
+      光要一个 data URI，通常不是谁真正想要的。大家想要的是那行放进样式表里的代码 &mdash; 所以先挑那一行，图片会带着引号一起出现在里面，而引号正是那个容易搞错、并且只在 SVG 上翻车的地方。
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="要粘什么">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>光要 data URI</strong>
+          <span class="shape-note">逗号后面的全部内容就是这个文件。哪儿能放网址就能粘到哪儿。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>一条 CSS 规则</strong>
+          <span class="shape-note">一条完整的规则，类名按文件名取。把选择器改成你实际要设置样式的那个。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>一个 CSS 自定义属性</strong>
+          <span class="shape-note">在样式表最上面声明一次，之后想用几次就用几次 <code>var(--name)</code>。图片会出现在不止一条规则里时，就选这个。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>一个 HTML <code>&lt;img&gt;</code> 标签</strong>
+          <span class="shape-note">像素尺寸已经填好，这样页面其余部分加载时不会跳。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">给 README 或者 issue 用：图片跟着文字走，不需要另外找地方托管。
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      <code>alt</code> 文本是故意留空的。这张图片是有含义还是纯装饰，只有你知道，而一段从文件名猜出来的描述，对用读屏软件的人来说比没有描述更糟。
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>SVG 也用 base64</strong>
+          <span class="check-note">默认关闭，因为 SVG 是文本，而 base64 是给字节用的。百分号编码让标记在样式表里仍然读得懂，而且通常还短五分之一。只有遇到非要 <code>;base64</code> 不可的工具链时才把它打开。
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 - the result. There is no button here on purpose: encoding
+       is instant, so there is nothing for a "convert" press to wait for. -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> 复制</h2>
+
+    <p id="empty-note" class="card-lede">
+      还什么都没选。往上面拖一张图片，要粘的那一行就会出现在这里。
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">全部复制</button>
+          <button type="button" id="download-all" class="ghost">下载成一个文件</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

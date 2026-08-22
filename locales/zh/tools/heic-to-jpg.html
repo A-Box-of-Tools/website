@@ -1,0 +1,107 @@
+<!--
+  tools/heic-to-jpg/body.html, in Simplified Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步 &mdash; 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选择你的 HEIC 照片</h2>
+
+    <p class="card-lede">
+      直接从手机里、从备份里，或者从存储卡上拷过来的都行。文件在这里、在这台机器上被读取，画面也在这里解码 &mdash; 这个页面里没有上传这一步，它背后也没有服务器。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">全部从列表移除</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步 &mdash; 要什么样的结果 -->
+  <section class="card" id="options-card">
+    <h2><span class="step">2</span> 说明你想要什么</h2>
+
+    <fieldset class="options">
+      <legend>格式</legend>
+
+      <div class="option-row">
+        <label for="format-select">把画面写成</label>
+        <select id="format-select">
+          <option value="image/jpeg" selected>JPEG &mdash; 到哪儿都打得开，包括那些不小心活到本世纪的东西</option>
+          <option value="image/png">PNG &mdash; 无损，体积是好几倍</option>
+          <option value="image/webp">WebP &mdash; 同等质量下比 JPEG 小，但只有新浏览器认</option>
+        </select>
+      </div>
+
+      <div class="option-row" id="quality-row">
+        <label for="quality">质量</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="50" max="100" step="1" value="92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>照片的那些细节</legend>
+
+      <label class="check">
+        <input type="checkbox" id="keep-exif" checked>
+        <span>
+          <strong>保留日期、相机和参数</strong>
+          <span class="check-note">按手机写的样子原样复制过去，所以转换后的照片仍然按拍摄那天排序，而不是按转换那天。照片带 GPS 坐标时，这也包括坐标 &mdash; 上面那份列表会说明你的哪几张带着。把它关掉，出来的 JPEG 里除了画面什么都没有。
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary">
+        无论选哪一边，这里没有任何东西被读给谁听：这个选择关乎的是你拿回去的那个文件里装什么，不是这个页面拿它做什么。如果你要逐条细看那些标签，或者把已经是 JPEG 的照片里的标签清掉，<a href="../exif-editor/">EXIF 查看与清除</a>才是干这个的工具。
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- 第 3 步 &mdash; 只按一下 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 转换</h2>
+
+    <div class="run-row">
+      <button type="button" id="convert-all" class="primary big" disabled>转换</button>
+    </div>
+
+    <!--
+      The decoder's own status line. This page is the only one on the site that
+      carries a codec, so it is the only one with anything to report here, and
+      saying where the megabyte came from is the point: it is served from this
+      origin, it is cached with the rest of the page, and it is what makes the
+      offline promise hold on a browser that cannot open a HEIC at all.
+    -->
+    <p id="engine-status" class="engine-status" role="status" aria-live="polite"></p>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>已转换</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下载</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

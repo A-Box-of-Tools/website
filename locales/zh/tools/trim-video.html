@@ -1,0 +1,218 @@
+<!--
+  tools/trim-video/body.html, in Simplified Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步 &mdash; 视频 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选一段视频</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <!-- One row a video, in the order they will be joined. Hidden until there
+         is more than one, because a list of one is furniture. -->
+    <ol class="clip-list" id="clip-list" hidden></ol>
+
+    <p id="join-note" class="path-note" hidden></p>
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 第 2 步 &mdash; 标记 -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> 把你要的部分标出来<span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      从头播一遍，在一段该开始的地方按 <kbd>I</kbd>，该结束的地方按 <kbd>O</kbd>。想标多少次就标多少次 &mdash; 每一对都会在下面成为一行，而最终视频就是这些行一个接一个。<kbd>U</kbd> 撤销最后一次，<kbd>Space</kbd> 播放和暂停，方向键跳五秒。
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- Built by src/timeline.js: a band for every segment, the one being
+         marked, a tick for every keyframe, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">播放</button>
+      <button type="button" id="back-5" class="ghost" title="后退五秒">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="前进五秒">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> 标起点</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> 标终点</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> 撤销</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="播放速度">
+      <span class="speed-label">速度</span>
+      <button type="button" class="speed" data-speed="0.25">0.25&times;</button>
+      <button type="button" class="speed" data-speed="0.5">0.5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0.75&times;</button>
+      <button type="button" class="speed active" data-speed="1">正常</button>
+      <button type="button" class="speed" data-speed="1.25">1.25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1.5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The segments themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>片段 <span class="segment-count" id="segment-count">还没有</span></h3>
+        <p class="segments-total">
+          共留下 <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">起点</th>
+            <th scope="col">终点</th>
+            <th scope="col">长度</th>
+            <th scope="col"><span class="visually-hidden">操作</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        还什么都没标。播放时先按 <kbd>I</kbd> 再按 <kbd>O</kbd>，或者用上面那几个按钮。
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">手动加一行</button>
+        <button type="button" id="reset-segments" class="ghost danger">全部清空</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">加载标记&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="时间戳文件格式">
+          <option value="seconds" selected>秒数</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">保存标记</button>
+      </div>
+
+      <p class="field-note">
+        标记存成一个纯文本文件 &mdash; 一段一行，格式就是上面选的那个 &mdash; 所以一次漫长的标记工作扛得住标签页被关掉，而同一个文件也可以交给任何读这种排版的工具。
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>标出来的部分怎么处理</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>留下它们</strong>最终视频就是标出来的那些部分，按顺序接起来。
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>把它们剪掉</strong>标出来的部分去掉，其余全部接起来。
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- 第 3 步 &mdash; 导出 -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 剪切</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="method">怎么剪</label>
+        <select id="method">
+          <option value="copy" selected>每个字节都保留 &mdash; 什么都不重新编码</option>
+          <option value="exact">就在这里精确切开 &mdash; 会重新编码画面</option>
+          <option value="record">一边播一边录</option>
+        </select>
+        <p class="field-note" id="method-note"></p>
+      </div>
+
+      <div class="field" id="frame-field" hidden>
+        <label for="frame">画幅尺寸</label>
+        <select id="frame">
+          <option value="first" selected>跟随第一段视频</option>
+          <option value="largest">跟随最大的那个</option>
+          <option value="1080p">1920 &times; 1080</option>
+          <option value="720p">1280 &times; 720</option>
+        </select>
+        <p class="field-note">
+          整个文件只用一个尺寸。形状不同的视频会加黑边装进去，绝不拉伸。
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">质量</label>
+        <select id="quality">
+          <option value="low">文件更小</option>
+          <option value="medium" selected>均衡</option>
+          <option value="high">最高质量</option>
+        </select>
+        <p class="field-note">
+          绝不会超过原片花的量 &mdash; 超过那个量再编码，只会让文件变大。
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          保留声音
+        </label>
+        <p class="field-note" id="audio-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>留下</dt><dd id="sum-clips">&mdash;</dd></div>
+      <div><dt>成片时长</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>从哪儿开始</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>大约</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>画面</dt><dd id="sum-picture">&mdash;</dd></div>
+      <div><dt>声音</dt><dd id="sum-sound">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>剪切视频</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>下载视频</a>
+      </div>
+    </div>
+  </section>
+</main>

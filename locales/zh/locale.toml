@@ -29,7 +29,7 @@ name = "Chinese (Simplified)"
 endonym = "简体中文"
 hreflang = "zh-Hans"
 
-complete = false
+complete = true
 
 #
 # ---------------------------------------------------------------------------
