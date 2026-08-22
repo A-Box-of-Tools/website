@@ -1,0 +1,219 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../merge-pdf/">PDF Merger &amp; Splitter</a>, drop
+      in every file you want to use, and drag the pages into the order you
+      want. Then say whether it comes out as one document or several, and press
+      the button. Nothing is uploaded: the files are opened, taken apart and
+      written back out by your own browser.
+    </p>
+    <p>
+      The three jobs people search for separately &mdash; merge, split, reorder
+      &mdash; are one screen, because they are one operation with a different
+      answer at the end: choose some pages, put them in an order, and decide how
+      many files they come out as.
+    </p>
+  </section>
+
+  <section>
+    <h2>Merging two or more documents</h2>
+    <p>
+      Choose the first file, then choose the second; each one's pages go on the
+      end of the running order, so you can keep adding files from different
+      folders without starting over. If they went in the wrong order, drag a
+      page by its handle, or use the arrows on each tile.
+    </p>
+    <p>
+      Merging does not re-encode anything. The content of each page and every
+      font, image and vector drawing it refers to is copied across exactly, so
+      text stays selectable and searchable and a scan is the same scan. The
+      merged file is usually a little smaller than the two inputs added
+      together, which is not compression &mdash; it is the structure around the
+      pages being written once instead of twice.
+    </p>
+    <p>
+      Pages keep their own size. Merge an A4 report with a US Letter appendix
+      and you get a document with both in it, which is what the files say.
+      Scaling somebody's pages onto one paper size is a different operation and
+      not one a merger should do quietly.
+    </p>
+  </section>
+
+  <section>
+    <h2>Splitting one document into several</h2>
+    <p>
+      There are four ways to cut, and which one you want depends on why you are
+      cutting:
+    </p>
+    <ul>
+      <li>
+        <strong>Every so many pages.</strong> For a long scan of something that
+        was originally a stack of separate documents &mdash; twelve payslips at
+        two pages each.
+      </li>
+      <li>
+        <strong>At page numbers you name.</strong> For a report with chapters
+        that start at pages you can see. Each number you type starts a new file.
+      </li>
+      <li>
+        <strong>One file per page.</strong> For pulling a single signature sheet
+        or certificate out of a batch.
+      </li>
+      <li>
+        <strong>Back into the files they came from.</strong> Only offered when
+        you have merged more than one file, and useful after editing: remove the
+        blank pages from three scans at once, then get three files back.
+      </li>
+    </ul>
+    <p>
+      If you only want a few pages out of a long document, you do not need to
+      split it at all. Type the pages you want in the range box &mdash;
+      <code>1-3, 8, 12-</code> &mdash; press &ldquo;Keep only these&rdquo;, and
+      build one document.
+    </p>
+    <p>
+      More than one output file is handed over as a single ZIP. Fifty downloads
+      is fifty save prompts, which is roughly where anybody gives up.
+    </p>
+  </section>
+
+  <section>
+    <h2>Reordering, rotating and removing pages</h2>
+    <p>
+      Drag a tile by its handle to move it. The arrows on each tile nudge it one
+      place, or turn it a quarter turn at a time &mdash; which is the fix for
+      the page that came out of the scanner sideways. The &times; removes it.
+    </p>
+    <p>
+      For anything involving more than a couple of pages, use the range box
+      instead. It takes what you would write on paper: <code>1-3, 8, 12-</code>,
+      and also <code>odd</code>, <code>even</code>, <code>all</code> and
+      <code>last</code>. Keep those, remove those, or turn those. A common one:
+      a double-sided scan where every second page is upside down is
+      <code>even</code> and two turns.
+    </p>
+    <p>
+      The numbers on the tiles renumber as you work, so they always mean
+      &ldquo;position in the finished document&rdquo; rather than &ldquo;page in
+      whichever file it came from&rdquo;. Nothing is written until you press the
+      button, so there is nothing to undo &mdash; and &ldquo;back to how they
+      came&rdquo; restores the original order of everything.
+    </p>
+  </section>
+
+  <section>
+    <h2>What survives a reshuffle, and what does not</h2>
+    <p>
+      This is the part no tool tells you, and it is the reason a merged document
+      sometimes feels subtly broken.
+    </p>
+    <p>
+      A PDF is not a stack of pages. It is a graph, and a good deal of it is
+      about the document rather than about any page: the bookmarks panel, the
+      links, the form, the reading order a screen reader follows, the numbering
+      that calls the first four pages &ldquo;i, ii, iii, iv&rdquo;. Move the
+      pages and every one of those has to be rebuilt or dropped.
+    </p>
+    <ul>
+      <li>
+        <strong>Bookmarks are rebuilt.</strong> An entry whose page is still
+        there points at wherever it has moved to. An entry whose page you
+        removed goes &mdash; unless it has surviving entries under it, in which
+        case it stays as a heading, because a chapter title is still where the
+        chapter is. Merging several files nests each one's bookmarks under a
+        heading named after the file, which is what makes a merged report
+        navigable at all.
+      </li>
+      <li>
+        <strong>Links are followed.</strong> A link from page 2 to page 40 knows
+        where page 40 went, including the named destinations that Word and LaTeX
+        write for every heading. A link whose target did not come along is left
+        with nothing behind it, rather than pointing at whatever page now
+        happens to be in that position.
+      </li>
+      <li>
+        <strong>Filled-in forms survive</strong>, and the new document is
+        registered as a form so readers treat it as one. One quirk worth
+        knowing: two fields with the same name are <em>one</em> field to any
+        reader, so merging two copies of the same form links them &mdash; typing
+        in one fills the other.
+      </li>
+      <li>
+        <strong>The tagged reading order does not.</strong> It describes a
+        sequence that no longer exists, and a wrong one is worse for a screen
+        reader than none. If a document's accessibility tagging matters,
+        keep the original alongside.
+      </li>
+      <li>
+        <strong>Page labels do not.</strong> The &ldquo;iii, iv, 1, 2&rdquo;
+        numbering is a statement about an order you have just changed.
+      </li>
+      <li>
+        <strong>Attachments and document scripting do not.</strong> Files
+        attached to the document belong to it, not to any page. Actions that run
+        JavaScript, submit a form somewhere or launch a program are not carried
+        into your new file, which is the right default for pages that came from
+        somebody else.
+      </li>
+    </ul>
+    <p>
+      A digital signature is a special case, and not a limitation of any tool: a
+      signature certifies a document as it stood. Move a page and it is broken,
+      because that is exactly what it is there to tell you.
+    </p>
+  </section>
+
+  <section>
+    <h2>Password-protected files</h2>
+    <p>
+      An encrypted PDF is refused, including the empty-password kind that a lot
+      of office copiers produce. Removing a document's protection is a different
+      job from moving its pages, and a tool that did it quietly would be doing
+      something you did not ask for. Open it in a reader with the password and
+      save an unprotected copy first.
+    </p>
+  </section>
+
+  <section>
+    <h2>Checking the result</h2>
+    <p>
+      Open it, and check three things: the page count, the order, and &mdash; if
+      the document had them &mdash; the bookmarks panel and a link or two.
+    </p>
+    <p>
+      The tool here does the first of those for you before it offers the file.
+      Each finished document is re-opened by the same code that read your
+      originals, and its pages counted by walking the page tree rather than
+      believing the count written in the file. If that disagrees with what you
+      asked for, no download is offered at all.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why this does not need a server</h2>
+    <p>
+      Merging sounds like server work, and for most of the web's life it was.
+      What it actually involves is parsing the file structure, copying the
+      objects a page depends on into a new file, and writing a fresh
+      cross-reference table. No pixels are decoded and nothing is rendered. A
+      browser has been able to do all of it for years.
+    </p>
+    <p>
+      Which matters more here than almost anywhere else, because of
+      <em>what</em> people merge. The documents that get combined are the ones
+      that came from somewhere: a contract and its signature page, a passport
+      scan and a bank statement, a medical letter and a claim form. An online
+      merger receives all of them at once, already collated, from one person. It
+      is the single most revealing upload most people ever make.
+    </p>
+    <p>
+      The tool here has no network feature at all, and the page's
+      <code>Content-Security-Policy</code> names every address it may contact,
+      none of which belongs to this site. Load it, unplug, and merge something
+      anyway.
+    </p>
+    <p>
+      <a href="../is-it-safe-to-upload-files/">Is it safe to upload files to
+      online converters?</a> sets out three more checks like that one.
+    </p>
+  </section>

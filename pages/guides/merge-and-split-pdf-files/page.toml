@@ -1,0 +1,38 @@
+#
+# Guide: merging, splitting and reordering PDF pages.
+#
+# The one job where "it went to a server" is worst, because of what people
+# merge: a contract and its signature page, a passport and a bank statement, a
+# claim form and a medical letter. Already collated, in one place, for someone
+# else's server.
+#
+# It is also the job where every tool loses something without saying so, so the
+# useful half of this guide is the part about what survives a reshuffle -
+# bookmarks, links, form fields, tagging - and what nothing can carry across.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/merge-and-split-pdf-files"
+kind = "guide"
+nav = "Merging & splitting PDFs"
+group = "doing-the-job"
+tool = "merge-pdf"
+
+title = "How to Merge, Split and Reorder PDF Pages"
+description = "Combine PDFs, cut one into several, and move pages around: what survives the reshuffle, what no tool can carry across, and why none of it needs uploading your documents anywhere."
+
+heading = "How to merge, split and reorder PDF pages"
+lede = """
+    Putting two documents together is the most ordinary thing anybody does to a
+    PDF, and the one most often done by handing both files to a stranger's
+    server. It does not need one. This covers how to do it, and what quietly
+    goes missing when a tool rearranges pages."""
+
+updated = "22 August 2026"
+published = "2026-08-22"
+lastmod = "2026-08-22"
+
+og_title = "How to merge, split and reorder PDF pages"
+og_description = "Combine PDFs, cut one into several, move pages around - and know what survives the reshuffle and what does not."
+og_image_alt = "abox.tools - tools that never touch a server"

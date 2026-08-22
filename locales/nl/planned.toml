@@ -58,7 +58,6 @@ items = [
 [[group]]
 name = "Documenten &amp; pdf"
 items = [
-  ["Samenvoegen, splitsen &amp; herordenen", "pagina's verschuiven zonder de omweg langs een server"],
   ["Pagina's draaien &amp; bijsnijden", "een scan rechtzetten die scheef binnenkwam, of de marges eraf halen"],
   ["Afbeeldingen eruit halen", "de plaatjes weer uit een document trekken"],
 ]
