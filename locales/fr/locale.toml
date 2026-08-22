@@ -339,6 +339,7 @@ offline = "Hors ligne :"
 checking = "vérification&hellip;"
 questions_heading = "Questions"
 guide_heading = "La version longue"
+related_heading = "Aussi dans la boîte"
 privacy_heading = "Comment cette promesse se vérifie"
 
 pledge_line = """
