@@ -36,7 +36,6 @@ id = "gif"
 name = "GIF &amp; animation"
 items = [
   ["GIF to MP4 or WebM", "the same animation, usually a tenth of the size"],
-  ["Split a GIF", "every frame out as its own PNG"],
   ["Resize, crop &amp; rotate GIFs", "frame by frame, with the timing kept"],
   ["Reverse a GIF", "last frame first"],
   ["Change GIF speed", "retime it without re-rendering the frames"],

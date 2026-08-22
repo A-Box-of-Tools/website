@@ -28,7 +28,6 @@ items = [
 name = "GIF &amp; Animation"
 items = [
   ["GIF zu MP4 oder WebM", "dieselbe Animation, meist ein Zehntel der Größe"],
-  ["GIF zerlegen", "jedes Einzelbild als eigenes PNG"],
   ["GIFs skalieren, zuschneiden &amp; drehen", "Bild für Bild, mit erhaltenem Timing"],
   ["GIF rückwärts", "das letzte Einzelbild zuerst"],
   ["GIF-Tempo ändern", "neu takten, ohne die Einzelbilder neu zu rendern"],

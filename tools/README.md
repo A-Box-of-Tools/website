@@ -30,6 +30,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image Resizer](resize-image/) | `/resize-image/` | Say the size. Draw the box. Pick the format. |
 | [Image Compressor](compress-image/) | `/compress-image/` | Name the size. It works out the rest. |
 | [GIF Maker](gif-maker/) | `/gif-maker/` | Turn a set of pictures into one animation. |
+| [GIF Splitter](split-gif/) | `/split-gif/` | Every frame out as its own PNG. |
 | [Audio Trimmer](trim-audio/) | `/trim-audio/` | Mark the parts worth keeping as it plays. Get them back as one file, cut where you said. |
 | [Audio Editor](edit-audio/) | `/edit-audio/` | Play it backwards, change the speed, lift a quiet recording — all of it here, on your machine. |
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |

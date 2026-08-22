@@ -28,7 +28,6 @@ items = [
 name = "Gif &amp; animatie"
 items = [
   ["Gif naar mp4 of WebM", "dezelfde animatie, meestal een tiende van de grootte"],
-  ["Een gif uit elkaar halen", "elk frame als eigen png"],
   ["Gifs schalen, bijsnijden &amp; draaien", "frame voor frame, met de timing intact"],
   ["Een gif omkeren", "het laatste frame eerst"],
   ["Gif-snelheid wijzigen", "opnieuw timen zonder de frames opnieuw te renderen"],
