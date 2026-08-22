@@ -1,0 +1,340 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Abra o <a href="../../criar-favicon/">Imagem para ICO</a>, jogue dentro uma
+      imagem quadrada de pelo menos 256 pixels, deixe a predefinição em
+      <em>Favicon de site</em> e baixe o <code>favicon.ico</code>. Coloque na
+      raiz do seu site, de modo que ele responda em
+      <code>https://seusite.com/favicon.ico</code>. Esse endereço é pedido por
+      todo navegador, mencione o seu HTML ou não, então a rigor não há mais nada
+      que você precise fazer.
+    </p>
+    <p>
+      Tudo o que vem abaixo é a parte que faz a diferença entre um ícone que está
+      tecnicamente presente e um que é legível: quais tamanhos entram, o que o
+      iPhone e o Android pedem no lugar disso, e o que fazer quando a sua
+      logomarca não sobrevive a ter dezesseis pixels de largura.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que é um conjunto de tamanhos e não uma imagem só</h2>
+    <p>
+      Um arquivo <code>.ico</code> é um contêiner. Dentro dele há várias imagens
+      completas da mesma coisa em tamanhos diferentes, e quem estiver lendo o
+      arquivo escolhe a mais próxima do tamanho de que precisa.
+    </p>
+    <p>
+      Isso soa como redundância e não é. Um navegador desenhando o seu ícone a
+      dezesseis pixels tem duas opções: ler uma versão de dezesseis pixels que
+      você desenhou, ou diminuir uma maior na hora. A segunda é pior, e
+      visivelmente &mdash; uma redução automática de uma logomarca detalhada
+      vira mingau, ao passo que uma versão de dezesseis pixels que você olhou é
+      algo que você teve chance de simplificar. O motivo inteiro de o formato
+      guardar vários tamanhos é lhe dar essa chance.
+    </p>
+    <p>
+      Três tamanhos é a convenção para um site, e cada um tem seu motivo:
+    </p>
+    <ul>
+      <li>
+        <strong>16&times;16</strong> &mdash; a aba do navegador, a barra de
+        endereços, o menu de favoritos. É este que as pessoas veem. Se você só
+        acertar um, acerte este.
+      </li>
+      <li>
+        <strong>32&times;32</strong> &mdash; a barra de favoritos, um atalho de
+        área de trabalho do Windows para o seu site, e a maioria dos navegadores
+        numa tela de alta densidade, que desenham o ícone da aba a partir do 32 e
+        o reduzem.
+      </li>
+      <li>
+        <strong>48&times;48</strong> &mdash; o tamanho em que o Google lê o ícone
+        de um site para os resultados de busca, e a visualização de ícones médios
+        do Windows.
+      </li>
+    </ul>
+    <p>
+      Qualquer coisa maior pertence a um PNG ao lado do <code>.ico</code>, e não
+      dentro dele, por motivos que aparecem abaixo, nos arquivos para celular.
+    </p>
+  </section>
+
+  <section>
+    <h2>O problema dos dezesseis pixels</h2>
+    <p>
+      Esta é a parte sobre a qual ninguém lhe avisa. Dezesseis pixels são cerca
+      de quatro milímetros numa tela normal: uma grade de 256 pontos ao todo,
+      menos que as letras desta frase. Quase nada que foi desenhado para
+      funcionar numa placa, num cartão de visita ou no cabeçalho de um site
+      sobrevive a ser reduzido a isso.
+    </p>
+    <p>
+      O que some, na ordem:
+    </p>
+    <ul>
+      <li>
+        <strong>Texto.</strong> Uma logomarca escrita, encolhida dentro de um
+        quadrado, fica com uns três pixels de altura. Ela não vira texto pequeno,
+        vira uma barra cinza. É por isso que quase toda empresa que tem um
+        símbolo além do nome usa só o símbolo como favicon, e por isso que as que
+        não têm símbolo usam uma letra só.
+      </li>
+      <li>
+        <strong>Linhas finas.</strong> Uma borda de um pixel numa logomarca de
+        512 pixels é um trinta e dois avos de pixel a dezesseis. Ela sai como uma
+        névoa cinza tênue ao longo da borda, ou some.
+      </li>
+      <li>
+        <strong>Gradientes e sombras.</strong> Não há espaço para uma transição.
+        Uma sombra suave vira uma franja suja.
+      </li>
+      <li>
+        <strong>Detalhe dentro de detalhe.</strong> Um ícone de um documento com
+        escrita nele vira um retângulo com um borrão.
+      </li>
+    </ul>
+    <p>
+      O conserto não é um ajuste, é outro desenho: uma marca simplificada com uma
+      ou duas formas, contraste alto e nada de texto além de um único caractere.
+      Desenhe essa versão a 32 ou 48 pixels de propósito, e use como origem.
+    </p>
+    <p>
+      O que uma ferramenta pode fazer é mostrar o problema antes de você
+      publicar. A pré-visualização do
+      <a href="../../criar-favicon/">Imagem para ICO</a> desenha cada tamanho no
+      tamanho real na tela, que é o único jeito de julgar isso &mdash; um ícone
+      de dezesseis pixels exibido a sessenta e quatro fica ótimo e não lhe diz
+      nada.
+    </p>
+  </section>
+
+  <section>
+    <h2>Sua logomarca não é quadrada. Completar ou cortar?</h2>
+    <p>
+      Um ícone é sempre quadrado, e a maioria das logomarcas não é, então alguma
+      coisa tem que acontecer. Há três respostas, e elas não são igualmente boas.
+    </p>
+    <p>
+      <strong>Completar com margem</strong> mantém a imagem inteira e põe espaço
+      acima e abaixo dela. É o padrão seguro e a escolha errada para uma
+      logomarca escrita e larga: encaixar num quadrado algo três vezes mais largo
+      que alto deixa a marca ocupando um terço da altura, o que a dezesseis
+      pixels são cinco pixels de logomarca e onze de nada.
+    </p>
+    <p>
+      <strong>Cortar pelo meio</strong> pega o maior quadrado do centro. Numa
+      composição &mdash; um símbolo com o nome da empresa ao lado &mdash; isso
+      muitas vezes corta os dois ao meio. Melhor cortar a origem você mesmo
+      antes, até ficar só o símbolo, e então converter aquilo.
+    </p>
+    <p>
+      <strong>Esticar</strong> achata a imagem para caber. Quase não existe
+      situação em que isso esteja certo, e a opção é oferecida principalmente
+      para que a ferramenta não esteja fazendo isso em silêncio.
+    </p>
+    <p>
+      A resposta geral para uma logomarca larga: não converta a logomarca.
+      Converta a parte dela que funciona sozinha.
+    </p>
+  </section>
+
+  <section>
+    <h2>Transparente ou fundo sólido?</h2>
+    <p>
+      Transparente costuma ser o certo para um site. Abas de navegador são
+      cinzas, brancas ou quase pretas, dependendo do navegador e do tema, e um
+      ícone transparente assenta em todas. Um ícone com um fundo branco pintado é
+      um retângulo branco numa barra de abas escura.
+    </p>
+    <p>
+      Duas exceções que vale conhecer:
+    </p>
+    <ul>
+      <li>
+        <strong>Uma logomarca que é escura e mais nada</strong> some no modo
+        escuro. Se a sua marca é preta sobre branco por natureza, dê a ela um
+        fundo colorido em vez de transparente, ou um contorno claro.
+      </li>
+      <li>
+        <strong>O ícone de toque da Apple tem que ser opaco.</strong> O iOS
+        desenha ele sobre o próprio ladrilho arredondado e renderiza
+        transparência como preto. Toda ferramenta que produz aquele arquivo
+        deveria estar achatando para você; a daqui achata, sobre branco por
+        padrão.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Os arquivos de que um site precisa e que não são o .ico</h2>
+    <p>
+      O <code>favicon.ico</code> cobre navegadores e Windows. Ele não cobre
+      celulares, e é aqui que a maioria dos conjuntos de ícones caseiros para
+      cedo demais. Outras três plataformas pedem os arquivos delas, com os nomes
+      delas, e nenhuma vai olhar dentro de um <code>.ico</code>:
+    </p>
+    <ul>
+      <li>
+        <strong>O iOS</strong> lê <code>apple-touch-icon.png</code> a
+        180&times;180 quando alguém adiciona o seu site à tela inicial. Sem ele, o
+        iOS usa uma captura de tela da página, que parece um erro.
+      </li>
+      <li>
+        <strong>O Android e todo aviso de instalação</strong> leem um manifesto
+        de aplicativo web &mdash; <code>site.webmanifest</code> &mdash; que
+        aponta para PNGs de 192 e 512 pixels. O de 512 também é o que um
+        aplicativo web mostra na tela de abertura.
+      </li>
+      <li>
+        <strong>Um ladrilho do menu Iniciar do Windows</strong> lê
+        <code>browserconfig.xml</code>, que aponta para um PNG de 150&times;150.
+        O menos importante dos três, e quatro linhas de XML.
+      </li>
+    </ul>
+    <p>
+      Há mais um que é fácil errar: os lançadores do Android cortam um ícone
+      adaptativo no formato que o celular preferir &mdash; círculo, quadrado
+      arredondado, aquele quase quadrado &mdash; e só os 80% centrais da imagem
+      têm sobrevivência garantida. Um ícone desenhado de borda a borda perde os
+      cantos. É isso que um ícone <em>maskable</em> é: a mesma imagem desenhada
+      de propósito pequena dentro do quadrado, declarada à parte no manifesto.
+    </p>
+    <p>
+      Marcar o conjunto de site no
+      <a href="../../criar-favicon/">Imagem para ICO</a> produz todos esses, o
+      manifesto e o bloco de HTML que aponta para eles. Uma coisa que aquele
+      bloco deixa de fora de propósito é um <code>&lt;link&gt;</code> para o
+      <code>favicon.ico</code>: os navegadores pedem aquele endereço por conta
+      própria, e nomeá-lo também faz o mesmo arquivo ser buscado duas vezes.
+    </p>
+  </section>
+
+  <section>
+    <h2>Um ícone de aplicativo do Windows é outro conjunto</h2>
+    <p>
+      Se o ícone é para um programa e não para um site, os tamanhos mudam. O que
+      o próprio <code>app.ico</code> padrão do Visual Studio contém é 16, 32, 48
+      e 256 &mdash; os três tamanhos do shell mais o grande, de onde o menu
+      Iniciar e a visualização de ícones extragrandes do Explorer desenham.
+    </p>
+    <p>
+      Numa tela de alta densidade o Windows também pede 20, 24, 40, 64 e 96, e os
+      reamostra a partir do tamanho mais próximo que tiver quando estiverem
+      faltando. Se isso importa depende do seu ícone: uma forma chapada sobrevive
+      à reamostragem, uma detalhada não. Acrescentá-los mais ou menos dobra o
+      arquivo, o que para um aplicativo não é nada &mdash; a conta é
+      completamente diferente da de um favicon, onde o arquivo é buscado por cada
+      visitante.
+    </p>
+    <p>
+      Mais uma coisa sobre tamanho: a entrada de 256 é onde estão os bytes.
+      Guardada sem compressão ela sozinha tem 264&nbsp;KB; guardada como PNG
+      dentro do ícone costuma ficar abaixo de 30. Entradas em PNG são legíveis
+      desde o Windows Vista, então o único motivo para evitá-las é software
+      genuinamente mais velho que isso, ou um instalador ou ferramenta embarcada
+      que interpreta ícones por conta própria.
+    </p>
+  </section>
+
+  <section>
+    <h2>Um Mac lê um arquivo completamente diferente</h2>
+    <p>
+      Se o ícone é para um aplicativo de Mac e não para um de Windows, nada do
+      que está acima se aplica: o macOS não lê <code>.ico</code> de jeito nenhum.
+      Ele lê <code>.icns</code>, que é a mesma ideia noutra embalagem &mdash;
+      vários tamanhos num contêiner &mdash; com três diferenças que vale
+      conhecer.
+    </p>
+    <ul>
+      <li>
+        <strong>Os tamanhos são fixos.</strong> A Apple publica dez vagas e não
+        há o que escolher: 16, 32, 64, 128, 256, 512 e 1024 pixels, com 32, 256 e
+        512 aparecendo duas vezes porque cada um é ao mesmo tempo um tamanho
+        próprio e a versão Retina do tamanho de baixo.
+      </li>
+      <li>
+        <strong>Vai até 1024.</strong> Um <code>.ico</code> para em 256, e é por
+        isso que um arquivo de ícone de Mac tem várias centenas de kilobytes e um
+        favicon tem quinze. Para um aplicativo entregue uma vez isso não é nada;
+        só um favicon é buscado por cada visitante.
+      </li>
+      <li>
+        <strong>1024 pixels é o que a sua arte tem que aguentar.</strong> Os dois
+        problemas são pontas opostas da mesma imagem: um favicon tem que
+        funcionar quando é minúsculo, e um ícone de Mac tem que se sustentar
+        quando é enorme. Uma logomarca exportada a 512 e ampliada para 1024 fica
+        macia numa tela Retina, e a App Store não aceita.
+      </li>
+    </ul>
+    <p>
+      Para usar um: um pacote de aplicativo guarda o arquivo em
+      <code>SeuApp.app/Contents/Resources/</code> e o nomeia no
+      <code>Info.plist</code>. Para uma pasta ou uma imagem de disco, selecione o
+      <code>.icns</code> no Finder, aperte Command-C, então Obter Informações na
+      coisa que você quer mudar, clique no ícone pequeno no canto superior
+      esquerdo e aperte Command-V.
+    </p>
+    <p>
+      Marcar <em>ícone do macOS</em> no
+      <a href="../../criar-favicon/">Imagem para ICO</a> escreve um, com ou sem o
+      arquivo do Windows ao lado. Qualquer coisa entregue nas duas plataformas
+      quer os dois, e os dois são desenhados a partir da mesma imagem na mesma
+      passada.
+    </p>
+  </section>
+
+  <section>
+    <h2>Conferindo que deu certo</h2>
+    <p>
+      Os navegadores guardam favicons em cache com mais teimosia do que quase
+      qualquer outra coisa, então &ldquo;subi e não mudou nada&rdquo; costuma ser
+      cache, e não erro. Duas coisas para tentar antes de voltar a editar
+      arquivos:
+    </p>
+    <ul>
+      <li>
+        Abra <code>https://seusite.com/favicon.ico</code> diretamente. Se o
+        arquivo baixar, ele está lá e você está olhando para um cache. Se der
+        404, ele não está na raiz.
+      </li>
+      <li>
+        Carregue o site numa janela anônima, que em geral tem o próprio cache de
+        ícones.
+      </li>
+    </ul>
+    <p>
+      No Windows, um <code>.ico</code> pode ser conferido colocando-o numa pasta
+      e alternando o Explorer entre os tamanhos de visualização: pequeno, médio,
+      grande e extragrande desenham entradas diferentes do mesmo arquivo, então
+      você consegue ver cada uma como o sistema vai ver.
+    </p>
+    <p>
+      Num Mac, um <code>.icns</code> abre no Preview, que lista cada vaga na
+      lateral &mdash; e o mesmo truque funciona no Finder: jogue o arquivo numa
+      pasta e arraste o controle de tamanho nas opções de visualização para ver a
+      troca entre as imagens de dentro.
+    </p>
+  </section>
+
+  <section>
+    <h2>Nada disso precisa de envio</h2>
+    <p>
+      Escalar uma imagem é coisa que todo navegador faz há anos, e um
+      <code>.ico</code> é um cabeçalho de seis bytes, dezesseis bytes por imagem,
+      e então as imagens. Não há etapa nenhuma na criação de um que exija um
+      servidor, e a ferramenta daqui não usa um: a
+      <code>Content-Security-Policy</code> da página nomeia todos os endereços
+      que ela pode contatar, e nenhum deles é deste site.
+    </p>
+    <p>
+      Isso vale mais aqui do que de costume. Uma logomarca entregue a um gerador
+      gratuito de favicon é, com bastante frequência, uma marca ainda não
+      lançada &mdash; o ícone é uma das primeiras coisas feitas e uma das últimas
+      anunciadas. Carregue a página, desconecte da internet e faça um mesmo
+      assim, se preferir conferir a acreditar.
+      <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
+      conversores online?</a> apresenta mais três verificações que você pode
+      fazer em qualquer ferramenta.
+    </p>
+  </section>

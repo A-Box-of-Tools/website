@@ -1,0 +1,21 @@
+#
+# Guia: cortar um vídeo (mudar o enquadramento) - português do Brasil.
+#
+# "Cortar" aqui é recortar a moldura, e não encurtar a duração - esse é o guia
+# de aparar. O texto diz "o formato da imagem" nas primeiras linhas justamente
+# para que ninguém confunda os dois.
+#
+
+nav = "Cortar um vídeo"
+title = "Como cortar um vídeo para outro formato de tela"
+description = "Reduza um clipe a um quadrado, a um retrato 9:16 ou a uma caixa exata em pixels. Qual proporção cada plataforma quer, por que cortar obriga a recodificar e aparar não, e o que isso custa."
+heading = "Como cortar um vídeo para outro formato de tela"
+lede = """
+    Cortar muda o formato da imagem, o que significa escrever quadros novos
+    &mdash; não há como escapar disso, e qualquer ferramenta que afirme o
+    contrário está fazendo outra coisa. Aqui está o que isso custa e como
+    gastar bem."""
+updated = "20 de agosto de 2026"
+og_title = "Como cortar um vídeo para outro formato de tela"
+og_description = "Qual proporção cada plataforma quer, por que cortar obriga a recodificar e aparar não, e o que isso custa."
+og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"

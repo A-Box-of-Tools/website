@@ -1,0 +1,17 @@
+#
+# Guia: comprimir uma imagem para um tamanho exato - português do Brasil.
+#
+
+nav = "Comprimir uma imagem"
+title = "Como comprimir uma imagem para um tamanho de arquivo exato"
+description = "O formulário quer 500 KB e sua foto tem 4 MB. O que um limite de tamanho custa de verdade, qual ajuste mexer primeiro e por que um PNG não encolhe como um JPEG."
+heading = "Como comprimir uma imagem para um tamanho de arquivo exato"
+lede = """
+    Alguém lhe deu um número &mdash; 100&nbsp;KB, 500&nbsp;KB, 2&nbsp;MB
+    &mdash; e sua foto está longe dele. Aqui está o que esse número custa, em
+    que gastá-lo e como saber se o resultado ainda está bom o bastante para
+    mandar."""
+updated = "20 de agosto de 2026"
+og_title = "Comprimir uma imagem para um tamanho de arquivo exato"
+og_description = "O que um limite de tamanho custa de verdade, qual ajuste mexer primeiro e por que um PNG não encolhe como um JPEG."
+og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"

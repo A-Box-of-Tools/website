@@ -1,0 +1,263 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Abra o <a href="../../gerar-qr-code/">Gerador de QR Code e código de
+      barras</a>, cole o seu link, deixe o nível em <strong>M</strong> e a margem
+      em <strong>4</strong>, e baixe o SVG. Imprima com pelo menos dois
+      centímetros de largura, em algo fosco, escuro sobre claro. Depois escaneie
+      o impresso com um celular que não é o seu, antes de mandar imprimir mil.
+    </p>
+    <p>
+      Isso cobre quase todos os casos. O resto desta página é o que fazer quando
+      não é um deles: um código que precisa aguentar ser manuseado, um código com
+      uma logomarca em cima, um código indo para algo pequeno, e a única decisão
+      que é fácil de errar de um jeito que você só descobre um ano depois.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que existe de fato dentro de um QR Code</h2>
+    <p>
+      Uma cadeia de texto. É isso tudo. Escanear um QR Code entrega ao celular um
+      pedaço de texto, e todo o resto &mdash; abrir uma página, entrar numa rede,
+      oferecer para salvar um contato &mdash; é o celular reconhecendo o formato
+      daquele texto e se oferecendo para agir.
+    </p>
+    <p>
+      Então não existe &ldquo;QR Code de Wi-Fi&rdquo; como categoria de código.
+      Existe um QR Code guardando <code>WIFI:T:WPA;S:Minha Rede;P:a senha;;</code>,
+      que todo celular feito na última década sabe ler. O gerador mostra a cadeia
+      final exatamente por isso: quando um código não faz o que você esperava, a
+      cadeia é a única coisa que vale olhar.
+    </p>
+    <p>
+      Também significa que um QR Code não pode ser mudado depois de impresso, não
+      pode dar notícia a ninguém e não pode expirar &mdash; a não ser que alguém
+      tenha colocado dentro dele um link para o próprio servidor, que é o assunto
+      da última seção daqui.
+    </p>
+  </section>
+
+  <section>
+    <h2>Decisão um: o nível de correção de erros</h2>
+    <p>
+      Um QR Code carrega um conjunto de palavras de verificação junto com os
+      dados, calculadas de modo que um leitor consiga reconstruir o que não
+      conseguiu enxergar. É por isso que um código com um canto rasgado ainda
+      escaneia. Quantas dessas palavras existem é o nível, e há quatro:
+    </p>
+    <ul>
+      <li><strong>L</strong> &mdash; cerca de 7% do código pode se perder.</li>
+      <li><strong>M</strong> &mdash; cerca de 15%.</li>
+      <li><strong>Q</strong> &mdash; cerca de 25%.</li>
+      <li><strong>H</strong> &mdash; cerca de 30%.</li>
+    </ul>
+    <p>
+      Mais correção não é de graça: os dados de verificação entram no mesmo
+      quadrado, então o mesmo texto no nível H precisa de um código maior e mais
+      denso que no L. Grosso modo, ir de L para H dobra o número de módulos para a
+      mesma cadeia, e módulos mais densos são mais difíceis de uma câmera
+      resolver. Há uma troca real aqui, e a resposta depende de para onde o código
+      vai.
+    </p>
+    <p>
+      <strong>L</strong> é para tela: um código num slide, num e-mail, numa página
+      web. Nada vai danificá-lo, e cada módulo a mais o torna mais difícil de ler
+      de longe.
+    </p>
+    <p>
+      <strong>M</strong> é o padrão e a resposta certa para a maior parte da
+      impressão. Papel que vai ser manuseado um pouco, um panfleto, um cartão de
+      visita.
+    </p>
+    <p>
+      <strong>Q e H</strong> são para códigos que vão apanhar: um cardápio limpado
+      todo dia, um adesivo numa máquina de oficina, uma etiqueta num engradado, um
+      código numa vitrine que pega sol direto. O H é também o que torna possível
+      uma logomarca no meio &mdash; veja abaixo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Decisão dois: a margem, que faz parte do código</h2>
+    <p>
+      O espaço branco em volta de um QR Code não é enchimento, e não é escolha de
+      design. Um leitor usa esse espaço para achar onde o símbolo termina. A
+      especificação pede quatro módulos de espaço em silêncio de cada lado, e um
+      código aparado até a borda é o motivo isolado mais comum de um código
+      impresso falhar.
+    </p>
+    <p>
+      Vale ser direto sobre isso porque aparar é uma coisa tão natural de fazer. O
+      código parece ter branco demais em volta, então é cortado no layout, ou
+      jogado sobre um painel colorido que encosta nos quadradinhos, ou colocado
+      sobre uma fotografia. Cada uma dessas coisas remove a fronteira que o leitor
+      ia usar.
+    </p>
+    <p>
+      Se o código parece grande demais com a margem, deixe o código menor. Não
+      tire a margem.
+    </p>
+  </section>
+
+  <section>
+    <h2>Decisão três: de que tamanho imprimir</h2>
+    <p>
+      A regra de bolso que sobreviveu ao contato com a realidade é
+      <strong>um para dez</strong>: um código precisa ter cerca de um décimo da
+      distância de onde vai ser escaneado.
+    </p>
+    <ul>
+      <li>Um cartão de visita ou um cardápio, lido a 30 cm: uns 2 cm de largura.</li>
+      <li>Um cartaz lido a dois metros: uns 20 cm.</li>
+      <li>Um ponto de ônibus ou uma vitrine lidos a cinco metros: uns 50 cm.</li>
+    </ul>
+    <p>
+      Dois centímetros é um piso, não um alvo. Abaixo de uns 1,5 cm um celular
+      comum começa a penar, por melhor que seja a impressão, porque os módulos
+      individuais chegam perto do tamanho de um pixel na câmera dele.
+    </p>
+    <p>
+      Menos texto significa menos módulos, o que significa um código que se lê de
+      longe para um dado tamanho impresso &mdash; um bom motivo para apontar um
+      código para <code>exemplo.com.br/x</code> em vez de para uma URL com cem
+      caracteres de parâmetros de rastreamento no fim.
+    </p>
+    <p>
+      E imprima a partir do <strong>SVG</strong>. Um QR Code é feito de bordas, e
+      um PNG tem um número fixo de pixels com que formá-las; amplie um e toda
+      borda amolece, que é exatamente o que dá trabalho a um leitor. Um SVG são os
+      quadradinhos como instruções, então sai nítido num cartão de visita ou num
+      outdoor.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cor, contraste e os dois erros</h2>
+    <p>
+      Um leitor mede a diferença entre os módulos escuros e os claros, então o
+      contraste é tudo. Duas coisas dão errado com regularidade:
+    </p>
+    <p>
+      <strong>Código claro sobre fundo escuro.</strong> Fica bonito, e um bom
+      número de leitores recusa de cara: eles procuram escuro sobre claro e não
+      tentam a inversão. Alguns tentam. Você não vai saber quais os seus clientes
+      têm.
+    </p>
+    <p>
+      <strong>Diferença insuficiente.</strong> Cinza médio sobre branco, ou duas
+      cores de marca com peso parecido, podem medir bem na tela e falhar no papel
+      quando entram o espalhamento da tinta e a exposição automática de um
+      celular. Se você está colorindo um código, mantenha a parte escura
+      genuinamente escura.
+    </p>
+    <p>
+      Fosco ganha de brilhante para qualquer coisa que vá ser escaneada sob uma
+      luz, e os dois ganham de imprimir sobre uma fotografia. Fundos transparentes
+      são úteis para colocar um código num painel colorido &mdash; mas confira o
+      que de fato acaba atrás dele, porque um código transparente num painel
+      escuro é o primeiro erro acima com etapas a mais.
+    </p>
+  </section>
+
+  <section>
+    <h2>Uma logomarca no meio</h2>
+    <p>
+      Isso funciona, e funciona por causa da correção de erros, e não apesar dela.
+      No nível H, cerca de 30% dos módulos podem ser destruídos e o código ainda é
+      lido, então uma logomarca cobrindo bem menos que isso &mdash; no centro,
+      onde não fica nenhum padrão de localização &mdash; é dano que o leitor
+      conserta.
+    </p>
+    <p>
+      Três coisas a respeitar. Use o nível H. Mantenha a logomarca abaixo de uns
+      20% da área, bem longe do limite teórico, porque a impressão não é a única
+      coisa comendo a sua margem. E nunca cubra os três quadrados grandes dos
+      cantos nem os menores perto deles: é assim que um leitor encontra e orienta
+      o símbolo em primeiro lugar, e correção de erros nenhuma reconstrói isso.
+    </p>
+    <p>
+      Depois teste em celulares de verdade. Uma logomarca leva um código de
+      &ldquo;sempre funciona&rdquo; para &ldquo;funciona com esta margem&rdquo;, e
+      o único jeito de saber quanta margem sobrou é tentar.
+    </p>
+  </section>
+
+  <section>
+    <h2>A decisão de que as pessoas se arrependem: estático ou &ldquo;dinâmico&rdquo;</h2>
+    <p>
+      Procure por um gerador de QR Code e a maioria dos resultados vai querer que
+      você crie uma conta, porque eles estão vendendo códigos
+      <em>dinâmicos</em>. Um código dinâmico não contém o seu link. Contém um link
+      curto para o servidor do próprio gerador, que redireciona para o seu.
+    </p>
+    <p>
+      O que isso lhe rende é real: você pode mudar para onde o código aponta
+      depois de impresso, e recebe uma contagem de cada escaneamento. Para uma
+      campanha com uma tiragem de seis dígitos, isso vale pagar.
+    </p>
+    <p>
+      O que isso custa também é real, e vale saber antes em vez de depois:
+    </p>
+    <ul>
+      <li>
+        <strong>O código para de funcionar quando eles pararem.</strong> Se o
+        serviço fechar, o domínio expirar ou o plano gratuito acabar, todo código
+        que você imprimiu morre &mdash; e a essa altura eles estão em dez mil
+        cardápios.
+      </li>
+      <li>
+        <strong>Cada escaneamento é dado de outra pessoa.</strong> O
+        redirecionamento enxerga o endereço IP, a hora e o aparelho de cada pessoa
+        que escaneia o seu código.
+      </li>
+      <li>
+        <strong>O link é deles, não seu.</strong> Quem escaneia vê um domínio
+        desconhecido piscar na tela, que é exatamente aquilo de que as pessoas
+        estão sendo orientadas a desconfiar.
+      </li>
+    </ul>
+    <p>
+      O caminho do meio não custa nada: faça um QR Code estático em volta de uma
+      URL curta <em>no seu próprio domínio</em>, e redirecione você mesmo. Você
+      mantém a capacidade de trocar o destino, mantém as estatísticas, e nada
+      sobre o código depende de uma empresa que você nunca viu continuar existindo
+      no ano que vem.
+    </p>
+    <p>
+      O <a href="../../gerar-qr-code/">gerador daqui</a> só faz códigos estáticos,
+      e não tem conta para criar. O que você digita é o que o código guarda.
+    </p>
+  </section>
+
+  <section>
+    <h2>Antes de imprimir mil deles</h2>
+    <p>
+      Escaneie o código. Não o que está na sua tela &mdash; a prova impressa, no
+      lugar em que ele vai ficar, com um celular que não é aquele em que você o
+      fez. Isso leva um minuto e pega a categoria inteira de problemas de que esta
+      página trata: uma margem que o layout comeu, um link sem o
+      <code>https://</code>, uma cor que mediu diferente no papel, um código
+      impresso num tamanho que funciona numa mesa e não numa parede.
+    </p>
+    <p>
+      E confira o que acontece depois do escaneamento. Um código que abre uma
+      página ilegível no celular é um código que falhou, mesmo tendo escaneado.
+    </p>
+  </section>
+
+  <section>
+    <h2>Nada disso exige enviar coisa alguma</h2>
+    <p>
+      Um QR Code é aritmética sobre uma cadeia de texto. Não há arquivo para
+      mandar e não há nada que um servidor consiga fazer que um navegador não
+      consiga, e é por isso que a <a href="../../gerar-qr-code/">ferramenta
+      daqui</a> faz tudo na sua própria máquina e funciona com a rede desligada.
+    </p>
+    <p>
+      Isso importa mais do que soa, por causa do que as pessoas colocam em QR
+      Codes. O uso mais comum do formato de Wi-Fi é a senha real de uma rede,
+      digitada numa página web. Vale saber se aquela página tinha para onde
+      mandá-la.
+    </p>
+  </section>

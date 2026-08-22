@@ -1,0 +1,20 @@
+#
+# Guia: gerar um QR Code - português do Brasil.
+#
+# "QR Code" fica em inglês porque é assim que se fala no Brasil, inclusive em
+# placa de restaurante. "Código de barras", esse sim, é português corrente.
+#
+
+nav = "Gerar um QR Code"
+title = "Como gerar um QR Code que escaneia sempre"
+description = "Qual nível de correção de erros escolher, por que a margem branca em volta do QR Code faz parte do código, de que tamanho imprimir, e o que o código \"dinâmico\" de um gerador gratuito lhe custa depois."
+heading = "Como gerar um QR Code que ainda escaneia no celular dos outros"
+lede = """
+    Gerar um QR Code leva um segundo. Gerar um que funcione num cardápio
+    molhado, num ponto de ônibus ou num celular esticado no braço com pouca luz
+    leva quatro decisões, e as quatro são tomadas antes de imprimir qualquer
+    coisa. Aqui está o que cada uma faz."""
+updated = "20 de agosto de 2026"
+og_title = "Gerar um QR Code que ainda escaneia no celular dos outros"
+og_description = "As quatro decisões que definem se um QR Code impresso funciona: o nível, a margem, o tamanho e de quem é o endereço que está lá dentro."
+og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"

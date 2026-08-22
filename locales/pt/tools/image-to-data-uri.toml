@@ -1,0 +1,315 @@
+#
+# Imagem para data URI - português do Brasil.
+#
+# Overrides for tools/image-to-data-uri/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Data URI" fica em inglês porque é o nome da coisa na especificação e o que
+# se digita numa busca; o slug, esse sim, é "imagem-para-base64", que é como se
+# procura no Brasil.
+#
+
+name = "Imagem para data URI"
+heading = "Imagem&nbsp;para&nbsp;data&nbsp;URI <span class=\"h1-kw\">&mdash; codificar uma imagem em base64 para CSS ou HTML</span>"
+tagline = "A imagem inteira como uma linha de texto. Cole direto no CSS ou no HTML."
+
+title = "Imagem para data URI &mdash; base64 para CSS, grátis, sem envio"
+description = "Transforme um PNG, JPEG, SVG ou WebP numa data URI que você cola no CSS ou no HTML. SVGs são codificados em porcentagem em vez de base64, então ficam legíveis e mais curtos. Roda no seu navegador; nada é enviado."
+og_title = "Transforme uma imagem numa linha que você cola no CSS"
+og_description = "Base64 para imagens, codificação em porcentagem para SVG, e a regra, a propriedade personalizada ou a tag img já montadas em volta. Roda na sua própria máquina; nada é enviado."
+og_image_alt = "Imagem para data URI - cole a imagem dentro da folha de estilo"
+
+pledge = """
+    A codificação roda no seu próprio navegador, no seu próprio hardware. É
+    aritmética sobre bytes que a página já tem: sem codificador, sem servidor, e
+    sem etapa de rede para deixar de fora. Esta ferramenta não tem função de rede
+    de espécie alguma &mdash; nada a buscar, nada a enviar &mdash; e não existe do
+    outro lado desta página servidor nenhum para onde mandar uma imagem, mesmo
+    que houvesse caminho."""
+
+live_hint = """
+      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
+      aba Rede e jogue uma imagem aqui. Nenhuma requisição leva uma imagem, uma
+      miniatura, um nome de arquivo ou um byte do que você escolheu. Ou desconecte
+      da internet e codifique uma mesmo assim."""
+
+read_first = """
+, <code>src/encode.js</code> para as duas
+      codificações e o raciocínio por trás de cada uma, <code>src/sniff.js</code>
+      para como o tipo de mídia é lido do arquivo em vez do nome dele, e
+      <code>src/metadata.js</code> para a verificação que diz quanto daquilo que
+      você está prestes a colar não é a imagem."""
+
+howto_heading = "Como transformar uma imagem em uma data URI"
+
+card = """
+            Base64 para imagens, codificação em porcentagem para SVG, e a regra
+            de CSS ou a tag <code>&lt;img&gt;</code> já montada em volta."""
+
+[words]
+plural = "imagens"
+choose = "uma imagem"
+analytics_extra = """, nem nenhum dos
+  nomes de arquivo, tamanhos ou textos codificados que esta ferramenta produz"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem recodificação"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[privacy]]
+title = "Suas imagens não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy nomeia todos os endereços que esta página pode
+      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
+      seus arquivos pudessem ser coletados, e não existe no código nada que os
+      mandaria se existisse."""
+
+[[privacy]]
+title = "Nada aqui busca coisa alguma."
+body = """
+ Não existe
+      <code>fetch</code>, nem <code>XMLHttpRequest</code>, nem
+      <code>sendBeacon</code> em lugar nenhum de <code>src/</code>. A codificação
+      é <code>btoa</code> e <code>encodeURIComponent</code> &mdash; duas funções
+      que o navegador tem desde o começo, e as duas pegam bytes e devolvem texto
+      sem ir a lugar nenhum."""
+
+[[privacy]]
+title = "A pré-visualização é a prova."
+body = """
+ A imagem ao lado de cada
+      resultado é desenhada a partir da data URI que esta página acabou de montar,
+      e não do seu arquivo. Ela aparece porque a URI está correta, na sua máquina,
+      sem servidor nenhum envolvido &mdash; e se não aparecer, a página diz isso em
+      vez de lhe entregar algo quebrado."""
+
+[[privacy]]
+title = "O aviso de metadados está do seu lado."
+body = """
+ Uma data URI copia o
+      arquivo exatamente, então a posição de GPS de uma fotografia viaja junto para
+      dentro da sua folha de estilo. Esta página lê quanto disso existe e lhe diz,
+      porque a alternativa é você descobrir depois de já ter feito o commit."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não é entregue a ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google, e o botão de doação vem do Buy Me a
+      Coffee. Nenhum deles recebe coisa alguma sobre as suas imagens. Toda linha
+      que lê ou codifica um arquivo é servida desta origem e está listada no
+      repositório."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desconecte da rede e a ferramenta continua
+      igual, porque nunca houve uma etapa de rede nela. Essa é a prova mais
+      simples de todas."""
+
+[[howto]]
+title = "Escolha suas imagens."
+body = """
+ Arraste até o seletor ou escolha na mão.
+      Elas são lidas direto do seu disco pelo navegador; nada é mandado para lugar
+      nenhum enquanto você faz isso."""
+
+[[howto]]
+title = "Diga para onde o resultado vai."
+body = """
+ A URI sozinha, uma regra de
+      CSS, uma propriedade personalizada, uma tag <code>&lt;img&gt;</code> ou
+      Markdown. Todas elas põem a URI entre aspas, que é o detalhe que decide se um
+      SVG embutido funciona ou silenciosamente não funciona."""
+
+[[howto]]
+title = "Leia o que custou."
+body = """
+ Cada resultado diz em quantos caracteres ele
+      virou, quanto isso é maior que o arquivo, e se embutir algo desse tamanho é
+      boa ideia. O base64 acrescenta um terço; se esse terço vale uma requisição
+      poupada depende inteiramente do tamanho, então a página diz de que lado da
+      linha você está."""
+
+[[howto]]
+title = "Confira os avisos."
+body = """
+ Se a imagem carrega EXIF, um perfil de cor ou
+      XMP, isso é nomeado junto com quantos bytes do seu resultado são aquilo. Se a
+      extensão discorda do formato real, a página usa o formato e lhe avisa. Se o
+      seu navegador não conseguir desenhar o resultado, ela diz isso também."""
+
+[[howto]]
+title = "Copie, ou baixe."
+body = """
+ Um botão por resultado, e um para todos de uma
+      vez &mdash; as propriedades personalizadas saem embrulhadas num bloco
+      <code>:root</code>, prontas para colar no alto de uma folha de estilo."""
+
+[[faq]]
+q = "Minha imagem é enviada para algum lugar?"
+a = """
+        Não. O arquivo é lido e codificado pelo seu próprio navegador no seu próprio
+        hardware, com duas funções que o navegador já tem. Esta ferramenta não tem
+        função de rede de espécie alguma &mdash; nunca busca nada e nunca manda nada
+        &mdash; e a <code>Content-Security-Policy</code> da página nomeia todos os
+        endereços que ela pode contatar, nenhum dos quais é deste site."""
+
+[[faq]]
+q = "O que é uma data URI?"
+a = """
+        Um jeito de escrever um arquivo inteiro onde normalmente iria um endereço da
+        web. Em vez de <code>url("logo.png")</code>, que manda o navegador ir buscar
+        alguma coisa, você escreve
+        <code>url("data:image/png;base64,iVBORw0...")</code>, que contém a própria
+        imagem. O navegador a decodifica ali mesmo. O efeito prático é uma
+        requisição a menos: a imagem chega junto com a folha de estilo ou com a
+        página, em vez de chegar depois."""
+
+[[faq]]
+q = "Por que o meu SVG não está em base64?"
+a = """
+        Porque base64 é a codificação errada para ele. Um SVG é texto, e uma URL já
+        carrega texto &mdash; só um punhado de caracteres precisa ser escapado.
+        Codificar esses em porcentagem e deixar o resto em paz produz uma URI que
+        costuma ser uns 20% mais curta que o base64 do mesmo arquivo, e que você
+        ainda consegue ler na sua folha de estilo: os nomes dos elementos, as cores e
+        o <code>viewBox</code> continuam todos lá para editar. Existe uma caixinha
+        para forçar base64, para a rara cadeia de ferramentas que insiste nisso."""
+
+[[faq]]
+q = "Quanto o base64 deixa a minha imagem maior?"
+a = """
+        Cerca de um terço. Três bytes de arquivo viram quatro caracteres de base64,
+        o que dá 33% antes do <code>data:image/png;base64,</code> na frente. Esse é
+        o piso, e é inevitável: é o que custa escrever bytes arbitrários usando só
+        os caracteres que uma URL permite. É também por isso que a página mostra a
+        contagem de caracteres ao lado do tamanho do arquivo, em vez de deixar você
+        descobrir quando a folha de estilo já estiver no ar."""
+
+[[faq]]
+q = "Quando embutir uma imagem é realmente boa ideia?"
+a = """
+        Quando ela é pequena e é necessária de imediato. Um ícone de 2 KB numa folha
+        de estilo que toda página carrega é vitória clara: uma ida e volta a menos, e
+        a imagem já está lá no momento em que o CSS está. Passando de uns 10 KB a
+        troca vira. Uma imagem embutida deixa de ser um arquivo separado, então não
+        pode ser guardada em cache sozinha, não pode ser buscada em paralelo com
+        outra coisa, e é baixada de novo por inteiro toda vez que o arquivo em volta
+        dela muda &mdash; uma fotografia de 200 KB numa folha de estilo são 200 KB
+        acrescentados ao caminho crítico de toda página do site. A página lhe diz de
+        que lado dessa linha cada resultado cai."""
+
+[[faq]]
+q = "O gzip desfaz o custo do base64?"
+a = """
+        Menos do que as pessoas esperam. O base64 de um arquivo já comprimido
+        &mdash; que é o que um PNG, um JPEG e um WebP são &mdash; comprime mal,
+        porque quase não sobrou redundância para o compressor achar; você
+        normalmente recupera algo como um décimo daquele terço que o base64
+        acrescentou, e não o terço inteiro. Um SVG codificado em porcentagem é o
+        caso oposto: ele continua sendo texto, então comprime mais ou menos tão bem
+        quanto antes, o que é mais um motivo para não pôr um em base64."""
+
+[[faq]]
+q = "Isto muda a minha imagem em alguma coisa?"
+a = """
+        Não, e essa é uma diferença deliberada em relação à maioria das ferramentas
+        daqui. Nada é decodificado em pixels e codificado de novo: os bytes que
+        saíram do seu disco são os bytes que entram na URI. Um JPEG continua
+        exatamente o JPEG que era, na mesma qualidade, com as mesmas dimensões. É
+        por isso que o resultado pode ser descrito como o mesmo arquivo, e não como
+        uma cópia dele."""
+
+[[faq]]
+q = "Então os meus dados EXIF e de GPS vão para dentro da folha de estilo também?"
+a = """
+        Vão, e essa é a parte que vale pensar antes de colar. Como nada é
+        recodificado, tudo o que a câmera escreveu viaja junto com a imagem: a
+        localização, o horário, o número de série da câmera. Numa foto de celular
+        isso pode ser 30 KB do arquivo, que viram 40 KB de base64 no caminho crítico
+        da sua página, e um endereço residencial dentro de algo que vai para um
+        repositório. A página lê quanto metadado existe num JPEG, PNG ou WebP e diz
+        isso. Para tirar antes, use o
+        <a href="../remover-dados-exif/">Visualizador e removedor de EXIF</a>."""
+
+[[faq]]
+q = "Por que ele usou um tipo diferente da extensão do meu arquivo?"
+a = """
+        Porque a extensão pode estar errada e os bytes não podem. Um arquivo chamado
+        <code>logo.png</code> que na verdade foi exportado como JPEG é comum o
+        bastante para toda ferramenta de imagem ter que lidar com isso, e uma data
+        URI que declara o tipo errado simplesmente não é desenhada &mdash; não há
+        recuo e não há mensagem de erro que valha a leitura. Então o tipo é lido dos
+        primeiros bytes do arquivo, que dizem o que ele é sem ambiguidade em todos
+        os formatos daqui, e a página lhe avisa quando os dois discordam."""
+
+[[faq]]
+q = "A pré-visualização está em branco. O que deu errado?"
+a = """
+        Provavelmente nada na URI. HEIC e TIFF geram data URIs perfeitamente válidas
+        que navegador nenhum, exceto o Safari, vai desenhar, então a imagem também
+        vai faltar onde quer que você a cole &mdash; converta para PNG, JPEG ou WebP
+        antes, com o <a href="../comprimir-imagem/">Compressor de imagens</a> ou o
+        <a href="../redimensionar-imagem/">Redimensionador de imagens</a>. Se o
+        formato for um comum, é provável que o arquivo em si esteja danificado: a
+        pré-visualização é desenhada a partir da URI que esta página montou, então
+        uma em branco significa que a imagem não decodificou."""
+
+[[faq]]
+q = "Existe limite de tamanho para uma data URI?"
+a = """
+        Nenhum que você vá encontrar em CSS ou numa tag <code>&lt;img&gt;</code>; os
+        navegadores modernos não impõem teto prático ali. O que os navegadores
+        limitam é digitar uma data URI na barra de endereços, o que a maioria deles
+        hoje recusa para qualquer coisa não trivial, por motivos de segurança que
+        nada têm a ver com este uso. O limite real é o de cima: muito antes de algo
+        técnico quebrar, a página em que ela está já ficou mais lenta do que ficaria
+        com um arquivo de imagem comum."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não há conta, nem login, nem período de teste, nem marca
+        d'água. Também não há limite para o número ou o tamanho dos arquivos,
+        porque não há servidor pagando por eles &mdash; o trabalho acontece na sua
+        própria máquina. O site exibe publicidade, e é ela que paga a conta; os
+        anúncios não recebem nada sobre as suas imagens."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Sim. Carregue a página uma vez, então desconecte da internet e ela continua
+        funcionando. Esse é também o jeito mais simples de provar que nada está
+        sendo enviado: uma ferramenta que mandasse as suas imagens embora para serem
+        codificadas pararia no instante em que você tirasse da tomada."""
+
+[schema]
+description = "Converta um PNG, JPEG, SVG, WebP, GIF ou ICO numa data URI pronta para colar no CSS ou no HTML. Base64 para formatos de pixel e codificação em porcentagem para SVG, embrulhados numa regra de CSS, numa propriedade personalizada, numa tag img ou em Markdown, com o custo em tamanho e qualquer metadado embutido informados. Roda inteiramente no navegador, sem envio."
+features = [
+  "Data URIs em base64 para PNG, JPEG, WebP, GIF, ICO, AVIF e mais",
+  "Data URIs de SVG codificadas em porcentagem, que são mais curtas que base64 e continuam legíveis",
+  "Regra de CSS, propriedade personalizada de CSS, tag img de HTML ou Markdown já prontas, sempre com aspas corretas",
+  "O tipo de mídia lido dos próprios bytes do arquivo, e não da extensão",
+  "Diz o que a codificação custou em caracteres, e se embutir naquele tamanho compensa",
+  "Avisa quando EXIF, XMP ou um perfil de cor está prestes a ser copiado para a sua folha de estilo",
+  "Copia o arquivo byte por byte: sem recodificação e sem perda de qualidade",
+  "Trabalha em lote, com tudo copiado ou baixado como um arquivo só",
+  "Roda offline; sem envio, sem conta",
+]
+
+[picker]
+title = "Arraste imagens para cá"
+hint = "ou clique para escolher &mdash; PNG, JPEG, SVG, WebP, GIF, ICO e mais"

@@ -1,0 +1,198 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Abra o <a href="../../aparar-video/">Aparador de vídeo</a>, jogue o clipe
+      dentro, aperte <kbd>I</kbd> e <kbd>O</kbd> para marcar cada trecho que
+      você quer &mdash; quantos quiser &mdash; e exporte. Num MP4, MOV ou M4V os
+      quadros que você mantém são movidos para o arquivo novo exatamente como
+      estavam &mdash; os mesmos bytes, os mesmos ajustes de codificador, tudo
+      igual &mdash; e o som é copiado amostra por amostra sem ser decodificado.
+    </p>
+    <p>
+      Isso significa que aparar não lhe custa qualidade nenhuma, e é rápido:
+      tirar um minuto de uma gravação de quatro gigabytes custa mais ou menos o
+      que custa escrever esse minuto no disco, porque os quadros são apontados
+      em vez de carregados. O único lugar onde isso aparece é onde o seu corte de
+      fato cai, que é o resto desta página.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que aparar não precisa perder qualidade nenhuma</h2>
+    <p>
+      Aparar não muda a aparência de quadro nenhum. Cada quadro que você mantém
+      deve sair idêntico a como entrou, então não há motivo para decodificá-lo e
+      codificá-lo de novo &mdash; e há todo motivo para não fazer isso, já que
+      uma recodificação é com perdas e deixaria o clipe inteiro um pouco pior só
+      para encurtá-lo.
+    </p>
+    <p>
+      Então um bom aparador não recodifica. Ele lê o índice do arquivo, descobre
+      quais quadros codificados caem na sua faixa e escreve aqueles bytes num
+      contêiner novo com um índice novo na frente deles. Nada é decodificado
+      nesse caminho.
+    </p>
+    <p>
+      Muitas ferramentas recodificam mesmo assim, porque decodificar e recodificar
+      é bem mais simples de implementar do que interpretar o formato do
+      contêiner. Você normalmente descobre com qual das duas está lidando pelo
+      tempo que leva: uma cópia é limitada pela velocidade de escrita do seu
+      disco, e uma recodificação é limitada pela velocidade com que a sua máquina
+      codifica vídeo, que é cem vezes mais lenta.
+    </p>
+  </section>
+
+  <section>
+    <h2>Keyframes, e por que o seu corte pode cair antes</h2>
+    <p>
+      Aqui está a restrição da qual decorre tudo o que se refere a aparar.
+    </p>
+    <p>
+      Vídeo não é guardado como uma sequência de imagens completas. Isso seria
+      enorme. A maioria dos quadros é guardada como uma descrição de como eles
+      diferem dos vizinhos, o que significa que não podem ser decodificados
+      sozinhos &mdash; você precisa dos quadros em volta. Só um
+      <strong>keyframe</strong> se sustenta sozinho como imagem completa, e os
+      keyframes ficam tipicamente de um a dez segundos de distância um do outro.
+    </p>
+    <p>
+      Então, se você marca um corte dois segundos depois do último keyframe, um
+      aparador que copia quadros não consegue começar ali. Os quadros no seu
+      marcador são ilegíveis sem a sequência que leva até eles. Ele tem que
+      carregar o trecho inteiro a partir do keyframe anterior ao seu marcador.
+    </p>
+    <p>
+      O que ele faz a respeito disso é a parte interessante. O formato do arquivo
+      tem uma forma padrão de dizer <em>comece a tocar neste ponto</em> &mdash;
+      os quadros extras estão no arquivo, mas o contêiner instrui o reprodutor a
+      pulá-los. Todo reprodutor mais usado respeita isso, e o clipe começa
+      exatamente onde você disse. Um reprodutor que ignore vai começar antes, no
+      máximo pelo intervalo entre keyframes.
+    </p>
+    <p>
+      A ferramenta daqui diz em qual dos casos você está e por quanto, antes de
+      exportar, para que seja uma decisão em vez de uma surpresa.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando aceitar uma recodificação</h2>
+    <p>
+      Existe o corte exato, e ele funciona recodificando o trecho de abertura
+      &mdash; decodificando a partir do keyframe e escrevendo uma nova sequência
+      de quadros que começa genuinamente onde você marcou. É mais lento, e custa
+      um pouco de qualidade só naquele trecho de abertura.
+    </p>
+    <p>
+      Escolha esse caminho quando o clipe for para algum lugar que não respeite a
+      instrução do contêiner, ou onde você não controla o reprodutor: alguns
+      editores de vídeo, alguns sistemas de transmissão e de videoconferência,
+      alguns reprodutores de hardware mais antigos. Escolha a cópia para todo o
+      resto, que é quase tudo &mdash; um navegador, um celular, uma plataforma
+      social, um reprodutor de mídia.
+    </p>
+    <p>
+      Uma terceira opção que não custa nada: mova o seu marcador. Se a ferramenta
+      mostra onde estão os keyframes, empurrar o corte para o mais próximo lhe dá
+      um corte exato sem recodificação nenhuma. Raramente vale a pena abrir mão
+      de uma cópia por um segundo de diferença.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tirando um pedaço do meio</h2>
+    <p>
+      Cortar um trecho fora é uma operação diferente de manter um trecho, e vale
+      saber que é suportada, porque muitos aparadores só fazem a segunda. Marque
+      a parte que você não quer, escolha tirá-la, e o que sobra dos dois lados é
+      unido num só clipe com o som carregado junto e em sincronia.
+    </p>
+    <p>
+      A emenda tem a mesma restrição de keyframe no ponto em que a segunda metade
+      recomeça, pelo mesmo motivo. Funciona nos dois caminhos de MP4 daqui. É a
+      única coisa que a gravação de recuo descrita abaixo não consegue fazer,
+      porque uma gravação é feita numa passada só, a partir de um único cursor de
+      reprodução.
+    </p>
+  </section>
+
+  <section>
+    <h2>Formatos, e o recuo</h2>
+    <p>
+      <strong>MP4, M4V e MOV</strong> são lidos diretamente, seja qual for o
+      codec lá dentro &mdash; H.264, HEVC, AV1, VP9. Copiar quadros não envolve
+      decodificá-los, então esse caminho funciona até para um codec para o qual o
+      seu navegador não tem decodificador nenhum, o que é uma consequência
+      agradável de não olhar as imagens.
+    </p>
+    <p>
+      <strong>Qualquer outra coisa que o seu navegador consiga tocar</strong>,
+      WebM mais obviamente, é aparada tocando o arquivo e gravando o resultado.
+      Funciona, e tem dois custos: leva o mesmo tempo que o trecho dura, e a
+      imagem e o som são codificados de novo.
+    </p>
+    <p>
+      <strong>AVI, WMV, FLV e a maioria dos MKVs</strong> o navegador não
+      consegue nem ler nem tocar, e a ferramenta diz isso em vez de falhar no
+      meio do caminho. Converta esses para MP4 antes, com algo que dê conta
+      deles.
+    </p>
+  </section>
+
+  <section>
+    <h2>Duas coisas que dão errado em silêncio por aí</h2>
+    <p>
+      <strong>Rotação.</strong> Um celular filma deitado e escreve uma instrução
+      de rotação no arquivo em vez de girar os pixels. Um aparador que copia
+      quadros tem que carregar essa instrução adiante, ou o seu clipe em pé sai
+      deitado &mdash; que é o jeito clássico de arruinar um vídeo aparado. O
+      caminho exato daqui gira os quadros enquanto os recodifica e escreve um
+      arquivo que não precisa de rotação nenhuma.
+    </p>
+    <p>
+      <strong>Sincronia do áudio.</strong> Áudio e vídeo são guardados como
+      fluxos separados com temporização própria, e não são picotados nos mesmos
+      pontos. Se os dois não forem alinhados de propósito no corte, o som vai
+      derivando. No caminho de cópia daqui o áudio é copiado amostra por amostra
+      sem ser decodificado, então é byte a byte o que estava no arquivo, e um
+      marcador de edição o mantém em sincronia com a imagem dentro de um
+      milésimo de segundo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Aparar não é cortar o enquadramento</h2>
+    <p>
+      Duas palavras que as pessoas usam uma pela outra. Aparar muda a duração do
+      clipe; cortar muda o formato da imagem. Se o que você quer é uma versão
+      quadrada de um vídeo deitado, ou as tarjas pretas fora das laterais, isso é
+      o <a href="../../cortar-video/">Cortador de vídeo</a> &mdash; e, ao
+      contrário de aparar, ele precisa recodificar, pelo motivo que
+      <a href="../cortar-um-video/">o guia dele</a> explica.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que isso não precisa de envio &mdash; especialmente isto</h2>
+    <p>
+      Vídeo é o tipo de arquivo que as pessoas mais esperam ter que enviar,
+      porque os arquivos são grandes e o trabalho soa pesado. Aparar é o caso em
+      que isso é menos verdade: no caminho de cópia o arquivo mal é lido. A
+      ferramenta percorre o índice, descobre quais faixas de bytes manter e as
+      escreve. Enviar um arquivo de quatro gigabytes a um servidor para que ele
+      faça isso seria a forma mais lenta possível de organizar a coisa.
+    </p>
+    <p>
+      É também o tipo de arquivo em que enviar custa mais caro para quem preferia
+      não enviar: vídeo carrega rostos, vozes, casas e localizações de um jeito
+      que um documento não carrega. A ferramenta daqui não tem função de rede de
+      espécie alguma, e a <code>Content-Security-Policy</code> da página nomeia
+      todos os endereços que ela pode contatar, nenhum dos quais é deste site.
+    </p>
+    <p>
+      Desconecte da internet e apare um clipe mesmo assim, se preferir conferir a
+      acreditar.
+      <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
+      conversores online?</a> apresenta mais três verificações do mesmo tipo.
+    </p>
+  </section>

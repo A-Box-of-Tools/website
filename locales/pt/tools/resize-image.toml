@@ -1,0 +1,279 @@
+#
+# Redimensionador de imagens - português do Brasil.
+#
+# Overrides for tools/resize-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Redimensionador de imagens"
+heading = "Redimensionar&nbsp;imagem <span class=\"h1-kw\">&mdash; cortar e converter também</span>"
+tagline = "Diga o tamanho. Desenhe a caixa. Escolha o formato."
+
+title = "Redimensionar uma imagem &mdash; cortar e converter, sem envio"
+description = "Redimensione, corte e converta imagens JPEG, PNG e WebP no seu navegador. Pixels exatos, uma porcentagem ou o lado maior - uma imagem ou uma pasta inteira. Nada é enviado."
+og_title = "Redimensione, corte e converta uma imagem sem enviá-la"
+og_description = "Defina o tamanho em pixels ou em porcentagem, arraste uma caixa de corte, mude o formato - para uma imagem ou um lote inteiro. Tudo roda na sua própria máquina."
+og_image_alt = "Redimensionador de imagens - redimensione, corte e converta sem enviar"
+
+pledge = """
+    O redimensionamento, o corte e a mudança de formato rodam todos no seu
+    próprio navegador, no seu próprio hardware, com os codificadores de imagem
+    que ele já traz. Esta ferramenta não tem função de rede de espécie alguma
+    &mdash; nada a buscar, nada a enviar &mdash; e não existe do outro lado desta
+    página servidor nenhum para onde mandar uma imagem, mesmo que houvesse
+    caminho."""
+
+live_hint = """
+      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
+      aba Rede e redimensione uma foto. Nenhuma requisição leva uma imagem, uma
+      miniatura, um nome de arquivo ou um byte do que você escolheu. Ou
+      desconecte da internet e redimensione uma mesmo assim."""
+
+read_first = """
+, <code>src/geometry.js</code> para a aritmética que
+      decide o que é mantido e de que tamanho sai, e
+      <code>src/codecs.js</code> para a única chamada de <code>drawImage</code>
+      que faz o corte e o redimensionamento de uma vez."""
+
+howto_heading = "Como redimensionar uma imagem sem enviá-la"
+
+card = """
+            Pixels exatos, uma porcentagem ou o lado maior &mdash; com uma caixa
+            de corte e uma troca de formato no caminho. Uma imagem ou uma
+            pasta."""
+
+[words]
+plural = "imagens"
+choose = "uma imagem"
+analytics_extra = """, nem nenhum dos
+  tamanhos, cortes ou formatos que esta ferramenta calcula"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem marca d'água"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[privacy]]
+title = "Suas imagens não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy nomeia todos os endereços que esta página pode
+      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
+      seus arquivos pudessem ser coletados, e não existe no código nada que os
+      mandaria se existisse."""
+
+[[privacy]]
+title = "Nada aqui busca coisa alguma."
+body = """
+ Não existe
+      <code>fetch</code>, nem <code>XMLHttpRequest</code>, nem
+      <code>sendBeacon</code> em lugar nenhum de <code>src/</code>. O
+      redimensionamento é um <code>drawImage</code> num canvas e um
+      <code>canvas.toBlob</code> &mdash; o escalador e o codificador que já estão
+      instalados no seu navegador."""
+
+[[privacy]]
+title = "Um arquivo que ninguém pediu para mudar não é mudado."
+body = """
+ Sem corte, sem
+      redimensionamento e sem troca de formato, o arquivo que você escolheu é
+      devolvido a você byte por byte em vez de ser salvo de novo. Isso não é só
+      educação: é por isso que esta ferramenta não consegue recodificar uma imagem
+      em silêncio, nem descartar em silêncio os metadados de uma que você só
+      queria olhar."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não é entregue a ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google, e o botão de doação vem do Buy Me a
+      Coffee. Nenhum deles recebe coisa alguma sobre as suas imagens. Toda linha
+      que lê, corta, escala ou escreve um arquivo é servida desta origem e está
+      listada no repositório."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desconecte da rede e a ferramenta continua
+      igual, porque nunca houve uma etapa de rede nela. Essa é a prova mais
+      simples de todas."""
+
+[[howto]]
+title = "Escolha suas imagens."
+body = """
+ Arraste até o seletor ou escolha na mão.
+      Elas são lidas direto do seu disco pelo navegador; nada é mandado para lugar
+      nenhum enquanto você faz isso."""
+
+[[howto]]
+title = "Corte, se quiser."
+body = """
+ A caixa começa na imagem inteira, então
+      deixá-la em paz não corta nada. Arraste, ou trave numa proporção &mdash; 1:1
+      para foto de perfil, 9:16 para um story, 16:9 para uma miniatura &mdash; e
+      aperte &ldquo;Maior&rdquo; para a maior caixa que couber. Cada imagem guarda
+      a caixa dela: clique em qualquer linha da lista para desenhar naquela. Se
+      todas tiverem que ficar com o mesmo enquadramento, um botão faz isso
+      também."""
+
+[[howto]]
+title = "Diga de que tamanho ela deve sair."
+body = """
+ Uma largura, uma altura
+      ou as duas; um lado maior, que deixa as fotos em pé e as deitadas do mesmo
+      tamanho entre si; ou uma porcentagem simples. Deixe uma das duas caixas em
+      branco e a imagem mantém o próprio formato."""
+
+[[howto]]
+title = "Escolha o formato e aperte o botão."
+body = """
+ Mantenha o formato em que
+      cada arquivo chegou, ou escreva tudo como JPEG, PNG ou WebP. Cada resultado
+      diz no que virou e quanto diminuiu; clique num deles para abrir em tamanho
+      cheio com todos os números por trás, e o original ao lado para comparar. Um
+      lote desce como um zip só."""
+
+[[faq]]
+q = "Minha imagem é enviada para algum lugar?"
+a = """
+        Não. O arquivo é decodificado, cortado, escalado e escrito pelo seu próprio
+        navegador no seu próprio hardware, com os codificadores de JPEG, PNG e WebP
+        que o navegador já traz. Esta ferramenta não tem função de rede de espécie
+        alguma &mdash; nunca busca nada e nunca manda nada &mdash; e a
+        <code>Content-Security-Policy</code> da página nomeia todos os endereços que
+        ela pode contatar, nenhum dos quais é deste site."""
+
+[[faq]]
+q = "O que acontece se eu der uma largura e não uma altura?"
+a = """
+        A altura sai do formato da própria imagem, que é quase sempre o que se
+        queria: &ldquo;1920 de largura&rdquo; quer dizer &ldquo;1920 de largura e a
+        altura que isso der&rdquo;. Preencha as duas e elas podem discordar do
+        formato da imagem, que é a única hora em que a escolha de &ldquo;se os
+        formatos discordarem&rdquo; aparece &mdash; caber dentro da caixa,
+        preenchê-la e cortar o que sobra, completar com um fundo, ou esticar e
+        aceitar a deformação."""
+
+[[faq]]
+q = "Redimensionar uma imagem perde qualidade?"
+a = """
+        Diminuir uma imagem não perde, de nenhum jeito que você consiga ver: entram
+        mais pixels do que saem, então o detalhe que fica é detalhe de verdade.
+        Aumentar não consegue acrescentar o que nunca foi fotografado &mdash; o
+        resultado é uma cópia mais macia da mesma imagem, não uma mais nítida
+        &mdash; e é por isso que &ldquo;nunca deixar uma imagem maior do que ela
+        começou&rdquo; vem ligado por padrão. O que custa um pouco é a recodificação
+        depois, se o formato for JPEG ou WebP, e o controle de qualidade é onde você
+        gasta ali."""
+
+[[faq]]
+q = "Posso cortar cada imagem de um jeito diferente?"
+a = """
+        Sim &mdash; esse é o padrão. Toda imagem da lista carrega a caixa dela, nos
+        pixels dela, e clicar numa linha põe aquela imagem na pré-visualização com a
+        caixa dela e a proporção travada dela de volta. Nada do que você faz numa
+        afeta outra. Toda caixa também começa na imagem inteira, então uma imagem em
+        que você nunca desenhou não é cortada."""
+
+[[faq]]
+q = "Ele consegue cortar um lote inteiro do mesmo jeito de uma vez?"
+a = """
+        Sim, com o botão embaixo da pré-visualização. Ele dá a cada outra imagem a
+        mesma área relativa &mdash; as mesmas frações da largura e da altura dela
+        &mdash; o que, num conjunto de capturas de tela ou exportações todas do
+        mesmo tamanho, é exatamente a mesma caixa, e a página diz isso. Com uma
+        proporção travada, ele dá a cada uma a maior caixa daquela proporção dentro
+        daquela área, então apertar 1:1 e depois aquele botão lhe rende quadrados a
+        partir de uma pasta com fotos em pé e deitadas misturadas. Toda caixa
+        continua editável depois."""
+
+[[faq]]
+q = "Quais formatos ele consegue ler e escrever?"
+a = """
+        Ele lê tudo o que o seu navegador consegue decodificar, o que na prática
+        significa JPEG, PNG, WebP, GIF, BMP e &mdash; na maioria dos navegadores
+        atuais &mdash; AVIF. Ele escreve JPEG, PNG e WebP, porque são esses os
+        codificadores que os navegadores trazem. Em &ldquo;manter o formato&rdquo;,
+        um JPEG continua JPEG e um PNG continua PNG; qualquer coisa que o navegador
+        não saiba escrever, como um GIF ou um BMP, sai como PNG, que é o formato que
+        mantém intactas a transparência e a cor chapada."""
+
+[[faq]]
+q = "O que acontece com a transparência quando eu salvo como JPEG?"
+a = """
+        Ela é preenchida com a cor de fundo, porque o JPEG não tem canal alfa onde
+        guardá-la. A cor é sua para escolher e começa em branco, que é o que a
+        maioria das pessoas quer e o que quase toda outra ferramenta faz sem lhe
+        avisar. A mesma cor é usada atrás de um quadro completado com margem. Salve
+        como PNG ou WebP e a transparência passa intocada."""
+
+[[faq]]
+q = "Ele remove os dados EXIF e de GPS?"
+a = """
+        De qualquer coisa que ele de fato processe, sim, como efeito colateral:
+        cortar ou redimensionar significa decodificar a imagem em pixels e codificar
+        esses pixels de novo, e um canvas cheio de pixels não carrega etiquetas,
+        então a localização, o modelo da câmera e os horários simplesmente não são
+        escritos no arquivo novo. Um arquivo que você não está alterando é outro
+        caso &mdash; ele é devolvido byte por byte, com etiquetas e tudo. Se você
+        quer os metadados fora mas a imagem intocada, use o
+        <a href="../remover-dados-exif/">Visualizador e removedor de EXIF</a>, que
+        reescreve o contêiner sem recomprimir nada."""
+
+[[faq]]
+q = "Qual a diferença entre isto e o compressor de imagens?"
+a = """
+        Este aqui é sobre dimensões: você diz quantos pixels quer e ele lhe dá isso.
+        O <a href="../comprimir-imagem/">Compressor de imagens</a> é sobre tamanho
+        de arquivo: você diz quantos kilobytes lhe permitiram e ele procura a maior
+        qualidade que cabe, redimensionando só se a qualidade sozinha não chegar lá.
+        Se mandaram você fazer &ldquo;1200 pixels de largura&rdquo;, você está no
+        lugar certo. Se mandaram &ldquo;abaixo de 500 KB&rdquo;, o outro chega mais
+        perto."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não há conta, nem login, nem período de teste, nem marca
+        d'água. Também não há limite para o número ou o tamanho dos arquivos,
+        porque não há servidor pagando por eles &mdash; o trabalho acontece na sua
+        própria máquina. O site exibe publicidade, e é ela que paga a conta; os
+        anúncios não recebem nada sobre as suas imagens."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Sim. Carregue a página uma vez, então desconecte da internet e ela continua
+        funcionando. Esse é também o jeito mais simples de provar que nada está
+        sendo enviado: uma ferramenta que mandasse as suas imagens embora para
+        serem redimensionadas pararia no instante em que você tirasse da tomada."""
+
+[schema]
+description = "Redimensione, corte e converta imagens JPEG, PNG e WebP no navegador. Defina um tamanho exato em pixels, uma porcentagem ou um lado maior, arraste uma caixa de corte ou trave numa proporção, e escreva o resultado como JPEG, PNG ou WebP. Aceita lotes, e nada é enviado."
+features = [
+  "Redimensiona por pixels exatos, pelo lado maior ou por porcentagem",
+  "Preencha um lado e o outro acompanha o formato da própria imagem",
+  "Caber dentro, preencher e cortar, completar com margem até um quadro exato, ou esticar",
+  "Uma caixa de corte arrastável por imagem, travável em 1:1, 4:5, 9:16, 16:9, 4:3 ou 3:2",
+  "Corta cada imagem de um jeito, ou aplica um enquadramento ao lote inteiro num clique",
+  "Abre cada imagem pronta em tamanho cheio, com todos os números por trás e o original para comparar",
+  "Converte entre JPEG, PNG e WebP, com controle de qualidade e cor de fundo",
+  "Nunca amplia uma imagem a menos que você peça",
+  "Devolve intocado qualquer arquivo que não foi pedido para mudar",
+  "Trabalha em lote, com todos os resultados num zip",
+  "Roda offline; sem envio, sem conta",
+]
+
+[picker]
+title = "Arraste imagens para cá"
+hint = "ou clique para escolher &mdash; JPEG, PNG, WebP e tudo o mais que o seu navegador conseguir abrir"

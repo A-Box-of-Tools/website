@@ -1,0 +1,17 @@
+#
+# Guia: juntar imagens em um PDF - português do Brasil.
+#
+
+nav = "Imagens em um PDF"
+title = "Como juntar imagens em um único PDF"
+description = "Transforme fotos ou escaneamentos num só PDF: tamanho de página, ordem e rotação, por que um JPEG não precisa perder qualidade na entrada e o que um PDF conta para quem o recebe."
+heading = "Como juntar imagens em um único PDF"
+lede = """
+    Alguém pediu &ldquo;um PDF só&rdquo; e você tem onze fotografias de papel.
+    Isto cobre as escolhas que de fato mudam o resultado &mdash; tamanho de
+    página, ordem, qualidade e o que o documento conta sobre você &mdash; e
+    quais delas dá para ignorar."""
+updated = "20 de agosto de 2026"
+og_title = "Como juntar imagens em um único PDF"
+og_description = "Tamanho de página, ordem e rotação, por que um JPEG não precisa perder qualidade na entrada e o que um PDF conta para quem o recebe."
+og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"

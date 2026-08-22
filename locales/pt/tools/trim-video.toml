@@ -1,0 +1,325 @@
+#
+# Aparador de vídeo - português do Brasil.
+#
+# Overrides for tools/trim-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Aparar" e não "cortar": em português os dois trabalhos de vídeo deste site
+# ficariam com o mesmo verbo, e o outro - mudar o formato da imagem - é o que
+# fica com "cortar". A distinção é a mesma que o inglês faz entre trim e crop,
+# e vale mantê-la porque as duas ferramentas se citam uma à outra.
+#
+
+name = "Aparador de vídeo"
+heading = "Aparar&nbsp;vídeo <span class=\"h1-kw\">&mdash; cortar trechos de um vídeo online</span>"
+tagline = "Marque os trechos que valem a pena enquanto ele toca. Receba tudo como um vídeo só."
+
+title = "Aparar um vídeo online &mdash; fique só com os trechos que quer, sem envio"
+description = "Assista a um vídeo e marque cada trecho que vale a pena enquanto ele toca, depois salve esses trechos como um arquivo só. Roda no navegador: nada é enviado, nada é recodificado, funciona offline."
+og_title = "Aparador de vídeo &mdash; fique só com os trechos que quer, sem enviar nada"
+og_description = "Aperte I e O enquanto toca para marcar cada trecho que vale a pena. Os trechos marcados são escritos de volta como um vídeo só, quadro a quadro, sem nada ser enviado."
+og_image_alt = "Aparador de vídeo - marque os trechos que você quer e salve como um vídeo só, no navegador"
+
+pledge = """
+    Seu vídeo é lido, marcado, cortado e escrito pelo seu próprio navegador, no
+    seu próprio hardware. Nada aqui consegue buscar ou mandar coisa alguma
+    &mdash; não existe função de rede nenhuma nesta ferramenta &mdash; e não
+    existe do outro lado desta página servidor nenhum para onde mandar um vídeo,
+    mesmo que houvesse caminho."""
+
+live_hint = """
+      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
+      aba Rede e apare um vídeo. Nenhuma requisição leva um quadro, um nome de
+      arquivo ou um byte do que você escolheu. Ou desconecte da internet e apare
+      um mesmo assim &mdash; uma ferramenta que mandasse o seu vídeo embora para
+      ser aparado simplesmente pararia."""
+
+read_first = """
+, <code>src/segments.js</code> para as marcações e o
+      arquivo em que elas são salvas, <code>src/demux.js</code> para o leitor que
+      acha os quadros num MP4, <code>src/ranges.js</code> para a aritmética que
+      transforma uma marcação numa sequência de amostras, e
+      <code>src/copy.js</code> para o laço que move essas amostras para o arquivo
+      novo. Nenhum deles importa qualquer coisa que consiga fazer uma
+      requisição."""
+
+howto_heading = "Como aparar um vídeo"
+
+card = """
+            Marque cada trecho que vale a pena enquanto ele toca, e salve tudo
+            como um vídeo só. Os quadros são copiados em vez de recodificados,
+            então nada se perde."""
+
+[words]
+plural = "vídeos"
+choose = "um vídeo"
+analytics_extra = """, nem nenhum
+  quadro, duração ou ponto de corte"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem marca d'água"
+
+[[facts]]
+text = "Quantos trechos você quiser"
+
+[[facts]]
+text = "Sem perda de qualidade"
+
+[[facts]]
+text = "Funciona offline"
+
+[[privacy]]
+title = "Seus vídeos não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy nomeia todos os endereços que esta página pode
+      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
+      o seu arquivo pudesse ser coletado, e não existe no código nada que o
+      mandaria se existisse."""
+
+[[privacy]]
+title = "Nada aqui busca coisa alguma."
+body = """
+ Esta ferramenta não tem função de
+      rede nenhuma: nenhum endereço para colar, nada para baixar, nenhum motor
+      buscado no primeiro uso. Cada byte que encosta no seu vídeo veio desta
+      origem quando a página carregou."""
+
+[[privacy]]
+title = "No caminho normal, nada chega sequer a ser decodificado."
+body = """
+
+      Aparar não muda a aparência de quadro nenhum, então os quadros codificados
+      dos trechos que você marcou são movidos para o arquivo novo exatamente como
+      foram encontrados. Cada um é guardado como uma fatia do arquivo no seu disco
+      &mdash; uma anotação dizendo quais bytes, e não os bytes em si &mdash; e o
+      seu navegador os lê pela primeira vez enquanto escreve o download. Nada aqui
+      jamais transforma o seu vídeo de volta em imagem."""
+
+[[privacy]]
+title = "O arquivo de marcações é feito na página."
+body = """
+ Salvar as suas
+      marcações escreve um arquivo de texto a partir dos números que já estão na
+      tela, direto para os seus downloads. Carregar um lê o arquivo aqui. Nenhum
+      dos dois chega perto de uma rede, e nenhum dos dois carrega nada além de
+      tempos."""
+
+[[privacy]]
+title = "O som é copiado, não escutado."
+body = """
+ Nos dois caminhos de MP4, as
+      amostras de áudio são movidas sem serem decodificadas &mdash; nada aqui
+      jamais as transforma de volta em som, e nada conseguiria passá-las a lugar
+      nenhum se transformasse."""
+
+[[privacy]]
+title = "Onde quadros são decodificados, isso acontece aqui."
+body = """
+ O corte
+      exato, e a pré-visualização de um arquivo que este navegador não toca, passam
+      pelo WebCodecs na sua própria máquina. É o mesmo decodificador que lhe
+      mostraria o vídeo de qualquer jeito, rodando no mesmo lugar."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não é entregue a ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google. Nenhum dos dois recebe coisa alguma
+      sobre o seu vídeo: nem um arquivo, nem um quadro, nem um nome, um tamanho,
+      uma duração ou onde você cortou. Toda linha que lê, corta e escreve é
+      servida desta origem e está listada no repositório."""
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não é entregue a ele."
+body = """
+
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um
+      script vindo de cdnjs.buymeacoffee.com e busca as letras dele no Google
+      Fonts. É um link e nada mais: ele não reporta visita nenhuma, e não recebe
+      nada sobre você nem sobre o seu vídeo."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desconecte da rede e tudo nesta página continua
+      funcionando. Essa é a prova mais simples de todas."""
+
+[[howto]]
+title = "Escolha um vídeo."
+body = """
+ Arraste um MP4, MOV, M4V ou WebM até o
+      seletor. Ele é lido direto do seu disco pelo navegador; nada é mandado para
+      lugar nenhum enquanto você faz isso. Arraste vários e eles são emendados, na
+      ordem em que você os colocou."""
+
+[[howto]]
+title = "Toque, e marque os trechos que você quer."
+body = """
+ Aperte
+      <kbd>I</kbd> onde um trecho deve começar e <kbd>O</kbd> onde ele deve
+      terminar. Faça isso quantas vezes quiser &mdash; cada par vira uma linha na
+      tabela de baixo, e uma faixa na linha do tempo. <kbd>U</kbd> desfaz o
+      último, <kbd>Espaço</kbd> toca e pausa, e as setas pulam cinco segundos por
+      vez. Diminua a velocidade de reprodução se o momento for difícil de
+      pegar."""
+
+[[howto]]
+title = "Acerte as marcações."
+body = """
+ Cada linha pode ser reproduzida sozinha,
+      retemporizada digitando um tempo exato nela, movida para cima ou para baixo
+      na ordem, ou apagada. As duas pontas do trecho selecionado também podem ser
+      arrastadas ao longo da linha do tempo. O total lá em cima é o que o vídeo
+      pronto vai durar."""
+
+[[howto]]
+title = "Fique com eles, ou tire-os fora."
+body = """
+ Ficar é o sentido de
+      sempre: o vídeo pronto são os trechos que você marcou, emendados em ordem.
+      Tirá-los fora é o outro trabalho que as pessoas querem e raramente acham
+      &mdash; marque os comerciais, os silêncios ou as tentativas falhas, e o que
+      sobra é emendado sem eles."""
+
+[[howto]]
+title = "Apare, e baixe."
+body = """
+ &ldquo;Manter cada byte&rdquo; move os
+      quadros intocados: rápido, e não tem como custar qualidade, mas cada trecho
+      começa no keyframe anterior à sua marcação. &ldquo;Cortar exatamente
+      aqui&rdquo; decodifica e escreve a imagem de novo, para que cada trecho
+      comece no quadro que você escolheu. A página diz qual dos dois você está
+      prestes a receber, e o que isso custa, antes de você apertar o botão."""
+
+[[faq]]
+q = "Meu vídeo é enviado para algum lugar?"
+a = """
+        Não. Ele é lido, marcado, cortado e escrito pelo seu próprio navegador no
+        seu próprio hardware. Não existe lado de servidor nesta ferramenta, e a
+        <code>Content-Security-Policy</code> da página nomeia todos os endereços que
+        ela pode contatar &mdash; nenhum deles é deste site. Desconecte da internet e
+        apare um vídeo mesmo assim, se preferir conferir a acreditar."""
+
+[[faq]]
+q = "Posso ficar com vários trechos do mesmo vídeo?"
+a = """
+        É para isso que isto serve. Aperte <kbd>I</kbd> e <kbd>O</kbd> quantas vezes
+        quiser enquanto ele toca; cada par vira uma linha, e o vídeo pronto é cada
+        linha emendada em ordem, com todo o resto fora. A maioria dos aparadores
+        online lhe dá um par de alças e pergunta qual trecho único manter, o que
+        serve para aparar a ponta de um clipe e não serve de nada para assistir a
+        uma hora de gravação uma vez e ficar com os seis momentos que prestam."""
+
+[[faq]]
+q = "Aparar perde qualidade?"
+a = """
+        Não no caminho normal, e não do jeito que importa. Aparar não muda a
+        aparência de quadro nenhum, então os quadros são movidos para o arquivo novo
+        exatamente como estavam: os mesmos bytes, os mesmos ajustes de codificador,
+        tudo igual. O único caminho daqui que recodifica alguma coisa é o corte
+        exato, e ele diz isso no botão."""
+
+[[faq]]
+q = "Por que um trecho começa antes de onde eu marquei?"
+a = """
+        Por causa de como o vídeo é guardado, e só em reprodutores que ignoram uma
+        parte padronizada do formato. A maioria dos quadros é guardada como uma
+        descrição de como eles diferem dos vizinhos, então não podem ser
+        decodificados sem eles; só um keyframe se sustenta sozinho, e os keyframes
+        ficam tipicamente de um a dez segundos de distância. Um corte que copia
+        quadros precisa, portanto, carregar a sequência a partir do keyframe
+        anterior à sua marcação &mdash; e o arquivo diz <em>comece a tocar na sua
+        marcação</em>, o que todo reprodutor mais usado respeita. Se você precisa
+        que seja exato em todo reprodutor, escolha &ldquo;Cortar exatamente
+        aqui&rdquo;, que recodifica. A página lhe diz em qual caso você está, e por
+        quanto, antes de exportar."""
+
+[[faq]]
+q = "Posso tirar os comerciais em vez disso?"
+a = """
+        Pode. Marque-os e escolha &ldquo;Tirar fora&rdquo;: tudo o que você
+        <em>não</em> marcou é emendado, em ordem. A mesma lista de marcações
+        responde às duas perguntas, então você pode alternar entre elas e ver a
+        duração mudar sem marcar nada duas vezes."""
+
+[[faq]]
+q = "Posso salvar minhas marcações e voltar a elas depois?"
+a = """
+        Pode. &ldquo;Salvar marcações&rdquo; escreve um arquivo de texto puro
+        &mdash; uma linha por trecho, um início e um fim separados por vírgula
+        &mdash; e &ldquo;Carregar marcações&rdquo; lê um de volta. Dois formatos são
+        oferecidos, segundos simples e <code>HH:MM:SS.mmm</code>, e os dois seguem o
+        mesmo desenho que outras ferramentas do gênero já usam, então um arquivo
+        escrito aqui pode ser entregue a uma delas e um arquivo escrito lá pode ser
+        jogado nesta página. Marcar é trabalho cuidadoso e ninguém deveria ter que
+        fazer duas vezes."""
+
+[[faq]]
+q = "Quais formatos de vídeo posso aparar?"
+a = """
+        MP4, M4V e MOV são lidos diretamente, seja lá o que houver dentro deles:
+        H.264, HEVC, AV1 ou VP9. Copiar quadros não envolve decodificá-los, então
+        esse caminho funciona até para um codec para o qual o seu navegador não tem
+        decodificador nenhum. Qualquer outra coisa que o seu navegador consiga tocar
+        &mdash; WebM mais obviamente &mdash; é aparada tocando o arquivo e gravando
+        o resultado, o que funciona, leva o mesmo tempo que o resultado dura, e só
+        consegue manter um trecho. Um arquivo que o navegador não consegue nem ler
+        nem tocar, o que na prática significa AVI, WMV, FLV e a maioria dos MKVs, é
+        recusado com uma mensagem dizendo isso, em vez de falhar no meio do
+        caminho."""
+
+[[faq]]
+q = "Existe limite de tamanho ou de duração do vídeo?"
+a = """
+        Não há limite embutido na ferramenta, e no caminho de cópia o arquivo mal é
+        lido: os quadros que você mantém são apontados em vez de carregados, então
+        ficar com quatro minutos de uma gravação de quatro gigabytes custa mais ou
+        menos o que custa escrever esses quatro minutos no disco. O corte exato
+        percorre o arquivo em fatias de alguns megabytes. De todo jeito o teto
+        prático é o arquivo pronto, que é montado na memória antes de você
+        baixá-lo."""
+
+[[faq]]
+q = "O som sobrevive?"
+a = """
+        Nos dois caminhos de MP4 ele é copiado amostra por amostra sem nunca ser
+        decodificado, então é byte a byte o que estava no arquivo, e um marcador de
+        edição mantém cada trecho alinhado com a imagem dele dentro de um milésimo
+        de segundo. A única exceção é emendar vídeos separados cujo som é descrito
+        de formas diferentes &mdash; taxas de amostragem diferentes, por exemplo
+        &mdash; onde não há como pôr os dois numa trilha só sem decodificá-los, e a
+        página diz isso antes de fazer. No caminho da gravação, ele é capturado da
+        reprodução e codificado de novo. De qualquer jeito, existe uma caixinha para
+        deixá-lo de fora por completo."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não há conta, nem login, nem período de teste, nem marca
+        d'água. O site exibe publicidade, e é ela que paga a conta; os anúncios não
+        recebem nada sobre o seu vídeo."""
+
+[schema]
+browser_requirements = "Requer JavaScript. Copiar quadros não precisa de suporte a codec de vídeo nenhum; o corte exato precisa de um navegador com WebCodecs, e outros formatos recuam para gravação."
+description = "Marque quantos trechos quiser de um vídeo enquanto ele toca, e salve esses trechos como um arquivo só - ou tire-os fora e fique com o resto. MP4, MOV e M4V são aparados movendo os quadros codificados para um arquivo novo, intocados, com o áudio original levado adiante amostra por amostra; nada é enviado e nada é recodificado."
+features = [
+  "Marca quantos trechos você quiser, com I e O, enquanto o vídeo toca",
+  "Emenda os trechos marcados num arquivo só, na ordem que você escolher",
+  "Ou tira os trechos marcados fora, mantendo todo o resto",
+  "Apara sem recodificar, então nenhuma qualidade se perde",
+  "Salva e recarrega as marcações como um arquivo de texto com os tempos",
+  "Marcações com precisão de quadro, com os keyframes mostrados na linha do tempo",
+  "Mantém o áudio original sem recodificá-lo",
+  "Roda offline; sem envio, sem conta, sem marca d'água",
+]
+
+[picker]
+title = "Arraste um vídeo para cá"
+hint = "ou clique para escolher &mdash; MP4, MOV, M4V, WebM. Arraste vários para emendá-los."

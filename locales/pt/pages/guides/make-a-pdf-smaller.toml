@@ -1,0 +1,17 @@
+#
+# Guia: deixar um PDF menor - português do Brasil.
+#
+
+nav = "Deixar um PDF menor"
+title = "Como deixar um PDF menor (e por que alguns não encolhem)"
+description = "Onde o tamanho de um PDF realmente está, por que um escaneamento comprime 80% e um contrato quase não se mexe, o que DPI significa aqui e o que um compressor jamais deveria fazer com o seu documento."
+heading = "Como deixar um PDF menor, e por que alguns não encolhem"
+lede = """
+    Um PDF que não cabe no limite do e-mail é quase sempre um PDF cheio de
+    imagens. Aqui está como descobrir se o seu é assim, o que comprimi-lo
+    custa e por que qualquer ferramenta que promete uma porcentagem fixa não
+    olhou para o seu arquivo."""
+updated = "20 de agosto de 2026"
+og_title = "Como deixar um PDF menor"
+og_description = "Onde o tamanho de um PDF realmente está, por que um escaneamento encolhe e um contrato não, e o que o DPI tem a ver com isso."
+og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"

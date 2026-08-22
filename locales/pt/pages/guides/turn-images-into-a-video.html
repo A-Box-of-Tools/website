@@ -1,0 +1,194 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Abra o <a href="../../imagens-para-video/">Imagens para vídeo</a>, jogue
+      as imagens dentro, coloque em ordem, defina quanto tempo cada uma fica na
+      tela e crie o vídeo. Você recebe um MP4 com vídeo H.264, que toca em
+      basicamente qualquer coisa.
+    </p>
+    <p>
+      Os dois ajustes que mais costumam obrigar a uma segunda passada são a
+      duração e a resolução, e vale entendê-los antes da primeira renderização,
+      não depois.
+    </p>
+  </section>
+
+  <section>
+    <h2>Taxa de quadros e duração não são a mesma coisa</h2>
+    <p>
+      Essa é a confusão que custa às pessoas uma nova renderização.
+    </p>
+    <p>
+      <strong>Duração</strong> é quanto tempo cada imagem fica na tela. É o
+      ajuste com que você de fato se importa. Três segundos é um padrão
+      confortável para uma apresentação que alguém está assistindo; um a dois
+      segundos parece ágil; qualquer coisa acima de cinco arrasta, a menos que
+      haja narração por cima.
+    </p>
+    <p>
+      <strong>Taxa de quadros</strong> é quantas vezes por segundo o vídeo repete
+      aquela imagem. Ela não muda nada na aparência da apresentação &mdash; uma
+      imagem parada mantida por três segundos fica idêntica a 24 quadros por
+      segundo e a 60 &mdash; e muda bastante o tamanho do arquivo e o tempo de
+      codificação.
+    </p>
+    <p>
+      Então, para uma apresentação simples, escolha uma taxa de quadros baixa. 24
+      ou 30 dá e sobra. O motivo para subir é se houver movimento no vídeo: um
+      travelling ou zoom sobre cada foto, ou uma transição entre elas, onde uma
+      taxa baixa aparece como serrilhado no movimento.
+    </p>
+  </section>
+
+  <section>
+    <h2>Resolução, e imagens de formato errado</h2>
+    <p>
+      Um vídeo tem um único tamanho de quadro do começo ao fim. As suas
+      fotografias quase certamente não têm todas o mesmo, então alguma coisa
+      precisa acontecer com as que não couberem &mdash; e essa alguma coisa é a
+      escolha que vale fazer de propósito.
+    </p>
+    <p>
+      Comece escolhendo a resolução a partir do destino do vídeo:
+    </p>
+    <ul>
+      <li>
+        <strong>1920&times;1080</strong> para qualquer coisa geral. Suportado
+        universalmente, toca em todo lugar, e é o que a maioria das pessoas
+        chama de HD.
+      </li>
+      <li>
+        <strong>1080&times;1920</strong> &mdash; os mesmos números ao contrário
+        &mdash; para um destino pensado no celular: stories, reels, shorts.
+      </li>
+      <li>
+        <strong>3840&times;2160</strong> só se as imagens realmente tiverem todo
+        esse detalhe e o destino for exibi-lo. São quatro vezes os pixels, quatro
+        vezes o tempo de codificação e mais ou menos quatro vezes o arquivo.
+      </li>
+    </ul>
+    <p>
+      Depois decida o que acontece com as que não batem. Caber cada imagem dentro
+      do quadro mantém tudo e deixa tarjas nas laterais &mdash; seguro, e a
+      resposta certa quando as imagens importam mais do que a apresentação.
+      Preencher o quadro e cortar o que sobra fica mais bonito e vai cortar o
+      topo de algumas delas. Misturar fotos em pé e deitadas num vídeo só é o
+      caso em que não existe boa resposta; decidir antes de qual jeito você
+      prefere errar poupa uma nova renderização.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ordem, e a armadilha do nome de arquivo</h2>
+    <p>
+      Como em qualquer trabalho em lote, os nomes de arquivo se ordenam de um
+      jeito que não é o jeito como você contou. <code>photo2.jpg</code> vem
+      depois de <code>photo10.jpg</code> numa ordenação alfabética, porque a
+      comparação é caractere por caractere.
+    </p>
+    <p>
+      Ordenar pela data em que a foto foi tirada costuma estar certo para
+      fotografias de um evento, já que você as tirou na ordem em que as coisas
+      aconteceram. Arrastar os quadradinhos está certo para qualquer coisa em
+      que a história não seja cronológica. Confira antes de renderizar: o vídeo é
+      o único produto em que consertar a ordem significa refazer o trabalho
+      inteiro.
+    </p>
+  </section>
+
+  <section>
+    <h2>Não há trilha sonora, e isso não é pouca coisa</h2>
+    <p>
+      O MP4 que esta ferramenta escreve tem uma única trilha de vídeo e nenhuma
+      trilha de áudio. Se a sua apresentação precisa de música ou narração, você
+      vai precisar de um editor de vídeo para essa etapa.
+    </p>
+    <p>
+      Vale saber por quê, e não apenas que é assim: acrescentar áudio significa
+      decodificar um arquivo de música, codificá-lo em AAC e intercalá-lo com o
+      vídeo dentro do contêiner. As três coisas são trabalho de verdade, e
+      fazê-las mal produz um arquivo que vai perdendo o sincronismo enquanto
+      toca. Está na lista em vez de estar pela metade.
+    </p>
+    <p>
+      Uma nota prática, se você for acrescentar música depois: escolha a faixa
+      primeiro e ajuste a duração por imagem para que a apresentação saia perto
+      da duração da música. Aparar a música para caber no vídeo sempre soa pior
+      que ajustar o vídeo à música.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que sai, e o que fazer se não tocar</h2>
+    <p>
+      MP4 com H.264 é o alvo, e é a combinação mais amplamente reproduzível que
+      existe. Num navegador sem WebCodecs a ferramenta recua para gravar WebM
+      &mdash; as mesmas imagens num contêiner que menos editores e menos
+      plataformas sociais aceitam.
+    </p>
+    <p>
+      Se você acabar com um WebM e alguma coisa recusar, o conserto é um
+      navegador com suporte a WebCodecs, e não uma conversão: as versões atuais
+      do Chrome, do Edge e do Safari têm. Renderizar de novo é melhor do que
+      converter, porque converter significa mais uma geração de codificação com
+      perdas.
+    </p>
+    <p>
+      Não há limite embutido na ferramenta para quantas imagens você pode usar. O
+      teto é a memória da sua própria máquina, porque o vídeo pronto é montado
+      ali antes de você baixá-lo &mdash; uma apresentação longa em 4K é a
+      primeira coisa a sentir isso.
+    </p>
+  </section>
+
+  <section>
+    <h2>Deixando o arquivo menor</h2>
+    <p>
+      Se o resultado ficar grande demais para onde ele vai, na ordem do que de
+      fato ajuda:
+    </p>
+    <p>
+      <strong>Baixe a taxa de quadros.</strong> Numa apresentação de imagens
+      paradas isso não custa nada visível e é a maior economia isolada
+      disponível.
+    </p>
+    <p>
+      <strong>Baixe a resolução.</strong> 1080p em vez de 4K é um quarto dos
+      pixels, e numa tela de celular ninguém vai perceber.
+    </p>
+    <p>
+      <strong>Encurte.</strong> Três segundos por imagem em vez de cinco tira 40%
+      da duração e 40% do arquivo, e em geral dá uma apresentação melhor.
+    </p>
+    <p>
+      Diminuir as fotografias de origem não ajuda muito. O vídeo é codificado na
+      resolução que você escolheu de todo jeito, então uma foto de 4000 pixels e
+      uma de 2000 produzem quase o mesmo número de bytes num vídeo 1080p. O que
+      isso faz é acelerar a codificação, e empurrar aquele teto de memória.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que isso não precisa de servidor, com uma exceção declarada</h2>
+    <p>
+      Codificar vídeo já foi o caso mais evidente a favor do envio: navegadores
+      não davam conta, e uma máquina com FFmpeg dava. O WebCodecs mudou isso ao
+      expor o codificador de hardware que já está na sua máquina, que é o mesmo
+      que o seu celular usa para gravar vídeo em tempo real. Compor os quadros é
+      um canvas. Nenhuma das duas etapas precisa de nada além do seu próprio
+      hardware.
+    </p>
+    <p>
+      Uma exceção nesta ferramenta específica, declarada em vez de escondida: a
+      função opcional de &ldquo;adicionar a partir de um endereço da web&rdquo;
+      busca uma imagem num endereço que você cola, e o servidor daquele endereço
+      enxerga o seu IP e o que você pediu. Isso é inerente à função, e não um
+      defeito dela, e é a única etapa de rede em toda a ferramenta. Não use essa
+      função e nada sai da sua máquina.
+    </p>
+    <p>
+      <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
+      conversores online?</a> apresenta quatro verificações que lhe dizem a mesma
+      coisa sobre qualquer ferramenta, esta inclusive.
+    </p>
+  </section>

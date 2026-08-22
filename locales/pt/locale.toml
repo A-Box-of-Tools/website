@@ -16,7 +16,11 @@ name = "Portuguese (Brazil)"
 endonym = "Português"
 hreflang = "pt-BR"
 
-complete = false
+# Finished: every tool, every guide, the roadmap list and the two legal
+# pages. From here a missing key is a build failure rather than a silent
+# fallback to English, and the link check runs over the Portuguese slugs -
+# see check_complete in buildlib/i18n.py.
+complete = true
 
 #
 # ---------------------------------------------------------------------------
@@ -32,10 +36,25 @@ complete = false
 "edit-audio" = "editar-audio"
 # Quase ninguém procura um "editor EXIF"; procura-se como tirar os dados de uma foto.
 "exif-editor" = "remover-dados-exif"
+# Quem quer isto quase nunca digita "HEIC": digita o que quer no fim, que é um
+# JPG que todo mundo abre. O nome do formato fica, porque é ele que está no
+# arquivo que a pessoa acabou de tirar do iPhone.
+"heic-to-jpg" = "heic-para-jpg"
+# "Data URI" é jargão; "base64" é o que se digita na busca e o que aparece na
+# linha do CSS que a pessoa quer colar.
+"image-to-data-uri" = "imagem-para-base64"
+# Pelo trabalho, não pelo formato: ninguém procura "imagem para ICO", e muita
+# gente procura como fazer um favicon.
+"image-to-ico" = "criar-favicon"
 "images-to-pdf" = "imagens-para-pdf"
 "images-to-video" = "imagens-para-video"
+# No Brasil se fala "gerar um QR Code", não "criar" nem "fazer". O código de
+# barras fica de fora do endereço: é a metade menos procurada das duas.
+"qr-barcode" = "gerar-qr-code"
 "resize-image" = "redimensionar-imagem"
+"svg-to-image" = "svg-para-png"
 "trim-video" = "aparar-video"
+"video-to-gif" = "video-para-gif"
 
 "guides" = "guias"
 "roadmap" = "roteiro"
@@ -51,6 +70,12 @@ complete = false
 "guides/trim-a-video" = "guias/aparar-um-video"
 "guides/crop-a-video" = "guias/cortar-um-video"
 "guides/is-it-safe-to-upload-files" = "guias/e-seguro-enviar-arquivos"
+"guides/make-a-favicon" = "guias/criar-um-favicon"
+"guides/convert-an-svg-to-png" = "guias/converter-svg-para-png"
+"guides/convert-heic-to-jpg" = "guias/converter-heic-para-jpg"
+"guides/embed-an-image-in-css" = "guias/colocar-uma-imagem-no-css"
+"guides/make-a-qr-code" = "guias/gerar-um-qr-code"
+"guides/turn-a-video-into-a-gif" = "guias/transformar-um-video-em-gif"
 
 #
 # ---------------------------------------------------------------------------
@@ -122,7 +147,7 @@ note = "Crie e reorganize documentos sem mandá-los para serem processados fora.
 
 [[hub.categories]]
 name = "Códigos e dados"
-note = "Transformar o que você digitou em algo que uma máquina consegue ler, sem que saia da página."
+note = "Transforme o que você digitou em algo que uma máquina consegue ler, sem que isso saia da página."
 
 [[hub.categories]]
 name = "Texto e código"
@@ -147,7 +172,6 @@ lede = """
 og_title = "Guias do abox.tools"
 og_description = "Como comprimir, redimensionar, cortar, aparar e converter seus arquivos, e o que cada ajuste custa. Sem envio nenhum."
 og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"
-
 
 [[guides.groups]]
 name = "Fazendo o trabalho"
@@ -290,8 +314,13 @@ questions_heading = "Perguntas"
 guide_heading = "A versão longa"
 privacy_heading = "Como a promessa de privacidade se verifica"
 
+# O inglês escreve "Your {{ plural }} are never uploaded", e o particípio
+# concorda em gênero: "enviadas" para imagens e fotos, "enviados" para vídeos
+# e documentos. Como o substantivo vem de cada ferramenta, nenhuma das duas
+# formas serve para todas - então a frase foi reescrita em volta de um verbo
+# que não concorda com nada.
 pledge_line = """
-    Suas {{ tool.words.plural }} <strong>nunca são enviadas</strong>. Não existe servidor."""
+    <strong>Nada sai daqui</strong> &mdash; nem {{ tool.words.plural }}. Não existe servidor."""
 
 boot_title = "O código desta página não iniciou."
 boot_body = """
@@ -317,14 +346,20 @@ read_first_lead = """
 [ui.guide]
 open_tool = "Abrir {{ tool.name | e }}"
 
+# O inglês faz o plural aqui grudando um "s" no substantivo - "its
+# {{ noun }}s" - e isso só funciona em inglês: o plural de "imagem" é
+# "imagens". As duas frases abaixo usam o substantivo apenas onde ele não
+# obriga concordância nenhuma: depois de "qual" e depois de "cada", que são
+# invariáveis em gênero e em número. Assim o próximo tool que ganhar um
+# [picker.urls] pode nomear o que quiser sem quebrar a gramática.
 [ui.picker]
 warning = """
       <strong>Esta é a única função que encosta na rede.</strong>
       Buscar um endereço informa àquele servidor o seu IP e qual {{ tool.picker.urls.noun }} você
-      pediu. A {{ tool.picker.urls.noun }} é copiada para a memória local ao chegar e nunca mais é
-      pedida de novo. Nada seu jamais sai &mdash; esta página continua incapaz
+      pediu. O que chega é copiado para a memória local na hora e nunca mais é
+      pedido de novo. Nada seu jamais sai &mdash; esta página continua incapaz
       de fazer qualquer envio."""
 label = "Um endereço por linha"
 note = """
-      O servidor precisa permitir o uso entre origens das suas {{ tool.picker.urls.noun }}s. Muitos sites não
+      O servidor precisa permitir o uso entre origens de cada {{ tool.picker.urls.noun }}. Muitos sites não
       permitem, e esses vão falhar com uma mensagem em vez de quebrar em silêncio mais tarde."""

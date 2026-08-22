@@ -1,0 +1,21 @@
+#
+# Guia: criar um favicon - português do Brasil.
+#
+# "Favicon" fica como está: é o nome do arquivo e do elemento no HTML, e é
+# assim que a palavra é usada no Brasil - não existe tradução em circulação.
+#
+
+nav = "Criar um favicon"
+title = "Como criar um favicon (e um ícone de aplicativo do Windows)"
+description = "De quais tamanhos um favicon.ico realmente precisa, quais arquivos extras o iPhone, o Android e o Mac pedem, e por que uma logomarca que funciona num cartaz desaparece a dezesseis pixels."
+heading = "Como criar um favicon que ainda se lê a dezesseis pixels"
+lede = """
+    Um favicon não é uma foto pequena da sua logomarca. É um conjunto de
+    imagens em tamanhos fixos, dentro de um contêiner que quase ninguém abre, e
+    a menor delas é a que todo mundo de fato vê. Aqui estão os tamanhos de que
+    você precisa, os arquivos que vão ao lado deles e o que fazer quando sua
+    logomarca não sobrevive à descida."""
+updated = "20 de agosto de 2026"
+og_title = "Criar um favicon que ainda se lê a dezesseis pixels"
+og_description = "De quais tamanhos um favicon.ico precisa, os arquivos extras que o iPhone e o Android pedem, e o que fazer quando sua logomarca não sobrevive à redução."
+og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"

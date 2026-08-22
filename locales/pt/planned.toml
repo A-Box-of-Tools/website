@@ -1,0 +1,77 @@
+#
+# A lista planejada da página de roteiro - português do Brasil.
+#
+# Overrides for config/planned.toml. Only words: the group `id` stays as it is,
+# because that is what a tool's roadmap_group matches on, and the order of the
+# groups and of the items inside them is decided once, in English.
+#
+# Every group and every item has to be here. They are merged in order, so a
+# missing entry would render in English in the middle of a Portuguese list with
+# nothing on the page to say which one it was - the build refuses a list whose
+# length has changed for exactly that reason.
+#
+# Os nomes de formato ficam como estão: JPG, HEIC, AVIF, MP4, SRT e CSV são a
+# mesma coisa em qualquer idioma, e traduzi-los só tornaria a lista mais difícil
+# de reconhecer para quem já sabe o que está procurando.
+#
+
+note = "Ainda não construídas. Listadas para você ver aonde isto vai dar."
+
+[[group]]
+name = "Imagens"
+items = [
+  ["Girar e espelhar", "em quartos de volta, ou endireitando por alguns graus"],
+  ["Escrever na imagem", "por cima da foto, ou numa tarja de legenda acima dela"],
+  ["Filtros", "brilho, contraste, saturação, desfoque, preto e branco"],
+  ["Imagem para data URI", "cole o resultado direto no CSS ou no HTML"],
+  ["HEIC para JPG", "as fotos que o iPhone tira, num formato que tudo abre"],
+  ["AVIF e JPEG XL", "converta nos dois sentidos, no navegador que você estiver usando"],
+]
+
+[[group]]
+name = "GIF e animação"
+items = [
+  ["GIF para MP4 ou WebM", "a mesma animação, em geral com um décimo do tamanho"],
+  ["Separar um GIF", "cada quadro sai como um PNG"],
+  ["Redimensionar, cortar e girar GIFs", "quadro a quadro, mantendo o tempo de cada um"],
+  ["Inverter um GIF", "o último quadro primeiro"],
+  ["Mudar a velocidade do GIF", "retemporizar sem renderizar os quadros de novo"],
+  ["Analisador de GIF", "quadros, atrasos, paleta e para onde foram os bytes"],
+  ["Criar APNG", "animação com transparência de verdade e cor completa"],
+  ["WebP animado", "de novo a mesma animação, por uma fração do tamanho"],
+]
+
+[[group]]
+name = "Vídeo"
+items = [
+  ["Redimensionar", "até um tamanho que realmente vá conseguir ser enviado"],
+  ["Girar", "para aquele clipe que foi filmado deitado"],
+  ["Tirar o som, ou salvar o áudio", "descarte o som, ou guarde ele sozinho"],
+  ["Converter para MP4 ou WebM", "seja qual for o que o site onde você vai postar exige"],
+  ["Filtros", "brilho, contraste, saturação, desfoque"],
+  ["Gravar legendas na imagem", "um arquivo SRT desenhado dentro do quadro"],
+]
+
+[[group]]
+name = "Áudio"
+items = [
+  ["Aparar", "fique com o trecho que você queria"],
+  ["Abrir e fechar em fade", "para não começar e terminar num corte seco"],
+  ["Forma de onda em imagem", "desenhar uma faixa como figura"],
+  ["Converter formato", "MP3, WAV e Opus, em qualquer direção"],
+]
+
+[[group]]
+name = "Documentos e PDF"
+items = [
+  ["Juntar, separar e reordenar", "páginas trocadas de lugar sem ida e volta a um servidor"],
+  ["Girar e cortar páginas", "endireitar um escaneamento que veio deitado, ou aparar as margens"],
+  ["Extrair imagens", "tirar as figuras de volta de dentro de um documento"],
+]
+
+[[group]]
+name = "Além de mídia"
+items = [
+  ["Dados", "conversão, limpeza e inspeção de CSV e JSON"],
+  ["Privacidade e segurança", "hashes, somas de verificação, remoção de metadados"],
+]

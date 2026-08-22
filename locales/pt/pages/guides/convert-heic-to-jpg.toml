@@ -1,0 +1,17 @@
+#
+# Guia: converter HEIC em JPG - português do Brasil.
+#
+
+nav = "HEIC para JPG"
+title = "Como converter HEIC em JPG (e o que HEIC é de verdade)"
+description = "iPhones salvam fotos em HEIC, e metade da internet não consegue abrir uma. O que é o formato, por que só o Safari decodifica, o que a conversão custa à imagem e como fazer isso sem entregar as fotos a ninguém."
+heading = "A foto que seu celular salvou, e o formato que nada abre"
+lede = """
+    O iPhone salva fotos em HEIC, um formato menor e melhor que o JPEG e que
+    um monte de programa ainda se recusa a abrir. Aqui está o que o formato é
+    de fato, o que a conversão custa à imagem e por que quase todo conversor
+    quer que você mande a foto para ele primeiro."""
+updated = "20 de agosto de 2026"
+og_title = "Como converter HEIC em JPG"
+og_description = "Por que fotos de iPhone não abrem, o que a conversão custa e como fazer sem entregar as fotos a ninguém."
+og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"
