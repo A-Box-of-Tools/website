@@ -1,0 +1,166 @@
+<main>
+  <!-- Étape 1 &mdash; les images -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisir des images</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    {% include "partials/url-import.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="Changer l'affichage de la liste">
+          <button type="button" data-view="large" class="active">Grand</button>
+          <button type="button" data-view="small">Petit</button>
+          <button type="button" data-view="list">Liste</button>
+          <button type="button" data-view="details">Détails</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">Trier par nom</button>
+        <button type="button" data-sort="date" class="ghost">Trier par date</button>
+        <button type="button" data-sort="reverse" class="ghost">Inverser</button>
+        <button type="button" id="clear-all" class="ghost danger">Tout retirer</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Faites glisser une image par sa poignée <span class="grip" aria-hidden="true">&#8942;&#8942;</span>
+      pour réordonner, ou servez-vous des flèches sur chacune.
+    </p>
+
+    <ul id="image-list" class="image-list view-large"></ul>
+
+    <div id="bulk-duration" class="bulk" hidden>
+      <label for="bulk-amount">Tenir chaque image pendant</label>
+      <input type="number" id="bulk-amount" min="1" max="3600" step="1" value="1">
+      <select id="duration-unit" aria-label="Unité de la durée d'affichage de chaque image">
+        <option value="frames" selected>images</option>
+        <option value="seconds">secondes</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">Appliquer à toutes</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Étape 2 &mdash; les réglages -->
+  <section class="card">
+    <h2><span class="step">2</span> Réglages de la vidéo</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="resolution">Résolution</label>
+        <select id="resolution">
+          <option value="auto" selected>Suivre la plus haute résolution</option>
+          <option value="3840x2160">3840 &times; 2160 &mdash; 4K</option>
+          <option value="1920x1080">1920 &times; 1080 &mdash; 1080p</option>
+          <option value="1280x720">1280 &times; 720 &mdash; 720p</option>
+          <option value="1080x1080">1080 &times; 1080 &mdash; carré</option>
+          <option value="1080x1920">1080 &times; 1920 &mdash; vertical</option>
+          <option value="custom">Personnalisée&hellip;</option>
+        </select>
+        <div id="resolution-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="7680" step="2" value="1920"
+                 aria-label="Largeur de sortie personnalisée, en pixels">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="7680" step="2" value="1080"
+                 aria-label="Hauteur de sortie personnalisée, en pixels">
+        </div>
+        <p class="field-note" id="resolution-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fps">Cadence</label>
+        <select id="fps">
+          <option value="12">12 fps</option>
+          <option value="15">15 fps</option>
+          <option value="24">24 fps &mdash; cinéma</option>
+          <option value="25">25 fps &mdash; PAL</option>
+          <option value="30" selected>30 fps</option>
+          <option value="50">50 fps</option>
+          <option value="60">60 fps</option>
+          <option value="custom">Personnalisée&hellip;</option>
+        </select>
+        <input type="number" id="fps-custom" class="spaced" min="1" max="120" step="1" value="30"
+               aria-label="Cadence personnalisée, en images par seconde" hidden>
+        <p class="field-note" id="fps-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">Cadrage des images</label>
+        <select id="fit">
+          <option value="contain" selected>Tenir dedans (bandes noires)</option>
+          <option value="blur">Tenir dedans, fond flouté</option>
+          <option value="cover">Remplir l'image (rogne les bords)</option>
+          <option value="stretch">Étirer pour remplir (déforme)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Couleur de fond</label>
+        <input type="color" id="background" value="#000000">
+      </div>
+
+      <div class="field">
+        <label for="quality">Qualité</label>
+        <select id="quality">
+          <option value="low">Fichier plus léger</option>
+          <option value="medium" selected>Équilibré</option>
+          <option value="high">Meilleure qualité</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="auto" selected>MP4 (recommandé)</option>
+          <option value="webm">WebM (repli)</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="640" height="360" aria-label="Aperçu de la première image"></canvas>
+        <p id="preview-empty" class="preview-empty">Ajoutez des images pour voir un aperçu</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Images</dt><dd id="sum-images">&mdash;</dd></div>
+        <div><dt>Durée</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>Taille de sortie</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Images au total</dt><dd id="sum-frames">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Étape 3 &mdash; l'export -->
+  <section class="card">
+    <h2><span class="step">3</span> Créer la vidéo</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Créer la vidéo</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Télécharger la vidéo</a>
+      </div>
+    </div>
+  </section>
+</main>

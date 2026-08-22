@@ -1,0 +1,257 @@
+#
+# Compresseur d'images - French.
+#
+# Overrides for tools/compress-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# KB and MB are left alone throughout. The figures on screen are written by
+# src/files.js, which is the same file in every language and says "KB", so
+# prose that said "Ko" would disagree with the tool it is describing.
+#
+
+name = "Compresseur d'images"
+# Le complément est l'expression que les gens tapent. Comme en anglais, le nom
+# du produit reste la moitié qui parle fort.
+heading = "Compresseur&nbsp;d'images <span class=\"h1-kw\">&mdash; compresser à une taille exacte</span>"
+tagline = "Vous donnez la taille. Il se charge du reste."
+
+title = "Compresser une image à une taille précise &mdash; gratuit, sans envoi"
+description = "Compressez un JPEG, un PNG ou un WebP à une taille exacte - 100 KB, 2 MB, ce que vous voulez. Tout se passe dans votre navigateur : rien n'est envoyé, aucun compte, fonctionne hors ligne."
+og_title = "Compresser une image à la taille que vous choisissez"
+og_description = "Donnez une taille à atteindre : l'outil cherche la compression la plus légère qui y arrive, puis mesure ce que cela a coûté. Il tourne sur votre machine et n'envoie rien."
+og_image_alt = "Compresseur d'images - donnez une taille, gardez la qualité"
+
+pledge = """
+    La compression se fait dans votre propre navigateur, sur votre propre
+    matériel, avec les encodeurs qu'il embarque déjà. Cet outil n'a aucune
+    fonction réseau &mdash; rien à récupérer, rien à envoyer &mdash; et il n'y a
+    à l'autre bout de cette page aucun serveur auquel envoyer une image, quand
+    bien même il existerait un chemin pour l'atteindre."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      gardez l'onglet Réseau à l'œil et compressez une photo. Pas une seule
+      requête ne transporte d'image, de vignette, de nom de fichier ni un octet
+      de ce que vous avez choisi. Ou coupez votre connexion et compressez-en une
+      quand même."""
+
+read_first = """
+, <code>src/compress.js</code> pour la recherche qui
+      décide de la quantité de qualité à dépenser, et
+      <code>src/measure.js</code> pour la comparaison derrière le chiffre de
+      &laquo;&nbsp;correspondance visuelle&nbsp;&raquo;."""
+
+howto_heading = "Compresser une image à une taille précise"
+
+card = """
+            Dites la taille qu'il vous faut &mdash; 100 KB, 2 MB, ce que vous
+            voulez &mdash; et il trouve la compression la plus légère qui y
+            arrive."""
+
+[words]
+plural = "images"
+choose = "une image"
+analytics_extra = """, ni aucune des
+  tailles ou des valeurs de qualité que cet outil calcule"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans limite de taille"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[privacy]]
+title = "Vos images n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
+      collecte où vos fichiers pourraient arriver, et rien dans le code qui les
+      y enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Rien ici ne va rien chercher."
+body = """
+ Il n'y a ni
+      <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
+      <code>sendBeacon</code> nulle part dans <code>src/</code>. La compression,
+      c'est <code>canvas.toBlob</code> &mdash; l'encodeur déjà installé dans
+      votre navigateur."""
+
+[[privacy]]
+title = "Les chiffres sont mesurés, pas remontés."
+body = """
+ Les tailles, la
+      valeur de qualité et la comparaison SSIM sont toutes calculées sur cette
+      page et vous sont montrées. Il n'existe dans ce dépôt aucun événement
+      d'analytique maison qui transporte un nom de fichier, une taille, un
+      nombre ou un résultat."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google, et le bouton de don de Buy
+      Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur vos images. Chaque
+      ligne qui lit, compresse ou mesure un fichier est servie depuis cette
+      origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Coupez le réseau et l'outil est
+      inchangé, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la
+      preuve la plus simple de toutes."""
+
+[[howto]]
+title = "Choisissez vos images."
+body = """
+ Déposez-les sur la zone prévue ou
+      sélectionnez-les à la main. Le navigateur les lit directement sur votre
+      disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+
+[[howto]]
+title = "Tapez la taille qu'on vous a imposée."
+body = """
+ 100 KB pour le
+      formulaire d'envoi qui refuse obstinément votre photo, 500 KB pour le
+      portail de candidature, 2 MB pour une page qui doit charger vite. Les
+      quatre plus courantes sont des boutons."""
+
+[[howto]]
+title = "Appuyez sur &laquo;&nbsp;Compresser à la taille visée&nbsp;&raquo;."
+body = """
+ Chaque image est
+      encodée plusieurs fois pendant que l'outil resserre autour de la meilleure
+      qualité qui tienne. Ce qui est déjà sous la taille visée est laissé
+      exactement tel quel."""
+
+[[howto]]
+title = "Regardez ce que cela a coûté, puis téléchargez."
+body = """
+ Chaque résultat
+      indique dans quel format il a été écrit, à quelle qualité, si les
+      dimensions ont changé, et à quel point il correspond à l'original une fois
+      mesuré. &laquo;&nbsp;Comparer&nbsp;&raquo; met les deux images côte à
+      côte."""
+
+[[faq]]
+q = "Mon image est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non. Le fichier est décodé, compressé et mesuré par votre propre navigateur
+        sur votre propre matériel, avec les encodeurs JPEG, PNG et WebP que le
+        navigateur embarque déjà. Cet outil n'a aucune fonction réseau &mdash; il ne
+        récupère jamais rien et n'envoie jamais rien &mdash; et la
+        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+        qu'elle peut contacter, dont aucune n'appartient à ce site."""
+
+[[faq]]
+q = "Comment atteint-il une taille exacte&nbsp;?"
+a = """
+        En essayant. Il n'existe pas de formule qui transforme un réglage de qualité
+        en un nombre d'octets &mdash; cela dépend entièrement de l'image &mdash; alors
+        l'outil encode l'image plusieurs fois et cherche la réponse. Il part du haut
+        de la plage de qualité et resserre par dichotomie, ce qui trouve la meilleure
+        qualité qui tienne en huit encodages environ. Chaque taille affichée sur la
+        page est un vrai fichier encodé, pas une estimation."""
+
+[[faq]]
+q = "Que veut dire &laquo;&nbsp;perte minimale&nbsp;&raquo; exactement, ici&nbsp;?"
+a = """
+        Trois choses précises. D'abord, une image déjà sous votre taille visée est
+        transmise octet pour octet plutôt que réencodée. Ensuite, la qualité est
+        dépensée avant la résolution, et seulement jusqu'à un plancher où les
+        artefacts de compression commencent à se voir &mdash; en dessous, l'outil
+        réduit l'image et remonte la qualité, parce que moins de bons pixels valent
+        mieux que davantage de pixels abîmés. Enfin, une fois trouvé un résultat qui
+        tient, la recherche remonte jusqu'à épuiser le budget&nbsp;: vous n'obtenez
+        donc pas un fichier de 300 KB quand vous en avez demandé 500."""
+
+[[faq]]
+q = "Que sont les valeurs SSIM et PSNR sur chaque résultat&nbsp;?"
+a = """
+        Ce sont des mesures de ce que la compression a coûté, prises en décodant le
+        résultat et en le comparant à l'image d'origine. Le SSIM compare la
+        luminosité, le contraste et la structure locales, ce qui est bien plus proche
+        de ce qui gêne un œil que le comptage des pixels modifiés&nbsp;; au-dessus de
+        0,98 environ, les deux sont difficiles à distinguer côte à côte. Le PSNR est
+        le chiffre en décibels traditionnel. Les deux sont calculés sur votre machine,
+        et les deux sont affichés pour que l'affirmation d'une faible perte soit
+        vérifiable plutôt que simplement énoncée."""
+
+[[faq]]
+q = "Quels formats sait-il lire et écrire&nbsp;?"
+a = """
+        Il lit tout ce que votre navigateur sait décoder, ce qui en pratique veut dire
+        JPEG, PNG, WebP, GIF, BMP et &mdash; sur la plupart des navigateurs actuels
+        &mdash; AVIF. Il écrit du JPEG, du PNG et du WebP, parce que ce sont les
+        encodeurs que les navigateurs embarquent. En mode
+        &laquo;&nbsp;auto&nbsp;&raquo;, il garde le format dans lequel votre fichier
+        est arrivé et ne bascule sur WebP que lorsque le garder aurait imposé un
+        redimensionnement ou une baisse de qualité visible."""
+
+[[faq]]
+q = "Pourquoi ne peut-il pas compresser un PNG bien loin&nbsp;?"
+a = """
+        Parce que le PNG est sans perte&nbsp;: il n'a aucune molette de qualité à
+        tourner. Le seul moyen de réduire un PNG est de lui donner moins de pixels ou
+        moins de couleurs&nbsp;; avec PNG sélectionné, l'outil atteint donc une cible
+        par le redimensionnement seul. Si l'image est une photographie, le JPEG ou le
+        WebP s'approcheront bien davantage de votre cible, à une qualité dont vous
+        verrez qu'elle convient &mdash; et s'il s'agit d'un logo ou d'une capture
+        d'écran avec transparence, le WebP garde la transparence que le JPEG
+        remplirait de blanc."""
+
+[[faq]]
+q = "Compresser une image supprime-t-il ses données EXIF et GPS&nbsp;?"
+a = """
+        Oui, par effet de bord. Compresser, c'est décoder l'image en pixels puis
+        réencoder ces pixels, et un canvas plein de pixels ne porte aucune
+        étiquette&nbsp;: le lieu, le modèle d'appareil, les horodatages et tout le
+        reste ne sont simplement pas écrits dans le nouveau fichier. Si vous voulez
+        que les métadonnées disparaissent mais que l'image reste intacte, prenez
+        plutôt le <a href="../supprimer-les-donnees-exif/">lecteur et effaceur
+        EXIF</a> &mdash; il réécrit le conteneur sans rien recompresser."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a pas de compte, pas de connexion, pas de période
+        d'essai et pas de filigrane. Il n'y a pas non plus de limite au nombre ni à la
+        taille des fichiers, parce qu'aucun serveur ne les paie &mdash; le travail se
+        fait sur votre propre machine. Le site porte de la publicité, et c'est elle
+        qui le finance&nbsp;; les annonces ne reçoivent rien sur vos images."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
+        de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
+        envoyé&nbsp;: un outil qui expédierait vos images ailleurs pour les compresser
+        s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Compressez des images JPEG, PNG et WebP à une taille que vous nommez. L'outil cherche la meilleure qualité qui tienne dans la cible, ne redimensionne que lorsque la qualité seule n'y suffit pas, et mesure le résultat par rapport à l'original. Tout se passe dans le navigateur, sans aucun envoi."
+features = [
+  "Compresse vers une taille de fichier que vous choisissez, pas vers un chiffre de qualité à deviner",
+  "Garde la pleine résolution quand il le peut, et ne redimensionne que si la qualité seule n'atteint pas la cible",
+  "Dépense tout le budget : le résultat arrive juste sous la cible plutôt que loin en dessous",
+  "Mesure le résultat par rapport à l'original avec le SSIM et le PSNR",
+  "Laisse totalement intacts les fichiers déjà sous la cible",
+  "JPEG, PNG et WebP, avec un choix de format automatique",
+  "Traitement par lots, tous les résultats dans un seul zip",
+  "Fonctionne hors ligne ; sans envoi, sans compte",
+]
+
+[picker]
+title = "Déposez vos images ici"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP et tout ce que votre navigateur sait ouvrir"

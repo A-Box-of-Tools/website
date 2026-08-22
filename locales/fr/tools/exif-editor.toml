@@ -1,0 +1,245 @@
+#
+# Lecteur et effaceur EXIF - French.
+#
+# Overrides for tools/exif-editor/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Lecteur et effaceur EXIF"
+heading = "Lecteur&nbsp;et&nbsp;effaceur EXIF <span class=\"h1-kw\">&mdash; supprimer les métadonnées d'une photo</span>"
+tagline = "Voyez ce qu'une photo raconte sur vous. Puis retirez-le."
+
+title = "Lecteur et effaceur EXIF &mdash; éditeur de métadonnées photo gratuit"
+description = "Voyez les données EXIF et GPS cachées dans une photo, modifiez-les, ou retirez tout d'un clic. Dans votre navigateur : rien n'est envoyé, et la photo n'est jamais réencodée."
+og_title = "Lecteur et effaceur EXIF &mdash; les voir, les modifier, ou tout retirer"
+og_description = "Lisez les métadonnées cachées dans une photo et retirez-les toutes d'un clic. Tout tourne sur votre machine ; l'image elle-même n'est jamais réencodée."
+og_image_alt = "Lecteur et effaceur EXIF - lire, modifier ou retirer les métadonnées d'une photo"
+
+pledge = """
+    Le fichier est ouvert, analysé et réécrit par votre propre navigateur. Cet
+    outil n'a aucune fonction réseau &mdash; rien à récupérer, rien à envoyer
+    &mdash; et il n'y a à l'autre bout de cette page aucun serveur auquel envoyer
+    une photo, quand bien même il y en aurait une."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      gardez l'onglet Réseau à l'œil et nettoyez une photo. Pas une seule requête
+      ne transporte d'image, de vignette, de nom de fichier ni une étiquette lue
+      dans votre fichier. Ou coupez votre connexion et nettoyez-en une quand
+      même."""
+
+read_first = """
+, <code>src/tiff.js</code> pour l'analyseur EXIF, et
+      <code>src/jpeg.js</code> pour la preuve que l'image elle-même n'est jamais
+      que copiée."""
+
+howto_heading = "Comment supprimer les données EXIF d'une photo"
+
+card = """
+            Voyez le lieu, l'appareil et les numéros de série cachés dans une
+            photo, modifiez ce que vous voulez, ou retirez tout d'un clic."""
+
+[words]
+plural = "photos"
+choose = "une photo"
+analytics_extra = """, ni aucune des étiquettes
+  que cet outil lit dans vos fichiers"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[facts]]
+text = "Ne réencode jamais l'image"
+
+[[privacy]]
+title = "Vos photos n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
+      collecte où vos fichiers pourraient arriver, et rien dans le code qui les y
+      enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Rien ici ne va rien chercher."
+body = """
+ Contrairement aux autres outils de
+      cette boîte, celui-ci n'a pas de fonction
+      &laquo;&nbsp;charger depuis une adresse web&nbsp;&raquo; ni la moindre
+      étape réseau facultative. Il n'y a ni <code>fetch</code>, ni
+      <code>XMLHttpRequest</code>, ni <code>sendBeacon</code> nulle part dans
+      <code>src/</code>."""
+
+[[privacy]]
+title = "Les métadonnées que nous lisons ne sont jamais relayées."
+body = """
+ Votre position
+      GPS est affichée sur cette page et ne va nulle part ailleurs. Il n'existe
+      dans ce dépôt aucun événement d'analytique maison qui transporte une
+      étiquette, un nom de fichier, une taille ou un nombre."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Ni l'un ni l'autre ne reçoit
+      quoi que ce soit sur vos photos. Chaque ligne qui lit, analyse ou réécrit
+      un fichier est servie depuis cette origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; dans l'en-tête est
+      dessiné par un script de cdnjs.buymeacoffee.com et se compose avec Google
+      Fonts. C'est un lien, rien de plus&nbsp;: il ne signale aucune visite, et
+      on ne lui donne rien sur vous ni sur vos fichiers. Rien ne se passe tant
+      que vous ne cliquez pas, et ce vers quoi vous cliqueriez est le site de
+      quelqu'un d'autre."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Coupez le réseau et l'outil est
+      inchangé, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la
+      preuve la plus simple de toutes."""
+
+[[howto]]
+title = "Choisissez vos photos."
+body = """
+ Déposez-les sur la zone prévue ou
+      sélectionnez-les à la main. Le navigateur les lit directement sur votre
+      disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+
+[[howto]]
+title = "Lisez ce qu'il y a dedans, si vous voulez."
+body = """
+ La liste des trouvailles
+      nomme ce qui vaut d'être su &mdash; la position GPS, les horodatages, les
+      numéros de série &mdash; avant le tableau complet de toutes les
+      étiquettes."""
+
+[[howto]]
+title = "Appuyez sur &laquo;&nbsp;Tout supprimer&nbsp;&raquo;."
+body = """
+ C'est tout le travail pour la
+      plupart des gens. Chaque étiquette, les blocs XMP et IPTC, les commentaires
+      et la vignette incorporée partent, sur toutes les photos de la liste d'un
+      coup."""
+
+[[howto]]
+title = "Ou modifiez au lieu de supprimer."
+body = """
+ Changez une date, corrigez une
+      ligne de copyright, retirez le lieu et gardez les réglages de l'appareil
+      &mdash; puis enregistrez cette photo seule."""
+
+[[faq]]
+q = "Ma photo est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non. Le fichier est lu, analysé et réécrit par votre propre navigateur sur
+        votre propre matériel. Cet outil n'a aucune fonction réseau &mdash; il ne
+        récupère jamais rien et n'envoie jamais rien &mdash; et la
+        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+        qu'elle peut contacter, dont aucune n'appartient à ce site."""
+
+[[faq]]
+q = "Qu'est-ce que l'EXIF, et quoi d'autre se cache dans une photo&nbsp;?"
+a = """
+        L'EXIF est un bloc d'étiquettes qu'un appareil écrit à côté de l'image&nbsp;:
+        la marque et le modèle, les réglages d'exposition, la date et l'heure à la
+        seconde près, souvent une position GPS, et parfois un numéro de série. Les
+        photos portent fréquemment davantage &mdash; un paquet XMP de XML laissé par
+        un logiciel de retouche, un bloc IPTC de légendes et de signatures, un profil
+        colorimétrique, une petite deuxième copie de l'image en vignette, et une note
+        de fabricant de données non documentées. Cet outil liste tout cela."""
+
+[[faq]]
+q = "Supprimer les métadonnées réduit-il la qualité de l'image&nbsp;?"
+a = """
+        Non, et c'est la principale raison d'utiliser un outil comme celui-ci plutôt
+        que de réenregistrer la photo. Les métadonnées se trouvent dans le conteneur
+        autour de l'image compressée, pas dedans. Les supprimer, c'est effacer des
+        entrées d'une liste et réécrire la liste&nbsp;; les données d'image
+        compressées sont recopiées octet pour octet, si bien que le résultat décode
+        exactement les mêmes pixels. Rien n'est décodé et rien n'est recompressé."""
+
+[[faq]]
+q = "Quels formats de fichier prend-il en charge&nbsp;?"
+a = """
+        Le JPEG, le PNG et le WebP. Le HEIC et l'AVIF sont reconnus mais pas
+        réécrits&nbsp;: ce sont des formats à boîtes faits d'atomes imbriqués et ils
+        demandent un autre analyseur, alors l'outil le dit plutôt que de produire un
+        fichier cassé. Un TIFF nu n'est pas pris en charge non plus, parce que dans un
+        TIFF les métadonnées et les pixels sont adressés par les mêmes décalages."""
+
+[[faq]]
+q = "Ma photo apparaîtra-t-elle tournée une fois les métadonnées retirées&nbsp;?"
+a = """
+        C'est possible, et il y a un réglage pour cela. Les téléphones enregistrent
+        d'habitude l'image telle que le capteur l'a vue et ajoutent une étiquette
+        d'orientation qui dit comment la tourner. Retirez cette étiquette et certains
+        afficheurs montreront la photo couchée. L'option &laquo;&nbsp;garder
+        l'étiquette d'orientation&nbsp;&raquo;, active par défaut, réécrit un minuscule
+        bloc EXIF ne contenant que cette seule étiquette &mdash; et seulement quand la
+        photo en avait réellement besoin. Décochez-la si vous préférez que le fichier
+        ne porte plus le moindre EXIF."""
+
+[[faq]]
+q = "Supprime-t-il la position GPS&nbsp;?"
+a = """
+        Oui. Tout supprimer supprime le répertoire GPS entier, et vous pouvez aussi
+        effacer le lieu seul en gardant le reste. La position est d'abord montrée en
+        degrés décimaux, parce que
+        &laquo;&nbsp;51 degrés, 30 minutes, 26 secondes&nbsp;&raquo; ne rend pas
+        évident qu'une photo nomme le bâtiment où elle a été prise."""
+
+[[faq]]
+q = "Puis-je modifier une étiquette au lieu de la supprimer&nbsp;?"
+a = """
+        Oui. Les étiquettes de texte, les dates, l'ISO, l'orientation et la résolution
+        peuvent toutes être modifiées, et quelques étiquettes courantes peuvent être
+        ajoutées à une photo qui n'en a aucune. Une réserve&nbsp;: écrire le fichier
+        reconstruit le bloc EXIF, et une note de fabricant contient des décalages vers
+        le bloc d'origine&nbsp;; une note reconstruite peut donc ne plus être lisible
+        ensuite par le logiciel du fabricant. Supprimez-la, ou laissez le fichier tel
+        quel, si cela compte pour vous."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a pas de compte, pas de connexion et pas de période
+        d'essai. Le site porte de la publicité, et c'est elle qui le finance&nbsp;;
+        les annonces ne reçoivent rien sur vos photos."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
+        de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
+        envoyé&nbsp;: un outil qui expédierait vos photos ailleurs pour les traiter
+        s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Lisez les métadonnées EXIF, GPS, XMP et IPTC contenues dans une photo, modifiez des étiquettes une à une, ou retirez tout d'un clic. JPEG, PNG et WebP, traités dans le navigateur sans réencoder l'image."
+features = [
+  "Montre toutes les étiquettes EXIF, y compris la position GPS, les numéros de série de l'appareil et les notes de fabricant",
+  "Modifie ou supprime des étiquettes une à une et réécrit le fichier",
+  "Retire l'EXIF, le GPS, le XMP, l'IPTC, les commentaires et la vignette incorporée d'un clic",
+  "JPEG, PNG et WebP",
+  "Ne réécrit que le conteneur, si bien que l'image n'est jamais recompressée",
+  "Fonctionne hors ligne ; sans envoi, sans compte",
+]
+
+[picker]
+title = "Déposez vos photos ici"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG et WebP"

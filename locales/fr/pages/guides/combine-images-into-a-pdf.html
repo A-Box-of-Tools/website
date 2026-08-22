@@ -1,0 +1,211 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez <a href="../../images-en-pdf/">Images en PDF</a>, déposez-y les
+      images, faites glisser les tuiles jusqu'à ce que l'ordre soit bon, et créez
+      le document. Les réglages par défaut &mdash; pages A4, petite marge,
+      photographies recopiées sans réencodage &mdash; sont ce que veulent la
+      plupart des gens.
+    </p>
+    <p>
+      Les quatre choses qui méritent réflexion sont l'ordre, le format de page,
+      le réglage de qualité, et ce que le document fini raconte sur vous. Dans
+      cet ordre de fréquence des erreurs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Réglez l'ordre avant tout le reste</h2>
+    <p>
+      L'ordre des pages est de loin ce qu'on rate le plus, parce que les noms de
+      fichiers se trient d'une façon à laquelle personne ne s'attend.
+      <code>IMG_2.jpg</code> vient après <code>IMG_10.jpg</code> dans un tri
+      alphabétique, puisque la comparaison se fait caractère par caractère et que
+      <code>1</code> précède <code>2</code>. Un dossier de scans nommés
+      <code>page1</code> à <code>page12</code> arrivera dans le mauvais ordre
+      dans à peu près n'importe quel outil.
+    </p>
+    <p>
+      Trier par date de prise de vue est en général plus fiable pour des
+      photographies, parce que vous avez photographié les pages dans l'ordre où
+      elles étaient. Dans un cas comme dans l'autre, vérifiez les tuiles avant
+      d'appuyer sur le bouton, plutôt que de vérifier le PDF après.
+    </p>
+  </section>
+
+  <section>
+    <h2>La qualité&nbsp;: ce que la plupart des outils ratent en silence</h2>
+    <p>
+      Un PDF sait transporter des données JPEG directement. C'est une propriété
+      du format&nbsp;: les octets compressés d'un JPEG peuvent être déposés tels
+      quels dans le document, et le lecteur les décode comme le ferait un
+      navigateur.
+    </p>
+    <p>
+      Cela compte, parce que cela veut dire qu'une photographie n'a rien à perdre
+      en entrant dans un PDF. Elle n'est jamais décodée et jamais recompressée
+      &nbsp;; l'image du document est bit pour bit l'image de votre fichier.
+      Beaucoup d'outils réencodent quand même &mdash; il est plus simple de tout
+      rendre sur un canvas et d'encoder uniformément &mdash; et le résultat est
+      une génération de qualité perdue pour rien.
+    </p>
+    <p>
+      Les autres formats ne peuvent pas voyager ainsi. Le PNG, le WebP, le HEIC
+      et le reste n'ont pas de filtre correspondant dans le PDF&nbsp;: ils
+      doivent donc être convertis. Vous avez le choix de la manière&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Réencoder en JPEG</strong> (le réglage par défaut). Fichier le
+        plus léger, petit coût en qualité, et la bonne réponse pour des
+        photographies.
+      </li>
+      <li>
+        <strong>Sans perte.</strong> Stocke les pixels exacts au prix d'un
+        document bien plus lourd. La bonne réponse pour les captures d'écran, les
+        schémas, et tout ce qui contient du texte ou des bords francs, où les
+        artefacts du JPEG sautent aux yeux.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Le format de page, et quand &laquo;&nbsp;ajuster à l'image&nbsp;&raquo; vaut mieux</h2>
+    <p>
+      Un format de page standard &mdash; A4, Letter, Legal, A3, A5, Tabloid
+      &mdash; pose chaque image sur une page de ce format, mise à l'échelle pour
+      tenir dans votre marge. Prenez-en un quand le document sera imprimé, ou
+      quand quelqu'un d'officiel va le classer.
+    </p>
+    <p>
+      &laquo;&nbsp;Exactement à la taille de chaque image&nbsp;&raquo; fait
+      correspondre chaque page à son image&nbsp;: il n'y a alors ni espace blanc
+      ni mise à l'échelle. Prenez-le quand le PDF est un contenant à images
+      plutôt qu'un document&nbsp;: un portfolio, un jeu de captures, une bande
+      dessinée. Cela a l'air faux à l'impression, parce que chaque page a une
+      taille différente.
+    </p>
+    <p>
+      Une marge vaut la peine sur tout ce qui sera imprimé. Les imprimantes
+      domestiques ne savent pas imprimer jusqu'au bord du papier, et une
+      photographie posée bord à bord ressort rognée.
+    </p>
+    <h3>Des pages verticales à partir de photographies horizontales</h3>
+    <p>
+      Si vous avez photographié des feuilles de papier avec un téléphone tenu en
+      travers, chaque image sera horizontale et se posera toute petite au milieu
+      d'une page verticale. Faire pivoter chacune d'un quart de tour avant de
+      construire le document est ce qui corrige cela, et c'est un choix par image
+      plutôt que global, parce qu'en général quelques-unes étaient dans le bon
+      sens.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que le PDF fini raconte sur vous</h2>
+    <p>
+      Un PDF porte un bloc d'informations de document&nbsp;: auteur, producteur,
+      date de création, parfois le titre. Selon ce qui l'a écrit, cela peut
+      comprendre votre nom de compte, le nom de votre machine, et l'heure exacte
+      à laquelle vous l'avez fabriqué.
+    </p>
+    <p>
+      Cela mérite réflexion, parce qu'un PDF est une chose que les gens envoient
+      à d'autres gens &mdash; une candidature, une réclamation, un document pour
+      un propriétaire. Les métadonnées voyagent avec, et n'importe quel lecteur
+      peut les afficher.
+    </p>
+    <p>
+      L'outil d'ici laisse ce bloc vide, à l'exception de son propre nom&nbsp;:
+      pas de noms de fichiers, pas de nom de machine, pas de nom d'utilisateur,
+      et pas de date de création sauf si vous cochez la case qui en demande une.
+      Si vous utilisez un autre outil, cela vaut la peine d'ouvrir une fois les
+      propriétés du résultat pour voir ce qu'il a écrit.
+    </p>
+    <p>
+      À part cela&nbsp;: les images elles-mêmes. Si vos photographies portent des
+      étiquettes EXIF et GPS, leur sort dépend du chemin. Un JPEG recopié sans
+      réencodage garde ce qu'il avait&nbsp;; une image réencodée perd les
+      étiquettes par effet de bord. Si cela compte, nettoyez les photos d'abord
+      avec le <a href="../../supprimer-les-donnees-exif/">lecteur et effaceur
+      EXIF</a> &mdash; <a href="../supprimer-les-donnees-exif-et-gps/">son
+      guide</a> explique ce qu'il y a dedans.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si le PDF ressort trop gros</h2>
+    <p>
+      Les photographies de téléphone sont lourdes, et vingt d'entre elles font un
+      document qu'un courriel refusera. Trois choses à essayer, dans
+      l'ordre&nbsp;:
+    </p>
+    <p>
+      <strong>Réduisez le plus grand côté.</strong> Une photographie de 4000
+      pixels d'une feuille de papier transporte bien plus de détail qu'aucun
+      lecteur ni aucune imprimante n'en utilisera. Ramener le grand côté à
+      quelque chose comme 2000 pixels divise typiquement le fichier par quatre et
+      ne change rien que quiconque puisse voir sur une page.
+    </p>
+    <p>
+      <strong>Prenez le JPEG plutôt que le sans perte</strong> pour tout ce qui
+      est photographique. Le sans perte est la bonne réponse pour les schémas et
+      la mauvaise pour la photo d'une page.
+    </p>
+    <p>
+      <strong>Compressez le document fini.</strong> Le
+      <a href="../../compresser-un-pdf/">compresseur de PDF</a> travaille par
+      rapport à la taille à laquelle chaque image est dessinée sur la page plutôt
+      que par rapport à son nombre de pixels, et c'est la mesure qui
+      compte&nbsp;; <a href="../reduire-la-taille-d-un-pdf/">son guide</a> traite
+      de ce que cela coûte.
+    </p>
+    <p>
+      Aucune limite n'est intégrée à l'outil quant au nombre d'images. Le plafond
+      pratique est la mémoire de votre propre machine, parce que le document fini
+      y est assemblé avant que vous le téléchargiez &mdash; quelques centaines de
+      photos de téléphone en pleine résolution est la première chose à s'en
+      ressentir, et réduire le plus grand côté repousse ce plafond bien plus
+      loin.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que cela ne vous donnera pas</h2>
+    <p>
+      Un PDF fait de photographies est un PDF plein d'images. Les mots qui y
+      figurent ne sont pas du texte&nbsp;: vous ne pouvez ni les chercher, ni les
+      copier, ni les faire lire par un lecteur d'écran. C'est une propriété de ce
+      dont vous êtes parti, pas de la conversion.
+    </p>
+    <p>
+      S'il vous faut du texte cherchable, il vous faut de l'OCR, qui est un autre
+      métier. Et si le document d'origine existe encore quelque part comme
+      document, l'exporter directement en PDF battra toujours le fait de le
+      photographier &mdash; plus léger, plus net, cherchable.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi cela ne demande pas d'envoi</h2>
+    <p>
+      Écrire un PDF, c'est écrire un fichier structuré&nbsp;: un en-tête, un jeu
+      d'objets, une table de références croisées. Il n'y a rien là-dedans qu'un
+      navigateur ne sache faire, et rien dans ce travail qui exige que les images
+      voyagent où que ce soit.
+    </p>
+    <p>
+      Ce qui mérite attention ici, à cause de ce que les gens mettent dans ces
+      documents. Pièces d'identité, relevés bancaires, courriers médicaux,
+      contrats signés &mdash; toute la raison pour laquelle quelqu'un fabrique un
+      PDF est en général qu'il l'envoie à une institution. L'outil d'ici n'a
+      aucune fonction réseau, et la <code>Content-Security-Policy</code> de la
+      page nomme toutes les adresses qu'elle peut contacter, dont aucune
+      n'appartient à ce site.
+    </p>
+    <p>
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
+      fichiers à un convertisseur en ligne&nbsp;?</a> expose comment le vérifier
+      vous-même, ici comme ailleurs.
+    </p>
+  </section>

@@ -13,7 +13,7 @@ lang = "fr"
 name = "French"
 endonym = "Français"
 
-complete = false
+complete = true
 
 #
 # ---------------------------------------------------------------------------
@@ -45,6 +45,25 @@ complete = false
 "images-to-video" = "images-en-video"
 "resize-image" = "redimensionner-une-image"
 "trim-video" = "couper-une-video"
+# Named for the job rather than for the format, like the EXIF tool above:
+# hardly anyone types "image en ICO", and a great many people type "créer un
+# favicon".
+"image-to-ico" = "creer-un-favicon"
+# The article drops out where the two format names carry the phrase. "Convertir
+# SVG en PNG" is what gets typed, and "convertir-un-svg-en-une-png" is not
+# French anybody writes - the formats behave like proper nouns here.
+"svg-to-image" = "convertir-svg-en-png"
+"heic-to-jpg" = "convertir-heic-en-jpg"
+# The same shape as "images-en-pdf" and "images-en-video" above: a conversion
+# named by its two ends.
+"video-to-gif" = "video-en-gif"
+"image-to-data-uri" = "image-en-base64"
+# The one tool here named by a noun rather than by a verb, because that is the
+# phrase: "générateur de QR code" is what French speakers type, in a way that
+# "créer un QR code" - which is the GUIDE below - is not. The barcodes are left
+# out of the address and carried by the page title; QR is what the search is
+# about, and a slug naming both would be too long to read in a URL bar.
+"qr-barcode" = "generateur-de-qr-code"
 
 "guides" = "guides"
 "roadmap" = "feuille-de-route"
@@ -60,6 +79,17 @@ complete = false
 "guides/trim-a-video" = "guides/couper-une-video"
 "guides/crop-a-video" = "guides/recadrer-une-video"
 "guides/is-it-safe-to-upload-files" = "guides/est-il-sur-d-envoyer-ses-fichiers"
+# "Son favicon" rather than "un favicon", which is the tool's address just
+# above: the guide is the long way round and the possessive says so, and two
+# addresses one word apart would be a coin toss for whoever pastes one.
+"guides/make-a-favicon" = "guides/creer-son-favicon"
+# The guides keep the article the tool slugs drop, because a question is asked
+# in full sentences even when a search box is not.
+"guides/convert-an-svg-to-png" = "guides/convertir-un-svg-en-png"
+"guides/convert-heic-to-jpg" = "guides/convertir-un-heic-en-jpg"
+"guides/turn-a-video-into-a-gif" = "guides/transformer-une-video-en-gif"
+"guides/embed-an-image-in-css" = "guides/integrer-une-image-dans-le-css"
+"guides/make-a-qr-code" = "guides/creer-un-qr-code"
 
 #
 # ---------------------------------------------------------------------------

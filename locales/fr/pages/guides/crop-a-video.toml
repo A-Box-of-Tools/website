@@ -1,0 +1,17 @@
+#
+# Guide : recadrer une video - French.
+#
+
+nav = "Recadrer une vidéo"
+title = "Comment recadrer une vidéo dans une autre forme"
+description = "Ramener un clip à un carré, à un format 9:16 vertical, ou à un cadre en pixels exact. Quelle proportion réclame chaque plateforme, pourquoi recadrer doit réencoder quand couper ne le fait pas, et ce que cela coûte."
+heading = "Comment recadrer une vidéo dans une autre forme"
+lede = """
+    Recadrer change la forme de l'image, ce qui veut dire écrire de nouvelles
+    images &mdash; il n'y a pas moyen d'y couper, et tout outil qui prétend le
+    contraire fait autre chose. Voici ce que cela coûte, et comment bien le
+    dépenser."""
+updated = "20 août 2026"
+og_title = "Comment recadrer une vidéo dans une autre forme"
+og_description = "Quelle proportion réclame chaque plateforme, pourquoi recadrer doit réencoder quand couper ne le fait pas, et ce que cela coûte."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

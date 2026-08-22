@@ -1,0 +1,221 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez le <a href="../../recadrer-une-video/">recadreur de vidéos</a>,
+      déposez-y le clip, faites glisser le cadre sur la partie à garder &mdash;
+      ou verrouillez-le sur une forme si on vous en a imposé une &mdash; et
+      exportez. Le clip qui sort dure exactement aussi longtemps que celui qui
+      est entré, avec son rythme et son son intacts.
+    </p>
+    <p>
+      Contrairement à la coupe, celui-ci doit écrire de nouvelles images. Ce
+      n'est pas un défaut d'un outil particulier&nbsp;; c'est ce qu'est le
+      recadrage. Le reste de cette page traite de ce que cela coûte et de la
+      façon de le garder petit.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi le recadrage ne peut pas éviter un réencodage</h2>
+    <p>
+      Une coupe garde des images entières&nbsp;: un bon coupeur les déplace donc
+      intactes et rien n'est décodé. Un recadrage garde une partie de chaque
+      image &mdash; et une partie d'image est une autre image. Il n'y a aucun
+      moyen de stocker une autre image sans réécrire les pixels.
+    </p>
+    <p>
+      Il existe une exception étroite, et il vaut la peine de la connaître pour
+      reconnaître quand on vous en fait argument. La vidéo est encodée par blocs,
+      et si un recadrage tombait exactement sur des frontières de blocs des
+      quatre côtés, une partie des données pourrait en principe être réutilisée.
+      En pratique, les dimensions de l'image, les vecteurs de mouvement et la
+      prédiction doivent de toute façon être réécrits&nbsp;: rien de réel ne se
+      construit ainsi. Considérez qu'un recadrage veut dire un réencodage.
+    </p>
+    <p>
+      Ce qu'un recadreur bien élevé fera, c'est ne pas dépenser
+      <em>davantage</em> que l'original ne dépensait sur la même zone. Encoder
+      une région recadrée à un débit plus élevé que sa source ne fait que grossir
+      le fichier&nbsp;; cela ne peut pas remettre un détail que l'original
+      n'avait pas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les formes qu'on vous réclame réellement</h2>
+    <p>
+      La plupart des recadrages se font parce qu'un endroit impose une
+      proportion. La liste courte&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>9:16 &mdash; vertical.</strong> Stories, reels, shorts, TikTok.
+        Plein écran sur un téléphone tenu normalement. La raison la plus courante
+        pour laquelle quiconque recadre une vidéo.
+      </li>
+      <li>
+        <strong>1:1 &mdash; carré.</strong> Les posts de fil sur plusieurs
+        plateformes. Fonctionne dans les deux sens de tenue du téléphone, et
+        c'est pourquoi cela perdure.
+      </li>
+      <li>
+        <strong>4:5 &mdash; légèrement vertical.</strong> La plus grande forme
+        que certains fils autorisent&nbsp;: elle prend donc plus d'écran qu'un
+        carré sans être une vidéo entièrement verticale.
+      </li>
+      <li>
+        <strong>16:9 &mdash; large.</strong> Le standard de la vidéo en général.
+        Vous ne recadrez en général <em>vers</em> ce format que pour retirer des
+        bandes noires, ou <em>depuis</em> ce format pour obtenir l'un des
+        précédents.
+      </li>
+    </ul>
+    <p>
+      Verrouillez le cadre sur la proportion plutôt que de le tirer à l'œil.
+      Quelques pixels d'écart veulent dire que la plateforme recadrera votre
+      recadrage, et elle ne vous consultera pas sur l'endroit.
+    </p>
+  </section>
+
+  <section>
+    <h2>Rendre vertical un clip horizontal</h2>
+    <p>
+      C'est le cas courant le plus difficile, et il vaut la peine de dire
+      clairement que le recadrage est un compromis plutôt qu'une solution.
+    </p>
+    <p>
+      Une vidéo 16:9 recadrée en 9:16 garde environ 32&nbsp;% de la largeur de
+      l'image. Tout ce qui est sur les côtés a disparu &mdash; et dans un plan
+      horizontal, les côtés sont en général là où se trouve le contexte. Si deux
+      personnes se parlent aux deux bords opposés du cadre, aucun recadrage
+      unique ne garde les deux.
+    </p>
+    <p>
+      Choisissez le recadrage en regardant le clip une fois et en vous demandant
+      où le sujet se trouve réellement la plupart du temps. Si la réponse est
+      &laquo;&nbsp;il bouge&nbsp;&raquo;, un recadrage fixe est le mauvais outil
+      et ce qu'il vous faut est un logiciel de montage capable de faire suivre le
+      cadre dans le temps. Si la réponse est
+      &laquo;&nbsp;au centre, la plupart du temps&nbsp;&raquo;, un recadrage
+      centré convient très bien et prend dix secondes.
+    </p>
+    <p>
+      L'autre solution à garder en tête&nbsp;: beaucoup de plateformes acceptent
+      une vidéo horizontale et ajoutent les bandes elles-mêmes. Le recadrage est
+      pour quand vous voulez le plein écran, pas pour quand vous voulez que la
+      vidéo soit acceptée.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi la largeur et la hauteur avancent par deux</h2>
+    <p>
+      Si vous remarquez que le cadre de recadrage refuse les nombres impairs,
+      c'est le codec qui fait des difficultés, pas l'interface.
+    </p>
+    <p>
+      Le H.264 &mdash; le codec à l'intérieur d'un MP4 &mdash; stocke la couleur
+      à demi-résolution horizontalement et verticalement, parce que l'œil est
+      bien moins sensible au détail de couleur qu'à celui de luminosité. Cela veut
+      dire que l'image est traitée par unités de deux pixels et qu'il n'y a aucun
+      moyen de décrire une image dont un côté ferait un nombre impair de pixels.
+    </p>
+    <p>
+      Les outils s'en accommodent en arrondissant votre recadrage une fois posé,
+      ce qui déplace votre cadre d'un pixel sans vous le dire, ou en ne proposant
+      que des nombres pairs dès le départ. C'est la seconde solution qui est
+      retenue ici.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qu'il advient du son</h2>
+    <p>
+      Rien, sur le chemin MP4. Le recadrage change l'image et n'a aucune raison
+      de toucher à l'audio&nbsp;: l'audio est donc recopié échantillon par
+      échantillon sans être jamais décodé &mdash; octet pour octet ce qu'il y
+      avait dans le fichier.
+    </p>
+    <p>
+      Sur le repli par enregistrement, décrit plus bas, le son est capté à la
+      lecture et réencodé, ce qui coûte un peu de qualité. Dans les deux cas, une
+      case permet de le laisser entièrement de côté, ce qui vaut la peine quand
+      le clip part quelque part qui le lira muet de toute façon et que vous
+      voulez le fichier le plus léger.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les formats, et le temps que cela prend</h2>
+    <p>
+      <strong>Le MP4, le M4V et le MOV</strong> sont lus directement, quel que
+      soit leur contenu &mdash; H.264, HEVC, AV1 ou VP9 &mdash; du moment que
+      votre navigateur sait décoder ce codec. Contrairement à la coupe, le
+      recadrage doit décoder&nbsp;: le codec compte donc ici d'une façon dont il
+      ne compte pas là-bas.
+    </p>
+    <p>
+      <strong>Tout le reste que votre navigateur sait lire</strong>, le WebM au
+      premier chef, est recadré en le jouant et en enregistrant le résultat, ce
+      qui marche et prend le temps que dure le clip.
+    </p>
+    <p>
+      <strong>L'AVI, le WMV, le FLV et la plupart des MKV</strong>, le navigateur
+      ne sait ni les lire ni les jouer, et l'outil les refuse avec un message
+      plutôt que d'échouer à mi-course.
+    </p>
+    <p>
+      Attendez-vous à ce qu'un recadrage prenne un temps réel sur un long clip,
+      parce que chaque image est décodée puis réencodée. Aucune limite n'est
+      intégrée à l'outil, et le fichier est parcouru quelques mégaoctets à la
+      fois plutôt que chargé en entier&nbsp;; le plafond pratique est la vidéo
+      finie, assemblée en mémoire avant que vous la téléchargiez.
+    </p>
+  </section>
+
+  <section>
+    <h2>Recadrez avant toute autre chose</h2>
+    <p>
+      Si un clip demande à la fois une coupe et un recadrage, coupez d'abord
+      &mdash; c'est gratuit, et chaque seconde retirée est une seconde que
+      personne n'a à réencoder. Recadrez ensuite le clip raccourci, une seule
+      fois.
+    </p>
+    <p>
+      Faire l'inverse revient à recadrer des images que vous êtes sur le point de
+      jeter, ce qui coûte du temps et de la qualité pour rien. Le
+      <a href="../../couper-une-video/">coupeur de vidéos</a> est juste à côté, et
+      <a href="../couper-une-video/">son guide</a> explique pourquoi cette étape
+      n'a pas à vous coûter quoi que ce soit.
+    </p>
+    <p>
+      Plus généralement&nbsp;: chaque étape avec perte s'accumule. Un recadrage
+      d'un original, c'est une génération. Un recadrage d'une coupe d'un export
+      d'un téléchargement, c'en est quatre, et cela se voit.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi cela ne demande pas d'envoi</h2>
+    <p>
+      Décoder et réencoder de la vidéo dans un navigateur est récent et c'est
+      réel&nbsp;: WebCodecs expose l'encodeur matériel même que votre téléphone
+      utilise pour enregistrer de la vidéo, et c'est rapide pour la même raison.
+      Le travail se passe sur la machine qui a déjà le fichier, ce qui est aussi,
+      pour une vidéo de plusieurs gigaoctets, la seule disposition qui ait du sens
+      &mdash; l'envoyer et retélécharger le résultat coûte plus de temps que
+      l'encodage.
+    </p>
+    <p>
+      L'outil d'ici n'a aucune fonction réseau, et la
+      <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+      qu'elle peut contacter, dont aucune n'appartient à ce site. Coupez votre
+      connexion et recadrez un clip quand même, si vous préférez vérifier plutôt
+      qu'on vous le dise.
+    </p>
+    <p>
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
+      fichiers à un convertisseur en ligne&nbsp;?</a> expose trois autres
+      vérifications applicables à n'importe quel outil.
+    </p>
+  </section>

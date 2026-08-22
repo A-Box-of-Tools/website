@@ -1,0 +1,200 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez <a href="../../images-en-video/">Images en vidéo</a>, déposez-y les
+      images, mettez-les en ordre, réglez la durée d'affichage de chacune, et
+      créez la vidéo. Vous obtenez un MP4 avec de la vidéo H.264, qui se lit sur
+      à peu près n'importe quoi.
+    </p>
+    <p>
+      Les deux réglages qui demandent le plus souvent une seconde passe sont la
+      durée et la résolution, et ils valent d'être compris avant le premier rendu
+      plutôt qu'après.
+    </p>
+  </section>
+
+  <section>
+    <h2>La cadence et la durée ne sont pas la même chose</h2>
+    <p>
+      C'est la confusion qui coûte un nouveau rendu.
+    </p>
+    <p>
+      <strong>La durée</strong> est le temps que chaque image reste à l'écran.
+      C'est le réglage qui vous intéresse réellement. Trois secondes est un
+      défaut confortable pour un diaporama que quelqu'un regarde&nbsp;; une à
+      deux secondes donne un rythme alerte&nbsp;; au-delà de cinq, cela traîne à
+      moins qu'une voix ne le commente.
+    </p>
+    <p>
+      <strong>La cadence</strong> est le nombre de fois par seconde où la vidéo
+      répète cette image. Elle ne change rien à l'allure du diaporama &mdash; une
+      image fixe tenue trois secondes est identique à 24 images par seconde et à
+      60 &mdash; et elle change beaucoup le poids du fichier et le temps
+      d'encodage.
+    </p>
+    <p>
+      Pour un simple diaporama, prenez donc une cadence basse. 24 ou 30 suffit
+      largement. La raison de monter est la présence de mouvement dans la
+      vidéo&nbsp;: un panoramique ou un zoom sur chaque photo, ou un fondu
+      enchaîné entre elles, où une cadence basse se voit comme des saccades.
+    </p>
+  </section>
+
+  <section>
+    <h2>La résolution, et les images qui n'ont pas la bonne forme</h2>
+    <p>
+      Une vidéo a une seule taille d'image sur toute sa durée. Vos photographies
+      n'en partagent presque certainement pas une seule&nbsp;: quelque chose doit
+      donc arriver à celles qui n'entrent pas &mdash; et ce quelque chose est le
+      choix qu'il vaut la peine de faire délibérément.
+    </p>
+    <p>
+      Commencez par choisir la résolution en fonction de la destination de la
+      vidéo&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>1920&times;1080</strong> pour tout usage général. Prise en charge
+        universellement, se lit partout, et c'est ce que la plupart des gens
+        appellent la HD.
+      </li>
+      <li>
+        <strong>1080&times;1920</strong> &mdash; les mêmes nombres dans l'autre
+        sens &mdash; pour une destination pensée pour le téléphone&nbsp;:
+        stories, reels, shorts.
+      </li>
+      <li>
+        <strong>3840&times;2160</strong> seulement si les images ont réellement
+        autant de détail et si la destination le montrera. C'est quatre fois les
+        pixels, quatre fois le temps d'encodage, et à peu près quatre fois le
+        fichier.
+      </li>
+    </ul>
+    <p>
+      Décidez ensuite du sort des images qui ne correspondent pas. Les faire
+      tenir dans le cadre garde tout et laisse des bandes sur les côtés &mdash;
+      sûr, et la bonne réponse quand les images comptent plus que la présentation.
+      Remplir le cadre et rogner le débord a plus d'allure et coupera le haut de
+      certaines. Mêler photographies verticales et horizontales dans une même
+      vidéo est le cas où il n'y a pas de bonne réponse&nbsp;; décider à l'avance
+      de quel côté vous préférez avoir tort épargne un nouveau rendu.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'ordre, et le piège des noms de fichiers</h2>
+    <p>
+      Comme pour tout traitement par lots, les noms de fichiers se trient d'une
+      façon qui n'est pas celle dont vous avez compté.
+      <code>photo2.jpg</code> vient après <code>photo10.jpg</code> dans un tri
+      alphabétique, parce que la comparaison se fait caractère par caractère.
+    </p>
+    <p>
+      Trier par date de prise de vue est en général juste pour des photographies
+      d'un événement, puisque vous les avez prises dans l'ordre où il s'est
+      déroulé. Faire glisser les tuiles est juste pour tout ce dont le récit
+      n'est pas chronologique. Vérifiez avant de lancer le rendu&nbsp;: la vidéo
+      est l'objet où corriger l'ordre veut dire refaire tout le travail.
+    </p>
+  </section>
+
+  <section>
+    <h2>Il n'y a pas de bande-son, et ce n'est pas un détail</h2>
+    <p>
+      Le MP4 qu'écrit cet outil a une seule piste vidéo et aucune piste audio. Si
+      votre diaporama a besoin de musique ou d'une voix, il vous faudra un
+      logiciel de montage pour cette étape.
+    </p>
+    <p>
+      Il vaut la peine de savoir pourquoi, et pas seulement que&nbsp;: ajouter de
+      l'audio veut dire décoder un fichier de musique, l'encoder en AAC, et
+      l'entrelacer avec la vidéo dans le conteneur. Les trois sont du vrai
+      travail, et les faire mal produit un fichier qui se désynchronise à la
+      lecture. C'est sur la liste plutôt qu'à moitié fait.
+    </p>
+    <p>
+      Une note pratique si vous ajoutez la musique après&nbsp;: choisissez
+      d'abord le morceau et réglez la durée par image pour que le diaporama
+      ressorte proche de la longueur de la chanson. Rogner la musique pour
+      qu'elle entre dans la vidéo sonne toujours plus mal que d'ajuster la vidéo
+      à la musique.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qui sort, et que faire si cela refuse de se lire</h2>
+    <p>
+      La cible est du MP4 avec du H.264, la combinaison la plus largement lisible
+      qui soit. Dans un navigateur sans WebCodecs, l'outil se rabat sur un
+      enregistrement WebM &mdash; les mêmes images dans un conteneur que moins
+      d'éditeurs et de plateformes sociales acceptent.
+    </p>
+    <p>
+      Si vous vous retrouvez avec un WebM et que quelque chose le refuse, le
+      remède est un navigateur qui prend en charge WebCodecs plutôt qu'une
+      conversion&nbsp;: les versions actuelles de Chrome, Edge et Safari le font
+      toutes. Refaire le rendu vaut mieux que convertir, parce que convertir veut
+      dire une génération de plus d'encodage avec perte.
+    </p>
+    <p>
+      Aucune limite n'est intégrée à l'outil quant au nombre d'images. Le plafond
+      est la mémoire de votre propre machine, parce que la vidéo finie y est
+      assemblée avant que vous la téléchargiez &mdash; un long diaporama en 4K
+      est la première chose à s'en ressentir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Alléger le fichier</h2>
+    <p>
+      Si le résultat est trop lourd pour sa destination, dans l'ordre de ce qui
+      aide réellement&nbsp;:
+    </p>
+    <p>
+      <strong>Baissez la cadence.</strong> Pour un diaporama d'images fixes, cela
+      ne coûte rien de visible et c'est la plus grosse économie disponible d'un
+      seul coup.
+    </p>
+    <p>
+      <strong>Baissez la résolution.</strong> Du 1080p au lieu de la 4K, c'est le
+      quart des pixels, et sur un écran de téléphone personne ne le saura.
+    </p>
+    <p>
+      <strong>Raccourcissez.</strong> Trois secondes par image au lieu de cinq,
+      c'est 40&nbsp;% de durée en moins et 40&nbsp;% de fichier en moins, et en
+      général un meilleur diaporama.
+    </p>
+    <p>
+      Réduire d'abord les photographies source n'aide pas beaucoup. La vidéo est
+      encodée à la résolution que vous avez choisie de toute façon&nbsp;: une
+      photo de 4000 pixels et une de 2000 produisent presque le même nombre
+      d'octets dans une vidéo 1080p. Cela accélère l'encodage, en revanche, et
+      cela repousse ce plafond de mémoire.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi cela ne demande pas de serveur, avec une exception dite</h2>
+    <p>
+      Encoder de la vidéo était naguère le cas le plus clair en faveur de
+      l'envoi&nbsp;: les navigateurs ne savaient pas le faire, et une machine
+      dotée de FFmpeg le savait. WebCodecs a changé cela en exposant l'encodeur
+      matériel qui est déjà dans votre machine, celui-là même que votre téléphone
+      utilise pour enregistrer de la vidéo en temps réel. Composer les images,
+      c'est un canvas. Aucune des deux étapes n'a besoin d'autre chose que de
+      votre propre matériel.
+    </p>
+    <p>
+      Une exception sur cet outil précis, dite plutôt qu'enterrée&nbsp;: la
+      fonction facultative &laquo;&nbsp;ajouter depuis une adresse web&nbsp;&raquo;
+      récupère une image à une adresse que vous collez, et le serveur qui se
+      trouve à cette adresse voit votre IP et ce que vous avez demandé. C'est
+      inhérent à la fonction plutôt qu'un défaut, et c'est la seule étape réseau
+      de tout l'outil. Ne vous en servez pas et rien ne quitte votre machine.
+    </p>
+    <p>
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
+      fichiers à un convertisseur en ligne&nbsp;?</a> expose quatre vérifications
+      qui vous diront la même chose de n'importe quel outil, celui-ci compris.
+    </p>
+  </section>

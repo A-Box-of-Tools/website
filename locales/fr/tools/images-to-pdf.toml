@@ -1,0 +1,233 @@
+#
+# Images en PDF - French.
+#
+# Overrides for tools/images-to-pdf/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Images en PDF"
+heading = "Images&nbsp;en&nbsp;PDF <span class=\"h1-kw\">&mdash; convertisseur JPG en PDF</span>"
+tagline = "Réunir vos images dans un seul document."
+
+title = "Convertisseur d'images en PDF &mdash; JPG en PDF gratuit, sans envoi"
+description = "Réunissez des images JPG, PNG ou WebP dans un seul PDF, gratuitement et entièrement dans votre navigateur. Les photos entrent sans être réencodées, et rien n'est envoyé."
+og_title = "Images en PDF &mdash; convertisseur JPG en PDF gratuit"
+og_description = "Réunissez des images dans un seul PDF sur votre propre machine. Les photos JPEG y sont recopiées intactes : rien ne perd en qualité et rien n'est envoyé."
+og_image_alt = "Images en PDF - réunir des images dans un document sans les envoyer"
+
+pledge = """
+    Le document est écrit en mémoire sur cette machine, page par page, par du
+    code servi depuis cette adresse. Rien ici ne sait faire un envoi, et il n'y a
+    à l'autre bout de cette page aucun serveur pour en recevoir un."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      gardez l'onglet Réseau à l'œil et fabriquez un PDF. Pas une seule requête ne
+      transporte d'image, de vignette ni de nom de fichier. Ou coupez votre
+      connexion et fabriquez-en un quand même."""
+
+read_first = """
+, ainsi que <code>src/pdf.js</code> et <code>src/document.js</code>
+      pour la totalité de l'écriture du fichier, qui ne touche jamais au
+      réseau."""
+
+howto_heading = "Comment transformer des images en PDF"
+
+card = """
+            Réunissez des images dans un seul PDF, une image par page. Les photos
+            JPEG y sont recopiées telles quelles, si bien que rien ne perd en
+            qualité."""
+
+[words]
+plural = "images"
+choose = "des images"
+analytics_extra = """"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[facts]]
+text = "Les fichiers restent sur votre appareil"
+
+[[privacy]]
+title = "Vos images n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Cet outil n'ajoute rien à
+      cette liste&nbsp;: il n'a aucune fonction réseau propre, pas même
+      facultative. Il n'y a ici aucun point de collecte où vos fichiers
+      pourraient arriver, et rien dans le code qui les y enverrait s'il en
+      existait un."""
+
+[[privacy]]
+title = "Le PDF est écrit ici."
+body = """
+ Un PDF, c'est une liste d'objets et une table
+      qui dit où chacun commence, et <code>src/pdf.js</code> écrit les deux.
+      Aucune bibliothèque n'est récupérée, rien n'est rendu sur un serveur, et le
+      fichier fini est remis directement à un téléchargement depuis la
+      mémoire."""
+
+[[privacy]]
+title = "On ne dit rien au document sur vous."
+body = """
+ La plupart des outils
+      tamponnent un PDF d'un horodatage et du nom du programme qui l'a fabriqué.
+      Celui-ci n'écrit un titre, un auteur et une date que si vous les tapez&nbsp;;
+      les noms de fichiers de vos images n'apparaissent jamais dans le document,
+      et rien sur votre machine non plus."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Ni l'un ni l'autre ne reçoit
+      quoi que ce soit sur vos images&nbsp;: ni un fichier, ni une vignette, ni un
+      nom, une taille ou un nombre. Chaque ligne qui lit, décode ou écrit une
+      image est servie depuis cette origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; dans l'en-tête est
+      dessiné par un script de cdnjs.buymeacoffee.com et se compose avec Google
+      Fonts. C'est un lien, rien de plus&nbsp;: il ne signale aucune visite, et
+      on ne lui donne rien sur vous ni sur vos images. Rien ne se passe tant que
+      vous ne cliquez pas, et ce vers quoi vous cliqueriez est le site de
+      quelqu'un d'autre."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Coupez le réseau et tout sur cette page
+      fonctionne encore. C'est la preuve la plus simple de toutes&nbsp;: un outil
+      qui expédierait vos images ailleurs pour en faire un document
+      s'arrêterait."""
+
+[[howto]]
+title = "Choisissez vos images."
+body = """
+ Déposez un dossier sur la zone prévue, ou
+      sélectionnez les fichiers à la main. Le navigateur les lit directement sur
+      votre disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+
+[[howto]]
+title = "Mettez les pages dans l'ordre, et tournez celles qui le demandent."
+body = """
+ Une
+      image devient une page, dans l'ordre affiché. Faites glisser une tuile par
+      sa poignée pour la déplacer, ou servez-vous des flèches&nbsp;; les boutons
+      de rotation tournent une page d'un quart de tour à la fois, ce dont un scan
+      couché a généralement besoin."""
+
+[[howto]]
+title = "Choisissez un format de page."
+body = """
+ &laquo;&nbsp;Ajuster la page à chaque
+      image&nbsp;&raquo; fait de chaque page exactement son image, sans rien
+      recadrer et sans bandes blanches. Les formats nommés &mdash; A4, Letter,
+      Legal et les autres &mdash; posent chaque image sur une page fixe à la
+      place, avec une marge si vous en voulez une."""
+
+[[howto]]
+title = "Créez le PDF et téléchargez-le."
+body = """
+ Le document est écrit sur votre
+      propre machine&nbsp;: la durée dépend donc de votre matériel et non d'une
+      file d'attente. Le fichier fini est remis directement aux téléchargements de
+      votre navigateur."""
+
+[[faq]]
+q = "Mes images sont-elles envoyées quelque part&nbsp;?"
+a = """
+        Non. Vos images sont lues et le PDF est écrit par votre propre navigateur sur
+        votre propre matériel. Cet outil n'a pas de côté serveur, et la
+        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+        qu'elle peut contacter &mdash; aucune n'appartient à ce site. Contrairement à
+        certains autres outils d'ici, celui-ci n'a aucune fonction réseau facultative."""
+
+[[faq]]
+q = "Convertir en PDF fait-il perdre de la qualité&nbsp;?"
+a = """
+        Pas pour un JPEG, avec le réglage par défaut. Le PDF sait transporter des
+        données JPEG directement&nbsp;: une photographie est donc recopiée dans le
+        document octet pour octet, elle n'est jamais décodée ni recompressée, et
+        l'image dans le PDF est l'image du fichier. Les autres formats doivent être
+        réencodés, parce que le PDF n'a pas de filtre pour eux &mdash; sauf si vous
+        choisissez le réglage sans perte, qui les stocke exactement au prix d'un
+        fichier plus gros."""
+
+[[faq]]
+q = "Quels formats d'image puis-je utiliser&nbsp;?"
+a = """
+        Toute image fixe que votre navigateur sait décoder, ce qui en pratique veut
+        dire le JPG, le PNG, le WebP, le GIF, l'AVIF et, sur les appareils Apple, le
+        HEIC. Il n'y a pas ici de liste séparée à tenir à jour, parce que le décodage
+        est le travail du navigateur et non le nôtre."""
+
+[[faq]]
+q = "Puis-je choisir le format de page et l'ordre des pages&nbsp;?"
+a = """
+        Oui. Les pages peuvent être en A4, Letter, Legal, A3, A5, Tabloid, à un format
+        que vous tapez, ou exactement à la taille de chaque image. Faites glisser les
+        tuiles pour les réordonner, triez-les par nom ou par date, tournez-en une d'un
+        quart de tour, et réglez une marge en millimètres."""
+
+[[faq]]
+q = "Combien d'images puis-je mettre dans un seul PDF&nbsp;?"
+a = """
+        Aucune limite n'est intégrée à l'outil. Le plafond pratique est la mémoire de
+        votre propre machine, parce que le document fini y est assemblé avant que vous
+        le téléchargiez. Quelques centaines de photos de téléphone en pleine résolution
+        est la première chose à s'en ressentir&nbsp;; réduire le plus grand côté, dans
+        les réglages, repousse ce plafond bien plus loin."""
+
+[[faq]]
+q = "Le PDF contient-il mes noms de fichiers ou un horodatage&nbsp;?"
+a = """
+        Non, sauf si vous en demandez un. Le bloc d'informations du document est laissé
+        vide, à l'exception du nom de cet outil&nbsp;: pas de noms de fichiers, pas de
+        nom de machine, pas de nom d'utilisateur, et pas de date de création sauf si
+        vous cochez la case. C'est délibéré &mdash; un PDF est une chose que les gens
+        envoient à d'autres gens."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a pas de compte, pas de connexion et pas de période
+        d'essai. Le site porte de la publicité, et c'est elle qui le finance&nbsp;; les
+        annonces ne reçoivent rien sur vos images."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
+        de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
+        envoyé&nbsp;: un outil qui expédierait vos images ailleurs pour en faire un
+        document s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Réunissez des images JPG, PNG et WebP dans un seul document PDF. Chaque page est écrite dans votre navigateur, si bien qu'aucune image n'est jamais envoyée."
+features = [
+  "Réunit des images JPG, PNG, WebP, GIF et AVIF dans un seul PDF",
+  "Les photos JPEG sont incorporées sans être réencodées",
+  "Formats de page de l'A5 au Tabloid, ou une page ajustée à chaque image",
+  "Réordonner, faire tourner, régler les marges et une couleur de page",
+  "Stockage sans perte facultatif pour les scans et les captures d'écran",
+  "Fonctionne hors ligne ; sans envoi, sans compte",
+]
+
+[picker]
+title = "Déposez vos images ici"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP, GIF, AVIF"
