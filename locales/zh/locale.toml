@@ -259,6 +259,7 @@ offline = "离线："
 checking = "检查中&hellip;"
 questions_heading = "常见问题"
 guide_heading = "详细版本"
+related_heading = "工具箱里的其他工具"
 privacy_heading = "这个说法要怎么验证"
 
 pledge_line = """

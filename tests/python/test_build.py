@@ -224,6 +224,69 @@ class GuidesAndTools(unittest.TestCase):
         self.assertIn('guides/b', str(caught.exception))
 
 
+class RelatedTools(unittest.TestCase):
+    """The ring of links out of every tool page.
+
+    The properties worth pinning down are the ones that make it a link graph
+    rather than a decoration: nothing points at itself, nothing points at the
+    same tool twice, and nothing is left with no way in.
+    """
+
+    @staticmethod
+    def tools(*pairs):
+        return [{'slug': slug, 'category': category} for slug, category in pairs]
+
+    def test_siblings_come_first(self):
+        ordered = self.tools(('a', 'x'), ('b', 'x'), ('c', 'y'), ('d', 'x'))
+        related = buildmod.related_tools(ordered, count=2)
+        self.assertEqual([t['slug'] for t in related['a']], ['b', 'd'])
+
+    def test_a_tool_never_links_to_itself(self):
+        ordered = self.tools(('a', 'x'), ('b', 'x'), ('c', 'x'))
+        for slug, others in buildmod.related_tools(ordered).items():
+            self.assertNotIn(slug, [t['slug'] for t in others])
+
+    def test_a_lone_tool_in_its_category_still_gets_links(self):
+        # qr-barcode and text-tools are the only tools in their categories, and
+        # a strict reading of "same category" would leave exactly those two
+        # pages as the dead ends this exists to remove.
+        ordered = self.tools(('a', 'x'), ('b', 'x'), ('lonely', 'z'))
+        related = buildmod.related_tools(ordered, count=2)
+        self.assertEqual([t['slug'] for t in related['lonely']], ['a', 'b'])
+
+    def test_the_ring_wraps(self):
+        # The last tool in the order reads round to the first rather than
+        # running out.
+        ordered = self.tools(('a', 'x'), ('b', 'x'), ('c', 'x'))
+        related = buildmod.related_tools(ordered, count=2)
+        self.assertEqual([t['slug'] for t in related['c']], ['a', 'b'])
+
+    def test_fewer_tools_than_asked_for_is_not_padded(self):
+        ordered = self.tools(('a', 'x'), ('b', 'x'))
+        self.assertEqual(len(buildmod.related_tools(ordered, count=4)['a']), 1)
+
+    def test_one_tool_on_its_own_gets_nothing(self):
+        self.assertEqual(buildmod.related_tools(self.tools(('a', 'x'))), {'a': []})
+
+    def test_no_tool_is_listed_twice_on_one_page(self):
+        ordered = self.tools(*[(chr(97 + n), 'x' if n % 2 else 'y')
+                               for n in range(9)])
+        for slug, others in buildmod.related_tools(ordered).items():
+            names = [t['slug'] for t in others]
+            self.assertEqual(len(names), len(set(names)), slug)
+
+    def test_every_real_tool_has_a_way_in(self):
+        # The half of this that is about search engines rather than readers: a
+        # tool nothing links to is a tool a crawler reaches only from the hub.
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        ordered = [{'slug': slug, 'category': category['id']}
+                   for category in site['hub']['categories']
+                   for slug in category['order']]
+        related = buildmod.related_tools(ordered)
+        linked = {t['slug'] for others in related.values() for t in others}
+        self.assertEqual({t['slug'] for t in ordered} - linked, set())
+
+
 class BuildTheSite(unittest.TestCase):
     """A whole plain build, into a temporary directory.
 

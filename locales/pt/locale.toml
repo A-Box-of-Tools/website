@@ -321,6 +321,7 @@ offline = "Offline:"
 checking = "verificando&hellip;"
 questions_heading = "Perguntas"
 guide_heading = "A versão longa"
+related_heading = "Também na caixa"
 privacy_heading = "Como a promessa de privacidade se verifica"
 
 # O inglês escreve "Your {{ plural }} are never uploaded", e o particípio

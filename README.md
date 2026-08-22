@@ -317,8 +317,10 @@ one.
    forgotten.
 2. Add the slug to the `order` of the matching `[[hub.categories]]` in
    `config/site.toml`, and set the same category id in the tool's `category`.
-   The card on the hub, the sitemap entry and the structured data follow from
-   that; there is no second place to remember.
+   The card on the hub, the sitemap entry, the structured data and the handful
+   of other tools every tool page links to all follow from that; there is no
+   second place to remember. See
+   [Why tool pages link to each other](#why-tool-pages-link-to-each-other).
 3. Run `python build.py`. If the tool is missing something, the build says so
    and writes nothing.
 4. If it belongs to a category that does not exist yet, add a
@@ -624,6 +626,38 @@ HTML.
 Neither link's text is written twice either. The tool page shows the guide's own
 `heading` and `description`; the guide shows the tool's own `name` and
 `tagline`. So neither page can promise something the other does not deliver.
+
+### Why tool pages link to each other
+
+Under the guide link, every tool page carries four more: "Also in the box", the
+nearest other tools. It closes a hole that was there from the start. A tool page
+linked up to the hub and across to its own guide and nowhere else, so somebody
+who arrived from a search for one tool was shown that tool and no route to the
+three beside it — and anything pointing at that page from outside stopped there
+instead of reaching the rest of the site.
+
+There is no list of related tools anywhere, and there should never be one.
+`order` in `[[hub.categories]]` already says which tools belong together,
+because it is what groups them on the front page; `related_tools()` in
+`build.py` reads the same order, so a second list cannot drift from the first.
+
+Two details in there are worth knowing before changing it:
+
+- **It is a ring, not the head of the category.** Each tool's list is read from
+  its own position and wraps round. Taking the first four of each category
+  instead would point all fourteen pages of `images-and-video` at the same four
+  names and leave the tail of it with nothing linking in — which is the half of
+  this that is about crawlers rather than readers.
+- **The category sorts the ring; it does not filter it.** `codes-and-data` and
+  `text-and-code` hold one tool each, so a strict reading of "same category"
+  would leave exactly `qr-barcode` and `text-tools` as the dead ends this is
+  meant to remove. A tool with siblings gets siblings, and a tool without gets
+  whatever the hub has nearest.
+
+`RELATED_COUNT` is four, and the `13rem` column minimum in
+`shared/css/tool-frame.css` is measured against it and against the 940px content
+column so the four land on one row. Changing either number without the other
+leaves an orphan on a second row.
 
 ---
 
