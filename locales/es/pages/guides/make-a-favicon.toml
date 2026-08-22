@@ -7,19 +7,19 @@
 
 nav = "Hacer un favicon"
 
-title = "Cómo hacer un favicon (y un icono de aplicación de Windows)"
-description = "Qué tamaños necesita de verdad un favicon.ico, qué archivos extra piden los iPhone, Android y un Mac, y por qué un logotipo que funciona en un cartel desaparece a dieciséis píxeles."
+title = "Cómo crear un favicon (y el icono de una aplicación de Windows)"
+description = "Qué tamaños necesita de verdad un favicon.ico, qué archivos aparte piden los iPhone, Android y un Mac, y por qué un logotipo que funciona en un cartel desaparece a dieciséis píxeles."
 
-heading = "Cómo hacer un favicon que todavía se lea a dieciséis píxeles"
+heading = "Cómo crear un favicon que aún se lea a dieciséis píxeles"
 lede = """
-    Un favicon no es una imagen pequeña de tu logotipo. Es un conjunto de
-    imágenes a tamaños fijos, dentro de un contenedor que casi nadie abre, y la
-    más pequeña de todas es la que ve la gente. Esto es qué tamaños necesitas,
-    qué archivos van al lado, y qué hacer cuando tu logotipo no sobrevive al
-    viaje hacia abajo."""
+    Un favicon no es una versión pequeña de tu logotipo. Es un juego de imágenes
+    a tamaños fijos, dentro de un contenedor que casi nadie abre, y la más
+    pequeña de todas es la que ve la gente. Aquí verás qué tamaños necesitas,
+    qué archivos van al lado y qué hacer cuando tu logotipo no aguanta el
+    encogimiento."""
 
 updated = "20 de agosto de 2026"
 
-og_title = "Hacer un favicon que todavía se lea a dieciséis píxeles"
-og_description = "Qué tamaños necesita un favicon.ico, los archivos extra que piden los iPhone y Android, y qué hacer cuando tu logotipo no sobrevive a encogerse."
+og_title = "Crear un favicon que aún se lea a dieciséis píxeles"
+og_description = "Qué tamaños necesita un favicon.ico, los archivos aparte que piden los iPhone y Android, y qué hacer cuando tu logotipo no aguanta encogerse."
 og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

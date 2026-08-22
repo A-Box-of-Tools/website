@@ -8,18 +8,18 @@
 
 nav = "Reducir un PDF"
 
-title = "Cómo reducir el tamaño de un PDF (y por qué algunos no encogen)"
-description = "Dónde está de verdad el tamaño de un PDF, por qué un escaneo se comprime un 80&nbsp;% y un contrato apenas se mueve, qué significan aquí los PPP, y qué no debería hacerle nunca un compresor a tu documento."
+title = "Cómo reducir el peso de un PDF (y por qué algunos no adelgazan)"
+description = "Dónde está de verdad el peso de un PDF, por qué un escaneo se comprime un 80 % y un contrato apenas se mueve, qué pintan aquí los PPP y qué no debería hacerle nunca un compresor a tu documento."
 
-heading = "Cómo reducir el tamaño de un PDF, y por qué algunos no encogen"
+heading = "Cómo reducir el peso de un PDF, y por qué algunos no adelgazan"
 lede = """
     Un PDF que no cabe en el límite de un correo es casi siempre un PDF lleno de
-    imágenes. Esto explica cómo saber si el tuyo lo es, qué cuesta comprimirlo, y
+    imágenes. Aquí verás cómo saber si el tuyo lo es, qué cuesta comprimirlo y
     por qué cualquier herramienta que prometa un porcentaje fijo no ha mirado tu
     archivo."""
 
 updated = "20 de agosto de 2026"
 
-og_title = "Cómo reducir el tamaño de un PDF"
-og_description = "Dónde está de verdad el tamaño de un PDF, por qué un escaneo encoge y un contrato no, y qué tienen que ver los PPP con esto."
+og_title = "Cómo reducir el peso de un PDF"
+og_description = "Dónde está de verdad el peso de un PDF, por qué un escaneo adelgaza y un contrato no, y qué pintan aquí los PPP."
 og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

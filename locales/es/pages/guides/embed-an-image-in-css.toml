@@ -9,18 +9,18 @@
 nav = "Incrustar una imagen en CSS"
 
 title = "Data URI en CSS: cuándo incrustar una imagen y cuándo no"
-description = "Lo que cuesta un data URI, por qué base64 añade un tercio y gzip no lo devuelve, por qué un SVG nunca debería ir en base64, y el error de comillas que rompe los SVG incrustados en silencio."
+description = "Lo que cuesta un data URI, por qué base64 añade un tercio y gzip no te lo devuelve, por qué un SVG no debería ir nunca en base64, y el fallo de comillas que rompe los SVG incrustados sin avisar."
 
 heading = "Cuándo meter una imagen dentro de tu CSS y cuándo no"
 lede = """
-    Una imagen escrita dentro de una hoja de estilos llega con ella: sin una
-    segunda petición y sin esperas. También deja de ser un archivo &mdash; así
-    que no se puede cachear por su cuenta, y se vuelve a descargar cada vez que
-    cambia algo a su alrededor. Esto es dónde merece la pena hacer ese trato, y
-    dónde en silencio no."""
+    Una imagen escrita dentro de la hoja de estilos llega con ella: sin una
+    segunda petición y sin esperas. Pero también deja de ser un archivo, así que
+    no se puede cachear por su cuenta y se vuelve a descargar cada vez que
+    cambia cualquier cosa a su alrededor. Esto es dónde ese trato sale a cuenta
+    y dónde, sin que se note, no."""
 
 updated = "20 de agosto de 2026"
 
 og_title = "Cuándo meter una imagen dentro de tu CSS"
-og_description = "Lo que cuesta un data URI, por qué un SVG nunca debería ir en base64, y el error de comillas que rompe los SVG incrustados en silencio."
+og_description = "Lo que cuesta un data URI, por qué un SVG no debería ir nunca en base64, y el fallo de comillas que rompe los SVG incrustados sin avisar."
 og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

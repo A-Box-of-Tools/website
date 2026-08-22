@@ -8,18 +8,18 @@
 
 nav = "Datos EXIF y GPS"
 
-title = "Cómo quitar los datos EXIF y GPS de una foto"
-description = "Una foto salida de un móvil suele llevar el punto exacto en que se tomó, la hora al segundo y el número de serie de la cámara. Qué hay ahí dentro, quién puede leerlo, y cómo quitarlo sin tocar la imagen."
+title = "Cómo eliminar los datos EXIF y GPS de una foto"
+description = "Una foto salida de un móvil suele llevar el punto exacto donde se hizo, la hora al segundo y el número de serie de la cámara. Qué hay ahí dentro, quién puede leerlo y cómo quitarlo sin tocar la imagen."
 
 heading = "Lo que una foto cuenta de ti, y cómo quitarlo"
 lede = """
-    Una imagen recién salida de un móvil suele llevar las coordenadas del sitio
-    en que se tomó, la hora al segundo, y datos suficientes de la cámara como
-    para atarla a todas las demás fotos del mismo dispositivo. Nada de eso se ve
-    en pantalla. Esto es lo que hay ahí dentro y cómo quitarlo."""
+    Una imagen recién salida de un móvil suele llevar las coordenadas del lugar
+    donde se hizo, la hora al segundo y datos de la cámara suficientes para
+    atarla a todas las demás fotos del mismo dispositivo. Nada de eso se ve en
+    pantalla. Esto es lo que hay ahí dentro y cómo quitarlo."""
 
 updated = "20 de agosto de 2026"
 
 og_title = "Lo que una foto cuenta de ti, y cómo quitarlo"
-og_description = "Las coordenadas GPS, las marcas de tiempo y los números de serie viajan dentro de fotos corrientes. Qué hay ahí dentro, quién puede leerlo, y cómo eliminarlo."
+og_description = "Las coordenadas GPS, las fechas y los números de serie viajan dentro de fotos corrientes. Qué hay ahí dentro, quién puede leerlo y cómo eliminarlo."
 og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

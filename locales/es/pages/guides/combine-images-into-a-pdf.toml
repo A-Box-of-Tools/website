@@ -8,18 +8,18 @@
 
 nav = "Imágenes en un PDF"
 
-title = "Cómo unir imágenes en un solo PDF"
-description = "Convierte fotos o escaneos en un único PDF: tamaño de página, orden y giro, por qué un JPEG no tiene por qué perder calidad al entrar, y qué le cuenta un PDF a la persona a la que se lo mandas."
+title = "Cómo juntar varias imágenes en un solo PDF"
+description = "Convierte fotos o escaneos en un único PDF: tamaño de página, orden y giro, por qué un JPEG no tiene por qué perder calidad al entrar, y qué cuenta el documento sobre quien lo envía."
 
-heading = "Cómo unir imágenes en un solo PDF"
+heading = "Cómo juntar varias imágenes en un solo PDF"
 lede = """
-    Alguien ha pedido «un PDF» y tú tienes once fotografías de papeles. Esto
-    cubre las decisiones que de verdad cambian el resultado &mdash; tamaño de
-    página, orden, calidad y qué dice el documento sobre ti &mdash; y cuáles
-    puedes ignorar."""
+    Te han pedido «un PDF» y lo que tienes son once fotografías de unos
+    papeles. Aquí están las decisiones que de verdad cambian el resultado
+    &mdash; el orden, el tamaño de página, la calidad y lo que el documento
+    cuenta sobre ti &mdash; y también las que puedes pasar por alto."""
 
 updated = "20 de agosto de 2026"
 
-og_title = "Cómo unir imágenes en un solo PDF"
-og_description = "Tamaño de página, orden y giro, por qué un JPEG no tiene por qué perder calidad al entrar, y qué le cuenta un PDF a la persona a la que se lo mandas."
+og_title = "Juntar varias imágenes en un solo PDF"
+og_description = "Tamaño de página, orden y giro, por qué un JPEG no tiene por qué perder calidad al entrar, y qué cuenta el documento sobre quien lo envía."
 og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
