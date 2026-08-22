@@ -27,8 +27,8 @@ import {
   totalSeconds, trim,
 } from '../../tools/trim-audio/src/trim.js';
 import {
-  TIMESTAMP_FORMATS, formatClock, openSegment, parseClock, readTimestamps,
-  segmentRanges, totalCaptured, writeTimestamps,
+  TIMESTAMP_FORMATS, formatClock, formatDuration, openSegment, parseClock,
+  readTimestamps, segmentRanges, totalCaptured, writeTimestamps,
 } from '../../tools/trim-audio/src/segments.js';
 import { formatTime, parseTime } from '../../tools/trim-audio/src/timeline.js';
 import { summarise } from '../../tools/trim-audio/src/waveform.js';
@@ -232,6 +232,57 @@ test('trim stops when the signal is aborted', async () => {
   await assert.rejects(() => running, { name: 'AbortError' });
 });
 
+/*
+ * The two below are about the same thing, which is the one part of this file
+ * that is not arithmetic: whether the loop really hands the page back between
+ * sections.
+ *
+ * The test above cannot answer that. It aborts from inside onProgress, which
+ * is called from *within* the loop, so it would pass just as happily against a
+ * version that never yields at all - and that version is what shipped: it
+ * awaited a resolved promise, which queues a microtask and returns to the same
+ * task. The browser only repaints and only delivers a click between tasks, so
+ * the progress bar was frozen and Cancel was unpressable for the whole trim.
+ *
+ * Aborting from a timer is the same shape as a person clicking Cancel, and it
+ * can only work if the loop returns to the event loop. `budgetMs: 0` makes the
+ * yield happen every section so the test does not depend on how fast the
+ * machine running it is.
+ */
+
+test('the loop hands the page back between sections, not just the microtask queue', async () => {
+  const source = { channels: [ramp(4000)], sampleRate: 1000, frames: 4000 };
+  const sections = planSections(
+    Array.from({ length: 8 }, (_, i) => ({ start: i * 0.5, end: i * 0.5 + 0.4 })),
+    { sampleRate: 1000, totalFrames: 4000 });
+
+  let timerFired = false;
+  let firedDuringLoop = false;
+  setTimeout(() => { timerFired = true; }, 0);
+
+  await trim(source, sections, {
+    budgetMs: 0,
+    onProgress: () => { if (timerFired) firedDuringLoop = true; },
+  });
+
+  assert.equal(firedDuringLoop, true,
+    'a timer set before the trim has to get its turn while the trim is running');
+});
+
+test('a cancel that arrives the way a click does is honoured', async () => {
+  const source = { channels: [ramp(4000)], sampleRate: 1000, frames: 4000 };
+  const sections = planSections(
+    Array.from({ length: 8 }, (_, i) => ({ start: i * 0.5, end: i * 0.5 + 0.4 })),
+    { sampleRate: 1000, totalFrames: 4000 });
+
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 0);
+
+  await assert.rejects(
+    () => trim(source, sections, { budgetMs: 0, signal: controller.signal }),
+    { name: 'AbortError' });
+});
+
 /* --------------------------------------------------------- cutting it out */
 
 test('inverting the marks keeps everything they did not cover', () => {
@@ -263,6 +314,38 @@ test('formatClock always writes hours, minutes, seconds and thousandths', () => 
   assert.equal(formatClock(0), '00:00:00.000');
   assert.equal(formatClock(207.687), '00:03:27.687');
   assert.equal(formatClock(3661.5), '01:01:01.500');
+});
+
+test('a fraction that rounds up carries into the seconds instead of writing four digits', () => {
+  // The instant has to be rounded before it is taken apart. Flooring the
+  // seconds and rounding the fraction separately writes 3.9996 as
+  // "00:00:03.1000", which is not a time: it reads back as 3.1, nine tenths of
+  // a second from where the mark was put.
+  assert.equal(formatClock(3.9996), '00:00:04.000');
+  assert.equal(formatClock(59.9999), '00:01:00.000');
+  assert.equal(formatClock(3599.9999), '01:00:00.000');
+  assert.equal(formatClock(0.9995), '00:00:01.000');
+
+  for (const seconds of [3.9996, 59.9999, 0.9995, 3599.9999]) {
+    assert.ok(Math.abs(parseClock(formatClock(seconds)) - seconds) < 0.001,
+      `${seconds} has to read back as itself`);
+  }
+});
+
+test('the same carry, in the label a row and the playhead are written with', () => {
+  assert.equal(formatTime(3.9996), '0:04.000');
+  assert.equal(formatTime(59.9999), '1:00.000');
+  assert.equal(formatTime(3599.9999), '1:00:00.000');
+  assert.equal(parseTime(formatTime(59.9999)), 60);
+});
+
+test('a length is written the way a person reads it, and carries too', () => {
+  assert.equal(formatDuration(0), '0:00.0');
+  assert.equal(formatDuration(3), '0:03.0');
+  assert.equal(formatDuration(83.5), '1:23.5');
+  assert.equal(formatDuration(59.96), '1:00.0');
+  assert.equal(formatDuration(3599.96), '1:00:00.0');
+  assert.equal(formatDuration(Number.NaN), '-');
 });
 
 test('parseClock reads what the two formats write and what people type', () => {

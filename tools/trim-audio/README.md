@@ -106,6 +106,20 @@ strict nor too clever — a file with no header at all is still a list of times,
 line that cannot be read is counted rather than fatal, and a part that starts
 past the end of the recording you loaded is dropped with a message saying so.
 
+**One rounding rule, in every place a time is written.** The instant is rounded
+to milliseconds *once*, before it is taken apart into hours, minutes, seconds
+and thousandths. Doing it the other way round — floor the seconds, round the
+fraction — is the same arithmetic and a different answer: 3.9996 floors to 3
+and rounds to 1000, and the two get written next to each other as
+`00:00:03.1000`. That is four digits in a field that holds three, it reads back
+as 3.1, and it is how a mark made at 3.9996 s comes home nine tenths of a
+second early. `formatClock` in `src/segments.js`, `formatTime` in
+`src/timeline.js` — which is what a row's time box is filled with, so an
+unreadable label there moves the mark when the row is next edited — and
+`formatDuration` all round first. So does the video cutter, because the file
+above is shared and the two have to agree about the instant as well as the
+layout.
+
 ## The waveform is not decoration
 
 Marking sound by scrubbing is guesswork. Silence looks like silence, a cough
@@ -201,6 +215,17 @@ the context is created to match. A file whose format does not say is decoded at
   `cutChannels` producing the samples that went in, in order, with the ramps
   where the plan said.
 - **`src/segments.js`** — the timestamps file in both formats, round-tripping,
-  and the leniency: no header, unreadable lines, reversed times.
+  and the leniency: no header, unreadable lines, reversed times. The rounding
+  rule above has its own test, at the fractions that expose it.
+- **That the loop really hands the page back.** This is the one test here that
+  is about scheduling rather than arithmetic, and it exists because the first
+  version of that loop awaited a resolved promise. That queues a *microtask*,
+  and microtasks run to exhaustion inside the task that queued them: the
+  browser never gets in between, so the progress bar could not repaint and the
+  Cancel button could not be pressed — the click had nowhere to be delivered
+  until the trim was already over. A test that aborts from inside `onProgress`
+  passes either way, which is why the test here aborts from a timer, the way a
+  person's click arrives. `budgetMs` is an argument to `trim()` so that the
+  test can set it to zero and not depend on how fast the machine is.
 
 Run them with `node --test "tests/js/*.test.js"` from the repository root.

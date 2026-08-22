@@ -54,6 +54,14 @@ strict nor too clever: a file with no header at all is still a list of times, a
 line that cannot be read is counted rather than fatal, and a marked part that
 starts past the end of the video you loaded is dropped with a message saying so.
 
+The instant is rounded to milliseconds **once, before it is taken apart** into
+hours, minutes, seconds and thousandths. Flooring the seconds and rounding the
+fraction separately writes 3.9996 as `00:00:03.1000` — four digits in a field
+that holds three, which reads back as 3.1. The audio trimmer reads and writes
+this same file, so both sides round the same way; `formatClock` in
+`src/segments.js` and `formatTime` in `src/timeline.js` are the two places it
+matters.
+
 ## Why this is not just the cropper with different arithmetic
 
 A crop changes what every frame looks like, so every frame has to be written

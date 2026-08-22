@@ -52,13 +52,21 @@ const MIN_SEGMENT = 0.001;
  * HH:MM:SS.mmm, always with the hours, because that is what the file format
  * uses and a reader that has to guess whether the first field is hours or
  * minutes is a reader that will one day guess wrong.
+ *
+ * The instant is rounded to milliseconds **once, before it is taken apart**.
+ * Flooring the seconds and rounding the fraction separately is the same
+ * arithmetic and a different answer: 3.9996 floors to 3 and rounds to 1000,
+ * and the two are then written next to each other as `00:00:03.1000` - four
+ * digits in a field that holds three, and a time that reads back as 3.1. A
+ * mark is careful work and this is the format it is saved in, so nine tenths
+ * of a second is not a rounding error to shrug at.
  */
 export function formatClock(seconds) {
-  const safe = Math.max(0, Number(seconds) || 0);
-  const whole = Math.floor(safe);
+  const total = Math.round(Math.max(0, Number(seconds) || 0) * 1000);
+  const whole = Math.floor(total / 1000);
   const pad = (value, size) => String(value).padStart(size, '0');
   return `${pad(Math.floor(whole / 3600), 2)}:${pad(Math.floor(whole / 60) % 60, 2)}`
-    + `:${pad(whole % 60, 2)}.${pad(Math.round((safe - whole) * 1000), 3)}`;
+    + `:${pad(whole % 60, 2)}.${pad(total % 1000, 3)}`;
 }
 
 /**
@@ -175,4 +183,27 @@ export function readTimestamps(text) {
   }
 
   return { format, name, segments, skipped };
+}
+
+/**
+ * A *length* - how long something runs for - written for a person to read.
+ *
+ * Rounded to tenths once and then taken apart, for the reason formatClock
+ * above is: decomposing first and rounding the piece writes 59.96 seconds as
+ * "0:60.0", which is a minute that never learned it was a minute.
+ *
+ * Tenths rather than thousandths because this answers "how long is it", and
+ * nobody marks a recording against the length of the whole thing. The exact
+ * instants are formatClock's job.
+ */
+export function formatDuration(seconds) {
+  if (!Number.isFinite(seconds)) return '-';
+  const tenths = Math.round(Math.max(0, seconds) * 10);
+  const whole = Math.floor(tenths / 10);
+  const hours = Math.floor(whole / 3600);
+  const minutes = Math.floor((whole % 3600) / 60);
+  const shown = `${String(whole % 60).padStart(2, '0')}.${tenths % 10}`;
+  return hours
+    ? `${hours}:${String(minutes).padStart(2, '0')}:${shown}`
+    : `${minutes}:${shown}`;
 }

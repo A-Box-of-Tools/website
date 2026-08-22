@@ -45,13 +45,21 @@ const MIN_SEGMENT = 0.02;
  * HH:MM:SS.mmm, always with the hours, because that is what the file format
  * uses and a reader that has to guess whether the first field is hours or
  * minutes is a reader that will one day guess wrong.
+ *
+ * The instant is rounded to milliseconds **once, before it is taken apart**.
+ * Flooring the seconds and rounding the fraction separately is the same
+ * arithmetic and a different answer: 3.9996 floors to 3 and rounds to 1000,
+ * and the two are then written next to each other as `00:00:03.1000` - four
+ * digits in a field that holds three, and a time that reads back as 3.1. The
+ * audio trimmer next door reads and writes this same file, so the two have to
+ * agree about the instant as well as about the layout.
  */
 export function formatClock(seconds) {
-  const safe = Math.max(0, Number(seconds) || 0);
-  const whole = Math.floor(safe);
+  const total = Math.round(Math.max(0, Number(seconds) || 0) * 1000);
+  const whole = Math.floor(total / 1000);
   const pad = (value, size) => String(value).padStart(size, '0');
   return `${pad(Math.floor(whole / 3600), 2)}:${pad(Math.floor(whole / 60) % 60, 2)}`
-    + `:${pad(whole % 60, 2)}.${pad(Math.round((safe - whole) * 1000), 3)}`;
+    + `:${pad(whole % 60, 2)}.${pad(total % 1000, 3)}`;
 }
 
 /**

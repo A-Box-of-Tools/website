@@ -34,15 +34,22 @@ function clamp(value, low, high) {
   return Math.max(low, Math.min(high, value));
 }
 
-/** mm:ss.mmm, which is short enough to read and exact enough to type back. */
+/**
+ * mm:ss.mmm, which is short enough to read and exact enough to type back.
+ *
+ * Rounded to milliseconds once, before it is taken apart: flooring the seconds
+ * and rounding the fraction separately writes 3.9996 as `0:03.1000`, which is
+ * four digits in a three-digit field and parses back as 3.1. This label is not
+ * only read - it is what a row's time box is filled with, so a number that
+ * cannot be read back is a mark that moves nine tenths of a second when
+ * somebody edits the row beside it.
+ */
 export function formatTime(seconds) {
-  const safe = Math.max(0, seconds || 0);
-  const whole = Math.floor(safe);
+  const total = Math.round(Math.max(0, seconds || 0) * 1000);
+  const whole = Math.floor(total / 1000);
   const hours = Math.floor(whole / 3600);
   const minutes = Math.floor((whole % 3600) / 60);
-  const rest = whole % 60;
-  const millis = Math.round((safe - whole) * 1000);
-  const tail = `${String(rest).padStart(2, '0')}.${String(millis).padStart(3, '0')}`;
+  const tail = `${String(whole % 60).padStart(2, '0')}.${String(total % 1000).padStart(3, '0')}`;
   return hours
     ? `${hours}:${String(minutes).padStart(2, '0')}:${tail}`
     : `${minutes}:${tail}`;
