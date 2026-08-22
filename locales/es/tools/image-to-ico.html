@@ -1,0 +1,187 @@
+<main>
+  <!-- Paso 1 &mdash; la imagen -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige una imagen</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Quitar todo de la lista</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="shape-note" class="field-summary" hidden></p>
+  </section>
+
+  <!-- Paso 2 &mdash; qué norma -->
+  <section class="card" id="preset-card">
+    <h2><span class="step">2</span> Di para qué es el icono</h2>
+
+    <p class="card-lede">
+      Un archivo de icono no es una imagen, son varias: el mismo logotipo
+      dibujado otra vez a cada tamaño que pide quien lo lee. Cuáles son esos
+      tamaños no es cuestión de gustos &mdash; un navegador quiere tres, una
+      aplicación en un portátil de alta densidad quiere diez, un Mac quiere los
+      diez suyos, y algo escrito antes de Windows Vista los quiere guardados de
+      una forma completamente distinta.
+    </p>
+
+    <!--
+      Which files to write. Windows and macOS read different containers and
+      neither will look at the other's, so this is a set of checkboxes rather
+      than a menu: wanting both is the normal case for anything shipped on both.
+    -->
+    <fieldset class="options outputs">
+      <legend>Qué hacer</legend>
+
+      <label class="check">
+        <input type="checkbox" id="want-ico" checked>
+        <span>
+          <strong>Icono de Windows &mdash; <code>.ico</code></strong>
+          <span class="check-note">
+            Lo lee cualquier navegador como favicon, y Windows para una
+            aplicación, un acceso directo y una carpeta. Los tamaños los eliges
+            tú abajo.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="want-icns">
+        <span>
+          <strong>Icono de macOS &mdash; <code>.icns</code></strong>
+          <span class="check-note">
+            Lo que lleva un paquete de aplicación de Mac. Apple nombra
+            exactamente diez ranuras, de 16 píxeles a 1024, así que no hay nada
+            que elegir: entran las diez, dibujadas a partir de siete renders
+            porque una ranura Retina y el tamaño siguiente son la misma imagen.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="pack-row">
+        <input type="checkbox" id="want-pack">
+        <span>
+          <strong>El resto del conjunto de iconos de una web</strong>
+          <span class="check-note">
+            Un .ico cubre la pestaña del navegador y Windows. No cubre la
+            pantalla de inicio de un iPhone, un aviso de instalación de Android
+            ni un mosaico anclado al menú Inicio &mdash; esos leen un PNG de
+            180 px, un manifiesto de aplicación web y un archivo XML, y ninguno
+            va a mirar dentro de un .ico. Marca esto y te llevas también todos
+            ellos, el manifiesto y el bloque de HTML para pegar en tu página.
+          </span>
+        </span>
+      </label>
+
+      <p id="output-summary" class="field-summary"></p>
+    </fieldset>
+
+    <div id="ico-settings">
+      <div class="presets" id="preset-list" role="radiogroup" aria-label="Para qué es el icono"></div>
+
+      <p id="preset-note" class="field-summary"></p>
+
+      <fieldset class="options" id="size-set">
+        <legend>Los tamaños que entran en el .ico</legend>
+        <div class="size-grid" id="size-grid"></div>
+        <p id="size-summary" class="field-summary"></p>
+      </fieldset>
+    </div>
+
+    <fieldset class="options">
+      <legend>Cómo se dibuja</legend>
+
+      <div class="option-row">
+        <label for="fit-select">Si la imagen no es cuadrada</label>
+        <select id="fit-select">
+          <option value="pad" selected>Rellenar hasta un cuadrado &mdash; se conserva la imagen entera</option>
+          <option value="crop">Recortar al cuadrado del centro</option>
+          <option value="stretch">Estirarla hasta un cuadrado</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="background-mode">Fondo</label>
+        <select id="background-mode">
+          <option value="transparent" selected>Transparente</option>
+          <option value="colour">Un color</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="Color de fondo" hidden>
+      </div>
+
+      <div class="option-row" id="storage-row">
+        <label for="storage-select">Cómo se guarda cada tamaño en el .ico</label>
+        <select id="storage-select">
+          <option value="auto" selected>Automático &mdash; compatible cuando sale barato, PNG cuando no</option>
+          <option value="png">PNG para todos los tamaños &mdash; el archivo más pequeño, necesita Vista o posterior</option>
+          <option value="bmp">Sin comprimir para todos los tamaños &mdash; se abre en cualquier cosa, varias veces más grande</option>
+        </select>
+      </div>
+
+      <p id="storage-note" class="field-summary"></p>
+    </fieldset>
+
+  </section>
+
+  <!-- Paso 3 &mdash; míralo pequeño y llévatelo -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Compruébalo al tamaño al que se verá</h2>
+
+    <p class="card-lede">
+      Esta es la parte que merece la pena mirar antes de descargar nada. Un
+      logotipo que se lee perfectamente a 512 píxeles mide dieciséis píxeles de
+      ancho en una pestaña del navegador, y sus partes finas &mdash; los trazos
+      de un texto, un borde de un pelo, un degradado &mdash; no sobreviven a eso.
+      Cada cuadrado de abajo está dibujado a su tamaño real a partir del archivo
+      que has elegido.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-strip" id="preview-strip"></div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make-icon" class="primary big" disabled>Hacer el icono</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Listo</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Descargar todo en un zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+
+      <!--
+        The block to paste into a page's <head>, shown rather than only zipped:
+        most people making a favicon are about to paste this into a template,
+        and a copy button is a shorter route than a download and a text editor.
+      -->
+      <div id="snippet" class="snippet" hidden>
+        <div class="snippet-head">
+          <h4>Pega esto en tu <code>&lt;head&gt;</code></h4>
+          <button type="button" id="copy-snippet" class="ghost">Copiar</button>
+        </div>
+        <pre id="snippet-text"></pre>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,234 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Abre el <a href="../../comprimir-pdf/">compresor de PDF</a>, suelta el
+      documento dentro y mira lo que te dice antes de cambiar nada. Lee el
+      archivo y enseña dónde está de verdad el tamaño &mdash; imágenes,
+      tipografías, texto y dibujo, y todo aquello a lo que ya no apunta nada del
+      documento. Esa sola pantalla suele responder la pregunta.
+    </p>
+    <p>
+      Si casi todo el tamaño son imágenes, puedes esperar un ahorro grande. Si
+      son tipografías y texto, no puedes, y ninguna herramienta puede. Cuál de
+      los dos tienes es la historia entera, y merece diez segundos de mirada.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dónde está de verdad el tamaño de un PDF</h2>
+    <p>
+      Un PDF es un contenedor de varias clases de cosas distintas, y no se
+      comprimen igual.
+    </p>
+    <ul>
+      <li>
+        <strong>Imágenes.</strong> Fotografías y escaneos. Casi siempre el grueso
+        de un PDF grande, y la única parte con margen de verdad.
+      </li>
+      <li>
+        <strong>Tipografías incrustadas.</strong> Una tipografía completa puede
+        ser de cientos de kilobytes; un subconjunto con solo los caracteres usados
+        es mucho menos. En cualquier caso, las comprimió el programa que produjo
+        el archivo.
+      </li>
+      <li>
+        <strong>Texto y dibujo vectorial.</strong> Instrucciones en vez de
+        píxeles: dibuja esta línea, pon esta palabra aquí. Compacto ya, y
+        comprimido ya.
+      </li>
+      <li>
+        <strong>Objetos a los que ya no apunta nada.</strong> Los PDF los
+        acumulan. Editar un documento muchas veces añade el cambio en vez de
+        reescribir el archivo, así que una versión antigua de una página puede
+        quedarse ahí dentro indefinidamente. Reempaquetar el archivo los tira.
+      </li>
+    </ul>
+    <p>
+      Así que los dos documentos que la gente le lleva a un compresor de PDF
+      tienen perspectivas completamente distintas. Un documento escaneado es en
+      esencia un montón de fotografías, y suele salir un 60&ndash;90&nbsp;% más
+      pequeño. Un contrato, una tesis o un informe exportado son texto, dibujo y
+      tipografías &mdash; todo ello comprimido ya por el programa que lo escribió
+      &mdash; y ahí el ahorro suele ser de un pequeño porcentaje, de reempaquetar
+      y tirar lo que no se referencia.
+    </p>
+    <p>
+      Cualquier herramienta que prometa «hasta un 90&nbsp;% más pequeño» sin
+      mirar tu archivo te está citando el mejor caso del primer tipo aplicado al
+      segundo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué tienen que ver los PPP con esto</h2>
+    <p>
+      Un PDF no guarda solo una imagen; anota de qué tamaño se dibuja esa imagen
+      en la página. Eso te da algo más útil que el número de píxeles: la
+      resolución efectiva.
+    </p>
+    <p>
+      Un escaneo de 4000 píxeles de ancho colocado a lo ancho de veinte
+      centímetros de papel lleva unos 500 píxeles por pulgada. Una pantalla
+      enseña unos 100. Una buena impresora de oficina trabaja a 300 y no puede
+      aprovechar mucho más. Todo lo que hay por encima es detalle que nada en el
+      futuro del documento va a mostrar jamás &mdash; y suele ser casi todo el
+      archivo.
+    </p>
+    <p>
+      Por eso un compresor de PDF sensato pide unos PPP en vez de un porcentaje de
+      calidad. Tira primero los píxeles que están por encima de tu cifra, porque
+      esos no cuestan nada que nadie pueda ver, y solo entonces empieza a gastar
+      calidad de verdad.
+    </p>
+    <p>
+      Guía aproximada: <strong>150 PPP</strong> para un documento que se va a leer
+      en pantalla, <strong>200&ndash;300</strong> para algo que se va a imprimir,
+      <strong>72&ndash;100</strong> para un borrador que nadie va a guardar. Medir
+      contra el tamaño al que se dibuja la imagen es además la razón de que un
+      logotipo colocado pequeño no se trate igual que un escaneo a página completa
+      &mdash; el logotipo ya está cerca de su resolución efectiva y no hay nada que
+      quitarle.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué debería y qué no debería tocar la compresión</h2>
+    <p>
+      Las imágenes se recodifican, así que esas pierden un poco. Nada más debería
+      tocarse en absoluto, y merece la pena comprobar que la herramienta que uses
+      lo respeta:
+    </p>
+    <ul>
+      <li>
+        <strong>El texto sigue siendo texto.</strong> Seleccionable, buscable,
+        copiable. Un compresor que aplane las páginas a imágenes producirá un
+        archivo muy pequeño y destruirá el documento &mdash; no puedes buscar en
+        él, los lectores de pantalla no pueden leerlo, y no hay vuelta atrás.
+      </li>
+      <li>
+        <strong>Las tipografías siguen enteras.</strong> Sustituir tipografías
+        cambia el aspecto del documento en el equipo de otra persona, que es
+        justamente lo que el PDF existe para evitar.
+      </li>
+      <li>
+        <strong>El dibujo vectorial se copia tal cual.</strong> Ya es pequeño, y
+        rasterizarlo lo haría a la vez más grande y peor.
+      </li>
+      <li>
+        <strong>Los formularios, los enlaces, los marcadores, la estructura de
+        accesibilidad y los adjuntos se llevan al archivo nuevo.</strong> Son
+        fáciles de perder en una reescritura y casi nunca se nota hasta que
+        alguien necesita uno.
+      </li>
+    </ul>
+    <p>
+      Una regla relacionada que un compresor debería seguir y muchos no siguen: si
+      recodificar una imagen no sale de verdad más pequeño que el original, hay
+      que devolver los bytes originales. Empeorar una imagen sin ningún ahorro es
+      el caso de pérdida pura, y pasa más a menudo de lo que uno pensaría con
+      imágenes que ya estaban bien comprimidas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Las imágenes que no se pueden comprimir</h2>
+    <p>
+      Algunas imágenes de dentro de un PDF se saltan, y una buena herramienta las
+      nombra en vez de dejarlas fuera de la cuenta en silencio:
+    </p>
+    <ul>
+      <li>
+        <strong>Imágenes JPEG&nbsp;2000, JBIG2 y codificadas para fax
+        (CCITT).</strong> Ningún navegador trae un descodificador para ninguna de
+        ellas, así que pasan intactas. Las dos últimas son de dos niveles &mdash;
+        solo blanco y negro &mdash; y suelen estar ya cerca de su tamaño mínimo.
+      </li>
+      <li>
+        <strong>Imágenes CMYK.</strong> Se dejan en paz a propósito.
+        Recodificarlas arriesga a desplazar los colores que sacaría una imprenta,
+        que es algo sorprendente que hacerle a un documento que alguien va a
+        imprimir.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Cosas que probar antes de comprimir</h2>
+    <p>
+      A veces el archivo es grande por una razón para la que la compresión es la
+      respuesta equivocada.
+    </p>
+    <p>
+      <strong>¿Se escaneó cuando no hacía falta?</strong> Un documento impreso y
+      después escaneado es un montón de fotografías de texto. Si el original
+      todavía existe en alguna parte como documento, exportarlo a PDF producirá un
+      archivo de una fracción del tamaño y además buscable.
+    </p>
+    <p>
+      <strong>¿Se exportó con ajustes de imprenta?</strong> Los procesadores de
+      texto y los programas de diseño suelen exportar por defecto con calidad de
+      imprenta. Volver a exportar para pantalla desde el archivo original suele
+      ganarle a comprimir la exportación.
+    </p>
+    <p>
+      <strong>¿Tiene que ser un solo archivo?</strong> El límite de un correo es
+      por mensaje. Dividir un documento de 200 páginas en capítulos es a veces la
+      solución honesta.
+    </p>
+  </section>
+
+  <section>
+    <h2>Los archivos cifrados, y por qué un compresor debería rechazarlos</h2>
+    <p>
+      Un PDF protegido con contraseña lo rechaza la herramienta de aquí, y eso es
+      deliberado y no una función que falte &mdash; incluso cuando la contraseña
+      está en blanco, que es como guardan muchos escáneres y fotocopiadoras.
+    </p>
+    <p>
+      Quitarle la protección a un documento es un trabajo distinto de
+      comprimirlo. Una herramienta que lo hiciera en silencio estaría haciendo
+      algo que no le pediste, sobre un archivo que alguien había bloqueado a
+      propósito, y devolviéndote una copia que ya no tendría la propiedad que esa
+      persona quiso que tuviera. Quítale la protección tú primero, a propósito, si
+      es lo que quieres.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comprobar el resultado</h2>
+    <p>
+      Ábrelo. Mira las imágenes con el zoom al máximo, comprueba que el texto
+      sigue siendo seleccionable y confirma el número de páginas.
+    </p>
+    <p>
+      La herramienta de aquí hace lo último por ti antes de ofrecerte el archivo:
+      vuelve a abrir el documento que acaba de escribir y le cuenta las páginas, en
+      tu propio equipo. Escribe además PDF 1.5, que entiende cualquier lector
+      publicado desde 2003, así que «se abre en mi equipo» es una aproximación
+      razonable a «se abre en el suyo».
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué esto no necesita un servidor</h2>
+    <p>
+      Comprimir un PDF suena a trabajo de servidor, y durante casi toda la vida de
+      la web lo fue. Lo que implica en realidad es analizar la estructura del
+      archivo, encontrar los flujos de imagen, descodificarlos y recodificarlos
+      con los códecs que un navegador ya trae, y volver a escribir el documento.
+      Todo eso funciona hoy dentro de un navegador.
+    </p>
+    <p>
+      Cosa que importa más con este tipo de archivo que con casi cualquier otro,
+      por lo que la gente comprime: contratos, informes médicos, extractos
+      bancarios, documentos de identidad, declaraciones de la renta. La
+      herramienta de aquí no tiene ninguna función de red, y la
+      <code>Content-Security-Policy</code> de la página nombra todas las
+      direcciones que puede contactar, ninguna de las cuales es de este sitio.
+      Cárgala, desenchúfate y comprime algo de todos modos.
+    </p>
+    <p>
+      <a href="../es-seguro-subir-archivos/">¿Es seguro subir archivos a los
+      conversores en línea?</a> plantea otras tres comprobaciones como esa.
+    </p>
+  </section>

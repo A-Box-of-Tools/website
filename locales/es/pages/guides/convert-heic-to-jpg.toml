@@ -1,0 +1,25 @@
+#
+# Guía: el formato en que guarda un iPhone, y cómo salir de él - Spanish.
+#
+# Overrides for pages/guides/convert-heic-to-jpg/page.toml. Only words: the
+# slug, the kind, the group and the tool this guide is about stay where they
+# are.
+#
+
+nav = "HEIC a JPG"
+
+title = "Cómo convertir HEIC a JPG (y qué es HEIC en realidad)"
+description = "Los iPhone guardan las fotos como HEIC, y media internet no sabe abrir una. Qué es el formato, por qué solo Safari lo descodifica, qué le cuesta a la imagen convertirla, y cómo hacerlo sin subirle las fotos a nadie."
+
+heading = "La foto que guardó tu móvil, y el formato que no abre nada"
+lede = """
+    Un iPhone guarda las fotos como HEIC, que es más pequeño y mejor que JPEG y
+    que muchísimo software se sigue negando a abrir. Esto es qué es el formato en
+    realidad, qué le cuesta a la imagen convertirla, y por qué casi todos los
+    conversores quieren que la subas primero."""
+
+updated = "20 de agosto de 2026"
+
+og_title = "Cómo convertir HEIC a JPG"
+og_description = "Por qué las fotos de iPhone no se abren, qué cuesta convertirlas, y cómo hacerlo sin entregarle las fotos a nadie."
+og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

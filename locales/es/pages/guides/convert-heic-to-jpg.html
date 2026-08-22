@@ -1,0 +1,247 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Abre el <a href="../../convertir-heic-a-jpg/">convertidor de HEIC a JPG</a>,
+      suelta las fotos dentro y pulsa «Convertir». Deja el control de calidad
+      donde está y deja marcado «conservar la fecha, la cámara y los ajustes»
+      salvo que tengas un motivo para no hacerlo. Te llevas JPEG de vuelta, un
+      botón de descarga por cada uno, o un zip si son varios.
+    </p>
+    <p>
+      Mientras lo haces no se sube nada. Eso es raro en este trabajo en concreto,
+      y la razón es la mitad interesante de esta página.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué es HEIC en realidad</h2>
+    <p>
+      HEIC no es realmente un formato de imagen como lo es JPEG. Es un contenedor
+      &mdash; la misma estructura de cajas con la que está construido un MP4
+      &mdash; con un fotograma fijo de vídeo <strong>HEVC</strong> dentro. HEVC,
+      también llamado H.265, es el códec que sustituyó al que usaba tu vieja
+      videocámara, y es muy bueno: una foto de iPhone en HEIC ocupa más o menos la
+      mitad que la misma foto en JPEG a la misma calidad.
+    </p>
+    <p>
+      Apple se pasó a él en iOS 11, en 2017, y lo puso por defecto. Lo que
+      significa que, a menos que alguien haya entrado en los ajustes y haya
+      elegido «Más compatible», todas las fotos que ha hecho su móvil durante casi
+      una década están en un formato que:
+    </p>
+    <ul>
+      <li>Windows no previsualiza sin una extensión de la Store;</li>
+      <li>casi todos los formularios de subida de la web rechazan de plano;</li>
+      <li>muchísimo software de escritorio antiguo no ha oído nombrar en su vida;</li>
+      <li>y ningún navegador salvo Safari va a mostrar.</li>
+    </ul>
+    <p>
+      La foto está perfectamente. Es un archivo mejor de lo que habría sido el
+      JPEG. Sencillamente está escrito en un idioma que casi todo el mundo no
+      aprendió nunca.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué solo Safari abre una</h2>
+    <p>
+      Esta es la parte que explica todos los conversores que has usado en tu vida,
+      así que merece un párrafo.
+    </p>
+    <p>
+      Descodificar HEVC necesita un descodificador de HEVC, y HEVC está patentado.
+      Las licencias las administra más de un consorcio de patentes, y distribuir un
+      descodificador significa pagarle a alguien. Los navegadores se apañan con
+      esto apoyándose en el sistema operativo &mdash; Chrome reproduce
+      <em>vídeo</em> HEVC en un equipo cuyo hardware ya tiene un descodificador con
+      licencia &mdash;, pero esa vía está cableada para la reproducción de vídeo y
+      no para imágenes fijas. Así que un HEIC entregado a un
+      <code>&lt;img&gt;</code> se rechaza, en Chrome, en Firefox y en Edge por
+      igual, en todos los sistemas operativos.
+    </p>
+    <p>
+      Safari sobre hardware de Apple es la excepción, porque macOS e iOS tienen el
+      descodificador y a Safari se le permite pedírselo. En todo lo demás, la
+      imagen es sencillamente indescodificable para el navegador.
+    </p>
+    <p>
+      Lo que le deja a un conversor exactamente dos opciones, y la elección entre
+      ellas es la historia entera de este tipo de herramienta.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué casi todos los conversores de HEIC quieren una subida</h2>
+    <p>
+      Opción uno: poner el descodificador en un servidor. La foto se sube, se
+      descodifica en una máquina que no has visto nunca, se recodifica como JPEG y
+      se te devuelve. Esto es lo que hace prácticamente cualquier «conversor de
+      HEIC gratuito en línea», y es por lo que todos necesitan tus archivos. No es
+      pereza &mdash; el navegador de verdad no puede hacerlo por su cuenta.
+    </p>
+    <p>
+      Lo que eso cuesta merece decirse sin rodeos. Las fotos de un móvil son los
+      archivos más personales que tiene casi todo el mundo, y un HEIC recién salido
+      de un iPhone suele llevar las coordenadas del sitio donde se tomó, con una
+      precisión de unos pocos metros, junto con la fecha al segundo y un
+      identificador de la cámara. Subir una carpeta entera a un servicio gratuito
+      significa entregar las dos cosas: las imágenes y eso. Lo que pase después lo
+      rige una política de privacidad que no leíste, en un servidor que no puedes
+      inspeccionar, en una jurisdicción que no elegiste.
+    </p>
+    <p>
+      Opción dos: poner el descodificador en la página. Eso es lo que hace
+      <a href="../../convertir-heic-a-jpg/">este</a>. Lleva <code>libheif</code>,
+      compilado a WebAssembly, como un archivo servido desde este sitio &mdash;
+      unos 1,4 MB, descargados una vez y después guardados en caché. Tu navegador
+      lo ejecuta en tu propio equipo, en tu propio hardware, y la foto no va a
+      ninguna parte. Carga la página una vez y puedes desenchufarte de internet del
+      todo y sigue funcionando, cosa que ningún conversor que suba archivos puede
+      hacer y la prueba más sencilla que hay.
+    </p>
+    <p>
+      Los 1,4 MB son el precio entero. Si estás con una conexión con límite de
+      datos es un coste real y conviene saberlo; por eso la página lo dice en voz
+      alta en vez de descargarlo en silencio.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué le cuesta a la imagen convertirla</h2>
+    <p>
+      HEIC y JPEG son códecs distintos, así que no hay forma de pasar de uno a otro
+      sin descodificar la imagen y volver a codificarla. Esa segunda codificación
+      tiene pérdidas. En la práctica esto importa mucho menos de lo que suena:
+    </p>
+    <ul>
+      <li>
+        <strong>Con calidad 92</strong> &mdash; que es donde arranca el conversor
+        &mdash; una fotografía es muy difícil de distinguir del original a
+        cualquier tamaño normal de visionado. Estarías buscando diferencias en
+        degradados suaves, como un cielo despejado, y por lo general no las vas a
+        encontrar.
+      </li>
+      <li>
+        <strong>El JPEG será más grande.</strong> Normalmente entre un tercio más
+        grande y el doble, porque JPEG es un códec de 1992 y HEVC no. Ese es el
+        trato: un archivo más grande que abre todo.
+      </li>
+      <li>
+        <strong>Convertir dos veces es lo que hay que evitar.</strong> Cada
+        codificación con pérdidas cuesta un poco. Convierte desde el HEIC
+        original, no desde un JPEG que ya te hizo alguien, y hazlo una sola vez.
+      </li>
+    </ul>
+    <p>
+      Si no quieres ninguna pérdida, PNG está en el menú de formatos. Prepárate
+      para el archivo: una fotografía en PNG suele ser de cinco a diez veces el
+      tamaño del JPEG, porque la compresión de PNG se diseñó para el color plano y
+      el dibujo de línea, no para la hierba y la piel.
+    </p>
+  </section>
+
+  <section>
+    <h2>La fecha, la cámara y las coordenadas</h2>
+    <p>
+      La queja habitual con los conversores de HEIC es que las fotos vuelven
+      habiendo perdido el día en que se tomaron, así que las imágenes de unas
+      vacaciones enteras se ordenan al final de la fototeca con la fecha de hoy.
+      Eso pasa porque convertir a través de un lienzo te da píxeles y nada más
+      &mdash; un lienzo no guarda etiquetas &mdash;, así que a menos que un
+      conversor vaya a buscar los metadatos por separado, sencillamente
+      desaparecen.
+    </p>
+    <p>
+      La herramienta de aquí copia el bloque EXIF del HEIC y lo escribe en el JPEG,
+      así que la fecha sobrevive. Hay una casilla, y viene marcada. Desmárcala y el
+      JPEG sale con la imagen y nada más.
+    </p>
+    <p>
+      Antes de decidir, mira la lista: la fila de cada foto dice si el archivo
+      lleva coordenadas GPS, y lo dice antes de que se convierta nada. Si las fotos
+      van a algún sitio público, esa es la línea que hay que leer. Si van a tu
+      propia fototeca, conservar los metadatos es casi seguro lo que quieres.
+    </p>
+    <p>
+      Una etiqueta se cambia elijas lo que elijas, y conviene saber por qué. Un
+      HEIC anota su rotación en dos sitios: en el contenedor y en el bloque EXIF.
+      El descodificador aplica la rotación del contenedor mientras descodifica, así
+      que los píxeles que entrega ya están derechos. Si el EXIF siguiera diciendo
+      «gira esto 90 grados», un visor lo haría otra vez y todas las fotos
+      verticales saldrían de lado. Así que la etiqueta de orientación se pone en
+      «derecha» y todo lo demás se copia exactamente como lo escribió el móvil.
+    </p>
+    <p>
+      Si lo que quieres es repasar las etiquetas en detalle, o quitarlas de fotos
+      que ya son JPEG, eso es otro trabajo y hay una
+      <a href="../eliminar-datos-exif-y-gps/">guía para ello</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cosas con las que la gente se topa</h2>
+    <ul>
+      <li>
+        <strong>Un HEIC llamado «.jpg».</strong> Extremadamente común: algo por el
+        camino lo renombró sin convertirlo, que es por lo que sigue sin abrirse.
+        Todo archivo que se suelte en el conversor se identifica por sus primeros
+        bytes y no por su nombre, así que uno de estos funciona sin problema. Es
+        además la razón de que a un archivo que sea de verdad un JPEG se le diga
+        que lo es, en lugar de convertirlo en una copia de sí mismo.
+      </li>
+      <li>
+        <strong>Un archivo, varias imágenes.</strong> Una ráfaga o una Live Photo
+        pueden llevar más de una imagen fija. Se convierten todas, y las de más se
+        numeran a partir del nombre original. La mitad de vídeo de una Live Photo
+        es un archivo aparte que el móvil guarda junto al HEIC, así que no está ahí
+        para convertirlo.
+      </li>
+      <li>
+        <strong>AVIF no es HEIC.</strong> Se parecen &mdash; el mismo contenedor,
+        otro códec dentro &mdash;, pero cualquier navegador actual abre un AVIF de
+        forma nativa, así que no hay nada que convertir y la herramienta lo dice en
+        vez de fingir que trabaja.
+      </li>
+      <li>
+        <strong>Cortar el problema de raíz.</strong> En el móvil: Ajustes &rarr;
+        Cámara &rarr; Formatos &rarr; Más compatible. A partir de ahí las fotos
+        nuevas son JPEG. Ocupa más almacenamiento y no toca las fotos que ya
+        tienes, pero significa no volver a hacer esto nunca.
+      </li>
+      <li>
+        <strong>Compartir a veces ya convierte.</strong> Pasar una foto por AirDrop
+        o por correo a un dispositivo que no sea de Apple muchas veces entrega un
+        JPEG, porque iOS convierte a la salida. Si una foto ha llegado como HEIC de
+        todas formas, vino por una vía que no lo hizo.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Cómo saber si un conversor está subiendo tus fotos</h2>
+    <p>
+      Esto vale para cualquier herramienta, no solo para esta, y lleva unos quince
+      segundos.
+    </p>
+    <ol>
+      <li>
+        Abre la página, después abre las herramientas de desarrollo de tu navegador
+        y ve a la pestaña Red.
+      </li>
+      <li>
+        Convierte una foto y mira. Una herramienta que descodifica en tu equipo no
+        hace ninguna petición en ese momento. Una herramienta que sube hace una del
+        tamaño de tu foto, y el tamaño se ve.
+      </li>
+      <li>
+        O, más sencillo todavía: carga la página, desconéctate de internet e
+        intenta convertir algo. Una herramienta que mandara tu foto fuera a
+        descodificar deja de funcionar. Una que lleva el descodificador dentro, no.
+      </li>
+    </ol>
+    <p>
+      El conversor de aquí está construido para pasar las dos comprobaciones, y hay
+      una versión más larga de este argumento en
+      <a href="../es-seguro-subir-archivos/">¿es seguro subir archivos?</a>.
+    </p>
+  </section>

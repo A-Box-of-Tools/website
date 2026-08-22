@@ -1,0 +1,255 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Para casi todos los archivos, y casi siempre, subirlos no pasa nada. Los
+      conversores serios borran lo que les mandas en unas pocas horas y no tienen
+      ningún interés en tus fotos de vacaciones.
+    </p>
+    <p>
+      El problema no es que estén mintiendo. Es que
+      <strong>no tienes forma de saber si lo hacen</strong>. Una vez que un
+      archivo sale de tu equipo, cada promesa sobre lo que pasa después es una
+      promesa que te estás creyendo: cuánto tiempo se guarda, quién puede
+      alcanzarlo, si se copia a una copia de seguridad que sobreviva al
+      temporizador de borrado, qué le pasa si la empresa se vende o sufre una
+      brecha. Nada de eso se ve desde fuera.
+    </p>
+    <p>
+      Así que la pregunta útil no es «¿me fío de este sitio?». Es
+      <strong>«¿necesita este trabajo que mi archivo salga de aquí?»</strong>.
+      Para un número grande y creciente de trabajos la respuesta es que no, y
+      cuando la respuesta es que no, la pregunta de la confianza deja de ser una
+      pregunta que tengas que responder.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué hace de verdad una «subida»</h2>
+    <p>
+      Cuando un conversor te pide que elijas un archivo y después te enseña una
+      barra de progreso, tu navegador está copiando el archivo entero, byte por
+      byte, a través de internet hasta un ordenador que es de otra persona. Ese
+      ordenador lo escribe en un disco, ejecuta la conversión, escribe el
+      resultado en el mismo disco y te da un enlace.
+    </p>
+    <p>
+      En ese momento tu archivo existe en al menos tres sitios que no elegiste: el
+      disco del servidor, los registros que hayan anotado la petición, y muchas
+      veces una red de distribución de contenidos que ha cacheado el resultado para
+      que la descarga sea rápida. Una política de borrado tiene que alcanzar los
+      tres. Casi todas dicen que lo hacen. Tú no puedes comprobar ninguno.
+    </p>
+    <p>
+      Conviene saber además que el archivo no es lo único que llega. El nombre del
+      archivo va con él, y también todo lo que hay dentro del archivo y que tú no
+      ves. Una foto recién salida de un móvil suele llevar las coordenadas GPS
+      exactas del sitio donde se tomó, la hora, el número de serie de la cámara y a
+      veces una miniatura incrustada de la imagen original de antes de que la
+      recortaras. La gente que tiene cuidado con la imagen muchas veces no lo tiene
+      con eso, porque nada en pantalla se lo enseña.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué casi todas las herramientas suben de todas formas</h2>
+    <p>
+      No porque quieran tus archivos. Porque durante casi toda la vida de la web no
+      había alternativa. Un navegador no podía descodificar un vídeo, recodificar
+      una imagen a una calidad elegida ni analizar un formato de archivo; un
+      servidor con FFmpeg e ImageMagick sí. Subir cosas no era un modelo de
+      negocio, era el único sitio donde podía ocurrir el trabajo.
+    </p>
+    <p>
+      Eso dejó de ser cierto hace poco y sin ruido. Los navegadores traen hoy
+      WebAssembly, que ejecuta los mismos códecs compilados a una velocidad cercana
+      a la nativa; WebCodecs, que expone el codificador de vídeo por hardware que
+      ya está en tu equipo; y una API de lienzo que puede descodificar y
+      recodificar imágenes directamente. El trabajo para el que hacía falta un
+      servidor ocurre ahora en el dispositivo que ya tiene el archivo.
+    </p>
+    <p>
+      Muchas herramientas siguen subiendo, y hay razones honestas: una cadena de
+      procesos que nadie quiere reescribir, un formato sin descodificador del lado
+      del navegador, un trabajo genuinamente demasiado pesado para un móvil. Hay
+      también una razón menos honesta, y es que un servidor es donde viven las
+      cuentas, las cuotas y los planes de pago. Una herramienta que funciona por
+      completo en tu navegador es difícil de medir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cuatro comprobaciones que puedes hacer tú</h2>
+    <p>
+      Funcionan con cualquier herramienta, esta incluida. Ninguna exige creerse la
+      palabra de nadie, y la primera lleva unos diez segundos.
+    </p>
+
+    <h3>1. Desenchufa</h3>
+    <p>
+      Carga la página, apaga el wifi o desenchufa el cable, e intenta usarla. Una
+      herramienta que hace su trabajo en tu navegador sigue exactamente igual que
+      antes. Una herramienta que sube se detiene de inmediato, porque lo que hacía
+      el trabajo ya no está a su alcance.
+    </p>
+    <p>
+      Esta es la prueba más fuerte que hay, y la más difícil de fingir, porque no
+      se puede responder con palabras. O la conversión termina sin red o no
+      termina.
+    </p>
+
+    <h3>2. Mira la pestaña Red</h3>
+    <p>
+      Abre las herramientas de desarrollo de tu navegador, elige Red y usa después
+      la herramienta. Todas las peticiones que hace la página aparecen listadas con
+      su tamaño. Si tu foto de 4&nbsp;MB se ha subido, hay una petición de
+      4&nbsp;MB en esa lista. Si lo más grande que sale de la página son unos pocos
+      kilobytes de publicidad, no se ha subido.
+    </p>
+    <p>
+      Ordena por tamaño y mira lo de arriba. No necesitas entender las peticiones;
+      necesitas fijarte en si alguna tiene el tamaño de tu archivo.
+    </p>
+
+    <h3>3. Lee la Content-Security-Policy</h3>
+    <p>
+      Mira el código fuente de la página y busca
+      <code>Content-Security-Policy</code>, cerca del principio. Es una lista de
+      las direcciones que esa página tiene permitido contactar, y la hace cumplir
+      tu navegador en vez de las buenas intenciones del sitio &mdash; una petición
+      a algo que no esté en la lista se rechaza, intente lo que intente el código.
+    </p>
+    <p>
+      La directiva que importa es <code>connect-src</code>, que rige adónde puede
+      enviar datos la página. Si nombra una dirección que pertenece al sitio en el
+      que estás, la página puede mandar tu archivo ahí. Si no nombra nada, o solo
+      terceros como una red publicitaria, no puede.
+    </p>
+    <p>
+      Una página sin ninguna Content-Security-Policy no es prueba de nada malo.
+      Solo significa que esta comprobación en concreto no tiene nada que decirte.
+    </p>
+
+    <h3>4. Lee el código</h3>
+    <p>
+      La menos cómoda y la más concluyente. Si una herramienta publica su código
+      fuente y lo sirve sin ningún paso de compilación, los archivos que se ha
+      bajado tu navegador son los archivos que puedes leer. Búscales
+      <code>fetch</code>, <code>XMLHttpRequest</code> y <code>sendBeacon</code>
+      &mdash; las tres formas que tiene una página de enviar algo &mdash; y mira
+      qué se les entrega.
+    </p>
+    <p>
+      Casi nadie va a hacer esto. Sigue importando que sea posible, porque una
+      afirmación que nadie puede comprobar no es realmente una afirmación.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lo que «funciona en tu navegador» no significa</h2>
+    <p>
+      Conviene ser preciso, porque la frase se usa a la ligera y este sitio tiene
+      que exigirse el mismo listón que está proponiendo.
+    </p>
+    <ul>
+      <li>
+        <strong>No significa ninguna petición en absoluto.</strong> La propia
+        página llegó por la red, y casi todas las herramientas gratuitas llevan
+        publicidad o analítica que hablan con alguien. La afirmación va de tu
+        <em>archivo</em>, no del tráfico en general.
+      </li>
+      <li>
+        <strong>No esconde tu dirección IP.</strong> Todos los sitios que visitas
+        la ven, este incluido. El procesamiento local va del contenido de tus
+        archivos, no del anonimato.
+      </li>
+      <li>
+        <strong>No sobrevive a una función que descarga algo.</strong> Una
+        herramienta que te deja pegar una dirección web tiene que contactar con esa
+        dirección, y ese servidor se entera de tu IP y de qué has pedido. Eso es
+        inherente a la función y no un defecto suyo &mdash; pero es una excepción
+        real y una herramienta debería decirlo con claridad en vez de
+        redondearla.
+      </li>
+      <li>
+        <strong>No es lo mismo que «borramos tus archivos».</strong> La segunda
+        frase va de lo que una empresa decide hacer. La primera va de lo que es
+        técnicamente posible. Solo una de las dos se puede comprobar.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Cuándo subir está genuinamente bien</h2>
+    <p>
+      Esto no es un argumento de que toda subida sea un error. Manda el archivo
+      cuando el contenido no sea sensible y el trabajo sea más fácil así; cuando el
+      trabajo sea de verdad demasiado pesado para tu dispositivo; cuando el formato
+      no tenga descodificador del lado del navegador; o cuando estés usando un
+      servicio con el que ya tienes una relación y cuyas condiciones te has leído de
+      verdad.
+    </p>
+    <p>
+      Ten más cuidado cuando el archivo contenga algo que no publicarías:
+      documentos de identidad, pruebas médicas, contratos, cualquier cosa con una
+      dirección o una cara que no pretendías compartir, o una foto cuyos datos de
+      ubicación no has mirado. Para esos, una herramienta que puedes comprobar
+      merece preferirse a una herramienta en la que tienes que confiar &mdash; no
+      porque sea probable que la de confianza te traicione, sino porque con la
+      comprobable la pregunta ni se plantea.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cómo responde este sitio a esas cuatro comprobaciones</h2>
+    <p>
+      Sería una guía muy rara la que te dijera que compruebes y después pidiera
+      quedar exenta. Así que, por orden:
+    </p>
+    <ul>
+      <li>
+        <strong>Desenchufa.</strong> Abre cualquier herramienta de aquí,
+        desconéctate, y sigue funcionando. Cada página de herramienta tiene un
+        indicador en directo que dice si estás conectado ahora mismo, así que
+        puedes verlo cambiar.
+      </li>
+      <li>
+        <strong>Pestaña Red.</strong> Convierte algo y lee la lista. Nada lleva tu
+        archivo, ni una miniatura suya, ni su nombre, ni su tamaño, ni nada leído
+        de dentro de él. En este sitio no hay ningún evento de analítica propio que
+        tenga nada de eso que enviar.
+      </li>
+      <li>
+        <strong>Content-Security-Policy.</strong> Está al principio del código
+        fuente de todas las páginas. <code>connect-src</code> nombra los puntos
+        finales de publicidad y medición de Google y el botón de donación, y nada
+        más. <strong>Ninguna dirección de esa lista pertenece a este sitio</strong>,
+        porque este sitio no tiene servidor &mdash; son archivos estáticos. No hay
+        ningún sitio al que enviar un archivo aunque algo lo intentara.
+      </li>
+      <li>
+        <strong>Código.</strong> Todas las líneas son
+        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">públicas</a>.
+        La compilación quita comentarios y espacios en blanco y nada más, y puedes
+        ejecutarla tú mismo y comparar el resultado con lo que se está sirviendo.
+      </li>
+    </ul>
+    <p>
+      Las excepciones, declaradas en vez de escondidas: este sitio lleva publicidad
+      de Google y un contador de visitas, que hablan los dos con Google y a ninguno
+      de los cuales se le entrega nada sobre tus archivos; y la herramienta
+      <a href="../../imagenes-a-video/">Imágenes a vídeo</a> puede descargar una
+      imagen desde una dirección que pegues tú, lo que significa que ese servidor ve
+      tu IP. La <a href="../../privacidad/">página de privacidad</a> explica las dos
+      por completo.
+    </p>
+    <p>
+      Todas las herramientas de aquí funcionan así: un
+      <a href="../../comprimir-imagen/">compresor de imágenes</a> que acierta un
+      tamaño que tú digas, un <a href="../../recortar-video/">recortador de
+      vídeo</a>, un <a href="../../eliminar-datos-exif/">visor y eliminador de
+      EXIF</a> para los datos ocultos descritos más arriba en esta página,
+      <a href="../../imagenes-a-video/">imágenes a vídeo</a> e
+      <a href="../../imagenes-a-pdf/">imágenes a PDF</a>. Todas gratuitas, sin
+      cuenta, y ninguna tiene adónde mandar tus archivos.
+    </p>
+  </section>

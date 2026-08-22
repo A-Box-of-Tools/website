@@ -1,0 +1,24 @@
+#
+# Guía: hacer un código QR que escanee de verdad - Spanish.
+#
+# Overrides for pages/guides/make-a-qr-code/page.toml. Only words: the slug,
+# the kind, the group and the tool this guide is about stay where they are.
+#
+
+nav = "Hacer un código QR"
+
+title = "Cómo hacer un código QR que escanee siempre"
+description = "Qué nivel de corrección de errores elegir, por qué el margen blanco de alrededor forma parte del código, de qué tamaño imprimirlo, y lo que te cuesta después el código «dinámico» de un generador gratuito."
+
+heading = "Cómo hacer un código QR que también escanee en el móvil de otro"
+lede = """
+    Hacer un código QR lleva un segundo. Hacer uno que funcione en una carta
+    mojada, en una marquesina o en un móvil sostenido con el brazo estirado y con
+    mala luz lleva cuatro decisiones, y las cuatro se toman antes de imprimir
+    nada. Esto es lo que hace cada una."""
+
+updated = "20 de agosto de 2026"
+
+og_title = "Hacer un código QR que también escanee en el móvil de otro"
+og_description = "Las cuatro decisiones que deciden si un código QR impreso funciona: el nivel, el margen, el tamaño y de quién es la dirección que lleva dentro."
+og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

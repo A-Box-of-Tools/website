@@ -1,0 +1,24 @@
+#
+# Guía: convertir imágenes en un vídeo - Spanish.
+#
+# Overrides for pages/guides/turn-images-into-a-video/page.toml. Only words:
+# the slug, the kind, the group and the tool this guide is about stay where
+# they are.
+#
+
+nav = "Imágenes en un vídeo"
+
+title = "Cómo convertir una carpeta de imágenes en un vídeo"
+description = "Haz un pase de diapositivas en MP4 con tus fotos: qué controlan de verdad la cadencia y la duración, qué hacer con las imágenes que tienen otra forma, y por qué el resultado no lleva banda sonora."
+
+heading = "Cómo convertir una carpeta de imágenes en un vídeo"
+lede = """
+    Un pase de diapositivas es fácil de hacer y fácil de renderizar dos veces,
+    porque dos de los ajustes no significan lo que parece. Esto es lo que
+    controla cada uno y qué elegir."""
+
+updated = "20 de agosto de 2026"
+
+og_title = "Cómo convertir una carpeta de imágenes en un vídeo"
+og_description = "Qué controlan de verdad la cadencia y la duración, qué hacer con las imágenes que tienen otra forma, y por qué no hay banda sonora."
+og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"

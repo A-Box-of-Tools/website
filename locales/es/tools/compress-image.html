@@ -1,0 +1,120 @@
+<main>
+  <!-- Paso 1 &mdash; los archivos -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige las imágenes</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Quitar todo de la lista</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Paso 2 &mdash; la cifra que importa -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> Di cuánto puede ocupar</h2>
+
+    <p class="card-lede">
+      Esta es la parte que los demás compresores hacen al revés. Te dan un
+      control de calidad y te dejan adivinar qué ajuste queda por debajo del
+      límite que te han puesto. Di el límite en su lugar, y la herramienta busca
+      la calidad más alta que cabe &mdash; y después gasta lo que quede del
+      presupuesto en vez de devolverte un archivo de la mitad de lo que pediste.
+    </p>
+
+    <div class="target-row">
+      <div class="target-field">
+        <label for="target-value">Tamaño objetivo, por imagen</label>
+        <div class="inline-pair">
+          <input type="number" id="target-value" value="500" min="1" step="1" inputmode="decimal">
+          <label for="target-unit" class="visually-hidden">Unidad</label>
+          <select id="target-unit">
+            <option value="KB" selected>KB</option>
+            <option value="MB">MB</option>
+          </select>
+        </div>
+      </div>
+
+      <!--
+        The four numbers people are actually given: an upload form that says
+        100 KB, a forum avatar or a job application at 500 KB, an email
+        attachment at 1 MB, and a web page hero at 2 MB.
+      -->
+      <div class="presets" id="presets" role="group" aria-label="Objetivos habituales">
+        <button type="button" class="ghost" data-bytes="102400">100 KB</button>
+        <button type="button" class="ghost" data-bytes="512000">500 KB</button>
+        <button type="button" class="ghost" data-bytes="1048576">1 MB</button>
+        <button type="button" class="ghost" data-bytes="2097152">2 MB</button>
+      </div>
+    </div>
+
+    <p id="target-summary" class="field-summary"></p>
+
+    <fieldset class="options">
+      <legend>Cómo se le permite llegar hasta ahí</legend>
+
+      <div class="option-row">
+        <label for="format-select">Formato de salida</label>
+        <select id="format-select">
+          <option value="auto" selected>Automático &mdash; conservar el formato salvo que otro quede mejor</option>
+          <option value="keep">Conservar siempre el formato original</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/webp">WebP</option>
+          <option value="image/png">PNG (sin pérdidas, así que el tamaño sale de las dimensiones)</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="allow-resize" checked>
+        <span>
+          <strong>Puede hacer la foto más pequeña si no queda otra</strong>
+          <span class="check-note">
+            Solo se usa cuando la calidad por sí sola tendría que caer por debajo
+            del punto en que la compresión empieza a notarse. Por debajo de ahí,
+            menos píxeles buenos se ven mejor que más píxeles arruinados.
+            Desactívalo para conservar las dimensiones exactas y pagar un
+            objetivo ajustado con calidad.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Paso 3 &mdash; el único clic -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Comprimir</h2>
+
+    <div class="run-row">
+      <button type="button" id="compress-all" class="primary big" disabled>Comprimir al objetivo</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Comprimidas</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Descargar todo en un zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
