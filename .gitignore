@@ -2,12 +2,17 @@
 # which the GitHub Action writes. Nothing generated belongs on main.
 /dist/
 /_site/
+/_plain/
 /.publish/
 /.dist-check/
 /dist-check/
 # Any other name somebody points --out at. The build writes wherever it
 # is told, and a generated tree that lands in a commit is worse than a
-# tidy ignore list.
+# tidy ignore list. `_plain` above is the one this list was missing when
+# it was written, and it is the name .github/workflows/build.yml itself
+# passes to --out - so it is the name most likely to be sitting in a
+# working tree when somebody types `git add -A`. It was, and 3,816
+# generated files went in.
 dist-*/
 __pycache__/
 
