@@ -1,0 +1,17 @@
+#
+# Guida: è sicuro caricare i propri file? - Italian.
+#
+
+nav = "È sicuro caricare i file?"
+title = "È sicuro caricare i propri file sui convertitori online?"
+description = "Quasi tutti i convertitori online mandano il tuo file a un server. Cosa vuol dire, cosa gli succede là, e quattro verifiche che ti dicono se uno strumento ne ha davvero bisogno."
+heading = "È sicuro caricare i propri file sui convertitori online?"
+lede = """
+    Di solito la risposta onesta è «probabilmente sì, ma non lo puoi
+    verificare». Qui c'è cosa fa davvero un caricamento al tuo file, perché
+    quasi tutti gli strumenti lo fanno ancora, e quattro prove che ti dicono se
+    quello che hai davanti ne ha bisogno."""
+updated = "20 agosto 2026"
+og_title = "È sicuro caricare i propri file sui convertitori online?"
+og_description = "Cosa succede a un file che carichi su un convertitore, perché quasi tutti gli strumenti lo chiedono ancora, e quattro verifiche che puoi fare da solo."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"

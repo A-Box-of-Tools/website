@@ -1,0 +1,237 @@
+#
+# Immagini in PDF - Italian.
+#
+# Overrides for tools/images-to-pdf/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "Immagini in PDF"
+# La coda è l'espressione che si cerca; il nome del prodotto resta la metà che
+# grida.
+heading = "Immagini&nbsp;in&nbsp;PDF <span class=\"h1-kw\">&mdash; convertitore da JPG a PDF</span>"
+tagline = "Metti le tue foto dentro un documento solo."
+
+title = "Convertitore da immagini a PDF &mdash; da JPG a PDF, gratis, senza caricare nulla"
+description = "Unisci immagini JPG, PNG o WebP in un unico PDF, gratis e interamente nel tuo browser. Le foto entrano senza essere ricodificate, e non viene caricato nulla."
+og_title = "Immagini in PDF &mdash; convertitore gratuito da JPG a PDF"
+og_description = "Unisci immagini in un unico PDF sul tuo dispositivo. Le foto JPEG vengono copiate dentro intatte, quindi non si perde qualità e non viene caricato nulla."
+og_image_alt = "Immagini in PDF - unire immagini in un documento senza caricarle"
+
+pledge = """
+    Il documento viene scritto in memoria su questo dispositivo, una pagina alla
+    volta, da codice servito da questo indirizzo. Qui dentro non c'è niente in
+    grado di fare un caricamento, e dall'altra parte di questa pagina non c'è
+    alcun server che potrebbe riceverlo."""
+
+live_hint = """
+      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
+      scheda Rete e fai un PDF. Non una sola richiesta porta con sé un'immagine,
+      una miniatura o un nome di file. Oppure stacca la connessione e fanne uno
+      lo stesso."""
+
+read_first = """
+, e <code>src/pdf.js</code> e <code>src/document.js</code>
+      per tutta la scrittura del file, che non tocca mai la rete."""
+
+howto_heading = "Come trasformare delle immagini in un PDF"
+
+card = """
+            Unisci immagini in un unico PDF, un'immagine per pagina. Le foto
+            JPEG vengono copiate dentro esattamente come sono, quindi non si
+            perde qualità."""
+
+[words]
+plural = "immagini"
+choose = "delle immagini"
+analytics_extra = """"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "I file restano sul tuo dispositivo"
+
+[[privacy]]
+title = "Le tue immagini non hanno dove andare."
+body = """
+ La
+      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di questi appartiene a questo sito. Questo strumento
+      non aggiunge niente a quella lista: non ha una funzione di rete propria,
+      nemmeno facoltativa. Qui non esiste un punto di raccolta dove i tuoi file
+      potrebbero finire, e nel codice non c'è nulla che ce li manderebbe se
+      esistesse."""
+
+[[privacy]]
+title = "Il PDF viene scritto qui."
+body = """
+ Un PDF è un elenco di oggetti e una tabella
+      che dice dove comincia ciascuno, e <code>src/pdf.js</code> scrive
+      entrambi. Non viene scaricata alcuna libreria, non viene disegnato niente
+      su un server, e il file finito viene consegnato direttamente a un download
+      dalla memoria."""
+
+[[privacy]]
+title = "Al documento non viene detto niente su di te."
+body = """
+ Quasi tutti gli
+      strumenti timbrano un PDF con un orario e il nome del programma che l'ha
+      fatto. Questo scrive un titolo, un autore e una data solo se li digiti tu;
+      i nomi dei file delle tue immagini non compaiono mai nel documento, e non
+      ci compare niente sul tuo dispositivo."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli viene dato."
+body = """
+ Gli script
+      pubblicitari e di misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sulle tue immagini: né un file, né una miniatura, né un
+      nome, una dimensione o un conteggio. Ogni riga che legge, decodifica o
+      scrive un'immagine è servita da questa origine ed è elencata nel
+      repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli viene dato."
+body = """
+
+      Il pulsante «Buy me a coffee» in cima è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. È un link e
+      niente di più: non riferisce alcuna visita, e non gli viene passato niente
+      su di te o sulle tue immagini. Non succede nulla finché non ci clicchi, e
+      quello a cui arriveresti è il sito di qualcun altro."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e tutto quello che sta su questa
+      pagina continua a funzionare. È la prova più semplice di tutte: uno
+      strumento che spedisse via le tue foto per farne un documento si
+      fermerebbe."""
+
+[[howto]]
+title = "Scegli le tue immagini."
+body = """
+ Trascina una cartella sul riquadro,
+      oppure seleziona i file a mano. Il browser li legge direttamente dal tuo
+      disco; mentre lo fai non viene mandato niente da nessuna parte."""
+
+[[howto]]
+title = "Metti le pagine in ordine, e gira quelle che ne hanno bisogno."
+body = """
+ Un'immagine
+      diventa una pagina, nell'ordine che vedi. Trascina una tessera per la sua
+      maniglia per spostarla, oppure usa le frecce; i pulsanti di rotazione
+      girano una pagina di un quarto alla volta, che è quello che di solito
+      serve a una scansione storta."""
+
+[[howto]]
+title = "Scegli una dimensione di pagina."
+body = """
+ «Adatta la pagina a ogni
+      immagine» rende ogni pagina esattamente la sua immagine, senza niente di
+      ritagliato e senza bande bianche. Le dimensioni con un nome &mdash; A4,
+      Letter, Legal e le altre &mdash; mettono invece ogni immagine su una
+      pagina fissa, con un margine se ne vuoi uno."""
+
+[[howto]]
+title = "Crea il PDF e scaricalo."
+body = """
+ Il documento viene scritto sul tuo
+      dispositivo, quindi quanto ci mette dipende dal tuo hardware e non da una
+      coda. Il file finito viene consegnato direttamente ai download del tuo
+      browser."""
+
+[[faq]]
+q = "Le mie immagini vengono caricate da qualche parte?"
+a = """
+        No. Le tue immagini vengono lette e il PDF viene scritto dal tuo browser
+        sul tuo hardware. Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina nomina tutti gli
+        indirizzi che può contattare &mdash; nessuno di questi appartiene a
+        questo sito. A differenza di qualche altro strumento di qui, questo non
+        ha proprio alcuna funzione di rete facoltativa."""
+
+[[faq]]
+q = "Convertire in PDF fa perdere qualità?"
+a = """
+        Non per un JPEG, con l'impostazione predefinita. Il PDF sa portare
+        direttamente i dati JPEG, quindi una fotografia viene copiata nel
+        documento byte per byte: non viene mai decodificata e non viene mai
+        ricompressa, e l'immagine nel PDF è l'immagine nel file. Gli altri
+        formati vanno ricodificati, perché il PDF non ha un filtro per loro
+        &mdash; a meno che tu non scelga l'impostazione senza perdita, che li
+        conserva esattamente al prezzo di un file più pesante."""
+
+[[faq]]
+q = "Quali formati di immagine posso usare?"
+a = """
+        Qualunque immagine ferma che il tuo browser sappia decodificare, il che
+        in pratica vuol dire JPG, PNG, WebP, GIF, AVIF e, sui dispositivi Apple,
+        HEIC. Qui non c'è un elenco a parte da tenere aggiornato, perché la
+        decodifica è compito del browser e non nostro."""
+
+[[faq]]
+q = "Posso scegliere la dimensione della pagina e l'ordine delle pagine?"
+a = """
+        Sì. Le pagine possono essere A4, Letter, Legal, A3, A5, Tabloid, una
+        dimensione che scrivi tu, o esattamente la dimensione di ogni immagine.
+        Trascina le tessere per riordinarle, ordinale per nome o per data,
+        ruotane una qualsiasi di un quarto di giro, e imposta un margine in
+        millimetri."""
+
+[[faq]]
+q = "Quante immagini posso mettere in un PDF?"
+a = """
+        Nello strumento non c'è alcun limite. Il tetto pratico è la memoria del
+        tuo dispositivo, perché il documento finito viene assemblato lì prima che
+        tu lo scarichi. Qualche centinaio di foto da telefono a piena risoluzione
+        è la prima cosa a sentirlo; rimpicciolire il lato più lungo, nelle
+        impostazioni, sposta quel tetto parecchio più in là."""
+
+[[faq]]
+q = "Il PDF contiene i nomi dei miei file o un orario?"
+a = """
+        No, a meno che tu non lo chieda. Il blocco di informazioni del documento
+        è lasciato vuoto tranne che per il nome di questo strumento: nessun nome
+        di file, nessun nome di dispositivo, nessun nome utente, e nessuna data
+        di creazione se non spunti la casella apposta. È voluto &mdash; un PDF è
+        una cosa che le persone mandano ad altre persone."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è accesso e non c'è periodo di prova.
+        Il sito ha della pubblicità, ed è quella che lo paga; agli annunci non
+        viene dato niente sulle tue immagini."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la connessione e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene
+        caricato niente: uno strumento che spedisse via le tue immagini per farne
+        un documento si fermerebbe nel momento in cui stacchi la spina."""
+
+[schema]
+description = "Unisci immagini JPG, PNG e WebP in un unico documento PDF. Ogni pagina viene scritta nel tuo browser, quindi nessuna immagine viene mai caricata."
+features = [
+  "Unisce immagini JPG, PNG, WebP, GIF e AVIF in un unico PDF",
+  "Le foto JPEG vengono incorporate senza essere ricodificate",
+  "Dimensioni di pagina da A5 a Tabloid, o una pagina adattata a ogni immagine",
+  "Riordina, ruota, imposta i margini e un colore di pagina",
+  "Conservazione senza perdita facoltativa per scansioni e screenshot",
+  "Funziona offline; niente caricamenti, nessun account",
+]
+
+[picker]
+title = "Trascina qui le immagini"
+hint = "oppure clicca per scegliere &mdash; JPEG, PNG, WebP, GIF, AVIF"

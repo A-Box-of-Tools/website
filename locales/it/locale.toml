@@ -10,7 +10,7 @@ lang = "it"
 name = "Italian"
 endonym = "Italiano"
 
-complete = false
+complete = true
 
 #
 # ---------------------------------------------------------------------------
@@ -23,22 +23,41 @@ complete = false
 #
 
 [slugs]
+# Gli strumenti.
 "compress-image" = "comprimere-immagine"
 "compress-pdf" = "comprimere-pdf"
 "crop-video" = "ritagliare-video"
 "edit-audio" = "modificare-audio"
 # Quasi nessuno cerca un "editor EXIF": si cerca come togliere i dati da una foto.
 "exif-editor" = "rimuovere-dati-exif"
+# Le conversioni perdono il verbo, come in "immagini-in-pdf": è il modo in cui
+# si scrive una conversione in italiano quando la si cerca.
+"heic-to-jpg" = "heic-in-jpg"
+# Nessuno cerca "immagine in data URI". Si cerca base64, che è la cosa che
+# finisce nel foglio di stile.
+"image-to-data-uri" = "immagine-in-base64"
+# Anche qui il lavoro, non il formato: quasi nessuno cerca "da immagine a ICO"
+# e moltissimi cercano come si fa una favicon.
+"image-to-ico" = "creare-favicon"
 "images-to-pdf" = "immagini-in-pdf"
 "images-to-video" = "immagini-in-video"
+# "QR code" e non "codice QR": è la forma che in italiano si scrive e si cerca,
+# prestito compreso.
+"qr-barcode" = "creare-qr-code"
 "resize-image" = "ridimensionare-immagine"
+# Lo strumento scrive anche JPEG e WebP, ma la domanda che porta qui è sempre
+# la stessa, e nomina il PNG.
+"svg-to-image" = "svg-in-png"
 "trim-video" = "tagliare-video"
+"video-to-gif" = "video-in-gif"
 
 "guides" = "guide"
 "roadmap" = "roadmap"
 "privacy" = "privacy"
 "terms" = "termini"
 
+# Le guide. Ognuna è la domanda che fa chi la cerca, nelle parole in cui la fa,
+# e non la traduzione del titolo inglese.
 "guides/compress-an-image-to-a-target-size" = "guide/comprimere-un-immagine-a-una-dimensione-esatta"
 "guides/resize-an-image" = "guide/ridimensionare-un-immagine"
 "guides/remove-exif-and-gps-data" = "guide/rimuovere-i-dati-exif-e-gps"
@@ -48,6 +67,12 @@ complete = false
 "guides/trim-a-video" = "guide/tagliare-un-video"
 "guides/crop-a-video" = "guide/ritagliare-un-video"
 "guides/is-it-safe-to-upload-files" = "guide/e-sicuro-caricare-i-propri-file"
+"guides/make-a-favicon" = "guide/creare-una-favicon"
+"guides/convert-an-svg-to-png" = "guide/convertire-un-svg-in-png"
+"guides/convert-heic-to-jpg" = "guide/convertire-heic-in-jpg"
+"guides/embed-an-image-in-css" = "guide/inserire-un-immagine-nel-css"
+"guides/make-a-qr-code" = "guide/creare-un-qr-code"
+"guides/turn-a-video-into-a-gif" = "guide/trasformare-un-video-in-gif"
 
 #
 # ---------------------------------------------------------------------------

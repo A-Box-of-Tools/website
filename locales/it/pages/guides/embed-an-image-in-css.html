@@ -1,0 +1,317 @@
+  <section>
+    <h2>La risposta corta</h2>
+    <p>
+      Apri <a href="../../immagine-in-base64/">Immagine in data URI</a>,
+      trascinaci dentro l'immagine, scegli <em>una proprietà personalizzata
+      CSS</em>, e incolla la riga in cima al tuo foglio di stile. Poi usala come
+      <code>background-image: var(--logo)</code> dove ti serve.
+    </p>
+    <p>
+      Fallo quando l'immagine è piccola &mdash; un'icona, un punto elenco, una
+      freccetta, un motivo &mdash; e serve su ogni pagina. Non farlo con una
+      fotografia. Tutto quello che segue è perché quelle due frasi sono diverse,
+      e come capire quale delle due hai davanti.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cos'è davvero un data URI</h2>
+    <p>
+      Un indirizzo che contiene la cosa invece di puntarci. Dove un foglio di
+      stile direbbe normalmente
+    </p>
+    <pre><code>background-image: url("logo.png");</code></pre>
+    <p>
+      e il browser va a recuperare <code>logo.png</code>, un data URI dice
+    </p>
+    <pre><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <p>
+      e non c'è niente da recuperare: l'immagine è già lì, scritta in caratteri.
+      Le parti sono tre. <code>data:</code> è lo schema. <code>image/png</code> è
+      il tipo di media, e il browser ci crede completamente &mdash; su questo
+      torniamo sotto. Tutto quello che sta dopo la virgola è il file.
+    </p>
+    <p>
+      È tutta lì l'idea. Non è un trucco né un espediente; sta negli standard dal
+      1998 e funziona in ogni browser uscito da allora.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cosa ci guadagni: un giro in meno</h2>
+    <p>
+      Il risparmio non è di banda. È della richiesta.
+    </p>
+    <p>
+      Un browser non può chiedere <code>logo.png</code> finché non ha letto il
+      foglio di stile che lo nomina, e non può leggere il foglio di stile finché
+      non l'ha recuperato. Quindi una normale immagine di sfondo sta ad almeno
+      due giri di profondità nel caricamento della pagina, e su un telefono con
+      una rete lenta un giro può valere un paio di centinaia di millisecondi a
+      prescindere da quanto sia leggero il file. Una freccetta da 600 byte costa
+      quasi niente da trasferire e può comunque costare un quarto di secondo per
+      arrivare.
+    </p>
+    <p>
+      Incorporata, arriva insieme al foglio di stile. È tutto lì il vantaggio, e
+      per una piccola icona che compare nella prima schermata è un vantaggio
+      vero.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cosa costa: un terzo, e poi la cache</h2>
+    <p>
+      <strong>Il base64 aggiunge circa un terzo.</strong> Tre byte di file
+      diventano quattro caratteri, perché è quello che ci vuole per scrivere byte
+      arbitrari usando solo i caratteri che un URL consente. Non c'è un encoder
+      furbo che lo eviti. Un PNG da 9 KB sono 12 KB di foglio di stile.
+    </p>
+    <p>
+      <strong>La compressione non te lo restituisce.</strong> È la parte che la
+      gente dà per scontata. Gzip e Brotli funzionano trovando ridondanza, e un
+      PNG, un JPEG e un WebP sono già stati compressi &mdash; di ridondanza ne è
+      rimasta pochissima, e il base64 non ne aggiunge. In pratica ti torna
+      indietro qualcosa come un decimo di quel terzo, non tutto. (Un SVG è il
+      caso opposto, e la sezione successiva parla di quello.)
+    </p>
+    <p>
+      <strong>Smette di essere un file.</strong> È il costo che non compare in
+      nessuna misura che è probabile tu prenda, ed è quello che conta quando le
+      dimensioni crescono:
+    </p>
+    <ul>
+      <li>
+        <strong>Non può stare in cache per conto suo.</strong> Un'immagine
+        normale viene recuperata una volta e riusata per un anno. Una incorporata
+        è parte del foglio di stile, quindi vive e muore con la voce di cache del
+        foglio di stile.
+      </li>
+      <li>
+        <strong>Cambiare qualunque cosa fa riscaricare tutto.</strong> Sistemi un
+        margine, pubblichi un nuovo foglio di stile, e ogni visitatore riscarica
+        insieme a lui l'immagine incorporata &mdash; un'immagine che non cambia
+        da due anni.
+      </li>
+      <li>
+        <strong>Sta sul percorso critico.</strong> Un foglio di stile blocca il
+        disegno della pagina. Un'immagine no. Incorporare un'immagine la sposta
+        dalla seconda categoria alla prima: la pagina non può dipingersi finché
+        non è arrivato tutto, immagine compresa.
+      </li>
+      <li>
+        <strong>Non può essere recuperata in parallelo.</strong> I browser
+        scaricano molte cose insieme. Un'immagine incorporata non è una cosa a
+        sé, quindi di tutto questo non ha niente.
+      </li>
+    </ul>
+    <p>
+      Soglie spannometriche, che sono i punti in cui cambia il consiglio e non
+      quelli in cui un browser fa qualcosa di diverso: sotto i 2 KB circa è un
+      guadagno netto; fino ai 10 KB circa di solito ne vale ancora la pena per
+      qualcosa che sta su ogni pagina; oltre i 50 KB è un errore senza messaggio
+      d'errore. <a href="../../immagine-in-base64/">Lo strumento</a> ti dice in
+      quale fascia cade ogni risultato, con accanto il numero di caratteri.
+    </p>
+  </section>
+
+  <section>
+    <h2>Non mettere mai un SVG in base64</h2>
+    <p>
+      È l'errore di gran lunga più comune nelle immagini incorporate, e lo fanno
+      gli esportatori e i plugin di compilazione tanto quanto le persone.
+    </p>
+    <p>
+      Un SVG è testo. Un URL sa già portare testo. Solo una manciata di caratteri
+      va protetta &mdash; <code>%</code>, <code>#</code>, <code>&lt;</code>,
+      <code>&gt;</code> e la virgoletta con cui l'hai avvolto &mdash; e tutto il
+      resto si può lasciare esattamente com'è. Codificarlo così ti dà un URI che
+      di solito è circa un quinto più corto del base64 dello stesso file, e che
+      poi si comprime come testo invece che come rumore.
+    </p>
+    <p>
+      Ed è anche ancora leggibile:
+    </p>
+    <pre><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <p>
+      Il <code>viewBox</code> lo vedi. Il colore di riempimento lo puoi cambiare
+      nel tuo editor senza decodificare niente. Metti in base64 lo stesso file e
+      diventa un muro di lettere che nessuno toccherà mai più.
+      <a href="../../immagine-in-base64/">Immagine in data URI</a> lo fa
+      automaticamente per tutto ciò che risulta essere un SVG, e ha una casella
+      per la rara catena di strumenti che insiste su <code>;base64</code>.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'errore di virgolette che rompe solo gli SVG</h2>
+    <p>
+      Il CSS ti lascia scrivere <code>url()</code> senza virgolette, e per un
+      normale nome di file va bene:
+    </p>
+    <pre><code>background-image: url(logo.png);</code></pre>
+    <p>
+      Fai lo stesso con un SVG codificato in percentuale e si rompe. Un token
+      <code>url()</code> senza virgolette finisce al primo spazio, parentesi,
+      virgoletta o carattere di controllo &mdash; e un SVG è pieno di spazi, tra
+      ogni attributo e ogni numero di un tracciato. La dichiarazione è allora non
+      valida, il CSS scarta in silenzio le dichiarazioni non valide, e tu non
+      ottieni né sfondo né errore.
+    </p>
+    <p>
+      La soluzione sono le virgolette, tutte le volte:
+    </p>
+    <pre><code>background-image: url("data:image/svg+xml,%3Csvg ... %3E");</code></pre>
+    <p>
+      È anche il motivo per cui un encoder non ha bisogno di proteggere gli spazi
+      &mdash; sono perfettamente leciti dentro un URL tra virgolette, e proteggere
+      ognuno come <code>%20</code> costerebbe tre caratteri per ogni spazio del
+      file. Le due decisioni vanno insieme: metti l'URI tra virgolette, e gli
+      spazi li puoi lasciare stare. Ogni forma che lo strumento produce è tra
+      virgolette esattamente per questo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Il tipo di media deve essere giusto</h2>
+    <p>
+      Un data URI dichiara il proprio tipo, e il browser gli crede sulla parola.
+      Non c'è un ripiego che vada a fiutare il contenuto come succede per un file
+      recuperato: di' <code>image/png</code> di qualcosa che in realtà è un JPEG
+      e l'immagine non compare, senza un messaggio in nessun posto utile.
+    </p>
+    <p>
+      E conta perché le estensioni mentono. Una foto esportata come JPEG e
+      rinominata <code>logo.png</code> è una cosa che si trova normalmente su un
+      disco. I primi byte di un file immagine, invece, dicono cos'è senza
+      ambiguità &mdash; ogni formato ha una firma &mdash; quindi uno strumento
+      dovrebbe leggere il file e non il suo nome. Quello di qui lo fa, e ti dice
+      quando i due non concordano.
+    </p>
+    <p>
+      Due formati vale la pena conoscerli perché falliscono in modo confuso.
+      <strong>HEIC</strong>, cioè come fotografa un iPhone, e <strong>TIFF</strong>,
+      cioè quello che producono gli scanner, fanno entrambi data URI
+      perfettamente validi che nessun browser tranne Safari disegna. L'URI non è
+      rotto; è il formato a non essere fra quelli che il web supporta. Converti
+      prima.
+    </p>
+  </section>
+
+  <section>
+    <h2>I metadati che non volevi pubblicare</h2>
+    <p>
+      Un data URI è una copia del file, byte per byte. Niente viene decodificato
+      e ricodificato, che di solito è il senso della cosa &mdash; non si perde
+      qualità &mdash; ma vuol dire anche che tutto il resto che c'è nel file
+      viene dietro.
+    </p>
+    <p>
+      Una fotografia appena uscita da un telefono porta con sé l'EXIF: le
+      coordinate GPS del posto in cui è stata scattata, l'orario, il modello
+      della fotocamera e spesso il suo numero di serie. Possono essere 30 KB del
+      file. Incorporati, diventano 40 KB di base64 nel tuo foglio di stile, sul
+      percorso critico di ogni pagina &mdash; e un indirizzo di casa depositato in
+      un repository, in una forma che a nessuno verrà mai in mente di guardare.
+    </p>
+    <p>
+      Toglilo prima con il
+      <a href="../../rimuovere-dati-exif/">visualizzatore e rimozione EXIF</a>,
+      che riscrive il contenitore senza toccare l'immagine; c'è anche
+      <a href="../rimuovere-i-dati-exif-e-gps/">una guida apposta</a>. Immagine
+      in data URI legge quanti metadati ci sono in un JPEG, un PNG o un WebP e lo
+      dice prima che tu copi qualunque cosa.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dove metterlo, una volta che ce l'hai</h2>
+    <p>
+      Se l'immagine compare in una sola regola, metti l'URI in quella regola. Se
+      compare in più di una &mdash; e le icone di solito lo fanno, una volta che
+      conti lo stato al passaggio del mouse e il tema scuro &mdash; dichiarala
+      una volta come proprietà personalizzata:
+    </p>
+    <pre><code>:root {
+  --icona-cerca: url("data:image/svg+xml,%3Csvg ... %3E");
+}
+
+.campo-ricerca { background-image: var(--icona-cerca); }
+.pulsante-ricerca::before { content: var(--icona-cerca); }</code></pre>
+    <p>
+      Un URI da 3 KB incollato in quattro regole sono 12 KB di foglio di stile e
+      quattro punti da modificare quando l'icona cambia. La proprietà
+      personalizzata è uno di ciascuno. È anche la forma che fa funzionare i
+      temi: ridefinisci <code>--icona-cerca</code> dentro una media query e ogni
+      suo uso segue.
+    </p>
+    <p>
+      Per un tag <code>&lt;img&gt;</code> invece che per il CSS, metti
+      <code>width</code> e <code>height</code>. Un'immagine incorporata si carica
+      all'istante, quindi una dimensione mancante è uno spostamento di layout che
+      avviene troppo in fretta per essere visto e ti viene contato lo stesso.
+      L'eccezione è l'SVG: uno che porta solo un <code>viewBox</code> non ha una
+      dimensione in pixel sua, e scrivere sul tag il 300&times;150 predefinito del
+      browser inchioda un'immagine scalabile a una dimensione che non ha scelto
+      nessuno.
+    </p>
+    <p>
+      Lascia vuoto l'<code>alt</code> a meno che tu non abbia qualcosa di vero da
+      metterci. Solo tu sai se l'immagine porta un significato o è decorazione, e
+      una descrizione indovinata da un nome di file è peggio, per chi usa uno
+      screen reader, che nessuna descrizione.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando la risposta è «non farlo»</h2>
+    <p>
+      Se l'immagine, una volta codificata, supera i 50 KB circa, incorporare è lo
+      strumento sbagliato e nessuna cura nella codifica lo sistema. Le
+      alternative, nell'ordine in cui vale la pena provarle:
+    </p>
+    <ul>
+      <li>
+        <strong>Rendila più leggera.</strong> Quasi tutte le immagini troppo
+        pesanti da incorporare sono troppo pesanti in generale. Il
+        <a href="../../comprimere-immagine/">compressore di immagini</a> porta
+        una fotografia a un peso che dici tu, e il
+        <a href="../../ridimensionare-immagine/">ridimensionatore di
+        immagini</a> taglia le misure in pixel a quello che il layout usa
+        davvero &mdash; che molto spesso è il problema vero.
+      </li>
+      <li>
+        <strong>Ridisegnala come SVG.</strong> Un'icona esportata come PNG da 40
+        KB è spesso un SVG da 900 byte. Non è una differenza di compressione, è
+        una differenza di formato, e risolve anche il problema del retina.
+      </li>
+      <li>
+        <strong>Lasciala come file e precaricala.</strong>
+        <code>&lt;link rel="preload" as="image"&gt;</code> avvia il recupero
+        subito senza spostare i byte sul percorso critico. Ottiene quasi tutto il
+        vantaggio dell'incorporare e niente del costo di cache.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Niente di tutto questo ha bisogno di un caricamento</h2>
+    <p>
+      Codificare un file in base64 è aritmetica. Sono due funzioni che il browser
+      ha dall'inizio &mdash; <code>btoa</code> ed <code>encodeURIComponent</code>
+      &mdash; e non c'è alcun motivo tecnico, proprio nessuno, per cui
+      un'immagine debba andare fino a un server e tornare per essere scritta in
+      un altro modo. Qualunque convertitore che carichi il tuo file per fare
+      questo lo sta caricando per motivi suoi, non tuoi.
+    </p>
+    <p>
+      <a href="../../immagine-in-base64/">Lo strumento di qui</a> non lo manda da
+      nessuna parte: la <code>Content-Security-Policy</code> della pagina nomina
+      tutti gli indirizzi che può contattare, e nessuno di questi appartiene a
+      questo sito. Carica la pagina, stacca la connessione, e codifica qualcosa
+      lo stesso se preferisci verificare invece che crederci.
+      <a href="../e-sicuro-caricare-i-propri-file/">È sicuro caricare i propri
+      file sui convertitori online?</a> propone altre tre verifiche che puoi fare
+      su qualunque strumento.
+    </p>
+  </section>

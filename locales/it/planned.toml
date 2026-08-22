@@ -1,0 +1,76 @@
+#
+# La lista dei previsti sulla roadmap - Italian.
+#
+# Overrides for config/planned.toml. Only words: the group `id` stays as it is,
+# because that is what a tool's roadmap_group matches on, and the order of the
+# groups and of the items inside them is decided once, in English.
+#
+# Every group and every item has to be here. They are merged in order, so a
+# missing entry would render in English in the middle of an Italian list with
+# nothing on the page to say which one it was - the build refuses a list whose
+# length has changed for exactly that reason.
+#
+
+note = "Non ancora costruiti. Sono elencati perché si veda dove sta andando tutto questo."
+
+[[group]]
+id = "images"
+name = "Immagini"
+items = [
+  ["Ruotare e specchiare", "di un quarto di giro, o raddrizzando di qualche grado"],
+  ["Aggiungere testo", "sopra la foto, o in una fascia sopra di essa"],
+  ["Filtri", "luminosità, contrasto, saturazione, sfocatura, scala di grigi"],
+  ["Immagine come data URI", "il risultato si incolla direttamente nel CSS o nell'HTML"],
+  ["Da HEIC a JPG", "le foto che fa un iPhone, in un formato che apre chiunque"],
+  ["AVIF e JPEG XL", "conversione in entrambi i sensi, con qualunque browser tu ti trovi"],
+]
+
+[[group]]
+id = "gif"
+name = "GIF e animazione"
+items = [
+  ["Da GIF a MP4 o WebM", "la stessa animazione, di solito un decimo del peso"],
+  ["Ridimensionare, ritagliare e ruotare le GIF", "fotogramma per fotogramma, con i tempi intatti"],
+  ["GIF al contrario", "l'ultimo fotogramma per primo"],
+  ["Cambiare la velocità di una GIF", "ritempificarla senza ridisegnare i fotogrammi"],
+  ["Analizzare una GIF", "fotogrammi, ritardi, tavolozza, e dove sono finiti i byte"],
+  ["Creare un APNG", "animazione con trasparenza vera e colore pieno"],
+  ["WebP animata", "ancora la stessa animazione, a una frazione del peso"],
+]
+
+[[group]]
+id = "video"
+name = "Video"
+items = [
+  ["Ridimensionare", "fino a una dimensione che si riesce davvero a mandare"],
+  ["Ruotare", "per la clip girata di traverso"],
+  ["Togliere l'audio, o salvarlo", "eliminare il suono, o tenerlo per conto suo"],
+  ["Convertire in MP4 o WebM", "quello dei due su cui insiste il sito dove stai pubblicando"],
+  ["Filtri", "luminosità, contrasto, saturazione, sfocatura"],
+  ["Incidere i sottotitoli", "un file SRT disegnato dentro l'immagine"],
+]
+
+[[group]]
+id = "audio"
+name = "Audio"
+items = [
+  ["Dissolvenza in apertura e in chiusura", "così non comincia e non finisce di netto"],
+  ["Forma d'onda come immagine", "disegnare una traccia come figura"],
+  ["Convertire formato", "MP3, WAV e Opus, in qualunque direzione"],
+]
+
+[[group]]
+id = "documents"
+name = "Documenti e PDF"
+items = [
+  ["Ruotare e ritagliare le pagine", "raddrizzare una scansione storta, o tagliarne i margini"],
+  ["Estrarre le immagini", "tirare fuori le figure da un documento"],
+]
+
+[[group]]
+id = "beyond"
+name = "Oltre i media"
+items = [
+  ["Dati", "conversione, pulizia e ispezione di CSV e JSON"],
+  ["Privacy e sicurezza", "hash, checksum, rimozione dei metadati"],
+]

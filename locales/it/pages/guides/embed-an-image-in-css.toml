@@ -1,0 +1,18 @@
+#
+# Guida: mettere un'immagine dentro il CSS - Italian.
+#
+
+nav = "Inserire un'immagine nel CSS"
+title = "Data URI nel CSS: quando incorporare un'immagine e quando no"
+description = "Quanto costa un data URI, perché il base64 aggiunge un terzo e il gzip non lo restituisce, perché un SVG non va mai messo in base64, e l'errore di virgolette che rompe in silenzio gli SVG incorporati."
+heading = "Quando mettere un'immagine dentro il tuo CSS, e quando no"
+lede = """
+    Un'immagine scritta dentro un foglio di stile arriva insieme a lui: nessuna
+    seconda richiesta, nessuna attesa. Però smette anche di essere un file
+    &mdash; quindi non può stare in cache per conto suo, e viene riscaricata
+    ogni volta che cambia qualcosa attorno. Qui c'è dove quello scambio conviene,
+    e dove invece, in silenzio, non conviene."""
+updated = "20 agosto 2026"
+og_title = "Quando mettere un'immagine dentro il tuo CSS"
+og_description = "Quanto costa un data URI, perché un SVG non va mai messo in base64, e l'errore di virgolette che rompe in silenzio gli SVG incorporati."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"

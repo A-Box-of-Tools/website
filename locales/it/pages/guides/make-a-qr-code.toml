@@ -1,0 +1,17 @@
+#
+# Guida: fare un QR code che si legga davvero - Italian.
+#
+
+nav = "Creare un QR code"
+title = "Come fare un QR code che si legge tutte le volte"
+description = "Quale livello di correzione d'errore scegliere, perché il margine bianco attorno a un QR code è parte del codice, quanto grande stamparlo, e quanto ti costa dopo il codice «dinamico» di un generatore gratuito."
+heading = "Come fare un QR code che si legga anche sul telefono di qualcun altro"
+lede = """
+    Fare un QR code richiede un secondo. Farne uno che funzioni su un menu
+    bagnato, su una pensilina dell'autobus o su un telefono tenuto a distanza di
+    braccio con poca luce richiede quattro decisioni, e tutte e quattro si
+    prendono prima di stampare qualsiasi cosa. Ecco cosa fa ciascuna."""
+updated = "20 agosto 2026"
+og_title = "Fare un QR code che si legga anche sul telefono di qualcun altro"
+og_description = "Le quattro decisioni che stabiliscono se un QR code stampato funziona: il livello, il margine, la dimensione, e di chi è l'indirizzo che c'è davvero dentro."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"

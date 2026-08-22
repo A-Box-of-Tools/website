@@ -1,0 +1,210 @@
+<main>
+  <!-- Passo 1 &mdash; i file -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli i file SVG</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Togli tutto dalla lista</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; la dimensione -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> Di' quanto grande deve venire</h2>
+
+    <p class="card-lede">
+      È l'unica domanda a cui un vettoriale non può rispondere al posto tuo. Un
+      SVG non ha pixel dentro &mdash; ha istruzioni per disegnare, e le seguirà a
+      qualunque dimensione tu dica. Il numero qui sotto non è un limite contro
+      cui stai spingendo, come sarebbe con una fotografia; quattromila pixel da
+      un'icona da 24&nbsp;pixel sono nitidi esattamente come lo erano i 24.
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">Imposta la dimensione con</label>
+      <select id="size-mode">
+        <option value="scale" selected>Un moltiplicatore della dimensione che il file chiede</option>
+        <option value="width">Larghezza in pixel</option>
+        <option value="height">Altezza in pixel</option>
+        <option value="longest">Il lato più lungo</option>
+        <option value="box">Un riquadro, con entrambi i lati dati</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>Moltiplica per<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="Moltiplicatori comuni">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        Ogni file dell'elenco viene moltiplicato a partire dalla propria
+        dimensione, così un lotto di icone disegnate a dimensioni diverse resta
+        in proporzione tra sé.
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>Larghezza<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="Larghezze comuni">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">L'altezza segue dalla forma del disegno.</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>Altezza<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">La larghezza segue dalla forma del disegno.</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>Lato più lungo<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        Il lato più lungo, qualunque sia, diventa questo e l'altro segue, così un
+        logo largo e uno alto escono della stessa dimensione sul lato lungo.
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>Larghezza<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>Altezza<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">Se il disegno ha una forma diversa</label>
+        <select id="box-fit">
+          <option value="fit" selected>Stai dentro &mdash; tutto il disegno, un lato viene più corto</option>
+          <option value="pad">Riempi con lo sfondo &mdash; esattamente questa dimensione, con lo sfondo ai due lati</option>
+          <option value="stretch">Stira &mdash; esattamente questa dimensione, e la forma deformata</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">Scrivi anche le copie ad alta densità</label>
+      <select id="density">
+        <option value="1" selected>No &mdash; un file per disegno</option>
+        <option value="2">Anche @2x &mdash; per uno schermo Retina</option>
+        <option value="3">@2x e @3x &mdash; la serie completa che chiede un telefono</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- Passo 3 &mdash; il formato -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> Scegli il formato</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Formato</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; tiene la trasparenza, bordi esatti</option>
+          <option value="image/jpeg">JPEG &mdash; niente trasparenza, fotografie più leggere</option>
+          <option value="image/webp">WebP &mdash; trasparenza e file più leggero</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">Qualità &mdash; <output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          Solo JPEG e WebP; il PNG non ha una manopola della qualità perché è
+          senza perdita. Tinte piatte e bordi netti &mdash; che sono quasi tutto
+          quello di cui è fatto un SVG &mdash; sono esattamente ciò che un
+          encoder con perdita gestisce peggio, quindi qui questo cursore sta più
+          in alto di quanto starebbe per una fotografia.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">Sfondo</label>
+        <select id="background-mode">
+          <option value="transparent" selected>Trasparente</option>
+          <option value="colour">Un colore</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="Colore di sfondo" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Passo 4 &mdash; guardalo, poi prendilo -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> Guardalo, poi salvalo</h2>
+
+    <p class="card-lede">
+      L'anteprima è disegnata dallo stesso codice che scrive il file, dal file
+      che hai scelto, su questo dispositivo. Quello che vale la pena controllare
+      sono le due cose che cambiano quando un disegno diventa pixel: un tratto da
+      un capello, largo mezzo pixel, che è diventato grigio, e il testo, che
+      viene disegnato con un carattere che questo dispositivo ha e non con uno
+      recuperato dal web.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">Aggiungi un SVG e compare qui.</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>Rasterizza</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Finito</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Scarica tutto in uno zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

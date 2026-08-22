@@ -1,0 +1,17 @@
+#
+# La pagina Privacy - Italian.
+#
+
+nav = "Privacy e cookie"
+title = "Privacy e cookie &mdash; abox.tools"
+description = "Cosa raccoglie e cosa non raccoglie abox.tools. I tuoi file non vengono mai caricati; la pubblicità, il contatore delle visite e il pulsante delle donazioni sono descritti per intero."
+heading = "Privacy e cookie"
+lede = """
+    La versione corta: i tuoi file non vengono mai caricati, perché non c'è
+    nessun posto dove caricarli. Tutto il resto di questa pagina riguarda la
+    pubblicità, il contatore delle visite e l'hosting &mdash; le parti che
+    coinvolgono davvero altre aziende."""
+updated = "19 agosto 2026"
+og_title = "Privacy e cookie &mdash; abox.tools"
+og_description = "I tuoi file non vengono mai caricati. Cosa viene raccolto, da chi, e come spegnerlo."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"

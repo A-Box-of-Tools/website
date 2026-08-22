@@ -1,0 +1,17 @@
+#
+# Guida: unire immagini in un PDF - Italian.
+#
+
+nav = "Immagini in un PDF"
+title = "Come unire delle immagini in un unico PDF"
+description = "Trasforma foto o scansioni in un unico PDF: dimensione della pagina, ordine e rotazione, perché un JPEG non deve perdere qualità entrando, e cosa dice un PDF alla persona a cui lo mandi."
+heading = "Come unire delle immagini in un unico PDF"
+lede = """
+    Qualcuno ha chiesto «un PDF solo» e tu hai undici fotografie di fogli di
+    carta. Qui ci sono le scelte che cambiano davvero il risultato &mdash;
+    dimensione della pagina, ordine, qualità e cosa il documento dice di te
+    &mdash; e quali puoi ignorare."""
+updated = "20 agosto 2026"
+og_title = "Come unire delle immagini in un unico PDF"
+og_description = "Dimensione della pagina, ordine e rotazione, perché un JPEG non deve perdere qualità entrando, e cosa dice un PDF alla persona a cui lo mandi."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"

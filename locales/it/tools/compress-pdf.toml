@@ -1,0 +1,272 @@
+#
+# Compressore di PDF - Italian.
+#
+# Overrides for tools/compress-pdf/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "Compressore di PDF"
+# La coda è l'espressione che si cerca; il nome del prodotto resta la metà che
+# grida.
+heading = "Comprimere&nbsp;un&nbsp;PDF <span class=\"h1-kw\">&mdash; ridurre il peso di un documento</span>"
+tagline = "Rimpicciolisci un documento senza spedirlo da nessuna parte."
+
+title = "Comprimere un PDF &mdash; gratis, nel browser, senza caricare nulla"
+description = "Riduci il peso di un PDF senza caricarlo. Il file viene letto, ricompresso e riscritto dal tuo browser, e lo strumento ti mostra dove sta davvero il peso prima di toccare qualunque cosa."
+og_title = "Comprimere un PDF &mdash; gratis, e non viene caricato nulla"
+og_description = "Rimpicciolisci un PDF sul tuo dispositivo. Misura quanto grande viene disegnata ogni figura sulla pagina, così butta via solo i pixel che nessuno poteva vedere."
+og_image_alt = "Comprimere un PDF - alleggerire un documento senza caricarlo"
+
+pledge = """
+    Il documento viene aperto, smontato e riscritto in memoria su questo
+    dispositivo, da codice servito da questo indirizzo. Qui dentro non c'è
+    niente in grado di fare un caricamento, e dall'altra parte di questa pagina
+    non c'è alcun server che potrebbe riceverlo."""
+
+live_hint = """
+      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
+      scheda Rete e comprimi un file. Non una sola richiesta porta con sé una
+      pagina, una figura o un nome di file. Oppure stacca la connessione e
+      comprimine uno lo stesso."""
+
+read_first = """
+, e <code>src/reader.js</code> e <code>src/writer.js</code>
+      per tutta la lettura e la riscrittura, nessuna delle due in grado di
+      raggiungere la rete."""
+
+howto_heading = "Come ridurre il peso di un PDF"
+
+card = """
+            Alleggerisci un documento ricomprimendo le figure che ha dentro.
+            Prima ti mostra dove sta davvero il peso, e dice chiaramente
+            quando non c'è niente da guadagnare."""
+
+[words]
+plural = "documenti"
+choose = "un PDF"
+analytics_extra = """"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "I file restano sul tuo dispositivo"
+
+[[privacy]]
+title = "Il tuo documento non ha dove andare."
+body = """
+ La
+      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di questi appartiene a questo sito. Questo strumento
+      non aggiunge niente a quella lista: non ha una funzione di rete propria,
+      nemmeno facoltativa. Qui non esiste un punto di raccolta dove il tuo file
+      potrebbe finire, e nel codice non c'è nulla che ce lo manderebbe se
+      esistesse."""
+
+[[privacy]]
+title = "Il formato sta tutto in questo repository."
+body = """
+ Un PDF è un elenco di
+      oggetti e una tabella che dice dove comincia ciascuno.
+      <code>src/objects.js</code> legge quella sintassi,
+      <code>src/reader.js</code> segue la tabella, <code>src/writer.js</code> ne
+      scrive una nuova, e nessuno dei tre importa qualcosa in grado di fare una
+      richiesta. Non viene scaricata alcuna libreria e non viene disegnato
+      niente su un server."""
+
+[[privacy]]
+title = "I file cifrati vengono respinti invece che aperti."
+body = """
+
+      Un PDF con una password sopra viene rifiutato, compreso quello che gli
+      scanner producono con la password vuota e che tecnicamente si aprirebbe.
+      Togliere la protezione a un documento è un lavoro diverso dal
+      rimpicciolirlo, e farlo in silenzio sarebbe una cosa sorprendente da parte
+      di uno strumento che agisce per conto tuo."""
+
+[[privacy]]
+title = "Toglie roba, non ne mette."
+body = """
+ Il file finito non porta con sé
+      data di creazione, né riga del produttore, né il nome dello strumento che
+      l'ha fatto. Con la casella spuntata perde anche il pacchetto XMP e i
+      blocchi privati che i programmi di impaginazione si lasciano dietro
+      &mdash; lo stesso ragionamento dello strumento EXIF, applicato a un
+      contenitore diverso."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli viene dato."
+body = """
+ Gli script
+      pubblicitari e di misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sul tuo documento: né un file, né una pagina, né un nome,
+      una dimensione o un numero di pagine. Ogni riga che legge, decodifica o
+      scrive un PDF è servita da questa origine ed è elencata nel repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli viene dato."
+body = """
+
+      Il pulsante «Buy me a coffee» in cima è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. È un link e
+      niente di più: non riferisce alcuna visita, e non gli viene passato niente
+      su di te o sul tuo documento. Non succede nulla finché non ci clicchi, e
+      quello a cui arriveresti è il sito di qualcun altro."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e tutto quello che sta su
+      questa pagina continua a funzionare. È la prova più semplice di tutte:
+      uno strumento che spedisse via il tuo documento per comprimerlo si
+      fermerebbe."""
+
+[[howto]]
+title = "Scegli un PDF."
+body = """
+ Trascinalo sul riquadro o
+      selezionalo a mano. Il browser lo legge direttamente dal tuo disco; mentre
+      lo fai non viene mandato niente da nessuna parte."""
+
+[[howto]]
+title = "Guarda dove sta il peso."
+body = """
+ La ripartizione è il senso
+      del secondo passo. Se la barra è quasi tutta immagini, questo strumento ha
+      qualcosa su cui lavorare. Se è quasi tutta caratteri e contenuto delle
+      pagine, te lo dirà, e il risparmio onesto è di qualche punto percentuale
+      &mdash; meglio saperlo prima di perderci un minuto."""
+
+[[howto]]
+title = "Di' quanto stringere."
+body = """
+ Le impostazioni con un nome sono
+      risoluzioni, non voti vaghi: 96 DPI per leggere su uno schermo, 130 per
+      mandarlo via mail, 220 per qualcosa che deve ancora andare in stampa.
+      Ognuna è misurata contro quanto grande la figura viene davvero disegnata
+      sulla pagina, così una foto messa lì come miniatura non viene trattata
+      come una scansione a pagina intera."""
+
+[[howto]]
+title = "Comprimi, e leggi la riga che dice che è stato verificato."
+body = """
+
+      Quando la riscrittura è finita, il file prodotto viene riaperto dallo
+      stesso lettore su questa pagina e le sue pagine vengono contate. Se il
+      conto non torna con l'originale, l'operazione viene dichiarata fallita e
+      non ti viene offerto alcun download."""
+
+[[faq]]
+q = "Il mio PDF viene caricato da qualche parte?"
+a = """
+        No. Il file viene letto, ricompresso e scritto dal tuo browser sul tuo
+        hardware. Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina nomina tutti gli
+        indirizzi che può contattare &mdash; nessuno di questi appartiene a
+        questo sito. Non ha proprio alcuna funzione di rete facoltativa."""
+
+[[faq]]
+q = "Di quanto si rimpicciolirà il mio PDF?"
+a = """
+        Dipende interamente da cosa c'è dentro, ed è per questo che lo strumento
+        misura e ti mostra prima di comprimere qualunque cosa. Un documento
+        scansionato è quasi tutto fotografie e di solito esce dal 60 al 90% più
+        leggero. Un contratto o una tesi sono testo, disegno vettoriale e
+        caratteri incorporati, tutte cose che erano già compresse da ciò che le
+        ha prodotte; lì il risparmio è di solito di qualche punto percentuale,
+        e viene dal riimpacchettare il file e dal buttare quello che non è più
+        richiamato da nessuno. Qualunque strumento prometta una percentuale
+        fissa senza guardare il tuo file sta tirando a indovinare."""
+
+[[faq]]
+q = "Comprimere un PDF fa perdere qualità?"
+a = """
+        Le figure che ha dentro vengono ricodificate, quindi sì, per quelle. Il
+        resto non viene toccato: il testo resta testo, selezionabile e
+        ricercabile, i caratteri restano interi e il disegno vettoriale viene
+        copiato tale e quale. Lo strumento si rifiuta anche di peggiorare
+        un'immagine per niente &mdash; se una ricodifica non esce più leggera
+        dell'originale, i byte originali tornano nel documento intatti."""
+
+[[faq]]
+q = "Cosa sono qui i DPI, e perché me li chiede?"
+a = """
+        Un PDF registra quanto grande viene disegnata ogni figura sulla pagina,
+        quindi lo strumento può ricavarne la risoluzione effettiva: una
+        scansione da 4000 pixel stesa su venti centimetri di carta porta 500
+        pixel per pollice. Niente su uno schermo e ben poco sulla carta sa
+        farsene, quindi i pixel oltre l'impostazione che scegli sono i primi a
+        essere buttati &mdash; costano qualità che nessuno può vedere. È quella
+        misura a fare in modo che un logo messo piccolo non venga trattato come
+        una scansione a pagina intera."""
+
+[[faq]]
+q = "Può aprire un PDF protetto da password?"
+a = """
+        No, ed è voluto. Un documento cifrato viene rifiutato con un messaggio
+        che lo dice, anche quando la password è vuota &mdash; che è il modo in
+        cui salvano moltissimi scanner e fotocopiatrici. Togliere la protezione
+        a un file è un lavoro diverso dal comprimerlo, e uno strumento che lo
+        facesse in silenzio starebbe facendo qualcosa che non hai chiesto."""
+
+[[faq]]
+q = "Ci sono PDF che non riesce a comprimere?"
+a = """
+        Alcune immagini al loro interno, sì. Le immagini JPEG 2000, JBIG2 e in
+        codifica fax (CCITT) non hanno un decodificatore in nessun browser,
+        quindi passano intatte e vengono segnalate come tali &mdash; le ultime
+        due sono codec in bianco e nero e di solito sono già vicine al minimo.
+        Anche le immagini CMYK vengono lasciate stare, perché ricodificarle
+        rischia di spostare i colori che una stampante produrrebbe. Tutto
+        quello che lo strumento salta viene nominato nei risultati, con il
+        motivo."""
+
+[[faq]]
+q = "Il file compresso si aprirà ancora dappertutto?"
+a = """
+        Sì. L'uscita è scritta in PDF 1.5, che ogni lettore uscito dal 2003 in
+        poi capisce, e lo strumento lo dimostra sul tuo dispositivo: riapre il
+        file finito e ne conta le pagine prima di offrirtelo. Moduli, link,
+        segnalibri, la struttura di accessibilità e gli eventuali allegati
+        incorporati vengono portati dall'altra parte; quello che resta indietro
+        è il materiale a cui niente nel documento faceva più riferimento."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è accesso, non c'è periodo di prova e
+        non c'è limite di dimensione oltre a quello che consente la memoria del
+        tuo dispositivo. Il sito ha della pubblicità, ed è quella che lo paga;
+        agli annunci non viene dato niente sul tuo documento."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la connessione e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene
+        caricato niente: uno strumento che spedisse via il tuo documento per
+        comprimerlo si fermerebbe nel momento in cui stacchi la spina."""
+
+[schema]
+description = "Comprimi un PDF nel browser. Le immagini vengono ricompresse rispetto a quanto grandi sono davvero disegnate sulla pagina, e il documento viene riscritto in locale, quindi nessun file viene mai caricato."
+features = [
+  "Mostra dove sta davvero il peso di un documento prima di comprimere qualunque cosa",
+  "Ricomprime le immagini rispetto alla loro risoluzione misurata sulla pagina",
+  "Lascia stare un'immagine quando ricodificarla non la renderebbe più leggera",
+  "Butta gli oggetti che una modifica precedente si è lasciata dietro, e i metadati facoltativi",
+  "Riapre e verifica il file finito prima di offrirlo",
+  "Funziona offline; niente caricamenti, nessun account, nessun limite di dimensione",
+]
+
+[picker]
+title = "Trascina qui un PDF"
+hint = "oppure clicca per scegliere &mdash; un documento alla volta"

@@ -1,0 +1,17 @@
+#
+# Guida: trasformare un video in una GIF - Italian.
+#
+
+nav = "Fare una GIF da un video"
+title = "Come trasformare un video in una GIF (e tenerla leggera)"
+description = "Quale pezzo, quale larghezza e quale frequenza scegliere, perché una GIF di un video pesa dieci volte il video, e quando usarne una."
+heading = "Come trasformare un video in una GIF"
+lede = """
+    La GIF è un formato del 1987 che conserva immagini intere invece del
+    movimento, quindi una fatta da un video è sempre pesante. Qui c'è quale
+    delle tre impostazioni muovere quando è troppo pesante, e quanto ti fa
+    guadagnare ciascuna."""
+updated = "20 agosto 2026"
+og_title = "Come trasformare un video in una GIF, e tenerla leggera"
+og_description = "Le tre impostazioni che decidono il peso di una GIF, quanto costa ciascuna, e quando una GIF è del tutto la risposta sbagliata."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"
