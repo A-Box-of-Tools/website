@@ -58,7 +58,6 @@ items = [
 [[group]]
 name = "Dokumente &amp; PDF"
 items = [
-  ["Zusammenführen, teilen &amp; umsortieren", "Seiten verschieben, ohne den Umweg über einen Server"],
   ["Seiten drehen &amp; zuschneiden", "einen quer eingelesenen Scan geraderücken oder seine Ränder beschneiden"],
   ["Bilder extrahieren", "die Bilder wieder aus einem Dokument herausholen"],
 ]

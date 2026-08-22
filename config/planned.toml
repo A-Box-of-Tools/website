@@ -69,7 +69,6 @@ items = [
 id = "documents"
 name = "Documents &amp; PDF"
 items = [
-  ["Merge, split &amp; reorder", "pages moved around without a round trip to a server"],
   ["Rotate &amp; crop pages", "fix a scan that came in sideways, or trim its margins"],
   ["Extract images", "pull the pictures back out of a document"],
 ]

@@ -317,6 +317,11 @@ New-OgImage -Path 'tools\compress-pdf\og.png' `
   -Subtitle 'Shows you where a document''s size actually is, then shrinks it on your own machine.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\merge-pdf\og.png' `
+  -Title 'PDF Merger & Splitter' `
+  -Subtitle 'Merge documents, split one into several, reorder pages - all on your own machine.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 <#
 .SYNOPSIS
   Draws icon-180.png, the home-screen icon.

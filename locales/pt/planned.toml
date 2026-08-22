@@ -62,7 +62,6 @@ items = [
 [[group]]
 name = "Documentos e PDF"
 items = [
-  ["Juntar, separar e reordenar", "páginas trocadas de lugar sem ida e volta a um servidor"],
   ["Girar e cortar páginas", "endireitar um escaneamento que veio deitado, ou aparar as margens"],
   ["Extrair imagens", "tirar as figuras de volta de dentro de um documento"],
 ]

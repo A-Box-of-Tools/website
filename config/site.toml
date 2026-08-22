@@ -235,7 +235,7 @@ order = ["trim-audio", "edit-audio"]
 id = "documents-and-pdf"
 name = "Documents &amp; PDF"
 note = "Make and rearrange documents without sending them to be processed."
-order = ["compress-pdf", "images-to-pdf"]
+order = ["merge-pdf", "compress-pdf", "images-to-pdf"]
 
 # The first category here that is not about a file at all. Everything above
 # takes something off your disk; this one takes a string and hands back a
@@ -370,6 +370,7 @@ order = [
   "embed-an-image-in-css",
   "remove-exif-and-gps-data",
   "convert-heic-to-jpg",
+  "merge-and-split-pdf-files",
   "make-a-pdf-smaller",
   "combine-images-into-a-pdf",
   "turn-images-into-a-video",

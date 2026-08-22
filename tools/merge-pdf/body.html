@@ -1,0 +1,156 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose your PDFs</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <ul id="source-list" class="source-list" hidden></ul>
+  </section>
+
+  <!-- Step 2 &mdash; the pages -->
+  <section class="card" id="pages-card" hidden>
+    <h2><span class="step">2</span> Arrange the pages</h2>
+
+    <p class="card-lede">
+      Every page of every file you chose, in the order they will come out.
+      Drag one by its <span class="grip" aria-hidden="true">&#8942;&#8942;</span>
+      handle to move it, turn it with the arrows, or take it out with the
+      &times;. Nothing here has been written yet &mdash; the document is
+      assembled when you press the button in step 4.
+    </p>
+
+    <div class="toolbar">
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="reverse" class="ghost">Reverse</button>
+        <button type="button" id="rotate-all" class="ghost">Turn every page</button>
+        <button type="button" id="restore" class="ghost">Back to how they came</button>
+        <button type="button" id="clear-all" class="ghost danger">Start again</button>
+      </div>
+    </div>
+
+    <div class="range-row">
+      <label for="range">Pages</label>
+      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+             spellcheck="false" aria-describedby="range-note">
+      <button type="button" id="range-keep" class="ghost">Keep only these</button>
+      <button type="button" id="range-drop" class="ghost">Remove these</button>
+      <button type="button" id="range-turn" class="ghost">Turn these</button>
+    </div>
+    <p id="range-note" class="field-note">
+      By the numbers below, which renumber as you go. <code>odd</code>,
+      <code>even</code>, <code>all</code> and <code>last</code> work too.
+    </p>
+    <p id="range-error" class="error" role="alert" hidden></p>
+
+    <ul id="page-list" class="page-list"></ul>
+  </section>
+
+  <!-- Step 3 &mdash; one file, or several -->
+  <section class="card" id="output-card" hidden>
+    <h2><span class="step">3</span> One document, or several</h2>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">How the pages are written out</legend>
+      <div class="presets" id="split-modes" role="radiogroup" aria-label="How the pages are written out">
+        <label class="preset">
+          <input type="radio" name="split" value="single" checked>
+          <span class="preset-body">
+            <strong>One document</strong>
+            <span class="preset-note">Everything above, in that order, as a single PDF.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="every">
+          <span class="preset-body">
+            <strong>Split every so many pages</strong>
+            <span class="preset-note">
+              A long scan cut into chapters of
+              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+                     inputmode="numeric" aria-label="Pages in each file">
+              pages.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="at">
+          <span class="preset-body">
+            <strong>Split at page&hellip;</strong>
+            <span class="preset-note">
+              Cut before
+              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+                     spellcheck="false" aria-label="Page numbers to cut before">
+              &mdash; each of those starts a new file.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="each">
+          <span class="preset-body">
+            <strong>Every page on its own</strong>
+            <span class="preset-note">One PDF per page. Useful for pulling out a signature sheet.</span>
+          </span>
+        </label>
+        <label class="preset" id="by-file-preset" hidden>
+          <input type="radio" name="split" value="file">
+          <span class="preset-body">
+            <strong>Back into the files they came from</strong>
+            <span class="preset-note">One document per file you chose, with your edits kept.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="keep-bookmarks" checked>
+      <span>
+        <strong>Keep the bookmarks</strong>
+        <span class="check-note">
+          The outline each file came with, rebuilt against the pages that are
+          actually here: an entry whose page you removed goes, and one whose
+          chapter is still here stays. Merging several files puts each one's
+          bookmarks under a heading named after it.
+        </span>
+      </span>
+    </label>
+
+    <p id="output-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Step 4 &mdash; the one click -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Put it together</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Build the document</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Download</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <ul id="file-list" class="out-list" hidden></ul>
+    </div>
+  </section>
+</main>
