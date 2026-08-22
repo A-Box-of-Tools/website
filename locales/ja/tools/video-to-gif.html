@@ -1,0 +1,164 @@
+<main>
+  <!-- ステップ1 &mdash; ファイル -->
+  <section class="card">
+    <h2><span class="step">1</span> 動画を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>ファイル</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>サイズ</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>画面</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>長さ</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>映像</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>読み取り方式</dt><dd id="src-path">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 範囲 -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> 範囲を選ぶ</h2>
+
+    <p class="hint">
+      映像を再生して、使いたい部分に印を付けてください。<kbd>I</kbd> は再生位置を始点に、<kbd>O</kbd> は終点にします。バーの両端のつまみはどちらもドラッグできます。
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/range.js. -->
+    <div id="rangebar"></div>
+    <div class="rb-scale">
+      <span>0:00.000</span>
+      <span id="scale-end">&mdash;</span>
+    </div>
+
+    <div class="marks">
+      <label>開始
+        <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-in" class="ghost" title="再生位置を始点にする (I)">
+        再生位置にする
+      </button>
+
+      <label>終了
+        <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-out" class="ghost" title="再生位置を終点にする (O)">
+        再生位置にする
+      </button>
+
+      <div class="mark-actions">
+        <button type="button" id="play-section" class="ghost">この範囲を再生</button>
+        <button type="button" id="whole-clip" class="ghost">映像全体</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ステップ3 &mdash; GIF -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 大きさとフレームレート</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="width">幅</label>
+        <select id="width">
+          <option value="240">240 px</option>
+          <option value="320">320 px</option>
+          <option value="480" selected>480 px</option>
+          <option value="640">640 px</option>
+          <option value="source">元の大きさ</option>
+          <option value="custom">ちょうどこの値&hellip;</option>
+        </select>
+        <p class="field-note">
+          高さはそれに従うので、形が変わることはありません。GIF の費用を決めるのは幅です。幅が半分なら、ピクセルは4分の1です。
+        </p>
+        <p class="field-note" id="width-note" hidden></p>
+      </div>
+
+      <div class="field" id="custom-width-field" hidden>
+        <label for="custom-width">正確な幅</label>
+        <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
+        <p class="field-note">ピクセル数で、16から1920のあいだ。</p>
+      </div>
+
+      <div class="field">
+        <label for="fps">1秒あたりのフレーム数</label>
+        <select id="fps">
+          <option value="5">5 &mdash; いちばん小さい</option>
+          <option value="10">10</option>
+          <option value="12" selected>12 &mdash; 十分なめらか</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25 &mdash; いちばんなめらか</option>
+        </select>
+        <p class="field-note">
+          動画自身のフレームレートではありません。そこから間引いて取り出します。
+          12あれば動きとして読み取れます。20を超えると、なめらかさが見えるより速くファイルが大きくなります。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="dither">ディザリング</label>
+        <select id="dither">
+          <option value="on" selected>有効 &mdash; グラデーションがなめらか</option>
+          <option value="off">無効 &mdash; 平坦で、小さい</option>
+        </select>
+        <p class="field-note">
+          ちょうどの色がないところで、パレットの2色を混ぜます。組織的ディザなので、静止した背景がちらつきません。
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="loop">
+          <input type="checkbox" id="loop" checked>
+          ずっと繰り返す
+        </label>
+        <p class="field-note">外すと、1回再生して止まります。</p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>範囲</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>書き出し</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>フレーム数</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>おおよそのサイズ</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="memory-note" class="field-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>GIF を作る</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <img id="result-image" alt="できあがったアニメーション（再生中）">
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>GIF をダウンロード</a>
+      </div>
+    </div>
+  </section>
+</main>

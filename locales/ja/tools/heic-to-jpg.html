@@ -1,0 +1,103 @@
+<main>
+  <!-- ステップ1 &mdash; ファイル -->
+  <section class="card">
+    <h2><span class="step">1</span> HEIC 写真を選ぶ</h2>
+
+    <p class="card-lede">
+      スマホから直接でも、バックアップからでも、メモリーカードから複製したものでも構いません。ファイルはここで、この端末で読まれ、画像もここでデコードされます &mdash; このページにアップロードの段階はなく、後ろにサーバーもありません。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 出てくるもの -->
+  <section class="card" id="options-card">
+    <h2><span class="step">2</span> 何を返してほしいかを言う</h2>
+
+    <fieldset class="options">
+      <legend>形式</legend>
+
+      <div class="option-row">
+        <label for="format-select">書き出す形式</label>
+        <select id="format-select">
+          <option value="image/jpeg" selected>JPEG &mdash; どこでも開けます。今世紀に間違って作られたものでも</option>
+          <option value="image/png">PNG &mdash; 劣化なし、そのぶん数倍のサイズ</option>
+          <option value="image/webp">WebP &mdash; 同じ画質なら JPEG より小さい。ただし最近のブラウザ限定</option>
+        </select>
+      </div>
+
+      <div class="option-row" id="quality-row">
+        <label for="quality">画質</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="50" max="100" step="1" value="92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>写真の付随情報</legend>
+
+      <label class="check">
+        <input type="checkbox" id="keep-exif" checked>
+        <span>
+          <strong>撮影日時、カメラ、設定を残す</strong>
+          <span class="check-note">
+            スマホが書いたとおりにそのまま複製されるので、変換後の写真も、変換した日ではなく撮影した日で並びます。写真が GPS 座標を持っている場合は、それも含まれます &mdash; どれが持っているかは上の一覧に出ています。これを外すと、JPEG には画像のほかに何も入りません。
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary">
+        どちらを選んでも、ここから誰かに読み上げられるものはありません。この選択は返ってくるファイルに何が入るかの話であって、このページがそれをどうするかの話ではありません。タグを細かく見たい場合や、すでに JPEG になっている写真から消したい場合は、
+        <a href="../exif-editor/">EXIF ビューアー &amp; 削除ツール</a>
+        がその役目を担います。
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- ステップ3 &mdash; 一度のクリック -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 変換する</h2>
+
+    <div class="run-row">
+      <button type="button" id="convert-all" class="primary big" disabled>変換</button>
+    </div>
+
+    <!--
+      The decoder's own status line. This page is the only one on the site that
+      carries a codec, so it is the only one with anything to report here, and
+      saying where the megabyte came from is the point: it is served from this
+      origin, it is cached with the rest of the page, and it is what makes the
+      offline promise hold on a browser that cannot open a HEIC at all.
+    -->
+    <p id="engine-status" class="engine-status" role="status" aria-live="polite"></p>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>変換しました</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

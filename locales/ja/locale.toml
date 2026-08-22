@@ -30,7 +30,7 @@ lang = "ja"
 name = "Japanese"
 endonym = "日本語"
 
-complete = false
+complete = true
 
 #
 # ---------------------------------------------------------------------------

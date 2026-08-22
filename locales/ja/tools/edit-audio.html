@@ -1,0 +1,168 @@
+<main>
+  <!-- ステップ1 &mdash; ファイル -->
+  <section class="card">
+    <h2><span class="step">1</span> ファイルを選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>ファイル</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>サイズ</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>長さ</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>音声</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>いちばん大きい瞬間</dt><dd id="src-peak">&mdash;</dd></div>
+      <div><dt>読み込み時の設定</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <div class="wave-wrap" id="src-wave-wrap" hidden>
+      <canvas id="src-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="preview" controls preload="metadata"></audio>
+    </div>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 編集 -->
+  <section class="card" id="edit-card" hidden>
+    <h2><span class="step">2</span> 変える</h2>
+
+    <div class="edit-block">
+      <label class="check" for="reverse">
+        <input type="checkbox" id="reverse">
+        逆から再生する
+      </label>
+      <p class="field-note">
+        サンプルが最後のものから順に書き出されます。それ以外は何も変わらないので、
+        2回逆にすれば、始めたときとまったく同じファイルに戻ります。
+      </p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="speed">速さ</label>
+        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+               spellcheck="false" autocomplete="off" aria-label="速さ（倍率）">
+      </div>
+
+      <!-- The slider is in octaves, not multiples: half speed and double speed
+           are then the same distance either side of the middle, which is how
+           they sound. main.js does the conversion. -->
+      <input type="range" id="speed" min="-2" max="2" step="0.01" value="0"
+             aria-describedby="speed-note">
+
+      <div class="presets" role="group" aria-label="速さのプリセット">
+        <button type="button" class="ghost" data-speed="0.5">0.5&times;</button>
+        <button type="button" class="ghost" data-speed="0.75">0.75&times;</button>
+        <button type="button" class="ghost" data-speed="1">1&times;</button>
+        <button type="button" class="ghost" data-speed="1.25">1.25&times;</button>
+        <button type="button" class="ghost" data-speed="1.5">1.5&times;</button>
+        <button type="button" class="ghost" data-speed="2">2&times;</button>
+      </div>
+
+      <fieldset class="modes">
+        <legend>音程をどうするか</legend>
+        <label class="mode">
+          <input type="radio" name="pitch" value="keep" checked>
+          <span>
+            <strong>音程を保つ</strong>
+            速くしても遅くしても、声は同じ声のまま聞こえます。
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="pitch" value="move">
+          <span>
+            <strong>音程も動かす</strong>
+            速ければ高く、遅ければ低く。テープと同じやり方です。
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="speed-note"></p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="volume">音量</label>
+        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+               spellcheck="false" aria-label="音量の変化（デシベル）">
+      </div>
+
+      <input type="range" id="volume" min="-24" max="24" step="0.5" value="0"
+             aria-describedby="volume-note">
+
+      <fieldset class="modes">
+        <legend>どこまで大きくするか</legend>
+        <label class="mode">
+          <input type="radio" name="level" value="gain" checked>
+          <span>
+            <strong>この分だけ</strong>
+            すべてのサンプルに同じ数を掛けます。ほかは何も変わりません。
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="level" value="normalize">
+          <span>
+            <strong>限界まで大きく</strong>
+            いちばん大きい瞬間が上限のすぐ下に来るまで持ち上げます。
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="volume-note"></p>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>長さ</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>速さ</dt><dd id="sum-speed">&mdash;</dd></div>
+      <div><dt>いちばん大きい瞬間</dt><dd id="sum-peak">&mdash;</dd></div>
+      <div><dt>おおよそのサイズ</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="clip-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- ステップ3 &mdash; 出てくるファイル -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 保存する</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">書き出す形式</label>
+        <select id="depth">
+          <option value="16" selected>16ビット WAV &mdash; どこでも再生できます</option>
+          <option value="32">32ビット浮動小数点 WAV &mdash; 何も切り詰めません</option>
+        </select>
+        <p class="field-note" id="depth-note">
+          WAV はサンプルをそのまま保持するので、書き出しで音質が落ちることはありません。小さなファイルではありません。上の見積もりをご覧ください。
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary">音声を編集する</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>音声をダウンロード</a>
+      </div>
+    </div>
+  </section>
+</main>

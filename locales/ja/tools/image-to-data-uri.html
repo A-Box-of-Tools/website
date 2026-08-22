@@ -1,0 +1,128 @@
+<main>
+  <!-- ステップ1 &mdash; ファイル -->
+  <section class="card">
+    <h2><span class="step">1</span> 画像を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 実際に貼られる行 -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> どこへ持っていくかを言う</h2>
+
+    <p class="card-lede">
+      データURIそのものを求めている人は、あまりいません。ほしいのはスタイルシートに入る行のほうです &mdash; ですから行のほうを選んでください。画像はその中に、引用符で囲まれた状態で届きます。ここは間違えやすく、しかも SVG のときだけ失敗する部分です。
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="何を貼るか">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>データURIそのもの</strong>
+          <span class="shape-note">
+            カンマから後ろがファイルです。URL が入る場所ならどこにでも貼れます。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>CSS ルール</strong>
+          <span class="shape-note">
+            ファイル名から取ったクラス名付きの、まるごと1つのルールです。セレクターは実際にスタイルを当てる相手に書き換えてください。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>CSS カスタムプロパティ</strong>
+          <span class="shape-note">
+            スタイルシートの先頭で一度だけ宣言し、あとは <code>var(--name)</code>
+            として好きなだけ使えます。同じ画像が複数のルールに出てくるときは、これを選んでください。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>HTML の <code>&lt;img&gt;</code> タグ</strong>
+          <span class="shape-note">
+            ピクセル数が入った状態で出るので、残りが読み込まれる間にページが跳ねることがありません。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">
+            README や issue 用に。どこかに置いてもらう必要のない、本文と一緒に持ち運べる画像です。
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      <code>alt</code> のテキストは意図的に空にしてあります。その画像が意味を運んでいるのか、それとも飾りなのかを知っているのはあなただけですし、ファイル名から推測した説明は、スクリーンリーダーを使う人にとって、説明がまったくないより悪いからです。
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>SVG も base64 にする</strong>
+          <span class="check-note">
+            既定では外してあります。SVG はテキストで、base64 はバイト列のためのものだからです。パーセントエンコードならスタイルシートの中でマークアップが読めるままですし、たいてい5分の1ほど短くなります。<code>;base64</code>
+            をどうしても要求するツールチェーンのために、これを入れてください。
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the result. There is no button here on purpose: encoding
+       is instant, so there is nothing for a "convert" press to wait for. -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> コピーする</h2>
+
+    <p id="empty-note" class="card-lede">
+      まだ何も選ばれていません。上に画像を入れると、貼るための行がここに出ます。
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">全部コピー</button>
+          <button type="button" id="download-all" class="ghost">1つのファイルとしてダウンロード</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

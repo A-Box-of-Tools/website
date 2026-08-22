@@ -1,0 +1,224 @@
+<main>
+  <!-- ステップ1 &mdash; 画像 -->
+  <section class="card">
+    <h2><span class="step">1</span> 画像を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" data-sort="name" class="ghost">名前順に並べる</button>
+        <button type="button" data-sort="date" class="ghost">日付順に並べる</button>
+        <button type="button" data-sort="reverse" class="ghost">逆順にする</button>
+        <button type="button" id="clear-all" class="ghost danger">全部外す</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      1ページに画像1枚、この順に並びます。
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> の取っ手をドラッグするか、タイル上の矢印でページを動かせます。
+    </p>
+
+    <ul id="image-list" class="image-list"></ul>
+  </section>
+
+  <!-- ステップ2 &mdash; ページ -->
+  <section class="card">
+    <h2><span class="step">2</span> ページの設定</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">ページサイズ</label>
+        <select id="page-size">
+          <option value="fit" selected>各画像に合わせる</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">レター &mdash; 8.5 &times; 11 in</option>
+          <option value="legal">リーガル &mdash; 8.5 &times; 14 in</option>
+          <option value="a3">A3 &mdash; 297 &times; 420 mm</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+          <option value="tabloid">タブロイド &mdash; 11 &times; 17 in</option>
+          <option value="custom">自分で指定&hellip;</option>
+        </select>
+        <div id="custom-size" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="1" max="5000" step="1" value="210"
+                 aria-label="指定するページの幅">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="1" max="5000" step="1" value="297"
+                 aria-label="指定するページの高さ">
+          <select id="custom-unit" aria-label="指定するページサイズの単位">
+            <option value="mm" selected>mm</option>
+            <option value="in">in</option>
+          </select>
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">印刷解像度</label>
+        <select id="dpi">
+          <option value="72">72 DPI &mdash; 画面</option>
+          <option value="96">96 DPI</option>
+          <option value="150" selected>150 DPI</option>
+          <option value="200">200 DPI</option>
+          <option value="300">300 DPI &mdash; 印刷</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          決まったピクセル数のページがどれだけの大きさになるかを決めます。画像そのものは変わりません。
+        </p>
+      </div>
+
+      <div class="field" id="orientation-field" hidden>
+        <label for="orientation">向き</label>
+        <select id="orientation">
+          <option value="auto" selected>各画像に合わせる</option>
+          <option value="portrait">縦</option>
+          <option value="landscape">横</option>
+        </select>
+      </div>
+
+      <div class="field" id="fit-field" hidden>
+        <label for="fit">ページ上での画像の置き方</label>
+        <select id="fit">
+          <option value="contain" selected>余白の内側に収める</option>
+          <option value="cover">ページいっぱいに（端が切れます）</option>
+          <option value="stretch">余白まで引き伸ばす（形が歪みます）</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="margin">余白</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="100" step="1" value="0"
+                 aria-label="余白（ミリメートル）">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="background">ページの色</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          余白と、透過している部分の後ろに出ます。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="mode">画像の品質</label>
+        <select id="mode">
+          <option value="keep" selected>JPEG はそのまま保つ</option>
+          <option value="jpeg">すべて JPEG として書き直す</option>
+          <option value="lossless">可逆 &mdash; 圧縮による劣化を一切なくす</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">JPEG の画質</label>
+        <select id="quality">
+          <option value="0.75">ファイルを小さく</option>
+          <option value="0.88" selected>バランス</option>
+          <option value="0.95">最高画質</option>
+        </select>
+        <p class="field-note">このツールが書き直す必要のある画像にだけ使われます。</p>
+      </div>
+
+      <div class="field">
+        <label for="max-side">大きな画像を縮める</label>
+        <select id="max-side">
+          <option value="0" selected>縮めない &mdash; 元の大きさのまま</option>
+          <option value="4000">長辺 4000 px</option>
+          <option value="2000">長辺 2000 px</option>
+          <option value="1200">長辺 1200 px</option>
+        </select>
+        <p class="field-note" id="shrink-note"></p>
+      </div>
+    </div>
+
+    <details class="meta-panel">
+      <summary>書類の情報 &mdash; すべて任意、既定ではすべて空欄</summary>
+      <div class="meta-body">
+        <p class="meta-note">
+          PDF は自分自身についての小さな情報のかたまりを持っていて、たいていの道具は頼まれなくても日時とプログラム名を書き込みます。これは、ここに打ち込まれたものだけを書きます。ファイル名も、端末名も入りませんし、日付もチェックを入れない限り入りません。
+        </p>
+        <div class="settings">
+          <div class="field">
+            <label for="doc-title">タイトル</label>
+            <input type="text" id="doc-title" maxlength="200" spellcheck="false"
+                   placeholder="空欄なら書きません">
+          </div>
+          <div class="field">
+            <label for="doc-author">著者</label>
+            <input type="text" id="doc-author" maxlength="200" spellcheck="false"
+                   placeholder="空欄なら書きません">
+          </div>
+          <div class="field">
+            <label for="file-name">ファイル名</label>
+            <div class="inline-pair">
+              <input type="text" id="file-name" maxlength="120" spellcheck="false"
+                     value="images">
+              <span class="unit-label">.pdf</span>
+            </div>
+          </div>
+          <div class="field checkbox-field">
+            <label for="dated">
+              <input type="checkbox" id="dated">
+              今日の日付を書類に記録する
+            </label>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="480" height="640" aria-label="1ページ分のプレビュー"></canvas>
+        <p id="preview-empty" class="preview-empty">画像を追加するとページが見られます</p>
+        <div id="preview-nav" class="preview-nav" hidden>
+          <button type="button" id="preview-prev" class="ghost" aria-label="前のページ">&lsaquo;</button>
+          <span id="preview-label" class="preview-label"></span>
+          <button type="button" id="preview-next" class="ghost" aria-label="次のページ">&rsaquo;</button>
+        </div>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>ページ数</dt><dd id="sum-pages">&mdash;</dd></div>
+        <div><dt>ページサイズ</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>選んだ画像</dt><dd id="sum-input">&mdash;</dd></div>
+        <div><dt>そのまま複製</dt><dd id="sum-copied">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ステップ3 &mdash; 書き出し -->
+  <section class="card">
+    <h2><span class="step">3</span> PDF を作る</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>PDF を作る</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>PDF をダウンロード</a>
+      </div>
+    </div>
+  </section>
+</main>
