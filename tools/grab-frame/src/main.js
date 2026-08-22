@@ -5,7 +5,7 @@ import { demux, UnsupportedFile } from './demux.js';
 import { FrameReader, decodeSeries, frameNear, seriesFrames } from './frames.js';
 import { drawUpright, frameCanvas } from './draw.js';
 import { FORMATS, clockTime, encodeStill, stillName } from './still.js';
-import { makeZip } from './zip.js';
+import { makeZip } from './shared/zip.js';
 import { hasWebCodecs, canDecode, encodableTypes } from './support.js';
 
 const $ = (id) => document.getElementById(id);

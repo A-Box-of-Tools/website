@@ -11,7 +11,7 @@ import { compare, hasTransparency } from './measure.js';
 import {
   bytes as humanBytes, targetBytes, dimensions, outName, change, matchText, psnrText,
 } from './files.js';
-import { makeZip } from './zip.js';
+import { makeZip } from './shared/zip.js';
 
 const $ = (id) => document.getElementById(id);
 

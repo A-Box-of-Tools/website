@@ -1,9 +1,22 @@
 /**
  * A ZIP writer, stored (uncompressed) only.
  *
- * Compressing twenty photos and handing back twenty downloads means twenty save
+ * Handing back twenty finished files as twenty downloads means twenty save
  * prompts, which is the sort of thing that makes people give up and use the
  * upload site instead. One archive is one prompt.
+ *
+ * Shared because every tool that works on a batch needs exactly this and none
+ * of them should own it: there were nine identical copies before this moved
+ * here. Ask for it with `js_parts = ["zip", "crc32"]` - the checksum is a
+ * separate part because a PNG writer needs it without the archive.
+ *
+ * Two tools still carry their own copy, and the reason is a rule worth knowing
+ * before moving anything else here: a shared module is only shipped into a
+ * tool at build time, at src/shared/, so a source file that imports it cannot
+ * be loaded outside a build. The tests import tool modules straight off the
+ * disk. That is fine for main.js, which no test loads, and not fine for a leaf
+ * module that is unit-tested - exif-editor's png.js and merge-pdf's produce.js
+ * are both of those, so they keep a local copy rather than lose their tests.
  *
  * Nothing here compresses. Deflating a folder of JPEGs saves almost nothing -
  * they are already compressed - and writing a deflate implementation to achieve

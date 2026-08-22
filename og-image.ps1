@@ -21,12 +21,63 @@
   SVG, and a hand-drawn copy of the mark would drift away from the file it was
   copied from, so a headless Edge rasterises it instead; see Get-MarkImage.
 
+  The cards come from the tools themselves: each one's heading is `name` in its
+  tools/<slug>/tool.toml and its subtitle is `og_card` there, so adding a tool
+  adds its card and nothing here has to be kept in step by hand.
+
+.PARAMETER Only
+  Draw one tool's card instead of all of them. Worth knowing about: the mark on
+  each card is rasterised by a headless Edge, that flakes about one call in
+  every run, and the redraws are not byte-identical even when it does not - so
+  a full run dirties every og.png whether or not the wording changed. If you
+  changed one tool, name it.
+
 .EXAMPLE
   .\og-image.ps1
+
+.EXAMPLE
+  .\og-image.ps1 -Only resize-image
 #>
+
+param(
+  [string]$Only
+)
 
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
+
+# The same line on every card, so it is written once.
+$footer = 'No uploads | No accounts | Works offline'
+
+function Read-ToolFields {
+  <#
+    .SYNOPSIS
+      The named top-level keys of a tool.toml, as a hashtable.
+
+    .DESCRIPTION
+      PowerShell has no TOML reader and this needs two keys, both of which are
+      plain one-line basic strings in every tool.toml - `name = "Image Resizer"`.
+      So it matches those and nothing else, rather than pulling in a parser or,
+      worse, half-writing one. A key whose value is a multi-line string or
+      carries an escape is simply not found, and the caller throws by name
+      rather than drawing a card with a blank on it.
+  #>
+  param(
+    [Parameter(Mandatory)][string]$Path,
+    [Parameter(Mandatory)][string[]]$Keys
+  )
+
+  $found = @{}
+  foreach ($line in Get-Content -Path $Path -Encoding UTF8) {
+    foreach ($key in $Keys) {
+      if ($found.ContainsKey($key)) { continue }
+      if ($line -match ('^' + [regex]::Escape($key) + '\s*=\s*"([^"\\]*)"\s*$')) {
+        $found[$key] = $Matches[1]
+      }
+    }
+  }
+  return $found
+}
 
 # Dark-theme tokens, copied from :root in site.css. Kept as literals rather
 # than parsed out of the CSS: this runs once in a while, by hand, and a parser
@@ -202,168 +253,46 @@ function New-OgImage {
   Write-Host "wrote $full"
 }
 
-New-OgImage -Path 'shared\og.png' `
-  -Title 'Tools that never touch a server' `
-  -Subtitle 'Small, single-purpose utilities that do all of their work inside your browser.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\images-to-video\og.png' `
-  -Title 'Images to Video' `
-  -Subtitle 'Turn a folder of images into an MP4 slideshow, encoded on your own machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\gif-maker\og.png' `
-  -Title 'GIF Maker' `
-  -Subtitle 'Put pictures in order, set the speed, and get one animated GIF.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\split-gif\og.png' `
-  -Title 'GIF Splitter' `
-  -Subtitle 'Every frame of an animation as its own PNG, with the timing written down.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\gif-analyzer\og.png' `
-  -Title 'GIF Analyzer' `
-  -Subtitle 'Every frame, every delay, every palette - and where the bytes went.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\crop-video\og.png' `
-  -Title 'Video Cropper' `
-  -Subtitle 'Cut a clip down to the part that matters, without it ever leaving your machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\grab-frame\og.png' `
-  -Title 'Video Frame Grabber' `
-  -Subtitle 'Save any frame of a clip as a picture, at the size the video really is.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\trim-audio\og.png' `
-  -Title 'Audio Trimmer' `
-  -Subtitle 'Mark the parts worth keeping as it plays, and save them as one recording.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\trim-video\og.png' `
-  -Title 'Video Cutter' `
-  -Subtitle 'Mark the parts worth keeping as it plays, and save them as one video.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\video-to-gif\og.png' `
-  -Title 'Video to GIF' `
-  -Subtitle 'Pick the section, the size and the frame rate - and never upload the clip.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\reverse-video\og.png' `
-  -Title 'Video Reverser' `
-  -Subtitle 'Play a clip backwards - the picture and the sound - without it leaving your machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\exif-editor\og.png' `
-  -Title 'EXIF Viewer & Remover' `
-  -Subtitle 'See what a photo says about you, then take it out - without re-encoding the picture.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\heic-to-jpg\og.png' `
-  -Title 'HEIC to JPG' `
-  -Subtitle 'iPhone photos in a format everything opens - decoded on your own machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\edit-audio\og.png' `
-  -Title 'Audio Editor' `
-  -Subtitle 'Reverse a track, change its speed, or lift a quiet recording - on your own machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\images-to-pdf\og.png' `
-  -Title 'Images to PDF' `
-  -Subtitle 'Gather pictures into one document. JPEG photos go in exactly as they are.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\resize-image\og.png' `
-  -Title 'Image Resizer' `
-  -Subtitle 'Resize, crop and convert a picture - or a whole folder - on your own machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\image-to-ico\og.png' `
-  -Title 'Image to ICO' `
-  -Subtitle 'Make a favicon, a Windows app icon or a macOS .icns - every size in one file.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\svg-to-image\og.png' `
-  -Title 'SVG to Image' `
-  -Subtitle 'Rasterize a vector to PNG, JPEG or WebP at any size, on your own machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\image-to-data-uri\og.png' `
-  -Title 'Image to Data URI' `
-  -Subtitle 'Encode a picture as one line you can paste straight into CSS or HTML.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\id-photo\og.png' `
-  -Title 'ID Photo Maker' `
-  -Subtitle 'Pick a country and a document, and it applies that rule exactly - on your own machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\compress-image\og.png' `
-  -Title 'Image Compressor' `
-  -Subtitle 'Name the size you need and it finds the least compression that gets there.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\qr-barcode\og.png' `
-  -Title 'QR & Barcode Generator' `
-  -Subtitle 'A QR code for a link, a Wi-Fi network or a contact card - drawn on your own machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\text-tools\og.png' `
-  -Title 'Text & Code' `
-  -Subtitle 'Format it, compare it, encode it - without pasting it into anyone else''s server.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\compress-pdf\og.png' `
-  -Title 'PDF Compressor' `
-  -Subtitle 'Shows you where a document''s size actually is, then shrinks it on your own machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-New-OgImage -Path 'tools\merge-pdf\og.png' `
-  -Title 'PDF Merger & Splitter' `
-  -Subtitle 'Merge documents, split one into several, reorder pages - all on your own machine.' `
-  -Footer 'No uploads | No accounts | Works offline'
-
-<#
-.SYNOPSIS
-  Draws icon-180.png, the home-screen icon.
-
-.DESCRIPTION
-  Everywhere else the mark is logo.svg, which themes itself. iOS is the
-  exception: it will not take an SVG for a home-screen icon, and it draws the
-  icon on a tile of its own rather than on the page, so this one is the light
-  palette on the light background regardless of the reader's theme. 180px is
-  what current iPhones ask for; smaller devices scale it down.
-#>
-function New-IconPng {
-  param([Parameter(Mandatory)][string]$Path)
-
-  $size = 180
-  $tile = [System.Drawing.ColorTranslator]::FromHtml('#f6f7f9')
-
-  $bmp = New-Object System.Drawing.Bitmap $size, $size
-  $g   = [System.Drawing.Graphics]::FromImage($bmp)
-  $g.SmoothingMode = 'AntiAlias'
-  $g.FillRectangle((New-Object System.Drawing.SolidBrush $tile), 0, 0, $size, $size)
-
-  # A margin of about a tenth, so the mark is not jammed against the rounded
-  # corners iOS crops the tile to.
-  $inset = 18
-  $side  = $size - ($inset * 2)
-  $mark  = Get-MarkImage -Size $side -Palette light
-  $g.DrawImage($mark, $inset, $inset, $side, $side)
-  $mark.Dispose()
-
-  $full = Join-Path $PSScriptRoot $Path
-  $bmp.Save($full, [System.Drawing.Imaging.ImageFormat]::Png)
-
-  $g.Dispose()
-  $bmp.Dispose()
-
-  Write-Host "wrote $full"
+# The hub's own card. Written out here because it is the one that belongs to no
+# tool - everything below reads its words from the tool it belongs to.
+if (-not $Only) {
+  New-OgImage -Path 'shared\og.png' `
+    -Title 'Tools that never touch a server' `
+    -Subtitle 'Small, single-purpose utilities that do all of their work inside your browser.' `
+    -Footer $footer
 }
 
-New-IconPng -Path 'shared\icon-180.png'
+# One card per tool, from that tool's own tool.toml.
+#
+# This used to be twenty-two more New-OgImage calls, and keeping them in step by
+# hand did not work: every one repeated the tool's `name` as its -Title and the
+# same line as its -Footer, and by the time this was written compress-pdf and
+# text-tools had shipped with no entry at all. Their og.png exists, so each was
+# drawn once from an entry nobody committed - which means the wording on those
+# two cards could not be changed and nobody would find out.
+#
+# Reading the folder instead means a tool cannot be forgotten, and the card says
+# what tool.toml says.
+foreach ($config in Get-ChildItem -Path (Join-Path $PSScriptRoot 'tools') -Filter 'tool.toml' -Recurse) {
+  $slug = $config.Directory.Name
+  if ($Only -and $Only -ne $slug) { continue }
+
+  $fields = Read-ToolFields -Path $config.FullName -Keys @('name', 'og_card')
+  foreach ($key in @('name', 'og_card')) {
+    if (-not $fields.ContainsKey($key)) {
+      throw "tools\$slug\tool.toml has no $key, so its share card cannot be drawn"
+    }
+  }
+
+  New-OgImage -Path (Join-Path 'tools' (Join-Path $slug 'og.png')) `
+    -Title $fields['name'] `
+    -Subtitle $fields['og_card'] `
+    -Footer $footer
+}
+
+# The home-screen icon and the hub's card belong to the site rather than to any
+# tool, so -Only skips them along with the other tools' cards. Without this,
+# asking for one tool still rewrote two files it had nothing to do with.
+if (-not $Only) {
+  New-IconPng -Path 'shared\icon-180.png'
+}

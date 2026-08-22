@@ -34,6 +34,11 @@ og_title = "GIF Maker &mdash; images into an animated GIF, in your browser"
 og_description = "Order the frames, set how long each one is held, pick a size, and get a GIF. The palette and the compression are worked out on your own machine; nothing is uploaded."
 og_image_alt = "GIF Maker - turn a set of images into one animated GIF"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Put pictures in order, set the speed, and get one animated GIF."
+
 # --- the pledge block --------------------------------------------------------
 
 pledge = """

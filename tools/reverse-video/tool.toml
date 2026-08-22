@@ -34,6 +34,11 @@ og_title = "Video Reverser &mdash; play a clip backwards without uploading it"
 og_description = "Reverse a video and the sound in it, frame by frame, on your own machine. The file is read, decoded and written by your own browser."
 og_image_alt = "Video Reverser - play a clip backwards in your browser, with nothing uploaded"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Play a clip backwards - the picture and the sound - without it leaving your machine."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

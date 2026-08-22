@@ -34,6 +34,11 @@ og_title = "Images to PDF &mdash; free JPG to PDF converter"
 og_description = "Combine images into one PDF on your own machine. JPEG photos are copied in untouched, so nothing loses quality and nothing is uploaded."
 og_image_alt = "Images to PDF - combine pictures into one document without uploading them"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Gather pictures into one document. JPEG photos go in exactly as they are."
+
 # --- the pledge block --------------------------------------------------------
 
 pledge = """

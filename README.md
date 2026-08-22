@@ -326,9 +326,22 @@ one.
 5. Set `roadmap_group` to one of the groups in `config/planned.toml`, so the
    tool crosses from the planned half of that group to the built half. A tool
    without one fails the build rather than quietly going missing.
-6. Write it a guide. See [The guides](#the-guides) — one folder under
+6. If the tool was itself on the roadmap, take its line out of
+   `config/planned.toml` **and** out of every `locales/*/planned.toml`. Those
+   item lists are plain strings with nothing to name them by, so they are
+   merged by position: a locale list longer than the English one is a hard
+   failure, and a line removed at the wrong index silently moves every
+   translation after it onto the wrong entry.
+7. Draw the share card: `.\og-image.ps1 -Only <slug>`. It reads the heading
+   from `name` and the subtitle from `og_card`, both in your `tool.toml`, so
+   there is no list to add yourself to. The build refuses a tool with no
+   `og.png`, because every tool page claims one in its `og:image` whether or
+   not it is there. Run it without `-Only` and it redraws all of them, which
+   is worth avoiding: the mark is rasterised through a headless Edge that
+   flakes about once a run.
+8. Write it a guide. See [The guides](#the-guides) — one folder under
    `pages/guides/`, and the link between the two pages is a single `tool` key.
-7. Write `tools/<slug>/README.md`: how the tool works and why it works that way,
+9. Write `tools/<slug>/README.md`: how the tool works and why it works that way,
    for somebody reading the code rather than using the page. The build refuses
    to finish without one. **This file — the repository README — is not one of
    the places to edit.** It covers the site and the build; a tool documents
@@ -369,7 +382,7 @@ ordinary build does not dirty the working tree.
 ### Shared parts
 
 A component more than one tool needs, and that no tool should own, lives under
-`shared/` and is named in the tool's `tool.toml`. Three of them exist:
+`shared/` and is named in the tool's `tool.toml`:
 
 | Part | Named in | Becomes |
 |---|---|---|
@@ -377,6 +390,11 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
 | `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
 | `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
+| `shared/js/zip.js` | `js_parts = ["zip"]` | the stored-only archive writer |
+| `shared/js/crc32.js` | `js_parts = ["crc32"]` | the CRC the ZIP and PNG writers need |
+
+`zip` needs `crc32` listed as well — it is a separate part because a PNG writer
+wants the checksum without the archive.
 
 The **file picker** is all three at once, and is the reason the arrangement
 exists: the drop zone, the hidden input, the drag highlighting, and the "Reading
@@ -417,6 +435,23 @@ rather than there and in the JavaScript as well.
 cached by its own service worker, and works offline with nothing fetched from a
 neighbour. That is also why a tool's source folder imports a file it does not
 contain — the import path says `./shared/` to make where it came from obvious.
+
+**So a `./shared/` import belongs in `main.js`, and nowhere else.** The copy
+happens at build time, which means that path does not resolve in the source
+tree, and the JavaScript tests import tool modules straight off the disk with
+no build in front of them. `main.js` is safe because no test loads it. A leaf
+module that is unit-tested is not: give it a `./shared/` import and its whole
+test file stops resolving. That is why `exif-editor/src/png.js` and
+`merge-pdf/src/produce.js` keep a local copy of the CRC and the ZIP writer that
+seven other tools now share — the alternative was trading their tests for the
+deduplication.
+
+The build checks the half of this it can. `buildlib/imports.py` reads every
+module a tool is about to ship, with the tokeniser from `minify.py` rather than
+a regular expression, and refuses a tool whose imports do not all land on a
+file that tool ships. The case it exists for: `shared/js/zip.js` imports
+`./crc32.js`, so a tool asking for `"zip"` and not `"crc32"` would build
+cleanly and 404 in the browser.
 
 Only *choosing* the files is shared. What a tool does with them afterwards — the
 list, the thumbnails, the reordering, the per-row buttons — differs enough per

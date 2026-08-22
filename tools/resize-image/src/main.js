@@ -12,7 +12,7 @@ import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import {
   bytes as humanBytes, change, countOf, describePlan, dimensions, outName, scaleText,
 } from './files.js';
-import { makeZip } from './zip.js';
+import { makeZip } from './shared/zip.js';
 
 const $ = (id) => document.getElementById(id);
 

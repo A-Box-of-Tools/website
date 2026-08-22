@@ -34,6 +34,11 @@ og_title = "Audio Editor &mdash; reverse, retime and amplify without uploading a
 og_description = "Reverse a track, change its speed with or without moving the pitch, and set the level - then download a WAV. The file is read and written by your own browser."
 og_image_alt = "Audio Editor - reverse, retime and amplify audio in your browser"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Reverse a track, change its speed, or lift a quiet recording - on your own machine."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

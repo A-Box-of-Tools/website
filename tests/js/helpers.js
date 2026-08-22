@@ -8,7 +8,7 @@
  * out by hand and commented field by field - see TIFF_LE below.
  */
 
-import { crc32 } from '../../tools/exif-editor/src/crc32.js';
+import { crc32 } from '../../shared/js/crc32.js';
 
 /**
  * Join byte runs. A part may be a Uint8Array, a plain array of byte values, or
