@@ -2,178 +2,181 @@
     <h2>Die kurze Antwort</h2>
     <p>
       Öffnen Sie <a href="../../bild-als-base64/">Bild als Data-URI</a>, ziehen
-      Sie das Bild hinein, wählen Sie <em>Eine CSS-Custom-Property</em> und fügen
-      Sie die Zeile oben in Ihr Stylesheet ein. Benutzen Sie sie dann als
+      Sie das Bild hinein, wählen Sie <em>Eine CSS-Custom-Property</em> und
+      setzen Sie die Zeile oben in Ihr Stylesheet. Verwenden Sie sie dann als
       <code>background-image: var(--logo)</code>, wo immer Sie sie brauchen.
     </p>
     <p>
-      Tun Sie das, wenn das Bild klein ist &mdash; ein Symbol, ein Aufzählungs­punkt,
-      ein Pfeil, ein Muster &mdash; und auf jeder Seite gebraucht wird. Tun Sie es
-      nicht mit einer Fotografie. Alles Weitere unten handelt davon, warum diese
-      beiden Sätze auseinandergehen, und woran Sie erkennen, welchen Fall Sie vor
-      sich haben.
+      Machen Sie das bei kleinen Bildern &mdash; ein Symbol, ein
+      Aufzählungszeichen, ein Pfeil, ein Muster &mdash;, die auf jeder Seite
+      gebraucht werden. Machen Sie es nicht mit einer Fotografie. Alles Weitere
+      erklärt, warum diese beiden Sätze auseinandergehen und woran Sie erkennen,
+      welchen Fall Sie vor sich haben.
     </p>
   </section>
 
   <section>
-    <h2>Was eine Data-URI eigentlich ist</h2>
+    <h2>Was eine Data-URI überhaupt ist</h2>
     <p>
-      Eine Adresse, die die Sache enthält, statt auf sie zu zeigen. Wo ein
-      Stylesheet normalerweise
+      Eine Adresse, die die Sache selbst enthält, statt auf sie zu zeigen. Wo in
+      einem Stylesheet normalerweise
     </p>
     <pre><code>background-image: url("logo.png");</code></pre>
     <p>
-      sagt und der Browser <code>logo.png</code> holen geht, sagt eine Data-URI
+      steht und der Browser losgeht und <code>logo.png</code> holt, steht bei
+      einer Data-URI
     </p>
-    <pre><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <pre class="wrap"><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
     <p>
-      und es gibt nichts zu holen: Das Bild ist schon da, in Zeichen
-      ausgeschrieben. Es besteht aus drei Teilen. <code>data:</code> ist das
-      Schema. <code>image/png</code> ist der Medientyp, und der Browser glaubt
-      ihn vollständig &mdash; dazu unten mehr. Alles nach dem Komma ist die
-      Datei.
+      und es gibt nichts mehr zu holen: Das Bild ist bereits da, in Zeichen
+      ausgeschrieben. Drei Teile stecken darin. <code>data:</code> ist das
+      Schema. <code>image/png</code> ist der Medientyp, und den glaubt der
+      Browser aufs Wort &mdash; dazu weiter unten mehr. Alles hinter dem Komma
+      ist die Datei.
     </p>
     <p>
-      Das ist die ganze Idee. Es ist kein Trick und kein Hack; es steht seit 1998
-      in den Standards und funktioniert in jedem Browser, der seither
-      ausgeliefert wurde.
+      Mehr ist es nicht. Kein Trick, kein Hack: Das steht seit 1998 in den
+      Standards und funktioniert in jedem Browser, der seither erschienen ist.
     </p>
   </section>
 
   <section>
-    <h2>Was es Ihnen bringt: eine Rundreise weniger</h2>
+    <h2>Was es bringt: eine Rundreise weniger</h2>
     <p>
-      Die Ersparnis ist nicht die Bandbreite. Es ist die Anfrage.
+      Gespart wird nicht die Bandbreite, sondern die Anfrage.
     </p>
     <p>
       Ein Browser kann <code>logo.png</code> nicht anfordern, bevor er das
-      Stylesheet gelesen hat, das es erwähnt, und er kann das Stylesheet nicht
-      lesen, bevor er es geholt hat. Ein gewöhnliches Hintergrundbild liegt also
-      mindestens zwei Rundreisen tief im Seitenaufbau, und auf einem Telefon in
-      einem langsamen Netz kann eine Rundreise ein paar hundert Millisekunden
-      dauern, ganz gleich wie klein die Datei ist. Ein 600 Byte großer Pfeil
-      kostet fast nichts an Übertragung und kann trotzdem eine Viertelsekunde
-      brauchen, um anzukommen.
+      Stylesheet gelesen hat, in dem es steht, und er kann das Stylesheet nicht
+      lesen, bevor er es geholt hat. Ein gewöhnliches Hintergrundbild liegt damit
+      mindestens zwei Rundreisen tief im Seitenaufbau &mdash; und auf einem Handy
+      in einem schwachen Netz dauert eine Rundreise schnell ein paar hundert
+      Millisekunden, ganz gleich, wie klein die Datei ist. Ein Pfeil von 600 Byte
+      kostet an Übertragung so gut wie nichts und kann trotzdem eine
+      Viertelsekunde brauchen, bis er da ist.
     </p>
     <p>
-      Eingebettet kommt er mit dem Stylesheet an. Das ist der gesamte Nutzen, und
-      für ein kleines Symbol im sichtbaren Bereich ist er ein echter.
+      Eingebettet kommt er zusammen mit dem Stylesheet an. Das ist der ganze
+      Nutzen &mdash; und für ein kleines Symbol im sofort sichtbaren Bereich ist
+      er echt.
     </p>
   </section>
 
   <section>
-    <h2>Was es kostet: ein Drittel, und dann das Zwischenspeichern</h2>
+    <h2>Was es kostet: ein Drittel, und dann der Cache</h2>
     <p>
       <strong>Base64 legt rund ein Drittel drauf.</strong> Aus drei Bytes Datei
-      werden vier Zeichen, denn so viel braucht es, um beliebige Bytes mit nur
-      den Zeichen zu schreiben, die eine URL erlaubt. Es gibt keinen klugen
-      Encoder, der das umgeht. Aus einem 9&nbsp;KB großen PNG werden 12&nbsp;KB
+      werden vier Zeichen, denn so viel braucht es, um beliebige Bytes mit den
+      Zeichen zu schreiben, die eine URL zulässt. Kein noch so schlauer Encoder
+      kommt darum herum: Aus einem PNG von 9&nbsp;KB werden 12&nbsp;KB
       Stylesheet.
     </p>
     <p>
-      <strong>Kompression gibt es nicht zurück.</strong> Das ist der Teil, den
-      Menschen wegannehmen. Gzip und Brotli arbeiten, indem sie Redundanz finden,
-      und ein PNG, ein JPEG und ein WebP wurden bereits komprimiert &mdash; da
-      ist kaum noch Redundanz drin, und Base64 fügt keine hinzu. In der Praxis
-      bekommen Sie etwa ein Zehntel des Drittels zurück, nicht das Ganze. (Ein
-      SVG ist der umgekehrte Fall, und davon handelt der nächste Abschnitt.)
+      <strong>Die Kompression holt das nicht zurück.</strong> Diesen Punkt setzen
+      die meisten stillschweigend voraus, und er stimmt nicht. Gzip und Brotli
+      leben davon, Wiederholungen zu finden &mdash; und ein PNG, ein JPEG oder
+      ein WebP ist bereits komprimiert, da sind kaum noch Wiederholungen drin,
+      und Base64 fügt keine hinzu. In der Praxis kommt etwa ein Zehntel dieses
+      Drittels zurück, nicht das Ganze. (Beim SVG liegt der Fall genau umgekehrt,
+      davon handelt der nächste Abschnitt.)
     </p>
     <p>
-      <strong>Es hört auf, eine Datei zu sein.</strong> Das ist der Preis, der in
-      keiner Messung auftaucht, die Sie wahrscheinlich vornehmen, und der, auf
-      den es bei Größe ankommt:
+      <strong>Es ist keine Datei mehr.</strong> Das ist der Preis, der in keiner
+      Messung auftaucht, die Sie vermutlich vornehmen &mdash; und der, auf den es
+      ankommt, sobald das Bild eine gewisse Größe hat:
     </p>
     <ul>
       <li>
         <strong>Es lässt sich nicht für sich zwischenspeichern.</strong> Ein
-        gewöhnliches Bild wird einmal geholt und ein Jahr lang wiederverwendet.
-        Ein eingebettetes ist Teil des Stylesheets, es lebt und stirbt also mit
-        dessen Cache-Eintrag.
+        gewöhnliches Bild wird einmal geholt und dann ein Jahr lang
+        wiederverwendet. Ein eingebettetes gehört zum Stylesheet und lebt und
+        stirbt mit dessen Cache-Eintrag.
       </li>
       <li>
-        <strong>Irgendetwas zu ändern lädt alles neu.</strong> Korrigieren Sie
-        einen Rand, liefern Sie ein neues Stylesheet aus, und jeder Besucher lädt
-        das eingebettete Bild gleich mit herunter &mdash; ein Bild, das sich seit
-        zwei Jahren nicht geändert hat.
+        <strong>Eine Änderung lädt alles neu.</strong> Sie korrigieren einen
+        Abstand, das Stylesheet geht neu heraus &mdash; und jeder Besucher lädt
+        das eingebettete Bild gleich mit, ein Bild, das sich seit zwei Jahren
+        nicht verändert hat.
       </li>
       <li>
         <strong>Es liegt auf dem kritischen Pfad.</strong> Ein Stylesheet
-        blockiert das Rendern. Ein Bild nicht. Ein Bild einzubetten verschiebt es
-        aus der zweiten Kategorie in die erste: Die Seite kann nicht zeichnen,
+        blockiert das Rendern, ein Bild nicht. Einbetten verschiebt das Bild von
+        der zweiten Kategorie in die erste: Die Seite kann nichts zeichnen,
         bevor das Ganze samt Bild angekommen ist.
       </li>
       <li>
-        <strong>Es lässt sich nicht parallel holen.</strong> Browser laden vieles
-        gleichzeitig herunter. Ein eingebettetes Bild ist keine eigene Sache, es
-        bekommt davon also nichts.
+        <strong>Es lässt sich nicht parallel holen.</strong> Browser laden
+        vieles gleichzeitig. Ein eingebettetes Bild ist keine eigene Sache und
+        hat davon nichts.
       </li>
     </ul>
     <p>
-      Grobe Schwellen &mdash; dort ändert sich der Rat, nicht das Verhalten eines
-      Browsers: unter etwa 2&nbsp;KB ist es ein klarer Gewinn; bis etwa
-      10&nbsp;KB lohnt es sich meist noch für etwas, das auf jeder Seite ist;
-      jenseits von 50&nbsp;KB ist es ein Fehler ohne Fehlermeldung.
-      <a href="../../bild-als-base64/">Das Werkzeug</a> sagt Ihnen, in welches
-      Band jedes Ergebnis fällt, mit der Zeichenzahl daneben.
+      Grobe Schwellen &mdash; sie markieren, wo der Rat kippt, nicht, wo ein
+      Browser etwas anderes tut: Unter etwa 2&nbsp;KB ist es ein klarer Gewinn;
+      bis etwa 10&nbsp;KB lohnt es sich meist noch für etwas, das auf jeder
+      Seite auftaucht; jenseits von 50&nbsp;KB ist es ein Fehler, der keine
+      Fehlermeldung erzeugt.
+      <a href="../../bild-als-base64/">Das Werkzeug</a> nennt Ihnen zu jedem
+      Ergebnis das passende Band und die Zeichenzahl daneben.
     </p>
   </section>
 
   <section>
-    <h2>Base64 ist für ein SVG nie richtig</h2>
+    <h2>Ein SVG gehört nie in Base64</h2>
     <p>
-      Das ist der mit Abstand häufigste Fehler bei eingebetteten Bildern, und er
-      wird von Exportern und Build-Plugins genauso oft gemacht wie von Menschen.
+      Das ist mit Abstand der häufigste Fehler bei eingebetteten Bildern, und
+      Exportfunktionen und Build-Plugins machen ihn genauso oft wie Menschen.
     </p>
     <p>
-      Ein SVG ist Text. Eine URL trägt Text ohnehin. Nur eine Handvoll Zeichen
-      muss maskiert werden &mdash; <code>%</code>, <code>#</code>,
+      Ein SVG ist Text, und Text trägt eine URL ohnehin. Nur eine Handvoll
+      Zeichen muss maskiert werden &mdash; <code>%</code>, <code>#</code>,
       <code>&lt;</code>, <code>&gt;</code> und das Anführungszeichen, in das Sie
-      es gesetzt haben &mdash; und alles andere kann genau so bleiben, wie es
-      ist. So kodiert bekommen Sie eine URI, die typischerweise etwa ein Fünftel
-      kürzer ist als das Base64 derselben Datei und die sich danach wie Text
-      komprimiert und nicht wie Rauschen.
+      das Ganze gesetzt haben &mdash;, alles Übrige darf genau so bleiben, wie
+      es ist. So kodiert bekommen Sie eine URI, die typischerweise rund ein
+      Fünftel kürzer ausfällt als das Base64 derselben Datei und die sich
+      danach wie Text komprimiert und nicht wie Rauschen.
     </p>
     <p>
-      Sie ist außerdem noch lesbar:
+      Lesbar bleibt sie obendrein:
     </p>
-    <pre><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
     <p>
-      Sie sehen die <code>viewBox</code>. Sie können die Füllfarbe in Ihrem
-      Editor ändern, ohne irgendetwas zu dekodieren. Base64-kodieren Sie dieselbe
-      Datei, und sie wird zu einer Wand aus Buchstaben, die niemand je wieder
-      anfasst. <a href="../../bild-als-base64/">Bild als Data-URI</a> macht das
-      automatisch für alles, was sich als SVG herausstellt, und hat ein Häkchen
-      für die seltene Werkzeugkette, die auf <code>;base64</code> besteht.
+      Sie sehen die <code>viewBox</code>. Sie können die Füllfarbe im Editor
+      ändern, ohne irgendetwas zu dekodieren. Base64-kodieren Sie dieselbe Datei,
+      wird daraus eine Wand aus Buchstaben, die nie wieder jemand anrührt.
+      <a href="../../bild-als-base64/">Bild als Data-URI</a> erledigt das von
+      selbst für alles, was sich als SVG entpuppt &mdash; und hält ein Häkchen
+      bereit für die seltene Werkzeugkette, die auf <code>;base64</code> besteht.
     </p>
   </section>
 
   <section>
-    <h2>Der Anführungszeichen-Fehler, der nur SVGs kaputtmacht</h2>
+    <h2>Der Anführungszeichen-Fehler, der nur SVGs zerlegt</h2>
     <p>
-      CSS erlaubt es, <code>url()</code> ohne Anführungszeichen zu schreiben, und
-      bei einem gewöhnlichen Dateinamen ist das in Ordnung:
+      CSS erlaubt <code>url()</code> auch ohne Anführungszeichen, und bei einem
+      gewöhnlichen Dateinamen geht das in Ordnung:
     </p>
     <pre><code>background-image: url(logo.png);</code></pre>
     <p>
-      Machen Sie dasselbe mit einem prozentkodierten SVG, und es bricht. Ein
-      <code>url()</code>-Token ohne Anführungszeichen endet am ersten Leerzeichen,
-      an der ersten Klammer, am ersten Anführungszeichen oder Steuerzeichen
-      &mdash; und ein SVG ist voller Leerzeichen, zwischen jedem Attribut und
-      jeder Zahl in einem Pfad. Die Deklaration ist dann ungültig, CSS verwirft
-      ungültige Deklarationen stillschweigend, und Sie bekommen keinen Hintergrund
-      und keinen Fehler.
+      Bei einem prozentkodierten SVG geht es schief. Ein
+      <code>url()</code>-Token ohne Anführungszeichen endet am ersten
+      Leerzeichen, an der ersten Klammer, am ersten Anführungszeichen oder
+      Steuerzeichen &mdash; und ein SVG ist voller Leerzeichen, zwischen jedem
+      Attribut und jeder Zahl in einem Pfad. Damit ist die Deklaration ungültig,
+      und ungültige Deklarationen wirft CSS wortlos weg: kein Hintergrund, keine
+      Fehlermeldung.
     </p>
     <p>
-      Die Lösung sind Anführungszeichen, jedes Mal:
+      Die Abhilfe sind Anführungszeichen, und zwar immer:
     </p>
     <pre><code>background-image: url("data:image/svg+xml,%3Csvg ... %3E");</code></pre>
     <p>
-      Das ist auch der Grund, warum ein Encoder Leerzeichen nicht maskieren muss
-      &mdash; sie sind innerhalb einer URL in Anführungszeichen völlig legal, und
-      jedes als <code>%20</code> zu maskieren kostete drei Zeichen je Leerzeichen
-      in der Datei. Die beiden Entscheidungen gehören zusammen: URI in
-      Anführungszeichen setzen, und die Leerzeichen dürfen bleiben. Jede Form,
-      die das Werkzeug erzeugt, ist genau deshalb in Anführungszeichen gesetzt.
+      Deshalb muss ein Encoder auch die Leerzeichen nicht maskieren &mdash;
+      innerhalb einer URL in Anführungszeichen sind sie völlig zulässig, und
+      jedes einzelne als <code>%20</code> zu schreiben kostete drei Zeichen pro
+      Leerzeichen in der Datei. Die beiden Entscheidungen hängen zusammen: URI in
+      Anführungszeichen setzen, dann dürfen die Leerzeichen bleiben. Genau darum
+      steht jede Form, die das Werkzeug ausgibt, in Anführungszeichen.
     </p>
   </section>
 
@@ -181,26 +184,26 @@
     <h2>Der Medientyp muss stimmen</h2>
     <p>
       Eine Data-URI gibt ihren eigenen Typ an, und der Browser nimmt sie beim
-      Wort. Es gibt keine Rückfallerkennung wie bei einer geholten Datei: Sagen
-      Sie <code>image/png</code> über etwas, das in Wahrheit ein JPEG ist, und
-      das Bild erscheint nicht &mdash; ohne Meldung an irgendeiner nützlichen
-      Stelle.
+      Wort. Anders als bei einer geholten Datei gibt es kein Nachschnüffeln als
+      Rückfallebene: Schreiben Sie <code>image/png</code> über etwas, das in
+      Wahrheit ein JPEG ist, erscheint das Bild einfach nicht &mdash; und nirgends
+      steht eine Meldung, die weiterhilft.
     </p>
     <p>
       Das zählt, weil Dateiendungen lügen. Ein als JPEG exportiertes und in
-      <code>logo.png</code> umbenanntes Foto ist etwas völlig Gewöhnliches auf
-      einer Festplatte. Die ersten Bytes einer Bilddatei dagegen sagen eindeutig,
-      was sie ist &mdash; jedes Format hat eine Signatur &mdash;, ein Werkzeug
-      sollte also die Datei lesen und nicht ihren Namen. Das hier tut es und sagt
-      Ihnen, wenn die beiden sich widersprechen.
+      <code>logo.png</code> umbenanntes Foto ist auf jeder Festplatte etwas ganz
+      Gewöhnliches. Die ersten Bytes einer Bilddatei dagegen sagen eindeutig,
+      was sie ist &mdash; jedes Format hat seine Signatur. Ein Werkzeug sollte
+      also die Datei lesen und nicht ihren Namen. Dieses hier tut das und meldet
+      sich, wenn beide sich widersprechen.
     </p>
     <p>
-      Zwei Formate sind wissenswert, weil sie auf verwirrende Weise scheitern.
+      Zwei Formate sollte man kennen, weil sie auf verwirrende Weise scheitern.
       <strong>HEIC</strong>, worin ein iPhone fotografiert, und
-      <strong>TIFF</strong>, was Scanner erzeugen, ergeben beide vollkommen
-      gültige Data-URIs, die kein Browser außer Safari zeichnet. Die URI ist
-      nicht kaputt; das Format ist schlicht keines, das das Web unterstützt.
-      Wandeln Sie vorher um.
+      <strong>TIFF</strong>, was aus Scannern kommt, ergeben beide vollkommen
+      gültige Data-URIs, die außer Safari kein Browser zeichnet. Kaputt ist nicht
+      die URI, sondern das Format ist keines, das das Web unterstützt. Wandeln
+      Sie vorher um.
     </p>
   </section>
 
@@ -208,35 +211,35 @@
     <h2>Die Metadaten, die Sie nicht veröffentlichen wollten</h2>
     <p>
       Eine Data-URI ist eine Kopie der Datei, Byte für Byte. Es wird nichts
-      dekodiert und neu kodiert, und das ist meist der Sinn &mdash; es geht keine
-      Qualität verloren &mdash;, aber es heißt auch, dass alles andere in der
-      Datei mitkommt.
+      dekodiert und neu kodiert &mdash; das ist meistens gerade der Sinn, denn so
+      geht keine Qualität verloren &mdash;, aber es heißt eben auch, dass alles
+      andere in der Datei mitfährt.
     </p>
     <p>
-      Eine Fotografie direkt vom Telefon trägt EXIF: die GPS-Koordinaten des
-      Aufnahmeortes, den Zeitstempel, das Kameramodell und oft dessen
+      Ein Foto direkt aus dem Handy trägt EXIF mit sich: die GPS-Koordinaten des
+      Aufnahmeorts, den Zeitstempel, das Kameramodell und oft dessen
       Seriennummer. Das können 30&nbsp;KB der Datei sein. Eingebettet werden
       daraus 40&nbsp;KB Base64 in Ihrem Stylesheet, auf dem kritischen Pfad jeder
-      Seite &mdash; und eine Wohnanschrift, die in ein Repository eingecheckt
-      wird, in einer Form, in der niemand je auf die Idee kommt nachzusehen.
+      einzelnen Seite &mdash; und eine Wohnanschrift, die ins Repository
+      eingecheckt wird, in einer Form, in der nie jemand nachsehen wird.
     </p>
     <p>
       Entfernen Sie sie vorher mit dem
       <a href="../../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>,
-      der den Container neu schreibt, ohne das Bild anzufassen; dazu gibt es
-      ebenfalls einen <a href="../exif-und-gps-daten-entfernen/">Ratgeber</a>.
-      Bild als Data-URI liest, wie viele Metadaten in einem JPEG, PNG oder WebP
-      stecken, und sagt es, bevor Sie irgendetwas kopieren.
+      der den Container neu schreibt, ohne das Bild anzurühren; auch dazu gibt es
+      einen <a href="../exif-und-gps-daten-entfernen/">eigenen Ratgeber</a>. Bild
+      als Data-URI liest aus, wie viele Metadaten in einem JPEG, PNG oder WebP
+      stecken, und sagt es Ihnen, bevor Sie irgendetwas kopieren.
     </p>
   </section>
 
   <section>
-    <h2>Wohin damit, wenn Sie es haben</h2>
+    <h2>Wohin damit, wenn Sie sie haben</h2>
     <p>
-      Erscheint das Bild in einer Regel, legen Sie die URI in diese Regel.
-      Erscheint es in mehr als einer &mdash; und bei Symbolen ist das meist so,
-      sobald man den Hover-Zustand und das dunkle Farbschema mitzählt &mdash;,
-      deklarieren Sie es einmal als Custom Property:
+      Taucht das Bild in einer einzigen Regel auf, gehört die URI in diese Regel.
+      Taucht es in mehreren auf &mdash; und bei Symbolen ist das meist so, sobald
+      man Hover-Zustand und dunkles Farbschema mitzählt &mdash;, deklarieren Sie
+      es einmal als Custom Property:
     </p>
     <pre><code>:root {
   --icon-search: url("data:image/svg+xml,%3Csvg ... %3E");
@@ -245,59 +248,58 @@
 .search-field { background-image: var(--icon-search); }
 .search-button::before { content: var(--icon-search); }</code></pre>
     <p>
-      Eine 3&nbsp;KB große URI, in vier Regeln eingefügt, sind 12&nbsp;KB
-      Stylesheet und vier Stellen zum Bearbeiten, wenn sich das Symbol ändert.
-      Die Custom Property ist je eine. Sie ist außerdem die Form, mit der Theming
-      funktioniert: Definieren Sie <code>--icon-search</code> in einer Media
-      Query neu, und jede Verwendung folgt.
+      Eine URI von 3&nbsp;KB, in vier Regeln eingesetzt, ergibt 12&nbsp;KB
+      Stylesheet und vier Stellen, die Sie beim nächsten Symbolwechsel anfassen
+      müssen. Bei der Custom Property ist es je eine. Sie ist zugleich die Form,
+      mit der Theming funktioniert: <code>--icon-search</code> in einer Media
+      Query neu definieren, und jede Verwendung zieht mit.
     </p>
     <p>
       Für ein <code>&lt;img&gt;</code>-Element statt CSS geben Sie
-      <code>width</code> und <code>height</code> an. Ein eingebettetes Bild lädt
-      sofort, eine fehlende Größe ist also ein Layout-Sprung, der zu schnell
-      passiert, um gesehen zu werden, und trotzdem gegen Sie zählt. Die Ausnahme
-      ist SVG: Eines, das nur eine <code>viewBox</code> trägt, hat keine eigene
-      Pixelgröße, und die Standardgröße 300&times;150 des Browsers auf das
-      Element zu schreiben nagelt ein skalierbares Bild auf eine Größe fest, die
-      niemand gewählt hat.
+      <code>width</code> und <code>height</code> an. Ein eingebettetes Bild ist
+      sofort da, eine fehlende Größe erzeugt also einen Layout-Sprung, der zu
+      schnell passiert, um gesehen zu werden, und der trotzdem gegen Sie
+      gerechnet wird. Die Ausnahme ist SVG: Eines, das nur eine
+      <code>viewBox</code> trägt, hat keine eigene Pixelgröße, und die
+      Standardgröße 300&times;150 des Browsers ins Element zu schreiben nagelt
+      ein skalierbares Bild auf ein Maß fest, das niemand gewählt hat.
     </p>
     <p>
-      Lassen Sie <code>alt</code> leer, sofern Sie nichts Wahres hineinzuschreiben
-      haben. Nur Sie wissen, ob das Bild Bedeutung trägt oder Dekoration ist, und
-      eine aus einem Dateinamen geratene Beschreibung ist für jemanden mit einem
-      Screenreader schlechter als gar keine.
+      Lassen Sie <code>alt</code> leer, solange Sie nichts Zutreffendes
+      hineinzuschreiben haben. Nur Sie wissen, ob das Bild Bedeutung trägt oder
+      Dekoration ist &mdash; und eine aus einem Dateinamen erratene Beschreibung
+      ist für jemanden am Screenreader schlechter als gar keine.
     </p>
   </section>
 
   <section>
     <h2>Wann die Antwort &bdquo;lieber nicht&ldquo; lautet</h2>
     <p>
-      Ist das Bild kodiert über etwa 50&nbsp;KB groß, ist Einbetten das falsche
-      Werkzeug, und keine Sorgfalt bei der Kodierung repariert das. Die
-      Alternativen, in der Reihenfolge, in der sie sich lohnen:
+      Ist das Bild kodiert größer als etwa 50&nbsp;KB, ist Einbetten das falsche
+      Werkzeug, und keine noch so sorgfältige Kodierung repariert das. Die
+      Alternativen, in der Reihenfolge, in der sie einen Versuch wert sind:
     </p>
     <ul>
       <li>
-        <strong>Machen Sie es kleiner.</strong> Die meisten Bilder, die zu groß
-        zum Einbetten sind, sind allgemein zu groß. Der
+        <strong>Machen Sie es kleiner.</strong> Die meisten Bilder, die zum
+        Einbetten zu groß sind, sind schlicht zu groß. Der
         <a href="../../bild-komprimieren/">Bildkompressor</a> bringt eine
-        Fotografie auf eine von Ihnen genannte Größe, und das
-        <a href="../../bildgroesse-aendern/">Bildgrößen-Ändern</a> schneidet die
-        Pixelmaße auf das herunter, was das Layout tatsächlich nutzt &mdash; und
-        das ist sehr oft das eigentliche Problem.
+        Fotografie auf eine Größe, die Sie nennen, und das
+        <a href="../../bildgroesse-aendern/">Bildgrößen-Ändern</a> stutzt die
+        Pixelmaße auf das, was das Layout tatsächlich nutzt &mdash; und genau
+        darin steckt sehr oft das eigentliche Problem.
       </li>
       <li>
-        <strong>Zeichnen Sie es als SVG neu.</strong> Ein als 40&nbsp;KB großes
-        PNG exportiertes Symbol ist häufig ein 900 Byte großes SVG. Das ist kein
-        Kompressionsunterschied, das ist ein Formatunterschied &mdash; und es
-        löst obendrein das Retina-Problem.
+        <strong>Zeichnen Sie es als SVG neu.</strong> Ein Symbol, das als PNG mit
+        40&nbsp;KB exportiert wurde, ist als SVG oft 900 Byte groß. Das ist kein
+        Unterschied in der Kompression, sondern einer im Format &mdash; und es
+        löst nebenbei das Retina-Problem.
       </li>
       <li>
         <strong>Lassen Sie es eine Datei und laden Sie sie vor.</strong>
-        <code>&lt;link rel="preload" as="image"&gt;</code> startet den Abruf
-        sofort, ohne die Bytes auf den kritischen Pfad zu verschieben. Es bringt
-        den größten Teil des Nutzens des Einbettens und nichts von den
-        Cache-Kosten.
+        <code>&lt;link rel="preload" as="image"&gt;</code> stößt den Abruf sofort
+        an, ohne die Bytes auf den kritischen Pfad zu schieben. Damit haben Sie
+        fast den ganzen Nutzen des Einbettens und keine der Cache-Kosten.
       </li>
     </ul>
   </section>
@@ -305,21 +307,21 @@
   <section>
     <h2>Nichts davon braucht einen Upload</h2>
     <p>
-      Eine Datei als Base64 zu kodieren ist Rechnerei. Es sind zwei Funktionen,
-      die der Browser seit Anbeginn hat &mdash; <code>btoa</code> und
-      <code>encodeURIComponent</code> &mdash; und es gibt überhaupt keinen
-      technischen Grund, warum ein Bild zu einem Server und zurück reisen sollte,
-      um anders aufgeschrieben zu werden. Jeder Umwandler, der Ihre Datei dafür
-      hochlädt, lädt sie aus seinen eigenen Gründen hoch und nicht aus Ihren.
+      Eine Datei nach Base64 zu kodieren ist Rechnerei. Es sind zwei Funktionen,
+      die der Browser seit jeher mitbringt &mdash; <code>btoa</code> und
+      <code>encodeURIComponent</code> &mdash;, und es gibt nicht den geringsten
+      technischen Grund, warum ein Bild dafür zu einem Server und zurück reisen
+      sollte, nur um anders aufgeschrieben zu werden. Wer Ihre Datei dafür
+      hochlädt, tut das aus eigenen Gründen und nicht aus Ihren.
     </p>
     <p>
       <a href="../../bild-als-base64/">Das Werkzeug hier</a> schickt sie
       nirgendwohin: Die <code>Content-Security-Policy</code> der Seite nennt jede
       Adresse, die sie kontaktieren darf, und keine davon gehört zu dieser Seite.
-      Laden Sie die Seite, trennen Sie die Internetverbindung und kodieren Sie
-      trotzdem etwas, wenn Sie lieber prüfen als glauben.
+      Wer lieber prüft als glaubt, lädt die Seite, trennt die
+      Internetverbindung und kodiert trotzdem etwas. Drei weitere Proben, die
+      Sie an jedem Werkzeug durchführen können, stehen in
       <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
-      zu Online-Konvertern hochzuladen?</a> nennt drei weitere Prüfungen, die Sie
-      an jedem Werkzeug durchführen können.
+      zu Online-Konvertern hochzuladen?</a>
     </p>
   </section>

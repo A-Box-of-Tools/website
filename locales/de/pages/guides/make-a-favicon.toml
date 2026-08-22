@@ -4,15 +4,15 @@
 
 nav = "Ein Favicon erstellen"
 title = "Ein Favicon erstellen (und ein Windows-App-Symbol)"
-description = "Welche Größen eine favicon.ico wirklich braucht, welche zusätzlichen Dateien iPhones, Android und ein Mac verlangen, und warum ein Logo, das auf einem Plakat funktioniert, bei sechzehn Pixeln verschwindet."
-heading = "Wie Sie ein Favicon erstellen, das bei sechzehn Pixeln noch lesbar ist"
+description = "Welche Größen eine favicon.ico wirklich braucht, welche zusätzlichen Dateien iPhone, Android und Mac verlangen und warum ein Logo, das auf einem Plakat wirkt, bei sechzehn Pixeln verschwindet."
+heading = "So erstellen Sie ein Favicon, das bei sechzehn Pixeln noch lesbar ist"
 lede = """
-    Ein Favicon ist kein kleines Bild Ihres Logos. Es ist ein Satz Bilder in
-    festen Größen, in einem Behälter, den die meisten Menschen nie öffnen &mdash;
-    und das kleinste davon ist das, was alle tatsächlich sehen. Hier steht,
-    welche Größen Sie brauchen, welche Dateien danebengehören, und was zu tun
-    ist, wenn Ihr Logo den Weg nach unten nicht übersteht."""
+    Ein Favicon ist kein kleines Bild Ihres Logos. Es ist ein ganzer Satz Bilder
+    in festen Größen, verpackt in einen Behälter, den kaum jemand je öffnet
+    &mdash; und ausgerechnet das kleinste davon bekommen alle zu sehen. Hier
+    steht, welche Größen Sie brauchen, welche Dateien danebengehören und was zu
+    tun ist, wenn Ihr Logo den Weg nach unten nicht übersteht."""
 updated = "20. August 2026"
 og_title = "Ein Favicon erstellen, das bei sechzehn Pixeln noch lesbar ist"
-og_description = "Welche Größen eine favicon.ico braucht, die zusätzlichen Dateien, die iPhones und Android verlangen, und was zu tun ist, wenn Ihr Logo das Verkleinern nicht übersteht."
+og_description = "Welche Größen eine favicon.ico braucht, welche Dateien iPhone und Android zusätzlich verlangen und was zu tun ist, wenn Ihr Logo das Verkleinern nicht übersteht."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

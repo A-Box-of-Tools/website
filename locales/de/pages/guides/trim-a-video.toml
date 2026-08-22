@@ -4,14 +4,14 @@
 
 nav = "Ein Video kürzen"
 title = "Ein Video kürzen, ohne es neu zu kodieren"
-description = "Einen Clip zu schneiden muss kein einziges Byte Qualität kosten. Warum ein Schnitt manchmal früher landet als markiert, was ein Keyframe damit zu tun hat, und wann eine Neukodierung hinzunehmen ist."
-heading = "Wie Sie ein Video kürzen, ohne es neu zu kodieren"
+description = "Einen Clip zu schneiden muss kein einziges Byte Qualität kosten. Warum ein Schnitt manchmal früher sitzt als markiert, was ein Keyframe damit zu tun hat und wann eine Neukodierung die bessere Wahl ist."
+heading = "So kürzen Sie ein Video, ohne es neu zu kodieren"
 lede = """
-    Kürzen ändert nichts daran, wie ein Einzelbild aussieht, also fasst ein
-    guter Schneider sie gar nicht an &mdash; er bewegt sie genau so, wie sie
-    waren, in eine neue Datei. Hier steht, was Ihnen das einbringt, und die eine
-    Stelle, an der es sich bemerkbar macht."""
+    Kürzen ändert nichts daran, wie ein Einzelbild aussieht &mdash; ein gutes
+    Werkzeug rührt die Bilder deshalb gar nicht an, sondern schiebt sie
+    unverändert in eine neue Datei. Hier steht, was Ihnen das einbringt, und an
+    welcher einen Stelle es sich trotzdem bemerkbar macht."""
 updated = "20. August 2026"
-og_title = "Wie Sie ein Video kürzen, ohne es neu zu kodieren"
-og_description = "Warum ein Schnitt manchmal früher landet als markiert, was ein Keyframe damit zu tun hat, und wann eine Neukodierung hinzunehmen ist."
+og_title = "So kürzen Sie ein Video, ohne es neu zu kodieren"
+og_description = "Warum ein Schnitt manchmal früher sitzt als markiert, was ein Keyframe damit zu tun hat und wann eine Neukodierung die bessere Wahl ist."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

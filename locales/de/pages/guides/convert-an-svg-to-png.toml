@@ -3,15 +3,15 @@
 #
 
 nav = "SVG in PNG umwandeln"
-title = "Ein SVG in der richtigen Größe in ein PNG umwandeln"
-description = "Ein Vektor hat keine eigene Pixelgröße, die Zahl gehört also Ihnen. Woher diese Zahl für einen Bildschirm, ein App-Symbol und einen Drucker kommt, und was sich ändert, wenn eine Zeichnung zu Pixeln wird."
-heading = "Wie Sie ein SVG in der richtigen Größe in ein PNG umwandeln"
+title = "SVG in PNG umwandeln, in der richtigen Größe"
+description = "Ein Vektor hat keine eigene Pixelgröße, die Zahl gehört also Ihnen. Woher sie für Bildschirm, App-Symbol und Drucker kommt und was sich ändert, sobald aus einer Zeichnung Pixel werden."
+heading = "So wandeln Sie ein SVG in der richtigen Größe in ein PNG um"
 lede = """
-    Das Umwandeln ist die leichte Hälfte. Die Frage, die entscheidet, ob das
-    Ergebnis zu etwas taugt, ist die, auf die Ihnen niemand eine Antwort in die
-    Hand gibt: wie viele Pixel? Hier steht, woher diese Zahl kommt, und was eine
-    Zeichnung auf dem Weg dahin verliert, eine zu werden."""
+    Das Umwandeln ist die leichte Hälfte. Über den Nutzen des Ergebnisses
+    entscheidet die Frage, auf die Ihnen niemand die Antwort mitliefert: wie
+    viele Pixel? Hier steht, woher diese Zahl kommt &mdash; und was eine
+    Zeichnung verliert, sobald sie eine wird."""
 updated = "20. August 2026"
-og_title = "Ein SVG in der richtigen Größe in ein PNG umwandeln"
-og_description = "Woher die Pixelzahl tatsächlich kommt, und die drei Dinge, die sich ändern, wenn eine Zeichnung zu Pixeln wird."
+og_title = "SVG in PNG umwandeln, in der richtigen Größe"
+og_description = "Woher die Pixelzahl wirklich kommt, und die drei Dinge, die sich ändern, sobald aus einer Zeichnung Pixel werden."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

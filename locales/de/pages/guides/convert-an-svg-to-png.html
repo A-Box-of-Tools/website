@@ -2,247 +2,251 @@
     <h2>Die kurze Antwort</h2>
     <p>
       Öffnen Sie <a href="../../svg-in-png-umwandeln/">SVG zu Bild</a>, ziehen
-      Sie die Datei hinein und nennen Sie eine Größe. Hat Ihnen niemand gesagt,
-      welche Größe es sein soll, sind
-      <strong>1024 Pixel auf der längsten Seite</strong> ein guter Standardwert:
-      groß genug für fast alles und klein genug zum Verschicken. Lassen Sie das
-      Format auf PNG, den Hintergrund auf transparent, und nehmen Sie die Datei.
+      Sie die Datei hinein und nennen Sie eine Größe. Hat Ihnen niemand eine
+      vorgegeben, fahren Sie mit <strong>1024 Pixeln auf der längeren
+      Seite</strong> gut: groß genug für fast jeden Zweck und klein genug für
+      den Mailanhang. Format auf PNG lassen, Hintergrund auf transparent lassen,
+      Datei mitnehmen.
     </p>
     <p>
-      Alles Weitere unten handelt davon, was zu tun ist, wenn dieser Standard
-      nicht reicht &mdash; wenn Ihnen eine Zahl vorgegeben wurde, wenn es in den
-      Druck geht, oder wenn es falsch aussehend zurückkommt.
+      Der Rest dieser Seite ist für die Fälle, in denen das nicht reicht &mdash;
+      wenn Ihnen eine Zahl vorgeschrieben wurde, wenn es in den Druck geht oder
+      wenn das Ergebnis seltsam aussieht.
     </p>
   </section>
 
   <section>
-    <h2>Warum die Größe Ihre Entscheidung ist und nicht die der Datei</h2>
+    <h2>Warum die Größe Ihre Sache ist und nicht die der Datei</h2>
     <p>
-      Ein JPEG ist ein Raster gemessener Pixel; die Frage, wie groß es ist, hat
-      eine Antwort. Ein SVG ist überhaupt kein Bild, es ist ein Satz Anweisungen
-      &mdash; zeichne hier einen Kreis, diesen Pfad in jener Farbe &mdash;, und
-      Anweisungen haben keine Größe. Ein Browser kann sie bei 16 Pixeln oder bei
-      4000 ausführen, und das Ergebnis ist so wie so gleich scharf, denn er
-      skaliert nichts. Er zeichnet neu.
+      Bei einem JPEG hat die Frage nach der Größe eine Antwort: Es ist ein
+      Raster aus abgemessenen Pixeln. Ein SVG dagegen ist gar kein Bild, sondern
+      eine Sammlung von Anweisungen &mdash; hier ein Kreis, dort dieser Pfad in
+      jener Farbe &mdash;, und Anweisungen haben keine Größe. Ein Browser führt
+      sie bei 16 Pixeln genauso aus wie bei 4000, und in beiden Fällen ist das
+      Ergebnis gleich scharf, denn skaliert wird dabei nichts. Es wird neu
+      gezeichnet.
     </p>
     <p>
-      Deshalb kann die Umwandlung Ihnen die Zahl nicht abnehmen, und deshalb
-      kostet es Sie nichts, eine große zu wählen. Das ist die eine Bildaufgabe,
-      bei der &bdquo;mach es größer&ldquo; gratis ist.
+      Deshalb kann Ihnen die Umwandlung die Zahl nicht abnehmen &mdash; und
+      deshalb kostet eine große Zahl auch nichts. Das ist die eine Bildaufgabe,
+      bei der &bdquo;dann eben größer&ldquo; gratis ist.
     </p>
     <p>
       Die meisten SVG-Dateien tragen zwar ein <code>width</code>- und ein
-      <code>height</code>-Attribut, und ein Werkzeug zeigt das an &mdash; aber es
-      ist eine Voreinstellung und keine Grenze. Ein Symbol, das
-      <code>width="24"</code> sagt, sagt nur, dass die Person, die es gezeichnet
-      hat, eine 24&nbsp;Pixel hohe Werkzeugleiste im Sinn hatte.
+      <code>height</code>-Attribut, und ein Werkzeug zeigt Ihnen das an. Es ist
+      aber eine Voreinstellung und keine Grenze: Ein Symbol mit
+      <code>width="24"</code> sagt nur, dass beim Zeichnen eine 24&nbsp;Pixel
+      hohe Werkzeugleiste im Kopf war.
     </p>
   </section>
 
   <section>
-    <h2>Woher die Zahl tatsächlich kommt</h2>
-    <p><strong>Für eine Website.</strong> Nehmen Sie die Größe, die das Bild auf
-      der Seite in CSS-Pixeln einnimmt, und multiplizieren Sie mit der
-      Pixeldichte der Bildschirme, die Ihnen wichtig sind. Ein Logo in einem 200
-      Pixel breiten Platz braucht eine 400-Pixel-Datei für ein Retina-Notebook
-      und 600 für ein neueres Telefon. Genau das bedeuten <code>@2x</code> und
-      <code>@3x</code> &mdash; und deshalb erspart Ihnen ein Werkzeug, das sie
-      schreibt, dieselbe Rechnung dreimal.
+    <h2>Woher die Zahl wirklich kommt</h2>
+    <p><strong>Für eine Website.</strong> Nehmen Sie den Platz, den das Bild auf
+      der Seite in CSS-Pixeln einnimmt, und multiplizieren Sie ihn mit der
+      Pixeldichte der Bildschirme, die Ihnen wichtig sind. Ein Logo in einer 200
+      Pixel breiten Lücke braucht 400 Pixel für ein Retina-Notebook und 600 für
+      ein neueres Handy. Mehr steckt hinter <code>@2x</code> und
+      <code>@3x</code> nicht &mdash; und deshalb erspart Ihnen ein Werkzeug, das
+      sie gleich mitschreibt, dieselbe Rechnung dreimal.
     </p>
-    <p><strong>Für ein App-Symbol, einen Store-Eintrag oder ein Favicon.</strong>
-      Die Zahl ist veröffentlicht, und es gibt nichts auszurechnen: genau das,
-      was die Seite des Stores sagt. Für ein Favicon rastern Sie gar nicht erst
-      &mdash; <a href="../favicon-selbst-erstellen/">erzeugen Sie eine .ico</a>,
-      die mehrere Größen in einer Datei hält, denn ein Browser-Tab, ein
-      Lesezeichen und eine Windows-Verknüpfung verlangen alle verschiedene.
+    <p><strong>Für ein App-Symbol, einen Store-Eintrag oder ein
+      Favicon.</strong> Da ist nichts zu rechnen: Die Zahl steht veröffentlicht
+      in den Vorgaben, und Sie nehmen genau die. Bei einem Favicon rastern Sie
+      am besten gar nicht erst, sondern
+      <a href="../favicon-selbst-erstellen/">erzeugen eine .ico</a> &mdash; die
+      hält mehrere Größen in einer Datei, und Browser-Tab, Lesezeichen und
+      Windows-Verknüpfung verlangen jeweils eine andere.
     </p>
-    <p><strong>Für den Druck.</strong> Multiplizieren Sie die physische Größe in
-      Zoll mit der Auflösung des Druckers. Ein Logo, das auf einer Visitenkarte
-      zwei Zoll breit bei 300&nbsp;DPI landet, sind 600 Pixel; dasselbe Logo über
-      eine A4-Seite, also 8,3&nbsp;Zoll, sind etwa 2500. Druckereien verlangen
-      300&nbsp;DPI als Selbstverständlichkeit, und für ein großformatiges Banner,
-      das man aus einiger Entfernung ansieht, reichen 150 gut aus.
+    <p><strong>Für den Druck.</strong> Physische Größe in Zoll mal Auflösung des
+      Druckers. Ein Logo, das auf einer Visitenkarte zwei Zoll breit wird,
+      ergibt bei 300&nbsp;DPI 600 Pixel; dasselbe Logo über die ganze
+      A4-Breite, also 8,3&nbsp;Zoll, rund 2500. Druckereien setzen
+      300&nbsp;DPI als selbstverständlich voraus; für ein großes Banner, das man
+      aus einigen Metern Entfernung sieht, genügen 150 locker.
     </p>
     <p><strong>Für eine Social-Vorschau oder ein OG-Bild.</strong> Die Plattform
-      nennt einen Rahmen &mdash; 1200&nbsp;&times;&nbsp;630 für die meisten
-      Link-Vorschauen &mdash; und der Rahmen hat ein anderes Verhältnis als Ihr
-      Logo. Dafür ist die Einstellung &bdquo;Auffüllen&ldquo; da: die Zeichnung
-      zentriert, in ihren eigenen Proportionen, mit einer Hintergrundfarbe für
-      den Rest &mdash; statt eines gedehnten Logos, das allen erzählt, dass Sie
-      nicht nachgesehen haben.
+      gibt einen Rahmen vor &mdash; bei den meisten Link-Vorschauen
+      1200&nbsp;&times;&nbsp;630 &mdash;, und der hat ein anderes
+      Seitenverhältnis als Ihr Logo. Dafür gibt es die Einstellung
+      &bdquo;Auffüllen&ldquo;: Die Zeichnung bleibt in ihren Proportionen und
+      sitzt mittig, den Rest übernimmt eine Hintergrundfarbe. Alles besser als
+      ein verzerrtes Logo, das jedem sofort verrät, dass niemand nachgesehen
+      hat.
     </p>
     <p>
-      Treffen zwei davon zu, nehmen Sie die größere. Ein PNG, das größer ist als
-      nötig, ist ein etwas größerer Download; eines, das zu klein ist, lässt sich
-      später nicht reparieren, aus dem Grund im nächsten Abschnitt.
-    </p>
-  </section>
-
-  <section>
-    <h2>Zurück geht es nicht</h2>
-    <p>
-      Rastern ist eine Einbahnstraße. Sobald die Zeichnung ein PNG ist, sind es
-      Pixel wie bei jedem anderen Bild, und es hinterher zu vergrößern muss
-      Detail erfinden, das nie gemessen wurde &mdash; dasselbe weiche,
-      verschmierte Ergebnis, das Sie beim Vergrößern einer Fotografie bekommen.
-    </p>
-    <p>
-      Bewahren Sie also das SVG auf. Es ist die Vorlage, es ist fast immer die
-      kleinere Datei, und jede künftige Größe kommt daraus einwandfrei heraus.
-      Das PNG ist ein Export für einen bestimmten Zweck, und wenn Sie eine andere
-      Größe brauchen, ist der richtige Schritt, erneut zu exportieren &mdash;
-      und nicht, das Exportierte zu skalieren.
-    </p>
-    <p>
-      Es gibt Software, die behauptet, ein PNG zurück in ein SVG zu verwandeln.
-      Was sie tut, ist nachzeichnen: raten, welche Kurven ein Pixelraster
-      erklären könnten. Bei flacher zweifarbiger Grafik funktioniert das
-      passabel, bei allem anderen erzeugt sie teuren Unsinn &mdash; und sie holt
-      nie zurück, was die ursprüngliche Zeichnung hatte.
+      Treffen zwei Fälle zu, nehmen Sie die größere Zahl. Ein PNG, das größer
+      ist als nötig, ist ein etwas längerer Download; eines, das zu klein geraten
+      ist, lässt sich hinterher nicht mehr retten &mdash; aus dem Grund, der im
+      nächsten Abschnitt steht.
     </p>
   </section>
 
   <section>
-    <h2>Drei Dinge ändern sich in dem Moment, in dem es Pixel werden</h2>
+    <h2>Zurück führt kein Weg</h2>
     <p>
-      Ein gerastertes SVG, das falsch aussieht, sieht fast immer aus einem dieser
-      drei Gründe falsch aus &mdash; und alle drei sind es wert, vor dem Export
-      gewusst zu werden statt danach.
+      Rastern ist eine Einbahnstraße. Ist die Zeichnung erst ein PNG, sind es
+      Pixel wie in jedem anderen Bild, und wer sie später vergrößert, muss Detail
+      erfinden, das nie gemessen wurde &mdash; mit demselben weichen,
+      verschmierten Ergebnis wie beim Aufblasen einer Fotografie.
     </p>
     <p>
-      <strong>Text wird in der Schrift gezeichnet, die das Gerät gerade
-      hat.</strong> Ein SVG, das Text enthält, enthält die Schrift nicht &mdash;
-      es nennt eine und überlässt es dem Renderer, sie zu finden. Ist die Schrift
-      nicht installiert, wird ein Ersatz genommen, und der Ersatz hat andere
-      Buchstabenformen und andere Breiten, der Text kann also umbrechen oder
-      überlaufen. Eine Datei, die sich ihre Schrift von einer Webadresse holt,
-      ergeht es noch schlechter: Ein SVG, das durch ein <code>&lt;img&gt;</code>
-      gerastert wird, darf überhaupt nichts abrufen, es kommt also nichts an.
+      Heben Sie das SVG also auf. Es ist die Vorlage, es ist fast immer die
+      kleinere Datei, und jede künftige Größe fällt daraus tadellos heraus. Das
+      PNG ist ein Export für einen bestimmten Zweck; brauchen Sie eine andere
+      Größe, exportieren Sie neu, statt am Exportierten herumzuskalieren.
     </p>
     <p>
-      Die Lösung ist die, die jeder Gestalter ohnehin kennt: <strong>Text vor dem
-      Export in Pfade umwandeln</strong> (Illustrator nennt es &bdquo;In Pfade
-      umwandeln&ldquo;, Figma &bdquo;Flatten&ldquo;, Inkscape &bdquo;Objekt in
-      Pfad&ldquo;). Die Buchstaben werden zu Geometrie, die Schrift hört auf eine
-      Rolle zu spielen, und das Bild sieht auf jedem Gerät gleich aus. Machen Sie
-      es an einer Kopie &mdash; in Pfade umgewandelter Text ist nicht mehr als
-      Text bearbeitbar.
-    </p>
-    <p>
-      <strong>Haarlinien werden grau oder verschwinden.</strong> Eine Linie, die
-      bei Ihrer gewählten Größe auf weniger als ein Pixel hinausläuft, kann nicht
-      als durchgezogene Linie gezeichnet werden, also wird sie blass gezeichnet.
-      Deshalb sieht ein feines Logo bei 64&nbsp;Pixeln ausgewaschen aus, während
-      dieselbe Datei bei 512 perfekt aussieht. Ist eine kleine Größe die Vorgabe,
-      lautet die Antwort: eine vereinfachte Zeichnung mit kräftigeren Linien
-      &mdash; und keine andere Exporteinstellung. Es ist derselbe Grund, aus dem
-      ein Favicon ein Zeichen ist und kein Schriftzug.
-    </p>
-    <p>
-      <strong>Animation hört auf.</strong> Ein animiertes SVG rastert zu einem
-      einzigen Standbild: was auch immer das erste Einzelbild ist. Es gibt keine
-      Exporteinstellung, die das ändert. Brauchen Sie die Bewegung, brauchen Sie
-      ein GIF oder ein Video, auf einem anderen Weg gemacht.
+      Es gibt Programme, die versprechen, ein PNG zurück in ein SVG zu
+      verwandeln. Was sie tun, heißt Nachzeichnen: Sie raten, welche Kurven ein
+      Pixelraster erklären könnten. Bei flacher zweifarbiger Grafik geht das
+      passabel, bei allem anderen kommt teurer Unsinn heraus &mdash; und was die
+      ursprüngliche Zeichnung hatte, holt es nie zurück.
     </p>
   </section>
 
   <section>
-    <h2>Transparenz, und welches Format zu wählen ist</h2>
+    <h2>Drei Dinge ändern sich, sobald daraus Pixel werden</h2>
     <p>
-      <strong>PNG</strong>, sofern Sie keinen Grund für etwas anderes haben. Es
-      ist verlustfrei, es behält Transparenz, und flache Farbflächen mit harten
-      Kanten &mdash; und daraus besteht eine Zeichnung größtenteils &mdash;
-      komprimieren sich darin gut. Ein gerastertes Logo ist als PNG meist
-      <em>kleiner</em>, als es als JPEG wäre, und dazu sauberer.
+      Wenn ein gerastertes SVG falsch aussieht, liegt es fast immer an einem
+      dieser drei Punkte. Alle drei sollte man vor dem Export kennen und nicht
+      danach.
     </p>
     <p>
-      <strong>JPEG</strong> hat überhaupt keine Transparenz. Jedes transparente
-      Pixel muss irgendeine Farbe werden, und wenn niemand eine wählt, wird es
-      schwarz &mdash; daher kommt das Ergebnis &bdquo;Logo auf schwarzem
-      Kasten&ldquo;, das Menschen für einen Fehler halten. Es ist außerdem auf
-      die Weise verlustbehaftet, die sich bei genau dieser Art Bild am
-      schlimmsten zeigt: ein Kranz aus Sprenkeln um jede harte Kante. Nehmen Sie
-      es, wenn etwas darauf besteht.
+      <strong>Text erscheint in der Schrift, die das Gerät gerade
+      hergibt.</strong> Ein SVG mit Text enthält die Schrift nicht &mdash; es
+      nennt nur eine und überlässt es dem Renderer, sie zu finden. Fehlt sie,
+      springt ein Ersatz ein, und der hat andere Buchstabenformen und andere
+      Laufweiten; der Text bricht dann um oder läuft über. Noch schlechter
+      ergeht es einer Datei, die ihre Schrift von einer Webadresse nachladen
+      will: Ein SVG, das über ein <code>&lt;img&gt;</code> gerastert wird, darf
+      überhaupt nichts abrufen, es kommt also nichts an.
+    </p>
+    <p>
+      Die Abhilfe kennt jede Gestalterin ohnehin: <strong>Text vor dem Export in
+      Pfade umwandeln</strong> (Illustrator: &bdquo;In Pfade umwandeln&ldquo;,
+      Figma: &bdquo;Flatten&ldquo;, Inkscape: &bdquo;Objekt in Pfad&ldquo;). Aus
+      den Buchstaben wird Geometrie, die Schrift spielt keine Rolle mehr, und
+      das Bild sieht auf jedem Gerät gleich aus. Machen Sie das an einer Kopie
+      &mdash; in Pfade umgewandelter Text lässt sich nicht mehr als Text
+      bearbeiten.
+    </p>
+    <p>
+      <strong>Haarlinien werden grau oder verschwinden ganz.</strong> Eine
+      Linie, die bei der gewählten Größe rechnerisch schmaler als ein Pixel
+      wird, lässt sich nicht als durchgezogene Linie zeichnen &mdash; also wird
+      sie blass gezeichnet. Genau deshalb wirkt ein filigranes Logo bei
+      64&nbsp;Pixeln ausgewaschen, während dieselbe Datei bei 512 tadellos
+      aussieht. Ist die kleine Größe Vorgabe, hilft keine andere
+      Exporteinstellung, sondern nur eine vereinfachte Zeichnung mit kräftigeren
+      Linien. Aus demselben Grund ist ein Favicon ein Zeichen und kein
+      Schriftzug.
+    </p>
+    <p>
+      <strong>Animationen bleiben stehen.</strong> Ein animiertes SVG rastert zu
+      einem einzigen Standbild, nämlich zum ersten Einzelbild. Daran ändert
+      keine Exporteinstellung etwas. Brauchen Sie die Bewegung, brauchen Sie ein
+      GIF oder ein Video &mdash; und einen anderen Weg dorthin.
+    </p>
+  </section>
+
+  <section>
+    <h2>Transparenz, und welches Format es sein sollte</h2>
+    <p>
+      <strong>PNG</strong>, solange nichts dagegen spricht. Verlustfrei, behält
+      Transparenz, und einfarbige Flächen mit harten Kanten &mdash; und daraus
+      besteht eine Zeichnung zum größten Teil &mdash; komprimiert es gut. Ein
+      gerastertes Logo wird als PNG meist <em>kleiner</em> als dieselbe Grafik
+      im JPEG, und obendrein sauberer.
+    </p>
+    <p>
+      <strong>JPEG</strong> kennt keine Transparenz. Jedes transparente Pixel
+      muss irgendeine Farbe annehmen, und wählt niemand eine, wird es schwarz
+      &mdash; daher das Logo im schwarzen Kasten, das viele für einen
+      Programmfehler halten. Dazu kommt: JPEG ist genau auf die Art
+      verlustbehaftet, die sich bei solchen Bildern am hässlichsten zeigt,
+      nämlich als Kranz aus Sprenkeln um jede harte Kante. Nehmen Sie es nur,
+      wenn etwas darauf besteht.
     </p>
     <p>
       <strong>WebP</strong> kann alles, was PNG kann, in einer kleineren Datei,
-      und wird von jedem aktuellen Browser gelesen. Der Grund, es nicht zu
-      nehmen, ist das, was nach dem Browser kommt: ältere Software, manche
-      Druckereien und eine ganze Reihe Upload-Formulare öffnen keines.
+      und jeder aktuelle Browser liest es. Der Grund, es trotzdem nicht zu
+      nehmen, liegt hinter dem Browser: ältere Software, manche Druckereien und
+      eine ganze Reihe von Upload-Formularen öffnen keines.
     </p>
     <p>
-      Bei PNG eine Hintergrundfarbe zu wählen ist ebenfalls ein völlig
-      gewöhnlicher Wunsch. Transparenz nützt nur dann etwas, wenn das, worauf das
-      Bild landet, eine Farbe ist, die Sie nicht vorhersagen können; wissen Sie
-      bereits, dass es eine weiße Seite ist, erspart Ihnen das Herunterrechnen
-      auf Weiß eine ganze Kategorie von Überraschungen.
+      Und eine Hintergrundfarbe auch beim PNG zu wählen ist ein völlig normaler
+      Wunsch. Transparenz nützt nur, solange Sie nicht wissen, auf welcher Farbe
+      das Bild landet; steht schon fest, dass es eine weiße Seite ist, erspart
+      Ihnen der Export gleich auf Weiß eine ganze Kategorie von Überraschungen.
     </p>
   </section>
 
   <section>
     <h2>Wenn der Export leer oder falsch herauskommt</h2>
     <p>
-      <strong>Nichts als leere Fläche.</strong> Meist ein fehlendes
-      <code>xmlns</code>-Attribut am Wurzelelement. Eine Datei ohne das ist für
-      ein Bild-Element kein SVG, und sie zeichnet sich als nichts. Die Datei im
-      Browser zu öffnen ist der schnelle Test: Zeigt der Browser ebenfalls
-      nichts, liegt es an der Datei und nicht am Konverter.
+      <strong>Nur leere Fläche.</strong> Meist fehlt das
+      <code>xmlns</code>-Attribut am Wurzelelement. Ohne das ist die Datei für
+      ein Bild-Element kein SVG, und sie zeichnet sich als nichts. Der schnelle
+      Test: die Datei im Browser öffnen. Zeigt auch der nichts, liegt es an der
+      Datei und nicht am Konverter.
     </p>
     <p>
-      <strong>Die Zeichnung ist klein, oben links in der Ecke.</strong> Die Datei
-      hat ein <code>width</code> und ein <code>height</code>, aber keine
-      <code>viewBox</code> &mdash; es gibt also kein Koordinatensystem zum
-      Skalieren, und die Grafik behält ihre ursprünglichen Einheiten auf einer
-      größeren Leinwand. Ein guter Konverter setzt Ihnen eine viewBox hinein; hat
-      Ihrer das nicht getan, behebt es
+      <strong>Die Zeichnung sitzt winzig in der linken oberen Ecke.</strong> Dann
+      hat die Datei zwar <code>width</code> und <code>height</code>, aber keine
+      <code>viewBox</code> &mdash; es fehlt also das Koordinatensystem, an dem
+      sich skalieren ließe, und die Grafik behält ihre ursprünglichen Einheiten
+      auf einer größeren Leinwand. Ein guter Konverter ergänzt die viewBox von
+      sich aus; hat Ihrer das nicht getan, tragen Sie
       <code>viewBox="0 0 <em>Breite</em> <em>Höhe</em>"</code> von Hand am
-      Wurzelelement &mdash; und die Datei ist reiner Text, Sie können das also.
+      Wurzelelement nach &mdash; die Datei ist reiner Text, das können Sie also
+      selbst.
     </p>
     <p>
-      <strong>Ein Teil des Bildes fehlt.</strong> Irgendetwas in der Datei zeigte
-      auf eine Adresse, statt die Grafik zu enthalten &mdash; ein eingebettetes
-      Foto, das als Verweis gespeichert ist, ein Stylesheet, eine Schrift. Ein
-      Rasterer, der sich weigert, das abzurufen, tut das Richtige, und es ist
-      dieselbe Weigerung, die verhindert, dass ein irgendwo heruntergeladenes SVG
-      seinem Urheber Bericht erstattet. Exportieren Sie aus dem Zeichenprogramm
-      neu, mit eingebetteten Bildern.
+      <strong>Ein Teil des Bildes fehlt.</strong> Dann verwies etwas in der Datei
+      auf eine Adresse, statt die Grafik selbst zu enthalten: ein eingebettetes
+      Foto, das nur verlinkt ist, ein Stylesheet, eine Schrift. Ein Rasterer, der
+      sich weigert, so etwas nachzuladen, tut genau das Richtige &mdash; es ist
+      dieselbe Weigerung, die verhindert, dass ein irgendwo heruntergeladenes
+      SVG seinem Urheber Meldung macht. Exportieren Sie im Zeichenprogramm neu,
+      diesmal mit eingebetteten Bildern.
     </p>
     <p>
-      <strong>Es verweigert eine sehr große Größe.</strong> Browser begrenzen,
-      wie groß eine Leinwand sein darf, und sie sind sich nicht einig, wo: ab
-      etwa 16.000&nbsp;Pixeln Seitenlänge kommt nichts mehr zurück, und Safari
-      auf einem iPhone oder iPad gibt viel früher auf, bei etwa
-      4096&nbsp;&times;&nbsp;4096. Ein Werkzeug, das Sie warnt, bewahrt Sie vor
-      einer leeren Datei &mdash; denn genau das erzeugt ein Browser, wenn ihm die
-      Luft ausgeht, und keine Fehlermeldung.
+      <strong>Eine sehr große Größe wird abgelehnt.</strong> Browser begrenzen,
+      wie groß eine Leinwand werden darf, und sie sind sich nicht einig, wo:
+      Jenseits von rund 16.000&nbsp;Pixeln Kantenlänge kommt nichts mehr zurück,
+      und Safari auf iPhone und iPad gibt viel früher auf, bei etwa
+      4096&nbsp;&times;&nbsp;4096. Ein Werkzeug, das Sie vorher warnt, bewahrt
+      Sie vor einer leeren Datei &mdash; denn genau die liefert ein Browser, wenn
+      ihm die Luft ausgeht, und eben keine Fehlermeldung.
     </p>
   </section>
 
   <section>
     <h2>Nichts davon braucht einen Upload</h2>
     <p>
-      Ein SVG zu rastern ist etwas, das jeder Browser tausendmal am Tag tut
-      &mdash; es ist dieselbe Maschinerie, die ein Symbol auf einer Webseite
-      zeichnet. Es gibt keinen technischen Grund, warum Ihre Grafik zu einem
-      Server und zurück reisen sollte, um als PNG herauszukommen, und das
-      Werkzeug hier schickt sie nirgendwohin: Die
-      <code>Content-Security-Policy</code> der Seite nennt jede Adresse, die sie
-      kontaktieren darf, und keine davon gehört zu dieser Seite.
+      Ein SVG zu rastern tut jeder Browser tausendmal am Tag &mdash; es ist
+      dieselbe Maschinerie, die ein Symbol auf einer Webseite zeichnet. Es gibt
+      keinen technischen Grund, warum Ihre Grafik zu einem Server und wieder
+      zurück reisen sollte, um als PNG herauszukommen, und das Werkzeug hier
+      schickt sie nirgendwohin: Die <code>Content-Security-Policy</code> der
+      Seite nennt jede Adresse, die sie kontaktieren darf, und keine davon gehört
+      zu dieser Seite.
     </p>
     <p>
-      Bei SVG zählt das mehr als sonst, denn ein SVG ist ein Dokument und kein
-      Bild. Es kann ein Skript und eine entfernte Adresse enthalten, und ein Logo,
-      das Ihnen eine Agentur geschickt hat, ist eine Datei, die Sie nicht
-      geschrieben haben. Durch ein Bild-Element gezeichnet, befindet es sich in
+      Bei SVG wiegt das schwerer als sonst, denn ein SVG ist ein Dokument und
+      kein Bild. Es kann ein Skript und eine entfernte Adresse enthalten, und das
+      Logo, das Ihnen eine Agentur geschickt hat, ist eine Datei, die Sie nicht
+      selbst geschrieben haben. Über ein Bild-Element gezeichnet, landet es in
       dem, was die Spezifikation <em>secure static mode</em> nennt: Das Skript
-      kann nicht laufen, und die Adresse wird nie kontaktiert. Das setzt der
-      Browser durch, nicht die Website.
+      kann nicht laufen, und die Adresse wird nie kontaktiert. Dafür sorgt der
+      Browser, nicht die Website.
     </p>
     <p>
-      Laden Sie die Seite, trennen Sie die Internetverbindung und wandeln Sie
-      trotzdem etwas um, wenn Sie lieber prüfen als glauben.
+      Wer lieber prüft als glaubt, lädt die Seite, trennt die
+      Internetverbindung und wandelt trotzdem etwas um. Drei weitere Proben, die
+      Sie an jedem Werkzeug durchführen können, stehen in
       <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
-      zu Online-Konvertern hochzuladen?</a> nennt drei weitere Prüfungen, die Sie
-      an jedem Werkzeug durchführen können.
+      zu Online-Konvertern hochzuladen?</a>
     </p>
   </section>
