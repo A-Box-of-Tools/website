@@ -353,6 +353,74 @@ class BuildTheSite(unittest.TestCase):
                     # unplugged, which is the one thing it promises.
                     self.assertIn(f"'{name}'", worker)
 
+    # -- the language a visitor is served ---------------------------------
+    #
+    # shared/lang.js reads the page rather than being told about it: the set of
+    # languages it may send somebody to is the rel="alternate" set in the head,
+    # which is the same set the sitemap and the switcher come from. So what is
+    # worth testing here is that the three parts are on the page at all, and
+    # that they agree with each other - a switcher on a page with no alternates
+    # would be a control that offers a language the crawler is not told exists.
+
+    def test_the_language_script_is_written_once_at_the_root(self):
+        self.assertTrue((self.out / 'lang.js').is_file())
+        # Written by the Emitter rather than copied by copy_shared, so that it
+        # is minified like every other script the site serves.
+        self.assertIn('abox-lang', (self.out / 'lang.js').read_text(encoding='utf-8'))
+
+    def test_every_page_asks_for_the_language_script_by_a_versioned_url(self):
+        """One URL, root-absolute, the same on every page in every language.
+
+        The version matters more here than it does for the stylesheet: a tool
+        page's service worker caches whatever same-origin file it is asked for,
+        and its cache is only emptied when one of the files it was built with
+        changes - which this one is not.
+        """
+        # This build does not minify, so the file on disk is the string that
+        # was hashed, byte for byte.
+        version = buildmod.sitelib.text_hash(
+            (self.out / 'lang.js').read_text(encoding='utf-8'))
+        asked = f'<script src="/lang.js?v={version}"></script>'
+        for name in self.written:
+            if not name.endswith('.html'):
+                continue
+            with self.subTest(page=name):
+                self.assertIn(asked, (self.out / name).read_text(encoding='utf-8'))
+
+    def test_the_notice_is_hidden_in_the_markup(self):
+        """A redirect nobody made cannot leave a notice about one behind.
+
+        The box is rendered on every page and unhidden only by the script, on a
+        page it has just sent somebody to. With the script blocked it is markup
+        and nothing else.
+        """
+        page = (self.out / 'de' / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('<div class="lang-auto" id="lang-auto" hidden>', page)
+
+    def test_a_page_offers_a_switcher_exactly_when_it_has_alternates(self):
+        """The header control, the footer list and the hreflang set are one
+        answer to one question, and buildlib/i18n.py is where it is decided.
+
+        A page that offers German in a menu and does not name it in its head is
+        the disagreement that shows up in Search Console as an hreflang set that
+        does not reciprocate.
+        """
+        for name in self.written:
+            if not name.endswith('.html') or name == '404.html':
+                continue
+            text = (self.out / name).read_text(encoding='utf-8')
+            with self.subTest(page=name):
+                offered = 'rel="alternate"' in text
+                self.assertEqual(offered, '<details class="lang-pick">' in text)
+                self.assertEqual(offered, 'class="lang-switch"' in text)
+
+    def test_the_switcher_links_this_page_and_not_the_front_door(self):
+        """Somebody reading about compressing an image who asks for German
+        wants that page in German. The German hub is reached from the English
+        hub; the German privacy page is reached from the English one."""
+        page = (self.out / 'privacy' / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('<a href="/de/datenschutz/" lang="de" hreflang="de">Deutsch</a>', page)
+
     def test_no_template_tag_survives_into_the_output(self):
         for name in self.written:
             if not name.endswith('.html'):

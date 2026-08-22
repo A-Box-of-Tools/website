@@ -1,0 +1,47 @@
+<!--
+  The language switcher, in the header this time.
+
+  The one in the footer is the canonical list - plain links, walkable by a
+  crawler, and the thing every other part of this feature reads its facts out
+  of. This is the same list again, at the top of the page, because a control
+  nobody can find is not a control: a reader who wants to change language does
+  not scroll to the bottom of an article to look for the word for it.
+
+  A <details>, so it opens and closes with no JavaScript at all. Everything
+  visible here works with shared/lang.js blocked; that file adds the first
+  arrival and nothing else. Native disclosure also brings the keyboard and the
+  screen-reader behaviour with it, which a div pretending to be a menu does not.
+
+  The summary shows the language you are reading rather than the word
+  "Language", for the same reason the list shows Deutsch rather than German:
+  the reader is scanning for a language name, and the one they are looking at
+  tells them at a glance whether anything needs doing.
+-->
+{% if languages %}<details class="lang-pick">
+  <summary>
+    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">
+      <g fill="none" stroke="currentColor" stroke-width="1.2">
+        <circle cx="8" cy="8" r="6.4"></circle>
+        <path d="M1.6 8h12.8"></path>
+        <path d="M8 1.6c1.7 1.9 2.6 4 2.6 6.4S9.7 12.5 8 14.4C6.3 12.5 5.4 10.4 5.4 8S6.3 3.5 8 1.6z"></path>
+      </g>
+    </svg>
+    <!--
+      The word "Language" is read out but not drawn: a summary with an
+      aria-label loses its own text to it, and a screen reader would then
+      announce the control without saying which language you are in. This way
+      the accessible name is "Language: Deutsch" and the visible one is
+      "Deutsch", which is what each audience needs.
+    -->
+    <span class="visually-hidden">{{ ui.languages }}: </span>
+    <span>{{ locale.endonym }}</span>
+    <span class="lang-pick-caret" aria-hidden="true">&#9662;</span>
+  </summary>
+  <ul class="lang-pick-menu">
+{% for lang in languages %}    <li>
+{% if lang.current %}      <span class="lang-current" lang="{{ lang.hreflang }}" aria-current="true">{{ lang.endonym }}</span>
+{% else %}      <a href="{{ lang.href }}" lang="{{ lang.hreflang }}" hreflang="{{ lang.hreflang }}">{{ lang.endonym }}</a>
+{% endif %}    </li>
+{% endfor %}  </ul>
+</details>
+{% endif %}

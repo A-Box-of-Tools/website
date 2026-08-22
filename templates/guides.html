@@ -26,6 +26,7 @@
 
 <link rel="canonical" href="{{ canonical }}">
 {% include "partials/alternates.html" %}
+{% include "partials/lang-script.html" %}
 
 <meta name="google-adsense-account" content="{{ site.adsense_client }}">
 
@@ -67,12 +68,17 @@
 </head>
 <body>
 
+{% include "partials/lang-notice.html" %}
+
 <header class="hub-head">
-  <p class="brand">
-    <a class="brand-home" href="{{ base }}">
-      <span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools
-    </a>
-  </p>
+  <div class="head-row">
+    <p class="brand">
+      <a class="brand-home" href="{{ base }}">
+        <span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools
+      </a>
+    </p>
+    {% include "partials/lang-pick.html" %}
+  </div>
   <h1>{{ site.guides.heading }}</h1>
   <p class="lede">
 {{ site.guides.lede }}

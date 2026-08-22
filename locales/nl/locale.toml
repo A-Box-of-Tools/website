@@ -267,6 +267,7 @@ base = "Elke bewering op deze site is bedoeld om gecontroleerd te worden, niet o
 
 [ui]
 languages = "Taal"
+lang_auto = "Deze pagina wordt in het Nederlands getoond omdat je browser om deze taal vraagt."
 breadcrumb = "Kruimelpad"
 all_tools = "Alle tools"
 last_updated = "Laatst bijgewerkt"

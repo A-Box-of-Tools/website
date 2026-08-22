@@ -42,6 +42,7 @@
 
 <link rel="canonical" href="{{ tool.url }}">
 {% include "partials/alternates.html" %}
+{% include "partials/lang-script.html" %}
 
 <!--
   Share card. og-image.ps1 draws these, and the URLs have to be absolute -
@@ -87,6 +88,8 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>{{ tool.favicon }}</text></svg>">
 </head>
 <body>
+
+{% include "partials/lang-notice.html" %}
 
 <!--
   Visible by default and removed by main.js once it boots. If the scripts never
@@ -143,6 +146,7 @@
     </div>
   </div>
   <div class="topbar-actions">
+    {% include "partials/lang-pick.html" %}
     <a class="source-link" href="{{ site.source_url }}"
        target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" focusable="false">

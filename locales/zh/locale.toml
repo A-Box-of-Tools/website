@@ -207,6 +207,7 @@ base = "本站的每一句话都是写来给你核对的，不是写来让你相
 
 [ui]
 languages = "语言"
+lang_auto = "已根据您浏览器的语言设置，以简体中文显示本页。"
 breadcrumb = "面包屑导航"
 all_tools = "全部工具"
 last_updated = "最后更新"

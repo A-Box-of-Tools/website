@@ -315,6 +315,7 @@ base = "이 사이트의 모든 주장은 믿으라고가 아니라 확인하라
 
 [ui]
 languages = "언어"
+lang_auto = "브라우저의 언어 설정에 따라 이 페이지를 한국어로 표시하고 있습니다."
 breadcrumb = "탐색 경로"
 all_tools = "모든 도구"
 last_updated = "마지막 업데이트"

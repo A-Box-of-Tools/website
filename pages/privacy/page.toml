@@ -15,8 +15,8 @@ lede = """
     to upload them to. Everything else on this page is about the ads, the visit
     counter and the hosting &mdash; the parts that do involve other companies."""
 
-updated = "19 August 2026"     # shown on the page, in words
-lastmod = "2026-08-19"         # the sitemap's machine-readable copy
+updated = "22 August 2026"     # shown on the page, in words
+lastmod = "2026-08-22"         # the sitemap's machine-readable copy
 
 og_title = "Privacy &amp; Cookies &mdash; abox.tools"
 og_description = "Your files are never uploaded. What is collected, by whom, and how to switch it off."

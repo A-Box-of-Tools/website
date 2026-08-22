@@ -1,0 +1,15 @@
+<!--
+  The first arrival, in about a kilobyte. shared/lang.js sets out what it does
+  and the three rules that keep it from becoming the redirect everybody hates.
+
+  Blocking, and directly under the hreflang links it reads. Not `defer`: a
+  redirect that fires after the page has been parsed is a redirect the visitor
+  watches happen, and the flash of the wrong language is worse than the few
+  milliseconds this costs. Same origin, cached after the first page, and the
+  stylesheet beside it is fetched in parallel by the preload scanner - which is
+  what actually blocks the paint.
+
+  It is a plain script rather than a module for the same reason: a module is
+  deferred by definition and could not do this at all.
+-->
+<script src="{{ lang_href }}"></script>
