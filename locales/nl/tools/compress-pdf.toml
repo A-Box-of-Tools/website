@@ -1,0 +1,266 @@
+#
+# Pdf verkleinen - Dutch.
+#
+# Overrides for tools/compress-pdf/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pdf-compressor"
+# Het staartje is de zoekterm. Net als in het Engels blijft de productnaam de
+# luide helft.
+heading = "Pdf&nbsp;comprimeren <span class=\"h1-kw\">&mdash; een pdf kleiner maken</span>"
+tagline = "Een document krimpen zonder het ergens heen te sturen."
+
+title = "Pdf comprimeren &mdash; gratis, in je browser, zonder uploaden"
+description = "Maak een pdf kleiner zonder hem te uploaden. Het bestand wordt door je eigen browser gelezen, opnieuw gecomprimeerd en herschreven, en de tool laat je eerst zien waar de grootte werkelijk zit."
+og_title = "Pdf comprimeren &mdash; gratis, en er wordt niets geüpload"
+og_description = "Krimp een pdf op je eigen apparaat. Het meet hoe groot elke afbeelding op de pagina getekend wordt, dus het gooit alleen pixels weg die niemand kon zien."
+og_image_alt = "Pdf comprimeren - een document kleiner maken zonder het te uploaden"
+
+pledge = """
+    Het document wordt op dit apparaat in het geheugen geopend, uit elkaar
+    gehaald en weer weggeschreven, door code die vanaf dit adres geserveerd
+    wordt. Niets hier kan een upload doen, en er staat aan de andere kant van
+    deze pagina geen server om er een te ontvangen."""
+
+live_hint = """
+      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
+      gaten en comprimeer een bestand. Geen enkel verzoek draagt een pagina, een
+      plaatje of een bestandsnaam. Of trek de stekker uit het internet en
+      comprimeer er toch een."""
+
+read_first = """
+, en <code>src/reader.js</code> en <code>src/writer.js</code>
+      voor het hele lees- en herschrijfwerk; geen van beide kan bij het netwerk."""
+
+howto_heading = "Een pdf kleiner maken"
+
+card = """
+            Maak een document kleiner door de plaatjes erin opnieuw te
+            comprimeren. Het laat je eerst zien waar de grootte werkelijk zit, en
+            zegt gewoon wanneer er niets te halen valt."""
+
+[words]
+plural = "documenten"
+choose = "een pdf"
+analytics_extra = """"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Bestanden blijven op je apparaat"
+
+[[privacy]]
+title = "Je document kan nergens heen."
+body = """
+ De
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen ervan hoort bij deze site. Deze tool voegt niets aan die lijst toe:
+      hij heeft geen eigen netwerkfunctie, ook geen optionele. Er is hier geen
+      eindpunt waar je bestand verzameld zou kunnen worden, en niets in de code
+      dat het zou versturen als dat er wel was."""
+
+[[privacy]]
+title = "Het hele formaat staat in deze repository."
+body = """
+ Een pdf is een lijst
+      objecten en een tabel van waar elk object begint. <code>src/objects.js</code>
+      leest die syntaxis, <code>src/reader.js</code> volgt de tabel,
+      <code>src/writer.js</code> schrijft een nieuwe, en geen van de drie
+      importeert iets dat een verzoek kan doen. Er wordt geen bibliotheek
+      opgehaald en er wordt niets op een server gerenderd."""
+
+[[privacy]]
+title = "Versleutelde bestanden worden geweigerd in plaats van geopend."
+body = """
+
+      Een pdf met een wachtwoord erop wordt geweigerd, ook het soort dat scanners
+      maken met een leeg wachtwoord en dat technisch gezien gewoon zou opengaan.
+      De beveiliging van een document afhalen is een andere klus dan het kleiner
+      maken, en het stilletjes doen zou een verrassende daad zijn voor een tool
+      die namens jou werkt."""
+
+[[privacy]]
+title = "Het haalt er dingen uit in plaats van erin te stoppen."
+body = """
+ Het klaargekomen bestand draagt geen
+      aanmaakdatum, geen producentregel en geen naam van de tool die het maakte.
+      Met het vinkje aan verliest het ook het XMP-pakket en de privéblokken die
+      opmaakprogramma's achterlaten &mdash; hetzelfde argument dat de EXIF-tool
+      maakt, toegepast op een andere container."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je document
+      mee: geen bestand, geen pagina, geen naam, geen grootte, geen aantal
+      pagina's. Elke regel die een pdf leest, decodeert of schrijft, wordt vanaf
+      deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat hij niet krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een
+      script van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts.
+      Het is een link en verder niets: hij meldt geen bezoek, en hij krijgt niets
+      over jou of je document mee. Er gebeurt niets tenzij je erop klikt, en waar
+      je dan naartoe klikt is de site van iemand anders."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles op deze
+      pagina doet het nog. Dat is het eenvoudigste bewijs van allemaal: een tool
+      die je document wegstuurde om het te comprimeren, zou stoppen."""
+
+[[howto]]
+title = "Kies een pdf."
+body = """
+ Sleep hem op het keuzevak of kies hem met
+      de hand. De browser leest hem rechtstreeks van je schijf; er wordt daarbij
+      niets ergens heen gestuurd."""
+
+[[howto]]
+title = "Kijk waar de grootte zit."
+body = """
+ De uitsplitsing is waar de
+      tweede stap om draait. Bestaat de balk vooral uit afbeeldingen, dan heeft
+      deze tool iets om mee te werken. Bestaat hij vooral uit lettertypen en
+      pagina-inhoud, dan zegt hij dat, en is de eerlijke besparing een paar
+      procent &mdash; dat weet je liever voordat je er een minuut in steekt."""
+
+[[howto]]
+title = "Zeg hoe hard er geknepen mag worden."
+body = """
+ De benoemde
+      instellingen zijn resoluties, geen vage rapportcijfers: 96 dpi om op een
+      scherm te lezen, 130 om te mailen, 220 voor iets dat nog geprint moet
+      worden. Elk daarvan wordt afgemeten aan hoe groot het plaatje werkelijk op
+      de pagina getekend wordt, dus een foto die als miniatuur staat, wordt niet
+      als een paginagrote scan behandeld."""
+
+[[howto]]
+title = "Comprimeer, en lees de regel die zegt dat het gecontroleerd is."
+body = """
+
+      Is het herschrijven klaar, dan wordt het gereedgekomen bestand door
+      dezelfde lezer op deze pagina opnieuw geopend en worden de pagina's geteld.
+      Klopt dat niet met het origineel, dan wordt de ronde als mislukt gemeld en
+      wordt er geen download aangeboden."""
+
+[[faq]]
+q = "Wordt mijn pdf ergens heen geüpload?"
+a = """
+        Nee. Het bestand wordt gelezen, opnieuw gecomprimeerd en geschreven door
+        je eigen browser op je eigen hardware. Deze tool heeft geen serverkant, en
+        de <code>Content-Security-Policy</code> van de pagina noemt elk adres dat
+        hij mag benaderen &mdash; geen ervan hoort bij deze site. Deze tool heeft
+        geen enkele optionele netwerkfunctie."""
+
+[[faq]]
+q = "Hoeveel kleiner wordt mijn pdf?"
+a = """
+        Dat hangt volledig af van wat erin zit, en daarom meet de tool het en
+        laat hij het je zien voordat hij iets comprimeert. Een gescand document
+        bestaat vrijwel geheel uit foto's en komt er meestal 60 tot 90% kleiner
+        uit. Een contract of een scriptie is tekst, vectortekening en ingebedde
+        lettertypen, die allemaal al gecomprimeerd waren door wat ze maakte; daar
+        is de besparing meestal een paar procent, uit het opnieuw inpakken van
+        het bestand en het weglaten van wat nergens meer naar verwijst. Elke tool
+        die een vast percentage belooft zonder naar je bestand te kijken, gokt."""
+
+[[faq]]
+q = "Kost een pdf comprimeren kwaliteit?"
+a = """
+        De plaatjes erin worden opnieuw gecodeerd, dus voor die: ja. Verder wordt
+        er niets aangeraakt: de tekst blijft tekst, selecteerbaar en doorzoekbaar,
+        de lettertypen blijven heel, en de vectortekening wordt exact
+        overgenomen. De tool weigert ook een plaatje voor niets slechter te maken
+        &mdash; komt een hercodering niet kleiner uit dan het origineel, dan gaan
+        de originele bytes onaangeroerd terug het document in."""
+
+[[faq]]
+q = "Wat is dpi hier, en waarom vraagt het ernaar?"
+a = """
+        Een pdf legt vast hoe groot elk plaatje op de pagina getekend wordt, dus
+        kan de tool de effectieve resolutie uitrekenen: een scan van 4000 pixels
+        die over twintig centimeter papier gelegd wordt, draagt zo'n 500 pixels
+        per inch. Niets op een scherm en heel weinig op papier kan daar iets mee,
+        dus de pixels boven de instelling die je kiest, gaan er als eerste af
+        &mdash; ze kosten kwaliteit die niemand kan zien. Door die meting wordt
+        een klein geplaatst logo niet hetzelfde behandeld als een paginagrote
+        scan."""
+
+[[faq]]
+q = "Kan het een met een wachtwoord beveiligde pdf openen?"
+a = """
+        Nee, en dat is met opzet. Een versleuteld document wordt geweigerd met een
+        melding die dat zegt, ook wanneer het wachtwoord leeg is &mdash; wat de
+        manier is waarop veel scanners en kopieerapparaten opslaan. De beveiliging
+        van een bestand halen is een andere klus dan het comprimeren, en een tool
+        die dat stilletjes deed, zou iets doen waar je niet om gevraagd hebt."""
+
+[[faq]]
+q = "Zijn er pdf's die het niet kan comprimeren?"
+a = """
+        Sommige afbeeldingen erin, ja. Voor JPEG 2000, JBIG2 en faxgecodeerde
+        (CCITT) afbeeldingen heeft geen enkele browser een decoder, dus die worden
+        onaangeroerd doorgegeven en als zodanig gemeld &mdash; de laatste twee
+        zijn tweekleurencodecs en zitten meestal toch al bijna op hun kleinst.
+        CMYK-afbeeldingen worden ook met rust gelaten, omdat hercoderen de kleuren
+        kan verschuiven die een drukker zou produceren. Alles wat de tool
+        overslaat, wordt bij de resultaten genoemd, met de reden erbij."""
+
+[[faq]]
+q = "Gaat het gecomprimeerde bestand overal nog open?"
+a = """
+        Ja. De uitvoer wordt geschreven als pdf 1.5, wat elke lezer die sinds 2003
+        is uitgekomen begrijpt, en de tool bewijst dat op je eigen apparaat: hij
+        opent het gereedgekomen bestand opnieuw en telt de pagina's voordat hij
+        het je aanbiedt. Formulieren, links, bladwijzers, de
+        toegankelijkheidsstructuur en eventuele ingesloten bijlagen gaan mee; wat
+        achterblijft is het materiaal waar niets in het document nog naar
+        verwees."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
+        geen limiet op de bestandsgrootte behalve wat het geheugen van je eigen
+        apparaat toelaat. De site draagt advertenties, en die betalen hem; de
+        advertenties krijgen niets over je document mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek dan je internetverbinding, en hij
+        werkt door. Dat is ook de eenvoudigste manier om te bewijzen dat er niets
+        geüpload wordt: een tool die je document wegstuurde om het te
+        comprimeren, zou stoppen op het moment dat je de stekker eruit trok."""
+
+[schema]
+description = "Comprimeer een pdf in je browser. Afbeeldingen worden opnieuw gecomprimeerd op basis van hoe groot ze werkelijk op de pagina getekend worden, en het document wordt lokaal herschreven, dus er wordt nooit een bestand geüpload."
+features = [
+  "Laat zien waar de grootte van een document werkelijk zit voordat er iets gecomprimeerd wordt",
+  "Comprimeert afbeeldingen opnieuw op basis van hun gemeten resolutie op de pagina",
+  "Laat een afbeelding met rust wanneer hercoderen hem niet kleiner zou maken",
+  "Laat objecten vallen die een eerdere bewerking achterliet, plus optionele metagegevens",
+  "Opent het gereedgekomen bestand opnieuw en controleert het voordat het wordt aangeboden",
+  "Draait offline; geen upload, geen account, geen limiet op de bestandsgrootte",
+]
+
+[picker]
+title = "Sleep een pdf hierheen"
+hint = "of klik om te bladeren &mdash; één document tegelijk"

@@ -1,0 +1,17 @@
+#
+# Gids: een qr-code maken die werkelijk scant - Dutch.
+#
+
+nav = "Een qr-code maken"
+title = "Een qr-code maken die elke keer scant"
+description = "Welk foutcorrectieniveau je kiest, waarom de witte marge om een qr-code heen bij de code hoort, hoe groot je hem afdrukt, en wat de 'dynamische' code van een gratis generator je later kost."
+heading = "Hoe je een qr-code maakt die ook op andermans telefoon scant"
+lede = """
+    Een qr-code maken kost een seconde. Er een maken die werkt op een natte
+    menukaart, in een bushokje, of op een telefoon op armlengte in slecht licht
+    kost vier beslissingen, en alle vier neem je voordat je iets afdrukt. Hier
+    staat wat elk ervan doet."""
+updated = "20 augustus 2026"
+og_title = "Een qr-code maken die ook op andermans telefoon scant"
+og_description = "De vier beslissingen die bepalen of een gedrukte qr-code werkt: het niveau, de marge, het formaat, en wiens adres er eigenlijk in zit."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"

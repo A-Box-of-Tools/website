@@ -1,0 +1,18 @@
+#
+# Gids: een favicon en een app-icoon maken - Dutch.
+#
+
+nav = "Een favicon maken"
+title = "Een favicon maken (en een Windows-app-icoon)"
+description = "Welke formaten een favicon.ico werkelijk nodig heeft, welke extra bestanden iPhones, Android en een Mac vragen, en waarom een logo dat op een poster werkt bij zestien pixels verdwijnt."
+heading = "Hoe je een favicon maakt die op zestien pixels nog leesbaar is"
+lede = """
+    Een favicon is geen klein plaatje van je logo. Het is een set plaatjes op
+    vaste formaten, in een houder die de meeste mensen nooit openen, en de
+    kleinste ervan is degene die iedereen werkelijk ziet. Dit gaat over welke
+    formaten je nodig hebt, welke bestanden ernaast horen, en wat je doet
+    wanneer je logo de reis omlaag niet overleeft."""
+updated = "20 augustus 2026"
+og_title = "Een favicon maken die op zestien pixels nog leesbaar is"
+og_description = "Welke formaten een favicon.ico nodig heeft, de extra bestanden die iPhones en Android vragen, en wat je doet wanneer je logo het verkleinen niet overleeft."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"

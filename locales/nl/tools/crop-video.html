@@ -1,0 +1,146 @@
+<main>
+  <!-- Stap 1 &mdash; het bestand -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies een video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Bestand</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Grootte</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Beeld</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Lengte</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; de bijsnijding -->
+  <section class="card" id="crop-card" hidden>
+    <h2><span class="step">2</span> Stel de bijsnijding in</h2>
+
+    <p class="stage-hint">
+      Sleep binnen het kader om het te verplaatsen, of aan een hoek om het
+      formaat te wijzigen. Met het kader geselecteerd verschuiven de pijltjes het
+      een pixel tegelijk, wijzigt <kbd>Alt</kbd>&nbsp;+&nbsp;pijltjes het
+      formaat, en maakt <kbd>Shift</kbd> ingedrukt houden elke stap tien.
+    </p>
+
+    <!-- The crop box itself is added here by src/cropper.js. The stage is given
+         the video's own shape, so the box can be positioned in percentages and
+         needs no recalculating when the window is resized. -->
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <div class="crop-controls">
+      <div class="aspect-row" role="group" aria-label="Het kader op een vorm vastzetten">
+        <button type="button" data-aspect="free" class="active">Vrij</button>
+        <button type="button" data-aspect="source">Origineel</button>
+        <button type="button" data-aspect="1:1">1:1</button>
+        <button type="button" data-aspect="4:5">4:5</button>
+        <button type="button" data-aspect="9:16">9:16</button>
+        <button type="button" data-aspect="16:9">16:9</button>
+        <button type="button" data-aspect="4:3">4:3</button>
+        <button type="button" data-aspect="3:2">3:2</button>
+        <button type="button" id="swap-aspect" class="ghost" title="Zet de vaste vorm op zijn kant">
+          Omdraaien
+        </button>
+      </div>
+
+      <div class="numbers">
+        <label>Links<input type="number" id="crop-x" min="0" step="1"></label>
+        <label>Boven<input type="number" id="crop-y" min="0" step="1"></label>
+        <label>Breedte<input type="number" id="crop-w" min="16" step="2"></label>
+        <label>Hoogte<input type="number" id="crop-h" min="16" step="2"></label>
+        <div class="number-actions">
+          <button type="button" id="crop-max" class="ghost">Grootst</button>
+          <button type="button" id="crop-centre" class="ghost">Midden</button>
+          <button type="button" id="crop-reset" class="ghost">Hele beeld</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="even-note">
+      Breedte en hoogte gaan met stappen van twee, omdat H.264 geen manier heeft
+      om een frame met een oneven zijde op te slaan.
+    </p>
+  </section>
+
+  <!-- Stap 3 &mdash; de export -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Snijd het bij</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Uitvoer</label>
+        <select id="format">
+          <option value="mp4" selected>MP4 &mdash; frame voor frame opnieuw gecodeerd</option>
+          <option value="webm">WebM &mdash; opgenomen terwijl het speelt</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="quality">Kwaliteit</label>
+        <select id="quality">
+          <option value="low">Kleiner bestand</option>
+          <option value="medium" selected>In balans</option>
+          <option value="high">Beste kwaliteit</option>
+        </select>
+        <p class="field-note">
+          Nooit meer dan het origineel aan datzelfde gebied uitgaf &mdash;
+          daarboven hercoderen maakt het bestand alleen groter.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Hou het geluid
+        </label>
+        <p class="field-note" id="audio-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Uitvoerbeeld</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Gehouden</dt><dd id="sum-kept">&mdash;</dd></div>
+      <div><dt>Lengte</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Hoe</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Video bijsnijden</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Video downloaden</a>
+      </div>
+    </div>
+  </section>
+</main>

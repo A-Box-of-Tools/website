@@ -1,0 +1,201 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Open de <a href="../../video-knippen/">Videoknipper</a>, sleep het filmpje
+      erin, druk op <kbd>I</kbd> en <kbd>O</kbd> om elk stuk te markeren dat je
+      wilt &mdash; zoveel als je wilt &mdash; en exporteer. Bij een mp4, mov of
+      m4v worden de frames die je houdt precies zoals ze waren naar het nieuwe
+      bestand verplaatst &mdash; dezelfde bytes, dezelfde encoderinstellingen,
+      alles hetzelfde &mdash; en het geluid gaat monster voor monster mee zonder
+      gedecodeerd te worden.
+    </p>
+    <p>
+      Dat betekent dat een knip je geen kwaliteit kost, en het is snel: een
+      minuut uit een opname van vier gigabyte halen kost ongeveer wat het kost om
+      die minuut naar schijf te schrijven, omdat naar de frames gewezen wordt in
+      plaats van dat ze geladen worden. De ene plek waar dit zichtbaar wordt, is
+      waar je knip werkelijk landt, en daar gaat de rest van deze pagina over.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom een knip helemaal geen kwaliteit hoeft te kosten</h2>
+    <p>
+      Inkorten verandert niets aan hoe een frame eruitziet. Elk frame dat je
+      houdt hoort er precies zo uit te komen als het erin ging, dus is er geen
+      reden om het te decoderen en opnieuw te coderen &mdash; en alle reden om
+      dat niet te doen, want een hercodering is verliesgevend en zou het hele
+      filmpje een beetje slechter maken om het korter te maken.
+    </p>
+    <p>
+      Een goede knipper hercodeert dus niet. Hij leest de index van het bestand,
+      rekent uit welke gecodeerde frames binnen jouw bereik vallen, en schrijft
+      die bytes naar een nieuwe container met een nieuwe index ervoor. Op die
+      route wordt er helemaal niets gedecodeerd.
+    </p>
+    <p>
+      Genoeg tools hercoderen toch, want decoderen en opnieuw coderen is veel
+      eenvoudiger te bouwen dan het containerformaat ontleden. Je kunt meestal
+      zien welke soort je gebruikt aan hoe lang het duurt: een kopie wordt
+      begrensd door hoe snel je schijf schrijft, en een hercodering door hoe snel
+      je apparaat video codeert, en dat is honderd keer trager.
+    </p>
+  </section>
+
+  <section>
+    <h2>Keyframes, en waarom je knip eerder kan landen</h2>
+    <p>
+      Dit is de beperking waar alles rond inkorten uit volgt.
+    </p>
+    <p>
+      Video wordt niet opgeslagen als een reeks complete plaatjes. Dat zou enorm
+      zijn. De meeste frames worden opgeslagen als een beschrijving van hoe ze
+      van hun buren verschillen, wat betekent dat ze niet op zichzelf te
+      decoderen zijn &mdash; je hebt de frames eromheen nodig. Alleen een
+      <strong>keyframe</strong> staat als compleet plaatje op zichzelf, en
+      keyframes liggen meestal een tot tien seconden uit elkaar.
+    </p>
+    <p>
+      Markeer je dus een knip twee seconden na het laatste keyframe, dan kan een
+      knipper die frames kopieert daar niet beginnen. De frames op je markering
+      zijn onleesbaar zonder de reeks die ernaartoe leidt. Hij moet het hele stuk
+      vanaf het keyframe vóór je markering meenemen.
+    </p>
+    <p>
+      Wat hij daaraan doet, is het interessante deel. Het bestandsformaat heeft
+      een standaardmanier om te zeggen <em>begin hier met afspelen</em> &mdash;
+      de extra frames zitten in het bestand, maar de container draagt de speler
+      op ze over te slaan. Elke gangbare speler respecteert dat, en het filmpje
+      begint precies waar jij zei. Een speler die het negeert begint eerder, tot
+      aan het keyframegat.
+    </p>
+    <p>
+      De tool hier zegt je vóór het exporteren in welk geval je zit en met
+      hoeveel, dus het is een beslissing in plaats van een verrassing.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wanneer je een hercodering accepteert</h2>
+    <p>
+      Er is een exacte knip, en die werkt door het openingsstuk opnieuw te
+      coderen &mdash; decoderen vanaf het keyframe, en een nieuwe reeks frames
+      wegschrijven die werkelijk begint waar jij markeerde. Hij is trager, en hij
+      kost een beetje kwaliteit, alleen op dat openingsstuk.
+    </p>
+    <p>
+      Kies hem wanneer het filmpje ergens heen gaat waar de instructie van de
+      container niet gerespecteerd wordt, of waar je de speler niet in de hand
+      hebt: sommige video-editors, sommige omroep- en vergadersystemen, sommige
+      oudere hardwarespelers. Kies de kopie voor al het andere, en dat is vrijwel
+      alles &mdash; een browser, een telefoon, een sociaal platform, een
+      mediaspeler.
+    </p>
+    <p>
+      Een derde optie die niets kost: verplaats je markering. Laat de tool je
+      zien waar de keyframes zitten, dan levert de knip naar het dichtstbijzijnde
+      schuiven je een exacte knip zonder ook maar te hercoderen. Het is zelden
+      een seconde verschil waard om een kopie op te geven.
+    </p>
+  </section>
+
+  <section>
+    <h2>Een stuk uit het midden halen</h2>
+    <p>
+      Een stuk eruit knippen is een andere handeling dan er een houden, en het is
+      het weten waard dat het ondersteund wordt, want veel knippers doen alleen
+      het tweede. Markeer het stuk dat je niet wilt, kies ervoor het eruit te
+      knippen, en wat aan weerszijden overblijft wordt tot één filmpje aan elkaar
+      gezet met het geluid gelijk mee.
+    </p>
+    <p>
+      De naad heeft dezelfde keyframebeperking op het punt waar de tweede helft
+      weer begint, om dezelfde reden. Het werkt hier op beide mp4-routes. Het is
+      het ene ding dat de opnameterugval hieronder niet kan, want een opname
+      wordt in één ronde vanaf één afspeelkop gemaakt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Formaten, en de terugval</h2>
+    <p>
+      <strong>Mp4, m4v en mov</strong> worden rechtstreeks gelezen, welke codec
+      er ook in zit &mdash; H.264, HEVC, AV1, VP9. Frames kopiëren houdt niet in
+      dat ze gedecodeerd worden, dus deze route werkt zelfs voor een codec
+      waarvoor je browser helemaal geen decoder heeft, en dat is een prettig
+      gevolg van niet naar de plaatjes kijken.
+    </p>
+    <p>
+      <strong>Al het andere dat je browser kan afspelen</strong>, WebM het meest
+      voor de hand liggend, wordt ingekort door het af te spelen en het resultaat
+      op te nemen. Dat werkt, en het heeft twee kosten: het duurt zo lang als het
+      stuk is, en beeld en geluid worden opnieuw gecodeerd.
+    </p>
+    <p>
+      <strong>Avi, wmv, flv en de meeste mkv's</strong> kan de browser niet lezen
+      en niet afspelen, en de tool zegt dat in plaats van halverwege te stranden.
+      Zet die eerst om naar mp4 met iets dat ze wel aankan.
+    </p>
+  </section>
+
+  <section>
+    <h2>Twee dingen die elders stilletjes misgaan</h2>
+    <p>
+      <strong>Draaiing.</strong> Een telefoon filmt liggend en schrijft een
+      draai-instructie in het bestand in plaats van de pixels te draaien. Een
+      knipper die frames kopieert moet die instructie meenemen, of je staande
+      filmpje komt er op zijn kant uit &mdash; en dat is de klassieke manier
+      waarop een ingekorte video verpest wordt. De exacte route hier draait de
+      frames terwijl hij ze hercodeert en schrijft een bestand dat helemaal geen
+      draaiing nodig heeft.
+    </p>
+    <p>
+      <strong>Geluidssynchronisatie.</strong> Audio en video worden als aparte
+      stromen met hun eigen timing opgeslagen, en ze worden niet op dezelfde
+      punten afgehakt. Worden de twee bij de knip niet met opzet uitgelijnd, dan
+      loopt het geluid weg. Op de kopieerroute hier wordt de audio monster voor
+      monster gekopieerd zonder gedecodeerd te worden, dus het is byte voor byte
+      wat er in het bestand zat, en een bewerkingsmarkering houdt hem tot op een
+      duizendste seconde gelijk met het beeld.
+    </p>
+  </section>
+
+  <section>
+    <h2>Inkorten is niet bijsnijden</h2>
+    <p>
+      Twee woorden die door elkaar gebruikt worden. Inkorten verandert de lengte
+      van het filmpje; bijsnijden verandert de vorm van het beeld. Wil je een
+      vierkante versie van een liggende video, of moeten de zwarte balken van de
+      zijkanten af, dan is dat de
+      <a href="../../video-bijsnijden/">Videobijsnijder</a> &mdash; en anders dan
+      inkorten moet die wel hercoderen, om de reden die
+      <a href="../een-video-bijsnijden/">de bijbehorende gids</a> uitlegt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom hier niets voor geüpload hoeft te worden &mdash; en juist hier niet</h2>
+    <p>
+      Video is het bestandstype waarvan mensen het meest verwachten dat het
+      geüpload moet worden, omdat de bestanden groot zijn en het werk zwaar
+      klinkt. Inkorten is het geval waarin dat het minst waar is: op de
+      kopieerroute wordt het bestand nauwelijks gelezen. De tool loopt de index
+      door, rekent uit welke bytebereiken hij houdt, en schrijft die weg. Een
+      bestand van vier gigabyte naar een server uploaden zodat die dat kan doen,
+      zou de traagst denkbare manier zijn om het te regelen.
+    </p>
+    <p>
+      Het is ook het bestandstype waarbij uploaden het meest kost als je dat
+      liever niet doet: video draagt gezichten, stemmen, huizen en locaties mee
+      op een manier die een document niet doet. De tool hier heeft geen enkele
+      netwerkfunctie, en de <code>Content-Security-Policy</code> van de pagina
+      noemt elk adres dat hij mag benaderen; geen ervan hoort bij deze site.
+    </p>
+    <p>
+      Trek de stekker uit het internet en kort er toch een in, als je liever
+      controleert dan het aanneemt.
+      <a href="../is-bestanden-uploaden-veilig/">Is het veilig om bestanden naar
+      online omzetters te uploaden?</a> zet er nog drie zulke controles op een
+      rij.
+    </p>
+  </section>

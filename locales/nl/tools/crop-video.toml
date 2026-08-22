@@ -1,0 +1,247 @@
+#
+# Videobijsnijder - Dutch.
+#
+# Overrides for tools/crop-video/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Videobijsnijder"
+# Het staartje is de zoekterm. Net als in het Engels blijft de productnaam de
+# luide helft.
+heading = "Video&nbsp;bijsnijden <span class=\"h1-kw\">&mdash; online een video bijsnijden</span>"
+tagline = "Snijd een filmpje terug tot het stuk waar het om gaat."
+
+title = "Online een video bijsnijden &mdash; gratis, zonder uploaden, werkt offline"
+description = "Snijd een mp4, mov of WebM bij naar elke vorm - vierkant, 9:16, of een exact pixelkader. Draait in je browser: niets geüpload, het geluid blijft, werkt offline."
+og_title = "Videobijsnijder &mdash; een filmpje bijsnijden zonder het te uploaden"
+og_description = "Sleep een kader over je filmpje en snijd het bij naar elke vorm. De frames worden op je eigen apparaat gedecodeerd en opnieuw gecodeerd, en het originele geluid gaat onaangeroerd mee."
+og_image_alt = "Videobijsnijder - een filmpje bijsnijden in je browser, zonder iets te uploaden"
+
+pledge = """
+    Elk frame wordt gedecodeerd, bijgesneden en gecodeerd door je eigen browser,
+    op je eigen hardware. Niets hier kan iets ophalen of versturen &mdash; er zit
+    helemaal geen netwerkfunctie in deze tool &mdash; en er staat aan de andere
+    kant van deze pagina geen server om een video heen te sturen, ook al was er
+    een weg."""
+
+live_hint = """
+      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
+      gaten en snijd een filmpje bij. Geen enkel verzoek draagt een frame, een
+      bestandsnaam of één byte van wat je koos. Of trek de stekker uit het
+      internet en snijd er toch een bij &mdash; een tool die je video wegstuurde
+      om hem te verwerken, zou domweg stoppen."""
+
+read_first = """
+, <code>src/demux.js</code> voor de lezer die de
+      frames in een mp4 vindt, en <code>src/transcode.js</code> voor de lus die
+      ze decodeert, bijsnijdt en codeert. Geen van beide importeert iets dat een
+      verzoek kan doen."""
+
+howto_heading = "Een video bijsnijden"
+
+card = """
+            Sleep een kader over een filmpje en snijd het terug naar die vorm
+            &mdash; vierkant voor een tijdlijn, staand voor een telefoon, of een
+            exact pixelkader."""
+
+[words]
+plural = "video's"
+choose = "een video"
+analytics_extra = """, en geen
+  frame, lengte of bijsnijdformaat"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Houdt het geluid"
+
+[[facts]]
+text = "Werkt offline"
+
+[[privacy]]
+title = "Je video's kunnen nergens heen."
+body = """
+ De
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen ervan hoort bij deze site. Er is hier geen eindpunt waar je bestand
+      verzameld zou kunnen worden, en niets in de code dat het zou versturen als
+      dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Deze tool heeft helemaal geen
+      netwerkfunctie: geen adres om te plakken, niets om te downloaden, geen
+      engine die bij het eerste gebruik opgehaald wordt. Elke byte die je video
+      aanraakt, kwam bij het laden van de pagina van deze herkomst."""
+
+[[privacy]]
+title = "Het decoderen en coderen gebeuren lokaal."
+body = """
+ De frames gaan door
+      WebCodecs in je eigen browser, of door dezelfde afspeelmotor die je het
+      filmpje toch al zou tonen. Het gereedgekomen bestand wordt op dit apparaat
+      in het geheugen opgebouwd en meteen aan een download doorgegeven."""
+
+[[privacy]]
+title = "Het geluid wordt gekopieerd, niet beluisterd."
+body = """
+ Op de mp4-route worden de
+      audiomonsters overgezet zonder ook maar gedecodeerd te worden &mdash; niets
+      hier maakt er ooit weer geluid van, en niets zou ze ergens heen kunnen
+      doorgeven als dat wel zo was."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je video mee:
+      geen bestand, geen frame, geen naam, geen grootte, geen lengte, en niet de
+      vorm waarnaar je bijsneed. Elke regel die leest, decodeert, bijsnijdt of
+      codeert, wordt vanaf deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat hij niet krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een
+      script van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts.
+      Het is een link en verder niets: hij meldt geen bezoek, en hij krijgt niets
+      over jou of je video mee."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles op deze
+      pagina doet het nog. Dat is het eenvoudigste bewijs van allemaal."""
+
+[[howto]]
+title = "Kies een video."
+body = """
+ Sleep een mp4, mov, m4v of WebM op het
+      keuzevak, of kies er een met de hand. De browser leest hem rechtstreeks van
+      je schijf; er wordt daarbij niets ergens heen gestuurd."""
+
+[[howto]]
+title = "Sleep het kader over het stuk dat je wilt houden."
+body = """
+ Sleep
+      binnen het kader om het te verplaatsen en aan een hoek om het formaat te
+      wijzigen. Zet het eerst vast op een vorm &mdash; 1:1 voor een vierkante
+      post, 9:16 voor een telefoon, 16:9 voor een breed beeld &mdash; of tik een
+      exact pixelkader in de vier velden eronder."""
+
+[[howto]]
+title = "Kies hoeveel kwaliteit je eraan uitgeeft."
+body = """
+ Het beeld moet
+      opnieuw gecodeerd worden, want een bijgesneden frame is een ander beeld.
+      &ldquo;In balans&rdquo; houdt het dicht bij wat het bestand al aan dat
+      gebied uitgaf; &ldquo;Beste kwaliteit&rdquo; geeft er meer aan uit. Het
+      geluid blijft, tenzij je het uitzet."""
+
+[[howto]]
+title = "Snijd het bij en download."
+body = """
+ Het werk gebeurt op je eigen
+      hardware, dus hoe lang het duurt hangt af van je apparaat en niet van een
+      wachtrij. De gereedgekomen video gaat rechtstreeks naar de downloads van je
+      browser."""
+
+[[faq]]
+q = "Wordt mijn video ergens heen geüpload?"
+a = """
+        Nee. Hij wordt gelezen, gedecodeerd, bijgesneden en gecodeerd door je
+        eigen browser op je eigen hardware. Deze tool heeft geen serverkant, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
+        mag benaderen &mdash; geen ervan hoort bij deze site. Trek de stekker uit
+        het internet en snijd er toch een bij, als je liever controleert dan het
+        aanneemt."""
+
+[[faq]]
+q = "Welke videoformaten kan ik bijsnijden?"
+a = """
+        Mp4, m4v en mov worden rechtstreeks gelezen, wat er ook in zit: H.264,
+        HEVC, AV1 of VP9, zolang je browser die codec kan decoderen. Al het andere
+        dat je browser kan afspelen &mdash; WebM het meest voor de hand liggend
+        &mdash; wordt in plaats daarvan bijgesneden door het af te spelen en het
+        resultaat op te nemen, wat werkt maar zo lang duurt als het filmpje is.
+        Een bestand dat de browser niet kan lezen en ook niet kan afspelen, in de
+        praktijk avi, wmv, flv en de meeste mkv's, wordt geweigerd met een melding
+        die dat zegt, in plaats van halverwege te stranden."""
+
+[[faq]]
+q = "Zit er een limiet op de grootte of lengte van de video?"
+a = """
+        In de tool zit geen limiet ingebouwd, en het bestand wordt niet in één
+        keer in het geheugen gelezen &mdash; er wordt een paar megabyte tegelijk
+        doorheen gelopen. Het praktische plafond is de gereedgekomen video, die in
+        het geheugen wordt opgebouwd voordat je hem downloadt, en de tijd die je
+        apparaat nodig heeft om hem te coderen."""
+
+[[faq]]
+q = "Blijft het geluid intact?"
+a = """
+        Op de mp4-route precies: de audio wordt monster voor monster overgezet
+        zonder ooit gedecodeerd te worden, dus het is byte voor byte wat er in het
+        bestand zat. Op de opnameroute wordt hij van de weergave opgevangen en
+        opnieuw gecodeerd, wat een beetje kwaliteit kost. Hoe dan ook is er een
+        vinkje om hem er helemaal uit te laten."""
+
+[[faq]]
+q = "Kost bijsnijden kwaliteit?"
+a = """
+        Het beeld wordt opnieuw gecodeerd, want een bijgesneden frame is een ander
+        beeld en er is geen manier om het op te slaan zonder de pixels opnieuw weg
+        te schrijven. Wat de tool niet doet, is meer uitgeven dan het origineel
+        aan datzelfde gebied uitgaf, want daarboven hercoderen maakt het bestand
+        alleen groter zonder het er beter uit te laten zien."""
+
+[[faq]]
+q = "Kan ik hem ook korter maken?"
+a = """
+        Hier niet, maar hiernaast wel. Deze tool verandert de vorm van het beeld
+        en verder niets: het filmpje dat eruit komt is precies zo lang als dat wat
+        erin ging, met zijn timing en zijn geluid intact. Inkorten is een aparte
+        klus en een aparte tool &mdash; de
+        <a href="../video-knippen/">Videoknipper</a> markeert de stukken van een
+        filmpje die het bewaren waard zijn en slaat ze op als één bestand, zonder
+        één frame opnieuw te coderen."""
+
+[[faq]]
+q = "Waarom gaan de breedte en hoogte met stappen van twee?"
+a = """
+        H.264, de codec in een mp4, slaat het beeld in blokken op en heeft geen
+        manier om een frame met een oneven aantal pixels op een zijde te
+        beschrijven. In plaats van je bijsnijding stilletjes af te ronden nadat je
+        hem hebt ingesteld, biedt het kader van meet af aan alleen even getallen
+        aan."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
+        geen watermerk. De site draagt advertenties, en die betalen hem; de
+        advertenties krijgen niets over je video mee."""
+
+[schema]
+browser_requirements = "Vereist JavaScript. Voor mp4-uitvoer is een browser met WebCodecs nodig; andere vallen terug op het opnemen van WebM."
+description = "Snijd een video in de browser bij naar elke vorm of een exact pixelkader. Mp4, mov en m4v worden frame voor frame gedecodeerd en opnieuw gecodeerd, met de originele audio onaangeroerd meegenomen; al het andere dat de browser kan afspelen wordt bijgesneden door het op te nemen. Er wordt niets geüpload."
+features = [
+  "Snijdt mp4-, mov-, m4v- en WebM-video bij",
+  "H.264-, HEVC-, AV1- en VP9-bronnen, gedecodeerd via WebCodecs",
+  "Vrij bijsnijden, vaste verhoudingen (1:1, 4:5, 9:16, 16:9, 4:3, 3:2) of een exact pixelkader",
+  "Houdt de originele audio zonder hem opnieuw te coderen",
+  "Draait offline; geen upload, geen account, geen watermerk",
+]
+
+[picker]
+title = "Sleep een video hierheen"
+hint = "of klik om te bladeren &mdash; mp4, mov, m4v, WebM, en al het andere dat deze browser afspeelt"

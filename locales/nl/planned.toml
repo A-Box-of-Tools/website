@@ -1,0 +1,73 @@
+#
+# De gepland-lijst op de roadmap - Dutch.
+#
+# Overrides for config/planned.toml. Only words: the group `id` stays as it is,
+# because that is what a tool's roadmap_group matches on, and the order of the
+# groups and of the items inside them is decided once, in English.
+#
+# Every group and every item has to be here. They are merged in order, so a
+# missing entry would render in English in the middle of a Dutch list with
+# nothing on the page to say which one it was - the build refuses a list whose
+# length has changed for exactly that reason.
+#
+
+note = "Nog niet gebouwd. Hier vermeld zodat je ziet waar dit heen gaat."
+
+[[group]]
+name = "Afbeeldingen"
+items = [
+  ["Draaien &amp; spiegelen", "kwartslagen, of een paar graden rechtzetten"],
+  ["Tekst toevoegen", "over de foto heen, of in een bijschrift erboven"],
+  ["Filters", "helderheid, contrast, verzadiging, vervaging, grijstinten"],
+  ["Afbeelding als data-URI", "het resultaat zo in je CSS of HTML plakken"],
+  ["HEIC naar JPG", "de foto's die een iPhone maakt, in een formaat dat alles opent"],
+  ["AVIF &amp; JPEG XL", "beide kanten op omzetten, in welke browser je ook zit"],
+]
+
+[[group]]
+name = "Gif &amp; animatie"
+items = [
+  ["Gif naar mp4 of WebM", "dezelfde animatie, meestal een tiende van de grootte"],
+  ["Een gif uit elkaar halen", "elk frame als eigen png"],
+  ["Gifs schalen, bijsnijden &amp; draaien", "frame voor frame, met de timing intact"],
+  ["Een gif omkeren", "het laatste frame eerst"],
+  ["Gif-snelheid wijzigen", "opnieuw timen zonder de frames opnieuw te renderen"],
+  ["Gif-analyse", "frames, vertragingen, palet, en waar de bytes heen zijn"],
+  ["APNG maken", "animatie met echte transparantie en volledige kleur"],
+  ["Bewegende WebP", "opnieuw dezelfde animatie, voor een fractie van de grootte"],
+]
+
+[[group]]
+name = "Video"
+items = [
+  ["Formaat wijzigen", "omlaag naar een grootte die er echt doorheen komt"],
+  ["Draaien", "voor het filmpje dat op z'n kant is opgenomen"],
+  ["Dempen, of het geluid bewaren", "het geluid weglaten, of het apart houden"],
+  ["Omzetten naar mp4 of WebM", "welke van de twee de site waarop je post ook eist"],
+  ["Filters", "helderheid, contrast, verzadiging, vervaging"],
+  ["Ondertiteling inbranden", "een srt-bestand vast in beeld getekend"],
+]
+
+[[group]]
+name = "Audio"
+items = [
+  ["Inkorten", "het stuk overhouden waar het je om ging"],
+  ["In- &amp; uitfaden", "zodat het niet tegen een muur begint en eindigt"],
+  ["Golfvorm als afbeelding", "een opname als plaatje tekenen"],
+  ["Formaat omzetten", "mp3, wav en Opus, alle kanten op"],
+]
+
+[[group]]
+name = "Documenten &amp; pdf"
+items = [
+  ["Samenvoegen, splitsen &amp; herordenen", "pagina's verschuiven zonder de omweg langs een server"],
+  ["Pagina's draaien &amp; bijsnijden", "een scan rechtzetten die scheef binnenkwam, of de marges eraf halen"],
+  ["Afbeeldingen eruit halen", "de plaatjes weer uit een document trekken"],
+]
+
+[[group]]
+name = "Verder dan media"
+items = [
+  ["Gegevens", "csv en json omzetten, opschonen, inspecteren"],
+  ["Privacy &amp; beveiliging", "hashes, controlegetallen, metagegevens wissen"],
+]

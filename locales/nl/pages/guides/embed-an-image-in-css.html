@@ -1,0 +1,316 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Open <a href="../../afbeelding-naar-base64/">Afbeelding naar data-URI</a>,
+      sleep het plaatje erin, kies <em>Een CSS custom property</em>, en plak de
+      regel boven aan je stylesheet. Gebruik hem daarna als
+      <code>background-image: var(--logo)</code> waar je hem nodig hebt.
+    </p>
+    <p>
+      Doe dat wanneer het plaatje klein is &mdash; een icoontje, een opsommingsteken,
+      een pijltje, een patroon &mdash; en op elke pagina nodig is. Doe het niet
+      met een foto. Alles hieronder gaat over waarom die twee zinnen verschillen,
+      en hoe je ziet naar welke van de twee je kijkt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat een data-URI eigenlijk is</h2>
+    <p>
+      Een adres dat het ding bevat in plaats van ernaar te wijzen. Waar een
+      stylesheet normaal zou zeggen
+    </p>
+    <pre><code>background-image: url("logo.png");</code></pre>
+    <p>
+      en de browser <code>logo.png</code> gaat ophalen, zegt een data-URI
+    </p>
+    <pre><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <p>
+      en valt er niets op te halen: het plaatje is er al, uitgeschreven in
+      tekens. Er zijn drie delen. <code>data:</code> is het schema.
+      <code>image/png</code> is het mediatype, en de browser gelooft dat
+      volledig &mdash; daarover hieronder meer. Alles na de komma is het bestand.
+    </p>
+    <p>
+      Dat is het hele idee. Het is geen truc of een hack; het staat sinds 1998 in
+      de standaarden en werkt in elke browser die sindsdien uitgekomen is.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat het je oplevert: één heen-en-weer minder</h2>
+    <p>
+      De besparing is geen bandbreedte. Het is het verzoek.
+    </p>
+    <p>
+      Een browser kan pas om <code>logo.png</code> vragen als hij de stylesheet
+      gelezen heeft die het noemt, en die stylesheet kan hij pas lezen als hij
+      hem opgehaald heeft. Een gewone achtergrondafbeelding zit dus minstens twee
+      heen-en-weren diep in het laden van de pagina, en op een telefoon op een
+      traag netwerk kan een heen-en-weer een paar honderd milliseconde zijn, hoe
+      klein het bestand ook is. Een pijltje van 600 bytes kost bijna niets om te
+      versturen en kan toch een kwart seconde kosten om aan te komen.
+    </p>
+    <p>
+      Ingesloten komt hij met de stylesheet mee. Dat is het hele voordeel, en
+      voor een klein icoontje boven de vouw is het een echt voordeel.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat het kost: een derde, en dan de caching</h2>
+    <p>
+      <strong>Base64 doet er ongeveer een derde bij.</strong> Drie bytes bestand
+      worden vier tekens, want dat is wat het kost om willekeurige bytes op te
+      schrijven met alleen de tekens die een URL toestaat. Er bestaat geen slimme
+      encoder die eromheen komt. Een png van 9 kB is 12 kB stylesheet.
+    </p>
+    <p>
+      <strong>Compressie geeft het niet terug.</strong> Dit is het stuk dat
+      mensen wegredeneren. Gzip en Brotli werken door herhaling te vinden, en een
+      png, een jpeg en een WebP zijn al gecomprimeerd &mdash; er zit heel weinig
+      herhaling meer in, en base64 voegt er geen toe. In de praktijk krijg je
+      zoiets als een tiende van die derde terug, niet het geheel. (Een svg is het
+      omgekeerde geval, en daar gaat het volgende deel over.)
+    </p>
+    <p>
+      <strong>Het houdt op een bestand te zijn.</strong> Dat is de kostenpost die
+      niet opduikt in enige meting die je waarschijnlijk doet, en het is degene
+      die op omvang telt:
+    </p>
+    <ul>
+      <li>
+        <strong>Hij kan niet los in de cache.</strong> Een gewone afbeelding
+        wordt één keer opgehaald en een jaar lang hergebruikt. Een ingesloten is
+        onderdeel van de stylesheet, dus hij leeft en sterft met het
+        cache-item van die stylesheet.
+      </li>
+      <li>
+        <strong>Iets veranderen downloadt alles opnieuw.</strong> Herstel een
+        marge, lever een nieuwe stylesheet uit, en elke bezoeker downloadt het
+        ingesloten plaatje er weer bij &mdash; een plaatje dat in twee jaar niet
+        veranderd is.
+      </li>
+      <li>
+        <strong>Hij staat op het kritieke pad.</strong> Een stylesheet blokkeert
+        het renderen. Een afbeelding niet. Een plaatje insluiten verplaatst het
+        van de tweede categorie naar de eerste: de pagina kan niet tekenen tot
+        het geheel, plaatje inbegrepen, is aangekomen.
+      </li>
+      <li>
+        <strong>Hij kan niet parallel opgehaald worden.</strong> Browsers
+        downloaden veel dingen tegelijk. Een ingesloten plaatje is geen apart
+        ding, dus daar krijgt het niets van mee.
+      </li>
+    </ul>
+    <p>
+      Ruwe drempels, die aangeven waar het advies verandert en niet waar een
+      browser iets anders doet: onder ongeveer 2 kB is het een duidelijke winst;
+      tot zo'n 10 kB is het meestal nog de moeite waard voor iets dat op elke
+      pagina staat; voorbij 50 kB is het een vergissing zonder foutmelding.
+      <a href="../../afbeelding-naar-base64/">De tool</a> zegt in welke band elk
+      resultaat valt, met het aantal tekens ernaast.
+    </p>
+  </section>
+
+  <section>
+    <h2>Maak nooit base64 van een svg</h2>
+    <p>
+      Dit is veruit de meest voorkomende fout bij ingesloten afbeeldingen, en hij
+      wordt door exporteurs en bouwplug-ins net zo vaak gemaakt als door mensen.
+    </p>
+    <p>
+      Een svg is tekst. Een URL draagt tekst al. Er hoeft maar een handvol tekens
+      ontsnapt te worden &mdash; <code>%</code>, <code>#</code>,
+      <code>&lt;</code>, <code>&gt;</code> en het aanhalingsteken waar je hem in
+      gezet hebt &mdash; en al het andere kan precies blijven zoals het is. Zo
+      coderen levert een URI op die meestal zo'n vijfde korter is dan de base64
+      van hetzelfde bestand, en die daarna comprimeert als tekst in plaats van
+      als ruis.
+    </p>
+    <p>
+      Hij is bovendien nog leesbaar:
+    </p>
+    <pre><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <p>
+      Je ziet de <code>viewBox</code>. Je kunt de vulkleur in je editor wijzigen
+      zonder iets te decoderen. Maak van hetzelfde bestand base64 en het wordt een
+      muur van letters die niemand ooit nog aanraakt.
+      <a href="../../afbeelding-naar-base64/">Afbeelding naar data-URI</a> doet
+      dit automatisch voor alles wat een svg blijkt te zijn, en heeft een vinkje
+      voor de zeldzame toolchain die op <code>;base64</code> staat.
+    </p>
+  </section>
+
+  <section>
+    <h2>De aanhalingsfout die alleen svg's breekt</h2>
+    <p>
+      CSS laat je <code>url()</code> zonder aanhalingstekens schrijven, en voor
+      een gewone bestandsnaam is dat prima:
+    </p>
+    <pre><code>background-image: url(logo.png);</code></pre>
+    <p>
+      Doe hetzelfde met een procentgecodeerde svg en het breekt. Een
+      <code>url()</code>-token zonder aanhalingstekens eindigt bij de eerste
+      spatie, haakje, aanhalingsteken of stuurteken &mdash; en een svg zit vol
+      spaties, tussen elk attribuut en elk getal in een pad. De declaratie is dan
+      ongeldig, CSS gooit ongeldige declaraties stilletjes weg, en je krijgt geen
+      achtergrond en geen foutmelding.
+    </p>
+    <p>
+      De oplossing is aanhalingstekens, elke keer:
+    </p>
+    <pre><code>background-image: url("data:image/svg+xml,%3Csvg ... %3E");</code></pre>
+    <p>
+      Dat is ook waarom een encoder spaties niet hoeft te ontsnappen &mdash; die
+      zijn volstrekt legaal binnen een URL tussen aanhalingstekens, en elke spatie
+      als <code>%20</code> ontsnappen zou drie tekens kosten per spatie in het
+      bestand. De twee beslissingen horen bij elkaar: zet de URI tussen
+      aanhalingstekens en je kunt de spaties met rust laten. Elke vorm die de tool
+      oplevert staat precies daarom tussen aanhalingstekens.
+    </p>
+  </section>
+
+  <section>
+    <h2>Het mediatype moet kloppen</h2>
+    <p>
+      Een data-URI geeft zijn eigen type op, en de browser gelooft hem op zijn
+      woord. Er is geen terugval op snuffelen zoals bij een opgehaald bestand:
+      zeg <code>image/png</code> over iets dat in werkelijkheid een jpeg is en
+      het plaatje verschijnt niet, zonder een melding op enige nuttige plek.
+    </p>
+    <p>
+      En dat telt, want bestandsextensies liegen. Een foto die als jpeg
+      geëxporteerd is en <code>logo.png</code> hernoemd, is een gewoon ding om op
+      een schijf tegen te komen. De eerste paar bytes van een afbeeldingsbestand
+      zeggen daarentegen ondubbelzinnig wat het is &mdash; elk formaat heeft een
+      handtekening &mdash; dus een tool hoort het bestand te lezen en niet zijn
+      naam. Die hier doet dat, en zegt het je wanneer de twee het oneens zijn.
+    </p>
+    <p>
+      Twee formaten zijn het weten waard omdat ze op een verwarrende manier
+      falen. <strong>HEIC</strong>, waarin een iPhone fotografeert, en
+      <strong>TIFF</strong>, wat scanners opleveren, maken allebei volkomen
+      geldige data-URI's die geen enkele browser behalve Safari wil tekenen. De
+      URI is niet kapot; het formaat is domweg niet een dat het web ondersteunt.
+      Zet eerst om.
+    </p>
+  </section>
+
+  <section>
+    <h2>De metagegevens die je niet wilde publiceren</h2>
+    <p>
+      Een data-URI is een kopie van het bestand, byte voor byte. Er wordt niets
+      gedecodeerd en hercodeerd, wat meestal juist de bedoeling is &mdash; er gaat
+      geen kwaliteit verloren &mdash; maar het betekent ook dat al het andere in
+      het bestand meekomt.
+    </p>
+    <p>
+      Een foto die zo van een telefoon komt draagt EXIF mee: de gps-coördinaten
+      van waar hij genomen is, de tijdstempel, het cameramodel en vaak het
+      serienummer. Dat kan 30 kB van het bestand zijn. Ingesloten wordt het 40 kB
+      base64 in je stylesheet, op het kritieke pad van elke pagina &mdash; en een
+      woonadres dat naar een repository gecommit wordt, in een vorm waar niemand
+      ooit aan denkt te kijken.
+    </p>
+    <p>
+      Haal het er eerst uit met de
+      <a href="../../exif-gegevens-verwijderen/">EXIF-lezer &amp; -wisser</a>,
+      die de container herschrijft zonder het plaatje aan te raken; daar is ook
+      <a href="../exif-en-gps-gegevens-verwijderen/">een gids voor</a>.
+      Afbeelding naar data-URI leest hoeveel metagegevens er in een jpeg, png of
+      WebP zitten en zegt het voordat je iets kopieert.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waar je hem zet, als je hem eenmaal hebt</h2>
+    <p>
+      Komt het plaatje in één regel voor, zet de URI dan in die regel. Komt het in
+      meer dan één voor &mdash; en bij icoontjes is dat meestal zo, zodra je de
+      hover-toestand en het donkere thema meetelt &mdash; declareer hem dan één
+      keer als custom property:
+    </p>
+    <pre><code>:root {
+  --icon-search: url("data:image/svg+xml,%3Csvg ... %3E");
+}
+
+.search-field { background-image: var(--icon-search); }
+.search-button::before { content: var(--icon-search); }</code></pre>
+    <p>
+      Een URI van 3 kB die in vier regels geplakt is, is 12 kB stylesheet en vier
+      plekken om te bewerken wanneer het icoon verandert. De custom property is
+      één van elk. Het is ook de vorm die themawisseling laat werken: herdefinieer
+      <code>--icon-search</code> binnen een mediaquery en elk gebruik ervan
+      volgt.
+    </p>
+    <p>
+      Voor een <code>&lt;img&gt;</code>-tag in plaats van CSS: zet er
+      <code>width</code> en <code>height</code> bij. Een ingesloten afbeelding
+      laadt ogenblikkelijk, dus een ontbrekend formaat is een layoutverschuiving
+      die te snel gaat om te zien en die toch tegen je telt. De uitzondering is
+      svg: een die alleen een <code>viewBox</code> meedraagt heeft zelf geen
+      pixelformaat, en de standaard 300&times;150 van de browser op de tag zetten
+      pint een schaalbaar plaatje vast op een formaat dat niemand gekozen heeft.
+    </p>
+    <p>
+      Laat de <code>alt</code> leeg tenzij je er iets waars in te zetten hebt.
+      Alleen jij weet of het plaatje betekenis draagt of versiering is, en een
+      beschrijving die uit een bestandsnaam geraden is, is voor iemand met een
+      schermlezer erger dan helemaal geen beschrijving.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wanneer het antwoord &ldquo;niet doen&rdquo; is</h2>
+    <p>
+      Is het plaatje gecodeerd groter dan ongeveer 50 kB, dan is insluiten het
+      verkeerde gereedschap en lost geen enkele zorgvuldigheid bij het coderen dat
+      op. De alternatieven, op volgorde van proberen:
+    </p>
+    <ul>
+      <li>
+        <strong>Maak het kleiner.</strong> De meeste afbeeldingen die te groot
+        zijn om in te sluiten, zijn sowieso te groot. De
+        <a href="../../afbeelding-comprimeren/">Afbeeldingscompressor</a> brengt
+        een foto naar een grootte die jij noemt, en
+        <a href="../../afbeelding-formaat-wijzigen/">Afbeeldingsformaat
+        wijzigen</a> brengt de pixelafmetingen terug tot wat de opmaak werkelijk
+        gebruikt &mdash; en dat is heel vaak het echte probleem.
+      </li>
+      <li>
+        <strong>Teken het opnieuw als svg.</strong> Een icoontje dat als png van
+        40 kB geëxporteerd is, is vaak een svg van 900 bytes. Dat is geen
+        compressieverschil maar een formaatverschil, en het lost meteen het
+        retinaprobleem op.
+      </li>
+      <li>
+        <strong>Laat het een bestand en laad het vooruit.</strong>
+        <code>&lt;link rel="preload" as="image"&gt;</code> start het ophalen
+        meteen zonder de bytes op het kritieke pad te zetten. Het levert het
+        meeste voordeel van insluiten op en niets van de cachekosten.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Hier hoeft niets voor geüpload te worden</h2>
+    <p>
+      Een bestand als base64 coderen is rekenen. Het zijn twee functies die de
+      browser al sinds het begin heeft &mdash; <code>btoa</code> en
+      <code>encodeURIComponent</code> &mdash; en er is werkelijk geen technische
+      reden voor een plaatje om naar een server en terug te reizen om anders
+      opgeschreven te worden. Elke omzetter die je bestand daarvoor uploadt,
+      uploadt het om zijn eigen redenen en niet om die van jou.
+    </p>
+    <p>
+      <a href="../../afbeelding-naar-base64/">De tool hier</a> stuurt het nergens
+      heen: de <code>Content-Security-Policy</code> van de pagina noemt elk adres
+      dat hij mag benaderen, en geen ervan hoort bij deze site. Laad de pagina,
+      trek de stekker uit het internet, en codeer er toch iets, als je liever
+      controleert dan het aanneemt.
+      <a href="../is-bestanden-uploaden-veilig/">Is het veilig om bestanden naar
+      online omzetters te uploaden?</a> zet nog drie controles op een rij die je
+      op elke tool kunt loslaten.
+    </p>
+  </section>

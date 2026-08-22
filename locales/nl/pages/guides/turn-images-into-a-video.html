@@ -1,0 +1,193 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Open <a href="../../afbeeldingen-naar-video/">Afbeeldingen naar video</a>,
+      sleep de plaatjes erin, zet ze op volgorde, stel in hoe lang elk wordt
+      vastgehouden, en maak de video. Je krijgt een mp4 met H.264-video, die
+      vrijwel overal afspeelt.
+    </p>
+    <p>
+      De twee instellingen die het vaakst een tweede ronde nodig hebben zijn de
+      duur en de resolutie, en die zijn het begrijpen waard vóór de eerste render
+      in plaats van erna.
+    </p>
+  </section>
+
+  <section>
+    <h2>Beeldsnelheid en duur zijn niet hetzelfde</h2>
+    <p>
+      Dit is de verwarring die mensen een nieuwe render kost.
+    </p>
+    <p>
+      <strong>Duur</strong> is hoe lang elk plaatje in beeld blijft. Dat is de
+      instelling waar het je werkelijk om gaat. Drie seconden is een prettige
+      standaard voor een diavoorstelling waar iemand naar kijkt; één tot twee
+      seconden voelt kwiek; alles boven de vijf sleept, tenzij er commentaar
+      overheen ligt.
+    </p>
+    <p>
+      <strong>Beeldsnelheid</strong> is hoe vaak per seconde de video dat plaatje
+      herhaalt. Het verandert niets aan hoe de diavoorstelling eruitziet &mdash;
+      een stilstaand beeld dat drie seconden blijft, ziet er op 24 beelden per
+      seconde precies zo uit als op 60 &mdash; en het verandert de
+      bestandsgrootte en de codeertijd behoorlijk.
+    </p>
+    <p>
+      Kies voor een gewone diavoorstelling dus een lage beeldsnelheid. 24 of 30
+      is ruim voldoende. De reden om hoger te gaan is beweging in de video: een
+      pan of zoom over elke foto, of een overvloeier ertussen, waar een lage
+      beeldsnelheid als zichtbaar stappen te zien is.
+    </p>
+  </section>
+
+  <section>
+    <h2>Resolutie, en plaatjes van de verkeerde vorm</h2>
+    <p>
+      Een video heeft één beeldformaat voor zijn hele lengte. Je foto's delen dat
+      vrijwel zeker niet allemaal, dus er moet iets gebeuren met degene die niet
+      passen &mdash; en dat iets is de keuze die je met opzet hoort te maken.
+    </p>
+    <p>
+      Begin met de resolutie kiezen op basis van waar de video heen gaat:
+    </p>
+    <ul>
+      <li>
+        <strong>1920&times;1080</strong> voor alles wat algemeen is. Overal
+        ondersteund, speelt overal, en het is wat de meeste mensen met hd
+        bedoelen.
+      </li>
+      <li>
+        <strong>1080&times;1920</strong> &mdash; dezelfde getallen andersom
+        &mdash; voor een bestemming waar de telefoon voorop staat: verhalen,
+        reels, shorts.
+      </li>
+      <li>
+        <strong>3840&times;2160</strong> alleen als de plaatjes werkelijk zoveel
+        detail hebben en de bestemming het gaat tonen. Het is vier keer zoveel
+        pixels, vier keer de codeertijd, en ruwweg vier keer het bestand.
+      </li>
+    </ul>
+    <p>
+      Beslis daarna wat er met de afwijkers gebeurt. Elk plaatje binnen het beeld
+      passen houdt het geheel en laat balken aan de zijkanten &mdash; veilig, en
+      het juiste antwoord wanneer de plaatjes zwaarder wegen dan de presentatie.
+      Het beeld vullen en de overloop afsnijden ziet er beter uit en snijdt bij
+      een paar de bovenkant eraf. Staande en liggende foto's in één video mengen
+      is het geval waar geen goed antwoord bestaat; van tevoren beslissen welke
+      kant je liever fout zit, scheelt een nieuwe render.
+    </p>
+  </section>
+
+  <section>
+    <h2>Volgorde, en de bestandsnaamval</h2>
+    <p>
+      Zoals bij elke stapelklus sorteren bestandsnamen op een manier die niet de
+      manier is waarop jij telde. <code>foto2.jpg</code> komt in een alfabetische
+      sortering ná <code>foto10.jpg</code>, omdat er teken voor teken vergeleken
+      wordt.
+    </p>
+    <p>
+      Sorteren op opnamedatum klopt meestal voor foto's van een gebeurtenis,
+      omdat je ze genomen hebt in de volgorde waarin ze gebeurden. De tegels
+      slepen klopt voor alles waar het verhaal niet chronologisch is. Controleer
+      het vóór je rendert: de video is het ene product waarbij de volgorde
+      herstellen betekent dat je de hele klus opnieuw doet.
+    </p>
+  </section>
+
+  <section>
+    <h2>Er zit geen geluidsspoor in, en dat is niet niks</h2>
+    <p>
+      De mp4 die deze tool schrijft heeft één videospoor en helemaal geen
+      audiospoor. Heeft je diavoorstelling muziek of commentaar nodig, dan heb je
+      voor die stap een video-editor nodig.
+    </p>
+    <p>
+      Het is het weten waard waarom, en niet alleen dát: audio toevoegen betekent
+      een muziekbestand decoderen, het naar AAC coderen, en het in de container
+      met de video verweven. Alle drie zijn echt werk, en ze slecht doen levert
+      een bestand op dat tijdens het afspelen uit de pas gaat lopen. Het staat op
+      de lijst in plaats van half af te zijn.
+    </p>
+    <p>
+      Een praktische opmerking als je er achteraf muziek onder zet: kies eerst
+      het nummer en stel de duur per plaatje zo in dat de diavoorstelling dicht
+      bij de lengte van het liedje uitkomt. De muziek inkorten om bij de video te
+      passen klinkt altijd slechter dan de video op de muziek passen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat eruit komt, en wat je doet als het niet afspeelt</h2>
+    <p>
+      Mp4 met H.264 is het doel, en dat is de breedst afspeelbare combinatie die
+      er is. In een browser zonder WebCodecs valt de tool terug op het opnemen
+      van WebM &mdash; hetzelfde beeld in een container die minder editors en
+      sociale platforms accepteren.
+    </p>
+    <p>
+      Kom je met een WebM te zitten en weigert iets hem, dan is de oplossing een
+      browser met WebCodecs in plaats van een omzetting: huidige versies van
+      Chrome, Edge en Safari hebben het alle drie. Opnieuw renderen is beter dan
+      omzetten, want omzetten betekent nog een generatie verliesgevende codering.
+    </p>
+    <p>
+      In de tool zit geen limiet op hoeveel plaatjes je kunt gebruiken. Het
+      plafond is het geheugen van je eigen apparaat, want de gereedgekomen video
+      wordt daar opgebouwd voordat je hem downloadt &mdash; een lange
+      4K-diavoorstelling is het eerste wat dat merkt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Het bestand kleiner maken</h2>
+    <p>
+      Is het resultaat te groot voor waar het heen gaat, dan op volgorde van wat
+      werkelijk helpt:
+    </p>
+    <p>
+      <strong>Verlaag de beeldsnelheid.</strong> Bij een stilstaande
+      diavoorstelling kost dit niets zichtbaars en is het de grootste enkele
+      besparing die er te halen valt.
+    </p>
+    <p>
+      <strong>Verlaag de resolutie.</strong> 1080p in plaats van 4K is een kwart
+      van de pixels, en op een telefoonscherm merkt niemand het.
+    </p>
+    <p>
+      <strong>Maak hem korter.</strong> Drie seconden per plaatje in plaats van
+      vijf is 40% van de lengte eraf en 40% van het bestand eraf, en meestal een
+      betere diavoorstelling.
+    </p>
+    <p>
+      De bronfoto's eerst verkleinen helpt niet veel. De video wordt hoe dan ook
+      op de resolutie gecodeerd die jij koos, dus een foto van 4000 pixels en een
+      van 2000 leveren in een 1080p-video vrijwel hetzelfde aantal bytes op. Het
+      maakt het coderen wel sneller, en het schuift dat geheugenplafond op.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom hier geen server voor nodig is, met één uitzondering erbij gezegd</h2>
+    <p>
+      Video coderen was ooit het duidelijkste geval voor uploaden: browsers
+      konden het niet en een machine met FFmpeg wel. WebCodecs heeft dat
+      veranderd door de hardware-encoder bloot te leggen die al in je apparaat
+      zit, en dat is dezelfde die je telefoon gebruikt om live video op te nemen.
+      De frames samenstellen is een canvas. Geen van beide stappen heeft iets
+      anders nodig dan je eigen hardware.
+    </p>
+    <p>
+      Eén uitzondering bij deze tool, hardop gezegd in plaats van weggemoffeld:
+      de optionele functie &ldquo;toevoegen vanaf een webadres&rdquo; haalt een
+      afbeelding op bij een adres dat jij erin plakt, en de server op dat adres
+      ziet je IP en wat je opvroeg. Dat hoort bij de functie in plaats van dat
+      het een gebrek is, en het is de enige netwerkstap in de hele tool. Gebruik
+      je hem niet, dan verlaat er helemaal niets je apparaat.
+    </p>
+    <p>
+      <a href="../is-bestanden-uploaden-veilig/">Is het veilig om bestanden naar
+      online omzetters te uploaden?</a> zet vier controles op een rij die je
+      hetzelfde vertellen over elke tool, deze inbegrepen.
+    </p>
+  </section>

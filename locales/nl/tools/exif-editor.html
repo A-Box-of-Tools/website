@@ -1,0 +1,150 @@
+<main>
+  <!-- Stap 1 &mdash; de bestanden -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies foto's</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Alles van de lijst halen</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; de ene klik -->
+  <section class="card" id="strip-card">
+    <h2><span class="step">2</span> Haal alles eruit</h2>
+
+    <p class="card-lede">
+      Eén knop, elke foto op de lijst. Het plaatje wordt niet gedecodeerd, niet
+      opnieuw getekend en niet opnieuw gecomprimeerd &mdash; de gecomprimeerde
+      beeldgegevens gaan onaangeroerd mee en alleen de metagegevens eromheen
+      vallen weg, dus het resultaat is dezelfde foto met niets eraan vast.
+    </p>
+
+    <div class="strip-row">
+      <button type="button" id="strip-all" class="primary big" disabled>Alle metagegevens verwijderen</button>
+      <span id="strip-status" class="strip-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Two things are kept by default, and both are stated on the button's own
+      line rather than buried in a settings panel. "Remove all" that quietly
+      keeps things is a broken promise; "remove all except these two, and here
+      they are" is a choice.
+    -->
+    <fieldset class="keep-options">
+      <legend>Wat er blijft</legend>
+      <label class="check">
+        <input type="checkbox" id="keep-orientation" checked>
+        <span>
+          <strong>De oriëntatietag</strong>
+          <span class="check-note">
+            Telefoons bewaren een foto zoals de sensor hem zag en voegen één tag toe
+            die zegt welke kant boven is. Haal die eruit en sommige kijkers tonen hem
+            op zijn kant. Blijft hij, dan wordt er een nieuw EXIF-blok geschreven met
+            deze tag en verder niets &mdash; en alleen wanneer de foto niet al
+            rechtop stond.
+          </span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keep-icc" checked>
+        <span>
+          <strong>Het kleurprofiel</strong>
+          <span class="check-note">
+            Het ICC-profiel zegt wat de getallen in het plaatje als kleur betekenen.
+            Over jou zegt het niets. Het weglaten kan de kleuren van een foto met een
+            breed gamma zichtbaar verschuiven, en daarom blijft het staan tenzij je
+            anders zegt.
+          </span>
+        </span>
+      </label>
+      <p class="keep-summary" id="keep-summary"></p>
+    </fieldset>
+
+    <div id="clean-results" class="results" hidden>
+      <div class="results-head">
+        <h3>Schoongemaakt</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Alles als zip downloaden</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!-- Stap 3 &mdash; lezen en bewerken -->
+  <section class="card" id="inspect-card">
+    <h2><span class="step">3</span> Kijk erin, en verander wat je wilt</h2>
+
+    <p id="inspect-empty" class="empty-note">
+      Kies hierboven een foto en alles wat erin zit verschijnt hier: wat hij zegt
+      over waar je was, wanneer, en waarmee. Er wordt niets ergens heen gestuurd
+      om dat uit te zoeken.
+    </p>
+
+    <div id="inspector" hidden>
+      <div class="inspect-head">
+        <div class="inspect-file">
+          <img id="inspect-thumb" class="inspect-thumb" alt="" hidden>
+          <div>
+            <p class="inspect-name" id="inspect-name"></p>
+            <p class="inspect-sub" id="inspect-sub"></p>
+          </div>
+        </div>
+        <div class="inspect-switch">
+          <label for="inspect-select" class="visually-hidden">Welke foto je bekijkt</label>
+          <select id="inspect-select"></select>
+        </div>
+      </div>
+
+      <!-- The findings: the part of this page that answers the actual question. -->
+      <section class="findings" aria-labelledby="findings-h">
+        <h3 id="findings-h">Wat dit bestand prijsgeeft</h3>
+        <ul id="findings-list" class="findings-list"></ul>
+      </section>
+
+      <!-- Whole blocks, each removable on its own. -->
+      <section class="blocks" aria-labelledby="blocks-h">
+        <h3 id="blocks-h">Blokken in dit bestand</h3>
+        <ul id="block-list" class="block-list"></ul>
+      </section>
+
+      <!-- Every tag, editable. -->
+      <section class="tags" aria-labelledby="tags-h">
+        <h3 id="tags-h">Elke tag</h3>
+        <p class="tags-note" id="tags-note"></p>
+        <div id="tag-groups"></div>
+
+        <details class="add-tag" id="add-tag">
+          <summary>Een tag toevoegen</summary>
+          <div class="add-tag-body">
+            <label for="add-tag-select">Tag</label>
+            <select id="add-tag-select"></select>
+            <label for="add-tag-value">Waarde</label>
+            <input type="text" id="add-tag-value" spellcheck="false">
+            <button type="button" id="add-tag-go" class="ghost">Toevoegen</button>
+          </div>
+        </details>
+      </section>
+
+      <div class="save-row">
+        <button type="button" id="save-edits" class="primary" disabled>Deze foto opslaan</button>
+        <button type="button" id="revert-edits" class="ghost" disabled>Mijn wijzigingen ongedaan maken</button>
+        <span id="save-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+      <p id="edit-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+</main>

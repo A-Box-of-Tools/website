@@ -1,0 +1,286 @@
+#
+# Audiobewerker - Dutch.
+#
+# Overrides for tools/edit-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Audiobewerker"
+# Het staartje is de zoekterm. Net als in het Engels blijft de productnaam de
+# luide helft.
+heading = "Audio&nbsp;bewerken <span class=\"h1-kw\">&mdash; omkeren, versnellen of versterken</span>"
+tagline = "Achterstevoren afspelen, de snelheid wijzigen, een zachte opname optillen &mdash; allemaal hier, op je eigen apparaat."
+
+title = "Audio omkeren, snelheid wijzigen &amp; volume optillen &mdash; gratis, zonder uploaden"
+description = "Speel een opname achterstevoren af, maak hem sneller of langzamer, en maak een zachte opname harder. Haalt ook het geluid uit een video. Draait in je browser: niets geüpload."
+og_title = "Audiobewerker &mdash; omkeren, hertimen en versterken zonder iets te uploaden"
+og_description = "Keer een opname om, wijzig de snelheid met of zonder de toonhoogte mee te nemen, en zet het niveau &mdash; download daarna een wav. Het bestand wordt door je eigen browser gelezen en geschreven."
+og_image_alt = "Audiobewerker - audio omkeren, hertimen en versterken in je browser"
+
+pledge = """
+    Je bestand wordt gelezen, bewerkt en geschreven door je eigen browser, op je
+    eigen hardware. Niets hier kan iets ophalen of versturen &mdash; er zit
+    helemaal geen netwerkfunctie in deze tool &mdash; en er staat aan de andere
+    kant van deze pagina geen server om een opname heen te sturen, ook al was er
+    een weg."""
+
+live_hint = """
+      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
+      gaten en keer iets om. Geen enkel verzoek draagt een sample, een
+      bestandsnaam of één byte van wat je koos. Of trek de stekker uit het
+      internet en bewerk toch een opname &mdash; een tool die je audio wegstuurde
+      om hem te verwerken, zou domweg stoppen."""
+
+read_first = """
+, <code>src/decode.js</code> voor de twintig regels
+      die je bestand aan de eigen decoder van de browser geven,
+      <code>src/stretch.js</code> voor het uitrekken in de tijd,
+      <code>src/speed.js</code> voor de resampler, en <code>src/wav.js</code>
+      voor de kop die vóór de samples komt. Geen ervan importeert iets dat een
+      verzoek kan doen."""
+
+howto_heading = "Een audiobestand bewerken"
+
+card = """
+            Keer een opname om, wijzig de snelheid met of zonder de toonhoogte
+            mee te nemen, en til een zachte opname op. Haalt ook het geluid uit
+            een video."""
+
+[words]
+plural = "opnames"
+choose = "een bestand"
+analytics_extra = """, en geen
+  golfvorm, lengte of niveau"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Video erin, audio eruit"
+
+[[facts]]
+text = "Werkt offline"
+
+[[privacy]]
+title = "Je opnames kunnen nergens heen."
+body = """
+ De
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen ervan hoort bij deze site. Er is hier geen eindpunt waar je bestand
+      verzameld zou kunnen worden, en niets in de code dat het zou versturen als
+      dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Deze tool heeft helemaal geen
+      netwerkfunctie: geen adres om te plakken, niets om te downloaden, geen
+      engine die bij het eerste gebruik opgehaald wordt. Elke byte die je audio
+      aanraakt, kwam bij het laden van de pagina van deze herkomst."""
+
+[[privacy]]
+title = "De decoder is die je al in je browser hebt."
+body = """
+
+      Het bestand wordt aan <code>decodeAudioData</code> gegeven, dezelfde code
+      die een nummer afspeelt in een <code>&lt;audio&gt;</code>-element. Er wordt
+      hier niets meegeleverd om jouw formaat te lezen, en er wordt ook niets
+      buiten deze pagina om gevraagd om het te lezen."""
+
+[[privacy]]
+title = "Het beeld van een video wordt helemaal nooit gedecodeerd."
+body = """
+ Sleep je een video naar
+      binnen, dan wordt alleen om de audiospoor gevraagd. De frames worden niet
+      gelezen, niet gedecodeerd, niet getekend en niet bekeken &mdash; er staat
+      geen code op deze pagina die dat zou kunnen, en het bestand dat eruit komt
+      bevat geluid en verder niets."""
+
+[[privacy]]
+title = "De samples worden opgeschreven, niet opnieuw gecodeerd."
+body = """
+
+      Een wav is de samples die deze pagina uitrekende, met een kop ervoor. Er
+      zit geen encoder in de lus die beslissingen over je opname neemt, en er is
+      niets wat een upload genoemd zou kunnen worden waarop dat zou moeten
+      gebeuren."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je opname
+      mee: geen bestand, geen sample, geen naam, geen grootte, geen lengte, en
+      niet hoe hard hij was. Elke regel die leest, bewerkt en schrijft, wordt
+      vanaf deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat hij niet krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een
+      script van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts.
+      Het is een link en verder niets: hij meldt geen bezoek, en hij krijgt niets
+      over jou of je bestand mee."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles op deze
+      pagina doet het nog. Dat is het eenvoudigste bewijs van allemaal."""
+
+[[howto]]
+title = "Kies een bestand."
+body = """
+ Sleep een mp3-, wav-, flac-, m4a-,
+      Ogg- of Opus-bestand op het keuzevak &mdash; of een video, als het je om
+      het geluid daaruit te doen is. De browser leest het rechtstreeks van je
+      schijf; er wordt daarbij niets ergens heen gestuurd."""
+
+[[howto]]
+title = "Draai hem om, als je daarvoor kwam."
+body = """
+ Eén vinkje.
+      De samples worden achterstevoren weggeschreven, wat precies omkeerbaar is:
+      doe het twee keer en je hebt het bestand terug waarmee je begon, sample
+      voor sample."""
+
+[[howto]]
+title = "Zet de snelheid."
+body = """
+ Sleep de schuif, tik een factor in, of druk
+      op een van de voorkeuzes. Kies daarna wat er met de toonhoogte gebeurt: hou
+      hem waar hij is, wat je wilt bij een college op 1,5&times;, of laat hem
+      meebewegen met de snelheid, wat een bandje doet en wat een stem hoger of
+      lager maakt."""
+
+[[howto]]
+title = "Zet het niveau."
+body = """
+ Noem een verandering in decibel, of vraag of
+      de opname opgetild mag worden tot het luidste moment net onder het plafond
+      zit. De pagina vertelt waar dat moment gaat landen voordat je op iets
+      drukt, en waarschuwt je als de gekozen instelling het voorbij volle schaal
+      zou duwen."""
+
+[[howto]]
+title = "Sla hem op."
+body = """
+ Het werk gebeurt op je eigen hardware, dus hoe
+      lang het duurt hangt af van je apparaat en niet van een wachtrij. Wat eruit
+      komt is een wav &mdash; de samples zelf, met een kop ervoor &mdash; die
+      eerst op de pagina wordt afgespeeld en daarna rechtstreeks naar de
+      downloads van je browser gaat."""
+
+[[faq]]
+q = "Wordt mijn audio ergens heen geüpload?"
+a = """
+        Nee. Hij wordt gelezen, bewerkt en geschreven door je eigen browser op je
+        eigen hardware. Deze tool heeft geen serverkant, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
+        mag benaderen &mdash; geen ervan hoort bij deze site. Trek de stekker uit
+        het internet en keer er toch een om, als je liever controleert dan het
+        aanneemt."""
+
+[[faq]]
+q = "Kan ik het geluid uit een video halen?"
+a = """
+        Ja, en dat is hier dezelfde klus als een mp3 openen. Sleep een mp4, mov of
+        WebM naar binnen en alleen de audiospoor wordt gedecodeerd: het beeld
+        wordt nooit gelezen, en wat eruit komt is een geluidsbestand zonder video
+        erin. Het is ook de manier om het geluid uit een filmpje te bewaren zonder
+        het te bewerken &mdash; laat elke instelling met rust en druk op de
+        knop."""
+
+[[faq]]
+q = "Verandert de toonhoogte als ik de snelheid wijzig?"
+a = """
+        Alleen als je erom vraagt. &ldquo;Hou de toonhoogte&rdquo; knipt de opname
+        in overlappende vensters van zo'n vijftig milliseconde en legt ze dichter
+        bij elkaar of verder uit elkaar terug, waarbij elke plek zo gekozen wordt
+        dat de golven op hun kruising uitlijnen &mdash; een stem blijft dezelfde
+        stem op 1,5&times;. &ldquo;Laat hem meebewegen&rdquo; resampelt in plaats
+        daarvan, wat een bandje sneller afspelen doet: twee keer zo snel is
+        precies een octaaf hoger."""
+
+[[faq]]
+q = "Waarom slaat het een wav op en geen mp3?"
+a = """
+        Omdat geen enkele browser een mp3-encoder meelevert, en deze tool weigert
+        je opname naar een server te sturen die er wel een heeft. Een wav heeft
+        helemaal geen encoder nodig &mdash; het zijn de samples met een kop van
+        vierenveertig bytes ervoor &mdash; dus is het zowel de eerlijke keuze als
+        de enige die geen kwaliteit kan kosten. Hij is wel groter: ongeveer tien
+        megabyte per minuut in stereo. Elke speler, telefoon en editor opent er
+        een, en alles wat een mp3 wil, kan er een van maken."""
+
+[[faq]]
+q = "Welke formaten kan ik openen?"
+a = """
+        Wat je browser decodeert, in de praktijk dus mp3, wav, flac, m4a en AAC,
+        Ogg Vorbis en Opus, en de audio in mp4-, m4v-, mov- en WebM-video. Wat
+        wegvalt is hetzelfde korte lijstje als overal elders: avi, wma en de
+        meeste mkv's. Een bestand dat deze browser niet wil lezen, wordt geweigerd
+        met een melding die dat zegt, in plaats van halverwege te stranden."""
+
+[[faq]]
+q = "Gaat het vervormen als ik het harder maak?"
+a = """
+        Alleen als je het voorbij volle schaal duwt, en de pagina zegt het je
+        voordat je dat doet. Digitale audio heeft een hard plafond: een sample kan
+        niet harder dan volle schaal, dus alles daarboven wordt tegen het plafond
+        platgeslagen, en dat is hoe vervorming klinkt. &ldquo;Zo hard als het
+        gaat&rdquo; is de instelling die dat niet kán doen &mdash; die rekent uit
+        hoeveel ruimte de opname nog heeft en gebruikt precies zoveel. Alles onder
+        het plafond is vermenigvuldigen en verder niets: zet hem 6 dB omhoog en
+        weer 6 dB omlaag en de samples staan waar ze begonnen."""
+
+[[faq]]
+q = "Kost omkeren of hertimen kwaliteit?"
+a = """
+        Omkeren niet: dezelfde samples komen er in de andere volgorde uit, en dat
+        is exact. De snelheid wijzigen verschuift elke sample, dus dat is rekenen
+        in plaats van kopiëren &mdash; de resampler filtert onderweg netjes, zodat
+        versnellen hoge tonen niet terugvouwt als een metalige rinkel, en de
+        vensters van de uitrekker worden gelegd waar de golven uitlijnen in plaats
+        van waar het rekenwerk toevallig uitkwam. Geen van beide routes codeert
+        iets opnieuw, want er is hier geen encoder om mee te hercoderen."""
+
+[[faq]]
+q = "Zit er een limiet op de lengte van het bestand?"
+a = """
+        In de tool zit geen limiet ingebouwd. Het praktische plafond is geheugen:
+        de hele opname wordt in één keer in deze pagina gedecodeerd, en een wav
+        wordt in het geheugen opgebouwd voordat je hem downloadt, dus een uur
+        stereo heeft iets minder dan een gigabyte werkruimte nodig. Een wav van
+        vier gigabyte wordt ronduit geweigerd, omdat het groottiveld van het
+        formaat er geen kan beschrijven."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
+        geen watermerk. De site draagt advertenties, en die betalen hem; de
+        advertenties krijgen niets over je opname mee."""
+
+[schema]
+browser_requirements = "Vereist JavaScript en een browser met Web Audio, wat elke huidige browser is. Geen codecondersteuning nodig buiten wat de browser al heeft om het bestand af te spelen."
+description = "Keer een audio-opname om, wijzig de snelheid met of zonder de toonhoogte mee te nemen, en zet het niveau, in de browser. Werkt ook op de audio in een video. Er wordt niets geüpload en het resultaat wordt als wav geschreven, dus er wordt niets opnieuw gecodeerd."
+features = [
+  "Speelt een opname exact achterstevoren af",
+  "Wijzigt de snelheid van een kwart tot vier keer, met de toonhoogte vast of mee",
+  "Tilt het niveau op of laat het zakken, of normaliseert het tot net onder volle schaal",
+  "Haalt de audio uit een mp4, mov of WebM zonder het beeld aan te raken",
+  "Schrijft 16-bits of 32-bits float wav, zonder encoder in de lus",
+  "Draait offline; geen upload, geen account, geen watermerk",
+]
+
+[picker]
+title = "Sleep een audiobestand of een video hierheen"
+hint = "of klik om te bladeren &mdash; mp3, wav, flac, m4a, Ogg, en het geluid in mp4, mov of WebM"

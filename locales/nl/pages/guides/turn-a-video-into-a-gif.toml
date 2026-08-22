@@ -1,0 +1,17 @@
+#
+# Gids: van een video een gif maken - Dutch.
+#
+
+nav = "Een gif maken van een video"
+title = "Van een video een gif maken (en hem klein houden)"
+description = "Welk stuk, welke breedte en welke beeldsnelheid je kiest, waarom een gif van een video tien keer zo groot is als de video, en wanneer je er überhaupt een gebruikt."
+heading = "Hoe je van een video een gif maakt"
+lede = """
+    Gif is een formaat uit 1987 dat hele plaatjes opslaat in plaats van
+    beweging, dus een gif die van een video gemaakt is, is altijd groot. Dit
+    gaat over welke van de drie instellingen je verzet wanneer hij te groot is,
+    en hoeveel elk ervan je oplevert."""
+updated = "20 augustus 2026"
+og_title = "Van een video een gif maken, en hem klein houden"
+og_description = "De drie instellingen die de grootte van een gif bepalen, wat elk ervan kost, en wanneer een gif juist het verkeerde antwoord is."
+og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"

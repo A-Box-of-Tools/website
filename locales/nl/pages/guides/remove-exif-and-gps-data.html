@@ -1,0 +1,223 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Open de <a href="../../exif-gegevens-verwijderen/">EXIF-lezer &amp;
+      -wisser</a>, sleep de foto's erin, en druk op &ldquo;Alle metagegevens
+      verwijderen&rdquo;. Elke tag, de XMP- en IPTC-blokken, de opmerkingen en de
+      ingesloten miniatuur gaan er in één keer af, bij elke foto op de lijst. Het
+      plaatje zelf wordt niet aangeraakt &mdash; niet opnieuw gecomprimeerd, niet
+      gedecodeerd, geen pixel veranderd.
+    </p>
+    <p>
+      Voordat je dat doet, is het de moeite waard om te kijken wat erin zat. Het
+      is meestal meer dan mensen verwachten, en die lijst is het argument om dit
+      überhaupt te doen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat er werkelijk in een foto zit</h2>
+    <p>
+      Een jpeg is niet alleen een gecomprimeerd plaatje. Het is een container, en
+      naast het plaatje zitten een paar blokken informatie die je camera,
+      telefoon of fotobewerker daar geschreven heeft.
+    </p>
+    <ul>
+      <li>
+        <strong>EXIF.</strong> De belangrijkste. Merk en model van de camera, de
+        lens, de belichtingsinstellingen, de ISO, de datum en tijd op de seconde
+        nauwkeurig, de oriëntatie waarin het plaatje getoond hoort te worden, en
+        &mdash; op een telefoon met locatievoorzieningen aan voor de camera
+        &mdash; een gps-positie tot op een paar meter nauwkeurig. Vaak ook nog
+        een serienummer van de camerabody.
+      </li>
+      <li>
+        <strong>Gps.</strong> Technisch een onderdeel van EXIF, en het apart
+        noemen waard omdat het degene is die het zwaarst weegt. Hij staat er in
+        graden, minuten en seconden, en dat is een notatie die er bijzonder goed
+        in slaagt niet op een adres te lijken.
+      </li>
+      <li>
+        <strong>XMP.</strong> Een pakketje XML dat fotobewerkers schrijven. Het
+        kan je naam meedragen, je software, waarderingen, trefwoorden, een
+        bewerkingsgeschiedenis, en een kopie van een deel van de EXIF-velden
+        &mdash; en daarom is alleen EXIF verwijderen niet genoeg.
+      </li>
+      <li>
+        <strong>IPTC.</strong> Een ouder blok met bijschrift-, naamsvermeldings-,
+        credit- en auteursrechtvelden, in gebruik bij pers en stockfotografie.
+      </li>
+      <li>
+        <strong>De ingesloten miniatuur.</strong> Een kleine tweede kopie van het
+        beeld. Hij wordt gemaakt wanneer het bestand geschreven wordt, en hij
+        wordt niet altijd opnieuw gemaakt wanneer het plaatje bewerkt wordt
+        &mdash; zo kan een bijgesneden foto reizen met een miniatuur van wat
+        eraf gesneden is.
+      </li>
+      <li>
+        <strong>De makernotitie.</strong> Een ongedocumenteerd blok
+        fabrikantgegevens. Niemand buiten de fabrikant weet alles wat erin zit.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Wie het werkelijk ziet</h2>
+    <p>
+      Dit is het stuk waarover je nauwkeurig moet zijn, want zowel de
+      alarmerende als de wegwuivende versie klopt niet.
+    </p>
+    <p>
+      <strong>De meeste grote sociale netwerken wissen metagegevens wanneer je
+      post.</strong> Facebook, Instagram en X coderen geüploade afbeeldingen
+      opnieuw en laten de tags daarbij vallen. Dat is geen vriendelijkheid
+      &mdash; zij houden de gegevens aan hun kant &mdash; maar het betekent wel
+      dat een foto die daar gepost wordt, niet aan elke kijker zijn coördinaten
+      geeft.
+    </p>
+    <p>
+      <strong>Vrijwel al het andere houdt ze.</strong> Een e-mailbijlage. Een
+      bestand dat via de meeste chat-apps als &ldquo;document&rdquo; verstuurd
+      wordt in plaats van als foto. Een plaatje op een forum, een
+      marktplaatsadvertentie, een persoonlijke site, een gedeelde schijf, een
+      bugmelding, een supportticket. In al die gevallen komt het bestand intact
+      aan, en iedereen die het downloadt kan de tags lezen met gereedschap dat
+      met zijn besturingssysteem meekomt.
+    </p>
+    <p>
+      De realistische risico's zijn alledaags in plaats van dramatisch: een
+      advertentie met foto's die thuis genomen zijn, een foto van een kind die op
+      hun school gemaakt is, een schijnbaar anoniem account dat foto's post die
+      allemaal hetzelfde cameraserienummer delen, een &ldquo;vorige week
+      genomen&rdquo; dat in maart genomen is.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom niet gewoon opnieuw opslaan?</h2>
+    <p>
+      Een foto opnieuw opslaan via een fotobewerker of een compressor haalt de
+      metagegevens er wel degelijk uit &mdash; het plaatje wordt gedecodeerd tot
+      pixels en opnieuw gecodeerd, en een canvas vol pixels draagt geen tags. Het
+      werkt, en het kost je kwaliteit, want die hercodering is verliesgevend.
+    </p>
+    <p>
+      De metagegevens fatsoenlijk verwijderen kost helemaal niets. De tags zitten
+      in de container <em>om</em> het gecomprimeerde plaatje heen, niet erin, dus
+      ze wissen is items uit een lijst schrappen en de lijst weer wegschrijven.
+      De gecomprimeerde beeldgegevens gaan byte voor byte mee en het resultaat
+      decodeert naar precies dezelfde pixels. Dat is de hele reden om een
+      metagegevenstool te gebruiken in plaats van een omzetter.
+    </p>
+    <p>
+      De uitzondering is wanneer je toch al ging hercoderen. Ben je de foto al
+      aan het comprimeren of schalen, dan gaan de tags als bijwerking mee en heb
+      je geen tweede stap nodig.
+    </p>
+  </section>
+
+  <section>
+    <h2>Het ene ding om te houden: de oriëntatie</h2>
+    <p>
+      Telefoons draaien het plaatje niet wanneer jij de telefoon draait. Ze leggen
+      het vast zoals de sensor het zag en voegen een Orientation-tag toe die zegt
+      hoe het gedraaid moet worden om te tonen. Wis elke tag en sommige kijkers
+      tonen je foto op zijn kant.
+    </p>
+    <p>
+      Daarom heeft de tool hier een optie &ldquo;hou de oriëntatietag&rdquo;, die
+      standaard aanstaat. Die schrijft een piepklein EXIF-blok terug met die ene
+      tag en verder niets, en alleen voor foto's die hem echt nodig hadden. De
+      gps, de tijdstempels, het serienummer en de rest zijn nog steeds weg.
+    </p>
+    <p>
+      Zet hem uit als je liever hebt dat het bestand helemaal geen EXIF draagt
+      &mdash; en controleer het resultaat dan voordat je het verstuurt, want een
+      foto op zijn kant is de gebruikelijke uitkomst.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bewerken in plaats van verwijderen</h2>
+    <p>
+      Alles verwijderen is voor de meeste mensen het juiste antwoord. Soms niet:
+      een fotograaf wil misschien de auteursrechtregel en de camera-instellingen
+      houden en alleen de locatie kwijt; een archivaris moet misschien een datum
+      corrigeren die fout was omdat de cameraklok dat was.
+    </p>
+    <p>
+      Allebei kan. De locatie kan los verwijderd worden, en teksttags, datums,
+      ISO, oriëntatie en resolutie kunnen ter plekke bewerkt worden.
+    </p>
+    <p>
+      Eén kanttekening die voor elke tool geldt die dit doet, niet alleen voor
+      deze: het bestand schrijven bouwt het EXIF-blok opnieuw op, en een
+      makernotitie bevat offsets naar het <em>originele</em> blok. Een herbouwde
+      makernotitie is daarom misschien niet meer leesbaar voor de eigen software
+      van de fabrikant. Maakt dat uit, verwijder dan de makernotitie of laat het
+      bestand onbewerkt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Formaten, en die het zo niet kunnen</h2>
+    <p>
+      Jpeg, png en WebP zijn alle drie netjes te herschrijven, en dat zijn de
+      drie die de tool hier aankan.
+    </p>
+    <p>
+      HEIC &mdash; wat een iPhone standaard opslaat &mdash; en AVIF zijn
+      doosformaten die uit geneste atomen zijn opgebouwd en die een heel andere
+      parser nodig hebben. De tool herkent ze en zegt dat, in plaats van een
+      kapot bestand te maken. Heb je een HEIC, dan haalt hem naar jpeg omzetten
+      de metagegevens er als bijwerking van de omzetting uit.
+    </p>
+    <p>
+      Een kale TIFF gaat ook niet, en om een interessantere reden: in een TIFF
+      worden de metagegevens en de pixelgegevens door dezelfde offsets
+      aangewezen, dus tags verwijderen betekent de adressering van het plaatje
+      zelf herschrijven. Dat kan, en het is een andere klus.
+    </p>
+  </section>
+
+  <section>
+    <h2>Een gewoonte die het waard is</h2>
+    <p>
+      Controleer vóór je post in plaats van erna. De tags lezen kost een paar
+      seconden en de bevindingenlijst noemt de dingen die het weten waard zijn
+      &mdash; de positie, de tijdstempels, de serienummers &mdash; vóór de
+      volledige tabel met elke tag, dus je hoeft niet te weten waar je op moet
+      letten.
+    </p>
+    <p>
+      De positie wordt eerst in decimale graden getoond, met opzet. &ldquo;51
+      graden, 30 minuten, 26 seconden&rdquo; maakt niet duidelijk dat een foto
+      het gebouw noemt waarin hij genomen is. Een paar decimalen die je in een
+      kaart kunt plakken wel.
+    </p>
+  </section>
+
+  <section>
+    <h2>Upload de foto niet om erachter te komen wat erin zit</h2>
+    <p>
+      Er zit een bijzondere ironie in de gebruikelijke manier waarop dit probleem
+      opgelost wordt: iemand die zich zorgen maakt over wat zijn foto prijsgeeft,
+      uploadt hem naar een website om erachter te komen. Die site heeft nu de
+      foto, de coördinaten, de tijdstempel en het serienummer, en een kopie van
+      het plaatje op een schijf die van hen is.
+    </p>
+    <p>
+      Er is geen reden voor. De container om een jpeg heen lezen en herschrijven
+      is een paar honderd regels ontleedwerk die een browser prima draait, en
+      daarom heeft de tool hier helemaal geen netwerkfunctie: geen
+      <code>fetch</code>, geen <code>XMLHttpRequest</code>, niets dat een bestand
+      zou kunnen versturen ook al probeerde er iets. Laad hem één keer, verbreek
+      de verbinding, en hij werkt door.
+    </p>
+    <p>
+      <a href="../is-bestanden-uploaden-veilig/">Is het veilig om bestanden naar
+      online omzetters te uploaden?</a> zet uiteen hoe je die bewering
+      controleert, op deze site of op elke andere &mdash; en dit is het
+      bestandstype waarbij dat het meest de moeite waard is.
+    </p>
+  </section>

@@ -1,0 +1,169 @@
+<main>
+  <!-- Stap 1 &mdash; het bestand -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies een video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Bestand</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Grootte</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Beeld</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Lengte</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Gelezen door</dt><dd id="src-path">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; het stuk -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> Kies het stuk</h2>
+
+    <p class="hint">
+      Speel het filmpje af en markeer het stuk dat je wilt. <kbd>I</kbd> zet het
+      begin waar de afspeelkop staat, <kbd>O</kbd> zet het eind, en beide grepen
+      op de balk kun je slepen.
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/range.js. -->
+    <div id="rangebar"></div>
+    <div class="rb-scale">
+      <span>0:00.000</span>
+      <span id="scale-end">&mdash;</span>
+    </div>
+
+    <div class="marks">
+      <label>Begin
+        <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-in" class="ghost" title="Zet het begin waar de afspeelkop staat (I)">
+        Zet op afspeelkop
+      </button>
+
+      <label>Eind
+        <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-out" class="ghost" title="Zet het eind waar de afspeelkop staat (O)">
+        Zet op afspeelkop
+      </button>
+
+      <div class="mark-actions">
+        <button type="button" id="play-section" class="ghost">Speel het stuk af</button>
+        <button type="button" id="whole-clip" class="ghost">Hele filmpje</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stap 3 &mdash; de gif -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Formaat en beeldsnelheid</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="width">Breedte</label>
+        <select id="width">
+          <option value="240">240 px</option>
+          <option value="320">320 px</option>
+          <option value="480" selected>480 px</option>
+          <option value="640">640 px</option>
+          <option value="source">Originele grootte</option>
+          <option value="custom">Precies&hellip;</option>
+        </select>
+        <p class="field-note">
+          De hoogte volgt, dus de verhouding verandert nooit. Breedte is wat een
+          gif kost: de halve breedte is een kwart van de pixels.
+        </p>
+        <p class="field-note" id="width-note" hidden></p>
+      </div>
+
+      <div class="field" id="custom-width-field" hidden>
+        <label for="custom-width">Exacte breedte</label>
+        <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
+        <p class="field-note">In pixels, tussen 16 en 1920.</p>
+      </div>
+
+      <div class="field">
+        <label for="fps">Beelden per seconde</label>
+        <select id="fps">
+          <option value="5">5 &mdash; kleinst</option>
+          <option value="10">10</option>
+          <option value="12" selected>12 &mdash; vloeiend genoeg</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25 &mdash; het vloeiendst</option>
+        </select>
+        <p class="field-note">
+          Niet de eigen snelheid van de video: de frames worden eruit
+          bemonsterd. Twaalf leest als beweging; boven de twintig groeit het
+          bestand sneller dan de vloeiendheid zichtbaar wordt.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="dither">Rasteren</label>
+        <select id="dither">
+          <option value="on" selected>Aan &mdash; vloeiendere verlopen</option>
+          <option value="off">Uit &mdash; vlakker, kleiner</option>
+        </select>
+        <p class="field-note">
+          Mengt twee paletkleuren waar de juiste ontbreekt. Geordend, zodat een
+          stilstaande achtergrond niet flikkert.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="loop">
+          <input type="checkbox" id="loop" checked>
+          Eeuwig herhalen
+        </label>
+        <p class="field-note">Uit speelt hem één keer door en stopt dan.</p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Stuk</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>Uitvoer</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Frames</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Ruwe bestandsgrootte</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="memory-note" class="field-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Maak de gif</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <img id="result-image" alt="De gereedgekomen animatie, spelend">
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Gif downloaden</a>
+      </div>
+    </div>
+  </section>
+</main>

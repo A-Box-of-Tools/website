@@ -1,0 +1,209 @@
+<main>
+  <!-- Stap 1 &mdash; de bestanden -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies de svg-bestanden</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Alles van de lijst halen</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; het formaat -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> Zeg hoe groot het moet worden</h2>
+
+    <p class="card-lede">
+      Dit is de ene vraag die een vector niet voor je kan beantwoorden. In een
+      svg zitten geen pixels &mdash; er zitten tekeninstructies in, en die volgt
+      hij op elk formaat dat je noemt. Het getal hieronder is geen grens waar je
+      tegenaan duwt, zoals dat bij een foto zou zijn; 4000 pixels uit een icoon
+      van 24&nbsp;pixels is precies zo scherp als die 24 was.
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">Stel het formaat in met</label>
+      <select id="size-mode">
+        <option value="scale" selected>Een factor van het formaat dat het bestand vraagt</option>
+        <option value="width">Breedte in pixels</option>
+        <option value="height">Hoogte in pixels</option>
+        <option value="longest">De langste zijde</option>
+        <option value="box">Een kader, met beide zijden erbij</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>Vermenigvuldig met<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="Veelvoorkomende factoren">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        Elk bestand op de lijst wordt vanaf zijn eigen formaat vermenigvuldigd,
+        dus een stapel iconen die op verschillende formaten getekend zijn, blijft
+        onderling in verhouding.
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>Breedte<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="Veelvoorkomende breedtes">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">De hoogte volgt uit de vorm van de tekening.</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>Hoogte<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">De breedte volgt uit de vorm van de tekening.</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>Langste zijde<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        Welke zijde de langste is wordt dit en de andere volgt, dus een breed
+        logo en een hoog logo komen er even groot op hun lange zijde uit.
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>Breedte<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>Hoogte<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">Als de tekening een andere vorm heeft</label>
+        <select id="box-fit">
+          <option value="fit" selected>Binnen passen &mdash; de hele tekening, één zijde komt korter uit</option>
+          <option value="pad">Opvullen &mdash; precies dit formaat, met de achtergrond aan weerszijden</option>
+          <option value="stretch">Uitrekken &mdash; precies dit formaat, en de vorm vervormd</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">Schrijf ook de hi-dpi-kopieën</label>
+      <select id="density">
+        <option value="1" selected>Nee &mdash; één bestand per tekening</option>
+        <option value="2">Ook @2x &mdash; voor een Retina-scherm</option>
+        <option value="3">@2x en @3x &mdash; de volledige set die een telefoon vraagt</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- Stap 3 &mdash; het bestandstype -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> Kies het bestandstype</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Bestandstype</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; houdt transparantie, exacte randen</option>
+          <option value="image/jpeg">JPEG &mdash; geen transparantie, kleinere foto's</option>
+          <option value="image/webp">WebP &mdash; transparantie én een kleiner bestand</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">Kwaliteit &mdash; <output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          Alleen JPEG en WebP; PNG heeft geen kwaliteitsknop omdat het verliesloos
+          is. Vlakke kleur en harde randen &mdash; en daar bestaat een svg vooral
+          uit &mdash; zijn precies waar een verliesgevende encoder het slechtst
+          mee omgaat, dus staat deze hier hoger dan bij een foto.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">Achtergrond</label>
+        <select id="background-mode">
+          <option value="transparent" selected>Transparant</option>
+          <option value="colour">Een kleur</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="Achtergrondkleur" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stap 4 &mdash; bekijken, dan meenemen -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> Bekijk het, en sla het dan op</h2>
+
+    <p class="card-lede">
+      De voorvertoning wordt getekend door dezelfde code die het bestand
+      schrijft, uit het bestand dat je koos, op dit apparaat. Waar het de moeite
+      waard is op te letten, zijn de twee dingen die veranderen wanneer een
+      tekening pixels wordt: een haarlijn die een halve pixel breed was en grijs
+      geworden is, en tekst, die getekend wordt in een lettertype dat dit
+      apparaat heeft in plaats van een dat van het web gehaald wordt.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">Voeg een svg toe en hij verschijnt hier.</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>Rasteren</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Klaar</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Alles als zip downloaden</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
