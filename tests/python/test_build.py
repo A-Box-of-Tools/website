@@ -246,13 +246,41 @@ class BuildTheSite(unittest.TestCase):
         cls.unfinished = [locale['lang'] for locale in cls.locales
                           if not locale['is_base'] and not locale['complete']]
 
+        # And which individual PAGES are advertised, which is no longer the same
+        # question. A published language still holds back the pages it has not
+        # translated, so the sitemap is a set of pages rather than a set of
+        # languages. Worked out the way the build works it out, from the same
+        # survey, so the test cannot drift from the rule it is checking.
+        tools = [buildmod.sitelib.load_tool(path, site)
+                 for path in sorted((ROOT / 'tools').glob('*/tool.toml'))]
+        prose = [buildmod.sitelib.load_page(path, site, ROOT / 'pages')
+                 for path in sorted((ROOT / 'pages').glob('**/page.toml'))]
+        planned = buildmod.sitelib.load_toml(ROOT / 'config' / 'planned.toml')
+        buildmod.i18n.survey(cls.locales, tools, prose, planned, site)
+
+        slugs = ([''] + [tool['slug'] for tool in tools]
+                 + [page['slug'] for page in prose]
+                 + [site['guides']['slug'], site['roadmap']['slug']])
+        cls.advertised = {
+            buildmod.i18n.locale_path(locale, slug).strip('/')
+            for locale in cls.locales for slug in slugs
+            if buildmod.i18n.translated(locale, slug)
+        }
+
     @classmethod
     def tearDownClass(cls):
         cls.tmp.cleanup()
 
     def unpublished(self, name):
-        """Whether a written page belongs to a language that is not finished."""
-        return any(name.startswith(f'{lang}/') for lang in self.unfinished)
+        """Whether a written page is one the site does not advertise.
+
+        Two reasons a page is not advertised, and both end up here: its language
+        has not finished the frame, or its language has finished the frame and
+        not this page.
+        """
+        if any(name.startswith(f'{lang}/') for lang in self.unfinished):
+            return True
+        return name[:-len('index.html')].strip('/') not in self.advertised
 
     def test_it_reports_what_it_wrote(self):
         self.assertIn('index.html', self.written)
@@ -337,11 +365,13 @@ class BuildTheSite(unittest.TestCase):
     def test_the_sitemap_lists_every_page_of_a_published_language(self):
         """Every page that is offered to a reader is offered to a crawler.
 
-        Published, not built. A locale whose locale.toml says complete = false
-        is built - so it can be read and reviewed at a real address - and is
-        kept out of the sitemap until it is finished. The companion test below
-        checks the other half of that, which is the half that matters: nothing
-        half-translated is ever advertised.
+        Published, not built - and published a page at a time. A locale whose
+        locale.toml says complete = false is built, so it can be read and
+        reviewed at a real address, and is kept out of the sitemap entirely. A
+        locale that IS published still keeps out the individual pages it has not
+        translated yet. The companion test below checks the other half of that,
+        which is the half that matters: nothing half-translated is ever
+        advertised.
         """
         sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
         site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
