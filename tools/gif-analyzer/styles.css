@@ -1,0 +1,364 @@
+/* Rules only the GIF analyzer needs. The frame around it - the header, the
+   pledge, the cards, the buttons - is shared/css/tool-frame.css. */
+
+.working {
+  margin: 1rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.card-lede {
+  margin: 0 0 1rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  max-width: 62ch;
+}
+
+.file-name {
+  margin: 0;
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.copy-status {
+  margin: 0.8rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+}
+
+.inline-label { color: var(--text-dim); font-size: 0.85rem; }
+
+/* ---------------------------------------------------------- the overview */
+
+.overview {
+  display: grid;
+  grid-template-columns: minmax(150px, 240px) 1fr;
+  gap: 1.4rem;
+  align-items: start;
+  margin-top: 1.2rem;
+}
+
+@media (max-width: 620px) {
+  .overview { grid-template-columns: 1fr; }
+}
+
+.preview-wrap { min-width: 0; }
+
+/* The checkerboard is not decoration. Half the GIFs anybody analyses have a
+   transparent background, and on a plain surface a transparent frame and a
+   white one look identical - which is exactly the thing somebody opened this
+   page to tell apart. */
+.preview {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(45deg, var(--border) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--border) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--border) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--border) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+}
+
+.preview-note {
+  margin: 0.5rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+.facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0 1.2rem;
+  font-size: 0.9rem;
+}
+
+.facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.facts dt { color: var(--text-dim); flex: none; }
+.facts dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.facts dd.warn { color: var(--danger); }
+
+/* ---------------------------------------------------------- the findings */
+
+.findings { list-style: none; margin: 0; padding: 0; }
+
+.finding {
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: 7px;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  background: var(--surface-2);
+}
+
+.finding.bad { border-left-color: var(--danger); }
+.finding.warn { border-left-color: #c08a2b; }
+.finding.note { border-left-color: var(--accent); }
+
+.finding-mark { flex: none; font-size: 0.9rem; line-height: 1.5; }
+.finding.bad .finding-mark { color: var(--danger); }
+.finding.warn .finding-mark { color: #c08a2b; }
+.finding.note .finding-mark { color: var(--accent); }
+
+.finding strong { display: block; margin-bottom: 0.2rem; }
+.finding div { color: var(--text-dim); }
+.finding div strong { color: var(--text); }
+
+/* ------------------------------------------------------------ the budget */
+
+/* One colour per bucket, used twice: in the bar and as the key beside its row.
+   They are the same six hues the rest of the site uses, spread apart enough to
+   be told apart at three pixels wide, which is what the smallest slice will be
+   on a phone. */
+.budget-bar {
+  display: flex;
+  width: 100%;
+  height: 26px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+  background: var(--surface-2);
+}
+
+.slice { display: block; height: 100%; min-width: 1px; }
+
+.key {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-right: 0.5rem;
+  flex: none;
+}
+
+.slice-pixels, .key-pixels { background: #2b6cb0; }
+.slice-local, .key-local { background: #b0682b; }
+.slice-global, .key-global { background: #d09a3c; }
+.slice-metadata, .key-metadata { background: #7a4fb5; }
+.slice-control, .key-control { background: #3f9e7a; }
+.slice-descriptor, .key-descriptor { background: #5cb59a; }
+.slice-framing, .key-framing { background: #8d99a8; }
+.slice-header, .key-header { background: #5d6672; }
+.slice-trailer, .key-trailer { background: #5d6672; }
+.slice-after, .key-after { background: #b02b2b; }
+.slice-unaccounted, .key-unaccounted { background: #b02b2b; }
+
+.budget {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.budget th, .budget td {
+  text-align: left;
+  padding: 0.5rem 0.4rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.budget thead th {
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.budget tbody th {
+  font-weight: 600;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.budget .num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.budget tfoot th, .budget tfoot td { border-bottom: none; font-weight: 700; }
+
+.budget-note {
+  flex-basis: 100%;
+  margin-left: 1.1rem;
+  margin-top: 0.15rem;
+  font-weight: 400;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+/* ------------------------------------------------------------ the frames */
+
+.frames {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.9rem;
+}
+
+.frame {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.7rem;
+  background: var(--surface-2);
+}
+
+.frame-shot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 132px;
+  border-radius: 6px;
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(45deg, var(--border) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--border) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--border) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--border) 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+}
+
+/* Nearest-neighbour, so that a frame smaller than the thumbnail box is shown as
+   its own pixels rather than as a blur. What the file stores is the question. */
+.frame-canvas {
+  image-rendering: pixelated;
+  max-width: 100%;
+  max-height: 120px;
+}
+
+.frame-blank { margin: 0; color: var(--text-dim); font-size: 0.8rem; }
+
+.frame-head {
+  margin: 0.6rem 0 0.4rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.frame-facts { margin: 0; font-size: 0.78rem; }
+
+.frame-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+}
+
+.frame-facts dt { color: var(--text-dim); flex: none; }
+.frame-facts dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+
+.more-row { margin-top: 1rem; }
+
+/* ----------------------------------------------------------- the palette */
+
+.palette {
+  list-style: none;
+  margin: 0.6rem 0 1.2rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+
+/* An entry no pixel refers to. Shown rather than hidden: a palette that is half
+   unused is a real finding about the file, and it is only visible as a shape. */
+.swatch.unused { opacity: 0.28; }
+
+.palette-note {
+  margin: 0.4rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+#colors-card h3, #colors-card h4 {
+  margin: 1.2rem 0 0;
+  font-size: 0.92rem;
+}
+
+#local-palettes-wrap summary {
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 0;
+}
+
+/* ------------------------------------------------------------ the extras */
+
+.extras { list-style: none; margin: 0; padding: 0; }
+
+.extras > li {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0.7rem 0.8rem;
+  margin-bottom: 0.6rem;
+  background: var(--surface-2);
+}
+
+.extra-head { margin: 0; font-weight: 600; font-size: 0.9rem; }
+
+.extra-note {
+  margin: 0.3rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* A comment or an XMP packet is somebody else's text and can be any shape at
+   all, including one very long line. It scrolls inside its own box rather than
+   pushing the page sideways. */
+.extra-text {
+  margin: 0.6rem 0 0;
+  padding: 0.6rem 0.7rem;
+  max-height: 12rem;
+  overflow: auto;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* -------------------------------------------------------------- messages */
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 7px;
+  background: var(--surface-2);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  font-size: 0.88rem;
+}

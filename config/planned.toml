@@ -39,7 +39,6 @@ items = [
   ["Resize, crop &amp; rotate GIFs", "frame by frame, with the timing kept"],
   ["Reverse a GIF", "last frame first"],
   ["Change GIF speed", "retime it without re-rendering the frames"],
-  ["GIF analyzer", "frames, delays, palette, and where the bytes went"],
   ["APNG maker", "animation with real transparency and full color"],
   ["Animated WebP", "the same animation again, at a fraction of the size"],
 ]

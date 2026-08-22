@@ -1,0 +1,155 @@
+<main>
+  <!--
+    One numbered step, and then six headings without numbers.
+
+    Every other tool on this site numbers all of its cards, because every card
+    is something the visitor does. Here there is exactly one thing to do -
+    choose a file - and everything below it is the answer. Numbering the answer
+    would promise a sequence of decisions that does not exist, and would leave
+    somebody looking for step 4's button.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose a GIF</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- The summary, and the animation as the browser itself draws it. -->
+  <section class="card" id="summary-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="copy-report" class="ghost">Copy the report</button>
+        <button type="button" id="download-report" class="ghost">Download it</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="preview-wrap">
+        <!--
+          The browser's own decoder, drawing the file unchanged. Everything else
+          on this page is drawn by src/frames.js, so having both means a
+          disagreement between them is visible rather than hidden - and it is
+          the disagreement that would tell you this reader had a bug.
+        -->
+        <img id="preview" class="preview" alt="The animation, playing as this browser draws it">
+        <p class="preview-note">Your browser's own decoder, playing the file as it stands.</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>Version</dt><dd id="fact-version">&mdash;</dd></div>
+        <div><dt>Canvas</dt><dd id="fact-canvas">&mdash;</dd></div>
+        <div><dt>File size</dt><dd id="fact-size">&mdash;</dd></div>
+        <div><dt>Frames</dt><dd id="fact-frames">&mdash;</dd></div>
+        <div><dt>As written</dt><dd id="fact-written">&mdash;</dd></div>
+        <div><dt>As it plays</dt><dd id="fact-plays">&mdash;</dd></div>
+        <div><dt>Loops</dt><dd id="fact-loops">&mdash;</dd></div>
+        <div><dt>Colours drawn</dt><dd id="fact-colors">&mdash;</dd></div>
+      </dl>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- The readings. First, because it is what somebody came for. -->
+  <section class="card" id="findings-card" hidden>
+    <h2>What stands out</h2>
+    <p class="card-lede">
+      Everything below is measured from this file. Nothing here is a guess about
+      what you meant to make.
+    </p>
+    <ul class="findings" id="findings"></ul>
+  </section>
+
+  <!-- The byte budget. -->
+  <section class="card" id="budget-card" hidden>
+    <h2>Where the bytes went</h2>
+    <p class="card-lede">
+      Every byte of the file is in exactly one row, and the rows add up to the
+      file. If they did not, the last row would say so rather than the bar
+      quietly stretching to fit.
+    </p>
+
+    <div class="budget-bar" id="budget-bar" role="img" aria-labelledby="budget-caption"></div>
+    <p class="visually-hidden" id="budget-caption">
+      The same figures as the table below, drawn as one bar.
+    </p>
+
+    <table class="budget">
+      <caption class="visually-hidden">Where this file's bytes went</caption>
+      <thead>
+        <tr>
+          <th scope="col">Part</th>
+          <th scope="col" class="num">Bytes</th>
+          <th scope="col" class="num">Share</th>
+        </tr>
+      </thead>
+      <tbody id="budget-rows"></tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">The whole file</th>
+          <td class="num" id="budget-total">&mdash;</td>
+          <td class="num">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- Frame by frame. -->
+  <section class="card" id="frames-card" hidden>
+    <div class="toolbar">
+      <h2>Frame by frame</h2>
+      <div class="toolbar-actions">
+        <label for="frame-view" class="inline-label">Show</label>
+        <select id="frame-view">
+          <option value="composited" selected>the canvas after each frame</option>
+          <option value="stored">only what each frame stores</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="card-lede" id="frames-lede"></p>
+
+    <ul class="frames" id="frames"></ul>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!-- The colours. -->
+  <section class="card" id="colors-card" hidden>
+    <h2>The colours</h2>
+    <p class="card-lede" id="colors-lede"></p>
+
+    <div id="global-palette-wrap" hidden>
+      <h3>The global table</h3>
+      <p class="palette-note" id="global-palette-note"></p>
+      <ul class="palette" id="global-palette"></ul>
+    </div>
+
+    <details id="local-palettes-wrap" hidden>
+      <summary id="local-palettes-summary">The per-frame tables</summary>
+      <div id="local-palettes"></div>
+    </details>
+  </section>
+
+  <!-- Everything in the file that is not a picture. -->
+  <section class="card" id="extras-card" hidden>
+    <h2>What else is in there</h2>
+    <p class="card-lede">
+      Blocks that carry no picture. A viewer skips all of them, and every copy
+      of the file carries them anyway.
+    </p>
+    <ul class="extras" id="extras"></ul>
+  </section>
+</main>

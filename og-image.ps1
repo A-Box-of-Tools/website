@@ -222,6 +222,11 @@ New-OgImage -Path 'tools\split-gif\og.png' `
   -Subtitle 'Every frame of an animation as its own PNG, with the timing written down.' `
   -Footer 'No uploads | No accounts | Works offline'
 
+New-OgImage -Path 'tools\gif-analyzer\og.png' `
+  -Title 'GIF Analyzer' `
+  -Subtitle 'Every frame, every delay, every palette - and where the bytes went.' `
+  -Footer 'No uploads | No accounts | Works offline'
+
 New-OgImage -Path 'tools\crop-video\og.png' `
   -Title 'Video Cropper' `
   -Subtitle 'Cut a clip down to the part that matters, without it ever leaving your machine.' `
