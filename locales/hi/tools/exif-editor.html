@@ -1,0 +1,150 @@
+<main>
+  <!-- क़दम 1 &mdash; फ़ाइलें -->
+  <section class="card">
+    <h2><span class="step">1</span> फ़ोटो चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">सबको सूची से हटा दीजिए</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- क़दम 2 &mdash; वह अकेला क्लिक -->
+  <section class="card" id="strip-card">
+    <h2><span class="step">2</span> सब कुछ हटा दीजिए</h2>
+
+    <p class="card-lede">
+      एक बटन, और सूची की हर फ़ोटो। तस्वीर न डिकोड होती है, न दोबारा खींची जाती
+      है, न दोबारा दबाई जाती है &mdash; दबी हुई तस्वीर का डेटा बिना छुए उतार
+      दिया जाता है और सिर्फ़ उसके चारों ओर का मेटाडेटा गिरा दिया जाता है,
+      इसलिए नतीजा वही फ़ोटो है, बिना कुछ चिपके।
+    </p>
+
+    <div class="strip-row">
+      <button type="button" id="strip-all" class="primary big" disabled>सारा मेटाडेटा हटाइए</button>
+      <span id="strip-status" class="strip-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Two things are kept by default, and both are stated on the button's own
+      line rather than buried in a settings panel. "Remove all" that quietly
+      keeps things is a broken promise; "remove all except these two, and here
+      they are" is a choice.
+    -->
+    <fieldset class="keep-options">
+      <legend>क्या रहने देना है</legend>
+      <label class="check">
+        <input type="checkbox" id="keep-orientation" checked>
+        <span>
+          <strong>ओरिएंटेशन टैग</strong>
+          <span class="check-note">
+            फ़ोन तस्वीर वैसे ही सहेजते हैं जैसे सेंसर ने उसे देखा और साथ में एक
+            टैग जोड़ देते हैं जो बताता है कि उसका ऊपर किधर है। उसे हटा दीजिए और
+            कुछ व्यूअर उसे करवट पर लिटा देते हैं। रहने देने पर एक नया EXIF ब्लॉक
+            लिखा जाता है जिसमें यही टैग होता है और उसके सिवा कुछ नहीं &mdash; और
+            वह भी सिर्फ़ तब जब फ़ोटो पहले से सीधी न रही हो।
+          </span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keep-icc" checked>
+        <span>
+          <strong>कलर प्रोफ़ाइल</strong>
+          <span class="check-note">
+            ICC प्रोफ़ाइल बताती है कि तस्वीर की संख्याओं का रंगों के रूप में
+            मतलब क्या है। वह आपके बारे में कुछ नहीं बताती। उसे गिरा देने से
+            चौड़े रंग-दायरे वाली फ़ोटो के रंग दिखने लायक़ खिसक सकते हैं, और
+            इसीलिए जब तक आप कुछ और न कहें वह बनी रहती है।
+          </span>
+        </span>
+      </label>
+      <p class="keep-summary" id="keep-summary"></p>
+    </fieldset>
+
+    <div id="clean-results" class="results" hidden>
+      <div class="results-head">
+        <h3>साफ़ की गईं</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>सबको एक ज़िप में डाउनलोड कीजिए</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!-- क़दम 3 &mdash; पढ़ना और बदलना -->
+  <section class="card" id="inspect-card">
+    <h2><span class="step">3</span> भीतर झाँकिए, और जो चाहें बदल दीजिए</h2>
+
+    <p id="inspect-empty" class="empty-note">
+      ऊपर से कोई फ़ोटो चुनिए और उसमें जो कुछ है वह यहाँ आ जाएगा: वह क्या बताती
+      है कि आप कहाँ थे, कब थे, और किस चीज़ पर। यह पता लगाने के लिए कुछ भी कहीं
+      नहीं भेजा जाता।
+    </p>
+
+    <div id="inspector" hidden>
+      <div class="inspect-head">
+        <div class="inspect-file">
+          <img id="inspect-thumb" class="inspect-thumb" alt="" hidden>
+          <div>
+            <p class="inspect-name" id="inspect-name"></p>
+            <p class="inspect-sub" id="inspect-sub"></p>
+          </div>
+        </div>
+        <div class="inspect-switch">
+          <label for="inspect-select" class="visually-hidden">किस फ़ोटो की पड़ताल करनी है</label>
+          <select id="inspect-select"></select>
+        </div>
+      </div>
+
+      <!-- The findings: the part of this page that answers the actual question. -->
+      <section class="findings" aria-labelledby="findings-h">
+        <h3 id="findings-h">यह फ़ाइल क्या-क्या ज़ाहिर कर देती है</h3>
+        <ul id="findings-list" class="findings-list"></ul>
+      </section>
+
+      <!-- Whole blocks, each removable on its own. -->
+      <section class="blocks" aria-labelledby="blocks-h">
+        <h3 id="blocks-h">इस फ़ाइल के ब्लॉक</h3>
+        <ul id="block-list" class="block-list"></ul>
+      </section>
+
+      <!-- Every tag, editable. -->
+      <section class="tags" aria-labelledby="tags-h">
+        <h3 id="tags-h">हर टैग</h3>
+        <p class="tags-note" id="tags-note"></p>
+        <div id="tag-groups"></div>
+
+        <details class="add-tag" id="add-tag">
+          <summary>कोई टैग जोड़िए</summary>
+          <div class="add-tag-body">
+            <label for="add-tag-select">टैग</label>
+            <select id="add-tag-select"></select>
+            <label for="add-tag-value">मान</label>
+            <input type="text" id="add-tag-value" spellcheck="false">
+            <button type="button" id="add-tag-go" class="ghost">जोड़िए</button>
+          </div>
+        </details>
+      </section>
+
+      <div class="save-row">
+        <button type="button" id="save-edits" class="primary" disabled>यह फ़ोटो सहेजिए</button>
+        <button type="button" id="revert-edits" class="ghost" disabled>मेरे बदलाव वापस लीजिए</button>
+        <span id="save-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+      <p id="edit-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+</main>

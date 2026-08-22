@@ -1,0 +1,210 @@
+<main>
+  <!-- क़दम 1 &mdash; फ़ाइलें -->
+  <section class="card">
+    <h2><span class="step">1</span> SVG फ़ाइलें चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">सबको सूची से हटा दीजिए</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- क़दम 2 &mdash; साइज़ -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> बताइए कि यह कितनी बड़ी होनी चाहिए</h2>
+
+    <p class="card-lede">
+      यह वह अकेला सवाल है जिसका जवाब वेक्टर आपके लिए दे नहीं सकता। SVG में
+      पिक्सल होते ही नहीं &mdash; उसमें खींचने के निर्देश होते हैं, और वह
+      उन्हें आपके बताए किसी भी साइज़ पर पूरा कर देगी। नीचे दी संख्या कोई ऐसी
+      सीमा नहीं है जिससे आप टकरा रहे हों, जैसी वह किसी फ़ोटोग्राफ़ के साथ होती;
+      24&nbsp;पिक्सल के आइकन से बने 4000 पिक्सल ठीक उतने ही साफ़ हैं जितने 24
+      थे।
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">साइज़ किससे तय कीजिए</label>
+      <select id="size-mode">
+        <option value="scale" selected>फ़ाइल जो साइज़ माँगती है उसका कोई गुणक</option>
+        <option value="width">पिक्सलों में चौड़ाई</option>
+        <option value="height">पिक्सलों में ऊँचाई</option>
+        <option value="longest">सबसे लंबा किनारा</option>
+        <option value="box">कोई डिब्बा, दोनों भुजाएँ बताकर</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>इससे गुणा कीजिए<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="आम गुणक">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        सूची की हर फ़ाइल अपने ही साइज़ से गुणा होती है, इसलिए अलग-अलग साइज़ों
+        पर बने आइकनों का ढेर आपस में अनुपात में बना रहता है।
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>चौड़ाई<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="आम चौड़ाइयाँ">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">ऊँचाई ड्रॉइंग के आकार से निकल आती है।</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>ऊँचाई<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">चौड़ाई ड्रॉइंग के आकार से निकल आती है।</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>सबसे लंबा किनारा<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        जो भी भुजा लंबी हो वह यह बन जाती है और दूसरी उसके पीछे चली आती है,
+        इसलिए चौड़ा लोगो और खड़ा लोगो अपने लंबे किनारे पर एक ही साइज़ के निकलते
+        हैं।
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>चौड़ाई<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>ऊँचाई<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">अगर ड्रॉइंग दूसरे आकार की हो</label>
+        <select id="box-fit">
+          <option value="fit" selected>भीतर समा जाए &mdash; पूरी ड्रॉइंग, एक भुजा छोटी निकलती है</option>
+          <option value="pad">खाली जगह भर दीजिए &mdash; ठीक यही साइज़, दोनों तरफ़ बैकग्राउंड के साथ</option>
+          <option value="stretch">खींच दीजिए &mdash; ठीक यही साइज़, और आकार विकृत</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">high-DPI नक़लें भी लिखिए</label>
+      <select id="density">
+        <option value="1" selected>नहीं &mdash; हर ड्रॉइंग की एक फ़ाइल</option>
+        <option value="2">@2x भी &mdash; Retina स्क्रीन के लिए</option>
+        <option value="3">@2x और @3x &mdash; फ़ोन जो पूरा सेट माँगता है</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- क़दम 3 &mdash; फ़ॉर्मैट -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> फ़ॉर्मैट चुनिए</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">फ़ॉर्मैट</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; पारदर्शिता बचाता है, किनारे हूबहू</option>
+          <option value="image/jpeg">JPEG &mdash; पारदर्शिता नहीं, फ़ोटोग्राफ़ छोटी</option>
+          <option value="image/webp">WebP &mdash; पारदर्शिता भी और छोटी फ़ाइल भी</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">क्वालिटी &mdash; <output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          सिर्फ़ JPEG और WebP के लिए; PNG में क्वालिटी का कोई बटन है ही नहीं
+          क्योंकि वह नुक़सान-रहित है। सपाट रंग और सख़्त किनारे &mdash; जिनसे
+          SVG का ज़्यादातर हिस्सा बना होता है &mdash; ठीक वही हैं जिन्हें
+          नुक़सान वाला एनकोडर सबसे बुरी तरह सँभालता है, इसलिए यहाँ यह उससे ऊँचा
+          बैठता है जितना किसी फ़ोटोग्राफ़ के लिए बैठता।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">बैकग्राउंड</label>
+        <select id="background-mode">
+          <option value="transparent" selected>पारदर्शी</option>
+          <option value="colour">कोई रंग</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="बैकग्राउंड का रंग" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- क़दम 4 &mdash; देखिए, फिर ले जाइए -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> देखिए, फिर सहेजिए</h2>
+
+    <p class="card-lede">
+      प्रीव्यू को वही कोड खींचता है जो फ़ाइल लिखता है, आपकी चुनी फ़ाइल से, इसी
+      मशीन पर। इसमें जाँचने लायक़ वही दो चीज़ें हैं जो ड्रॉइंग के पिक्सल बनते
+      वक़्त बदल जाती हैं: वह बाल जैसी लकीर जो आधे पिक्सल चौड़ी थी और भूरी पड़
+      गई, और कोई भी टेक्स्ट, जो वेब से लाए गए फ़ॉन्ट में नहीं, इसी मशीन के पास
+      मौजूद फ़ॉन्ट में खिंचता है।
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">कोई SVG जोड़िए और वह यहाँ आ जाएगी।</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>रैस्टराइज़ कीजिए</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>तैयार</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>सबको एक ज़िप में डाउनलोड कीजिए</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

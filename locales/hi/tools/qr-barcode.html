@@ -1,0 +1,186 @@
+<main>
+  <!-- क़दम 1 &mdash; कैसा कोड -->
+  <section class="card">
+    <h2><span class="step">1</span> तय कीजिए कि कैसा कोड चाहिए</h2>
+
+    <p class="card-lede">
+      QR कोड कुछ भी ढो लेता है और फ़ोन का कैमरा उसी को ढूँढ़ता है। बारकोड एक
+      संख्या ढोता है, और आपको कौन-सा चाहिए यह आम तौर पर आपके लिए पहले ही तय कर
+      दिया जाता है &mdash; उस दुकान, गोदाम या शिपिंग कंपनी के हाथों जो उसे
+      माँग रही है।
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">कोड की क़िस्म</label>
+      <select id="symbology">
+        <optgroup label="वर्गाकार">
+          <option value="qr" selected>QR कोड</option>
+        </optgroup>
+        <optgroup label="धारियाँ">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">Interleaved 2 of 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- क़दम 2 &mdash; ख़ुद वह लाइन -->
+  <section class="card">
+    <h2><span class="step">2</span> बताइए कि उसमें क्या जाएगा</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">इसमें क्या रहेगा</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>वह ठीक लाइन जो यह कोड ढोएगा</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- क़दम 3 &mdash; यह खींचा कैसे जाए -->
+  <section class="card">
+    <h2><span class="step">3</span> चुनिए कि यह दिखे कैसा</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>QR कोड</legend>
+
+      <div class="option-row">
+        <label for="level">यह कितनी चोट सह सकता है</label>
+        <select id="level">
+          <option value="L">L &mdash; क़रीब 7% वापस लाया जा सकता है, सबसे छोटा कोड</option>
+          <option value="M" selected>M &mdash; क़रीब 15%, आम चुनाव</option>
+          <option value="Q">Q &mdash; क़रीब 25%</option>
+          <option value="H">H &mdash; क़रीब 30%, ऐसी छपाई के लिए जो घिसेगी</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">हाशिया, मॉड्यूलों में</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        हाशिया कोड का हिस्सा है, उसके चारों ओर की जगह भर नहीं। विनिर्देश चार
+        मॉड्यूल माँगता है, और किनारे तक काटा गया कोड वह है जिसे बहुत सारे
+        स्कैनर देख ही नहीं पाएँगे।
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>बारकोड</legend>
+
+      <div class="option-row">
+        <label for="bar-width">सबसे पतली धारी, पिक्सलों में</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">धारियों की ऊँचाई, पिक्सलों में</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>नीचे अक्षर भी छापिए</strong>
+          <span class="check-note">
+            जब स्कैनर काम न करे तो आदमी क्या पढ़े, यही। दुकान वाले कोड पर अंक
+            हाशियों में भी बैठते हैं, और यह जान-बूझकर है: वे उस सफ़ेद जगह की
+            हद बता देते हैं जिसे किसी को काटना नहीं चाहिए।
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>कोई चेक कैरेक्टर जोड़िए</strong>
+          <span class="check-note">
+            Code 39 आम तौर पर एक नहीं ढोता। कुछ व्यवस्थाएँ इस पर अड़ती हैं;
+            इसे सिर्फ़ तब जोड़िए जब आपकी अड़ती हो, क्योंकि जो रीडर इसकी उम्मीद
+            नहीं कर रहा वह इसे आख़िर में जुड़ा एक अतिरिक्त अक्षर पढ़ लेगा।
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>रंग और आकार</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">कोड</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">उसके पीछे</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>बैकग्राउंड बिलकुल नहीं</strong>
+          <span class="check-note">
+            पारदर्शी, ऐसी किसी चीज़ पर रखने के लिए जिसका अपना रंग पहले से है।
+            SVG और PNG दोनों उसे बचाए रखती हैं; पीछे आख़िर में जो भी बैठे उसका
+            हल्का होना ज़रूरी है, वरना स्कैनर को कोई अंतर मिलेगा ही नहीं।
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">तस्वीर का आकार, पिक्सलों में</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- क़दम 4 &mdash; नतीजा -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> इसे ले जाइए</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="आपका बनाया हुआ कोड"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG डाउनलोड कीजिए</button>
+      <button type="button" id="download-png" class="primary">PNG डाउनलोड कीजिए</button>
+      <button type="button" id="copy-png" class="ghost">तस्वीर कॉपी कीजिए</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      रखने लायक़ SVG ही है। वह कोड को पिक्सलों के बजाय निर्देशों के रूप में
+      रखती है, इसलिए किसी भी साइज़ पर बिना नरम पड़े छपती है &mdash; और यह यहाँ
+      ज़्यादातर तस्वीरों से कहीं ज़्यादा मायने रखता है, क्योंकि धुँधला किनारा
+      ठीक वही चीज़ है जिसे स्कैनर सुलझा नहीं पाता।
+    </p>
+  </section>
+</main>

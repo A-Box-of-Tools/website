@@ -1,0 +1,283 @@
+<main>
+  <!-- क़दम 1 &mdash; फ़ाइलें -->
+  <section class="card">
+    <h2><span class="step">1</span> तस्वीरें चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">सबको सूची से हटा दीजिए</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- क़दम 2 &mdash; क्रॉप -->
+  <section class="card" id="crop-card">
+    <h2><span class="step">2</span> चाहें तो क्रॉप कीजिए</h2>
+
+    <p class="card-lede">
+      डिब्बा पूरी तस्वीर पर से शुरू होता है, इसलिए इस क़दम को छुए बिना छोड़
+      देने पर कुछ भी क्रॉप नहीं होता। हर तस्वीर का अपना डिब्बा रहता है &mdash;
+      किसी एक पर खींचने के लिए उसे ऊपर की सूची से चुन लीजिए। क्रॉप करना आकार
+      बदलने से पहले होता है, और यही अकेला क्रम है जो समझ में आता है: जो तस्वीर
+      छोटी हो जाने के बाद काटी जाए, वह अपने ज़रूरी पिक्सल पहले ही फेंक चुकी
+      होती है।
+    </p>
+
+    <p id="crop-empty" class="field-summary">कोई तस्वीर जोड़िए और डिब्बा यहाँ आ जाएगा।</p>
+
+    <div id="crop-controls" hidden>
+      <p class="stage-hint">
+        <span id="stage-name" class="stage-name"></span>
+        डिब्बे को हिलाने के लिए उसके भीतर से खींचिए, या आकार बदलने के लिए किसी
+        भी कोने से। डिब्बा चुना हुआ हो तो तीर वाली कुंजियाँ उसे एक-एक पिक्सल
+        खिसकाती हैं, <kbd>Alt</kbd>&nbsp;+&nbsp;तीर उसका आकार बदलते हैं, और
+        <kbd>Shift</kbd> दबाए रखने पर हर क़दम दस का हो जाता है।
+      </p>
+
+      <!-- The crop box itself is added here by src/cropper.js. The stage is
+           given the picture's own shape, so the box can be positioned in
+           percentages and needs no recalculating when the window is resized. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <p id="stage-note" class="stage-note" hidden></p>
+
+      <div class="crop-controls">
+        <div class="aspect-row" id="aspect-row" role="group" aria-label="क्रॉप को किसी आकार पर लॉक कीजिए">
+          <button type="button" data-aspect="free" class="active">मनचाहा</button>
+          <button type="button" data-aspect="source">असली</button>
+          <button type="button" data-aspect="1:1">1:1</button>
+          <button type="button" data-aspect="4:5">4:5</button>
+          <button type="button" data-aspect="9:16">9:16</button>
+          <button type="button" data-aspect="16:9">16:9</button>
+          <button type="button" data-aspect="4:3">4:3</button>
+          <button type="button" data-aspect="3:2">3:2</button>
+          <button type="button" id="swap-aspect" class="ghost" title="लॉक किए आकार को करवट पर लिटा दीजिए">
+            अदल-बदल
+          </button>
+        </div>
+
+        <div class="numbers">
+          <label>बाएँ<input type="number" id="crop-x" min="0" step="1"></label>
+          <label>ऊपर<input type="number" id="crop-y" min="0" step="1"></label>
+          <label>चौड़ाई<input type="number" id="crop-w" min="8" step="1"></label>
+          <label>ऊँचाई<input type="number" id="crop-h" min="8" step="1"></label>
+          <div class="number-actions">
+            <button type="button" id="crop-max" class="ghost">सबसे बड़ा</button>
+            <button type="button" id="crop-centre" class="ghost">बीच में</button>
+            <button type="button" id="crop-reset" class="ghost">पूरी तस्वीर</button>
+          </div>
+        </div>
+
+        <!--
+          Every image keeps its own box, which is the point. This is for the
+          case that is still worth one click: a folder of exports that all want
+          the same framing.
+        -->
+        <div class="apply-row" id="apply-row" hidden>
+          <button type="button" id="crop-apply-all" class="ghost">यही क्रॉप हर तस्वीर पर लगाइए</button>
+          <p class="hint-line" id="apply-note"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- क़दम 3 &mdash; साइज़ -->
+  <section class="card" id="resize-card">
+    <h2><span class="step">3</span> बताइए कि यह किस साइज़ की होनी चाहिए</h2>
+
+    <div class="option-row">
+      <label for="resize-mode">साइज़ किससे तय कीजिए</label>
+      <select id="resize-mode">
+        <option value="pixels" selected>चौड़ाई और ऊँचाई, पिक्सलों में</option>
+        <option value="longest">सबसे लंबा किनारा</option>
+        <option value="percent">अभी जितनी है उसका कोई प्रतिशत</option>
+        <option value="none">कुछ नहीं &mdash; साइज़ ठीक जैसा है वैसा रहने दीजिए</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="pixels-fields">
+      <div class="numbers">
+        <label>चौड़ाई<input type="number" id="size-w" min="1" step="1" placeholder="अपने आप" value="1920"></label>
+        <label>ऊँचाई<input type="number" id="size-h" min="1" step="1" placeholder="अपने आप"></label>
+        <div class="number-actions">
+          <button type="button" id="swap-size" class="ghost">अदल-बदल</button>
+        </div>
+      </div>
+
+      <!--
+        Leaving one of them blank is the common case and the one worth
+        supporting properly: "1920 wide, whatever tall that makes it" needs no
+        decision about shapes at all.
+      -->
+      <p class="hint-line">
+        तस्वीर का अपना आकार बनाए रखने के लिए एक भर दीजिए और दूसरी ख़ाली छोड़
+        दीजिए।
+      </p>
+
+      <div class="presets" id="size-presets" role="group" aria-label="आम साइज़">
+        <button type="button" class="ghost" data-w="1920" data-h="1080">1920 &times; 1080</button>
+        <button type="button" class="ghost" data-w="1280" data-h="720">1280 &times; 720</button>
+        <button type="button" class="ghost" data-w="1080" data-h="1080">1080 &times; 1080</button>
+        <button type="button" class="ghost" data-w="600" data-h="">600 चौड़ी</button>
+      </div>
+
+      <div class="option-row" id="fit-row">
+        <label for="fit">अगर आकार आपस में न मिलें</label>
+        <select id="fit">
+          <option value="contain" selected>भीतर समा जाइए &mdash; पूरी तस्वीर, एक भुजा छोटी निकलती है</option>
+          <option value="cover">भर दीजिए &mdash; ठीक यही साइज़, और बाहर निकलता हिस्सा कटा हुआ</option>
+          <option value="pad">खाली जगह भर दीजिए &mdash; ठीक यही साइज़, चारों ओर बैकग्राउंड के साथ</option>
+          <option value="stretch">खींच दीजिए &mdash; ठीक यही साइज़, और आकार विकृत</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>सबसे लंबा किनारा<input type="number" id="size-longest" min="1" step="1" value="1920"></label>
+      </div>
+      <p class="hint-line">
+        जो भी भुजा लंबी हो वह यह बन जाती है, और दूसरी उसके पीछे चली आती है। एक
+        ही ढेर की खड़ी और पड़ी तस्वीरें अपने लंबे किनारे पर एक ही साइज़ की
+        निकलती हैं, और किसी गैलरी को आम तौर पर यही चाहिए होता है।
+      </p>
+      <div class="presets" id="longest-presets" role="group" aria-label="आम लंबे किनारे">
+        <button type="button" class="ghost" data-longest="640">640</button>
+        <button type="button" class="ghost" data-longest="1280">1280</button>
+        <button type="button" class="ghost" data-longest="1920">1920</button>
+        <button type="button" class="ghost" data-longest="2560">2560</button>
+      </div>
+    </div>
+
+    <div class="size-fields" id="percent-fields" hidden>
+      <div class="numbers">
+        <label>प्रतिशत<input type="number" id="size-percent" min="1" max="1000" step="1" value="50"></label>
+      </div>
+      <div class="presets" id="percent-presets" role="group" aria-label="आम प्रतिशत">
+        <button type="button" class="ghost" data-percent="25">25%</button>
+        <button type="button" class="ghost" data-percent="50">50%</button>
+        <button type="button" class="ghost" data-percent="75">75%</button>
+        <button type="button" class="ghost" data-percent="200">200%</button>
+      </div>
+    </div>
+
+    <label class="check" id="enlarge-row">
+      <input type="checkbox" id="no-enlarge" checked>
+      <span>
+        <strong>तस्वीर को उसके असली साइज़ से बड़ा कभी मत कीजिए</strong>
+        <span class="check-note">
+          बड़ा करने में ऐसे पिक्सल गढ़े जाते हैं जो कभी खींचे ही नहीं गए,
+          इसलिए बड़े फ़्रेम के लिए माँगी गई छोटी तस्वीर ब्योरे वाली नहीं, नरम
+          निकलती है। यह चालू रहने पर, जो कुछ भी आपकी माँगी साइज़ से पहले ही
+          छोटा है वह अपने ही साइज़ पर छोड़ दिया जाता है।
+        </span>
+      </span>
+    </label>
+
+    <p id="size-summary" class="field-summary"></p>
+  </section>
+
+  <!-- क़दम 4 &mdash; फ़ॉर्मैट, और वह अकेला क्लिक -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> इसे सहेजिए</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">फ़ॉर्मैट</label>
+        <select id="format">
+          <option value="keep" selected>हर फ़ाइल जिस फ़ॉर्मैट में आई थी वही रहने दीजिए</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">क्वालिटी &mdash; <output id="quality-value" for="quality">85</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="85">
+        <p class="field-note">
+          सिर्फ़ JPEG और WebP के लिए; PNG में क्वालिटी का कोई बटन है ही नहीं।
+          85 वह जगह है जहाँ ज़्यादातर लोग फ़र्क़ बता पाना बंद कर देते हैं।
+          क़रीब 60 से नीचे सपाट हिस्सों में पट्टियाँ पड़ने लगती हैं।
+        </p>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">बैकग्राउंड</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          जहाँ तस्वीर नहीं है वहाँ जो झलकता है: खाली जगह भरने वाले फ़्रेम के
+          पीछे, और तब पारदर्शिता के पीछे भी जब नतीजे के फ़ॉर्मैट में अल्फ़ा
+          चैनल न हो।
+        </p>
+      </div>
+    </div>
+
+    <p id="plan-summary" class="field-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>तस्वीरों का आकार बदलिए</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>तैयार</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>सबको एक ज़िप में डाउनलोड कीजिए</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The big look at one result. A <dialog> opened with showModal() rather than
+    a div pretending to be one: the browser gives the focus trap, the Escape
+    key and the inert background for nothing, and gets all three right.
+
+    Both pictures in it are object URLs made on this page - the result, and the
+    original that was already decoded for the thumbnail. Opening this fetches
+    nothing and decodes nothing that was not already decoded.
+  -->
+  <dialog id="viewer" class="viewer" aria-labelledby="viewer-name">
+    <div class="viewer-head">
+      <h2 id="viewer-name" class="viewer-name"></h2>
+      <button type="button" id="viewer-close" class="ghost" aria-label="बंद कीजिए">बंद कीजिए</button>
+    </div>
+
+    <div class="viewer-stage">
+      <img id="viewer-image" alt="">
+    </div>
+
+    <p id="viewer-caption" class="viewer-caption"></p>
+
+    <dl class="viewer-facts" id="viewer-facts"></dl>
+
+    <div class="viewer-actions">
+      <button type="button" id="viewer-compare" class="ghost" aria-pressed="false">असली तस्वीर दिखाइए</button>
+      <a id="viewer-download" class="primary as-button" download>डाउनलोड</a>
+    </div>
+  </dialog>
+</main>

@@ -1,0 +1,169 @@
+<main>
+  <!-- क़दम 1 &mdash; फ़ाइल -->
+  <section class="card">
+    <h2><span class="step">1</span> कोई वीडियो चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>फ़ाइल</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>साइज़</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>फ़्रेम</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>लंबाई</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>वीडियो</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>किससे पढ़ा गया</dt><dd id="src-path">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- क़दम 2 &mdash; हिस्सा -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> हिस्सा चुनिए</h2>
+
+    <p class="hint">
+      क्लिप चलाइए और जो हिस्सा चाहिए उस पर निशान लगाइए। <kbd>I</kbd> शुरुआत को
+      वहाँ रख देता है जहाँ प्लेहेड है, <kbd>O</kbd> अंत को, और पट्टी की दोनों
+      मुठियाँ खींची भी जा सकती हैं।
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/range.js. -->
+    <div id="rangebar"></div>
+    <div class="rb-scale">
+      <span>0:00.000</span>
+      <span id="scale-end">&mdash;</span>
+    </div>
+
+    <div class="marks">
+      <label>शुरुआत
+        <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-in" class="ghost" title="शुरुआत को वहाँ रख दीजिए जहाँ प्लेहेड है (I)">
+        प्लेहेड पर रखिए
+      </button>
+
+      <label>अंत
+        <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-out" class="ghost" title="अंत को वहाँ रख दीजिए जहाँ प्लेहेड है (O)">
+        प्लेहेड पर रखिए
+      </button>
+
+      <div class="mark-actions">
+        <button type="button" id="play-section" class="ghost">यह हिस्सा चलाइए</button>
+        <button type="button" id="whole-clip" class="ghost">पूरी क्लिप</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- क़दम 3 &mdash; GIF -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> आकार और फ़्रेम दर</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="width">चौड़ाई</label>
+        <select id="width">
+          <option value="240">240 px</option>
+          <option value="320">320 px</option>
+          <option value="480" selected>480 px</option>
+          <option value="640">640 px</option>
+          <option value="source">असली साइज़</option>
+          <option value="custom">ठीक इतनी&hellip;</option>
+        </select>
+        <p class="field-note">
+          ऊँचाई अपने आप चली आती है, इसलिए आकार कभी नहीं बदलता। GIF की क़ीमत
+          चौड़ाई ही लेती है: आधी चौड़ाई यानी चौथाई पिक्सल।
+        </p>
+        <p class="field-note" id="width-note" hidden></p>
+      </div>
+
+      <div class="field" id="custom-width-field" hidden>
+        <label for="custom-width">ठीक चौड़ाई</label>
+        <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
+        <p class="field-note">पिक्सलों में, 16 और 1920 के बीच।</p>
+      </div>
+
+      <div class="field">
+        <label for="fps">फ़्रेम प्रति सेकंड</label>
+        <select id="fps">
+          <option value="5">5 &mdash; सबसे छोटी</option>
+          <option value="10">10</option>
+          <option value="12" selected>12 &mdash; काफ़ी चिकनी</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25 &mdash; सबसे चिकनी</option>
+        </select>
+        <p class="field-note">
+          यह वीडियो की अपनी दर नहीं है: फ़्रेम उसमें से नमूने के तौर पर लिए
+          जाते हैं। बारह गति की तरह पढ़ा जाता है; बीस से ऊपर फ़ाइल उतनी तेज़ी
+          से बढ़ती है जितनी तेज़ी से चिकनाहट दिखती नहीं।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="dither">डिदरिंग</label>
+        <select id="dither">
+          <option value="on" selected>चालू &mdash; चिकने ग्रेडिएंट</option>
+          <option value="off">बंद &mdash; ज़्यादा सपाट, ज़्यादा छोटी</option>
+        </select>
+        <p class="field-note">
+          जहाँ सही रंग नदारद हो, वहाँ पैलेट के दो रंग मिला देता है। क्रमित,
+          इसलिए स्थिर बैकग्राउंड झिलमिलाता नहीं।
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="loop">
+          <input type="checkbox" id="loop" checked>
+          हमेशा लूप कीजिए
+        </label>
+        <p class="field-note">बंद रहने पर यह एक बार चलकर रुक जाती है।</p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>हिस्सा</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>नतीजा</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>फ़्रेम</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>मोटे तौर पर फ़ाइल साइज़</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="memory-note" class="field-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>GIF बनाइए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <img id="result-image" alt="तैयार एनिमेशन, चलती हुई">
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>GIF डाउनलोड कीजिए</a>
+      </div>
+    </div>
+  </section>
+</main>
