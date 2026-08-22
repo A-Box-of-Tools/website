@@ -5,13 +5,13 @@
 nav = "Een pdf kleiner maken"
 title = "Een pdf kleiner maken (en waarom sommige niet krimpen)"
 description = "Waar de grootte van een pdf werkelijk zit, waarom een scan 80% krimpt en een contract nauwelijks beweegt, wat dpi hier betekent, en wat een compressor nooit met je document hoort te doen."
-heading = "Hoe je een pdf kleiner maakt, en waarom sommige niet krimpen"
+heading = "Een pdf kleiner maken, en waarom sommige niet krimpen"
 lede = """
     Een pdf die niet binnen een e-maillimiet past, is bijna altijd een pdf vol
-    plaatjes. Hier staat hoe je ziet of dat bij jou zo is, wat comprimeren kost,
-    en waarom elke tool die een vast percentage belooft niet naar je bestand
-    gekeken heeft."""
+    plaatjes. Hier lees je hoe je ziet of dat bij jou zo is, wat comprimeren je
+    kost, en waarom elke tool die een vast percentage belooft niet naar jouw
+    bestand gekeken heeft."""
 updated = "20 augustus 2026"
-og_title = "Hoe je een pdf kleiner maakt"
+og_title = "Een pdf kleiner maken"
 og_description = "Waar de grootte van een pdf werkelijk zit, waarom een scan krimpt en een contract niet, en wat dpi ermee te maken heeft."
 og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
