@@ -1,0 +1,17 @@
+#
+# Guia: é seguro enviar arquivos? - português do Brasil.
+#
+
+nav = "É seguro enviar arquivos?"
+title = "É seguro enviar arquivos para conversores online?"
+description = "A maioria dos conversores online manda o seu arquivo para um servidor. O que isso significa, o que acontece com ele lá e quatro verificações que dizem se a ferramenta precisa mesmo fazer isso."
+heading = "É seguro enviar arquivos para conversores online?"
+lede = """
+    Normalmente a resposta honesta é &ldquo;provavelmente, mas você não tem
+    como conferir&rdquo;. Aqui está o que enviar realmente faz com o seu
+    arquivo, por que a maioria das ferramentas ainda faz isso e quatro testes
+    que dizem se a que está na sua frente precisa fazer."""
+updated = "20 de agosto de 2026"
+og_title = "É seguro enviar arquivos para conversores online?"
+og_description = "O que acontece com um arquivo enviado a um conversor, por que a maioria das ferramentas ainda pede um e quatro verificações que você mesmo pode fazer."
+og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"

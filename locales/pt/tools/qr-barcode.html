@@ -1,0 +1,186 @@
+<main>
+  <!-- Passo 1 &mdash; que tipo de código -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha o tipo de código</h2>
+
+    <p class="card-lede">
+      Um QR Code guarda qualquer coisa e é o que a câmera de um celular procura.
+      Um código de barras guarda um número, e qual deles você precisa costuma já
+      estar decidido &mdash; pela loja, pelo depósito ou pela transportadora que
+      está pedindo.
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">Tipo de código</label>
+      <select id="symbology">
+        <optgroup label="Quadrado">
+          <option value="qr" selected>QR Code</option>
+        </optgroup>
+        <optgroup label="Barras">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">Intercalado 2 de 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- Passo 2 &mdash; a cadeia de texto em si -->
+  <section class="card">
+    <h2><span class="step">2</span> Diga o que vai dentro</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">O que ele guarda</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>A cadeia de texto exata que este código vai guardar</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- Passo 3 &mdash; como ele é desenhado -->
+  <section class="card">
+    <h2><span class="step">3</span> Escolha a aparência</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>O QR Code</legend>
+
+      <div class="option-row">
+        <label for="level">Quanto dano ele pode aguentar</label>
+        <select id="level">
+          <option value="L">L &mdash; cerca de 7% recuperável, código menor</option>
+          <option value="M" selected>M &mdash; cerca de 15%, a escolha de sempre</option>
+          <option value="Q">Q &mdash; cerca de 25%</option>
+          <option value="H">H &mdash; cerca de 30%, para uma impressão que vai se desgastar</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">Margem, em módulos</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        A margem faz parte do código, e não é espaço em volta dele. Quatro
+        módulos é o que a especificação pede, e um código aparado até a borda é um
+        que muitos leitores não vão enxergar.
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>O código de barras</legend>
+
+      <div class="option-row">
+        <label for="bar-width">Barra mais estreita, em pixels</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">Altura das barras, em pixels</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>Imprimir os caracteres embaixo</strong>
+          <span class="check-note">
+            O que uma pessoa lê quando o leitor não lê. Num código de varejo os
+            dígitos ficam também nas margens, e isso é de propósito: eles marcam
+            o espaço em branco que ninguém deveria aparar.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>Acrescentar um caractere de verificação</strong>
+          <span class="check-note">
+            O Code 39 normalmente não carrega um. Alguns sistemas insistem nele;
+            só acrescente se o seu insistir, porque um leitor que não estiver
+            esperando um vai lê-lo como um caractere a mais no fim.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Cor e tamanho</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">O código</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">Atrás dele</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Sem fundo nenhum</strong>
+          <span class="check-note">
+            Transparente, para pôr sobre algo que já tem cor. O SVG e o PNG
+            mantêm isso; seja lá o que acabar atrás dele tem que ser claro, ou um
+            leitor não vai achar contraste.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">Tamanho da imagem, em pixels</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Passo 4 &mdash; o resultado -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> Leve</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="O código que você gerou"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Baixar o SVG</button>
+      <button type="button" id="download-png" class="primary">Baixar o PNG</button>
+      <button type="button" id="copy-png" class="ghost">Copiar a imagem</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      O SVG é o que vale guardar. Ele é o código como instruções em vez de
+      pixels, então imprime em qualquer tamanho sem amolecer &mdash; o que importa
+      mais aqui do que na maioria das imagens, porque uma borda borrada é
+      exatamente o que um leitor não consegue resolver.
+    </p>
+  </section>
+</main>

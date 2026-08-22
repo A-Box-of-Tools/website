@@ -1,0 +1,251 @@
+#
+# Imagens para vídeo - português do Brasil.
+#
+# Overrides for tools/images-to-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# This is the one tool with a [picker.urls] table, so it is also the one whose
+# translation has to supply the noun the importer's warning in [ui.picker] is
+# written around. The Portuguese sentences there were rewritten to use it only
+# after "qual" and "cada", which inflect for neither gender nor number, so the
+# noun can simply be the right word - see the comment above [ui.picker].
+#
+
+name = "Imagens para vídeo"
+heading = "Imagens&nbsp;para&nbsp;vídeo <span class=\"h1-kw\">&mdash; fazer uma apresentação em MP4</span>"
+tagline = "Transforme uma pasta de imagens em um vídeo."
+
+title = "Sequência de imagens para MP4 &mdash; grátis, sem envio, funciona offline"
+description = "Transforme imagens JPG, PNG ou WebP num vídeo MP4 de apresentação, de graça e inteiramente no seu navegador. Nada é enviado, sem cadastro, e funciona offline."
+og_title = "Sequência de imagens para MP4 &mdash; grátis, no seu navegador"
+og_description = "Transforme uma sequência renderizada, um timelapse ou uma pasta de fotos num MP4. A codificação roda na sua própria máquina; nada é enviado."
+og_image_alt = "Imagens para vídeo - transforme uma pasta de imagens numa apresentação em MP4"
+
+pledge = """
+    Cada quadro é codificado pelo seu próprio navegador e o vídeo é montado na
+    memória desta máquina. O codificador nunca encosta na rede, e não existe do
+    outro lado desta página servidor nenhum para onde mandar uma imagem, mesmo se
+    ele encostasse."""
+
+live_hint = """
+      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
+      aba Rede e faça um vídeo. Nenhuma requisição leva uma imagem, uma miniatura
+      ou um nome de arquivo. Ou desconecte da internet e faça um mesmo assim."""
+
+read_first = """
+, e <code>src/encoder.js</code> para o laço de
+      codificação, que nunca encosta na rede."""
+
+howto_heading = "Como transformar imagens em um vídeo"
+
+card = """
+            Transforme uma pasta de imagens numa apresentação em MP4. A
+            codificação roda na sua própria máquina, com o seu próprio
+            hardware."""
+
+[words]
+plural = "imagens"
+choose = "imagens"
+analytics_extra = """"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[facts]]
+text = "Os arquivos ficam no seu aparelho"
+
+[[privacy]]
+title = "Suas imagens não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy nomeia todos os endereços que esta página pode
+      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
+      seus arquivos pudessem ser coletados, e não existe no código nada que os
+      mandaria se existisse. Isto já foi <code>connect-src 'none'</code>, que era
+      absoluto; acrescentar publicidade custou isso, e dizer isso faz parte do
+      acordo."""
+
+[[privacy]]
+title = "A codificação é local."
+body = """
+ O WebCodecs roda no seu navegador e o arquivo
+      pronto é entregue direto a um download. Não existe lado de servidor neste
+      aplicativo."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não é entregue a ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google. Nenhum dos dois recebe coisa alguma
+      sobre as suas imagens: nem um arquivo, nem uma miniatura, nem um nome, um
+      tamanho ou uma contagem. Toda linha que lê, decodifica, compõe ou codifica
+      uma imagem é servida desta origem e está listada no repositório."""
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não é entregue a ele."
+body = """
+
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um
+      script vindo de cdnjs.buymeacoffee.com e busca as letras dele no Google
+      Fonts. É um link e nada mais: ele não reporta visita nenhuma, e não recebe
+      nada sobre você nem sobre as suas imagens. Nada acontece a menos que você
+      clique, e aquilo para onde você iria clicando é o site de outra gente."""
+
+[[privacy]]
+title = "Uma exceção deliberada."
+body = """
+ Se você usar &ldquo;Adicionar a partir de um
+      endereço da web&rdquo;, aquele servidor é contatado para buscar a imagem e
+      vai enxergar o seu endereço IP. Só imagens que você cola são buscadas, e só
+      para dentro: o <code>img-src</code> é aberto, o <code>connect-src</code>
+      não. O contador abaixo lista todas as origens externas contatadas."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desconecte da rede e tudo, menos o carregamento
+      por endereço da web, continua funcionando. Essa é a prova mais simples de
+      todas."""
+
+[[howto]]
+title = "Escolha suas imagens."
+body = """
+ Arraste uma pasta até o seletor, ou escolha
+      os arquivos na mão. Eles são lidos direto do seu disco pelo navegador; nada
+      é mandado para lugar nenhum enquanto você faz isso."""
+
+[[howto]]
+title = "Ponha em ordem e defina quanto tempo cada uma fica."
+body = """
+ Arraste
+      para reordenar. O tempo de permanência pode ser dado em quadros ou em
+      segundos, para todas as imagens de uma vez ou uma imagem por vez."""
+
+[[howto]]
+title = "Escolha uma resolução e uma taxa de quadros."
+body = """
+ &ldquo;Acompanhar a
+      maior resolução&rdquo; segue a sua maior imagem; as predefinições cobrem 4K,
+      1080p, 720p, quadrado e vertical, e há um tamanho personalizado se nenhum
+      deles servir."""
+
+[[howto]]
+title = "Crie o vídeo e baixe."
+body = """
+ A codificação roda no seu próprio
+      hardware, então o tempo que leva depende da sua máquina e não de uma fila. O
+      MP4 pronto é entregue direto aos downloads do seu navegador."""
+
+[[faq]]
+q = "Minhas imagens são enviadas para algum lugar?"
+a = """
+        Não. Suas imagens são lidas, compostas e codificadas pelo seu próprio
+        navegador no seu próprio hardware. Não existe lado de servidor nesta
+        ferramenta, e a <code>Content-Security-Policy</code> da página nomeia todos
+        os endereços que ela pode contatar &mdash; nenhum deles é deste site. A
+        única exceção é a função opcional de &ldquo;adicionar a partir de um
+        endereço da web&rdquo;, que busca uma imagem que você cola, e aquele
+        servidor enxerga o seu endereço IP."""
+
+[[faq]]
+q = "Quais formatos de imagem posso usar?"
+a = """
+        Qualquer formato de imagem parada que o seu navegador consiga decodificar, o
+        que na prática significa JPG, PNG, WebP, GIF, AVIF e, em aparelhos da Apple,
+        HEIC. Não existe aqui uma lista separada para manter atualizada, porque
+        decodificar é trabalho do navegador, e não nosso."""
+
+[[faq]]
+q = "Que formato de vídeo ele produz?"
+a = """
+        MP4 com vídeo H.264, que toca em basicamente qualquer coisa. Num navegador
+        sem WebCodecs a ferramenta recua para gravar WebM &mdash; as mesmas imagens
+        num contêiner que menos editores aceitam."""
+
+[[faq]]
+q = "Posso usar isto para uma sequência renderizada do Blender ou do After Effects?"
+a = """
+        Sim &mdash; uma sequência renderizada numerada é exatamente para isso que
+        isto serve. Acrescente os quadros que o seu renderizador escreveu, deixe o
+        tempo de permanência em um quadro cada, e ajuste a taxa de quadros para
+        bater com a renderização. O &ldquo;Ordenar por nome&rdquo; conta do jeito
+        que você espera, então <code>frame_2</code> cai antes de
+        <code>frame_10</code>, e não depois.
+        <br><br>
+        Uma coisa que vale saber antes de começar: o H.264 não tem canal alfa,
+        então a transparência é achatada sobre a cor de fundo em vez de ser levada
+        adiante. Se você precisa manter o alfa, componha os quadros no seu editor
+        em vez disso."""
+
+[[faq]]
+q = "Posso fazer um timelapse com fotos?"
+a = """
+        Sim, e é o mesmo trabalho de uma sequência renderizada: mantenha cada foto
+        por um único quadro e escolha uma taxa de quadros. A 30 fps, cada trinta
+        fotos viram um segundo de vídeo; a 12 fps, essas mesmas fotos duram dois
+        segundos e meio.
+        <br><br>
+        O &ldquo;Ordenar por data&rdquo; devolve um rolo de câmera à ordem em que
+        foi fotografado, o que importa quando os nomes de arquivo recomeçaram em
+        0001. Fotos de tamanhos diferentes não são problema &mdash; &ldquo;Acompanhar
+        a maior resolução&rdquo; dimensiona o vídeo de modo que nenhuma delas seja
+        reduzida."""
+
+[[faq]]
+q = "Existe limite de quantas imagens, ou de quanto o vídeo pode durar?"
+a = """
+        Não há limite embutido na ferramenta. O teto prático é a memória da sua
+        própria máquina, porque o vídeo pronto é montado ali antes de você
+        baixá-lo. Apresentações muito grandes em 4K são a primeira coisa a sentir
+        isso."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não há conta, nem login, nem período de teste. O site exibe
+        publicidade, e é ela que paga a conta; os anúncios não recebem nada sobre as
+        suas imagens."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Sim. Carregue a página uma vez, então desconecte da internet e ela continua
+        funcionando. Esse é também o jeito mais simples de provar que nada está
+        sendo enviado: uma ferramenta que mandasse as suas imagens embora para
+        serem processadas pararia no instante em que você tirasse da tomada."""
+
+[[faq]]
+q = "Posso acrescentar música ou uma trilha sonora?"
+a = """
+        Ainda não. A ferramenta produz só vídeo: o MP4 que ela escreve tem uma única
+        trilha de vídeo e nenhuma trilha de áudio. Acrescente a trilha sonora depois,
+        num editor de vídeo, se precisar de uma."""
+
+[schema]
+browser_requirements = "Requer JavaScript. A saída em MP4 precisa de um navegador com WebCodecs; os demais recuam para WebM."
+description = "Transforme uma pasta de imagens numa apresentação em vídeo MP4. Cada etapa roda no seu navegador, então imagem nenhuma é enviada."
+features = [
+  "Converte imagens JPG, PNG, WebP, GIF e AVIF em vídeo",
+  "Saída em MP4 (H.264), com WebM como recuo",
+  "Resoluções até 3840x2160, taxas de quadros de 12 a 60 fps",
+  "Tempo de permanência por imagem, em quadros ou em segundos",
+  "Roda offline; sem envio, sem conta",
+]
+
+[picker]
+title = "Arraste imagens para cá"
+hint = "ou clique para escolher &mdash; JPEG, PNG, WebP, GIF, AVIF"
+
+[picker.urls]
+summary = "Adicionar a partir de um endereço da web"
+button = "Baixar as imagens"
+noun = "imagem"

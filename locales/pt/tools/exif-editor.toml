@@ -1,0 +1,243 @@
+#
+# Visualizador e removedor de EXIF - português do Brasil.
+#
+# Overrides for tools/exif-editor/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "EXIF" fica como está em toda parte: é o nome do bloco dentro do arquivo, e é
+# assim que ele aparece em qualquer programa que o leia.
+#
+
+name = "Visualizador e removedor de EXIF"
+heading = "Remover&nbsp;dados&nbsp;EXIF <span class=\"h1-kw\">&mdash; ver e apagar metadados de fotos</span>"
+tagline = "Veja o que uma foto conta sobre você. Depois tire isso."
+
+title = "Ver e remover dados EXIF &mdash; editor de metadados de fotos grátis"
+description = "Veja os dados EXIF e de GPS escondidos numa foto, edite, ou apague tudo num clique. No seu navegador: nada é enviado, e a foto nunca é recodificada."
+og_title = "Visualizador e removedor de EXIF &mdash; veja, edite ou apague"
+og_description = "Leia os metadados escondidos numa foto e remova todos num clique. Roda na sua própria máquina; a imagem em si nunca é recodificada."
+og_image_alt = "Visualizador e removedor de EXIF - leia, edite ou apague os metadados de uma foto"
+
+pledge = """
+    O arquivo é aberto, interpretado e reescrito pelo seu próprio navegador. Esta
+    ferramenta não tem função de rede de espécie alguma &mdash; nada a buscar,
+    nada a enviar &mdash; e não existe do outro lado desta página servidor nenhum
+    para onde mandar uma foto, mesmo que houvesse caminho."""
+
+live_hint = """
+      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
+      aba Rede e limpe uma foto. Nenhuma requisição leva uma imagem, uma
+      miniatura, um nome de arquivo ou uma etiqueta que lemos do seu arquivo. Ou
+      desconecte da internet e limpe uma mesmo assim."""
+
+read_first = """
+, <code>src/tiff.js</code> para o interpretador de
+      EXIF, e <code>src/jpeg.js</code> para a prova de que a imagem em si nunca é
+      mais que copiada."""
+
+howto_heading = "Como remover os dados EXIF de uma foto"
+
+card = """
+            Veja a localização, a câmera e os números de série escondidos numa
+            foto, edite o que quiser, ou apague tudo num clique."""
+
+[words]
+plural = "fotos"
+choose = "uma foto"
+analytics_extra = """, nem nenhuma das
+  etiquetas que esta ferramenta lê dos seus arquivos"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[facts]]
+text = "Nunca recodifica a imagem"
+
+[[privacy]]
+title = "Suas fotos não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy nomeia todos os endereços que esta página pode
+      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
+      seus arquivos pudessem ser coletados, e não existe no código nada que os
+      mandaria se existisse."""
+
+[[privacy]]
+title = "Nada aqui busca coisa alguma."
+body = """
+ Ao contrário das outras
+      ferramentas desta caixa, esta não tem função de &ldquo;carregar de um
+      endereço da web&rdquo; e não tem etapa de rede opcional nenhuma. Não existe
+      <code>fetch</code>, nem <code>XMLHttpRequest</code>, nem
+      <code>sendBeacon</code> em lugar nenhum de <code>src/</code>."""
+
+[[privacy]]
+title = "Os metadados que lemos nunca são relatados."
+body = """
+ Sua posição de GPS
+      é exibida nesta página e não vai a mais lugar nenhum. Não existe neste
+      repositório nenhum evento de análise personalizado que carregue uma
+      etiqueta, um nome de arquivo, um tamanho ou uma contagem."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não é entregue a ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google. Nenhum dos dois recebe coisa alguma
+      sobre as suas fotos. Toda linha que lê, interpreta ou reescreve um arquivo é
+      servida desta origem e está listada no repositório."""
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não é entregue a ele."
+body = """
+
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um
+      script vindo de cdnjs.buymeacoffee.com e busca as letras dele no Google
+      Fonts. É um link e nada mais: ele não reporta visita nenhuma, e não recebe
+      nada sobre você nem sobre os seus arquivos. Nada acontece a menos que você
+      clique, e aquilo para onde você iria clicando é o site de outra gente."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desconecte da rede e a ferramenta continua
+      igual, porque nunca houve uma etapa de rede nela. Essa é a prova mais
+      simples de todas."""
+
+[[howto]]
+title = "Escolha suas fotos."
+body = """
+ Arraste até o seletor ou escolha na mão.
+      Elas são lidas direto do seu disco pelo navegador; nada é mandado para lugar
+      nenhum enquanto você faz isso."""
+
+[[howto]]
+title = "Leia o que tem nelas, se quiser."
+body = """
+ A lista de achados nomeia as
+      coisas que vale saber &mdash; a posição de GPS, os horários, os números de
+      série &mdash; antes da tabela completa com todas as etiquetas."""
+
+[[howto]]
+title = "Aperte &ldquo;Remover todos os metadados&rdquo;."
+body = """
+ Esse é o trabalho inteiro
+      para a maioria das pessoas. Todas as etiquetas, os blocos XMP e IPTC, os
+      comentários e a miniatura embutida vão embora, em todas as fotos da lista de
+      uma vez."""
+
+[[howto]]
+title = "Ou edite em vez de remover."
+body = """
+ Mude uma data, corrija uma linha de
+      direitos autorais, descarte a localização e mantenha os ajustes da câmera
+      &mdash; e então salve aquela foto sozinha."""
+
+[[faq]]
+q = "Minha foto é enviada para algum lugar?"
+a = """
+        Não. O arquivo é lido, interpretado e reescrito pelo seu próprio navegador
+        no seu próprio hardware. Esta ferramenta não tem função de rede de espécie
+        alguma &mdash; nunca busca nada e nunca manda nada &mdash; e a
+        <code>Content-Security-Policy</code> da página nomeia todos os endereços que
+        ela pode contatar, nenhum dos quais é deste site."""
+
+[[faq]]
+q = "O que é EXIF, e o que mais está escondido numa foto?"
+a = """
+        EXIF é um bloco de etiquetas que a câmera escreve ao lado da imagem: a marca
+        e o modelo, os ajustes de exposição, a data e a hora com precisão de segundo,
+        muitas vezes uma posição de GPS e às vezes um número de série. As fotos
+        costumam carregar mais coisas além disso &mdash; um pacote XMP de XML vindo
+        de um editor, um bloco IPTC com campos de legenda e assinatura, um perfil de
+        cor, uma segunda cópia pequena da imagem como miniatura, e uma maker note
+        com dados não documentados do fabricante. Esta ferramenta lista tudo
+        isso."""
+
+[[faq]]
+q = "Remover os metadados reduz a qualidade da imagem?"
+a = """
+        Não, e esse é o motivo principal para usar uma ferramenta assim em vez de
+        salvar a foto de novo. Os metadados ficam no contêiner em volta da imagem
+        comprimida, e não dentro dela. Removê-los é apagar itens de uma lista e
+        escrever a lista de volta; os dados de imagem comprimida são copiados byte
+        por byte, então o resultado decodifica exatamente para os mesmos pixels.
+        Nada é decodificado e nada é recomprimido."""
+
+[[faq]]
+q = "Quais formatos de arquivo ele trata?"
+a = """
+        JPEG, PNG e WebP. HEIC e AVIF são reconhecidos, mas não reescritos: são
+        formatos de caixas montados a partir de átomos aninhados e precisam de outro
+        interpretador, então a ferramenta diz isso em vez de produzir um arquivo
+        quebrado. Um TIFF puro também não é tratado, porque num TIFF os metadados e
+        os pixels são endereçados pelos mesmos deslocamentos."""
+
+[[faq]]
+q = "Minha foto vai aparecer girada depois que os metadados forem removidos?"
+a = """
+        Pode acontecer, e há um ajuste para isso. Os celulares normalmente gravam a
+        imagem do jeito que o sensor viu e acrescentam uma etiqueta de Orientação
+        dizendo como virar. Remova essa etiqueta e alguns visualizadores mostram a
+        foto deitada. A opção de &ldquo;manter a etiqueta de orientação&rdquo;, que
+        vem ligada, escreve de volta um pequeníssimo bloco EXIF contendo só essa
+        etiqueta &mdash; e só quando a foto realmente precisava. Desligue se você
+        preferir que o arquivo não carregue EXIF nenhum."""
+
+[[faq]]
+q = "Ele remove a localização de GPS?"
+a = """
+        Sim. Remover tudo remove o diretório de GPS inteiro, e você também pode
+        apagar a localização sozinha e manter o resto. A posição é mostrada primeiro
+        em graus decimais, porque &ldquo;51 graus, 30 minutos, 26 segundos&rdquo; não
+        deixa evidente que a foto nomeia o prédio em que foi tirada."""
+
+[[faq]]
+q = "Posso mudar uma etiqueta em vez de apagá-la?"
+a = """
+        Sim. Etiquetas de texto, datas, o ISO, a orientação e a resolução podem
+        todas ser editadas, e algumas etiquetas comuns podem ser acrescentadas a uma
+        foto que não tem nenhuma. Uma ressalva: escrever o arquivo reconstrói o
+        bloco EXIF, e uma maker note contém deslocamentos que apontam para dentro do
+        bloco original, então uma maker note reconstruída pode deixar de ser legível
+        pelo próprio software do fabricante. Apague a maker note ou deixe o arquivo
+        sem editar, se isso lhe importa."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não há conta, nem login, nem período de teste. O site exibe
+        publicidade, e é ela que paga a conta; os anúncios não recebem nada sobre as
+        suas fotos."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Sim. Carregue a página uma vez, então desconecte da internet e ela continua
+        funcionando. Esse é também o jeito mais simples de provar que nada está
+        sendo enviado: uma ferramenta que mandasse as suas fotos embora para serem
+        processadas pararia no instante em que você tirasse da tomada."""
+
+[schema]
+description = "Leia os metadados EXIF, GPS, XMP e IPTC de dentro de uma foto, edite etiquetas individuais, ou remova tudo num clique. JPEG, PNG e WebP, processados no navegador sem recodificar a imagem."
+features = [
+  "Mostra todas as etiquetas EXIF, inclusive posição de GPS, números de série da câmera e maker notes",
+  "Edita ou apaga etiquetas individuais e escreve o arquivo de volta",
+  "Remove EXIF, GPS, XMP, IPTC, comentários e a miniatura embutida num clique",
+  "JPEG, PNG e WebP",
+  "Reescreve só o contêiner, então a imagem nunca é recomprimida",
+  "Roda offline; sem envio, sem conta",
+]
+
+[picker]
+title = "Arraste fotos para cá"
+hint = "ou clique para escolher &mdash; JPEG, PNG e WebP"

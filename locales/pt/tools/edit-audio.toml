@@ -1,0 +1,279 @@
+#
+# Editor de áudio - português do Brasil.
+#
+# Overrides for tools/edit-audio/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Editor de áudio"
+heading = "Editor&nbsp;de&nbsp;áudio <span class=\"h1-kw\">&mdash; inverter, mudar a velocidade ou aumentar o volume</span>"
+tagline = "Toque de trás para a frente, mude a velocidade, levante uma gravação baixa &mdash; tudo aqui, na sua máquina."
+
+title = "Inverter áudio, mudar a velocidade e aumentar o volume &mdash; grátis, sem envio"
+description = "Toque uma faixa de trás para a frente, acelere ou desacelere, e deixe uma gravação baixa mais alta. Também tira o som de dentro de um vídeo. Roda no navegador: nada é enviado."
+og_title = "Editor de áudio &mdash; inverta, retemporize e amplifique sem enviar nada"
+og_description = "Inverta uma faixa, mude a velocidade com ou sem mexer no tom, e ajuste o nível - depois baixe um WAV. O arquivo é lido e escrito pelo seu próprio navegador."
+og_image_alt = "Editor de áudio - inverta, retemporize e amplifique áudio no seu navegador"
+
+pledge = """
+    Seu arquivo é lido, editado e escrito pelo seu próprio navegador, no seu
+    próprio hardware. Nada aqui consegue buscar ou mandar coisa alguma &mdash;
+    não existe função de rede nenhuma nesta ferramenta &mdash; e não existe do
+    outro lado desta página servidor nenhum para onde mandar uma gravação, mesmo
+    que houvesse caminho."""
+
+live_hint = """
+      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
+      aba Rede e inverta alguma coisa. Nenhuma requisição leva uma amostra, um
+      nome de arquivo ou um byte do que você escolheu. Ou desconecte da internet e
+      edite uma faixa mesmo assim &mdash; uma ferramenta que mandasse o seu áudio
+      embora para ser processado simplesmente pararia."""
+
+read_first = """
+, <code>src/decode.js</code> para as vinte linhas que
+      entregam o seu arquivo ao decodificador do próprio navegador,
+      <code>src/stretch.js</code> para o esticador de tempo,
+      <code>src/speed.js</code> para o reamostrador, e <code>src/wav.js</code>
+      para o cabeçalho que vai na frente das amostras. Nenhum deles importa
+      qualquer coisa que consiga fazer uma requisição."""
+
+howto_heading = "Como editar um arquivo de áudio"
+
+card = """
+            Inverta uma faixa, mude a velocidade com ou sem mexer no tom, e
+            levante uma gravação baixa. Também tira o som de dentro de um
+            vídeo."""
+
+[words]
+plural = "gravações"
+choose = "um arquivo"
+analytics_extra = """, nem nenhuma
+  forma de onda, duração ou nível"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem marca d'água"
+
+[[facts]]
+text = "Vídeo entra, áudio sai"
+
+[[facts]]
+text = "Funciona offline"
+
+[[privacy]]
+title = "Suas gravações não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy nomeia todos os endereços que esta página pode
+      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
+      o seu arquivo pudesse ser coletado, e não existe no código nada que o
+      mandaria se existisse."""
+
+[[privacy]]
+title = "Nada aqui busca coisa alguma."
+body = """
+ Esta ferramenta não tem função de
+      rede nenhuma: nenhum endereço para colar, nada para baixar, nenhum motor
+      buscado no primeiro uso. Cada byte que encosta no seu áudio veio desta
+      origem quando a página carregou."""
+
+[[privacy]]
+title = "O decodificador é o que já está no seu navegador."
+body = """
+
+      O arquivo é entregue ao <code>decodeAudioData</code>, o mesmo código que
+      toca uma faixa num elemento <code>&lt;audio&gt;</code>. Nada é embarcado
+      aqui para ler o seu formato, e nada é pedido a coisa alguma fora desta
+      página para lê-lo tampouco."""
+
+[[privacy]]
+title = "A imagem de um vídeo nunca chega a ser decodificada."
+body = """
+ Quando você joga um
+      vídeo aqui, só a trilha de áudio dele é pedida. Os quadros não são lidos,
+      não são decodificados, não são desenhados e não são olhados &mdash; não
+      existe nesta página código que pudesse, e o arquivo que sai carrega som e
+      nada mais."""
+
+[[privacy]]
+title = "As amostras são anotadas, não codificadas de novo."
+body = """
+
+      Um WAV são as amostras que esta página calculou com um cabeçalho na frente
+      delas. Não há um codificador no meio tomando decisões sobre a sua gravação,
+      e não há nada que pudesse ser chamado de envio para isso acontecer."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não é entregue a ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google. Nenhum dos dois recebe coisa alguma
+      sobre a sua gravação: nem um arquivo, nem uma amostra, nem um nome, um
+      tamanho, uma duração ou o quão alta ela estava. Toda linha que lê, edita e
+      escreve é servida desta origem e está listada no repositório."""
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não é entregue a ele."
+body = """
+
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um
+      script vindo de cdnjs.buymeacoffee.com e busca as letras dele no Google
+      Fonts. É um link e nada mais: ele não reporta visita nenhuma, e não recebe
+      nada sobre você nem sobre o seu arquivo."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desconecte da rede e tudo nesta página continua
+      funcionando. Essa é a prova mais simples de todas."""
+
+[[howto]]
+title = "Escolha um arquivo."
+body = """
+ Arraste um MP3, WAV, FLAC, M4A, Ogg ou
+      Opus até o seletor &mdash; ou um vídeo, se o que você quer é o som de
+      dentro dele. Ele é lido direto do seu disco pelo navegador; nada é mandado
+      para lugar nenhum enquanto você faz isso."""
+
+[[howto]]
+title = "Vire de trás para a frente, se foi para isso que você veio."
+body = """
+ Uma
+      caixinha. As amostras são escritas da última para a primeira, o que é
+      exatamente reversível: faça duas vezes e você tem o arquivo de onde partiu,
+      amostra por amostra."""
+
+[[howto]]
+title = "Ajuste a velocidade."
+body = """
+ Arraste o controle, digite um multiplicador,
+      ou aperte uma das predefinições. Depois escolha o que acontece com o tom:
+      segurá-lo onde está, que é o que você quer numa aula a 1,5&times;, ou
+      deixá-lo mover junto com a velocidade, que é o que uma fita faz e o que faz
+      uma voz subir ou descer."""
+
+[[howto]]
+title = "Ajuste o nível."
+body = """
+ Ou diga uma mudança em decibéis, ou peça que a
+      gravação seja levantada até o momento mais alto dela ficar logo abaixo do
+      teto. A página diz onde aquele momento vai cair antes de você apertar
+      qualquer coisa, e avisa se o ajuste escolhido o empurraria além da escala
+      cheia."""
+
+[[howto]]
+title = "Salve."
+body = """
+ O trabalho acontece no seu próprio hardware, então o
+      tempo que leva depende da sua máquina e não de uma fila. O que sai é um WAV
+      &mdash; as próprias amostras, com um cabeçalho na frente &mdash; tocado na
+      página primeiro, e depois entregue direto aos downloads do seu
+      navegador."""
+
+[[faq]]
+q = "Meu áudio é enviado para algum lugar?"
+a = """
+        Não. Ele é lido, editado e escrito pelo seu próprio navegador no seu próprio
+        hardware. Não existe lado de servidor nesta ferramenta, e a
+        <code>Content-Security-Policy</code> da página nomeia todos os endereços que
+        ela pode contatar &mdash; nenhum deles é deste site. Desconecte da internet e
+        inverta uma faixa mesmo assim, se preferir conferir a acreditar."""
+
+[[faq]]
+q = "Consigo tirar o áudio de dentro de um vídeo?"
+a = """
+        Sim, e aqui é o mesmo trabalho que abrir um MP3. Jogue um MP4, MOV ou WebM
+        aqui e só a trilha de áudio dele é decodificada: a imagem nunca é lida, e o
+        que sai é um arquivo de som sem vídeo nenhum. É também o jeito de salvar o
+        som de um clipe sem editá-lo &mdash; deixe todos os ajustes em paz e aperte
+        o botão."""
+
+[[faq]]
+q = "Mudar a velocidade muda o tom?"
+a = """
+        Só se você pedir. &ldquo;Manter o tom&rdquo; corta a gravação em janelas
+        sobrepostas de uns cinquenta milissegundos e as reassenta mais perto ou mais
+        longe umas das outras, escolhendo cada posição de modo que as ondas se
+        alinhem onde se cruzam &mdash; uma voz continua a mesma voz a 1,5&times;.
+        &ldquo;Deixar mover&rdquo; reamostra em vez disso, que é o que tocar uma
+        fita mais rápido faz: o dobro da velocidade é exatamente uma oitava
+        acima."""
+
+[[faq]]
+q = "Por que ele salva um WAV em vez de um MP3?"
+a = """
+        Porque navegador nenhum traz um codificador de MP3, e esta ferramenta se
+        recusa a mandar a sua gravação para um servidor que tenha um. Um WAV não
+        precisa de codificador nenhum &mdash; são as amostras com um cabeçalho de
+        quarenta e quatro bytes na frente &mdash; então é ao mesmo tempo a opção
+        honesta e a única que não tem como custar qualidade. Ele é maior: cerca de
+        dez megabytes por minuto em estéreo. Todo reprodutor, celular e editor abre
+        um, e qualquer coisa que queira um MP3 consegue fazer um a partir dele."""
+
+[[faq]]
+q = "Quais formatos posso abrir?"
+a = """
+        O que o seu navegador decodificar, o que na prática significa MP3, WAV,
+        FLAC, M4A e AAC, Ogg Vorbis e Opus, e o áudio dentro de vídeos MP4, M4V, MOV
+        e WebM. O que fica de fora é a mesma lista curta de sempre: AVI, WMA e a
+        maioria dos MKVs. Um arquivo que este navegador não lê é recusado com uma
+        mensagem dizendo isso, em vez de falhar no meio do caminho."""
+
+[[faq]]
+q = "Deixar mais alto vai distorcer?"
+a = """
+        Só se você passar da escala cheia, e a página avisa antes de você passar. O
+        áudio digital tem um teto rígido: uma amostra não pode ser mais alta que a
+        escala cheia, então qualquer coisa acima disso é achatada contra o teto, e é
+        assim que a distorção soa. &ldquo;O mais alto que der&rdquo; é o ajuste que
+        não consegue fazer isso &mdash; ele calcula quanto espaço sobrou na gravação
+        e usa exatamente aquilo. Tudo abaixo do teto é multiplicação e mais nada:
+        suba 6 dB e desça 6 dB e as amostras estão onde começaram."""
+
+[[faq]]
+q = "Inverter ou retemporizar perde qualidade?"
+a = """
+        Inverter não perde: as mesmas amostras saem na outra ordem, o que é exato.
+        Mudar a velocidade move cada amostra, então é aritmética e não cópia &mdash;
+        o reamostrador filtra direito no caminho, então acelerar não dobra as notas
+        altas de volta para baixo como um zumbido metálico, e as janelas do
+        esticador são colocadas onde as ondas se alinham, e não onde a conta calhou
+        de cair. Nenhum dos dois caminhos recodifica nada, porque não há aqui
+        codificador com que recodificar."""
+
+[[faq]]
+q = "Existe limite de duração do arquivo?"
+a = """
+        Não há limite embutido na ferramenta. O teto prático é a memória: a gravação
+        inteira é decodificada nesta página de uma vez, e um WAV é montado na memória
+        antes de você baixá-lo, então uma hora de estéreo precisa de algo abaixo de
+        um gigabyte para trabalhar. Um WAV de quatro gigabytes é recusado de cara,
+        porque o próprio campo de tamanho do formato não consegue descrever um."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não há conta, nem login, nem período de teste, nem marca
+        d'água. O site exibe publicidade, e é ela que paga a conta; os anúncios não
+        recebem nada sobre a sua gravação."""
+
+[schema]
+browser_requirements = "Requer JavaScript e um navegador com Web Audio, o que é todo navegador atual. Nenhum suporte a codec além do que o navegador já tem para tocar o arquivo."
+description = "Inverta uma faixa de áudio, mude a velocidade dela com ou sem mexer no tom, e ajuste o nível, dentro do navegador. Funciona também com o áudio de dentro de um vídeo. Nada é enviado e o resultado é escrito como WAV, então nada é recodificado."
+features = [
+  "Toca uma faixa de trás para a frente, exatamente",
+  "Muda a velocidade de um quarto a quatro vezes, mantendo o tom ou movendo-o",
+  "Sobe ou desce o nível, ou normaliza para logo abaixo da escala cheia",
+  "Tira o áudio de um MP4, MOV ou WebM sem encostar na imagem",
+  "Escreve WAV de 16 bits ou float de 32 bits, sem codificador no meio",
+  "Roda offline; sem envio, sem conta, sem marca d'água",
+]
+
+[picker]
+title = "Arraste um arquivo de áudio ou um vídeo para cá"
+hint = "ou clique para escolher &mdash; MP3, WAV, FLAC, M4A, Ogg, e o som dentro de MP4, MOV ou WebM"

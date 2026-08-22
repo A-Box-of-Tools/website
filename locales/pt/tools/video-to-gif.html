@@ -1,0 +1,169 @@
+<main>
+  <!-- Passo 1 &mdash; o arquivo -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha um vídeo</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Arquivo</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Tamanho</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Quadro</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Duração</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Vídeo</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Lido por</dt><dd id="src-path">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; o trecho -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> Escolha o trecho</h2>
+
+    <p class="hint">
+      Toque o clipe e marque a parte que você quer. <kbd>I</kbd> põe o início
+      onde o cursor de reprodução está, <kbd>O</kbd> põe o fim, e as duas alças
+      da barra podem ser arrastadas.
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/range.js. -->
+    <div id="rangebar"></div>
+    <div class="rb-scale">
+      <span>0:00.000</span>
+      <span id="scale-end">&mdash;</span>
+    </div>
+
+    <div class="marks">
+      <label>Início
+        <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-in" class="ghost" title="Pôr o início onde o cursor de reprodução está (I)">
+        Marcar no cursor
+      </button>
+
+      <label>Fim
+        <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-out" class="ghost" title="Pôr o fim onde o cursor de reprodução está (O)">
+        Marcar no cursor
+      </button>
+
+      <div class="mark-actions">
+        <button type="button" id="play-section" class="ghost">Tocar o trecho</button>
+        <button type="button" id="whole-clip" class="ghost">Clipe inteiro</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Passo 3 &mdash; o GIF -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Tamanho e taxa de quadros</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="width">Largura</label>
+        <select id="width">
+          <option value="240">240 px</option>
+          <option value="320">320 px</option>
+          <option value="480" selected>480 px</option>
+          <option value="640">640 px</option>
+          <option value="source">Tamanho original</option>
+          <option value="custom">Exatamente&hellip;</option>
+        </select>
+        <p class="field-note">
+          A altura acompanha, então o formato nunca muda. A largura é o que um
+          GIF custa: metade da largura é um quarto dos pixels.
+        </p>
+        <p class="field-note" id="width-note" hidden></p>
+      </div>
+
+      <div class="field" id="custom-width-field" hidden>
+        <label for="custom-width">Largura exata</label>
+        <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
+        <p class="field-note">Em pixels, entre 16 e 1920.</p>
+      </div>
+
+      <div class="field">
+        <label for="fps">Quadros por segundo</label>
+        <select id="fps">
+          <option value="5">5 &mdash; o menor</option>
+          <option value="10">10</option>
+          <option value="12" selected>12 &mdash; suave o bastante</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25 &mdash; o mais suave</option>
+        </select>
+        <p class="field-note">
+          Não é a taxa do próprio vídeo: os quadros são amostrados dele. Doze se
+          lê como movimento; acima de vinte o arquivo cresce mais rápido do que a
+          suavidade aparece.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="dither">Dithering</label>
+        <select id="dither">
+          <option value="on" selected>Ligado &mdash; gradientes mais suaves</option>
+          <option value="off">Desligado &mdash; mais chapado, menor</option>
+        </select>
+        <p class="field-note">
+          Mistura duas cores da paleta onde a certa está faltando. Ordenado, para
+          um fundo parado não fervilhar.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="loop">
+          <input type="checkbox" id="loop" checked>
+          Repetir para sempre
+        </label>
+        <p class="field-note">Desligado toca uma vez e para.</p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Trecho</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>Saída</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Quadros</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Tamanho aproximado</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="memory-note" class="field-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Fazer o GIF</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <img id="result-image" alt="A animação pronta, tocando">
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Baixar o GIF</a>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,160 @@
+<main>
+  <!-- Passo 1 &mdash; o arquivo -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha um PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Escolher outro</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; a tela que esta ferramenta manteria se pudesse manter só uma -->
+  <section class="card" id="inventory-card" hidden>
+    <h2><span class="step">2</span> Veja onde está o tamanho</h2>
+
+    <p class="card-lede">
+      &ldquo;Comprimir um PDF&rdquo; são dois trabalhos diferentes dividindo um
+      nome. Um escaneamento é uma pilha de fotografias, e recodificá-las vale a
+      maior parte do arquivo. Um contrato é texto e fontes, que o que quer que o
+      tenha feito já comprimiu &mdash; não existe oitenta por cento escondido lá
+      dentro, e ferramenta nenhuma vai achar um. Qual dos dois você tem não é
+      questão de opinião, então aqui está, antes de qualquer coisa ser tocada.
+    </p>
+
+    <p id="verdict" class="verdict"></p>
+
+    <div class="breakdown">
+      <div id="breakdown-bar" class="breakdown-bar" role="img" aria-labelledby="breakdown-list"></div>
+      <ul id="breakdown-list" class="breakdown-list"></ul>
+    </div>
+
+    <p id="inventory-notes" class="field-summary"></p>
+  </section>
+
+  <!-- Passo 3 &mdash; quanto gastar -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">3</span> Diga com que força apertar</h2>
+
+    <p class="card-lede">
+      Um PDF registra de que tamanho cada imagem é desenhada, então esta
+      ferramenta consegue medir o que a página de fato usa em vez de adivinhar. Um
+      escaneamento de 4000 pixels colocado ao longo de vinte centímetros de papel
+      está carregando 500 pixels por polegada; a 150 ele imprime igual e fica
+      igual na tela. Os pixels que ninguém consegue ver são gastos primeiro,
+      porque não custam nada.
+    </p>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">Quanta qualidade pode ser gasta</legend>
+      <div class="presets" id="presets" role="radiogroup" aria-label="Quanta qualidade pode ser gasta">
+        <label class="preset">
+          <input type="radio" name="preset" value="smallest">
+          <span class="preset-body">
+            <strong>O menor possível</strong>
+            <span class="preset-note">96 DPI. Para algo que só precisa ser lido numa tela.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="screen" checked>
+          <span class="preset-body">
+            <strong>Bom na tela</strong>
+            <span class="preset-note">130 DPI. A resposta de sempre para um arquivo que você precisa mandar por e-mail.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="print">
+          <span class="preset-body">
+            <strong>Ainda bom no papel</strong>
+            <span class="preset-note">220 DPI. Menor, e ainda vai imprimir direito.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="gentle">
+          <span class="preset-body">
+            <strong>Quase não encostar nas imagens</strong>
+            <span class="preset-note">Sem redimensionamento nenhum. A maior parte da economia vem de reempacotar o arquivo.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <details class="advanced">
+      <summary>Defina os dois números você mesmo</summary>
+      <div class="option-row">
+        <label for="dpi-value">Máximo de pixels por polegada de espaço desenhado</label>
+        <div class="inline-pair">
+          <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
+          <span class="unit">DPI &mdash; 0 deixa cada imagem no tamanho cheio dela</span>
+        </div>
+      </div>
+      <div class="option-row">
+        <label for="quality-value">Qualidade do JPEG</label>
+        <div class="inline-pair">
+          <input type="range" id="quality-value" min="30" max="95" step="1" value="68">
+          <output id="quality-out" for="quality-value">68</output>
+        </div>
+      </div>
+    </details>
+
+    <label class="check">
+      <input type="checkbox" id="strip-meta" checked>
+      <span>
+        <strong>Tirar o que o arquivo lembra sobre de onde ele veio</strong>
+        <span class="check-note">
+          O nome e a versão do programa que o fez, quando foi feito e editado pela
+          última vez, o pacote XMP, e aquele blob privado que um programa de
+          diagramação deixa para trás para conseguir reimportar o próprio trabalho
+          &mdash; o que às vezes são megabytes. Nada disso é necessário para exibir
+          o documento.
+        </span>
+      </span>
+    </label>
+
+    <p id="settings-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Passo 4 &mdash; o único clique -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Comprimir</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Comprimir este PDF</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Baixar</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <details id="per-image" class="advanced" hidden>
+        <summary>O que aconteceu com cada imagem</summary>
+        <ul id="image-list" class="image-list"></ul>
+      </details>
+    </div>
+  </section>
+</main>

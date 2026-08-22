@@ -1,0 +1,220 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Abra o <a href="../../remover-dados-exif/">Visualizador e removedor de
+      EXIF</a>, jogue as fotos dentro e aperte &ldquo;Remover todos os
+      metadados&rdquo;. Todas as etiquetas, os blocos XMP e IPTC, os comentários
+      e a miniatura embutida vão embora, em todas as fotos da lista de uma vez.
+      A imagem em si não é tocada &mdash; não é recomprimida, não é decodificada,
+      não muda um pixel sequer.
+    </p>
+    <p>
+      Antes de fazer isso, vale olhar o que tinha lá dentro. Costuma ser mais do
+      que as pessoas esperam, e essa lista é o argumento para fazer isso.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que existe de fato dentro de uma foto</h2>
+    <p>
+      Um JPEG não é só uma imagem comprimida. É um contêiner, e ao lado da
+      imagem ficam vários blocos de informação que a sua câmera, o seu celular
+      ou o seu editor escreveram ali.
+    </p>
+    <ul>
+      <li>
+        <strong>EXIF.</strong> O principal. Marca e modelo da câmera, lente,
+        ajustes de exposição, ISO, a data e a hora com precisão de segundo, a
+        orientação em que a imagem deve ser exibida e &mdash; num celular com a
+        localização ligada para a câmera &mdash; uma posição de GPS com precisão
+        de poucos metros. Muitas vezes, também o número de série do corpo da
+        câmera.
+      </li>
+      <li>
+        <strong>GPS.</strong> Tecnicamente parte do EXIF, e vale nomear à parte
+        porque é o que mais importa. Vem escrito em graus, minutos e segundos,
+        um formato que faz um ótimo trabalho de não parecer um endereço.
+      </li>
+      <li>
+        <strong>XMP.</strong> Um pacote de XML que os editores escrevem. Pode
+        carregar o seu nome, o seu software, avaliações, palavras-chave,
+        histórico de edição e uma cópia de alguns campos do EXIF &mdash; e é por
+        isso que remover só o EXIF não basta.
+      </li>
+      <li>
+        <strong>IPTC.</strong> Um bloco mais antigo com campos de legenda,
+        assinatura, crédito e direitos autorais, usado na imprensa e em bancos
+        de imagens.
+      </li>
+      <li>
+        <strong>A miniatura embutida.</strong> Uma segunda cópia pequena da
+        imagem. Ela é gerada quando o arquivo é escrito, e nem sempre é gerada
+        de novo quando a imagem é editada &mdash; e é assim que uma foto cortada
+        pode viajar com uma miniatura do que foi cortado fora.
+      </li>
+      <li>
+        <strong>A maker note.</strong> Um bloco não documentado com dados do
+        fabricante. Ninguém fora do fabricante sabe tudo o que tem lá dentro.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Quem de fato vê isso</h2>
+    <p>
+      Esta é a parte em que vale ser preciso, porque tanto a versão alarmada
+      quanto a versão debochada estão erradas.
+    </p>
+    <p>
+      <strong>A maioria das grandes redes sociais apaga os metadados quando você
+      posta.</strong> Facebook, Instagram e X recodificam as imagens enviadas e
+      descartam as etiquetas no processo. Isso não é gentileza &mdash; eles ficam
+      com os dados do lado deles &mdash; mas significa que uma foto postada
+      nesses serviços não entrega as coordenadas dela a cada pessoa que a vê.
+    </p>
+    <p>
+      <strong>Quase todo o resto mantém.</strong> Um anexo de e-mail. Um arquivo
+      mandado pela maioria dos aplicativos de mensagem como
+      &ldquo;documento&rdquo; em vez de foto. Uma imagem num fórum, num anúncio
+      de classificados, num site pessoal, num drive compartilhado, num relato de
+      bug, num chamado de suporte. Em todos esses o arquivo chega inteiro, e
+      qualquer um que o baixe consegue ler as etiquetas com ferramentas que já
+      vêm no sistema operacional.
+    </p>
+    <p>
+      Os riscos realistas são banais em vez de dramáticos: um anúncio de
+      classificados fotografado dentro de casa, uma foto de criança tirada na
+      escola dela, uma conta aparentemente anônima postando fotos que
+      compartilham todas um mesmo número de série de câmera, um &ldquo;tirada
+      semana passada&rdquo; que foi tirada em março.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que não simplesmente salvar de novo?</h2>
+    <p>
+      Salvar de novo uma foto por um editor ou um compressor realmente remove os
+      metadados &mdash; a imagem é decodificada em pixels e codificada outra vez,
+      e um canvas cheio de pixels não carrega etiqueta nenhuma. Funciona, e lhe
+      custa qualidade, porque essa recodificação é com perdas.
+    </p>
+    <p>
+      Remover os metadados direito não custa nada. As etiquetas ficam no
+      contêiner <em>em volta</em> da imagem comprimida, e não dentro dela, então
+      apagá-las é excluir entradas de uma lista e escrever a lista de volta. Os
+      dados de imagem comprimida são copiados byte por byte e o resultado
+      decodifica exatamente para os mesmos pixels. Esse é o motivo inteiro para
+      usar uma ferramenta de metadados em vez de um conversor.
+    </p>
+    <p>
+      A exceção é se você fosse recodificar de qualquer jeito. Se já está
+      comprimindo ou redimensionando a foto, as etiquetas vão embora como efeito
+      colateral e você não precisa de uma segunda etapa.
+    </p>
+  </section>
+
+  <section>
+    <h2>A única coisa que vale manter: a orientação</h2>
+    <p>
+      Celulares não giram a imagem quando você vira o aparelho. Eles gravam do
+      jeito que o sensor viu e acrescentam uma etiqueta de Orientação dizendo
+      como aquilo deve ser virado para exibição. Apague todas as etiquetas e
+      alguns visualizadores vão mostrar a sua foto deitada.
+    </p>
+    <p>
+      É por isso que a ferramenta daqui tem uma opção de &ldquo;manter a etiqueta
+      de orientação&rdquo;, ligada por padrão. Ela escreve de volta um
+      pequeníssimo bloco EXIF contendo só essa etiqueta e nada mais, e só nas
+      fotos que realmente precisavam. O GPS, os horários, o número de série e o
+      resto continuam fora.
+    </p>
+    <p>
+      Desligue se você preferir que o arquivo não carregue EXIF nenhum &mdash; e
+      então confira o resultado antes de mandar, porque uma foto deitada é o
+      desfecho de sempre.
+    </p>
+  </section>
+
+  <section>
+    <h2>Editar em vez de remover</h2>
+    <p>
+      Remover tudo é a resposta certa para a maioria das pessoas. Às vezes não
+      é: um fotógrafo pode querer manter a linha de direitos autorais e os
+      ajustes da câmera e tirar só a localização; um arquivista pode precisar
+      corrigir uma data que estava errada porque o relógio da câmera estava.
+    </p>
+    <p>
+      Os dois são possíveis. A localização pode ser apagada sozinha, e etiquetas
+      de texto, datas, ISO, orientação e resolução podem ser editadas ali mesmo.
+    </p>
+    <p>
+      Uma ressalva que vale para toda ferramenta que faz isso, não só para esta:
+      escrever o arquivo reconstrói o bloco EXIF, e uma maker note contém
+      deslocamentos que apontam para dentro do bloco <em>original</em>. Uma maker
+      note reconstruída pode, portanto, deixar de ser legível pelo próprio
+      software do fabricante. Se isso importa, apague a maker note ou deixe o
+      arquivo sem editar.
+    </p>
+  </section>
+
+  <section>
+    <h2>Formatos, e os que não dão para fazer assim</h2>
+    <p>
+      JPEG, PNG e WebP podem todos ser reescritos de forma limpa, e são esses os
+      três que a ferramenta daqui trata.
+    </p>
+    <p>
+      HEIC &mdash; o que um iPhone salva por padrão &mdash; e AVIF são formatos
+      de caixas montados a partir de átomos aninhados, e precisam de um
+      interpretador completamente diferente. A ferramenta reconhece os dois e diz
+      isso, em vez de produzir um arquivo quebrado. Se você tem um HEIC,
+      convertê-lo para JPEG vai remover os metadados como efeito colateral da
+      conversão.
+    </p>
+    <p>
+      Um TIFF puro também não é tratado, e por um motivo mais interessante: num
+      TIFF os metadados e os dados de pixel são endereçados pelos mesmos
+      deslocamentos, então remover etiquetas significa reescrever o
+      endereçamento da própria imagem. Dá para fazer, e é outro trabalho.
+    </p>
+  </section>
+
+  <section>
+    <h2>Um hábito que vale ter</h2>
+    <p>
+      Confira antes de postar, não depois. Ler as etiquetas leva alguns segundos,
+      e a lista de achados nomeia as coisas que vale saber &mdash; a posição, os
+      horários, os números de série &mdash; antes da tabela completa com todas as
+      etiquetas, para você não precisar saber o que procurar.
+    </p>
+    <p>
+      A posição é mostrada primeiro em graus decimais, de propósito. &ldquo;51
+      graus, 30 minutos, 26 segundos&rdquo; não deixa evidente que a foto nomeia
+      o prédio em que foi tirada. Um par de decimais que você cola num mapa
+      deixa.
+    </p>
+  </section>
+
+  <section>
+    <h2>Não mande a foto para descobrir o que tem nela</h2>
+    <p>
+      Há uma ironia específica no jeito como esse problema costuma ser resolvido:
+      alguém preocupado com o que a foto revela envia essa foto a um site para
+      descobrir. O site agora tem a foto, as coordenadas, o horário e o número de
+      série, e uma cópia da imagem num disco que é dele.
+    </p>
+    <p>
+      Não há motivo para isso. Ler e reescrever o contêiner em volta de um JPEG
+      são algumas centenas de linhas de interpretação que um navegador roda
+      perfeitamente bem, e é por isso que a ferramenta daqui não tem função de
+      rede nenhuma: nenhum <code>fetch</code>, nenhum <code>XMLHttpRequest</code>,
+      nada que pudesse mandar um arquivo mesmo que alguma coisa tentasse.
+      Carregue uma vez, desconecte, e ela continua funcionando.
+    </p>
+    <p>
+      <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
+      conversores online?</a> mostra como conferir essa afirmação neste site ou
+      em qualquer outro &mdash; e este é o tipo de arquivo em que mais vale a
+      pena conferir.
+    </p>
+  </section>
