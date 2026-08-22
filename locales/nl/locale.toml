@@ -104,26 +104,32 @@ body = """
         stoppen."""
 
 [[hub.categories]]
+id = "images-and-video"
 name = "Afbeeldingen &amp; video"
 note = "Werk aan je foto's en opnames zonder ze aan iemand af te staan."
 
 [[hub.categories]]
+id = "gif-and-animation"
 name = "GIF &amp; animatie"
 note = "Bouw een animatie, of haal er een uit elkaar, zonder dat die je computer verlaat."
 
 [[hub.categories]]
+id = "audio"
 name = "Audio"
 note = "Werk aan een opname zonder hem af te staan, ook aan het geluid in een video."
 
 [[hub.categories]]
+id = "documents-and-pdf"
 name = "Documenten &amp; pdf"
 note = "Maak en herschik documenten zonder ze ergens heen te sturen om verwerkt te worden."
 
 [[hub.categories]]
+id = "codes-and-data"
 name = "Codes &amp; gegevens"
 note = "Maak van wat u typt iets dat een machine kan lezen, zonder dat het de pagina verlaat."
 
 [[hub.categories]]
+id = "text-and-code"
 name = "Tekst &amp; code"
 note = "Lees het, vergelijk het, codeer het, zonder een token of een configuratiebestand op de server van iemand anders te plakken."
 
@@ -149,10 +155,12 @@ og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
 
 
 [[guides.groups]]
+id = "doing-the-job"
 name = "De klus klaren"
 note = "Eén per tool: waar de klus uit bestaat, welke instelling telt, en wat die je kost."
 
 [[guides.groups]]
+id = "before-you-upload"
 name = "Voordat je iets uploadt"
 note = "Wat een bestand aan een website geven werkelijk betekent, en hoe je ziet of het nodig was."
 

@@ -114,26 +114,32 @@ body = """
         s'arrêterait tout simplement."""
 
 [[hub.categories]]
+id = "images-and-video"
 name = "Images &amp; vidéo"
 note = "Travailler ses photos et ses séquences sans les confier à personne."
 
 [[hub.categories]]
+id = "gif-and-animation"
 name = "GIF &amp; animation"
 note = "Créez une animation, ou décomposez-la, sans qu'elle quitte votre machine."
 
 [[hub.categories]]
+id = "audio"
 name = "Audio"
 note = "Travailler un enregistrement sans le confier à personne, y compris le son d'une vidéo."
 
 [[hub.categories]]
+id = "documents-and-pdf"
 name = "Documents &amp; PDF"
 note = "Créer et réorganiser des documents sans les envoyer se faire traiter ailleurs."
 
 [[hub.categories]]
+id = "codes-and-data"
 name = "Codes &amp; données"
 note = "Transformer ce que vous avez tapé en quelque chose qu'une machine sait lire, sans que cela quitte la page."
 
 [[hub.categories]]
+id = "text-and-code"
 name = "Texte &amp; code"
 note = "Mettez-le en forme, comparez-le, encodez-le, sans coller un jeton ou un fichier de configuration sur le serveur de quelqu'un d'autre."
 
@@ -158,10 +164,12 @@ og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
 
 
 [[guides.groups]]
+id = "doing-the-job"
 name = "Faire le travail"
 note = "Un par outil : en quoi consiste la tâche, quel réglage compte, et ce qu'il vous coûte."
 
 [[guides.groups]]
+id = "before-you-upload"
 name = "Avant d'envoyer quoi que ce soit"
 note = "Ce que confier un fichier à un site implique vraiment, et comment savoir si c'était nécessaire."
 

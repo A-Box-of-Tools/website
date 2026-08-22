@@ -78,6 +78,20 @@ So the unit is the page:
     raising, which is the same rule again: a locale is allowed to be behind
     English, and is never allowed to be ahead of it.
 
+A list of things that have ids is matched BY id, and that is not a detail. The
+first version of the rule above matched by position, which quietly assumes a
+short locale list is the English one with the tail missing. The day English
+inserted [[hub.categories]] for GIF between images and audio, that assumption
+was wrong in seven languages at once, and every category after the insertion
+took the name of the one before it: the Spanish hub put "Audio" over the GIF
+maker, "Documentos y PDF" over the audio editor, and "Códigos y datos" over the
+PDF tools. Nothing raised, because by position every entry still had a partner
+to merge with. An id says which English entry a translation is FOR, so a locale
+may be missing one, may carry them in another order, and may have been written
+against an English list that has since been inserted into - and all three come
+out right. A locale entry with no id, or with an id the English has not got, is
+refused rather than guessed at.
+
 Two things follow that are easy to get wrong, and both have their own tests.
 Every language's debt is worked out by `survey` BEFORE any page is rendered,
 because the hreflang set on the English page is a fact about German. And an
@@ -401,10 +415,28 @@ def merge(base, over, where, missing, path, structural=STRUCTURAL_KEYS,
                 f'{len(base)}. They are merged in order, so a locale can be behind '
                 'the English but it cannot be ahead of it - there is nothing for '
                 'the extra entries to translate.')
-        # Short is allowed, and is the ordinary state of a locale that was
-        # finished before English grew another entry. The tail falls back and is
-        # counted, exactly like any other untranslated string, which is what
-        # keeps a new [[hub.categories]] from breaking ten builds at once.
+        # A list of things that have ids is matched BY id, not by position.
+        #
+        # Position was the first version and it is not safe. It assumes a short
+        # locale list is the English one with the tail missing, and the day
+        # English inserted [[hub.categories]] for GIF in the middle, seven
+        # languages silently relabelled every category after it: the Spanish hub
+        # put "Audio" over the GIF maker, "Documentos y PDF" over the audio
+        # editor, and "Códigos y datos" over the PDF tools. Nothing raised,
+        # because by-position every entry had something to merge with.
+        #
+        # An id says which entry a translation is FOR, so a locale can be missing
+        # one, can carry them in another order, and can be written against an
+        # English list that has since had something inserted into the middle of
+        # it, and all three come out right.
+        if base and all(isinstance(entry, dict) and 'id' in entry for entry in base):
+            return merge_by_id(base, over, where, missing, path, structural,
+                               transform)
+
+        # Everything else is still positional, which is what a list of plain
+        # strings or of tables with nothing to name them by has to be. Short is
+        # allowed - it is the ordinary state of a locale finished before English
+        # grew another entry - and the tail falls back and is counted.
         merged = [merge(a, b, where, missing, f'{path}[{index}]', structural,
                         transform)
                   for index, (a, b) in enumerate(zip(base, over))]
@@ -417,6 +449,56 @@ def merge(base, over, where, missing, path, structural=STRUCTURAL_KEYS,
         raise LocaleError(
             f'{where}: {path} should be a {kind(base)}, not a {kind(over)}')
     return over
+
+
+def merge_by_id(base, over, where, missing, path, structural, transform):
+    """Merge two lists of tables by matching their ids, not their positions.
+
+    Every entry of the English list is emitted, in the English order, because
+    the order of the categories on the hub is a fact about the site rather than
+    about any language. Each one takes its words from the locale entry with the
+    same id, or falls back and is counted if the locale has not got one.
+
+    A locale entry with no id cannot be matched to anything, and an entry whose
+    id the English does not have is translating something that no longer exists;
+    both are refused, and loudly, because the alternative is the silent
+    mislabelling this function was written to end.
+    """
+    by_id = {}
+    for index, entry in enumerate(over):
+        if not isinstance(entry, dict):
+            raise LocaleError(
+                f'{where}: {path}[{index}] should be a table, not a {kind(entry)}')
+        if 'id' not in entry:
+            known = ', '.join(str(entry['id']) for entry in base)
+            raise LocaleError(
+                f'{where}: {path}[{index}] has no id, so there is no saying which '
+                f'entry it translates. Give it the id of the one it is for: '
+                f'{known}.')
+        if entry['id'] in by_id:
+            raise LocaleError(
+                f'{where}: {path} has two entries with id {entry["id"]!r}.')
+        by_id[entry['id']] = entry
+
+    known = {entry['id'] for entry in base}
+    stray = sorted(str(found) for found in by_id if found not in known)
+    if stray:
+        raise LocaleError(
+            f'{where}: {path} translates {", ".join(stray)}, which the English '
+            'does not have. A locale may be behind the English and may not be '
+            'ahead of it.')
+
+    merged = []
+    for entry in base:
+        found = by_id.get(entry['id'])
+        step = f'{path}[{entry["id"]}]'
+        if found is None:
+            merged.append(fell_back(entry, transform, structural))
+            note_missing(entry, missing, step, structural)
+        else:
+            merged.append(merge(entry, found, where, missing, step, structural,
+                                transform))
+    return merged
 
 
 def fell_back(value, transform, structural=STRUCTURAL_KEYS):

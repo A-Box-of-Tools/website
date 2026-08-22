@@ -82,26 +82,32 @@ body = """
         へ送っている道具なら、その時点で止まってしまうからです。"""
 
 [[hub.categories]]
+id = "images-and-video"
 name = "画像と動画"
 note = "写真や映像を、誰にも預けずに扱えます。"
 
 [[hub.categories]]
+id = "gif-and-animation"
 name = "GIFとアニメーション"
 note = "アニメーションを作る、あるいは分解する。どちらも端末の外には出ません。"
 
 [[hub.categories]]
+id = "audio"
 name = "音声"
 note = "録音を誰にも預けずに扱えます。動画の中の音声も同じです。"
 
 [[hub.categories]]
+id = "documents-and-pdf"
 name = "書類とPDF"
 note = "書類の作成や並べ替えを、どこかへ送って処理してもらうことなく行えます。"
 
 [[hub.categories]]
+id = "codes-and-data"
 name = "コードとデータ"
 note = "入力した内容を、機械が読み取れる形に変えます。ページの外には出ません。"
 
 [[hub.categories]]
+id = "text-and-code"
 name = "テキストとコード"
 note = "読みやすくして、比べて、符号化する。トークンや設定ファイルを他人のサーバーに貼り付けることなく。"
 
@@ -126,10 +132,12 @@ og_image_alt = "abox.tools - サーバーに触れない道具"
 
 
 [[guides.groups]]
+id = "doing-the-job"
 name = "作業を進める"
 note = "ツールごとに一本。何をする作業なのか、どの設定が効くのか、そして何を犠牲にするのか。"
 
 [[guides.groups]]
+id = "before-you-upload"
 name = "アップロードする前に"
 note = "ファイルをウェブサイトに渡すとは実際どういうことか。そして、それが本当に必要だったかを見分ける方法。"
 

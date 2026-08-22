@@ -105,26 +105,32 @@ body = """
         processá-los simplesmente pararia."""
 
 [[hub.categories]]
+id = "images-and-video"
 name = "Imagens e vídeo"
 note = "Trabalhe suas fotos e gravações sem entregá-las a ninguém."
 
 [[hub.categories]]
+id = "gif-and-animation"
 name = "GIF e animação"
 note = "Monte uma animação, ou desmonte uma, sem que ela saia do seu computador."
 
 [[hub.categories]]
+id = "audio"
 name = "Áudio"
 note = "Trabalhe uma gravação sem entregá-la a ninguém, inclusive o som de dentro de um vídeo."
 
 [[hub.categories]]
+id = "documents-and-pdf"
 name = "Documentos e PDF"
 note = "Crie e reorganize documentos sem mandá-los para serem processados fora."
 
 [[hub.categories]]
+id = "codes-and-data"
 name = "Códigos e dados"
 note = "Transformar o que você digitou em algo que uma máquina consegue ler, sem que saia da página."
 
 [[hub.categories]]
+id = "text-and-code"
 name = "Texto e código"
 note = "Leia, compare, codifique - sem colar um token ou um arquivo de configuração no servidor de outra pessoa."
 
@@ -150,10 +156,12 @@ og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"
 
 
 [[guides.groups]]
+id = "doing-the-job"
 name = "Fazendo o trabalho"
 note = "Um por ferramenta: em que consiste a tarefa, qual ajuste importa e o que ele custa a você."
 
 [[guides.groups]]
+id = "before-you-upload"
 name = "Antes de enviar qualquer coisa"
 note = "O que entregar um arquivo a um site realmente significa, e como saber se isso era necessário."
 

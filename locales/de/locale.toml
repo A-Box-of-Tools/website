@@ -160,26 +160,32 @@ body = """
         würde schlicht stehen bleiben."""
 
 [[hub.categories]]
+id = "images-and-video"
 name = "Bilder &amp; Video"
 note = "Mit Fotos und Aufnahmen arbeiten, ohne sie aus der Hand zu geben."
 
 [[hub.categories]]
+id = "gif-and-animation"
 name = "GIF &amp; Animation"
 note = "Eine Animation bauen oder zerlegen, ohne dass sie den Rechner verlässt."
 
 [[hub.categories]]
+id = "audio"
 name = "Audio"
 note = "An einer Aufnahme arbeiten, ohne sie aus der Hand zu geben - auch am Ton in einem Video."
 
 [[hub.categories]]
+id = "documents-and-pdf"
 name = "Dokumente &amp; PDF"
 note = "Dokumente erstellen und umsortieren, ohne sie zum Verarbeiten wegzuschicken."
 
 [[hub.categories]]
+id = "codes-and-data"
 name = "Codes &amp; Daten"
 note = "Aus Getipptem etwas machen, das eine Maschine lesen kann - ohne dass es die Seite verlässt."
 
 [[hub.categories]]
+id = "text-and-code"
 name = "Text &amp; Code"
 note = "Lesbar machen, vergleichen, kodieren - ohne ein Token oder eine Konfigurationsdatei bei einem fremden Dienst einzufügen."
 
@@ -204,10 +210,12 @@ og_description = "Bilder komprimieren, skalieren, zuschneiden, kürzen und umwan
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
 
 [[guides.groups]]
+id = "doing-the-job"
 name = "Die Arbeit erledigen"
 note = "Einer je Werkzeug: worum es geht, welche Einstellung zählt und was sie Sie kostet."
 
 [[guides.groups]]
+id = "before-you-upload"
 name = "Bevor Sie etwas hochladen"
 note = "Was das Übergeben einer Datei an eine Website wirklich bedeutet - und woran Sie erkennen, ob es nötig war."
 
