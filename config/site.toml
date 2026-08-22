@@ -488,6 +488,12 @@ offline = "Offline:"
 checking = "checking&hellip;"
 questions_heading = "Questions"
 guide_heading = "The longer version"
+
+# The heading over the handful of other tools at the foot of every tool page.
+# "Also in the box" rather than "Related tools" because the tools under it are
+# not always related - two categories hold one tool each, and those two pages
+# get the nearest thing the hub has instead. See related_tools() in build.py.
+related_heading = "Also in the box"
 privacy_heading = "How the privacy claim is verifiable"
 
 # The headline claim. The noun in the middle is this tool's own - "files",

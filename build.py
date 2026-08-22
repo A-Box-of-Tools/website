@@ -330,6 +330,10 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
                for category in root['hub']['categories']
                for slug in category['order'] if slug in by_slug]
 
+    # The few other tools each tool page points at, off the same hub order. See
+    # related_tools: one ring over every tool, siblings first.
+    related_of = related_tools(ordered)
+
     # What the footer on every page is built from. Derived from the folders that
     # exist rather than written down anywhere, so a new tool or a new legal page
     # reaches every footer on the site without a second edit.
@@ -351,7 +355,8 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written = []
     for tool in ltools:
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
-                   links, lang_v, guide_of.get(tool['slug'], {}), emit)
+                   links, lang_v, guide_of.get(tool['slug'], {}),
+                   related_of.get(tool['slug'], []), emit)
         written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
 
     for page in lprose:
@@ -515,6 +520,54 @@ def tie_guides_to_tools(guides, by_slug):
     return owned
 
 
+# How many other tools a tool page points at. Four is enough to be a route on
+# out of the page and few enough that the block stays a suggestion rather than
+# a second copy of the hub halfway down every tool.
+RELATED_COUNT = 4
+
+
+def related_tools(ordered, count=RELATED_COUNT):
+    """Map a tool's slug to the few other tools its page links to.
+
+    A tool page used to be a dead end. It links up to the hub and across to its
+    own guide and nowhere else, so a reader who arrived from a search for "heic
+    to jpg" was shown one tool and no route to the resize and the compress
+    sitting beside it on the front page.
+
+    Which tools are related is not written down anywhere new, and deliberately
+    so: `order` in config/site.toml already groups the tools by what they are
+    for, and that grouping is the hub's own. The tools a page points at are the
+    ones a reader would have found under the same heading on the front page,
+    which means there is no second list here to fall out of step with the first.
+
+    The list is a RING rather than the head of the category. Read from the
+    tool's own position and wrap round, and every tool links to `count` others
+    and every tool has something linking to it - inbound runs two to six across
+    the twenty-four, rather than the exact `count` a plain ring would give,
+    because sorting siblings to the front pulls the crowded categories forward.
+    Taking the first few of each category instead would point all fourteen pages
+    of `images-and-video` at the same four names and leave the tail of it with
+    nothing coming in at all, which is the half of the problem that is about
+    search engines rather than readers.
+
+    Two categories hold one tool each, `qr-barcode` and `text-tools`, so a
+    strict reading of "same category" would leave exactly those two pages as
+    the dead ends this exists to remove. The ring therefore runs over every
+    tool and the category merely sorts first: a tool with siblings gets
+    siblings, and a tool without gets the nearest thing the hub has.
+    """
+    total = len(ordered)
+    out = {}
+    for index, tool in enumerate(ordered):
+        ring = [ordered[(index + step) % total] for step in range(1, total)]
+        # Stable, so the same-category tools keep their ring order and the rest
+        # follow in theirs. Sorting on the bool is the whole of "siblings
+        # first, then whatever is nearest".
+        ring.sort(key=lambda other: other['category'] != tool['category'])
+        out[tool['slug']] = ring[:count]
+    return out
+
+
 def build_guides(out, templates, locale, locales, site, groups, guides, footer,
                  links, css_v, lang_v, emit):
     """The index of the written half of the site.
@@ -556,7 +609,7 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
-               lang_v, guide, emit):
+               lang_v, guide, related, emit):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -661,6 +714,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
             'tool': tool,
             'guide': guide,
+            'related': related,
             'ui': ui,
             'footer': footer,
             'csp': sitelib.render_csp(root['csp'], root.get('tool_csp', {}),

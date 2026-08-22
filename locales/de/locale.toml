@@ -363,6 +363,7 @@ offline = "Offline:"
 checking = "wird geprüft&hellip;"
 questions_heading = "Fragen"
 guide_heading = "Die ausführliche Fassung"
+related_heading = "Auch im Werkzeugkasten"
 privacy_heading = "Wie sich der Datenschutz nachprüfen lässt"
 
 # Das Substantiv steht mitten im Satz, und das Verb am Ende - genau der Grund,

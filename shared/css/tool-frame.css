@@ -585,6 +585,60 @@ button, .as-button {
 .tool-guide a { color: var(--accent); font-weight: 600; }
 .tool-guide-note { font-size: 0.88rem; color: var(--text-dim); }
 
+/* ---- the other tools --------------------------------------------------- */
+
+/* Four links out of the page, under the guide. Deliberately NOT the hub's
+   .tool-card: a card is a thing to choose between, and these are an aside at
+   the foot of a page whose own tool the reader has already chosen. Making them
+   look the same would put a second set of primary choices below the first.
+
+   auto-fit rather than a fixed count, so the row is four across on a desktop,
+   two on a tablet and one on a phone without a media query - the same
+   arrangement .tool-grid uses on the hub, at a smaller measure.
+
+   13rem is measured rather than picked: the column above is 940px and the gap
+   1.4rem, so a 15rem minimum fits 3.6 of them and RELATED_COUNT is 4 - a row
+   of three with a single orphan under it. 13rem fits 4.18, which is the four
+   on one line, and still falls to two by 620px and one by 380px. Changing
+   either number without the other brings the orphan back. */
+
+.tool-related {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.9rem 1.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tool-related li { display: grid; gap: 0.15rem; }
+
+.tool-related a {
+  display: flex;
+  gap: 0.45rem;
+  align-items: baseline;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.93rem;
+  text-decoration: none;
+}
+
+.tool-related a:hover .tool-related-name,
+.tool-related a:focus-visible .tool-related-name { text-decoration: underline; }
+
+/* The emoji carries no meaning the name does not already carry - it is
+   aria-hidden in the markup - so it must not set the line's baseline or a row
+   whose neighbour has a taller glyph sits a pixel lower than the rest. */
+.tool-related-icon { font-size: 1rem; line-height: 1; }
+
+.tool-related-note {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  /* The taglines are one line each at desktop width and two at phone width;
+     without this the rows below them would not line up. */
+  text-wrap: pretty;
+}
+
 /* ---- footer ------------------------------------------------------------ */
 
 /* A link footer in the shape the large media-tool sites use: a few columns of

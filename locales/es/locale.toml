@@ -323,6 +323,7 @@ offline = "Sin conexión:"
 checking = "comprobando&hellip;"
 questions_heading = "Preguntas"
 guide_heading = "La versión larga"
+related_heading = "También en la caja"
 privacy_heading = "Cómo se comprueba lo que promete"
 
 pledge_line = """
