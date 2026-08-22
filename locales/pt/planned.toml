@@ -18,6 +18,7 @@
 note = "Ainda não construídas. Listadas para você ver aonde isto vai dar."
 
 [[group]]
+id = "images"
 name = "Imagens"
 items = [
   ["Girar e espelhar", "em quartos de volta, ou endireitando por alguns graus"],
@@ -29,6 +30,7 @@ items = [
 ]
 
 [[group]]
+id = "gif"
 name = "GIF e animação"
 items = [
   ["GIF para MP4 ou WebM", "a mesma animação, em geral com um décimo do tamanho"],
@@ -41,6 +43,7 @@ items = [
 ]
 
 [[group]]
+id = "video"
 name = "Vídeo"
 items = [
   ["Redimensionar", "até um tamanho que realmente vá conseguir ser enviado"],
@@ -52,6 +55,7 @@ items = [
 ]
 
 [[group]]
+id = "audio"
 name = "Áudio"
 items = [
   ["Abrir e fechar em fade", "para não começar e terminar num corte seco"],
@@ -60,6 +64,7 @@ items = [
 ]
 
 [[group]]
+id = "documents"
 name = "Documentos e PDF"
 items = [
   ["Girar e cortar páginas", "endireitar um escaneamento que veio deitado, ou aparar as margens"],
@@ -67,6 +72,7 @@ items = [
 ]
 
 [[group]]
+id = "beyond"
 name = "Além de mídia"
 items = [
   ["Dados", "conversão, limpeza e inspeção de CSV e JSON"],

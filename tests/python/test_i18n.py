@@ -136,7 +136,8 @@ class Merging(unittest.TestCase):
         missing = []
         merged = i18n.merge(
             planned,
-            {'group': [{'name': 'Bilder', 'items': [['Drehen', 'Vierteldrehungen']]}]},
+            {'group': [{'id': 'images', 'name': 'Bilder',
+                        'items': [['Drehen', 'Vierteldrehungen']]}]},
             'test', missing, 'planned', i18n.PLANNED_STRUCTURE)
 
         self.assertEqual(merged['group'][0]['name'], 'Bilder')
@@ -255,6 +256,74 @@ class Completeness(unittest.TestCase):
     def test_english_is_complete_by_definition(self):
         i18n.check_complete({'is_base': True, 'complete': True, 'frame': ['x']})
         self.assertTrue(i18n.translated({'is_base': True}, 'anything'))
+
+
+class MatchingListsById(unittest.TestCase):
+    """Which English entry a translation is FOR.
+
+    Matching by position looks fine until English inserts something in the
+    middle. It did - [[hub.categories]] gained GIF between images and audio -
+    and seven languages silently relabelled every category after it: the Spanish
+    hub put "Audio" over the GIF maker and "Documentos y PDF" over the audio
+    editor. Nothing raised, because by position every entry had a partner.
+    """
+
+    def merge(self, base, over, missing=None):
+        return i18n.merge(base, over, 'test',
+                          missing if missing is not None else [], 'x')
+
+    def english(self):
+        return {'cats': [{'id': 'images', 'name': 'Images'},
+                         {'id': 'gif', 'name': 'GIF'},
+                         {'id': 'audio', 'name': 'Audio'}]}
+
+    def test_an_entry_english_gained_in_the_middle_falls_back_in_place(self):
+        """The case that was silently wrong: the locale predates `gif`."""
+        missing = []
+        found = self.merge(self.english(),
+                           {'cats': [{'id': 'images', 'name': 'Bilder'},
+                                     {'id': 'audio', 'name': 'Ton'}]},
+                           missing)
+        self.assertEqual([c['name'] for c in found['cats']],
+                         ['Bilder', 'GIF', 'Ton'])
+        self.assertIn('x.cats[gif].name', missing)
+
+    def test_the_english_order_is_kept_whatever_order_the_locale_is_in(self):
+        found = self.merge(self.english(),
+                           {'cats': [{'id': 'audio', 'name': 'Ton'},
+                                     {'id': 'gif', 'name': 'GIF-Bilder'},
+                                     {'id': 'images', 'name': 'Bilder'}]})
+        self.assertEqual([c['id'] for c in found['cats']],
+                         ['images', 'gif', 'audio'])
+        self.assertEqual([c['name'] for c in found['cats']],
+                         ['Bilder', 'GIF-Bilder', 'Ton'])
+
+    def test_an_entry_with_no_id_is_refused(self):
+        with self.assertRaises(ConfigError) as caught:
+            self.merge(self.english(), {'cats': [{'name': 'Bilder'}]})
+        message = str(caught.exception)
+        self.assertIn('no id', message)
+        # The error has to list what the ids are, or it cannot be acted on.
+        self.assertIn('images', message)
+
+    def test_an_id_the_english_does_not_have_is_refused(self):
+        with self.assertRaises(ConfigError) as caught:
+            self.merge(self.english(), {'cats': [{'id': 'wat', 'name': 'x'}]})
+        self.assertIn('wat', str(caught.exception))
+
+    def test_the_same_id_twice_is_refused(self):
+        with self.assertRaises(ConfigError) as caught:
+            self.merge(self.english(), {'cats': [{'id': 'gif', 'name': 'a'},
+                                                 {'id': 'gif', 'name': 'b'}]})
+        self.assertIn('gif', str(caught.exception))
+
+    def test_a_list_without_ids_is_still_matched_by_position(self):
+        """Plain strings have nothing to name them by, and are unchanged."""
+        missing = []
+        found = self.merge({'faq': ['one', 'two', 'three']},
+                           {'faq': ['eins']}, missing)
+        self.assertEqual(found['faq'], ['eins', 'two', 'three'])
+        self.assertEqual(missing, ['x.faq[1]', 'x.faq[2]'])
 
 
 class FallingBackInsideALanguage(unittest.TestCase):
