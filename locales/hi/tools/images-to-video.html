@@ -1,0 +1,167 @@
+<main>
+  <!-- क़दम 1 &mdash; तस्वीरें -->
+  <section class="card">
+    <h2><span class="step">1</span> तस्वीरें चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    {% include "partials/url-import.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="सूची दिखने का ढंग बदलिए">
+          <button type="button" data-view="large" class="active">बड़ा</button>
+          <button type="button" data-view="small">छोटा</button>
+          <button type="button" data-view="list">सूची</button>
+          <button type="button" data-view="details">ब्योरा</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">नाम से क्रम में लगाइए</button>
+        <button type="button" data-sort="date" class="ghost">तारीख़ से क्रम में लगाइए</button>
+        <button type="button" data-sort="reverse" class="ghost">उलटा कीजिए</button>
+        <button type="button" id="clear-all" class="ghost danger">सब हटा दीजिए</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      क्रम बदलने के लिए किसी भी तस्वीर को उसके
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> हैंडल से खींचिए,
+      या हर एक पर बने तीरों का इस्तेमाल कीजिए।
+    </p>
+
+    <ul id="image-list" class="image-list view-large"></ul>
+
+    <div id="bulk-duration" class="bulk" hidden>
+      <label for="bulk-amount">हर तस्वीर को इतनी देर रोकिए</label>
+      <input type="number" id="bulk-amount" min="1" max="3600" step="1" value="1">
+      <select id="duration-unit" aria-label="हर तस्वीर कितनी देर रुके, उसकी इकाई">
+        <option value="frames" selected>फ़्रेम</option>
+        <option value="seconds">सेकंड</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">सब पर लगाइए</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- क़दम 2 &mdash; सेटिंग -->
+  <section class="card">
+    <h2><span class="step">2</span> वीडियो की सेटिंग</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="resolution">रिज़ॉल्यूशन</label>
+        <select id="resolution">
+          <option value="auto" selected>सबसे ऊँचे रिज़ॉल्यूशन से मिलाइए</option>
+          <option value="3840x2160">3840 &times; 2160 &mdash; 4K</option>
+          <option value="1920x1080">1920 &times; 1080 &mdash; 1080p</option>
+          <option value="1280x720">1280 &times; 720 &mdash; 720p</option>
+          <option value="1080x1080">1080 &times; 1080 &mdash; वर्गाकार</option>
+          <option value="1080x1920">1080 &times; 1920 &mdash; खड़ा</option>
+          <option value="custom">मनचाहा&hellip;</option>
+        </select>
+        <div id="resolution-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="7680" step="2" value="1920"
+                 aria-label="नतीजे की मनचाही चौड़ाई, पिक्सलों में">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="7680" step="2" value="1080"
+                 aria-label="नतीजे की मनचाही ऊँचाई, पिक्सलों में">
+        </div>
+        <p class="field-note" id="resolution-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fps">फ़्रेम दर</label>
+        <select id="fps">
+          <option value="12">12 fps</option>
+          <option value="15">15 fps</option>
+          <option value="24">24 fps &mdash; फ़िल्म</option>
+          <option value="25">25 fps &mdash; PAL</option>
+          <option value="30" selected>30 fps</option>
+          <option value="50">50 fps</option>
+          <option value="60">60 fps</option>
+          <option value="custom">मनचाही&hellip;</option>
+        </select>
+        <input type="number" id="fps-custom" class="spaced" min="1" max="120" step="1" value="30"
+               aria-label="मनचाही फ़्रेम दर, फ़्रेम प्रति सेकंड में" hidden>
+        <p class="field-note" id="fps-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">तस्वीर कैसे बैठे</label>
+        <select id="fit">
+          <option value="contain" selected>भीतर समा जाए (लेटरबॉक्स)</option>
+          <option value="blur">भीतर समा जाए, पीछे धुँधला बैकड्रॉप</option>
+          <option value="cover">फ़्रेम भर दे (किनारे कट जाते हैं)</option>
+          <option value="stretch">खिंचकर भर दे (विकृत हो जाती है)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">बैकड्रॉप का रंग</label>
+        <input type="color" id="background" value="#000000">
+      </div>
+
+      <div class="field">
+        <label for="quality">क्वालिटी</label>
+        <select id="quality">
+          <option value="low">छोटी फ़ाइल</option>
+          <option value="medium" selected>संतुलित</option>
+          <option value="high">सबसे अच्छी क्वालिटी</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="format">फ़ॉर्मैट</label>
+        <select id="format">
+          <option value="auto" selected>MP4 (यही सुझाया जाता है)</option>
+          <option value="webm">WebM (पीछे हटने का रास्ता)</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="640" height="360" aria-label="पहले फ़्रेम का प्रीव्यू"></canvas>
+        <p id="preview-empty" class="preview-empty">प्रीव्यू देखने के लिए तस्वीरें जोड़िए</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>तस्वीरें</dt><dd id="sum-images">&mdash;</dd></div>
+        <div><dt>अवधि</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>नतीजे का आकार</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>कुल फ़्रेम</dt><dd id="sum-frames">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- क़दम 3 &mdash; एक्सपोर्ट -->
+  <section class="card">
+    <h2><span class="step">3</span> वीडियो बनाइए</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>वीडियो बनाइए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>वीडियो डाउनलोड कीजिए</a>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,142 @@
+<main>
+  <!-- क़दम 1 &mdash; फ़ाइलें -->
+  <section class="card">
+    <h2><span class="step">1</span> तस्वीरें चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">सबको सूची से हटा दीजिए</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- क़दम 2 &mdash; वह पंक्ति जो असल में चिपकाई जाती है -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> बताइए कि यह जा कहाँ रहा है</h2>
+
+    <p class="card-lede">
+      अकेला data URI शायद ही कभी किसी को चाहिए होता है। चाहिए होती है वह पंक्ति
+      जो स्टाइलशीट में जाती है &mdash; इसलिए पंक्ति चुन लीजिए, और तस्वीर उसी के
+      भीतर, पहले से उद्धरण चिह्नों में लिपटी हुई आ जाती है &mdash; और यही वह
+      हिस्सा है जो आसानी से बिगड़ता है और जो सिर्फ़ SVG के लिए नाकाम होता है।
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="क्या चिपकाना है">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>अकेला data URI</strong>
+          <span class="shape-note">
+            कॉमा के बाद जो कुछ है वह फ़ाइल है। जहाँ भी कोई URL जाता है, वहीं
+            चिपका दीजिए।
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>कोई CSS नियम</strong>
+          <span class="shape-note">
+            पूरा नियम, और फ़ाइल के नाम पर बनी एक क्लास। सिलेक्टर को बदलकर वही
+            कर लीजिए जिसे आप असल में स्टाइल कर रहे हैं।
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>कोई CSS कस्टम प्रॉपर्टी</strong>
+          <span class="shape-note">
+            स्टाइलशीट के सिरे पर एक ही बार घोषित, और जितनी बार चाहें
+            <code>var(--name)</code> की तरह इस्तेमाल। जब तस्वीर एक से ज़्यादा
+            नियमों में आती हो, तो यही चुनना है।
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>कोई HTML <code>&lt;img&gt;</code> टैग</strong>
+          <span class="shape-note">
+            पिक्सल साइज़ भरा हुआ, ताकि बाक़ी पेज लोड होते वक़्त पेज उछले नहीं।
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">
+            किसी README या इशू के लिए: ऐसी तस्वीर जो टेक्स्ट के साथ ही सफ़र
+            करती है, बजाय इसके कि उसे कहीं होस्ट होने की जगह चाहिए हो।
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      <code>alt</code> टेक्स्ट जान-बूझकर ख़ाली छोड़ा गया है। सिर्फ़ आप जानते
+      हैं कि तस्वीर कोई अर्थ ढो रही है या बस सजावट है, और फ़ाइल के नाम से
+      अंदाज़ा लगाकर लिखा गया विवरण स्क्रीन रीडर इस्तेमाल करने वाले के लिए किसी
+      विवरण के न होने से भी बुरा है।
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>SVG को भी base64 कीजिए</strong>
+          <span class="check-note">
+            डिफ़ॉल्ट रूप से बंद, क्योंकि SVG टेक्स्ट है और base64 बाइटों के लिए
+            है। percent-encoding मार्कअप को स्टाइलशीट में पढ़ने लायक़ छोड़ देती
+            है और आम तौर पर पाँचवाँ हिस्सा छोटी रहती है। जो इक्का-दुक्का
+            टूलचेन <code>;base64</code> पर ही अड़े, उसके लिए इसे चालू कीजिए।
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- क़दम 3 &mdash; नतीजा। यहाँ कोई बटन जान-बूझकर नहीं है: एनकोडिंग तुरंत
+       हो जाती है, इसलिए किसी "बदलिए" वाली दबाव के इंतज़ार करने को कुछ है ही
+       नहीं। -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> इसे कॉपी कीजिए</h2>
+
+    <p id="empty-note" class="card-lede">
+      अभी कुछ चुना नहीं गया। ऊपर कोई तस्वीर छोड़िए और चिपकाने लायक़ पंक्ति यहाँ
+      आ जाएगी।
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">सब कॉपी कीजिए</button>
+          <button type="button" id="download-all" class="ghost">एक ही फ़ाइल में डाउनलोड कीजिए</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

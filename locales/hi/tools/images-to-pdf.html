@@ -1,0 +1,230 @@
+<main>
+  <!-- क़दम 1 &mdash; तस्वीरें -->
+  <section class="card">
+    <h2><span class="step">1</span> तस्वीरें चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" data-sort="name" class="ghost">नाम से क्रम में लगाइए</button>
+        <button type="button" data-sort="date" class="ghost">तारीख़ से क्रम में लगाइए</button>
+        <button type="button" data-sort="reverse" class="ghost">उलटा कीजिए</button>
+        <button type="button" id="clear-all" class="ghost danger">सब हटा दीजिए</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      हर पन्ने पर एक तस्वीर, इसी क्रम में। किसी पन्ने को हिलाने के लिए उसे
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> हैंडल से खींचिए,
+      या उस पर बने तीरों का इस्तेमाल कीजिए।
+    </p>
+
+    <ul id="image-list" class="image-list"></ul>
+  </section>
+
+  <!-- क़दम 2 &mdash; पन्ने -->
+  <section class="card">
+    <h2><span class="step">2</span> पन्ने की सेटिंग</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">पन्ने का आकार</label>
+        <select id="page-size">
+          <option value="fit" selected>हर तस्वीर के हिसाब से पन्ना बनाइए</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8.5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8.5 &times; 14 in</option>
+          <option value="a3">A3 &mdash; 297 &times; 420 mm</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+          <option value="tabloid">Tabloid &mdash; 11 &times; 17 in</option>
+          <option value="custom">मनचाहा&hellip;</option>
+        </select>
+        <div id="custom-size" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="1" max="5000" step="1" value="210"
+                 aria-label="मनचाहे पन्ने की चौड़ाई">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="1" max="5000" step="1" value="297"
+                 aria-label="मनचाहे पन्ने की ऊँचाई">
+          <select id="custom-unit" aria-label="मनचाहे पन्ने के आकार की इकाई">
+            <option value="mm" selected>mm</option>
+            <option value="in">in</option>
+          </select>
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">छपाई का रिज़ॉल्यूशन</label>
+        <select id="dpi">
+          <option value="72">72 DPI &mdash; स्क्रीन</option>
+          <option value="96">96 DPI</option>
+          <option value="150" selected>150 DPI</option>
+          <option value="200">200 DPI</option>
+          <option value="300">300 DPI &mdash; छपाई</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          तय करता है कि दिए गए पिक्सलों पर पन्ना कितना बड़ा होगा। इससे तस्वीर
+          नहीं बदलती।
+        </p>
+      </div>
+
+      <div class="field" id="orientation-field" hidden>
+        <label for="orientation">दिशा</label>
+        <select id="orientation">
+          <option value="auto" selected>हर तस्वीर से मिलाइए</option>
+          <option value="portrait">खड़ा</option>
+          <option value="landscape">पड़ा</option>
+        </select>
+      </div>
+
+      <div class="field" id="fit-field" hidden>
+        <label for="fit">तस्वीर पन्ने पर कैसे बैठे</label>
+        <select id="fit">
+          <option value="contain" selected>हाशियों के भीतर समा जाए</option>
+          <option value="cover">पन्ना भर दे (किनारे कट जाते हैं)</option>
+          <option value="stretch">हाशियों तक खिंच जाए (विकृत हो जाती है)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="margin">हाशिया</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="100" step="1" value="0"
+                 aria-label="मिलीमीटर में हाशिया">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="background">पन्ने का रंग</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          हाशियों में दिखता है, और किसी भी आर-पार दिखने वाली चीज़ के पीछे भी।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="mode">तस्वीर की क्वालिटी</label>
+        <select id="mode">
+          <option value="keep" selected>JPEG को ठीक जैसी हैं वैसी रहने दीजिए</option>
+          <option value="jpeg">सब कुछ JPEG के रूप में दोबारा एनकोड कीजिए</option>
+          <option value="lossless">नुक़सान-रहित &mdash; कंप्रेशन का ज़रा भी नुक़सान नहीं</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">JPEG क्वालिटी</label>
+        <select id="quality">
+          <option value="0.75">छोटी फ़ाइल</option>
+          <option value="0.88" selected>संतुलित</option>
+          <option value="0.95">सबसे अच्छी क्वालिटी</option>
+        </select>
+        <p class="field-note">सिर्फ़ उन तस्वीरों पर लगता है जिन्हें इस टूल को दोबारा एनकोड करना ही पड़ता है।</p>
+      </div>
+
+      <div class="field">
+        <label for="max-side">बड़ी तस्वीरें छोटी कीजिए</label>
+        <select id="max-side">
+          <option value="0" selected>कभी नहीं &mdash; पूरा साइज़ रहने दीजिए</option>
+          <option value="4000">सबसे लंबी भुजा 4000 px</option>
+          <option value="2000">सबसे लंबी भुजा 2000 px</option>
+          <option value="1200">सबसे लंबी भुजा 1200 px</option>
+        </select>
+        <p class="field-note" id="shrink-note"></p>
+      </div>
+    </div>
+
+    <details class="meta-panel">
+      <summary>दस्तावेज़ का ब्योरा &mdash; सब वैकल्पिक, सब डिफ़ॉल्ट रूप से ख़ाली</summary>
+      <div class="meta-body">
+        <p class="meta-note">
+          PDF अपने बारे में जानकारी का एक छोटा ब्लॉक ढोती है, और ज़्यादातर टूल
+          उसमें समय और प्रोग्राम का नाम भर देते हैं, चाहे आपने कहा हो या न कहा
+          हो। यह वाला वही लिखता है जो आप यहाँ टाइप करते हैं और उसके सिवा कुछ
+          नहीं: न फ़ाइलों के नाम, न मशीन का नाम, और तारीख़ भी नहीं, जब तक आप
+          डिब्बा न चुनें।
+        </p>
+        <div class="settings">
+          <div class="field">
+            <label for="doc-title">शीर्षक</label>
+            <input type="text" id="doc-title" maxlength="200" spellcheck="false"
+                   placeholder="ख़ाली रहने पर छोड़ दिया जाता है">
+          </div>
+          <div class="field">
+            <label for="doc-author">लेखक</label>
+            <input type="text" id="doc-author" maxlength="200" spellcheck="false"
+                   placeholder="ख़ाली रहने पर छोड़ दिया जाता है">
+          </div>
+          <div class="field">
+            <label for="file-name">फ़ाइल का नाम</label>
+            <div class="inline-pair">
+              <input type="text" id="file-name" maxlength="120" spellcheck="false"
+                     value="images">
+              <span class="unit-label">.pdf</span>
+            </div>
+          </div>
+          <div class="field checkbox-field">
+            <label for="dated">
+              <input type="checkbox" id="dated">
+              दस्तावेज़ में आज की तारीख़ दर्ज कीजिए
+            </label>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="480" height="640" aria-label="एक पन्ने का प्रीव्यू"></canvas>
+        <p id="preview-empty" class="preview-empty">पन्ने देखने के लिए तस्वीरें जोड़िए</p>
+        <div id="preview-nav" class="preview-nav" hidden>
+          <button type="button" id="preview-prev" class="ghost" aria-label="पिछला पन्ना">&lsaquo;</button>
+          <span id="preview-label" class="preview-label"></span>
+          <button type="button" id="preview-next" class="ghost" aria-label="अगला पन्ना">&rsaquo;</button>
+        </div>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>पन्ने</dt><dd id="sum-pages">&mdash;</dd></div>
+        <div><dt>पन्ने का आकार</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>चुनी गई तस्वीरें</dt><dd id="sum-input">&mdash;</dd></div>
+        <div><dt>बिना छुए उतारी गईं</dt><dd id="sum-copied">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- क़दम 3 &mdash; एक्सपोर्ट -->
+  <section class="card">
+    <h2><span class="step">3</span> PDF बनाइए</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>PDF बनाइए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>PDF डाउनलोड कीजिए</a>
+      </div>
+    </div>
+  </section>
+</main>

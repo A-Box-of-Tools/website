@@ -1,0 +1,175 @@
+<main>
+  <!-- क़दम 1 &mdash; फ़्रेम -->
+  <section class="card">
+    <h2><span class="step">1</span> तस्वीरें चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="फ़्रेम दिखने का ढंग बदलिए">
+          <button type="button" data-view="large" class="active" aria-pressed="true">बड़ा</button>
+          <button type="button" data-view="small" aria-pressed="false">छोटा</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">नाम से क्रम में लगाइए</button>
+        <button type="button" data-sort="date" class="ghost">तारीख़ से क्रम में लगाइए</button>
+        <button type="button" data-sort="reverse" class="ghost">उलटा कीजिए</button>
+        <button type="button" id="clear-all" class="ghost danger">सब हटा दीजिए</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      क्रम बदलने के लिए किसी भी फ़्रेम को उसके
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> हैंडल से खींचिए,
+      या हर एक पर बने तीरों का इस्तेमाल कीजिए। यहाँ का क्रम ही वह क्रम है जिसमें वे चलेंगे।
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">हर फ़्रेम को इतनी देर रोकिए</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="हर फ़्रेम कितनी देर रुके, उसकी इकाई">
+        <option value="seconds" selected>सेकंड</option>
+        <option value="fps">फ़्रेम प्रति सेकंड</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">सब पर लगाइए</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- क़दम 2 &mdash; सेटिंग -->
+  <section class="card">
+    <h2><span class="step">2</span> GIF की सेटिंग</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">आकार</label>
+        <select id="size">
+          <option value="480" selected>480 px &mdash; अच्छा डिफ़ॉल्ट</option>
+          <option value="640">640 px</option>
+          <option value="320">320 px</option>
+          <option value="240">240 px</option>
+          <option value="original">तस्वीरों से मिलाइए</option>
+          <option value="custom">मनचाहा&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="मनचाही चौड़ाई, पिक्सलों में">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="मनचाही ऊँचाई, पिक्सलों में">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">तस्वीर कैसे बैठे</label>
+        <select id="fit">
+          <option value="contain" selected>भीतर समा जाए (लेटरबॉक्स)</option>
+          <option value="cover">फ़्रेम भर दे (किनारे कट जाते हैं)</option>
+          <option value="stretch">खिंचकर भर दे (विकृत हो जाती है)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">बैकड्रॉप का रंग</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">रंग</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; GIF में ज़्यादा से ज़्यादा इतने</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; सबसे छोटी फ़ाइल</option>
+        </select>
+        <p class="field-note">कम रंग, छोटी फ़ाइल, ज़्यादा पट्टियाँ।</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">पैलेट</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>हर फ़्रेम के लिए सबसे अच्छे रंग</option>
+          <option value="shared">पूरी GIF के लिए एक पैलेट</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">डिदरिंग</label>
+        <select id="dither">
+          <option value="on" selected>चालू &mdash; चिकने ग्रेडिएंट</option>
+          <option value="off">बंद &mdash; ज़्यादा सपाट, साफ़ किनारे</option>
+        </select>
+        <p class="field-note">लोगो, लकीरों वाली कला और स्क्रीनशॉट के लिए इसे बंद कर दीजिए।</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">लूप</label>
+        <select id="loop-mode">
+          <option value="forever" selected>हमेशा लूप कीजिए</option>
+          <option value="once">एक बार चलाइए</option>
+          <option value="times">तय बार चलाइए&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="एनिमेशन कितनी बार चले" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">पारदर्शिता</label>
+        <select id="transparent">
+          <option value="off" selected>बैकड्रॉप पर चपटा कर दीजिए</option>
+          <option value="on">पारदर्शी हिस्से रहने दीजिए</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="पहले फ़्रेम का प्रीव्यू"></canvas>
+        <p id="preview-empty" class="preview-empty">प्रीव्यू देखने के लिए तस्वीरें जोड़िए</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>फ़्रेम</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>कितनी देर चलती है</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>फ़्रेम का आकार</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>कितनी बार चलती है</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- क़दम 3 &mdash; एक्सपोर्ट -->
+  <section class="card">
+    <h2><span class="step">3</span> GIF बनाइए</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>GIF बनाइए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="तैयार एनिमेशन, चलती हुई"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>GIF डाउनलोड कीजिए</a>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,189 @@
+<main>
+  <!-- क़दम 1 &mdash; तस्वीर -->
+  <section class="card">
+    <h2><span class="step">1</span> तस्वीर चुनिए</h2>
+
+    <p class="card-lede">
+      कोई भी तस्वीर जिसे आपका ब्राउज़र खोल सके। सादी दीवार के सामने, दिन की
+      रोशनी में, क़रीब डेढ़ मीटर की दूरी से खींची गई फ़ोन की तस्वीर &mdash;
+      इनमें से ज़्यादातर नियम इसी के इर्द-गिर्द लिखे गए थे। और वह सीधे आपकी
+      डिस्क से पढ़ी जाती है, कहीं भेजी नहीं जाती।
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">कोई दूसरी चुनिए</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- क़दम 2 &mdash; नियम -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> देश और दस्तावेज़ चुनिए</h2>
+
+    <p class="card-lede">
+      नीचे का हर आँकड़ा प्रकाशित ज़रूरत है, और उसी प्राधिकरण से उतारा गया है
+      जिसका नाम उसके नीचे लिखा है। इस सूची में कुछ भी अंदाज़े से नहीं है, और
+      कुछ भी बाहर से लाया नहीं जाता &mdash; यह <code>src/specs.js</code> में
+      एक तालिका है, जो पेज के साथ ही परोसी जाती है।
+    </p>
+
+    <div class="option-row">
+      <label for="spec">विनिर्देश</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>वे संख्याएँ, जो आपको ख़ुद टाइप करनी हैं</summary>
+      <div class="numbers">
+        <label>चौड़ाई (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>ऊँचाई (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>सिर, कम से कम (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>सिर, ज़्यादा से ज़्यादा (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>बैकग्राउंड
+          <select id="custom-background">
+            <option value="white">सादा सफ़ेद</option>
+            <option value="off-white">सफ़ेद या हल्का मटमैला सफ़ेद</option>
+            <option value="light-grey" selected>सादा हल्का भूरा</option>
+            <option value="cream">हल्का भूरा या क्रीम</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>अपलोड की चौड़ाई (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>अपलोड की ऊँचाई (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>कम से कम (KB)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>ज़्यादा से ज़्यादा (KB)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        यहाँ KB का मतलब 1024 बाइट है, और ये फ़ॉर्म भी उससे यही समझते हैं।
+      </p>
+    </details>
+  </section>
+
+  <!-- क़दम 3 &mdash; फ़्रेम -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> चेहरे पर निशान लगाइए, और फ़्रेम जाँचिए</h2>
+
+    <p id="frame-empty" class="field-summary">कोई तस्वीर चुनिए और क्रॉप का डिब्बा यहाँ आ जाएगा।</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        चारों बिंदुओं को सिर के शिखर, ठुड्डी और दोनों पुतलियों पर खींचकर रखिए,
+        फिर <strong>डिब्बा बिठाइए</strong> दबाइए। नियम जो कुछ नापता है वह पूरा
+        का पूरा यही चार बिंदु हैं, और इसीलिए यह टूल किसी फ़ेस डिटेक्टर से
+        अंदाज़ा लगाने के बजाय आपसे इन्हें रखवाता है। बिंदु वहीं से शुरू होते हैं
+        जहाँ सिर-और-कंधों वाली फ़ोटो में वे आम तौर पर होते हैं &mdash; वह
+        शुरुआती जगह है, कोई माप नहीं।
+      </p>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">डिब्बे को नियम पर बिठाइए</button>
+        <button type="button" id="reset-marks" class="ghost">बिंदु वापस अपनी जगह रखिए</button>
+        <button type="button" id="whole-photo" class="ghost">जो सबसे बड़ा डिब्बा समा सके</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- क़दम 4 &mdash; बैकग्राउंड -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> बैकग्राउंड</h2>
+
+    <p class="card-lede" id="background-lede">
+      क्रॉप के ऊपरी हिस्से की एक पट्टी से और दोनों किनारों से, कंधों के ऊपर से
+      पढ़ा जाता है &mdash; यानी फ़्रेम के उन हिस्सों से जिनमें बैकग्राउंड के
+      सिवा कुछ होना ही नहीं चाहिए। यह RGB में नहीं, CIE Lab में नापा जाता है,
+      क्योंकि RGB की चालीस इकाई दूर बैठे दो भूरे रंगों में फ़र्क़ बता पाना
+      नामुमकिन है और नीले की चालीस इकाइयाँ एक अलग ही रंग हैं।
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">आपका वाला किस रंग का पढ़ा गया<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">नियम कौन-सा रंग माँगता है<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- क़दम 5 &mdash; फ़ाइलें -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> इसे सहेजिए</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">छपाई का रिज़ॉल्यूशन</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; लगभग हर नियम यही फ़र्श बताता है</option>
+          <option value="600">600 dpi &mdash; अच्छी फ़ोटो लैब यही इस्तेमाल करेगी</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">किस शीट पर छापना है</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>फ़ाइलें बनाइए</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>तैयार</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

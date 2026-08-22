@@ -1,0 +1,185 @@
+<main>
+  <!-- क़दम 1 &mdash; तस्वीर -->
+  <section class="card">
+    <h2><span class="step">1</span> कोई तस्वीर चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">सबको सूची से हटा दीजिए</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="shape-note" class="field-summary" hidden></p>
+  </section>
+
+  <!-- क़दम 2 &mdash; कौन-सा मानक -->
+  <section class="card" id="preset-card">
+    <h2><span class="step">2</span> बताइए कि आइकन किस काम के लिए है</h2>
+
+    <p class="card-lede">
+      आइकन फ़ाइल एक तस्वीर नहीं, कई तस्वीरें हैं: वही लोगो हर उस साइज़ पर
+      दोबारा खींचा हुआ जो उसे पढ़ने वाली चीज़ माँगती है। वे साइज़ कौन-से हैं,
+      यह पसंद का मामला नहीं है &mdash; ब्राउज़र को तीन चाहिए, high-DPI लैपटॉप
+      पर चलने वाले ऐप्लिकेशन को दस, Mac को अपने ही दस, और Windows Vista से पहले
+      लिखी किसी चीज़ को वे बिलकुल अलग ढंग से सहेजे हुए चाहिए।
+    </p>
+
+    <!--
+      Which files to write. Windows and macOS read different containers and
+      neither will look at the other's, so this is a set of checkboxes rather
+      than a menu: wanting both is the normal case for anything shipped on both.
+    -->
+    <fieldset class="options outputs">
+      <legend>क्या बनाना है</legend>
+
+      <label class="check">
+        <input type="checkbox" id="want-ico" checked>
+        <span>
+          <strong>Windows आइकन &mdash; <code>.ico</code></strong>
+          <span class="check-note">
+            इसे हर ब्राउज़र favicon के रूप में पढ़ता है, और Windows किसी
+            ऐप्लिकेशन, शॉर्टकट तथा फ़ोल्डर के लिए। साइज़ नीचे से आपको चुनने
+            हैं।
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="want-icns">
+        <span>
+          <strong>macOS आइकन &mdash; <code>.icns</code></strong>
+          <span class="check-note">
+            यही Mac ऐप्लिकेशन बंडल साथ लेकर चलता है। Apple ठीक दस ख़ाने तय करता
+            है, 16 पिक्सल से 1024 तक, इसलिए चुनने को कुछ है ही नहीं: दसों भीतर
+            जाते हैं, सात रेंडर से खींचकर &mdash; क्योंकि कोई Retina ख़ाना और
+            उससे अगला साइज़ एक ही तस्वीर होते हैं।
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="pack-row">
+        <input type="checkbox" id="want-pack">
+        <span>
+          <strong>किसी वेबसाइट के आइकन सेट का बाक़ी हिस्सा</strong>
+          <span class="check-note">
+            .ico ब्राउज़र के टैब और Windows को ढक लेती है। वह iPhone की होम
+            स्क्रीन, Android के इंस्टॉल प्रॉम्प्ट, या स्टार्ट मेन्यू पर पिन की
+            गई टाइल को नहीं ढकती &mdash; वे 180px की PNG, एक web app manifest
+            और एक XML फ़ाइल पढ़ते हैं, और इनमें से कोई भी .ico के भीतर नहीं
+            झाँकेगा। इस पर निशान लगाइए और आपको वे सब, मैनिफ़ेस्ट, और अपने पेज
+            में चिपकाने लायक़ HTML का टुकड़ा भी मिल जाता है।
+          </span>
+        </span>
+      </label>
+
+      <p id="output-summary" class="field-summary"></p>
+    </fieldset>
+
+    <div id="ico-settings">
+      <div class="presets" id="preset-list" role="radiogroup" aria-label="आइकन किस काम के लिए है"></div>
+
+      <p id="preset-note" class="field-summary"></p>
+
+      <fieldset class="options" id="size-set">
+        <legend>.ico में जाने वाले साइज़</legend>
+        <div class="size-grid" id="size-grid"></div>
+        <p id="size-summary" class="field-summary"></p>
+      </fieldset>
+    </div>
+
+    <fieldset class="options">
+      <legend>यह खींचा कैसे जाए</legend>
+
+      <div class="option-row">
+        <label for="fit-select">अगर तस्वीर वर्गाकार न हो</label>
+        <select id="fit-select">
+          <option value="pad" selected>खाली जगह भरकर वर्ग बना दीजिए &mdash; पूरी तस्वीर बची रहती है</option>
+          <option value="crop">बीच के वर्ग तक क्रॉप कीजिए</option>
+          <option value="stretch">खींचकर वर्ग बना दीजिए</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="background-mode">बैकग्राउंड</label>
+        <select id="background-mode">
+          <option value="transparent" selected>पारदर्शी</option>
+          <option value="colour">कोई रंग</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="बैकग्राउंड का रंग" hidden>
+      </div>
+
+      <div class="option-row" id="storage-row">
+        <label for="storage-select">.ico में हर साइज़ कैसे सहेजा जाए</label>
+        <select id="storage-select">
+          <option value="auto" selected>अपने आप &mdash; जहाँ सस्ता पड़े वहाँ हर जगह चलने वाला, वरना PNG</option>
+          <option value="png">हर साइज़ के लिए PNG &mdash; सबसे छोटी फ़ाइल, Vista या उससे नया चाहिए</option>
+          <option value="bmp">हर साइज़ के लिए बिना दबा हुआ &mdash; कहीं भी खुलती है, कई गुना बड़ी</option>
+        </select>
+      </div>
+
+      <p id="storage-note" class="field-summary"></p>
+    </fieldset>
+
+  </section>
+
+  <!-- क़दम 3 &mdash; छोटा करके देखिए, फिर ले जाइए -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> उसी साइज़ पर जाँचिए जिस पर वह दिखेगा</h2>
+
+    <p class="card-lede">
+      कुछ भी डाउनलोड करने से पहले देखने लायक़ हिस्सा यही है। जो लोगो 512 पिक्सल
+      पर बख़ूबी पढ़ा जाता है, वह ब्राउज़र के टैब में सोलह पिक्सल चौड़ा होता है,
+      और उसके पतले हिस्से &mdash; वर्डमार्क के स्ट्रोक, बाल जैसा किनारा, कोई
+      ग्रेडिएंट &mdash; उतने में टिकते ही नहीं। नीचे का हर वर्ग आपकी चुनी फ़ाइल
+      से, अपने असली साइज़ पर खींचा जाता है।
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-strip" id="preview-strip"></div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make-icon" class="primary big" disabled>आइकन बनाइए</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>तैयार</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>सब कुछ एक ज़िप में डाउनलोड कीजिए</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+
+      <!--
+        The block to paste into a page's <head>, shown rather than only zipped:
+        most people making a favicon are about to paste this into a template,
+        and a copy button is a shorter route than a download and a text editor.
+      -->
+      <div id="snippet" class="snippet" hidden>
+        <div class="snippet-head">
+          <h4>इसे अपने <code>&lt;head&gt;</code> में चिपकाइए</h4>
+          <button type="button" id="copy-snippet" class="ghost">कॉपी</button>
+        </div>
+        <pre id="snippet-text"></pre>
+      </div>
+    </div>
+  </section>
+</main>

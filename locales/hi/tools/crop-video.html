@@ -1,0 +1,146 @@
+<main>
+  <!-- क़दम 1 &mdash; फ़ाइल -->
+  <section class="card">
+    <h2><span class="step">1</span> कोई वीडियो चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>फ़ाइल</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>साइज़</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>फ़्रेम</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>लंबाई</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>वीडियो</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>ऑडियो</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- क़दम 2 &mdash; क्रॉप -->
+  <section class="card" id="crop-card" hidden>
+    <h2><span class="step">2</span> क्रॉप तय कीजिए</h2>
+
+    <p class="stage-hint">
+      डिब्बे को हिलाने के लिए उसके भीतर से खींचिए, या आकार बदलने के लिए किसी भी
+      कोने से। डिब्बा चुना हुआ हो तो तीर वाली कुंजियाँ उसे एक-एक पिक्सल खिसकाती
+      हैं, <kbd>Alt</kbd>&nbsp;+&nbsp;तीर उसका आकार बदलते हैं, और
+      <kbd>Shift</kbd> दबाए रखने पर हर क़दम दस का हो जाता है।
+    </p>
+
+    <!-- The crop box itself is added here by src/cropper.js. The stage is given
+         the video's own shape, so the box can be positioned in percentages and
+         needs no recalculating when the window is resized. -->
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <div class="crop-controls">
+      <div class="aspect-row" role="group" aria-label="क्रॉप को किसी आकार पर लॉक कीजिए">
+        <button type="button" data-aspect="free" class="active">मनचाहा</button>
+        <button type="button" data-aspect="source">असली</button>
+        <button type="button" data-aspect="1:1">1:1</button>
+        <button type="button" data-aspect="4:5">4:5</button>
+        <button type="button" data-aspect="9:16">9:16</button>
+        <button type="button" data-aspect="16:9">16:9</button>
+        <button type="button" data-aspect="4:3">4:3</button>
+        <button type="button" data-aspect="3:2">3:2</button>
+        <button type="button" id="swap-aspect" class="ghost" title="लॉक किए आकार को करवट पर लिटा दीजिए">
+          अदल-बदल
+        </button>
+      </div>
+
+      <div class="numbers">
+        <label>बाएँ<input type="number" id="crop-x" min="0" step="1"></label>
+        <label>ऊपर<input type="number" id="crop-y" min="0" step="1"></label>
+        <label>चौड़ाई<input type="number" id="crop-w" min="16" step="2"></label>
+        <label>ऊँचाई<input type="number" id="crop-h" min="16" step="2"></label>
+        <div class="number-actions">
+          <button type="button" id="crop-max" class="ghost">सबसे बड़ा</button>
+          <button type="button" id="crop-centre" class="ghost">बीच में</button>
+          <button type="button" id="crop-reset" class="ghost">पूरा फ़्रेम</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="even-note">
+      चौड़ाई और ऊँचाई दो-दो के क़दमों में चलती हैं, क्योंकि H.264 के पास विषम
+      भुजा वाला फ़्रेम सहेजने का कोई तरीक़ा ही नहीं।
+    </p>
+  </section>
+
+  <!-- क़दम 3 &mdash; एक्सपोर्ट -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> इसे क्रॉप कीजिए</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">नतीजा</label>
+        <select id="format">
+          <option value="mp4" selected>MP4 &mdash; फ़्रेम-दर-फ़्रेम दोबारा एनकोड होकर</option>
+          <option value="webm">WebM &mdash; चलते-चलते रिकॉर्ड होकर</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="quality">क्वालिटी</label>
+        <select id="quality">
+          <option value="low">छोटी फ़ाइल</option>
+          <option value="medium" selected>संतुलित</option>
+          <option value="high">सबसे अच्छी क्वालिटी</option>
+        </select>
+        <p class="field-note">
+          उसी हिस्से पर असली फ़ाइल से कभी ज़्यादा नहीं &mdash; उससे ऊपर दोबारा
+          एनकोड करने से फ़ाइल बस बड़ी होती है।
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          आवाज़ रहने दीजिए
+        </label>
+        <p class="field-note" id="audio-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>नतीजे का फ़्रेम</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>बचा हुआ</dt><dd id="sum-kept">&mdash;</dd></div>
+      <div><dt>लंबाई</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>कैसे</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>वीडियो क्रॉप कीजिए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>वीडियो डाउनलोड कीजिए</a>
+      </div>
+    </div>
+  </section>
+</main>
