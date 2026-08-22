@@ -70,6 +70,13 @@ import tool modules straight off the disk. So `./shared/` imports belong in
 `main.js`, which no test loads. `buildlib/imports.py` fails the build if an
 import does not land on a file the tool ships.
 
+**Some modules are deliberately copied, and must stay in step.** The MP4
+reader is in five tools and the writer in two, because the rule above blocks
+sharing them. `tests/python/test_duplicates.py` declares which copies must
+agree and fails if they drift, comparing tokens so each copy keeps its own
+comments. Fix one copy and it will tell you about the others; add a new copy
+and it will make you declare it.
+
 ## Adding a tool
 
 The checklist is [README.md → Adding a tool](README.md#adding-a-tool). Two
