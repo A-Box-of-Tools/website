@@ -1,0 +1,2 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
+function n(){return typeof window.VideoDecoder=="function"&&typeof window.VideoFrame=="function"}async function t(e){if(!n())return!1;try{const{supported:o}=await VideoDecoder.isConfigSupported(e);return!!o}catch{return!1}}export{t as canDecode,n as hasWebCodecs};

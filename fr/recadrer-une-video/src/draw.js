@@ -1,0 +1,2 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
+function w(r,o,{rotation:m=0,displayWidth:e,displayHeight:n,crop:s,scale:f=1}){r.setTransform(f,0,0,f,-s.x*f,-s.y*f),m===90?r.transform(0,1,-1,0,e,0):m===180?r.transform(-1,0,0,-1,e,n):m===270&&r.transform(0,-1,1,0,0,n),r.drawImage(o,0,0),r.setTransform(1,0,0,1,0,0)}export{w as drawCropped};

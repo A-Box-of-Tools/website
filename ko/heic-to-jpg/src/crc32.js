@@ -1,0 +1,2 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
+let l=null;function r(){l=new Uint32Array(256);for(let t=0;t<256;t+=1){let f=t;for(let e=0;e<8;e+=1)f=f&1?3988292384^f>>>1:f>>>1;l[t]=f>>>0}}function o(t){l||r();let f=4294967295;for(const e of t)for(let n=0;n<e.length;n+=1)f=l[(f^e[n])&255]^f>>>8;return(f^4294967295)>>>0}export{o as crc32};
