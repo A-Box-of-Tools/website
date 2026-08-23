@@ -80,6 +80,8 @@ complete = true
 # QR rather than barcode. The page makes both and the description says so, but
 # the searches are not close: one address has to pick the louder half.
 "qr-barcode" = "qr코드-만들기"
+# 만들기의 반대쪽. 스캔이 검색되는 말이고, 읽기는 프로그램이 하는 일입니다.
+"qr-barcode-reader" = "qr코드-스캔"
 "resize-image" = "이미지-크기-조절"
 "reverse-video" = "동영상-거꾸로-재생"
 "svg-to-image" = "svg-png-변환"

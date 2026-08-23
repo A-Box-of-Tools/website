@@ -18,7 +18,13 @@
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), usb=(), payment=()
+  Permissions-Policy: camera=(self), microphone=(), geolocation=(), usb=(), payment=()
 
+# camera=(self) rather than camera=(): /qr-barcode-reader/ reads a code from a
+# live camera, and a page cannot ask for one that its own site has switched off.
+# It is the narrowest form that permits it - this origin only, no embedded
+# frame, and no other capability moved - and every other tool here is unaffected
+# because none of them asks. If that tool ever goes, put camera=() back.
+#
 # Deliberately NOT set: Cross-Origin-Embedder-Policy. Enabling it would block
 # the cross-origin <img> loads that "Add from a web address" depends on.

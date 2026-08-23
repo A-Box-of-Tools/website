@@ -247,11 +247,14 @@ a = """
 [[faq]]
 q = "Ele também lê um QR Code, além de gerar?"
 a = """
-        Ainda não. Ler um significa decodificar uma imagem, ou seja, achar o símbolo
-        numa fotografia, corrigir o ângulo em que ela foi tirada e reparar o dano, o
-        que é um trabalho diferente e bem maior do que desenhar um. Dava para
-        construir aqui nos mesmos termos que todo o resto, e está na lista. Enquanto
-        isso, a câmera do seu celular já faz, e faz bem."""
+        Esta página não, mas a do lado sim:
+        <a href="../ler-qr-code/">o leitor</a> pega uma foto, um print ou
+        a sua câmera e devolve o texto. É um trabalho bem maior do que desenhar
+        um &mdash; achar o símbolo dentro de uma imagem, corrigir o ângulo em
+        que ela foi tirada e reparar o dano são três problemas que esta página
+        não tem &mdash;, e por isso virou ferramenta própria e não um botão
+        aqui. Funciona nos mesmos termos que todo o resto: nada sobe, e nenhum
+        quadro da câmera fica guardado."""
 
 [[faq]]
 q = "Para que serve a margem, e posso deixá-la menor?"

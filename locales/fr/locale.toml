@@ -78,6 +78,10 @@ complete = true
 # c'est la formule qui se tape. Le singulier, parce que la recherche est
 # faite par quelqu'un qui en veut un.
 "password-generator" = "generateur-de-mot-de-passe"
+# Un nom, comme "generateur-de-qr-code" plus haut, et pour la même raison :
+# "lecteur de QR code" est la formule qui se tape. Les codes-barres restent
+# hors de l'adresse, portés par le titre de la page.
+"qr-barcode-reader" = "lecteur-de-qr-code"
 
 "guides" = "guides"
 "roadmap" = "feuille-de-route"

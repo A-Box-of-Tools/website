@@ -1,0 +1,263 @@
+<main>
+  <!-- 1단계 &mdash; 이미지가 어디서 오는지 -->
+  <section class="card">
+    <h2><span class="step">1</span> 코드를 보여 주기</h2>
+
+    <p class="card-lede">
+      사진이든, 스크린숏이든, 카메라든. 무엇을 고르시든 이미지는 여기서, 이
+      페이지 안에서, 당신 기기 위에서 읽힙니다 &mdash; 아무것도 올라가지 않고,
+      카메라 프레임은 살펴본 뒤 버려질 뿐 저장되지 않습니다.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div class="run-row">
+      <button type="button" id="start-camera" class="primary">카메라 쓰기</button>
+      <button type="button" id="stop-camera" class="ghost" hidden>카메라 멈추기</button>
+    </div>
+
+    <p class="field-summary" id="pick-note">
+      <kbd>Ctrl</kbd>+<kbd>V</kbd>로 이미지를 바로 붙여 넣을 수도 있습니다
+      &mdash; 이미 화면에 떠 있는 코드의 스크린숏이 가장 빠른 길입니다.
+    </p>
+
+    <p id="pick-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 카메라. 켜진 뒤에야 나타납니다 -->
+  <section class="card" id="camera-card" hidden>
+    <h2>카메라</h2>
+
+    <div class="viewfinder">
+      <video id="video" playsinline muted disablepictureinpicture></video>
+      <div class="reticle" aria-hidden="true"></div>
+    </div>
+
+    <div class="camera-controls">
+      <div class="option-row" id="camera-pick-row" hidden>
+        <label for="camera-pick">어느 카메라</label>
+        <select id="camera-pick"></select>
+      </div>
+
+      <label class="check" id="torch-row" hidden>
+        <input type="checkbox" id="torch">
+        <span>
+          <strong>조명 켜기</strong>
+          <span class="check-note">
+            조명이 달린 카메라는 일부뿐이고, 페이지가 그것을 요청하도록
+            허락하는 브라우저도 일부뿐입니다. 여기에 보이지 않는다면 없는
+            것입니다.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary" id="camera-status" role="status"></p>
+
+    <p class="field-summary">
+      여기서 정직한 표시는 카메라 불빛입니다. 프레임이 들어오는 동안 켜져 있고,
+      멈추는 순간 꺼집니다. 그 두 지점 사이의 무엇도 디스크에 쓰이지 않고, 이
+      페이지의 <code>Content-Security-Policy</code>에는 이미지가 갈 수 있는
+      주소가 하나도 없습니다.
+    </p>
+  </section>
+
+  <!-- 2단계 &mdash; 답 -->
+  <section class="card" id="results-card" hidden>
+    <h2><span class="step">2</span> 무엇이 적혀 있는지</h2>
+
+    <p class="card-lede">
+      보여 줄 뿐, 열지 않습니다. 인쇄된 코드는 아무도 읽을 수 없는 주소이고,
+      그 위에 스티커를 붙이는 일이 누군가에게 남는 장사가 되는 이유가 바로
+      그것입니다 &mdash; 그래서 문자열 전체를 여기에 두어 보시게 하고, 실제로
+      닿게 될 호스트는 자기만의 줄로 빼냈습니다.
+    </p>
+
+    <div id="results"></div>
+  </section>
+
+  <!--
+    결과 하나. 찾은 코드마다 복제되고 스크립트는 값만 채웁니다. 이 안의 모든
+    낱말이 마크업에 있는 이유는, 이 파일은 언어마다 번역되는 반면 src/*.js는
+    열한 곳의 주소에 공통으로 쓰이는 한 파일이기 때문입니다.
+  -->
+  <template id="result-template">
+    <article class="result">
+      <header class="result-head">
+        <span class="result-kind"></span>
+        <span class="result-symbology"></span>
+      </header>
+
+      <pre class="result-text"></pre>
+
+      <div class="run-row">
+        <button type="button" class="primary copy">문자열 복사</button>
+        <a class="as-button open" target="_blank" rel="noopener noreferrer nofollow" hidden>
+          새 탭에서 열기
+        </a>
+      </div>
+
+      <dl class="result-rows"></dl>
+      <ul class="result-warnings"></ul>
+
+      <details class="result-facts">
+        <summary>이건 어떻게 읽었는가</summary>
+
+        <dl class="facts-list">
+          <div><dt>심벌</dt><dd data-fact="symbol"></dd></div>
+          <div data-only="qr"><dt>버전</dt><dd data-fact="version"></dd></div>
+          <div data-only="qr"><dt>오류 정정</dt><dd data-fact="level"></dd></div>
+          <div data-only="qr"><dt>마스크</dt><dd data-fact="mask"></dd></div>
+          <div data-only="qr"><dt>복구한 코드워드</dt><dd data-fact="repaired"></dd></div>
+          <div data-only="qr"><dt>기록 방식</dt><dd data-fact="mode"></dd></div>
+          <div data-only="qr" data-optional><dt>선언된 문자 집합</dt><dd data-fact="eci"></dd></div>
+          <div data-only="qr" data-optional><dt>묶음 중 한 장</dt><dd data-fact="part"></dd></div>
+          <div data-only="linear" data-optional><dt>일치한 스캔 선</dt><dd data-fact="lines"></dd></div>
+          <div><dt>글자 수</dt><dd data-fact="characters"></dd></div>
+          <div><dt>찾은 방법</dt><dd data-fact="how"></dd></div>
+        </dl>
+
+        <figure class="grid-figure" hidden>
+          <canvas class="grid" width="1" height="1"></canvas>
+          <figcaption>
+            이 페이지가 표본으로 삼은 모듈을 다시 그린 것입니다. 찍으신 코드처럼
+            보이면 제대로 읽은 것이고, 잡음처럼 보이면 아니며 위의 답도 믿을 것이
+            못 됩니다.
+          </figcaption>
+        </figure>
+      </details>
+    </article>
+  </template>
+
+  <!--
+    스크립트가 쓰는 낱말들입니다. 번역하는 사람이 페이지의 나머지를 만나는 곳에서
+    함께 만나도록 마크업 안에 두었습니다. 안의 {host}는 읽어 낸 호스트로
+    채워지고, 그 밖에는 아무것도 치환되지 않습니다.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="kind.url">웹 주소</span>
+    <span data-phrase="kind.url-plain">웹 주소, 암호화 없음</span>
+    <span data-phrase="kind.wifi">Wi-Fi 네트워크</span>
+    <span data-phrase="kind.vcard">연락처 카드</span>
+    <span data-phrase="kind.mecard">연락처 카드</span>
+    <span data-phrase="kind.email">이메일</span>
+    <span data-phrase="kind.phone">전화번호</span>
+    <span data-phrase="kind.sms">문자 메시지</span>
+    <span data-phrase="kind.place">지도 위의 한 지점</span>
+    <span data-phrase="kind.otp">2단계 인증 비밀 키</span>
+    <span data-phrase="kind.other-scheme">다른 프로그램이 열 무언가</span>
+    <span data-phrase="kind.number">숫자</span>
+    <span data-phrase="kind.text">그냥 글자</span>
+    <span data-phrase="symbology.qr">QR 코드</span>
+
+
+    <span data-phrase="field.host">가는 곳</span>
+    <span data-phrase="field.port">포트</span>
+    <span data-phrase="field.path">경로</span>
+    <span data-phrase="field.ssid">네트워크 이름</span>
+    <span data-phrase="field.security">보안</span>
+    <span data-phrase="field.password">비밀번호</span>
+    <span data-phrase="field.hidden">숨김 네트워크</span>
+    <span data-phrase="field.name">이름</span>
+    <span data-phrase="field.org">소속</span>
+    <span data-phrase="field.title">직함</span>
+    <span data-phrase="field.phone">전화</span>
+    <span data-phrase="field.email">이메일</span>
+    <span data-phrase="field.web">웹사이트</span>
+    <span data-phrase="field.address">주소</span>
+    <span data-phrase="field.note">메모</span>
+    <span data-phrase="field.to">받는 사람</span>
+    <span data-phrase="field.subject">제목</span>
+    <span data-phrase="field.message">내용</span>
+    <span data-phrase="field.number">번호</span>
+    <span data-phrase="field.latitude">위도</span>
+    <span data-phrase="field.longitude">경도</span>
+    <span data-phrase="field.account">계정</span>
+    <span data-phrase="field.issuer">발급처</span>
+    <span data-phrase="field.secret">비밀 키</span>
+    <span data-phrase="field.scheme">스킴</span>
+
+    <span data-phrase="value.yes">예</span>
+    <span data-phrase="value.open-network">개방 &mdash; 비밀번호 없음</span>
+    <span data-phrase="value.none">없음</span>
+    <span data-phrase="value.copied">복사했습니다</span>
+    <span data-phrase="value.modules">한 변 {n}모듈</span>
+
+    <span data-phrase="warn.userinfo">@ 앞의 모든 것은 사용자 이름이지 주소가
+      아닙니다. 이 링크가 무엇이라고 말하는 것처럼 보이든, 가는 곳은
+      {host}입니다.</span>
+    <span data-phrase="warn.punycode">이 주소는 라틴 문자가 아닌 체계로
+      쓰였습니다. 다른 문자 체계에는 우리 글자와 모양이 똑같은 글자가 있고, 이미
+      믿고 있는 이름처럼 보이게 만드는 수법이 그것을 씁니다.</span>
+    <span data-phrase="warn.unicode-host">호스트 이름에 기본 라틴 문자 바깥의
+      글자가 들어 있습니다. 어떤 이름을 다른 이름처럼 보이게 하는 데 쓰일 수
+      있습니다.</span>
+    <span data-phrase="warn.plain-http">밋밋한 http:// 주소입니다. 여기로 보내는
+      것은 암호화되지 않은 채 흐르고, 중간에 있는 무엇이든 읽거나 바꿀 수
+      있습니다.</span>
+    <span data-phrase="warn.shortener">{host}는 리디렉션입니다. 실제로 닿게 될
+      주소는 이 코드 안에 없고, 그것이 무엇인지 알아내려면 서버에 접속해야 하는데
+      &mdash; 이 페이지는 결코 그러지 않습니다.</span>
+    <span data-phrase="warn.wifi-secret">이 코드에는 비밀번호가 그대로 적혀
+      있습니다. 코드를 사진으로 찍은 사람은 그것을 갖게 됩니다. 이런 코드를 벽에
+      붙이기 전에 알아 둘 만한 일입니다.</span>
+    <span data-phrase="warn.otp-secret">인증 앱의 씨앗입니다. 이것을 가진 사람은
+      그 계정의 코드를 얼마든지 계속 만들어 낼 수 있습니다. 이 값은 이 페이지를
+      벗어나지 않았고, 다음에 어디로 가는지는 조심할 값어치가 있습니다.</span>
+    <span data-phrase="warn.not-openable">이건 웹 주소가 아니므로 내어 드릴 링크도
+      없습니다. 위에 전문이 그대로 적혀 있습니다. 당신 기기의 무언가가 여기에
+      반응할지는 당신과 그 프로그램 사이의 일입니다.</span>
+
+    <span data-phrase="mode.numeric">숫자만</span>
+    <span data-phrase="mode.alphanumeric">대문자와 숫자</span>
+    <span data-phrase="mode.byte">바이트</span>
+    <span data-phrase="mode.kanji">한자</span>
+
+    <span data-phrase="how.local">블록마다 따로 구한 임계값</span>
+    <span data-phrase="how.inverted">밝기를 뒤집는 방법</span>
+    <span data-phrase="how.global">이미지 전체에 하나의 임계값</span>
+    <span data-phrase="how.softened">이미지를 먼저 부드럽게 하는 방법</span>
+    <span data-phrase="how.dense">, 모든 행을 살피면서</span>
+
+    <span data-phrase="status.reading">이미지를 읽는 중&hellip;</span>
+    <span data-phrase="status.nothing">그 이미지에서 코드를 찾지 못했습니다. 흰
+      여백까지 포함한 심벌 전체가 화면에 있어야 하고, 어두운 네모가 제대로 어둡게
+      찍힐 만큼 빛이 있어야 합니다.</span>
+    <span data-phrase="status.broken">그 파일은 이미지로 열 수 없었습니다.</span>
+    <span data-phrase="status.looking">찾는 중&hellip; 코드를 움직이지 말고 화면의
+      절반쯤을 채워 주세요.</span>
+    <span data-phrase="status.on">카메라가 켜졌습니다. 아무것도 저장되지
+      않습니다.</span>
+
+    <span data-phrase="camera.denied">브라우저가 이 페이지에 카메라를 내주지
+      않았습니다. 바꿀 수 있는 권한입니다. 주소 표시줄의 카메라 아이콘을 보세요.
+      대신 이미지를 고르는 데에는 권한이 전혀 필요하지 않습니다.</span>
+    <span data-phrase="camera.none">이 기기에서 카메라를 찾지 못했습니다. 위에
+      사진이나 스크린숏을 올려 주시면 똑같이 읽힙니다.</span>
+    <span data-phrase="camera.busy">카메라는 있는데 다른 것이 쓰고 있습니다. 그것을
+      붙잡고 있는 프로그램 &mdash; 보통은 화상 통화 &mdash; 을 닫고 다시 해
+      보세요.</span>
+    <span data-phrase="camera.insecure">브라우저는 https로 제공된 페이지에만
+      카메라를 내주는데, 이 페이지는 지금 그렇지 않습니다.</span>
+    <span data-phrase="camera.unsupported">이 브라우저에는 페이지가 요청할 수 있는
+      카메라 기능이 없습니다. 나머지는 그대로 동작합니다.</span>
+    <span data-phrase="camera.failed">카메라를 시작하지 못했고, 브라우저가 이유를
+      알려 주지 않았습니다.</span>
+
+    <span data-phrase="live.clean">당신의 이미지는 어디로도 가지 않았습니다.
+      불러온 파일 {total}개, 모두 이 페이지 자신의 것입니다.</span>
+    <span data-phrase="live.dirty">무언가가 {hosts}에 접속했습니다. 이 도구가 결코
+      하지 않는 일입니다. 살펴볼 값어치가 있습니다.</span>
+    <span data-phrase="live.platform">이 페이지의 광고·측정·후원 버튼 스크립트가
+      호스트 {count}곳에서 불러와졌습니다. 그중 어느 것도 이미지도, 카메라
+      프레임도, 코드에 적혀 있던 글자 하나도 받지 않았습니다.</span>
+    <span data-phrase="offline.ready">준비됨 &mdash; 인터넷을 끊어도 이대로
+      동작합니다.</span>
+    <span data-phrase="offline.none">이 브라우저에서는 쓸 수 없습니다 (나머지는
+      그대로 동작합니다).</span>
+    <span data-phrase="offline.insecure">오프라인 저장에는 https:// 또는 localhost가
+      필요합니다.</span>
+    <span data-phrase="offline.failed">여기서는 저장할 수 없지만, 어느 쪽이든
+      올라가는 것은 없습니다.</span>
+  </div>
+</main>

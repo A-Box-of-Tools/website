@@ -244,7 +244,7 @@ order = ["merge-pdf", "compress-pdf", "images-to-pdf"]
 id = "codes-and-data"
 name = "Codes &amp; data"
 note = "Turn something you typed into something a machine can read, without it leaving the page."
-order = ["qr-barcode"]
+order = ["qr-barcode", "qr-barcode-reader"]
 
 # The second of those, and the one where the promise matters most: what people
 # paste into an online formatter is tokens, config files and customer records.

@@ -41,6 +41,13 @@ The groups are deliberate, not accidental:
     time-lapse has no sound worth keeping - so they share the smaller muxer.
     crop-video's writer is its own: it carries audio like the trim pair and takes
     a different timescale and tkhd signature from either.
+  - qr-tables.js is in the QR generator and the QR reader, and is the same file
+    on purpose: it is the specification's tables and the arithmetic around them,
+    and a reader that disagreed with the writer about the size of a symbol or
+    the split of its blocks would be wrong rather than different. The field
+    arithmetic beside it is NOT shared - gf256.js computes a remainder and
+    reed-solomon.js finds errors, which are different halves of the same
+    mathematics - so those two are not a group and are not meant to be.
 
 Adding a sixth copy of one of these, or a new duplicated module, means adding
 it here. `test_every_copy_is_declared` fails if a copy exists that no group
@@ -61,6 +68,7 @@ GROUPS = [
     ('demux.js', ['reverse-video', 'trim-video']),
     ('mp4.js', ['reverse-video', 'trim-video']),
     ('mp4.js', ['images-to-video', 'timelapse-video']),
+    ('qr-tables.js', ['qr-barcode', 'qr-barcode-reader']),
 ]
 
 # Copies that are not duplicates of anything, and why. Named so that

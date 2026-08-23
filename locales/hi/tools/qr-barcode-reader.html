@@ -1,0 +1,265 @@
+<main>
+  <!-- चरण 1 &mdash; तस्वीर कहाँ से आती है -->
+  <section class="card">
+    <h2><span class="step">1</span> इसे कोड दिखाइए</h2>
+
+    <p class="card-lede">
+      फ़ोटो, स्क्रीनशॉट, या कैमरा। जो भी चुनिए, तस्वीर यहीं पढ़ी जाती है, इसी
+      पन्ने में, आपकी अपनी मशीन पर &mdash; कुछ अपलोड नहीं होता, और कैमरे का
+      फ़्रेम जाँचकर फेंक दिया जाता है, रिकॉर्ड नहीं किया जाता।
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div class="run-row">
+      <button type="button" id="start-camera" class="primary">कैमरा इस्तेमाल कीजिए</button>
+      <button type="button" id="stop-camera" class="ghost" hidden>कैमरा रोकिए</button>
+    </div>
+
+    <p class="field-summary" id="pick-note">
+      आप तस्वीर सीधे <kbd>Ctrl</kbd>+<kbd>V</kbd> से भी चिपका सकते हैं &mdash; जो
+      कोड पहले से स्क्रीन पर है उसका स्क्रीनशॉट सबसे तेज़ रास्ता है।
+    </p>
+
+    <p id="pick-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- कैमरा, जो चालू होने पर ही दिखता है -->
+  <section class="card" id="camera-card" hidden>
+    <h2>कैमरा</h2>
+
+    <div class="viewfinder">
+      <video id="video" playsinline muted disablepictureinpicture></video>
+      <div class="reticle" aria-hidden="true"></div>
+    </div>
+
+    <div class="camera-controls">
+      <div class="option-row" id="camera-pick-row" hidden>
+        <label for="camera-pick">कौन-सा कैमरा</label>
+        <select id="camera-pick"></select>
+      </div>
+
+      <label class="check" id="torch-row" hidden>
+        <input type="checkbox" id="torch">
+        <span>
+          <strong>बत्ती जलाइए</strong>
+          <span class="check-note">
+            बत्ती कुछ ही कैमरों में होती है, और कुछ ही ब्राउज़र किसी पन्ने को
+            उसे माँगने देते हैं। जहाँ यह विकल्प नहीं दिखता, वहाँ बत्ती है ही
+            नहीं।
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary" id="camera-status" role="status"></p>
+
+    <p class="field-summary">
+      यहाँ ईमानदार संकेत कैमरे की बत्ती है: जब तक फ़्रेम आ रहे हैं वह जलती है,
+      और रोकते ही बुझ जाती है। इन दो बिंदुओं के बीच का कुछ भी डिस्क पर नहीं
+      लिखा जाता, और इस पन्ने की
+      <code>Content-Security-Policy</code> में कोई ऐसा पता है ही नहीं जहाँ कोई
+      तस्वीर भेजी जा सके।
+    </p>
+  </section>
+
+  <!-- चरण 2 &mdash; जवाब -->
+  <section class="card" id="results-card" hidden>
+    <h2><span class="step">2</span> इसमें क्या लिखा है</h2>
+
+    <p class="card-lede">
+      दिखाया जाता है, खोला कभी नहीं। छपा हुआ कोड ऐसा पता है जिसे कोई पढ़ नहीं
+      सकता, और ठीक इसी वजह से उस पर स्टिकर चिपकाना किसी के लिए फ़ायदे का सौदा बन
+      जाता है &mdash; इसलिए पूरी लिखावट यहाँ देखने को है, और जिस होस्ट पर आप
+      सचमुच पहुँचते वह अपनी अलग लाइन में।
+    </p>
+
+    <div id="results"></div>
+  </section>
+
+  <!--
+    एक नतीजा। मिले हर कोड के लिए इसकी नक़ल बनती है और स्क्रिप्ट सिर्फ़ मान भरती
+    है: इसका हर शब्द यहीं, मार्कअप में है, क्योंकि यह फ़ाइल हर भाषा के लिए
+    अनूदित होती है और src/*.js ग्यारह पतों पर एक ही फ़ाइल रहती है।
+  -->
+  <template id="result-template">
+    <article class="result">
+      <header class="result-head">
+        <span class="result-kind"></span>
+        <span class="result-symbology"></span>
+      </header>
+
+      <pre class="result-text"></pre>
+
+      <div class="run-row">
+        <button type="button" class="primary copy">लिखावट कॉपी कीजिए</button>
+        <a class="as-button open" target="_blank" rel="noopener noreferrer nofollow" hidden>
+          नए टैब में खोलिए
+        </a>
+      </div>
+
+      <dl class="result-rows"></dl>
+      <ul class="result-warnings"></ul>
+
+      <details class="result-facts">
+        <summary>यह कैसे पढ़ा गया</summary>
+
+        <dl class="facts-list">
+          <div><dt>सिंबल</dt><dd data-fact="symbol"></dd></div>
+          <div data-only="qr"><dt>वर्शन</dt><dd data-fact="version"></dd></div>
+          <div data-only="qr"><dt>त्रुटि-सुधार</dt><dd data-fact="level"></dd></div>
+          <div data-only="qr"><dt>मास्क</dt><dd data-fact="mask"></dd></div>
+          <div data-only="qr"><dt>सुधारे गए कोडवर्ड</dt><dd data-fact="repaired"></dd></div>
+          <div data-only="qr"><dt>किस रूप में लिखा</dt><dd data-fact="mode"></dd></div>
+          <div data-only="qr" data-optional><dt>घोषित कैरेक्टर सेट</dt><dd data-fact="eci"></dd></div>
+          <div data-only="qr" data-optional><dt>एक सेट का हिस्सा</dt><dd data-fact="part"></dd></div>
+          <div data-only="linear" data-optional><dt>सहमत स्कैन लाइनें</dt><dd data-fact="lines"></dd></div>
+          <div><dt>अक्षर</dt><dd data-fact="characters"></dd></div>
+          <div><dt>किससे मिला</dt><dd data-fact="how"></dd></div>
+        </dl>
+
+        <figure class="grid-figure" hidden>
+          <canvas class="grid" width="1" height="1"></canvas>
+          <figcaption>
+            जो मॉड्यूल इस पन्ने ने सैंपल किए, वे दोबारा बनाकर। अगर यह उसी कोड
+            जैसा दिखता है जो आपने खींचा था, तो सही चीज़ पढ़ी गई; अगर यह बेतरतीब
+            धब्बों जैसा दिखता है, तो नहीं, और ऊपर के जवाब पर भरोसा नहीं करना
+            चाहिए।
+          </figcaption>
+        </figure>
+      </details>
+    </article>
+  </template>
+
+  <!--
+    स्क्रिप्ट को जिन शब्दों की ज़रूरत है, वे मार्कअप में रखे हैं ताकि अनुवाद
+    करने वाले को वे वहीं मिलें जहाँ बाक़ी पन्ना मिलता है। इनमें आया {host} पढ़े
+    गए होस्ट से भरा जाता है; और कुछ नहीं बदला जाता।
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="kind.url">एक वेब पता</span>
+    <span data-phrase="kind.url-plain">एक वेब पता, बिना एन्क्रिप्शन</span>
+    <span data-phrase="kind.wifi">एक Wi-Fi नेटवर्क</span>
+    <span data-phrase="kind.vcard">एक कॉन्टैक्ट कार्ड</span>
+    <span data-phrase="kind.mecard">एक कॉन्टैक्ट कार्ड</span>
+    <span data-phrase="kind.email">एक ईमेल</span>
+    <span data-phrase="kind.phone">एक फ़ोन नंबर</span>
+    <span data-phrase="kind.sms">एक टेक्स्ट संदेश</span>
+    <span data-phrase="kind.place">नक़्शे पर एक जगह</span>
+    <span data-phrase="kind.otp">दो-चरणीय प्रमाणीकरण का गुप्त बीज</span>
+    <span data-phrase="kind.other-scheme">किसी और प्रोग्राम के खोलने की चीज़</span>
+    <span data-phrase="kind.number">एक संख्या</span>
+    <span data-phrase="kind.text">सादा पाठ</span>
+    <span data-phrase="symbology.qr">QR कोड</span>
+
+
+    <span data-phrase="field.host">यहाँ जाता है</span>
+    <span data-phrase="field.port">पोर्ट</span>
+    <span data-phrase="field.path">पथ</span>
+    <span data-phrase="field.ssid">नेटवर्क का नाम</span>
+    <span data-phrase="field.security">सुरक्षा</span>
+    <span data-phrase="field.password">पासवर्ड</span>
+    <span data-phrase="field.hidden">छिपा नेटवर्क</span>
+    <span data-phrase="field.name">नाम</span>
+    <span data-phrase="field.org">संस्था</span>
+    <span data-phrase="field.title">पद</span>
+    <span data-phrase="field.phone">फ़ोन</span>
+    <span data-phrase="field.email">ईमेल</span>
+    <span data-phrase="field.web">वेबसाइट</span>
+    <span data-phrase="field.address">पता</span>
+    <span data-phrase="field.note">टिप्पणी</span>
+    <span data-phrase="field.to">किसे</span>
+    <span data-phrase="field.subject">विषय</span>
+    <span data-phrase="field.message">संदेश</span>
+    <span data-phrase="field.number">नंबर</span>
+    <span data-phrase="field.latitude">अक्षांश</span>
+    <span data-phrase="field.longitude">देशांतर</span>
+    <span data-phrase="field.account">खाता</span>
+    <span data-phrase="field.issuer">जारीकर्ता</span>
+    <span data-phrase="field.secret">गुप्त कुंजी</span>
+    <span data-phrase="field.scheme">स्कीम</span>
+
+    <span data-phrase="value.yes">हाँ</span>
+    <span data-phrase="value.open-network">खुला &mdash; बिना पासवर्ड</span>
+    <span data-phrase="value.none">कोई नहीं</span>
+    <span data-phrase="value.copied">कॉपी हो गया</span>
+    <span data-phrase="value.modules">{n} मॉड्यूल वर्ग</span>
+
+    <span data-phrase="warn.userinfo">@ से पहले की हर चीज़ उपयोगकर्ता नाम है, पता
+      नहीं। यह लिंक चाहे जो कहता दिखे, जाता {host} पर है।</span>
+    <span data-phrase="warn.punycode">यह पता ग़ैर-लैटिन लिपि में लिखा है। दूसरी
+      लिपियों के कुछ अक्षर हूबहू हमारे अक्षरों जैसे दिखते हैं, और इसी तरह किसी
+      नाम को उस नाम जैसा बना दिया जाता है जिस पर आप पहले से भरोसा करते
+      हैं।</span>
+    <span data-phrase="warn.unicode-host">होस्ट के नाम में सादे लैटिन वर्णमाला से
+      बाहर के अक्षर हैं, जिनसे एक नाम को दूसरे जैसा दिखाया जा सकता है।</span>
+    <span data-phrase="warn.plain-http">यह सादा http:// पता है, इसलिए आप इसे जो भी
+      भेजेंगे वह बिना एन्क्रिप्शन के जाएगा और बीच में पड़ने वाली कोई भी चीज़ उसे
+      पढ़ या बदल सकती है।</span>
+    <span data-phrase="warn.shortener">{host} एक रीडायरेक्ट है। जिस पते पर आप
+      सचमुच पहुँचते, वह इस कोड में है ही नहीं, और यह पता करने का मतलब होता किसी
+      सर्वर से संपर्क करना &mdash; जो यह पन्ना कभी नहीं करता।</span>
+    <span data-phrase="warn.wifi-secret">इस कोड में पासवर्ड खुले पाठ में मौजूद है।
+      जो भी कोड की फ़ोटो ले लेगा उसके पास वह पासवर्ड होगा &mdash; ऐसा कोई कोड
+      दीवार पर लगाने से पहले यह जान लेना ठीक रहता है।</span>
+    <span data-phrase="warn.otp-secret">यह किसी ऑथेंटिकेटर ऐप का बीज है: जिसके पास
+      यह होगा वह उस खाते के आपके कोड जब तक चाहे बनाता रह सकता है। यह इस पन्ने से
+      बाहर नहीं गया है, और आगे यह कहाँ जाता है इस बारे में सावधानी बरतना ठीक
+      रहेगा।</span>
+    <span data-phrase="warn.not-openable">यह वेब पता नहीं है, इसलिए देने को कोई
+      लिंक भी नहीं। ऊपर यह पूरा छपा है; आपकी मशीन पर कोई चीज़ इस पर अमल करती है
+      या नहीं, यह आपके और उस प्रोग्राम के बीच की बात है।</span>
+
+    <span data-phrase="mode.numeric">सिर्फ़ अंक</span>
+    <span data-phrase="mode.alphanumeric">बड़े अक्षर और अंक</span>
+    <span data-phrase="mode.byte">बाइट</span>
+    <span data-phrase="mode.kanji">कांजी</span>
+
+    <span data-phrase="how.local">खंड-दर-खंड निकाली गई थ्रेशोल्ड</span>
+    <span data-phrase="how.inverted">गहरे और हल्के की अदला-बदली</span>
+    <span data-phrase="how.global">पूरी तस्वीर के लिए एक ही थ्रेशोल्ड</span>
+    <span data-phrase="how.softened">तस्वीर को पहले हल्का धुँधला करना</span>
+    <span data-phrase="how.dense">, हर पंक्ति जाँचते हुए</span>
+
+    <span data-phrase="status.reading">तस्वीर पढ़ी जा रही है&hellip;</span>
+    <span data-phrase="status.nothing">उस तस्वीर में कोई कोड नहीं मिला। पूरा
+      सिंबल फ़्रेम में चाहिए, उसका सफ़ेद हाशिया भी, और इतनी रोशनी कि गहरे चौकोर
+      सचमुच गहरे दिखें।</span>
+    <span data-phrase="status.broken">वह फ़ाइल तस्वीर के रूप में नहीं खुल
+      सकी।</span>
+    <span data-phrase="status.looking">देखा जा रहा है&hellip; कोड को स्थिर रखिए और
+      फ़्रेम का करीब आधा हिस्सा उससे भरिए।</span>
+    <span data-phrase="status.on">कैमरा चालू है। कुछ रिकॉर्ड नहीं हो रहा।</span>
+
+    <span data-phrase="camera.denied">ब्राउज़र ने इस पन्ने को कैमरा देने से मना कर
+      दिया। यह अनुमति आप बदल सकते हैं: पता-पट्टी में कैमरे का चिह्न देखिए। इसके
+      बजाय तस्वीर चुनने के लिए कोई अनुमति चाहिए ही नहीं।</span>
+    <span data-phrase="camera.none">इस मशीन पर कोई कैमरा नहीं मिला। ऊपर कोई फ़ोटो
+      या स्क्रीनशॉट छोड़ दीजिए, वह उसी तरह पढ़ा जाएगा।</span>
+    <span data-phrase="camera.busy">कैमरा है, पर उसे कोई और चीज़ इस्तेमाल कर रही
+      है। जो उसे खोले बैठा है उसे बंद कीजिए &mdash; आम तौर पर कोई वीडियो कॉल
+      &mdash; और फिर कोशिश कीजिए।</span>
+    <span data-phrase="camera.insecure">ब्राउज़र कैमरा सिर्फ़ उसी पन्ने को देता है
+      जो https से आया हो, और यह पन्ना अभी वैसा नहीं है।</span>
+    <span data-phrase="camera.unsupported">इस ब्राउज़र में कैमरे का ऐसा इंटरफ़ेस
+      है ही नहीं जो कोई पन्ना माँग सके। यहाँ का बाक़ी सब फिर भी चलता है।</span>
+    <span data-phrase="camera.failed">कैमरा शुरू नहीं हो सका, और ब्राउज़र ने वजह
+      नहीं बताई।</span>
+
+    <span data-phrase="live.clean">आपकी तस्वीरें कहीं नहीं गईं। {total} फ़ाइलें
+      लोड हुईं, सब इसी पन्ने की अपनी।</span>
+    <span data-phrase="live.dirty">किसी चीज़ ने {hosts} से संपर्क किया, जो यह
+      औज़ार कभी नहीं करता। इसे देख लेना चाहिए।</span>
+    <span data-phrase="live.platform">पन्ने की अपनी विज्ञापन, माप और दान-बटन
+      वाली स्क्रिप्ट {count} होस्ट से लोड हुईं; उनमें से किसी को न कोई तस्वीर दी
+      गई, न कोई फ़्रेम, न किसी कोड में लिखी बात का एक अक्षर।</span>
+    <span data-phrase="offline.ready">तैयार &mdash; इंटरनेट काट दीजिए, यह फिर भी
+      चलता रहेगा।</span>
+    <span data-phrase="offline.none">इस ब्राउज़र में उपलब्ध नहीं (बाक़ी सब फिर भी
+      चलता है)।</span>
+    <span data-phrase="offline.insecure">ऑफ़लाइन कैश के लिए https:// या localhost
+      चाहिए।</span>
+    <span data-phrase="offline.failed">यहाँ कैश नहीं हो सकता, पर अपलोड फिर भी कुछ
+      नहीं होता।</span>
+  </div>
+</main>

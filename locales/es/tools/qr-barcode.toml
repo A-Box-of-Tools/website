@@ -250,12 +250,15 @@ a = """
 [[faq]]
 q = "¿Puede leer un código QR además de hacerlo?"
 a = """
-        Todavía no. Leer uno significa descodificar una imagen, es decir,
-        encontrar el símbolo dentro de una fotografía, corregir el ángulo desde el
-        que se tomó y reparar el daño. Es un trabajo distinto y bastante más
-        grande que dibujar uno. Se podría construir aquí en los mismos términos
-        que todo lo demás, y está en la lista. Mientras tanto, la cámara de tu
-        móvil ya lo hace, y lo hace bien."""
+        Esta página no, pero la de al lado sí:
+        <a href="../escanear-codigo-qr/">el lector</a> toma una foto, una captura
+        de pantalla o tu cámara y te devuelve la cadena. Es un trabajo bastante
+        más grande que dibujar uno &mdash; encontrar el símbolo dentro de una
+        imagen, corregir el ángulo desde el que se tomó y reparar el daño son
+        tres problemas que esta página no tiene &mdash;, y por eso es una
+        herramienta aparte y no un botón aquí. Funciona en los mismos términos
+        que todo lo demás: no se sube nada, y no se guarda ningún fotograma de
+        la cámara."""
 
 [[faq]]
 q = "¿Para qué es el margen? ¿Puedo hacerlo más pequeño?"

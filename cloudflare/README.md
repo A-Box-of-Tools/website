@@ -59,7 +59,7 @@ site returns, which needs no token at all.
 | `X-Frame-Options` | `DENY` | The older spelling of the same thing, for browsers that predate `frame-ancestors` |
 | `X-Content-Type-Options` | `nosniff` | Stops the browser second-guessing a declared content type |
 | `Referrer-Policy` | `no-referrer` | Outgoing links do not carry which page you came from |
-| `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), usb=(), payment=()` | Switches off capabilities no tool here uses, so a future mistake cannot quietly start using one |
+| `Permissions-Policy` | `camera=(self), microphone=(), geolocation=(), usb=(), payment=()` | Switches off capabilities no tool here uses, so a future mistake cannot quietly start using one. `camera=(self)` is the one exception: `/qr-barcode-reader/` reads a code from a live camera, and a page cannot ask for a capability its own site has switched off. `(self)` is this origin only — no embedded frame gets it, and nothing else moved |
 
 Deliberately **not** set here: a full `Content-Security-Policy`. Each page ships
 its own policy in a `<meta>` tag, and when two policies apply the browser enforces
