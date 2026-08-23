@@ -419,6 +419,65 @@ class Advertising(unittest.TestCase):
         self.assertEqual([entry['current'] for entry in found], [True, False])
 
 
+class OfferingALanguageForAPageThatIsNotTranslated(unittest.TestCase):
+    """The switcher answers a person; hreflang answers a crawler.
+
+    Judging both per page removed the control entirely from any page nobody had
+    translated yet - five of the site's tool pages shipped with no way to change
+    language at all. The page behind the link is built in every language and
+    already linked from that language's hub, so the honest answer is to offer it
+    and say it is still English, not to hide it.
+    """
+
+    def setUp(self):
+        self.english = i18n.base_locale(SITE)
+        # Finished frame, and this one page not translated in it.
+        self.german = locale(complete=True, slugs={'widget': 'dings'},
+                             debt={'widget': ['tools.widget.title']})
+
+    def switcher(self):
+        return i18n.switcher([self.english, self.german], self.english,
+                             'widget', SITE)
+
+    def test_the_language_is_still_offered(self):
+        self.assertIn('de', [entry['lang'] for entry in self.switcher()])
+
+    def test_and_is_marked_as_not_translated(self):
+        found = {entry['lang']: entry['translated'] for entry in self.switcher()}
+        self.assertEqual(found, {'en': True, 'de': False})
+
+    def test_the_link_still_goes_to_that_page_in_that_language(self):
+        """It exists - falling back builds it - and it wears a German frame."""
+        found = {entry['lang']: entry['href'] for entry in self.switcher()}
+        self.assertEqual(found['de'], '/de/dings/')
+
+    def test_but_nothing_is_advertised_to_a_crawler(self):
+        """The part that must NOT loosen. hreflang claims a translation of this
+        page exists, and here one does not."""
+        self.assertEqual(i18n.alternates([self.english, self.german],
+                                         'widget', SITE), [])
+
+    def test_a_page_translated_nowhere_still_offers_every_language(self):
+        nothing = locale(complete=True, slugs={'widget': 'dings'},
+                         debt={'widget': ['tools.widget.title']})
+        spanish = locale(lang='es', hreflang='es', prefix='es/', complete=True,
+                         debt={'widget': ['tools.widget.title']})
+        found = i18n.switcher([self.english, nothing, spanish], self.english,
+                              'widget', SITE)
+        self.assertEqual([entry['lang'] for entry in found], ['en', 'de', 'es'])
+        self.assertEqual([entry['translated'] for entry in found],
+                         [True, False, False])
+
+    def test_an_unfinished_FRAME_is_still_not_offered(self):
+        """Being behind on one page is not the same as not being a language
+        yet. A locale whose nav and footer are still English has nothing to
+        offer a reader who picks it."""
+        draft = locale(lang='fr', hreflang='fr', prefix='fr/', complete=False)
+        found = i18n.switcher([self.english, self.german, draft], self.english,
+                              'widget', SITE)
+        self.assertNotIn('fr', [entry['lang'] for entry in found])
+
+
 class Addresses(unittest.TestCase):
     def test_depth_is_measured_from_the_language_not_from_the_site(self):
         """Regression: every prose page linked its way out of its own language.

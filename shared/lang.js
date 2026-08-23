@@ -183,9 +183,13 @@
   document.addEventListener('click', function (event) {
     var target = event.target;
     if (!target || !target.closest) return;
-    var link = target.closest('a[hreflang]');
+    // Either attribute. A switcher entry for a language this page has not been
+    // translated into carries data-lang and no hreflang, because there is no
+    // translation of this page for an hreflang to point at - but choosing it is
+    // every bit as much a choice, and has to stick the same way.
+    var link = target.closest('a[hreflang], a[data-lang]');
     if (!link || !link.closest('.lang-switch, .lang-pick, .lang-auto')) return;
-    var tag = link.getAttribute('hreflang');
+    var tag = link.getAttribute('hreflang') || link.getAttribute('data-lang');
     if (tag && TAG.test(tag)) remember('localStorage', CHOICE, tag);
   });
 
@@ -210,8 +214,11 @@
       // language, and its address on this page. Both are taken from it rather
       // than built here, so the notice cannot offer a link the switcher would
       // not.
-      var wanted = 'a[hreflang="' + from + '"]';
-      var link = document.querySelector('.lang-switch ' + wanted + ', .lang-pick ' + wanted);
+      // Written out rather than folded into :is(). This file runs blocking, on
+      // the first paint, in whatever browser turned up.
+      var link = document.querySelector(
+        '.lang-switch a[hreflang="' + from + '"], .lang-switch a[data-lang="' + from + '"], ' +
+        '.lang-pick a[hreflang="' + from + '"], .lang-pick a[data-lang="' + from + '"]');
       if (!notice || !link) return;
 
       var back = notice.querySelector('.lang-auto-back');

@@ -324,6 +324,7 @@ base = "이 사이트에 적힌 주장은 믿으라고 쓴 것이 아니라 확�
 [ui]
 languages = "언어"
 lang_auto = "브라우저가 요청한 언어에 맞춰 이 페이지를 한국어로 보여 드리고 있습니다."
+lang_untranslated = "이 페이지는 아직 영어입니다"
 breadcrumb = "탐색 경로"
 all_tools = "모든 도구"
 last_updated = "마지막 업데이트"
