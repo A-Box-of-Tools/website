@@ -63,6 +63,9 @@ complete = true
 # Senha, não "palavra-passe", que é de Portugal. E no singular: quem procura
 # quer uma.
 "password-generator" = "gerador-de-senha"
+# O estrangeirismo, porque e' o que se digita: "camera rapida" quase ninguem
+# procura, e "timelapse" aparece ate' em legenda de celular.
+"timelapse-video" = "fazer-timelapse"
 
 "guides" = "guias"
 "roadmap" = "roteiro"

@@ -1,0 +1,264 @@
+#
+# Zeitraffer-Generator - German.
+#
+# Overrides for tools/timelapse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Zeitraffer-Generator"
+heading = "Zeitraffer&nbsp;erstellen <span class=\"h1-kw\">&mdash; ein Video im Zeitraffer abspielen</span>"
+tagline = "Eine Stunde Aufnahme in zwanzig Sekunden."
+
+title = "Zeitraffer-Video erstellen &mdash; kostenlos, ohne Upload, auch offline"
+description = "Ein langes Video zum Zeitraffer machen, mit 10x, 60x oder jedem Tempo, das Sie eintippen. Läuft im Browser: kein Upload, kein Wasserzeichen, auch offline."
+og_title = "Zeitraffer-Generator &mdash; ein Video beschleunigen, ohne es hochzuladen"
+og_description = "Aus einem langen Clip alle paar Sekunden ein Einzelbild nehmen und daraus einen kurzen machen. Ihr eigener Browser liest, dekodiert und kodiert die Datei."
+og_image_alt = "Zeitraffer-Generator - ein langes Video im Browser beschleunigen, ohne dass etwas hochgeladen wird"
+
+pledge = """
+    Jedes Einzelbild wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+    ausgewählt, dekodiert und neu kodiert. Abrufen oder senden kann hier nichts,
+    denn eine Netzfunktion hat dieses Werkzeug überhaupt nicht. Und selbst wenn
+    es einen Weg nach draußen gäbe, stünde am anderen Ende dieser Seite kein
+    Server, an den ein Video gehen könnte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und erstellen Sie einen Zeitraffer. Keine einzige
+      Anfrage trägt ein Einzelbild, einen Dateinamen oder ein Byte dessen, was
+      Sie ausgewählt haben. Oder trennen Sie die Internetverbindung und erstellen
+      Sie trotzdem einen. Ein Werkzeug, das Ihr Video zum Verarbeiten wegschickt,
+      bliebe dabei einfach stehen."""
+
+read_first = """
+, <code>src/plan.js</code> für die Rechnung, die
+      festlegt, aus welchem Moment jedes Einzelbild stammt, und
+      <code>src/decode.js</code> für die Schleife, die nur die Teile der Datei
+      liest, die diese Momente brauchen. Keines davon importiert etwas, das eine
+      Anfrage stellen könnte."""
+
+howto_heading = "So erstellen Sie einen Zeitraffer aus einem Video"
+
+card = """
+            Aus einem langen Clip einen kurzen machen, aus Stunden Sekunden,
+            ohne ihn irgendwohin zu schicken."""
+
+[words]
+plural = "Videos"
+choose = "ein Video"
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Jedes Tempo, das Sie eintippen"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[privacy]]
+title = "Ihre Videos haben keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Datei landen könnte, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Eine Netzfunktion hat dieses Werkzeug
+      überhaupt nicht. Es gibt keine Adresse zum Einfügen, nichts
+      herunterzuladen und keine Engine, die beim ersten Gebrauch nachgeladen
+      wird. Jedes Byte, das Ihr Video berührt, kam beim Laden der Seite von
+      dieser Domain selbst."""
+
+[[privacy]]
+title = "Dekodieren und Kodieren passieren lokal."
+body = """
+ Die Einzelbilder laufen
+      durch WebCodecs in Ihrem eigenen Browser oder durch dieselbe
+      Wiedergabe-Engine, die Ihnen den Clip ohnehin zeigen würde. Die fertige
+      Datei entsteht im Arbeitsspeicher dieses Geräts und geht von dort direkt in
+      einen Download."""
+
+[[privacy]]
+title = "Das meiste der Datei wird nie gelesen."
+body = """
+ Ein Zeitraffer braucht alle
+      paar Sekunden ein Einzelbild, deshalb liest das Werkzeug rund um jeden
+      dieser Momente nur ein kurzes Stück und überspringt den Rest. Das ist eine
+      Entscheidung fürs Tempo und nicht für den Datenschutz, aber wissenswert ist
+      es trotzdem: Selbst hier auf Ihrem Gerät wird der größte Teil Ihres Videos
+      nie geöffnet."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihr
+      Video übergeben, weder eine Datei noch ein Einzelbild, ein Name, eine Größe
+      oder eine Länge. Jede Zeile, die liest, dekodiert, auswählt oder kodiert,
+      kommt von dieser Domain selbst und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihr Video bekommt er nichts."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Wählen Sie ein Video aus."
+body = """
+ Ziehen Sie ein MP4, MOV, M4V oder WebM
+      auf das Auswahlfeld oder suchen Sie eines von Hand heraus. Der Browser
+      liest es direkt von Ihrer Festplatte, und dabei geht nichts nach
+      draußen."""
+
+[[howto]]
+title = "Sagen Sie, wie viel schneller."
+body = """
+ Drücken Sie eines der
+      Tempi oder tippen Sie Ihr eigenes ein. Wenn Sie lieber angeben, wie lang
+      das Ergebnis werden soll, etwa &bdquo;in zwanzig Sekunden&ldquo;, tippen
+      Sie das ein und das Tempo ergibt sich daraus."""
+
+[[howto]]
+title = "Prüfen Sie das Intervall."
+body = """
+ Die Zeile unter dem Tempo sagt,
+      was wirklich geschieht: alle wie viel Sekunden des Originals ein Einzelbild
+      genommen wird. Das ist die Zahl, die man an einer Kamera einstellen würde,
+      und die, die man vor dem Start am besten kurz gegenprüft."""
+
+[[howto]]
+title = "Erstellen und herunterladen."
+body = """
+ Die Arbeit passiert auf Ihrer
+      eigenen Hardware. Wie lange sie dauert, hängt daher von Ihrem Gerät ab und
+      nicht von einer Warteschlange. Das fertige Video geht direkt in die
+      Downloads Ihres Browsers."""
+
+[[faq]]
+q = "Wird mein Video irgendwohin hochgeladen?"
+a = """
+        Nein. Ihr eigener Browser liest, dekodiert, wählt aus und kodiert es auf
+        Ihrer eigenen Hardware. Eine Serverseite hat dieses Werkzeug nicht, und
+        in der <code>Content-Security-Policy</code> der Seite steht jede Adresse,
+        die sie kontaktieren darf; keine davon gehört uns. Wer lieber prüft als
+        glaubt, trennt die Internetverbindung und erstellt trotzdem einen
+        Zeitraffer."""
+
+[[faq]]
+q = "Was bedeutet das Tempo genau?"
+a = """
+        Das Verhältnis zwischen dem, was hineingeht, und dem, was herauskommt.
+        Bei 60&times; wird aus einer Stunde Aufnahme eine Minute, egal mit
+        welcher Bildrate Sie sie abspielen. Darunter nimmt das Werkzeug alle
+        <em>Tempo &divide; Bildrate</em> Sekunden ein Einzelbild. 60&times; bei 30
+        Bildern pro Sekunde ist also alle zwei Sekunden eines. Die Seite zeigt
+        Ihnen dieses Intervall vor dem Start, denn es ist die Zahl, an der man
+        sieht, was tatsächlich passiert."""
+
+[[faq]]
+q = "Welche Videoformate kann ich beschleunigen?"
+a = """
+        MP4, M4V und MOV werden direkt gelesen, egal was darin steckt, also
+        H.264, HEVC, AV1 oder VP9, solange Ihr Browser diesen Codec dekodieren
+        kann. Alles andere, was Ihr Browser abspielen kann, allen voran WebM,
+        wird gelesen, indem die Wiedergabe zu jedem Moment gespult wird. Das
+        funktioniert bei jedem Format, das der Browser abspielt. Was er weder
+        lesen noch abspielen kann, in der Praxis AVI, WMV, FLV und die meisten
+        MKVs, wird gleich mit einer entsprechenden Meldung abgelehnt, statt auf
+        halbem Weg zu scheitern. Heraus kommt immer ein MP4."""
+
+[[faq]]
+q = "Warum hat der Zeitraffer keinen Ton?"
+a = """
+        Weil nichts davon erhaltenswert wäre. Ton, der dreißigmal zu schnell
+        läuft, ist weder Sprache noch Musik, sondern ein Piepsen. Und die
+        Alternative, den Ton in Originalgeschwindigkeit unter ein Bild zu legen,
+        das ihm längst davongelaufen ist, wäre ein anderer Clip als der, den Sie
+        angefordert haben. Die Tonspur fällt also weg, und genau das ist auch der
+        Hauptgrund, warum aus einer Stunde Video ein paar Megabyte werden. Wenn
+        Sie den Ton für sich brauchen: Der
+        <a href="../audio-bearbeiten/">Audio-Editor</a> speichert ihn."""
+
+[[faq]]
+q = "Geht das schneller, als das ganze Video umzuwandeln?"
+a = """
+        Erheblich, und genau dafür wird die Datei direkt gelesen. Ein Einzelbild
+        lässt sich nur dekodieren, indem man beim Keyframe davor anfängt, aber
+        nirgends steht, dass die Bilder dazwischen behalten werden müssen. Ein
+        Zeitraffer mit 60&times; aus einer Stunde dekodiert also ein paar tausend
+        Einzelbilder statt hunderttausend. Die Übersicht sagt Ihnen vor dem
+        Klick, wie viele es genau sein werden."""
+
+[[faq]]
+q = "Kostet das Qualität?"
+a = """
+        Die behaltenen Einzelbilder werden ein zweites Mal kodiert, und das
+        kostet ein wenig. Vermeiden lässt es sich nicht, denn der fertige Clip
+        zeigt sie zu Zeitpunkten, für die in der Originaldatei nichts kodiert
+        war. Wofür dieses Werkzeug mehr ausgibt als die anderen Video-Werkzeuge
+        hier, ist die Bitrate, und das mit Absicht: Zwei Einzelbilder im Abstand
+        von zwei Sekunden haben viel weniger gemeinsam als zwei im Abstand einer
+        Dreißigstelsekunde. Ein Codec kann also weniger wiederverwenden, und ein
+        auf normale Aufnahmen abgestimmter Wert käme klotzig heraus."""
+
+[[faq]]
+q = "Gibt es eine Grenze für Größe oder Länge des Videos?"
+a = """
+        Im Werkzeug ist keine Grenze eingebaut, und die Datei wandert auch nicht
+        auf einmal in den Arbeitsspeicher. Gelesen werden nur kurze Stücke rund
+        um jeden Moment und sonst nichts. Die praktische Obergrenze ist der
+        fertige Zeitraffer, der vor dem Download im Arbeitsspeicher
+        zusammengesetzt wird, und ein Zeitraffer ist per Definition kurz. Die
+        Übersicht zeigt vor dem Start, wie groß er ungefähr wird."""
+
+[[faq]]
+q = "Kann ich nur einen Teil des Clips beschleunigen?"
+a = """
+        Hier nicht. Dieses Werkzeug nimmt das Ganze, vom ersten bis zum letzten
+        Einzelbild. Schneiden Sie den gewünschten Abschnitt vorher mit dem
+        <a href="../video-schneiden/">Video-Schneider</a> heraus, der das ohne
+        eine einzige Neukodierung erledigt, und beschleunigen Sie dann, was dabei
+        herauskommt."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und kein Wasserzeichen. Bezahlt wird die Seite über Werbung,
+        und den Anzeigen wird nichts über Ihr Video übergeben."""
+
+[schema]
+browser_requirements = "Benötigt JavaScript und einen Browser, der Video mit WebCodecs kodieren kann: Chrome, Edge, Safari 16.4 oder neuer oder Firefox 133 oder neuer."
+description = "Ein langes Video im Browser zum Zeitraffer machen. Alle paar Sekunden des Originals wird ein Einzelbild genommen, und die Einzelbilder werden als kurzes MP4 mit 24, 30 oder 60 Bildern pro Sekunde zurückgeschrieben. MP4, MOV und M4V werden direkt gelesen, und zwar nur rund um die benötigten Momente; bei allem anderen, was der Browser abspielen kann, wird stattdessen gespult. Es wird nichts hochgeladen."
+features = [
+  "Beschleunigt MP4-, MOV-, M4V- und WebM-Videos um das 1,1- bis 1000-Fache",
+  "Tempo angeben oder sagen, wie lang das Ergebnis werden soll",
+  "Liest nur die Teile der Datei, die die gewählten Momente brauchen",
+  "24, 30 oder 60 Bilder pro Sekunde, in Originalgröße oder verkleinert",
+  "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
+]
+
+[picker]
+title = "Video hierher ziehen"
+hint = "oder klicken und auswählen &mdash; MP4, MOV, M4V, WebM und alles andere, was dieser Browser abspielt"

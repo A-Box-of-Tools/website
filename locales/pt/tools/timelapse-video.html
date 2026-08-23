@@ -1,0 +1,153 @@
+<main>
+  <!-- Passo 1 &mdash; o arquivo -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha um vídeo</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="preview-wrap" id="preview-wrap" hidden>
+      <video id="preview" playsinline controls muted></video>
+      <canvas id="still" hidden></canvas>
+    </div>
+    <p id="preview-note" class="path-note" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Arquivo</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Tamanho</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Quadro</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Duração</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Taxa de quadros</dt><dd id="src-fps">&mdash;</dd></div>
+      <div><dt>Vídeo</dt><dd id="src-codec">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; a velocidade -->
+  <section class="card" id="speed-card" hidden>
+    <h2><span class="step">2</span> Escolha a velocidade</h2>
+
+    <div class="speed-row" role="group" aria-label="Quanto o clipe é acelerado">
+      <button type="button" data-speed="2">2&times;</button>
+      <button type="button" data-speed="5">5&times;</button>
+      <button type="button" data-speed="10" class="active">10&times;</button>
+      <button type="button" data-speed="20">20&times;</button>
+      <button type="button" data-speed="30">30&times;</button>
+      <button type="button" data-speed="60">60&times;</button>
+      <button type="button" data-speed="120">120&times;</button>
+      <button type="button" data-speed="300">300&times;</button>
+    </div>
+
+    <!--
+      Two ways of saying the same thing, because people arrive with one of two
+      questions: "speed this up thirty times" and "make this fit in twenty
+      seconds". Typing in either box fills in the other.
+    -->
+    <div class="numbers">
+      <label>Velocidade
+        <span class="with-unit">
+          <input type="number" id="speed" min="1.1" max="1000" step="0.1" value="10">
+          <span class="unit">&times;</span>
+        </span>
+      </label>
+      <label>Duração final
+        <span class="with-unit">
+          <input type="number" id="length" min="0.1" step="0.1">
+          <span class="unit">s</span>
+        </span>
+      </label>
+    </div>
+
+    <p class="interval-note" id="interval-note"></p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="fps">Roda a</label>
+        <select id="fps">
+          <option value="24">24 quadros por segundo</option>
+          <option value="30" selected>30 quadros por segundo</option>
+          <option value="60">60 quadros por segundo</option>
+        </select>
+        <p class="field-note">
+          A taxa em que o clipe pronto roda. Ela não muda o quanto ele é rápido,
+          disso cuida a velocidade acima, só o quanto ele parece fluido.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="size">Tamanho</label>
+        <select id="size">
+          <option value="0" selected>Tamanho original</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+        <p class="field-note" id="size-note">
+          Só reduz. Um timelapse quase sempre é assistido pequeno.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="quality">Qualidade</label>
+        <select id="quality">
+          <option value="low">Arquivo menor</option>
+          <option value="medium" selected>Equilibrado</option>
+          <option value="high">Melhor qualidade</option>
+        </select>
+        <p class="field-note">
+          Mais alta do que as ferramentas de vídeo daqui costumam gastar, porque
+          dois quadros seguidos de um timelapse têm pouco em comum para
+          comprimir.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Passo 3 &mdash; a saída -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Faça o timelapse</h2>
+
+    <dl class="summary" id="summary">
+      <div><dt>Quadros mantidos</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Um quadro a cada</dt><dd id="sum-interval">&mdash;</dd></div>
+      <div><dt>Duração final</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Quadro de saída</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Lê</dt><dd id="sum-read">&mdash;</dd></div>
+      <div><dt>Cerca de</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-note" class="path-note" hidden></p>
+
+    <p class="silent-note">
+      O resultado não tem som. Fala e música a trinta vezes a velocidade não são
+      fala nem música, então aqui não há nada que valha a pena guardar. E é boa
+      parte do motivo de uma hora de vídeo sair com poucos megabytes.
+    </p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Fazer timelapse</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline loop></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Baixar o timelapse</a>
+      </div>
+    </div>
+  </section>
+</main>

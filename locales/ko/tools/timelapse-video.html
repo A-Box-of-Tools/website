@@ -1,0 +1,152 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> 동영상 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="preview-wrap" id="preview-wrap" hidden>
+      <video id="preview" playsinline controls muted></video>
+      <canvas id="still" hidden></canvas>
+    </div>
+    <p id="preview-note" class="path-note" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>파일</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>용량</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>프레임</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>길이</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>초당 프레임</dt><dd id="src-fps">&mdash;</dd></div>
+      <div><dt>영상</dt><dd id="src-codec">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 배속 -->
+  <section class="card" id="speed-card" hidden>
+    <h2><span class="step">2</span> 배속 정하기</h2>
+
+    <div class="speed-row" role="group" aria-label="영상을 얼마나 빠르게 할지">
+      <button type="button" data-speed="2">2&times;</button>
+      <button type="button" data-speed="5">5&times;</button>
+      <button type="button" data-speed="10" class="active">10&times;</button>
+      <button type="button" data-speed="20">20&times;</button>
+      <button type="button" data-speed="30">30&times;</button>
+      <button type="button" data-speed="60">60&times;</button>
+      <button type="button" data-speed="120">120&times;</button>
+      <button type="button" data-speed="300">300&times;</button>
+    </div>
+
+    <!--
+      Two ways of saying the same thing, because people arrive with one of two
+      questions: "speed this up thirty times" and "make this fit in twenty
+      seconds". Typing in either box fills in the other.
+    -->
+    <div class="numbers">
+      <label>배속
+        <span class="with-unit">
+          <input type="number" id="speed" min="1.1" max="1000" step="0.1" value="10">
+          <span class="unit">&times;</span>
+        </span>
+      </label>
+      <label>완성본 길이
+        <span class="with-unit">
+          <input type="number" id="length" min="0.1" step="0.1">
+          <span class="unit">초</span>
+        </span>
+      </label>
+    </div>
+
+    <p class="interval-note" id="interval-note"></p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="fps">재생 속도</label>
+        <select id="fps">
+          <option value="24">초당 24프레임</option>
+          <option value="30" selected>초당 30프레임</option>
+          <option value="60">초당 60프레임</option>
+        </select>
+        <p class="field-note">
+          완성된 영상이 재생되는 프레임 수입니다. 얼마나 빠른지는 위의 배속이
+          정하고, 이 값은 얼마나 부드러워 보이는지만 바꿉니다.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="size">크기</label>
+        <select id="size">
+          <option value="0" selected>원본 크기</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+        <p class="field-note" id="size-note">
+          줄이기만 합니다. 타임랩스는 대개 작게 보니까요.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="quality">화질</label>
+        <select id="quality">
+          <option value="low">작은 파일</option>
+          <option value="medium" selected>균형</option>
+          <option value="high">최고 화질</option>
+        </select>
+        <p class="field-note">
+          여기 있는 다른 영상 도구들보다 넉넉하게 씁니다. 타임랩스는 이웃한 두
+          프레임 사이에 압축해서 줄일 공통점이 거의 없기 때문입니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3단계 &mdash; 결과 -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 타임랩스 만들기</h2>
+
+    <dl class="summary" id="summary">
+      <div><dt>남기는 프레임</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>프레임 간격</dt><dd id="sum-interval">&mdash;</dd></div>
+      <div><dt>완성본 길이</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>출력 프레임</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>읽는 양</dt><dd id="sum-read">&mdash;</dd></div>
+      <div><dt>예상 용량</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-note" class="path-note" hidden></p>
+
+    <p class="silent-note">
+      결과물에는 소리가 없습니다. 30배로 빨라진 말과 음악은 더 이상 말도 음악도
+      아니라서 남길 것이 없습니다. 한 시간짜리 영상이 몇 메가바이트로 나오는
+      이유도 대부분 여기에 있습니다.
+    </p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>타임랩스 만들기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline loop></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>타임랩스 내려받기</a>
+      </div>
+    </div>
+  </section>
+</main>
