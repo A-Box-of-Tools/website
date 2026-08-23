@@ -71,6 +71,10 @@ complete = true
 # out of the address and carried by the page title; QR is what the search is
 # about, and a slug naming both would be too long to read in a URL bar.
 "qr-barcode" = "generateur-de-qr-code"
+# Un nom, comme le générateur de QR code au-dessus, et pour la même raison :
+# c'est la formule qui se tape. Le singulier, parce que la recherche est
+# faite par quelqu'un qui en veut un.
+"password-generator" = "generateur-de-mot-de-passe"
 
 "guides" = "guides"
 "roadmap" = "feuille-de-route"
@@ -180,6 +184,11 @@ note = "Transformer ce que vous avez tapé en quelque chose qu'une machine sait 
 id = "text-and-code"
 name = "Texte &amp; code"
 note = "Le relire, le comparer, l'encoder, sans coller un jeton ou un fichier de configuration sur le serveur d'un inconnu."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Mots de passe &amp; sécurité"
+note = "Fabriquez le secret ici, sur votre propre appareil, pour que personne d'autre n'en ait jamais eu une copie à perdre."
 
 #
 # ---------------------------------------------------------------------------

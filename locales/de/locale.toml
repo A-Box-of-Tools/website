@@ -93,6 +93,9 @@ complete = true
 "image-to-data-uri" = "bild-als-base64"
 "qr-barcode" = "qr-code-erstellen"
 "video-to-gif" = "video-in-gif-umwandeln"
+# "Passwort Generator" ist genau das, was getippt wird, und zwar in dieser
+# Reihenfolge. Die Passphrase steht im Titel, nicht in der Adresse.
+"password-generator" = "passwort-generator"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of
@@ -202,6 +205,11 @@ note = "Getipptes in etwas verwandeln, das eine Maschine lesen kann, ohne dass e
 id = "text-and-code"
 name = "Text &amp; Code"
 note = "Lesbar machen, vergleichen, kodieren, ohne dafür ein Token oder eine Konfigurationsdatei auf einen fremden Server zu kopieren."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Passwörter &amp; Sicherheit"
+note = "Das Geheimnis hier erzeugen, auf Ihrem eigenen Gerät, damit niemand sonst je eine Kopie davon hatte, die verloren gehen könnte."
 
 #
 # ---------------------------------------------------------------------------

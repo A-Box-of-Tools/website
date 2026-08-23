@@ -1,0 +1,227 @@
+/* Only the rules this tool needs. The frame is shared/css/tool-frame.css. */
+
+/* ---------------------------------------------------------------- the tabs */
+
+.tabs {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  background: none;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 0.5rem 0.95rem;
+  margin-bottom: -1px;
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.tab:hover { color: var(--text); }
+
+.tab[aria-selected="true"] {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--accent);
+  /* The selected tab covers the line under the strip, which is what joins it
+     to the panel below rather than leaving it floating above one. */
+  box-shadow: 0 1px 0 0 var(--surface);
+}
+
+.card-lede { margin: 0; font-size: 0.88rem; color: var(--text-dim); }
+
+/* ------------------------------------------------------------- the options */
+
+.settings { display: grid; gap: 1.15rem; }
+
+.field { display: flex; flex-direction: column; gap: 0.3rem; }
+.field > label { font-size: 0.85rem; font-weight: 600; }
+.field-note { margin: 0.15rem 0 0; font-size: 0.78rem; color: var(--text-dim); }
+
+.field.checks { gap: 0.5rem; }
+.checks-label { font-size: 0.85rem; font-weight: 600; }
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+}
+.check input { width: 1rem; height: 1rem; }
+
+.field code {
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: 0.05rem 0.3rem;
+  font-size: 0.9em;
+  /* The symbol set runs past the edge of a phone otherwise, and it is the one
+     piece of text on this page a reader may want to check character by
+     character. */
+  overflow-wrap: anywhere;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.slider-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+
+.slider-row output {
+  min-width: 2.6rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+/* -------------------------------------------------------------- the result */
+
+.result { margin-bottom: 1.1rem; }
+
+/*
+  Monospace, big, and with every character spaced apart from its neighbours.
+  This is the one string on the site that gets read a character at a time and
+  typed into something else, so `l` and `1` sitting on top of each other is a
+  real cost rather than a typographic quibble.
+*/
+.secret {
+  display: block;
+  font-family: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(1.05rem, 3.4vw, 1.5rem);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  overflow-wrap: anywhere;
+  padding: 0.9rem 1rem;
+  min-height: 3.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  user-select: all;
+}
+
+.result-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+}
+
+.copy-note { font-size: 0.8rem; color: var(--text-dim); }
+.copy-note.good { color: var(--ok); }
+.copy-note.warn { color: var(--danger); }
+
+/* ------------------------------------------------------------ the strength */
+
+.strength {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.strength-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin: 0 0 0.6rem;
+}
+
+.strength-head output {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.strength-unit { font-size: 0.85rem; color: var(--text-dim); }
+
+.verdict {
+  margin-inline-start: auto;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.strength-bar {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.strength-bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  transition: width 0.15s ease;
+}
+
+/*
+  One colour scale, set on the wrapper and read by both the bar and the word,
+  so the two can never disagree about how strong the page thinks something is.
+*/
+.strength[data-rating="very-weak"] .verdict,
+.strength[data-rating="weak"] .verdict { color: var(--danger); }
+.strength[data-rating="fair"] .verdict { color: #b07d2b; }
+.strength[data-rating="strong"] .verdict,
+.strength[data-rating="very-strong"] .verdict { color: var(--ok); }
+
+.strength[data-rating="very-weak"] #strength-fill,
+.strength[data-rating="weak"] #strength-fill { background: var(--danger); }
+.strength[data-rating="fair"] #strength-fill { background: #d09a3c; }
+.strength[data-rating="strong"] #strength-fill,
+.strength[data-rating="very-strong"] #strength-fill { background: var(--ok); }
+
+.strength-crack {
+  margin: 0.6rem 0 0;
+  font-size: 0.88rem;
+}
+
+.strength-space {
+  margin: 0.3rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.strength-space sup { font-size: 0.75em; }
+
+.assumptions {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.55rem 0.8rem;
+  font-size: 0.83rem;
+  color: var(--text-dim);
+  margin-bottom: 1.2rem;
+}
+.assumptions summary { cursor: pointer; font-weight: 600; color: var(--text); }
+.assumptions p { margin: 0.6rem 0 0; }
+
+/* ----------------------------------------------------------------- the list */
+
+.bulk { border-top: 1px solid var(--border); padding-top: 1.1rem; }
+
+.batch {
+  margin: 0.9rem 0 0;
+  padding-inline-start: 2.4rem;
+  font-family: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.batch li::marker { color: var(--text-dim); font-family: system-ui, sans-serif; font-size: 0.8rem; }
+
+/* ------------------------------------------------------------------- notes */
+
+.error {
+  margin: 0 0 0.9rem;
+  color: var(--danger);
+  font-size: 0.88rem;
+}
+
+.note-card p { margin: 0; font-size: 0.9rem; color: var(--text-dim); }

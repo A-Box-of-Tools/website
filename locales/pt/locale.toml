@@ -60,6 +60,9 @@ complete = true
 "svg-to-image" = "svg-para-png"
 "trim-video" = "aparar-video"
 "video-to-gif" = "video-para-gif"
+# Senha, não "palavra-passe", que é de Portugal. E no singular: quem procura
+# quer uma.
+"password-generator" = "gerador-de-senha"
 
 "guides" = "guias"
 "roadmap" = "roteiro"
@@ -163,6 +166,11 @@ note = "Transforme o que você digitou em algo que uma máquina consegue ler, se
 id = "text-and-code"
 name = "Texto e código"
 note = "Leia, compare, codifique, sem precisar colar um token ou um arquivo de configuração no servidor dos outros."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Senhas e segurança"
+note = "Crie o segredo aqui, no seu próprio computador, para que ninguém mais tenha tido uma cópia dele para perder."
 
 #
 # ---------------------------------------------------------------------------

@@ -64,6 +64,9 @@ complete = true
 # regel die je uiteindelijk in je CSS plakt.
 "image-to-data-uri" = "afbeelding-naar-base64"
 "qr-barcode" = "qr-code-maken"
+# Aaneen geschreven zou het één woord zijn, maar in een adres leest
+# "wachtwoord-generator" beter en het is ook wat er gezocht wordt.
+"password-generator" = "wachtwoord-generator"
 
 "guides" = "gidsen"
 "roadmap" = "roadmap"
@@ -166,6 +169,11 @@ note = "Zet iets wat je intypt om in iets wat een machine kan lezen, zonder dat 
 id = "text-and-code"
 name = "Tekst &amp; code"
 note = "Lees het, vergelijk het, codeer het, zonder dat je een token of een configuratiebestand op de server van iemand anders plakt."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Wachtwoorden &amp; beveiliging"
+note = "Maak het geheim hier, op je eigen apparaat, zodat niemand anders er ooit een kopie van had om kwijt te raken."
 
 #
 # ---------------------------------------------------------------------------

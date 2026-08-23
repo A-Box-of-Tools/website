@@ -566,9 +566,9 @@ def related_tools(ordered, count=RELATED_COUNT):
     nothing coming in at all, which is the half of the problem that is about
     search engines rather than readers.
 
-    Two categories hold one tool each, `qr-barcode` and `text-tools`, so a
-    strict reading of "same category" would leave exactly those two pages as
-    the dead ends this exists to remove. The ring therefore runs over every
+    Three categories hold one tool each - `qr-barcode`, `text-tools` and
+    `password-generator` - so a strict reading of "same category" would leave
+    exactly those pages as the dead ends this exists to remove. The ring therefore runs over every
     tool and the category merely sorts first: a tool with siblings gets
     siblings, and a tool without gets the nearest thing the hub has.
     """

@@ -53,6 +53,9 @@ complete = true
 "svg-to-image" = "svg-in-png"
 "trim-video" = "tagliare-video"
 "video-to-gif" = "video-in-gif"
+# Un nome e non un verbo, come per il QR code: "generatore password" è la
+# forma che si scrive, senza la preposizione che l'italiano scritto vorrebbe.
+"password-generator" = "generatore-password"
 
 "guides" = "guide"
 "roadmap" = "roadmap"
@@ -160,6 +163,11 @@ note = "Trasforma quello che hai scritto in qualcosa che una macchina sa leggere
 id = "text-and-code"
 name = "Testo e codice"
 note = "Leggilo, confrontalo, codificalo, senza incollare un token o un file di configurazione sul server di qualcun altro."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Password e sicurezza"
+note = "Crea qui il segreto, sul tuo dispositivo, così nessun altro ne ha mai avuto una copia da perdere."
 
 #
 # ---------------------------------------------------------------------------
