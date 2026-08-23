@@ -248,6 +248,12 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     build_sitemap(out, templates, site, locales, tools, ordered_prose)
     written.append('sitemap.xml')
 
+    # And the same site again, in plain text, for something that reads one file
+    # and decides from it whether any of this is worth mentioning. Built from
+    # the same list as the sitemap above and holding back the same languages.
+    build_llms(out, templates, site, locales, ordered_tools, ordered_prose)
+    written.append('llms.txt')
+
     copy_shared(out)
     write(out / 'site.css', site_css)
     write(out / 'lang.js', lang_js)
@@ -1197,6 +1203,115 @@ def build_sitemap(out, templates, site, locales, tools, prose):
                     if page['kind'] == 'legal' and ready(page['slug'])]
 
     write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': entries}))
+
+
+def build_llms(out, templates, site, locales, tools, prose):
+    """/llms.txt: the whole site as plain text, for a reader that gets one fetch.
+
+    A search engine is handed a page of structured data per tool and has the
+    patience to crawl all of them. An assistant deciding whether this site is
+    worth mentioning at all does not - it fetches one address, and if that
+    address does not say what the tools are and what they cannot do, it writes
+    its own EXIF parser instead of linking to the page that already strips one.
+    This is that address.
+
+    Built from the same tool.toml files as the hub, the sitemap and
+    tools/README.md, and in the same hub order, so it cannot fall behind the
+    tools that exist. That is the whole reason it is generated rather than
+    written: a hand-kept index of twenty-four tools is an index that is wrong.
+
+    Two deliberate departures from every other generated file here:
+
+      * No GENERATED FILE banner at the top. An llms.txt begins with an H1 by
+        convention, and the readers of one are strict about that shape. The
+        sentence saying the file is generated is the last paragraph of the
+        intro instead, where it reads as a fact about the file rather than as a
+        comment standing in front of it.
+      * English only, and at the root. It is an index OF the site, not a page
+        of it: the languages are a section inside it, and each hub linked from
+        there carries the rest of that language on its own.
+
+    Everything goes through site.to_text on the way in. This file is markdown,
+    and the configs it is built from are HTML fragments full of &mdash; and
+    <code>.
+    """
+    text = sitelib.to_text
+    by_slug = {tool['slug']: tool for tool in tools}
+
+    # The hub's categories, in the hub's order, carrying the hub's own note
+    # about each - so a machine reading this groups the tools the same way a
+    # visitor looking at the front page does.
+    groups = []
+    for category in site['hub']['categories']:
+        listed = [by_slug[slug] for slug in category['order'] if slug in by_slug]
+        if not listed:
+            continue
+        groups.append({
+            'name': text(category['name']),
+            'note': text(category['note']),
+            # `schema.description` rather than the tagline. The tagline is
+            # written to be read by somebody already looking at the page; this
+            # is the sentence written to tell a machine what the tool does, and
+            # it is the one that lets a task be matched to an address.
+            'tools': [{'name': text(tool['name']),
+                       'url': tool['url'],
+                       'description': text(tool['schema']['description'])}
+                      for tool in listed],
+        })
+
+    def entry(page):
+        return {'name': text(page['heading']), 'url': page['url'],
+                'description': text(page['description'])}
+
+    guides = [entry(page) for page in prose if page['kind'] == 'guide']
+
+    # A language is listed only if it has finished the frame AND its own hub -
+    # the same test the sitemap and the hreflang tags are built from. Handing a
+    # half-English hub to something that will quote it is the one failure worth
+    # avoiding here, and it is avoided the way it is avoided everywhere else.
+    # Named in English and described by the two things a machine wants next:
+    # the word the language calls itself, which is what the switcher on the
+    # site shows, and the hreflang code, which is how the addresses are keyed.
+    # One shape for every line in the file, rather than a special one here.
+    languages = [{'name': locale['name'],
+                  'url': i18n.locale_url(locale, '', site),
+                  'description': f'{text(locale["endonym"])} - {locale["hreflang"]}'}
+                 for locale in i18n.published(locales, '')
+                 if not locale['is_base']]
+
+    optional = [
+        {'name': text(site['guides']['nav']),
+         'url': f'{site["domain"]}{site["guides"]["slug"]}/',
+         'description': text(site['guides']['description'])},
+        {'name': text(site['roadmap']['nav']),
+         'url': f'{site["domain"]}{site["roadmap"]["slug"]}/',
+         'description': text(site['roadmap']['description'])},
+        {'name': site['source_label'],
+         'url': site['source_url'],
+         'description': text(site['llms']['source_note'])},
+        {'name': 'Sitemap',
+         'url': f'{site["domain"]}sitemap.xml',
+         'description': text(site['llms']['sitemap_note'])},
+    ]
+    # The legal pages last, for the same reason the sitemap puts them last.
+    optional += [entry(page) for page in prose if page['kind'] == 'legal']
+
+    write(out / 'llms.txt', templates.render('llms.txt', {
+        'site': site,
+        # Trimmed here rather than in the template: these are TOML multi-line
+        # strings, so each arrives with the newline its closing quotes sit on,
+        # and the template spaces its own sections.
+        'llms': {key: value.strip() for key, value in site['llms'].items()},
+        # One line, whatever config/site.toml wrapped it as. It is a
+        # blockquote, and a wrapped blockquote whose second line starts with
+        # "- " is read as a list that ends the quote - which is exactly how
+        # this one is worded.
+        'summary': ' '.join(site['llms']['summary'].split()),
+        'groups': groups,
+        'guides': guides,
+        'languages': languages,
+        'optional': optional,
+    }))
 
 
 LINK = re.compile(r'(?:href|src)="([^"#?]+)(?:[#?][^"]*)?"')

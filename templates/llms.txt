@@ -1,0 +1,30 @@
+# {{ site.name }}
+
+> {{ summary }}
+
+{{ llms.intro }}
+{% for group in groups %}
+## {{ group.name }}
+
+{{ group.note }}
+
+{% for tool in group.tools %}- [{{ tool.name }}]({{ tool.url }}): {{ tool.description }}
+{% endfor %}{% endfor %}
+## Guides
+
+{{ llms.guides_note }}
+
+{% for guide in guides %}- [{{ guide.name }}]({{ guide.url }}): {{ guide.description }}
+{% endfor %}
+## Other languages
+
+{{ llms.languages_note }}
+
+{% for language in languages %}- [{{ language.name }}]({{ language.url }}): {{ language.description }}
+{% endfor %}
+## Optional
+
+{{ llms.optional_note }}
+
+{% for link in optional %}- [{{ link.name }}]({{ link.url }}): {{ link.description }}
+{% endfor %}
