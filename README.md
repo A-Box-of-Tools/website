@@ -1101,10 +1101,10 @@ here.
 
 ## What can be built here
 
-The "Planned" list on the roadmap is not a wishlist. It was drawn up by going
-through the tool list of the largest online GIF and video site — the closest
-thing there is to a complete catalogue of what people actually want done to a
-media file — and putting every entry through one test:
+The "Planned" list on the roadmap is not a wishlist. Its media groups were
+drawn up by going through the tool list of the largest online GIF and video
+site — the closest thing there is to a complete catalogue of what people
+actually want done to a media file — and putting every entry through one test:
 
 > Does all of the work happen on the visitor's own machine, with the file never
 > leaving it, and does the tool still run with the network unplugged?
@@ -1116,6 +1116,15 @@ dependency at all — but they are a preference, not the promise. The promise is
 that your file stays on your machine. A tool that keeps that promise with thirty
 megabytes of vendored WebAssembly keeps it exactly as completely as one that
 keeps it with four hundred lines of hand-written muxer.
+
+That catalogue is no longer the only source. The list has since been pruned —
+several of its lines turned out to be features of tools that had already
+shipped, and a few had nothing going for them but being cheap to build — and
+extended past media into documents and personal records, where the file leaving
+the machine has a legal or a financial consequence rather than an aesthetic
+one. Each surviving line is argued in [ROADMAP.md](ROADMAP.md), and so is each
+line that was taken off, which is the half worth reading before putting one
+back.
 
 ### What the browser can do on its own
 

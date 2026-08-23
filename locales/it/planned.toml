@@ -17,10 +17,9 @@ note = "Non ancora costruiti. Sono elencati perché tu possa vedere dove sta and
 id = "images"
 name = "Immagini"
 items = [
-  ["Ruotare e specchiare", "di un quarto di giro, oppure raddrizzando di qualche grado"],
   ["Aggiungere testo", "sopra la foto, oppure in una fascia sopra di essa"],
-  ["Filtri", "luminosità, contrasto, saturazione, sfocatura, scala di grigi"],
-  ["AVIF e JPEG XL", "conversione nei due sensi, con qualunque browser ti capiti di usare"],
+  ["AVIF", "il formato che un solo browser scrive e tutti gli altri si limitano a leggere"],
+  ["Anonimizzare un DICOM", "togliere il paziente da un esame senza toccare l'immagine"],
 ]
 
 [[group]]
@@ -28,11 +27,8 @@ id = "gif"
 name = "GIF e animazione"
 items = [
   ["Da GIF a MP4 o WebM", "la stessa animazione, di solito un decimo del peso"],
-  ["Ridimensionare, ritagliare e ruotare le GIF", "fotogramma per fotogramma, con i tempi intatti"],
-  ["Invertire una GIF", "l'ultimo fotogramma per primo"],
-  ["Cambiare la velocità di una GIF", "spostarne i tempi senza ridisegnare i fotogrammi"],
-  ["Generatore di APNG", "animazione con trasparenza vera e colore pieno"],
-  ["WebP animata", "ancora la stessa animazione, a una frazione del peso"],
+  ["Modificare una GIF", "ridimensionare, ritagliare, ruotare, invertire o cambiarne la velocità"],
+  ["WebP animata", "la stessa animazione a una frazione del peso: l'unica qui che richiede un encoder incluso"],
 ]
 
 [[group]]
@@ -40,19 +36,17 @@ id = "video"
 name = "Video"
 items = [
   ["Ridimensionare", "fino a una dimensione che si riesca davvero a mandare"],
-  ["Ruotare", "per la clip girata di traverso"],
-  ["Togliere l'audio, o salvarlo", "eliminare il suono, oppure tenerlo per conto suo"],
-  ["Convertire in MP4 o WebM", "quello dei due su cui insiste il sito dove stai pubblicando"],
-  ["Filtri", "luminosità, contrasto, saturazione, sfocatura"],
+  ["Ruotare", "per la clip girata di traverso, senza decodificare un solo fotogramma"],
+  ["Togliere l'audio a un video", "eliminare il suono e lasciare intatta l'immagine"],
+  ["Convertire in MP4", "qualunque cosa sia uscita dalla telecamera, nel file che si riesce davvero a caricare"],
   ["Incidere i sottotitoli", "un file SRT disegnato dentro l'immagine"],
+  ["Convertire i sottotitoli", "SRT, VTT, ASS, SBV e LRC in qualunque direzione, con i tempi che si possono spostare"],
 ]
 
 [[group]]
 id = "audio"
 name = "Audio"
 items = [
-  ["Dissolvenza in apertura e in chiusura", "così non comincia e non finisce di netto"],
-  ["Forma d'onda come immagine", "disegnare una traccia come figura"],
   ["Convertire formato", "MP3, WAV e Opus, in qualunque direzione"],
 ]
 
@@ -62,11 +56,15 @@ name = "Documenti e PDF"
 items = [
   ["Ruotare e ritagliare le pagine", "raddrizzare una scansione storta, oppure tagliarne i margini"],
   ["Estrarre le immagini", "tirare fuori le figure da un documento"],
+  ["Oscurare un PDF", "togliere davvero le parole, invece di disegnarci sopra un rettangolo nero"],
+  ["Scanner di documenti", "la foto di una pagina, raddrizzata e ripulita in un documento"],
 ]
 
 [[group]]
 id = "beyond"
 name = "Oltre i media"
 items = [
-  ["Dati", "conversione, pulizia e ispezione di CSV e JSON"],
+  ["Hash e checksum", "verificare che un download sia il file che dichiara di essere, senza consegnarlo a nessuno"],
+  ["CSV e JSON", "convertire nei due sensi, e rimettere in ordine quello che ha esportato il foglio di calcolo"],
+  ["Certificati e chiavi", "leggere un certificato o una richiesta di firma senza incollarla nel server di qualcun altro"],
 ]
