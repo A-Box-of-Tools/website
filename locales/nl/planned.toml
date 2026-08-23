@@ -17,10 +17,9 @@ note = "Nog niet gebouwd. Hier vermeld zodat je ziet waar dit heen gaat."
 id = "images"
 name = "Afbeeldingen"
 items = [
-  ["Draaien &amp; spiegelen", "kwartslagen, of een paar graden rechtzetten"],
   ["Tekst toevoegen", "over de foto heen, of in een bijschrift erboven"],
-  ["Filters", "helderheid, contrast, verzadiging, vervaging, grijstinten"],
-  ["AVIF &amp; JPEG XL", "beide kanten op omzetten, in welke browser je ook werkt"],
+  ["AVIF", "het formaat dat één browser schrijft en de rest alleen leest"],
+  ["DICOM anonimiseren", "de patiënt uit een scan halen zonder de scan aan te raken"],
 ]
 
 [[group]]
@@ -28,11 +27,8 @@ id = "gif"
 name = "Gif &amp; animatie"
 items = [
   ["Gif naar mp4 of WebM", "dezelfde animatie, meestal een tiende van de grootte"],
-  ["Gifs schalen, bijsnijden &amp; draaien", "frame voor frame, met de timing intact"],
-  ["Een gif omkeren", "het laatste frame eerst"],
-  ["Gif-snelheid wijzigen", "opnieuw timen zonder de frames opnieuw te renderen"],
-  ["APNG maken", "animatie met echte transparantie en volledige kleur"],
-  ["Bewegende WebP", "opnieuw dezelfde animatie, voor een fractie van de bestandsgrootte"],
+  ["Een gif bewerken", "schalen, bijsnijden, draaien, omkeren of de snelheid wijzigen"],
+  ["Bewegende WebP", "dezelfde animatie voor een fractie van de grootte &mdash; en de enige hier die een meegeleverde encoder nodig heeft"],
 ]
 
 [[group]]
@@ -40,19 +36,17 @@ id = "video"
 name = "Video"
 items = [
   ["Formaat wijzigen", "omlaag naar een grootte die er echt doorheen komt"],
-  ["Draaien", "voor dat filmpje dat op z'n kant is opgenomen"],
-  ["Dempen, of het geluid bewaren", "het geluid weglaten, of het apart houden"],
-  ["Omzetten naar mp4 of WebM", "welke van de twee de site waarop je post ook eist"],
-  ["Filters", "helderheid, contrast, verzadiging, vervaging"],
+  ["Draaien", "voor dat filmpje dat op z'n kant is opgenomen, zonder ook maar één frame te decoderen"],
+  ["Een video dempen", "het geluid weglaten en het beeld ongemoeid laten"],
+  ["Omzetten naar mp4", "wat er ook uit de camera kwam, als het bestand dat er wél doorheen komt"],
   ["Ondertiteling inbranden", "een srt-bestand vast in beeld getekend"],
+  ["Ondertiteling omzetten", "srt, vtt, ass, sbv en lrc alle kanten op, met tijden die je kunt verschuiven"],
 ]
 
 [[group]]
 id = "audio"
 name = "Audio"
 items = [
-  ["In- &amp; uitfaden", "zodat het niet tegen een muur begint en eindigt"],
-  ["Golfvorm als afbeelding", "een opname als plaatje tekenen"],
   ["Formaat omzetten", "mp3, wav en Opus, alle kanten op"],
 ]
 
@@ -62,12 +56,15 @@ name = "Documenten &amp; pdf"
 items = [
   ["Pagina's draaien &amp; bijsnijden", "een scan rechtzetten die scheef binnenkwam, of de marges eraf halen"],
   ["Afbeeldingen eruit halen", "de plaatjes weer uit een document trekken"],
+  ["Een pdf redigeren", "de woorden eruit halen, in plaats van er een zwart blok overheen te tekenen"],
+  ["Documentscanner", "een foto van een pagina, rechtgezet en opgeschoond tot een document"],
 ]
 
 [[group]]
 id = "beyond"
 name = "Verder dan media"
 items = [
-  ["Gegevens", "csv en json omzetten, opschonen, inspecteren"],
-  ["Privacy &amp; beveiliging", "hashes, controlegetallen, metagegevens wissen"],
+  ["Hashes &amp; controlegetallen", "controleren of een download het bestand is dat het zegt te zijn, zonder het af te staan"],
+  ["csv &amp; json", "beide kanten op omzetten, en opruimen wat het rekenblad exporteerde"],
+  ["Certificaten &amp; sleutels", "een certificaat of een ondertekeningsverzoek lezen zonder het in andermans server te plakken"],
 ]

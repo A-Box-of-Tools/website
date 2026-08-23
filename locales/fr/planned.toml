@@ -17,10 +17,9 @@ note = "Pas encore construits. Ils figurent ici pour que vous voyiez où tout ce
 id = "images"
 name = "Images"
 items = [
-  ["Faire pivoter &amp; retourner", "par quarts de tour, ou redressé de quelques degrés"],
   ["Ajouter du texte", "sur l'image, ou dans un bandeau au-dessus"],
-  ["Filtres", "luminosité, contraste, saturation, flou, niveaux de gris"],
-  ["AVIF &amp; JPEG XL", "convertir dans les deux sens, quel que soit le navigateur que vous utilisez"],
+  ["AVIF", "le format qu'un seul navigateur sait écrire, et que les autres se contentent de lire"],
+  ["Anonymiser un DICOM", "retirer le patient d'un examen sans toucher à l'image"],
 ]
 
 [[group]]
@@ -28,11 +27,8 @@ id = "gif"
 name = "GIF &amp; animation"
 items = [
   ["GIF en MP4 ou WebM", "la même animation, en général au dixième du poids"],
-  ["Redimensionner, recadrer &amp; faire pivoter des GIF", "image par image, en gardant le rythme"],
-  ["Inverser un GIF", "la dernière image en premier"],
-  ["Changer la vitesse d'un GIF", "le recaler sans refabriquer les images"],
-  ["Créateur d'APNG", "de l'animation avec une vraie transparence et toutes les couleurs"],
-  ["WebP animé", "encore la même animation, pour une fraction du poids"],
+  ["Modifier un GIF", "redimensionner, recadrer, faire pivoter, inverser ou changer la vitesse"],
+  ["WebP animé", "la même animation pour une fraction du poids &mdash; et le seul ici qui exige un encodeur embarqué"],
 ]
 
 [[group]]
@@ -40,19 +36,17 @@ id = "video"
 name = "Vidéo"
 items = [
   ["Redimensionner", "jusqu'à une taille qui passera vraiment"],
-  ["Faire pivoter", "pour le clip filmé de travers"],
-  ["Couper le son, ou l'enregistrer", "retirer le son, ou le garder à part"],
-  ["Convertir en MP4 ou WebM", "celui des deux qu'exige le site où vous publiez"],
-  ["Filtres", "luminosité, contraste, saturation, flou"],
+  ["Faire pivoter", "pour le clip filmé de travers, sans décoder une seule image"],
+  ["Couper le son d'une vidéo", "retirer le son sans toucher à l'image"],
+  ["Convertir en MP4", "ce qui est sorti de la caméra, sous la forme qui passera vraiment"],
   ["Incruster des sous-titres", "un fichier SRT dessiné dans l'image"],
+  ["Convertir des sous-titres", "SRT, VTT, ASS, SBV et LRC dans tous les sens, et des minutages que l'on peut décaler"],
 ]
 
 [[group]]
 id = "audio"
 name = "Audio"
 items = [
-  ["Fondus d'entrée &amp; de sortie", "pour que cela ne démarre ni ne s'arrête net"],
-  ["Image de forme d'onde", "dessiner une piste comme une image"],
   ["Convertir le format", "MP3, WAV et Opus, dans tous les sens"],
 ]
 
@@ -62,12 +56,15 @@ name = "Documents &amp; PDF"
 items = [
   ["Faire pivoter &amp; recadrer des pages", "redresser un scan couché, ou rogner ses marges"],
   ["Extraire les images", "ressortir les images d'un document"],
+  ["Caviarder un PDF", "retirer les mots, au lieu de peindre un rectangle noir par-dessus"],
+  ["Scanner de documents", "la photo d'une page, redressée et nettoyée en document"],
 ]
 
 [[group]]
 id = "beyond"
 name = "Au-delà des médias"
 items = [
-  ["Données", "conversion, nettoyage et inspection de CSV et de JSON"],
-  ["Confidentialité &amp; sécurité", "empreintes, sommes de contrôle, suppression de métadonnées"],
+  ["Empreintes &amp; sommes de contrôle", "vérifier qu'un téléchargement est bien le fichier annoncé, sans le confier à personne"],
+  ["CSV &amp; JSON", "convertir dans les deux sens, et remettre d'aplomb ce que le tableur a exporté"],
+  ["Certificats &amp; clés", "lire un certificat ou une demande de signature sans la coller dans le serveur de quelqu'un d'autre"],
 ]
