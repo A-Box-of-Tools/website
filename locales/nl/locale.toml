@@ -53,6 +53,8 @@ complete = true
 "resize-image" = "afbeelding-formaat-wijzigen"
 "trim-video" = "video-knippen"
 "video-to-gif" = "video-naar-gif"
+# Het leenwoord, want "tijdsverloop" zoekt niemand.
+"timelapse-video" = "timelapse-maken"
 "heic-to-jpg" = "heic-naar-jpg"
 # Naar de klus genoemd, niet naar het formaat. Niemand zoekt op "afbeelding naar
 # ICO"; men zoekt hoe je een favicon maakt.

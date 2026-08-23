@@ -217,7 +217,7 @@ body = """
 id = "images-and-video"
 name = "Images &amp; video"
 note = "Work with pictures and footage without handing them to anyone."
-order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "grab-frame", "video-to-gif", "exif-editor", "redact-image", "heic-to-jpg", "image-to-data-uri", "image-to-ico", "svg-to-image", "id-photo", "resize-image", "compress-image"]
+order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "video-to-gif", "exif-editor", "redact-image", "heic-to-jpg", "image-to-data-uri", "image-to-ico", "svg-to-image", "id-photo", "resize-image", "compress-image"]
 
 [[hub.categories]]
 id = "gif-and-animation"

@@ -68,6 +68,8 @@ complete = true
 # Con "de": "generador de contraseñas" es lo que se teclea, y el
 # "generador-contrasenas" sin la preposición no es español que nadie escriba.
 "password-generator" = "generador-de-contrasenas"
+# El prestamo, no "camara rapida": timelapse es lo que se escribe al buscar.
+"timelapse-video" = "crear-timelapse"
 "hash-checksum" = "calcular-checksum"
 
 "guides" = "guias"

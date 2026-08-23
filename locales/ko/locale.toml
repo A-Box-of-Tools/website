@@ -94,6 +94,8 @@ complete = true
 # 암호가 아니라 비밀번호입니다. 암호는 암호학의 암호고, 로그인에 쓰는 것을
 # 한국 사이트는 모두 비밀번호라고 부릅니다.
 "password-generator" = "비밀번호-생성기"
+# 사전에 있는 '저속 촬영'이 아니라 실제로 검색창에 치는 '타임랩스'.
+"timelapse-video" = "타임랩스-만들기"
 "hash-checksum" = "체크섬-확인"
 
 # The indexes and the legal pages. 개인정보처리방침 is the name that page has in

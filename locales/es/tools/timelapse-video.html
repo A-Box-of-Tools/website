@@ -1,0 +1,154 @@
+<main>
+  <!-- Paso 1 &mdash; el archivo -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige un vídeo</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="preview-wrap" id="preview-wrap" hidden>
+      <video id="preview" playsinline controls muted></video>
+      <canvas id="still" hidden></canvas>
+    </div>
+    <p id="preview-note" class="path-note" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Archivo</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Tamaño</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Fotograma</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Duración</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Cadencia</dt><dd id="src-fps">&mdash;</dd></div>
+      <div><dt>Vídeo</dt><dd id="src-codec">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Paso 2 &mdash; la velocidad -->
+  <section class="card" id="speed-card" hidden>
+    <h2><span class="step">2</span> Elige la velocidad</h2>
+
+    <div class="speed-row" role="group" aria-label="Cuánto se acelera el clip">
+      <button type="button" data-speed="2">2&times;</button>
+      <button type="button" data-speed="5">5&times;</button>
+      <button type="button" data-speed="10" class="active">10&times;</button>
+      <button type="button" data-speed="20">20&times;</button>
+      <button type="button" data-speed="30">30&times;</button>
+      <button type="button" data-speed="60">60&times;</button>
+      <button type="button" data-speed="120">120&times;</button>
+      <button type="button" data-speed="300">300&times;</button>
+    </div>
+
+    <!--
+      Two ways of saying the same thing, because people arrive with one of two
+      questions: "speed this up thirty times" and "make this fit in twenty
+      seconds". Typing in either box fills in the other.
+    -->
+    <div class="numbers">
+      <label>Velocidad
+        <span class="with-unit">
+          <input type="number" id="speed" min="1.1" max="1000" step="0.1" value="10">
+          <span class="unit">&times;</span>
+        </span>
+      </label>
+      <label>Duración final
+        <span class="with-unit">
+          <input type="number" id="length" min="0.1" step="0.1">
+          <span class="unit">s</span>
+        </span>
+      </label>
+    </div>
+
+    <p class="interval-note" id="interval-note"></p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="fps">Se reproduce a</label>
+        <select id="fps">
+          <option value="24">24 fotogramas por segundo</option>
+          <option value="30" selected>30 fotogramas por segundo</option>
+          <option value="60">60 fotogramas por segundo</option>
+        </select>
+        <p class="field-note">
+          La cadencia a la que va el clip terminado. No cambia lo rápido que es,
+          de eso se encarga la velocidad de arriba, solo lo fluido que se ve.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="size">Tamaño</label>
+        <select id="size">
+          <option value="0" selected>Tamaño original</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+        <p class="field-note" id="size-note">
+          Solo se reduce. Un timelapse casi siempre se ve en pequeño.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="quality">Calidad</label>
+        <select id="quality">
+          <option value="low">Archivo más pequeño</option>
+          <option value="medium" selected>Equilibrado</option>
+          <option value="high">Máxima calidad</option>
+        </select>
+        <p class="field-note">
+          Más alta de lo que suelen gastar las herramientas de vídeo de aquí,
+          porque dos fotogramas seguidos de un timelapse tienen poco en común que
+          comprimir.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paso 3 &mdash; la salida -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Crea el timelapse</h2>
+
+    <dl class="summary" id="summary">
+      <div><dt>Fotogramas conservados</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Un fotograma cada</dt><dd id="sum-interval">&mdash;</dd></div>
+      <div><dt>Duración final</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Fotograma de salida</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Lee</dt><dd id="sum-read">&mdash;</dd></div>
+      <div><dt>Aproximadamente</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-note" class="path-note" hidden></p>
+
+    <p class="silent-note">
+      El resultado no tiene sonido. La voz y la música a treinta veces su
+      velocidad no son voz ni música, así que aquí no hay nada que merezca la
+      pena conservar. Y esa es buena parte de que una hora de vídeo salga en unos
+      pocos megabytes.
+    </p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Crear timelapse</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline loop></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Descargar timelapse</a>
+      </div>
+    </div>
+  </section>
+</main>

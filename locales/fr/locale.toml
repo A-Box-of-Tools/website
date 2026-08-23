@@ -64,6 +64,9 @@ complete = true
 # The same shape as "images-en-pdf" and "images-en-video" above: a conversion
 # named by its two ends.
 "video-to-gif" = "video-en-gif"
+# L'anglicisme, parce que c'est ce qui se tape : "acceleration" ou
+# "hyperlapse" ne sont pas ce que cherche quelqu'un qui veut cet outil.
+"timelapse-video" = "faire-un-timelapse"
 "image-to-data-uri" = "image-en-base64"
 # The one tool here named by a noun rather than by a verb, because that is the
 # phrase: "générateur de QR code" is what French speakers type, in a way that
