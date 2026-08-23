@@ -1,5 +1,5 @@
 #
-# Guide : creer un favicon (et une icone d'application Windows) - French.
+# Guide : créer un favicon (et une icône d'application Windows) - French.
 #
 
 nav = "Créer un favicon"
@@ -15,4 +15,4 @@ lede = """
 updated = "20 août 2026"
 og_title = "Créer un favicon qui se lise encore à seize pixels"
 og_description = "Quelles tailles un favicon.ico réclame, les fichiers supplémentaires que demandent les iPhone et Android, et quoi faire quand votre logo ne survit pas à la réduction."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

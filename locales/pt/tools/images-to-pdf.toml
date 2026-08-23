@@ -12,18 +12,19 @@ tagline = "Coloque suas imagens num documento só."
 title = "Conversor de imagens para PDF &mdash; JPG para PDF grátis, sem envio"
 description = "Junte imagens JPG, PNG ou WebP num só PDF, de graça e inteiramente no seu navegador. As fotos entram sem serem recodificadas, e nada é enviado."
 og_title = "Imagens para PDF &mdash; conversor grátis de JPG para PDF"
-og_description = "Junte imagens num só PDF na sua própria máquina. Fotos JPEG são copiadas intocadas, então nada perde qualidade e nada é enviado."
+og_description = "Junte imagens num só PDF no seu próprio computador. Fotos JPEG são copiadas intocadas, então nada perde qualidade e nada é enviado."
 og_image_alt = "Imagens para PDF - junte imagens num documento sem enviá-las"
 
 pledge = """
-    O documento é escrito na memória desta máquina, uma página por vez, por
-    código servido deste endereço. Nada aqui consegue fazer um envio, e não existe
-    do outro lado desta página servidor nenhum para receber um."""
+    O documento é escrito na memória deste computador, uma página por vez, por
+    código servido deste endereço. Nada aqui consegue fazer um envio, e do outro
+    lado desta página não existe servidor nenhum para receber."""
 
 live_hint = """
-      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
-      aba Rede e faça um PDF. Nenhuma requisição leva uma imagem, uma miniatura ou
-      um nome de arquivo. Ou desconecte da internet e faça um mesmo assim."""
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e faça um PDF. Nenhuma
+      requisição leva uma imagem, uma miniatura ou um nome de arquivo. Ou então
+      desligue a internet e faça um assim mesmo."""
 
 read_first = """
 , e <code>src/pdf.js</code> e <code>src/document.js</code>
@@ -38,7 +39,6 @@ card = """
 [words]
 plural = "imagens"
 choose = "imagens"
-analytics_extra = """"""
 
 [[facts]]
 text = "Sem envio"
@@ -53,37 +53,38 @@ text = "Funciona offline"
 text = "Código aberto"
 
 [[facts]]
-text = "Os arquivos ficam no seu aparelho"
+text = "Os arquivos ficam no seu computador"
 
 [[privacy]]
 title = "Suas imagens não têm para onde ir."
 body = """
  A
-      Content-Security-Policy nomeia todos os endereços que esta página pode
-      contatar, e nenhum deles é deste site. Esta ferramenta não acrescenta nada
-      àquela lista: ela não tem função de rede própria, nem sequer uma opcional.
-      Não existe aqui um ponto final onde seus arquivos pudessem ser coletados, e
-      não existe no código nada que os mandaria se existisse."""
+      Content-Security-Policy lista todos os endereços que esta página pode
+      acessar, e nenhum deles é deste site. Esta ferramenta não acrescenta nada
+      àquela lista, porque não tem função de rede própria, nem sequer uma
+      opcional. Não existe aqui um endpoint onde seus arquivos pudessem ser
+      recolhidos, e não existe no código nada que os mandaria mesmo que
+      existisse."""
 
 [[privacy]]
 title = "O PDF é escrito aqui."
 body = """
- Um PDF é uma lista de objetos e uma tabela de
-      onde cada um começa, e o <code>src/pdf.js</code> escreve as duas coisas.
-      Nenhuma biblioteca é buscada, nada é renderizado num servidor, e o arquivo
-      pronto é entregue direto a um download a partir da memória."""
+ Um PDF é uma lista de objetos e uma tabela
+      dizendo onde cada um começa, e o <code>src/pdf.js</code> escreve as duas
+      coisas. Nenhuma biblioteca é buscada, nada é renderizado num servidor, e o
+      arquivo pronto vai da memória direto para um download."""
 
 [[privacy]]
-title = "Não é dito ao documento nada sobre você."
+title = "Nada sobre você é contado ao documento."
 body = """
  A maioria das ferramentas
       carimba num PDF um horário e o nome do programa que o fez. Esta escreve um
-      título, um autor e uma data só se você digitar; os nomes de arquivo das suas
-      imagens nunca aparecem no documento, e nada sobre a sua máquina
+      título, um autor e uma data só se você digitar. Os nomes de arquivo das suas
+      imagens nunca aparecem no documento, e nada sobre o seu computador
       aparece."""
 
 [[privacy]]
-title = "O que o Google carrega, e o que não é entregue a ele."
+title = "O que o Google carrega, e o que não chega até ele."
 body = """
  Os scripts de
       publicidade e de medição vêm do Google. Nenhum dos dois recebe coisa alguma
@@ -92,121 +93,119 @@ body = """
       é servida desta origem e está listada no repositório."""
 
 [[privacy]]
-title = "O que o botão de doação carrega, e o que não é entregue a ele."
+title = "O que o botão de doação carrega, e o que não chega até ele."
 body = """
 
-      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um
-      script vindo de cdnjs.buymeacoffee.com e busca as letras dele no Google
-      Fonts. É um link e nada mais: ele não reporta visita nenhuma, e não recebe
-      nada sobre você nem sobre as suas imagens. Nada acontece a menos que você
-      clique, e aquilo para onde você iria clicando é o site de outra gente."""
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um script
+      vindo de cdnjs.buymeacoffee.com e busca as letras dele no Google Fonts. É um
+      link e nada mais: não informa visita nenhuma, e não recebe nada sobre você
+      nem sobre as suas imagens. Nada acontece a menos que você clique, e o lugar
+      para onde ele leva é o site de outra empresa."""
 
 [[privacy]]
 title = "Funciona offline."
 body = """
- Desconecte da rede e tudo nesta página continua
-      funcionando. Essa é a prova mais simples de todas: uma ferramenta que
+ Desligue a rede e tudo nesta página continua
+      funcionando. Essa é a prova mais simples de todas, porque uma ferramenta que
       mandasse as suas imagens embora para virarem um documento pararia."""
 
 [[howto]]
 title = "Escolha suas imagens."
 body = """
  Arraste uma pasta até o seletor, ou escolha
-      os arquivos na mão. Eles são lidos direto do seu disco pelo navegador; nada
-      é mandado para lugar nenhum enquanto você faz isso."""
+      os arquivos na mão. Quem lê tudo direto do seu disco é o navegador, e nada é
+      mandado para lugar nenhum enquanto você faz isso."""
 
 [[howto]]
 title = "Ponha as páginas em ordem e gire as que precisarem."
 body = """
  Uma
       imagem vira uma página, na ordem mostrada. Arraste um quadradinho pela alça
-      para movê-lo, ou use as setas; os botões de girar viram uma página um quarto
-      de volta por vez, que é o que um escaneamento deitado normalmente pede."""
+      para movê-lo, ou use as setas. Os botões de girar viram uma página um quarto
+      de volta por vez, que é o que uma digitalização deitada normalmente pede."""
 
 [[howto]]
 title = "Escolha um tamanho de página."
 body = """
- &ldquo;Ajustar a página a cada
+ O &ldquo;Ajustar a página a cada
       imagem&rdquo; faz cada página ser exatamente a imagem dela, sem nada cortado
-      e sem faixas brancas. Os tamanhos nomeados &mdash; A4, Carta, Ofício e os
-      demais &mdash; colocam cada imagem numa página fixa, com margem se você
-      quiser uma."""
+      e sem faixas brancas. Os tamanhos com nome, de A4 a Ofício, colocam cada
+      imagem numa página fixa, com margem se você quiser uma."""
 
 [[howto]]
 title = "Crie o PDF e baixe."
 body = """
- O documento é escrito na sua própria máquina,
-      então o tempo que leva depende do seu hardware e não de uma fila. O arquivo
-      pronto é entregue direto aos downloads do seu navegador."""
+ O documento é escrito no seu próprio
+      computador, então o tempo que leva depende do seu hardware e não de uma fila.
+      O arquivo pronto vai direto para os downloads do seu navegador."""
 
 [[faq]]
 q = "Minhas imagens são enviadas para algum lugar?"
 a = """
-        Não. Suas imagens são lidas e o PDF é escrito pelo seu próprio navegador no
+        Não. Quem lê as suas imagens e escreve o PDF é o seu próprio navegador, no
         seu próprio hardware. Não existe lado de servidor nesta ferramenta, e a
-        <code>Content-Security-Policy</code> da página nomeia todos os endereços que
-        ela pode contatar &mdash; nenhum deles é deste site. Ao contrário de algumas
-        das outras ferramentas daqui, esta não tem função de rede opcional
-        nenhuma."""
+        <code>Content-Security-Policy</code> da página lista todos os endereços que
+        ela pode acessar, nenhum deles deste site. Ao contrário de algumas das outras
+        ferramentas daqui, esta não tem nenhuma função de rede opcional."""
 
 [[faq]]
 q = "Converter para PDF perde qualidade?"
 a = """
-        Não, no caso de um JPEG e no ajuste padrão. O PDF consegue carregar dados
+        No caso de um JPEG e no ajuste padrão, não. O PDF consegue carregar dados
         JPEG diretamente, então uma fotografia é copiada para dentro do documento
         byte por byte: ela nunca é decodificada e nunca é comprimida de novo, e a
         imagem no PDF é a imagem do arquivo. Outros formatos precisam ser
-        recodificados, porque o PDF não tem filtro para eles &mdash; a não ser que
-        você escolha o ajuste sem perdas, que os guarda exatamente ao custo de um
-        arquivo maior."""
+        recodificados, porque o PDF não tem filtro para eles. A saída é escolher o
+        ajuste sem perdas, que guarda tudo exatamente ao custo de um arquivo
+        maior."""
 
 [[faq]]
 q = "Quais formatos de imagem posso usar?"
 a = """
         Qualquer imagem parada que o seu navegador consiga decodificar, o que na
-        prática significa JPG, PNG, WebP, GIF, AVIF e, em aparelhos da Apple, HEIC.
-        Não existe aqui uma lista separada para manter atualizada, porque
-        decodificar é trabalho do navegador, e não nosso."""
+        prática significa JPG, PNG, WebP, GIF, AVIF e, em dispositivos Apple, HEIC.
+        Não existe aqui uma lista separada para manter atualizada, porque decodificar
+        é trabalho do navegador, e não nosso."""
 
 [[faq]]
 q = "Posso escolher o tamanho da página e a ordem das páginas?"
 a = """
-        Sim. As páginas podem ser A4, Carta, Ofício, A3, A5, Tabloide, um tamanho
+        Pode. As páginas podem ser A4, Carta, Ofício, A3, A5, Tabloide, um tamanho
         que você digita, ou exatamente o tamanho de cada imagem. Arraste os
-        quadradinhos para reordenar, ordene por nome ou por data, gire qualquer um
-        deles um quarto de volta, e defina uma margem em milímetros."""
+        quadradinhos para mudar a ordem, ordene por nome ou por data, gire qualquer
+        um deles um quarto de volta, e defina uma margem em milímetros."""
 
 [[faq]]
 q = "Quantas imagens posso pôr num PDF?"
 a = """
-        Não há limite embutido na ferramenta. O teto prático é a memória da sua
-        própria máquina, porque o documento pronto é montado ali antes de você
-        baixá-lo. Algumas centenas de fotos de celular em resolução cheia são a
-        primeira coisa a sentir isso; diminuir o lado maior, nos ajustes, empurra
+        A ferramenta não tem limite embutido. O teto prático é a memória do seu
+        próprio computador, porque o documento pronto é montado ali antes de você
+        baixar. Algumas centenas de fotos de celular em resolução cheia são a
+        primeira coisa a sentir isso, e diminuir o lado maior, nos ajustes, empurra
         esse teto para bem longe."""
 
 [[faq]]
 q = "O PDF contém os nomes dos meus arquivos ou um horário?"
 a = """
-        Não, a menos que você peça. O bloco de informações do documento é deixado
-        vazio, exceto pelo nome desta ferramenta: nenhum nome de arquivo, nenhum
-        nome de máquina, nenhum nome de usuário, e nenhuma data de criação a não ser
-        que você marque a caixa. Isso é deliberado &mdash; um PDF é uma coisa que as
-        pessoas mandam para outras pessoas."""
+        Não, a menos que você peça. O bloco de informações do documento fica vazio,
+        tirando o nome desta ferramenta: nenhum nome de arquivo, nenhum nome de
+        máquina, nenhum nome de usuário, e nenhuma data de criação a não ser que você
+        marque a caixa. Isso é de propósito, porque um PDF é uma coisa que as pessoas
+        mandam para outras pessoas."""
 
 [[faq]]
 q = "É grátis, e preciso de conta?"
 a = """
-        É grátis, e não há conta, nem login, nem período de teste. O site exibe
-        publicidade, e é ela que paga a conta; os anúncios não recebem nada sobre as
+        É grátis, e não tem conta, nem login, nem período de teste. O site exibe
+        publicidade, e é ela que paga a conta. Os anúncios não recebem nada sobre as
         suas imagens."""
 
 [[faq]]
 q = "Funciona offline?"
 a = """
-        Sim. Carregue a página uma vez, então desconecte da internet e ela continua
-        funcionando. Esse é também o jeito mais simples de provar que nada está
-        sendo enviado: uma ferramenta que mandasse as suas imagens embora para
+        Funciona. Carregue a página uma vez, depois desligue a internet e ela
+        continua funcionando. Esse é também o jeito mais simples de provar que nada
+        está sendo enviado: uma ferramenta que mandasse as suas imagens embora para
         virarem um documento pararia no instante em que você tirasse da tomada."""
 
 [schema]
@@ -216,10 +215,10 @@ features = [
   "Fotos JPEG são embutidas sem serem recodificadas",
   "Tamanhos de página de A5 a Tabloide, ou uma página ajustada a cada imagem",
   "Reordene, gire, defina margens e uma cor de página",
-  "Armazenamento sem perdas opcional para escaneamentos e capturas de tela",
+  "Armazenamento sem perdas opcional para digitalizações e capturas de tela",
   "Roda offline; sem envio, sem conta",
 ]
 
 [picker]
 title = "Arraste imagens para cá"
-hint = "ou clique para escolher &mdash; JPEG, PNG, WebP, GIF, AVIF"
+hint = "ou clique para escolher: JPEG, PNG, WebP, GIF, AVIF"

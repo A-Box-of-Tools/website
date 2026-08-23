@@ -11,7 +11,7 @@
 # length has changed for exactly that reason.
 #
 
-note = "Pas encore construit. Listé pour que vous voyiez où cela va."
+note = "Pas encore construits. Ils figurent ici pour que vous voyiez où tout cela va."
 
 [[group]]
 id = "images"
@@ -20,9 +20,7 @@ items = [
   ["Faire pivoter &amp; retourner", "par quarts de tour, ou redressé de quelques degrés"],
   ["Ajouter du texte", "sur l'image, ou dans un bandeau au-dessus"],
   ["Filtres", "luminosité, contraste, saturation, flou, niveaux de gris"],
-  ["Image en data URI", "coller le résultat directement dans du CSS ou du HTML"],
-  ["HEIC vers JPG", "les photos que fait un iPhone, dans un format que tout ouvre"],
-  ["AVIF &amp; JPEG XL", "convertir dans les deux sens, quel que soit le navigateur où vous êtes"],
+  ["AVIF &amp; JPEG XL", "convertir dans les deux sens, quel que soit le navigateur que vous utilisez"],
 ]
 
 [[group]]
@@ -54,7 +52,7 @@ items = [
 id = "audio"
 name = "Audio"
 items = [
-  ["Fondus d'entrée &amp; de sortie", "pour que cela ne démarre ni ne s'arrête à pic"],
+  ["Fondus d'entrée &amp; de sortie", "pour que cela ne démarre ni ne s'arrête net"],
   ["Image de forme d'onde", "dessiner une piste comme une image"],
   ["Convertir le format", "MP3, WAV et Opus, dans tous les sens"],
 ]

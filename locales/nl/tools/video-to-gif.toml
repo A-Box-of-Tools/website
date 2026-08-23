@@ -11,44 +11,40 @@ name = "Video naar gif"
 heading = "Video&nbsp;naar&nbsp;gif <span class=\"h1-kw\">&mdash; een video omzetten naar een gif</span>"
 tagline = "Kies het stuk, het formaat en de beeldsnelheid."
 
-title = "Video-naar-gif-omzetter &mdash; gratis, zonder uploaden, werkt offline"
-description = "Maak van een stuk mp4, mov of WebM een bewegende gif. Kies het stuk, de breedte en de beeldsnelheid; de frames worden gelezen en de gif wordt geschreven in je browser. Niets geüpload."
+title = "Video naar gif omzetten &mdash; gratis, zonder uploaden, werkt offline"
+description = "Maak van een stuk mp4, mov of WebM een bewegende gif. Kies het stuk, de breedte en de beeldsnelheid, en je browser leest de frames en schrijft de gif. Er wordt niets geüpload."
 og_title = "Video naar gif &mdash; een gif maken zonder het filmpje te uploaden"
 og_description = "Markeer de seconden die je wilt, kies een breedte en een beeldsnelheid, en krijg een bewegende gif. Het bemonsteren, het palet, het rasteren en de LZW gebeuren allemaal op je eigen apparaat."
 og_image_alt = "Video naar gif - een bewegende gif maken in je browser, zonder iets te uploaden"
 
 pledge = """
-    Elk frame wordt gelezen, geschaald, gekwantiseerd en geschreven door je eigen
-    browser, op je eigen hardware. Niets hier kan iets ophalen of versturen
-    &mdash; er zit helemaal geen netwerkfunctie in deze tool &mdash; en er staat
-    aan de andere kant van deze pagina geen server om een video heen te sturen,
-    ook al was er een weg."""
+    Je eigen browser leest, schaalt, kwantiseert en schrijft elk frame, op je eigen
+    hardware. Niets hier kan iets ophalen of versturen, want er zit helemaal geen
+    netwerkfunctie in deze tool. En al was die er wel, dan stond aan de andere kant
+    van deze pagina nog steeds geen server om een video naartoe te sturen."""
 
 live_hint = """
-      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
-      gaten en maak een gif. Geen enkel verzoek draagt een frame, een
-      bestandsnaam of één byte van wat je koos. Of trek de stekker uit het
-      internet en maak er toch een &mdash; een tool die je video wegstuurde om
-      hem om te zetten, zou domweg stoppen."""
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en maak een gif. Geen enkel verzoek draagt
+      een frame, een bestandsnaam of ook maar één byte van wat je koos. Of trek de
+      stekker uit je internet en maak er alsnog een, want een tool die je video
+      wegstuurde om hem te laten omzetten zou er domweg mee ophouden."""
 
 read_first = """
 , <code>src/frames.js</code> voor de twee manieren
       waarop de frames uit een video gelezen worden, <code>src/quantize.js</code>
       voor het palet, en <code>src/gif.js</code> voor het bestand zelf, LZW en
-      al. Geen ervan importeert iets dat een verzoek kan doen."""
+      al. Geen ervan importeert iets wat een verzoek kan doen."""
 
-howto_heading = "Van een video een gif maken"
+howto_heading = "Zo maak je van een video een gif"
 
 card = """
-            Markeer de seconden die je wilt, kies een breedte en een
-            beeldsnelheid, en krijg een bewegende gif &mdash; palet, rastering en
-            al."""
+            Markeer de seconden die je wilt, kies een breedte en een beeldsnelheid,
+            en je krijgt een bewegende gif terug, palet en rastering en al."""
 
 [words]
 plural = "video's"
 choose = "een video"
-analytics_extra = """, en geen
-  frame, lengte of formaat"""
 
 [[facts]]
 text = "Geen upload"
@@ -68,11 +64,11 @@ text = "Werkt offline"
 [[privacy]]
 title = "Je video's kunnen nergens heen."
 body = """
- De
-      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
-      geen ervan hoort bij deze site. Er is hier geen eindpunt waar je bestand
-      verzameld zou kunnen worden, en niets in de code dat het zou versturen als
-      dat er wel was."""
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en
+      geen daarvan hoort bij deze site. Er is hier geen eindpunt waar je bestand
+      verzameld zou kunnen worden, en in de code staat niets wat het zou versturen
+      als dat eindpunt er wel was."""
 
 [[privacy]]
 title = "Niets hier haalt iets op."
@@ -83,25 +79,23 @@ body = """
       aanraakt, kwam bij het laden van de pagina van deze herkomst."""
 
 [[privacy]]
-title = "Het decoderen gebeurt lokaal."
+title = "Het decoderen gebeurt hier."
 body = """
- De frames gaan door WebCodecs
-      in je eigen browser, of door dezelfde afspeelmotor die je het filmpje toch
-      al zou tonen. Welke van de twee gebruikt is, staat boven aan de pagina,
-      want het verandert hoe de frames gekozen worden en dat hoor je te kunnen
-      zien."""
+ De frames gaan door WebCodecs in
+      je eigen browser, of door dezelfde afspeelmotor die je het filmpje toch al zou
+      tonen. Welke van de twee het geworden is staat boven aan de pagina, omdat het
+      verandert hoe de frames gekozen worden en je dat hoort te kunnen zien."""
 
 [[privacy]]
 title = "De gif wordt hier geschreven, in code die je kunt lezen."
 body = """
- Het
-      palet, het rasteren en de LZW-compressie zijn zo'n zeshonderd regels in de
-      eigen map van deze tool. Er is geen encoderdienst, geen bibliotheek die
-      tijdens het draaien opgehaald wordt, en nergens erin een plek waar een
-      plaatje heen gestuurd zou kunnen worden."""
+ Het palet, het rasteren en de
+      LZW-compressie beslaan zo'n zeshonderd regels in de eigen map van deze tool.
+      Er is geen encoderdienst, geen bibliotheek die tijdens het draaien opgehaald
+      wordt, en nergens een plek waar een plaatje heen gestuurd zou kunnen worden."""
 
 [[privacy]]
-title = "Wat Google laadt, en wat het niet krijgt."
+title = "Wat Google laadt, en wat het niet te zien krijgt."
 body = """
  De advertentie- en
       meetscripts komen van Google. Geen van beide krijgt iets over je video mee:
@@ -110,43 +104,43 @@ body = """
       codeert, wordt vanaf deze herkomst geserveerd en staat in de repository."""
 
 [[privacy]]
-title = "Wat de doneerknop laadt, en wat hij niet krijgt."
+title = "Wat de doneerknop laadt, en wat hij niet te zien krijgt."
 body = """
 
       De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een
       script van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts.
-      Het is een link en verder niets: hij meldt geen bezoek, en hij krijgt niets
-      over jou of je video mee."""
+      Het is een link en verder niets. Hij meldt geen bezoek en krijgt niets over
+      jou of je video mee."""
 
 [[privacy]]
 title = "Het werkt offline."
 body = """
  Verbreek de verbinding en alles op deze
-      pagina doet het nog. Dat is het eenvoudigste bewijs van allemaal."""
+      pagina doet het nog. Eenvoudiger bewijs bestaat er niet."""
 
 [[howto]]
 title = "Kies een video."
 body = """
- Sleep een mp4, mov, m4v of WebM op het
-      keuzevak, of kies er een met de hand. De browser leest hem rechtstreeks van
-      je schijf; er wordt daarbij niets ergens heen gestuurd."""
+ Sleep een mp4, mov, m4v of WebM het vak
+      in, of kies er een met de hand. De browser leest hem rechtstreeks van je
+      schijf, en er gaat ondertussen niets ergens heen."""
 
 [[howto]]
 title = "Markeer het stuk."
 body = """
  Speel het filmpje af en druk op
       <kbd>I</kbd> waar het moet beginnen en op <kbd>O</kbd> waar het moet
-      eindigen, of sleep de grepen op de balk. Een gif duurt een paar seconden
-      &mdash; dit is de instelling die bepaalt of het bestand klein of enorm
-      wordt, veel meer dan de andere twee."""
+      eindigen, of sleep de grepen op de balk. Een gif duurt een paar seconden, en
+      deze instelling bepaalt veel sterker dan de andere twee of het bestand klein
+      of enorm wordt."""
 
 [[howto]]
 title = "Kies de breedte en de beeldsnelheid."
 body = """
- 480 pixels
-      breed en 12 beelden per seconde past bij de meeste dingen waar een gif voor
-      is. De breedte halveren viert de pixels; twaalf beelden per seconde leest
-      als beweging zonder te betalen voor de beelden die niemand ziet."""
+ 480 pixels breed en 12 beelden per
+      seconde past bij vrijwel alles waar een gif voor bedoeld is. Halveer je de
+      breedte, dan vier je het aantal pixels, en twaalf beelden per seconde leest al
+      als beweging zonder dat je betaalt voor de beelden die niemand ziet."""
 
 [[howto]]
 title = "Maak hem, en download."
@@ -160,22 +154,22 @@ body = """
 [[faq]]
 q = "Wordt mijn video ergens heen geüpload?"
 a = """
-        Nee. Hij wordt gelezen, bemonsterd en omgezet door je eigen browser op je
-        eigen hardware. Deze tool heeft geen serverkant, en de
-        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
-        mag benaderen &mdash; geen ervan hoort bij deze site. Trek de stekker uit
-        het internet en maak er toch een gif van, als je liever controleert dan
-        het aanneemt."""
+        Nee. Je eigen browser leest, bemonstert en zet hem om, op je eigen hardware.
+        Deze tool heeft geen serverkant, en in de
+        <code>Content-Security-Policy</code> van de pagina staat elk adres dat hij
+        mag benaderen, waarvan er geen enkele bij deze site hoort. Controleer je het
+        liever dan dat je het aanneemt, trek dan de stekker uit je internet en maak er
+        alsnog een gif van."""
 
 [[faq]]
 q = "Welke videoformaten kan ik omzetten?"
 a = """
         Mp4, m4v en mov worden rechtstreeks gelezen, wat er ook in zit: H.264,
-        HEVC, AV1 of VP9, zolang je browser die codec kan decoderen. Al het andere
-        dat je browser kan afspelen &mdash; WebM het meest voor de hand liggend
-        &mdash; wordt in plaats daarvan gelezen door de speler naar elk moment te
-        laten springen, wat trager is en iets minder precies over welk frame waar
-        landt. Een bestand dat de browser niet kan lezen en ook niet kan afspelen,
+        HEVC, AV1 of VP9, zolang je browser die codec kan decoderen. Al het andere dat
+        je browser kan afspelen, en dan denk je meteen aan WebM, wordt gelezen door de
+        speler naar elk moment te laten springen. Dat gaat trager en het is iets
+        minder precies over welk frame waar landt. Een bestand dat de browser niet kan
+        lezen en ook niet kan afspelen,
         in de praktijk avi, wmv, flv en de meeste mkv's, wordt geweigerd met een
         melding die dat zegt, in plaats van halverwege te stranden."""
 
@@ -183,61 +177,60 @@ a = """
 q = "Waarom is mijn gif zo groot?"
 a = """
         Omdat gif een formaat uit 1987 is dat hele plaatjes opslaat in plaats van
-        beweging. Er is geen manier om er een van een filmpje van vijf seconden te
-        maken die net zo klein is als de mp4 van vijf seconden waar hij uit kwam
-        &mdash; een gif van een video is routineus tien keer zo groot als de
-        video. De drie instellingen die het werkelijk bepalen zijn, op volgorde:
-        hoe lang het stuk is, hoe breed het beeld is, en hoeveel beelden per
-        seconde. De breedte halveren viert de pixels, en het zijn de pixels die
-        kosten."""
+        beweging. Een gif van vijf seconden krijg je nooit zo klein als de mp4 van
+        vijf seconden waar hij uit kwam, want een gif van een video is routineus tien
+        keer zo groot als die video. Drie instellingen bepalen het werkelijk, in deze
+        volgorde: hoe lang het stuk is, hoe breed het beeld is, en hoeveel beelden per
+        seconde er zijn. Halveer je de breedte, dan vier je het aantal pixels, en het
+        zijn nu juist de pixels die kosten."""
 
 [[faq]]
 q = "Waarom maar 256 kleuren?"
 a = """
-        Dat is het formaat: een gif draagt één tabel van hoogstens 256 kleuren mee
-        en slaat elke pixel op als een nummer daarin. Deze tool kiest die 256 door
-        de kleuren in elk frame van je stuk te tellen en ze in 256 groepen te
-        splitsen &mdash; mediaansnede, de standaardmethode &mdash; zodat het palet
-        bij jouw filmpje past in plaats van een vaste set kleuren te zijn. Waar
-        een kleur ontbreekt, mengt het rasteren de twee dichtstbijzijnde, zodat
-        een verloop een verloop blijft in plaats van strepen te worden."""
+        Zo zit het formaat in elkaar. Een gif draagt één tabel van hoogstens 256
+        kleuren mee en slaat elke pixel op als een nummer daarin. Deze tool kiest die
+        256 door de kleuren in elk frame van je stuk te tellen en ze met mediaansnede,
+        de standaardmethode, in 256 groepen te splitsen. Zo past het palet bij jouw
+        filmpje in plaats van dat het een vaste set kleuren is. Waar een kleur
+        ontbreekt, mengt het rasteren de twee dichtstbijzijnde, zodat een verloop een
+        verloop blijft in plaats van dat er strepen ontstaan."""
 
 [[faq]]
 q = "Wat doet de rasterinstelling?"
 a = """
-        Die ruilt een beetje ruis in voor een hoop bandvorming. Met hem aan blijft
-        een lucht die anders vier vlakke banden zou worden een verloop, ten koste
-        van een vage textuur en een groter bestand. Met hem uit is het beeld
-        vlakker en het bestand kleiner, wat past bij schermopnames, lijntekeningen
-        en alles wat al uit vlakke kleur bestaat. Het raster dat hier gebruikt
-        wordt is geordend en niet van het foutdiffusietype, zodat een onveranderde
-        achtergrond tussen frames volkomen stil blijft in plaats van te
+        Die ruilt een beetje ruis in voor een hoop bandvorming. Zet je hem aan, dan
+        blijft een lucht die anders vier vlakke banden zou worden een verloop, ten
+        koste van een vage textuur en een groter bestand. Zet je hem uit, dan wordt
+        het beeld vlakker en het bestand kleiner, en dat past bij schermopnames,
+        lijntekeningen en alles wat al uit vlakke kleur bestaat. Het raster dat hier
+        gebruikt wordt is geordend en niet van het foutdiffusietype, waardoor een
+        onveranderde achtergrond tussen frames volkomen stil blijft in plaats van te
         flikkeren."""
 
 [[faq]]
 q = "Zit er een limiet op de lengte of de grootte?"
 a = """
-        Het stuk is wat begrensd is, en door geheugen in plaats van door een
-        regel: elk frame ervan wordt tegelijk vastgehouden terwijl het palet
-        gekozen wordt, dus rekent de pagina uit wat jouw instellingen zouden
-        kosten en zegt dat voordat je begint. Hij weigert liever dan het tabblad
-        zonder geheugen te laten vallen. Een korter stuk, een kleinere breedte of
-        een lagere beeldsnelheid brengen het allemaal omlaag."""
+        Alleen het stuk is begrensd, en dan door het geheugen in plaats van door een
+        regel. Terwijl het palet gekozen wordt, worden alle frames ervan tegelijk
+        vastgehouden, dus rekent de pagina uit wat jouw instellingen zouden kosten en
+        zegt ze dat voordat je begint. Weigeren doet ze liever dan het tabblad zonder
+        geheugen te laten vallen. Een korter stuk, een kleinere breedte of een lagere
+        beeldsnelheid brengen het allemaal omlaag."""
 
 [[faq]]
 q = "Blijft het geluid behouden?"
 a = """
-        Een gif kan geen geluid meedragen. Er is geen versie van het formaat met
-        audio, en dat is de belangrijkste reden dat het web gifs grotendeels
-        vervangen heeft door stille loopende video. Doet het geluid ertoe, hou de
-        video dan &mdash; de <a href="../video-knippen/">Videoknipper</a> knipt er
-        een stuk uit zonder één frame opnieuw te coderen."""
+        Een gif kan geen geluid meedragen. Er bestaat geen versie van het formaat met
+        audio, en dat is de belangrijkste reden dat het web gifs grotendeels vervangen
+        heeft door stille video in een lus. Doet het geluid ertoe, hou dan de video
+        aan: de <a href="../video-knippen/">Videoknipper</a> knipt er een stuk uit
+        zonder ook maar één frame opnieuw te coderen."""
 
 [[faq]]
-q = "Is het gratis, en heb ik een account nodig?"
+q = "Is het gratis, en heb ik er een account voor nodig?"
 a = """
-        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
-        geen watermerk. De site draagt advertenties, en die betalen hem; de
+        Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen
+        watermerk aan te pas. De site draait op advertenties, en die betalen hem. Die
         advertenties krijgen niets over je video mee."""
 
 [schema]

@@ -8,10 +8,10 @@ description = "Was mit einem Bild geschieht, wenn Sie seine Pixelmaße ändern: 
 heading = "So skalieren Sie ein Bild, ohne es zu ruinieren"
 lede = """
     Skalieren ist die eine Bildaufgabe, bei der der Schaden schon vor dem Klick
-    feststeht &mdash; entschieden von der Zahl, die Sie eintippen, und dem
-    Format, das Sie verlangen. Hier steht, was jede dieser Entscheidungen mit
-    dem Bild anstellt und welche davon sich zurücknehmen lässt."""
+    feststeht. Entschieden haben ihn die Zahl, die Sie eintippen, und das Format,
+    das Sie verlangen. Hier steht, was jede dieser Entscheidungen mit dem Bild
+    anstellt und welche davon sich zurücknehmen lässt."""
 updated = "20. August 2026"
 og_title = "Ein Bild skalieren, ohne es zu ruinieren"
 og_description = "Warum Verkleinern harmlos ist und Vergrößern nicht, was zu tun ist, wenn der Rahmen das falsche Format hat, und wann Zuschneiden die bessere Antwort ist."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

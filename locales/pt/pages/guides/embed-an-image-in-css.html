@@ -7,10 +7,10 @@
       <code>background-image: var(--logo)</code> onde precisar.
     </p>
     <p>
-      Faça isso quando a imagem for pequena &mdash; um ícone, um marcador de
-      lista, uma setinha, um padrão &mdash; e for necessária em toda página. Não
-      faça com uma fotografia. Tudo o que vem abaixo é o porquê de essas duas
-      frases diferirem, e como saber com qual dos dois casos você está lidando.
+      Faça isso quando a imagem for pequena, como um ícone, um marcador de lista,
+      uma setinha ou um padrão, e for necessária em toda página. Não faça com uma
+      fotografia. Tudo o que vem abaixo é o porquê de essas duas frases diferirem,
+      e como saber com qual dos dois casos você está lidando.
     </p>
   </section>
 
@@ -24,21 +24,21 @@
     <p>
       e o navegador vai buscar o <code>logo.png</code>, uma data URI diz
     </p>
-    <pre><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <pre class="wrap"><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
     <p>
-      e não há o que buscar: a imagem já está ali, escrita em caracteres. São
-      três partes. <code>data:</code> é o esquema. <code>image/png</code> é o tipo
-      de mídia, e o navegador acredita nele por completo &mdash; mais sobre isso
+      e não há o que buscar, porque a imagem já está ali, escrita em caracteres.
+      São três partes. <code>data:</code> é o esquema. <code>image/png</code> é o
+      tipo de mídia, e o navegador acredita nele por completo, com mais sobre isso
       abaixo. Tudo depois da vírgula é o arquivo.
     </p>
     <p>
-      É essa a ideia inteira. Não é truque nem gambiarra; está nos padrões desde
+      É essa a ideia inteira. Não é truque nem gambiarra: está nos padrões desde
       1998 e funciona em todo navegador lançado desde então.
     </p>
   </section>
 
   <section>
-    <h2>O que isso lhe rende: uma ida e volta a menos</h2>
+    <h2>O que isso rende a você: uma ida e volta a menos</h2>
     <p>
       A economia não é de banda. É da requisição.
     </p>
@@ -69,8 +69,8 @@
     <p>
       <strong>A compressão não devolve.</strong> Esta é a parte que as pessoas
       dispensam por suposição. Gzip e Brotli funcionam encontrando redundância, e
-      um PNG, um JPEG e um WebP já foram comprimidos &mdash; sobra pouquíssima
-      redundância neles, e o base64 não acrescenta nenhuma. Na prática você
+      um PNG, um JPEG e um WebP já foram comprimidos, então sobra pouquíssima
+      redundância neles e o base64 não acrescenta nenhuma. Na prática você
       recupera algo como um décimo daquele terço, e não o terço inteiro. (Um SVG
       é o caso oposto, e a próxima seção é sobre isso.)
     </p>
@@ -88,8 +88,7 @@
       <li>
         <strong>Mudar qualquer coisa rebaixa tudo.</strong> Conserte uma margem,
         publique uma folha de estilo nova, e todo visitante baixa a imagem
-        embutida de novo junto com ela &mdash; uma imagem que não muda há dois
-        anos.
+        embutida de novo junto com ela, uma imagem que não muda há dois anos.
       </li>
       <li>
         <strong>Ela está no caminho crítico.</strong> Uma folha de estilo bloqueia
@@ -105,11 +104,11 @@
     </ul>
     <p>
       Limiares grosseiros, que são onde o conselho muda e não onde algum navegador
-      faz algo diferente: abaixo de uns 2 KB é vitória clara; até uns 10 KB
-      normalmente ainda vale para algo que está em toda página; passando de 50 KB
-      é um erro sem mensagem de erro.
-      <a href="../../imagem-para-base64/">A ferramenta</a> lhe diz em qual faixa
-      cada resultado cai, com a contagem de caracteres ao lado.
+      faz algo diferente: abaixo de uns 2 KB é vitória clara, até uns 10 KB
+      normalmente ainda vale para algo que está em toda página, e passando de 50
+      KB é um erro sem mensagem de erro.
+      <a href="../../imagem-para-base64/">A ferramenta</a> diz em qual faixa cada
+      resultado cai, com a contagem de caracteres ao lado.
     </p>
   </section>
 
@@ -122,16 +121,16 @@
     </p>
     <p>
       Um SVG é texto. Uma URL já carrega texto. Só um punhado de caracteres
-      precisa ser escapado &mdash; <code>%</code>, <code>#</code>,
-      <code>&lt;</code>, <code>&gt;</code> e a aspa em que você o envolveu
-      &mdash; e todo o resto pode ficar exatamente como está. Codificar assim lhe
-      dá uma URI tipicamente uns 20% mais curta que o base64 do mesmo arquivo, e
-      que depois comprime como texto em vez de comprimir como ruído.
+      precisa ser escapado, que são <code>%</code>, <code>#</code>,
+      <code>&lt;</code>, <code>&gt;</code> e a aspa em que você o envolveu, e todo
+      o resto pode ficar exatamente como está. Codificar assim rende uma URI
+      tipicamente uns 20% mais curta que o base64 do mesmo arquivo, e que depois
+      comprime como texto em vez de comprimir como ruído.
     </p>
     <p>
       E continua legível:
     </p>
-    <pre><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
     <p>
       Você consegue ver o <code>viewBox</code>. Você consegue mudar a cor de
       preenchimento no seu editor sem decodificar nada. Ponha o mesmo arquivo em
@@ -153,20 +152,19 @@
     <p>
       Faça o mesmo com um SVG codificado em porcentagem e quebra. Um token
       <code>url()</code> sem aspas termina no primeiro espaço, parêntese, aspa ou
-      caractere de controle &mdash; e um SVG é cheio de espaços, entre cada
-      atributo e cada número de um traçado. A declaração fica inválida, o CSS
-      descarta declarações inválidas em silêncio, e você fica sem fundo e sem
-      erro.
+      caractere de controle, e um SVG é cheio de espaços, entre cada atributo e
+      cada número de um traçado. A declaração fica inválida, o CSS descarta
+      declarações inválidas em silêncio, e você fica sem fundo e sem erro.
     </p>
     <p>
       O conserto é aspas, sempre:
     </p>
     <pre><code>background-image: url("data:image/svg+xml,%3Csvg ... %3E");</code></pre>
     <p>
-      É também por isso que um codificador não precisa escapar espaços &mdash;
-      eles são perfeitamente legais dentro de uma URL com aspas, e escapar cada um
-      como <code>%20</code> custaria três caracteres por espaço do arquivo. As
-      duas decisões andam juntas: ponha a URI entre aspas e você pode deixar os
+      É também por isso que um codificador não precisa escapar espaços: eles são
+      perfeitamente legais dentro de uma URL com aspas, e escapar cada um como
+      <code>%20</code> custaria três caracteres por espaço do arquivo. As duas
+      decisões andam juntas, porque, pondo a URI entre aspas, você pode deixar os
       espaços em paz. Todo formato que a ferramenta produz vem com aspas
       exatamente por isso.
     </p>
@@ -184,16 +182,16 @@
       O que importa porque extensões de arquivo mentem. Uma foto exportada como
       JPEG e renomeada para <code>logo.png</code> é uma coisa comum de se achar
       num disco. Os primeiros bytes de um arquivo de imagem, por outro lado, dizem
-      o que ele é sem ambiguidade &mdash; todo formato tem uma assinatura &mdash;
-      então uma ferramenta deveria ler o arquivo em vez do nome dele. A daqui lê,
-      e avisa quando os dois discordam.
+      o que ele é sem ambiguidade, porque todo formato tem uma assinatura. Uma
+      ferramenta deveria ler o arquivo em vez do nome dele. A daqui lê, e avisa
+      quando os dois discordam.
     </p>
     <p>
       Dois formatos valem menção porque falham de um jeito confuso.
       <strong>HEIC</strong>, que é como um iPhone fotografa, e
-      <strong>TIFF</strong>, que é o que os escâneres produzem, geram data URIs
+      <strong>TIFF</strong>, que é o que os scanners produzem, geram data URIs
       perfeitamente válidas que navegador nenhum, exceto o Safari, vai desenhar. A
-      URI não está quebrada; o formato simplesmente não é um que a web suporte.
+      URI não está quebrada: o formato simplesmente não é um que a web suporte.
       Converta antes.
     </p>
   </section>
@@ -202,21 +200,21 @@
     <h2>Os metadados que você não pretendia publicar</h2>
     <p>
       Uma data URI é uma cópia do arquivo, byte por byte. Nada é decodificado e
-      recodificado, o que normalmente é a graça &mdash; nenhuma qualidade se
-      perde &mdash; mas também significa que todo o resto do arquivo vem junto.
+      recodificado, o que normalmente é a graça, porque nenhuma qualidade se
+      perde, mas também significa que todo o resto do arquivo vem junto.
     </p>
     <p>
       Uma fotografia recém-saída de um celular carrega EXIF: as coordenadas de
       GPS de onde foi tirada, a hora, o modelo da câmera e muitas vezes o número
       de série dela. Isso pode ser 30 KB do arquivo. Embutido, vira 40 KB de
-      base64 na sua folha de estilo, no caminho crítico de toda página &mdash; e
-      um endereço residencial comprometido num repositório, numa forma em que
-      ninguém jamais vai pensar em olhar.
+      base64 na sua folha de estilo, no caminho crítico de toda página, e um
+      endereço residencial comprometido num repositório, numa forma em que ninguém
+      jamais vai pensar em olhar.
     </p>
     <p>
       Limpe antes com o
       <a href="../../remover-dados-exif/">Visualizador e removedor de EXIF</a>,
-      que reescreve o contêiner sem encostar na imagem; há
+      que reescreve o contêiner sem encostar na imagem, e há
       <a href="../remover-dados-exif-e-gps/">um guia sobre isso</a> também. O
       Imagem para data URI lê quanto metadado existe num JPEG, PNG ou WebP e diz
       isso antes de você copiar qualquer coisa.
@@ -227,9 +225,8 @@
     <h2>Onde colocar, depois de ter a linha</h2>
     <p>
       Se a imagem aparece numa regra, ponha a URI naquela regra. Se aparece em
-      mais de uma &mdash; e ícones em geral aparecem, quando você conta o estado
-      de hover e o tema escuro &mdash; declare uma vez como propriedade
-      personalizada:
+      mais de uma, e ícones em geral aparecem quando você conta o estado de hover
+      e o tema escuro, declare uma vez como propriedade personalizada:
     </p>
     <pre><code>:root {
   --icon-search: url("data:image/svg+xml,%3Csvg ... %3E");
@@ -275,8 +272,8 @@
         <a href="../../comprimir-imagem/">Compressor de imagens</a> leva uma
         fotografia a um tamanho que você diz, e o
         <a href="../../redimensionar-imagem/">Redimensionador de imagens</a> corta
-        as dimensões em pixels até o que o layout de fato usa &mdash; o que
-        muitíssimas vezes é o problema real.
+        as dimensões em pixels até o que o layout de fato usa, o que muitíssimas
+        vezes é o problema real.
       </li>
       <li>
         <strong>Redesenhe como SVG.</strong> Um ícone exportado como PNG de 40 KB
@@ -296,20 +293,20 @@
     <h2>Nada disso precisa de envio</h2>
     <p>
       Codificar um arquivo em base64 é aritmética. São duas funções que o
-      navegador tem desde o começo &mdash; <code>btoa</code> e
-      <code>encodeURIComponent</code> &mdash; e não existe motivo técnico nenhum
-      para uma imagem viajar até um servidor e voltar só para ser escrita de outro
-      jeito. Qualquer conversor que envia o seu arquivo para fazer isso está
-      enviando pelos motivos dele, não pelos seus.
+      navegador tem desde o começo, o <code>btoa</code> e o
+      <code>encodeURIComponent</code>, e não existe motivo técnico nenhum para uma
+      imagem viajar até um servidor e voltar só para ser escrita de outro jeito.
+      Qualquer conversor que envia o seu arquivo para fazer isso está enviando
+      pelos motivos dele, não pelos seus.
     </p>
     <p>
       <a href="../../imagem-para-base64/">A ferramenta daqui</a> não manda a
       imagem para lugar nenhum: a <code>Content-Security-Policy</code> da página
-      nomeia todos os endereços que ela pode contatar, e nenhum deles é deste
-      site. Carregue a página, desconecte da internet e codifique alguma coisa
-      mesmo assim, se preferir conferir a acreditar.
+      lista todos os endereços que ela pode acessar, e nenhum deles é deste site.
+      Se você prefere conferir a acreditar, carregue a página, desligue a internet
+      e codifique alguma coisa assim mesmo. O
       <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
-      conversores online?</a> apresenta mais três verificações que você pode fazer
-      em qualquer ferramenta.
+      conversores online?</a> traz mais três verificações que você pode fazer em
+      qualquer ferramenta.
     </p>
   </section>

@@ -11,38 +11,37 @@ name = "Immagini in video"
 heading = "Immagini&nbsp;in&nbsp;video <span class=\"h1-kw\">&mdash; fare una presentazione in MP4</span>"
 tagline = "Trasforma una cartella di immagini in un video."
 
-title = "Da sequenza di immagini a MP4 &mdash; gratis, senza caricare nulla, anche offline"
-description = "Trasforma immagini JPG, PNG o WebP in un video MP4, gratis e interamente nel tuo browser. Non viene caricato nulla, non serve iscriversi, e funziona offline."
-og_title = "Da sequenza di immagini a MP4 &mdash; gratis, nel tuo browser"
-og_description = "Trasforma una sequenza di render, un timelapse o una cartella di foto in un MP4. La codifica gira sul tuo dispositivo; non viene caricato nulla."
+title = "Da sequenza di immagini a MP4 &mdash; gratis, senza caricare niente, anche offline"
+description = "Trasforma immagini JPG, PNG o WebP in un video MP4, gratis e interamente dentro il tuo browser. Non viene caricato niente, non serve iscriversi, e funziona offline."
+og_title = "Da sequenza di immagini a MP4 &mdash; gratis, dentro il tuo browser"
+og_description = "Trasforma una sequenza di render, un timelapse o una cartella di foto in un MP4. La codifica gira sul tuo dispositivo, e non viene caricato niente."
 og_image_alt = "Immagini in video - trasformare una cartella di immagini in una presentazione MP4"
 
 pledge = """
-    Ogni fotogramma viene codificato dal tuo browser e il video viene costruito
-    in memoria su questo dispositivo. L'encoder non tocca mai la rete, e
-    dall'altra parte di questa pagina non c'è alcun server a cui mandare
-    un'immagine, anche se la toccasse."""
+    Ogni fotogramma lo codifica il tuo browser, e il video viene costruito in
+    memoria su questo dispositivo. L'encoder la rete non la tocca mai, e
+    dall'altra parte di questa pagina non c'è nessun server a cui mandare
+    un'immagine, nemmeno se la toccasse."""
 
 live_hint = """
-      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
-      scheda Rete e fai un video. Non una sola richiesta porta con sé
-      un'immagine, una miniatura o un nome di file. Oppure stacca la connessione
-      e fanne uno lo stesso."""
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori,
+      tieni d'occhio il pannello Rete e fai un video. Non c'è una sola richiesta
+      che porti con sé un'immagine, una miniatura o un nome di file. Oppure
+      stacca la connessione e fanne uno lo stesso."""
 
 read_first = """
-, e <code>src/encoder.js</code> per il ciclo di codifica
-      che non tocca mai la rete."""
+, e <code>src/encoder.js</code> per il ciclo di codifica,
+      che la rete non la tocca mai."""
 
 howto_heading = "Come trasformare delle immagini in un video"
 
 card = """
             Trasforma una cartella di immagini in una presentazione MP4. La
-            codifica gira sul tuo dispositivo, usando il tuo hardware."""
+            codifica gira sul tuo dispositivo, con il tuo hardware."""
 
 [words]
 plural = "immagini"
 choose = "delle immagini"
-analytics_extra = """"""
 
 [[facts]]
 text = "Niente caricamenti"
@@ -63,39 +62,39 @@ text = "I file restano sul tuo dispositivo"
 title = "Le tue immagini non hanno dove andare."
 body = """
  La
-      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
-      contattare, e nessuno di questi appartiene a questo sito. Qui non esiste
-      un punto di raccolta dove i tuoi file potrebbero finire, e nel codice non
-      c'è nulla che ce li manderebbe se esistesse. Prima qui c'era scritto
-      <code>connect-src 'none'</code>, che era assoluto; aggiungere la
+      Content-Security-Policy elenca tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di quegli indirizzi appartiene a questo sito. Non
+      esiste un punto di raccolta in cui i tuoi file possano finire, e nel codice
+      non c'è niente che ce li manderebbe se anche esistesse. Prima qui c'era
+      scritto <code>connect-src 'none'</code>, che era assoluto; aggiungere la
       pubblicità è costato quello, e dirlo fa parte del patto."""
 
 [[privacy]]
-title = "La codifica è locale."
+title = "La codifica avviene in locale."
 body = """
- WebCodecs gira nel tuo browser e il file finito
-      viene consegnato direttamente a un download. Questa applicazione non ha un
-      lato server."""
+ WebCodecs gira dentro il tuo browser
+      e il file finito viene consegnato direttamente a un download. Questa
+      applicazione un lato server non ce l'ha."""
 
 [[privacy]]
-title = "Cosa carica Google, e cosa non gli viene dato."
+title = "Cosa carica Google, e cosa non gli arriva."
 body = """
- Gli script
-      pubblicitari e di misurazione arrivano da Google. A nessuno dei due viene
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
       passato niente sulle tue immagini: né un file, né una miniatura, né un
-      nome, una dimensione o un conteggio. Ogni riga che legge, decodifica,
+      nome, né una dimensione, né un conteggio. Ogni riga che legge, decodifica,
       compone o codifica un'immagine è servita da questa origine ed è elencata
       nel repository."""
 
 [[privacy]]
-title = "Cosa carica il pulsante delle donazioni, e cosa non gli viene dato."
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
 body = """
 
-      Il pulsante «Buy me a coffee» in cima è disegnato da uno script di
-      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. È un link e
-      niente di più: non riferisce alcuna visita, e non gli viene passato niente
-      su di te o sulle tue immagini. Non succede nulla finché non ci clicchi, e
-      quello a cui arriveresti è il sito di qualcun altro."""
+      Il pulsante «Buy me a coffee» in cima lo disegna uno script di
+      cdnjs.buymeacoffee.com, che prende i caratteri da Google Fonts. È un link
+      e niente di più: non riferisce nessuna visita, e non gli viene passato
+      niente su di te o sulle tue immagini. Finché non ci clicchi non succede
+      niente, e quello a cui arriveresti è il sito di qualcun altro."""
 
 [[privacy]]
 title = "Un'eccezione voluta."
@@ -109,80 +108,79 @@ body = """
 [[privacy]]
 title = "Funziona offline."
 body = """
- Stacca la rete e tutto quello che sta qui,
-      tranne il caricamento da un indirizzo web, continua a funzionare. È la
-      prova più semplice di tutte."""
+ Stacca la rete e tutto quello che sta qui
+      continua a funzionare, tranne il caricamento da un indirizzo web. È la
+      prova più semplice che ci sia."""
 
 [[howto]]
-title = "Scegli le tue immagini."
+title = "Scegli le immagini."
 body = """
  Trascina una cartella sul riquadro,
-      oppure seleziona i file a mano. Il browser li legge direttamente dal tuo
-      disco; mentre lo fai non viene mandato niente da nessuna parte."""
+      oppure seleziona i file a mano. Li legge il browser direttamente dal tuo
+      disco, e mentre lo fa non parte niente per nessuna destinazione."""
 
 [[howto]]
 title = "Mettile in ordine e imposta quanto dura ciascuna."
 body = """
  Trascina
-      per riordinare. La durata si può dare in fotogrammi o in secondi, o per
-      tutte le immagini insieme o una alla volta."""
+      per riordinare. La durata la puoi dare in fotogrammi o in secondi, e puoi
+      darla per tutte le immagini insieme oppure una alla volta."""
 
 [[howto]]
 title = "Scegli una risoluzione e una frequenza di fotogrammi."
 body = """
  «Segui la
       risoluzione più alta» va dietro alla tua immagine più grande; i valori
-      pronti coprono 4K, 1080p, 720p, quadrato e verticale, e c'è una dimensione
-      personalizzata se nessuno di questi va bene."""
+      pronti coprono 4K, 1080p, 720p, quadrato e verticale, e se nessuno di
+      questi va bene c'è una dimensione personalizzata."""
 
 [[howto]]
 title = "Crea il video e scaricalo."
 body = """
  La codifica gira sul tuo hardware,
-      quindi quanto ci mette dipende dal tuo dispositivo e non da una coda.
-      L'MP4 finito viene consegnato direttamente ai download del tuo
-      browser."""
+      quindi quanto ci mette dipende dal tuo dispositivo e non da una coda. L'MP4
+      finito finisce dritto nei download del browser."""
 
 [[faq]]
 q = "Le mie immagini vengono caricate da qualche parte?"
 a = """
-        No. Le tue immagini vengono lette, composte e codificate dal tuo browser
-        sul tuo hardware. Questo strumento non ha un lato server, e la
-        <code>Content-Security-Policy</code> della pagina nomina tutti gli
-        indirizzi che può contattare &mdash; nessuno di questi appartiene a
-        questo sito. L'unica eccezione è la funzione facoltativa «aggiungi da un
-        indirizzo web», che recupera un'immagine che hai incollato tu, e quel
-        server vede il tuo indirizzo IP."""
+        No. Le tue immagini le legge, le compone e le codifica il tuo browser sul
+        tuo hardware. Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca tutti gli
+        indirizzi che può contattare, nessuno dei quali appartiene a questo sito.
+        L'unica eccezione è la funzione facoltativa «aggiungi da un indirizzo
+        web», che va a recuperare un'immagine incollata da te, e quel server vede
+        il tuo indirizzo IP."""
 
 [[faq]]
 q = "Quali formati di immagine posso usare?"
 a = """
         Qualunque formato di immagine ferma che il tuo browser sappia
         decodificare, il che in pratica vuol dire JPG, PNG, WebP, GIF, AVIF e,
-        sui dispositivi Apple, HEIC. Qui non c'è un elenco a parte da tenere
+        sui dispositivi Apple, HEIC. Qui non c'è nessun elenco a parte da tenere
         aggiornato, perché la decodifica è compito del browser e non nostro."""
 
 [[faq]]
 q = "Che formato video produce?"
 a = """
         MP4 con video H.264, che si riproduce praticamente ovunque. In un browser
-        senza WebCodecs lo strumento ripiega sulla registrazione in WebM &mdash;
-        le stesse riprese in un contenitore che meno programmi di montaggio
+        senza WebCodecs lo strumento ripiega sulla registrazione in WebM, cioè le
+        stesse riprese dentro un contenitore che meno programmi di montaggio
         accettano."""
 
 [[faq]]
 q = "Posso usarlo per una sequenza di render di Blender o After Effects?"
 a = """
-        Sì &mdash; una sequenza di render numerata è esattamente ciò per cui
+        Sì: una sequenza di render numerata è esattamente il motivo per cui
         esiste. Aggiungi i fotogrammi che ha scritto il tuo renderer, lascia la
         durata a un fotogramma ciascuno, e imposta la frequenza in modo che
         corrisponda al render. «Ordina per nome» conta come ti aspetti, quindi
         <code>frame_2</code> finisce prima di <code>frame_10</code> e non dopo.
         <br><br>
-        Una cosa da sapere prima di cominciare: l'H.264 non ha un canale alfa,
-        quindi la trasparenza viene appiattita sul colore di sfondo invece che
-        portata dall'altra parte. Se ti serve tenere l'alfa, componi i fotogrammi
-        nel tuo programma di montaggio."""
+        Una cosa da sapere prima di cominciare: l'H.264 un canale alfa non ce
+        l'ha, quindi la trasparenza viene appiattita sul colore di sfondo invece
+        che portata dall'altra parte. Se ti serve tenere l'alfa, componi i
+        fotogrammi nel tuo programma di montaggio."""
 
 [[faq]]
 q = "Posso fare un timelapse con delle foto?"
@@ -194,38 +192,38 @@ a = """
         <br><br>
         «Ordina per data» rimette un rullino nell'ordine in cui è stato scattato,
         cosa che conta quando i nomi dei file sono ripartiti da 0001. Foto di
-        dimensioni diverse non sono un problema &mdash; «segui la risoluzione più
+        dimensioni diverse non sono un problema, perché «segui la risoluzione più
         alta» dimensiona il video in modo che nessuna venga rimpicciolita."""
 
 [[faq]]
 q = "C'è un limite al numero di immagini o alla durata del video?"
 a = """
-        Nello strumento non c'è alcun limite. Il tetto pratico è la memoria del
+        Nello strumento non c'è nessun limite. Il tetto pratico è la memoria del
         tuo dispositivo, perché il video finito viene assemblato lì prima che tu
-        lo scarichi. Le presentazioni 4K molto lunghe sono la prima cosa a
-        sentirlo."""
+        lo scarichi. La prima cosa a sentirlo sono le presentazioni 4K molto
+        lunghe."""
 
 [[faq]]
 q = "È gratis, e mi serve un account?"
 a = """
-        È gratis, e non c'è account, non c'è accesso e non c'è periodo di prova.
-        Il sito ha della pubblicità, ed è quella che lo paga; agli annunci non
-        viene dato niente sulle tue immagini."""
+        È gratis, e non c'è account, non c'è registrazione e non c'è periodo di
+        prova. Il sito ha della pubblicità, ed è quella che lo mantiene; agli
+        annunci non arriva niente sulle tue immagini."""
 
 [[faq]]
 q = "Funziona offline?"
 a = """
         Sì. Carica la pagina una volta, poi stacca la connessione e continua a
         funzionare. È anche il modo più semplice per dimostrare che non viene
-        caricato niente: uno strumento che spedisse via le tue immagini per
-        elaborarle si fermerebbe nel momento in cui stacchi la spina."""
+        caricato niente, perché uno strumento che spedisse via le tue immagini
+        per elaborarle si fermerebbe nell'istante in cui stacchi la spina."""
 
 [[faq]]
 q = "Posso aggiungere della musica o una colonna sonora?"
 a = """
-        Non ancora. Lo strumento produce solo video: l'MP4 che scrive ha una sola
-        traccia video e nessuna traccia audio. Se ti serve una colonna sonora,
-        aggiungila dopo in un programma di montaggio."""
+        Non ancora. Lo strumento produce soltanto video: l'MP4 che scrive ha una
+        sola traccia video e nessuna traccia audio. Se ti serve una colonna
+        sonora, aggiungila dopo in un programma di montaggio."""
 
 [schema]
 browser_requirements = "Richiede JavaScript. L'uscita in MP4 ha bisogno di un browser con WebCodecs; gli altri ripiegano sul WebM."
@@ -240,7 +238,7 @@ features = [
 
 [picker]
 title = "Trascina qui le immagini"
-hint = "oppure clicca per scegliere &mdash; JPEG, PNG, WebP, GIF, AVIF"
+hint = "oppure clicca per sceglierle &mdash; JPEG, PNG, WebP, GIF, AVIF"
 
 [picker.urls]
 summary = "Aggiungi da un indirizzo web"

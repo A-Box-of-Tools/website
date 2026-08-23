@@ -11,17 +11,15 @@
 # length has changed for exactly that reason.
 #
 
-note = "Todavía sin construir. Está aquí para que veas hacia dónde va esto."
+note = "Todavía sin construir. Está en la lista para que veas por dónde va esto."
 
 [[group]]
 id = "images"
 name = "Imágenes"
 items = [
   ["Girar y voltear", "en cuartos de vuelta, o enderezar unos pocos grados"],
-  ["Añadir texto", "sobre la imagen, o en una caja de texto encima"],
-  ["Filtros", "brillo, contraste, saturación, desenfoque, escala de grises"],
-  ["Imagen a data URI", "el resultado se pega directamente en CSS o HTML"],
-  ["HEIC a JPG", "las fotos que hace un iPhone, en un formato que abre todo"],
+  ["Añadir texto", "sobre la propia imagen, o en un pie encima de ella"],
+  ["Filtros", "brillo, contraste, saturación, desenfoque y escala de grises"],
   ["AVIF y JPEG XL", "convertir en ambas direcciones, sea cual sea el navegador que uses"],
 ]
 
@@ -33,7 +31,7 @@ items = [
   ["Redimensionar, recortar y girar GIF", "fotograma a fotograma, conservando los tiempos"],
   ["Invertir un GIF", "el último fotograma primero"],
   ["Cambiar la velocidad de un GIF", "retimarlo sin volver a renderizar los fotogramas"],
-  ["Analizador de GIF", "fotogramas, retardos, paleta y adónde se han ido los bytes"],
+  ["Analizador de GIF", "fotogramas, retardos, paleta y en qué se han ido los bytes"],
   ["Creador de APNG", "animación con transparencia de verdad y color completo"],
   ["WebP animado", "otra vez la misma animación, por una fracción del tamaño"],
 ]
@@ -44,9 +42,9 @@ name = "Vídeo"
 items = [
   ["Redimensionar", "hasta un tamaño que de verdad se pueda enviar"],
   ["Girar", "para ese clip que se grabó de lado"],
-  ["Silenciar, o guardar el audio", "quitar el sonido, o conservarlo por su cuenta"],
+  ["Silenciar, o quedarse el audio", "quitarle el sonido, o guardarlo aparte"],
   ["Convertir a MP4 o WebM", "el que insista en pedirte el sitio donde vas a publicar"],
-  ["Filtros", "brillo, contraste, saturación, desenfoque"],
+  ["Filtros", "brillo, contraste, saturación y desenfoque"],
   ["Incrustar subtítulos", "un archivo SRT dibujado dentro de la imagen"],
 ]
 
@@ -55,8 +53,8 @@ id = "audio"
 name = "Audio"
 items = [
   ["Fundido de entrada y de salida", "para que no empiece y acabe de golpe"],
-  ["Imagen de la forma de onda", "dibujar una pista como si fuera una imagen"],
-  ["Convertir de formato", "MP3, WAV y Opus, en cualquier dirección"],
+  ["Imagen de la onda", "dibujar una pista como si fuera una imagen"],
+  ["Cambiar de formato", "MP3, WAV y Opus, en cualquier dirección"],
 ]
 
 [[group]]
@@ -64,13 +62,13 @@ id = "documents"
 name = "Documentos y PDF"
 items = [
   ["Girar y recortar páginas", "enderezar un escaneo que entró de lado, o recortarle los márgenes"],
-  ["Extraer imágenes", "sacar las fotos de vuelta de un documento"],
+  ["Extraer imágenes", "recuperar las fotos que hay dentro de un documento"],
 ]
 
 [[group]]
 id = "beyond"
 name = "Más allá de los medios"
 items = [
-  ["Datos", "convertir, limpiar e inspeccionar CSV y JSON"],
+  ["Datos", "convertir, limpiar e inspeccionar archivos CSV y JSON"],
   ["Privacidad y seguridad", "hashes, sumas de verificación, eliminación de metadatos"],
 ]

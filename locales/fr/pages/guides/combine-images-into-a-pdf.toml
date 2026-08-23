@@ -1,5 +1,5 @@
 #
-# Guide : reunir des images dans un PDF - French.
+# Guide : réunir des images dans un PDF - French.
 #
 
 nav = "Des images dans un PDF"
@@ -8,10 +8,10 @@ description = "Transformer des photos ou des scans en un seul PDF : format de pa
 heading = "Comment réunir des images dans un seul PDF"
 lede = """
     On vous a demandé &laquo;&nbsp;un seul PDF&nbsp;&raquo; et vous avez onze
-    photographies de papier. Voici les choix qui changent vraiment le résultat
-    &mdash; format de page, ordre, qualité, et ce que le document dit de vous
-    &mdash; et ceux que vous pouvez ignorer."""
+    photographies de papier. Voici les choix qui changent vraiment le résultat,
+    à savoir le format de page, l'ordre, la qualité et ce que le document dit de
+    vous, ainsi que ceux que vous pouvez ignorer."""
 updated = "20 août 2026"
 og_title = "Comment réunir des images dans un seul PDF"
 og_description = "Format de page, ordre et rotation, pourquoi un JPEG n'a pas à perdre de qualité en entrant, et ce qu'un PDF raconte à la personne à qui vous l'envoyez."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

@@ -8,10 +8,10 @@ description = "Een filmpje knippen hoeft geen enkele byte kwaliteit te kosten. W
 heading = "Hoe je een video inkort zonder hem opnieuw te coderen"
 lede = """
     Inkorten verandert niets aan hoe een frame eruitziet, dus een goede knipper
-    raakt ze niet aan &mdash; hij verplaatst ze precies zoals ze waren naar een
-    nieuw bestand. Hier staat wat je dat oplevert, en de ene plek waar het
-    zichtbaar wordt."""
+    raakt ze niet aan, maar verplaatst ze precies zoals ze waren naar een nieuw
+    bestand. Hier staat wat je dat oplevert, en de ene plek waar het zichtbaar
+    wordt."""
 updated = "20 augustus 2026"
 og_title = "Hoe je een video inkort zonder hem opnieuw te coderen"
 og_description = "Waarom een knip soms eerder landt dan waar je hem markeerde, wat een keyframe daarmee te maken heeft, en wanneer je een hercodering accepteert."
-og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

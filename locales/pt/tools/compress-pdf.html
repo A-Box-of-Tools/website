@@ -1,5 +1,5 @@
 <main>
-  <!-- Passo 1 &mdash; o arquivo -->
+  <!-- Passo 1: o arquivo -->
   <section class="card">
     <h2><span class="step">1</span> Escolha um PDF</h2>
 
@@ -17,17 +17,18 @@
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
   </section>
 
-  <!-- Passo 2 &mdash; a tela que esta ferramenta manteria se pudesse manter só uma -->
+  <!-- Passo 2: a tela que esta ferramenta manteria se pudesse manter só uma -->
   <section class="card" id="inventory-card" hidden>
     <h2><span class="step">2</span> Veja onde está o tamanho</h2>
 
     <p class="card-lede">
-      &ldquo;Comprimir um PDF&rdquo; são dois trabalhos diferentes dividindo um
-      nome. Um escaneamento é uma pilha de fotografias, e recodificá-las vale a
-      maior parte do arquivo. Um contrato é texto e fontes, que o que quer que o
-      tenha feito já comprimiu &mdash; não existe oitenta por cento escondido lá
+      &ldquo;Comprimir um PDF&rdquo; são dois trabalhos diferentes dividindo o
+      mesmo nome. Uma digitalização é uma pilha de fotografias, e recodificá-las
+      vale a maior parte do arquivo. Já um contrato é texto e fontes, que o
+      programa que o fez já comprimiu: não existe oitenta por cento escondido lá
       dentro, e ferramenta nenhuma vai achar um. Qual dos dois você tem não é
-      questão de opinião, então aqui está, antes de qualquer coisa ser tocada.
+      questão de opinião, então está tudo aqui, antes de qualquer coisa ser
+      tocada.
     </p>
 
     <p id="verdict" class="verdict"></p>
@@ -40,17 +41,17 @@
     <p id="inventory-notes" class="field-summary"></p>
   </section>
 
-  <!-- Passo 3 &mdash; quanto gastar -->
+  <!-- Passo 3: quanto gastar -->
   <section class="card" id="settings-card" hidden>
     <h2><span class="step">3</span> Diga com que força apertar</h2>
 
     <p class="card-lede">
       Um PDF registra de que tamanho cada imagem é desenhada, então esta
-      ferramenta consegue medir o que a página de fato usa em vez de adivinhar. Um
-      escaneamento de 4000 pixels colocado ao longo de vinte centímetros de papel
-      está carregando 500 pixels por polegada; a 150 ele imprime igual e fica
-      igual na tela. Os pixels que ninguém consegue ver são gastos primeiro,
-      porque não custam nada.
+      ferramenta consegue medir o que a página de fato usa em vez de adivinhar.
+      Uma digitalização de 4000 pixels espalhada ao longo de vinte centímetros de
+      papel está carregando 500 pixels por polegada, e a 150 ela imprime igual e
+      fica igual na tela. Os pixels que ninguém consegue ver são os primeiros a
+      ser gastos, porque não custam nada.
     </p>
 
     <fieldset class="presets-set">
@@ -93,7 +94,7 @@
         <label for="dpi-value">Máximo de pixels por polegada de espaço desenhado</label>
         <div class="inline-pair">
           <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
-          <span class="unit">DPI &mdash; 0 deixa cada imagem no tamanho cheio dela</span>
+          <span class="unit">DPI. Com 0, cada imagem fica no tamanho cheio dela</span>
         </div>
       </div>
       <div class="option-row">
@@ -112,9 +113,9 @@
         <span class="check-note">
           O nome e a versão do programa que o fez, quando foi feito e editado pela
           última vez, o pacote XMP, e aquele blob privado que um programa de
-          diagramação deixa para trás para conseguir reimportar o próprio trabalho
-          &mdash; o que às vezes são megabytes. Nada disso é necessário para exibir
-          o documento.
+          diagramação deixa para trás para conseguir reimportar o próprio
+          trabalho, o que às vezes dá megabytes. Nada disso é necessário para
+          exibir o documento.
         </span>
       </span>
     </label>
@@ -122,7 +123,7 @@
     <p id="settings-summary" class="field-summary"></p>
   </section>
 
-  <!-- Passo 4 &mdash; o único clique -->
+  <!-- Passo 4: o único clique -->
   <section class="card" id="run-card" hidden>
     <h2><span class="step">4</span> Comprimir</h2>
 

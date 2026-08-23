@@ -7,45 +7,43 @@
 
 name = "Recortador de vídeo"
 heading = "Recortar&nbsp;vídeo <span class=\"h1-kw\">&mdash; recortar un vídeo en línea</span>"
-tagline = "Deja un clip reducido a la parte que importa."
+tagline = "Deja el clip en la parte que de verdad importa."
 
-title = "Recortar un vídeo en línea &mdash; gratis, sin subidas y sin conexión"
-description = "Recorta un MP4, un MOV o un WebM a cualquier forma: cuadrado, 9:16 o una caja de píxeles exacta. Funciona en tu navegador: no se sube nada, se conserva el sonido y funciona sin conexión."
+title = "Recortar un vídeo en línea &mdash; gratis, sin subir nada y sin conexión"
+description = "Recorta un MP4, MOV o WebM a la forma que quieras: cuadrado, 9:16 o una caja de píxeles exacta. Todo en el navegador, sin subir nada y conservando el sonido."
 og_title = "Recortador de vídeo &mdash; recorta un clip sin subirlo"
-og_description = "Arrastra una caja sobre tu clip y recórtalo a cualquier forma. Los fotogramas se descodifican y se vuelven a codificar en tu propio equipo, y el sonido original pasa intacto."
+og_description = "Arrastra una caja sobre el clip y recórtalo a la forma que quieras. Los fotogramas se descodifican y se vuelven a codificar en tu dispositivo, y el sonido original pasa intacto."
 og_image_alt = "Recortador de vídeo - recorta un clip en tu navegador sin subir nada"
 
 pledge = """
-    Tu propio navegador descodifica, recorta y codifica cada fotograma, en tu
-    propio hardware. Aquí nada puede descargar ni enviar nada &mdash; esta
-    herramienta no tiene ninguna función de red &mdash; y al otro lado de esta
-    página no hay ningún servidor al que mandar un vídeo aunque lo hubiera."""
+    Cada fotograma lo descodifica, lo recorta y lo codifica tu propio navegador,
+    en tu propio hardware. Aquí no hay nada que pueda descargar ni enviar, porque
+    esta herramienta no tiene ninguna función de red. Y aunque la tuviera, al
+    otro lado de esta página no hay ningún servidor al que mandar un vídeo."""
 
 live_hint = """
-      No hace falta que nos creas: abre las herramientas de desarrollo, mira la
-      pestaña «Red» y recorta un clip. Ni una sola petición lleva un fotograma,
-      un nombre de archivo ni un byte de lo que has elegido. O desconéctate de
-      internet y recorta uno de todos modos &mdash; una herramienta que mandara
-      tu vídeo fuera a procesar sencillamente se detendría."""
+      No hace falta que nos creas. Abre las herramientas de desarrollo, ponte en
+      la pestaña «Red» y recorta un clip. No verás ni una petición que lleve un
+      fotograma, un nombre de archivo o un byte de lo que has elegido. O
+      desconéctate de internet y recorta uno igualmente: una herramienta que
+      mandara tu vídeo fuera a procesar se pararía en seco."""
 
 read_first = """
 , <code>src/demux.js</code> para el lector que
       encuentra los fotogramas dentro de un MP4, y <code>src/transcode.js</code>
-      para el bucle que los descodifica, los recorta y los codifica. Ninguno
-      importa nada capaz de hacer una petición."""
+      para el bucle que los descodifica, los recorta y los codifica. Ninguno de
+      los dos importa nada capaz de hacer una petición."""
 
 howto_heading = "Cómo recortar un vídeo"
 
 card = """
-            Arrastra una caja sobre un clip y déjalo con esa forma &mdash;
-            cuadrado para un feed, vertical para el móvil, o una caja de píxeles
+            Arrastra una caja sobre el clip y déjalo con esa forma: cuadrado
+            para un feed, vertical para el móvil o una caja de píxeles
             exacta."""
 
 [words]
 plural = "vídeos"
 choose = "un vídeo"
-analytics_extra = """, ni ningún
-  fotograma, duración o tamaño de recorte"""
 
 [[facts]]
 text = "Sin subidas"
@@ -66,52 +64,52 @@ text = "Funciona sin conexión"
 title = "Tus vídeos no tienen adónde ir."
 body = """
  La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna es de este sitio. Aquí no hay ningún punto final donde
-      pudiera recogerse tu archivo, ni nada en el código que lo enviara si lo
-      hubiera."""
+      Content-Security-Policy enumera todas las direcciones a las que esta
+      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
+      destino donde recoger tu archivo, ni una línea de código que lo mandara si
+      lo hubiera."""
 
 [[privacy]]
-title = "Aquí nada descarga nada."
+title = "Aquí nada le pide nada a la red."
 body = """
  Esta herramienta no tiene ninguna
-      función de red: ninguna dirección que pegar, nada que descargar, ningún
-      motor que se baje en el primer uso. Cada byte que toca tu vídeo vino de
-      este origen cuando se cargó la página."""
+      función de red: no hay dirección que pegar, ni nada que descargar, ni
+      ningún motor que se baje la primera vez que la usas. Cada byte que toca tu
+      vídeo llegó desde este origen al cargarse la página."""
 
 [[privacy]]
 title = "La descodificación y la codificación son locales."
 body = """
  Los fotogramas pasan
-      por WebCodecs en tu propio navegador, o por el mismo motor de reproducción
-      que te enseñaría el clip de todas formas. El archivo terminado se construye
-      en la memoria de este equipo y se entrega directamente a una descarga."""
+      por WebCodecs dentro de tu navegador, o por el mismo motor de reproducción
+      que te enseñaría el clip de todas formas. El archivo terminado se monta en
+      la memoria de este dispositivo y va directo a una descarga."""
 
 [[privacy]]
 title = "El sonido se copia, no se escucha."
 body = """
- Por la vía de MP4 las
-      muestras de audio se trasladan sin descodificarlas siquiera &mdash; aquí
-      nada las vuelve a convertir en sonido, y nada podría pasarlas a ninguna
-      parte si lo hiciera."""
+ Por la vía del MP4, las
+      muestras de audio se trasladan sin llegar a descodificarse. Aquí nada las
+      vuelve a convertir en sonido, y aunque lo hiciera, no habría adónde
+      mandarlas."""
 
 [[privacy]]
-title = "Qué carga Google y qué no se le da."
+title = "Qué carga Google, y qué no llega a ver."
 body = """
  Los scripts de
-      publicidad y medición vienen de Google. A ninguno se le entrega nada sobre
-      tu vídeo: ni un archivo, ni un fotograma, ni un nombre, un tamaño, una
-      duración o la forma a la que lo recortaste. Cada línea que lee,
-      descodifica, recorta o codifica se sirve desde este origen y está listada
-      en el repositorio."""
+      publicidad y de medición vienen de Google. A ninguno se le entrega nada
+      sobre tu vídeo: ni un archivo, ni un fotograma, ni un nombre, ni un tamaño,
+      ni una duración, ni la forma a la que lo has recortado. Cada línea que lee,
+      descodifica, recorta o codifica se sirve desde este origen y está en el
+      repositorio."""
 
 [[privacy]]
-title = "Qué carga el botón de donación y qué no se le da."
+title = "Qué carga el botón de donación, y qué no llega a ver."
 body = """
 
       El botón «Buy me a coffee» de la cabecera lo dibuja un script de
-      cdnjs.buymeacoffee.com y se compone con Google Fonts. Es un enlace y nada
-      más: no informa de ninguna visita, y no se le entrega nada sobre ti ni
+      cdnjs.buymeacoffee.com y se compone con Google Fonts. No es más que un
+      enlace: no avisa de ninguna visita, y no se le entrega nada sobre ti ni
       sobre tu vídeo."""
 
 [[privacy]]
@@ -123,119 +121,120 @@ body = """
 [[howto]]
 title = "Elige un vídeo."
 body = """
- Suelta un MP4, MOV, M4V o WebM sobre
-      el selector, o escoge uno a mano. Tu navegador lo lee directamente del
-      disco; mientras lo haces no se envía nada a ninguna parte."""
+ Arrastra un MP4, MOV, M4V o WebM
+      hasta el selector, o busca uno a mano. El navegador lo lee directamente
+      del disco, y mientras lo haces no sale nada hacia ninguna parte."""
 
 [[howto]]
 title = "Arrastra la caja sobre la parte que quieres conservar."
 body = """
  Arrastra
-      dentro para moverla y desde cualquier esquina para cambiarle el tamaño.
-      Fíjala antes a una forma &mdash; 1:1 para una publicación cuadrada, 9:16
-      para el móvil, 16:9 para un encuadre panorámico &mdash; o escribe una caja
-      de píxeles exacta en los cuatro campos de debajo."""
+      por dentro para moverla y desde cualquier esquina para cambiarle el
+      tamaño. Puedes fijarla antes a una forma, sea 1:1 para una publicación
+      cuadrada, 9:16 para el móvil o 16:9 para un encuadre panorámico, o
+      escribir una caja de píxeles exacta en los cuatro campos de debajo."""
 
 [[howto]]
 title = "Elige cuánta calidad gastar."
 body = """
  La imagen tiene que volver
-      a codificarse, porque un fotograma recortado es otra imagen distinta.
-      «Equilibrado» la deja cerca de lo que el archivo ya gastaba en esa zona;
-      «Mejor calidad» gasta más. El sonido se conserva salvo que lo desactives."""
+      a codificarse, porque un fotograma recortado ya es otra imagen. Con
+      «Equilibrado» se queda cerca de lo que el archivo gastaba en esa zona; con
+      «Mejor calidad» gasta más. El sonido se conserva salvo que lo
+      desactives."""
 
 [[howto]]
 title = "Recórtalo y descárgalo."
 body = """
- El trabajo ocurre en tu propio
-      hardware, así que lo que tarde depende de tu equipo y no de una cola. El
-      vídeo terminado se entrega directamente a las descargas de tu navegador."""
+ El trabajo lo hace tu propio
+      hardware, así que lo que tarde depende de tu dispositivo y no de una cola.
+      El vídeo terminado va directo a las descargas del navegador."""
 
 [[faq]]
 q = "¿Se sube mi vídeo a alguna parte?"
 a = """
-        No. Tu propio navegador lo lee, lo descodifica, lo recorta y lo codifica
-        en tu propio hardware. Esta herramienta no tiene lado servidor, y la
-        <code>Content-Security-Policy</code> de la página nombra todas las
-        direcciones que puede contactar &mdash; ninguna es de este sitio.
-        Desenchúfate de internet y recorta un clip de todos modos si prefieres
-        comprobarlo a que te lo cuenten."""
+        No. Tu propio navegador lo lee, lo descodifica, lo recorta y lo codifica,
+        todo en tu propio hardware. Esta herramienta no tiene parte de servidor, y
+        la <code>Content-Security-Policy</code> de la página enumera todas las
+        direcciones a las que puede conectarse, ninguna de este sitio. Y si
+        prefieres comprobarlo a que te lo cuenten, desenchúfate de internet y
+        recorta un clip igualmente."""
 
 [[faq]]
 q = "¿Qué formatos de vídeo puedo recortar?"
 a = """
         MP4, M4V y MOV se leen directamente, lleven lo que lleven dentro: H.264,
-        HEVC, AV1 o VP9, siempre que tu navegador sepa descodificar ese códec.
-        Cualquier otra cosa que tu navegador sepa reproducir &mdash; WebM la más
-        evidente &mdash; se recorta reproduciéndola y grabando el resultado, lo
-        que funciona pero tarda lo que dure el clip. Un archivo que el navegador
-        no sabe ni leer ni reproducir, que en la práctica significa AVI, WMV, FLV
-        y casi todos los MKV, se rechaza con un mensaje que lo dice, en vez de
-        fallar a mitad de camino."""
+        HEVC, AV1 o VP9, siempre que el navegador sepa descodificar ese códec.
+        Lo demás que el navegador sepa reproducir, y aquí el caso claro es el
+        WebM, se recorta reproduciéndolo y grabando el resultado; funciona, pero
+        tarda lo que dure el clip. Un archivo que el navegador no sabe ni leer ni
+        reproducir, que en la práctica son los AVI, WMV, FLV y casi todos los
+        MKV, se rechaza con un mensaje que lo dice, en lugar de fallar a mitad de
+        camino."""
 
 [[faq]]
-q = "¿Hay algún límite de tamaño o duración del vídeo?"
+q = "¿Hay algún límite de tamaño o de duración?"
 a = """
-        La herramienta no lleva ningún límite dentro, y el archivo no se carga
-        entero en memoria de golpe &mdash; se recorre de unos pocos megabytes en
-        unos pocos megabytes. El techo práctico es el vídeo terminado, que se
-        monta en memoria antes de que lo descargues, y el tiempo que tarde tu
-        equipo en codificarlo."""
+        La herramienta no lleva ningún límite dentro, y el archivo tampoco se
+        carga entero en memoria de golpe, sino que se recorre de unos megabytes
+        en unos megabytes. El techo de verdad son dos cosas: el vídeo terminado,
+        que sí se monta en memoria antes de que lo descargues, y lo que tarde tu
+        dispositivo en codificarlo."""
 
 [[faq]]
 q = "¿Sobrevive el sonido?"
 a = """
-        Por la vía de MP4, exactamente: el audio se copia muestra a muestra sin
-        descodificarlo nunca, así que es byte por byte lo que había en el
-        archivo. Por la vía de la grabación se captura de la reproducción y se
-        vuelve a codificar, lo que cuesta algo de calidad. En cualquiera de los
-        dos casos hay una casilla para dejarlo fuera del todo."""
+        Por la vía del MP4, tal cual: el audio se copia muestra a muestra sin
+        llegar a descodificarse, así que sale byte por byte igual que estaba en
+        el archivo. Por la vía de la grabación se captura de la reproducción y se
+        vuelve a codificar, lo que cuesta algo de calidad. En los dos casos hay
+        una casilla para dejarlo fuera del todo."""
 
 [[faq]]
 q = "¿Recortar hace perder calidad?"
 a = """
-        La imagen se vuelve a codificar, porque un fotograma recortado es otra
-        imagen distinta y no hay forma de guardarla sin escribir los píxeles de
-        nuevo. Lo que la herramienta no hará es gastar más de lo que gastaba el
-        original en esa misma zona, ya que recodificar por encima de eso solo
-        hace el archivo más grande sin hacer que se vea mejor."""
+        La imagen se vuelve a codificar, porque un fotograma recortado ya es otra
+        imagen y no hay manera de guardarla sin escribir los píxeles otra vez. Lo
+        que la herramienta no hace es gastar más de lo que gastaba el original en
+        esa misma zona, porque recodificar por encima de ahí solo engorda el
+        archivo sin que se vea mejor."""
 
 [[faq]]
 q = "¿Puedo cortar también la duración?"
 a = """
         Aquí no, pero al lado sí. Esta herramienta cambia la forma de la imagen y
         nada más: el clip que sale dura exactamente lo mismo que el que entró,
-        con su sincronía y su sonido intactos. Cortar es un trabajo aparte y es
-        una herramienta aparte &mdash; el <a href="../cortar-video/">cortador de
-        vídeo</a> marca los trozos de un clip que merece la pena conservar y los
-        guarda como un solo archivo, sin recodificar ni un fotograma."""
+        con su sincronía y su sonido intactos. Cortar es otro trabajo y tiene su
+        propia herramienta. El <a href="../cortar-video/">cortador de vídeo</a>
+        marca los trozos que merece la pena conservar y los guarda en un solo
+        archivo, sin recodificar ni un fotograma."""
 
 [[faq]]
 q = "¿Por qué el ancho y el alto se mueven de dos en dos?"
 a = """
-        H.264, el códec que hay dentro de un MP4, guarda la imagen en bloques y
-        no tiene forma de describir un fotograma con un número impar de píxeles
-        de lado. En vez de redondear tu recorte en silencio después de fijarlo,
-        la caja solo ofrece números pares desde el principio."""
+        Porque el H.264, el códec que hay dentro de un MP4, guarda la imagen en
+        bloques y no tiene forma de describir un fotograma con un número impar de
+        píxeles de lado. En vez de redondearte el recorte por lo bajo una vez
+        fijado, la caja solo te ofrece números pares desde el principio."""
 
 [[faq]]
 q = "¿Es gratis? ¿Necesito una cuenta?"
 a = """
-        Es gratis, y no hay cuenta, ni inicio de sesión, ni prueba, ni marca de
-        agua. El sitio lleva publicidad, que es lo que lo paga; a los anuncios no
-        se les da nada sobre tu vídeo."""
+        Es gratis, y no hay cuenta, ni inicio de sesión, ni versión de prueba, ni
+        marca de agua. El sitio lleva publicidad, que es lo que lo paga, y a los
+        anuncios no se les da nada sobre tu vídeo."""
 
 [schema]
 browser_requirements = "Necesita JavaScript. La salida en MP4 requiere un navegador con WebCodecs; los demás recurren a grabar en WebM."
-description = "Recorta un vídeo a cualquier forma o a una caja de píxeles exacta en el navegador. MP4, MOV y M4V se descodifican y se vuelven a codificar fotograma a fotograma, con el audio original trasladado intacto; cualquier otra cosa que el navegador sepa reproducir se recorta grabándola. No se sube nada."
+description = "Recorta un vídeo a la forma que quieras o a una caja de píxeles exacta, dentro del navegador. Los MP4, MOV y M4V se descodifican y se vuelven a codificar fotograma a fotograma, con el audio original trasladado intacto; lo demás que el navegador sepa reproducir se recorta grabándolo. No se sube nada."
 features = [
   "Recorta vídeo MP4, MOV, M4V y WebM",
   "Fuentes H.264, HEVC, AV1 y VP9, descodificadas mediante WebCodecs",
   "Recorte libre, proporciones fijas (1:1, 4:5, 9:16, 16:9, 4:3, 3:2) o una caja de píxeles exacta",
   "Conserva el audio original sin volver a codificarlo",
-  "Funciona sin conexión; sin subidas, sin cuenta y sin marca de agua",
+  "Funciona sin conexión, sin subidas, sin cuenta y sin marca de agua",
 ]
 
 [picker]
-title = "Suelta aquí un vídeo"
+title = "Arrastra aquí un vídeo"
 hint = "o haz clic para buscarlo &mdash; MP4, MOV, M4V, WebM y cualquier otra cosa que este navegador reproduzca"

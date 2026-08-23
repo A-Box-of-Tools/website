@@ -11,7 +11,7 @@ name = "Afbeeldingen naar pdf"
 heading = "Afbeeldingen&nbsp;naar&nbsp;pdf <span class=\"h1-kw\">&mdash; jpg-naar-pdf-omzetter</span>"
 tagline = "Zet je plaatjes in één document."
 
-title = "Afbeeldingen-naar-pdf-omzetter &mdash; gratis jpg naar pdf, zonder uploaden"
+title = "Afbeeldingen naar pdf &mdash; gratis jpg naar pdf omzetten, zonder uploaden"
 description = "Voeg jpg-, png- of WebP-afbeeldingen samen tot één pdf, gratis en volledig in je browser. Foto's gaan erin zonder opnieuw gecodeerd te worden, en er wordt niets geüpload."
 og_title = "Afbeeldingen naar pdf &mdash; gratis jpg-naar-pdf-omzetter"
 og_description = "Voeg afbeeldingen samen tot één pdf op je eigen apparaat. JPEG-foto's worden onaangeroerd overgenomen, dus er gaat geen kwaliteit verloren en er wordt niets geüpload."
@@ -20,21 +20,21 @@ og_image_alt = "Afbeeldingen naar pdf - plaatjes samenvoegen tot één document 
 pledge = """
     Het document wordt op dit apparaat in het geheugen geschreven, pagina voor
     pagina, door code die vanaf dit adres geserveerd wordt. Niets hier kan een
-    upload doen, en er staat aan de andere kant van deze pagina geen server om er
-    een te ontvangen."""
+    upload doen, en aan de andere kant van deze pagina staat geen server die er
+    een zou kunnen ontvangen."""
 
 live_hint = """
-      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
-      gaten en maak een pdf. Geen enkel verzoek draagt een afbeelding, een
-      miniatuur of een bestandsnaam. Of trek de stekker uit het internet en maak
-      er toch een."""
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en maak een pdf. Geen enkel verzoek draagt
+      een afbeelding, een miniatuur of een bestandsnaam. Of trek de stekker uit je
+      internet en maak er alsnog een."""
 
 read_first = """
 , en <code>src/pdf.js</code> en <code>src/document.js</code>
-      voor het hele schrijfwerk aan het bestand, dat het netwerk nooit
-      aanraakt."""
+      voor het hele schrijfwerk aan het bestand, waar het netwerk nooit aan te pas
+      komt."""
 
-howto_heading = "Van afbeeldingen een pdf maken"
+howto_heading = "Zo maak je van afbeeldingen een pdf"
 
 card = """
             Voeg afbeeldingen samen tot één pdf, één plaatje per pagina.
@@ -44,7 +44,6 @@ card = """
 [words]
 plural = "afbeeldingen"
 choose = "afbeeldingen"
-analytics_extra = """"""
 
 [[facts]]
 text = "Geen upload"
@@ -64,33 +63,33 @@ text = "Bestanden blijven op je apparaat"
 [[privacy]]
 title = "Je afbeeldingen kunnen nergens heen."
 body = """
- De
-      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
-      geen ervan hoort bij deze site. Deze tool voegt niets aan die lijst toe: hij
-      heeft geen eigen netwerkfunctie, ook geen optionele. Er is hier geen
-      eindpunt waar je bestanden verzameld zouden kunnen worden, en niets in de
-      code dat ze zou versturen als dat er wel was."""
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en
+      geen daarvan hoort bij deze site. Deze tool voegt niets aan die lijst toe,
+      want hij heeft geen eigen netwerkfunctie, ook geen optionele. Er is hier geen
+      eindpunt waar je bestanden verzameld zouden kunnen worden, en in de code staat
+      niets wat ze zou versturen als dat eindpunt er wel was."""
 
 [[privacy]]
 title = "De pdf wordt hier geschreven."
 body = """
- Een pdf is een lijst objecten en een
-      tabel van waar elk object begint, en <code>src/pdf.js</code> schrijft ze
-      allebei. Er wordt geen bibliotheek opgehaald, er wordt niets op een server
-      gerenderd, en het gereedgekomen bestand gaat rechtstreeks vanuit het
-      geheugen naar een download."""
+ Een pdf is een lijst objecten plus
+      een tabel van waar elk object begint, en <code>src/pdf.js</code> schrijft ze
+      allebei. Er wordt geen bibliotheek opgehaald en er wordt niets op een server
+      gerenderd, en het gereedgekomen bestand gaat rechtstreeks vanuit het geheugen
+      naar een download."""
 
 [[privacy]]
 title = "Het document krijgt niets over jou te horen."
 body = """
- De meeste tools stempelen een
-      pdf met een tijdstempel en de naam van het programma dat hem maakte. Deze
-      schrijft alleen een titel, een auteur en een datum als je die intikt; de
-      bestandsnamen van je plaatjes komen nooit in het document voor, en iets over
-      je apparaat evenmin."""
+ De meeste tools stempelen een pdf
+      met een tijdstempel en de naam van het programma dat hem maakte. Deze schrijft
+      alleen een titel, een auteur en een datum als je die zelf intikt. De
+      bestandsnamen van je plaatjes komen nooit in het document voor, en over je
+      apparaat staat er evenmin iets in."""
 
 [[privacy]]
-title = "Wat Google laadt, en wat het niet krijgt."
+title = "Wat Google laadt, en wat het niet te zien krijgt."
 body = """
  De advertentie- en
       meetscripts komen van Google. Geen van beide krijgt iets over je
@@ -99,82 +98,82 @@ body = """
       vanaf deze herkomst geserveerd en staat in de repository."""
 
 [[privacy]]
-title = "Wat de doneerknop laadt, en wat hij niet krijgt."
+title = "Wat de doneerknop laadt, en wat hij niet te zien krijgt."
 body = """
 
       De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een
       script van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts.
-      Het is een link en verder niets: hij meldt geen bezoek, en hij krijgt niets
-      over jou of je afbeeldingen mee. Er gebeurt niets tenzij je erop klikt, en
-      waar je dan naartoe klikt is de site van iemand anders."""
+      Het is een link en verder niets. Hij meldt geen bezoek en krijgt niets over
+      jou of je afbeeldingen mee. Er gebeurt niets tenzij je erop klikt, en waar je
+      dan naartoe klikt is de site van iemand anders."""
 
 [[privacy]]
 title = "Het werkt offline."
 body = """
  Verbreek de verbinding en alles op deze
-      pagina doet het nog. Dat is het eenvoudigste bewijs van allemaal: een tool
-      die je plaatjes wegstuurde om er een document van te maken, zou stoppen."""
+      pagina doet het nog. Eenvoudiger bewijs bestaat er niet, want een tool die je
+      plaatjes wegstuurde om er een document van te laten maken zou ermee ophouden."""
 
 [[howto]]
 title = "Kies je afbeeldingen."
 body = """
- Sleep een map op het keuzevak, of kies
-      de bestanden met de hand. De browser leest ze rechtstreeks van je schijf; er
-      wordt daarbij niets ergens heen gestuurd."""
+ Sleep een map het vak in, of kies de
+      bestanden met de hand. De browser leest ze rechtstreeks van je schijf, en er
+      gaat ondertussen niets ergens heen."""
 
 [[howto]]
 title = "Zet de pagina's op volgorde, en draai wat gedraaid moet."
 body = """
  Eén
-      afbeelding wordt één pagina, in de getoonde volgorde. Sleep een tegel aan
-      zijn handvat om hem te verplaatsen, of gebruik de pijltjes; de draaiknoppen
-      draaien een pagina een kwartslag tegelijk, en dat is wat een scheve scan
-      meestal nodig heeft."""
+      afbeelding wordt één pagina, in de volgorde die je ziet staan. Sleep een tegel
+      aan zijn handvat om hem te verplaatsen, of doe het met de pijltjes. De
+      draaiknoppen draaien een pagina een kwartslag tegelijk, en meer heeft een
+      scheve scan meestal niet nodig."""
 
 [[howto]]
 title = "Kies een paginaformaat."
 body = """
- &ldquo;Pas de pagina op elke
-      afbeelding aan&rdquo; maakt elke pagina precies zijn plaatje, zonder dat er
-      iets bijgesneden wordt en zonder witte banen. De benoemde formaten &mdash;
-      A4, Letter, Legal en de rest &mdash; zetten elk plaatje in plaats daarvan op
-      een vaste pagina, met een marge als je die wilt."""
+ Met &ldquo;Pas de pagina op elke
+      afbeelding aan&rdquo; wordt elke pagina precies zijn eigen plaatje, zonder dat
+      er iets bijgesneden wordt en zonder witte banen. De benoemde formaten, van A4
+      en Letter tot Legal en de rest, zetten elk plaatje juist op een vaste pagina,
+      met een marge als je die wilt."""
 
 [[howto]]
 title = "Maak de pdf en download hem."
 body = """
  Het document wordt op je eigen
-      apparaat geschreven, dus hoe lang het duurt hangt af van je hardware en niet
-      van een wachtrij. Het gereedgekomen bestand gaat rechtstreeks naar de
-      downloads van je browser."""
+      apparaat geschreven, dus hoe lang het duurt hangt van je hardware af en niet
+      van een wachtrij. Het gereedgekomen bestand gaat rechtstreeks naar de downloads
+      van je browser."""
 
 [[faq]]
 q = "Worden mijn afbeeldingen ergens heen geüpload?"
 a = """
-        Nee. Je afbeeldingen worden gelezen en de pdf wordt geschreven door je
-        eigen browser op je eigen hardware. Deze tool heeft geen serverkant, en de
-        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
-        mag benaderen &mdash; geen ervan hoort bij deze site. Anders dan sommige
+        Nee. Je eigen browser leest je afbeeldingen en schrijft de pdf, op je eigen
+        hardware. Deze tool heeft geen serverkant, en in de
+        <code>Content-Security-Policy</code> van de pagina staat elk adres dat hij
+        mag benaderen, waarvan er geen enkele bij deze site hoort. Anders dan sommige
         andere tools hier heeft deze helemaal geen optionele netwerkfunctie."""
 
 [[faq]]
 q = "Kost omzetten naar pdf kwaliteit?"
 a = """
         Voor een JPEG niet, op de standaardinstelling. Pdf kan JPEG-gegevens
-        rechtstreeks meedragen, dus een foto wordt byte voor byte het document in
-        gekopieerd: hij wordt nooit gedecodeerd en nooit opnieuw gecomprimeerd, en
-        het plaatje in de pdf is het plaatje in het bestand. Andere formaten moeten
-        wel opnieuw gecodeerd worden, want pdf heeft er geen filter voor &mdash;
-        tenzij je de verliesloze instelling kiest, die ze exact bewaart ten koste
-        van een groter bestand."""
+        rechtstreeks meedragen, dus een foto gaat byte voor byte het document in. Hij
+        wordt nooit gedecodeerd en nooit opnieuw gecomprimeerd, en het plaatje in de
+        pdf is precies het plaatje in het bestand. Andere formaten moeten wel opnieuw
+        gecodeerd worden, omdat pdf er geen filter voor heeft. Kies je de verliesloze
+        instelling, dan blijven ze exact bewaard, alleen wordt het bestand dan
+        groter."""
 
 [[faq]]
 q = "Welke afbeeldingsformaten kan ik gebruiken?"
 a = """
         Elk stilstaand beeld dat je browser kan decoderen, in de praktijk dus jpg,
-        png, WebP, gif, AVIF en, op Apple-apparaten, HEIC. Er is hier geen aparte
-        lijst om bij te houden, omdat het decoderen het werk van de browser is en
-        niet het onze."""
+        png, WebP, gif, AVIF en op Apple-apparaten ook HEIC. Er valt hier geen aparte
+        lijst bij te houden, omdat het decoderen het werk van de browser is en niet
+        van ons."""
 
 [[faq]]
 q = "Kan ik het paginaformaat en de volgorde van de pagina's kiezen?"
@@ -187,35 +186,36 @@ a = """
 [[faq]]
 q = "Hoeveel afbeeldingen kan ik in één pdf zetten?"
 a = """
-        In de tool zit geen limiet ingebouwd. Het praktische plafond is het
-        geheugen van je eigen apparaat, want het gereedgekomen document wordt daar
-        opgebouwd voordat je het downloadt. Een paar honderd telefoonfoto's op
-        volle resolutie is het eerste wat dat merkt; de langste zijde verkleinen,
-        in de instellingen, schuift dat plafond een heel eind op."""
+        In de tool zit geen limiet ingebouwd. Het praktische plafond is het geheugen
+        van je eigen apparaat, omdat het gereedgekomen document daar wordt opgebouwd
+        voordat je het downloadt. Bij een paar honderd telefoonfoto's op volle
+        resolutie merk je dat het eerst. Verklein je in de instellingen de langste
+        zijde, dan schuift dat plafond een heel eind op."""
 
 [[faq]]
 q = "Staan mijn bestandsnamen of een tijdstempel in de pdf?"
 a = """
-        Nee, tenzij je erom vraagt. Het informatieblok van het document blijft leeg
-        op de naam van deze tool na: geen bestandsnamen, geen apparaatnaam, geen
-        gebruikersnaam, en geen aanmaakdatum tenzij je het vinkje daarvoor aanzet.
-        Dat is met opzet &mdash; een pdf is iets wat mensen naar andere mensen
-        sturen."""
+        Nee, tenzij je erom vraagt. Het informatieblok van het document blijft leeg op
+        de naam van deze tool na. Er komen geen bestandsnamen in, geen apparaatnaam,
+        geen gebruikersnaam, en geen aanmaakdatum tenzij je het vinkje daarvoor
+        aanzet. Dat is met opzet zo, want een pdf is nu eenmaal iets wat mensen naar
+        andere mensen sturen."""
 
 [[faq]]
 q = "Is het gratis, en heb ik een account nodig?"
 a = """
-        Het is gratis, en er is geen account, geen inloggen en geen proefperiode.
-        De site draagt advertenties, en die betalen hem; de advertenties krijgen
-        niets over je afbeeldingen mee."""
+        Het is gratis, en er komt geen account, geen inlog en geen proefperiode aan
+        te pas. De site draait op advertenties, en die betalen hem. Die advertenties
+        krijgen niets over je afbeeldingen mee."""
 
 [[faq]]
 q = "Werkt het offline?"
 a = """
-        Ja. Laad de pagina één keer, verbreek dan je internetverbinding, en hij
-        werkt door. Dat is ook de eenvoudigste manier om te bewijzen dat er niets
-        geüpload wordt: een tool die je afbeeldingen wegstuurde om er een document
-        van te maken, zou stoppen op het moment dat je de stekker eruit trok."""
+        Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij
+        werkt gewoon door. Dat is meteen de eenvoudigste manier om te bewijzen dat er
+        niets geüpload wordt, want een tool die je afbeeldingen wegstuurde om er een
+        document van te laten maken zou ermee ophouden zodra je de stekker eruit
+        trok."""
 
 [schema]
 description = "Voeg jpg-, png- en WebP-afbeeldingen samen tot één pdf-document. Elke pagina wordt in je browser geschreven, dus er wordt nooit een afbeelding geüpload."

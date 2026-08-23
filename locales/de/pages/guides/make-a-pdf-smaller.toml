@@ -4,8 +4,8 @@
 
 nav = "Ein PDF kleiner machen"
 title = "Ein PDF kleiner machen (und warum manche nicht schrumpfen)"
-description = "Wo bei einem PDF die Größe wirklich sitzt, warum ein Scan um 80 Prozent schrumpft und ein Vertrag sich kaum rührt, was DPI hier bedeutet und was ein Kompressor mit Ihrem Dokument niemals anstellen darf."
-heading = "So machen Sie ein PDF kleiner - und warum manche nicht schrumpfen"
+description = "Wo bei einem PDF die Größe wirklich sitzt, warum ein Scan um 80 Prozent schrumpft und ein Vertrag sich kaum rührt, was dpi hier bedeutet und was ein Kompressor mit Ihrem Dokument niemals anstellen darf."
+heading = "So machen Sie ein PDF kleiner, und warum manche nicht schrumpfen"
 lede = """
     Ein PDF, das nicht unter das Anhangslimit passt, ist fast immer ein PDF
     voller Bilder. Hier steht, woran Sie erkennen, ob Ihres dazugehört, was das
@@ -13,5 +13,5 @@ lede = """
     verspricht, Ihre Datei gar nicht angesehen hat."""
 updated = "20. August 2026"
 og_title = "So machen Sie ein PDF kleiner"
-og_description = "Wo bei einem PDF die Größe wirklich sitzt, warum ein Scan schrumpft und ein Vertrag nicht, und was DPI damit zu tun hat."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
+og_description = "Wo bei einem PDF die Größe wirklich sitzt, warum ein Scan schrumpft und ein Vertrag nicht, und was dpi damit zu tun hat."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

@@ -155,7 +155,18 @@ TRANSLATABLE_SITE_PATHS = (
 STRUCTURAL_KEYS = frozenset({
     'slug', 'id', 'order', 'lastmod', 'published', 'category', 'group',
     'mark', 'icon', 'favicon', 'brand_mark', 'kind', 'tool',
-    'css_parts', 'js_parts', 'roadmap_group', 'analytics_extra',
+    'css_parts', 'js_parts', 'roadmap_group',
+    # `analytics_extra` is prose, and is still structure, which looks like a
+    # contradiction until you see where it lands: the tail of one sentence in
+    # the comment at the top of templates/analytics.js. That comment is written
+    # in English and is not translatable - only the `{{ words.plural }}` beside
+    # it is - and the JS minifier strips the whole block before it ships, so
+    # nothing a visitor can load contains either half. Translating it therefore
+    # buys a sentence nobody reads, and costs a page: a locale missing it would
+    # go into debt on that tool and drop out of the sitemap and the hreflang
+    # set. Ten locales once carried translations of this key that the merge
+    # discarded on every build; they were removed rather than made to work.
+    'analytics_extra',
     # The file input's own attributes. A MIME type and a boolean are the same
     # in every language, and a locale that translated "image/*" would produce a
     # picker that accepts nothing.

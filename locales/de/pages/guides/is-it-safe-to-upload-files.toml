@@ -7,12 +7,12 @@ title = "Ist es sicher, Dateien zu Online-Konvertern hochzuladen?"
 description = "Die meisten Online-Konverter schicken Ihre Datei an einen Server. Was dort damit geschieht, warum die Anbieter das tun und vier Proben, die zeigen, ob ein Werkzeug den Upload überhaupt nötig hat."
 heading = "Ist es sicher, Dateien zu Online-Konvertern hochzuladen?"
 lede = """
-    Ehrlich beantwortet lautet die Antwort meist: &bdquo;Vermutlich schon
-    &mdash; nachprüfen können Sie es allerdings nicht.&ldquo; Hier steht, was
-    beim Hochladen wirklich mit Ihrer Datei passiert, warum die meisten
-    Werkzeuge trotzdem darauf bestehen, und mit welchen vier Proben Sie
-    herausfinden, ob das Werkzeug vor Ihnen den Upload überhaupt braucht."""
+    Ehrlich beantwortet lautet sie meist: &bdquo;Vermutlich schon, nachprüfen
+    können Sie es allerdings nicht.&ldquo; Hier steht, was beim Hochladen
+    wirklich mit Ihrer Datei passiert, warum die meisten Werkzeuge trotzdem
+    darauf bestehen und mit welchen vier Proben Sie herausfinden, ob das
+    Werkzeug vor Ihnen den Upload überhaupt braucht."""
 updated = "20. August 2026"
 og_title = "Ist es sicher, Dateien zu Online-Konvertern hochzuladen?"
 og_description = "Was mit einer hochgeladenen Datei geschieht, warum die meisten Werkzeuge danach verlangen und vier Proben, die Sie selbst machen können."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

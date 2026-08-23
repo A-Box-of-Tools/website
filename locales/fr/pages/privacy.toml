@@ -4,14 +4,14 @@
 
 nav = "Confidentialité &amp; cookies"
 title = "Confidentialité &amp; cookies &mdash; abox.tools"
-description = "Ce qu'abox.tools collecte et ce qu'il ne collecte pas. Vos fichiers ne sont jamais envoyés ; la publicité, le compteur de visites et le bouton de don sont décrits ici en entier."
+description = "Ce qu'abox.tools collecte et ce qu'il ne collecte pas. Vos fichiers ne sont jamais envoyés&nbsp;; la publicité, le compteur de visites et le bouton de don sont décrits ici en entier."
 heading = "Confidentialité &amp; cookies"
 lede = """
     La version courte&nbsp;: vos fichiers ne sont jamais envoyés, parce qu'il n'y
     a nulle part où les envoyer. Tout le reste de cette page concerne la
-    publicité, le compteur de visites et l'hébergement &mdash; les parties qui,
-    elles, font intervenir d'autres entreprises."""
-updated = "19 août 2026"
+    publicité, le compteur de visites et l'hébergement, c'est-à-dire les parties
+    qui, elles, font intervenir d'autres entreprises."""
+updated = "22 août 2026"
 og_title = "Confidentialité &amp; cookies &mdash; abox.tools"
 og_description = "Vos fichiers ne sont jamais envoyés. Ce qui est collecté, par qui, et comment le désactiver."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

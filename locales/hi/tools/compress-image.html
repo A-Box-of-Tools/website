@@ -1,5 +1,5 @@
 <main>
-  <!-- क़दम 1 &mdash; फ़ाइलें -->
+  <!-- कदम 1 &mdash; फ़ाइलें -->
   <section class="card">
     <h2><span class="step">1</span> तस्वीरें चुनिए</h2>
 
@@ -23,17 +23,16 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- क़दम 2 &mdash; वह संख्या जो मायने रखती है -->
+  <!-- कदम 2 &mdash; वह संख्या जो मायने रखती है -->
   <section class="card" id="target-card">
     <h2><span class="step">2</span> बताइए कि यह कितनी बड़ी हो सकती है</h2>
 
     <p class="card-lede">
       यही वह हिस्सा है जिसे दूसरे कंप्रेसर उलटा कर देते हैं। वे आपको क्वालिटी
-      का स्लाइडर थमा देते हैं और आप पर छोड़ देते हैं कि आप अंदाज़ा लगाएँ कि
-      कौन-सी सेटिंग आपकी दी गई सीमा के नीचे उतरेगी। इसके बजाय सीमा बता दीजिए,
-      और टूल उस सबसे ऊँची क्वालिटी को खोजता है जो उसमें समा जाए &mdash; फिर
-      आपकी माँगी साइज़ से आधी फ़ाइल थमाने के बजाय बजट में जो बचा है वह भी
-      ख़र्च कर देता है।
+      का स्लाइडर थमा देते हैं, और अंदाज़ा आप लगाइए कि कौन-सी सेटिंग आपको दी
+      गई सीमा के नीचे उतरेगी। इसके बजाय सीमा आप बता दीजिए। टूल उस सबसे ऊँची
+      क्वालिटी को ढूँढ़ता है जो उसमें समा जाए, और आपके माँगे साइज़ से आधी
+      फ़ाइल थमाने के बजाय बजट में जो बचा है वह भी खर्च कर देता है।
     </p>
 
     <div class="target-row">
@@ -54,7 +53,7 @@
         100 KB, a forum avatar or a job application at 500 KB, an email
         attachment at 1 MB, and a web page hero at 2 MB.
       -->
-      <div class="presets" id="presets" role="group" aria-label="आम तौर पर माँगी जाने वाली साइज़">
+      <div class="presets" id="presets" role="group" aria-label="आम तौर पर माँगे जाने वाले साइज़">
         <button type="button" class="ghost" data-bytes="102400">100 KB</button>
         <button type="button" class="ghost" data-bytes="512000">500 KB</button>
         <button type="button" class="ghost" data-bytes="1048576">1 MB</button>
@@ -65,7 +64,7 @@
     <p id="target-summary" class="field-summary"></p>
 
     <fieldset class="options">
-      <legend>वहाँ तक पहुँचने के लिए इसे क्या करने की इजाज़त है</legend>
+      <legend>वहाँ तक पहुँचने के लिए यह क्या-क्या कर सकता है</legend>
 
       <div class="option-row">
         <label for="format-select">नतीजे का फ़ॉर्मैट</label>
@@ -74,7 +73,7 @@
           <option value="keep">असली फ़ॉर्मैट हमेशा बनाए रखिए</option>
           <option value="image/jpeg">JPEG</option>
           <option value="image/webp">WebP</option>
-          <option value="image/png">PNG (नुक़सान-रहित, इसलिए साइज़ माप में से निकलता है)</option>
+          <option value="image/png">PNG (नुकसान-रहित, इसलिए साइज़ माप में से निकलता है)</option>
         </select>
       </div>
 
@@ -83,11 +82,11 @@
         <span>
           <strong>ज़रूरत पड़े तो तस्वीर छोटी कर सकता है</strong>
           <span class="check-note">
-            इसका इस्तेमाल सिर्फ़ तब होता है जब अकेली क्वालिटी को उस बिंदु से
-            नीचे गिरना पड़ता जहाँ कंप्रेशन दिखने लगता है। उससे नीचे कम अच्छे
-            पिक्सल ज़्यादा बिगड़े हुए पिक्सलों से बेहतर दिखते हैं। ठीक वही माप
-            बनाए रखने के लिए इसे बंद कर दीजिए, और तंग तय साइज़ की क़ीमत इसके
-            बजाय क्वालिटी से चुकाइए।
+            यह सिर्फ़ तब काम आता है जब अकेली क्वालिटी को उस हद से नीचे गिरना
+            पड़ता जहाँ से कंप्रेशन दिखने लगता है। उससे नीचे कम मगर अच्छे
+            पिक्सल ज़्यादा मगर बिगड़े हुए पिक्सलों से बेहतर दिखते हैं। ठीक
+            वही माप बनाए रखनी हो तो इसे बंद कर दीजिए, और तंग तय साइज़ की कीमत
+            क्वालिटी से चुकाइए।
           </span>
         </span>
       </label>
@@ -96,12 +95,12 @@
     </fieldset>
   </section>
 
-  <!-- क़दम 3 &mdash; वह अकेला क्लिक -->
+  <!-- कदम 3 &mdash; वह अकेला क्लिक -->
   <section class="card" id="run-card">
-    <h2><span class="step">3</span> दबाइए</h2>
+    <h2><span class="step">3</span> कंप्रेस कीजिए</h2>
 
     <div class="run-row">
-      <button type="button" id="compress-all" class="primary big" disabled>तय साइज़ तक दबाइए</button>
+      <button type="button" id="compress-all" class="primary big" disabled>तय साइज़ तक कंप्रेस कीजिए</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -111,8 +110,8 @@
 
     <div id="results" class="results" hidden>
       <div class="results-head">
-        <h3>दबाई हुई</h3>
-        <button type="button" id="download-zip" class="ghost" hidden>सबको एक ज़िप में डाउनलोड कीजिए</button>
+        <h3>कंप्रेस हो चुकीं</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>सबको एक ZIP में डाउनलोड कीजिए</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>

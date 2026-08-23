@@ -29,10 +29,10 @@
 
     <p class="card-lede">
       상자는 사진 전체에서 시작하므로, 이 단계를 그냥 지나가면 아무것도 잘리지
-      않습니다. 이미지마다 자기 상자를 따로 갖습니다 &mdash; 위 목록에서 하나를
-      고르면 그 위에 그리게 됩니다. 자르기는 크기 조절보다 먼저 일어나는데,
-      말이 되는 순서가 그것뿐입니다. 줄인 다음에 잘라 낸 사진은 필요했던 픽셀을
-      이미 버린 뒤입니다.
+      않습니다. 이미지마다 자기 상자를 따로 갖는데, 위 목록에서 하나를 고르면 그
+      위에 그리게 됩니다. 자르기는 크기 조절보다 먼저 일어납니다. 말이 되는
+      순서가 그것뿐이거든요. 줄인 다음에 잘라 낸 사진은 필요했던 픽셀을 이미
+      버린 뒤니까요.
     </p>
 
     <p id="crop-empty" class="field-summary">이미지를 넣으면 상자가 여기 나타납니다.</p>
@@ -107,7 +107,7 @@
         <option value="pixels" selected>너비와 높이, 픽셀로</option>
         <option value="longest">긴 변</option>
         <option value="percent">지금 크기의 퍼센트</option>
-        <option value="none">없음 &mdash; 크기를 그대로 둡니다</option>
+        <option value="none">없음(크기를 그대로 둡니다)</option>
       </select>
     </div>
 
@@ -139,10 +139,10 @@
       <div class="option-row" id="fit-row">
         <label for="fit">비율이 어긋나면</label>
         <select id="fit">
-          <option value="contain" selected>안에 맞추기 &mdash; 사진은 전부 남고, 한 변이 짧게 나옵니다</option>
-          <option value="cover">채우기 &mdash; 정확히 이 크기로, 넘치는 부분은 잘립니다</option>
-          <option value="pad">여백 넣기 &mdash; 정확히 이 크기로, 둘레에 배경이 들어갑니다</option>
-          <option value="stretch">늘이기 &mdash; 정확히 이 크기로, 비율은 찌그러집니다</option>
+          <option value="contain" selected>안에 맞추기(사진은 전부 남고, 한 변이 짧게 나옵니다)</option>
+          <option value="cover">채우기(정확히 이 크기로, 넘치는 부분은 잘립니다)</option>
+          <option value="pad">여백 넣기(정확히 이 크기로, 둘레에 배경이 들어갑니다)</option>
+          <option value="stretch">늘이기(정확히 이 크기로, 비율은 찌그러집니다)</option>
         </select>
       </div>
     </div>
@@ -208,7 +208,7 @@
       </div>
 
       <div class="field" id="quality-field">
-        <label for="quality">화질 &mdash; <output id="quality-value" for="quality">85</output></label>
+        <label for="quality">화질 <output id="quality-value" for="quality">85</output></label>
         <input type="range" id="quality" min="30" max="100" step="1" value="85">
         <p class="field-note">
           JPEG와 WebP에만 해당합니다. PNG에는 화질 다이얼이 없습니다. 85쯤이

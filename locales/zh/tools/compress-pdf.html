@@ -6,7 +6,7 @@
   visible on the page.
 -->
 <main>
-  <!-- 第 1 步 &mdash; 文件 -->
+  <!-- 第 1 步，选文件 -->
   <section class="card">
     <h2><span class="step">1</span> 选一个 PDF</h2>
 
@@ -24,12 +24,12 @@
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
   </section>
 
-  <!-- 第 2 步 &mdash; 如果只能留一个界面，这个工具会留这个 -->
+  <!-- 第 2 步，只留一个界面的话，这个工具会留这个 -->
   <section class="card" id="inventory-card" hidden>
     <h2><span class="step">2</span> 看清体积堆在哪儿</h2>
 
     <p class="card-lede">
-      “压缩 PDF”其实是共用一个名字的两件事。扫描件是一摞照片，把它们重新编码能省下文件的大半。合同是文字和字体，生成它的软件早就压过了 &mdash; 里面没有藏着一个百分之八十，任何工具也变不出来。你手上是哪一种，这不是见仁见智的事，所以在动任何东西之前，先摆在这里。
+      “压缩 PDF”其实是共用一个名字的两件事。扫描件是一摞照片，重新编码一遍就能省下文件的大半。合同是文字和字体，生成它的软件早压过一轮了，里面并没有藏着一个百分之八十，哪个工具也变不出来。你手上是哪一种不是见仁见智的事，所以在动任何东西之前，先摆在这里。
     </p>
 
     <p id="verdict" class="verdict"></p>
@@ -42,12 +42,12 @@
     <p id="inventory-notes" class="field-summary"></p>
   </section>
 
-  <!-- 第 3 步 &mdash; 打算花多少 -->
+  <!-- 第 3 步，打算花多少 -->
   <section class="card" id="settings-card" hidden>
     <h2><span class="step">3</span> 说明要压多狠</h2>
 
     <p class="card-lede">
-      PDF 里记着每张图片画多大，所以这个工具能量出页面实际用到多少，而不是靠猜。一张 4000 像素的扫描件铺在八英寸纸上，就是每英寸 500 个像素；降到 150，打印出来一样，屏幕上看也一样。谁也看不见的像素先花掉，因为它们不值钱。
+      PDF 里记着每张图片画多大，所以这个工具能量出页面实际用到多少，不用靠猜。一张 4000 像素的扫描件铺在八英寸纸上，就是每英寸 500 个像素；降到 150，打印出来一样，屏幕上看也一样。谁也看不见的像素先花掉，因为它们不值钱。
     </p>
 
     <fieldset class="presets-set">
@@ -71,7 +71,7 @@
           <input type="radio" name="preset" value="print">
           <span class="preset-body">
             <strong>打印出来也还行</strong>
-            <span class="preset-note">220 DPI。小一些，而且印出来仍然像样。</span>
+            <span class="preset-note">220 DPI。小一些，印出来仍然像样。</span>
           </span>
         </label>
         <label class="preset">
@@ -90,7 +90,7 @@
         <label for="dpi-value">每英寸绘制空间最多放多少像素</label>
         <div class="inline-pair">
           <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
-          <span class="unit">DPI &mdash; 填 0 则每张图片都保持原尺寸</span>
+          <span class="unit">DPI，填 0 则每张图片都保持原尺寸</span>
         </div>
       </div>
       <div class="option-row">
@@ -106,7 +106,7 @@
       <input type="checkbox" id="strip-meta" checked>
       <span>
         <strong>把文件记住的来历清掉</strong>
-        <span class="check-note">做出它的程序的名字和版本、什么时候做的、什么时候最后改过、XMP 数据包，以及排版软件为了以后能把自己的活儿再导回去而留下的那一坨私有数据 &mdash; 那东西偶尔有好几兆。显示这个文档，一样都用不上。
+        <span class="check-note">做出它的程序叫什么、版本多少、什么时候做的、什么时候最后改过、XMP 数据包，还有排版软件为了以后能把自己的活儿再导回去而留下的那一坨私有数据，那东西偶尔有好几兆。显示这个文档，一样都用不上。
         </span>
       </span>
     </label>
@@ -114,7 +114,7 @@
     <p id="settings-summary" class="field-summary"></p>
   </section>
 
-  <!-- 第 4 步 &mdash; 只按一下 -->
+  <!-- 第 4 步，按一下就完 -->
   <section class="card" id="run-card" hidden>
     <h2><span class="step">4</span> 压缩</h2>
 

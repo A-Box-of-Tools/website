@@ -8,11 +8,11 @@
     <p>
       O problema não é que eles estejam mentindo. É que
       <strong>você não tem como saber se estão</strong>. Assim que um arquivo
-      sai da sua máquina, toda promessa sobre o que acontece depois é uma
-      promessa que você aceita na confiança: por quanto tempo ele fica, quem
-      consegue alcançá-lo, se ele foi copiado para um backup que sobrevive ao
-      cronômetro de exclusão, o que acontece com ele se a empresa for vendida ou
-      invadida. Nada disso é visível de fora.
+      sai do seu computador, toda promessa sobre o que acontece depois é uma
+      promessa que você aceita na fé: por quanto tempo ele fica, quem consegue
+      alcançá-lo, se ele foi copiado para um backup que sobrevive ao cronômetro
+      de exclusão, o que acontece com ele se a empresa for vendida ou invadida.
+      Nada disso é visível de fora.
     </p>
     <p>
       Então a pergunta útil não é &ldquo;eu confio neste site?&rdquo;. É
@@ -26,11 +26,11 @@
   <section>
     <h2>O que &ldquo;enviar&rdquo; de fato faz</h2>
     <p>
-      Quando um conversor pede que você escolha um arquivo e então lhe mostra uma
+      Quando um conversor pede que você escolha um arquivo e então mostra uma
       barra de progresso, o seu navegador está copiando o arquivo inteiro, byte
       por byte, pela internet, até um computador que pertence a outra pessoa.
       Esse computador escreve o arquivo num disco, roda a conversão, escreve o
-      resultado no mesmo disco e lhe entrega um link.
+      resultado no mesmo disco e devolve um link para você.
     </p>
     <p>
       Nesse momento o seu arquivo existe em pelo menos três lugares que você não
@@ -57,17 +57,17 @@
       Não é porque queiram os seus arquivos. É porque, durante a maior parte da
       vida da web, não havia alternativa. Um navegador não conseguia decodificar
       um vídeo, recodificar uma imagem numa qualidade escolhida ou interpretar um
-      formato de arquivo; um servidor com FFmpeg e ImageMagick conseguia. Enviar
-      não era um modelo de negócio, era o único lugar onde o trabalho podia
-      acontecer.
+      formato de arquivo, e um servidor com FFmpeg e ImageMagick conseguia.
+      Enviar não era um modelo de negócio, era o único lugar onde o trabalho
+      podia acontecer.
     </p>
     <p>
       Isso deixou de ser verdade há pouco tempo e sem alarde. Os navegadores hoje
       trazem WebAssembly, que roda os mesmos codecs compilados perto da
       velocidade nativa, WebCodecs, que expõe o codificador de vídeo por hardware
-      que já está na sua máquina, e uma API de Canvas que decodifica e recodifica
-      imagens diretamente. O trabalho para o qual um servidor era necessário
-      agora roda no aparelho que já tem o arquivo.
+      que já está no seu computador, e uma API de Canvas que decodifica e
+      recodifica imagens diretamente. O trabalho para o qual um servidor era
+      necessário agora roda no aparelho que já tem o arquivo.
     </p>
     <p>
       Muitas ferramentas ainda enviam, e há motivos honestos: um encanamento
@@ -75,7 +75,7 @@
       do navegador, um trabalho genuinamente pesado demais para um celular.
       Existe também um motivo menos honesto, que é o servidor ser o lugar onde
       moram as contas, as cotas e os planos pagos. Uma ferramenta que roda
-      inteiramente no seu navegador é difícil de tarifar.
+      inteiramente no seu navegador é difícil de cobrar.
     </p>
   </section>
 
@@ -95,30 +95,30 @@
     </p>
     <p>
       Este é o teste mais forte que existe, e o mais difícil de fingir, porque
-      não pode ser respondido com escolha de palavras. Ou a conversão termina sem
+      não dá para responder com escolha de palavras. Ou a conversão termina sem
       rede, ou não termina.
     </p>
 
-    <h3>2. Olhe a aba Rede</h3>
+    <h3>2. Olhe a aba &ldquo;Rede&rdquo;</h3>
     <p>
-      Abra as ferramentas de desenvolvedor do seu navegador, escolha Rede e então
-      use a ferramenta. Toda requisição que a página faz aparece na lista com o
-      tamanho. Se a sua foto de 4&nbsp;MB foi enviada, existe uma requisição de
-      4&nbsp;MB naquela lista. Se a maior coisa saindo da página são alguns
-      kilobytes de publicidade, não foi.
+      Abra as ferramentas do desenvolvedor do seu navegador, escolha
+      &ldquo;Rede&rdquo; e então use a ferramenta. Toda requisição que a página
+      faz aparece na lista com o tamanho. Se a sua foto de 4&nbsp;MB foi enviada,
+      existe uma requisição de 4&nbsp;MB naquela lista. Se a maior coisa saindo
+      da página são alguns kilobytes de publicidade, não foi.
     </p>
     <p>
       Ordene por tamanho e olhe o topo. Você não precisa entender as
-      requisições; precisa notar se alguma delas tem o tamanho do seu arquivo.
+      requisições, precisa só notar se alguma delas tem o tamanho do seu arquivo.
     </p>
 
     <h3>3. Leia a Content-Security-Policy</h3>
     <p>
       Veja o código-fonte da página e procure por
       <code>Content-Security-Policy</code>, lá no alto. É uma lista dos endereços
-      que aquela página tem permissão de contatar, e quem a faz valer é o seu
-      navegador, e não as boas intenções do site &mdash; uma requisição a
-      qualquer coisa fora da lista é recusada, tente o código o que tentar.
+      que aquela página tem permissão de acessar, e quem a faz valer é o seu
+      navegador, não as boas intenções do site. Uma requisição a qualquer coisa
+      fora da lista é recusada, tente o código o que tentar.
     </p>
     <p>
       A diretiva que importa é <code>connect-src</code>, que rege para onde a
@@ -128,18 +128,18 @@
     </p>
     <p>
       Uma página sem Content-Security-Policy nenhuma não é evidência de nada
-      ruim. Só quer dizer que esta verificação em particular não tem nada a lhe
+      ruim. Só quer dizer que esta verificação em particular não tem nada a
       dizer.
     </p>
 
     <h3>4. Leia o código</h3>
     <p>
-      A menos conveniente, a mais conclusiva. Se uma ferramenta publica o código
-      dela e o serve sem etapa de compilação, os arquivos que o seu navegador
-      buscou são os arquivos que você pode ler. Procure neles por
-      <code>fetch</code>, <code>XMLHttpRequest</code> e <code>sendBeacon</code>
-      &mdash; os três jeitos que uma página tem de mandar qualquer coisa &mdash;
-      e veja o que é passado para eles.
+      A menos conveniente, e a mais conclusiva. Se uma ferramenta publica o
+      código dela e o serve sem etapa de compilação, os arquivos que o seu
+      navegador buscou são os arquivos que você pode ler. Procure neles por
+      <code>fetch</code>, <code>XMLHttpRequest</code> e <code>sendBeacon</code>,
+      que são os três jeitos que uma página tem de mandar qualquer coisa, e veja
+      o que é passado para eles.
     </p>
     <p>
       A maioria das pessoas não vai fazer isso. Continua importando que seja
@@ -168,11 +168,10 @@
       </li>
       <li>
         <strong>Não sobrevive a uma função que busca alguma coisa.</strong> Uma
-        ferramenta que deixa você colar um endereço da web precisa contatar
-        aquele endereço, e aquele servidor fica sabendo o seu IP e o que você
-        pediu. Isso é inerente à função, não um defeito dela &mdash; mas é uma
-        exceção real, e uma ferramenta deve dizer isso com todas as letras em vez
-        de arredondar.
+        ferramenta que deixa você colar um endereço da web precisa acessar aquele
+        endereço, e aquele servidor fica sabendo o seu IP e o que você pediu. Isso
+        é inerente à função, não um defeito dela, mas é uma exceção real, e uma
+        ferramenta deve dizer isso com todas as letras em vez de arredondar.
       </li>
       <li>
         <strong>Não é a mesma coisa que &ldquo;nós apagamos seus
@@ -187,10 +186,10 @@
     <h2>Quando enviar está genuinamente tudo bem</h2>
     <p>
       Isto não é um argumento de que todo envio é um erro. Mande o arquivo quando
-      o conteúdo não for sensível e o trabalho ficar mais fácil assim; quando o
-      trabalho for de fato pesado demais para o seu aparelho; quando o formato
-      não tiver decodificador do lado do navegador; ou quando você estiver usando
-      um serviço com o qual já tem relação e cujos termos você leu de verdade.
+      o conteúdo não for sensível e o trabalho ficar mais fácil assim, quando o
+      trabalho for de fato pesado demais para o seu aparelho, quando o formato
+      não tiver decodificador do lado do navegador, ou quando você estiver usando
+      um serviço com o qual já tem relação e cujos termos leu de verdade.
     </p>
     <p>
       Tenha mais cuidado quando o arquivo contém algo que você não postaria
@@ -198,8 +197,8 @@
       qualquer coisa com um endereço ou um rosto que você não pretendia
       compartilhar, ou uma foto cujos dados de localização você não olhou. Para
       esses, uma ferramenta que você consegue conferir merece preferência sobre
-      uma ferramenta em que você precisa confiar &mdash; não porque a confiável
-      provavelmente vá traí-lo, mas porque com a verificável a pergunta nem
+      uma ferramenta em que você precisa confiar. Não porque a confiável
+      provavelmente vá trair você, e sim porque com a verificável a pergunta nem
       chega a surgir.
     </p>
   </section>
@@ -212,25 +211,24 @@
     </p>
     <ul>
       <li>
-        <strong>Tire da tomada.</strong> Abra qualquer ferramenta daqui,
-        desconecte, e ela continua funcionando. Cada página de ferramenta tem um
+        <strong>Tire da tomada.</strong> Abra qualquer ferramenta daqui, desligue
+        a internet, e ela continua funcionando. Cada página de ferramenta tem um
         indicador ao vivo que diz se você está online neste momento, para você
         ver a mudança acontecer.
       </li>
       <li>
-        <strong>Aba Rede.</strong> Converta alguma coisa e leia a lista. Nada
-        leva o seu arquivo, uma miniatura dele, o nome, o tamanho ou qualquer
-        coisa lida de dentro dele. Não existe neste site nenhum evento de análise
-        personalizado que tivesse algo disso para mandar.
+        <strong>Aba &ldquo;Rede&rdquo;.</strong> Converta alguma coisa e leia a
+        lista. Nada leva o seu arquivo, uma miniatura dele, o nome, o tamanho ou
+        qualquer coisa lida de dentro dele. Não existe neste site nenhum evento
+        de análise personalizado que tivesse algo disso para mandar.
       </li>
       <li>
         <strong>Content-Security-Policy.</strong> Está no alto do código-fonte de
         toda página. O <code>connect-src</code> nomeia os endereços de
         publicidade e de medição do Google e o botão de doação, e nada mais.
         <strong>Nenhum endereço daquela lista pertence a este site</strong>,
-        porque este site não tem servidor &mdash; são arquivos estáticos. Não há
-        para onde um arquivo pudesse ser mandado, mesmo que alguma coisa
-        tentasse.
+        porque este site não tem servidor: são arquivos estáticos. Não há para
+        onde um arquivo pudesse ser mandado, mesmo que alguma coisa tentasse.
       </li>
       <li>
         <strong>Código.</strong> Cada linha é
@@ -258,7 +256,7 @@
       <a href="../../remover-dados-exif/">visualizador e removedor de EXIF</a>
       para os dados escondidos descritos mais acima nesta página,
       <a href="../../imagens-para-video/">imagens para vídeo</a> e
-      <a href="../../imagens-para-pdf/">imagens para PDF</a>. Todas gratuitas,
-      sem conta, e nenhuma delas tem para onde mandar os seus arquivos.
+      <a href="../../imagens-para-pdf/">imagens para PDF</a>. Todas grátis, sem
+      conta, e nenhuma delas tem para onde mandar os seus arquivos.
     </p>
   </section>

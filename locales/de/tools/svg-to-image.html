@@ -1,7 +1,7 @@
 <main>
   <!-- Schritt 1 &mdash; die Dateien -->
   <section class="card">
-    <h2><span class="step">1</span> Die SVG-Dateien wählen</h2>
+    <h2><span class="step">1</span> Die SVG-Dateien auswählen</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -29,10 +29,10 @@
 
     <p class="card-lede">
       Das ist die eine Frage, die ein Vektor Ihnen nicht abnehmen kann. In einem
-      SVG stecken keine Pixel &mdash; es enthält Anweisungen zum Zeichnen, und es
-      befolgt sie in jeder Größe, die Sie nennen. Die Zahl unten ist keine
-      Grenze, gegen die Sie drücken, wie es bei einer Fotografie wäre: 4000 Pixel
-      aus einem 24&nbsp;Pixel großen Symbol sind genauso scharf wie 24.
+      SVG stecken keine Pixel, sondern Anweisungen zum Zeichnen, und die befolgt
+      es in jeder Größe, die Sie nennen. Die Zahl unten ist also keine Grenze,
+      gegen die Sie drücken, wie es bei einer Fotografie wäre. 4000 Pixel aus
+      einem 24&nbsp;Pixel großen Symbol sind genauso scharf wie 24.
     </p>
 
     <div class="option-row">
@@ -89,8 +89,8 @@
         <label>Längste Seite<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
       </div>
       <p class="hint-line">
-        Welche Seite auch immer länger ist, wird das hier, und die andere folgt
-        &mdash; ein breites und ein hohes Logo kommen so auf ihrer langen Kante
+        Welche Seite auch immer länger ist, bekommt diesen Wert, und die andere
+        folgt. Ein breites und ein hohes Logo kommen damit auf ihrer langen Kante
         gleich groß heraus.
       </p>
     </div>
@@ -149,10 +149,10 @@
         <input type="range" id="quality" min="30" max="100" step="1" value="90">
         <p class="field-note">
           Nur JPEG und WebP; PNG hat keinen Qualitätsregler, weil es verlustfrei
-          ist. Flache Farbflächen und harte Kanten &mdash; und daraus besteht ein
-          SVG größtenteils &mdash; sind genau das, womit ein verlustbehafteter
-          Encoder am schlechtesten umgeht, deshalb liegt dieser Wert hier höher,
-          als er es bei einer Fotografie täte.
+          ist. Mit flachen Farbflächen und harten Kanten kommt ein
+          verlustbehafteter Encoder am schlechtesten zurecht, und genau daraus
+          besteht ein SVG größtenteils. Deshalb liegt dieser Wert hier höher, als
+          er es bei einer Fotografie täte.
         </p>
       </div>
 
@@ -173,12 +173,12 @@
     <h2><span class="step">4</span> Ansehen, dann speichern</h2>
 
     <p class="card-lede">
-      Die Vorschau wird von demselben Code, der die Datei schreibt, aus der von
-      Ihnen gewählten Datei auf diesem Gerät gezeichnet. Zu prüfen lohnen sich
+      Gezeichnet wird die Vorschau auf diesem Gerät, aus Ihrer eigenen Datei und
+      von demselben Code, der auch die Datei schreibt. Ansehen sollten Sie sich
       die beiden Dinge, die sich ändern, wenn eine Zeichnung zu Pixeln wird: eine
-      Haarlinie, die ein halbes Pixel breit war und grau geworden ist, und Text,
-      der in einer Schrift gezeichnet wird, die dieses Gerät hat, und nicht in
-      einer aus dem Netz geholten.
+      Haarlinie, die ein halbes Pixel breit war und nun grau ist, und Text, der
+      in einer Schrift gezeichnet wird, die dieses Gerät hat, und nicht in einer
+      aus dem Netz geholten.
     </p>
 
     <div id="preview" class="preview" hidden>
@@ -188,7 +188,7 @@
       <p class="preview-note" id="preview-note"></p>
     </div>
 
-    <p id="preview-empty" class="field-summary">Fügen Sie ein SVG hinzu, und es erscheint hier.</p>
+    <p id="preview-empty" class="field-summary">Ein SVG hinzufügen, dann erscheint es hier.</p>
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>Rastern</button>

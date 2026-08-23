@@ -28,30 +28,30 @@
       Isso soa como redundância e não é. Um navegador desenhando o seu ícone a
       dezesseis pixels tem duas opções: ler uma versão de dezesseis pixels que
       você desenhou, ou diminuir uma maior na hora. A segunda é pior, e
-      visivelmente &mdash; uma redução automática de uma logomarca detalhada
-      vira mingau, ao passo que uma versão de dezesseis pixels que você olhou é
-      algo que você teve chance de simplificar. O motivo inteiro de o formato
-      guardar vários tamanhos é lhe dar essa chance.
+      visivelmente, porque uma redução automática de uma logomarca detalhada vira
+      mingau, ao passo que uma versão de dezesseis pixels que você olhou é algo
+      que você teve chance de simplificar. O motivo inteiro de o formato guardar
+      vários tamanhos é dar essa chance a você.
     </p>
     <p>
       Três tamanhos é a convenção para um site, e cada um tem seu motivo:
     </p>
     <ul>
       <li>
-        <strong>16&times;16</strong> &mdash; a aba do navegador, a barra de
-        endereços, o menu de favoritos. É este que as pessoas veem. Se você só
-        acertar um, acerte este.
+        <strong>16&times;16:</strong> a aba do navegador, a barra de endereços, o
+        menu de favoritos. É este que as pessoas veem. Se você só acertar um,
+        acerte este.
       </li>
       <li>
-        <strong>32&times;32</strong> &mdash; a barra de favoritos, um atalho de
-        área de trabalho do Windows para o seu site, e a maioria dos navegadores
-        numa tela de alta densidade, que desenham o ícone da aba a partir do 32 e
-        o reduzem.
+        <strong>32&times;32:</strong> a barra de favoritos, um atalho de área de
+        trabalho do Windows para o seu site, e a maioria dos navegadores numa
+        tela de alta densidade, que desenham o ícone da aba a partir do 32 e o
+        reduzem.
       </li>
       <li>
-        <strong>48&times;48</strong> &mdash; o tamanho em que o Google lê o ícone
-        de um site para os resultados de busca, e a visualização de ícones médios
-        do Windows.
+        <strong>48&times;48:</strong> o tamanho em que o Google lê o ícone de um
+        site para os resultados de busca, e a visualização de ícones médios do
+        Windows.
       </li>
     </ul>
     <p>
@@ -63,7 +63,7 @@
   <section>
     <h2>O problema dos dezesseis pixels</h2>
     <p>
-      Esta é a parte sobre a qual ninguém lhe avisa. Dezesseis pixels são cerca
+      Esta é a parte sobre a qual ninguém avisa você. Dezesseis pixels são cerca
       de quatro milímetros numa tela normal: uma grade de 256 pontos ao todo,
       menos que as letras desta frase. Quase nada que foi desenhado para
       funcionar numa placa, num cartão de visita ou no cabeçalho de um site
@@ -103,9 +103,9 @@
       O que uma ferramenta pode fazer é mostrar o problema antes de você
       publicar. A pré-visualização do
       <a href="../../criar-favicon/">Imagem para ICO</a> desenha cada tamanho no
-      tamanho real na tela, que é o único jeito de julgar isso &mdash; um ícone
-      de dezesseis pixels exibido a sessenta e quatro fica ótimo e não lhe diz
-      nada.
+      tamanho real na tela, que é o único jeito de julgar isso. Um ícone de
+      dezesseis pixels exibido a sessenta e quatro fica ótimo e não diz nada a
+      você.
     </p>
   </section>
 
@@ -124,9 +124,9 @@
     </p>
     <p>
       <strong>Cortar pelo meio</strong> pega o maior quadrado do centro. Numa
-      composição &mdash; um símbolo com o nome da empresa ao lado &mdash; isso
-      muitas vezes corta os dois ao meio. Melhor cortar a origem você mesmo
-      antes, até ficar só o símbolo, e então converter aquilo.
+      composição, com um símbolo e o nome da empresa ao lado, isso muitas vezes
+      corta os dois ao meio. Melhor cortar a origem você mesmo antes, até ficar
+      só o símbolo, e então converter aquilo.
     </p>
     <p>
       <strong>Esticar</strong> achata a imagem para caber. Quase não existe
@@ -158,9 +158,9 @@
       </li>
       <li>
         <strong>O ícone de toque da Apple tem que ser opaco.</strong> O iOS
-        desenha ele sobre o próprio ladrilho arredondado e renderiza
+        desenha esse ícone sobre o próprio ladrilho arredondado e renderiza
         transparência como preto. Toda ferramenta que produz aquele arquivo
-        deveria estar achatando para você; a daqui achata, sobre branco por
+        deveria estar achatando por você, e a daqui achata, sobre branco por
         padrão.
       </li>
     </ul>
@@ -182,9 +182,9 @@
       </li>
       <li>
         <strong>O Android e todo aviso de instalação</strong> leem um manifesto
-        de aplicativo web &mdash; <code>site.webmanifest</code> &mdash; que
-        aponta para PNGs de 192 e 512 pixels. O de 512 também é o que um
-        aplicativo web mostra na tela de abertura.
+        de aplicativo web, o <code>site.webmanifest</code>, que aponta para PNGs
+        de 192 e 512 pixels. O de 512 também é o que um aplicativo web mostra na
+        tela de abertura.
       </li>
       <li>
         <strong>Um ladrilho do menu Iniciar do Windows</strong> lê
@@ -194,9 +194,9 @@
     </ul>
     <p>
       Há mais um que é fácil errar: os lançadores do Android cortam um ícone
-      adaptativo no formato que o celular preferir &mdash; círculo, quadrado
-      arredondado, aquele quase quadrado &mdash; e só os 80% centrais da imagem
-      têm sobrevivência garantida. Um ícone desenhado de borda a borda perde os
+      adaptativo no formato que o celular preferir, seja círculo, quadrado
+      arredondado ou aquele quase quadrado, e só os 80% centrais da imagem têm
+      sobrevivência garantida. Um ícone desenhado de borda a borda perde os
       cantos. É isso que um ícone <em>maskable</em> é: a mesma imagem desenhada
       de propósito pequena dentro do quadrado, declarada à parte no manifesto.
     </p>
@@ -215,17 +215,17 @@
     <p>
       Se o ícone é para um programa e não para um site, os tamanhos mudam. O que
       o próprio <code>app.ico</code> padrão do Visual Studio contém é 16, 32, 48
-      e 256 &mdash; os três tamanhos do shell mais o grande, de onde o menu
-      Iniciar e a visualização de ícones extragrandes do Explorer desenham.
+      e 256: os três tamanhos do shell mais o grande, de onde o menu Iniciar e a
+      visualização de ícones extragrandes do Explorer desenham.
     </p>
     <p>
       Numa tela de alta densidade o Windows também pede 20, 24, 40, 64 e 96, e os
       reamostra a partir do tamanho mais próximo que tiver quando estiverem
       faltando. Se isso importa depende do seu ícone: uma forma chapada sobrevive
       à reamostragem, uma detalhada não. Acrescentá-los mais ou menos dobra o
-      arquivo, o que para um aplicativo não é nada &mdash; a conta é
-      completamente diferente da de um favicon, onde o arquivo é buscado por cada
-      visitante.
+      arquivo, o que para um aplicativo não é nada, porque a conta é
+      completamente diferente da de um favicon, em que o arquivo é buscado por
+      cada visitante.
     </p>
     <p>
       Mais uma coisa sobre tamanho: a entrada de 256 é onde estão os bytes.
@@ -242,9 +242,8 @@
     <p>
       Se o ícone é para um aplicativo de Mac e não para um de Windows, nada do
       que está acima se aplica: o macOS não lê <code>.ico</code> de jeito nenhum.
-      Ele lê <code>.icns</code>, que é a mesma ideia noutra embalagem &mdash;
-      vários tamanhos num contêiner &mdash; com três diferenças que vale
-      conhecer.
+      Ele lê <code>.icns</code>, que é a mesma ideia noutra embalagem, com vários
+      tamanhos num contêiner, e com três diferenças que vale conhecer.
     </p>
     <ul>
       <li>
@@ -256,8 +255,8 @@
       <li>
         <strong>Vai até 1024.</strong> Um <code>.ico</code> para em 256, e é por
         isso que um arquivo de ícone de Mac tem várias centenas de kilobytes e um
-        favicon tem quinze. Para um aplicativo entregue uma vez isso não é nada;
-        só um favicon é buscado por cada visitante.
+        favicon tem quinze. Para um aplicativo entregue uma vez isso não é nada,
+        porque só um favicon é buscado por cada visitante.
       </li>
       <li>
         <strong>1024 pixels é o que a sua arte tem que aguentar.</strong> Os dois
@@ -271,7 +270,7 @@
       Para usar um: um pacote de aplicativo guarda o arquivo em
       <code>SeuApp.app/Contents/Resources/</code> e o nomeia no
       <code>Info.plist</code>. Para uma pasta ou uma imagem de disco, selecione o
-      <code>.icns</code> no Finder, aperte Command-C, então Obter Informações na
+      <code>.icns</code> no Finder, aperte Command-C, depois Obter Informações na
       coisa que você quer mudar, clique no ícone pequeno no canto superior
       esquerdo e aperte Command-V.
     </p>
@@ -311,9 +310,9 @@
     </p>
     <p>
       Num Mac, um <code>.icns</code> abre no Preview, que lista cada vaga na
-      lateral &mdash; e o mesmo truque funciona no Finder: jogue o arquivo numa
-      pasta e arraste o controle de tamanho nas opções de visualização para ver a
-      troca entre as imagens de dentro.
+      lateral. O mesmo truque funciona no Finder: jogue o arquivo numa pasta e
+      arraste o controle de tamanho nas opções de visualização para ver a troca
+      entre as imagens de dentro.
     </p>
   </section>
 
@@ -324,17 +323,17 @@
       <code>.ico</code> é um cabeçalho de seis bytes, dezesseis bytes por imagem,
       e então as imagens. Não há etapa nenhuma na criação de um que exija um
       servidor, e a ferramenta daqui não usa um: a
-      <code>Content-Security-Policy</code> da página nomeia todos os endereços
-      que ela pode contatar, e nenhum deles é deste site.
+      <code>Content-Security-Policy</code> da página lista todos os endereços
+      que ela pode acessar, e nenhum deles é deste site.
     </p>
     <p>
       Isso vale mais aqui do que de costume. Uma logomarca entregue a um gerador
       gratuito de favicon é, com bastante frequência, uma marca ainda não
-      lançada &mdash; o ícone é uma das primeiras coisas feitas e uma das últimas
-      anunciadas. Carregue a página, desconecte da internet e faça um mesmo
-      assim, se preferir conferir a acreditar.
+      lançada, já que o ícone é uma das primeiras coisas feitas e uma das últimas
+      anunciadas. Se você prefere conferir a acreditar, carregue a página,
+      desligue a internet e faça um assim mesmo. O
       <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
-      conversores online?</a> apresenta mais três verificações que você pode
-      fazer em qualquer ferramenta.
+      conversores online?</a> traz mais três verificações que você pode fazer em
+      qualquer ferramenta.
     </p>
   </section>

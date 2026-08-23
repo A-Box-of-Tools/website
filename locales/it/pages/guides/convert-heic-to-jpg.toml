@@ -8,10 +8,10 @@ description = "Gli iPhone salvano le foto in HEIC, e mezza internet non riesce a
 heading = "La foto che il tuo telefono ha salvato, e il formato che non apre niente"
 lede = """
     Un iPhone salva le foto in HEIC, che è più leggero e migliore del JPEG e che
-    moltissimo software si rifiuta ancora di aprire. Qui c'è cos'è davvero quel
-    formato, quanto costa convertirlo all'immagine, e perché quasi ogni
-    convertitore vuole prima che tu lo carichi."""
+    moltissimo software si rifiuta ancora di aprire. Vediamo cos'è davvero quel
+    formato, quanto costa all'immagine convertirlo, e perché quasi ogni
+    convertitore vuole prima che tu glielo carichi."""
 updated = "20 agosto 2026"
 og_title = "Come convertire un HEIC in JPG"
 og_description = "Perché le foto dell'iPhone non si aprono, quanto costa convertirle, e come farlo senza consegnarle a nessuno."
-og_image_alt = "abox.tools - strumenti che non toccano nessun server"
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

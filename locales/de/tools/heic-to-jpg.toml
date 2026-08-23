@@ -10,27 +10,28 @@ heading = "HEIC&nbsp;zu&nbsp;JPG <span class=\"h1-kw\">&mdash; iPhone-Fotos umwa
 tagline = "Die Fotos, die ein iPhone macht, in einem Format, das jedes Programm öffnet."
 
 title = "HEIC-zu-JPG-Umwandler &mdash; kostenlos, ohne Upload"
-description = "HEIC-Fotos vom iPhone im Browser in JPG umwandeln. Der Decoder läuft auf Ihrem eigenen Gerät: nichts wird hochgeladen, kein Konto, funktioniert offline, und Datum und Kameradaten dürfen mitkommen."
+description = "HEIC-Fotos vom iPhone im Browser in JPG umwandeln. Der Decoder läuft auf Ihrem eigenen Gerät: nichts wird hochgeladen, kein Konto, auch offline, und Datum und Kameradaten dürfen mitkommen."
 og_title = "HEIC-Fotos zu JPGs machen, ohne sie hochzuladen"
-og_description = "Der Umwandler, der Ihre Fotos nicht haben will. Der HEIC-Decoder wird von dieser Seite ausgeliefert und läuft auf Ihrem eigenen Gerät, die Bilder verlassen es also nie."
+og_description = "Der Umwandler, der Ihre Fotos gar nicht haben will. Der HEIC-Decoder kommt von dieser Seite und läuft auf Ihrem eigenen Gerät, die Bilder verlassen es also nie."
 og_image_alt = "HEIC zu JPG - iPhone-Fotos in einem Format, das jedes Programm öffnet"
 
 pledge = """
     Das Dekodieren läuft in Ihrem eigenen Browser, auf Ihrer eigenen Hardware.
     HEIC ist das eine Bildformat, das ein Browser nicht von sich aus öffnet,
-    also trägt diese Seite den Decoder mit sich &mdash; rund 1,4 MB, von dieser
-    Seite ausgeliefert, nach dem ersten Besuch im Zwischenspeicher. Das ist der
-    ganze Grund, warum jeder andere HEIC-Umwandler Sie zum Hochladen auffordert:
-    Sie legen den Codec auf einen Server, und Ihre Fotos müssen zu ihm. Dieser
-    hier legt den Codec stattdessen hierher. Auf dieser Seite gibt es überhaupt
-    keine Netzfunktion und am anderen Ende keinen Server, an den ein Foto ginge."""
+    also trägt diese Seite den Decoder mit sich: rund 1,4 MB, von hier
+    ausgeliefert und nach dem ersten Besuch im Zwischenspeicher. Genau daran
+    liegt es, dass jeder andere HEIC-Umwandler Sie zum Hochladen auffordert. Wer
+    den Codec auf einen Server legt, muss Ihre Fotos zu ihm holen. Dieser hier
+    legt den Codec stattdessen hierher. Eine Netzfunktion gibt es auf dieser
+    Seite überhaupt nicht, und am anderen Ende stünde auch kein Server, an den
+    ein Foto gehen könnte."""
 
 live_hint = """
-      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
-      &bdquo;Netzwerk&ldquo; und wandeln Sie ein Foto um. Sie sehen die eigenen
-      Dateien dieser Seite laden, den Decoder darunter, und keine einzige
-      Anfrage, die ein Foto, ein Vorschaubild, einen Dateinamen oder ein Byte
-      Ihrer Auswahl trägt. Oder laden Sie die Seite einmal, trennen Sie die
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und wandeln Sie ein Foto um. Sie sehen die
+      eigenen Dateien dieser Seite laden, den Decoder darunter, und keine
+      einzige Anfrage, die ein Foto, ein Vorschaubild, einen Dateinamen oder ein
+      Byte Ihrer Auswahl trägt. Oder laden Sie die Seite einmal, trennen Sie die
       Internetverbindung und wandeln Sie trotzdem einen ganzen Ordner um."""
 
 read_first = """
@@ -41,18 +42,16 @@ read_first = """
       JPEG geschieht. Die Engine selbst ist <code>vendor/libheif.js</code>,
       unverändert, mit ihrer Lizenz daneben."""
 
-howto_heading = "HEIC-Fotos in JPG umwandeln"
+howto_heading = "So wandeln Sie HEIC-Fotos in JPG um"
 
 card = """
             Die Fotos, die ein iPhone macht, in einem Format, das jedes Programm
-            öffnet &mdash; dekodiert auf Ihrem eigenen Gerät, nicht auf dem
+            öffnet. Dekodiert wird auf Ihrem eigenen Gerät und nicht auf dem
             Server von irgendwem."""
 
 [words]
 plural = "Fotos"
 choose = "ein Foto"
-analytics_extra = """, und auch keines der
-  Daten, Kameramodelle oder Koordinaten, die dieses Werkzeug daraus liest"""
 
 [[facts]]
 text = "Kein Upload"
@@ -72,24 +71,24 @@ text = "Quelloffen"
 [[privacy]]
 title = "Ihre Fotos haben keinen Weg nach draußen."
 body = """
- Die
-      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
-      an dem Ihre Dateien gesammelt werden könnten, und nichts im Code, das sie
-      senden würde, gäbe es einen."""
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen."""
 
 [[privacy]]
 title = "Der Decoder kam von hier, und er geht nirgendwohin."
 body = """
  HEIC ist HEVC
-      in einem Box-Format, und außer Safari dekodiert es kein Browser &mdash;
-      also liefert diese Seite <code>libheif</code> aus, nach WebAssembly
+      in einem Box-Format, und außer Safari dekodiert es kein Browser. Deshalb
+      liefert diese Seite <code>libheif</code> mit aus, nach WebAssembly
       kompiliert: rund 1,4 MB, in dieses Repository eingecheckt, von dieser
-      Herkunft ausgeliefert und vom Service Worker zwischengespeichert wie jede
-      andere Datei hier. Es wird nicht von einem CDN geholt, denn das setzte
-      einen Dritten in den Weg jedes Besuchs und nähme dem Werkzeug die
-      Offline-Fähigkeit. Die Binärdatei steckt im Skript statt daneben, und zwar
-      genau deshalb, damit zum Starten kein Abruf nötig ist."""
+      Domain ausgeliefert und vom Service Worker zwischengespeichert wie jede
+      andere Datei hier. Von einem CDN wird nichts geholt, denn das setzte einen
+      Dritten in den Weg jedes Besuchs und nähme dem Werkzeug die
+      Offline-Fähigkeit. Dass die Binärdatei im Skript steckt statt daneben, hat
+      genau einen Grund: So braucht es zum Starten keinen einzigen Abruf."""
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
@@ -99,87 +98,86 @@ body = """
       <code>sendBeacon</code> in irgendeiner Datei, die für dieses Werkzeug
       geschrieben wurde. Die mitgelieferte Engine enthält, wie jeder
       Emscripten-Build, die Ladepfade, die eine <code>.wasm</code> von einer URL
-      holen würden; sie werden nicht genommen, weil die Binärdatei schon zur Hand
-      ist &mdash; und würde einer genommen, nennt <code>connect-src</code> Googles
-      Messendpunkte und sonst nichts, der Browser würde ihn also abweisen. Die
+      holen würden. Genommen wird keiner davon, weil die Binärdatei schon zur
+      Hand ist. Und würde doch einer genommen, nennt <code>connect-src</code>
+      Googles Messendpunkte und sonst nichts, der Browser wiese ihn also ab. Die
       Richtlinie ist der Beweis, nicht das Versprechen."""
 
 [[privacy]]
-title = "Die Metadaten werden hier gelesen und Ihnen gemeldet."
+title = "Die Metadaten werden hier gelesen und Ihnen gezeigt."
 body = """
  Die Liste auf der
-      Seite sagt, was jedes Foto mit sich trägt &mdash; das Datum, die Kamera und
-      ob GPS-Koordinaten darin stehen &mdash;, denn das möchten Sie vielleicht
-      wissen, bevor Sie das JPEG jemandem geben. Es wird von
-      <code>src/boxes.js</code> in diesem Browser aus der Datei gelesen, auf
-      dieser Seite angezeigt und in Ihr JPEG geschrieben oder weggelassen, ganz
-      wie Sie es wählen. Es gibt in diesem Repository kein eigenes
-      Analytics-Ereignis, das einen Dateinamen, ein Datum, eine Koordinate oder
-      eine Anzahl mitführt."""
+      Seite sagt, was jedes Foto mit sich trägt, also das Datum, die Kamera und
+      ob GPS-Koordinaten darin stehen. Das wollen Sie vielleicht wissen, bevor
+      Sie das JPEG jemandem geben. Gelesen wird es von <code>src/boxes.js</code>
+      in diesem Browser aus der Datei, auf dieser Seite angezeigt und in Ihr JPEG
+      geschrieben oder weggelassen, ganz wie Sie es wählen. In diesem Repository
+      gibt es kein eigenes Analytics-Ereignis, das einen Dateinamen, ein Datum,
+      eine Koordinate oder eine Anzahl mitführt."""
 
 [[privacy]]
-title = "Was Google lädt - und was es nicht bekommt."
+title = "Was Google lädt und was Google nicht bekommt."
 body = """
  Die Werbe- und
       Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
       Keinem davon wird irgendetwas über Ihre Fotos übergeben. Jede Zeile, die
-      eine Datei liest, dekodiert oder schreibt, wird von dieser Herkunft
-      ausgeliefert und ist im Repository aufgeführt."""
+      eine Datei liest, dekodiert oder schreibt, kommt von dieser Domain selbst
+      und steht im Repository."""
 
 [[privacy]]
 title = "Es funktioniert offline."
 body = """
  Laden Sie die Seite einmal und trennen Sie die
-      Netzverbindung, und das Werkzeug bleibt unverändert &mdash; der Decoder ist
-      mit ihr zwischengespeichert. Das ist der einfachste Beweis von allen, und
+      Netzverbindung, und das Werkzeug bleibt unverändert, denn der Decoder liegt
+      mit ihr im Zwischenspeicher. Das ist der einfachste Beweis von allen und
       hier ein stärkerer als irgendwo sonst auf dieser Seite: Ein Umwandler, der
       Ihre Fotos zum Dekodieren wegschickte, brächte das unmöglich fertig."""
 
 [[howto]]
-title = "Wählen Sie Ihre HEIC-Fotos."
+title = "Wählen Sie Ihre HEIC-Fotos aus."
 body = """
  Ziehen Sie sie auf das Auswahlfeld
-      oder wählen Sie sie von Hand, direkt aus einem Telefon-Backup oder einem
-      Ordner auf dem Schreibtisch. Der Browser liest sie von Ihrer Festplatte;
-      dabei wird nichts irgendwohin gesendet. Die Liste sagt, was jedes davon ist
-      und was darin steckt."""
+      oder suchen Sie sie von Hand heraus, direkt aus einem Telefon-Backup oder
+      einem Ordner auf dem Schreibtisch. Der Browser liest sie von Ihrer
+      Festplatte, und dabei geht nichts nach draußen. Die Liste sagt Ihnen, was
+      jedes davon ist und was darin steckt."""
 
 [[howto]]
 title = "Sehen Sie nach, was die Fotos mit sich tragen."
 body = """
  Jede Zeile nennt das
-      Aufnahmedatum, die Kamera und &mdash; in Grün, weil das der bemerkenswerte
-      Teil ist &mdash;, ob die Datei GPS-Koordinaten enthält. Das wird aus dem
-      Container gelesen, ohne das Bild zu dekodieren, kostet also nichts und
-      erscheint sofort."""
+      Aufnahmedatum, die Kamera und, in Grün, weil das der bemerkenswerte Teil
+      ist, ob die Datei GPS-Koordinaten enthält. Gelesen wird das aus dem
+      Container, ohne das Bild zu dekodieren, es kostet also nichts und erscheint
+      sofort."""
 
 [[howto]]
 title = "Wählen Sie ein Format und entscheiden Sie über die Details."
 body = """
- JPEG, sofern Sie
-      keinen Grund für etwas anderes haben: Es ist das Format, das überall
-      öffnet, und genau darum geht es beim Umwandeln. Der Qualitätsregler steht
-      auf 92 &mdash; die Einstellung, bei der eine Fotografie vom Original kaum
-      zu unterscheiden ist. Das Häkchen entscheidet, ob Datum, Kamera und Ort
-      mitkommen."""
+ Nehmen Sie JPEG,
+      solange Sie keinen Grund für etwas anderes haben, denn es ist das Format,
+      das überall aufgeht, und genau darum geht es beim Umwandeln. Der
+      Qualitätsregler steht auf 92, also dort, wo eine Fotografie vom Original
+      kaum zu unterscheiden ist. Das Häkchen entscheidet, ob Datum, Kamera und
+      Ort mitkommen."""
 
 [[howto]]
 title = "Klicken Sie auf &bdquo;Umwandeln&ldquo; und laden Sie herunter."
 body = """
- Der Decoder trifft bei
-      der ersten Umwandlung ein &mdash; rund 1,4 MB, einmal &mdash; und jedes
-      Foto danach wird auf Ihrem eigenen Gerät dekodiert und geschrieben. Eine
-      Datei gibt Ihnen eine Download-Schaltfläche; mehrere geben Ihnen zusätzlich
-      ein ZIP."""
+ Bei der ersten
+      Umwandlung trifft der Decoder ein, rund 1,4 MB und nur dieses eine Mal.
+      Jedes Foto danach wird auf Ihrem eigenen Gerät dekodiert und geschrieben.
+      Bei einer Datei bekommen Sie eine Download-Schaltfläche, bei mehreren
+      zusätzlich ein ZIP."""
 
 [[faq]]
 q = "Wird mein Foto irgendwohin hochgeladen?"
 a = """
-        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
-        gelesen, dekodiert und geschrieben. Dieses Werkzeug hat keinerlei
-        Netzfunktion &mdash; es ruft nie etwas ab und sendet nie etwas &mdash; und
-        die <code>Content-Security-Policy</code> der Seite nennt jede Adresse, die
-        sie kontaktieren darf; keine davon gehört zu dieser Seite. Das eine, was
+        Nein. Ihr eigener Browser liest, dekodiert und schreibt die Datei auf
+        Ihrer eigenen Hardware. Netzfunktionen hat dieses Werkzeug keine, es ruft
+        nie etwas ab und sendet nie etwas. In der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf, und keine davon gehört uns. Das eine, was
         tatsächlich lädt, ist der Decoder selbst, und der kommt von dieser Seite,
         einmal, bevor Ihr Foto überhaupt beteiligt ist."""
 
@@ -187,114 +185,112 @@ a = """
 q = "Warum lädt diese Seite beim ersten Mal 1,4 MB herunter?"
 a = """
         Weil HEIC das eine Bildformat ist, das ein Browser nicht öffnet. Es ist
-        ein HEVC-Einzelbild in einem Box-Container, und nur Safari, auf
-        Apple-Hardware, hat einen Decoder dafür; Chrome, Firefox und Edge weisen
-        die Datei schlicht ab. Ein HEIC-Umwandler braucht seinen Decoder also
-        irgendwoher, und dafür gibt es zwei Orte: einen Server oder die Seite.
-        Jeder andere Umwandler hat den Server gewählt, und genau deshalb brauchen
-        sie alle Ihre Fotos hochgeladen. Dieser trägt stattdessen
-        <code>libheif</code>, nach WebAssembly kompiliert. Es wird von dieser
-        Seite ausgeliefert, nach dem ersten Besuch zwischengespeichert, und es ist
-        der ganze Preis dafür, dass Ihre Fotos nirgendwohin gehen."""
+        ein HEVC-Einzelbild in einem Box-Container, und nur Safari hat auf
+        Apple-Hardware einen Decoder dafür. Chrome, Firefox und Edge weisen die
+        Datei schlicht ab. Ein HEIC-Umwandler braucht seinen Decoder also
+        irgendwoher, und dafür kommen zwei Orte in Frage: ein Server oder die
+        Seite. Alle anderen Umwandler haben den Server gewählt, und deshalb
+        brauchen sie Ihre Fotos hochgeladen. Dieser trägt stattdessen
+        <code>libheif</code> mit sich, nach WebAssembly kompiliert. Es kommt von
+        dieser Seite, liegt nach dem ersten Besuch im Zwischenspeicher, und es
+        ist der ganze Preis dafür, dass Ihre Fotos nirgendwohin gehen."""
 
 [[faq]]
 q = "Behält das JPEG Datum, Kamera und Ort?"
 a = """
-        Wenn Sie wollen &mdash; es ist ein Häkchen auf der Seite. Bleibt es
-        gesetzt, wird der EXIF-Block aus dem HEIC herauskopiert und genau so ins
-        JPEG geschrieben, wie das Telefon ihn geschrieben hat; das umgewandelte
-        Foto sortiert sich also weiter nach dem Aufnahmetag statt nach dem Tag der
-        Umwandlung &mdash; und das ist die übliche Klage über HEIC-Umwandler. Ein
-        Tag wird geändert, und nur eines: die Orientierung, die auf
-        &bdquo;aufrecht&ldquo; gesetzt wird, weil die Drehung bereits auf die
-        Pixel angewendet wurde und ein Betrachter, der sie noch einmal anwendete,
-        jedes Hochformatfoto auf die Seite legen würde. Nehmen Sie das Häkchen
-        heraus, und das JPEG kommt mit dem Bild und sonst nichts heraus."""
+        Wenn Sie wollen, es ist ein Häkchen auf der Seite. Bleibt es gesetzt,
+        wird der EXIF-Block aus dem HEIC herauskopiert und genau so ins JPEG
+        geschrieben, wie das Telefon ihn geschrieben hat. Das umgewandelte Foto
+        sortiert sich damit weiter nach dem Aufnahmetag statt nach dem Tag der
+        Umwandlung, und genau darüber wird bei HEIC-Umwandlern am häufigsten
+        geklagt. Geändert wird genau ein Tag, nämlich die Orientierung, die auf
+        &bdquo;aufrecht&ldquo; gesetzt wird. Die Drehung steckt bereits in den
+        Pixeln, und ein Betrachter, der sie noch einmal anwendete, legte jedes
+        Hochformatfoto auf die Seite. Nehmen Sie das Häkchen heraus, kommt das
+        JPEG mit dem Bild und sonst nichts heraus."""
 
 [[faq]]
 q = "Entfernt es GPS-Koordinaten?"
 a = """
-        Es sagt Ihnen, dass sie da sind, und tut dann, worum Sie bitten. Die Zeile
-        zu jedem Foto sagt, ob die Datei Koordinaten trägt, bevor irgendetwas
-        umgewandelt wird &mdash; das ist mehr, als das Telefon tut. Nehmen Sie das
-        Häkchen bei &bdquo;Datum, Kamera und Einstellungen behalten&ldquo; heraus,
-        bleiben sie samt allem anderen aus dem JPEG; lassen Sie es gesetzt, kommen
-        sie mit. Wollen Sie die Tags im Detail durchsehen oder sie aus Fotos
-        entfernen, die schon JPEGs sind, ist der
+        Es sagt Ihnen, dass sie da sind, und tut dann, worum Sie bitten. Schon
+        bevor irgendetwas umgewandelt wird, verrät die Zeile zu jedem Foto, ob
+        die Datei Koordinaten trägt, und das ist mehr, als das Telefon tut.
+        Nehmen Sie das Häkchen bei &bdquo;Datum, Kamera und Einstellungen
+        behalten&ldquo; heraus, bleiben sie samt allem anderen aus dem JPEG,
+        lassen Sie es gesetzt, kommen sie mit. Wollen Sie die Tags im Detail
+        durchsehen oder sie aus Fotos entfernen, die schon JPEGs sind, ist der
         <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>
-        das Werkzeug dafür &mdash; und er tut es, ohne das Bild neu zu
+        das Werkzeug dafür, und der schafft es sogar, ohne das Bild neu zu
         komprimieren."""
 
 [[faq]]
 q = "Wird das Bild neu komprimiert?"
 a = """
-        Ja, und das muss es: HEIC und JPEG sind verschiedene Codecs, es gibt also
-        keinen Weg vom einen zum anderen, ohne das Bild zu dekodieren und erneut
-        zu kodieren. Steuern können Sie, was das kostet. Der Qualitätsregler steht
-        standardmäßig auf 92, wo eine Fotografie vom Original sehr schwer zu
-        unterscheiden ist, und PNG steht im Menü für den Fall, dass Sie
-        überhaupt keinen Verlust wollen und es Ihnen nichts ausmacht, dass die
-        Datei fünf- bis zehnmal so groß wird."""
+        Ja, und das muss es auch. HEIC und JPEG sind verschiedene Codecs, es gibt
+        also keinen Weg vom einen zum anderen, ohne das Bild zu dekodieren und
+        erneut zu kodieren. Was das kostet, steuern Sie selbst. Der
+        Qualitätsregler steht standardmäßig auf 92, wo eine Fotografie vom
+        Original sehr schwer zu unterscheiden ist, und PNG steht für den Fall im
+        Menü, dass Sie überhaupt keinen Verlust wollen und Ihnen eine fünf- bis
+        zehnmal so große Datei nichts ausmacht."""
 
 [[faq]]
 q = "Was, wenn die Datei .jpg heißt, aber in Wahrheit ein HEIC ist?"
 a = """
         Dann geht es trotzdem. Jede hier abgelegte Datei wird an ihren ersten
-        Bytes erkannt und nicht an ihrem Namen, denn der Name ist das, wofür sich
-        die zuletzt beteiligte App entschieden hat &mdash; und ein HEIC, das als
-        &bdquo;.jpg&ldquo; ankam, ist einer der häufigsten Gründe, warum Menschen
-        nach einem Werkzeug wie diesem suchen. Eine Datei, die wirklich ein JPEG
-        oder ein PNG ist, wird mit einer entsprechenden Meldung abgelehnt, statt
-        in eine Kopie ihrer selbst umgewandelt zu werden."""
+        Bytes erkannt und nicht an ihrem Namen, denn der Name ist bloß das, wofür
+        sich die zuletzt beteiligte App entschieden hat. Ein HEIC, das als
+        &bdquo;.jpg&ldquo; ankam, ist ohnehin einer der häufigsten Gründe, warum
+        Menschen nach einem Werkzeug wie diesem suchen. Eine Datei, die wirklich
+        ein JPEG oder ein PNG ist, wird mit einer entsprechenden Meldung
+        abgelehnt, statt in eine Kopie ihrer selbst umgewandelt zu werden."""
 
 [[faq]]
 q = "Kann es ein Live Photo oder eine Serienaufnahme umwandeln?"
 a = """
         Die Standbilder darin, ja. Ein HEIC kann mehr als ein Bild halten, und
-        jedes, das es hält, wird umgewandelt und nach dem Original mit einer
-        angehängten Nummer benannt. Die Videohälfte eines Live Photos ist eine
-        eigene Datei, die das Telefon neben dem HEIC aufbewahrt, sie ist hier also
-        gar nicht zum Umwandeln vorhanden. Tiefenkarten und Vorschaubilder stecken
-        im Container, sind aber keine Bilder, um die jemand gebeten hätte, und
+        jedes davon wird umgewandelt und nach dem Original mit einer angehängten
+        Nummer benannt. Die Videohälfte eines Live Photos ist eine eigene Datei,
+        die das Telefon neben dem HEIC aufbewahrt, sie liegt hier also gar nicht
+        zum Umwandeln vor. Tiefenkarten und Vorschaubilder stecken zwar im
+        Container, sind aber keine Bilder, um die jemand gebeten hätte, und
         bleiben unangetastet."""
 
 [[faq]]
 q = "Warum nimmt es mein AVIF nicht?"
 a = """
-        Weil es damit nichts zu tun gibt. AVIF ist derselbe Container wie HEIC,
+        Weil es damit nichts zu tun gäbe. AVIF ist derselbe Container wie HEIC,
         nur mit AV1 statt HEVC darin, und jeder aktuelle Browser dekodiert eines
-        von Haus aus &mdash; ein Umwandler würde also ein Megabyte Engine
-        ausliefern, um ein Problem zu lösen, das Sie nicht haben. Brauchen Sie ein
-        AVIF als JPEG, lesen der
-        <a href="../bild-komprimieren/">Bildkompressor</a> und das
-        <a href="../bildgroesse-aendern/">Bildgrößen-Ändern</a> beide AVIF und
-        schreiben JPEG &mdash; mit dem Decoder, den Ihr Browser ohnehin hat."""
+        von Haus aus. Ein Umwandler lieferte also ein Megabyte Engine aus, um ein
+        Problem zu lösen, das Sie gar nicht haben. Brauchen Sie ein AVIF als
+        JPEG, lesen der <a href="../bild-komprimieren/">Bildkompressor</a> und
+        der <a href="../bildgroesse-aendern/">Bildskalierer</a> beide AVIF und
+        schreiben JPEG, und zwar mit dem Decoder, den Ihr Browser ohnehin hat."""
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
 a = """
         Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
-        Testphase und kein Wasserzeichen. Es gibt auch keine Grenze für Anzahl
-        oder Größe der Dateien, weil es keinen Server gibt, der dafür zahlt
-        &mdash; die Arbeit passiert auf Ihrem eigenen Gerät. Die Seite trägt
-        Werbung, und die bezahlt sie; den Anzeigen wird nichts über Ihre Fotos
-        übergeben."""
+        Testphase und kein Wasserzeichen. Auch bei Anzahl und Größe der Dateien
+        gibt es keine Grenze, denn es zahlt kein Server dafür. Die Arbeit
+        passiert auf Ihrem eigenen Gerät. Bezahlt wird die Seite über Werbung,
+        und den Anzeigen wird nichts über Ihre Fotos übergeben."""
 
 [[faq]]
 q = "Funktioniert es offline?"
 a = """
         Ja, Decoder inklusive. Laden Sie die Seite einmal, trennen Sie dann die
         Internetverbindung, und sie arbeitet an Ihren Fotos genau wie vorher
-        weiter. Das ist zugleich der stärkste verfügbare Beweis dafür, dass nichts
-        hochgeladen wird: Ein Umwandler, der Ihre HEICs zum Dekodieren
-        wegschickte, würde in dem Moment stehen bleiben, in dem Sie den Stecker
-        ziehen &mdash; dieser tut es nicht."""
+        weiter. Das ist zugleich der stärkste Beweis, der sich dafür führen
+        lässt, dass nichts hochgeladen wird. Ein Umwandler, der Ihre HEICs zum
+        Dekodieren wegschickte, bliebe in dem Moment stehen, in dem Sie den
+        Stecker ziehen. Dieser bleibt es nicht."""
 
 [schema]
-description = "HEIC- und HEIF-Fotos von einem iPhone in JPEG, PNG oder WebP umwandeln. Der HEIC-Decoder ist WebAssembly, das von der Seite selbst ausgeliefert wird - die Bilder werden also auf Ihrem eigenen Gerät dekodiert und nie hochgeladen. Datum, Kamera und Ort können ins JPEG mitgenommen oder weggelassen werden."
+description = "HEIC- und HEIF-Fotos von einem iPhone in JPEG, PNG oder WebP umwandeln. Der HEIC-Decoder ist WebAssembly und wird von der Seite selbst ausgeliefert, die Bilder werden also auf Ihrem eigenen Gerät dekodiert und nie hochgeladen. Datum, Kamera und Ort können ins JPEG mitgenommen oder weggelassen werden."
 features = [
   "Wandelt HEIC und HEIF in JPEG, PNG oder WebP um",
-  "Dekodiert im Browser, in jedem Browser - nicht nur in Safari",
+  "Dekodiert im Browser, in jedem Browser, nicht nur in Safari",
   "Es wird nichts hochgeladen, und das Werkzeug arbeitet mit getrennter Netzverbindung",
   "Nimmt Datum, Kamera und GPS ins JPEG mit, oder lässt sie weg",
   "Sagt vor jeder Umwandlung, welche Fotos GPS-Koordinaten enthalten",
@@ -306,4 +302,4 @@ features = [
 
 [picker]
 title = "HEIC-Fotos hierher ziehen"
-hint = "oder klicken zum Auswählen &mdash; .heic und .heif, wie sie auch gerade heißen"
+hint = "oder klicken und auswählen &mdash; .heic und .heif, wie sie auch gerade heißen"

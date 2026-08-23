@@ -1,5 +1,5 @@
 #
-# Guide : transformer une video en GIF - French.
+# Guide : transformer une vidéo en GIF - French.
 #
 
 nav = "Faire un GIF depuis une vidéo"
@@ -14,4 +14,4 @@ lede = """
 updated = "20 août 2026"
 og_title = "Comment transformer une vidéo en GIF, et le garder léger"
 og_description = "Les trois réglages qui décident du poids d'un GIF, ce que chacun coûte, et quand le GIF est carrément la mauvaise réponse."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

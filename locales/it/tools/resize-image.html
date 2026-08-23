@@ -29,11 +29,11 @@
 
     <p class="card-lede">
       Il riquadro parte su tutta l'immagine, quindi lasciare stare questo passo
-      non ritaglia niente. Ogni immagine tiene il proprio riquadro &mdash;
-      scegline una dall'elenco qui sopra per disegnarci sopra. Il ritaglio
-      avviene prima del ridimensionamento, che è l'unico ordine che abbia senso:
-      un'immagine tagliata dopo essere stata rimpicciolita ha già buttato via i
-      pixel che le servivano.
+      non ritaglia niente. Ogni immagine si tiene il proprio riquadro, e per
+      disegnarci sopra basta sceglierla dall'elenco qui sopra. Il ritaglio
+      avviene prima del ridimensionamento, che è l'unico ordine ad avere senso,
+      perché un'immagine tagliata dopo essere stata rimpicciolita ha già buttato
+      via i pixel che le servivano.
     </p>
 
     <p id="crop-empty" class="field-summary">Aggiungi un'immagine e il riquadro compare qui.</p>
@@ -183,10 +183,11 @@
       <span>
         <strong>Non ingrandire mai un'immagine oltre la sua dimensione di partenza</strong>
         <span class="check-note">
-          Ingrandire inventa pixel che non sono mai stati fotografati, quindi
-          un'immagine piccola messa in una cornice grande esce morbida invece che
-          dettagliata. Con questa attiva, tutto quello che è già più piccolo della
-          dimensione che hai chiesto viene lasciato alla propria dimensione.
+          Ingrandire vuol dire inventare pixel che non sono mai stati
+          fotografati, quindi un'immagine piccola messa in una cornice grande
+          esce morbida invece che dettagliata. Con questa attiva, tutto quello
+          che è già più piccolo della dimensione che hai chiesto resta alla
+          dimensione che ha.
         </span>
       </span>
     </label>
@@ -214,9 +215,9 @@
         <label for="quality">Qualità &mdash; <output id="quality-value" for="quality">85</output></label>
         <input type="range" id="quality" min="30" max="100" step="1" value="85">
         <p class="field-note">
-          Solo JPEG e WebP; il PNG non ha una manopola della qualità. 85 è dove
-          quasi tutti smettono di accorgersene. Sotto il 60 circa le zone piatte
-          cominciano a fare bande.
+          Solo JPEG e WebP; il PNG una manopola della qualità non ce l'ha. 85 è
+          il punto in cui quasi nessuno se ne accorge più. Sotto il 60 circa le
+          zone piatte cominciano a fare bande.
         </p>
       </div>
 

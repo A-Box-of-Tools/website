@@ -28,8 +28,8 @@
       Dat klinkt als overbodigheid en dat is het niet. Een browser die je icoon
       op zestien pixels tekent heeft twee mogelijkheden: een versie van zestien
       pixels lezen die jij getekend hebt, of ter plekke een grotere verkleinen.
-      Het tweede is slechter, en zichtbaar ook &mdash; een automatische
-      verkleining van een gedetailleerd logo levert pap op, terwijl een versie
+      Het tweede is slechter, en dat zie je ook, want een automatische verkleining
+      van een gedetailleerd logo levert pap op, terwijl een versie
       van zestien pixels waar jij naar gekeken hebt iets is dat je hebt kunnen
       vereenvoudigen. De hele reden dat het formaat meerdere maten bevat, is om
       je die kans te geven.
@@ -39,17 +39,17 @@
     </p>
     <ul>
       <li>
-        <strong>16&times;16</strong> &mdash; het browsertabblad, de adresbalk,
+        <strong>16&times;16</strong>, voor het browsertabblad, de adresbalk en
         het bladwijzermenu. Dit is degene die mensen zien. Krijg je er maar één
         goed, krijg dan deze goed.
       </li>
       <li>
-        <strong>32&times;32</strong> &mdash; een bladwijzerbalk, een
+        <strong>32&times;32</strong>, voor een bladwijzerbalk, een
         Windows-bureaubladsnelkoppeling naar je site, en de meeste browsers op
         een hi-dpi-scherm, die het tabbladicoon uit 32 halen en verkleinen.
       </li>
       <li>
-        <strong>48&times;48</strong> &mdash; het formaat waarop Google een
+        <strong>48&times;48</strong>, het formaat waarop Google een
         site-icoon voor zoekresultaten leest, en de middelgrote
         pictogramweergave van Windows.
       </li>
@@ -105,8 +105,8 @@
       publiceert. De voorvertoning in
       <a href="../../favicon-maken/">Afbeelding naar ICO</a> tekent elk formaat
       op zijn echte formaat op het scherm, en dat is de enige manier om dit te
-      beoordelen &mdash; een icoon van zestien pixels dat op vierenzestig getoond
-      wordt, ziet er prima uit en zegt je niets.
+      beoordelen. Een icoon van zestien pixels dat op vierenzestig getoond wordt
+      ziet er prima uit en zegt je dus niets.
     </p>
   </section>
 
@@ -184,7 +184,7 @@
       </li>
       <li>
         <strong>Android en elke installatievraag</strong> lezen een
-        webapp-manifest &mdash; <code>site.webmanifest</code> &mdash; dat naar
+        webapp-manifest, oftewel <code>site.webmanifest</code>, dat naar
         png's van 192 en 512 pixels wijst. Die 512 is ook wat een webapp op zijn
         startscherm toont.
       </li>
@@ -196,9 +196,9 @@
     </ul>
     <p>
       Er is er nog een die makkelijk misgaat: Android-launchers snijden een
-      adaptief icoon bij naar de vorm die de telefoon leuk vindt &mdash; cirkel,
-      squircle, afgerond vierkant &mdash; en alleen de middelste 80% van het
-      beeld overleeft gegarandeerd. Een icoon dat van rand tot rand getekend is,
+      adaptief icoon bij naar de vorm die de telefoon leuk vindt, of dat nu een
+      cirkel, een squircle of een afgerond vierkant is, en alleen de middelste 80%
+      van het beeld overleeft gegarandeerd. Een icoon dat van rand tot rand getekend is,
       raakt zijn hoeken kwijt. Dat is wat een <em>maskeerbaar</em> icoon is:
       hetzelfde plaatje met opzet klein binnen het vierkant getekend, apart
       opgegeven in het manifest.
@@ -219,21 +219,21 @@
     <p>
       Is het icoon voor een programma in plaats van een site, dan veranderen de
       formaten. Wat de standaard-<code>app.ico</code> van Visual Studio zelf
-      bevat, is 16, 32, 48 en 256 &mdash; de drie shellformaten plus de grote
-      waar het startmenu en de extra grote weergave van Verkenner uit tekenen.
+      bevat, is 16, 32, 48 en 256: de drie shellformaten plus de grote waar het
+      startmenu en de extra grote weergave van Verkenner uit tekenen.
     </p>
     <p>
       Op een hi-dpi-scherm vraagt Windows ook om 20, 24, 40, 64 en 96, en
       herbemonstert die vanaf het dichtstbijzijnde formaat dat het heeft wanneer
       ze ontbreken. Of dat uitmaakt hangt van je icoon af: een vlakke vorm
       overleeft de herbemonstering, een gedetailleerde niet. Ze toevoegen
-      verdubbelt ruwweg het bestand, en dat is voor een programma helemaal niets
-      &mdash; het rekensommetje is volstrekt anders dan bij een favicon, die door
-      elke bezoeker opgehaald wordt.
+      verdubbelt ruwweg het bestand, en voor een programma stelt dat helemaal niets
+      voor. Het rekensommetje ligt daar volstrekt anders dan bij een favicon, die
+      door elke bezoeker opgehaald wordt.
     </p>
     <p>
       Nog iets over grootte: bij het item van 256 zitten de bytes.
-      Ongecomprimeerd opgeslagen is het in zijn eentje 264&nbsp;kB; als png in
+      Ongecomprimeerd opgeslagen is het in zijn eentje 264&nbsp;KB; als png in
       het icoon opgeslagen meestal onder de 30. PNG-items zijn sinds Windows
       Vista leesbaar, dus de enige reden om ze te mijden is software die
       werkelijk ouder is dan dat, of een installatieprogramma of ingebedde tool
@@ -247,7 +247,7 @@
       Is het icoon voor een Mac-programma in plaats van een Windows-programma,
       dan geldt niets van het bovenstaande: macOS leest helemaal geen
       <code>.ico</code>. Het leest <code>.icns</code>, hetzelfde idee in een
-      andere verpakking &mdash; meerdere formaten in één houder &mdash; met drie
+      andere verpakking, ook weer meerdere formaten in één houder, met drie
       verschillen die het weten waard zijn.
     </p>
     <ul>
@@ -315,9 +315,9 @@
     </p>
     <p>
       Op een Mac gaat een <code>.icns</code> open in Voorvertoning, dat elke plek
-      langs de zijkant opsomt &mdash; en dezelfde truc werkt in de Finder: zet
-      hem in een map en sleep de formaatschuif in de weergaveopties om hem tussen
-      de plaatjes erin te zien wisselen.
+      langs de zijkant opsomt. Dezelfde truc werkt in de Finder: zet hem in een map
+      en sleep de formaatschuif in de weergaveopties om hem tussen de plaatjes erin
+      te zien wisselen.
     </p>
   </section>
 
@@ -334,10 +334,10 @@
     <p>
       Dat is hier meer dan gewoonlijk het waard om om te geven. Een logo dat aan
       een gratis favicongenerator gegeven wordt, is nogal eens een merk dat nog
-      niet uit is &mdash; het icoon is een van de eerste dingen die gemaakt
-      worden en een van de laatste die aangekondigd worden. Laad de pagina, trek
-      de stekker uit het internet, en maak er toch een, als je liever controleert
-      dan het aanneemt.
+      niet uit is, want het icoon hoort bij de eerste dingen die gemaakt worden en
+      bij de laatste die aangekondigd worden. Controleer je het liever dan dat je het
+      aanneemt, laad dan de pagina, trek de stekker uit je internet en maak er alsnog
+      een.
       <a href="../is-bestanden-uploaden-veilig/">Is het veilig om bestanden naar
       online omzetters te uploaden?</a> zet nog drie controles op een rij die je
       op elke tool kunt loslaten.

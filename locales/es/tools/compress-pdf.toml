@@ -7,37 +7,37 @@
 
 name = "Compresor de PDF"
 heading = "Comprimir&nbsp;PDF <span class=\"h1-kw\">&mdash; reducir el tamaño de un PDF</span>"
-tagline = "Encoge un documento sin mandarlo a ninguna parte."
+tagline = "Reduce un documento sin mandarlo a ninguna parte."
 
-title = "Comprimir PDF &mdash; gratis, en tu navegador y sin subir nada"
-description = "Reduce el tamaño de un PDF sin subirlo. Tu propio navegador lee el archivo, lo vuelve a comprimir y lo reescribe, y la herramienta te enseña dónde está de verdad su tamaño antes de tocar nada."
-og_title = "Comprimir PDF &mdash; gratis, y no se sube nada"
-og_description = "Encoge un PDF en tu propio equipo. Mide de qué tamaño se dibuja cada imagen en la página, así que solo tira los píxeles que nadie podría ver."
+title = "Comprimir PDF &mdash; gratis, en el navegador y sin subir nada"
+description = "Reduce el tamaño de un PDF sin subirlo. Tu propio navegador lo lee, vuelve a comprimirlo y lo reescribe, y antes de tocar nada te enseña dónde está de verdad el tamaño."
+og_title = "Comprimir PDF &mdash; gratis, y sin subir nada"
+og_description = "Reduce un PDF en tu propio dispositivo. Mide de qué tamaño se dibuja cada imagen en la página, así que solo tira los píxeles que nadie iba a ver."
 og_image_alt = "Comprimir PDF - reducir un documento sin subirlo"
 
 pledge = """
     El documento se abre, se despieza y se vuelve a escribir en la memoria de
-    este equipo, con código servido desde esta dirección. Aquí nada puede hacer
-    una subida, y al otro lado de esta página no hay ningún servidor que la
-    recibiera."""
+    este dispositivo, con código servido desde esta misma dirección. Aquí no hay
+    nada capaz de subir un archivo, y al otro lado de esta página tampoco hay
+    ningún servidor que fuera a recibirlo."""
 
 live_hint = """
-      No hace falta que nos creas: abre las herramientas de desarrollo, mira la
-      pestaña «Red» y comprime un archivo. Ni una sola petición lleva una
-      página, una imagen ni un nombre de archivo. O desconéctate de internet y
-      comprime uno de todos modos."""
+      No hace falta que nos creas. Abre las herramientas de desarrollo, ponte en
+      la pestaña «Red» y comprime un archivo. No verás ni una petición que lleve
+      una página, una imagen o un nombre de archivo. O desconéctate de internet
+      y comprime uno igualmente."""
 
 read_first = """
 , y <code>src/reader.js</code> y <code>src/writer.js</code>
-      para toda la lectura y la reescritura, ninguna de las cuales puede llegar
-      a la red."""
+      para toda la lectura y la reescritura, que no pueden llegar a la red ni
+      uno ni otro."""
 
 howto_heading = "Cómo reducir el tamaño de un PDF"
 
 card = """
             Reduce un documento volviendo a comprimir las imágenes que lleva
-            dentro. Primero te enseña dónde está de verdad el tamaño, y dice sin
-            rodeos cuando no hay nada que rascar."""
+            dentro. Primero te enseña dónde está de verdad el tamaño, y te dice
+            sin rodeos cuándo no hay nada que rascar."""
 
 [words]
 plural = "documentos"
@@ -62,11 +62,11 @@ text = "Los archivos se quedan en tu dispositivo"
 title = "Tu documento no tiene adónde ir."
 body = """
  La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna es de este sitio. Esta herramienta no añade nada a esa
-      lista: no tiene ninguna función de red propia, ni siquiera opcional. Aquí
-      no hay ningún punto final donde pudiera recogerse tu archivo, ni nada en el
-      código que lo enviara si lo hubiera."""
+      Content-Security-Policy enumera todas las direcciones a las que esta
+      página puede conectarse, y ninguna es de este sitio. Esta herramienta no
+      añade nada a esa lista, porque no tiene ninguna función de red propia, ni
+      siquiera opcional. Aquí no hay ningún destino donde recoger tu archivo, ni
+      una línea de código que lo mandara si lo hubiera."""
 
 [[privacy]]
 title = "El formato entero está en este repositorio."
@@ -74,7 +74,7 @@ body = """
  Un PDF es una lista de
       objetos y una tabla que dice dónde empieza cada uno.
       <code>src/objects.js</code> lee esa sintaxis, <code>src/reader.js</code>
-      sigue la tabla, <code>src/writer.js</code> escribe una nueva, y ninguno de
+      sigue la tabla y <code>src/writer.js</code> escribe una nueva. Ninguno de
       los tres importa nada capaz de hacer una petición. No se descarga ninguna
       biblioteca y no se renderiza nada en un servidor."""
 
@@ -82,54 +82,54 @@ body = """
 title = "Los archivos cifrados se rechazan en vez de abrirse."
 body = """
 
-      Un PDF con contraseña se rechaza, incluidos los que producen los escáneres
-      con una contraseña vacía y que técnicamente se abrirían. Quitarle la
+      Un PDF con contraseña se rechaza, y también los que guardan los escáneres
+      con la contraseña vacía, que técnicamente sí se abrirían. Quitarle la
       protección a un documento es un trabajo distinto de hacerlo más pequeño, y
-      hacerlo en silencio sería una cosa sorprendente para una herramienta que
-      actúa en tu nombre."""
+      quedaría raro que una herramienta lo hiciera por su cuenta y sin decir
+      nada."""
 
 [[privacy]]
 title = "Quita cosas en lugar de meterlas."
 body = """
  El archivo terminado no lleva fecha
       de creación, ni línea de productor, ni el nombre de la herramienta que lo
-      hizo. Con la casilla marcada pierde además el paquete XMP y los bloques
-      privados que dejan atrás los programas de maquetación &mdash; el mismo
-      argumento que hace la herramienta de EXIF, aplicado a otro contenedor."""
+      hizo. Si marcas la casilla, pierde además el paquete XMP y los bloques
+      privados que dejan atrás los programas de maquetación. Es el mismo
+      argumento de la herramienta de EXIF, aplicado a otro contenedor."""
 
 [[privacy]]
-title = "Qué carga Google y qué no se le da."
+title = "Qué carga Google, y qué no llega a ver."
 body = """
  Los scripts de
-      publicidad y medición vienen de Google. A ninguno se le entrega nada sobre
-      tu documento: ni un archivo, ni una página, ni un nombre, un tamaño o un
-      número de páginas. Cada línea que lee, descodifica o escribe un PDF se
-      sirve desde este origen y está listada en el repositorio."""
+      publicidad y de medición vienen de Google. A ninguno se le entrega nada
+      sobre tu documento: ni un archivo, ni una página, ni un nombre, ni un
+      tamaño, ni un número de páginas. Cada línea que lee, descodifica o escribe
+      un PDF se sirve desde este origen y está en el repositorio."""
 
 [[privacy]]
-title = "Qué carga el botón de donación y qué no se le da."
+title = "Qué carga el botón de donación, y qué no llega a ver."
 body = """
 
       El botón «Buy me a coffee» de la cabecera lo dibuja un script de
-      cdnjs.buymeacoffee.com y se compone con Google Fonts. Es un enlace y nada
-      más: no informa de ninguna visita, y no se le entrega nada sobre ti ni
-      sobre tu documento. No pasa nada a menos que lo pulses, y lo que hay al
-      otro lado es el sitio de otra gente."""
+      cdnjs.buymeacoffee.com y se compone con Google Fonts. No es más que un
+      enlace: no avisa de ninguna visita, y no se le entrega nada sobre ti ni
+      sobre tu documento. Si no lo pulsas no ocurre nada, y lo que hay al otro
+      lado es un sitio ajeno."""
 
 [[privacy]]
 title = "Funciona sin conexión."
 body = """
  Desconéctate de la red y todo lo de esta
       página sigue funcionando. Es la prueba más sencilla de todas: una
-      herramienta que mandara tu documento fuera para comprimirlo se
-      detendría."""
+      herramienta que mandara tu documento fuera para comprimirlo se pararía en
+      seco."""
 
 [[howto]]
 title = "Elige un PDF."
 body = """
- Suéltalo sobre el selector o escógelo a
-      mano. Tu navegador lo lee directamente del disco; mientras lo haces no se
-      envía nada a ninguna parte."""
+ Arrástralo hasta el selector o búscalo a
+      mano. El navegador lo lee directamente del disco, y mientras lo haces no
+      sale nada hacia ninguna parte."""
 
 [[howto]]
 title = "Mira dónde está el tamaño."
@@ -137,7 +137,7 @@ body = """
  El desglose es la razón de
       ser del segundo paso. Si la barra es casi toda imágenes, esta herramienta
       tiene con qué trabajar. Si es casi toda tipografías y contenido de página,
-      lo dirá, y el ahorro honesto es de un pequeño porcentaje &mdash; mejor
+      te lo dirá, y el ahorro honesto será de un pequeño porcentaje. Más vale
       saberlo antes de dedicarle un minuto."""
 
 [[howto]]
@@ -145,123 +145,123 @@ title = "Di cuánto hay que apretar."
 body = """
  Los ajustes con nombre son
       resoluciones, no notas vagas: 96 PPP para leer en pantalla, 130 para
-      enviar por correo, 220 para algo que todavía tiene que imprimirse. Cada
-      uno se mide contra el tamaño al que se dibuja realmente la imagen en la
-      página, así que una foto colocada como miniatura no se trata como un
-      escaneo a página completa."""
+      enviar por correo y 220 para algo que todavía tiene que imprimirse. Cada
+      uno se compara con el tamaño al que se dibuja de verdad la imagen en la
+      página, así que una foto puesta como miniatura no recibe el mismo trato
+      que un escaneo a página completa."""
 
 [[howto]]
 title = "Comprímelo y lee la línea que dice que se ha comprobado."
 body = """
 
       Cuando termina la reescritura, el mismo lector de esta página vuelve a
-      abrir el archivo terminado y le cuenta las páginas. Si eso no coincide con
-      el original, la ejecución se declara fallida y no se ofrece ninguna
-      descarga."""
+      abrir el archivo terminado y le cuenta las páginas. Si el número no
+      coincide con el del original, la ejecución se da por fallida y no se
+      ofrece ninguna descarga."""
 
 [[faq]]
 q = "¿Se sube mi PDF a alguna parte?"
 a = """
-        No. Tu propio navegador lee, vuelve a comprimir y escribe el archivo en
-        tu propio hardware. Esta herramienta no tiene lado servidor, y la
-        <code>Content-Security-Policy</code> de la página nombra todas las
-        direcciones que puede contactar &mdash; ninguna es de este sitio. Esta
-        herramienta no tiene ninguna función de red, ni siquiera opcional."""
+        No. Tu propio navegador lee el archivo, lo vuelve a comprimir y lo
+        escribe, todo en tu propio hardware. Esta herramienta no tiene lado
+        servidor, y la <code>Content-Security-Policy</code> de la página enumera
+        todas las direcciones a las que puede conectarse, ninguna de este sitio.
+        Tampoco tiene ninguna función de red, ni siquiera opcional."""
 
 [[faq]]
 q = "¿Cuánto se va a reducir mi PDF?"
 a = """
         Depende por completo de lo que lleve dentro, y por eso la herramienta lo
         mide y te lo enseña antes de comprimir nada. Un documento escaneado es
-        casi todo fotografías y suele quedarse un 60&ndash;90&nbsp;% más
+        casi todo fotografías y suele quedarse entre un 60 y un 90&nbsp;% más
         pequeño. Un contrato o una tesis son texto, dibujo vectorial y
         tipografías incrustadas, y todo eso ya venía comprimido por el programa
         que lo generó; ahí el ahorro suele ser de un pequeño porcentaje, de
-        reempaquetar el archivo y tirar lo que ya no se referencia. Cualquier
-        herramienta que prometa un porcentaje fijo sin mirar tu archivo está
+        reempaquetar el archivo y tirar lo que ya no usa nadie. Cualquier
+        herramienta que te prometa un porcentaje fijo sin mirar tu archivo está
         adivinando."""
 
 [[faq]]
 q = "¿Comprimir un PDF le hace perder calidad?"
 a = """
-        Las imágenes que lleva se vuelven a codificar, así que sí, para esas. No
-        se toca nada más: el texto sigue siendo texto, seleccionable y
-        buscable, las tipografías se conservan enteras y el dibujo vectorial se
-        copia tal cual. La herramienta también se niega a empeorar una imagen
-        para nada &mdash; si la recodificación no sale más pequeña que el
-        original, los bytes originales vuelven al documento sin tocar."""
+        A las imágenes sí, porque se vuelven a codificar. Lo demás no se toca: el
+        texto sigue siendo texto, seleccionable y buscable, las tipografías se
+        conservan enteras y el dibujo vectorial se copia tal cual. La herramienta
+        tampoco empeora una imagen para nada. Si la recodificación no sale más
+        pequeña que el original, los bytes originales vuelven al documento sin
+        que los haya tocado nadie."""
 
 [[faq]]
 q = "¿Qué son aquí los PPP y por qué los pregunta?"
 a = """
         Un PDF anota de qué tamaño se dibuja cada imagen en la página, así que la
-        herramienta puede calcular su resolución efectiva: un escaneo de 4000
+        herramienta puede calcular su resolución efectiva. Un escaneo de 4000
         píxeles colocado a lo ancho de veinte centímetros de papel lleva unos 500
-        píxeles por pulgada. Nada en una pantalla y muy poco en papel puede
-        aprovechar eso, así que los píxeles por encima del ajuste que elijas son
-        los primeros en tirarse &mdash; cuestan una calidad que nadie ve. Esa
-        medición es la razón de que un logotipo colocado pequeño no se trate
-        igual que un escaneo a página completa."""
+        píxeles por pulgada, y eso no lo aprovecha ninguna pantalla y casi ningún
+        papel. Por eso los primeros píxeles en tirarse son los que sobran por
+        encima del ajuste que elijas: cuestan una calidad que no ve nadie. Esa
+        medición es la razón de que un logotipo puesto pequeño no reciba el mismo
+        trato que un escaneo a página completa."""
 
 [[faq]]
 q = "¿Puede abrir un PDF protegido con contraseña?"
 a = """
         No, y es a propósito. Un documento cifrado se rechaza con un mensaje que
-        lo dice, incluso cuando la contraseña está en blanco &mdash; que es como
-        guardan muchos escáneres y fotocopiadoras. Quitarle la protección a un
-        archivo es un trabajo distinto de comprimirlo, y una herramienta que lo
-        hiciera en silencio estaría haciendo algo que no le pediste."""
+        lo dice, incluso cuando la contraseña está en blanco, que es como guardan
+        muchos escáneres y fotocopiadoras. Quitarle la protección a un archivo es
+        un trabajo distinto de comprimirlo, y una herramienta que lo hiciera sin
+        decir nada estaría haciendo algo que tú no le has pedido."""
 
 [[faq]]
 q = "¿Hay PDF que no pueda comprimir?"
 a = """
         Algunas imágenes de dentro, sí. Las imágenes JPEG 2000, JBIG2 y
         codificadas para fax (CCITT) no tienen descodificador en ningún
-        navegador, así que pasan intactas y se informa de ello &mdash; las dos
+        navegador, así que pasan intactas y la herramienta lo dice; las dos
         últimas son códecs de dos niveles y suelen estar ya cerca de su tamaño
         mínimo. Las imágenes CMYK también se dejan en paz, porque recodificarlas
-        arriesga a desplazar los colores que sacaría una imprenta. Todo lo que
-        la herramienta se salta aparece nombrado en los resultados, con el
+        podría desplazar los colores que sacaría una imprenta. Todo lo que la
+        herramienta se salta aparece con su nombre en los resultados, y con el
         motivo."""
 
 [[faq]]
 q = "¿El archivo comprimido se seguirá abriendo en todas partes?"
 a = """
         Sí. La salida se escribe como PDF 1.5, que entiende cualquier lector
-        publicado desde 2003, y la herramienta lo demuestra en tu propio equipo:
-        vuelve a abrir el archivo terminado y le cuenta las páginas antes de
-        ofrecértelo. Los formularios, los enlaces, los marcadores, la estructura
-        de accesibilidad y los adjuntos incrustados se llevan al archivo nuevo;
-        lo que se queda atrás es el material al que ya no apuntaba nada del
-        documento."""
+        publicado desde 2003, y la herramienta lo demuestra en tu propio
+        dispositivo: vuelve a abrir el archivo terminado y le cuenta las páginas
+        antes de ofrecértelo. Los formularios, los enlaces, los marcadores, la
+        estructura de accesibilidad y los adjuntos incrustados pasan al archivo
+        nuevo. Lo que se queda atrás es el material al que ya no apuntaba nada
+        del documento."""
 
 [[faq]]
 q = "¿Es gratis? ¿Necesito una cuenta?"
 a = """
-        Es gratis, y no hay cuenta, ni inicio de sesión, ni prueba, ni más límite
-        de tamaño de archivo que el que permita la memoria de tu propio equipo.
-        El sitio lleva publicidad, que es lo que lo paga; a los anuncios no se
-        les da nada sobre tu documento."""
+        Es gratis, y no hay cuenta, ni inicio de sesión, ni versión de prueba, ni
+        más límite de tamaño que el que permita la memoria de tu propio
+        dispositivo. El sitio lleva publicidad, que es lo que lo paga, y a los
+        anuncios no se les da nada sobre tu documento."""
 
 [[faq]]
 q = "¿Funciona sin conexión?"
 a = """
-        Sí. Carga la página una vez, desconéctate de internet y sigue
+        Sí. Carga la página una vez, desconéctate de internet y verás que sigue
         funcionando. Esa es además la forma más sencilla de demostrar que no se
         sube nada: una herramienta que mandara tu documento fuera para
-        comprimirlo se detendría en el momento en que desenchufaras."""
+        comprimirlo se pararía en cuanto desenchufaras."""
 
 [schema]
-description = "Comprime un PDF en tu navegador. Las imágenes se vuelven a comprimir contra el tamaño al que se dibujan realmente en la página, y el documento se reescribe localmente, así que no se sube ningún archivo."
+description = "Comprime un PDF en el navegador. Las imágenes se vuelven a comprimir según el tamaño al que se dibujan de verdad en la página, y el documento se reescribe en local, así que no se sube ningún archivo."
 features = [
   "Enseña dónde está de verdad el tamaño de un documento antes de comprimir nada",
-  "Vuelve a comprimir las imágenes contra su resolución medida en la página",
-  "Deja una imagen en paz cuando recodificarla no la haría más pequeña",
+  "Vuelve a comprimir las imágenes según su resolución medida en la página",
+  "Deja en paz una imagen cuando recodificarla no la haría más pequeña",
   "Tira los objetos que dejó atrás una edición anterior, y los metadatos opcionales",
-  "Vuelve a abrir y comprobar el archivo terminado antes de ofrecerlo",
-  "Funciona sin conexión; sin subidas, sin cuenta y sin límite de tamaño",
+  "Vuelve a abrir el archivo terminado y lo comprueba antes de ofrecerlo",
+  "Funciona sin conexión, sin subidas, sin cuenta y sin límite de tamaño",
 ]
 
 [picker]
-title = "Suelta aquí un PDF"
+title = "Arrastra aquí un PDF"
 hint = "o haz clic para buscarlo &mdash; un documento cada vez"

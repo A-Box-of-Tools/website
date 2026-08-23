@@ -20,9 +20,7 @@ items = [
   ["Draaien &amp; spiegelen", "kwartslagen, of een paar graden rechtzetten"],
   ["Tekst toevoegen", "over de foto heen, of in een bijschrift erboven"],
   ["Filters", "helderheid, contrast, verzadiging, vervaging, grijstinten"],
-  ["Afbeelding als data-URI", "het resultaat zo in je CSS of HTML plakken"],
-  ["HEIC naar JPG", "de foto's die een iPhone maakt, in een formaat dat alles opent"],
-  ["AVIF &amp; JPEG XL", "beide kanten op omzetten, in welke browser je ook zit"],
+  ["AVIF &amp; JPEG XL", "beide kanten op omzetten, in welke browser je ook werkt"],
 ]
 
 [[group]]
@@ -35,7 +33,7 @@ items = [
   ["Gif-snelheid wijzigen", "opnieuw timen zonder de frames opnieuw te renderen"],
   ["Gif-analyse", "frames, vertragingen, palet, en waar de bytes heen zijn"],
   ["APNG maken", "animatie met echte transparantie en volledige kleur"],
-  ["Bewegende WebP", "opnieuw dezelfde animatie, voor een fractie van de grootte"],
+  ["Bewegende WebP", "opnieuw dezelfde animatie, voor een fractie van de bestandsgrootte"],
 ]
 
 [[group]]
@@ -43,7 +41,7 @@ id = "video"
 name = "Video"
 items = [
   ["Formaat wijzigen", "omlaag naar een grootte die er echt doorheen komt"],
-  ["Draaien", "voor het filmpje dat op z'n kant is opgenomen"],
+  ["Draaien", "voor dat filmpje dat op z'n kant is opgenomen"],
   ["Dempen, of het geluid bewaren", "het geluid weglaten, of het apart houden"],
   ["Omzetten naar mp4 of WebM", "welke van de twee de site waarop je post ook eist"],
   ["Filters", "helderheid, contrast, verzadiging, vervaging"],

@@ -7,29 +7,29 @@
 
 name = "Bildkompressor"
 # Der Zusatz ist der Ausdruck, nach dem gesucht wird. Wie im Englischen bleibt
-# der Produktname die laute Haelfte.
+# der Produktname die laute Hälfte.
 heading = "Bild&nbsp;komprimieren <span class=\"h1-kw\">&mdash; auf eine exakte Größe</span>"
 tagline = "Sie nennen die Größe. Den Rest rechnet es aus."
 
 title = "Bild auf exakte Größe komprimieren &mdash; kostenlos, ohne Upload"
-description = "JPEG, PNG oder WebP auf eine exakte Größe komprimieren - 100 KB, 2 MB, beliebig. Läuft komplett im Browser: kein Upload, kein Konto, auch offline."
+description = "JPEG, PNG oder WebP auf eine exakte Größe komprimieren, ob 100 KB oder 2 MB. Läuft komplett im Browser: kein Upload, kein Konto, auch offline."
 og_title = "Ein Bild auf eine Größe Ihrer Wahl komprimieren"
-og_description = "Nennen Sie eine Zielgröße; dieses Werkzeug findet die geringste Kompression, die sie erreicht, und misst, was das gekostet hat. Läuft auf Ihrem Gerät, nichts wird hochgeladen."
+og_description = "Nennen Sie eine Zielgröße. Das Werkzeug findet die geringste Kompression, die dorthin reicht, und misst anschließend, was sie gekostet hat. Läuft auf Ihrem Gerät, nichts wird hochgeladen."
 og_image_alt = "Bildkompressor - Größe nennen, Qualität behalten"
 
 pledge = """
     Die Kompression läuft in Ihrem eigenen Browser, auf Ihrer eigenen Hardware,
-    mit den Encodern, die er ohnehin mitbringt. Dieses Werkzeug hat keinerlei
-    Netzfunktion &mdash; nichts abzurufen, nichts zu senden &mdash; und es gibt
-    am anderen Ende dieser Seite keinen Server, an den ein Bild ginge, selbst
-    wenn es einen Weg dorthin gäbe."""
+    mit den Encodern, die er ohnehin mitbringt. Netzfunktionen hat dieses
+    Werkzeug keine, weder zum Abrufen noch zum Senden. Und selbst wenn es einen
+    Weg nach draußen gäbe, stünde am anderen Ende dieser Seite kein Server, an
+    den ein Bild gehen könnte."""
 
 live_hint = """
-      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den
-      Tab &bdquo;Netzwerk&ldquo; und komprimieren Sie ein Foto. Keine einzige
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und komprimieren Sie ein Foto. Keine einzige
       Anfrage trägt ein Bild, ein Vorschaubild, einen Dateinamen oder ein Byte
-      Ihrer Auswahl. Oder trennen Sie die Internetverbindung und komprimieren
-      Sie trotzdem eines."""
+      dessen, was Sie ausgewählt haben. Oder trennen Sie die
+      Internetverbindung und komprimieren Sie trotzdem eines."""
 
 read_first = """
 , <code>src/compress.js</code> für die Suche, die
@@ -37,18 +37,16 @@ read_first = """
       <code>src/measure.js</code> für den Vergleich hinter dem Wert
       &bdquo;visuelle Übereinstimmung&ldquo;."""
 
-howto_heading = "Ein Bild auf eine bestimmte Größe komprimieren"
+howto_heading = "So komprimieren Sie ein Bild auf eine bestimmte Größe"
 
 card = """
-            Nennen Sie die Größe, die Sie brauchen &mdash; 100 KB, 2 MB,
-            beliebig &mdash; und es findet die geringste Kompression, die
-            dorthin kommt."""
+            Nennen Sie die Größe, die Sie brauchen, ob 100 KB oder 2 MB, und
+            das Werkzeug findet die geringste Kompression, die dorthin
+            reicht."""
 
 [words]
 plural = "Bilder"
 choose = "ein Bild"
-analytics_extra = """, und auch keine der
-  Größen oder Qualitätswerte, die dieses Werkzeug ermittelt"""
 
 [[facts]]
 text = "Kein Upload"
@@ -68,52 +66,52 @@ text = "Quelloffen"
 [[privacy]]
 title = "Ihre Bilder haben keinen Weg nach draußen."
 body = """
- Die
-      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen
-      Endpunkt, an dem Ihre Dateien gesammelt werden könnten, und nichts im
-      Code, das sie senden würde, gäbe es einen."""
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen."""
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
 body = """
  Es gibt weder
       <code>fetch</code> noch <code>XMLHttpRequest</code> noch
-      <code>sendBeacon</code> irgendwo in <code>src/</code>. Die Kompression ist
-      <code>canvas.toBlob</code> &mdash; der Encoder, der in Ihrem Browser
-      bereits installiert ist."""
+      <code>sendBeacon</code> irgendwo in <code>src/</code>. Die Kompression
+      erledigt <code>canvas.toBlob</code>, also der Encoder, der in Ihrem
+      Browser ohnehin steckt."""
 
 [[privacy]]
 title = "Die Zahlen werden gemessen, nicht gemeldet."
 body = """
  Die Größen, der
-      Qualitätswert und der SSIM-Vergleich werden alle auf dieser Seite
-      berechnet und Ihnen angezeigt. Es gibt in diesem Repository kein eigenes
-      Analytics-Ereignis, das einen Dateinamen, eine Größe, eine Anzahl oder
-      ein Ergebnis mitführt."""
+      Qualitätswert und der SSIM-Vergleich entstehen alle auf dieser Seite und
+      werden Ihnen angezeigt. In diesem Repository gibt es kein eigenes
+      Analytics-Ereignis, das einen Dateinamen, eine Größe, eine Anzahl oder ein
+      Ergebnis mitführt."""
 
 [[privacy]]
-title = "Was Google lädt - und was es nicht bekommt."
+title = "Was Google lädt und was Google nicht bekommt."
 body = """
  Die Werbe- und
       Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
-      Keinem davon wird irgendetwas über Ihre Bilder übergeben. Jede Zeile,
-      die eine Datei liest, komprimiert oder misst, wird von dieser Herkunft
-      ausgeliefert und ist im Repository aufgeführt."""
+      Keinem davon wird irgendetwas über Ihre Bilder übergeben. Jede Zeile, die
+      eine Datei liest, komprimiert oder misst, kommt von dieser Domain selbst
+      und steht im Repository."""
 
 [[privacy]]
 title = "Es funktioniert offline."
 body = """
  Trennen Sie die Netzverbindung, und das
-      Werkzeug bleibt unverändert, weil es nie einen Netzschritt darin gab. Das
-      ist der einfachste Beweis von allen."""
+      Werkzeug bleibt unverändert, weil darin nie ein Schritt über das Netz
+      vorgesehen war. Ein einfacherer Beweis lässt sich kaum führen."""
 
 [[howto]]
-title = "Wählen Sie Ihre Bilder."
+title = "Wählen Sie Ihre Bilder aus."
 body = """
  Ziehen Sie sie auf das Auswahlfeld
-      oder wählen Sie sie von Hand. Der Browser liest sie direkt von Ihrer
-      Festplatte; dabei wird nichts irgendwohin gesendet."""
+      oder suchen Sie sie von Hand heraus. Der Browser liest sie direkt von
+      Ihrer Festplatte, und dabei geht nichts nach draußen."""
 
 [[howto]]
 title = "Tippen Sie die geforderte Größe ein."
@@ -121,120 +119,121 @@ body = """
  100 KB für das
       Upload-Formular, das Ihr Foto immer wieder ablehnt, 500 KB für das
       Bewerbungsportal, 2 MB für eine Seite, die schnell laden muss. Die vier
-      häufigsten sind Schaltflächen."""
+      häufigsten Werte liegen als Schaltflächen bereit."""
 
 [[howto]]
 title = "Klicken Sie auf &bdquo;Auf Zielgröße komprimieren&ldquo;."
 body = """
  Jedes Bild wird
-      mehrfach kodiert, während das Werkzeug sich an die höchste Qualität
-      herantastet, die noch hineinpasst. Was bereits unter der Zielgröße
-      liegt, bleibt genau so, wie es ist."""
+      mehrfach kodiert, während sich das Werkzeug an die höchste Qualität
+      herantastet, die noch hineinpasst. Was schon unter der Zielgröße liegt,
+      bleibt unverändert."""
 
 [[howto]]
 title = "Prüfen Sie, was es gekostet hat, und laden Sie herunter."
 body = """
  Jedes Ergebnis
       nennt das Format, in dem es geschrieben wurde, die Qualität, ob sich die
-      Abmessungen geändert haben und wie genau es dem Original entspricht.
-      &bdquo;Vergleichen&ldquo; stellt beide Bilder nebeneinander."""
+      Abmessungen geändert haben und wie genau es dem Original entspricht. Mit
+      &bdquo;Vergleichen&ldquo; stehen beide Bilder nebeneinander."""
 
 [[faq]]
 q = "Wird mein Bild irgendwohin hochgeladen?"
 a = """
-        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
-        dekodiert, komprimiert und gemessen &mdash; mit den JPEG-, PNG- und
-        WebP-Encodern, die der Browser bereits mitbringt. Dieses Werkzeug hat
-        keinerlei Netzfunktion &mdash; es ruft nie etwas ab und sendet nie etwas
-        &mdash; und die <code>Content-Security-Policy</code> der Seite nennt jede
-        Adresse, die sie kontaktieren darf; keine davon gehört zu dieser Seite."""
+        Nein. Ihr eigener Browser dekodiert, komprimiert und misst die Datei auf
+        Ihrer eigenen Hardware, mit den JPEG-, PNG- und WebP-Encodern, die er
+        ohnehin mitbringt. Netzfunktionen hat dieses Werkzeug keine, es ruft nie
+        etwas ab und sendet nie etwas. In der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf, und keine davon gehört uns."""
 
 [[faq]]
-q = "Wie trifft es eine exakte Größe?"
+q = "Wie kommt es auf eine exakte Größe?"
 a = """
-        Durch Ausprobieren. Es gibt keine Formel, die eine Qualitätseinstellung in
-        eine Byte-Zahl umrechnet &mdash; das hängt vollständig vom Bild ab &mdash;
-        also kodiert das Werkzeug das Bild mehrfach und sucht die Antwort. Es
-        beginnt am oberen Ende des Qualitätsbereichs und halbiert sich heran, was
-        die höchste passende Qualität in etwa acht Durchgängen findet. Jede
-        Größe, die Sie auf der Seite sehen, ist eine echte kodierte Datei, keine
-        Schätzung."""
+        Durch Ausprobieren. Eine Formel, die eine Qualitätseinstellung in eine
+        Byte-Zahl umrechnet, gibt es nicht, denn das hängt vollständig vom Bild
+        ab. Also kodiert das Werkzeug das Bild mehrfach und sucht die Antwort.
+        Es beginnt am oberen Ende des Qualitätsbereichs und halbiert sich heran,
+        sodass es die höchste passende Qualität in etwa acht Durchgängen findet.
+        Jede Größe, die Sie auf der Seite sehen, gehört zu einer echten
+        kodierten Datei und ist keine Schätzung."""
 
 [[faq]]
 q = "Was heißt hier eigentlich &bdquo;minimaler Verlust&ldquo;?"
 a = """
         Drei konkrete Dinge. Erstens wird ein Bild, das bereits unter Ihrer
         Zielgröße liegt, Byte für Byte durchgereicht statt neu kodiert. Zweitens
-        wird Qualität vor Auflösung ausgegeben, und nur bis zu einer Untergrenze,
-        ab der Kompressionsartefakte sichtbar werden &mdash; darunter verkleinert
-        das Werkzeug das Bild und dreht die Qualität wieder hoch, denn weniger gute
-        Pixel sehen besser aus als mehr ruinierte. Drittens tastet sich die Suche,
-        sobald ein passendes Ergebnis gefunden ist, wieder nach oben, bis das Budget
-        aufgebraucht ist &mdash; Sie bekommen also keine 300-KB-Datei, wenn Sie
-        500 KB verlangt haben."""
+        gibt das Werkzeug Qualität aus, bevor es an die Auflösung geht, und nur
+        bis zu der Grenze, ab der Kompressionsartefakte sichtbar werden. Darunter
+        verkleinert es lieber das Bild und dreht die Qualität wieder hoch, denn
+        weniger gute Pixel sehen besser aus als mehr ruinierte. Drittens tastet
+        sich die Suche wieder nach oben, sobald ein passendes Ergebnis gefunden
+        ist, bis das Budget aufgebraucht ist. Sie bekommen also keine
+        300-KB-Datei, wenn Sie 500 KB verlangt haben."""
 
 [[faq]]
 q = "Was sind die SSIM- und PSNR-Werte an jedem Ergebnis?"
 a = """
-        Sie messen, was die Kompression gekostet hat: Das Ergebnis wird dekodiert
-        und mit dem Originalbild verglichen. SSIM vergleicht lokale Helligkeit,
-        Kontrast und Struktur, was dem, woran sich ein Auge stört, deutlich näher
-        kommt als das Zählen veränderter Pixel; ab etwa 0,98 sind beide
-        nebeneinander kaum zu unterscheiden. PSNR ist der klassische Dezibelwert.
-        Beide werden auf Ihrem Gerät berechnet, und beide werden angezeigt, damit
-        die Behauptung geringen Verlusts nachprüfbar ist statt nur behauptet."""
+        Sie messen, was die Kompression gekostet hat. Dafür wird das Ergebnis
+        dekodiert und mit dem Originalbild verglichen. SSIM vergleicht lokale
+        Helligkeit, Kontrast und Struktur und kommt damit dem, woran sich ein
+        Auge stört, deutlich näher als das Zählen veränderter Pixel. Ab etwa
+        0,98 sind beide Bilder nebeneinander kaum zu unterscheiden. PSNR ist der
+        klassische Dezibelwert. Beides rechnet Ihr Gerät aus, und beides steht
+        auf der Seite, damit die Rede vom geringen Verlust nachprüfbar bleibt
+        und nicht bloß behauptet."""
 
 [[faq]]
 q = "Welche Formate kann es lesen und schreiben?"
 a = """
-        Es liest alles, was Ihr Browser dekodieren kann, in der Praxis also JPEG,
-        PNG, WebP, GIF, BMP und &mdash; in den meisten aktuellen Browsern &mdash;
-        AVIF. Es schreibt JPEG, PNG und WebP, weil das die Encoder sind, die
+        Es liest alles, was Ihr Browser dekodieren kann, in der Praxis also
+        JPEG, PNG, WebP, GIF, BMP und, in den meisten aktuellen Browsern, AVIF.
+        Geschrieben werden JPEG, PNG und WebP, denn das sind die Encoder, die
         Browser mitbringen. Auf &bdquo;automatisch&ldquo; behält es das Format
-        bei, in dem Ihre Datei ankam, und wechselt nur dann zu WebP, wenn das
-        Beibehalten eine Verkleinerung oder einen sichtbaren Qualitätsverlust
-        bedeutet hätte."""
+        bei, in dem Ihre Datei angekommen ist, und wechselt nur dann zu WebP,
+        wenn das Beibehalten eine Verkleinerung oder einen sichtbaren
+        Qualitätsverlust bedeutet hätte."""
 
 [[faq]]
 q = "Warum lässt sich ein PNG nicht weit komprimieren?"
 a = """
-        Weil PNG verlustfrei ist: Es hat keinen Qualitätsregler zum Drehen. Ein
-        PNG kleiner zu machen geht nur über weniger Pixel oder weniger Farben, und
-        mit ausgewähltem PNG erreicht das Werkzeug eine Zielgröße deshalb allein
-        über die Größenänderung. Ist das Bild eine Fotografie, kommt JPEG oder
-        WebP Ihrer Zielgröße in einer sichtbar unbedenklichen Qualität weit
-        näher &mdash; und ist es ein Logo oder ein Screenshot mit Transparenz,
-        behält WebP die Transparenz, die JPEG mit Weiß auffüllen würde."""
+        Weil PNG verlustfrei arbeitet und deshalb gar keinen Qualitätsregler
+        hat. Ein PNG kleiner zu bekommen geht nur über weniger Pixel oder
+        weniger Farben, und mit ausgewähltem PNG erreicht das Werkzeug eine
+        Zielgröße daher allein über die Größenänderung. Bei einer Fotografie
+        kommen JPEG oder WebP Ihrer Zielgröße in sichtbar unbedenklicher
+        Qualität weit näher. Bei einem Logo oder einem Screenshot mit
+        Transparenz behält WebP die Transparenz, die JPEG mit Weiß auffüllen
+        würde."""
 
 [[faq]]
 q = "Entfernt das Komprimieren die EXIF- und GPS-Daten eines Bildes?"
 a = """
-        Ja, als Nebenwirkung. Komprimieren heißt, das Bild zu Pixeln zu dekodieren
-        und diese Pixel erneut zu kodieren, und eine Leinwand voller Pixel trägt
-        keine Tags &mdash; Ort, Kameramodell, Zeitstempel und alles Weitere werden
-        also schlicht nicht in die neue Datei geschrieben. Sollen die Metadaten weg,
-        das Bild aber unangetastet bleiben, nehmen Sie stattdessen den
-        <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>
-        &mdash; er schreibt den Container neu, ohne irgendetwas neu zu
-        komprimieren."""
+        Ja, als Nebenwirkung. Komprimieren heißt, das Bild zu Pixeln zu
+        dekodieren und diese Pixel erneut zu kodieren, und ein Canvas voller
+        Pixel trägt keine Tags. Ort, Kameramodell, Zeitstempel und alles Weitere
+        werden also schlicht nicht in die neue Datei geschrieben. Sollen die
+        Metadaten weg, das Bild aber unangetastet bleiben, nehmen Sie besser den
+        <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>.
+        Der schreibt nur den Container neu und komprimiert nichts."""
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
 a = """
-        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase
-        und kein Wasserzeichen. Es gibt auch keine Grenze für Anzahl oder Größe
-        der Dateien, weil es keinen Server gibt, der dafür zahlt &mdash; die
-        Arbeit passiert auf Ihrem eigenen Gerät. Die Seite trägt Werbung, und die
-        bezahlt sie; den Anzeigen wird nichts über Ihre Bilder übergeben."""
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und kein Wasserzeichen. Auch bei Anzahl und Größe der Dateien
+        gibt es keine Grenze, denn es zahlt kein Server dafür. Die Arbeit
+        passiert auf Ihrem eigenen Gerät. Bezahlt wird die Seite über Werbung,
+        und den Anzeigen wird nichts über Ihre Bilder übergeben."""
 
 [[faq]]
 q = "Funktioniert es offline?"
 a = """
-        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung, und
-        sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür, dass
-        nichts hochgeladen wird: Ein Werkzeug, das Ihre Bilder zum Komprimieren
-        wegschickt, würde in dem Moment stehen bleiben, in dem Sie den Stecker
-        ziehen."""
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die
+        Internetverbindung, und sie arbeitet weiter. Das ist zugleich der
+        einfachste Beweis dafür, dass nichts hochgeladen wird. Ein Werkzeug, das
+        Ihre Bilder zum Komprimieren wegschickt, bliebe in dem Moment stehen, in
+        dem Sie den Stecker ziehen."""
 
 [schema]
 description = "JPEG-, PNG- und WebP-Bilder auf eine von Ihnen genannte Größe komprimieren. Das Werkzeug sucht die höchste Qualität, die in die Zielgröße passt, verkleinert nur dann, wenn Qualität allein nicht reicht, und misst das Ergebnis gegen das Original. Läuft vollständig im Browser, ohne Upload."
@@ -251,4 +250,4 @@ features = [
 
 [picker]
 title = "Bilder hierher ziehen"
-hint = "oder klicken zum Auswählen &mdash; JPEG, PNG, WebP und alles andere, was Ihr Browser öffnen kann"
+hint = "oder klicken und auswählen &mdash; JPEG, PNG, WebP und alles andere, was Ihr Browser öffnen kann"

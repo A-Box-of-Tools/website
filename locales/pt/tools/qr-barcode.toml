@@ -22,40 +22,37 @@ og_description = "Links, senhas de Wi-Fi, cartões de contato e os códigos de b
 og_image_alt = "Gerador de QR Code e código de barras - gere um código, nada é enviado"
 
 pledge = """
-    Um QR Code é aritmética sobre uma cadeia de texto: não há arquivo para
-    mandar e não há serviço a quem pedir. Cada etapa &mdash; escolher o modo,
-    escolher a versão, a correção de erros Reed-Solomon, a máscara, as barras de
-    um código de barras e o dígito verificador embaixo &mdash; acontece em cerca
-    de mil linhas de JavaScript nesta página, que você pode ler. Esta ferramenta
-    não tem função de rede de espécie alguma, o que importa mais aqui do que na
-    maioria das páginas: o que está sendo codificado é muitas vezes uma senha de
-    Wi-Fi."""
+    Um QR Code é aritmética sobre uma cadeia de texto. Não há arquivo para mandar
+    e não há serviço a quem pedir. Cada etapa acontece em cerca de mil linhas de
+    JavaScript nesta página, que você pode ler: escolher o modo, escolher a
+    versão, a correção de erros Reed-Solomon, a máscara, as barras de um código de
+    barras e o dígito verificador embaixo. Esta ferramenta não tem função de rede
+    de espécie alguma, o que importa mais aqui do que na maioria das páginas,
+    porque o que está sendo codificado é muitas vezes uma senha de Wi-Fi."""
 
 live_hint = """
-      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
-      aba Rede e digite uma senha no formulário de Wi-Fi. Nenhuma requisição leva
-      um caractere dela. Ou desconecte da internet e gere o código mesmo
-      assim."""
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e digite uma senha no
+      formulário de Wi-Fi. Nenhuma requisição leva um caractere dela. Ou então
+      desligue a internet e gere o código assim mesmo."""
 
 read_first = """
 , <code>src/qr-encode.js</code>
-      e <code>src/qr.js</code> para o QR Code em si &mdash; os modos, a versão e
-      os blocos num, e os padrões, a máscara e os bits de formato no outro
-      &mdash; <code>src/gf256.js</code> para a correção de erros, e
+      e <code>src/qr.js</code> para o QR Code em si, com os modos, a versão e os
+      blocos num deles e os padrões, a máscara e os bits de formato no outro,
+      <code>src/gf256.js</code> para a correção de erros, e
       <code>src/barcode.js</code> para os listrados."""
 
 howto_heading = "Como gerar um QR Code sem enviar nada"
 
 card = """
-            Um QR Code para um link, uma rede Wi-Fi ou um cartão de contato
-            &mdash; ou um código de barras de varejo com o dígito verificador já
-            calculado. SVG ou PNG."""
+            Um QR Code para um link, uma rede Wi-Fi ou um cartão de contato, ou
+            um código de barras de varejo com o dígito verificador já calculado.
+            SVG ou PNG."""
 
 [words]
 plural = "códigos e o texto dentro deles"
 choose = "o que vai dentro dele"
-analytics_extra = """, nem um
-  caractere do que você digitar"""
 
 [[facts]]
 text = "Sem envio"
@@ -76,42 +73,42 @@ text = "Código aberto"
 title = "Não existe para onde o que você digita possa ir."
 body = """
  A
-      Content-Security-Policy nomeia todos os endereços que esta página pode
-      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
-      uma senha de Wi-Fi pudesse ser coletada, e não existe no código nada que a
-      mandaria se existisse."""
+      Content-Security-Policy lista todos os endereços que esta página pode
+      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde uma
+      senha de Wi-Fi pudesse ser recolhida, e não existe no código nada que a
+      mandaria mesmo que existisse."""
 
 [[privacy]]
-title = "Nada aqui busca coisa alguma."
+title = "Nada aqui vai buscar coisa alguma."
 body = """
  Não existe
       <code>fetch</code>, nem <code>XMLHttpRequest</code>, nem
       <code>sendBeacon</code> em lugar nenhum de <code>src/</code>. O código é
       montado a partir da cadeia de texto por aritmética e desenhado como um SVG,
-      nesta página, na sua máquina."""
+      nesta página, no seu computador."""
 
 [[privacy]]
 title = "O código não aponta para a gente."
 body = """
  O que você digita é o que o
-      código guarda. Vários geradores gratuitos lhe devolvem um código contendo
-      um link para o site deles, que então redireciona para o seu &mdash; então
-      cada escaneamento é contado por eles, e o código para de funcionar no dia
-      em que eles pararem de pagar o domínio ou decidirem que o plano gratuito
-      acabou. Nada aqui encurta, redireciona ou rastreia: a cadeia de texto
-      mostrada na página é a cadeia de texto que está na imagem."""
+      código guarda. Vários geradores gratuitos devolvem um código contendo um
+      link para o site deles, que só então redireciona para o seu. Assim cada
+      escaneamento é contado por eles, e o código para de funcionar no dia em que
+      eles pararem de pagar o domínio ou decidirem que o plano gratuito acabou.
+      Nada aqui encurta, redireciona ou rastreia: a cadeia de texto que aparece na
+      página é a cadeia de texto que está na imagem."""
 
 [[privacy]]
 title = "O PNG é feito a partir do SVG que está na tela."
 body = """
- O
-      download não é uma segunda renderização que pudesse discordar da
-      pré-visualização. A mesma marcação é entregue ao navegador e pintada num
-      canvas, o que também é por que isso pode ser feito sem contatar nada: não
-      há fonte para buscar nem imagem para carregar lá dentro."""
+ O download não é uma
+      segunda renderização que pudesse discordar da pré-visualização. A mesma
+      marcação é entregue ao navegador e pintada num canvas, o que também é o
+      motivo de isso ser possível sem acessar nada: não há fonte para buscar nem
+      imagem para carregar lá dentro."""
 
 [[privacy]]
-title = "O que o Google carrega, e o que não é entregue a ele."
+title = "O que o Google carrega, e o que não chega até ele."
 body = """
  Os scripts de
       publicidade e de medição vêm do Google, e o botão de doação vem do Buy Me a
@@ -122,38 +119,38 @@ body = """
 [[privacy]]
 title = "Funciona offline."
 body = """
- Desconecte da rede e a ferramenta continua
-      igual, porque nunca houve uma etapa de rede nela. Essa é a prova mais
+ Desligue a rede e a ferramenta continua
+      igualzinha, porque nunca houve uma etapa de rede nela. Essa é a prova mais
       simples de todas."""
 
 [[howto]]
 title = "Escolha o tipo de código."
 body = """
- Um QR Code guarda qualquer coisa e é
-      o que a câmera de um celular procura, então é a resposta a menos que
-      alguém lhe tenha dito outra coisa. Um código de barras guarda um número, e
-      qual deles você precisa é decidido por quem vai escaneá-lo &mdash; uma loja
-      quer um EAN-13 ou um UPC-A, uma caixa de transporte quer um ITF-14, e
-      qualquer coisa interna costuma ser Code 128."""
+ Um QR Code guarda qualquer coisa e é o
+      que a câmera de um celular procura, então é a resposta a menos que alguém
+      tenha mandado outra coisa. Um código de barras guarda um número, e qual
+      deles você precisa é decidido por quem vai escanear: uma loja quer um EAN-13
+      ou um UPC-A, uma caixa de transporte quer um ITF-14, e qualquer coisa
+      interna costuma ser Code 128."""
 
 [[howto]]
 title = "Diga o que vai dentro."
 body = """
- Um link é o caso comum, e as caixas
-      acima dele montam os outros formatos que os celulares conhecem: uma rede
-      Wi-Fi que se oferece para conectar, um cartão de contato que se oferece
-      para ser salvo, um e-mail, uma mensagem de texto, um telefone, um lugar num
-      mapa. Qualquer que seja a sua escolha, a cadeia de texto final aparece na
-      página &mdash; é só isso que um QR Code guarda."""
+ Um link é o caso comum, e as caixas acima
+      dele montam os outros formatos que os celulares conhecem: uma rede Wi-Fi que
+      se oferece para conectar, um cartão de contato que se oferece para ser
+      salvo, um e-mail, uma mensagem de texto, um telefone, um lugar no mapa. Seja
+      qual for a sua escolha, a cadeia de texto final aparece na página, porque é
+      só isso que um QR Code guarda."""
 
 [[howto]]
 title = "Escolha quanto dano ele pode aguentar."
 body = """
  Os quatro níveis põem mais ou
       menos correção de erros, e mais correção significa um código maior e mais
-      denso. L basta para uma tela, M para papel comum, e H para algo que vai ser
-      manuseado, impresso pequeno, ou colado numa vitrine ao sol. Um código num
-      cardápio que é limpado todo dia merece Q ou H."""
+      denso. O L basta para uma tela, o M para papel comum, e o H para algo que
+      vai ser manuseado, impresso pequeno ou colado numa vitrine ao sol. Um código
+      num cardápio que é limpado todo dia merece Q ou H."""
 
 [[howto]]
 title = "Defina o tamanho, a margem e as cores."
@@ -161,39 +158,38 @@ body = """
  A margem faz parte do código:
       quatro módulos de espaço em silêncio em volta é o que a especificação pede,
       e aparar isso é o motivo isolado mais comum de um código impresso não
-      escanear. Escuro sobre claro, com contraste de verdade &mdash; um leitor lê
-      a diferença entre os dois, então cinza pálido sobre branco não serve, e
-      claro sobre escuro falha de cara num bom número de leitores."""
+      escanear. Escuro sobre claro, com contraste de verdade, porque um leitor lê a
+      diferença entre os dois. Cinza pálido sobre branco não serve, e claro sobre
+      escuro falha de cara num bom número de leitores."""
 
 [[howto]]
 title = "Confira com o celular que você tem."
 body = """
  Antes de imprimir mil deles,
       escaneie o que está na sua tela. Isso leva dez segundos e pega a categoria
-      inteira de erros que uma pré-visualização não pega: uma senha de Wi-Fi com
-      um caractere que precisava ser escapado, um link sem o
-      <code>https://</code>, um número de código de barras com um dígito a
-      menos."""
+      inteira de erros que uma pré-visualização não pega: uma senha de Wi-Fi com um
+      caractere que precisava ser escapado, um link sem o <code>https://</code>, um
+      número de código de barras com um dígito a menos."""
 
 [[howto]]
 title = "Leve o SVG."
 body = """
  Ele é o código como instruções em vez de
       pixels, então imprime em qualquer tamanho sem amolecer, e uma borda mole é
-      exatamente o que um leitor não consegue resolver. Leve o PNG também se
-      aquilo em que você vai colar não aceitar um SVG; ele é desenhado num número
-      inteiro de pixels por módulo, então também não tem bordas borradas."""
+      exatamente o que um leitor não consegue resolver. Leve o PNG também se aquilo
+      em que você vai colar não aceitar um SVG. Ele é desenhado num número inteiro
+      de pixels por módulo, então também não tem bordas borradas."""
 
 [[faq]]
 q = "Alguma coisa que eu digito é mandada para algum lugar?"
 a = """
         Não. Um QR Code é aritmética sobre uma cadeia de texto, e essa aritmética
-        roda no seu próprio navegador, na sua própria máquina. Esta ferramenta não
-        tem função de rede de espécie alguma &mdash; nunca busca nada e nunca manda
-        nada &mdash; e a <code>Content-Security-Policy</code> da página nomeia todos
-        os endereços que ela pode contatar, nenhum dos quais é deste site. Isso vale
-        mais aqui do que na maioria das páginas, porque a coisa que as pessoas mais
-        põem num QR Code é a senha do Wi-Fi delas."""
+        roda no seu próprio navegador, no seu próprio computador. Esta ferramenta não
+        tem função de rede de espécie alguma: nunca busca nada e nunca manda nada. E
+        a <code>Content-Security-Policy</code> da página lista todos os endereços que
+        ela pode acessar, nenhum dos quais é deste site. Isso vale mais aqui do que
+        na maioria das páginas, porque a coisa que as pessoas mais põem num QR Code é
+        a senha do Wi-Fi delas."""
 
 [[faq]]
 q = "Estes códigos expiram, ou param de funcionar depois?"
@@ -203,38 +199,38 @@ a = """
         que expiram são os que têm o endereço de outra gente lá dentro: um QR Code
         &ldquo;dinâmico&rdquo; guarda um link para o servidor do gerador, que
         redireciona para o seu, o que significa que eles podem contar cada
-        escaneamento, mudar para onde ele leva, ou desligá-lo quando um teste
-        acabar. Nada aqui redireciona por lugar nenhum."""
+        escaneamento, mudar para onde ele leva, ou desligá-lo quando um teste acabar.
+        Nada aqui redireciona por lugar nenhum."""
 
 [[faq]]
 q = "É grátis, e posso usar comercialmente?"
 a = """
-        É grátis, não há conta, não há marca d'água e não há limite de quantos você
-        gera, e você pode pôr o resultado num produto, num cartaz ou numa fachada.
-        QR Code é marca registrada da Denso Wave, que declarou que não vai exercê-la
-        contra quem usa os códigos &mdash; a especificação é publicada como ISO/IEC
-        18004 e é livre para implementar, que é o que esta página faz. O site exibe
+        É grátis, não tem conta, não tem marca d'água, não tem limite de quantos você
+        gera, e você pode pôr o resultado num produto, num cartaz ou numa fachada. QR
+        Code é marca registrada da Denso Wave, que declarou que não vai exercê-la
+        contra quem usa os códigos. A especificação é publicada como ISO/IEC 18004 e
+        é livre para implementar, que é o que esta página faz. O site exibe
         publicidade, e é ela que paga a conta."""
 
 [[faq]]
 q = "Qual nível de correção de erros eu devo escolher?"
 a = """
-        M, a menos que você tenha um motivo. L gera o código menor e serve numa
-        tela; M sobrevive ao manuseio comum; Q e H são para um código que vai ser
-        impresso pequeno, plastificado, colado numa vitrine, ou parcialmente coberto
-        por uma logomarca. Cada degrau a mais põe mais dados de verificação, o que
-        exige um símbolo maior para a mesma quantidade de texto &mdash; ir de L para
-        H mais ou menos dobra o número de módulos para a mesma cadeia."""
+        M, a menos que você tenha um motivo. O L gera o código menor e serve numa
+        tela, o M sobrevive ao manuseio comum, e o Q e o H são para um código que vai
+        ser impresso pequeno, plastificado, colado numa vitrine ou parcialmente
+        coberto por uma logomarca. Cada degrau a mais põe mais dados de verificação,
+        o que exige um símbolo maior para a mesma quantidade de texto: ir de L para H
+        mais ou menos dobra o número de módulos para a mesma cadeia."""
 
 [[faq]]
 q = "Quanto cabe num QR Code?"
 a = """
-        No tamanho maior, 177 módulos de lado, até 7.089 dígitos, 4.296 letras
-        maiúsculas e dígitos, ou 2.953 bytes de qualquer outra coisa &mdash; e isso
-        na correção de erros mais fraca; na mais forte é cerca de um terço disso. Na
-        prática, o limite não é o formato e sim o leitor: passando de algumas
-        centenas de caracteres, os módulos ficam tão pequenos que a câmera de um
-        celular comum não consegue resolvê-los a um braço de distância. Um código
+        No tamanho maior, com 177 módulos de lado, cabem até 7.089 dígitos, 4.296
+        letras maiúsculas e dígitos, ou 2.953 bytes de qualquer outra coisa. E isso
+        na correção de erros mais fraca, porque na mais forte é cerca de um terço
+        disso. Na prática, o limite não é o formato e sim o leitor: passando de
+        algumas centenas de caracteres, os módulos ficam tão pequenos que a câmera de
+        um celular comum não consegue resolvê-los a um braço de distância. Um código
         longo costuma ser sinal de que ali cabia um link curto."""
 
 [[faq]]
@@ -245,81 +241,79 @@ a = """
         custam oito bits cada. Uma URL escrita
         <code>HTTPS://EXEMPLO.COM.BR/PAGINA</code> pode ficar um terço menor que a
         mesma URL em minúsculas. O esquema e o host não diferenciam maiúsculas, então
-        gritá-los não muda nada além do tamanho; o caminho depois do host diferencia,
-        então deixe esse em paz."""
+        gritá-los não muda nada além do tamanho. Já o caminho depois do host
+        diferencia, então deixe esse em paz."""
 
 [[faq]]
 q = "Ele também lê um QR Code, além de gerar?"
 a = """
-        Ainda não. Ler um significa decodificar uma imagem &mdash; achar o símbolo
-        numa fotografia, corrigir o ângulo em que ela foi tirada e reparar o dano
-        &mdash; o que é um trabalho diferente e bem maior do que desenhar um. Dava
-        para construir aqui nos mesmos termos que todo o resto, e está na lista.
-        Enquanto isso, a câmera do seu celular já faz, e faz bem."""
+        Ainda não. Ler um significa decodificar uma imagem, ou seja, achar o símbolo
+        numa fotografia, corrigir o ângulo em que ela foi tirada e reparar o dano, o
+        que é um trabalho diferente e bem maior do que desenhar um. Dava para
+        construir aqui nos mesmos termos que todo o resto, e está na lista. Enquanto
+        isso, a câmera do seu celular já faz, e faz bem."""
 
 [[faq]]
 q = "Para que serve a margem, e posso deixá-la menor?"
 a = """
-        O espaço branco em volta de um QR Code faz parte do código. Um leitor o usa
-        para achar onde o símbolo termina, e a especificação pede quatro módulos de
-        cada lado; um código de barras quer uns dez. Você pode zerar isso aqui e a
-        imagem vai ficar mais arrumada, e um bom número de leitores então vai deixar
-        de enxergá-la &mdash; especialmente sobre um fundo carregado. Se o problema é
-        espaço, deixe o código menor em vez de aparar a margem dele."""
+        O espaço branco em volta de um QR Code faz parte do código. Um leitor usa
+        esse espaço para achar onde o símbolo termina, e a especificação pede quatro
+        módulos de cada lado; um código de barras quer uns dez. Dá para zerar isso
+        aqui, e a imagem vai ficar mais arrumada, mas aí um bom número de leitores
+        vai deixar de enxergá-la, especialmente sobre um fundo carregado. Se o
+        problema é espaço, deixe o código menor em vez de aparar a margem dele."""
 
 [[faq]]
 q = "De qual código de barras eu preciso?"
 a = """
-        Do que a pessoa que vai escanear pedir. EAN-13 é o código de barras do
-        varejo fora da América do Norte e UPC-A é o norte-americano &mdash; os dois
-        precisam de um número emitido para você pela GS1, porque o número identifica
-        a sua empresa, e não só o produto. EAN-8 é a versão curta para embalagens
-        pequenas. ITF-14 vai na caixa de transporte. Code 128 e Code 39 guardam
-        texto além de dígitos e não precisam de registro nenhum, o que faz deles a
-        resposta certa para qualquer coisa interna: patrimônio, prateleiras, ordens
-        de serviço."""
+        Do que a pessoa que vai escanear pedir. EAN-13 é o código de barras do varejo
+        fora da América do Norte e UPC-A é o norte-americano, e os dois precisam de
+        um número emitido para você pela GS1, porque o número identifica a sua
+        empresa e não só o produto. EAN-8 é a versão curta para embalagens pequenas.
+        ITF-14 vai na caixa de transporte. Code 128 e Code 39 guardam texto além de
+        dígitos e não precisam de registro nenhum, o que faz deles a resposta certa
+        para qualquer coisa interna: patrimônio, prateleiras, ordens de serviço."""
 
 [[faq]]
 q = "O que é um dígito verificador, e por que a ferramenta acrescentou um?"
 a = """
         É o último dígito de um código de barras de varejo, calculado a partir dos
         anteriores, para que um leitor consiga distinguir uma leitura errada de uma
-        certa. O EAN-13 quer doze dígitos e calcula o décimo terceiro; o UPC-A quer
+        certa. O EAN-13 quer doze dígitos e calcula o décimo terceiro, e o UPC-A quer
         onze e calcula o décimo segundo. Digite o número curto e esta página
-        acrescenta o dígito. Digite o número completo e ela confere o que você deu
-        &mdash; e recusa, em vez de corrigir em silêncio, porque um dígito errado
-        consertado caladinho é uma etiqueta que escaneia como produto de outra
-        pessoa."""
+        acrescenta o dígito. Digite o número completo e ela confere o que você deu, e
+        recusa em vez de corrigir em silêncio, porque um dígito errado consertado
+        caladinho é uma etiqueta que escaneia como produto de outra pessoa."""
 
 [[faq]]
 q = "Posso pôr uma logomarca no meio de um QR Code?"
 a = """
-        Aqui não, mas vale saber por que funciona em outros lugares: é a correção de
-        erros que torna isso possível. No nível H, cerca de 30% dos módulos podem
+        Aqui não, mas vale saber por que funciona em outros lugares: quem torna isso
+        possível é a correção de erros. No nível H, cerca de 30% dos módulos podem
         ser destruídos e o código ainda é lido, então uma logomarca cobrindo bem
-        menos que isso no centro &mdash; onde não fica nenhum padrão de localização
-        &mdash; é dano reparável. Passe o código pelo seu editor de imagem no nível
-        H, mantenha a logomarca abaixo de uns 20% da área, e teste com um celular de
-        verdade em vez de confiar."""
+        menos que isso no centro, onde não fica nenhum padrão de localização, é dano
+        reparável. Passe o código pelo seu editor de imagem no nível H, mantenha a
+        logomarca abaixo de uns 20% da área, e teste com um celular de verdade em vez
+        de confiar."""
 
 [[faq]]
 q = "Por que o SVG é melhor que o PNG?"
 a = """
         Porque um código é feito de bordas, e um PNG tem um número fixo de pixels com
-        que formá-las. Amplie um e toda borda amolece; uma borda mole é precisamente
-        o que dá trabalho a um leitor, e uma impressora a 1200 dpi recebendo um PNG
-        de 512 pixels está sendo convidada a inventar a diferença. Um SVG são os
-        quadradinhos como instruções, então imprime nítido num cartão de visita ou
-        num outdoor. O PNG daqui é desenhado num número inteiro de pixels por módulo,
-        que é o melhor que um PNG consegue fazer."""
+        que formá-las. Amplie um e toda borda amolece, e uma borda mole é
+        precisamente o que dá trabalho a um leitor. Uma impressora a 1200 dpi
+        recebendo um PNG de 512 pixels está sendo convidada a inventar a diferença.
+        Um SVG são os quadradinhos como instruções, então imprime nítido num cartão
+        de visita ou num outdoor. O PNG daqui é desenhado num número inteiro de
+        pixels por módulo, que é o melhor que um PNG consegue fazer."""
 
 [[faq]]
 q = "Funciona offline?"
 a = """
-        Sim. Carregue a página uma vez, então desconecte da internet e ela continua
-        funcionando. Esse é também o jeito mais simples de provar que nada está
-        sendo enviado: uma ferramenta que mandasse o seu texto embora para ter um
-        código desenhado pararia no instante em que você tirasse da tomada."""
+        Funciona. Carregue a página uma vez, depois desligue a internet e ela
+        continua funcionando. Esse é também o jeito mais simples de provar que nada
+        está sendo enviado: uma ferramenta que mandasse o seu texto embora para ter
+        um código desenhado pararia no instante em que você tirasse da tomada."""
 
 [schema]
 description = "Gere um QR Code ou um código de barras linear a partir de uma cadeia de texto, dentro do navegador. QR Codes para links, redes Wi-Fi, cartões de contato, e-mail, SMS, telefones e coordenadas, com os quatro níveis de correção de erros; códigos de barras EAN-13, EAN-8, UPC-A, ITF-14, Intercalado 2 de 5, Code 128 e Code 39 com os dígitos verificadores deles. Baixe em SVG ou PNG. Nada é enviado."

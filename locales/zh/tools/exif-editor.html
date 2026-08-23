@@ -6,7 +6,7 @@
   visible on the page.
 -->
 <main>
-  <!-- 第 1 步 &mdash; 文件 -->
+  <!-- 第 1 步，选文件 -->
   <section class="card">
     <h2><span class="step">1</span> 选择照片</h2>
 
@@ -21,7 +21,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">全部从列表移除</button>
+        <button type="button" id="clear-all" class="ghost danger">全部移出列表</button>
       </div>
     </div>
 
@@ -30,12 +30,12 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- 第 2 步 &mdash; 只按一下 -->
+  <!-- 第 2 步，按一下就完 -->
   <section class="card" id="strip-card">
     <h2><span class="step">2</span> 全部删掉</h2>
 
     <p class="card-lede">
-      一个按钮，列表上的每一张照片。画面不会被解码、重绘或重新压缩 &mdash; 压缩过的图像数据原样复制过去，只丢掉围在它外面的元数据，所以结果是同一张照片，什么都没挂着。
+      一个按钮，管列表上的每一张照片。画面不解码、不重绘、不重新压缩，压缩过的图像数据原样复制过去，只丢掉围在外面的元数据，所以出来的是同一张照片，身上什么都不挂了。
     </p>
 
     <div class="strip-row">
@@ -55,7 +55,7 @@
         <input type="checkbox" id="keep-orientation" checked>
         <span>
           <strong>方向标签</strong>
-          <span class="check-note">手机按传感器看到的样子存照片，再加一个标签说明哪边朝上。把它删掉，有些看图软件就会把照片横着显示。选择保留时，会写入一块新的 EXIF，里面只有这一个标签，别的都没有 &mdash; 而且只在照片本来就不是正着的时候才写。
+          <span class="check-note">手机按传感器看到的样子存照片，再加一个标签说明哪边朝上。把它删掉，有些看图软件就会把照片横着显示。选择保留时，会写入一块新的 EXIF，里面只有这一个标签，别的一概没有，而且只在照片本来就不是正着的时候才写。
           </span>
         </span>
       </label>
@@ -64,7 +64,7 @@
         <span>
           <strong>色彩配置</strong>
           <span class="check-note">
-            ICC 配置说明画面里那些数字作为颜色是什么意思。它没有说你任何事。丢掉它，一张广色域照片的颜色可能会明显偏掉，所以除非你另有交代，它会被保留。
+            ICC 配置说明画面里那些数字当成颜色该怎么解释，它没有透露你任何事。丢掉它，一张广色域照片的颜色可能明显偏掉，所以除非你另有交代，它会留着。
           </span>
         </span>
       </label>
@@ -73,19 +73,19 @@
 
     <div id="clean-results" class="results" hidden>
       <div class="results-head">
-        <h3>已清理</h3>
+        <h3>清干净了</h3>
         <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下载</button>
       </div>
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
 
-  <!-- 第 3 步 &mdash; 查看与编辑 -->
+  <!-- 第 3 步，查看与编辑 -->
   <section class="card" id="inspect-card">
     <h2><span class="step">3</span> 看看里面，想改什么改什么</h2>
 
     <p id="inspect-empty" class="empty-note">
-      在上面选一张照片，它里面的一切就会出现在这里：它说了你在哪儿、什么时候、用什么拍的。为了弄清这些，没有任何东西被送去哪里。
+      在上面选一张照片，它里面的一切就会出现在这里，你在哪儿、什么时候、用什么拍的。为了弄清这些，没有一样东西被送去别处。
     </p>
 
     <div id="inspector" hidden>

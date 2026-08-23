@@ -1,18 +1,18 @@
 #
-# Guide : integrer une image dans le CSS - French.
+# Guide : intégrer une image dans le CSS - French.
 #
 
 nav = "Intégrer une image dans le CSS"
 title = "Les data URI en CSS : quand intégrer une image, et quand s'abstenir"
-description = "Ce que coûte un data URI, pourquoi le base64 ajoute un tiers que le gzip ne rend pas, pourquoi un SVG ne devrait jamais être en base64, et l'erreur de guillemets qui casse les SVG en ligne sans rien dire."
+description = "Ce que coûte un data URI, pourquoi le base64 ajoute un tiers que le gzip ne rend pas, pourquoi un SVG ne devrait jamais être en base64, et l'erreur de guillemets qui casse les SVG intégrés sans rien dire."
 heading = "Quand mettre une image dans votre CSS, et quand s'abstenir"
 lede = """
     Une image écrite dans une feuille de style arrive avec elle&nbsp;: pas de
-    seconde requête, pas d'attente. Elle cesse aussi d'être un fichier &mdash;
-    elle ne peut donc plus être mise en cache pour elle-même, et elle est
+    seconde requête, pas d'attente. Elle cesse aussi d'être un fichier, si bien
+    qu'elle ne peut plus être mise en cache pour elle-même et qu'elle est
     retéléchargée dès que quoi que ce soit autour d'elle change. Voici où ce
     marché vaut la peine, et où il ne la vaut discrètement pas."""
 updated = "20 août 2026"
 og_title = "Quand mettre une image dans votre CSS"
-og_description = "Ce que coûte un data URI, pourquoi un SVG ne devrait jamais être en base64, et l'erreur de guillemets qui casse les SVG en ligne sans rien dire."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_description = "Ce que coûte un data URI, pourquoi un SVG ne devrait jamais être en base64, et l'erreur de guillemets qui casse les SVG intégrés sans rien dire."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

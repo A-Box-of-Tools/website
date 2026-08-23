@@ -1,175 +1,175 @@
   <section>
     <h2>La respuesta corta</h2>
     <p>
-      Abre <a href="../../convertir-svg-a-png/">SVG a imagen</a>, suelta el
-      archivo dentro y di un tamaño. Si nadie te ha dicho qué tamaño usar,
-      <strong>1024 píxeles en el lado más largo</strong> es un buen valor por
-      defecto: lo bastante grande para casi todo y lo bastante pequeño para
+      Abre <a href="../../convertir-svg-a-png/">SVG a imagen</a>, arrastra el
+      archivo dentro y di un tamaño. Si nadie te ha dicho cuál usar,
+      <strong>1024 píxeles en el lado más largo</strong> es un buen punto de
+      partida: lo bastante grande para casi todo y lo bastante pequeño para
       mandarlo por correo. Deja el formato en PNG, deja el fondo en transparente y
       llévate el archivo.
     </p>
     <p>
-      Todo lo de abajo es qué hacer cuando ese valor por defecto no basta &mdash;
-      cuando te han especificado un número, cuando va a una imprenta, o cuando
-      vuelve con mal aspecto.
+      Todo lo de abajo es qué hacer cuando ese valor por defecto no llega: cuando
+      te han dado un número concreto, cuando el archivo va a una imprenta o cuando
+      te vuelve con mal aspecto.
     </p>
   </section>
 
   <section>
     <h2>Por qué el tamaño lo decides tú y no el archivo</h2>
     <p>
-      Un JPEG es una rejilla de píxeles medidos; preguntar cuánto mide tiene
-      respuesta. Un SVG no es una imagen en absoluto, es un conjunto de
-      instrucciones &mdash; dibuja un círculo aquí, este trazado de este color
-      &mdash; y las instrucciones no tienen tamaño. Un navegador puede ejecutarlas
-      a 16 píxeles o a 4000 y el resultado es igual de nítido en ambos casos,
-      porque no está escalando nada. Está dibujando otra vez.
+      Un JPEG es una rejilla de píxeles medidos, así que preguntar cuánto mide
+      tiene respuesta. Un SVG no es una imagen: es un conjunto de instrucciones
+      (dibuja un círculo aquí, este trazado de este color), y las instrucciones no
+      tienen tamaño. Un navegador puede ejecutarlas a 16 píxeles o a 4000 y el
+      resultado sale igual de nítido en los dos casos, porque no está escalando
+      nada: está volviendo a dibujar.
     </p>
     <p>
-      Por eso la conversión no puede elegir un número por ti, y por eso no te
-      cuesta nada elegir uno grande. Este es el único trabajo de imagen en el que
-      «hazlo más grande» es gratis.
+      Por eso la conversión no puede elegir el número por ti, y por eso elegir uno
+      grande no te cuesta nada. Este es el único trabajo de imagen en el que
+      «hazlo más grande» sale gratis.
     </p>
     <p>
-      Casi todos los archivos SVG sí llevan un atributo <code>width</code> y
-      <code>height</code>, y una herramienta te lo enseñará &mdash; pero es un
-      valor por defecto, no un límite. Un icono que dice <code>width="24"</code>
-      solo dice que quien lo dibujó tenía en mente una barra de herramientas de
-      24&nbsp;píxeles.
+      Casi todos los archivos SVG sí llevan los atributos <code>width</code> y
+      <code>height</code>, y una herramienta te los va a enseñar, pero eso es un
+      valor por defecto y no un límite. Un icono que pone <code>width="24"</code>
+      solo te dice que quien lo dibujó tenía en la cabeza una barra de herramientas
+      de 24&nbsp;píxeles.
     </p>
   </section>
 
   <section>
     <h2>De dónde sale de verdad el número</h2>
-    <p><strong>Para una web.</strong> Coge el tamaño que ocupa la imagen en la
-      página en píxeles CSS y multiplícalo por la densidad de píxeles de las
-      pantallas que te importen. Un logotipo en un hueco de 200&nbsp;píxeles de
-      ancho necesita un archivo de 400&nbsp;píxeles para un portátil Retina y de
-      600 para un móvil reciente. Eso es todo lo que significan <code>@2x</code> y
-      <code>@3x</code>, y es por lo que una herramienta que los escriba te ahorra
-      hacer la cuenta tres veces.
+    <p><strong>Para una web.</strong> Coge lo que ocupa la imagen en la página en
+      píxeles CSS y multiplícalo por la densidad de píxeles de las pantallas que te
+      importen. Un logotipo en un hueco de 200&nbsp;píxeles de ancho necesita un
+      archivo de 400&nbsp;píxeles para un portátil Retina y de 600 para un móvil
+      reciente. Eso es todo lo que significan <code>@2x</code> y <code>@3x</code>,
+      y por eso una herramienta que los escriba te ahorra hacer la cuenta tres
+      veces.
     </p>
     <p><strong>Para el icono de una aplicación, una ficha de tienda o un
-      favicon.</strong> El número está publicado y no hay nada que calcular: lo
-      que diga la página de la tienda, exactamente. Para un favicon, no
-      rasterices en absoluto &mdash; <a href="../como-hacer-un-favicon/">haz un
-      .ico</a>, que guarda varios tamaños en un archivo, porque la pestaña de un
-      navegador, un marcador y un acceso directo de Windows piden todos tamaños
-      distintos.
+      favicon.</strong> El número está publicado y no hay nada que calcular:
+      exactamente lo que diga la página de la tienda. Y para un favicon no
+      rasterices nada: <a href="../como-hacer-un-favicon/">haz un .ico</a>, que
+      guarda varios tamaños en un archivo, porque la pestaña de un navegador, un
+      marcador y un acceso directo de Windows piden tamaños distintos.
     </p>
     <p><strong>Para imprenta.</strong> Multiplica el tamaño físico en pulgadas
-      por la resolución de la impresora. Un logotipo que va en una tarjeta de
-      visita con dos pulgadas de ancho a 300&nbsp;PPP son 600 píxeles; el mismo
-      logotipo a lo ancho de una página A4, con 8,3&nbsp;pulgadas, son unos 2500.
-      Las imprentas piden 300&nbsp;PPP por costumbre, y para una lona de gran
-      formato que se ve desde el otro lado de una sala 150 sobran.
+      por la resolución de la impresora. Un logotipo de dos pulgadas de ancho en
+      una tarjeta de visita, a 300&nbsp;PPP, son 600 píxeles; ese mismo logotipo a
+      lo ancho de una página A4, o sea 8,3&nbsp;pulgadas, son unos 2500. Las
+      imprentas piden 300&nbsp;PPP por costumbre, y para una lona de gran formato
+      que se mira desde el otro lado de una sala sobra con 150.
     </p>
     <p><strong>Para una vista previa social o una imagen OG.</strong> La
-      plataforma dice una caja &mdash; 1200&nbsp;&times;&nbsp;630 para casi todas
-      las vistas previas de enlaces &mdash; y la caja tiene otra forma que tu
-      logotipo. Para eso está el ajuste de «rellenar»: el dibujo centrado con sus
-      propias proporciones, con un color de fondo llenando el resto, en lugar de
-      un logotipo estirado que le cuenta a todo el mundo que no lo comprobaste.
+      plataforma te da una caja, que para casi todas las vistas previas de enlaces
+      es 1200&nbsp;&times;&nbsp;630, y esa caja tiene otra forma que tu logotipo.
+      Para eso está el ajuste de «rellenar»: el dibujo centrado y con sus propias
+      proporciones, y un color de fondo llenando el resto, en vez de un logotipo
+      estirado que le anuncia a todo el mundo que no lo comprobaste.
     </p>
     <p>
-      Cuando se apliquen dos de estos, usa el mayor. Un PNG más grande de lo
-      necesario es una descarga algo mayor; uno demasiado pequeño no se puede
-      arreglar después, por la razón del apartado siguiente.
+      Cuando te apliquen dos de estos, quédate con el mayor. Un PNG más grande de
+      la cuenta es una descarga algo mayor; uno demasiado pequeño ya no se arregla
+      después, por la razón que viene en el apartado siguiente.
     </p>
   </section>
 
   <section>
     <h2>No se puede volver atrás</h2>
     <p>
-      Rasterizar es de ida. Una vez que el dibujo es un PNG son píxeles como los de
-      cualquier otra imagen, y ampliarlo después tiene que inventar detalle que
-      nunca se midió &mdash; el mismo resultado blando y emborronado que da ampliar
-      una fotografía.
+      Rasterizar es un viaje de ida. Una vez que el dibujo es un PNG son píxeles
+      como los de cualquier otra imagen, y ampliarlo después obliga a inventar
+      detalle que nunca se midió, con el mismo resultado blando y emborronado que
+      da ampliar una fotografía.
     </p>
     <p>
-      Así que conserva el SVG. Es la copia maestra, casi siempre es el archivo más
-      pequeño, y todos los tamaños futuros salen de él perfectamente. El PNG es una
-      exportación para un uso concreto, y cuando necesites otro tamaño lo correcto
-      es volver a exportar y no redimensionar lo que exportaste.
+      Así que guarda el SVG. Es la copia maestra, casi siempre es el archivo más
+      pequeño y todos los tamaños futuros salen de él perfectos. El PNG es una
+      exportación para un uso concreto, y cuando necesites otro tamaño lo que toca
+      es volver a exportar, no redimensionar lo que ya exportaste.
     </p>
     <p>
       Hay software que dice convertir un PNG de vuelta en un SVG. Lo que hace es
-      calcar: adivinar qué curvas podrían explicar una rejilla de píxeles. Funciona
-      pasablemente con dibujo plano de dos colores y produce disparates caros con
-      cualquier otra cosa, y nunca recupera lo que tenía el dibujo original.
+      calcar: adivinar qué curvas podrían explicar una rejilla de píxeles. Con
+      dibujo plano de dos colores se defiende, con cualquier otra cosa suelta
+      disparates carísimos, y en ningún caso recupera lo que tenía el dibujo
+      original.
     </p>
   </section>
 
   <section>
     <h2>Tres cosas cambian en cuanto se convierte en píxeles</h2>
     <p>
-      Un SVG rasterizado que se ve mal casi siempre se ve mal por una de estas tres
+      Cuando un SVG rasterizado se ve mal, casi siempre es por una de estas tres
       razones, y las tres conviene conocerlas antes de exportar y no después.
     </p>
     <p>
       <strong>El texto se dibuja con la tipografía que tenga la máquina.</strong>
-      Un SVG que contiene texto no contiene la tipografía &mdash; nombra una y deja
-      que el renderizador la encuentre. Si la tipografía no está instalada, se usa
-      una sustituta, y la sustituta tiene otras formas de letra y otras anchuras,
-      así que el texto puede recolocarse o desbordarse. A un archivo que se trae su
-      tipografía de una dirección web le va todavía peor: a un SVG que se rasteriza
-      a través de un <code>&lt;img&gt;</code> no se le permite descargar
-      absolutamente nada, así que no llega nada.
+      Un SVG que lleva texto no lleva la tipografía: nombra una y deja que el
+      renderizador la encuentre. Si esa tipografía no está instalada se usa una
+      sustituta, y la sustituta tiene otras formas de letra y otras anchuras, así
+      que el texto puede recolocarse o desbordarse. A un archivo que se trae su
+      tipografía de una dirección web le va todavía peor: a un SVG rasterizado a
+      través de un <code>&lt;img&gt;</code> no se le permite descargar
+      absolutamente nada, así que no le llega nada.
     </p>
     <p>
-      La solución es la que cualquier diseñador ya conoce: <strong>convertir el
-      texto en contornos</strong> antes de exportar el SVG (Illustrator lo llama
-      Crear contornos, Figma lo llama Flatten, Inkscape lo llama Objeto a trazado).
-      Las letras se convierten en geometría, la tipografía deja de importar y la
-      imagen se ve igual en todas las máquinas. Hazlo sobre una copia &mdash; el
-      texto convertido en contornos ya no se puede editar como texto.
+      La solución la conoce ya cualquier diseñador: <strong>convertir el texto en
+      contornos</strong> antes de exportar el SVG (Illustrator lo llama Crear
+      contornos, Figma lo llama Flatten e Inkscape lo llama Objeto a trazado). Las
+      letras pasan a ser geometría, la tipografía deja de importar y la imagen se ve
+      igual en todas partes. Hazlo sobre una copia, porque un texto convertido en
+      contornos ya no se puede editar como texto.
     </p>
     <p>
       <strong>Las líneas de un pelo se vuelven grises o desaparecen.</strong> Un
-      trazo que sale a menos de un píxel al tamaño que has elegido no se puede
-      dibujar como una línea sólida, así que se dibuja como una tenue. Por eso un
-      logotipo delicado rasterizado a 64&nbsp;píxeles se ve deslavado mientras que
-      el mismo archivo a 512 se ve perfecto. Si el requisito es un tamaño pequeño,
-      la respuesta es un dibujo simplificado con trazos más gruesos y no otro
-      ajuste de exportación &mdash; que es la misma razón por la que un favicon es
-      un símbolo y no un logotipo de palabra.
+      trazo que al tamaño que has elegido sale por debajo de un píxel no se puede
+      dibujar como línea sólida, así que se dibuja tenue. Por eso un logotipo
+      delicado rasterizado a 64&nbsp;píxeles sale deslavado mientras que el mismo
+      archivo a 512 sale perfecto. Si lo que te exigen es un tamaño pequeño, la
+      respuesta es un dibujo simplificado con trazos más gruesos y no otro ajuste
+      de exportación. Es la misma razón por la que un favicon es un símbolo y no un
+      logotipo de palabra.
     </p>
     <p>
       <strong>La animación se para.</strong> Un SVG animado rasteriza a una sola
-      imagen fija: el primer fotograma, sea cual sea. No hay ningún ajuste de
-      exportación que cambie eso. Si necesitas el movimiento, necesitas un GIF o un
-      vídeo, hechos de otra manera.
+      imagen fija, que es el primer fotograma, sea cual sea, y no hay ningún ajuste
+      de exportación que cambie eso. Si necesitas el movimiento, necesitas un GIF o
+      un vídeo, hechos por otra vía.
     </p>
   </section>
 
   <section>
     <h2>La transparencia, y qué formato elegir</h2>
     <p>
-      <strong>PNG</strong> salvo que tengas un motivo. No tiene pérdidas, conserva
-      la transparencia, y el color plano con bordes duros &mdash; que es de lo que
-      está hecho casi todo dibujo &mdash; se comprime bien en él. Un logotipo
-      rasterizado suele ser un PNG <em>más pequeño</em> de lo que sería un JPEG,
-      además de más limpio.
+      <strong>PNG</strong>, salvo que tengas un motivo para otra cosa. No tiene
+      pérdidas, conserva la transparencia y comprime bien el color plano con bordes
+      duros, que es de lo que está hecho casi cualquier dibujo. Un logotipo
+      rasterizado suele salir en PNG <em>más pequeño</em> de lo que saldría en
+      JPEG, y además más limpio.
     </p>
     <p>
-      <strong>JPEG</strong> no tiene transparencia en absoluto. Cada píxel
-      transparente tiene que convertirse en algún color, y si nadie elige uno por ti
-      se convierte en negro &mdash; de ahí viene ese resultado de logotipo sobre
-      caja negra que la gente da por hecho que es un error. Además tiene pérdidas de
-      la forma que peor se nota justo en este tipo de imagen: un anillo de
-      salpicaduras alrededor de cada borde duro. Úsalo cuando algo insista.
+      <strong>JPEG</strong> no tiene transparencia. Cada píxel transparente tiene
+      que convertirse en algún color, y si nadie elige uno por ti se convierte en
+      negro: de ahí sale ese logotipo sobre caja negra que todo el mundo da por
+      hecho que es un fallo. Encima tiene pérdidas de la forma que peor se nota
+      justo en este tipo de imagen, con un anillo de salpicaduras alrededor de cada
+      borde duro. Úsalo cuando algo insista.
     </p>
     <p>
-      <strong>WebP</strong> hace todo lo que hace PNG, en un archivo más pequeño, y
-      lo lee cualquier navegador actual. La razón para no usarlo es lo que pasa
-      después del navegador: el software antiguo, algunas imprentas y bastantes
-      formularios de subida siguen sin abrir uno.
+      <strong>WebP</strong> hace todo lo que hace el PNG en un archivo más
+      pequeño, y lo lee cualquier navegador actual. El motivo para no usarlo es lo
+      que viene después del navegador: el software antiguo, algunas imprentas y
+      bastantes formularios de subida siguen sin abrir uno.
     </p>
     <p>
-      Elegir un color de fondo con PNG es también algo perfectamente normal de
-      querer. La transparencia solo es útil cuando aquello sobre lo que aterriza la
-      imagen es de un color que no puedes predecir; cuando ya sabes que es una
-      página blanca, aplanar sobre blanco evita toda una categoría de sorpresas.
+      Y elegir un color de fondo con PNG también es algo perfectamente normal de
+      querer. La transparencia solo sirve cuando aquello sobre lo que va a aterrizar
+      la imagen es de un color que no puedes predecir; si ya sabes que es una página
+      blanca, aplanar sobre blanco te ahorra toda una categoría de sorpresas.
     </p>
   </section>
 

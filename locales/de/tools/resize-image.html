@@ -1,7 +1,7 @@
 <main>
   <!-- Schritt 1 &mdash; die Dateien -->
   <section class="card">
-    <h2><span class="step">1</span> Bilder wählen</h2>
+    <h2><span class="step">1</span> Bilder auswählen</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -29,14 +29,14 @@
 
     <p class="card-lede">
       Der Rahmen beginnt auf dem ganzen Bild, diesen Schritt in Ruhe zu lassen
-      schneidet also nichts ab. Jedes Bild behält seinen eigenen Rahmen &mdash;
-      wählen Sie oben eines aus der Liste, um darauf zu zeichnen. Zugeschnitten
-      wird vor dem Skalieren, und das ist die einzige Reihenfolge, die Sinn
-      ergibt: Ein Bild, das erst nach dem Verkleinern beschnitten wird, hat die
-      Pixel, die es dafür gebraucht hätte, schon weggeworfen.
+      schneidet also nichts ab. Jedes Bild behält seinen eigenen Rahmen. Wählen
+      Sie oben eines aus der Liste, um darauf zu zeichnen. Zugeschnitten wird vor
+      dem Skalieren, und eine andere Reihenfolge ergäbe auch keinen Sinn, denn
+      ein Bild, das erst nach dem Verkleinern beschnitten wird, hat die Pixel,
+      die es dafür gebraucht hätte, längst weggeworfen.
     </p>
 
-    <p id="crop-empty" class="field-summary">Fügen Sie ein Bild hinzu, und der Rahmen erscheint hier.</p>
+    <p id="crop-empty" class="field-summary">Ein Bild hinzufügen, dann erscheint hier der Rahmen.</p>
 
     <div id="crop-controls" hidden>
       <p class="stage-hint">
@@ -185,11 +185,10 @@
       <span>
         <strong>Ein Bild nie größer machen, als es angefangen hat</strong>
         <span class="check-note">
-          Vergrößern erfindet Pixel, die nie fotografiert wurden &mdash; ein
-          kleines Bild, das in einen großen Rahmen soll, kommt also weich heraus
-          statt detailreich. Ist dies aktiv, bleibt alles, was ohnehin kleiner
-          ist als die von Ihnen verlangte Größe, stattdessen in seiner eigenen
-          Größe.
+          Vergrößern erfindet Pixel, die nie fotografiert wurden. Ein kleines
+          Bild, das in einen großen Rahmen soll, kommt deshalb weich heraus statt
+          detailreich. Ist das hier aktiv, bleibt alles, was ohnehin kleiner ist
+          als die von Ihnen verlangte Größe, in seiner eigenen Größe.
         </span>
       </span>
     </label>
@@ -227,7 +226,7 @@
         <label for="background">Hintergrund</label>
         <input type="color" id="background" value="#ffffff">
         <p class="field-note">
-          Was dort durchscheint, wo das Bild nicht ist: hinter einem
+          Scheint überall dort durch, wo das Bild nicht ist, also hinter einem
           aufgefüllten Rahmen und hinter Transparenz, wenn das Ausgabeformat
           keinen Alphakanal hat.
         </p>

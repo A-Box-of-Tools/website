@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; 動画 -->
+  <!-- ステップ1｜動画 -->
   <section class="card">
     <h2><span class="step">1</span> 動画を選ぶ</h2>
 
@@ -19,7 +19,7 @@
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- ステップ2 &mdash; 印 -->
+  <!-- ステップ2｜印 -->
   <section class="card" id="section-card" hidden>
     <h2>
       <span class="step">2</span> 残したい場所に印を付ける
@@ -27,8 +27,7 @@
     </h2>
 
     <p class="stage-hint">
-      通して再生しながら、残す部分の始まりで <kbd>I</kbd>、終わりで <kbd>O</kbd>
-      を押してください。何度でも構いません &mdash; 1組ごとに下の1行になり、できあがる動画はその行を順につないだものになります。<kbd>U</kbd> で直前のものを取り消し、<kbd>Space</kbd> で再生と一時停止、矢印キーで5秒飛べます。
+      通して再生しながら、残す部分の始まりで<kbd>I</kbd>、終わりで<kbd>O</kbd>を押してください。何度でも構いません。1組ごとに下の1行になり、できあがる動画はその行を順につないだものになります。<kbd>U</kbd>で直前のものを取り消し、<kbd>Space</kbd>で再生と一時停止、矢印キーで5秒飛べます。
     </p>
 
     <div class="stage-wrap">
@@ -53,9 +52,9 @@
       <button type="button" id="play" class="primary">再生</button>
       <button type="button" id="back-5" class="ghost" title="5秒戻る">&minus;5s</button>
       <button type="button" id="forward-5" class="ghost" title="5秒進む">+5s</button>
-      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> 始点</button>
-      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> 終点</button>
-      <button type="button" id="undo" class="ghost"><kbd>U</kbd> 取り消し</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd>始点</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd>終点</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd>取り消し</button>
     </div>
 
     <div class="speed-row" role="group" aria-label="再生速度">
@@ -72,9 +71,9 @@
     <!-- The segments themselves. This is the tool. -->
     <div class="segments">
       <div class="segments-head">
-        <h3>区間 <span class="segment-count" id="segment-count">まだありません</span></h3>
+        <h3>区間<span class="segment-count" id="segment-count">まだありません</span></h3>
         <p class="segments-total">
-          残る合計 <strong id="total-kept">0:00.000</strong>
+          残る合計<strong id="total-kept">0:00.000</strong>
         </p>
       </div>
 
@@ -92,12 +91,12 @@
       </table>
 
       <p class="segments-empty" id="segments-empty">
-        まだ何も印が付いていません。再生しながら <kbd>I</kbd>、<kbd>O</kbd> の順に押すか、上のボタンを使ってください。
+        まだ何も印が付いていません。再生しながら<kbd>I</kbd>、<kbd>O</kbd>の順に押すか、上のボタンを使ってください。
       </p>
 
       <div class="segment-actions">
         <button type="button" id="add-segment" class="ghost">手で1行足す</button>
-        <button type="button" id="reset-segments" class="ghost danger">全部消す</button>
+        <button type="button" id="reset-segments" class="ghost danger">すべて消す</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">印を読み込む&hellip;</button>
         <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
@@ -109,7 +108,7 @@
       </div>
 
       <p class="field-note">
-        印は素のテキストファイルとして保存されます &mdash; 1行が1区間、形式は上で選んだもの &mdash; ですから長い印付け作業はタブを閉じても残りますし、同じ並べ方を読むどのツールにも同じファイルを渡せます。
+        印は素のテキストファイルとして保存します。1行が1区間で、形式は上で選んだものです。ですから長い印付け作業はタブを閉じても残りますし、同じ並べ方を読むどのツールにも同じファイルを渡せます。
       </p>
     </div>
 
@@ -132,7 +131,7 @@
     </fieldset>
   </section>
 
-  <!-- ステップ3 &mdash; 書き出し -->
+  <!-- ステップ3｜書き出し -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> カットする</h2>
 
@@ -140,8 +139,8 @@
       <div class="field">
         <label for="method">カットの方法</label>
         <select id="method">
-          <option value="copy" selected>1バイトも変えずに移す &mdash; 何も書き出し直しません</option>
-          <option value="exact">ここちょうどで切る &mdash; 映像を書き出し直します</option>
+          <option value="copy" selected>1バイトも変えずに移す（何もエンコードし直しません）</option>
+          <option value="exact">ここちょうどで切る（映像をエンコードし直します）</option>
           <option value="record">再生しながら録画する</option>
         </select>
         <p class="field-note" id="method-note"></p>
@@ -156,7 +155,7 @@
           <option value="720p">1280 &times; 720</option>
         </select>
         <p class="field-note">
-          ファイル全体でひとつのサイズになります。形の違う動画は帯を付けて内側に収められ、引き伸ばされることはありません。
+          ファイル全体でひとつのサイズになります。形の違う動画は帯を付けて内側に収め、引き伸ばすことはありません。
         </p>
       </div>
 
@@ -168,7 +167,7 @@
           <option value="high">最高画質</option>
         </select>
         <p class="field-note">
-          元のファイルが費やしていた以上は決して費やしません &mdash; それを超えて書き出しても、ファイルが大きくなるだけです。
+          元のファイルが費やしていた以上は、決して費やしません。それを超えてエンコードしても、ファイルが大きくなるだけだからです。
         </p>
       </div>
 

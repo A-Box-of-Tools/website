@@ -24,8 +24,6 @@ items = [
   ["Girar e espelhar", "em quartos de volta, ou endireitando por alguns graus"],
   ["Escrever na imagem", "por cima da foto, ou numa tarja de legenda acima dela"],
   ["Filtros", "brilho, contraste, saturação, desfoque, preto e branco"],
-  ["Imagem para data URI", "cole o resultado direto no CSS ou no HTML"],
-  ["HEIC para JPG", "as fotos que o iPhone tira, num formato que tudo abre"],
   ["AVIF e JPEG XL", "converta nos dois sentidos, no navegador que você estiver usando"],
 ]
 
@@ -46,10 +44,10 @@ items = [
 id = "video"
 name = "Vídeo"
 items = [
-  ["Redimensionar", "até um tamanho que realmente vá conseguir ser enviado"],
+  ["Redimensionar", "até um tamanho que o envio realmente aceite"],
   ["Girar", "para aquele clipe que foi filmado deitado"],
-  ["Tirar o som, ou salvar o áudio", "descarte o som, ou guarde ele sozinho"],
-  ["Converter para MP4 ou WebM", "seja qual for o que o site onde você vai postar exige"],
+  ["Tirar o som, ou salvar o áudio", "jogue o som fora, ou fique só com ele"],
+  ["Converter para MP4 ou WebM", "seja lá qual deles o site em que você vai postar exigir"],
   ["Filtros", "brilho, contraste, saturação, desfoque"],
   ["Gravar legendas na imagem", "um arquivo SRT desenhado dentro do quadro"],
 ]
@@ -67,7 +65,7 @@ items = [
 id = "documents"
 name = "Documentos e PDF"
 items = [
-  ["Girar e cortar páginas", "endireitar um escaneamento que veio deitado, ou aparar as margens"],
+  ["Girar e cortar páginas", "endireitar uma digitalização que veio deitada, ou aparar as margens"],
   ["Extrair imagens", "tirar as figuras de volta de dentro de um documento"],
 ]
 

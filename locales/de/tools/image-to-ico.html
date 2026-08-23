@@ -1,7 +1,7 @@
 <main>
   <!-- Schritt 1 &mdash; das Bild -->
   <section class="card">
-    <h2><span class="step">1</span> Ein Bild wählen</h2>
+    <h2><span class="step">1</span> Ein Bild auswählen</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -29,9 +29,9 @@
     <h2><span class="step">2</span> Sagen, wofür das Symbol ist</h2>
 
     <p class="card-lede">
-      Eine Symboldatei ist nicht ein Bild, sondern mehrere: dasselbe Logo, erneut
-      gezeichnet in jeder Größe, die das Lesende verlangt. Welche Größen das
-      sind, ist keine Geschmacksfrage &mdash; ein Browser will drei davon, eine
+      Eine Symboldatei ist nicht ein Bild, sondern mehrere: dasselbe Logo, neu
+      gezeichnet in jeder Größe, die das lesende Programm verlangt. Welche Größen
+      das sind, ist keine Geschmacksfrage. Ein Browser will drei davon, eine
       Anwendung auf einem hochauflösenden Notebook zehn, ein Mac seine eigenen
       zehn, und etwas, das vor Windows Vista geschrieben wurde, will sie ganz
       anders gespeichert haben.
@@ -63,9 +63,10 @@
           <strong>macOS-Symbol &mdash; <code>.icns</code></strong>
           <span class="check-note">
             Das, was ein Mac-Anwendungspaket mit sich trägt. Apple benennt genau
-            zehn Plätze, von 16 Pixeln bis 1024, es gibt also nichts zu wählen:
-            Alle zehn kommen hinein, gezeichnet aus sieben Renderings, weil ein
-            Retina-Platz und die nächstgrößere Größe dasselbe Bild sind.
+            zehn Plätze, von 16 Pixeln bis 1024, zu wählen gibt es hier also
+            nichts. Alle zehn kommen hinein, gezeichnet aus sieben Renderings,
+            weil ein Retina-Platz und die nächstgrößere Größe dasselbe Bild
+            sind.
           </span>
         </span>
       </label>
@@ -75,12 +76,12 @@
         <span>
           <strong>Der Rest des Symbolsatzes einer Website</strong>
           <span class="check-note">
-            Eine .ico deckt den Browser-Tab und Windows ab. Sie deckt weder
-            einen iPhone-Startbildschirm noch eine
-            Android-Installationsaufforderung noch eine ans Startmenü geheftete
-            Kachel ab &mdash; die lesen ein 180-px-PNG, ein Web-App-Manifest und
-            eine XML-Datei, und keines davon sieht in eine .ico hinein. Setzen
-            Sie hier das Häkchen, bekommen Sie all das dazu, das Manifest und den
+            Eine .ico deckt den Browser-Tab und Windows ab. Nicht ab deckt sie
+            einen iPhone-Startbildschirm, eine
+            Android-Installationsaufforderung und eine ans Startmenü geheftete
+            Kachel. Die lesen ein 180-px-PNG, ein Web-App-Manifest und eine
+            XML-Datei, und keines davon sieht in eine .ico hinein. Setzen Sie
+            hier das Häkchen, bekommen Sie all das dazu, samt Manifest und dem
             HTML-Block zum Einfügen in Ihre Seite.
           </span>
         </span>
@@ -127,7 +128,7 @@
         <select id="storage-select">
           <option value="auto" selected>Automatisch &mdash; verträglich, wo es billig ist, PNG, wo nicht</option>
           <option value="png">PNG für jede Größe &mdash; kleinste Datei, braucht Vista oder neuer</option>
-          <option value="bmp">Unkomprimiert für jede Größe &mdash; öffnet überall, um ein Vielfaches größer</option>
+          <option value="bmp">Unkomprimiert für jede Größe &mdash; geht überall auf, um ein Vielfaches größer</option>
         </select>
       </div>
 
@@ -141,12 +142,12 @@
     <h2><span class="step">3</span> In der Größe prüfen, in der es zu sehen sein wird</h2>
 
     <p class="card-lede">
-      Das ist der Teil, den anzusehen sich lohnt, bevor Sie irgendetwas
-      herunterladen. Ein Logo, das bei 512 Pixeln perfekt lesbar ist, ist in
-      einem Browser-Tab sechzehn Pixel breit, und die dünnen Stellen daran
-      &mdash; die Striche eines Schriftzugs, eine Haarlinie als Rahmen, ein
-      Verlauf &mdash; überleben das nicht. Jedes Quadrat unten wird in seiner
-      echten Größe aus der von Ihnen gewählten Datei gezeichnet.
+      Diesen Teil sollten Sie sich ansehen, bevor Sie irgendetwas herunterladen.
+      Ein Logo, das bei 512 Pixeln perfekt lesbar ist, wird im Browser-Tab
+      sechzehn Pixel breit, und die dünnen Stellen daran überleben das nicht,
+      also die Striche eines Schriftzugs, eine Haarlinie als Rahmen oder ein
+      Verlauf. Jedes Quadrat unten wird in seiner echten Größe aus der von Ihnen
+      gewählten Datei gezeichnet.
     </p>
 
     <div id="preview" class="preview" hidden>

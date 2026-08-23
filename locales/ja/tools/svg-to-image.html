@@ -1,7 +1,7 @@
 <main>
-  <!-- ステップ1 &mdash; ファイル -->
+  <!-- ステップ1｜ファイル -->
   <section class="card">
-    <h2><span class="step">1</span> SVG ファイルを選ぶ</h2>
+    <h2><span class="step">1</span> SVGファイルを選ぶ</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -14,7 +14,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+        <button type="button" id="clear-all" class="ghost danger">すべてリストから外す</button>
       </div>
     </div>
 
@@ -23,12 +23,12 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- ステップ2 &mdash; 大きさ -->
+  <!-- ステップ2｜大きさ -->
   <section class="card" id="size-card">
-    <h2><span class="step">2</span> どの大きさにするかを言う</h2>
+    <h2><span class="step">2</span> どの大きさにするかを決める</h2>
 
     <p class="card-lede">
-      ベクターがあなたの代わりに答えられない唯一の問いが、これです。SVG の中にはピクセルがありません &mdash; あるのは描くための指示で、どんな大きさを指定されても、そのとおりに描きます。下の数値は、写真のように押し返してくる限界ではありません。24&nbsp;ピクセルのアイコンから作った4000ピクセルは、24のときとまったく同じだけ鮮明です。
+      ベクターが代わりに答えてくれない唯一の問いが、これです。SVGの中にピクセルはありません。あるのは描くための指示だけで、どんな大きさを指定されても、そのとおりに描きます。下の数値は、写真のように押し返してくる限界ではありません。24&nbsp;ピクセルのアイコンから作った4000ピクセルは、24のときとまったく同じだけ鮮明です。
     </p>
 
     <div class="option-row">
@@ -95,9 +95,9 @@
       <div class="option-row">
         <label for="box-fit">図の形が違う場合</label>
         <select id="box-fit">
-          <option value="fit" selected>内側に収める &mdash; 図全体が入り、一方の辺が短く出ます</option>
-          <option value="pad">余白で埋める &mdash; 指定どおりの大きさで、両側に背景が入ります</option>
-          <option value="stretch">引き伸ばす &mdash; 指定どおりの大きさで、形は歪みます</option>
+          <option value="fit" selected>内側に収める（図全体が入り、一方の辺が短く出ます）</option>
+          <option value="pad">余白で埋める（指定どおりの大きさで、両側に背景が入ります）</option>
+          <option value="stretch">引き伸ばす（指定どおりの大きさで、形は歪みます）</option>
         </select>
       </div>
     </div>
@@ -111,9 +111,9 @@
     <div class="option-row" id="density-row">
       <label for="density">高DPI用の複製も書き出す</label>
       <select id="density">
-        <option value="1" selected>いいえ &mdash; 図ごとに1ファイル</option>
-        <option value="2">@2x も &mdash; Retina の画面向け</option>
-        <option value="3">@2x と @3x &mdash; スマホが求める一式</option>
+        <option value="1" selected>作らない（図ごとに1ファイル）</option>
+        <option value="2">@2xも作る（Retinaの画面向け）</option>
+        <option value="3">@2xと@3xも作る（スマホが求める一式）</option>
       </select>
     </div>
 
@@ -121,7 +121,7 @@
     <p id="size-warning" class="field-summary warn" hidden></p>
   </section>
 
-  <!-- ステップ3 &mdash; 形式 -->
+  <!-- ステップ3｜形式 -->
   <section class="card" id="format-card">
     <h2><span class="step">3</span> 形式を選ぶ</h2>
 
@@ -129,18 +129,18 @@
       <div class="field">
         <label for="format">形式</label>
         <select id="format">
-          <option value="image/png" selected>PNG &mdash; 透過を保ち、縁が正確</option>
-          <option value="image/jpeg">JPEG &mdash; 透過なし、写真なら小さい</option>
-          <option value="image/webp">WebP &mdash; 透過ありで、ファイルも小さい</option>
+          <option value="image/png" selected>PNG（透過を保ち、縁が正確）</option>
+          <option value="image/jpeg">JPEG（透過なし。写真なら小さい）</option>
+          <option value="image/webp">WebP（透過ありで、ファイルも小さい）</option>
         </select>
         <p class="field-note" id="format-note"></p>
       </div>
 
       <div class="field" id="quality-field" hidden>
-        <label for="quality">画質 &mdash; <output id="quality-value" for="quality">90</output></label>
+        <label for="quality">画質（<output id="quality-value" for="quality">90</output>）</label>
         <input type="range" id="quality" min="30" max="100" step="1" value="90">
         <p class="field-note">
-          JPEG と WebP のみ。PNG は可逆なので画質のつまみがありません。平坦な色とくっきりした縁 &mdash; SVG のほとんどはそれでできています &mdash; は、非可逆のエンコーダーがいちばん苦手とするものなので、ここでは写真の場合より高い値にしてあります。
+          JPEGとWebPだけに効きます。PNGは可逆なので画質のつまみがありません。平坦な色とくっきりした縁は、非可逆のエンコーダーがいちばん苦手とするものです。SVGのほとんどはそれでできているので、ここでは写真の場合より高い値にしてあります。
         </p>
       </div>
 
@@ -156,12 +156,12 @@
     </div>
   </section>
 
-  <!-- ステップ4 &mdash; 見てから受け取る -->
+  <!-- ステップ4｜見てから受け取る -->
   <section class="card" id="run-card">
     <h2><span class="step">4</span> 見てから保存する</h2>
 
     <p class="card-lede">
-      プレビューは、ファイルを書き出すのと同じコードが、あなたが選んだファイルから、この端末で描いたものです。確かめる価値があるのは、図がピクセルになるときに変わる2つです。幅が半ピクセルだった髪の毛のような線が灰色になっていないか、そして文字が、ウェブから取ってきたのではなくこの端末にあるフォントで描かれていないか。
+      プレビューは、ファイルを書き出すのと同じコードが、選んだファイルから、この端末で描いたものです。確かめる価値があるのは、図がピクセルになるときに変わる2点です。幅が半ピクセルだった髪の毛のような線が灰色になっていないか。そして文字が、ウェブから取ってきたのではなく、この端末にあるフォントで描かれていないか。
     </p>
 
     <div id="preview" class="preview" hidden>
@@ -171,7 +171,7 @@
       <p class="preview-note" id="preview-note"></p>
     </div>
 
-    <p id="preview-empty" class="field-summary">SVG を追加すると、ここに出ます。</p>
+    <p id="preview-empty" class="field-summary">SVGを追加すると、ここに出ます。</p>
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>画像にする</button>
@@ -185,7 +185,7 @@
     <div id="results" class="results" hidden>
       <div class="results-head">
         <h3>できました</h3>
-        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめてzipでダウンロード</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>

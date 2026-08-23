@@ -8,16 +8,16 @@
 nav = "Cortar un vídeo"
 
 title = "Cómo cortar un vídeo sin recodificarlo"
-description = "Cortar un clip no tiene por qué perder ni un byte de calidad. Por qué a veces el corte cae antes de donde lo marcaste, qué tiene que ver un fotograma clave con eso, y cuándo conviene aceptar una recodificación."
+description = "Cortar un clip no tiene por qué costarte ni un byte de calidad. Por qué a veces el corte cae antes de donde lo marcaste, qué pinta ahí un fotograma clave, y cuándo conviene aceptar una recodificación."
 
 heading = "Cómo cortar un vídeo sin recodificarlo"
 lede = """
-    Cortar no cambia el aspecto de ningún fotograma, así que un buen cortador no
-    los toca &mdash; los traslada a un archivo nuevo tal y como estaban. Esto
-    explica qué te compra eso, y el único sitio donde se nota."""
+    Cortar no le cambia el aspecto a ningún fotograma, así que un buen cortador
+    ni los toca: los traslada a un archivo nuevo tal y como estaban. Aquí va lo
+    que eso te ahorra, y el único sitio donde se nota."""
 
 updated = "20 de agosto de 2026"
 
 og_title = "Cómo cortar un vídeo sin recodificarlo"
-og_description = "Por qué a veces el corte cae antes de donde lo marcaste, qué tiene que ver un fotograma clave con eso, y cuándo conviene aceptar una recodificación."
-og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
+og_description = "Por qué a veces el corte cae antes de donde lo marcaste, qué pinta ahí un fotograma clave, y cuándo conviene aceptar una recodificación."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

@@ -11,44 +11,43 @@ name = "Da video a GIF"
 heading = "Da&nbsp;video&nbsp;a&nbsp;GIF <span class=\"h1-kw\">&mdash; convertire un video in una GIF</span>"
 tagline = "Scegli il pezzo, la dimensione e la frequenza dei fotogrammi."
 
-title = "Convertitore da video a GIF &mdash; gratis, senza caricare nulla, anche offline"
-description = "Trasforma un pezzo di un MP4, un MOV o un WebM in una GIF animata. Scegli il pezzo, la larghezza e la frequenza dei fotogrammi; i fotogrammi vengono letti e la GIF viene scritta nel tuo browser. Niente caricamenti."
+title = "Convertitore da video a GIF &mdash; gratis, senza caricare niente, anche offline"
+description = "Trasforma un pezzo di un MP4, un MOV o un WebM in una GIF animata. Scegli il pezzo, la larghezza e la frequenza dei fotogrammi: i fotogrammi li legge e la GIF la scrive il tuo browser. Niente caricamenti."
 og_title = "Da video a GIF &mdash; fare una GIF senza caricare la clip"
 og_description = "Segna i secondi che vuoi, scegli una larghezza e una frequenza, e ottieni una GIF animata. Il campionamento dei fotogrammi, la tavolozza, il dithering e l'LZW avvengono tutti sul tuo dispositivo."
-og_image_alt = "Da video a GIF - fare una GIF animata nel browser, senza caricare nulla"
+og_image_alt = "Da video a GIF - fare una GIF animata nel browser, senza caricare niente"
 
 pledge = """
     Ogni fotogramma viene letto, ridimensionato, quantizzato e scritto dal tuo
-    browser, sul tuo hardware. Qui dentro non c'è niente che possa recuperare o
-    spedire qualcosa &mdash; questo strumento non ha proprio alcuna funzione di
-    rete &mdash; e dall'altra parte di questa pagina non c'è alcun server a cui
-    mandare un video, anche se ci fosse un modo per farlo."""
+    browser, sul tuo hardware. Qui dentro non c'è niente che sappia recuperare o
+    spedire qualcosa, perché questo strumento non ha proprio nessuna funzione di
+    rete. E dall'altra parte di questa pagina non c'è nessun server a cui
+    mandare un video, anche se una funzione del genere ci fosse."""
 
 live_hint = """
-      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
-      scheda Rete e fai una GIF. Non una sola richiesta porta con sé un
-      fotogramma, un nome di file o un byte di quello che hai scelto. Oppure
-      stacca la connessione e fanne una lo stesso &mdash; uno strumento che
-      spedisse via il tuo video per convertirlo si fermerebbe e basta."""
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori,
+      tieni d'occhio il pannello Rete e fai una GIF. Non c'è una sola richiesta
+      che porti con sé un fotogramma, un nome di file o un byte di quello che
+      hai scelto. Oppure stacca la connessione e fanne una lo stesso: uno
+      strumento che spedisse via il tuo video per convertirlo si fermerebbe e
+      basta."""
 
 read_first = """
 , <code>src/frames.js</code> per i due modi in cui
       i fotogrammi vengono letti da un video, <code>src/quantize.js</code> per
       la tavolozza, e <code>src/gif.js</code> per il file in sé, LZW compreso.
-      Nessuno di loro importa qualcosa in grado di fare una richiesta."""
+      Nessuno di loro importa qualcosa che sappia fare una richiesta."""
 
 howto_heading = "Come trasformare un video in una GIF"
 
 card = """
             Segna i secondi che vuoi, scegli una larghezza e una frequenza, e
-            ottieni una GIF animata &mdash; tavolozza, dithering e tutto il
+            ottieni una GIF animata, con tavolozza, dithering e tutto il
             resto."""
 
 [words]
 plural = "video"
 choose = "un video"
-analytics_extra = """, e nessun
-  fotogramma, durata o dimensione"""
 
 [[facts]]
 text = "Niente caricamenti"
@@ -69,77 +68,78 @@ text = "Funziona offline"
 title = "I tuoi video non hanno dove andare."
 body = """
  La
-      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
-      contattare, e nessuno di questi appartiene a questo sito. Qui non esiste
-      un punto di raccolta dove il tuo file potrebbe finire, e nel codice non
-      c'è nulla che ce lo manderebbe se esistesse."""
+      Content-Security-Policy elenca tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di quegli indirizzi appartiene a questo sito. Non
+      esiste un punto di raccolta in cui il tuo file possa finire, e nel codice
+      non c'è niente che ce lo manderebbe se anche esistesse."""
 
 [[privacy]]
-title = "Qui dentro niente recupera niente."
+title = "Qui dentro niente va a recuperare niente."
 body = """
- Questo strumento non ha proprio
-      alcuna funzione di rete: nessun indirizzo da incollare, niente da
-      scaricare, nessun motore recuperato al primo utilizzo. Ogni byte che tocca
-      il tuo video è arrivato da questa origine quando la pagina si è
-      caricata."""
+ Questo strumento non ha
+      proprio nessuna funzione di rete: nessun indirizzo da incollare, niente da
+      scaricare, nessun motore che si scarichi al primo utilizzo. Ogni byte che
+      tocca il tuo video è arrivato da questa origine nel momento in cui si è
+      caricata la pagina."""
 
 [[privacy]]
-title = "La decodifica è locale."
+title = "La decodifica avviene in locale."
 body = """
- I fotogrammi passano per WebCodecs
-      dentro il tuo browser, oppure per lo stesso motore di riproduzione che ti
-      mostrerebbe la clip comunque. Quale dei due sia stato usato è scritto in
-      cima alla pagina, perché cambia il modo in cui i fotogrammi vengono
-      scelti e devi poterlo vedere."""
+ I fotogrammi passano per
+      WebCodecs dentro il tuo browser, oppure per lo stesso motore di
+      riproduzione che ti mostrerebbe la clip comunque. Quale dei due sia stato
+      usato è scritto in cima alla pagina, perché cambia il modo in cui i
+      fotogrammi vengono scelti e devi poterlo vedere."""
 
 [[privacy]]
 title = "La GIF viene scritta qui, in codice che puoi leggere."
 body = """
  La
       tavolozza, il dithering e la compressione LZW sono un seicento righe nella
-      cartella di questo strumento. Non c'è un servizio di codifica, non c'è una
-      libreria recuperata all'avvio, e in nessun punto di tutto questo
-      un'immagine potrebbe essere spedita."""
+      cartella di questo strumento. Non c'è nessun servizio di codifica, non c'è
+      nessuna libreria recuperata all'avvio, e in nessun punto di tutto questo
+      un'immagine potrebbe essere spedita da qualche parte."""
 
 [[privacy]]
-title = "Cosa carica Google, e cosa non gli viene dato."
+title = "Cosa carica Google, e cosa non gli arriva."
 body = """
- Gli script
-      pubblicitari e di misurazione arrivano da Google. A nessuno dei due viene
-      passato niente sul tuo video: né un file, né un fotogramma, né un nome,
-      una dimensione, una durata o il pezzo che hai segnato. Ogni riga che
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sul tuo video: né un file, né un fotogramma, né un nome, né
+      una dimensione, né una durata, né il pezzo che hai segnato. Ogni riga che
       legge, campiona, quantizza o codifica è servita da questa origine ed è
       elencata nel repository."""
 
 [[privacy]]
-title = "Cosa carica il pulsante delle donazioni, e cosa non gli viene dato."
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
 body = """
 
-      Il pulsante «Buy me a coffee» in cima è disegnato da uno script di
-      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. È un link e
-      niente di più: non riferisce alcuna visita, e non gli viene passato niente
-      su di te o sul tuo video."""
+      Il pulsante «Buy me a coffee» in cima lo disegna uno script di
+      cdnjs.buymeacoffee.com, che prende i caratteri da Google Fonts. È un link
+      e niente di più: non riferisce nessuna visita, e non gli viene passato
+      niente su di te o sul tuo video."""
 
 [[privacy]]
 title = "Funziona offline."
 body = """
  Stacca la rete e tutto quello che sta su
-      questa pagina continua a funzionare. È la prova più semplice di tutte."""
+      questa pagina continua a funzionare. È la prova più semplice che ci
+      sia."""
 
 [[howto]]
 title = "Scegli un video."
 body = """
  Trascina un MP4, un MOV, un M4V o un
-      WebM sul riquadro, oppure selezionane uno a mano. Il browser lo legge
-      direttamente dal tuo disco; mentre lo fai non viene mandato niente da
-      nessuna parte."""
+      WebM sul riquadro, oppure selezionane uno a mano. Lo legge il browser
+      direttamente dal tuo disco, e mentre lo fa non parte niente per nessuna
+      destinazione."""
 
 [[howto]]
 title = "Segna il pezzo."
 body = """
  Fai scorrere la clip e premi
       <kbd>I</kbd> dove deve cominciare e <kbd>O</kbd> dove deve finire, oppure
-      trascina le maniglie sulla barra. Una GIF dura qualche secondo &mdash; è
+      trascina le maniglie sulla barra. Una GIF dura qualche secondo, ed è
       questa l'impostazione che decide se il file sarà leggero o enorme, molto
       più delle altre due."""
 
@@ -147,10 +147,10 @@ body = """
 title = "Scegli la larghezza e la frequenza dei fotogrammi."
 body = """
  480 pixel di
-      larghezza e 12 fotogrammi al secondo vanno bene per quasi tutto ciò a cui
-      serve una GIF. Dimezzare la larghezza divide i pixel per quattro; dodici
-      fotogrammi al secondo si leggono come movimento senza pagare per quelli
-      che nessuno vede."""
+      larghezza e 12 fotogrammi al secondo vanno bene per quasi tutto quello a
+      cui serve una GIF. Dimezzare la larghezza divide i pixel per quattro; e
+      dodici fotogrammi al secondo si leggono come movimento senza farti pagare
+      quelli che nessuno vede."""
 
 [[howto]]
 title = "Falla, e scarica."
@@ -158,40 +158,40 @@ body = """
  I fotogrammi vengono letti, viene
       scelta una sola tavolozza di 256 colori per tutta l'animazione, e ogni
       fotogramma viene scritto come la sola parte dell'immagine che è cambiata.
-      Quando è finita si riproduce sulla pagina, ed è lo stesso file che ti dà
-      il download."""
+      Quando è finita si riproduce sulla pagina, ed è lo stesso identico file che
+      ti dà il download."""
 
 [[faq]]
 q = "Il mio video viene caricato da qualche parte?"
 a = """
-        No. Viene letto, campionato e convertito dal tuo browser sul tuo
-        hardware. Questo strumento non ha un lato server, e la
-        <code>Content-Security-Policy</code> della pagina nomina tutti gli
-        indirizzi che può contattare &mdash; nessuno di questi appartiene a
-        questo sito. Se preferisci verificare invece che crederci, stacca la
-        connessione e fai una GIF lo stesso."""
+        No. Lo legge, lo campiona e lo converte il tuo browser sul tuo hardware.
+        Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca tutti gli
+        indirizzi che può contattare, nessuno dei quali appartiene a questo sito.
+        Se preferisci verificare invece che crederci, stacca la connessione e fai
+        una GIF lo stesso."""
 
 [[faq]]
 q = "Quali formati video posso convertire?"
 a = """
         MP4, M4V e MOV vengono letti direttamente, qualunque cosa ci sia dentro:
         H.264, HEVC, AV1 o VP9, purché il tuo browser sappia decodificare quel
-        codec. Tutto il resto che il browser sa riprodurre &mdash; il WebM in
-        primis &mdash; viene invece letto portando il lettore su ogni istante,
-        cosa più lenta e leggermente meno esatta su quale fotogramma finisca
-        dove. Un file che il browser non sa né leggere né riprodurre, il che in
-        pratica vuol dire AVI, WMV, FLV e quasi tutti gli MKV, viene rifiutato
-        con un messaggio che lo dice, invece di piantarsi a metà strada."""
+        codec. Tutto il resto che il browser sa riprodurre, il WebM in primis,
+        viene invece letto portando il lettore su ogni istante, cosa più lenta e
+        un filo meno esatta su quale fotogramma finisca dove. Un file che il
+        browser non sa né leggere né riprodurre, e in pratica sono AVI, WMV, FLV
+        e quasi tutti gli MKV, viene rifiutato con un messaggio che lo dice,
+        invece di piantarsi a metà strada."""
 
 [[faq]]
 q = "Perché la mia GIF è così pesante?"
 a = """
         Perché la GIF è un formato del 1987 che conserva immagini intere invece
         del movimento. Non c'è modo di farne una da una clip di cinque secondi
-        che sia leggera come l'MP4 di cinque secondi da cui viene &mdash; una GIF
-        di un video pesa abitualmente dieci volte il video. Le tre impostazioni
-        che la decidono davvero sono, in quest'ordine: quanto è lungo il pezzo,
-        quanto è larga l'immagine, e quanti fotogrammi al secondo. Dimezzare la
+        che sia leggera come l'MP4 di cinque secondi da cui viene: una GIF tratta
+        da un video pesa abitualmente dieci volte il video. Le tre impostazioni
+        che la decidono davvero sono, in quest'ordine, quanto è lungo il pezzo,
+        quanto è larga l'immagine e quanti fotogrammi al secondo. Dimezzare la
         larghezza divide i pixel per quattro, e sono i pixel a costare."""
 
 [[faq]]
@@ -200,7 +200,7 @@ a = """
         È il formato: una GIF porta con sé una tabella di al massimo 256 colori e
         conserva ogni pixel come un numero che punta lì dentro. Questo strumento
         sceglie quei 256 contando i colori di ogni fotogramma del tuo pezzo e
-        dividendoli in 256 gruppi &mdash; median cut, il metodo classico &mdash;
+        dividendoli in 256 gruppi con il median cut, che è il metodo classico,
         così la tavolozza si adatta alla tua clip invece di essere un insieme
         fisso di colori. Dove un colore manca, il dithering mescola i due più
         vicini, così una sfumatura resta una sfumatura invece di diventare a
@@ -212,42 +212,43 @@ a = """
         Scambia un po' di rumore per molte meno bande. Con il dithering attivo,
         un cielo che altrimenti diventerebbe quattro fasce piatte resta una
         sfumatura, al prezzo di una texture leggera e di un file più pesante.
-        Senza, l'immagine è più piatta e il file più leggero, il che va bene per
-        le registrazioni dello schermo, i disegni al tratto e qualunque cosa sia
-        già fatta di tinte piatte. Il dithering usato qui è ordinato e non del
-        tipo a diffusione dell'errore, così uno sfondo che non cambia resta
+        Senza, l'immagine è più piatta e il file più leggero, il che va benissimo
+        per le registrazioni dello schermo, i disegni al tratto e qualunque cosa
+        sia già fatta di tinte piatte. Il dithering usato qui è ordinato e non a
+        diffusione dell'errore, così uno sfondo che non cambia resta
         perfettamente fermo tra un fotogramma e l'altro invece di tremolare."""
 
 [[faq]]
 q = "C'è un limite alla durata o alla dimensione?"
 a = """
         Il limite riguarda il pezzo, ed è dettato dalla memoria e non da una
-        regola: ogni suo fotogramma viene tenuto insieme agli altri mentre viene
-        scelta la tavolozza, quindi la pagina calcola quanto costerebbero le tue
-        impostazioni e lo dice prima che tu cominci. Si rifiuta invece di
-        lasciare che la scheda finisca la memoria e sparisca. Un pezzo più corto,
-        una larghezza minore o una frequenza più bassa lo fanno scendere
-        tutti."""
+        regola: mentre viene scelta la tavolozza ogni suo fotogramma viene tenuto
+        insieme agli altri, quindi la pagina calcola quanto costerebbero le tue
+        impostazioni e te lo dice prima che tu cominci. Piuttosto si rifiuta, che
+        è meglio di una scheda che finisce la memoria e sparisce. Un pezzo più
+        corto, una larghezza minore o una frequenza più bassa lo fanno scendere
+        tutti e tre."""
 
 [[faq]]
 q = "Tiene l'audio?"
 a = """
-        Una GIF non può portare suono. Non esiste una versione del formato che
-        abbia l'audio, che è il motivo principale per cui il web ha sostituito
-        quasi ovunque le GIF con video muti che si ripetono. Se il suono conta,
-        tieni il video &mdash; il <a href="../tagliare-video/">tagliavideo</a> ne
-        ritaglia un pezzo senza ricodificare un fotogramma."""
+        Una GIF il suono non lo può portare. Non esiste nessuna versione del
+        formato che abbia l'audio, ed è il motivo principale per cui il web ha
+        sostituito quasi ovunque le GIF con video muti che si ripetono. Se il
+        suono conta, tieni il video: il
+        <a href="../tagliare-video/">tagliavideo</a> ne ritaglia un pezzo senza
+        ricodificare un fotogramma."""
 
 [[faq]]
 q = "È gratis, e mi serve un account?"
 a = """
-        È gratis, e non c'è account, non c'è accesso, non c'è periodo di prova e
-        non c'è filigrana. Il sito ha della pubblicità, ed è quella che lo paga;
-        agli annunci non viene dato niente sul tuo video."""
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di
+        prova e non c'è filigrana. Il sito ha della pubblicità, ed è quella che lo
+        mantiene; agli annunci non arriva niente sul tuo video."""
 
 [schema]
 browser_requirements = "Richiede JavaScript. MP4 e MOV hanno bisogno di un browser con WebCodecs; tutto quello che il browser sa riprodurre funziona anche senza."
-description = "Converti un pezzo di video in una GIF animata, nel browser. I fotogrammi vengono campionati alla frequenza scelta, viene scelta con il median cut una sola tavolozza da 256 colori per tutta l'animazione, e ogni fotogramma viene scritto come la sola zona che è cambiata. Non viene caricato nulla."
+description = "Converti un pezzo di video in una GIF animata, nel browser. I fotogrammi vengono campionati alla frequenza scelta, viene scelta con il median cut una sola tavolozza da 256 colori per tutta l'animazione, e ogni fotogramma viene scritto come la sola zona che è cambiata. Non viene caricato niente."
 features = [
   "Converte video MP4, MOV, M4V e WebM in GIF animata",
   "Sorgenti H.264, HEVC, AV1 e VP9, decodificate con WebCodecs",
@@ -258,4 +259,4 @@ features = [
 
 [picker]
 title = "Trascina qui un video"
-hint = "oppure clicca per scegliere &mdash; MP4, MOV, M4V, WebM e qualunque altra cosa questo browser riproduca"
+hint = "oppure clicca per sceglierlo &mdash; MP4, MOV, M4V, WebM e qualunque altra cosa questo browser riproduca"

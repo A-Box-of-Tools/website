@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; 画像 -->
+  <!-- ステップ1｜画像 -->
   <section class="card">
     <h2><span class="step">1</span> 画像を選ぶ</h2>
 
@@ -14,7 +14,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+        <button type="button" id="clear-all" class="ghost danger">すべてリストから外す</button>
       </div>
     </div>
 
@@ -24,14 +24,12 @@
     <p id="shape-note" class="field-summary" hidden></p>
   </section>
 
-  <!-- ステップ2 &mdash; どの規格か -->
+  <!-- ステップ2｜どの規格か -->
   <section class="card" id="preset-card">
-    <h2><span class="step">2</span> そのアイコンが何のためのものかを言う</h2>
+    <h2><span class="step">2</span> そのアイコンが何のためのものかを決める</h2>
 
     <p class="card-lede">
-      アイコンファイルは1枚の画像ではなく複数枚です。同じロゴを、それを読む相手が求める大きさごとに描き直したものです。どの大きさかは趣味の問題ではありません
-      &mdash; ブラウザは3つを求め、高DPIのノートPC上のアプリケーションは10個を求め、
-      Mac は Mac 独自の10個を求め、Windows Vista より前に書かれたものは、そもそも別の保存方法を求めます。
+      アイコンファイルは1枚の画像ではなく複数枚です。同じロゴを、それを読む相手が求める大きさごとに描き直したものです。どの大きさかは、趣味の問題ではありません。ブラウザは3つを求め、高DPIのノートPC上のアプリケーションは10個を求め、MacはMac独自の10個を求めます。Windows Vistaより前に書かれたものにいたっては、そもそも別の保存方法を求めます。
     </p>
 
     <!--
@@ -45,9 +43,9 @@
       <label class="check">
         <input type="checkbox" id="want-ico" checked>
         <span>
-          <strong>Windows のアイコン &mdash; <code>.ico</code></strong>
+          <strong>Windowsのアイコン（<code>.ico</code>）</strong>
           <span class="check-note">
-            どのブラウザもファビコンとして読み、Windows はアプリケーション、ショートカット、フォルダーのために読みます。サイズは下で選べます。
+            どのブラウザもファビコンとして読み、Windowsはアプリケーション、ショートカット、フォルダのために読みます。サイズは下で選べます。
           </span>
         </span>
       </label>
@@ -55,11 +53,9 @@
       <label class="check">
         <input type="checkbox" id="want-icns">
         <span>
-          <strong>macOS のアイコン &mdash; <code>.icns</code></strong>
+          <strong>macOSのアイコン（<code>.icns</code>）</strong>
           <span class="check-note">
-            Mac のアプリケーションバンドルが抱えるものです。Apple が16ピクセルから
-            1024ピクセルまでちょうど10個の枠を定めているので、選ぶものはありません。
-            10個すべてが入り、描画は7回です。Retina の枠と1段上のサイズは同じ絵だからです。
+            Macのアプリケーションバンドルが抱えるものです。Appleが16ピクセルから1024ピクセルまで、ちょうど10個の枠を定めているので、選ぶものはありません。10個すべてが入り、描画は7回で済みます。Retinaの枠と1段上のサイズは同じ絵だからです。
           </span>
         </span>
       </label>
@@ -69,9 +65,7 @@
         <span>
           <strong>ウェブサイトのアイコン一式の残り</strong>
           <span class="check-note">
-            .ico はブラウザのタブと Windows をカバーします。iPhone のホーム画面、
-            Android のインストール案内、スタートメニューに固定したタイルはカバーしません &mdash; それらが読むのは180pxの PNG、ウェブアプリのマニフェスト、
-            XML ファイルで、そのどれも .ico の中を見ません。ここにチェックを入れると、それらすべてと、マニフェストと、ページに貼る HTML のかたまりも付いてきます。
+            .icoがカバーするのは、ブラウザのタブとWindowsです。iPhoneのホーム画面、Androidのインストール案内、スタートメニューに固定したタイルはカバーしません。それらが読むのは180pxのPNG、ウェブアプリのマニフェスト、XMLファイルで、そのどれも.icoの中を見ないからです。ここにチェックを入れると、それらすべてと、マニフェストと、ページに貼るHTMLのかたまりまで付いてきます。
           </span>
         </span>
       </label>
@@ -85,7 +79,7 @@
       <p id="preset-note" class="field-summary"></p>
 
       <fieldset class="options" id="size-set">
-        <legend>.ico に入れるサイズ</legend>
+        <legend>.icoに入れるサイズ</legend>
         <div class="size-grid" id="size-grid"></div>
         <p id="size-summary" class="field-summary"></p>
       </fieldset>
@@ -97,7 +91,7 @@
       <div class="option-row">
         <label for="fit-select">画像が正方形でない場合</label>
         <select id="fit-select">
-          <option value="pad" selected>余白を足して正方形にする &mdash; 画像全体が残ります</option>
+          <option value="pad" selected>余白を足して正方形にする（画像全体が残ります）</option>
           <option value="crop">中央の正方形を切り抜く</option>
           <option value="stretch">正方形に引き伸ばす</option>
         </select>
@@ -113,11 +107,11 @@
       </div>
 
       <div class="option-row" id="storage-row">
-        <label for="storage-select">.ico の中で各サイズをどう保存するか</label>
+        <label for="storage-select">.icoの中で各サイズをどう保存するか</label>
         <select id="storage-select">
-          <option value="auto" selected>自動 &mdash; 安く済むうちは互換重視、そうでなくなったら PNG</option>
-          <option value="png">すべてのサイズを PNG に &mdash; いちばん小さいが、Vista 以降が必要</option>
-          <option value="bmp">すべてのサイズを非圧縮に &mdash; 何でも開けるが、数倍のサイズ</option>
+          <option value="auto" selected>自動（安く済むうちは互換重視、そうでなくなったらPNG）</option>
+          <option value="png">すべてのサイズをPNGに（いちばん小さいが、Vista以降が必要）</option>
+          <option value="bmp">すべてのサイズを非圧縮に（何でも開けるが、数倍のサイズ）</option>
         </select>
       </div>
 
@@ -126,13 +120,12 @@
 
   </section>
 
-  <!-- ステップ3 &mdash; 小さく見てから受け取る -->
+  <!-- ステップ3｜小さく見てから受け取る -->
   <section class="card" id="run-card">
     <h2><span class="step">3</span> 実際に見られる大きさで確かめる</h2>
 
     <p class="card-lede">
-      何かをダウンロードする前に見ておく価値があるのがここです。512ピクセルで完璧に読めるロゴも、ブラウザのタブでは横幅16ピクセルで、その細い部分
-      &mdash; ワードマークの線、髪の毛のような枠線、グラデーション &mdash; はそこを生き延びません。下の正方形はどれも、あなたが選んだファイルから実寸で描かれています。
+      何かをダウンロードする前に見ておく価値があるのが、ここです。512ピクセルで完璧に読めるロゴも、ブラウザのタブでは横幅16ピクセルしかありません。ワードマークの線、髪の毛のような枠線、グラデーションといった細い部分は、そこを生き延びません。下の正方形はどれも、選んだファイルから実寸で描いたものです。
     </p>
 
     <div id="preview" class="preview" hidden>
@@ -152,7 +145,7 @@
     <div id="results" class="results" hidden>
       <div class="results-head">
         <h3>できました</h3>
-        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめてzipでダウンロード</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>
@@ -164,7 +157,7 @@
       -->
       <div id="snippet" class="snippet" hidden>
         <div class="snippet-head">
-          <h4>これを <code>&lt;head&gt;</code> に貼ってください</h4>
+          <h4>これを<code>&lt;head&gt;</code>に貼ってください</h4>
           <button type="button" id="copy-snippet" class="ghost">コピー</button>
         </div>
         <pre id="snippet-text"></pre>

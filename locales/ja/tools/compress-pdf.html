@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; ファイル -->
+  <!-- ステップ1｜ファイル -->
   <section class="card">
     <h2><span class="step">1</span> PDFを選ぶ</h2>
 
@@ -17,12 +17,12 @@
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; the screen this tool would keep if it could keep only one -->
+  <!-- ステップ2｜一画面しか残せないなら、このツールが残す画面 -->
   <section class="card" id="inventory-card" hidden>
-    <h2><span class="step">2</span> 容量がどこにあるかを見る</h2>
+    <h2><span class="step">2</span> 容量がどこにあるのかを見る</h2>
 
     <p class="card-lede">
-      「PDFを圧縮する」は、ひとつの名前を共有した別々の仕事です。スキャンは写真の束で、それを再エンコードすればファイルの大半に効きます。契約書は文字とフォントで、作った側がすでに圧縮しています &mdash; そこに80%が隠れていることはなく、どんな道具にも見つけられません。自分のがどちらかは意見の問題ではないので、何かに手をつける前にお見せします。
+      「PDFを圧縮する」という一つの名前の下に、まったく別の仕事が二つ入っています。スキャンは写真の束なので、それを再エンコードすればファイルの大半に効きます。契約書は文字とフォントで、作った側がすでに圧縮しています。そこに80%が隠れていることはありませんし、どんな道具にも見つけられません。手元のPDFがどちらなのかは意見の問題ではないので、何かに手をつける前にお見せします。
     </p>
 
     <p id="verdict" class="verdict"></p>
@@ -35,13 +35,12 @@
     <p id="inventory-notes" class="field-summary"></p>
   </section>
 
-  <!-- ステップ3 &mdash; どこまで費やすか -->
+  <!-- ステップ3｜どこまで費やすか -->
   <section class="card" id="settings-card" hidden>
-    <h2><span class="step">3</span> どこまで絞るかを言う</h2>
+    <h2><span class="step">3</span> どこまで絞るかを決める</h2>
 
     <p class="card-lede">
-      PDFは各画像がどれだけの大きさに描かれるかを記録しているので、このツールは推測ではなく、ページが実際に使っている量を測れます。4000ピクセルのスキャンを8インチの幅に置けば、1インチあたり500ピクセルを抱えています。
-      150にしても印刷は同じで、画面でも同じに見えます。誰にも見えないピクセルから先に使われます。それを捨てても何も失わないからです。
+      PDFは各画像がどれだけの大きさに描かれるかを記録しているので、このツールは推測ではなく、ページが実際に使っている量を測れます。4000ピクセルのスキャンを8インチの幅に置けば、1インチあたり500ピクセルを抱えていることになります。150に落としても印刷は同じで、画面でも同じに見えます。ですから、誰にも見えないピクセルから先に使います。捨てても何も失わないからです。
     </p>
 
     <fieldset class="presets-set">
@@ -51,21 +50,21 @@
           <input type="radio" name="preset" value="smallest">
           <span class="preset-body">
             <strong>いちばん小さく</strong>
-            <span class="preset-note">96 DPI。画面で読めればよいものに。</span>
+            <span class="preset-note">96DPI。画面で読めればよいものに。</span>
           </span>
         </label>
         <label class="preset">
           <input type="radio" name="preset" value="screen" checked>
           <span class="preset-body">
             <strong>画面できれい</strong>
-            <span class="preset-note">130 DPI。メールで送るファイルなら、たいていこれです。</span>
+            <span class="preset-note">130DPI。メールで送るファイルなら、たいていこれです。</span>
           </span>
         </label>
         <label class="preset">
           <input type="radio" name="preset" value="print">
           <span class="preset-body">
             <strong>紙でもまだきれい</strong>
-            <span class="preset-note">220 DPI。小さくなり、印刷もきちんとできます。</span>
+            <span class="preset-note">220DPI。小さくなりますし、印刷もきちんとできます。</span>
           </span>
         </label>
         <label class="preset">
@@ -84,11 +83,11 @@
         <label for="dpi-value">描画される幅1インチあたりの最大ピクセル数</label>
         <div class="inline-pair">
           <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
-          <span class="unit">DPI &mdash; 0 にするとどの画像も元の大きさのまま</span>
+          <span class="unit">DPI（0にするとどの画像も元の大きさのまま）</span>
         </div>
       </div>
       <div class="option-row">
-        <label for="quality-value">JPEG の画質</label>
+        <label for="quality-value">JPEGの画質</label>
         <div class="inline-pair">
           <input type="range" id="quality-value" min="30" max="95" step="1" value="68">
           <output id="quality-out" for="quality-value">68</output>
@@ -99,9 +98,9 @@
     <label class="check">
       <input type="checkbox" id="strip-meta" checked>
       <span>
-        <strong>どこから来たかについてファイルが覚えていることを外す</strong>
+        <strong>どこから来たのかについてファイルが覚えていることを外す</strong>
         <span class="check-note">
-          作成したプログラムの名前とバージョン、作成日時と最終編集日時、XMPパケット、そしてレイアウトソフトが自分の作業を読み戻すために残していく非公開のかたまり &mdash; これが数メガバイトになることもあります。書類を表示するのに必要なものはひとつもありません。
+          作成したプログラムの名前とバージョン、作成日時と最終編集日時、XMPパケット、そしてレイアウトソフトが自分の作業を読み戻すために残していく非公開のかたまり。最後のものは数メガバイトになることもあります。書類を表示するのに必要なものは、ひとつもありません。
         </span>
       </span>
     </label>
@@ -109,7 +108,7 @@
     <p id="settings-summary" class="field-summary"></p>
   </section>
 
-  <!-- ステップ4 &mdash; 一度のクリック -->
+  <!-- ステップ4｜クリック一度 -->
   <section class="card" id="run-card" hidden>
     <h2><span class="step">4</span> 圧縮する</h2>
 

@@ -7,7 +7,7 @@
 
 nav = "Gerar um QR Code"
 title = "Como gerar um QR Code que escaneia sempre"
-description = "Qual nível de correção de erros escolher, por que a margem branca em volta do QR Code faz parte do código, de que tamanho imprimir, e o que o código \"dinâmico\" de um gerador gratuito lhe custa depois."
+description = "Qual nível de correção de erros escolher, por que a margem branca em volta do QR Code faz parte do código, de que tamanho imprimir, e quanto o código \"dinâmico\" de um gerador gratuito custa a você depois."
 heading = "Como gerar um QR Code que ainda escaneia no celular dos outros"
 lede = """
     Gerar um QR Code leva um segundo. Gerar um que funcione num cardápio
@@ -17,4 +17,4 @@ lede = """
 updated = "20 de agosto de 2026"
 og_title = "Gerar um QR Code que ainda escaneia no celular dos outros"
 og_description = "As quatro decisões que definem se um QR Code impresso funciona: o nível, a margem, o tamanho e de quem é o endereço que está lá dentro."
-og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; ファイル -->
+  <!-- ステップ1｜ファイル -->
   <section class="card">
     <h2><span class="step">1</span> 動画を選ぶ</h2>
 
@@ -23,14 +23,12 @@
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- ステップ2 &mdash; 切り抜き -->
+  <!-- ステップ2｜切り抜き -->
   <section class="card" id="crop-card" hidden>
     <h2><span class="step">2</span> 切り抜く範囲を決める</h2>
 
     <p class="stage-hint">
-      枠の内側をドラッグすれば移動、四隅をドラッグすれば大きさが変わります。枠を選んだ状態では、矢印キーで1ピクセルずつ動かせ、
-      <kbd>Alt</kbd>&nbsp;+&nbsp;矢印で大きさを変えられます。
-      <kbd>Shift</kbd> を押しながらなら1回10ピクセルです。
+      枠の内側をドラッグすれば移動、四隅をドラッグすれば大きさが変わります。枠を選んだ状態なら、矢印キーで1ピクセルずつ動かせます。<kbd>Alt</kbd>&nbsp;+&nbsp;矢印で大きさが変わり、<kbd>Shift</kbd>を押しながらなら1回10ピクセルです。
     </p>
 
     <!-- The crop box itself is added here by src/cropper.js. The stage is given
@@ -74,20 +72,20 @@
     </div>
 
     <p class="even-note">
-      幅と高さは2ずつ動きます。H.264 には一辺が奇数のフレームを保存する方法がないからです。
+      幅と高さは2ずつ動きます。H.264には一辺が奇数のフレームを保存する方法がないからです。
     </p>
   </section>
 
-  <!-- ステップ3 &mdash; 書き出し -->
+  <!-- ステップ3｜書き出し -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> 切り抜く</h2>
 
     <div class="settings">
       <div class="field">
-        <label for="format">書き出し</label>
+        <label for="format">書き出し形式</label>
         <select id="format">
-          <option value="mp4" selected>MP4 &mdash; フレームごとに書き出し直します</option>
-          <option value="webm">WebM &mdash; 再生しながら録画します</option>
+          <option value="mp4" selected>MP4（フレームごとにエンコードし直す）</option>
+          <option value="webm">WebM（再生しながら録画する）</option>
         </select>
         <p class="field-note" id="format-note"></p>
       </div>
@@ -100,8 +98,7 @@
           <option value="high">最高画質</option>
         </select>
         <p class="field-note">
-          同じ範囲に元のファイルが費やしていた以上は決して費やしません &mdash;
-          それを超えて書き出しても、ファイルが大きくなるだけです。
+          同じ範囲に元のファイルが費やしていた以上は、決して費やしません。それを超えてエンコードしても、ファイルが大きくなるだけだからです。
         </p>
       </div>
 

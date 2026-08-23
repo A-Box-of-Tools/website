@@ -4,15 +4,15 @@
 
 nav = "Einen QR-Code erzeugen"
 title = "Einen QR-Code erzeugen, der sich jedes Mal scannen lässt"
-description = "Welche Fehlerkorrekturstufe die richtige ist, warum der weiße Rand zum Code gehört, wie groß Sie ihn drucken müssen und was Sie der 'dynamische' Code eines Gratis-Generators ein Jahr später kostet."
+description = "Welche Fehlerkorrekturstufe die richtige ist, warum der weiße Rand zum Code gehört, wie groß Sie ihn drucken müssen und was Sie der &bdquo;dynamische&ldquo; Code eines Gratis-Generators ein Jahr später kostet."
 heading = "So erzeugen Sie einen QR-Code, der sich auch mit fremden Handys scannen lässt"
 lede = """
     Einen QR-Code zu erzeugen dauert eine Sekunde. Einen zu erzeugen, der auf
     einer feuchten Speisekarte funktioniert, am Buswartehäuschen und auf einem
     bei schlechtem Licht auf Armlänge gehaltenen Handy, kostet vier
-    Entscheidungen &mdash; und alle vier fallen, bevor irgendetwas gedruckt
-    wird. Hier steht, was jede davon bewirkt."""
+    Entscheidungen, und alle vier fallen, bevor irgendetwas gedruckt wird. Hier
+    steht, was jede davon bewirkt."""
 updated = "20. August 2026"
 og_title = "Einen QR-Code erzeugen, der sich auch mit fremden Handys scannen lässt"
 og_description = "Die vier Entscheidungen, an denen hängt, ob ein gedruckter QR-Code funktioniert: die Stufe, der Rand, die Größe und wessen Adresse eigentlich darin steht."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

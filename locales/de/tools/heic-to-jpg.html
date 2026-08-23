@@ -1,13 +1,13 @@
 <main>
   <!-- Schritt 1 &mdash; die Dateien -->
   <section class="card">
-    <h2><span class="step">1</span> Ihre HEIC-Fotos wählen</h2>
+    <h2><span class="step">1</span> Ihre HEIC-Fotos auswählen</h2>
 
     <p class="card-lede">
       Direkt vom Telefon, aus einem Backup oder von einer Speicherkarte kopiert.
-      Die Datei wird hier gelesen, auf diesem Gerät, und das Bild wird ebenfalls
-      hier dekodiert &mdash; auf dieser Seite gibt es keinen Upload-Schritt und
-      dahinter keinen Server.
+      Gelesen wird die Datei hier, auf diesem Gerät, und dekodiert wird das Bild
+      ebenfalls hier. Einen Upload-Schritt gibt es auf dieser Seite nicht, und
+      dahinter auch keinen Server.
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -34,7 +34,7 @@
       <div class="option-row">
         <label for="format-select">Die Bilder schreiben als</label>
         <select id="format-select">
-          <option value="image/jpeg" selected>JPEG &mdash; öffnet überall, auch in aus Versehen in diesem Jahrhundert Gebautem</option>
+          <option value="image/jpeg" selected>JPEG &mdash; öffnet sich überall, auch in Software, die das Jahrhundert nur versehentlich erreicht hat</option>
           <option value="image/png">PNG &mdash; verlustfrei, und um ein Mehrfaches größer</option>
           <option value="image/webp">WebP &mdash; kleiner als JPEG bei gleicher Qualität, und nur in modernen Browsern</option>
         </select>
@@ -59,21 +59,21 @@
         <span>
           <strong>Datum, Kamera und Einstellungen behalten</strong>
           <span class="check-note">
-            Genau so übernommen, wie das Telefon sie geschrieben hat &mdash; das
-            umgewandelte Foto sortiert sich also weiter nach dem Aufnahmetag statt
-            nach dem Tag der Umwandlung. Dazu gehören auch die GPS-Koordinaten,
-            wenn das Foto welche hat; die Liste oben sagt, welche Ihrer Fotos das
-            sind. Schalten Sie das ab, und das JPEG kommt mit nichts als dem Bild
-            heraus.
+            Genau so übernommen, wie das Telefon sie geschrieben hat. Das
+            umgewandelte Foto sortiert sich damit weiter nach dem Aufnahmetag
+            statt nach dem Tag der Umwandlung. Dazu gehören auch die
+            GPS-Koordinaten, wenn das Foto welche hat, und die Liste oben sagt
+            Ihnen, welche Ihrer Fotos das sind. Schalten Sie es ab, kommt das
+            JPEG mit nichts als dem Bild heraus.
           </span>
         </span>
       </label>
 
       <p class="field-summary">
-        So oder so wird hier nichts an irgendjemanden ausgelesen: Die Wahl
-        betrifft, was in die Datei kommt, die Sie zurückbekommen, und nicht, was
-        diese Seite damit tut. Wollen Sie die Tags im Detail durchsehen oder sie
-        aus Fotos entfernen, die schon JPEGs sind, ist der
+        So oder so meldet hier nichts etwas an irgendjemanden. Die Wahl betrifft,
+        was in die Datei kommt, die Sie zurückbekommen, und nicht, was diese
+        Seite damit tut. Wollen Sie die Tags im Detail durchsehen oder sie aus
+        Fotos entfernen, die schon JPEGs sind, ist der
         <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>
         das Werkzeug dafür.
       </p>

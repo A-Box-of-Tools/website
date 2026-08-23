@@ -9,6 +9,13 @@
 # formal register would make the Dutch read like a bank letter, which is the
 # opposite of what this site sounds like.
 #
+# Written as Dutch rather than carried over from the English. Dutch hinges a
+# sentence on want, omdat, waardoor and dus where the English reaches for a
+# dash or a colon, so those are gone wherever they were doing an English job;
+# the verb sits where Dutch puts it; and the compounds are closed, because a
+# space in "bestandsgrootte" is the mistake a reader spots before they have
+# finished the sentence.
+#
 
 lang = "nl"
 name = "Dutch"
@@ -83,78 +90,78 @@ complete = true
 #
 
 [hub]
-title = "Gratis browsertools &mdash; zonder uploaden, zonder account | abox.tools"
+title = "Gratis browsertools &mdash; niets uploaden, geen account | abox.tools"
 # Onder de 155 tekens, net als in het Engels: Google kapt een beschrijving daar
 # af, en het staartje is hier het stuk dat de site verkoopt.
-description = "Gratis browsertools die je bestanden nooit uploaden. Afbeeldingen samenvoegen tot pdf of mp4, een afbeelding exact comprimeren, video bijsnijden, EXIF wissen."
-heading = "Gereedschap dat geen server aanraakt"
-og_title = "A Box of Tools &mdash; gereedschap dat geen server aanraakt"
-og_description = "Kleine tools, elk voor één klus, die volledig in je browser draaien. Je bestanden verlaten je apparaat niet."
-og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
-schema_description = "Kleine tools, elk voor één klus, die al hun werk binnen de browser doen. Er wordt niets geüpload en een account is niet nodig."
+description = "Gratis tools in je browser die niets uploaden. Voeg afbeeldingen samen tot pdf of mp4, comprimeer een foto naar een exacte grootte, wis EXIF."
+heading = "Gereedschap waar geen server aan te pas komt"
+og_title = "A Box of Tools &mdash; gereedschap waar geen server aan te pas komt"
+og_description = "Kleine tools die elk één ding doen en volledig in je eigen browser draaien. Je bestanden blijven op je apparaat."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"
+schema_description = "Kleine tools die elk één ding doen en al hun werk in de browser zelf afhandelen. Er wordt niets geüpload en een account heb je niet nodig."
 schema_about = "Bestandstools die in de browser draaien en bestanden lokaal verwerken zonder ze te uploaden"
 
 lede = """
-    Kleine tools, elk voor één klus, die al hun werk binnen je browser doen. Je
-    bestanden blijven op je apparaat: er valt niets te uploaden, er is geen
-    account aan te maken en er wordt niets bijgehouden."""
+    Kleine tools die elk één ding doen en al het werk in je eigen browser
+    afhandelen. Je bestanden blijven op je apparaat, want er valt niets te
+    uploaden, je hoeft geen account te maken en er wordt niets bijgehouden."""
 
 support_note = """
-      Deze tools zijn gratis en dat blijven ze. Als er eentje je werk heeft
-      bespaard: dit is het enige op de site dat je iets vraagt."""
+      Deze tools zijn gratis en dat blijven ze. Heeft er eentje je een klus
+      bespaard, dan is dit het enige op de site dat je om iets vraagt."""
 
 # Drie controleerbare feiten in plaats van een belofte, net als in het Engels.
 [[hub.guarantees]]
 title = "Je bestanden verlaten je apparaat nooit"
 body = """
-        Ze worden geopend, gelezen en verwerkt door je eigen browser, op je
-        eigen hardware. De <code>Content-Security-Policy</code> van elke tool
-        noemt elk adres dat hij mag benaderen, en geen daarvan is van ons."""
+        Je eigen browser opent, leest en verwerkt ze, op je eigen hardware. In
+        de <code>Content-Security-Policy</code> van elke tool staat elk adres
+        dat hij mag benaderen, en daar zit er niet één van ons tussen."""
 
 [[hub.guarantees]]
-title = "Over je bestanden wordt niets doorgegeven"
+title = "Er wordt niets over je bestanden verstuurd"
 body = """
-        Niet het bestand, niet een miniatuur, niet de naam, de grootte of
-        hoeveel je er koos. Geen enkele tool hier geeft daar iets van door. Aan
-        de andere kant staat geen server die het zou kunnen lezen."""
+        Niet het bestand, niet een miniatuur, niet de naam, de grootte of het
+        aantal dat je koos. Geen enkele tool hier leest dat uit. Aan de andere
+        kant staat ook geen server die het zou kunnen ontvangen."""
 
 [[hub.guarantees]]
 title = "Het werkt offline"
 body = """
-        Open een tool één keer, verbreek je internetverbinding, en hij werkt
-        precies zo door aan je bestanden. Dat is lastig te veinzen: een tool die
-        je bestanden ergens heen stuurde om ze te verwerken zou domweg
-        stoppen."""
+        Open een tool één keer, verbreek daarna je internetverbinding en hij
+        werkt precies zo door aan je bestanden. Dat laat zich lastig veinzen,
+        want een tool die je bestanden ergens heen stuurde om ze te laten
+        verwerken zou er simpelweg mee ophouden."""
 
 [[hub.categories]]
 id = "images-and-video"
 name = "Afbeeldingen &amp; video"
-note = "Werk aan je foto's en opnames zonder ze aan iemand af te staan."
+note = "Bewerk je foto's en opnames zonder ze uit handen te geven."
 
 [[hub.categories]]
 id = "gif-and-animation"
 name = "GIF &amp; animatie"
-note = "Bouw een animatie, of haal er een uit elkaar, zonder dat die je computer verlaat."
+note = "Bouw een animatie of haal er een uit elkaar, zonder dat hij je apparaat verlaat."
 
 [[hub.categories]]
 id = "audio"
 name = "Audio"
-note = "Werk aan een opname zonder hem af te staan, ook aan het geluid in een video."
+note = "Bewerk een opname zonder hem uit handen te geven, ook het geluid dat in een video zit."
 
 [[hub.categories]]
 id = "documents-and-pdf"
 name = "Documenten &amp; pdf"
-note = "Maak en herschik documenten zonder ze ergens heen te sturen om verwerkt te worden."
+note = "Stel documenten samen en herschik ze, zonder ze op te sturen om ze te laten verwerken."
 
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; gegevens"
-note = "Maak van iets wat je typt iets wat een machine kan lezen, zonder dat het de pagina verlaat."
+note = "Zet iets wat je intypt om in iets wat een machine kan lezen, zonder dat het de pagina verlaat."
 
 [[hub.categories]]
 id = "text-and-code"
 name = "Tekst &amp; code"
-note = "Lees het, vergelijk het, codeer het, zonder een token of een configuratiebestand op de server van iemand anders te plakken."
+note = "Lees het, vergelijk het, codeer het, zonder dat je een token of een configuratiebestand op de server van iemand anders plakt."
 
 #
 # ---------------------------------------------------------------------------
@@ -164,27 +171,27 @@ note = "Lees het, vergelijk het, codeer het, zonder een token of een configurati
 
 [guides]
 nav = "Alle gidsen"
-title = "Gidsen &mdash; hoe de klus werkt en wat elke keuze kost"
-description = "Heldere gidsen over comprimeren, formaat wijzigen, bijsnijden, inkorten en converteren van je eigen bestanden: wat de instellingen betekenen en waarom er niets geüpload hoeft te worden."
+title = "Gidsen &mdash; hoe je de klus klaart en wat elke keuze kost"
+description = "Heldere gidsen over comprimeren, verkleinen, bijsnijden, inkorten en omzetten van je eigen bestanden: wat de instellingen doen, wat ze kosten en waarom uploaden nergens voor nodig is."
 heading = "Gidsen"
 lede = """
-    Eén gids per tool, geschreven voor wie een formaat of een bestandsgrootte
-    opgelegd heeft gekregen en wil weten wat de instelling die hij zo gaat
-    verzetten eigenlijk doet. Alles wat hier beschreven wordt gebeurt op je
-    eigen apparaat."""
+    Eén gids per tool, geschreven voor iedereen die een bestandsgrootte of een
+    afmeting opgelegd heeft gekregen en wil weten wat die ene instelling nu
+    eigenlijk doet. Alles wat hier beschreven staat gebeurt op je eigen
+    apparaat."""
 og_title = "De gidsen van abox.tools"
-og_description = "Hoe je je eigen bestanden comprimeert, verkleint, bijsnijdt, inkort en converteert, en wat elke instelling kost. Zonder uploaden."
-og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+og_description = "Hoe je je eigen bestanden comprimeert, verkleint, bijsnijdt, inkort en omzet, en wat elke instelling je kost. Zonder uploaden."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"
 
 [[guides.groups]]
 id = "doing-the-job"
 name = "De klus klaren"
-note = "Eén per tool: waar de klus uit bestaat, welke instelling telt, en wat die je kost."
+note = "Eén per tool: waar de klus uit bestaat, welke instelling telt en wat die je kost."
 
 [[guides.groups]]
 id = "before-you-upload"
 name = "Voordat je iets uploadt"
-note = "Wat een bestand aan een website geven werkelijk betekent, en hoe je ziet of het nodig was."
+note = "Wat er werkelijk gebeurt als je een bestand aan een website geeft, en hoe je ziet of dat nodig was."
 
 #
 # ---------------------------------------------------------------------------
@@ -195,44 +202,44 @@ note = "Wat een bestand aan een website geven werkelijk betekent, en hoe je ziet
 
 [roadmap]
 nav = "Roadmap"
-title = "Roadmap &mdash; wat abox.tools hierna bouwt"
-description = "Elke tool die voor abox.tools gepland staat, gegroepeerd en in de open lucht, plus de tools die al klaar zijn. Ze draaien allemaal in de browser en uploaden niets."
-heading = "Wat hierna komt"
+title = "Roadmap &mdash; wat abox.tools hierna gaat bouwen"
+description = "Alle tools die voor abox.tools op de planning staan, gegroepeerd en in de openbaarheid, plus de tools die er al zijn. Ze draaien allemaal in je browser en uploaden niets."
+heading = "Wat er hierna komt"
 lede = """
-    Alles op beide lijsten hieronder doet zijn werk binnen je browser en uploadt
-    niets &mdash; dat is de regel die een naam moet halen voordat hij hier
-    überhaupt op komt. De aantallen staan nergens opgeschreven; de build telt ze
-    op de lijsten zelf."""
+    Alles op beide lijsten hieronder doet zijn werk in je eigen browser en
+    uploadt niets, en dat is meteen de regel waar een naam aan moet voldoen
+    voordat hij hier überhaupt op komt. De aantallen staan nergens
+    opgeschreven; de build leest ze van de twee lijsten af."""
 
-intro_heading = "Hoe deze lijst is opgesteld"
+intro_heading = "Hoe deze lijst tot stand is gekomen"
 intro = """
     <p>
-      Het is geen verlanglijst. Hij is opgesteld door de toolslijst van de
-      grootste online gif- en videosite door te lopen &mdash; het dichtste wat
-      er bestaat bij een catalogus van wat mensen werkelijk met een bestand
-      gedaan willen hebben &mdash; en elke regel te houden die zo gebouwd kan
-      worden dat het werk op je eigen apparaat gebeurt en blijft gebeuren met
-      de stekker eruit.
+      Het is geen verlanglijst. Hij is samengesteld door de toolslijst van de
+      grootste gif- en videosite van het internet door te lopen, want dat is
+      het dichtste wat er bestaat bij een catalogus van wat mensen werkelijk
+      met een bestand gedaan willen krijgen. Blijven staan is alles wat zo te
+      bouwen valt dat het werk op je eigen apparaat gebeurt en blijft gebeuren
+      met het netwerk eruit.
     </p>
     <p>
-      Het meeste wat overbleef leunt op interfaces die de browser al meelevert.
-      Een enkeling heeft een codec nodig die in de ene tool wordt ingebouwd die
-      hem gebruikt, en dat mag &mdash; het bestand verlaat het apparaat nog
-      steeds niet. Wat die lat niet haalde is weggelaten in plaats van beloofd,
-      dus een paar van de gaten die hieronder voor de hand liggen zijn gaten met
-      opzet.
+      Het meeste wat overbleef draait op interfaces die de browser zelf al
+      meelevert. Een enkeling heeft een codec nodig, en die wordt dan
+      ingebouwd in precies de ene tool die hem gebruikt. Dat mag, want het
+      bestand verlaat het apparaat nog steeds niet. Wat die lat niet haalde is
+      weggelaten in plaats van beloofd, dus een paar van de gaten die
+      hieronder opvallen zijn gaten met opzet.
     </p>
     <p>
-      De tools die al bestaan staan bovenaan hun groep, gemarkeerd als
-      <em>Klaar</em> en gelinkt aan hun eigen pagina. Alles daaronder moet nog
-      komen, en niets is een link voordat het zover is.
+      De tools die al bestaan staan bovenaan in hun groep, met het label
+      <em>Klaar</em> en een link naar hun eigen pagina. Alles daaronder moet
+      nog komen, en niets wordt een link voordat het zover is.
     </p>"""
 
-planned_heading = "Elk soort bestand, en wat je ermee kunt"
+planned_heading = "Elk soort bestand, en wat je ermee kunt doen"
 
 og_title = "De roadmap van abox.tools"
-og_description = "Wat klaar is en wat hierna komt. Alles draait in de browser en uploadt niets."
-og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+og_description = "Wat er klaar is en wat er hierna komt. Alles draait in je browser en uploadt niets."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"
 
 #
 # ---------------------------------------------------------------------------
@@ -242,15 +249,15 @@ og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
 
 [not_found]
 title = "Pagina niet gevonden &mdash; abox.tools"
-description = "Dat adres bestaat niet op abox.tools. Dit zijn de tools die er wel zijn - allemaal gratis, en geen ervan uploadt je bestanden ergens heen."
-heading = "Deze pagina is hier niet"
-tools_heading = "Alle tools, op één plek"
-tools_note = "Allemaal gratis, allemaal in je browser, geen ervan uploadt iets."
+description = "Dat adres bestaat niet op abox.tools. Dit zijn de tools die er wel zijn, allemaal gratis, en geen ervan uploadt je bestanden ergens heen."
+heading = "Deze pagina staat hier niet"
+tools_heading = "Alle tools bij elkaar"
+tools_note = "Allemaal gratis, allemaal in je browser, en geen ervan uploadt iets."
 
 lede = """
-    Of het adres bevat een typefout, of wat er stond is verhuisd. Er is niets
-    met je bestand en er is niets kwijt: deze site heeft nooit iets van jou
-    gehad om kwijt te raken."""
+    Of er zit een typefout in het adres, of wat er stond is verhuisd. Met je
+    bestand is niets mis en er is niets kwijtgeraakt, want deze site heeft
+    nooit iets van jou in handen gehad."""
 
 #
 # ---------------------------------------------------------------------------
@@ -260,9 +267,10 @@ lede = """
 
 [footer]
 blurb = """
-        Gereedschap dat geen server aanraakt. Je bestanden blijven op je
-        apparaat &mdash; niets te uploaden, geen account aan te maken."""
-base = "Elke bewering op deze site is bedoeld om gecontroleerd te worden, niet om geloofd te worden."
+        Gereedschap waar geen server aan te pas komt. Je bestanden blijven op
+        je eigen apparaat, want er valt niets te uploaden en je hoeft geen
+        account te maken."""
+base = "Elke bewering op deze site is bedoeld om na te trekken, niet om te geloven."
 
 #
 # ---------------------------------------------------------------------------
@@ -275,7 +283,7 @@ base = "Elke bewering op deze site is bedoeld om gecontroleerd te worden, niet o
 
 [ui]
 languages = "Taal"
-lang_auto = "Deze pagina wordt in het Nederlands getoond omdat je browser om deze taal vraagt."
+lang_auto = "Deze pagina wordt in het Nederlands getoond, de taal waar je browser om vraagt."
 breadcrumb = "Kruimelpad"
 all_tools = "Alle tools"
 last_updated = "Laatst bijgewerkt"
@@ -293,73 +301,77 @@ footer_sitemap = "Sitemap"
 footer_source = "Lees de code op GitHub"
 
 guarantees_note = """
-    Niets daarvan hoef je op ons woord aan te nemen.
+    Je hoeft daar niets van op ons woord aan te nemen.
     <a href="{{ base }}{{ links.safety_guide }}/">
       Hoe je ziet of een tool je bestanden echt nodig heeft</a>
-    zet vier controles op een rij die je zelf kunt doen, op deze site en op elke
-    andere."""
+    zet vier controles op een rij die je zelf kunt uitvoeren, hier en op elke
+    andere site."""
 
 hub_guides_note = """
-    Weet je niet welke instelling je moet verzetten, of wat die kost?
+    Weet je niet welke instelling je moet verzetten, of wat die je kost?
     <a href="{{ base }}{{ links.guides }}/">Bij elke tool hoort een
     gids</a>."""
 
 hub_roadmap_note = """
-    Er komt meer aan, en de lijst is openbaar:
-    <a href="{{ base }}{{ links.roadmap }}/">bekijk wat er gepland staat</a>."""
+    Er komt meer aan, en de lijst ligt open:
+    <a href="{{ base }}{{ links.roadmap }}/">kijk wat er op de planning
+    staat</a>."""
 
 guides_all_note = """
-    Elke gids hier beschrijft een tool die op je eigen apparaat draait:
+    Elke gids hier gaat over een tool die op je eigen apparaat draait:
     <a href="{{ base }}">bekijk ze allemaal</a>."""
 
 [ui.tool]
-view_source = "Bekijk de code"
-how_verified = "Hoe dit te controleren is"
+view_source = "Broncode bekijken"
+how_verified = "Hoe je dit controleert"
 live_check = "Live controle:"
 offline = "Offline:"
 checking = "bezig met controleren&hellip;"
 questions_heading = "Vragen"
 guide_heading = "De uitgebreide versie"
-privacy_heading = "Hoe de privacybelofte te controleren is"
+privacy_heading = "Hoe je de privacybelofte controleert"
 
 pledge_line = """
     Je {{ tool.words.plural }} worden <strong>nooit geüpload</strong>. Er is geen server."""
 
 boot_title = "De code van deze pagina is niet gestart."
 boot_body = """
-    <code>index.html</code> rechtstreeks uit een map openen blokkeert JavaScript-modules,
-    dus er gebeurt niets wanneer je {{ tool.words.choose }} kiest. Serveer de map in plaats daarvan
-    over http:"""
+    Open je <code>index.html</code> rechtstreeks uit een map, dan worden JavaScript-modules
+    geblokkeerd en gebeurt er niets zodra je {{ tool.words.choose }} kiest. Serveer de map
+    in plaats daarvan over http:"""
 boot_then = "Open daarna <code>http://localhost:8080/</code>."
 
 noscript_title = "JavaScript staat uit."
-noscript_body = "Deze app doet al zijn werk in je browser en kan er dus niet zonder."
+noscript_body = "Deze app doet al zijn werk in je browser en kan dus niet zonder."
 
 check_yourself = """
-      <strong>Controleer het zelf.</strong> Niets van het bovenstaande hoef je op
-      ons woord aan te nemen. Deze pagina wordt uit de sjablonen en de configuratie
-      in de repository gegenereerd door een buildscript dat je kunt lezen en zelf
-      kunt draaien, en het resultaat staat op de branch <code>dist</code> &mdash;
-      je kunt dus vergelijken wat er geserveerd wordt met wat een build van de
-      bronnen oplevert:"""
+      <strong>Controleer het zelf.</strong> Je hoeft niets van het bovenstaande op
+      ons woord aan te nemen. Een buildscript maakt deze pagina uit de sjablonen en
+      de configuratie in de repository, en dat script kun je lezen en zelf draaien.
+      Het resultaat staat vastgelegd op de branch <code>dist</code>, dus je kunt wat
+      er geserveerd wordt vergelijken met wat een build van de bronnen oplevert:"""
 
 read_first_lead = """
-      De bestanden die je het eerst wilt lezen zijn <code>config/site.toml</code>
+      De bestanden die je als eerste wilt lezen zijn <code>config/site.toml</code>
       voor de Content-Security-Policy"""
 
 [ui.guide]
-open_tool = "{{ tool.name | e }} openen"
+# "Open de tool X" rather than "X openen": several tool names in Dutch are verb
+# phrases - "Afbeeldingsformaat wijzigen" - and "Afbeeldingsformaat wijzigen
+# openen" is not a sentence. With "de tool" in front, every name in this locale
+# reads as the object it is.
+open_tool = "Open de tool {{ tool.name | e }}"
 
 [ui.picker]
 warning = """
-      <strong>Dit is de enige functie die het netwerk aanraakt.</strong>
-      Een adres ophalen vertelt die server je IP-adres en welke {{ tool.picker.urls.noun }} je
-      hebt opgevraagd. De {{ tool.picker.urls.noun }} wordt bij aankomst naar het lokale geheugen
-      gekopieerd en nooit opnieuw opgevraagd. Er gaat nooit iets van jou naar
-      buiten &mdash; deze pagina kan nog steeds geen enkele upload doen."""
+      <strong>Dit is de enige functie die het netwerk aanspreekt.</strong>
+      Haal je een adres op, dan weet die server je IP-adres en welke {{ tool.picker.urls.noun }} je
+      hebt opgevraagd. Zodra de {{ tool.picker.urls.noun }} binnen is, gaat hij naar het lokale
+      geheugen en wordt hij nooit opnieuw opgevraagd. Er gaat nooit iets van jou naar
+      buiten, want deze pagina kan nog steeds helemaal niets uploaden."""
 label = "Eén adres per regel"
 # Enkelvoud, want het Nederlands maakt geen meervoud met een losse s: de zin is
 # zo geschreven dat {{ tool.picker.urls.noun }} er onvervoegd in past.
 note = """
       De server moet cross-origin gebruik toestaan van de {{ tool.picker.urls.noun }} die je opvraagt.
-      Veel sites doen dat niet, en die mislukken met een melding in plaats van later stil kapot te gaan."""
+      Veel sites doen dat niet, en die mislukken met een melding in plaats van later stilletjes kapot te gaan."""

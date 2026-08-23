@@ -8,10 +8,10 @@ description = "Maak van foto's of scans één pdf: paginaformaat, volgorde en dr
 heading = "Hoe je afbeeldingen samenvoegt tot één pdf"
 lede = """
     Iemand heeft om &ldquo;één pdf&rdquo; gevraagd en jij hebt elf foto's van
-    papier. Dit gaat over de keuzes die het resultaat werkelijk veranderen
-    &mdash; paginaformaat, volgorde, kwaliteit en wat het document over je zegt
-    &mdash; en over welke je kunt negeren."""
+    papier. Dit gaat over de keuzes die het resultaat werkelijk veranderen,
+    namelijk het paginaformaat, de volgorde, de kwaliteit en wat het document over
+    je zegt, en over welke je rustig kunt negeren."""
 updated = "20 augustus 2026"
 og_title = "Hoe je afbeeldingen samenvoegt tot één pdf"
 og_description = "Paginaformaat, volgorde en draaiing, waarom een jpeg onderweg geen kwaliteit hoeft te verliezen, en wat een pdf vertelt aan degene naar wie je hem stuurt."
-og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

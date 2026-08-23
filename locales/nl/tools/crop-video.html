@@ -28,10 +28,10 @@
     <h2><span class="step">2</span> Stel de bijsnijding in</h2>
 
     <p class="stage-hint">
-      Sleep binnen het kader om het te verplaatsen, of aan een hoek om het
-      formaat te wijzigen. Met het kader geselecteerd verschuiven de pijltjes het
-      een pixel tegelijk, wijzigt <kbd>Alt</kbd>&nbsp;+&nbsp;pijltjes het
-      formaat, en maakt <kbd>Shift</kbd> ingedrukt houden elke stap tien.
+      Sleep binnen het kader om het te verplaatsen, of aan een hoek om het formaat
+      te wijzigen. Staat het kader scherp, dan verschuif je het met de pijltjes een
+      pixel tegelijk, wijzig je het formaat met <kbd>Alt</kbd>&nbsp;+&nbsp;pijltjes,
+      en wordt elke stap tien zodra je <kbd>Shift</kbd> ingedrukt houdt.
     </p>
 
     <!-- The crop box itself is added here by src/cropper.js. The stage is given
@@ -75,8 +75,8 @@
     </div>
 
     <p class="even-note">
-      Breedte en hoogte gaan met stappen van twee, omdat H.264 geen manier heeft
-      om een frame met een oneven zijde op te slaan.
+      Breedte en hoogte gaan met stappen van twee, omdat H.264 een frame met een
+      oneven zijde eenvoudigweg niet kan opslaan.
     </p>
   </section>
 
@@ -102,15 +102,15 @@
           <option value="high">Beste kwaliteit</option>
         </select>
         <p class="field-note">
-          Nooit meer dan het origineel aan datzelfde gebied uitgaf &mdash;
-          daarboven hercoderen maakt het bestand alleen groter.
+          Nooit meer dan het origineel aan datzelfde gebied uitgaf, want daarboven
+          hercoderen maakt het bestand alleen maar groter.
         </p>
       </div>
 
       <div class="field">
         <label class="check" for="keep-audio">
           <input type="checkbox" id="keep-audio" checked>
-          Hou het geluid
+          Hou het geluid erin
         </label>
         <p class="field-note" id="audio-note"></p>
       </div>

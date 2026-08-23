@@ -9,16 +9,16 @@
 nav = "Convertir un SVG a PNG"
 
 title = "Cómo convertir un SVG en un PNG al tamaño correcto"
-description = "Un vector no tiene tamaño propio en píxeles, así que el número lo eliges tú. De dónde sale ese número para una pantalla, para el icono de una aplicación y para una imprenta, y qué cambia cuando un dibujo se convierte en píxeles."
+description = "Un vector no tiene tamaño propio en píxeles, así que el número lo pones tú. De dónde sale ese número para una pantalla, para el icono de una aplicación y para una imprenta, y qué cambia cuando un dibujo se convierte en píxeles."
 
 heading = "Cómo convertir un SVG en un PNG al tamaño correcto"
 lede = """
-    Convertir es la mitad fácil. La pregunta que decide si el resultado sirve de
-    algo es la que nadie te responde: ¿cuántos píxeles? Esto es de dónde sale ese
-    número, y qué pierde un dibujo camino de convertirse en uno."""
+    Convertir es la parte fácil. Lo que decide si el resultado sirve de algo es
+    la pregunta que no te responde nadie: ¿cuántos píxeles? Aquí va de dónde sale
+    ese número, y qué pierde un dibujo camino de convertirse en uno."""
 
 updated = "20 de agosto de 2026"
 
 og_title = "Convertir un SVG en un PNG al tamaño correcto"
 og_description = "De dónde sale de verdad el número de píxeles, y las tres cosas que cambian cuando un dibujo se convierte en píxeles."
-og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

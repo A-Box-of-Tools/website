@@ -9,9 +9,9 @@
       transparant staan, en neem het bestand mee.
     </p>
     <p>
-      Alles hieronder gaat over wat je doet wanneer die standaard niet volstaat
-      &mdash; wanneer er een getal voor je vastgelegd is, wanneer het naar de
-      drukker gaat, of wanneer het er verkeerd uit komt.
+      Alles hieronder gaat over wat je doet wanneer die standaard niet volstaat:
+      wanneer er een getal voor je vastgelegd is, wanneer het naar de drukker gaat,
+      of wanneer het er verkeerd uit komt.
     </p>
   </section>
 
@@ -20,8 +20,8 @@
     <p>
       Een jpeg is een raster van gemeten pixels; de vraag hoe groot hij is heeft
       een antwoord. Een svg is helemaal geen plaatje, het is een set instructies
-      &mdash; teken hier een cirkel, dit pad in die kleur &mdash; en instructies
-      hebben geen formaat. Een browser kan ze op 16 pixels of op 4000 uitvoeren
+      van het type &ldquo;teken hier een cirkel, dit pad in die kleur&rdquo;, en
+      instructies hebben geen formaat. Een browser kan ze op 16 pixels of op 4000 uitvoeren
       en het resultaat is even scherp, want hij schaalt niets. Hij tekent
       opnieuw.
     </p>
@@ -32,8 +32,8 @@
     </p>
     <p>
       De meeste svg-bestanden dragen wel een <code>width</code>- en
-      <code>height</code>-attribuut mee, en een tool laat dat zien &mdash; maar
-      het is een standaard, geen grens. Een icoon dat <code>width="24"</code>
+      <code>height</code>-attribuut mee, en een tool laat dat ook zien, maar het is
+      een standaardwaarde en geen grens. Een icoon dat <code>width="24"</code>
       zegt, zegt alleen dat degene die het tekende een werkbalk van 24&nbsp;pixels
       voor ogen had.
     </p>
@@ -51,8 +51,8 @@
     </p>
     <p><strong>Voor een app-icoon, een winkelvermelding of een favicon.</strong>
       Het getal is gepubliceerd en er valt niets uit te rekenen: precies wat de
-      pagina van de winkel zegt. Voor een favicon: raster helemaal niet &mdash;
-      <a href="../zelf-een-favicon-maken/">maak een .ico</a>, die meerdere
+      pagina van de winkel zegt. Voor een favicon raster je helemaal niet, maar
+      <a href="../zelf-een-favicon-maken/">maak je een .ico</a>, die meerdere
       formaten in één bestand bevat, omdat een browsertabblad, een bladwijzer en
       een Windows-snelkoppeling alle drie om een ander vragen.
     </p>
@@ -64,8 +64,8 @@
       zaal ziet is 150 ruim voldoende.
     </p>
     <p><strong>Voor een sociale voorvertoning of een OG-afbeelding.</strong> Het
-      platform noemt een kader &mdash; 1200&nbsp;&times;&nbsp;630 voor de meeste
-      linkvoorvertoningen &mdash; en dat kader heeft een andere vorm dan je logo.
+      platform noemt een kader, meestal 1200&nbsp;&times;&nbsp;630 voor
+      linkvoorvertoningen, en dat kader heeft een andere vorm dan je logo.
       Daar is de instelling &ldquo;opvullen&rdquo; voor: de tekening gecentreerd
       op zijn eigen verhoudingen, met een achtergrondkleur die de rest vult, in
       plaats van een uitgerekt logo dat iedereen vertelt dat je niet gekeken
@@ -83,8 +83,8 @@
     <p>
       Rasteren is eenrichtingsverkeer. Zodra de tekening een png is, is het pixels
       als elk ander plaatje, en hem daarna vergroten moet detail verzinnen dat
-      nooit gemeten is &mdash; hetzelfde zachte, uitgesmeerde resultaat dat je
-      krijgt van een foto vergroten.
+      nooit gemeten is, met hetzelfde zachte, uitgesmeerde resultaat dat je van een
+      vergrote foto krijgt.
     </p>
     <p>
       Bewaar dus de svg. Dat is het origineel, het is vrijwel altijd het kleinere
@@ -110,8 +110,8 @@
     </p>
     <p>
       <strong>Tekst wordt getekend in het lettertype dat het apparaat heeft.</strong>
-      Een svg met tekst erin bevat het lettertype niet &mdash; hij noemt er een
-      en laat het aan de renderer over om het te vinden. Is het lettertype niet
+      Een svg met tekst erin bevat het lettertype niet, maar noemt er een en laat
+      het aan de renderer over om het te vinden. Is het lettertype niet
       geïnstalleerd, dan wordt er een vervanger gebruikt, en die vervanger heeft
       andere letterbeelden en andere breedtes, dus de tekst kan verschuiven of
       overlopen. Een bestand dat zijn lettertype van een webadres haalt, is er
@@ -123,9 +123,8 @@
       contouren</strong> voordat je de svg exporteert (Illustrator noemt het
       Create Outlines, Figma noemt het Flatten, Inkscape noemt het Object to
       Path). De letters worden meetkunde, het lettertype doet er niet meer toe, en
-      het plaatje ziet er op elk apparaat hetzelfde uit. Doe het op een kopie
-      &mdash; tekst die naar contouren omgezet is, is niet meer als tekst te
-      bewerken.
+      het plaatje ziet er op elk apparaat hetzelfde uit. Doe het wel op een kopie,
+      want tekst die naar contouren omgezet is valt niet meer als tekst te bewerken.
     </p>
     <p>
       <strong>Haarlijnen worden grijs of verdwijnen.</strong> Een lijn die op jouw
@@ -134,8 +133,8 @@
       op 64&nbsp;pixels gerasterd is er verwassen uit terwijl hetzelfde bestand op
       512 er perfect uitziet. Is een klein formaat de eis, dan is het antwoord een
       vereenvoudigde tekening met zwaardere lijnen en niet een andere
-      exportinstelling &mdash; dezelfde reden waarom een favicon een symbool is en
-      geen woordmerk.
+      exportinstelling, en dat is dezelfde reden waarom een favicon een symbool is
+      en geen woordmerk.
     </p>
     <p>
       <strong>Animatie stopt.</strong> Een bewegende svg rastert naar één
@@ -149,18 +148,17 @@
     <h2>Transparantie, en welk bestandstype je kiest</h2>
     <p>
       <strong>Png</strong>, tenzij je een reden hebt. Het is verliesloos, het
-      houdt transparantie, en vlakke kleur met harde randen &mdash; en daar
-      bestaat een tekening vooral uit &mdash; comprimeert er goed in. Een
+      houdt transparantie, en vlakke kleur met harde randen comprimeert er goed in,
+      en daar bestaat een tekening nu juist vooral uit. Een
       gerasterd logo is meestal een <em>kleinere</em> png dan het een jpeg zou
       zijn, en bovendien een schonere.
     </p>
     <p>
       <strong>Jpeg</strong> heeft helemaal geen transparantie. Elke transparante
       pixel moet een kleur worden, en kiest er niets een voor je, dan wordt hij
-      zwart &mdash; en daar komt het resultaat logo-op-een-zwart-vlak vandaan dat
-      mensen voor een fout aanzien. Het is bovendien verliesgevend op de manier
-      die juist bij dit soort plaatjes het meest opvalt: een krans van spikkels om
-      elke harde rand. Gebruik het wanneer iets erop staat.
+      zwart, en daar komt dat logo-op-een-zwart-vlak vandaan dat mensen voor een
+      fout aanzien. Bovendien is jpeg verliesgevend op de manier die juist bij dit
+      soort plaatjes het meest opvalt: een krans van spikkels om elke harde rand. Gebruik het wanneer iets erop staat.
     </p>
     <p>
       <strong>WebP</strong> doet alles wat png doet, in een kleiner bestand, en
@@ -198,7 +196,7 @@
     </p>
     <p>
       <strong>Een deel van het plaatje ontbreekt.</strong> Iets in het bestand
-      wees naar een adres in plaats van het tekenwerk te bevatten &mdash; een
+      wees naar een adres in plaats van het tekenwerk zelf te bevatten: een
       ingesloten foto die als link opgeslagen is, een stylesheet, een lettertype.
       Een rasteraar die weigert die op te halen doet het juiste, en het is
       dezelfde weigering die belet dat een svg die je ergens gedownload hebt
@@ -219,8 +217,8 @@
   <section>
     <h2>Hier hoeft niets voor geüpload te worden</h2>
     <p>
-      Een svg rasteren is iets wat elke browser duizenden keren per dag doet
-      &mdash; het is dezelfde machinerie die een icoon op een webpagina tekent. Er
+      Een svg rasteren is iets wat elke browser duizenden keren per dag doet, met
+      dezelfde machinerie die een icoon op een webpagina tekent. Er
       is geen technische reden voor je tekenwerk om naar een server en terug te
       reizen om er als png uit te komen, en de tool hier stuurt het nergens heen:
       de <code>Content-Security-Policy</code> van de pagina noemt elk adres dat

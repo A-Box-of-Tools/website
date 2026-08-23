@@ -7,8 +7,8 @@
       <code>background-image: var(--logo)</code> waar je hem nodig hebt.
     </p>
     <p>
-      Doe dat wanneer het plaatje klein is &mdash; een icoontje, een opsommingsteken,
-      een pijltje, een patroon &mdash; en op elke pagina nodig is. Doe het niet
+      Doe dat wanneer het plaatje klein is, zoals een icoontje, een opsommingsteken,
+      een pijltje of een patroon, en op elke pagina nodig is. Doe het niet
       met een foto. Alles hieronder gaat over waarom die twee zinnen verschillen,
       en hoe je ziet naar welke van de twee je kijkt.
     </p>
@@ -24,12 +24,12 @@
     <p>
       en de browser <code>logo.png</code> gaat ophalen, zegt een data-URI
     </p>
-    <pre><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <pre class="wrap"><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
     <p>
       en valt er niets op te halen: het plaatje is er al, uitgeschreven in
       tekens. Er zijn drie delen. <code>data:</code> is het schema.
       <code>image/png</code> is het mediatype, en de browser gelooft dat
-      volledig &mdash; daarover hieronder meer. Alles na de komma is het bestand.
+      volledig, en daarover hieronder meer. Alles na de komma is het bestand.
     </p>
     <p>
       Dat is het hele idee. Het is geen truc of een hack; het staat sinds 1998 in
@@ -63,12 +63,12 @@
       <strong>Base64 doet er ongeveer een derde bij.</strong> Drie bytes bestand
       worden vier tekens, want dat is wat het kost om willekeurige bytes op te
       schrijven met alleen de tekens die een URL toestaat. Er bestaat geen slimme
-      encoder die eromheen komt. Een png van 9 kB is 12 kB stylesheet.
+      encoder die eromheen komt. Een png van 9 KB is 12 KB stylesheet.
     </p>
     <p>
       <strong>Compressie geeft het niet terug.</strong> Dit is het stuk dat
       mensen wegredeneren. Gzip en Brotli werken door herhaling te vinden, en een
-      png, een jpeg en een WebP zijn al gecomprimeerd &mdash; er zit heel weinig
+      png, een jpeg en een WebP zijn al gecomprimeerd. Er zit dus heel weinig
       herhaling meer in, en base64 voegt er geen toe. In de praktijk krijg je
       zoiets als een tiende van die derde terug, niet het geheel. (Een svg is het
       omgekeerde geval, en daar gaat het volgende deel over.)
@@ -88,7 +88,7 @@
       <li>
         <strong>Iets veranderen downloadt alles opnieuw.</strong> Herstel een
         marge, lever een nieuwe stylesheet uit, en elke bezoeker downloadt het
-        ingesloten plaatje er weer bij &mdash; een plaatje dat in twee jaar niet
+        ingesloten plaatje er weer bij, terwijl dat plaatje in twee jaar niet
         veranderd is.
       </li>
       <li>
@@ -105,9 +105,9 @@
     </ul>
     <p>
       Ruwe drempels, die aangeven waar het advies verandert en niet waar een
-      browser iets anders doet: onder ongeveer 2 kB is het een duidelijke winst;
-      tot zo'n 10 kB is het meestal nog de moeite waard voor iets dat op elke
-      pagina staat; voorbij 50 kB is het een vergissing zonder foutmelding.
+      browser iets anders doet: onder ongeveer 2 KB is het een duidelijke winst;
+      tot zo'n 10 KB is het meestal nog de moeite waard voor iets dat op elke
+      pagina staat; voorbij 50 KB is het een vergissing zonder foutmelding.
       <a href="../../afbeelding-naar-base64/">De tool</a> zegt in welke band elk
       resultaat valt, met het aantal tekens ernaast.
     </p>
@@ -121,9 +121,9 @@
     </p>
     <p>
       Een svg is tekst. Een URL draagt tekst al. Er hoeft maar een handvol tekens
-      ontsnapt te worden &mdash; <code>%</code>, <code>#</code>,
+      ontsnapt te worden, namelijk <code>%</code>, <code>#</code>,
       <code>&lt;</code>, <code>&gt;</code> en het aanhalingsteken waar je hem in
-      gezet hebt &mdash; en al het andere kan precies blijven zoals het is. Zo
+      gezet hebt. Al het andere kan precies blijven zoals het is. Zo
       coderen levert een URI op die meestal zo'n vijfde korter is dan de base64
       van hetzelfde bestand, en die daarna comprimeert als tekst in plaats van
       als ruis.
@@ -131,7 +131,7 @@
     <p>
       Hij is bovendien nog leesbaar:
     </p>
-    <pre><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
     <p>
       Je ziet de <code>viewBox</code>. Je kunt de vulkleur in je editor wijzigen
       zonder iets te decoderen. Maak van hetzelfde bestand base64 en het wordt een
@@ -152,8 +152,8 @@
     <p>
       Doe hetzelfde met een procentgecodeerde svg en het breekt. Een
       <code>url()</code>-token zonder aanhalingstekens eindigt bij de eerste
-      spatie, haakje, aanhalingsteken of stuurteken &mdash; en een svg zit vol
-      spaties, tussen elk attribuut en elk getal in een pad. De declaratie is dan
+      spatie, haakje, aanhalingsteken of stuurteken, en een svg zit vol spaties,
+      tussen elk attribuut en elk getal in een pad. De declaratie is dan
       ongeldig, CSS gooit ongeldige declaraties stilletjes weg, en je krijgt geen
       achtergrond en geen foutmelding.
     </p>
@@ -162,8 +162,8 @@
     </p>
     <pre><code>background-image: url("data:image/svg+xml,%3Csvg ... %3E");</code></pre>
     <p>
-      Dat is ook waarom een encoder spaties niet hoeft te ontsnappen &mdash; die
-      zijn volstrekt legaal binnen een URL tussen aanhalingstekens, en elke spatie
+      Daarom hoeft een encoder spaties ook niet te ontsnappen, want die zijn
+      volstrekt legaal binnen een URL tussen aanhalingstekens, en elke spatie
       als <code>%20</code> ontsnappen zou drie tekens kosten per spatie in het
       bestand. De twee beslissingen horen bij elkaar: zet de URI tussen
       aanhalingstekens en je kunt de spaties met rust laten. Elke vorm die de tool
@@ -183,9 +183,8 @@
       En dat telt, want bestandsextensies liegen. Een foto die als jpeg
       geëxporteerd is en <code>logo.png</code> hernoemd, is een gewoon ding om op
       een schijf tegen te komen. De eerste paar bytes van een afbeeldingsbestand
-      zeggen daarentegen ondubbelzinnig wat het is &mdash; elk formaat heeft een
-      handtekening &mdash; dus een tool hoort het bestand te lezen en niet zijn
-      naam. Die hier doet dat, en zegt het je wanneer de twee het oneens zijn.
+      zeggen daarentegen ondubbelzinnig wat het is, want elk formaat heeft een
+      handtekening. Een tool hoort dus het bestand te lezen en niet zijn naam. Die hier doet dat, en zegt het je wanneer de twee het oneens zijn.
     </p>
     <p>
       Twee formaten zijn het weten waard omdat ze op een verwarrende manier
@@ -201,15 +200,15 @@
     <h2>De metagegevens die je niet wilde publiceren</h2>
     <p>
       Een data-URI is een kopie van het bestand, byte voor byte. Er wordt niets
-      gedecodeerd en hercodeerd, wat meestal juist de bedoeling is &mdash; er gaat
-      geen kwaliteit verloren &mdash; maar het betekent ook dat al het andere in
-      het bestand meekomt.
+      gedecodeerd en hercodeerd, en meestal is dat juist de bedoeling omdat er geen
+      kwaliteit verloren gaat. Alleen betekent het ook dat al het andere in het
+      bestand gewoon meekomt.
     </p>
     <p>
       Een foto die zo van een telefoon komt draagt EXIF mee: de gps-coördinaten
       van waar hij genomen is, de tijdstempel, het cameramodel en vaak het
-      serienummer. Dat kan 30 kB van het bestand zijn. Ingesloten wordt het 40 kB
-      base64 in je stylesheet, op het kritieke pad van elke pagina &mdash; en een
+      serienummer. Dat kan 30 KB van het bestand zijn. Ingesloten wordt het 40 KB
+      base64 in je stylesheet, op het kritieke pad van elke pagina, plus een
       woonadres dat naar een repository gecommit wordt, in een vorm waar niemand
       ooit aan denkt te kijken.
     </p>
@@ -227,9 +226,9 @@
     <h2>Waar je hem zet, als je hem eenmaal hebt</h2>
     <p>
       Komt het plaatje in één regel voor, zet de URI dan in die regel. Komt het in
-      meer dan één voor &mdash; en bij icoontjes is dat meestal zo, zodra je de
-      hover-toestand en het donkere thema meetelt &mdash; declareer hem dan één
-      keer als custom property:
+      meer dan één voor, en bij icoontjes is dat meestal zo zodra je de
+      hover-toestand en het donkere thema meetelt, declareer hem dan één keer als
+      custom property:
     </p>
     <pre><code>:root {
   --icon-search: url("data:image/svg+xml,%3Csvg ... %3E");
@@ -238,7 +237,7 @@
 .search-field { background-image: var(--icon-search); }
 .search-button::before { content: var(--icon-search); }</code></pre>
     <p>
-      Een URI van 3 kB die in vier regels geplakt is, is 12 kB stylesheet en vier
+      Een URI van 3 KB die in vier regels geplakt is, is 12 KB stylesheet en vier
       plekken om te bewerken wanneer het icoon verandert. De custom property is
       één van elk. Het is ook de vorm die themawisseling laat werken: herdefinieer
       <code>--icon-search</code> binnen een mediaquery en elk gebruik ervan
@@ -264,7 +263,7 @@
   <section>
     <h2>Wanneer het antwoord &ldquo;niet doen&rdquo; is</h2>
     <p>
-      Is het plaatje gecodeerd groter dan ongeveer 50 kB, dan is insluiten het
+      Is het plaatje gecodeerd groter dan ongeveer 50 KB, dan is insluiten het
       verkeerde gereedschap en lost geen enkele zorgvuldigheid bij het coderen dat
       op. De alternatieven, op volgorde van proberen:
     </p>
@@ -276,11 +275,11 @@
         een foto naar een grootte die jij noemt, en
         <a href="../../afbeelding-formaat-wijzigen/">Afbeeldingsformaat
         wijzigen</a> brengt de pixelafmetingen terug tot wat de opmaak werkelijk
-        gebruikt &mdash; en dat is heel vaak het echte probleem.
+        gebruikt, en heel vaak zit daar het echte probleem.
       </li>
       <li>
         <strong>Teken het opnieuw als svg.</strong> Een icoontje dat als png van
-        40 kB geëxporteerd is, is vaak een svg van 900 bytes. Dat is geen
+        40 KB geëxporteerd is, is vaak een svg van 900 bytes. Dat is geen
         compressieverschil maar een formaatverschil, en het lost meteen het
         retinaprobleem op.
       </li>
@@ -297,10 +296,10 @@
     <h2>Hier hoeft niets voor geüpload te worden</h2>
     <p>
       Een bestand als base64 coderen is rekenen. Het zijn twee functies die de
-      browser al sinds het begin heeft &mdash; <code>btoa</code> en
-      <code>encodeURIComponent</code> &mdash; en er is werkelijk geen technische
-      reden voor een plaatje om naar een server en terug te reizen om anders
-      opgeschreven te worden. Elke omzetter die je bestand daarvoor uploadt,
+      browser al sinds het begin heeft, <code>btoa</code> en
+      <code>encodeURIComponent</code>, en er is werkelijk geen technische reden voor
+      een plaatje om naar een server en terug te reizen om anders opgeschreven te
+      worden. Elke omzetter die je bestand daarvoor uploadt,
       uploadt het om zijn eigen redenen en niet om die van jou.
     </p>
     <p>

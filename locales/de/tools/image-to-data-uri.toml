@@ -10,25 +10,25 @@ heading = "Bild&nbsp;als&nbsp;Data-URI <span class=\"h1-kw\">&mdash; ein Bild f�
 tagline = "Das ganze Bild als eine Zeile Text. Direkt in CSS oder HTML einfügen."
 
 title = "Bild als Data-URI &mdash; Base64 für CSS, kostenlos, ohne Upload"
-description = "Ein PNG, JPEG, SVG oder WebP in eine Data-URI verwandeln, die Sie in CSS oder HTML einfügen können. SVGs werden prozentkodiert statt base64-kodiert, bleiben also lesbar und kürzer. Läuft im Browser; nichts wird hochgeladen."
+description = "Ein PNG, JPEG, SVG oder WebP in eine Data-URI verwandeln, die Sie in CSS oder HTML einfügen können. SVGs werden prozentkodiert statt base64-kodiert, bleiben also lesbar und kürzer. Läuft im Browser, nichts wird hochgeladen."
 og_title = "Ein Bild in eine Zeile verwandeln, die Sie in CSS einfügen können"
-og_description = "Base64 für Bilder, Prozentkodierung für SVG, und die fertige Regel, Custom Property oder img-Zeile drumherum. Läuft auf Ihrem eigenen Gerät; nichts wird hochgeladen."
+og_description = "Base64 für Bilder, Prozentkodierung für SVG, und die fertige Regel, Custom Property oder img-Zeile drumherum. Läuft auf Ihrem eigenen Gerät, nichts wird hochgeladen."
 og_image_alt = "Bild als Data-URI - das Bild ins Stylesheet einfügen"
 
 pledge = """
     Die Kodierung läuft in Ihrem eigenen Browser, auf Ihrer eigenen Hardware.
-    Sie ist Rechnerei auf Bytes, die die Seite ohnehin hat: kein Encoder, kein
-    Server und kein Netzschritt, den man weglassen könnte. Dieses Werkzeug hat
-    keinerlei Netzfunktion &mdash; nichts abzurufen, nichts zu senden &mdash;
-    und es gibt am anderen Ende dieser Seite keinen Server, an den ein Bild
-    ginge, selbst wenn es einen Weg dorthin gäbe."""
+    Sie ist Rechnerei auf Bytes, die die Seite ohnehin hat, ohne Encoder, ohne
+    Server und ohne einen Schritt über das Netz, den man weglassen könnte.
+    Netzfunktionen hat dieses Werkzeug keine, weder zum Abrufen noch zum Senden.
+    Und selbst wenn es einen Weg nach draußen gäbe, stünde am anderen Ende
+    dieser Seite kein Server, an den ein Bild gehen könnte."""
 
 live_hint = """
-      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
-      &bdquo;Netzwerk&ldquo; und ziehen Sie ein Bild hinein. Keine einzige
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und ziehen Sie ein Bild hinein. Keine einzige
       Anfrage trägt ein Bild, ein Vorschaubild, einen Dateinamen oder ein Byte
-      Ihrer Auswahl. Oder trennen Sie die Internetverbindung und kodieren Sie
-      trotzdem eines."""
+      dessen, was Sie ausgewählt haben. Oder trennen Sie die Internetverbindung
+      und kodieren Sie trotzdem eines."""
 
 read_first = """
 , <code>src/encode.js</code> für die beiden
@@ -37,7 +37,7 @@ read_first = """
       <code>src/metadata.js</code> für die Prüfung, die sagt, wie viel von dem,
       was Sie gleich einfügen, gar nicht das Bild ist."""
 
-howto_heading = "Ein Bild in eine Data-URI verwandeln"
+howto_heading = "So verwandeln Sie ein Bild in eine Data-URI"
 
 card = """
             Base64 für Bilder, Prozentkodierung für SVG, und die CSS-Regel oder
@@ -46,8 +46,6 @@ card = """
 [words]
 plural = "Bilder"
 choose = "ein Bild"
-analytics_extra = """, und auch keine der
-  Dateinamen, Größen oder kodierten Texte, die dieses Werkzeug erzeugt"""
 
 [[facts]]
 text = "Kein Upload"
@@ -67,81 +65,81 @@ text = "Quelloffen"
 [[privacy]]
 title = "Ihre Bilder haben keinen Weg nach draußen."
 body = """
- Die
-      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
-      an dem Ihre Dateien gesammelt werden könnten, und nichts im Code, das sie
-      senden würde, gäbe es einen."""
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen."""
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
 body = """
  Es gibt weder
       <code>fetch</code> noch <code>XMLHttpRequest</code> noch
-      <code>sendBeacon</code> irgendwo in <code>src/</code>. Die Kodierung ist
-      <code>btoa</code> und <code>encodeURIComponent</code> &mdash; zwei
-      Funktionen, die der Browser seit Anbeginn hat und die beide Bytes nehmen
-      und Text zurückgeben, ohne irgendwohin zu gehen."""
+      <code>sendBeacon</code> irgendwo in <code>src/</code>. Kodiert wird mit
+      <code>btoa</code> und <code>encodeURIComponent</code>, zwei Funktionen, die
+      der Browser seit Anbeginn hat. Beide nehmen Bytes und geben Text zurück,
+      ohne dabei irgendwohin zu gehen."""
 
 [[privacy]]
 title = "Die Vorschau ist der Beweis."
 body = """
  Das Bild neben jedem Ergebnis wird
       aus der Data-URI gezeichnet, die diese Seite eben gebaut hat, und nicht aus
-      Ihrer Datei. Es erscheint, weil die URI korrekt ist &mdash; auf Ihrem
-      Gerät, ohne beteiligten Server. Und erscheint es nicht, sagt die Seite das,
-      statt Ihnen etwas Kaputtes zu geben."""
+      Ihrer Datei. Es erscheint, weil die URI stimmt, auf Ihrem Gerät und ohne
+      jeden beteiligten Server. Erscheint es nicht, sagt die Seite das, statt
+      Ihnen etwas Kaputtes zu geben."""
 
 [[privacy]]
 title = "Die Metadaten-Warnung ist auf Ihrer Seite."
 body = """
  Eine Data-URI kopiert die
-      Datei exakt, die GPS-Position einer Fotografie reist also mit ihr in Ihr
-      Stylesheet. Diese Seite liest, wie viel davon da ist, und sagt es Ihnen
-      &mdash; denn die Alternative ist, dass Sie es erfahren, nachdem es
+      Datei exakt, und damit reist die GPS-Position einer Fotografie mit ihr in
+      Ihr Stylesheet. Diese Seite liest, wie viel davon vorhanden ist, und sagt
+      es Ihnen, denn die Alternative wäre, dass Sie es erfahren, wenn schon
       eingecheckt ist."""
 
 [[privacy]]
-title = "Was Google lädt - und was es nicht bekommt."
+title = "Was Google lädt und was Google nicht bekommt."
 body = """
  Die Werbe- und
       Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
       Keinem davon wird irgendetwas über Ihre Bilder übergeben. Jede Zeile, die
-      eine Datei liest oder kodiert, wird von dieser Herkunft ausgeliefert und
-      ist im Repository aufgeführt."""
+      eine Datei liest oder kodiert, kommt von dieser Domain selbst und steht im
+      Repository."""
 
 [[privacy]]
 title = "Es funktioniert offline."
 body = """
  Trennen Sie die Netzverbindung, und das
-      Werkzeug bleibt unverändert, weil es nie einen Netzschritt darin gab. Das
-      ist der einfachste Beweis von allen."""
+      Werkzeug bleibt unverändert, weil darin nie ein Schritt über das Netz
+      vorgesehen war. Einen einfacheren Beweis gibt es nicht."""
 
 [[howto]]
-title = "Wählen Sie Ihre Bilder."
+title = "Wählen Sie Ihre Bilder aus."
 body = """
  Ziehen Sie sie auf das Auswahlfeld oder
-      wählen Sie sie von Hand. Der Browser liest sie direkt von Ihrer Festplatte;
-      dabei wird nichts irgendwohin gesendet."""
+      suchen Sie sie von Hand heraus. Der Browser liest sie direkt von Ihrer
+      Festplatte, und dabei geht nichts nach draußen."""
 
 [[howto]]
 title = "Sagen Sie, wohin das Ergebnis geht."
 body = """
- Die URI für sich, eine
-      CSS-Regel, eine Custom Property, ein <code>&lt;img&gt;</code>-Element oder
-      Markdown. Jede davon setzt die URI in Anführungszeichen &mdash; und das ist
-      das Detail, das entscheidet, ob ein eingebettetes SVG funktioniert oder
-      stillschweigend nicht."""
+ Zur Wahl stehen die URI für
+      sich, eine CSS-Regel, eine Custom Property, ein
+      <code>&lt;img&gt;</code>-Element oder Markdown. Jede davon setzt die URI in
+      Anführungszeichen, und genau dieses Detail entscheidet, ob ein
+      eingebettetes SVG funktioniert oder stillschweigend nicht."""
 
 [[howto]]
 title = "Lesen Sie, was es gekostet hat."
 body = """
  Jedes Ergebnis sagt, aus wie vielen
-      Zeichen es geworden ist, um wie viel größer das als die Datei ist, und ob
-      es eine gute Idee ist, etwas dieser Größe einzubetten. Base64 legt ein
-      Drittel drauf; ob dieses Drittel eine gesparte Anfrage wert ist, hängt
-      ganz von der Größe ab &mdash; die Seite sagt Ihnen also, auf welcher Seite
-      der Grenze Sie stehen."""
+      Zeichen es geworden ist, um wie viel größer das als die Datei ist und ob
+      sich das Einbetten in dieser Größe überhaupt lohnt. Base64 legt ein Drittel
+      drauf. Ob dieses Drittel eine gesparte Anfrage wert ist, hängt ganz an der
+      Größe, und deshalb sagt Ihnen die Seite, auf welcher Seite der Grenze Sie
+      stehen."""
 
 [[howto]]
 title = "Achten Sie auf die Warnungen."
@@ -156,53 +154,52 @@ body = """
 title = "Kopieren oder herunterladen."
 body = """
  Eine Schaltfläche je Ergebnis und
-      eine für alle auf einmal &mdash; die Custom Properties kommen in einen
-      <code>:root</code>-Block gewickelt heraus, fertig zum Einfügen oben in ein
+      eine für alle auf einmal. Die Custom Properties kommen fertig in einen
+      <code>:root</code>-Block gewickelt heraus, bereit zum Einfügen oben in ein
       Stylesheet."""
 
 [[faq]]
 q = "Wird mein Bild irgendwohin hochgeladen?"
 a = """
-        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
-        gelesen und kodiert, mit zwei Funktionen, die der Browser ohnehin hat.
-        Dieses Werkzeug hat keinerlei Netzfunktion &mdash; es ruft nie etwas ab
-        und sendet nie etwas &mdash; und die <code>Content-Security-Policy</code>
-        der Seite nennt jede Adresse, die sie kontaktieren darf; keine davon
-        gehört zu dieser Seite."""
+        Nein. Ihr eigener Browser liest und kodiert die Datei auf Ihrer eigenen
+        Hardware, mit zwei Funktionen, die er ohnehin hat. Netzfunktionen hat
+        dieses Werkzeug keine, es ruft nie etwas ab und sendet nie etwas. In der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf, und keine davon gehört uns."""
 
 [[faq]]
 q = "Was ist eine Data-URI?"
 a = """
         Eine Art, eine ganze Datei dorthin zu schreiben, wo sonst eine
-        Webadresse stünde. Statt <code>url("logo.png")</code>, was dem Browser
-        sagt, er solle etwas holen gehen, schreiben Sie
-        <code>url("data:image/png;base64,iVBORw0...")</code>, was das Bild selbst
-        enthält. Der Browser dekodiert es an Ort und Stelle. Praktisch bedeutet
-        das eine Anfrage weniger: Das Bild kommt mit dem Stylesheet oder der
-        Seite an statt danach."""
+        Webadresse stünde. Statt <code>url("logo.png")</code>, was den Browser
+        losschickt, etwas zu holen, schreiben Sie
+        <code>url("data:image/png;base64,iVBORw0...")</code>, worin das Bild
+        selbst steckt. Der Browser dekodiert es an Ort und Stelle. In der Praxis
+        heißt das eine Anfrage weniger, denn das Bild kommt mit dem Stylesheet
+        oder der Seite an statt danach."""
 
 [[faq]]
 q = "Warum ist mein SVG nicht base64?"
 a = """
-        Weil Base64 die falsche Kodierung dafür ist. Ein SVG ist Text, und eine
-        URL kann Text ohnehin tragen &mdash; nur eine Handvoll Zeichen muss
-        maskiert werden. Diese prozentzukodieren und den Rest in Ruhe zu lassen
-        ergibt eine URI, die typischerweise ein Fünftel kürzer ist als das Base64
-        derselben Datei und die Sie in Ihrem Stylesheet noch lesen können: Die
-        Elementnamen, die Farben und die <code>viewBox</code> stehen alle noch da
-        und lassen sich bearbeiten. Es gibt ein Häkchen, um Base64 zu erzwingen
-        &mdash; für die seltene Werkzeugkette, die darauf besteht."""
+        Weil Base64 dafür die falsche Kodierung ist. Ein SVG ist Text, und Text
+        kann eine URL ohnehin tragen, maskiert werden muss nur eine Handvoll
+        Zeichen. Genau die prozentzukodieren und den Rest in Ruhe zu lassen
+        ergibt eine URI, die typischerweise ein Fünftel kürzer ausfällt als das
+        Base64 derselben Datei und die Sie in Ihrem Stylesheet noch lesen können.
+        Die Elementnamen, die Farben und die <code>viewBox</code> stehen alle
+        noch da und lassen sich bearbeiten. Für die seltene Werkzeugkette, die
+        darauf besteht, gibt es ein Häkchen, das Base64 erzwingt."""
 
 [[faq]]
 q = "Wie viel größer macht Base64 mein Bild?"
 a = """
-        Um etwa ein Drittel. Aus drei Bytes Datei werden vier Zeichen Base64, das
-        sind 33&nbsp;% noch vor dem <code>data:image/png;base64,</code> davor.
-        Das ist die Untergrenze, und sie ist unvermeidlich: So viel kostet es,
+        Um etwa ein Drittel. Aus drei Bytes Datei werden vier Zeichen Base64,
+        also 33&nbsp;% noch vor dem <code>data:image/png;base64,</code> davor.
+        Das ist die Untergrenze und unvermeidlich, denn so viel kostet es,
         beliebige Bytes mit nur den Zeichen zu schreiben, die eine URL erlaubt.
-        Und es ist auch der Grund, warum die Seite die Zeichenzahl neben die
-        Dateigröße stellt, statt Sie es herausfinden zu lassen, wenn das
-        Stylesheet ausgeliefert ist."""
+        Deshalb stellt die Seite die Zeichenzahl auch gleich neben die
+        Dateigröße, statt Sie das herausfinden zu lassen, wenn das Stylesheet
+        schon ausgeliefert ist."""
 
 [[faq]]
 q = "Wann ist es tatsächlich eine gute Idee, ein Bild einzubetten?"
@@ -211,79 +208,79 @@ a = """
         in einem Stylesheet, das jede Seite lädt, ist ein klarer Gewinn: eine
         Rundreise weniger, und das Bild ist da, sobald das CSS da ist. Ab etwa
         10&nbsp;KB kippt der Handel. Ein eingebettetes Bild ist keine eigene
-        Datei mehr, kann also nicht für sich zwischengespeichert werden, nicht
-        parallel zu etwas anderem geholt werden und wird jedes Mal vollständig
-        neu geladen, wenn sich die Datei drumherum ändert &mdash; eine
+        Datei mehr, kann also nicht für sich zwischengespeichert und nicht
+        parallel zu etwas anderem geholt werden, und es wird jedes Mal
+        vollständig neu geladen, wenn sich die Datei drumherum ändert. Eine
         200&nbsp;KB große Fotografie in einem Stylesheet sind 200&nbsp;KB
-        zusätzlich auf dem kritischen Pfad jeder Seite der Website. Die Seite
-        sagt Ihnen, auf welche Seite dieser Grenze jedes Ergebnis fällt."""
+        zusätzlich auf dem kritischen Pfad jeder Seite der Website. Auf welche
+        Seite dieser Grenze ein Ergebnis fällt, sagt Ihnen die Seite."""
 
 [[faq]]
 q = "Macht gzip den Base64-Aufschlag wieder wett?"
 a = """
-        Weniger, als man denkt. Base64 einer bereits komprimierten Datei &mdash;
-        und ein PNG, ein JPEG und ein WebP sind das alle &mdash; komprimiert
-        schlecht, weil dem Kompressor kaum noch Redundanz bleibt; zurück bekommen
-        Sie typischerweise etwa ein Zehntel des Drittels, das Base64
-        hinzugefügt hat, und nicht das Ganze. Ein prozentkodiertes SVG ist der
-        umgekehrte Fall: Es ist weiter Text, komprimiert sich also ungefähr so
-        gut wie vorher &mdash; noch ein Grund, keines zu base64-kodieren."""
+        Weniger, als man denkt. Base64 einer bereits komprimierten Datei
+        komprimiert schlecht, weil dem Kompressor kaum noch Redundanz bleibt, und
+        ein PNG, ein JPEG und ein WebP sind alle bereits komprimiert. Zurück
+        bekommen Sie typischerweise etwa ein Zehntel des Drittels, das Base64
+        hinzugefügt hat, und nicht das Ganze. Ein prozentkodiertes SVG liegt
+        genau andersherum. Es bleibt Text und komprimiert sich damit ungefähr so
+        gut wie vorher, was ein weiterer Grund ist, keines zu base64-kodieren."""
 
 [[faq]]
 q = "Ändert das mein Bild überhaupt?"
 a = """
-        Nein, und das ist ein bewusster Unterschied zu den meisten Werkzeugen
-        hier. Nichts wird zu Pixeln dekodiert und erneut kodiert: Die Bytes, die
-        von Ihrer Festplatte kamen, sind die Bytes, die in die URI gehen. Ein
-        JPEG bleibt exakt das JPEG, das es war, in derselben Qualität, mit
-        denselben Abmessungen. Es ist der Grund, warum sich das Ergebnis als
-        dieselbe Datei beschreiben lässt und nicht als Kopie davon."""
+        Nein, und darin unterscheidet es sich bewusst von den meisten Werkzeugen
+        hier. Es wird nichts zu Pixeln dekodiert und erneut kodiert. Die Bytes,
+        die von Ihrer Festplatte kamen, sind die Bytes, die in die URI gehen. Ein
+        JPEG bleibt exakt das JPEG, das es war, in derselben Qualität und mit
+        denselben Abmessungen. Deshalb lässt sich das Ergebnis als dieselbe Datei
+        beschreiben und nicht bloß als Kopie davon."""
 
 [[faq]]
 q = "Dann gehen meine EXIF- und GPS-Daten also auch ins Stylesheet?"
 a = """
-        Ja &mdash; und das ist der Teil, über den man vor dem Einfügen nachdenken
-        sollte. Weil nichts neu kodiert wird, reist alles mit, was die Kamera
-        geschrieben hat: der Ort, der Zeitstempel, die Seriennummer der Kamera.
-        Bei einem Handyfoto können das 30&nbsp;KB der Datei sein, aus denen
-        40&nbsp;KB Base64 auf dem kritischen Pfad Ihrer Seite werden &mdash; und
-        eine Wohnanschrift in etwas, das in ein Repository eingecheckt wird. Die
-        Seite liest, wie viele Metadaten in einem JPEG, PNG oder WebP stecken,
-        und sagt es. Um sie vorher herauszunehmen, nehmen Sie den
+        Ja, und darüber sollten Sie vor dem Einfügen nachdenken. Weil nichts neu
+        kodiert wird, reist alles mit, was die Kamera geschrieben hat: der Ort,
+        der Zeitstempel, die Seriennummer der Kamera. Bei einem Handyfoto können
+        das 30&nbsp;KB der Datei sein, aus denen 40&nbsp;KB Base64 auf dem
+        kritischen Pfad Ihrer Seite werden, und obendrein eine Wohnanschrift in
+        etwas, das in ein Repository eingecheckt wird. Wie viele Metadaten in
+        einem JPEG, PNG oder WebP stecken, liest die Seite und sagt es Ihnen.
+        Herausnehmen lassen sie sich vorher mit dem
         <a href="../exif-daten-entfernen/">EXIF-Betrachter &amp; -Entferner</a>."""
 
 [[faq]]
 q = "Warum hat es einen anderen Typ genommen als die Endung meiner Datei?"
 a = """
         Weil die Endung falsch sein kann und die Bytes nicht. Eine Datei namens
-        <code>logo.png</code>, die in Wahrheit als JPEG exportiert wurde, ist
-        häufig genug, dass jedes Bildwerkzeug damit umgehen muss &mdash; und eine
-        Data-URI, die den falschen Typ angibt, erscheint schlicht nicht: Es gibt
-        keine Rückfalloption und keine lesenswerte Fehlermeldung. Der Typ wird
-        also aus den ersten Bytes der Datei gelesen, die in jedem Format hier
-        eindeutig sagen, was sie ist, und die Seite sagt Ihnen, wenn die beiden
-        sich widersprechen."""
+        <code>logo.png</code>, die in Wahrheit als JPEG exportiert wurde, kommt
+        oft genug vor, dass jedes Bildwerkzeug damit umgehen muss. Eine Data-URI
+        mit dem falschen Typ erscheint dagegen schlicht nicht, ohne
+        Rückfalloption und ohne lesenswerte Fehlermeldung. Gelesen wird der Typ
+        deshalb aus den ersten Bytes der Datei, die in jedem Format hier
+        eindeutig sagen, was sie ist, und wenn beides sich widerspricht, sagt es
+        Ihnen die Seite."""
 
 [[faq]]
 q = "Die Vorschau ist leer. Was ist schiefgegangen?"
 a = """
         An der URI vermutlich nichts. HEIC und TIFF ergeben beide vollkommen
-        gültige Data-URIs, die kein Browser außer Safari zeichnet &mdash; das
-        Bild fehlt also auch überall dort, wo Sie sie einfügen. Wandeln Sie es
+        gültige Data-URIs, die außer Safari kein Browser zeichnet, und damit
+        fehlt das Bild auch überall dort, wo Sie sie einfügen. Wandeln Sie es
         zuerst mit dem <a href="../bild-komprimieren/">Bildkompressor</a> oder
-        dem <a href="../bildgroesse-aendern/">Bildgrößen-Ändern</a> nach PNG,
-        JPEG oder WebP um. Ist das Format ein gewöhnliches, ist wahrscheinlich
-        die Datei selbst beschädigt: Die Vorschau wird aus der URI gezeichnet,
-        die diese Seite gebaut hat &mdash; eine leere heißt also, dass das Bild
-        nicht dekodiert hat."""
+        dem <a href="../bildgroesse-aendern/">Bildskalierer</a> nach PNG, JPEG
+        oder WebP um. Ist das Format ein ganz gewöhnliches, ist wahrscheinlich
+        die Datei selbst beschädigt. Die Vorschau wird ja aus der URI gezeichnet,
+        die diese Seite gebaut hat, und eine leere heißt deshalb, dass das Bild
+        gar nicht dekodiert hat."""
 
 [[faq]]
 q = "Gibt es eine Größengrenze für eine Data-URI?"
 a = """
         Keine, der Sie in CSS oder in einem <code>&lt;img&gt;</code>-Element
-        begegnen; moderne Browser setzen dort keine praktische Grenze. Was
-        Browser begrenzen, ist das Eintippen einer Data-URI in die Adressleiste,
-        was die meisten inzwischen für alles Nichttriviale verweigern &mdash; aus
+        begegnen, denn moderne Browser setzen dort keine praktische Grenze.
+        Begrenzt wird das Eintippen einer Data-URI in die Adressleiste, was die
+        meisten Browser inzwischen für alles Nichttriviale verweigern, aus
         Sicherheitsgründen, die mit dieser Verwendung nichts zu tun haben. Die
         echte Grenze ist die von oben: Lange bevor irgendetwas Technisches
         bricht, ist die Seite, in der es steckt, langsamer geworden, als sie mit
@@ -293,23 +290,22 @@ a = """
 q = "Ist es kostenlos, und brauche ich ein Konto?"
 a = """
         Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
-        Testphase und kein Wasserzeichen. Es gibt auch keine Grenze für Anzahl
-        oder Größe der Dateien, weil es keinen Server gibt, der dafür zahlt
-        &mdash; die Arbeit passiert auf Ihrem eigenen Gerät. Die Seite trägt
-        Werbung, und die bezahlt sie; den Anzeigen wird nichts über Ihre Bilder
-        übergeben."""
+        Testphase und kein Wasserzeichen. Auch bei Anzahl und Größe der Dateien
+        gibt es keine Grenze, denn es zahlt kein Server dafür. Die Arbeit
+        passiert auf Ihrem eigenen Gerät. Bezahlt wird die Seite über Werbung,
+        und den Anzeigen wird nichts über Ihre Bilder übergeben."""
 
 [[faq]]
 q = "Funktioniert es offline?"
 a = """
         Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
         und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
-        dass nichts hochgeladen wird: Ein Werkzeug, das Ihre Bilder zum Kodieren
-        wegschickt, würde in dem Moment stehen bleiben, in dem Sie den Stecker
+        dass nichts hochgeladen wird. Ein Werkzeug, das Ihre Bilder zum Kodieren
+        wegschickt, bliebe in dem Moment stehen, in dem Sie den Stecker
         ziehen."""
 
 [schema]
-description = "Ein PNG, JPEG, SVG, WebP, GIF oder ICO in eine Data-URI umwandeln, fertig zum Einfügen in CSS oder HTML. Base64 für Rasterformate und Prozentkodierung für SVG, eingefasst in eine CSS-Regel, eine Custom Property, ein img-Element oder Markdown - mit Angabe der Größenkosten und der eingebetteten Metadaten. Läuft vollständig im Browser, ohne Upload."
+description = "Ein PNG, JPEG, SVG, WebP, GIF oder ICO in eine Data-URI umwandeln, fertig zum Einfügen in CSS oder HTML. Base64 für Rasterformate und Prozentkodierung für SVG, eingefasst in eine CSS-Regel, eine Custom Property, ein img-Element oder Markdown, mit Angabe der Größenkosten und der eingebetteten Metadaten. Läuft vollständig im Browser, ohne Upload."
 features = [
   "Base64-Data-URIs für PNG, JPEG, WebP, GIF, ICO, AVIF und mehr",
   "Prozentkodierte SVG-Data-URIs, kürzer als Base64 und weiterhin lesbar",
@@ -324,4 +320,4 @@ features = [
 
 [picker]
 title = "Bilder hierher ziehen"
-hint = "oder klicken zum Auswählen &mdash; PNG, JPEG, SVG, WebP, GIF, ICO und mehr"
+hint = "oder klicken und auswählen &mdash; PNG, JPEG, SVG, WebP, GIF, ICO und mehr"

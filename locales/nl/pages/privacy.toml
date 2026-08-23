@@ -7,11 +7,11 @@ title = "Privacy &amp; cookies &mdash; abox.tools"
 description = "Wat abox.tools wel en niet verzamelt. Je bestanden worden nooit geüpload; de advertenties, de bezoekersteller en de doneerknop staan hier volledig beschreven."
 heading = "Privacy &amp; cookies"
 lede = """
-    De korte versie: je bestanden worden nooit geüpload, want er is nergens om
-    ze naartoe te uploaden. Al het andere op deze pagina gaat over de
-    advertenties, de bezoekersteller en de hosting &mdash; de onderdelen waar wel
-    andere bedrijven bij betrokken zijn."""
-updated = "19 augustus 2026"
+    De korte versie: je bestanden worden nooit geüpload, want er is nergens om ze
+    naartoe te uploaden. Al het andere op deze pagina gaat over de advertenties,
+    de bezoekersteller en de hosting, oftewel de onderdelen waar wél andere
+    bedrijven bij betrokken zijn."""
+updated = "22 augustus 2026"
 og_title = "Privacy &amp; cookies &mdash; abox.tools"
 og_description = "Je bestanden worden nooit geüpload. Wat er verzameld wordt, door wie, en hoe je het uitzet."
-og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

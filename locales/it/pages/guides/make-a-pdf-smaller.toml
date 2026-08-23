@@ -8,10 +8,10 @@ description = "Dove sta davvero il peso di un PDF, perché una scansione si comp
 heading = "Come alleggerire un PDF, e perché alcuni non si rimpiccioliscono"
 lede = """
     Un PDF che non entra nel limite di una mail è quasi sempre un PDF pieno di
-    immagini. Qui c'è come capire se il tuo lo è, quanto costa comprimerlo, e
-    perché qualunque strumento prometta una percentuale fissa non ha guardato il
-    tuo file."""
+    immagini. Vediamo come capire se il tuo lo è, quanto costa comprimerlo, e
+    perché qualunque strumento prometta una percentuale fissa il tuo file non
+    l'ha guardato."""
 updated = "20 agosto 2026"
 og_title = "Come alleggerire un PDF"
 og_description = "Dove sta davvero il peso di un PDF, perché una scansione si rimpicciolisce e un contratto no, e cosa c'entrano i DPI."
-og_image_alt = "abox.tools - strumenti che non toccano nessun server"
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

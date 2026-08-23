@@ -23,34 +23,32 @@ pledge = """
     naar het gevraagde formaat herschreven door honderd regels in
     <code>src/svg.js</code> die je kunt lezen, en het wordt op een canvas
     getekend dat je browser toch al meelevert. Deze tool heeft geen enkele
-    netwerkfunctie &mdash; niets op te halen, niets te versturen &mdash; en er
-    staat aan de andere kant van deze pagina geen server om een logo heen te
-    sturen, ook al was er een weg."""
+    netwerkfunctie, dus er valt niets op te halen en niets te versturen. En al was
+    die er wel, dan stond aan de andere kant van deze pagina nog steeds geen
+    server om een logo naartoe te sturen."""
 
 live_hint = """
-      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
-      gaten en raster iets. Geen enkel verzoek draagt een bestand, een miniatuur,
-      een bestandsnaam of één byte van wat je koos. Of trek de stekker uit het
-      internet en zet er toch een om."""
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en raster iets. Geen enkel verzoek draagt
+      een bestand, een miniatuur, een bestandsnaam of ook maar één byte van wat je
+      koos. Of trek de stekker uit je internet en zet er alsnog een om."""
 
 read_first = """
 , <code>src/svg.js</code> voor hoe het eigen
       formaat van een bestand gelezen wordt en hoe zijn worteltag herschreven
       wordt, en <code>src/render.js</code> voor de acht regels die het rasteren
-      doen &mdash; een &lt;img&gt;, een <code>drawImage</code> en een
+      doen: een &lt;img&gt;, een <code>drawImage</code> en een
       <code>toBlob</code>, met niets ertussen."""
 
-howto_heading = "Een svg naar een png omzetten zonder hem te uploaden"
+howto_heading = "Zo zet je een svg om naar een png zonder hem te uploaden"
 
 card = """
-            Een svg heeft zelf geen pixelformaat, dus het getal kies jij &mdash;
-            32 of 8000, en even scherp hoe dan ook."""
+            Een svg heeft zelf geen pixelformaat, dus het getal kies jij: 32 of
+            8000, en even scherp hoe dan ook."""
 
 [words]
 plural = "svg-bestanden"
 choose = "een svg"
-analytics_extra = """, en ook geen van de
-  formaten, bestandstypen of bestandsnamen die deze tool uitrekent"""
 
 [[facts]]
 text = "Geen upload"
@@ -70,21 +68,20 @@ text = "Open source"
 [[privacy]]
 title = "Je tekenwerk kan nergens heen."
 body = """
- De
-      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
-      geen ervan hoort bij deze site. Er is hier geen eindpunt waar je bestanden
-      verzameld zouden kunnen worden, en niets in de code dat ze zou versturen
-      als dat er wel was."""
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en
+      geen daarvan hoort bij deze site. Er is hier geen eindpunt waar je bestanden
+      verzameld zouden kunnen worden, en in de code staat niets wat ze zou
+      versturen als dat eindpunt er wel was."""
 
 [[privacy]]
 title = "Niets hier haalt iets op."
 body = """
- Er staat nergens in
-      <code>src/</code> een <code>fetch</code>, een <code>XMLHttpRequest</code>
-      of een <code>sendBeacon</code>. De hele rasteraar is een
+ In <code>src/</code> staat
+      nergens een <code>fetch</code>, een <code>XMLHttpRequest</code> of een
+      <code>sendBeacon</code>. De hele rasteraar bestaat uit een
       <code>&lt;img&gt;</code> met een blob van je eigen bestand erin, één
-      <code>drawImage</code> op een canvas, en één
-      <code>canvas.toBlob</code>."""
+      <code>drawImage</code> op een canvas, en één <code>canvas.toBlob</code>."""
 
 [[privacy]]
 title = "Een svg is een document, en dit is de modus waarin het niets kan doen."
@@ -94,47 +91,47 @@ body = """
       <code>&lt;image href=&quot;https://&hellip;&quot;&gt;</code>, een
       stylesheet en een weblettertype meedragen. Getekend via een
       <code>&lt;img&gt;</code> zit hij in wat de specificatie <em>secure static
-      mode</em> noemt: het script draait niet en geen van die adressen wordt
-      opgehaald. Dat is een garantie van de browser, geen belofte van ons, en het
-      is de reden dat deze pagina een bestand kan openen dat ze nooit gezien
-      heeft zonder dat het bestand naar huis kan bellen."""
+      mode</em> noemt, en dan draait het script niet en wordt geen van die adressen
+      opgehaald. Dat is een garantie van de browser en geen belofte van ons, en
+      juist daarom kan deze pagina een bestand openen dat ze nooit eerder gezien
+      heeft zonder dat dat bestand naar huis kan bellen."""
 
 [[privacy]]
-title = "Wat Google laadt, en wat het niet krijgt."
+title = "Wat Google laadt, en wat het niet te zien krijgt."
 body = """
  De advertentie- en
-      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen ervan
-      krijgt iets over je tekening mee. Elke regel die een bestand leest, op
+      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen van
+      alle krijgt iets over je tekening mee. Elke regel die een bestand leest, op
       formaat zet of tekent, wordt vanaf deze herkomst geserveerd en staat in de
       repository."""
 
 [[privacy]]
 title = "Het werkt offline."
 body = """
- Verbreek de verbinding en de tool is
-      onveranderd, want er zat nooit een netwerkstap in. Dat is het eenvoudigste
-      bewijs van allemaal."""
+ Verbreek de verbinding en de tool
+      werkt onveranderd door, omdat er nooit een netwerkstap in zat. Eenvoudiger
+      bewijs bestaat er niet."""
 
 [[howto]]
 title = "Kies de svg."
 body = """
- Sleep er een op het keuzevak, of kies een
-      map vol en zet ze in één keer om. De browser leest het bestand
-      rechtstreeks van je schijf; er wordt daarbij niets ergens heen gestuurd.
-      Elke regel zegt welk formaat het bestand denkt te hebben &mdash; en zegt
-      dat anders wanneer dat formaat uit zijn <code>viewBox</code> kwam, of
-      aangenomen is omdat het bestand er geen opgeeft."""
+ Sleep er een het vak in, of kies een map
+      vol en zet ze in één keer om. De browser leest het bestand rechtstreeks van
+      je schijf, en er gaat ondertussen niets ergens heen. Bij elke regel staat welk
+      formaat het bestand denkt te hebben, en dat wordt er anders bij gezegd wanneer
+      dat formaat uit de <code>viewBox</code> kwam of aangenomen is omdat het
+      bestand er geen opgeeft."""
 
 [[howto]]
 title = "Zeg hoe groot."
 body = """
  Een factor van het eigen formaat van het
-      bestand is het snelste antwoord en het juiste voor een stapel: elke
-      tekening wordt vanaf zijn eigen beginpunt geschaald, dus een set iconen
-      blijft onderling in verhouding. Noem anders een breedte, een hoogte, de
-      langste zijde, of een kader met beide zijden erbij. Een groot getal kost
-      hier niets, anders dan bij een foto &mdash; de tekening wordt op dat
-      formaat opnieuw getekend, niet ernaartoe uitgerekt."""
+      bestand is het snelste antwoord, en voor een stapel ook het juiste. Elke
+      tekening wordt dan vanaf zijn eigen beginpunt geschaald, waardoor een set
+      iconen onderling in verhouding blijft. Anders noem je een breedte, een hoogte,
+      de langste zijde, of een kader met beide zijden erbij. Een groot getal kost je
+      hier niets, anders dan bij een foto, want de tekening wordt op dat formaat
+      opnieuw getekend en er niet naartoe uitgerekt."""
 
 [[howto]]
 title = "Voeg de hi-dpi-kopieën toe als je ze nodig hebt."
@@ -150,23 +147,23 @@ body = """
 [[howto]]
 title = "Kies het bestandstype en beslis over transparantie."
 body = """
- Png, tenzij je een reden
-      hebt: het is verliesloos, het houdt transparantie, en vlakke kleur
-      comprimeert er goed in. Jpeg heeft helemaal geen transparantie, dus er
-      wordt een achtergrondkleur in geschilderd, of je er nu een kiest of niet
-      &mdash; zonder komt elke transparante pixel er zwart uit. WebP doet allebei
-      en maakt een kleiner bestand, ten koste van software die oud genoeg is om
-      het niet te lezen."""
+ Png, tenzij je een reden hebt om iets
+      anders te nemen, want het is verliesloos, het houdt transparantie en vlakke
+      kleur comprimeert er goed in. Jpeg kent helemaal geen transparantie, dus daar
+      wordt hoe dan ook een achtergrondkleur in geschilderd, of je er nu een kiest
+      of niet. Kies je er geen, dan komt elke transparante pixel er zwart uit. WebP
+      doet allebei en maakt een kleiner bestand, alleen leest software die oud
+      genoeg is het niet."""
 
 [[howto]]
 title = "Kijk naar de voorvertoning voordat je downloadt."
 body = """
- Die wordt getekend door dezelfde
-      code die het bestand schrijft, uit jouw bestand, op jouw apparaat. Er
-      veranderen twee dingen wanneer een tekening pixels wordt, en allebei zie je
-      hier: een haarlijn die een halve pixel breed was wordt grijs, en tekst
-      wordt getekend in een lettertype dat deze computer heeft in plaats van een
-      dat van het web gehaald wordt."""
+ Die wordt getekend door dezelfde code
+      die het bestand schrijft, uit jouw bestand, op jouw apparaat. Zodra een
+      tekening pixels wordt veranderen er twee dingen, en allebei zie je ze hier.
+      Een haarlijn die een halve pixel breed was wordt grijs, en tekst wordt
+      getekend in een lettertype dat deze computer heeft in plaats van in een dat
+      van het web gehaald wordt."""
 
 [[howto]]
 title = "Neem de bestanden mee."
@@ -180,12 +177,12 @@ body = """
 [[faq]]
 q = "Wordt mijn svg ergens heen geüpload?"
 a = """
-        Nee. Het bestand wordt gelezen door je eigen browser op je eigen hardware,
-        op een canvas getekend door dezelfde motor die elk ander plaatje rendert
-        dat je ziet, en als download teruggegeven. Deze tool heeft geen enkele
-        netwerkfunctie &mdash; hij haalt nooit iets op en verstuurt nooit iets
-        &mdash; en de <code>Content-Security-Policy</code> van de pagina noemt elk
-        adres dat hij mag benaderen; geen ervan hoort bij deze site."""
+        Nee. Je eigen browser leest het bestand op je eigen hardware, tekent het op
+        een canvas met dezelfde motor die elk ander plaatje rendert dat je ziet, en
+        geeft het als download terug. Deze tool heeft geen enkele netwerkfunctie en
+        haalt dus nooit iets op en verstuurt nooit iets. In de
+        <code>Content-Security-Policy</code> van de pagina staat bovendien elk adres
+        dat hij mag benaderen, en geen daarvan hoort bij deze site."""
 
 [[faq]]
 q = "Op welk formaat moet ik een svg rasteren?"
@@ -213,11 +210,11 @@ a = """
 [[faq]]
 q = "Mijn svg heeft geen breedte of hoogte. Welk formaat krijg ik?"
 a = """
-        De <code>viewBox</code>, als die er is &mdash; de breedte en hoogte
-        daarvan zijn gebruikerseenheden en geen pixels, maar ze zijn de enige
-        getallen in het bestand en een browser behandelt ze als het natuurlijke
-        formaat van de tekening. Is er ook geen viewBox, dan zegt de pagina
-        <em>aangenomen</em> naast de regel en gebruikt ze
+        De <code>viewBox</code>, als die er is. De breedte en hoogte daarvan zijn
+        gebruikerseenheden en geen pixels, maar het zijn de enige getallen in het
+        bestand en een browser behandelt ze als het natuurlijke formaat van de
+        tekening. Is er ook geen viewBox, dan zet de pagina <em>aangenomen</em> naast
+        de regel en gebruikt ze
         300&nbsp;&times;&nbsp;150, en dat is waarop een <code>&lt;img&gt;</code>
         hem getekend zou hebben. Hoe dan ook kun je zelf het gewenste formaat
         noemen en wordt het bestand op dat formaat getekend."""
@@ -228,82 +225,82 @@ a = """
         Omdat het lettertype niet in de svg zit. Een svg die tekst tekent noemt een
         lettertype en laat het aan de machine over om het te vinden, en een bestand
         dat er een met een <code>@import</code> van Google Fonts haalt, krijgt hier
-        niets: een svg die via een <code>&lt;img&gt;</code> getekend wordt, mag
-        niets ophalen, en dat is dezelfde regel die hem belet met jouw bestand naar
-        huis te bellen. De oplossing is die elke ontwerper al kent &mdash; zet de
-        tekst in het tekenprogramma om naar paden voordat je exporteert. Dan is het
-        meetkunde, en dan ziet het er overal hetzelfde uit."""
+        niets, want een svg die via een <code>&lt;img&gt;</code> getekend wordt mag
+        niets ophalen. Dat is dezelfde regel die hem belet met jouw bestand naar huis
+        te bellen. De oplossing kent elke ontwerper al: zet de tekst in het
+        tekenprogramma om naar paden voordat je exporteert. Dan is het meetkunde, en
+        dan ziet het er overal hetzelfde uit."""
 
 [[faq]]
-q = "Kan het meerdere bestanden tegelijk omzetten?"
+q = "Kan hij meerdere bestanden tegelijk omzetten?"
 a = """
         Ja. Elke svg op de lijst wordt met dezelfde instellingen gerenderd en de
-        stapel komt binnen als één zip. Een factor &mdash; &ldquo;4&times; het
-        formaat dat het bestand vraagt&rdquo; &mdash; is meestal de juiste
-        instelling voor een stapel, omdat elke tekening vanaf zijn eigen formaat
-        geschaald wordt in plaats van dat ze allemaal naar hetzelfde aantal pixels
-        gedwongen worden. Klik op een regel om die in de voorvertoning te zetten."""
+        stapel komt binnen als één zip. Voor een stapel is een factor meestal de
+        juiste instelling, dus zoiets als &ldquo;4&times; het formaat dat het bestand
+        vraagt&rdquo;. Elke tekening wordt dan vanaf zijn eigen formaat geschaald in
+        plaats van dat ze allemaal naar hetzelfde aantal pixels gedwongen worden.
+        Klik op een regel om die in de voorvertoning te zetten."""
 
 [[faq]]
 q = "Zit er een groottelimiet op?"
 a = """
-        Die van de browser, niet de onze. Een canvas geeft het ergens voorbij
-        16.384 pixels op een zijde op, en Safari op een iPhone of iPad stopt bij
-        zo'n 16,7 megapixel oppervlak &mdash; 4096&nbsp;&times;&nbsp;4096.
-        Daarboven waarschuwt de pagina je in plaats van je een leeg plaatje te
-        geven, want dat is wat een browser doet wanneer hij op is:
-        <code>toBlob</code> geeft helemaal niets terug, zonder een foutmelding die
-        zichzelf uitlegt. Voorbij 100 megapixel weigert de tool, want dat is
-        400&nbsp;MB canvas nog voordat er één byte gecodeerd is."""
+        Die van de browser, niet die van ons. Een canvas geeft het ergens voorbij
+        16.384 pixels op een zijde op, en Safari op een iPhone of iPad stopt al bij
+        zo'n 16,7 megapixel oppervlak, oftewel 4096&nbsp;&times;&nbsp;4096. Daarboven
+        waarschuwt de pagina je in plaats van je een leeg plaatje te geven, want dat
+        is wat een browser doet zodra hij op is. <code>toBlob</code> geeft dan
+        helemaal niets terug, zonder foutmelding die zichzelf uitlegt. Voorbij 100
+        megapixel weigert de tool, omdat dat 400&nbsp;MB canvas is nog voordat er één
+        byte gecodeerd is."""
 
 [[faq]]
 q = "Wat gebeurt er met transparantie?"
 a = """
-        Die blijft, in png en in WebP. Jpeg heeft helemaal geen alfakanaal, dus er
-        wordt een kleur achter het hele plaatje geschilderd of je er nu om vraagt
-        of niet &mdash; zonder zou alles wat transparant is er zwart uit komen, en
-        dat ziet eruit als een fout in plaats van als jpeg. Een achtergrondkleur
-        kiezen bij png is ook een volstrekt gewone wens: dat slaat de tekening op
-        die kleur plat in plaats van er een gat te laten."""
+        Die blijft, in png en in WebP. Jpeg heeft helemaal geen alfakanaal, dus daar
+        wordt hoe dan ook een kleur achter het hele plaatje geschilderd, of je er nu
+        om vraagt of niet. Zonder die kleur zou alles wat transparant is er zwart uit
+        komen, en dat ziet eruit als een fout in plaats van als jpeg. Ook bij png is
+        een achtergrondkleur kiezen een volstrekt normale wens, want dan wordt de
+        tekening op die kleur platgeslagen in plaats van dat er een gat blijft."""
 
 [[faq]]
-q = "Kan het een svg lezen met een script of een externe afbeelding erin?"
+q = "Kan hij een svg lezen met een script of een externe afbeelding erin?"
 a = """
-        Lezen kan het, en het tekent precies de delen die een browser bereid is te
-        tekenen. Een svg die via een <code>&lt;img&gt;</code> geladen wordt, zit in
-        <em>secure static mode</em>: scripts draaien niet, externe verwijzingen
-        worden niet opgehaald, en animatie speelt niet &mdash; je krijgt het eerste
+        Lezen kan hij, en hij tekent precies de delen die een browser bereid is te
+        tekenen. Een svg die via een <code>&lt;img&gt;</code> geladen wordt zit in
+        <em>secure static mode</em>. Scripts draaien dan niet, externe verwijzingen
+        worden niet opgehaald en animatie speelt niet, dus je krijgt het eerste
         frame. Een bestand met een externe <code>&lt;image&gt;</code> erin komt er
-        dus uit met dat deel eruit. Dat is de browser die namens jou weigert, en
-        het is de reden dat deze pagina veilig een bestand kan openen dat ze nooit
-        gezien heeft."""
+        dus uit met dat deel eruit. Dat is de browser die namens jou weigert, en juist
+        daarom kan deze pagina veilig een bestand openen dat ze nooit eerder gezien
+        heeft."""
 
 [[faq]]
 q = "Wat is het verschil tussen dit en Afbeeldingsformaat wijzigen?"
 a = """
         De bron. <a href="../afbeelding-formaat-wijzigen/">Afbeeldingsformaat
-        wijzigen</a> begint bij pixels &mdash; een jpeg, een png &mdash; dus daar
-        moet groter maken detail verzinnen dat er nooit was. Dit begint bij een
-        tekening, dus valt er niets te verzinnen en is er geen bovengrens om je
-        druk over te maken. Heb je een svg, dan levert deze je een scherp
-        resultaat; heb je een foto, dan is die de juiste."""
+        wijzigen</a> begint bij pixels, bij een jpeg of een png, dus daar moet groter
+        maken detail verzinnen dat er nooit geweest is. Dit begint bij een tekening,
+        dus valt er niets te verzinnen en is er geen bovengrens om je druk over te
+        maken. Heb je een svg, dan levert deze je een scherp resultaat. Heb je een
+        foto, dan zit je bij die andere goed."""
 
 [[faq]]
 q = "Is het gratis, en heb ik een account nodig?"
 a = """
-        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
-        geen watermerk. Er is ook geen limiet op het aantal of de grootte van de
-        bestanden, want er is geen server die ervoor betaalt &mdash; het werk
-        gebeurt op je eigen apparaat. De site draagt advertenties, en die betalen
-        hem; de advertenties krijgen niets over je bestanden mee."""
+        Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen
+        watermerk aan te pas. Er zit ook geen limiet op het aantal bestanden of op de
+        grootte ervan, omdat er geen server is die daarvoor betaalt: het werk gebeurt
+        op je eigen apparaat. De site draait op advertenties, en die betalen hem. Die
+        advertenties krijgen niets over je bestanden mee."""
 
 [[faq]]
 q = "Werkt het offline?"
 a = """
-        Ja. Laad de pagina één keer, verbreek dan je internetverbinding, en hij
-        werkt door. Dat is ook de eenvoudigste manier om te bewijzen dat er niets
-        geüpload wordt: een tool die je tekenwerk wegstuurde om het te laten
-        renderen, zou stoppen op het moment dat je de stekker eruit trok."""
+        Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij
+        werkt gewoon door. Dat is meteen de eenvoudigste manier om te bewijzen dat er
+        niets geüpload wordt, want een tool die je tekenwerk wegstuurde om het te
+        laten renderen zou ermee ophouden zodra je de stekker eruit trok."""
 
 [schema]
 description = "Raster een svg naar een png, jpeg of WebP op elk formaat, in de browser. Stel het formaat in met een factor, een breedte, een hoogte, de langste zijde of een kader, voeg @2x- en @3x-kopieën toe, hou transparantie of sla hem plat, en zet een hele stapel in één keer om. Er wordt niets geüpload."

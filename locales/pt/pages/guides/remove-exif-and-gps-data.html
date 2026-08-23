@@ -2,11 +2,11 @@
     <h2>A resposta curta</h2>
     <p>
       Abra o <a href="../../remover-dados-exif/">Visualizador e removedor de
-      EXIF</a>, jogue as fotos dentro e aperte &ldquo;Remover todos os
+      EXIF</a>, jogue as fotos dentro e clique em &ldquo;Remover todos os
       metadados&rdquo;. Todas as etiquetas, os blocos XMP e IPTC, os comentários
       e a miniatura embutida vão embora, em todas as fotos da lista de uma vez.
-      A imagem em si não é tocada &mdash; não é recomprimida, não é decodificada,
-      não muda um pixel sequer.
+      A imagem em si não é tocada: não é recomprimida, não é decodificada, não
+      muda um pixel sequer.
     </p>
     <p>
       Antes de fazer isso, vale olhar o que tinha lá dentro. Costuma ser mais do
@@ -25,9 +25,9 @@
       <li>
         <strong>EXIF.</strong> O principal. Marca e modelo da câmera, lente,
         ajustes de exposição, ISO, a data e a hora com precisão de segundo, a
-        orientação em que a imagem deve ser exibida e &mdash; num celular com a
-        localização ligada para a câmera &mdash; uma posição de GPS com precisão
-        de poucos metros. Muitas vezes, também o número de série do corpo da
+        orientação em que a imagem deve ser exibida e, num celular com a
+        localização ligada para a câmera, uma posição de GPS com precisão de
+        poucos metros. Muitas vezes, também o número de série do corpo da
         câmera.
       </li>
       <li>
@@ -38,8 +38,8 @@
       <li>
         <strong>XMP.</strong> Um pacote de XML que os editores escrevem. Pode
         carregar o seu nome, o seu software, avaliações, palavras-chave,
-        histórico de edição e uma cópia de alguns campos do EXIF &mdash; e é por
-        isso que remover só o EXIF não basta.
+        histórico de edição e uma cópia de alguns campos do EXIF, e é por isso
+        que remover só o EXIF não basta.
       </li>
       <li>
         <strong>IPTC.</strong> Um bloco mais antigo com campos de legenda,
@@ -49,8 +49,8 @@
       <li>
         <strong>A miniatura embutida.</strong> Uma segunda cópia pequena da
         imagem. Ela é gerada quando o arquivo é escrito, e nem sempre é gerada
-        de novo quando a imagem é editada &mdash; e é assim que uma foto cortada
-        pode viajar com uma miniatura do que foi cortado fora.
+        de novo quando a imagem é editada. É assim que uma foto cortada pode
+        viajar com uma miniatura do que foi cortado fora.
       </li>
       <li>
         <strong>A maker note.</strong> Um bloco não documentado com dados do
@@ -68,9 +68,9 @@
     <p>
       <strong>A maioria das grandes redes sociais apaga os metadados quando você
       posta.</strong> Facebook, Instagram e X recodificam as imagens enviadas e
-      descartam as etiquetas no processo. Isso não é gentileza &mdash; eles ficam
-      com os dados do lado deles &mdash; mas significa que uma foto postada
-      nesses serviços não entrega as coordenadas dela a cada pessoa que a vê.
+      descartam as etiquetas no processo. Isso não é gentileza, porque eles ficam
+      com os dados do lado deles, mas significa que uma foto postada nesses
+      serviços não entrega as coordenadas dela a cada pessoa que a vê.
     </p>
     <p>
       <strong>Quase todo o resto mantém.</strong> Um anexo de e-mail. Um arquivo
@@ -94,9 +94,9 @@
     <h2>Por que não simplesmente salvar de novo?</h2>
     <p>
       Salvar de novo uma foto por um editor ou um compressor realmente remove os
-      metadados &mdash; a imagem é decodificada em pixels e codificada outra vez,
-      e um canvas cheio de pixels não carrega etiqueta nenhuma. Funciona, e lhe
-      custa qualidade, porque essa recodificação é com perdas.
+      metadados, porque a imagem é decodificada em pixels e codificada outra vez,
+      e um canvas cheio de pixels não carrega etiqueta nenhuma. Funciona, e custa
+      qualidade a você, porque essa recodificação é com perdas.
     </p>
     <p>
       Remover os metadados direito não custa nada. As etiquetas ficam no
@@ -123,15 +123,15 @@
     </p>
     <p>
       É por isso que a ferramenta daqui tem uma opção de &ldquo;manter a etiqueta
-      de orientação&rdquo;, ligada por padrão. Ela escreve de volta um
+      de orientação&rdquo;, que já vem ligada. Ela escreve de volta um
       pequeníssimo bloco EXIF contendo só essa etiqueta e nada mais, e só nas
       fotos que realmente precisavam. O GPS, os horários, o número de série e o
       resto continuam fora.
     </p>
     <p>
-      Desligue se você preferir que o arquivo não carregue EXIF nenhum &mdash; e
-      então confira o resultado antes de mandar, porque uma foto deitada é o
-      desfecho de sempre.
+      Desligue se você preferir que o arquivo não carregue EXIF nenhum, e então
+      confira o resultado antes de mandar, porque uma foto deitada é o desfecho
+      de sempre.
     </p>
   </section>
 
@@ -140,7 +140,7 @@
     <p>
       Remover tudo é a resposta certa para a maioria das pessoas. Às vezes não
       é: um fotógrafo pode querer manter a linha de direitos autorais e os
-      ajustes da câmera e tirar só a localização; um arquivista pode precisar
+      ajustes da câmera e tirar só a localização, e um arquivista pode precisar
       corrigir uma data que estava errada porque o relógio da câmera estava.
     </p>
     <p>
@@ -152,8 +152,8 @@
       escrever o arquivo reconstrói o bloco EXIF, e uma maker note contém
       deslocamentos que apontam para dentro do bloco <em>original</em>. Uma maker
       note reconstruída pode, portanto, deixar de ser legível pelo próprio
-      software do fabricante. Se isso importa, apague a maker note ou deixe o
-      arquivo sem editar.
+      software do fabricante. Se isso importa para você, apague a maker note ou
+      deixe o arquivo sem editar.
     </p>
   </section>
 
@@ -164,15 +164,14 @@
       três que a ferramenta daqui trata.
     </p>
     <p>
-      HEIC &mdash; o que um iPhone salva por padrão &mdash; e AVIF são formatos
-      de caixas montados a partir de átomos aninhados, e precisam de um
-      interpretador completamente diferente. A ferramenta reconhece os dois e diz
-      isso, em vez de produzir um arquivo quebrado. Se você tem um HEIC,
-      convertê-lo para JPEG vai remover os metadados como efeito colateral da
-      conversão.
+      HEIC, que é o que um iPhone salva por padrão, e AVIF são formatos de caixas
+      montados a partir de átomos aninhados, e precisam de um interpretador
+      completamente diferente. A ferramenta reconhece os dois e avisa isso, em
+      vez de produzir um arquivo quebrado. Se você tem um HEIC, convertê-lo para
+      JPEG vai remover os metadados como efeito colateral da conversão.
     </p>
     <p>
-      Um TIFF puro também não é tratado, e por um motivo mais interessante: num
+      Um TIFF puro também fica de fora, e por um motivo mais interessante: num
       TIFF os metadados e os dados de pixel são endereçados pelos mesmos
       deslocamentos, então remover etiquetas significa reescrever o
       endereçamento da própria imagem. Dá para fazer, e é outro trabalho.
@@ -183,15 +182,15 @@
     <h2>Um hábito que vale ter</h2>
     <p>
       Confira antes de postar, não depois. Ler as etiquetas leva alguns segundos,
-      e a lista de achados nomeia as coisas que vale saber &mdash; a posição, os
-      horários, os números de série &mdash; antes da tabela completa com todas as
+      e a lista de achados nomeia as coisas que vale saber, como a posição, os
+      horários e os números de série, antes da tabela completa com todas as
       etiquetas, para você não precisar saber o que procurar.
     </p>
     <p>
-      A posição é mostrada primeiro em graus decimais, de propósito. &ldquo;51
-      graus, 30 minutos, 26 segundos&rdquo; não deixa evidente que a foto nomeia
-      o prédio em que foi tirada. Um par de decimais que você cola num mapa
-      deixa.
+      A posição aparece primeiro em graus decimais, de propósito. &ldquo;51
+      graus, 30 minutos, 26 segundos&rdquo; não deixa evidente que a foto está
+      entregando o prédio em que foi tirada. Um par de decimais que você cola num
+      mapa deixa.
     </p>
   </section>
 
@@ -209,12 +208,12 @@
       perfeitamente bem, e é por isso que a ferramenta daqui não tem função de
       rede nenhuma: nenhum <code>fetch</code>, nenhum <code>XMLHttpRequest</code>,
       nada que pudesse mandar um arquivo mesmo que alguma coisa tentasse.
-      Carregue uma vez, desconecte, e ela continua funcionando.
+      Carregue uma vez, desligue a internet, e ela continua funcionando.
     </p>
     <p>
-      <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
+      O <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
       conversores online?</a> mostra como conferir essa afirmação neste site ou
-      em qualquer outro &mdash; e este é o tipo de arquivo em que mais vale a
+      em qualquer outro, e este é justamente o tipo de arquivo em que mais vale a
       pena conferir.
     </p>
   </section>

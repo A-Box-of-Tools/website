@@ -28,11 +28,11 @@
     <h2><span class="step">2</span> Zeg hoe groot het moet worden</h2>
 
     <p class="card-lede">
-      Dit is de ene vraag die een vector niet voor je kan beantwoorden. In een
-      svg zitten geen pixels &mdash; er zitten tekeninstructies in, en die volgt
-      hij op elk formaat dat je noemt. Het getal hieronder is geen grens waar je
-      tegenaan duwt, zoals dat bij een foto zou zijn; 4000 pixels uit een icoon
-      van 24&nbsp;pixels is precies zo scherp als die 24 was.
+      Dit is de ene vraag die een vector niet voor je kan beantwoorden. In een svg
+      zitten geen pixels maar tekeninstructies, en die volgt hij op elk formaat dat
+      je noemt. Het getal hieronder is dus geen grens waar je tegenaan duwt, zoals
+      dat bij een foto wel zou zijn. 4000 pixels uit een icoon van 24&nbsp;pixels is
+      precies zo scherp als die 24 was.
     </p>
 
     <div class="option-row">
@@ -147,10 +147,10 @@
         <label for="quality">Kwaliteit &mdash; <output id="quality-value" for="quality">90</output></label>
         <input type="range" id="quality" min="30" max="100" step="1" value="90">
         <p class="field-note">
-          Alleen JPEG en WebP; PNG heeft geen kwaliteitsknop omdat het verliesloos
-          is. Vlakke kleur en harde randen &mdash; en daar bestaat een svg vooral
-          uit &mdash; zijn precies waar een verliesgevende encoder het slechtst
-          mee omgaat, dus staat deze hier hoger dan bij een foto.
+          Alleen voor JPEG en WebP, want PNG heeft geen kwaliteitsknop omdat het
+          verliesloos is. Een verliesgevende encoder gaat het slechtst om met vlakke
+          kleur en harde randen, en daar bestaat een svg nu juist vooral uit. Daarom
+          staat deze hier hoger dan bij een foto.
         </p>
       </div>
 
@@ -171,12 +171,11 @@
     <h2><span class="step">4</span> Bekijk het, en sla het dan op</h2>
 
     <p class="card-lede">
-      De voorvertoning wordt getekend door dezelfde code die het bestand
-      schrijft, uit het bestand dat je koos, op dit apparaat. Waar het de moeite
-      waard is op te letten, zijn de twee dingen die veranderen wanneer een
-      tekening pixels wordt: een haarlijn die een halve pixel breed was en grijs
-      geworden is, en tekst, die getekend wordt in een lettertype dat dit
-      apparaat heeft in plaats van een dat van het web gehaald wordt.
+      De voorvertoning wordt getekend door dezelfde code die het bestand schrijft,
+      uit het bestand dat je koos, op dit apparaat. Let vooral op de twee dingen die
+      veranderen zodra een tekening pixels wordt. Een haarlijn die een halve pixel
+      breed was is grijs geworden, en tekst wordt getekend in een lettertype dat dit
+      apparaat heeft in plaats van in een dat van het web gehaald wordt.
     </p>
 
     <div id="preview" class="preview" hidden>

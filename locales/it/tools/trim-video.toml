@@ -11,25 +11,26 @@ name = "Tagliavideo"
 heading = "Tagliare&nbsp;un&nbsp;video <span class=\"h1-kw\">&mdash; accorciarlo online</span>"
 tagline = "Segna i pezzi che vale la pena tenere mentre scorre. Te li ritrovi come un video solo."
 
-title = "Tagliare un video online &mdash; tieni solo i pezzi che vuoi, senza caricare nulla"
-description = "Guarda un video e segna ogni pezzo che vale la pena tenere mentre scorre, poi salva quei pezzi come un file solo. Gira nel browser: niente caricamenti, niente ricodifiche, funziona offline."
+title = "Tagliare un video online &mdash; tieni solo i pezzi che vuoi, senza caricare niente"
+description = "Guarda un video e segna ogni pezzo che vale la pena tenere mentre scorre, poi salva quei pezzi come un file solo. Gira nel browser, non carica niente, non ricodifica niente e funziona offline."
 og_title = "Tagliavideo &mdash; tieni solo i pezzi che vuoi, senza caricare niente"
-og_description = "Premi I e O mentre scorre per segnare ogni pezzo che vale la pena tenere. I pezzi segnati vengono riscritti come un video solo, fotogramma per fotogramma, senza caricare nulla."
+og_description = "Premi I e O mentre scorre per segnare ogni pezzo che vale la pena tenere. I pezzi segnati vengono riscritti come un video solo, fotogramma per fotogramma, senza caricare niente."
 og_image_alt = "Tagliavideo - segna i pezzi che vuoi e salvali come un video solo, nel browser"
 
 pledge = """
     Il tuo video viene letto, segnato, tagliato e scritto dal tuo browser, sul
-    tuo hardware. Qui dentro non c'è niente che possa recuperare o spedire
-    qualcosa &mdash; questo strumento non ha proprio alcuna funzione di rete
-    &mdash; e dall'altra parte di questa pagina non c'è alcun server a cui
-    mandare un video, anche se ci fosse un modo per farlo."""
+    tuo hardware. Qui dentro non c'è niente che sappia recuperare o spedire
+    qualcosa, perché questo strumento non ha proprio nessuna funzione di rete. E
+    dall'altra parte di questa pagina non c'è nessun server a cui mandare un
+    video, anche se una funzione del genere ci fosse."""
 
 live_hint = """
-      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
-      scheda Rete e taglia un video. Non una sola richiesta porta con sé un
-      fotogramma, un nome di file o un byte di quello che hai scelto. Oppure
-      stacca la connessione e tagliane uno lo stesso &mdash; uno strumento che
-      spedisse via il tuo video per tagliarlo si fermerebbe e basta."""
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori,
+      tieni d'occhio il pannello Rete e taglia un video. Non c'è una sola
+      richiesta che porti con sé un fotogramma, un nome di file o un byte di
+      quello che hai scelto. Oppure stacca la connessione e tagliane uno lo
+      stesso: uno strumento che spedisse via il tuo video per tagliarlo si
+      fermerebbe e basta."""
 
 read_first = """
 , <code>src/segments.js</code> per i segni e il file
@@ -37,7 +38,7 @@ read_first = """
       i fotogrammi dentro un MP4, <code>src/ranges.js</code> per l'aritmetica
       che trasforma un segno in una serie di campioni, e
       <code>src/copy.js</code> per il ciclo che sposta quei campioni nel file
-      nuovo. Nessuno di loro importa qualcosa in grado di fare una richiesta."""
+      nuovo. Nessuno di loro importa qualcosa che sappia fare una richiesta."""
 
 howto_heading = "Come tagliare un video"
 
@@ -49,8 +50,6 @@ card = """
 [words]
 plural = "video"
 choose = "un video"
-analytics_extra = """, e nessun
-  fotogramma, durata o punto di taglio"""
 
 [[facts]]
 text = "Niente caricamenti"
@@ -74,29 +73,29 @@ text = "Funziona offline"
 title = "I tuoi video non hanno dove andare."
 body = """
  La
-      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
-      contattare, e nessuno di questi appartiene a questo sito. Qui non esiste
-      un punto di raccolta dove il tuo file potrebbe finire, e nel codice non
-      c'è nulla che ce lo manderebbe se esistesse."""
+      Content-Security-Policy elenca tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di quegli indirizzi appartiene a questo sito. Non
+      esiste un punto di raccolta in cui il tuo file possa finire, e nel codice
+      non c'è niente che ce lo manderebbe se anche esistesse."""
 
 [[privacy]]
-title = "Qui dentro niente recupera niente."
+title = "Qui dentro niente va a recuperare niente."
 body = """
- Questo strumento non ha proprio
-      alcuna funzione di rete: nessun indirizzo da incollare, niente da
-      scaricare, nessun motore recuperato al primo utilizzo. Ogni byte che tocca
-      il tuo video è arrivato da questa origine quando la pagina si è
-      caricata."""
+ Questo strumento non ha
+      proprio nessuna funzione di rete: nessun indirizzo da incollare, niente da
+      scaricare, nessun motore che si scarichi al primo utilizzo. Ogni byte che
+      tocca il tuo video è arrivato da questa origine nel momento in cui si è
+      caricata la pagina."""
 
 [[privacy]]
-title = "Sulla via normale non viene nemmeno decodificato niente."
+title = "Per la strada normale non viene nemmeno decodificato niente."
 body = """
 
-      Tagliare non cambia l'aspetto di alcun fotogramma, quindi i fotogrammi
+      Tagliare non cambia l'aspetto di nessun fotogramma, quindi i fotogrammi
       codificati dei pezzi che hai segnato vengono spostati nel file nuovo
       esattamente come sono stati trovati. Ognuno viene conservato come una
-      fetta del file sul tuo disco &mdash; un appunto che dice quali byte, non i
-      byte stessi &mdash; e il tuo browser li legge per la prima volta mentre
+      fetta del file che sta sul tuo disco, cioè un appunto che dice quali byte
+      e non i byte stessi, e il tuo browser li legge per la prima volta mentre
       scrive il download. Qui dentro non c'è niente che ritrasformi mai il tuo
       video in un'immagine."""
 
@@ -112,79 +111,80 @@ body = """
 [[privacy]]
 title = "L'audio viene copiato, non ascoltato."
 body = """
- Su entrambe le vie
-      dell'MP4 i campioni audio vengono spostati dall'altra parte senza essere
-      decodificati affatto &mdash; qui dentro non c'è niente che li ritrasformi
-      in suono, e niente che potrebbe passarli da qualche parte se lo
-      facesse."""
+ Su tutte e due le strade
+      dell'MP4 i campioni audio passano dall'altra parte senza essere
+      decodificati per niente: qui dentro non c'è niente che li ritrasformi in
+      suono, e non ci sarebbe niente in grado di passarli da qualche parte
+      nemmeno se lo facesse."""
 
 [[privacy]]
-title = "Dove i fotogrammi vengono decodificati, avviene qui."
+title = "Dove i fotogrammi vengono davvero decodificati, succede qui."
 body = """
  Il taglio
       esatto, e l'anteprima per un file che questo browser non riproduce,
       passano per WebCodecs sul tuo dispositivo. È lo stesso decodificatore che
-      ti mostrerebbe il video comunque, che gira nello stesso posto."""
+      ti mostrerebbe il video comunque, e gira nello stesso posto."""
 
 [[privacy]]
-title = "Cosa carica Google, e cosa non gli viene dato."
+title = "Cosa carica Google, e cosa non gli arriva."
 body = """
- Gli script
-      pubblicitari e di misurazione arrivano da Google. A nessuno dei due viene
-      passato niente sul tuo video: né un file, né un fotogramma, né un nome,
-      una dimensione, una durata o dove l'hai tagliato. Ogni riga che legge,
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sul tuo video: né un file, né un fotogramma, né un nome, né
+      una dimensione, né una durata, né dove l'hai tagliato. Ogni riga che legge,
       taglia e scrive è servita da questa origine ed è elencata nel
       repository."""
 
 [[privacy]]
-title = "Cosa carica il pulsante delle donazioni, e cosa non gli viene dato."
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
 body = """
 
-      Il pulsante «Buy me a coffee» in cima è disegnato da uno script di
-      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. È un link e
-      niente di più: non riferisce alcuna visita, e non gli viene passato niente
-      su di te o sul tuo video."""
+      Il pulsante «Buy me a coffee» in cima lo disegna uno script di
+      cdnjs.buymeacoffee.com, che prende i caratteri da Google Fonts. È un link
+      e niente di più: non riferisce nessuna visita, e non gli viene passato
+      niente su di te o sul tuo video."""
 
 [[privacy]]
 title = "Funziona offline."
 body = """
  Stacca la rete e tutto quello che sta su
-      questa pagina continua a funzionare. È la prova più semplice di tutte."""
+      questa pagina continua a funzionare. È la prova più semplice che ci
+      sia."""
 
 [[howto]]
 title = "Scegli un video."
 body = """
  Trascina un MP4, un MOV, un M4V o un
-      WebM sul riquadro. Il browser lo legge direttamente dal tuo disco; mentre
-      lo fai non viene mandato niente da nessuna parte. Trascinane parecchi e
-      vengono uniti, nell'ordine in cui li hai messi."""
+      WebM sul riquadro. Lo legge il browser direttamente dal tuo disco, e
+      mentre lo fa non parte niente per nessuna destinazione. Trascinane
+      parecchi e vengono uniti, nell'ordine in cui li hai messi."""
 
 [[howto]]
 title = "Fallo scorrere, e segna i pezzi che vuoi."
 body = """
  Premi
-      <kbd>I</kbd> dove un pezzo deve cominciare e <kbd>O</kbd> dove deve finire.
-      Fallo tutte le volte che vuoi &mdash; ogni coppia diventa una riga nella
-      tabella qui sotto, e una fascia sulla linea del tempo. <kbd>U</kbd> toglie
-      l'ultima, <kbd>Spazio</kbd> avvia e mette in pausa, e le frecce saltano di
-      cinque secondi alla volta. Rallenta la riproduzione se il momento è
-      difficile da prendere."""
+      <kbd>I</kbd> dove un pezzo deve cominciare e <kbd>O</kbd> dove deve finire,
+      tutte le volte che vuoi: ogni coppia diventa una riga nella tabella qui
+      sotto e una fascia sulla linea del tempo. <kbd>U</kbd> toglie l'ultima,
+      <kbd>Spazio</kbd> avvia e mette in pausa, e le frecce saltano di cinque
+      secondi alla volta. Se il momento è difficile da prendere, rallenta la
+      riproduzione."""
 
 [[howto]]
 title = "Sistema i segni."
 body = """
- Ogni riga si può riprodurre per conto
-      suo, ritempificare scrivendoci dentro un tempo esatto, spostare su o giù
-      nell'ordine, o cancellare. I due estremi del pezzo selezionato si possono
-      anche trascinare lungo la linea del tempo. Il totale in cima è quanto
-      durerà il video finito."""
+ Ogni riga la puoi riprodurre per conto
+      suo, correggere scrivendoci dentro un tempo esatto, spostare su o giù
+      nell'ordine, oppure cancellare. I due estremi del pezzo selezionato si
+      possono anche trascinare lungo la linea del tempo. Il totale in cima è
+      quanto durerà il video finito."""
 
 [[howto]]
 title = "Tienili, oppure toglili."
 body = """
  Tenere è il verso abituale: il
       video finito sono i pezzi che hai segnato, uniti in ordine. Toglierli è
-      l'altro lavoro che si vuole e che raramente si trova &mdash; segna le
+      quell'altro lavoro che si vuole spesso e si trova raramente: segna le
       pubblicità, i silenzi o le false partenze, e quello che resta viene unito
       senza di loro."""
 
@@ -193,51 +193,51 @@ title = "Taglia, e scarica."
 body = """
  «Tieni ogni byte» sposta i
       fotogrammi dall'altra parte intatti: è rapido e non può costare qualità,
-      ma ogni pezzo comincia dal fotogramma chiave prima del tuo segno.
+      ma ogni pezzo comincia dal fotogramma chiave che precede il tuo segno.
       «Taglia esattamente qui» decodifica e riscrive l'immagine, così ogni pezzo
-      parte dal fotogramma che hai scelto. La pagina dice quale dei due stai per
-      ottenere, e quanto costa, prima che tu prema il pulsante."""
+      parte dal fotogramma che hai scelto tu. La pagina ti dice quale dei due
+      stai per ottenere, e quanto costa, prima che tu prema il pulsante."""
 
 [[faq]]
 q = "Il mio video viene caricato da qualche parte?"
 a = """
-        No. Viene letto, segnato, tagliato e scritto dal tuo browser sul tuo
+        No. Lo legge, lo segna, lo taglia e lo scrive il tuo browser sul tuo
         hardware. Questo strumento non ha un lato server, e la
-        <code>Content-Security-Policy</code> della pagina nomina tutti gli
-        indirizzi che può contattare &mdash; nessuno di questi appartiene a
-        questo sito. Se preferisci verificare invece che crederci, stacca la
-        connessione e taglia un video lo stesso."""
+        <code>Content-Security-Policy</code> della pagina elenca tutti gli
+        indirizzi che può contattare, nessuno dei quali appartiene a questo sito.
+        Se preferisci verificare invece che crederci, stacca la connessione e
+        taglia un video lo stesso."""
 
 [[faq]]
 q = "Posso tenere più pezzi dello stesso video?"
 a = """
         È esattamente per questo che esiste. Premi <kbd>I</kbd> e <kbd>O</kbd>
-        tutte le volte che vuoi mentre scorre; ogni coppia diventa una riga, e il
-        video finito è ogni riga unita in ordine con tutto il resto sparito.
+        tutte le volte che vuoi mentre scorre: ogni coppia diventa una riga, e il
+        video finito è ogni riga unita in ordine, con tutto il resto sparito.
         Quasi tutti i tagliavideo online ti danno una coppia di maniglie e ti
-        chiedono quale unico tratto tenere, il che va bene per rifilare l'inizio
-        e la fine di una clip e non serve a niente per guardare un'ora di riprese
-        una volta sola e tenere i sei momenti che valgono."""
+        chiedono quale unico tratto tenere, il che va benissimo per rifilare
+        l'inizio e la fine di una clip e non serve a niente quando devi guardare
+        un'ora di riprese una volta sola e tenere i sei momenti che valgono."""
 
 [[faq]]
 q = "Tagliare fa perdere qualità?"
 a = """
-        Non sulla via normale, e non nel modo che conta. Tagliare non cambia
-        l'aspetto di alcun fotogramma, quindi i fotogrammi vengono spostati nel
-        file nuovo esattamente com'erano: gli stessi byte, le stesse
-        impostazioni dell'encoder, tutto uguale. L'unica via di qui che
-        ricodifica qualcosa è il taglio esatto, e lo dice sul pulsante."""
+        Non per la strada normale, e non nel modo che conta. Tagliare non cambia
+        l'aspetto di nessun fotogramma, quindi i fotogrammi vengono spostati nel
+        file nuovo esattamente com'erano: gli stessi byte, le stesse impostazioni
+        dell'encoder, tutto uguale. L'unica strada di qui che ricodifica qualcosa
+        è il taglio esatto, e lo dice sul pulsante."""
 
 [[faq]]
 q = "Perché un pezzo comincia prima di dove l'ho segnato?"
 a = """
         Per come è conservato il video, e solo sui lettori che ignorano una parte
         standard del formato. Quasi tutti i fotogrammi sono conservati come una
-        descrizione di come differiscono dai vicini, quindi non si possono
-        decodificare senza di loro; solo un fotogramma chiave sta in piedi da
-        solo, e i fotogrammi chiave di solito distano da uno a dieci secondi. Un
-        taglio che copia i fotogrammi deve quindi portarsi la serie a partire dal
-        fotogramma chiave davanti al tuo segno &mdash; e il file dice <em>comincia
+        descrizione di quanto differiscono dai vicini, quindi senza i vicini non
+        si possono decodificare; solo un fotogramma chiave sta in piedi da solo, e
+        i fotogrammi chiave di solito distano da uno a dieci secondi. Un taglio
+        che copia i fotogrammi deve perciò portarsi dietro la serie a partire dal
+        fotogramma chiave che precede il tuo segno, e nel file scrive <em>comincia
         a riprodurre dal tuo segno</em>, cosa che ogni lettore diffuso rispetta.
         Se ti serve esatto su qualunque lettore, scegli «Taglia esattamente qui»,
         che ricodifica. La pagina ti dice in quale dei due casi ti trovi, e di
@@ -246,21 +246,21 @@ a = """
 [[faq]]
 q = "Posso invece togliere le pubblicità?"
 a = """
-        Sì. Segnale, poi scegli «Toglili»: viene unito invece tutto quello che
+        Sì. Segnale, poi scegli «Toglili»: viene unito tutto quello che
         <em>non</em> hai segnato, in ordine. Lo stesso elenco di segni risponde a
-        entrambe le domande, quindi puoi passare dall'una all'altra e vedere la
+        tutte e due le domande, quindi puoi passare dall'una all'altra e vedere la
         durata cambiare senza segnare niente due volte."""
 
 [[faq]]
 q = "Posso salvare i miei segni e riprenderli dopo?"
 a = """
-        Sì. «Salva i segni» scrive un file di testo semplice &mdash; una riga per
-        pezzo, un inizio e una fine separati da una virgola &mdash; e «Carica i
-        segni» ne rilegge uno. Vengono offerti due formati, secondi semplici e
-        <code>HH:MM:SS.mmm</code>, ed entrambi rispettano la disposizione che
-        altri strumenti fatti così usano già, quindi un file scritto qui si può
-        consegnare a uno di quelli e un file scritto là si può trascinare su
-        questa pagina. Segnare è un lavoro paziente e nessuno dovrebbe doverlo
+        Sì. «Salva i segni» scrive un file di testo semplice, una riga per pezzo
+        con un inizio e una fine separati da una virgola, e «Carica i segni» ne
+        rilegge uno. I formati offerti sono due, secondi semplici e
+        <code>HH:MM:SS.mmm</code>, e tutti e due rispettano la disposizione che
+        altri strumenti fatti così usano già, quindi un file scritto qui lo puoi
+        consegnare a uno di quelli e un file scritto là lo puoi trascinare su
+        questa pagina. Segnare è un lavoro paziente, e nessuno dovrebbe doverlo
         fare due volte."""
 
 [[faq]]
@@ -268,50 +268,50 @@ q = "Quali formati video posso tagliare?"
 a = """
         MP4, M4V e MOV vengono letti direttamente, qualunque cosa ci sia dentro:
         H.264, HEVC, AV1 o VP9. Copiare i fotogrammi non comporta decodificarli,
-        quindi questa via funziona anche per un codec per cui il tuo browser non
-        ha proprio alcun decodificatore. Tutto il resto che il browser sa
-        riprodurre &mdash; il WebM in primis &mdash; viene invece tagliato
-        riproducendolo e registrando il risultato, il che funziona, richiede
-        tanto tempo quanto è lungo il risultato, e può tenere un pezzo solo. Un
-        file che il browser non sa né leggere né riprodurre, il che in pratica
-        vuol dire AVI, WMV, FLV e quasi tutti gli MKV, viene rifiutato con un
-        messaggio che lo dice, invece di piantarsi a metà strada."""
+        quindi questa strada funziona anche per un codec per cui il tuo browser
+        non ha proprio nessun decodificatore. Tutto il resto che il browser sa
+        riprodurre, il WebM in primis, viene invece tagliato riproducendolo e
+        registrando il risultato, il che funziona, richiede tanto tempo quanto è
+        lungo il risultato, e può tenere un pezzo solo. Un file che il browser non
+        sa né leggere né riprodurre, e in pratica sono AVI, WMV, FLV e quasi tutti
+        gli MKV, viene rifiutato con un messaggio che lo dice, invece di piantarsi
+        a metà strada."""
 
 [[faq]]
 q = "C'è un limite alla dimensione o alla durata del video?"
 a = """
-        Nello strumento non c'è alcun limite, e sulla via della copia il file
+        Nello strumento non ce n'è nessuno, e sulla strada della copia il file
         viene letto a malapena: i fotogrammi che tieni vengono puntati invece che
         caricati, quindi tenere quattro minuti da una registrazione di quattro
         gigabyte costa più o meno quanto costa scrivere quei quattro minuti sul
-        disco. Il taglio esatto percorre il file qualche megabyte alla volta. In
-        entrambi i casi il tetto pratico è il file finito, che viene assemblato
-        in memoria prima che tu lo scarichi."""
+        disco. Il taglio esatto invece percorre il file qualche megabyte alla
+        volta. In tutti e due i casi il tetto pratico è il file finito, che viene
+        assemblato in memoria prima che tu lo scarichi."""
 
 [[faq]]
 q = "L'audio sopravvive?"
 a = """
-        Su entrambe le vie dell'MP4 viene copiato campione per campione senza
-        essere mai decodificato, quindi è byte per byte quello che c'era nel
+        Su tutte e due le strade dell'MP4 viene copiato campione per campione
+        senza essere mai decodificato, quindi è byte per byte quello che c'era nel
         file, e un segno di montaggio tiene ogni pezzo allineato con la sua
-        immagine entro un millesimo di secondo. L'unica eccezione è unire video
-        separati il cui audio è descritto in modo diverso &mdash; frequenze di
-        campionamento diverse, per esempio &mdash; dove non c'è modo di mettere
-        entrambi in una traccia sola senza decodificarli, e la pagina lo dice
-        prima di farlo. Sulla via della registrazione viene catturato dalla
-        riproduzione e ricodificato. In entrambi i casi c'è una casella per
+        immagine entro un millesimo di secondo. L'unica eccezione è quando unisci
+        video separati il cui audio è descritto in modo diverso, per esempio con
+        frequenze di campionamento diverse: lì non c'è modo di metterli tutti e
+        due in una traccia sola senza decodificarli, e la pagina te lo dice prima
+        di farlo. Sulla strada della registrazione viene invece catturato dalla
+        riproduzione e ricodificato. In tutti e due i casi c'è una casella per
         lasciarlo fuori del tutto."""
 
 [[faq]]
 q = "È gratis, e mi serve un account?"
 a = """
-        È gratis, e non c'è account, non c'è accesso, non c'è periodo di prova e
-        non c'è filigrana. Il sito ha della pubblicità, ed è quella che lo paga;
-        agli annunci non viene dato niente sul tuo video."""
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di
+        prova e non c'è filigrana. Il sito ha della pubblicità, ed è quella che lo
+        mantiene; agli annunci non arriva niente sul tuo video."""
 
 [schema]
 browser_requirements = "Richiede JavaScript. Copiare i fotogrammi non richiede alcun supporto ai codec video; il taglio esatto richiede un browser con WebCodecs, e gli altri formati ripiegano sulla registrazione."
-description = "Segna quanti pezzi vuoi di un video mentre scorre, poi salva quei pezzi come un file solo - oppure toglili e tieni il resto. MP4, MOV e M4V vengono tagliati spostando i fotogrammi codificati in un file nuovo intatti, con l'audio originale portato dall'altra parte campione per campione; non viene caricato nulla e non viene ricodificato niente."
+description = "Segna quanti pezzi vuoi di un video mentre scorre, poi salva quei pezzi come un file solo - oppure toglili e tieni il resto. MP4, MOV e M4V vengono tagliati spostando i fotogrammi codificati in un file nuovo intatti, con l'audio originale portato dall'altra parte campione per campione; non viene caricato niente e non viene ricodificato niente."
 features = [
   "Segna quanti pezzi vuoi con I e O mentre il video scorre",
   "Unisce i pezzi segnati in un file solo, nell'ordine che scegli tu",
@@ -325,4 +325,4 @@ features = [
 
 [picker]
 title = "Trascina qui un video"
-hint = "oppure clicca per scegliere &mdash; MP4, MOV, M4V, WebM. Trascinane parecchi per unirli."
+hint = "oppure clicca per sceglierlo &mdash; MP4, MOV, M4V, WebM. Trascinane parecchi per unirli."

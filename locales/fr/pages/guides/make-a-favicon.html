@@ -29,11 +29,11 @@
       Cela a l'air redondant et ne l'est pas. Un navigateur qui dessine votre
       icône à seize pixels a deux possibilités&nbsp;: lire une version de seize
       pixels que vous avez dessinée, ou en réduire une plus grande sur-le-champ.
-      La seconde est pire, et visiblement &mdash; la réduction automatique d'un
-      logo détaillé produit une bouillie, alors qu'une version de seize pixels
-      que vous avez regardée est une chose que vous avez eu l'occasion de
-      simplifier. Toute la raison pour laquelle le format contient plusieurs
-      tailles est de vous donner cette occasion.
+      La seconde est pire, et visiblement, car la réduction automatique d'un logo
+      détaillé produit une bouillie, alors qu'une version de seize pixels que vous
+      avez regardée est une chose que vous avez eu l'occasion de simplifier. Toute
+      la raison pour laquelle le format contient plusieurs tailles est de vous
+      donner cette occasion.
     </p>
     <p>
       Trois tailles sont la convention pour un site web, et chacune a sa
@@ -41,18 +41,18 @@
     </p>
     <ul>
       <li>
-        <strong>16&times;16</strong> &mdash; l'onglet du navigateur, la barre
-        d'adresse, le menu des signets. C'est celle que les gens voient. Si vous
-        n'en réussissez qu'une, réussissez celle-là.
+        <strong>16&nbsp;&times;&nbsp;16</strong>, l'onglet du navigateur, la
+        barre d'adresse, le menu des signets. C'est celle que les gens voient. Si
+        vous n'en réussissez qu'une, réussissez celle-là.
       </li>
       <li>
-        <strong>32&times;32</strong> &mdash; une barre de signets, un raccourci
-        Windows vers votre site sur le bureau, et la plupart des navigateurs sur
-        un écran haute densité, qui tirent l'icône de l'onglet du 32 et la
-        réduisent.
+        <strong>32&nbsp;&times;&nbsp;32</strong>, une barre de signets, un
+        raccourci Windows vers votre site sur le bureau, et la plupart des
+        navigateurs sur un écran haute densité, qui tirent l'icône de l'onglet du
+        32 et la réduisent.
       </li>
       <li>
-        <strong>48&times;48</strong> &mdash; la taille à laquelle Google lit
+        <strong>48&nbsp;&times;&nbsp;48</strong>, la taille à laquelle Google lit
         l'icône d'un site pour les résultats de recherche, et la vue à icônes
         moyennes de Windows.
       </li>
@@ -107,9 +107,9 @@
     <p>
       Ce qu'un outil peut faire, c'est vous montrer le problème avant que vous ne
       le publiiez. L'aperçu d'<a href="../../creer-un-favicon/">Image en ICO</a>
-      dessine chaque taille à sa taille réelle à l'écran, seule façon d'en juger
-      &mdash; une icône de seize pixels affichée à soixante-quatre a l'air très
-      bien et ne vous apprend rien.
+      dessine chaque taille à sa taille réelle à l'écran, seule façon d'en
+      juger&nbsp;: une icône de seize pixels affichée à soixante-quatre a l'air
+      très bien et ne vous apprend rien.
     </p>
   </section>
 
@@ -129,9 +129,9 @@
     </p>
     <p>
       <strong>Recadrer au milieu</strong> prend le plus grand carré du centre.
-      Pour un ensemble &mdash; un symbole avec le nom de l'entreprise à côté
-      &mdash; cela coupe souvent les deux en plein milieu. Mieux vaut recadrer la
-      source vous-même d'abord, jusqu'au symbole seul, puis convertir cela.
+      Pour un ensemble fait d'un symbole et du nom de l'entreprise à côté, cela
+      coupe souvent les deux en plein milieu. Mieux vaut recadrer la source
+      vous-même d'abord, jusqu'au symbole seul, puis convertir cela.
     </p>
     <p>
       <strong>Étirer</strong> écrase l'image pour la faire entrer. Il n'existe
@@ -182,30 +182,31 @@
     <ul>
       <li>
         <strong>iOS</strong> lit <code>apple-touch-icon.png</code> en
-        180&times;180 quand quelqu'un ajoute votre site à son écran d'accueil.
-        Sans lui, iOS utilise une capture de la page, ce qui a l'air d'une
-        erreur.
+        180&nbsp;&times;&nbsp;180 quand quelqu'un ajoute votre site à son écran
+        d'accueil. Sans lui, iOS utilise une capture de la page, ce qui a l'air
+        d'une erreur.
       </li>
       <li>
         <strong>Android et toutes les invites d'installation</strong> lisent un
-        manifeste d'application web &mdash; <code>site.webmanifest</code> &mdash;
-        qui pointe vers des PNG de 192 et 512 pixels. Le 512 est aussi ce qu'une
-        application web montre sur son écran de démarrage.
+        manifeste d'application web, <code>site.webmanifest</code>, qui pointe
+        vers des PNG de 192 et 512 pixels. Le 512 est aussi ce qu'une application
+        web montre sur son écran de démarrage.
       </li>
       <li>
         <strong>Une tuile du menu Démarrer de Windows</strong> lit
-        <code>browserconfig.xml</code>, qui pointe vers un PNG de 150&times;150.
-        Le moins important des trois, et quatre lignes de XML.
+        <code>browserconfig.xml</code>, qui pointe vers un PNG de
+        150&nbsp;&times;&nbsp;150. Le moins important des trois, et quatre lignes
+        de XML.
       </li>
     </ul>
     <p>
       Il y en a une dernière facile à rater&nbsp;: les lanceurs Android rognent
-      une icône adaptative à la forme que le téléphone préfère &mdash; cercle,
-      carré arrondi, &laquo;&nbsp;squircle&nbsp;&raquo; &mdash; et seuls les
-      80&nbsp;% centraux de l'image sont garantis de survivre. Une icône dessinée
-      bord à bord perd ses coins. C'est cela, une icône
-      <em>masquable</em>&nbsp;: la même image dessinée délibérément petite à
-      l'intérieur du carré, déclarée séparément dans le manifeste.
+      une icône adaptative à la forme que le téléphone préfère, cercle, carré
+      arrondi ou &laquo;&nbsp;squircle&nbsp;&raquo;, et seuls les 80&nbsp;%
+      centraux de l'image sont garantis de survivre. Une icône dessinée bord à
+      bord perd ses coins. C'est cela, une icône <em>masquable</em>&nbsp;: la
+      même image dessinée délibérément petite à l'intérieur du carré, déclarée
+      séparément dans le manifeste.
     </p>
     <p>
       Cocher le jeu pour site web dans
@@ -222,8 +223,9 @@
     <p>
       Si l'icône est pour un programme et non pour un site, les tailles changent.
       Ce que contient l'<code>app.ico</code> livrée par défaut avec Visual Studio,
-      ce sont 16, 32, 48 et 256 &mdash; les trois tailles du shell plus la grande
-      dont se servent le menu Démarrer et la vue très grande de l'Explorateur.
+      ce sont 16, 32, 48 et 256, c'est-à-dire les trois tailles du shell plus la
+      grande dont se servent le menu Démarrer et la vue très grande de
+      l'Explorateur.
     </p>
     <p>
       Sur un écran haute densité, Windows réclame aussi 20, 24, 40, 64 et 96, et
@@ -231,8 +233,8 @@
       elles manquent. Que cela compte ou non dépend de votre icône&nbsp;: une
       forme plate survit au rééchantillonnage, une forme détaillée non. Les
       ajouter double à peu près le fichier, ce qui pour une application ne
-      représente rien du tout &mdash; le calcul est complètement différent de
-      celui d'un favicon, que chaque visiteur récupère.
+      représente rien du tout&nbsp;; le calcul est complètement différent de celui
+      d'un favicon, que chaque visiteur récupère.
     </p>
     <p>
       Encore une chose au sujet de la taille&nbsp;: c'est l'entrée 256 qui pèse.
@@ -249,9 +251,8 @@
     <p>
       Si l'icône est pour une application Mac et non Windows, rien de ce qui
       précède ne s'applique&nbsp;: macOS ne lit pas du tout le <code>.ico</code>.
-      Il lit le <code>.icns</code>, qui est la même idée dans un autre emballage
-      &mdash; plusieurs tailles dans un conteneur &mdash; avec trois différences
-      à connaître.
+      Il lit le <code>.icns</code>, qui est la même idée dans un autre emballage,
+      plusieurs tailles dans un conteneur, avec trois différences à connaître.
     </p>
     <ul>
       <li>
@@ -320,9 +321,9 @@
     </p>
     <p>
       Sur un Mac, un <code>.icns</code> s'ouvre dans Aperçu, qui liste chaque
-      emplacement sur le côté &mdash; et la même astuce marche dans le
-      Finder&nbsp;: déposez-le dans un dossier et faites glisser le curseur de
-      taille des options d'affichage pour le voir basculer d'une image à l'autre.
+      emplacement sur le côté, et la même astuce marche dans le Finder&nbsp;:
+      déposez-le dans un dossier et faites glisser le curseur de taille des
+      options d'affichage pour le voir basculer d'une image à l'autre.
     </p>
   </section>
 
@@ -333,13 +334,14 @@
       depuis des années, et un <code>.ico</code>, c'est un en-tête de six octets,
       seize octets par image, puis les images. Il n'y a dans sa fabrication
       aucune étape qui exige un serveur, et l'outil d'ici n'en utilise
-      pas&nbsp;: la <code>Content-Security-Policy</code> de la page nomme toutes
-      les adresses qu'elle peut contacter, et aucune n'appartient à ce site.
+      pas&nbsp;: la <code>Content-Security-Policy</code> de la page énumère
+      toutes les adresses qu'elle peut contacter, et aucune n'appartient à ce
+      site.
     </p>
     <p>
       Cela mérite plus d'attention ici qu'ailleurs. Un logo confié à un
       générateur de favicons gratuit est, assez souvent, une marque non encore
-      dévoilée &mdash; l'icône est l'une des premières choses fabriquées et l'une
+      dévoilée&nbsp;: l'icône est l'une des premières choses fabriquées et l'une
       des dernières annoncées. Chargez la page, coupez votre connexion, et
       fabriquez-en une quand même, si vous préférez vérifier plutôt qu'on vous le
       dise. <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer

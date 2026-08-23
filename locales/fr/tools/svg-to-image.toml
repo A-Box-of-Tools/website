@@ -4,13 +4,16 @@
 # Overrides for tools/svg-to-image/tool.toml. Only words: the slug, the
 # category, the icon, the CSP and the list of shared parts stay where they are.
 #
+# [schema] is emitted as JSON-LD, where HTML entities are never decoded, so
+# that table alone uses plain spaces and plain punctuation.
+#
 
 name = "SVG en image"
 heading = "SVG&nbsp;en&nbsp;image <span class=\"h1-kw\">&mdash; rastériser un vectoriel en PNG, JPEG ou WebP, à n'importe quelle taille</span>"
 tagline = "Vous donnez la taille. Un vectoriel n'en a aucune à perdre."
 
 title = "SVG en PNG &mdash; rastériser un vectoriel à n'importe quelle taille, sans envoi"
-description = "Convertissez un SVG en PNG, JPEG ou WebP à n'importe quelle taille, dans votre navigateur. Donnez la largeur, un multiple ou un cadre ; récupérez aussi les copies @2x et @3x. Transparence gardée, rien n'est envoyé."
+description = "Convertissez un SVG en PNG, JPEG ou WebP à n'importe quelle taille, dans votre navigateur. Donnez la largeur, un multiple ou un cadre&nbsp;; récupérez aussi les copies @2x et @3x. Transparence gardée, rien n'est envoyé."
 og_title = "Transformer un SVG en PNG à n'importe quelle taille, sans l'envoyer"
 og_description = "Un vectoriel n'a pas de taille en pixels à lui : le nombre est à vous de le choisir - 32 ou 8000, avec la même netteté dans les deux cas. Tout tourne sur votre propre machine."
 og_image_alt = "SVG en image - rastériser un vectoriel en PNG, JPEG ou WebP à n'importe quelle taille"
@@ -20,36 +23,35 @@ pledge = """
     écran. Votre fichier est lu sur votre disque, sa balise racine est réécrite à
     la taille demandée par une centaine de lignes dans <code>src/svg.js</code>
     que vous pouvez lire, et il est dessiné sur un canvas que votre navigateur
-    embarque déjà. Cet outil n'a aucune fonction réseau &mdash; rien à récupérer,
-    rien à envoyer &mdash; et il n'y a à l'autre bout de cette page aucun serveur
-    auquel envoyer un logo, quand bien même il y en aurait une."""
+    embarque déjà. Cet outil ne comporte aucune fonction réseau, si bien qu'il
+    n'a rien à aller chercher et rien à envoyer. Et quand bien même il en aurait
+    une, il n'y a à l'autre bout de cette page aucun serveur à qui remettre un
+    logo."""
 
 live_hint = """
       Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
-      gardez l'onglet Réseau à l'œil et rastérisez quelque chose. Pas une seule
-      requête ne transporte de fichier, de vignette, de nom de fichier ni un
-      octet de ce que vous avez choisi. Ou coupez votre connexion et
-      convertissez-en un quand même."""
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et rastérisez quelque
+      chose. Pas une seule requête ne transporte de fichier, de vignette, de nom
+      de fichier ni le moindre octet de ce que vous avez choisi. Vous pouvez
+      aussi couper la connexion et en convertir un quand même."""
 
 read_first = """
 , <code>src/svg.js</code> pour la façon dont la taille
       propre d'un fichier est lue et dont sa balise racine est réécrite, et
-      <code>src/render.js</code> pour les huit lignes qui font la rastérisation
-      &mdash; un &lt;img&gt;, un <code>drawImage</code> et un
+      <code>src/render.js</code> pour les huit lignes qui font la rastérisation,
+      à savoir un &lt;img&gt;, un <code>drawImage</code> et un
       <code>toBlob</code>, sans rien entre les deux."""
 
 howto_heading = "Comment convertir un SVG en PNG sans l'envoyer"
 
 card = """
             Un SVG n'a pas de taille en pixels à lui&nbsp;: le nombre est à vous
-            de le choisir &mdash; 32 ou 8000, et la même netteté dans les deux
+            de le choisir, 32 ou 8000, avec la même netteté dans les deux
             cas."""
 
 [words]
 plural = "fichiers SVG"
 choose = "un SVG"
-analytics_extra = """, ni aucune des
-  tailles, des formats ou des noms de fichiers que cet outil calcule"""
 
 [[facts]]
 text = "Sans envoi"
@@ -64,21 +66,21 @@ text = "Sans filigrane"
 text = "Fonctionne hors ligne"
 
 [[facts]]
-text = "Code ouvert"
+text = "Open source"
 
 [[privacy]]
 title = "Votre dessin n'a nulle part où aller."
 body = """
  La
-      Content-Security-Policy nomme toutes les adresses que cette page peut
-      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
-      collecte où vos fichiers pourraient arriver, et rien dans le code qui les y
+      Content-Security-Policy énumère toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de
+      collecte où vos fichiers pourraient aboutir, ni rien dans le code qui les y
       enverrait s'il en existait un."""
 
 [[privacy]]
 title = "Rien ici ne va rien chercher."
 body = """
- Il n'y a ni
+ On ne trouve ni
       <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
       <code>sendBeacon</code> nulle part dans <code>src/</code>. Le rastériseur
       tout entier, c'est un <code>&lt;img&gt;</code> qui tient un blob de votre
@@ -92,12 +94,12 @@ body = """
       <code>&lt;script&gt;</code>, une
       <code>&lt;image href=&quot;https://&hellip;&quot;&gt;</code> distante, une
       feuille de style et une police web. Dessiné à travers un
-      <code>&lt;img&gt;</code>, il est dans ce que la spécification appelle le
-      <em>mode statique sécurisé</em>&nbsp;: le script ne s'exécute pas et pas
+      <code>&lt;img&gt;</code>, il se trouve dans ce que la spécification appelle
+      le <em>mode statique sécurisé</em>&nbsp;: le script ne s'exécute pas et pas
       une seule de ces adresses n'est contactée. C'est une garantie du
-      navigateur, pas une promesse de notre part, et c'est la raison pour
-      laquelle cette page peut ouvrir un fichier qu'elle n'a jamais vu sans que
-      ce fichier puisse téléphoner à la maison."""
+      navigateur, et non une promesse de notre part, ce qui permet à cette page
+      d'ouvrir un fichier qu'elle n'a jamais vu sans que ce fichier puisse
+      contacter l'extérieur."""
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
@@ -109,10 +111,10 @@ body = """
       cette origine et figure dans le dépôt."""
 
 [[privacy]]
-title = "Cela fonctionne hors ligne."
+title = "Tout fonctionne hors ligne."
 body = """
- Coupez le réseau et l'outil est
-      inchangé, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la
+ Coupez le réseau&nbsp;: l'outil reste
+      identique, puisqu'il n'a jamais comporté la moindre étape réseau. C'est la
       preuve la plus simple de toutes."""
 
 [[howto]]
@@ -120,11 +122,11 @@ title = "Choisissez le SVG."
 body = """
  Déposez-en un sur la zone prévue, ou
       prenez-en un dossier entier et convertissez le tout d'un coup. Le
-      navigateur lit le fichier directement sur votre disque&nbsp;; rien n'est
-      envoyé nulle part pendant ce temps. Chaque ligne dit quelle taille le
-      fichier croit avoir &mdash; et le dit différemment quand cette taille vient
-      de son <code>viewBox</code>, ou a été supposée parce que le fichier n'en
-      déclare aucune."""
+      navigateur lit le fichier directement sur votre disque, sans que rien parte
+      où que ce soit pendant ce temps. Chaque ligne dit quelle taille le fichier
+      croit avoir, et le dit différemment selon que cette taille vient de son
+      <code>viewBox</code> ou a été supposée parce que le fichier n'en déclare
+      aucune."""
 
 [[howto]]
 title = "Dites quelle taille."
@@ -133,17 +135,17 @@ body = """
       est la réponse la plus rapide et la bonne pour un lot&nbsp;: chaque dessin
       est mis à l'échelle depuis son propre point de départ, si bien qu'un jeu
       d'icônes reste en proportion. Sinon, nommez une largeur, une hauteur, le
-      plus grand côté, ou un cadre dont les deux côtés sont donnés. Il n'y a ici
-      aucune pénalité à donner un grand nombre, contrairement à une photographie
-      &mdash; le dessin est redessiné à cette taille, pas étiré jusqu'à elle."""
+      plus grand côté, ou un cadre dont les deux côtés sont donnés. Contrairement
+      à une photographie, donner un grand nombre ne coûte rien ici, puisque le
+      dessin est redessiné à cette taille plutôt qu'étiré jusqu'à elle."""
 
 [[howto]]
 title = "Ajoutez les copies haute densité s'il vous en faut."
 body = """
  Un téléphone et un portable
-      Retina dessinent deux ou trois pixels physiques pour chaque pixel CSS&nbsp;:
-      un logo de 200 pixels a donc besoin d'un fichier de 400 ou 600 pixels
-      derrière lui. Demandez <code>@2x</code> et <code>@3x</code> et ils
+      Retina dessinent deux ou trois pixels physiques pour chaque pixel
+      CSS&nbsp;: un logo de 200 pixels a donc besoin d'un fichier de 400 ou 600
+      pixels derrière lui. Demandez <code>@2x</code> et <code>@3x</code> et ils
       ressortent nommés comme Xcode, les outils Android et
       <code>image-set()</code> en CSS l'attendent tous, et chacun fait exactement
       le double ou le triple du premier plutôt que d'être arrondi séparément."""
@@ -153,11 +155,11 @@ title = "Choisissez le format et tranchez sur la transparence."
 body = """
  PNG, sauf si vous avez
       une raison&nbsp;: il est sans perte, il garde la transparence, et les
-      aplats s'y compressent bien. Le JPEG n'a aucune transparence, alors une
-      couleur de fond est peinte que vous en choisissiez une ou non &mdash; sans
-      elle, chaque pixel transparent ressort noir. Le WebP fait les deux et donne
-      un fichier plus léger, au prix des logiciels assez anciens pour ne pas le
-      lire."""
+      aplats s'y compressent bien. Le JPEG n'a aucune transparence, si bien
+      qu'une couleur de fond est peinte que vous en choisissiez une ou non&nbsp;;
+      sans elle, chaque pixel transparent ressortirait noir. Le WebP fait les
+      deux et donne un fichier plus léger, au prix des logiciels assez anciens
+      pour ne pas le lire."""
 
 [[howto]]
 title = "Regardez l'aperçu avant de télécharger."
@@ -183,10 +185,11 @@ q = "Mon SVG est-il envoyé quelque part&nbsp;?"
 a = """
         Non. Le fichier est lu par votre propre navigateur sur votre propre matériel,
         dessiné sur un canvas par le moteur même qui rend toutes les autres images que
-        vous voyez, et rendu sous forme de téléchargement. Cet outil n'a aucune
-        fonction réseau &mdash; il ne récupère jamais rien et n'envoie jamais rien
-        &mdash; et la <code>Content-Security-Policy</code> de la page nomme toutes les
-        adresses qu'elle peut contacter, dont aucune n'appartient à ce site."""
+        vous voyez, puis rendu sous forme de téléchargement. Cet outil ne comporte
+        aucune fonction réseau, si bien qu'il ne va jamais rien chercher et n'envoie
+        jamais rien. Sa <code>Content-Security-Policy</code> énumère par ailleurs
+        toutes les adresses que la page peut contacter, dont aucune n'appartient à ce
+        site."""
 
 [[faq]]
 q = "À quelle taille faut-il rastériser un SVG&nbsp;?"
@@ -207,17 +210,17 @@ a = """
         redessine donc les courbes à la taille demandée. 4000 pixels tirés d'une icône
         de 24 pixels sont exactement aussi nets que l'étaient les 24. Ce que vous ne
         pouvez pas faire, c'est le chemin inverse&nbsp;: une fois que c'est un PNG, ce
-        sont des pixels comme tout le reste, alors rastérisez à la taille dont vous avez
-        besoin plutôt que de redimensionner le résultat ensuite."""
+        sont des pixels comme tout le reste, aussi vaut-il mieux rastériser à la taille
+        dont vous avez besoin que redimensionner le résultat ensuite."""
 
 [[faq]]
 q = "Mon SVG n'a ni largeur ni hauteur. Quelle taille vais-je obtenir&nbsp;?"
 a = """
-        Le <code>viewBox</code>, s'il y en a un &mdash; sa largeur et sa hauteur sont
-        des unités utilisateur plutôt que des pixels, mais ce sont les seuls nombres du
-        fichier et un navigateur les traite comme la taille naturelle du dessin. S'il
-        n'y a pas de viewBox non plus, la page affiche <em>supposée</em> à côté de la
-        ligne et utilise 300&nbsp;&times;&nbsp;150, ce à quoi un
+        Celle du <code>viewBox</code>, s'il y en a un&nbsp;: sa largeur et sa hauteur
+        sont des unités utilisateur plutôt que des pixels, mais ce sont les seuls
+        nombres du fichier et un navigateur les traite comme la taille naturelle du
+        dessin. S'il n'y a pas de viewBox non plus, la page affiche <em>supposée</em> à
+        côté de la ligne et utilise 300&nbsp;&times;&nbsp;150, ce à quoi un
         <code>&lt;img&gt;</code> l'aurait dessiné. Dans les deux cas, vous pouvez nommer
         la taille voulue et le fichier est dessiné à celle-là."""
 
@@ -228,42 +231,42 @@ a = """
         police et laisse la machine la trouver, et un fichier qui en tire une de Google
         Fonts avec un <code>@import</code> n'obtient rien ici&nbsp;: un SVG dessiné à
         travers un <code>&lt;img&gt;</code> n'a pas le droit de récupérer quoi que ce
-        soit, ce qui est la règle même qui l'empêche de téléphoner à la maison avec
-        votre fichier. Le remède est celui que tout graphiste connaît déjà &mdash;
-        convertissez le texte en tracés dans le logiciel de dessin avant d'exporter.
-        C'est alors de la géométrie, et cela a la même allure partout."""
+        soit, ce qui est la règle même qui l'empêche de contacter l'extérieur avec votre
+        fichier. Le remède est celui que tout graphiste connaît déjà&nbsp;: convertissez
+        le texte en tracés dans le logiciel de dessin avant d'exporter. C'est alors de
+        la géométrie, et cela a la même allure partout."""
 
 [[faq]]
 q = "Peut-il convertir plusieurs fichiers à la fois&nbsp;?"
 a = """
         Oui. Chaque SVG de la liste est rendu avec les mêmes réglages et le lot arrive
-        en un seul zip. Un multiple &mdash;
-        &laquo;&nbsp;4&times; la taille que le fichier demande&nbsp;&raquo; &mdash; est
-        en général le bon réglage pour un lot, parce que chaque dessin est mis à
-        l'échelle depuis sa propre taille au lieu que tous soient forcés au même nombre
-        de pixels. Cliquez sur une ligne pour mettre celle-là dans l'aperçu."""
+        en un seul zip. Un multiple, du genre
+        &laquo;&nbsp;4&times; la taille que le fichier demande&nbsp;&raquo;, est en
+        général le bon réglage pour un lot, parce que chaque dessin est mis à l'échelle
+        depuis sa propre taille au lieu que tous soient forcés au même nombre de pixels.
+        Cliquez sur une ligne pour mettre celle-là dans l'aperçu."""
 
 [[faq]]
 q = "Y a-t-il une limite de taille&nbsp;?"
 a = """
         Celle du navigateur, pas la nôtre. Un canvas abandonne quelque part au-delà de
-        16 384 pixels de côté, et Safari sur un iPhone ou un iPad s'arrête à environ
-        16,7 mégapixels de surface &mdash; 4096&nbsp;&times;&nbsp;4096. Au-dessus, la
-        page vous prévient plutôt que de vous rendre une image vide, ce que fait un
+        16&nbsp;384 pixels de côté, et Safari sur un iPhone ou un iPad s'arrête à
+        environ 16,7 mégapixels de surface, soit 4096&nbsp;&times;&nbsp;4096. Au-dessus,
+        la page vous prévient plutôt que de vous rendre une image vide, ce que fait un
         navigateur à court de ressources&nbsp;: <code>toBlob</code> ne rend rien du
         tout, sans la moindre erreur pour s'expliquer. Passé 100 mégapixels, l'outil
-        refuse, parce que cela fait 400&nbsp;MB de canvas avant qu'un seul octet ait été
-        encodé."""
+        refuse, parce que cela ferait 400&nbsp;MB de canvas avant qu'un seul octet ait
+        été encodé."""
 
 [[faq]]
 q = "Qu'advient-il de la transparence&nbsp;?"
 a = """
-        Elle est gardée, en PNG et en WebP. Le JPEG n'a aucun canal alpha, alors une
-        couleur est peinte derrière toute l'image que vous en demandiez une ou non
-        &mdash; sans elle, tout ce qui est transparent ressortirait noir, ce qui a l'air
-        d'un bug plutôt que du JPEG. Choisir une couleur de fond avec du PNG est aussi
-        une chose parfaitement ordinaire à vouloir&nbsp;: cela aplatit le dessin sur
-        cette couleur au lieu de laisser un trou."""
+        Elle est gardée, en PNG et en WebP. Le JPEG n'a aucun canal alpha, si bien
+        qu'une couleur est peinte derrière toute l'image que vous en demandiez une ou
+        non&nbsp;; sans elle, tout ce qui est transparent ressortirait noir, ce qui a
+        l'air d'un bug plutôt que du JPEG. Choisir une couleur de fond avec du PNG est
+        aussi une chose parfaitement ordinaire à vouloir&nbsp;: cela aplatit le dessin
+        sur cette couleur au lieu de laisser un trou."""
 
 [[faq]]
 q = "Peut-il lire un SVG qui contient un script ou une image externe&nbsp;?"
@@ -271,17 +274,17 @@ a = """
         Il peut en lire un, et il dessinera exactement les parties qu'un navigateur veut
         bien dessiner. Un SVG chargé à travers un <code>&lt;img&gt;</code> est en
         <em>mode statique sécurisé</em>&nbsp;: les scripts ne s'exécutent pas, les
-        références externes ne sont pas récupérées, et l'animation ne joue pas &mdash;
-        c'est la première image que vous obtenez. Un fichier avec une
+        références externes ne sont pas récupérées, et l'animation ne joue pas, si bien
+        que c'est la première image que vous obtenez. Un fichier avec une
         <code>&lt;image&gt;</code> distante ressort donc avec cette partie manquante.
-        C'est le navigateur qui refuse pour votre compte, et c'est la raison pour
-        laquelle cette page peut ouvrir sans danger un fichier qu'elle n'a jamais vu."""
+        C'est le navigateur qui refuse pour votre compte, et c'est ce qui permet à cette
+        page d'ouvrir sans danger un fichier qu'elle n'a jamais vu."""
 
 [[faq]]
 q = "Quelle différence avec le redimensionneur d'images&nbsp;?"
 a = """
-        La nature de la source. Le redimensionneur d'images part de pixels &mdash; un
-        JPEG, un PNG &mdash; alors l'agrandir doit inventer un détail qui n'a jamais
+        La nature de la source. Le redimensionneur d'images part de pixels, ceux d'un
+        JPEG ou d'un PNG, si bien que l'agrandir doit inventer un détail qui n'a jamais
         existé. Celui-ci part d'un dessin&nbsp;: il n'y a rien à inventer et aucune
         limite haute dont il faille se soucier. Si ce que vous avez est un SVG, c'est
         celui-ci qui vous donne un résultat net&nbsp;; si ce que vous avez est une
@@ -290,19 +293,19 @@ a = """
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
 a = """
-        C'est gratuit, et il n'y a pas de compte, pas de connexion, pas de période
-        d'essai et pas de filigrane. Il n'y a pas non plus de limite au nombre ni à la
-        taille des fichiers, parce qu'aucun serveur ne les paie &mdash; le travail se
-        fait sur votre propre machine. Le site porte de la publicité, et c'est elle qui
-        le finance&nbsp;; les annonces ne reçoivent rien sur vos fichiers."""
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai, ni
+        filigrane. Le nombre et la taille des fichiers ne sont pas limités non plus,
+        parce qu'aucun serveur ne les paie et que tout le travail se fait sur votre
+        propre machine. Le site affiche de la publicité, et c'est elle qui le
+        finance&nbsp;; les annonces ne reçoivent rien sur vos fichiers."""
 
 [[faq]]
 q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
 a = """
         Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
         de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
-        envoyé&nbsp;: un outil qui expédierait votre dessin ailleurs pour le faire
-        rendre s'arrêterait à l'instant où vous débranchez."""
+        envoyé, car un outil qui expédierait votre dessin ailleurs pour le faire
+        rastériser s'arrêterait à l'instant où vous débranchez."""
 
 [schema]
 description = "Rastérisez un SVG en PNG, JPEG ou WebP à n'importe quelle taille, dans le navigateur. Réglez la taille par un multiple, une largeur, une hauteur, le plus grand côté ou un cadre, ajoutez les copies @2x et @3x, gardez ou aplatissez la transparence, et convertissez tout un lot d'un coup. Rien n'est envoyé."

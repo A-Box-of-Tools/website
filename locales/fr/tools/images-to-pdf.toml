@@ -4,6 +4,9 @@
 # Overrides for tools/images-to-pdf/tool.toml. Only words: the slug, the
 # category, the icon, the CSP and the list of shared parts stay where they are.
 #
+# [schema] is emitted as JSON-LD, where HTML entities are never decoded, so
+# that table alone uses plain spaces and plain punctuation.
+#
 
 name = "Images en PDF"
 heading = "Images&nbsp;en&nbsp;PDF <span class=\"h1-kw\">&mdash; convertisseur JPG en PDF</span>"
@@ -22,9 +25,10 @@ pledge = """
 
 live_hint = """
       Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
-      gardez l'onglet Réseau à l'œil et fabriquez un PDF. Pas une seule requête ne
-      transporte d'image, de vignette ni de nom de fichier. Ou coupez votre
-      connexion et fabriquez-en un quand même."""
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et fabriquez un PDF.
+      Pas une seule requête ne transporte d'image, de vignette ni de nom de
+      fichier. Vous pouvez aussi couper la connexion et en fabriquer un quand
+      même."""
 
 read_first = """
 , ainsi que <code>src/pdf.js</code> et <code>src/document.js</code>
@@ -41,7 +45,6 @@ card = """
 [words]
 plural = "images"
 choose = "des images"
-analytics_extra = """"""
 
 [[facts]]
 text = "Sans envoi"
@@ -53,7 +56,7 @@ text = "Sans compte"
 text = "Fonctionne hors ligne"
 
 [[facts]]
-text = "Code ouvert"
+text = "Open source"
 
 [[facts]]
 text = "Les fichiers restent sur votre appareil"
@@ -62,11 +65,11 @@ text = "Les fichiers restent sur votre appareil"
 title = "Vos images n'ont nulle part où aller."
 body = """
  La
-      Content-Security-Policy nomme toutes les adresses que cette page peut
+      Content-Security-Policy énumère toutes les adresses que cette page peut
       contacter, et aucune n'appartient à ce site. Cet outil n'ajoute rien à
-      cette liste&nbsp;: il n'a aucune fonction réseau propre, pas même
-      facultative. Il n'y a ici aucun point de collecte où vos fichiers
-      pourraient arriver, et rien dans le code qui les y enverrait s'il en
+      cette liste, puisqu'il n'a aucune fonction réseau propre, pas même
+      facultative. Il n'existe ici aucun point de collecte où vos fichiers
+      pourraient aboutir, ni rien dans le code qui les y enverrait s'il en
       existait un."""
 
 [[privacy]]
@@ -79,13 +82,13 @@ body = """
       mémoire."""
 
 [[privacy]]
-title = "On ne dit rien au document sur vous."
+title = "Le document n'apprend rien sur vous."
 body = """
  La plupart des outils
       tamponnent un PDF d'un horodatage et du nom du programme qui l'a fabriqué.
-      Celui-ci n'écrit un titre, un auteur et une date que si vous les tapez&nbsp;;
-      les noms de fichiers de vos images n'apparaissent jamais dans le document,
-      et rien sur votre machine non plus."""
+      Celui-ci n'écrit un titre, un auteur et une date que si vous les
+      tapez&nbsp;; les noms de fichiers de vos images n'apparaissent jamais dans
+      le document, et rien de votre machine non plus."""
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
@@ -108,11 +111,11 @@ body = """
       quelqu'un d'autre."""
 
 [[privacy]]
-title = "Cela fonctionne hors ligne."
+title = "Tout fonctionne hors ligne."
 body = """
- Coupez le réseau et tout sur cette page
-      fonctionne encore. C'est la preuve la plus simple de toutes&nbsp;: un outil
-      qui expédierait vos images ailleurs pour en faire un document
+ Coupez le réseau et tout, sur cette page,
+      continue de fonctionner. C'est la preuve la plus simple de toutes, car un
+      outil qui expédierait vos images ailleurs pour en faire un document
       s'arrêterait."""
 
 [[howto]]
@@ -120,7 +123,7 @@ title = "Choisissez vos images."
 body = """
  Déposez un dossier sur la zone prévue, ou
       sélectionnez les fichiers à la main. Le navigateur les lit directement sur
-      votre disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+      votre disque, sans que rien parte où que ce soit pendant ce temps."""
 
 [[howto]]
 title = "Mettez les pages dans l'ordre, et tournez celles qui le demandent."
@@ -136,9 +139,9 @@ title = "Choisissez un format de page."
 body = """
  &laquo;&nbsp;Ajuster la page à chaque
       image&nbsp;&raquo; fait de chaque page exactement son image, sans rien
-      recadrer et sans bandes blanches. Les formats nommés &mdash; A4, Letter,
-      Legal et les autres &mdash; posent chaque image sur une page fixe à la
-      place, avec une marge si vous en voulez une."""
+      recadrer et sans bandes blanches. Les formats nommés, A4, Letter, Legal et
+      les autres, posent plutôt chaque image sur une page fixe, avec une marge si
+      vous en voulez une."""
 
 [[howto]]
 title = "Créez le PDF et téléchargez-le."
@@ -152,10 +155,10 @@ body = """
 q = "Mes images sont-elles envoyées quelque part&nbsp;?"
 a = """
         Non. Vos images sont lues et le PDF est écrit par votre propre navigateur sur
-        votre propre matériel. Cet outil n'a pas de côté serveur, et la
-        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
-        qu'elle peut contacter &mdash; aucune n'appartient à ce site. Contrairement à
-        certains autres outils d'ici, celui-ci n'a aucune fonction réseau facultative."""
+        votre propre matériel. Cet outil n'a pas de côté serveur, et sa
+        <code>Content-Security-Policy</code> énumère toutes les adresses que la page
+        peut contacter, dont aucune n'appartient à ce site. Contrairement à certains
+        autres outils d'ici, celui-ci n'a même aucune fonction réseau facultative."""
 
 [[faq]]
 q = "Convertir en PDF fait-il perdre de la qualité&nbsp;?"
@@ -164,8 +167,8 @@ a = """
         données JPEG directement&nbsp;: une photographie est donc recopiée dans le
         document octet pour octet, elle n'est jamais décodée ni recompressée, et
         l'image dans le PDF est l'image du fichier. Les autres formats doivent être
-        réencodés, parce que le PDF n'a pas de filtre pour eux &mdash; sauf si vous
-        choisissez le réglage sans perte, qui les stocke exactement au prix d'un
+        réencodés, faute de filtre PDF qui leur corresponde, à moins que vous ne
+        choisissiez le réglage sans perte, qui les stocke exactement au prix d'un
         fichier plus gros."""
 
 [[faq]]
@@ -173,8 +176,8 @@ q = "Quels formats d'image puis-je utiliser&nbsp;?"
 a = """
         Toute image fixe que votre navigateur sait décoder, ce qui en pratique veut
         dire le JPG, le PNG, le WebP, le GIF, l'AVIF et, sur les appareils Apple, le
-        HEIC. Il n'y a pas ici de liste séparée à tenir à jour, parce que le décodage
-        est le travail du navigateur et non le nôtre."""
+        HEIC. Il n'y a pas ici de liste séparée à tenir à jour, puisque le décodage est
+        le travail du navigateur et non le nôtre."""
 
 [[faq]]
 q = "Puis-je choisir le format de page et l'ordre des pages&nbsp;?"
@@ -190,31 +193,31 @@ a = """
         Aucune limite n'est intégrée à l'outil. Le plafond pratique est la mémoire de
         votre propre machine, parce que le document fini y est assemblé avant que vous
         le téléchargiez. Quelques centaines de photos de téléphone en pleine résolution
-        est la première chose à s'en ressentir&nbsp;; réduire le plus grand côté, dans
-        les réglages, repousse ce plafond bien plus loin."""
+        commencent à s'y faire sentir&nbsp;; réduire le plus grand côté, dans les
+        réglages, repousse ce plafond bien plus loin."""
 
 [[faq]]
 q = "Le PDF contient-il mes noms de fichiers ou un horodatage&nbsp;?"
 a = """
         Non, sauf si vous en demandez un. Le bloc d'informations du document est laissé
         vide, à l'exception du nom de cet outil&nbsp;: pas de noms de fichiers, pas de
-        nom de machine, pas de nom d'utilisateur, et pas de date de création sauf si
-        vous cochez la case. C'est délibéré &mdash; un PDF est une chose que les gens
-        envoient à d'autres gens."""
+        nom de machine, pas de nom d'utilisateur, et pas de date de création à moins
+        que vous ne cochiez la case. C'est délibéré, un PDF étant une chose que les
+        gens envoient à d'autres gens."""
 
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
 a = """
-        C'est gratuit, et il n'y a pas de compte, pas de connexion et pas de période
-        d'essai. Le site porte de la publicité, et c'est elle qui le finance&nbsp;; les
-        annonces ne reçoivent rien sur vos images."""
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai. Le
+        site affiche de la publicité, et c'est elle qui le finance&nbsp;; les annonces
+        ne reçoivent rien sur vos images."""
 
 [[faq]]
 q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
 a = """
         Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
         de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
-        envoyé&nbsp;: un outil qui expédierait vos images ailleurs pour en faire un
+        envoyé, car un outil qui expédierait vos images ailleurs pour en faire un
         document s'arrêterait à l'instant où vous débranchez."""
 
 [schema]

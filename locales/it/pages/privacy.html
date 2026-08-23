@@ -2,14 +2,14 @@
     <h2>I tuoi file</h2>
     <p>
       Ogni strumento di questo sito fa il proprio lavoro dentro il tuo browser,
-      sul tuo hardware. Quando scegli un file, viene letto dalla pagina che hai
-      già aperto. Non ci viene mandato, perché non esiste un nostro server a cui
-      mandarlo &mdash; questo sito è un insieme di file statici, senza backend,
+      sul tuo hardware. Quando scegli un file, a leggerlo è la pagina che hai
+      già aperto. A noi non viene mandato, perché non esiste un nostro server a
+      cui mandarlo: questo sito è un insieme di file statici, senza backend,
       senza database e senza archiviazione.
     </p>
     <p>
       Vuol dire che non riceviamo, non vediamo, non conserviamo, non registriamo
-      e non elaboriamo mai:
+      e non trattiamo mai:
     </p>
     <ul>
       <li>i tuoi file, interi o in parte</li>
@@ -20,11 +20,11 @@
     </ul>
     <p>
       Non è una promessa sulle nostre intenzioni. Ogni pagina porta con sé una
-      <code>Content-Security-Policy</code> che nomina tutti gli indirizzi che la
-      pagina può contattare, e il browser la fa rispettare. Nessuno di quegli
-      indirizzi è nostro. Puoi leggere la policy in cima al sorgente di
-      qualunque pagina, oppure aprire la scheda Rete del tuo browser e guardare:
-      nessuna richiesta porta con sé il tuo file.
+      <code>Content-Security-Policy</code> che elenca tutti gli indirizzi che la
+      pagina può contattare, e a farla rispettare è il browser. Nessuno di quegli
+      indirizzi è nostro. Puoi leggere la policy in cima al sorgente di qualunque
+      pagina, oppure aprire il pannello Rete del tuo browser e guardare: non c'è
+      una sola richiesta che porti con sé il tuo file.
     </p>
     <p>
       I file che produci con uno strumento vengono consegnati al meccanismo di
@@ -37,25 +37,25 @@
     <h2>L'unica eccezione, e dove vale</h2>
     <p>
       Lo strumento <a href="../immagini-in-video/">Immagini in video</a> ha una
-      funzione «aggiungi da un indirizzo web». Se ci incolli dentro un
-      indirizzo, il tuo browser recupera quell'immagine dal server che hai
-      nominato, e <strong>quel server vede il tuo indirizzo IP</strong> e quale
-      file hai chiesto. È inevitabile, ed è tutta la natura di quella funzione.
+      funzione «aggiungi da un indirizzo web». Se ci incolli dentro un indirizzo,
+      il tuo browser recupera quell'immagine dal server che hai nominato, e
+      <strong>quel server vede il tuo indirizzo IP</strong> e quale file hai
+      chiesto. È inevitabile, ed è tutta la natura di quella funzione.
     </p>
     <p>
       Succede solo per gli indirizzi che scrivi tu, è costruita in modo che le
-      immagini possano entrare ma i dati non possano uscire, e la pagina di
-      quello strumento la spiega più nel dettaglio. Nessun altro strumento di
-      questo sito può fare una richiesta in uscita con dentro qualcosa di tuo.
+      immagini possano entrare ma i dati non possano uscire, e la pagina di quello
+      strumento la spiega più nel dettaglio. Nessun altro strumento di questo sito
+      è in grado di fare una richiesta in uscita con dentro qualcosa di tuo.
     </p>
   </section>
 
   <section>
     <h2>Cosa viene raccolto, e da chi</h2>
     <p>
-      Questo sito è gratuito ed è pagato dalla pubblicità. Vuol dire che su
-      queste pagine girano due prodotti di Google, e su quasi tutte un pulsante
-      per le donazioni. Ecco l'elenco completo.
+      Questo sito è gratuito ed è pagato dalla pubblicità. Vuol dire che su queste
+      pagine girano due prodotti di Google, e su quasi tutte un pulsante per le
+      donazioni. Ecco l'elenco completo.
     </p>
 
     <h3>Google AdSense &mdash; la pubblicità</h3>
@@ -63,15 +63,15 @@
       Google serve gli annunci e decide quali vedi. Per farlo può impostare e
       leggere cookie o identificatori simili nel tuo browser, e riceve il tuo
       indirizzo IP, una posizione approssimativa ricavata da esso, il tuo user
-      agent, e su quale pagina eri. A seconda delle tue impostazioni e di dove
-      ti trovi, gli annunci possono essere personalizzati usando un profilo che
-      Google ha su di te, costruito in gran parte a partire dalla tua attività
-      su altri siti.
+      agent, e su quale pagina eri. A seconda delle tue impostazioni e di dove ti
+      trovi, gli annunci possono essere personalizzati usando un profilo che
+      Google ha su di te, costruito in gran parte a partire dalla tua attività su
+      altri siti.
     </p>
     <p>
-      Noi non riceviamo niente di tutto ciò, non lo possiamo vedere, e non
-      mandiamo mai a Google niente sui tuoi file. Il resoconto di Google su come
-      usa i dati dei siti che ospitano la sua pubblicità sta su
+      Noi non riceviamo niente di tutto questo, non lo possiamo vedere, e a Google
+      non mandiamo mai niente sui tuoi file. Il resoconto di Google su come usa i
+      dati dei siti che ospitano la sua pubblicità sta su
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
@@ -79,52 +79,61 @@
     <p>
       Usiamo Google Analytics 4 per contare le visite alle pagine, così sappiamo
       su quali strumenti vale la pena lavorare. Registra la pagina che hai
-      guardato, all'incirca quando, un identificatore generato a caso e
-      conservato nel tuo browser, una posizione approssimativa, il tipo di
-      dispositivo e di browser, e il sito da cui sei arrivato.
+      guardato, all'incirca quando, un identificatore generato a caso e conservato
+      nel tuo browser, una posizione approssimativa, il tipo di dispositivo e di
+      browser, e il sito da cui sei arrivato.
     </p>
     <p>
       È configurato per non fare nient'altro, e la configurazione è un file che
       puoi leggere: <code>analytics.js</code>, accanto a ogni pagina, imposta un
-      contatore di visualizzazioni e non contiene proprio alcun evento
-      personalizzato. Su questo sito non c'è niente che gli passi un file, un
-      nome di file, una misura o un conteggio &mdash; qui non c'è codice che
-      potrebbe farlo.
+      contatore di visualizzazioni e non contiene proprio nessun evento
+      personalizzato. Su questo sito non c'è niente che gli passi un file, un nome
+      di file, una misura o un conteggio, perché qui non c'è codice che saprebbe
+      farlo.
     </p>
 
     <h3>Buy Me a Coffee &mdash; il pulsante delle donazioni</h3>
     <p>
       La pagina principale e le pagine degli strumenti hanno un pulsante per le
-      donazioni, che si carica dai server di Buy Me a Coffee. Caricarlo vuol
-      dire che la loro CDN vede il tuo indirizzo IP e che eri su questo sito, e
-      i caratteri del pulsante vengono presi da Google Fonts, che vede
-      anch'essa il tuo indirizzo IP. Non viene mandato nient'altro, e non
-      succede altro finché non ci clicchi davvero, momento in cui sei sul loro
-      sito e sotto le loro condizioni. Questa pagina e la
-      <a href="../termini/">pagina dei termini</a> non disegnano il pulsante.
+      donazioni, che si carica dai server di Buy Me a Coffee. Caricarlo vuol dire
+      che la loro CDN vede il tuo indirizzo IP e che eri su questo sito, e i
+      caratteri del pulsante vengono presi da Google Fonts, che vede anch'essa il
+      tuo indirizzo IP. Non viene mandato nient'altro, e finché non ci clicchi
+      davvero non succede altro; da quel momento sei sul loro sito e sotto le loro
+      condizioni. Questa pagina e la
+      <a href="../termini/">pagina dei termini</a> il pulsante non lo disegnano.
     </p>
 
     <h3>Hosting</h3>
     <p>
       Il sito è servito da GitHub Pages, dietro Cloudflare. Come qualunque host
-      web, elaborano le richieste che fa il tuo browser &mdash; il che comprende
-      il tuo indirizzo IP, la pagina richiesta e il tuo user agent &mdash; per
-      consegnare la pagina e per tenere il servizio in piedi e al sicuro. Non
-      abbiamo accesso ai registri per singolo visitatore di nessuno dei due.
+      web, elaborano le richieste che fa il tuo browser, e quindi il tuo indirizzo
+      IP, la pagina richiesta e il tuo user agent, per consegnare la pagina e per
+      tenere il servizio in piedi e al sicuro. Non abbiamo accesso ai registri per
+      singolo visitatore di nessuno dei due.
     </p>
   </section>
 
   <section>
     <h2>Cookie</h2>
     <p>
-      Non impostiamo alcun cookie nostro. Non abbiamo un accesso, non abbiamo
-      una sessione, non abbiamo preferenze da ricordare, e non abbiamo alcun
-      motivo per averne.
+      Non impostiamo nessun cookie nostro. Non abbiamo un accesso e non abbiamo
+      una sessione, e c'è una sola preferenza che ci capiti di ricordare.
     </p>
     <p>
-      Ogni cookie o identificatore simile che puoi trovare qui appartiene a
-      Google ed è impostato dagli script pubblicitari e di misurazione descritti
-      sopra. Servono a misurare le visite, e a scegliere e limitare gli annunci.
+      <strong>La lingua che scegli.</strong> Se scegli una lingua dal selettore,
+      quella scelta viene scritta nella memoria locale del tuo browser, sotto il
+      nome <code>abox-lang</code>, così la pagina successiva che apri è nella
+      lingua che hai chiesto. Non è un cookie: non viene mai mandata a noi né a
+      nessun altro, resta sul dispositivo su cui stai leggendo, e cancellare i
+      dati dei siti dal tuo browser la rimuove. Se non scegli mai una lingua non
+      viene scritto proprio niente &mdash; una pagina mostrata nella lingua del
+      tuo browser è stata abbinata lì per lì e subito dimenticata.
+    </p>
+    <p>
+      Ogni cookie o identificatore simile che puoi trovare qui appartiene a Google
+      ed è impostato dagli script pubblicitari e di misurazione descritti sopra.
+      Servono a misurare le visite, e a scegliere e limitare gli annunci.
     </p>
     <h3>Come spegnerlo</h3>
     <ul>
@@ -154,9 +163,9 @@
   <section>
     <h2>I tuoi diritti sui dati</h2>
     <p>
-      Non abbiamo alcun dato personale su di te, quindi non c'è niente che
-      possiamo mostrarti, correggere, esportare o cancellare &mdash; una
-      richiesta a noi tornerebbe indietro vuota, sinceramente.
+      Non abbiamo nessun dato personale su di te, quindi non c'è niente che
+      possiamo mostrarti, correggere, esportare o cancellare: una richiesta fatta
+      a noi, sinceramente, tornerebbe indietro vuota.
     </p>
     <p>
       I dati descritti sopra sono in mano a Google, che ne è titolare per conto
@@ -169,9 +178,9 @@
   <section>
     <h2>Minori</h2>
     <p>
-      Questo sito non si rivolge ai minori e non chiede a nessuno la propria
-      età, perché non chiede niente a nessuno. Non raccogliamo consapevolmente
-      alcun dato personale da chicchessia, di qualunque età.
+      Questo sito non si rivolge ai minori e non chiede a nessuno la propria età,
+      perché non chiede niente a nessuno. Non raccogliamo consapevolmente nessun
+      dato personale da chicchessia, di qualunque età.
     </p>
   </section>
 

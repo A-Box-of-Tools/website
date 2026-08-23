@@ -6,7 +6,7 @@
   visible on the page.
 -->
 <main>
-  <!-- 第 1 步 &mdash; 文件 -->
+  <!-- 第 1 步，选文件 -->
   <section class="card">
     <h2><span class="step">1</span> 选一段视频</h2>
 
@@ -30,7 +30,7 @@
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- 第 2 步 &mdash; 那一段 -->
+  <!-- 第 2 步，那一段 -->
   <section class="card" id="section-card" hidden>
     <h2><span class="step">2</span> 挑出那一段</h2>
 
@@ -76,7 +76,7 @@
     </div>
   </section>
 
-  <!-- 第 3 步 &mdash; GIF -->
+  <!-- 第 3 步，GIF -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> 尺寸和帧率</h2>
 
@@ -92,7 +92,7 @@
           <option value="custom">精确指定&hellip;</option>
         </select>
         <p class="field-note">
-          高度跟着走，所以形状不会变。GIF 的开销就在宽度上：宽度减半，像素只剩四分之一。
+          高度跟着走，形状不会变。GIF 的开销全在宽度上，宽度减半，像素只剩四分之一。
         </p>
         <p class="field-note" id="width-note" hidden></p>
       </div>
@@ -106,12 +106,12 @@
       <div class="field">
         <label for="fps">每秒帧数</label>
         <select id="fps">
-          <option value="5">5 &mdash; 最小</option>
+          <option value="5">5，最小</option>
           <option value="10">10</option>
-          <option value="12" selected>12 &mdash; 够流畅了</option>
+          <option value="12" selected>12，够流畅了</option>
           <option value="15">15</option>
           <option value="20">20</option>
-          <option value="25">25 &mdash; 最流畅</option>
+          <option value="25">25，最流畅</option>
         </select>
         <p class="field-note">
           这不是视频自己的帧率：帧是从它里面取样出来的。十二帧看起来就是动的；超过二十，文件长得比流畅度显出来的快。
@@ -121,8 +121,8 @@
       <div class="field">
         <label for="dither">抖动</label>
         <select id="dither">
-          <option value="on" selected>开 &mdash; 渐变更平滑</option>
-          <option value="off">关 &mdash; 更平整，更小</option>
+          <option value="on" selected>开，渐变更平滑</option>
+          <option value="off">关，更平整，更小</option>
         </select>
         <p class="field-note">
           在缺少合适颜色的地方，把调色板里两个颜色混起来。用的是有序抖动，所以静止的背景不会闪。

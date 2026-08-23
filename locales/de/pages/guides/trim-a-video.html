@@ -3,20 +3,20 @@
     <p>
       Öffnen Sie den <a href="../../video-schneiden/">Video-Schneider</a>, ziehen
       Sie den Clip hinein, markieren Sie mit <kbd>I</kbd> und <kbd>O</kbd> jeden
-      Abschnitt, den Sie behalten wollen &mdash; so viele Sie mögen &mdash;, und
-      exportieren Sie. Bei einem MP4, MOV oder M4V wandern die Einzelbilder, die
-      Sie behalten, unverändert in die neue Datei: dieselben Bytes, dieselben
+      Abschnitt, den Sie behalten wollen, so viele Sie mögen, und exportieren
+      Sie. Bei einem MP4, MOV oder M4V wandern die Einzelbilder, die Sie
+      behalten, unverändert in die neue Datei: dieselben Bytes, dieselben
       Encoder-Einstellungen, alles gleich. Und der Ton wird Sample für Sample
       übernommen, ohne je dekodiert zu werden.
     </p>
     <p>
-      Ein Schnitt kostet Sie also keine Qualität, und schnell ist er obendrein:
+      Ein Schnitt kostet Sie also keine Qualität, und schnell ist er obendrein.
       Eine Minute aus einer vier Gigabyte großen Aufnahme herauszuschneiden
-      dauert ungefähr so lange, wie diese Minute auf die Festplatte zu schreiben
-      &mdash; denn auf die Einzelbilder wird nur gezeigt, sie werden nicht
-      geladen. An genau einer Stelle macht sich das Verfahren trotzdem
-      bemerkbar: dort, wo Ihr Schnitt am Ende wirklich sitzt. Davon handelt der
-      Rest dieser Seite.
+      dauert ungefähr so lange, wie diese Minute auf die Festplatte zu schreiben,
+      denn auf die Einzelbilder wird nur gezeigt, geladen werden sie nicht. An
+      genau einer Stelle macht sich das Verfahren trotzdem bemerkbar, nämlich
+      dort, wo Ihr Schnitt am Ende wirklich sitzt. Davon handelt der Rest dieser
+      Seite.
     </p>
   </section>
 
@@ -24,10 +24,10 @@
     <h2>Warum ein Schnitt überhaupt keine Qualität kosten muss</h2>
     <p>
       Kürzen ändert nichts am Aussehen eines Einzelbildes. Jedes Bild, das Sie
-      behalten, soll genauso herauskommen, wie es hineinging &mdash; es gibt also
-      keinen Grund, es zu dekodieren und neu zu kodieren, und jeden Grund, es
-      bleiben zu lassen: Eine Neukodierung ist verlustbehaftet und würde den
-      ganzen Clip ein wenig schlechter machen, bloß um ihn zu kürzen.
+      behalten, soll genauso herauskommen, wie es hineinging. Es gibt also keinen
+      Grund, es zu dekodieren und neu zu kodieren, und jeden Grund, es bleiben zu
+      lassen. Eine Neukodierung ist verlustbehaftet und würde den ganzen Clip ein
+      wenig schlechter machen, bloß um ihn zu kürzen.
     </p>
     <p>
       Ein gutes Werkzeug kodiert deshalb nicht neu. Es liest den Index der Datei,
@@ -38,10 +38,10 @@
     <p>
       Viele Werkzeuge kodieren trotzdem neu, weil Dekodieren und Neukodieren
       sehr viel leichter umzusetzen ist, als das Containerformat zu zerlegen.
-      Woran Sie erkennen, welche Sorte Sie vor sich haben: an der Dauer. Eine
-      Kopie ist davon begrenzt, wie schnell Ihre Festplatte schreibt, eine
-      Neukodierung davon, wie schnell Ihr Gerät Video kodiert &mdash; und das ist
-      hundertmal langsamer.
+      Welche Sorte Sie vor sich haben, erkennen Sie an der Dauer. Eine Kopie ist
+      davon begrenzt, wie schnell Ihre Festplatte schreibt, eine Neukodierung
+      davon, wie schnell Ihr Gerät Video kodiert, und das ist hundertmal
+      langsamer.
     </p>
   </section>
 
@@ -51,18 +51,18 @@
       Aus dieser einen Beschränkung folgt alles Übrige.
     </p>
     <p>
-      Video wird nicht als Folge vollständiger Bilder gespeichert &mdash; das
-      wäre gewaltig. Die meisten Einzelbilder halten nur fest, worin sie sich von
+      Video wird nicht als Folge vollständiger Bilder gespeichert, das wäre
+      gewaltig. Die meisten Einzelbilder halten nur fest, worin sie sich von
       ihren Nachbarn unterscheiden, und lassen sich deshalb nicht für sich allein
-      dekodieren: Man braucht die Bilder ringsherum. Nur ein
+      dekodieren, man braucht die Bilder ringsherum. Nur ein
       <strong>Keyframe</strong> steht als vollständiges Bild für sich, und
       Keyframes liegen typischerweise eine bis zehn Sekunden auseinander.
     </p>
     <p>
       Setzen Sie Ihre Marke also zwei Sekunden hinter den letzten Keyframe, kann
-      ein Werkzeug, das Einzelbilder kopiert, dort nicht anfangen: Die Bilder an
-      Ihrer Marke sind ohne den Anlauf davor nicht lesbar. Es muss den ganzen
-      Abschnitt ab dem Keyframe vor Ihrer Marke mitnehmen.
+      ein Werkzeug, das Einzelbilder kopiert, dort nicht anfangen. Die Bilder an
+      Ihrer Marke sind ohne den Anlauf davor nicht lesbar, und deshalb muss es
+      den ganzen Abschnitt ab dem Keyframe vor Ihrer Marke mitnehmen.
     </p>
     <p>
       Interessant ist, was es damit anstellt. Das Dateiformat kennt eine genormte
@@ -70,11 +70,12 @@
       dann zwar in der Datei, aber der Container weist den Player an, sie zu
       überspringen. Jeder gängige Player hält sich daran, und der Clip beginnt
       genau dort, wo Sie es wollten. Ein Player, der die Anweisung ignoriert,
-      beginnt früher &mdash; höchstens um den Keyframe-Abstand.
+      beginnt früher, höchstens um den Keyframe-Abstand.
     </p>
     <p>
       Das Werkzeug hier sagt Ihnen vor dem Export, welcher Fall vorliegt und um
-      wie viel es geht. So wird daraus eine Entscheidung statt einer Überraschung.
+      wie viel es geht. So wird daraus eine Entscheidung statt einer
+      Überraschung.
     </p>
   </section>
 
@@ -84,19 +85,19 @@
       Es gibt auch den exakten Schnitt. Er funktioniert, indem der
       Anfangsabschnitt neu kodiert wird: ab dem Keyframe dekodieren und eine neue
       Folge von Einzelbildern schreiben, die tatsächlich dort beginnt, wo Sie
-      markiert haben. Das dauert länger und kostet ein wenig Qualität &mdash;
+      markiert haben. Das dauert länger und kostet ein wenig Qualität,
       allerdings nur auf diesem Anfangsabschnitt.
     </p>
     <p>
       Nehmen Sie ihn, wenn der Clip dorthin geht, wo die Anweisung des Containers
-      nicht befolgt wird, oder wohin Sie den Player nicht bestimmen können: manche
-      Schnittprogramme, manche Sende- und Konferenzsysteme, manche ältere
-      Hardware-Player. Für alles andere &mdash; also für so ziemlich alles: einen
-      Browser, ein Handy, eine soziale Plattform, einen Mediaplayer &mdash;
-      nehmen Sie die Kopie.
+      nicht befolgt wird, oder wohin Sie den Player nicht bestimmen können: zu
+      manchen Schnittprogrammen, manchen Sende- und Konferenzsystemen, manchen
+      älteren Hardware-Playern. Für alles andere, und das heißt für einen
+      Browser, ein Handy, eine soziale Plattform oder einen Mediaplayer, nehmen
+      Sie die Kopie.
     </p>
     <p>
-      Und es gibt eine dritte Möglichkeit, die gar nichts kostet: die Marke
+      Und es gibt eine dritte Möglichkeit, die gar nichts kostet: die Marke zu
       verschieben. Zeigt Ihnen das Werkzeug, wo die Keyframes sitzen, bekommen
       Sie mit einem Stups auf den nächstgelegenen einen exakten Schnitt ganz ohne
       Neukodierung. Wegen einer Sekunde Unterschied lohnt es sich selten, die
@@ -107,17 +108,17 @@
   <section>
     <h2>Ein Stück aus der Mitte herausnehmen</h2>
     <p>
-      Einen Abschnitt herauszuschneiden ist etwas anderes, als einen zu behalten
-      &mdash; und dass es überhaupt geht, ist erwähnenswert, weil viele Werkzeuge
-      nur das Zweite können. Markieren Sie den Teil, den Sie nicht wollen, wählen
-      Sie &bdquo;herausschneiden&ldquo;, und was links und rechts übrig bleibt,
-      wird zu einem Clip zusammengefügt, mit dem Ton im Takt.
+      Einen Abschnitt herauszuschneiden ist etwas anderes, als einen zu behalten,
+      und dass es überhaupt geht, ist erwähnenswert, weil viele Werkzeuge nur das
+      Zweite können. Markieren Sie den Teil, den Sie nicht wollen, wählen Sie
+      &bdquo;herausschneiden&ldquo;, und was links und rechts übrig bleibt, wird
+      zu einem Clip zusammengefügt, mit dem Ton im Takt.
     </p>
     <p>
       An der Nahtstelle, wo die zweite Hälfte wieder einsetzt, gilt dieselbe
       Keyframe-Beschränkung, aus demselben Grund. Auf beiden MP4-Wegen
       funktioniert das hier. Es ist das Einzige, was die weiter unten
-      beschriebene Aufzeichnung nicht kann &mdash; eine Aufzeichnung entsteht in
+      beschriebene Aufzeichnung nicht kann, denn eine Aufzeichnung entsteht in
       einem Durchgang aus einem Abspielkopf.
     </p>
   </section>
@@ -126,17 +127,16 @@
     <h2>Formate, und der Weg über die Aufzeichnung</h2>
     <p>
       <strong>MP4, M4V und MOV</strong> werden direkt gelesen, gleich welcher
-      Codec darin steckt &mdash; H.264, HEVC, AV1, VP9. Einzelbilder zu kopieren
-      heißt nicht, sie zu dekodieren; dieser Weg funktioniert also selbst bei
-      einem Codec, für den Ihr Browser gar keinen Decoder besitzt. Eine
-      angenehme Folge davon, sich die Bilder erst gar nicht anzusehen.
+      Codec darin steckt, ob H.264, HEVC, AV1 oder VP9. Einzelbilder zu kopieren
+      heißt nicht, sie zu dekodieren, dieser Weg funktioniert also selbst bei
+      einem Codec, für den Ihr Browser gar keinen Decoder besitzt. Eine angenehme
+      Folge davon, sich die Bilder erst gar nicht anzusehen.
     </p>
     <p>
-      <strong>Alles Übrige, was Ihr Browser abspielen kann</strong> &mdash; allen
-      voran WebM &mdash;, wird gekürzt, indem es abgespielt und das Ergebnis
-      dabei aufgezeichnet wird. Das klappt, hat aber zwei Kosten: Es dauert
-      genau so lange, wie der Abschnitt lang ist, und Bild und Ton werden neu
-      kodiert.
+      <strong>Alles Übrige, was Ihr Browser abspielen kann</strong>, allen voran
+      WebM, wird gekürzt, indem es abgespielt und das Ergebnis dabei
+      aufgezeichnet wird. Das klappt, hat aber zwei Kosten. Es dauert genau so
+      lange, wie der Abschnitt lang ist, und Bild und Ton werden neu kodiert.
     </p>
     <p>
       <strong>AVI, WMV, FLV und die meisten MKVs</strong> kann der Browser weder
@@ -151,8 +151,8 @@
     <p>
       <strong>Die Drehung.</strong> Ein Handy filmt im Querformat und schreibt
       eine Drehanweisung in die Datei, statt die Pixel zu drehen. Ein Werkzeug,
-      das Einzelbilder kopiert, muss diese Anweisung mitnehmen &mdash; sonst kommt
-      Ihr Hochformat-Clip quer heraus, und das ist die klassische Art, ein
+      das Einzelbilder kopiert, muss diese Anweisung mitnehmen, sonst kommt Ihr
+      Hochformat-Clip quer heraus, und das ist die klassische Art, ein
       geschnittenes Video zu ruinieren. Der exakte Weg dreht die Bilder hier beim
       Neukodieren gleich mit und schreibt eine Datei, die gar keine Drehung mehr
       braucht.
@@ -162,9 +162,9 @@
       Ströme mit eigenem Timing in der Datei, und sie werden nicht an denselben
       Stellen zerteilt. Bringt man beide am Schnitt nicht bewusst in Deckung,
       läuft der Ton davon. Auf dem Kopierweg wird der Ton hier Sample für Sample
-      übernommen, ohne dekodiert zu werden &mdash; er ist also Byte für Byte
-      das, was in der Datei stand &mdash;, und eine Edit-Markierung hält ihn auf
-      eine Tausendstelsekunde genau am Bild.
+      übernommen, ohne dekodiert zu werden, und ist damit Byte für Byte das, was
+      in der Datei stand. Eine Edit-Markierung hält ihn auf eine
+      Tausendstelsekunde genau am Bild.
     </p>
   </section>
 
@@ -174,31 +174,30 @@
       Zwei Wörter, die ständig füreinander einspringen. Kürzen ändert die Länge
       des Clips, Zuschneiden die Form des Bildes. Wollen Sie eine quadratische
       Fassung eines Querformatvideos oder die schwarzen Balken an den Seiten los,
-      ist der <a href="../../video-zuschneiden/">Video-Zuschneider</a> zuständig
-      &mdash; und anders als beim Kürzen muss dabei neu kodiert werden, aus dem
-      Grund, den <a href="../video-bildausschnitt-aendern/">sein Ratgeber</a>
-      erklärt.
+      ist der <a href="../../video-zuschneiden/">Video-Zuschneider</a> zuständig.
+      Anders als beim Kürzen muss dabei neu kodiert werden, aus dem Grund, den
+      <a href="../video-bildausschnitt-aendern/">sein Ratgeber</a> erklärt.
     </p>
   </section>
 
   <section>
-    <h2>Warum das keinen Upload braucht - hier erst recht nicht</h2>
+    <h2>Warum das keinen Upload braucht, hier erst recht nicht</h2>
     <p>
-      Video ist der Dateityp, bei dem am ehesten alle mit einem Upload rechnen:
+      Video ist der Dateityp, bei dem am ehesten alle mit einem Upload rechnen.
       Die Dateien sind groß, die Arbeit klingt schwer. Beim Kürzen trifft das am
-      wenigsten zu &mdash; auf dem Kopierweg wird die Datei kaum gelesen. Das
+      wenigsten zu, denn auf dem Kopierweg wird die Datei kaum gelesen. Das
       Werkzeug läuft den Index ab, ermittelt, welche Byte-Bereiche bleiben
-      sollen, und schreibt sie heraus. Vier Gigabyte auf einen Server zu schieben,
-      damit der das erledigt, wäre die langsamste Anordnung, die sich denken
-      lässt.
+      sollen, und schreibt sie heraus. Vier Gigabyte auf einen Server zu
+      schieben, damit der das erledigt, wäre die langsamste Anordnung, die sich
+      denken lässt.
     </p>
     <p>
       Es ist zugleich der Dateityp, bei dem ein Upload am meisten kostet, wenn
-      man ihn lieber vermieden hätte: Video trägt Gesichter, Stimmen, Wohnungen
-      und Orte auf eine Weise, wie es ein Dokument nie tut. Das Werkzeug hier hat
-      keinerlei Netzfunktion, und die <code>Content-Security-Policy</code> der
-      Seite nennt jede Adresse, die sie kontaktieren darf; keine davon gehört zu
-      dieser Seite.
+      man ihn lieber vermieden hätte, denn Video trägt Gesichter, Stimmen,
+      Wohnungen und Orte auf eine Weise, wie es ein Dokument nie tut.
+      Netzfunktionen hat das Werkzeug hier keine, und in der
+      <code>Content-Security-Policy</code> der Seite steht jede Adresse, die sie
+      kontaktieren darf; keine davon gehört uns.
     </p>
     <p>
       Wer lieber prüft als glaubt, trennt die Internetverbindung und schneidet

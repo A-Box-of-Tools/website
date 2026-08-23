@@ -1,7 +1,7 @@
 <main>
   <!-- Schritt 1 &mdash; die Dateien -->
   <section class="card">
-    <h2><span class="step">1</span> Fotos wählen</h2>
+    <h2><span class="step">1</span> Fotos auswählen</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -28,10 +28,11 @@
     <h2><span class="step">2</span> Alles entfernen</h2>
 
     <p class="card-lede">
-      Eine Schaltfläche, alle Fotos auf der Liste. Das Bild wird nicht dekodiert,
-      nicht neu gezeichnet und nicht neu komprimiert &mdash; die komprimierten
-      Bilddaten werden unangetastet übernommen und nur die Metadaten darum herum
-      fallen weg. Heraus kommt dasselbe Foto, ohne Anhang.
+      Eine Schaltfläche, alle Fotos auf der Liste. Das Bild wird nicht
+      dekodiert, nicht neu gezeichnet und nicht neu komprimiert. Die
+      komprimierten Bilddaten werden unangetastet übernommen, und nur die
+      Metadaten darum herum fallen weg. Heraus kommt dasselbe Foto, nur ohne
+      Anhang.
     </p>
 
     <div class="strip-row">
@@ -53,11 +54,10 @@
           <strong>Das Orientierungs-Tag</strong>
           <span class="check-note">
             Telefone speichern ein Foto so, wie der Sensor es gesehen hat, und
-            ergänzen ein einziges Tag, das sagt, wo oben ist. Entfernt man das,
-            zeigen manche Betrachter es quer. Behält man es, wird ein neuer
-            EXIF-Block geschrieben, der dieses Tag und sonst nichts enthält
-            &mdash; und auch nur dann, wenn das Foto nicht ohnehin schon richtig
-            herum lag.
+            ergänzen ein einziges Tag, das sagt, wo oben ist. Fällt das weg,
+            zeigen manche Betrachter es quer. Bleibt es, wird ein neuer
+            EXIF-Block geschrieben, in dem dieses Tag und sonst nichts steht, und
+            auch das nur, wenn das Foto nicht ohnehin schon richtig herum lag.
           </span>
         </span>
       </label>
@@ -66,10 +66,10 @@
         <span>
           <strong>Das Farbprofil</strong>
           <span class="check-note">
-            Das ICC-Profil sagt, was die Zahlen im Bild als Farben bedeuten. Über
-            Sie sagt es nichts. Es wegzulassen kann die Farben eines Fotos mit
-            großem Farbraum sichtbar verschieben, und deshalb bleibt es, sofern
-            Sie nichts anderes sagen.
+            Das ICC-Profil sagt, was die Zahlen im Bild als Farben bedeuten.
+            Über Sie sagt es nichts. Ohne das Profil können sich die Farben eines
+            Fotos mit großem Farbraum sichtbar verschieben, und deshalb bleibt
+            es, solange Sie nichts anderes sagen.
           </span>
         </span>
       </label>
@@ -90,9 +90,9 @@
     <h2><span class="step">3</span> Hineinsehen und ändern, was Sie möchten</h2>
 
     <p id="inspect-empty" class="empty-note">
-      Wählen Sie oben ein Foto, und alles darin erscheint hier: was es darüber
-      verrät, wo Sie waren, wann, und womit. Um das herauszufinden, wird nichts
-      irgendwohin gesendet.
+      Wählen Sie oben ein Foto aus, und alles darin erscheint hier: was es
+      darüber verrät, wo Sie waren, wann und womit. Um das herauszufinden, geht
+      nichts nach draußen.
     </p>
 
     <div id="inspector" hidden>

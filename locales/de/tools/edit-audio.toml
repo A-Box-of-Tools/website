@@ -7,28 +7,28 @@
 
 name = "Audio-Editor"
 heading = "Audio&nbsp;bearbeiten <span class=\"h1-kw\">&mdash; rückwärts, schneller oder lauter</span>"
-tagline = "Rückwärts abspielen, das Tempo ändern, eine leise Aufnahme anheben &mdash; alles hier, auf Ihrem Gerät."
+tagline = "Rückwärts abspielen, das Tempo ändern, eine leise Aufnahme anheben. Alles hier, auf Ihrem Gerät."
 
 title = "Audio umkehren, Tempo ändern &amp; lauter machen &mdash; kostenlos, ohne Upload"
 description = "Eine Aufnahme rückwärts abspielen, schneller oder langsamer machen und eine leise Aufnahme anheben. Holt auch den Ton aus einem Video. Läuft im Browser: nichts wird hochgeladen."
-og_title = "Audio-Editor &mdash; umkehren, umtakten und verstärken, ohne etwas hochzuladen"
-og_description = "Eine Aufnahme umkehren, ihr Tempo mit oder ohne Tonhöhenänderung anpassen und den Pegel setzen - dann eine WAV herunterladen. Die Datei wird von Ihrem eigenen Browser gelesen und geschrieben."
-og_image_alt = "Audio-Editor - Audio im Browser umkehren, umtakten und verstärken"
+og_title = "Audio-Editor &mdash; umkehren, Tempo ändern, lauter machen, ohne etwas hochzuladen"
+og_description = "Eine Aufnahme umkehren, ihr Tempo mit oder ohne Tonhöhenänderung anpassen, den Pegel setzen und eine WAV herunterladen. Gelesen und geschrieben wird sie von Ihrem eigenen Browser."
+og_image_alt = "Audio-Editor - Audio im Browser umkehren, im Tempo ändern und verstärken"
 
 pledge = """
     Ihre Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
-    gelesen, bearbeitet und geschrieben. Nichts hier kann etwas abrufen oder
-    senden &mdash; dieses Werkzeug hat überhaupt keine Netzfunktion &mdash; und
-    am anderen Ende dieser Seite gibt es keinen Server, an den eine Aufnahme
-    ginge, selbst wenn es einen Weg dorthin gäbe."""
+    gelesen, bearbeitet und geschrieben. Abrufen oder senden kann hier nichts,
+    denn eine Netzfunktion hat dieses Werkzeug überhaupt nicht. Und selbst wenn
+    es einen Weg nach draußen gäbe, stünde am anderen Ende dieser Seite kein
+    Server, an den eine Aufnahme gehen könnte."""
 
 live_hint = """
-      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
-      &bdquo;Netzwerk&ldquo; und kehren Sie etwas um. Keine einzige Anfrage trägt
-      ein Sample, einen Dateinamen oder ein Byte Ihrer Auswahl. Oder trennen Sie
-      die Internetverbindung und bearbeiten Sie trotzdem eine Aufnahme &mdash;
-      ein Werkzeug, das Ihr Audio zum Verarbeiten wegschickt, würde schlicht
-      stehen bleiben."""
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und kehren Sie etwas um. Keine einzige Anfrage
+      trägt ein Sample, einen Dateinamen oder ein Byte dessen, was Sie
+      ausgewählt haben. Oder trennen Sie die Internetverbindung und bearbeiten
+      Sie trotzdem eine Aufnahme. Ein Werkzeug, das Ihr Audio zum Verarbeiten
+      wegschickt, bliebe dabei einfach stehen."""
 
 read_first = """
 , <code>src/decode.js</code> für die zwanzig Zeilen,
@@ -38,7 +38,7 @@ read_first = """
       Samples kommt. Keines davon importiert etwas, das eine Anfrage stellen
       könnte."""
 
-howto_heading = "Eine Audiodatei bearbeiten"
+howto_heading = "So bearbeiten Sie eine Audiodatei"
 
 card = """
             Eine Aufnahme rückwärts abspielen, ihr Tempo mit oder ohne
@@ -48,8 +48,6 @@ card = """
 [words]
 plural = "Aufnahmen"
 choose = "eine Datei"
-analytics_extra = """, und auch keine
-  Wellenform, Länge oder Lautstärke"""
 
 [[facts]]
 text = "Kein Upload"
@@ -69,146 +67,146 @@ text = "Funktioniert offline"
 [[privacy]]
 title = "Ihre Aufnahmen haben keinen Weg nach draußen."
 body = """
- Die
-      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
-      an dem Ihre Datei gesammelt werden könnte, und nichts im Code, das sie
-      senden würde, gäbe es einen."""
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Datei landen könnte, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen."""
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
 body = """
- Dieses Werkzeug hat überhaupt keine
-      Netzfunktion: keine Adresse zum Einfügen, nichts herunterzuladen, keine
-      Engine, die beim ersten Gebrauch nachgeladen wird. Jedes Byte, das Ihr
-      Audio berührt, kam beim Laden der Seite von dieser Herkunft."""
+ Eine Netzfunktion hat dieses Werkzeug
+      überhaupt nicht. Es gibt keine Adresse zum Einfügen, nichts
+      herunterzuladen und keine Engine, die beim ersten Gebrauch nachgeladen
+      wird. Jedes Byte, das Ihr Audio berührt, kam beim Laden der Seite von
+      dieser Domain selbst."""
 
 [[privacy]]
 title = "Der Decoder ist der, den Ihr Browser ohnehin hat."
 body = """
 
-      Die Datei wird an <code>decodeAudioData</code> übergeben, denselben Code,
-      der eine Aufnahme in einem <code>&lt;audio&gt;</code>-Element abspielt. Hier
-      wird nichts ausgeliefert, um Ihr Format zu lesen, und es wird auch nichts
-      außerhalb dieser Seite darum gebeten."""
+      Die Datei geht an <code>decodeAudioData</code>, also an denselben Code, der
+      eine Aufnahme in einem <code>&lt;audio&gt;</code>-Element abspielt. Um Ihr
+      Format zu lesen, wird hier nichts ausgeliefert und auch nichts von
+      außerhalb dieser Seite angefordert."""
 
 [[privacy]]
 title = "Das Bild eines Videos wird überhaupt nicht dekodiert."
 body = """
- Wenn Sie ein Video
-      hineinziehen, wird nur seine Tonspur angefordert. Die Einzelbilder werden
-      nicht gelesen, nicht dekodiert, nicht gezeichnet und nicht angesehen
-      &mdash; es gibt auf dieser Seite keinen Code, der das könnte, und die
-      Datei, die herauskommt, enthält Klang und sonst nichts."""
+ Ziehen Sie ein Video
+      hinein, wird nur seine Tonspur angefordert. Die Einzelbilder werden nicht
+      gelesen, nicht dekodiert, nicht gezeichnet und nicht angesehen, denn auf
+      dieser Seite gibt es gar keinen Code, der das könnte. Was herauskommt,
+      enthält Klang und sonst nichts."""
 
 [[privacy]]
 title = "Die Samples werden aufgeschrieben, nicht neu kodiert."
 body = """
 
       Eine WAV besteht aus den Samples, die diese Seite berechnet hat, mit einem
-      Header davor. Es gibt keinen Encoder in der Kette, der Entscheidungen über
-      Ihre Aufnahme trifft, und nichts, was sich als Upload beschreiben ließe,
-      auf dem so etwas passieren könnte."""
+      Header davor. In der Kette sitzt kein Encoder, der über Ihre Aufnahme
+      entscheidet, und es gibt auch nichts, was sich als Upload beschreiben
+      ließe, worauf so etwas passieren könnte."""
 
 [[privacy]]
-title = "Was Google lädt - und was es nicht bekommt."
+title = "Was Google lädt und was Google nicht bekommt."
 body = """
  Die Werbe- und
       Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihre
-      Aufnahme übergeben: keine Datei, kein Sample, kein Name, keine Größe, keine
-      Länge und nicht, wie laut sie war. Jede Zeile, die liest, bearbeitet und
-      schreibt, wird von dieser Herkunft ausgeliefert und ist im Repository
-      aufgeführt."""
+      Aufnahme übergeben, weder eine Datei noch ein Sample, ein Name, eine Größe,
+      eine Länge oder wie laut sie war. Jede Zeile, die liest, bearbeitet und
+      schreibt, kommt von dieser Domain selbst und steht im Repository."""
 
 [[privacy]]
-title = "Was der Spenden-Button lädt - und was er nicht bekommt."
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
 body = """
 
       Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
       Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
-      Google Fonts. Er ist ein Link und nicht mehr: Er meldet keinen Besuch, und
-      ihm wird nichts über Sie oder Ihre Datei übergeben."""
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihre Datei bekommt er nichts."""
 
 [[privacy]]
 title = "Es funktioniert offline."
 body = """
  Trennen Sie die Netzverbindung, und alles auf
-      dieser Seite arbeitet weiter. Das ist der einfachste Beweis von allen."""
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht."""
 
 [[howto]]
-title = "Wählen Sie eine Datei."
+title = "Wählen Sie eine Datei aus."
 body = """
  Ziehen Sie eine MP3-, WAV-, FLAC-,
-      M4A-, Ogg- oder Opus-Datei auf das Auswahlfeld &mdash; oder ein Video, wenn
+      M4A-, Ogg- oder Opus-Datei auf das Auswahlfeld, oder gleich ein Video, wenn
       es Ihnen um den Ton daraus geht. Der Browser liest sie direkt von Ihrer
-      Festplatte; dabei wird nichts irgendwohin gesendet."""
+      Festplatte, und dabei geht nichts nach draußen."""
 
 [[howto]]
 title = "Drehen Sie sie um, falls Sie deshalb hier sind."
 body = """
- Ein einziges
-      Häkchen. Die Samples werden von hinten nach vorn geschrieben, was exakt
-      umkehrbar ist: Machen Sie es zweimal, und Sie haben Sample für Sample die
+ Dafür genügt ein
+      Häkchen. Die Samples werden von hinten nach vorn geschrieben, und das ist
+      exakt umkehrbar. Machen Sie es zweimal, haben Sie Sample für Sample die
       Datei, mit der Sie angefangen haben."""
 
 [[howto]]
 title = "Stellen Sie das Tempo ein."
 body = """
  Ziehen Sie den Regler, tippen Sie
-      einen Faktor ein oder nehmen Sie eine der Voreinstellungen. Entscheiden Sie
-      dann, was mit der Tonhöhe passiert: sie halten, wo sie ist &mdash; das
-      wollen Sie bei einer Vorlesung mit 1,5&times; &mdash; oder sie mit dem
-      Tempo mitgehen lassen, was ein Tonband tut und was eine Stimme höher oder
-      tiefer macht."""
+      einen Faktor ein oder nehmen Sie eine der Voreinstellungen. Dann
+      entscheiden Sie, was mit der Tonhöhe passiert. Halten Sie sie, wo sie ist,
+      wenn Sie eine Vorlesung mit 1,5&times; hören wollen. Oder lassen Sie sie
+      mit dem Tempo mitgehen, so wie es ein Tonband tut, das eine Stimme höher
+      oder tiefer macht."""
 
 [[howto]]
 title = "Stellen Sie den Pegel ein."
 body = """
  Nennen Sie entweder eine Änderung in
       Dezibel, oder lassen Sie die Aufnahme so weit anheben, dass ihr lautester
-      Moment knapp unter der Decke liegt. Die Seite sagt Ihnen vorher, wo dieser
-      Moment landen wird, und warnt Sie, wenn Ihre Einstellung ihn über die
-      Vollaussteuerung hinausschieben würde."""
+      Moment knapp unter der Decke liegt. Wo dieser Moment landen wird, sagt
+      Ihnen die Seite vorher, und sie warnt Sie, wenn Ihre Einstellung ihn über
+      die Vollaussteuerung hinausschieben würde."""
 
 [[howto]]
 title = "Speichern Sie."
 body = """
- Die Arbeit passiert auf Ihrer eigenen Hardware, wie
-      lange sie dauert, hängt also von Ihrem Gerät ab und nicht von einer
-      Warteschlange. Heraus kommt eine WAV &mdash; die Samples selbst, mit einem
-      Header davor &mdash; die zuerst auf der Seite abgespielt und dann direkt an
-      die Downloads Ihres Browsers übergeben wird."""
+ Die Arbeit passiert auf Ihrer eigenen Hardware.
+      Wie lange sie dauert, hängt daher von Ihrem Gerät ab und nicht von einer
+      Warteschlange. Heraus kommt eine WAV, also die Samples selbst mit einem
+      Header davor. Sie wird zuerst auf der Seite abgespielt und geht dann direkt
+      in die Downloads Ihres Browsers."""
 
 [[faq]]
 q = "Wird mein Audio irgendwohin hochgeladen?"
 a = """
-        Nein. Es wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
-        gelesen, bearbeitet und geschrieben. Dieses Werkzeug hat keine
-        Serverseite, und die <code>Content-Security-Policy</code> der Seite nennt
-        jede Adresse, die sie kontaktieren darf &mdash; keine davon gehört zu
-        dieser Seite. Trennen Sie die Internetverbindung und kehren Sie trotzdem
-        eine Aufnahme um, wenn Sie lieber prüfen als glauben."""
+        Nein. Ihr eigener Browser liest, bearbeitet und schreibt es auf Ihrer
+        eigenen Hardware. Eine Serverseite hat dieses Werkzeug nicht, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf; keine davon gehört uns. Wer lieber prüft als
+        glaubt, trennt die Internetverbindung und kehrt trotzdem eine Aufnahme
+        um."""
 
 [[faq]]
 q = "Kann ich den Ton aus einem Video holen?"
 a = """
-        Ja, und das ist hier dieselbe Aufgabe wie das Öffnen einer MP3. Ziehen
-        Sie ein MP4, MOV oder WebM hinein, und nur seine Tonspur wird dekodiert:
+        Ja, und hier ist das dieselbe Aufgabe wie das Öffnen einer MP3. Ziehen
+        Sie ein MP4, MOV oder WebM hinein, und es wird nur die Tonspur dekodiert.
         Das Bild wird nie gelesen, und heraus kommt eine Audiodatei ohne Video
-        darin. Es ist auch der Weg, den Ton eines Clips zu sichern, ohne ihn
-        überhaupt zu bearbeiten &mdash; lassen Sie jede Einstellung in Ruhe und
-        drücken Sie auf die Schaltfläche."""
+        darin. So sichern Sie auch den Ton eines Clips, ohne ihn überhaupt zu
+        bearbeiten: Lassen Sie einfach jede Einstellung in Ruhe und drücken Sie
+        auf die Schaltfläche."""
 
 [[faq]]
 q = "Ändert eine Tempoänderung die Tonhöhe?"
 a = """
         Nur wenn Sie es so wollen. &bdquo;Tonhöhe halten&ldquo; schneidet die
         Aufnahme in überlappende Fenster von etwa fünfzig Millisekunden und legt
-        sie enger oder weiter auseinander wieder ab, wobei jede Position so
-        gewählt wird, dass die Wellen an ihrer Schnittstelle zusammenpassen
-        &mdash; eine Stimme bleibt bei 1,5&times; dieselbe Stimme.
-        &bdquo;Mitgehen lassen&ldquo; rechnet stattdessen neu ab, und das ist,
-        was ein schneller laufendes Tonband tut: doppeltes Tempo ist genau eine
+        sie enger oder weiter auseinander wieder ab. Jede Position wird dabei so
+        gewählt, dass die Wellen an der Schnittstelle zusammenpassen, und
+        deshalb bleibt eine Stimme bei 1,5&times; dieselbe Stimme.
+        &bdquo;Mitgehen lassen&ldquo; rechnet stattdessen neu ab, und genau das
+        tut ein schneller laufendes Tonband: doppeltes Tempo ist genau eine
         Oktave höher."""
 
 [[faq]]
@@ -216,12 +214,12 @@ q = "Warum speichert es eine WAV und keine MP3?"
 a = """
         Weil kein Browser einen MP3-Encoder mitbringt und dieses Werkzeug sich
         weigert, Ihre Aufnahme an einen Server zu schicken, der einen hat. Eine
-        WAV braucht überhaupt keinen Encoder &mdash; sie besteht aus den Samples
-        mit einem vierundvierzig Byte großen Header davor &mdash; und ist damit
-        zugleich die ehrliche Option und die einzige, die keine Qualität kosten
-        kann. Sie ist größer: rund zehn Megabyte pro Minute in Stereo. Jeder
-        Player, jedes Telefon und jeder Editor öffnet sie, und alles, was eine
-        MP3 will, kann daraus eine machen."""
+        WAV braucht überhaupt keinen Encoder, denn sie besteht aus den Samples
+        mit einem vierundvierzig Byte großen Header davor. Damit ist sie zugleich
+        die ehrliche Option und die einzige, die keine Qualität kosten kann.
+        Größer ist sie allerdings, rund zehn Megabyte pro Minute in Stereo.
+        Öffnen kann sie jeder Player, jedes Telefon und jeder Editor, und alles,
+        was eine MP3 will, macht daraus eine."""
 
 [[faq]]
 q = "Welche Formate kann ich öffnen?"
@@ -230,53 +228,55 @@ a = """
         und AAC, Ogg Vorbis und Opus sowie den Ton in MP4-, M4V-, MOV- und
         WebM-Videos. Draußen bleibt dieselbe kurze Liste wie überall sonst: AVI,
         WMA und die meisten MKVs. Eine Datei, die dieser Browser nicht lesen
-        will, wird mit einer entsprechenden Meldung abgelehnt, statt auf halbem
-        Weg zu scheitern."""
+        will, wird gleich mit einer entsprechenden Meldung abgelehnt, statt auf
+        halbem Weg zu scheitern."""
 
 [[faq]]
 q = "Verzerrt es, wenn ich es lauter mache?"
 a = """
-        Nur wenn Sie über die Vollaussteuerung hinausgehen, und die Seite sagt es
-        Ihnen vorher. Digitales Audio hat eine harte Decke: Ein Sample kann nicht
-        lauter sein als Vollaussteuerung, alles darüber wird also an der Decke
-        plattgedrückt &mdash; und genau so klingt Verzerrung. &bdquo;So laut wie
-        möglich&ldquo; ist die Einstellung, die das nicht tun kann: Sie rechnet
-        aus, wie viel Luft die Aufnahme noch hat, und nutzt genau so viel. Alles
-        unterhalb der Decke ist Multiplikation und nichts weiter: 6 dB hoch und
-        6 dB wieder herunter, und die Samples stehen, wo sie standen."""
+        Nur wenn Sie über die Vollaussteuerung hinausgehen, und das sagt Ihnen
+        die Seite vorher. Digitales Audio hat eine harte Decke. Lauter als
+        Vollaussteuerung kann ein Sample nicht werden, alles darüber wird also
+        an der Decke plattgedrückt, und genau so klingt Verzerrung. &bdquo;So
+        laut wie möglich&ldquo; ist die Einstellung, die das gar nicht tun kann,
+        denn sie rechnet aus, wie viel Luft die Aufnahme noch hat, und nutzt
+        genau so viel. Unterhalb der Decke ist alles bloß Multiplikation: 6 dB
+        hoch und 6 dB wieder herunter, und die Samples stehen, wo sie
+        standen."""
 
 [[faq]]
-q = "Kostet Umkehren oder Umtakten Qualität?"
+q = "Kostet Umkehren oder eine Tempoänderung Qualität?"
 a = """
-        Umkehren nicht: Dieselben Samples kommen in der anderen Reihenfolge
-        heraus, was exakt ist. Eine Tempoänderung verschiebt jedes Sample, ist
-        also Rechnerei und keine Kopie &mdash; das Resampling filtert dabei
+        Umkehren nicht. Dieselben Samples kommen in der anderen Reihenfolge
+        heraus, und das ist exakt. Eine Tempoänderung verschiebt dagegen jedes
+        Sample und ist damit Rechnerei statt Kopie. Das Resampling filtert dabei
         ordentlich, damit hohe Töne beim Beschleunigen nicht als metallisches
         Klingeln zurückfalten, und die Fenster der Zeitdehnung werden dort
         gesetzt, wo die Wellen zusammenpassen, statt dort, wo die Rechnung
-        gerade hinfiel. Keiner der beiden Wege kodiert etwas neu, denn es gibt
-        hier keinen Encoder, mit dem sich etwas neu kodieren ließe."""
+        gerade hinfiel. Neu kodiert wird auf keinem der beiden Wege etwas, denn
+        einen Encoder gibt es hier gar nicht."""
 
 [[faq]]
 q = "Gibt es eine Grenze für die Länge der Datei?"
 a = """
-        Im Werkzeug ist keine Grenze eingebaut. Die praktische Obergrenze ist der
-        Arbeitsspeicher: Die gesamte Aufnahme wird auf einmal in diese Seite
-        dekodiert, und vor dem Download wird eine WAV im Speicher zusammengesetzt
-        &mdash; eine Stunde Stereo braucht also knapp unter einem Gigabyte
-        Arbeitsraum. Eine WAV über vier Gigabyte wird rundweg abgelehnt, weil das
-        Größenfeld des Formats selbst eine solche nicht beschreiben kann."""
+        Im Werkzeug ist keine Grenze eingebaut. Die praktische Obergrenze setzt
+        der Arbeitsspeicher, denn die gesamte Aufnahme wird auf einmal in diese
+        Seite dekodiert, und vor dem Download wird eine WAV im Speicher
+        zusammengesetzt. Eine Stunde Stereo braucht damit knapp unter einem
+        Gigabyte Arbeitsraum. Eine WAV über vier Gigabyte wird rundweg
+        abgelehnt, weil das Größenfeld des Formats selbst so etwas gar nicht
+        beschreiben kann."""
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
 a = """
         Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
-        Testphase und kein Wasserzeichen. Die Seite trägt Werbung, und die
-        bezahlt sie; den Anzeigen wird nichts über Ihre Aufnahme übergeben."""
+        Testphase und kein Wasserzeichen. Bezahlt wird die Seite über Werbung,
+        und den Anzeigen wird nichts über Ihre Aufnahme übergeben."""
 
 [schema]
-browser_requirements = "Benötigt JavaScript und einen Browser mit Web Audio, was jeder aktuelle ist. Es braucht keine Codec-Unterstützung über das hinaus, was der Browser zum Abspielen der Datei ohnehin hat."
-description = "Eine Tonaufnahme im Browser umkehren, ihr Tempo mit oder ohne Tonhöhenänderung anpassen und ihren Pegel setzen. Funktioniert auch mit dem Ton in einem Video. Es wird nichts hochgeladen, und das Ergebnis wird als WAV geschrieben - es wird also nichts neu kodiert."
+browser_requirements = "Benötigt JavaScript und einen Browser mit Web Audio, was jeder aktuelle ist. Codec-Unterstützung über das hinaus, was der Browser zum Abspielen der Datei ohnehin hat, braucht es nicht."
+description = "Eine Tonaufnahme im Browser umkehren, ihr Tempo mit oder ohne Tonhöhenänderung anpassen und ihren Pegel setzen. Funktioniert auch mit dem Ton in einem Video. Es wird nichts hochgeladen, und weil das Ergebnis als WAV geschrieben wird, wird auch nichts neu kodiert."
 features = [
   "Spielt eine Aufnahme exakt rückwärts ab",
   "Ändert das Tempo vom Viertel bis zum Vierfachen, mit gehaltener oder mitgehender Tonhöhe",
@@ -288,4 +288,4 @@ features = [
 
 [picker]
 title = "Audiodatei oder Video hierher ziehen"
-hint = "oder klicken zum Auswählen &mdash; MP3, WAV, FLAC, M4A, Ogg und der Ton in MP4, MOV oder WebM"
+hint = "oder klicken und auswählen &mdash; MP3, WAV, FLAC, M4A, Ogg und der Ton in MP4, MOV oder WebM"

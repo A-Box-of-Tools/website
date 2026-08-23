@@ -45,9 +45,9 @@
 
     <div class="edit-block">
       <div class="block-head">
-        <label for="speed">속도</label>
+        <label for="speed">배속</label>
         <input type="text" id="speed-value" class="value-box" inputmode="decimal"
-               spellcheck="false" autocomplete="off" aria-label="속도, 배수로">
+               spellcheck="false" autocomplete="off" aria-label="배속, 배수로">
       </div>
 
       <!-- The slider is in octaves, not multiples: half speed and double speed
@@ -119,7 +119,7 @@
 
     <dl class="summary" id="summary">
       <div><dt>길이</dt><dd id="sum-length">&mdash;</dd></div>
-      <div><dt>속도</dt><dd id="sum-speed">&mdash;</dd></div>
+      <div><dt>배속</dt><dd id="sum-speed">&mdash;</dd></div>
       <div><dt>가장 큰 순간</dt><dd id="sum-peak">&mdash;</dd></div>
       <div><dt>대략</dt><dd id="sum-size">&mdash;</dd></div>
     </dl>
@@ -135,8 +135,8 @@
       <div class="field">
         <label for="depth">무엇으로 쓸지</label>
         <select id="depth">
-          <option value="16" selected>16비트 WAV &mdash; 어디서나 재생됩니다</option>
-          <option value="32">32비트 부동소수 WAV &mdash; 잘려 나가는 것이 없습니다</option>
+          <option value="16" selected>16비트 WAV(어디서나 재생됩니다)</option>
+          <option value="32">32비트 부동소수 WAV(잘려 나가는 것이 없습니다)</option>
         </select>
         <p class="field-note" id="depth-note">
           WAV는 샘플을 있는 그대로 담기 때문에, WAV로 쓰는 것 자체가 품질을

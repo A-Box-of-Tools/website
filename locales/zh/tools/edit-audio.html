@@ -4,9 +4,12 @@
   Prose paragraphs are written on one line each: a line break inside Chinese
   text collapses to a space in HTML, and a space between two Han characters is
   visible on the page.
+
+  The &mdash; inside each <dd> is a placeholder for a value not read yet, not
+  punctuation, so it stays exactly as the English source has it.
 -->
 <main>
-  <!-- 第 1 步 &mdash; 文件 -->
+  <!-- 第 1 步，选文件 -->
   <section class="card">
     <h2><span class="step">1</span> 选一个文件</h2>
 
@@ -35,7 +38,7 @@
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- 第 2 步 &mdash; 改动 -->
+  <!-- 第 2 步，改动 -->
   <section class="card" id="edit-card" hidden>
     <h2><span class="step">2</span> 改它</h2>
 
@@ -45,7 +48,7 @@
         倒着放
       </label>
       <p class="field-note">
-        采样按从后往前的顺序写出去。除此之外它们什么都没变，所以倒放两次，拿回来的正是你一开始那个文件。
+        采样按从后往前的顺序写出去，除此之外一点没变，所以倒放两次，拿回来的正是你一开始那个文件。
       </p>
     </div>
 
@@ -76,7 +79,7 @@
         <label class="mode">
           <input type="radio" name="pitch" value="keep" checked>
           <span>
-            <strong>保持音高</strong>人声听起来还是同一个人，只是快了或者慢了。
+            <strong>钉住音高</strong>人声听着还是同一个人，只是快了或者慢了。
           </span>
         </label>
         <label class="mode">
@@ -105,13 +108,13 @@
         <label class="mode">
           <input type="radio" name="level" value="gain" checked>
           <span>
-            <strong>就调这么多</strong>每一个采样都乘以同一个数。别的什么都不变。
+            <strong>就调这么多</strong>每一个采样都乘上同一个数，别的一概不动。
           </span>
         </label>
         <label class="mode">
           <input type="radio" name="level" value="normalize">
           <span>
-            <strong>能多响就多响</strong>一直提到最响的那一瞬刚好顶在上限之下。
+            <strong>能多响就多响</strong>一路提到最响的那一瞬刚好顶在上限之下。
           </span>
         </label>
       </fieldset>
@@ -129,7 +132,7 @@
     <p id="clip-note" class="path-note" hidden></p>
   </section>
 
-  <!-- 第 3 步 &mdash; 出来的那个文件 -->
+  <!-- 第 3 步，出来的那个文件 -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> 保存</h2>
 
@@ -137,11 +140,11 @@
       <div class="field">
         <label for="depth">写成什么</label>
         <select id="depth">
-          <option value="16" selected>16 位 WAV &mdash; 到哪儿都能放</option>
-          <option value="32">32 位浮点 WAV &mdash; 什么都不被削平</option>
+          <option value="16" selected>16 位 WAV，到哪儿都能放</option>
+          <option value="32">32 位浮点 WAV，什么都不会被削平</option>
         </select>
         <p class="field-note" id="depth-note">
-          WAV 原样保存采样，所以写一个 WAV 不可能损失质量。它不是个小文件：看上面的估算。
+          WAV 原样保存采样，所以写一个 WAV 不可能损失质量。代价是文件不小，估算见上面。
         </p>
       </div>
     </div>

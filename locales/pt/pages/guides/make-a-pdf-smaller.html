@@ -2,10 +2,10 @@
     <h2>A resposta curta</h2>
     <p>
       Abra o <a href="../../comprimir-pdf/">Compressor de PDF</a>, jogue o
-      documento dentro e olhe o que ele lhe diz antes de mudar qualquer coisa.
-      Ele lê o arquivo e mostra onde o tamanho realmente está &mdash; imagens,
-      fontes, texto e desenho, e tudo aquilo a que nada no documento se refere
-      mais. Essa tela sozinha costuma responder à pergunta.
+      documento dentro e olhe o que ele diz antes de mudar qualquer coisa. Ele lê
+      o arquivo e mostra onde o tamanho realmente está: imagens, fontes, texto e
+      desenho, e tudo aquilo a que nada no documento se refere mais. Essa tela
+      sozinha costuma responder à pergunta.
     </p>
     <p>
       Se a maior parte do tamanho é imagem, espere uma economia grande. Se são
@@ -22,12 +22,12 @@
     </p>
     <ul>
       <li>
-        <strong>Imagens.</strong> Fotografias e escaneamentos. Quase sempre o
+        <strong>Imagens.</strong> Fotografias e digitalizações. Quase sempre o
         grosso de um PDF grande, e a única parte com folga de verdade.
       </li>
       <li>
         <strong>Fontes embutidas.</strong> Uma fonte inteira pode ter centenas
-        de kilobytes; um subconjunto só com os caracteres de fato usados é bem
+        de kilobytes, e um subconjunto só com os caracteres de fato usados é bem
         menos. De um jeito ou de outro, elas já foram comprimidas por quem
         produziu o arquivo.
       </li>
@@ -40,18 +40,18 @@
         <strong>Objetos que nada mais aponta.</strong> PDFs acumulam isso.
         Editar um documento muitas vezes acrescenta a mudança em vez de
         reescrever o arquivo, então uma versão antiga de uma página pode ficar
-        lá dentro por tempo indeterminado. Reempacotar o arquivo descarta esses
-        objetos.
+        lá dentro por tempo indeterminado. Reempacotar o arquivo joga esses
+        objetos fora.
       </li>
     </ul>
     <p>
       Ou seja, os dois documentos que as pessoas levam a um compressor de PDF
-      têm perspectivas completamente diferentes. Um documento escaneado é
-      essencialmente uma pilha de fotografias, e costuma sair 60&ndash;90%
-      menor. Um contrato, uma tese ou um relatório exportado são texto, desenho
-      e fontes &mdash; tudo já comprimido pelo programa que escreveu o arquivo
-      &mdash; e ali a economia costuma ser de alguns por cento, vinda do
-      reempacotamento e do descarte do que não é referenciado.
+      têm perspectivas completamente diferentes. Um documento digitalizado é
+      essencialmente uma pilha de fotografias, e costuma sair de 60% a 90% menor.
+      Já um contrato, uma tese ou um relatório exportado são texto, desenho e
+      fontes, tudo isso já comprimido pelo programa que escreveu o arquivo, e ali
+      a economia costuma ser de alguns por cento, vinda do reempacotamento e do
+      descarte do que não é referenciado.
     </p>
     <p>
       Qualquer ferramenta que promete &ldquo;até 90% menor&rdquo; sem olhar o
@@ -63,16 +63,15 @@
     <h2>O que o DPI tem a ver com isso</h2>
     <p>
       Um PDF não guarda apenas uma imagem; ele registra de que tamanho essa
-      imagem é desenhada na página. Isso lhe dá algo mais útil que a contagem de
+      imagem é desenhada na página. Isso rende algo mais útil que a contagem de
       pixels: a resolução efetiva.
     </p>
     <p>
-      Um escaneamento de 4000 pixels de largura colocado ao longo de vinte
+      Uma digitalização de 4000 pixels de largura espalhada ao longo de vinte
       centímetros de papel está carregando 500 pixels por polegada. Uma tela
       mostra cerca de 100. Uma boa impressora de escritório trabalha a 300 e não
       consegue usar muito mais. Tudo acima disso é detalhe que nada no futuro do
-      documento jamais vai exibir &mdash; e costuma ser a maior parte do
-      arquivo.
+      documento jamais vai exibir, e costuma ser a maior parte do arquivo.
     </p>
     <p>
       É por isso que um compressor de PDF sensato pede um DPI em vez de uma
@@ -82,11 +81,11 @@
     </p>
     <p>
       Guia grosseiro: <strong>150 DPI</strong> para um documento que será lido na
-      tela, <strong>200&ndash;300</strong> para algo que será impresso,
-      <strong>72&ndash;100</strong> para um rascunho que ninguém vai guardar.
+      tela, <strong>de 200 a 300</strong> para algo que será impresso, e
+      <strong>de 72 a 100</strong> para um rascunho que ninguém vai guardar.
       Medir contra o tamanho em que a imagem é desenhada também é o motivo de
-      uma logomarca colocada pequena não ser tratada igual a um escaneamento de
-      página inteira &mdash; a logomarca já está perto da resolução efetiva dela
+      uma logomarca colocada pequena não ser tratada igual a uma digitalização de
+      página inteira, porque a logomarca já está perto da resolução efetiva dela
       e não há nada a tirar.
     </p>
   </section>
@@ -102,13 +101,13 @@
       <li>
         <strong>Texto continua texto.</strong> Selecionável, pesquisável,
         copiável. Um compressor que achata as páginas em imagens vai produzir um
-        arquivo bem pequeno e destruir o documento &mdash; você não consegue
-        pesquisar, leitores de tela não conseguem ler, e não há como desfazer.
+        arquivo bem pequeno e destruir o documento: você não consegue pesquisar,
+        leitores de tela não conseguem ler, e não há como desfazer.
       </li>
       <li>
         <strong>As fontes continuam inteiras.</strong> Substituir fontes muda
-        como o documento aparece na máquina de outra pessoa, que é exatamente a
-        coisa que o PDF existe para evitar.
+        como o documento aparece no computador de outra pessoa, que é exatamente
+        a coisa que o PDF existe para evitar.
       </li>
       <li>
         <strong>Desenho vetorial é copiado exatamente.</strong> Já é pequeno, e
@@ -133,15 +132,14 @@
     <h2>As imagens que não dá para comprimir</h2>
     <p>
       Algumas imagens dentro de um PDF são puladas, e uma boa ferramenta nomeia
-      quais em vez de silenciosamente deixá-las fora da conta:
+      quais em vez de deixá-las fora da conta em silêncio:
     </p>
     <ul>
       <li>
         <strong>Imagens JPEG&nbsp;2000, JBIG2 e codificadas em fax
         (CCITT).</strong> Navegador nenhum traz decodificador para nenhuma
-        delas, então passam intocadas. As duas últimas são de dois níveis
-        &mdash; só preto e branco &mdash; e em geral já estão perto do menor
-        tamanho possível.
+        delas, então passam intocadas. As duas últimas são de dois níveis, só
+        preto e branco, e em geral já estão perto do menor tamanho possível.
       </li>
       <li>
         <strong>Imagens CMYK.</strong> Deixadas de lado de propósito.
@@ -159,10 +157,10 @@
       resposta errada.
     </p>
     <p>
-      <strong>Ele foi escaneado sem precisar?</strong> Um documento impresso e
-      depois escaneado é uma pilha de fotografias de texto. Se o original ainda
-      existe em algum lugar como documento, exportar aquilo para PDF vai produzir
-      um arquivo com uma fração do tamanho, e ainda pesquisável.
+      <strong>Ele foi digitalizado sem precisar?</strong> Um documento impresso e
+      depois digitalizado é uma pilha de fotografias de texto. Se o original
+      ainda existe em algum lugar como documento, exportar aquilo para PDF vai
+      produzir um arquivo com uma fração do tamanho, e ainda pesquisável.
     </p>
     <p>
       <strong>Ele foi exportado em ajustes de impressão?</strong> Editores de
@@ -180,17 +178,16 @@
   <section>
     <h2>Arquivos criptografados, e por que um compressor deve recusá-los</h2>
     <p>
-      Um PDF protegido por senha é recusado pela ferramenta daqui, e isso é
-      deliberado, não uma função faltando &mdash; inclusive quando a senha é
-      vazia, que é como muitos escâneres e copiadoras salvam.
+      Um PDF protegido por senha é recusado pela ferramenta daqui, e isso é de
+      propósito, não uma função faltando. Vale inclusive quando a senha é vazia,
+      que é como muitos scanners e copiadoras salvam.
     </p>
     <p>
       Tirar a proteção de um documento é um trabalho diferente de comprimi-lo.
       Uma ferramenta que fizesse isso em silêncio estaria fazendo algo que você
-      não pediu, num arquivo que alguém trancou de propósito, e lhe devolvendo
-      uma cópia que já não tem a propriedade que aquela pessoa quis lhe dar.
-      Tire a proteção você mesmo primeiro, de propósito, se é isso que você
-      quer.
+      não pediu, num arquivo que alguém trancou de propósito, e devolvendo uma
+      cópia que já não tem a propriedade que aquela pessoa quis dar a você. Se é
+      isso que você quer, tire a proteção antes, de propósito.
     </p>
   </section>
 
@@ -203,9 +200,9 @@
     <p>
       A ferramenta daqui faz a última dessas coisas por você antes de oferecer o
       arquivo: ela reabre o documento que acabou de escrever e conta as páginas,
-      na sua própria máquina. Ela também escreve PDF 1.5, que todo leitor lançado
-      desde 2003 entende, então &ldquo;abre na minha máquina&rdquo; é uma
-      aproximação razoável de &ldquo;abre na deles&rdquo;.
+      no seu próprio computador. Ela também escreve PDF 1.5, que todo leitor
+      lançado desde 2003 entende, então &ldquo;abre no meu computador&rdquo; é
+      uma aproximação razoável de &ldquo;abre no deles&rdquo;.
     </p>
   </section>
 
@@ -219,15 +216,16 @@
       documento de volta. Tudo isso roda num navegador hoje.
     </p>
     <p>
-      O que importa mais neste tipo de arquivo do que na maioria, por causa do
-      que as pessoas comprimem: contratos, laudos médicos, extratos bancários,
-      documentos de identidade, declarações de imposto. A ferramenta daqui não
-      tem função de rede nenhuma, e a <code>Content-Security-Policy</code> da
-      página nomeia todos os endereços que ela pode contatar, nenhum dos quais é
-      deste site. Carregue, desconecte e comprima alguma coisa mesmo assim.
+      Aqui isso importa mais do que na maioria dos arquivos, por causa do que as
+      pessoas comprimem: contratos, laudos médicos, extratos bancários,
+      documentos de identidade, declarações de imposto de renda. A ferramenta
+      daqui não tem função de rede nenhuma, e a
+      <code>Content-Security-Policy</code> da página lista todos os endereços que
+      ela pode acessar, nenhum dos quais é deste site. Carregue, desligue a
+      internet e comprima alguma coisa assim mesmo.
     </p>
     <p>
-      <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
-      conversores online?</a> apresenta mais três verificações como essa.
+      O <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
+      conversores online?</a> traz mais três verificações como essa.
     </p>
   </section>

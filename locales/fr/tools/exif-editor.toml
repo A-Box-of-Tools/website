@@ -4,29 +4,32 @@
 # Overrides for tools/exif-editor/tool.toml. Only words: the slug, the
 # category, the icon, the CSP and the list of shared parts stay where they are.
 #
+# [schema] is emitted as JSON-LD, where HTML entities are never decoded, so
+# that table alone uses plain spaces and plain punctuation.
+#
 
 name = "Lecteur et effaceur EXIF"
 heading = "Lecteur&nbsp;et&nbsp;effaceur EXIF <span class=\"h1-kw\">&mdash; supprimer les métadonnées d'une photo</span>"
 tagline = "Voyez ce qu'une photo raconte sur vous. Puis retirez-le."
 
 title = "Lecteur et effaceur EXIF &mdash; éditeur de métadonnées photo gratuit"
-description = "Voyez les données EXIF et GPS cachées dans une photo, modifiez-les, ou retirez tout d'un clic. Dans votre navigateur : rien n'est envoyé, et la photo n'est jamais réencodée."
+description = "Voyez les données EXIF et GPS cachées dans une photo, modifiez-les, ou retirez tout d'un clic. Tout se passe dans votre navigateur, sans envoi et sans jamais réencoder la photo."
 og_title = "Lecteur et effaceur EXIF &mdash; les voir, les modifier, ou tout retirer"
-og_description = "Lisez les métadonnées cachées dans une photo et retirez-les toutes d'un clic. Tout tourne sur votre machine ; l'image elle-même n'est jamais réencodée."
+og_description = "Lisez les métadonnées cachées dans une photo et retirez-les toutes d'un clic. Tout tourne sur votre machine&nbsp;; l'image elle-même n'est jamais réencodée."
 og_image_alt = "Lecteur et effaceur EXIF - lire, modifier ou retirer les métadonnées d'une photo"
 
 pledge = """
     Le fichier est ouvert, analysé et réécrit par votre propre navigateur. Cet
-    outil n'a aucune fonction réseau &mdash; rien à récupérer, rien à envoyer
-    &mdash; et il n'y a à l'autre bout de cette page aucun serveur auquel envoyer
-    une photo, quand bien même il y en aurait une."""
+    outil ne comporte aucune fonction réseau, si bien qu'il n'a rien à aller
+    chercher et rien à envoyer. Et quand bien même il en aurait une, il n'y a à
+    l'autre bout de cette page aucun serveur à qui remettre une photo."""
 
 live_hint = """
       Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
-      gardez l'onglet Réseau à l'œil et nettoyez une photo. Pas une seule requête
-      ne transporte d'image, de vignette, de nom de fichier ni une étiquette lue
-      dans votre fichier. Ou coupez votre connexion et nettoyez-en une quand
-      même."""
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et nettoyez une photo.
+      Pas une seule requête ne transporte d'image, de vignette, de nom de fichier
+      ni la moindre étiquette lue dans votre fichier. Vous pouvez aussi couper la
+      connexion et en nettoyer une quand même."""
 
 read_first = """
 , <code>src/tiff.js</code> pour l'analyseur EXIF, et
@@ -42,8 +45,6 @@ card = """
 [words]
 plural = "photos"
 choose = "une photo"
-analytics_extra = """, ni aucune des étiquettes
-  que cet outil lit dans vos fichiers"""
 
 [[facts]]
 text = "Sans envoi"
@@ -55,7 +56,7 @@ text = "Sans compte"
 text = "Fonctionne hors ligne"
 
 [[facts]]
-text = "Code ouvert"
+text = "Open source"
 
 [[facts]]
 text = "Ne réencode jamais l'image"
@@ -64,9 +65,9 @@ text = "Ne réencode jamais l'image"
 title = "Vos photos n'ont nulle part où aller."
 body = """
  La
-      Content-Security-Policy nomme toutes les adresses que cette page peut
-      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
-      collecte où vos fichiers pourraient arriver, et rien dans le code qui les y
+      Content-Security-Policy énumère toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de
+      collecte où vos fichiers pourraient aboutir, ni rien dans le code qui les y
       enverrait s'il en existait un."""
 
 [[privacy]]
@@ -75,7 +76,7 @@ body = """
  Contrairement aux autres outils de
       cette boîte, celui-ci n'a pas de fonction
       &laquo;&nbsp;charger depuis une adresse web&nbsp;&raquo; ni la moindre
-      étape réseau facultative. Il n'y a ni <code>fetch</code>, ni
+      étape réseau facultative. On ne trouve ni <code>fetch</code>, ni
       <code>XMLHttpRequest</code>, ni <code>sendBeacon</code> nulle part dans
       <code>src/</code>."""
 
@@ -83,8 +84,8 @@ body = """
 title = "Les métadonnées que nous lisons ne sont jamais relayées."
 body = """
  Votre position
-      GPS est affichée sur cette page et ne va nulle part ailleurs. Il n'existe
-      dans ce dépôt aucun événement d'analytique maison qui transporte une
+      GPS est affichée sur cette page et ne va nulle part ailleurs. Aucun
+      événement d'analytique maison, dans tout ce dépôt, ne transporte une
       étiquette, un nom de fichier, une taille ou un nombre."""
 
 [[privacy]]
@@ -107,10 +108,10 @@ body = """
       quelqu'un d'autre."""
 
 [[privacy]]
-title = "Cela fonctionne hors ligne."
+title = "Tout fonctionne hors ligne."
 body = """
- Coupez le réseau et l'outil est
-      inchangé, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la
+ Coupez le réseau&nbsp;: l'outil reste
+      identique, puisqu'il n'a jamais comporté la moindre étape réseau. C'est la
       preuve la plus simple de toutes."""
 
 [[howto]]
@@ -118,14 +119,14 @@ title = "Choisissez vos photos."
 body = """
  Déposez-les sur la zone prévue ou
       sélectionnez-les à la main. Le navigateur les lit directement sur votre
-      disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+      disque, sans que rien parte où que ce soit pendant ce temps."""
 
 [[howto]]
 title = "Lisez ce qu'il y a dedans, si vous voulez."
 body = """
  La liste des trouvailles
-      nomme ce qui vaut d'être su &mdash; la position GPS, les horodatages, les
-      numéros de série &mdash; avant le tableau complet de toutes les
+      nomme d'abord ce qui vaut d'être su, à savoir la position GPS, les
+      horodatages et les numéros de série, avant le tableau complet de toutes les
       étiquettes."""
 
 [[howto]]
@@ -140,17 +141,17 @@ body = """
 title = "Ou modifiez au lieu de supprimer."
 body = """
  Changez une date, corrigez une
-      ligne de copyright, retirez le lieu et gardez les réglages de l'appareil
-      &mdash; puis enregistrez cette photo seule."""
+      ligne de copyright, retirez le lieu en gardant les réglages de l'appareil,
+      puis enregistrez cette photo seule."""
 
 [[faq]]
 q = "Ma photo est-elle envoyée quelque part&nbsp;?"
 a = """
         Non. Le fichier est lu, analysé et réécrit par votre propre navigateur sur
-        votre propre matériel. Cet outil n'a aucune fonction réseau &mdash; il ne
-        récupère jamais rien et n'envoie jamais rien &mdash; et la
-        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
-        qu'elle peut contacter, dont aucune n'appartient à ce site."""
+        votre propre matériel. Cet outil ne comporte aucune fonction réseau, si bien
+        qu'il ne va jamais rien chercher et n'envoie jamais rien. Sa
+        <code>Content-Security-Policy</code> énumère par ailleurs toutes les adresses
+        que la page peut contacter, dont aucune n'appartient à ce site."""
 
 [[faq]]
 q = "Qu'est-ce que l'EXIF, et quoi d'autre se cache dans une photo&nbsp;?"
@@ -158,41 +159,43 @@ a = """
         L'EXIF est un bloc d'étiquettes qu'un appareil écrit à côté de l'image&nbsp;:
         la marque et le modèle, les réglages d'exposition, la date et l'heure à la
         seconde près, souvent une position GPS, et parfois un numéro de série. Les
-        photos portent fréquemment davantage &mdash; un paquet XMP de XML laissé par
-        un logiciel de retouche, un bloc IPTC de légendes et de signatures, un profil
+        photos portent fréquemment davantage&nbsp;: un paquet XMP de XML laissé par un
+        logiciel de retouche, un bloc IPTC de légendes et de signatures, un profil
         colorimétrique, une petite deuxième copie de l'image en vignette, et une note
-        de fabricant de données non documentées. Cet outil liste tout cela."""
+        de fabricant remplie de données non documentées. Cet outil liste tout cela."""
 
 [[faq]]
 q = "Supprimer les métadonnées réduit-il la qualité de l'image&nbsp;?"
 a = """
         Non, et c'est la principale raison d'utiliser un outil comme celui-ci plutôt
         que de réenregistrer la photo. Les métadonnées se trouvent dans le conteneur
-        autour de l'image compressée, pas dedans. Les supprimer, c'est effacer des
-        entrées d'une liste et réécrire la liste&nbsp;; les données d'image
-        compressées sont recopiées octet pour octet, si bien que le résultat décode
-        exactement les mêmes pixels. Rien n'est décodé et rien n'est recompressé."""
+        autour de l'image compressée, et non dedans. Les supprimer revient à effacer
+        des entrées d'une liste puis à réécrire la liste&nbsp;; les données d'image
+        compressées, elles, sont recopiées octet pour octet, si bien que le résultat
+        décode exactement les mêmes pixels. Rien n'est décodé et rien n'est
+        recompressé."""
 
 [[faq]]
 q = "Quels formats de fichier prend-il en charge&nbsp;?"
 a = """
         Le JPEG, le PNG et le WebP. Le HEIC et l'AVIF sont reconnus mais pas
-        réécrits&nbsp;: ce sont des formats à boîtes faits d'atomes imbriqués et ils
-        demandent un autre analyseur, alors l'outil le dit plutôt que de produire un
-        fichier cassé. Un TIFF nu n'est pas pris en charge non plus, parce que dans un
-        TIFF les métadonnées et les pixels sont adressés par les mêmes décalages."""
+        réécrits&nbsp;: ce sont des formats à boîtes faits d'atomes imbriqués, qui
+        demandent un autre analyseur, si bien que l'outil le dit plutôt que de
+        produire un fichier cassé. Un TIFF nu n'est pas pris en charge non plus,
+        parce que dans un TIFF les métadonnées et les pixels sont adressés par les
+        mêmes décalages."""
 
 [[faq]]
 q = "Ma photo apparaîtra-t-elle tournée une fois les métadonnées retirées&nbsp;?"
 a = """
         C'est possible, et il y a un réglage pour cela. Les téléphones enregistrent
         d'habitude l'image telle que le capteur l'a vue et ajoutent une étiquette
-        d'orientation qui dit comment la tourner. Retirez cette étiquette et certains
-        afficheurs montreront la photo couchée. L'option &laquo;&nbsp;garder
-        l'étiquette d'orientation&nbsp;&raquo;, active par défaut, réécrit un minuscule
-        bloc EXIF ne contenant que cette seule étiquette &mdash; et seulement quand la
-        photo en avait réellement besoin. Décochez-la si vous préférez que le fichier
-        ne porte plus le moindre EXIF."""
+        d'orientation qui dit comment la tourner. Retirez cette étiquette et
+        certaines visionneuses montreront la photo couchée. L'option
+        &laquo;&nbsp;garder l'étiquette d'orientation&nbsp;&raquo;, active par défaut,
+        réécrit un minuscule bloc EXIF ne contenant que cette seule étiquette, et
+        seulement quand la photo en avait réellement besoin. Décochez-la si vous
+        préférez que le fichier ne porte plus le moindre EXIF."""
 
 [[faq]]
 q = "Supprime-t-il la position GPS&nbsp;?"
@@ -200,33 +203,33 @@ a = """
         Oui. Tout supprimer supprime le répertoire GPS entier, et vous pouvez aussi
         effacer le lieu seul en gardant le reste. La position est d'abord montrée en
         degrés décimaux, parce que
-        &laquo;&nbsp;51 degrés, 30 minutes, 26 secondes&nbsp;&raquo; ne rend pas
-        évident qu'une photo nomme le bâtiment où elle a été prise."""
+        &laquo;&nbsp;51&nbsp;degrés, 30&nbsp;minutes, 26&nbsp;secondes&nbsp;&raquo; ne
+        rend pas évident qu'une photo nomme le bâtiment où elle a été prise."""
 
 [[faq]]
 q = "Puis-je modifier une étiquette au lieu de la supprimer&nbsp;?"
 a = """
         Oui. Les étiquettes de texte, les dates, l'ISO, l'orientation et la résolution
         peuvent toutes être modifiées, et quelques étiquettes courantes peuvent être
-        ajoutées à une photo qui n'en a aucune. Une réserve&nbsp;: écrire le fichier
-        reconstruit le bloc EXIF, et une note de fabricant contient des décalages vers
-        le bloc d'origine&nbsp;; une note reconstruite peut donc ne plus être lisible
-        ensuite par le logiciel du fabricant. Supprimez-la, ou laissez le fichier tel
-        quel, si cela compte pour vous."""
+        ajoutées à une photo qui n'en a aucune. Une réserve, toutefois&nbsp;: écrire
+        le fichier reconstruit le bloc EXIF, or une note de fabricant contient des
+        décalages vers le bloc d'origine&nbsp;; une note reconstruite peut donc ne
+        plus être lisible ensuite par le logiciel du fabricant. Supprimez-la, ou
+        laissez le fichier tel quel, si cela compte pour vous."""
 
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
 a = """
-        C'est gratuit, et il n'y a pas de compte, pas de connexion et pas de période
-        d'essai. Le site porte de la publicité, et c'est elle qui le finance&nbsp;;
-        les annonces ne reçoivent rien sur vos photos."""
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai.
+        Le site affiche de la publicité, et c'est elle qui le finance&nbsp;; les
+        annonces ne reçoivent rien sur vos photos."""
 
 [[faq]]
 q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
 a = """
         Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
         de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
-        envoyé&nbsp;: un outil qui expédierait vos photos ailleurs pour les traiter
+        envoyé, car un outil qui expédierait vos photos ailleurs pour les traiter
         s'arrêterait à l'instant où vous débranchez."""
 
 [schema]

@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; 画像 -->
+  <!-- ステップ1｜画像 -->
   <section class="card">
     <h2><span class="step">1</span> 画像を選ぶ</h2>
 
@@ -19,19 +19,18 @@
         <button type="button" data-sort="name" class="ghost">名前順に並べる</button>
         <button type="button" data-sort="date" class="ghost">日付順に並べる</button>
         <button type="button" data-sort="reverse" class="ghost">逆順にする</button>
-        <button type="button" id="clear-all" class="ghost danger">全部外す</button>
+        <button type="button" id="clear-all" class="ghost danger">すべて外す</button>
       </div>
     </div>
 
     <p id="reorder-hint" class="reorder-hint" hidden>
-      1ページに画像1枚、この順に並びます。
-      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> の取っ手をドラッグするか、タイル上の矢印でページを動かせます。
+      1ページに画像1枚、この順に並びます。<span class="grip" aria-hidden="true">&#8942;&#8942;</span>の取っ手をドラッグするか、タイル上の矢印でページを動かせます。
     </p>
 
     <ul id="image-list" class="image-list"></ul>
   </section>
 
-  <!-- ステップ2 &mdash; ページ -->
+  <!-- ステップ2｜ページ -->
   <section class="card">
     <h2><span class="step">2</span> ページの設定</h2>
 
@@ -40,12 +39,12 @@
         <label for="page-size">ページサイズ</label>
         <select id="page-size">
           <option value="fit" selected>各画像に合わせる</option>
-          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
-          <option value="letter">レター &mdash; 8.5 &times; 11 in</option>
-          <option value="legal">リーガル &mdash; 8.5 &times; 14 in</option>
-          <option value="a3">A3 &mdash; 297 &times; 420 mm</option>
-          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
-          <option value="tabloid">タブロイド &mdash; 11 &times; 17 in</option>
+          <option value="a4">A4（210 &times; 297 mm）</option>
+          <option value="letter">レター（8.5 &times; 11 in）</option>
+          <option value="legal">リーガル（8.5 &times; 14 in）</option>
+          <option value="a3">A3（297 &times; 420 mm）</option>
+          <option value="a5">A5（148 &times; 210 mm）</option>
+          <option value="tabloid">タブロイド（11 &times; 17 in）</option>
           <option value="custom">自分で指定&hellip;</option>
         </select>
         <div id="custom-size" class="inline-pair" hidden>
@@ -65,15 +64,15 @@
       <div class="field" id="dpi-field">
         <label for="dpi">印刷解像度</label>
         <select id="dpi">
-          <option value="72">72 DPI &mdash; 画面</option>
-          <option value="96">96 DPI</option>
-          <option value="150" selected>150 DPI</option>
-          <option value="200">200 DPI</option>
-          <option value="300">300 DPI &mdash; 印刷</option>
-          <option value="600">600 DPI</option>
+          <option value="72">72DPI（画面）</option>
+          <option value="96">96DPI</option>
+          <option value="150" selected>150DPI</option>
+          <option value="200">200DPI</option>
+          <option value="300">300DPI（印刷）</option>
+          <option value="600">600DPI</option>
         </select>
         <p class="field-note">
-          決まったピクセル数のページがどれだけの大きさになるかを決めます。画像そのものは変わりません。
+          決まったピクセル数のページが、紙の上でどれだけの大きさになるかを決めます。画像そのものは変わりません。
         </p>
       </div>
 
@@ -115,40 +114,40 @@
       <div class="field">
         <label for="mode">画像の品質</label>
         <select id="mode">
-          <option value="keep" selected>JPEG はそのまま保つ</option>
-          <option value="jpeg">すべて JPEG として書き直す</option>
-          <option value="lossless">可逆 &mdash; 圧縮による劣化を一切なくす</option>
+          <option value="keep" selected>JPEGはそのまま保つ</option>
+          <option value="jpeg">すべてJPEGとして書き直す</option>
+          <option value="lossless">可逆（圧縮による劣化を一切なくす）</option>
         </select>
         <p class="field-note" id="mode-note"></p>
       </div>
 
       <div class="field" id="quality-field">
-        <label for="quality">JPEG の画質</label>
+        <label for="quality">JPEGの画質</label>
         <select id="quality">
           <option value="0.75">ファイルを小さく</option>
           <option value="0.88" selected>バランス</option>
           <option value="0.95">最高画質</option>
         </select>
-        <p class="field-note">このツールが書き直す必要のある画像にだけ使われます。</p>
+        <p class="field-note">このツールが書き直す必要のある画像にだけ効きます。</p>
       </div>
 
       <div class="field">
         <label for="max-side">大きな画像を縮める</label>
         <select id="max-side">
-          <option value="0" selected>縮めない &mdash; 元の大きさのまま</option>
-          <option value="4000">長辺 4000 px</option>
-          <option value="2000">長辺 2000 px</option>
-          <option value="1200">長辺 1200 px</option>
+          <option value="0" selected>縮めない（元の大きさのまま）</option>
+          <option value="4000">長辺4000px</option>
+          <option value="2000">長辺2000px</option>
+          <option value="1200">長辺1200px</option>
         </select>
         <p class="field-note" id="shrink-note"></p>
       </div>
     </div>
 
     <details class="meta-panel">
-      <summary>書類の情報 &mdash; すべて任意、既定ではすべて空欄</summary>
+      <summary>書類の情報（すべて任意。既定ではすべて空欄）</summary>
       <div class="meta-body">
         <p class="meta-note">
-          PDF は自分自身についての小さな情報のかたまりを持っていて、たいていの道具は頼まれなくても日時とプログラム名を書き込みます。これは、ここに打ち込まれたものだけを書きます。ファイル名も、端末名も入りませんし、日付もチェックを入れない限り入りません。
+          PDFは自分自身についての小さな情報のかたまりを持っていて、たいていの道具は頼まれなくても日時とプログラム名を書き込みます。これは、ここに打ち込まれたものだけを書きます。ファイル名も端末名も入りませんし、日付もチェックを入れない限り入りません。
         </p>
         <div class="settings">
           <div class="field">
@@ -198,12 +197,12 @@
     </div>
   </section>
 
-  <!-- ステップ3 &mdash; 書き出し -->
+  <!-- ステップ3｜書き出し -->
   <section class="card">
-    <h2><span class="step">3</span> PDF を作る</h2>
+    <h2><span class="step">3</span> PDFを作る</h2>
 
     <div class="export-row">
-      <button type="button" id="export" class="primary" disabled>PDF を作る</button>
+      <button type="button" id="export" class="primary" disabled>PDFを作る</button>
       <button type="button" id="cancel" class="ghost" hidden>中止</button>
     </div>
 
@@ -217,7 +216,7 @@
     <div id="result" class="result" hidden>
       <div class="result-meta">
         <p id="result-info"></p>
-        <a id="download" class="primary as-button" download>PDF をダウンロード</a>
+        <a id="download" class="primary as-button" download>PDFをダウンロード</a>
       </div>
     </div>
   </section>

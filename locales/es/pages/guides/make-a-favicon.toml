@@ -13,13 +13,13 @@ description = "Qué tamaños necesita de verdad un favicon.ico, qué archivos ex
 heading = "Cómo hacer un favicon que todavía se lea a dieciséis píxeles"
 lede = """
     Un favicon no es una imagen pequeña de tu logotipo. Es un conjunto de
-    imágenes a tamaños fijos, dentro de un contenedor que casi nadie abre, y la
-    más pequeña de todas es la que ve la gente. Esto es qué tamaños necesitas,
-    qué archivos van al lado, y qué hacer cuando tu logotipo no sobrevive al
-    viaje hacia abajo."""
+    imágenes a tamaños fijos, metidas en un contenedor que casi nadie abre, y la
+    más pequeña de todas es la que ve la gente. Aquí van los tamaños que
+    necesitas, los archivos que van al lado y qué hacer cuando tu logotipo no
+    sobrevive al viaje hacia abajo."""
 
 updated = "20 de agosto de 2026"
 
 og_title = "Hacer un favicon que todavía se lea a dieciséis píxeles"
 og_description = "Qué tamaños necesita un favicon.ico, los archivos extra que piden los iPhone y Android, y qué hacer cuando tu logotipo no sobrevive a encogerse."
-og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

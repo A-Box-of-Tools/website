@@ -4,13 +4,13 @@
 
 nav = "Imagens em vídeo"
 title = "Como transformar uma pasta de imagens em um vídeo"
-description = "Faça uma apresentação em MP4 a partir de fotos: o que a taxa de quadros e a duração de fato controlam, o que fazer com imagens de formato diferente e por que o resultado sai sem trilha sonora."
+description = "Faça uma apresentação em MP4 a partir de fotos: o que a taxa de quadros e a duração de fato controlam, o que fazer com imagens de formato diferente, e por que o resultado sai sem trilha sonora."
 heading = "Como transformar uma pasta de imagens em um vídeo"
 lede = """
     Uma apresentação de slides é simples de fazer e fácil de ter que renderizar
-    duas vezes, porque dois dos ajustes não significam o que parecem
-    significar. Aqui está o que cada um controla e o que escolher."""
+    duas vezes, porque dois dos ajustes não significam o que parecem significar.
+    Aqui está o que cada um controla, e o que escolher."""
 updated = "20 de agosto de 2026"
 og_title = "Como transformar uma pasta de imagens em um vídeo"
-og_description = "O que a taxa de quadros e a duração de fato controlam, o que fazer com imagens de formato diferente e por que não há trilha sonora."
-og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"
+og_description = "O que a taxa de quadros e a duração de fato controlam, o que fazer com imagens de formato diferente, e por que não há trilha sonora."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

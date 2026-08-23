@@ -116,9 +116,9 @@
     <p>
       Bekijk de broncode van de pagina en zoek bovenin naar
       <code>Content-Security-Policy</code>. Het is een lijst van de adressen die
-      die pagina mag benaderen, en hij wordt afgedwongen door je browser in
-      plaats van door de goede bedoelingen van de site &mdash; een verzoek aan
-      iets dat niet op de lijst staat wordt geweigerd, wat de code ook probeert.
+      die pagina mag benaderen, en je browser dwingt hem af in plaats van de goede
+      bedoelingen van de site. Een verzoek aan iets dat niet op de lijst staat
+      wordt dus geweigerd, wat de code ook probeert.
     </p>
     <p>
       De richtlijn die ertoe doet is <code>connect-src</code>, die bepaalt waar
@@ -136,9 +136,8 @@
       Het minst handig, het meest sluitend. Publiceert een tool zijn broncode en
       serveert hij die zonder bouwstap, dan zijn de bestanden die je browser
       ophaalde de bestanden die je kunt lezen. Zoek erin op <code>fetch</code>,
-      <code>XMLHttpRequest</code> en <code>sendBeacon</code> &mdash; de drie
-      manieren waarop een pagina iets kan versturen &mdash; en kijk wat ze
-      meekrijgen.
+      <code>XMLHttpRequest</code> en <code>sendBeacon</code>, want dat zijn de drie
+      manieren waarop een pagina iets kan versturen, en kijk wat ze meekrijgen.
     </p>
     <p>
       De meeste mensen zullen dit niet doen. Het doet er nog steeds toe dat het
@@ -168,9 +167,9 @@
       <li>
         <strong>Het overleeft geen functie die iets ophaalt.</strong> Een tool
         waarin je een webadres kunt plakken, moet dat adres benaderen, en die
-        server komt je IP te weten en wat je opvroeg. Dat hoort bij de functie en
-        is er geen gebrek in &mdash; maar het is een echte uitzondering en een
-        tool hoort dat gewoon te zeggen in plaats van het af te ronden.
+        server komt je IP te weten en wat je opvroeg. Dat hoort bij de functie en is
+        er geen gebrek in, maar het blijft een echte uitzondering, en een tool hoort
+        dat gewoon te zeggen in plaats van het af te ronden.
       </li>
       <li>
         <strong>Het is niet hetzelfde als &ldquo;wij verwijderen je
@@ -195,8 +194,8 @@
       posten: identiteitsdocumenten, medische scans, contracten, alles met een
       adres of een gezicht dat je niet wilde delen, of een foto waarvan je de
       locatiegegevens niet bekeken hebt. Voor die is een tool die je kunt
-      controleren te verkiezen boven een tool die je moet vertrouwen &mdash; niet
-      omdat de vertrouwde je waarschijnlijk verraadt, maar omdat de vraag bij de
+      controleren te verkiezen boven een tool die je moet vertrouwen. Niet omdat
+      die vertrouwde je waarschijnlijk verraadt, maar omdat de vraag bij de
       controleerbare niet eens opkomt.
     </p>
   </section>
@@ -225,9 +224,9 @@
         broncode van elke pagina. <code>connect-src</code> noemt de
         advertentie- en meeteindpunten van Google en de doneerknop, en verder
         niets. <strong>Geen adres op die lijst hoort bij deze site</strong>, want
-        deze site heeft geen server &mdash; het zijn statische bestanden. Er is
-        nergens waar een bestand heen gestuurd zou kunnen worden, ook al
-        probeerde er iets.
+        deze site heeft geen server, want het zijn statische bestanden. Er is dus
+        nergens waar een bestand heen gestuurd zou kunnen worden, ook al probeerde
+        er iets het.
       </li>
       <li>
         <strong>Code.</strong> Elke regel is

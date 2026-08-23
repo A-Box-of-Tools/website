@@ -4,14 +4,14 @@
 
 nav = "Privacidade e cookies"
 title = "Privacidade e cookies &mdash; abox.tools"
-description = "O que o abox.tools coleta e o que não coleta. Seus arquivos nunca são enviados; a publicidade, o contador de visitas e o botão de doação estão descritos por inteiro."
+description = "O que o abox.tools coleta e o que não coleta. Seus arquivos nunca são enviados, e a publicidade, o contador de visitas e o botão de doação estão descritos por inteiro."
 heading = "Privacidade e cookies"
 lede = """
     A versão curta: seus arquivos nunca são enviados, porque não existe lugar
     nenhum para enviá-los. Todo o resto desta página trata da publicidade, do
-    contador de visitas e da hospedagem &mdash; as partes em que outras
+    contador de visitas e da hospedagem, que são as partes em que outras
     empresas realmente entram."""
-updated = "19 de agosto de 2026"
+updated = "22 de agosto de 2026"
 og_title = "Privacidade e cookies &mdash; abox.tools"
-og_description = "Seus arquivos nunca são enviados. O que é coletado, por quem e como desligar."
-og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"
+og_description = "Seus arquivos nunca são enviados. O que é coletado, por quem, e como desligar."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

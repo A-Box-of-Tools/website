@@ -1,7 +1,7 @@
 <main>
   <!-- Schritt 1 &mdash; die Dateien -->
   <section class="card">
-    <h2><span class="step">1</span> Bilder wählen</h2>
+    <h2><span class="step">1</span> Bilder auswählen</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -28,10 +28,10 @@
     <h2><span class="step">2</span> Sagen, wohin es geht</h2>
 
     <p class="card-lede">
-      Eine Data-URI für sich ist selten das, was jemand will. Gewollt ist die
-      Zeile, die ins Stylesheet kommt &mdash; wählen Sie also die Zeile, und das
-      Bild trifft schon korrekt in Anführungszeichen darin ein. Das ist der
-      Teil, der leicht schiefgeht und der nur bei SVGs scheitert.
+      Eine Data-URI für sich will fast nie jemand. Gebraucht wird die Zeile, die
+      ins Stylesheet kommt. Wählen Sie also die Zeile, und das Bild sitzt darin
+      schon korrekt in Anführungszeichen. Genau dieser Teil geht leicht schief,
+      und bei SVGs geht er auch wirklich schief.
     </p>
 
     <div class="shapes" id="shapes" role="radiogroup" aria-label="Was eingefügt wird">
@@ -94,9 +94,9 @@
 
     <p class="field-summary">
       Der <code>alt</code>-Text bleibt mit Absicht leer. Nur Sie wissen, ob das
-      Bild Bedeutung trägt oder Dekoration ist, und eine aus einem Dateinamen
-      geratene Beschreibung ist für jemanden mit einem Screenreader schlechter
-      als gar keine.
+      Bild etwas bedeutet oder bloß schmückt, und eine aus dem Dateinamen
+      geratene Beschreibung ist für jemanden am Screenreader schlechter als gar
+      keine.
     </p>
 
     <fieldset class="options">
@@ -108,9 +108,9 @@
           <strong>Die SVGs ebenfalls base64-kodieren</strong>
           <span class="check-note">
             Standardmäßig aus, denn ein SVG ist Text und Base64 ist für Bytes.
-            Die Prozentkodierung lässt das Markup im Stylesheet lesbar und ist
-            meist ein Fünftel kürzer. Schalten Sie das ein für die seltene
-            Werkzeugkette, die auf <code>;base64</code> besteht.
+            Die Prozentkodierung hält das Markup im Stylesheet lesbar und fällt
+            meist ein Fünftel kürzer aus. Einschalten sollten Sie es nur für die
+            seltene Werkzeugkette, die auf <code>;base64</code> besteht.
           </span>
         </span>
       </label>
@@ -124,7 +124,7 @@
     <h2><span class="step">3</span> Kopieren</h2>
 
     <p id="empty-note" class="card-lede">
-      Noch nichts gewählt. Ziehen Sie oben ein Bild hinein, und die Zeile zum
+      Noch nichts ausgewählt. Ziehen Sie oben ein Bild hinein, und die Zeile zum
       Einfügen erscheint hier.
     </p>
 

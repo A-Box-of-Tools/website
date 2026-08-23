@@ -18,8 +18,8 @@
     <h2>Wat HEIC eigenlijk is</h2>
     <p>
       HEIC is niet echt een beeldformaat op de manier waarop jpeg dat is. Het is
-      een container &mdash; dezelfde doosstructuur waaruit een mp4 opgebouwd is
-      &mdash; met daarin een stilstaand frame <strong>HEVC</strong>-video. HEVC,
+      een container, opgebouwd uit dezelfde doosstructuur als een mp4, met daarin
+      een stilstaand frame <strong>HEVC</strong>-video. HEVC,
       ook H.265 genoemd, is de codec die die van je oude camcorder verving, en
       hij is heel goed: een iPhone-foto in HEIC is ruwweg de helft van de grootte
       van dezelfde foto als jpeg op dezelfde kwaliteit.
@@ -53,10 +53,9 @@
       HEVC decoderen vraagt om een HEVC-decoder, en HEVC is gepatenteerd. De
       licentieverlening wordt door meer dan één patentpool geregeld, en een
       decoder meeleveren betekent iemand betalen. Browsers gaan daarmee om door
-      op het besturingssysteem te leunen &mdash; Chrome speelt HEVC-<em>video</em>
-      af op een machine waarvan de hardware al een gelicentieerde decoder heeft
-      &mdash; maar die route is aangesloten op videoweergave en niet op
-      stilstaand beeld. Een HEIC die aan <code>&lt;img&gt;</code> gegeven wordt,
+      op het besturingssysteem te leunen. Chrome speelt HEVC-<em>video</em> gewoon
+      af op een machine waarvan de hardware al een gelicentieerde decoder heeft,
+      alleen is die route aangesloten op videoweergave en niet op stilstaand beeld. Een HEIC die aan <code>&lt;img&gt;</code> gegeven wordt,
       wordt dus geweigerd, in Chrome, Firefox en Edge, op elk
       besturingssysteem.
     </p>
@@ -78,8 +77,7 @@
       gedecodeerd op een machine die je nooit gezien hebt, opnieuw gecodeerd als
       jpeg, en teruggestuurd. Dat is wat vrijwel elke &ldquo;gratis online
       HEIC-omzetter&rdquo; doet, en daarom hebben ze allemaal je bestanden nodig.
-      Het is geen luiheid &mdash; de browser kan het werkelijk niet op eigen
-      kracht.
+      Luiheid is dat niet, want de browser kan het werkelijk niet op eigen kracht.
     </p>
     <p>
       Wat het kost is het waard om ronduit te zeggen. Foto's van een telefoon
@@ -96,8 +94,8 @@
       Mogelijkheid twee: zet de decoder op de pagina. Dat is wat
       <a href="../../heic-naar-jpg/">deze</a> doet. Hij draagt
       <code>libheif</code> mee, gecompileerd naar WebAssembly, als een bestand
-      dat vanaf deze site geserveerd wordt &mdash; zo'n 1,4 MB, één keer
-      gedownload en daarna in de cache. Je browser draait het op je eigen
+      dat vanaf deze site geserveerd wordt: zo'n 1,4 MB, één keer gedownload en
+      daarna in de cache. Je browser draait het op je eigen
       apparaat, op je eigen hardware, en de foto gaat nergens heen. Laad de
       pagina één keer en je kunt de stekker helemaal uit het internet trekken en
       hij werkt door, en dat is iets wat geen enkele uploadende omzetter kan en
@@ -120,9 +118,8 @@
     </p>
     <ul>
       <li>
-        <strong>Op kwaliteit 92</strong> &mdash; waar de omzetter begint &mdash;
-        is een foto op elk normaal kijkformaat heel moeilijk van het origineel te
-        onderscheiden. Je zoekt naar verschillen in vloeiende verlopen, zoals een
+        <strong>Op kwaliteit 92</strong>, waar de omzetter begint, is een foto op
+        elk normaal kijkformaat heel moeilijk van het origineel te onderscheiden. Je zoekt naar verschillen in vloeiende verlopen, zoals een
         strakke lucht, en die vind je meestal niet.
       </li>
       <li>
@@ -151,9 +148,9 @@
       De gebruikelijke klacht over HEIC-omzetters is dat de foto's terugkomen
       zonder de dag waarop ze genomen zijn, zodat een vakantie aan foto's
       onderaan de bibliotheek sorteert onder de datum van vandaag. Dat gebeurt
-      omdat omzetten via een canvas je pixels geeft en verder niets &mdash; een
-      canvas bevat geen tags &mdash; dus tenzij een omzetter de metagegevens
-      apart gaat ophalen, zijn ze domweg weg.
+      omdat omzetten via een canvas je pixels geeft en verder niets, want een canvas
+      bevat geen tags. Tenzij een omzetter de metagegevens apart gaat ophalen, zijn
+      ze dus domweg weg.
     </p>
     <p>
       De tool hier kopieert het EXIF-blok uit de HEIC en schrijft het in de jpeg,
@@ -204,10 +201,10 @@
         de HEIC bewaart, dus dat zit er niet in om om te zetten.
       </li>
       <li>
-        <strong>AVIF is geen HEIC.</strong> Ze lijken op elkaar &mdash; dezelfde
-        container, een andere codec erin &mdash; maar elke huidige browser opent
-        een AVIF vanzelf, dus er valt niets om te zetten en de tool zegt dat in
-        plaats van te doen alsof hij werkt.
+        <strong>AVIF is geen HEIC.</strong> Ze lijken op elkaar, met dezelfde
+        container en een andere codec erin, maar elke huidige browser opent een AVIF
+        vanzelf. Er valt dus niets om te zetten, en de tool zegt dat ook, in plaats
+        van te doen alsof hij werkt.
       </li>
       <li>
         <strong>Het probleem bij de bron stoppen.</strong> Op de telefoon:

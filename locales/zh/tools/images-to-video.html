@@ -6,7 +6,7 @@
   visible on the page.
 -->
 <main>
-  <!-- 第 1 步 &mdash; 图片 -->
+  <!-- 第 1 步，选图片 -->
   <section class="card">
     <h2><span class="step">1</span> 选择图片</h2>
 
@@ -37,7 +37,7 @@
     </div>
 
     <p id="reorder-hint" class="reorder-hint" hidden>
-      抓住任意一张图片的 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动可以重排，也可以用每张图上的箭头。
+      抓住任意一张图片的 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动就能重排，用每张图上的箭头也行。
     </p>
 
     <ul id="image-list" class="image-list view-large"></ul>
@@ -54,7 +54,7 @@
     </div>
   </section>
 
-  <!-- 第 2 步 &mdash; 设置 -->
+  <!-- 第 2 步，设置 -->
   <section class="card">
     <h2><span class="step">2</span> 视频设置</h2>
 
@@ -63,11 +63,11 @@
         <label for="resolution">分辨率</label>
         <select id="resolution">
           <option value="auto" selected>跟随最高分辨率</option>
-          <option value="3840x2160">3840 &times; 2160 &mdash; 4K</option>
-          <option value="1920x1080">1920 &times; 1080 &mdash; 1080p</option>
-          <option value="1280x720">1280 &times; 720 &mdash; 720p</option>
-          <option value="1080x1080">1080 &times; 1080 &mdash; 方形</option>
-          <option value="1080x1920">1080 &times; 1920 &mdash; 竖版</option>
+          <option value="3840x2160">3840 &times; 2160，4K</option>
+          <option value="1920x1080">1920 &times; 1080，1080p</option>
+          <option value="1280x720">1280 &times; 720，720p</option>
+          <option value="1080x1080">1080 &times; 1080，方形</option>
+          <option value="1080x1920">1080 &times; 1920，竖版</option>
           <option value="custom">自定义&hellip;</option>
         </select>
         <div id="resolution-custom" class="inline-pair" hidden>
@@ -85,8 +85,8 @@
         <select id="fps">
           <option value="12">12 fps</option>
           <option value="15">15 fps</option>
-          <option value="24">24 fps &mdash; 电影</option>
-          <option value="25">25 fps &mdash; PAL</option>
+          <option value="24">24 fps，电影</option>
+          <option value="25">25 fps，PAL</option>
           <option value="30" selected>30 fps</option>
           <option value="50">50 fps</option>
           <option value="60">60 fps</option>
@@ -98,7 +98,7 @@
       </div>
 
       <div class="field">
-        <label for="fit">图片如何适配</label>
+        <label for="fit">图片怎么放进画面</label>
         <select id="fit">
           <option value="contain" selected>装进画面（留黑边）</option>
           <option value="blur">装进画面，背景用模糊填充</option>
@@ -145,7 +145,7 @@
     </div>
   </section>
 
-  <!-- 第 3 步 &mdash; 导出 -->
+  <!-- 第 3 步，导出 -->
   <section class="card">
     <h2><span class="step">3</span> 生成视频</h2>
 

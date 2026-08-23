@@ -1,13 +1,13 @@
 <main>
-  <!-- क़दम 1 &mdash; तस्वीर -->
+  <!-- कदम 1 &mdash; तस्वीर -->
   <section class="card">
     <h2><span class="step">1</span> तस्वीर चुनिए</h2>
 
     <p class="card-lede">
       कोई भी तस्वीर जिसे आपका ब्राउज़र खोल सके। सादी दीवार के सामने, दिन की
-      रोशनी में, क़रीब डेढ़ मीटर की दूरी से खींची गई फ़ोन की तस्वीर &mdash;
-      इनमें से ज़्यादातर नियम इसी के इर्द-गिर्द लिखे गए थे। और वह सीधे आपकी
-      डिस्क से पढ़ी जाती है, कहीं भेजी नहीं जाती।
+      रोशनी में, करीब डेढ़ मीटर की दूरी से खींची गई फ़ोन की तस्वीर। इनमें से
+      ज़्यादातर नियम इसी के इर्द-गिर्द लिखे गए थे। और वह सीधे आपकी डिस्क से
+      पढ़ी जाती है, कहीं भेजी नहीं जाती।
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -20,15 +20,15 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- क़दम 2 &mdash; नियम -->
+  <!-- कदम 2 &mdash; नियम -->
   <section class="card" id="spec-card">
     <h2><span class="step">2</span> देश और दस्तावेज़ चुनिए</h2>
 
     <p class="card-lede">
       नीचे का हर आँकड़ा प्रकाशित ज़रूरत है, और उसी प्राधिकरण से उतारा गया है
       जिसका नाम उसके नीचे लिखा है। इस सूची में कुछ भी अंदाज़े से नहीं है, और
-      कुछ भी बाहर से लाया नहीं जाता &mdash; यह <code>src/specs.js</code> में
-      एक तालिका है, जो पेज के साथ ही परोसी जाती है।
+      कुछ भी बाहर से नहीं आता। यह <code>src/specs.js</code> में एक तालिका भर
+      है, जो पेज के साथ ही आ जाती है।
     </p>
 
     <div class="option-row">
@@ -48,7 +48,7 @@
       break and then believe they met.
     -->
     <details class="custom-panel" id="custom-panel" hidden>
-      <summary>वे संख्याएँ, जो आपको ख़ुद टाइप करनी हैं</summary>
+      <summary>वे संख्याएँ, जो आपको खुद टाइप करनी हैं</summary>
       <div class="numbers">
         <label>चौड़ाई (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
         <label>ऊँचाई (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
@@ -78,7 +78,7 @@
     </details>
   </section>
 
-  <!-- क़दम 3 &mdash; फ़्रेम -->
+  <!-- कदम 3 &mdash; फ़्रेम -->
   <section class="card" id="frame-card">
     <h2><span class="step">3</span> चेहरे पर निशान लगाइए, और फ़्रेम जाँचिए</h2>
 
@@ -90,8 +90,8 @@
         फिर <strong>डिब्बा बिठाइए</strong> दबाइए। नियम जो कुछ नापता है वह पूरा
         का पूरा यही चार बिंदु हैं, और इसीलिए यह टूल किसी फ़ेस डिटेक्टर से
         अंदाज़ा लगाने के बजाय आपसे इन्हें रखवाता है। बिंदु वहीं से शुरू होते हैं
-        जहाँ सिर-और-कंधों वाली फ़ोटो में वे आम तौर पर होते हैं &mdash; वह
-        शुरुआती जगह है, कोई माप नहीं।
+        जहाँ सिर-और-कंधों वाली फ़ोटो में वे आम तौर पर होते हैं। वह शुरुआती
+        जगह भर है, कोई माप नहीं।
       </p>
 
       <!-- The crop box, its overlay and the four marks are all added here by
@@ -119,16 +119,16 @@
     </div>
   </section>
 
-  <!-- क़दम 4 &mdash; बैकग्राउंड -->
+  <!-- कदम 4 &mdash; बैकग्राउंड -->
   <section class="card" id="background-card">
     <h2><span class="step">4</span> बैकग्राउंड</h2>
 
     <p class="card-lede" id="background-lede">
       क्रॉप के ऊपरी हिस्से की एक पट्टी से और दोनों किनारों से, कंधों के ऊपर से
-      पढ़ा जाता है &mdash; यानी फ़्रेम के उन हिस्सों से जिनमें बैकग्राउंड के
-      सिवा कुछ होना ही नहीं चाहिए। यह RGB में नहीं, CIE Lab में नापा जाता है,
-      क्योंकि RGB की चालीस इकाई दूर बैठे दो भूरे रंगों में फ़र्क़ बता पाना
-      नामुमकिन है और नीले की चालीस इकाइयाँ एक अलग ही रंग हैं।
+      पढ़ा जाता है, यानी फ़्रेम के उन हिस्सों से जिनमें बैकग्राउंड के सिवा
+      कुछ होना ही नहीं चाहिए। यह RGB में नहीं, CIE Lab में नापा जाता है।
+      RGB की चालीस इकाई दूर बैठे दो भूरे रंगों में फ़र्क बता पाना नामुमकिन
+      है, जबकि नीले की चालीस इकाइयाँ एक अलग ही रंग हैं।
     </p>
 
     <div class="swatches" id="swatches" hidden>
@@ -147,7 +147,7 @@
     <p class="field-note" id="background-note"></p>
   </section>
 
-  <!-- क़दम 5 &mdash; फ़ाइलें -->
+  <!-- कदम 5 &mdash; फ़ाइलें -->
   <section class="card" id="save-card">
     <h2><span class="step">5</span> इसे सहेजिए</h2>
 
@@ -157,7 +157,7 @@
       <div class="field" id="dpi-field">
         <label for="print-dpi">छपाई का रिज़ॉल्यूशन</label>
         <select id="print-dpi">
-          <option value="300">300 dpi &mdash; लगभग हर नियम यही फ़र्श बताता है</option>
+          <option value="300">300 dpi &mdash; लगभग हर नियम यही न्यूनतम बताता है</option>
           <option value="600">600 dpi &mdash; अच्छी फ़ोटो लैब यही इस्तेमाल करेगी</option>
         </select>
         <p class="field-note" id="dpi-note"></p>

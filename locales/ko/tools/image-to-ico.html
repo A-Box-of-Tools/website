@@ -29,11 +29,11 @@
     <h2><span class="step">2</span> 아이콘의 용도 말하기</h2>
 
     <p class="card-lede">
-      아이콘 파일은 그림 하나가 아니라 여럿입니다. 같은 로고를 그것을 읽는 쪽이
+      아이콘 파일은 그림 하나가 아니라 여럿입니다. 같은 로고를, 그걸 읽는 쪽이
       요구하는 크기마다 다시 그려 넣은 것이죠. 그 크기가 무엇인지는 취향의 문제가
-      아닙니다 &mdash; 브라우저는 셋을 원하고, 고해상도 노트북의 프로그램은 열을
-      원하며, 맥은 자기만의 열을 원하고, 윈도우 비스타 이전에 만들어진 것은
-      아예 다른 방식으로 저장되기를 원합니다.
+      아닙니다. 브라우저는 셋을 원하고, 고해상도 노트북의 프로그램은 열을 원하며,
+      맥은 자기만의 열을 원하고, 윈도우 비스타 이전에 만들어진 것은 아예 다른
+      방식으로 저장되기를 원합니다.
     </p>
 
     <!--
@@ -47,7 +47,7 @@
       <label class="check">
         <input type="checkbox" id="want-ico" checked>
         <span>
-          <strong>윈도우 아이콘 &mdash; <code>.ico</code></strong>
+          <strong>윈도우 아이콘: <code>.ico</code></strong>
           <span class="check-note">
             모든 브라우저가 파비콘으로 읽고, 윈도우가 프로그램과 바로 가기,
             폴더에 씁니다. 크기는 아래에서 직접 고릅니다.
@@ -58,7 +58,7 @@
       <label class="check">
         <input type="checkbox" id="want-icns">
         <span>
-          <strong>macOS 아이콘 &mdash; <code>.icns</code></strong>
+          <strong>macOS 아이콘: <code>.icns</code></strong>
           <span class="check-note">
             맥 애플리케이션 번들이 싣고 다니는 것입니다. 애플이 16픽셀부터
             1024픽셀까지 정확히 열 개의 슬롯을 정해 두어 고를 것이 없습니다.
@@ -74,9 +74,9 @@
           <strong>웹사이트 아이콘 세트의 나머지</strong>
           <span class="check-note">
             .ico는 브라우저 탭과 윈도우까지만 감당합니다. 아이폰 홈 화면,
-            안드로이드 설치 안내, 시작 메뉴에 고정한 타일은 감당하지 못합니다
-            &mdash; 그것들은 180px PNG와 웹 앱 매니페스트, XML 파일을 읽는데,
-            어느 것도 .ico 안을 들여다보지 않습니다. 이걸 체크하면 그 전부와
+            안드로이드 설치 안내, 시작 메뉴에 고정한 타일은 감당하지 못합니다.
+            그쪽은 180px PNG와 웹 앱 매니페스트, XML 파일을 읽는데, 어느 것도
+            .ico 안을 들여다보지 않으니까요. 이걸 체크하면 그 전부와
             매니페스트, 그리고 페이지에 붙여 넣을 HTML 덩어리까지 받습니다.
           </span>
         </span>
@@ -103,7 +103,7 @@
       <div class="option-row">
         <label for="fit-select">그림이 정사각형이 아니라면</label>
         <select id="fit-select">
-          <option value="pad" selected>여백을 넣어 정사각형으로 &mdash; 그림 전체가 남습니다</option>
+          <option value="pad" selected>여백을 넣어 정사각형으로(그림 전체가 남습니다)</option>
           <option value="crop">가운데 정사각형만 잘라내기</option>
           <option value="stretch">정사각형으로 늘이기</option>
         </select>
@@ -121,9 +121,9 @@
       <div class="option-row" id="storage-row">
         <label for="storage-select">.ico 안에 각 크기를 저장하는 방식</label>
         <select id="storage-select">
-          <option value="auto" selected>자동 &mdash; 값이 싸면 호환 방식으로, 아니면 PNG로</option>
-          <option value="png">모든 크기를 PNG로 &mdash; 가장 작은 파일, 비스타 이상 필요</option>
-          <option value="bmp">모든 크기를 압축 없이 &mdash; 어디서나 열리고, 용량은 몇 배</option>
+          <option value="auto" selected>자동(값이 싸면 호환 방식으로, 아니면 PNG로)</option>
+          <option value="png">모든 크기를 PNG로(가장 작은 파일, 비스타 이상 필요)</option>
+          <option value="bmp">모든 크기를 압축 없이(어디서나 열리고, 용량은 몇 배)</option>
         </select>
       </div>
 
@@ -138,9 +138,9 @@
 
     <p class="card-lede">
       아무것도 내려받기 전에 볼 만한 대목입니다. 512픽셀에서 완벽하게 읽히는
-      로고도 브라우저 탭에서는 가로 16픽셀이고, 그 안의 가는 부분 &mdash;
-      워드마크의 획, 머리카락 같은 테두리, 그라데이션 &mdash; 은 그 크기를 견디지
-      못합니다. 아래의 모든 사각형은 여러분이 고른 파일에서 실제 크기 그대로
+      로고도 브라우저 탭에서는 가로 16픽셀입니다. 그 안의 가는 부분, 그러니까
+      워드마크의 획이나 머리카락 같은 테두리, 그라데이션은 그 크기를 견디지
+      못합니다. 아래의 모든 사각형은 고르신 파일에서 실제 크기 그대로
       그려집니다.
     </p>
 

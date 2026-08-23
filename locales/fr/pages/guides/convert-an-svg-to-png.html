@@ -9,7 +9,7 @@
       prenez le fichier.
     </p>
     <p>
-      Tout ce qui suit est pour les cas où ce défaut ne suffit pas &mdash; quand
+      Tout ce qui suit est pour les cas où ce défaut ne suffit pas&nbsp;: quand
       un chiffre vous a été imposé, quand cela part à l'impression, ou quand cela
       revient avec l'air faux.
     </p>
@@ -19,11 +19,11 @@
     <h2>Pourquoi la taille est votre décision et non celle du fichier</h2>
     <p>
       Un JPEG est une grille de pixels mesurés&nbsp;; demander sa taille a une
-      réponse. Un SVG n'est pas une image du tout, c'est un jeu d'instructions
-      &mdash; dessine un cercle ici, ce tracé dans cette couleur &mdash; et des
-      instructions n'ont pas de taille. Un navigateur peut les exécuter à 16
-      pixels ou à 4000 et le résultat est aussi net dans les deux cas, parce
-      qu'il ne met rien à l'échelle. Il redessine.
+      réponse. Un SVG n'est pas une image du tout, c'est un jeu d'instructions,
+      du genre &laquo;&nbsp;dessine un cercle ici, ce tracé dans cette
+      couleur&nbsp;&raquo;, et des instructions n'ont pas de taille. Un navigateur
+      peut les exécuter à 16 pixels ou à 4000 et le résultat est aussi net dans
+      les deux cas, parce qu'il ne met rien à l'échelle. Il redessine.
     </p>
     <p>
       C'est pourquoi la conversion ne peut pas choisir un chiffre à votre place,
@@ -32,10 +32,10 @@
     </p>
     <p>
       La plupart des fichiers SVG portent bien un attribut <code>width</code> et
-      <code>height</code>, et un outil vous le montrera &mdash; mais c'est un
-      défaut, pas une limite. Une icône qui dit <code>width="24"</code> dit
-      seulement que la personne qui l'a dessinée avait en tête une barre d'outils
-      de 24&nbsp;pixels.
+      <code>height</code>, et un outil vous le montrera, mais c'est un défaut et
+      non une limite. Une icône qui dit <code>width="24"</code> dit seulement que
+      la personne qui l'a dessinée avait en tête une barre d'outils de
+      24&nbsp;pixels.
     </p>
   </section>
 
@@ -52,7 +52,7 @@
     <p><strong>Pour une icône d'application, une fiche de boutique ou un
       favicon.</strong> Le chiffre est publié et il n'y a rien à calculer&nbsp;:
       ce que dit la page de la boutique, exactement. Pour un favicon, ne
-      rastérisez pas du tout &mdash;
+      rastérisez pas du tout&nbsp;;
       <a href="../creer-son-favicon/">fabriquez un .ico</a>, qui contient
       plusieurs tailles dans un fichier, parce qu'un onglet de navigateur, un
       signet et un raccourci Windows en réclament chacun une différente.
@@ -65,12 +65,11 @@
       bannière grand format regardée du bout d'une pièce, 150 suffit largement.
     </p>
     <p><strong>Pour un aperçu social ou une image OG.</strong> La plateforme
-      nomme un cadre &mdash; 1200&nbsp;&times;&nbsp;630 pour la plupart des
-      aperçus de liens &mdash; et le cadre n'a pas la forme de votre logo. C'est
-      à cela que sert le réglage &laquo;&nbsp;compléter&nbsp;&raquo;&nbsp;: le
-      dessin centré à ses propres proportions, avec une couleur de fond qui
-      remplit le reste, plutôt qu'un logo étiré qui annonce à tout le monde que
-      vous n'avez pas vérifié.
+      nomme un cadre, en général 1200&nbsp;&times;&nbsp;630 pour un aperçu de
+      lien, et ce cadre n'a pas la forme de votre logo. C'est à cela que sert le
+      réglage &laquo;&nbsp;compléter&nbsp;&raquo;&nbsp;: le dessin centré à ses
+      propres proportions, avec une couleur de fond qui remplit le reste, plutôt
+      qu'un logo étiré qui annonce à tout le monde que vous n'avez pas vérifié.
     </p>
     <p>
       Quand deux de ces cas s'appliquent, prenez le plus grand. Un PNG plus grand
@@ -85,7 +84,7 @@
     <p>
       La rastérisation est à sens unique. Une fois le dessin devenu un PNG, ce
       sont des pixels comme dans n'importe quelle autre image, et l'agrandir
-      ensuite doit inventer un détail qui n'a jamais été mesuré &mdash; le même
+      ensuite doit inventer un détail qui n'a jamais été mesuré, avec le même
       résultat mou et étalé qu'on obtient en agrandissant une photographie.
     </p>
     <p>
@@ -113,14 +112,14 @@
     </p>
     <p>
       <strong>Le texte est dessiné dans la police que possède la
-      machine.</strong> Un SVG qui contient du texte ne contient pas la police
-      &mdash; il en nomme une et laisse le moteur de rendu la trouver. Si la
-      police n'est pas installée, une police de remplacement est utilisée, et
+      machine.</strong> Un SVG qui contient du texte ne contient pas la
+      police&nbsp;: il en nomme une et laisse le moteur de rendu la trouver. Si
+      la police n'est pas installée, une police de remplacement est utilisée, et
       cette remplaçante a d'autres dessins de lettres et d'autres
       chasses&nbsp;: le texte peut donc se recomposer ou déborder. Un fichier qui
-      tire sa police d'une adresse web s'en tire encore plus mal&nbsp;: un SVG
+      tire sa police d'une adresse web s'en tire encore plus mal, puisqu'un SVG
       rastérisé à travers un <code>&lt;img&gt;</code> n'a pas le droit de
-      récupérer quoi que ce soit, alors rien n'arrive.
+      récupérer quoi que ce soit&nbsp;; rien n'arrive.
     </p>
     <p>
       Le remède est celui que tout graphiste connaît déjà&nbsp;:
@@ -128,7 +127,7 @@
       (Illustrator appelle cela Vectoriser, Figma dit Flatten, Inkscape dit Objet
       en chemin). Les lettres deviennent de la géométrie, la police cesse
       d'importer, et l'image a la même allure sur toutes les machines.
-      Faites-le sur une copie &mdash; un texte vectorisé n'est plus modifiable
+      Faites-le sur une copie, car un texte vectorisé n'est plus modifiable
       comme texte.
     </p>
     <p>
@@ -138,7 +137,7 @@
       pourquoi un logo délicat rastérisé à 64&nbsp;pixels a l'air délavé quand le
       même fichier à 512 est parfait. Si une petite taille est l'exigence, la
       réponse est un dessin simplifié aux traits plus épais plutôt qu'un autre
-      réglage d'export &mdash; c'est la même raison qui fait qu'un favicon est un
+      réglage d'export&nbsp;: c'est la même raison qui fait qu'un favicon est un
       symbole et non un mot.
     </p>
     <p>
@@ -153,15 +152,15 @@
     <h2>La transparence, et quel format choisir</h2>
     <p>
       <strong>PNG</strong>, sauf raison particulière. Il est sans perte, il garde
-      la transparence, et les aplats à bords francs &mdash; qui sont l'essentiel
-      de ce dont un dessin est fait &mdash; s'y compressent bien. Un logo
-      rastérisé est en général un PNG <em>plus léger</em> qu'il ne serait un
-      JPEG, en plus d'être plus propre.
+      la transparence, et les aplats à bords francs, dont un dessin est
+      essentiellement fait, s'y compressent bien. Un logo rastérisé est en
+      général un PNG <em>plus léger</em> qu'il ne serait un JPEG, en plus d'être
+      plus propre.
     </p>
     <p>
       <strong>Le JPEG</strong> n'a aucune transparence. Chaque pixel transparent
       doit devenir une couleur, et si personne n'en choisit une pour vous, il
-      devient noir &mdash; c'est de là que vient le résultat du logo dans un
+      devient noir&nbsp;: c'est de là que vient le résultat du logo dans un
       rectangle noir que l'on prend pour un bug. Il est en outre avec perte de la
       façon qui se voit le plus mal sur exactement ce genre d'image&nbsp;: un
       liseré de moucheture autour de chaque bord franc. Utilisez-le quand quelque
@@ -205,17 +204,17 @@
     </p>
     <p>
       <strong>Une partie de l'image manque.</strong> Quelque chose dans le
-      fichier pointait vers une adresse au lieu de contenir le dessin &mdash; une
-      photographie incorporée stockée comme lien, une feuille de style, une
-      police. Un rastériseur qui refuse d'aller les chercher fait ce qu'il faut,
-      et c'est le même refus qui empêche un SVG téléchargé quelque part de
-      rendre des comptes à celui qui l'a fabriqué. Réexportez depuis le logiciel
-      de dessin avec les images incorporées.
+      fichier pointait vers une adresse au lieu de contenir le dessin, qu'il
+      s'agisse d'une photographie stockée comme lien, d'une feuille de style ou
+      d'une police. Un rastériseur qui refuse d'aller les chercher fait ce qu'il
+      faut, et c'est le même refus qui empêche un SVG téléchargé quelque part
+      d'aller prévenir celui qui l'a fabriqué. Réexportez depuis le logiciel de
+      dessin avec les images incorporées.
     </p>
     <p>
       <strong>Il refuse une très grande taille.</strong> Les navigateurs
       plafonnent la taille d'un canvas, et ils ne s'accordent pas sur
-      l'endroit&nbsp;: au-delà d'environ 16 000&nbsp;pixels de côté rien ne
+      l'endroit&nbsp;: au-delà d'environ 16&nbsp;000&nbsp;pixels de côté rien ne
       revient, et Safari sur un iPhone ou un iPad abandonne bien plus tôt, vers
       4096&nbsp;&times;&nbsp;4096. Un outil qui vous prévient vous épargne un
       fichier vide, parce que c'est ce que produit un navigateur à court de
@@ -227,11 +226,11 @@
     <h2>Rien de tout cela ne demande un envoi</h2>
     <p>
       Rastériser un SVG est une chose que tous les navigateurs font des milliers
-      de fois par jour &mdash; c'est la machinerie même qui dessine une icône sur
+      de fois par jour&nbsp;: c'est la machinerie même qui dessine une icône sur
       une page web. Il n'y a aucune raison technique pour que votre dessin voyage
       jusqu'à un serveur et en revienne sous forme de PNG, et l'outil d'ici ne
       l'envoie nulle part&nbsp;: la <code>Content-Security-Policy</code> de la
-      page nomme toutes les adresses qu'elle peut contacter, et aucune
+      page énumère toutes les adresses qu'elle peut contacter, et aucune
       n'appartient à ce site.
     </p>
     <p>

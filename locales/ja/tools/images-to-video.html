@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; 画像 -->
+  <!-- ステップ1｜画像 -->
   <section class="card">
     <h2><span class="step">1</span> 画像を選ぶ</h2>
 
@@ -25,12 +25,12 @@
         <button type="button" data-sort="name" class="ghost">名前順に並べる</button>
         <button type="button" data-sort="date" class="ghost">日付順に並べる</button>
         <button type="button" data-sort="reverse" class="ghost">逆順にする</button>
-        <button type="button" id="clear-all" class="ghost danger">全部外す</button>
+        <button type="button" id="clear-all" class="ghost danger">すべて外す</button>
       </div>
     </div>
 
     <p id="reorder-hint" class="reorder-hint" hidden>
-      画像の <span class="grip" aria-hidden="true">&#8942;&#8942;</span> の取っ手をドラッグするか、それぞれの矢印を使って並べ替えられます。
+      画像の<span class="grip" aria-hidden="true">&#8942;&#8942;</span>の取っ手をドラッグするか、それぞれの矢印を使って並べ替えられます。
     </p>
 
     <ul id="image-list" class="image-list view-large"></ul>
@@ -47,7 +47,7 @@
     </div>
   </section>
 
-  <!-- ステップ2 &mdash; 設定 -->
+  <!-- ステップ2｜設定 -->
   <section class="card">
     <h2><span class="step">2</span> 動画の設定</h2>
 
@@ -56,11 +56,11 @@
         <label for="resolution">解像度</label>
         <select id="resolution">
           <option value="auto" selected>いちばん大きい画像に合わせる</option>
-          <option value="3840x2160">3840 &times; 2160 &mdash; 4K</option>
-          <option value="1920x1080">1920 &times; 1080 &mdash; 1080p</option>
-          <option value="1280x720">1280 &times; 720 &mdash; 720p</option>
-          <option value="1080x1080">1080 &times; 1080 &mdash; 正方形</option>
-          <option value="1080x1920">1080 &times; 1920 &mdash; 縦長</option>
+          <option value="3840x2160">3840 &times; 2160（4K）</option>
+          <option value="1920x1080">1920 &times; 1080（1080p）</option>
+          <option value="1280x720">1280 &times; 720（720p）</option>
+          <option value="1080x1080">1080 &times; 1080（正方形）</option>
+          <option value="1080x1920">1080 &times; 1920（縦長）</option>
           <option value="custom">自分で指定&hellip;</option>
         </select>
         <div id="resolution-custom" class="inline-pair" hidden>
@@ -76,13 +76,13 @@
       <div class="field">
         <label for="fps">フレームレート</label>
         <select id="fps">
-          <option value="12">12 fps</option>
-          <option value="15">15 fps</option>
-          <option value="24">24 fps &mdash; 映画</option>
-          <option value="25">25 fps &mdash; PAL</option>
-          <option value="30" selected>30 fps</option>
-          <option value="50">50 fps</option>
-          <option value="60">60 fps</option>
+          <option value="12">12fps</option>
+          <option value="15">15fps</option>
+          <option value="24">24fps（映画）</option>
+          <option value="25">25fps（PAL）</option>
+          <option value="30" selected>30fps</option>
+          <option value="50">50fps</option>
+          <option value="60">60fps</option>
           <option value="custom">自分で指定&hellip;</option>
         </select>
         <input type="number" id="fps-custom" class="spaced" min="1" max="120" step="1" value="30"
@@ -138,7 +138,7 @@
     </div>
   </section>
 
-  <!-- ステップ3 &mdash; 書き出し -->
+  <!-- ステップ3｜書き出し -->
   <section class="card">
     <h2><span class="step">3</span> 動画を作る</h2>
 
