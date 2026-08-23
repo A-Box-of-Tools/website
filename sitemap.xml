@@ -127,6 +127,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/qr-barcode-reader/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/redact-image/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
@@ -451,6 +457,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/de/qr-code-scannen/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/de/bild-schwaerzen/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
@@ -697,6 +709,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/es/escanear-codigo-qr/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/es/censurar-imagen/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
@@ -939,6 +957,12 @@
   <url>
     <loc>https://abox.tools/fr/generateur-de-qr-code/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/lecteur-de-qr-code/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1197,6 +1221,12 @@
   <url>
     <loc>https://abox.tools/hi/qr-barcode/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/qr-barcode-reader/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1483,6 +1513,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/it/leggere-qr-code/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/it/oscurare-immagine/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
@@ -1725,6 +1761,12 @@
   <url>
     <loc>https://abox.tools/ja/qr-barcode/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/qr-barcode-reader/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1983,6 +2025,12 @@
   <url>
     <loc>https://abox.tools/ko/qr코드-만들기/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/qr코드-스캔/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2269,6 +2317,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/nl/qr-code-scannen/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/nl/afbeelding-onleesbaar-maken/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
@@ -2515,6 +2569,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/pt/ler-qr-code/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/pt/tarjar-imagem/</loc>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
@@ -2757,6 +2817,12 @@
   <url>
     <loc>https://abox.tools/zh/qr-barcode/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/qr-barcode-reader/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

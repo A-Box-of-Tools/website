@@ -75,9 +75,10 @@ Make and rearrange documents without sending them to be processed.
 
 ## Codes & data
 
-Make something a machine can read, or check that a file is the file it claims to be. Both in the page.
+Turn something you typed into something a machine can read, without it leaving the page.
 
 - [QR & Barcode Generator](https://abox.tools/qr-barcode/): Generate a QR code or a linear barcode from a string in the browser. QR codes for links, Wi-Fi networks, contact cards, email, SMS, phone numbers and coordinates, with all four error-correction levels; EAN-13, EAN-8, UPC-A, ITF-14, Interleaved 2 of 5, Code 128 and Code 39 barcodes with their check digits. Download as SVG or PNG. Nothing is uploaded.
+- [QR & Barcode Reader](https://abox.tools/qr-barcode-reader/): Read a QR code or a linear barcode from an image, a screenshot or a live camera, entirely in the browser. Shows the decoded string and, for links, the host it would reach, before anything is opened. Supports QR versions 1 to 40 with Reed-Solomon error correction, and EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 and Code 39. Nothing is uploaded and no camera frame is recorded.
 - [Hash & Checksum](https://abox.tools/hash-checksum/): Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 checksum of any file in the browser, and compare it against the value a download page published. The file is read in pieces and never uploaded.
 
 ## Text & code
