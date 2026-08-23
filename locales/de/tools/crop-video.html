@@ -1,7 +1,7 @@
 <main>
   <!-- Schritt 1 &mdash; die Datei -->
   <section class="card">
-    <h2><span class="step">1</span> Ein Video wählen</h2>
+    <h2><span class="step">1</span> Ein Video auswählen</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -57,7 +57,7 @@
         <button type="button" data-aspect="16:9">16:9</button>
         <button type="button" data-aspect="4:3">4:3</button>
         <button type="button" data-aspect="3:2">3:2</button>
-        <button type="button" id="swap-aspect" class="ghost" title="Das festgelegte Seitenverhältnis auf die Seite legen">
+        <button type="button" id="swap-aspect" class="ghost" title="Das festgelegte Format hochkant kippen">
           Tauschen
         </button>
       </div>
@@ -76,8 +76,8 @@
     </div>
 
     <p class="even-note">
-      Breite und Höhe ändern sich in Zweierschritten, weil H.264 ein Einzelbild
-      mit ungerader Seitenlänge gar nicht speichern kann.
+      Breite und Höhe springen in Zweierschritten, weil H.264 ein Einzelbild mit
+      ungerader Seitenlänge gar nicht erst speichern kann.
     </p>
   </section>
 
@@ -103,8 +103,8 @@
           <option value="high">Beste Qualität</option>
         </select>
         <p class="field-note">
-          Nie mehr, als das Original für denselben Ausschnitt ausgegeben hat
-          &mdash; eine Neukodierung darüber hinaus macht die Datei nur größer.
+          Nie mehr, als das Original für denselben Ausschnitt ausgegeben hat.
+          Eine Neukodierung darüber hinaus macht die Datei nur größer.
         </p>
       </div>
 

@@ -9,10 +9,10 @@
       ne verrez pas la différence.
     </p>
     <p>
-      Le reste de cette page est pour les fois où cela ne se passe pas ainsi
-      &nbsp;: quand le résultat paraît mou, quand un PNG bouge à peine, ou quand
-      vous voulez savoir ce que l'outil fait réellement à votre image avant de
-      l'envoyer à quelqu'un.
+      Le reste de cette page est pour les fois où cela ne se passe pas
+      ainsi&nbsp;: quand le résultat paraît mou, quand un PNG bouge à peine, ou
+      quand vous voulez savoir ce que l'outil fait réellement à votre image avant
+      de l'envoyer à quelqu'un.
     </p>
   </section>
 
@@ -28,14 +28,14 @@
     </p>
     <p>
       Une limite de taille est donc un budget de détail. La question utile n'est
-      pas &laquo;&nbsp;puis-je atteindre 500&nbsp;KB&nbsp;&raquo; &mdash; on peut
-      toujours atteindre n'importe quel chiffre &mdash; mais
+      pas &laquo;&nbsp;puis-je atteindre 500&nbsp;KB&nbsp;&raquo;, puisqu'on peut
+      toujours atteindre n'importe quel chiffre, mais bien
       &laquo;&nbsp;quelle part de l'image dois-je abandonner pour y arriver, et
       est-ce que cela compte pour l'usage que j'en fais&nbsp;?&nbsp;&raquo;
     </p>
     <p>
-      Deux règles empiriques. Une photographie d'une scène réelle &mdash;
-      visages, feuillages, tissus &mdash; cache bien la compression, parce que
+      Deux règles empiriques. Une photographie d'une scène réelle, avec ses
+      visages, son feuillage et ses tissus, cache bien la compression, parce que
       l'œil n'y trouve aucune zone parfaitement plate où remarquer les dégâts.
       Une capture d'écran, un graphique, un logo ou tout ce qui a de grands
       aplats et des bords de texte francs la montre immédiatement, et devrait en
@@ -50,18 +50,18 @@
       fichier de 500&nbsp;KB. Le rapport entre les deux dépend entièrement du
       contenu de l'image&nbsp;: au même réglage, une photographie d'un mur nu
       peut ressortir dix fois plus légère qu'une photographie de forêt. Tout
-      outil qui vous propose &laquo;&nbsp;qualité&nbsp;: 60&nbsp;&raquo; et croise
-      les doigts devine à votre place.
+      outil qui vous propose &laquo;&nbsp;qualité&nbsp;: 60&nbsp;&raquo; et
+      croise les doigts devine à votre place.
     </p>
     <p>
       La seule méthode fiable est d'essayer. Encoder l'image, regarder la taille,
       ajuster, encoder à nouveau. Le faire à la main est fastidieux, et c'est
-      pourquoi les compresseurs demandent un chiffre de qualité à la place
-      &mdash; cela vous refile le fastidieux. Le faire automatiquement, c'est
-      environ huit encodages, et huit encodages d'une photo de téléphone
-      représentent une fraction de seconde sur toute machine construite cette
-      décennie&nbsp;: c'est pourquoi l'outil de ce site demande la taille et fait
-      la recherche lui-même.
+      pourquoi les compresseurs demandent plutôt un chiffre de qualité, ce qui
+      vous refile le fastidieux. Le faire automatiquement, c'est environ huit
+      encodages, et huit encodages d'une photo de téléphone représentent une
+      fraction de seconde sur toute machine construite cette décennie&nbsp;:
+      c'est pourquoi l'outil de ce site demande la taille et fait la recherche
+      lui-même.
     </p>
     <p>
       Chaque taille qu'il rapporte est un vrai fichier encodé, pas une
@@ -78,14 +78,13 @@
       redimensionnement. Ce n'est pas équivalent, et l'ordre compte.
     </p>
     <p>
-      La qualité passe en premier, parce que les 30&nbsp;% premiers de réduction
-      de qualité sont réellement invisibles sur une photographie &mdash; vous
-      jetez du détail que le format conservait plus soigneusement qu'aucun œil ne
-      peut le vérifier. Les pixels passent en second, parce qu'une fois la
-      qualité descendue assez bas pour que les artefacts se voient, une image
-      plus petite à une qualité correcte est plus belle qu'une image en taille
-      pleine mais abîmée. Moins de bons pixels valent mieux que davantage de
-      mauvais.
+      La qualité passe en premier, parce que la première tranche de 30&nbsp;% de
+      réduction est réellement invisible sur une photographie&nbsp;: vous y jetez
+      du détail que le format conservait plus soigneusement qu'aucun œil ne peut
+      le vérifier. Les pixels passent en second, parce qu'une fois la qualité
+      descendue assez bas pour que les artefacts se voient, une image plus petite
+      à une qualité correcte est plus belle qu'une image en taille pleine mais
+      abîmée. Moins de bons pixels valent mieux que davantage de mauvais.
     </p>
     <p>
       C'est toute la stratégie, et elle vaut d'être connue même si vous utilisez
@@ -153,9 +152,9 @@
     </p>
     <p>
       Donc, s'il vous faut un fichier bien plus léger et qu'il doit rester un
-      PNG, le seul levier restant est la taille &mdash; moins de pixels, ou moins
-      de couleurs. S'il a le droit de cesser d'être un PNG, la question est ce
-      qu'il y a dedans&nbsp;:
+      PNG, le seul levier restant est la taille, c'est-à-dire moins de pixels ou
+      moins de couleurs. S'il a le droit de cesser d'être un PNG, la question est
+      ce qu'il y a dedans&nbsp;:
     </p>
     <ul>
       <li>
@@ -181,7 +180,7 @@
   <section>
     <h2>Comment savoir si le résultat est assez bon</h2>
     <p>
-      Regarder une vignette ne prouve rien &mdash; tout a l'air correct en
+      Regarder une vignette ne prouve rien, puisque tout a l'air correct en
       vignette. Deux vérifications valent mieux&nbsp;:
     </p>
     <p>
@@ -192,19 +191,19 @@
     </p>
     <p>
       <strong>Lisez la mesure, si l'outil vous en donne une.</strong> Le
-      compresseur d'ici décode son propre résultat et le compare à l'original, et
+      compresseur d'ici décode son propre résultat, le compare à l'original et
       rapporte le SSIM&nbsp;: un chiffre qui compare la luminosité, le contraste
       et la structure locales plutôt que de compter les pixels modifiés, ce qui
-      est bien plus proche de ce qui gêne un œil. Au-dessus de 0,98 environ, les
-      deux images sont difficiles à séparer côte à côte. En dessous de 0,95
-      environ, regardez avant d'envoyer. Il rapporte aussi le PSNR, le chiffre en
-      décibels traditionnel, pour qui le préfère.
+      se rapproche bien davantage de ce qui gêne l'œil. Au-dessus de 0,98
+      environ, les deux images sont difficiles à séparer côte à côte. En dessous
+      de 0,95 environ, regardez avant d'envoyer. Il rapporte aussi le PSNR, le
+      traditionnel chiffre en décibels, pour qui le préfère.
     </p>
     <p>
       Les deux sont calculés sur votre propre machine et vous sont montrés, et
-      c'est tout l'intérêt de les avoir&nbsp;: cela transforme
-      &laquo;&nbsp;perte de qualité minimale&nbsp;&raquo; d'une affirmation en un
-      chiffre vérifiable.
+      c'est tout l'intérêt de les avoir&nbsp;: cela fait de la
+      &laquo;&nbsp;perte de qualité minimale&nbsp;&raquo; un chiffre vérifiable
+      plutôt qu'une affirmation.
     </p>
   </section>
 
@@ -212,8 +211,8 @@
     <h2>Trois choses à savoir avant d'envoyer le fichier</h2>
     <p>
       <strong>Compresser efface les métadonnées.</strong> Réencoder, c'est
-      décoder l'image en pixels puis réencoder ces pixels, et un canvas plein de
-      pixels ne porte aucune étiquette &mdash; la position GPS, le modèle
+      décoder l'image en pixels puis réencoder ces pixels, or un canvas rempli de
+      pixels ne porte aucune étiquette&nbsp;: la position GPS, le modèle
       d'appareil, les horodatages et le reste ne sont donc simplement pas écrits
       dans le nouveau fichier. C'est généralement un bonus. Si vous vouliez les
       étiquettes disparues mais l'image intacte, c'est un autre travail&nbsp;: le
@@ -225,9 +224,9 @@
     <p>
       <strong>Ne compressez jamais deux fois le même fichier.</strong> Chaque
       encodage avec perte jette du détail définitivement, et encoder une image
-      déjà compressée en jette davantage &mdash; y compris les artefacts de la
-      première passe, qu'il conserve fidèlement au prix du vrai détail. Repartez
-      toujours de l'original et compressez une seule fois.
+      déjà compressée en jette davantage, y compris les artefacts de la première
+      passe, qu'il conserve fidèlement au prix du vrai détail. Repartez toujours
+      de l'original et compressez une seule fois.
     </p>
     <p>
       <strong>Gardez l'original.</strong> Il n'y a pas de retour possible après
@@ -240,11 +239,11 @@
     <h2>Rien de tout cela ne demande un envoi</h2>
     <p>
       Tous les navigateurs livrent un encodeur JPEG, PNG et WebP depuis des
-      années &mdash; c'est le même code qui enregistre une image depuis un
-      canvas. Compresser une image fait partie des travaux qui n'ont aucune
-      raison technique de faire intervenir un serveur, et c'est pourquoi l'outil
-      d'ici n'en a pas&nbsp;: l'image est décodée, encodée et mesurée sur votre
-      propre machine, et il n'y a dans la
+      années, et c'est le même code qui enregistre une image depuis un canvas.
+      Compresser une image fait partie des travaux qui n'ont aucune raison
+      technique de faire intervenir un serveur, et c'est pourquoi l'outil d'ici
+      n'en a pas&nbsp;: l'image est décodée, encodée et mesurée sur votre propre
+      machine, et il n'y a dans la
       <code>Content-Security-Policy</code> de la page aucune adresse appartenant
       à ce site vers laquelle elle pourrait être envoyée.
     </p>

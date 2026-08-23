@@ -1,18 +1,17 @@
 <main>
-  <!-- ステップ1 &mdash; コードの種類 -->
+  <!-- ステップ1｜コードの種類 -->
   <section class="card">
     <h2><span class="step">1</span> コードの種類を選ぶ</h2>
 
     <p class="card-lede">
-      QR コードは何でも入り、スマホのカメラが探しているのもこれです。バーコードに入れられるのは数字で、どれが必要かはたいてい向こうが決めています &mdash;
-      それを求める店、倉庫、運送会社がです。
+      QRコードは何でも入りますし、スマホのカメラが探しているのもこれです。バーコードに入れられるのは数字で、どれが必要かは、たいてい読み取る側が決めています。それを求める店、倉庫、運送会社です。
     </p>
 
     <div class="option-row">
       <label for="symbology">コードの種類</label>
       <select id="symbology">
         <optgroup label="正方形">
-          <option value="qr" selected>QR コード</option>
+          <option value="qr" selected>QRコード</option>
         </optgroup>
         <optgroup label="縞模様">
           <option value="code128">Code 128</option>
@@ -20,7 +19,7 @@
           <option value="upca">UPC-A</option>
           <option value="ean8">EAN-8</option>
           <option value="itf14">ITF-14</option>
-          <option value="itf">インターリーブド 2 of 5</option>
+          <option value="itf">インターリーブド2 of 5</option>
           <option value="code39">Code 39</option>
         </optgroup>
       </select>
@@ -29,7 +28,7 @@
     <p class="field-summary" id="symbology-note"></p>
   </section>
 
-  <!-- ステップ2 &mdash; 文字列そのもの -->
+  <!-- ステップ2｜文字列そのもの -->
   <section class="card">
     <h2><span class="step">2</span> 中に入れるものを指定する</h2>
 
@@ -56,20 +55,20 @@
     </details>
   </section>
 
-  <!-- ステップ3 &mdash; 見た目 -->
+  <!-- ステップ3｜見た目 -->
   <section class="card">
     <h2><span class="step">3</span> 見た目を決める</h2>
 
     <fieldset class="options" id="qr-options">
-      <legend>QR コード</legend>
+      <legend>QRコード</legend>
 
       <div class="option-row">
         <label for="level">どれだけ傷んでよいか</label>
         <select id="level">
-          <option value="L">L &mdash; 約7%まで復元可能、コードはいちばん小さい</option>
-          <option value="M" selected>M &mdash; 約15%。ふつうはこれ</option>
-          <option value="Q">Q &mdash; 約25%</option>
-          <option value="H">H &mdash; 約30%。すり減る印刷物向け</option>
+          <option value="L">L（約7%まで復元可能。コードはいちばん小さい）</option>
+          <option value="M" selected>M（約15%。ふつうはこれ）</option>
+          <option value="Q">Q（約25%）</option>
+          <option value="H">H（約30%。すり減る印刷物向け）</option>
         </select>
       </div>
 
@@ -111,7 +110,7 @@
         <span>
           <strong>検査文字を付ける</strong>
           <span class="check-note">
-            Code 39 はふつう検査文字を持ちません。要求するシステムもあります。お使いのものが要求する場合にだけ付けてください。想定していない読み取り機は、末尾の余分な1文字として読んでしまいます。
+            Code 39はふつう検査文字を持ちません。要求するシステムもあるので、お使いのものが求める場合にだけ付けてください。想定していない読み取り機は、末尾の余分な1文字として読んでしまいます。
           </span>
         </span>
       </label>
@@ -136,7 +135,7 @@
         <span>
           <strong>背景をなくす</strong>
           <span class="check-note">
-            透過にします。すでに色の付いたものの上に置く場合に。SVG も PNG も透過を保ちますが、後ろに来るものは明るくなければなりません。そうでないとスキャナーが差を見つけられません。
+            透過にします。すでに色の付いたものの上に置くときに使ってください。SVGもPNGも透過を保ちますが、後ろに来るものは明るくなければなりません。そうでないと、スキャナーが差を見つけられません。
           </span>
         </span>
       </label>
@@ -150,7 +149,7 @@
     </fieldset>
   </section>
 
-  <!-- ステップ4 &mdash; 結果 -->
+  <!-- ステップ4｜結果 -->
   <section class="card" id="result-card">
     <h2><span class="step">4</span> 受け取る</h2>
 
@@ -159,15 +158,15 @@
     <p class="facts" id="facts"></p>
 
     <div class="run-row">
-      <button type="button" id="download-svg" class="primary">SVG をダウンロード</button>
-      <button type="button" id="download-png" class="primary">PNG をダウンロード</button>
+      <button type="button" id="download-svg" class="primary">SVGをダウンロード</button>
+      <button type="button" id="download-png" class="primary">PNGをダウンロード</button>
       <button type="button" id="copy-png" class="ghost">画像をコピー</button>
     </div>
 
     <p class="field-summary" id="download-note" role="status"></p>
 
     <p class="field-summary">
-      取っておくべきは SVG のほうです。ピクセルではなく指示としてのコードなので、どんな大きさで印刷してもぼやけません &mdash; これはほかの画像より重い意味を持ちます。ぼやけた縁こそ、スキャナーが解像できないものだからです。
+      取っておくべきはSVGのほうです。ピクセルではなく指示としてのコードなので、どんな大きさで印刷してもぼやけません。これはほかの画像より重い意味を持ちます。ぼやけた縁こそ、スキャナーが解像できないものだからです。
     </p>
   </section>
 </main>

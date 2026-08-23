@@ -2,7 +2,7 @@
     <h2>A resposta curta</h2>
     <p>
       Abra o <a href="../../heic-para-jpg/">conversor de HEIC para JPG</a>, jogue
-      as fotos dentro e aperte &ldquo;Converter&rdquo;. Deixe o controle de
+      as fotos dentro e clique em &ldquo;Converter&rdquo;. Deixe o controle de
       qualidade onde está e deixe marcado &ldquo;manter a data, a câmera e os
       ajustes&rdquo;, a menos que você tenha um motivo para não deixar. Você
       recebe JPEGs de volta, um botão de download para cada, ou um zip se forem
@@ -17,12 +17,12 @@
   <section>
     <h2>O que HEIC é de verdade</h2>
     <p>
-      HEIC não é bem um formato de imagem do jeito que o JPEG é. É um contêiner
-      &mdash; a mesma estrutura de caixas com que um MP4 é montado &mdash; com um
-      quadro parado de vídeo <strong>HEVC</strong> lá dentro. O HEVC, também
-      chamado de H.265, é o codec que substituiu o que a sua filmadora antiga
-      usava, e é muito bom: uma foto de iPhone em HEIC tem mais ou menos metade
-      do tamanho da mesma foto como JPEG na mesma qualidade.
+      HEIC não é bem um formato de imagem do jeito que o JPEG é. É um contêiner,
+      com a mesma estrutura de caixas com que um MP4 é montado, e dentro dele fica
+      um quadro parado de vídeo <strong>HEVC</strong>. O HEVC, também chamado de
+      H.265, é o codec que substituiu o que a sua filmadora antiga usava, e é
+      muito bom: uma foto de iPhone em HEIC tem mais ou menos metade do tamanho
+      da mesma foto como JPEG na mesma qualidade.
     </p>
     <p>
       A Apple mudou para ele no iOS 11, em 2017, e o deixou como padrão. O que
@@ -52,12 +52,12 @@
       Decodificar HEVC precisa de um decodificador de HEVC, e HEVC é patenteado.
       O licenciamento é administrado por mais de um consórcio de patentes, e
       distribuir um decodificador significa pagar alguém. Os navegadores lidam
-      com isso apoiando-se no sistema operacional &mdash; o Chrome toca
+      com isso apoiando-se no sistema operacional, e é assim que o Chrome toca
       <em>vídeo</em> HEVC numa máquina cujo hardware já tem um decodificador
-      licenciado &mdash; mas esse caminho está ligado à reprodução de vídeo, e
-      não a imagens paradas. Então um HEIC entregue a uma
-      <code>&lt;img&gt;</code> é recusado, no Chrome, no Firefox e no Edge
-      igualmente, em qualquer sistema operacional.
+      licenciado. Só que esse caminho está ligado à reprodução de vídeo, e não a
+      imagens paradas. Então um HEIC entregue a uma <code>&lt;img&gt;</code> é
+      recusado, no Chrome, no Firefox e no Edge igualmente, em qualquer sistema
+      operacional.
     </p>
     <p>
       O Safari em hardware da Apple é a exceção, porque o macOS e o iOS têm o
@@ -77,7 +77,7 @@
       decodificada numa máquina que você nunca viu, recodificada como JPEG e
       mandada de volta. É isso que quase todo &ldquo;conversor de HEIC online
       gratuito&rdquo; faz, e é por isso que todos precisam dos seus arquivos. Não
-      é preguiça &mdash; o navegador genuinamente não dá conta sozinho.
+      é preguiça, porque o navegador genuinamente não dá conta sozinho.
     </p>
     <p>
       Vale ser direto sobre o que isso custa. Fotos de celular são os arquivos
@@ -93,16 +93,16 @@
       Opção dois: colocar o decodificador na página. É isso que
       <a href="../../heic-para-jpg/">este aqui</a> faz. Ele carrega a
       <code>libheif</code>, compilada para WebAssembly, como um arquivo servido
-      deste site &mdash; cerca de 1,4 MB, baixado uma vez e depois guardado em
-      cache. O seu navegador roda isso na sua própria máquina, no seu próprio
+      deste site, com cerca de 1,4 MB, baixados uma vez e depois guardados em
+      cache. O seu navegador roda isso no seu próprio computador, no seu próprio
       hardware, e a foto não vai a lugar nenhum. Carregue a página uma vez e você
-      pode desconectar completamente da internet que ela continua funcionando, o
-      que é uma coisa que conversor nenhum que envia consegue fazer, e a prova
-      mais simples que existe.
+      pode desligar completamente a internet que ela continua funcionando, o que é
+      uma coisa que conversor nenhum que envia consegue fazer, e a prova mais
+      simples que existe.
     </p>
     <p>
       Os 1,4 MB são o preço inteiro. Se você está numa conexão tarifada é um
-      custo real e vale saber; é por isso que a página diz isso em voz alta em
+      custo real e vale saber, e é por isso que a página diz isso em voz alta em
       vez de baixar em silêncio.
     </p>
   </section>
@@ -116,10 +116,10 @@
     </p>
     <ul>
       <li>
-        <strong>Na qualidade 92</strong> &mdash; onde o conversor começa &mdash;
-        uma fotografia é muito difícil de distinguir do original em qualquer
-        tamanho normal de visualização. Você estaria procurando diferenças em
-        gradientes suaves, como um céu limpo, e em geral não vai achar.
+        <strong>Na qualidade 92</strong>, que é onde o conversor começa, uma
+        fotografia é muito difícil de distinguir do original em qualquer tamanho
+        normal de visualização. Você estaria procurando diferenças em gradientes
+        suaves, como um céu limpo, e em geral não vai achar.
       </li>
       <li>
         <strong>O JPEG vai ser maior.</strong> Normalmente entre um terço maior e
@@ -147,9 +147,9 @@
       A reclamação de sempre sobre conversores de HEIC é que as fotos voltam sem
       o dia em que foram tiradas, então uma viagem inteira de fotos vai parar no
       fim da biblioteca com a data de hoje. Isso acontece porque converter por um
-      canvas lhe dá pixels e mais nada &mdash; um canvas não guarda etiquetas
-      &mdash; então, a não ser que o conversor vá buscar os metadados à parte,
-      eles simplesmente somem.
+      canvas rende pixels e mais nada, já que um canvas não guarda etiquetas.
+      Então, a não ser que o conversor vá buscar os metadados à parte, eles
+      simplesmente somem.
     </p>
     <p>
       A ferramenta daqui copia o bloco EXIF do HEIC e o escreve dentro do JPEG,
@@ -200,10 +200,10 @@
         então não está ali dentro para ser convertida.
       </li>
       <li>
-        <strong>AVIF não é HEIC.</strong> Eles se parecem &mdash; mesmo
-        contêiner, codec diferente lá dentro &mdash; mas todo navegador atual
-        abre um AVIF nativamente, então não há o que converter e a ferramenta diz
-        isso em vez de fingir que trabalhou.
+        <strong>AVIF não é HEIC.</strong> Eles se parecem, com o mesmo contêiner
+        e um codec diferente lá dentro, mas todo navegador atual abre um AVIF
+        nativamente. Não há o que converter, e a ferramenta avisa isso em vez de
+        fingir que trabalhou.
       </li>
       <li>
         <strong>Cortar o problema na origem.</strong> No celular: Ajustes &rarr;
@@ -228,16 +228,16 @@
     </p>
     <ol>
       <li>
-        Abra a página, então abra as ferramentas de desenvolvedor do seu
-        navegador e vá para a aba Rede.
+        Abra a página, então abra as ferramentas do desenvolvedor do seu
+        navegador e vá para a aba &ldquo;Rede&rdquo;.
       </li>
       <li>
-        Converta uma foto e observe. Uma ferramenta que decodifica na sua máquina
-        não faz requisição nenhuma naquele momento. Uma ferramenta que envia faz
-        uma do tamanho da sua foto, e você consegue ver o tamanho.
+        Converta uma foto e observe. Uma ferramenta que decodifica no seu
+        computador não faz requisição nenhuma naquele momento. Uma ferramenta que
+        envia faz uma do tamanho da sua foto, e você consegue ver o tamanho.
       </li>
       <li>
-        Ou, mais simples ainda: carregue a página, desconecte da internet e tente
+        Ou, mais simples ainda: carregue a página, desligue a internet e tente
         converter alguma coisa. Uma ferramenta que mandou a sua foto para ser
         decodificada em outro lugar para de funcionar. Uma que carrega o
         decodificador não para.

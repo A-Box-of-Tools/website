@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; ファイル -->
+  <!-- ステップ1｜ファイル -->
   <section class="card">
     <h2><span class="step">1</span> 写真を選ぶ</h2>
 
@@ -14,7 +14,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+        <button type="button" id="clear-all" class="ghost danger">すべてリストから外す</button>
       </div>
     </div>
 
@@ -23,12 +23,12 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- ステップ2 &mdash; 一度のクリック -->
+  <!-- ステップ2｜クリック一度 -->
   <section class="card" id="strip-card">
     <h2><span class="step">2</span> すべて削除する</h2>
 
     <p class="card-lede">
-      ボタンひとつで、リスト上のすべての写真に効きます。画像は復号も描き直しも再圧縮もされません &mdash; 圧縮された画像データはそのまま複製され、その周りのメタデータだけが落ちるので、結果は何も付いていない同じ写真です。
+      ボタンひとつで、リスト上のすべての写真に効きます。画像をデコードすることも、描き直すことも、再圧縮することもありません。圧縮された画像データはそのまま複製し、その周りのメタデータだけを落とすので、出てくるのは何も付いていない同じ写真です。
     </p>
 
     <div class="strip-row">
@@ -49,9 +49,7 @@
         <span>
           <strong>向きのタグ</strong>
           <span class="check-note">
-            スマホはセンサーが見たままの向きで写真を保存し、どちらが上かを示すタグを
-            1つ添えます。これを消すと、ビューアーによっては横向きに表示されます。残す場合は、このタグだけを含む新しい EXIF ブロックが書かれます &mdash;
-            しかも、その写真がもともと正しい向きでなかった場合だけです。
+            スマホはセンサーが見たままの向きで写真を保存し、どちらが上かを示すタグを1つ添えます。これを消すと、ビューアーによっては横向きに表示されます。残す場合は、このタグだけを含む新しいEXIFブロックを書きます。しかも、その写真がもともと正しい向きでなかった場合だけです。
           </span>
         </span>
       </label>
@@ -60,7 +58,7 @@
         <span>
           <strong>カラープロファイル</strong>
           <span class="check-note">
-            ICC プロファイルは、画像の中の数値がどの色を意味するかを示すものです。あなたについては何も語りません。落とすと、広い色域の写真では色が目に見えて変わることがあります。だから、指示がない限り残します。
+            ICCプロファイルは、画像の中の数値がどの色を意味するのかを示すものです。撮った人については何も語りません。落とすと、広い色域の写真では色が目に見えて変わることがあるので、指示がない限り残します。
           </span>
         </span>
       </label>
@@ -70,18 +68,18 @@
     <div id="clean-results" class="results" hidden>
       <div class="results-head">
         <h3>きれいにしました</h3>
-        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめてzipでダウンロード</button>
       </div>
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
 
-  <!-- ステップ3 &mdash; 中を読む、直す -->
+  <!-- ステップ3｜中を読む、直す -->
   <section class="card" id="inspect-card">
     <h2><span class="step">3</span> 中を見て、好きなところを変える</h2>
 
     <p id="inspect-empty" class="empty-note">
-      上で写真を選ぶと、その中身がすべてここに出ます。あなたがどこにいたか、いつか、何で撮ったかを、その写真が何と語っているかです。それを調べるために何かがどこかへ送られることはありません。
+      上で写真を選ぶと、その中身がすべてここに出ます。どこにいたのか、いつなのか、何で撮ったのか。その写真が何を語っているかです。それを調べるために何かがどこかへ送られることはありません。
     </p>
 
     <div id="inspector" hidden>

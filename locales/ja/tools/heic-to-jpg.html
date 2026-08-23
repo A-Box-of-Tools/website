@@ -1,10 +1,10 @@
 <main>
-  <!-- ステップ1 &mdash; ファイル -->
+  <!-- ステップ1｜ファイル -->
   <section class="card">
-    <h2><span class="step">1</span> HEIC 写真を選ぶ</h2>
+    <h2><span class="step">1</span> HEIC写真を選ぶ</h2>
 
     <p class="card-lede">
-      スマホから直接でも、バックアップからでも、メモリーカードから複製したものでも構いません。ファイルはここで、この端末で読まれ、画像もここでデコードされます &mdash; このページにアップロードの段階はなく、後ろにサーバーもありません。
+      スマホから直接でも、バックアップからでも、メモリーカードから複製したものでも構いません。ファイルを読むのも画像をデコードするのも、この端末の中です。このページにアップロードの段階はありませんし、後ろにサーバーもありません。
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -12,7 +12,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+        <button type="button" id="clear-all" class="ghost danger">すべてリストから外す</button>
       </div>
     </div>
 
@@ -21,9 +21,9 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- ステップ2 &mdash; 出てくるもの -->
+  <!-- ステップ2｜出てくるもの -->
   <section class="card" id="options-card">
-    <h2><span class="step">2</span> 何を返してほしいかを言う</h2>
+    <h2><span class="step">2</span> 何を返してほしいかを決める</h2>
 
     <fieldset class="options">
       <legend>形式</legend>
@@ -31,9 +31,9 @@
       <div class="option-row">
         <label for="format-select">書き出す形式</label>
         <select id="format-select">
-          <option value="image/jpeg" selected>JPEG &mdash; どこでも開けます。今世紀に間違って作られたものでも</option>
-          <option value="image/png">PNG &mdash; 劣化なし、そのぶん数倍のサイズ</option>
-          <option value="image/webp">WebP &mdash; 同じ画質なら JPEG より小さい。ただし最近のブラウザ限定</option>
+          <option value="image/jpeg" selected>JPEG（今世紀に作られたものなら、どこでも開けます）</option>
+          <option value="image/png">PNG（劣化なし。そのぶん数倍のサイズ）</option>
+          <option value="image/webp">WebP（同じ画質ならJPEGより小さい。ただし最近のブラウザ限定）</option>
         </select>
       </div>
 
@@ -56,20 +56,18 @@
         <span>
           <strong>撮影日時、カメラ、設定を残す</strong>
           <span class="check-note">
-            スマホが書いたとおりにそのまま複製されるので、変換後の写真も、変換した日ではなく撮影した日で並びます。写真が GPS 座標を持っている場合は、それも含まれます &mdash; どれが持っているかは上の一覧に出ています。これを外すと、JPEG には画像のほかに何も入りません。
+            スマホが書いたとおりにそのまま複製するので、変換後の写真も、変換した日ではなく撮影した日で並びます。写真がGPS座標を持っていれば、それも含まれます。どれが持っているかは、上の一覧に出ています。これを外すと、JPEGには画像のほかに何も入りません。
           </span>
         </span>
       </label>
 
       <p class="field-summary">
-        どちらを選んでも、ここから誰かに読み上げられるものはありません。この選択は返ってくるファイルに何が入るかの話であって、このページがそれをどうするかの話ではありません。タグを細かく見たい場合や、すでに JPEG になっている写真から消したい場合は、
-        <a href="../exif-editor/">EXIF ビューアー &amp; 削除ツール</a>
-        がその役目を担います。
+        どちらを選んでも、ここから誰かに読み上げられるものはありません。これは返ってくるファイルに何が入るかの話であって、このページがそれをどうするかの話ではありません。タグを細かく見たいときや、すでにJPEGになっている写真から消したいときは、<a href="../exif-editor/">EXIFビューアー・削除ツール</a>がその役目を担います。
       </p>
     </fieldset>
   </section>
 
-  <!-- ステップ3 &mdash; 一度のクリック -->
+  <!-- ステップ3｜クリック一度 -->
   <section class="card" id="run-card">
     <h2><span class="step">3</span> 変換する</h2>
 
@@ -94,7 +92,7 @@
     <div id="results" class="results" hidden>
       <div class="results-head">
         <h3>変換しました</h3>
-        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめてzipでダウンロード</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>

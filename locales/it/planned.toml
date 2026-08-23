@@ -11,18 +11,16 @@
 # length has changed for exactly that reason.
 #
 
-note = "Non ancora costruiti. Sono elencati perché si veda dove sta andando tutto questo."
+note = "Non ancora costruiti. Sono elencati perché tu possa vedere dove sta andando tutto questo."
 
 [[group]]
 id = "images"
 name = "Immagini"
 items = [
-  ["Ruotare e specchiare", "di un quarto di giro, o raddrizzando di qualche grado"],
-  ["Aggiungere testo", "sopra la foto, o in una fascia sopra di essa"],
+  ["Ruotare e specchiare", "di un quarto di giro, oppure raddrizzando di qualche grado"],
+  ["Aggiungere testo", "sopra la foto, oppure in una fascia sopra di essa"],
   ["Filtri", "luminosità, contrasto, saturazione, sfocatura, scala di grigi"],
-  ["Immagine come data URI", "il risultato si incolla direttamente nel CSS o nell'HTML"],
-  ["Da HEIC a JPG", "le foto che fa un iPhone, in un formato che apre chiunque"],
-  ["AVIF e JPEG XL", "conversione in entrambi i sensi, con qualunque browser tu ti trovi"],
+  ["AVIF e JPEG XL", "conversione nei due sensi, con qualunque browser ti capiti di usare"],
 ]
 
 [[group]]
@@ -31,9 +29,9 @@ name = "GIF e animazione"
 items = [
   ["Da GIF a MP4 o WebM", "la stessa animazione, di solito un decimo del peso"],
   ["Ridimensionare, ritagliare e ruotare le GIF", "fotogramma per fotogramma, con i tempi intatti"],
-  ["GIF al contrario", "l'ultimo fotogramma per primo"],
-  ["Cambiare la velocità di una GIF", "ritempificarla senza ridisegnare i fotogrammi"],
-  ["Creare un APNG", "animazione con trasparenza vera e colore pieno"],
+  ["Invertire una GIF", "l'ultimo fotogramma per primo"],
+  ["Cambiare la velocità di una GIF", "spostarne i tempi senza ridisegnare i fotogrammi"],
+  ["Generatore di APNG", "animazione con trasparenza vera e colore pieno"],
   ["WebP animata", "ancora la stessa animazione, a una frazione del peso"],
 ]
 
@@ -41,9 +39,9 @@ items = [
 id = "video"
 name = "Video"
 items = [
-  ["Ridimensionare", "fino a una dimensione che si riesce davvero a mandare"],
+  ["Ridimensionare", "fino a una dimensione che si riesca davvero a mandare"],
   ["Ruotare", "per la clip girata di traverso"],
-  ["Togliere l'audio, o salvarlo", "eliminare il suono, o tenerlo per conto suo"],
+  ["Togliere l'audio, o salvarlo", "eliminare il suono, oppure tenerlo per conto suo"],
   ["Convertire in MP4 o WebM", "quello dei due su cui insiste il sito dove stai pubblicando"],
   ["Filtri", "luminosità, contrasto, saturazione, sfocatura"],
   ["Incidere i sottotitoli", "un file SRT disegnato dentro l'immagine"],
@@ -62,7 +60,7 @@ items = [
 id = "documents"
 name = "Documenti e PDF"
 items = [
-  ["Ruotare e ritagliare le pagine", "raddrizzare una scansione storta, o tagliarne i margini"],
+  ["Ruotare e ritagliare le pagine", "raddrizzare una scansione storta, oppure tagliarne i margini"],
   ["Estrarre le immagini", "tirare fuori le figure da un documento"],
 ]
 

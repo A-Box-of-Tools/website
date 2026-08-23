@@ -7,11 +7,11 @@ title = "Come tagliare un video senza ricodificarlo"
 description = "Accorciare una clip non deve costare un solo byte di qualità. Perché a volte un taglio cade prima di dove l'hai segnato, cosa c'entra un fotogramma chiave, e quando accettare una ricodifica."
 heading = "Come tagliare un video senza ricodificarlo"
 lede = """
-    Tagliare non cambia l'aspetto di alcun fotogramma, quindi un buon
-    tagliavideo non li tocca &mdash; li sposta in un file nuovo esattamente
-    com'erano. Qui c'è cosa ti fa guadagnare, e l'unico punto in cui si
+    Tagliare non cambia l'aspetto di nessun fotogramma, quindi un buon
+    tagliavideo i fotogrammi non li tocca: li sposta in un file nuovo esattamente
+    com'erano. Vediamo cosa ti fa guadagnare, e l'unico punto in cui la cosa si
     vede."""
 updated = "20 agosto 2026"
 og_title = "Come tagliare un video senza ricodificarlo"
 og_description = "Perché a volte un taglio cade prima di dove l'hai segnato, cosa c'entra un fotogramma chiave, e quando accettare una ricodifica."
-og_image_alt = "abox.tools - strumenti che non toccano nessun server"
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

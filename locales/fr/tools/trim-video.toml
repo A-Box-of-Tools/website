@@ -8,31 +8,34 @@
 # for - the shortcut is the letter itself, not a word - and renaming them in
 # the prose would name a key that does nothing.
 #
+# [schema] is emitted as JSON-LD, where HTML entities are never decoded, so
+# that table alone uses plain spaces and plain punctuation.
+#
 
 name = "Coupeur de vidéos"
 heading = "Couper&nbsp;une&nbsp;vidéo <span class=\"h1-kw\">&mdash; couper une vidéo en ligne</span>"
 tagline = "Marquez les passages à garder pendant la lecture. Récupérez-les en une seule vidéo."
 
 title = "Couper une vidéo en ligne &mdash; ne garder que ce que vous voulez, sans envoi"
-description = "Regardez une vidéo et marquez chaque passage à garder pendant qu'elle joue, puis enregistrez ces passages en un seul fichier. Tout se passe dans votre navigateur : rien n'est envoyé, rien n'est réencodé, fonctionne hors ligne."
+description = "Regardez une vidéo et marquez chaque passage à garder pendant qu'elle joue, puis enregistrez ces passages en un seul fichier. Tout se passe dans votre navigateur : rien n'est envoyé et rien n'est réencodé."
 og_title = "Coupeur de vidéos &mdash; ne garder que ce que vous voulez, sans rien envoyer"
 og_description = "Appuyez sur I et O pendant la lecture pour marquer chaque passage à garder. Les passages marqués sont réécrits en une seule vidéo, image pour image, sans rien envoyer."
 og_image_alt = "Coupeur de vidéos - marquez ce que vous voulez et enregistrez-le en une seule vidéo, dans votre navigateur"
 
 pledge = """
     Votre vidéo est lue, marquée, coupée et écrite par votre propre navigateur,
-    sur votre propre matériel. Rien ici ne sait récupérer ni envoyer quoi que ce
-    soit &mdash; cet outil n'a aucune fonction réseau &mdash; et il n'y a à
-    l'autre bout de cette page aucun serveur auquel envoyer une vidéo, quand bien
-    même il y en aurait une."""
+    sur votre propre matériel. Cet outil ne comporte aucune fonction réseau, si
+    bien que rien ici ne sait aller chercher ni envoyer quoi que ce soit. Et
+    quand bien même il en aurait une, il n'y a à l'autre bout de cette page aucun
+    serveur à qui remettre une vidéo."""
 
 live_hint = """
       Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
-      gardez l'onglet Réseau à l'œil et coupez une vidéo. Pas une seule requête
-      ne transporte d'image, de nom de fichier ni un octet de ce que vous avez
-      choisi. Ou coupez votre connexion et coupez-en une quand même &mdash; un
-      outil qui expédierait votre vidéo ailleurs pour la couper s'arrêterait tout
-      simplement."""
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et coupez une vidéo.
+      Pas une seule requête ne transporte d'image, de nom de fichier ni le
+      moindre octet de ce que vous avez choisi. Vous pouvez aussi couper la
+      connexion et en couper une quand même, car un outil qui expédierait votre
+      vidéo ailleurs pour la couper s'arrêterait tout simplement."""
 
 read_first = """
 , <code>src/segments.js</code> pour les marques et le
@@ -40,8 +43,8 @@ read_first = """
       qui trouve les images dans un MP4, <code>src/ranges.js</code> pour
       l'arithmétique qui transforme une marque en une suite d'échantillons, et
       <code>src/copy.js</code> pour la boucle qui déplace ces échantillons dans
-      le nouveau fichier. Aucun d'eux n'importe quoi que ce soit capable de faire
-      une requête."""
+      le nouveau fichier. Aucun d'eux n'importe la moindre chose capable
+      d'émettre une requête."""
 
 howto_heading = "Comment couper une vidéo"
 
@@ -53,8 +56,6 @@ card = """
 [words]
 plural = "vidéos"
 choose = "une vidéo"
-analytics_extra = """, ni
-  image, durée ou point de coupe"""
 
 [[facts]]
 text = "Sans envoi"
@@ -78,9 +79,9 @@ text = "Fonctionne hors ligne"
 title = "Vos vidéos n'ont nulle part où aller."
 body = """
  La
-      Content-Security-Policy nomme toutes les adresses que cette page peut
-      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
-      collecte où votre fichier pourrait arriver, et rien dans le code qui l'y
+      Content-Security-Policy énumère toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de
+      collecte où votre fichier pourrait aboutir, ni rien dans le code qui l'y
       enverrait s'il en existait un."""
 
 [[privacy]]
@@ -98,8 +99,8 @@ body = """
       Couper ne change l'aspect d'aucune image&nbsp;: les images encodées des
       passages que vous avez marqués sont donc déplacées dans le nouveau fichier
       exactement telles qu'on les a trouvées. Chacune est retenue comme une
-      tranche du fichier sur votre disque &mdash; une note disant quels octets,
-      pas les octets eux-mêmes &mdash; et votre navigateur les lit pour la
+      tranche du fichier sur votre disque, c'est-à-dire une note disant quels
+      octets plutôt que les octets eux-mêmes, et votre navigateur les lit pour la
       première fois au moment d'écrire le téléchargement. Rien ici ne
       retransforme jamais votre vidéo en image."""
 
@@ -116,9 +117,9 @@ body = """
 title = "Le son est copié, pas écouté."
 body = """
  Sur les deux chemins MP4, les
-      échantillons audio sont déplacés sans être décodés du tout &mdash; rien ici
-      ne les retransforme jamais en son, et rien ne saurait les faire passer où
-      que ce soit si c'était le cas."""
+      échantillons audio sont déplacés sans être décodés le moins du monde. Rien
+      ici ne les retransforme jamais en son, et rien ne saurait les faire passer
+      où que ce soit si c'était le cas."""
 
 [[privacy]]
 title = "Là où des images sont décodées, cela se passe ici."
@@ -148,26 +149,26 @@ body = """
       on ne lui donne rien sur vous ni sur votre vidéo."""
 
 [[privacy]]
-title = "Cela fonctionne hors ligne."
+title = "Tout fonctionne hors ligne."
 body = """
- Coupez le réseau et tout sur cette
-      page fonctionne encore. C'est la preuve la plus simple de toutes."""
+ Coupez le réseau et tout, sur cette
+      page, continue de fonctionner. C'est la preuve la plus simple de
+      toutes."""
 
 [[howto]]
 title = "Choisissez une vidéo."
 body = """
  Déposez un MP4, un MOV, un M4V ou un
-      WebM sur la zone prévue. Le navigateur le lit directement sur votre
-      disque&nbsp;; rien n'est envoyé nulle part pendant ce temps. Déposez-en
-      plusieurs et ils sont mis bout à bout, dans l'ordre où vous les avez
-      posés."""
+      WebM sur la zone prévue. Le navigateur le lit directement sur votre disque,
+      sans que rien parte où que ce soit pendant ce temps. Déposez-en plusieurs
+      et ils sont mis bout à bout, dans l'ordre où vous les avez posés."""
 
 [[howto]]
 title = "Lancez la lecture et marquez les passages voulus."
 body = """
  Appuyez sur
       <kbd>I</kbd> là où un passage doit commencer et sur <kbd>O</kbd> là où il
-      doit finir. Faites-le autant de fois que vous voulez &mdash; chaque paire
+      doit finir. Faites-le autant de fois que vous voulez&nbsp;: chaque paire
       devient une ligne dans le tableau du dessous, et une bande sur la ligne de
       temps. <kbd>U</kbd> reprend la dernière, <kbd>Espace</kbd> lit et met en
       pause, et les flèches sautent de cinq secondes. Ralentissez la lecture si
@@ -188,7 +189,7 @@ body = """
  Garder est le sens habituel&nbsp;:
       la vidéo finie, ce sont les passages que vous avez marqués, mis bout à bout
       dans l'ordre. Les couper est l'autre travail que les gens veulent et
-      trouvent rarement &mdash; marquez les publicités, les silences ou les faux
+      trouvent rarement&nbsp;; marquez les publicités, les silences ou les faux
       départs, et ce qui reste est raccordé sans eux."""
 
 [[howto]]
@@ -206,11 +207,11 @@ body = """
 q = "Ma vidéo est-elle envoyée quelque part&nbsp;?"
 a = """
         Non. Elle est lue, marquée, coupée et écrite par votre propre navigateur sur
-        votre propre matériel. Cet outil n'a pas de côté serveur, et la
-        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
-        qu'elle peut contacter &mdash; aucune n'appartient à ce site. Coupez votre
-        connexion et coupez une vidéo quand même, si vous préférez vérifier plutôt
-        qu'on vous le dise."""
+        votre propre matériel. Cet outil n'a pas de côté serveur, et sa
+        <code>Content-Security-Policy</code> énumère toutes les adresses que la page
+        peut contacter, dont aucune n'appartient à ce site. Coupez votre connexion et
+        coupez une vidéo quand même, si vous préférez vérifier plutôt qu'on vous le
+        dise."""
 
 [[faq]]
 q = "Puis-je garder plusieurs passages d'une même vidéo&nbsp;?"
@@ -228,7 +229,7 @@ q = "Couper fait-il perdre de la qualité&nbsp;?"
 a = """
         Pas sur le chemin normal, et pas de la façon qui compte. Couper ne change
         l'aspect d'aucune image&nbsp;: les images sont donc déplacées dans le nouveau
-        fichier exactement telles qu'elles étaient &mdash; mêmes octets, mêmes réglages
+        fichier exactement telles qu'elles étaient, mêmes octets, mêmes réglages
         d'encodeur, même tout. Le seul chemin d'ici qui réencode quoi que ce soit est la
         coupe exacte, et le bouton le dit."""
 
@@ -241,7 +242,7 @@ a = """
         peuvent pas être décodées sans elles. Seule une image clé se tient toute seule,
         et les images clés sont typiquement espacées d'une à dix secondes. Une coupe qui
         recopie les images doit donc emporter la suite depuis l'image clé qui précède
-        votre marque &mdash; et le fichier dit <em>commencer la lecture à votre
+        votre marque, tandis que le fichier, lui, dit <em>commencer la lecture à votre
         marque</em>, ce que tout lecteur grand public respecte. S'il vous la faut exacte
         dans tous les lecteurs, choisissez
         &laquo;&nbsp;Couper exactement ici&nbsp;&raquo;, qui réencode. La page vous dit
@@ -260,27 +261,26 @@ a = """
 q = "Puis-je enregistrer mes marques et y revenir&nbsp;?"
 a = """
         Oui. &laquo;&nbsp;Enregistrer les marques&nbsp;&raquo; écrit un simple fichier
-        texte &mdash; une ligne par passage, un début et une fin séparés par une virgule
-        &mdash; et &laquo;&nbsp;Charger des marques&nbsp;&raquo; en relit un. Deux
-        formats sont proposés, des secondes brutes et
-        <code>HH:MM:SS.mmm</code>, et tous deux respectent la disposition qu'utilisent
-        déjà les autres outils qui travaillent ainsi&nbsp;: un fichier écrit ici peut
-        être donné à l'un d'eux, et un fichier écrit là-bas peut être déposé sur cette
-        page. Marquer est un travail minutieux et personne ne devrait avoir à le faire
-        deux fois."""
+        texte, une ligne par passage, un début et une fin séparés par une virgule, et
+        &laquo;&nbsp;Charger des marques&nbsp;&raquo; en relit un. Deux formats sont
+        proposés, des secondes brutes et <code>HH:MM:SS.mmm</code>, et tous deux
+        respectent la disposition qu'utilisent déjà les autres outils qui travaillent
+        ainsi&nbsp;: un fichier écrit ici peut être donné à l'un d'eux, et un fichier
+        écrit là-bas peut être déposé sur cette page. Marquer est un travail minutieux
+        et personne ne devrait avoir à le faire deux fois."""
 
 [[faq]]
 q = "Quels formats vidéo puis-je couper&nbsp;?"
 a = """
         Le MP4, le M4V et le MOV sont lus directement, quel que soit leur
         contenu&nbsp;: H.264, HEVC, AV1 ou VP9. Recopier des images n'implique pas de
-        les décoder&nbsp;: ce chemin fonctionne donc même pour un codec dont votre
-        navigateur n'a aucun décodeur. Tout le reste que votre navigateur sait lire
-        &mdash; le WebM au premier chef &mdash; est coupé en le jouant et en
-        enregistrant le résultat, ce qui marche, prend le temps que dure le résultat, et
-        ne peut garder qu'un seul passage. Un fichier que le navigateur ne sait ni lire
-        ni jouer, ce qui en pratique veut dire l'AVI, le WMV, le FLV et la plupart des
-        MKV, est refusé avec un message qui le dit, plutôt que d'échouer à mi-course."""
+        les décoder, si bien que ce chemin fonctionne même pour un codec dont votre
+        navigateur n'a aucun décodeur. Tout le reste que votre navigateur sait lire, à
+        commencer par le WebM, est coupé en le jouant et en enregistrant le résultat, ce
+        qui marche, prend le temps que dure le résultat, et ne peut garder qu'un seul
+        passage. Un fichier que le navigateur ne sait ni lire ni jouer, ce qui en
+        pratique veut dire l'AVI, le WMV, le FLV et la plupart des MKV, est refusé avec
+        un message qui le dit, plutôt que d'échouer à mi-course."""
 
 [[faq]]
 q = "Y a-t-il une limite de taille ou de durée&nbsp;?"
@@ -300,17 +300,17 @@ a = """
         être décodé, il est donc octet pour octet ce qu'il y avait dans le fichier, et
         une marque de montage garde chaque passage aligné sur son image au millième de
         seconde près. La seule exception est le raccordement de vidéos distinctes dont
-        le son est décrit différemment &mdash; des fréquences d'échantillonnage
-        différentes, par exemple &mdash; où il n'y a aucun moyen de mettre les deux dans
-        une seule piste sans les décoder, et la page le dit avant de le faire. Sur le
-        chemin par enregistrement, il est capté à la lecture et réencodé. Dans les deux
-        cas, une case permet de le laisser entièrement de côté."""
+        le son est décrit différemment, avec par exemple des fréquences
+        d'échantillonnage qui diffèrent, car il n'y a alors aucun moyen de mettre les
+        deux dans une seule piste sans les décoder, et la page le dit avant de le faire.
+        Sur le chemin par enregistrement, il est capté à la lecture et réencodé. Dans
+        les deux cas, une case permet de le laisser entièrement de côté."""
 
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
 a = """
-        C'est gratuit, et il n'y a pas de compte, pas de connexion, pas de période
-        d'essai et pas de filigrane. Le site porte de la publicité, et c'est elle qui le
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai, ni
+        filigrane. Le site affiche de la publicité, et c'est elle qui le
         finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
 
 [schema]

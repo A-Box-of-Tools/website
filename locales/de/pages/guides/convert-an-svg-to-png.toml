@@ -9,9 +9,9 @@ heading = "So wandeln Sie ein SVG in der richtigen Größe in ein PNG um"
 lede = """
     Das Umwandeln ist die leichte Hälfte. Über den Nutzen des Ergebnisses
     entscheidet die Frage, auf die Ihnen niemand die Antwort mitliefert: wie
-    viele Pixel? Hier steht, woher diese Zahl kommt &mdash; und was eine
-    Zeichnung verliert, sobald sie eine wird."""
+    viele Pixel? Hier steht, woher diese Zahl kommt und was eine Zeichnung
+    verliert, sobald sie zu Pixeln wird."""
 updated = "20. August 2026"
 og_title = "SVG in PNG umwandeln, in der richtigen Größe"
 og_description = "Woher die Pixelzahl wirklich kommt, und die drei Dinge, die sich ändern, sobald aus einer Zeichnung Pixel werden."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

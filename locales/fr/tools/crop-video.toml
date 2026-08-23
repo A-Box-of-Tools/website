@@ -4,50 +4,51 @@
 # Overrides for tools/crop-video/tool.toml. Only words: the slug, the category,
 # the icon, the CSP and the list of shared parts stay where they are.
 #
+# [schema] is emitted as JSON-LD, where HTML entities are never decoded, so
+# that table alone uses plain spaces and plain punctuation.
+#
 
 name = "Recadreur de vidéos"
 heading = "Recadrer&nbsp;une&nbsp;vidéo <span class=\"h1-kw\">&mdash; recadrer une vidéo en ligne</span>"
 tagline = "Ramener un clip à ce qui compte dedans."
 
 title = "Recadrer une vidéo en ligne &mdash; gratuit, sans envoi, hors ligne"
-description = "Recadrez un MP4, un MOV ou un WebM dans n'importe quelle forme - carré, 9:16, ou un cadre en pixels exact. Tout se passe dans votre navigateur : rien n'est envoyé, le son est gardé, fonctionne hors ligne."
+description = "Recadrez un MP4, un MOV ou un WebM dans la forme que vous voulez : carré, 9:16, ou un cadre en pixels exact. Tout se passe dans votre navigateur, le son est gardé et rien n'est envoyé."
 og_title = "Recadreur de vidéos &mdash; recadrer un clip sans l'envoyer"
 og_description = "Tracez un cadre sur votre clip et recadrez-le dans la forme que vous voulez. Les images sont décodées et réencodées sur votre propre machine, et le son d'origine est repris intact."
 og_image_alt = "Recadreur de vidéos - recadrer un clip dans votre navigateur, sans rien envoyer"
 
 pledge = """
     Chaque image est décodée, recadrée et encodée par votre propre navigateur,
-    sur votre propre matériel. Rien ici ne sait récupérer ni envoyer quoi que ce
-    soit &mdash; cet outil n'a aucune fonction réseau &mdash; et il n'y a à
-    l'autre bout de cette page aucun serveur auquel envoyer une vidéo, quand
-    bien même il y en aurait une."""
+    sur votre propre matériel. Cet outil ne comporte aucune fonction réseau, si
+    bien que rien ici ne sait aller chercher ni envoyer quoi que ce soit. Et
+    quand bien même il en aurait une, il n'y a à l'autre bout de cette page
+    aucun serveur à qui remettre une vidéo."""
 
 live_hint = """
       Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
-      gardez l'onglet Réseau à l'œil et recadrez un clip. Pas une seule requête
-      ne transporte d'image, de nom de fichier ni un octet de ce que vous avez
-      choisi. Ou coupez votre connexion et recadrez-en un quand même &mdash; un
-      outil qui expédierait votre vidéo ailleurs pour la traiter s'arrêterait
-      tout simplement."""
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et recadrez un clip.
+      Pas une seule requête ne transporte d'image, de nom de fichier ni le
+      moindre octet de ce que vous avez choisi. Vous pouvez aussi couper la
+      connexion et en recadrer un quand même, car un outil qui expédierait votre
+      vidéo ailleurs pour la traiter s'arrêterait tout simplement."""
 
 read_first = """
 , <code>src/demux.js</code> pour le lecteur qui trouve
       les images dans un MP4, et <code>src/transcode.js</code> pour la boucle qui
-      les décode, les recadre et les encode. Ni l'un ni l'autre n'importe quoi
-      que ce soit capable de faire une requête."""
+      les décode, les recadre et les encode. Ni l'un ni l'autre n'importe la
+      moindre chose capable d'émettre une requête."""
 
 howto_heading = "Comment recadrer une vidéo"
 
 card = """
-            Tracez un cadre sur un clip et ramenez-le à cette forme &mdash; carré
-            pour un fil, vertical pour un téléphone, ou un cadre en pixels
-            exact."""
+            Tracez un cadre sur un clip et ramenez-le à cette forme&nbsp;: carré
+            pour un fil d'actualité, vertical pour un téléphone, ou un cadre en
+            pixels exact."""
 
 [words]
 plural = "vidéos"
 choose = "une vidéo"
-analytics_extra = """, ni
-  image, durée ou taille de recadrage"""
 
 [[facts]]
 text = "Sans envoi"
@@ -68,9 +69,9 @@ text = "Fonctionne hors ligne"
 title = "Vos vidéos n'ont nulle part où aller."
 body = """
  La
-      Content-Security-Policy nomme toutes les adresses que cette page peut
-      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
-      collecte où votre fichier pourrait arriver, et rien dans le code qui l'y
+      Content-Security-Policy énumère toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de
+      collecte où votre fichier pourrait aboutir, ni rien dans le code qui l'y
       enverrait s'il en existait un."""
 
 [[privacy]]
@@ -85,16 +86,16 @@ body = """
 title = "Le décodage et l'encodage sont locaux."
 body = """
  Les images passent par
-      WebCodecs dans votre propre navigateur, ou par le même moteur de lecture
-      qui vous montrerait le clip de toute façon. Le fichier fini est construit
-      en mémoire sur cette machine et remis directement à un
+      WebCodecs dans votre propre navigateur, ou par le moteur de lecture qui
+      vous montrerait le clip de toute façon. Le fichier fini est construit en
+      mémoire sur cette machine, puis remis directement à un
       téléchargement."""
 
 [[privacy]]
 title = "Le son est copié, pas écouté."
 body = """
  Sur le chemin MP4, les
-      échantillons audio sont déplacés sans être décodés du tout &mdash; rien
+      échantillons audio sont déplacés sans être décodés le moins du monde. Rien
       ici ne les retransforme jamais en son, et rien ne saurait les faire passer
       où que ce soit si c'était le cas."""
 
@@ -118,17 +119,18 @@ body = """
       on ne lui donne rien sur vous ni sur votre vidéo."""
 
 [[privacy]]
-title = "Cela fonctionne hors ligne."
+title = "Tout fonctionne hors ligne."
 body = """
- Coupez le réseau et tout sur cette
-      page fonctionne encore. C'est la preuve la plus simple de toutes."""
+ Coupez le réseau et tout, sur cette
+      page, continue de fonctionner. C'est la preuve la plus simple de
+      toutes."""
 
 [[howto]]
 title = "Choisissez une vidéo."
 body = """
  Déposez un MP4, un MOV, un M4V ou
       un WebM sur la zone prévue, ou sélectionnez-en un à la main. Le navigateur
-      le lit directement sur votre disque&nbsp;; rien n'est envoyé nulle part
+      le lit directement sur votre disque, sans que rien parte où que ce soit
       pendant ce temps."""
 
 [[howto]]
@@ -136,8 +138,8 @@ title = "Tracez le cadre sur la partie à garder."
 body = """
  Faites-le
       glisser depuis l'intérieur pour le déplacer, et par un coin pour le
-      redimensionner. Verrouillez-le d'abord sur une forme &mdash; 1:1 pour un
-      post carré, 9:16 pour un téléphone, 16:9 pour un cadre large &mdash; ou
+      redimensionner. Verrouillez-le d'abord sur une forme, 1:1 pour une
+      publication carrée, 9:16 pour un téléphone ou 16:9 pour un cadre large, ou
       tapez un cadre en pixels exact dans les quatre champs en dessous."""
 
 [[howto]]
@@ -162,29 +164,29 @@ body = """
 q = "Ma vidéo est-elle envoyée quelque part&nbsp;?"
 a = """
         Non. Elle est lue, décodée, recadrée et encodée par votre propre navigateur
-        sur votre propre matériel. Cet outil n'a pas de côté serveur, et la
-        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
-        qu'elle peut contacter &mdash; aucune n'appartient à ce site. Coupez votre
-        connexion et recadrez un clip quand même, si vous préférez vérifier plutôt
-        qu'on vous le dise."""
+        sur votre propre matériel. Cet outil n'a pas de côté serveur, et sa
+        <code>Content-Security-Policy</code> énumère toutes les adresses que la page
+        peut contacter, dont aucune n'appartient à ce site. Coupez votre connexion et
+        recadrez un clip quand même, si vous préférez vérifier plutôt qu'on vous le
+        dise."""
 
 [[faq]]
 q = "Quels formats vidéo puis-je recadrer&nbsp;?"
 a = """
         Le MP4, le M4V et le MOV sont lus directement, quel que soit leur
         contenu&nbsp;: H.264, HEVC, AV1 ou VP9, du moment que votre navigateur sait
-        décoder ce codec. Tout le reste que votre navigateur sait lire &mdash; le WebM
-        au premier chef &mdash; est recadré en le jouant et en enregistrant le
-        résultat, ce qui marche mais prend le temps que dure le clip. Un fichier que
-        le navigateur ne sait ni lire ni jouer, ce qui en pratique veut dire l'AVI, le
-        WMV, le FLV et la plupart des MKV, est refusé avec un message qui le dit,
-        plutôt que d'échouer à mi-course."""
+        décoder ce codec. Tout le reste que votre navigateur sait lire, à commencer
+        par le WebM, est recadré en le jouant et en enregistrant le résultat, ce qui
+        marche mais prend le temps que dure le clip. Un fichier que le navigateur ne
+        sait ni lire ni jouer, ce qui en pratique veut dire l'AVI, le WMV, le FLV et
+        la plupart des MKV, est refusé avec un message qui le dit, plutôt que
+        d'échouer à mi-course."""
 
 [[faq]]
 q = "Y a-t-il une limite de taille ou de durée&nbsp;?"
 a = """
         Aucune limite n'est intégrée à l'outil, et le fichier n'est pas chargé en
-        mémoire d'un seul coup &mdash; il est parcouru quelques mégaoctets à la fois.
+        mémoire d'un seul coup&nbsp;: il est parcouru quelques mégaoctets à la fois.
         Le plafond pratique, c'est la vidéo finie, assemblée en mémoire avant que vous
         la téléchargiez, et le temps que votre machine met à l'encoder."""
 
@@ -210,8 +212,8 @@ q = "Puis-je aussi raccourcir la durée&nbsp;?"
 a = """
         Pas ici, mais juste à côté. Cet outil change la forme de l'image et rien
         d'autre&nbsp;: le clip qui sort dure exactement aussi longtemps que celui qui
-        est entré, avec son rythme et son son intacts. Couper est un autre métier et
-        c'est un autre outil &mdash; le
+        est entré, avec son rythme et son son intacts. Couper relève d'un autre métier
+        et donc d'un autre outil&nbsp;: le
         <a href="../couper-une-video/">coupeur de vidéos</a> marque les passages d'un
         clip qui valent d'être gardés et les enregistre en un seul fichier, sans
         réencoder une image."""
@@ -227,9 +229,9 @@ a = """
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
 a = """
-        C'est gratuit, et il n'y a pas de compte, pas de connexion, pas de période
-        d'essai et pas de filigrane. Le site porte de la publicité, et c'est elle qui
-        le finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai,
+        ni filigrane. Le site affiche de la publicité, et c'est elle qui le
+        finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
 
 [schema]
 browser_requirements = "Nécessite JavaScript. La sortie MP4 demande un navigateur avec WebCodecs ; les autres se rabattent sur un enregistrement WebM."

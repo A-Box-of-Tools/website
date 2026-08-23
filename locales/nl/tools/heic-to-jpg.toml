@@ -9,51 +9,50 @@ name = "HEIC naar JPG"
 # Het staartje is de zoekterm. Net als in het Engels blijft de productnaam de
 # luide helft.
 heading = "HEIC&nbsp;naar&nbsp;JPG <span class=\"h1-kw\">&mdash; iPhone-foto's omzetten</span>"
-tagline = "De foto's die een iPhone maakt, in een formaat dat alles opent."
+tagline = "De foto's die een iPhone maakt, in een formaat dat overal opengaat."
 
-title = "HEIC-naar-JPG-omzetter &mdash; gratis, zonder uploaden"
-description = "Zet HEIC-foto's van een iPhone om naar JPG in je browser. De decoder draait op je eigen apparaat: niets geüpload, geen account, werkt offline, en de datum en cameragegevens mogen mee."
+title = "HEIC naar JPG omzetten &mdash; gratis, zonder uploaden"
+description = "Zet HEIC-foto's van een iPhone om naar JPG in je browser. De decoder draait op je eigen apparaat, dus er wordt niets geüpload. Werkt offline, en de datum en cameragegevens mogen mee."
 og_title = "HEIC-foto's naar JPG omzetten zonder ze te uploaden"
-og_description = "De omzetter die je foto's niet wil hebben. De HEIC-decoder wordt vanaf deze pagina geserveerd en draait op je eigen apparaat, dus de foto's verlaten het nooit."
+og_description = "De omzetter die je foto's helemaal niet wil hebben. De HEIC-decoder wordt vanaf deze pagina geserveerd en draait op je eigen apparaat, dus je foto's verlaten het nooit."
 og_image_alt = "HEIC naar JPG - iPhone-foto's in een formaat dat alles opent"
 
 pledge = """
     Het decoderen gebeurt in je eigen browser, op je eigen hardware. HEIC is het
-    ene beeldformaat dat een browser niet uit zichzelf opent, dus draagt deze
-    pagina de decoder mee &mdash; zo'n 1,4 MB, geserveerd vanaf deze site, na het
-    eerste bezoek in de cache. Dat is precies de reden dat elke andere
-    HEIC-omzetter je om een upload vraagt: die zetten de codec op een server en
-    dan moeten je foto's daarheen. Deze zet de codec hier neer. Er zit op deze
-    pagina helemaal geen netwerkfunctie, en er staat aan de andere kant geen
-    server om een foto heen te sturen."""
+    ene beeldformaat dat een browser niet uit zichzelf opent, en daarom draagt
+    deze pagina de decoder mee: zo'n 1,4 MB, geserveerd vanaf deze site en na het
+    eerste bezoek in de cache. Precies daar zit de reden dat elke andere
+    HEIC-omzetter je om een upload vraagt, want die zetten de codec op een server
+    en dan moeten je foto's daarheen. Deze zet de codec hier neer. Er zit op deze
+    pagina helemaal geen netwerkfunctie, en aan de andere kant staat geen server
+    om een foto naartoe te sturen."""
 
 live_hint = """
-      Neem het niet van ons aan: open de DevTools, hou het tabblad Netwerk in de
-      gaten en zet een foto om. Je ziet de eigen bestanden van deze pagina laden,
-      de decoder daaronder, en geen enkel verzoek dat een foto, een miniatuur, een
-      bestandsnaam of één byte van wat je koos meedraagt. Of laad de pagina één
-      keer, trek de stekker uit het internet, en zet er toch een hele map van
-      om."""
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en zet een foto om. Je ziet de eigen
+      bestanden van deze pagina laden en de decoder daaronder, maar geen enkel
+      verzoek dat een foto, een miniatuur, een bestandsnaam of ook maar één byte
+      van wat je koos meedraagt. Of laad de pagina één keer, trek de stekker uit je
+      internet en zet er alsnog een hele map van om."""
 
 read_first = """
 , <code>src/heif.js</code> voor hoe de decoder
-      geladen wordt en wat hij mag, <code>src/boxes.js</code> voor het ontleden
-      van de container die de metagegevens van de foto vindt, en
-      <code>src/exif.js</code> voor wat er met die metagegevens gebeurt op weg
-      naar een JPEG. De engine zelf is <code>vendor/libheif.js</code>,
-      ongewijzigd, met zijn licentie ernaast."""
+      geladen wordt en wat hij mag, <code>src/boxes.js</code> voor het ontleden van
+      de container die de metagegevens van de foto vindt, en
+      <code>src/exif.js</code> voor wat er met die metagegevens gebeurt op weg naar
+      een JPEG. De engine zelf is <code>vendor/libheif.js</code>, ongewijzigd, met
+      zijn licentie ernaast."""
 
-howto_heading = "HEIC-foto's naar JPG omzetten"
+howto_heading = "Zo zet je HEIC-foto's om naar JPG"
 
 card = """
-            De foto's die een iPhone maakt, in een formaat dat alles opent
-            &mdash; gedecodeerd op je eigen apparaat, niet op iemands server."""
+            De foto's die een iPhone maakt, in een formaat dat overal opengaat,
+            gedecodeerd op je eigen apparaat in plaats van op de server van iemand
+            anders."""
 
 [words]
 plural = "foto's"
 choose = "een foto"
-analytics_extra = """, en ook geen van de
-  datums, cameramodellen of coördinaten die deze tool eruit leest"""
 
 [[facts]]
 text = "Geen upload"
@@ -73,215 +72,208 @@ text = "Open source"
 [[privacy]]
 title = "Je foto's kunnen nergens heen."
 body = """
- De
-      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
-      geen ervan hoort bij deze site. Er is hier geen eindpunt waar je bestanden
-      verzameld zouden kunnen worden, en niets in de code dat ze zou versturen
-      als dat er wel was."""
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en
+      geen daarvan hoort bij deze site. Er is hier geen eindpunt waar je bestanden
+      verzameld zouden kunnen worden, en in de code staat niets wat ze zou
+      versturen als dat eindpunt er wel was."""
 
 [[privacy]]
 title = "De decoder kwam hiervandaan, en hij gaat nergens heen."
 body = """
- HEIC is HEVC
-      in een doosformaat, en geen enkele browser behalve Safari decodeert er een,
-      dus levert deze pagina <code>libheif</code> mee, gecompileerd naar
-      WebAssembly &mdash; zo'n 1,4 MB, vastgelegd in deze repository, geserveerd
-      vanaf deze herkomst, en door de service worker in de cache gezet als elk
-      ander bestand hier. Hij wordt niet van een CDN gehaald, want dat zou bij
-      elk bezoek een derde partij in het pad zetten en de tool offline laten
-      stoppen. Het binaire deel zit in het script in plaats van ernaast, juist
-      opdat er geen fetch nodig is om het te starten."""
+ HEIC is HEVC in
+      een doosformaat, en behalve Safari decodeert geen enkele browser er een.
+      Daarom levert deze pagina <code>libheif</code> mee, gecompileerd naar
+      WebAssembly: zo'n 1,4 MB, vastgelegd in deze repository, geserveerd vanaf deze
+      herkomst en door de service worker in de cache gezet als elk ander bestand
+      hier. Hij komt niet van een CDN, want dat zou bij elk bezoek een derde partij
+      in het pad zetten en de tool offline laten stoppen. Het binaire deel zit in
+      het script in plaats van ernaast, juist zodat er geen fetch nodig is om het te
+      starten."""
 
 [[privacy]]
 title = "Niets hier haalt iets op."
 body = """
- Er staat in geen enkel
-      bestand dat voor deze tool geschreven is een <code>fetch</code>, een
+ In geen enkel bestand dat voor
+      deze tool geschreven is staat een <code>fetch</code>, een
       <code>XMLHttpRequest</code> of een <code>sendBeacon</code>. De meegeleverde
       engine bevat, zoals elke Emscripten-build, de laadpaden die een
-      <code>.wasm</code> van een URL zouden halen; die worden niet genomen, omdat
-      het binaire deel al in huis is &mdash; en als dat wel gebeurde, noemt
-      <code>connect-src</code> de meeteindpunten van Google en verder niets, dus
-      zou de browser het weigeren. Het bewijs is de policy, niet de belofte."""
+      <code>.wasm</code> van een URL zouden halen. Die worden niet genomen, omdat
+      het binaire deel al in huis is. En gebeurde het toch, dan noemt
+      <code>connect-src</code> de meeteindpunten van Google en verder niets, dus zou
+      de browser het weigeren. Het bewijs is de policy, niet de belofte."""
 
 [[privacy]]
 title = "De metagegevens worden hier gelezen en aan jou gemeld."
 body = """
- De lijst op de
-      pagina zegt wat elke foto meedraagt &mdash; de datum, de camera, en of er
-      gps-coördinaten in zitten &mdash; want dat wil je misschien weten voordat
-      je de JPEG aan iemand geeft. Het wordt door <code>src/boxes.js</code> in
-      deze browser uit het bestand gelezen, op deze pagina getoond, en in je JPEG
-      geschreven of weggelaten, geheel zoals jij kiest. Er zit in deze repository
-      geen eigen analytics-gebeurtenis die een bestandsnaam, een datum, een
-      coördinaat of een aantal meedraagt."""
+ De lijst op de pagina
+      zegt wat elke foto meedraagt: de datum, de camera, en of er gps-coördinaten in
+      zitten. Dat wil je misschien weten voordat je de JPEG aan iemand geeft.
+      <code>src/boxes.js</code> leest het in deze browser uit het bestand, toont het
+      op deze pagina, en schrijft het in je JPEG of laat het weg, geheel zoals jij
+      kiest. In deze repository zit geen eigen analytics-gebeurtenis die een
+      bestandsnaam, een datum, een coördinaat of een aantal meedraagt."""
 
 [[privacy]]
-title = "Wat Google laadt, en wat het niet krijgt."
+title = "Wat Google laadt, en wat het niet te zien krijgt."
 body = """
  De advertentie- en
-      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen ervan
-      krijgt iets over je foto's mee. Elke regel die een bestand leest, decodeert
-      of schrijft, wordt vanaf deze herkomst geserveerd en staat in de
-      repository."""
+      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen van alle
+      krijgt iets over je foto's mee. Elke regel die een bestand leest, decodeert of
+      schrijft, wordt vanaf deze herkomst geserveerd en staat in de repository."""
 
 [[privacy]]
 title = "Het werkt offline."
 body = """
- Laad de pagina één keer en verbreek de
-      verbinding, en de tool is onveranderd &mdash; de decoder zit mee in de
-      cache. Dat is het eenvoudigste bewijs van allemaal, en hier is het sterker
-      dan waar dan ook op deze site: een omzetter die je foto's wegstuurde om ze
-      te decoderen, zou dat onmogelijk voor elkaar krijgen."""
+ Laad de pagina één keer, verbreek de
+      verbinding, en de tool werkt onveranderd door, want de decoder zit mee in de
+      cache. Eenvoudiger bewijs bestaat er niet, en hier weegt het zwaarder dan waar
+      dan ook op deze site: een omzetter die je foto's wegstuurde om ze te laten
+      decoderen zou dat onmogelijk voor elkaar krijgen."""
 
 [[howto]]
 title = "Kies je HEIC-foto's."
 body = """
- Sleep ze op het keuzevak of kies ze
-      met de hand, zo uit een telefoonback-up of een map op je bureaublad. De
-      browser leest ze van je schijf; er wordt daarbij niets ergens heen
-      gestuurd. De lijst zegt wat elk bestand is en wat erin zit."""
+ Sleep ze het vak in of kies ze met de
+      hand, zo uit een telefoonback-up of een map op je bureaublad. De browser leest
+      ze van je schijf, en er gaat ondertussen niets ergens heen. Op de lijst staat
+      wat elk bestand is en wat erin zit."""
 
 [[howto]]
 title = "Kijk wat de foto's meedragen."
 body = """
- Elke regel noemt de datum
-      waarop hij gemaakt is, de camera, en &mdash; in het groen, want dat is het
-      stuk dat opvalt &mdash; of het bestand gps-coördinaten bevat. Dat wordt uit
-      de container gelezen zonder het plaatje te decoderen, dus het kost niets en
-      staat er meteen."""
+ Bij elke regel staat de datum
+      waarop hij gemaakt is, de camera, en in het groen, want dat is het stuk dat
+      opvalt, of het bestand gps-coördinaten bevat. Dat wordt uit de container
+      gelezen zonder het plaatje te decoderen, dus het kost je niets en het staat er
+      meteen."""
 
 [[howto]]
 title = "Kies een formaat, en beslis over de details."
 body = """
  JPEG, tenzij je een
-      reden hebt: dat is het formaat dat overal opengaat, en daar is het omzetten
-      om begonnen. De kwaliteitsschuif staat op 92, de stand waarop een foto
-      nauwelijks van het origineel te onderscheiden is. Het vinkje bepaalt of de
-      datum, camera en locatie meegaan."""
+      reden hebt om iets anders te nemen, want dat is het formaat dat overal
+      opengaat en daar was het omzetten om begonnen. De kwaliteitsschuif staat op
+      92, de stand waarop een foto nauwelijks van het origineel te onderscheiden is.
+      Met het vinkje bepaal je of de datum, de camera en de locatie meegaan."""
 
 [[howto]]
 title = "Druk op &ldquo;Omzetten&rdquo; en download."
 body = """
- De decoder komt binnen bij
-      de eerste omzetting &mdash; zo'n 1,4 MB, één keer &mdash; en elke foto
-      daarna wordt op je eigen apparaat gedecodeerd en geschreven. Bij één
-      bestand krijg je een downloadknop; bij meerdere krijg je er een zip bij."""
+ De decoder komt binnen bij de
+      eerste omzetting, zo'n 1,4 MB en dan nooit meer, en elke foto daarna wordt op
+      je eigen apparaat gedecodeerd en geschreven. Bij één bestand krijg je een
+      downloadknop, bij meerdere krijg je er een zip bij."""
 
 [[faq]]
 q = "Wordt mijn foto ergens heen geüpload?"
 a = """
-        Nee. Het bestand wordt gelezen, gedecodeerd en geschreven door je eigen
-        browser op je eigen hardware. Deze tool heeft geen enkele netwerkfunctie
-        &mdash; hij haalt nooit iets op en verstuurt nooit iets &mdash; en de
-        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
-        mag benaderen; geen ervan hoort bij deze site. Het enige wat wel laadt is
-        de decoder zelf, en die komt van deze site, één keer, voordat je foto er
-        ooit bij betrokken is."""
+        Nee. Je eigen browser leest, decodeert en schrijft het bestand op je eigen
+        hardware. Deze tool heeft geen enkele netwerkfunctie en haalt dus nooit iets
+        op en verstuurt nooit iets. In de <code>Content-Security-Policy</code> van de
+        pagina staat bovendien elk adres dat hij mag benaderen, en geen daarvan hoort
+        bij deze site. Het enige wat wel laadt is de decoder zelf, en die komt van
+        deze site, één keer, voordat je foto er ook maar bij betrokken is."""
 
 [[faq]]
 q = "Waarom downloadt deze pagina de eerste keer 1,4 MB?"
 a = """
         Omdat HEIC het ene beeldformaat is dat een browser niet opent. Het is een
-        HEVC-frame in een doosformaat, en alleen Safari, op Apple-hardware, heeft
-        er een decoder voor; Chrome, Firefox en Edge weigeren het bestand domweg.
-        Een HEIC-omzetter heeft dus ergens een decoder nodig, en er zijn twee
-        plekken waar die vandaan kan komen: een server, of de pagina. Elke andere
-        omzetter koos de server, en dat is precies waarom ze allemaal je foto's
-        geüpload willen hebben. Deze draagt in plaats daarvan <code>libheif</code>
-        mee, gecompileerd naar WebAssembly. Hij wordt vanaf deze site geserveerd,
-        na het eerste bezoek in de cache gezet, en dat is de volledige prijs van
-        je foto's die nergens heen gaan."""
+        HEVC-frame in een doosformaat, en alleen Safari heeft er op Apple-hardware
+        een decoder voor. Chrome, Firefox en Edge weigeren het bestand domweg. Een
+        HEIC-omzetter heeft dus ergens een decoder nodig, en die kan maar van twee
+        plekken komen: van een server of van de pagina. Elke andere omzetter koos de
+        server, en precies daarom willen ze allemaal je foto's geüpload hebben. Deze
+        draagt in plaats daarvan <code>libheif</code> mee, gecompileerd naar
+        WebAssembly, geserveerd vanaf deze site en na het eerste bezoek in de cache.
+        Dat is de volledige prijs van je foto's die nergens heen gaan."""
 
 [[faq]]
 q = "Houdt de JPEG de datum, de camera en de locatie?"
 a = """
-        Als je dat wilt, en het is een vinkje op de pagina. Blijft het aan, dan
-        wordt het EXIF-blok uit de HEIC gekopieerd en precies zo in de JPEG
-        geschreven als de telefoon het schreef, zodat de omgezette foto nog
-        sorteert op de dag waarop hij gemaakt is in plaats van de dag waarop hij
-        omgezet is &mdash; en dat is de gebruikelijke klacht over HEIC-omzetters.
-        Eén tag verandert er, en maar één: de oriëntatie, die op
-        &ldquo;rechtop&rdquo; wordt gezet, omdat de draaiing al op de pixels is
-        toegepast en een kijker die hem nog eens toepaste elke staande foto op
-        zijn kant zou leggen. Zet het vinkje uit en de JPEG komt eruit met het
-        plaatje en verder niets."""
+        Als je dat wilt, en daar staat een vinkje voor op de pagina. Blijft het aan,
+        dan wordt het EXIF-blok uit de HEIC gekopieerd en precies zo in de JPEG
+        geschreven als de telefoon het schreef. De omgezette foto sorteert daardoor
+        nog op de dag waarop hij gemaakt is in plaats van op de dag waarop hij
+        omgezet werd, en dat is nu juist de gebruikelijke klacht over
+        HEIC-omzetters. Er verandert precies één tag, namelijk de oriëntatie. Die
+        gaat op &ldquo;rechtop&rdquo;, omdat de draaiing al op de pixels is toegepast
+        en een kijker die hem nog eens toepaste elke staande foto op zijn kant zou
+        leggen. Zet je het vinkje uit, dan komt de JPEG eruit met het plaatje en
+        verder niets."""
 
 [[faq]]
-q = "Haalt het gps-coördinaten eruit?"
+q = "Haalt hij gps-coördinaten eruit?"
 a = """
-        Het vertelt je dat ze er zijn, en doet daarna wat je vraagt. De regel bij
-        elke foto zegt of het bestand coördinaten meedraagt voordat je iets omzet,
-        en dat is meer dan de telefoon doet. Het vinkje &ldquo;hou de datum, de
-        camera en de instellingen&rdquo; uitzetten laat ze samen met al het andere
-        uit de JPEG; aan laten neemt ze mee. Wil je de tags in detail doorlopen,
-        of ze weghalen bij foto's die al JPEG zijn, dan is de
-        <a href="../exif-gegevens-verwijderen/">EXIF-lezer &amp; -wisser</a> de
-        tool daarvoor, en die doet het zonder het plaatje opnieuw te
-        comprimeren."""
+        Hij zegt je eerst dát ze er zijn, en doet daarna wat jij vraagt. Bij elke foto
+        staat vóór het omzetten al of het bestand coördinaten meedraagt, en dat is
+        meer dan de telefoon doet. Zet je het vinkje &ldquo;hou de datum, de camera
+        en de instellingen&rdquo; uit, dan blijven ze samen met al het andere uit de
+        JPEG. Laat je het aan, dan gaan ze mee. Wil je de tags stuk voor stuk
+        doorlopen, of ze weghalen bij foto's die al JPEG zijn, dan is de
+        <a href="../exif-gegevens-verwijderen/">EXIF-lezer &amp; -wisser</a> de tool
+        daarvoor, en die doet het zonder het plaatje opnieuw te comprimeren."""
 
 [[faq]]
 q = "Wordt het plaatje opnieuw gecomprimeerd?"
 a = """
-        Ja, en dat moet ook: HEIC en JPEG zijn verschillende codecs, dus er is geen
-        manier om van de ene naar de andere te gaan zonder het plaatje te
-        decoderen en opnieuw te coderen. Wat je wel in de hand hebt, is wat dat
-        kost. De kwaliteitsschuif staat standaard op 92, waarop een foto heel
-        moeilijk van het origineel te onderscheiden is, en PNG staat op het menu
-        voor het geval je helemaal geen verlies wilt en het niet erg vindt dat het
-        bestand vijf tot tien keer zo groot wordt."""
+        Ja, en dat kan ook niet anders, want HEIC en JPEG zijn verschillende codecs
+        en je komt niet van de ene naar de andere zonder het plaatje te decoderen en
+        opnieuw te coderen. Wat je wel in de hand hebt is wat dat kost. De
+        kwaliteitsschuif staat standaard op 92, waarop een foto heel moeilijk van het
+        origineel te onderscheiden is, en PNG staat op het menu voor als je helemaal
+        geen verlies wilt en het niet erg vindt dat het bestand vijf tot tien keer zo
+        groot wordt."""
 
 [[faq]]
 q = "En als het bestand .jpg heet maar eigenlijk een HEIC is?"
 a = """
-        Dan werkt het nog steeds. Elk bestand dat hier naar binnen gaat, wordt aan
-        zijn eerste bytes herkend en niet aan zijn naam, want de naam is wat de
-        laatste app die het bestand aanraakte ervan gemaakt heeft &mdash; en een
-        HEIC die binnenkwam met de naam &ldquo;.jpg&rdquo; is een van de
-        gebruikelijkste redenen dat mensen zo'n tool gaan zoeken. Een bestand dat
-        werkelijk een JPEG of een PNG is, wordt geweigerd met een melding die dat
-        zegt, in plaats van omgezet te worden in een kopie van zichzelf."""
+        Dan werkt het nog steeds. Elk bestand dat hier naar binnen gaat wordt aan zijn
+        eerste bytes herkend en niet aan zijn naam, want die naam is wat de laatste
+        app die het bestand aanraakte ervan gemaakt heeft. Een HEIC die binnenkomt
+        onder de naam &ldquo;.jpg&rdquo; is trouwens een van de gebruikelijkste
+        redenen dat mensen zo'n tool gaan zoeken. Een bestand dat werkelijk een JPEG
+        of een PNG is, wordt geweigerd met een melding die dat zegt, in plaats van
+        omgezet te worden in een kopie van zichzelf."""
 
 [[faq]]
-q = "Kan het een Live Photo of een burst omzetten?"
+q = "Kan hij een Live Photo of een burst omzetten?"
 a = """
-        De stilstaande beelden erin, ja. Een HEIC kan meer dan één plaatje
-        bevatten, en elk plaatje dat erin zit wordt omgezet en naar het origineel
-        genoemd met een nummer erachter. De videohelft van een Live Photo is een
-        apart bestand dat de telefoon naast de HEIC bewaart, dus dat zit hier niet
-        in om om te zetten. Dieptekaarten en miniaturen zitten wel in de container
-        maar zijn geen plaatjes waar iemand om vroeg, en die worden met rust
-        gelaten."""
+        De stilstaande beelden erin, ja. Een HEIC kan meer dan één plaatje bevatten,
+        en elk plaatje dat erin zit wordt omgezet en naar het origineel genoemd met
+        een nummer erachter. De videohelft van een Live Photo is een apart bestand
+        dat de telefoon naast de HEIC bewaart, dus dat zit hier niet in om om te
+        zetten. Dieptekaarten en miniaturen zitten wel in de container, maar dat zijn
+        geen plaatjes waar iemand om vroeg, en die blijven met rust."""
 
 [[faq]]
-q = "Waarom neemt het mijn AVIF niet aan?"
+q = "Waarom neemt hij mijn AVIF niet aan?"
 a = """
-        Omdat er niets aan te doen valt. AVIF is dezelfde container als HEIC met
-        AV1 erin in plaats van HEVC, en elke huidige browser decodeert er een
-        vanzelf &mdash; een omzetter zou dus een megabyte engine meesturen om een
-        probleem op te lossen dat je niet hebt. Heb je een AVIF nodig als JPEG,
-        dan lezen de <a href="../afbeelding-comprimeren/">Afbeeldingscompressor</a>
-        en <a href="../afbeelding-formaat-wijzigen/">Afbeeldingsformaat
-        wijzigen</a> allebei AVIF en schrijven ze JPEG met de decoder die je
-        browser al heeft."""
+        Omdat er niets aan te doen valt. AVIF is dezelfde container als HEIC, alleen
+        met AV1 erin in plaats van HEVC, en elke huidige browser decodeert er
+        vanzelf een. Een omzetter zou dus een megabyte engine meesturen om een
+        probleem op te lossen dat je niet hebt. Heb je een AVIF nodig als JPEG, dan
+        lezen de <a href="../afbeelding-comprimeren/">Afbeeldingscompressor</a> en de
+        <a href="../afbeelding-formaat-wijzigen/">Afbeeldingsformaat wijzigen</a>
+        allebei AVIF en schrijven ze JPEG met de decoder die je browser al heeft."""
 
 [[faq]]
-q = "Is het gratis, en heb ik een account nodig?"
+q = "Is het gratis, en heb ik er een account voor nodig?"
 a = """
-        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
-        geen watermerk. Er is ook geen limiet op het aantal of de grootte van de
-        bestanden, want er is geen server die ervoor betaalt &mdash; het werk
-        gebeurt op je eigen apparaat. De site draagt advertenties, en die betalen
-        hem; de advertenties krijgen niets over je foto's mee."""
+        Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen
+        watermerk aan te pas. Er zit ook geen limiet op het aantal bestanden of op de
+        grootte ervan, omdat er geen server is die daarvoor betaalt: het werk gebeurt
+        op je eigen apparaat. De site draait op advertenties, en die betalen hem. Die
+        advertenties krijgen niets over je foto's mee."""
 
 [[faq]]
 q = "Werkt het offline?"
 a = """
-        Ja, decoder inbegrepen. Laad de pagina één keer, verbreek dan je
-        internetverbinding, en hij werkt precies zo door aan je foto's. Dat is ook
-        het sterkste bewijs dat er niets geüpload wordt: een omzetter die je
-        HEIC's wegstuurde om ze te decoderen, zou stoppen op het moment dat je de
-        stekker eruit trok, en deze niet."""
+        Ja, decoder en al. Laad de pagina één keer, verbreek daarna je
+        internetverbinding en hij werkt precies zo door aan je foto's. Dat is meteen
+        het sterkste bewijs dat er niets geüpload wordt, want een omzetter die je
+        HEIC's wegstuurde om ze te laten decoderen zou ermee ophouden zodra je de
+        stekker eruit trok. Deze niet."""
 
 [schema]
 description = "Zet HEIC- en HEIF-foto's van een iPhone om naar JPEG, PNG of WebP. De HEIC-decoder is WebAssembly die vanaf de pagina zelf geserveerd wordt, dus de foto's worden op je eigen apparaat gedecodeerd en nooit geüpload. De datum, camera en locatie kunnen mee de JPEG in of weggelaten worden."

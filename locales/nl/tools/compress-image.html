@@ -28,12 +28,11 @@
     <h2><span class="step">2</span> Zeg hoe groot het mag zijn</h2>
 
     <p class="card-lede">
-      Dit is het deel dat andere compressors omgekeerd doen. Ze geven je een
+      Dit is het stuk dat andere compressors omgekeerd doen. Zij geven je een
       kwaliteitsschuif en laten jou raden welke stand onder de opgelegde grens
-      landt. Noem in plaats daarvan de grens, en de tool zoekt de hoogste
-      kwaliteit die erin past &mdash; en geeft daarna uit wat er van het budget
-      over is, in plaats van je een bestand van de halve gevraagde grootte terug
-      te geven.
+      landt. Noem hier gewoon die grens, dan zoekt de tool de hoogste kwaliteit
+      die erin past. Wat er daarna van het budget over is, geeft hij alsnog uit,
+      zodat je geen bestand van de halve gevraagde grootte terugkrijgt.
     </p>
 
     <div class="target-row">
@@ -65,7 +64,7 @@
     <p id="target-summary" class="field-summary"></p>
 
     <fieldset class="options">
-      <legend>Waarmee het daar mag komen</legend>
+      <legend>Hoe hij daar mag komen</legend>
 
       <div class="option-row">
         <label for="format-select">Uitvoerformaat</label>
@@ -74,20 +73,20 @@
           <option value="keep">Altijd het originele formaat houden</option>
           <option value="image/jpeg">JPEG</option>
           <option value="image/webp">WebP</option>
-          <option value="image/png">PNG (verliesloos, dus de grootte gaat van de afmetingen af)</option>
+          <option value="image/png">PNG (verliesloos, dus de grootte moet van de afmetingen komen)</option>
         </select>
       </div>
 
       <label class="check">
         <input type="checkbox" id="allow-resize" checked>
         <span>
-          <strong>Mag het plaatje kleiner maken als het moet</strong>
+          <strong>Mag het plaatje kleiner maken als dat nodig is</strong>
           <span class="check-note">
-            Wordt pas gebruikt zodra kwaliteit alleen onder het punt zou moeten
+            Komt pas in beeld zodra de kwaliteit alleen onder het punt zou moeten
             zakken waarop compressie zichtbaar wordt. Daaronder zien minder goede
-            pixels er beter uit dan meer verpeste. Zet dit uit om de exacte
-            afmetingen te houden en een krap doel in plaats daarvan uit de
-            kwaliteit te betalen.
+            pixels er nu eenmaal beter uit dan meer verpeste. Zet dit uit als je de
+            exacte afmetingen wilt houden en een krap doel liever uit de kwaliteit
+            betaalt.
           </span>
         </span>
       </label>

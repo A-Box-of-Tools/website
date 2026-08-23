@@ -8,16 +8,17 @@
 nav = "Redimensionar una imagen"
 
 title = "Cómo redimensionar una imagen sin destrozarla"
-description = "Qué le pasa a una foto cuando cambias sus dimensiones en píxeles: por qué encogerla es seguro y agrandarla no, qué hacer cuando la caja tiene otra forma, y cuándo conviene recortar en su lugar."
+description = "Qué le pasa a una foto cuando le cambias las dimensiones en píxeles: por qué encogerla no tiene riesgo y agrandarla sí, qué hacer cuando la caja tiene otra forma, y cuándo lo que toca es recortar."
 
 heading = "Cómo redimensionar una imagen sin destrozarla"
 lede = """
-    Redimensionar es el único trabajo de imagen en el que el daño se decide
-    antes de pulsar el botón, según qué número escribas y qué forma pidas. Esto
-    es lo que le hace cada elección a la foto, y cuáles se pueden deshacer."""
+    Redimensionar es el único trabajo de imagen en el que el daño está decidido
+    antes de pulsar el botón, según el número que escribas y la forma que pidas.
+    Aquí va lo que le hace cada elección a la foto, y cuáles tienen vuelta
+    atrás."""
 
 updated = "20 de agosto de 2026"
 
 og_title = "Redimensionar una imagen sin destrozarla"
-og_description = "Por qué encogerla es seguro y agrandarla no, qué hacer cuando la caja tiene otra forma, y cuándo conviene recortar en su lugar."
-og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
+og_description = "Por qué encogerla no tiene riesgo y agrandarla sí, qué hacer cuando la caja tiene otra forma, y cuándo lo que toca es recortar."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

@@ -1,5 +1,5 @@
 <main>
-  <!-- Passo 1 &mdash; os arquivos -->
+  <!-- Passo 1: os arquivos -->
   <section class="card">
     <h2><span class="step">1</span> Escolha as fotos</h2>
 
@@ -23,15 +23,15 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Passo 2 &mdash; o único clique -->
+  <!-- Passo 2: o único clique -->
   <section class="card" id="strip-card">
     <h2><span class="step">2</span> Remova tudo</h2>
 
     <p class="card-lede">
       Um botão, todas as fotos da lista. A imagem não é decodificada, redesenhada
-      nem recomprimida &mdash; os dados de imagem comprimida são copiados
-      intocados e só os metadados em volta são descartados, então o resultado é a
-      mesma foto sem nada anexado.
+      nem recomprimida. Os dados de imagem comprimida são copiados intocados e só
+      os metadados em volta são jogados fora, então o resultado é a mesma foto sem
+      nada anexado.
     </p>
 
     <div class="strip-row">
@@ -52,11 +52,11 @@
         <span>
           <strong>A etiqueta de orientação</strong>
           <span class="check-note">
-            Os celulares guardam a foto do jeito que o sensor viu e acrescentam uma
-            etiqueta dizendo para que lado é o de cima. Remova isso e alguns
-            visualizadores mostram a foto deitada. Mantida, um novo bloco EXIF é
-            escrito com essa etiqueta e nada mais &mdash; e só quando a foto já não
-            estava no sentido certo.
+            Os celulares guardam a foto do jeito que o sensor viu e acrescentam
+            uma etiqueta dizendo para que lado é o de cima. Remova isso e alguns
+            visualizadores mostram a foto deitada. Se você mantiver, é escrito um
+            novo bloco EXIF com essa etiqueta e nada mais, e só quando a foto já
+            não estava no sentido certo.
           </span>
         </span>
       </label>
@@ -84,14 +84,14 @@
     </div>
   </section>
 
-  <!-- Passo 3 &mdash; ler e editar -->
+  <!-- Passo 3: ler e editar -->
   <section class="card" id="inspect-card">
     <h2><span class="step">3</span> Olhe por dentro e mude o que quiser</h2>
 
     <p id="inspect-empty" class="empty-note">
       Escolha uma foto acima e tudo o que há nela aparece aqui: o que ela conta
-      sobre onde você estava, quando e em qual aparelho. Nada é mandado para lugar
-      nenhum para descobrir isso.
+      sobre onde você estava, quando e com qual aparelho. Nada precisa ser mandado
+      para lugar nenhum para descobrir isso.
     </p>
 
     <div id="inspector" hidden>

@@ -3,14 +3,14 @@
 #
 
 nav = "Fazer um GIF de um vídeo"
-title = "Como transformar um vídeo em GIF (e manter ele pequeno)"
-description = "Qual trecho, qual largura e qual taxa de quadros escolher, por que um GIF de um vídeo tem dez vezes o tamanho do vídeo, e quando vale usar um."
+title = "Como transformar um vídeo em GIF (e manter o arquivo pequeno)"
+description = "Qual trecho, qual largura e qual taxa de quadros escolher, por que um GIF de um vídeo fica dez vezes maior que o vídeo, e quando vale usar um."
 heading = "Como transformar um vídeo em GIF"
 lede = """
     GIF é um formato de 1987 que guarda imagens inteiras em vez de movimento,
-    então um GIF feito de vídeo é sempre grande. Aqui está qual dos três
-    ajustes mexer quando ele ficar grande demais, e quanto cada um rende."""
+    então um GIF feito de vídeo é sempre grande. Aqui está qual dos três ajustes
+    mexer quando ele ficar grande demais, e quanto cada um rende."""
 updated = "20 de agosto de 2026"
-og_title = "Como transformar um vídeo em GIF, e manter ele pequeno"
-og_description = "Os três ajustes que decidem o tamanho de um GIF, o que cada um custa e quando o GIF é a resposta errada de saída."
-og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"
+og_title = "Como transformar um vídeo em GIF, e manter o arquivo pequeno"
+og_description = "Os três ajustes que decidem o tamanho de um GIF, o que cada um custa, e quando o GIF é a resposta errada de saída."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

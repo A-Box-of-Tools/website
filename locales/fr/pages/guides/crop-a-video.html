@@ -2,10 +2,10 @@
     <h2>La réponse courte</h2>
     <p>
       Ouvrez le <a href="../../recadrer-une-video/">recadreur de vidéos</a>,
-      déposez-y le clip, faites glisser le cadre sur la partie à garder &mdash;
-      ou verrouillez-le sur une forme si on vous en a imposé une &mdash; et
-      exportez. Le clip qui sort dure exactement aussi longtemps que celui qui
-      est entré, avec son rythme et son son intacts.
+      déposez-y le clip, faites glisser le cadre sur la partie à garder, ou
+      verrouillez-le sur une forme si on vous en a imposé une, et exportez. Le
+      clip qui sort dure exactement aussi longtemps que celui qui est entré, avec
+      son rythme et son son intacts.
     </p>
     <p>
       Contrairement à la coupe, celui-ci doit écrire de nouvelles images. Ce
@@ -20,8 +20,8 @@
     <p>
       Une coupe garde des images entières&nbsp;: un bon coupeur les déplace donc
       intactes et rien n'est décodé. Un recadrage garde une partie de chaque
-      image &mdash; et une partie d'image est une autre image. Il n'y a aucun
-      moyen de stocker une autre image sans réécrire les pixels.
+      image, or une partie d'image est une autre image. Il n'y a aucun moyen de
+      stocker une autre image sans réécrire les pixels.
     </p>
     <p>
       Il existe une exception étroite, et il vaut la peine de la connaître pour
@@ -49,23 +49,23 @@
     </p>
     <ul>
       <li>
-        <strong>9:16 &mdash; vertical.</strong> Stories, reels, shorts, TikTok.
+        <strong>9:16, le vertical.</strong> Stories, reels, shorts, TikTok.
         Plein écran sur un téléphone tenu normalement. La raison la plus courante
         pour laquelle quiconque recadre une vidéo.
       </li>
       <li>
-        <strong>1:1 &mdash; carré.</strong> Les posts de fil sur plusieurs
+        <strong>1:1, le carré.</strong> Les publications de fil sur plusieurs
         plateformes. Fonctionne dans les deux sens de tenue du téléphone, et
         c'est pourquoi cela perdure.
       </li>
       <li>
-        <strong>4:5 &mdash; légèrement vertical.</strong> La plus grande forme
-        que certains fils autorisent&nbsp;: elle prend donc plus d'écran qu'un
-        carré sans être une vidéo entièrement verticale.
+        <strong>4:5, le légèrement vertical.</strong> La plus grande forme que
+        certains fils autorisent&nbsp;: elle prend donc plus d'écran qu'un carré
+        sans être une vidéo entièrement verticale.
       </li>
       <li>
-        <strong>16:9 &mdash; large.</strong> Le standard de la vidéo en général.
-        Vous ne recadrez en général <em>vers</em> ce format que pour retirer des
+        <strong>16:9, le large.</strong> Le standard de la vidéo en général. Vous
+        ne recadrez en général <em>vers</em> ce format que pour retirer des
         bandes noires, ou <em>depuis</em> ce format pour obtenir l'un des
         précédents.
       </li>
@@ -85,7 +85,7 @@
     </p>
     <p>
       Une vidéo 16:9 recadrée en 9:16 garde environ 32&nbsp;% de la largeur de
-      l'image. Tout ce qui est sur les côtés a disparu &mdash; et dans un plan
+      l'image. Tout ce qui est sur les côtés a disparu, et dans un plan
       horizontal, les côtés sont en général là où se trouve le contexte. Si deux
       personnes se parlent aux deux bords opposés du cadre, aucun recadrage
       unique ne garde les deux.
@@ -114,11 +114,11 @@
       c'est le codec qui fait des difficultés, pas l'interface.
     </p>
     <p>
-      Le H.264 &mdash; le codec à l'intérieur d'un MP4 &mdash; stocke la couleur
-      à demi-résolution horizontalement et verticalement, parce que l'œil est
-      bien moins sensible au détail de couleur qu'à celui de luminosité. Cela veut
-      dire que l'image est traitée par unités de deux pixels et qu'il n'y a aucun
-      moyen de décrire une image dont un côté ferait un nombre impair de pixels.
+      Le H.264, le codec à l'intérieur d'un MP4, stocke la couleur à
+      demi-résolution horizontalement et verticalement, parce que l'œil est bien
+      moins sensible au détail de couleur qu'à celui de luminosité. L'image est
+      donc traitée par unités de deux pixels, et il n'y a aucun moyen de décrire
+      une image dont un côté ferait un nombre impair de pixels.
     </p>
     <p>
       Les outils s'en accommodent en arrondissant votre recadrage une fois posé,
@@ -132,9 +132,9 @@
     <h2>Ce qu'il advient du son</h2>
     <p>
       Rien, sur le chemin MP4. Le recadrage change l'image et n'a aucune raison
-      de toucher à l'audio&nbsp;: l'audio est donc recopié échantillon par
-      échantillon sans être jamais décodé &mdash; octet pour octet ce qu'il y
-      avait dans le fichier.
+      de toucher à l'audio&nbsp;: celui-ci est donc recopié échantillon par
+      échantillon sans être jamais décodé, octet pour octet ce qu'il y avait dans
+      le fichier.
     </p>
     <p>
       Sur le repli par enregistrement, décrit plus bas, le son est capté à la
@@ -149,10 +149,10 @@
     <h2>Les formats, et le temps que cela prend</h2>
     <p>
       <strong>Le MP4, le M4V et le MOV</strong> sont lus directement, quel que
-      soit leur contenu &mdash; H.264, HEVC, AV1 ou VP9 &mdash; du moment que
-      votre navigateur sait décoder ce codec. Contrairement à la coupe, le
-      recadrage doit décoder&nbsp;: le codec compte donc ici d'une façon dont il
-      ne compte pas là-bas.
+      soit leur contenu, qu'il s'agisse de H.264, de HEVC, d'AV1 ou de VP9, du
+      moment que votre navigateur sait décoder ce codec. Contrairement à la
+      coupe, le recadrage doit décoder&nbsp;: le codec compte donc ici d'une
+      façon dont il ne compte pas là-bas.
     </p>
     <p>
       <strong>Tout le reste que votre navigateur sait lire</strong>, le WebM au
@@ -176,8 +176,8 @@
   <section>
     <h2>Recadrez avant toute autre chose</h2>
     <p>
-      Si un clip demande à la fois une coupe et un recadrage, coupez d'abord
-      &mdash; c'est gratuit, et chaque seconde retirée est une seconde que
+      Si un clip demande à la fois une coupe et un recadrage, coupez d'abord,
+      puisque c'est gratuit et que chaque seconde retirée est une seconde que
       personne n'a à réencoder. Recadrez ensuite le clip raccourci, une seule
       fois.
     </p>
@@ -202,13 +202,13 @@
       réel&nbsp;: WebCodecs expose l'encodeur matériel même que votre téléphone
       utilise pour enregistrer de la vidéo, et c'est rapide pour la même raison.
       Le travail se passe sur la machine qui a déjà le fichier, ce qui est aussi,
-      pour une vidéo de plusieurs gigaoctets, la seule disposition qui ait du sens
-      &mdash; l'envoyer et retélécharger le résultat coûte plus de temps que
-      l'encodage.
+      pour une vidéo de plusieurs gigaoctets, la seule disposition qui ait du
+      sens, puisque l'envoyer et retélécharger le résultat coûte plus de temps
+      que l'encodage.
     </p>
     <p>
       L'outil d'ici n'a aucune fonction réseau, et la
-      <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+      <code>Content-Security-Policy</code> de la page énumère toutes les adresses
       qu'elle peut contacter, dont aucune n'appartient à ce site. Coupez votre
       connexion et recadrez un clip quand même, si vous préférez vérifier plutôt
       qu'on vous le dise.

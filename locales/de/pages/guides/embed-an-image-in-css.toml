@@ -5,14 +5,14 @@
 nav = "Ein Bild in CSS einbetten"
 title = "Data-URIs in CSS: wann ein Bild ins Stylesheet gehört und wann nicht"
 description = "Was eine Data-URI kostet, warum Base64 ein Drittel drauflegt und gzip es nicht zurückgibt, warum ein SVG nie base64 sein sollte und welcher Anführungszeichen-Fehler eingebettete SVGs klammheimlich zerlegt."
-heading = "Wann ein Bild in Ihr CSS gehört - und wann nicht"
+heading = "Wann ein Bild in Ihr CSS gehört und wann nicht"
 lede = """
     Ein Bild, das im Stylesheet steht, kommt mit ihm an: keine zweite Anfrage,
-    kein Warten. Dafür ist es keine Datei mehr &mdash; es lässt sich nicht für
-    sich zwischenspeichern und wird jedes Mal neu geladen, wenn sich irgendetwas
-    ringsherum ändert. Hier steht, wo sich dieser Handel lohnt und wo er
+    kein Warten. Dafür ist es keine Datei mehr. Es lässt sich nicht mehr für sich
+    zwischenspeichern und wird jedes Mal neu geladen, wenn sich ringsherum
+    irgendetwas ändert. Hier steht, wo sich dieser Handel lohnt und wo er
     klammheimlich schadet."""
 updated = "20. August 2026"
 og_title = "Wann ein Bild in Ihr CSS gehört"
 og_description = "Was eine Data-URI kostet, warum ein SVG nie base64 sein sollte und welcher Anführungszeichen-Fehler eingebettete SVGs klammheimlich zerlegt."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

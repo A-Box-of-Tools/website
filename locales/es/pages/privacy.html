@@ -4,8 +4,8 @@
       Todas las herramientas de este sitio hacen su trabajo dentro de tu propio
       navegador, en tu propio hardware. Cuando eliges un archivo, lo lee la
       página que ya tienes abierta. No se nos envía, porque no hay ningún
-      servidor nuestro al que enviarlo &mdash; este sitio es un conjunto de
-      archivos estáticos, sin backend, sin base de datos y sin almacenamiento.
+      servidor nuestro al que enviarlo: este sitio es un conjunto de archivos
+      estáticos, sin backend, sin base de datos y sin almacenamiento.
     </p>
     <p>
       Eso significa que nunca recibimos, vemos, guardamos, registramos ni
@@ -20,16 +20,16 @@
     </ul>
     <p>
       Esto no es una promesa sobre nuestras intenciones. Cada página lleva una
-      <code>Content-Security-Policy</code> que nombra todas las direcciones que
-      la página tiene permitido contactar, y el navegador la hace cumplir.
-      Ninguna de esas direcciones es nuestra. Puedes leer la política al
-      principio del código fuente de cualquier página, o abrir la pestaña Red de
-      tu navegador y mirar: ninguna petición lleva tu archivo.
+      <code>Content-Security-Policy</code> que enumera todas las direcciones a
+      las que la página tiene permitido conectarse, y quien la hace cumplir es el
+      navegador. Ninguna de esas direcciones es nuestra. Puedes leer la política
+      al principio del código fuente de cualquier página, o abrir la pestaña Red
+      del navegador y comprobarlo: ninguna petición lleva tu archivo.
     </p>
     <p>
-      Los archivos que produces con una herramienta se le entregan al mecanismo
-      de descargas de tu propio navegador y se guardan donde tú le digas. En ese
-      paso tampoco intervenimos.
+      Los archivos que produces con una herramienta pasan al mecanismo de
+      descargas de tu propio navegador y se guardan donde tú le digas. En ese paso
+      tampoco intervenimos.
     </p>
   </section>
 
@@ -40,13 +40,13 @@
       función de «añadir desde una dirección web». Si pegas una dirección en
       ella, tu navegador descarga esa imagen del servidor que hayas nombrado, y
       <strong>ese servidor ve tu dirección IP</strong> y qué archivo has pedido.
-      Eso es inevitable, y es la naturaleza entera de la función.
+      Eso es inevitable, y es la naturaleza misma de la función.
     </p>
     <p>
       Solo ocurre con las direcciones que tecleas tú, está construida de modo que
       las imágenes puedan entrar pero los datos no puedan salir, y la página de
       esa herramienta lo explica con más detalle. Ninguna otra herramienta de este
-      sitio puede hacer una petición hacia fuera con nada tuyo dentro.
+      sitio puede hacer una petición hacia fuera que lleve algo tuyo dentro.
     </p>
   </section>
 
@@ -86,8 +86,8 @@
       Está configurado para no hacer nada más, y la configuración es un archivo
       que puedes leer: el <code>analytics.js</code> que hay junto a cada página
       monta un contador de páginas vistas y no contiene ningún evento propio. En
-      este sitio nada le pasa un archivo, un nombre de archivo, una dimensión o
-      un recuento &mdash; aquí no hay código que pudiera hacerlo.
+      este sitio no hay nada que le pase un archivo, un nombre de archivo, una
+      dimensión o un recuento, porque aquí no hay código capaz de hacerlo.
     </p>
 
     <h3>Buy Me a Coffee &mdash; el botón de donación</h3>
@@ -104,18 +104,29 @@
     <h3>Alojamiento</h3>
     <p>
       El sitio lo sirve GitHub Pages, detrás de Cloudflare. Como cualquier
-      alojamiento web, procesan las peticiones que hace tu navegador &mdash; lo
-      que incluye tu dirección IP, la página pedida y tu agente de usuario
-      &mdash; para entregar la página y para mantener el servicio en pie y
-      seguro. No tenemos acceso a registros por visitante de ninguno de los dos.
+      alojamiento web, procesan las peticiones que hace tu navegador, lo que
+      incluye tu dirección IP, la página pedida y tu agente de usuario, para
+      entregar la página y mantener el servicio en pie y seguro. No tenemos acceso
+      a los registros por visitante de ninguno de los dos.
     </p>
   </section>
 
   <section>
     <h2>Cookies</h2>
     <p>
-      No ponemos ninguna cookie propia. No tenemos inicio de sesión, ni sesión,
-      ni preferencias que recordar, ni motivo para tenerlas.
+      No ponemos ninguna cookie propia. No hay inicio de sesión ni sesión, y solo
+      hay una preferencia que lleguemos a recordar.
+    </p>
+    <p>
+      <strong>El idioma que elijas.</strong> Si eliges un idioma en el selector,
+      esa elección se guarda en el almacenamiento local de tu navegador, con el
+      nombre <code>abox-lang</code>, para que la siguiente página que abras salga
+      en el idioma que pediste. No es una cookie: no se envía nunca ni a nosotros
+      ni a nadie más, se queda en el dispositivo desde el que estás leyendo esto,
+      y se borra al borrar los datos de sitio del navegador. Si no eliges ningún
+      idioma, no se escribe nada en absoluto: una página que se te muestre en el
+      idioma de tu propio navegador se resolvió en ese momento y se olvidó acto
+      seguido.
     </p>
     <p>
       Cualquier cookie o identificador similar que encuentres aquí es de Google y
@@ -152,8 +163,8 @@
     <h2>Tus derechos sobre los datos</h2>
     <p>
       No tenemos ningún dato personal tuyo, así que no hay nada que podamos
-      enseñarte, corregir, exportar ni borrar &mdash; una solicitud dirigida a
-      nosotros volvería vacía, honestamente.
+      enseñarte, corregir, exportar ni borrar. Una solicitud dirigida a nosotros
+      volvería vacía, dicho con toda honestidad.
     </p>
     <p>
       Los datos descritos arriba los tiene Google, que actúa como responsable de

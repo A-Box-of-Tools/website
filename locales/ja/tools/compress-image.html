@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; ファイル -->
+  <!-- ステップ1｜ファイル -->
   <section class="card">
     <h2><span class="step">1</span> 画像を選ぶ</h2>
 
@@ -14,7 +14,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+        <button type="button" id="clear-all" class="ghost danger">すべてリストから外す</button>
       </div>
     </div>
 
@@ -23,12 +23,12 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- ステップ2 &mdash; 肝心の数字 -->
+  <!-- ステップ2｜肝心の数字 -->
   <section class="card" id="target-card">
-    <h2><span class="step">2</span> どこまで大きくてよいかを言う</h2>
+    <h2><span class="step">2</span> 上限のサイズを決める</h2>
 
     <p class="card-lede">
-      ほかの圧縮ツールが逆にしているのがここです。画質のスライダーだけを渡して、どの位置なら指定された上限に収まるかはあなたに推測させます。そうではなく上限のほうを言ってください。ツールがそこに収まる中でいちばん高い画質を探し &mdash; さらに、頼んだ半分のサイズのファイルを返すのではなく、余った予算を使い切ります。
+      ほかの圧縮ツールが逆にしているのは、この部分です。画質のスライダーだけを渡され、どこに合わせれば指定された上限に収まるのかは、使う側が当てることになります。ここでは上限のほうを先に指定してください。そこに収まる中でいちばん高い画質をツールが探し、余った分まで使い切ります。頼んだ半分のサイズのファイルが返ってくることはありません。
     </p>
 
     <div class="target-row">
@@ -60,12 +60,12 @@
     <p id="target-summary" class="field-summary"></p>
 
     <fieldset class="options">
-      <legend>そこへ届くために何を許すか</legend>
+      <legend>そこへ届くまでに何を許すか</legend>
 
       <div class="option-row">
         <label for="format-select">書き出す形式</label>
         <select id="format-select">
-          <option value="auto" selected>自動 &mdash; ほかの形式が明らかに良い場合を除き、形式を保つ</option>
+          <option value="auto" selected>自動（ほかの形式が明らかに有利なときだけ変える）</option>
           <option value="keep">常に元の形式を保つ</option>
           <option value="image/jpeg">JPEG</option>
           <option value="image/webp">WebP</option>
@@ -78,7 +78,7 @@
         <span>
           <strong>必要なら画像そのものを小さくしてよい</strong>
           <span class="check-note">
-            画質だけで対応すると、圧縮のノイズが見え始める点より下へ落とさざるを得ない場合にだけ使われます。そこから先は、荒れたピクセルが多いより、きれいなピクセルが少ないほうが見た目は良くなります。寸法をそのまま保ち、厳しい目標を画質のほうで払いたい場合はここを外してください。
+            画質だけで対応すると、圧縮のノイズが見え始める点より下まで落とさざるを得ません。そうなったときにだけ縮小します。そこから先は、荒れたピクセルが多いより、きれいなピクセルが少ないほうがよく見えるからです。寸法をそのまま保って、厳しい目標を画質のほうで払いたいときは、ここのチェックを外してください。
           </span>
         </span>
       </label>
@@ -87,7 +87,7 @@
     </fieldset>
   </section>
 
-  <!-- ステップ3 &mdash; 一度のクリック -->
+  <!-- ステップ3｜クリック一度 -->
   <section class="card" id="run-card">
     <h2><span class="step">3</span> 圧縮する</h2>
 
@@ -103,7 +103,7 @@
     <div id="results" class="results" hidden>
       <div class="results-head">
         <h3>圧縮しました</h3>
-        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめてzipでダウンロード</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>

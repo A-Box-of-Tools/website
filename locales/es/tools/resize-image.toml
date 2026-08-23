@@ -10,23 +10,23 @@ heading = "Redimensionar&nbsp;imagen <span class=\"h1-kw\">&mdash; redimensionar
 tagline = "Di el tamaño. Dibuja la caja. Elige el formato."
 
 title = "Redimensionar una imagen &mdash; también recortar y convertir, sin subir nada"
-description = "Redimensiona, recorta y convierte imágenes JPEG, PNG y WebP en tu navegador. Píxeles exactos, un porcentaje o un lado largo: una imagen o una carpeta entera. No se sube nada."
+description = "Redimensiona, recorta y convierte imágenes JPEG, PNG y WebP dentro del navegador. Píxeles exactos, un porcentaje o un lado largo, para una imagen o para una carpeta entera. No se sube nada."
 og_title = "Redimensiona, recorta y convierte una imagen sin subirla"
-og_description = "Pon el tamaño en píxeles o en porcentaje, arrastra una caja de recorte, cambia el formato: para una foto o para un lote entero. Todo ocurre en tu propio equipo."
+og_description = "Pon el tamaño en píxeles o en porcentaje, arrastra una caja de recorte y cambia el formato, para una foto o para un lote entero. Todo ocurre en tu dispositivo."
 og_image_alt = "Redimensionador de imágenes - redimensiona, recorta y convierte sin subir nada"
 
 pledge = """
-    El redimensionado, el recorte y el cambio de formato ocurren todos en tu
-    propio navegador, en tu propio hardware, con los codificadores de imagen que
-    ya trae de serie. Esta herramienta no tiene ninguna función de red &mdash;
-    nada que descargar, nada que enviar &mdash; y al otro lado de esta página no
-    hay ningún servidor al que mandar una foto aunque lo hubiera."""
+    El redimensionado, el recorte y el cambio de formato ocurren dentro de tu
+    navegador, en tu propio hardware, con los codificadores de imagen que ya trae
+    de serie. Esta herramienta no tiene ninguna función de red: no descarga nada
+    y no envía nada. Y aunque la tuviera, al otro lado de esta página no hay
+    ningún servidor al que mandar una foto."""
 
 live_hint = """
-      No hace falta que nos creas: abre las herramientas de desarrollo, mira la
-      pestaña «Red» y redimensiona una foto. Ni una sola petición lleva una
-      imagen, una miniatura, un nombre de archivo ni un byte de lo que has
-      elegido. O desconéctate de internet y redimensiona una de todos modos."""
+      No hace falta que nos creas. Abre las herramientas de desarrollo, ponte en
+      la pestaña «Red» y redimensiona una foto. No verás ni una petición que
+      lleve una imagen, una miniatura, un nombre de archivo o un byte de lo que
+      has elegido. O desconéctate de internet y redimensiona una igualmente."""
 
 read_first = """
 , <code>src/geometry.js</code> para la aritmética
@@ -37,15 +37,12 @@ read_first = """
 howto_heading = "Cómo redimensionar una imagen sin subirla"
 
 card = """
-            Píxeles exactos, un porcentaje o un lado largo &mdash; con caja de
-            recorte y cambio de formato por el camino. Una foto o una
-            carpeta."""
+            Píxeles exactos, un porcentaje o un lado largo, con caja de recorte y
+            cambio de formato por el camino. Una foto o una carpeta entera."""
 
 [words]
 plural = "imágenes"
 choose = "una imagen"
-analytics_extra = """, ni ninguno de los
-  tamaños, recortes o formatos que esta herramienta calcula"""
 
 [[facts]]
 text = "Sin subidas"
@@ -66,152 +63,149 @@ text = "Código abierto"
 title = "Tus imágenes no tienen adónde ir."
 body = """
  La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna es de este sitio. Aquí no hay ningún punto final donde
-      pudieran recogerse tus archivos, ni nada en el código que los enviara si lo
-      hubiera."""
+      Content-Security-Policy enumera todas las direcciones a las que esta
+      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
+      destino donde recoger tus archivos, ni una línea de código que los mandara
+      si lo hubiera."""
 
 [[privacy]]
-title = "Aquí nada descarga nada."
+title = "Aquí nada le pide nada a la red."
 body = """
- No hay ningún
-      <code>fetch</code>, ningún <code>XMLHttpRequest</code> ni ningún
-      <code>sendBeacon</code> en todo <code>src/</code>. El redimensionado es un
-      <code>drawImage</code> sobre un lienzo y un <code>canvas.toBlob</code>
-      &mdash; el escalador y el codificador que ya están instalados en tu
-      navegador."""
+ En todo
+      <code>src/</code> no hay un solo <code>fetch</code>, ni un
+      <code>XMLHttpRequest</code>, ni un <code>sendBeacon</code>. El
+      redimensionado son un <code>drawImage</code> sobre un lienzo y un
+      <code>canvas.toBlob</code>, o sea, el escalador y el codificador que ya
+      vienen instalados en el navegador."""
 
 [[privacy]]
 title = "Un archivo que nadie ha pedido cambiar no se cambia."
 body = """
  Sin recorte, sin
       redimensionado y sin cambio de formato, el archivo que elegiste se te
-      devuelve byte por byte en vez de volver a guardarse. Y no es solo cortesía:
-      es la razón de que esta herramienta no pueda recodificar una foto en
-      silencio, ni tirar en silencio los metadatos de una que solo querías
-      mirar."""
+      devuelve byte por byte en lugar de volver a guardarse. Y no es cortesía: es
+      la razón de que esta herramienta no pueda recodificarte una foto sin decir
+      nada, ni tirarle los metadatos a una que solo querías mirar."""
 
 [[privacy]]
-title = "Qué carga Google y qué no se le da."
+title = "Qué carga Google, y qué no llega a ver."
 body = """
  Los scripts de
-      publicidad y medición vienen de Google, y el botón de donación de Buy Me a
-      Coffee. A ninguno se le entrega nada sobre tus fotos. Cada línea que lee,
-      recorta, escala o escribe un archivo se sirve desde este origen y está
-      listada en el repositorio."""
+      publicidad y de medición vienen de Google, y el botón de donación, de Buy
+      Me a Coffee. A ninguno se le entrega nada sobre tus fotos. Cada línea que
+      lee, recorta, escala o escribe un archivo se sirve desde este origen y está
+      en el repositorio."""
 
 [[privacy]]
 title = "Funciona sin conexión."
 body = """
  Desconéctate de la red y la herramienta
-      sigue igual, porque nunca hubo un paso de red dentro de ella. Es la prueba
-      más sencilla de todas."""
+      sigue igual, porque nunca hubo dentro de ella ningún paso que pasara por la
+      red. Es la prueba más sencilla de todas."""
 
 [[howto]]
 title = "Elige tus imágenes."
 body = """
- Suéltalas sobre el selector o escógelas
-      a mano. Tu navegador las lee directamente del disco; mientras lo haces no se
-      envía nada a ninguna parte."""
+ Arrástralas hasta el selector o
+      búscalas a mano. El navegador las lee directamente del disco, y mientras lo
+      haces no sale nada hacia ninguna parte."""
 
 [[howto]]
 title = "Recorta, si te apetece."
 body = """
  La caja empieza sobre la foto entera,
-      así que dejarla en paz no recorta nada. Arrástrala, o fíjala a una forma
-      &mdash; 1:1 para una foto de perfil, 9:16 para una historia, 16:9 para una
-      miniatura &mdash; y pulsa «Lo más grande» para la mayor que quepa. Cada
-      imagen conserva su propia caja: haz clic en cualquier fila de la lista para
-      dibujar sobre esa. Si todas deben quedar encuadradas igual, hay también un
+      así que si la dejas en paz no recorta nada. Arrástrala, o fíjala a una
+      forma, sea 1:1 para una foto de perfil, 9:16 para una historia o 16:9 para
+      una miniatura, y pulsa «Lo más grande» para la mayor que quepa. Cada imagen
+      conserva su propia caja: haz clic en cualquier fila de la lista para dibujar
+      sobre esa. Y si todas tienen que quedar encuadradas igual, hay también un
       botón para eso."""
 
 [[howto]]
 title = "Di de qué tamaño tiene que salir."
 body = """
- Un ancho, un alto o
-      los dos; un lado largo, que deja las fotos verticales y las horizontales del
-      mismo tamaño entre sí; o un porcentaje pelado. Deja una de las dos casillas
-      en blanco y la foto conserva su propia forma."""
+ Un ancho, un alto o los
+      dos. También un lado largo, que deja las fotos verticales y las
+      horizontales del mismo tamaño entre sí, o un porcentaje pelado. Si dejas
+      una de las dos casillas en blanco, la foto conserva su propia forma."""
 
 [[howto]]
 title = "Elige el formato y pulsa el botón."
 body = """
- Conserva el formato con
-      que llegó cada archivo, o escríbelo todo como JPEG, PNG o WebP. Cada
-      resultado dice en qué se ha convertido y cuánto ha encogido; haz clic en uno
-      para abrirlo a tamaño completo con todas sus cifras detrás, y el original al
-      lado para comparar. Un lote baja como un solo zip."""
+ Puedes conservar el formato
+      con el que llegó cada archivo, o escribirlo todo como JPEG, PNG o WebP.
+      Cada resultado dice en qué se ha convertido y cuánto ha encogido. Haz clic
+      en uno para abrirlo a tamaño completo, con todas sus cifras detrás y el
+      original al lado para comparar. Un lote baja como un solo zip."""
 
 [[faq]]
 q = "¿Se sube mi imagen a alguna parte?"
 a = """
         No. Tu propio navegador descodifica, recorta, escala y escribe el archivo
         en tu propio hardware, con los codificadores JPEG, PNG y WebP que ya trae
-        de serie. Esta herramienta no tiene ninguna función de red &mdash; nunca
-        descarga nada y nunca envía nada &mdash; y la
-        <code>Content-Security-Policy</code> de la página nombra todas las
-        direcciones que puede contactar, ninguna de las cuales es de este
-        sitio."""
+        de serie. Esta herramienta no tiene ninguna función de red: nunca descarga
+        nada y nunca envía nada. Y la <code>Content-Security-Policy</code> de la
+        página enumera todas las direcciones a las que puede conectarse, ninguna
+        de este sitio."""
 
 [[faq]]
 q = "¿Qué pasa si le doy un ancho pero no un alto?"
 a = """
-        El alto sale de la propia forma de la foto, que es casi siempre lo que se
-        quería: «1920 de ancho» significa «1920 de ancho y el alto que eso dé».
-        Rellena los dos y ambos pueden discrepar de la forma de la foto, que es la
-        única vez que aparece la opción «si las formas no coinciden» &mdash;
-        encajar dentro de la caja, llenarla y cortar lo que sobre, rellenar con un
-        fondo, o estirar y aceptar la deformación."""
+        El alto sale de la propia forma de la foto, que es casi siempre lo que
+        querías: «1920 de ancho» significa «1920 de ancho y el alto que salga».
+        Si rellenas los dos, los dos pueden discrepar de la forma de la foto, y
+        esa es la única vez que aparece la opción «si las formas no coinciden»,
+        con sus cuatro salidas: encajar dentro de la caja, llenarla y cortar lo
+        que sobre, rellenar con un fondo, o estirar y aceptar la deformación."""
 
 [[faq]]
 q = "¿Redimensionar una imagen hace perder calidad?"
 a = """
-        Hacer una foto más pequeña no, de ninguna forma que puedas ver: entran más
-        píxeles de los que salen, así que el detalle que se conserva es detalle de
-        verdad. Hacer una más grande no puede añadir lo que nunca se fotografió
-        &mdash; el resultado es una copia más blanda de la misma foto, no una más
-        nítida &mdash;, y por eso «no agrandar nunca una foto más de lo que
-        empezó» viene activado. Lo que sí cuesta un poco es la recodificación
-        posterior, si el formato es JPEG o WebP, y el control de calidad es lo que
-        gastas ahí."""
+        Hacer una foto más pequeña, no, al menos de ninguna forma que puedas ver:
+        entran más píxeles de los que salen, así que el detalle que se conserva es
+        detalle de verdad. Hacer una más grande no puede añadir lo que nunca se
+        fotografió, y lo que sale es una copia más blanda de la misma foto, no una
+        más nítida. Por eso viene activado «no agrandar nunca una foto más de lo
+        que empezó». Lo que sí cuesta algo es la recodificación posterior, si el
+        formato es JPEG o WebP, y el control de calidad es lo que gastas ahí."""
 
 [[faq]]
 q = "¿Puedo recortar cada imagen de forma distinta?"
 a = """
-        Sí &mdash; es lo que hace por defecto. Cada imagen de la lista lleva su
-        propia caja, en sus propios píxeles, y hacer clic en una fila pone esa
-        imagen en la vista previa con su caja y su forma fijada de vuelta. Nada de
-        lo que le hagas a una afecta a otra. Todas las cajas empiezan además sobre
-        la foto entera, así que una imagen sobre la que nunca dibujes no se recorta
-        en absoluto."""
+        Sí, y es lo que hace por defecto. Cada imagen de la lista lleva su propia
+        caja, en sus propios píxeles, y al hacer clic en una fila esa imagen vuelve
+        a la vista previa con su caja y su forma fijada. Nada de lo que le hagas a
+        una afecta a otra. Además, todas las cajas empiezan sobre la foto entera,
+        así que una imagen sobre la que nunca dibujes no se recorta en
+        absoluto."""
 
 [[faq]]
 q = "¿Puede recortar un lote entero igual de una vez?"
 a = """
-        Sí, con el botón que hay debajo de la vista previa. Le da a cada una de las
-        demás imágenes la misma zona relativa &mdash; las mismas fracciones de su
-        propio ancho y alto &mdash;, lo que para un conjunto de capturas o
-        exportaciones del mismo tamaño es exactamente la misma caja, y la página lo
-        dice. Con una forma fijada, le da a cada una la mayor caja de esa forma
-        dentro de esa zona, así que pulsar 1:1 y luego ese botón te saca cuadrados
-        de una carpeta con fotos verticales y horizontales mezcladas. Después,
-        todas las cajas siguen siendo editables."""
+        Sí, con el botón que hay debajo de la vista previa. Le da a todas las demás
+        imágenes la misma zona relativa, es decir, las mismas fracciones de su
+        propio ancho y alto, lo que en un conjunto de capturas o exportaciones del
+        mismo tamaño es exactamente la misma caja, y la página lo dice. Con una
+        forma fijada, le da a cada una la mayor caja de esa forma que quepa dentro
+        de esa zona, así que pulsar 1:1 y luego ese botón te saca cuadrados de una
+        carpeta con fotos verticales y horizontales mezcladas. Después, todas las
+        cajas siguen siendo editables."""
 
 [[faq]]
 q = "¿Qué formatos puede leer y escribir?"
 a = """
-        Lee todo lo que tu navegador sepa descodificar, que en la práctica
-        significa JPEG, PNG, WebP, GIF, BMP y &mdash; en casi todos los
-        navegadores actuales &mdash; AVIF. Escribe JPEG, PNG y WebP, porque esos
-        son los codificadores que traen los navegadores. Con «conservar el
-        formato», un JPEG sigue siendo un JPEG y un PNG sigue siendo un PNG; lo
-        que el navegador no sabe escribir, como un GIF o un BMP, sale como PNG,
-        que es el que conserva intactos la transparencia y el color plano."""
+        Lee todo lo que el navegador sepa descodificar, que en la práctica son
+        JPEG, PNG, WebP, GIF, BMP y, en casi todos los navegadores actuales, AVIF.
+        Escribe JPEG, PNG y WebP, que son los codificadores que traen los
+        navegadores. Con «conservar el formato», un JPEG sigue siendo un JPEG y un
+        PNG sigue siendo un PNG; y lo que el navegador no sabe escribir, como un
+        GIF o un BMP, sale como PNG, que es el que conserva intactos la
+        transparencia y el color plano."""
 
 [[faq]]
 q = "¿Qué pasa con la transparencia si guardo como JPEG?"
 a = """
-        Se rellena con el color de fondo, porque JPEG no tiene canal alfa donde
+        Se rellena con el color de fondo, porque el JPEG no tiene canal alfa donde
         guardarla. El color lo eliges tú y empieza en blanco, que es lo que quiere
         casi todo el mundo y lo que hace casi cualquier otra herramienta sin
         decírtelo. El mismo color se usa detrás de un marco rellenado. Guarda como
@@ -220,14 +214,14 @@ a = """
 [[faq]]
 q = "¿Quita los datos EXIF y GPS?"
 a = """
-        De todo lo que procesa de verdad, sí, como efecto secundario: recortar o
-        redimensionar significa descodificar la foto a píxeles y volver a
+        De todo lo que procesa de verdad, sí, y de rebote: recortar o
+        redimensionar consiste en descodificar la foto a píxeles y volver a
         codificar esos píxeles, y un lienzo lleno de píxeles no lleva etiquetas,
         así que la ubicación, el modelo de cámara y las marcas de tiempo
-        sencillamente no se escriben en el archivo nuevo. Un archivo que no estás
-        cambiando en nada es otro caso &mdash; se devuelve byte por byte, con
+        sencillamente no se escriben en el archivo nuevo. Un archivo que no le
+        estás cambiando nada es otro caso: se devuelve byte por byte, con
         etiquetas y todo. Si lo que quieres es quitar los metadatos sin tocar la
-        foto, usa el <a href="../eliminar-datos-exif/">visor y eliminador de
+        foto, tienes el <a href="../eliminar-datos-exif/">visor y eliminador de
         EXIF</a>, que reescribe el contenedor sin volver a comprimir nada."""
 
 [[faq]]
@@ -237,28 +231,28 @@ a = """
         <a href="../comprimir-imagen/">compresor de imágenes</a> va de tamaño de
         archivo: dices cuántos kilobytes tienes permitidos y busca la calidad más
         alta que cabe, redimensionando solo si la calidad por sí sola no llega. Si
-        te dijeron «1200 píxeles de ancho», estás en el sitio correcto. Si te
-        dijeron «por debajo de 500 KB», la otra te dejará más cerca."""
+        te han dicho «1200 píxeles de ancho», estás en el sitio correcto. Si te
+        han dicho «por debajo de 500 KB», la otra te dejará más cerca."""
 
 [[faq]]
 q = "¿Es gratis? ¿Necesito una cuenta?"
 a = """
-        Es gratis, y no hay cuenta, ni inicio de sesión, ni prueba, ni marca de
-        agua. Tampoco hay límite en el número ni en el tamaño de los archivos,
-        porque no hay ningún servidor pagándolos &mdash; el trabajo ocurre en tu
-        propio equipo. El sitio lleva publicidad, que es lo que lo paga; a los
-        anuncios no se les da nada sobre tus imágenes."""
+        Es gratis, y no hay cuenta, ni inicio de sesión, ni versión de prueba, ni
+        marca de agua. Tampoco hay límite en el número ni en el tamaño de los
+        archivos, porque no hay ningún servidor pagándolos: el trabajo lo hace tu
+        propio dispositivo. El sitio lleva publicidad, que es lo que lo paga, y a
+        los anuncios no se les da nada sobre tus imágenes."""
 
 [[faq]]
 q = "¿Funciona sin conexión?"
 a = """
-        Sí. Carga la página una vez, desconéctate de internet y sigue
+        Sí. Carga la página una vez, desconéctate de internet y verás que sigue
         funcionando. Esa es además la forma más sencilla de demostrar que no se
         sube nada: una herramienta que mandara tus imágenes fuera para
-        redimensionarlas se detendría en el momento en que desenchufaras."""
+        redimensionarlas se pararía en cuanto desenchufaras."""
 
 [schema]
-description = "Redimensiona, recorta y convierte imágenes JPEG, PNG y WebP en el navegador. Fija un tamaño exacto en píxeles, un porcentaje o un lado largo, arrastra una caja de recorte o fíjala a una forma, y escribe el resultado como JPEG, PNG o WebP. Admite lotes, y no sube nada."
+description = "Redimensiona, recorta y convierte imágenes JPEG, PNG y WebP dentro del navegador. Fija un tamaño exacto en píxeles, un porcentaje o un lado largo, arrastra una caja de recorte o fíjala a una forma, y escribe el resultado como JPEG, PNG o WebP. Admite lotes y no sube nada."
 features = [
   "Redimensiona por píxeles exactos, por un lado largo o por un porcentaje",
   "Rellena un lado y el otro sigue la propia forma de la foto",
@@ -267,12 +261,12 @@ features = [
   "Recorta cada imagen de forma distinta, o aplica un mismo encuadre a todo el lote de un clic",
   "Abre cada foto terminada a tamaño completo, con todas sus cifras detrás y el original para comparar",
   "Convierte entre JPEG, PNG y WebP, con control de calidad y color de fondo",
-  "Nunca agranda una foto salvo que se lo pidas",
-  "Devuelve intacto cualquier archivo que no se le haya pedido cambiar",
+  "No agranda nunca una foto salvo que se lo pidas",
+  "Devuelve intacto cualquier archivo al que no se le haya pedido cambiar nada",
   "Por lotes, con todos los resultados en un zip",
-  "Funciona sin conexión; sin subidas y sin cuenta",
+  "Funciona sin conexión, sin subidas y sin cuenta",
 ]
 
 [picker]
-title = "Suelta aquí las imágenes"
-hint = "o haz clic para buscarlas &mdash; JPEG, PNG, WebP y cualquier otra cosa que tu navegador sepa abrir"
+title = "Arrastra aquí las imágenes"
+hint = "o haz clic para buscarlas &mdash; JPEG, PNG, WebP y cualquier otra cosa que el navegador sepa abrir"

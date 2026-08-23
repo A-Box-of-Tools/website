@@ -4,9 +4,12 @@
   Prose paragraphs are written on one line each: a line break inside Chinese
   text collapses to a space in HTML, and a space between two Han characters is
   visible on the page.
+
+  The &mdash; inside each <dd> is a placeholder for a value not read yet, not
+  punctuation, so it stays exactly as the English source has it.
 -->
 <main>
-  <!-- 第 1 步 &mdash; 文件 -->
+  <!-- 第 1 步，选文件 -->
   <section class="card">
     <h2><span class="step">1</span> 选一段视频</h2>
 
@@ -30,12 +33,12 @@
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- 第 2 步 &mdash; 裁剪框 -->
+  <!-- 第 2 步，裁剪框 -->
   <section class="card" id="crop-card" hidden>
     <h2><span class="step">2</span> 设置裁剪框</h2>
 
     <p class="stage-hint">
-      在框里面拖动可以移动它，拖任意一个角可以改大小。框被选中时，方向键一次挪一个像素，<kbd>Alt</kbd>&nbsp;+&nbsp;方向键改大小，按住 <kbd>Shift</kbd> 则每一步走十个像素。
+      在框里面拖动就能移动，拖任意一个角就能改大小。框选中时，方向键一次挪一个像素，<kbd>Alt</kbd>&nbsp;+&nbsp;方向键改大小，按住 <kbd>Shift</kbd> 则每一步走十个像素。
     </p>
 
     <!-- The crop box itself is added here by src/cropper.js. The stage is given
@@ -79,11 +82,11 @@
     </div>
 
     <p class="even-note">
-      宽和高按 2 跳，因为 H.264 没有办法存一条边是奇数的帧。
+      宽和高按 2 跳，因为 H.264 存不了一条边是奇数的帧。
     </p>
   </section>
 
-  <!-- 第 3 步 &mdash; 导出 -->
+  <!-- 第 3 步，导出 -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> 裁剪</h2>
 
@@ -91,8 +94,8 @@
       <div class="field">
         <label for="format">输出</label>
         <select id="format">
-          <option value="mp4" selected>MP4 &mdash; 逐帧重新编码</option>
-          <option value="webm">WebM &mdash; 一边播一边录</option>
+          <option value="mp4" selected>MP4，逐帧重新编码</option>
+          <option value="webm">WebM，一边播一边录</option>
         </select>
         <p class="field-note" id="format-note"></p>
       </div>
@@ -105,7 +108,7 @@
           <option value="high">最高质量</option>
         </select>
         <p class="field-note">
-          绝不会超过原片在同一块区域上花的量 &mdash; 超过那个量再编码，只会让文件变大。
+          绝不会超过原片在同一块区域上花的量，超过那个量再编码，只会让文件变大。
         </p>
       </div>
 
@@ -122,7 +125,7 @@
       <div><dt>输出画幅</dt><dd id="sum-size">&mdash;</dd></div>
       <div><dt>保留</dt><dd id="sum-kept">&mdash;</dd></div>
       <div><dt>时长</dt><dd id="sum-length">&mdash;</dd></div>
-      <div><dt>用什么方式</dt><dd id="sum-path">&mdash;</dd></div>
+      <div><dt>走哪条路</dt><dd id="sum-path">&mdash;</dd></div>
     </dl>
 
     <div class="export-row">

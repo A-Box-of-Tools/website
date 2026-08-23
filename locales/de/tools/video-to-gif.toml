@@ -12,23 +12,23 @@ tagline = "Abschnitt, Größe und Bildrate selbst wählen."
 title = "Video-zu-GIF-Umwandler &mdash; kostenlos, ohne Upload, auch offline"
 description = "Einen Teil eines MP4, MOV oder WebM in ein animiertes GIF verwandeln. Wählen Sie Abschnitt, Breite und Bildrate; die Einzelbilder werden in Ihrem Browser gelesen und das GIF dort geschrieben. Kein Upload."
 og_title = "Video zu GIF &mdash; ein GIF machen, ohne den Clip hochzuladen"
-og_description = "Markieren Sie die gewünschten Sekunden, wählen Sie Breite und Bildrate, und bekommen Sie ein animiertes GIF. Abtastung, Palette, Dithering und LZW passieren alle auf Ihrem eigenen Gerät."
+og_description = "Markieren Sie die gewünschten Sekunden, wählen Sie Breite und Bildrate, und heraus kommt ein animiertes GIF. Abtastung, Palette, Dithering und LZW passieren alle auf Ihrem eigenen Gerät."
 og_image_alt = "Video zu GIF - ein animiertes GIF im Browser machen, ohne dass etwas hochgeladen wird"
 
 pledge = """
     Jedes Einzelbild wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
-    gelesen, skaliert, quantisiert und geschrieben. Nichts hier kann etwas
-    abrufen oder senden &mdash; dieses Werkzeug hat überhaupt keine Netzfunktion
-    &mdash; und am anderen Ende dieser Seite gibt es keinen Server, an den ein
-    Video ginge, selbst wenn es einen Weg dorthin gäbe."""
+    gelesen, skaliert, quantisiert und geschrieben. Abrufen oder senden kann hier
+    nichts, denn eine Netzfunktion hat dieses Werkzeug überhaupt nicht. Und
+    selbst wenn es einen Weg nach draußen gäbe, stünde am anderen Ende dieser
+    Seite kein Server, an den ein Video gehen könnte."""
 
 live_hint = """
-      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
-      &bdquo;Netzwerk&ldquo; und erzeugen Sie ein GIF. Keine einzige Anfrage
-      trägt ein Einzelbild, einen Dateinamen oder ein Byte Ihrer Auswahl. Oder
-      trennen Sie die Internetverbindung und erzeugen Sie trotzdem eines &mdash;
-      ein Werkzeug, das Ihr Video zum Umwandeln wegschickt, würde schlicht stehen
-      bleiben."""
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und erzeugen Sie ein GIF. Keine einzige Anfrage
+      trägt ein Einzelbild, einen Dateinamen oder ein Byte dessen, was Sie
+      ausgewählt haben. Oder trennen Sie die Internetverbindung und erzeugen Sie
+      trotzdem eines. Ein Werkzeug, das Ihr Video zum Umwandeln wegschickt,
+      bliebe dabei einfach stehen."""
 
 read_first = """
 , <code>src/frames.js</code> für die beiden Wege, auf
@@ -37,18 +37,16 @@ read_first = """
       für die Datei selbst, LZW inklusive. Keines davon importiert etwas, das
       eine Anfrage stellen könnte."""
 
-howto_heading = "Ein Video in ein GIF verwandeln"
+howto_heading = "So verwandeln Sie ein Video in ein GIF"
 
 card = """
             Markieren Sie die gewünschten Sekunden, wählen Sie Breite und
-            Bildrate, und bekommen Sie ein animiertes GIF &mdash; samt Palette
-            und Dithering."""
+            Bildrate, und heraus kommt ein animiertes GIF, samt Palette und
+            Dithering."""
 
 [words]
 plural = "Videos"
 choose = "ein Video"
-analytics_extra = """, und auch kein
-  Einzelbild, keine Dauer und keine Größe"""
 
 [[facts]]
 text = "Kein Upload"
@@ -68,19 +66,20 @@ text = "Funktioniert offline"
 [[privacy]]
 title = "Ihre Videos haben keinen Weg nach draußen."
 body = """
- Die
-      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
-      an dem Ihre Datei gesammelt werden könnte, und nichts im Code, das sie
-      senden würde, gäbe es einen."""
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Datei landen könnte, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen."""
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
 body = """
- Dieses Werkzeug hat überhaupt keine
-      Netzfunktion: keine Adresse zum Einfügen, nichts herunterzuladen, keine
-      Engine, die beim ersten Gebrauch nachgeladen wird. Jedes Byte, das Ihr
-      Video berührt, kam beim Laden der Seite von dieser Herkunft."""
+ Eine Netzfunktion hat dieses Werkzeug
+      überhaupt nicht. Es gibt keine Adresse zum Einfügen, nichts
+      herunterzuladen und keine Engine, die beim ersten Gebrauch nachgeladen
+      wird. Jedes Byte, das Ihr Video berührt, kam beim Laden der Seite von
+      dieser Domain selbst."""
 
 [[privacy]]
 title = "Das Dekodieren ist lokal."
@@ -88,7 +87,7 @@ body = """
  Die Einzelbilder laufen durch WebCodecs
       in Ihrem eigenen Browser oder durch dieselbe Wiedergabe-Engine, die Ihnen
       den Clip ohnehin zeigen würde. Welcher von beiden genommen wurde, steht
-      oben auf der Seite &mdash; denn es ändert, wie die Einzelbilder gewählt
+      oben auf der Seite, denn davon hängt ab, wie die Einzelbilder gewählt
       werden, und das sollten Sie sehen können."""
 
 [[privacy]]
@@ -101,52 +100,53 @@ body = """
       gesendet werden könnte."""
 
 [[privacy]]
-title = "Was Google lädt - und was es nicht bekommt."
+title = "Was Google lädt und was Google nicht bekommt."
 body = """
  Die Werbe- und
       Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihr
-      Video übergeben: keine Datei, kein Einzelbild, kein Name, keine Größe,
-      keine Länge und nicht der Abschnitt, den Sie markiert haben. Jede Zeile,
-      die liest, abtastet, quantisiert oder kodiert, wird von dieser Herkunft
-      ausgeliefert und ist im Repository aufgeführt."""
+      Video übergeben, weder eine Datei noch ein Einzelbild, ein Name, eine
+      Größe, eine Länge oder der Abschnitt, den Sie markiert haben. Jede Zeile,
+      die liest, abtastet, quantisiert oder kodiert, kommt von dieser Domain
+      selbst und steht im Repository."""
 
 [[privacy]]
-title = "Was der Spenden-Button lädt - und was er nicht bekommt."
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
 body = """
       Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
       Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
-      Google Fonts. Er ist ein Link und nicht mehr: Er meldet keinen Besuch, und
-      ihm wird nichts über Sie oder Ihr Video übergeben."""
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihr Video bekommt er nichts."""
 
 [[privacy]]
 title = "Es funktioniert offline."
 body = """
  Trennen Sie die Netzverbindung, und alles auf
-      dieser Seite arbeitet weiter. Das ist der einfachste Beweis von allen."""
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht."""
 
 [[howto]]
-title = "Wählen Sie ein Video."
+title = "Wählen Sie ein Video aus."
 body = """
  Ziehen Sie ein MP4, MOV, M4V oder WebM
-      auf das Auswahlfeld oder wählen Sie eines von Hand. Der Browser liest es
-      direkt von Ihrer Festplatte; dabei wird nichts irgendwohin gesendet."""
+      auf das Auswahlfeld oder suchen Sie eines von Hand heraus. Der Browser
+      liest es direkt von Ihrer Festplatte, und dabei geht nichts nach
+      draußen."""
 
 [[howto]]
 title = "Markieren Sie den Abschnitt."
 body = """
  Spielen Sie den Clip ab und drücken
-      Sie <kbd>I</kbd>, wo er beginnen soll, und <kbd>O</kbd>, wo er enden soll
-      &mdash; oder ziehen Sie die Griffe auf dem Balken. Ein GIF ist ein paar
-      Sekunden lang, und das ist die Einstellung, die entscheidet, ob die Datei
-      klein oder riesig wird &mdash; weit mehr als die anderen beiden."""
+      Sie <kbd>I</kbd>, wo er beginnen soll, und <kbd>O</kbd>, wo er enden soll.
+      Oder ziehen Sie die Griffe auf dem Balken. Ein GIF ist ein paar Sekunden
+      lang, und diese Einstellung entscheidet weit mehr als die anderen beiden
+      darüber, ob die Datei klein oder riesig wird."""
 
 [[howto]]
 title = "Wählen Sie Breite und Bildrate."
 body = """
  480 Pixel Breite und 12 Bilder pro
       Sekunde passen zu den meisten Zwecken, für die es ein GIF gibt. Die Breite
-      zu halbieren viertelt die Pixel; zwölf Bilder pro Sekunde lesen sich als
-      Bewegung, ohne für die zu zahlen, die niemand sieht."""
+      zu halbieren viertelt die Pixel, und zwölf Bilder pro Sekunde lesen sich
+      als Bewegung, ohne dass Sie für die bezahlen, die niemand sieht."""
 
 [[howto]]
 title = "Erzeugen und herunterladen."
@@ -154,94 +154,92 @@ body = """
  Die Einzelbilder werden gelesen, eine
       Palette aus 256 Farben wird für die ganze Animation gewählt, und jedes
       Einzelbild wird nur als der Teil des Bildes geschrieben, der sich geändert
-      hat. Es spielt auf der Seite ab, wenn es fertig ist &mdash; und das ist
-      dieselbe Datei, die der Download Ihnen gibt."""
+      hat. Ist es fertig, spielt es auf der Seite ab, und das ist dieselbe Datei,
+      die der Download Ihnen gibt."""
 
 [[faq]]
 q = "Wird mein Video irgendwohin hochgeladen?"
 a = """
-        Nein. Es wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
-        gelesen, abgetastet und umgewandelt. Dieses Werkzeug hat keine
-        Serverseite, und die <code>Content-Security-Policy</code> der Seite nennt
-        jede Adresse, die sie kontaktieren darf &mdash; keine davon gehört zu
-        dieser Seite. Trennen Sie die Internetverbindung und erzeugen Sie
-        trotzdem ein GIF, wenn Sie lieber prüfen als glauben."""
+        Nein. Ihr eigener Browser liest, tastet ab und wandelt um, auf Ihrer
+        eigenen Hardware. Eine Serverseite hat dieses Werkzeug nicht, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf; keine davon gehört uns. Wer lieber prüft als
+        glaubt, trennt die Internetverbindung und erzeugt trotzdem ein GIF."""
 
 [[faq]]
 q = "Welche Videoformate kann ich umwandeln?"
 a = """
-        MP4, M4V und MOV werden direkt gelesen, egal was darin steckt: H.264,
-        HEVC, AV1 oder VP9, solange Ihr Browser diesen Codec dekodieren kann.
-        Alles andere, was Ihr Browser abspielen kann &mdash; allen voran WebM
-        &mdash; wird stattdessen gelesen, indem der Player auf jeden Zeitpunkt
-        gesprungen wird; das ist langsamer und etwas weniger genau darin, welches
-        Einzelbild wo landet. Eine Datei, die der Browser weder lesen noch
-        abspielen kann &mdash; in der Praxis AVI, WMV, FLV und die meisten MKVs
-        &mdash; wird mit einer entsprechenden Meldung abgelehnt, statt auf halbem
-        Weg zu scheitern."""
+        MP4, M4V und MOV werden direkt gelesen, egal was darin steckt, also
+        H.264, HEVC, AV1 oder VP9, solange Ihr Browser diesen Codec dekodieren
+        kann. Alles andere, was Ihr Browser abspielen kann, allen voran WebM,
+        wird stattdessen gelesen, indem der Player auf jeden Zeitpunkt springt.
+        Das ist langsamer und etwas weniger genau darin, welches Einzelbild wo
+        landet. Was der Browser weder lesen noch abspielen kann, in der Praxis
+        AVI, WMV, FLV und die meisten MKVs, wird gleich mit einer entsprechenden
+        Meldung abgelehnt, statt auf halbem Weg zu scheitern."""
 
 [[faq]]
 q = "Warum ist mein GIF so groß?"
 a = """
         Weil GIF ein Format von 1987 ist, das ganze Bilder speichert und keine
-        Bewegung. Es gibt keine Möglichkeit, aus einem fünf Sekunden langen Clip
-        eines zu machen, das so klein ist wie das fünf Sekunden lange MP4, aus
-        dem es kam &mdash; ein GIF eines Videos ist routinemäßig zehnmal so groß
-        wie das Video. Die drei Einstellungen, die es tatsächlich entscheiden,
-        sind der Reihe nach: wie lang der Abschnitt ist, wie breit das Bild ist
-        und wie viele Bilder pro Sekunde. Die Breite zu halbieren viertelt die
-        Pixel, und die Pixel sind es, die kosten."""
+        Bewegung. Aus einem fünf Sekunden langen Clip lässt sich keines machen,
+        das so klein ist wie das fünf Sekunden lange MP4, aus dem es kam. Ein GIF
+        eines Videos ist routinemäßig zehnmal so groß wie das Video. Entschieden
+        wird die Größe von drei Einstellungen, in dieser Reihenfolge: wie lang
+        der Abschnitt ist, wie breit das Bild ist und wie viele Bilder pro
+        Sekunde es hat. Die Breite zu halbieren viertelt die Pixel, und die Pixel
+        sind es, die kosten."""
 
 [[faq]]
 q = "Warum nur 256 Farben?"
 a = """
-        Das ist das Format: Ein GIF trägt eine Tabelle von höchstens 256 Farben
-        und speichert jedes Pixel als Nummer darin. Dieses Werkzeug wählt diese
-        256, indem es die Farben in jedem Einzelbild Ihres Abschnitts zählt und
-        sie in 256 Gruppen teilt &mdash; Median Cut, die Standardmethode &mdash;,
-        die Palette passt also zu Ihrem Clip statt ein fester Farbsatz zu sein.
-        Wo eine Farbe fehlt, mischt das Dithering die beiden nächstgelegenen, so
-        dass ein Verlauf ein Verlauf bleibt und nicht zu Streifen wird."""
+        Weil das Format es so will. Ein GIF trägt eine Tabelle von höchstens 256
+        Farben und speichert jedes Pixel als Nummer darin. Dieses Werkzeug wählt
+        diese 256, indem es die Farben in jedem Einzelbild Ihres Abschnitts zählt
+        und sie in 256 Gruppen teilt, mit Median Cut, der Standardmethode. Die
+        Palette passt damit zu Ihrem Clip, statt ein fester Farbsatz zu sein. Wo
+        eine Farbe fehlt, mischt das Dithering die beiden nächstgelegenen, damit
+        ein Verlauf ein Verlauf bleibt und nicht zu Streifen wird."""
 
 [[faq]]
 q = "Was macht die Dithering-Einstellung?"
 a = """
         Sie tauscht ein wenig Rauschen gegen viel weniger Streifenbildung. Ist
         sie an, bleibt ein Himmel, der sonst zu vier flachen Bändern würde, ein
-        Verlauf &mdash; um den Preis einer feinen Textur und einer größeren
-        Datei. Ist sie aus, wird das Bild flacher und die Datei kleiner, was zu
+        Verlauf, und Sie zahlen mit einer feinen Textur und einer größeren Datei.
+        Ist sie aus, wird das Bild flacher und die Datei kleiner, was zu
         Bildschirmaufnahmen, Strichzeichnungen und allem passt, was ohnehin aus
-        flachen Farbflächen besteht. Das hier verwendete Dithering ist geordnet
-        und nicht die fehlerverteilende Art, damit ein unveränderter Hintergrund
+        flachen Farbflächen besteht. Verwendet wird hier geordnetes Dithering und
+        nicht die fehlerverteilende Art, damit ein unveränderter Hintergrund
         zwischen den Einzelbildern vollkommen still steht statt zu flimmern."""
 
 [[faq]]
 q = "Gibt es eine Grenze für Länge oder Größe?"
 a = """
         Begrenzt ist der Abschnitt, und zwar durch den Arbeitsspeicher und nicht
-        durch eine Regel: Jedes seiner Einzelbilder wird gleichzeitig gehalten,
-        während die Palette gewählt wird &mdash; die Seite rechnet also aus, was
-        Ihre Einstellungen kosten würden, und sagt es Ihnen vor dem Start. Sie
-        weigert sich, statt den Tab den Speicher aufbrauchen und verschwinden zu
-        lassen. Ein kürzerer Abschnitt, eine kleinere Breite oder eine niedrigere
-        Bildrate bringen ihn alle herunter."""
+        durch eine Regel. Jedes seiner Einzelbilder wird gleichzeitig gehalten,
+        während die Palette gewählt wird. Die Seite rechnet deshalb aus, was Ihre
+        Einstellungen kosten würden, und sagt es Ihnen vor dem Start. Sie weigert
+        sich lieber, als den Tab den Speicher aufbrauchen und verschwinden zu
+        lassen. Herunter bringen das ein kürzerer Abschnitt, eine kleinere Breite
+        oder eine niedrigere Bildrate."""
 
 [[faq]]
 q = "Behält es den Ton?"
 a = """
-        Ein GIF kann keinen Ton tragen. Es gibt keine Fassung des Formats mit
-        Audio &mdash; und das ist der Hauptgrund, warum das Web GIFs
-        größtenteils durch stumm laufende Videos ersetzt hat. Ist der Ton
-        wichtig, behalten Sie das Video: Der
-        <a href="../video-schneiden/">Video-Schneider</a> schneidet einen
-        Abschnitt heraus, ohne ein einziges Einzelbild neu zu kodieren."""
+        Ein GIF kann keinen Ton tragen. Eine Fassung des Formats mit Audio gibt
+        es nicht, und das ist der Hauptgrund, warum das Web GIFs größtenteils
+        durch stumm laufende Videos ersetzt hat. Ist der Ton wichtig, behalten
+        Sie das Video. Der <a href="../video-schneiden/">Video-Schneider</a>
+        schneidet einen Abschnitt heraus, ohne ein einziges Einzelbild neu zu
+        kodieren."""
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
 a = """
         Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
-        Testphase und kein Wasserzeichen. Die Seite trägt Werbung, und die
-        bezahlt sie; den Anzeigen wird nichts über Ihr Video übergeben."""
+        Testphase und kein Wasserzeichen. Bezahlt wird die Seite über Werbung,
+        und den Anzeigen wird nichts über Ihr Video übergeben."""
 
 [schema]
 browser_requirements = "Benötigt JavaScript. Für MP4 und MOV braucht es einen Browser mit WebCodecs; alles, was der Browser abspielen kann, geht auch ohne."
@@ -250,10 +248,10 @@ features = [
   "Wandelt MP4-, MOV-, M4V- und WebM-Video in ein animiertes GIF um",
   "H.264-, HEVC-, AV1- und VP9-Quellen, dekodiert über WebCodecs",
   "Den Abschnitt auf einer Zeitleiste markieren oder exakte Zeiten eintippen",
-  "Beliebige Breite, 5 bis 25 Bilder pro Sekunde, optionales geordnetes Dithering",
+  "Beliebige Breite, 5 bis 25 Bilder pro Sekunde, auf Wunsch geordnetes Dithering",
   "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
 ]
 
 [picker]
 title = "Video hierher ziehen"
-hint = "oder klicken zum Auswählen &mdash; MP4, MOV, M4V, WebM und alles andere, was dieser Browser abspielt"
+hint = "oder klicken und auswählen &mdash; MP4, MOV, M4V, WebM und alles andere, was dieser Browser abspielt"

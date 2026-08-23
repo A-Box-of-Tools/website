@@ -11,7 +11,7 @@ lede = """
     人从来没打开过的容器里，而其中最小的那张，才是所有人真正看到的那张。\
     这里讲的是你需要哪些尺寸、旁边还要放哪些文件，以及你的 logo 撑不过这\
     一路缩小时该怎么办。"""
-updated = "2026 年 8 月 20 日"
+updated = "2026年8月20日"
 og_title = "做一个在十六像素下还认得出来的 favicon"
 og_description = "一个 favicon.ico 需要哪些尺寸、iPhone 和 Android 还要哪些额外文件，以及 logo 缩小之后活不下来时该怎么办。"
 og_image_alt = "abox.tools - 不碰服务器的工具"

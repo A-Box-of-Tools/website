@@ -1,5 +1,5 @@
 <main>
-  <!-- Passo 1 &mdash; as imagens -->
+  <!-- Passo 1: as imagens -->
   <section class="card">
     <h2><span class="step">1</span> Escolha as imagens</h2>
 
@@ -26,13 +26,13 @@
     <p id="reorder-hint" class="reorder-hint" hidden>
       Uma imagem por página, nesta ordem. Arraste pela alça
       <span class="grip" aria-hidden="true">&#8942;&#8942;</span> para mover uma página,
-      ou use as setas nela.
+      ou use as setas dela.
     </p>
 
     <ul id="image-list" class="image-list"></ul>
   </section>
 
-  <!-- Passo 2 &mdash; as páginas -->
+  <!-- Passo 2: as páginas -->
   <section class="card">
     <h2><span class="step">2</span> Configuração da página</h2>
 
@@ -41,12 +41,12 @@
         <label for="page-size">Tamanho da página</label>
         <select id="page-size">
           <option value="fit" selected>Ajustar a página a cada imagem</option>
-          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
-          <option value="letter">Carta &mdash; 8,5 &times; 11 pol</option>
-          <option value="legal">Ofício &mdash; 8,5 &times; 14 pol</option>
-          <option value="a3">A3 &mdash; 297 &times; 420 mm</option>
-          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
-          <option value="tabloid">Tabloide &mdash; 11 &times; 17 pol</option>
+          <option value="a4">A4 (210 &times; 297 mm)</option>
+          <option value="letter">Carta (8,5 &times; 11 pol)</option>
+          <option value="legal">Ofício (8,5 &times; 14 pol)</option>
+          <option value="a3">A3 (297 &times; 420 mm)</option>
+          <option value="a5">A5 (148 &times; 210 mm)</option>
+          <option value="tabloid">Tabloide (11 &times; 17 pol)</option>
           <option value="custom">Personalizado&hellip;</option>
         </select>
         <div id="custom-size" class="inline-pair" hidden>
@@ -66,16 +66,16 @@
       <div class="field" id="dpi-field">
         <label for="dpi">Resolução de impressão</label>
         <select id="dpi">
-          <option value="72">72 DPI &mdash; tela</option>
+          <option value="72">72 DPI (tela)</option>
           <option value="96">96 DPI</option>
           <option value="150" selected>150 DPI</option>
           <option value="200">200 DPI</option>
-          <option value="300">300 DPI &mdash; impressão</option>
+          <option value="300">300 DPI (impressão)</option>
           <option value="600">600 DPI</option>
         </select>
         <p class="field-note">
-          Decide de que tamanho fica uma página para um dado número de pixels. Não
-          muda a imagem.
+          É o que decide de que tamanho fica uma página para um dado número de
+          pixels. Não muda a imagem em nada.
         </p>
       </div>
 
@@ -119,7 +119,7 @@
         <select id="mode">
           <option value="keep" selected>Manter os JPEGs exatamente como estão</option>
           <option value="jpeg">Recodificar tudo como JPEG</option>
-          <option value="lossless">Sem perdas &mdash; nenhuma perda de compressão</option>
+          <option value="lossless">Sem perdas: nada é comprimido de novo</option>
         </select>
         <p class="field-note" id="mode-note"></p>
       </div>
@@ -137,7 +137,7 @@
       <div class="field">
         <label for="max-side">Encolher imagens grandes</label>
         <select id="max-side">
-          <option value="0" selected>Nunca &mdash; manter o tamanho cheio</option>
+          <option value="0" selected>Nunca: manter o tamanho cheio</option>
           <option value="4000">Lado maior 4000 px</option>
           <option value="2000">Lado maior 2000 px</option>
           <option value="1200">Lado maior 1200 px</option>
@@ -147,14 +147,14 @@
     </div>
 
     <details class="meta-panel">
-      <summary>Detalhes do documento &mdash; todos opcionais, todos em branco por padrão</summary>
+      <summary>Detalhes do documento: todos opcionais, todos em branco por padrão</summary>
       <div class="meta-body">
         <p class="meta-note">
           Um PDF carrega um pequeno bloco de informações sobre si mesmo, e a
-          maioria das ferramentas o preenche com um horário e um nome de programa,
-          você tendo pedido ou não. Esta escreve o que você digitar aqui e nada
-          mais: nenhum nome de arquivo, nenhum nome de máquina, e nenhuma data a
-          não ser que você marque a caixa.
+          maioria das ferramentas preenche esse bloco com um horário e um nome de
+          programa, você tendo pedido ou não. Esta aqui escreve o que você digitar
+          e nada mais: nenhum nome de arquivo, nenhum nome de máquina, e nenhuma
+          data a não ser que você marque a caixa.
         </p>
         <div class="settings">
           <div class="field">
@@ -204,7 +204,7 @@
     </div>
   </section>
 
-  <!-- Passo 3 &mdash; exportar -->
+  <!-- Passo 3: exportar -->
   <section class="card">
     <h2><span class="step">3</span> Crie o PDF</h2>
 

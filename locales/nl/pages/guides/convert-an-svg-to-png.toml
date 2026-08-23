@@ -7,11 +7,11 @@ title = "Een svg naar een png omzetten op het juiste formaat"
 description = "Een vector heeft zelf geen pixelformaat, dus het getal kies jij. Waar dat getal vandaan komt voor een scherm, een app-icoon en een printer, en wat er verandert wanneer een tekening pixels wordt."
 heading = "Hoe je een svg naar een png omzet op het juiste formaat"
 lede = """
-    Het omzetten is de makkelijke helft. De vraag die bepaalt of het resultaat
-    ergens goed voor is, is degene waarop niemand je een antwoord aanreikt:
-    hoeveel pixels? Hier staat waar dat getal vandaan komt, en wat een tekening
-    onderweg naar pixels verliest."""
+    Het omzetten is de makkelijke helft. Of het resultaat ergens goed voor is
+    hangt af van de ene vraag waarop niemand je het antwoord aanreikt: hoeveel
+    pixels? Hier staat waar dat getal vandaan komt, en wat een tekening onderweg
+    naar pixels verliest."""
 updated = "20 augustus 2026"
 og_title = "Een svg naar een png omzetten op het juiste formaat"
 og_description = "Waar het aantal pixels werkelijk vandaan komt, en de drie dingen die veranderen wanneer een tekening pixels wordt."
-og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

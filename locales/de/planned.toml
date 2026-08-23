@@ -20,8 +20,6 @@ items = [
   ["Drehen &amp; spiegeln", "in Vierteldrehungen oder um wenige Grad geradegerückt"],
   ["Text hinzufügen", "über dem Bild oder in einem Textkasten darüber"],
   ["Filter", "Helligkeit, Kontrast, Sättigung, Weichzeichnen, Graustufen"],
-  ["Bild als Data-URI", "das Ergebnis direkt in CSS oder HTML einfügen"],
-  ["HEIC zu JPG", "die Fotos eines iPhones in einem Format, das jedes Programm öffnet"],
   ["AVIF &amp; JPEG XL", "in beide Richtungen umwandeln, in welchem Browser Sie auch sitzen"],
 ]
 

@@ -6,7 +6,7 @@
   visible on the page.
 -->
 <main>
-  <!-- 第 1 步 &mdash; 文件 -->
+  <!-- 第 1 步，选文件 -->
   <section class="card">
     <h2><span class="step">1</span> 选择图片</h2>
 
@@ -21,7 +21,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">全部从列表移除</button>
+        <button type="button" id="clear-all" class="ghost danger">全部移出列表</button>
       </div>
     </div>
 
@@ -30,20 +30,20 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- 第 2 步 &mdash; 真正被粘出去的那一行 -->
+  <!-- 第 2 步，真正被粘出去的那一行 -->
   <section class="card" id="shape-card">
     <h2><span class="step">2</span> 说明它要用在哪儿</h2>
 
     <p class="card-lede">
-      光要一个 data URI，通常不是谁真正想要的。大家想要的是那行放进样式表里的代码 &mdash; 所以先挑那一行，图片会带着引号一起出现在里面，而引号正是那个容易搞错、并且只在 SVG 上翻车的地方。
+      光有一个 data URI，通常不是谁真正想要的，大家想要的是那行能直接放进样式表的代码。所以先挑那一行，图片会带着引号一起出现在里面，而引号正是最容易搞错、又只在 SVG 上翻车的地方。
     </p>
 
     <div class="shapes" id="shapes" role="radiogroup" aria-label="要粘什么">
       <label class="shape">
         <input type="radio" name="shape" value="uri" checked>
         <span class="shape-body">
-          <strong>光要 data URI</strong>
-          <span class="shape-note">逗号后面的全部内容就是这个文件。哪儿能放网址就能粘到哪儿。
+          <strong>只要 data URI</strong>
+          <span class="shape-note">逗号后面的全部内容就是这个文件。哪儿能放网址，就能粘到哪儿。
           </span>
         </span>
       </label>
@@ -61,7 +61,7 @@
         <input type="radio" name="shape" value="css-var">
         <span class="shape-body">
           <strong>一个 CSS 自定义属性</strong>
-          <span class="shape-note">在样式表最上面声明一次，之后想用几次就用几次 <code>var(--name)</code>。图片会出现在不止一条规则里时，就选这个。
+          <span class="shape-note">在样式表最上面声明一次，之后想用几次就写几次 <code>var(--name)</code>。图片要出现在不止一条规则里，就选这个。
           </span>
         </span>
       </label>
@@ -70,7 +70,7 @@
         <input type="radio" name="shape" value="html">
         <span class="shape-body">
           <strong>一个 HTML <code>&lt;img&gt;</code> 标签</strong>
-          <span class="shape-note">像素尺寸已经填好，这样页面其余部分加载时不会跳。
+          <span class="shape-note">像素尺寸已经填好，页面其余部分加载时不会跳。
           </span>
         </span>
       </label>
@@ -79,7 +79,7 @@
         <input type="radio" name="shape" value="markdown">
         <span class="shape-body">
           <strong>Markdown</strong>
-          <span class="shape-note">给 README 或者 issue 用：图片跟着文字走，不需要另外找地方托管。
+          <span class="shape-note">给 README 或者 issue 用，图片跟着文字走，不用另找地方托管。
           </span>
         </span>
       </label>
@@ -96,7 +96,7 @@
         <input type="checkbox" id="svg-base64">
         <span>
           <strong>SVG 也用 base64</strong>
-          <span class="check-note">默认关闭，因为 SVG 是文本，而 base64 是给字节用的。百分号编码让标记在样式表里仍然读得懂，而且通常还短五分之一。只有遇到非要 <code>;base64</code> 不可的工具链时才把它打开。
+          <span class="check-note">默认关着，因为 SVG 是文本，而 base64 是给字节用的。百分号编码让标记在样式表里仍然读得懂，通常还短五分之一。只有碰上非要 <code>;base64</code> 不可的工具链，才把它打开。
           </span>
         </span>
       </label>
@@ -109,7 +109,7 @@
     <h2><span class="step">3</span> 复制</h2>
 
     <p id="empty-note" class="card-lede">
-      还什么都没选。往上面拖一张图片，要粘的那一行就会出现在这里。
+      还什么都没选。往上面拖一张图片，要粘的那一行就出现在这里。
     </p>
 
     <div id="results" hidden>

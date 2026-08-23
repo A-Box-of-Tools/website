@@ -1,5 +1,5 @@
 <main>
-  <!-- Passo 1 &mdash; o arquivo -->
+  <!-- Passo 1: o arquivo -->
   <section class="card">
     <h2><span class="step">1</span> Escolha um vídeo</h2>
 
@@ -23,13 +23,13 @@
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- Passo 2 &mdash; o trecho -->
+  <!-- Passo 2: o trecho -->
   <section class="card" id="section-card" hidden>
     <h2><span class="step">2</span> Escolha o trecho</h2>
 
     <p class="hint">
-      Toque o clipe e marque a parte que você quer. <kbd>I</kbd> põe o início
-      onde o cursor de reprodução está, <kbd>O</kbd> põe o fim, e as duas alças
+      Toque o clipe e marque a parte que você quer. O <kbd>I</kbd> põe o início
+      onde o cursor de reprodução está, o <kbd>O</kbd> põe o fim, e as duas alças
       da barra podem ser arrastadas.
     </p>
 
@@ -71,7 +71,7 @@
     </div>
   </section>
 
-  <!-- Passo 3 &mdash; o GIF -->
+  <!-- Passo 3: o GIF -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> Tamanho e taxa de quadros</h2>
 
@@ -87,8 +87,8 @@
           <option value="custom">Exatamente&hellip;</option>
         </select>
         <p class="field-note">
-          A altura acompanha, então o formato nunca muda. A largura é o que um
-          GIF custa: metade da largura é um quarto dos pixels.
+          A altura acompanha, então o formato nunca muda. A largura é o que
+          encarece um GIF: metade da largura dá um quarto dos pixels.
         </p>
         <p class="field-note" id="width-note" hidden></p>
       </div>
@@ -102,29 +102,29 @@
       <div class="field">
         <label for="fps">Quadros por segundo</label>
         <select id="fps">
-          <option value="5">5 &mdash; o menor</option>
+          <option value="5">5: o menor</option>
           <option value="10">10</option>
-          <option value="12" selected>12 &mdash; suave o bastante</option>
+          <option value="12" selected>12: suave o bastante</option>
           <option value="15">15</option>
           <option value="20">20</option>
-          <option value="25">25 &mdash; o mais suave</option>
+          <option value="25">25: o mais suave</option>
         </select>
         <p class="field-note">
-          Não é a taxa do próprio vídeo: os quadros são amostrados dele. Doze se
-          lê como movimento; acima de vinte o arquivo cresce mais rápido do que a
-          suavidade aparece.
+          Não é a taxa do próprio vídeo, porque os quadros são amostrados dele.
+          Doze já se lê como movimento, e acima de vinte o arquivo cresce mais
+          rápido do que a suavidade aparece.
         </p>
       </div>
 
       <div class="field">
         <label for="dither">Dithering</label>
         <select id="dither">
-          <option value="on" selected>Ligado &mdash; gradientes mais suaves</option>
-          <option value="off">Desligado &mdash; mais chapado, menor</option>
+          <option value="on" selected>Ligado: gradientes mais suaves</option>
+          <option value="off">Desligado: mais chapado, menor</option>
         </select>
         <p class="field-note">
-          Mistura duas cores da paleta onde a certa está faltando. Ordenado, para
-          um fundo parado não fervilhar.
+          Mistura duas cores da paleta onde a certa está faltando. É ordenado,
+          para um fundo parado não fervilhar.
         </p>
       </div>
 
@@ -133,7 +133,7 @@
           <input type="checkbox" id="loop" checked>
           Repetir para sempre
         </label>
-        <p class="field-note">Desligado toca uma vez e para.</p>
+        <p class="field-note">Desligado, ele toca uma vez e para.</p>
       </div>
     </div>
 

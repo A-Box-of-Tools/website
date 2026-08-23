@@ -3,14 +3,13 @@
 #
 
 nav = "隐私与 Cookie"
-title = "隐私与 Cookie &mdash; abox.tools"
-description = "abox.tools 收集什么、不收集什么。你的文件永远不会被上传；广告、访问统计和捐助按钮这三样，这里逐一写清楚。"
+title = "隐私与 Cookie | abox.tools"
+description = "abox.tools 收集什么、不收集什么。你的文件不会被上传，而广告、访问统计和捐助按钮这三样，这里逐一写清楚。"
 heading = "隐私与 Cookie"
 lede = """
-    短版本：你的文件永远不会被上传，因为根本没有可以上传到的地方。这个页面\
-    剩下的内容讲的是广告、访问统计和托管 &mdash; 也就是确实牵涉到其他公司的\
-    那几部分。"""
-updated = "2026 年 8 月 19 日"
-og_title = "隐私与 Cookie &mdash; abox.tools"
-og_description = "你的文件永远不会被上传。什么被收集了、被谁收集，以及怎么关掉它。"
+    先说短的，你的文件不会被上传，因为根本没有可以上传到的地方。这个页面剩下
+    的内容讲的是广告、访问统计和托管，也就是确实牵涉到其他公司的那几部分。"""
+updated = "2026年8月22日"
+og_title = "隐私与 Cookie | abox.tools"
+og_description = "你的文件不会被上传。什么被收集了、由谁收集，以及怎么把它关掉。"
 og_image_alt = "abox.tools - 不碰服务器的工具"

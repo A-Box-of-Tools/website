@@ -2,16 +2,15 @@
     <h2>La risposta corta</h2>
     <p>
       Apri il <a href="../../rimuovere-dati-exif/">visualizzatore e rimozione
-      EXIF</a>, trascinaci dentro le foto, e premi «Rimuovi tutti i metadati».
+      EXIF</a>, trascinaci dentro le foto e premi «Rimuovi tutti i metadati».
       Ogni tag, i blocchi XMP e IPTC, i commenti e la miniatura incorporata se ne
-      vanno, su tutte le foto dell'elenco in una volta. L'immagine in sé non
-      viene toccata &mdash; non ricompressa, non decodificata, non cambiata di un
-      pixel.
+      vanno, su tutte le foto dell'elenco in una volta sola. L'immagine in sé non
+      viene toccata: non ricompressa, non decodificata, non cambiata di un pixel.
     </p>
     <p>
-      Prima di farlo, vale la pena guardare cosa c'era là dentro. Di solito è più
-      di quanto la gente si aspetti, e quell'elenco è la ragione stessa per fare
-      tutto questo.
+      Prima di farlo, però, vale la pena guardare cosa c'era là dentro. Di solito
+      è più di quanto la gente si aspetti, e quell'elenco è la ragione stessa per
+      cui si fa tutto questo.
     </p>
   </section>
 
@@ -26,13 +25,13 @@
       <li>
         <strong>EXIF.</strong> Il principale. Marca e modello della fotocamera,
         obiettivo, impostazioni di esposizione, ISO, la data e l'ora al secondo,
-        l'orientamento in cui l'immagine va mostrata, e &mdash; su un telefono
-        con i servizi di localizzazione attivi per la fotocamera &mdash; una
-        posizione GPS accurata a pochi metri. Spesso anche il numero di serie del
-        corpo macchina.
+        l'orientamento in cui l'immagine va mostrata, e, su un telefono con i
+        servizi di localizzazione attivi per la fotocamera, una posizione GPS
+        accurata a pochi metri. Spesso anche il numero di serie del corpo
+        macchina.
       </li>
       <li>
-        <strong>GPS.</strong> Tecnicamente parte dell'EXIF, e vale la pena
+        <strong>GPS.</strong> Tecnicamente è parte dell'EXIF, e vale la pena
         nominarlo a parte perché è quello che conta di più. È scritto in gradi,
         primi e secondi, un formato che riesce benissimo a non sembrare un
         indirizzo.
@@ -40,8 +39,8 @@
       <li>
         <strong>XMP.</strong> Un pacchetto di XML che scrivono i programmi di
         ritocco. Può portare il tuo nome, il tuo software, valutazioni, parole
-        chiave, cronologia delle modifiche, e una copia di alcuni campi EXIF
-        &mdash; motivo per cui rimuovere solo l'EXIF non basta.
+        chiave, cronologia delle modifiche e una copia di alcuni campi EXIF, ed è
+        il motivo per cui rimuovere solo l'EXIF non basta.
       </li>
       <li>
         <strong>IPTC.</strong> Un blocco più vecchio con campi di didascalia,
@@ -50,9 +49,9 @@
       </li>
       <li>
         <strong>La miniatura incorporata.</strong> Una piccola seconda copia
-        dell'immagine. Viene generata quando il file viene scritto, e non sempre
-        viene rigenerata quando l'immagine viene modificata &mdash; ed è così che
-        una foto ritagliata può viaggiare con una miniatura di quello che è stato
+        dell'immagine. Viene generata quando il file viene scritto e non sempre
+        viene rigenerata quando l'immagine viene modificata: è così che una foto
+        ritagliata può viaggiare con una miniatura di quello che è stato
         ritagliato via.
       </li>
       <li>
@@ -71,9 +70,9 @@
     <p>
       <strong>Quasi tutti i grandi social network tolgono i metadati quando
       pubblichi.</strong> Facebook, Instagram e X ricodificano le immagini
-      caricate e nel farlo buttano i tag. Non è una gentilezza &mdash; i dati
-      dalla loro parte se li tengono &mdash; ma vuol dire che una foto pubblicata
-      su quei servizi non consegna le proprie coordinate a chiunque la guardi.
+      caricate e nel farlo buttano i tag. Non è una gentilezza, perché i dati
+      dalla loro parte se li tengono, ma vuol dire che una foto pubblicata su
+      quei servizi non consegna le proprie coordinate a chiunque la guardi.
     </p>
     <p>
       <strong>Quasi tutto il resto li tiene.</strong> Un allegato di posta. Un
@@ -81,15 +80,15 @@
       che come foto. Un'immagine su un forum, un annuncio di un mercatino, un
       sito personale, un'unità condivisa, una segnalazione di bug, un ticket di
       assistenza. In tutti questi casi il file arriva intatto, e chiunque lo
-      scarichi può leggerne i tag con strumenti che arrivano insieme al suo
+      scarichi può leggerne i tag con strumenti che gli sono arrivati insieme al
       sistema operativo.
     </p>
     <p>
       I rischi realistici sono banali più che drammatici: un annuncio fotografato
       in casa, la foto di un bambino scattata a scuola, un account
       apparentemente anonimo che pubblica foto che condividono tutte lo stesso
-      numero di serie della fotocamera, un «scattata la settimana scorsa» che era
-      di marzo.
+      numero di serie della fotocamera, uno «scattata la settimana scorsa» che
+      era di marzo.
     </p>
   </section>
 
@@ -97,22 +96,23 @@
     <h2>Perché non risalvarla e basta?</h2>
     <p>
       Risalvare una foto passando da un programma di ritocco o da un compressore
-      rimuove davvero i metadati &mdash; l'immagine viene decodificata in pixel e
-      ricodificata, e una tela piena di pixel non porta con sé alcun tag.
-      Funziona, e ti costa qualità, perché quella ricodifica è con perdita.
+      i metadati li rimuove davvero, perché l'immagine viene decodificata in
+      pixel e ricodificata, e un canvas pieno di pixel non porta con sé nessun
+      tag. Funziona, e ti costa qualità, perché quella ricodifica è con perdita.
     </p>
     <p>
-      Rimuovere i metadati come si deve non costa proprio niente. I tag stanno
-      nel contenitore <em>attorno</em> all'immagine compressa, non dentro,
-      quindi toglierli è cancellare voci da un elenco e riscrivere l'elenco. I
-      dati compressi dell'immagine vengono copiati byte per byte e il risultato
-      decodifica esattamente gli stessi pixel. È tutto lì il motivo per usare uno
-      strumento per i metadati invece di un convertitore.
+      Rimuovere i metadati come si deve invece non costa proprio niente. I tag
+      stanno nel contenitore <em>attorno</em> all'immagine compressa e non
+      dentro, quindi toglierli vuol dire cancellare voci da un elenco e
+      riscrivere l'elenco. I dati compressi dell'immagine vengono copiati byte
+      per byte e il risultato decodifica esattamente gli stessi pixel. È tutto
+      lì il motivo per usare uno strumento per i metadati invece di un
+      convertitore.
     </p>
     <p>
       L'eccezione è se dovevi ricodificare comunque. Se stai già comprimendo o
-      ridimensionando la foto, i tag se ne vanno come effetto collaterale e non
-      ti serve un secondo passaggio.
+      ridimensionando la foto, i tag se ne vanno come effetto collaterale e un
+      secondo passaggio non ti serve.
     </p>
   </section>
 
@@ -121,44 +121,44 @@
     <p>
       I telefoni non ruotano l'immagine quando giri il telefono. La registrano
       come l'ha vista il sensore e aggiungono un tag Orientation che dice come va
-      girata per mostrarla. Togli tutti i tag e certi visualizzatori mostreranno
-      la tua foto di traverso.
+      girata per mostrarla. Togli tutti i tag e certi visualizzatori ti
+      mostreranno la foto di traverso.
     </p>
     <p>
       È per questo che lo strumento di qui ha un'opzione «tieni il tag di
       orientamento», attiva di default. Riscrive un minuscolo blocco EXIF che
-      contiene quel solo tag e nient'altro, e solo per le foto che ne avevano
-      davvero bisogno. Il GPS, gli orari, il numero di serie e il resto se ne
-      vanno lo stesso.
+      contiene quel solo tag e nient'altro, e lo fa solo per le foto che ne
+      avevano davvero bisogno. Il GPS, gli orari, il numero di serie e il resto
+      se ne vanno lo stesso.
     </p>
     <p>
-      Toglila se preferisci che il file non porti alcun EXIF, proprio nessuno
-      &mdash; e poi controlla il risultato prima di mandarlo, perché una foto di
-      traverso è l'esito abituale.
+      Toglila se preferisci che il file non porti EXIF di nessun tipo, e poi
+      controlla il risultato prima di mandarlo, perché una foto di traverso è
+      l'esito abituale.
     </p>
   </section>
 
   <section>
     <h2>Modificare invece di rimuovere</h2>
     <p>
-      Rimuovere tutto è la risposta giusta per quasi tutti. A volte non lo è: un
-      fotografo può volere che la riga di copyright e le impostazioni della
-      fotocamera restino e che se ne vada solo la posizione; un archivista può
-      aver bisogno di correggere una data sbagliata perché lo era l'orologio
-      della fotocamera.
+      Rimuovere tutto è la risposta giusta per quasi chiunque. A volte però non
+      lo è: un fotografo può volere che la riga di copyright e le impostazioni
+      della fotocamera restino e che se ne vada solo la posizione; un archivista
+      può aver bisogno di correggere una data sbagliata perché sbagliato era
+      l'orologio della fotocamera.
     </p>
     <p>
-      Si può fare in entrambi i casi. La posizione si può cancellare per conto
-      suo, e tag di testo, date, ISO, orientamento e risoluzione si possono
-      modificare sul posto.
+      Si può fare in tutti e due i casi. La posizione si può cancellare per conto
+      suo, e i tag di testo, le date, l'ISO, l'orientamento e la risoluzione si
+      possono modificare sul posto.
     </p>
     <p>
-      Un avvertimento che vale per ogni strumento che fa questo, non solo per
-      questo: scrivere il file ricostruisce il blocco EXIF, e una maker note
+      Un avvertimento che vale per ogni strumento che fa questo lavoro, non solo
+      per questo: scrivere il file ricostruisce il blocco EXIF, e una maker note
       contiene offset che puntano dentro il blocco <em>originale</em>. Una maker
       note ricostruita potrebbe quindi non essere più leggibile dal software del
-      produttore. Se la cosa ti interessa, cancella la maker note o lascia il
-      file non modificato.
+      produttore. Se la cosa ti interessa, cancella la maker note oppure lascia
+      il file com'è.
     </p>
   </section>
 
@@ -169,17 +169,17 @@
       che lo strumento di qui gestisce.
     </p>
     <p>
-      L'HEIC &mdash; quello che un iPhone salva di default &mdash; e l'AVIF sono
-      formati a scatole costruiti con atomi annidati, e hanno bisogno di un
-      analizzatore del tutto diverso. Lo strumento li riconosce e lo dice invece
-      di produrre un file rotto. Se hai un HEIC, convertirlo in JPEG ne rimuoverà
-      i metadati come effetto collaterale della conversione.
+      L'HEIC, quello che un iPhone salva di default, e l'AVIF sono formati
+      costruiti con box annidati, e hanno bisogno di un analizzatore del tutto
+      diverso. Lo strumento li riconosce e te lo dice, invece di produrre un file
+      rotto. Se hai un HEIC, convertirlo in JPEG ne rimuoverà i metadati come
+      effetto collaterale della conversione.
     </p>
     <p>
       Nemmeno un TIFF nudo viene gestito, e per un motivo più interessante: in un
       TIFF i metadati e i dati dei pixel sono indirizzati dagli stessi offset,
       quindi rimuovere dei tag vuol dire riscrivere l'indirizzamento stesso
-      dell'immagine. È fattibile ed è un altro lavoro.
+      dell'immagine. È fattibile, ed è un altro lavoro.
     </p>
   </section>
 
@@ -187,12 +187,13 @@
     <h2>Un'abitudine che vale la pena prendere</h2>
     <p>
       Controlla prima di pubblicare invece che dopo. Leggere i tag richiede
-      qualche secondo e l'elenco dei riscontri nomina le cose che vale la pena
-      sapere &mdash; la posizione, gli orari, i numeri di serie &mdash; prima
-      della tabella completa di tutti i tag, così non devi sapere cosa cercare.
+      qualche secondo, e l'elenco dei riscontri nomina le cose che vale la pena
+      sapere, cioè la posizione, gli orari e i numeri di serie, prima della
+      tabella completa di tutti i tag, così non devi sapere in anticipo cosa
+      cercare.
     </p>
     <p>
-      La posizione è mostrata prima in gradi decimali, di proposito. «51 gradi,
+      La posizione è mostrata prima in gradi decimali, e di proposito. «51 gradi,
       30 primi, 26 secondi» non rende evidente che una foto nomina l'edificio in
       cui è stata scattata. Una coppia di decimali che puoi incollare in una
       mappa sì.
@@ -204,23 +205,23 @@
     <p>
       C'è un'ironia particolare nel modo abituale in cui questo problema viene
       risolto: una persona preoccupata di cosa riveli la propria foto la carica
-      su un sito per scoprirlo. Adesso il sito ha la foto, le coordinate,
-      l'orario e il numero di serie, e una copia dell'immagine su un disco che è
-      suo.
+      su un sito per scoprirlo. E adesso il sito ha la foto, le coordinate,
+      l'orario e il numero di serie, più una copia dell'immagine su un disco che
+      è suo.
     </p>
     <p>
       Non ce n'è motivo. Leggere e riscrivere il contenitore attorno a un JPEG
       sono qualche centinaio di righe di analisi che un browser esegue
-      benissimo, ed è per questo che lo strumento di qui non ha proprio alcuna
+      benissimo, ed è per questo che lo strumento di qui non ha proprio nessuna
       funzione di rete: nessun <code>fetch</code>, nessun
-      <code>XMLHttpRequest</code>, niente che potrebbe spedire un file anche se
+      <code>XMLHttpRequest</code>, niente che potrebbe spedire un file nemmeno se
       qualcosa ci provasse. Caricalo una volta, stacca la connessione, e continua
       a funzionare.
     </p>
     <p>
       <a href="../e-sicuro-caricare-i-propri-file/">È sicuro caricare i propri
       file sui convertitori online?</a> spiega come verificare quell'affermazione
-      su questo sito come su qualunque altro &mdash; e questo è il tipo di file
-      su cui vale più la pena verificare.
+      su questo sito come su qualunque altro, e questo è il tipo di file su cui
+      vale più la pena verificare.
     </p>
   </section>

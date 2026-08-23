@@ -19,11 +19,11 @@
     <h2>Ce qu'est réellement le HEIC</h2>
     <p>
       Le HEIC n'est pas vraiment un format d'image au sens où le JPEG en est un.
-      C'est un conteneur &mdash; la même structure à boîtes dont est fait un MP4
-      &mdash; avec à l'intérieur une image fixe de vidéo <strong>HEVC</strong>.
-      Le HEVC, aussi appelé H.265, est le codec qui a remplacé celui de votre
-      vieux caméscope, et il est très bon&nbsp;: une photo d'iPhone en HEIC pèse
-      à peu près la moitié de la même photo en JPEG à qualité égale.
+      C'est un conteneur, la même structure à boîtes dont est fait un MP4, avec à
+      l'intérieur une image fixe de vidéo <strong>HEVC</strong>. Le HEVC, aussi
+      appelé H.265, est le codec qui a remplacé celui de votre vieux caméscope,
+      et il est très bon&nbsp;: une photo d'iPhone en HEIC pèse à peu près la
+      moitié de la même photo en JPEG à qualité égale.
     </p>
     <p>
       Apple y est passé dans iOS 11, en 2017, et l'a mis par défaut. Ce qui veut
@@ -54,9 +54,9 @@
       Décoder du HEVC demande un décodeur HEVC, et le HEVC est breveté. Les
       licences sont administrées par plus d'un consortium de brevets, et livrer
       un décodeur veut dire payer quelqu'un. Les navigateurs s'en tirent en
-      s'appuyant sur le système d'exploitation &mdash; Chrome lit de la
+      s'appuyant sur le système d'exploitation, et Chrome lit ainsi de la
       <em>vidéo</em> HEVC sur une machine dont le matériel a déjà un décodeur
-      sous licence &mdash; mais ce chemin est câblé pour la lecture vidéo et non
+      sous licence&nbsp;; mais ce chemin est câblé pour la lecture vidéo et non
       pour les images fixes. Un HEIC remis à <code>&lt;img&gt;</code> est donc
       refusé, dans Chrome, Firefox et Edge pareillement, sur tous les systèmes
       d'exploitation.
@@ -79,8 +79,8 @@
       envoyée, décodée sur une machine que vous n'avez jamais vue, réencodée en
       JPEG, et renvoyée. C'est ce que fait à peu près tout
       &laquo;&nbsp;convertisseur HEIC en ligne gratuit&nbsp;&raquo;, et c'est
-      pourquoi ils ont tous besoin de vos fichiers. Ce n'est pas de la paresse
-      &mdash; le navigateur en est réellement incapable tout seul.
+      pourquoi ils ont tous besoin de vos fichiers. Ce n'est pas de la
+      paresse&nbsp;: le navigateur en est réellement incapable tout seul.
     </p>
     <p>
       Ce que cela coûte mérite d'être dit sans détour. Les photos d'un téléphone
@@ -97,7 +97,7 @@
       Seconde possibilité&nbsp;: mettre le décodeur dans la page. C'est ce que
       fait <a href="../../convertir-heic-en-jpg/">celui-ci</a>. Il emporte
       <code>libheif</code>, compilé en WebAssembly, comme un fichier servi depuis
-      ce site &mdash; environ 1,4 MB, téléchargé une fois puis mis en cache.
+      ce site, soit environ 1,4&nbsp;MB, téléchargés une fois puis mis en cache.
       Votre navigateur l'exécute sur votre propre machine, sur votre propre
       matériel, et la photo ne va nulle part. Chargez la page une fois et vous
       pouvez couper entièrement votre connexion sans qu'elle cesse de
@@ -105,9 +105,10 @@
       la plus simple qui soit.
     </p>
     <p>
-      Les 1,4 MB sont le prix entier. Si vous êtes sur une connexion facturée au
-      volume, c'est un coût réel et il vaut la peine de le savoir&nbsp;: c'est
-      pourquoi la page le dit à voix haute au lieu de le télécharger en douce.
+      Ces 1,4&nbsp;MB sont tout le prix à payer. Si vous êtes sur une connexion
+      facturée au volume, c'est un coût réel et il vaut la peine de le
+      savoir&nbsp;: c'est pourquoi la page le dit à voix haute au lieu de le
+      télécharger en douce.
     </p>
   </section>
 
@@ -121,11 +122,10 @@
     </p>
     <ul>
       <li>
-        <strong>À la qualité 92</strong> &mdash; là où le convertisseur commence
-        &mdash; une photographie est très difficile à distinguer de l'original à
-        toute taille de visionnage normale. Vous cherchez des différences dans
-        les dégradés doux, comme un ciel dégagé, et vous n'en trouverez
-        généralement pas.
+        <strong>À la qualité 92</strong>, là où le convertisseur commence, une
+        photographie est très difficile à distinguer de l'original à toute taille
+        de visionnage normale. Vous cherchez des différences dans les dégradés
+        doux, comme un ciel dégagé, et vous n'en trouverez généralement pas.
       </li>
       <li>
         <strong>Le JPEG sera plus gros.</strong> En général entre un tiers de
@@ -155,9 +155,9 @@
       reviennent en ayant perdu leur jour de prise de vue&nbsp;: toute une
       photothèque de vacances se range alors en bas de la bibliothèque, à la date
       du jour. Cela arrive parce que convertir à travers un canvas ne donne que
-      des pixels &mdash; un canvas ne contient aucune étiquette &mdash;&nbsp;;
-      donc, à moins qu'un convertisseur n'aille chercher les métadonnées à part,
-      elles ont simplement disparu.
+      des pixels, et qu'un canvas ne contient aucune étiquette&nbsp;; à moins
+      qu'un convertisseur n'aille chercher les métadonnées à part, elles ont donc
+      simplement disparu.
     </p>
     <p>
       L'outil d'ici copie le bloc EXIF depuis le HEIC et l'écrit dans le
@@ -177,10 +177,11 @@
       le conteneur, et dans le bloc EXIF. Le décodeur applique la rotation du
       conteneur pendant le décodage&nbsp;: les pixels remis sont donc déjà dans
       le bon sens. Si l'EXIF disait encore
-      &laquo;&nbsp;tournez ceci de 90 degrés&nbsp;&raquo;, un afficheur le ferait
-      une seconde fois et toutes les photos verticales ressortiraient couchées.
-      L'étiquette d'orientation est donc mise à &laquo;&nbsp;droite&nbsp;&raquo;
-      et tout le reste est recopié exactement comme le téléphone l'avait écrit.
+      &laquo;&nbsp;tournez ceci de 90&nbsp;degrés&nbsp;&raquo;, une visionneuse le
+      ferait une seconde fois et toutes les photos verticales ressortiraient
+      couchées. L'étiquette d'orientation est donc remise sur
+      &laquo;&nbsp;image à l'endroit&nbsp;&raquo;, et tout le reste est recopié
+      exactement comme le téléphone l'avait écrit.
     </p>
     <p>
       Si ce que vous voulez, c'est parcourir les étiquettes en détail, ou les
@@ -209,9 +210,9 @@
         HEIC&nbsp;: elle n'est donc pas là pour être convertie.
       </li>
       <li>
-        <strong>L'AVIF n'est pas du HEIC.</strong> Ils se ressemblent &mdash; même
-        conteneur, autre codec dedans &mdash; mais tous les navigateurs actuels
-        ouvrent un AVIF nativement&nbsp;: il n'y a donc rien à convertir et
+        <strong>L'AVIF n'est pas du HEIC.</strong> Ils se ressemblent, même
+        conteneur et autre codec dedans, mais tous les navigateurs actuels
+        ouvrent un AVIF nativement&nbsp;: il n'y a donc rien à convertir, et
         l'outil le dit au lieu de faire semblant de travailler.
       </li>
       <li>
@@ -239,7 +240,7 @@
     <ol>
       <li>
         Ouvrez la page, puis ouvrez les outils de développement de votre
-        navigateur et allez dans l'onglet Réseau.
+        navigateur et allez dans l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo;.
       </li>
       <li>
         Convertissez une photo, et regardez. Un outil qui décode sur votre

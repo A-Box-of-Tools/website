@@ -1,5 +1,5 @@
 <main>
-  <!-- क़दम 1 &mdash; फ़ाइलें -->
+  <!-- कदम 1 &mdash; फ़ाइलें -->
   <section class="card">
     <h2><span class="step">1</span> SVG फ़ाइलें चुनिए</h2>
 
@@ -23,15 +23,15 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- क़दम 2 &mdash; साइज़ -->
+  <!-- कदम 2 &mdash; साइज़ -->
   <section class="card" id="size-card">
     <h2><span class="step">2</span> बताइए कि यह कितनी बड़ी होनी चाहिए</h2>
 
     <p class="card-lede">
       यह वह अकेला सवाल है जिसका जवाब वेक्टर आपके लिए दे नहीं सकता। SVG में
-      पिक्सल होते ही नहीं &mdash; उसमें खींचने के निर्देश होते हैं, और वह
-      उन्हें आपके बताए किसी भी साइज़ पर पूरा कर देगी। नीचे दी संख्या कोई ऐसी
-      सीमा नहीं है जिससे आप टकरा रहे हों, जैसी वह किसी फ़ोटोग्राफ़ के साथ होती;
+      पिक्सल होते ही नहीं। उसमें खींचने के निर्देश होते हैं, और वह उन्हें आपके
+      बताए किसी भी साइज़ पर पूरा कर देगी। नीचे दी संख्या कोई ऐसी सीमा नहीं है
+      जिससे आप टकरा रहे हों, जैसी वह किसी फ़ोटोग्राफ़ के साथ होती।
       24&nbsp;पिक्सल के आइकन से बने 4000 पिक्सल ठीक उतने ही साफ़ हैं जितने 24
       थे।
     </p>
@@ -117,7 +117,7 @@
       @2x is exactly twice its @1x and cannot drift by a rounded pixel.
     -->
     <div class="option-row" id="density-row">
-      <label for="density">high-DPI नक़लें भी लिखिए</label>
+      <label for="density">high-DPI नकलें भी लिखिए</label>
       <select id="density">
         <option value="1" selected>नहीं &mdash; हर ड्रॉइंग की एक फ़ाइल</option>
         <option value="2">@2x भी &mdash; Retina स्क्रीन के लिए</option>
@@ -129,7 +129,7 @@
     <p id="size-warning" class="field-summary warn" hidden></p>
   </section>
 
-  <!-- क़दम 3 &mdash; फ़ॉर्मैट -->
+  <!-- कदम 3 &mdash; फ़ॉर्मैट -->
   <section class="card" id="format-card">
     <h2><span class="step">3</span> फ़ॉर्मैट चुनिए</h2>
 
@@ -148,11 +148,11 @@
         <label for="quality">क्वालिटी &mdash; <output id="quality-value" for="quality">90</output></label>
         <input type="range" id="quality" min="30" max="100" step="1" value="90">
         <p class="field-note">
-          सिर्फ़ JPEG और WebP के लिए; PNG में क्वालिटी का कोई बटन है ही नहीं
-          क्योंकि वह नुक़सान-रहित है। सपाट रंग और सख़्त किनारे &mdash; जिनसे
-          SVG का ज़्यादातर हिस्सा बना होता है &mdash; ठीक वही हैं जिन्हें
-          नुक़सान वाला एनकोडर सबसे बुरी तरह सँभालता है, इसलिए यहाँ यह उससे ऊँचा
-          बैठता है जितना किसी फ़ोटोग्राफ़ के लिए बैठता।
+          सिर्फ़ JPEG और WebP के लिए। PNG में क्वालिटी का कोई बटन है ही नहीं,
+          क्योंकि वह नुकसान-रहित है। सपाट रंग और सख्त किनारे, जिनसे SVG का
+          ज़्यादातर हिस्सा बना होता है, ठीक वही हैं जिन्हें नुकसान वाला एनकोडर
+          सबसे बुरी तरह सँभालता है, इसलिए यहाँ यह उससे ऊँचा बैठता है जितना
+          किसी फ़ोटोग्राफ़ के लिए बैठता।
         </p>
       </div>
 
@@ -168,14 +168,14 @@
     </div>
   </section>
 
-  <!-- क़दम 4 &mdash; देखिए, फिर ले जाइए -->
+  <!-- कदम 4 &mdash; देखिए, फिर ले जाइए -->
   <section class="card" id="run-card">
     <h2><span class="step">4</span> देखिए, फिर सहेजिए</h2>
 
     <p class="card-lede">
       प्रीव्यू को वही कोड खींचता है जो फ़ाइल लिखता है, आपकी चुनी फ़ाइल से, इसी
-      मशीन पर। इसमें जाँचने लायक़ वही दो चीज़ें हैं जो ड्रॉइंग के पिक्सल बनते
-      वक़्त बदल जाती हैं: वह बाल जैसी लकीर जो आधे पिक्सल चौड़ी थी और भूरी पड़
+      मशीन पर। इसमें जाँचने लायक वही दो चीज़ें हैं जो ड्रॉइंग के पिक्सल बनते
+      वक्त बदल जाती हैं: वह बाल जैसी लकीर जो आधे पिक्सल चौड़ी थी और भूरी पड़
       गई, और कोई भी टेक्स्ट, जो वेब से लाए गए फ़ॉन्ट में नहीं, इसी मशीन के पास
       मौजूद फ़ॉन्ट में खिंचता है।
     </p>
@@ -201,7 +201,7 @@
     <div id="results" class="results" hidden>
       <div class="results-head">
         <h3>तैयार</h3>
-        <button type="button" id="download-zip" class="ghost" hidden>सबको एक ज़िप में डाउनलोड कीजिए</button>
+        <button type="button" id="download-zip" class="ghost" hidden>सबको एक ZIP में डाउनलोड कीजिए</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>

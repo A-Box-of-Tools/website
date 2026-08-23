@@ -13,13 +13,13 @@ description = "Convierte fotos o escaneos en un único PDF: tamaño de página, 
 
 heading = "Cómo unir imágenes en un solo PDF"
 lede = """
-    Alguien ha pedido «un PDF» y tú tienes once fotografías de papeles. Esto
-    cubre las decisiones que de verdad cambian el resultado &mdash; tamaño de
-    página, orden, calidad y qué dice el documento sobre ti &mdash; y cuáles
-    puedes ignorar."""
+    Alguien te ha pedido «un PDF» y tú lo que tienes son once fotografías de
+    papeles. Aquí van las decisiones que de verdad cambian el resultado, que son
+    el tamaño de página, el orden, la calidad y qué acaba diciendo el documento
+    sobre ti, y también cuáles puedes ignorar."""
 
 updated = "20 de agosto de 2026"
 
 og_title = "Cómo unir imágenes en un solo PDF"
 og_description = "Tamaño de página, orden y giro, por qué un JPEG no tiene por qué perder calidad al entrar, y qué le cuenta un PDF a la persona a la que se lo mandas."
-og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

@@ -4,12 +4,12 @@
 
 nav = "Termos de uso"
 title = "Termos de uso &mdash; abox.tools"
-description = "As condições em que este site é oferecido: gratuito, como está, sem conta, sem garantia &mdash; e seus arquivos continuam inteiramente seus, porque nunca chegam até nós."
+description = "As condições em que este site é oferecido: gratuito, no estado em que se encontra, sem conta e sem garantia. Seus arquivos continuam inteiramente seus, porque nunca chegam até nós."
 heading = "Termos de uso"
 lede = """
     Não há conta para abrir nem contrato para assinar, então isto aqui é curto.
     Descreve o que você pode esperar deste site e o que ele não promete."""
 updated = "19 de agosto de 2026"
 og_title = "Termos de uso &mdash; abox.tools"
-og_description = "Gratuito, como está, sem conta, sem garantia. Seus arquivos continuam inteiramente seus."
-og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"
+og_description = "Gratuito, no estado em que se encontra, sem conta e sem garantia. Seus arquivos continuam inteiramente seus."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

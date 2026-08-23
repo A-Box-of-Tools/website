@@ -10,44 +10,43 @@ heading = "SVG&nbsp;para&nbsp;imagem <span class=\"h1-kw\">&mdash; rasterizar um
 tagline = "Diga o tamanho. Um vetor não tem tamanho próprio a perder."
 
 title = "SVG para PNG &mdash; rasterize um vetor em qualquer tamanho, sem envio"
-description = "Converta um SVG em PNG, JPEG ou WebP em qualquer tamanho, no seu navegador. Diga a largura, um multiplicador ou uma caixa; leve também as cópias @2x e @3x. Transparência mantida, nada enviado."
+description = "Converta um SVG em PNG, JPEG ou WebP em qualquer tamanho, no seu navegador. Diga a largura, um multiplicador ou uma caixa, e leve também as cópias @2x e @3x. A transparência é mantida e nada é enviado."
 og_title = "Transforme um SVG em PNG em qualquer tamanho, sem enviá-lo"
-og_description = "Um vetor não tem tamanho em pixels próprio, então o número é escolha sua - 32 ou 8000, com a mesma nitidez nos dois casos. Tudo roda na sua própria máquina."
+og_description = "Um vetor não tem tamanho em pixels próprio, então o número é escolha sua: 32 ou 8000, com a mesma nitidez nos dois casos. Tudo roda no seu próprio computador."
 og_image_alt = "SVG para imagem - rasterize um vetor em PNG, JPEG ou WebP em qualquer tamanho"
 
 pledge = """
-    O desenho é rasterizado pelo mesmo motor que acabou de colocá-lo na sua
-    tela. O seu arquivo é lido do seu disco, a tag raiz dele é reescrita para o
-    tamanho que você pediu por cem linhas em <code>src/svg.js</code> que você
-    pode ler, e ele é desenhado num canvas que o seu navegador já traz. Esta
-    ferramenta não tem função de rede de espécie alguma &mdash; nada a buscar,
-    nada a enviar &mdash; e não existe do outro lado desta página servidor nenhum
-    para onde mandar uma logomarca, mesmo que houvesse caminho."""
+    O desenho é rasterizado pelo mesmo motor que acabou de colocá-lo na sua tela.
+    O seu arquivo é lido do seu disco, a tag raiz dele é reescrita para o tamanho
+    que você pediu por cem linhas em <code>src/svg.js</code> que você pode ler, e
+    ele é desenhado num canvas que o seu navegador já traz. Esta ferramenta não tem
+    função de rede de espécie alguma: não há o que buscar nem o que mandar. E do
+    outro lado desta página não existe servidor nenhum para onde mandar uma
+    logomarca, mesmo que houvesse caminho."""
 
 live_hint = """
-      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
-      aba Rede e rasterize alguma coisa. Nenhuma requisição leva um arquivo, uma
-      miniatura, um nome de arquivo ou um byte do que você escolheu. Ou desconecte
-      da internet e converta um mesmo assim."""
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e rasterize alguma
+      coisa. Nenhuma requisição leva um arquivo, uma miniatura, um nome de arquivo
+      ou um byte do que você escolheu. Ou então desligue a internet e converta um
+      assim mesmo."""
 
 read_first = """
-, <code>src/svg.js</code> para como o tamanho
-      próprio de um arquivo é lido e como a tag raiz dele é reescrita, e
-      <code>src/render.js</code> para as oito linhas que fazem a rasterização
-      &mdash; um &lt;img&gt;, um <code>drawImage</code> e um
-      <code>toBlob</code>, sem nada no meio."""
+, <code>src/svg.js</code> para como o tamanho próprio
+      de um arquivo é lido e como a tag raiz dele é reescrita, e
+      <code>src/render.js</code> para as oito linhas que fazem a rasterização: um
+      &lt;img&gt;, um <code>drawImage</code> e um <code>toBlob</code>, sem nada no
+      meio."""
 
 howto_heading = "Como converter um SVG em PNG sem enviá-lo"
 
 card = """
             Um SVG não tem tamanho em pixels próprio, então o número é escolha
-            sua &mdash; 32 ou 8000, e a mesma nitidez nos dois casos."""
+            sua: 32 ou 8000, e a mesma nitidez nos dois casos."""
 
 [words]
 plural = "arquivos SVG"
 choose = "um SVG"
-analytics_extra = """, nem nenhum dos
-  tamanhos, formatos ou nomes de arquivo que esta ferramenta calcula"""
 
 [[facts]]
 text = "Sem envio"
@@ -68,19 +67,19 @@ text = "Código aberto"
 title = "Sua arte não tem para onde ir."
 body = """
  A
-      Content-Security-Policy nomeia todos os endereços que esta página pode
-      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
-      seus arquivos pudessem ser coletados, e não existe no código nada que os
-      mandaria se existisse."""
+      Content-Security-Policy lista todos os endereços que esta página pode
+      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde seus
+      arquivos pudessem ser recolhidos, e não existe no código nada que os
+      mandaria mesmo que existisse."""
 
 [[privacy]]
-title = "Nada aqui busca coisa alguma."
+title = "Nada aqui vai buscar coisa alguma."
 body = """
  Não existe
       <code>fetch</code>, nem <code>XMLHttpRequest</code>, nem
-      <code>sendBeacon</code> em lugar nenhum de <code>src/</code>. O
-      rasterizador inteiro é um <code>&lt;img&gt;</code> segurando um blob do seu
-      próprio arquivo, um <code>drawImage</code> num canvas e um
+      <code>sendBeacon</code> em lugar nenhum de <code>src/</code>. O rasterizador
+      inteiro é um <code>&lt;img&gt;</code> segurando um blob do seu próprio
+      arquivo, um <code>drawImage</code> num canvas e um
       <code>canvas.toBlob</code>."""
 
 [[privacy]]
@@ -90,14 +89,14 @@ body = """
       <code>&lt;script&gt;</code>, um
       <code>&lt;image href=&quot;https://&hellip;&quot;&gt;</code> remoto, uma
       folha de estilo e uma fonte da web. Desenhado por meio de um
-      <code>&lt;img&gt;</code> ele está no que a especificação chama de
-      <em>modo estático seguro</em>: o script não roda e nenhum daqueles
-      endereços é buscado. Essa é uma garantia do navegador, não uma promessa
-      nossa, e é o motivo de esta página conseguir abrir um arquivo que nunca viu
-      sem que o arquivo consiga dar notícia a ninguém."""
+      <code>&lt;img&gt;</code>, ele fica no que a especificação chama de
+      <em>modo estático seguro</em>: o script não roda e nenhum daqueles endereços
+      é buscado. Essa é uma garantia do navegador, não uma promessa nossa, e é o
+      motivo de esta página conseguir abrir um arquivo que nunca viu sem que o
+      arquivo consiga dar notícia a ninguém."""
 
 [[privacy]]
-title = "O que o Google carrega, e o que não é entregue a ele."
+title = "O que o Google carrega, e o que não chega até ele."
 body = """
  Os scripts de
       publicidade e de medição vêm do Google, e o botão de doação vem do Buy Me a
@@ -108,29 +107,29 @@ body = """
 [[privacy]]
 title = "Funciona offline."
 body = """
- Desconecte da rede e a ferramenta continua
-      igual, porque nunca houve uma etapa de rede nela. Essa é a prova mais
+ Desligue a rede e a ferramenta continua
+      igualzinha, porque nunca houve uma etapa de rede nela. Essa é a prova mais
       simples de todas."""
 
 [[howto]]
 title = "Escolha o SVG."
 body = """
  Arraste um até o seletor, ou escolha uma pasta
-      cheia deles e converta o lote de uma vez. O arquivo é lido direto do seu
-      disco pelo navegador; nada é mandado para lugar nenhum enquanto você faz
-      isso. Cada linha diz que tamanho o arquivo acha que tem &mdash; e diz de
-      outro jeito quando aquele tamanho veio do <code>viewBox</code>, ou foi
-      presumido porque o arquivo não declara nenhum."""
+      cheia deles e converta o lote de uma vez. Quem lê o arquivo direto do seu
+      disco é o navegador, e nada é mandado para lugar nenhum enquanto você faz
+      isso. Cada linha diz que tamanho o arquivo acha que tem, e diz de outro jeito
+      quando aquele tamanho veio do <code>viewBox</code> ou foi presumido porque o
+      arquivo não declara nenhum."""
 
 [[howto]]
 title = "Diga de que tamanho."
 body = """
  Um multiplicador do tamanho próprio do
-      arquivo é a resposta mais rápida e a certa para um lote: cada desenho é
-      escalado a partir do próprio ponto de partida, então um conjunto de ícones
+      arquivo é a resposta mais rápida e a certa para um lote, porque cada desenho
+      é escalado a partir do próprio ponto de partida e um conjunto de ícones
       continua em proporção. Fora isso, diga uma largura, uma altura, o lado maior,
-      ou uma caixa com os dois lados. Aqui não há penalidade por um número grande,
-      como haveria com uma fotografia &mdash; o desenho é redesenhado naquele
+      ou uma caixa com os dois lados. Aqui não existe penalidade por um número
+      grande, como existiria com uma fotografia: o desenho é redesenhado naquele
       tamanho, não esticado até ele."""
 
 [[howto]]
@@ -148,17 +147,17 @@ body = """
 title = "Escolha o formato e decida sobre a transparência."
 body = """
  PNG, a menos que você tenha um
-      motivo: é sem perdas, mantém a transparência, e cor chapada comprime bem
-      nele. O JPEG não tem transparência nenhuma, então uma cor de fundo é
-      pintada quer você escolha uma ou não &mdash; sem ela, cada pixel
-      transparente sai preto. O WebP faz as duas coisas e gera um arquivo menor,
-      ao custo de software velho o bastante para não lê-lo."""
+      motivo, porque é sem perdas, mantém a transparência e comprime bem cor
+      chapada. O JPEG não tem transparência nenhuma, então uma cor de fundo é
+      pintada quer você escolha uma ou não, já que sem ela cada pixel transparente
+      sairia preto. O WebP faz as duas coisas e gera um arquivo menor, ao custo de
+      software velho o bastante para não lê-lo."""
 
 [[howto]]
 title = "Olhe a pré-visualização antes de baixar."
 body = """
  Ela é desenhada pelo mesmo código que
-      escreve o arquivo, a partir do seu arquivo, na sua máquina. Duas coisas
+      escreve o arquivo, a partir do seu arquivo, no seu computador. Duas coisas
       mudam quando um desenho vira pixels, e as duas aparecem aqui: um fio de
       cabelo que tinha meio pixel de largura fica cinza, e qualquer texto é
       desenhado com uma fonte que este computador tem, e não com uma buscada na
@@ -167,73 +166,72 @@ body = """
 [[howto]]
 title = "Leve os arquivos."
 body = """
- Um download por arquivo, ou o lote inteiro como
-      um zip só. Os nomes seguem o SVG de onde vieram, com <code>@2x</code> e
+ Um download por arquivo, ou o lote inteiro num
+      zip só. Os nomes seguem o SVG de onde vieram, com <code>@2x</code> e
       <code>@3x</code> nas cópias, e dois arquivos que teriam o mesmo nome são
       numerados em vez de um substituir o outro em silêncio."""
 
 [[faq]]
 q = "Meu SVG é enviado para algum lugar?"
 a = """
-        Não. O arquivo é lido pelo seu próprio navegador no seu próprio hardware,
-        desenhado num canvas pelo mesmo motor que renderiza qualquer outra imagem
-        que você vê, e devolvido como download. Esta ferramenta não tem função de
-        rede de espécie alguma &mdash; nunca busca nada e nunca manda nada &mdash;
-        e a <code>Content-Security-Policy</code> da página nomeia todos os
-        endereços que ela pode contatar, nenhum dos quais é deste site."""
+        Não. Quem lê o arquivo é o seu próprio navegador, no seu próprio hardware, e
+        quem o desenha num canvas é o mesmo motor que renderiza qualquer outra imagem
+        que você vê. Depois ele volta como download. Esta ferramenta não tem função
+        de rede de espécie alguma: nunca busca nada e nunca manda nada. E a
+        <code>Content-Security-Policy</code> da página lista todos os endereços que
+        ela pode acessar, nenhum dos quais é deste site."""
 
 [[faq]]
 q = "Em que tamanho eu deveria rasterizar um SVG?"
 a = """
-        No que a coisa que vai lê-lo pedir, multiplicado pela densidade de pixels
-        da tela em que ele vai ser visto. Uma logomarca que ocupa 200 pixels de CSS
-        precisa de 400 num notebook Retina e de 600 num celular recente, que é o
-        que as cópias <code>@2x</code> e <code>@3x</code> daqui são. Para um ícone
-        de aplicativo ou uma ficha de loja, a loja nomeia um número exato e é esse
-        o número. Quando ninguém lhe disse nada, 1024 no lado maior é um padrão
+        No que a coisa que vai lê-lo pedir, multiplicado pela densidade de pixels da
+        tela em que ele vai ser visto. Uma logomarca que ocupa 200 pixels de CSS
+        precisa de 400 num notebook Retina e de 600 num celular recente, que é o que
+        as cópias <code>@2x</code> e <code>@3x</code> daqui são. Para um ícone de
+        aplicativo ou uma ficha de loja, a loja nomeia um número exato e é esse o
+        número. Quando ninguém disse nada a você, 1024 no lado maior é um padrão
         útil: grande o bastante para quase qualquer uso e pequeno o bastante para
         mandar por e-mail."""
 
 [[faq]]
 q = "Deixar maior perde qualidade?"
 a = """
-        Não, e este é o único lugar onde essa resposta é honestamente não. Um vetor
-        é instrução em vez de pixel, então o navegador desenha as curvas de novo no
+        Não, e este é o único lugar onde essa resposta é honestamente não. Um vetor é
+        instrução em vez de pixel, então o navegador desenha as curvas de novo no
         tamanho que for pedido. 4000 pixels a partir de um ícone de 24 pixels é
-        exatamente tão nítido quanto 24 era. O que você não pode é ir no sentido
-        contrário: assim que virou PNG é pixel como qualquer outra coisa, então
-        rasterize no tamanho de que você precisa em vez de redimensionar o
-        resultado depois."""
+        exatamente tão nítido quanto 24 era. O que não dá é ir no sentido contrário:
+        assim que virou PNG, é pixel como qualquer outra coisa. Rasterize no tamanho
+        de que você precisa, em vez de redimensionar o resultado depois."""
 
 [[faq]]
 q = "Meu SVG não tem width nem height. Que tamanho eu recebo?"
 a = """
-        O do <code>viewBox</code>, se houver um &mdash; a largura e a altura dele
-        são unidades de usuário e não pixels, mas são os únicos números do arquivo
-        e um navegador os trata como o tamanho natural do desenho. Se também não
-        houver viewBox, a página diz <em>presumido</em> ao lado da linha e usa
+        O do <code>viewBox</code>, se houver um. A largura e a altura dele são
+        unidades de usuário e não pixels, mas são os únicos números do arquivo, e um
+        navegador os trata como o tamanho natural do desenho. Se também não houver
+        viewBox, a página diz <em>presumido</em> ao lado da linha e usa
         300&nbsp;&times;&nbsp;150, que é o tamanho em que um
-        <code>&lt;img&gt;</code> o teria desenhado. De todo jeito, você pode dizer
-        o tamanho que quer e o arquivo é desenhado naquele."""
+        <code>&lt;img&gt;</code> o teria desenhado. De todo jeito, você pode dizer o
+        tamanho que quer e o arquivo é desenhado naquele."""
 
 [[faq]]
 q = "Por que o texto ficou diferente no PNG?"
 a = """
         Porque a fonte não está no SVG. Um SVG que desenha texto nomeia uma fonte e
-        deixa a máquina encontrá-la, e um arquivo que puxa uma do Google Fonts com
-        um <code>@import</code> não recebe nada aqui: um SVG desenhado por meio de
-        um <code>&lt;img&gt;</code> não tem permissão de buscar coisa alguma, que é
-        a mesma regra que o impede de dar notícia a alguém com o seu arquivo. O
-        conserto é o que todo designer já sabe &mdash; converta o texto em traçados
-        no programa de desenho antes de exportar. Aí vira geometria, e fica igual em
+        deixa a máquina encontrá-la, e um arquivo que puxa uma do Google Fonts com um
+        <code>@import</code> não recebe nada aqui: um SVG desenhado por meio de um
+        <code>&lt;img&gt;</code> não tem permissão de buscar coisa alguma, que é a
+        mesma regra que o impede de dar notícia a alguém com o seu arquivo. O
+        conserto é o que todo designer já sabe: converta o texto em traçados no
+        programa de desenho antes de exportar. Aí vira geometria, e fica igual em
         todo lugar."""
 
 [[faq]]
 q = "Ele consegue converter vários arquivos de uma vez?"
 a = """
-        Sim. Todo SVG da lista é renderizado com os mesmos ajustes e o lote desce
-        como um zip só. Um multiplicador &mdash; &ldquo;4&times; o tamanho que o
-        arquivo pede&rdquo; &mdash; costuma ser o ajuste certo para um lote, porque
+        Consegue. Todo SVG da lista é renderizado com os mesmos ajustes e o lote
+        inteiro baixa num zip só. Um multiplicador, do tipo &ldquo;4&times; o tamanho
+        que o arquivo pede&rdquo;, costuma ser o ajuste certo para um lote, porque
         cada desenho é escalado a partir do próprio tamanho em vez de todos serem
         forçados ao mesmo número de pixels. Clique em qualquer linha para pôr aquele
         na pré-visualização."""
@@ -241,60 +239,60 @@ a = """
 [[faq]]
 q = "Existe limite de tamanho?"
 a = """
-        O do navegador, não o nosso. Um canvas desiste em algum ponto acima de
-        16.384 pixels de lado, e o Safari num iPhone ou iPad para em cerca de 16,7
-        megapixels de área &mdash; 4096&nbsp;&times;&nbsp;4096. Acima disso a página
-        avisa você em vez de devolver uma imagem em branco, que é o que um navegador
-        faz quando não dá conta: o <code>toBlob</code> não devolve nada, sem erro
-        nenhum para se explicar. Passando de 100 megapixels a ferramenta recusa,
-        porque isso são 400&nbsp;MB de canvas antes de um byte ser codificado."""
+        O do navegador, não o nosso. Um canvas desiste em algum ponto acima de 16.384
+        pixels de lado, e o Safari num iPhone ou iPad para em cerca de 16,7
+        megapixels de área, ou seja, 4096&nbsp;&times;&nbsp;4096. Acima disso a
+        página avisa você em vez de devolver uma imagem em branco, que é o que um
+        navegador faz quando não dá conta: o <code>toBlob</code> não devolve nada,
+        sem erro nenhum para se explicar. Passando de 100 megapixels a ferramenta
+        recusa, porque isso dá 400&nbsp;MB de canvas antes de um byte ser
+        codificado."""
 
 [[faq]]
 q = "O que acontece com a transparência?"
 a = """
         Ela é mantida, em PNG e em WebP. O JPEG não tem canal alfa nenhum, então uma
-        cor é pintada atrás da imagem inteira, você pedindo uma ou não &mdash; sem
-        ela, tudo o que é transparente sairia preto, o que parece um defeito em vez
-        de parecer JPEG. Escolher uma cor de fundo com PNG também é uma coisa
-        perfeitamente comum de se querer: isso achata o desenho sobre aquela cor em
-        vez de deixar um buraco."""
+        cor é pintada atrás da imagem inteira, você pedindo uma ou não. Sem ela, tudo
+        o que é transparente sairia preto, o que parece defeito em vez de parecer
+        JPEG. Escolher uma cor de fundo com PNG também é uma coisa perfeitamente
+        comum de se querer, porque isso achata o desenho sobre aquela cor em vez de
+        deixar um buraco."""
 
 [[faq]]
 q = "Ele consegue ler um SVG que contém um script ou uma imagem externa?"
 a = """
         Consegue ler um, e vai desenhar exatamente as partes que um navegador se
         dispõe a desenhar. Um SVG carregado por meio de um <code>&lt;img&gt;</code>
-        está em <em>modo estático seguro</em>: scripts não rodam, referências
-        externas não são buscadas, e animação não toca &mdash; o primeiro quadro é o
-        que você recebe. Então um arquivo com um <code>&lt;image&gt;</code> remoto
-        sai com aquela parte faltando. É o navegador recusando em seu nome, e é o
-        motivo de esta página conseguir abrir com segurança um arquivo que nunca
-        viu."""
+        fica em <em>modo estático seguro</em>: scripts não rodam, referências
+        externas não são buscadas e animação não toca, então o que você recebe é o
+        primeiro quadro. Um arquivo com um <code>&lt;image&gt;</code> remoto sai com
+        aquela parte faltando. É o navegador recusando em seu nome, e é o motivo de
+        esta página conseguir abrir com segurança um arquivo que nunca viu."""
 
 [[faq]]
 q = "Qual a diferença entre isto e o Redimensionador de imagens?"
 a = """
-        A origem. O Redimensionador de imagens parte de pixels &mdash; um JPEG, um
-        PNG &mdash; então deixar maior obriga a inventar detalhe que nunca esteve
-        lá. Este parte de um desenho, então não há o que inventar e não há limite
-        superior que valha a preocupação. Se o que você tem é um SVG, é este que lhe
-        dá um resultado nítido; se o que você tem é uma fotografia, é aquele."""
+        A origem. O Redimensionador de imagens parte de pixels, como um JPEG ou um
+        PNG, então deixar maior obriga a inventar detalhe que nunca esteve lá. Este
+        aqui parte de um desenho, então não há o que inventar nem limite superior que
+        valha a preocupação. Se o que você tem é um SVG, é este que entrega um
+        resultado nítido. Se o que você tem é uma fotografia, é aquele."""
 
 [[faq]]
 q = "É grátis, e preciso de conta?"
 a = """
-        É grátis, e não há conta, nem login, nem período de teste, nem marca
-        d'água. Também não há limite para o número ou o tamanho dos arquivos,
-        porque não há servidor pagando por eles &mdash; o trabalho acontece na sua
-        própria máquina. O site exibe publicidade, e é ela que paga a conta; os
+        É grátis, e não tem conta, nem login, nem período de teste, nem marca
+        d'água. Também não tem limite para o número nem para o tamanho dos arquivos,
+        porque não existe servidor pagando por eles: o trabalho acontece no seu
+        próprio computador. O site exibe publicidade, e é ela que paga a conta. Os
         anúncios não recebem nada sobre os seus arquivos."""
 
 [[faq]]
 q = "Funciona offline?"
 a = """
-        Sim. Carregue a página uma vez, então desconecte da internet e ela continua
-        funcionando. Esse é também o jeito mais simples de provar que nada está
-        sendo enviado: uma ferramenta que mandasse a sua arte embora para ser
+        Funciona. Carregue a página uma vez, depois desligue a internet e ela
+        continua funcionando. Esse é também o jeito mais simples de provar que nada
+        está sendo enviado: uma ferramenta que mandasse a sua arte embora para ser
         renderizada pararia no instante em que você tirasse da tomada."""
 
 [schema]
@@ -314,4 +312,4 @@ features = [
 
 [picker]
 title = "Arraste um SVG para cá"
-hint = "ou clique para escolher &mdash; vários de uma vez também serve"
+hint = "ou clique para escolher: vários de uma vez também serve"

@@ -6,8 +6,8 @@
     <p class="card-lede">
       Zo van de telefoon, uit een back-up, of gekopieerd van een geheugenkaart.
       Het bestand wordt hier gelezen, op dit apparaat, en het plaatje wordt hier
-      ook gedecodeerd &mdash; er zit geen uploadstap in deze pagina en er staat
-      geen server achter.
+      ook gedecodeerd, want er zit geen uploadstap in deze pagina en er staat geen
+      server achter.
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -36,7 +36,7 @@
         <select id="format-select">
           <option value="image/jpeg" selected>JPEG &mdash; gaat overal open, ook in dingen die per ongeluk deze eeuw gemaakt zijn</option>
           <option value="image/png">PNG &mdash; verliesloos, en een paar keer zo groot</option>
-          <option value="image/webp">WebP &mdash; kleiner dan JPEG bij dezelfde kwaliteit, en alleen moderne browsers</option>
+          <option value="image/webp">WebP &mdash; kleiner dan JPEG bij dezelfde kwaliteit, maar alleen in moderne browsers</option>
         </select>
       </div>
 
@@ -60,19 +60,19 @@
           <strong>Hou de datum, de camera en de instellingen</strong>
           <span class="check-note">
             Precies overgenomen zoals de telefoon ze schreef, zodat de omgezette
-            foto nog sorteert op de dag waarop hij gemaakt is in plaats van de dag
-            waarop hij omgezet is. Daar horen de gps-coördinaten bij wanneer de foto
-            ze heeft &mdash; de lijst hierboven zegt welke van jou dat zijn. Zet dit
-            uit en de JPEG komt eruit met niets erin dan het plaatje.
+            foto nog sorteert op de dag waarop hij gemaakt is in plaats van op de dag
+            waarop hij omgezet werd. Daar horen de gps-coördinaten bij als de foto
+            die heeft, en op de lijst hierboven zie je welke van jou dat zijn. Zet je
+            dit uit, dan komt de JPEG eruit met niets erin dan het plaatje.
           </span>
         </span>
       </label>
 
       <p class="field-summary">
-        Hoe dan ook wordt hier niets aan iemand doorgegeven: de keuze gaat over
-        wat er in het bestand komt dat je terugkrijgt, niet over wat deze pagina
-        ermee doet. Wil je de tags in detail doorlopen, of ze weghalen bij foto's
-        die al JPEG zijn, dan is de
+        Hoe dan ook wordt hier niets aan wie dan ook doorgegeven. De keuze gaat
+        alleen over wat er in het bestand komt dat je terugkrijgt, niet over wat deze
+        pagina ermee doet. Wil je de tags stuk voor stuk doorlopen, of ze weghalen
+        bij foto's die al JPEG zijn, dan is de
         <a href="../exif-gegevens-verwijderen/">EXIF-lezer &amp; -wisser</a> de
         tool daarvoor.
       </p>

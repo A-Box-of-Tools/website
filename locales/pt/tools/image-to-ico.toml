@@ -16,45 +16,42 @@ tagline = "Uma imagem entra. Sai todo tamanho que um navegador, o Windows ou um 
 title = "Imagem para ICO &mdash; crie um favicon, ícone de app ou ICNS, sem envio"
 description = "Converta um PNG, JPEG ou SVG num .ico de verdade, com vários tamanhos, ou num .icns do macOS, no seu navegador. Favicon, ícone de aplicativo do Windows, ícone de app do Mac, mais os arquivos da Apple e do Android que um site precisa. Nada é enviado."
 og_title = "Crie um .ico ou um .icns com todos os tamanhos dentro, sem enviar nada"
-og_description = "Um favicon.ico para um site, um app.ico para um programa do Windows, um .icns para um Mac - com uma pré-visualização a 16 pixels antes de você baixar. Tudo roda na sua própria máquina."
+og_description = "Um favicon.ico para um site, um app.ico para um programa do Windows, um .icns para um Mac, com uma pré-visualização a 16 pixels antes de você baixar. Tudo roda no seu próprio computador."
 og_image_alt = "Imagem para ICO - criador de favicon e de ícone do Windows e do macOS, sem envio"
 
 pledge = """
-    A escala e os próprios arquivos de ícone são feitos no seu próprio
-    navegador. A imagem é desenhada pelo canvas que o seu navegador já traz, e
-    cada contêiner &mdash; o <code>.ico</code> do Windows, o <code>.icns</code>
-    do macOS &mdash; é montado a partir daqueles pixels por umas duas centenas de
-    linhas em <code>src/ico.js</code> e <code>src/icns.js</code> que você pode
-    ler. Esta ferramenta não tem função de rede de espécie alguma &mdash; nada a
-    buscar, nada a enviar &mdash; e não existe do outro lado desta página
-    servidor nenhum para onde mandar uma logomarca, mesmo que houvesse
-    caminho."""
+    A escala e os próprios arquivos de ícone são feitos no seu próprio navegador.
+    A imagem é desenhada pelo canvas que o seu navegador já traz, e cada
+    contêiner, tanto o <code>.ico</code> do Windows quanto o <code>.icns</code> do
+    macOS, é montado a partir daqueles pixels por umas duas centenas de linhas em
+    <code>src/ico.js</code> e <code>src/icns.js</code> que você pode ler. Esta
+    ferramenta não tem função de rede de espécie alguma: não há o que buscar nem o
+    que mandar. E do outro lado desta página não existe servidor nenhum para onde
+    mandar uma logomarca, mesmo que houvesse caminho."""
 
 live_hint = """
-      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
-      aba Rede e crie um ícone. Nenhuma requisição leva uma imagem, uma
-      miniatura, um nome de arquivo ou um byte do que você escolheu. Ou desconecte
-      da internet e crie um mesmo assim."""
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e crie um ícone.
+      Nenhuma requisição leva uma imagem, uma miniatura, um nome de arquivo ou um
+      byte do que você escolheu. Ou então desligue a internet e crie um assim
+      mesmo."""
 
 read_first = """
 , <code>src/ico.js</code> e
-      <code>src/icns.js</code> para os dois formatos de ícone &mdash; o
-      diretório, as entradas e a máscara num, as dez vagas nomeadas pela Apple no
-      outro &mdash; e <code>src/sizes.js</code> para de onde vem cada tamanho da
-      página."""
+      <code>src/icns.js</code> para os dois formatos de ícone, com o diretório, as
+      entradas e a máscara num deles e as dez vagas nomeadas pela Apple no outro,
+      e <code>src/sizes.js</code> para de onde vem cada tamanho da página."""
 
 howto_heading = "Como criar um arquivo .ico sem enviar nada"
 
 card = """
-            Um favicon, um ícone de aplicativo do Windows ou um .icns do macOS
-            &mdash; todos os tamanhos num arquivo só, com uma pré-visualização a
-            16 pixels antes de você baixar."""
+            Um favicon, um ícone de aplicativo do Windows ou um .icns do macOS,
+            todos os tamanhos num arquivo só, com uma pré-visualização a 16 pixels
+            antes de você baixar."""
 
 [words]
 plural = "imagens"
 choose = "uma imagem"
-analytics_extra = """, nem nenhum dos
-  tamanhos, formatos ou nomes de arquivo que esta ferramenta calcula"""
 
 [[facts]]
 text = "Sem envio"
@@ -75,34 +72,34 @@ text = "Código aberto"
 title = "Sua logomarca não tem para onde ir."
 body = """
  A
-      Content-Security-Policy nomeia todos os endereços que esta página pode
-      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
-      seus arquivos pudessem ser coletados, e não existe no código nada que os
-      mandaria se existisse."""
+      Content-Security-Policy lista todos os endereços que esta página pode
+      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde seus
+      arquivos pudessem ser recolhidos, e não existe no código nada que os
+      mandaria mesmo que existisse."""
 
 [[privacy]]
-title = "Nada aqui busca coisa alguma."
+title = "Nada aqui vai buscar coisa alguma."
 body = """
  Não existe
       <code>fetch</code>, nem <code>XMLHttpRequest</code>, nem
       <code>sendBeacon</code> em lugar nenhum de <code>src/</code>. A escala é um
-      <code>drawImage</code> num canvas; cada ícone é um cabeçalho escrito na
+      <code>drawImage</code> num canvas, e cada ícone é um cabeçalho escrito na
       frente daqueles pixels pelo <code>src/ico.js</code> ou pelo
       <code>src/icns.js</code>, nesta página."""
 
 [[privacy]]
 title = "O arquivo é descrito a partir dos próprios bytes dele."
 body = """
- A lista de tamanhos mostrada
-      ao lado de um ícone pronto não é a lista de tamanhos que você pediu. Ela é
-      lida de volta do arquivo que acabou de ser escrito, pelo
-      <code>readIcoDirectory</code> ou pelo <code>readIcnsElements</code>, então,
-      se um escritor algum dia discordasse dos ajustes, a página diria isso em vez
-      de você descobrir quando o Windows não desenhasse nada e o macOS desenhasse
-      uma folha de papel em branco."""
+ A lista de tamanhos que
+      aparece ao lado de um ícone pronto não é a lista de tamanhos que você pediu.
+      Ela é lida de volta do arquivo que acabou de ser escrito, pelo
+      <code>readIcoDirectory</code> ou pelo <code>readIcnsElements</code>. Se um
+      escritor algum dia discordasse dos ajustes, a página diria isso, em vez de
+      você descobrir quando o Windows não desenhasse nada e o macOS desenhasse uma
+      folha de papel em branco."""
 
 [[privacy]]
-title = "O que o Google carrega, e o que não é entregue a ele."
+title = "O que o Google carrega, e o que não chega até ele."
 body = """
  Os scripts de
       publicidade e de medição vêm do Google, e o botão de doação vem do Buy Me a
@@ -113,8 +110,8 @@ body = """
 [[privacy]]
 title = "Funciona offline."
 body = """
- Desconecte da rede e a ferramenta continua
-      igual, porque nunca houve uma etapa de rede nela. Essa é a prova mais
+ Desligue a rede e a ferramenta continua
+      igualzinha, porque nunca houve uma etapa de rede nela. Essa é a prova mais
       simples de todas."""
 
 [[howto]]
@@ -123,14 +120,14 @@ body = """
  Arraste um PNG, JPEG, WebP ou SVG até o
       seletor, ou escolha várias e converta todas de uma vez. Quadrada é o mais
       fácil, e qualquer coisa a partir de 256 pixels tem detalhe suficiente para
-      todos os tamanhos. Ela é lida direto do seu disco pelo navegador; nada é
-      mandado para lugar nenhum enquanto você faz isso."""
+      todos os tamanhos. Quem lê o arquivo direto do seu disco é o navegador, e
+      nada é mandado para lugar nenhum enquanto você faz isso."""
 
 [[howto]]
 title = "Escolha os arquivos de que você precisa."
 body = """
  O Windows e um navegador leem
-      <code>.ico</code>; um Mac lê <code>.icns</code> e nem olha para o outro.
+      <code>.ico</code>, e um Mac lê <code>.icns</code> e nem olha para o outro.
       Marque um, ou os dois, se a coisa que você está fazendo sai nas duas
       plataformas. Um site quer também as imagens extras da Apple, do Android e do
       ladrilho, e essa é a terceira caixinha."""
@@ -139,7 +136,7 @@ body = """
 title = "Diga para que serve o ícone."
 body = """
  Um favicon de site tem 16, 32 e 48
-      pixels; um aplicativo do Windows quer 256 também; um aplicativo que precisa
+      pixels. Um aplicativo do Windows quer 256 também. Um aplicativo que precisa
       ficar bom num notebook de alta densidade quer os tamanhos intermediários que
       o Windows pede a 125% e 150% de escala. Escolha o que corresponde ao
       trabalho, ou marque os tamanhos você mesmo. Cada tamanho da lista diz quem
@@ -151,7 +148,7 @@ title = "Resolva o formato e o fundo."
 body = """
  Um ícone é quadrado e a maioria das
       logomarcas não é. Completar com margem mantém a imagem inteira com espaço
-      acima e abaixo; cortar pega o meio; esticar achata. A transparência é
+      acima e abaixo, cortar pega o meio, e esticar achata. A transparência é
       mantida como transparência, a menos que você escolha uma cor para ficar
       atrás dela."""
 
@@ -173,26 +170,26 @@ body = """
       marcou aquilo, pronto para entrar num pacote de aplicativo de Mac. Marque
       também o conjunto de site e você leva ainda as imagens da Apple, do Android
       e do ladrilho do Windows, o manifesto, e o bloco de HTML para colar na sua
-      página. Qualquer coisa além de um arquivo só desce como um zip."""
+      página. Qualquer coisa além de um arquivo só baixa num zip."""
 
 [[faq]]
 q = "Minha imagem é enviada para algum lugar?"
 a = """
-        Não. A imagem é decodificada e escalada pelo seu próprio navegador no seu
+        Não. Quem decodifica e escala a imagem é o seu próprio navegador, no seu
         próprio hardware, e o .ico é montado a partir daqueles pixels por código
         servido por esta página. Esta ferramenta não tem função de rede de espécie
-        alguma &mdash; nunca busca nada e nunca manda nada &mdash; e a
-        <code>Content-Security-Policy</code> da página nomeia todos os endereços que
-        ela pode contatar, nenhum dos quais é deste site."""
+        alguma: nunca busca nada e nunca manda nada. E a
+        <code>Content-Security-Policy</code> da página lista todos os endereços que
+        ela pode acessar, nenhum dos quais é deste site."""
 
 [[faq]]
 q = "Quais tamanhos um favicon.ico deve conter?"
 a = """
         16, 32 e 48. Isso não é preferência: 16 é o que um navegador desenha numa
         aba, 32 é o que o Windows usa para um atalho de área de trabalho e o que
-        vários navegadores usam para um favorito, e 48 é o tamanho em que o Google
-        lê o ícone de um site. Qualquer coisa maior pertence a um PNG ao lado do
-        .ico em vez de dentro dele &mdash; que é o que o conjunto de site daqui
+        vários navegadores usam para um favorito, e 48 é o tamanho em que o Google lê
+        o ícone de um site. Qualquer coisa maior pertence a um PNG ao lado do .ico em
+        vez de dentro dele, que é justamente o que o conjunto de site daqui
         produz."""
 
 [[faq]]
@@ -200,11 +197,11 @@ q = "De quais tamanhos precisa um ícone de aplicativo do Windows?"
 a = """
         16, 32, 48 e 256, que é o que o próprio app.ico padrão do Visual Studio
         guarda. 16 é a barra de título e a visualização pequena do Explorer, 32 é a
-        área de trabalho e a barra de tarefas, 48 são os ícones médios do Explorer,
-        e 256 é o menu Iniciar e a visualização extragrande. Numa tela de alta
-        densidade o Windows também pede 20, 24, 40, 64 e 96, e os reamostra a partir
-        do tamanho mais próximo que tiver se não estiverem lá &mdash; a predefinição
-        de &ldquo;todas as escalas&rdquo; coloca esses."""
+        área de trabalho e a barra de tarefas, 48 são os ícones médios do Explorer, e
+        256 é o menu Iniciar e a visualização extragrande. Numa tela de alta
+        densidade o Windows também pede 20, 24, 40, 64 e 96, e reamostra a partir do
+        tamanho mais próximo que tiver se eles não estiverem lá. A predefinição de
+        &ldquo;todas as escalas&rdquo; já coloca esses."""
 
 [[faq]]
 q = "Por que o arquivo ficou maior que a imagem de onde eu parti?"
@@ -212,125 +209,123 @@ a = """
         Porque um .ico não é uma imagem, são várias, e as pequenas são guardadas sem
         compressão para que qualquer coisa consiga lê-las. Uma entrada de 32x32 tem
         exatamente 4.264 bytes, seja lá o que houver nela, e uma entrada de 256x256
-        sem compressão tem 264 KB &mdash; e é por isso que tamanhos acima de 64 são
-        guardados como PNG por padrão. Escolher &ldquo;PNG em todos os
-        tamanhos&rdquo; gera o menor arquivo possível; escolher sem compressão em
-        todos os tamanhos gera o mais compatível."""
+        sem compressão tem 264 KB. É por isso que tamanhos acima de 64 são guardados
+        como PNG por padrão. Escolher &ldquo;PNG em todos os tamanhos&rdquo; gera o
+        menor arquivo possível, e escolher sem compressão em todos os tamanhos gera o
+        mais compatível."""
 
 [[faq]]
 q = "Qual a diferença entre as entradas em PNG e as sem compressão?"
 a = """
         Só como os pixels são guardados dentro do .ico. Uma entrada sem compressão é
-        o arranjo original do Windows &mdash; um cabeçalho de bitmap, os pixels de
-        cabeça para baixo, e uma máscara de transparência de um bit &mdash; e toda
-        versão do Windows já lançada consegue ler. Uma entrada em PNG é um arquivo
-        PNG inteiro enfiado dentro do ícone, o que é de três a dez vezes menor nos
-        tamanhos grandes, mas só passou a ser entendido a partir do Windows Vista. O
-        padrão usa cada um onde ele ganha: sem compressão até 64 pixels, PNG
-        acima."""
+        o arranjo original do Windows, com um cabeçalho de bitmap, os pixels de
+        cabeça para baixo e uma máscara de transparência de um bit, e toda versão do
+        Windows já lançada consegue ler. Uma entrada em PNG é um arquivo PNG inteiro
+        enfiado dentro do ícone, o que é de três a dez vezes menor nos tamanhos
+        grandes, mas só passou a ser entendido a partir do Windows Vista. O padrão
+        usa cada um onde ele ganha: sem compressão até 64 pixels, PNG acima
+        disso."""
 
 [[faq]]
 q = "Ele consegue fazer um ícone maior que 256 pixels?"
 a = """
         Não, e nada consegue. O formato guarda cada lado num único byte, e o 0 já
-        está tomado &mdash; ele significa 256. Esse é o teto, então um .ico contendo
-        uma imagem de 512 pixels não é um ícone maior, é um ícone quebrado. Se você
-        precisa de 512, precisa de um PNG, que é o que o conjunto de site inclui
-        para o Android e para a tela de abertura de um aplicativo web."""
+        está tomado, porque significa 256. Esse é o teto, então um .ico contendo uma
+        imagem de 512 pixels não é um ícone maior, é um ícone quebrado. Se você
+        precisa de 512, precisa de um PNG, que é o que o conjunto de site inclui para
+        o Android e para a tela de abertura de um aplicativo web."""
 
 [[faq]]
 q = "Ele mantém a transparência?"
 a = """
-        Sim, nos dois tipos de entrada, e também escreve a antiga máscara de um bit
+        Mantém, nos dois tipos de entrada, e ainda escreve a antiga máscara de um bit
         ao lado do canal alfa, para que software velho demais para ler o alfa ainda
         recorte o ícone em vez de desenhar uma caixa preta. O único arquivo que é
-        deliberadamente deixado opaco é o ícone de toque da Apple no conjunto de
-        site: o iOS o compõe sobre o próprio ladrilho e transforma transparência em
-        preto, então ele é achatado sobre a sua cor de fundo, branca por padrão."""
+        deixado opaco de propósito é o ícone de toque da Apple no conjunto de site,
+        porque o iOS o compõe sobre o próprio ladrilho e transforma transparência em
+        preto. Ele é achatado sobre a sua cor de fundo, branca por padrão."""
 
 [[faq]]
 q = "Minha logomarca é escrita e larga. O que acontece com ela?"
 a = """
         Alguma coisa tem que acontecer, porque um ícone é quadrado. Completar com
-        margem mantém tudo e deixa pequeno &mdash; uma logomarca escrita completada
-        dentro de um quadrado de 16 pixels fica com uns três pixels de altura e
-        ilegível. Cortar pelo meio costuma funcionar melhor: tire o símbolo da
-        composição e use aquilo, como quase toda marca faz no favicon dela. A
-        pré-visualização mostra qual dos dois sobrevive antes de você baixar
-        qualquer coisa."""
+        margem mantém tudo e deixa pequeno: uma logomarca escrita completada dentro
+        de um quadrado de 16 pixels fica com uns três pixels de altura e ilegível.
+        Cortar pelo meio costuma funcionar melhor, então tire o símbolo da composição
+        e use aquilo, como quase toda marca faz no favicon dela. A pré-visualização
+        mostra qual dos dois sobrevive antes de você baixar qualquer coisa."""
 
 [[faq]]
 q = "O que tem no conjunto de site, e eu preciso de tudo aquilo?"
 a = """
-        Sete PNGs, um manifesto de aplicativo web, um browserconfig.xml e um bloco
-        de HTML para colar. Você precisa deles porque um .ico cobre navegadores e
+        Sete PNGs, um manifesto de aplicativo web, um browserconfig.xml e um bloco de
+        HTML para colar. Você precisa deles porque um .ico cobre navegadores e
         Windows e nada mais: uma tela inicial de iPhone lê um PNG de 180 pixels com
         um nome próprio, o Android e todo aviso de instalação leem o manifesto, e um
-        ladrilho fixado no menu Iniciar lê o XML. Nenhum deles vai olhar dentro de
-        um .ico. Tudo é gerado aqui, na sua máquina, e o zip vem com uma nota
-        dizendo para que serve cada arquivo."""
+        ladrilho fixado no menu Iniciar lê o XML. Nenhum deles vai olhar dentro de um
+        .ico. Tudo é gerado aqui, no seu computador, e o zip vem com uma nota dizendo
+        para que serve cada arquivo."""
 
 [[faq]]
 q = "Ele também faz um ícone de macOS?"
 a = """
-        Faz &mdash; marque <em>ícone do macOS</em> e você recebe um
-        <code>.icns</code> ao lado do <code>.ico</code>, ou no lugar dele. É outro
-        contêiner para a mesma ideia, e nenhum dos dois sistemas lê o do outro: o
-        Windows quer .ico e um pacote de aplicativo de Mac quer .icns. Ali os
-        tamanhos não são escolha, porque a Apple publica exatamente dez vagas
-        &mdash; 16, 32, 64, 128, 256, 512 e 1024 pixels, com três delas aparecendo
-        duas vezes como a versão Retina do tamanho de baixo. As dez entram,
-        desenhadas a partir de sete renderizações, e é por isso que um .icns é o
-        arquivo maior."""
+        Faz. Marque <em>ícone do macOS</em> e você recebe um <code>.icns</code> ao
+        lado do <code>.ico</code>, ou no lugar dele. É outro contêiner para a mesma
+        ideia, e nenhum dos dois sistemas lê o do outro: o Windows quer .ico e um
+        pacote de aplicativo de Mac quer .icns. Ali os tamanhos não são escolha,
+        porque a Apple publica exatamente dez vagas, de 16, 32, 64, 128, 256, 512 e
+        1024 pixels, com três delas aparecendo duas vezes como a versão Retina do
+        tamanho de baixo. As dez entram, desenhadas a partir de sete renderizações, e
+        é por isso que um .icns é o arquivo maior."""
 
 [[faq]]
 q = "Como eu uso o arquivo .icns?"
 a = """
         Para um aplicativo, ele vai no pacote em
         <code>SeuApp.app/Contents/Resources/</code> e é nomeado no
-        <code>Info.plist</code> sob <code>CFBundleIconFile</code>; toda ferramenta
-        de empacotamento de Mac tem um campo para isso. Para qualquer outra coisa,
-        selecione o arquivo no Finder, aperte Command-C, então Obter Informações na
+        <code>Info.plist</code> sob <code>CFBundleIconFile</code>. Toda ferramenta de
+        empacotamento de Mac tem um campo para isso. Para qualquer outra coisa,
+        selecione o arquivo no Finder, aperte Command-C, depois Obter Informações na
         pasta ou imagem de disco que você quer mudar, clique no ícone pequeno no
         canto superior esquerdo e aperte Command-V."""
 
 [[faq]]
 q = "O .icns é igual ao que o iconutil faz?"
 a = """
-        As mesmas dez vagas com os mesmos tipos de quatro letras, e PNG em cada uma,
-        que é o que o <code>iconutil</code> produz a partir de uma pasta
-        <code>.iconset</code>. Uma diferença deliberada: a ferramenta da Apple
-        também escreve um elemento <code>TOC&nbsp;</code>, um índice dos tipos e
-        tamanhos que vêm depois. É uma otimização e não parte do formato &mdash; um
+        São as mesmas dez vagas com os mesmos tipos de quatro letras, e PNG em cada
+        uma, que é o que o <code>iconutil</code> produz a partir de uma pasta
+        <code>.iconset</code>. Existe uma diferença de propósito: a ferramenta da
+        Apple também escreve um elemento <code>TOC&nbsp;</code>, um índice dos tipos
+        e tamanhos que vêm depois. É uma otimização e não parte do formato, já que um
         leitor sem ele percorre os elementos de ponta a ponta e chega à mesma
-        resposta &mdash; e um índice errado é pior que índice nenhum, então ele fica
-        de fora."""
+        resposta. E um índice errado é pior que índice nenhum, então ele fica de
+        fora."""
 
 [[faq]]
 q = "Posso converter várias imagens de uma vez?"
 a = """
         Pode. Toda imagem da lista vira o próprio .ico com os mesmos ajustes, e o
-        lote desce como um zip só, com uma pasta por imagem &mdash; senão duas delas
-        se chamariam favicon.ico e uma sobrescreveria a outra. Toda saída que você
+        lote inteiro baixa num zip só, com uma pasta por imagem, senão duas delas se
+        chamariam favicon.ico e uma sobrescreveria a outra. Toda saída que você
         marcou é feita para toda imagem. Clique em qualquer linha para pôr aquela
         imagem na pré-visualização."""
 
 [[faq]]
 q = "É grátis, e preciso de conta?"
 a = """
-        É grátis, e não há conta, nem login, nem período de teste, nem marca
-        d'água. Também não há limite para o número ou o tamanho dos arquivos,
-        porque não há servidor pagando por eles &mdash; o trabalho acontece na sua
-        própria máquina. O site exibe publicidade, e é ela que paga a conta; os
+        É grátis, e não tem conta, nem login, nem período de teste, nem marca
+        d'água. Também não tem limite para o número nem para o tamanho dos arquivos,
+        porque não existe servidor pagando por eles: o trabalho acontece no seu
+        próprio computador. O site exibe publicidade, e é ela que paga a conta. Os
         anúncios não recebem nada sobre as suas imagens."""
 
 [[faq]]
 q = "Funciona offline?"
 a = """
-        Sim. Carregue a página uma vez, então desconecte da internet e ela continua
-        funcionando. Esse é também o jeito mais simples de provar que nada está
-        sendo enviado: uma ferramenta que mandasse a sua logomarca embora para ser
-        convertida pararia no instante em que você tirasse da tomada."""
+        Funciona. Carregue a página uma vez, depois desligue a internet e ela
+        continua funcionando. Esse é também o jeito mais simples de provar que nada
+        está sendo enviado: uma ferramenta que mandasse a sua logomarca embora para
+        ser convertida pararia no instante em que você tirasse da tomada."""
 
 [schema]
 description = "Converta uma imagem num arquivo ICO do Windows com vários tamanhos ou num arquivo ICNS do macOS, dentro do navegador. Predefinições para favicon de site, ícone de aplicativo do Windows e ícone de aplicativo em alta densidade, as dez vagas de icns da Apple, uma pré-visualização de cada tamanho no tamanho real em pixels, e um conjunto opcional dos arquivos da Apple, do Android e do ladrilho do Windows que um site precisa. Nada é enviado."
@@ -351,4 +346,4 @@ features = [
 
 [picker]
 title = "Arraste uma imagem para cá"
-hint = "ou clique para escolher &mdash; PNG, SVG, JPEG, WebP e tudo o mais que o seu navegador conseguir abrir"
+hint = "ou clique para escolher: PNG, SVG, JPEG, WebP e tudo o mais que o seu navegador conseguir abrir"

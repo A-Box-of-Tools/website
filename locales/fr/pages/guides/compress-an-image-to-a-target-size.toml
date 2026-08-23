@@ -1,5 +1,5 @@
 #
-# Guide : compresser une image a une taille precise - French.
+# Guide : compresser une image à une taille précise - French.
 #
 
 nav = "Compresser une image"
@@ -7,11 +7,10 @@ title = "Comment compresser une image à une taille de fichier exacte"
 description = "Un formulaire d'envoi veut 500 KB et votre photo en fait 4 MB. Ce qu'une limite de taille coûte vraiment, quel réglage déplacer en premier, et pourquoi un PNG ne maigrit pas comme un JPEG."
 heading = "Comment compresser une image à une taille de fichier exacte"
 lede = """
-    On vous a donné un chiffre &mdash; 100&nbsp;KB, 500&nbsp;KB, 2&nbsp;MB
-    &mdash; et votre photo en est très loin. Voici ce que ce chiffre coûte, à
-    quoi le dépenser, et comment savoir si le résultat est encore assez bon pour
-    être envoyé."""
+    On vous a donné un chiffre, 100&nbsp;KB, 500&nbsp;KB ou 2&nbsp;MB, et votre
+    photo en est très loin. Voici ce que ce chiffre coûte, à quoi le dépenser, et
+    comment savoir si le résultat est encore assez bon pour être envoyé."""
 updated = "20 août 2026"
 og_title = "Compresser une image à une taille de fichier exacte"
 og_description = "Ce qu'une limite de taille coûte vraiment, quel réglage déplacer en premier, et pourquoi un PNG ne maigrit pas comme un JPEG."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

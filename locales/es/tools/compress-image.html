@@ -14,7 +14,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">Quitar todo de la lista</button>
+        <button type="button" id="clear-all" class="ghost danger">Vaciar la lista</button>
       </div>
     </div>
 
@@ -28,11 +28,12 @@
     <h2><span class="step">2</span> Di cuánto puede ocupar</h2>
 
     <p class="card-lede">
-      Esta es la parte que los demás compresores hacen al revés. Te dan un
-      control de calidad y te dejan adivinar qué ajuste queda por debajo del
-      límite que te han puesto. Di el límite en su lugar, y la herramienta busca
-      la calidad más alta que cabe &mdash; y después gasta lo que quede del
-      presupuesto en vez de devolverte un archivo de la mitad de lo que pediste.
+      Esta es la parte que los demás compresores hacen al revés. Te ponen un
+      control de calidad y te dejan a ti adivinar qué ajuste acaba por debajo
+      del límite que te han puesto. Aquí lo que dices es el límite, y la
+      herramienta busca la calidad más alta que cabe dentro de él. Después gasta
+      lo que le sobre del presupuesto, en vez de devolverte un archivo de la
+      mitad de lo que pediste.
     </p>
 
     <div class="target-row">
@@ -64,12 +65,12 @@
     <p id="target-summary" class="field-summary"></p>
 
     <fieldset class="options">
-      <legend>Cómo se le permite llegar hasta ahí</legend>
+      <legend>Qué puede hacer para llegar hasta ahí</legend>
 
       <div class="option-row">
         <label for="format-select">Formato de salida</label>
         <select id="format-select">
-          <option value="auto" selected>Automático &mdash; conservar el formato salvo que otro quede mejor</option>
+          <option value="auto" selected>Automático &mdash; conserva el formato salvo que otro le venga mejor</option>
           <option value="keep">Conservar siempre el formato original</option>
           <option value="image/jpeg">JPEG</option>
           <option value="image/webp">WebP</option>
@@ -82,11 +83,11 @@
         <span>
           <strong>Puede hacer la foto más pequeña si no queda otra</strong>
           <span class="check-note">
-            Solo se usa cuando la calidad por sí sola tendría que caer por debajo
-            del punto en que la compresión empieza a notarse. Por debajo de ahí,
-            menos píxeles buenos se ven mejor que más píxeles arruinados.
-            Desactívalo para conservar las dimensiones exactas y pagar un
-            objetivo ajustado con calidad.
+            Solo recurre a esto cuando la calidad por sí sola tendría que bajar
+            del punto en el que la compresión empieza a notarse. A partir de
+            ahí, menos píxeles buenos se ven mejor que más píxeles estropeados.
+            Desactívalo si prefieres conservar las dimensiones exactas y pagar
+            un objetivo ajustado a costa de la calidad.
           </span>
         </span>
       </label>

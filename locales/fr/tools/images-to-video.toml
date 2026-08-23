@@ -6,9 +6,13 @@
 #
 # This is the one tool with a [picker.urls] table, so it is also the one whose
 # translation has to supply the noun the importer's warning in [ui.picker] is
-# written around. French needs it in the singular and with the gender the
-# articles in those sentences were written for - feminine, here - which is why
-# the warning is a whole sentence in the locale file rather than two fragments.
+# written around. French needs it in the singular, and feminine, because that
+# warning still says "quelle ... vous réclamez". The rest of the warning was
+# rewritten to stop leaning on the noun's gender, so this is now the only
+# agreement the two files share.
+#
+# [schema] is emitted as JSON-LD, where HTML entities are never decoded, so
+# that table alone uses plain spaces and plain punctuation.
 #
 
 name = "Images en vidéo"
@@ -18,20 +22,21 @@ tagline = "Transformer un dossier d'images en vidéo."
 title = "Séquence d'images en MP4 &mdash; gratuit, sans envoi, hors ligne"
 description = "Transformez des images JPG, PNG ou WebP en un diaporama vidéo MP4, gratuitement et entièrement dans votre navigateur. Rien n'est envoyé, aucune inscription, et cela fonctionne hors ligne."
 og_title = "Séquence d'images en MP4 &mdash; gratuit, dans votre navigateur"
-og_description = "Transformez une séquence de rendu, un timelapse ou un dossier de photos en MP4. L'encodage tourne sur votre propre machine ; rien n'est envoyé."
+og_description = "Transformez une séquence de rendu, un timelapse ou un dossier de photos en MP4. L'encodage tourne sur votre propre machine&nbsp;; rien n'est envoyé."
 og_image_alt = "Images en vidéo - transformer un dossier d'images en diaporama MP4"
 
 pledge = """
     Chaque image est encodée par votre propre navigateur et la vidéo est
     construite en mémoire sur cette machine. L'encodeur ne touche jamais au
-    réseau, et il n'y a à l'autre bout de cette page aucun serveur auquel envoyer
-    une image, même s'il y touchait."""
+    réseau et, quand bien même il y toucherait, il n'y a à l'autre bout de cette
+    page aucun serveur à qui remettre une image."""
 
 live_hint = """
       Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
-      gardez l'onglet Réseau à l'œil et fabriquez une vidéo. Pas une seule
-      requête ne transporte d'image, de vignette ni de nom de fichier. Ou coupez
-      votre connexion et fabriquez-en une quand même."""
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et fabriquez une
+      vidéo. Pas une seule requête ne transporte d'image, de vignette ni de nom
+      de fichier. Vous pouvez aussi couper la connexion et en fabriquer une quand
+      même."""
 
 read_first = """
 , ainsi que <code>src/encoder.js</code> pour la boucle
@@ -46,7 +51,6 @@ card = """
 [words]
 plural = "images"
 choose = "des images"
-analytics_extra = """"""
 
 [[facts]]
 text = "Sans envoi"
@@ -58,7 +62,7 @@ text = "Sans compte"
 text = "Fonctionne hors ligne"
 
 [[facts]]
-text = "Code ouvert"
+text = "Open source"
 
 [[facts]]
 text = "Les fichiers restent sur votre appareil"
@@ -67,9 +71,9 @@ text = "Les fichiers restent sur votre appareil"
 title = "Vos images n'ont nulle part où aller."
 body = """
  La
-      Content-Security-Policy nomme toutes les adresses que cette page peut
-      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
-      collecte où vos fichiers pourraient arriver, et rien dans le code qui les y
+      Content-Security-Policy énumère toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de
+      collecte où vos fichiers pourraient aboutir, ni rien dans le code qui les y
       enverrait s'il en existait un. Cette ligne disait autrefois
       <code>connect-src 'none'</code>, ce qui était absolu&nbsp;; ajouter la
       publicité a coûté cela, et le dire fait partie du marché."""
@@ -113,18 +117,18 @@ body = """
       contactées."""
 
 [[privacy]]
-title = "Cela fonctionne hors ligne."
+title = "Tout fonctionne hors ligne."
 body = """
- Coupez le réseau et tout fonctionne
-      encore, sauf le chargement depuis une adresse web. C'est la preuve la plus
-      simple de toutes."""
+ Coupez le réseau et tout continue de
+      fonctionner, à la seule exception du chargement depuis une adresse web.
+      C'est la preuve la plus simple de toutes."""
 
 [[howto]]
 title = "Choisissez vos images."
 body = """
  Déposez un dossier sur la zone prévue, ou
       sélectionnez les fichiers à la main. Le navigateur les lit directement sur
-      votre disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+      votre disque, sans que rien parte où que ce soit pendant ce temps."""
 
 [[howto]]
 title = "Mettez-les en ordre et dites combien de temps chacune est tenue."
@@ -153,10 +157,10 @@ body = """
 q = "Mes images sont-elles envoyées quelque part&nbsp;?"
 a = """
         Non. Vos images sont lues, composées et encodées par votre propre navigateur
-        sur votre propre matériel. Cet outil n'a pas de côté serveur, et la
-        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
-        qu'elle peut contacter &mdash; aucune n'appartient à ce site. La seule
-        exception est la fonction facultative
+        sur votre propre matériel. Cet outil n'a pas de côté serveur, et sa
+        <code>Content-Security-Policy</code> énumère toutes les adresses que la page
+        peut contacter, dont aucune n'appartient à ce site. La seule exception est la
+        fonction facultative
         &laquo;&nbsp;ajouter depuis une adresse web&nbsp;&raquo;, qui récupère une
         image que vous collez, et ce serveur-là voit votre adresse IP."""
 
@@ -165,20 +169,20 @@ q = "Quels formats d'image puis-je utiliser&nbsp;?"
 a = """
         Tout format d'image fixe que votre navigateur sait décoder, ce qui en pratique
         veut dire le JPG, le PNG, le WebP, le GIF, l'AVIF et, sur les appareils Apple,
-        le HEIC. Il n'y a pas ici de liste séparée à tenir à jour, parce que le
-        décodage est le travail du navigateur et non le nôtre."""
+        le HEIC. Il n'y a pas ici de liste séparée à tenir à jour, puisque le décodage
+        est le travail du navigateur et non le nôtre."""
 
 [[faq]]
 q = "Quel format vidéo produit-il&nbsp;?"
 a = """
         Du MP4 avec de la vidéo H.264, qui se lit sur à peu près n'importe quoi. Dans
-        un navigateur sans WebCodecs, l'outil se rabat sur un enregistrement WebM
-        &mdash; les mêmes images dans un conteneur que moins d'éditeurs acceptent."""
+        un navigateur sans WebCodecs, l'outil se rabat sur un enregistrement WebM, soit
+        les mêmes images dans un conteneur que moins d'éditeurs acceptent."""
 
 [[faq]]
 q = "Puis-je m'en servir pour une séquence de rendu Blender ou After Effects&nbsp;?"
 a = """
-        Oui &mdash; une séquence de rendu numérotée est exactement ce à quoi cela sert.
+        Oui, une séquence de rendu numérotée est exactement ce à quoi cela sert.
         Ajoutez les images écrites par votre moteur de rendu, laissez la durée
         d'affichage à une image chacune, et réglez la cadence sur celle du rendu.
         &laquo;&nbsp;Trier par nom&nbsp;&raquo; compte comme vous vous y attendez, si
@@ -187,8 +191,8 @@ a = """
         <br><br>
         Une chose à savoir avant de commencer&nbsp;: le H.264 n'a pas de canal alpha,
         la transparence est donc aplatie sur la couleur de fond plutôt que reportée. Si
-        vous devez garder l'alpha, composez les images dans votre logiciel de montage à
-        la place."""
+        vous devez garder l'alpha, composez plutôt les images dans votre logiciel de
+        montage."""
 
 [[faq]]
 q = "Puis-je faire un timelapse à partir de photos&nbsp;?"
@@ -200,7 +204,7 @@ a = """
         <br><br>
         &laquo;&nbsp;Trier par date&nbsp;&raquo; remet une pellicule dans l'ordre où
         elle a été prise, ce qui compte quand les noms de fichiers sont repartis à
-        0001. Des photos de tailles différentes ne posent pas de problème &mdash;
+        0001. Des photos de tailles différentes ne posent aucun problème, puisque
         &laquo;&nbsp;Suivre la plus haute résolution&nbsp;&raquo; dimensionne la vidéo
         pour qu'aucune ne soit réduite."""
 
@@ -209,22 +213,22 @@ q = "Y a-t-il une limite au nombre d'images ou à la durée de la vidéo&nbsp;?"
 a = """
         Aucune limite n'est intégrée à l'outil. Le plafond pratique est la mémoire de
         votre propre machine, parce que la vidéo finie y est assemblée avant que vous
-        la téléchargiez. Les très grands diaporamas en 4K sont la première chose à
-        s'en ressentir."""
+        la téléchargiez. Les très grands diaporamas en 4K commencent à s'y faire
+        sentir les premiers."""
 
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
 a = """
-        C'est gratuit, et il n'y a pas de compte, pas de connexion et pas de période
-        d'essai. Le site porte de la publicité, et c'est elle qui le finance&nbsp;; les
-        annonces ne reçoivent rien sur vos images."""
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai. Le
+        site affiche de la publicité, et c'est elle qui le finance&nbsp;; les annonces
+        ne reçoivent rien sur vos images."""
 
 [[faq]]
 q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
 a = """
         Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
         de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
-        envoyé&nbsp;: un outil qui expédierait vos images ailleurs pour les traiter
+        envoyé, car un outil qui expédierait vos images ailleurs pour les traiter
         s'arrêterait à l'instant où vous débranchez."""
 
 [[faq]]
@@ -240,7 +244,7 @@ description = "Transformez un dossier d'images en un diaporama vidéo MP4. Chaqu
 features = [
   "Convertit des images JPG, PNG, WebP, GIF et AVIF en vidéo",
   "Sortie MP4 (H.264), avec le WebM comme repli",
-  "Résolutions jusqu'à 3840x2160, cadences de 12 à 60 images par seconde",
+  "Résolutions jusqu'à 3840 × 2160, cadences de 12 à 60 images par seconde",
   "Durée d'affichage par image, en images ou en secondes",
   "Fonctionne hors ligne ; sans envoi, sans compte",
 ]
@@ -252,7 +256,6 @@ hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP, GIF, AVIF"
 [picker.urls]
 summary = "Ajouter depuis une adresse web"
 button = "Récupérer les images"
-# Singular, and the gender the sentences in [ui.picker] were written around:
-# feminine, because they say "la ... est copiée" and "quelle ... vous avez
-# demandée".
+# Singular, and feminine, because [ui.picker] still says "quelle ... vous
+# réclamez". Nothing else in that warning agrees with this word any more.
 noun = "image"

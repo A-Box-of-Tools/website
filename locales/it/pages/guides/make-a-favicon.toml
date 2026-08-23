@@ -9,10 +9,10 @@ heading = "Come creare una favicon che si legga ancora a sedici pixel"
 lede = """
     Una favicon non è una piccola immagine del tuo logo. È una serie di immagini
     a dimensioni fisse, dentro un contenitore che quasi nessuno apre mai, e la
-    più piccola di loro è quella che vedono davvero tutti. Qui ci sono le
-    dimensioni che ti servono, i file che le stanno accanto, e cosa fare quando
-    il tuo logo non sopravvive alla discesa."""
+    più piccola di loro è quella che vedono davvero tutti. Vediamo le dimensioni
+    che ti servono, i file che le stanno accanto, e cosa fare quando il tuo logo
+    alla discesa non sopravvive."""
 updated = "20 agosto 2026"
 og_title = "Creare una favicon che si legga ancora a sedici pixel"
 og_description = "Di quali dimensioni ha bisogno un favicon.ico, i file in più che chiedono iPhone e Android, e cosa fare quando il tuo logo non sopravvive al rimpicciolimento."
-og_image_alt = "abox.tools - strumenti che non toccano nessun server"
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

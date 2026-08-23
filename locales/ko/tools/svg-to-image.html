@@ -28,11 +28,10 @@
     <h2><span class="step">2</span> 얼마나 크게 할지 말하기</h2>
 
     <p class="card-lede">
-      벡터가 대신 답해 줄 수 없는 유일한 질문입니다. SVG 안에는 픽셀이 없습니다
-      &mdash; 그리는 방법이 적혀 있을 뿐이고, 어떤 크기를 말하든 그대로
-      따릅니다. 아래의 숫자는 사진에서라면 그랬을 법한, 밀어붙이고 있는 한계가
-      아닙니다. 24&nbsp;픽셀 아이콘에서 뽑은 4000픽셀은 24픽셀만큼이나
-      선명합니다.
+      벡터가 대신 답해 줄 수 없는 유일한 질문입니다. SVG 안에는 픽셀이 없습니다.
+      그리는 방법이 적혀 있을 뿐이라, 어떤 크기를 말하든 그대로 따릅니다. 아래의
+      숫자는 사진에서라면 그랬을 법한 한계선이 아닙니다. 24&nbsp;픽셀 아이콘에서
+      뽑은 4000픽셀은 24픽셀만큼이나 선명하니까요.
     </p>
 
     <div class="option-row">
@@ -101,9 +100,9 @@
       <div class="option-row">
         <label for="box-fit">그림의 비율이 다르면</label>
         <select id="box-fit">
-          <option value="fit" selected>안에 맞추기 &mdash; 그림은 전부 남고, 한 변이 짧게 나옵니다</option>
-          <option value="pad">여백 넣기 &mdash; 정확히 이 크기로, 양옆에 배경이 들어갑니다</option>
-          <option value="stretch">늘이기 &mdash; 정확히 이 크기로, 비율은 찌그러집니다</option>
+          <option value="fit" selected>안에 맞추기(그림은 전부 남고, 한 변이 짧게 나옵니다)</option>
+          <option value="pad">여백 넣기(정확히 이 크기로, 양옆에 배경이 들어갑니다)</option>
+          <option value="stretch">늘이기(정확히 이 크기로, 비율은 찌그러집니다)</option>
         </select>
       </div>
     </div>
@@ -117,9 +116,9 @@
     <div class="option-row" id="density-row">
       <label for="density">고해상도 사본도 함께 쓰기</label>
       <select id="density">
-        <option value="1" selected>아니요 &mdash; 그림 하나당 파일 하나</option>
-        <option value="2">@2x도 &mdash; 레티나 화면용</option>
-        <option value="3">@2x와 @3x &mdash; 휴대폰이 요구하는 한 벌 전부</option>
+        <option value="1" selected>아니요(그림 하나당 파일 하나)</option>
+        <option value="2">@2x도 함께(레티나 화면용)</option>
+        <option value="3">@2x와 @3x(휴대폰이 요구하는 한 벌 전부)</option>
       </select>
     </div>
 
@@ -135,21 +134,21 @@
       <div class="field">
         <label for="format">형식</label>
         <select id="format">
-          <option value="image/png" selected>PNG &mdash; 투명도를 지키고 가장자리가 정확합니다</option>
-          <option value="image/jpeg">JPEG &mdash; 투명도가 없고, 사진은 더 작습니다</option>
-          <option value="image/webp">WebP &mdash; 투명도도 되고 파일도 더 작습니다</option>
+          <option value="image/png" selected>PNG(투명도를 지키고 가장자리가 정확합니다)</option>
+          <option value="image/jpeg">JPEG(투명도가 없고, 사진은 더 작습니다)</option>
+          <option value="image/webp">WebP(투명도도 되고 파일도 더 작습니다)</option>
         </select>
         <p class="field-note" id="format-note"></p>
       </div>
 
       <div class="field" id="quality-field" hidden>
-        <label for="quality">화질 &mdash; <output id="quality-value" for="quality">90</output></label>
+        <label for="quality">화질 <output id="quality-value" for="quality">90</output></label>
         <input type="range" id="quality" min="30" max="100" step="1" value="90">
         <p class="field-note">
           JPEG와 WebP에만 해당합니다. PNG는 무손실이라 화질 다이얼이 없습니다.
-          단색 면과 또렷한 가장자리 &mdash; SVG를 이루는 것 대부분이 그것입니다
-          &mdash; 는 손실 인코더가 가장 못 다루는 것이라, 사진일 때보다 이 값을
-          높게 잡아 두었습니다.
+          단색 면과 또렷한 가장자리는 손실 인코더가 가장 못 다루는 것인데, SVG를
+          이루는 것이 대부분 그것입니다. 그래서 사진일 때보다 이 값을 높게 잡아
+          두었습니다.
         </p>
       </div>
 
@@ -170,10 +169,10 @@
     <h2><span class="step">4</span> 보고 나서 저장하기</h2>
 
     <p class="card-lede">
-      미리보기는 파일을 쓰는 바로 그 코드가, 여러분이 고른 파일에서, 이 기기에서
-      그린 것입니다. 확인할 만한 것은 그림이 픽셀이 될 때 달라지는 두 가지입니다.
-      반 픽셀 굵기였다가 회색이 되어 버린 머리카락 선, 그리고 웹에서 가져온
-      글꼴이 아니라 이 기기에 있는 글꼴로 그려지는 글자.
+      미리보기는 파일을 쓰는 바로 그 코드가, 고르신 파일에서, 이 기기에서 그린
+      것입니다. 확인할 만한 것은 그림이 픽셀이 될 때 달라지는 두 가지입니다. 반
+      픽셀 굵기였다가 회색이 되어 버린 머리카락 선, 그리고 웹에서 가져온 글꼴이
+      아니라 이 기기에 있는 글꼴로 그려지는 글자입니다.
     </p>
 
     <div id="preview" class="preview" hidden>

@@ -7,11 +7,11 @@ title = "Aus einem Video ein GIF machen (und es klein halten)"
 description = "Welchen Abschnitt, welche Breite und welche Bildrate Sie wählen sollten, warum ein GIF zehnmal so groß wird wie das Video, aus dem es stammt, und wann sich ein GIF überhaupt lohnt."
 heading = "So machen Sie aus einem Video ein GIF"
 lede = """
-    GIF ist ein Format von 1987, das ganze Bilder speichert und keine Bewegung
-    &mdash; eines aus einem Video wird deshalb immer groß. Hier steht, an
-    welcher der drei Einstellungen Sie drehen sollten, wenn es zu groß gerät,
-    und wie viel jede davon bringt."""
+    GIF ist ein Format von 1987, das ganze Bilder speichert und keine Bewegung.
+    Eines aus einem Video wird deshalb immer groß. Hier steht, an welcher der
+    drei Einstellungen Sie drehen sollten, wenn es zu groß gerät, und wie viel
+    jede davon bringt."""
 updated = "20. August 2026"
 og_title = "Aus einem Video ein GIF machen, und es klein halten"
 og_description = "Die drei Einstellungen, an denen die Größe eines GIFs hängt, was jede davon kostet und wann ein GIF die vollkommen falsche Antwort ist."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

@@ -1,5 +1,5 @@
 #
-# Guide : couper une video - French.
+# Guide : couper une vidéo - French.
 #
 
 nav = "Couper une vidéo"
@@ -8,10 +8,10 @@ description = "Couper un clip n'a pas à perdre un seul octet de qualité. Pourq
 heading = "Comment couper une vidéo sans la réencoder"
 lede = """
     Couper ne change l'aspect d'aucune image&nbsp;: un bon coupeur n'y touche
-    donc pas &mdash; il les déplace dans un nouveau fichier exactement telles
-    qu'elles étaient. Voici ce que cela vous rapporte, et le seul endroit où cela
-    se voit."""
+    donc pas, il les déplace dans un nouveau fichier exactement telles qu'elles
+    étaient. Voici ce que cela vous rapporte, et le seul endroit où cela se
+    voit."""
 updated = "20 août 2026"
 og_title = "Comment couper une vidéo sans la réencoder"
 og_description = "Pourquoi une coupe tombe parfois plus tôt que là où vous l'avez marquée, ce qu'une image clé vient y faire, et quand accepter un réencodage."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

@@ -8,17 +8,17 @@
 nav = "Privacidad y cookies"
 
 title = "Privacidad y cookies &mdash; abox.tools"
-description = "Qué recoge y qué no recoge abox.tools. Tus archivos no se suben nunca; la publicidad, el contador de visitas y el botón de donación se describen aquí por completo."
+description = "Qué recoge y qué no recoge abox.tools. Tus archivos no se suben nunca; la publicidad, el contador de visitas y el botón de donación se describen aquí al completo."
 
 heading = "Privacidad y cookies"
 lede = """
-    La versión corta: tus archivos no se suben nunca, porque no hay ningún sitio
-    al que subirlos. Todo lo demás de esta página va de la publicidad, del
-    contador de visitas y del alojamiento &mdash; las partes en las que sí
+    La versión corta es que tus archivos no se suben nunca, porque no hay ningún
+    sitio al que subirlos. Todo lo demás de esta página va de la publicidad, del
+    contador de visitas y del alojamiento, que son las partes en las que sí
     intervienen otras empresas."""
 
-updated = "19 de agosto de 2026"
+updated = "22 de agosto de 2026"
 
 og_title = "Privacidad y cookies &mdash; abox.tools"
 og_description = "Tus archivos no se suben nunca. Qué se recoge, quién lo recoge y cómo desactivarlo."
-og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

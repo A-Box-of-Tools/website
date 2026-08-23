@@ -1,5 +1,5 @@
 <main>
-  <!-- Passo 1 &mdash; a imagem -->
+  <!-- Passo 1: a imagem -->
   <section class="card">
     <h2><span class="step">1</span> Escolha uma imagem</h2>
 
@@ -24,17 +24,17 @@
     <p id="shape-note" class="field-summary" hidden></p>
   </section>
 
-  <!-- Passo 2 &mdash; qual padrão -->
+  <!-- Passo 2: qual padrão -->
   <section class="card" id="preset-card">
     <h2><span class="step">2</span> Diga para que serve o ícone</h2>
 
     <p class="card-lede">
       Um arquivo de ícone não é uma imagem, são várias: a mesma logomarca
       desenhada de novo em cada tamanho que a coisa que vai lê-la pede. Quais
-      tamanhos são esses não é questão de gosto &mdash; um navegador quer três
-      deles, um aplicativo num notebook de alta densidade quer dez, um Mac quer
-      os dez dele, e algo escrito antes do Windows Vista quer os tamanhos
-      guardados de um jeito completamente diferente.
+      tamanhos são esses não é questão de gosto. Um navegador quer três deles, um
+      aplicativo num notebook de alta densidade quer dez, um Mac quer os dez dele,
+      e algo escrito antes do Windows Vista quer os tamanhos guardados de um jeito
+      completamente diferente.
     </p>
 
     <!--
@@ -48,7 +48,7 @@
       <label class="check">
         <input type="checkbox" id="want-ico" checked>
         <span>
-          <strong>Ícone do Windows &mdash; <code>.ico</code></strong>
+          <strong>Ícone do Windows, em <code>.ico</code></strong>
           <span class="check-note">
             Lido por todo navegador como favicon, e pelo Windows para um
             aplicativo, um atalho e uma pasta. Os tamanhos são escolha sua, aí
@@ -60,12 +60,12 @@
       <label class="check">
         <input type="checkbox" id="want-icns">
         <span>
-          <strong>Ícone do macOS &mdash; <code>.icns</code></strong>
+          <strong>Ícone do macOS, em <code>.icns</code></strong>
           <span class="check-note">
             O que um pacote de aplicativo de Mac carrega. A Apple nomeia
             exatamente dez vagas, de 16 pixels a 1024, então não há o que
             escolher: as dez entram, desenhadas a partir de sete renderizações,
-            porque uma vaga Retina e o tamanho de cima são a mesma imagem.
+            já que uma vaga Retina e o tamanho de cima são a mesma imagem.
           </span>
         </span>
       </label>
@@ -77,7 +77,7 @@
           <span class="check-note">
             Um .ico cobre a aba do navegador e o Windows. Ele não cobre uma tela
             inicial de iPhone, um aviso de instalação do Android, nem um ladrilho
-            fixado no menu Iniciar &mdash; esses leem um PNG de 180px, um
+            fixado no menu Iniciar, porque esses leem um PNG de 180px, um
             manifesto de aplicativo web e um arquivo XML, e nenhum deles vai olhar
             dentro de um .ico. Marque esta caixa e você leva todos eles também, o
             manifesto, e o bloco de HTML para colar na sua página.
@@ -106,7 +106,7 @@
       <div class="option-row">
         <label for="fit-select">Se a imagem não for quadrada</label>
         <select id="fit-select">
-          <option value="pad" selected>Completar até virar um quadrado &mdash; a imagem inteira é mantida</option>
+          <option value="pad" selected>Completar até virar um quadrado: a imagem inteira é mantida</option>
           <option value="crop">Cortar no quadrado do meio</option>
           <option value="stretch">Esticar até virar um quadrado</option>
         </select>
@@ -124,9 +124,9 @@
       <div class="option-row" id="storage-row">
         <label for="storage-select">Como cada tamanho é guardado no .ico</label>
         <select id="storage-select">
-          <option value="auto" selected>Automático &mdash; compatível quando é barato, PNG quando não é</option>
-          <option value="png">PNG em todos os tamanhos &mdash; menor arquivo, precisa do Vista ou mais novo</option>
-          <option value="bmp">Sem compressão em todos os tamanhos &mdash; abre em qualquer coisa, várias vezes maior</option>
+          <option value="auto" selected>Automático: compatível quando é barato, PNG quando não é</option>
+          <option value="png">PNG em todos os tamanhos: menor arquivo, precisa do Vista ou mais novo</option>
+          <option value="bmp">Sem compressão em todos os tamanhos: abre em qualquer coisa, várias vezes maior</option>
         </select>
       </div>
 
@@ -135,17 +135,17 @@
 
   </section>
 
-  <!-- Passo 3 &mdash; veja pequeno, e então leve -->
+  <!-- Passo 3: veja pequeno, e então leve -->
   <section class="card" id="run-card">
     <h2><span class="step">3</span> Confira no tamanho em que ele vai ser visto</h2>
 
     <p class="card-lede">
-      Esta é a parte que vale olhar antes de baixar qualquer coisa. Uma
-      logomarca que se lê perfeitamente a 512 pixels tem dezesseis pixels de
-      largura numa aba de navegador, e as partes finas dela &mdash; os traços de
-      uma logomarca escrita, uma borda de fio de cabelo, um gradiente &mdash; não
-      sobrevivem a isso. Cada quadrado abaixo é desenhado no tamanho real a partir
-      do arquivo que você escolheu.
+      Esta é a parte que vale olhar antes de baixar qualquer coisa. Uma logomarca
+      que se lê perfeitamente a 512 pixels tem dezesseis pixels de largura numa
+      aba de navegador, e as partes finas dela não sobrevivem a isso: os traços de
+      uma logomarca escrita, uma borda de fio de cabelo, um gradiente. Cada
+      quadrado abaixo é desenhado no tamanho real a partir do arquivo que você
+      escolheu.
     </p>
 
     <div id="preview" class="preview" hidden>

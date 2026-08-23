@@ -10,8 +10,8 @@ lede = """
     Fare un QR code richiede un secondo. Farne uno che funzioni su un menu
     bagnato, su una pensilina dell'autobus o su un telefono tenuto a distanza di
     braccio con poca luce richiede quattro decisioni, e tutte e quattro si
-    prendono prima di stampare qualsiasi cosa. Ecco cosa fa ciascuna."""
+    prendono prima di stampare qualunque cosa. Vediamo cosa fa ciascuna."""
 updated = "20 agosto 2026"
 og_title = "Fare un QR code che si legga anche sul telefono di qualcun altro"
 og_description = "Le quattro decisioni che stabiliscono se un QR code stampato funziona: il livello, il margine, la dimensione, e di chi è l'indirizzo che c'è davvero dentro."
-og_image_alt = "abox.tools - strumenti che non toccano nessun server"
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

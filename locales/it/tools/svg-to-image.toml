@@ -9,48 +9,47 @@ name = "Da SVG a immagine"
 # La coda è l'espressione che si cerca; il nome del prodotto resta la metà che
 # grida.
 heading = "Da&nbsp;SVG&nbsp;a&nbsp;PNG <span class=\"h1-kw\">&mdash; rasterizzare un vettoriale in PNG, JPEG o WebP a qualunque dimensione</span>"
-tagline = "Di' la dimensione. Un vettoriale non ne ha una sua da perdere."
+tagline = "La dimensione la dici tu. Un vettoriale non ne ha una sua da perdere."
 
-title = "Da SVG a PNG &mdash; rasterizzare un vettoriale a qualunque dimensione, senza caricare nulla"
-description = "Converti un SVG in PNG, JPEG o WebP a qualunque dimensione, nel tuo browser. Di' la larghezza, un moltiplicatore o un riquadro; ottieni anche le copie @2x e @3x. Trasparenza conservata, niente caricamenti."
+title = "Da SVG a PNG &mdash; rasterizzare un vettoriale a qualunque dimensione, senza caricare niente"
+description = "Converti un SVG in PNG, JPEG o WebP a qualunque dimensione, dentro il tuo browser. Di' la larghezza, un moltiplicatore o un riquadro, e ti arrivano anche le copie @2x e @3x. Trasparenza conservata, niente caricamenti."
 og_title = "Trasformare un SVG in un PNG a qualunque dimensione, senza caricarlo"
-og_description = "Un vettoriale non ha una dimensione in pixel sua, quindi il numero lo scegli tu - 32 o 8000, con la stessa nitidezza in entrambi i casi. Gira tutto sul tuo dispositivo."
+og_description = "Un vettoriale una dimensione in pixel sua non ce l'ha, quindi il numero lo scegli tu: 32 o 8000, con la stessa nitidezza in tutti e due i casi. Gira tutto sul tuo dispositivo."
 og_image_alt = "Da SVG a immagine - rasterizzare un vettoriale in PNG, JPEG o WebP a qualunque dimensione"
 
 pledge = """
-    Il disegno viene rasterizzato dallo stesso motore che l'ha appena messo sul
-    tuo schermo. Il tuo file viene letto dal tuo disco, il suo tag radice viene
+    Il disegno lo rasterizza lo stesso motore che l'ha appena messo sul tuo
+    schermo. Il tuo file viene letto dal tuo disco, il suo tag radice viene
     riscritto alla dimensione che hai chiesto da un centinaio di righe in
-    <code>src/svg.js</code> che puoi leggere, e viene disegnato su una tela che
-    il tuo browser si porta già dietro. Questo strumento non ha alcuna funzione
-    di rete &mdash; niente da recuperare, niente da spedire &mdash; e dall'altra
-    parte di questa pagina non c'è alcun server a cui mandare un logo, anche se
-    ci fosse un modo per farlo."""
+    <code>src/svg.js</code> che puoi leggere, e viene disegnato su un canvas che
+    il tuo browser si porta già dietro. Questo strumento non ha nessuna funzione
+    di rete, non c'è niente da recuperare e niente da spedire, e dall'altra
+    parte di questa pagina non c'è nessun server a cui mandare un logo, anche se
+    una funzione del genere ci fosse."""
 
 live_hint = """
-      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
-      scheda Rete e rasterizza qualcosa. Non una sola richiesta porta con sé un
-      file, una miniatura, un nome di file o un byte di quello che hai scelto.
-      Oppure stacca la connessione e convertine uno lo stesso."""
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori,
+      tieni d'occhio il pannello Rete e rasterizza qualcosa. Non c'è una sola
+      richiesta che porti con sé un file, una miniatura, un nome di file o un
+      byte di quello che hai scelto. Oppure stacca la connessione e convertine
+      uno lo stesso."""
 
 read_first = """
 , <code>src/svg.js</code> per come viene letta
       la dimensione dichiarata da un file e come ne viene riscritto il tag
-      radice, e <code>src/render.js</code> per le otto righe che rasterizzano
-      &mdash; un &lt;img&gt;, un <code>drawImage</code> e un
-      <code>toBlob</code>, senza niente in mezzo."""
+      radice, e <code>src/render.js</code> per le otto righe che rasterizzano:
+      un &lt;img&gt;, un <code>drawImage</code> e un <code>toBlob</code>, senza
+      niente in mezzo."""
 
 howto_heading = "Come convertire un SVG in PNG senza caricarlo"
 
 card = """
-            Un SVG non ha una dimensione in pixel sua, quindi il numero lo
-            scegli tu &mdash; 32 o 8000, e la nitidezza è la stessa."""
+            Un SVG una dimensione in pixel sua non ce l'ha, quindi il numero lo
+            scegli tu: 32 o 8000, e la nitidezza è la stessa."""
 
 [words]
 plural = "file SVG"
 choose = "un SVG"
-analytics_extra = """, e nemmeno una delle
-  dimensioni, dei formati o dei nomi di file che questo strumento calcola"""
 
 [[facts]]
 text = "Niente caricamenti"
@@ -71,20 +70,19 @@ text = "Open source"
 title = "Il tuo disegno non ha dove andare."
 body = """
  La
-      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
-      contattare, e nessuno di questi appartiene a questo sito. Qui non esiste
-      un punto di raccolta dove i tuoi file potrebbero finire, e nel codice non
-      c'è nulla che ce li manderebbe se esistesse."""
+      Content-Security-Policy elenca tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di quegli indirizzi appartiene a questo sito. Non
+      esiste un punto di raccolta in cui i tuoi file possano finire, e nel codice
+      non c'è niente che ce li manderebbe se anche esistesse."""
 
 [[privacy]]
-title = "Qui dentro niente recupera niente."
+title = "Qui dentro niente va a recuperare niente."
 body = """
- Non c'è un
-      <code>fetch</code>, né un <code>XMLHttpRequest</code>, né un
-      <code>sendBeacon</code> da nessuna parte in <code>src/</code>. Tutto il
-      rasterizzatore è un <code>&lt;img&gt;</code> che contiene un blob del tuo
-      file, un <code>drawImage</code> su una tela, e un
-      <code>canvas.toBlob</code>."""
+ In <code>src/</code> non
+      c'è né un <code>fetch</code>, né un <code>XMLHttpRequest</code>, né un
+      <code>sendBeacon</code>. Tutto il rasterizzatore è un
+      <code>&lt;img&gt;</code> che contiene un blob del tuo file, un
+      <code>drawImage</code> su un canvas e un <code>canvas.toBlob</code>."""
 
 [[privacy]]
 title = "Un SVG è un documento, e questa è la modalità in cui non può agire."
@@ -93,81 +91,81 @@ body = """
       uno <code>&lt;script&gt;</code>, un
       <code>&lt;image href=&quot;https://&hellip;&quot;&gt;</code> remoto, un
       foglio di stile e un carattere web. Disegnato attraverso un
-      <code>&lt;img&gt;</code> si trova in quella che la specifica chiama
+      <code>&lt;img&gt;</code> si trova però in quella che la specifica chiama
       <em>secure static mode</em>: lo script non gira e non viene recuperato
-      nemmeno uno di quegli indirizzi. È una garanzia del browser, non una
-      nostra promessa, ed è il motivo per cui questa pagina può aprire un file
+      nemmeno uno di quegli indirizzi. È una garanzia del browser e non una
+      promessa nostra, ed è il motivo per cui questa pagina può aprire un file
       che non ha mai visto senza che il file possa chiamare casa."""
 
 [[privacy]]
-title = "Cosa carica Google, e cosa non gli viene dato."
+title = "Cosa carica Google, e cosa non gli arriva."
 body = """
- Gli script
-      pubblicitari e di misurazione arrivano da Google, e il pulsante delle
+ Gli script della
+      pubblicità e della misurazione arrivano da Google, il pulsante delle
       donazioni da Buy Me a Coffee. A nessuno di loro viene passato niente sul
-      tuo disegno. Ogni riga che legge, dimensiona o disegna un file è servita
-      da questa origine ed è elencata nel repository."""
+      tuo disegno. Ogni riga che legge, dimensiona o disegna un file è servita da
+      questa origine ed è elencata nel repository."""
 
 [[privacy]]
 title = "Funziona offline."
 body = """
  Stacca la rete e lo strumento resta
       identico, perché al suo interno non c'è mai stato un passaggio di rete. È
-      la prova più semplice di tutte."""
+      la prova più semplice che ci sia."""
 
 [[howto]]
 title = "Scegli l'SVG."
 body = """
  Trascinane uno sul riquadro, oppure
-      prendi una cartella intera e convertili tutti in un colpo solo. Il browser
-      legge il file direttamente dal tuo disco; mentre lo fai non viene mandato
-      niente da nessuna parte. Ogni riga dice che dimensione crede di avere il
-      file &mdash; e lo dice in modo diverso quando quella dimensione viene dal
-      suo <code>viewBox</code>, o è stata data per scontata perché il file non ne
-      dichiara nessuna."""
+      prendi una cartella intera e convertili tutti in un colpo solo. Il file lo
+      legge il browser direttamente dal tuo disco, e mentre lo fa non parte
+      niente per nessuna destinazione. Ogni riga dice che dimensione crede di
+      avere il file, e lo dice in modo diverso a seconda che quella dimensione
+      venga dal suo <code>viewBox</code> oppure sia stata data per scontata
+      perché il file non ne dichiara nessuna."""
 
 [[howto]]
 title = "Di' quanto grande."
 body = """
  Un moltiplicatore della dimensione del
-      file è la risposta più rapida e quella giusta per un lotto: ogni disegno
-      viene scalato dal proprio punto di partenza, così una serie di icone resta
-      in proporzione. Altrimenti indica una larghezza, un'altezza, il lato più
-      lungo, o un riquadro con entrambi i lati dati. Qui non c'è alcuna penale
-      per un numero grande come ce n'è con una fotografia &mdash; il disegno
-      viene ridisegnato a quella dimensione, non stirato fino a lì."""
+      file è la risposta più rapida, ed è quella giusta per un lotto, perché ogni
+      disegno viene scalato dal proprio punto di partenza e una serie di icone
+      resta in proporzione. Altrimenti indica una larghezza, un'altezza, il lato
+      più lungo, o un riquadro con tutti e due i lati dati. Qui un numero grande
+      non ha la penale che avrebbe con una fotografia, perché il disegno viene
+      ridisegnato a quella dimensione, non stirato fino a lì."""
 
 [[howto]]
 title = "Aggiungi le copie ad alta densità, se ti servono."
 body = """
  Un telefono e un portatile
       Retina disegnano due o tre pixel fisici per ogni pixel CSS, quindi un logo
-      da 200 pixel ha bisogno di un file da 400 o 600 pixel dietro. Chiedi
-      <code>@2x</code> e <code>@3x</code> ed escono nominate come si aspettano
+      da 200 pixel ha bisogno dietro di un file da 400 o 600 pixel. Chiedi
+      <code>@2x</code> e <code>@3x</code> ed escono nominate come se le aspettano
       Xcode, gli strumenti di Android e l'<code>image-set()</code> del CSS, e
       ognuna è esattamente il doppio o il triplo della prima invece che
-      arrotondata a parte."""
+      arrotondata per conto suo."""
 
 [[howto]]
 title = "Scegli il formato e decidi sulla trasparenza."
 body = """
  PNG, a meno che tu non abbia
       un motivo: è senza perdita, tiene la trasparenza, e le tinte piatte ci si
-      comprimono bene. Il JPEG non ha alcuna trasparenza, quindi un colore di
-      sfondo viene dipinto che tu ne scelga uno o no &mdash; senza, ogni pixel
-      trasparente esce nero. Il WebP fa entrambe le cose e produce un file più
-      leggero, al prezzo del software abbastanza vecchio da non saperlo
+      comprimono bene. Il JPEG di trasparenza non ne ha, quindi un colore di
+      sfondo viene dipinto che tu ne scelga uno o no, e senza sceglierlo ogni
+      pixel trasparente esce nero. Il WebP fa tutte e due le cose e produce un
+      file più leggero, al prezzo del software abbastanza vecchio da non saperlo
       leggere."""
 
 [[howto]]
 title = "Guarda l'anteprima prima di scaricare."
 body = """
  È disegnata dallo stesso codice che
-      scrive il file, dal tuo file, sul tuo dispositivo. Due cose cambiano quando
-      un disegno diventa pixel, ed entrambe si vedono qui: un tratto da un
-      capello, che era largo mezzo pixel, diventa grigio, e il testo viene
-      disegnato con un carattere che questo computer ha, non con uno recuperato
-      dal web."""
+      scrive il file, dal tuo file, sul tuo dispositivo. Quando un disegno
+      diventa pixel cambiano due cose, e tutte e due si vedono qui: un tratto da
+      un capello, che era largo mezzo pixel, diventa grigio, e il testo viene
+      disegnato con un carattere che questo computer ha già, non con uno
+      recuperato dal web."""
 
 [[howto]]
 title = "Prendi i file."
@@ -175,148 +173,147 @@ body = """
  Un download per file, oppure tutto il
       lotto in un unico zip. I nomi seguono l'SVG da cui vengono, con
       <code>@2x</code> e <code>@3x</code> sulle copie, e due file che avrebbero
-      avuto lo stesso nome vengono numerati invece che uno sostituire l'altro in
+      avuto lo stesso nome vengono numerati invece che sostituirsi a vicenda in
       silenzio."""
 
 [[faq]]
 q = "Il mio SVG viene caricato da qualche parte?"
 a = """
-        No. Il file viene letto dal tuo browser sul tuo hardware, disegnato su
-        una tela dallo stesso motore che rende ogni altra immagine che vedi, e
-        restituito come download. Questo strumento non ha alcuna funzione di rete
-        &mdash; non recupera mai niente e non spedisce mai niente &mdash; e la
-        <code>Content-Security-Policy</code> della pagina nomina tutti gli
-        indirizzi che può contattare, nessuno dei quali appartiene a questo
+        No. Il file lo legge il tuo browser sul tuo hardware, lo disegna su un
+        canvas con lo stesso motore che rende ogni altra immagine che vedi, e te
+        lo restituisce come download. Questo strumento non ha nessuna funzione di
+        rete: non recupera mai niente e non spedisce mai niente. La
+        <code>Content-Security-Policy</code> della pagina elenca poi tutti gli
+        indirizzi che può contattare, e nessuno di quelli appartiene a questo
         sito."""
 
 [[faq]]
 q = "A che dimensione dovrei rasterizzare un SVG?"
 a = """
         A quella che chiede la cosa che lo legge, moltiplicata per il rapporto di
-        pixel del dispositivo dello schermo su cui verrà visto. Un logo che
-        occupa 200 pixel CSS ha bisogno di 400 per un portatile Retina e di 600
-        per un telefono recente, che è quello che sono qui le copie
-        <code>@2x</code> e <code>@3x</code>. Per l'icona di un'app o per una
-        scheda su uno store, lo store nomina un numero esatto ed è quello il
-        numero. Quando nessuno ti ha detto niente, 1024 sul lato più lungo è un
-        default utile: abbastanza grande per quasi ogni uso e abbastanza piccolo
-        da mandare via mail."""
+        pixel del dispositivo su cui verrà visto. Un logo che occupa 200 pixel CSS
+        ha bisogno di 400 per un portatile Retina e di 600 per un telefono
+        recente, che è poi quello che sono qui le copie <code>@2x</code> e
+        <code>@3x</code>. Per l'icona di un'app o per una scheda su uno store, lo
+        store nomina un numero esatto ed è quello il numero. Quando invece nessuno
+        ti ha detto niente, 1024 sul lato più lungo è un default utile: abbastanza
+        grande per quasi ogni uso e abbastanza piccolo da mandare via mail."""
 
 [[faq]]
 q = "Ingrandirlo fa perdere qualità?"
 a = """
         No, e questo è l'unico posto in cui quella risposta è onestamente no. Un
-        vettoriale è istruzioni invece che pixel, quindi il browser ridisegna le
-        curve a qualunque dimensione gli si chieda. Quattromila pixel da
-        un'icona da 24 pixel sono nitidi esattamente come lo erano i 24. Quello
-        che non puoi fare è il percorso inverso: una volta che è un PNG sono
-        pixel come qualunque altra cosa, quindi rasterizza alla dimensione che ti
-        serve invece di ridimensionare il risultato dopo."""
+        vettoriale sono istruzioni invece che pixel, quindi il browser ridisegna
+        le curve a qualunque dimensione gli si chieda: quattromila pixel tirati
+        fuori da un'icona da 24 pixel sono nitidi esattamente come lo erano i 24.
+        Quello che non puoi fare è il percorso inverso, perché una volta che è un
+        PNG sono pixel come qualunque altra cosa; rasterizza quindi alla
+        dimensione che ti serve, invece di ridimensionare il risultato dopo."""
 
 [[faq]]
 q = "Il mio SVG non ha larghezza né altezza. Che dimensione ottengo?"
 a = """
-        Il <code>viewBox</code>, se ce n'è uno &mdash; la sua larghezza e la sua
-        altezza sono unità utente e non pixel, ma sono gli unici numeri nel file
-        e un browser li tratta come la dimensione naturale del disegno. Se non
-        c'è nemmeno un viewBox, la pagina scrive <em>presunta</em> accanto alla
-        riga e usa 300&nbsp;&times;&nbsp;150, che è la dimensione a cui l'avrebbe
-        disegnato un <code>&lt;img&gt;</code>. In un caso e nell'altro puoi
-        indicare la dimensione che vuoi e il file viene disegnato a quella."""
+        Quella del <code>viewBox</code>, se ce n'è uno: la sua larghezza e la sua
+        altezza sono unità utente e non pixel, ma sono gli unici numeri che stanno
+        nel file, e un browser li tratta come la dimensione naturale del disegno.
+        Se non c'è nemmeno un viewBox, la pagina scrive <em>presunta</em> accanto
+        alla riga e usa 300&nbsp;&times;&nbsp;150, che è la dimensione a cui
+        l'avrebbe disegnato un <code>&lt;img&gt;</code>. In un caso e nell'altro
+        puoi indicare la dimensione che vuoi e il file viene disegnato a
+        quella."""
 
 [[faq]]
 q = "Perché il testo nel PNG viene diverso?"
 a = """
-        Perché il carattere non è dentro l'SVG. Un SVG che disegna del testo
-        nomina un carattere e lascia che sia la macchina a trovarlo, e un file
-        che se lo tira da Google Fonts con un <code>@import</code> qui non
-        ottiene niente: a un SVG disegnato attraverso un <code>&lt;img&gt;</code>
-        non è concesso recuperare niente, che è la stessa regola che gli impedisce
-        di chiamare casa con il tuo file. La soluzione la conosce già ogni
-        grafico &mdash; converti il testo in tracciati nel programma di disegno
-        prima di esportare. Allora è geometria, e viene uguale dappertutto."""
+        Perché il carattere dentro l'SVG non c'è. Un SVG che disegna del testo
+        nomina un carattere e lascia che sia la macchina a trovarlo, e un file che
+        se lo tira da Google Fonts con un <code>@import</code> qui non ottiene
+        niente: a un SVG disegnato attraverso un <code>&lt;img&gt;</code> non è
+        concesso recuperare niente, che è la stessa regola che gli impedisce di
+        chiamare casa con il tuo file. La soluzione ogni grafico la conosce già:
+        converti il testo in tracciati nel programma di disegno prima di
+        esportare. A quel punto è geometria, e viene uguale dappertutto."""
 
 [[faq]]
 q = "Può convertire più file insieme?"
 a = """
         Sì. Ogni SVG dell'elenco viene reso con le stesse impostazioni e il lotto
-        scende come un unico zip. Un moltiplicatore &mdash; «4&times; la
-        dimensione che il file chiede» &mdash; di solito è l'impostazione giusta
-        per un lotto, perché ogni disegno viene scalato dalla propria dimensione
-        invece che essere forzato tutto allo stesso numero di pixel. Clicca una
-        riga qualsiasi per mettere quella nell'anteprima."""
+        si scarica in un unico zip. Per un lotto l'impostazione giusta di solito è
+        un moltiplicatore, cioè «4&times; la dimensione che il file chiede»,
+        perché ogni disegno viene scalato dalla propria dimensione invece che
+        forzato tutto allo stesso numero di pixel. Clicca una riga qualsiasi per
+        mettere quella nell'anteprima."""
 
 [[faq]]
 q = "C'è un limite di dimensione?"
 a = """
-        Quello del browser, non il nostro. Una tela si arrende da qualche parte
+        Quello del browser, non il nostro. Un canvas si arrende da qualche parte
         oltre i 16.384 pixel per lato, e Safari su iPhone o iPad si ferma attorno
-        ai 16,7 megapixel di area &mdash; 4096&nbsp;&times;&nbsp;4096. Sopra
-        quella soglia la pagina ti avverte invece di restituirti un'immagine
-        vuota, che è quello che fa un browser quando è a corto:
-        <code>toBlob</code> non restituisce proprio niente, senza un errore che
-        si spieghi. Oltre i 100 megapixel lo strumento si rifiuta, perché sono
-        400&nbsp;MB di tela prima ancora che sia stato codificato un byte."""
+        ai 16,7 megapixel di area, cioè 4096&nbsp;&times;&nbsp;4096. Sopra quella
+        soglia la pagina ti avverte, invece di restituirti un'immagine vuota, che
+        è quello che fa un browser quando è a corto: <code>toBlob</code> non
+        restituisce proprio niente, senza nemmeno un errore che si spieghi. Oltre
+        i 100 megapixel lo strumento si rifiuta, perché sono 400&nbsp;MB di canvas
+        prima ancora che sia stato codificato un byte."""
 
 [[faq]]
 q = "Cosa succede alla trasparenza?"
 a = """
-        Viene conservata, in PNG e in WebP. Il JPEG non ha alcun canale alfa,
-        quindi un colore viene dipinto dietro tutta l'immagine che tu ne chieda
-        uno o no &mdash; senza, tutto quello che è trasparente uscirebbe nero,
-        cosa che sembra un difetto e non il JPEG. Anche scegliere un colore di
-        sfondo con il PNG è una cosa perfettamente normale da volere: appiattisce
+        Viene conservata, in PNG e in WebP. Il JPEG un canale alfa non ce l'ha,
+        quindi dietro tutta l'immagine viene dipinto un colore, che tu ne chieda
+        uno o no: senza, tutto quello che è trasparente uscirebbe nero, cosa che
+        sembra un difetto e invece è il JPEG. Anche scegliere un colore di sfondo
+        con il PNG è una cosa perfettamente normale da volere, perché appiattisce
         il disegno su quel colore invece di lasciare un buco."""
 
 [[faq]]
 q = "Può leggere un SVG che contiene uno script o un'immagine esterna?"
 a = """
-        Può leggerlo, e disegnerà esattamente le parti che un browser è disposto
-        a disegnare. Un SVG caricato attraverso un <code>&lt;img&gt;</code> si
-        trova in <em>secure static mode</em>: gli script non girano, i
-        riferimenti esterni non vengono recuperati, e l'animazione non parte
-        &mdash; quello che ottieni è il primo fotogramma. Quindi un file che ha
-        dentro un <code>&lt;image&gt;</code> remoto esce con quella parte
-        mancante. È il browser che si rifiuta per conto tuo, ed è il motivo per
-        cui questa pagina può aprire senza rischi un file che non ha mai
-        visto."""
+        Può leggerlo, e disegnerà esattamente le parti che un browser è disposto a
+        disegnare. Un SVG caricato attraverso un <code>&lt;img&gt;</code> si trova
+        in <em>secure static mode</em>: gli script non girano, i riferimenti
+        esterni non vengono recuperati, e l'animazione non parte, quindi quello
+        che ottieni è il primo fotogramma. Un file che ha dentro un
+        <code>&lt;image&gt;</code> remoto esce perciò con quella parte mancante. È
+        il browser che si rifiuta per conto tuo, ed è il motivo per cui questa
+        pagina può aprire senza rischi un file che non ha mai visto."""
 
 [[faq]]
 q = "Che differenza c'è tra questo e il ridimensionatore di immagini?"
 a = """
-        Da cosa partono. Il ridimensionatore di immagini parte da pixel &mdash;
-        un JPEG, un PNG &mdash; quindi ingrandirlo deve inventare dettaglio che
-        non c'è mai stato. Questo parte da un disegno, quindi non c'è niente da
-        inventare e nessun limite superiore di cui preoccuparsi. Se quello che
-        hai è un SVG, questo è quello che ti dà un risultato nitido; se quello
-        che hai è una fotografia, è l'altro."""
+        Il punto di partenza. Il ridimensionatore di immagini parte da pixel, un
+        JPEG o un PNG, quindi per ingrandirli deve inventare dettaglio che non c'è
+        mai stato. Questo parte da un disegno, quindi non c'è niente da inventare
+        e nessun limite superiore di cui preoccuparsi. Se quello che hai è un SVG,
+        è questo a darti un risultato nitido; se quello che hai è una fotografia,
+        è l'altro."""
 
 [[faq]]
 q = "È gratis, e mi serve un account?"
 a = """
-        È gratis, e non c'è account, non c'è accesso, non c'è periodo di prova e
-        non c'è filigrana. Non c'è nemmeno un limite al numero o alla dimensione
-        dei file, perché non c'è un server che li paga &mdash; il lavoro avviene
-        sul tuo dispositivo. Il sito ha della pubblicità, ed è quella che lo
-        paga; agli annunci non viene dato niente sui tuoi file."""
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di
+        prova e non c'è filigrana. Non c'è nemmeno un limite al numero o alla
+        dimensione dei file, perché non c'è nessun server che li paga: il lavoro
+        lo fa il tuo dispositivo. Il sito ha della pubblicità, ed è quella che lo
+        mantiene; agli annunci non arriva niente sui tuoi file."""
 
 [[faq]]
 q = "Funziona offline?"
 a = """
         Sì. Carica la pagina una volta, poi stacca la connessione e continua a
         funzionare. È anche il modo più semplice per dimostrare che non viene
-        caricato niente: uno strumento che spedisse via il tuo disegno per farlo
-        rendere si fermerebbe nel momento in cui stacchi la spina."""
+        caricato niente, perché uno strumento che spedisse via il tuo disegno per
+        farlo rendere si fermerebbe nell'istante in cui stacchi la spina."""
 
 [schema]
-description = "Rasterizza un SVG in PNG, JPEG o WebP a qualunque dimensione, nel browser. Imposta la dimensione con un moltiplicatore, una larghezza, un'altezza, il lato più lungo o un riquadro, aggiungi le copie @2x e @3x, conserva o appiattisci la trasparenza, e converti un lotto in una volta. Non viene caricato nulla."
+description = "Rasterizza un SVG in PNG, JPEG o WebP a qualunque dimensione, nel browser. Imposta la dimensione con un moltiplicatore, una larghezza, un'altezza, il lato più lungo o un riquadro, aggiungi le copie @2x e @3x, conserva o appiattisci la trasparenza, e converti un lotto in una volta. Non viene caricato niente."
 features = [
   "Ridisegna il vettoriale a ogni dimensione, quindi il risultato è nitido a tutte",
   "Dimensione con un moltiplicatore, una larghezza, un'altezza, il lato più lungo o un riquadro con un adattamento",
   "Copie @2x e @3x, ognuna un multiplo esatto della prima invece che arrotondata due volte",
   "PNG, JPEG e WebP, con la trasparenza conservata o appiattita su un colore",
   "Legge la dimensione da width, height o dal viewBox, e dice quale ha usato",
-  "Avverte prima di una dimensione che la tela di un browser non riesce davvero a produrre",
+  "Avverte prima di una dimensione che il canvas di un browser non riesce davvero a produrre",
   "Anteprima disegnata dallo stesso codice che scrive il file",
   "Lavora a lotti, con tutti i risultati in un unico zip",
   "Gli script e i riferimenti remoti dentro il file non vengono mai eseguiti né recuperati",
@@ -325,4 +322,4 @@ features = [
 
 [picker]
 title = "Trascina qui un SVG"
-hint = "oppure clicca per scegliere &mdash; anche più d'uno alla volta"
+hint = "oppure clicca per sceglierlo &mdash; anche più d'uno alla volta"

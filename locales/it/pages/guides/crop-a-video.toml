@@ -7,11 +7,11 @@ title = "Come ritagliare un video in una forma diversa"
 description = "Riduci una clip a un quadrato, a un verticale 9:16 o a un riquadro di pixel esatto. Quale proporzione vuole ogni piattaforma, perché ritagliare deve ricodificare mentre tagliare no, e quanto costa."
 heading = "Come ritagliare un video in una forma diversa"
 lede = """
-    Ritagliare cambia la forma dell'immagine, il che vuol dire scrivere
-    fotogrammi nuovi &mdash; non c'è modo di aggirarlo, e qualunque strumento
-    dica il contrario sta facendo un'altra cosa. Qui c'è quanto costa, e come
-    spenderlo bene."""
+    Ritagliare cambia la forma dell'immagine, e questo vuol dire scrivere
+    fotogrammi nuovi: non c'è modo di aggirarlo, e qualunque strumento dica il
+    contrario sta facendo un'altra cosa. Vediamo quanto costa e come spenderlo
+    bene."""
 updated = "20 agosto 2026"
 og_title = "Come ritagliare un video in una forma diversa"
 og_description = "Quale proporzione vuole ogni piattaforma, perché ritagliare deve ricodificare mentre tagliare no, e quanto costa."
-og_image_alt = "abox.tools - strumenti che non toccano nessun server"
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

@@ -40,10 +40,10 @@
     <div id="crop-controls" hidden>
       <p class="stage-hint">
         <span id="stage-name" class="stage-name"></span>
-        Arrastra dentro de la caja para moverla, o desde cualquier esquina para
-        cambiarle el tamaño. Con la caja enfocada, las flechas la desplazan un
-        píxel cada vez, <kbd>Alt</kbd>&nbsp;+&nbsp;flechas la redimensionan, y
-        mantener <kbd>Mayús</kbd> hace que cada paso sean diez.
+        Arrastra por dentro de la caja para moverla, o desde cualquier esquina
+        para cambiarle el tamaño. Con la caja enfocada, las flechas la mueven un
+        píxel cada vez, <kbd>Alt</kbd>&nbsp;+&nbsp;flechas la redimensionan, y con
+        <kbd>Mayús</kbd> pulsado cada paso pasa a ser de diez.
       </p>
 
       <!-- The crop box itself is added here by src/cropper.js. The stage is
@@ -212,7 +212,7 @@
         <label for="quality">Calidad &mdash; <output id="quality-value" for="quality">85</output></label>
         <input type="range" id="quality" min="30" max="100" step="1" value="85">
         <p class="field-note">
-          Solo para JPEG y WebP; PNG no tiene mando de calidad. En 85 es donde
+          Solo para JPEG y WebP; el PNG no tiene control de calidad. En 85 es donde
           casi todo el mundo deja de notar la diferencia. Por debajo de 60 más o
           menos, las zonas planas empiezan a hacer bandas.
         </p>

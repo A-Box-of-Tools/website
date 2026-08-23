@@ -6,7 +6,7 @@
   visible on the page.
 -->
 <main>
-  <!-- 第 1 步 &mdash; 视频 -->
+  <!-- 第 1 步，选视频 -->
   <section class="card">
     <h2><span class="step">1</span> 选一段视频</h2>
 
@@ -26,14 +26,14 @@
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- 第 2 步 &mdash; 标记 -->
+  <!-- 第 2 步，标记 -->
   <section class="card" id="section-card" hidden>
     <h2>
       <span class="step">2</span> 把你要的部分标出来<span class="editing" id="editing" hidden></span>
     </h2>
 
     <p class="stage-hint">
-      从头播一遍，在一段该开始的地方按 <kbd>I</kbd>，该结束的地方按 <kbd>O</kbd>。想标多少次就标多少次 &mdash; 每一对都会在下面成为一行，而最终视频就是这些行一个接一个。<kbd>U</kbd> 撤销最后一次，<kbd>Space</kbd> 播放和暂停，方向键跳五秒。
+      从头播一遍，一段该开始的地方按 <kbd>I</kbd>，该结束的地方按 <kbd>O</kbd>。想标多少次就标多少次，每一对都会在下面成为一行，最终视频就是这些行一个接一个。<kbd>U</kbd> 撤销最后一次，<kbd>Space</kbd> 播放和暂停，方向键跳五秒。
     </p>
 
     <div class="stage-wrap">
@@ -114,7 +114,7 @@
       </div>
 
       <p class="field-note">
-        标记存成一个纯文本文件 &mdash; 一段一行，格式就是上面选的那个 &mdash; 所以一次漫长的标记工作扛得住标签页被关掉，而同一个文件也可以交给任何读这种排版的工具。
+        标记存成一个纯文本文件，一段一行，格式就是上面选的那个，所以一次漫长的标记工作扛得住标签页被关掉，而同一个文件也可以交给任何读这种排版的工具。
       </p>
     </div>
 
@@ -135,7 +135,7 @@
     </fieldset>
   </section>
 
-  <!-- 第 3 步 &mdash; 导出 -->
+  <!-- 第 3 步，导出 -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> 剪切</h2>
 
@@ -143,8 +143,8 @@
       <div class="field">
         <label for="method">怎么剪</label>
         <select id="method">
-          <option value="copy" selected>每个字节都保留 &mdash; 什么都不重新编码</option>
-          <option value="exact">就在这里精确切开 &mdash; 会重新编码画面</option>
+          <option value="copy" selected>每个字节都保留，什么都不重新编码</option>
+          <option value="exact">就在这里精确切开，会重新编码画面</option>
           <option value="record">一边播一边录</option>
         </select>
         <p class="field-note" id="method-note"></p>
@@ -171,7 +171,7 @@
           <option value="high">最高质量</option>
         </select>
         <p class="field-note">
-          绝不会超过原片花的量 &mdash; 超过那个量再编码，只会让文件变大。
+          绝不会超过原片花的量，超过那个量再编码，只会让文件变大。
         </p>
       </div>
 

@@ -19,8 +19,8 @@
       &laquo;&nbsp;est-ce que je fais confiance à ce site&nbsp;?&nbsp;&raquo;
       C'est <strong>&laquo;&nbsp;est-ce que ce travail exige que mon fichier
       parte&nbsp;?&nbsp;&raquo;</strong> Pour un nombre important et croissant de
-      travaux, la réponse est non &mdash; et quand la réponse est non, la question
-      de la confiance cesse d'être une question à laquelle vous devez répondre.
+      travaux, la réponse est non, et quand la réponse est non, la question de la
+      confiance cesse d'être une question à laquelle vous devez répondre.
     </p>
   </section>
 
@@ -102,13 +102,14 @@
       s'achève sans réseau, ou bien non.
     </p>
 
-    <h3>2. Surveillez l'onglet Réseau</h3>
+    <h3>2. Surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo;</h3>
     <p>
-      Ouvrez les outils de développement de votre navigateur, choisissez Réseau,
-      puis servez-vous de l'outil. Chaque requête que fait la page est listée avec
-      sa taille. Si votre photo de 4&nbsp;MB a été envoyée, il y a une requête de
-      4&nbsp;MB dans cette liste. Si la plus grosse chose qui quitte la page fait
-      quelques kilooctets de publicité, elle ne l'a pas été.
+      Ouvrez les outils de développement de votre navigateur, allez dans l'onglet
+      &laquo;&nbsp;Réseau&nbsp;&raquo;, puis servez-vous de l'outil. Chaque
+      requête que fait la page y est listée avec sa taille. Si votre photo de
+      4&nbsp;MB a été envoyée, il y a une requête de 4&nbsp;MB dans cette liste.
+      Si la plus grosse chose qui quitte la page fait quelques kilooctets de
+      publicité, elle ne l'a pas été.
     </p>
     <p>
       Triez par taille et regardez le haut. Vous n'avez pas besoin de comprendre
@@ -118,10 +119,10 @@
 
     <h3>3. Lisez la Content-Security-Policy</h3>
     <p>
-      Affichez le source de la page et cherchez
+      Affichez le code source de la page et cherchez
       <code>Content-Security-Policy</code>, vers le haut. C'est la liste des
       adresses que cette page a le droit de contacter, et c'est votre navigateur
-      qui l'applique, non les bonnes intentions du site &mdash; une requête vers
+      qui l'applique, non les bonnes intentions du site&nbsp;: une requête vers
       quoi que ce soit d'absent de la liste est refusée, quoi que le code essaie.
     </p>
     <p>
@@ -142,9 +143,9 @@
       La moins commode, la plus concluante. Si un outil publie son source et le
       sert sans étape de compilation, les fichiers que votre navigateur a
       récupérés sont les fichiers que vous pouvez lire. Cherchez-y
-      <code>fetch</code>, <code>XMLHttpRequest</code> et <code>sendBeacon</code>
-      &mdash; les trois façons dont une page peut envoyer quoi que ce soit &mdash;
-      et regardez ce qu'on leur donne.
+      <code>fetch</code>, <code>XMLHttpRequest</code> et <code>sendBeacon</code>,
+      les trois façons dont une page peut envoyer quoi que ce soit, et regardez ce
+      qu'on leur donne.
     </p>
     <p>
       La plupart des gens ne le feront pas. Il n'en reste pas moins important que
@@ -176,9 +177,9 @@
         <strong>Cela ne survit pas à une fonction qui va chercher quelque
         chose.</strong> Un outil qui vous laisse coller une adresse web doit
         contacter cette adresse, et ce serveur apprend votre IP et ce que vous
-        avez demandé. C'est inhérent à la fonction, pas un défaut &mdash; mais
-        c'est une vraie exception, et un outil devrait le dire franchement plutôt
-        que de l'arrondir.
+        avez demandé. C'est inhérent à la fonction plutôt qu'un défaut, mais c'est
+        une vraie exception, et un outil devrait le dire franchement plutôt que de
+        l'arrondir.
       </li>
       <li>
         <strong>Ce n'est pas la même chose que
@@ -206,9 +207,9 @@
       qui porte une adresse ou un visage que vous n'aviez pas l'intention de
       partager, ou une photo dont vous n'avez pas regardé les données de lieu.
       Pour ceux-là, un outil que vous pouvez vérifier vaut mieux qu'un outil
-      auquel vous devez faire confiance &mdash; non parce que celui à qui l'on
-      fait confiance risque de vous trahir, mais parce qu'avec celui qui est
-      vérifiable la question ne se pose pas.
+      auquel vous devez faire confiance, non parce que celui à qui l'on fait
+      confiance risque de vous trahir, mais parce qu'avec celui qui est vérifiable
+      la question ne se pose pas.
     </p>
   </section>
 
@@ -226,18 +227,18 @@
         vous pouvez donc le regarder changer.
       </li>
       <li>
-        <strong>Onglet Réseau.</strong> Convertissez quelque chose et lisez la
-        liste. Rien ne transporte votre fichier, une vignette de celui-ci, son
-        nom, sa taille, ni quoi que ce soit qui en soit lu. Il n'existe sur ce
-        site aucun événement d'analytique maison qui aurait quoi que ce soit de
-        cela à envoyer.
+        <strong>Onglet &laquo;&nbsp;Réseau&nbsp;&raquo;.</strong> Convertissez
+        quelque chose et lisez la liste. Rien ne transporte votre fichier, une
+        vignette de celui-ci, son nom, sa taille, ni quoi que ce soit qui en soit
+        lu. Il n'existe sur ce site aucun événement d'analytique maison qui aurait
+        quoi que ce soit de cela à envoyer.
       </li>
       <li>
-        <strong>Content-Security-Policy.</strong> Elle est en tête du source de
-        chaque page. <code>connect-src</code> nomme les points de mesure et de
+        <strong>Content-Security-Policy.</strong> Elle est en tête du code source
+        de chaque page. <code>connect-src</code> nomme les points de mesure et de
         publicité de Google et le bouton de don, et rien d'autre.
         <strong>Aucune adresse de cette liste n'appartient à ce site</strong>,
-        parce que ce site n'a pas de serveur &mdash; ce sont des fichiers
+        parce que ce site n'a pas de serveur&nbsp;: ce sont des fichiers
         statiques. Il n'y a nulle part où envoyer un fichier, même si quelque
         chose essayait.
       </li>

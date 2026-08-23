@@ -9,17 +9,17 @@
 nav = "Hacer un GIF a partir de un vídeo"
 
 title = "Cómo convertir un vídeo en un GIF (y que salga pequeño)"
-description = "Qué trozo, qué ancho y qué cadencia elegir, por qué un GIF de un vídeo ocupa diez veces lo que el vídeo, y cuándo conviene usar uno."
+description = "Qué trozo, qué ancho y qué cadencia elegir, por qué un GIF hecho de un vídeo ocupa diez veces lo que el vídeo, y cuándo compensa usar uno."
 
 heading = "Cómo convertir un vídeo en un GIF"
 lede = """
-    GIF es un formato de 1987 que guarda imágenes enteras en vez de movimiento,
-    así que uno hecho a partir de un vídeo siempre es grande. Esto es cuál de los
-    tres ajustes mover cuando sale demasiado grande, y cuánto te compra cada
-    uno."""
+    El GIF es un formato de 1987 que guarda imágenes enteras en vez de
+    movimiento, así que uno hecho a partir de un vídeo siempre sale grande. Aquí
+    va cuál de los tres ajustes mover cuando se te va de tamaño, y cuánto te
+    ahorra cada uno."""
 
 updated = "20 de agosto de 2026"
 
 og_title = "Cómo convertir un vídeo en un GIF y que salga pequeño"
 og_description = "Los tres ajustes que deciden el tamaño de un GIF, lo que cuesta cada uno, y cuándo un GIF es directamente la respuesta equivocada."
-og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

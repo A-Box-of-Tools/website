@@ -1,5 +1,5 @@
 <main>
-  <!-- Passo 1 &mdash; os arquivos -->
+  <!-- Passo 1: os arquivos -->
   <section class="card">
     <h2><span class="step">1</span> Escolha os arquivos SVG</h2>
 
@@ -23,17 +23,17 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Passo 2 &mdash; o tamanho -->
+  <!-- Passo 2: o tamanho -->
   <section class="card" id="size-card">
     <h2><span class="step">2</span> Diga de que tamanho ele deve ser</h2>
 
     <p class="card-lede">
       Esta é a única pergunta que um vetor não consegue responder por você. Um
-      SVG não tem pixels dentro &mdash; tem instruções de desenho, e vai
-      segui-las em qualquer tamanho que você disser. O número abaixo não é um
-      limite contra o qual você está empurrando, como seria com uma fotografia;
-      4000 pixels a partir de um ícone de 24&nbsp;pixels é exatamente tão nítido
-      quanto 24 era.
+      SVG não tem pixels dentro. Ele tem instruções de desenho, e vai segui-las em
+      qualquer tamanho que você disser. O número abaixo não é um limite contra o
+      qual você está empurrando, como seria com uma fotografia: 4000 pixels a
+      partir de um ícone de 24&nbsp;pixels é exatamente tão nítido quanto 24
+      era.
     </p>
 
     <div class="option-row">
@@ -103,9 +103,9 @@
       <div class="option-row">
         <label for="box-fit">Se o desenho tiver outro formato</label>
         <select id="box-fit">
-          <option value="fit" selected>Caber dentro &mdash; o desenho inteiro, com um lado sobrando</option>
-          <option value="pad">Completar &mdash; exatamente este tamanho, com o fundo dos dois lados</option>
-          <option value="stretch">Esticar &mdash; exatamente este tamanho, e o formato deformado</option>
+          <option value="fit" selected>Caber dentro: o desenho inteiro, com um lado sobrando</option>
+          <option value="pad">Completar: exatamente este tamanho, com o fundo dos dois lados</option>
+          <option value="stretch">Esticar: exatamente este tamanho, e o formato deformado</option>
         </select>
       </div>
     </div>
@@ -119,9 +119,9 @@
     <div class="option-row" id="density-row">
       <label for="density">Escrever também as cópias de alta densidade</label>
       <select id="density">
-        <option value="1" selected>Não &mdash; um arquivo por desenho</option>
-        <option value="2">@2x também &mdash; para uma tela Retina</option>
-        <option value="3">@2x e @3x &mdash; o conjunto completo que um celular pede</option>
+        <option value="1" selected>Não: um arquivo por desenho</option>
+        <option value="2">@2x também, para uma tela Retina</option>
+        <option value="3">@2x e @3x, o conjunto completo que um celular pede</option>
       </select>
     </div>
 
@@ -129,7 +129,7 @@
     <p id="size-warning" class="field-summary warn" hidden></p>
   </section>
 
-  <!-- Passo 3 &mdash; o formato -->
+  <!-- Passo 3: o formato -->
   <section class="card" id="format-card">
     <h2><span class="step">3</span> Escolha o formato</h2>
 
@@ -137,21 +137,21 @@
       <div class="field">
         <label for="format">Formato</label>
         <select id="format">
-          <option value="image/png" selected>PNG &mdash; mantém a transparência, bordas exatas</option>
-          <option value="image/jpeg">JPEG &mdash; sem transparência, fotografias menores</option>
-          <option value="image/webp">WebP &mdash; transparência e um arquivo menor</option>
+          <option value="image/png" selected>PNG: mantém a transparência, bordas exatas</option>
+          <option value="image/jpeg">JPEG: sem transparência, fotografias menores</option>
+          <option value="image/webp">WebP: transparência e um arquivo menor</option>
         </select>
         <p class="field-note" id="format-note"></p>
       </div>
 
       <div class="field" id="quality-field" hidden>
-        <label for="quality">Qualidade &mdash; <output id="quality-value" for="quality">90</output></label>
+        <label for="quality">Qualidade: <output id="quality-value" for="quality">90</output></label>
         <input type="range" id="quality" min="30" max="100" step="1" value="90">
         <p class="field-note">
-          Só JPEG e WebP; o PNG não tem botão de qualidade porque é sem perdas.
-          Cor chapada e bordas duras &mdash; que é a maior parte do que um SVG
-          tem &mdash; são exatamente o que um codificador com perdas trata pior,
-          então isto fica mais alto aqui do que ficaria numa fotografia.
+          Só JPEG e WebP, porque o PNG é sem perdas e não tem controle de
+          qualidade. Cor chapada e bordas duras, que são a maior parte do que um
+          SVG tem, são exatamente o que um codificador com perdas trata pior, e por
+          isso este controle fica mais alto aqui do que ficaria numa fotografia.
         </p>
       </div>
 
@@ -167,16 +167,17 @@
     </div>
   </section>
 
-  <!-- Passo 4 &mdash; olhe, e então leve -->
+  <!-- Passo 4: olhe, e então leve -->
   <section class="card" id="run-card">
     <h2><span class="step">4</span> Olhe, e então salve</h2>
 
     <p class="card-lede">
       A pré-visualização é desenhada pelo mesmo código que escreve o arquivo, a
-      partir do arquivo que você escolheu, nesta máquina. O que vale conferir são
-      as duas coisas que mudam quando um desenho vira pixels: um fio de cabelo
+      partir do arquivo que você escolheu, neste computador. O que vale conferir
+      são as duas coisas que mudam quando um desenho vira pixels: um fio de cabelo
       que tinha meio pixel de largura e ficou cinza, e qualquer texto, que é
-      desenhado com uma fonte que esta máquina tem, e não com uma buscada na web.
+      desenhado com uma fonte que este computador tem, e não com uma buscada na
+      web.
     </p>
 
     <div id="preview" class="preview" hidden>

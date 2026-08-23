@@ -4,9 +4,12 @@
   Prose paragraphs are written on one line each: a line break inside Chinese
   text collapses to a space in HTML, and a space between two Han characters is
   visible on the page.
+
+  The &mdash; inside each <dd> is a placeholder for a value not read yet, not
+  punctuation, so it stays exactly as the English source has it.
 -->
 <main>
-  <!-- 第 1 步 &mdash; 图片 -->
+  <!-- 第 1 步，选图片 -->
   <section class="card">
     <h2><span class="step">1</span> 选择图片</h2>
 
@@ -31,13 +34,13 @@
     </div>
 
     <p id="reorder-hint" class="reorder-hint" hidden>
-      一张图一页，顺序就是这个。抓住 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动可以挪动一页，也可以用它上面的箭头。
+      一张图一页，顺序就是这个。抓住 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动就能挪动一页，用它上面的箭头也行。
     </p>
 
     <ul id="image-list" class="image-list"></ul>
   </section>
 
-  <!-- 第 2 步 &mdash; 页面 -->
+  <!-- 第 2 步，页面 -->
   <section class="card">
     <h2><span class="step">2</span> 页面设置</h2>
 
@@ -46,12 +49,12 @@
         <label for="page-size">页面尺寸</label>
         <select id="page-size">
           <option value="fit" selected>让页面适应每张图片</option>
-          <option value="a4">A4 &mdash; 210 &times; 297 毫米</option>
-          <option value="letter">Letter &mdash; 8.5 &times; 11 英寸</option>
-          <option value="legal">Legal &mdash; 8.5 &times; 14 英寸</option>
-          <option value="a3">A3 &mdash; 297 &times; 420 毫米</option>
-          <option value="a5">A5 &mdash; 148 &times; 210 毫米</option>
-          <option value="tabloid">Tabloid &mdash; 11 &times; 17 英寸</option>
+          <option value="a4">A4，210 &times; 297 毫米</option>
+          <option value="letter">Letter，8.5 &times; 11 英寸</option>
+          <option value="legal">Legal，8.5 &times; 14 英寸</option>
+          <option value="a3">A3，297 &times; 420 毫米</option>
+          <option value="a5">A5，148 &times; 210 毫米</option>
+          <option value="tabloid">Tabloid，11 &times; 17 英寸</option>
           <option value="custom">自定义&hellip;</option>
         </select>
         <div id="custom-size" class="inline-pair" hidden>
@@ -71,15 +74,15 @@
       <div class="field" id="dpi-field">
         <label for="dpi">打印分辨率</label>
         <select id="dpi">
-          <option value="72">72 DPI &mdash; 屏幕</option>
+          <option value="72">72 DPI，屏幕</option>
           <option value="96">96 DPI</option>
           <option value="150" selected>150 DPI</option>
           <option value="200">200 DPI</option>
-          <option value="300">300 DPI &mdash; 打印</option>
+          <option value="300">300 DPI，打印</option>
           <option value="600">600 DPI</option>
         </select>
         <p class="field-note">
-          它决定了给定的像素数对应多大的页面。它不会改动画面本身。
+          它决定给定的像素数对应多大的页面，不会改动画面本身。
         </p>
       </div>
 
@@ -123,7 +126,7 @@
         <select id="mode">
           <option value="keep" selected>JPEG 原样保留</option>
           <option value="jpeg">全部重新编码成 JPEG</option>
-          <option value="lossless">无损 &mdash; 完全没有压缩损失</option>
+          <option value="lossless">无损，一点压缩损失都没有</option>
         </select>
         <p class="field-note" id="mode-note"></p>
       </div>
@@ -141,7 +144,7 @@
       <div class="field">
         <label for="max-side">把大图缩小</label>
         <select id="max-side">
-          <option value="0" selected>从不 &mdash; 保持原尺寸</option>
+          <option value="0" selected>从不缩，保持原尺寸</option>
           <option value="4000">最长边 4000 px</option>
           <option value="2000">最长边 2000 px</option>
           <option value="1200">最长边 1200 px</option>
@@ -151,10 +154,10 @@
     </div>
 
     <details class="meta-panel">
-      <summary>文档信息 &mdash; 全部可选，默认全空</summary>
+      <summary>文档信息，全部可选，默认全空</summary>
       <div class="meta-body">
         <p class="meta-note">
-          PDF 里带着一小块关于它自己的信息，而大多数工具不管你要不要，都会往里面填一个时间戳和一个程序名。这一个只写你在这里输入的内容，别的什么都不写：没有文件名，没有机器名，你不勾那个框也没有日期。
+          PDF 里带着一小块关于它自己的信息，大多数工具不管你要不要，都会往里面填一个时间戳和一个程序名。这一个只写你在这里输入的内容，别的什么都不写，没有文件名，没有机器名，你不勾那个框也没有日期。
         </p>
         <div class="settings">
           <div class="field">
@@ -204,7 +207,7 @@
     </div>
   </section>
 
-  <!-- 第 3 步 &mdash; 导出 -->
+  <!-- 第 3 步，导出 -->
   <section class="card">
     <h2><span class="step">3</span> 生成 PDF</h2>
 

@@ -8,16 +8,16 @@
 nav = "Condiciones de uso"
 
 title = "Condiciones de uso &mdash; abox.tools"
-description = "Las condiciones bajo las que se ofrece este sitio: gratis, tal cual, sin cuenta, sin garantía, y tus archivos siguen siendo enteramente tuyos porque nunca se nos envían."
+description = "Las condiciones bajo las que se ofrece este sitio: gratis, tal cual, sin cuenta y sin garantía. Tus archivos siguen siendo enteramente tuyos, porque nunca se nos envían."
 
 heading = "Condiciones de uso"
 lede = """
     No hay ninguna cuenta que abrir ni ningún acuerdo que firmar, así que estas
-    son cortas. Describen lo que puedes esperar de este sitio y lo que no
-    promete."""
+    condiciones son cortas. Describen lo que puedes esperar de este sitio y lo
+    que no te promete."""
 
 updated = "19 de agosto de 2026"
 
 og_title = "Condiciones de uso &mdash; abox.tools"
 og_description = "Gratis, tal cual, sin cuenta y sin garantía. Tus archivos siguen siendo enteramente tuyos."
-og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

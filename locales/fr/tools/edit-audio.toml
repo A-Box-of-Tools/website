@@ -4,31 +4,37 @@
 # Overrides for tools/edit-audio/tool.toml. Only words: the slug, the category,
 # the icon, the CSP and the list of shared parts stay where they are.
 #
+# "Retime" has no French verb: it is said as "changer la vitesse" throughout.
+# Clipping is "écrêter", which is the word French audio work actually uses.
+#
+# [schema] is emitted as JSON-LD, where HTML entities are never decoded, so
+# that table alone uses plain spaces and plain punctuation.
+#
 
 name = "Éditeur audio"
 heading = "Éditeur&nbsp;audio <span class=\"h1-kw\">&mdash; inverser, accélérer ou amplifier une piste</span>"
-tagline = "La passer à l'envers, changer la vitesse, relever un enregistrement trop faible &mdash; tout cela ici, sur votre machine."
+tagline = "La passer à l'envers, changer la vitesse, relever un enregistrement trop faible&nbsp;: tout cela ici, sur votre machine."
 
 title = "Inverser un audio, changer la vitesse et monter le volume &mdash; gratuit, sans envoi"
-description = "Passez une piste à l'envers, accélérez-la ou ralentissez-la, et rendez plus fort un enregistrement trop faible. Récupère aussi le son d'une vidéo. Tout se passe dans votre navigateur : rien n'est envoyé."
-og_title = "Éditeur audio &mdash; inverser, retimer et amplifier sans rien envoyer"
+description = "Passez une piste à l'envers, accélérez-la ou ralentissez-la, et relevez un enregistrement trop faible. Récupère aussi le son d'une vidéo. Tout se passe dans votre navigateur, sans le moindre envoi."
+og_title = "Éditeur audio &mdash; inverser, changer la vitesse et amplifier sans rien envoyer"
 og_description = "Inversez une piste, changez sa vitesse avec ou sans déplacer la hauteur, réglez le niveau, puis téléchargez un WAV. Le fichier est lu et écrit par votre propre navigateur."
-og_image_alt = "Éditeur audio - inverser, retimer et amplifier un son dans votre navigateur"
+og_image_alt = "Éditeur audio - inverser, changer la vitesse et amplifier un son dans votre navigateur"
 
 pledge = """
     Votre fichier est lu, modifié et écrit par votre propre navigateur, sur votre
-    propre matériel. Rien ici ne sait récupérer ni envoyer quoi que ce soit
-    &mdash; cet outil n'a aucune fonction réseau &mdash; et il n'y a à l'autre
-    bout de cette page aucun serveur auquel envoyer un enregistrement, quand bien
-    même il y en aurait une."""
+    propre matériel. Cet outil ne comporte aucune fonction réseau, si bien que
+    rien ici ne sait aller chercher ni envoyer quoi que ce soit. Et quand bien
+    même il en aurait une, il n'y a à l'autre bout de cette page aucun serveur à
+    qui remettre un enregistrement."""
 
 live_hint = """
       Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
-      gardez l'onglet Réseau à l'œil et inversez quelque chose. Pas une seule
-      requête ne transporte d'échantillon, de nom de fichier ni un octet de ce
-      que vous avez choisi. Ou coupez votre connexion et modifiez une piste quand
-      même &mdash; un outil qui expédierait votre audio ailleurs pour le traiter
-      s'arrêterait tout simplement."""
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et inversez quelque
+      chose. Pas une seule requête ne transporte d'échantillon, de nom de fichier
+      ni le moindre octet de ce que vous avez choisi. Vous pouvez aussi couper la
+      connexion et modifier une piste quand même, car un outil qui expédierait
+      votre audio ailleurs pour le traiter s'arrêterait tout simplement."""
 
 read_first = """
 , <code>src/decode.js</code> pour les vingt lignes qui
@@ -36,7 +42,7 @@ read_first = """
       <code>src/stretch.js</code> pour l'étirement temporel,
       <code>src/speed.js</code> pour le rééchantillonneur, et
       <code>src/wav.js</code> pour l'en-tête posé devant les échantillons. Aucun
-      d'eux n'importe quoi que ce soit capable de faire une requête."""
+      d'eux n'importe la moindre chose capable d'émettre une requête."""
 
 howto_heading = "Comment modifier un fichier audio"
 
@@ -48,8 +54,6 @@ card = """
 [words]
 plural = "enregistrements"
 choose = "un fichier"
-analytics_extra = """, ni
-  forme d'onde, durée ou niveau"""
 
 [[facts]]
 text = "Sans envoi"
@@ -70,9 +74,9 @@ text = "Fonctionne hors ligne"
 title = "Vos enregistrements n'ont nulle part où aller."
 body = """
  La
-      Content-Security-Policy nomme toutes les adresses que cette page peut
-      contacter, et aucune n'appartient à ce site. Il n'y a ici aucun point de
-      collecte où votre fichier pourrait arriver, et rien dans le code qui l'y
+      Content-Security-Policy énumère toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de
+      collecte où votre fichier pourrait aboutir, ni rien dans le code qui l'y
       enverrait s'il en existait un."""
 
 [[privacy]]
@@ -84,7 +88,7 @@ body = """
       vient de cette origine, au chargement de la page."""
 
 [[privacy]]
-title = "Le décodeur est celui qui est déjà dans votre navigateur."
+title = "Le décodeur est celui qui se trouve déjà dans votre navigateur."
 body = """
 
       Le fichier est remis à <code>decodeAudioData</code>, le code même qui joue
@@ -97,9 +101,8 @@ title = "L'image d'une vidéo n'est jamais décodée."
 body = """
  Quand vous déposez une
       vidéo, seule sa piste audio est demandée. Les images ne sont ni lues, ni
-      décodées, ni dessinées, ni regardées &mdash; il n'y a sur cette page aucun
-      code qui le pourrait, et le fichier qui en sort contient du son et rien
-      d'autre."""
+      décodées, ni dessinées, ni regardées&nbsp;: aucun code de cette page ne le
+      pourrait, et le fichier qui en sort contient du son et rien d'autre."""
 
 [[privacy]]
 title = "Les échantillons sont écrits, pas réencodés."
@@ -107,7 +110,7 @@ body = """
 
       Un WAV, ce sont les échantillons que cette page a calculés avec un en-tête
       devant. Il n'y a dans la boucle aucun encodeur qui prendrait des décisions
-      sur votre enregistrement, et rien qu'on puisse décrire comme un envoi pour
+      sur votre enregistrement, ni rien qu'on puisse décrire comme un envoi pour
       qu'il s'en produise un."""
 
 [[privacy]]
@@ -130,21 +133,22 @@ body = """
       on ne lui donne rien sur vous ni sur votre fichier."""
 
 [[privacy]]
-title = "Cela fonctionne hors ligne."
+title = "Tout fonctionne hors ligne."
 body = """
- Coupez le réseau et tout sur cette
-      page fonctionne encore. C'est la preuve la plus simple de toutes."""
+ Coupez le réseau et tout, sur cette
+      page, continue de fonctionner. C'est la preuve la plus simple de
+      toutes."""
 
 [[howto]]
 title = "Choisissez un fichier."
 body = """
  Déposez un MP3, un WAV, un FLAC, un
-      M4A, un Ogg ou un Opus sur la zone prévue &mdash; ou une vidéo, si ce que
-      vous voulez, c'est le son qui est dedans. Le navigateur le lit directement
-      sur votre disque&nbsp;; rien n'est envoyé nulle part pendant ce temps."""
+      M4A, un Ogg ou un Opus sur la zone prévue, ou bien une vidéo si ce que vous
+      voulez, c'est le son qui est dedans. Le navigateur le lit directement sur
+      votre disque, sans que rien parte où que ce soit pendant ce temps."""
 
 [[howto]]
-title = "Retournez-la, si c'est pour cela que vous êtes venu."
+title = "Passez-la à l'envers, si c'est pour cela que vous êtes venu."
 body = """
  Une seule
       case. Les échantillons sont écrits du dernier au premier, ce qui est
@@ -163,7 +167,7 @@ body = """
 [[howto]]
 title = "Réglez le niveau."
 body = """
- Nommez un écart en décibels, ou demandez
+ Indiquez un écart en décibels, ou demandez
       que l'enregistrement soit remonté jusqu'à ce que son moment le plus fort se
       pose juste sous le plafond. La page dit où ce moment atterrira avant que
       vous appuyiez sur quoi que ce soit, et vous prévient si le réglage choisi
@@ -174,19 +178,19 @@ title = "Enregistrez."
 body = """
  Le travail se fait sur votre propre matériel&nbsp;:
       la durée dépend donc de votre machine et non d'une file d'attente. Ce qui
-      sort est un WAV &mdash; les échantillons eux-mêmes, avec un en-tête devant
-      &mdash; d'abord rejoué sur la page, puis remis directement aux
+      sort est un WAV, c'est-à-dire les échantillons eux-mêmes avec un en-tête
+      devant, rejoué d'abord sur la page, puis remis directement aux
       téléchargements de votre navigateur."""
 
 [[faq]]
 q = "Mon audio est-il envoyé quelque part&nbsp;?"
 a = """
         Non. Il est lu, modifié et écrit par votre propre navigateur sur votre propre
-        matériel. Cet outil n'a pas de côté serveur, et la
-        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
-        qu'elle peut contacter &mdash; aucune n'appartient à ce site. Coupez votre
-        connexion et inversez une piste quand même, si vous préférez vérifier plutôt
-        qu'on vous le dise."""
+        matériel. Cet outil n'a pas de côté serveur, et sa
+        <code>Content-Security-Policy</code> énumère toutes les adresses que la page
+        peut contacter, dont aucune n'appartient à ce site. Coupez votre connexion et
+        inversez une piste quand même, si vous préférez vérifier plutôt qu'on vous le
+        dise."""
 
 [[faq]]
 q = "Puis-je récupérer le son d'une vidéo&nbsp;?"
@@ -194,8 +198,8 @@ a = """
         Oui, et c'est ici le même travail qu'ouvrir un MP3. Déposez un MP4, un MOV ou
         un WebM et seule sa piste audio est décodée&nbsp;: l'image n'est jamais lue,
         et ce qui sort est un fichier son sans vidéo dedans. C'est aussi la façon
-        d'enregistrer le son d'un clip sans le modifier du tout &mdash; ne touchez à
-        aucun réglage et appuyez sur le bouton."""
+        d'enregistrer le son d'un clip sans le modifier du tout, puisqu'il suffit de
+        ne toucher à aucun réglage et d'appuyer sur le bouton."""
 
 [[faq]]
 q = "Changer la vitesse change-t-il la hauteur&nbsp;?"
@@ -203,8 +207,8 @@ a = """
         Seulement si vous le demandez. &laquo;&nbsp;Garder la hauteur&nbsp;&raquo;
         découpe l'enregistrement en fenêtres qui se chevauchent, d'une cinquantaine de
         millisecondes, et les repose plus serrées ou plus espacées, en choisissant
-        chaque position pour que les ondes se rejoignent au croisement &mdash; une
-        voix reste la même voix à 1,5&times;. &laquo;&nbsp;La laisser
+        chaque position pour que les ondes se rejoignent au croisement&nbsp;; une voix
+        reste ainsi la même voix à 1,5&times;. &laquo;&nbsp;La laisser
         suivre&nbsp;&raquo; rééchantillonne à la place, ce que fait une bande jouée
         plus vite&nbsp;: deux fois la vitesse, c'est exactement une octave au-dessus."""
 
@@ -213,12 +217,11 @@ q = "Pourquoi enregistre-t-il un WAV plutôt qu'un MP3&nbsp;?"
 a = """
         Parce qu'aucun navigateur n'embarque d'encodeur MP3, et que cet outil refuse
         d'envoyer votre enregistrement à un serveur qui en aurait un. Un WAV ne
-        demande aucun encodeur &mdash; ce sont les échantillons avec un en-tête de
-        quarante-quatre octets devant &mdash; c'est donc à la fois l'option honnête et
-        la seule qui ne puisse pas coûter de qualité. Il est plus gros&nbsp;: environ
-        dix mégaoctets la minute en stéréo. Tous les lecteurs, téléphones et éditeurs
-        en ouvrent un, et tout ce qui veut un MP3 peut en fabriquer un à partir de
-        là."""
+        demande aucun encodeur, n'étant que les échantillons précédés d'un en-tête de
+        quarante-quatre octets&nbsp;; c'est donc à la fois l'option honnête et la
+        seule qui ne puisse pas coûter de qualité. Il est plus gros, environ dix
+        mégaoctets la minute en stéréo. Tous les lecteurs, téléphones et éditeurs en
+        ouvrent un, et tout ce qui veut un MP3 peut en fabriquer un à partir de là."""
 
 [[faq]]
 q = "Quels formats puis-je ouvrir&nbsp;?"
@@ -234,26 +237,26 @@ a = """
 q = "Le monter plus fort va-t-il le distordre&nbsp;?"
 a = """
         Seulement si vous le poussez au-delà de la pleine échelle, et la page vous le
-        dit avant. L'audio numérique a un plafond dur&nbsp;: un échantillon ne peut
-        pas être plus fort que la pleine échelle, alors tout ce qui dépasse est aplati
-        contre le plafond, et c'est à cela que ressemble la distorsion.
-        &laquo;&nbsp;Aussi fort que possible&nbsp;&raquo; est le réglage qui ne peut
-        pas faire cela &mdash; il calcule la marge qui reste à l'enregistrement et
-        utilise exactement celle-là. En dessous du plafond, tout n'est que
-        multiplication&nbsp;: montez de 6 dB, redescendez de 6 dB, et les échantillons
-        sont là où ils étaient."""
+        dit avant. L'audio numérique a un plafond absolu&nbsp;: un échantillon ne peut
+        pas être plus fort que la pleine échelle, si bien que tout ce qui dépasse est
+        écrêté contre ce plafond, et c'est à cela que ressemble la distorsion.
+        &laquo;&nbsp;Aussi fort que possible&nbsp;&raquo; est justement le réglage qui
+        ne peut pas faire cela, puisqu'il calcule la marge qui reste à
+        l'enregistrement et utilise exactement celle-là. En dessous du plafond, tout
+        n'est que multiplication&nbsp;: montez de 6&nbsp;dB, redescendez de 6&nbsp;dB,
+        et les échantillons sont là où ils étaient."""
 
 [[faq]]
-q = "Inverser ou retimer fait-il perdre de la qualité&nbsp;?"
+q = "Inverser une piste ou changer sa vitesse fait-il perdre de la qualité&nbsp;?"
 a = """
         Inverser, non&nbsp;: ce sont les mêmes échantillons qui ressortent dans
         l'autre ordre, ce qui est exact. Changer la vitesse déplace chaque
-        échantillon, c'est donc de l'arithmétique et non une copie &mdash; le
+        échantillon, et relève donc de l'arithmétique plutôt que de la copie. Le
         rééchantillonneur filtre correctement en chemin, si bien qu'accélérer ne
-        replie pas les aigus en un sifflement métallique, et les fenêtres de
-        l'étireur sont posées là où les ondes se rejoignent plutôt que là où le calcul
-        les aurait laissées. Aucun des deux chemins ne réencode quoi que ce soit,
-        parce qu'il n'y a ici aucun encodeur avec quoi réencoder."""
+        replie pas les aigus en un sifflement métallique, et les fenêtres de l'étireur
+        sont posées là où les ondes se rejoignent plutôt que là où le calcul les
+        aurait laissées. Aucun des deux chemins ne réencode quoi que ce soit, faute
+        d'encodeur ici avec quoi réencoder."""
 
 [[faq]]
 q = "Y a-t-il une limite à la durée du fichier&nbsp;?"
@@ -268,9 +271,9 @@ a = """
 [[faq]]
 q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
 a = """
-        C'est gratuit, et il n'y a pas de compte, pas de connexion, pas de période
-        d'essai et pas de filigrane. Le site porte de la publicité, et c'est elle qui
-        le finance&nbsp;; les annonces ne reçoivent rien sur votre enregistrement."""
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai,
+        ni filigrane. Le site affiche de la publicité, et c'est elle qui le
+        finance&nbsp;; les annonces ne reçoivent rien sur votre enregistrement."""
 
 [schema]
 browser_requirements = "Nécessite JavaScript et un navigateur doté de Web Audio, ce qui est le cas de tous les navigateurs actuels. Aucune prise en charge de codec au-delà de ce que le navigateur a déjà pour lire le fichier."

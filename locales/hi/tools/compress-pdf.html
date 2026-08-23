@@ -1,5 +1,5 @@
 <main>
-  <!-- क़दम 1 &mdash; फ़ाइल -->
+  <!-- कदम 1 &mdash; फ़ाइल -->
   <section class="card">
     <h2><span class="step">1</span> कोई PDF चुनिए</h2>
 
@@ -17,17 +17,18 @@
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
   </section>
 
-  <!-- क़दम 2 &mdash; वह स्क्रीन जो यह टूल तब भी रखता, अगर सिर्फ़ एक ही रख सकता -->
+  <!-- कदम 2 &mdash; वह स्क्रीन जो यह टूल तब भी रखता, अगर सिर्फ़ एक ही रख सकता -->
   <section class="card" id="inventory-card" hidden>
     <h2><span class="step">2</span> देखिए कि साइज़ है कहाँ</h2>
 
     <p class="card-lede">
-      &ldquo;PDF दबाइए&rdquo; एक ही नाम साझा करते दो अलग-अलग काम हैं। स्कैन
-      फ़ोटोग्राफ़ों का ढेर है, और उन्हें दोबारा एनकोड करने से फ़ाइल का
-      ज़्यादातर हिस्सा बच जाता है। अनुबंध टेक्स्ट और फ़ॉन्ट है, जिसे उसे बनाने
-      वाले ने पहले ही दबा दिया था &mdash; उसमें कोई अस्सी प्रतिशत छिपा नहीं
-      है, और कोई टूल उसे खोज भी नहीं सकता। इन दोनों में से आपके पास कौन-सा है,
-      यह राय का मामला नहीं है, इसलिए कुछ भी छूने से पहले वह यह रहा।
+      &ldquo;PDF कंप्रेस कीजिए&rdquo; असल में दो अलग-अलग काम हैं, जो एक ही नाम
+      से चलते हैं। स्कैन तो फ़ोटोग्राफ़ों का ढेर होता है, और उन्हें दोबारा
+      एनकोड करने से फ़ाइल का ज़्यादातर हिस्सा बच जाता है। अनुबंध टेक्स्ट और
+      फ़ॉन्ट होता है, जिसे उसे बनाने वाले ने पहले ही कंप्रेस कर दिया था। उसमें
+      कोई अस्सी प्रतिशत छिपा नहीं है, और कोई टूल उसे खोज भी नहीं सकता। इन
+      दोनों में से आपके पास कौन-सा है, यह राय का मामला नहीं है, इसलिए कुछ भी
+      छूने से पहले वह यह रहा।
     </p>
 
     <p id="verdict" class="verdict"></p>
@@ -40,22 +41,22 @@
     <p id="inventory-notes" class="field-summary"></p>
   </section>
 
-  <!-- क़दम 3 &mdash; कितना ख़र्च करना है -->
+  <!-- कदम 3 &mdash; कितना खर्च करना है -->
   <section class="card" id="settings-card" hidden>
     <h2><span class="step">3</span> बताइए कि कितनी कसकर निचोड़ना है</h2>
 
     <p class="card-lede">
       PDF यह दर्ज रखती है कि हर तस्वीर कितनी बड़ी बनाई गई है, इसलिए यह टूल
       अंदाज़ा लगाने के बजाय नाप सकता है कि पन्ना असल में इस्तेमाल कितना करता
-      है। 4000 पिक्सल का स्कैन अगर काग़ज़ पर आठ इंच में फैला है, तो वह प्रति
-      इंच 500 पिक्सल ढो रहा है; 150 पर वह उतना ही अच्छा छपता है और स्क्रीन पर
+      है। 4000 पिक्सल का स्कैन अगर कागज़ पर आठ इंच में फैला है, तो वह प्रति
+      इंच 500 पिक्सल ढो रहा है। 150 पर वह उतना ही अच्छा छपता है और स्क्रीन पर
       भी वैसा ही दिखता है। जो पिक्सल किसी को दिख ही नहीं सकते, वे सबसे पहले
-      ख़र्च होते हैं, क्योंकि उनकी कोई क़ीमत नहीं।
+      खर्च होते हैं, क्योंकि उनकी कोई कीमत नहीं।
     </p>
 
     <fieldset class="presets-set">
-      <legend class="visually-hidden">क्वालिटी कितनी ख़र्च की जा सकती है</legend>
-      <div class="presets" id="presets" role="radiogroup" aria-label="क्वालिटी कितनी ख़र्च की जा सकती है">
+      <legend class="visually-hidden">क्वालिटी कितनी खर्च की जा सकती है</legend>
+      <div class="presets" id="presets" role="radiogroup" aria-label="क्वालिटी कितनी खर्च की जा सकती है">
         <label class="preset">
           <input type="radio" name="preset" value="smallest">
           <span class="preset-body">
@@ -67,13 +68,13 @@
           <input type="radio" name="preset" value="screen" checked>
           <span class="preset-body">
             <strong>स्क्रीन पर अच्छा</strong>
-            <span class="preset-note">130 DPI। ऐसी फ़ाइल के लिए आम जवाब जिसे आपको ईमेल करना है।</span>
+            <span class="preset-note">130 DPI। जिस फ़ाइल को आपको ईमेल करना है, उसका आम जवाब यही है।</span>
           </span>
         </label>
         <label class="preset">
           <input type="radio" name="preset" value="print">
           <span class="preset-body">
-            <strong>काग़ज़ पर भी अच्छा</strong>
+            <strong>कागज़ पर भी अच्छा</strong>
             <span class="preset-note">220 DPI। छोटा भी, और यह ठीक से छपेगा भी।</span>
           </span>
         </label>
@@ -88,7 +89,7 @@
     </fieldset>
 
     <details class="advanced">
-      <summary>दोनों संख्याएँ ख़ुद तय कीजिए</summary>
+      <summary>दोनों संख्याएँ खुद तय कीजिए</summary>
       <div class="option-row">
         <label for="dpi-value">बनाई गई जगह के हर इंच पर ज़्यादा से ज़्यादा पिक्सल</label>
         <div class="inline-pair">
@@ -110,11 +111,10 @@
       <span>
         <strong>फ़ाइल को अपने आने की जगह के बारे में जो याद है, वह निकाल दीजिए</strong>
         <span class="check-note">
-          उसे बनाने वाले प्रोग्राम का नाम और संस्करण, वह कब बनी और आख़िरी बार
-          कब बदली गई, XMP पैकेट, और वह निजी गठरी जो लेआउट सॉफ़्टवेयर पीछे
-          छोड़ जाता है ताकि वह अपना ही काम दोबारा भीतर ले सके &mdash; और वह
-          कभी-कभी कई मेगाबाइट की होती है। दस्तावेज़ दिखाने के लिए इनमें से कुछ
-          भी ज़रूरी नहीं।
+          उसे बनाने वाले प्रोग्राम का नाम और संस्करण, वह कब बनी और आखिरी बार
+          कब बदली गई, XMP पैकेट, और वह निजी गठरी जो लेआउट सॉफ़्टवेयर पीछे छोड़
+          जाता है ताकि अपना ही काम दोबारा भीतर ले सके, जो कभी-कभी कई मेगाबाइट
+          की होती है। दस्तावेज़ दिखाने के लिए इनमें से कुछ भी ज़रूरी नहीं।
         </span>
       </span>
     </label>
@@ -122,12 +122,12 @@
     <p id="settings-summary" class="field-summary"></p>
   </section>
 
-  <!-- क़दम 4 &mdash; वह अकेला क्लिक -->
+  <!-- कदम 4 &mdash; वह अकेला क्लिक -->
   <section class="card" id="run-card" hidden>
-    <h2><span class="step">4</span> दबाइए</h2>
+    <h2><span class="step">4</span> कंप्रेस कीजिए</h2>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big">यह PDF दबाइए</button>
+      <button type="button" id="run" class="primary big">यह PDF कंप्रेस कीजिए</button>
       <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
     </div>
 

@@ -1,5 +1,5 @@
 <main>
-  <!-- Passo 1 &mdash; os arquivos -->
+  <!-- Passo 1: os arquivos -->
   <section class="card">
     <h2><span class="step">1</span> Escolha as imagens</h2>
 
@@ -23,15 +23,15 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Passo 2 &mdash; o corte -->
+  <!-- Passo 2: o corte -->
   <section class="card" id="crop-card">
     <h2><span class="step">2</span> Corte, se quiser</h2>
 
     <p class="card-lede">
       A caixa começa na imagem inteira, então deixar este passo em paz não corta
-      nada. Cada imagem guarda a caixa dela &mdash; escolha uma da lista acima
+      nada. Cada imagem guarda a caixa dela, e você escolhe uma da lista acima
       para desenhar nela. O corte acontece antes do redimensionamento, que é a
-      única ordem que faz sentido: uma imagem cortada depois de encolhida já
+      única ordem que faz sentido, já que uma imagem cortada depois de encolhida
       jogou fora os pixels de que precisava.
     </p>
 
@@ -97,7 +97,7 @@
     </div>
   </section>
 
-  <!-- Passo 3 &mdash; o tamanho -->
+  <!-- Passo 3: o tamanho -->
   <section class="card" id="resize-card">
     <h2><span class="step">3</span> Diga que tamanho ela deve ter</h2>
 
@@ -107,7 +107,7 @@
         <option value="pixels" selected>Largura e altura, em pixels</option>
         <option value="longest">O lado maior</option>
         <option value="percent">Uma porcentagem do que ela é agora</option>
-        <option value="none">Nada &mdash; deixar o tamanho exatamente como está</option>
+        <option value="none">Nada: deixar o tamanho exatamente como está</option>
       </select>
     </div>
 
@@ -139,10 +139,10 @@
       <div class="option-row" id="fit-row">
         <label for="fit">Se os formatos discordarem</label>
         <select id="fit">
-          <option value="contain" selected>Caber dentro &mdash; a imagem inteira, com um lado sobrando</option>
-          <option value="cover">Preencher &mdash; exatamente este tamanho, com o excesso cortado</option>
-          <option value="pad">Completar &mdash; exatamente este tamanho, com um fundo em volta</option>
-          <option value="stretch">Esticar &mdash; exatamente este tamanho, e o formato deformado</option>
+          <option value="contain" selected>Caber dentro: a imagem inteira, com um lado sobrando</option>
+          <option value="cover">Preencher: exatamente este tamanho, com o excesso cortado</option>
+          <option value="pad">Completar: exatamente este tamanho, com um fundo em volta</option>
+          <option value="stretch">Esticar: exatamente este tamanho, e o formato deformado</option>
         </select>
       </div>
     </div>
@@ -182,8 +182,8 @@
         <strong>Nunca deixar uma imagem maior do que ela começou</strong>
         <span class="check-note">
           Ampliar inventa pixels que nunca foram fotografados, então uma imagem
-          pequena a quem se pede um quadro grande sai macia em vez de detalhada.
-          Com isto ligado, qualquer coisa que já seja menor que o tamanho pedido
+          pequena forçada num quadro grande sai macia em vez de detalhada. Com
+          isto ligado, qualquer coisa que já esteja menor que o tamanho pedido
           fica no próprio tamanho.
         </span>
       </span>
@@ -192,7 +192,7 @@
     <p id="size-summary" class="field-summary"></p>
   </section>
 
-  <!-- Passo 4 &mdash; o formato, e o único clique -->
+  <!-- Passo 4: o formato, e o único clique -->
   <section class="card" id="save-card">
     <h2><span class="step">4</span> Salve</h2>
 
@@ -209,12 +209,12 @@
       </div>
 
       <div class="field" id="quality-field">
-        <label for="quality">Qualidade &mdash; <output id="quality-value" for="quality">85</output></label>
+        <label for="quality">Qualidade: <output id="quality-value" for="quality">85</output></label>
         <input type="range" id="quality" min="30" max="100" step="1" value="85">
         <p class="field-note">
-          Só JPEG e WebP; o PNG não tem botão de qualidade. 85 é onde a maioria
-          das pessoas para de conseguir perceber. Abaixo de uns 60 as áreas
-          chapadas começam a criar faixas.
+          Só JPEG e WebP, porque o PNG não tem controle de qualidade. 85 é o
+          ponto em que a maioria das pessoas para de notar diferença. Abaixo de
+          uns 60, as áreas chapadas começam a criar faixas.
         </p>
       </div>
 

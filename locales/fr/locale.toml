@@ -8,6 +8,10 @@
 # Nothing structural is repeated here - no list of which tools exist, no
 # category ids, no ordering, no Content-Security-Policy. See buildlib/i18n.py.
 #
+# Typography follows the French rules the rest of this locale already used and
+# this file did not: &nbsp; before : ; ! ?, and &laquo;&nbsp;...&nbsp;&raquo;
+# around a quoted UI label. Headings capitalise the first word only.
+#
 
 lang = "fr"
 name = "French"
@@ -98,60 +102,60 @@ complete = true
 #
 
 [hub]
-title = "Outils en ligne gratuits &mdash; sans envoi, sans compte | abox.tools"
+title = "Outils en ligne gratuits, sans envoi ni inscription | abox.tools"
 # Sous 155 caractères, comme en anglais : Google coupe une description à peu
 # près là, et la fin est ici la partie qui vend le site.
-description = "Des outils gratuits qui n'envoient jamais vos fichiers. Réunir des images en PDF ou en MP4, compresser une image à une taille précise, recadrer une vidéo."
-heading = "Des outils qui ne touchent jamais un serveur"
-og_title = "A Box of Tools &mdash; des outils qui ne touchent jamais un serveur"
-og_description = "De petits outils à usage unique qui fonctionnent entièrement dans votre navigateur. Vos fichiers ne quittent pas votre machine."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+description = "Des outils gratuits qui n'envoient jamais vos fichiers. Réunir des images en PDF ou en MP4, compresser une image à la taille voulue, recadrer une vidéo."
+heading = "Des outils qui ne passent jamais par un serveur"
+og_title = "A Box of Tools &mdash; des outils qui ne passent jamais par un serveur"
+og_description = "De petits outils à usage unique qui travaillent entièrement dans votre navigateur. Vos fichiers ne quittent pas votre machine."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
 schema_description = "De petits outils à usage unique qui font tout leur travail dans votre navigateur. Rien n'est envoyé et aucun compte n'est nécessaire."
-schema_about = "Des utilitaires de fichiers qui s'exécutent dans le navigateur et traitent les fichiers localement, sans les envoyer"
+schema_about = "Des utilitaires de fichiers qui s'exécutent dans le navigateur et traitent les fichiers en local, sans jamais les envoyer"
 
 lede = """
     De petits outils à usage unique qui font tout leur travail dans votre
-    navigateur. Vos fichiers restent sur votre machine : il n'y a rien à
+    navigateur. Vos fichiers restent sur votre machine, car il n'y a rien à
     envoyer, aucun compte à créer et rien qui vous suive."""
 
 support_note = """
-      Ces outils sont gratuits et le resteront. Si l'un d'eux vous a évité du
-      travail, c'est la seule chose sur ce site qui vous demande quoi que ce
-      soit."""
+      Ces outils sont gratuits et le resteront. Si l'un d'eux vous a épargné une
+      corvée, voici la seule chose, sur tout ce site, qui vous demande quelque
+      chose."""
 
 # Trois faits vérifiables plutôt qu'une promesse, comme en anglais.
 [[hub.guarantees]]
 title = "Vos fichiers ne quittent jamais votre machine"
 body = """
-        Ils sont ouverts, lus et traités par votre propre navigateur, sur votre
+        C'est votre navigateur qui les ouvre, les lit et les traite, sur votre
         propre matériel. La <code>Content-Security-Policy</code> de chaque outil
-        nomme toutes les adresses qu'il peut contacter, et aucune ne nous
-        appartient."""
+        énumère toutes les adresses qu'il a le droit de contacter, et aucune ne
+        nous appartient."""
 
 [[hub.guarantees]]
-title = "Rien de vos fichiers n'est transmis"
+title = "Aucune information sur vos fichiers n'est transmise"
 body = """
-        Ni le fichier, ni une vignette, ni le nom, la taille ou le nombre que
-        vous avez choisi. Aucun outil ici n'en communique quoi que ce soit. Il
-        n'y a, à l'autre bout, aucun serveur pour le lire."""
+        Ni le fichier, ni une vignette, ni son nom, ni sa taille, ni le nombre
+        que vous avez choisi. Aucun outil d'ici n'en dit quoi que ce soit, et il
+        n'y a de toute façon, à l'autre bout, aucun serveur pour l'entendre."""
 
 [[hub.guarantees]]
-title = "Cela fonctionne hors ligne"
+title = "Tout fonctionne hors ligne"
 body = """
         Ouvrez un outil une fois, coupez votre connexion, et il continue de
-        travailler sur vos fichiers exactement comme avant. C'est difficile à
-        simuler : un outil qui enverrait vos fichiers ailleurs pour les traiter
-        s'arrêterait tout simplement."""
+        travailler sur vos fichiers exactement comme avant. La démonstration est
+        difficile à truquer, puisqu'un outil qui expédierait vos fichiers
+        ailleurs pour les traiter s'arrêterait net."""
 
 [[hub.categories]]
 id = "images-and-video"
 name = "Images &amp; vidéo"
-note = "Travailler ses photos et ses séquences sans les confier à personne."
+note = "Travailler ses photos et ses rushes sans les confier à personne."
 
 [[hub.categories]]
 id = "gif-and-animation"
 name = "GIF &amp; animation"
-note = "Créez une animation, ou décomposez-la, sans qu'elle quitte votre machine."
+note = "Monter une animation, ou la décomposer, sans qu'elle quitte votre machine."
 
 [[hub.categories]]
 id = "audio"
@@ -161,7 +165,7 @@ note = "Travailler un enregistrement sans le confier à personne, y compris le s
 [[hub.categories]]
 id = "documents-and-pdf"
 name = "Documents &amp; PDF"
-note = "Créer et réorganiser des documents sans les envoyer se faire traiter ailleurs."
+note = "Fabriquer et réorganiser des documents sans les envoyer se faire traiter ailleurs."
 
 [[hub.categories]]
 id = "codes-and-data"
@@ -171,7 +175,7 @@ note = "Transformer ce que vous avez tapé en quelque chose qu'une machine sait 
 [[hub.categories]]
 id = "text-and-code"
 name = "Texte &amp; code"
-note = "Mettez-le en forme, comparez-le, encodez-le, sans coller un jeton ou un fichier de configuration sur le serveur de quelqu'un d'autre."
+note = "Le relire, le comparer, l'encoder, sans coller un jeton ou un fichier de configuration sur le serveur d'un inconnu."
 
 #
 # ---------------------------------------------------------------------------
@@ -181,22 +185,22 @@ note = "Mettez-le en forme, comparez-le, encodez-le, sans coller un jeton ou un 
 
 [guides]
 nav = "Tous les guides"
-title = "Guides &mdash; comment faire, et ce que chaque choix coûte"
-description = "Des guides clairs pour compresser, redimensionner, recadrer, couper et convertir vos fichiers : ce que les réglages veulent dire et pourquoi rien n'a besoin d'être envoyé."
+title = "Guides&nbsp;: comment faire, et ce que chaque choix coûte"
+description = "Des guides pour compresser, redimensionner, recadrer, couper et convertir ses fichiers : ce que veulent dire les réglages, ce qu'ils coûtent, et pourquoi aucun envoi n'est nécessaire."
 heading = "Guides"
 lede = """
     Un guide par outil, écrit pour qui s'est vu imposer une taille ou un format
     et aimerait savoir ce que fait vraiment le réglage qu'il s'apprête à
     déplacer. Tout ce qui est décrit ici se passe sur votre propre machine."""
 og_title = "Les guides d'abox.tools"
-og_description = "Compresser, redimensionner, recadrer, couper et convertir ses fichiers, et ce que chaque réglage coûte. Sans aucun envoi."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_description = "Compresser, redimensionner, recadrer, couper et convertir ses fichiers, et ce que chaque réglage coûte. Sans le moindre envoi."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
 
 
 [[guides.groups]]
 id = "doing-the-job"
 name = "Faire le travail"
-note = "Un par outil : en quoi consiste la tâche, quel réglage compte, et ce qu'il vous coûte."
+note = "Un guide par outil : en quoi consiste la tâche, quel réglage compte, et ce qu'il vous coûte."
 
 [[guides.groups]]
 id = "before-you-upload"
@@ -206,51 +210,50 @@ note = "Ce que confier un fichier à un site implique vraiment, et comment savoi
 #
 # ---------------------------------------------------------------------------
 # The roadmap. Only the frame - the list itself is config/planned.toml, which
-# has no locale file yet and is therefore still English on this page.
+# is translated in planned.toml beside this file.
 # ---------------------------------------------------------------------------
 #
 
 [roadmap]
 nav = "Feuille de route"
-title = "Feuille de route &mdash; ce qu'abox.tools construit ensuite"
+title = "Feuille de route&nbsp;: ce qu'abox.tools construit ensuite"
 description = "Tous les outils prévus pour abox.tools, groupés et à découvert, avec ceux qui sont déjà finis. Tous s'exécutent dans le navigateur et n'envoient rien."
 heading = "Ce qui arrive ensuite"
 lede = """
-    Tout ce qui figure sur les deux listes ci-dessous fait son travail dans
-    votre navigateur et n'envoie rien &mdash; c'est la règle qu'un nom doit
-    passer avant même d'y entrer. Les nombres ne sont écrits nulle part ; la
-    compilation les compte sur les listes elles-mêmes."""
+    Tout ce qui figure sur les deux listes ci-dessous travaille dans votre
+    navigateur et n'envoie rien, car c'est la condition qu'un nom doit remplir
+    pour y entrer. Aucun de ces nombres n'est écrit à la main&nbsp;: la
+    compilation les relève elle-même sur les deux listes."""
 
 intro_heading = "Comment cette liste a été établie"
 intro = """
     <p>
-      Ce n'est pas une liste de souhaits. Elle a été établie en parcourant le
-      catalogue d'outils du plus grand site de GIF et de vidéo en ligne &mdash;
-      ce qui se rapproche le plus d'un inventaire de ce que les gens veulent
-      réellement faire à un fichier &mdash; et en gardant chaque entrée qui
-      peut être construite de sorte que le travail se fasse sur votre propre
-      machine et continue de se faire une fois le réseau débranché.
+      Ce n'est pas une liste de souhaits. Elle a été dressée en dépouillant le
+      catalogue du plus grand site de GIF et de vidéo en ligne, ce qui se
+      rapproche le plus d'un inventaire de ce que les gens veulent réellement
+      faire à un fichier, puis en gardant chaque entrée réalisable de telle
+      sorte que le travail se fasse sur votre propre machine et continue de se
+      faire une fois le réseau débranché.
     </p>
     <p>
       L'essentiel de ce qui a survécu repose sur des interfaces que le
-      navigateur fournit déjà. Quelques-unes demandent un codec embarqué dans
-      le seul outil qui l'utilise, ce qui est permis &mdash; le fichier ne
-      quitte toujours pas la machine. Ce qui ne franchissait pas cette barre a
-      été écarté plutôt que promis, si bien que certains des manques évidents
+      navigateur fournit déjà. Quelques entrées réclament un codec embarqué
+      dans le seul outil qui l'utilise, ce qui reste permis, puisque le fichier
+      ne quitte toujours pas la machine. Ce qui ne franchissait pas cette barre
+      a été écarté plutôt que promis, si bien que certains des manques évidents
       ci-dessous sont voulus.
     </p>
     <p>
       Les outils qui existent déjà figurent en haut de leur groupe, marqués
       <em>Terminé</em> et reliés à leur propre page. Tout ce qui se trouve en
-      dessous reste à venir, et rien n'est un lien tant que ce n'est pas le
-      cas.
+      dessous reste à venir, et rien n'y devient un lien avant de l'être.
     </p>"""
 
 planned_heading = "Chaque type de fichier, et ce qu'on peut en faire"
 
 og_title = "La feuille de route d'abox.tools"
 og_description = "Ce qui est fait, et ce qui arrive ensuite. Tout s'exécute dans le navigateur et n'envoie rien."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
 
 #
 # ---------------------------------------------------------------------------
@@ -262,15 +265,15 @@ og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
 
 [not_found]
 title = "Page introuvable &mdash; abox.tools"
-description = "Cette adresse n'existe pas sur abox.tools. Voici les outils qui existent - tous gratuits, et aucun n'envoie vos fichiers où que ce soit."
+description = "Cette adresse n'existe pas sur abox.tools. Voici celles qui existent : que des outils gratuits, dont aucun n'envoie vos fichiers où que ce soit."
 heading = "Cette page n'est pas ici"
 tools_heading = "Tous les outils, au même endroit"
 tools_note = "Tous gratuits, tous dans votre navigateur, aucun n'envoie quoi que ce soit."
 
 lede = """
     Soit l'adresse contient une faute de frappe, soit ce qui s'y trouvait a
-    déménagé. Votre fichier n'a rien et rien n'a été perdu : ce site n'a jamais
-    rien détenu de vous qu'il puisse perdre."""
+    déménagé. Il n'est rien arrivé à votre fichier et rien n'a été perdu, ce
+    site n'ayant jamais rien détenu de vous qu'il puisse perdre."""
 
 #
 # ---------------------------------------------------------------------------
@@ -280,8 +283,8 @@ lede = """
 
 [footer]
 blurb = """
-        Des outils qui ne touchent jamais un serveur. Vos fichiers restent sur
-        votre machine &mdash; rien à envoyer, aucun compte à créer."""
+        Des outils qui ne passent jamais par un serveur. Vos fichiers restent
+        sur votre machine, sans rien à envoyer ni compte à créer."""
 base = "Chaque affirmation de ce site est faite pour être vérifiée, pas pour être crue."
 
 #
@@ -315,53 +318,56 @@ guarantees_note = """
     Rien de tout cela n'est à croire sur parole.
     <a href="{{ base }}{{ links.safety_guide }}/">
       Comment savoir si un outil a vraiment besoin de vos fichiers</a>
-    présente quatre vérifications que vous pouvez faire vous-même, sur ce site
+    présente quatre vérifications que vous pouvez mener vous-même, sur ce site
     comme sur n'importe quel autre."""
 
 hub_guides_note = """
-    Vous ne savez pas quel réglage déplacer, ni ce qu'il coûte ?
+    Vous ne savez pas quel réglage déplacer, ni ce qu'il coûte&nbsp;?
     <a href="{{ base }}{{ links.guides }}/">Il y a un guide pour chaque
     outil</a>."""
 
 hub_roadmap_note = """
-    Il en arrive d'autres, et la liste est publique :
+    Il en arrive d'autres, et la liste est publique&nbsp;:
     <a href="{{ base }}{{ links.roadmap }}/">voir ce qui est prévu</a>."""
 
 guides_all_note = """
-    Chaque guide décrit ici un outil qui s'exécute sur votre propre machine :
+    Chaque guide décrit ici un outil qui s'exécute sur votre propre machine&nbsp;:
     <a href="{{ base }}">les voir tous</a>."""
 
 [ui.tool]
 view_source = "Voir le code"
-how_verified = "Comment c'est vérifiable"
-live_check = "Vérification en direct :"
-offline = "Hors ligne :"
+how_verified = "Comment le vérifier"
+live_check = "Vérification en direct&nbsp;:"
+offline = "Hors ligne&nbsp;:"
 checking = "vérification&hellip;"
 questions_heading = "Questions"
 guide_heading = "La version longue"
 related_heading = "Aussi dans la boîte"
 privacy_heading = "Comment cette promesse se vérifie"
 
+# Tournée à l'actif : le participe passé s'accorderait avec
+# {{ tool.words.plural }}, qui est tantôt masculin ("documents") tantôt féminin
+# ("images"), et aucune forme écrite ici ne pourrait convenir aux deux.
 pledge_line = """
-    Vos {{ tool.words.plural }} ne sont <strong>jamais envoyés</strong>. Il n'y a pas de serveur."""
+    Cet outil n'envoie <strong>jamais</strong> vos {{ tool.words.plural }}. Il n'y a pas de serveur."""
 
 boot_title = "Le code de cette page n'a pas démarré."
 boot_body = """
     Ouvrir <code>index.html</code> directement depuis un dossier bloque les modules
-    JavaScript : rien ne se passera au moment de choisir {{ tool.words.choose }}. Servez plutôt le dossier
-    en http :"""
+    JavaScript, si bien que rien ne se passera au moment de choisir {{ tool.words.choose }}. Servez plutôt le dossier
+    en http&nbsp;:"""
 boot_then = "Ouvrez ensuite <code>http://localhost:8080/</code>."
 
 noscript_title = "JavaScript est désactivé."
-noscript_body = "Cette application fait tout son travail dans votre navigateur ; elle ne peut pas fonctionner sans."
+noscript_body = "Cette application fait tout son travail dans votre navigateur et ne peut donc pas fonctionner sans lui."
 
 check_yourself = """
       <strong>Vérifiez vous-même.</strong> Rien de ce qui précède n'est à croire sur
       parole. Cette page est produite à partir des gabarits et de la configuration
       du dépôt par un script de compilation que vous pouvez lire et exécuter
-      vous-même, et le résultat est déposé sur la branche <code>dist</code>
-      &mdash; vous pouvez donc comparer ce qui est servi à ce qu'une compilation
-      des sources produit :"""
+      vous-même, et le résultat est publié sur la branche <code>dist</code>, ce
+      qui vous permet de comparer ce qui est servi avec ce que produit une
+      compilation des sources&nbsp;:"""
 
 read_first_lead = """
       Les fichiers à lire en premier sont <code>config/site.toml</code> pour la
@@ -372,12 +378,13 @@ open_tool = "Ouvrir {{ tool.name | e }}"
 
 [ui.picker]
 warning = """
-      <strong>C'est la seule fonction qui touche au réseau.</strong>
-      Récupérer une adresse indique au serveur concerné votre adresse IP et quelle {{ tool.picker.urls.noun }} vous
-      avez demandée. La {{ tool.picker.urls.noun }} est copiée en mémoire locale à son arrivée et n'est jamais
-      redemandée. Rien de vous ne sort jamais &mdash; cette page reste
-      incapable du moindre envoi."""
+      <strong>C'est la seule fonction de la page qui touche au réseau.</strong>
+      Aller chercher une adresse révèle au serveur concerné votre adresse IP et
+      lui apprend quelle {{ tool.picker.urls.noun }} vous réclamez. Le fichier reçu est recopié en
+      mémoire locale dès son arrivée et n'est jamais redemandé. Rien de vous ne
+      sort d'ici, et cette page reste tout aussi incapable d'envoyer quoi que ce
+      soit."""
 label = "Une adresse par ligne"
 note = """
-      Le serveur doit autoriser l'usage multi-origine de ses {{ tool.picker.urls.noun }}s. Beaucoup de sites ne le
-      font pas, et ceux-là échoueront avec un message plutôt que de casser en silence plus tard."""
+      Le serveur d'en face doit autoriser l'usage multi-origine de ses {{ tool.picker.urls.noun }}s. Beaucoup
+      ne le font pas, auquel cas vous aurez un message d'erreur plutôt qu'une panne silencieuse plus tard."""

@@ -9,34 +9,33 @@ name = "Imágenes a vídeo"
 heading = "Imágenes&nbsp;a&nbsp;vídeo <span class=\"h1-kw\">&mdash; hacer un pase de diapositivas en MP4</span>"
 tagline = "Convierte una carpeta de imágenes en un vídeo."
 
-title = "Secuencia de imágenes a MP4 &mdash; gratis, sin subidas y sin conexión"
-description = "Convierte imágenes JPG, PNG o WebP en un vídeo MP4 de pase de diapositivas, gratis y por completo en tu navegador. No se sube nada, no hay que registrarse y funciona sin conexión."
-og_title = "Secuencia de imágenes a MP4 &mdash; gratis, en tu navegador"
-og_description = "Convierte una secuencia de render, un timelapse o una carpeta de fotos en un MP4. La codificación ocurre en tu propio equipo; no se sube nada."
+title = "Secuencia de imágenes a MP4 &mdash; gratis, sin subir nada y sin conexión"
+description = "Convierte imágenes JPG, PNG o WebP en un vídeo MP4 de pase de diapositivas, gratis y sin salir del navegador. No se sube nada, no hay que registrarse y funciona sin conexión."
+og_title = "Secuencia de imágenes a MP4 &mdash; gratis y en tu navegador"
+og_description = "Convierte una secuencia de render, un timelapse o una carpeta de fotos en un MP4. La codificación ocurre en tu dispositivo y no se sube nada."
 og_image_alt = "Imágenes a vídeo - convierte una carpeta de imágenes en un pase de diapositivas MP4"
 
 pledge = """
-    Tu propio navegador codifica cada fotograma y el vídeo se construye en la
-    memoria de este equipo. El codificador no toca nunca la red, y al otro lado
-    de esta página no hay ningún servidor al que mandar una imagen aunque la
-    tocara."""
+    Cada fotograma lo codifica tu propio navegador, y el vídeo se monta en la
+    memoria de este dispositivo. El codificador no toca la red en ningún momento,
+    y aunque la tocara, al otro lado de esta página no hay ningún servidor al que
+    mandar una imagen."""
 
 live_hint = """
-      No hace falta que nos creas: abre las herramientas de desarrollo, mira la
-      pestaña «Red» y haz un vídeo. Ni una sola petición lleva una imagen, una
-      miniatura ni un nombre de archivo. O desconéctate de internet y haz uno de
-      todos modos."""
+      No hace falta que nos creas. Abre las herramientas de desarrollo, ponte en
+      la pestaña «Red» y haz un vídeo. No verás ni una petición que lleve una
+      imagen, una miniatura o un nombre de archivo. O desconéctate de internet y
+      haz uno igualmente."""
 
 read_first = """
 , y <code>src/encoder.js</code> para el bucle de
-      codificación, que nunca toca la red."""
+      codificación, que no toca la red en ningún momento."""
 
 howto_heading = "Cómo convertir imágenes en un vídeo"
 
 card = """
             Convierte una carpeta de imágenes en un pase de diapositivas en MP4.
-            La codificación ocurre en tu propio equipo, con tu propio
-            hardware."""
+            La codificación ocurre en tu dispositivo, con tu propio hardware."""
 
 [words]
 plural = "imágenes"
@@ -61,37 +60,37 @@ text = "Los archivos se quedan en tu dispositivo"
 title = "Tus imágenes no tienen adónde ir."
 body = """
  La
-      Content-Security-Policy nombra todas las direcciones que esta página puede
-      contactar, y ninguna es de este sitio. Aquí no hay ningún punto final donde
-      pudieran recogerse tus archivos, ni nada en el código que los enviara si lo
-      hubiera. Esto antes decía <code>connect-src 'none'</code>, que era absoluto;
-      poner publicidad costó eso, y decirlo forma parte del trato."""
+      Content-Security-Policy enumera todas las direcciones a las que esta
+      página puede conectarse, y ninguna es de este sitio. Aquí no hay ningún
+      destino donde recoger tus archivos, ni una línea de código que los mandara
+      si lo hubiera. Esto antes decía <code>connect-src 'none'</code>, que era
+      absoluto. Poner publicidad costó eso, y decirlo forma parte del trato."""
 
 [[privacy]]
 title = "La codificación es local."
 body = """
  WebCodecs funciona dentro de tu navegador y el
-      archivo terminado se entrega directamente a una descarga. Esta aplicación no
-      tiene lado servidor."""
+      archivo terminado va directo a una descarga. Esta aplicación no tiene parte
+      de servidor."""
 
 [[privacy]]
-title = "Qué carga Google y qué no se le da."
+title = "Qué carga Google, y qué no llega a ver."
 body = """
  Los scripts de
-      publicidad y medición vienen de Google. A ninguno se le entrega nada sobre
-      tus imágenes: ni un archivo, ni una miniatura, ni un nombre, un tamaño o un
-      recuento. Cada línea que lee, descodifica, compone o codifica una imagen se
-      sirve desde este origen y está listada en el repositorio."""
+      publicidad y de medición vienen de Google. A ninguno se le entrega nada
+      sobre tus imágenes: ni un archivo, ni una miniatura, ni un nombre, ni un
+      tamaño, ni un recuento. Cada línea que lee, descodifica, compone o codifica
+      una imagen se sirve desde este origen y está en el repositorio."""
 
 [[privacy]]
-title = "Qué carga el botón de donación y qué no se le da."
+title = "Qué carga el botón de donación, y qué no llega a ver."
 body = """
 
       El botón «Buy me a coffee» de la cabecera lo dibuja un script de
-      cdnjs.buymeacoffee.com y se compone con Google Fonts. Es un enlace y nada
-      más: no informa de ninguna visita, y no se le entrega nada sobre ti ni
-      sobre tus imágenes. No pasa nada a menos que lo pulses, y lo que hay al
-      otro lado es el sitio de otra gente."""
+      cdnjs.buymeacoffee.com y se compone con Google Fonts. No es más que un
+      enlace: no avisa de ninguna visita, y no se le entrega nada sobre ti ni
+      sobre tus imágenes. Si no lo pulsas no ocurre nada, y lo que hay al otro
+      lado es un sitio ajeno."""
 
 [[privacy]]
 title = "Una excepción deliberada."
@@ -100,140 +99,141 @@ body = """
       se contacta con ese servidor para traer la imagen y verá tu dirección IP.
       Solo se descargan las imágenes que pegues tú, y solo hacia dentro:
       <code>img-src</code> se abre, <code>connect-src</code> no. El contador de
-      abajo lista todos los orígenes externos contactados."""
+      abajo lista todos los orígenes externos con los que se ha contactado."""
 
 [[privacy]]
 title = "Funciona sin conexión."
 body = """
- Desconéctate de la red y todo salvo la carga
-      desde una dirección web sigue funcionando. Es la prueba más sencilla de
+ Desconéctate de la red y sigue funcionando
+      todo menos la carga desde una dirección web. Es la prueba más sencilla de
       todas."""
 
 [[howto]]
 title = "Elige tus imágenes."
 body = """
- Suelta una carpeta sobre el selector,
-      o escoge los archivos a mano. Tu navegador los lee directamente del disco;
-      mientras lo haces no se envía nada a ninguna parte."""
+ Arrastra una carpeta entera hasta el
+      selector, o busca los archivos a mano. El navegador los lee directamente
+      del disco, y mientras lo haces no sale nada hacia ninguna parte."""
 
 [[howto]]
 title = "Ponlas en orden y decide cuánto dura cada una."
 body = """
  Arrastra
-      para reordenar. La duración se puede dar en fotogramas o en segundos, para
-      todas las imágenes a la vez o de una en una."""
+      para reordenarlas. La duración se puede dar en fotogramas o en segundos,
+      para todas las imágenes a la vez o de una en una."""
 
 [[howto]]
 title = "Elige una resolución y una cadencia."
 body = """
  «Igualar la
-      resolución más alta» sigue a tu imagen más grande; los preajustes cubren 4K,
-      1080p, 720p, cuadrado y vertical, y hay un tamaño a medida si ninguno
-      encaja."""
+      resolución más alta» sigue a tu imagen más grande. Los preajustes cubren
+      4K, 1080p, 720p, cuadrado y vertical, y tienes un tamaño a medida si
+      ninguno te encaja."""
 
 [[howto]]
 title = "Crea el vídeo y descárgalo."
 body = """
- La codificación ocurre en tu
-      propio hardware, así que lo que tarde depende de tu equipo y no de una cola.
-      El MP4 terminado se entrega directamente a las descargas de tu
-      navegador."""
+ La codificación la hace tu propio
+      hardware, así que lo que tarde depende de tu dispositivo y no de una cola.
+      El MP4 terminado va directo a las descargas del navegador."""
 
 [[faq]]
 q = "¿Se suben mis imágenes a alguna parte?"
 a = """
-        No. Tu propio navegador lee, compone y codifica tus imágenes en tu propio
-        hardware. Esta herramienta no tiene lado servidor, y la
-        <code>Content-Security-Policy</code> de la página nombra todas las
-        direcciones que puede contactar &mdash; ninguna es de este sitio. La única
+        No. Tu propio navegador las lee, las compone y las codifica, todo en tu
+        propio hardware. Esta herramienta no tiene parte de servidor, y la
+        <code>Content-Security-Policy</code> de la página enumera todas las
+        direcciones a las que puede conectarse, ninguna de este sitio. La única
         excepción es la función opcional de «añadir desde una dirección web», que
-        descarga una imagen que pegues tú, y ese servidor ve tu dirección IP."""
+        descarga una imagen que has pegado tú, y ese servidor sí ve tu dirección
+        IP."""
 
 [[faq]]
 q = "¿Qué formatos de imagen puedo usar?"
 a = """
-        Cualquier formato de imagen fija que tu navegador sepa descodificar, que
-        en la práctica significa JPG, PNG, WebP, GIF, AVIF y, en dispositivos
-        Apple, HEIC. Aquí no hay otra lista que mantener al día, porque
-        descodificar es trabajo del navegador y no nuestro."""
+        Cualquier formato de imagen fija que el navegador sepa descodificar, que
+        en la práctica son JPG, PNG, WebP, GIF, AVIF y, en dispositivos Apple,
+        HEIC. Aquí no hay otra lista que mantener al día, porque descodificar es
+        trabajo del navegador y no nuestro."""
 
 [[faq]]
 q = "¿Qué formato de vídeo produce?"
 a = """
         MP4 con vídeo H.264, que se reproduce prácticamente en cualquier cosa. En
-        un navegador sin WebCodecs la herramienta recurre a grabar WebM &mdash; el
-        mismo material en un contenedor que aceptan menos editores."""
+        un navegador sin WebCodecs, la herramienta recurre a grabar en WebM, que
+        es el mismo material en un contenedor que aceptan menos editores."""
 
 [[faq]]
 q = "¿Puedo usar esto para una secuencia de render de Blender o After Effects?"
 a = """
-        Sí &mdash; una secuencia de render numerada es exactamente para lo que
-        está esto. Añade los fotogramas que escribió tu motor de render, deja la
-        duración en un fotograma cada uno y pon la cadencia igual que la del
-        render. «Ordenar por nombre» cuenta como esperarías, así que
-        <code>frame_2</code> cae antes de <code>frame_10</code> y no después.
+        Sí, una secuencia de render numerada es exactamente para lo que está esto.
+        Añade los fotogramas que escribió tu motor de render, deja la duración en
+        un fotograma cada uno y pon la misma cadencia que el render. «Ordenar por
+        nombre» cuenta como esperarías, así que <code>frame_2</code> cae antes de
+        <code>frame_10</code> y no después.
         <br><br>
-        Algo que conviene saber antes de empezar: H.264 no tiene canal alfa, así
-        que la transparencia se aplana sobre el color de fondo en vez de
+        Una cosa que conviene saber antes de empezar: el H.264 no tiene canal
+        alfa, así que la transparencia se aplana sobre el color de fondo en vez de
         conservarse. Si necesitas mantener el alfa, compón los fotogramas en tu
         editor."""
 
 [[faq]]
 q = "¿Puedo hacer un timelapse con fotos?"
 a = """
-        Sí, y es el mismo trabajo que una secuencia de render: deja cada foto un
-        solo fotograma y elige una cadencia. A 30 fps, cada treinta fotos son un
-        segundo de vídeo; a 12 fps, esas mismas fotos duran dos segundos y
+        Sí, y es el mismo trabajo que una secuencia de render: deja cada foto en
+        un solo fotograma y elige una cadencia. A 30 fps, cada treinta fotos son
+        un segundo de vídeo; a 12 fps, esas mismas fotos duran dos segundos y
         medio.
         <br><br>
-        «Ordenar por fecha» devuelve un carrete al orden en que se disparó, lo
-        cual importa cuando los nombres de archivo han vuelto a empezar en 0001.
-        Que las fotos tengan tamaños distintos no es problema &mdash; «Igualar la
-        resolución más alta» dimensiona el vídeo de modo que ninguna se reduzca."""
+        «Ordenar por fecha» devuelve un carrete al orden en que se disparó, cosa
+        que importa cuando los nombres de archivo han vuelto a empezar en 0001.
+        Y que las fotos tengan tamaños distintos no es problema, porque «Igualar
+        la resolución más alta» dimensiona el vídeo de modo que no se reduzca
+        ninguna."""
 
 [[faq]]
 q = "¿Hay algún límite de cuántas imágenes o de cuánto puede durar el vídeo?"
 a = """
-        La herramienta no lleva ningún límite dentro. El techo práctico es la
-        memoria de tu propio equipo, porque el vídeo terminado se monta ahí antes
-        de que lo descargues. Los pases de diapositivas en 4K muy grandes son lo
-        primero que lo nota."""
+        La herramienta no lleva ningún límite dentro. El techo de verdad es la
+        memoria de tu propio dispositivo, porque el vídeo terminado se monta ahí
+        antes de que lo descargues. Lo primero que lo nota son los pases de
+        diapositivas en 4K muy largos."""
 
 [[faq]]
 q = "¿Es gratis? ¿Necesito una cuenta?"
 a = """
-        Es gratis, y no hay cuenta, ni inicio de sesión, ni prueba. El sitio lleva
-        publicidad, que es lo que lo paga; a los anuncios no se les da nada sobre
-        tus imágenes."""
+        Es gratis, y no hay cuenta, ni inicio de sesión, ni versión de prueba. El
+        sitio lleva publicidad, que es lo que lo paga, y a los anuncios no se les
+        da nada sobre tus imágenes."""
 
 [[faq]]
 q = "¿Funciona sin conexión?"
 a = """
-        Sí. Carga la página una vez, desconéctate de internet y sigue
+        Sí. Carga la página una vez, desconéctate de internet y verás que sigue
         funcionando. Esa es además la forma más sencilla de demostrar que no se
         sube nada: una herramienta que mandara tus imágenes fuera a procesar se
-        detendría en el momento en que desenchufaras."""
+        pararía en cuanto desenchufaras."""
 
 [[faq]]
 q = "¿Puedo añadir música o una banda sonora?"
 a = """
-        Todavía no. La herramienta produce solo vídeo: el MP4 que escribe tiene
-        una única pista de vídeo y ninguna de audio. Añade la banda sonora
-        después, en un editor de vídeo, si te hace falta."""
+        Todavía no. La herramienta produce solo vídeo: el MP4 que escribe lleva
+        una única pista de vídeo y ninguna de audio. Si la necesitas, añade la
+        banda sonora después, en un editor de vídeo."""
 
 [schema]
 browser_requirements = "Necesita JavaScript. La salida en MP4 requiere un navegador con WebCodecs; los demás recurren a WebM."
-description = "Convierte una carpeta de imágenes en un vídeo MP4 de pase de diapositivas. Cada paso ocurre en tu navegador, así que no se sube ninguna imagen."
+description = "Convierte una carpeta de imágenes en un vídeo MP4 de pase de diapositivas. Cada paso ocurre dentro de tu navegador, así que no se sube ninguna imagen."
 features = [
   "Convierte imágenes JPG, PNG, WebP, GIF y AVIF en vídeo",
   "Salida en MP4 (H.264), con WebM como alternativa",
   "Resoluciones de hasta 3840x2160 y cadencias de 12 a 60 fps",
   "Duración por imagen en fotogramas o en segundos",
-  "Funciona sin conexión; sin subidas y sin cuenta",
+  "Funciona sin conexión, sin subidas y sin cuenta",
 ]
 
 [picker]
-title = "Suelta aquí las imágenes"
+title = "Arrastra aquí las imágenes"
 hint = "o haz clic para buscarlas &mdash; JPEG, PNG, WebP, GIF, AVIF"
 
 [picker.urls]

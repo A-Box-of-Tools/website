@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; ファイル -->
+  <!-- ステップ1｜ファイル -->
   <section class="card">
     <h2><span class="step">1</span> 動画を選ぶ</h2>
 
@@ -23,12 +23,12 @@
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- ステップ2 &mdash; 範囲 -->
+  <!-- ステップ2｜範囲 -->
   <section class="card" id="section-card" hidden>
     <h2><span class="step">2</span> 範囲を選ぶ</h2>
 
     <p class="hint">
-      映像を再生して、使いたい部分に印を付けてください。<kbd>I</kbd> は再生位置を始点に、<kbd>O</kbd> は終点にします。バーの両端のつまみはどちらもドラッグできます。
+      映像を再生して、使いたい部分に印を付けてください。<kbd>I</kbd>は再生位置を始点に、<kbd>O</kbd>は終点にします。バーの両端のつまみは、どちらもドラッグできます。
     </p>
 
     <div class="stage-wrap">
@@ -69,7 +69,7 @@
     </div>
   </section>
 
-  <!-- ステップ3 &mdash; GIF -->
+  <!-- ステップ3｜GIF -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> 大きさとフレームレート</h2>
 
@@ -77,15 +77,15 @@
       <div class="field">
         <label for="width">幅</label>
         <select id="width">
-          <option value="240">240 px</option>
-          <option value="320">320 px</option>
-          <option value="480" selected>480 px</option>
-          <option value="640">640 px</option>
+          <option value="240">240px</option>
+          <option value="320">320px</option>
+          <option value="480" selected>480px</option>
+          <option value="640">640px</option>
           <option value="source">元の大きさ</option>
           <option value="custom">ちょうどこの値&hellip;</option>
         </select>
         <p class="field-note">
-          高さはそれに従うので、形が変わることはありません。GIF の費用を決めるのは幅です。幅が半分なら、ピクセルは4分の1です。
+          高さはそれに従うので、形が変わることはありません。GIFの費用を決めるのは幅です。幅が半分なら、ピクセルは4分の1になります。
         </p>
         <p class="field-note" id="width-note" hidden></p>
       </div>
@@ -93,30 +93,29 @@
       <div class="field" id="custom-width-field" hidden>
         <label for="custom-width">正確な幅</label>
         <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
-        <p class="field-note">ピクセル数で、16から1920のあいだ。</p>
+        <p class="field-note">ピクセル数で、16から1920のあいだで指定します。</p>
       </div>
 
       <div class="field">
         <label for="fps">1秒あたりのフレーム数</label>
         <select id="fps">
-          <option value="5">5 &mdash; いちばん小さい</option>
+          <option value="5">5（いちばん小さい）</option>
           <option value="10">10</option>
-          <option value="12" selected>12 &mdash; 十分なめらか</option>
+          <option value="12" selected>12（十分なめらか）</option>
           <option value="15">15</option>
           <option value="20">20</option>
-          <option value="25">25 &mdash; いちばんなめらか</option>
+          <option value="25">25（いちばんなめらか）</option>
         </select>
         <p class="field-note">
-          動画自身のフレームレートではありません。そこから間引いて取り出します。
-          12あれば動きとして読み取れます。20を超えると、なめらかさが見えるより速くファイルが大きくなります。
+          動画自身のフレームレートではありません。そこから間引いて取り出します。12あれば動きとして読み取れます。20を超えると、なめらかさが見えるより速く、ファイルのほうが大きくなります。
         </p>
       </div>
 
       <div class="field">
         <label for="dither">ディザリング</label>
         <select id="dither">
-          <option value="on" selected>有効 &mdash; グラデーションがなめらか</option>
-          <option value="off">無効 &mdash; 平坦で、小さい</option>
+          <option value="on" selected>有効（グラデーションがなめらか）</option>
+          <option value="off">無効（平坦で、小さい）</option>
         </select>
         <p class="field-note">
           ちょうどの色がないところで、パレットの2色を混ぜます。組織的ディザなので、静止した背景がちらつきません。
@@ -142,7 +141,7 @@
     <p id="memory-note" class="field-note" hidden></p>
 
     <div class="export-row">
-      <button type="button" id="export" class="primary" disabled>GIF を作る</button>
+      <button type="button" id="export" class="primary" disabled>GIFを作る</button>
       <button type="button" id="cancel" class="ghost" hidden>中止</button>
     </div>
 
@@ -157,7 +156,7 @@
       <img id="result-image" alt="できあがったアニメーション（再生中）">
       <div class="result-meta">
         <p id="result-info"></p>
-        <a id="download" class="primary as-button" download>GIF をダウンロード</a>
+        <a id="download" class="primary as-button" download>GIFをダウンロード</a>
       </div>
     </div>
   </section>

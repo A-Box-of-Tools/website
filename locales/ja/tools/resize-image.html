@@ -1,5 +1,5 @@
 <main>
-  <!-- ステップ1 &mdash; ファイル -->
+  <!-- ステップ1｜ファイル -->
   <section class="card">
     <h2><span class="step">1</span> 画像を選ぶ</h2>
 
@@ -14,7 +14,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">リストから全部外す</button>
+        <button type="button" id="clear-all" class="ghost danger">すべてリストから外す</button>
       </div>
     </div>
 
@@ -23,12 +23,12 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- ステップ2 &mdash; 切り抜き -->
+  <!-- ステップ2｜切り抜き -->
   <section class="card" id="crop-card">
     <h2><span class="step">2</span> 必要なら切り抜く</h2>
 
     <p class="card-lede">
-      枠は画像全体に置かれた状態で始まるので、この段階に触れなければ何も切り取られません。画像はそれぞれ自分の枠を持っています &mdash; 上のリストから選べば、その画像の上に描けます。切り抜きはリサイズより先に行われます。意味の通る順序はそれだけです。縮めたあとで切り落とされた画像は、必要だったピクセルをすでに捨ててしまっているからです。
+      枠は画像全体に置かれた状態で始まるので、この段階に触れなければ何も切り取られません。画像はそれぞれ自分の枠を持っているので、上のリストから選べば、その画像の上に描けます。切り抜きはリサイズより先です。意味の通る順序はそれだけしかありません。縮めたあとで切り落とされた画像は、必要だったピクセルをすでに捨ててしまっているからです。
     </p>
 
     <p id="crop-empty" class="field-summary">画像を追加すると、ここに枠が出ます。</p>
@@ -36,9 +36,7 @@
     <div id="crop-controls" hidden>
       <p class="stage-hint">
         <span id="stage-name" class="stage-name"></span>
-        枠の内側をドラッグすれば移動、四隅をドラッグすれば大きさが変わります。枠を選んだ状態では、矢印キーで1ピクセルずつ動かせ、
-        <kbd>Alt</kbd>&nbsp;+&nbsp;矢印で大きさを変えられます。
-        <kbd>Shift</kbd> を押しながらなら1回10ピクセルです。
+        枠の内側をドラッグすれば移動、四隅をドラッグすれば大きさが変わります。枠を選んだ状態なら、矢印キーで1ピクセルずつ動かせます。<kbd>Alt</kbd>&nbsp;+&nbsp;矢印で大きさが変わり、<kbd>Shift</kbd>を押しながらなら1回10ピクセルです。
       </p>
 
       <!-- The crop box itself is added here by src/cropper.js. The stage is
@@ -92,9 +90,9 @@
     </div>
   </section>
 
-  <!-- ステップ3 &mdash; 大きさ -->
+  <!-- ステップ3｜大きさ -->
   <section class="card" id="resize-card">
-    <h2><span class="step">3</span> どの大きさにするかを言う</h2>
+    <h2><span class="step">3</span> どの大きさにするかを決める</h2>
 
     <div class="option-row">
       <label for="resize-mode">サイズの決め方</label>
@@ -102,7 +100,7 @@
         <option value="pixels" selected>幅と高さをピクセルで</option>
         <option value="longest">長いほうの辺で</option>
         <option value="percent">いまの大きさに対する割合で</option>
-        <option value="none">指定しない &mdash; 大きさはそのまま</option>
+        <option value="none">指定しない（大きさはそのまま）</option>
       </select>
     </div>
 
@@ -134,10 +132,10 @@
       <div class="option-row" id="fit-row">
         <label for="fit">縦横比が食い違う場合</label>
         <select id="fit">
-          <option value="contain" selected>内側に収める &mdash; 画像全体が入り、一方の辺が短く出ます</option>
-          <option value="cover">いっぱいに広げる &mdash; 指定どおりの大きさで、はみ出しは切り落とします</option>
-          <option value="pad">余白で埋める &mdash; 指定どおりの大きさで、周りに背景が入ります</option>
-          <option value="stretch">引き伸ばす &mdash; 指定どおりの大きさで、形は歪みます</option>
+          <option value="contain" selected>内側に収める（画像全体が入り、一方の辺が短く出ます）</option>
+          <option value="cover">いっぱいに広げる（指定どおりの大きさで、はみ出しは切り落とします）</option>
+          <option value="pad">余白で埋める（指定どおりの大きさで、周りに背景が入ります）</option>
+          <option value="stretch">引き伸ばす（指定どおりの大きさで、形は歪みます）</option>
         </select>
       </div>
     </div>
@@ -147,7 +145,7 @@
         <label>長いほうの辺<input type="number" id="size-longest" min="1" step="1" value="1920"></label>
       </div>
       <p class="hint-line">
-        長いほうの辺がこの値になり、もう一方はそれに従います。同じまとまりの中の縦位置と横位置の写真が、長辺で同じ大きさに揃います。ギャラリーではたいていこれが求められます。
+        長いほうの辺がこの値になり、もう一方はそれに従います。同じまとまりの中の縦位置と横位置の写真が、長辺で同じ大きさに揃います。ギャラリーで求められるのは、たいていこれです。
       </p>
       <div class="presets" id="longest-presets" role="group" aria-label="よく使う長辺">
         <button type="button" class="ghost" data-longest="640">640</button>
@@ -174,7 +172,7 @@
       <span>
         <strong>元より大きくしない</strong>
         <span class="check-note">
-          拡大は、そもそも写っていなかったピクセルを発明することなので、小さな画像を大きな枠に入れると、細部が増えるのではなくぼやけて出てきます。これを入れておくと、指定した大きさよりすでに小さいものは、自分の大きさのまま残されます。
+          拡大とは、そもそも写っていなかったピクセルを発明することです。ですから小さな画像を大きな枠に入れると、細部が増えるのではなく、ぼやけて出てきます。これを入れておけば、指定した大きさよりすでに小さいものは、自分の大きさのまま残ります。
         </span>
       </span>
     </label>
@@ -182,7 +180,7 @@
     <p id="size-summary" class="field-summary"></p>
   </section>
 
-  <!-- ステップ4 &mdash; 形式と、一度のクリック -->
+  <!-- ステップ4｜形式と、クリック一度 -->
   <section class="card" id="save-card">
     <h2><span class="step">4</span> 保存する</h2>
 
@@ -199,10 +197,10 @@
       </div>
 
       <div class="field" id="quality-field">
-        <label for="quality">画質 &mdash; <output id="quality-value" for="quality">85</output></label>
+        <label for="quality">画質（<output id="quality-value" for="quality">85</output>）</label>
         <input type="range" id="quality" min="30" max="100" step="1" value="85">
         <p class="field-note">
-          JPEG と WebP のみ。PNG に画質のつまみはありません。85 は、たいていの人が見分けられなくなるあたりです。60 を下回ると、平坦な部分に段が出始めます。
+          JPEGとWebPだけに効きます。PNGに画質のつまみはありません。85は、たいていの人が見分けられなくなるあたりです。60を下回ると、平坦な部分に段が出始めます。
         </p>
       </div>
 
@@ -229,7 +227,7 @@
     <div id="results" class="results" hidden>
       <div class="results-head">
         <h3>できました</h3>
-        <button type="button" id="download-zip" class="ghost" hidden>まとめて zip でダウンロード</button>
+        <button type="button" id="download-zip" class="ghost" hidden>まとめてzipでダウンロード</button>
       </div>
       <p id="results-summary" class="results-summary"></p>
       <ul id="result-list" class="result-list"></ul>

@@ -12,40 +12,39 @@ heading = "Comprimir&nbsp;imagem <span class=\"h1-kw\">&mdash; para um tamanho e
 tagline = "Diga o tamanho. Ele resolve o resto."
 
 title = "Comprimir imagem para um tamanho exato &mdash; grátis, sem envio"
-description = "Comprima um JPEG, PNG ou WebP para um tamanho exato - 100 KB, 2 MB, o que for. Roda inteiro no navegador: nada é enviado, sem conta, funciona offline."
+description = "Comprima um JPEG, PNG ou WebP para um tamanho exato: 100 KB, 2 MB, o que for. Roda inteiro no navegador, não envia nada, não pede conta e funciona offline."
 og_title = "Comprima uma imagem para um tamanho que você escolhe"
-og_description = "Diga um tamanho alvo e isto encontra a menor compressão que chega lá, e depois mede o que aquilo custou. Roda na sua própria máquina; nada é enviado."
+og_description = "Diga um tamanho alvo e ele acha a menor compressão que chega lá, depois mede o que isso custou. Roda no seu próprio computador e não envia nada."
 og_image_alt = "Compressor de imagens - diga um tamanho, mantenha a qualidade"
 
 pledge = """
     A compressão roda no seu próprio navegador, no seu próprio hardware, com os
-    codificadores que ele já traz. Esta ferramenta não tem função de rede de
-    espécie alguma &mdash; nada a buscar, nada a enviar &mdash; e não existe do
-    outro lado desta página servidor nenhum para onde mandar uma imagem, mesmo
+    codificadores que ele já traz de fábrica. Esta ferramenta não tem função de
+    rede de espécie alguma: não há o que buscar nem o que mandar. E do outro lado
+    desta página não existe servidor nenhum para onde mandar uma imagem, mesmo
     que houvesse caminho."""
 
 live_hint = """
-      Não acredite na nossa palavra: abra as ferramentas de desenvolvedor, olhe a
-      aba Rede e comprima uma foto. Nenhuma requisição leva uma imagem, uma
-      miniatura, um nome de arquivo ou um byte do que você escolheu. Ou
-      desconecte da internet e comprima uma mesmo assim."""
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e comprima uma foto.
+      Nenhuma requisição leva uma imagem, uma miniatura, um nome de arquivo ou um
+      byte do que você escolheu. Ou então desligue a internet e comprima uma assim
+      mesmo."""
 
 read_first = """
 , <code>src/compress.js</code> para a busca que decide
-      quanta qualidade gastar, e <code>src/measure.js</code> para a comparação
-      por trás do número de &ldquo;semelhança visual&rdquo;."""
+      quanta qualidade gastar, e <code>src/measure.js</code> para a comparação por
+      trás do número de &ldquo;semelhança visual&rdquo;."""
 
 howto_heading = "Como comprimir uma imagem para um tamanho específico"
 
 card = """
-            Diga o tamanho de que você precisa &mdash; 100 KB, 2 MB, o que for
-            &mdash; e ele encontra a menor compressão que chega lá."""
+            Diga o tamanho de que você precisa, seja 100 KB, 2 MB ou o que for, e
+            ele acha a menor compressão que chega lá."""
 
 [words]
 plural = "imagens"
 choose = "uma imagem"
-analytics_extra = """, nem nenhum dos
-  tamanhos ou números de qualidade que esta ferramenta calcula"""
 
 [[facts]]
 text = "Sem envio"
@@ -66,31 +65,31 @@ text = "Código aberto"
 title = "Suas imagens não têm para onde ir."
 body = """
  A
-      Content-Security-Policy nomeia todos os endereços que esta página pode
-      contatar, e nenhum deles é deste site. Não existe aqui um ponto final onde
-      seus arquivos pudessem ser coletados, e não existe no código nada que os
-      mandaria se existisse."""
+      Content-Security-Policy lista todos os endereços que esta página pode
+      acessar, e nenhum deles é deste site. Não existe aqui um endpoint onde seus
+      arquivos pudessem ser recolhidos, e não existe no código nada que os
+      mandaria mesmo que existisse."""
 
 [[privacy]]
-title = "Nada aqui busca coisa alguma."
+title = "Nada aqui vai buscar coisa alguma."
 body = """
  Não existe
       <code>fetch</code>, nem <code>XMLHttpRequest</code>, nem
       <code>sendBeacon</code> em lugar nenhum de <code>src/</code>. A compressão é
-      <code>canvas.toBlob</code> &mdash; o codificador que já está instalado no
+      um <code>canvas.toBlob</code>, ou seja, o codificador que já vem instalado no
       seu navegador."""
 
 [[privacy]]
-title = "Os números são medidos, não reportados."
+title = "Os números são medidos aqui, não informados a ninguém."
 body = """
  Os tamanhos, o
-      número de qualidade e a comparação SSIM são todos calculados nesta página e
-      mostrados a você. Não existe neste repositório nenhum evento de análise
-      personalizado que carregue um nome de arquivo, um tamanho, uma contagem ou
-      um resultado."""
+      número de qualidade e a comparação SSIM saem todos de contas feitas nesta
+      página e aparecem para você. Não existe neste repositório nenhum evento de
+      análise personalizado que carregue um nome de arquivo, um tamanho, uma
+      contagem ou um resultado."""
 
 [[privacy]]
-title = "O que o Google carrega, e o que não é entregue a ele."
+title = "O que o Google carrega, e o que não chega até ele."
 body = """
  Os scripts de
       publicidade e de medição vêm do Google, e o botão de doação vem do Buy Me a
@@ -101,15 +100,15 @@ body = """
 [[privacy]]
 title = "Funciona offline."
 body = """
- Desconecte da rede e a ferramenta continua
-      igual, porque nunca houve uma etapa de rede nela. Essa é a prova mais
+ Desligue a rede e a ferramenta continua
+      igualzinha, porque nunca houve uma etapa de rede nela. Essa é a prova mais
       simples de todas."""
 
 [[howto]]
 title = "Escolha suas imagens."
 body = """
- Arraste até o seletor ou escolha na mão.
-      Elas são lidas direto do seu disco pelo navegador; nada é mandado para lugar
+ Arraste até o seletor, ou escolha na mão.
+      Quem lê tudo direto do seu disco é o navegador, e nada é mandado para lugar
       nenhum enquanto você faz isso."""
 
 [[howto]]
@@ -118,41 +117,41 @@ body = """
  100 KB para o
       formulário que insiste em recusar a sua foto, 500 KB para o sistema de
       inscrição, 2 MB para uma página que precisa carregar rápido. Os quatro mais
-      comuns são botões."""
+      comuns já estão como botões."""
 
 [[howto]]
-title = "Aperte &ldquo;Comprimir até o alvo&rdquo;."
+title = "Clique em &ldquo;Comprimir até o alvo&rdquo;."
 body = """
  Cada imagem é
-      codificada várias vezes enquanto a ferramenta se aproxima da maior qualidade
-      que cabe. Qualquer coisa que já esteja abaixo do alvo é deixada exatamente
-      como está."""
+      codificada várias vezes enquanto a ferramenta vai fechando o cerco na maior
+      qualidade que cabe. Qualquer coisa que já esteja abaixo do alvo fica
+      exatamente como está."""
 
 [[howto]]
-title = "Confira o que custou e baixe."
+title = "Veja o que custou e baixe."
 body = """
- Cada resultado diz em que formato
-      foi escrito, com qual qualidade, se as dimensões mudaram e o quanto ele bate
-      com o original quando medido. &ldquo;Comparar&rdquo; põe as duas imagens
-      lado a lado."""
+ Cada resultado diz em que formato foi
+      escrito, com qual qualidade, se as dimensões mudaram e o quanto ele bate com
+      o original quando medido. O &ldquo;Comparar&rdquo; põe as duas imagens lado
+      a lado."""
 
 [[faq]]
 q = "Minha imagem é enviada para algum lugar?"
 a = """
-        Não. O arquivo é decodificado, comprimido e medido pelo seu próprio
-        navegador no seu próprio hardware, com os codificadores de JPEG, PNG e WebP
-        que o navegador já traz. Esta ferramenta não tem função de rede de espécie
-        alguma &mdash; nunca busca nada e nunca manda nada &mdash; e a
-        <code>Content-Security-Policy</code> da página nomeia todos os endereços que
-        ela pode contatar, nenhum dos quais é deste site."""
+        Não. Quem decodifica, comprime e mede o arquivo é o seu próprio navegador,
+        no seu próprio hardware, com os codificadores de JPEG, PNG e WebP que ele já
+        traz. Esta ferramenta não tem função de rede de espécie alguma: nunca busca
+        nada e nunca manda nada. E a <code>Content-Security-Policy</code> da página
+        lista todos os endereços que ela pode acessar, nenhum dos quais é deste
+        site."""
 
 [[faq]]
 q = "Como ele acerta um tamanho exato?"
 a = """
         Tentando. Não existe fórmula que transforme um ajuste de qualidade numa
-        contagem de bytes &mdash; isso depende inteiramente da imagem &mdash; então
-        a ferramenta codifica a imagem várias vezes e procura a resposta. Ela começa
-        no topo da faixa de qualidade e vai fechando o cerco pela metade, o que
+        contagem de bytes, porque isso depende inteiramente da imagem. Então a
+        ferramenta codifica a imagem várias vezes até achar a resposta. Ela começa
+        no topo da faixa de qualidade e vai cortando o intervalo pela metade, o que
         encontra a maior qualidade que cabe em umas oito codificações. Todo tamanho
         que você vê na página é um arquivo codificado de verdade, não uma
         estimativa."""
@@ -160,75 +159,74 @@ a = """
 [[faq]]
 q = "O que &ldquo;perda mínima&rdquo; quer dizer aqui, exatamente?"
 a = """
-        Três coisas específicas. Primeira, uma imagem que já está abaixo do seu alvo
-        é repassada byte por byte em vez de recodificada. Segunda, a qualidade é
-        gasta antes da resolução, e só até um piso em que os artefatos de compressão
-        começam a aparecer &mdash; passando desse ponto a ferramenta diminui a
-        imagem e devolve a qualidade para cima, porque menos pixels bons ficam
-        melhores que mais pixels arruinados. Terceira, assim que um resultado que
-        cabe é encontrado, a busca volta a subir até o orçamento ser usado, então
-        você não recebe um arquivo de 300 KB tendo pedido 500 KB."""
+        Três coisas específicas. A primeira: uma imagem que já está abaixo do seu
+        alvo passa direto, byte por byte, em vez de ser recodificada. A segunda: a
+        qualidade é gasta antes da resolução, e só até um piso em que os artefatos
+        de compressão começam a aparecer. Passando desse ponto, a ferramenta diminui
+        a imagem e devolve a qualidade para cima, porque menos pixels bons ficam
+        melhores do que mais pixels arruinados. A terceira: assim que aparece um
+        resultado que cabe, a busca volta a subir até o orçamento acabar, então você
+        não recebe um arquivo de 300 KB tendo pedido 500 KB."""
 
 [[faq]]
 q = "O que são os números de SSIM e PSNR em cada resultado?"
 a = """
         São uma medição do que a compressão custou, feita decodificando o resultado
         e comparando com a imagem original. O SSIM compara brilho, contraste e
-        estrutura locais, o que é bem mais próximo daquilo que incomoda um olho do
-        que contar pixels alterados; acima de mais ou menos 0,98 os dois são
-        difíceis de distinguir lado a lado. O PSNR é a tradicional medida em
-        decibéis. Os dois são calculados na sua máquina, e os dois são mostrados
-        para que a afirmação de perda baixa seja verificável em vez de apenas
+        estrutura locais, o que chega bem mais perto daquilo que incomoda o olho do
+        que simplesmente contar pixels alterados; acima de mais ou menos 0,98 os
+        dois são difíceis de distinguir lado a lado. O PSNR é a tradicional medida
+        em decibéis. Os dois são calculados no seu computador, e os dois aparecem
+        para que a afirmação de perda baixa possa ser conferida em vez de só
         alegada."""
 
 [[faq]]
 q = "Quais formatos ele consegue ler e escrever?"
 a = """
-        Ele lê tudo o que o seu navegador consegue decodificar, o que na prática
-        significa JPEG, PNG, WebP, GIF, BMP e &mdash; na maioria dos navegadores
-        atuais &mdash; AVIF. Ele escreve JPEG, PNG e WebP, porque são esses os
-        codificadores que os navegadores trazem. Em &ldquo;automático&rdquo; ele
-        mantém o formato em que o seu arquivo chegou, e só troca para WebP quando
-        manter teria significado um redimensionamento ou uma queda visível de
-        qualidade."""
+        Ele lê tudo o que o seu navegador conseguir decodificar, o que na prática
+        significa JPEG, PNG, WebP, GIF, BMP e, na maioria dos navegadores atuais,
+        AVIF. Ele escreve JPEG, PNG e WebP, porque são esses os codificadores que os
+        navegadores trazem. No &ldquo;automático&rdquo; ele mantém o formato em que
+        o seu arquivo chegou, e só troca para WebP quando manter teria significado
+        um redimensionamento ou uma queda visível de qualidade."""
 
 [[faq]]
 q = "Por que ele não consegue comprimir muito um PNG?"
 a = """
-        Porque o PNG é sem perdas: ele não tem botão de qualidade para girar. O
-        único jeito de deixar um PNG menor é dar a ele menos pixels ou menos cores,
-        então, com PNG selecionado, a ferramenta chega a um alvo só redimensionando.
-        Se a imagem é uma fotografia, JPEG ou WebP chegam muito mais perto do seu
-        alvo num tamanho em que dá para ver que está tudo bem &mdash; e se for uma
-        logomarca ou uma captura de tela com transparência, o WebP mantém a
-        transparência que o JPEG preencheria com branco."""
+        Porque o PNG é sem perdas: não tem botão de qualidade para girar. O único
+        jeito de deixar um PNG menor é dar a ele menos pixels ou menos cores, então,
+        com PNG selecionado, a ferramenta chega a um alvo só redimensionando. Se a
+        imagem é uma fotografia, JPEG ou WebP chegam muito mais perto do seu alvo
+        num tamanho em que dá para ver que está tudo bem. E se for uma logomarca ou
+        uma captura de tela com transparência, o WebP mantém a transparência que o
+        JPEG preencheria com branco."""
 
 [[faq]]
 q = "Comprimir uma imagem remove os dados EXIF e de GPS dela?"
 a = """
-        Sim, como efeito colateral. Comprimir significa decodificar a imagem em
+        Remove, como efeito colateral. Comprimir significa decodificar a imagem em
         pixels e codificar esses pixels de novo, e um canvas cheio de pixels não
-        carrega etiquetas, então a localização, o modelo da câmera, os horários e
-        todo o resto simplesmente não são escritos no arquivo novo. Se você quer os
-        metadados fora mas a imagem intocada, use o
-        <a href="../remover-dados-exif/">Visualizador e removedor de EXIF</a> em vez
-        disso &mdash; ele reescreve o contêiner sem recomprimir nada."""
+        carrega etiqueta nenhuma, então a localização, o modelo da câmera, os
+        horários e todo o resto simplesmente não são escritos no arquivo novo. Se
+        você quer os metadados fora mas a imagem intocada, use o
+        <a href="../remover-dados-exif/">Visualizador e removedor de EXIF</a>, que
+        reescreve o contêiner sem recomprimir nada."""
 
 [[faq]]
 q = "É grátis, e preciso de conta?"
 a = """
-        É grátis, e não há conta, nem login, nem período de teste, nem marca
-        d'água. Também não há limite para o número ou o tamanho dos arquivos,
-        porque não há servidor pagando por eles &mdash; o trabalho acontece na sua
-        própria máquina. O site exibe publicidade, e é ela que paga a conta; os
+        É grátis, e não tem conta, nem login, nem período de teste, nem marca
+        d'água. Também não tem limite para o número nem para o tamanho dos arquivos,
+        porque não existe servidor pagando por eles: o trabalho acontece no seu
+        próprio computador. O site exibe publicidade, e é ela que paga a conta. Os
         anúncios não recebem nada sobre as suas imagens."""
 
 [[faq]]
 q = "Funciona offline?"
 a = """
-        Sim. Carregue a página uma vez, então desconecte da internet e ela continua
-        funcionando. Esse é também o jeito mais simples de provar que nada está
-        sendo enviado: uma ferramenta que mandasse as suas imagens embora para
+        Funciona. Carregue a página uma vez, depois desligue a internet e ela
+        continua funcionando. Esse é também o jeito mais simples de provar que nada
+        está sendo enviado: uma ferramenta que mandasse as suas imagens embora para
         serem comprimidas pararia no instante em que você tirasse da tomada."""
 
 [schema]
@@ -246,4 +244,4 @@ features = [
 
 [picker]
 title = "Arraste imagens para cá"
-hint = "ou clique para escolher &mdash; JPEG, PNG, WebP e tudo o mais que o seu navegador conseguir abrir"
+hint = "ou clique para escolher: JPEG, PNG, WebP e tudo o mais que o seu navegador conseguir abrir"

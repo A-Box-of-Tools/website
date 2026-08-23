@@ -2,15 +2,15 @@
     <h2>La risposta corta</h2>
     <p>
       Apri il <a href="../../comprimere-pdf/">compressore di PDF</a>, trascinaci
-      dentro il documento, e guarda cosa ti dice prima di cambiare qualcosa.
-      Legge il file e mostra dove sta davvero il peso &mdash; immagini,
-      caratteri, testo e disegno, e tutto quello a cui nel documento non fa più
-      riferimento nessuno. Quella schermata di solito risponde alla domanda.
+      dentro il documento, e guarda cosa ti dice prima di cambiare qualunque
+      cosa. Legge il file e ti mostra dove sta davvero il peso: immagini,
+      caratteri, testo e disegno, più tutto quello a cui nel documento non fa più
+      riferimento nessuno. Quella schermata di solito risponde già alla domanda.
     </p>
     <p>
       Se quasi tutto il peso sono immagini, puoi aspettarti un grande risparmio.
-      Se sono caratteri e testo, no, e non può nessuno strumento. Quale dei due
-      hai in mano è tutta la storia, e vale dieci secondi di sguardo.
+      Se sono caratteri e testo, no, e non ci riesce nessuno strumento. Quale dei
+      due hai in mano è tutta la storia, e vale dieci secondi di sguardo.
     </p>
   </section>
 
@@ -28,8 +28,8 @@
       <li>
         <strong>Caratteri incorporati.</strong> Un carattere intero può pesare
         centinaia di kilobyte; un sottoinsieme dei soli segni davvero usati pesa
-        molto meno. In ogni caso, sono stati compressi da ciò che ha prodotto il
-        file.
+        molto meno. In ogni caso, sono già stati compressi da quello che ha
+        prodotto il file.
       </li>
       <li>
         <strong>Testo e disegno vettoriale.</strong> Istruzioni invece di pixel:
@@ -40,37 +40,37 @@
         <strong>Oggetti a cui non punta più niente.</strong> I PDF li accumulano.
         Modificare un documento spesso aggiunge la modifica in coda invece di
         riscrivere il file, quindi una vecchia versione di una pagina può restare
-        lì dentro all'infinito. Riimpacchettare il file li butta.
+        lì dentro all'infinito. Reimpacchettare il file li butta.
       </li>
     </ul>
     <p>
       Quindi i due documenti che la gente porta a un compressore di PDF hanno
       prospettive completamente diverse. Un documento scansionato è in sostanza
       una pila di fotografie, e di solito esce dal 60 al 90% più leggero. Un
-      contratto, una tesi o un rapporto esportato sono testo, disegno e
-      caratteri &mdash; tutti già compressi dal software che li ha scritti
-      &mdash; e lì il risparmio è di solito di qualche punto percentuale, dal
-      riimpacchettamento e dal buttare quello a cui nessuno fa riferimento.
+      contratto, una tesi o un rapporto esportato sono invece testo, disegno e
+      caratteri, tutti già compressi dal software che li ha scritti, e lì il
+      risparmio è di solito di qualche punto percentuale, che viene dal
+      reimpacchettamento e dal buttare quello a cui nessuno fa più riferimento.
     </p>
     <p>
-      Qualunque strumento prometta «fino al 90% più leggero» senza guardare il
-      tuo file sta citando il caso migliore del primo tipo per il secondo.
+      Qualunque strumento prometta «fino al 90% più leggero» senza aver guardato
+      il tuo file ti sta citando il caso migliore del primo tipo per il secondo.
     </p>
   </section>
 
   <section>
     <h2>Cosa c'entrano i DPI</h2>
     <p>
-      Un PDF non contiene solo un'immagine; registra quanto grande viene
-      disegnata quell'immagine sulla pagina. Il che ti dà qualcosa di più utile
-      del numero di pixel: la risoluzione effettiva.
+      Un PDF non contiene solo un'immagine: registra anche quanto grande viene
+      disegnata quell'immagine sulla pagina. E questo ti dà qualcosa di più utile
+      del numero di pixel, cioè la risoluzione effettiva.
     </p>
     <p>
       Una scansione larga 4000 pixel stesa su venti centimetri di carta porta
-      500 pixel per pollice. Uno schermo ne mostra un centinaio. Una buona
-      stampante da ufficio lavora a 300 e non sa farsene di molto di più. Tutto
-      quello che sta sopra è dettaglio che niente nel futuro del documento
-      mostrerà mai &mdash; ed è di solito la maggior parte del file.
+      circa 500 pixel per pollice. Uno schermo ne mostra un centinaio. Una buona
+      stampante da ufficio lavora a 300 e di molto di più non sa farsene. Tutto
+      quello che sta sopra è dettaglio che niente, nel futuro del documento,
+      mostrerà mai, ed è di solito la maggior parte del file.
     </p>
     <p>
       È per questo che un compressore di PDF sensato chiede dei DPI invece di
@@ -79,13 +79,13 @@
       comincia a spendere qualità vera.
     </p>
     <p>
-      Regola spannometrica: <strong>150 DPI</strong> per un documento che verrà
-      letto sullo schermo, <strong>200&ndash;300</strong> per qualcosa che verrà
+      A occhio e croce: <strong>150 DPI</strong> per un documento che verrà letto
+      sullo schermo, <strong>200&ndash;300</strong> per qualcosa che verrà
       stampato, <strong>72&ndash;100</strong> per una bozza che nessuno terrà.
-      Misurare rispetto a quanto grande viene disegnata l'immagine è anche il
-      motivo per cui un logo messo piccolo non viene trattato come una scansione
-      a pagina intera &mdash; il logo è già vicino alla propria risoluzione
-      effettiva e non c'è niente da prendere.
+      Misurare su quanto grande viene disegnata l'immagine è anche il motivo per
+      cui un logo messo piccolo non finisce trattato come una scansione a pagina
+      intera: il logo è già vicino alla propria risoluzione effettiva, e non c'è
+      niente da prendere.
     </p>
   </section>
 
@@ -94,20 +94,19 @@
     <p>
       Le immagini vengono ricodificate, quindi quelle perdono un po'. Tutto il
       resto non dovrebbe essere toccato affatto, e vale la pena controllare che
-      lo strumento che usi rispetti la regola:
+      lo strumento che usi la regola la rispetti:
     </p>
     <ul>
       <li>
         <strong>Il testo resta testo.</strong> Selezionabile, cercabile,
-        copiabile. Un compressore che appiattisce le pagine in immagini
-        produrrà un file molto leggero e distruggerà il documento &mdash; non lo
-        puoi cercare, gli screen reader non lo possono leggere, e non si può
-        tornare indietro.
+        copiabile. Un compressore che appiattisce le pagine in immagini produrrà
+        un file molto leggero e ti distruggerà il documento: non lo puoi cercare,
+        gli screen reader non lo possono leggere, e indietro non si torna.
       </li>
       <li>
-        <strong>I caratteri restano interi.</strong> Sostituire i caratteri
-        cambia come si presenta il documento sul dispositivo di qualcun altro,
-        che è l'unica cosa che il PDF esiste per impedire.
+        <strong>I caratteri restano interi.</strong> Sostituire i caratteri cambia
+        come si presenta il documento sul dispositivo di qualcun altro, che è
+        l'unica cosa che il PDF esiste per impedire.
       </li>
       <li>
         <strong>Il disegno vettoriale viene copiato tale e quale.</strong> È già
@@ -116,16 +115,17 @@
       <li>
         <strong>Moduli, link, segnalibri, struttura di accessibilità e allegati
         passano dall'altra parte.</strong> Sono cose facili da perdere in una
-        riscrittura e di cui raramente ci si accorge finché a qualcuno non ne
+        riscrittura e di cui raramente ci si accorge, finché a qualcuno non ne
         serve una.
       </li>
     </ul>
     <p>
-      Una regola collegata che un compressore dovrebbe seguire e che molti non
-      seguono: se ricodificare un'immagine non la fa uscire davvero più leggera
-      dell'originale, rimetti dentro i byte originali. Peggiorare un'immagine
-      senza risparmio è il caso di pura perdita, e succede più spesso di quanto
-      si creda su immagini che erano già compresse bene.
+      C'è poi una regola collegata che un compressore dovrebbe seguire e che
+      molti non seguono: se ricodificare un'immagine non la fa uscire davvero
+      più leggera dell'originale, i byte originali vanno rimessi dentro.
+      Peggiorare un'immagine senza risparmiare niente è il caso di pura perdita,
+      e su immagini che erano già compresse bene succede più spesso di quanto si
+      creda.
     </p>
   </section>
 
@@ -133,7 +133,7 @@
     <h2>Le immagini che non si possono comprimere</h2>
     <p>
       Alcune immagini dentro un PDF vengono saltate, e un buon strumento le
-      nomina invece di lasciarle in silenzio fuori dall'aritmetica:
+      nomina invece di lasciarle fuori dall'aritmetica in silenzio:
     </p>
     <ul>
       <li>
@@ -143,10 +143,10 @@
         sono già vicine al minimo.
       </li>
       <li>
-        <strong>Immagini CMYK.</strong> Lasciate stare di proposito.
-        Ricodificarle rischia di spostare i colori che produrrebbe una
-        stampante, che è una cosa sorprendente da fare a un documento che
-        qualcuno sta per stampare.
+        <strong>Immagini CMYK.</strong> Lasciate stare di proposito, perché
+        ricodificarle rischia di spostare i colori che produrrebbe una stampante,
+        che è una cosa sorprendente da fare a un documento che qualcuno sta per
+        stampare.
       </li>
     </ul>
   </section>
@@ -161,7 +161,7 @@
       <strong>È stato scansionato quando non ce n'era bisogno?</strong> Un
       documento stampato e poi scansionato è una pila di fotografie di testo. Se
       l'originale esiste ancora da qualche parte come documento, esportarlo in
-      PDF produrrà un file di una frazione del peso che è anche cercabile.
+      PDF produrrà un file di una frazione del peso, che per giunta è cercabile.
     </p>
     <p>
       <strong>È stato esportato con impostazioni da stampa?</strong> I programmi
@@ -171,23 +171,23 @@
     </p>
     <p>
       <strong>Deve per forza essere un file solo?</strong> Il limite di una mail
-      vale per messaggio. Dividere un documento da 200 pagine in capitoli a
-      volte è la soluzione onesta.
+      vale per messaggio. Dividere un documento da 200 pagine in capitoli a volte
+      è la soluzione onesta.
     </p>
   </section>
 
   <section>
     <h2>I file cifrati, e perché un compressore dovrebbe rifiutarli</h2>
     <p>
-      Un PDF protetto da password viene rifiutato dallo strumento di qui, ed è
-      voluto invece che una funzione mancante &mdash; anche quando la password è
-      vuota, che è il modo in cui salvano moltissimi scanner e fotocopiatrici.
+      Un PDF protetto da password lo strumento di qui lo rifiuta, ed è una scelta
+      voluta e non una funzione mancante. Vale anche quando la password è vuota,
+      che è poi il modo in cui salvano moltissimi scanner e fotocopiatrici.
     </p>
     <p>
       Togliere la protezione a un documento è un lavoro diverso dal comprimerlo.
       Uno strumento che lo facesse in silenzio starebbe facendo qualcosa che non
-      hai chiesto, a un file che qualcuno aveva deliberatamente bloccato, e ti
-      restituirebbe una copia che non ha più la proprietà che gli si voleva
+      gli hai chiesto, a un file che qualcuno aveva deliberatamente bloccato, e
+      ti restituirebbe una copia che non ha più la proprietà che gli si voleva
       dare. Se è quello che vuoi, togli prima tu la protezione, di proposito.
     </p>
   </section>
@@ -199,7 +199,7 @@
       sia ancora selezionabile, e verifica il numero di pagine.
     </p>
     <p>
-      Lo strumento di qui fa l'ultima cosa al posto tuo prima di offrirti il
+      L'ultima cosa lo strumento di qui la fa al posto tuo, prima di offrirti il
       file: riapre il documento che ha appena scritto e ne conta le pagine, sul
       tuo dispositivo. Scrive anche in PDF 1.5, che ogni lettore uscito dal 2003
       in poi capisce, quindi «si apre sul mio computer» è un ragionevole
@@ -210,18 +210,18 @@
   <section>
     <h2>Perché questo non ha bisogno di un server</h2>
     <p>
-      Comprimere un PDF sembra un lavoro da server, e per quasi tutta la vita
-      del web lo è stato. Quello che comporta davvero è analizzare la struttura
-      del file, trovare i flussi delle immagini, decodificarli e ricodificarli
-      con i codec che un browser si porta già dietro, e riscrivere il documento.
-      Tutto questo ormai gira in un browser.
+      Comprimere un PDF sembra un lavoro da server, e per quasi tutta la vita del
+      web lo è stato. Quello che comporta davvero è analizzare la struttura del
+      file, trovare i flussi delle immagini, decodificarli e ricodificarli con i
+      codec che un browser si porta già dietro, e riscrivere il documento. Tutto
+      questo ormai gira in un browser.
     </p>
     <p>
-      Il che conta per questo tipo di file più che per quasi tutti gli altri,
-      per quello che la gente comprime: contratti, referti medici, estratti
-      conto, documenti d'identità, dichiarazioni dei redditi. Lo strumento di
-      qui non ha proprio alcuna funzione di rete, e la
-      <code>Content-Security-Policy</code> della pagina nomina tutti gli
+      E conta per questo tipo di file più che per quasi tutti gli altri, per
+      quello che la gente ci comprime: contratti, referti medici, estratti conto,
+      documenti d'identità, dichiarazioni dei redditi. Lo strumento di qui non ha
+      proprio nessuna funzione di rete, e la
+      <code>Content-Security-Policy</code> della pagina elenca tutti gli
       indirizzi che può contattare, nessuno dei quali appartiene a questo sito.
       Caricala, stacca la spina, e comprimi qualcosa lo stesso.
     </p>

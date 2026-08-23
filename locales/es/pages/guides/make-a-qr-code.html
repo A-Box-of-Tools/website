@@ -9,10 +9,10 @@
     </p>
     <p>
       Eso cubre casi todos los casos. El resto de esta página es qué hacer cuando
-      no es uno de ellos: un código que tiene que aguantar que lo manoseen, un
-      código con un logotipo encima, un código que va en algo pequeño, y la única
-      decisión que es fácil de equivocar de una forma de la que no te enteras hasta
-      un año después.
+      el tuyo no es uno de ellos: un código que tiene que aguantar que lo
+      manoseen, uno con un logotipo encima, uno que va en algo pequeño, y la única
+      decisión que se puede equivocar de una forma de la que no te enteras hasta un
+      año después.
     </p>
   </section>
 
@@ -20,9 +20,9 @@
     <h2>Qué hay de verdad dentro de un código QR</h2>
     <p>
       Una cadena de texto. Eso es todo. Escanear un código QR le entrega al móvil
-      un trozo de texto, y todo lo demás &mdash; abrir una página, conectarse a una
-      red, ofrecerse a guardar un contacto &mdash; es el móvil reconociendo la
-      forma de ese texto y ofreciéndose a actuar.
+      un trozo de texto, y todo lo demás, sea abrir una página, conectarse a una
+      red u ofrecerse a guardar un contacto, es el móvil reconociendo la forma de
+      ese texto y ofreciéndose a actuar.
     </p>
     <p>
       Así que no existe eso de un «código QR de wifi» como tipo de código. Existe
@@ -32,10 +32,10 @@
       que esperabas, la cadena es lo único que merece la pena mirar.
     </p>
     <p>
-      Significa además que un código QR no se puede cambiar una vez impreso, no
-      puede llamar a casa y no puede caducar &mdash; salvo que alguien le haya
-      metido dentro un enlace a su propio servidor, que es el tema del último
-      apartado de aquí.
+      Significa además que un código QR no se puede cambiar una vez impreso, ni
+      puede llamar a casa, ni puede caducar. Salvo que alguien le haya metido
+      dentro un enlace a su propio servidor, que es de lo que va el último apartado
+      de esta página.
     </p>
   </section>
 
@@ -48,18 +48,18 @@
       Cuántas de esas palabras hay es el nivel, y hay cuatro:
     </p>
     <ul>
-      <li><strong>L</strong> &mdash; se puede perder alrededor del 7&nbsp;% del código.</li>
-      <li><strong>M</strong> &mdash; alrededor del 15&nbsp;%.</li>
-      <li><strong>Q</strong> &mdash; alrededor del 25&nbsp;%.</li>
-      <li><strong>H</strong> &mdash; alrededor del 30&nbsp;%.</li>
+      <li><strong>L:</strong> se puede perder alrededor del 7&nbsp;% del código.</li>
+      <li><strong>M:</strong> alrededor del 15&nbsp;%.</li>
+      <li><strong>Q:</strong> alrededor del 25&nbsp;%.</li>
+      <li><strong>H:</strong> alrededor del 30&nbsp;%.</li>
     </ul>
     <p>
-      Más corrección no es gratis: los datos de comprobación van en el mismo
+      Más corrección no sale gratis: los datos de comprobación van en el mismo
       cuadrado, así que el mismo texto en H necesita un código más grande y más
       denso que en L. A grandes rasgos, pasar de L a H duplica el número de módulos
-      para la misma cadena, y unos módulos más densos son más difíciles de resolver
-      para una cámara. Aquí hay un trato de verdad y la respuesta depende de adónde
-      vaya el código.
+      para la misma cadena, y cuanto más densos son los módulos, más le cuesta
+      resolverlos a una cámara. Aquí hay un intercambio de verdad, y la respuesta
+      depende de dónde vaya a acabar el código.
     </p>
     <p>
       <strong>L</strong> es para una pantalla: un código en una diapositiva, en un
@@ -73,9 +73,9 @@
     </p>
     <p>
       <strong>Q y H</strong> son para códigos que van a sufrir: una carta que se
-      limpia a diario, una pegatina en una máquina de un taller, una etiqueta en
-      una caja, un código en un escaparate que le da el sol directo. H es además lo
-      que hace posible un logotipo en el centro &mdash; ver más abajo.
+      limpia a diario, una pegatina en una máquina de taller, una etiqueta en una
+      caja, un código en un escaparate al que le da el sol de lleno. Y H es además
+      lo que hace posible poner un logotipo en el centro, como se ve más abajo.
     </p>
   </section>
 
@@ -89,11 +89,11 @@
       impreso falle.
     </p>
     <p>
-      Merece la pena decirlo sin rodeos porque recortar es una cosa muy natural de
-      hacer. El código parece que tiene demasiado blanco alrededor, así que se
-      recorta en la maquetación, o se suelta sobre un panel de color que llega
-      hasta los cuadrados, o se pone encima de una fotografía. Cada una de esas
-      cosas le quita el límite que iba a usar el lector.
+      Conviene decirlo sin rodeos, porque recortar es de lo más natural del mundo.
+      El código parece que tiene demasiado blanco alrededor, así que se recorta en
+      la maquetación, o se suelta sobre un panel de color que llega hasta los
+      cuadrados, o se pone encima de una fotografía. Cada una de esas cosas le
+      quita el límite que iba a usar el lector.
     </p>
     <p>
       Si el código parece demasiado grande con su margen, haz el código más
@@ -119,14 +119,14 @@
       módulos sueltos se acercan al tamaño de un píxel de su cámara.
     </p>
     <p>
-      Menos texto significa menos módulos, y eso significa un código que se lee a
-      distancia para un tamaño impreso dado &mdash; que es un buen motivo para
-      apuntar un código a <code>ejemplo.com/x</code> y no a una URL con cien
-      caracteres de parámetros de seguimiento al final.
+      Menos texto son menos módulos, y menos módulos son un código que se lee de
+      más lejos para un mismo tamaño impreso. Ese es un buen motivo para apuntar un
+      código a <code>ejemplo.com/x</code> y no a una URL con cien caracteres de
+      parámetros de seguimiento al final.
     </p>
     <p>
       Y imprime desde el <strong>SVG</strong>. Un código QR está hecho de bordes, y
-      un PNG tiene un número fijo de píxeles con los que hacerlos; amplía uno y
+      un PNG tiene un número fijo de píxeles con los que hacerlos: amplía uno y
       todos los bordes se ablandan, que es justo lo que le cuesta a un escáner. Un
       SVG son los cuadrados como instrucciones, así que sale nítido tanto en una
       tarjeta de visita como en una valla.
@@ -140,72 +140,73 @@
       el contraste lo es todo. Hay dos cosas que salen mal a menudo:
     </p>
     <p>
-      <strong>Código claro sobre fondo oscuro.</strong> Queda llamativo, y bastantes
-      lectores lo rechazan de plano: buscan oscuro sobre claro y no prueban la
-      inversión. Algunos sí. No vas a saber cuáles tienen tus clientes.
+      <strong>Código claro sobre fondo oscuro.</strong> Queda llamativo, y
+      bastantes lectores lo rechazan de plano, porque buscan oscuro sobre claro y
+      no prueban a invertirlo. Otros sí lo hacen, pero tú no vas a saber cuáles
+      tienen tus clientes.
     </p>
     <p>
-      <strong>Poca diferencia.</strong> Un gris medio sobre blanco, o dos colores de
-      marca de peso parecido, pueden medir bien en pantalla y fallar en papel en
+      <strong>Poca diferencia.</strong> Un gris medio sobre blanco, o dos colores
+      de marca de peso parecido, pueden medir bien en pantalla y fallar en papel en
       cuanto entran en juego la ganancia de tinta y la exposición automática de un
-      móvil. Si vas a colorear un código, mantén la parte oscura genuinamente
+      móvil. Si vas a colorear un código, que la parte oscura sea de verdad
       oscura.
     </p>
     <p>
       El mate le gana al brillo en cualquier cosa que se vaya a escanear bajo una
       luz, y los dos le ganan a imprimir sobre una fotografía. Los fondos
-      transparentes son útiles para poner un código sobre un panel de color &mdash;
-      pero comprueba qué acaba de verdad detrás, porque un código transparente sobre
-      un panel oscuro es el primer error de arriba con pasos de más.
+      transparentes vienen bien para poner un código sobre un panel de color, pero
+      comprueba qué acaba de verdad detrás: un código transparente sobre un panel
+      oscuro es el primer error de arriba, solo que con pasos de más.
     </p>
   </section>
 
   <section>
     <h2>Un logotipo en el centro</h2>
     <p>
-      Esto funciona, y funciona gracias a la corrección de errores y no a pesar de
+      Esto funciona, y funciona gracias a la corrección de errores, no a pesar de
       ella. En el nivel H se puede destruir alrededor del 30&nbsp;% de los módulos
-      y el código sigue leyéndose, así que un logotipo que cubra bastante menos que
-      eso &mdash; en el centro, donde no hay ningún patrón de localización &mdash;
-      es un daño que el lector repara.
+      y el código se sigue leyendo, así que un logotipo que cubra bastante menos que
+      eso, y en el centro, donde no hay ningún patrón de localización, es un daño
+      que el lector repara.
     </p>
     <p>
-      Tres cosas que respetar. Usa el nivel H. Mantén el logotipo por debajo de una
-      quinta parte del área más o menos, bien lejos del límite teórico, porque la
-      impresión no es lo único que se está comiendo tu margen. Y no tapes nunca los
-      tres cuadrados grandes de las esquinas ni los pequeños que hay cerca: así es
-      como un lector encuentra y orienta el símbolo, para empezar, y no hay
-      corrección de errores que los reconstruya.
+      Hay tres cosas que respetar. Usa el nivel H. Mantén el logotipo por debajo de
+      una quinta parte del área más o menos, bien lejos del límite teórico, porque
+      la impresión no es lo único que se está comiendo tu margen. Y no tapes nunca
+      los tres cuadrados grandes de las esquinas ni los pequeños que hay cerca: es
+      así como un lector encuentra y orienta el símbolo, y no hay corrección de
+      errores que los reconstruya.
     </p>
     <p>
-      Y después pruébalo en móviles de verdad. Un logotipo lleva un código de
-      «siempre funciona» a «funciona con este margen», y la única forma de saber
-      cuánto margen queda es probarlo.
+      Y luego pruébalo en móviles de verdad. Un logotipo baja un código de «siempre
+      funciona» a «funciona con este margen», y la única forma de saber cuánto
+      margen queda es probándolo.
     </p>
   </section>
 
   <section>
     <h2>La decisión de la que la gente se arrepiente: estático o «dinámico»</h2>
     <p>
-      Busca un generador de QR y casi todos los resultados quieren que te hagas una
-      cuenta, porque están vendiendo códigos <em>dinámicos</em>. Un código dinámico
-      no contiene tu enlace. Contiene un enlace corto al propio servidor del
-      generador, que redirige al tuyo.
+      Busca un generador de QR y casi todos los resultados van a querer que te
+      hagas una cuenta, porque lo que venden son códigos <em>dinámicos</em>. Un
+      código dinámico no lleva tu enlace: lleva un enlace corto al propio servidor
+      del generador, que redirige al tuyo.
     </p>
     <p>
-      Lo que eso te compra es real: puedes cambiar adónde apunta el código después
-      de imprimirlo, y te llevas un recuento de cada escaneo. Para una campaña con
-      una tirada de seis cifras, eso merece pagarse.
+      Lo que ganas con eso es real: puedes cambiar adónde apunta el código después
+      de imprimirlo, y te llevas un recuento de cada escaneo. En una campaña con
+      una tirada de seis cifras, eso se paga solo.
     </p>
     <p>
-      Lo que cuesta también es real, y merece saberse antes y no después:
+      Lo que cuesta también es real, y conviene saberlo antes y no después:
     </p>
     <ul>
       <li>
         <strong>El código deja de funcionar cuando ellos dejan de funcionar.</strong>
-        Si el servicio cierra, el dominio caduca o el plan gratuito expira, todos
-        los códigos que imprimiste se quedan muertos &mdash; y para entonces están
-        en diez mil cartas.
+        Si el servicio cierra, el dominio caduca o se acaba el plan gratuito, todos
+        los códigos que imprimiste se quedan muertos, y para entonces están en diez
+        mil cartas.
       </li>
       <li>
         <strong>Cada escaneo son datos de otra persona.</strong> La redirección ve
@@ -213,15 +214,15 @@
       </li>
       <li>
         <strong>El enlace es suyo, no tuyo.</strong> Cualquiera que lo escanee ve
-        pasar un dominio desconocido, que es justo de lo que a la gente le están
-        diciendo que desconfíe.
+        pasar un dominio desconocido, que es justo de lo que a todo el mundo le
+        están diciendo que desconfíe.
       </li>
     </ul>
     <p>
-      El término medio no cuesta nada: pon un código QR estático alrededor de una
-      URL corta <em>de tu propio dominio</em>, y redirígela tú. Conservas la
-      capacidad de cambiar el destino, conservas la analítica, y nada del código
-      depende de que una empresa que no conoces siga existiendo el año que viene.
+      El término medio no cuesta nada: haz un código QR estático alrededor de una
+      URL corta <em>de tu propio dominio</em> y redirígela tú. Sigues pudiendo
+      cambiar el destino, sigues teniendo la analítica, y nada del código depende de
+      que una empresa que no conoces siga existiendo el año que viene.
     </p>
     <p>
       El <a href="../../generar-codigo-qr/">generador de aquí</a> solo hace códigos
@@ -233,16 +234,17 @@
   <section>
     <h2>Antes de imprimir mil</h2>
     <p>
-      Escanea el código. No el de tu pantalla &mdash; la prueba impresa, en el
-      sitio al que va, con un móvil que no sea aquel con el que lo hiciste. Eso
-      lleva un minuto y pilla la categoría entera de problemas de la que va esta
-      página: un margen que se comió la maquetación, un enlace al que le faltaba el
-      <code>https://</code>, un color que midió distinto en papel, un código impreso
-      a un tamaño que funciona en un escritorio y no en una pared.
+      Escanea el código, y no el de tu pantalla: la prueba impresa, en el sitio al
+      que va, y con un móvil que no sea aquel con el que lo hiciste. Es un minuto,
+      y pilla la categoría entera de problemas de la que va esta página: un margen
+      que se comió la maquetación, un enlace al que le faltaba el
+      <code>https://</code>, un color que midió distinto en papel, un código
+      impreso a un tamaño que funciona en una mesa y no en una pared.
     </p>
     <p>
-      Y comprueba qué pasa después del escaneo. Un código que abre una página
-      ilegible en un móvil es un código que ha fallado, aunque haya escaneado.
+      Y comprueba qué pasa después de escanear. Un código que abre una página
+      ilegible en un móvil es un código que ha fallado, por mucho que haya
+      escaneado.
     </p>
   </section>
 
@@ -250,14 +252,14 @@
     <h2>Nada de esto exige subir nada</h2>
     <p>
       Un código QR es aritmética sobre una cadena de texto. No hay ningún archivo
-      que enviar ni nada que un servidor pueda hacer y un navegador no, y por eso
-      la <a href="../../generar-codigo-qr/">herramienta de aquí</a> lo hace todo en
-      tu propio equipo y funciona con la red desenchufada.
+      que enviar, ni nada que sepa hacer un servidor y no sepa hacer un navegador, y
+      por eso la <a href="../../generar-codigo-qr/">herramienta de aquí</a> lo hace
+      todo en tu propio dispositivo y funciona con la red desenchufada.
     </p>
     <p>
-      Y eso importa más de lo que suena, por lo que la gente mete en los códigos QR.
-      El uso más común del formato de wifi es la contraseña real de una red,
-      tecleada en una página web. Merece la pena saber si esa página tenía adónde
+      Y eso importa más de lo que suena, por lo que la gente mete en los códigos
+      QR. El uso más habitual del formato de wifi es la contraseña de verdad de una
+      red, tecleada en una página web. Conviene saber si esa página tenía adónde
       mandarla.
     </p>
   </section>

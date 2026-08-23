@@ -26,14 +26,14 @@
     </p>
     <p>
       Een groottelimiet is dus een budget voor detail. De nuttige vraag is niet
-      &ldquo;haal ik 500&nbsp;kB&rdquo; &mdash; elk getal is altijd haalbaar
-      &mdash; maar &ldquo;hoeveel van het plaatje moet ik opgeven om daar te
-      komen, en maakt dat uit voor waar ik het voor gebruik?&rdquo;
+      &ldquo;haal ik 500&nbsp;KB&rdquo;, want elk getal is altijd haalbaar. De
+      nuttige vraag is hoeveel van het plaatje je moet opgeven om daar te komen, en
+      of dat uitmaakt voor waar je het voor gebruikt.
     </p>
     <p>
-      Twee vuistregels. Een foto van een echt tafereel &mdash; gezichten, blad,
-      stof &mdash; verbergt compressie goed, omdat het oog geen volkomen vlak
-      gebied heeft om schade in op te merken. Een schermafbeelding, een grafiek,
+      Twee vuistregels. Een foto van een echt tafereel, met gezichten, blad en
+      stof, verbergt compressie goed, omdat het oog geen volkomen vlak gebied heeft
+      waarin het schade opmerkt. Een schermafbeelding, een grafiek,
       een logo of wat dan ook met grote vlakke kleuren en harde tekstranden laat
       het meteen zien, en zou meestal een png of een WebP moeten zijn in plaats
       van een jpeg.
@@ -44,7 +44,7 @@
     <h2>Waarom er geen formule is, en wat je daaraan doet</h2>
     <p>
       Er is geen manier om de kwaliteitsinstelling uit te rekenen die een bestand
-      van 500&nbsp;kB oplevert. De verhouding tussen die twee hangt volledig af
+      van 500&nbsp;KB oplevert. De verhouding tussen die twee hangt volledig af
       van wat er in het plaatje zit: op dezelfde stand kan een foto van een kale
       muur er een tiende zo groot uit komen als een foto van een bos. Elke tool
       die je &ldquo;kwaliteit: 60&rdquo; aanbiedt en er het beste van hoopt, gokt
@@ -53,8 +53,8 @@
     <p>
       De enige betrouwbare methode is proberen. Codeer de afbeelding, kijk naar
       de grootte, stel bij, codeer opnieuw. Dat met de hand doen is vervelend, en
-      daarom vragen compressors om een kwaliteitsgetal &mdash; dat verschuift het
-      vervelende werk naar jou. Het automatisch doen kost ongeveer acht
+      daarom vragen compressors om een kwaliteitsgetal, want zo schuiven ze het
+      vervelende werk naar jou door. Het automatisch doen kost ongeveer acht
       coderingen, en acht coderingen van een telefoonfoto is een fractie van een
       seconde op elk apparaat van dit decennium; en daarom vraagt de tool op deze
       site om de grootte en zoekt hij het zelf uit.
@@ -76,7 +76,7 @@
     </p>
     <p>
       Kwaliteit gaat eerst, want de eerste 30% of zo van de kwaliteitsverlaging
-      is bij een foto werkelijk onzichtbaar &mdash; je gooit detail weg dat het
+      is bij een foto werkelijk onzichtbaar, want je gooit detail weg dat het
       formaat zorgvuldiger bewaarde dan enig oog kan nagaan. Pixels gaan als
       tweede, want zodra de kwaliteit ver genoeg zakt dat artefacten zichtbaar
       worden, ziet een kleiner plaatje op fatsoenlijke kwaliteit er beter uit dan
@@ -150,9 +150,8 @@
     </p>
     <p>
       Moet je dus een veel kleiner bestand hebben en moet het een png blijven,
-      dan is de enige hendel die overblijft de grootte &mdash; minder pixels, of
-      minder kleuren. Mag het ophouden een png te zijn, dan is de vraag wat erin
-      zit:
+      dan blijft alleen de grootte over als hendel: minder pixels of minder
+      kleuren. Mag het ophouden een png te zijn, dan is de vraag wat erin zit:
     </p>
     <ul>
       <li>
@@ -177,8 +176,8 @@
   <section>
     <h2>Hoe je ziet of het resultaat goed genoeg is</h2>
     <p>
-      Naar een miniatuur kijken bewijst niets &mdash; op miniatuurformaat ziet
-      alles er prima uit. Twee betere controles:
+      Naar een miniatuur kijken bewijst niets, want op miniatuurformaat ziet alles
+      er prima uit. Twee betere controles:
     </p>
     <p>
       <strong>Kijk ernaar op volle grootte, naar het vlakste stuk in
@@ -208,9 +207,8 @@
     <p>
       <strong>Comprimeren wist de metagegevens.</strong> Hercoderen betekent het
       plaatje decoderen tot pixels en die pixels opnieuw coderen, en een canvas
-      vol pixels draagt geen tags &mdash; dus de gps-positie, het cameramodel, de
-      tijdstempels en de rest worden domweg niet in het nieuwe bestand
-      geschreven. Meestal is dat mooi meegenomen. Wilde je de tags weg maar het
+      vol pixels draagt geen tags. De gps-positie, het cameramodel, de tijdstempels
+      en de rest belanden dus domweg niet in het nieuwe bestand. Meestal is dat mooi meegenomen. Wilde je de tags weg maar het
       plaatje onaangeroerd, dan is dat een andere klus: de
       <a href="../../exif-gegevens-verwijderen/">EXIF-lezer &amp; -wisser</a>
       herschrijft de container zonder ook maar iets opnieuw te comprimeren, en
@@ -220,8 +218,8 @@
     <p>
       <strong>Comprimeer hetzelfde bestand nooit twee keer.</strong> Elke
       verliesgevende codering gooit blijvend detail weg, en een al gecomprimeerd
-      plaatje coderen gooit er meer weg &mdash; inclusief de artefacten uit de
-      eerste ronde, die trouw bewaard blijven ten koste van echt detail. Ga
+      plaatje coderen gooit er nog meer weg, inclusief de artefacten uit de eerste
+      ronde, die trouw bewaard blijven ten koste van echt detail. Ga
       altijd terug naar het origineel en comprimeer één keer.
     </p>
     <p>
@@ -234,8 +232,8 @@
   <section>
     <h2>Hier hoeft niets voor geüpload te worden</h2>
     <p>
-      Elke browser levert al jaren een jpeg-, png- en WebP-encoder mee &mdash;
-      het is dezelfde code die een plaatje uit een canvas opslaat. Een afbeelding
+      Elke browser levert al jaren een jpeg-, png- en WebP-encoder mee, en dat is
+      dezelfde code die een plaatje uit een canvas opslaat. Een afbeelding
       comprimeren is een van de klussen waarvoor er geen technische reden is om
       er überhaupt een server bij te betrekken, en daarom heeft de tool hier er
       geen: het plaatje wordt op je eigen apparaat gedecodeerd, gecodeerd en

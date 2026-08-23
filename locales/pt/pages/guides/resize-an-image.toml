@@ -4,14 +4,14 @@
 
 nav = "Redimensionar uma imagem"
 title = "Como redimensionar uma imagem sem estragá-la"
-description = "O que acontece com uma foto quando você muda as dimensões em pixels: por que diminuir é seguro e aumentar não é, o que fazer quando a caixa tem outro formato e quando é melhor cortar."
+description = "O que acontece com uma foto quando você muda as dimensões em pixels: por que diminuir é seguro e aumentar não é, o que fazer quando a caixa tem outro formato, e quando é melhor cortar."
 heading = "Como redimensionar uma imagem sem estragá-la"
 lede = """
-    Redimensionar é o único trabalho de imagem em que o estrago fica decidido
-    antes de você apertar o botão, pelo número que digita e pelo formato que
-    pede. Aqui está o que cada escolha faz com a foto e quais delas dá para
+    Redimensionar é o único trabalho de imagem em que o estrago já fica decidido
+    antes de você clicar no botão, pelo número que você digita e pelo formato que
+    você pede. Aqui está o que cada escolha faz com a foto, e quais delas dá para
     desfazer."""
 updated = "20 de agosto de 2026"
 og_title = "Redimensionar uma imagem sem estragá-la"
-og_description = "Por que diminuir é seguro e aumentar não é, o que fazer quando a caixa tem outro formato e quando é melhor cortar."
-og_image_alt = "abox.tools - ferramentas que não encostam em servidor nenhum"
+og_description = "Por que diminuir é seguro e aumentar não é, o que fazer quando a caixa tem outro formato, e quando é melhor cortar."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

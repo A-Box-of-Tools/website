@@ -17,6 +17,17 @@
 # buildlib/site.py escapes on the way out. Transliteration is for URLs, and is
 # confined to [slugs] below.
 #
+# German, not English in German words. The house style, decided here and
+# followed by every file in this folder:
+#
+#   * Siezen throughout, warm rather than official.
+#   * "Werkzeug" in body copy; "Tools" only where a string is a search result -
+#     a title or a meta description - because that is the word that gets typed.
+#   * "Gerät" for the reader's machine, never "Maschine".
+#   * The em dash is an English habit. German carries that weight in a
+#     subordinate clause or in a second sentence, so most of them are gone.
+#   * No colon used for a revelation, and no " - " standing in for a dash.
+#
 
 lang = "de"
 name = "German"
@@ -114,49 +125,49 @@ complete = true
 
 [hub]
 title = "Kostenlose Browser-Tools &mdash; ohne Upload, ohne Anmeldung | abox.tools"
-# Unter 155 Zeichen, wie im Englischen: Google schneidet eine Beschreibung dort
+# Unter 155 Zeichen, wie im Englischen. Google schneidet eine Beschreibung dort
 # ab, und der Schluss ist hier der Teil, der die Seite verkauft.
-description = "Kostenlose Browser-Tools, die Ihre Dateien nie hochladen. Bilder zu PDF oder MP4 verbinden, Bilder exakt komprimieren, Videos zuschneiden, EXIF entfernen."
-heading = "Werkzeuge, die keinen Server anfassen"
-og_title = "A Box of Tools &mdash; Werkzeuge, die keinen Server anfassen"
+description = "Kostenlose Browser-Tools, die Ihre Dateien nie hochladen. Bilder zu PDF oder MP4 zusammenfügen, exakt komprimieren, Videos zuschneiden, EXIF entfernen."
+heading = "Werkzeuge, die ohne Server auskommen"
+og_title = "A Box of Tools &mdash; Werkzeuge, die ohne Server auskommen"
 og_description = "Kleine Werkzeuge für je eine Aufgabe, die vollständig in Ihrem Browser laufen. Ihre Dateien verlassen Ihr Gerät nicht."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
-schema_description = "Kleine Werkzeuge für je eine Aufgabe, die ihre gesamte Arbeit im Browser erledigen. Nichts wird hochgeladen, ein Konto ist nicht nötig."
-schema_about = "Browser-basierte Datei-Werkzeuge, die Dateien lokal verarbeiten, ohne sie hochzuladen"
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
+schema_description = "Kleine Werkzeuge für je eine Aufgabe, die ihre gesamte Arbeit im Browser erledigen. Nichts wird hochgeladen, und ein Konto brauchen Sie nicht."
+schema_about = "Browser-Werkzeuge für Dateien, die lokal verarbeitet und nicht hochgeladen werden"
 
 lede = """
     Kleine Werkzeuge für je eine Aufgabe, die ihre gesamte Arbeit in Ihrem
-    Browser erledigen. Ihre Dateien bleiben auf Ihrem Gerät: Es gibt nichts
-    hochzuladen, kein Konto anzulegen und nichts zu verfolgen."""
+    Browser erledigen. Ihre Dateien bleiben dabei auf Ihrem Gerät. Sie laden
+    nichts hoch, Sie legen kein Konto an, und niemand verfolgt, was Sie tun."""
 
 support_note = """
-      Diese Werkzeuge sind kostenlos und bleiben es. Wenn Ihnen eines Arbeit
-      erspart hat, ist das hier das Einzige auf der Seite, das Sie um etwas
-      bittet."""
+      Diese Werkzeuge sind kostenlos und bleiben es. Hat Ihnen eines Arbeit
+      erspart, finden Sie hier die einzige Stelle auf der Seite, die Sie um
+      etwas bittet."""
 
 # Drei nachprüfbare Tatsachen, kein Versprechen - genau wie im Englischen.
 [[hub.guarantees]]
 title = "Ihre Dateien verlassen Ihr Gerät nie"
 body = """
-        Sie werden von Ihrem eigenen Browser geöffnet, gelesen und verarbeitet,
-        auf Ihrer eigenen Hardware. Die <code>Content-Security-Policy</code> jedes
-        Werkzeugs nennt jede Adresse, die es kontaktieren darf, und keine davon
+        Ihr eigener Browser öffnet, liest und verarbeitet sie, auf Ihrer eigenen
+        Hardware. In der <code>Content-Security-Policy</code> jedes Werkzeugs
+        steht jede Adresse, die es überhaupt kontaktieren darf, und keine davon
         gehört uns."""
 
 [[hub.guarantees]]
-title = "Über Ihre Dateien wird nichts übermittelt"
+title = "Über Ihre Dateien wird nichts verschickt"
 body = """
-        Weder die Datei noch ein Vorschaubild, noch der Name, die Größe oder
-        wie viele Sie ausgewählt haben. Kein Werkzeug hier liest davon etwas
-        aus. Es gibt am anderen Ende keinen Server, der es lesen könnte."""
+        Nicht die Datei, nicht das Vorschaubild, nicht der Name, die Größe oder
+        die Anzahl. Keines der Werkzeuge hier liest so etwas aus, und am anderen
+        Ende sitzt auch kein Server, der es entgegennehmen könnte."""
 
 [[hub.guarantees]]
 title = "Es funktioniert offline"
 body = """
         Öffnen Sie ein Werkzeug einmal, trennen Sie die Internetverbindung, und
-        es arbeitet unverändert weiter an Ihren Dateien. Das lässt sich schwer
-        vortäuschen: Ein Werkzeug, das Ihre Dateien zum Verarbeiten wegschickt,
-        würde schlicht stehen bleiben."""
+        es arbeitet unverändert an Ihren Dateien weiter. Vortäuschen lässt sich
+        das kaum, denn ein Werkzeug, das Ihre Dateien zum Verarbeiten
+        wegschickt, bliebe an dieser Stelle einfach stehen."""
 
 [[hub.categories]]
 id = "images-and-video"
@@ -166,12 +177,12 @@ note = "Mit Fotos und Aufnahmen arbeiten, ohne sie aus der Hand zu geben."
 [[hub.categories]]
 id = "gif-and-animation"
 name = "GIF &amp; Animation"
-note = "Eine Animation bauen oder zerlegen, ohne dass sie den Rechner verlässt."
+note = "Eine Animation bauen oder zerlegen, ohne dass sie Ihr Gerät verlässt."
 
 [[hub.categories]]
 id = "audio"
 name = "Audio"
-note = "An einer Aufnahme arbeiten, ohne sie aus der Hand zu geben - auch am Ton in einem Video."
+note = "An einer Aufnahme arbeiten, ohne sie aus der Hand zu geben. Auch am Ton in einem Video."
 
 [[hub.categories]]
 id = "documents-and-pdf"
@@ -181,12 +192,12 @@ note = "Dokumente erstellen und umsortieren, ohne sie zum Verarbeiten wegzuschic
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; Daten"
-note = "Aus Getipptem etwas machen, das eine Maschine lesen kann - ohne dass es die Seite verlässt."
+note = "Getipptes in etwas verwandeln, das eine Maschine lesen kann, ohne dass es die Seite verlässt."
 
 [[hub.categories]]
 id = "text-and-code"
 name = "Text &amp; Code"
-note = "Lesbar machen, vergleichen, kodieren - ohne ein Token oder eine Konfigurationsdatei bei einem fremden Dienst einzufügen."
+note = "Lesbar machen, vergleichen, kodieren, ohne dafür ein Token oder eine Konfigurationsdatei auf einen fremden Server zu kopieren."
 
 #
 # ---------------------------------------------------------------------------
@@ -196,78 +207,78 @@ note = "Lesbar machen, vergleichen, kodieren - ohne ein Token oder eine Konfigur
 
 [guides]
 nav = "Alle Ratgeber"
-title = "Ratgeber &mdash; wie die Arbeit geht und was jede Einstellung kostet"
-description = "Verständliche Ratgeber zum Komprimieren, Skalieren, Zuschneiden, Kürzen und Umwandeln eigener Dateien - was die Einstellungen bedeuten und warum kein Upload nötig ist."
+title = "Ratgeber &mdash; wie es geht und was jede Einstellung kostet"
+description = "Verständliche Ratgeber zum Komprimieren, Skalieren, Zuschneiden und Umwandeln eigener Dateien. Was die Einstellungen bedeuten, was sie kosten, warum kein Upload nötig ist."
 heading = "Ratgeber"
 lede = """
-    Ein Ratgeber je Werkzeug, geschrieben für alle, denen eine Größe oder ein
-    Format vorgegeben wurde und die wissen möchten, was der Regler, den sie
-    gleich bewegen, eigentlich tut. Alles hier Beschriebene passiert auf Ihrem
-    eigenen Gerät."""
-og_title = "abox.tools Ratgeber"
-og_description = "Bilder komprimieren, skalieren, zuschneiden, kürzen und umwandeln - und was jede Einstellung kostet. Ganz ohne Upload."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
+    Zu jedem Werkzeug ein Ratgeber. Geschrieben für alle, denen jemand eine
+    Größe oder ein Format vorgegeben hat und die vorher wissen möchten, was der
+    Regler eigentlich tut, den sie gleich bewegen. Alles, was hier beschrieben
+    wird, passiert auf Ihrem eigenen Gerät."""
+og_title = "Die Ratgeber von abox.tools"
+og_description = "Komprimieren, skalieren, zuschneiden, kürzen, umwandeln. Und was jede Einstellung kostet. Ganz ohne Upload."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
 
 [[guides.groups]]
 id = "doing-the-job"
 name = "Die Arbeit erledigen"
-note = "Einer je Werkzeug: worum es geht, welche Einstellung zählt und was sie Sie kostet."
+note = "Einer je Werkzeug: worum es geht, welche Einstellung zählt und was sie kostet."
 
 [[guides.groups]]
 id = "before-you-upload"
 name = "Bevor Sie etwas hochladen"
-note = "Was das Übergeben einer Datei an eine Website wirklich bedeutet - und woran Sie erkennen, ob es nötig war."
+note = "Was wirklich passiert, wenn Sie eine Datei an eine Website übergeben, und woran Sie erkennen, ob das nötig war."
 
 #
 # ---------------------------------------------------------------------------
 # The roadmap.
 #
-# Only the frame. The list itself is config/planned.toml, which has no locale
-# file yet and is therefore still English on this page - one of the two reasons
-# `complete` is false at the top of this file.
+# Only the frame. The list itself is config/planned.toml, translated beside this
+# file in planned.toml.
 # ---------------------------------------------------------------------------
 #
 
 [roadmap]
 nav = "Roadmap"
 title = "Roadmap &mdash; was abox.tools als Nächstes baut"
-description = "Jedes für abox.tools geplante Werkzeug, offen und gruppiert, dazu die bereits fertigen. Alle laufen im Browser und laden nichts hoch."
+description = "Alle geplanten Werkzeuge für abox.tools, offen und nach Gruppen sortiert, dazu die bereits fertigen. Alle laufen im Browser und laden nichts hoch."
 heading = "Was als Nächstes kommt"
 lede = """
     Alles auf beiden Listen erledigt seine Arbeit in Ihrem Browser und lädt
-    nichts hoch &mdash; das ist die Regel, die ein Name bestehen muss, bevor er
-    überhaupt hier landet. Die Zahlen sind nirgends eingetragen; der Build
-    zählt sie an den beiden Listen ab."""
+    nichts hoch. Diese Regel muss ein Name bestehen, bevor er überhaupt hier
+    landet. Die Zahlen stehen nirgends geschrieben; der Build zählt sie an den
+    beiden Listen ab."""
 
 intro_heading = "Wie diese Liste entstanden ist"
 intro = """
     <p>
-      Sie ist keine Wunschliste. Sie entstand, indem die Werkzeugliste der
-      größten Online-GIF- und -Videoseite durchgegangen wurde &mdash; das
-      Nächste, was es zu einem Katalog dessen gibt, was Menschen tatsächlich
-      mit einer Datei gemacht haben wollen &mdash; und jeder Eintrag behalten
-      wurde, der sich so bauen lässt, dass die Arbeit auf Ihrem eigenen Gerät
-      stattfindet und auch ohne Netzverbindung weiterläuft.
+      Sie ist keine Wunschliste. Grundlage war die Werkzeugliste der größten
+      Online-Seite für GIFs und Videos, denn etwas Näheres an einem Katalog
+      dessen, was Menschen tatsächlich mit einer Datei gemacht haben wollen,
+      gibt es nicht. Übrig geblieben ist daraus jeder Eintrag, der sich so bauen
+      lässt, dass die Arbeit auf Ihrem eigenen Gerät stattfindet und auch ohne
+      Netzverbindung weiterläuft.
     </p>
     <p>
       Das meiste davon läuft mit Schnittstellen, die der Browser ohnehin
-      mitbringt. Einige wenige brauchen einen Codec, der in genau das Werkzeug
-      eingebettet wird, das ihn benutzt &mdash; das ist erlaubt, die Datei
-      verlässt das Gerät trotzdem nicht. Was diese Hürde nicht nimmt, wurde
-      weggelassen statt versprochen; einige der offensichtlich wirkenden
-      Lücken unten sind also Absicht.
+      mitbringt. Ein paar brauchen einen Codec, der fest in genau das Werkzeug
+      eingebaut wird, das ihn benutzt. Auch das ist erlaubt, denn die Datei
+      verlässt das Gerät deshalb trotzdem nicht. Was diese Hürde nicht nimmt,
+      wurde weggelassen statt versprochen. Manche der Lücken, die unten
+      auffallen, sind also Absicht.
     </p>
     <p>
       Die bereits vorhandenen Werkzeuge stehen oben in ihrer Gruppe, als
       <em>Fertig</em> markiert und mit ihrer eigenen Seite verlinkt. Alles
-      darunter steht noch aus, und nichts wird zu einem Link, bevor es das ist.
+      darunter steht noch aus, und ein Link wird daraus erst, wenn es fertig
+      ist.
     </p>"""
 
-planned_heading = "Jede Art von Datei, und was sich damit machen lässt"
+planned_heading = "Jede Art von Datei und was sich damit machen lässt"
 
-og_title = "abox.tools Roadmap"
+og_title = "Die Roadmap von abox.tools"
 og_description = "Was fertig ist und was als Nächstes kommt. Alles läuft im Browser und lädt nichts hoch."
-og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
 
 #
 # ---------------------------------------------------------------------------
@@ -282,15 +293,16 @@ og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"
 
 [not_found]
 title = "Seite nicht gefunden &mdash; abox.tools"
-description = "Diese Adresse gibt es auf abox.tools nicht. Hier sind die Werkzeuge, die es gibt - alle kostenlos, und keines lädt Ihre Dateien irgendwohin."
-heading = "Diese Seite ist nicht hier"
+description = "Diese Adresse gibt es auf abox.tools nicht. Hier stehen die Werkzeuge, die es gibt. Alle kostenlos, und keines lädt Ihre Dateien irgendwohin."
+heading = "Diese Seite gibt es hier nicht"
 tools_heading = "Alle Werkzeuge auf einen Blick"
 tools_note = "Alle kostenlos, alle im Browser, keines lädt irgendetwas hoch."
 
 lede = """
-    Entweder hat die Adresse einen Tippfehler, oder was dort einmal lag, ist
-    umgezogen. Mit Ihrer Datei ist nichts passiert und nichts ist verloren:
-    Diese Seite hatte noch nie etwas von Ihnen, das sie verlieren könnte."""
+    Entweder steckt in der Adresse ein Tippfehler, oder was dort einmal lag, ist
+    umgezogen. Ihrer Datei ist nichts passiert, und verloren ist auch nichts.
+    Diese Seite hatte noch nie etwas von Ihnen, das sie hätte verlieren
+    können."""
 
 #
 # ---------------------------------------------------------------------------
@@ -300,8 +312,8 @@ lede = """
 
 [footer]
 blurb = """
-        Werkzeuge, die keinen Server anfassen. Ihre Dateien bleiben auf Ihrem
-        Gerät &mdash; nichts hochzuladen, kein Konto anzulegen."""
+        Werkzeuge, die ohne Server auskommen. Ihre Dateien bleiben auf Ihrem
+        Gerät. Sie laden nichts hoch und legen kein Konto an."""
 base = "Jede Behauptung auf dieser Seite ist zum Nachprüfen gedacht, nicht zum Glauben."
 
 #
@@ -319,7 +331,9 @@ base = "Jede Behauptung auf dieser Seite ist zum Nachprüfen gedacht, nicht zum 
 [ui]
 languages = "Sprache"
 lang_auto = "Diese Seite wird auf Deutsch angezeigt, weil Ihr Browser diese Sprache bevorzugt."
-breadcrumb = "Brotkrumennavigation"
+# "Navigationspfad", nicht "Brotkrumennavigation": das ist die Beschriftung, die
+# deutsche Screenreader-Nutzer an dieser Stelle gewohnt sind.
+breadcrumb = "Navigationspfad"
 all_tools = "Alle Werkzeuge"
 last_updated = "Zuletzt aktualisiert"
 built_tag = "Fertig"
@@ -339,8 +353,8 @@ guarantees_note = """
     Nichts davon müssen Sie uns glauben.
     <a href="{{ base }}{{ links.safety_guide }}/">
       Woran Sie erkennen, ob ein Werkzeug Ihre Dateien wirklich braucht</a>
-    nennt vier Prüfungen, die Sie selbst durchführen können &mdash; auf
-    dieser Seite oder auf jeder anderen."""
+    nennt vier Prüfungen, die Sie selbst durchführen können, auf dieser Seite
+    wie auf jeder anderen."""
 
 hub_guides_note = """
     Unsicher, welche Einstellung Sie bewegen sollen oder was sie kostet?
@@ -348,8 +362,8 @@ hub_guides_note = """
     Ratgeber</a>."""
 
 hub_roadmap_note = """
-    Es kommt noch mehr, und die Liste ist öffentlich:
-    <a href="{{ base }}{{ links.roadmap }}/">ansehen, was geplant ist</a>."""
+    Es kommt noch mehr, und die Liste liegt offen:
+    <a href="{{ base }}{{ links.roadmap }}/">was als Nächstes geplant ist</a>."""
 
 guides_all_note = """
     Jeder Ratgeber hier beschreibt ein Werkzeug, das auf Ihrem eigenen Gerät
@@ -357,14 +371,14 @@ guides_all_note = """
 
 [ui.tool]
 view_source = "Quellcode ansehen"
-how_verified = "Wie das nachprüfbar ist"
+how_verified = "So lässt sich das nachprüfen"
 live_check = "Live-Prüfung:"
 offline = "Offline:"
 checking = "wird geprüft&hellip;"
 questions_heading = "Fragen"
 guide_heading = "Die ausführliche Fassung"
 related_heading = "Auch im Werkzeugkasten"
-privacy_heading = "Wie sich der Datenschutz nachprüfen lässt"
+privacy_heading = "So lässt sich das Datenschutzversprechen nachprüfen"
 
 # Das Substantiv steht mitten im Satz, und das Verb am Ende - genau der Grund,
 # warum dieser Satz als Ganzes übersetzt wird und nicht in zwei Hälften.
@@ -374,8 +388,8 @@ pledge_line = """
 boot_title = "Der Code dieser Seite ist nicht gestartet."
 boot_body = """
     Wird <code>index.html</code> direkt aus einem Ordner geöffnet, blockiert der Browser
-    JavaScript-Module, und beim Auswählen von {{ tool.words.choose }} passiert nichts. Geben Sie den Ordner
-    stattdessen über http aus:"""
+    JavaScript-Module, und beim Auswählen von {{ tool.words.choose }} passiert nichts. Stellen Sie den Ordner
+    stattdessen über HTTP bereit:"""
 boot_then = "Öffnen Sie dann <code>http://localhost:8080/</code>."
 
 noscript_title = "JavaScript ist deaktiviert."
@@ -383,11 +397,10 @@ noscript_body = "Diese Anwendung erledigt ihre gesamte Arbeit in Ihrem Browser u
 
 check_yourself = """
       <strong>Prüfen Sie es selbst.</strong> Nichts davon müssen Sie uns glauben.
-      Diese Seite wird aus den Vorlagen und der Konfiguration im Repository von einem
-      Build-Skript erzeugt, das Sie lesen und selbst ausführen können, und das
-      Ergebnis liegt im Branch <code>dist</code> &mdash; Sie können also
-      vergleichen, was ausgeliefert wird, mit dem, was ein Build der Quellen
-      hervorbringt:"""
+      Ein Build-Skript erzeugt diese Seite aus den Vorlagen und der Konfiguration
+      im Repository, und dieses Skript können Sie lesen und selbst ausführen. Das
+      Ergebnis liegt im Branch <code>dist</code>. Vergleichen Sie also, was
+      ausgeliefert wird, mit dem, was ein Build der Quellen hervorbringt:"""
 
 read_first_lead = """
       Zuerst lesenswert sind <code>config/site.toml</code> für die
@@ -397,13 +410,17 @@ read_first_lead = """
 open_tool = "{{ tool.name | e }} öffnen"
 
 [ui.picker]
+# Das Substantiv aus [picker.urls] des Werkzeugs steht hier im Singular, und die
+# Sätze sind um ein sächliches Substantiv herum gebaut - siehe den Kommentar in
+# tools/images-to-video.toml, dem einzigen Werkzeug, das diese Tafel hat.
 warning = """
-      <strong>Dies ist die einzige Funktion, die das Netz berührt.</strong>
-      Beim Abrufen einer Adresse erfährt der dortige Server Ihre IP-Adresse und welches {{ tool.picker.urls.noun }} Sie
-      angefordert haben. Das {{ tool.picker.urls.noun }} wird beim Eintreffen in den lokalen Speicher kopiert und nie
-      erneut angefordert. Von Ihnen geht nie etwas hinaus &mdash; diese Seite kann
-      nach wie vor keinerlei Upload durchführen."""
+      <strong>Das ist die einzige Funktion hier, die ins Netz geht.</strong>
+      Rufen Sie eine Adresse ab, erfährt der Server dort Ihre IP-Adresse und welches {{ tool.picker.urls.noun }} Sie
+      angefordert haben. Beim Eintreffen landet das {{ tool.picker.urls.noun }} im lokalen Speicher und wird nie
+      erneut angefordert. Von Ihnen geht dabei nichts hinaus, denn hochladen kann
+      diese Seite nach wie vor nichts."""
 label = "Eine Adresse pro Zeile"
 note = """
-      Der Server muss die herkunftsübergreifende Nutzung seiner {{ tool.picker.urls.noun }} erlauben. Viele Seiten tun
-      das nicht, und die scheitern dann mit einer Meldung, statt später still zu versagen."""
+      Der Server muss erlauben, dass eine fremde Website sein {{ tool.picker.urls.noun }} lädt. Viele
+      erlauben das nicht. Dann scheitert der Abruf gleich mit einer Meldung,
+      statt später still zu versagen."""

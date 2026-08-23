@@ -7,11 +7,11 @@ title = "Een video naar een andere vorm bijsnijden"
 description = "Snijd een filmpje terug naar een vierkant, een staande 9:16, of een exact pixelkader. Welke verhouding elk platform wil, waarom bijsnijden wel moet hercoderen en inkorten niet, en wat dat kost."
 heading = "Hoe je een video naar een andere vorm bijsnijdt"
 lede = """
-    Bijsnijden verandert de vorm van het beeld, en dat betekent nieuwe frames
-    schrijven &mdash; daar is geen weg omheen, en elke tool die iets anders
+    Bijsnijden verandert de vorm van het beeld, en dus moeten er nieuwe frames
+    geschreven worden. Daar kom je niet onderuit, en elke tool die iets anders
     beweert doet iets anders. Hier staat wat het kost, en hoe je het goed
     uitgeeft."""
 updated = "20 augustus 2026"
 og_title = "Hoe je een video naar een andere vorm bijsnijdt"
 og_description = "Welke beeldverhouding elk platform wil, waarom bijsnijden wel moet hercoderen en inkorten niet, en wat dat kost."
-og_image_alt = "abox.tools - gereedschap dat geen server aanraakt"
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

@@ -1,5 +1,5 @@
 #
-# Guide : les donnees EXIF et GPS d'une photo, et comment les retirer - French.
+# Guide : les données EXIF et GPS d'une photo, et comment les retirer - French.
 #
 
 nav = "Données EXIF et GPS"
@@ -15,4 +15,4 @@ lede = """
 updated = "20 août 2026"
 og_title = "Ce qu'une photo raconte sur vous, et comment le retirer"
 og_description = "Coordonnées GPS, horodatages et numéros de série voyagent à l'intérieur des photos ordinaires. Ce qu'il y a dedans, qui peut le lire, et comment l'effacer."
-og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

@@ -17,18 +17,19 @@
     <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; the screen this tool would keep if it could keep only one -->
+  <!-- Étape 2 &mdash; l'écran que cet outil garderait s'il ne devait en garder qu'un -->
   <section class="card" id="inventory-card" hidden>
     <h2><span class="step">2</span> Voir où est le poids</h2>
 
     <p class="card-lede">
       &laquo;&nbsp;Compresser un PDF&nbsp;&raquo;, ce sont deux métiers
       différents qui partagent un nom. Un scan est une pile de photographies, et
-      les réencoder vaut l'essentiel du fichier. Un contrat, c'est du texte et
-      des polices, que ce qui l'a produit avait déjà compressés &mdash; il n'y a
-      pas quatre-vingts pour cent cachés dedans, et aucun outil ne peut en
-      trouver. Lequel des deux vous avez n'est pas affaire d'opinion&nbsp;: le
-      voici donc avant qu'on touche à quoi que ce soit.
+      les réencoder vaut l'essentiel du fichier. Un contrat, en revanche, c'est
+      du texte et des polices, que ce qui l'a produit avait déjà compressés, si
+      bien qu'il n'y a pas quatre-vingts pour cent cachés dedans et qu'aucun
+      outil ne saurait en trouver. Savoir lequel des deux vous avez n'est pas
+      affaire d'opinion&nbsp;: le voici donc avant qu'on touche à quoi que ce
+      soit.
     </p>
 
     <p id="verdict" class="verdict"></p>
@@ -46,12 +47,12 @@
     <h2><span class="step">3</span> Dire jusqu'où serrer</h2>
 
     <p class="card-lede">
-      Un PDF enregistre la taille à laquelle chaque image est dessinée&nbsp;: cet
-      outil peut donc mesurer ce que la page utilise vraiment, au lieu de le
+      Un PDF enregistre la taille à laquelle chaque image est dessinée, ce qui
+      permet à cet outil de mesurer ce que la page utilise vraiment au lieu de le
       deviner. Un scan de 4000 pixels étalé sur vingt centimètres de papier
       transporte 500 pixels par pouce&nbsp;; à 150, il s'imprime pareil et se
-      regarde pareil à l'écran. Les pixels que personne ne voit sont dépensés en
-      premier, parce qu'ils ne coûtent rien.
+      regarde pareil à l'écran. Les pixels que personne ne voit sont donc
+      dépensés en premier, puisqu'ils ne coûtent rien.
     </p>
 
     <fieldset class="presets-set">
@@ -61,21 +62,21 @@
           <input type="radio" name="preset" value="smallest">
           <span class="preset-body">
             <strong>Le plus léger</strong>
-            <span class="preset-note">96 DPI. Pour ce qui n'a qu'à se lire à l'écran.</span>
+            <span class="preset-note">96&nbsp;DPI. Pour ce qui n'a qu'à se lire à l'écran.</span>
           </span>
         </label>
         <label class="preset">
           <input type="radio" name="preset" value="screen" checked>
           <span class="preset-body">
             <strong>Bien à l'écran</strong>
-            <span class="preset-note">130 DPI. La réponse habituelle pour un fichier à envoyer par courriel.</span>
+            <span class="preset-note">130&nbsp;DPI. La réponse habituelle pour un fichier à envoyer par courriel.</span>
           </span>
         </label>
         <label class="preset">
           <input type="radio" name="preset" value="print">
           <span class="preset-body">
             <strong>Encore bien sur papier</strong>
-            <span class="preset-note">220 DPI. Plus léger, et il s'imprimera toujours correctement.</span>
+            <span class="preset-note">220&nbsp;DPI. Plus léger, et il s'imprimera toujours correctement.</span>
           </span>
         </label>
         <label class="preset">
@@ -89,12 +90,12 @@
     </fieldset>
 
     <details class="advanced">
-      <summary>Régler les deux nombres vous-même</summary>
+      <summary>Régler les deux valeurs vous-même</summary>
       <div class="option-row">
-        <label for="dpi-value">Pixels au maximum par pouce d'espace dessiné</label>
+        <label for="dpi-value">Densité maximale, en pixels par pouce dessiné</label>
         <div class="inline-pair">
           <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
-          <span class="unit">DPI &mdash; 0 laisse chaque image à sa taille pleine</span>
+          <span class="unit">DPI (0 laisse chaque image à sa taille pleine)</span>
         </div>
       </div>
       <div class="option-row">
@@ -112,9 +113,9 @@
         <strong>Enlever ce que le fichier retient de sa provenance</strong>
         <span class="check-note">
           Le nom et la version du programme qui l'a fabriqué, la date de création
-          et de dernière modification, le paquet XMP, et le bloc privé qu'une
-          application de mise en page laisse derrière elle pour pouvoir
-          réimporter son propre travail &mdash; ce qui fait parfois plusieurs
+          et de dernière modification, le paquet XMP, ainsi que le bloc privé
+          qu'une application de mise en page laisse derrière elle pour pouvoir
+          réimporter son propre travail, un bloc qui pèse parfois plusieurs
           mégaoctets. Rien de tout cela n'est nécessaire pour afficher le
           document.
         </span>

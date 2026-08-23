@@ -1,12 +1,12 @@
   <section>
     <h2>Seus arquivos</h2>
     <p>
-      Toda ferramenta deste site faz seu trabalho dentro do seu próprio
-      navegador, no seu próprio hardware. Quando você escolhe um arquivo, ele é
-      lido pela página que você já tem aberta. Ele não é enviado para nós,
-      porque não existe servidor nosso para onde ele pudesse ir &mdash; este
-      site é um conjunto de arquivos estáticos, sem backend, sem banco de dados
-      e sem armazenamento.
+      Toda ferramenta deste site faz o trabalho dela dentro do seu próprio
+      navegador, no seu próprio hardware. Quando você escolhe um arquivo, quem o
+      lê é a página que você já tem aberta. Ele não é enviado para nós, porque
+      não existe servidor nosso para onde ele pudesse ir: este site é um
+      conjunto de arquivos estáticos, sem backend, sem banco de dados e sem
+      armazenamento.
     </p>
     <p>
       Isso quer dizer que nunca recebemos, vemos, guardamos, registramos nem
@@ -21,11 +21,11 @@
     </ul>
     <p>
       Isto não é uma promessa sobre as nossas intenções. Cada página carrega uma
-      <code>Content-Security-Policy</code> que nomeia todos os endereços que a
-      página tem permissão de contatar, e quem faz valer a regra é o navegador.
+      <code>Content-Security-Policy</code> que lista todos os endereços que a
+      página tem permissão de acessar, e quem faz valer a regra é o navegador.
       Nenhum desses endereços é nosso. Você pode ler a política no alto do
-      código-fonte de qualquer página, ou abrir a aba Rede do seu navegador e
-      observar: nenhuma requisição leva o seu arquivo.
+      código-fonte de qualquer página, ou abrir a aba &ldquo;Rede&rdquo; do seu
+      navegador e observar: nenhuma requisição leva o seu arquivo.
     </p>
     <p>
       Os arquivos que você produz com uma ferramenta são entregues ao mecanismo
@@ -90,7 +90,7 @@
       arquivo que você pode ler: o <code>analytics.js</code> ao lado de cada
       página monta um contador de visualizações e não contém evento
       personalizado nenhum. Nada neste site passa a ele um arquivo, um nome de
-      arquivo, uma dimensão ou uma contagem &mdash; não existe aqui código que
+      arquivo, uma dimensão ou uma contagem, porque não existe aqui código que
       pudesse fazer isso.
     </p>
 
@@ -109,18 +109,28 @@
     <h3>Hospedagem</h3>
     <p>
       O site é servido pelo GitHub Pages, atrás da Cloudflare. Como qualquer
-      hospedagem, eles processam as requisições que o seu navegador faz &mdash;
-      o que inclui o seu endereço IP, a página pedida e o seu agente de usuário
-      &mdash; para entregar a página e manter o serviço no ar e seguro. Não
-      temos acesso aos registros por visitante de nenhum dos dois.
+      hospedagem, eles processam as requisições que o seu navegador faz, o que
+      inclui o seu endereço IP, a página pedida e o seu agente de usuário, para
+      entregar a página e manter o serviço no ar e seguro. Não temos acesso aos
+      registros por visitante de nenhum dos dois.
     </p>
   </section>
 
   <section>
     <h2>Cookies</h2>
     <p>
-      Não gravamos nenhum cookie nosso. Não temos login, não temos sessão, não
-      temos preferências para lembrar e não temos motivo para isso.
+      Não gravamos nenhum cookie nosso. Não temos login nem sessão, e existe uma
+      única preferência que este site guarda.
+    </p>
+    <p>
+      <strong>O idioma que você escolhe.</strong> Se você escolher um idioma no
+      seletor, essa escolha é escrita no armazenamento local do seu navegador,
+      com o nome <code>abox-lang</code>, para que a próxima página que você abrir
+      esteja no idioma que você pediu. Não é um cookie: nunca é enviada para nós
+      nem para mais ninguém, fica no aparelho em que você está lendo isto, e
+      limpar os dados de site do seu navegador apaga. Se você nunca escolher um
+      idioma, nada chega a ser escrito, porque uma página exibida no idioma do
+      próprio navegador foi combinada na hora e esquecida em seguida.
     </p>
     <p>
       Todo cookie ou identificador parecido que você encontrar aqui é do Google
@@ -157,8 +167,8 @@
     <h2>Seus direitos sobre os dados</h2>
     <p>
       Não guardamos nenhum dado pessoal sobre você, então não há nada que
-      possamos lhe mostrar, corrigir, exportar ou apagar &mdash; um pedido feito
-      a nós voltaria vazio, sinceramente.
+      possamos mostrar, corrigir, exportar ou apagar. Um pedido feito a nós
+      voltaria vazio, sinceramente.
     </p>
     <p>
       Os dados descritos acima ficam com o Google, que é o próprio controlador

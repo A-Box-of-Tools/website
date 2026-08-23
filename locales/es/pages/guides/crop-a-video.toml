@@ -8,17 +8,17 @@
 nav = "Recortar un vídeo"
 
 title = "Cómo recortar un vídeo a otra forma"
-description = "Deja un clip reducido a un cuadrado, a un vertical 9:16 o a una caja de píxeles exacta. Qué proporción quiere cada plataforma, por qué recortar tiene que recodificar cuando cortar no, y lo que eso cuesta."
+description = "Deja un clip en un cuadrado, en un vertical 9:16 o en una caja de píxeles exacta. Qué proporción quiere cada plataforma, por qué recortar tiene que recodificar y cortar no, y lo que eso cuesta."
 
 heading = "Cómo recortar un vídeo a otra forma"
 lede = """
-    Recortar cambia la forma de la imagen, lo que significa escribir fotogramas
-    nuevos &mdash; no hay manera de evitarlo, y cualquier herramienta que diga lo
-    contrario está haciendo otra cosa. Esto es lo que cuesta, y cómo gastarlo
+    Recortar cambia la forma de la imagen, y eso obliga a escribir fotogramas
+    nuevos. No hay manera de esquivarlo, y cualquier herramienta que te diga lo
+    contrario está haciendo otra cosa. Aquí va lo que cuesta y cómo gastarlo
     bien."""
 
 updated = "20 de agosto de 2026"
 
 og_title = "Cómo recortar un vídeo a otra forma"
-og_description = "Qué proporción quiere cada plataforma, por qué recortar tiene que recodificar cuando cortar no, y lo que eso cuesta."
-og_image_alt = "abox.tools - herramientas que no tocan ningún servidor"
+og_description = "Qué proporción quiere cada plataforma, por qué recortar tiene que recodificar y cortar no, y lo que eso cuesta."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

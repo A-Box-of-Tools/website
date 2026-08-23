@@ -1,7 +1,7 @@
 <main>
   <!-- Schritt 1 &mdash; Bilder -->
   <section class="card">
-    <h2><span class="step">1</span> Bilder wählen</h2>
+    <h2><span class="step">1</span> Bilder auswählen</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -66,15 +66,15 @@
       <div class="field" id="dpi-field">
         <label for="dpi">Druckauflösung</label>
         <select id="dpi">
-          <option value="72">72 DPI &mdash; Bildschirm</option>
-          <option value="96">96 DPI</option>
-          <option value="150" selected>150 DPI</option>
-          <option value="200">200 DPI</option>
+          <option value="72">72 dpi &mdash; Bildschirm</option>
+          <option value="96">96 dpi</option>
+          <option value="150" selected>150 dpi</option>
+          <option value="200">200 dpi</option>
           <option value="300">300 DPI &mdash; Druck</option>
-          <option value="600">600 DPI</option>
+          <option value="600">600 dpi</option>
         </select>
         <p class="field-note">
-          Bestimmt, wie groß eine Seite bei einer gegebenen Pixelzahl wird. Am
+          Legt fest, wie groß eine Seite bei einer gegebenen Pixelzahl wird. Am
           Bild selbst ändert es nichts.
         </p>
       </div>
@@ -152,9 +152,9 @@
         <p class="meta-note">
           Ein PDF trägt einen kleinen Block mit Angaben über sich selbst, und die
           meisten Werkzeuge füllen ihn mit einem Zeitstempel und einem
-          Programmnamen, ob Sie darum gebeten haben oder nicht. Dieses schreibt,
-          was Sie hier eintippen, und sonst nichts: keine Dateinamen, keinen
-          Gerätenamen und kein Datum, sofern Sie das Häkchen nicht setzen.
+          Programmnamen, ob Sie darum gebeten haben oder nicht. Dieses schreibt
+          nur, was Sie hier eintippen. Keine Dateinamen, keinen Gerätenamen und
+          kein Datum, solange Sie das Häkchen nicht setzen.
         </p>
         <div class="settings">
           <div class="field">
@@ -188,7 +188,7 @@
     <div class="preview-row">
       <div class="preview-frame">
         <canvas id="preview" width="480" height="640" aria-label="Vorschau einer Seite"></canvas>
-        <p id="preview-empty" class="preview-empty">Fügen Sie Bilder hinzu, um die Seiten zu sehen</p>
+        <p id="preview-empty" class="preview-empty">Bilder hinzufügen, dann erscheinen hier die Seiten</p>
         <div id="preview-nav" class="preview-nav" hidden>
           <button type="button" id="preview-prev" class="ghost" aria-label="Vorherige Seite">&lsaquo;</button>
           <span id="preview-label" class="preview-label"></span>

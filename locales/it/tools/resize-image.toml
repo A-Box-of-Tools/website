@@ -9,27 +9,28 @@ name = "Ridimensionatore di immagini"
 # La coda è l'espressione che si cerca; il nome del prodotto resta la metà che
 # grida.
 heading = "Ridimensionare&nbsp;un'immagine <span class=\"h1-kw\">&mdash; ritagliare e convertire</span>"
-tagline = "Di' la dimensione. Disegna il riquadro. Scegli il formato."
+tagline = "Di' la dimensione, disegna il riquadro, scegli il formato."
 
-title = "Ridimensionare un'immagine &mdash; anche ritagliare e convertire, senza caricare nulla"
-description = "Ridimensiona, ritaglia e converti immagini JPEG, PNG e WebP nel tuo browser. Pixel esatti, una percentuale o il lato lungo - un'immagine o una cartella intera. Non viene caricato nulla."
+title = "Ridimensionare un'immagine &mdash; anche ritagliare e convertire, senza caricare niente"
+description = "Ridimensiona, ritaglia e converti immagini JPEG, PNG e WebP dentro il tuo browser. Pixel esatti, una percentuale o il lato lungo, per un'immagine sola o per una cartella intera. Non viene caricato niente."
 og_title = "Ridimensionare, ritagliare e convertire un'immagine senza caricarla"
-og_description = "Imposta la dimensione in pixel o in percentuale, trascina un riquadro di ritaglio, cambia formato - per un'immagine o per un lotto intero. Gira tutto sul tuo dispositivo."
-og_image_alt = "Ridimensionatore di immagini - ridimensionare, ritagliare e convertire senza caricare nulla"
+og_description = "Imposta la dimensione in pixel o in percentuale, trascina un riquadro di ritaglio, cambia formato, per un'immagine o per un lotto intero. Gira tutto sul tuo dispositivo."
+og_image_alt = "Ridimensionatore di immagini - ridimensionare, ritagliare e convertire senza caricare niente"
 
 pledge = """
-    Il ridimensionamento, il ritaglio e il cambio di formato avvengono tutti nel
-    tuo browser, sul tuo hardware, con gli encoder di immagini che si porta già
-    dietro. Questo strumento non ha alcuna funzione di rete &mdash; niente da
-    recuperare, niente da spedire &mdash; e dall'altra parte di questa pagina
-    non c'è alcun server a cui mandare un'immagine, anche se ci fosse un modo
-    per farlo."""
+    Il ridimensionamento, il ritaglio e il cambio di formato avvengono tutti
+    dentro il tuo browser, sul tuo hardware, con gli encoder di immagini che si
+    porta già dietro. Questo strumento non ha nessuna funzione di rete, non c'è
+    niente da recuperare e niente da spedire, e dall'altra parte di questa
+    pagina non c'è nessun server a cui mandare un'immagine, anche se una
+    funzione del genere ci fosse."""
 
 live_hint = """
-      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
-      scheda Rete e ridimensiona una foto. Non una sola richiesta porta con sé
-      un'immagine, una miniatura, un nome di file o un byte di quello che hai
-      scelto. Oppure stacca la connessione e ridimensionane una lo stesso."""
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori,
+      tieni d'occhio il pannello Rete e ridimensiona una foto. Non c'è una sola
+      richiesta che porti con sé un'immagine, una miniatura, un nome di file o
+      un byte di quello che hai scelto. Oppure stacca la connessione e
+      ridimensionane una lo stesso."""
 
 read_first = """
 , <code>src/geometry.js</code> per l'aritmetica
@@ -40,15 +41,13 @@ read_first = """
 howto_heading = "Come ridimensionare un'immagine senza caricarla"
 
 card = """
-            Pixel esatti, una percentuale o il lato lungo &mdash; con un
-            riquadro di ritaglio e un cambio di formato lungo la strada.
-            Un'immagine o una cartella."""
+            Pixel esatti, una percentuale o il lato lungo, con un riquadro di
+            ritaglio e un cambio di formato lungo la strada. Un'immagine sola o
+            una cartella intera."""
 
 [words]
 plural = "immagini"
 choose = "un'immagine"
-analytics_extra = """, e nemmeno una delle
-  dimensioni, dei ritagli o dei formati che questo strumento calcola"""
 
 [[facts]]
 text = "Niente caricamenti"
@@ -69,20 +68,19 @@ text = "Open source"
 title = "Le tue immagini non hanno dove andare."
 body = """
  La
-      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
-      contattare, e nessuno di questi appartiene a questo sito. Qui non esiste
-      un punto di raccolta dove i tuoi file potrebbero finire, e nel codice non
-      c'è nulla che ce li manderebbe se esistesse."""
+      Content-Security-Policy elenca tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di quegli indirizzi appartiene a questo sito. Non
+      esiste un punto di raccolta in cui i tuoi file possano finire, e nel codice
+      non c'è niente che ce li manderebbe se anche esistesse."""
 
 [[privacy]]
-title = "Qui dentro niente recupera niente."
+title = "Qui dentro niente va a recuperare niente."
 body = """
- Non c'è un
-      <code>fetch</code>, né un <code>XMLHttpRequest</code>, né un
-      <code>sendBeacon</code> da nessuna parte in <code>src/</code>. Il
-      ridimensionamento è un <code>drawImage</code> su una tela e un
-      <code>canvas.toBlob</code> &mdash; lo scalatore e l'encoder che sono già
-      installati nel tuo browser."""
+ In <code>src/</code> non
+      c'è né un <code>fetch</code>, né un <code>XMLHttpRequest</code>, né un
+      <code>sendBeacon</code>. Il ridimensionamento è un <code>drawImage</code>
+      su un canvas più un <code>canvas.toBlob</code>, cioè lo scalatore e
+      l'encoder già installati nel tuo browser."""
 
 [[privacy]]
 title = "Un file che nessuno ha chiesto di cambiare non viene cambiato."
@@ -91,14 +89,14 @@ body = """
       ridimensionamento e senza cambio di formato, il file che hai scelto ti
       viene restituito byte per byte invece che risalvato. Non è solo cortesia:
       è il motivo per cui questo strumento non può ricodificare in silenzio
-      un'immagine, né buttare in silenzio i metadati di una che volevi solo
+      un'immagine, né buttare in silenzio i metadati di una che volevi soltanto
       guardare."""
 
 [[privacy]]
-title = "Cosa carica Google, e cosa non gli viene dato."
+title = "Cosa carica Google, e cosa non gli arriva."
 body = """
- Gli script
-      pubblicitari e di misurazione arrivano da Google, e il pulsante delle
+ Gli script della
+      pubblicità e della misurazione arrivano da Google, il pulsante delle
       donazioni da Buy Me a Coffee. A nessuno di loro viene passato niente sulle
       tue immagini. Ogni riga che legge, ritaglia, scala o scrive un file è
       servita da questa origine ed è elencata nel repository."""
@@ -108,25 +106,25 @@ title = "Funziona offline."
 body = """
  Stacca la rete e lo strumento resta
       identico, perché al suo interno non c'è mai stato un passaggio di rete. È
-      la prova più semplice di tutte."""
+      la prova più semplice che ci sia."""
 
 [[howto]]
-title = "Scegli le tue immagini."
+title = "Scegli le immagini."
 body = """
- Trascinale sul riquadro o
-      selezionale a mano. Il browser le legge direttamente dal tuo disco; mentre
-      lo fai non viene mandato niente da nessuna parte."""
+ Trascinale sul riquadro, oppure
+      selezionale a mano. Le legge il browser direttamente dal tuo disco, e
+      mentre lo fa non parte niente per nessuna destinazione."""
 
 [[howto]]
 title = "Ritaglia, se ti va."
 body = """
  Il riquadro parte su tutta l'immagine,
       quindi lasciarlo stare non ritaglia niente. Trascinalo, oppure bloccalo su
-      una forma &mdash; 1:1 per una foto profilo, 9:16 per una storia, 16:9 per
-      una miniatura &mdash; e premi «Il più grande» per quello più grande che ci
-      sta. Ogni immagine tiene il proprio riquadro: clicca una riga qualsiasi
-      dell'elenco per disegnare su quella. Se devono essere tutte inquadrate allo
-      stesso modo, c'è un pulsante anche per quello."""
+      una forma, 1:1 per una foto profilo, 9:16 per una storia, 16:9 per una
+      miniatura, e premi «Il più grande» per quello più grande che ci sta. Ogni
+      immagine si tiene il proprio riquadro: clicca una riga qualsiasi
+      dell'elenco per disegnare su quella. E se devono essere tutte inquadrate
+      allo stesso modo, c'è un pulsante anche per quello."""
 
 [[howto]]
 title = "Di' che dimensione deve avere in uscita."
@@ -134,59 +132,59 @@ body = """
  Una larghezza,
       un'altezza, o entrambe; un lato lungo, che tiene gli scatti verticali e
       orizzontali della stessa dimensione tra loro; oppure una semplice
-      percentuale. Lascia vuoto uno dei due campi e l'immagine tiene la propria
-      forma."""
+      percentuale. Lascia vuoto uno dei due campi e l'immagine si tiene la
+      propria forma."""
 
 [[howto]]
 title = "Scegli il formato, poi premi il pulsante."
 body = """
- Tieni quello con cui
-      è arrivato ogni file, oppure scrivi tutto come JPEG, PNG o WebP. Ogni
+ Puoi tenere quello con
+      cui è arrivato ogni file, oppure scrivere tutto come JPEG, PNG o WebP. Ogni
       risultato dice cosa è diventato e di quanto si è alleggerito; cliccane uno
-      per aprirlo a dimensione piena con tutti i numeri dietro, e l'originale
-      accanto per confrontare. Un lotto scende come un unico zip."""
+      per aprirlo a dimensione piena, con tutti i numeri dietro e l'originale
+      accanto per confrontare. Un lotto si scarica in un unico zip."""
 
 [[faq]]
 q = "La mia immagine viene caricata da qualche parte?"
 a = """
-        No. Il file viene decodificato, ritagliato, scalato e scritto dal tuo
-        browser sul tuo hardware, con gli encoder JPEG, PNG e WebP che il browser
-        si porta già dietro. Questo strumento non ha alcuna funzione di rete
-        &mdash; non recupera mai niente e non spedisce mai niente &mdash; e la
-        <code>Content-Security-Policy</code> della pagina nomina tutti gli
-        indirizzi che può contattare, nessuno dei quali appartiene a questo
+        No. Il file lo decodifica, lo ritaglia, lo scala e lo scrive il tuo
+        browser sul tuo hardware, con gli encoder JPEG, PNG e WebP che si porta
+        già dietro. Questo strumento non ha nessuna funzione di rete: non recupera
+        mai niente e non spedisce mai niente. La
+        <code>Content-Security-Policy</code> della pagina elenca poi tutti gli
+        indirizzi che può contattare, e nessuno di quelli appartiene a questo
         sito."""
 
 [[faq]]
 q = "Cosa succede se do una larghezza ma non un'altezza?"
 a = """
-        L'altezza segue dalla forma stessa dell'immagine, che è quasi sempre
-        quello che si voleva: «larga 1920» vuol dire «larga 1920 e alta quanto
-        viene». Riempi entrambi i campi e i due possono non concordare con la
-        forma dell'immagine, che è l'unico caso in cui compare la scelta «se le
-        forme non concordano» &mdash; stare dentro il riquadro, riempirlo e
-        tagliare quello che avanza, riempire con uno sfondo, o stirare e
-        accettare la deformazione."""
+        L'altezza viene dietro alla forma stessa dell'immagine, che è quasi
+        sempre quello che si voleva: «larga 1920» vuol dire «larga 1920 e alta
+        quanto viene». Se riempi tutti e due i campi, i due numeri possono non
+        concordare con la forma dell'immagine, ed è l'unico caso in cui compare
+        la scelta «se le forme non concordano»: stare dentro il riquadro,
+        riempirlo e tagliare quello che avanza, riempire con uno sfondo, oppure
+        stirare e accettare la deformazione."""
 
 [[faq]]
 q = "Ridimensionare un'immagine fa perdere qualità?"
 a = """
-        Rimpicciolire un'immagine no, in nessun modo che si veda: entrano più
-        pixel di quanti ne escano, quindi il dettaglio che resta è dettaglio
-        vero. Ingrandirne una non può aggiungere quello che non è mai stato
-        fotografato &mdash; il risultato è una copia più morbida della stessa
-        immagine, non una più nitida &mdash; ed è per questo che «non ingrandire
-        mai un'immagine oltre la sua dimensione di partenza» è attivo di default.
-        Quello che costa qualcosa è la ricodifica successiva, se il formato è
-        JPEG o WebP, e il cursore della qualità è quello che spendi lì."""
+        Rimpicciolirla no, in nessun modo che si veda: entrano più pixel di
+        quanti ne escano, quindi il dettaglio che resta è dettaglio vero.
+        Ingrandirla invece non può aggiungere quello che non è mai stato
+        fotografato, e il risultato è una copia più morbida della stessa
+        immagine, non una più nitida: per questo «non ingrandire mai un'immagine
+        oltre la sua dimensione di partenza» è attivo di default. Quello che
+        costa davvero qualcosa è la ricodifica successiva, se il formato è JPEG o
+        WebP, e il cursore della qualità è quello che spendi lì."""
 
 [[faq]]
 q = "Posso ritagliare ogni immagine in modo diverso?"
 a = """
-        Sì &mdash; è il comportamento predefinito. Ogni immagine dell'elenco
-        porta il proprio riquadro, nei propri pixel, e cliccare una riga mette
+        Sì, ed è il comportamento predefinito. Ogni immagine dell'elenco si porta
+        il proprio riquadro, nei propri pixel, e cliccare una riga mette
         quell'immagine nell'anteprima con il suo riquadro e la sua forma bloccata
-        di nuovo addosso. Niente di quello che fai a una tocca un'altra. Anche
+        di nuovo addosso. Niente di quello che fai a una tocca le altre. Anche
         ogni riquadro parte su tutta l'immagine, quindi un'immagine su cui non
         disegni mai non viene ritagliata affatto."""
 
@@ -194,33 +192,33 @@ a = """
 q = "Può ritagliare un lotto intero allo stesso modo in una volta?"
 a = """
         Sì, con il pulsante sotto l'anteprima. Dà a ogni altra immagine la stessa
-        area relativa &mdash; le stesse frazioni della propria larghezza e
-        altezza &mdash; che per una serie di screenshot o di esportazioni tutti
-        della stessa dimensione è esattamente lo stesso riquadro, e la pagina lo
-        dice. Con una forma bloccata dà invece a ciascuna il riquadro più grande
-        di quella forma dentro quell'area, così premere 1:1 e poi quel pulsante
-        ti tira fuori dei quadrati da una cartella di scatti verticali e
-        orizzontali mescolati. Ogni riquadro resta modificabile dopo."""
+        area relativa, cioè le stesse frazioni della propria larghezza e altezza,
+        che per una serie di screenshot o di esportazioni tutti della stessa
+        dimensione è esattamente lo stesso riquadro, e la pagina te lo dice. Con
+        una forma bloccata dà invece a ciascuna il riquadro più grande di quella
+        forma dentro quell'area, così premere 1:1 e poi quel pulsante ti tira
+        fuori dei quadrati anche da una cartella dove verticali e orizzontali
+        sono mescolati. Ogni riquadro resta comunque modificabile dopo."""
 
 [[faq]]
 q = "Quali formati sa leggere e scrivere?"
 a = """
-        Legge tutto quello che il tuo browser sa decodificare, che in pratica
-        vuol dire JPEG, PNG, WebP, GIF, BMP e &mdash; sulla maggior parte dei
-        browser attuali &mdash; AVIF. Scrive JPEG, PNG e WebP, perché quelli sono
-        gli encoder che i browser si portano dietro. Su «tieni il formato» un
-        JPEG resta un JPEG e un PNG resta un PNG; tutto quello che il browser non
-        sa scrivere, come una GIF o un BMP, esce come PNG, che è quello che tiene
-        intatte la trasparenza e le tinte piatte."""
+        Legge tutto quello che il browser sa decodificare, che in pratica vuol
+        dire JPEG, PNG, WebP, GIF, BMP e, sulla maggior parte dei browser di oggi,
+        anche AVIF. Scrive JPEG, PNG e WebP, perché quelli sono gli encoder che i
+        browser si portano dietro. Su «tieni il formato» un JPEG resta un JPEG e
+        un PNG resta un PNG; tutto quello che il browser non sa scrivere, come una
+        GIF o un BMP, esce come PNG, che è il formato che tiene intatte la
+        trasparenza e le tinte piatte."""
 
 [[faq]]
 q = "Cosa succede alla trasparenza se salvo in JPEG?"
 a = """
-        Viene riempita con il colore di sfondo, perché il JPEG non ha un canale
-        alfa in cui conservarla. Il colore lo scegli tu e parte dal bianco, che è
-        quello che vuole quasi tutti e quello che fa quasi ogni altro strumento
-        senza dirtelo. Lo stesso colore viene usato dietro una cornice di
-        riempimento. Salva invece in PNG o WebP e la trasparenza passa
+        Viene riempita con il colore di sfondo, perché il JPEG un canale alfa in
+        cui conservarla non ce l'ha. Il colore lo scegli tu e parte dal bianco,
+        che è quello che vuole quasi chiunque e quello che fa quasi ogni altro
+        strumento senza dirtelo. Lo stesso colore viene usato dietro una cornice
+        di riempimento. Se invece salvi in PNG o WebP, la trasparenza passa
         intatta."""
 
 [[faq]]
@@ -228,44 +226,44 @@ q = "Rimuove i dati EXIF e GPS?"
 a = """
         Da tutto quello che elabora davvero, sì, come effetto collaterale:
         ritagliare o ridimensionare vuol dire decodificare l'immagine in pixel e
-        ricodificare quei pixel, e una tela piena di pixel non porta con sé alcun
-        tag, quindi la posizione, il modello della fotocamera e gli orari
+        ricodificare quei pixel, e un canvas pieno di pixel non porta con sé
+        nessun tag, quindi la posizione, il modello della fotocamera e gli orari
         semplicemente non vengono scritti nel file nuovo. Un file che non stai
-        cambiando affatto è un caso diverso &mdash; ti viene restituito byte per
-        byte, tag compresi. Se vuoi via i metadati ma l'immagine intatta, usa il
-        <a href="../rimuovere-dati-exif/">visualizzatore e rimozione EXIF</a>,
-        che riscrive il contenitore senza ricomprimere niente."""
+        cambiando affatto è un caso diverso, perché ti viene restituito byte per
+        byte, tag compresi. Se vuoi togliere i metadati ma lasciare l'immagine
+        intatta, c'è il <a href="../rimuovere-dati-exif/">visualizzatore e
+        rimozione EXIF</a>, che riscrive il contenitore senza ricomprimere
+        niente."""
 
 [[faq]]
 q = "In cosa è diverso dal compressore di immagini?"
 a = """
         Questo riguarda le dimensioni: dici quanti pixel vuoi e te li dà. Il
-        <a href="../comprimere-immagine/">compressore di immagini</a> riguarda il
-        peso del file: dici quanti kilobyte ti sono concessi e lui cerca la
-        qualità più alta che ci sta, ridimensionando solo se la qualità da sola
-        non ci arriva. Se ti hanno detto «larga 1200 pixel», sei nel posto
-        giusto. Se ti hanno detto «sotto i 500 KB», l'altro ti porterà più
-        vicino."""
+        <a href="../comprimere-immagine/">compressore di immagini</a> riguarda
+        invece il peso del file: dici quanti kilobyte ti sono concessi e lui cerca
+        la qualità più alta che ci sta, ridimensionando solo se la qualità da sola
+        non ci arriva. Se ti hanno detto «larga 1200 pixel», sei nel posto giusto.
+        Se ti hanno detto «sotto i 500 KB», l'altro ti porterà più vicino."""
 
 [[faq]]
 q = "È gratis, e mi serve un account?"
 a = """
-        È gratis, e non c'è account, non c'è accesso, non c'è periodo di prova e
-        non c'è filigrana. Non c'è nemmeno un limite al numero o alla dimensione
-        dei file, perché non c'è un server che li paga &mdash; il lavoro avviene
-        sul tuo dispositivo. Il sito ha della pubblicità, ed è quella che lo
-        paga; agli annunci non viene dato niente sulle tue immagini."""
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di
+        prova e non c'è filigrana. Non c'è nemmeno un limite al numero o alla
+        dimensione dei file, perché non c'è nessun server che li paga: il lavoro
+        lo fa il tuo dispositivo. Il sito ha della pubblicità, ed è quella che lo
+        mantiene; agli annunci non arriva niente sulle tue immagini."""
 
 [[faq]]
 q = "Funziona offline?"
 a = """
         Sì. Carica la pagina una volta, poi stacca la connessione e continua a
         funzionare. È anche il modo più semplice per dimostrare che non viene
-        caricato niente: uno strumento che spedisse via le tue immagini per
-        ridimensionarle si fermerebbe nel momento in cui stacchi la spina."""
+        caricato niente, perché uno strumento che spedisse via le tue immagini per
+        ridimensionarle si fermerebbe nell'istante in cui stacchi la spina."""
 
 [schema]
-description = "Ridimensiona, ritaglia e converti immagini JPEG, PNG e WebP nel browser. Imposta una dimensione esatta in pixel, una percentuale o il lato lungo, trascina un riquadro di ritaglio o bloccalo su una forma, e scrivi il risultato come JPEG, PNG o WebP. Supporta i lotti, e non viene caricato nulla."
+description = "Ridimensiona, ritaglia e converti immagini JPEG, PNG e WebP nel browser. Imposta una dimensione esatta in pixel, una percentuale o il lato lungo, trascina un riquadro di ritaglio o bloccalo su una forma, e scrivi il risultato come JPEG, PNG o WebP. Supporta i lotti, e non viene caricato niente."
 features = [
   "Ridimensiona per pixel esatti, per lato lungo o in percentuale",
   "Riempi un lato solo e l'altro segue la forma stessa dell'immagine",
@@ -282,4 +280,4 @@ features = [
 
 [picker]
 title = "Trascina qui le immagini"
-hint = "oppure clicca per scegliere &mdash; JPEG, PNG, WebP e qualunque altra cosa il tuo browser sappia aprire"
+hint = "oppure clicca per sceglierle &mdash; JPEG, PNG, WebP e qualunque altra cosa il browser sappia aprire"

@@ -3,10 +3,10 @@
     <p>
       Jedes Werkzeug auf dieser Seite erledigt seine Arbeit in Ihrem eigenen
       Browser, auf Ihrer eigenen Hardware. Wenn Sie eine Datei auswählen, wird
-      sie von der Seite gelesen, die Sie ohnehin schon offen haben. Sie wird uns
-      nicht gesendet, weil es keinen Server von uns gibt, an den sie gesendet
-      werden könnte &mdash; diese Seite besteht aus statischen Dateien, ohne
-      Backend, ohne Datenbank und ohne Speicher.
+      sie von der Seite gelesen, die Sie ohnehin schon offen haben. An uns
+      gesendet wird sie nicht, denn es gibt gar keinen Server von uns, an den sie
+      gehen könnte. Diese Seite besteht aus statischen Dateien, ohne Backend,
+      ohne Datenbank und ohne Speicher.
     </p>
     <p>
       Das heißt, wir empfangen, sehen, speichern, protokollieren und verarbeiten
@@ -21,11 +21,11 @@
     </ul>
     <p>
       Das ist kein Versprechen über unsere Absichten. Jede Seite trägt eine
-      <code>Content-Security-Policy</code>, die jede Adresse nennt, welche die
-      Seite kontaktieren darf, und der Browser setzt sie durch. Keine dieser
-      Adressen gehört uns. Sie können die Richtlinie oben im Quelltext jeder
-      Seite lesen &mdash; oder den Netzwerk-Tab Ihres Browsers öffnen und
-      zusehen: Keine einzige Anfrage trägt Ihre Datei.
+      <code>Content-Security-Policy</code>, in der jede Adresse steht, die die
+      Seite kontaktieren darf, und durchgesetzt wird sie vom Browser. Keine
+      dieser Adressen gehört uns. Lesen können Sie die Richtlinie oben im
+      Quelltext jeder Seite. Oder Sie öffnen den Netzwerk-Tab Ihres Browsers und
+      sehen zu: Keine einzige Anfrage trägt Ihre Datei.
     </p>
     <p>
       Dateien, die Sie mit einem Werkzeug erzeugen, werden an den
@@ -45,9 +45,9 @@
       und ist das Wesen dieser Funktion.
     </p>
     <p>
-      Es passiert ausschließlich bei Adressen, die Sie selbst eintippen, es ist
-      so gebaut, dass Bilder hereinkommen, aber keine Daten hinausgehen können,
-      und die Seite jenes Werkzeugs erklärt es ausführlicher. Kein anderes
+      Es passiert ausschließlich bei Adressen, die Sie selbst eintippen, und es
+      ist so gebaut, dass Bilder hereinkommen, aber keine Daten hinausgehen
+      können. Ausführlicher erklärt das die Seite jenes Werkzeugs. Kein anderes
       Werkzeug auf dieser Seite kann eine ausgehende Anfrage stellen, in der
       irgendetwas von Ihnen steckt.
     </p>
@@ -61,7 +61,7 @@
       Spenden-Button. Hier ist die vollständige Liste.
     </p>
 
-    <h3>Google AdSense &mdash; die Werbung</h3>
+    <h3>Google AdSense: die Werbung</h3>
     <p>
       Google liefert die Anzeigen aus und entscheidet, welche Sie sehen. Dazu
       kann Google Cookies oder ähnliche Kennungen in Ihrem Browser setzen und
@@ -69,7 +69,7 @@
       Standort, Ihren User-Agent und die Angabe, auf welcher Seite Sie waren. Je
       nach Ihren Einstellungen und Ihrem Aufenthaltsort können die Anzeigen
       anhand eines Profils personalisiert werden, das Google über Sie führt und
-      das größtenteils aus Ihrer Aktivität auf anderen Seiten stammt.
+      das größtenteils aus Ihrer Aktivität auf anderen Websites stammt.
     </p>
     <p>
       Nichts davon erreicht uns, wir können es nicht einsehen, und wir senden
@@ -78,7 +78,7 @@
       <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>.
     </p>
 
-    <h3>Google Analytics &mdash; der Besuchszähler</h3>
+    <h3>Google Analytics: der Besuchszähler</h3>
     <p>
       Wir nutzen Google Analytics 4, um Seitenaufrufe zu zählen, damit wir
       wissen, an welchen Werkzeugen zu arbeiten sich lohnt. Erfasst werden die
@@ -88,21 +88,21 @@
     </p>
     <p>
       Es ist so eingerichtet, dass es sonst nichts tut, und die Einrichtung ist
-      eine Datei, die Sie lesen können: <code>analytics.js</code> neben jeder
+      eine Datei, die Sie lesen können. <code>analytics.js</code> neben jeder
       Seite richtet einen Seitenaufruf-Zähler ein und enthält überhaupt keine
       eigenen Ereignisse. Nichts auf dieser Seite übergibt ihm eine Datei, einen
-      Dateinamen, eine Abmessung oder eine Anzahl &mdash; es gibt hier keinen
+      Dateinamen, eine Abmessung oder eine Anzahl, denn es gibt hier gar keinen
       Code, der das könnte.
     </p>
 
-    <h3>Buy Me a Coffee &mdash; der Spenden-Button</h3>
+    <h3>Buy Me a Coffee: der Spenden-Button</h3>
     <p>
       Die Startseite und die Werkzeugseiten tragen einen Spenden-Button, der von
       den Servern von Buy Me a Coffee geladen wird. Ihn zu laden bedeutet, dass
-      deren CDN Ihre IP-Adresse sieht und weiß, dass Sie auf dieser Seite waren;
-      die Schrift des Buttons wird von Google Fonts geholt, das Ihre IP-Adresse
-      ebenfalls sieht. Mehr wird nicht gesendet, und weiter passiert nichts,
-      sofern Sie ihn nicht tatsächlich anklicken &mdash; ab da sind Sie auf deren
+      deren CDN Ihre IP-Adresse sieht und weiß, dass Sie auf dieser Seite waren.
+      Die Schrift des Buttons wird von Google Fonts geholt, das Ihre IP-Adresse
+      ebenfalls sieht. Mehr wird nicht gesendet, und solange Sie ihn nicht
+      tatsächlich anklicken, passiert auch sonst nichts. Ab da sind Sie auf deren
       Seite und unter deren Richtlinien. Diese Seite und die
       <a href="../nutzungsbedingungen/">Nutzungsbedingungen</a> zeichnen den
       Button nicht.
@@ -111,11 +111,10 @@
     <h3>Hosting</h3>
     <p>
       Die Seite wird von GitHub Pages ausgeliefert, hinter Cloudflare. Wie jeder
-      Webhoster verarbeiten die beiden die Anfragen, die Ihr Browser stellt
-      &mdash; darunter Ihre IP-Adresse, die angeforderte Seite und Ihr User-Agent
-      &mdash;, um die Seite auszuliefern und den Dienst verfügbar und sicher zu
-      halten. Wir haben keinen Zugriff auf besucherbezogene Protokolle von einem
-      der beiden.
+      Webhoster verarbeiten die beiden die Anfragen, die Ihr Browser stellt,
+      darunter Ihre IP-Adresse, die angeforderte Seite und Ihren User-Agent, um
+      die Seite auszuliefern und den Dienst verfügbar und sicher zu halten. Auf
+      besucherbezogene Protokolle haben wir bei keinem der beiden Zugriff.
     </p>
   </section>
 
@@ -129,17 +128,17 @@
       <strong>Die Sprache, die Sie wählen.</strong> Wenn Sie im Umschalter eine
       Sprache auswählen, wird diese Wahl im lokalen Speicher Ihres Browsers
       abgelegt, unter dem Namen <code>abox-lang</code>, damit die nächste Seite
-      in der gewünschten Sprache erscheint. Es ist kein Cookie: Es wird weder an
-      uns noch an sonst jemanden gesendet, es bleibt auf dem Gerät, auf dem Sie
-      dies lesen, und das Löschen der Websitedaten Ihres Browsers entfernt es.
-      Wählen Sie nie eine Sprache, wird gar nichts gespeichert &mdash; eine
-      Seite, die in der Sprache Ihres Browsers erscheint, wurde im Moment des
-      Aufrufs zugeordnet und danach wieder vergessen.
+      in der gewünschten Sprache erscheint. Ein Cookie ist das nicht. Es wird
+      weder an uns noch an sonst jemanden gesendet, es bleibt auf dem Gerät, auf
+      dem Sie dies lesen, und das Löschen der Websitedaten Ihres Browsers
+      entfernt es. Wählen Sie nie eine Sprache, wird auch nichts gespeichert.
+      Eine Seite, die in der Sprache Ihres Browsers erscheint, wurde im Moment
+      des Aufrufs zugeordnet und danach wieder vergessen.
     </p>
     <p>
       Jedes Cookie und jede ähnliche Kennung, die Sie hier finden, gehört Google
       und wird von den oben beschriebenen Werbe- und Analyseskripten gesetzt. Sie
-      dienen dazu, Besuche zu messen sowie Anzeigen auszuwählen und ihre Häufigkeit
+      dienen dazu, Besuche zu messen, Anzeigen auszuwählen und deren Häufigkeit
       zu begrenzen.
     </p>
     <h3>Wie Sie es abschalten</h3>
@@ -171,8 +170,8 @@
     <h2>Ihre Rechte an den Daten</h2>
     <p>
       Wir halten keine personenbezogenen Daten über Sie, es gibt also nichts, was
-      wir Ihnen zeigen, berichtigen, exportieren oder löschen könnten &mdash;
-      eine Anfrage an uns käme, ehrlich gesagt, leer zurück.
+      wir Ihnen zeigen, berichtigen, exportieren oder löschen könnten. Eine
+      Anfrage an uns käme, ehrlich gesagt, leer zurück.
     </p>
     <p>
       Die oben beschriebenen Daten liegen bei Google, das dafür als eigener

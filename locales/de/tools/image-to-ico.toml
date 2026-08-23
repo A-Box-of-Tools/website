@@ -12,46 +12,44 @@ tagline = "Ein Bild hinein. Jede Größe, die ein Browser, Windows oder ein Mac 
 title = "Bild zu ICO &mdash; Favicon, App-Symbol oder ICNS, ohne Upload"
 description = "Ein PNG, JPEG oder SVG im Browser in eine echte .ico mit mehreren Größen oder eine macOS-.icns umwandeln. Favicon, Windows-App-Symbol, Mac-App-Symbol, dazu die Apple- und Android-Dateien, die eine Website braucht. Nichts wird hochgeladen."
 og_title = "Eine .ico oder .icns mit allen Größen darin erstellen, ohne etwas hochzuladen"
-og_description = "Eine favicon.ico für eine Website, eine app.ico für ein Windows-Programm, eine .icns für einen Mac - mit einer Vorschau bei 16 Pixeln vor dem Download. Alles läuft auf Ihrem eigenen Gerät."
+og_description = "Eine favicon.ico für eine Website, eine app.ico für ein Windows-Programm, eine .icns für einen Mac, jeweils mit einer Vorschau bei 16 Pixeln vor dem Download. Alles läuft auf Ihrem eigenen Gerät."
 og_image_alt = "Bild zu ICO - Favicon, Windows- und macOS-Symbol erstellen, ohne Upload"
 
 pledge = """
     Das Skalieren und die Symboldateien selbst entstehen beide in Ihrem eigenen
-    Browser. Das Bild wird von der Leinwand gezeichnet, die Ihr Browser ohnehin
-    mitbringt, und jeder Container &mdash; die Windows-<code>.ico</code>, die
-    macOS-<code>.icns</code> &mdash; wird aus diesen Pixeln von ein paar hundert
-    Zeilen in <code>src/ico.js</code> und <code>src/icns.js</code>
-    zusammengesetzt, die Sie lesen können. Dieses Werkzeug hat keinerlei
-    Netzfunktion &mdash; nichts abzurufen, nichts zu senden &mdash; und es gibt
-    am anderen Ende dieser Seite keinen Server, an den ein Logo ginge, selbst
-    wenn es einen Weg dorthin gäbe."""
+    Browser. Gezeichnet wird das Bild auf dem Canvas, das Ihr Browser ohnehin
+    mitbringt, und jeden Container setzen aus diesen Pixeln ein paar hundert
+    Zeilen in <code>src/ico.js</code> und <code>src/icns.js</code> zusammen, die
+    Sie lesen können, die Windows-<code>.ico</code> ebenso wie die
+    macOS-<code>.icns</code>. Netzfunktionen hat dieses Werkzeug keine, weder zum
+    Abrufen noch zum Senden. Und selbst wenn es einen Weg nach draußen gäbe,
+    stünde am anderen Ende dieser Seite kein Server, an den ein Logo gehen
+    könnte."""
 
 live_hint = """
-      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
-      &bdquo;Netzwerk&ldquo; und erstellen Sie ein Symbol. Keine einzige Anfrage
-      trägt ein Bild, ein Vorschaubild, einen Dateinamen oder ein Byte Ihrer
-      Auswahl. Oder trennen Sie die Internetverbindung und erstellen Sie trotzdem
-      eines."""
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und erstellen Sie ein Symbol. Keine einzige
+      Anfrage trägt ein Bild, ein Vorschaubild, einen Dateinamen oder ein Byte
+      dessen, was Sie ausgewählt haben. Oder trennen Sie die Internetverbindung
+      und erstellen Sie trotzdem eines."""
 
 read_first = """
 , <code>src/ico.js</code> und
-      <code>src/icns.js</code> für die beiden Symbolformate &mdash; das
-      Verzeichnis, die Einträge und die Maske im einen, Apples zehn benannte
-      Plätze im anderen &mdash; und <code>src/sizes.js</code> dafür, woher jede
-      Größe auf der Seite kommt."""
+      <code>src/icns.js</code> für die beiden Symbolformate, also das
+      Verzeichnis, die Einträge und die Maske im einen und Apples zehn benannte
+      Plätze im anderen, sowie <code>src/sizes.js</code> dafür, woher jede Größe
+      auf der Seite kommt."""
 
-howto_heading = "Eine .ico-Datei erstellen, ohne etwas hochzuladen"
+howto_heading = "So erstellen Sie eine .ico-Datei, ohne etwas hochzuladen"
 
 card = """
-            Ein Favicon, ein Windows-App-Symbol oder eine macOS-.icns &mdash;
-            jede Größe in einer Datei, mit einer Vorschau bei 16 Pixeln vor dem
+            Ein Favicon, ein Windows-App-Symbol oder eine macOS-.icns, jede
+            Größe in einer Datei, mit einer Vorschau bei 16 Pixeln vor dem
             Download."""
 
 [words]
 plural = "Bilder"
 choose = "ein Bild"
-analytics_extra = """, und auch keine der
-  Größen, Formate oder Dateinamen, die dieses Werkzeug ermittelt"""
 
 [[facts]]
 text = "Kein Upload"
@@ -71,21 +69,21 @@ text = "Quelloffen"
 [[privacy]]
 title = "Ihr Logo hat keinen Weg nach draußen."
 body = """
- Die
-      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
-      an dem Ihre Dateien gesammelt werden könnten, und nichts im Code, das sie
-      senden würde, gäbe es einen."""
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen."""
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
 body = """
  Es gibt weder
       <code>fetch</code> noch <code>XMLHttpRequest</code> noch
-      <code>sendBeacon</code> irgendwo in <code>src/</code>. Das Skalieren ist
-      ein <code>drawImage</code> auf eine Leinwand; jedes Symbol ist ein Header,
-      den <code>src/ico.js</code> oder <code>src/icns.js</code> auf dieser Seite
-      vor diese Pixel schreibt."""
+      <code>sendBeacon</code> irgendwo in <code>src/</code>. Skaliert wird mit
+      einem <code>drawImage</code> auf ein Canvas, und jedes Symbol ist ein
+      Header, den <code>src/ico.js</code> oder <code>src/icns.js</code> auf
+      dieser Seite vor diese Pixel schreibt."""
 
 [[privacy]]
 title = "Die Datei wird aus ihren eigenen Bytes beschrieben."
@@ -94,231 +92,228 @@ body = """
       neben einem fertigen Symbol ist nicht die Liste der Größen, die Sie
       verlangt haben. Sie wird aus der eben geschriebenen Datei zurückgelesen,
       von <code>readIcoDirectory</code> beziehungsweise
-      <code>readIcnsElements</code> &mdash; wäre ein Schreiber je anderer
-      Meinung als die Einstellungen, sagte die Seite das, statt dass Sie es
-      erfahren, wenn Windows nichts zeichnet und macOS ein leeres Blatt
-      Papier."""
+      <code>readIcnsElements</code>. Wäre ein Schreiber je anderer Meinung als
+      die Einstellungen, sagte die Seite das, statt Sie es erfahren zu lassen,
+      wenn Windows nichts zeichnet und macOS ein leeres Blatt Papier zeigt."""
 
 [[privacy]]
-title = "Was Google lädt - und was es nicht bekommt."
+title = "Was Google lädt und was Google nicht bekommt."
 body = """
  Die Werbe- und
       Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
       Keinem davon wird irgendetwas über Ihr Bild übergeben. Jede Zeile, die eine
-      Datei liest, skaliert oder schreibt, wird von dieser Herkunft ausgeliefert
-      und ist im Repository aufgeführt."""
+      Datei liest, skaliert oder schreibt, kommt von dieser Domain selbst und
+      steht im Repository."""
 
 [[privacy]]
 title = "Es funktioniert offline."
 body = """
  Trennen Sie die Netzverbindung, und das
-      Werkzeug bleibt unverändert, weil es nie einen Netzschritt darin gab. Das
-      ist der einfachste Beweis von allen."""
+      Werkzeug bleibt unverändert, weil darin nie ein Schritt über das Netz
+      vorgesehen war. Einen einfacheren Beweis gibt es nicht."""
 
 [[howto]]
-title = "Wählen Sie das Bild."
+title = "Wählen Sie das Bild aus."
 body = """
  Ziehen Sie ein PNG, JPEG, WebP oder SVG
-      auf das Auswahlfeld, oder wählen Sie mehrere und wandeln Sie sie in einem
-      Durchgang um. Quadratisch ist am einfachsten, und alles ab 256 Pixeln hat
-      genug Detail für jede Größe. Der Browser liest es direkt von Ihrer
-      Festplatte; dabei wird nichts irgendwohin gesendet."""
+      auf das Auswahlfeld, oder nehmen Sie gleich mehrere und wandeln Sie sie in
+      einem Durchgang um. Am einfachsten ist ein quadratisches Bild, und alles ab
+      256 Pixeln hat genug Detail für jede Größe. Der Browser liest es direkt von
+      Ihrer Festplatte, und dabei geht nichts nach draußen."""
 
 [[howto]]
 title = "Wählen Sie die Dateien, die Sie brauchen."
 body = """
  Windows und ein Browser lesen
-      <code>.ico</code>; ein Mac liest <code>.icns</code> und sieht die andere
-      gar nicht erst an. Setzen Sie das Häkchen bei einem von beiden &mdash; oder
-      bei beiden, wenn das, was Sie bauen, auf beiden ausgeliefert wird. Eine
-      Website will außerdem die zusätzlichen Apple-, Android- und Kachelbilder,
-      und das ist das dritte Kästchen."""
+      <code>.ico</code>, ein Mac liest <code>.icns</code> und sieht die andere
+      gar nicht erst an. Setzen Sie das Häkchen bei einem von beiden, oder bei
+      beiden, wenn das, was Sie bauen, auf beiden Systemen ausgeliefert wird.
+      Eine Website will außerdem die zusätzlichen Apple-, Android- und
+      Kachelbilder, und dafür gibt es das dritte Kästchen."""
 
 [[howto]]
 title = "Sagen Sie, wofür das Symbol ist."
 body = """
  Ein Website-Favicon sind 16, 32 und
-      48 Pixel; eine Windows-Anwendung will zusätzlich 256; eine Anwendung, die
-      auf einem hochauflösenden Notebook gut aussehen muss, will die
+      48 Pixel. Eine Windows-Anwendung will zusätzlich 256, und eine Anwendung,
+      die auf einem hochauflösenden Notebook gut aussehen muss, will die
       Zwischengrößen, die Windows bei 125&nbsp;% und 150&nbsp;% Skalierung
-      verlangt. Wählen Sie das Passende, oder setzen Sie die Häkchen selbst.
-      Jede Größe auf der Liste sagt, wer sie verlangt. Bei der
-      <code>.icns</code> gibt es diese Wahl nicht: Apple benennt genau zehn
-      Plätze, und alle zehn kommen hinein."""
+      verlangt. Wählen Sie das Passende, oder setzen Sie die Häkchen selbst. Jede
+      Größe auf der Liste sagt Ihnen, wer sie verlangt. Bei der
+      <code>.icns</code> haben Sie diese Wahl nicht, denn Apple benennt genau
+      zehn Plätze, und alle zehn kommen hinein."""
 
 [[howto]]
 title = "Kümmern Sie sich um Form und Hintergrund."
 body = """
  Ein Symbol ist quadratisch,
       und die meisten Logos sind es nicht. Füllen Sie auf, bleibt das ganze Bild
-      erhalten, mit Platz darüber und darunter; schneiden Sie zu, wird die Mitte
-      genommen; dehnen Sie, wird es gestaucht. Transparenz bleibt Transparenz,
-      sofern Sie keine Farbe wählen, die dahinter sitzt."""
+      erhalten, mit Platz darüber und darunter. Schneiden Sie zu, wird die Mitte
+      genommen. Dehnen Sie, wird es gestaucht. Transparenz bleibt Transparenz,
+      solange Sie keine Farbe wählen, die dahinter sitzt."""
 
 [[howto]]
 title = "Sehen Sie sich das mit 16 Pixeln an, bevor Sie herunterladen."
 body = """
- Das ist die
-      Größe, in der das Symbol am häufigsten zu sehen sein wird, und dort
-      verschwinden dünne Striche und kleine Schrift. Jedes Quadrat in der
-      Vorschau wird in seiner echten Größe aus Ihrer eigenen Datei gezeichnet.
-      Ist das kleinste ein Fleck, ist die Lösung eine einfachere Zeichnung und
-      keine andere Einstellung."""
+ In dieser Größe
+      wird das Symbol am häufigsten zu sehen sein, und dort verschwinden dünne
+      Striche und kleine Schrift. Jedes Quadrat in der Vorschau wird in seiner
+      echten Größe aus Ihrer eigenen Datei gezeichnet. Ist das kleinste ein
+      Fleck, hilft eine einfachere Zeichnung und keine andere Einstellung."""
 
 [[howto]]
 title = "Nehmen Sie die Dateien."
 body = """
  Eine .ico mit jeder Größe darin, benannt
-      <code>favicon.ico</code>, wenn Sie das verlangt haben, denn das ist die
-      Adresse, nach der Browser suchen. Eine .icns daneben, wenn Sie das Häkchen
-      gesetzt haben, bereit für ein Mac-Anwendungspaket. Setzen Sie auch das
-      Häkchen für den Website-Satz, bekommen Sie zusätzlich die Apple-, Android-
-      und Windows-Kachelbilder, das Manifest und den HTML-Block zum Einfügen in
-      Ihre Seite. Alles über eine einzelne Datei hinaus kommt als ein ZIP
-      herunter."""
+      als <code>favicon.ico</code>, wenn Sie das verlangt haben, denn unter
+      dieser Adresse suchen Browser danach. Eine .icns daneben, wenn Sie das
+      Häkchen gesetzt haben, bereit für ein Mac-Anwendungspaket. Setzen Sie auch
+      das Häkchen für den Website-Satz, kommen die Apple-, Android- und
+      Windows-Kachelbilder dazu, dazu das Manifest und der HTML-Block zum
+      Einfügen in Ihre Seite. Alles, was über eine einzelne Datei hinausgeht,
+      kommt als ZIP herunter."""
 
 [[faq]]
 q = "Wird mein Bild irgendwohin hochgeladen?"
 a = """
-        Nein. Das Bild wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
-        dekodiert und skaliert, und die .ico wird aus diesen Pixeln von Code
-        zusammengesetzt, der von dieser Seite ausgeliefert wird. Dieses Werkzeug
-        hat keinerlei Netzfunktion &mdash; es ruft nie etwas ab und sendet nie
-        etwas &mdash; und die <code>Content-Security-Policy</code> der Seite
-        nennt jede Adresse, die sie kontaktieren darf; keine davon gehört zu
-        dieser Seite."""
+        Nein. Ihr eigener Browser dekodiert und skaliert das Bild auf Ihrer
+        eigenen Hardware, und die .ico setzt Code aus diesen Pixeln zusammen, den
+        diese Seite selbst ausliefert. Netzfunktionen hat dieses Werkzeug keine,
+        es ruft nie etwas ab und sendet nie etwas. In der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf, und keine davon gehört uns."""
 
 [[faq]]
 q = "Welche Größen sollte eine favicon.ico enthalten?"
 a = """
-        16, 32 und 48. Das ist keine Geschmacksfrage: 16 ist das, was ein Browser
-        in einem Tab zeichnet, 32 nutzt Windows für eine Desktop-Verknüpfung und
-        mehrere Browser für ein Lesezeichen, und 48 ist die Größe, in der Google
-        ein Seitensymbol liest. Alles Größere gehört in ein PNG neben die .ico
-        statt hinein &mdash; und genau das erzeugt hier der Website-Satz."""
+        16, 32 und 48. Das ist keine Geschmacksfrage. 16 zeichnet ein Browser im
+        Tab, 32 nutzt Windows für eine Desktop-Verknüpfung und nutzen mehrere
+        Browser für ein Lesezeichen, und in 48 liest Google ein Seitensymbol.
+        Alles Größere gehört als PNG neben die .ico statt hinein, und genau das
+        erzeugt hier der Website-Satz."""
 
 [[faq]]
 q = "Welche Größen braucht ein Windows-Anwendungssymbol?"
 a = """
-        16, 32, 48 und 256 &mdash; das ist es, was die Standard-app.ico von
-        Visual Studio selbst enthält. 16 ist die Titelleiste und die kleine
-        Explorer-Ansicht, 32 der Desktop und die Taskleiste, 48 die mittleren
-        Symbole des Explorers, und 256 das Startmenü und die extragroße Ansicht.
-        Auf einem hochauflösenden Bildschirm verlangt Windows außerdem 20, 24,
-        40, 64 und 96 und rechnet sie aus der nächstgelegenen vorhandenen Größe
-        hoch, wenn sie fehlen &mdash; die Voreinstellung &bdquo;jede
-        Skalierung&ldquo; legt sie hinein."""
+        16, 32, 48 und 256, denn das enthält die Standard-app.ico von Visual
+        Studio selbst. 16 ist die Titelleiste und die kleine Explorer-Ansicht, 32
+        der Desktop und die Taskleiste, 48 die mittleren Symbole des Explorers
+        und 256 das Startmenü und die extragroße Ansicht. Auf einem
+        hochauflösenden Bildschirm verlangt Windows außerdem 20, 24, 40, 64 und
+        96 und rechnet sie aus der nächstgelegenen vorhandenen Größe hoch, wenn
+        sie fehlen. Die Voreinstellung &bdquo;jede Skalierung&ldquo; legt sie
+        gleich mit hinein."""
 
 [[faq]]
 q = "Warum ist die Datei größer als das Bild, mit dem ich angefangen habe?"
 a = """
-        Weil eine .ico nicht ein Bild ist, sondern mehrere &mdash; und die
-        kleinen werden unkomprimiert gespeichert, damit alles sie lesen kann. Ein
-        32&times;32-Eintrag ist exakt 4.264 Byte groß, was auch darin steht, und
-        ein unkomprimierter 256&times;256-Eintrag 264&nbsp;KB &mdash; und deshalb
-        werden Größen über 64 standardmäßig als PNG gespeichert. &bdquo;PNG für
-        jede Größe&ldquo; ergibt die kleinstmögliche Datei; unkomprimiert für
+        Weil eine .ico nicht ein Bild ist, sondern mehrere, und weil die kleinen
+        unkomprimiert gespeichert werden, damit alles sie lesen kann. Ein
+        32&times;32-Eintrag ist exakt 4.264 Byte groß, was auch so darin steht,
+        und ein unkomprimierter 256&times;256-Eintrag bringt es auf 264&nbsp;KB.
+        Deshalb werden Größen über 64 standardmäßig als PNG gespeichert. &bdquo;PNG
+        für jede Größe&ldquo; ergibt die kleinstmögliche Datei, unkomprimiert für
         jede Größe die verträglichste."""
 
 [[faq]]
 q = "Was ist der Unterschied zwischen PNG- und unkomprimierten Einträgen?"
 a = """
         Nur, wie die Pixel in der .ico gespeichert werden. Ein unkomprimierter
-        Eintrag ist die ursprüngliche Windows-Anordnung &mdash; ein
-        Bitmap-Header, die Pixel auf dem Kopf und eine Ein-Bit-Transparenzmaske
-        &mdash;, und jede je erschienene Windows-Version kann ihn lesen. Ein
-        PNG-Eintrag ist eine ganze PNG-Datei, im Symbol verstaut, die bei den
-        großen Größen drei- bis zehnmal kleiner ist, aber erst ab Windows Vista
-        verstanden wurde. Die Voreinstellung nimmt jeweils das, was gewinnt:
-        unkomprimiert bis 64 Pixel, darüber PNG."""
+        Eintrag ist die ursprüngliche Windows-Anordnung, also ein Bitmap-Header,
+        die Pixel auf dem Kopf und eine Ein-Bit-Transparenzmaske, und lesen kann
+        ihn jede je erschienene Windows-Version. Ein PNG-Eintrag ist eine ganze
+        PNG-Datei, im Symbol verstaut. Bei den großen Größen ist er drei- bis
+        zehnmal kleiner, verstanden wird er allerdings erst ab Windows Vista. Die
+        Voreinstellung nimmt jeweils das, was gewinnt: unkomprimiert bis 64
+        Pixel, darüber PNG."""
 
 [[faq]]
 q = "Kann es ein Symbol größer als 256 Pixel erzeugen?"
 a = """
-        Nein, und nichts kann das. Das Format speichert jede Seitenlänge in einem
-        einzigen Byte, und die 0 ist vergeben &mdash; sie bedeutet 256. Das ist
-        die Obergrenze, eine .ico mit einem 512-Pixel-Bild darin ist also kein
-        größeres Symbol, sondern ein kaputtes. Brauchen Sie 512, brauchen Sie ein
-        PNG &mdash; und genau das enthält der Website-Satz, für Android und für
-        den Startbildschirm einer Web-App."""
+        Nein, und das kann nichts. Das Format speichert jede Seitenlänge in einem
+        einzigen Byte, und die 0 ist bereits vergeben, sie bedeutet 256. Damit
+        ist die Obergrenze erreicht, und eine .ico mit einem 512-Pixel-Bild darin
+        ist kein größeres Symbol, sondern ein kaputtes. Brauchen Sie 512,
+        brauchen Sie ein PNG, und genau das steckt im Website-Satz, für Android
+        und für den Startbildschirm einer Web-App."""
 
 [[faq]]
 q = "Bleibt die Transparenz erhalten?"
 a = """
-        Ja, in beiden Eintragsarten, und es wird zusätzlich die alte
-        Ein-Bit-Maske neben dem Alphakanal geschrieben, damit Software, die zu
-        alt ist, das Alpha zu lesen, das Symbol trotzdem freistellt, statt einen
-        schwarzen Kasten zu zeichnen. Die eine Datei, die absichtlich
-        undurchsichtig gemacht wird, ist das Apple-Touch-Symbol im Website-Satz:
-        iOS legt es auf seine eigene Kachel und macht aus Transparenz Schwarz,
-        also wird es auf Ihre Hintergrundfarbe heruntergerechnet, standardmäßig
-        Weiß."""
+        Ja, in beiden Eintragsarten. Zusätzlich wird die alte Ein-Bit-Maske neben
+        den Alphakanal geschrieben, damit Software, die zu alt ist, das Alpha zu
+        lesen, das Symbol trotzdem freistellt, statt einen schwarzen Kasten zu
+        zeichnen. Absichtlich undurchsichtig gemacht wird genau eine Datei,
+        nämlich das Apple-Touch-Symbol im Website-Satz. iOS legt es auf seine
+        eigene Kachel und macht aus Transparenz Schwarz, also wird es vorher auf
+        Ihre Hintergrundfarbe heruntergerechnet, standardmäßig auf Weiß."""
 
 [[faq]]
 q = "Mein Logo ist ein breiter Schriftzug. Was passiert damit?"
 a = """
         Irgendetwas muss passieren, denn ein Symbol ist quadratisch. Auffüllen
-        behält das Ganze und macht es klein &mdash; ein in ein 16-Pixel-Quadrat
-        aufgefüllter Schriftzug ist etwa drei Pixel hoch und unlesbar. Auf die
-        Mitte zuschneiden funktioniert meist besser: Nehmen Sie das Zeichen aus
-        der Wort-Bild-Marke heraus und benutzen Sie das, so wie es fast jede
-        Marke für ihr Favicon tut. Die Vorschau zeigt Ihnen, was überlebt, bevor
-        Sie irgendetwas herunterladen."""
+        behält das Ganze und macht es klein, und ein in ein 16-Pixel-Quadrat
+        aufgefüllter Schriftzug ist etwa drei Pixel hoch und damit unlesbar.
+        Meist funktioniert es besser, auf die Mitte zuzuschneiden. Nehmen Sie das
+        Zeichen aus der Wort-Bild-Marke heraus und benutzen Sie nur das, so wie
+        es fast jede Marke für ihr Favicon tut. Was davon überlebt, zeigt Ihnen
+        die Vorschau, bevor Sie irgendetwas herunterladen."""
 
 [[faq]]
 q = "Was ist im Website-Satz, und brauche ich das alles?"
 a = """
         Sieben PNGs, ein Web-App-Manifest, eine browserconfig.xml und ein
-        HTML-Block zum Einfügen. Sie brauchen sie, weil eine .ico Browser und
-        Windows abdeckt und sonst nichts: Ein iPhone-Startbildschirm liest ein
+        HTML-Block zum Einfügen. Brauchen tun Sie das, weil eine .ico Browser und
+        Windows abdeckt und sonst nichts. Ein iPhone-Startbildschirm liest ein
         180-Pixel-PNG unter einem eigenen Namen, Android und jede
         Installationsaufforderung lesen das Manifest, und eine ans Startmenü
-        geheftete Kachel liest die XML. Keines davon sieht in eine .ico hinein.
-        Alles wird hier erzeugt, auf Ihrem Gerät, und im ZIP liegt eine Notiz,
+        geheftete Kachel liest die XML. In eine .ico sieht keines davon hinein.
+        Erzeugt wird alles hier, auf Ihrem Gerät, und im ZIP liegt eine Notiz,
         die sagt, wofür jede Datei da ist."""
 
 [[faq]]
 q = "Kann es auch ein macOS-Symbol erzeugen?"
 a = """
-        Ja &mdash; setzen Sie das Häkchen bei <em>macOS-Symbol</em>, und Sie
-        bekommen eine <code>.icns</code> neben der <code>.ico</code>, oder statt
-        ihrer. Es ist ein anderer Container für dieselbe Idee, und keines der
+        Ja. Setzen Sie das Häkchen bei <em>macOS-Symbol</em>, und Sie bekommen
+        eine <code>.icns</code> neben der <code>.ico</code> oder auch an ihrer
+        Stelle. Es ist ein anderer Container für dieselbe Idee, und keines der
         beiden Systeme liest den des anderen: Windows will .ico, ein
         Mac-Anwendungspaket will .icns. Die Größen sind dort keine Wahl, denn
-        Apple veröffentlicht genau zehn Plätze &mdash; 16, 32, 64, 128, 256, 512
-        und 1024 Pixel, drei davon zweimal, als Retina-Fassung der Größe
-        darunter. Alle zehn kommen hinein, gezeichnet aus sieben Renderings, und
-        deshalb ist eine .icns die größere Datei."""
+        Apple veröffentlicht genau zehn Plätze, nämlich 16, 32, 64, 128, 256, 512
+        und 1024 Pixel, drei davon zweimal als Retina-Fassung der Größe darunter.
+        Alle zehn kommen hinein, gezeichnet aus sieben Renderings, und deshalb
+        ist eine .icns die größere Datei."""
 
 [[faq]]
 q = "Wie benutze ich die .icns-Datei?"
 a = """
         Für eine Anwendung gehört sie im Paket nach
         <code>IhreApp.app/Contents/Resources/</code> und wird in
-        <code>Info.plist</code> unter <code>CFBundleIconFile</code> benannt;
-        jedes Mac-Paketierwerkzeug hat ein Feld dafür. Für alles andere: Datei im
-        Finder auswählen, Command-C drücken, dann &bdquo;Informationen&ldquo; für
-        den Ordner oder das Festplattenabbild öffnen, das Sie ändern wollen, oben
-        links auf das kleine Symbol klicken und Command-V drücken."""
+        <code>Info.plist</code> unter <code>CFBundleIconFile</code> benannt.
+        Jedes Mac-Paketierwerkzeug hat ein Feld dafür. Für alles andere wählen
+        Sie die Datei im Finder aus, drücken Command-C, öffnen dann
+        &bdquo;Informationen&ldquo; für den Ordner oder das Festplattenabbild,
+        das Sie ändern wollen, klicken oben links auf das kleine Symbol und
+        drücken Command-V."""
 
 [[faq]]
 q = "Ist die .icns dasselbe wie das, was iconutil erzeugt?"
 a = """
-        Dieselben zehn Plätze mit denselben Vier-Buchstaben-Typen und PNG in
-        jedem, und genau das erzeugt <code>iconutil</code> aus einem
-        <code>.iconset</code>-Ordner. Ein bewusster Unterschied: Apples Werkzeug
-        schreibt zusätzlich ein <code>TOC&nbsp;</code>-Element, einen Index der
-        folgenden Typen und Längen. Das ist eine Optimierung und kein Teil des
-        Formats &mdash; ein Leser ohne Index läuft die Elemente von vorn bis
-        hinten ab und kommt zum selben Ergebnis &mdash;, und ein falscher Index
-        ist schlimmer als gar keiner, also bleibt er weg."""
+        Es sind dieselben zehn Plätze mit denselben Vier-Buchstaben-Typen und PNG
+        in jedem, und genau das erzeugt <code>iconutil</code> aus einem
+        <code>.iconset</code>-Ordner. Einen Unterschied gibt es mit Absicht.
+        Apples Werkzeug schreibt zusätzlich ein <code>TOC&nbsp;</code>-Element,
+        einen Index der folgenden Typen und Längen. Das ist eine Optimierung und
+        kein Teil des Formats, denn ein Leser ohne Index läuft die Elemente von
+        vorn bis hinten ab und kommt zum selben Ergebnis. Ein falscher Index wäre
+        schlimmer als gar keiner, also bleibt er weg."""
 
 [[faq]]
 q = "Kann ich mehrere Bilder auf einmal umwandeln?"
 a = """
-        Ja. Jedes Bild auf der Liste wird zu seiner eigenen .ico mit denselben
-        Einstellungen, und der Stapel kommt als ein ZIP mit einem Ordner je Bild
-        herunter &mdash; sonst hießen zwei davon beide favicon.ico und eines
+        Ja. Jedes Bild auf der Liste wird mit denselben Einstellungen zu seiner
+        eigenen .ico, und der Stapel kommt als ein ZIP mit einem Ordner je Bild
+        herunter. Sonst hießen zwei davon beide favicon.ico, und eines
         überschriebe das andere. Jede Ausgabe, bei der Sie das Häkchen gesetzt
         haben, wird für jedes Bild erzeugt. Klicken Sie eine beliebige Zeile an,
         um jenes Bild in die Vorschau zu holen."""
@@ -327,23 +322,22 @@ a = """
 q = "Ist es kostenlos, und brauche ich ein Konto?"
 a = """
         Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
-        Testphase und kein Wasserzeichen. Es gibt auch keine Grenze für Anzahl
-        oder Größe der Dateien, weil es keinen Server gibt, der dafür zahlt
-        &mdash; die Arbeit passiert auf Ihrem eigenen Gerät. Die Seite trägt
-        Werbung, und die bezahlt sie; den Anzeigen wird nichts über Ihre Bilder
-        übergeben."""
+        Testphase und kein Wasserzeichen. Auch bei Anzahl und Größe der Dateien
+        gibt es keine Grenze, denn es zahlt kein Server dafür. Die Arbeit
+        passiert auf Ihrem eigenen Gerät. Bezahlt wird die Seite über Werbung,
+        und den Anzeigen wird nichts über Ihre Bilder übergeben."""
 
 [[faq]]
 q = "Funktioniert es offline?"
 a = """
         Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
         und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
-        dass nichts hochgeladen wird: Ein Werkzeug, das Ihr Logo zum Umwandeln
-        wegschickt, würde in dem Moment stehen bleiben, in dem Sie den Stecker
+        dass nichts hochgeladen wird. Ein Werkzeug, das Ihr Logo zum Umwandeln
+        wegschickt, bliebe in dem Moment stehen, in dem Sie den Stecker
         ziehen."""
 
 [schema]
-description = "Ein Bild im Browser in eine Windows-ICO-Datei mit mehreren Größen oder eine macOS-ICNS-Datei umwandeln. Voreinstellungen für ein Website-Favicon, ein Windows-Anwendungssymbol und ein Symbol für hohe Auflösungen, Apples zehn ICNS-Plätze, eine Vorschau jeder Größe in ihrer echten Pixelgröße und ein optionaler Satz der Apple-, Android- und Windows-Kacheldateien, die eine Website braucht. Es wird nichts hochgeladen."
+description = "Ein Bild im Browser in eine Windows-ICO-Datei mit mehreren Größen oder eine macOS-ICNS-Datei umwandeln. Voreinstellungen für ein Website-Favicon, ein Windows-Anwendungssymbol und ein Symbol für hohe Auflösungen, Apples zehn ICNS-Plätze, eine Vorschau jeder Größe in ihrer echten Pixelgröße und auf Wunsch der Satz der Apple-, Android- und Windows-Kacheldateien, die eine Website braucht. Es wird nichts hochgeladen."
 features = [
   "Schreibt eine echte .ico mit mehreren Größen, von 16 bis 256 Pixeln",
   "Schreibt eine macOS-.icns mit allen zehn Plätzen von Apple, von 16 bis 1024 Pixeln",
@@ -354,11 +348,11 @@ features = [
   "Behält Transparenz und schreibt zusätzlich die Transparenzmaske für die Zeit vor Vista",
   "Auffüllen, zuschneiden oder dehnen für ein nicht quadratisches Bild, auf einer Farbe oder auf nichts",
   "Zeigt jede Größe in ihrer echten Pixelgröße vor dem Download",
-  "Optionaler Website-Satz: Apple-Touch-Symbol, Android-Symbole, maskierbares Symbol, Windows-Kachel, Manifest und das HTML zum Einfügen",
+  "Auf Wunsch der Website-Satz: Apple-Touch-Symbol, Android-Symbole, maskierbares Symbol, Windows-Kachel, Manifest und das HTML zum Einfügen",
   "Stapelverarbeitung, alle Ergebnisse in einem ZIP",
   "Läuft offline; kein Upload, kein Konto",
 ]
 
 [picker]
 title = "Bild hierher ziehen"
-hint = "oder klicken zum Auswählen &mdash; PNG, SVG, JPEG, WebP und alles andere, was Ihr Browser öffnen kann"
+hint = "oder klicken und auswählen &mdash; PNG, SVG, JPEG, WebP und alles andere, was Ihr Browser öffnen kann"

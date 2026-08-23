@@ -12,22 +12,23 @@ heading = "Dati&nbsp;EXIF <span class=\"h1-kw\">&mdash; rimuovere i metadati da 
 tagline = "Guarda cosa dice di te una foto. Poi toglilo."
 
 title = "Visualizzare e rimuovere i dati EXIF &mdash; editor di metadati gratuito"
-description = "Guarda i dati EXIF e GPS nascosti in una foto, modificali, o togli tutto con un clic. Nel browser: niente caricamenti, e la foto non viene mai ricodificata."
+description = "Guarda i dati EXIF e GPS nascosti in una foto, modificali, oppure togli tutto con un clic. Nel browser, senza caricare niente, e senza che la foto venga mai ricodificata."
 og_title = "Dati EXIF &mdash; guardali, modificali, o toglili"
-og_description = "Leggi i metadati nascosti in una foto e rimuovili tutti con un clic. Gira sul tuo dispositivo; l'immagine in sé non viene mai ricodificata."
+og_description = "Leggi i metadati nascosti in una foto e toglili tutti con un clic. Il lavoro lo fa il tuo dispositivo, e l'immagine in sé non viene mai ricodificata."
 og_image_alt = "Visualizzatore e rimozione EXIF - leggere, modificare o togliere i metadati di una foto"
 
 pledge = """
     Il file viene aperto, analizzato e riscritto dal tuo browser. Questo
-    strumento non ha alcuna funzione di rete &mdash; niente da recuperare,
-    niente da spedire &mdash; e dall'altra parte di questa pagina non c'è alcun
-    server a cui mandare una foto, anche se ci fosse un modo per farlo."""
+    strumento non ha nessuna funzione di rete: non c'è niente da recuperare e
+    niente da spedire. E dall'altra parte di questa pagina non c'è nessun server
+    a cui mandare una foto, anche se una funzione del genere ci fosse."""
 
 live_hint = """
-      Non crederci sulla parola: apri gli strumenti di sviluppo, guarda la
-      scheda Rete e ripulisci una foto. Non una sola richiesta porta con sé
-      un'immagine, una miniatura, un nome di file o un tag letto dal tuo file.
-      Oppure stacca la connessione e ripuliscine una lo stesso."""
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori,
+      tieni d'occhio il pannello Rete e ripulisci una foto. Non c'è una sola
+      richiesta che porti con sé un'immagine, una miniatura, un nome di file o
+      un tag letto dal tuo file. Oppure stacca la connessione e ripuliscine una
+      lo stesso."""
 
 read_first = """
 , <code>src/tiff.js</code> per l'analizzatore EXIF, e
@@ -38,13 +39,12 @@ howto_heading = "Come rimuovere i dati EXIF da una foto"
 
 card = """
             Guarda la posizione, la fotocamera e i numeri di serie nascosti in
-            una foto, modifica quello che vuoi, o togli tutto con un clic."""
+            una foto, modifica quello che vuoi, oppure togli tutto con un
+            clic."""
 
 [words]
 plural = "foto"
 choose = "una foto"
-analytics_extra = """, e nemmeno uno dei tag
-  che questo strumento legge dai tuoi file"""
 
 [[facts]]
 text = "Niente caricamenti"
@@ -65,98 +65,99 @@ text = "Non ricodifica mai l'immagine"
 title = "Le tue foto non hanno dove andare."
 body = """
  La
-      Content-Security-Policy nomina tutti gli indirizzi che questa pagina può
-      contattare, e nessuno di questi appartiene a questo sito. Qui non esiste
-      un punto di raccolta dove i tuoi file potrebbero finire, e nel codice non
-      c'è nulla che ce li manderebbe se esistesse."""
+      Content-Security-Policy elenca tutti gli indirizzi che questa pagina può
+      contattare, e nessuno di quegli indirizzi appartiene a questo sito. Non
+      esiste un punto di raccolta in cui i tuoi file possano finire, e nel codice
+      non c'è niente che ce li manderebbe se anche esistesse."""
 
 [[privacy]]
-title = "Qui dentro niente recupera niente."
+title = "Qui dentro niente va a recuperare niente."
 body = """
  A differenza degli altri
-      strumenti di questa scatola, questo non ha la funzione «carica da un
-      indirizzo web» e non ha proprio alcun passaggio di rete facoltativo. Non
-      c'è un <code>fetch</code>, né un <code>XMLHttpRequest</code>, né un
-      <code>sendBeacon</code> da nessuna parte in <code>src/</code>."""
+      strumenti di questa cassetta, questo non ha nemmeno la funzione «carica da
+      un indirizzo web», e di passaggi di rete facoltativi non ne ha proprio.
+      In <code>src/</code> non c'è né un <code>fetch</code>, né un
+      <code>XMLHttpRequest</code>, né un <code>sendBeacon</code>."""
 
 [[privacy]]
 title = "I metadati che leggiamo non vengono mai riferiti."
 body = """
  La tua posizione GPS
       viene mostrata su questa pagina e non va da nessun'altra parte. In questo
-      repository non esiste alcun evento di analytics che porti con sé un tag,
+      repository non esiste nessun evento di analytics che porti con sé un tag,
       un nome di file, una dimensione o un conteggio."""
 
 [[privacy]]
-title = "Cosa carica Google, e cosa non gli viene dato."
+title = "Cosa carica Google, e cosa non gli arriva."
 body = """
- Gli script
-      pubblicitari e di misurazione arrivano da Google. A nessuno dei due viene
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
       passato niente sulle tue foto. Ogni riga che legge, analizza o riscrive un
       file è servita da questa origine ed è elencata nel repository."""
 
 [[privacy]]
-title = "Cosa carica il pulsante delle donazioni, e cosa non gli viene dato."
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
 body = """
 
-      Il pulsante «Buy me a coffee» in cima è disegnato da uno script di
-      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. È un link e
-      niente di più: non riferisce alcuna visita, e non gli viene passato niente
-      su di te o sui tuoi file. Non succede nulla finché non ci clicchi, e
-      quello a cui arriveresti è il sito di qualcun altro."""
+      Il pulsante «Buy me a coffee» in cima lo disegna uno script di
+      cdnjs.buymeacoffee.com, che prende i caratteri da Google Fonts. È un link
+      e niente di più: non riferisce nessuna visita, e non gli viene passato
+      niente su di te o sui tuoi file. Finché non ci clicchi non succede niente,
+      e quello a cui arriveresti è il sito di qualcun altro."""
 
 [[privacy]]
 title = "Funziona offline."
 body = """
  Stacca la rete e lo strumento resta
       identico, perché al suo interno non c'è mai stato un passaggio di rete. È
-      la prova più semplice di tutte."""
+      la prova più semplice che ci sia."""
 
 [[howto]]
-title = "Scegli le tue foto."
+title = "Scegli le foto."
 body = """
- Trascinale sul riquadro o
-      selezionale a mano. Il browser le legge direttamente dal tuo disco; mentre
-      lo fai non viene mandato niente da nessuna parte."""
+ Trascinale sul riquadro, oppure
+      selezionale a mano. Le legge il browser direttamente dal tuo disco, e
+      mentre lo fa non parte niente per nessuna destinazione."""
 
 [[howto]]
 title = "Leggi cosa contengono, se ti va."
 body = """
  L'elenco dei riscontri nomina
-      le cose che vale la pena sapere &mdash; la posizione GPS, gli orari, i
-      numeri di serie &mdash; prima della tabella completa di tutti i tag."""
+      le cose che vale la pena sapere, cioè la posizione GPS, gli orari e i
+      numeri di serie, e viene prima della tabella completa di tutti i tag."""
 
 [[howto]]
 title = "Premi «Rimuovi tutti i metadati»."
 body = """
- Per quasi tutti è tutto qui il
-      lavoro. Ogni tag, i blocchi XMP e IPTC, i commenti e la miniatura
-      incorporata se ne vanno, su tutte le foto dell'elenco in una volta."""
+ Per quasi tutti il lavoro è
+      tutto qui. Ogni tag, i blocchi XMP e IPTC, i commenti e la miniatura
+      incorporata se ne vanno, su tutte le foto dell'elenco in una volta
+      sola."""
 
 [[howto]]
 title = "Oppure modifica invece di rimuovere."
 body = """
  Cambia una data, correggi una
-      riga di copyright, butta la posizione e tieni le impostazioni della
-      fotocamera &mdash; poi salva quella foto per conto suo."""
+      riga di copyright, butta la posizione tenendo le impostazioni della
+      fotocamera, e poi salva quella foto per conto suo."""
 
 [[faq]]
 q = "La mia foto viene caricata da qualche parte?"
 a = """
-        No. Il file viene letto, analizzato e riscritto dal tuo browser sul tuo
-        hardware. Questo strumento non ha alcuna funzione di rete &mdash; non
-        recupera mai niente e non spedisce mai niente &mdash; e la
-        <code>Content-Security-Policy</code> della pagina nomina tutti gli
-        indirizzi che può contattare, nessuno dei quali appartiene a questo
+        No. Il file lo legge, lo analizza e lo riscrive il tuo browser sul tuo
+        hardware. Questo strumento non ha nessuna funzione di rete: non recupera
+        mai niente e non spedisce mai niente. La
+        <code>Content-Security-Policy</code> della pagina elenca poi tutti gli
+        indirizzi che può contattare, e nessuno di quelli appartiene a questo
         sito."""
 
 [[faq]]
 q = "Cos'è l'EXIF, e cos'altro si nasconde in una foto?"
 a = """
-        L'EXIF è un blocco di tag che una fotocamera scrive accanto all'immagine:
+        L'EXIF è un blocco di tag che la fotocamera scrive accanto all'immagine:
         la marca e il modello, le impostazioni di esposizione, la data e l'ora al
         secondo, spesso una posizione GPS e a volte un numero di serie. Le foto
-        portano spesso anche altro &mdash; un pacchetto XMP di XML lasciato da un
+        però portano spesso anche altro: un pacchetto XMP di XML lasciato da un
         programma di ritocco, un blocco IPTC con didascalia e firma, un profilo
         colore, una piccola seconda copia dell'immagine come miniatura, e una
         maker note di dati non documentati del produttore. Questo strumento li
@@ -167,7 +168,7 @@ q = "Rimuovere i metadati peggiora la qualità dell'immagine?"
 a = """
         No, ed è il motivo principale per usare uno strumento come questo invece
         di risalvare la foto. I metadati stanno nel contenitore attorno
-        all'immagine compressa, non dentro di essa. Rimuoverli vuol dire
+        all'immagine compressa, non dentro l'immagine. Rimuoverli vuol dire
         cancellare voci da un elenco e riscrivere l'elenco; i dati compressi
         dell'immagine vengono copiati byte per byte, quindi il risultato
         decodifica esattamente gli stessi pixel. Non viene decodificato niente e
@@ -176,23 +177,23 @@ a = """
 [[faq]]
 q = "Quali formati di file gestisce?"
 a = """
-        JPEG, PNG e WebP. HEIC e AVIF vengono riconosciuti ma non riscritti: sono
-        formati a scatole costruiti con atomi annidati e hanno bisogno di un
-        analizzatore diverso, quindi lo strumento lo dice invece di produrre un
-        file rotto. Nemmeno un TIFF nudo viene gestito, perché in un TIFF i
-        metadati e i pixel sono indirizzati dagli stessi offset."""
+        JPEG, PNG e WebP. HEIC e AVIF vengono riconosciuti ma non riscritti,
+        perché sono formati costruiti con box annidati e hanno bisogno di un
+        analizzatore diverso: lo strumento te lo dice, invece di produrre un file
+        rotto. Nemmeno un TIFF nudo viene gestito, perché in un TIFF i metadati e
+        i pixel sono indirizzati dagli stessi offset."""
 
 [[faq]]
 q = "La mia foto risulterà ruotata dopo la rimozione dei metadati?"
 a = """
         Può succedere, e c'è un'impostazione apposta. I telefoni di solito
         registrano l'immagine come l'ha vista il sensore e aggiungono un tag
-        Orientation che dice come girarla. Togli quel tag e alcuni
-        visualizzatori mostrano la foto di traverso. L'opzione «tieni il tag di
+        Orientation che dice come girarla. Togli quel tag e certi visualizzatori
+        ti mostrano la foto di traverso. L'opzione «tieni il tag di
         orientamento», attiva di default, riscrive un minuscolo blocco EXIF che
-        contiene soltanto quel tag &mdash; e solo quando la foto ne aveva
-        davvero bisogno. Toglila se preferisci che il file non porti alcun EXIF,
-        proprio nessuno."""
+        contiene soltanto quel tag, e lo fa solo quando la foto ne aveva davvero
+        bisogno. Toglila se preferisci che il file non porti EXIF di nessun
+        tipo."""
 
 [[faq]]
 q = "Rimuove la posizione GPS?"
@@ -208,26 +209,26 @@ q = "Posso cambiare un tag invece di cancellarlo?"
 a = """
         Sì. I tag di testo, le date, l'ISO, l'orientamento e la risoluzione si
         possono modificare tutti, e qualche tag comune si può aggiungere a una
-        foto che non ne ha. Un avvertimento: scrivere il file ricostruisce il
-        blocco EXIF, e una maker note contiene offset che puntano dentro il
+        foto che non ne ha. Un avvertimento però: scrivere il file ricostruisce
+        il blocco EXIF, e una maker note contiene offset che puntano dentro il
         blocco originale, quindi una maker note ricostruita potrebbe poi non
-        essere leggibile dal software del produttore. Cancellala, o lascia il
-        file non modificato, se la cosa ti interessa."""
+        essere più leggibile dal software del produttore. Se la cosa ti
+        interessa, cancellala oppure lascia il file com'è."""
 
 [[faq]]
 q = "È gratis, e mi serve un account?"
 a = """
-        È gratis, e non c'è account, non c'è accesso e non c'è periodo di prova.
-        Il sito ha della pubblicità, ed è quella che lo paga; agli annunci non
-        viene dato niente sulle tue foto."""
+        È gratis, e non c'è account, non c'è registrazione e non c'è periodo di
+        prova. Il sito ha della pubblicità, ed è quella che lo mantiene; agli
+        annunci non arriva niente sulle tue foto."""
 
 [[faq]]
 q = "Funziona offline?"
 a = """
         Sì. Carica la pagina una volta, poi stacca la connessione e continua a
         funzionare. È anche il modo più semplice per dimostrare che non viene
-        caricato niente: uno strumento che spedisse via le tue foto per
-        elaborarle si fermerebbe nel momento in cui stacchi la spina."""
+        caricato niente, perché uno strumento che spedisse via le tue foto per
+        elaborarle si fermerebbe nell'istante in cui stacchi la spina."""
 
 [schema]
 description = "Leggi i metadati EXIF, GPS, XMP e IPTC dentro una foto, modifica i singoli tag, o rimuovili tutti con un clic. JPEG, PNG e WebP, elaborati nel browser senza ricodificare l'immagine."
@@ -242,4 +243,4 @@ features = [
 
 [picker]
 title = "Trascina qui le foto"
-hint = "oppure clicca per scegliere &mdash; JPEG, PNG e WebP"
+hint = "oppure clicca per sceglierle &mdash; JPEG, PNG e WebP"

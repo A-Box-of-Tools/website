@@ -12,21 +12,20 @@ tagline = "Sehen, was ein Foto über Sie verrät. Und es dann herausnehmen."
 title = "EXIF-Daten entfernen &amp; anzeigen &mdash; kostenloser Metadaten-Editor"
 description = "Die EXIF- und GPS-Daten in einem Foto sehen, bearbeiten oder mit einem Klick vollständig entfernen. Im Browser: kein Upload, und das Bild wird nie neu kodiert."
 og_title = "EXIF-Betrachter &amp; -Entferner &mdash; ansehen, bearbeiten oder entfernen"
-og_description = "Die in einem Foto versteckten Metadaten lesen und mit einem Klick vollständig entfernen. Läuft auf Ihrem eigenen Gerät; das Bild selbst wird nie neu kodiert."
+og_description = "Die in einem Foto versteckten Metadaten lesen und mit einem Klick vollständig entfernen. Läuft auf Ihrem eigenen Gerät, und das Bild selbst wird nie neu kodiert."
 og_image_alt = "EXIF-Betrachter und -Entferner - Metadaten in einem Foto lesen, bearbeiten oder entfernen"
 
 pledge = """
     Die Datei wird von Ihrem eigenen Browser geöffnet, ausgewertet und neu
-    geschrieben. Dieses Werkzeug hat keinerlei Netzfunktion &mdash; nichts
-    abzurufen, nichts zu senden &mdash; und es gibt am anderen Ende dieser Seite
-    keinen Server, an den ein Foto ginge, selbst wenn es einen Weg dorthin
-    gäbe."""
+    geschrieben. Netzfunktionen hat dieses Werkzeug keine, weder zum Abrufen
+    noch zum Senden. Und selbst wenn es einen Weg nach draußen gäbe, stünde am
+    anderen Ende dieser Seite kein Server, an den ein Foto gehen könnte."""
 
 live_hint = """
-      Glauben Sie es uns nicht: Öffnen Sie die DevTools, beobachten Sie den Tab
-      &bdquo;Netzwerk&ldquo; und säubern Sie ein Foto. Keine einzige Anfrage
-      trägt ein Bild, ein Vorschaubild, einen Dateinamen oder ein Tag, das wir
-      aus Ihrer Datei gelesen haben. Oder trennen Sie die Internetverbindung und
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und säubern Sie ein Foto. Keine einzige Anfrage
+      trägt ein Bild, ein Vorschaubild, einen Dateinamen oder ein Tag, das aus
+      Ihrer Datei gelesen wurde. Oder trennen Sie die Internetverbindung und
       säubern Sie trotzdem eines."""
 
 read_first = """
@@ -34,7 +33,7 @@ read_first = """
       <code>src/jpeg.js</code> als Beleg dafür, dass das Bild selbst immer nur
       kopiert wird."""
 
-howto_heading = "EXIF-Daten aus einem Foto entfernen"
+howto_heading = "So entfernen Sie die EXIF-Daten aus einem Foto"
 
 card = """
             Sehen Sie Ort, Kamera und Seriennummern, die in einem Foto stecken,
@@ -44,8 +43,6 @@ card = """
 [words]
 plural = "Fotos"
 choose = "ein Foto"
-analytics_extra = """, und auch keines der Tags,
-  die dieses Werkzeug aus Ihren Dateien liest"""
 
 [[facts]]
 text = "Kein Upload"
@@ -65,139 +62,137 @@ text = "Kodiert das Bild nie neu"
 [[privacy]]
 title = "Ihre Fotos haben keinen Weg nach draußen."
 body = """
- Die
-      Content-Security-Policy nennt jede Adresse, die diese Seite kontaktieren
-      darf, und keine davon gehört zu dieser Seite. Es gibt hier keinen Endpunkt,
-      an dem Ihre Dateien gesammelt werden könnten, und nichts im Code, das sie
-      senden würde, gäbe es einen."""
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Dateien landen könnten, und im Code steht auch nichts, das sie
+      dorthin schicken würde, gäbe es einen."""
 
 [[privacy]]
 title = "Nichts hier ruft etwas ab."
 body = """
  Anders als die übrigen Werkzeuge in
       diesem Kasten hat dieses keine Funktion &bdquo;von einer Webadresse
-      laden&ldquo; und überhaupt keinen optionalen Netzschritt. Es gibt weder
-      <code>fetch</code> noch <code>XMLHttpRequest</code> noch
+      laden&ldquo; und überhaupt keinen optionalen Schritt über das Netz. Es
+      gibt weder <code>fetch</code> noch <code>XMLHttpRequest</code> noch
       <code>sendBeacon</code> irgendwo in <code>src/</code>."""
 
 [[privacy]]
-title = "Die Metadaten, die wir lesen, werden nie ausgelesen."
+title = "Gelesen wird alles, weitergesagt nichts."
 body = """
  Ihre GPS-Position
-      wird auf dieser Seite angezeigt und geht nirgendwo sonst hin. Es gibt in
-      diesem Repository kein eigenes Analytics-Ereignis, das ein Tag, einen
-      Dateinamen, eine Größe oder eine Anzahl mitführt."""
+      steht auf dieser Seite und sonst nirgends. In diesem Repository gibt es
+      kein eigenes Analytics-Ereignis, das ein Tag, einen Dateinamen, eine Größe
+      oder eine Anzahl mitführt."""
 
 [[privacy]]
-title = "Was Google lädt - und was es nicht bekommt."
+title = "Was Google lädt und was Google nicht bekommt."
 body = """
  Die Werbe- und
       Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihre
       Fotos übergeben. Jede Zeile, die eine Datei liest, auswertet oder neu
-      schreibt, wird von dieser Herkunft ausgeliefert und ist im Repository
-      aufgeführt."""
+      schreibt, kommt von dieser Domain selbst und steht im Repository."""
 
 [[privacy]]
-title = "Was der Spenden-Button lädt - und was er nicht bekommt."
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
 body = """
 
       Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
       Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
-      Google Fonts. Er ist ein Link und nicht mehr: Er meldet keinen Besuch, und
-      ihm wird nichts über Sie oder Ihre Dateien übergeben. Es passiert nichts,
-      solange Sie ihn nicht anklicken, und was Sie damit ansteuern, ist die Seite
-      von jemand anderem."""
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihre Dateien bekommt er nichts. Solange Sie ihn nicht
+      anklicken, passiert nichts, und was Sie damit ansteuern, ist die Seite von
+      jemand anderem."""
 
 [[privacy]]
 title = "Es funktioniert offline."
 body = """
  Trennen Sie die Netzverbindung, und das
-      Werkzeug bleibt unverändert, weil es nie einen Netzschritt darin gab. Das
-      ist der einfachste Beweis von allen."""
+      Werkzeug bleibt unverändert, weil darin nie ein Schritt über das Netz
+      vorgesehen war. Einen einfacheren Beweis gibt es nicht."""
 
 [[howto]]
-title = "Wählen Sie Ihre Fotos."
+title = "Wählen Sie Ihre Fotos aus."
 body = """
  Ziehen Sie sie auf das Auswahlfeld
-      oder wählen Sie sie von Hand. Der Browser liest sie direkt von Ihrer
-      Festplatte; dabei wird nichts irgendwohin gesendet."""
+      oder suchen Sie sie von Hand heraus. Der Browser liest sie direkt von
+      Ihrer Festplatte, und dabei geht nichts nach draußen."""
 
 [[howto]]
-title = "Lesen Sie, was darin steht - wenn Sie mögen."
+title = "Lesen Sie, was darin steht, wenn Sie mögen."
 body = """
  Die Fundliste nennt
-      zuerst das Wissenswerte &mdash; die GPS-Position, die Zeitstempel, die
-      Seriennummern &mdash; und danach kommt die vollständige Tabelle mit jedem
-      einzelnen Tag."""
+      zuerst das Wissenswerte, also die GPS-Position, die Zeitstempel und die
+      Seriennummern. Darunter folgt die vollständige Tabelle mit jedem einzelnen
+      Tag."""
 
 [[howto]]
 title = "Klicken Sie auf &bdquo;Alle Metadaten entfernen&ldquo;."
 body = """
  Für die meisten
       Menschen ist das die ganze Aufgabe. Jedes Tag, die XMP- und IPTC-Blöcke,
-      die Kommentare und das eingebettete Vorschaubild verschwinden &mdash; bei
-      allen Fotos auf der Liste auf einmal."""
+      die Kommentare und das eingebettete Vorschaubild verschwinden, und zwar
+      bei allen Fotos auf der Liste auf einmal."""
 
 [[howto]]
 title = "Oder bearbeiten statt entfernen."
 body = """
  Ändern Sie ein Datum,
       korrigieren Sie eine Copyright-Zeile, löschen Sie den Ort und behalten Sie
-      die Kameraeinstellungen &mdash; und speichern Sie dieses Foto dann
-      einzeln."""
+      die Kameraeinstellungen. Dieses eine Foto speichern Sie dann einzeln."""
 
 [[faq]]
 q = "Wird mein Foto irgendwohin hochgeladen?"
 a = """
-        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
-        gelesen, ausgewertet und neu geschrieben. Dieses Werkzeug hat keinerlei
-        Netzfunktion &mdash; es ruft nie etwas ab und sendet nie etwas &mdash; und
-        die <code>Content-Security-Policy</code> der Seite nennt jede Adresse, die
-        sie kontaktieren darf; keine davon gehört zu dieser Seite."""
+        Nein. Ihr eigener Browser liest, wertet aus und schreibt neu, auf Ihrer
+        eigenen Hardware. Netzfunktionen hat dieses Werkzeug keine, es ruft nie
+        etwas ab und sendet nie etwas. In der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf, und keine davon gehört uns."""
 
 [[faq]]
 q = "Was ist EXIF, und was steckt sonst noch in einem Foto?"
 a = """
         EXIF ist ein Block von Tags, den eine Kamera neben das Bild schreibt:
-        Hersteller und Modell, die Belichtungseinstellungen, Datum und Uhrzeit auf
-        die Sekunde genau, oft eine GPS-Position und manchmal eine Seriennummer.
-        Häufig tragen Fotos noch mehr mit sich &mdash; ein XMP-Paket mit XML aus
-        einem Bildbearbeitungsprogramm, einen IPTC-Block mit Bildunterschrift und
-        Urheberzeile, ein Farbprofil, eine kleine zweite Kopie des Bildes als
-        Vorschaubild und eine Maker Note mit undokumentierten Herstellerdaten.
-        Dieses Werkzeug listet all das auf."""
+        Hersteller und Modell, die Belichtungseinstellungen, Datum und Uhrzeit
+        auf die Sekunde genau, oft eine GPS-Position und manchmal eine
+        Seriennummer. Häufig tragen Fotos noch mehr mit sich, etwa ein XMP-Paket
+        mit XML aus einem Bildbearbeitungsprogramm, einen IPTC-Block mit
+        Bildunterschrift und Urheberzeile, ein Farbprofil, eine kleine zweite
+        Kopie des Bildes als Vorschaubild und eine Maker Note mit
+        undokumentierten Herstellerdaten. Dieses Werkzeug listet all das auf."""
 
 [[faq]]
 q = "Verschlechtert das Entfernen der Metadaten die Bildqualität?"
 a = """
         Nein, und das ist der wichtigste Grund, ein solches Werkzeug zu benutzen,
         statt das Foto neu zu speichern. Metadaten liegen im Container um das
-        komprimierte Bild herum, nicht darin. Sie zu entfernen heißt, Einträge aus
-        einer Liste zu löschen und die Liste wieder herauszuschreiben; die
-        komprimierten Bilddaten werden Byte für Byte übernommen, das Ergebnis
-        dekodiert also zu exakt denselben Pixeln. Es wird nichts dekodiert und
-        nichts neu komprimiert."""
+        komprimierte Bild herum, nicht darin. Sie zu entfernen heißt, Einträge
+        aus einer Liste zu löschen und die Liste wieder herauszuschreiben. Die
+        komprimierten Bilddaten werden Byte für Byte übernommen, und das Ergebnis
+        dekodiert daher zu exakt denselben Pixeln. Dekodiert wird nichts, und neu
+        komprimiert erst recht nicht."""
 
 [[faq]]
 q = "Welche Dateiformate kann es verarbeiten?"
 a = """
-        JPEG, PNG und WebP. HEIC und AVIF werden erkannt, aber nicht neu
-        geschrieben: Es sind Box-Formate aus verschachtelten Atomen und brauchen
-        einen anderen Parser, also sagt das Werkzeug das, statt eine kaputte Datei
-        zu erzeugen. Ein reines TIFF wird ebenfalls nicht verarbeitet, weil in
-        einem TIFF die Metadaten und die Pixel über dieselben Offsets adressiert
-        werden."""
+        JPEG, PNG und WebP. HEIC und AVIF werden zwar erkannt, aber nicht neu
+        geschrieben. Es sind Box-Formate aus verschachtelten Atomen und
+        bräuchten einen anderen Parser, also sagt das Werkzeug das lieber, statt
+        eine kaputte Datei zu erzeugen. Ein reines TIFF bleibt ebenfalls
+        draußen, weil in einem TIFF die Metadaten und die Pixel über dieselben
+        Offsets adressiert werden."""
 
 [[faq]]
 q = "Erscheint mein Foto nach dem Entfernen gedreht?"
 a = """
         Das kann passieren, und dafür gibt es eine Einstellung. Telefone nehmen
         das Bild meist so auf, wie der Sensor es gesehen hat, und ergänzen ein
-        Orientation-Tag, das sagt, wie es zu drehen ist. Entfernt man dieses Tag,
+        Orientation-Tag, das sagt, wie es zu drehen ist. Fällt dieses Tag weg,
         zeigen manche Betrachter das Foto quer. Die Option &bdquo;das
-        Orientierungs-Tag behalten&ldquo;, die standardmäßig aktiv ist, schreibt
-        einen winzigen EXIF-Block zurück, der nichts als dieses eine Tag enthält
-        &mdash; und auch nur dann, wenn das Foto es tatsächlich gebraucht hat.
+        Orientierungs-Tag behalten&ldquo; ist deshalb standardmäßig aktiv und
+        schreibt einen winzigen EXIF-Block zurück, in dem nichts als dieses eine
+        Tag steht, und auch das nur, wenn das Foto es tatsächlich gebraucht hat.
         Schalten Sie sie ab, wenn die Datei lieber gar kein EXIF tragen soll."""
 
 [[faq]]
@@ -205,9 +200,9 @@ q = "Entfernt es den GPS-Standort?"
 a = """
         Ja. Beim Entfernen aller Daten verschwindet das gesamte GPS-Verzeichnis,
         und Sie können den Standort auch einzeln löschen und den Rest behalten.
-        Die Position wird zuerst in Dezimalgrad angezeigt, denn
-        &bdquo;51 Grad, 30 Minuten, 26 Sekunden&ldquo; macht nicht auf den ersten
-        Blick deutlich, dass ein Foto das Gebäude benennt, in dem es aufgenommen
+        Angezeigt wird die Position zuerst in Dezimalgrad, denn bei
+        &bdquo;51 Grad, 30 Minuten, 26 Sekunden&ldquo; fällt nicht auf den ersten
+        Blick auf, dass ein Foto das Gebäude benennt, in dem es aufgenommen
         wurde."""
 
 [[faq]]
@@ -215,18 +210,18 @@ q = "Kann ich ein Tag ändern, statt es zu löschen?"
 a = """
         Ja. Text-Tags, Datumsangaben, der ISO-Wert, die Orientierung und die
         Auflösung lassen sich alle bearbeiten, und ein paar gängige Tags können
-        einem Foto hinzugefügt werden, das keine hat. Ein Vorbehalt: Beim
-        Schreiben der Datei wird der EXIF-Block neu aufgebaut, und eine Maker Note
-        enthält Offsets in den ursprünglichen Block &mdash; eine neu aufgebaute
-        Maker Note ist danach also womöglich für die Software des Herstellers
-        nicht mehr lesbar. Löschen Sie sie, oder lassen Sie die Datei unbearbeitet,
-        wenn Ihnen das wichtig ist."""
+        Sie einem Foto hinzufügen, das keine hat. Einen Vorbehalt gibt es. Beim
+        Schreiben der Datei wird der EXIF-Block neu aufgebaut, und eine Maker
+        Note enthält Offsets in den ursprünglichen Block. Neu aufgebaut ist sie
+        für die Software des Herstellers womöglich nicht mehr lesbar. Löschen Sie
+        sie in dem Fall, oder lassen Sie die Datei ganz unbearbeitet, wenn Ihnen
+        daran liegt."""
 
 [[faq]]
 q = "Ist es kostenlos, und brauche ich ein Konto?"
 a = """
         Es ist kostenlos, und es gibt kein Konto, keine Anmeldung und keine
-        Testphase. Die Seite trägt Werbung, und die bezahlt sie; den Anzeigen wird
+        Testphase. Bezahlt wird die Seite über Werbung, und den Anzeigen wird
         nichts über Ihre Fotos übergeben."""
 
 [[faq]]
@@ -234,9 +229,9 @@ q = "Funktioniert es offline?"
 a = """
         Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
         und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
-        dass nichts hochgeladen wird: Ein Werkzeug, das Ihre Fotos zum Verarbeiten
-        wegschickt, würde in dem Moment stehen bleiben, in dem Sie den Stecker
-        ziehen."""
+        dass nichts hochgeladen wird. Ein Werkzeug, das Ihre Fotos zum
+        Verarbeiten wegschickt, bliebe in dem Moment stehen, in dem Sie den
+        Stecker ziehen."""
 
 [schema]
 description = "Die EXIF-, GPS-, XMP- und IPTC-Metadaten in einem Foto lesen, einzelne Tags bearbeiten oder alles mit einem Klick entfernen. JPEG, PNG und WebP, im Browser verarbeitet, ohne das Bild neu zu kodieren."
@@ -251,4 +246,4 @@ features = [
 
 [picker]
 title = "Fotos hierher ziehen"
-hint = "oder klicken zum Auswählen &mdash; JPEG, PNG und WebP"
+hint = "oder klicken und auswählen &mdash; JPEG, PNG und WebP"

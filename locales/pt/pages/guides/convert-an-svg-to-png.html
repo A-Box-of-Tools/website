@@ -2,39 +2,38 @@
     <h2>A resposta curta</h2>
     <p>
       Abra o <a href="../../svg-para-png/">SVG para imagem</a>, jogue o arquivo
-      dentro e diga um tamanho. Se ninguém lhe disse que tamanho usar,
+      dentro e diga um tamanho. Se ninguém disse a você que tamanho usar,
       <strong>1024 pixels no lado maior</strong> é um bom padrão: grande o
       bastante para quase tudo e pequeno o bastante para mandar por e-mail.
       Deixe o formato em PNG, deixe o fundo em transparente e leve o arquivo.
     </p>
     <p>
-      Tudo o que vem abaixo é o que fazer quando esse padrão não basta &mdash;
-      quando um número foi especificado para você, quando a coisa vai para
-      impressão, ou quando ela volta com cara de errada.
+      Tudo o que vem abaixo é o que fazer quando esse padrão não basta: quando um
+      número foi especificado para você, quando a coisa vai para impressão, ou
+      quando ela volta com cara de errada.
     </p>
   </section>
 
   <section>
     <h2>Por que o tamanho é decisão sua e não do arquivo</h2>
     <p>
-      Um JPEG é uma grade de pixels medidos; perguntar de que tamanho ele é tem
-      resposta. Um SVG não é uma imagem, é um conjunto de instruções &mdash;
-      desenhe um círculo aqui, este traçado naquela cor &mdash; e instruções não
-      têm tamanho. Um navegador pode executá-las a 16 pixels ou a 4000 e o
-      resultado é igualmente nítido dos dois jeitos, porque ele não está escalando
-      nada. Está desenhando de novo.
+      Um JPEG é uma grade de pixels medidos, e perguntar de que tamanho ele é tem
+      resposta. Um SVG não é uma imagem, é um conjunto de instruções, do tipo
+      desenhe um círculo aqui, este traçado naquela cor, e instruções não têm
+      tamanho. Um navegador pode executá-las a 16 pixels ou a 4000 e o resultado é
+      igualmente nítido dos dois jeitos, porque ele não está escalando nada. Está
+      desenhando de novo.
     </p>
     <p>
       É por isso que a conversão não pode escolher um número por você, e por isso
-      que não lhe custa nada escolher um grande. Este é o único trabalho de
+      que não custa nada a você escolher um grande. Este é o único trabalho de
       imagem em que &ldquo;faça maior&rdquo; é de graça.
     </p>
     <p>
       A maioria dos arquivos SVG carrega mesmo um atributo <code>width</code> e
-      um <code>height</code>, e a ferramenta vai mostrar &mdash; mas é um padrão,
-      não um limite. Um ícone que diz <code>width="24"</code> só está dizendo que
-      quem o desenhou tinha em mente uma barra de ferramentas de
-      24&nbsp;pixels.
+      um <code>height</code>, e a ferramenta vai mostrar, mas é um padrão, não um
+      limite. Um ícone que diz <code>width="24"</code> só está dizendo que quem o
+      desenhou tinha em mente uma barra de ferramentas de 24&nbsp;pixels.
     </p>
   </section>
 
@@ -51,28 +50,28 @@
     <p><strong>Para um ícone de aplicativo, uma ficha de loja ou um
       favicon.</strong> O número é publicado e não há o que descobrir: o que a
       página da loja disser, exatamente. Para um favicon, não rasterize de jeito
-      nenhum &mdash; <a href="../criar-um-favicon/">faça um .ico</a>, que guarda
-      vários tamanhos num arquivo só, porque uma aba de navegador, um favorito e
-      um atalho do Windows pedem tamanhos diferentes.
+      nenhum. <a href="../criar-um-favicon/">Faça um .ico</a>, que guarda vários
+      tamanhos num arquivo só, porque uma aba de navegador, um favorito e um
+      atalho do Windows pedem tamanhos diferentes.
     </p>
     <p><strong>Para impressão.</strong> Multiplique o tamanho físico em polegadas
       pela resolução da impressora. Uma logomarca indo para um cartão de visita
-      com cinco centímetros de largura a 300&nbsp;DPI dá 600 pixels; a mesma
+      com cinco centímetros de largura a 300&nbsp;DPI dá 600 pixels, e a mesma
       logomarca atravessando uma página A4, com 21&nbsp;centímetros, dá cerca de
       2500. As gráficas pedem 300&nbsp;DPI por hábito, e para um banner de grande
       formato visto do outro lado de uma sala 150 dá e sobra.
     </p>
     <p><strong>Para uma prévia em rede social ou uma imagem OG.</strong> A
-      plataforma nomeia uma caixa &mdash; 1200&nbsp;&times;&nbsp;630 na maioria
-      das prévias de link &mdash; e a caixa tem formato diferente da sua
-      logomarca. É para isso que serve o ajuste de &ldquo;completar com
-      margem&rdquo;: o desenho centralizado nas proporções dele, com uma cor de
-      fundo preenchendo o resto, em vez de uma logomarca esticada que conta a
-      todo mundo que você não conferiu.
+      plataforma nomeia uma caixa, normalmente 1200&nbsp;&times;&nbsp;630 nas
+      prévias de link, e a caixa tem formato diferente da sua logomarca. É para
+      isso que serve o ajuste de &ldquo;completar com margem&rdquo;: o desenho
+      centralizado nas proporções dele, com uma cor de fundo preenchendo o resto,
+      em vez de uma logomarca esticada que conta a todo mundo que você não
+      conferiu.
     </p>
     <p>
       Quando dois desses casos se aplicam, use o maior. Um PNG maior do que
-      precisa é um download um pouco maior; um pequeno demais não tem conserto
+      precisa é um download um pouco maior, e um pequeno demais não tem conserto
       depois, pelo motivo da próxima seção.
     </p>
   </section>
@@ -82,8 +81,8 @@
     <p>
       Rasterizar é caminho de mão única. Assim que o desenho vira um PNG ele é
       pixel como qualquer outra imagem, e ampliá-lo depois obriga a inventar
-      detalhe que nunca foi medido &mdash; o mesmo resultado macio e borrado que
-      se obtém ao ampliar uma fotografia.
+      detalhe que nunca foi medido, com o mesmo resultado macio e borrado que se
+      obtém ao ampliar uma fotografia.
     </p>
     <p>
       Então guarde o SVG. Ele é a cópia mestra, é quase sempre o arquivo menor, e
@@ -109,7 +108,7 @@
     </p>
     <p>
       <strong>Texto é desenhado com a fonte que a máquina tiver.</strong> Um SVG
-      que contém texto não contém a fonte &mdash; ele nomeia uma e deixa que o
+      que contém texto não contém a fonte: ele nomeia uma e deixa que o
       renderizador a encontre. Se a fonte não estiver instalada, uma substituta é
       usada, e a substituta tem outro desenho de letra e outras larguras, então o
       texto pode reorganizar ou transbordar. Um arquivo que puxa a fonte de um
@@ -122,7 +121,7 @@
       contornos</strong> antes de exportar o SVG (o Illustrator chama de Criar
       Contornos, o Figma chama de Flatten, o Inkscape chama de Objeto para
       Caminho). As letras viram geometria, a fonte deixa de importar e a imagem
-      fica igual em qualquer máquina. Faça numa cópia &mdash; texto contornado
+      fica igual em qualquer máquina. Faça numa cópia, porque texto contornado
       deixa de ser editável como texto.
     </p>
     <p>
@@ -131,9 +130,8 @@
       sólida, então é desenhado tênue. É por isso que uma logomarca delicada
       rasterizada a 64&nbsp;pixels fica desbotada enquanto o mesmo arquivo a 512
       fica perfeito. Se o tamanho pequeno é a exigência, a resposta é um desenho
-      simplificado com traços mais pesados, e não outro ajuste de exportação
-      &mdash; que é o mesmo motivo de um favicon ser um símbolo e não uma
-      logomarca escrita.
+      simplificado com traços mais pesados, e não outro ajuste de exportação, que
+      é o mesmo motivo de um favicon ser um símbolo e não uma logomarca escrita.
     </p>
     <p>
       <strong>A animação para.</strong> Um SVG animado rasteriza para uma única
@@ -147,17 +145,16 @@
     <h2>Transparência, e qual formato escolher</h2>
     <p>
       <strong>PNG</strong>, a menos que você tenha um motivo. É sem perdas,
-      mantém a transparência, e cor chapada com bordas duras &mdash; que é a
-      maior parte do que um desenho tem &mdash; comprime bem nele. Uma logomarca
-      rasterizada normalmente é um PNG <em>menor</em> do que seria um JPEG, além
-      de mais limpo.
+      mantém a transparência, e comprime bem cor chapada com bordas duras, que é
+      a maior parte do que um desenho tem. Uma logomarca rasterizada normalmente
+      é um PNG <em>menor</em> do que seria um JPEG, além de mais limpo.
     </p>
     <p>
       <strong>JPEG</strong> não tem transparência nenhuma. Cada pixel
       transparente tem que virar alguma cor, e se nada escolher uma por você ele
-      vira preto &mdash; que é de onde vem aquele resultado de logomarca sobre
-      caixa preta que as pessoas acham que é bug. Ele também é com perdas do jeito
-      que pior aparece exatamente nesse tipo de imagem: um anel de sujeirinha em
+      vira preto, que é de onde vem aquele resultado de logomarca sobre caixa
+      preta que as pessoas acham que é bug. Ele também é com perdas do jeito que
+      pior aparece exatamente nesse tipo de imagem: um anel de sujeirinha em
       volta de cada borda dura. Use quando alguma coisa insistir nele.
     </p>
     <p>
@@ -169,7 +166,7 @@
     <p>
       Escolher uma cor de fundo com PNG também é uma coisa perfeitamente comum de
       se querer. Transparência só é útil quando aquilo em que a imagem vai cair é
-      de uma cor que você não consegue prever; quando você já sabe que é uma
+      de uma cor que você não consegue prever, e quando você já sabe que é uma
       página branca, achatar sobre branco evita uma categoria inteira de
       surpresa.
     </p>
@@ -189,24 +186,24 @@
       arquivo tem <code>width</code> e <code>height</code> mas não tem
       <code>viewBox</code>, então não há sistema de coordenadas a escalar e a
       arte mantém as unidades originais num canvas maior. Um bom conversor coloca
-      um viewBox para você; se o seu não colocou, acrescentar
+      um viewBox por você. Se o seu não colocou, acrescentar
       <code>viewBox="0 0 <em>largura</em> <em>altura</em>"</code> no elemento raiz
       à mão resolve, e o arquivo é texto puro, então dá para fazer.
     </p>
     <p>
       <strong>Falta parte da imagem.</strong> Alguma coisa no arquivo apontava
-      para um endereço em vez de conter a arte &mdash; uma fotografia embutida
-      guardada como link, uma folha de estilo, uma fonte. Um rasterizador que se
-      recusa a buscar essas coisas está fazendo o certo, e é a mesma recusa que
-      impede um SVG que você baixou de algum lugar de dar notícia a quem o fez.
-      Reexporte do programa de desenho com as imagens embutidas.
+      para um endereço em vez de conter a arte: uma fotografia embutida guardada
+      como link, uma folha de estilo, uma fonte. Um rasterizador que se recusa a
+      buscar essas coisas está fazendo o certo, e é a mesma recusa que impede um
+      SVG que você baixou de algum lugar de dar notícia a quem o fez. Reexporte
+      do programa de desenho com as imagens embutidas.
     </p>
     <p>
       <strong>Ele recusa um tamanho muito grande.</strong> Os navegadores limitam
       o tamanho de um canvas, e não concordam sobre onde: passando de mais ou
       menos 16.000&nbsp;pixels de lado nada volta, e o Safari num iPhone ou iPad
       desiste bem antes, por volta de 4096&nbsp;&times;&nbsp;4096. Uma ferramenta
-      que avisa está lhe poupando de um arquivo em branco, porque é isso que um
+      que avisa está poupando você de um arquivo em branco, porque é isso que um
       navegador produz quando não dá conta, em vez de uma mensagem de erro.
     </p>
   </section>
@@ -214,26 +211,27 @@
   <section>
     <h2>Nada disso precisa de envio</h2>
     <p>
-      Rasterizar um SVG é coisa que todo navegador faz milhares de vezes por dia
-      &mdash; é o mesmo maquinário que desenha um ícone numa página web. Não há
-      motivo técnico para a sua arte viajar até um servidor e voltar para sair
-      como PNG, e a ferramenta daqui não manda ela para lugar nenhum: a
-      <code>Content-Security-Policy</code> da página nomeia todos os endereços
-      que ela pode contatar, e nenhum deles é deste site.
+      Rasterizar um SVG é coisa que todo navegador faz milhares de vezes por dia,
+      com o mesmo maquinário que desenha um ícone numa página web. Não há motivo
+      técnico para a sua arte viajar até um servidor e voltar para sair como PNG,
+      e a ferramenta daqui não manda a arte para lugar nenhum: a
+      <code>Content-Security-Policy</code> da página lista todos os endereços
+      que ela pode acessar, e nenhum deles é deste site.
     </p>
     <p>
       Isso importa mais que de costume com SVG, porque um SVG é um documento e
       não uma imagem. Ele pode conter um script e um endereço remoto, e uma
-      logomarca que uma agência lhe mandou é um arquivo que você não escreveu.
-      Desenhado por meio de uma tag de imagem, ele está no que a especificação
-      chama de <em>modo estático seguro</em>: o script não pode rodar e o endereço
-      nunca é contatado. Quem faz isso valer é o navegador, e não o site.
+      logomarca que uma agência mandou para você é um arquivo que você não
+      escreveu. Desenhado por meio de uma tag de imagem, ele fica no que a
+      especificação chama de <em>modo estático seguro</em>: o script não pode
+      rodar e o endereço nunca é acessado. Quem faz isso valer é o navegador, e
+      não o site.
     </p>
     <p>
-      Carregue a página, desconecte da internet e converta alguma coisa mesmo
-      assim, se preferir conferir a acreditar.
+      Se você prefere conferir a acreditar, carregue a página, desligue a
+      internet e converta alguma coisa assim mesmo. O
       <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
-      conversores online?</a> apresenta mais três verificações que você pode
-      fazer em qualquer ferramenta.
+      conversores online?</a> traz mais três verificações que você pode fazer em
+      qualquer ferramenta.
     </p>
   </section>
