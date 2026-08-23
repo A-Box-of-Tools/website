@@ -407,6 +407,26 @@ read_first_lead = """
       Zuerst lesenswert sind <code>config/site.toml</code> für die
       Content-Security-Policy"""
 
+[ui.feedback]
+# Die Beschriftungen der Daumen sind nur für Screenreader und den Tooltip - die
+# Symbole selbst brauchen keine Übersetzung.
+prompt = "Hat das geklappt?"
+up = "Ja"
+down = "Nein"
+dismiss = "Schließen"
+
+reason_prompt = "Was ist schiefgelaufen?"
+reason_wrong = "Falsches Ergebnis"
+reason_failed = "Nicht fertig geworden"
+reason_slow = "Zu langsam"
+reason_confusing = "Verwirrend"
+
+thanks = "Danke &mdash; das hilft."
+
+note = """
+      Gesendet wird nur die Antwort, und nur auf Knopfdruck. Nie Ihre Datei,
+      nie ihr Name, nie irgendetwas darüber."""
+
 [ui.guide]
 open_tool = "{{ tool.name | e }} öffnen"
 

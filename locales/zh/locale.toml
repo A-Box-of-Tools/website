@@ -295,6 +295,25 @@ read_first_lead = """
       最值得先读的几个文件：<code>config/site.toml</code> 里是
       Content-Security-Policy"""
 
+[ui.feedback]
+# 大拇指按钮的标签是给屏幕阅读器和悬停提示用的，图标本身不用翻译。
+prompt = "这次弄成了吗？"
+up = "成了"
+down = "没成"
+dismiss = "关闭"
+
+reason_prompt = "哪里不对？"
+reason_wrong = "结果不对"
+reason_failed = "没跑完"
+reason_slow = "太慢了"
+reason_confusing = "不会用"
+
+thanks = "谢谢 &mdash; 这很有帮助。"
+
+note = """
+      只有你的回答会被发出去，而且只在你按下按钮时。你的文件、文件名，以及跟它
+      有关的任何信息，都不会。"""
+
 [ui.guide]
 open_tool = "打开{{ tool.name | e }}"
 

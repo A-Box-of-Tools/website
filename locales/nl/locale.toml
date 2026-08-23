@@ -357,6 +357,26 @@ read_first_lead = """
       De bestanden die je als eerste wilt lezen zijn <code>config/site.toml</code>
       voor de Content-Security-Policy"""
 
+[ui.feedback]
+# De labels bij de duimen zijn voor de schermlezer en de tooltip; de icoontjes
+# spreken voor zich.
+prompt = "Heeft dit geholpen?"
+up = "Ja"
+down = "Nee"
+dismiss = "Sluiten"
+
+reason_prompt = "Wat ging er mis?"
+reason_wrong = "Verkeerd resultaat"
+reason_failed = "Kwam niet af"
+reason_slow = "Te traag"
+reason_confusing = "Onduidelijk"
+
+thanks = "Bedankt &mdash; daar hebben we wat aan."
+
+note = """
+      Alleen je antwoord wordt verstuurd, en alleen als je op een knop drukt.
+      Nooit je bestand, niet de naam ervan, en niets erover."""
+
 [ui.guide]
 # "Open de tool X" rather than "X openen": several tool names in Dutch are verb
 # phrases - "Afbeeldingsformaat wijzigen" - and "Afbeeldingsformaat wijzigen

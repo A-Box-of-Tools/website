@@ -394,6 +394,26 @@ read_first_lead = """
       먼저 읽어 볼 파일을 꼽자면, Content-Security-Policy는
       <code>config/site.toml</code>"""
 
+[ui.feedback]
+# 엄지 아이콘의 레이블은 스크린 리더와 툴팁을 위한 것입니다. 아이콘 자체는
+# 번역이 필요 없습니다.
+prompt = "원하는 결과가 나왔나요?"
+up = "예"
+down = "아니요"
+dismiss = "닫기"
+
+reason_prompt = "무엇이 잘못됐나요?"
+reason_wrong = "결과가 잘못됨"
+reason_failed = "끝까지 진행되지 않음"
+reason_slow = "너무 느림"
+reason_confusing = "쓰기 어려움"
+
+thanks = "고맙습니다 &mdash; 큰 도움이 됩니다."
+
+note = """
+      보내지는 것은 답변뿐이고, 그것도 버튼을 눌렀을 때만입니다. 파일도, 파일
+      이름도, 파일에 관한 어떤 정보도 보내지 않습니다."""
+
 [ui.guide]
 open_tool = "{{ tool.name | e }} 열기"
 

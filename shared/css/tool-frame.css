@@ -904,6 +904,121 @@ footer a:hover { text-decoration: underline; }
 .logo-band { fill: var(--accent); }
 .logo-latch { fill: var(--accent-pale); }
 
+/* --------------------------------------------------------------- feedback */
+
+/*
+  "Did this do the job?" - see shared/feedback.js and templates/partials/
+  feedback.html. It is deliberately quieter than anything around it: it sits in
+  the flow of the page rather than over it, it is the width of the content
+  column rather than the width of the screen, and it uses --surface-2 so it
+  reads as an aside next to the result it is asking about rather than as a
+  second thing to do.
+*/
+.feedback {
+  max-width: 940px;
+  margin: 1rem auto 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  animation: feedback-in 220ms ease-out;
+}
+
+@keyframes feedback-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* It arrives on its own, unasked. Something that moves without being touched is
+   the first thing to switch off when the visitor has said they want less of
+   that - and it has no meaning it needs the movement to carry. */
+@media (prefers-reduced-motion: reduce) {
+  .feedback { animation: none; }
+}
+
+.feedback-ask {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.8rem;
+}
+
+.feedback-q {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Pushes the close button to the far end, and is what lets the question keep
+   its natural width instead of being stretched by the row. */
+.feedback-votes {
+  display: flex;
+  gap: 0.4rem;
+  margin-inline-end: auto;
+}
+
+.feedback-vote {
+  background: var(--surface);
+  border-color: var(--border);
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0.35rem 0.75rem;
+}
+
+.feedback-vote:hover { border-color: var(--accent); }
+
+.feedback-close {
+  background: none;
+  border-color: transparent;
+  color: var(--text-dim);
+  padding: 0.25rem 0.45rem;
+  font-size: 0.9rem;
+}
+
+.feedback-close:hover { color: var(--text); }
+
+.feedback-why {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.8rem;
+}
+
+.feedback-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* Four of these have to fit a phone without becoming a column of full-width
+   buttons, which is why they are small and wrap rather than stretch. */
+.feedback-chip {
+  background: var(--surface);
+  border-color: var(--border);
+  font-size: 0.85rem;
+  padding: 0.3rem 0.65rem;
+}
+
+.feedback-chip:hover { border-color: var(--accent); }
+
+.feedback-thanks {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ok);
+}
+
+/* What is sent, in the smallest type on the panel. Small because it is a
+   footnote to a question, not the question - and present because the answer to
+   "what does this send" should be in front of somebody who is deciding whether
+   to press the button, not two pages away. */
+.feedback-note {
+  margin: 0.45rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
 /* ------------------------------------------------------------- ad placement */
 
 /* Auto ads inject their own <ins> elements wherever Google decides, so their

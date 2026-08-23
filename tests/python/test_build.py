@@ -287,6 +287,50 @@ class RelatedTools(unittest.TestCase):
         self.assertEqual({t['slug'] for t in ordered} - linked, set())
 
 
+class DownloadHooks(unittest.TestCase):
+    """Every save button a locale copy could have dropped the hook from.
+
+    shared/feedback.js finds a download by the click, and it recognises three
+    shapes in the markup: an <a download>, a button whose id starts with
+    "download", and anything carrying data-download. The first two are
+    structure, and a translator has no reason to touch either. The third is an
+    attribute on a button whose visible words ARE translated - and a tool's
+    body.html is copied whole into locales/<lang>/tools/<slug>.html, so a
+    translation is a chance to lose it.
+
+    Losing it is silent: the tool still works, the button still saves the file,
+    and that one language simply stops being asked the question. This is the
+    only thing that would notice.
+    """
+
+    def counts(self, text):
+        return len(re.findall(r'data-download', text))
+
+    def test_every_locale_copy_keeps_the_hook(self):
+        for source in sorted(ROOT.glob('tools/*/body.html')):
+            slug = source.parent.name
+            wanted = self.counts(source.read_text(encoding='utf-8'))
+            for copy in sorted(ROOT.glob(f'locales/*/tools/{slug}.html')):
+                with self.subTest(tool=slug, lang=copy.parent.parent.name):
+                    self.assertEqual(
+                        self.counts(copy.read_text(encoding='utf-8')), wanted,
+                        f'{copy.relative_to(ROOT)} has a different number of '
+                        'data-download attributes than the English body it is a '
+                        'translation of')
+
+    def test_the_tool_that_needs_one_has_one(self):
+        """exif-editor saves through a button named nothing like "download".
+
+        Named here rather than inferred, because the rule this is protecting is
+        not "some tool has the attribute" - it is that a save button which does
+        not announce itself in one of the other two ways has to opt in, and
+        exif-editor is the one that does not.
+        """
+        body = (ROOT / 'tools' / 'exif-editor' / 'body.html').read_text(encoding='utf-8')
+        self.assertIn('id="save-edits"', body)
+        self.assertRegex(body, r'id="save-edits"[^>]*data-download')
+
+
 class BuildTheSite(unittest.TestCase):
     """A whole plain build, into a temporary directory.
 
@@ -387,6 +431,59 @@ class BuildTheSite(unittest.TestCase):
         worker = (self.out / slug / 'sw.js').read_text(encoding='utf-8')
         version = page.split('styles.css?v=')[1].split('"')[0].split("'")[0]
         self.assertIn(f'styles.css?v={version}', worker)
+
+    def test_a_tool_page_asks_its_question(self):
+        """The panel, and the one script that can act on it.
+
+        Both halves, because either on its own is a page that looks right and
+        does nothing: markup with no script never appears, and a script with no
+        markup returns on its first line.
+        """
+        slug = sorted(p.parent.name for p in ROOT.glob('tools/*/tool.toml'))[0]
+        page = (self.out / slug / 'index.html').read_text(encoding='utf-8')
+        self.assertIn('id="feedback"', page)
+        self.assertIn(f'data-tool="{slug}"', page)
+        self.assertIn('/feedback.js?v=', page)
+        self.assertTrue((self.out / 'feedback.js').is_file())
+
+    def test_the_question_is_asked_in_the_language_of_the_page(self):
+        """A translated tool page asks in that language, not in English.
+
+        The frame's words fall back to English wherever a locale has not
+        written them, and a fallback is not an error - so without this, adding a
+        string to the frame and never translating it would show up as an English
+        sentence in the middle of a Japanese page and nothing would say so.
+
+        Read off the two <p class="feedback-q"> the panel renders rather than
+        off the whole page, because the whole page also carries the partial's
+        own comment, and that comment quotes the English question.
+        """
+        finished = [locale for locale in self.locales
+                    if not locale['is_base'] and locale['complete']]
+        if not finished:
+            self.skipTest('no locale has finished the frame')
+
+        def questions(page):
+            return re.findall(r'<p class="feedback-q">(.*?)</p>',
+                              page.read_text(encoding='utf-8'), re.S)
+
+        slug = sorted(p.parent.name for p in ROOT.glob('tools/*/tool.toml'))[0]
+        english = questions(self.out / slug / 'index.html')
+        self.assertEqual(len(english), 2, 'the panel asks two questions')
+
+        for locale in finished:
+            with self.subTest(lang=locale['lang']):
+                path = buildmod.i18n.locale_path(locale, slug).strip('/')
+                asked = questions(self.out / path / 'index.html')
+                self.assertEqual(len(asked), len(english))
+                for said, in_english in zip(asked, english):
+                    self.assertNotEqual(said.strip(), in_english.strip())
+
+    def test_the_hub_does_not_ask_it(self):
+        """Nothing to download there, so nothing to ask about."""
+        hub = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertNotIn('id="feedback"', hub)
+        self.assertNotIn('feedback.js', hub)
 
     def test_a_vendored_engine_is_copied_and_precached(self):
         """Any tool with a vendor/ folder gets it byte for byte, and cached.
