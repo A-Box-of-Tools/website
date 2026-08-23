@@ -1,16 +1,24 @@
 #
-# 指南：把图片合成一个 PDF - Simplified Chinese.
+# Guide: combining images into a PDF - Simplified Chinese.
+#
+# Overrides for pages/guides/combine-images-into-a-pdf/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
 #
 
 nav = "图片合成 PDF"
-title = "怎么把图片合成一个 PDF"
-description = "把照片或扫描件变成一个 PDF：页面尺寸、顺序和旋转，为什么 JPEG 放进去可以一点质量都不掉，以及一个 PDF 会向收件人透露些什么。"
-heading = "怎么把图片合成一个 PDF"
+
+title = "怎么把多张图片合成一个 PDF"
+description = "把照片或者扫描件做成一个 PDF：页面大小、顺序和旋转，JPEG 为什么进去时可以一点不掉画质，以及这份 PDF 会向收件人交代些什么。"
+
+heading = "怎么把多张图片合成一个 PDF"
 lede = """
-    有人跟你要“一个 PDF”，而你手上是十一张拍着纸的照片。这里讲的是真正会
-    改变结果的那几个选择，页面尺寸、顺序、质量，还有这个文档会替你说些什么，
-    以及哪些你可以不用管。"""
+    人家要“一个 PDF”，而你手上是十一张纸的照片。这一页讲那些真正改变结果的\
+    选择：页面大小、顺序、画质，还有这份文档会把你交代多少，以及哪些其实\
+    不用管。"""
+
 updated = "2026年8月20日"
-og_title = "怎么把图片合成一个 PDF"
-og_description = "页面尺寸、顺序和旋转，为什么 JPEG 放进去可以不掉质量，以及一个 PDF 会向收件人透露些什么。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+
+og_title = "怎么把多张图片合成一个 PDF"
+og_description = "页面大小、顺序和旋转，JPEG 为什么进去时可以不掉画质，以及这份 PDF 会向收件人交代些什么。"
+og_image_alt = "abox.tools - 不走服务器的工具"

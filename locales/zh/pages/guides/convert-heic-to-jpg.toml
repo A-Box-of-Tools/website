@@ -1,16 +1,24 @@
 #
-# 指南：iPhone 存出来的那个格式，以及怎么从里面出来 - Simplified Chinese.
+# Guide: HEIC, and how to get out of it - Simplified Chinese.
+#
+# Overrides for pages/guides/convert-heic-to-jpg/page.toml. Prose in the .html
+# beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
 #
 
 nav = "HEIC 转 JPG"
-title = "怎么把 HEIC 转成 JPG（以及 HEIC 到底是什么）"
-description = "iPhone 把照片存成 HEIC，而半个互联网打不开它。这个格式是什么、为什么只有 Safari 解得了、转换要付出什么代价，以及怎么在不把照片上传给任何人的前提下完成它。"
-heading = "你手机存下的那张照片，和那个什么都打不开的格式"
+
+title = "HEIC 怎么转成 JPG（以及 HEIC 到底是什么）"
+description = "iPhone 把照片存成 HEIC，而半个互联网打不开它。这个格式是什么，为什么只有 Safari 解得了，转换要拿画质换多少，以及怎么做到不把照片交给任何人。"
+
+heading = "手机存下的那张照片，和那个什么都打不开的格式"
 lede = """
     iPhone 把照片存成 HEIC，它比 JPEG 更小也更好，而大量软件至今拒绝打开它。\
-    这里讲的是这个格式到底是什么、转换要让画面付出什么代价，以及为什么几乎\
-    每一个转换器都要你先把它传上去。"""
+    这一页讲这个格式究竟是什么，转换要拿画质换多少，以及为什么几乎每一个\
+    转换器都要你先把照片传上去。"""
+
 updated = "2026年8月20日"
-og_title = "怎么把 HEIC 转成 JPG"
-og_description = "为什么 iPhone 的照片打不开、转换要付出什么代价，以及怎么在不把照片交给任何人的前提下完成它。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+
+og_title = "HEIC 怎么转成 JPG"
+og_description = "iPhone 的照片为什么打不开，转换的代价是什么，以及怎么做到不把照片交给任何人。"
+og_image_alt = "abox.tools - 不走服务器的工具"

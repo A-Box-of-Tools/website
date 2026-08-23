@@ -25,13 +25,29 @@
 #
 # HOUSE STYLE, decided here and held to across every file in this locale
 #
+# This locale is written, not translated, and is not meant to be diffable
+# against the English sentence for sentence. Same tools, same claims, same
+# order - said the way a Chinese writer would say them. English builds one long
+# sentence out of a relative clause and an appositive; this builds three short
+# ones. English needs a pronoun in every clause; this drops the subject. So a
+# paragraph here often has a different number of sentences than the English
+# paragraph it stands for, and that is the point rather than drift.
+#
 #   * the reader is 你, never 您, on every page including the legal ones;
+#   * short sentences. If a clause can end, end it. A 逗号 chain longer than
+#     about three clauses is an English sentence wearing Chinese characters;
+#   * no 破折号, and no colon sprung the English way to reveal something. A
+#     Chinese colon introduces a list or a quotation and little else;
+#   * 的 is rationed, a passive becomes topic-comment, and 它/它们 appear only
+#     where a Chinese reader would otherwise lose the thread;
 #   * one half-width space between Han text and Latin letters or digits, and
 #     none between Han text and full-width punctuation. Dates are the standing
 #     exception, because Chinese typography sets them closed up: 2026年8月20日;
 #   * full-width punctuation throughout: ，。、；：“”‘’（）《》;
-#   * no 破折号. An English em-dash aside is re-hinged into short clauses joined
-#     by commas, so `&mdash;` survives only where the markup itself needs it;
+#   * NO LINE BREAK INSIDE A SENTENCE. Between two Han characters a break is a
+#     gap the reader can see, and there is no English space for it to hide in.
+#     Long values wrap with a trailing backslash, which TOML eats along with
+#     the indentation of the line after it;
 #   * the title separator is " | " rather than a dash, because that is what a
 #     Chinese search result actually looks like.
 #
@@ -50,73 +66,73 @@ complete = true
 #
 
 [hub]
-title = "免费在线工具 | 文件不上传，也不用注册 | abox.tools"
+title = "免费在线工具箱 | 不上传文件，不用注册 | abox.tools"
 # 中文搜索结果大约在这个长度截断。
-description = "全部免费，文件不上传。图片合成 PDF 或 MP4、把图片压到指定大小、裁剪视频、清除 EXIF 信息，都在你的浏览器里完成。"
-heading = "不碰服务器的工具箱"
-og_title = "A Box of Tools | 不碰服务器的工具"
-og_description = "每个工具只做一件事，全部工作都在你的浏览器里完成。文件不会离开你的设备。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
-schema_description = "每个工具只做一件事，全部工作都在浏览器里完成。不上传任何东西，也不需要账号。"
-schema_about = "在浏览器里运行、在本地处理文件而不上传的文件工具"
+description = "全部免费，文件不用上传。图片拼成 PDF 或 MP4、把图压到指定大小、裁视频、清 EXIF，都在你自己的浏览器里做完。"
+heading = "一箱子工具，都不走服务器"
+og_title = "A Box of Tools | 不走服务器的工具"
+og_description = "一个工具只干一件事，全程在你的浏览器里跑。文件不出这台机器。"
+og_image_alt = "abox.tools - 不走服务器的工具"
+schema_description = "一个工具只干一件事，活全在浏览器里干完。没有东西要上传，也不用账号。"
+schema_about = "在浏览器里就地处理文件、不需要上传的文件工具"
 
 lede = """
-    每个工具只做一件事，全部工作都在你的浏览器里完成。文件留在你自己的设备
-    上，没有什么要上传，不用注册账号，也不做任何追踪。"""
+    一个工具只干一件事，全程在你的浏览器里跑。文件留在你自己的机器上，没有\
+    东西要传，没有账号要注册，也没人在旁边记你干了什么。"""
 
 support_note = """
-      这些工具免费，以后也一直免费。如果哪个帮你省了事，本站开口向你要东西
-      的地方只有这一处。"""
+      这些工具免费，以后也一样。要是哪个真帮你省了事，全站开口跟你要点什么\
+      的地方，就这一处。"""
 
 # 不是承诺，是三条你自己就能验证的事实（与英文版一致）。
 [[hub.guarantees]]
-title = "文件不会离开你的设备"
+title = "文件不出你这台机器"
 body = """
-        打开、读取、处理文件的是你自己的浏览器，用的是你自己的硬件。每个工具
-        的 <code>Content-Security-Policy</code> 都把允许连接的地址一条不漏地
-        列了出来，其中没有一条属于我们。"""
+        打开、读取、处理，全是你自己的浏览器在做，用的是你自己的硬件。每个\
+        工具的 <code>Content-Security-Policy</code> 都把允许联的地址列全了，\
+        里面没有一个是我们的。"""
 
 [[hub.guarantees]]
-title = "关于你文件的信息也不会外传"
+title = "连你文件的信息也传不出去"
 body = """
-        文件本身不会，缩略图、文件名、大小、你选了几个，也都不会。这里没有哪
-        个工具去读这些东西，另一端也没有服务器可以接收。"""
+        文件本身不传，缩略图、文件名、大小、选了几个，一样不传。这里没有哪个\
+        工具去读这些，另一头也没有服务器等着收。"""
 
 [[hub.guarantees]]
-title = "断网也照样能用"
+title = "断网照样能用"
 body = """
-        把工具打开一次，然后断开网络，它照样处理你的文件，和联网时一模一样。
-        这一点很难作假，真要把文件送出去处理，断网那一刻就动不了了。"""
+        把工具打开一次，然后拔掉网线，它照干不误，跟联网时没有区别。这一步很\
+        难作假。真要把文件送出去处理，断网当场就停。"""
 
 [[hub.categories]]
 id = "images-and-video"
 name = "图片与视频"
-note = "处理照片和素材，不用交给任何人。"
+note = "修图、剪片，不用把东西交给谁。"
 
 [[hub.categories]]
 id = "gif-and-animation"
 name = "GIF 与动画"
-note = "做一段动画，或者把动画拆成帧，文件都不离开你的设备。"
+note = "做一段动画，或者把动画拆开看，文件都不出这台机器。"
 
 [[hub.categories]]
 id = "audio"
 name = "音频"
-note = "处理录音不用交给别人，视频里的声音也一样。"
+note = "剪录音不用交给别人，剪视频里的声音也一样。"
 
 [[hub.categories]]
 id = "documents-and-pdf"
 name = "文档与 PDF"
-note = "做文档、重排文档，都不用送出去处理。"
+note = "拼文档、拆文档、给文档瘦身，不用送出去处理。"
 
 [[hub.categories]]
 id = "codes-and-data"
 name = "编码与数据"
-note = "把你输入的内容变成机器读得懂的东西，不用离开这个页面。"
+note = "把你打进去的内容变成机器读得懂的东西，不用离开这个页面。"
 
 [[hub.categories]]
 id = "text-and-code"
 name = "文本与代码"
-note = "查看、比对、编码，不用把令牌或者配置文件粘到别人的服务器上。"
+note = "看一看、比一比、编个码，不用把令牌和配置文件贴到别人的服务器上。"
 
 #
 # ---------------------------------------------------------------------------
@@ -126,26 +142,26 @@ note = "查看、比对、编码，不用把令牌或者配置文件粘到别人
 
 [guides]
 nav = "全部指南"
-title = "指南 | 这件事怎么做，每个选择又要付出什么"
-description = "用大白话讲清楚怎么压缩、缩放、裁剪、剪辑、转换自己的文件。设置是什么意思，代价在哪里，为什么这些全都不用上传。"
+title = "指南 | 这活怎么干，每个选择又要付出什么"
+description = "压缩、缩放、裁剪、剪辑、转格式，一件一件说清楚。设置到底动了什么，代价在哪儿，为什么这些都用不着上传。"
 heading = "指南"
 lede = """
-    一个工具一篇，写给那些被要求交出某个大小或者某种格式、又想弄明白手上这个
-    设置到底在动什么的人。这里讲的每一步都发生在你自己的设备上。"""
+    一个工具一篇。写给那些被人要求交出某个大小、某种格式，又想弄明白手上这个\
+    设置到底在动什么的人。这里讲的每一步，都发生在你自己的机器上。"""
 og_title = "abox.tools 指南"
-og_description = "怎么压缩、缩放、裁剪、剪辑、转换自己的文件，每个设置又要付出什么。全程不涉及上传。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+og_description = "怎么压缩、缩放、裁剪、剪辑、转换自己的文件，每个设置又要付出什么。全程用不着上传。"
+og_image_alt = "abox.tools - 不走服务器的工具"
 
 
 [[guides.groups]]
 id = "doing-the-job"
-name = "把事做完"
-note = "一个工具一篇，讲这件事要做什么、哪个设置真正管用、又要付出什么。"
+name = "把活干完"
+note = "一个工具一篇：这活要做什么，哪个设置真管用，代价又是什么。"
 
 [[guides.groups]]
 id = "before-you-upload"
-name = "上传任何东西之前"
-note = "把文件交给一个网站到底意味着什么，以及怎么判断这一步是不是非做不可。"
+name = "上传之前"
+note = "把文件交给一个网站，到底等于交出了什么，以及这一步是不是非做不可。"
 
 #
 # ---------------------------------------------------------------------------
@@ -156,36 +172,36 @@ note = "把文件交给一个网站到底意味着什么，以及怎么判断这
 
 [roadmap]
 nav = "路线图"
-title = "路线图 | abox.tools 接下来要做什么"
-description = "abox.tools 计划中的工具全都分好类公开列在这里，已经做完的也在。它们都在浏览器里跑，都不上传任何东西。"
+title = "路线图 | abox.tools 接下来做什么"
+description = "abox.tools 打算做的工具都在这儿，分好类，公开列着，已经做完的也在。全都在浏览器里跑，全都不上传。"
 heading = "接下来做什么"
 lede = """
-    下面两份清单上的每一项，都在你的浏览器里干活，都不上传东西，一个名字要想
-    进这份清单，先得过这一关。数字没有写死在任何地方，是构建脚本从这两份清单
-    上数出来的。"""
+    下面两份清单上的每一项，都得在你的浏览器里干活，都得不上传东西。过不了\
+    这一关，名字根本上不了榜。两个数字没写死在任何地方，是构建脚本从清单上\
+    数出来的。"""
 
-intro_heading = "这份清单是怎么定下来的"
+intro_heading = "这份清单是怎么定出来的"
 intro = """
     <p>
-      这不是许愿单。做法是把网上最大的 GIF 和视频站点的工具列表从头到尾过一
-      遍，那份列表大概是现存最接近“人们到底想拿文件做什么”的一份目录，然后
-      只留下那些能做到让处理发生在你自己设备上、拔掉网线也照样干活的条目。
+      这不是许愿单。做法是把网上最大那家 GIF 和视频站点的工具列表从头到尾过\
+      一遍，那份列表大概是现存最接近“人们到底想拿文件做什么”的一份目录，然后\
+      只留下那些能做到在你自己机器上完成、拔了网线也照干的条目。
     </p>
     <p>
-      留下来的绝大多数靠浏览器本来就带的接口就够了。少数几个得把编解码器打包
-      进唯一用到它的那个工具里，这也算过关，文件照样不离开设备。达不到这条线
-      的宁可不写，所以下面几个看着很明显的空缺，是故意空着的。
+      留下来的绝大多数，靠浏览器本来就带的接口就够了。少数几个得把编解码器\
+      打包进唯一用到它的那个工具里，这也算过关，文件照样不出这台机器。达不到\
+      这条线的宁可不写，所以下面几个看着很明显的空缺，是故意空着的。
     </p>
     <p>
-      已经做出来的工具排在各自分组最前面，标着<em>已完成</em>，点进去就是它
-      自己的页面。下面的都还没做，做出来之前不会变成链接。
+      已经做出来的排在各自分组最前面，标着<em>已完成</em>，点进去就是它自己的\
+      页面。下面的都还没做，做出来之前不会变成链接。
     </p>"""
 
 planned_heading = "每一类文件，以及能拿它做什么"
 
 og_title = "abox.tools 路线图"
-og_description = "哪些做好了，接下来做什么。全部在浏览器里运行，都不上传任何东西。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+og_description = "哪些做好了，接下来做什么。全都在浏览器里跑，全都不上传。"
+og_image_alt = "abox.tools - 不走服务器的工具"
 
 #
 # ---------------------------------------------------------------------------
@@ -194,15 +210,15 @@ og_image_alt = "abox.tools - 不碰服务器的工具"
 #
 
 [not_found]
-title = "页面找不到 | abox.tools"
-description = "abox.tools 上没有这个地址。下面这些工具是真有的，全部免费，也没有一个会把你的文件传到别处。"
-heading = "这个页面不在这里"
-tools_heading = "全部工具，都在这里"
-tools_note = "全部免费，全部在你的浏览器里跑，没有一个会上传东西。"
+title = "页面不存在 | abox.tools"
+description = "abox.tools 上没有这个地址。下面这些工具是真有的，全部免费，也没有一个会把你的文件传去别处。"
+heading = "这个页面不在这儿"
+tools_heading = "全部工具，都在这儿"
+tools_note = "全部免费，全在你的浏览器里跑，没有一个上传东西。"
 
 lede = """
-    要么地址打错了，要么原本在这儿的东西挪走了。你的文件没出问题，也没丢什么。
-    本站从来没拿到过你的东西，也就无从丢起。"""
+    要么地址打错了，要么原来在这儿的东西挪了地方。你的文件没事，也没丢掉\
+    什么。本站从来没拿到过你的东西，想丢也无从丢起。"""
 
 #
 # ---------------------------------------------------------------------------
@@ -212,9 +228,9 @@ lede = """
 
 [footer]
 blurb = """
-        不碰服务器的工具。文件留在你自己的设备上，没有什么要上传，也不用
-        注册账号。"""
-base = "本站的每一句话，都是写来让你核对的，不是写来让你信的。"
+        不走服务器的工具。文件留在你自己的机器上，没有东西要传，也不用注册\
+        账号。"""
+base = "本站说的每一句话，都是写来给你核对的，不是写来让你信的。"
 
 #
 # ---------------------------------------------------------------------------
@@ -225,8 +241,8 @@ base = "本站的每一句话，都是写来让你核对的，不是写来让你
 
 [ui]
 languages = "语言"
-lang_auto = "这个页面按简体中文显示，因为你的浏览器要的是这个语言。"
-lang_untranslated = "这个页面还是英文的"
+lang_auto = "你的浏览器要的是简体中文，所以这个页面按简体中文显示。"
+lang_untranslated = "这个页面还是英文"
 breadcrumb = "面包屑导航"
 all_tools = "全部工具"
 last_updated = "最后更新"
@@ -245,51 +261,52 @@ footer_sitemap = "站点地图"
 footer_source = "在 GitHub 上读代码"
 
 guarantees_note = """
-    上面这些都不用你凭信任接受。
+    上面这些不用你信。
     <a href="{{ base }}{{ links.safety_guide }}/">
-      怎么判断一个工具是不是真的需要你的文件</a>
-    里有四项你自己动手就能做的检查，对本站管用，对别的网站也一样。"""
+      怎么判断一个工具是不是真需要你的文件</a>
+    里有四项你自己动手就能做的检查，用在本站管用，用在别家也一样。"""
 
 hub_guides_note = """
     不知道该动哪个设置，也不清楚代价？
     <a href="{{ base }}{{ links.guides }}/">每个工具都配了一篇指南</a>。"""
 
 hub_roadmap_note = """
-    后面还有，清单也是公开的，
-    <a href="{{ base }}{{ links.roadmap }}/">看看接下来要做什么</a>。"""
+    后面还有，清单也是公开的。
+    <a href="{{ base }}{{ links.roadmap }}/">看看接下来做什么</a>。"""
 
 guides_all_note = """
-    这里每一篇指南讲的都是一个跑在你自己设备上的工具，
-    <a href="{{ base }}">全部看一遍</a>。"""
+    这里每篇指南讲的工具，都跑在你自己的机器上。
+    <a href="{{ base }}">全都在这儿</a>。"""
 
 [ui.tool]
 view_source = "查看源码"
-how_verified = "这一条怎么验证"
+how_verified = "这条怎么核实"
 live_check = "实时检查："
 offline = "离线："
 checking = "检查中&hellip;"
 questions_heading = "常见问题"
-guide_heading = "详细版本"
-related_heading = "工具箱里的其他工具"
-privacy_heading = "隐私这一条要怎么验证"
+guide_heading = "说得更细的版本"
+related_heading = "工具箱里还有"
+privacy_heading = "这条隐私承诺怎么核实"
 
 pledge_line = """
-    你的{{ tool.words.plural }}<strong>不会被上传</strong>。这里根本没有服务器。"""
+    你的{{ tool.words.plural }}<strong>不会上传</strong>。这里根本没有服务器。"""
 
-boot_title = "这个页面的代码没能启动。"
+boot_title = "这个页面的代码没跑起来。"
 boot_body = """
-    直接从文件夹里打开 <code>index.html</code>，浏览器会拦下 JavaScript 模块，
-    于是选择{{ tool.words.choose }}的时候什么反应都没有。请改用 http 提供这个文件夹："""
+    直接从文件夹里打开 <code>index.html</code>，浏览器会拦下 JavaScript 模块，\
+    于是你选好{{ tool.words.choose }}之后，页面不会有任何反应。改用 http 把这个\
+    文件夹提供出去："""
 boot_then = "然后打开 <code>http://localhost:8080/</code>。"
 
-noscript_title = "JavaScript 已停用。"
-noscript_body = "这个应用全部工作都在你的浏览器里完成，没有 JavaScript 就跑不起来。"
+noscript_title = "JavaScript 被停用了。"
+noscript_body = "这个页面全部的活都在你的浏览器里干，没有 JavaScript 就跑不起来。"
 
 check_yourself = """
-      <strong>你可以自己核对。</strong>上面这些都不用你凭信任接受。这个页面是
-      仓库里的模板和配置，经过一个你能读、也能自己跑的构建脚本生成出来的，
-      结果提交在 <code>dist</code> 分支上，所以你可以拿实际提供的内容和从源码
-      构建出来的结果直接对比："""
+      <strong>你可以自己核对。</strong>上面这些不用你信。这个页面是仓库里的\
+      模板和配置生成出来的，构建脚本你能读，也能自己跑一遍，跑出来的结果就\
+      提交在 <code>dist</code> 分支上。拿实际发给你的内容，跟你自己从源码\
+      构建出来的结果对一遍就知道了："""
 
 read_first_lead = """
       最值得先读的几个文件：<code>config/site.toml</code> 里是
@@ -300,11 +317,11 @@ open_tool = "打开{{ tool.name | e }}"
 
 [ui.picker]
 warning = """
-      <strong>这是唯一一个会碰到网络的功能。</strong>
-      抓取一个网址，等于告诉那台服务器你的 IP 地址，以及你要的{{ tool.picker.urls.noun }}是哪一个。
-      {{ tool.picker.urls.noun }}到手之后会复制进本地内存，不会再请求第二次。你这边始终不会有东西
-      发出去，这个页面还是做不了任何形式的上传。"""
-label = "每行一个网址"
+      <strong>这是唯一一处会碰网络的功能。</strong>
+      抓一个网址，等于告诉那台服务器你的 IP 地址，以及你要的是哪个{{ tool.picker.urls.noun }}。\
+      {{ tool.picker.urls.noun }}到手之后复制进本地内存，不会再请求第二次。你这边\
+      始终没有东西发出去，这个页面照样做不了任何形式的上传。"""
+label = "一行一个网址"
 note = """
-      对方服务器必须允许跨域使用它的{{ tool.picker.urls.noun }}。很多站点不允许，这些会直接带着一条
-      提示失败，而不是过一阵子悄无声息地出问题。"""
+      对方服务器得允许跨域使用它的{{ tool.picker.urls.noun }}。很多站点不允许，\
+      这类会当场失败并说明原因，不会过一阵子悄没声地出问题。"""

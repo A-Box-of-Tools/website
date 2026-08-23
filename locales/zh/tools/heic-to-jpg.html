@@ -11,7 +11,7 @@
     <h2><span class="step">1</span> 选好你的 HEIC 照片</h2>
 
     <p class="card-lede">
-      直接从手机里、从备份里，或者从存储卡上拷过来的都行。文件就在这台机器上读取，画面也在这里解码，这个页面里没有上传这一步，它背后也没有服务器。
+      手机里直接拷的、备份里翻出来的、存储卡上拿的，都行。文件就在这台机器上读，画面也在这里解码。这个页面没有上传这一步，背后也没有服务器。
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -19,7 +19,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">全部移出列表</button>
+        <button type="button" id="clear-all" class="ghost danger">清空列表</button>
       </div>
     </div>
 
@@ -30,17 +30,17 @@
 
   <!-- 第 2 步，要什么样的结果 -->
   <section class="card" id="options-card">
-    <h2><span class="step">2</span> 说明你想要什么</h2>
+    <h2><span class="step">2</span> 想要什么样的结果</h2>
 
     <fieldset class="options">
       <legend>格式</legend>
 
       <div class="option-row">
-        <label for="format-select">把画面写成</label>
+        <label for="format-select">把画面存成</label>
         <select id="format-select">
-          <option value="image/jpeg" selected>JPEG，到哪儿都打得开，包括那些不小心活到本世纪的东西</option>
-          <option value="image/png">PNG，无损，体积是好几倍</option>
-          <option value="image/webp">WebP，同等质量下比 JPEG 小，但只有新浏览器认</option>
+          <option value="image/jpeg" selected>JPEG，什么都打得开，连老掉牙的软件也认</option>
+          <option value="image/png">PNG，无损，体积翻好几倍</option>
+          <option value="image/webp">WebP，同画质下比 JPEG 小，但只有新浏览器认</option>
         </select>
       </div>
 
@@ -56,19 +56,19 @@
     </fieldset>
 
     <fieldset class="options">
-      <legend>照片的那些细节</legend>
+      <legend>照片里的那些信息</legend>
 
       <label class="check">
         <input type="checkbox" id="keep-exif" checked>
         <span>
           <strong>保留日期、相机和参数</strong>
-          <span class="check-note">按手机写的样子原样复制过去，所以转换后的照片仍然按拍摄那天排序，而不是按转换那天。照片带 GPS 坐标时，坐标也一起带上，上面那份列表会说明你的哪几张带着。把它关掉，出来的 JPEG 里除了画面什么都没有。
+          <span class="check-note">按手机写的样子原样复制过去，所以转换后的照片还是按拍摄那天排序，不是按转换那天。照片带 GPS 坐标的话，坐标也一起带上，上面那份列表写明了你的哪几张带着。关掉它，出来的 JPEG 里只剩画面。
           </span>
         </span>
       </label>
 
       <p class="field-summary">
-        选哪一边都一样，这里没有任何东西被读给谁听。这个选择管的是你拿回去的那个文件里装什么，不是这个页面拿它做什么。你要是想逐条细看那些标签，或者把已经是 JPEG 的照片里的标签清掉，<a href="../exif-editor/">EXIF 查看与清除</a>才是干这个的工具。
+        选哪边都一样，这里没有任何东西会被读给谁听。这个选择管的是你拿回去的文件里装什么，不是这个页面拿它做什么。想逐条细看那些标签，或者把已经是 JPEG 的照片里的标签清掉，那是 <a href="../exif-editor/">EXIF 查看与清除</a>干的活。
       </p>
     </fieldset>
   </section>

@@ -6,9 +6,9 @@
   visible on the page.
 -->
 <main>
-  <!-- 第 1 步，选图片 -->
+  <!-- 第 1 步，选图 -->
   <section class="card">
-    <h2><span class="step">1</span> 选择图片</h2>
+    <h2><span class="step">1</span> 选图片</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -23,38 +23,38 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <div class="view-switch" role="group" aria-label="改变列表的显示方式">
+        <div class="view-switch" role="group" aria-label="换一种列表显示方式">
           <button type="button" data-view="large" class="active">大图</button>
           <button type="button" data-view="small">小图</button>
           <button type="button" data-view="list">列表</button>
-          <button type="button" data-view="details">详细</button>
+          <button type="button" data-view="details">详情</button>
         </div>
-        <button type="button" data-sort="name" class="ghost">按名称排序</button>
-        <button type="button" data-sort="date" class="ghost">按日期排序</button>
-        <button type="button" data-sort="reverse" class="ghost">倒序</button>
+        <button type="button" data-sort="name" class="ghost">按名字排</button>
+        <button type="button" data-sort="date" class="ghost">按日期排</button>
+        <button type="button" data-sort="reverse" class="ghost">倒过来</button>
         <button type="button" id="clear-all" class="ghost danger">全部移除</button>
       </div>
     </div>
 
     <p id="reorder-hint" class="reorder-hint" hidden>
-      抓住任意一张图片的 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动就能重排，用每张图上的箭头也行。
+      抓住图片上的<span class="grip" aria-hidden="true">&#8942;&#8942;</span>手柄拖动换顺序，或者按每张图上的箭头。
     </p>
 
     <ul id="image-list" class="image-list view-large"></ul>
 
     <div id="bulk-duration" class="bulk" hidden>
-      <label for="bulk-amount">每张图片停留</label>
+      <label for="bulk-amount">每张图停</label>
       <input type="number" id="bulk-amount" min="1" max="3600" step="1" value="1">
-      <select id="duration-unit" aria-label="每张图片停留时间的单位">
+      <select id="duration-unit" aria-label="每张图停留时间的单位">
         <option value="frames" selected>帧</option>
         <option value="seconds">秒</option>
       </select>
-      <button type="button" id="apply-bulk" class="ghost">应用到全部</button>
+      <button type="button" id="apply-bulk" class="ghost">全部套用</button>
       <span class="bulk-note" id="bulk-note"></span>
     </div>
   </section>
 
-  <!-- 第 2 步，设置 -->
+  <!-- 第 2 步，视频设置 -->
   <section class="card">
     <h2><span class="step">2</span> 视频设置</h2>
 
@@ -62,20 +62,20 @@
       <div class="field">
         <label for="resolution">分辨率</label>
         <select id="resolution">
-          <option value="auto" selected>跟随最高分辨率</option>
+          <option value="auto" selected>跟最大的那张走</option>
           <option value="3840x2160">3840 &times; 2160，4K</option>
           <option value="1920x1080">1920 &times; 1080，1080p</option>
           <option value="1280x720">1280 &times; 720，720p</option>
           <option value="1080x1080">1080 &times; 1080，方形</option>
-          <option value="1080x1920">1080 &times; 1920，竖版</option>
-          <option value="custom">自定义&hellip;</option>
+          <option value="1080x1920">1080 &times; 1920，竖屏</option>
+          <option value="custom">自己填&hellip;</option>
         </select>
         <div id="resolution-custom" class="inline-pair" hidden>
           <input type="number" id="custom-width" min="16" max="7680" step="2" value="1920"
-                 aria-label="自定义输出宽度，以像素计">
+                 aria-label="自定义输出宽度，单位像素">
           <span aria-hidden="true">&times;</span>
           <input type="number" id="custom-height" min="16" max="7680" step="2" value="1080"
-                 aria-label="自定义输出高度，以像素计">
+                 aria-label="自定义输出高度，单位像素">
         </div>
         <p class="field-note" id="resolution-note"></p>
       </div>
@@ -90,34 +90,34 @@
           <option value="30" selected>30 fps</option>
           <option value="50">50 fps</option>
           <option value="60">60 fps</option>
-          <option value="custom">自定义&hellip;</option>
+          <option value="custom">自己填&hellip;</option>
         </select>
         <input type="number" id="fps-custom" class="spaced" min="1" max="120" step="1" value="30"
-               aria-label="自定义帧率，每秒帧数" hidden>
+               aria-label="自定义帧率，单位帧每秒" hidden>
         <p class="field-note" id="fps-note"></p>
       </div>
 
       <div class="field">
-        <label for="fit">图片怎么放进画面</label>
+        <label for="fit">画面怎么放</label>
         <select id="fit">
-          <option value="contain" selected>装进画面（留黑边）</option>
-          <option value="blur">装进画面，背景用模糊填充</option>
-          <option value="cover">铺满画面（会裁掉边缘）</option>
-          <option value="stretch">拉伸铺满（会变形）</option>
+          <option value="contain" selected>整张放进去（留黑边）</option>
+          <option value="blur">整张放进去，衬底是模糊的自己</option>
+          <option value="cover">铺满画面（边上会被裁掉）</option>
+          <option value="stretch">拉满画面（会变形）</option>
         </select>
       </div>
 
       <div class="field" id="background-field">
-        <label for="background">背景颜色</label>
+        <label for="background">衬底颜色</label>
         <input type="color" id="background" value="#000000">
       </div>
 
       <div class="field">
-        <label for="quality">质量</label>
+        <label for="quality">画质</label>
         <select id="quality">
-          <option value="low">文件更小</option>
+          <option value="low">文件小一点</option>
           <option value="medium" selected>均衡</option>
-          <option value="high">最高质量</option>
+          <option value="high">最好画质</option>
         </select>
       </div>
 
@@ -125,7 +125,7 @@
         <label for="format">格式</label>
         <select id="format">
           <option value="auto" selected>MP4（推荐）</option>
-          <option value="webm">WebM（退路）</option>
+          <option value="webm">WebM（兜底）</option>
         </select>
         <p class="field-note" id="format-note"></p>
       </div>
@@ -133,11 +133,11 @@
 
     <div class="preview-row">
       <div class="preview-frame">
-        <canvas id="preview" width="640" height="360" aria-label="第一帧的预览"></canvas>
-        <p id="preview-empty" class="preview-empty">加入图片就能看到预览</p>
+        <canvas id="preview" width="640" height="360" aria-label="首帧预览"></canvas>
+        <p id="preview-empty" class="preview-empty">加几张图，就能看到预览了</p>
       </div>
       <dl class="summary" id="summary">
-        <div><dt>图片数</dt><dd id="sum-images">&mdash;</dd></div>
+        <div><dt>图片</dt><dd id="sum-images">&mdash;</dd></div>
         <div><dt>时长</dt><dd id="sum-duration">&mdash;</dd></div>
         <div><dt>输出尺寸</dt><dd id="sum-size">&mdash;</dd></div>
         <div><dt>总帧数</dt><dd id="sum-frames">&mdash;</dd></div>
