@@ -1,0 +1,384 @@
+#
+# Hachage & somme de contrôle - French.
+#
+# Overrides for tools/hash-checksum/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Somme de contrôle" is the French term and "checksum" is what gets typed, so
+# the searchable strings carry both and the body copy uses the French. The
+# algorithm names are never translated: MD5 and SHA-256 are what is printed on
+# the download page the reader has open.
+#
+# French typography throughout: &nbsp; before : ; ! ?, and
+# &laquo;&nbsp;...&nbsp;&raquo; around a quoted label.
+#
+
+name = "Hachage & somme de contrôle"
+heading = "Somme&nbsp;de&nbsp;contrôle <span class=\"h1-kw\">&mdash; MD5, SHA-1, SHA-256, SHA-512</span>"
+tagline = "Vérifier un téléchargement face au nombre publié par son auteur, sans l&rsquo;envoyer à personne."
+
+title = "Calculer une somme de contrôle SHA-256 ou MD5 &mdash; sans rien envoyer"
+description = "Calculez le MD5, SHA-1, SHA-256, SHA-384 ou SHA-512 de n&rsquo;importe quel fichier et comparez-le à la somme de contrôle publiée sur la page de téléchargement. Le fichier est lu dans le navigateur et n&rsquo;est jamais envoyé, quelle que soit sa taille."
+og_title = "Vérifier un téléchargement sans l&rsquo;envoyer à qui que ce soit"
+og_description = "MD5, SHA-1, SHA-256, SHA-384 et SHA-512, calculés dans votre propre navigateur. Collez la somme de contrôle publiée et la page dit si elle correspond. Aucune limite de taille&nbsp;: le fichier est lu par morceaux."
+og_image_alt = "Hachage & somme de contrôle - vérifier un téléchargement dans le navigateur, sans envoi"
+
+pledge = """
+    Une somme de contrôle est un calcul sur les octets de votre fichier, et il se
+    fait ici, dans cette page, sur votre propre processeur. Le fichier est lu sur
+    le disque par tranches de quatre mégaoctets, et chaque tranche est jetée dès
+    qu&rsquo;elle a été comptée&nbsp;: rien n&rsquo;est donc jamais reconstitué
+    quelque part, ni en mémoire, ni encore moins sur un serveur. Il n&rsquo;y a
+    aucun serveur au bout de cette page à qui envoyer un fichier, même si
+    quelque chose ici le voulait."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      regardez l&rsquo;onglet Réseau et vérifiez un fichier. Aucune requête ne
+      transporte le moindre octet, ni son nom, ni sa taille. Ou débranchez
+      internet et vérifiez-en un quand même."""
+
+read_first = """
+, <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> et
+      <code>src/sha512.js</code> pour les quatre fonctions de compression,
+      <code>src/blocks.js</code> pour le remplissage qu&rsquo;elles partagent, et
+      <code>src/hash.js</code> pour la boucle qui lit votre fichier par morceaux.
+      Aucun de ces fichiers ne contient une ligne capable d&rsquo;atteindre le
+      réseau."""
+
+howto_heading = "Comment vérifier un téléchargement avec sa somme de contrôle"
+
+card = """
+            Calculez le MD5, SHA-1, SHA-256, SHA-384 ou SHA-512 d&rsquo;un
+            fichier et comparez-le à celui qu&rsquo;affiche la page de
+            téléchargement. Sans limite de taille&nbsp;: le fichier est lu par
+            morceaux et jamais gardé entier."""
+
+[words]
+plural = "fichiers"
+choose = "un fichier"
+analytics_extra = """, ni la
+  somme de contrôle de votre fichier"""
+
+[[facts]]
+text = "Aucun envoi"
+
+[[facts]]
+text = "Aucune limite de taille"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[facts]]
+text = "Vos fichiers restent sur votre appareil"
+
+[[privacy]]
+title = "Votre fichier n&rsquo;a nulle part où aller."
+body = """
+ La
+      Content-Security-Policy énumère toutes les adresses que cette page peut
+      contacter, et aucune ne nous appartient. Il n&rsquo;y a ici aucun point de
+      collecte pour votre fichier, et rien dans le code qui l&rsquo;y enverrait
+      s&rsquo;il en existait un. Cette ligne disait autrefois
+      <code>connect-src 'none'</code>, ce qui était absolu&nbsp;; la publicité a
+      coûté cela, et le dire fait partie du marché."""
+
+[[privacy]]
+title = "Le fichier n&rsquo;est jamais gardé entier, quelle que soit sa taille."
+body = """
+
+      Il est lu par tranches de quatre mégaoctets, et chaque tranche est intégrée
+      à l&rsquo;état courant puis jetée. La mémoire utilisée est donc la même
+      pour une image disque de quarante gigaoctets que pour un fichier texte, et
+      il n&rsquo;existe pas de taille à partir de laquelle la page renonce.
+      C&rsquo;est aussi pourquoi le <code>crypto.subtle.digest</code> du
+      navigateur n&rsquo;est pas utilisé&nbsp;: il veut le fichier entier en
+      mémoire d&rsquo;un coup, ce qui est exactement le plafond que cet outil
+      existe pour ne pas avoir."""
+
+[[privacy]]
+title = "Cinq algorithmes, cinq fichiers dans ce dépôt."
+body = """
+ <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> et
+      <code>src/sha512.js</code> sont les spécifications publiées écrites telles
+      quelles, une soixantaine de lignes chacune, avec les tables de constantes
+      écrites plutôt que calculées pour que rien du résultat ne dépende de votre
+      navigateur. Chacune est vérifiée à chaque construction face aux vecteurs de
+      test officiels et face à l&rsquo;implémentation du système
+      d&rsquo;exploitation."""
+
+[[privacy]]
+title = "La somme de contrôle que vous collez ne part nulle part non plus."
+body = """
+
+      Elle est comparée ici, dans la page, à la valeur calculée ici. Personne
+      n&rsquo;apprend rien de cette comparaison&nbsp;: ni la valeur, ni le
+      résultat, ni le nom du fichier. Cela compte plus qu&rsquo;il n&rsquo;y
+      paraît&nbsp;: une somme de contrôle accompagnée d&rsquo;un nom de fichier
+      indique à qui la collecte exactement quelle version de quel logiciel vous
+      venez de télécharger."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu&rsquo;on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Ni l&rsquo;un ni
+      l&rsquo;autre ne reçoit quoi que ce soit sur votre fichier&nbsp;: ni le
+      fichier, ni son nom, ni sa taille, ni aucune des empreintes calculées.
+      Chaque ligne qui lit ou traite un octet est servie depuis ce domaine et
+      figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que charge le bouton de don, et ce qu&rsquo;on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l&rsquo;en-tête est
+      dessiné par un script de cdnjs.buymeacoffee.com et prend sa police chez
+      Google Fonts. C&rsquo;est un lien et rien de plus&nbsp;: il ne signale
+      aucune visite et ne reçoit rien sur vous ni sur vos fichiers. Rien ne se
+      passe tant que vous ne cliquez pas, et ce que vous ouvririez alors est le
+      site de quelqu&rsquo;un d&rsquo;autre."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Débranchez le réseau et chaque
+      partie de cette page continue de fonctionner. C&rsquo;est la preuve la plus
+      simple qui soit&nbsp;: un outil qui enverrait votre fichier ailleurs pour
+      le calculer s&rsquo;arrêterait à la seconde où vous débranchez."""
+
+[[howto]]
+title = "Choisissez le fichier."
+body = """
+ Déposez-le sur la zone ou
+      sélectionnez-le à la main. Il est lu par morceaux directement sur votre
+      disque&nbsp;; rien ne part nulle part pendant ce temps, et il n&rsquo;y a
+      pas de taille à partir de laquelle la page renonce."""
+
+[[howto]]
+title = "Laissez-la lire."
+body = """
+ MD5 et SHA-256 sont calculés par
+      défaut, en une seule passe. La barre indique où en est la lecture et à
+      quelle vitesse. Une grande image disque prend à peu près le temps
+      qu&rsquo;il faudrait pour la copier, puisque c&rsquo;est la même quantité
+      de lecture."""
+
+[[howto]]
+title = "Collez ce qu&rsquo;elle devrait donner."
+body = """
+
+      Ce que la page de téléchargement vous a donné, sous n&rsquo;importe quelle
+      forme&nbsp;: de l&rsquo;hexadécimal seul, une ligne de sortie de
+      <code>sha256sum</code>, un fichier <code>SHA256SUMS</code> entier, ou
+      l&rsquo;attribut <code>integrity</code> pris sur une balise de script.
+      L&rsquo;algorithme se déduit de la longueur, et la bonne case se coche
+      toute seule."""
+
+[[howto]]
+title = "Lisez la réponse, pas la couleur."
+body = """
+ La page dit
+      en une phrase si c&rsquo;est bien le fichier que décrit cette somme de
+      contrôle. Si elle correspond, les octets sont identiques à ceux qu&rsquo;a
+      mesurés l&rsquo;auteur. Sinon, ils ne le sont pas, et il vaut mieux
+      retélécharger avant d&rsquo;ouvrir quoi que ce soit."""
+
+[[howto]]
+title = "Emportez les sommes si vous en avez besoin."
+body = """
+
+      Copiez-en une, copiez-les toutes, ou enregistrez-les dans un petit fichier
+      texte, sous la forme avec l&rsquo;algorithme en tête qu&rsquo;écrivent les
+      outils en ligne de commande. Le nom de l&rsquo;algorithme voyage ainsi avec
+      le nombre."""
+
+[[faq]]
+q = "Mon fichier est-il envoyé quelque part&nbsp;?"
+a = """
+        Non. Votre propre navigateur le lit sur votre disque et le calcule sur
+        votre propre processeur, par tranches de quatre mégaoctets. Cet outil
+        n&rsquo;a pas de partie serveur, et la
+        <code>Content-Security-Policy</code> de la page énumère toutes les
+        adresses qu&rsquo;elle peut contacter&nbsp;: aucune ne nous appartient.
+        Débranchez le réseau et cela continue de fonctionner."""
+
+[[faq]]
+q = "Y a-t-il une limite de taille&nbsp;?"
+a = """
+        Non. Le fichier n&rsquo;est jamais gardé entier&nbsp;: il est lu par
+        morceaux, et chaque morceau est compté puis jeté, de sorte
+        qu&rsquo;une image disque de quarante gigaoctets consomme les mêmes
+        quelques mégaoctets de mémoire qu&rsquo;un fichier texte. Ce que cela
+        coûte, c&rsquo;est du temps, et la page vous dit combien au fur et à
+        mesure.
+        <br><br>
+        C&rsquo;est la raison pour laquelle les algorithmes sont écrits ici
+        plutôt que confiés au <code>crypto.subtle.digest</code> du navigateur,
+        qui serait plus rapide. Cet appel prend le message entier dans un seul
+        tampon et il n&rsquo;existe aucun moyen de lui donner un fichier par
+        morceaux&nbsp;: s&rsquo;en servir aurait fait dépendre la taille du plus
+        gros fichier vérifiable de la mémoire que cet onglet obtient. Sur un
+        téléphone, cela fait quelques centaines de mégaoctets, et ce que les gens
+        veulent le plus vérifier, ce sont des images disque."""
+
+[[faq]]
+q = "La somme correspond. Qu&rsquo;est-ce que cela prouve au juste&nbsp;?"
+a = """
+        Que les octets présents sur votre disque sont ceux que quelqu&rsquo;un
+        avait sous les yeux en notant ce nombre. Rien de plus, et les limites
+        méritent d&rsquo;être précises.
+        <br><br>
+        Cela prouve que le téléchargement n&rsquo;a pas été tronqué, ni abîmé par
+        un disque défaillant, ni remplacé en chemin. Cela ne prouve
+        <strong>pas</strong> que le fichier est sans danger, car un auteur peut
+        mesurer un logiciel malveillant aussi exactement qu&rsquo;autre chose. Et
+        cela prouve très peu si la somme venait de la même page, par la même
+        connexion, que le fichier&nbsp;: qui pouvait changer l&rsquo;un pouvait
+        changer l&rsquo;autre. Une somme de contrôle vaut surtout quand elle vous
+        parvient par une autre voie&nbsp;: un fichier <code>SHA256SUMS</code>
+        signé, l&rsquo;annonce de version d&rsquo;une distribution, un second
+        miroir, ou un gestionnaire de paquets qui la connaît déjà."""
+
+[[faq]]
+q = "Elle ne correspond pas. Et maintenant&nbsp;?"
+a = """
+        Retéléchargez d&rsquo;abord le fichier, au même endroit. Un transfert
+        interrompu ou repris est de très loin la cause la plus fréquente, et une
+        deuxième copie règle généralement l&rsquo;affaire.
+        <br><br>
+        Si la deuxième copie donne la même mauvaise réponse, vérifiez que vous
+        comparez à la bonne ligne&nbsp;: les pages de version listent plusieurs
+        fichiers, et la somme de la version ARM ne correspondra jamais à celle de
+        la version x86. Vérifiez ensuite le numéro de version. Si tout cela est
+        juste et que cela ne correspond toujours pas, n&rsquo;ouvrez pas le
+        fichier. Prenez-le sur un autre miroir et comparez les deux sommes entre
+        elles."""
+
+[[faq]]
+q = "Lequel choisir&nbsp;?"
+a = """
+        Celui que l&rsquo;auteur a publié. Tout l&rsquo;exercice consiste à
+        comparer à son nombre, et vous ne pouvez pas choisir le sien à sa place.
+        <br><br>
+        Si vous produisez une somme plutôt que d&rsquo;en vérifier une, prenez
+        SHA-256. MD5 et SHA-1 sont cassés au sens qui compte&nbsp;: deux fichiers
+        différents ayant la même empreinte peuvent être fabriqués exprès, en
+        quelques heures pour MD5 et pour un coût modéré pour SHA-1. Cela ne les
+        rend pas inutiles contre les accidents, car un téléchargement tronqué ne
+        tombera pas par hasard sur la même empreinte&nbsp;; mais cela veut dire
+        qu&rsquo;aucun des deux ne peut plus vous assurer que personne n&rsquo;a
+        touché au fichier. SHA-384 et SHA-512 vont très bien et ne valent pas
+        mieux en pratique&nbsp;; ils sont là parce que certains projets les
+        publient."""
+
+[[faq]]
+q = "Pourquoi MD5 est-il là s&rsquo;il est cassé&nbsp;?"
+a = """
+        Parce que c&rsquo;est encore ce qui est imprimé. Des miroirs, des pages
+        de micrologiciels, des serveurs universitaires et quantité de sites de
+        constructeurs ont publié un MD5 il y a vingt ans et n&rsquo;ont pas
+        rouvert la page depuis. Un outil qui refuserait d&rsquo;en calculer un
+        refuserait de répondre à la question avec laquelle ses visiteurs
+        arrivent vraiment.
+        <br><br>
+        Ce qu&rsquo;il peut faire, en revanche, c&rsquo;est dire ce que la
+        réponse vaut, et c&rsquo;est le rôle de la note à côté de la case. Un MD5
+        qui correspond écarte toujours un téléchargement abîmé. Il n&rsquo;écarte
+        pas un téléchargement trafiqué."""
+
+[[faq]]
+q = "Quels formats puis-je coller dans le champ de comparaison&nbsp;?"
+a = """
+        Tous les formats courants, et la page reconnaît elle-même lequel
+        c&rsquo;est.
+        <br><br>
+        De l&rsquo;hexadécimal seul, avec ou sans espaces. Une ligne de sortie de
+        <code>md5sum</code> ou <code>sha256sum</code>, avec le nom de fichier
+        derrière. Un fichier <code>SHA256SUMS</code> entier de quarante
+        lignes&nbsp;: c&rsquo;est alors la ligne qui nomme votre fichier qui est
+        retenue. La forme BSD, <code>SHA256 (disk.iso) = &hellip;</code>. Une
+        étiquette devant, comme <code>SHA-256&nbsp;: &hellip;</code>. Et un
+        attribut de subresource integrity, <code>sha384-&hellip;</code>, qui est
+        en base64 plutôt qu&rsquo;en hexadécimal et qui est décodé avant la
+        comparaison.
+        <br><br>
+        L&rsquo;algorithme se déduit de la longueur&nbsp;: 32 caractères
+        hexadécimaux font un MD5, 40 un SHA-1, 64 un SHA-256, 96 un SHA-384 et
+        128 un SHA-512. Aucun n&rsquo;a la longueur d&rsquo;un autre, il n&rsquo;y
+        a donc rien à choisir et rien à se tromper."""
+
+[[faq]]
+q = "Le résultat sera-t-il le même que celui de sha256sum ou de certutil&nbsp;?"
+a = """
+        Oui, octet pour octet. Ce sont des spécifications exactes avec des
+        vecteurs de test publiés, et chaque algorithme d&rsquo;ici est vérifié à
+        chaque construction face à ces vecteurs et face à
+        l&rsquo;implémentation du système d&rsquo;exploitation.
+        <br><br>
+        La seule différence visible est la présentation. Le
+        <code>certutil -hashfile</code> de Windows écrit en majuscules avec des
+        espaces&nbsp;; cette page écrit en minuscules, ce qu&rsquo;emploie la
+        quasi-totalité des auteurs. La comparaison ignore les deux, si bien
+        qu&rsquo;une somme copiée depuis certutil correspond à une somme en
+        minuscules collée ici."""
+
+[[faq]]
+q = "Puis-je comparer deux fichiers entre eux&nbsp;?"
+a = """
+        Oui, avec une étape de plus&nbsp;: vérifiez le premier, copiez sa somme,
+        choisissez ensuite le second et collez cette somme dans le champ. Si les
+        deux fichiers sont identiques, la page le dira.
+        <br><br>
+        Cela vaut d&rsquo;être connu pour le cas où les sommes de contrôle sont
+        discrètement imbattables&nbsp;: savoir si la copie sur le disque de
+        sauvegarde est vraiment le même fichier que celui de l&rsquo;ordinateur
+        portable, quand les deux annoncent la même taille et la même date."""
+
+[[faq]]
+q = "Est-ce que cela modifie mon fichier&nbsp;?"
+a = """
+        Non. Cet outil ne fait que lire. Il n&rsquo;y a pas de fichier de sortie,
+        pas de réencodage et rien qui soit réécrit&nbsp;: la seule chose
+        téléchargeable est un petit fichier texte listant les sommes. Votre
+        original reste intact sur votre disque, ce qui est aussi la réponse
+        honnête à la question de ce qui se passe si vous fermez l&rsquo;onglet."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C&rsquo;est gratuit, et il n&rsquo;y a ni compte, ni inscription, ni
+        période d&rsquo;essai. Il n&rsquo;y a pas de limite de taille de fichier
+        ni de limite au nombre de fichiers vérifiés. Le site porte de la
+        publicité, et c&rsquo;est elle qui le paie&nbsp;; on ne lui donne rien
+        sur votre fichier."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, débranchez internet, et elle continue de
+        fonctionner. C&rsquo;est aussi la façon la plus simple de prouver que
+        rien n&rsquo;est envoyé&nbsp;: un outil qui expédierait votre fichier
+        ailleurs pour le calculer s&rsquo;arrêterait à la seconde où vous
+        débranchez."""
+
+[schema]
+description = "Calculer la somme de contrôle MD5, SHA-1, SHA-256, SHA-384 ou SHA-512 de n'importe quel fichier dans le navigateur et la comparer à la valeur publiée par une page de téléchargement. Le fichier est lu par morceaux et n'est jamais envoyé."
+features = [
+  "MD5, SHA-1, SHA-256, SHA-384 et SHA-512, en une seule passe sur le fichier",
+  "Aucune limite de taille : le fichier est lu par morceaux et jamais gardé entier",
+  "Collez la valeur attendue sous n'importe quelle forme publiée : l'algorithme est déduit",
+  "Lit la sortie de sha256sum, les fichiers SHA256SUMS, la forme BSD et les attributs integrity",
+  "Dit en une phrase si le fichier correspond, et pas seulement par une couleur",
+  "Copier une somme, toutes les copier, ou les enregistrer en texte avec l'algorithme en tête",
+  "Fonctionne hors ligne ; aucun envoi, aucun compte, aucune modification du fichier",
+]
+
+[picker]
+title = "Déposez un fichier ici"
+hint = "ou cliquez pour parcourir &mdash; n&rsquo;importe quel fichier, n&rsquo;importe quelle taille, rien n&rsquo;est envoyé"

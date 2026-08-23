@@ -82,6 +82,7 @@ complete = true
 # "lecteur de QR code" est la formule qui se tape. Les codes-barres restent
 # hors de l'adresse, portés par le titre de la page.
 "qr-barcode-reader" = "lecteur-de-qr-code"
+"hash-checksum" = "verifier-une-somme-de-controle"
 
 "guides" = "guides"
 "roadmap" = "feuille-de-route"
@@ -109,6 +110,7 @@ complete = true
 "guides/turn-a-video-into-a-gif" = "guides/transformer-une-video-en-gif"
 "guides/embed-an-image-in-css" = "guides/integrer-une-image-dans-le-css"
 "guides/make-a-qr-code" = "guides/creer-un-qr-code"
+"guides/verify-a-file-checksum" = "guides/verifier-la-somme-de-controle-d-un-telechargement"
 
 #
 # ---------------------------------------------------------------------------
@@ -185,7 +187,7 @@ note = "Fabriquer et réorganiser des documents sans les envoyer se faire traite
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; données"
-note = "Transformer ce que vous avez tapé en quelque chose qu'une machine sait lire, sans que cela quitte la page."
+note = "Fabriquer quelque chose qu’une machine sait lire, ou vérifier qu’un fichier est bien celui qu’il prétend être. Le tout dans la page."
 
 [[hub.categories]]
 id = "text-and-code"

@@ -237,14 +237,17 @@ name = "Documents &amp; PDF"
 note = "Make and rearrange documents without sending them to be processed."
 order = ["merge-pdf", "compress-pdf", "images-to-pdf"]
 
-# The first category here that is not about a file at all. Everything above
-# takes something off your disk; this one takes a string and hands back a
-# picture of it, which is why the note says "typed" rather than "chosen".
+# The first category here that is not about editing a file. One tool takes a
+# string and hands back a picture of it; the other takes a file and hands back a
+# number about it. Neither produces a changed copy of anything, which is what
+# the note has to cover - it said "turn something you typed" while there was
+# only the code generator here, and that stopped being true the day a checksum
+# arrived.
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; data"
 note = "Turn something you typed into something a machine can read, without it leaving the page."
-order = ["qr-barcode", "qr-barcode-reader"]
+order = ["qr-barcode", "qr-barcode-reader", "hash-checksum"]
 
 # The second of those, and the one where the promise matters most: what people
 # paste into an online formatter is tokens, config files and customer records.
@@ -391,6 +394,7 @@ order = [
   "grab-a-frame-from-a-video",
   "trim-an-audio-file",
   "make-a-qr-code",
+  "verify-a-file-checksum",
   "turn-a-video-into-a-gif",
   "split-a-gif-into-frames",
   "whats-inside-a-gif",

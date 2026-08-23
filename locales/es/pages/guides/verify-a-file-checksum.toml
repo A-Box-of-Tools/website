@@ -1,0 +1,17 @@
+#
+# Guía: comprobar una descarga contra su checksum - Spanish.
+#
+
+nav = "Comprobar un checksum"
+title = "Cómo verificar una descarga con su checksum (y qué demuestra)"
+description = "Cómo comparar un checksum MD5 o SHA-256 en Windows, macOS y Linux o en el navegador, qué demuestra realmente que coincida, y el error que deja toda la operación en nada."
+heading = "Cómo comprobar una descarga contra su checksum"
+lede = """
+    La línea de hexadecimal que hay bajo un enlace de descarga está ahí para que
+    puedas demostrar que el archivo llegó intacto. Compararla lleva un minuto.
+    Saber cuánto vale esa comparación, y qué costumbre la deja sin valor, lleva
+    el resto de esta página."""
+updated = "23 de agosto de 2026"
+og_title = "Comprobar una descarga contra su checksum, y qué demuestra eso"
+og_description = "Para qué está el hexadecimal bajo un enlace de descarga, cómo compararlo en cualquier sistema operativo, y por qué tomarlo de la misma página que el archivo echa por tierra la idea."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

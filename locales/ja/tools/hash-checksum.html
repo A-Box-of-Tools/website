@@ -1,0 +1,183 @@
+<main>
+  <!--
+    三つの手順。三つめが、ここに来た理由そのものです。
+    
+    チェックサムを計算することが目的ではありません。いまダウンロードした
+    ファイルが、配布元が測ったファイルと同じものかどうかを確かめることが目的
+    です。「ハッシュ値はこちらです」で終わるページは、最後の、そして唯一
+    面倒な作業を訪問者に押しつけます。六十四文字を目で見比べる作業です。
+    だから照合は独立した手順にしてあり、公開されているどの書き方でも受け取り、
+    色ではなく一文で答えます。
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> ファイルを選ぶ</h2>
+
+    <!--
+      本物の <label> なら、ブラウザーがファイル選択画面を開きます。display:none で
+      隠した input への .click() は Safari と一部の Chrome 設定が拒否するため、
+      input はレイアウトに残しています。見えないだけで、フォーカスは当たり、
+      キーボードからも届きます。この経路に JavaScript は一行もありません。
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="run-card">
+    <h2><span class="step">2</span> チェックサム</h2>
+    <p class="card-lede">
+      MD5 と SHA-256 は最初から計算します。この二つで、世に出ているダウンロード
+      ページのほとんどをまかなえるからです。ほかにチェックを入れると、その分だけ
+      ファイルをもう一度読み直します。時間がかかるのは読み取りのほうなので、
+      ファイルを選ぶ前に入れておいたものは一度の読み取りでまとめて出ます。
+    </p>
+
+    <fieldset class="algorithms">
+      <legend class="visually-hidden">計算するチェックサムの種類</legend>
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="md5" checked>
+        <span class="algorithm-name">MD5</span>
+        <span class="algorithm-note">2004年から衝突は安く作れます。それでも、ネット上のダウンロードの半分にはこの数字が添えてあります。</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha1">
+        <span class="algorithm-name">SHA-1</span>
+        <span class="algorithm-note">2017年に公開の場で破られました。それでも Git はこれでオブジェクトに名前を付けますし、多くの配布ページにまだ載っています。</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha256" checked>
+        <span class="algorithm-name">SHA-256</span>
+        <span class="algorithm-note">いまチェックサムといえばこれです。チェックサムを公開しているディストリビューションは、まずこれを公開します。</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha384">
+        <span class="algorithm-name">SHA-384</span>
+        <span class="algorithm-note">SHA-512 を途中で切ったもの。主に script タグの integrity 属性で見かけます。</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha512">
+        <span class="algorithm-name">SHA-512</span>
+        <span class="algorithm-note">幅は広いものの、実際に問題になったどんな場面でも強さは変わりません。それでも公開しているプロジェクトがあります。</span>
+      </label>
+    </fieldset>
+
+    <div class="progress" id="progress" hidden>
+      <div class="progress-track" role="progressbar" id="progress-track"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="progress-fill" id="progress-fill"></span>
+      </div>
+      <p class="progress-line">
+        <span id="progress-text" role="status" aria-live="polite"></span>
+        <button type="button" id="stop" class="ghost danger">中止</button>
+      </p>
+    </div>
+
+    <p class="stopped" id="stopped" hidden>
+      中止しました。このファイルについては何も計算していません。
+      <button type="button" id="restart" class="ghost">もう一度</button>
+    </p>
+
+    <div class="results" id="results" hidden>
+      <div class="toolbar">
+        <h3 class="file-name" id="file-name">&mdash;</h3>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">まとめてコピー</button>
+          <button type="button" id="download-checksums" class="ghost">ファイルに保存</button>
+        </div>
+      </div>
+
+      <p class="file-facts" id="file-facts"></p>
+
+      <ul class="digests" id="digests">
+        <li class="digest" data-algorithm="md5" hidden>
+          <span class="digest-name">MD5</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <button type="button" class="ghost" data-slot="copy">コピー</button>
+        </li>
+        <li class="digest" data-algorithm="sha1" hidden>
+          <span class="digest-name">SHA-1</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <button type="button" class="ghost" data-slot="copy">コピー</button>
+        </li>
+        <li class="digest" data-algorithm="sha256" hidden>
+          <span class="digest-name">SHA-256</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <button type="button" class="ghost" data-slot="copy">コピー</button>
+        </li>
+        <li class="digest" data-algorithm="sha384" hidden>
+          <span class="digest-name">SHA-384</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <button type="button" class="ghost" data-slot="copy">コピー</button>
+        </li>
+        <li class="digest" data-algorithm="sha512" hidden>
+          <span class="digest-name">SHA-512</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <button type="button" class="ghost" data-slot="copy">コピー</button>
+        </li>
+      </ul>
+
+      <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="compare-card">
+    <h2><span class="step">3</span> 本来の値と照らし合わせる</h2>
+    <p class="card-lede">
+      ダウンロードページに書いてあったチェックサムを貼り付けてください。書き方は
+      問いません。十六進数そのまま、<code>sha256sum</code> の出力、
+      <code>SHA256SUMS</code> ファイルまるごと、
+      <code>SHA256 (ファイル名) = &hellip;</code> の形、script タグの
+      <code>integrity</code> 属性、どれでも読み取ります。どの方式かは長さで決まる
+      ので、選ぶ必要はありません。
+    </p>
+
+    <label class="visually-hidden" for="expected">本来のチェックサム</label>
+    <textarea id="expected" rows="3" spellcheck="false" autocapitalize="off"
+              autocomplete="off"
+              placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
+
+    <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
+      <span data-read="one">これは <b data-slot="algorithm"></b> です。</span>
+      <span data-read="many">これは一覧です。チェックサムが <b data-slot="count"></b> 件入っています。</span>
+      <span data-read="stray">十六進数 <b data-slot="length"></b> 文字ですが、ここにあるどの方式もその長さではありません。末尾が欠けたコピーであることがほとんどです。</span>
+      <span data-read="nothing">チェックサムらしきものが見当たりません。</span>
+    </p>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-line good" data-outcome="match">
+        <span class="verdict-mark">&#10003;</span>
+        <span>そのチェックサムが指しているファイルは、これです。<b data-slot="algorithm"></b> は貼り付けられた値と一文字ずつ同じでした。</span>
+      </p>
+      <p class="verdict-line good" data-outcome="renamed">
+        <span class="verdict-mark">&#10003;</span>
+        <span>中身は一致しましたが、別の行とです。貼り付けられた内容ではこのファイルを <b data-slot="name"></b> と呼んでいて、選ばれたファイルの名前は違います。途中で名前が変わったか、確かめたかったダウンロードとは別物か、どちらかです。<b data-slot="algorithm"></b> はどちらにせよ合っています。</span>
+      </p>
+      <p class="verdict-line bad" data-outcome="mismatch">
+        <span class="verdict-mark">&#10007;</span>
+        <span>そのチェックサムが指しているファイルでは<b>ありません</b>。<b data-slot="algorithm"></b> が違うので、中身が違います。ダウンロードが途中で切れたか、版が違うか、ミラーが別のものを配っているかです。開く前に取り直してください。</span>
+      </p>
+      <p class="verdict-line" data-outcome="waiting">
+        <span class="verdict-mark">&hellip;</span>
+        <span>照合用に <b data-slot="algorithm"></b> を計算しています。</span>
+      </p>
+      <p class="verdict-line" data-outcome="nofile">
+        <span class="verdict-mark">&hellip;</span>
+        <span>上でファイルを選ぶと、一致するかどうかをここに出します。</span>
+      </p>
+    </div>
+  </section>
+</main>

@@ -69,5 +69,4 @@ id = "beyond"
 name = "Más allá de los medios"
 items = [
   ["Datos", "convertir, limpiar e inspeccionar archivos CSV y JSON"],
-  ["Privacidad y seguridad", "hashes, sumas de verificación, eliminación de metadatos"],
 ]

@@ -72,6 +72,7 @@ complete = true
 "password-generator" = "generador-de-contrasenas"
 # El prestamo, no "camara rapida": timelapse es lo que se escribe al buscar.
 "timelapse-video" = "crear-timelapse"
+"hash-checksum" = "calcular-checksum"
 
 "guides" = "guias"
 "roadmap" = "hoja-de-ruta"
@@ -94,6 +95,7 @@ complete = true
 "guides/embed-an-image-in-css" = "guias/incrustar-una-imagen-en-css"
 "guides/make-a-qr-code" = "guias/como-hacer-un-codigo-qr"
 "guides/turn-a-video-into-a-gif" = "guias/convertir-un-video-en-gif"
+"guides/verify-a-file-checksum" = "guias/verificar-el-checksum-de-una-descarga"
 
 #
 # ---------------------------------------------------------------------------
@@ -169,7 +171,7 @@ note = "Crea y reordena documentos sin mandarlos a procesar a ninguna parte."
 [[hub.categories]]
 id = "codes-and-data"
 name = "Códigos y datos"
-note = "Convierte lo que escribes en algo que una máquina pueda leer, sin que salga de la página."
+note = "Crea algo que una máquina pueda leer, o comprueba que un archivo es el que dice ser. Todo dentro de la página."
 
 [[hub.categories]]
 id = "text-and-code"

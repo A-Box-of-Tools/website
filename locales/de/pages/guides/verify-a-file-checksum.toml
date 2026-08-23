@@ -1,0 +1,17 @@
+#
+# Ratgeber: Einen Download gegen seine Prüfsumme prüfen - German.
+#
+
+nav = "Eine Prüfsumme prüfen"
+title = "Einen Download mit seiner Prüfsumme prüfen (und was das beweist)"
+description = "Wie Sie eine MD5- oder SHA-256-Prüfsumme unter Windows, macOS und Linux oder im Browser vergleichen, was ein Treffer wirklich beweist und welcher Fehler die ganze Übung wertlos macht."
+heading = "So prüfen Sie einen Download gegen seine Prüfsumme"
+lede = """
+    Die Zeile Hexzeichen unter einem Downloadlink steht dort, damit Sie
+    nachweisen können, dass die Datei unversehrt angekommen ist. Der Vergleich
+    dauert etwa eine Minute. Zu wissen, was er wert ist, und welche Gewohnheit
+    ihn wertlos macht, kostet den Rest dieser Seite."""
+updated = "23. August 2026"
+og_title = "Einen Download gegen seine Prüfsumme prüfen, und was das beweist"
+og_description = "Wofür die Hexzeichen unter einem Downloadlink da sind, wie Sie sie auf jedem Betriebssystem vergleichen und warum sie nichts nützen, wenn sie von derselben Seite stammen wie die Datei."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

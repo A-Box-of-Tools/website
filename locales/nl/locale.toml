@@ -71,6 +71,7 @@ complete = true
 "password-generator" = "wachtwoord-generator"
 # "Scannen" is wat er getypt wordt; "lezen" is wat het programma doet.
 "qr-barcode-reader" = "qr-code-scannen"
+"hash-checksum" = "checksum-controleren"
 
 "guides" = "gidsen"
 "roadmap" = "roadmap"
@@ -93,6 +94,7 @@ complete = true
 "guides/convert-heic-to-jpg" = "gidsen/heic-naar-jpg-omzetten"
 "guides/embed-an-image-in-css" = "gidsen/een-afbeelding-in-css-zetten"
 "guides/make-a-qr-code" = "gidsen/zelf-een-qr-code-maken"
+"guides/verify-a-file-checksum" = "gidsen/de-checksum-van-een-download-controleren"
 
 #
 # ---------------------------------------------------------------------------
@@ -167,7 +169,7 @@ note = "Stel documenten samen en herschik ze, zonder ze op te sturen om ze te la
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; gegevens"
-note = "Zet iets wat je intypt om in iets wat een machine kan lezen, zonder dat het de pagina verlaat."
+note = "Maak iets wat een machine kan lezen, of controleer of een bestand is wat het beweert te zijn. Allebei binnen de pagina."
 
 [[hub.categories]]
 id = "text-and-code"

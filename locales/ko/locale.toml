@@ -98,6 +98,7 @@ complete = true
 "password-generator" = "비밀번호-생성기"
 # 사전에 있는 '저속 촬영'이 아니라 실제로 검색창에 치는 '타임랩스'.
 "timelapse-video" = "타임랩스-만들기"
+"hash-checksum" = "체크섬-확인"
 
 # The indexes and the legal pages. 개인정보처리방침 is the name that page has in
 # Korean law and on every Korean site, so it is what a reader scans for.
@@ -128,6 +129,7 @@ complete = true
 "guides/trim-a-video" = "가이드/동영상-구간-자르기"
 "guides/turn-a-video-into-a-gif" = "가이드/동영상-gif-만들기"
 "guides/turn-images-into-a-video" = "가이드/사진으로-동영상-만들기"
+"guides/verify-a-file-checksum" = "가이드/체크섬으로-다운로드-확인하기"
 
 #
 # ---------------------------------------------------------------------------
@@ -200,7 +202,7 @@ note = "문서를 만들고 순서를 바꾸는 일까지, 어디로도 보내�
 [[hub.categories]]
 id = "codes-and-data"
 name = "코드와 데이터"
-note = "입력한 내용을 기계가 읽는 형태로 바꿉니다. 페이지 밖으로 나가지 않습니다."
+note = "기계가 읽는 형태를 만들거나, 그 파일이 자기가 말하는 그 파일인지 확인합니다. 둘 다 페이지 안에서 끝납니다."
 
 [[hub.categories]]
 id = "text-and-code"

@@ -1,0 +1,38 @@
+#
+# Guide: checking a download against the checksum beside it.
+#
+# Written for the person who has just been told to "verify the download" and
+# has been told nothing else: what the number is, how to compare it on each of
+# the three operating systems as well as here, what a match does and does not
+# prove, and the one thing that makes the whole exercise worthless - taking the
+# checksum off the same page as the file.
+#
+# The last section is the one this guide exists for. Almost every other page on
+# the internet about this stops at "the strings should be the same".
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/verify-a-file-checksum"
+kind = "guide"
+nav = "Verifying a checksum"
+group = "doing-the-job"
+tool = "hash-checksum"
+
+title = "How to Verify a Download With Its Checksum (and What It Proves)"
+description = "How to check an MD5 or SHA-256 checksum on Windows, macOS and Linux or in your browser, what a match actually proves, and the mistake that makes the whole exercise pointless."
+
+heading = "How to check a download against its checksum"
+lede = """
+    The line of hex under a download link is there so you can prove the file
+    arrived intact. Comparing it takes about a minute. Knowing what the
+    comparison is worth &mdash; and the one habit that makes it worth nothing
+    &mdash; takes the rest of this page."""
+
+updated = "23 August 2026"
+published = "2026-08-23"
+lastmod = "2026-08-23"
+
+og_title = "Checking a download against its checksum, and what that proves"
+og_description = "What the hex under a download link is for, how to compare it on any operating system, and why taking it off the same page as the file defeats the point."
+og_image_alt = "abox.tools - tools that never touch a server"
