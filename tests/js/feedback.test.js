@@ -160,7 +160,15 @@ function run({ stored = null, gtag = true, refuseStorage = false, tool = 'compre
     addEventListener: (type, fn) => on.window.set(type, fn),
     setTimeout: (fn) => timers.push(fn),
   };
-  if (gtag) window.gtag = (...args) => sent.push(args);
+  // The queue, not a function - which is the whole point, and was once the
+  // bug. A stub that offered `window.gtag` passed while the deployed build,
+  // where that global has been renamed away, sent nothing at all. So the stub
+  // now offers exactly what a real page offers: an array called dataLayer.
+  if (gtag) {
+    window.dataLayer = {
+      push: (args) => sent.push(Array.from(args)),
+    };
+  }
 
   // eslint-disable-next-line no-new-func
   new Function('window', 'document', SOURCE)(window, document);
@@ -336,6 +344,8 @@ test('closing without pressing either button sends nothing', () => {
 });
 
 test('a blocked measurement script is not an error, and still thanks them', () => {
+  // No dataLayer at all, which is what a page whose measurement script never
+  // loaded actually looks like.
   const page = run({ gtag: false });
   page.click(page.link);
   page.tick();
