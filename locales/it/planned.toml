@@ -64,7 +64,6 @@ items = [
 id = "beyond"
 name = "Oltre i media"
 items = [
-  ["Hash e checksum", "verificare che un download sia il file che dichiara di essere, senza consegnarlo a nessuno"],
   ["CSV e JSON", "convertire nei due sensi, e rimettere in ordine quello che ha esportato il foglio di calcolo"],
   ["Certificati e chiavi", "leggere un certificato o una richiesta di firma senza incollarla nel server di qualcun altro"],
 ]

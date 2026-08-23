@@ -72,7 +72,6 @@ items = [
 id = "beyond"
 name = "Beyond media"
 items = [
-  ["Hashes &amp; checksums", "check that a download is the file it claims to be, without handing it over"],
   ["CSV &amp; JSON", "convert either way, and tidy up what the spreadsheet exported"],
   ["Certificates &amp; keys", "read a certificate or a signing request without pasting it into someone's server"],
 ]

@@ -233,16 +233,14 @@ should bother them.
 This group used to hold two cards that were not tools at all — "Data" and
 "Privacy & security" — each naming a category and promising nothing with a
 shape. Half of the second one had shipped already as
-[`exif-editor`](tools/exif-editor/). These three are what they should have said.
+[`exif-editor`](tools/exif-editor/). These are what they should have said.
 
-### Hashes & checksums
-
-Verifying that a download is the file it claims to be, by uploading it to a
-stranger, is a self-defeating act — and it is what every online hash tool asks
-for. `crypto.subtle.digest` gives SHA-1, SHA-256, SHA-384 and SHA-512 for
-nothing, MD5 is short enough to write out and still what half the download
-pages publish, and reading the file in chunks means there is no size ceiling.
-Paste the expected value in and the page says yes or no.
+A third one, hashes and checksums, was written on this list and taken off it a
+day later, because [`hash-checksum`](tools/hash-checksum/) had shipped while the
+list was being rewritten and nobody noticed in time. That is rule 1 working
+slowly rather than a rule being broken — but it is also the second time this
+group has advertised something that already existed, which is a good reason to
+check `tools/` before adding a name here rather than after.
 
 ### CSV & JSON
 

@@ -64,7 +64,6 @@ items = [
 id = "beyond"
 name = "Más allá de los medios"
 items = [
-  ["Hashes y sumas de verificación", "comprobar que una descarga es el archivo que dice ser, sin entregárselo a nadie"],
   ["CSV y JSON", "convertir en ambas direcciones, y ordenar lo que exportó la hoja de cálculo"],
   ["Certificados y claves", "leer un certificado o una solicitud de firma sin pegarla en el servidor de nadie"],
 ]
