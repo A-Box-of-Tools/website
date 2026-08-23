@@ -69,5 +69,4 @@ id = "beyond"
 name = "Verder dan media"
 items = [
   ["Gegevens", "csv en json omzetten, opschonen, inspecteren"],
-  ["Privacy &amp; beveiliging", "hashes, controlegetallen, metagegevens wissen"],
 ]

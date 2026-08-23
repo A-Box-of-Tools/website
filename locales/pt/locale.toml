@@ -66,6 +66,7 @@ complete = true
 # O estrangeirismo, porque e' o que se digita: "camera rapida" quase ninguem
 # procura, e "timelapse" aparece ate' em legenda de celular.
 "timelapse-video" = "fazer-timelapse"
+"hash-checksum" = "verificar-checksum"
 
 "guides" = "guias"
 "roadmap" = "roteiro"
@@ -88,6 +89,7 @@ complete = true
 "guides/embed-an-image-in-css" = "guias/colocar-uma-imagem-no-css"
 "guides/make-a-qr-code" = "guias/gerar-um-qr-code"
 "guides/turn-a-video-into-a-gif" = "guias/transformar-um-video-em-gif"
+"guides/verify-a-file-checksum" = "guias/verificar-o-checksum-de-um-download"
 
 #
 # ---------------------------------------------------------------------------
@@ -163,7 +165,7 @@ note = "Crie e reorganize documentos sem mandar nada para ser processado fora."
 [[hub.categories]]
 id = "codes-and-data"
 name = "Códigos e dados"
-note = "Transforme o que você digitou em algo que uma máquina consegue ler, sem que nada saia da página."
+note = "Crie algo que uma máquina consegue ler, ou confirme que um arquivo é mesmo o que diz ser. Tudo dentro da página."
 
 [[hub.categories]]
 id = "text-and-code"

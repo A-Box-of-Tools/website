@@ -73,5 +73,4 @@ id = "beyond"
 name = "Além de mídia"
 items = [
   ["Dados", "conversão, limpeza e inspeção de CSV e JSON"],
-  ["Privacidade e segurança", "hashes, somas de verificação, remoção de metadados"],
 ]

@@ -1,0 +1,269 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez <a href="../../verifier-une-somme-de-controle/">Hachage &amp; somme de
+      contrôle</a>, déposez dessus le fichier téléchargé et collez dans le champ du
+      bas la somme donnée par la page de téléchargement. La page déduit de la
+      longueur de quel algorithme il s'agit et répond par une phrase.
+    </p>
+    <p>
+      Si cela correspond, les octets sur votre disque sont ceux que l'auteur a
+      mesurés. Sinon, retéléchargez le fichier avant de l'ouvrir. Tout ce qui suit
+      est ce que cette phrase laisse de côté.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qu'est le nombre sous le lien de téléchargement</h2>
+    <p>
+      La sortie d'une fonction de hachage&nbsp;: un calcul qui lit chaque octet d'un
+      fichier et produit une réponse courte, de longueur fixe. Le même fichier donne
+      toujours la même réponse, et un fichier qui diffère d'un seul bit en donne une
+      complètement différente&nbsp;: pas une réponse presque identique, une réponse
+      sans rapport. Toute l'affaire repose sur cette propriété.
+    </p>
+    <p>
+      Comme la réponse est courte et le fichier ne l'est pas, le calcul jette de
+      l'information, et il existe forcément beaucoup de fichiers qui partagent une
+      même réponse. En trouver un exprès est la partie difficile, et sa difficulté
+      est ce qui sépare les algorithmes ci-dessous les uns des autres.
+    </p>
+    <p>
+      Une somme de contrôle n'a rien de secret et ne s'inverse pas. C'est une
+      empreinte, publiée pour que deux personnes puissent s'accorder sur le fait
+      qu'elles tiennent la même chose.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quel algorithme vous avez sous les yeux</h2>
+    <p>
+      Vous n'avez pas à choisir&nbsp;: l'auteur l'a déjà fait, et votre travail est de
+      calculer le même. La longueur suffit à le reconnaître&nbsp;:
+    </p>
+    <ul>
+      <li><strong>32 caractères hexadécimaux</strong> &mdash; MD5.</li>
+      <li><strong>40</strong> &mdash; SHA-1.</li>
+      <li><strong>64</strong> &mdash; SHA-256, et c'est celui que vous verrez le plus.</li>
+      <li><strong>96</strong> &mdash; SHA-384.</li>
+      <li><strong>128</strong> &mdash; SHA-512.</li>
+    </ul>
+    <p>
+      Aucun n'a la longueur d'un autre, ce qui permet à l'outil d'identifier une
+      valeur collée sans qu'on le lui dise. Une chaîne de 63 caractères n'est la
+      somme de rien du tout&nbsp;: c'est un SHA-256 qui a perdu un caractère en
+      chemin vers le presse-papiers.
+    </p>
+  </section>
+
+  <section>
+    <h2>Sur votre propre machine, sans navigateur</h2>
+    <p>
+      Chaque système d'exploitation embarque de quoi faire cela, et connaître la
+      commande vaut la peine même si vous passez par une page. À la question
+      &laquo;&nbsp;comment savoir si votre site a calculé honnêtement&nbsp;&raquo;, il
+      n'y a pas de meilleure réponse que de passer le même fichier dans l'outil livré
+      avec votre ordinateur.
+    </p>
+    <p><strong>Windows</strong>, dans PowerShell :</p>
+    <pre><code>Get-FileHash .\disk.iso -Algorithm SHA256</code></pre>
+    <p>
+      Les machines plus anciennes ont à la place
+      <code>certutil -hashfile disk.iso SHA256</code>, qui écrit en majuscules avec
+      des espaces. La casse ne compte jamais dans une comparaison de sommes&nbsp;: ces
+      lettres sont des chiffres, pas des mots.
+    </p>
+    <p><strong>macOS</strong>:</p>
+    <pre><code>shasum -a 256 disk.iso</code></pre>
+    <p><strong>Linux</strong>:</p>
+    <pre><code>sha256sum disk.iso</code></pre>
+    <p>
+      Les trois impriment la même chaîne pour le même fichier, et ce site aussi. Ce
+      sont des spécifications exactes avec des vecteurs de test publiés&nbsp;; il n'y
+      a pas de place pour qu'une implémentation ait un avis.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comparer sans y laisser ses yeux</h2>
+    <p>
+      Ne lisez pas soixante-quatre caractères sur deux écrans pour décider qu'ils se
+      ressemblent. Les gens vérifient les quatre premiers et les quatre derniers puis
+      s'arrêtent, ce qui est exactement la comparaison qu'un attaquant s'arrangerait
+      pour passer, et c'est aussi ainsi qu'une erreur de bonne foi passe.
+    </p>
+    <p>
+      Collez les deux dans quelque chose qui compare pour vous. En ligne de commande,
+      c'est à cela que sert l'option <code>-c</code>&nbsp;:
+    </p>
+    <pre><code>sha256sum -c SHA256SUMS</code></pre>
+    <p>
+      Dans un navigateur, c'est le champ de comparaison de
+      <a href="../../verifier-une-somme-de-controle/">Hachage &amp; somme de
+      contrôle</a>, qui prend la valeur sous la forme où l'auteur l'a écrite&nbsp;:
+      hexadécimal seul, ligne de <code>sha256sum</code>, fichier
+      <code>SHA256SUMS</code> entier, forme
+      <code>SHA256 (disk.iso) = &hellip;</code>, ou
+      <code>integrity="sha384-&hellip;"</code> pris sur une balise de script. Il
+      répond oui ou non, en une phrase.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qu'une correspondance prouve, exactement</h2>
+    <p>
+      Que les octets sur votre disque sont ceux que quelqu'un avait devant lui en
+      notant ce nombre. C'est vraiment utile à savoir, et c'est plus étroit que la
+      plupart des gens ne le supposent&nbsp;: la liste vaut donc la peine.
+    </p>
+    <p><strong>Une correspondance écarte :</strong></p>
+    <ul>
+      <li>
+        un téléchargement qui s'est arrêté trop tôt en laissant un fichier d'apparence
+        complète&nbsp;;
+      </li>
+      <li>
+        une corruption en transit, sur un disque en fin de vie ou par un mauvais câble
+        USB&nbsp;;
+      </li>
+      <li>
+        le mauvais fichier&nbsp;: la version ARM au lieu de la x86, ou la publication
+        du mois dernier&nbsp;;
+      </li>
+      <li>
+        un miroir qui sert discrètement autre chose que ce qu'il annonce.
+      </li>
+    </ul>
+    <p><strong>Une correspondance n'écarte pas :</strong></p>
+    <ul>
+      <li>
+        <strong>que le fichier soit malveillant.</strong> Un auteur peut mesurer un
+        logiciel malveillant aussi exactement qu'autre chose. Une somme dit
+        &laquo;&nbsp;voilà ce qui a été publié&nbsp;&raquo;, jamais &laquo;&nbsp;c'est
+        sans danger&nbsp;&raquo;&nbsp;;
+      </li>
+      <li>
+        <strong>que l'auteur ait été compromis.</strong> Si quelqu'un a remplacé le
+        fichier sur le serveur, il a remplacé la somme imprimée dessous dans la même
+        minute. Ce qui nous amène à la section suivante.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>L'erreur qui vide tout l'exercice de son sens</h2>
+    <p>
+      Prendre la somme de contrôle sur la même page, par la même connexion, que le
+      fichier.
+    </p>
+    <p>
+      Demandez-vous contre quoi vous vous protégez. Si c'est contre un téléchargement
+      abîmé, la somme peut venir de n'importe où et la vérification fonctionne. Si
+      c'est contre quelqu'un qui aurait trafiqué le fichier, alors celui qui pouvait
+      changer le fichier pouvait changer la ligne hexadécimale imprimée dessous,
+      puisque les deux venaient du même serveur par la même connexion. Vous
+      demanderiez au faussaire de confirmer la signature.
+    </p>
+    <p>
+      Une somme de contrôle vaut le plus quand elle vous parvient par une voie que le
+      fichier n'a pas prise :
+    </p>
+    <ul>
+      <li>
+        un fichier <code>SHA256SUMS</code> avec une signature GPG détachée, vérifiée
+        contre une clé que vous aviez déjà&nbsp;: c'est ce que publient les
+        distributions et c'est la vraie réponse&nbsp;;
+      </li>
+      <li>
+        l'annonce de version sur une liste de diffusion, ou une étiquette dans un
+        dépôt de code, plutôt que la page de téléchargement&nbsp;;
+      </li>
+      <li>
+        un second miroir sur un autre domaine, les deux étant ensuite comparés entre
+        eux&nbsp;;
+      </li>
+      <li>
+        un gestionnaire de paquets, qui fait cela pour vous contre des clés livrées
+        avec le système d'exploitation.
+      </li>
+    </ul>
+    <p>
+      Rien de tout cela ne rend inutile la vérification d'une somme publiée sur la
+      même page. Elle attrape le téléchargement abîmé, qui est la panne qui arrive
+      vraiment aux gens. Ne vous racontez simplement pas qu'elle a attrapé autre
+      chose.
+    </p>
+  </section>
+
+  <section>
+    <h2>MD5 et SHA-1 sont cassés. Servez-vous-en quand même, parfois</h2>
+    <p>
+      Tous deux sont cassés au sens le plus fort qui compte ici&nbsp;: on peut
+      construire des <em>collisions</em> exprès. Deux fichiers différents ayant le
+      même MD5 se fabriquent sur du matériel ordinaire depuis 2004, et en 2017 une
+      équipe a produit deux PDF différents ayant le même SHA-1. En 2020, la version à
+      préfixe choisi de cette attaque est descendue à quelques dizaines de milliers
+      de dollars de calcul loué.
+    </p>
+    <p>
+      En pratique&nbsp;: un MD5 qui correspond ne vous dit plus que personne n'a
+      touché au fichier, puisque quelqu'un qui l'aurait voulu aurait pu fabriquer un
+      autre fichier portant le même nombre. Il vous dit toujours que le
+      téléchargement n'a pas été tronqué ni corrompu, car un accident au hasard ne
+      tombera pas sur une collision&nbsp;: aucun accident n'a jamais eu cette
+      probabilité.
+    </p>
+    <p>
+      Donc si l'auteur n'a imprimé qu'un MD5, vérifiez-le&nbsp;: cela vaut mieux que
+      de ne rien vérifier. Et si c'est vous qui publiez, imprimez un SHA-256.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cela ne correspond pas. Et maintenant ?</h2>
+    <ol>
+      <li>
+        <strong>Retéléchargez</strong>, au même endroit. Un transfert interrompu ou
+        repris est de très loin la cause la plus fréquente, et une deuxième copie règle
+        généralement l'affaire.
+      </li>
+      <li>
+        <strong>Vérifiez que vous êtes sur la bonne ligne.</strong> Les pages de
+        version listent plusieurs fichiers&nbsp;: la somme de l'installeur ne
+        correspondra jamais à celle de l'archive, ni celle de l'ARM à celle du x86.
+      </li>
+      <li>
+        <strong>Vérifiez la version.</strong> Une page de sommes mise en favori est
+        périmée le jour où sort une révision.
+      </li>
+      <li>
+        <strong>Essayez un autre miroir</strong> et comparez entre elles les sommes
+        des deux fichiers. Deux miroirs qui s'accordent entre eux et divergent du
+        nombre publié, c'est un problème différent d'un miroir qui diverge des deux.
+      </li>
+      <li>
+        <strong>N'ouvrez rien entre-temps.</strong> Un fichier qui rate sa somme de
+        contrôle est au mieux abîmé et au pire pas le fichier demandé.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Pourquoi faire cela dans un navigateur</h2>
+    <p>
+      Parce que la ligne de commande n'est pas là où se trouve la plupart des gens,
+      et parce que l'autre solution évidente, un site qui vous demande d'envoyer le
+      fichier, est une chose étrange à faire avec un installeur dont on doute déjà.
+      Expédier un fichier quelque part pour savoir s'il a été trafiqué en route
+      ajoute un endroit de plus où il peut l'être.
+    </p>
+    <p>
+      <a href="../../verifier-une-somme-de-controle/">Hachage &amp; somme de
+      contrôle</a> lit le fichier par tranches de quatre mégaoctets sur votre propre
+      machine&nbsp;: pas d'envoi, pas de limite de taille, et rien à qui faire
+      confiance en dehors de la page elle-même, que vous pouvez lire et qui continue
+      de fonctionner réseau débranché. Si vous préférez faire confiance à votre
+      système d'exploitation, lancez la commande de la section plus haut et comparez
+      les deux réponses. Elles seront identiques.
+    </p>
+  </section>

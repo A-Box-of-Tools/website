@@ -98,6 +98,7 @@ complete = true
 "password-generator" = "passwort-generator"
 # Nicht "zeitraffer-video": gesucht wird die Handlung, nicht das Ergebnis.
 "timelapse-video" = "zeitraffer-erstellen"
+"hash-checksum" = "pruefsumme-berechnen"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of
@@ -125,6 +126,7 @@ complete = true
 "guides/embed-an-image-in-css" = "ratgeber/bild-in-css-einbetten"
 "guides/make-a-qr-code" = "ratgeber/qr-code-selbst-erstellen"
 "guides/turn-a-video-into-a-gif" = "ratgeber/aus-einem-video-ein-gif-machen"
+"guides/verify-a-file-checksum" = "ratgeber/pruefsumme-vergleichen"
 
 #
 # ---------------------------------------------------------------------------
@@ -201,7 +203,7 @@ note = "Dokumente erstellen und umsortieren, ohne sie zum Verarbeiten wegzuschic
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; Daten"
-note = "Getipptes in etwas verwandeln, das eine Maschine lesen kann, ohne dass es die Seite verlässt."
+note = "Etwas herstellen, das eine Maschine lesen kann, oder prüfen, ob eine Datei die ist, die sie zu sein behauptet. Beides auf der Seite selbst."
 
 [[hub.categories]]
 id = "text-and-code"

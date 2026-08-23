@@ -1,0 +1,17 @@
+#
+# Gids: een download controleren tegen zijn checksum - Dutch.
+#
+
+nav = "Een checksum controleren"
+title = "Een download controleren met zijn checksum (en wat dat bewijst)"
+description = "Hoe je een MD5- of SHA-256-checksum vergelijkt op Windows, macOS en Linux of in je browser, wat een treffer werkelijk bewijst, en de fout waardoor de hele exercitie niets meer voorstelt."
+heading = "Zo controleer je een download tegen zijn checksum"
+lede = """
+    De regel hex onder een downloadlink staat er zodat je kunt aantonen dat het
+    bestand ongeschonden is aangekomen. Hem vergelijken kost een minuut. Weten
+    wat die vergelijking waard is, en welke gewoonte haar waardeloos maakt, kost
+    de rest van deze pagina."""
+updated = "23 augustus 2026"
+og_title = "Een download controleren tegen zijn checksum, en wat dat bewijst"
+og_description = "Waar de hex onder een downloadlink voor is, hoe je hem op elk besturingssysteem vergelijkt, en waarom hem van dezelfde pagina halen als het bestand het idee onderuithaalt."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

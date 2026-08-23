@@ -1,0 +1,182 @@
+<main>
+  <!--
+    세 단계, 그리고 세 번째가 여기까지 온 이유입니다.
+    
+    체크섬을 계산하는 것은 일이 아닙니다. 방금 받은 파일이 배포처가 잰 그
+    파일인지 알아내는 것이 일입니다. "해시는 여기 있습니다"에서 끝나는
+    페이지는 마지막이자 유일하게 성가신 몫을 방문자에게 떠넘깁니다. 예순네
+    자를 눈으로 맞춰 보는 몫이죠. 그래서 비교를 별도의 단계로 두었고,
+    공개되는 어떤 형식이든 받아들이며, 색이 아니라 한 문장으로 답합니다.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> 파일 고르기</h2>
+
+    <!--
+      진짜 <label>이면 브라우저가 알아서 파일 선택 창을 엽니다. display:none으로
+      숨긴 input에 .click()을 부르는 방식은 사파리와 일부 크롬 설정이 거부하므로,
+      input은 레이아웃에 남겨 둡니다. 보이지 않을 뿐 포커스도 가고 키보드로도
+      닿습니다. 이 경로에는 자바스크립트가 한 줄도 없습니다.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="run-card">
+    <h2><span class="step">2</span> 체크섬</h2>
+    <p class="card-lede">
+      MD5와 SHA-256은 기본으로 계산합니다. 둘이면 세상에 있는 다운로드 페이지의
+      거의 전부를 덮기 때문입니다. 다른 것을 켜면 그것 때문에 파일을 다시 읽습니다.
+      느린 쪽은 읽기이므로, 파일을 고르기 전에 켜 둔 것은 한 번 읽는 동안 함께
+      나옵니다.
+    </p>
+
+    <fieldset class="algorithms">
+      <legend class="visually-hidden">어떤 체크섬을 계산할지</legend>
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="md5" checked>
+        <span class="algorithm-name">MD5</span>
+        <span class="algorithm-note">충돌은 2004년부터 값이 쌉니다. 그런데도 인터넷에 있는 다운로드의 절반 옆에는 이 숫자가 적혀 있습니다.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha1">
+        <span class="algorithm-name">SHA-1</span>
+        <span class="algorithm-note">2017년에 공개적으로 깨졌습니다. 그런데도 깃은 이것으로 객체에 이름을 붙이고, 릴리스 페이지에도 여전히 많습니다.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha256" checked>
+        <span class="algorithm-name">SHA-256</span>
+        <span class="algorithm-note">오늘날 체크섬이라고 하면 이것입니다. 체크섬을 공개하는 배포판은 대개 이것을 공개합니다.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha384">
+        <span class="algorithm-name">SHA-384</span>
+        <span class="algorithm-note">SHA-512를 잘라 쓴 것. 주로 script 태그의 integrity 속성에서 마주칩니다.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha512">
+        <span class="algorithm-name">SHA-512</span>
+        <span class="algorithm-note">더 넓지만, 실제로 문제가 된 어떤 경우에도 더 강하지는 않았습니다. 그래도 공개하는 프로젝트가 있습니다.</span>
+      </label>
+    </fieldset>
+
+    <div class="progress" id="progress" hidden>
+      <div class="progress-track" role="progressbar" id="progress-track"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="progress-fill" id="progress-fill"></span>
+      </div>
+      <p class="progress-line">
+        <span id="progress-text" role="status" aria-live="polite"></span>
+        <button type="button" id="stop" class="ghost danger">중지</button>
+      </p>
+    </div>
+
+    <p class="stopped" id="stopped" hidden>
+      중지했습니다. 이 파일에 대해서는 아무것도 계산하지 않았습니다.
+      <button type="button" id="restart" class="ghost">다시 시작</button>
+    </p>
+
+    <div class="results" id="results" hidden>
+      <div class="toolbar">
+        <h3 class="file-name" id="file-name">&mdash;</h3>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">전부 복사</button>
+          <button type="button" id="download-checksums" class="ghost">파일로 저장</button>
+        </div>
+      </div>
+
+      <p class="file-facts" id="file-facts"></p>
+
+      <ul class="digests" id="digests">
+        <li class="digest" data-algorithm="md5" hidden>
+          <span class="digest-name">MD5</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>일치</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>불일치</span>
+          <button type="button" class="ghost" data-slot="copy">복사</button>
+        </li>
+        <li class="digest" data-algorithm="sha1" hidden>
+          <span class="digest-name">SHA-1</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>일치</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>불일치</span>
+          <button type="button" class="ghost" data-slot="copy">복사</button>
+        </li>
+        <li class="digest" data-algorithm="sha256" hidden>
+          <span class="digest-name">SHA-256</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>일치</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>불일치</span>
+          <button type="button" class="ghost" data-slot="copy">복사</button>
+        </li>
+        <li class="digest" data-algorithm="sha384" hidden>
+          <span class="digest-name">SHA-384</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>일치</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>불일치</span>
+          <button type="button" class="ghost" data-slot="copy">복사</button>
+        </li>
+        <li class="digest" data-algorithm="sha512" hidden>
+          <span class="digest-name">SHA-512</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>일치</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>불일치</span>
+          <button type="button" class="ghost" data-slot="copy">복사</button>
+        </li>
+      </ul>
+
+      <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="compare-card">
+    <h2><span class="step">3</span> 원래 값과 맞춰 보기</h2>
+    <p class="card-lede">
+      다운로드 페이지가 준 체크섬을 붙여 넣으세요. 형식은 상관없습니다. 16진수만
+      있어도 되고, <code>sha256sum</code> 출력이어도 되고,
+      <code>SHA256SUMS</code> 파일 전체여도 되고,
+      <code>SHA256 (파일) = &hellip;</code> 형태여도 되고, script 태그의
+      <code>integrity</code> 속성이어도 됩니다. 어떤 알고리즘인지는 길이로
+      정해지므로 고를 것이 없습니다.
+    </p>
+
+    <label class="visually-hidden" for="expected">원래 있어야 할 체크섬</label>
+    <textarea id="expected" rows="3" spellcheck="false" autocapitalize="off"
+              autocomplete="off"
+              placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
+
+    <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
+      <span data-read="one">이것은 <b data-slot="algorithm"></b>입니다.</span>
+      <span data-read="many">목록이네요. 체크섬이 <b data-slot="count"></b>개 들어 있습니다.</span>
+      <span data-read="stray">16진수 <b data-slot="length"></b>자인데, 여기 있는 어떤 것도 그 길이가 아닙니다. 대개 끝이 잘린 사본입니다.</span>
+      <span data-read="nothing">체크섬처럼 보이는 것이 없습니다.</span>
+    </p>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-line good" data-outcome="match">
+        <span class="verdict-mark">&#10003;</span>
+        <span>그 체크섬이 가리키는 파일이 맞습니다. <b data-slot="algorithm"></b>이 붙여 넣으신 값과 한 글자도 다르지 않습니다.</span>
+      </p>
+      <p class="verdict-line good" data-outcome="renamed">
+        <span class="verdict-mark">&#10003;</span>
+        <span>바이트는 맞는데 다른 줄과 맞았습니다. 붙여 넣으신 내용은 이 파일을 <b data-slot="name"></b>이라고 부르고, 고르신 파일의 이름은 다릅니다. 오는 길에 이름이 바뀌었거나, 확인하려던 그 파일이 아니거나 둘 중 하나입니다. <b data-slot="algorithm"></b>은 어느 쪽이든 맞습니다.</span>
+      </p>
+      <p class="verdict-line bad" data-outcome="mismatch">
+        <span class="verdict-mark">&#10007;</span>
+        <span>그 체크섬이 가리키는 파일이 <b>아닙니다</b>. <b data-slot="algorithm"></b>이 다르니 바이트가 다릅니다. 다운로드가 끊겼거나, 버전이 다르거나, 미러가 다른 것을 주고 있습니다. 열기 전에 다시 받으세요.</span>
+      </p>
+      <p class="verdict-line" data-outcome="waiting">
+        <span class="verdict-mark">&hellip;</span>
+        <span>맞춰 볼 <b data-slot="algorithm"></b>을 계산하는 중입니다.</span>
+      </p>
+      <p class="verdict-line" data-outcome="nofile">
+        <span class="verdict-mark">&hellip;</span>
+        <span>위에서 파일을 고르시면 맞는지 여기에 나옵니다.</span>
+      </p>
+    </div>
+  </section>
+</main>

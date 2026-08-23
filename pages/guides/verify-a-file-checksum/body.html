@@ -1,0 +1,241 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open <a href="../../hash-checksum/">Hash &amp; Checksum</a>, drop the file
+      you downloaded onto it, and paste the checksum from the download page into
+      the box at the bottom. The page works out which algorithm the number is
+      from how long it is, and answers in a sentence.
+    </p>
+    <p>
+      If it matches, the bytes on your disk are the bytes the publisher measured.
+      If it does not, download the file again before you open it. Everything
+      below is what that sentence leaves out.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the number under the download link is</h2>
+    <p>
+      It is the output of a hash function: a calculation that reads every byte of
+      a file and produces a short, fixed-length answer. The same file always
+      gives the same answer, and a file that differs by a single bit gives a
+      completely different one &mdash; not a nearly-identical one, an unrelated
+      one. That is the whole property being relied on.
+    </p>
+    <p>
+      Because the answer is short and the file is not, the calculation throws
+      information away, and there are necessarily many files that share any given
+      answer. Finding one of them on purpose is the hard part, and how hard it is
+      is what separates the algorithms below from each other.
+    </p>
+    <p>
+      Nothing about a checksum is secret and nothing about it is reversible. It
+      is a fingerprint, published so that two people can agree they are holding
+      the same thing.
+    </p>
+  </section>
+
+  <section>
+    <h2>Which algorithm you are looking at</h2>
+    <p>
+      You do not have to choose &mdash; the publisher already did, and your job
+      is to compute the same one. You can tell which from the length alone:
+    </p>
+    <ul>
+      <li><strong>32 hex characters</strong> &mdash; MD5.</li>
+      <li><strong>40</strong> &mdash; SHA-1.</li>
+      <li><strong>64</strong> &mdash; SHA-256, and this is what you will see most.</li>
+      <li><strong>96</strong> &mdash; SHA-384.</li>
+      <li><strong>128</strong> &mdash; SHA-512.</li>
+    </ul>
+    <p>
+      No two of them are the same length, which is why the tool can identify a
+      pasted value without being told. A string that is 63 characters long is not
+      a checksum of anything; it is a SHA-256 that lost a character on the way to
+      your clipboard.
+    </p>
+  </section>
+
+  <section>
+    <h2>Doing it on your own machine, without a browser</h2>
+    <p>
+      Every operating system ships something that does this, and it is worth
+      knowing the command even if you use a page for it &mdash; there is no
+      better answer to "how do I know your site computed it honestly" than
+      running the same file through the tool that came with your computer.
+    </p>
+    <p><strong>Windows</strong>, in PowerShell:</p>
+    <pre><code>Get-FileHash .\disk.iso -Algorithm SHA256</code></pre>
+    <p>
+      Older machines have <code>certutil -hashfile disk.iso SHA256</code>
+      instead, which prints in upper case with spaces in it. Case never matters
+      in a checksum comparison; the letters are digits, not words.
+    </p>
+    <p><strong>macOS</strong>:</p>
+    <pre><code>shasum -a 256 disk.iso</code></pre>
+    <p><strong>Linux</strong>:</p>
+    <pre><code>sha256sum disk.iso</code></pre>
+    <p>
+      All three print the same string for the same file, and so does this site.
+      They are exact specifications with published test vectors; there is no room
+      for an implementation to have an opinion.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comparing them without going cross-eyed</h2>
+    <p>
+      Do not read sixty-four characters off two screens and decide they look the
+      same. People check the first four and the last four and stop, which is
+      exactly the comparison an attacker would arrange to pass, and it is also
+      how an honest mistake gets waved through.
+    </p>
+    <p>
+      Paste both into something that can compare them for you. On a command line
+      that is what the <code>-c</code> flag is for:
+    </p>
+    <pre><code>sha256sum -c SHA256SUMS</code></pre>
+    <p>
+      In a browser it is the comparison box on
+      <a href="../../hash-checksum/">Hash &amp; Checksum</a>, which takes the
+      value in whatever shape the publisher wrote it &mdash; bare hex, a line of
+      <code>sha256sum</code> output, a whole <code>SHA256SUMS</code> file, the
+      <code>SHA256 (disk.iso) = &hellip;</code> form, or an
+      <code>integrity="sha384-&hellip;"</code> attribute out of a script tag
+      &mdash; and says yes or no in a sentence.
+    </p>
+  </section>
+
+  <section>
+    <h2>What a match proves, exactly</h2>
+    <p>
+      That the bytes on your disk are the bytes somebody had in front of them
+      when they wrote that number down. That is a genuinely useful thing to know
+      and it is narrower than most people assume, so it is worth listing what it
+      covers and what it does not.
+    </p>
+    <p><strong>A match rules out:</strong></p>
+    <ul>
+      <li>a download that stopped early and left you a file that looks complete;</li>
+      <li>corruption in transit, on a failing disk, or in a bad USB cable;</li>
+      <li>the wrong file &mdash; the ARM build instead of the x86 one, or last
+        month's release;</li>
+      <li>a mirror that quietly serves something other than what it advertises.</li>
+    </ul>
+    <p><strong>A match does not rule out:</strong></p>
+    <ul>
+      <li><strong>the file being malicious.</strong> A publisher can measure
+        malware exactly as accurately as anything else. A checksum says "this is
+        what they shipped", never "this is safe";</li>
+      <li><strong>the publisher having been compromised.</strong> If someone
+        replaced the file on the server, they replaced the checksum beside it in
+        the same minute. Which brings us to the next section.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>The mistake that makes the whole exercise pointless</h2>
+    <p>
+      Taking the checksum from the same page, over the same connection, as the
+      file.
+    </p>
+    <p>
+      Think about what you are defending against. If the worry is a corrupted
+      download, the checksum can come from anywhere and the check works. If the
+      worry is somebody tampering with the file, then whoever could change the
+      file could change the line of hex printed underneath it, because both came
+      from the same server over the same connection. You would be asking the
+      forger to confirm the signature.
+    </p>
+    <p>
+      A checksum is worth most when it reaches you by a route the file did not:
+    </p>
+    <ul>
+      <li>a <code>SHA256SUMS</code> file with a detached GPG signature, checked
+        against a key you already had &mdash; this is what distributions publish
+        and it is the real answer;</li>
+      <li>the release announcement on a mailing list, or a tag in a source
+        repository, rather than the download page;</li>
+      <li>a second mirror on a different domain, and the two compared with each
+        other;</li>
+      <li>a package manager, which is doing this for you against keys shipped
+        with the operating system.</li>
+    </ul>
+    <p>
+      None of that makes checking a same-page checksum useless. It catches the
+      broken download, which is the failure that actually happens to people. Just
+      do not tell yourself it caught anything else.
+    </p>
+  </section>
+
+  <section>
+    <h2>MD5 and SHA-1 are broken. Use them anyway, sometimes</h2>
+    <p>
+      Both have been broken in the strongest sense that matters here:
+      <em>collisions</em> can be constructed on purpose. Two different files with
+      the same MD5 have been buildable on ordinary hardware since 2004, and in
+      2017 a team produced two different PDFs with the same SHA-1. In 2020 the
+      chosen-prefix version of that attack came down to a few tens of thousands
+      of dollars of rented computing.
+    </p>
+    <p>
+      What that means in practice: a matching MD5 no longer tells you nobody
+      meddled with the file, because somebody who wanted to could have built a
+      different file with the same number. It still tells you the download was
+      not truncated or corrupted, because a random accident will not land on a
+      collision &mdash; that has odds no accident has ever had.
+    </p>
+    <p>
+      So if the publisher printed an MD5 and nothing else, check it. It is worth
+      more than not checking. And if you are the one publishing, print a SHA-256.
+    </p>
+  </section>
+
+  <section>
+    <h2>It did not match. What now?</h2>
+    <ol>
+      <li>
+        <strong>Download it again</strong>, from the same place. An interrupted
+        or resumed transfer is far and away the most common cause and a second
+        copy usually settles it.
+      </li>
+      <li>
+        <strong>Check you are on the right line.</strong> Release pages list
+        several files; the checksum for the installer will never match the
+        archive, and the ARM build will never match the x86 one.
+      </li>
+      <li>
+        <strong>Check the version.</strong> Bookmarked checksum pages go stale
+        the day a point release ships.
+      </li>
+      <li>
+        <strong>Try a different mirror</strong> and compare the two files'
+        checksums with each other. Two mirrors agreeing with each other and
+        disagreeing with the published number is a different problem from one
+        mirror disagreeing with both.
+      </li>
+      <li>
+        <strong>Do not open it in the meantime.</strong> A file that fails its
+        checksum is at best damaged and at worst not the file you asked for.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Why do this in a browser at all</h2>
+    <p>
+      Because the command line is not where most people are, and because the
+      obvious alternative &mdash; a website that asks you to upload the file
+      &mdash; is a strange thing to do with an installer you are already unsure
+      about. Sending a file somewhere to find out whether it was tampered with in
+      transit adds one more place it can be tampered with.
+    </p>
+    <p>
+      <a href="../../hash-checksum/">Hash &amp; Checksum</a> reads the file in
+      four-megabyte pieces on your own machine, so there is no upload, no size
+      limit, and nothing to trust beyond the page itself &mdash; which you can
+      read, and which keeps working with the network unplugged. If you would
+      rather trust your own operating system, run the command from the section
+      above and compare the two answers. They will agree.
+    </p>
+  </section>

@@ -40,5 +40,6 @@ browser and uploads nothing; how the site around them is built is in the
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |
 | [QR & Barcode Generator](qr-barcode/) | `/qr-barcode/` | Type it, and it becomes a code. Nothing is sent to make one. |
+| [Hash & Checksum](hash-checksum/) | `/hash-checksum/` | Check a download against the number the publisher printed, without sending it to anyone. |
 | [Text & Code](text-tools/) | `/text-tools/` | Lay it out, see what changed, encode it, or turn it into the other format. Nothing is pasted into anyone else's server. |
 | [Password & Passphrase Generator](password-generator/) | `/password-generator/` | Made here, by your own browser, and never sent anywhere. Nothing is stored and there is no history. |

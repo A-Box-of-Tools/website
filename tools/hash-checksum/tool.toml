@@ -1,0 +1,410 @@
+#
+# Hash & Checksum
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# The words below have one job the others do not: they have to be honest about
+# what a checksum proves. It proves the bytes arrived unaltered. It does not
+# prove the publisher is trustworthy, and it does not prove much at all if the
+# checksum came down the same wire as the file. Both of those are said out loud
+# on the page rather than left to be inferred, because the visitor most likely
+# to be here is one who has just been told to "verify the download" and has not
+# been told what that is worth.
+#
+
+slug = "hash-checksum"
+name = "Hash & Checksum"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Hash&nbsp;&amp;&nbsp;checksum <span class=\"h1-kw\">&mdash; MD5, SHA-1, SHA-256, SHA-512</span>"
+tagline = "Check a download against the number the publisher printed, without sending it to anyone."
+icon = "&#128273;"          # the key, beside the page heading
+favicon = "&#128273;"       # the tab icon, drawn into an inline SVG
+category = "codes-and-data"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "beyond"
+
+# Shared modules this tool asks for. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-23"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "SHA-256 &amp; MD5 Checksum Tool &mdash; Verify a Download, No Upload"
+description = "Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 of any file and compare it with the checksum the download page published. The file is read in your browser and never uploaded, at any size."
+og_title = "Verify a download without uploading it to anybody"
+og_description = "MD5, SHA-1, SHA-256, SHA-384 and SHA-512, worked out in your own browser. Paste the checksum the publisher printed and the page says whether it matches. No size limit, because the file is read in pieces."
+og_image_alt = "Hash & Checksum - verify a download in your browser, no upload"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Check a download against the number the publisher printed - on your own machine."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  This tool needs no directive of its own, and it is the clearest case on the
+  site of why: it fetches nothing, decodes nothing from the network, and draws
+  nothing. The only blob: URL it makes is the download link for the list of
+  checksums, which is a link rather than an image and needs no permission.
+  img-src still carries blob: because every tool page does, and https: because
+  ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    A checksum is arithmetic over the bytes of your file, and it is done here, in
+    this page, on your own processor. The file is read off your disk four
+    megabytes at a time and each piece is thrown away as soon as it has been
+    counted, so nothing is ever assembled anywhere &mdash; not in memory, and
+    certainly not on a server. There is no server on the other end of this page
+    to send a file to even if anything here wanted to."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and check
+      a file. Not one request carries a byte of it, or its name, or its size. Or
+      unplug from the internet and check one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> and
+      <code>src/sha512.js</code> for the four compression functions,
+      <code>src/blocks.js</code> for the padding they share, and
+      <code>src/hash.js</code> for the loop that reads your file in pieces
+      &mdash; none of which has a line that could reach the network."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to check a download against its checksum"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Work out a file's MD5, SHA-1, SHA-256, SHA-384 or SHA-512 and
+            compare it with the one the download page printed. Any size: the
+            file is read in pieces, never held whole."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "files"
+choose = "a file"
+analytics_extra = """, and no
+  checksum out of your file"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No size limit"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "Your file has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were. This used to read <code>connect-src 'none'</code>, which was absolute;
+      adding advertising cost that, and saying so is part of the deal."""
+
+[[privacy]]
+title = "The file is never held whole, at any size."
+body = """
+
+      It is read four megabytes at a time and each piece is counted into the
+      running state and dropped. So the memory this page uses is the same for a
+      forty-gigabyte disk image as for a text file, and there is no size at which
+      it gives up. That is also why the browser's own
+      <code>crypto.subtle.digest</code> is not used: it wants the whole file in
+      memory at once, which is exactly the ceiling this tool exists not to
+      have."""
+
+[[privacy]]
+title = "Five algorithms, five files in this repository."
+body = """
+ <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> and
+      <code>src/sha512.js</code> are the published specifications written out,
+      about sixty lines each, with the constant tables spelled out rather than
+      computed so that nothing about the answer can depend on your browser. Every
+      one of them is checked against the official test vectors and against the
+      operating system's own implementation before it ships."""
+
+[[privacy]]
+title = "The checksum you paste in is not sent anywhere either."
+body = """
+
+      It is compared here, in the page, against the digest computed here. Nothing
+      about the comparison &mdash; not the value, not whether it matched, not the
+      name of the file &mdash; is read out to anybody. That matters more than it
+      might sound: a checksum plus a filename tells whoever collects it exactly
+      which build of which piece of software you just downloaded."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      file: not the file, not its name, its size, or any of the digests. Every
+      line that reads or hashes a byte is served from this origin and listed in
+      the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your files. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and every part of this
+      page still works. That is the simplest proof of all: a tool that sent your
+      file away to be hashed would stop the moment you unplugged."""
+
+[[howto]]
+title = "Choose the file."
+body = """
+ Drop it onto the picker, or select
+      it by hand. It is read straight off your disk in pieces; nothing is sent
+      anywhere while you do it, and there is no size at which the page gives
+      up."""
+
+[[howto]]
+title = "Let it read."
+body = """
+ MD5 and SHA-256 are worked out by
+      default, in a single pass. The bar shows how far through the file it is
+      and how fast that is going &mdash; a large disk image takes about as long
+      as copying it would, because it is the same amount of reading."""
+
+[[howto]]
+title = "Paste what it should be."
+body = """
+ Whatever the download page
+      gave you, in whatever shape: bare hex, a line of <code>sha256sum</code>
+      output, a whole <code>SHA256SUMS</code> file, or the
+      <code>integrity</code> attribute off a script tag. Which algorithm it is
+      follows from how long it is, and the right box ticks itself."""
+
+[[howto]]
+title = "Read the answer, not the colour."
+body = """
+ The page
+      says in a sentence whether this is the file that checksum describes. A
+      match means the bytes are identical to the ones the publisher measured. A
+      mismatch means they are not, and the download should be fetched again
+      before it is opened."""
+
+[[howto]]
+title = "Take the checksums if you need them."
+body = """
+
+      Copy one, copy all of them, or save them as a small text file in the
+      tagged form the command-line tools write, so the algorithm travels with
+      the number."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my file uploaded anywhere?"
+a = """
+        No. It is read off your disk by your own browser and hashed on your own
+        processor, four megabytes at a time. There is no server side to this
+        tool, and the page's <code>Content-Security-Policy</code> names every
+        address it may contact &mdash; none of them belongs to this site. Unplug
+        from the network and it still works."""
+
+[[faq]]
+q = "Is there a size limit?"
+a = """
+        No. The file is never held whole: it is read in pieces and each piece is
+        counted and dropped, so a forty-gigabyte disk image uses the same few
+        megabytes of memory as a text file. What it costs is time, and the page
+        tells you how much as it goes.
+        <br><br>
+        This is the reason the algorithms are written out here rather than
+        handed to the browser's own <code>crypto.subtle.digest</code>, which
+        would be faster. That call takes the whole message in one buffer and
+        there is no way to feed it a file in pieces, so using it would have put
+        the largest file you can check at the mercy of how much memory this tab
+        happens to be allowed. On a phone that is a few hundred megabytes, and
+        the file people most want to check is a disk image."""
+
+[[faq]]
+q = "The checksum matched. What has that actually proved?"
+a = """
+        That the bytes on your disk are the bytes somebody measured when they
+        wrote that number down. Nothing more, and it is worth being precise about
+        the limits.
+        <br><br>
+        It proves the download was not truncated, corrupted by a bad disk, or
+        swapped for something else in transit. It does <strong>not</strong> prove
+        the file is safe, because a publisher can measure malware just as
+        accurately as anything else. And it proves very little if the checksum
+        came from the same page, over the same connection, as the file: anybody
+        able to change one was able to change the other. A checksum is worth most
+        when it reaches you by a different route &mdash; a signed
+        <code>SHA256SUMS</code> file, a distribution's release announcement, a
+        second mirror, or a package manager that already knows it."""
+
+[[faq]]
+q = "It did not match. What now?"
+a = """
+        Download it again first, from the same place. An interrupted or
+        resumed transfer is far and away the most common cause, and a second copy
+        usually settles it.
+        <br><br>
+        If the second copy gives the same wrong answer, check you are comparing
+        against the right line: release pages list several files, and the
+        checksum for the ARM build will never match the x86 one. Then check the
+        version number. If all of that is right and it still does not match, do
+        not open the file. Fetch it from a different mirror and compare the two
+        checksums with each other."""
+
+[[faq]]
+q = "Which one should I use?"
+a = """
+        Whichever the publisher printed. The point of the exercise is to compare
+        against their number, and you cannot choose theirs for them.
+        <br><br>
+        If you are producing a checksum rather than checking one, use SHA-256.
+        MD5 and SHA-1 are both broken in the sense that matters: two different
+        files with the same digest can be constructed deliberately, in hours on
+        MD5 and at moderate expense on SHA-1. That does not make them useless
+        against accidents &mdash; a truncated download will not collide with the
+        original by chance &mdash; but it does mean neither can tell you that
+        nobody meddled. SHA-384 and SHA-512 are fine and no better in practice;
+        they are here because some projects publish them."""
+
+[[faq]]
+q = "Why is MD5 here at all if it is broken?"
+a = """
+        Because it is still what is printed. Mirrors, firmware downloads,
+        university software pages and a great many vendor sites published an MD5
+        twenty years ago and have not revisited the page since, and a tool that
+        refused to compute one would be refusing to answer the question its
+        visitors actually arrived with.
+        <br><br>
+        What it can do instead is say what the answer is worth, which is what the
+        note beside the checkbox does. An MD5 that matches still rules out a
+        corrupted download. It does not rule out a deliberate one."""
+
+[[faq]]
+q = "What formats can I paste into the comparison box?"
+a = """
+        All of the usual ones, and it works out which is which by itself.
+        <br><br>
+        Bare hex, with or without spaces in it. A line of <code>md5sum</code> or
+        <code>sha256sum</code> output, with the filename after it. A whole
+        <code>SHA256SUMS</code> file with forty lines, in which case the line
+        naming your file is the one used. The BSD form,
+        <code>SHA256 (disk.iso) = &hellip;</code>. A label in front, as in
+        <code>SHA-256: &hellip;</code>. And a subresource-integrity attribute,
+        <code>sha384-&hellip;</code>, which is base64 rather than hex and is
+        decoded before it is compared.
+        <br><br>
+        Which algorithm it is comes from how long it is: 32 hex characters is an
+        MD5, 40 a SHA-1, 64 a SHA-256, 96 a SHA-384 and 128 a SHA-512. No two are
+        the same length, so there is nothing to choose and nothing to get
+        wrong."""
+
+[[faq]]
+q = "Will it give the same answer as sha256sum or certutil?"
+a = """
+        Yes, byte for byte. These are exact specifications with published test
+        vectors, and every algorithm here is checked against those vectors and
+        against the operating system's own implementation on every build.
+        <br><br>
+        The only difference you will see is presentation. Windows'
+        <code>certutil -hashfile</code> prints in upper case and puts spaces in;
+        this page prints lower case, which is what almost every publisher uses.
+        The comparison ignores both, so a checksum copied out of certutil matches
+        a lower-case one pasted here."""
+
+[[faq]]
+q = "Can I check two files against each other?"
+a = """
+        Yes, with one extra step: check the first, copy its checksum, then choose
+        the second and paste that checksum into the box. If the two files are
+        identical the page will say so.
+        <br><br>
+        That is worth knowing for the case checksums are quietly best at &mdash;
+        deciding whether the copy on the backup drive is really the same file as
+        the one on the laptop, when both claim the same size and the same
+        date."""
+
+[[faq]]
+q = "Does it change my file?"
+a = """
+        No. This tool only reads. There is no output file, no re-encode and
+        nothing written back &mdash; the only thing you can download is a small
+        text file listing the checksums. Your original is untouched on your disk,
+        which is also the honest answer to what happens if you close the tab."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in and no trial. There is no
+        limit on file size and no limit on how many files you check. The site
+        carries advertising, which is what pays for it; the ads are not given
+        anything about your file."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your file away to be hashed would stop the
+        moment you unplugged."""
+
+[schema]
+category = "UtilitiesApplication"
+description = "Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 checksum of any file in the browser, and compare it against the value a download page published. The file is read in pieces and never uploaded."
+features = [
+  "MD5, SHA-1, SHA-256, SHA-384 and SHA-512, in one pass over the file",
+  "No size limit: the file is read in pieces and never held whole",
+  "Paste the expected value in any published form and it works out which algorithm it is",
+  "Reads sha256sum output, SHA256SUMS files, the BSD tagged form and integrity attributes",
+  "Says in a sentence whether the file matches, not just in a colour",
+  "Copy one checksum, all of them, or save them as a tagged text file",
+  "Runs offline; no upload, no account, no change to your file",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "*/*"
+multiple = false
+title = "Drop a file here"
+hint = "or click to browse &mdash; any file, any size, nothing is uploaded"
