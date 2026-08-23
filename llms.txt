@@ -84,6 +84,12 @@ Read it, compare it, encode it - without pasting a token or a config file into s
 
 - [Text & Code](https://abox.tools/text-tools/): Format and minify JSON, XML, HTML, CSS and YAML, compare two texts with a line and word diff, encode and decode Base64, URLs, HTML entities and hex, and convert JSON to YAML or XML and back. Everything runs in the browser and nothing is uploaded.
 
+## Passwords & security
+
+Make the secret here, on your own machine, so that nobody else ever had a copy of it to lose.
+
+- [Password & Passphrase Generator](https://abox.tools/password-generator/): Generate strong random passwords and diceware passphrases in the browser. Characters are drawn with crypto.getRandomValues and words from a bundled 7,776-word EFF list; the page reports the exact entropy of what it made. Nothing is uploaded and nothing is stored.
+
 ## Guides
 
 Written for the person doing the job rather than for the tool: what each setting

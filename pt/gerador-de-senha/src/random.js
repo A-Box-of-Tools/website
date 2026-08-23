@@ -1,0 +1,2 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
+const o=4294967296;function e(r){if(!Number.isInteger(r)||r<1||r>4294967296)throw new RangeError(`randomInt needs a whole bound in 1..2^32, not ${r}`);if(r===1)return 0;const t=4294967296-4294967296%r,n=new Uint32Array(1);for(;;)if(crypto.getRandomValues(n),n[0]<t)return n[0]%r}function i(r){return r[e(r.length)]}export{i as pick,e as randomInt};

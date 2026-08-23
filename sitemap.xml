@@ -109,6 +109,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/password-generator/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/qr-barcode/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -409,6 +415,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/de/passwort-generator/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/de/qr-code-erstellen/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -631,6 +643,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/es/generador-de-contrasenas/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/es/generar-codigo-qr/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -849,6 +867,12 @@
   <url>
     <loc>https://abox.tools/fr/images-en-video/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/generateur-de-mot-de-passe/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1083,6 +1107,12 @@
   <url>
     <loc>https://abox.tools/hi/images-to-video/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/password-generator/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1345,6 +1375,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/it/generatore-password/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/it/creare-qr-code/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -1563,6 +1599,12 @@
   <url>
     <loc>https://abox.tools/ja/images-to-video/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/password-generator/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1797,6 +1839,12 @@
   <url>
     <loc>https://abox.tools/ko/사진으로-동영상-만들기/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/비밀번호-생성기/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2059,6 +2107,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/nl/wachtwoord-generator/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/nl/qr-code-maken/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -2281,6 +2335,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/pt/gerador-de-senha/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/pt/gerar-qr-code/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -2499,6 +2559,12 @@
   <url>
     <loc>https://abox.tools/zh/images-to-video/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/password-generator/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
