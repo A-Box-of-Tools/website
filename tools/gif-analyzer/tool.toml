@@ -1,0 +1,358 @@
+#
+# GIF Analyzer
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# This is the first tool here that produces no file. It reads one and explains
+# it, which changes the shape of the words below rather than their substance:
+# the pledge is still that nothing is uploaded, and it is still checkable the
+# same three ways.
+#
+
+slug = "gif-analyzer"
+name = "GIF Analyzer"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "GIF&nbsp;Analyzer <span class=\"h1-kw\">&mdash; what is actually inside a GIF</span>"
+tagline = "Frames, delays, palettes, and where every byte went."
+icon = "&#128269;"         # the mark beside the page heading
+favicon = "&#128269;"      # the tab icon, drawn into an inline SVG
+category = "gif-and-animation"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "gif"
+
+# Shared modules this tool asks for. The same arrangement as css_parts, and for
+# the same reason: a component more than one tool needs and no tool should own.
+# file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-22"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "GIF Analyzer &mdash; Frames, Delays, Palette and File Size, No Upload"
+description = "Take a GIF apart in your browser: every frame with its delay and disposal, the colour tables, the loop count, and a byte-by-byte breakdown of where the file size went. Nothing is uploaded."
+og_title = "GIF Analyzer &mdash; take a GIF apart in your browser"
+og_description = "Every frame, every delay, every palette, and an honest account of where the bytes went. The file is read on your own machine and never uploaded."
+og_image_alt = "GIF Analyzer - frames, delays, palette, and where the bytes went"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Every frame, every delay, every palette - and where the bytes went."
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The file is opened and taken apart by your own browser: the block structure, the
+    LZW decompression and every frame drawn on this page are done on this machine.
+    There is no server on the other end of this page to send a file to even if
+    anything here wanted to."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and analyze a
+      GIF. Not one request carries an image, a thumbnail, or a filename. Or unplug
+      from the internet and analyze one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/gif.js</code> for the block reader that
+      walks the file, <code>src/lzw.js</code> for the decompressor, and
+      <code>src/budget.js</code> for the byte accounting &mdash; none of which has a
+      line that could reach the network."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to analyze a GIF"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Open a GIF and see what is really in it: every frame with its
+            delay and disposal, the colour tables, and an honest account of
+            where the file size went."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "GIFs"
+choose = "a GIF"
+analytics_extra = """, and no
+  frame, palette or comment out of your file"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "Your GIF has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were. This used to read <code>connect-src 'none'</code>, which was absolute;
+      adding advertising cost that, and saying so is part of the deal."""
+
+[[privacy]]
+title = "The reader is four files in this repository."
+body = """
+ Nothing here uses
+      the browser's own GIF decoder to work out what is in the file, because that
+      decoder will not say where a byte went. So the format is read out by hand:
+      <code>src/gif.js</code> walks the blocks, <code>src/lzw.js</code> expands the
+      pixels, <code>src/frames.js</code> stacks them, and
+      <code>src/budget.js</code> adds the parts back up and checks they come to the
+      size of the file."""
+
+[[privacy]]
+title = "Comments and metadata are shown to you, and to nobody else."
+body = """
+
+      A GIF can carry a comment block, an XMP packet describing an edit, or a
+      colour profile, and this page prints all of them out. They are put on the
+      screen in front of you and go nowhere else: there is no analytics event in
+      this repository that carries any of it, and the page could not send one if
+      there were."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      file: not the file, not a thumbnail, not a name, a size, a frame count or a
+      comment. Every line that reads, decompresses or draws a GIF is served from
+      this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your files. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and every part of this
+      page still works. That is the simplest proof of all: a tool that sent your
+      GIF away to be analysed would stop the moment you unplugged."""
+
+[[howto]]
+title = "Choose a GIF."
+body = """
+ Drop it onto the picker, or select it by
+      hand. It is read straight off your disk by the browser; nothing is sent
+      anywhere while you do it."""
+
+[[howto]]
+title = "Read the summary first."
+body = """
+ The canvas size, the frame
+      count, how long the animation says it runs and how long it actually plays.
+      Those last two differ more often than people expect, and the reason is in
+      the next section."""
+
+[[howto]]
+title = "Look at what stands out."
+body = """
+ Every line there is
+      measured from your file: delays no browser will honour, a missing loop
+      block, colour tables nothing refers to, metadata that is bigger than some
+      of the frames. Nothing is a guess about what you meant to make."""
+
+[[howto]]
+title = "See where the bytes went."
+body = """
+ Every byte of the
+      file is in exactly one row, and the rows add up to the file. If most of it
+      is not in "compressed pixels", the rest of the table says where it is
+      instead."""
+
+[[howto]]
+title = "Go through the frames."
+body = """
+ Each one shows its delay,
+      its rectangle, its disposal method and its size. Switch between "the canvas
+      after each frame" and "only what each frame stores" &mdash; the second is how
+      you see whether the file is optimised, because a well-made GIF stores tiny
+      rectangles and a badly made one stores the whole picture every time."""
+
+[[howto]]
+title = "Take the report if you need it."
+body = """
+ The whole
+      analysis as plain text, to paste into a message or keep beside the file. It
+      is built in the page from what is already on your screen."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my GIF uploaded anywhere?"
+a = """
+        No. The file is read, decompressed and drawn by your own browser on your
+        own hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. Unplug from the network and it
+        still analyses GIFs."""
+
+[[faq]]
+q = "Why does my GIF play slower than the delays say?"
+a = """
+        Because every browser refuses to honour a delay under two hundredths of a
+        second and holds the frame for a tenth instead. The rule was written into
+        Netscape in 1996, for the spinning globes and under-construction signs of
+        the time, and has been copied into every browser since; nothing has ever
+        removed it.
+        <br><br>
+        So a GIF whose frames all say 0.01s does not play at 100 frames a second.
+        It plays at 10, which is five to ten times slower than whatever made it
+        intended. This page shows both numbers &mdash; what the file says and what
+        it will actually do &mdash; and marks the frames it affects. The fix, in
+        whatever made the file, is to write 0.02 rather than 0.01."""
+
+[[faq]]
+q = "What does &ldquo;disposal&rdquo; mean?"
+a = """
+        What to leave on the screen when a frame's time is up, and it is the field
+        that decides whether an animation looks right or smears.
+        <br><br>
+        <strong>Leave it in place</strong> means the next frame paints over this
+        one, which is what you want when frames are opaque and cover each other.
+        <strong>Clear back to the background</strong> wipes the frame's rectangle
+        first, which is what transparency needs &mdash; without it the see-through
+        parts of the next frame show the previous one underneath. <strong>Restore
+        what was underneath</strong> puts back whatever was there before this
+        frame drew, which is how a small moving object over a still background is
+        stored. And <strong>unspecified</strong> means the file did not say, and
+        every viewer treats it as "leave it in place"."""
+
+[[faq]]
+q = "Why is my GIF so large?"
+a = """
+        The "Where the bytes went" table answers that for your particular file
+        rather than in general, and there are only a few possible answers.
+        <br><br>
+        If nearly all of it is <strong>compressed pixels</strong>, the file is
+        simply a lot of picture: GIF stores every frame as whole pixels, with no
+        motion compensation and no quality dial, so the size is roughly the area
+        times the frame count. Fewer frames, a smaller size or fewer colours are
+        the only levers.
+        <br><br>
+        If a large slice is <strong>colour tables</strong>, the file is writing a
+        palette per frame at 768 bytes each. If a large slice is
+        <strong>metadata</strong>, an editor left an XMP packet behind and it can
+        be removed without touching the picture. And if the frames all cover the
+        whole canvas, the encoder never worked out which part actually changed
+        &mdash; which on anything filmed or recorded is most of the file."""
+
+[[faq]]
+q = "What is the difference between the two frame views?"
+a = """
+        <strong>The canvas after each frame</strong> is what a viewer shows at
+        that moment: this frame drawn on top of whatever the frames before it
+        left behind. <strong>Only what each frame stores</strong> is the
+        rectangle the file actually holds for that frame, on its own, with
+        nothing underneath.
+        <br><br>
+        The second is the interesting one. A GIF may store a frame as only the
+        part of the picture that changed, which is why a screen recording of a
+        mostly-still window can be small. If every frame in your file is the full
+        canvas, nothing did that work &mdash; and you cannot tell by watching the
+        animation, only by looking at what is stored."""
+
+[[faq]]
+q = "It says my file has a comment or XMP in it. What is that?"
+a = """
+        Text that rides along with the picture and that no viewer draws. A comment
+        block is usually the name of whatever wrote the file. An XMP packet is the
+        XML an image editor writes to record what it did, and it can carry the
+        edit history, the software version and sometimes the author's name.
+        <br><br>
+        This page prints both out in full, because the interesting question about
+        metadata is what it says rather than that it exists. It is shown to you
+        and to nobody else: nothing in this repository reads any of it out to
+        anyone."""
+
+[[faq]]
+q = "Can it open a broken GIF?"
+a = """
+        It tries, and it tells you where it gave up. A file that ends mid-block,
+        has a byte where a block marker should be, or carries a frame whose
+        compressed data runs out early will still show everything that was
+        readable before that point, with the problem named at the top. That is the
+        case an analyzer is most wanted for, so throwing the whole file away over
+        one bad byte would be the wrong behaviour."""
+
+[[faq]]
+q = "Does it change my file?"
+a = """
+        No. This tool only reads. There is no output file, no re-encode and no
+        button here that writes a GIF &mdash; the only thing you can download is a
+        plain-text copy of the analysis. Your original is untouched on your disk,
+        which is also the honest answer to what happens if you close the tab."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in and no trial. There is no
+        limit on file size beyond your own machine's memory. The site carries
+        advertising, which is what pays for it; the ads are not given anything
+        about your file."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being uploaded:
+        a tool that sent your GIF away to be analysed would stop the moment you
+        unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Take a GIF apart in the browser: every frame with its delay, rectangle and disposal method, the colour tables, the loop count, any metadata, and a byte-by-byte account of the file size. Nothing is uploaded."
+features = [
+  "Every frame with its delay, rectangle, disposal method and compressed size",
+  "Both views of a frame: what it stores, and the canvas a viewer sees",
+  "A byte budget that adds up to the file, so nothing is unexplained",
+  "Colour tables drawn out, with the entries no pixel ever refers to marked",
+  "Reads comments, XMP packets, ICC profiles and the Netscape loop block",
+  "Reports delays no browser will honour, and what the animation really plays at",
+  "Opens damaged and truncated files and says where they stop",
+  "Runs offline; no upload, no account, no change to your file",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/gif,.gif"
+multiple = false
+title = "Drop a GIF here"
+hint = "or click to browse &mdash; animated or still, any size"

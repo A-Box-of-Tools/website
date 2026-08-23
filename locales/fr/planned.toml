@@ -31,7 +31,6 @@ items = [
   ["Redimensionner, recadrer &amp; faire pivoter des GIF", "image par image, en gardant le rythme"],
   ["Inverser un GIF", "la dernière image en premier"],
   ["Changer la vitesse d'un GIF", "le recaler sans refabriquer les images"],
-  ["Analyseur de GIF", "images, délais, palette, et où sont passés les octets"],
   ["Créateur d'APNG", "de l'animation avec une vraie transparence et toutes les couleurs"],
   ["WebP animé", "encore la même animation, pour une fraction du poids"],
 ]

@@ -342,6 +342,7 @@ offline = "Hors ligne&nbsp;:"
 checking = "vérification&hellip;"
 questions_heading = "Questions"
 guide_heading = "La version longue"
+related_heading = "Aussi dans la boîte"
 privacy_heading = "Comment cette promesse se vérifie"
 
 # Tournée à l'actif : le participe passé s'accorderait avec

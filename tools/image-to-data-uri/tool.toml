@@ -39,6 +39,11 @@ og_title = "Turn an image into a line you can paste into CSS"
 og_description = "Base64 for pictures, percent-encoding for SVG, and the ready-made rule, custom property or img tag around it. Runs on your own machine; nothing is uploaded."
 og_image_alt = "Image to Data URI - paste the picture into the stylesheet"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Encode a picture as one line you can paste straight into CSS or HTML."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

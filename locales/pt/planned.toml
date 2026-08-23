@@ -35,7 +35,6 @@ items = [
   ["Redimensionar, cortar e girar GIFs", "quadro a quadro, mantendo o tempo de cada um"],
   ["Inverter um GIF", "o último quadro primeiro"],
   ["Mudar a velocidade do GIF", "retemporizar sem renderizar os quadros de novo"],
-  ["Analisador de GIF", "quadros, atrasos, paleta e para onde foram os bytes"],
   ["Criar APNG", "animação com transparência de verdade e cor completa"],
   ["WebP animado", "de novo a mesma animação, por uma fração do tamanho"],
 ]

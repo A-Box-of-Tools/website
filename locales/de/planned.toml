@@ -31,7 +31,6 @@ items = [
   ["GIFs skalieren, zuschneiden &amp; drehen", "Bild für Bild, mit erhaltenem Timing"],
   ["GIF rückwärts", "das letzte Einzelbild zuerst"],
   ["GIF-Tempo ändern", "neu takten, ohne die Einzelbilder neu zu rendern"],
-  ["GIF-Analyse", "Einzelbilder, Verzögerungen, Palette, und wohin die Bytes gegangen sind"],
   ["APNG erstellen", "Animation mit echter Transparenz und voller Farbtiefe"],
   ["Animiertes WebP", "wieder dieselbe Animation, bei einem Bruchteil der Größe"],
 ]

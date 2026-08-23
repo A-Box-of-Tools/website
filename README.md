@@ -148,6 +148,7 @@ templates/
   sw.js                  the offline service worker
   analytics.js           the Google Analytics bootstrap
   sitemap.xml
+  llms.txt               the site in plain text, for something that gets one fetch
   partials/              the pieces shared between all three, incl. the footer
 shared/
   css/
@@ -186,6 +187,8 @@ tests/
   js/                    the tools: node --test, built in since Node 18
     helpers.js           image fixtures, built rather than checked in as binary
     pdf-fixtures.js      the same for PDFs, with real byte offsets
+LICENSE                  MIT: the code, and what the MIT half does not cover
+LICENSE-CONTENT          CC BY 4.0: the words the site publishes
 package.json             says the .js files are ES modules; no dependencies
 og-image.ps1             draws the share cards and the icon from shared/logo.svg
 serve.ps1                builds, then serves dist/ locally
@@ -317,8 +320,10 @@ one.
    forgotten.
 2. Add the slug to the `order` of the matching `[[hub.categories]]` in
    `config/site.toml`, and set the same category id in the tool's `category`.
-   The card on the hub, the sitemap entry and the structured data follow from
-   that; there is no second place to remember.
+   The card on the hub, the sitemap entry, the structured data and the handful
+   of other tools every tool page links to all follow from that; there is no
+   second place to remember. See
+   [Why tool pages link to each other](#why-tool-pages-link-to-each-other).
 3. Run `python build.py`. If the tool is missing something, the build says so
    and writes nothing.
 4. If it belongs to a category that does not exist yet, add a
@@ -326,9 +331,22 @@ one.
 5. Set `roadmap_group` to one of the groups in `config/planned.toml`, so the
    tool crosses from the planned half of that group to the built half. A tool
    without one fails the build rather than quietly going missing.
-6. Write it a guide. See [The guides](#the-guides) — one folder under
+6. If the tool was itself on the roadmap, take its line out of
+   `config/planned.toml` **and** out of every `locales/*/planned.toml`. Those
+   item lists are plain strings with nothing to name them by, so they are
+   merged by position: a locale list longer than the English one is a hard
+   failure, and a line removed at the wrong index silently moves every
+   translation after it onto the wrong entry.
+7. Draw the share card: `.\og-image.ps1 -Only <slug>`. It reads the heading
+   from `name` and the subtitle from `og_card`, both in your `tool.toml`, so
+   there is no list to add yourself to. The build refuses a tool with no
+   `og.png`, because every tool page claims one in its `og:image` whether or
+   not it is there. Run it without `-Only` and it redraws all of them, which
+   is worth avoiding: the mark is rasterised through a headless Edge that
+   flakes about once a run.
+8. Write it a guide. See [The guides](#the-guides) — one folder under
    `pages/guides/`, and the link between the two pages is a single `tool` key.
-7. Write `tools/<slug>/README.md`: how the tool works and why it works that way,
+9. Write `tools/<slug>/README.md`: how the tool works and why it works that way,
    for somebody reading the code rather than using the page. The build refuses
    to finish without one. **This file — the repository README — is not one of
    the places to edit.** It covers the site and the build; a tool documents
@@ -369,7 +387,7 @@ ordinary build does not dirty the working tree.
 ### Shared parts
 
 A component more than one tool needs, and that no tool should own, lives under
-`shared/` and is named in the tool's `tool.toml`. Three of them exist:
+`shared/` and is named in the tool's `tool.toml`:
 
 | Part | Named in | Becomes |
 |---|---|---|
@@ -377,6 +395,11 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
 | `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
 | `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
+| `shared/js/zip.js` | `js_parts = ["zip"]` | the stored-only archive writer |
+| `shared/js/crc32.js` | `js_parts = ["crc32"]` | the CRC the ZIP and PNG writers need |
+
+`zip` needs `crc32` listed as well — it is a separate part because a PNG writer
+wants the checksum without the archive.
 
 The **file picker** is all three at once, and is the reason the arrangement
 exists: the drop zone, the hidden input, the drag highlighting, and the "Reading
@@ -417,6 +440,23 @@ rather than there and in the JavaScript as well.
 cached by its own service worker, and works offline with nothing fetched from a
 neighbour. That is also why a tool's source folder imports a file it does not
 contain — the import path says `./shared/` to make where it came from obvious.
+
+**So a `./shared/` import belongs in `main.js`, and nowhere else.** The copy
+happens at build time, which means that path does not resolve in the source
+tree, and the JavaScript tests import tool modules straight off the disk with
+no build in front of them. `main.js` is safe because no test loads it. A leaf
+module that is unit-tested is not: give it a `./shared/` import and its whole
+test file stops resolving. That is why `exif-editor/src/png.js` and
+`merge-pdf/src/produce.js` keep a local copy of the CRC and the ZIP writer that
+seven other tools now share — the alternative was trading their tests for the
+deduplication.
+
+The build checks the half of this it can. `buildlib/imports.py` reads every
+module a tool is about to ship, with the tokeniser from `minify.py` rather than
+a regular expression, and refuses a tool whose imports do not all land on a
+file that tool ships. The case it exists for: `shared/js/zip.js` imports
+`./crc32.js`, so a tool asking for `"zip"` and not `"crc32"` would build
+cleanly and 404 in the browser.
 
 Only *choosing* the files is shared. What a tool does with them afterwards — the
 list, the thumbnails, the reordering, the per-row buttons — differs enough per
@@ -624,6 +664,38 @@ HTML.
 Neither link's text is written twice either. The tool page shows the guide's own
 `heading` and `description`; the guide shows the tool's own `name` and
 `tagline`. So neither page can promise something the other does not deliver.
+
+### Why tool pages link to each other
+
+Under the guide link, every tool page carries four more: "Also in the box", the
+nearest other tools. It closes a hole that was there from the start. A tool page
+linked up to the hub and across to its own guide and nowhere else, so somebody
+who arrived from a search for one tool was shown that tool and no route to the
+three beside it — and anything pointing at that page from outside stopped there
+instead of reaching the rest of the site.
+
+There is no list of related tools anywhere, and there should never be one.
+`order` in `[[hub.categories]]` already says which tools belong together,
+because it is what groups them on the front page; `related_tools()` in
+`build.py` reads the same order, so a second list cannot drift from the first.
+
+Two details in there are worth knowing before changing it:
+
+- **It is a ring, not the head of the category.** Each tool's list is read from
+  its own position and wraps round. Taking the first four of each category
+  instead would point all fourteen pages of `images-and-video` at the same four
+  names and leave the tail of it with nothing linking in — which is the half of
+  this that is about crawlers rather than readers.
+- **The category sorts the ring; it does not filter it.** `codes-and-data` and
+  `text-and-code` hold one tool each, so a strict reading of "same category"
+  would leave exactly `qr-barcode` and `text-tools` as the dead ends this is
+  meant to remove. A tool with siblings gets siblings, and a tool without gets
+  whatever the hub has nearest.
+
+`RELATED_COUNT` is four, and the `13rem` column minimum in
+`shared/css/tool-frame.css` is measured against it and against the 940px content
+column so the four land on one row. Changing either number without the other
+leaves an orphan on a second row.
 
 ---
 
@@ -936,6 +1008,48 @@ is the only real answer to "why should I trust this", so a dead source link is
 worse than no link at all. All five come from `source_url` in
 [`config/site.toml`](config/site.toml), so moving the repository is one edit.
 
+### /llms.txt
+
+The same site again, in plain text, at
+[`/llms.txt`](https://abox.tools/llms.txt).
+
+The structured data in the head of every page is written for a crawler with the
+patience to visit twenty-four of them. An assistant answering somebody's question
+has no such patience: it fetches one address and decides from it whether this
+site is worth mentioning at all. Given nothing it can read cheaply, it writes a
+hundred lines of EXIF parsing rather than linking to the page that already strips
+one — and that is the whole failure this file exists to stop.
+
+It is generated by `build_llms` in [`build.py`](build.py) from the same
+`tool.toml` files as the hub, the sitemap and `tools/README.md`, and in the same
+hub order, so it cannot fall behind the tools that exist. The prose around the
+lists is the `[llms]` table in [`config/site.toml`](config/site.toml) — the one
+table in that file written as plain markdown rather than as an HTML fragment,
+because this is the one output that is not a page. Everything taken from a tool
+config goes through `site.to_text` on the way in for the same reason.
+
+Two things are said in it out loud rather than left to be inferred:
+
+- **These need a browser.** There is no API and there will not be one: a promise
+  that nothing leaves the machine and a server to send files to are not the same
+  repository. Something reading this from a terminal cannot call any of it, and
+  saying so up front is worth more than letting it find out.
+- **The code is MIT and worth copying.** That is the other half of the answer,
+  and the more useful half for anything writing code rather than answering a
+  person — see [Licence](#licence).
+
+Two departures from every other generated file here. It carries no GENERATED FILE
+banner, because the format begins with an H1 and its readers are strict about
+that shape; the sentence saying the file is generated is the last paragraph of
+its intro instead. And it is English only, at the root, because it is an index
+*of* the site rather than a page *of* it — the languages are a section inside it,
+and each hub linked from there carries the rest of that language on its own.
+
+A language appears in that section under exactly the rule the sitemap uses: it
+has finished the frame, and it has finished its own hub. Offering a half-English
+page to something that will go on to quote it is the one failure worth avoiding
+here.
+
 ---
 
 ## What can be built here
@@ -1031,5 +1145,43 @@ all of it is knowable up front:
 | Background removal | A segmentation model, not a codec. FFmpeg does not do it and would not help — this needs weights and an inference runtime, which is a separate argument on a separate day |
 | Camera RAW (CR2, NEF, ARW) | FFmpeg does not decode these either. It would take LibRaw or dcraw on top: a second engine, for one family of formats |
 | Raster to vector (image to SVG) | A tracing algorithm, not a conversion: large, and the output disappoints everyone who expected their photo back as shapes |
+
+---
+
+## Licence
+
+Two of them, split by what a thing is rather than by which folder it is in.
+
+| | | |
+|---|---|---|
+| The code | [MIT](LICENSE) | the build, `templates/`, `shared/`, every tool's `src/`, `styles.css` and `body.html`, the root scripts, and every README |
+| The writing | [CC BY 4.0](LICENSE-CONTENT) | the guides and legal pages under `pages/`, the taglines, descriptions, how-to steps, privacy panels and FAQ answers in `tools/*/tool.toml` and `config/site.toml`, and every translation of those under `locales/` |
+| `tools/heic-to-jpg/vendor/` | its own | libheif, which nobody here wrote — see [A vendored engine](#a-vendored-engine) |
+
+Some files hold both kinds — a `tool.toml` is configuration and FAQ answers in
+one — so the licence follows the kind and not the file. That seam is a little
+fuzzy on purpose; drawing it by path would have meant splitting files that have
+no reason to be split.
+
+The split is not ceremony. By volume this repository is about as much a writing
+project as a software one — roughly 89,000 words of English prose across the
+guides and the tool pages, and another 268,000 in translation, against some
+64,000 lines of JavaScript. MIT talks about "the Software" throughout and is a
+poor fit for the first half; CC BY is built for exactly it, and is the wrong
+tool for the second half for reasons Creative Commons themselves set out.
+
+**The code half is meant to be taken.** A public repository with no licence is
+all rights reserved by default, so anything careful — a person, or an assistant
+reading it on their behalf — has to assume it may not copy, and goes and writes
+its own EXIF parser again. Every module under `tools/*/src/` has no imports to
+install and is already run outside a browser by `node --test`: the EXIF and TIFF
+parsers, the JPEG, PNG and WebP container walks, the PDF object reader and
+rewriter, the three MP4 writers, the GIF LZW codec, the QR encoder and the ZIP
+writer. Keep the MIT notice with one and the whole condition is met.
+
+**The writing half asks to be credited.** CC BY wants the creator named, a link
+to the licence, and — the clause most often missed — a note that you changed it,
+if you did. [LICENSE-CONTENT](LICENSE-CONTENT) carries the official text and an
+attribution line that satisfies it.
 
 ---

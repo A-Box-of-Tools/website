@@ -320,6 +320,7 @@ offline = "Offline:"
 checking = "verifica in corso&hellip;"
 questions_heading = "Domande"
 guide_heading = "La versione lunga"
+related_heading = "Anche nella cassetta"
 privacy_heading = "Come si verifica quello che promette"
 
 # Il nome che sta in mezzo cambia genere da uno strumento all'altro - le

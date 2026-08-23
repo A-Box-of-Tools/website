@@ -224,6 +224,69 @@ class GuidesAndTools(unittest.TestCase):
         self.assertIn('guides/b', str(caught.exception))
 
 
+class RelatedTools(unittest.TestCase):
+    """The ring of links out of every tool page.
+
+    The properties worth pinning down are the ones that make it a link graph
+    rather than a decoration: nothing points at itself, nothing points at the
+    same tool twice, and nothing is left with no way in.
+    """
+
+    @staticmethod
+    def tools(*pairs):
+        return [{'slug': slug, 'category': category} for slug, category in pairs]
+
+    def test_siblings_come_first(self):
+        ordered = self.tools(('a', 'x'), ('b', 'x'), ('c', 'y'), ('d', 'x'))
+        related = buildmod.related_tools(ordered, count=2)
+        self.assertEqual([t['slug'] for t in related['a']], ['b', 'd'])
+
+    def test_a_tool_never_links_to_itself(self):
+        ordered = self.tools(('a', 'x'), ('b', 'x'), ('c', 'x'))
+        for slug, others in buildmod.related_tools(ordered).items():
+            self.assertNotIn(slug, [t['slug'] for t in others])
+
+    def test_a_lone_tool_in_its_category_still_gets_links(self):
+        # qr-barcode and text-tools are the only tools in their categories, and
+        # a strict reading of "same category" would leave exactly those two
+        # pages as the dead ends this exists to remove.
+        ordered = self.tools(('a', 'x'), ('b', 'x'), ('lonely', 'z'))
+        related = buildmod.related_tools(ordered, count=2)
+        self.assertEqual([t['slug'] for t in related['lonely']], ['a', 'b'])
+
+    def test_the_ring_wraps(self):
+        # The last tool in the order reads round to the first rather than
+        # running out.
+        ordered = self.tools(('a', 'x'), ('b', 'x'), ('c', 'x'))
+        related = buildmod.related_tools(ordered, count=2)
+        self.assertEqual([t['slug'] for t in related['c']], ['a', 'b'])
+
+    def test_fewer_tools_than_asked_for_is_not_padded(self):
+        ordered = self.tools(('a', 'x'), ('b', 'x'))
+        self.assertEqual(len(buildmod.related_tools(ordered, count=4)['a']), 1)
+
+    def test_one_tool_on_its_own_gets_nothing(self):
+        self.assertEqual(buildmod.related_tools(self.tools(('a', 'x'))), {'a': []})
+
+    def test_no_tool_is_listed_twice_on_one_page(self):
+        ordered = self.tools(*[(chr(97 + n), 'x' if n % 2 else 'y')
+                               for n in range(9)])
+        for slug, others in buildmod.related_tools(ordered).items():
+            names = [t['slug'] for t in others]
+            self.assertEqual(len(names), len(set(names)), slug)
+
+    def test_every_real_tool_has_a_way_in(self):
+        # The half of this that is about search engines rather than readers: a
+        # tool nothing links to is a tool a crawler reaches only from the hub.
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        ordered = [{'slug': slug, 'category': category['id']}
+                   for category in site['hub']['categories']
+                   for slug in category['order']]
+        related = buildmod.related_tools(ordered)
+        linked = {t['slug'] for others in related.values() for t in others}
+        self.assertEqual({t['slug'] for t in ordered} - linked, set())
+
+
 class BuildTheSite(unittest.TestCase):
     """A whole plain build, into a temporary directory.
 
@@ -487,6 +550,81 @@ class BuildTheSite(unittest.TestCase):
                     text = (self.out / name).read_text(encoding='utf-8')
                     self.assertNotIn(f'hreflang="{locale}"', text)
                     self.assertNotIn(f'href="/{locale}/"', text)
+
+    # -- /llms.txt ------------------------------------------------------
+    #
+    # The plain-text index, for a reader that fetches one address and decides
+    # from it whether the site is worth mentioning. Everything checked here is
+    # a way that file can be wrong without anything else on the site noticing:
+    # a tool missing from it, markup leaking into it, a blockquote that ends
+    # early, or a language offered before it is finished.
+
+    def test_llms_txt_is_written(self):
+        self.assertIn('llms.txt', self.written)
+        self.assertTrue((self.out / 'llms.txt').is_file())
+
+    def test_llms_txt_begins_with_the_site_name_as_a_heading(self):
+        """The one thing the format requires, and the one thing a reader of it
+        keys on."""
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        first = (self.out / 'llms.txt').read_text(encoding='utf-8').splitlines()[0]
+        self.assertEqual(first, f'# {site["name"]}')
+
+    def test_the_llms_txt_summary_is_one_line(self):
+        """A wrapped blockquote is a blockquote until markdown reads its second
+        line as something else - and this summary's second line began with a
+        dash, which is a list, which ends the quote. It is collapsed to one
+        line in build_llms for that reason, so this is the guard on it."""
+        lines = (self.out / 'llms.txt').read_text(encoding='utf-8').splitlines()
+        quote = next(i for i, line in enumerate(lines) if line.startswith('> '))
+        self.assertEqual(lines[quote + 1], '')
+
+    def test_llms_txt_lists_every_tool(self):
+        text = (self.out / 'llms.txt').read_text(encoding='utf-8')
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        slugs = sorted(path.parent.name for path in ROOT.glob('tools/*/tool.toml'))
+        self.assertTrue(slugs)
+        for slug in slugs:
+            with self.subTest(tool=slug):
+                self.assertIn(f'({site["domain"]}{slug}/)', text)
+
+    def test_llms_txt_lists_every_guide(self):
+        text = (self.out / 'llms.txt').read_text(encoding='utf-8')
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        slugs = sorted(path.parent.name
+                       for path in ROOT.glob('pages/guides/*/page.toml'))
+        self.assertTrue(slugs)
+        for slug in slugs:
+            with self.subTest(guide=slug):
+                self.assertIn(f'({site["domain"]}guides/{slug}/)', text)
+
+    def test_llms_txt_carries_no_markup(self):
+        """It is built from config written as HTML fragments, and it is not
+        HTML. An &mdash; or a <code> that survives into it is a value that
+        skipped site.to_text on the way in."""
+        text = (self.out / 'llms.txt').read_text(encoding='utf-8')
+        for leak in ('&mdash;', '&amp;', '&#', '<code>', '<a ', '{{', '{%'):
+            with self.subTest(leak=leak):
+                self.assertNotIn(leak, text)
+
+    def test_llms_txt_offers_exactly_the_languages_the_sitemap_does(self):
+        """The same rule as the sitemap and the hreflang tags, and for the same
+        reason: a language whose hub is still half English should not be handed
+        to something that will quote it."""
+        text = (self.out / 'llms.txt').read_text(encoding='utf-8')
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        # Only the languages section. A tool's address has the same shape as a
+        # language's, so searching the whole file would count `text-tools` as a
+        # language and pass for the wrong reason.
+        after = text.split('## Other languages')[1]
+        section = after.split('\n## ')[0]
+        listed = set(re.findall(re.escape(site['domain']) + r'([^/)]+)/\)', section))
+        for locale in self.locales:
+            if locale['is_base']:
+                continue
+            offered = locale['lang'] in listed
+            with self.subTest(lang=locale['lang']):
+                self.assertEqual(offered, locale['lang'] in self.advertised)
 
     def test_the_404_page_is_written(self):
         self.assertIn('404.html', self.written)

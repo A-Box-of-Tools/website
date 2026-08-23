@@ -31,7 +31,6 @@ items = [
   ["Gifs schalen, bijsnijden &amp; draaien", "frame voor frame, met de timing intact"],
   ["Een gif omkeren", "het laatste frame eerst"],
   ["Gif-snelheid wijzigen", "opnieuw timen zonder de frames opnieuw te renderen"],
-  ["Gif-analyse", "frames, vertragingen, palet, en waar de bytes heen zijn"],
   ["APNG maken", "animatie met echte transparantie en volledige kleur"],
   ["Bewegende WebP", "opnieuw dezelfde animatie, voor een fractie van de bestandsgrootte"],
 ]

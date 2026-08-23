@@ -34,6 +34,11 @@ og_title = "Video to GIF &mdash; make a GIF without uploading the clip"
 og_description = "Mark the seconds you want, choose a width and a frame rate, and get an animated GIF. The frames are sampled and the palette, the dithering and the LZW are all done on your own machine."
 og_image_alt = "Video to GIF - make an animated GIF in your browser, with nothing uploaded"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Pick the section, the size and the frame rate - and never upload the clip."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

@@ -33,6 +33,11 @@ og_title = "Format, compare, encode and convert text without pasting it into a s
 og_description = "A JSON formatter, a diff, an encoder and a converter on one page, all running on your own machine. Paste a token or a config file without handing it to anybody."
 og_image_alt = "Text & Code - formatter, diff, encoder and converter, no upload"
 
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Format, compare, encode and convert - without pasting a token into anyone else's server."
+
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.
 csp_note = """

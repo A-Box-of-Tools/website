@@ -29,7 +29,7 @@ roadmap_group = "images"
 css_parts = ["file-list"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "zip", "crc32"]
 lastmod = "2026-08-20"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -39,6 +39,11 @@ description = "Convert iPhone HEIC photos to JPG in your browser. The decoder ru
 og_title = "Turn HEIC photos into JPGs without uploading them"
 og_description = "The converter that does not want your photos. The HEIC decoder is served from this page and runs on your own machine, so the pictures never leave it."
 og_image_alt = "HEIC to JPG - iPhone photos in a format everything opens"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "iPhone photos in a format everything opens - decoded on your own machine."
 
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.

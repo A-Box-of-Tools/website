@@ -28,7 +28,7 @@ css_parts = ["file-list"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "zip", "crc32"]
 lastmod = "2026-08-20"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -38,6 +38,11 @@ description = "Resize, crop and convert JPEG, PNG and WebP images in your browse
 og_title = "Resize, crop and convert an image without uploading it"
 og_description = "Set the size in pixels or as a percentage, drag a crop box, change the format - for one picture or a whole batch. It all runs on your own machine."
 og_image_alt = "Image Resizer - resize, crop and convert without uploading"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Resize, crop and convert a picture - or a whole folder - on your own machine."
 
 # Appended to the Content-Security-Policy comment in the generated page, for
 # whatever this tool needs that the rest of the site does not.

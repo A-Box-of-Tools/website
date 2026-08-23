@@ -69,6 +69,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from buildlib import cssmin
 from buildlib import i18n
+from buildlib import imports
 from buildlib import mangle
 from buildlib import minify
 from buildlib import site as sitelib
@@ -247,6 +248,12 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     build_sitemap(out, templates, site, locales, tools, ordered_prose)
     written.append('sitemap.xml')
 
+    # And the same site again, in plain text, for something that reads one file
+    # and decides from it whether any of this is worth mentioning. Built from
+    # the same list as the sitemap above and holding back the same languages.
+    build_llms(out, templates, site, locales, ordered_tools, ordered_prose)
+    written.append('llms.txt')
+
     copy_shared(out)
     write(out / 'site.css', site_css)
     write(out / 'lang.js', lang_js)
@@ -329,6 +336,10 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
                for category in root['hub']['categories']
                for slug in category['order'] if slug in by_slug]
 
+    # The few other tools each tool page points at, off the same hub order. See
+    # related_tools: one ring over every tool, siblings first.
+    related_of = related_tools(ordered)
+
     # What the footer on every page is built from. Derived from the folders that
     # exist rather than written down anywhere, so a new tool or a new legal page
     # reaches every footer on the site without a second edit.
@@ -350,7 +361,8 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written = []
     for tool in ltools:
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
-                   links, lang_v, guide_of.get(tool['slug'], {}), emit)
+                   links, lang_v, guide_of.get(tool['slug'], {}),
+                   related_of.get(tool['slug'], []), emit)
         written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
 
     for page in lprose:
@@ -514,6 +526,54 @@ def tie_guides_to_tools(guides, by_slug):
     return owned
 
 
+# How many other tools a tool page points at. Four is enough to be a route on
+# out of the page and few enough that the block stays a suggestion rather than
+# a second copy of the hub halfway down every tool.
+RELATED_COUNT = 4
+
+
+def related_tools(ordered, count=RELATED_COUNT):
+    """Map a tool's slug to the few other tools its page links to.
+
+    A tool page used to be a dead end. It links up to the hub and across to its
+    own guide and nowhere else, so a reader who arrived from a search for "heic
+    to jpg" was shown one tool and no route to the resize and the compress
+    sitting beside it on the front page.
+
+    Which tools are related is not written down anywhere new, and deliberately
+    so: `order` in config/site.toml already groups the tools by what they are
+    for, and that grouping is the hub's own. The tools a page points at are the
+    ones a reader would have found under the same heading on the front page,
+    which means there is no second list here to fall out of step with the first.
+
+    The list is a RING rather than the head of the category. Read from the
+    tool's own position and wrap round, and every tool links to `count` others
+    and every tool has something linking to it - inbound runs two to six across
+    the twenty-four, rather than the exact `count` a plain ring would give,
+    because sorting siblings to the front pulls the crowded categories forward.
+    Taking the first few of each category instead would point all fourteen pages
+    of `images-and-video` at the same four names and leave the tail of it with
+    nothing coming in at all, which is the half of the problem that is about
+    search engines rather than readers.
+
+    Two categories hold one tool each, `qr-barcode` and `text-tools`, so a
+    strict reading of "same category" would leave exactly those two pages as
+    the dead ends this exists to remove. The ring therefore runs over every
+    tool and the category merely sorts first: a tool with siblings gets
+    siblings, and a tool without gets the nearest thing the hub has.
+    """
+    total = len(ordered)
+    out = {}
+    for index, tool in enumerate(ordered):
+        ring = [ordered[(index + step) % total] for step in range(1, total)]
+        # Stable, so the same-category tools keep their ring order and the rest
+        # follow in theirs. Sorting on the bool is the whole of "siblings
+        # first, then whatever is nearest".
+        ring.sort(key=lambda other: other['category'] != tool['category'])
+        out[tool['slug']] = ring[:count]
+    return out
+
+
 def build_guides(out, templates, locale, locales, site, groups, guides, footer,
                  links, css_v, lang_v, emit):
     """The index of the written half of the site.
@@ -555,7 +615,7 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
-               lang_v, guide, emit):
+               lang_v, guide, related, emit):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -577,6 +637,18 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     shared = shared_js(tool)
     assets = [(f'src/shared/{path.name}', path) for path in shared]
     assets += [(f'src/{path.name}', path) for path in own]
+
+    # Nothing is bundled, so the browser fetches every module by the name an
+    # import gives it. A specifier naming a file this tool does not ship is
+    # therefore not a build error but a 404 on the visitor's machine, after the
+    # page has rendered - and the commonest cause is a shared module that needs
+    # a second shared module the tool never asked for in js_parts. This is the
+    # one place that knows exactly what the tool ships, so it is where that is
+    # checked. See buildlib/imports.py.
+    sources = dict(assets)
+    imports.check(set(sources),
+                  lambda name: sources[name].read_text(encoding='utf-8'),
+                  tool['slug'])
 
     for name, path in assets:
         (dest / name).parent.mkdir(parents=True, exist_ok=True)
@@ -648,6 +720,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
             'tool': tool,
             'guide': guide,
+            'related': related,
             'ui': ui,
             'footer': footer,
             'csp': sitelib.render_csp(root['csp'], root.get('tool_csp', {}),
@@ -681,9 +754,18 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         'cache_hash': sitelib.cache_hash(cached),
     }), where=f'{locale["prefix"]}{tool["out_slug"]}/sw.js')
 
+    # Required, not optional. templates/tool.html writes og:image and
+    # twitter:image on every tool page whether or not the file is there, and
+    # check_links only reads <a href>, so a tool without one used to build
+    # clean and serve a share card that 404s - in ten languages, and visible
+    # only to whoever pasted the link somewhere. Draw it with
+    # `.\og-image.ps1 -Only <slug>`.
     og = tool['dir'] / 'og.png'
-    if og.is_file():
-        shutil.copy2(og, dest / 'og.png')
+    if not og.is_file():
+        raise sitelib.ConfigError(
+            f'{tool["slug"]}: no og.png. Every tool page claims one in its '
+            f'og:image; draw it with .\\og-image.ps1 -Only {tool["slug"]}')
+    shutil.copy2(og, dest / 'og.png')
 
 
 def vendor_files(tool, dest):
@@ -1121,6 +1203,115 @@ def build_sitemap(out, templates, site, locales, tools, prose):
                     if page['kind'] == 'legal' and ready(page['slug'])]
 
     write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': entries}))
+
+
+def build_llms(out, templates, site, locales, tools, prose):
+    """/llms.txt: the whole site as plain text, for a reader that gets one fetch.
+
+    A search engine is handed a page of structured data per tool and has the
+    patience to crawl all of them. An assistant deciding whether this site is
+    worth mentioning at all does not - it fetches one address, and if that
+    address does not say what the tools are and what they cannot do, it writes
+    its own EXIF parser instead of linking to the page that already strips one.
+    This is that address.
+
+    Built from the same tool.toml files as the hub, the sitemap and
+    tools/README.md, and in the same hub order, so it cannot fall behind the
+    tools that exist. That is the whole reason it is generated rather than
+    written: a hand-kept index of twenty-four tools is an index that is wrong.
+
+    Two deliberate departures from every other generated file here:
+
+      * No GENERATED FILE banner at the top. An llms.txt begins with an H1 by
+        convention, and the readers of one are strict about that shape. The
+        sentence saying the file is generated is the last paragraph of the
+        intro instead, where it reads as a fact about the file rather than as a
+        comment standing in front of it.
+      * English only, and at the root. It is an index OF the site, not a page
+        of it: the languages are a section inside it, and each hub linked from
+        there carries the rest of that language on its own.
+
+    Everything goes through site.to_text on the way in. This file is markdown,
+    and the configs it is built from are HTML fragments full of &mdash; and
+    <code>.
+    """
+    text = sitelib.to_text
+    by_slug = {tool['slug']: tool for tool in tools}
+
+    # The hub's categories, in the hub's order, carrying the hub's own note
+    # about each - so a machine reading this groups the tools the same way a
+    # visitor looking at the front page does.
+    groups = []
+    for category in site['hub']['categories']:
+        listed = [by_slug[slug] for slug in category['order'] if slug in by_slug]
+        if not listed:
+            continue
+        groups.append({
+            'name': text(category['name']),
+            'note': text(category['note']),
+            # `schema.description` rather than the tagline. The tagline is
+            # written to be read by somebody already looking at the page; this
+            # is the sentence written to tell a machine what the tool does, and
+            # it is the one that lets a task be matched to an address.
+            'tools': [{'name': text(tool['name']),
+                       'url': tool['url'],
+                       'description': text(tool['schema']['description'])}
+                      for tool in listed],
+        })
+
+    def entry(page):
+        return {'name': text(page['heading']), 'url': page['url'],
+                'description': text(page['description'])}
+
+    guides = [entry(page) for page in prose if page['kind'] == 'guide']
+
+    # A language is listed only if it has finished the frame AND its own hub -
+    # the same test the sitemap and the hreflang tags are built from. Handing a
+    # half-English hub to something that will quote it is the one failure worth
+    # avoiding here, and it is avoided the way it is avoided everywhere else.
+    # Named in English and described by the two things a machine wants next:
+    # the word the language calls itself, which is what the switcher on the
+    # site shows, and the hreflang code, which is how the addresses are keyed.
+    # One shape for every line in the file, rather than a special one here.
+    languages = [{'name': locale['name'],
+                  'url': i18n.locale_url(locale, '', site),
+                  'description': f'{text(locale["endonym"])} - {locale["hreflang"]}'}
+                 for locale in i18n.published(locales, '')
+                 if not locale['is_base']]
+
+    optional = [
+        {'name': text(site['guides']['nav']),
+         'url': f'{site["domain"]}{site["guides"]["slug"]}/',
+         'description': text(site['guides']['description'])},
+        {'name': text(site['roadmap']['nav']),
+         'url': f'{site["domain"]}{site["roadmap"]["slug"]}/',
+         'description': text(site['roadmap']['description'])},
+        {'name': site['source_label'],
+         'url': site['source_url'],
+         'description': text(site['llms']['source_note'])},
+        {'name': 'Sitemap',
+         'url': f'{site["domain"]}sitemap.xml',
+         'description': text(site['llms']['sitemap_note'])},
+    ]
+    # The legal pages last, for the same reason the sitemap puts them last.
+    optional += [entry(page) for page in prose if page['kind'] == 'legal']
+
+    write(out / 'llms.txt', templates.render('llms.txt', {
+        'site': site,
+        # Trimmed here rather than in the template: these are TOML multi-line
+        # strings, so each arrives with the newline its closing quotes sit on,
+        # and the template spaces its own sections.
+        'llms': {key: value.strip() for key, value in site['llms'].items()},
+        # One line, whatever config/site.toml wrapped it as. It is a
+        # blockquote, and a wrapped blockquote whose second line starts with
+        # "- " is read as a list that ends the quote - which is exactly how
+        # this one is worded.
+        'summary': ' '.join(site['llms']['summary'].split()),
+        'groups': groups,
+        'guides': guides,
+        'languages': languages,
+        'optional': optional,
+    }))
 
 
 LINK = re.compile(r'(?:href|src)="([^"#?]+)(?:[#?][^"]*)?"')

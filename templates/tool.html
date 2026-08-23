@@ -275,6 +275,30 @@
     <a href="{{ base }}{{ guide.out_slug }}/">{{ guide.heading }}</a>
     <span class="tool-guide-note">{{ guide.description }}</span>
   </p>
+{% endif %}
+  <!--
+    The way out of this page that is not the footer and not the back button.
+    Everything above is about one tool; a reader who has just finished with it
+    usually wants the neighbouring one, and until this block existed the only
+    route to it was the hub.
+
+    Which tools these are is worked out in related_tools() in build.py from the
+    hub's own category order, so there is no second list of "related" tools to
+    disagree with the first. `name` is escaped exactly as the hub escapes it -
+    it is the plain-text name that also goes into the structured data - and
+    `tagline` is not, because it is the same authored line the tool's own
+    header renders above.
+  -->
+{% if related %}  <h2 id="related-h">{{ ui.tool.related_heading }}</h2>
+  <ul class="tool-related">
+{% for other in related %}    <li>
+      <a href="{{ base }}{{ other.out_slug }}/">
+        <span class="tool-related-icon" aria-hidden="true">{{ other.icon }}</span>
+        <span class="tool-related-name">{{ other.name | e }}</span>
+      </a>
+      <span class="tool-related-note">{{ other.tagline }}</span>
+    </li>
+{% endfor %}  </ul>
 {% endif %}</section>
 
 {% include "partials/footer.html" %}

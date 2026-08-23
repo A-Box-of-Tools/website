@@ -9,7 +9,7 @@ import {
   bytes as humanBytes, dimensions, countOf, iconName, folderFor, describe,
 } from './files.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
-import { makeZip } from './zip.js';
+import { makeZip } from './shared/zip.js';
 
 const $ = (id) => document.getElementById(id);
 
