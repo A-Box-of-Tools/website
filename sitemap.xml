@@ -157,6 +157,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/timelapse-video/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/trim-audio/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -445,6 +451,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/de/zeitraffer-erstellen/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/de/video-schneiden/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -673,6 +685,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/es/crear-timelapse/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/es/cortar-video/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -897,6 +915,12 @@
   <url>
     <loc>https://abox.tools/fr/convertir-svg-en-png/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/faire-un-timelapse/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1153,6 +1177,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/hi/timelapse-video/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/hi/trim-video/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -1405,6 +1435,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/it/creare-timelapse/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/it/tagliare-video/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -1629,6 +1665,12 @@
   <url>
     <loc>https://abox.tools/ja/svg-to-image/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/timelapse-video/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1885,6 +1927,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ko/타임랩스-만들기/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ko/동영상-자르기/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -2137,6 +2185,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/nl/timelapse-maken/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/nl/video-knippen/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -2365,6 +2419,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/pt/fazer-timelapse/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/pt/aparar-video/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -2589,6 +2649,12 @@
   <url>
     <loc>https://abox.tools/zh/svg-to-image/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/timelapse-video/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
