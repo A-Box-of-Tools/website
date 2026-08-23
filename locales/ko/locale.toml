@@ -89,6 +89,9 @@ complete = true
 # Cropping the picture is 화면-자르기, above.
 "trim-video" = "동영상-자르기"
 "video-to-gif" = "동영상-gif-변환"
+# 암호가 아니라 비밀번호입니다. 암호는 암호학의 암호고, 로그인에 쓰는 것을
+# 한국 사이트는 모두 비밀번호라고 부릅니다.
+"password-generator" = "비밀번호-생성기"
 
 # The indexes and the legal pages. 개인정보처리방침 is the name that page has in
 # Korean law and on every Korean site, so it is what a reader scans for.
@@ -196,6 +199,11 @@ note = "입력한 내용을 기계가 읽는 형태로 바꿉니다. 페이지 �
 id = "text-and-code"
 name = "텍스트와 코드"
 note = "읽고, 비교하고, 인코딩합니다. 토큰이나 설정 파일을 남의 서버에 붙여넣지 않고요."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "비밀번호와 보안"
+note = "비밀은 여기, 본인 기기에서 만듭니다. 남의 손에 사본이 간 적이 없으니 잃어버릴 것도 없습니다."
 
 #
 # ---------------------------------------------------------------------------

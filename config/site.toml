@@ -254,6 +254,15 @@ name = "Text &amp; code"
 note = "Read it, compare it, encode it - without pasting a token or a config file into somebody else's server."
 order = ["text-tools"]
 
+# The third, and the one where the output rather than the input is the secret.
+# Everything above takes something you have; this takes nothing at all and
+# hands back something that did not exist a moment ago and must not leave.
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Passwords &amp; security"
+note = "Make the secret here, on your own machine, so that nobody else ever had a copy of it to lose."
+order = ["password-generator"]
+
 #
 # ---------------------------------------------------------------------------
 # The roadmap page.

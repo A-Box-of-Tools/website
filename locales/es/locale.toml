@@ -62,6 +62,9 @@ complete = true
 "image-to-data-uri" = "imagen-a-base64"
 "qr-barcode" = "generar-codigo-qr"
 "video-to-gif" = "convertir-video-a-gif"
+# Con "de": "generador de contraseñas" es lo que se teclea, y el
+# "generador-contrasenas" sin la preposición no es español que nadie escriba.
+"password-generator" = "generador-de-contrasenas"
 
 "guides" = "guias"
 "roadmap" = "hoja-de-ruta"
@@ -164,6 +167,11 @@ note = "Convierte lo que escribes en algo que una máquina pueda leer, sin que s
 id = "text-and-code"
 name = "Texto y código"
 note = "Léelo, compáralo, codifícalo. Sin pegar un token ni un archivo de configuración en el servidor de otro."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Contraseñas y seguridad"
+note = "Crea aquí el secreto, en tu propio dispositivo, para que nadie más haya tenido nunca una copia que perder."
 
 #
 # ---------------------------------------------------------------------------
