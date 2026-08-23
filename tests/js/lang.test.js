@@ -241,23 +241,7 @@ test('a click on a switcher link is what writes a choice down', () => {
     getAttribute: (name) => (name === 'hreflang' ? 'de' : null),
     closest: (selector) => (selector.includes('.lang-switch') ? link : null),
   };
-  click({ target: { closest: (selector) => (selector.includes('a[hreflang]') ? link : null) } });
-  assert.equal(out.stored(), 'de');
-});
-
-test('a click on a language whose copy of this page is English still counts', () => {
-  // The switcher offers every published language, not only the ones this page
-  // is translated into. Those entries carry data-lang and no hreflang, because
-  // hreflang would claim a translation of this page exists - but picking one is
-  // every bit as much a choice, and has to stick.
-  const out = run({ alternates: HUB });
-  const link = {
-    getAttribute: (name) => (name === 'data-lang' ? 'de' : null),
-    closest: (selector) => (selector.includes('.lang-switch') ? link : null),
-  };
-  out.listeners.get('click')({
-    target: { closest: (selector) => (selector.includes('a[data-lang]') ? link : null) },
-  });
+  click({ target: { closest: (selector) => (selector === 'a[hreflang]' ? link : null) } });
   assert.equal(out.stored(), 'de');
 });
 

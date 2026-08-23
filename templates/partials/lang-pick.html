@@ -40,9 +40,8 @@
   <ul class="lang-pick-menu">
 {% for lang in languages %}    <li>
 {% if lang.current %}      <span class="lang-current" lang="{{ lang.hreflang }}" aria-current="true">{{ lang.endonym }}</span>
-{% else %}{% if lang.translated %}      <a href="{{ lang.href }}" lang="{{ lang.hreflang }}" hreflang="{{ lang.hreflang }}">{{ lang.endonym }}</a>
-{% else %}      <a href="{{ lang.href }}" data-lang="{{ lang.hreflang }}" class="lang-partial"><span lang="{{ lang.hreflang }}">{{ lang.endonym }}</span><span class="lang-partial-mark" aria-hidden="true">EN</span><span class="visually-hidden"> &mdash; {{ ui.lang_untranslated }}</span></a>
-{% endif %}{% endif %}    </li>
+{% else %}      <a href="{{ lang.href }}" lang="{{ lang.hreflang }}" hreflang="{{ lang.hreflang }}">{{ lang.endonym }}</a>
+{% endif %}    </li>
 {% endfor %}  </ul>
 </details>
 {% endif %}

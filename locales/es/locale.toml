@@ -284,7 +284,6 @@ base = "Cada afirmación de este sitio está hecha para comprobarla, no para cre
 [ui]
 languages = "Idioma"
 lang_auto = "Estás viendo esta página en español, que es el idioma que pide tu navegador."
-lang_untranslated = "esta página todavía está en inglés"
 breadcrumb = "Ruta de navegación"
 all_tools = "Todas las herramientas"
 last_updated = "Última actualización"
