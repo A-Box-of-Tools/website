@@ -263,12 +263,15 @@ a = """
 [[faq]]
 q = "Sait-il lire un QR code aussi bien qu'en fabriquer un&nbsp;?"
 a = """
-        Pas encore. Le lire, c'est décoder une image, donc trouver le symbole dans une
-        photographie, corriger l'angle de la prise de vue et réparer les dégâts, ce qui
-        est un travail différent et bien plus lourd que d'en dessiner un. Cela pourrait
-        être construit ici aux mêmes conditions que tout le reste, et c'est sur la
-        liste. En attendant, l'appareil photo de votre téléphone le fait déjà, et le
-        fait bien."""
+        Pas cette page, mais celle d'à côté&nbsp;:
+        <a href="../lecteur-de-qr-code/">le lecteur</a> prend une photo, une
+        capture d'écran ou votre caméra et vous rend la chaîne. C'est un travail
+        nettement plus gros que d'en dessiner un &mdash; trouver le symbole dans
+        une image, corriger l'angle de la prise de vue et réparer les dégâts
+        sont trois problèmes que cette page n'a pas &mdash;, et c'est pourquoi
+        c'est un outil à part et non un bouton ici. Il fonctionne aux mêmes
+        conditions que tout le reste&nbsp;: rien n'est envoyé, et aucune image
+        de la caméra n'est conservée."""
 
 [[faq]]
 q = "À quoi sert la marge, et puis-je la réduire&nbsp;?"

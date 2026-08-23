@@ -1,0 +1,299 @@
+<main>
+  <!-- Step 1 &mdash; which of the two things this is -->
+  <section class="card">
+    <h2><span class="step">1</span> Pick what to make</h2>
+
+    <!--
+      A tab strip rather than two pages, because the choice between them is the
+      question this tool exists to help with and it should be one click, with
+      the answer to "which is stronger" visible on both sides of it.
+      `role="tablist"` and the arrow keys are wired in main.js.
+    -->
+    <div class="tabs" role="tablist" aria-label="What to make">
+      <button type="button" role="tab" id="tab-password" class="tab" data-mode="password"
+              aria-selected="true" aria-controls="options-password">Password</button>
+      <button type="button" role="tab" id="tab-passphrase" class="tab" data-mode="passphrase"
+              aria-selected="false" tabindex="-1" aria-controls="options-passphrase">Passphrase</button>
+    </div>
+
+    <p class="card-lede" id="mode-note">
+      A password is a run of characters &mdash; short, strong, and something
+      you will keep in a password manager. A passphrase is words picked at
+      random from a list &mdash; longer to type, far easier to remember and to
+      read aloud, and the right answer for the handful of secrets you have to
+      type from memory: the password manager's own, your laptop's, your phone's
+      backup code.
+    </p>
+  </section>
+
+  <!-- Step 2 &mdash; the settings, one panel per mode -->
+  <section class="card">
+    <h2><span class="step">2</span> Set it up</h2>
+
+    <div class="settings" id="options-password" role="tabpanel" aria-labelledby="tab-password">
+      <div class="field">
+        <label for="length">Length</label>
+        <div class="slider-row">
+          <input type="range" id="length" min="6" max="128" value="20" step="1">
+          <output for="length" id="length-out">20</output>
+        </div>
+        <p class="field-note">
+          Length beats everything else. Adding one character to a
+          ninety-four-character alphabet is worth more than any rule about
+          which characters have to appear in it.
+        </p>
+      </div>
+
+      <div class="field checks">
+        <span class="checks-label">Characters to draw from</span>
+        <label class="check" for="use-lower">
+          <input type="checkbox" id="use-lower" checked>
+          Lower case <code>a&ndash;z</code>
+        </label>
+        <label class="check" for="use-upper">
+          <input type="checkbox" id="use-upper" checked>
+          Upper case <code>A&ndash;Z</code>
+        </label>
+        <label class="check" for="use-digits">
+          <input type="checkbox" id="use-digits" checked>
+          Digits <code>0&ndash;9</code>
+        </label>
+        <label class="check" for="use-symbols">
+          <input type="checkbox" id="use-symbols" checked>
+          Symbols
+        </label>
+      </div>
+
+      <div class="field">
+        <label for="symbol-set">Which symbols</label>
+        <select id="symbol-set">
+          <option value="full" selected>All of them</option>
+          <option value="safe">Only the ones every site accepts</option>
+        </select>
+        <p class="field-note">
+          These ones: <code id="symbol-chars"></code>. The space, the two
+          quotes, the backtick and the backslash are left out of both sets on
+          purpose &mdash; they are as random as anything else and they are what
+          turns a working password into a support ticket.
+        </p>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="require-each">
+          <input type="checkbox" id="require-each">
+          At least one character from each set
+        </label>
+        <p class="field-note">
+          For the sign-up form that insists. It makes the password
+          <em>weaker</em>, not stronger, because it rules out some of the
+          passwords that were previously possible &mdash; the reading below
+          already has that subtracted.
+        </p>
+
+        <label class="check" for="avoid-lookalikes">
+          <input type="checkbox" id="avoid-lookalikes">
+          No look-alike characters
+        </label>
+        <p class="field-note">
+          Drops <code>I l 1 |</code> and <code>O 0</code>, for a password that
+          has to be read off a screen and typed somewhere else. Add a character
+          or two of length to pay for it.
+        </p>
+      </div>
+    </div>
+
+    <div class="settings" id="options-passphrase" role="tabpanel" aria-labelledby="tab-passphrase" hidden>
+      <div class="field">
+        <label for="words">Words</label>
+        <div class="slider-row">
+          <input type="range" id="words" min="3" max="12" value="6" step="1">
+          <output for="words" id="words-out">6</output>
+        </div>
+        <p class="field-note">
+          Four words is the well-known picture and is below what is worth using
+          today. Six is the sensible floor for anything that matters, and seven
+          for the password that guards all the others.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="list">Word list</label>
+        <select id="list">
+          <option value="long" selected>The long list &mdash; 7,776 words</option>
+          <option value="short">The short list &mdash; 1,296 short words</option>
+        </select>
+        <p class="field-note">
+          The long list is six dice throws a word, so 12.9 bits each. The short
+          list is four throws, 10.3 bits each, and every word in it is five
+          letters or fewer with no word the beginning of another &mdash; which
+          is what to use for a passphrase you will be typing on a television
+          remote or reading down a phone screen.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="separator">Between the words</label>
+        <select id="separator">
+          <option value="hyphen" selected>A hyphen</option>
+          <option value="space">A space</option>
+          <option value="dot">A full stop</option>
+          <option value="underscore">An underscore</option>
+          <option value="digit">A random digit</option>
+          <option value="none">Nothing</option>
+        </select>
+        <p class="field-note">
+          A random digit is the only one of these that adds anything, because
+          it is a fresh choice at every join rather than a rule. The others are
+          about what the box you are pasting into will accept &mdash; a space
+          is the most readable and the most likely to be mangled.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="capitals">Capitals</label>
+        <select id="capitals">
+          <option value="lower" selected>Leave them alone</option>
+          <option value="title">Capitalise Each Word</option>
+          <option value="upper">ALL CAPITALS</option>
+        </select>
+        <p class="field-note">
+          None of these three adds any strength: which one is in force is a
+          rule anybody can read off this page, so it is not something an
+          attacker has to guess. It is here for the form that demands a capital.
+        </p>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="add-digit">
+          <input type="checkbox" id="add-digit">
+          End it with a digit
+        </label>
+        <label class="check" for="add-symbol">
+          <input type="checkbox" id="add-symbol">
+          End it with a symbol
+        </label>
+        <p class="field-note">
+          For the same insistent form. The digit is a real choice and is worth
+          3.3 bits; the symbol is drawn from eight and is worth 3.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out, and what it is worth -->
+  <section class="card">
+    <h2><span class="step">3</span> Take it</h2>
+
+    <p id="no-classes" class="error" role="alert" hidden>
+      Nothing is left to draw from. Switch at least one set of characters back
+      on in step 2.
+    </p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="result" id="result"
+         data-copied="Copied."
+         data-copy-failed="Your browser would not let this page reach the clipboard. Select it and copy it yourself.">
+      <output id="secret" class="secret" aria-live="polite"></output>
+      <div class="result-actions">
+        <button type="button" id="regenerate" class="primary">Make another</button>
+        <button type="button" id="copy" class="ghost" data-download>Copy</button>
+        <span id="copy-note" class="copy-note" role="status"></span>
+      </div>
+    </div>
+
+    <!--
+      The strength readout. Every word it can say is written here rather than
+      in main.js, in `data-` attributes read once at boot, because everything
+      in this file is translated for each language the site is served in and
+      nothing inside src/ is. The numbers come from strength.js; the sentences
+      around them come from whichever language this page is.
+    -->
+    <div class="strength" id="strength"
+         data-very-weak="Very weak"
+         data-weak="Weak"
+         data-fair="Fair"
+         data-strong="Strong"
+         data-very-strong="Very strong"
+         data-instant="Guessed instantly, by anybody who gets the file."
+         data-minutes="Guessed within minutes."
+         data-hours="Guessed within a day."
+         data-days="Guessed within a month."
+         data-months="Guessed within a year."
+         data-years="Would take years."
+         data-centuries="Would take centuries."
+         data-ages="Would outlast the hardware, and everyone using it.">
+      <p class="strength-head">
+        <output id="bits">&mdash;</output>
+        <span class="strength-unit">bits of entropy</span>
+        <span id="verdict" class="verdict"></span>
+      </p>
+      <div class="strength-bar" aria-hidden="true"><span id="strength-fill"></span></div>
+      <p class="strength-crack" id="crack"></p>
+      <p class="strength-space">
+        An attacker would have to work through
+        <output id="space">&mdash;</output>
+        possibilities to be sure of finding it.
+      </p>
+    </div>
+
+    <details class="assumptions">
+      <summary>What that estimate assumes</summary>
+      <p>
+        That the attacker has stolen the file your password is stored in and is
+        guessing against it on their own hardware at a hundred billion guesses a
+        second &mdash; roughly a rack of graphics cards against a fast hash, of
+        the kind that keeps turning up in breaches. Against a password hash
+        chosen properly, bcrypt or Argon2, the same hardware manages a few
+        thousand a second and every answer above becomes about twenty-five bits
+        harder. Against a login form that answers ten times a second, all of
+        them are unreachable.
+      </p>
+      <p>
+        The figure is deliberately the pessimistic one, and it is the number of
+        guesses to be <em>certain</em>; the average attack finds the answer in
+        half of them, which is what the estimate above uses.
+      </p>
+    </details>
+
+    <!--
+      Several at once, for the batch of accounts or the seed file. This is also
+      the page's only download, and the only thing on it that produces a file:
+      everything else is a string in a box.
+    -->
+    <div class="field bulk">
+      <label for="count">Or make several at once</label>
+      <div class="slider-row">
+        <input type="range" id="count" min="1" max="100" value="1" step="1">
+        <output for="count" id="count-out">1</output>
+      </div>
+      <ol class="batch" id="batch" start="2" hidden></ol>
+      <div class="result-actions">
+        <button type="button" id="copy-all" class="ghost" hidden>Copy all</button>
+        <button type="button" id="download-txt" class="ghost" hidden>Download as a text file</button>
+      </div>
+      <p class="field-note">
+        A downloaded list is a plain text file written by this page from what is
+        already on your screen. It is saved by your browser, to your own disk,
+        and nothing sends it anywhere &mdash; but a file full of passwords on
+        disk is a file full of passwords on disk. Move them into a password
+        manager and delete it.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Said on the page rather than only in the panel above it, because it is the
+    question every visitor to a page like this one is actually asking and the
+    answer is unusually short.
+  -->
+  <section class="card note-card">
+    <h2>Nothing here is remembered</h2>
+    <p>
+      What this page makes is never stored, never listed, and never sent. There
+      is no history to clear because none is kept: reload the page and every
+      password it has ever shown you is gone, including from this page's own
+      memory. The only copies are the ones you make &mdash; the clipboard, and
+      the text file if you asked for one.
+    </p>
+  </section>
+</main>

@@ -1,0 +1,395 @@
+#
+# QR & Barcode Reader
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# The other half of /qr-barcode/. That page turns a string into a picture; this
+# one turns a picture back into a string, which is a considerably larger job -
+# finding a symbol in a photograph, correcting for the angle it was taken at
+# and repairing the damage are three problems the generator does not have.
+#
+# It is also the first tool here that asks the browser for anything: the
+# camera. What that does and does not mean is written out in src/camera.js and
+# said again in the pledge below, because "this page uses your camera" is the
+# one sentence on this site that sounds like the opposite of the promise.
+#
+
+slug = "qr-barcode-reader"
+name = "QR & Barcode Reader"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "QR&nbsp;&amp;&nbsp;Barcode Reader <span class=\"h1-kw\">&mdash; scan a QR code from an image or your camera</span>"
+tagline = "Point it at a code, or drop a picture of one. It is read here, and nowhere else."
+icon = "&#128269;"          # the mark beside the page heading
+favicon = "&#128269;"       # the tab icon, drawn into an inline SVG
+category = "codes-and-data"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+roadmap_group = "beyond"
+lastmod = "2026-08-23"
+
+# The drop zone brings in shared/js/file-picker.js. Several files at once is
+# deliberate: a folder of screenshots, or a photograph of a page of codes, is a
+# real thing people have, and reading them one at a time is the annoying way.
+js_parts = ["file-picker"]
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "QR Code Reader &amp; Barcode Scanner &mdash; From an Image, Nothing Uploaded"
+description = "Read a QR code from a photo, a screenshot or your camera, and see exactly where the link goes before you open it. EAN, UPC, Code 128, Code 39 and ITF barcodes too. Nothing is uploaded."
+og_title = "Read a QR code without sending the picture to anyone"
+og_description = "Scan a QR code from an image or your camera and see the whole address before you decide to open it. The picture never leaves your machine, and no camera frame is ever recorded."
+og_image_alt = "QR & Barcode Reader - scan a code from an image or camera, nothing uploaded"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Read a QR code from a picture or your camera - and see where it goes before you go there."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  The camera needs nothing added to it: a MediaStream handed to a &lt;video&gt;
+  through srcObject is not a fetch, so no directive governs it and none has
+  been widened for it. img-src needs blob: for the one decoding path that goes
+  through an &lt;img&gt; rather than createImageBitmap, and https: because ad
+  creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Reading a code is arithmetic over pixels, and the pixels are already here.
+    Finding the symbol, correcting for the angle, undoing the mask, repairing
+    the damage with Reed-Solomon and reading the bits back out all happen in
+    about two thousand lines of JavaScript in this page that you can read.
+    <strong>The camera is the same promise, not an exception to it:</strong> a
+    frame arrives as pixels in this tab, is examined, and is gone. Nothing is
+    recorded, nothing is kept, and this page has no network feature of any kind
+    to send one with."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      scan a code with the camera running. Not one request carries a frame or a
+      character of what it said. Or unplug from the internet and read the code
+      anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/binarize.js</code>
+      and <code>src/detect.js</code> for finding a symbol in a photograph
+      &mdash; the threshold, the finder patterns and the perspective transform
+      &mdash; <code>src/qr-decode.js</code> for reading it back,
+      <code>src/reed-solomon.js</code> for repairing what was misread,
+      <code>src/linear.js</code> for the striped ones, and
+      <code>src/camera.js</code>, which is every line in this page that touches
+      a camera."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to read a QR code without uploading the picture"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Read a QR code from a photo, a screenshot or your camera &mdash; and
+            see the whole address before you open it. Barcodes too."""
+
+[picker]
+accept = "image/*"
+multiple = true
+title = "Drop a picture of a code here"
+hint = "or click to browse &mdash; a photograph, a screenshot, a PNG, anything your browser can open"
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "pictures and the codes in them"
+choose = "the picture to read"
+analytics_extra = """, and not a
+  character of what a code turned out to say"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "Nothing recorded"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "The picture is never uploaded, and the camera is not an exception."
+body = """
+ A
+      photograph you drop here is decoded onto a canvas in this page and read
+      there. A camera frame is the same thing arriving thirty times a second:
+      it is drawn onto that canvas, examined, and overwritten by the next one.
+      No frame is recorded, none is kept, and the camera light going out when
+      you press stop is the whole of it."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>, and the page's
+      <code>Content-Security-Policy</code> leaves no address this origin could
+      send to even if there were. That is why this page cannot tell you where a
+      shortened link ends up: finding out would mean asking, and it does not
+      ask."""
+
+[[privacy]]
+title = "It shows you the address. It never opens it."
+body = """
+ A printed
+      QR code is an address nobody can read, which is exactly what makes a
+      sticker over one worth somebody's trouble. Nothing is opened here. The
+      whole string is printed for you to look at, the host it would actually
+      reach is called out on its own, and the tricks that make one address look
+      like another &mdash; a username before an <code>@</code>, a name written
+      in a script whose letters are shaped like ours, a redirect &mdash; are
+      named where they appear."""
+
+[[privacy]]
+title = "It shows you what it sampled, too."
+body = """
+ Under every QR
+      result is a picture of the modules this page actually read off your
+      photograph. If it looks like the code you scanned, the answer above it is
+      sound; if it looks like static, it is not. No reader that hands you a
+      string and nothing else can be checked that way."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed a picture, a frame, or anything read out
+      of one. Every line that turns pixels into a string is served from this
+      origin and listed in the repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, camera included, because there was never a network step in
+      it. That is the simplest proof of all."""
+
+[[howto]]
+title = "Give it the picture."
+body = """
+ Drop a photograph or a screenshot on
+      the box, paste one straight in, or press the camera button. Several at
+      once is fine &mdash; each is read on its own and each gets its own
+      answer. A screenshot of a code that is already on your screen is the
+      fastest way in and the most reliable, because there is no lens, no angle
+      and no light involved."""
+
+[[howto]]
+title = "Get the whole symbol in frame, margin included."
+body = """
+ The white space around a
+      code is part of the code: it is how a reader finds where the symbol ends.
+      A photograph cropped to the edge of the squares is the single most common
+      reason one will not read, and filling about half the frame with the code
+      is about right &mdash; closer than that and the corners fall outside the
+      picture."""
+
+[[howto]]
+title = "Read the address before you decide anything."
+body = """
+ The point of scanning a code
+      on a poster, a parking meter or a letter is to find out where it goes,
+      and that is the one thing a phone camera does not really let you do. The
+      host is printed here on its own line. If it is not a name you were
+      expecting, you have already got what you came for and there is nothing
+      left to open."""
+
+[[howto]]
+title = "Take the warnings seriously, especially the quiet ones."
+body = """
+ A plain
+      <code>http://</code> address, a name in an alphabet that is not the one
+      it appears to be in, a link shortener, or anything before an
+      <code>@</code> in the address &mdash; each of those is named where it
+      appears. None of them proves anything on its own. All of them are worth
+      ten seconds before you go there."""
+
+[[howto]]
+title = "If it will not read, change the light before you change anything else."
+body = """
+ Almost
+      every failure is a threshold problem: a reflection across the middle, a
+      shadow over one corner, or a screen photographed at an angle that catches
+      the backlight. Move so the glare is off the code, or turn the camera
+      light on. Failing that, take one flat, straight-on photograph and drop
+      that in &mdash; a still picture gets a far more thorough search than a
+      live frame can."""
+
+[[howto]]
+title = "Check the sampled picture if the answer looks odd."
+body = """
+ Open &ldquo;how this one was
+      read&rdquo; and look at the little grid. It is what this page believed
+      the code to be, drawn back out of the modules it sampled. A reader that
+      misread a symbol and repaired it into something plausible will show it
+      there, and nowhere else."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is the picture uploaded anywhere?"
+a = """
+        No, and neither is anything read out of it. The picture is decoded onto
+        a canvas in this page and read there, by JavaScript served from this
+        site. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to us. The plainest proof is to disconnect from
+        the internet: it keeps working."""
+
+[[faq]]
+q = "Does the camera record anything?"
+a = """
+        No. A camera frame arrives as pixels in this tab, is drawn onto a canvas,
+        is examined, and is overwritten by the next frame about a tenth of a
+        second later. Nothing is written to disk and nothing is kept. The stream
+        stops the moment you press stop, when the tab goes into the background,
+        and when you leave the page &mdash; and the light on your camera is the
+        indicator to trust, because no page can turn that off."""
+
+[[faq]]
+q = "Why does it show me the link instead of opening it?"
+a = """
+        Because that is the useful part. A QR code is an address you cannot read,
+        which is the whole reason a sticker over the code on a parking meter
+        works: by the time you know where it went, you are there. Here the string
+        is printed in full, the host is called out on its own line, and opening
+        it is a separate button you press after reading it. That is one extra
+        click and it is the click the format has always needed."""
+
+[[faq]]
+q = "What can it read?"
+a = """
+        QR codes at every version from 1 to 40, at all four error-correction
+        levels, in numeric, alphanumeric, byte and kanji mode, with ECI character
+        sets and structured-append symbols reported rather than silently
+        dropped. On the striped side: EAN-13, EAN-8, UPC-A, UPC-E, ITF-14,
+        Interleaved 2 of 5, Code 128 and Code 39. It does not read Data Matrix,
+        PDF417, Aztec or MaxiCode."""
+
+[[faq]]
+q = "It will not read my code. What is wrong?"
+a = """
+        Nine times in ten it is one of three things. The white margin is cropped
+        off, and a reader uses that margin to find where the symbol ends. There
+        is a reflection or a shadow across part of the code, so no threshold
+        separates the dark squares from the light ones. Or the code is too small
+        in the frame for its modules to be more than a pixel or two across. Move
+        the light, fill about half the frame, and take the picture straight on
+        rather than at an angle."""
+
+[[faq]]
+q = "Can it read a code that is damaged or partly covered?"
+a = """
+        Often, yes, and that is the format working as designed rather than
+        anything clever here. Every QR code carries Reed-Solomon check data, and
+        a symbol made at level H can lose about 30% of its modules and still be
+        rebuilt exactly. The page says how many codewords it had to repair under
+        &ldquo;how this one was read&rdquo;, so you can see how close to the edge
+        it was. What it will not do is guess: a symbol damaged past what the
+        checks can carry is reported as unreadable rather than answered
+        wrongly."""
+
+[[faq]]
+q = "Why does it say it cannot tell me where a bit.ly link goes?"
+a = """
+        Because finding out would mean asking bit.ly, and that is a network
+        request. Every other claim on this page rests on there being no code here
+        that contacts anything, and quietly making an exception for this would be
+        worth less than the answer. So the shortener is named, and what it hides
+        is left honestly unknown. If you want to resolve it, paste it into
+        something that is willing to fetch."""
+
+[[faq]]
+q = "Is it safe to scan a QR code at all?"
+a = """
+        Scanning one is safe. Acting on one is the risk, and it is a real one:
+        codes stuck over the real one on parking meters, on restaurant tables and
+        on parcel-delivery cards are now common enough to have a name. What makes
+        them work is that nobody can read a code by looking at it. Reading it
+        without opening it &mdash; which is what this page does &mdash; removes
+        the whole of that advantage, and the ten seconds it takes to look at the
+        host is the entire defence."""
+
+[[faq]]
+q = "What is the little grid under each result?"
+a = """
+        The modules this page actually sampled off your picture, drawn back out
+        at one square per module. It is there so the reading can be checked by
+        eye rather than trusted: if that grid looks like the code you
+        photographed, the answer above it came from the right pixels. Almost no
+        reader shows you this, and it is the difference between a tool you can
+        check and one you have to believe."""
+
+[[faq]]
+q = "Does it read several codes in one picture?"
+a = """
+        One per picture, for now. Drop several pictures at once and each is read
+        on its own, and the camera reads code after code as you move it, keeping
+        each new one it has not already seen. A single photograph holding a sheet
+        of codes is a job for cropping it, or for pointing the camera at them one
+        at a time."""
+
+[[faq]]
+q = "Why did it say my barcode is a different format from the one I asked for?"
+a = """
+        Because a barcode does not carry its own name. UPC-A is an EAN-13 whose
+        first digit is zero, ITF-14 is Interleaved 2 of 5 with fourteen digits
+        and a valid check digit, and Code 128 in its numeric mode looks like
+        nothing else. What this page reports is what the bars say plus what the
+        check digit confirms, which is as much as the symbol itself knows."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working, camera and all. That is also the simplest way to prove nothing
+        is being uploaded: a reader that sent your picture away to be decoded
+        would stop the moment you unplugged."""
+
+[schema]
+category = "UtilitiesApplication"
+description = "Read a QR code or a linear barcode from an image, a screenshot or a live camera, entirely in the browser. Shows the decoded string and, for links, the host it would reach, before anything is opened. Supports QR versions 1 to 40 with Reed-Solomon error correction, and EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 and Code 39. Nothing is uploaded and no camera frame is recorded."
+features = [
+  "Reads a QR code from a photograph, a screenshot, a pasted image or a live camera",
+  "Every QR version from 1 to 40, all four error-correction levels, and numeric, alphanumeric, byte and kanji modes",
+  "Reed-Solomon correction, so a scratched, creased or partly covered code still reads",
+  "Corrects for angle and perspective using the alignment pattern",
+  "Reads codes printed light on dark, and codes photographed upside down",
+  "EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 and Code 39",
+  "Shows the whole address, and the host it really reaches, before anything is opened",
+  "Names the tricks that disguise a link: a username before the @, a lookalike alphabet, a redirect",
+  "Takes apart Wi-Fi, contact card, email, SMS, phone and map payloads into readable fields",
+  "Draws the modules it sampled, so the reading can be checked rather than trusted",
+  "No camera frame is recorded or kept; the stream stops with the tab",
+  "Runs offline; no upload, no account",
+]

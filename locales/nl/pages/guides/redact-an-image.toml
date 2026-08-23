@@ -1,0 +1,19 @@
+#
+# Gids: een afbeelding zo onleesbaar maken dat het afgedekte echt weg is - Dutch.
+#
+
+nav = "Een afbeelding onleesbaar maken"
+title = "Een afbeelding zo onleesbaar maken dat het afgedekte echt weg is"
+description = "De zwarte vakken die de meeste programma's tekenen liggen op de afbeelding en kunnen worden weggeschoven. Wat een echte redactie onderscheidt van een afdekking, waarom gepixelde tekst terug te lezen is en hoe je een bestand controleert voordat je het verstuurt."
+
+heading = "Een afbeelding zo onleesbaar maken dat het afgedekte echt weg is"
+lede = """
+    Iets afdekken en iets weghalen zien er op het scherm hetzelfde uit en zijn
+    totaal niet hetzelfde. Hier staat het verschil, staan de twee manieren die
+    meer achterlaten dan mensen denken, en staan de controles waarmee je ziet
+    welke van de twee je zojuist hebt gedaan."""
+updated = "23 augustus 2026"
+
+og_title = "Een afbeelding zo onleesbaar maken dat het afgedekte echt weg is"
+og_description = "Waarom een zwarte rechthoek meestal geen redactie is, waarom gepixelde tekst terug te lezen is en hoe je een bestand controleert voordat je het verstuurt."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

@@ -47,3 +47,10 @@ it. Some files hold both kinds; the licence follows the kind, not the file.
 One folder is under neither. tools/heic-to-jpg/vendor/ holds libheif, which
 nobody here wrote; it ships with its own LICENSE file beside it, and that file
 is the one that governs it.
+
+One file is under neither, for the same reason. The two wordlists inside
+tools/password-generator/src/wordlist.js are the Electronic Frontier
+Foundation's diceware lists, published at https://www.eff.org/dice and used
+unchanged under CC BY 3.0 US. The code around them is MIT like everything else;
+the words are EFF's, are credited in that file's own header and in that tool's
+README, and stay under their licence. Nothing else in this repository is.

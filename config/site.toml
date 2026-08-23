@@ -217,7 +217,7 @@ body = """
 id = "images-and-video"
 name = "Images &amp; video"
 note = "Work with pictures and footage without handing them to anyone."
-order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "grab-frame", "video-to-gif", "exif-editor", "heic-to-jpg", "image-to-data-uri", "image-to-ico", "svg-to-image", "id-photo", "resize-image", "compress-image"]
+order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "video-to-gif", "exif-editor", "redact-image", "heic-to-jpg", "image-to-data-uri", "image-to-ico", "svg-to-image", "id-photo", "resize-image", "compress-image"]
 
 [[hub.categories]]
 id = "gif-and-animation"
@@ -237,14 +237,17 @@ name = "Documents &amp; PDF"
 note = "Make and rearrange documents without sending them to be processed."
 order = ["merge-pdf", "compress-pdf", "images-to-pdf"]
 
-# The first category here that is not about a file at all. Everything above
-# takes something off your disk; this one takes a string and hands back a
-# picture of it, which is why the note says "typed" rather than "chosen".
+# The first category here that is not about editing a file. One tool takes a
+# string and hands back a picture of it; the other takes a file and hands back a
+# number about it. Neither produces a changed copy of anything, which is what
+# the note has to cover - it said "turn something you typed" while there was
+# only the code generator here, and that stopped being true the day a checksum
+# arrived.
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; data"
 note = "Turn something you typed into something a machine can read, without it leaving the page."
-order = ["qr-barcode"]
+order = ["qr-barcode", "qr-barcode-reader", "hash-checksum"]
 
 # The second of those, and the one where the promise matters most: what people
 # paste into an online formatter is tokens, config files and customer records.
@@ -253,6 +256,15 @@ id = "text-and-code"
 name = "Text &amp; code"
 note = "Read it, compare it, encode it - without pasting a token or a config file into somebody else's server."
 order = ["text-tools"]
+
+# The third, and the one where the output rather than the input is the secret.
+# Everything above takes something you have; this takes nothing at all and
+# hands back something that did not exist a moment ago and must not leave.
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Passwords &amp; security"
+note = "Make the secret here, on your own machine, so that nobody else ever had a copy of it to lose."
+order = ["password-generator"]
 
 #
 # ---------------------------------------------------------------------------
@@ -369,6 +381,7 @@ order = [
   "convert-an-svg-to-png",
   "embed-an-image-in-css",
   "remove-exif-and-gps-data",
+  "redact-an-image",
   "convert-heic-to-jpg",
   "merge-and-split-pdf-files",
   "make-a-pdf-smaller",
@@ -381,6 +394,7 @@ order = [
   "grab-a-frame-from-a-video",
   "trim-an-audio-file",
   "make-a-qr-code",
+  "verify-a-file-checksum",
   "turn-a-video-into-a-gif",
   "split-a-gif-into-frames",
   "whats-inside-a-gif",

@@ -76,6 +76,9 @@ complete = true
 # Named for the job rather than for the format. Almost nobody searches for an
 # "EXIF editor" in German; they search for how to get the data out of a photo.
 "exif-editor" = "exif-daten-entfernen"
+# "Schwaerzen" ist der Behoerdenbegriff und traegt genau die Bedeutung,
+# auf die es ankommt: entfernt, nicht verdeckt.
+"redact-image" = "bild-schwaerzen"
 "images-to-pdf" = "bilder-in-pdf-umwandeln"
 "images-to-video" = "bilder-in-video-umwandeln"
 "resize-image" = "bildgroesse-aendern"
@@ -89,7 +92,16 @@ complete = true
 "heic-to-jpg" = "heic-in-jpg-umwandeln"
 "image-to-data-uri" = "bild-als-base64"
 "qr-barcode" = "qr-code-erstellen"
+# "Scannen" rather than "lesen": lesen is what the program does, scannen is
+# what a German speaker calls it and what they type into a search box.
+"qr-barcode-reader" = "qr-code-scannen"
 "video-to-gif" = "video-in-gif-umwandeln"
+# "Passwort Generator" ist genau das, was getippt wird, und zwar in dieser
+# Reihenfolge. Die Passphrase steht im Titel, nicht in der Adresse.
+"password-generator" = "passwort-generator"
+# Nicht "zeitraffer-video": gesucht wird die Handlung, nicht das Ergebnis.
+"timelapse-video" = "zeitraffer-erstellen"
+"hash-checksum" = "pruefsumme-berechnen"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of
@@ -104,6 +116,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "ratgeber/bild-auf-groesse-komprimieren"
 "guides/resize-an-image" = "ratgeber/bild-skalieren"
 "guides/remove-exif-and-gps-data" = "ratgeber/exif-und-gps-daten-entfernen"
+"guides/redact-an-image" = "ratgeber/bild-unkenntlich-machen"
 "guides/make-a-pdf-smaller" = "ratgeber/pdf-kleiner-machen"
 "guides/combine-images-into-a-pdf" = "ratgeber/bilder-zu-pdf-zusammenfuegen"
 "guides/turn-images-into-a-video" = "ratgeber/aus-bildern-ein-video-machen"
@@ -116,6 +129,7 @@ complete = true
 "guides/embed-an-image-in-css" = "ratgeber/bild-in-css-einbetten"
 "guides/make-a-qr-code" = "ratgeber/qr-code-selbst-erstellen"
 "guides/turn-a-video-into-a-gif" = "ratgeber/aus-einem-video-ein-gif-machen"
+"guides/verify-a-file-checksum" = "ratgeber/pruefsumme-vergleichen"
 
 #
 # ---------------------------------------------------------------------------
@@ -192,12 +206,17 @@ note = "Dokumente erstellen und umsortieren, ohne sie zum Verarbeiten wegzuschic
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; Daten"
-note = "Getipptes in etwas verwandeln, das eine Maschine lesen kann, ohne dass es die Seite verlässt."
+note = "Etwas herstellen, das eine Maschine lesen kann, oder prüfen, ob eine Datei die ist, die sie zu sein behauptet. Beides auf der Seite selbst."
 
 [[hub.categories]]
 id = "text-and-code"
 name = "Text &amp; Code"
 note = "Lesbar machen, vergleichen, kodieren, ohne dafür ein Token oder eine Konfigurationsdatei auf einen fremden Server zu kopieren."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Passwörter &amp; Sicherheit"
+note = "Das Geheimnis hier erzeugen, auf Ihrem eigenen Gerät, damit niemand sonst je eine Kopie davon hatte, die verloren gehen könnte."
 
 #
 # ---------------------------------------------------------------------------

@@ -250,12 +250,15 @@ a = """
 [[faq]]
 q = "Kann es einen QR-Code auch lesen und nicht nur erzeugen?"
 a = """
-        Noch nicht. Einen zu lesen heißt, ein Bild zu dekodieren, also das Symbol
-        in einer Fotografie zu finden, den Aufnahmewinkel herauszurechnen und den
-        Schaden zu reparieren. Das ist eine andere und erheblich größere Aufgabe,
-        als einen zu zeichnen. Bauen ließe sie sich hier zu denselben
-        Bedingungen wie alles andere, und sie steht auf der Liste. Bis dahin kann
-        die Kamera Ihres Telefons das bereits, und sie kann es gut."""
+        Diese Seite nicht, die daneben schon:
+        <a href="../qr-code-scannen/">der Scanner</a> nimmt ein Foto, einen
+        Screenshot oder Ihre Kamera und gibt die Zeichenkette zurück. Das ist
+        eine erheblich größere Aufgabe, als einen zu zeichnen &mdash; das Symbol
+        in einem Bild finden, den Aufnahmewinkel herausrechnen und den Schaden
+        reparieren sind drei Probleme, die diese Seite nicht hat &mdash;, und
+        deshalb ist es ein eigenes Werkzeug und kein Knopf hier. Es läuft zu
+        denselben Bedingungen wie alles andere: nichts hochgeladen, und kein
+        Kamerabild aufgehoben."""
 
 [[faq]]
 q = "Wofür ist der Rand, und kann ich ihn kleiner machen?"

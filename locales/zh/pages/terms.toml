@@ -1,15 +1,18 @@
 #
 # 使用条款 - Simplified Chinese. Overrides for pages/terms/page.toml.
 #
+# Written in Chinese rather than translated out of the English; the house style
+# is at the top of locales/zh/locale.toml. The reader is 你 here as well.
+#
 
 nav = "使用条款"
 title = "使用条款 | abox.tools"
-description = "本站提供给你的条件：免费、按现状提供、不需要账号、不作任何担保。你的文件完全属于你自己，因为它们从来没有发到我们这里。"
+description = "本站按什么条件提供给你：免费、按现状、不用注册、不作担保，而你的文件完全是你自己的，因为它们从来没发给过我们。"
 heading = "使用条款"
 lede = """
-    这里没有账号要开，也没有协议要签，所以条款很短。它们写明你可以对本站抱有
-    什么期待，以及本站没有承诺过什么。"""
+    这里没有账号要开，也没有协议要签，所以条款很短。它讲的是你可以对本站抱有\
+    什么期待，以及本站没有承诺什么。"""
 updated = "2026年8月19日"
 og_title = "使用条款 | abox.tools"
-og_description = "免费、按现状提供、不需要账号、不作担保。你的文件完全属于你自己。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+og_description = "免费，按现状提供，不用注册，不作担保。你的文件完全是你自己的。"
+og_image_alt = "abox.tools - 不走服务器的工具"

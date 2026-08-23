@@ -1,0 +1,266 @@
+#
+# Créateur de timelapse - French.
+#
+# Overrides for tools/timelapse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# [schema] is emitted as JSON-LD, where HTML entities are never decoded, so
+# that table alone uses plain spaces and plain punctuation.
+#
+
+name = "Créateur de timelapse"
+heading = "Faire&nbsp;un&nbsp;timelapse <span class=\"h1-kw\">&mdash; accélérer une vidéo en ligne</span>"
+tagline = "Une heure de rushes en vingt secondes."
+
+title = "Faire un timelapse en ligne &mdash; gratuit, sans envoi, hors ligne"
+description = "Transformez une longue vidéo en timelapse : 10x, 60x ou la vitesse que vous tapez. Tout se passe dans votre navigateur, sans envoi, sans filigrane, et même hors ligne."
+og_title = "Créateur de timelapse &mdash; accélérer une vidéo sans l'envoyer"
+og_description = "Prenez une image toutes les quelques secondes d'un long clip et récupérez-en un court. Votre propre navigateur lit, décode et encode le fichier."
+og_image_alt = "Créateur de timelapse - accélérer une longue vidéo dans votre navigateur, sans rien envoyer"
+
+pledge = """
+    Chaque image est choisie, décodée puis réencodée par votre propre navigateur,
+    sur votre propre matériel. Cet outil ne comporte aucune fonction réseau, si
+    bien que rien ici ne sait aller chercher ni envoyer quoi que ce soit. Et
+    quand bien même il en aurait une, il n'y a à l'autre bout de cette page
+    aucun serveur à qui remettre une vidéo."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et faites un
+      timelapse. Pas une seule requête ne transporte d'image, de nom de fichier
+      ni le moindre octet de ce que vous avez choisi. Vous pouvez aussi couper la
+      connexion et en faire un quand même, car un outil qui expédierait votre
+      vidéo ailleurs pour la traiter s'arrêterait tout simplement."""
+
+read_first = """
+, <code>src/plan.js</code> pour le calcul qui décide de
+      quel instant vient chaque image, et <code>src/decode.js</code> pour la
+      boucle qui ne lit que les portions du fichier dont ces instants ont besoin.
+      Ni l'un ni l'autre n'importe la moindre chose capable d'émettre une
+      requête."""
+
+howto_heading = "Comment faire un timelapse à partir d'une vidéo"
+
+card = """
+            Faites d'un long clip un clip court, des heures en secondes, sans
+            l'envoyer nulle part."""
+
+[words]
+plural = "vidéos"
+choose = "une vidéo"
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans filigrane"
+
+[[facts]]
+text = "La vitesse que vous tapez"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[privacy]]
+title = "Vos vidéos n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy énumère toutes les adresses que cette page peut
+      contacter, et aucune n'appartient à ce site. Il n'existe ici aucun point de
+      collecte où votre fichier pourrait aboutir, ni rien dans le code qui l'y
+      enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Rien ici ne va rien chercher."
+body = """
+ Cet outil n'a aucune fonction
+      réseau&nbsp;: pas d'adresse à coller, rien à télécharger, aucun moteur
+      récupéré à la première utilisation. Chaque octet qui touche à votre vidéo
+      vient de cette origine, au chargement de la page."""
+
+[[privacy]]
+title = "Le décodage et l'encodage sont locaux."
+body = """
+ Les images passent par
+      WebCodecs dans votre propre navigateur, ou par le moteur de lecture qui
+      vous montrerait le clip de toute façon. Le fichier fini est construit en
+      mémoire sur cette machine, puis remis directement à un
+      téléchargement."""
+
+[[privacy]]
+title = "L'essentiel du fichier n'est même pas lu."
+body = """
+ Un timelapse a besoin
+      d'une image toutes les quelques secondes&nbsp;: l'outil lit donc la courte
+      portion de fichier qui entoure chacune d'elles et saute le reste. C'est un
+      choix de rapidité et non de confidentialité, mais il vaut la peine d'être
+      connu&nbsp;: même ici, sur votre machine, la plus grande partie de votre
+      vidéo n'est jamais ouverte."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Ni l'un ni l'autre ne reçoit
+      quoi que ce soit sur votre vidéo&nbsp;: ni un fichier, ni une image, ni un
+      nom, une taille ou une durée. Chaque ligne qui lit, décode, choisit ou
+      encode est servie depuis cette origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que le bouton de don charge, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; dans l'en-tête est
+      dessiné par un script de cdnjs.buymeacoffee.com et se compose avec Google
+      Fonts. C'est un lien, rien de plus&nbsp;: il ne signale aucune visite, et
+      on ne lui donne rien sur vous ni sur votre vidéo."""
+
+[[privacy]]
+title = "Tout fonctionne hors ligne."
+body = """
+ Coupez le réseau et tout, sur cette
+      page, continue de fonctionner. C'est la preuve la plus simple de
+      toutes."""
+
+[[howto]]
+title = "Choisissez une vidéo."
+body = """
+ Déposez un MP4, un MOV, un M4V ou
+      un WebM sur la zone prévue, ou sélectionnez-en un à la main. Le navigateur
+      le lit directement sur votre disque, sans que rien parte où que ce soit
+      pendant ce temps."""
+
+[[howto]]
+title = "Dites combien de fois plus vite."
+body = """
+ Appuyez sur l'une des
+      vitesses, ou tapez la vôtre. Si vous préférez indiquer la durée du
+      résultat, &laquo;&nbsp;que ça tienne en vingt secondes&nbsp;&raquo; par
+      exemple, tapez-la et la vitesse en découle."""
+
+[[howto]]
+title = "Vérifiez l'intervalle."
+body = """
+ La ligne sous la vitesse dit ce
+      que l'outil s'apprête vraiment à faire&nbsp;: une image toutes les tant de
+      secondes de l'original. C'est le nombre qu'on réglerait sur un appareil
+      photo, et celui qu'il vaut mieux relire avant de lancer."""
+
+[[howto]]
+title = "Lancez, puis téléchargez."
+body = """
+ Le travail se fait sur votre
+      propre matériel&nbsp;: le temps que cela prend dépend donc de votre machine
+      et non d'une file d'attente. La vidéo finie part directement dans les
+      téléchargements de votre navigateur."""
+
+[[faq]]
+q = "Ma vidéo est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non. Votre propre navigateur la lit, la décode, choisit les images et les
+        encode, sur votre propre matériel. Cet outil n'a pas de partie serveur,
+        et la <code>Content-Security-Policy</code> de la page énumère toutes les
+        adresses qu'elle peut contacter&nbsp;: aucune n'appartient à ce site. Si
+        vous préférez vérifier plutôt qu'on vous le dise, coupez la connexion et
+        faites un timelapse quand même."""
+
+[[faq]]
+q = "Que veut dire la vitesse, au juste&nbsp;?"
+a = """
+        Le rapport entre ce qui entre et ce qui sort. À 60&times;, une heure de
+        rushes devient une minute, quelle que soit la cadence de lecture. En
+        dessous, l'outil prend une image toutes les <em>vitesse &divide;
+        cadence</em> secondes&nbsp;: 60&times; à 30 images par seconde, c'est une
+        image toutes les deux secondes. La page vous montre cet intervalle avant
+        de lancer, parce que c'est le nombre qui dit ce qui se passe
+        réellement."""
+
+[[faq]]
+q = "Quels formats vidéo puis-je accélérer&nbsp;?"
+a = """
+        Les MP4, M4V et MOV sont lus directement, quel que soit leur
+        contenu&nbsp;: H.264, HEVC, AV1 ou VP9, du moment que votre navigateur
+        sait décoder ce codec. Tout le reste que votre navigateur sait lire, le
+        WebM en premier lieu, est parcouru en amenant le lecteur sur chaque
+        instant, ce qui marche avec tous les formats qu'il ouvre. Un fichier que
+        le navigateur ne sait ni lire ni jouer, c'est-à-dire en pratique les AVI,
+        WMV, FLV et la plupart des MKV, est refusé avec un message qui le dit,
+        plutôt que d'échouer à mi-parcours. Ce qui sort est toujours un MP4."""
+
+[[faq]]
+q = "Pourquoi le timelapse n'a-t-il pas de son&nbsp;?"
+a = """
+        Parce qu'il n'y a rien à garder. Un son passé trente fois trop vite n'est
+        ni de la parole ni de la musique, c'est un couinement&nbsp;; et
+        l'inverse, garder l'audio à sa vitesse d'origine sous une image qui a
+        filé devant, donnerait un autre clip que celui que vous avez demandé. La
+        piste est donc abandonnée, ce qui explique aussi pour l'essentiel qu'une
+        heure de vidéo tienne en quelques mégaoctets. Si c'est le son que vous
+        vouliez, l'<a href="../modifier-un-audio/">Éditeur audio</a>
+        l'enregistre."""
+
+[[faq]]
+q = "Est-ce plus rapide que de convertir la vidéo entière&nbsp;?"
+a = """
+        Beaucoup plus, et c'est tout l'intérêt de lire le fichier directement.
+        Une image ne se décode qu'en partant de l'image clé qui la précède, mais
+        rien n'oblige à garder celles du milieu&nbsp;: un timelapse à 60&times;
+        d'une heure décode quelques milliers d'images au lieu de cent mille. Le
+        récapitulatif dit exactement combien il en lira avant que vous n'appuyiez
+        sur le bouton."""
+
+[[faq]]
+q = "Est-ce que cela coûte de la qualité&nbsp;?"
+a = """
+        Les images gardées sont encodées une seconde fois, ce qui coûte un peu.
+        C'est inévitable&nbsp;: le clip fini les montre à des instants pour
+        lesquels rien n'avait été encodé dans le fichier d'origine. Ce que cet
+        outil dépense plus que les autres outils vidéo d'ici, c'est le débit, et
+        c'est voulu&nbsp;: deux images séparées de deux secondes ont bien moins
+        en commun que deux images séparées d'un trentième de seconde, donc le
+        codec a moins à réutiliser, et un chiffre calibré pour des rushes
+        ordinaires sortirait en gros carrés."""
+
+[[faq]]
+q = "Y a-t-il une limite de taille ou de durée&nbsp;?"
+a = """
+        Aucune limite n'est inscrite dans l'outil, et le fichier n'est pas non
+        plus chargé en mémoire d'un bloc&nbsp;: seules de courtes portions autour
+        de chaque instant sont lues. Le plafond réel, c'est le timelapse fini,
+        assemblé en mémoire avant que vous le téléchargiez, et un timelapse est
+        court par définition. Le récapitulatif montre à peu près ce qu'il pèsera
+        avant de lancer."""
+
+[[faq]]
+q = "Puis-je n'accélérer qu'une partie du clip&nbsp;?"
+a = """
+        Pas ici. Cet outil prend tout, de la première image à la dernière.
+        Découpez d'abord le passage voulu avec le
+        <a href="../couper-une-video/">Découpeur de vidéos</a>, qui le fait sans
+        réencoder une seule image, puis accélérez ce qui en sort."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni inscription, ni période d'essai,
+        ni filigrane. Le site est financé par la publicité, et on ne donne rien
+        aux annonces sur votre vidéo."""
+
+[schema]
+browser_requirements = "Nécessite JavaScript et un navigateur capable d'encoder de la vidéo avec WebCodecs : Chrome, Edge, Safari 16.4 ou plus récent, ou Firefox 133 ou plus récent."
+description = "Transformer une longue vidéo en timelapse dans le navigateur. Une image est prise toutes les quelques secondes de l'original, puis les images sont réécrites en un MP4 court à 24, 30 ou 60 images par seconde. Les MP4, MOV et M4V sont lus directement, et seulement autour des instants nécessaires ; tout le reste que le navigateur sait lire est parcouru par déplacements. Rien n'est envoyé."
+features = [
+  "Accélère les vidéos MP4, MOV, M4V et WebM de 1,1x à 1000x",
+  "Dites la vitesse, ou dites la durée que doit faire le résultat",
+  "Ne lit que les portions du fichier dont les instants choisis ont besoin",
+  "24, 30 ou 60 images par seconde, à la taille d'origine ou réduite",
+  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+]
+
+[picker]
+title = "Déposez une vidéo ici"
+hint = "ou cliquez pour parcourir &mdash; MP4, MOV, M4V, WebM, et tout ce que ce navigateur sait lire"

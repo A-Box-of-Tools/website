@@ -1,0 +1,319 @@
+#
+# Time-Lapse Maker
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "timelapse-video"
+name = "Time-Lapse Maker"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Time&#8209;Lapse&nbsp;Maker <span class=\"h1-kw\">&mdash; speed a long video up</span>"
+tagline = "An hour of footage, in twenty seconds."
+icon = "&#9193;&#65039;"          # the mark beside the page heading
+favicon = "&#9193;"      # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "video"
+
+# Shared modules this tool asks for. The same arrangement as css_parts,
+# and for the same reason: a component more than one tool needs and no
+# tool should own. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+lastmod = "2026-08-23"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Time-Lapse Video Maker &mdash; Free, No Upload, Works Offline"
+description = "Turn a long video into a time-lapse: 10x, 60x or any speed you type. Runs in your browser, so nothing is uploaded, there is no watermark, and it works offline."
+og_title = "Time-Lapse Maker &mdash; speed up a video without uploading it"
+og_description = "Take one frame every few seconds of a long clip and write them back as a short one. The file is read, decoded and encoded by your own browser."
+og_image_alt = "Time-Lapse Maker - speed a long video up in your browser, with nothing uploaded"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Turn hours of footage into seconds - without the file leaving your machine."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  media-src needs blob: because both the clip you chose and the finished
+  time-lapse are played from memory on this machine rather than from a URL. That
+  is the only addition: this tool fetches nothing, so connect-src is left
+  exactly as the site sets it."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Every frame is chosen, decoded and encoded again by your own browser, on
+    your own hardware. Nothing here can fetch or send anything &mdash; there is
+    no network feature in this tool at all &mdash; and there is no server on the
+    other end of this page to send a video to even if there were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and make
+      a time-lapse. Not one request carries a frame, a filename, or a byte of
+      what you chose. Or unplug from the internet and make one anyway &mdash; a
+      tool that sent your video away to be processed would simply stop."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/plan.js</code> for the arithmetic that
+      decides which instant each frame comes from, and <code>src/decode.js</code>
+      for the loop that reads only the parts of the file those instants need.
+      None of them imports anything that can make a request."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to make a time-lapse from a video"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Turn a long clip into a short one &mdash; hours into seconds &mdash;
+            without sending it anywhere."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "videos"
+choose = "a video"
+analytics_extra = """, and no
+  frame, duration or file name"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Any speed you type"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[privacy]]
+title = "Your videos have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ This tool has no network feature at
+      all: no address to paste, nothing to download, no engine fetched on first
+      use. Every byte that touches your video came from this origin when the page
+      loaded."""
+
+[[privacy]]
+title = "The decoding and encoding are local."
+body = """
+ The frames go through
+      WebCodecs in your own browser, or through the same playback engine that
+      would show you the clip anyway. The finished file is built in memory on
+      this machine and handed straight to a download."""
+
+[[privacy]]
+title = "Most of the file is never even read."
+body = """
+ A time-lapse needs one frame
+      every few seconds, so the tool reads the short run of the file around each
+      of those and skips the rest. That is a speed decision rather than a privacy
+      one, and it is worth knowing anyway: even locally, most of your video is
+      never opened."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      video: not a file, not a frame, not a name, a size or a length. Every line
+      that reads, decodes, samples or encodes is served from this origin and
+      listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about you
+      or your video."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on
+      this page still works. That is the simplest proof of all."""
+
+[[howto]]
+title = "Choose a video."
+body = """
+ Drop an MP4, MOV, M4V or WebM onto
+      the picker, or select one by hand. It is read straight off your disk by the
+      browser; nothing is sent anywhere while you do it."""
+
+[[howto]]
+title = "Say how much faster."
+body = """
+ Press one of the speeds, or
+      type your own. If you would rather say how long the result should be
+      &mdash; &ldquo;make this fit in twenty seconds&rdquo; &mdash; type that
+      instead and the speed follows."""
+
+[[howto]]
+title = "Check the interval."
+body = """
+ The line under the speed says
+      what the tool is really about to do: one frame every so many seconds of the
+      original. That is the number a photographer would set on a camera, and it
+      is the one worth sanity-checking before you start."""
+
+[[howto]]
+title = "Make it and download."
+body = """
+ The work happens on your own
+      hardware, so how long it takes depends on your machine rather than on a
+      queue. The finished video is handed straight to your browser's
+      downloads."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my video uploaded anywhere?"
+a = """
+        No. It is read, decoded, sampled and encoded by your own browser on your
+        own hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. Unplug from the internet and
+        make a time-lapse anyway if you would rather check than be told."""
+
+[[faq]]
+q = "What does the speed actually mean?"
+a = """
+        The ratio between what went in and what comes out. At 60&times; an hour
+        of footage becomes a minute, whatever frame rate you play it back at.
+        Underneath, the tool takes one frame every <em>speed &divide; frame
+        rate</em> seconds &mdash; 60&times; at 30 frames a second is one frame
+        every two seconds &mdash; and the page shows you that interval before you
+        start, because it is the number that says what is really happening."""
+
+[[faq]]
+q = "Which video formats can I speed up?"
+a = """
+        MP4, M4V and MOV are read directly, whatever is inside them: H.264,
+        HEVC, AV1 or VP9, as long as your browser can decode that codec. Anything
+        else your browser can play &mdash; WebM most obviously &mdash; is read by
+        seeking the browser's own player to each instant instead, which works on
+        every format it plays. A file the browser can neither read nor play,
+        which in practice means AVI, WMV, FLV and most MKVs, is refused with a
+        message saying so rather than failing halfway through. What comes out is
+        always an MP4."""
+
+[[faq]]
+q = "Why does the time-lapse have no sound?"
+a = """
+        Because there is nothing worth keeping. Sound played thirty times too
+        fast is not speech or music, it is a chirp; and the alternative &mdash;
+        keeping the sound at its original speed under a picture that has raced
+        ahead of it &mdash; would be a different clip from the one you asked for.
+        So the track is dropped, which is also most of the reason an hour of
+        video comes out as a few megabytes. If you want the audio on its own, the
+        <a href="../edit-audio/">Audio Editor</a> will save it."""
+
+[[faq]]
+q = "Is it quicker than converting the whole video?"
+a = """
+        Much, and that is the point of reading the file directly. A frame can
+        only be decoded by starting from the keyframe in front of it, but nothing
+        says the frames in between have to be kept &mdash; so a 60&times;
+        time-lapse of an hour decodes a few thousand frames out of a hundred
+        thousand rather than all of them. The summary says exactly how many it
+        will read before you press the button."""
+
+[[faq]]
+q = "Does it lose quality?"
+a = """
+        The frames it keeps are encoded a second time, which costs a little; that
+        cannot be avoided, because the finished clip shows them at times nothing
+        in the original file was coded for. What this tool does spend more on
+        than the other video tools here is the bitrate, deliberately. Two frames
+        two seconds apart have far less in common than two frames a thirtieth of
+        a second apart, so a codec has less to reuse, and a figure tuned for
+        ordinary footage would come out blocky."""
+
+[[faq]]
+q = "Is there a limit on the size or length of the video?"
+a = """
+        There is no limit built into the tool, and the file is not read into
+        memory all at once &mdash; it is read in short runs around each instant,
+        and only those. The practical ceiling is the finished time-lapse, which
+        is assembled in memory before you download it, and a time-lapse is short
+        by definition: the summary shows roughly how large it will be before you
+        start."""
+
+[[faq]]
+q = "Can I speed up only part of a clip?"
+a = """
+        Not here. This tool takes the whole thing from the first frame to the
+        last. Cut the section you want first with the
+        <a href="../trim-video/">Video Cutter</a> &mdash; which does it without
+        re-encoding a frame &mdash; and speed up what comes out of that."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. The site carries advertising, which is what pays for it; the
+        ads are not given anything about your video."""
+
+[schema]
+browser_requirements = "Requires JavaScript and a browser with WebCodecs video encoding: Chrome, Edge, Safari 16.4 or newer, or Firefox 133 or newer."
+category = "MultimediaApplication"
+description = "Turn a long video into a time-lapse in the browser. One frame is taken every few seconds of the original and the frames are written back as a short MP4 at 24, 30 or 60 frames a second. MP4, MOV and M4V are read directly and only around the instants that are needed; anything else the browser can play is seeked through instead. Nothing is uploaded."
+features = [
+  "Speeds up MP4, MOV, M4V and WebM video by any factor from 1.1x to 1000x",
+  "Say the speed, or say how long the result should be",
+  "Reads only the parts of the file the chosen instants need",
+  "24, 30 or 60 frames a second, at the original size or scaled down",
+  "Runs offline; no upload, no account, no watermark",
+]
+
+# This tool needs one thing the rest of the site does not: blob: on media-src,
+# because both the clip you chose and the finished time-lapse are played from
+# memory on this machine rather than from a URL. A tool can only ever widen its
+# own page this way - it cannot narrow the site policy, and it cannot touch any
+# other tool's.
+[csp]
+"media-src" = ["'self'", "blob:"]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "video/*"
+multiple = false
+title = "Drop a video here"
+hint = "or click to browse &mdash; MP4, MOV, M4V, WebM, and anything else this browser plays"

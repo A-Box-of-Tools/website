@@ -39,6 +39,8 @@ complete = true
 "edit-audio" = "editar-audio"
 # Quase ninguém procura um "editor EXIF"; procura-se como tirar os dados de uma foto.
 "exif-editor" = "remover-dados-exif"
+# "Tarjar" e "tarja preta" e o que se escreve e se procura no Brasil.
+"redact-image" = "tarjar-imagem"
 # Quem quer isto quase nunca digita "HEIC": digita o que quer no fim, que é um
 # JPG que todo mundo abre. O nome do formato fica, porque é ele que está no
 # arquivo que a pessoa acabou de tirar do iPhone.
@@ -54,10 +56,19 @@ complete = true
 # No Brasil se fala "gerar um QR Code", não "criar" nem "fazer". O código de
 # barras fica de fora do endereço: é a metade menos procurada das duas.
 "qr-barcode" = "gerar-qr-code"
+# "Ler" e não "escanear": as duas se falam, mas é "ler QR Code" que se digita.
+"qr-barcode-reader" = "ler-qr-code"
 "resize-image" = "redimensionar-imagem"
 "svg-to-image" = "svg-para-png"
 "trim-video" = "aparar-video"
 "video-to-gif" = "video-para-gif"
+# Senha, não "palavra-passe", que é de Portugal. E no singular: quem procura
+# quer uma.
+"password-generator" = "gerador-de-senha"
+# O estrangeirismo, porque e' o que se digita: "camera rapida" quase ninguem
+# procura, e "timelapse" aparece ate' em legenda de celular.
+"timelapse-video" = "fazer-timelapse"
+"hash-checksum" = "verificar-checksum"
 
 "guides" = "guias"
 "roadmap" = "roteiro"
@@ -67,6 +78,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "guias/comprimir-uma-imagem-para-um-tamanho-exato"
 "guides/resize-an-image" = "guias/redimensionar-uma-imagem"
 "guides/remove-exif-and-gps-data" = "guias/remover-dados-exif-e-gps"
+"guides/redact-an-image" = "guias/tarjar-uma-imagem"
 "guides/make-a-pdf-smaller" = "guias/deixar-um-pdf-menor"
 "guides/combine-images-into-a-pdf" = "guias/juntar-imagens-em-um-pdf"
 "guides/turn-images-into-a-video" = "guias/transformar-imagens-em-video"
@@ -79,6 +91,7 @@ complete = true
 "guides/embed-an-image-in-css" = "guias/colocar-uma-imagem-no-css"
 "guides/make-a-qr-code" = "guias/gerar-um-qr-code"
 "guides/turn-a-video-into-a-gif" = "guias/transformar-um-video-em-gif"
+"guides/verify-a-file-checksum" = "guias/verificar-o-checksum-de-um-download"
 
 #
 # ---------------------------------------------------------------------------
@@ -154,12 +167,17 @@ note = "Crie e reorganize documentos sem mandar nada para ser processado fora."
 [[hub.categories]]
 id = "codes-and-data"
 name = "Códigos e dados"
-note = "Transforme o que você digitou em algo que uma máquina consegue ler, sem que nada saia da página."
+note = "Crie algo que uma máquina consegue ler, ou confirme que um arquivo é mesmo o que diz ser. Tudo dentro da página."
 
 [[hub.categories]]
 id = "text-and-code"
 name = "Texto e código"
 note = "Leia, compare, codifique, sem precisar colar um token ou um arquivo de configuração no servidor dos outros."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Senhas e segurança"
+note = "Crie o segredo aqui, no seu próprio computador, para que ninguém mais tenha tido uma cópia dele para perder."
 
 #
 # ---------------------------------------------------------------------------

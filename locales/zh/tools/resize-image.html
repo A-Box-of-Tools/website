@@ -8,7 +8,7 @@
 <main>
   <!-- 第 1 步，选文件 -->
   <section class="card">
-    <h2><span class="step">1</span> 选择图片</h2>
+    <h2><span class="step">1</span> 选图片</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -21,7 +21,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">全部移出列表</button>
+        <button type="button" id="clear-all" class="ghost danger">清空列表</button>
       </div>
     </div>
 
@@ -30,19 +30,20 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- 第 2 步，裁剪 -->
+  <!-- 第 2 步，裁切 -->
   <section class="card" id="crop-card">
     <h2><span class="step">2</span> 想裁就裁</h2>
 
     <p class="card-lede">
-      框一开始罩着整张图片，这一步不动就什么都不裁。每张图片各有自己的框，从上面的列表里挑一张，就在那一张上画。裁剪发生在缩放之前，也只有这个顺序说得通，一张缩小之后才被裁的图片，早就把它需要的那些像素扔掉了。
+      裁剪框一开始罩着整张图，所以这一步你不动，就等于没裁。每张图各有各的框，在上面的列表里点一张，就在那张上画。裁切在缩放之前发生，这是唯一说得通的顺序：先缩小再裁，那些本该留下的像素早就扔掉了。
     </p>
 
-    <p id="crop-empty" class="field-summary">加一张图片，框就会出现在这里。</p>
+    <p id="crop-empty" class="field-summary">加一张图，框就出现在这儿。</p>
 
     <div id="crop-controls" hidden>
       <p class="stage-hint">
-        <span id="stage-name" class="stage-name"></span>在框里面拖动就能移动，拖任意一个角就能改大小。框选中时，方向键一次挪一个像素，<kbd>Alt</kbd>&nbsp;+&nbsp;方向键改大小，按住 <kbd>Shift</kbd> 则每一步走十个像素。
+        <span id="stage-name" class="stage-name"></span>
+        在框里拖是移动，拖四角是缩放。框选中时，方向键一次挪一个像素，<kbd>Alt</kbd>&nbsp;+&nbsp;方向键是改大小，按住 <kbd>Shift</kbd> 一步走十个。
       </p>
 
       <!-- The crop box itself is added here by src/cropper.js. The stage is
@@ -57,17 +58,17 @@
       <p id="stage-note" class="stage-note" hidden></p>
 
       <div class="crop-controls">
-        <div class="aspect-row" id="aspect-row" role="group" aria-label="把裁剪框锁定为某个形状">
+        <div class="aspect-row" id="aspect-row" role="group" aria-label="把裁剪框锁成某个比例">
           <button type="button" data-aspect="free" class="active">自由</button>
-          <button type="button" data-aspect="source">原始</button>
+          <button type="button" data-aspect="source">原比例</button>
           <button type="button" data-aspect="1:1">1:1</button>
           <button type="button" data-aspect="4:5">4:5</button>
           <button type="button" data-aspect="9:16">9:16</button>
           <button type="button" data-aspect="16:9">16:9</button>
           <button type="button" data-aspect="4:3">4:3</button>
           <button type="button" data-aspect="3:2">3:2</button>
-          <button type="button" id="swap-aspect" class="ghost" title="把锁定的形状横竖对调">
-            对调
+          <button type="button" id="swap-aspect" class="ghost" title="把锁定的比例横竖对调">
+            横竖对调
           </button>
         </div>
 
@@ -77,9 +78,9 @@
           <label>宽<input type="number" id="crop-w" min="8" step="1"></label>
           <label>高<input type="number" id="crop-h" min="8" step="1"></label>
           <div class="number-actions">
-            <button type="button" id="crop-max" class="ghost">最大</button>
+            <button type="button" id="crop-max" class="ghost">拉到最大</button>
             <button type="button" id="crop-centre" class="ghost">居中</button>
-            <button type="button" id="crop-reset" class="ghost">整张图片</button>
+            <button type="button" id="crop-reset" class="ghost">整张图</button>
           </div>
         </div>
 
@@ -89,7 +90,7 @@
           the same framing.
         -->
         <div class="apply-row" id="apply-row" hidden>
-          <button type="button" id="crop-apply-all" class="ghost">把这个裁剪用到每张图片上</button>
+          <button type="button" id="crop-apply-all" class="ghost">这个裁法套到每张图上</button>
           <p class="hint-line" id="apply-note"></p>
         </div>
       </div>
@@ -98,15 +99,15 @@
 
   <!-- 第 3 步，尺寸 -->
   <section class="card" id="resize-card">
-    <h2><span class="step">3</span> 说明它该是多大</h2>
+    <h2><span class="step">3</span> 说清楚要多大</h2>
 
     <div class="option-row">
-      <label for="resize-mode">按什么定尺寸</label>
+      <label for="resize-mode">尺寸怎么定</label>
       <select id="resize-mode">
-        <option value="pixels" selected>宽和高，以像素计</option>
-        <option value="longest">最长的那条边</option>
-        <option value="percent">现在尺寸的百分比</option>
-        <option value="none">什么都不改，尺寸原样保留</option>
+        <option value="pixels" selected>给宽和高，按像素</option>
+        <option value="longest">给最长的那条边</option>
+        <option value="percent">按现在尺寸的百分比</option>
+        <option value="none">不改，尺寸原样保持</option>
       </select>
     </div>
 
@@ -115,7 +116,7 @@
         <label>宽<input type="number" id="size-w" min="1" step="1" placeholder="自动" value="1920"></label>
         <label>高<input type="number" id="size-h" min="1" step="1" placeholder="自动"></label>
         <div class="number-actions">
-          <button type="button" id="swap-size" class="ghost">对调</button>
+          <button type="button" id="swap-size" class="ghost">宽高对调</button>
         </div>
       </div>
 
@@ -125,10 +126,10 @@
         decision about shapes at all.
       -->
       <p class="hint-line">
-        填一个、另一个留空，图片就保持它自己的比例。
+        只填一个、另一个留空，图片就保持自己原来的比例。
       </p>
 
-      <div class="presets" id="size-presets" role="group" aria-label="常见尺寸">
+      <div class="presets" id="size-presets" role="group" aria-label="常用尺寸">
         <button type="button" class="ghost" data-w="1920" data-h="1080">1920 &times; 1080</button>
         <button type="button" class="ghost" data-w="1280" data-h="720">1280 &times; 720</button>
         <button type="button" class="ghost" data-w="1080" data-h="1080">1080 &times; 1080</button>
@@ -136,12 +137,12 @@
       </div>
 
       <div class="option-row" id="fit-row">
-        <label for="fit">如果比例对不上</label>
+        <label for="fit">比例对不上的时候</label>
         <select id="fit">
-          <option value="contain" selected>装进去，整张图片都在，有一边会短一点</option>
-          <option value="cover">铺满，正好这个尺寸，溢出的切掉</option>
-          <option value="pad">补白，正好这个尺寸，四周垫上背景</option>
-          <option value="stretch">拉伸，正好这个尺寸，比例变形</option>
+          <option value="contain" selected>放进去，整张图都在，有一边会短一点</option>
+          <option value="cover">铺满，正好这么大，溢出的裁掉</option>
+          <option value="pad">垫起来，正好这么大，四周补背景</option>
+          <option value="stretch">拉伸，正好这么大，比例认了变形</option>
         </select>
       </div>
     </div>
@@ -151,9 +152,9 @@
         <label>最长边<input type="number" id="size-longest" min="1" step="1" value="1920"></label>
       </div>
       <p class="hint-line">
-        哪条边更长，哪条边就变成这个数，另一条跟着走。同一批里的竖拍和横拍照片，长边尺寸就都一样了，这通常正是相册想要的。
+        哪边长哪边就变成这个数，另一边跟着走。同一批里的竖构图和横构图，长边就都一样大了，图库通常要的就是这个。
       </p>
-      <div class="presets" id="longest-presets" role="group" aria-label="常见长边">
+      <div class="presets" id="longest-presets" role="group" aria-label="常用长边">
         <button type="button" class="ghost" data-longest="640">640</button>
         <button type="button" class="ghost" data-longest="1280">1280</button>
         <button type="button" class="ghost" data-longest="1920">1920</button>
@@ -165,7 +166,7 @@
       <div class="numbers">
         <label>百分比<input type="number" id="size-percent" min="1" max="1000" step="1" value="50"></label>
       </div>
-      <div class="presets" id="percent-presets" role="group" aria-label="常见百分比">
+      <div class="presets" id="percent-presets" role="group" aria-label="常用百分比">
         <button type="button" class="ghost" data-percent="25">25%</button>
         <button type="button" class="ghost" data-percent="50">50%</button>
         <button type="button" class="ghost" data-percent="75">75%</button>
@@ -176,8 +177,8 @@
     <label class="check" id="enlarge-row">
       <input type="checkbox" id="no-enlarge" checked>
       <span>
-        <strong>绝不把图片放得比原来更大</strong>
-        <span class="check-note">放大是在编造当初没拍下来的像素，所以一张小图被要求填满一个大画幅，出来的是软，不是细。开着它时，任何已经小于你所要尺寸的图片，都会保持自己的尺寸。
+        <strong>绝不把图片放大</strong>
+        <span class="check-note">放大是在编造当初根本没拍到的像素，所以一张小图硬要撑到大尺寸，出来只会更糊，不会更清楚。开着这个，本来就比你要的尺寸小的图，就按它自己的尺寸留着。
         </span>
       </span>
     </label>
@@ -193,7 +194,7 @@
       <div class="field">
         <label for="format">格式</label>
         <select id="format">
-          <option value="keep" selected>保持每个文件原来的格式</option>
+          <option value="keep" selected>各自保持进来时的格式</option>
           <option value="image/jpeg">JPEG</option>
           <option value="image/png">PNG</option>
           <option value="image/webp">WebP</option>
@@ -202,10 +203,10 @@
       </div>
 
       <div class="field" id="quality-field">
-        <label for="quality">质量 <output id="quality-value" for="quality">85</output></label>
+        <label for="quality">质量，<output id="quality-value" for="quality">85</output></label>
         <input type="range" id="quality" min="30" max="100" step="1" value="85">
         <p class="field-note">
-          只对 JPEG 和 WebP 起作用；PNG 没有质量旋钮。85 是大多数人开始分辨不出来的地方。低到 60 以下，平坦区域会开始出现色带。
+          只对 JPEG 和 WebP 起作用，PNG 没有质量这个旋钮。85 是多数人开始分辨不出来的那一档。低于 60 上下，大片平坦的区域会开始出现色带。
         </p>
       </div>
 
@@ -213,7 +214,7 @@
         <label for="background">背景</label>
         <input type="color" id="background" value="#ffffff">
         <p class="field-note">
-          画面盖不到的地方露出来的就是它：补白边框的后面，以及输出格式没有 alpha 通道时透明区域的后面。
+          画面盖不到的地方露出来的就是它：垫成固定尺寸时四周那一圈，以及输出格式没有 alpha 通道时透明的那些地方。
         </p>
       </div>
     </div>
@@ -221,7 +222,7 @@
     <p id="plan-summary" class="field-summary"></p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>处理这些图片</button>
+      <button type="button" id="run" class="primary big" disabled>开始处理</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -263,7 +264,7 @@
     <dl class="viewer-facts" id="viewer-facts"></dl>
 
     <div class="viewer-actions">
-      <button type="button" id="viewer-compare" class="ghost" aria-pressed="false">显示原图</button>
+      <button type="button" id="viewer-compare" class="ghost" aria-pressed="false">看原图</button>
       <a id="viewer-download" class="primary as-button" download>下载</a>
     </div>
   </dialog>

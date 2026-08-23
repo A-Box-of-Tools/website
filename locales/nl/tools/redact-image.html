@@ -1,0 +1,182 @@
+<main>
+  <!-- Stap 1 &mdash; de afbeelding -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies de afbeelding</h2>
+
+    <p class="card-lede">
+      Een screenshot van een bankafschrift, een foto van een paspoort, een
+      rekening met een adres erop: precies de afbeeldingen die onleesbaar gemaakt
+      moeten worden zijn de afbeeldingen die je daarvoor niet naar de server van
+      een vreemde zou moeten uploaden. Deze leest de browser rechtstreeks van je
+      schijf.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">Een andere kiezen</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; de vakjes -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Dek af wat niemand mag zien</h2>
+
+    <p id="edit-empty" class="field-summary">Kies een afbeelding, dan verschijnt hij hier om op te tekenen.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Sleep over de afbeelding om een vakje te tekenen. Een vakje versleep je,
+        het formaat verander je met de grepen, of je bereikt het met
+        <kbd>Tab</kbd> en werkt met de pijltjestoetsen: <kbd>Alt</kbd> met de
+        pijltjes verandert het formaat en <kbd>Delete</kbd> verwijdert het. Wat je
+        onder elk vakje ziet is het echte resultaat: de voorvertoning wordt
+        getekend door dezelfde code die het bestand schrijft, op schermformaat.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>Wat een nieuw vakje doet</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>Zwart maken</strong>
+            <span class="check-note">
+              Eén kleur, van rand tot rand. Van wat er stond blijft niets over:
+              geen omtrek, geen gemiddelde, niet eens het aantal tekens. Dit is
+              de enige van de drie die de zaak echt afsluit, en het is wat je
+              gebruikt voor alles wat als tekst te lezen is.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>Pixelen</strong>
+            <span class="check-note">
+              Elk blok wordt de gemiddelde kleur van dat blok. De oorspronkelijke
+              pixels zijn echt uit het bestand, maar een raster van gemiddelden
+              is nog altijd een meting van wat eronder lag, en voor tekst in een
+              gewoon lettertype is dat in gepubliceerd onderzoek genoeg geweest
+              om het origineel te reconstrueren. Prima voor een gezicht in een
+              menigte, niet voor een rekeningnummer.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>Blurren</strong>
+            <span class="check-note">
+              Elke pixel wordt een gewogen gemiddelde van zijn buren. Hetzelfde
+              bezwaar als bij pixelen, en iets scherper: blurren is een
+              convolutie, en convoluties zijn in principe omkeerbaar. Gebruik het
+              waar je iets zachter wilt maken in plaats van verbergen.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">Hoe sterk er gepixeld en geblurd wordt</label>
+          <select id="strength">
+            <option value="light">Licht</option>
+            <option value="medium" selected>Gemiddeld</option>
+            <option value="heavy">Sterk</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">Vakje in het midden toevoegen</button>
+        <button type="button" id="undo" class="ghost" disabled>Ongedaan maken</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>Alle vakjes weghalen</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Stap 3 &mdash; het bestand -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> Sla de onleesbaar gemaakte kopie op</h2>
+
+    <p class="card-lede">
+      De afbeelding wordt gedecodeerd naar pixels, de vakjes worden over die
+      pixels geschreven en het resultaat wordt als een nieuw bestand gecodeerd.
+      Er is geen laag, geen aantekening en geen spoor van waar de vakjes lagen,
+      want de afgedekte pixels houden op te bestaan voordat de encoder iets
+      krijgt.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Formaat</label>
+        <select id="format">
+          <option value="auto" selected>Automatisch &mdash; JPEG voor een foto, PNG voor de rest</option>
+          <option value="png">PNG (verliesvrij)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          Voor het onleesbaar maken maakt het niets uit: de pixels zijn al weg
+          voordat de encoder ze ziet. Het bepaalt alleen wat de rest van de
+          afbeelding kost en hoe die wordt gecomprimeerd.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">Kwaliteit</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Onleesbaar maken en opslaan</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      Bezig op volledige grootte&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>Het klaargemaakte bestand</h3>
+        <a id="download" class="primary as-button" href="#" download>Downloaden</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        Open het daarna en probeer de afgedekte tekst te selecteren, of plak het
+        in een editor en zoek naar een laag. Er valt niets te vinden: het is één
+        platte afbeelding, en wat je hebt afgedekt was overschreven voordat hij
+        werd geschreven.
+      </p>
+    </div>
+  </section>
+</main>

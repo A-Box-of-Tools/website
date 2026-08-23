@@ -30,6 +30,9 @@ complete = true
 "edit-audio" = "modificare-audio"
 # Quasi nessuno cerca un "editor EXIF": si cerca come togliere i dati da una foto.
 "exif-editor" = "rimuovere-dati-exif"
+# "Oscurare" e il verbo che si usa anche negli atti pubblici, e porta con se
+# la distinzione su cui vive la pagina: togliere, non coprire.
+"redact-image" = "oscurare-immagine"
 # Le conversioni perdono il verbo, come in "immagini-in-pdf": è il modo in cui
 # si scrive una conversione in italiano quando la si cerca.
 "heic-to-jpg" = "heic-in-jpg"
@@ -44,12 +47,20 @@ complete = true
 # "QR code" e non "codice QR": è la forma che in italiano si scrive e si cerca,
 # prestito compreso.
 "qr-barcode" = "creare-qr-code"
+# «Leggere» e non «scansionare»: la seconda si dice, la prima si cerca.
+"qr-barcode-reader" = "leggere-qr-code"
 "resize-image" = "ridimensionare-immagine"
 # Lo strumento scrive anche JPEG e WebP, ma la domanda che porta qui è sempre
 # la stessa, e nomina il PNG.
 "svg-to-image" = "svg-in-png"
 "trim-video" = "tagliare-video"
 "video-to-gif" = "video-in-gif"
+# Un nome e non un verbo, come per il QR code: "generatore password" è la
+# forma che si scrive, senza la preposizione che l'italiano scritto vorrebbe.
+"password-generator" = "generatore-password"
+# Il prestito, non "ripresa accelerata": timelapse e' quello che si scrive.
+"timelapse-video" = "creare-timelapse"
+"hash-checksum" = "verificare-checksum"
 
 "guides" = "guide"
 "roadmap" = "roadmap"
@@ -61,6 +72,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "guide/comprimere-un-immagine-a-una-dimensione-esatta"
 "guides/resize-an-image" = "guide/ridimensionare-un-immagine"
 "guides/remove-exif-and-gps-data" = "guide/rimuovere-i-dati-exif-e-gps"
+"guides/redact-an-image" = "guide/oscurare-un-immagine"
 "guides/make-a-pdf-smaller" = "guide/ridurre-le-dimensioni-di-un-pdf"
 "guides/combine-images-into-a-pdf" = "guide/unire-immagini-in-un-pdf"
 "guides/turn-images-into-a-video" = "guide/trasformare-immagini-in-un-video"
@@ -73,6 +85,7 @@ complete = true
 "guides/embed-an-image-in-css" = "guide/inserire-un-immagine-nel-css"
 "guides/make-a-qr-code" = "guide/creare-un-qr-code"
 "guides/turn-a-video-into-a-gif" = "guide/trasformare-un-video-in-gif"
+"guides/verify-a-file-checksum" = "guide/verificare-il-checksum-di-un-file"
 
 #
 # ---------------------------------------------------------------------------
@@ -150,12 +163,17 @@ note = "Crea e riordina documenti senza mandarli a elaborare da qualche altra pa
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codici e dati"
-note = "Trasforma quello che hai scritto in qualcosa che una macchina sa leggere, senza che esca dalla pagina."
+note = "Crea qualcosa che una macchina sa leggere, oppure verifica che un file sia davvero quello che dice di essere. Tutto dentro la pagina."
 
 [[hub.categories]]
 id = "text-and-code"
 name = "Testo e codice"
 note = "Leggilo, confrontalo, codificalo, senza incollare un token o un file di configurazione sul server di qualcun altro."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Password e sicurezza"
+note = "Crea qui il segreto, sul tuo dispositivo, così nessun altro ne ha mai avuto una copia da perdere."
 
 #
 # ---------------------------------------------------------------------------

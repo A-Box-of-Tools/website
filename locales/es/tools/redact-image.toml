@@ -1,0 +1,263 @@
+#
+# Censor de imágenes - Spanish.
+#
+# Overrides for tools/redact-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Censurar" es el verbo que se escribe y se busca en español para esto, aunque
+# en inglés "redact" sea más estrecho. "Tapar" aparece donde hace falta marcar
+# la diferencia entre cubrir y quitar, que es de lo que trata toda la página.
+#
+
+name = "Censor de imágenes"
+heading = "Censurar&nbsp;una&nbsp;imagen <span class=\"h1-kw\">&mdash; tapar, pixelar o difuminar</span>"
+tagline = "Lo que tapas se borra del archivo; no queda escondido dentro."
+
+title = "Censurar una imagen &mdash; tapar, pixelar o difuminar, sin subir nada"
+description = "Cubre un nombre, una dirección o un número de cuenta en una foto o una captura y vuelve a guardar la imagen, de modo que los píxeles ocultos desaparecen del archivo en lugar de quedarse debajo de un rectángulo. Todo ocurre en el navegador."
+og_title = "Censurar una imagen para que lo tapado desaparezca de verdad"
+og_description = "Dibuja recuadros sobre lo que nadie debe ver. Los píxeles de debajo se sobrescriben antes de escribir el archivo, así que no queda ninguna capa que apartar. No se sube nada."
+og_image_alt = "Censor de imágenes - los píxeles tapados se sobrescriben, no se esconden"
+
+pledge = """
+    El navegador decodifica la imagen, pinta encima y la vuelve a codificar con
+    los códecs que ya trae. Esta herramienta no tiene ninguna función de red, ni
+    para pedir ni para enviar, y aquí eso pesa más que en casi cualquier otra
+    página del sitio: las imágenes que llegan a un censor son justo las que
+    todavía llevan legible un nombre, una dirección o un número de cuenta."""
+
+live_hint = """
+      No hace falta creernos. Abre las herramientas de desarrollo, mira la
+      pestaña de red y censura una captura. Ninguna petición lleva una imagen, ni
+      una miniatura, ni un nombre de archivo, ni la posición de un solo recuadro.
+      O desconéctate de internet y censura una igualmente."""
+
+read_first = """
+, <code>src/redact.js</code> para las tres
+      funciones que sobrescriben los píxeles y <code>src/preview.js</code> para
+      entender por qué lo que se ve en pantalla lo dibujan esas mismas tres
+      funciones."""
+
+howto_heading = "Cómo censurar una imagen para que lo tapado desaparezca de verdad"
+
+card = """
+            Tapa, pixela o difumina parte de una imagen. Los píxeles cubiertos
+            se sobrescriben antes de escribir el archivo, así que no queda
+            ninguna capa que apartar."""
+
+[words]
+plural = "imágenes"
+choose = "una imagen"
+
+[[facts]]
+text = "Sin subida"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin marca de agua"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[privacy]]
+title = "Tus imágenes no tienen adónde ir."
+body = """
+ La
+      Content-Security-Policy nombra todas las direcciones que esta página puede
+      contactar, y ninguna es nuestra. Aquí no hay ningún punto de recogida donde
+      pudieran acabar tus archivos, ni nada en el código que los enviaría si lo
+      hubiera."""
+
+[[privacy]]
+title = "Los píxeles tapados desaparecen aquí, no de camino a la salida."
+body = """
+ La imagen se
+      decodifica en un búfer de píxeles, los recuadros se escriben sobre ese
+      búfer y el búfer pasa al codificador. En esta página no existe ninguna
+      versión de la imagen con los recuadros como capa aparte, porque esa versión
+      no llega a crearse nunca. Está en
+      <code>src/redact.js</code>."""
+
+[[privacy]]
+title = "Aquí nada pide nada."
+body = """
+ No hay
+      <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
+      <code>sendBeacon</code> en ninguna parte de <code>src/</code>. El trabajo
+      es <code>getImageData</code>, tres bucles sobre los bytes y
+      <code>canvas.toBlob</code>, y todo eso ya viene instalado en el
+      navegador."""
+
+[[privacy]]
+title = "Los recuadros no se comunican a ninguna parte."
+body = """
+ Dónde dibujaste,
+      cuántos son, de qué tamaño y qué estilo elegiste se queda en la memoria de
+      esta página hasta que la cierras. En este repositorio no hay ningún evento
+      de analítica que lleve nada de eso, y la única pregunta que hace el sitio
+      después de una descarga envía un pulgar arriba o abajo y el nombre de la
+      herramienta, nada más."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Desconéctate de la red y la herramienta
+      sigue igual, porque nunca hubo un paso de red dentro. Es la prueba más
+      sencilla de todas, y la que conviene hacer antes de censurar un
+      pasaporte."""
+
+[[howto]]
+title = "Elige la imagen."
+body = """
+ Una captura, un escaneo o una foto:
+      cualquier cosa que tu navegador pueda abrir. Se lee directamente del disco
+      y no sale nada a ninguna parte mientras lo haces."""
+
+[[howto]]
+title = "Arrastra un recuadro sobre lo que nadie debe ver."
+body = """
+ Y arrastra
+      otro para lo siguiente. Un recuadro se mueve arrastrándolo, se redimensiona
+      por sus tiradores, o se alcanza con la tecla Tab y se desplaza con las
+      flechas. Lo que aparece debajo del recuadro es el resultado real, dibujado
+      por el mismo código que escribe el archivo."""
+
+[[howto]]
+title = "Elige tapar, pixelar o difuminar &mdash; y elige tapar."
+body = """
+ El
+      relleno negro no deja absolutamente nada. Pixelar y difuminar sustituyen
+      los píxeles por promedios de sí mismos, lo cual basta para una cara al
+      fondo y no basta para nada que se lea como texto."""
+
+[[howto]]
+title = "Pulsa &laquo;Censurar y guardar&raquo; y comprueba el archivo."
+body = """
+ La imagen que
+      aparece después es el archivo terminado, decodificado otra vez. Ábrelo en
+      un editor y busca una capa, o intenta seleccionar el texto tapado: hay una
+      sola imagen plana, y lo que cubriste se sobrescribió antes de
+      escribirla."""
+
+[[faq]]
+q = "¿Se sube mi imagen a alguna parte?"
+a = """
+        No. El archivo lo decodifica, censura y codifica tu propio navegador en tu
+        propio equipo. Esta herramienta no tiene ninguna función de red, nunca
+        pide ni envía nada, y la <code>Content-Security-Policy</code> de la página
+        nombra todas las direcciones que puede contactar, ninguna de las cuales es
+        nuestra. Carga la página una vez, desconéctate de internet y sigue
+        funcionando."""
+
+[[faq]]
+q = "¿Lo tapado desaparece de verdad del archivo?"
+a = """
+        Sí, y por eso existe esta herramienta. La imagen se decodifica en un búfer
+        de píxeles; los recuadros sobrescriben los píxeles que hay dentro; el
+        búfer se codifica después como un archivo nuevo. Los valores originales ya
+        no están en memoria antes de que el codificador reciba nada, así que no
+        hay ninguna capa que esconder, ninguna anotación que quitar y ningún
+        historial que deshacer. Puedes comprobarlo como comprobarías la afirmación
+        de cualquier otro: abre el resultado en un editor de imágenes y busca una
+        segunda capa, o intenta seleccionar el texto que tapaste."""
+
+[[faq]]
+q = "¿Se puede recuperar una zona pixelada o difuminada?"
+a = """
+        A veces, y esto es lo único que conviene leer antes de elegir. El relleno
+        negro sustituye todo lo que hay debajo por un color plano, así que no
+        sobrevive nada: ni un borde, ni un promedio, ni el número de caracteres.
+        Pixelar sustituye cada bloque por el promedio de ese bloque, y una
+        cuadrícula de promedios sigue siendo una medida de lo que había debajo:
+        con texto en una tipografía corriente y un tamaño previsible, hay trabajos
+        publicados que han reconstruido el original renderizando cadenas
+        candidatas y comparando sus promedios. Difuminar es una convolución, y las
+        convoluciones se pueden invertir en principio. Así que pixela una cara del
+        fondo si quieres, y tapa en negro todo lo que se lea como texto."""
+
+[[faq]]
+q = "¿Por qué un rectángulo negro dibujado en un editor de documentos no es lo mismo?"
+a = """
+        Porque la mayoría de los editores guardan el rectángulo al lado de la
+        imagen y no dentro de ella. Una forma dibujada en un lector de PDF, en una
+        presentación, en un procesador de textos o en un editor de imágenes por
+        capas es un objeto con una posición, colocado encima de la página; moverlo,
+        borrarlo o abrir el archivo con otro programa devuelve exactamente lo que
+        estaba cubriendo. Periódicos, tribunales y ministerios han publicado
+        documentos censurados así. Aquí el rectángulo no se guarda en ningún sitio:
+        es un conjunto de valores de píxel escritos sobre los que había."""
+
+[[faq]]
+q = "¿También quita los datos EXIF y GPS?"
+a = """
+        Sí, como efecto secundario. Guardar significa codificar un lienzo lleno de
+        píxeles, y un lienzo no lleva etiquetas, así que la ubicación, el modelo de
+        cámara, las fechas y la miniatura incrustada sencillamente no se escriben
+        en el archivo nuevo. La miniatura importa aquí: es una segunda copia
+        pequeña de la imagen, no siempre se regenera al editar una foto, y una foto
+        censurada que viaja con una miniatura sin censurar deshace todo el trabajo.
+        Si lo que quieres es quitar los metadatos sin recodificar la imagen, el
+        <a href="../eliminar-datos-exif/">Visor y limpiador EXIF</a> reescribe el
+        contenedor en lugar de la imagen."""
+
+[[faq]]
+q = "¿Qué formatos puede leer y escribir?"
+a = """
+        Lee todo lo que tu navegador sepa decodificar, que en la práctica es JPEG,
+        PNG, WebP, GIF, BMP y, en casi todos los navegadores actuales, AVIF.
+        Escribe JPEG, PNG y WebP, porque esos son los codificadores que traen los
+        navegadores. En &laquo;automático&raquo; un JPEG vuelve como JPEG y todo lo
+        demás como PNG, lo que mantiene una foto con tamaño de foto y deja nítido
+        el texto que quedó a la vista en una captura. La elección no cambia nada de
+        la censura: los píxeles ya no están cuando el codificador los ve."""
+
+[[faq]]
+q = "¿Puedo hacerlo sin ratón?"
+a = """
+        Sí. &laquo;Añadir un recuadro en el centro&raquo; coloca uno sobre la
+        imagen, Tab pasa de un recuadro a otro, las flechas mueven el que tiene el
+        foco y Alt con las flechas lo redimensiona; con Mayús cada paso es de diez
+        píxeles y Supr lo elimina. Además, cada recuadro tiene debajo de la imagen
+        una fila con su tamaño, su posición, lo que hace y un botón para quitarlo,
+        de modo que toda la herramienta se maneja con el teclado y la lee un lector
+        de pantalla."""
+
+[[faq]]
+q = "¿Funciona en el móvil?"
+a = """
+        Sí. Dibujar, mover y redimensionar son eventos de puntero y no de ratón, así
+        que un dedo funciona igual, y los tiradores se dibujan más grandes en una
+        pantalla táctil. La imagen en pantalla se redibuja al tamaño de la pantalla
+        mientras trabajas; el archivo se censura siempre a su resolución completa
+        cuando pulsas el botón."""
+
+[[faq]]
+q = "¿Es gratis y hace falta una cuenta?"
+a = """
+        Es gratis, y no hay cuenta, ni registro, ni versión de prueba, ni marca de
+        agua. Tampoco hay límite de tamaño para la imagen, porque no hay ningún
+        servidor pagándolo: el trabajo ocurre en tu propio dispositivo. El sitio
+        lleva publicidad, que es lo que lo paga; a los anuncios no se les da nada
+        sobre tus imágenes."""
+
+[schema]
+description = "Censurar una imagen en el navegador: dibujar recuadros sobre lo que nadie debe ver y taparlo en negro, pixelarlo o difuminarlo. Los píxeles cubiertos se sobrescriben antes de codificar el archivo, así que el resultado no lleva capas, ni anotaciones, ni metadatos. No se sube nada."
+features = [
+  "Relleno negro, pixelado y difuminado, elegidos recuadro a recuadro",
+  "Los píxeles cubiertos se sobrescriben antes de codificar, así que no queda ninguna capa que apartar",
+  "La vista previa la dibuja el mismo código que escribe el archivo",
+  "Dice de cuántos bloques está hecho un pixelado en lugar de llamarlo &laquo;fuerte&raquo;",
+  "Teclado y pantalla táctil además del ratón: todo recuadro se añade, mueve, redimensiona y quita sin él",
+  "Quita EXIF, GPS y la miniatura incrustada como efecto de recodificar",
+  "Salida en JPEG, PNG y WebP, con elección automática",
+  "Funciona sin conexión; sin subida y sin cuenta",
+]
+
+[picker]
+title = "Arrastra una imagen aquí"
+hint = "o haz clic para elegir &mdash; JPEG, PNG, WebP y cualquier otra cosa que tu navegador pueda abrir"

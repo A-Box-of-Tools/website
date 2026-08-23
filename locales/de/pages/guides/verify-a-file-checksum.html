@@ -1,0 +1,253 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie <a href="../../pruefsumme-berechnen/">Hash &amp; Prüfsumme</a>,
+      ziehen Sie die heruntergeladene Datei darauf und fügen Sie die Prüfsumme
+      von der Downloadseite in das Feld unten ein. Die Seite erkennt an der
+      Länge, welches Verfahren die Zahl ist, und antwortet in einem Satz.
+    </p>
+    <p>
+      Passt sie, sind die Bytes auf Ihrer Festplatte die, die der Anbieter
+      gemessen hat. Passt sie nicht, laden Sie die Datei noch einmal herunter,
+      bevor Sie sie öffnen. Alles Weitere ist das, was dieser Satz auslässt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was die Zahl unter dem Downloadlink ist</h2>
+    <p>
+      Das Ergebnis einer Hashfunktion, also einer Rechnung, die jedes Byte einer
+      Datei liest und daraus eine kurze Antwort fester Länge macht. Dieselbe
+      Datei ergibt immer dieselbe Antwort, und eine Datei, die sich um ein
+      einziges Bit unterscheidet, ergibt eine völlig andere. Nicht eine fast
+      gleiche, sondern eine ohne jeden Zusammenhang. Auf dieser Eigenschaft
+      beruht die ganze Sache.
+    </p>
+    <p>
+      Weil die Antwort kurz ist und die Datei nicht, wirft die Rechnung
+      Information weg, und es gibt zwangsläufig viele Dateien mit derselben
+      Antwort. Eine davon absichtlich zu finden, ist der schwierige Teil, und wie
+      schwierig das ist, unterscheidet die Verfahren weiter unten voneinander.
+    </p>
+    <p>
+      An einer Prüfsumme ist nichts geheim, und umkehren lässt sie sich nicht.
+      Sie ist ein Fingerabdruck, veröffentlicht, damit zwei Leute sich einig sein
+      können, dasselbe in der Hand zu halten.
+    </p>
+  </section>
+
+  <section>
+    <h2>Welches Verfahren Sie vor sich haben</h2>
+    <p>
+      Sie müssen nicht wählen. Der Anbieter hat das getan, und Ihre Aufgabe ist,
+      dasselbe zu rechnen. Woran Sie es erkennen, ist allein die Länge:
+    </p>
+    <ul>
+      <li><strong>32 Hexzeichen</strong> &mdash; MD5.</li>
+      <li><strong>40</strong> &mdash; SHA-1.</li>
+      <li><strong>64</strong> &mdash; SHA-256, und das sehen Sie am häufigsten.</li>
+      <li><strong>96</strong> &mdash; SHA-384.</li>
+      <li><strong>128</strong> &mdash; SHA-512.</li>
+    </ul>
+    <p>
+      Keine zwei davon sind gleich lang, und deshalb kann das Werkzeug einen
+      eingefügten Wert erkennen, ohne gefragt zu haben. Eine Zeichenkette mit 63
+      Zeichen ist die Prüfsumme von gar nichts. Sie ist eine SHA-256, der auf dem
+      Weg in die Zwischenablage ein Zeichen abhandengekommen ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Auf dem eigenen Gerät, ohne Browser</h2>
+    <p>
+      Jedes Betriebssystem bringt etwas mit, das das kann, und den Befehl zu
+      kennen lohnt sich auch dann, wenn Sie eine Webseite dafür benutzen. Auf die
+      Frage &bdquo;woher weiß ich, dass Ihre Seite ehrlich gerechnet hat&ldquo;
+      gibt es keine bessere Antwort, als dieselbe Datei durch das Werkzeug zu
+      schicken, das mit Ihrem Rechner geliefert wurde.
+    </p>
+    <p><strong>Windows</strong>, in der PowerShell:</p>
+    <pre><code>Get-FileHash .\disk.iso -Algorithm SHA256</code></pre>
+    <p>
+      Ältere Rechner haben stattdessen
+      <code>certutil -hashfile disk.iso SHA256</code>, das in Großbuchstaben und
+      mit Leerzeichen schreibt. Groß- und Kleinschreibung spielt bei einer
+      Prüfsumme nie eine Rolle; die Buchstaben sind Ziffern, keine Wörter.
+    </p>
+    <p><strong>macOS</strong>:</p>
+    <pre><code>shasum -a 256 disk.iso</code></pre>
+    <p><strong>Linux</strong>:</p>
+    <pre><code>sha256sum disk.iso</code></pre>
+    <p>
+      Alle drei geben für dieselbe Datei dieselbe Zeichenkette aus, und diese
+      Seite ebenfalls. Es sind exakte Spezifikationen mit veröffentlichten
+      Testvektoren, da bleibt einer Implementierung kein Spielraum für eine
+      eigene Meinung.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vergleichen, ohne sich die Augen zu verderben</h2>
+    <p>
+      Lesen Sie nicht vierundsechzig Zeichen von zwei Bildschirmen ab und
+      entscheiden Sie dann, dass sie gleich aussehen. Leute prüfen die ersten
+      vier und die letzten vier und hören auf, und genau diesen Vergleich würde
+      ein Angreifer bestehen wollen. Auch ein ehrlicher Fehler rutscht so durch.
+    </p>
+    <p>
+      Fügen Sie beides in etwas ein, das für Sie vergleicht. Auf der
+      Kommandozeile ist dafür der Schalter <code>-c</code> da:
+    </p>
+    <pre><code>sha256sum -c SHA256SUMS</code></pre>
+    <p>
+      Im Browser ist es das Vergleichsfeld auf
+      <a href="../../pruefsumme-berechnen/">Hash &amp; Prüfsumme</a>, das den
+      Wert in jeder Form annimmt, in der ein Anbieter ihn schreibt: als bloße
+      Hexzeichen, als Zeile aus <code>sha256sum</code>, als ganze
+      <code>SHA256SUMS</code>-Datei, in der Form
+      <code>SHA256 (disk.iso) = &hellip;</code> oder als
+      <code>integrity="sha384-&hellip;"</code> aus einem Script-Tag. Die Antwort
+      kommt als Satz.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was ein Treffer genau beweist</h2>
+    <p>
+      Dass die Bytes auf Ihrer Festplatte die sind, die jemand vor sich hatte,
+      als er diese Zahl aufschrieb. Das ist wirklich nützlich zu wissen und
+      enger, als die meisten annehmen, deshalb lohnt sich eine Aufzählung.
+    </p>
+    <p><strong>Ein Treffer schließt aus:</strong></p>
+    <ul>
+      <li>einen Download, der zu früh abbrach und eine vollständig wirkende Datei
+        hinterließ;</li>
+      <li>eine Verfälschung unterwegs, auf einer sterbenden Platte oder durch ein
+        schlechtes USB-Kabel;</li>
+      <li>die falsche Datei, also den ARM- statt des x86-Builds oder das Release
+        vom Vormonat;</li>
+      <li>einen Spiegelserver, der etwas anderes ausliefert, als er behauptet.</li>
+    </ul>
+    <p><strong>Ein Treffer schließt nicht aus:</strong></p>
+    <ul>
+      <li><strong>dass die Datei bösartig ist.</strong> Ein Anbieter kann
+        Schadsoftware genauso genau messen wie alles andere. Eine Prüfsumme sagt
+        &bdquo;das ist, was ausgeliefert wurde&ldquo;, nie &bdquo;das ist
+        ungefährlich&ldquo;;</li>
+      <li><strong>dass der Anbieter kompromittiert wurde.</strong> Wer die Datei
+        auf dem Server ersetzt hat, hat in derselben Minute die Zeile darunter
+        ersetzt. Womit wir beim nächsten Abschnitt wären.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Der Fehler, der die ganze Übung wertlos macht</h2>
+    <p>
+      Die Prüfsumme von derselben Seite über dieselbe Verbindung zu nehmen wie
+      die Datei.
+    </p>
+    <p>
+      Überlegen Sie, wogegen Sie sich absichern. Geht es um einen kaputten
+      Download, darf die Prüfsumme von überall kommen, und die Prüfung
+      funktioniert. Geht es darum, dass jemand die Datei manipuliert hat, dann
+      konnte derselbe Jemand auch die Zeile Hexzeichen darunter ändern, denn
+      beides kam vom selben Server über dieselbe Verbindung. Sie würden den
+      Fälscher bitten, die Unterschrift zu bestätigen.
+    </p>
+    <p>
+      Am meisten wert ist eine Prüfsumme, wenn sie Sie auf einem Weg erreicht,
+      den die Datei nicht genommen hat:
+    </p>
+    <ul>
+      <li>als <code>SHA256SUMS</code>-Datei mit abgetrennter GPG-Signatur,
+        geprüft gegen einen Schlüssel, den Sie schon hatten. So machen es die
+        Distributionen, und das ist die eigentliche Antwort;</li>
+      <li>über die Release-Ankündigung auf einer Mailingliste oder ein Tag im
+        Quellcode-Repository statt über die Downloadseite;</li>
+      <li>über einen zweiten Spiegelserver auf einer anderen Domain, und die
+        beiden dann miteinander verglichen;</li>
+      <li>über eine Paketverwaltung, die genau das für Sie erledigt, gegen
+        Schlüssel, die mit dem Betriebssystem geliefert wurden.</li>
+    </ul>
+    <p>
+      Nichts davon macht die Prüfung gegen eine Prüfsumme von derselben Seite
+      nutzlos. Sie fängt den kaputten Download ab, und das ist der Fall, der den
+      Leuten tatsächlich passiert. Reden Sie sich nur nicht ein, sie hätte mehr
+      abgefangen.
+    </p>
+  </section>
+
+  <section>
+    <h2>MD5 und SHA-1 sind gebrochen. Nehmen Sie sie trotzdem, manchmal</h2>
+    <p>
+      Beide sind in dem stärksten Sinn gebrochen, auf den es hier ankommt:
+      <em>Kollisionen</em> lassen sich absichtlich bauen. Zwei verschiedene
+      Dateien mit derselben MD5 sind seit 2004 auf gewöhnlicher Hardware
+      herstellbar, und 2017 hat ein Team zwei verschiedene PDF-Dateien mit
+      derselben SHA-1 vorgelegt. 2020 kostete die Variante mit frei wählbarem
+      Anfang nur noch einige zehntausend Dollar gemietete Rechenzeit.
+    </p>
+    <p>
+      Praktisch heißt das: Eine passende MD5 sagt Ihnen nicht mehr, dass niemand
+      an der Datei war, denn wer wollte, hätte eine andere Datei mit derselben
+      Zahl bauen können. Sie sagt Ihnen weiterhin, dass der Download nicht
+      abgeschnitten oder verfälscht wurde, denn ein zufälliges Missgeschick
+      trifft keine Kollision. Diese Wahrscheinlichkeit hatte noch kein Unfall.
+    </p>
+    <p>
+      Hat der Anbieter also nur eine MD5 veröffentlicht, prüfen Sie sie. Das ist
+      mehr wert als nicht zu prüfen. Und wenn Sie selbst veröffentlichen, drucken
+      Sie eine SHA-256.
+    </p>
+  </section>
+
+  <section>
+    <h2>Sie passt nicht. Was jetzt?</h2>
+    <ol>
+      <li>
+        <strong>Noch einmal herunterladen</strong>, von derselben Stelle. Eine
+        abgebrochene oder fortgesetzte Übertragung ist mit weitem Abstand die
+        häufigste Ursache, und die zweite Kopie klärt es meistens.
+      </li>
+      <li>
+        <strong>Prüfen, ob es die richtige Zeile ist.</strong> Auf Releaseseiten
+        stehen mehrere Dateien. Die Prüfsumme des Installers passt nie zu der des
+        Archivs, und die des ARM-Builds nie zu der des x86-Builds.
+      </li>
+      <li>
+        <strong>Die Version prüfen.</strong> Gemerkte Prüfsummenseiten sind an
+        dem Tag veraltet, an dem ein Wartungsrelease erscheint.
+      </li>
+      <li>
+        <strong>Einen anderen Spiegelserver versuchen</strong> und die Prüfsummen
+        der beiden Dateien miteinander vergleichen. Zwei Spiegel, die
+        untereinander übereinstimmen und von der veröffentlichten Zahl abweichen,
+        sind ein anderes Problem als ein Spiegel, der von beiden abweicht.
+      </li>
+      <li>
+        <strong>Die Datei bis dahin nicht öffnen.</strong> Eine Datei, die ihre
+        Prüfsumme verfehlt, ist im besten Fall beschädigt und im schlechtesten
+        nicht die, die Sie wollten.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Warum überhaupt im Browser</h2>
+    <p>
+      Weil die Kommandozeile nicht der Ort ist, an dem die meisten Leute sind,
+      und weil die naheliegende Alternative seltsam ist: eine Webseite, die Sie
+      bittet, die Datei hochzuladen. Eine Datei irgendwohin zu schicken, um
+      herauszufinden, ob unterwegs an ihr manipuliert wurde, fügt genau eine
+      weitere Stelle hinzu, an der manipuliert werden kann.
+    </p>
+    <p>
+      <a href="../../pruefsumme-berechnen/">Hash &amp; Prüfsumme</a> liest die
+      Datei in Stücken von vier Megabyte auf Ihrem eigenen Gerät. Es gibt also
+      keinen Upload, keine Größengrenze und nichts, dem Sie vertrauen müssten
+      außer der Seite selbst, die Sie lesen können und die auch mit gezogenem
+      Netzstecker weiterarbeitet. Vertrauen Sie lieber Ihrem eigenen
+      Betriebssystem, nehmen Sie den Befehl aus dem Abschnitt weiter oben und
+      vergleichen Sie die beiden Antworten. Sie werden übereinstimmen.
+    </p>
+  </section>

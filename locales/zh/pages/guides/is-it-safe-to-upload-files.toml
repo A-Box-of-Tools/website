@@ -1,16 +1,24 @@
 #
-# 指南：把文件传给在线转换器安全吗 - Simplified Chinese.
+# Guide: is it safe to upload files to online converters? - Simplified Chinese.
+#
+# Overrides for pages/guides/is-it-safe-to-upload-files/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
 #
 
 nav = "上传文件安全吗？"
+
 title = "把文件传给在线转换器安全吗？"
-description = "大多数在线转换器会把你的文件发到一台服务器上。那意味着什么、文件在那边会经历什么，以及四项检查，用来判断一个工具是不是真的非要不可。"
+description = "多数在线转换器会把你的文件送到服务器上。这意味着什么，文件在那边会经历什么，以及四项能看出一个工具到底需不需要你文件的检查。"
+
 heading = "把文件传给在线转换器安全吗？"
 lede = """
-    通常老实的答案是“大概安全吧，但你没法核实”。这里讲的是上传到底把你的\
-    文件怎么了、为什么大多数工具依然这么做，以及四个测试 —— 它们能告诉你，\
-    眼前这一个是不是真的非上传不可。"""
+    老实的回答通常是：“多半没事，但你没法核实。”这一页讲上传到底把你的文件\
+    怎么了，为什么多数工具至今还这么干，以及四项检查，能看出你眼前这一个\
+    是不是非上传不可。"""
+
 updated = "2026年8月20日"
+
 og_title = "把文件传给在线转换器安全吗？"
-og_description = "你上传给转换器的文件会经历什么、为什么大多数工具依然要你上传，以及四项你可以自己动手做的检查。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+og_description = "你传给转换器的文件会经历什么，为什么多数工具至今还要你上传，以及四项你自己就能做的检查。"
+og_image_alt = "abox.tools - 不走服务器的工具"

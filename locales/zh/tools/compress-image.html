@@ -1,19 +1,14 @@
 <!--
   tools/compress-image/body.html, in Simplified Chinese.
 
-  Prose paragraphs are written on one line each. A line break inside Chinese
+  Prose paragraphs are written on one line each: a line break inside Chinese
   text collapses to a space in HTML, and a space between two Han characters is
-  visible on the page - so the wrapping that makes English sources readable
-  would print a gap here instead. Line breaks are kept only where English would
-  have put a space anyway.
-
-  Comments that explain the markup are left in English: they are for whoever
-  reads the repository, and the repository is written in English.
+  visible on the page.
 -->
 <main>
   <!-- 第 1 步，选文件 -->
   <section class="card">
-    <h2><span class="step">1</span> 选择图片</h2>
+    <h2><span class="step">1</span> 选图片</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -26,7 +21,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">全部移出列表</button>
+        <button type="button" id="clear-all" class="ghost danger">清空列表</button>
       </div>
     </div>
 
@@ -37,15 +32,15 @@
 
   <!-- 第 2 步，真正要紧的那个数字 -->
   <section class="card" id="target-card">
-    <h2><span class="step">2</span> 说出它能有多大</h2>
+    <h2><span class="step">2</span> 说清楚最大能有多大</h2>
 
     <p class="card-lede">
-      别的压缩工具在这一步是反着来的。它们扔给你一个质量滑块，让你自己猜哪一档能落在人家给的限制以下。这里请你直接报出限制，工具去搜塞得进去的最高质量，然后把预算里剩下的也花掉，而不是回你一个只有你要求一半大的文件。
+      别的压缩工具这一步都做反了。它们丢给你一个画质滑块，让你自己猜哪一档能压进人家给的限额。这里反过来，你把限额说出来，工具去找刚好塞得进去的那个最高画质，然后把剩下的额度用满，不会把你要的 500 KB 压成一个 300 KB 的文件交回来。
     </p>
 
     <div class="target-row">
       <div class="target-field">
-        <label for="target-value">每张图片的目标大小</label>
+        <label for="target-value">每张图的目标大小</label>
         <div class="inline-pair">
           <input type="number" id="target-value" value="500" min="1" step="1" inputmode="decimal">
           <label for="target-unit" class="visually-hidden">单位</label>
@@ -61,7 +56,7 @@
         100 KB, a forum avatar or a job application at 500 KB, an email
         attachment at 1 MB, and a web page hero at 2 MB.
       -->
-      <div class="presets" id="presets" role="group" aria-label="常见目标">
+      <div class="presets" id="presets" role="group" aria-label="常用目标大小">
         <button type="button" class="ghost" data-bytes="102400">100 KB</button>
         <button type="button" class="ghost" data-bytes="512000">500 KB</button>
         <button type="button" class="ghost" data-bytes="1048576">1 MB</button>
@@ -72,24 +67,24 @@
     <p id="target-summary" class="field-summary"></p>
 
     <fieldset class="options">
-      <legend>允许它怎么压到那儿</legend>
+      <legend>允许它怎么达到这个数</legend>
 
       <div class="option-row">
         <label for="format-select">输出格式</label>
         <select id="format-select">
-          <option value="auto" selected>自动，能保持原格式就保持，换一个更划算才换</option>
-          <option value="keep">始终保持原格式</option>
+          <option value="auto" selected>自动，保持原格式，除非换一种明显更划算</option>
+          <option value="keep">一律保持原格式</option>
           <option value="image/jpeg">JPEG</option>
           <option value="image/webp">WebP</option>
-          <option value="image/png">PNG（无损，所以体积只能从尺寸里省）</option>
+          <option value="image/png">PNG（无损，所以只能从尺寸上省）</option>
         </select>
       </div>
 
       <label class="check">
         <input type="checkbox" id="allow-resize" checked>
         <span>
-          <strong>必要时允许把画面改小</strong>
-          <span class="check-note">只有在光靠降质量就得掉到压缩痕迹开始显形的那条线以下时，才会动用。过了那条线，少一些好像素比多一些烂像素好看。关掉它，尺寸一分不动，紧张的目标全部由质量买单。
+          <strong>实在不行，可以把图片做小</strong>
+          <span class="check-note">只有画质单独往下降、已经降到压缩痕迹开始露出来的时候才会动它。过了那一档，像素少一点但个个干净，比像素多一堆却全糊了好看。关掉它就是尺寸一格不动，目标再紧也全从画质里出。
           </span>
         </span>
       </label>
@@ -103,7 +98,7 @@
     <h2><span class="step">3</span> 压缩</h2>
 
     <div class="run-row">
-      <button type="button" id="compress-all" class="primary big" disabled>压缩到目标大小</button>
+      <button type="button" id="compress-all" class="primary big" disabled>压到这个大小</button>
     </div>
 
     <div id="progress" class="progress" hidden>

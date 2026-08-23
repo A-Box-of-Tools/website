@@ -45,11 +45,16 @@ complete = true
 "edit-audio" = "audio-bewerken"
 # Vrijwel niemand zoekt op "EXIF-editor"; men zoekt hoe je de gegevens uit een foto haalt.
 "exif-editor" = "exif-gegevens-verwijderen"
+# "Onleesbaar maken" is wat er gezocht wordt en het zegt wat er gebeurt.
+# "Lakken" komt uit de Woo-hoek en leest als jargon.
+"redact-image" = "afbeelding-onleesbaar-maken"
 "images-to-pdf" = "afbeeldingen-naar-pdf"
 "images-to-video" = "afbeeldingen-naar-video"
 "resize-image" = "afbeelding-formaat-wijzigen"
 "trim-video" = "video-knippen"
 "video-to-gif" = "video-naar-gif"
+# Het leenwoord, want "tijdsverloop" zoekt niemand.
+"timelapse-video" = "timelapse-maken"
 "heic-to-jpg" = "heic-naar-jpg"
 # Naar de klus genoemd, niet naar het formaat. Niemand zoekt op "afbeelding naar
 # ICO"; men zoekt hoe je een favicon maakt.
@@ -61,6 +66,12 @@ complete = true
 # regel die je uiteindelijk in je CSS plakt.
 "image-to-data-uri" = "afbeelding-naar-base64"
 "qr-barcode" = "qr-code-maken"
+# Aaneen geschreven zou het één woord zijn, maar in een adres leest
+# "wachtwoord-generator" beter en het is ook wat er gezocht wordt.
+"password-generator" = "wachtwoord-generator"
+# "Scannen" is wat er getypt wordt; "lezen" is wat het programma doet.
+"qr-barcode-reader" = "qr-code-scannen"
+"hash-checksum" = "checksum-controleren"
 
 "guides" = "gidsen"
 "roadmap" = "roadmap"
@@ -70,6 +81,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "gidsen/afbeelding-naar-exact-formaat-comprimeren"
 "guides/resize-an-image" = "gidsen/formaat-van-een-afbeelding-wijzigen"
 "guides/remove-exif-and-gps-data" = "gidsen/exif-en-gps-gegevens-verwijderen"
+"guides/redact-an-image" = "gidsen/een-afbeelding-onleesbaar-maken"
 "guides/make-a-pdf-smaller" = "gidsen/een-pdf-kleiner-maken"
 "guides/combine-images-into-a-pdf" = "gidsen/afbeeldingen-samenvoegen-tot-een-pdf"
 "guides/turn-images-into-a-video" = "gidsen/van-afbeeldingen-een-video-maken"
@@ -82,6 +94,7 @@ complete = true
 "guides/convert-heic-to-jpg" = "gidsen/heic-naar-jpg-omzetten"
 "guides/embed-an-image-in-css" = "gidsen/een-afbeelding-in-css-zetten"
 "guides/make-a-qr-code" = "gidsen/zelf-een-qr-code-maken"
+"guides/verify-a-file-checksum" = "gidsen/de-checksum-van-een-download-controleren"
 
 #
 # ---------------------------------------------------------------------------
@@ -156,12 +169,17 @@ note = "Stel documenten samen en herschik ze, zonder ze op te sturen om ze te la
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; gegevens"
-note = "Zet iets wat je intypt om in iets wat een machine kan lezen, zonder dat het de pagina verlaat."
+note = "Maak iets wat een machine kan lezen, of controleer of een bestand is wat het beweert te zijn. Allebei binnen de pagina."
 
 [[hub.categories]]
 id = "text-and-code"
 name = "Tekst &amp; code"
 note = "Lees het, vergelijk het, codeer het, zonder dat je een token of een configuratiebestand op de server van iemand anders plakt."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Wachtwoorden &amp; beveiliging"
+note = "Maak het geheim hier, op je eigen apparaat, zodat niemand anders er ooit een kopie van had om kwijt te raken."
 
 #
 # ---------------------------------------------------------------------------

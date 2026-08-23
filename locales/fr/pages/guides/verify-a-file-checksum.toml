@@ -1,0 +1,17 @@
+#
+# Guide : vérifier un téléchargement avec sa somme de contrôle - French.
+#
+
+nav = "Vérifier une somme de contrôle"
+title = "Vérifier un téléchargement avec sa somme de contrôle (et ce que cela prouve)"
+description = "Comment comparer une somme MD5 ou SHA-256 sous Windows, macOS et Linux ou dans le navigateur, ce qu'une correspondance prouve vraiment, et l'erreur qui vide l'exercice de son sens."
+heading = "Comment vérifier un téléchargement avec sa somme de contrôle"
+lede = """
+    La ligne hexadécimale sous un lien de téléchargement est là pour que vous
+    puissiez prouver que le fichier est arrivé intact. La comparer prend une
+    minute. Savoir ce que vaut cette comparaison &mdash; et quelle habitude la
+    rend sans valeur &mdash; prend le reste de cette page."""
+updated = "23 août 2026"
+og_title = "Vérifier un téléchargement avec sa somme de contrôle, et ce que cela prouve"
+og_description = "À quoi sert l'hexadécimal sous un lien de téléchargement, comment le comparer sur n'importe quel système, et pourquoi le prendre sur la même page que le fichier ruine l'idée."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
