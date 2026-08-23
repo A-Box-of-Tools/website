@@ -284,7 +284,6 @@ base = "Elke bewering op deze site is bedoeld om na te trekken, niet om te gelov
 [ui]
 languages = "Taal"
 lang_auto = "Deze pagina wordt in het Nederlands getoond, de taal waar je browser om vraagt."
-lang_untranslated = "deze pagina is nog in het Engels"
 breadcrumb = "Kruimelpad"
 all_tools = "Alle tools"
 last_updated = "Laatst bijgewerkt"
@@ -356,6 +355,26 @@ check_yourself = """
 read_first_lead = """
       De bestanden die je als eerste wilt lezen zijn <code>config/site.toml</code>
       voor de Content-Security-Policy"""
+
+[ui.feedback]
+# De labels bij de duimen zijn voor de schermlezer en de tooltip; de icoontjes
+# spreken voor zich.
+prompt = "Heeft dit geholpen?"
+up = "Ja"
+down = "Nee"
+dismiss = "Sluiten"
+
+reason_prompt = "Wat ging er mis?"
+reason_wrong = "Verkeerd resultaat"
+reason_failed = "Kwam niet af"
+reason_slow = "Te traag"
+reason_confusing = "Onduidelijk"
+
+thanks = "Bedankt &mdash; daar hebben we wat aan."
+
+note = """
+      Alleen je antwoord wordt verstuurd, en alleen als je op een knop drukt.
+      Nooit je bestand, niet de naam ervan, en niets erover."""
 
 [ui.guide]
 # "Open de tool X" rather than "X openen": several tool names in Dutch are verb

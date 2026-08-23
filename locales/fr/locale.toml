@@ -298,7 +298,6 @@ base = "Chaque affirmation de ce site est faite pour être vérifiée, pas pour 
 [ui]
 languages = "Langue"
 lang_auto = "Cette page s'affiche en français parce que c'est la langue demandée par votre navigateur."
-lang_untranslated = "cette page est encore en anglais"
 breadcrumb = "Fil d'Ariane"
 all_tools = "Tous les outils"
 last_updated = "Dernière mise à jour"
@@ -373,6 +372,26 @@ check_yourself = """
 read_first_lead = """
       Les fichiers à lire en premier sont <code>config/site.toml</code> pour la
       Content-Security-Policy"""
+
+[ui.feedback]
+# Les libellés des pouces servent au lecteur d'écran et à l'infobulle : les
+# icônes, elles, se passent de traduction.
+prompt = "Est-ce que ça a marché&nbsp;?"
+up = "Oui"
+down = "Non"
+dismiss = "Fermer"
+
+reason_prompt = "Qu'est-ce qui n'a pas marché&nbsp;?"
+reason_wrong = "Mauvais résultat"
+reason_failed = "N'a pas abouti"
+reason_slow = "Trop lent"
+reason_confusing = "Peu clair"
+
+thanks = "Merci &mdash; c'est utile."
+
+note = """
+      Seule la réponse est envoyée, et seulement quand vous cliquez. Jamais
+      votre fichier, ni son nom, ni quoi que ce soit à son sujet."""
 
 [ui.guide]
 open_tool = "Ouvrir {{ tool.name | e }}"

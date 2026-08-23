@@ -64,8 +64,11 @@ self.addEventListener('fetch', (event) => {
         // is the whole point of this worker. Anything else gets the failure,
         // because handing HTML back to something that asked for a script only
         // turns "offline" into a MIME-type error in the console - which is
-        // exactly what /lang.js, the one root-absolute file a tool page asks
-        // for and does not precache, did before this line said `navigate`.
+        // exactly what /lang.js, one of the two root-absolute files a tool page
+        // asks for and does not precache, did before this line said `navigate`.
+        // /feedback.js is the other, and is deliberately in the same position:
+        // offline there is nothing for it to ask about, because there is no
+        // measurement call to carry the answer.
         request.mode === 'navigate'
           ? caches.match('index.html')
           : Promise.reject(new Error('offline and not cached'))

@@ -242,7 +242,6 @@ base = "本站说的每一句话，都是写来给你核对的，不是写来让
 [ui]
 languages = "语言"
 lang_auto = "你的浏览器要的是简体中文，所以这个页面按简体中文显示。"
-lang_untranslated = "这个页面还是英文"
 breadcrumb = "面包屑导航"
 all_tools = "全部工具"
 last_updated = "最后更新"
@@ -311,6 +310,29 @@ check_yourself = """
 read_first_lead = """
       最值得先读的几个文件：<code>config/site.toml</code> 里是
       Content-Security-Policy"""
+
+[ui.feedback]
+prompt = "这次管用吗？"
+
+# 两个按钮画的是大拇指，图标本身不用翻译，这两句是读屏软件和悬停提示念的。
+# 上面是一个问句，所以这里答的是“管用”，不是给它打分。
+up = "管用"
+down = "不管用"
+dismiss = "关闭"
+
+reason_prompt = "哪儿不对？"
+reason_wrong = "结果不对"
+reason_failed = "没跑完"
+reason_slow = "太慢"
+reason_confusing = "不会用"
+
+thanks = "谢谢，这很有用。"
+
+# 这句得跟 shared/feedback.js 一直对得上：发出去的只有你的回答和它说的是哪个
+# 工具，别的一概没有。
+note = """
+      发出去的只有你这个回答，而且只在你按下按钮的时候。你的文件、它的名字，\
+      以及跟它有关的任何东西，一样都不发。"""
 
 [ui.guide]
 open_tool = "打开{{ tool.name | e }}"

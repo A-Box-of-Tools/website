@@ -969,38 +969,32 @@ def switcher(locales, current, slug, site):
     endonyms and the per-page addresses come from - so a language offered here
     is a language a visitor can be sent to, and no other list decides that.
 
-    Offers every language the SITE is published in, and not only the ones this
-    page is translated into. That is the second version of this rule.
+    Offers the languages this page is actually translated into, and says so by
+    listing nothing else. That is the third version of this rule, and the two
+    before it were each wrong in the opposite direction.
 
-    The first offered `published(locales, slug)`, on the reasoning that listing
-    German on a page with no German behind it is a promise the next click
-    breaks. The reasoning was wrong about what is behind the link. An
-    untranslated page is still BUILT in every language - that is the whole point
-    of falling back - so /de/gif-analyzer/ exists, wears a German nav and a
-    German footer, and is already linked from the German hub. The click lands
-    somewhere real.
+    Judging it per page and rendering nothing below two entries removed the
+    control altogether from any page nobody had translated yet - five tool pages
+    shipped with no way to change language at all. Offering every published
+    language instead, with the untranslated ones badged, put an EN chip beside
+    eight of the eleven entries on a page like /id-photo/, which reads as
+    breakage rather than as information.
 
-    What the first version actually did was remove the control. A tool nobody
-    has translated yet had fewer than two languages to offer, so both switchers
-    rendered nothing at all, and five of the site's tool pages shipped with no
-    way to change language from them - which is a worse answer to "can I read
-    this in German" than an honest "yes, but this one is still in English".
+    So the list is per page again, and what changed is the floor. A switcher is
+    rendered whenever the SITE has more than one published language, even where
+    THIS page has only English to offer - a list of one is not furniture when it
+    is the way out of a page the reader cannot read. What is never done again is
+    listing a language and then explaining that it will not be in it.
 
-    So the two audiences are separated, because they were never asking the same
-    question. `alternates` and the sitemap still speak per PAGE: they are claims
-    to a crawler that a translation of THIS page exists, and claiming one that
-    does not is the failure Google reports. The switcher is a control for a
-    person, and a person choosing Deutsch is choosing the German site. Entries
-    whose page is not translated yet are marked rather than hidden, and carry no
-    hreflang - there is no translation of this page for it to point at.
+    `alternates` and the sitemap are built from the same per-page set, so the
+    three still cannot disagree about which languages claim to have this page.
     """
-    ready = published(locales)
-    # Nothing to switch to. A control offering only the language you are already
-    # reading is furniture, so it is not rendered until a second language is
-    # finished enough to be offered.
-    if len(ready) < 2:
+    # The floor is the SITE, the list is the PAGE. On a site with one language
+    # there is nothing to switch to and no control; on a site with ten there is
+    # always a control, even on a page only one of them has.
+    if len(published(locales)) < 2:
         return []
-
+    ready = published(locales, slug)
     return [
         {
             'lang': locale['lang'],
@@ -1013,11 +1007,6 @@ def switcher(locales, current, slug, site):
             # itself localized.
             'href': locale_path(locale, slug),
             'current': locale['lang'] == current['lang'],
-            # Whether THIS page is translated in that language, as opposed to
-            # whether that language is published at all. False means the click
-            # still works and still changes the site around the reader; it is
-            # the article itself that will still be in English.
-            'translated': translated(locale, slug),
         }
         for locale in ready
     ]

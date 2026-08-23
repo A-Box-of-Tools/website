@@ -284,7 +284,6 @@ base = "Cada afirmación de este sitio está hecha para comprobarla, no para cre
 [ui]
 languages = "Idioma"
 lang_auto = "Estás viendo esta página en español, que es el idioma que pide tu navegador."
-lang_untranslated = "esta página todavía está en inglés"
 breadcrumb = "Ruta de navegación"
 all_tools = "Todas las herramientas"
 last_updated = "Última actualización"
@@ -355,6 +354,26 @@ check_yourself = """
 read_first_lead = """
       Los archivos por los que conviene empezar son <code>config/site.toml</code>,
       donde está la Content-Security-Policy"""
+
+[ui.feedback]
+# Las etiquetas de los pulgares son para el lector de pantalla y el tooltip: los
+# iconos ya se entienden solos.
+prompt = "¿Te ha servido?"
+up = "Sí"
+down = "No"
+dismiss = "Cerrar"
+
+reason_prompt = "¿Qué ha fallado?"
+reason_wrong = "Resultado incorrecto"
+reason_failed = "No terminó"
+reason_slow = "Demasiado lento"
+reason_confusing = "Confuso"
+
+thanks = "Gracias &mdash; nos sirve."
+
+note = """
+      Solo se envía la respuesta, y solo cuando pulsas un botón. Nunca tu
+      archivo, ni su nombre, ni nada sobre él."""
 
 [ui.guide]
 open_tool = "Abrir {{ tool.name | e }}"
