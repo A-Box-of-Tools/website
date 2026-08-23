@@ -67,6 +67,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/hash-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/heic-to-jpg/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -307,6 +313,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/guides/verify-a-file-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/guides/turn-a-video-into-a-gif/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -387,6 +399,12 @@
   <url>
     <loc>https://abox.tools/de/exif-daten-entfernen/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/pruefsumme-berechnen/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -559,6 +577,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/de/ratgeber/pruefsumme-vergleichen/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/de/ratgeber/aus-einem-video-ein-gif-machen/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -621,6 +645,12 @@
   <url>
     <loc>https://abox.tools/es/eliminar-datos-exif/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/calcular-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -793,6 +823,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/es/guias/verificar-el-checksum-de-una-descarga/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/es/guias/convertir-un-video-en-gif/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -855,6 +891,12 @@
   <url>
     <loc>https://abox.tools/fr/supprimer-les-donnees-exif/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/verifier-une-somme-de-controle/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1027,6 +1069,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/fr/guides/verifier-la-somme-de-controle-d-un-telechargement/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/fr/guides/transformer-une-video-en-gif/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -1095,6 +1143,12 @@
   <url>
     <loc>https://abox.tools/hi/gif-maker/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/hash-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1303,6 +1357,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/hi/guides/verify-a-file-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/hi/guides/turn-a-video-into-a-gif/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -1371,6 +1431,12 @@
   <url>
     <loc>https://abox.tools/it/rimuovere-dati-exif/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/verificare-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1543,6 +1609,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/it/guide/verificare-il-checksum-di-un-file/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/it/guide/trasformare-un-video-in-gif/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -1605,6 +1677,12 @@
   <url>
     <loc>https://abox.tools/ja/exif-editor/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/hash-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1777,6 +1855,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ja/guides/verify-a-file-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ja/guides/turn-a-video-into-a-gif/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -1845,6 +1929,12 @@
   <url>
     <loc>https://abox.tools/ko/gif-만들기/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/체크섬-확인/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2053,6 +2143,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ko/가이드/체크섬으로-다운로드-확인하기/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ko/가이드/동영상-gif-만들기/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -2121,6 +2217,12 @@
   <url>
     <loc>https://abox.tools/nl/exif-gegevens-verwijderen/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/checksum-controleren/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2293,6 +2395,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/nl/gidsen/de-checksum-van-een-download-controleren/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/nl/gidsen/van-een-video-een-gif-maken/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -2355,6 +2463,12 @@
   <url>
     <loc>https://abox.tools/pt/remover-dados-exif/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/verificar-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2527,6 +2641,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/pt/guias/verificar-o-checksum-de-um-download/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/pt/guias/transformar-um-video-em-gif/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -2589,6 +2709,12 @@
   <url>
     <loc>https://abox.tools/zh/exif-editor/</loc>
     <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/hash-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2757,6 +2883,12 @@
   <url>
     <loc>https://abox.tools/zh/guides/make-a-qr-code/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/guides/verify-a-file-checksum/</loc>
+    <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

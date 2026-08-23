@@ -1,0 +1,2 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
+function b(l,i){const f=new Uint8Array(l),o=new DataView(f.buffer);let t=0,r=0;return{update(n){r+=n.length;let e=0;for(;e<n.length;){const a=Math.min(l-t,n.length-e);f.set(n.subarray(e,e+a),t),t+=a,e+=a,t===l&&(i(o),t=0)}},finish(n,e){f[t]=128,t+=1,t>l-n&&(f.fill(0,t),i(o),t=0),f.fill(0,t),e(o,l-n,r),i(o)}}}function h(l){const i=l*8;return{hi:Math.floor(i/4294967296),lo:i>>>0}}export{h as bitLength,b as blocks};

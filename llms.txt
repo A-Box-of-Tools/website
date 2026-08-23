@@ -75,9 +75,10 @@ Make and rearrange documents without sending them to be processed.
 
 ## Codes & data
 
-Turn something you typed into something a machine can read, without it leaving the page.
+Make something a machine can read, or check that a file is the file it claims to be. Both in the page.
 
 - [QR & Barcode Generator](https://abox.tools/qr-barcode/): Generate a QR code or a linear barcode from a string in the browser. QR codes for links, Wi-Fi networks, contact cards, email, SMS, phone numbers and coordinates, with all four error-correction levels; EAN-13, EAN-8, UPC-A, ITF-14, Interleaved 2 of 5, Code 128 and Code 39 barcodes with their check digits. Download as SVG or PNG. Nothing is uploaded.
+- [Hash & Checksum](https://abox.tools/hash-checksum/): Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 checksum of any file in the browser, and compare it against the value a download page published. The file is read in pieces and never uploaded.
 
 ## Text & code
 
@@ -116,6 +117,7 @@ means, what it costs, and when not to bother.
 - [How to save a frame from a video as a picture](https://abox.tools/guides/grab-a-frame-from-a-video/): Get a still out of a clip at its real resolution: why a screenshot of a paused player is not the same picture, which format to save it in, and how to land on the exact frame you meant.
 - [How to trim audio without losing quality](https://abox.tools/guides/trim-an-audio-file/): Where an audio cut actually lands, why it can be exact when a video cut cannot, why a join sometimes clicks, and what a five-millisecond fade is really doing.
 - [How to make a QR code that still scans on somebody else's phone](https://abox.tools/guides/make-a-qr-code/): Which error-correction level to pick, why the white margin around a QR code is part of the code, how big to print it, and what a free generator's 'dynamic' code costs you later.
+- [How to check a download against its checksum](https://abox.tools/guides/verify-a-file-checksum/): How to check an MD5 or SHA-256 checksum on Windows, macOS and Linux or in your browser, what a match actually proves, and the mistake that makes the whole exercise pointless.
 - [How to turn a video into a GIF](https://abox.tools/guides/turn-a-video-into-a-gif/): Which section, which width and which frame rate to choose, why a GIF of a video is ten times the size of the video, and when to use one at all.
 - [How to split a GIF into frames](https://abox.tools/guides/split-a-gif-into-frames/): Get every frame of an animated GIF as a PNG: why some frames are only a small patch of the picture, what happens to the transparency, and how to keep the timing so you can put it back together.
 - [What is actually inside a GIF](https://abox.tools/guides/whats-inside-a-gif/): Frames, delays, disposal methods and colour tables explained, why browsers refuse the fastest delays, and how to work out where a GIF's file size really went.
