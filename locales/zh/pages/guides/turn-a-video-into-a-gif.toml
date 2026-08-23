@@ -1,16 +1,24 @@
 #
-# 指南：把视频做成 GIF - Simplified Chinese.
+# Guide: turning a video into a GIF - Simplified Chinese.
+#
+# Overrides for pages/guides/turn-a-video-into-a-gif/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
 #
 
-nav = "用视频做 GIF"
-title = "怎么把视频做成 GIF（还能做得不大）"
-description = "该挑哪一段、哪个宽度、哪个帧率，为什么视频转出来的 GIF 是视频的十倍大，以及到底什么时候才该用 GIF。"
+nav = "视频做成 GIF"
+
+title = "怎么把视频做成 GIF（还不让它太大）"
+description = "该挑哪一段、多宽、每秒几帧，视频做成 GIF 为什么会大出十倍，以及什么时候压根不该用 GIF。"
+
 heading = "怎么把视频做成 GIF"
 lede = """
-    GIF 是 1987 年的格式，它存的是一整张一整张的画面，而不是运动，所以拿\
-    视频做出来的 GIF 永远都大。这里讲的是嫌它太大时该动那三个设置里的哪\
-    一个，以及每一个能给你换回多少。"""
+    GIF 是 1987 年的格式，存的是一张张完整画面，不是运动，所以视频做出来的
+    GIF 永远很大。这一页讲文件太大时该动三个设置里的哪一个，以及每一个能\
+    换回多少。"""
+
 updated = "2026年8月20日"
-og_title = "怎么把视频做成 GIF，还能做得不大"
-og_description = "决定一张 GIF 体积的三个设置、每一个的代价，以及什么时候 GIF 根本就是错的答案。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+
+og_title = "怎么把视频做成 GIF，还不让它太大"
+og_description = "决定 GIF 大小的那三个设置，各自的代价，以及什么时候 GIF 根本就是个错误答案。"
+og_image_alt = "abox.tools - 不走服务器的工具"

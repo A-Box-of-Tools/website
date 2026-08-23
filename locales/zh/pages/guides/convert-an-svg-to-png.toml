@@ -1,16 +1,24 @@
 #
-# 指南：把 SVG 转成 PNG - Simplified Chinese.
+# Guide: converting an SVG to a PNG - Simplified Chinese.
+#
+# Overrides for pages/guides/convert-an-svg-to-png/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
 #
 
 nav = "SVG 转 PNG"
-title = "怎么把 SVG 按合适的尺寸转成 PNG"
-description = "矢量图没有自己的像素尺寸，所以那个数字由你来定。屏幕、应用图标和打印机各自的数字是怎么来的，以及一幅图变成像素时会发生什么变化。"
-heading = "怎么把 SVG 按合适的尺寸转成 PNG"
+
+title = "怎么把 SVG 转成合适尺寸的 PNG"
+description = "矢量图自己没有像素尺寸，所以这个数字由你定。屏幕、应用图标和印刷各自的数字从哪儿来，以及一张图纸变成像素那一刻会发生什么变化。"
+
+heading = "怎么把 SVG 转成合适尺寸的 PNG"
 lede = """
-    转换是容易的那一半。决定结果有没有用的，是那个没人替你回答的问题：\
-    多少像素？这里讲的就是那个数字的来历，以及一幅图在变成像素的路上会\
-    失去什么。"""
+    转换是容易的那一半。真正决定结果有没有用的，是那个没人替你回答的问题：\
+    到底要多少像素？这一页讲这个数字从哪儿来，以及一张图纸在变成像素的路上\
+    会丢掉什么。"""
+
 updated = "2026年8月20日"
-og_title = "把 SVG 按合适的尺寸转成 PNG"
-og_description = "像素数这个数字究竟是怎么来的，以及一幅图变成像素时会变的那三件事。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+
+og_title = "把 SVG 转成合适尺寸的 PNG"
+og_description = "那个像素数到底从哪儿来，以及图纸变成像素时会变的三件事。"
+og_image_alt = "abox.tools - 不走服务器的工具"

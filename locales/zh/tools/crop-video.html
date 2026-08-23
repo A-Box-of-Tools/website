@@ -4,9 +4,6 @@
   Prose paragraphs are written on one line each: a line break inside Chinese
   text collapses to a space in HTML, and a space between two Han characters is
   visible on the page.
-
-  The &mdash; inside each <dd> is a placeholder for a value not read yet, not
-  punctuation, so it stays exactly as the English source has it.
 -->
 <main>
   <!-- 第 1 步，选文件 -->
@@ -24,10 +21,10 @@
     <dl class="source" id="source" hidden>
       <div><dt>文件</dt><dd id="src-name">&mdash;</dd></div>
       <div><dt>大小</dt><dd id="src-size">&mdash;</dd></div>
-      <div><dt>画幅</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>画面</dt><dd id="src-frame">&mdash;</dd></div>
       <div><dt>时长</dt><dd id="src-length">&mdash;</dd></div>
-      <div><dt>视频</dt><dd id="src-codec">&mdash;</dd></div>
-      <div><dt>音频</dt><dd id="src-audio">&mdash;</dd></div>
+      <div><dt>视频编码</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>音频编码</dt><dd id="src-audio">&mdash;</dd></div>
     </dl>
 
     <p id="path-note" class="path-note" hidden></p>
@@ -35,10 +32,10 @@
 
   <!-- 第 2 步，裁剪框 -->
   <section class="card" id="crop-card" hidden>
-    <h2><span class="step">2</span> 设置裁剪框</h2>
+    <h2><span class="step">2</span> 拉出裁剪框</h2>
 
     <p class="stage-hint">
-      在框里面拖动就能移动，拖任意一个角就能改大小。框选中时，方向键一次挪一个像素，<kbd>Alt</kbd>&nbsp;+&nbsp;方向键改大小，按住 <kbd>Shift</kbd> 则每一步走十个像素。
+      在框里拖是移动，拖四角是缩放。框选中时，方向键一次挪一个像素，<kbd>Alt</kbd>&nbsp;+&nbsp;方向键是改大小，按住 <kbd>Shift</kbd> 一步走十个。
     </p>
 
     <!-- The crop box itself is added here by src/cropper.js. The stage is given
@@ -54,17 +51,17 @@
     <p id="stage-note" class="stage-note" hidden></p>
 
     <div class="crop-controls">
-      <div class="aspect-row" role="group" aria-label="把裁剪框锁定为某个形状">
+      <div class="aspect-row" role="group" aria-label="把裁剪框锁成某个比例">
         <button type="button" data-aspect="free" class="active">自由</button>
-        <button type="button" data-aspect="source">原始</button>
+        <button type="button" data-aspect="source">原比例</button>
         <button type="button" data-aspect="1:1">1:1</button>
         <button type="button" data-aspect="4:5">4:5</button>
         <button type="button" data-aspect="9:16">9:16</button>
         <button type="button" data-aspect="16:9">16:9</button>
         <button type="button" data-aspect="4:3">4:3</button>
         <button type="button" data-aspect="3:2">3:2</button>
-        <button type="button" id="swap-aspect" class="ghost" title="把锁定的形状横竖对调">
-          对调
+        <button type="button" id="swap-aspect" class="ghost" title="把锁定的比例横竖对调">
+          横竖对调
         </button>
       </div>
 
@@ -74,21 +71,21 @@
         <label>宽<input type="number" id="crop-w" min="16" step="2"></label>
         <label>高<input type="number" id="crop-h" min="16" step="2"></label>
         <div class="number-actions">
-          <button type="button" id="crop-max" class="ghost">最大</button>
+          <button type="button" id="crop-max" class="ghost">拉到最大</button>
           <button type="button" id="crop-centre" class="ghost">居中</button>
-          <button type="button" id="crop-reset" class="ghost">整个画面</button>
+          <button type="button" id="crop-reset" class="ghost">整幅画面</button>
         </div>
       </div>
     </div>
 
     <p class="even-note">
-      宽和高按 2 跳，因为 H.264 存不了一条边是奇数的帧。
+      宽和高按 2 跳，因为 H.264 没办法存一条边是奇数像素的帧。
     </p>
   </section>
 
   <!-- 第 3 步，导出 -->
   <section class="card" id="export-card" hidden>
-    <h2><span class="step">3</span> 裁剪</h2>
+    <h2><span class="step">3</span> 开裁</h2>
 
     <div class="settings">
       <div class="field">
@@ -101,29 +98,29 @@
       </div>
 
       <div class="field">
-        <label for="quality">质量</label>
+        <label for="quality">画质</label>
         <select id="quality">
-          <option value="low">文件更小</option>
+          <option value="low">文件小一点</option>
           <option value="medium" selected>均衡</option>
-          <option value="high">最高质量</option>
+          <option value="high">最好画质</option>
         </select>
         <p class="field-note">
-          绝不会超过原片在同一块区域上花的量，超过那个量再编码，只会让文件变大。
+          绝不会比原片在同一块区域上花得还多，超过那个数只会让文件变大。
         </p>
       </div>
 
       <div class="field">
         <label class="check" for="keep-audio">
           <input type="checkbox" id="keep-audio" checked>
-          保留声音
+          留着声音
         </label>
         <p class="field-note" id="audio-note"></p>
       </div>
     </div>
 
     <dl class="summary" id="summary">
-      <div><dt>输出画幅</dt><dd id="sum-size">&mdash;</dd></div>
-      <div><dt>保留</dt><dd id="sum-kept">&mdash;</dd></div>
+      <div><dt>输出画面</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>留下的部分</dt><dd id="sum-kept">&mdash;</dd></div>
       <div><dt>时长</dt><dd id="sum-length">&mdash;</dd></div>
       <div><dt>走哪条路</dt><dd id="sum-path">&mdash;</dd></div>
     </dl>

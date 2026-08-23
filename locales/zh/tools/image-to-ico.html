@@ -6,9 +6,9 @@
   visible on the page.
 -->
 <main>
-  <!-- 第 1 步，选图片 -->
+  <!-- 第 1 步，选图 -->
   <section class="card">
-    <h2><span class="step">1</span> 选一张图片</h2>
+    <h2><span class="step">1</span> 选一张图</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -21,7 +21,7 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" id="clear-all" class="ghost danger">全部移出列表</button>
+        <button type="button" id="clear-all" class="ghost danger">清空列表</button>
       </div>
     </div>
 
@@ -31,12 +31,12 @@
     <p id="shape-note" class="field-summary" hidden></p>
   </section>
 
-  <!-- 第 2 步，按哪套标准 -->
+  <!-- 第 2 步，按哪套标准来 -->
   <section class="card" id="preset-card">
-    <h2><span class="step">2</span> 说明这个图标是干什么用的</h2>
+    <h2><span class="step">2</span> 说清楚这个图标干什么用</h2>
 
     <p class="card-lede">
-      一个图标文件不是一张图，是好几张，同一个 logo 按读它的那个东西索取的每一个尺寸重画一遍。是哪些尺寸也不是口味问题：浏览器要三个，高 DPI 笔记本上的应用要十个，Mac 要它自己那十个，而 Windows Vista 之前写的东西要的是完全另一种存法。
+      一个图标文件装的不是一张图，是好几张：同一个 logo，按读它的那个东西要的每个尺寸各画一遍。要哪几个尺寸，这不是口味问题。浏览器要三个，高分屏笔记本上的应用要十个，Mac 要它自己那十个，而 Windows Vista 之前的东西，还要求换一种完全不同的存法。
     </p>
 
     <!--
@@ -51,7 +51,8 @@
         <input type="checkbox" id="want-ico" checked>
         <span>
           <strong>Windows 图标，<code>.ico</code></strong>
-          <span class="check-note">每个浏览器都把它当 favicon 读，Windows 也用它做应用、快捷方式和文件夹的图标。尺寸由你在下面挑。
+          <span class="check-note">
+            浏览器拿它当 favicon，Windows 拿它做应用、快捷方式和文件夹的图标。尺寸在下面自己挑。
           </span>
         </span>
       </label>
@@ -61,7 +62,7 @@
         <span>
           <strong>macOS 图标，<code>.icns</code></strong>
           <span class="check-note">
-            Mac 应用包里装的就是它。苹果明确规定了十个槽位，从 16 像素到 1024，所以没什么可挑的，十个全都进去，由七次渲染画出来，因为一个 Retina 槽位和上一档尺寸是同一张图。
+            Mac 应用包里装的就是它。苹果定死了十个槽位，从 16 像素到 1024，没什么可挑的，十个全写进去，来自七次绘制，因为一个 Retina 槽位和上一档尺寸画的是同一张图。
           </span>
         </span>
       </label>
@@ -69,8 +70,9 @@
       <label class="check" id="pack-row">
         <input type="checkbox" id="want-pack">
         <span>
-          <strong>网站图标整套里剩下的部分</strong>
-          <span class="check-note">一个 .ico 管的是浏览器标签页和 Windows，管不了 iPhone 主屏幕、Android 安装提示，或者钉在开始菜单上的磁贴，那些读的是一个 180px 的 PNG、一个 web app manifest 和一个 XML 文件，它们没有一个会往 .ico 里面看。勾上这个，你会把它们、manifest，以及要粘进你页面的那段 HTML 一并拿到。
+          <strong>网站图标套件的其余部分</strong>
+          <span class="check-note">
+            .ico 管得了浏览器标签页和 Windows，管不了 iPhone 主屏、安卓的安装提示，也管不了钉在开始菜单上的磁贴。那三样读的是一张 180 像素的 PNG、一份 Web 应用 manifest 和一个 XML 文件，谁都不会去看 .ico 里面。勾上这个，这些全给你，外加 manifest 和一段可以粘进页面的 HTML。
           </span>
         </span>
       </label>
@@ -79,26 +81,26 @@
     </fieldset>
 
     <div id="ico-settings">
-      <div class="presets" id="preset-list" role="radiogroup" aria-label="这个图标是干什么用的"></div>
+      <div class="presets" id="preset-list" role="radiogroup" aria-label="这个图标干什么用"></div>
 
       <p id="preset-note" class="field-summary"></p>
 
       <fieldset class="options" id="size-set">
-        <legend>装进 .ico 里的尺寸</legend>
+        <legend>.ico 里装哪些尺寸</legend>
         <div class="size-grid" id="size-grid"></div>
         <p id="size-summary" class="field-summary"></p>
       </fieldset>
     </div>
 
     <fieldset class="options">
-      <legend>怎么画</legend>
+      <legend>画法</legend>
 
       <div class="option-row">
-        <label for="fit-select">图片不是正方形的话</label>
+        <label for="fit-select">图片不是方的时候</label>
         <select id="fit-select">
-          <option value="pad" selected>留白补成正方形，整张图都保住</option>
-          <option value="crop">裁中间那块正方形</option>
-          <option value="stretch">拉伸成正方形</option>
+          <option value="pad" selected>留白垫成方的，整张图都留住</option>
+          <option value="crop">裁中间那个方块</option>
+          <option value="stretch">直接拉成方的</option>
         </select>
       </div>
 
@@ -106,17 +108,17 @@
         <label for="background-mode">背景</label>
         <select id="background-mode">
           <option value="transparent" selected>透明</option>
-          <option value="colour">某个颜色</option>
+          <option value="colour">一种颜色</option>
         </select>
-        <input type="color" id="background-colour" value="#ffffff" aria-label="背景颜色" hidden>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="背景色" hidden>
       </div>
 
       <div class="option-row" id="storage-row">
-        <label for="storage-select">每个尺寸在 .ico 里怎么存</label>
+        <label for="storage-select">.ico 里每个尺寸怎么存</label>
         <select id="storage-select">
-          <option value="auto" selected>自动，代价不大时选兼容的，否则用 PNG</option>
-          <option value="png">所有尺寸都用 PNG，文件最小，需要 Vista 或更新</option>
-          <option value="bmp">所有尺寸都不压缩，什么都打得开，体积是好几倍</option>
+          <option value="auto" selected>自动，便宜的时候用兼容存法，不便宜就用 PNG</option>
+          <option value="png">所有尺寸都用 PNG，文件最小，要 Vista 以上</option>
+          <option value="bmp">所有尺寸都不压缩，什么都打得开，体积翻好几倍</option>
         </select>
       </div>
 
@@ -125,12 +127,12 @@
 
   </section>
 
-  <!-- 第 3 步，先看小的，再拿走 -->
+  <!-- 第 3 步，先按真实大小看看，再拿走 -->
   <section class="card" id="run-card">
-    <h2><span class="step">3</span> 按它真正会被看到的尺寸检查一遍</h2>
+    <h2><span class="step">3</span> 按它真正被看到的大小检查一遍</h2>
 
     <p class="card-lede">
-      这是下载任何东西之前最值得看一眼的地方。一个在 512 像素下清清楚楚的 logo，到了浏览器标签页里只有十六个像素宽，它身上那些细的部分撑不过这一下，文字标的笔画、一条发丝边框、一个渐变，都是。下面每一个方块，都按真实尺寸、从你选的那个文件画出来。
+      下载之前，最值得看的就是这一步。一个 512 像素下清清楚楚的 logo，到了浏览器标签页上只有十六个像素宽，它身上细的那些部分，文字标的笔画、一根发丝般的描边、一段渐变，全都撑不过去。下面每一格，都是拿你选的那个文件按真实尺寸画出来的。
     </p>
 
     <div id="preview" class="preview" hidden>
@@ -139,7 +141,7 @@
     </div>
 
     <div class="run-row">
-      <button type="button" id="make-icon" class="primary big" disabled>制作图标</button>
+      <button type="button" id="make-icon" class="primary big" disabled>做图标</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -149,7 +151,7 @@
 
     <div id="results" class="results" hidden>
       <div class="results-head">
-        <h3>好了</h3>
+        <h3>做好了</h3>
         <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下载</button>
       </div>
       <p id="results-summary" class="results-summary"></p>

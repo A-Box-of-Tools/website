@@ -1,16 +1,24 @@
 #
-# 指南：剪视频时长 - Simplified Chinese.
+# Guide: trimming a video - Simplified Chinese.
+#
+# Overrides for pages/guides/trim-a-video/page.toml. Prose in the .html beside
+# this file. Written in Chinese rather than translated out of the English; the
+# house style is at the top of locales/zh/locale.toml.
 #
 
-nav = "剪视频"
-title = "怎么在不重新编码的前提下剪视频"
-description = "剪一段片子可以一个字节的质量都不掉。为什么切口有时会落在你标记的位置之前、这跟关键帧有什么关系，以及什么时候该接受一次重新编码。"
-heading = "怎么在不重新编码的前提下剪视频"
+nav = "剪视频时长"
+
+title = "怎么剪视频而不重新编码"
+description = "剪一段片子可以一个字节的画质都不掉。为什么下刀的位置有时候比你标的早，关键帧跟这有什么关系，以及什么时候该认下那次重新编码。"
+
+heading = "怎么剪视频而不重新编码"
 lede = """
-    剪切并不改变任何一帧的样子，所以一个好的剪辑工具根本不动它们，只是把
-    它们按原样搬进一个新文件。这里讲的是这么做换来了什么，以及它唯一会
-    露出破绽的那个地方。"""
+    剪切不改变任何一帧的样子，所以好的剪切工具压根不碰它们，而是把它们原样\
+    搬进一个新文件。这一页讲这么做换来了什么，以及它唯一会露出来的那个\
+    地方。"""
+
 updated = "2026年8月20日"
-og_title = "怎么在不重新编码的前提下剪视频"
-og_description = "为什么切口有时会落在你标记的位置之前、这跟关键帧有什么关系，以及什么时候该接受一次重新编码。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+
+og_title = "怎么剪视频而不重新编码"
+og_description = "为什么下刀的位置有时候比你标的早，关键帧跟这有什么关系，以及什么时候该认下那次重新编码。"
+og_image_alt = "abox.tools - 不走服务器的工具"
