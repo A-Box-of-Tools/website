@@ -1,0 +1,341 @@
+#
+# Qr- & barcodescanner - Dutch.
+#
+# Overrides for tools/qr-barcode-reader/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Je-vorm, net als bij de generator hiernaast.
+#
+# "Qr-code" met kleine letters en een streepje: dat is de spelling van de
+# Woordenlijst, en het is ook hoe het geschreven wordt. De namen van de
+# symbolieken - EAN-13, UPC-A, ITF-14, Code 128, Code 39, ISO/IEC 18004 -
+# blijven zoals ze zijn: dat zijn normnamen.
+#
+
+name = "Qr- & barcodescanner"
+heading = "Qr-code&nbsp;&amp;&nbsp;barcode scannen <span class=\"h1-kw\">&mdash; vanaf een afbeelding of met je camera</span>"
+tagline = "Richt je camera erop, of sleep er een foto van hierheen. Het wordt hier gelezen, en nergens anders."
+
+title = "Qr-codescanner &amp; barcodelezer &mdash; vanaf een afbeelding, zonder uploaden"
+description = "Lees een qr-code vanaf een foto, een schermafbeelding of je camera, en zie precies waar de link heen gaat voordat je hem opent. Ook EAN, UPC, Code 128, Code 39 en ITF. Er wordt niets geüpload."
+og_title = "Een qr-code lezen zonder de afbeelding naar iemand te sturen"
+og_description = "Scan een qr-code vanaf een afbeelding of met je camera en bekijk het volledige adres voordat je besluit het te openen. De afbeelding verlaat je machine niet, en er wordt geen enkel camerabeeld opgenomen."
+og_image_alt = "Qr- & barcodescanner - een code lezen vanaf een afbeelding of camera, zonder uploaden"
+
+pledge = """
+    Een code lezen is rekenwerk op pixels, en de pixels zijn er al. Het symbool
+    vinden, de hoek eruit rekenen, het masker ongedaan maken, de schade
+    repareren met Reed-Solomon en de bits weer uitlezen: dat gebeurt allemaal in
+    zo'n tweeduizend regels JavaScript in deze pagina die je gewoon kunt lezen.
+    <strong>De camera is dezelfde belofte, geen uitzondering erop:</strong> een
+    beeld komt als pixels dit tabblad binnen, wordt bekeken, en is weg. Er wordt
+    niets opgenomen, niets bewaard, en deze pagina heeft geen enkele
+    netwerkfunctie om er iets mee te versturen."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en scan een code met de camera aan. Geen
+      enkel verzoek draagt een beeld of ook maar één teken van wat erin stond. Of
+      trek de stekker uit je internet en lees de code alsnog."""
+
+read_first = """
+, <code>src/binarize.js</code>
+      en <code>src/detect.js</code> voor het vinden van een symbool in een foto
+      &mdash; de drempelwaarde, de zoekpatronen en de perspectiefcorrectie
+      &mdash;, <code>src/qr-decode.js</code> voor het teruglezen,
+      <code>src/reed-solomon.js</code> voor het repareren van wat verkeerd
+      gelezen is, <code>src/linear.js</code> voor de gestreepte, en
+      <code>src/camera.js</code>, dat elke regel in deze pagina is die een
+      camera aanraakt."""
+
+howto_heading = "Hoe je een qr-code leest zonder de afbeelding te uploaden"
+
+card = """
+            Lees een qr-code vanaf een foto, een schermafbeelding of je camera
+            &mdash; en zie het hele adres voordat je het opent. Barcodes ook."""
+
+[picker]
+title = "Sleep hier een afbeelding met een code heen"
+hint = "of klik om te bladeren &mdash; een foto, een schermafbeelding, een PNG, alles wat je browser kan openen"
+
+[words]
+plural = "afbeeldingen en de codes die erin zitten"
+choose = "de afbeelding die gelezen wordt"
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Niets opgenomen"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "De afbeelding wordt nooit geüpload, en de camera is geen uitzondering."
+body = """
+ Een foto die je
+      hierheen sleept wordt op een canvas in deze pagina gedecodeerd en daar
+      gelezen. Een camerabeeld is precies hetzelfde, maar dan dertig keer per
+      seconde: het wordt op dat canvas getekend, bekeken en overschreven door het
+      volgende. Er wordt er geen enkele opgenomen, er blijft er geen enkele
+      staan, en dat het cameralampje uitgaat als je op stoppen drukt is het hele
+      verhaal."""
+
+[[privacy]]
+title = "Hier haalt niets iets op."
+body = """
+ Er is geen
+      <code>fetch</code>, geen <code>XMLHttpRequest</code> en geen
+      <code>sendBeacon</code> ergens in <code>src/</code>, en de
+      <code>Content-Security-Policy</code> van de pagina laat geen enkel adres
+      over waar deze oorsprong iets heen zou kunnen sturen, ook al was er wel
+      iets. Daarom kan deze pagina je niet vertellen waar een verkorte link
+      uitkomt: dat uitzoeken zou vragen betekenen, en ze vraagt niets."""
+
+[[privacy]]
+title = "Hij laat je het adres zien. Hij opent het nooit."
+body = """
+ Een gedrukte qr-code
+      is een adres dat niemand kan lezen, en dat is precies wat een sticker
+      eroverheen voor iemand de moeite waard maakt. Hier wordt niets geopend. De
+      hele tekenreeks staat er voor je om te bekijken, de host waar je echt zou
+      uitkomen staat apart, en de trucs die het ene adres op het andere laten
+      lijken &mdash; een gebruikersnaam vóór een <code>@</code>, een naam
+      geschreven in een alfabet waarvan de letters onze vorm hebben, een
+      omleiding &mdash; worden benoemd waar ze voorkomen."""
+
+[[privacy]]
+title = "Hij laat je ook zien wat hij bemonsterd heeft."
+body = """
+ Onder elk qr-resultaat
+      staat een afbeelding van de modules die deze pagina echt uit je foto heeft
+      gelezen. Lijkt dat op de code die je gescand hebt, dan klopt het antwoord
+      erboven; lijkt het op ruis, dan niet. Een lezer die je alleen een
+      tekenreeks geeft en verder niets valt zo niet te controleren."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google, en de doneerknop van Buy Me a Coffee. Geen
+      van alle krijgt een afbeelding, een camerabeeld of iets wat daaruit gelezen
+      is. Elke regel die pixels in een tekenreeks verandert wordt vanaf deze
+      oorsprong geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en de tool is
+      onveranderd, camera en al, want er heeft nooit een netwerkstap in gezeten.
+      Dat is het eenvoudigste bewijs dat er is."""
+
+[[howto]]
+title = "Geef hem de afbeelding."
+body = """
+ Sleep een foto of een
+      schermafbeelding op het vak, plak er een rechtstreeks in, of druk op de
+      cameraknop. Meerdere tegelijk mag: elk wordt apart gelezen en elk krijgt
+      zijn eigen antwoord. Een schermafbeelding van een code die al op je scherm
+      staat is de snelste weg en de betrouwbaarste, want daar komt geen lens,
+      geen hoek en geen licht aan te pas."""
+
+[[howto]]
+title = "Zorg dat het hele symbool in beeld is, marge en al."
+body = """
+ Het wit rondom een code
+      hoort bij de code: daaraan ziet een lezer waar het symbool ophoudt. Een foto
+      die tot de rand van de blokjes is bijgesneden is verreweg de meest
+      voorkomende reden dat er een niet gelezen wordt. Ongeveer de helft van het
+      beeld vullen met de code is ongeveer goed; dichterbij en de hoeken vallen
+      buiten de foto."""
+
+[[howto]]
+title = "Lees het adres voordat je iets besluit."
+body = """
+ Waarom je een code op een
+      poster, een parkeerautomaat of een brief scant, is om te weten te komen waar
+      hij heen gaat &mdash; en dat is nou net wat de camera van je telefoon je
+      eigenlijk niet laat doen. Hier staat de host op een eigen regel. Is het geen
+      naam die je verwachtte, dan heb je al waarvoor je kwam en valt er niets meer
+      te openen."""
+
+[[howto]]
+title = "Neem de waarschuwingen serieus, juist de zachte."
+body = """
+ Een kaal
+      <code>http://</code>-adres, een naam in een alfabet dat niet is wat het
+      lijkt, een linkverkorter, of wat dan ook vóór een <code>@</code> in het
+      adres &mdash; elk daarvan wordt benoemd waar het voorkomt. Geen van alle
+      bewijst op zichzelf iets. Alle zijn tien seconden waard voordat je erheen
+      gaat."""
+
+[[howto]]
+title = "Lukt het niet, verander dan eerst het licht en pas daarna iets anders."
+body = """
+ Bijna elke
+      mislukking is een drempelprobleem: een weerspiegeling dwars over het midden,
+      een schaduw over een hoek, of een scherm dat onder een hoek is
+      gefotografeerd die de achtergrondverlichting vangt. Ga zo staan dat de
+      glans niet op de code valt, of zet het cameralampje aan. Helpt dat niet, maak
+      dan één vlakke foto recht van voren en sleep die erin &mdash; een stilstaand
+      beeld krijgt een veel grondiger zoektocht dan een live beeld kan
+      krijgen."""
+
+[[howto]]
+title = "Ziet het antwoord er raar uit, kijk dan naar het bemonsterde beeld."
+body = """
+ Klap
+      &ldquo;hoe deze gelezen is&rdquo; open en kijk naar het roostertje. Dat is
+      wat deze pagina dacht dat de code was, teruggetekend uit de modules die ze
+      bemonsterd heeft. Een lezer die een symbool verkeerd las en het tot iets
+      plausibels heeft gerepareerd laat dat daar zien, en nergens anders."""
+
+[[faq]]
+q = "Wordt de afbeelding ergens naartoe geüpload?"
+a = """
+        Nee, en wat eruit gelezen wordt ook niet. De afbeelding wordt op een
+        canvas in deze pagina gedecodeerd en daar gelezen, door JavaScript dat van
+        deze site komt. Deze tool heeft geen enkele netwerkfunctie &mdash; hij
+        haalt nooit iets op en stuurt nooit iets &mdash; en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
+        mag benaderen, en geen daarvan is van ons. Het eenvoudigste bewijs is de
+        verbinding verbreken: hij blijft gewoon werken."""
+
+[[faq]]
+q = "Neemt de camera iets op?"
+a = """
+        Nee. Een camerabeeld komt als pixels dit tabblad binnen, wordt op een
+        canvas getekend, bekeken, en ongeveer een tiende seconde later
+        overschreven door het volgende. Er wordt niets naar schijf geschreven en
+        er blijft niets staan. De stream stopt zodra je op stoppen drukt, wanneer
+        het tabblad naar de achtergrond gaat en wanneer je de pagina verlaat
+        &mdash; en het lampje op je camera is de indicator om op te vertrouwen,
+        want geen enkele pagina kan dat uitzetten."""
+
+[[faq]]
+q = "Waarom laat hij me de link zien in plaats van hem te openen?"
+a = """
+        Omdat dat het nuttige deel is. Een qr-code is een adres dat je niet kunt
+        lezen, en juist daarom werkt een sticker over de code van een
+        parkeerautomaat: tegen de tijd dat je weet waar hij heen ging, ben je er
+        al. Hier staat de tekenreeks er helemaal, de host staat apart op een eigen
+        regel, en openen is een aparte knop die je pas indrukt nadat je het gelezen
+        hebt. Dat is één klik extra, en het is de klik die dit formaat altijd al
+        nodig had."""
+
+[[faq]]
+q = "Wat kan hij lezen?"
+a = """
+        Qr-codes in alle versies van 1 tot en met 40, op alle vier de
+        foutcorrectieniveaus, in numerieke, alfanumerieke, byte- en kanjimodus,
+        waarbij ECI-tekensets en symbolen uit een aaneengeschakelde reeks gemeld
+        worden in plaats van stilletjes weggegooid. Aan de gestreepte kant: EAN-13,
+        EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 en Code 39. Data
+        Matrix, PDF417, Aztec en MaxiCode leest hij niet."""
+
+[[faq]]
+q = "Hij leest mijn code niet. Wat is er mis?"
+a = """
+        Negen van de tien keer is het een van drie dingen. De witte marge is
+        weggesneden, en een lezer gebruikt die om te zien waar het symbool
+        ophoudt. Er ligt een weerspiegeling of een schaduw over een deel van de
+        code, zodat geen enkele drempelwaarde de donkere blokjes van de lichte
+        scheidt. Of de code is zo klein in beeld dat zijn modules niet meer dan
+        een of twee pixels breed zijn. Verander het licht, vul ongeveer de helft
+        van het beeld, en fotografeer recht van voren in plaats van schuin."""
+
+[[faq]]
+q = "Kan hij een beschadigde of deels bedekte code lezen?"
+a = """
+        Vaak wel, en dat is het formaat dat werkt zoals het bedoeld is, niet iets
+        knaps van hier. Elke qr-code draagt Reed-Solomon-controlegegevens, en een
+        symbool dat op niveau H gemaakt is kan ongeveer 30% van zijn modules
+        verliezen en toch exact herbouwd worden. De pagina zegt onder &ldquo;hoe
+        deze gelezen is&rdquo; hoeveel codewoorden ze heeft moeten repareren, zodat
+        je ziet hoe krap het was. Wat hij niet doet, is gokken: een symbool dat
+        verder beschadigd is dan de controle aankan wordt als onleesbaar gemeld in
+        plaats van verkeerd beantwoord."""
+
+[[faq]]
+q = "Waarom zegt hij dat hij niet kan vertellen waar een bit.ly-link heen gaat?"
+a = """
+        Omdat dat uitzoeken betekent dat je het aan bit.ly moet vragen, en dat is
+        een netwerkverzoek. Al het andere dat deze pagina beweert rust erop dat er
+        hier geen code is die met iets contact maakt, en daar stiekem een
+        uitzondering op maken zou minder waard zijn dan het antwoord. Dus wordt de
+        verkorter benoemd en blijft wat hij verbergt eerlijk onbekend. Wil je hem
+        oplossen, plak hem dan in iets dat wél bereid is om te vragen."""
+
+[[faq]]
+q = "Is het eigenlijk wel veilig om een qr-code te scannen?"
+a = """
+        Er een scannen is veilig. Er gehoor aan geven is het risico, en dat is een
+        echt risico: codes die over de echte heen zijn geplakt op
+        parkeerautomaten, op restauranttafels en op briefjes van de
+        pakketbezorger zijn inmiddels gewoon genoeg om een naam te hebben. Wat ze
+        laat werken, is dat niemand een code kan lezen door ernaar te kijken. Hem
+        lezen zonder hem te openen &mdash; wat deze pagina doet &mdash; haalt dat
+        hele voordeel weg, en de tien seconden die het kost om naar de host te
+        kijken zijn de hele verdediging."""
+
+[[faq]]
+q = "Wat is dat roostertje onder elk resultaat?"
+a = """
+        De modules die deze pagina echt uit je afbeelding bemonsterd heeft,
+        teruggetekend met één blokje per module. Het staat er zodat de lezing met
+        het oog te controleren is in plaats van te geloven: lijkt dat rooster op de
+        code die je gefotografeerd hebt, dan kwam het antwoord erboven uit de
+        juiste pixels. Bijna geen enkele lezer laat je dit zien, en het is het
+        verschil tussen gereedschap dat je kunt controleren en gereedschap dat je
+        moet geloven."""
+
+[[faq]]
+q = "Leest hij meerdere codes in één afbeelding?"
+a = """
+        Eén per afbeelding, voorlopig. Sleep er meerdere tegelijk in en elk wordt
+        apart gelezen, en de camera leest code na code terwijl je hem beweegt, en
+        houdt elke nieuwe die hij nog niet gezien heeft. Eén foto met een vel vol
+        codes erop is een klus voor bijsnijden, of voor de camera één voor één
+        erop richten."""
+
+[[faq]]
+q = "Waarom noemt hij mijn barcode anders dan wat ik gevraagd had?"
+a = """
+        Omdat een barcode zijn eigen naam niet bij zich draagt. UPC-A is een EAN-13
+        waarvan het eerste cijfer een nul is, ITF-14 is Interleaved 2 of 5 met
+        veertien cijfers en een geldig controlecijfer, en Code 128 in zijn
+        numerieke modus lijkt nergens anders op. Wat deze pagina meldt is wat de
+        strepen zeggen plus wat het controlecijfer bevestigt, en dat is alles wat
+        het symbool zelf weet."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek dan de verbinding en hij blijft
+        werken, camera en al. Dat is ook de eenvoudigste manier om te bewijzen dat
+        er niets geüpload wordt: een lezer die je afbeelding wegstuurt om te laten
+        decoderen, stopt op het moment dat je de stekker eruit trekt."""
+
+[schema]
+description = "Lees een qr-code of een lineaire barcode vanaf een afbeelding, een schermafbeelding of een live camera, volledig in de browser. Toont de gedecodeerde tekenreeks en, bij links, de host waar je echt zou uitkomen, voordat er iets geopend wordt. Ondersteunt qr-versies 1 tot en met 40 met Reed-Solomon-foutcorrectie, en EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 en Code 39. Er wordt niets geüpload en er wordt geen camerabeeld opgenomen."
+features = [
+  "Leest een qr-code vanaf een foto, een schermafbeelding, een geplakte afbeelding of een live camera",
+  "Alle qr-versies van 1 tot en met 40, alle vier de foutcorrectieniveaus, en numerieke, alfanumerieke, byte- en kanjimodus",
+  "Reed-Solomon-correctie, zodat een bekraste, gekreukte of deels bedekte code toch gelezen wordt",
+  "Corrigeert hoek en perspectief met behulp van het uitlijnpatroon",
+  "Leest codes die licht op donker gedrukt zijn, en codes die ondersteboven gefotografeerd zijn",
+  "EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 en Code 39",
+  "Laat het hele adres zien, en de host waar je echt uitkomt, voordat er iets geopend wordt",
+  "Benoemt de trucs die een link vermommen: een gebruikersnaam vóór de @, een alfabet dat het onze nadoet, een omleiding",
+  "Haalt wifi-, visitekaart-, e-mail-, sms-, telefoon- en kaartgegevens uit elkaar in leesbare velden",
+  "Tekent de bemonsterde modules, zodat de lezing te controleren is in plaats van te geloven",
+  "Er wordt geen camerabeeld opgenomen of bewaard; de stream stopt met het tabblad",
+  "Werkt offline, zonder upload en zonder account",
+]

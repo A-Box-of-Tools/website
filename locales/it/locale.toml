@@ -47,6 +47,8 @@ complete = true
 # "QR code" e non "codice QR": è la forma che in italiano si scrive e si cerca,
 # prestito compreso.
 "qr-barcode" = "creare-qr-code"
+# «Leggere» e non «scansionare»: la seconda si dice, la prima si cerca.
+"qr-barcode-reader" = "leggere-qr-code"
 "resize-image" = "ridimensionare-immagine"
 # Lo strumento scrive anche JPEG e WebP, ma la domanda che porta qui è sempre
 # la stessa, e nomina il PNG.

@@ -250,12 +250,15 @@ a = """
 [[faq]]
 q = "Kan hij een qr-code ook lezen, en niet alleen maken?"
 a = """
-        Nog niet. Er een lezen betekent een afbeelding decoderen: het symbool in een
-        foto vinden, corrigeren voor de hoek waaronder hij genomen is, en de schade
-        repareren. Dat is een andere en aanzienlijk grotere klus dan er een tekenen.
-        Het zou hier op dezelfde voorwaarden als al het andere gebouwd kunnen worden,
-        en het staat op de lijst. Ondertussen doet de camera van je telefoon het al,
-        en nog goed ook."""
+        Deze pagina niet, maar die ernaast wel:
+        <a href="../qr-code-scannen/">de lezer</a> neemt een foto, een
+        schermafbeelding of je camera en geeft de tekst terug. Het is een
+        aanzienlijk grotere klus dan er een tekenen &mdash; het symbool in een
+        afbeelding vinden, corrigeren voor de hoek waaronder hij genomen is en
+        de schade repareren zijn drie problemen die deze pagina niet heeft
+        &mdash; en daarom is het eigen gereedschap en geen knop hier. Het werkt
+        op dezelfde voorwaarden als al het andere: niets geüpload, en geen
+        camerabeeld bewaard."""
 
 [[faq]]
 q = "Waar is de marge voor, en kan ik hem kleiner maken?"

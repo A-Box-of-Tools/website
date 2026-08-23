@@ -1,0 +1,331 @@
+/*
+  What this tool needs on top of shared/css/tool-frame.css.
+
+  Three things the frame has no rule for, because no tool here had one before:
+  a viewfinder with a live camera in it, a result that is mostly a string
+  somebody has to be able to read character by character, and a warning that is
+  not an error - "this address is not what it looks like" has to be loud enough
+  to stop somebody and calm enough not to look like the page has broken.
+*/
+
+.card-lede {
+  margin: -0.4rem 0 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 68ch;
+}
+
+.field-summary {
+  margin: 0.9rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+  color: var(--danger);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.run-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1.1rem;
+}
+
+kbd {
+  font: inherit;
+  font-size: 0.85em;
+  padding: 0.05em 0.35em;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+
+/* ------------------------------------------------------------- the camera */
+
+/*
+  The frame is capped rather than left to the stream's own aspect ratio. A
+  phone hands over a portrait frame taller than the screen, and a viewfinder
+  that pushes its own controls below the fold is one nobody can find the stop
+  button on.
+*/
+.viewfinder {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 4 / 3;
+  max-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewfinder video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Not a target: a code does not have to be inside it. It is there to say how
+   much of the frame a code should fill, which is the single thing that most
+   often decides whether a camera reads one. */
+.reticle {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  width: min(62%, 62vh);
+  aspect-ratio: 1;
+  border: 2px solid rgb(255 255 255 / 70%);
+  border-radius: 12px;
+  box-shadow: 0 0 0 100vmax rgb(0 0 0 / 22%);
+  pointer-events: none;
+  transition: border-color 0.2s ease;
+}
+
+#camera-card.hit .reticle {
+  border-color: var(--ok);
+  border-width: 4px;
+}
+
+.camera-controls {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.option-row label { font-size: 0.9rem; font-weight: 600; }
+.option-row select { min-width: 0; max-width: 100%; }
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+.check input { margin-top: 0.25rem; flex: none; }
+.check strong { display: block; font-size: 0.9rem; }
+
+.check-note {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 70ch;
+}
+
+/* ------------------------------------------------------------ the results */
+
+.result {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  padding: 1rem 1.1rem 1.1rem;
+}
+
+.result + .result { margin-top: 1rem; }
+
+.result-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.7rem;
+}
+
+.result-kind {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.result-symbology {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+}
+
+/*
+  The string itself, and the most important element on the page. It is set in a
+  monospace face and wrapped anywhere rather than at word boundaries, because
+  what somebody is doing with it is checking one character against another -
+  and a proportional face that renders rn as m is the whole trick this page
+  exists to defeat.
+*/
+.result-text {
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 7px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 16rem;
+  overflow-y: auto;
+  user-select: all;
+}
+
+.result-rows {
+  margin: 1.1rem 0 0;
+  display: grid;
+  gap: 0.5rem 1.2rem;
+}
+
+.result-rows > div {
+  display: grid;
+  grid-template-columns: minmax(6rem, 12ch) 1fr;
+  gap: 0.2rem 1rem;
+  align-items: baseline;
+}
+
+.result-rows dt {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.result-rows dd {
+  margin: 0;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+/* The host, and the network name: the one line somebody is really reading. */
+.result-rows dd.emphasis {
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.result-rows dd.secret {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  border-radius: 4px;
+  padding: 0.05rem 0.35rem;
+}
+
+/*
+  Amber rather than red. These are not errors - the page worked - and a red box
+  around "this is a plain http address" trains people to dismiss the box that
+  says "this link is not going where it says".
+*/
+.result-warnings {
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.result-warnings li {
+  position: relative;
+  padding: 0.6rem 0.8rem 0.6rem 2.2rem;
+  border-radius: 7px;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  background: color-mix(in srgb, #c8860d 14%, var(--surface));
+  border: 1px solid color-mix(in srgb, #c8860d 45%, transparent);
+}
+
+.result-warnings li::before {
+  content: "\26A0";
+  position: absolute;
+  left: 0.8rem;
+  top: 0.55rem;
+  font-size: 0.95rem;
+}
+
+.result-facts {
+  margin-top: 1.1rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 0.7rem;
+}
+
+.result-facts summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.result-facts summary:hover { color: var(--accent); }
+
+.facts-list {
+  margin: 0.8rem 0 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.facts-list > div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 18ch) 1fr;
+  gap: 0.2rem 1rem;
+  font-size: 0.84rem;
+}
+
+.facts-list dt { color: var(--text-dim); }
+.facts-list dd { margin: 0; }
+
+.grid-figure {
+  margin: 1rem 0 0;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Pixellated on purpose: this is a picture of what was sampled, and smoothing
+   it would hide exactly the sampling error it exists to show. */
+.grid-figure canvas {
+  width: 150px;
+  height: auto;
+  image-rendering: pixelated;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  flex: none;
+}
+
+.grid-figure figcaption {
+  flex: 1 1 16rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+@media (max-width: 480px) {
+  .result-rows > div,
+  .facts-list > div {
+    grid-template-columns: 1fr;
+  }
+}

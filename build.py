@@ -558,19 +558,21 @@ def related_tools(ordered, count=RELATED_COUNT):
 
     The list is a RING rather than the head of the category. Read from the
     tool's own position and wrap round, and every tool links to `count` others
-    and every tool has something linking to it - inbound runs two to six across
-    the twenty-four, rather than the exact `count` a plain ring would give,
-    because sorting siblings to the front pulls the crowded categories forward.
+    and every tool has something linking to it - inbound runs a few either side
+    of `count` rather than the exact `count` a plain ring would give, because
+    sorting siblings to the front pulls the crowded categories forward.
     Taking the first few of each category instead would point all fourteen pages
     of `images-and-video` at the same four names and leave the tail of it with
     nothing coming in at all, which is the half of the problem that is about
     search engines rather than readers.
 
-    Three categories hold one tool each - `qr-barcode`, `text-tools` and
-    `password-generator` - so a strict reading of "same category" would leave
-    exactly those pages as the dead ends this exists to remove. The ring therefore runs over every
-    tool and the category merely sorts first: a tool with siblings gets
-    siblings, and a tool without gets the nearest thing the hub has.
+    Two categories hold one tool each - `text-tools` and `password-generator` -
+    so a strict reading of "same category" would leave exactly those pages as
+    the dead ends this exists to remove. `codes-and-data` was a third until the
+    reader joined the generator in it, and that is the sort of thing that keeps
+    happening, so the ring runs over every tool and the category merely sorts
+    first: a tool with siblings gets siblings, and a tool without gets the
+    nearest thing the hub has.
     """
     total = len(ordered)
     out = {}

@@ -92,6 +92,9 @@ complete = true
 "heic-to-jpg" = "heic-in-jpg-umwandeln"
 "image-to-data-uri" = "bild-als-base64"
 "qr-barcode" = "qr-code-erstellen"
+# "Scannen" rather than "lesen": lesen is what the program does, scannen is
+# what a German speaker calls it and what they type into a search box.
+"qr-barcode-reader" = "qr-code-scannen"
 "video-to-gif" = "video-in-gif-umwandeln"
 # "Passwort Generator" ist genau das, was getippt wird, und zwar in dieser
 # Reihenfolge. Die Passphrase steht im Titel, nicht in der Adresse.

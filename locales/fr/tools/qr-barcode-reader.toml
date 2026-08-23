@@ -1,0 +1,347 @@
+#
+# Lecteur de QR codes et de codes-barres - French.
+#
+# Overrides for tools/qr-barcode-reader/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Vouvoiement, comme le générateur d'à côté.
+#
+# The format names stay as they are - EAN-13, UPC-A, ITF-14, Code 128, Code 39,
+# ISO/IEC 18004 - because those are the names printed on the specification and
+# on whatever is going to scan the label.
+#
+# "Code-barres" is hyphenated everywhere, which is the standard spelling; the
+# older "code a barres" is not used here.
+#
+
+name = "Lecteur de QR codes et de codes-barres"
+heading = "Lecteur de QR&nbsp;codes&nbsp;et&nbsp;codes-barres <span class=\"h1-kw\">&mdash; scanner un QR code depuis une image ou la caméra</span>"
+tagline = "Visez un code, ou déposez-en une photo. La lecture se fait ici, et nulle part ailleurs."
+
+title = "Lecteur de QR code &amp; scanner de codes-barres &mdash; depuis une image, sans rien envoyer"
+description = "Lisez un QR code depuis une photo, une capture d'écran ou votre caméra, et voyez exactement où mène le lien avant de l'ouvrir. Codes-barres EAN, UPC, Code 128, Code 39 et ITF aussi. Rien n'est envoyé."
+og_title = "Lire un QR code sans envoyer l'image à qui que ce soit"
+og_description = "Scannez un QR code depuis une image ou avec votre caméra, et lisez l'adresse entière avant de décider de l'ouvrir. L'image ne quitte pas votre machine, et aucune image de la caméra n'est enregistrée."
+og_image_alt = "Lecteur de QR codes et de codes-barres - lire un code depuis une image ou la caméra, sans rien envoyer"
+
+pledge = """
+    Lire un code, c'est de l'arithmétique sur des pixels, et les pixels sont
+    déjà là. Trouver le symbole, corriger l'angle de la prise de vue, défaire le
+    masque, réparer les dégâts avec Reed-Solomon et relire les bits&nbsp;: tout
+    cela se passe dans environ deux mille lignes de JavaScript que vous pouvez
+    lire, dans cette page. <strong>La caméra, c'est la même promesse, pas une
+    exception&nbsp;:</strong> une image arrive sous forme de pixels dans cet
+    onglet, elle est examinée, elle disparaît. Rien n'est enregistré, rien n'est
+    conservé, et cette page n'a aucune fonction réseau qui permettrait d'envoyer
+    quoi que ce soit."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et scannez un code
+      avec la caméra allumée. Pas une seule requête ne transporte une image ni
+      un caractère de ce qu'elle disait. Vous pouvez aussi couper la connexion
+      et lire le code quand même."""
+
+read_first = """
+, <code>src/binarize.js</code>
+      et <code>src/detect.js</code> pour trouver un symbole dans une photo
+      &mdash; le seuil, les motifs de repérage et la correction de perspective
+      &mdash;, <code>src/qr-decode.js</code> pour le relire,
+      <code>src/reed-solomon.js</code> pour réparer ce qui a été mal lu,
+      <code>src/linear.js</code> pour ceux à barres, et
+      <code>src/camera.js</code>, qui est chaque ligne de cette page qui touche
+      à une caméra."""
+
+howto_heading = "Comment lire un QR code sans envoyer l'image"
+
+card = """
+            Lisez un QR code depuis une photo, une capture d'écran ou votre
+            caméra &mdash; et voyez l'adresse entière avant de l'ouvrir. Les
+            codes-barres aussi."""
+
+[picker]
+title = "Déposez ici une image contenant un code"
+hint = "ou cliquez pour parcourir &mdash; une photo, une capture d'écran, un PNG, tout ce que votre navigateur sait ouvrir"
+
+[words]
+plural = "les images et les codes qu'elles contiennent"
+choose = "l'image à lire"
+
+[[facts]]
+text = "Rien n'est envoyé"
+
+[[facts]]
+text = "Pas de compte"
+
+[[facts]]
+text = "Rien n'est enregistré"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code source ouvert"
+
+[[privacy]]
+title = "L'image n'est jamais envoyée, et la caméra ne fait pas exception."
+body = """
+ Une photo que
+      vous déposez ici est décodée sur un canvas de cette page et lue là. Une
+      image de la caméra, c'est la même chose trente fois par seconde&nbsp;: elle
+      est dessinée sur ce canvas, examinée, puis écrasée par la suivante. Aucune
+      n'est enregistrée, aucune n'est conservée, et le voyant de la caméra qui
+      s'éteint quand vous appuyez sur arrêter, c'est tout ce qu'il y a."""
+
+[[privacy]]
+title = "Rien ici ne va chercher quoi que ce soit."
+body = """
+ Il n'y a ni
+      <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
+      <code>sendBeacon</code> nulle part dans <code>src/</code>, et la
+      <code>Content-Security-Policy</code> de la page ne laisse aucune adresse
+      vers laquelle cette origine pourrait envoyer quelque chose, même s'il y en
+      avait. C'est pour cela que cette page ne peut pas vous dire où aboutit un
+      lien raccourci&nbsp;: le savoir voudrait dire demander, et elle ne demande
+      rien."""
+
+[[privacy]]
+title = "Elle vous montre l'adresse. Elle ne l'ouvre jamais."
+body = """
+ Un QR code
+      imprimé est une adresse que personne ne peut lire, et c'est exactement ce
+      qui rend un autocollant collé par-dessus rentable pour quelqu'un. Rien
+      n'est ouvert ici. La chaîne entière est affichée pour que vous la
+      regardiez, l'hôte que vous atteindriez vraiment est sorti sur sa propre
+      ligne, et les astuces qui font qu'une adresse en imite une autre &mdash; un
+      nom d'utilisateur devant un <code>@</code>, un nom écrit dans un alphabet
+      dont les lettres ont la forme des nôtres, une redirection &mdash; sont
+      nommées là où elles apparaissent."""
+
+[[privacy]]
+title = "Elle vous montre aussi ce qu'elle a échantillonné."
+body = """
+ Sous chaque
+      résultat de QR code se trouve une image des modules que cette page a
+      réellement lus sur votre photo. Si cela ressemble au code que vous avez
+      scanné, la réponse au-dessus tient&nbsp;; si cela ressemble à du bruit,
+      non. Un lecteur qui vous rend une chaîne et rien d'autre ne se vérifie pas
+      comme cela."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google, et le bouton de don de Buy
+      Me a Coffee. Aucun d'eux ne reçoit une image, une prise de vue, ni quoi que
+      ce soit lu dedans. Chaque ligne qui transforme des pixels en chaîne est
+      servie depuis cette origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Coupez le réseau et l'outil ne change
+      pas, caméra comprise, parce qu'il n'y a jamais eu d'étape réseau dedans.
+      C'est la preuve la plus simple de toutes."""
+
+[[howto]]
+title = "Donnez-lui l'image."
+body = """
+ Déposez une photo ou une capture
+      d'écran sur la boîte, collez-en une directement, ou appuyez sur le bouton
+      de la caméra. Plusieurs à la fois, c'est très bien&nbsp;: chacune est lue
+      séparément et chacune a sa propre réponse. Une capture d'un code déjà
+      affiché à l'écran est la voie la plus rapide et la plus fiable, parce qu'il
+      n'y a là ni objectif, ni angle, ni lumière en jeu."""
+
+[[howto]]
+title = "Faites entrer le symbole entier, marge comprise."
+body = """
+ Le blanc autour d'un code
+      fait partie du code&nbsp;: c'est comme cela qu'un lecteur sait où le
+      symbole s'arrête. Une photo rognée au bord des carrés est de loin la raison
+      la plus fréquente pour laquelle un code ne se lit pas. Remplir à peu près
+      la moitié du cadre avec le code, c'est à peu près juste&nbsp;; plus près, et
+      les coins sortent de l'image."""
+
+[[howto]]
+title = "Lisez l'adresse avant de décider quoi que ce soit."
+body = """
+ Scanner un code sur une
+      affiche, un horodateur ou une lettre, c'est pour savoir où il mène &mdash;
+      et c'est justement la seule chose qu'un appareil photo de téléphone ne vous
+      laisse pas vraiment faire. Ici l'hôte est écrit sur sa propre ligne. Si ce
+      n'est pas un nom auquel vous vous attendiez, vous avez déjà ce que vous
+      étiez venu chercher et il n'y a plus rien à ouvrir."""
+
+[[howto]]
+title = "Prenez les avertissements au sérieux, surtout les discrets."
+body = """
+ Une adresse en
+      <code>http://</code> tout court, un nom écrit dans un alphabet qui n'est
+      pas celui qu'il semble être, un raccourcisseur de liens, ou quoi que ce
+      soit devant un <code>@</code> dans l'adresse&nbsp;: chacun est nommé là où
+      il apparaît. Aucun ne prouve quoi que ce soit à lui seul. Tous méritent dix
+      secondes avant d'y aller."""
+
+[[howto]]
+title = "Si cela ne se lit pas, changez la lumière avant tout le reste."
+body = """
+ Presque tous les
+      échecs sont un problème de seuil&nbsp;: un reflet en travers du milieu, une
+      ombre sur un coin, ou un écran photographié sous un angle qui attrape le
+      rétroéclairage. Déplacez-vous pour que le reflet ne tombe pas sur le code,
+      ou allumez la lumière de la caméra. Si cela ne suffit pas, prenez une seule
+      photo à plat et de face, et déposez celle-là&nbsp;: une image fixe a droit à
+      une recherche bien plus poussée qu'une image en direct."""
+
+[[howto]]
+title = "Si la réponse vous semble bizarre, regardez l'image échantillonnée."
+body = """
+ Ouvrez
+      &laquo;&nbsp;comment celui-ci a été lu&nbsp;&raquo; et regardez la petite
+      grille. C'est ce que cette page a cru que le code était, redessiné à partir
+      des modules échantillonnés. Un lecteur qui a mal lu un symbole et l'a
+      réparé jusqu'à en faire quelque chose de plausible le montre là, et nulle
+      part ailleurs."""
+
+[[faq]]
+q = "L'image est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non, et ce qui en est lu non plus. L'image est décodée sur un canvas de
+        cette page et lue là, par du JavaScript servi depuis ce site. Cet outil
+        n'a aucune fonction réseau &mdash; il ne va jamais rien chercher et
+        n'envoie jamais rien &mdash; et la
+        <code>Content-Security-Policy</code> de la page nomme toutes les adresses
+        qu'elle peut contacter, dont aucune ne nous appartient. La preuve la plus
+        simple&nbsp;: coupez la connexion, cela continue de marcher."""
+
+[[faq]]
+q = "La caméra enregistre-t-elle quelque chose&nbsp;?"
+a = """
+        Non. Une image de la caméra arrive sous forme de pixels dans cet onglet,
+        est dessinée sur un canvas, est examinée, et se fait écraser par la
+        suivante un dixième de seconde plus tard. Rien n'est écrit sur le disque
+        et rien n'est conservé. Le flux s'arrête dès que vous appuyez sur
+        arrêter, quand l'onglet passe en arrière-plan et quand vous quittez la
+        page &mdash; et le voyant de votre caméra est l'indicateur auquel vous
+        fier, parce qu'aucune page ne peut l'éteindre."""
+
+[[faq]]
+q = "Pourquoi me montre-t-elle le lien au lieu de l'ouvrir&nbsp;?"
+a = """
+        Parce que c'est la partie utile. Un QR code est une adresse que vous ne
+        pouvez pas lire, et c'est bien pour cela qu'un autocollant sur le code
+        d'un horodateur fonctionne&nbsp;: quand vous savez où il menait, vous y
+        êtes déjà. Ici la chaîne est affichée en entier, l'hôte est sorti sur sa
+        propre ligne, et l'ouvrir est un bouton séparé sur lequel vous appuyez
+        après l'avoir lue. C'est un clic de plus, et c'est le clic dont ce format
+        a toujours eu besoin."""
+
+[[faq]]
+q = "Que sait-il lire&nbsp;?"
+a = """
+        Les QR codes de toutes les versions, de 1 à 40, aux quatre niveaux de
+        correction d'erreurs, en mode numérique, alphanumérique, octet et kanji,
+        avec les jeux de caractères ECI et les symboles d'un ensemble chaîné
+        signalés plutôt qu'abandonnés en silence. Côté barres&nbsp;: EAN-13,
+        EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 et Code 39. Il
+        ne lit ni Data Matrix, ni PDF417, ni Aztec, ni MaxiCode."""
+
+[[faq]]
+q = "Il ne lit pas mon code. Qu'est-ce qui ne va pas&nbsp;?"
+a = """
+        Neuf fois sur dix, c'est l'une de trois choses. La marge blanche est
+        rognée, et un lecteur s'en sert pour savoir où le symbole s'arrête. Un
+        reflet ou une ombre traverse une partie du code, si bien qu'aucun seuil ne
+        sépare les carrés sombres des clairs. Ou le code est si petit dans le
+        cadre que ses modules ne font qu'un ou deux pixels. Changez la lumière,
+        remplissez à peu près la moitié du cadre, et prenez la photo de face
+        plutôt que de biais."""
+
+[[faq]]
+q = "Peut-il lire un code abîmé ou partiellement recouvert&nbsp;?"
+a = """
+        Souvent oui, et c'est le format qui fonctionne comme prévu, pas une
+        habileté d'ici. Tout QR code porte des données de contrôle Reed-Solomon,
+        et un symbole fait au niveau H peut perdre environ 30&nbsp;% de ses
+        modules et être quand même reconstruit à l'identique. La page indique
+        combien de mots de code elle a dû réparer, sous
+        &laquo;&nbsp;comment celui-ci a été lu&nbsp;&raquo;, pour que vous voyiez
+        à quel point c'était juste. Ce qu'elle ne fait pas, c'est deviner&nbsp;:
+        un symbole abîmé au-delà de ce que le contrôle peut porter est signalé
+        illisible plutôt que répondu de travers."""
+
+[[faq]]
+q = "Pourquoi dit-il qu'il ne peut pas savoir où mène un lien bit.ly&nbsp;?"
+a = """
+        Parce que le savoir voudrait dire demander à bit.ly, et c'est une requête
+        réseau. Tout le reste de ce que cette page affirme repose sur le fait
+        qu'aucun code ici ne contacte quoi que ce soit, et faire discrètement une
+        exception vaudrait moins que la réponse. Alors le raccourcisseur est
+        nommé, et ce qu'il cache est honnêtement laissé inconnu. Si vous voulez le
+        résoudre, collez-le dans quelque chose qui accepte, lui, de demander."""
+
+[[faq]]
+q = "Est-ce risqué de scanner un QR code&nbsp;?"
+a = """
+        Le scanner ne l'est pas. Y donner suite, si, et le risque est réel&nbsp;:
+        les codes collés par-dessus le vrai, sur les horodateurs, les tables de
+        restaurant et les avis de passage des livreurs, sont désormais assez
+        courants pour avoir un nom. Ce qui les fait marcher, c'est que personne ne
+        peut lire un code en le regardant. Le lire sans l'ouvrir &mdash; ce que
+        fait cette page &mdash; supprime tout cet avantage, et les dix secondes
+        passées à regarder l'hôte sont toute la défense."""
+
+[[faq]]
+q = "C'est quoi, la petite grille sous chaque résultat&nbsp;?"
+a = """
+        Les modules que cette page a réellement échantillonnés sur votre image,
+        redessinés à un carré par module. Elle est là pour que la lecture se
+        vérifie à l'œil plutôt que se croie&nbsp;: si cette grille ressemble au
+        code que vous avez photographié, la réponse au-dessus vient des bons
+        pixels. Presque aucun lecteur ne vous montre cela, et c'est la différence
+        entre un outil qu'on peut vérifier et un outil qu'il faut croire."""
+
+[[faq]]
+q = "Lit-il plusieurs codes sur une même image&nbsp;?"
+a = """
+        Un par image, pour l'instant. Déposez plusieurs images à la fois et chacune
+        est lue séparément, et la caméra lit code après code à mesure que vous la
+        déplacez, gardant chaque nouveau qu'elle n'a pas déjà vu. Une seule photo
+        contenant une page entière de codes, c'est un travail de recadrage &mdash;
+        ou de caméra pointée sur l'un après l'autre."""
+
+[[faq]]
+q = "Pourquoi appelle-t-il mon code-barres autrement que ce que j'avais demandé&nbsp;?"
+a = """
+        Parce qu'un code-barres ne porte pas son propre nom. UPC-A est un EAN-13
+        dont le premier chiffre est un zéro, ITF-14 est de l'Interleaved 2 of 5 à
+        quatorze chiffres avec une clé de contrôle valide, et le Code 128 dans son
+        mode numérique ne ressemble à rien d'autre. Ce que cette page annonce,
+        c'est ce que disent les barres plus ce que confirme la clé de
+        contrôle&nbsp;: c'est tout ce que le symbole lui-même sait."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez la connexion, et elle continue de
+        fonctionner, caméra comprise. C'est aussi la façon la plus simple de
+        prouver que rien n'est envoyé&nbsp;: un lecteur qui expédierait votre
+        image pour la faire décoder s'arrêterait à la seconde où vous débranchez."""
+
+[schema]
+description = "Lire un QR code ou un code-barres linéaire depuis une image, une capture d'écran ou la caméra en direct, entièrement dans le navigateur. Affiche la chaîne décodée et, pour les liens, l'hôte réellement atteint, avant que quoi que ce soit ne soit ouvert. Prend en charge les versions QR de 1 à 40 avec correction d'erreurs Reed-Solomon, ainsi que EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 et Code 39. Rien n'est envoyé et aucune image de la caméra n'est enregistrée."
+features = [
+  "Lit un QR code depuis une photo, une capture d'écran, une image collée ou la caméra en direct",
+  "Toutes les versions QR de 1 à 40, les quatre niveaux de correction d'erreurs et les modes numérique, alphanumérique, octet et kanji",
+  "Correction Reed-Solomon, pour qu'un code rayé, plié ou partiellement recouvert se lise quand même",
+  "Corrige l'angle et la perspective à l'aide du motif d'alignement",
+  "Lit les codes imprimés en clair sur fond sombre et les codes photographiés à l'envers",
+  "EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 et Code 39",
+  "Affiche l'adresse entière, et l'hôte réellement atteint, avant que rien ne soit ouvert",
+  "Nomme les astuces qui déguisent un lien : un nom d'utilisateur devant le @, un alphabet sosie, une redirection",
+  "Décompose les charges Wi-Fi, carte de visite, e-mail, SMS, téléphone et carte en champs lisibles",
+  "Dessine les modules échantillonnés, pour que la lecture se vérifie au lieu de se croire",
+  "Aucune image de la caméra n'est enregistrée ni conservée ; le flux s'arrête avec l'onglet",
+  "Fonctionne hors ligne, sans envoi et sans compte",
+]

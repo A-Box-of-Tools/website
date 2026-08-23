@@ -246,8 +246,8 @@ order = ["merge-pdf", "compress-pdf", "images-to-pdf"]
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; data"
-note = "Make something a machine can read, or check that a file is the file it claims to be. Both in the page."
-order = ["qr-barcode", "hash-checksum"]
+note = "Turn something you typed into something a machine can read, without it leaving the page."
+order = ["qr-barcode", "qr-barcode-reader", "hash-checksum"]
 
 # The second of those, and the one where the promise matters most: what people
 # paste into an online formatter is tokens, config files and customer records.

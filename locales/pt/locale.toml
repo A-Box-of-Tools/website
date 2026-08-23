@@ -56,6 +56,8 @@ complete = true
 # No Brasil se fala "gerar um QR Code", não "criar" nem "fazer". O código de
 # barras fica de fora do endereço: é a metade menos procurada das duas.
 "qr-barcode" = "gerar-qr-code"
+# "Ler" e não "escanear": as duas se falam, mas é "ler QR Code" que se digita.
+"qr-barcode-reader" = "ler-qr-code"
 "resize-image" = "redimensionar-imagem"
 "svg-to-image" = "svg-para-png"
 "trim-video" = "aparar-video"

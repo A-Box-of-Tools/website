@@ -69,6 +69,8 @@ complete = true
 # Aaneen geschreven zou het één woord zijn, maar in een adres leest
 # "wachtwoord-generator" beter en het is ook wat er gezocht wordt.
 "password-generator" = "wachtwoord-generator"
+# "Scannen" is wat er getypt wordt; "lezen" is wat het programma doet.
+"qr-barcode-reader" = "qr-code-scannen"
 "hash-checksum" = "checksum-controleren"
 
 "guides" = "gidsen"
