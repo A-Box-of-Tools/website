@@ -1204,6 +1204,7 @@ Two of them, split by what a thing is rather than by which folder it is in.
 | The code | [MIT](LICENSE) | the build, `templates/`, `shared/`, every tool's `src/`, `styles.css` and `body.html`, the root scripts, and every README |
 | The writing | [CC BY 4.0](LICENSE-CONTENT) | the guides and legal pages under `pages/`, the taglines, descriptions, how-to steps, privacy panels and FAQ answers in `tools/*/tool.toml` and `config/site.toml`, and every translation of those under `locales/` |
 | `tools/heic-to-jpg/vendor/` | its own | libheif, which nobody here wrote — see [A vendored engine](#a-vendored-engine) |
+| the wordlists in `tools/password-generator/src/wordlist.js` | [CC BY 3.0 US](https://creativecommons.org/licenses/by/3.0/us/) | the EFF's diceware lists, bundled unchanged and credited in that file and in [its tool's README](tools/password-generator/README.md) |
 
 Some files hold both kinds — a `tool.toml` is configuration and FAQ answers in
 one — so the licence follows the kind and not the file. That seam is a little

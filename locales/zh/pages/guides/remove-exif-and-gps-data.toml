@@ -1,16 +1,25 @@
 #
-# 指南：照片里的元数据，以及怎么把它删掉 - Simplified Chinese.
+# Guide: the metadata inside a photo, and how to remove it - Simplified
+# Chinese.
+#
+# Overrides for pages/guides/remove-exif-and-gps-data/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
 #
 
-nav = "EXIF 与 GPS 数据"
-title = "怎么删掉照片里的 EXIF 和 GPS 数据"
-description = "手机拍的照片通常带着确切的拍摄地点、精确到秒的时间，还有相机的序列号。里面到底有什么、谁读得到，以及怎么在不动画面的前提下把它们拿掉。"
-heading = "一张照片说了你什么，以及怎么把它拿掉"
+nav = "EXIF 与 GPS 信息"
+
+title = "怎么删掉照片里的 EXIF 和 GPS 信息"
+description = "手机拍的照片通常带着精确的拍摄地点、精确到秒的时间，还有相机的序列号。里面到底有什么，谁读得到，以及怎么在不动画面的前提下把它们清掉。"
+
+heading = "一张照片把你交代了多少，以及怎么把它删掉"
 lede = """
-    一张刚从手机里出来的照片，通常带着拍摄地点的坐标、精确到秒的时间，\
-    以及足够把它和同一台设备拍的其他每一张照片串起来的相机信息。这些在\
-    屏幕上一样都看不见。这里讲的是里面有什么，以及怎么把它删掉。"""
+    刚出手机的一张照片，通常带着拍摄地点的坐标、精确到秒的时间，还有足够把它\
+    和这台设备拍的其他每一张串起来的相机信息。这些在屏幕上一样都看不见。\
+    这一页讲里面到底有什么，以及怎么清掉。"""
+
 updated = "2026年8月20日"
-og_title = "一张照片说了你什么，以及怎么把它拿掉"
-og_description = "GPS 坐标、时间戳和序列号就藏在普通照片里。里面有什么、谁读得到，以及怎么把它清掉。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+
+og_title = "一张照片把你交代了多少，以及怎么把它删掉"
+og_description = "GPS 坐标、时间戳和序列号就藏在普通照片里。里面有什么，谁读得到，以及怎么清掉。"
+og_image_alt = "abox.tools - 不走服务器的工具"

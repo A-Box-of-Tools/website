@@ -1,0 +1,178 @@
+<main>
+  <!-- Passo 1 &mdash; a imagem -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha a imagem</h2>
+
+    <p class="card-lede">
+      O print de um extrato bancário, a foto de um passaporte, uma conta com um
+      endereço nela: as imagens que precisam de tarja são justamente as que não
+      deveriam ser enviadas ao servidor de um estranho para isso. Esta aqui o
+      navegador lê direto do seu disco.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">Escolher outra</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; as caixas -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Cubra o que ninguém deve ver</h2>
+
+    <p id="edit-empty" class="field-summary">Escolha uma imagem e ela aparece aqui para você desenhar em cima.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Arraste sobre a imagem para desenhar uma caixa. Arraste a caixa para
+        movê-la, use as alças para mudar o tamanho, ou chegue nela com
+        <kbd>Tab</kbd> e trabalhe com as setas: <kbd>Alt</kbd> com as setas muda o
+        tamanho e <kbd>Delete</kbd> remove. O que você vê embaixo de cada caixa é
+        o resultado de verdade: a prévia é desenhada pelo mesmo código que escreve
+        o arquivo, no tamanho da tela.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>O que uma caixa nova faz</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>Tarja preta</strong>
+            <span class="check-note">
+              Uma cor chapada, de ponta a ponta. Do que estava ali não sobrevive
+              nada: nem um contorno, nem uma média, nem a quantidade de
+              caracteres. É a única das três que encerra o assunto, e é o que usar
+              para qualquer coisa que se leia como texto.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>Pixelar</strong>
+            <span class="check-note">
+              Cada bloco vira a cor média daquele bloco. Os pixels originais somem
+              mesmo do arquivo, mas uma grade de médias ainda é uma medida do que
+              estava embaixo, e para texto em uma fonte comum isso já bastou, em
+              trabalhos publicados, para reconstruir o original. Serve para um
+              rosto no meio da multidão; não serve para um número de conta.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>Desfocar</strong>
+            <span class="check-note">
+              Cada pixel vira uma média ponderada dos vizinhos. A mesma objeção da
+              pixelação, um pouco mais forte: desfocar é uma convolução, e
+              convoluções em princípio podem ser invertidas. Use onde você quer
+              suavizar algo, não esconder.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">Quanta força na pixelação e no desfoque</label>
+          <select id="strength">
+            <option value="light">Leve</option>
+            <option value="medium" selected>Média</option>
+            <option value="heavy">Forte</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">Adicionar uma caixa no meio</button>
+        <button type="button" id="undo" class="ghost" disabled>Desfazer</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>Remover todas as caixas</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Passo 3 &mdash; o arquivo -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> Salve a cópia tarjada</h2>
+
+    <p class="card-lede">
+      A imagem é decodificada em pixels, as caixas são escritas por cima desses
+      pixels, e o resultado é codificado como um arquivo novo. Não há camada,
+      anotação nem registro de onde as caixas estavam, porque os pixels cobertos
+      deixam de existir antes de o codificador receber qualquer coisa.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Formato</label>
+        <select id="format">
+          <option value="auto" selected>Automático &mdash; JPEG para foto, PNG para o resto</option>
+          <option value="png">PNG (sem perdas)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          Para a tarja não faz diferença: os pixels já foram embora quando o
+          codificador os vê. Isso decide só quanto custa o resto da imagem e como
+          ele é comprimido.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">Qualidade</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Tarjar e salvar</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      Tarjando no tamanho original&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>O arquivo pronto</h3>
+        <a id="download" class="primary as-button" href="#" download>Baixar</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        Abra depois e tente selecionar o texto coberto, ou cole em um editor e
+        procure uma camada. Não há nada para achar: é uma única imagem achatada, e
+        as partes que você cobriu foram sobrescritas antes de ela ser escrita.
+      </p>
+    </div>
+  </section>
+</main>

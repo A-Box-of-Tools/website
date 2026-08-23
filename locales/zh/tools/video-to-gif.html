@@ -21,21 +21,21 @@
     <dl class="source" id="source" hidden>
       <div><dt>文件</dt><dd id="src-name">&mdash;</dd></div>
       <div><dt>大小</dt><dd id="src-size">&mdash;</dd></div>
-      <div><dt>画幅</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>画面</dt><dd id="src-frame">&mdash;</dd></div>
       <div><dt>时长</dt><dd id="src-length">&mdash;</dd></div>
-      <div><dt>视频</dt><dd id="src-codec">&mdash;</dd></div>
-      <div><dt>读取方式</dt><dd id="src-path">&mdash;</dd></div>
+      <div><dt>视频编码</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>用什么读的</dt><dd id="src-path">&mdash;</dd></div>
     </dl>
 
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- 第 2 步，那一段 -->
+  <!-- 第 2 步，挑段落 -->
   <section class="card" id="section-card" hidden>
     <h2><span class="step">2</span> 挑出那一段</h2>
 
     <p class="hint">
-      播放片子，把你要的那部分标出来。<kbd>I</kbd> 把起点设在播放头所在的位置，<kbd>O</kbd> 设终点，条上的两个手柄也都能拖。
+      放起来，把要的那一段标出来。<kbd>I</kbd> 把开始点定在播放头这儿，<kbd>O</kbd> 定结束点，条上那两个手柄也能直接拖。
     </p>
 
     <div class="stage-wrap">
@@ -55,28 +55,28 @@
     </div>
 
     <div class="marks">
-      <label>起点
+      <label>开始
         <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
       </label>
-      <button type="button" id="mark-in" class="ghost" title="把起点设在播放头所在的位置（I）">
-        设到播放头
+      <button type="button" id="mark-in" class="ghost" title="把开始点定到播放头这儿（I）">
+        定到播放头
       </button>
 
-      <label>终点
+      <label>结束
         <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
       </label>
-      <button type="button" id="mark-out" class="ghost" title="把终点设在播放头所在的位置（O）">
-        设到播放头
+      <button type="button" id="mark-out" class="ghost" title="把结束点定到播放头这儿（O）">
+        定到播放头
       </button>
 
       <div class="mark-actions">
-        <button type="button" id="play-section" class="ghost">播放这一段</button>
+        <button type="button" id="play-section" class="ghost">放一遍这一段</button>
         <button type="button" id="whole-clip" class="ghost">整段片子</button>
       </div>
     </div>
   </section>
 
-  <!-- 第 3 步，GIF -->
+  <!-- 第 3 步，出 GIF -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> 尺寸和帧率</h2>
 
@@ -92,7 +92,7 @@
           <option value="custom">精确指定&hellip;</option>
         </select>
         <p class="field-note">
-          高度跟着走，形状不会变。GIF 的开销全在宽度上，宽度减半，像素只剩四分之一。
+          高度跟着走，比例不会变。GIF 的花销就在宽度上：宽度砍一半，像素少四分之三。
         </p>
         <p class="field-note" id="width-note" hidden></p>
       </div>
@@ -100,7 +100,7 @@
       <div class="field" id="custom-width-field" hidden>
         <label for="custom-width">精确宽度</label>
         <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
-        <p class="field-note">以像素计，介于 16 和 1920 之间。</p>
+        <p class="field-note">单位像素，16 到 1920 之间。</p>
       </div>
 
       <div class="field">
@@ -108,24 +108,24 @@
         <select id="fps">
           <option value="5">5，最小</option>
           <option value="10">10</option>
-          <option value="12" selected>12，够流畅了</option>
+          <option value="12" selected>12，够顺了</option>
           <option value="15">15</option>
           <option value="20">20</option>
-          <option value="25">25，最流畅</option>
+          <option value="25">25，最顺</option>
         </select>
         <p class="field-note">
-          这不是视频自己的帧率：帧是从它里面取样出来的。十二帧看起来就是动的；超过二十，文件长得比流畅度显出来的快。
+          这不是视频自己的帧率，帧是从里面抽出来的。十二帧就读得出是在动；过了二十，文件涨得比顺滑看得出来的部分快。
         </p>
       </div>
 
       <div class="field">
         <label for="dither">抖动</label>
         <select id="dither">
-          <option value="on" selected>开，渐变更平滑</option>
-          <option value="off">关，更平整，更小</option>
+          <option value="on" selected>开，渐变更顺</option>
+          <option value="off">关，更平，更小</option>
         </select>
         <p class="field-note">
-          在缺少合适颜色的地方，把调色板里两个颜色混起来。用的是有序抖动，所以静止的背景不会闪。
+          配色板里缺哪个颜色，就拿两个凑。用的是有序抖动，所以静止的背景不会满屏爬。
         </p>
       </div>
 
@@ -134,21 +134,21 @@
           <input type="checkbox" id="loop" checked>
           一直循环
         </label>
-        <p class="field-note">关掉就只播一遍然后停住。</p>
+        <p class="field-note">关掉就只放一遍，然后停住。</p>
       </div>
     </div>
 
     <dl class="summary" id="summary">
-      <div><dt>选段</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>段落</dt><dd id="sum-section">&mdash;</dd></div>
       <div><dt>输出</dt><dd id="sum-size">&mdash;</dd></div>
       <div><dt>帧数</dt><dd id="sum-frames">&mdash;</dd></div>
-      <div><dt>大致文件大小</dt><dd id="sum-bytes">&mdash;</dd></div>
+      <div><dt>大致体积</dt><dd id="sum-bytes">&mdash;</dd></div>
     </dl>
 
     <p id="memory-note" class="field-note" hidden></p>
 
     <div class="export-row">
-      <button type="button" id="export" class="primary" disabled>生成 GIF</button>
+      <button type="button" id="export" class="primary" disabled>做 GIF</button>
       <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 
@@ -160,7 +160,7 @@
     <p id="error" class="error" role="alert" hidden></p>
 
     <div id="result" class="result" hidden>
-      <img id="result-image" alt="做好的动画，正在播放">
+      <img id="result-image" alt="做好的动图，正在播放">
       <div class="result-meta">
         <p id="result-info"></p>
         <a id="download" class="primary as-button" download>下载 GIF</a>

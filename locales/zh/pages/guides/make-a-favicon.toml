@@ -1,17 +1,24 @@
 #
-# 指南：做一个 favicon 和一个应用图标 - Simplified Chinese.
+# Guide: making a favicon and an app icon - Simplified Chinese.
+#
+# Overrides for pages/guides/make-a-favicon/page.toml. Prose in the .html
+# beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
 #
 
-nav = "制作 favicon"
-title = "怎么做一个 favicon（以及一个 Windows 应用图标）"
-description = "一个 favicon.ico 到底需要哪些尺寸、iPhone、Android 和 Mac 还要哪些额外文件，以及为什么一个在海报上好好的 logo 到了十六像素就没了。"
-heading = "怎么做一个在十六像素下还认得出来的 favicon"
+nav = "做网站图标"
+
+title = "怎么做网站图标（以及 Windows 应用图标）"
+description = "favicon.ico 里到底该装哪几个尺寸，iPhone、安卓和 Mac 另外要哪些文件，以及为什么一个在海报上好好的 logo，到了十六像素就没了。"
+
+heading = "怎么做一个到十六像素还看得清的网站图标"
 lede = """
-    favicon 不是你 logo 的一张小图。它是一组固定尺寸的图片，装在一个大多数\
-    人从来没打开过的容器里，而其中最小的那张，才是所有人真正看到的那张。\
-    这里讲的是你需要哪些尺寸、旁边还要放哪些文件，以及你的 logo 撑不过这\
-    一路缩小时该怎么办。"""
+    网站图标不是把 logo 缩小的一张图。它是一组固定尺寸的图，装在一个多数人\
+    从没打开过的容器里，而其中最小的那一张，才是所有人真正看到的。这一页讲\
+    你需要哪些尺寸、旁边还得放哪些文件，以及 logo 缩下去撑不住时该怎么办。"""
+
 updated = "2026年8月20日"
-og_title = "做一个在十六像素下还认得出来的 favicon"
-og_description = "一个 favicon.ico 需要哪些尺寸、iPhone 和 Android 还要哪些额外文件，以及 logo 缩小之后活不下来时该怎么办。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+
+og_title = "做一个到十六像素还看得清的网站图标"
+og_description = "favicon.ico 需要哪些尺寸，iPhone 和安卓另外要哪些文件，以及 logo 缩下去撑不住时该怎么办。"
+og_image_alt = "abox.tools - 不走服务器的工具"

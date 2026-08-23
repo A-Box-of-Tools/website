@@ -1,14 +1,25 @@
 #
-# 指南：把图片压到指定大小 - Simplified Chinese.
+# Guide: compressing an image to a target size - Simplified Chinese.
+#
+# Overrides for pages/guides/compress-an-image-to-a-target-size/page.toml.
+# Prose in the .html beside this file. Written in Chinese rather than
+# translated out of the English; the house style is at the top of
+# locales/zh/locale.toml.
 #
 
 nav = "压缩图片"
-title = "怎么把图片压到指定的文件大小"
-description = "上传表单要 500 KB，你的照片有 4 MB。一个大小限制到底要花什么代价、该先动哪个设置，以及为什么 PNG 不像 JPEG 那样压得下去。"
-heading = "怎么把一张图片压到指定的文件大小"
+
+title = "怎么把图片压到指定大小"
+description = "上传框要 500 KB，你的照片有 4 MB。一个大小限制到底要你付出什么，先动哪个设置，以及 PNG 为什么不像 JPEG 那样能压。"
+
+heading = "怎么把图片压到指定的文件大小"
 lede = """
-    有人扔给你一个数字，100&nbsp;KB、500&nbsp;KB 或者 2&nbsp;MB，而你的照片    离它差得远。这里讲的是这个数字要花什么代价、这笔钱该花在哪儿，以及怎么    判断结果是不是还够好、发得出去。"""
+    有人扔给你一个数字，100&nbsp;KB、500&nbsp;KB、2&nbsp;MB，而你的照片差得\
+    老远。这一页讲的是：这个数字要你拿什么去换，该花在哪儿，以及怎么判断压\
+    完的这张还能不能发出去。"""
+
 updated = "2026年8月20日"
+
 og_title = "把图片压到指定的文件大小"
-og_description = "一个大小限制到底要花什么代价、该先动哪个设置，以及为什么 PNG 不像 JPEG 那样压得下去。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+og_description = "一个大小限制到底要你付出什么，先动哪个设置，以及 PNG 为什么不像 JPEG 那样能压。"
+og_image_alt = "abox.tools - 不走服务器的工具"

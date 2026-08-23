@@ -1,15 +1,23 @@
 #
-# 指南：把一个文件夹的图片做成视频 - Simplified Chinese.
+# Guide: turning images into a video - Simplified Chinese.
+#
+# Overrides for pages/guides/turn-images-into-a-video/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
 #
 
 nav = "图片做成视频"
+
 title = "怎么把一个文件夹的图片做成视频"
-description = "用照片做一个 MP4 幻灯片：帧率和时长各自到底管什么、形状不对的图片怎么处理，以及为什么结果里没有声音。"
+description = "用照片做一段 MP4 幻灯片：帧率和停留时间各管什么，比例不对的照片怎么办，以及成品为什么没有配乐。"
+
 heading = "怎么把一个文件夹的图片做成视频"
 lede = """
-    幻灯片做起来简单，也很容易白做两遍，因为其中两个设置的含义和它们听\
-    起来的不一样。这里讲的是它们各自管什么，以及该怎么选。"""
+    做幻灯片是件简单事，也是件很容易做两遍的事，因为其中两个设置的意思跟它们\
+    听上去的不一样。这一页讲每一个到底管什么，以及该怎么选。"""
+
 updated = "2026年8月20日"
+
 og_title = "怎么把一个文件夹的图片做成视频"
-og_description = "帧率和时长各自到底管什么、形状不对的图片怎么处理，以及为什么没有声音。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+og_description = "帧率和停留时间各管什么，比例不对的照片怎么办，以及为什么没有配乐。"
+og_image_alt = "abox.tools - 不走服务器的工具"

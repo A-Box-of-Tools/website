@@ -64,6 +64,8 @@ complete = true
 # Named for the job rather than for the format, like the German. "EXIF 편집기"
 # is not a thing anybody searches for; deleting the data out of a photo is.
 "exif-editor" = "exif-정보-삭제"
+# 한국어로 이 작업을 찾을 때 실제로 치는 말이 "가리기"입니다.
+"redact-image" = "이미지-가리기"
 "gif-maker" = "gif-만들기"
 "heic-to-jpg" = "heic-jpg-변환"
 # The job again, and the clearest case of it: 증명사진 is a word every Korean
@@ -89,6 +91,9 @@ complete = true
 # Cropping the picture is 화면-자르기, above.
 "trim-video" = "동영상-자르기"
 "video-to-gif" = "동영상-gif-변환"
+# 암호가 아니라 비밀번호입니다. 암호는 암호학의 암호고, 로그인에 쓰는 것을
+# 한국 사이트는 모두 비밀번호라고 부릅니다.
+"password-generator" = "비밀번호-생성기"
 "hash-checksum" = "체크섬-확인"
 
 # The indexes and the legal pages. 개인정보처리방침 is the name that page has in
@@ -114,6 +119,7 @@ complete = true
 "guides/make-a-pdf-smaller" = "가이드/pdf-용량-줄이는-법"
 "guides/make-a-qr-code" = "가이드/qr코드-만드는-법"
 "guides/remove-exif-and-gps-data" = "가이드/사진-위치정보-삭제"
+"guides/redact-an-image" = "가이드/이미지-가리기"
 "guides/resize-an-image" = "가이드/이미지-크기-바꾸기"
 "guides/reverse-a-video" = "가이드/동영상-거꾸로-돌리기"
 "guides/trim-a-video" = "가이드/동영상-구간-자르기"
@@ -198,6 +204,11 @@ note = "기계가 읽는 형태를 만들거나, 그 파일이 자기가 말하�
 id = "text-and-code"
 name = "텍스트와 코드"
 note = "읽고, 비교하고, 인코딩합니다. 토큰이나 설정 파일을 남의 서버에 붙여넣지 않고요."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "비밀번호와 보안"
+note = "비밀은 여기, 본인 기기에서 만듭니다. 남의 손에 사본이 간 적이 없으니 잃어버릴 것도 없습니다."
 
 #
 # ---------------------------------------------------------------------------

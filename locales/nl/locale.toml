@@ -45,6 +45,9 @@ complete = true
 "edit-audio" = "audio-bewerken"
 # Vrijwel niemand zoekt op "EXIF-editor"; men zoekt hoe je de gegevens uit een foto haalt.
 "exif-editor" = "exif-gegevens-verwijderen"
+# "Onleesbaar maken" is wat er gezocht wordt en het zegt wat er gebeurt.
+# "Lakken" komt uit de Woo-hoek en leest als jargon.
+"redact-image" = "afbeelding-onleesbaar-maken"
 "images-to-pdf" = "afbeeldingen-naar-pdf"
 "images-to-video" = "afbeeldingen-naar-video"
 "resize-image" = "afbeelding-formaat-wijzigen"
@@ -61,6 +64,9 @@ complete = true
 # regel die je uiteindelijk in je CSS plakt.
 "image-to-data-uri" = "afbeelding-naar-base64"
 "qr-barcode" = "qr-code-maken"
+# Aaneen geschreven zou het één woord zijn, maar in een adres leest
+# "wachtwoord-generator" beter en het is ook wat er gezocht wordt.
+"password-generator" = "wachtwoord-generator"
 "hash-checksum" = "checksum-controleren"
 
 "guides" = "gidsen"
@@ -71,6 +77,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "gidsen/afbeelding-naar-exact-formaat-comprimeren"
 "guides/resize-an-image" = "gidsen/formaat-van-een-afbeelding-wijzigen"
 "guides/remove-exif-and-gps-data" = "gidsen/exif-en-gps-gegevens-verwijderen"
+"guides/redact-an-image" = "gidsen/een-afbeelding-onleesbaar-maken"
 "guides/make-a-pdf-smaller" = "gidsen/een-pdf-kleiner-maken"
 "guides/combine-images-into-a-pdf" = "gidsen/afbeeldingen-samenvoegen-tot-een-pdf"
 "guides/turn-images-into-a-video" = "gidsen/van-afbeeldingen-een-video-maken"
@@ -164,6 +171,11 @@ note = "Maak iets wat een machine kan lezen, of controleer of een bestand is wat
 id = "text-and-code"
 name = "Tekst &amp; code"
 note = "Lees het, vergelijk het, codeer het, zonder dat je een token of een configuratiebestand op de server van iemand anders plakt."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Wachtwoorden &amp; beveiliging"
+note = "Maak het geheim hier, op je eigen apparaat, zodat niemand anders er ooit een kopie van had om kwijt te raken."
 
 #
 # ---------------------------------------------------------------------------

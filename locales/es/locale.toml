@@ -49,6 +49,9 @@ complete = true
 "edit-audio" = "editar-audio"
 # Casi nadie busca un "editor EXIF"; se busca cómo quitarle los datos a una foto.
 "exif-editor" = "eliminar-datos-exif"
+# "Censurar" es el verbo que se busca en espanol para tapar datos de una
+# imagen, aunque el ingles "redact" sea mas estrecho.
+"redact-image" = "censurar-imagen"
 "images-to-pdf" = "imagenes-a-pdf"
 "images-to-video" = "imagenes-a-video"
 "resize-image" = "redimensionar-imagen"
@@ -62,6 +65,9 @@ complete = true
 "image-to-data-uri" = "imagen-a-base64"
 "qr-barcode" = "generar-codigo-qr"
 "video-to-gif" = "convertir-video-a-gif"
+# Con "de": "generador de contraseñas" es lo que se teclea, y el
+# "generador-contrasenas" sin la preposición no es español que nadie escriba.
+"password-generator" = "generador-de-contrasenas"
 "hash-checksum" = "calcular-checksum"
 
 "guides" = "guias"
@@ -72,6 +78,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "guias/comprimir-una-imagen-a-un-tamano-exacto"
 "guides/resize-an-image" = "guias/redimensionar-una-imagen"
 "guides/remove-exif-and-gps-data" = "guias/eliminar-datos-exif-y-gps"
+"guides/redact-an-image" = "guias/censurar-una-imagen"
 "guides/make-a-pdf-smaller" = "guias/reducir-el-tamano-de-un-pdf"
 "guides/combine-images-into-a-pdf" = "guias/unir-imagenes-en-un-pdf"
 "guides/turn-images-into-a-video" = "guias/convertir-imagenes-en-un-video"
@@ -166,6 +173,11 @@ note = "Crea algo que una máquina pueda leer, o comprueba que un archivo es el 
 id = "text-and-code"
 name = "Texto y código"
 note = "Léelo, compáralo, codifícalo. Sin pegar un token ni un archivo de configuración en el servidor de otro."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Contraseñas y seguridad"
+note = "Crea aquí el secreto, en tu propio dispositivo, para que nadie más haya tenido nunca una copia que perder."
 
 #
 # ---------------------------------------------------------------------------

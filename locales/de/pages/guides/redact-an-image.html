@@ -1,0 +1,234 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie den <a href="../../bild-schwaerzen/">Bild-Schwärzer</a>, ziehen
+      Sie das Bild hinein, ziehen Sie einen Kasten über jede Stelle, die niemand
+      sehen soll, und klicken Sie auf &bdquo;Schwärzen und speichern&ldquo;.
+      Nehmen Sie die schwarze Fläche für alles, was sich als Text lesen lässt.
+      Die Datei, die Sie zurückbekommen, hat dort andere Pixelwerte, wo die
+      Kästen lagen. Es gibt darin kein Rechteck, das sich beiseiteschieben
+      ließe, weil darin überhaupt kein Rechteck ist.
+    </p>
+    <p>
+      Alles Weitere erklärt, warum dieser letzte Satz der eigentliche Punkt ist
+      und woran Sie erkennen, ob ein Programm, das Sie schon benutzen, dasselbe
+      von sich behaupten kann.
+    </p>
+  </section>
+
+  <section>
+    <h2>Abdecken und Entfernen sehen auf dem Bildschirm gleich aus</h2>
+    <p>
+      Zeichnen Sie in einem PDF-Betrachter, einer Präsentation, einer
+      Textverarbeitung oder einem Bildeditor mit Ebenen ein schwarzes Rechteck
+      über einen Namen. Zu sehen ist ein Name mit einem schwarzen Rechteck
+      darüber. <em>Gespeichert</em> haben Sie in den meisten dieser Programme
+      ein Dokument, das den Namen enthält und, getrennt davon, ein Rechteck mit
+      Position, Größe und Farbe.
+    </p>
+    <p>
+      Wer diese Datei öffnet, kann das Rechteck verschieben, löschen oder das
+      Dokument in einem Programm öffnen, das die Ebenen in anderer Reihenfolge
+      zeichnet. Der Name steht immer noch darin. Am Bildschirm ist nicht zu
+      erkennen, welcher der beiden Fälle vorliegt, und genau deshalb passiert
+      das immer wieder Organisationen mit eigener Rechtsabteilung.
+    </p>
+    <p>
+      So sind Gerichtsakten, Behördenberichte, Verträge und mehr als eine
+      eingescannte Zeitungsseite an die Öffentlichkeit geraten. Das Muster ist
+      jedes Mal dasselbe: Das Rechteck war die Anmerkung, und die Anmerkung war
+      nicht das Bild.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was eine echte Schwärzung ist</h2>
+    <p>
+      Ein Bild ist ein Raster aus Zahlen, eine pro Pixel. Es zu schwärzen heißt,
+      <strong>andere Zahlen in das Raster zu schreiben</strong> und das Raster
+      dann zu speichern. Danach gibt es nichts wiederherzustellen, nicht weil
+      die Datei es gut versteckt, sondern weil die Werte nicht in der Datei
+      stehen. Nur diese Variante übersteht es, wenn jemand Neugieriges sie
+      öffnet.
+    </p>
+    <p>
+      Daraus folgen drei Dinge, an denen man eine geschwärzte Datei erkennt:
+    </p>
+    <ul>
+      <li>
+        <strong>Das Ergebnis ist ein flaches Bild.</strong> Keine Ebenen, keine
+        Objekte, keine Anmerkungsliste, nichts zum Ein- und Ausblenden. Wenn Ihr
+        Programm eine Datei mit einer Ebene darin zurückgibt, hat es abgedeckt
+        statt entfernt.
+      </li>
+      <li>
+        <strong>Es ist eine neue Datei, keine bearbeitete alte.</strong> Die
+        Pixel sind durch einen Decoder und einen Encoder gelaufen, geschrieben
+        wird also aus dem geschwärzten Raster.
+      </li>
+      <li>
+        <strong>Die Metadaten sind ebenfalls weg</strong>, als Nebenwirkung. Ein
+        Raster aus Pixeln trägt kein Kameramodell, keine GPS-Position und keinen
+        Zeitstempel. Was da sonst gestanden hätte, steht in
+        <a href="../exif-und-gps-daten-entfernen/">Was ein Foto über Sie
+        verrät</a>.
+      </li>
+    </ul>
+    <p>
+      Der letzte Punkt verdient einen eigenen Absatz, denn in ihm steckt eine
+      weitere Falle. Viele Fotos tragen ein <strong>eingebettetes
+      Vorschaubild</strong>: eine kleine zweite Kopie des Bildes, geschrieben
+      beim Erzeugen der Datei und nicht immer neu erzeugt, wenn das Bild
+      bearbeitet wird. Ein Foto, das ein Werkzeug an Ort und Stelle bearbeitet
+      hat, statt es neu zu kodieren, kann also mit einem Vorschaubild des
+      ungeschwärzten Originals unterwegs sein. Es ist ein kleines Bild, und es
+      ist mühelos groß genug, um einen Namen darauf zu lesen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Schwarz, verpixeln oder weichzeichnen &mdash; und warum das nicht dasselbe ist</h2>
+    <p>
+      Alle drei überschreiben die Pixel. Nur eines davon lässt nichts übrig.
+    </p>
+    <h3>Schwarze Fläche</h3>
+    <p>
+      Jedes Pixel im Kasten bekommt dieselbe Farbe. Von dem, was dort war,
+      bleibt nichts: keine Kontur, keine mittlere Helligkeit, nicht die Anzahl
+      der Zeichen, nicht die Länge des Wortes. Es ist die einzige der drei
+      Arten, bei der die Frage &bdquo;könnte man das rückgängig machen?&ldquo;
+      ein glattes Nein zur Antwort hat, und die richtige Wahl für einen Namen,
+      eine Adresse, eine Kontonummer, ein Kennzeichen, eine Unterschrift oder
+      einen Barcode.
+    </p>
+    <h3>Verpixeln</h3>
+    <p>
+      Der Kasten wird in Blöcke zerlegt, und jeder Block bekommt die
+      Durchschnittsfarbe dieses Blocks. Die ursprünglichen Pixel sind wirklich
+      weg. Aber ein Raster aus Mittelwerten ist immer noch eine Messung dessen,
+      was darunter lag, und bei Text kann diese Messung genügen.
+    </p>
+    <p>
+      Der Angriff ist nicht raffiniert. Text stammt aus einer kleinen Menge von
+      Möglichkeiten: eine Schrift, eine Größe, eine Position, eine Zeichenfolge.
+      Wer ahnt, was für eine Art Angabe dort stand, rendert jede in Frage
+      kommende Zeichenfolge auf dieselbe Weise, verpixelt sie mit demselben
+      Blockraster und vergleicht die Mittelwerte mit Ihren. Meist passt genau
+      eine. Das ist an echten verpixelten Screenshots vorgeführt worden, und es
+      gibt veröffentlichte Software dafür.
+    </p>
+    <p>
+      Entscheidend ist, <strong>aus wie vielen Blöcken das Raster
+      besteht</strong>. Zwei Blöcke über einem Wort sind zwei Zahlen, und mit
+      zwei Zahlen lässt sich keine Zeichenfolge bestimmen. Vierzig Blöcke über
+      demselben Wort sind vierzig Zahlen, und vierzig reichen reichlich. Deshalb
+      nennt der Bild-Schwärzer die Blockzahl des feinsten Rasters auf dem Bild,
+      statt eine Einstellung &bdquo;stark&ldquo; zu nennen: Die Zahl ist die
+      Tatsache, das Adjektiv nur eine Meinung darüber.
+    </p>
+    <h3>Weichzeichnen</h3>
+    <p>
+      Jedes Pixel wird zum gewichteten Mittel seiner Nachbarn. Das ist eine
+      Faltung, und Faltungen sind im Prinzip umkehrbar: Aus einer
+      weichgezeichneten Kopie das Original zurückzurechnen ist eine
+      Standardaufgabe mit Standardsoftware, und sie gelingt am besten in genau
+      dem Fall, auf den es hier ankommt, nämlich bei scharfem Text, der mit
+      kleinem Radius weichgezeichnet wurde.
+    </p>
+    <p>
+      Nutzlos sind Verpixeln und Weichzeichnen deswegen nicht. Ein Gesicht im
+      Hintergrund einer Straßenaufnahme, eine Hausnummer gegenüber, der
+      Bildschirm einer Kollegin hinter Ihnen in einer Videokonferenz: Das ist
+      alles in Ordnung, und das Bild bleibt dabei ein Bild. Die Regel lautet
+      schlicht: <strong>Was sich als Text lesen lässt, wird
+      geschwärzt.</strong>
+    </p>
+  </section>
+
+  <section>
+    <h2>Vier Prüfungen vor dem Verschicken</h2>
+    <p>
+      Sie dauern zusammen eine Minute und funktionieren am Ergebnis jedes
+      Werkzeugs, auch an diesem. Eine Behauptung, die Sie prüfen können, ist
+      mehr wert als eine, die Sie glauben sollen.
+    </p>
+    <ol>
+      <li>
+        <strong>Versuchen Sie, den Text zu markieren.</strong> Öffnen Sie die
+        Datei und ziehen Sie über die abgedeckte Stelle. Wird dabei etwas
+        hervorgehoben, steht der Text noch im Dokument, und Sie sehen eine Form,
+        die darüber gezeichnet wurde.
+      </li>
+      <li>
+        <strong>Öffnen Sie sie in einem Editor und suchen Sie nach
+        Ebenen.</strong> Eine einzige Ebene, meist &bdquo;Hintergrund&ldquo;
+        genannt, ist das, wonach ein geschwärztes Bild aussieht. Ein eigenes
+        Rechteck-Objekt heißt, dass das Original darunter liegt.
+      </li>
+      <li>
+        <strong>Sehen Sie sich das Vorschaubild an.</strong> Manche
+        Dateimanager und Bildbetrachter zeigen das eingebettete Vorschaubild,
+        statt das Bild neu zu lesen. Zeigt die kleine Fassung noch, was Sie
+        abgedeckt haben, wurde die Datei bearbeitet statt neu aufgebaut.
+      </li>
+      <li>
+        <strong>Zoomen Sie ganz an die Ränder des Kastens heran.</strong> Eine
+        Schwärzung, die auf die Pixel angewendet wurde, hat genau an der Grenze
+        eine harte Kante. Ein weicher oder halbdurchsichtiger Rand heißt, dass
+        etwas mit einer Deckkraft über das Bild gezeichnet wurde, und eine
+        Deckkraft unter 100 Prozent ist eine Kopie des Originals mit einem
+        Farbschleier darauf.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Wo es geht, lieber abschneiden als abdecken</h2>
+    <p>
+      Wenn das, was Sie verbergen wollen, am Rand des Bildes sitzt, etwa eine
+      Kopfzeile mit einem Kontonamen, ein Browser-Tab oder eine Taskleiste mit
+      Ihrem Benutzernamen, dann ist Abschneiden stärker als Abdecken und ergibt
+      außerdem eine sauberere Datei. Es gibt keinen Kasten, über den man
+      nachdenken müsste, weil dort schlicht nichts mehr ist.
+    </p>
+    <p>
+      Der <a href="../../bildgroesse-aendern/">Bildskalierer</a> schneidet zu,
+      und <a href="../bild-skalieren/">sein Ratgeber</a> beschreibt, was er
+      sonst noch kann. Für alles in der Bildmitte nehmen Sie den Schwärzer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ein Screenshot ist oft das größere Problem</h2>
+    <p>
+      Meist ist nicht nur das Bild an einem Screenshot verräterisch. Sehen Sie
+      sich vor dem Verschicken an, was um den Ausschnitt herum steht, den Sie
+      zeigen wollten: den Fenstertitel, die Adressleiste samt
+      Vervollständigungsliste, offene Tabs, eine Benachrichtigung, Uhrzeit und
+      Datum, die Taskleiste, ein angemeldetes Profilbild in der Ecke, den Namen
+      des WLANs. Jede einzelne dieser Angaben kann Sie verorten, und keine davon
+      war das, worauf Sie beim Auslösen geschaut haben.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dafür braucht es keinen Upload</h2>
+    <p>
+      Ein Bild lesen, einige seiner Pixel überschreiben und es wieder kodieren
+      kann jeder Browser seit Jahren. Es gibt keinen technischen Grund, warum
+      das Foto Ihres Reisepasses, Ihrer Gehaltsabrechnung oder Ihres
+      Kontoauszugs zu einem fremden Server und zurück reisen müsste, nur damit
+      ein schwarzer Kasten daraufkommt. Und genau solche Bilder bekommt ein
+      Schwärzungswerkzeug zu sehen.
+    </p>
+    <p>
+      Das Werkzeug hier schickt nichts irgendwohin: In der
+      <code>Content-Security-Policy</code> der Seite steht jede Adresse, die sie
+      kontaktieren darf, und keine davon gehört uns. Laden Sie die Seite,
+      trennen Sie die Internetverbindung und schwärzen Sie trotzdem etwas, wenn
+      Sie lieber prüfen als glauben.
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist das Hochladen von
+      Dateien bei Online-Konvertern sicher?</a> nennt drei weitere Prüfungen,
+      die Sie an jedem Werkzeug vornehmen können.
+    </p>
+  </section>

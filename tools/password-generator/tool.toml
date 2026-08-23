@@ -1,0 +1,426 @@
+#
+# Password & Passphrase Generator
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# The first tool here whose output is a secret rather than a document, which
+# changes what the claims on the page have to carry. Everywhere else "nothing
+# is uploaded" protects a file you already had; here there is no file, and the
+# thing being protected is something that did not exist until this page made
+# it. A generator that sent its output anywhere would not be a weak tool, it
+# would be a collection.
+#
+
+slug = "password-generator"
+name = "Password & Passphrase Generator"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Password&nbsp;&amp;&nbsp;passphrase <span class=\"h1-kw\">&mdash; a strong random one, made in your browser</span>"
+tagline = "Made here, by your own browser, and never sent anywhere. Nothing is stored and there is no history."
+icon = "&#128273;"          # the mark beside the page heading
+favicon = "&#128273;"       # the tab icon, drawn into an inline SVG
+category = "passwords-and-security"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "beyond"
+lastmod = "2026-08-23"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Strong Random Password &amp; Passphrase Generator &mdash; Nothing Uploaded"
+description = "Make a strong random password, or a diceware passphrase from a bundled 7,776-word list. Drawn by your browser's own cryptographic generator, never sent anywhere, never stored. Free, no sign-up."
+og_title = "A password generator that could not send your password anywhere"
+og_description = "Random passwords and diceware passphrases, drawn by crypto.getRandomValues in your own browser from a wordlist that ships with the page. No server, no account, no history, and an honest count of how strong the result actually is."
+og_image_alt = "Password & Passphrase Generator - strong random passwords, nothing uploaded"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "A strong random password, or a passphrase you can remember - made on your own machine."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  This tool needs no directive of its own. It fetches nothing and decodes
+  nothing from the network: the wordlist is a file in this folder, and the
+  randomness comes from the browser itself. The one blob: URL it makes is the
+  text file of a batch, which is a download rather than a resource the page
+  loads, and needs no permission at all.
+  img-src still carries blob: because every tool page does, and https: because
+  ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Every character comes from <code>crypto.getRandomValues</code>, the
+    browser's own cryptographic generator, and every word from a list that
+    ships in this folder as <code>src/wordlist.js</code>. There is no
+    <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+    <code>sendBeacon</code> anywhere in <code>src/</code>, so there is no code
+    path by which a password made here could reach us or anybody else &mdash;
+    and nothing is written to storage either, so reloading this page destroys
+    every password it has ever shown you."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      press <em>Make another</em> as many times as you like. Not one request
+      carries a character of the result. Or unplug from the internet and go on
+      generating."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/random.js</code> for the
+      forty lines that stand between this page and every password it makes
+      &mdash; it has exactly one input, and that input is the browser's own
+      generator &mdash; <code>src/generate.js</code> for how the settings turn
+      into a string, and <code>src/strength.js</code> for the arithmetic behind
+      the number, which counts rather than guesses."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to make a strong password without a website seeing it"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            A strong random password, or a passphrase built from a bundled
+            wordlist. Drawn by your own browser and never sent anywhere."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "passwords and passphrases"
+choose = "a length"
+analytics_extra = """, and none of the
+  passwords, passphrases or strength readings this tool works out"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "Nothing stored"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "The password is made where you are reading this."
+body = """
+ It is drawn in this
+      page, by this page, out of the randomness your own operating system
+      hands the browser. Nothing is requested to produce it and nothing is
+      reported once it exists. The
+      <code>Content-Security-Policy</code> names every address this page may
+      contact, and not one of them belongs to this site: there is no endpoint
+      here that a generated password could be collected at, and nothing in the
+      code that would send it if there were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The wordlist is not
+      downloaded; it is <code>src/wordlist.js</code>, served from this origin
+      with the rest of the page, and you can read it."""
+
+[[privacy]]
+title = "The randomness is the browser's, and it is the right kind."
+body = """
+ <code>crypto.getRandomValues</code>
+      is the generator browsers provide for keys and tokens, seeded and
+      reseeded by the operating system. <code>Math.random</code> appears
+      nowhere in this folder, and it would be a real flaw if it did: its
+      internal state can be recovered from a handful of outputs, which makes
+      every password it will ever produce computable by anybody who has seen
+      one of them."""
+
+[[privacy]]
+title = "Nothing is stored, so there is no history to clear."
+body = """
+ No localStorage, no
+      sessionStorage, no cookie, no URL parameter and no <code>&lt;input&gt;</code>
+      the browser will offer to remember. What is on screen exists in one array
+      in this page's memory, and closing the tab is the whole of the cleanup.
+      The only copies of anything made here are the ones you take away."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed a character of what this page makes, or its
+      length, or its strength, or which settings produced it. Every line that
+      draws a character or a word is served from this origin and listed in the
+      repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all: a generator that asked a server for its randomness
+      would stop the moment you unplugged."""
+
+[[howto]]
+title = "Choose a password or a passphrase."
+body = """
+ A password is a run of random
+      characters: short to store, awkward to type, and exactly right for the
+      hundreds of accounts your password manager fills in for you. A passphrase
+      is words drawn at random from a list: longer, but rememberable and
+      sayable, which is what you need for the few secrets you have to type from
+      memory &mdash; the password manager's own, your laptop's, your phone's
+      recovery code."""
+
+[[howto]]
+title = "Set the length, or the number of words."
+body = """
+ This is the setting that matters and
+      the others mostly are not. Twenty characters, or six words, is a sensible
+      floor for anything worth protecting; go up from there for the account
+      that would let somebody reset all the others. The reading underneath
+      moves as you drag, so you can see what each extra character buys."""
+
+[[howto]]
+title = "Turn on the rules the form is going to insist on."
+body = """
+ &ldquo;At least one of
+      each&rdquo;, a digit on the end, a symbol from the short list every site
+      accepts. None of these makes anything stronger &mdash; the first one makes
+      it very slightly weaker, and the page has already subtracted that &mdash;
+      but they are how you get past a sign-up form without generating six in a
+      row."""
+
+[[howto]]
+title = "Read the number, not the colour."
+body = """
+ The bits are counted from the settings
+      that produced the string: the size of the alphabet, the number of draws,
+      and nothing else. That is a real measurement, unlike the meter on a
+      sign-up page, which can only score the characters in front of it and has
+      no way of knowing whether you chose them or a generator did."""
+
+[[howto]]
+title = "Copy it, and put it somewhere, before you leave."
+body = """
+ There is no history here and no
+      way to ask for it back; reloading the page destroys it. Paste it into the
+      password manager first and into the sign-up form second, so that the one
+      that has to remember it has it before anything can go wrong."""
+
+[[howto]]
+title = "Take a batch if you need one."
+body = """
+ The slider at the bottom makes up to a
+      hundred at once and will save them as a plain text file, written by this
+      page from what is already on your screen. Useful for seeding accounts or
+      handing out starter credentials, and worth deleting the moment they are
+      somewhere better: a file full of passwords on your disk is still a file
+      full of passwords."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Are the passwords sent anywhere, or stored?"
+a = """
+        Neither. They are made in your browser, on your own hardware, and this
+        tool has no network feature of any kind &mdash; it never fetches
+        anything and never sends anything. Nothing is written to storage
+        either: no localStorage, no cookie, no history. Reload the page and
+        every password it has shown you is gone, from the screen and from its
+        own memory. The page's <code>Content-Security-Policy</code> names every
+        address it may contact and none of them is ours, so there is nowhere for
+        a password to be collected even if something tried."""
+
+[[faq]]
+q = "Where does the randomness come from?"
+a = """
+        <code>crypto.getRandomValues</code>, the generator browsers provide for
+        cryptographic use, seeded and reseeded by your operating system's own
+        entropy pool. It is the same source a browser uses for TLS key material.
+        <code>Math.random</code> is not used anywhere in this tool, and that
+        distinction is not pedantry: <code>Math.random</code> is a fast
+        arithmetic generator whose entire internal state can be reconstructed
+        from a few consecutive outputs, so a password generator built on it
+        produces passwords that look random and can be enumerated by anybody who
+        has seen one of them."""
+
+[[faq]]
+q = "Is a password made in a browser as good as one from a desktop program?"
+a = """
+        For the randomness, yes &mdash; it is the same operating-system source
+        either way, reached through a different door. What differs is what else
+        is in the room. A browser tab runs alongside your extensions, and an
+        extension with permission to read pages can read this one. That is true
+        of every web-based generator including this one, and it is the honest
+        reason to use your password manager's built-in generator when you have
+        one: it is the same arithmetic, in a process with less standing beside
+        it. This page is for when you do not have one to hand."""
+
+[[faq]]
+q = "Password or passphrase &mdash; which should I actually use?"
+a = """
+        A password for everything a password manager types for you, because you
+        will never look at it and length is free. A passphrase for the few
+        things you have to type from memory or read aloud: the password
+        manager's master password, a disk encryption key, a device you set up
+        by remote control. Six words from the long list is 77 bits, which is
+        stronger than a twelve-character random password and enormously easier
+        to get right at four in the morning."""
+
+[[faq]]
+q = "How long should a password be?"
+a = """
+        Twenty characters over the full alphabet is about 130 bits and is past
+        the point where length stops being the thing to worry about. Sixteen is
+        fine. Twelve is the floor for anything you would mind losing, and it is
+        the floor rather than the target. Below that you are relying on the site
+        having stored it properly, which is a bet the last twenty years of
+        breach notifications suggest you should not take. Length beats every
+        other setting on the page; adding one character is worth more than any
+        rule about which characters have to appear."""
+
+[[faq]]
+q = "How many words should a passphrase have?"
+a = """
+        Six from the long list, and seven if it guards other passwords. The
+        famous four-word picture was drawn in 2011, is 51 bits, and is within
+        reach of a serious offline attack today. Five is 64. Six is 77, which is
+        past anything an attacker will spend on one ordinary account. Every
+        extra word from the long list adds 12.9 bits, and the words are the only
+        part that adds anything &mdash; the hyphens and the capitals do not."""
+
+[[faq]]
+q = "What is a &ldquo;bit&rdquo;, and why does this page count them?"
+a = """
+        A bit is a doubling. Sixty bits means there were 2^60 equally likely
+        results this page could have produced, so an attacker who knows exactly
+        how it works still has that many to try. It is a property of the
+        <em>process</em>, not of the string: the page can quote it exactly
+        because it is the thing that did the choosing and knows how many choices
+        it made. That is the difference between this and the coloured bar on a
+        sign-up form, which reads the characters and guesses. On that bar,
+        <code>correct horse battery staple</code> scores badly and is worth 44
+        bits, and <code>P@ssw0rd!</code> scores well and is worth almost
+        nothing."""
+
+[[faq]]
+q = "Why does &ldquo;must contain a symbol&rdquo; make a password weaker?"
+a = """
+        Because a rule can only ever remove possibilities. Requiring at least
+        one character from every set rules out every password that happened not
+        to have one, and a smaller set of possible passwords is a smaller number
+        to search. The effect is small &mdash; about half a bit at a typical
+        length &mdash; and it is real, and this page subtracts it rather than
+        quoting the flattering figure. It is worked out exactly, by counting the
+        passwords the rule actually allows rather than the ones it does not."""
+
+[[faq]]
+q = "Which wordlist is this, and does it matter that an attacker can download it?"
+a = """
+        It is the Electronic Frontier Foundation's diceware lists, bundled
+        unchanged: 7,776 words for the long one and 1,296 for the short. They
+        were built for exactly this &mdash; nothing offensive, no homophones, no
+        pairs that run together into a third word, and in the short list no word
+        that is the beginning of another. And no, it does not matter that the
+        list is public: the strength quoted here assumes an attacker has it, is
+        looking at this page's source, and knows every setting you used. The
+        only thing they do not know is which of the 7,776 came up each time.
+        That assumption is what makes the number trustworthy."""
+
+[[faq]]
+q = "Is a passphrase not just a dictionary attack waiting to happen?"
+a = """
+        Not when the words are chosen this way. A dictionary attack works
+        against phrases <em>people</em> pick, because people pick words that go
+        together, in an order that makes sense, out of the few thousand they use
+        every day. This page picks each word independently, uniformly, from a
+        fixed list, with no regard for whether the result reads well &mdash;
+        which is why it usually does not. An attacker who knows the list and
+        the length still faces 7,776 to the power of the number of words."""
+
+[[faq]]
+q = "Can I get a password back after I have left the page?"
+a = """
+        No, and that is deliberate. Nothing is written down anywhere, so there
+        is nothing to recover: no history panel, no &ldquo;recently
+        generated&rdquo; list, no cache. A generator that could show you last
+        Tuesday's password would be a generator that had stored it, and stored
+        where you could reach it means stored where something else could. Copy
+        it into a password manager before you navigate away."""
+
+[[faq]]
+q = "Is copying it to the clipboard safe?"
+a = """
+        It is the ordinary risk, and it is worth knowing rather than worrying
+        about. The clipboard is shared with everything else running as you, it
+        usually survives until the next copy, and on some setups it syncs
+        between devices. That is a good reason to paste it where it belongs
+        immediately and copy something else afterwards, and not a reason to
+        type a weaker password by hand instead. This page cannot read your
+        clipboard; it can only write to it, and only when you press the
+        button."""
+
+[[faq]]
+q = "Should I use the same one in more than one place?"
+a = """
+        No, and it is the one piece of advice on this page that outranks
+        everything else on it. Almost every account taken over is taken over
+        with a password that was correct somewhere else first: a site is
+        breached, the list is published, and the same address and password are
+        tried everywhere. A unique password per site turns a breach into one
+        account instead of all of them, and it is the reason to keep a password
+        manager &mdash; not the strength of any individual password it holds."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, there is no account, no sign-in, no trial, and no limit on
+        how many you generate. The site carries advertising, which is what pays
+        for it; the ads are not given anything at all about what this page
+        makes, including how long it was or how strong."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet, and it keeps
+        making passwords. The randomness comes from your own machine and the
+        wordlist is already in the page. That is also the simplest way to prove
+        nothing is being fetched or sent: a generator that asked a server for
+        its numbers would stop the moment you unplugged."""
+
+[schema]
+category = "SecurityApplication"
+description = "Generate strong random passwords and diceware passphrases in the browser. Characters are drawn with crypto.getRandomValues and words from a bundled 7,776-word EFF list; the page reports the exact entropy of what it made. Nothing is uploaded and nothing is stored."
+features = [
+  "Random passwords from an alphabet of up to 94 characters, 6 to 128 long",
+  "Diceware passphrases from a bundled 7,776-word list, or a 1,296-word short list",
+  "Every draw from crypto.getRandomValues, with the modulo bias rejected rather than ignored",
+  "Exact entropy in bits, counted from the settings rather than scored from the string",
+  "Counts the cost of a \"must contain one of each\" rule instead of ignoring it",
+  "Optional exclusion of look-alike characters for a password that has to be typed",
+  "Separator, capitalisation and a trailing digit or symbol, each honest about what it adds",
+  "Up to a hundred at a time, copied or saved as a plain text file",
+  "Nothing stored: no history, no localStorage, no cookie",
+  "Runs offline; no upload, no account",
+]

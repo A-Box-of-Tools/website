@@ -1,0 +1,19 @@
+#
+# Guide : caviarder une image pour que le masqué disparaisse vraiment - French.
+#
+
+nav = "Caviarder une image"
+title = "Comment caviarder une image pour que le masqué disparaisse vraiment"
+description = "Les rectangles noirs tracés par la plupart des logiciels reposent sur l'image et peuvent être écartés. Ce qui sépare un vrai caviardage d'un simple recouvrement, pourquoi un texte pixellisé peut être relu, et comment vérifier un fichier avant de l'envoyer."
+
+heading = "Comment caviarder une image pour que le masqué disparaisse vraiment"
+lede = """
+    Recouvrir et supprimer se ressemblent à l'écran et ne sont pas du tout la
+    même chose. Voici la différence, les deux traitements qui laissent plus de
+    traces qu'on ne le croit, et les vérifications qui vous disent lequel des
+    deux vous venez de faire."""
+updated = "23 août 2026"
+
+og_title = "Comment caviarder une image pour que le masqué disparaisse vraiment"
+og_description = "Pourquoi un rectangle noir n'est presque jamais un caviardage, pourquoi un texte pixellisé peut être relu, et comment vérifier un fichier avant de l'envoyer."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

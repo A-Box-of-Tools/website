@@ -1,0 +1,266 @@
+#
+# Afbeelding onleesbaar maken - Dutch.
+#
+# Overrides for tools/redact-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Onleesbaar maken" is wat er in het Nederlands gezocht wordt en het zegt
+# precies wat er gebeurt. "Lakken" komt uit de Woo-hoek en leest voor de meeste
+# mensen als jargon, dus dat staat er niet.
+#
+
+name = "Afbeelding onleesbaar maken"
+heading = "Afbeelding&nbsp;onleesbaar&nbsp;maken <span class=\"h1-kw\">&mdash; zwart maken, pixelen of blurren</span>"
+tagline = "Wat je afdekt wordt uit het bestand gewist, niet erin verstopt."
+
+title = "Afbeelding onleesbaar maken &mdash; zwart maken, pixelen of blurren, zonder uploaden"
+description = "Dek een naam, een adres of een rekeningnummer in een foto of screenshot af en sla de afbeelding opnieuw op, zodat de verborgen pixels echt uit het bestand zijn en niet onder een rechthoek blijven liggen. Alles gebeurt in de browser."
+og_title = "Een afbeelding zo onleesbaar maken dat het afgedekte echt weg is"
+og_description = "Teken vakjes over wat niemand mag zien. De pixels eronder worden overschreven voordat het bestand wordt geschreven, dus er is geen laag om weg te schuiven. Er wordt niets geüpload."
+og_image_alt = "Afbeelding onleesbaar maken - de afgedekte pixels worden overschreven, niet verstopt"
+
+pledge = """
+    Je eigen browser decodeert de afbeelding, schildert eroverheen en codeert
+    hem opnieuw, met de codecs die hij toch al meebrengt. Dit gereedschap heeft
+    geen enkele netwerkfunctie, niet om iets op te halen en niet om iets te
+    versturen, en dat weegt hier zwaarder dan bijna overal anders op deze site,
+    want wie een afbeelding onleesbaar wil maken heeft er meestal een voor zich
+    waar nog een naam, een adres of een rekeningnummer op te lezen is."""
+
+live_hint = """
+      Je hoeft ons niet te geloven. Open de ontwikkelaarstools, kijk op het
+      tabblad Netwerk en maak een screenshot onleesbaar. Geen enkel verzoek draagt
+      een afbeelding, een miniatuur, een bestandsnaam of de positie van één vakje
+      mee. Of trek de internetverbinding eruit en doe het toch."""
+
+read_first = """
+, <code>src/redact.js</code> voor de drie
+      functies die de pixels overschrijven en <code>src/preview.js</code> voor de
+      reden dat wat je op het scherm ziet door diezelfde drie functies wordt
+      getekend."""
+
+howto_heading = "Zo maak je een afbeelding onleesbaar zodat het afgedekte echt weg is"
+
+card = """
+            Maak een deel van een afbeelding zwart, gepixeld of wazig. De
+            afgedekte pixels worden overschreven voordat het bestand wordt
+            geschreven, dus er blijft geen laag over om weg te schuiven."""
+
+[words]
+plural = "afbeeldingen"
+choose = "een afbeelding"
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Je afbeeldingen kunnen nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en
+      geen daarvan is van ons. Er is hier geen eindpunt waar je bestanden terecht
+      zouden kunnen komen, en in de code staat ook niets dat ze erheen zou sturen
+      als dat er wel was."""
+
+[[privacy]]
+title = "De afgedekte pixels verdwijnen hier, niet onderweg naar buiten."
+body = """
+ De afbeelding
+      wordt gedecodeerd naar een buffer met pixels, de vakjes worden in die buffer
+      geschreven en de buffer gaat naar de encoder. Er bestaat op deze pagina geen
+      versie van de afbeelding met de vakjes als aparte laag, want die versie
+      wordt nooit gemaakt. Zie <code>src/redact.js</code>."""
+
+[[privacy]]
+title = "Hier haalt niets iets op."
+body = """
+ Er is geen
+      <code>fetch</code>, geen <code>XMLHttpRequest</code> en geen
+      <code>sendBeacon</code> ergens in <code>src/</code>. Het werk is
+      <code>getImageData</code>, drie lussen over de bytes en
+      <code>canvas.toBlob</code>, en dat zit allemaal al in je browser."""
+
+[[privacy]]
+title = "De vakjes worden nergens gemeld."
+body = """
+ Waar je hebt getekend,
+      hoeveel het er zijn, hoe groot ze zijn en welke soort je koos, blijft in het
+      geheugen van deze pagina tot je hem sluit. In deze repository staat geen
+      enkele analytics-gebeurtenis die daar iets van meeneemt, en de ene vraag die
+      de site na een download stelt stuurt een duim omhoog of omlaag en de naam
+      van het gereedschap, verder niets."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en het gereedschap is
+      hetzelfde, want er heeft nooit een netwerkstap in gezeten. Dat is het
+      eenvoudigste bewijs van allemaal, en het bewijs dat je wilt draaien voordat
+      je een paspoort onleesbaar maakt."""
+
+[[howto]]
+title = "Kies de afbeelding."
+body = """
+ Een screenshot, een scan of een foto:
+      alles wat je browser kan openen. Hij wordt rechtstreeks van je schijf
+      gelezen en er gaat ondertussen niets ergens heen."""
+
+[[howto]]
+title = "Sleep een vakje over wat niemand mag zien."
+body = """
+ En daarna een
+      volgende. Een vakje versleep je, je verandert het formaat met de grepen, of
+      je bereikt het met Tab en werkt met de pijltjestoetsen. Wat er onder het
+      vakje verschijnt is het echte resultaat, getekend door dezelfde code die
+      straks het bestand schrijft."""
+
+[[howto]]
+title = "Kies zwart, pixelen of blurren &mdash; en kies zwart."
+body = """
+ Een zwart
+      vlak laat helemaal niets over. Pixelen en blurren vervangen de pixels door
+      gemiddelden van zichzelf, en dat is genoeg voor een gezicht op de achtergrond
+      en niet genoeg voor iets dat als tekst te lezen is."""
+
+[[howto]]
+title = "Klik op &lsquo;Onleesbaar maken en opslaan&rsquo; en controleer het bestand."
+body = """
+ De
+      afbeelding die daarna verschijnt is het klaargemaakte bestand, opnieuw
+      gedecodeerd. Open het in een editor en zoek naar een laag, of probeer de
+      afgedekte tekst te selecteren: er is één platte afbeelding, en wat je hebt
+      afgedekt was overschreven voordat hij werd geschreven."""
+
+[[faq]]
+q = "Wordt mijn afbeelding ergens naartoe geüpload?"
+a = """
+        Nee. Je eigen browser decodeert het bestand op je eigen hardware, maakt het
+        onleesbaar en codeert het opnieuw. Dit gereedschap heeft geen enkele
+        netwerkfunctie, het haalt nooit iets op en stuurt nooit iets, en in de
+        <code>Content-Security-Policy</code> van de pagina staat elk adres dat hij
+        mag benaderen, waarvan er geen enkele van ons is. Laad de pagina één keer,
+        trek de internetverbinding eruit en hij werkt gewoon door."""
+
+[[faq]]
+q = "Is het afgedekte deel echt weg uit het bestand?"
+a = """
+        Ja, en daarom bestaat dit gereedschap. De afbeelding wordt gedecodeerd naar
+        een buffer met pixels; de vakjes overschrijven de pixels die erbinnen
+        liggen; daarna wordt de buffer als een nieuw bestand gecodeerd. De
+        oorspronkelijke waarden zijn uit het geheugen verdwenen voordat de encoder
+        iets krijgt, dus er is geen laag om te verbergen, geen aantekening om te
+        verwijderen en geen geschiedenis om ongedaan te maken. Je kunt het
+        controleren zoals je iemand anders zijn bewering zou controleren: open het
+        resultaat in een beeldbewerker en zoek naar een tweede laag, of probeer de
+        tekst die je hebt afgedekt te selecteren."""
+
+[[faq]]
+q = "Kan een gepixeld of geblurd gebied worden hersteld?"
+a = """
+        Soms, en dit is het enige dat je echt moet lezen voordat je kiest. Een
+        zwart vlak vervangt alles eronder door één kleur, dus er blijft niets over:
+        geen rand, geen gemiddelde, niet eens het aantal tekens. Pixelen vervangt
+        elk blok door het gemiddelde van dat blok, en een raster van gemiddelden is
+        nog altijd een meting van wat eronder lag: voor tekst in een gewoon
+        lettertype op een voorspelbare grootte is dat in gepubliceerd onderzoek
+        genoeg geweest om het origineel te reconstrueren, door kandidaat-teksten te
+        renderen en hun gemiddelden te vergelijken. Blurren is een convolutie, en
+        convoluties zijn in principe omkeerbaar. Pixel dus gerust een gezicht op de
+        achtergrond, en maak alles wat als tekst te lezen is zwart."""
+
+[[faq]]
+q = "Waarom is een zwarte rechthoek uit een tekstprogramma niet hetzelfde?"
+a = """
+        Omdat de meeste programma's de rechthoek naast de afbeelding opslaan en niet
+        erin. Een vorm die je tekent in een pdf-lezer, een presentatie, een
+        tekstverwerker of een beeldbewerker met lagen is een object met een positie
+        dat bovenop de pagina ligt, en wie het verplaatst, verwijdert of het bestand
+        in een ander programma opent krijgt precies terug wat eronder zat. Kranten,
+        rechtbanken en ministeries hebben op die manier documenten gepubliceerd.
+        Hier wordt de rechthoek helemaal niet opgeslagen: het zijn pixelwaarden die
+        over de vorige heen geschreven zijn."""
+
+[[faq]]
+q = "Verdwijnen de EXIF- en GPS-gegevens ook?"
+a = """
+        Ja, als bijeffect. Opslaan betekent hier dat een canvas vol pixels wordt
+        gecodeerd, en een canvas draagt geen tags, dus de locatie, het cameramodel,
+        de tijdstempels en de ingebedde miniatuur worden simpelweg niet in het
+        nieuwe bestand geschreven. Die miniatuur doet er hier toe: het is een kleine
+        tweede kopie van de afbeelding, hij wordt niet altijd opnieuw aangemaakt als
+        een foto bewerkt wordt, en een onleesbaar gemaakte foto die met een
+        ongeschonden miniatuur op reis gaat doet al het werk teniet. Wil je de
+        metadata kwijt zonder dat de afbeelding opnieuw gecodeerd wordt, dan
+        herschrijft de <a href="../exif-gegevens-verwijderen/">EXIF-lezer &amp; -wisser</a> in
+        plaats daarvan de container."""
+
+[[faq]]
+q = "Welke formaten kan het lezen en schrijven?"
+a = """
+        Het leest alles wat je browser kan decoderen, in de praktijk dus JPEG, PNG,
+        WebP, GIF, BMP en op de meeste huidige browsers ook AVIF. Het schrijft JPEG,
+        PNG en WebP, want dat zijn de encoders die browsers meebrengen. Op
+        &lsquo;automatisch&rsquo; komt een JPEG terug als JPEG en al het andere als
+        PNG, waardoor een foto een fotoformaat houdt en de tekst die op een
+        screenshot wél zichtbaar blijft scherp blijft. Voor het onleesbaar maken
+        maakt de keuze niets uit: de pixels zijn al weg voordat de encoder ze
+        ziet."""
+
+[[faq]]
+q = "Kan het ook zonder muis?"
+a = """
+        Ja. &lsquo;Vakje in het midden toevoegen&rsquo; zet er een op de afbeelding,
+        met Tab spring je tussen de vakjes, de pijltjestoetsen verplaatsen het vakje
+        met focus en Alt met de pijltjes verandert het formaat; met Shift is elke
+        stap tien pixels en met Delete verdwijnt het. Bij elk vakje hoort bovendien
+        een regel onder de afbeelding met het formaat, de positie, wat het doet en
+        een knop om het te verwijderen, dus het hele gereedschap is met het
+        toetsenbord te bedienen en met een schermlezer te lezen."""
+
+[[faq]]
+q = "Werkt het op een telefoon?"
+a = """
+        Ja. Tekenen, verplaatsen en formaat wijzigen gaan via pointergebeurtenissen
+        en niet via muisgebeurtenissen, dus een vinger werkt net zo, en de grepen
+        worden op een aanraakscherm groter getekend. De afbeelding op het scherm
+        wordt tijdens het werken op schermformaat opnieuw getekend; het bestand zelf
+        wordt altijd op de volle resolutie onleesbaar gemaakt zodra je op de knop
+        drukt."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inlog, geen proefperiode en geen
+        watermerk. Er is ook geen limiet aan de grootte van de afbeelding, want er
+        is geen server die ervoor betaalt: het werk gebeurt op je eigen apparaat. De
+        site draait advertenties, en die betalen hem; de advertenties krijgen niets
+        over je afbeeldingen te zien."""
+
+[schema]
+description = "Een afbeelding onleesbaar maken in de browser: vakjes tekenen over wat niemand mag zien en dat zwart maken, pixelen of blurren. De afgedekte pixels worden overschreven voordat het bestand wordt gecodeerd, dus het resultaat draagt geen laag, geen aantekening en geen metadata. Er wordt niets geüpload."
+features = [
+  "Zwart vlak, pixelen en blurren, per vakje te kiezen",
+  "De afgedekte pixels worden vóór het coderen overschreven, dus er blijft geen laag over om weg te schuiven",
+  "De voorvertoning wordt getekend door dezelfde code die het bestand schrijft",
+  "Noemt uit hoeveel blokken een pixelraster bestaat in plaats van het &lsquo;sterk&rsquo; te noemen",
+  "Toetsenbord en aanraakscherm net zo goed als muis: elk vakje kan zonder erbij",
+  "Wist EXIF, GPS en de ingebedde miniatuur als bijeffect van het opnieuw coderen",
+  "JPEG, PNG en WebP eruit, met een automatische keuze",
+  "Werkt offline, zonder upload en zonder account",
+]
+
+[picker]
+title = "Sleep een afbeelding hierheen"
+hint = "of klik om te bladeren &mdash; JPEG, PNG, WebP en alles wat je browser kan openen"
