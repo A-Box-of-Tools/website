@@ -18,6 +18,14 @@
   that page in German; dropping them on the hub to find it again is the
   commonest way a switcher gets built wrong.
 
+  Every published language is offered, including the ones whose copy of this
+  page nobody has translated yet - those are marked with a two-letter badge and
+  a spoken note, and carry data-lang rather than hreflang, because hreflang
+  claims a translation exists and here one does not. The page behind the link is
+  real either way: it is built in every language and already linked from that
+  language's hub. Hiding the control instead left five tool pages with no way
+  out of English at all.
+
   Each language is written in its own language - Deutsch, not German - because
   that is the word a reader looking for it will be scanning for. `lang` and
   `hreflang` are on every link so that a screen reader announces the name in the
@@ -32,8 +40,9 @@
   <ul>
 {% for lang in languages %}    <li>
 {% if lang.current %}      <span class="lang-current" lang="{{ lang.hreflang }}" aria-current="true">{{ lang.endonym }}</span>
-{% else %}      <a href="{{ lang.href }}" lang="{{ lang.hreflang }}" hreflang="{{ lang.hreflang }}">{{ lang.endonym }}</a>
-{% endif %}    </li>
+{% else %}{% if lang.translated %}      <a href="{{ lang.href }}" lang="{{ lang.hreflang }}" hreflang="{{ lang.hreflang }}">{{ lang.endonym }}</a>
+{% else %}      <a href="{{ lang.href }}" data-lang="{{ lang.hreflang }}" class="lang-partial"><span lang="{{ lang.hreflang }}">{{ lang.endonym }}</span><span class="lang-partial-mark" aria-hidden="true">EN</span><span class="visually-hidden"> &mdash; {{ ui.lang_untranslated }}</span></a>
+{% endif %}{% endif %}    </li>
 {% endfor %}  </ul>
 </nav>
 {% endif %}

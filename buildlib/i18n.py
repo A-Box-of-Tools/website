@@ -969,11 +969,32 @@ def switcher(locales, current, slug, site):
     endonyms and the per-page addresses come from - so a language offered here
     is a language a visitor can be sent to, and no other list decides that.
 
-    Offers only the languages this page exists in. A switcher that lists German
-    on a page with no German behind it is a promise the next click breaks, and
-    it is worse than not offering German at all.
+    Offers every language the SITE is published in, and not only the ones this
+    page is translated into. That is the second version of this rule.
+
+    The first offered `published(locales, slug)`, on the reasoning that listing
+    German on a page with no German behind it is a promise the next click
+    breaks. The reasoning was wrong about what is behind the link. An
+    untranslated page is still BUILT in every language - that is the whole point
+    of falling back - so /de/gif-analyzer/ exists, wears a German nav and a
+    German footer, and is already linked from the German hub. The click lands
+    somewhere real.
+
+    What the first version actually did was remove the control. A tool nobody
+    has translated yet had fewer than two languages to offer, so both switchers
+    rendered nothing at all, and five of the site's tool pages shipped with no
+    way to change language from them - which is a worse answer to "can I read
+    this in German" than an honest "yes, but this one is still in English".
+
+    So the two audiences are separated, because they were never asking the same
+    question. `alternates` and the sitemap still speak per PAGE: they are claims
+    to a crawler that a translation of THIS page exists, and claiming one that
+    does not is the failure Google reports. The switcher is a control for a
+    person, and a person choosing Deutsch is choosing the German site. Entries
+    whose page is not translated yet are marked rather than hidden, and carry no
+    hreflang - there is no translation of this page for it to point at.
     """
-    ready = published(locales, slug)
+    ready = published(locales)
     # Nothing to switch to. A control offering only the language you are already
     # reading is furniture, so it is not rendered until a second language is
     # finished enough to be offered.
@@ -992,6 +1013,11 @@ def switcher(locales, current, slug, site):
             # itself localized.
             'href': locale_path(locale, slug),
             'current': locale['lang'] == current['lang'],
+            # Whether THIS page is translated in that language, as opposed to
+            # whether that language is published at all. False means the click
+            # still works and still changes the site around the reader; it is
+            # the article itself that will still be in English.
+            'translated': translated(locale, slug),
         }
         for locale in ready
     ]

@@ -460,22 +460,58 @@ class BuildTheSite(unittest.TestCase):
         page = (self.out / 'de' / 'index.html').read_text(encoding='utf-8')
         self.assertIn('<div class="lang-auto" id="lang-auto" hidden>', page)
 
-    def test_a_page_offers_a_switcher_exactly_when_it_has_alternates(self):
-        """The header control, the footer list and the hreflang set are one
-        answer to one question, and buildlib/i18n.py is where it is decided.
+    def test_every_page_offers_a_way_out_of_the_language_it_is_in(self):
+        """The control is for a person, and a person can always want it.
 
-        A page that offers German in a menu and does not name it in its head is
-        the disagreement that shows up in Search Console as an hreflang set that
-        does not reciprocate.
+        This used to be judged per page, together with the hreflang set, on the
+        reasoning that the three had to be one answer to one question. The
+        result was that a tool nobody had translated yet had fewer than two
+        languages to offer and rendered no control at all - five tool pages
+        shipped with no way to change language from them.
         """
         for name in self.written:
             if not name.endswith('.html') or name == '404.html':
                 continue
             text = (self.out / name).read_text(encoding='utf-8')
             with self.subTest(page=name):
-                offered = 'rel="alternate"' in text
-                self.assertEqual(offered, '<details class="lang-pick">' in text)
-                self.assertEqual(offered, 'class="lang-switch"' in text)
+                self.assertIn('<details class="lang-pick">', text)
+                self.assertIn('class="lang-switch"', text)
+
+    def test_a_page_never_advertises_a_language_it_does_not_offer(self):
+        """What the old rule was really protecting, and this keeps.
+
+        The switcher may now offer MORE than the hreflang set names: it lists
+        every published language, marking the ones whose copy of this page is
+        still English. What it may never do is name a language in the head that
+        a reader cannot then reach from the page - that is the disagreement
+        Search Console reports as an hreflang set that does not reciprocate.
+        """
+        for name in self.written:
+            if not name.endswith('.html') or name == '404.html':
+                continue
+            text = (self.out / name).read_text(encoding='utf-8')
+            advertised = set(re.findall(r'<link rel="alternate" hreflang="([^"]+)"',
+                                        text)) - {'x-default'}
+            if not advertised:
+                continue
+            switch = text.split('class="lang-switch"', 1)[1]
+            offered = set(re.findall(r'(?:hreflang|data-lang|lang)="([^"]+)"', switch))
+            with self.subTest(page=name):
+                self.assertTrue(advertised <= offered,
+                                f'{sorted(advertised - offered)} advertised but '
+                                'not offered')
+
+    def test_an_untranslated_language_is_offered_but_not_advertised(self):
+        """The two audiences, on one page.
+
+        gif-analyzer is translated nowhere, so it names no alternate in its
+        head - and still offers every language, each marked as still English.
+        """
+        text = (self.out / 'gif-analyzer' / 'index.html').read_text(encoding='utf-8')
+        self.assertNotIn('<link rel="alternate" hreflang=', text)
+        self.assertIn('<details class="lang-pick">', text)
+        self.assertIn('data-lang="de"', text)
+        self.assertIn('lang-partial-mark', text)
 
     def test_the_switcher_links_this_page_and_not_the_front_door(self):
         """Somebody reading about compressing an image who asks for German
