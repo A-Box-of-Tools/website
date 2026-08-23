@@ -284,7 +284,6 @@ base = "Elke bewering op deze site is bedoeld om na te trekken, niet om te gelov
 [ui]
 languages = "Taal"
 lang_auto = "Deze pagina wordt in het Nederlands getoond, de taal waar je browser om vraagt."
-lang_untranslated = "deze pagina is nog in het Engels"
 breadcrumb = "Kruimelpad"
 all_tools = "Alle tools"
 last_updated = "Laatst bijgewerkt"

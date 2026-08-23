@@ -419,63 +419,72 @@ class Advertising(unittest.TestCase):
         self.assertEqual([entry['current'] for entry in found], [True, False])
 
 
-class OfferingALanguageForAPageThatIsNotTranslated(unittest.TestCase):
-    """The switcher answers a person; hreflang answers a crawler.
+class APageNobodyHasTranslatedYet(unittest.TestCase):
+    """What the switcher does where there is nothing much to switch to.
 
-    Judging both per page removed the control entirely from any page nobody had
-    translated yet - five of the site's tool pages shipped with no way to change
-    language at all. The page behind the link is built in every language and
-    already linked from that language's hub, so the honest answer is to offer it
-    and say it is still English, not to hide it.
+    Three rules have been tried here. Judging the list per page AND refusing to
+    render below two entries took the control off any page nobody had
+    translated - five tool pages shipped with no way out of English. Listing
+    every published language and badging the untranslated ones put an EN chip
+    beside eight of eleven entries on /id-photo/, which reads as breakage.
+
+    What is kept is the per-page list, with the floor moved to the site: a page
+    offers the languages it actually has, and a list of one is still rendered,
+    because on a page the reader cannot read English is the way out.
     """
 
     def setUp(self):
         self.english = i18n.base_locale(SITE)
-        # Finished frame, and this one page not translated in it.
+        # A finished language that has not got this one page.
         self.german = locale(complete=True, slugs={'widget': 'dings'},
                              debt={'widget': ['tools.widget.title']})
 
-    def switcher(self):
-        return i18n.switcher([self.english, self.german], self.english,
-                             'widget', SITE)
+    def switcher(self, *locales, current=None):
+        found = list(locales)
+        return i18n.switcher(found, current or self.english, 'widget', SITE)
 
-    def test_the_language_is_still_offered(self):
-        self.assertIn('de', [entry['lang'] for entry in self.switcher()])
+    def test_a_language_without_this_page_is_not_listed(self):
+        """The confusing part, gone: no entry that has to be explained away."""
+        found = self.switcher(self.english, self.german)
+        self.assertEqual([entry['lang'] for entry in found], ['en'])
 
-    def test_and_is_marked_as_not_translated(self):
-        found = {entry['lang']: entry['translated'] for entry in self.switcher()}
-        self.assertEqual(found, {'en': True, 'de': False})
+    def test_english_alone_is_still_rendered(self):
+        """A list of one is furniture on most pages and the way out on this
+        one. The reader is looking at an article they cannot read."""
+        found = self.switcher(self.english, self.german)
+        self.assertEqual(len(found), 1)
+        self.assertEqual(found[0]['href'], '/widget/')
 
-    def test_the_link_still_goes_to_that_page_in_that_language(self):
-        """It exists - falling back builds it - and it wears a German frame."""
-        found = {entry['lang']: entry['href'] for entry in self.switcher()}
-        self.assertEqual(found['de'], '/de/dings/')
+    def test_english_alone_is_offered_from_inside_another_language(self):
+        """The German frame around an English article: the only useful thing to
+        offer is the English page, and it has to be offered."""
+        found = self.switcher(self.english, self.german, current=self.german)
+        self.assertEqual([entry['lang'] for entry in found], ['en'])
+        self.assertEqual([entry['current'] for entry in found], [False])
 
-    def test_but_nothing_is_advertised_to_a_crawler(self):
-        """The part that must NOT loosen. hreflang claims a translation of this
-        page exists, and here one does not."""
-        self.assertEqual(i18n.alternates([self.english, self.german],
-                                         'widget', SITE), [])
+    def test_a_site_with_one_language_still_offers_nothing(self):
+        """The floor is the site. With nowhere to go there is no control."""
+        self.assertEqual(i18n.switcher([self.english], self.english, 'widget',
+                                       SITE), [])
 
-    def test_a_page_translated_nowhere_still_offers_every_language(self):
-        nothing = locale(complete=True, slugs={'widget': 'dings'},
-                         debt={'widget': ['tools.widget.title']})
-        spanish = locale(lang='es', hreflang='es', prefix='es/', complete=True,
-                         debt={'widget': ['tools.widget.title']})
-        found = i18n.switcher([self.english, nothing, spanish], self.english,
-                              'widget', SITE)
-        self.assertEqual([entry['lang'] for entry in found], ['en', 'de', 'es'])
-        self.assertEqual([entry['translated'] for entry in found],
-                         [True, False, False])
+    def test_a_page_that_is_translated_lists_it(self):
+        done = locale(complete=True, slugs={'widget': 'dings'})
+        found = self.switcher(self.english, done)
+        self.assertEqual([entry['lang'] for entry in found], ['en', 'de'])
+        self.assertEqual([entry['href'] for entry in found],
+                         ['/widget/', '/de/dings/'])
 
-    def test_an_unfinished_FRAME_is_still_not_offered(self):
-        """Being behind on one page is not the same as not being a language
-        yet. A locale whose nav and footer are still English has nothing to
-        offer a reader who picks it."""
-        draft = locale(lang='fr', hreflang='fr', prefix='fr/', complete=False)
-        found = i18n.switcher([self.english, self.german, draft], self.english,
-                              'widget', SITE)
-        self.assertNotIn('fr', [entry['lang'] for entry in found])
+    def test_the_switcher_and_the_hreflang_set_name_the_same_languages(self):
+        """Both are per page again, so they cannot drift apart."""
+        locales = [self.english, self.german,
+                   locale(lang='es', hreflang='es', prefix='es/', complete=True,
+                          slugs={'widget': 'aparato'})]
+        offered = {entry['hreflang'] for entry in
+                   i18n.switcher(locales, self.english, 'widget', SITE)}
+        advertised = {entry['hreflang'] for entry in
+                      i18n.alternates(locales, 'widget', SITE)} - {'x-default'}
+        self.assertEqual(offered, advertised)
+        self.assertNotIn('de', offered)
 
 
 class Addresses(unittest.TestCase):

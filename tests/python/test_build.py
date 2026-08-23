@@ -598,17 +598,17 @@ class BuildTheSite(unittest.TestCase):
                                 f'{sorted(advertised - offered)} advertised but '
                                 'not offered')
 
-    def test_an_untranslated_language_is_offered_but_not_advertised(self):
-        """The two audiences, on one page.
-
-        gif-analyzer is translated nowhere, so it names no alternate in its
-        head - and still offers every language, each marked as still English.
-        """
+    def test_a_page_nobody_has_translated_offers_english_and_only_english(self):
+        """gif-analyzer is translated nowhere. It names no alternate in its
+        head, lists no language it has not got - and still renders the control,
+        because English is the way out of a page the reader cannot read."""
         text = (self.out / 'gif-analyzer' / 'index.html').read_text(encoding='utf-8')
         self.assertNotIn('<link rel="alternate" hreflang=', text)
         self.assertIn('<details class="lang-pick">', text)
-        self.assertIn('data-lang="de"', text)
-        self.assertIn('lang-partial-mark', text)
+        switch = text.split('class="lang-switch"', 1)[1].split('</nav>', 1)[0]
+        self.assertEqual(switch.count('<li>'), 1)
+        for absent in ('lang-partial', 'data-lang', 'hreflang="de"'):
+            self.assertNotIn(absent, switch)
 
     def test_the_switcher_links_this_page_and_not_the_front_door(self):
         """Somebody reading about compressing an image who asks for German

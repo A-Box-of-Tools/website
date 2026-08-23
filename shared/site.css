@@ -690,29 +690,6 @@ footer a:hover { text-decoration: underline; }
 
 .lang-pick-menu .lang-current { color: var(--text-dim); }
 
-/* ---- a language whose copy of this page is not translated yet ------------ */
-
-/* Offered, not hidden. The page behind the link is built and readable in that
-   language - it is this article that is still English - so the switcher says
-   which, in two letters that need no translating, and a screen reader gets the
-   sentence. Dimming the badge and not the language name keeps the thing the
-   reader is scanning for at full contrast. */
-
-.lang-partial-mark {
-  margin-inline-start: 0.4em;
-  padding: 0.05em 0.3em;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  font-size: 0.7em;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--text-dim);
-  vertical-align: 0.1em;
-}
-
-.lang-pick-menu a { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
-.lang-pick-menu .lang-partial-mark { margin-inline-start: 0; flex: none; }
-
 /* ---- "you were sent here" ------------------------------------------------ */
 
 /* Shown only on a page shared/lang.js has just redirected somebody to, and
@@ -774,7 +751,6 @@ footer a:hover { text-decoration: underline; }
   color: var(--text);
   font-weight: 600;
 }
-
 
 /* ------------------------------------------------------------- ad placement */
 

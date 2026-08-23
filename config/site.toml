@@ -434,14 +434,6 @@ languages = "Language"
 # other language's own name, taken from the switcher rather than written here.
 lang_auto = "This page is shown in English, the language your browser asks for."
 
-# Said of a language in the switcher whose copy of THIS page has not been
-# translated yet. The switcher offers it anyway - the page is built and
-# readable in every language, and removing the control is a worse answer to
-# "can I read this in German" than an honest "yes, but not this one yet".
-# Read out rather than drawn; the badge beside it carries the same fact to
-# the eye in two letters, which need no translating.
-lang_untranslated = "this page is still in English"
-
 breadcrumb = "Breadcrumb"
 all_tools = "All tools"
 last_updated = "Last updated"
