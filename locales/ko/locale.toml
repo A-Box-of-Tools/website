@@ -64,6 +64,8 @@ complete = true
 # Named for the job rather than for the format, like the German. "EXIF 편집기"
 # is not a thing anybody searches for; deleting the data out of a photo is.
 "exif-editor" = "exif-정보-삭제"
+# 한국어로 이 작업을 찾을 때 실제로 치는 말이 "가리기"입니다.
+"redact-image" = "이미지-가리기"
 "gif-maker" = "gif-만들기"
 "heic-to-jpg" = "heic-jpg-변환"
 # The job again, and the clearest case of it: 증명사진 is a word every Korean
@@ -113,6 +115,7 @@ complete = true
 "guides/make-a-pdf-smaller" = "가이드/pdf-용량-줄이는-법"
 "guides/make-a-qr-code" = "가이드/qr코드-만드는-법"
 "guides/remove-exif-and-gps-data" = "가이드/사진-위치정보-삭제"
+"guides/redact-an-image" = "가이드/이미지-가리기"
 "guides/resize-an-image" = "가이드/이미지-크기-바꾸기"
 "guides/reverse-a-video" = "가이드/동영상-거꾸로-돌리기"
 "guides/trim-a-video" = "가이드/동영상-구간-자르기"

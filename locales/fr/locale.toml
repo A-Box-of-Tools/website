@@ -45,6 +45,9 @@ complete = true
 # Nobody searches for an "éditeur EXIF" in French; they search for how to get
 # the data out of a photo.
 "exif-editor" = "supprimer-les-donnees-exif"
+# "Caviarder" est le mot exact, et c'est celui qui porte la distinction
+# dont vit la page : supprimer plutot que recouvrir.
+"redact-image" = "caviarder-une-image"
 "images-to-pdf" = "images-en-pdf"
 "images-to-video" = "images-en-video"
 "resize-image" = "redimensionner-une-image"
@@ -77,6 +80,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "guides/compresser-une-image-a-une-taille-precise"
 "guides/resize-an-image" = "guides/redimensionner-une-image"
 "guides/remove-exif-and-gps-data" = "guides/supprimer-les-donnees-exif-et-gps"
+"guides/redact-an-image" = "guides/caviarder-une-image"
 "guides/make-a-pdf-smaller" = "guides/reduire-la-taille-d-un-pdf"
 "guides/combine-images-into-a-pdf" = "guides/reunir-des-images-dans-un-pdf"
 "guides/turn-images-into-a-video" = "guides/transformer-des-images-en-video"

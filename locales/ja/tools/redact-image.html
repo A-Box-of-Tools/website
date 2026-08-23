@@ -1,0 +1,153 @@
+<main>
+  <!-- ステップ1｜画像 -->
+  <section class="card">
+    <h2><span class="step">1</span> 画像を選ぶ</h2>
+
+    <p class="card-lede">
+      銀行の明細のスクリーンショット、パスポートの写真、住所の入った請求書。黒塗りが必要な画像は、そのために知らない相手のサーバーへ上げるべきでない画像とちょうど同じものです。この画像はブラウザがディスクから直接読みます。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">別の画像を選ぶ</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- ステップ2｜枠 -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> 見せたくない場所を隠す</h2>
+
+    <p id="edit-empty" class="field-summary">画像を選ぶと、ここに表示されて枠を引けるようになります。</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        画像の上をドラッグすると枠を引けます。枠はドラッグで動かし、ハンドルで大きさを変えられます。<kbd>Tab</kbd>キーで枠に移り、矢印キーで動かすこともできます。<kbd>Alt</kbd>と矢印キーで大きさが変わり、<kbd>Delete</kbd>キーで削除できます。枠の下に見えているものが本当の結果です。プレビューはファイルを書くのと同じコードが、画面の大きさで描いています。
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>新しい枠が何をするか</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>黒く塗る</strong>
+            <span class="check-note">
+              端から端まで1色です。そこにあったものは何も残りません。輪郭も、平均値も、文字数さえも残りません。3つのうちで話が終わるのはこれだけで、文字として読めるものにはこれを使ってください。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>モザイクをかける</strong>
+            <span class="check-note">
+              各ブロックがそのブロックの平均色になります。元の画素は本当にファイルから消えますが、平均値の格子は下にあったものの測定値として残ります。ありふれた書体の文字なら、それだけで元に戻せたという研究が公表されています。人混みの中の顔には向きますが、口座番号には向きません。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>ぼかす</strong>
+            <span class="check-note">
+              各画素が周囲の加重平均になります。モザイクと同じ問題が、もう少しはっきり出ます。ぼかしは畳み込みであり、畳み込みは原理として逆算できるからです。隠すためではなく、和らげたいときに使ってください。
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">モザイクとぼかしの強さ</label>
+          <select id="strength">
+            <option value="light">弱</option>
+            <option value="medium" selected>中</option>
+            <option value="heavy">強</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">中央に枠を追加</button>
+        <button type="button" id="undo" class="ghost" disabled>元に戻す</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>枠をすべて削除</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- ステップ3｜ファイル -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> 黒塗りした画像を保存する</h2>
+
+    <p class="card-lede">
+      画像は画素に展開され、枠はその画素の上に書き込まれ、結果が新しいファイルとして書き出されます。レイヤーも注釈も、枠がどこにあったかの記録もありません。隠れた画素は、エンコーダーが何かを受け取るより前に存在しなくなるからです。
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">形式</label>
+        <select id="format">
+          <option value="auto" selected>自動｜写真はJPEG、それ以外はPNG</option>
+          <option value="png">PNG（可逆）</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          黒塗りには関係しません。エンコーダーが見るときには画素はすでに消えています。決まるのは、残りの画像の重さと圧縮のされ方だけです。
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">画質</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>黒塗りして保存</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      元の解像度で黒塗り中&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>できあがったファイル</h3>
+        <a id="download" class="primary as-button" href="#" download>ダウンロード</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        あとで開いて、隠した文字を選択してみるか、編集ソフトに貼ってレイヤーを探してみてください。見つかるものはありません。平たい画像が1枚あるだけで、隠した場所は書き出しより前に上書きされています。
+      </p>
+    </div>
+  </section>
+</main>

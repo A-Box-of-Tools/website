@@ -1,0 +1,181 @@
+<main>
+  <!-- Passo 1 &mdash; l'immagine -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli l'immagine</h2>
+
+    <p class="card-lede">
+      Lo screenshot di un estratto conto, la foto di un passaporto, una bolletta
+      con sopra un indirizzo: le immagini che serve oscurare sono esattamente
+      quelle che non andrebbero caricate sul server di uno sconosciuto per
+      farlo. Questa la legge il browser direttamente dal tuo disco.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">Scegline un'altra</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; i riquadri -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Copri ciò che nessuno deve vedere</h2>
+
+    <p id="edit-empty" class="field-summary">Scegli un'immagine e comparirà qui, pronta da segnare.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Trascina sull'immagine per tracciare un riquadro. Un riquadro si sposta
+        trascinandolo, si ridimensiona dalle maniglie, oppure si raggiunge con
+        <kbd>Tab</kbd> e si muove con le frecce: <kbd>Alt</kbd> e le frecce
+        ridimensionano, <kbd>Canc</kbd> lo rimuove. Quello che vedi sotto ogni
+        riquadro è il risultato vero: l'anteprima la disegna lo stesso codice che
+        scrive il file, a dimensione schermo.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>Che cosa fa un riquadro nuovo</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>Coprire di nero</strong>
+            <span class="check-note">
+              Un colore pieno, da bordo a bordo. Di quello che c'era non
+              sopravvive niente: né un contorno, né una media, né il numero di
+              caratteri. È l'unico dei tre che chiude davvero la questione, ed è
+              quello da usare per qualsiasi cosa si legga come testo.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>Pixelare</strong>
+            <span class="check-note">
+              Ogni blocco diventa il colore medio di quel blocco. I pixel
+              originali spariscono davvero dal file, ma una griglia di medie è pur
+              sempre una misura di ciò che c'era sotto, e per un testo in un
+              carattere ordinario è bastata, in lavori pubblicati, a ricostruire
+              l'originale. Va bene per un volto in mezzo alla gente, non per un
+              numero di conto.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>Sfocare</strong>
+            <span class="check-note">
+              Ogni pixel diventa una media pesata dei suoi vicini. La stessa
+              obiezione della pixelatura, un po' più netta: sfocare è una
+              convoluzione, e le convoluzioni in linea di principio si invertono.
+              Usala dove vuoi ammorbidire qualcosa, non nasconderla.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">Quanto sono forti pixelatura e sfocatura</label>
+          <select id="strength">
+            <option value="light">Leggera</option>
+            <option value="medium" selected>Media</option>
+            <option value="heavy">Forte</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">Aggiungi un riquadro al centro</button>
+        <button type="button" id="undo" class="ghost" disabled>Annulla</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>Togli tutti i riquadri</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Passo 3 &mdash; il file -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> Salva la copia oscurata</h2>
+
+    <p class="card-lede">
+      L'immagine viene decodificata in pixel, i riquadri vengono scritti sopra
+      quei pixel, e il risultato viene codificato come file nuovo. Non c'è
+      nessun livello, nessuna annotazione e nessuna traccia di dove fossero i
+      riquadri, perché i pixel coperti smettono di esistere prima che il
+      codificatore riceva qualcosa.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Formato</label>
+        <select id="format">
+          <option value="auto" selected>Automatico &mdash; JPEG per una foto, PNG per il resto</option>
+          <option value="png">PNG (senza perdita)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          Per l'oscuramento non cambia niente: i pixel sono già spariti quando il
+          codificatore li vede. Decide soltanto quanto pesa il resto
+          dell'immagine e come viene compresso.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">Qualità</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Oscura e salva</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      Oscuramento a piena risoluzione&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>Il file finito</h3>
+        <a id="download" class="primary as-button" href="#" download>Scarica</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        Aprilo poi e prova a selezionare il testo coperto, oppure incollalo in un
+        editor e cerca un livello. Non c'è niente da trovare: è una sola immagine
+        piatta, e le parti che hai coperto sono state sovrascritte prima che
+        venisse scritta.
+      </p>
+    </div>
+  </section>
+</main>

@@ -45,6 +45,9 @@ complete = true
 "edit-audio" = "audio-bewerken"
 # Vrijwel niemand zoekt op "EXIF-editor"; men zoekt hoe je de gegevens uit een foto haalt.
 "exif-editor" = "exif-gegevens-verwijderen"
+# "Onleesbaar maken" is wat er gezocht wordt en het zegt wat er gebeurt.
+# "Lakken" komt uit de Woo-hoek en leest als jargon.
+"redact-image" = "afbeelding-onleesbaar-maken"
 "images-to-pdf" = "afbeeldingen-naar-pdf"
 "images-to-video" = "afbeeldingen-naar-video"
 "resize-image" = "afbeelding-formaat-wijzigen"
@@ -70,6 +73,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "gidsen/afbeelding-naar-exact-formaat-comprimeren"
 "guides/resize-an-image" = "gidsen/formaat-van-een-afbeelding-wijzigen"
 "guides/remove-exif-and-gps-data" = "gidsen/exif-en-gps-gegevens-verwijderen"
+"guides/redact-an-image" = "gidsen/een-afbeelding-onleesbaar-maken"
 "guides/make-a-pdf-smaller" = "gidsen/een-pdf-kleiner-maken"
 "guides/combine-images-into-a-pdf" = "gidsen/afbeeldingen-samenvoegen-tot-een-pdf"
 "guides/turn-images-into-a-video" = "gidsen/van-afbeeldingen-een-video-maken"

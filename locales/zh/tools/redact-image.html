@@ -1,0 +1,159 @@
+<!--
+  tools/redact-image/body.html, in Simplified Chinese.
+
+  Chinese keeps the English slug, so every href here is exactly the one the
+  English source wrote; only the link text is translated.
+-->
+<main>
+  <!-- 第一步：图片 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选一张图片</h2>
+
+    <p class="card-lede">
+      银行流水的截图、护照的照片、印着住址的账单。需要涂黑的图片，恰恰就是不该为了涂黑而传给陌生服务器的那些图片。这一张由浏览器直接从你的硬盘读进来。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">换一张</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第二步：框 -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> 遮住不该被看到的部分</h2>
+
+    <p id="edit-empty" class="field-summary">选一张图片，它就会出现在这里让你画。</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        在图片上拖动就能拉出一个框。框可以拖着移动，可以拉把手改大小，也可以按 <kbd>Tab</kbd> 选中之后用方向键调整：<kbd>Alt</kbd> 加方向键改大小，<kbd>Delete</kbd> 删掉它。每个框下面显示的都是真实结果，预览是写文件的那段代码按屏幕尺寸画出来的。
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>新框做什么</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>涂黑</strong>
+            <span class="check-note">
+              整块一种颜色，从边到边。原来那里的东西什么都不剩：轮廓不剩，平均值不剩，连有几个字都不剩。三种里只有这一种是把话说死的，凡是能读成文字的都该用它。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>打码</strong>
+            <span class="check-note">
+              每一格变成那一格的平均色。原来的像素确实从文件里没了，但一格一格的平均值仍然是对下面内容的一次测量。对于常见字体里的文字，已经有公开研究靠它还原出了原文。用来遮人群里的一张脸没问题，用来遮账号不行。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>模糊</strong>
+            <span class="check-note">
+              每个像素变成周围像素的加权平均。跟打码是同一个问题，而且更明显一些：模糊是一次卷积，卷积原则上可以反过来算。想让某样东西柔和一点、而不是藏起来时再用它。
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">打码和模糊的强度</label>
+          <select id="strength">
+            <option value="light">轻</option>
+            <option value="medium" selected>中</option>
+            <option value="heavy">重</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">在中间加一个框</button>
+        <button type="button" id="undo" class="ghost" disabled>撤销</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>删掉所有框</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- 第三步：文件 -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> 保存涂好的那一份</h2>
+
+    <p class="card-lede">
+      图片被解码成像素，框写在这些像素上面，结果再被编码成一个新文件。没有图层，没有批注，也没有任何关于框在哪里的记录，因为被遮的像素在编码器拿到东西之前就已经不存在了。
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">格式</label>
+        <select id="format">
+          <option value="auto" selected>自动：照片给 JPEG，其余给 PNG</option>
+          <option value="png">PNG（无损）</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          这跟涂黑没关系：编码器看到它们的时候，那些像素早就没了。它只决定图片其余部分占多大、怎么压缩。
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">质量</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>涂黑并保存</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      正在按原始尺寸处理&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>做好的文件</h3>
+        <a id="download" class="primary as-button" href="#" download>下载</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        回头把它打开，试着选中被遮住的文字，或者贴进编辑器里找找图层。找不到东西：只有平平的一张图，你遮住的地方在它被写出来之前就已经被覆盖了。
+      </p>
+    </div>
+  </section>
+</main>

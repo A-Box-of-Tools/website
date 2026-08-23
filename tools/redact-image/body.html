@@ -1,0 +1,179 @@
+<main>
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose the image</h2>
+
+    <p class="card-lede">
+      A screenshot of a bank statement, a photo of a passport, a bill with an
+      address on it &mdash; the pictures people need to redact are exactly the
+      pictures they should not be uploading to a stranger's server to have it
+      done. This one is read straight off your disk by the browser.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">Choose a different one</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the boxes -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Cover what should not be seen</h2>
+
+    <p id="edit-empty" class="field-summary">Choose an image and it appears here to draw on.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Drag across the picture to draw a box. Drag a box to move it, drag its
+        handles to resize it, or press <kbd>Tab</kbd> to reach one and use the
+        arrow keys &mdash; <kbd>Alt</kbd> and the arrows resize, <kbd>Delete</kbd>
+        removes. What you see under each box is the real thing: the preview is
+        drawn by the same code that writes the file, at screen size.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>What a new box does</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>Black it out</strong>
+            <span class="check-note">
+              One flat colour, edge to edge. Nothing of what was there survives
+              &mdash; not an outline, not an average, not the number of
+              characters. This is the only one of the three that is finished,
+              and it is what to use for anything that reads as text.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>Pixelate it</strong>
+            <span class="check-note">
+              Each block becomes the average colour of that block. The original
+              pixels are gone from the file, but a grid of averages is still a
+              measurement of what was underneath &mdash; and for text in an
+              ordinary font that has been enough, in published work, to
+              reconstruct the original. Fine for a face in a crowd; not for an
+              account number.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>Blur it</strong>
+            <span class="check-note">
+              Each pixel becomes a weighted average of its neighbours. The same
+              objection as pixelating, a little more sharply: blurring is a
+              convolution, and convolutions can in principle be worked backwards.
+              Use it where you want something softened rather than hidden.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">How hard pixelate and blur are applied</label>
+          <select id="strength">
+            <option value="light">Light</option>
+            <option value="medium" selected>Medium</option>
+            <option value="heavy">Heavy</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">Add a box in the middle</button>
+        <button type="button" id="undo" class="ghost" disabled>Undo</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>Remove every box</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the file -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> Save the redacted copy</h2>
+
+    <p class="card-lede">
+      The picture is decoded to pixels, the boxes are written over those pixels,
+      and the result is encoded as a new file. There is no layer, no annotation
+      and no record of where the boxes were, because the covered pixels stop
+      existing before the encoder is handed anything.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="auto" selected>Auto &mdash; JPEG for a photo, PNG for anything else</option>
+          <option value="png">PNG (lossless)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          It makes no difference to the redaction: the pixels are already gone
+          before the encoder sees them. It only decides what the rest of the
+          picture costs and how it is compressed.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">Quality</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Redact and save</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      Redacting at full size&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>The finished file</h3>
+        <a id="download" class="primary as-button" href="#" download>Download</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        Open it afterwards and try to select the covered text, or paste it into
+        an editor and look for a layer. There is nothing to find: it is one flat
+        picture, and the parts you covered were overwritten before it was
+        written out.
+      </p>
+    </div>
+  </section>
+</main>

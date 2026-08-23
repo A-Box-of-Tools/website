@@ -1,0 +1,313 @@
+#
+# Image Redactor
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "redact-image"
+name = "Image Redactor"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Image&nbsp;Redactor <span class=\"h1-kw\">&mdash; black out, pixelate or blur</span>"
+tagline = "What you cover is deleted from the file, not covered up in it."
+icon = "&#11035;"          # the mark beside the page heading
+favicon = "&#11035;"       # the tab icon, drawn into an inline SVG
+category = "images-and-video"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "images"
+
+# Shared modules this tool asks for. file-picker brings in the drop zone; the
+# list of boxes underneath the picture is this tool's own, because it is a list
+# of rectangles rather than a list of files.
+js_parts = ["file-picker"]
+lastmod = "2026-08-23"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Redact an Image &mdash; Black Out, Pixelate or Blur, No Upload"
+description = "Cover a name, an address or an account number in a photo or screenshot and re-encode the picture, so the hidden pixels are gone from the file rather than sitting under a rectangle. Runs entirely in your browser."
+og_title = "Redact an image so the covered part is really gone"
+og_description = "Draw boxes over what should not be seen. The pixels underneath are overwritten before the file is written, so there is no layer to move and nothing to recover. Nothing is uploaded."
+og_image_alt = "Image Redactor - the covered pixels are overwritten, not hidden"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Draw a box, and the pixels under it stop existing before the file is written."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  img-src needs blob: because the finished picture is shown to you by decoding
+  the file this page just made, and https: because ad creatives come from
+  anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The picture is decoded, painted over and encoded again by your own browser,
+    using the codecs it already ships with. This tool has no network feature of
+    any kind &mdash; nothing to fetch, nothing to send &mdash; which matters more
+    here than almost anywhere else on this site: the pictures people bring to a
+    redaction tool are the ones with a name, an address or an account number
+    still legible on them."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and redact
+      a screenshot of something. Not one request carries an image, a thumbnail, a
+      filename, or the position of a single box. Or unplug from the internet and
+      redact one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/redact.js</code> for the three
+      functions that overwrite the pixels, and <code>src/preview.js</code> for
+      why what you see on screen is drawn by those same three functions."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to redact an image so the hidden part is really gone"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Black out, pixelate or blur part of a picture. The covered pixels
+            are overwritten before the file is written, so there is no layer to
+            move aside."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "images"
+choose = "an image"
+analytics_extra = """, and nothing about
+  where you put a box or what was under it"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your images have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were."""
+
+[[privacy]]
+title = "The covered pixels stop existing here, not on the way out."
+body = """
+ The picture is
+      decoded into a buffer of pixels, the boxes are written over that buffer,
+      and the buffer is handed to the encoder. There is no version of the picture
+      in this page with the boxes as a separate layer, because no such version is
+      ever made &mdash; see <code>src/redact.js</code>."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The work is
+      <code>getImageData</code>, three loops over the bytes, and
+      <code>canvas.toBlob</code> &mdash; all of it already installed in your
+      browser."""
+
+[[privacy]]
+title = "The boxes are never reported anywhere."
+body = """
+ Where you drew, how
+      many, how big, and which style you chose are held in this page's memory
+      until you close it. There is no custom analytics event in this repository
+      that carries any of it, and the one question this site asks after a
+      download sends a thumb up or down and the name of the tool, nothing else."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all &mdash; and the one worth running before you redact
+      a passport."""
+
+[[howto]]
+title = "Choose the image."
+body = """
+ A screenshot, a scan or a photo &mdash;
+      anything your browser can open. It is read straight off your disk; nothing
+      is sent anywhere while you do it."""
+
+[[howto]]
+title = "Drag a box over what should not be seen."
+body = """
+ Drag again for
+      the next one. A box can be moved, resized by its handles, or reached with
+      the Tab key and moved with the arrows. What appears under the box is the
+      real result, drawn by the same code that writes the file."""
+
+[[howto]]
+title = "Choose black, pixelate or blur &mdash; and prefer black."
+body = """
+ A
+      black fill leaves nothing at all. Pixelating and blurring replace the
+      pixels with averages of themselves, which is enough for a face in the
+      background and is not enough for anything that reads as text."""
+
+[[howto]]
+title = "Press \"Redact and save\", then check the file."
+body = """
+ The
+      picture shown afterwards is the finished file, decoded again. Open it in an
+      editor and look for a layer or try to select the covered text: there is one
+      flat picture, and the parts you covered were overwritten before it was
+      written out."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my image uploaded anywhere?"
+a = """
+        No. The file is decoded, redacted and encoded by your own browser on your
+        own hardware. This tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site. Load the page once, unplug from the
+        internet, and it still works."""
+
+[[faq]]
+q = "Is the covered part really gone from the file?"
+a = """
+        Yes, and that is the reason this tool exists. The picture is decoded into
+        a buffer of pixels; the boxes overwrite the pixels inside them; the buffer
+        is then encoded as a new file. The original values are gone from memory
+        before the encoder is handed anything, so there is no layer to hide, no
+        annotation to remove and no history to undo. You can check it the way you
+        would check anybody else's claim: open the result in an image editor and
+        look for a second layer, or try to select the text you covered."""
+
+[[faq]]
+q = "Can a pixelated or blurred area be recovered?"
+a = """
+        Sometimes, and this is the one thing worth reading before choosing. A
+        black fill replaces everything under it with one flat colour, so nothing
+        survives &mdash; not an edge, not an average, not the number of characters.
+        Pixelating replaces each block with the average of that block, and a grid
+        of averages is still a measurement of what was underneath: for text in an
+        ordinary font at a predictable size, published work has reconstructed the
+        original by rendering candidate strings and comparing their averages.
+        Blurring is a convolution, and convolutions can in principle be worked
+        backwards. So pixelate or blur a face in the background if you like, and
+        black out anything that reads as text."""
+
+[[faq]]
+q = "Why is a black rectangle drawn in a document editor not the same thing?"
+a = """
+        Because most editors save the rectangle beside the picture rather than
+        into it. A shape drawn in a PDF reader, a slide deck, a word processor or
+        a layered image editor is an object with a position, sitting on top of the
+        page &mdash; and moving it, deleting it, or opening the file in a different
+        program puts back exactly what it was covering. Newspapers, courts and
+        government departments have all published documents that were redacted
+        that way. Here the rectangle is not saved at all: it is a set of pixel
+        values written over the ones that were there."""
+
+[[faq]]
+q = "Does it also remove the EXIF and GPS data?"
+a = """
+        Yes, as a side effect. Saving means encoding a canvas full of pixels, and
+        a canvas carries no tags, so the location, camera model, timestamps and
+        the embedded thumbnail are simply not written to the new file. The
+        thumbnail matters here: it is a small second copy of the picture, it is
+        not always regenerated when a photo is edited, and a redacted photo
+        travelling with an un-redacted thumbnail is a real way to undo this work.
+        If you want metadata gone without the picture being re-encoded at all,
+        the <a href="../exif-editor/">EXIF Viewer &amp; Remover</a> rewrites the
+        container instead."""
+
+[[faq]]
+q = "Which formats can it read and write?"
+a = """
+        It reads anything your browser can decode, which in practice means JPEG,
+        PNG, WebP, GIF, BMP and &mdash; on most current browsers &mdash; AVIF. It
+        writes JPEG, PNG and WebP, because those are the encoders browsers ship.
+        On "auto" a JPEG comes back as a JPEG and everything else as a PNG, which
+        keeps a photograph the size of a photograph and keeps a screenshot's
+        remaining text crisp. The choice makes no difference to the redaction:
+        the pixels are already gone before the encoder sees them."""
+
+[[faq]]
+q = "Can I do this without a mouse?"
+a = """
+        Yes. "Add a box in the middle" puts one on the picture, Tab moves between
+        boxes, the arrow keys move the focused one and Alt with the arrow keys
+        resizes it &mdash; Shift makes each step ten pixels &mdash; and Delete
+        removes it. Every box also has a row underneath the picture with its size,
+        its position, what it does, and a button to remove it, so the whole tool
+        is usable from the keyboard and readable by a screen reader."""
+
+[[faq]]
+q = "Does it work on a phone?"
+a = """
+        Yes. Drawing, moving and resizing are all pointer events rather than mouse
+        events, so a finger works the same way, and the handles are drawn larger
+        on a touch screen. The picture on screen is redrawn at screen size while
+        you work &mdash; the file itself is always redacted at its own full
+        resolution when you press the button."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no watermark.
+        There is no limit on the size of the picture either, because there is no
+        server paying for it &mdash; the work happens on your own machine. The
+        site carries advertising, which is what pays for it; the ads are not given
+        anything about your images."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Redact an image in the browser: draw boxes over what should not be seen and black them out, pixelate them or blur them. The covered pixels are overwritten before the file is encoded, so the result carries no layer, no annotation and no metadata. Nothing is uploaded."
+features = [
+  "Black fill, pixelation and blur, chosen per box",
+  "The covered pixels are overwritten before encoding, so there is no layer to move aside",
+  "The preview is drawn by the same code that writes the file",
+  "Reports how many blocks a mosaic is made of, rather than calling it 'strong'",
+  "Keyboard and touch as well as mouse: every box can be added, moved, resized and removed without one",
+  "Strips EXIF, GPS and the embedded thumbnail as a side effect of re-encoding",
+  "JPEG, PNG and WebP out, with an automatic choice",
+  "Runs offline; no upload, no account",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "image/*,.jpg,.jpeg,.png,.webp,.gif,.bmp,.avif"
+multiple = false
+title = "Drop an image here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP and anything else your browser can open"
