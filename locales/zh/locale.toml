@@ -111,7 +111,7 @@ note = "做文档、重排文档，都不用送出去处理。"
 [[hub.categories]]
 id = "codes-and-data"
 name = "编码与数据"
-note = "把你输入的内容变成机器读得懂的东西，不用离开这个页面。"
+note = "做出机器读得懂的东西，或者核对一个文件是不是它自称的那个。两件事都在页面里完成。"
 
 [[hub.categories]]
 id = "text-and-code"

@@ -75,5 +75,4 @@ id = "beyond"
 name = "Beyond media"
 items = [
   ["Data", "CSV and JSON conversion, cleaning, inspection"],
-  ["Privacy &amp; security", "hashes, checksums, metadata stripping"],
 ]

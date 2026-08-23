@@ -1,0 +1,209 @@
+/* Rules only the checksum tool needs. The frame around it - the header, the
+   pledge, the cards, the buttons - is shared/css/tool-frame.css. */
+
+.card-lede {
+  margin: 0 0 1rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  max-width: 68ch;
+}
+
+.file-name {
+  margin: 0;
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.file-facts {
+  margin: 0.35rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.copy-status {
+  margin: 0.8rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+}
+
+/* ------------------------------------------------------- which algorithms */
+
+.algorithms {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Two columns of text per row: the tick, then the name over its note. The
+   note is the whole reason this is a grid rather than five inline labels -
+   it wraps, and a wrapped second line has to line up under the first rather
+   than under the checkbox. */
+.algorithm {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.15rem 0.6rem;
+  align-items: baseline;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.algorithm:hover { border-color: var(--accent); }
+
+.algorithm input { margin: 0; grid-row: span 2; align-self: center; }
+
+.algorithm-name { font-weight: 600; }
+
+.algorithm-note {
+  grid-column: 2;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------- the progress */
+
+.progress { margin-top: 1.1rem; }
+
+.progress-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.progress-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+}
+
+.progress-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.5rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* -------------------------------------------------------------- the digests */
+
+.results { margin-top: 1.3rem; }
+
+.digests {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+/* The digest itself gets a row of its own below the name on a narrow screen,
+   because sixty-four characters of hex will not share one with anything. */
+.digest {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.3rem 0.7rem;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.digest-name { font-weight: 600; font-size: 0.9rem; }
+
+.digest-value {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.digest-verdict {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+}
+
+.digest-verdict.is-match { color: var(--ok); border: 1px solid var(--ok); }
+.digest-verdict.is-differs { color: var(--danger); border: 1px solid var(--danger); }
+
+.digest.is-match { border-color: var(--ok); }
+.digest.is-differs { border-color: var(--danger); }
+
+/* ------------------------------------------------------ what it should be */
+
+#expected {
+  width: 100%;
+  resize: vertical;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.7rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.expected-read {
+  margin: 0.5rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.verdict { margin-top: 1rem; }
+
+.verdict-line {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: 0.92rem;
+}
+
+.verdict-line.good { border-color: var(--ok); }
+.verdict-line.bad { border-color: var(--danger); }
+
+.verdict-mark { flex: none; font-weight: 700; }
+.verdict-line.good .verdict-mark { color: var(--ok); }
+.verdict-line.bad .verdict-mark { color: var(--danger); }
+
+/* -------------------------------------------------------------- messages */
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 7px;
+  background: var(--surface-2);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  font-size: 0.88rem;
+}
+
+.stopped {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin: 1rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}

@@ -1,0 +1,182 @@
+<main>
+  <!--
+    तीन कदम, और तीसरा ही वह वजह है जिसके लिए कोई यहाँ आता है।
+    
+    चेकसम निकाल देना काम नहीं है। काम यह पता करना है कि अभी-अभी डाउनलोड की गई
+    फ़ाइल वही है या नहीं जिसे बनाने वाले ने नापा था। जो पेज "यह रहा आपका हैश"
+    पर रुक जाता है, वह आख़िरी और अकेला मुश्किल हिस्सा पढ़ने वाले के सिर डाल देता
+    है: चौंसठ अक्षर आँख से मिलाना। इसीलिए मिलान यहाँ अपना अलग कदम है, चेकसम जिस
+    भी रूप में छपा हो उसे ले लेता है, और रंग के बजाय एक वाक्य में जवाब देता है।
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> फ़ाइल चुनिए</h2>
+
+    <!--
+      असली <label> हो तो ब्राउज़र खुद फ़ाइल चुनने की खिड़की खोल देता है।
+      display:none से छिपे input पर .click() को सफ़ारी और कुछ क्रोम सेटिंग सीधे मना
+      कर देती हैं, इसलिए input लेआउट में ही रहता है: दिखता नहीं, पर फ़ोकस उस पर
+      आता है और कीबोर्ड से भी पहुँच जाता है। इस रास्ते पर जावास्क्रिप्ट एक लाइन भी
+      नहीं है।
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="run-card">
+    <h2><span class="step">2</span> चेकसम</h2>
+    <p class="card-lede">
+      MD5 और SHA-256 डिफ़ॉल्ट रूप से निकाले जाते हैं, क्योंकि ये दोनों मिलकर लगभग हर
+      डाउनलोड पेज को ढक लेते हैं। कोई और टिक कीजिए तो फ़ाइल उसके लिए दोबारा पढ़ी
+      जाती है। धीमा हिस्सा पढ़ना ही है, इसलिए फ़ाइल चुनने से पहले जो टिक हो, वह सब एक
+      ही बार पढ़ने में निकल आता है।
+    </p>
+
+    <fieldset class="algorithms">
+      <legend class="visually-hidden">कौन से चेकसम निकाले जाएँ</legend>
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="md5" checked>
+        <span class="algorithm-name">MD5</span>
+        <span class="algorithm-note">2004 से टकराव बनाना सस्ता है। फिर भी इंटरनेट के आधे डाउनलोड के बगल में यही नंबर छपा मिलता है।</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha1">
+        <span class="algorithm-name">SHA-1</span>
+        <span class="algorithm-note">2017 में सबके सामने टूटा। फिर भी Git आज तक इसी से ऑब्जेक्ट का नाम रखता है, और कई रिलीज़ पेज पर यह मौजूद है।</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha256" checked>
+        <span class="algorithm-name">SHA-256</span>
+        <span class="algorithm-note">आज चेकसम का मतलब यही है। जो भी डिस्ट्रिब्यूशन चेकसम छापता है, यही छापता है।</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha384">
+        <span class="algorithm-name">SHA-384</span>
+        <span class="algorithm-note">छाँटा हुआ SHA-512। ज़्यादातर स्क्रिप्ट टैग के integrity एट्रिब्यूट में मिलता है।</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha512">
+        <span class="algorithm-name">SHA-512</span>
+        <span class="algorithm-note">ज़्यादा चौड़ा, पर व्यवहार में जहाँ कहीं फ़र्क पड़ा वहाँ ज़्यादा मज़बूत नहीं। फिर भी कुछ प्रोजेक्ट इसे छापते हैं।</span>
+      </label>
+    </fieldset>
+
+    <div class="progress" id="progress" hidden>
+      <div class="progress-track" role="progressbar" id="progress-track"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="progress-fill" id="progress-fill"></span>
+      </div>
+      <p class="progress-line">
+        <span id="progress-text" role="status" aria-live="polite"></span>
+        <button type="button" id="stop" class="ghost danger">रोकिए</button>
+      </p>
+    </div>
+
+    <p class="stopped" id="stopped" hidden>
+      रोक दिया। इस फ़ाइल के लिए कुछ नहीं निकाला गया।
+      <button type="button" id="restart" class="ghost">फिर से शुरू</button>
+    </p>
+
+    <div class="results" id="results" hidden>
+      <div class="toolbar">
+        <h3 class="file-name" id="file-name">&mdash;</h3>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">सब कॉपी कीजिए</button>
+          <button type="button" id="download-checksums" class="ghost">फ़ाइल में सहेजें</button>
+        </div>
+      </div>
+
+      <p class="file-facts" id="file-facts"></p>
+
+      <ul class="digests" id="digests">
+        <li class="digest" data-algorithm="md5" hidden>
+          <span class="digest-name">MD5</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>मिलता है</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>नहीं मिलता</span>
+          <button type="button" class="ghost" data-slot="copy">कॉपी</button>
+        </li>
+        <li class="digest" data-algorithm="sha1" hidden>
+          <span class="digest-name">SHA-1</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>मिलता है</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>नहीं मिलता</span>
+          <button type="button" class="ghost" data-slot="copy">कॉपी</button>
+        </li>
+        <li class="digest" data-algorithm="sha256" hidden>
+          <span class="digest-name">SHA-256</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>मिलता है</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>नहीं मिलता</span>
+          <button type="button" class="ghost" data-slot="copy">कॉपी</button>
+        </li>
+        <li class="digest" data-algorithm="sha384" hidden>
+          <span class="digest-name">SHA-384</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>मिलता है</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>नहीं मिलता</span>
+          <button type="button" class="ghost" data-slot="copy">कॉपी</button>
+        </li>
+        <li class="digest" data-algorithm="sha512" hidden>
+          <span class="digest-name">SHA-512</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>मिलता है</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>नहीं मिलता</span>
+          <button type="button" class="ghost" data-slot="copy">कॉपी</button>
+        </li>
+      </ul>
+
+      <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="compare-card">
+    <h2><span class="step">3</span> जो आना चाहिए उससे मिलाइए</h2>
+    <p class="card-lede">
+      डाउनलोड पेज ने जो चेकसम दिया है उसे चिपका दीजिए। रूप कोई भी हो, फ़र्क नहीं
+      पड़ता: सिर्फ़ हेक्स, <code>sha256sum</code> का आउटपुट, पूरी
+      <code>SHA256SUMS</code> फ़ाइल, <code>SHA256 (फ़ाइल) = &hellip;</code> वाला रूप,
+      या स्क्रिप्ट टैग का <code>integrity</code> एट्रिब्यूट। कौन सा एल्गोरिदम है यह
+      लंबाई से तय होता है, इसलिए चुनने को कुछ नहीं है।
+    </p>
+
+    <label class="visually-hidden" for="expected">जो चेकसम होना चाहिए</label>
+    <textarea id="expected" rows="3" spellcheck="false" autocapitalize="off"
+              autocomplete="off"
+              placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
+
+    <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
+      <span data-read="one">यह एक <b data-slot="algorithm"></b> है।</span>
+      <span data-read="many">यह एक सूची है। इसमें <b data-slot="count"></b> चेकसम हैं।</span>
+      <span data-read="stray">ये <b data-slot="length"></b> हेक्स अक्षर हैं, और यहाँ का कोई भी इतना लंबा नहीं। आम तौर पर कॉपी करते वक़्त आख़िर छूट जाता है।</span>
+      <span data-read="nothing">इसमें ऐसा कुछ नहीं जो चेकसम लगे।</span>
+    </p>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-line good" data-outcome="match">
+        <span class="verdict-mark">&#10003;</span>
+        <span>यह वही फ़ाइल है जिसका वह चेकसम है। इसका <b data-slot="algorithm"></b> हूबहू वही है जो आपने चिपकाया, अक्षर दर अक्षर।</span>
+      </p>
+      <p class="verdict-line good" data-outcome="renamed">
+        <span class="verdict-mark">&#10003;</span>
+        <span>बाइट मिलते हैं, पर किसी और लाइन से। आपने जो चिपकाया है वह इस फ़ाइल को <b data-slot="name"></b> कहता है, और आपने जो चुनी है उसका नाम कुछ और है। या तो रास्ते में नाम बदल गया, या यह वह डाउनलोड ही नहीं जिसे आप जाँचना चाहते थे। <b data-slot="algorithm"></b> दोनों हाल में सही है।</span>
+      </p>
+      <p class="verdict-line bad" data-outcome="mismatch">
+        <span class="verdict-mark">&#10007;</span>
+        <span>यह वह फ़ाइल <b>नहीं</b> है जिसका वह चेकसम है। इसका <b data-slot="algorithm"></b> अलग है, यानी बाइट अलग हैं: डाउनलोड बीच में टूटा, वर्शन गलत है, या मिरर कुछ और दे रहा है। चलाने से पहले दोबारा ले आइए।</span>
+      </p>
+      <p class="verdict-line" data-outcome="waiting">
+        <span class="verdict-mark">&hellip;</span>
+        <span>मिलाने के लिए <b data-slot="algorithm"></b> निकाला जा रहा है।</span>
+      </p>
+      <p class="verdict-line" data-outcome="nofile">
+        <span class="verdict-mark">&hellip;</span>
+        <span>ऊपर एक फ़ाइल चुनिए, फिर यहाँ लिखा आएगा कि वह मिलती है या नहीं।</span>
+      </p>
+    </div>
+  </section>
+</main>

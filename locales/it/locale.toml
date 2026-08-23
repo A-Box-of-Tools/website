@@ -50,6 +50,7 @@ complete = true
 "svg-to-image" = "svg-in-png"
 "trim-video" = "tagliare-video"
 "video-to-gif" = "video-in-gif"
+"hash-checksum" = "verificare-checksum"
 
 "guides" = "guide"
 "roadmap" = "roadmap"
@@ -73,6 +74,7 @@ complete = true
 "guides/embed-an-image-in-css" = "guide/inserire-un-immagine-nel-css"
 "guides/make-a-qr-code" = "guide/creare-un-qr-code"
 "guides/turn-a-video-into-a-gif" = "guide/trasformare-un-video-in-gif"
+"guides/verify-a-file-checksum" = "guide/verificare-il-checksum-di-un-file"
 
 #
 # ---------------------------------------------------------------------------
@@ -150,7 +152,7 @@ note = "Crea e riordina documenti senza mandarli a elaborare da qualche altra pa
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codici e dati"
-note = "Trasforma quello che hai scritto in qualcosa che una macchina sa leggere, senza che esca dalla pagina."
+note = "Crea qualcosa che una macchina sa leggere, oppure verifica che un file sia davvero quello che dice di essere. Tutto dentro la pagina."
 
 [[hub.categories]]
 id = "text-and-code"

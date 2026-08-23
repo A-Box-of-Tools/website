@@ -1,0 +1,356 @@
+#
+# Hash e checksum - Italian.
+#
+# Overrides for tools/hash-checksum/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Checksum" is what Italian technical writing uses and what gets typed;
+# "somma di controllo" appears once, where the term needs explaining. Algorithm
+# names are never translated: MD5 and SHA-256 are what the download page has
+# printed.
+#
+
+name = "Hash e checksum"
+heading = "Hash&nbsp;e&nbsp;checksum <span class=\"h1-kw\">&mdash; MD5, SHA-1, SHA-256, SHA-512</span>"
+tagline = "Controlla un download contro il numero pubblicato da chi lo distribuisce, senza mandarlo a nessuno."
+
+title = "Calcolare checksum SHA-256 e MD5 &mdash; verificare un download, senza caricarlo"
+description = "Calcola l'MD5, SHA-1, SHA-256, SHA-384 o SHA-512 di qualsiasi file e confrontalo con il checksum pubblicato dalla pagina di download. Il file viene letto nel browser e non viene mai caricato, di qualunque dimensione sia."
+og_title = "Verificare un download senza mandarlo a nessuno"
+og_description = "MD5, SHA-1, SHA-256, SHA-384 e SHA-512, calcolati nel tuo browser. Incolla il checksum pubblicato e la pagina dice se corrisponde. Nessun limite di dimensione, perché il file viene letto a pezzi."
+og_image_alt = "Hash e checksum - verificare un download nel browser, senza caricarlo"
+
+pledge = """
+    Un checksum è aritmetica sui byte del tuo file, e qui il conto si fa in
+    questa pagina, con il processore di questo dispositivo. Il file viene letto
+    dal disco a pezzi da quattro megabyte e ogni pezzo viene buttato appena è
+    stato contato, quindi da nessuna parte si forma una copia intera: né in
+    memoria, né tantomeno su un server. All'altro capo di questa pagina non c'è
+    nessun server a cui mandare un file, nemmeno se qualcosa qui volesse
+    farlo."""
+
+live_hint = """
+      Non devi crederci sulla parola: apri gli strumenti di sviluppo, guarda la
+      scheda Rete e controlla un file. Nessuna richiesta porta con sé un solo
+      byte, né il nome né la dimensione. Oppure stacca la rete e controllane uno
+      lo stesso."""
+
+read_first = """
+, <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> e
+      <code>src/sha512.js</code> per le quattro funzioni di compressione,
+      <code>src/blocks.js</code> per il riempimento che hanno in comune e
+      <code>src/hash.js</code> per il ciclo che legge il file a pezzi. In
+      nessuno di questi c'è una riga capace di raggiungere la rete."""
+
+howto_heading = "Come controllare un download con il suo checksum"
+
+card = """
+            Calcola l'MD5, SHA-1, SHA-256, SHA-384 o SHA-512 di un file e
+            confrontalo con quello pubblicato dalla pagina di download. Di
+            qualsiasi dimensione: il file viene letto a pezzi e mai tenuto
+            intero."""
+
+[words]
+plural = "file"
+choose = "un file"
+analytics_extra = """, né il
+  checksum del tuo file"""
+
+[[facts]]
+text = "Nessun caricamento"
+
+[[facts]]
+text = "Nessun limite di dimensione"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Codice aperto"
+
+[[facts]]
+text = "I file restano sul tuo dispositivo"
+
+[[privacy]]
+title = "Il tuo file non ha una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può
+      contattare, e nessuno è nostro. Qui non esiste un punto di raccolta dove
+      il tuo file possa finire, e nel codice non c'è niente che ce lo manderebbe
+      se esistesse. Prima qui si leggeva <code>connect-src 'none'</code>, che era
+      assoluto; la pubblicità è costata questo, e dirlo fa parte del patto."""
+
+[[privacy]]
+title = "Il file non sta mai intero da nessuna parte, di qualsiasi dimensione sia."
+body = """
+
+      Viene letto a pezzi da quattro megabyte, e ogni pezzo entra nello stato in
+      corso e viene buttato. La memoria che questa pagina usa è la stessa per
+      un'immagine disco da quaranta gigabyte e per un file di testo, e non c'è
+      una dimensione oltre la quale si arrende. È anche il motivo per cui non si
+      usa il <code>crypto.subtle.digest</code> del browser: quella funzione vuole
+      il file intero in memoria tutto insieme, che è esattamente il tetto che
+      questo strumento esiste per non avere."""
+
+[[privacy]]
+title = "Cinque algoritmi, cinque file in questo repository."
+body = """
+ In <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> e
+      <code>src/sha512.js</code> ci sono le specifiche pubblicate scritte per
+      esteso, una sessantina di righe ciascuna, con le tabelle di costanti
+      scritte invece che calcolate perché niente del risultato dipenda dal
+      browser. Ognuna viene verificata a ogni build contro i vettori di test
+      ufficiali e contro l'implementazione del sistema operativo."""
+
+[[privacy]]
+title = "Anche il checksum che incolli non va da nessuna parte."
+body = """
+
+      Il confronto avviene qui, nella pagina, contro il valore calcolato qui. Di
+      quel confronto non viene a sapere nessuno: né il valore, né se
+      corrispondeva, né il nome del file. Conta più di quanto sembri: un checksum
+      insieme a un nome di file dice a chi lo raccoglie esattamente quale build
+      di quale programma hai appena scaricato."""
+
+[[privacy]]
+title = "Cosa carica Google e cosa non riceve."
+body = """
+ Gli script pubblicitari e
+      di misurazione arrivano da Google. Nessuno dei due riceve niente sul tuo
+      file: né il file, né il nome, né la dimensione, né uno dei valori
+      calcolati. Ogni riga che legge o elabora un byte è servita da questo
+      dominio ed è nel repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni e cosa non riceve."
+body = """
+
+      Il pulsante &laquo;Buy me a coffee&raquo; in testa alla pagina è disegnato
+      da uno script di cdnjs.buymeacoffee.com e prende i caratteri da Google
+      Fonts. È un link e nient'altro: non segnala la visita e non riceve niente
+      su di te o sui tuoi file. Non succede nulla finché non lo premi, e quello
+      che apriresti è il sito di qualcun altro."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e ogni parte di questa pagina
+      continua a funzionare. È la prova più semplice di tutte: uno strumento che
+      mandasse via il tuo file per farlo calcolare si fermerebbe nel momento in
+      cui stacchi la spina."""
+
+[[howto]]
+title = "Scegli il file."
+body = """
+ Trascinalo sul riquadro oppure
+      selezionalo a mano. Viene letto a pezzi direttamente dal disco; mentre lo
+      fai non parte niente da nessuna parte, e non c'è una dimensione oltre la
+      quale la pagina si arrende."""
+
+[[howto]]
+title = "Lascia che lo legga."
+body = """
+ MD5 e SHA-256 si calcolano di
+      default, in un'unica passata. La barra dice a che punto è e a che
+      velocità. Un'immagine disco grande ci mette più o meno quanto ci
+      metterebbe a essere copiata, perché la quantità di lettura è la stessa."""
+
+[[howto]]
+title = "Incolla quello che dovrebbe venire."
+body = """
+
+      Quello che ti ha dato la pagina di download, in qualunque forma sia:
+      esadecimale nudo, una riga di output di <code>sha256sum</code>, un intero
+      file <code>SHA256SUMS</code>, oppure l'attributo <code>integrity</code>
+      preso da un tag script. Quale algoritmo sia si ricava dalla lunghezza, e la
+      casella giusta si spunta da sola."""
+
+[[howto]]
+title = "Leggi la risposta, non il colore."
+body = """
+ La pagina
+      dice in una frase se questo è il file che quel checksum descrive. Se
+      corrisponde, i byte sono identici a quelli misurati da chi lo ha
+      pubblicato. Se non corrisponde non lo sono, e conviene riscaricare prima di
+      aprirlo."""
+
+[[howto]]
+title = "Portati via i checksum, se ti servono."
+body = """
+
+      Copiane uno, copiali tutti, oppure salvali in un piccolo file di testo,
+      nella forma con l'algoritmo davanti che scrivono gli strumenti da riga di
+      comando. Così il nome dell'algoritmo viaggia insieme al numero."""
+
+[[faq]]
+q = "Il mio file viene caricato da qualche parte?"
+a = """
+        No. Lo legge il tuo browser dal tuo disco e lo calcola il tuo processore,
+        a pezzi da quattro megabyte. Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo
+        che può contattare: nessuno è nostro. Stacca la rete e continua a
+        funzionare."""
+
+[[faq]]
+q = "C'è un limite di dimensione?"
+a = """
+        No. Il file non sta mai intero da nessuna parte: viene letto a pezzi e
+        ogni pezzo viene contato e buttato, così un'immagine disco da quaranta
+        gigabyte usa gli stessi pochi megabyte di memoria di un file di testo.
+        Quello che costa è tempo, e la pagina te lo dice mentre va avanti.
+        <br><br>
+        È il motivo per cui gli algoritmi sono scritti qui invece di essere
+        passati al <code>crypto.subtle.digest</code> del browser, che sarebbe più
+        veloce. Quella chiamata prende l'intero messaggio in un solo buffer e non
+        c'è modo di darle un file a pezzi, quindi usarla avrebbe messo la
+        dimensione massima verificabile in balia della memoria che questa scheda
+        riesce a ottenere. Su un telefono sono qualche centinaio di megabyte, e
+        quello che la gente vuole verificare di più sono le immagini disco."""
+
+[[faq]]
+q = "Il checksum corrisponde. Che cosa è stato dimostrato, esattamente?"
+a = """
+        Che i byte sul tuo disco sono quelli che qualcuno aveva davanti quando ha
+        scritto quel numero. Nient'altro, e sui limiti conviene essere precisi.
+        <br><br>
+        È dimostrato che il download non si è troncato, non è stato rovinato da
+        un disco guasto e non è stato scambiato per strada. <strong>Non</strong>
+        è dimostrato che il file sia innocuo, perché chi pubblica può misurare un
+        malware con la stessa esattezza di qualsiasi altra cosa. Ed è dimostrato
+        molto poco se il checksum arrivava dalla stessa pagina, sulla stessa
+        connessione, del file: chi poteva cambiare una cosa poteva cambiare
+        l'altra. Un checksum vale soprattutto quando ti arriva per una strada
+        diversa: un file <code>SHA256SUMS</code> firmato, l'annuncio di rilascio
+        di una distribuzione, un secondo mirror, o un gestore di pacchetti che lo
+        conosce già."""
+
+[[faq]]
+q = "Non corrisponde. E adesso?"
+a = """
+        Prima riscarica il file, dallo stesso posto. Un trasferimento interrotto
+        o ripreso è di gran lunga la causa più comune, e la seconda copia di
+        solito risolve.
+        <br><br>
+        Se la seconda copia dà la stessa risposta sbagliata, controlla di
+        confrontare la riga giusta: le pagine di rilascio elencano più file, e il
+        checksum della build ARM non corrisponderà mai a quello della x86. Poi
+        controlla la versione. Se è tutto giusto e continua a non corrispondere,
+        non aprire il file. Prendilo da un altro mirror e confronta i due
+        checksum fra loro."""
+
+[[faq]]
+q = "Quale dovrei usare?"
+a = """
+        Quello che ha pubblicato chi distribuisce il file. Il senso dell'esercizio
+        è confrontare con il suo numero, e quello non lo scegli tu.
+        <br><br>
+        Se invece stai producendo un checksum anziché verificarlo, usa SHA-256.
+        MD5 e SHA-1 sono rotti nel senso che conta: due file diversi con lo stesso
+        valore si possono costruire apposta, in poche ore con MD5 e con una spesa
+        contenuta con SHA-1. Questo non li rende inutili contro gli incidenti,
+        perché un download troncato non finisce per caso sullo stesso valore
+        dell'originale; però significa che nessuno dei due può più dirti che
+        nessuno ci ha messo mano. SHA-384 e SHA-512 vanno benissimo e in pratica
+        non sono migliori: stanno qui perché qualche progetto li pubblica."""
+
+[[faq]]
+q = "Perché c'è MD5 se è rotto?"
+a = """
+        Perché è ancora quello che sta stampato. Mirror, download di firmware,
+        pagine di software universitarie e moltissimi siti di produttori hanno
+        pubblicato un MD5 vent'anni fa e da allora non hanno più toccato la
+        pagina. Uno strumento che si rifiutasse di calcolarlo si rifiuterebbe di
+        rispondere alla domanda con cui i suoi visitatori arrivano davvero.
+        <br><br>
+        Quello che può fare, invece, è dire quanto vale la risposta, ed è quello
+        che fa la nota accanto alla casella. Un MD5 che corrisponde esclude
+        ancora un download rovinato. Non esclude un download manomesso."""
+
+[[faq]]
+q = "Quali formati posso incollare nel riquadro di confronto?"
+a = """
+        Tutti quelli usati di solito, e la pagina capisce da sola quale sia.
+        <br><br>
+        Esadecimale nudo, con o senza spazi. Una riga di output di
+        <code>md5sum</code> o <code>sha256sum</code>, con il nome del file dopo.
+        Un intero file <code>SHA256SUMS</code> con quaranta righe: in quel caso
+        viene usata la riga che nomina il tuo file. La forma BSD,
+        <code>SHA256 (disk.iso) = &hellip;</code>. Un'etichetta davanti, come in
+        <code>SHA-256: &hellip;</code>. E un attributo di subresource integrity,
+        <code>sha384-&hellip;</code>, che è in base64 invece che in esadecimale e
+        viene decodificato prima del confronto.
+        <br><br>
+        Quale algoritmo sia si ricava dalla lunghezza: 32 caratteri esadecimali
+        sono un MD5, 40 uno SHA-1, 64 uno SHA-256, 96 uno SHA-384 e 128 uno
+        SHA-512. Non ce ne sono due della stessa lunghezza, quindi non c'è niente
+        da scegliere e niente da sbagliare."""
+
+[[faq]]
+q = "Darà lo stesso risultato di sha256sum o certutil?"
+a = """
+        Sì, byte per byte. Sono specifiche esatte con vettori di test pubblicati,
+        e ogni algoritmo qui viene verificato a ogni build contro quei vettori e
+        contro l'implementazione del sistema operativo.
+        <br><br>
+        L'unica differenza che vedrai è la presentazione. Il
+        <code>certutil -hashfile</code> di Windows scrive in maiuscolo e con
+        spazi; questa pagina scrive in minuscolo, che è quello che usa quasi
+        chiunque pubblichi. Il confronto ignora entrambe le cose, quindi un
+        checksum copiato da certutil corrisponde a uno in minuscolo incollato
+        qui."""
+
+[[faq]]
+q = "Posso confrontare due file fra loro?"
+a = """
+        Sì, con un passaggio in più: controlla il primo, copia il suo checksum,
+        poi scegli il secondo e incolla quel checksum nel riquadro. Se i due file
+        sono identici, la pagina lo dirà.
+        <br><br>
+        Vale la pena saperlo per il caso in cui i checksum sono silenziosamente
+        imbattibili: capire se la copia sul disco di backup è davvero lo stesso
+        file di quella sul portatile, quando tutte e due dichiarano la stessa
+        dimensione e la stessa data."""
+
+[[faq]]
+q = "Modifica il mio file?"
+a = """
+        No. Questo strumento legge soltanto. Non c'è un file in uscita, non c'è
+        una ricodifica e non c'è niente che venga riscritto: l'unica cosa che
+        puoi scaricare è un piccolo file di testo con i checksum. Il tuo
+        originale resta intatto sul disco, che è anche la risposta onesta a cosa
+        succede se chiudi la scheda."""
+
+[[faq]]
+q = "È gratis, e serve un account?"
+a = """
+        È gratis, e non c'è account, né registrazione, né prova. Non c'è limite
+        alla dimensione del file né a quanti file controlli. Il sito ha
+        pubblicità, che è quello che lo paga; alla pubblicità non viene dato
+        niente sul tuo file."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la rete e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene
+        caricato niente: uno strumento che mandasse via il tuo file per farlo
+        calcolare si fermerebbe nel momento in cui stacchi la spina."""
+
+[schema]
+description = "Calcolare il checksum MD5, SHA-1, SHA-256, SHA-384 o SHA-512 di qualsiasi file nel browser e confrontarlo con il valore pubblicato da una pagina di download. Il file viene letto a pezzi e non viene mai caricato."
+features = [
+  "MD5, SHA-1, SHA-256, SHA-384 e SHA-512, in un'unica passata sul file",
+  "Nessun limite di dimensione: il file viene letto a pezzi e mai tenuto intero",
+  "Incolla il valore atteso in qualsiasi forma pubblicata: l'algoritmo lo capisce da solo",
+  "Legge l'output di sha256sum, i file SHA256SUMS, la forma BSD e gli attributi integrity",
+  "Dice in una frase se il file corrisponde, non solo con un colore",
+  "Copia un checksum, copiali tutti o salvali come file di testo con l'algoritmo davanti",
+  "Funziona offline; nessun caricamento, nessun account, nessuna modifica al file",
+]
+
+[picker]
+title = "Trascina qui un file"
+hint = "oppure fai clic per sceglierlo &mdash; qualsiasi file, qualsiasi dimensione, non viene caricato niente"
