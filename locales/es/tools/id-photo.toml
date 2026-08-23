@@ -1,0 +1,318 @@
+#
+# Foto de carnet - Spanish.
+#
+# Overrides for tools/id-photo/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Creador de fotos de carnet"
+heading = "Foto&nbsp;de&nbsp;carnet <span class=\"h1-kw\">&mdash; pasaporte y visado según la norma</span>"
+tagline = "Elige el país. Aplica esa norma, exactamente."
+
+title = "Foto de pasaporte a medida &mdash; la norma de cada país, sin subir nada"
+description = "Haz una foto de pasaporte o visado según la norma publicada de tu país: milímetros y DPI exactos, una guía en vivo de altura de cabeza y línea de ojos, comprobación del fondo, una hoja de 10x15 lista para imprimir y un archivo ajustado al límite en KB del portal. No se sube nada."
+og_title = "Haz una foto de pasaporte según la norma exacta de tu país, sin subirla"
+og_description = "Elige un país y un documento y el recuadro de recorte toma la altura de cabeza y la línea de ojos de esa norma. Imprime al tamaño y la resolución obligatorios y escribe el archivo de subida dentro de la banda de KB que exige el formulario."
+og_image_alt = "Creador de fotos de carnet - fotos de pasaporte y visado según la norma, sin subir nada"
+
+pledge = """
+    El recorte, las mediciones, la lectura del fondo y la impresión se hacen todos en
+    tu propio navegador, en tu propio equipo, con el codificador JPEG que ya trae.
+    Esta herramienta no tiene ninguna función de red, nada que pedir y nada que
+    enviar, y aunque la tuviera, al otro lado de esta página no hay ningún servidor al
+    que mandar una fotografía de tu cara."""
+
+live_hint = """
+      No hace falta que nos creas. Abre las herramientas de desarrollo, ponte en la
+      pestaña «Red» y haz una foto de pasaporte. No verás ni una petición que lleve
+      una imagen, una miniatura, un nombre de archivo o un byte de lo que has
+      elegido. O desconéctate de internet y haz una igualmente."""
+
+read_first = """
+, <code>src/specs.js</code> para el reglamento, con las
+      cifras publicadas de cada país, la autoridad de la que salen y la fecha en que
+      se leyeron, <code>src/geometry.js</code> para las cuentas que convierten cuatro
+      puntos marcados en un recorte, y <code>src/jpeg.js</code> para las dos
+      modificaciones de cabecera que meten la resolución de impresión en el archivo y
+      suben una subida demasiado pequeña hasta el tamaño que exige un formulario."""
+
+howto_heading = "Cómo hacer una foto de pasaporte que no te devuelvan"
+
+card = """
+            Elige un país y un documento, y el recuadro de recorte toma la altura de
+            cabeza y la línea de ojos de esa norma. Imprime a los milímetros y la
+            resolución exactos, con una hoja de 10&nbsp;&times;&nbsp;15, y aprieta la
+            subida hasta la banda de KB del portal."""
+
+[words]
+plural = "fotos"
+choose = "una foto"
+analytics_extra = """, ni ninguna de las
+  mediciones, recortes o países que esta herramienta calcula"""
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin marca de agua"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[privacy]]
+title = "Una fotografía de tu cara no sale nunca de este equipo."
+body = """
+ Aquí eso pesa más
+      que en casi cualquier otra herramienta: el archivo que maneja esta página es una
+      imagen de tu cara, y lo que estás a punto de hacer con ella nombra además el
+      país cuyo documento estás solicitando. La
+      <code>Content-Security-Policy</code> nombra todas las direcciones que esta
+      página puede contactar, y ninguna de ellas es nuestra. Aquí no hay ningún
+      destino donde pudiera recogerse tu fotografía."""
+
+[[privacy]]
+title = "Aquí nada pide nada."
+body = """
+ En <code>src/</code> no hay ningún
+      <code>fetch</code>, ningún <code>XMLHttpRequest</code> y ningún
+      <code>sendBeacon</code>. El reglamento es una tabla en
+      <code>src/specs.js</code>, servida con la página y guardada en caché con ella:
+      no hay ninguna lista de países que consultar ni nada contra lo que comprobar tu
+      foto en remoto."""
+
+[[privacy]]
+title = "No hay detección de caras, y es a propósito."
+body = """
+ Los cuatro puntos desde los
+      que se miden las normas los arrastras tú. Detectarlos significaría enviar un
+      modelo y ejecutarlo sobre una imagen de tu cara, y un modelo que se equivoca se
+      equivoca de forma desigual: peor con unas caras que con otras. Cuatro puntos
+      cuestan ocho segundos y son exactos para todo el mundo."""
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = """
+ Los scripts de publicidad y de
+      medición vienen de Google, y el botón de donación, de Buy Me a Coffee. A ninguno
+      se le entrega nada sobre tu fotografía, tu cara ni el país cuya norma has
+      elegido. Cada línea que lee, recorta, mide o escribe un archivo se sirve desde
+      este origen y está en el repositorio."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Desconéctate de la red y la herramienta
+      sigue igual, porque nunca hubo dentro de ella ningún paso que pasara por la red.
+      Es la prueba más sencilla de todas."""
+
+[[howto]]
+title = "Elige la fotografía."
+body = """
+ Una foto de móvil contra una pared lisa,
+      con luz de día, hecha a metro y medio más o menos. El navegador la lee
+      directamente de tu disco, y mientras tanto no sale nada a ninguna parte."""
+
+[[howto]]
+title = "Elige el país y el documento."
+body = """
+ El panel enseña entonces el tamaño de
+      impresión, la banda de altura de cabeza, la línea de ojos, el color de fondo y
+      los límites de subida de esa norma, junto con la autoridad de la que salió cada
+      cifra y la fecha en que se leyó. Nada de esa lista está supuesto, y cualquier
+      cosa que te hayan mandado y que no esté en ella entra por «En cualquier otro
+      sitio»."""
+
+[[howto]]
+title = "Arrastra los cuatro puntos sobre tu cara."
+body = """
+ Coronilla, barbilla y cada
+      pupila. Esos cuatro puntos son todo lo que mide la norma, y por eso esta
+      herramienta te los pide en vez de adivinarlos. Después pulsa <em>Ajustar el
+      recuadro</em> y el recorte cae donde ese país lo quiere."""
+
+[[howto]]
+title = "Lee las cuatro comprobaciones, y el fondo."
+body = """
+ Altura de cabeza, línea de
+      ojos, centrado e inclinación, cada uno medido sobre el recuadro tal como está y
+      cada uno diciendo hacia dónde arrastrar si se sale. El fondo se lee de la parte
+      de arriba y de los lados del recorte y se compara con el color que pide la
+      norma; la falta de uniformidad, que es lo que de verdad hace que rechacen las
+      fotos, se mide aparte del color."""
+
+[[howto]]
+title = "Llévate los tres archivos."
+body = """
+ La impresión, a los milímetros exactos y
+      con la resolución escrita dentro del archivo para que una tienda la imprima al
+      tamaño correcto. La hoja, con tantas copias como quepan en un
+      10&nbsp;&times;&nbsp;15 y marcas de corte en los huecos. Y la subida, al tamaño
+      en píxeles que exige el portal y dentro de la banda de KB que impone por los dos
+      extremos."""
+
+[[faq]]
+q = "¿Se sube mi foto a alguna parte?"
+a = """
+        No. La imagen la decodifica, la recorta, la mide y la escribe tu propio
+        navegador en tu propio equipo, con el codificador JPEG que el navegador ya
+        trae. Esta herramienta no tiene ninguna función de red: nunca pide nada y nunca
+        envía nada, y la <code>Content-Security-Policy</code> de la página nombra todas
+        las direcciones que puede contactar, ninguna de las cuales es nuestra. Aquí eso
+        vale más que en casi cualquier otra herramienta: el archivo es una fotografía
+        de tu cara."""
+
+[[faq]]
+q = "¿Qué países están cubiertos?"
+a = """
+        Las especificaciones transcritas hasta ahora son la propia norma de la OACI,
+        Estados Unidos (pasaporte y la inscripción en la lotería de visados, que tienen
+        reglas de subida distintas), el Reino Unido, el visado Schengen, Alemania,
+        Canadá, Australia, la India (pasaporte, la copia de
+        35&nbsp;&times;&nbsp;45&nbsp;mm y la foto y la firma de los formularios SSC y
+        UPSC), China y Japón. Cada entrada nombra la autoridad de la que salió y la
+        fecha en que se leyó. Todo lo demás entra por «En cualquier otro sitio», donde
+        cada cifra la escribes tú; y como casi todo el mundo emite siguiendo la
+        geometría de la OACI, esa entrada arranca con ella."""
+
+[[faq]]
+q = "¿Por qué me pide marcar mi propia cara en vez de encontrarla?"
+a = """
+        Porque encontrar una cara significa enviar un modelo: pesos que descargar, un
+        entorno de inferencia para ejecutarlos y un modo de fallo desigual. Los
+        detectores son medidamente peores con unas caras que con otras, y las personas
+        cuyas fotografías ya se rechazan más a menudo serían precisamente las que
+        saldrían perdiendo. Cuatro puntos arrastrados cuestan unos ocho segundos, son
+        exactos y son los mismos ocho segundos para todo el mundo. El detector de caras
+        experimental del navegador habría funcionado en un navegador y detrás de una
+        opción oculta, y eso no es una función: es una herramienta que funciona distinto
+        según con qué la abras."""
+
+[[faq]]
+q = "¿Qué es la regla de la altura de cabeza, y por qué la mía no la cumple nunca?"
+a = """
+        Todas estas especificaciones dicen cuánto del encuadre tiene que ocupar la
+        cabeza, medida desde la base de la barbilla hasta lo más alto de la cabeza,
+        pelo incluido; suele ser entre el 70 y el 80 por ciento, que para una foto de
+        45&nbsp;mm son de 31,5 a 36&nbsp;mm. El motivo habitual del fallo es el selfi:
+        un brazo mide unos 60&nbsp;cm, lo que deforma la cara y deja la cabeza
+        demasiado grande en el encuadre. El segundo motivo habitual es la coronilla: es
+        lo más alto del pelo, no el nacimiento del pelo, y marcar el nacimiento hace que
+        todas las cabezas salgan pequeñas."""
+
+[[faq]]
+q = "¿Por qué el archivo tiene que pesar al menos 20 KB, y cómo se puede rellenar?"
+a = """
+        Los portales de exámenes de la India, el formulario de visado chino y la subida
+        del pasaporte británico indican un tamaño mínimo además de un máximo, porque un
+        archivo por debajo suele ser una miniatura que alguien subió por error. Una
+        fotografía de 200&nbsp;&times;&nbsp;230 tiene 46.000 píxeles, y con la mejor
+        calidad que un navegador vaya a escribir todavía puede quedarse en 15&nbsp;KB,
+        sin forma de hacerla más grande comprimiendo menos. Así que la herramienta añade
+        un segmento de comentario JPEG lleno de espacios. Eso forma parte del estándar
+        JPEG, cualquier decodificador se lo salta y la imagen es bit a bit la misma
+        imagen: lo único más largo es el archivo. El relleno dice exactamente eso, en
+        inglés, dentro del propio archivo."""
+
+[[faq]]
+q = "¿Comprueba el fondo, y puede sustituirlo?"
+a = """
+        Lo comprueba y no lo sustituye. El color se lee de una franja a lo ancho de la
+        parte superior del recorte y por cada lado, por encima de los hombros, y se
+        compara con el color de la norma en CIE Lab y no en RGB: dos grises separados
+        por cuarenta unidades RGB son indistinguibles, y cuarenta unidades de azul son
+        otro color. La falta de uniformidad se mide aparte, porque una sombra en una
+        pared blanca es lo que de verdad hace que rechacen fotografías, y eso no es un
+        problema de color. Sustituir un fondo significa recortar a una persona de una
+        imagen, que es un modelo de segmentación, y uno malo se come el pelo. Ponerte
+        medio metro más lejos de la pared arregla más de estos casos que cualquier
+        filtro."""
+
+[[faq]]
+q = "¿Para qué es la hoja de 10 x 15?"
+a = """
+        Una cabina cobra varios euros por seis fotografías. Un mostrador de fotos
+        imprime un 10&nbsp;&times;&nbsp;15 por céntimos, y eso lo hace cualquiera. Así
+        que la herramienta coloca tantas copias de tu foto como quepan en el papel
+        &mdash; ocho, para un 35&nbsp;&times;&nbsp;45 en un 10&nbsp;&times;&nbsp;15
+        &mdash; con marcas de corte en los huecos y sin imprimir nada encima de una
+        imagen. No se escala nada: cada copia tiene exactamente el tamaño que pide la
+        norma, porque una hoja que las encogiera un dos por ciento para meter una más
+        serían ocho fotografías del tamaño equivocado. Imprímela al 100 por cien;
+        «ajustar a la página» es lo que hace que una hoja salga mal."""
+
+[[faq]]
+q = "¿Por qué importan los DPI si los píxeles son los mismos?"
+a = """
+        Porque un JPEG puede decir de qué tamaño es, y si no lo dice, lo que lo imprima
+        se lo inventa. La resolución vive en la cabecera JFIF, y un lienzo de navegador
+        escribe esa cabecera con el campo de unidades puesto en «esto es una proporción,
+        no una resolución». Esta herramienta reescribe esos pocos bytes para que el
+        archivo diga 300&nbsp;dpi, que es lo que convierte 413&nbsp;&times;&nbsp;531
+        píxeles en una fotografía de 35&nbsp;&times;&nbsp;45&nbsp;mm y no en una imagen
+        sin tamaño determinado. Para eso no se decodifica nada y no se gasta calidad."""
+
+[[faq]]
+q = "¿Puede hacer también el archivo de la firma?"
+a = """
+        Sí: los formularios SSC y UPSC la quieren a 140&nbsp;&times;&nbsp;60 píxeles y
+        entre 10 y 20&nbsp;KB, y está en la lista como especificación propia. La guía de
+        la cara se apaga para ella, porque una firma no tiene línea de ojos, y lo que se
+        comprueba en su lugar es que el papel sea claro, que haya tinta encima y que el
+        recorte no se haya llevado una raya del cuaderno o el borde de la página. Llegar
+        a los 10&nbsp;KB es la parte difícil de esa regla, no quedarse por debajo de
+        20."""
+
+[[faq]]
+q = "¿Esto garantiza que me acepten la solicitud?"
+a = """
+        No, y ninguna herramienta puede garantizarlo con honestidad. Lo que hace es
+        aplicar las cifras publicadas exactamente y enseñarte cada medición que ha
+        hecho, para que lo que un formulario mide automáticamente &mdash; tamaño en
+        píxeles, tamaño de archivo, formato &mdash; esté bien, y lo que mide una persona
+        &mdash; altura de cabeza, línea de ojos, el fondo &mdash; lo tengas delante con
+        números. Las normas además cambian: cada especificación de aquí dice de qué
+        autoridad salió y cuándo se leyó, para que puedas contrastarla con el formulario
+        que tienes delante en vez de fiarte de una tabla."""
+
+[[faq]]
+q = "¿Es gratis? ¿Necesito una cuenta?"
+a = """
+        Es gratis, y no hay cuenta, ni inicio de sesión, ni versión de prueba, ni marca
+        de agua impresa sobre tu cara. Tampoco hay límite de cuántas fotografías hagas,
+        porque no hay ningún servidor pagándolas. El sitio lleva publicidad, que es lo
+        que lo paga, y a los anuncios no se les da nada sobre tu fotografía."""
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = """
+        Sí. Carga la página una vez, desconéctate de internet y verás que sigue
+        funcionando: el reglamento es un archivo servido con la página, no una consulta.
+        Esa es además la forma más sencilla de demostrar que no se sube nada: una
+        herramienta que mandara tu fotografía fuera a recortar se pararía en cuanto
+        desenchufaras."""
+
+[schema]
+description = "Haz una fotografía de pasaporte, visado o documento de identidad según la especificación publicada de un país, en el navegador. Aplica el tamaño de impresión, los DPI, la banda de altura de cabeza, la línea de ojos y el color de fondo del documento elegido, muestra y mide cada uno en vivo, comprueba el fondo, monta una hoja de 10x15 imprimible con marcas de corte y escribe un archivo de subida al tamaño en píxeles obligatorio dentro de la banda de KB del portal. No se sube nada."
+features = [
+  "Un reglamento de especificaciones publicadas, cada una con su autoridad y la fecha en que se leyó",
+  "La geometría del Doc 9303 de la OACI: la altura de cabeza como fracción del encuadre y la línea de ojos sobre el borde inferior",
+  "Un recuadro de recorte fijado a la forma de la especificación, con la banda de ojos y la de barbilla dibujadas dentro",
+  "Cuatro marcas arrastradas (coronilla, barbilla y las dos pupilas) en vez de detección de caras",
+  "Altura de cabeza, línea de ojos, centrado e inclinación en vivo, cada uno diciendo hacia dónde corregir",
+  "Color y uniformidad del fondo medidos en CIE Lab, con los dos informados por separado",
+  "Imprime a los milímetros exactos, con la resolución escrita en la cabecera JPEG",
+  "Una hoja de 10 x 15, 13 x 18, A4 o Carta, mosaicada con marcas de corte en los huecos y sin nada encima de una imagen",
+  "Un archivo de subida al tamaño en píxeles obligatorio, ajustado a la banda de KB del portal por los dos extremos",
+  "Fotos de formulario SSC y UPSC a 200 x 230 en 20-50 KB, y firmas a 140 x 60 en 10-20 KB",
+  "Funciona sin conexión; sin subidas, sin cuenta, sin detección de caras",
+]
+
+[picker]
+title = "Suelta aquí una foto"
+hint = "o haz clic para buscarla &mdash; una fotografía, JPEG, PNG, WebP o cualquier otra cosa que tu navegador pueda abrir"

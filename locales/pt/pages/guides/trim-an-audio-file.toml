@@ -1,0 +1,16 @@
+#
+# Guia: cortar um arquivo de áudio - Portuguese.
+#
+
+nav = "Cortar um áudio"
+title = "Como cortar áudio sem perder qualidade"
+description = "Onde um corte de áudio cai de verdade, por que ele pode ser exato quando o de vídeo não pode, por que uma emenda às vezes estala, e o que uma queda de cinco milissegundos está realmente fazendo."
+heading = "Como cortar áudio sem perder qualidade"
+lede = """
+    Um corte de áudio cai no instante exato que você marcou, em qualquer player,
+    sempre &mdash; o que não vale para vídeo. Aqui está o porquê, qual é a única
+    pegadinha de verdade, e o que fazer com ela."""
+updated = "21 de agosto de 2026"
+og_title = "Como cortar áudio sem perder qualidade"
+og_description = "Por que um corte de áudio pode ser exato quando o de vídeo não pode, por que uma emenda às vezes estala, e o que faz uma queda de cinco milissegundos."
+og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

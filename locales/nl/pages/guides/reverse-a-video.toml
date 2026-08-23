@@ -1,0 +1,17 @@
+#
+# Gids: een video achteruit afspelen - Dutch.
+#
+
+nav = "Een video achteruit afspelen"
+title = "Een video achteruit afspelen (en het geluid erbij)"
+description = "Een clip achterstevoren afspelen: wat omkeren met het beeld en het geluid doet, waarom het niet zonder hercoderen kan, waarom het trager is dan inkorten, en wat je eerst moet doen."
+heading = "Een video achteruit afspelen"
+lede = """
+    Een clip achterstevoren afspelen klinkt als de simpelste bewerking die er is, en
+    het is degene waar een videobestand het slechtst op gebouwd is. Dit is wat er
+    werkelijk moet gebeuren, wat het kost, en die ene stap die je er beter vóór kunt
+    zetten."""
+updated = "20 augustus 2026"
+og_title = "Een video achteruit afspelen"
+og_description = "Waarom een decoder niet achteruit kan, wat omkeren het beeld en het geluid kost, en de ene stap die je er beter vóór kunt zetten."
+og_image_alt = "abox.tools - tools die nooit een server aanraken"

@@ -1,0 +1,18 @@
+#
+# Guida: dividere una GIF animata in fotogrammi - Italian.
+#
+
+nav = "Dividere una GIF"
+title = "Come dividere una GIF in fotogrammi (e cos'è davvero un fotogramma)"
+description = "Tirare fuori ogni fotogramma di una GIF animata come PNG: perché certi fotogrammi sono solo un pezzetto dell'immagine, che fine fa la trasparenza e come tenere i tempi per rimetterla insieme."
+heading = "Come dividere una GIF in fotogrammi"
+lede = """
+    Tirare fuori i fotogrammi costa un trascinamento e un pulsante. Quello che
+    vale la pena capire è cosa sia davvero un «fotogramma» di una GIF, perché il
+    formato conserva qualcosa di piuttosto diverso da quello che vedi &mdash; ed
+    è per quello che il quattordicesimo fotogramma è un rettangolo con dentro la
+    bocca di qualcuno."""
+updated = "21 agosto 2026"
+og_title = "Come dividere una GIF in fotogrammi"
+og_description = "Ogni fotogramma di una GIF come PNG: perché alcuni sono solo un pezzetto, che fine fa la trasparenza e come tenere i tempi."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

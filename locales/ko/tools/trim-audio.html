@@ -1,0 +1,197 @@
+<main>
+  <!-- 1단계 &mdash; 녹음 -->
+  <section class="card">
+    <h2><span class="step">1</span> 녹음 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>파일</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>용량</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>길이</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>소리</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>읽은 방식</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 표시 -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> 원하는 부분에 표시하기
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      끝까지 틀어 놓고, 구간이 시작될 자리에서 <kbd>I</kbd>를, 끝날 자리에서
+      <kbd>O</kbd>를 누르십시오. 몇 번이든 좋습니다. 한 쌍마다 아래에 한 줄이
+      되고, 완성된 파일은 그 줄들이 차례로 이어진 것입니다. <kbd>U</kbd>는 직전
+      하나를 되돌리고, <kbd>스페이스</kbd>는 재생과 일시정지, 화살표 키는 5초씩
+      건너뜁니다. <kbd>Shift</kbd>를 함께 누르면 10밀리초씩 움직입니다.
+    </p>
+
+    <!-- Built by src/timeline.js: the waveform, a band for every part, the one
+         being marked, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <audio id="preview" class="player" controls preload="metadata"></audio>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">재생</button>
+      <button type="button" id="back-5" class="ghost" title="5초 뒤로">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="5초 앞으로">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> 시작 표시</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> 끝 표시</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> 되돌리기</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="재생 속도">
+      <span class="speed-label">속도</span>
+      <button type="button" class="speed" data-speed="0.5">0.5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0.75&times;</button>
+      <button type="button" class="speed active" data-speed="1">보통</button>
+      <button type="button" class="speed" data-speed="1.25">1.25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1.5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The parts themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>구간 <span class="segment-count" id="segment-count">아직 없음</span></h3>
+        <p class="segments-total">
+          남기는 길이 합계 <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">시작</th>
+            <th scope="col">끝</th>
+            <th scope="col">길이</th>
+            <th scope="col"><span class="visually-hidden">동작</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        아직 표시한 것이 없습니다. 재생하면서 <kbd>I</kbd>를 누른 다음
+        <kbd>O</kbd>를 누르거나, 위의 버튼을 쓰십시오.
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">줄 직접 추가</button>
+        <button type="button" id="reset-segments" class="ghost danger">전부 지우기</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">표시 불러오기&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="시간 파일 형식">
+          <option value="seconds" selected>초</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">표시 저장</button>
+      </div>
+
+      <p class="field-note">
+        표시는 일반 텍스트 파일로 저장됩니다. 한 줄이 한 구간이고 형식은 위에서
+        고른 대로입니다. 그래서 오래 표시한 작업이 탭을 닫아도 남고, 같은 파일을
+        동영상 자르기나 그 배열을 읽는 다른 도구에 건넬 수도 있습니다.
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>표시한 구간을 어떻게 할지</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>남기기</strong>
+          완성된 파일은 표시한 구간들을 순서대로 이어 붙인 것입니다.
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>잘라 내기</strong>
+          표시한 구간이 빠지고, 나머지가 이어집니다.
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- 3단계 &mdash; 나오는 파일 -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 자르기</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">어떻게 쓸지</label>
+        <select id="depth">
+          <option value="16" selected>16비트 WAV &mdash; 어디서나 재생됩니다</option>
+          <option value="32">32비트 부동소수점 WAV &mdash; 샘플 그대로</option>
+        </select>
+        <p class="field-note">
+          WAV는 샘플을 있는 그대로 담기 때문에, 써 내는 것만으로 품질이 깎이지
+          않습니다. 다만 작은 파일은 아닙니다. 아래 예상치를 보십시오.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fade">이음매 부드럽게</label>
+        <select id="fade">
+          <option value="0">끄기 &mdash; 정확한 샘플에서 자르기</option>
+          <option value="0.005" selected>5 ms &mdash; 딱 소리를 막기에 충분</option>
+          <option value="0.02">20 ms</option>
+          <option value="0.05">50 ms</option>
+        </select>
+        <p class="field-note" id="fade-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>남기는 것</dt><dd id="sum-parts">&mdash;</dd></div>
+      <div><dt>완성 길이</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>시작 지점</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>이음매</dt><dd id="sum-joins">&mdash;</dd></div>
+      <div><dt>소리</dt><dd id="sum-sound">&mdash;</dd></div>
+      <div><dt>대략</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>오디오 자르기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" class="player" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>오디오 내려받기</a>
+      </div>
+    </div>
+  </section>
+</main>

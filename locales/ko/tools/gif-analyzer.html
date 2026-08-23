@@ -1,0 +1,155 @@
+<main>
+  <!--
+    One numbered step, and then six headings without numbers.
+
+    Every other tool on this site numbers all of its cards, because every card
+    is something the visitor does. Here there is exactly one thing to do -
+    choose a file - and everything below it is the answer. Numbering the answer
+    would promise a sequence of decisions that does not exist, and would leave
+    somebody looking for step 4's button.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> GIF 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- 요약과, 브라우저가 스스로 그리는 애니메이션. -->
+  <section class="card" id="summary-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="copy-report" class="ghost">보고서 복사</button>
+        <button type="button" id="download-report" class="ghost">내려받기</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="preview-wrap">
+        <!--
+          The browser's own decoder, drawing the file unchanged. Everything else
+          on this page is drawn by src/frames.js, so having both means a
+          disagreement between them is visible rather than hidden - and it is
+          the disagreement that would tell you this reader had a bug.
+        -->
+        <img id="preview" class="preview" alt="이 브라우저가 그리는 애니메이션">
+        <p class="preview-note">브라우저 자체의 디코더가 파일을 있는 그대로 재생하고 있습니다.</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>버전</dt><dd id="fact-version">&mdash;</dd></div>
+        <div><dt>캔버스</dt><dd id="fact-canvas">&mdash;</dd></div>
+        <div><dt>파일 크기</dt><dd id="fact-size">&mdash;</dd></div>
+        <div><dt>프레임</dt><dd id="fact-frames">&mdash;</dd></div>
+        <div><dt>파일에 적힌 길이</dt><dd id="fact-written">&mdash;</dd></div>
+        <div><dt>실제 재생 길이</dt><dd id="fact-plays">&mdash;</dd></div>
+        <div><dt>반복</dt><dd id="fact-loops">&mdash;</dd></div>
+        <div><dt>쓰인 색</dt><dd id="fact-colors">&mdash;</dd></div>
+      </dl>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- 판독 결과. 이걸 보러 왔으니 먼저. -->
+  <section class="card" id="findings-card" hidden>
+    <h2>눈에 띄는 것</h2>
+    <p class="card-lede">
+      아래는 전부 이 파일에서 잰 값입니다. 무엇을 만들려 했는지에 대한 추측은
+      하나도 없습니다.
+    </p>
+    <ul class="findings" id="findings"></ul>
+  </section>
+
+  <!-- 바이트 계산. -->
+  <section class="card" id="budget-card" hidden>
+    <h2>바이트가 어디로 갔는지</h2>
+    <p class="card-lede">
+      파일의 모든 바이트가 딱 한 줄에 들어가고, 줄을 더하면 파일이 됩니다.
+      더해서 맞지 않으면 막대가 슬그머니 늘어나는 대신 마지막 줄이 그렇게
+      말합니다.
+    </p>
+
+    <div class="budget-bar" id="budget-bar" role="img" aria-labelledby="budget-caption"></div>
+    <p class="visually-hidden" id="budget-caption">
+      아래 표와 같은 수치를 막대 하나로 그린 것입니다.
+    </p>
+
+    <table class="budget">
+      <caption class="visually-hidden">이 파일의 바이트가 어디로 갔는지</caption>
+      <thead>
+        <tr>
+          <th scope="col">부분</th>
+          <th scope="col" class="num">바이트</th>
+          <th scope="col" class="num">비중</th>
+        </tr>
+      </thead>
+      <tbody id="budget-rows"></tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">파일 전체</th>
+          <td class="num" id="budget-total">&mdash;</td>
+          <td class="num">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- 프레임 하나하나. -->
+  <section class="card" id="frames-card" hidden>
+    <div class="toolbar">
+      <h2>프레임별로 보기</h2>
+      <div class="toolbar-actions">
+        <label for="frame-view" class="inline-label">보기</label>
+        <select id="frame-view">
+          <option value="composited" selected>프레임마다의 캔버스</option>
+          <option value="stored">각 프레임이 저장한 것만</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="card-lede" id="frames-lede"></p>
+
+    <ul class="frames" id="frames"></ul>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!-- 색. -->
+  <section class="card" id="colors-card" hidden>
+    <h2>색</h2>
+    <p class="card-lede" id="colors-lede"></p>
+
+    <div id="global-palette-wrap" hidden>
+      <h3>전역 표</h3>
+      <p class="palette-note" id="global-palette-note"></p>
+      <ul class="palette" id="global-palette"></ul>
+    </div>
+
+    <details id="local-palettes-wrap" hidden>
+      <summary id="local-palettes-summary">프레임별 표</summary>
+      <div id="local-palettes"></div>
+    </details>
+  </section>
+
+  <!-- 파일 안에서 그림이 아닌 것들. -->
+  <section class="card" id="extras-card" hidden>
+    <h2>그 밖에 들어 있는 것</h2>
+    <p class="card-lede">
+      그림을 담고 있지 않은 블록들입니다. 뷰어는 전부 건너뛰지만, 파일의 사본은
+      그래도 그것들을 계속 들고 다닙니다.
+    </p>
+    <ul class="extras" id="extras"></ul>
+  </section>
+</main>

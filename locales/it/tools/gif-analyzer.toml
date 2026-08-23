@@ -1,0 +1,310 @@
+#
+# Analizzatore di GIF - Italian.
+#
+# Overrides for tools/gif-analyzer/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Analizzatore di GIF"
+heading = "Analizzatore&nbsp;di&nbsp;GIF <span class=\"h1-kw\">&mdash; cosa c'è davvero dentro una GIF</span>"
+tagline = "Fotogrammi, durate, tavolozze e dove è finito ogni byte."
+
+title = "Analizzare una GIF &mdash; fotogrammi, durate, tavolozza e peso"
+description = "Smonta una GIF nel browser: ogni fotogramma con la sua durata e il suo smaltimento, le tavole dei colori, le ripetizioni e il conto byte per byte di dove è finito il peso del file. Non viene caricato niente."
+og_title = "Analizzatore di GIF &mdash; smonta una GIF nel tuo browser"
+og_description = "Ogni fotogramma, ogni durata, ogni tavolozza e un conto onesto di dove sono finiti i byte. Il file viene letto sul tuo dispositivo e non viene mai caricato."
+og_image_alt = "Analizzatore di GIF - fotogrammi, durate, tavolozza e dove sono finiti i byte"
+
+pledge = """
+    Il file lo apre e lo smonta il tuo browser: la struttura a blocchi, la
+    decompressione LZW e ogni fotogramma disegnato su questa pagina succedono su
+    questo dispositivo. Dall'altra parte di questa pagina non c'è nessun server a cui
+    mandare un file, nemmeno se qualcosa qui volesse farlo."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori, tieni
+      d'occhio il pannello Rete e analizza una GIF. Non c'è una sola richiesta che
+      porti con sé un'immagine, una miniatura o un nome di file. Oppure stacca la
+      connessione e analizzane una lo stesso."""
+
+read_first = """
+, <code>src/gif.js</code> per il lettore di blocchi
+      che percorre il file, <code>src/lzw.js</code> per il decompressore e
+      <code>src/budget.js</code> per la contabilità dei byte: in nessuno dei tre c'è
+      una riga che possa raggiungere la rete."""
+
+howto_heading = "Come analizzare una GIF"
+
+card = """
+            Apri una GIF e guarda cosa c'è davvero dentro: ogni fotogramma con la
+            sua durata e il suo smaltimento, le tavole dei colori e un conto onesto
+            di dove è finito il peso del file."""
+
+[words]
+plural = "GIF"
+choose = "una GIF"
+analytics_extra = """, e nessun
+  fotogramma, tavolozza o commento del tuo file"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "I file restano sul tuo dispositivo"
+
+[[privacy]]
+title = "La tua GIF non ha una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può contattare, e
+      non ne appartiene uno a questo sito. Qui non esiste un recapito dove il tuo
+      file possa essere raccolto, e nel codice non c'è niente che lo manderebbe lì se
+      esistesse. Una volta questa riga diceva <code>connect-src 'none'</code>, che
+      non ammetteva eccezioni: la pubblicità è costata quello, e dirlo fa parte
+      dell'accordo."""
+
+[[privacy]]
+title = "Il lettore sono quattro file di questo repository."
+body = """
+ Qui niente usa il
+      decodificatore GIF del browser per capire cosa c'è nel file, perché quel
+      decodificatore non ti dice dove è finito un byte. Quindi il formato viene letto
+      a mano: <code>src/gif.js</code> percorre i blocchi, <code>src/lzw.js</code>
+      espande i pixel, <code>src/frames.js</code> li impila e
+      <code>src/budget.js</code> rimette insieme i pezzi e controlla che facciano il
+      peso del file."""
+
+[[privacy]]
+title = "Commenti e metadati li vedi tu, e nessun altro."
+body = """
+
+      Una GIF può portarsi dietro un blocco di commento, un pacchetto XMP che descrive
+      una modifica o un profilo colore, e questa pagina li stampa tutti. Finiscono
+      sullo schermo davanti a te e da nessun'altra parte: in questo repository non
+      c'è un evento di misurazione che ne porti via qualcosa, e la pagina non
+      potrebbe mandarlo nemmeno se ci fosse."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sul tuo file: né il file, né una miniatura, né un nome, un
+      peso, un numero di fotogrammi o un commento. Ogni riga che legge, decomprime o
+      disegna una GIF è servita da questa origine ed è elencata nel repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
+body = """
+
+      Il pulsante «Buy me a coffee» in alto è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. Non è niente di più
+      di un collegamento: non segnala nessuna visita e non gli viene passato niente su
+      di te o sui tuoi file. Finché non ci clicchi non succede niente, e quello a cui
+      arriveresti è il sito di qualcun altro."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e ogni pezzo di questa pagina
+      continua a funzionare. È la prova più semplice che ci sia: uno strumento che
+      spedisse via la tua GIF per analizzarla si fermerebbe nell'istante in cui
+      stacchi la spina."""
+
+[[howto]]
+title = "Scegli una GIF."
+body = """
+ Trascinala sul selettore oppure cercala a mano.
+      Il browser la legge direttamente dal tuo disco, e nel frattempo non esce niente
+      da nessuna parte."""
+
+[[howto]]
+title = "Leggi prima il riepilogo."
+body = """
+ Le dimensioni della tela, il numero di
+      fotogrammi, quanto l'animazione dichiara di durare e quanto dura davvero. Le
+      ultime due si discostano più spesso di quanto la gente si aspetti, e il motivo
+      è nella sezione successiva."""
+
+[[howto]]
+title = "Guarda cosa salta all'occhio."
+body = """
+ Ogni riga lì è misurata sul tuo
+      file: durate che nessun browser rispetterà, un blocco di ripetizione che manca,
+      tavole dei colori a cui non punta niente, metadati più grandi di certi
+      fotogrammi. Niente è un'ipotesi su cosa volevi fare."""
+
+[[howto]]
+title = "Guarda dove sono finiti i byte."
+body = """
+ Ogni byte del file sta in
+      esattamente una riga, e le righe fanno il file. Se la maggior parte non sta in
+      «pixel compressi», il resto della tabella ti dice dov'è invece."""
+
+[[howto]]
+title = "Scorri i fotogrammi."
+body = """
+ Ognuno mostra la sua durata, il suo
+      rettangolo, il suo metodo di smaltimento e la sua dimensione. Passa da «la tela
+      dopo ogni fotogramma» a «solo quello che ogni fotogramma salva»: con il secondo
+      vedi se il file è ottimizzato, perché una GIF fatta bene salva rettangolini e
+      una fatta male salva ogni volta l'immagine intera."""
+
+[[howto]]
+title = "Portati via il resoconto se ti serve."
+body = """
+ Tutta l'analisi in testo
+      semplice, da incollare in un messaggio o da tenere accanto al file. Viene
+      costruito nella pagina da quello che è già sul tuo schermo."""
+
+[[faq]]
+q = "La mia GIF viene caricata da qualche parte?"
+a = """
+        No. Il file lo legge, lo decomprime e lo disegna il tuo browser sul tuo
+        hardware. Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo che
+        può contattare: nessuno appartiene a questo sito. Stacca la connessione e
+        continua ad analizzare GIF."""
+
+[[faq]]
+q = "Perché la mia GIF va più lenta di quanto dicono le durate?"
+a = """
+        Perché ogni browser si rifiuta di rispettare una durata sotto i due centesimi
+        di secondo e tiene il fotogramma per un decimo. La regola è stata scritta
+        dentro Netscape nel 1996, per i mappamondi che giravano e i cartelli «lavori
+        in corso» dell'epoca, ed è stata ricopiata in ogni browser da allora: non l'ha
+        mai tolta nessuno.
+        <br><br>
+        Quindi una GIF i cui fotogrammi dicono tutti 0,01 s non va a 100 fotogrammi al
+        secondo. Va a 10, cioè da cinque a dieci volte più lenta di quanto intendesse
+        il programma che l'ha fatta. Questa pagina mostra tutti e due i numeri, quello
+        che dice il file e quello che farà davvero, e segna i fotogrammi coinvolti. Il
+        rimedio, nel programma che ha scritto il file, è scrivere 0,02 invece di
+        0,01."""
+
+[[faq]]
+q = "Cosa vuol dire «smaltimento»?"
+a = """
+        Cosa lasciare sullo schermo quando il tempo di un fotogramma è finito, ed è il
+        campo che decide se un'animazione viene bene o sbava.
+        <br><br>
+        <strong>Lasciarlo dov'è</strong> vuol dire che il fotogramma successivo dipinge
+        sopra questo, ed è quello che serve quando i fotogrammi sono opachi e si
+        coprono a vicenda. <strong>Tornare allo sfondo</strong> cancella prima il
+        rettangolo del fotogramma, ed è quello che serve alla trasparenza: senza,
+        le parti trasparenti del fotogramma dopo lasciano vedere il precedente
+        sotto. <strong>Ripristinare quello che c'era sotto</strong> rimette quello che
+        c'era prima che questo fotogramma disegnasse, ed è così che si salva un
+        oggetto piccolo che si muove su uno sfondo fermo. E <strong>non
+        specificato</strong> vuol dire che il file non l'ha detto, e ogni
+        visualizzatore lo tratta come «lasciarlo dov'è»."""
+
+[[faq]]
+q = "Perché la mia GIF è così grande?"
+a = """
+        La tabella «Dove sono finiti i byte» risponde per il tuo file preciso invece
+        che in generale, e le risposte possibili sono poche.
+        <br><br>
+        Se quasi tutto è in <strong>pixel compressi</strong>, il file è semplicemente
+        tanta immagine: una GIF salva ogni fotogramma come pixel interi, senza
+        compensazione del movimento e senza una manopola della qualità, quindi il peso
+        è più o meno l'area per il numero di fotogrammi. Meno fotogrammi, dimensioni
+        più piccole o meno colori sono le uniche leve.
+        <br><br>
+        Se una fetta grossa è in <strong>tavole dei colori</strong>, il file scrive una
+        tavolozza per fotogramma, da 768 byte l'una. Se una fetta grossa è in
+        <strong>metadati</strong>, un editor si è lasciato dietro un pacchetto XMP, e
+        si può togliere senza toccare l'immagine. E se i fotogrammi coprono tutti la
+        tela intera, il codificatore non si è mai chiesto quale parte fosse cambiata
+        davvero, e su qualunque cosa ripresa o registrata quello è quasi tutto il
+        file."""
+
+[[faq]]
+q = "Che differenza c'è tra le due viste dei fotogrammi?"
+a = """
+        <strong>La tela dopo ogni fotogramma</strong> è quello che un visualizzatore
+        mostra in quel momento: questo fotogramma disegnato sopra quello che hanno
+        lasciato i precedenti. <strong>Solo quello che ogni fotogramma salva</strong>
+        è il rettangolo che il file tiene davvero per quel fotogramma, da solo e con
+        niente sotto.
+        <br><br>
+        La seconda è quella interessante. Una GIF può salvare di un fotogramma solo la
+        parte di immagine che è cambiata, ed è per questo che la registrazione dello
+        schermo di una finestra quasi ferma può essere piccola. Se in un file ogni
+        fotogramma è la tela intera, quel lavoro non l'ha fatto nessuno, e guardando
+        l'animazione non te ne accorgi: te ne accorgi solo guardando cosa c'è
+        salvato."""
+
+[[faq]]
+q = "Dice che nel mio file c'è un commento o dell'XMP. Cos'è?"
+a = """
+        Testo che viaggia insieme all'immagine e che nessun visualizzatore disegna. Un
+        blocco di commento di solito è il nome del programma che ha scritto il file.
+        Un pacchetto XMP è l'XML che un editor di immagini scrive per annotare cosa ha
+        fatto, e può portarsi dietro la cronologia delle modifiche, la versione del
+        programma e a volte il nome dell'autore.
+        <br><br>
+        Questa pagina li stampa tutti e due per intero, perché la domanda interessante
+        sui metadati è cosa dicono, non che esistano. Vengono mostrati a te e a
+        nessun altro: niente in questo repository li legge a qualcuno."""
+
+[[faq]]
+q = "Riesce ad aprire una GIF rotta?"
+a = """
+        Ci prova, e ti dice dove ha rinunciato. Un file che finisce a metà di un
+        blocco, che ha un byte dove dovrebbe esserci un marcatore o che porta un
+        fotogramma i cui dati compressi finiscono in anticipo mostrerà comunque tutto
+        quello che era leggibile fino a quel punto, con il problema scritto in cima.
+        È proprio il caso in cui un analizzatore serve di più, quindi buttare via
+        tutto il file per un byte sbagliato sarebbe il comportamento sbagliato."""
+
+[[faq]]
+q = "Modifica il mio file?"
+a = """
+        No. Questo strumento legge soltanto. Non c'è un file in uscita, non c'è una
+        ricodifica e qui non c'è nessun pulsante che scriva una GIF: l'unica cosa che
+        puoi scaricare è una copia dell'analisi in testo semplice. Il tuo originale
+        resta intatto sul tuo disco, che è anche la risposta onesta a cosa succede se
+        chiudi la scheda."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di prova.
+        Non c'è nemmeno un limite alla dimensione del file oltre alla memoria del tuo
+        dispositivo. Il sito ha della pubblicità, ed è quella che lo mantiene; agli
+        annunci non arriva niente sul tuo file."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la connessione e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene caricato
+        niente, perché uno strumento che spedisse via la tua GIF per analizzarla si
+        fermerebbe nell'istante in cui stacchi la spina."""
+
+[schema]
+description = "Smonta una GIF nel browser: ogni fotogramma con la sua durata, il suo rettangolo e il suo metodo di smaltimento, le tavole dei colori, le ripetizioni, i metadati e un conto byte per byte del peso del file. Non viene caricato niente."
+features = [
+  "Ogni fotogramma con durata, rettangolo, metodo di smaltimento e peso compresso",
+  "Le due viste di un fotogramma: quello che salva e la tela che vede chi guarda",
+  "Un bilancio dei byte che fa il file, così non resta niente senza spiegazione",
+  "Tavole dei colori disegnate, con segnate le voci a cui nessun pixel punta",
+  "Legge commenti, pacchetti XMP, profili ICC e il blocco di ripetizione Netscape",
+  "Segnala le durate che nessun browser rispetterà e a che velocità va davvero",
+  "Apre file rovinati e troncati e dice dove si fermano",
+  "Funziona offline; niente caricamenti, niente account, niente modifiche al file",
+]
+
+[picker]
+title = "Trascina qui una GIF"
+hint = "oppure clicca per sceglierla &mdash; animata o ferma, di qualsiasi dimensione"

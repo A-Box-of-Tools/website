@@ -89,6 +89,11 @@ complete = true
 # Cropping the picture is 화면-자르기, above.
 "trim-video" = "동영상-자르기"
 "video-to-gif" = "동영상-gif-변환"
+"gif-analyzer" = "gif-분석"
+"grab-frame" = "동영상-캡처"
+"merge-pdf" = "pdf-합치기"
+"split-gif" = "gif-프레임-분리"
+"trim-audio" = "오디오-자르기"
 
 # The indexes and the legal pages. 개인정보처리방침 is the name that page has in
 # Korean law and on every Korean site, so it is what a reader scans for.
@@ -118,6 +123,11 @@ complete = true
 "guides/trim-a-video" = "가이드/동영상-구간-자르기"
 "guides/turn-a-video-into-a-gif" = "가이드/동영상-gif-만들기"
 "guides/turn-images-into-a-video" = "가이드/사진으로-동영상-만들기"
+"guides/grab-a-frame-from-a-video" = "가이드/동영상-캡처하는-법"
+"guides/merge-and-split-pdf-files" = "가이드/pdf-합치기와-나누기"
+"guides/split-a-gif-into-frames" = "가이드/gif-프레임-분리하기"
+"guides/trim-an-audio-file" = "가이드/오디오-파일-자르기"
+"guides/whats-inside-a-gif" = "가이드/gif-파일-구조"
 
 #
 # ---------------------------------------------------------------------------

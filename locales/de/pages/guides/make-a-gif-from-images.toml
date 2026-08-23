@@ -1,0 +1,17 @@
+#
+# Ratgeber: aus Bildern ein animiertes GIF machen - German.
+#
+
+nav = "Aus Bildern ein GIF"
+title = "Aus Bildern ein animiertes GIF machen"
+description = "Aus einer Reihe Bilder ein animiertes GIF: wie schnell ein GIF wirklich laufen kann, was die Paletteneinstellung ändert, und die drei Dinge, die die Datei tatsächlich kleiner machen."
+heading = "Aus Bildern ein animiertes GIF machen"
+lede = """
+    Das GIF zu machen ist der leichte Teil. Eines zu bekommen, das klein genug
+    ist, um es wirklich zu posten, ist der Teil, über den zu lesen sich lohnt,
+    denn ein GIF hat keinen Qualitätsregler, und nur drei Dinge bewegen seine
+    Größe überhaupt."""
+updated = "20. August 2026"
+og_title = "Aus Bildern ein animiertes GIF machen"
+og_description = "Wie schnell ein GIF wirklich laufen kann, was die Paletteneinstellung ändert, und die drei Dinge, die die Datei tatsächlich kleiner machen."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

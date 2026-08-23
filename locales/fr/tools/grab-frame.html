@@ -1,0 +1,134 @@
+<main>
+  <!-- Étape 1 &mdash; le fichier -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez une vidéo</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Fichier</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Taille</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Image</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Durée</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Vidéo</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Images</dt><dd id="src-frames">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Étape 2 &mdash; le moment -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> Trouvez l'image</h2>
+
+    <p class="stage-hint">
+      Faites glisser le curseur pour parcourir le clip, ou lisez-le et
+      arrêtez-vous où vous voulez. <kbd>&larr;</kbd> et <kbd>&rarr;</kbd>
+      avancent d'une image, <kbd>Maj</kbd> avec elles de dix, et
+      <kbd>Espace</kbd> lit et met en pause.
+    </p>
+
+    <!-- The picture you are looking at is the picture that gets saved: on the
+         exact path the canvas holds the decoded frame itself, drawn small here
+         and full size into the file. The <video> element is only for playing
+         and for the files this browser can play but this reader cannot open. -->
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline></video>
+        <canvas id="still" hidden></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>Décodage&hellip;</p>
+      </div>
+    </div>
+
+    <div class="transport">
+      <div class="transport-buttons" role="group" aria-label="Parcourir le clip">
+        <button type="button" id="step-back" class="ghost" title="Image précédente (flèche gauche)"
+          aria-label="Image précédente">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="Lire ou mettre en pause (espace)"
+          aria-label="Lire">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="Image suivante (flèche droite)"
+          aria-label="Image suivante">|&#9654;</button>
+      </div>
+
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="Position dans le clip">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-frame"></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Étape 3 &mdash; l'arrêt sur image -->
+  <section class="card" id="grab-card" hidden>
+    <h2><span class="step">3</span> Prenez l'image</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; exactement l'image</option>
+          <option value="image/jpeg">JPEG &mdash; plus léger, avec perte</option>
+          <option value="image/webp">WebP &mdash; plus léger encore, avec perte</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">Qualité <output id="quality-value">92</output></label>
+        <input type="range" id="quality" min="40" max="100" step="1" value="92">
+        <p class="field-note">
+          Seul le PNG conserve l'image telle quelle. Tout le reste ajoute une
+          deuxième compression par-dessus celle de la vidéo.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="every">Toutes les</label>
+        <div class="inline-pair">
+          <input type="number" id="every" min="0.1" max="600" step="0.5" value="5">
+          <span>secondes</span>
+        </div>
+        <p class="field-note">
+          Pour une planche-contact, ou une vignette de temps en temps. Plafonné à
+          500 images.
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="grab" class="primary">Extraire cette image</button>
+      <button type="button" id="grab-series" class="ghost">En extraire une toutes les 5 secondes</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Étape 4 &mdash; ce qui est ressorti -->
+  <section class="card" id="shots-card" hidden>
+    <h2><span class="step">4</span> Vos images</h2>
+
+    <div class="toolbar">
+      <p class="count" id="shots-count" role="status" aria-live="polite"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="download-all" class="ghost">Tout télécharger en ZIP</button>
+        <button type="button" id="clear" class="ghost danger">Vider</button>
+      </div>
+    </div>
+
+    <ul class="shots" id="shots"></ul>
+  </section>
+</main>

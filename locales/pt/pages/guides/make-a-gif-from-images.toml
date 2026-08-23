@@ -1,0 +1,16 @@
+#
+# Guia: fazer um GIF animado com imagens - Portuguese.
+#
+
+nav = "Imagens em GIF"
+title = "Como fazer um GIF animado com imagens"
+description = "Transforme um conjunto de fotos num GIF animado: a que velocidade um GIF realmente toca, o que a opção de paleta muda, e as três coisas que de fato deixam o arquivo menor."
+heading = "Como fazer um GIF animado com imagens"
+lede = """
+    Fazer o GIF é a parte fácil. Conseguir um pequeno o bastante para dar para
+    postar é a parte que vale ler, porque GIF não tem controle de qualidade e só
+    três coisas mexem no tamanho dele."""
+updated = "20 de agosto de 2026"
+og_title = "Como fazer um GIF animado com imagens"
+og_description = "A que velocidade um GIF realmente toca, o que a opção de paleta muda, e as três coisas que de fato deixam o arquivo menor."
+og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

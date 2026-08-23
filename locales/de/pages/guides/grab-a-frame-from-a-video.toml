@@ -1,0 +1,17 @@
+#
+# Ratgeber: ein Standbild aus einem Video holen - German.
+#
+
+nav = "Standbild greifen"
+title = "Ein Standbild aus einem Video als Bild speichern"
+description = "So holen Sie ein Einzelbild in voller Auflösung aus einem Clip: warum ein Screenshot des pausierten Players nicht dasselbe Bild ist, welches Format sich lohnt und wie Sie genau auf dem Bild landen, das Sie meinten."
+heading = "Ein Standbild aus einem Video als Bild speichern"
+lede = """
+    Player anhalten, Screenshot-Taste drücken &mdash; heraus kommt ein Bild von
+    einem Fenster. Manchmal reicht das. Hier steht, worin der Unterschied
+    besteht und wie Sie an das Einzelbild selbst kommen, wenn es darauf
+    ankommt."""
+updated = "20. August 2026"
+og_title = "Ein Standbild aus einem Video als Bild speichern"
+og_description = "Warum der Screenshot eines pausierten Players nicht das Einzelbild ist, welches Format sich lohnt und wie Sie genau das gemeinte Bild treffen."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

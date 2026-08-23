@@ -1,0 +1,328 @@
+#
+# Biometrisches Passbild - German.
+#
+# Overrides for tools/id-photo/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Passbild-Ersteller"
+heading = "Passbild&nbsp;erstellen <span class=\"h1-kw\">&mdash; Pass- und Visumfotos nach Vorschrift</span>"
+tagline = "Land auswählen. Es wendet genau die Vorschrift dieses Landes an."
+
+title = "Passbild erstellen &mdash; die Maße jedes Landes, ohne Upload"
+description = "Ein Pass- oder Visumfoto nach der veröffentlichten Vorschrift Ihres Landes: exakte Millimeter und DPI, eine mitlaufende Kontrolle von Kopfhöhe und Augenlinie, eine Hintergrundprüfung, ein druckfertiger 10x15-Bogen und eine Datei, die in die KB-Grenze des Portals passt. Es wird nichts hochgeladen."
+og_title = "Ein Passbild genau nach der Vorschrift Ihres Landes, ohne es hochzuladen"
+og_description = "Wählen Sie Land und Dokument, und der Zuschnittrahmen übernimmt Kopfhöhe und Augenlinie dieser Vorschrift. Druckt in der vorgeschriebenen Größe und Auflösung und schreibt die Upload-Datei in das KB-Band, auf dem das Formular besteht."
+og_image_alt = "Passbild-Ersteller - Pass- und Visumfotos nach Vorschrift, ohne Upload"
+
+pledge = """
+    Der Zuschnitt, das Messen, das Auslesen des Hintergrunds und der Druck laufen
+    alle in Ihrem eigenen Browser, auf Ihrer eigenen Hardware, mit dem JPEG-Kodierer,
+    den er ohnehin mitbringt. Eine Netzfunktion hat dieses Werkzeug überhaupt nicht,
+    weder etwas abzurufen noch etwas zu senden. Und selbst wenn es einen Weg nach
+    draußen gäbe, stünde am anderen Ende dieser Seite kein Server, an den ein Foto
+    Ihres Gesichts gehen könnte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und erstellen Sie ein Passbild. Keine einzige Anfrage
+      trägt ein Bild, ein Vorschaubild, einen Dateinamen oder ein Byte dessen, was
+      Sie ausgewählt haben. Oder trennen Sie die Internetverbindung und erstellen Sie
+      trotzdem eines."""
+
+read_first = """
+, <code>src/specs.js</code> für das Regelwerk, also die
+      veröffentlichten Zahlen jedes Landes samt Behörde und Datum, an dem sie
+      abgelesen wurden, <code>src/geometry.js</code> für die Rechnung, die aus vier
+      gesetzten Punkten einen Zuschnitt macht, und <code>src/jpeg.js</code> für die
+      zwei Kopfänderungen, die die Druckauflösung in die Datei schreiben und einen zu
+      kleinen Upload auf die Größe bringen, auf der ein Formular besteht."""
+
+howto_heading = "So machen Sie ein Passbild, das nicht zurückkommt"
+
+card = """
+            Wählen Sie Land und Dokument, und der Zuschnittrahmen übernimmt
+            Kopfhöhe und Augenlinie dieser Vorschrift. Druckt auf den exakten
+            Millimeter und in der richtigen Auflösung, mit einem
+            10&nbsp;&times;&nbsp;15-Bogen, und presst den Upload in das KB-Band des
+            Portals."""
+
+[words]
+plural = "Fotos"
+choose = "ein Foto"
+analytics_extra = """, und keine der
+  Messungen, Zuschnitte oder Länder, die dieses Werkzeug ermittelt"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Ein Foto Ihres Gesichts verlässt dieses Gerät nie."
+body = """
+ Das wiegt hier
+      schwerer als bei den meisten Werkzeugen: Die Datei, die diese Seite in die Hand
+      nimmt, ist ein Bild Ihres Gesichts, und was Sie damit vorhaben, nennt zugleich
+      das Land, dessen Dokument Sie beantragen. In der
+      <code>Content-Security-Policy</code> steht jede Adresse, die diese Seite
+      kontaktieren darf, und keine einzige davon gehört uns. Es gibt hier keinen
+      Endpunkt, an dem Ihr Foto eingesammelt werden könnte."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ In <code>src/</code> gibt es nirgends ein
+      <code>fetch</code>, kein <code>XMLHttpRequest</code> und kein
+      <code>sendBeacon</code>. Das Regelwerk ist eine Tabelle in
+      <code>src/specs.js</code>, die mit der Seite ausgeliefert und mit ihr
+      zwischengespeichert wird. Es gibt keine Länderliste nachzuschlagen und nichts,
+      wogegen Ihr Foto aus der Ferne geprüft würde."""
+
+[[privacy]]
+title = "Es gibt keine Gesichtserkennung, und das mit Absicht."
+body = """
+ Die vier Punkte, an
+      denen die Vorschriften gemessen werden, ziehen Sie selbst. Sie zu erkennen,
+      hieße ein Modell auszuliefern und es auf einem Bild Ihres Gesichts laufen zu
+      lassen, und ein Modell, das falsch liegt, liegt ungleichmäßig falsch: bei
+      manchen Gesichtern schlechter als bei anderen. Vier Punkte kosten acht Sekunden
+      und sind für alle exakt."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee. Keinem
+      davon wird irgendetwas über Ihr Foto, Ihr Gesicht oder die gewählte Vorschrift
+      übergeben. Jede Zeile, die eine Datei liest, zuschneidet, vermisst oder
+      schreibt, kommt von dieser Domain selbst und steht im Repository."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und das
+      Werkzeug bleibt unverändert, weil darin nie ein Schritt über das Netz vorgesehen
+      war. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Wählen Sie das Foto aus."
+body = """
+ Ein Handybild vor einer schlichten
+      Wand, bei Tageslicht, aus etwa anderthalb Metern Abstand. Der Browser liest es
+      direkt von Ihrer Festplatte, und dabei geht nichts nach draußen."""
+
+[[howto]]
+title = "Wählen Sie Land und Dokument."
+body = """
+ Die Tafel zeigt dann Druckgröße,
+      Kopfhöhenband, Augenlinie, Hintergrundfarbe und Upload-Grenzen dieser
+      Vorschrift, jeweils mit der Behörde, aus der die Zahl stammt, und dem Datum, an
+      dem sie abgelesen wurde. Nichts auf dieser Liste ist geraten, und alles, was Sie
+      zugeschickt bekommen haben und was nicht darauf steht, kommt unter
+      &bdquo;Irgendwo anders&ldquo; hinein."""
+
+[[howto]]
+title = "Ziehen Sie die vier Punkte auf Ihr Gesicht."
+body = """
+ Scheitel, Kinn und jede
+      Pupille. An diesen vier Punkten hängt alles, was die Vorschrift misst, und
+      deshalb fragt dieses Werkzeug danach, statt zu raten. Drücken Sie dann
+      <em>Rahmen einpassen</em>, und der Zuschnitt landet dort, wo dieses Land ihn
+      haben will."""
+
+[[howto]]
+title = "Lesen Sie die vier Prüfungen und den Hintergrund."
+body = """
+ Kopfhöhe, Augenlinie,
+      Zentrierung und Neigung, jeweils am Rahmen gemessen, wie er gerade steht, und
+      jeweils mit dem Hinweis, in welche Richtung zu ziehen ist, wenn etwas nicht
+      stimmt. Der Hintergrund wird oben und an den Seiten des Zuschnitts ausgelesen
+      und mit der Farbe verglichen, die die Vorschrift verlangt. Die Ungleichmäßigkeit,
+      an der Fotos tatsächlich scheitern, wird getrennt von der Farbe gemessen."""
+
+[[howto]]
+title = "Nehmen Sie die drei Dateien mit."
+body = """
+ Den Druck, auf den exakten
+      Millimeter, mit der Auflösung in der Datei, damit ein Laden ihn in der richtigen
+      Größe druckt. Den Bogen, mit so vielen Abzügen, wie auf ein 10&nbsp;&times;&nbsp;15
+      passen, und Schnittmarken in den Zwischenräumen. Und den Upload, in der
+      Pixelgröße, die das Portal verlangt, und innerhalb des KB-Bandes, das es an
+      beiden Enden durchsetzt."""
+
+[[faq]]
+q = "Wird mein Foto irgendwohin hochgeladen?"
+a = """
+        Nein. Ihr eigener Browser dekodiert, schneidet, vermisst und schreibt das Bild
+        auf Ihrer eigenen Hardware, mit dem JPEG-Kodierer, den der Browser ohnehin
+        mitbringt. Eine Netzfunktion hat dieses Werkzeug überhaupt nicht, es ruft nie
+        etwas ab und sendet nie etwas, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die sie
+        kontaktieren darf; keine davon gehört uns. Das wiegt hier schwerer als bei den
+        meisten Werkzeugen, denn die Datei ist ein Foto Ihres Gesichts."""
+
+[[faq]]
+q = "Welche Länder sind abgedeckt?"
+a = """
+        Bisher übertragen sind der ICAO-Standard selbst, die Vereinigten Staaten (Pass
+        und die Bewerbung um die Diversity-Visa-Lotterie, die unterschiedliche
+        Upload-Regeln haben), das Vereinigte Königreich, das Schengen-Visum,
+        Deutschland, Kanada, Australien, Indien (Pass, der Abzug in
+        35&nbsp;&times;&nbsp;45&nbsp;mm sowie das Formularfoto und die Unterschrift für
+        SSC und UPSC), China und Japan. Jeder Eintrag nennt die Behörde, aus der er
+        stammt, und das Datum, an dem er abgelesen wurde. Alles andere kommt unter
+        &bdquo;Irgendwo anders&ldquo; hinein, wo Sie jede Zahl selbst eintippen. Da der
+        größte Teil der Welt nach der ICAO-Geometrie ausstellt, beginnt dieser Eintrag
+        auch mit ihr."""
+
+[[faq]]
+q = "Warum soll ich mein Gesicht selbst markieren, statt dass es gefunden wird?"
+a = """
+        Weil ein Gesicht zu finden bedeutet, ein Modell auszuliefern: Gewichte zum
+        Herunterladen, eine Laufzeitumgebung, um sie auszuführen, und ein Versagen, das
+        ungleichmäßig verteilt ist. Erkenner sind bei manchen Gesichtern messbar
+        schlechter als bei anderen, und ausgerechnet die Menschen, deren Fotos ohnehin
+        am häufigsten abgelehnt werden, würden im Stich gelassen. Vier gezogene Punkte
+        kosten etwa acht Sekunden, sind exakt und sind für alle dieselben acht
+        Sekunden. Der experimentelle Gesichtserkenner des Browsers hätte in einem
+        Browser hinter einem Schalter funktioniert, und das ist keine Funktion, sondern
+        ein Werkzeug, das sich je nach dem, womit man es geöffnet hat, anders
+        verhält."""
+
+[[faq]]
+q = "Was ist die Kopfhöhenregel, und warum scheitert meine ständig daran?"
+a = """
+        Jede dieser Vorschriften sagt, wie viel vom Bild der Kopf ausfüllen muss,
+        gemessen von der Kinnunterkante bis zum obersten Punkt des Kopfes, Haare
+        eingeschlossen. Meist sind es 70 bis 80 Prozent, bei einem 45&nbsp;mm hohen
+        Foto also 31,5 bis 36&nbsp;mm. Der übliche Grund fürs Scheitern ist ein Selfie:
+        eine Armlänge sind etwa 60&nbsp;cm, was das Gesicht verzerrt und den Kopf zu
+        groß ins Bild setzt. Der zweithäufigste Grund ist der Scheitel. Gemeint ist der
+        oberste Punkt der Haare, nicht der Haaransatz, und wer den Haaransatz markiert,
+        bekommt jeden Kopf zu klein."""
+
+[[faq]]
+q = "Warum muss die Datei mindestens 20 KB haben, und wie kann man sie auffüllen?"
+a = """
+        Indische Prüfungsportale, das chinesische Visumformular und der britische
+        Pass-Upload nennen neben einer Höchstgröße auch eine Mindestgröße, denn eine
+        Datei darunter ist meist ein versehentlich hochgeladenes Vorschaubild. Ein Foto
+        mit 200&nbsp;&times;&nbsp;230 hat 46.000 Pixel und kann selbst bei der besten
+        Qualität, die ein Browser schreibt, bei 15&nbsp;KB landen, ohne dass sich durch
+        weniger Kompression etwas machen ließe. Also fügt das Werkzeug ein
+        JPEG-Kommentarsegment voller Leerzeichen an. Das gehört zum JPEG-Standard, jeder
+        Dekoder überspringt es, und das Bild bleibt Bit für Bit dasselbe Bild, nur die
+        Datei ist länger. Genau das steht auch in der Auffüllung, auf Englisch, in der
+        Datei selbst."""
+
+[[faq]]
+q = "Prüft es den Hintergrund, und kann es einen austauschen?"
+a = """
+        Es prüft und tauscht nicht aus. Die Farbe wird aus einem Streifen über dem
+        oberen Rand des Zuschnitts und an beiden Seiten oberhalb der Schultern
+        ausgelesen und mit der Farbe der Vorschrift verglichen, und zwar in CIE Lab
+        statt in RGB: Zwei Grautöne, die vierzig RGB-Einheiten auseinanderliegen, sind
+        nicht zu unterscheiden, vierzig Einheiten Blau dagegen sind eine andere Farbe.
+        Die Ungleichmäßigkeit wird getrennt gemessen, denn ein Schatten auf einer weißen
+        Wand ist das, woran Fotos wirklich scheitern, und das ist kein Farbproblem.
+        Einen Hintergrund zu ersetzen hieße, einen Menschen aus einem Bild
+        auszuschneiden, und das ist ein Segmentierungsmodell, das im schlechten Fall
+        Haare frisst. Einen halben Meter weiter von der Wand wegzutreten, behebt mehr
+        davon als jeder Filter."""
+
+[[faq]]
+q = "Wozu ist der 10-x-15-Bogen da?"
+a = """
+        Ein Automat nimmt für sechs Fotos ein paar Euro. Ein Fotoschalter druckt ein
+        10&nbsp;&times;&nbsp;15 für Cents, und das kann jeder. Also legt das Werkzeug
+        so viele Abzüge Ihres Fotos auf das Papier, wie darauf passen, bei
+        35&nbsp;&times;&nbsp;45 auf 10&nbsp;&times;&nbsp;15 sind das acht, mit
+        Schnittmarken in den Zwischenräumen und ohne dass etwas über ein Bild gedruckt
+        wird. Skaliert wird nichts: Jeder Abzug hat genau die Größe, die die Vorschrift
+        verlangt, denn ein Bogen, der sie um zwei Prozent schrumpfte, um einen mehr
+        unterzubringen, wären acht Fotos in der falschen Größe. Drucken Sie ihn mit 100
+        Prozent; &bdquo;an Seite anpassen&ldquo; ist das, was einen Bogen falsch
+        herauskommen lässt."""
+
+[[faq]]
+q = "Warum sind die DPI wichtig, wenn die Pixel dieselben sind?"
+a = """
+        Weil ein JPEG sagen kann, wie groß es ist, und wenn es das nicht tut, rät das
+        Druckprogramm. Die Auflösung steht im JFIF-Kopf, und eine Browser-Leinwand
+        schreibt diesen Kopf mit dem Einheitenfeld auf &bdquo;das ist ein
+        Seitenverhältnis, keine Auflösung&ldquo;. Dieses Werkzeug schreibt diese
+        wenigen Bytes um, sodass die Datei 300&nbsp;dpi angibt, und erst das macht aus
+        413&nbsp;&times;&nbsp;531 Pixeln ein Foto von 35&nbsp;&times;&nbsp;45&nbsp;mm
+        statt eines Bildes ohne bestimmte Größe. Dafür wird nichts dekodiert und keine
+        Qualität ausgegeben."""
+
+[[faq]]
+q = "Kann es auch die Unterschriftsdatei?"
+a = """
+        Ja. Die SSC- und UPSC-Formulare wollen eine mit 140&nbsp;&times;&nbsp;60 Pixeln
+        und zwischen 10 und 20&nbsp;KB, und sie steht als eigene Vorschrift auf der
+        Liste. Die Gesichtsüberlagerung ist dafür abgeschaltet, denn eine Unterschrift
+        hat keine Augenlinie. Geprüft wird stattdessen, dass das Papier hell ist, dass
+        Tinte darauf ist und dass der Zuschnitt keine Linierung und keinen Blattrand
+        mitgenommen hat. Die 10&nbsp;KB zu erreichen ist bei dieser Regel der schwere
+        Teil, nicht das Unterschreiten von 20."""
+
+[[faq]]
+q = "Garantiert das, dass mein Antrag angenommen wird?"
+a = """
+        Nein, und ehrlicherweise kann das kein Werkzeug. Was es tut, ist die
+        veröffentlichten Zahlen exakt anzuwenden und Ihnen jede Messung zu zeigen, die
+        es gemacht hat. So stimmt das, was ein Formular automatisch misst, also
+        Pixelgröße, Dateigröße und Format, und das, was ein Mensch beurteilt, also
+        Kopfhöhe, Augenlinie und Hintergrund, liegt mit Zahlen vor Ihnen. Die Regeln
+        ändern sich außerdem: Jede Vorschrift hier nennt ihre Behörde und ihr
+        Lesedatum, damit Sie sie gegen das Formular vor sich prüfen können, statt einer
+        Tabelle zu vertrauen."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase und
+        kein Wasserzeichen quer über Ihrem Gesicht. Wie viele Fotos Sie machen, ist
+        ebenfalls nicht begrenzt, denn es zahlt kein Server dafür. Bezahlt wird die
+        Seite über Werbung, und den Anzeigen wird nichts über Ihr Foto übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung, und
+        sie arbeitet weiter. Das Regelwerk ist eine Datei, die mit der Seite kommt, und
+        keine Abfrage. Das ist zugleich der einfachste Beweis dafür, dass nichts
+        hochgeladen wird: Ein Werkzeug, das Ihr Foto zum Zuschneiden wegschickt, bliebe
+        in dem Moment stehen, in dem Sie den Stecker ziehen."""
+
+[schema]
+description = "Ein Pass-, Visum- oder Ausweisfoto im Browser nach der veröffentlichten Vorschrift eines Landes erstellen. Wendet Druckgröße, Auflösung, Kopfhöhenband, Augenlinie und Hintergrundfarbe des gewählten Dokuments an, zeigt jede Größe mitlaufend an und misst sie, prüft den Hintergrund, legt einen druckfertigen 10-x-15-Bogen mit Schnittmarken an und schreibt eine Upload-Datei in der vorgeschriebenen Pixelgröße innerhalb des KB-Bandes des Portals. Es wird nichts hochgeladen."
+features = [
+  "Ein Regelwerk veröffentlichter Vorschriften, jede mit Behörde und Lesedatum",
+  "Die Geometrie aus ICAO Doc 9303: Kopfhöhe als Anteil des Bildes und Augenlinie über der Unterkante",
+  "Ein Zuschnittrahmen im Format der Vorschrift, mit eingezeichnetem Augen- und Kinnband",
+  "Vier gezogene Marken für Scheitel, Kinn und beide Pupillen statt Gesichtserkennung",
+  "Kopfhöhe, Augenlinie, Zentrierung und Neigung mitlaufend, jeweils mit Korrekturrichtung",
+  "Hintergrundfarbe und Gleichmäßigkeit in CIE Lab gemessen und getrennt ausgewiesen",
+  "Druckt auf den exakten Millimeter, mit der Auflösung im JPEG-Kopf",
+  "Ein Bogen in 10 x 15, 13 x 18, A4 oder Letter, gekachelt mit Schnittmarken in den Lücken",
+  "Eine Upload-Datei in der vorgeschriebenen Pixelgröße, an beiden Enden ins KB-Band des Portals gebracht",
+  "SSC- und UPSC-Formularfotos in 200 x 230 mit 20 bis 50 KB und Unterschriften in 140 x 60 mit 10 bis 20 KB",
+  "Läuft offline; kein Upload, kein Konto, keine Gesichtserkennung",
+]
+
+[picker]
+title = "Foto hierher ziehen"
+hint = "oder klicken und auswählen &mdash; ein Foto, JPEG, PNG, WebP oder alles andere, was Ihr Browser öffnen kann"

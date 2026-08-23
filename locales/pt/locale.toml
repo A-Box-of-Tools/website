@@ -58,6 +58,15 @@ complete = true
 "svg-to-image" = "svg-para-png"
 "trim-video" = "aparar-video"
 "video-to-gif" = "video-para-gif"
+"gif-analyzer" = "analisar-gif"
+"gif-maker" = "criar-gif"
+"grab-frame" = "extrair-quadro-de-video"
+"id-photo" = "foto-3x4"
+"merge-pdf" = "juntar-pdf"
+"reverse-video" = "inverter-video"
+"split-gif" = "separar-gif-em-quadros"
+"text-tools" = "formatar-json"
+"trim-audio" = "cortar-audio"
 
 "guides" = "guias"
 "roadmap" = "roteiro"
@@ -79,6 +88,15 @@ complete = true
 "guides/embed-an-image-in-css" = "guias/colocar-uma-imagem-no-css"
 "guides/make-a-qr-code" = "guias/gerar-um-qr-code"
 "guides/turn-a-video-into-a-gif" = "guias/transformar-um-video-em-gif"
+"guides/format-json-without-uploading-it" = "guias/formatar-json"
+"guides/grab-a-frame-from-a-video" = "guias/extrair-um-quadro-de-um-video"
+"guides/make-a-gif-from-images" = "guias/fazer-um-gif-com-imagens"
+"guides/make-a-passport-photo" = "guias/fazer-foto-3x4-em-casa"
+"guides/merge-and-split-pdf-files" = "guias/juntar-e-dividir-arquivos-pdf"
+"guides/reverse-a-video" = "guias/inverter-um-video"
+"guides/split-a-gif-into-frames" = "guias/separar-um-gif-em-quadros"
+"guides/trim-an-audio-file" = "guias/cortar-um-arquivo-de-audio"
+"guides/whats-inside-a-gif" = "guias/o-que-tem-dentro-de-um-gif"
 
 #
 # ---------------------------------------------------------------------------

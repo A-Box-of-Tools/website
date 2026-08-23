@@ -1,0 +1,18 @@
+#
+# Gids: JSON formatteren zonder het weg te geven - Dutch.
+#
+
+nav = "JSON formatteren"
+title = "JSON formatteren zonder het te uploaden"
+description = "JSON in je eigen browser uitlijnen, controleren en verkleinen: wat een formatteerder nooit aan je bestand mag veranderen, hoe je de foutmelding leest, en waarom het uitmaakt in welk vak je het plakt."
+heading = "JSON formatteren zonder het aan iemand te geven"
+lede = """
+    JSON formatteren hoort de witruimte te veranderen en verder niets. De meeste
+    hulpmiddelen die het aanbieden veranderen meer, en geen van alle zegt het
+    erbij. Dit is waar je op let, hoe je de fout leest wanneer het bestand niet
+    te ontleden is, en waarom het vak waar je een configuratiebestand in plakt
+    een gedachte waard is."""
+updated = "20 augustus 2026"
+og_title = "JSON formatteren zonder het aan iemand te geven"
+og_description = "Wat een JSON-formatteerder nooit aan je bestand mag veranderen, hoe je de ontleedfout leest, en waarom de site waar je het in plakt uitmaakt."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

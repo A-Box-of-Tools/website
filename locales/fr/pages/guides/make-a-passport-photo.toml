@@ -1,0 +1,18 @@
+#
+# Guide : faire sa photo d'identité chez soi - French.
+#
+
+nav = "Faire une photo d'identité"
+title = "Comment faire sa photo d'identité chez soi (sans se la faire refuser)"
+description = "Ce qu'on mesure vraiment sur une photo d'identité &mdash; hauteur du visage, ligne des yeux, fond &mdash;, quel pays demande quels chiffres, et comment respecter les limites en pixels et en Ko d'un formulaire en ligne."
+heading = "Comment faire une photo d'identité qui ne revient pas"
+lede = """
+    Une photo d'identité n'est pas une image de votre visage à une certaine
+    taille. C'est un jeu de mesures, et celles qui échouent ne sont presque
+    jamais celles qui inquiètent. Voici ce qui est réellement mesuré, quels
+    chiffres veut quel pays, et quoi faire face aux formulaires qui refusent un
+    fichier parce qu'il est trop petit."""
+updated = "20 août 2026"
+og_title = "Comment faire une photo d'identité qui ne revient pas"
+og_description = "Hauteur du visage, ligne des yeux, fond et poids du fichier : ce que mesure un service des passeports, et comment y arriver avec un téléphone et un mur uni."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

@@ -1,0 +1,242 @@
+#
+# Invertitore di video - Italian.
+#
+# Overrides for tools/reverse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Invertitore di video"
+heading = "Invertire&nbsp;un&nbsp;video <span class=\"h1-kw\">&mdash; riprodurlo al contrario</span>"
+tagline = "L'ultimo fotogramma per primo, audio compreso."
+
+title = "Invertire un video online &mdash; gratis, senza caricare niente, offline"
+description = "Riproduci un MP4, MOV o WebM al contrario, con anche l'audio invertito. Gira nel browser: non viene caricato niente, non c'è filigrana e funziona offline."
+og_title = "Invertitore di video &mdash; riproduci un video al contrario senza caricarlo"
+og_description = "Inverti un video e l'audio che contiene, fotogramma per fotogramma, sul tuo dispositivo. Il file lo legge, lo decodifica e lo scrive il tuo browser."
+og_image_alt = "Invertitore di video - riprodurre un video al contrario nel browser, senza caricare niente"
+
+pledge = """
+    Ogni fotogramma viene decodificato, girato e ricodificato dal tuo browser, sul
+    tuo hardware. Qui non c'è niente che possa scaricare o mandare qualcosa, perché
+    questo strumento non ha proprio nessuna funzione di rete. E anche se ci fosse
+    una via d'uscita, dall'altra parte di questa pagina non c'è nessun server a cui
+    mandare un video."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori, tieni
+      d'occhio il pannello Rete e inverti un video. Non c'è una sola richiesta che
+      porti con sé un fotogramma, un nome di file o un byte di quello che hai
+      scelto. Oppure stacca la connessione e invertine uno lo stesso: uno strumento
+      che spedisse via il tuo video per elaborarlo si fermerebbe e basta."""
+
+read_first = """
+, <code>src/timeline.js</code> per i conti che decidono
+      quale fotogramma esce e quando, e <code>src/reverse.js</code> per il ciclo che
+      percorre il file all'indietro, un gruppo di fotogrammi alla volta. Nessuno di
+      loro importa qualcosa in grado di fare una richiesta."""
+
+howto_heading = "Come invertire un video"
+
+card = """
+            Riproduci un video al contrario, immagine e audio, senza mandarlo da
+            nessuna parte."""
+
+[words]
+plural = "video"
+choose = "un video"
+analytics_extra = """, e nessun
+  fotogramma, durata o nome di file"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessuna filigrana"
+
+[[facts]]
+text = "Inverte anche l'audio"
+
+[[facts]]
+text = "Funziona offline"
+
+[[privacy]]
+title = "I tuoi video non hanno una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può contattare, e
+      non ne appartiene uno a questo sito. Qui non esiste un recapito dove il tuo
+      file possa essere raccolto, e nel codice non c'è niente che lo manderebbe lì
+      se esistesse."""
+
+[[privacy]]
+title = "Qui niente va a prendere niente."
+body = """
+ Questo strumento non ha proprio nessuna
+      funzione di rete: non c'è un indirizzo da incollare, non c'è niente da
+      scaricare, non c'è un motore che arrivi al primo utilizzo. Ogni byte che tocca
+      il tuo video è arrivato da questa origine quando la pagina si è caricata."""
+
+[[privacy]]
+title = "Decodifica e codifica sono locali."
+body = """
+ I fotogrammi passano da WebCodecs
+      nel tuo browser, oppure dallo stesso motore di riproduzione che ti mostrerebbe
+      il video comunque. Il file finito viene costruito nella memoria di questo
+      dispositivo e consegnato direttamente a un download."""
+
+[[privacy]]
+title = "Anche l'audio viene girato qui."
+body = """
+ Invertire una traccia vuol dire
+      decodificarla, e quella decodifica è quella del browser, che gira su questo
+      dispositivo. Niente la ascolta, niente la conserva e niente potrebbe passarla
+      altrove: qui non c'è un percorso nel codice che spedisca un byte."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sul tuo video: né il file, né un fotogramma, né un nome, una
+      dimensione o una durata. Ogni riga che legge, decodifica, inverte o codifica è
+      servita da questa origine ed è elencata nel repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
+body = """
+
+      Il pulsante «Buy me a coffee» in alto è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. Non è niente di
+      più di un collegamento: non segnala nessuna visita e non gli viene passato
+      niente su di te o sul tuo video."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e tutto quello che c'è su questa
+      pagina continua a funzionare. È la prova più semplice che ci sia."""
+
+[[howto]]
+title = "Scegli un video."
+body = """
+ Trascina un MP4, MOV, M4V o WebM sul
+      selettore, oppure cercalo a mano. Il browser lo legge direttamente dal tuo
+      disco, e nel frattempo non esce niente da nessuna parte."""
+
+[[howto]]
+title = "Decidi cosa fare con l'audio."
+body = """
+ «Inverti anche l'audio» gira la
+      traccia campione per campione, ed è questo che fa uscire il parlato come
+      parlato riprodotto al contrario invece che come silenzio. Toglilo per un video
+      muto, che è anche più veloce."""
+
+[[howto]]
+title = "Decidi quanta qualità spendere."
+body = """
+ L'immagine va ricodificata,
+      perché i fotogrammi escono in un ordine per cui nel file non era codificato
+      niente. «Bilanciato» resta vicino a quello che spendeva l'originale, «Massima
+      qualità» spende di più."""
+
+[[howto]]
+title = "Inverti e scarica."
+body = """
+ Il lavoro succede sul tuo hardware, quindi
+      quanto ci mette dipende dal tuo dispositivo e non da una coda. Il video finito
+      va dritto nei download del tuo browser."""
+
+[[faq]]
+q = "Il mio video viene caricato da qualche parte?"
+a = """
+        No. Lo legge, lo decodifica, lo inverte e lo codifica il tuo browser sul tuo
+        hardware. Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo che
+        può contattare: nessuno appartiene a questo sito. Se preferisci controllare
+        invece che fidarti, stacca la connessione e inverti un video lo stesso."""
+
+[[faq]]
+q = "Quali formati video posso invertire?"
+a = """
+        MP4, M4V e MOV vengono letti direttamente, qualunque cosa ci sia dentro:
+        H.264, HEVC, AV1 o VP9, purché il tuo browser sappia decodificare quel
+        codec. Tutto il resto che il tuo browser sa riprodurre, WebM su tutti, viene
+        invertito facendo tornare indietro il lettore del browser un passo alla
+        volta: funziona, ma è più lento. Un file che il browser non sa né leggere né
+        riprodurre, che in pratica vuol dire AVI, WMV, FLV e quasi tutti gli MKV,
+        viene rifiutato con un messaggio che lo dice invece di fallire a metà strada.
+        Quello che esce è sempre un MP4."""
+
+[[faq]]
+q = "Viene invertito anche l'audio?"
+a = """
+        Sì, a meno che tu non lo tolga. L'intera traccia viene decodificata, i
+        campioni vengono messi nell'ordine inverso e poi si ricodifica in AAC. Quella
+        seconda codifica non si può evitare: un pacchetto audio è qualche decina di
+        millisecondi di suono codificati rispetto al pacchetto precedente, quindi
+        scrivere i pacchetti al contrario farebbe sentire pezzetti riprodotti in
+        avanti nell'ordine sbagliato, e suona come un guasto, non come
+        un'inversione."""
+
+[[faq]]
+q = "Invertire fa perdere qualità?"
+a = """
+        L'immagine viene codificata una seconda volta, e questo costa un pochino.
+        Qui non si può evitare come si evita tagliando: un video invertito mostra i
+        suoi fotogrammi in un ordine per cui nel file originale non era codificato
+        niente, quindi ogni fotogramma va riscritto. Quello che lo strumento non fa è
+        spendere più dell'originale, perché codificare oltre quel punto ingrossa il
+        file senza migliorarne l'aspetto."""
+
+[[faq]]
+q = "C'è un limite alla dimensione o alla durata del video?"
+a = """
+        Nello strumento non c'è nessun limite, e il file non viene letto tutto in
+        memoria in una volta: viene percorso un gruppo di fotogrammi alla volta,
+        all'indietro. I tetti veri sono il video finito, che viene assemblato in
+        memoria prima che tu lo scarichi, e l'audio, che va tenuto intero perché per
+        invertirlo serve l'ultimo campione prima di poter scrivere il primo."""
+
+[[faq]]
+q = "Perché con certi file è più lento?"
+a = """
+        Perché le vie d'ingresso sono due. Un MP4 o un MOV lo legge direttamente
+        questo strumento e lo decodifica un gruppo di fotogrammi alla volta, e va
+        veloce quanto va il tuo dispositivo. Tutto il resto viene invertito chiedendo
+        al lettore del browser un istante del video dopo l'altro, e ognuno di quei
+        salti costringe il browser a decodificare dal fotogramma chiave precedente.
+        La pagina dice quale delle due sta usando, e perché, prima che tu cominci."""
+
+[[faq]]
+q = "Posso invertire solo una parte del video?"
+a = """
+        Qui no. Questo strumento inverte tutto: il video che esce dura esattamente
+        quanto quello che è entrato, con l'ultimo fotogramma per primo. Taglia prima
+        la parte che ti serve con il
+        <a href="../tagliare-video/">Taglierino per video</a>, che lo fa senza
+        ricodificare un fotogramma, e poi inverti quello che ne viene fuori."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di prova
+        e non c'è filigrana. Il sito ha della pubblicità, ed è quella che lo
+        mantiene; agli annunci non arriva niente sul tuo video."""
+
+[schema]
+browser_requirements = "Richiede JavaScript e un browser con la codifica video di WebCodecs: Chrome, Edge, Safari 16.4 o più recente, o Firefox 133 o più recente."
+description = "Inverti un video nel browser, audio compreso. MP4, MOV e M4V vengono decodificati gruppo per gruppo partendo dalla fine e ricodificati con i tempi dei fotogrammi originali; tutto il resto che il browser sa riprodurre viene percorso all'indietro. Non viene caricato niente."
+features = [
+  "Inverte video MP4, MOV, M4V e WebM",
+  "Sorgenti H.264, HEVC, AV1 e VP9, decodificate con WebCodecs",
+  "Inverte l'audio campione per campione, oppure lo lascia fuori",
+  "Mantiene i tempi dei fotogrammi originali, anche con cadenza irregolare",
+  "Funziona offline; niente caricamenti, niente account, niente filigrana",
+]
+
+[picker]
+title = "Trascina qui un video"
+hint = "oppure clicca per sceglierlo &mdash; MP4, MOV, M4V, WebM e tutto il resto che questo browser riproduce"

@@ -1,0 +1,189 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Open de <a href="../../gif-splitsen-in-frames/">GIF-splitser</a>, sleep de
+      GIF erin, en elk frame verschijnt als een PNG die je kunt downloaden
+      &mdash; stuk voor stuk, of allemaal tegelijk als één zipbestand. Laat de
+      instellingen met rust en je krijgt precies wat de meeste mensen bedoelen:
+      elk frame als het hele plaatje, zoals het er op dat moment van de animatie
+      uitziet.
+    </p>
+    <p>
+      De rest van deze pagina gaat over de drie dingen die daarna verbazen: een
+      frame dat maar een klein lapje is, transparantie die ergens anders zwart
+      wordt, en timing die niet meer bestaat zodra de frames losse bestanden
+      zijn.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat een GIF-frame eigenlijk is</h2>
+    <p>
+      Een GIF is geen stapel plaatjes. Het is <em>één</em> plaatje, gevolgd door
+      een reeks lapjes.
+    </p>
+    <p>
+      Elk frame na het eerste bewaart alleen de rechthoek die veranderd is, plus
+      een regel over wat er daarna met het doek moet gebeuren. Al het andere op
+      het scherm is simpelweg wat de eerdere frames daar hebben achtergelaten.
+      Iemand die voor een stilstaande muur staat te praten kost een rechthoek
+      gezicht per frame in plaats van een heel plaatje per frame, en dat is de
+      hele reden dat een formaat zonder bewegingscompensatie en zonder
+      verliesgevende stap niet volslagen onbruikbaar is.
+    </p>
+    <p>
+      Er zijn dus twee verschillende, even eerlijke antwoorden op &ldquo;geef me
+      frame 14&rdquo;, en het hulpmiddel biedt ze allebei:
+    </p>
+    <p>
+      <strong>Het frame zoals het eruitziet.</strong> Het hele plaatje op dat
+      moment: frame 14 getekend boven op alles wat eraan voorafging. Dat is de
+      standaard, en dat is wat je wilt voor een contactblad, een miniatuur, een
+      beeld om te posten, of frames die een videobewerker in gaan.
+    </p>
+    <p>
+      <strong>Alleen de pixels die dat frame bewaart.</strong> Het lapje zelf, op
+      zijn eigen formaat, op zijn eigen plek, met alles wat het niet meedraagt
+      doorzichtig gelaten. Frame 14 is dan misschien 60&nbsp;&times;&nbsp;40
+      pixels mond. Dat is de weergave die verklaart waar de bytes van een GIF
+      gebleven zijn, en die je wilt als je de animatie aan het bewerken bent in
+      plaats van er plaatjes uit te oogsten.
+    </p>
+    <p>
+      Er is niets mis met je bestand als een bewaard frame op een fragment lijkt.
+      Dat ís het bestand.
+    </p>
+  </section>
+
+  <section>
+    <h2>De opruimregel, en waarom sommige frames gaten achterlaten</h2>
+    <p>
+      Elk frame draagt ook een van vier instructies over wat er met zijn
+      rechthoek gebeurt voordat het volgende frame getekend wordt. Het hulpmiddel
+      toont die onder elk frame in de weergave van wat er bewaard is:
+    </p>
+    <p>
+      <strong>Blijft staan.</strong> De gewone. Het lapje blijft waar het geland
+      is en het volgende frame tekent eroverheen.
+    </p>
+    <p>
+      <strong>Wist zijn gebied daarna.</strong> De rechthoek wordt schoongeveegd
+      voordat het volgende frame landt. Dit is wat een animatie met een bewegend
+      doorzichtig voorwerp doet, en het is ook de klassieke oorzaak van
+      flikkerende GIF's.
+    </p>
+    <p>
+      <strong>Zet terug wat eronder zat.</strong> Het doek gaat terug naar hoe
+      het eruitzag voordat dit frame tekende &mdash; een stempel, en dan een
+      ongedaan maken. Zeldzaam, en de regel die zelfgebouwde GIF-lezers het
+      vaakst fout doen.
+    </p>
+    <p>
+      Eén detail dat handig is als je hulpmiddelen vergelijkt: de specificatie
+      zegt dat &ldquo;wist zijn gebied&rdquo; de <em>achtergrondkleur</em> terug
+      moet zetten, maar elke browser sinds de jaren negentig wist naar
+      <em>doorzichtig</em>, omdat de animaties van toen daarvan uitgingen. Dit
+      hulpmiddel volgt bewust de browsers, zodat de frames die je krijgt de
+      frames zijn die je gezien hebt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat er met de transparantie gebeurt</h2>
+    <p>
+      GIF-transparantie is één bit. Een pixel is geverfd of onzichtbaar, en
+      daartussen zit niets &mdash; geen zachte randen, geen halve schaduwen.
+      Daarom heeft een GIF met een doorzichtige achtergrond die harde, licht
+      gekartelde omtrek.
+    </p>
+    <p>
+      PNG bewaart precies dat, zonder verlies, dus de frames komen er met hun
+      transparantie ongeschonden uit en er wordt niets verzonnen. Houd hem als de
+      frames ergens naartoe gaan waar men transparantie begrijpt.
+    </p>
+    <p>
+      Vul hem anders met een kleur. Software die een alfakanaal negeert, tekent
+      het meestal zwart, dus een frame dat er in de browser prima uitzag komt aan
+      met een zwarte achtergrond &mdash; en een bewaard lapje, dat bijna overal
+      doorzichtig is, komt aan als een zwarte rechthoek met een mond erin. De
+      kleur vooraf kiezen lost dat op. Hij wordt in de PNG geschreven en kan
+      achteraf niet meer weg, en dat is de enige reden dat het niet de standaard
+      is.
+    </p>
+  </section>
+
+  <section>
+    <h2>De timing, die de frames niet mee kunnen dragen</h2>
+    <p>
+      Een PNG heeft geen plek om vast te leggen hoe lang hij in beeld stond.
+      Splits een animatie in PNG's en de timing is weg, en dat telt op het moment
+      dat je het weer in elkaar wilt zetten.
+    </p>
+    <p>
+      Daar is de <code>frames.txt</code> in het zipbestand voor. Die noemt van elk
+      frame de vertraging, de plek en het formaat, zodat de animatie opnieuw
+      gebouwd kan worden in de <a href="../../gif-maken/">GIF-maker</a> of ergens
+      anders. Het kost een paar kilobyte en er is geen manier om het later terug
+      te rekenen.
+    </p>
+    <p>
+      Twee dingen over GIF-vertragingen die iedereen verrassen:
+    </p>
+    <p>
+      <strong>De eenheid is honderdsten van een seconde</strong>, dus de fijnste
+      stap die het formaat kent is 0,01&nbsp;s. Een GIF van precies 30&nbsp;fps
+      bestaat niet; 0,03&nbsp;s per frame is 33,3&nbsp;fps en 0,04&nbsp;s is 25.
+    </p>
+    <p>
+      <strong>Alles onder 0,02&nbsp;s wordt op 0,10&nbsp;s afgespeeld.</strong>
+      Browsers begrenzen dat al sinds de jaren negentig &mdash; een regel
+      geschreven voor de draaiende wereldbollen van die tijd en nooit meer
+      weggehaald. Een GIF waarvan het bestand 0,01&nbsp;s per frame zegt, claimt
+      100&nbsp;fps en speelt op 10. Het hulpmiddel toont de vertraging zoals hij
+      echt gespeeld wordt, en zet ernaast wat het bestand bewaart wanneer die
+      twee uiteenlopen, want dat gat is de reden dat een GIF die je splitst en
+      weer opbouwt trager kan uitkomen dan het origineel.
+    </p>
+  </section>
+
+  <section>
+    <h2>Framenummers, en waarom er nullen voor staan</h2>
+    <p>
+      Frames komen eruit als <code>naam-001.png</code>, <code>naam-002.png</code>,
+      genummerd vanaf één en aangevuld tot de breedte van het laatste nummer. Dat
+      is geen versiering: <code>frame9.png</code> sorteert in elke
+      bestandsbeheerder en in de meeste software die een reeks importeert
+      <em>na</em> <code>frame10.png</code>, omdat ze tekst sorteren en geen
+      getallen. Aangevulde namen sorteren overal goed, en elke videobewerker die
+      een beeldreeks importeert verwacht ze zo.
+    </p>
+    <p>
+      Een lange animatie uitdunnen met &ldquo;houd elk tweede frame&rdquo;
+      hernummert niets. Frame 42 heet nog steeds frame 42, zodat de bestanden
+      naast het origineel en naast de tijdenlijst blijven kloppen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom hier geen server voor nodig is</h2>
+    <p>
+      Een GIF lezen zijn twee klussen: door de blokken van het bestand lopen, en
+      de LZW-compressie ongedaan maken waarin de pixels verpakt zitten. Samen
+      zijn dat een paar honderd regels, ze staan uitgeschreven in de repository,
+      en ze draaien op je eigen apparaat &mdash; en daarom blijft de pagina het
+      doen met de netwerkstekker eruit.
+    </p>
+    <p>
+      Je browser kan al een GIF afspelen, maar geeft de onderdelen niet af: een
+      <code>&lt;img&gt;</code> geeft je een animatie, er een op een doek tekenen
+      geeft je voor altijd het eerste frame, en de ene API die meer doet ontbreekt
+      in Safari. Dus wordt het formaat hier zelf gelezen, in elke browser op
+      dezelfde manier &mdash; en dat het zelf gelezen wordt, is ook wat het
+      mogelijk maakt om je de lapjes en de opruimregels te laten zien.
+    </p>
+    <p>
+      <a href="../is-bestanden-uploaden-veilig/">Is het veilig om bestanden naar
+      online omzetters te uploaden?</a> zet vier controles op een rij die je over
+      elk hulpmiddel hetzelfde vertellen, dit hulpmiddel inbegrepen.
+    </p>
+  </section>

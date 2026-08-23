@@ -1,0 +1,17 @@
+#
+# Guide : fusionner, diviser et réordonner des pages PDF - French.
+#
+
+nav = "Fusion et division de PDF"
+title = "Comment fusionner, diviser et réordonner des pages PDF"
+description = "Réunir des PDF, en couper un en plusieurs et déplacer des pages : ce qui survit au remaniement, ce qu'aucun outil ne peut emporter, et pourquoi rien de tout cela n'exige d'envoyer vos documents quelque part."
+heading = "Comment fusionner, diviser et réordonner des pages PDF"
+lede = """
+    Réunir deux documents est la chose la plus ordinaire qu'on fasse à un PDF,
+    et celle qu'on fait le plus souvent en confiant les deux fichiers au serveur
+    d'un inconnu. Il n'en faut aucun. Voici comment procéder, et ce qui disparaît
+    discrètement quand un outil réordonne des pages."""
+updated = "22 août 2026"
+og_title = "Comment fusionner, diviser et réordonner des pages PDF"
+og_description = "Réunir des PDF, en couper un en plusieurs, déplacer des pages &mdash; et savoir ce qui survit au remaniement et ce qui n'y survit pas."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

@@ -1,0 +1,17 @@
+#
+# Guia: juntar, dividir e reordenar páginas de PDF - Portuguese.
+#
+
+nav = "Juntar e dividir PDF"
+title = "Como juntar, dividir e reordenar páginas de PDF"
+description = "Junte PDFs, corte um em vários e mude páginas de lugar: o que sobrevive à remexida, o que ferramenta nenhuma consegue levar junto, e por que nada disso precisa enviar os seus documentos para lugar algum."
+heading = "Como juntar, dividir e reordenar páginas de PDF"
+lede = """
+    Juntar dois documentos é a coisa mais banal que se faz com um PDF, e a que
+    mais vezes é feita entregando os dois arquivos ao servidor de um
+    desconhecido. Não precisa de nenhum. Aqui está como fazer, e o que some
+    caladinho quando uma ferramenta rearranja páginas."""
+updated = "22 de agosto de 2026"
+og_title = "Como juntar, dividir e reordenar páginas de PDF"
+og_description = "Junte PDFs, corte um em vários, mude páginas de lugar &mdash; e saiba o que sobrevive à remexida e o que não."
+og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

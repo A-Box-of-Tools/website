@@ -1,0 +1,269 @@
+#
+# GIF-splitser - Dutch.
+#
+# Overrides for tools/split-gif/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "GIF-splitser"
+heading = "GIF&nbsp;splitsen <span class=\"h1-kw\">&mdash; elk frame als eigen PNG</span>"
+tagline = "Elk frame eruit, als eigen PNG."
+
+title = "GIF splitsen in frames &mdash; gratis, zonder uploaden"
+description = "Splits een geanimeerde GIF in losse frames en sla elk frame op als PNG, gratis en helemaal in je browser. Transparantie en timing blijven behouden. Er wordt niets geüpload en het werkt offline."
+og_title = "GIF-splitser &mdash; een animatie uit elkaar halen in je browser"
+og_description = "Elk frame van een GIF als eigen PNG, met de vertragingen en de transparantie intact. Het bestand wordt op je eigen apparaat gelezen en nooit geüpload."
+og_image_alt = "GIF-splitser - elk frame van een GIF als eigen PNG"
+
+pledge = """
+    De GIF wordt door je eigen browser gelezen, uitgepakt en getekend, en elke
+    PNG wordt in het geheugen van dit apparaat gemaakt. Aan de andere kant van
+    deze pagina zit geen server waar een animatie naartoe zou kunnen, ook al zou
+    iets hier dat willen."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en splits een GIF. Geen enkel verzoek draagt
+      een afbeelding, een frame of een bestandsnaam. Of trek de stekker uit je
+      internet en splits er alsnog een."""
+
+read_first = """
+, <code>src/gif.js</code> voor de lezer die de frames
+      uitpakt en <code>src/compose.js</code> voor de regels waarmee ze op elkaar
+      worden gelegd. In geen van beide staat een regel die het netwerk zou kunnen
+      bereiken."""
+
+howto_heading = "Zo splits je een GIF in frames"
+
+card = """
+            Haal een animatie uit elkaar: elk frame als eigen PNG, met de
+            transparantie behouden en de timing opgeschreven. De GIF wordt op je
+            eigen apparaat uitgepakt."""
+
+[words]
+plural = "GIF's"
+choose = "een GIF"
+analytics_extra = """, en geen
+  frame, vertraging of plaatje"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Bestanden blijven op je apparaat"
+
+[[privacy]]
+title = "Je GIF kan nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en
+      geen daarvan is van ons. Er is hier geen eindpunt waar je bestanden
+      verzameld zouden kunnen worden, en er staat ook niets in de code dat ze
+      daarheen zou sturen als dat er wel was. Hier stond ooit
+      <code>connect-src 'none'</code>, en dat was absoluut. Advertenties hebben
+      dat gekost, en dat erbij zeggen hoort bij de afspraak."""
+
+[[privacy]]
+title = "De GIF-lezer bestaat uit twee bestanden in deze repository."
+body = """
+ Een browser
+      speelt een GIF wel af, maar geeft je de onderdelen niet, dus wordt het
+      formaat hier zelf gelezen: <code>src/gif.js</code> is de container en de
+      LZW-uitpakker, <code>src/compose.js</code> zijn de opruimregels die bepalen
+      hoe elk frame eruitziet als de frames ervoor eronder liggen. Er wordt niets
+      opgehaald om een bestand te openen, en er komt geen engine binnen bij het
+      eerste gebruik."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je animatie
+      mee: geen bestand, geen frame, geen naam, geen formaat en geen aantal. Elke
+      regel die een plaatje leest, uitpakt, tekent of wegschrijft, wordt vanaf
+      deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat die niet te zien krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een
+      script van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts.
+      Het is niet meer dan een link: hij meldt geen bezoek en krijgt niets over
+      jou of je bestanden mee. Er gebeurt niets zolang je er niet op klikt, en
+      waar je dan op zou klikken is de site van iemand anders."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles op deze
+      pagina blijft werken. Eenvoudiger bewijs bestaat er niet: een tool die je
+      animatie wegstuurde om hem uit elkaar te halen zou stoppen op het moment
+      dat je de stekker eruit trok."""
+
+[[howto]]
+title = "Kies de GIF."
+body = """
+ Sleep hem op de kiezer of zoek hem met de hand
+      op. De browser leest hem rechtstreeks van je schijf, en de pagina vertelt
+      wat ze aantrof: het formaat, het aantal frames, hoe lang hij speelt en hoe
+      vaak hij zich herhaalt."""
+
+[[howto]]
+title = "Bepaal wat er in elke PNG komt."
+body = """
+ <strong>Het frame zoals het
+      eruitziet</strong> is wat vrijwel iedereen wil: het hele plaatje op dat
+      moment van de animatie. <strong>Alleen de pixels die dat frame
+      opslaat</strong> is de lap die het bestand werkelijk bevat, op zijn eigen
+      formaat en op zijn eigen plek. Daardoor blijft een GIF klein, en zo ziet de
+      animatie er juist niet uit."""
+
+[[howto]]
+title = "Bepaal wat er met de transparantie gebeurt."
+body = """
+ PNG houdt die
+      vast, en dat is de eerlijke standaardkeuze. Vul hem met een kleur als de
+      frames ergens heen gaan waar transparantie genegeerd wordt en het anders
+      zwart wordt."""
+
+[[howto]]
+title = "Kies de frames die je wilt."
+body = """
+ Standaard allemaal. &ldquo;Elk
+      tweede frame houden&rdquo; dunt een lange opname uit, en de vinkjes in het
+      raster gaan daar overheen. De nummering verandert nooit, dus frame 42 heet
+      frame 42, hoe weinig van zijn buren je ook hebt bewaard."""
+
+[[howto]]
+title = "Download ze."
+body = """
+ Eén frame tegelijk uit het raster, of allemaal
+      als één ZIP zodat je één opslaanvraag krijgt in plaats van honderden. In de
+      ZIP kan een <code>frames.txt</code> mee met hoe lang elk frame bleef staan,
+      en dat is het enige wat een map vol PNG's niet uit zichzelf kan
+      vertellen."""
+
+[[faq]]
+q = "Wordt mijn GIF ergens naartoe geüpload?"
+a = """
+        Nee. Het bestand wordt gelezen, uitgepakt en getekend door je eigen
+        browser op je eigen hardware, en elke PNG wordt hier in het geheugen
+        gemaakt. Deze tool heeft geen serverkant, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat ze
+        mag benaderen: geen daarvan is van ons. Trek de stekker eruit en hij
+        splitst nog steeds GIF's."""
+
+[[faq]]
+q = "Waarom lijkt één frame op een klein stukje van het plaatje?"
+a = """
+        Omdat dat is wat er in het bestand staat. Een GIF is een eerste plaatje
+        gevolgd door lappen: elk volgend frame slaat alleen de rechthoek op die
+        veranderde, en al het andere op het scherm is wat de frames ervoor daar
+        achterlieten. Een pratend hoofd voor een stilstaande muur slaat dus per
+        frame een gezicht op in plaats van een plaatje, en dat is precies waarom
+        het formaat niet enorm is.
+        <br><br>
+        Je ziet dat omdat &ldquo;Alleen de pixels die dat frame opslaat&rdquo;
+        aanstaat. Zet het op &ldquo;Het frame zoals het eruitziet&rdquo; en elke
+        PNG is het hele plaatje zoals de animatie er op dat moment uitziet."""
+
+[[faq]]
+q = "Blijft de transparantie behouden?"
+a = """
+        Ja. Transparantie in een GIF is één bit, want een pixel is of geverfd of
+        onzichtbaar en daartussen zit niets, en PNG slaat precies dat op. De
+        frames komen er dus uit met hun transparante vlakken intact. Wil je liever
+        een dichte achtergrond, zet &ldquo;Transparante vlakken&rdquo; dan op
+        vullen met een kleur. Die wordt in de PNG geschreven en kan er daarna niet
+        meer uit."""
+
+[[faq]]
+q = "Waarom kloppen de vertragingen niet met wat ik verwachtte?"
+a = """
+        Een GIF slaat elke vertraging op in honderdsten van een seconde, en
+        browsers trekken sinds de jaren negentig alles onder twee honderdsten op
+        naar een tiende seconde. Die regel is geschreven voor de draaiende
+        wereldbollen van toen en is nooit meer weggehaald. Een frame waarvan het
+        bestand 0,01 s zegt, wordt dus overal op 0,10 s afgespeeld. Deze tool laat
+        de vertraging zien zoals hij echt gespeeld wordt, en zet ernaast wat het
+        bestand opslaat als die twee verschillen."""
+
+[[faq]]
+q = "Kan ik de frames weer aan elkaar zetten?"
+a = """
+        Ja, met de <a href="../gif-maken/">GIF-maker</a> op deze site of met alles
+        wat een map met afbeeldingen aanneemt. Daar is de
+        <code>frames.txt</code> in de ZIP voor: bij het splitsen gaat de timing
+        verloren, want een PNG heeft nergens plek om vast te leggen hoe lang hij
+        bleef staan, dus draagt die lijst de vertraging en de positie van elk
+        frame mee naar buiten."""
+
+[[faq]]
+q = "In welke formaten kunnen de frames worden opgeslagen?"
+a = """
+        In PNG, en met opzet alleen in PNG. Een GIF-frame heeft hooguit 256
+        kleuren en één bit transparantie; PNG slaat dat precies en zonder verlies
+        op, terwijl JPEG de transparantie zou weggooien, kleuren zou verzinnen die
+        het frame nooit had, en van vlak werk meestal een <em>groter</em> bestand
+        maakt. Heb je toch JPEG's nodig, zet de PNG's dan daarna om met de
+        <a href="../afbeelding-formaat-wijzigen/">Formaatwijzigingstool</a>."""
+
+[[faq]]
+q = "Zit er een limiet op het aantal frames dat hij leest?"
+a = """
+        Er is geen vaste limiet. Het echte plafond is het geheugen van je eigen
+        apparaat: tijdens het lezen groeit een GIF naar ongeveer één byte per
+        pixel per frame, dus een klein bestand kan heel veel geheugen zijn, en
+        deze pagina stopt liever met lezen dan het tabblad te laten sterven.
+        Gebeurt dat, dan zegt ze het en geeft ze de frames terug die ze wel had."""
+
+[[faq]]
+q = "Opent hij ook een beschadigde GIF?"
+a = """
+        Meestal wel. Afgebroken downloads, een ontbrekende eindmarkering en een
+        laatste frame dat midden in de stroom ophoudt komen allemaal veel voor, en
+        een lezer die die weigert is nutteloos voor precies de bestanden die
+        mensen het liefst uit elkaar willen halen. Alle frames die compleet zijn
+        komen terug, met een briefje over wat er mis was. Alleen een bestand dat
+        helemaal geen GIF is wordt meteen geweigerd."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er komt geen account, geen inlog en geen proefperiode
+        aan te pas. Op de frames zit ook geen watermerk. De site draait op
+        advertenties, en die betalen hem; die advertenties krijgen niets over je
+        bestanden mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij
+        werkt gewoon door. Dat is meteen de eenvoudigste manier om te bewijzen dat
+        er niets geüpload wordt, want een tool die je animatie wegstuurde om hem
+        te verwerken zou ermee ophouden zodra je de stekker eruit trok."""
+
+[schema]
+description = "Splits een geanimeerde GIF in losse frames en sla elk frame op als PNG. Het bestand wordt in je browser uitgepakt, dus er wordt nooit een animatie geüpload."
+features = [
+  "Elk frame van een GIF als eigen PNG, met de transparantie behouden",
+  "Het frame zoals het eruitziet, of alleen de pixels die dat frame opslaat",
+  "Vertraging, positie, formaat en opruimregel per frame in beeld",
+  "Elk tweede of elk vijfde frame houden, of zelf frames aanvinken",
+  "Alles in één ZIP, met optionele timinglijst om de animatie weer op te bouwen",
+  "Werkt offline; geen upload, geen account, geen watermerk",
+]
+
+[picker]
+title = "Sleep hier een GIF naartoe"
+hint = "of klik om te bladeren &mdash; geanimeerd of stil, elk formaat"

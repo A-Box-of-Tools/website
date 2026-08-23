@@ -1,0 +1,210 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Abra o <a href="../../extrair-quadro-de-video/">Extrator de quadro</a>,
+      solte o vídeo lá dentro, ache o momento e aperte <em>Extrair este
+      quadro</em>. O que cai nos seus downloads é o quadro na resolução do
+      próprio vídeo &mdash; 3840&nbsp;&times;&nbsp;2160 de um vídeo em 4K, seja
+      qual for o tamanho da prévia na página.
+    </p>
+    <p>
+      Deixe o formato em PNG, a não ser que o tamanho do arquivo seja um
+      problema. O resto desta página é sobre por que essas duas frases não são a
+      mesma coisa que uma captura de tela, e quando a diferença vale a pena.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que uma captura do player pausado é outra imagem</h2>
+    <p>
+      Todo mundo já tem um jeito de fazer isso: pausar, apertar a tecla de
+      captura, cortar os controles fora. Funciona, e para mandar rápido é
+      exatamente o esforço certo. Só que a essa altura quatro coisas aconteceram
+      com a imagem, e nenhuma delas tem volta:
+    </p>
+    <ul>
+      <li>
+        <strong>Ela tem o tamanho da janela, não o do vídeo.</strong> Um vídeo em
+        4K num player ocupando meia tela dá uma imagem de um player ocupando meia
+        tela. Todo pixel que estava no arquivo e não estava na tela se foi.
+      </li>
+      <li>
+        <strong>Ela foi redimensionada.</strong> O que quer que o player tenha
+        feito para caber o quadro naquela janela &mdash; suavizar, dar nitidez ou
+        simplesmente reamostrar &mdash; ficou assado ali dentro.
+      </li>
+      <li>
+        <strong>Ela passou pela cadeia de exibição.</strong> Gerenciamento de
+        cor, e num vídeo HDR um mapeamento de tons escolhido para o seu monitor,
+        não para o arquivo.
+      </li>
+      <li>
+        <strong>Ela quase sempre traz mobília junto.</strong> Controles, barra de
+        progresso, faixa de legenda, o cursor.
+      </li>
+    </ul>
+    <p>
+      Um extrator de quadro pula as quatro: ele decodifica o quadro que o arquivo
+      realmente guarda e escreve aqueles pixels. A imagem tem o tamanho que o
+      vídeo tem, e ninguém desenhou nada em cima.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cair no quadro que você queria</h2>
+    <p>
+      Esta é a parte que a maioria das ferramentas erra em silêncio, e vale saber
+      o que procurar em qualquer uma delas.
+    </p>
+    <p>
+      Vídeo não é uma tira de fotos na ordem em que você assiste. A maior parte
+      dos quadros é guardada como uma descrição do que muda em relação a outros
+      quadros, e em qualquer arquivo com quadros B a ordem em que eles estão
+      guardados não é a ordem em que aparecem. Uma ferramenta que manda um player
+      para um instante e pega o que aparecer fica à mercê de como aquele player
+      arredonda; e uma que avança &ldquo;um quadro&rdquo; somando um trinta avos
+      de segundo erra em todo vídeo que não seja exatamente de 30&nbsp;fps &mdash;
+      ou seja, quase todo vídeo de celular, porque eles variam a taxa de quadros
+      conforme a luz muda.
+    </p>
+    <p>
+      A saída é ler a lista de quadros do próprio arquivo e chamar os quadros pelo
+      lugar que ocupam nela. Num MP4 a ferramenta daqui faz isso: o controle anda
+      um quadro por passo, as setas andam um quadro, e ela consegue dizer que você
+      está no quadro 812 de 3.540 porque contou. Nos formatos que ela não lê
+      direto, ela avisa, e anda mais ou menos um quadro em vez de fingir.
+    </p>
+    <p>
+      Um teste rápido para qualquer extrator: avance alguns quadros em cima de
+      algo com movimento rápido. Se a imagem às vezes não muda, ou pula de dois em
+      dois, a ferramenta está chutando em cima de marcas de tempo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Em que formato salvar</h2>
+    <p>
+      Na prática só existem três respostas, e a escolha é sobre o que acontece com
+      a imagem depois.
+    </p>
+    <ul>
+      <li>
+        <strong>PNG</strong> &mdash; o padrão, e o único que guarda o quadro
+        exato. Escolha ele se a imagem vai ser editada, impressa, comparada com
+        outro quadro ou guardada. É também o maior: conte alguns megabytes vindo
+        de 1080p e uns oito vindo de 4K, porque imagem fotográfica não é aquilo em
+        que a compressão do PNG é boa.
+      </li>
+      <li>
+        <strong>JPEG</strong> &mdash; um décimo do tamanho, e aceito em todo
+        lugar. Escolha ele para uma miniatura, uma prévia, ou qualquer coisa que
+        vá direto para um documento ou uma conversa. É uma segunda rodada de
+        compressão com perda em cima da do próprio vídeo, então é o ponto de
+        partida errado para continuar editando.
+      </li>
+      <li>
+        <strong>WebP</strong> &mdash; menor ainda com a mesma qualidade visível, e
+        hoje suportado onde importa. A única ressalva é software antigo: alguns
+        programas de computador ainda não abrem.
+      </li>
+    </ul>
+    <p>
+      Uma coisa que vale deixar clara: um quadro tirado de um vídeo já é uma
+      imagem comprimida. Salvar em PNG não desfaz isso e não recupera o detalhe
+      que o codec jogou fora quando o vídeo foi gravado. O que o PNG te dá é que
+      nada seja jogado fora <em>duas vezes</em>. Se você vai corrigir cor ou
+      recortar a imagem depois, isso importa; se vai mandar para alguém, não.
+    </p>
+  </section>
+
+  <section>
+    <h2>Extrair muitos de uma vez</h2>
+    <p>
+      Uma imagem a cada tantos segundos é um trabalho diferente de uma imagem num
+      momento, e aparece mais do que parece: uma folha de contato de uma gravação
+      longa, miniaturas para escolher uma capa, uma amostra regular do material
+      para conferir foco ou exposição ao longo de uma diária.
+    </p>
+    <p>
+      Defina um intervalo, aperte o botão da série, e a ferramenta percorre o
+      vídeo uma vez tirando uma imagem em cada marca. Duas observações práticas.
+      Seja generoso com o intervalo num vídeo longo &mdash; uma imagem por segundo
+      de uma hora de material são 3.600 fotos, que é por isso que a ferramenta
+      limita uma rodada em 500. E escolha JPEG para isso, a menos que tenha um
+      motivo para não escolher: cem PNGs de 4K são quase um gigabyte segurado na
+      página antes de você ter baixado qualquer um.
+    </p>
+    <p>
+      Elas voltam num ZIP só, com o timecode no nome, então se ordenam na sequência
+      em que aconteceram e cada uma dá para achar de novo no vídeo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vídeos em pé, e a clássica imagem deitada</h2>
+    <p>
+      Se você já tirou um quadro de um vídeo de celular e ele saiu deitado, é por
+      isso. O celular filma deitado e escreve um quarto de volta dentro do arquivo
+      em vez de girar os pixels. Os players leem essa volta e aplicam; uma
+      ferramenta que lê só os pixels não aplica, e o resultado é uma imagem
+      perfeitamente boa do momento certo, girada 90 graus.
+    </p>
+    <p>
+      Não há nada de errado com o arquivo, e girar a imagem de volta depois não
+      custa nada além da chateação. A ferramenta daqui lê a rotação na faixa e
+      aplica antes de desenhar, então um vídeo em pé dá uma imagem em pé.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que não dá para recuperar</h2>
+    <p>
+      Uma imagem parada só pode ser tão boa quanto o quadro de onde ela veio, e
+      duas coisas limitam isso, seja qual for a ferramenta.
+    </p>
+    <p>
+      <strong>O borrão de movimento está no quadro.</strong> Se o assunto estava
+      se mexendo durante a exposição, todo quadro daquele movimento está borrado,
+      e não existe ali dentro um quadro nítido para achar. Filmar com velocidade
+      de obturador mais alta é o único conserto, e ele tem que acontecer antes da
+      gravação.
+    </p>
+    <p>
+      <strong>A compressão também está no quadro.</strong> Vídeo é comprimido bem
+      mais forte que uma fotografia, e mais forte ainda nos quadros entre
+      quadros-chave. Se uma imagem sai quadriculada, tente andar um ou dois
+      quadros para qualquer lado: um quadro-chave é guardado inteiro e costuma
+      ficar visivelmente mais limpo que os vizinhos.
+    </p>
+    <p>
+      E se a imagem precisar de outro tamanho ou outro formato depois, faça isso
+      como um passo separado: o
+      <a href="../../redimensionar-imagem/">Redimensionador de imagens</a>
+      redimensiona, recorta e converte, e
+      <a href="../redimensionar-uma-imagem/">o guia dele</a> conta o que cada uma
+      dessas coisas custa.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que isso não precisa de envio</h2>
+    <p>
+      Decodificar vídeo dentro de um navegador é recente e é real: o WebCodecs
+      expõe o mesmo decodificador de hardware que o seu celular usa para tocar
+      vídeo. O trabalho acontece na máquina que já tem o arquivo, o que para um
+      vídeo de vários gigabytes é também o único arranjo que faz sentido &mdash;
+      subir uma hora de 4K para receber de volta uma imagem de 8&nbsp;MB é um mau
+      negócio em todas as direções.
+    </p>
+    <p>
+      A ferramenta aqui não tem função de rede de espécie alguma, e a
+      <code>Content-Security-Policy</code> da página lista todo endereço que ela
+      pode contatar, e nenhum deles é nosso. Desligue a internet e extraia um
+      quadro assim mesmo, se você prefere conferir a acreditar.
+    </p>
+    <p>
+      <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para
+      conversores online?</a> reúne mais três checagens que você pode fazer em
+      qualquer ferramenta.
+    </p>
+  </section>

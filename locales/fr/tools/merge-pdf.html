@@ -1,0 +1,159 @@
+<main>
+  <!-- Étape 1 &mdash; les fichiers -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez vos PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <ul id="source-list" class="source-list" hidden></ul>
+  </section>
+
+  <!-- Étape 2 &mdash; les pages -->
+  <section class="card" id="pages-card" hidden>
+    <h2><span class="step">2</span> Rangez les pages</h2>
+
+    <p class="card-lede">
+      Toutes les pages de tous les fichiers choisis, dans l'ordre où elles
+      ressortiront. Faites-en glisser une par sa poignée
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> pour la déplacer,
+      tournez-la avec les flèches, ou retirez-la avec la &times;. Rien n'a encore
+      été écrit ici&nbsp;: le document est assemblé quand vous appuyez sur le
+      bouton de l'étape 4.
+    </p>
+
+    <div class="toolbar">
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="reverse" class="ghost">Inverser</button>
+        <button type="button" id="rotate-all" class="ghost">Tourner toutes les pages</button>
+        <button type="button" id="restore" class="ghost">Revenir à l'état initial</button>
+        <button type="button" id="clear-all" class="ghost danger">Recommencer</button>
+      </div>
+    </div>
+
+    <div class="range-row">
+      <label for="range">Pages</label>
+      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+             spellcheck="false" aria-describedby="range-note">
+      <button type="button" id="range-keep" class="ghost">Ne garder que celles-ci</button>
+      <button type="button" id="range-drop" class="ghost">Retirer celles-ci</button>
+      <button type="button" id="range-turn" class="ghost">Tourner celles-ci</button>
+    </div>
+    <p id="range-note" class="field-note">
+      D'après les numéros ci-dessous, qui se renumérotent au fur et à mesure.
+      <code>odd</code>, <code>even</code>, <code>all</code> et <code>last</code>
+      fonctionnent aussi.
+    </p>
+    <p id="range-error" class="error" role="alert" hidden></p>
+
+    <ul id="page-list" class="page-list"></ul>
+  </section>
+
+  <!-- Étape 3 &mdash; un fichier, ou plusieurs -->
+  <section class="card" id="output-card" hidden>
+    <h2><span class="step">3</span> Un document, ou plusieurs</h2>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">Comment les pages sont écrites</legend>
+      <div class="presets" id="split-modes" role="radiogroup" aria-label="Comment les pages sont écrites">
+        <label class="preset">
+          <input type="radio" name="split" value="single" checked>
+          <span class="preset-body">
+            <strong>Un document</strong>
+            <span class="preset-note">Tout ce qui est ci-dessus, dans cet ordre, en un seul PDF.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="every">
+          <span class="preset-body">
+            <strong>Diviser toutes les tant de pages</strong>
+            <span class="preset-note">
+              Un long scan découpé en chapitres de
+              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+                     inputmode="numeric" aria-label="Pages dans chaque fichier">
+              pages.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="at">
+          <span class="preset-body">
+            <strong>Diviser à la page&hellip;</strong>
+            <span class="preset-note">
+              Couper avant
+              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+                     spellcheck="false" aria-label="Numéros de page avant lesquels couper">
+              &mdash; chacune de celles-ci commence un nouveau fichier.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="each">
+          <span class="preset-body">
+            <strong>Chaque page à part</strong>
+            <span class="preset-note">Un PDF par page. Pratique pour extraire une feuille de signature.</span>
+          </span>
+        </label>
+        <label class="preset" id="by-file-preset" hidden>
+          <input type="radio" name="split" value="file">
+          <span class="preset-body">
+            <strong>De retour dans les fichiers d'origine</strong>
+            <span class="preset-note">Un document par fichier choisi, avec vos modifications conservées.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="keep-bookmarks" checked>
+      <span>
+        <strong>Garder les signets</strong>
+        <span class="check-note">
+          Le plan fourni par chaque fichier, reconstruit d'après les pages
+          réellement présentes&nbsp;: une entrée dont vous avez retiré la page
+          disparaît, une dont le chapitre est toujours là reste. Fusionner
+          plusieurs fichiers place les signets de chacun sous un titre portant son
+          nom.
+        </span>
+      </span>
+    </label>
+
+    <p id="output-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Étape 4 &mdash; le seul clic -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Assemblez</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Construire le document</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Télécharger</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <ul id="file-list" class="out-list" hidden></ul>
+    </div>
+  </section>
+</main>

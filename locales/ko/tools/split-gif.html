@@ -1,0 +1,108 @@
+<main>
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> GIF 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>파일</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>용량</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>그림</dt><dd id="src-picture">&mdash;</dd></div>
+      <div><dt>프레임</dt><dd id="src-frames">&mdash;</dd></div>
+      <div><dt>재생 길이</dt><dd id="src-duration">&mdash;</dd></div>
+      <div><dt>반복</dt><dd id="src-loop">&mdash;</dd></div>
+    </dl>
+
+    <p id="notice" class="path-note" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 2단계 &mdash; 나오는 결과 -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">2</span> 프레임이 나오는 방식</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="mode">PNG 한 장에 담기는 것</label>
+        <select id="mode">
+          <option value="composited" selected>보이는 그대로의 프레임</option>
+          <option value="stored">그 프레임이 저장한 픽셀만</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="background">투명한 영역</label>
+        <select id="background">
+          <option value="keep" selected>투명하게 두기</option>
+          <option value="flatten">색으로 채우기&hellip;</option>
+        </select>
+        <div id="colour-row" class="inline-pair" hidden>
+          <input type="color" id="colour" value="#ffffff" aria-label="투명한 영역을 채울 색">
+          <span id="colour-note">모든 프레임에 적힙니다. 나중에 되돌릴 수 없습니다.</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="every">남길 프레임</label>
+        <div class="inline-pair">
+          <input type="number" id="every" min="1" max="100" step="1" value="1">
+          <span id="every-note">장에 한 장</span>
+        </div>
+        <p class="field-note">
+          전부 대신 두 장에 한 장, 다섯 장에 한 장만 가져옵니다. 한눈에 보는
+          시트를 만들 때나 녹화가 길 때 쓰십시오.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="timing">시간 목록</label>
+        <select id="timing">
+          <option value="yes" selected>ZIP에 frames.txt 넣기</option>
+          <option value="no">프레임만</option>
+        </select>
+        <p class="field-note">
+          각 프레임이 얼마나 머물렀고 어디에 놓였는지. PNG만 모아 둔 폴더가
+          스스로 들고 갈 수 없는 정보입니다.
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="download-all" class="primary">모든 프레임 ZIP으로 내려받기</button>
+      <button type="button" id="download-selected" class="ghost" hidden>고른 프레임 내려받기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- 3단계 &mdash; 프레임 자체 -->
+  <section class="card" id="frames-card" hidden>
+    <h2><span class="step">3</span> 프레임</h2>
+
+    <div class="toolbar">
+      <p class="count" id="frames-count" role="status" aria-live="polite"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="select-all" class="ghost">전체 선택</button>
+        <button type="button" id="select-none" class="ghost">선택 해제</button>
+        <button type="button" id="clear" class="ghost danger">처음부터 다시</button>
+      </div>
+    </div>
+
+    <!-- Checkboxes rather than a click-to-select grid: this is a list of files
+         somebody is about to save, and a checkbox is the one control everybody
+         already knows is safe to press. -->
+    <ul class="frames" id="frames"></ul>
+  </section>
+</main>

@@ -1,0 +1,226 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Abre <a href="../../unir-pdf/">Unir y separar PDF</a>, suelta dentro todos
+      los archivos que quieras usar, y arrastra las páginas hasta dejarlas en el
+      orden que quieres. Luego di si sale como un documento o como varios, y
+      pulsa el botón. No se sube nada: los archivos los abre, los desmonta y los
+      vuelve a escribir tu propio navegador.
+    </p>
+    <p>
+      Los tres trabajos que la gente busca por separado &mdash; unir, separar,
+      reordenar &mdash; son una sola pantalla, porque son una sola operación con
+      una respuesta distinta al final: elegir unas páginas, ponerlas en un orden,
+      y decidir en cuántos archivos salen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Unir dos o más documentos</h2>
+    <p>
+      Elige el primer archivo y después el segundo; las páginas de cada uno se
+      van al final del orden que llevas, así que puedes seguir añadiendo archivos
+      de carpetas distintas sin empezar de cero. Si han entrado en mal orden,
+      arrastra una página por su tirador, o usa las flechas de cada ficha.
+    </p>
+    <p>
+      Unir no recodifica nada. El contenido de cada página y cada fuente, imagen
+      y dibujo vectorial al que se refiere se copian tal cual, así que el texto
+      sigue siendo seleccionable y buscable y un escaneo es el mismo escaneo. El
+      archivo unido suele ser un poco más pequeño que los dos de entrada sumados,
+      lo que no es compresión: es la estructura que rodea a las páginas, escrita
+      una vez en lugar de dos.
+    </p>
+    <p>
+      Las páginas conservan su propio tamaño. Une un informe en A4 con un anexo
+      en Carta y obtienes un documento con las dos cosas dentro, que es lo que
+      dicen los archivos. Escalar las páginas de alguien a un solo tamaño de
+      papel es otra operación, y no una que un unificador deba hacer en silencio.
+    </p>
+  </section>
+
+  <section>
+    <h2>Separar un documento en varios</h2>
+    <p>
+      Hay cuatro formas de cortar, y cuál quieres depende de por qué estás
+      cortando:
+    </p>
+    <ul>
+      <li>
+        <strong>Cada tantas páginas.</strong> Para un escaneo largo de algo que
+        en origen era un montón de documentos sueltos &mdash; doce nóminas de dos
+        páginas cada una.
+      </li>
+      <li>
+        <strong>En los números de página que digas.</strong> Para un informe con
+        capítulos que empiezan en páginas que puedes ver. Cada número que
+        escribas empieza un archivo nuevo.
+      </li>
+      <li>
+        <strong>Un archivo por página.</strong> Para sacar una única hoja de
+        firmas o un certificado de un lote.
+      </li>
+      <li>
+        <strong>De vuelta a los archivos de los que vinieron.</strong> Solo se
+        ofrece cuando has unido más de un archivo, y sirve después de editar:
+        quitar las páginas en blanco de tres escaneos a la vez y recuperar tres
+        archivos.
+      </li>
+    </ul>
+    <p>
+      Si solo quieres unas cuantas páginas de un documento largo, no hace falta
+      separarlo. Escribe las páginas que quieres en la casilla de rangos &mdash;
+      <code>1-3, 8, 12-</code> &mdash;, pulsa «Quedarme solo con estas» y monta
+      un documento.
+    </p>
+    <p>
+      Cuando sale más de un archivo, se entrega todo en un solo ZIP. Cincuenta
+      descargas son cincuenta avisos de guardar, que es más o menos donde
+      cualquiera se rinde.
+    </p>
+  </section>
+
+  <section>
+    <h2>Reordenar, girar y quitar páginas</h2>
+    <p>
+      Arrastra una ficha por su tirador para moverla. Las flechas de cada ficha
+      la desplazan un puesto, o la giran un cuarto de vuelta cada vez &mdash; que
+      es el arreglo para la página que salió del escáner de lado. La &times; la
+      quita.
+    </p>
+    <p>
+      Para cualquier cosa que afecte a más de un par de páginas, usa mejor la
+      casilla de rangos. Acepta lo que escribirías en papel:
+      <code>1-3, 8, 12-</code>, y también <code>impares</code>,
+      <code>pares</code>, <code>todas</code> y <code>última</code>. Quédate con
+      esas, quita esas, o gira esas. Uno habitual: en un escaneo a doble cara
+      donde todas las páginas segundas están cabeza abajo, eso es
+      <code>pares</code> y dos giros.
+    </p>
+    <p>
+      Los números de las fichas se renumeran mientras trabajas, así que siempre
+      significan «posición en el documento terminado» y no «página del archivo
+      del que salió». No se escribe nada hasta que pulsas el botón, así que no
+      hay nada que deshacer &mdash; y «volver a como estaban» restaura el orden
+      original de todo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué sobrevive a una reorganización y qué no</h2>
+    <p>
+      Esta es la parte que ninguna herramienta te cuenta, y la razón de que un
+      documento unido a veces parezca sutilmente estropeado.
+    </p>
+    <p>
+      Un PDF no es un montón de páginas. Es un grafo, y buena parte de él va
+      sobre el documento y no sobre ninguna página en concreto: el panel de
+      marcadores, los enlaces, el formulario, el orden de lectura que sigue un
+      lector de pantalla, la numeración que llama a las cuatro primeras páginas
+      «i, ii, iii, iv». Mueve las páginas y cada una de esas cosas hay que
+      reconstruirla o dejarla caer.
+    </p>
+    <ul>
+      <li>
+        <strong>Los marcadores se reconstruyen.</strong> Una entrada cuya página
+        sigue ahí apunta a donde se haya movido. Una entrada cuya página quitaste
+        se va &mdash; salvo que tenga por debajo entradas que sí sobreviven, en
+        cuyo caso se queda como encabezado, porque el título de un capítulo sigue
+        estando donde está el capítulo. Al unir varios archivos, los marcadores de
+        cada uno se anidan bajo un encabezado con el nombre del archivo, que es lo
+        que hace navegable un informe unido.
+      </li>
+      <li>
+        <strong>Los enlaces se siguen.</strong> Un enlace de la página 2 a la 40
+        sabe adónde se fue la 40, incluidos los destinos con nombre que Word y
+        LaTeX escriben para cada encabezado. Un enlace cuyo destino no vino se
+        queda sin nada detrás, en vez de apuntar a la página que ahora ocupa esa
+        posición.
+      </li>
+      <li>
+        <strong>Los formularios rellenados sobreviven</strong>, y el documento
+        nuevo queda registrado como formulario para que los lectores lo traten
+        como tal. Una rareza que conviene saber: dos campos con el mismo nombre
+        son <em>un</em> campo para cualquier lector, así que unir dos copias del
+        mismo formulario los enlaza &mdash; escribir en uno rellena el otro.
+      </li>
+      <li>
+        <strong>El orden de lectura etiquetado no.</strong> Describe una
+        secuencia que ya no existe, y uno equivocado es peor para un lector de
+        pantalla que ninguno. Si el etiquetado de accesibilidad de un documento
+        importa, conserva el original al lado.
+      </li>
+      <li>
+        <strong>Las etiquetas de página tampoco.</strong> La numeración «iii, iv,
+        1, 2» es una afirmación sobre un orden que acabas de cambiar.
+      </li>
+      <li>
+        <strong>Los adjuntos y el guionado del documento tampoco.</strong> Los
+        archivos adjuntos pertenecen al documento, no a ninguna página. Las
+        acciones que ejecutan JavaScript, envían un formulario a algún sitio o
+        lanzan un programa no pasan a tu archivo nuevo, que es lo que debe pasar
+        por defecto con páginas que vinieron de otra persona.
+      </li>
+    </ul>
+    <p>
+      Una firma digital es un caso aparte, y no una limitación de ninguna
+      herramienta: una firma certifica un documento tal y como estaba. Mueve una
+      página y queda rota, porque eso es exactamente lo que está ahí para
+      decirte.
+    </p>
+  </section>
+
+  <section>
+    <h2>Archivos protegidos con contraseña</h2>
+    <p>
+      Un PDF cifrado se rechaza, incluidos los de contraseña vacía que producen
+      muchas fotocopiadoras de oficina. Quitarle la protección a un documento es
+      un trabajo distinto de mover sus páginas, y una herramienta que lo hiciera
+      en silencio estaría haciendo algo que no le pediste. Ábrelo en un lector con
+      la contraseña y guarda antes una copia sin protección.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comprobar el resultado</h2>
+    <p>
+      Ábrelo y comprueba tres cosas: el número de páginas, el orden y &mdash; si
+      el documento los tenía &mdash; el panel de marcadores y un enlace o dos.
+    </p>
+    <p>
+      Lo primero te lo hace la herramienta de aquí antes de ofrecerte el archivo.
+      Cada documento terminado lo vuelve a abrir el mismo código que leyó tus
+      originales, y sus páginas se cuentan recorriendo el árbol de páginas en
+      lugar de creerse el número escrito en el archivo. Si eso no coincide con lo
+      que pediste, no se te ofrece descarga alguna.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué esto no necesita un servidor</h2>
+    <p>
+      Unir suena a trabajo de servidor, y durante casi toda la vida de la web lo
+      fue. Lo que implica en realidad es analizar la estructura del archivo,
+      copiar a un archivo nuevo los objetos de los que depende cada página, y
+      escribir una tabla de referencias cruzadas nueva. No se decodifica ni un
+      píxel y no se dibuja nada. Un navegador puede hacerlo todo desde hace años.
+    </p>
+    <p>
+      Y aquí importa más que en casi cualquier otro sitio, por <em>lo que</em>
+      une la gente. Los documentos que se combinan son los que vinieron de algún
+      lado: un contrato y su página de firmas, el escaneo de un pasaporte y un
+      extracto bancario, un informe médico y un formulario de reclamación. Un
+      unificador en línea los recibe todos de golpe, ya ordenados, de una misma
+      persona. Es la subida más reveladora que hace casi nadie en su vida.
+    </p>
+    <p>
+      La herramienta de aquí no tiene función de red de ninguna clase, y la
+      <code>Content-Security-Policy</code> de la página nombra todas las
+      direcciones que puede contactar, y ninguna es de este sitio. Cárgala,
+      desenchufa, y une algo igualmente.
+    </p>
+    <p>
+      <a href="../es-seguro-subir-archivos/">¿Es seguro subir archivos a
+      conversores en línea?</a> propone otras tres comprobaciones como esa.
+    </p>
+  </section>

@@ -1,0 +1,190 @@
+<main>
+  <!-- Étape 1 &mdash; la photographie -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez la photographie</h2>
+
+    <p class="card-lede">
+      N'importe quelle image que votre navigateur sait ouvrir. Une photo de
+      téléphone prise devant un mur uni, à la lumière du jour, à un mètre cinquante
+      environ&nbsp;: c'est autour de cela que la plupart de ces règles ont été
+      écrites. Elle est lue directement sur votre disque, et n'est envoyée nulle
+      part.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">En choisir une autre</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Étape 2 &mdash; la règle -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> Choisissez le pays et le document</h2>
+
+    <p class="card-lede">
+      Chaque chiffre ci-dessous est l'exigence publiée, transcrite depuis
+      l'autorité nommée en dessous. Rien dans cette liste n'est deviné, et rien
+      n'est téléchargé&nbsp;: c'est une table dans <code>src/specs.js</code>,
+      servie avec la page.
+    </p>
+
+    <div class="option-row">
+      <label for="spec">Spécification</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>Les chiffres, à saisir vous-même</summary>
+      <div class="numbers">
+        <label>Largeur (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>Hauteur (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>Tête, minimum (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>Tête, maximum (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>Fond
+          <select id="custom-background">
+            <option value="white">Blanc uni</option>
+            <option value="off-white">Blanc ou blanc cassé</option>
+            <option value="light-grey" selected>Gris clair uni</option>
+            <option value="cream">Gris clair ou crème</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>Largeur d'envoi (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>Hauteur d'envoi (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>Minimum (Ko)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>Maximum (Ko)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        Ko signifie ici 1024 octets, ce que ces formulaires entendent par là.
+      </p>
+    </details>
+  </section>
+
+  <!-- Étape 3 &mdash; le cadrage -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> Marquez le visage et vérifiez le cadrage</h2>
+
+    <p id="frame-empty" class="field-summary">Choisissez une photographie et le cadre de recadrage apparaîtra ici.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        Faites glisser les quatre points sur le sommet du crâne, le menton et
+        chaque pupille, puis appuyez sur <strong>Ajuster le cadre</strong>. Ces
+        quatre points constituent la totalité de ce que la règle mesure, et c'est
+        pour cela que cet outil vous demande de les placer plutôt que de les deviner
+        avec un détecteur de visage. Les points démarrent là où une photo en buste
+        les met d'habitude&nbsp;: c'est une position de départ, pas une mesure.
+      </p>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">Ajuster le cadre à la règle</button>
+        <button type="button" id="reset-marks" class="ghost">Remettre les points</button>
+        <button type="button" id="whole-photo" class="ghost">Le plus grand cadre possible</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Étape 4 &mdash; le fond -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> Le fond</h2>
+
+    <p class="card-lede" id="background-lede">
+      Lu sur une bande en haut du recadrage et le long de chaque côté, au-dessus
+      des épaules&nbsp;: les parties du cadre qui ne devraient être que du fond.
+      Mesuré en CIE Lab plutôt qu'en RVB, parce que deux gris distants de quarante
+      unités RVB sont indiscernables et que quarante unités de bleu font une autre
+      couleur.
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">Ce que donne le vôtre<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">Ce que la règle demande<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Étape 5 &mdash; les fichiers -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> Enregistrez</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">Résolution d'impression</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; le plancher qu'annonce presque chaque règle</option>
+          <option value="600">600 dpi &mdash; ce qu'utilisera un bon labo photo</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">Planche à imprimer</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>Fabriquer les fichiers</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Terminé</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

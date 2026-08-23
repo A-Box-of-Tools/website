@@ -1,0 +1,155 @@
+<main>
+  <!--
+    One numbered step, and then six headings without numbers.
+
+    Every other tool on this site numbers all of its cards, because every card
+    is something the visitor does. Here there is exactly one thing to do -
+    choose a file - and everything below it is the answer. Numbering the answer
+    would promise a sequence of decisions that does not exist, and would leave
+    somebody looking for step 4's button.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> GIFを選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- 概要と、ブラウザ自身が描くアニメーション。 -->
+  <section class="card" id="summary-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="copy-report" class="ghost">レポートをコピー</button>
+        <button type="button" id="download-report" class="ghost">ダウンロード</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="preview-wrap">
+        <!--
+          The browser's own decoder, drawing the file unchanged. Everything else
+          on this page is drawn by src/frames.js, so having both means a
+          disagreement between them is visible rather than hidden - and it is
+          the disagreement that would tell you this reader had a bug.
+        -->
+        <img id="preview" class="preview" alt="このブラウザが描くアニメーション">
+        <p class="preview-note">ブラウザ自身のデコーダーが、ファイルをそのまま再生しています。</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>バージョン</dt><dd id="fact-version">&mdash;</dd></div>
+        <div><dt>キャンバス</dt><dd id="fact-canvas">&mdash;</dd></div>
+        <div><dt>ファイルサイズ</dt><dd id="fact-size">&mdash;</dd></div>
+        <div><dt>コマ数</dt><dd id="fact-frames">&mdash;</dd></div>
+        <div><dt>ファイルの値</dt><dd id="fact-written">&mdash;</dd></div>
+        <div><dt>実際の再生</dt><dd id="fact-plays">&mdash;</dd></div>
+        <div><dt>繰り返し</dt><dd id="fact-loops">&mdash;</dd></div>
+        <div><dt>使われた色</dt><dd id="fact-colors">&mdash;</dd></div>
+      </dl>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- 読み取り結果。求めてきたものなので先に。 -->
+  <section class="card" id="findings-card" hidden>
+    <h2>目立つところ</h2>
+    <p class="card-lede">
+      以下はすべてこのファイルから測った値です。あなたの意図についての推測は
+      ひとつもありません。
+    </p>
+    <ul class="findings" id="findings"></ul>
+  </section>
+
+  <!-- バイトの内訳。 -->
+  <section class="card" id="budget-card" hidden>
+    <h2>バイトの行き先</h2>
+    <p class="card-lede">
+      ファイルのすべてのバイトはどれか1つの行に属し、行を足すとファイルに
+      なります。合わなければ、棒が黙って伸びて辻褄を合わせるのではなく、
+      最後の行がそう言います。
+    </p>
+
+    <div class="budget-bar" id="budget-bar" role="img" aria-labelledby="budget-caption"></div>
+    <p class="visually-hidden" id="budget-caption">
+      下の表と同じ数値を、1本の棒として描いたものです。
+    </p>
+
+    <table class="budget">
+      <caption class="visually-hidden">このファイルのバイトの行き先</caption>
+      <thead>
+        <tr>
+          <th scope="col">部分</th>
+          <th scope="col" class="num">バイト</th>
+          <th scope="col" class="num">割合</th>
+        </tr>
+      </thead>
+      <tbody id="budget-rows"></tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">ファイル全体</th>
+          <td class="num" id="budget-total">&mdash;</td>
+          <td class="num">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- コマごと。 -->
+  <section class="card" id="frames-card" hidden>
+    <div class="toolbar">
+      <h2>コマごとに見る</h2>
+      <div class="toolbar-actions">
+        <label for="frame-view" class="inline-label">表示</label>
+        <select id="frame-view">
+          <option value="composited" selected>各コマ後のキャンバス</option>
+          <option value="stored">各コマが保存している分だけ</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="card-lede" id="frames-lede"></p>
+
+    <ul class="frames" id="frames"></ul>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!-- 色。 -->
+  <section class="card" id="colors-card" hidden>
+    <h2>色</h2>
+    <p class="card-lede" id="colors-lede"></p>
+
+    <div id="global-palette-wrap" hidden>
+      <h3>全体のテーブル</h3>
+      <p class="palette-note" id="global-palette-note"></p>
+      <ul class="palette" id="global-palette"></ul>
+    </div>
+
+    <details id="local-palettes-wrap" hidden>
+      <summary id="local-palettes-summary">コマごとのテーブル</summary>
+      <div id="local-palettes"></div>
+    </details>
+  </section>
+
+  <!-- ファイルの中の、絵ではない部分。 -->
+  <section class="card" id="extras-card" hidden>
+    <h2>ほかに入っているもの</h2>
+    <p class="card-lede">
+      絵を持たないブロックです。表示ソフトはすべて読み飛ばしますが、ファイルの
+      コピーはそれでも毎回それを運びます。
+    </p>
+    <ul class="extras" id="extras"></ul>
+  </section>
+</main>

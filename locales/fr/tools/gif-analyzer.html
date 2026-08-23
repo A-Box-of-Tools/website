@@ -1,0 +1,155 @@
+<main>
+  <!--
+    One numbered step, and then six headings without numbers.
+
+    Every other tool on this site numbers all of its cards, because every card
+    is something the visitor does. Here there is exactly one thing to do -
+    choose a file - and everything below it is the answer. Numbering the answer
+    would promise a sequence of decisions that does not exist, and would leave
+    somebody looking for step 4's button.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez un GIF</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Le résumé, et l'animation telle que le navigateur la dessine lui-même. -->
+  <section class="card" id="summary-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="copy-report" class="ghost">Copier le rapport</button>
+        <button type="button" id="download-report" class="ghost">Le télécharger</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="preview-wrap">
+        <!--
+          The browser's own decoder, drawing the file unchanged. Everything else
+          on this page is drawn by src/frames.js, so having both means a
+          disagreement between them is visible rather than hidden - and it is
+          the disagreement that would tell you this reader had a bug.
+        -->
+        <img id="preview" class="preview" alt="L'animation, telle que ce navigateur la dessine">
+        <p class="preview-note">Le décodeur de votre propre navigateur, jouant le fichier tel quel.</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>Version</dt><dd id="fact-version">&mdash;</dd></div>
+        <div><dt>Canevas</dt><dd id="fact-canvas">&mdash;</dd></div>
+        <div><dt>Taille</dt><dd id="fact-size">&mdash;</dd></div>
+        <div><dt>Images</dt><dd id="fact-frames">&mdash;</dd></div>
+        <div><dt>Selon le fichier</dt><dd id="fact-written">&mdash;</dd></div>
+        <div><dt>À la lecture</dt><dd id="fact-plays">&mdash;</dd></div>
+        <div><dt>Boucles</dt><dd id="fact-loops">&mdash;</dd></div>
+        <div><dt>Couleurs dessinées</dt><dd id="fact-colors">&mdash;</dd></div>
+      </dl>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Les constats. En premier, parce que c'est ce pour quoi on est venu. -->
+  <section class="card" id="findings-card" hidden>
+    <h2>Ce qui ressort</h2>
+    <p class="card-lede">
+      Tout ce qui suit est mesuré sur ce fichier. Rien ici n'est une supposition
+      sur ce que vous vouliez faire.
+    </p>
+    <ul class="findings" id="findings"></ul>
+  </section>
+
+  <!-- Le budget d'octets. -->
+  <section class="card" id="budget-card" hidden>
+    <h2>Où sont passés les octets</h2>
+    <p class="card-lede">
+      Chaque octet du fichier est dans exactement une ligne, et les lignes font
+      le fichier. Si ce n'était pas le cas, la dernière ligne le dirait, plutôt
+      que la barre ne s'étire discrètement pour tomber juste.
+    </p>
+
+    <div class="budget-bar" id="budget-bar" role="img" aria-labelledby="budget-caption"></div>
+    <p class="visually-hidden" id="budget-caption">
+      Les mêmes chiffres que le tableau ci-dessous, dessinés en une seule barre.
+    </p>
+
+    <table class="budget">
+      <caption class="visually-hidden">Où sont passés les octets de ce fichier</caption>
+      <thead>
+        <tr>
+          <th scope="col">Partie</th>
+          <th scope="col" class="num">Octets</th>
+          <th scope="col" class="num">Part</th>
+        </tr>
+      </thead>
+      <tbody id="budget-rows"></tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">Le fichier entier</th>
+          <td class="num" id="budget-total">&mdash;</td>
+          <td class="num">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- Image par image. -->
+  <section class="card" id="frames-card" hidden>
+    <div class="toolbar">
+      <h2>Image par image</h2>
+      <div class="toolbar-actions">
+        <label for="frame-view" class="inline-label">Afficher</label>
+        <select id="frame-view">
+          <option value="composited" selected>le canevas après chaque image</option>
+          <option value="stored">seulement ce que chaque image stocke</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="card-lede" id="frames-lede"></p>
+
+    <ul class="frames" id="frames"></ul>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!-- Les couleurs. -->
+  <section class="card" id="colors-card" hidden>
+    <h2>Les couleurs</h2>
+    <p class="card-lede" id="colors-lede"></p>
+
+    <div id="global-palette-wrap" hidden>
+      <h3>La table globale</h3>
+      <p class="palette-note" id="global-palette-note"></p>
+      <ul class="palette" id="global-palette"></ul>
+    </div>
+
+    <details id="local-palettes-wrap" hidden>
+      <summary id="local-palettes-summary">Les tables propres à chaque image</summary>
+      <div id="local-palettes"></div>
+    </details>
+  </section>
+
+  <!-- Tout ce qui, dans le fichier, n'est pas une image. -->
+  <section class="card" id="extras-card" hidden>
+    <h2>Ce qu'il y a d'autre là-dedans</h2>
+    <p class="card-lede">
+      Des blocs qui ne portent aucune image. Une visionneuse les saute tous, et
+      chaque copie du fichier les transporte quand même.
+    </p>
+    <ul class="extras" id="extras"></ul>
+  </section>
+</main>

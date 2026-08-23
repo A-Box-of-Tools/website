@@ -1,0 +1,191 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Den <a href="../../gif-in-einzelbilder-zerlegen/">GIF-Zerleger</a> öffnen,
+      das GIF hineinziehen, und jedes Einzelbild erscheint als PNG zum
+      Herunterladen &mdash; einzeln oder alle zusammen als eine ZIP-Datei. Wenn
+      Sie die Einstellungen in Ruhe lassen, bekommen Sie genau das, was die
+      meisten meinen: jedes Bild als vollständiges Bild, so wie es in diesem
+      Moment der Animation aussieht.
+    </p>
+    <p>
+      Der Rest dieser Seite handelt von den drei Dingen, die danach überraschen:
+      ein Bild, das nur ein kleiner Ausschnitt ist; Transparenz, die anderswo
+      schwarz wird; und Zeiten, die es nicht mehr gibt, sobald die Bilder
+      einzelne Dateien sind.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was ein GIF-Einzelbild wirklich ist</h2>
+    <p>
+      Ein GIF ist kein Stapel Bilder. Es ist <em>ein</em> Bild, gefolgt von einer
+      Reihe von Flicken.
+    </p>
+    <p>
+      Jedes Bild nach dem ersten speichert nur das Rechteck, das sich geändert
+      hat, dazu eine Regel, was danach mit der Leinwand geschehen soll. Alles
+      andere auf dem Schirm ist schlicht das, was die früheren Bilder dort
+      hinterlassen haben. Eine Person, die vor einer stillen Wand redet, kostet
+      ein Rechteck Gesicht pro Bild statt eines ganzen Bildes pro Bild, und genau
+      das ist der Grund, warum ein Format ohne Bewegungsschätzung und ohne
+      verlustbehafteten Schritt nicht völlig unbrauchbar ist.
+    </p>
+    <p>
+      Es gibt also zwei verschiedene, gleichermaßen ehrliche Antworten auf
+      &bdquo;gib mir Bild 14&ldquo;, und das Werkzeug bietet beide an:
+    </p>
+    <p>
+      <strong>Das Bild, wie es erscheint.</strong> Das vollständige Bild in
+      diesem Moment: Bild 14, gezeichnet über alles, was davor war. Das ist die
+      Voreinstellung, und das wollen Sie für eine Übersicht, ein Vorschaubild,
+      ein Standbild zum Posten oder für Bilder, die in einen Videoschnitt gehen.
+    </p>
+    <p>
+      <strong>Nur die Pixel, die dieses Bild speichert.</strong> Der Flicken
+      selbst, in seiner eigenen Größe, an seiner eigenen Stelle, und alles, was
+      er nicht trägt, bleibt transparent. Bild 14 sind dann vielleicht
+      60&nbsp;&times;&nbsp;40 Pixel Mund. Das ist die Ansicht, die erklärt, wohin
+      die Bytes eines GIFs gegangen sind, und die Sie wollen, wenn Sie die
+      Animation bearbeiten und nicht Bilder daraus ernten.
+    </p>
+    <p>
+      An Ihrer Datei ist nichts falsch, wenn ein gespeichertes Bild wie ein
+      Fetzen aussieht. Das ist die Datei.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Aufräumregel, und warum manche Bilder Löcher hinterlassen</h2>
+    <p>
+      Jedes Bild trägt außerdem eine von vier Anweisungen dazu, was mit seinem
+      Rechteck geschieht, bevor das nächste gezeichnet wird. Das Werkzeug zeigt
+      sie in der gespeicherten Ansicht unter jedem Bild an:
+    </p>
+    <p>
+      <strong>Bleibt stehen.</strong> Der Normalfall. Der Flicken bleibt, wo er
+      gelandet ist, und das nächste Bild zeichnet darüber.
+    </p>
+    <p>
+      <strong>Räumt seine Fläche danach.</strong> Das Rechteck wird gelöscht,
+      bevor das nächste Bild landet. So arbeitet eine Animation mit einem
+      bewegten transparenten Objekt, und das ist auch die klassische Ursache
+      flackernder GIFs.
+    </p>
+    <p>
+      <strong>Stellt wieder her, was darunter war.</strong> Die Leinwand geht
+      zurück auf das, was sie vor diesem Bild zeigte &mdash; ein Stempel, dann
+      ein Rückgängig. Selten, und die Regel, die selbstgebaute GIF-Leser am
+      häufigsten falsch machen.
+    </p>
+    <p>
+      Eine Einzelheit, die zählt, wenn Sie Werkzeuge vergleichen: Die
+      Spezifikation sagt, &bdquo;räumt seine Fläche&ldquo; solle die
+      <em>Hintergrundfarbe</em> wiederherstellen, aber jeder Browser seit den
+      1990ern räumt stattdessen auf <em>transparent</em>, weil die Animationen
+      jener Zeit genau das annahmen. Dieses Werkzeug folgt bewusst den Browsern,
+      damit die Bilder, die Sie bekommen, die Bilder sind, die Sie gesehen haben.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was mit der Transparenz passiert</h2>
+    <p>
+      GIF-Transparenz ist ein Bit. Ein Pixel ist entweder gemalt oder unsichtbar,
+      und dazwischen gibt es nichts &mdash; keine weichen Kanten, keine halben
+      Schatten. Deshalb hat ein GIF mit transparentem Hintergrund diesen harten,
+      leicht ausgefransten Umriss.
+    </p>
+    <p>
+      PNG speichert genau das, verlustfrei, sodass die Bilder mit unversehrter
+      Transparenz herauskommen und nichts erfunden wird. Behalten Sie sie, wenn
+      die Bilder irgendwohin gehen, das Transparenz versteht.
+    </p>
+    <p>
+      Füllen Sie sie stattdessen mit einer Farbe, wenn nicht. Software, die einen
+      Alphakanal ignoriert, zeigt ihn meist schwarz an, sodass ein Bild, das im
+      Browser gut aussah, mit schwarzem Hintergrund ankommt &mdash; und ein
+      gespeicherter Flicken, der fast überall transparent ist, kommt als
+      schwarzes Rechteck mit einem Mund darin an. Die Farbe vorher zu wählen ist
+      der Ausweg. Sie wird in das PNG geschrieben und lässt sich nachträglich
+      nicht mehr entfernen, was der einzige Grund ist, warum das nicht die
+      Voreinstellung ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Zeiten, die die Bilder nicht tragen können</h2>
+    <p>
+      Ein PNG hat keinen Platz, um festzuhalten, wie lange es zu sehen war.
+      Zerlegen Sie eine Animation in PNGs, sind die Zeiten weg &mdash; und das
+      zählt in dem Moment, in dem Sie sie wieder zusammensetzen wollen.
+    </p>
+    <p>
+      Dafür ist die <code>frames.txt</code> im ZIP da. Sie führt Verzögerung,
+      Position und Größe jedes Bildes auf, sodass die Animation im
+      <a href="../../gif-erstellen/">GIF-Ersteller</a> oder anderswo wieder
+      aufgebaut werden kann. Sie kostet ein paar Kilobyte, und es gibt keine
+      Möglichkeit, sie später zu rekonstruieren.
+    </p>
+    <p>
+      Zwei Dinge über GIF-Verzögerungen, die alle erwischen:
+    </p>
+    <p>
+      <strong>Die Einheit sind Hundertstelsekunden</strong>, der feinste Schritt
+      des Formats ist also 0,01&nbsp;s. Ein exakt 30&nbsp;fps schnelles GIF gibt
+      es nicht; 0,03&nbsp;s pro Bild sind 33,3&nbsp;fps und 0,04&nbsp;s sind 25.
+    </p>
+    <p>
+      <strong>Alles unter 0,02&nbsp;s wird mit 0,10&nbsp;s abgespielt.</strong>
+      Browser deckeln das seit den 1990ern &mdash; eine Regel, geschrieben für
+      die rotierenden Globen jener Zeit und nie wieder entfernt. Ein GIF, dessen
+      Datei 0,01&nbsp;s pro Bild sagt, behauptet 100&nbsp;fps und läuft mit 10.
+      Das Werkzeug zeigt die Verzögerung so an, wie sie wirklich abgespielt wird,
+      und nennt daneben, was in der Datei steht, wenn beides auseinandergeht
+      &mdash; denn diese Lücke ist der Grund, warum ein zerlegtes und wieder
+      zusammengesetztes GIF langsamer sein kann als das Original.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bildnummern, und warum sie aufgefüllt sind</h2>
+    <p>
+      Die Bilder kommen als <code>name-001.png</code>, <code>name-002.png</code>
+      heraus, ab eins gezählt und auf die Breite der letzten Zahl aufgefüllt. Das
+      ist keine Verzierung: <code>bild9.png</code> sortiert in jedem
+      Dateimanager und in den meisten Programmen, die eine Sequenz importieren,
+      <em>hinter</em> <code>bild10.png</code>, weil sie Text sortieren und nicht
+      Zahlen. Aufgefüllte Namen sortieren überall richtig, und jedes
+      Schnittprogramm, das eine Bildsequenz importiert, erwartet sie.
+    </p>
+    <p>
+      Eine lange Animation mit &bdquo;jedes zweite Bild behalten&ldquo;
+      auszudünnen, nummeriert nichts um. Bild 42 heißt weiter Bild 42, sodass
+      sich die Dateien am Original und an der Zeitenliste ausrichten lassen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum das keinen Server braucht</h2>
+    <p>
+      Ein GIF zu lesen sind zwei Aufgaben: durch die Blöcke der Datei laufen und
+      die LZW-Kompression rückgängig machen, in die ihre Pixel eingepackt sind.
+      Zusammen sind das ein paar hundert Zeilen, sie stehen ausgeschrieben im
+      Repository, und sie laufen auf Ihrem eigenen Rechner &mdash; weshalb die
+      Seite auch mit gezogenem Netzstecker weiterarbeitet.
+    </p>
+    <p>
+      Ihr Browser kann ein GIF längst abspielen, nur rückt er die Teile nicht
+      heraus: Ein <code>&lt;img&gt;</code> gibt Ihnen eine Animation, das
+      Zeichnen auf eine Leinwand gibt Ihnen für immer das erste Bild, und die
+      eine Schnittstelle, die mehr kann, fehlt in Safari. Also wird das Format
+      hier selbst gelesen, in jedem Browser auf dieselbe Weise &mdash; und dass
+      es selbst gelesen wird, ist überhaupt erst der Grund, warum die Flicken und
+      die Aufräumregeln gezeigt werden können.
+    </p>
+    <p>
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
+      zu Online-Konvertern hochzuladen?</a> nennt vier Prüfungen, die Ihnen
+      dasselbe über jedes Werkzeug sagen, dieses eingeschlossen.
+    </p>
+  </section>

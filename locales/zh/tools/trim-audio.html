@@ -1,0 +1,196 @@
+<main>
+  <!-- 第一步 &mdash; 录音 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选一段录音</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>文件</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>大小</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>时长</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>声音</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>读取为</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 第二步 &mdash; 标记 -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> 标出你要的段落
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      从头放一遍，在某段该开始的地方按 <kbd>I</kbd>，该结束的地方按
+      <kbd>O</kbd>。想标几次都行，每一对都会变成下面的一行，成品文件就是这些行
+      一个接一个。<kbd>U</kbd> 撤销最后一次，<kbd>空格</kbd> 播放和暂停，方向键
+      跳五秒。按住 <kbd>Shift</kbd> 再按方向键，每次挪十毫秒。
+    </p>
+
+    <!-- Built by src/timeline.js: the waveform, a band for every part, the one
+         being marked, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <audio id="preview" class="player" controls preload="metadata"></audio>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">播放</button>
+      <button type="button" id="back-5" class="ghost" title="后退五秒">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="前进五秒">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> 标起点</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> 标终点</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> 撤销</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="播放速度">
+      <span class="speed-label">速度</span>
+      <button type="button" class="speed" data-speed="0.5">0.5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0.75&times;</button>
+      <button type="button" class="speed active" data-speed="1">正常</button>
+      <button type="button" class="speed" data-speed="1.25">1.25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1.5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The parts themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>段落 <span class="segment-count" id="segment-count">还没有</span></h3>
+        <p class="segments-total">
+          保留总时长 <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">起点</th>
+            <th scope="col">终点</th>
+            <th scope="col">时长</th>
+            <th scope="col"><span class="visually-hidden">操作</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        还没标任何东西。播放时先按 <kbd>I</kbd> 再按 <kbd>O</kbd>，或者用上面的
+        按钮。
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">手动加一行</button>
+        <button type="button" id="reset-segments" class="ghost danger">全部清空</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">载入标记&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="时间文件格式">
+          <option value="seconds" selected>秒数</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">保存标记</button>
+      </div>
+
+      <p class="field-note">
+        标记会保存成纯文本文件，一行一段，格式就是上面选的那种。这样一次很长的
+        标记工作不会因为关掉标签页而白费，同一个文件也可以交给视频剪辑，或者
+        任何能读这种排版的工具。
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>标出的段落怎么处理</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>留下它们</strong>
+          成品文件就是标出的段落，按顺序接起来。
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>把它们剪掉</strong>
+          标出的段落去掉，其余部分接在一起。
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- 第三步 &mdash; 出来的文件 -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 剪</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">写成什么</label>
+        <select id="depth">
+          <option value="16" selected>16 位 WAV &mdash; 到处都能放</option>
+          <option value="32">32 位浮点 WAV &mdash; 原原本本的采样</option>
+        </select>
+        <p class="field-note">
+          WAV 原样保存采样，所以写出这一步不可能掉画质。但它不是个小文件：看
+          下面的估算。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fade">让接缝柔一点</label>
+        <select id="fade">
+          <option value="0">关闭 &mdash; 切在精确的采样上</option>
+          <option value="0.005" selected>5 毫秒 &mdash; 足够挡住咔哒声</option>
+          <option value="0.02">20 毫秒</option>
+          <option value="0.05">50 毫秒</option>
+        </select>
+        <p class="field-note" id="fade-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>保留</dt><dd id="sum-parts">&mdash;</dd></div>
+      <div><dt>成品时长</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>起始于</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>接缝</dt><dd id="sum-joins">&mdash;</dd></div>
+      <div><dt>声音</dt><dd id="sum-sound">&mdash;</dd></div>
+      <div><dt>大约</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>剪辑音频</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" class="player" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>下载音频</a>
+      </div>
+    </div>
+  </section>
+</main>

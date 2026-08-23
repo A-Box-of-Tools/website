@@ -1,0 +1,108 @@
+<main>
+  <!-- चरण 1 &mdash; फ़ाइल -->
+  <section class="card">
+    <h2><span class="step">1</span> एक GIF चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>फ़ाइल</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>साइज़</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>तस्वीर</dt><dd id="src-picture">&mdash;</dd></div>
+      <div><dt>फ़्रेम</dt><dd id="src-frames">&mdash;</dd></div>
+      <div><dt>चलती है</dt><dd id="src-duration">&mdash;</dd></div>
+      <div><dt>दोहराव</dt><dd id="src-loop">&mdash;</dd></div>
+    </dl>
+
+    <p id="notice" class="path-note" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- चरण 2 &mdash; क्या बाहर आएगा -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">2</span> फ़्रेम किस रूप में निकलें</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="mode">हर PNG में होगा</label>
+        <select id="mode">
+          <option value="composited" selected>फ़्रेम जैसा दिखता है</option>
+          <option value="stored">सिर्फ़ वे पिक्सल जो यह फ़्रेम सहेजता है</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="background">पारदर्शी हिस्से</label>
+        <select id="background">
+          <option value="keep" selected>पारदर्शी ही रहने दीजिए</option>
+          <option value="flatten">किसी रंग से भर दीजिए&hellip;</option>
+        </select>
+        <div id="colour-row" class="inline-pair" hidden>
+          <input type="color" id="colour" value="#ffffff" aria-label="पारदर्शी हिस्सों को भरने वाला रंग">
+          <span id="colour-note">हर फ़्रेम में लिख दिया जाता है। बाद में हटाया नहीं जा सकता।</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="every">रखिए हर</label>
+        <div class="inline-pair">
+          <input type="number" id="every" min="1" max="100" step="1" value="1">
+          <span id="every-note">वाँ फ़्रेम</span>
+        </div>
+        <p class="field-note">
+          सारे के बजाय हर दूसरा या हर पाँचवाँ फ़्रेम लीजिए, किसी कॉन्टैक्ट शीट
+          के लिए या लंबी रिकॉर्डिंग के लिए।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="timing">टाइमिंग सूची</label>
+        <select id="timing">
+          <option value="yes" selected>ZIP में frames.txt भी रखिए</option>
+          <option value="no">सिर्फ़ फ़्रेम</option>
+        </select>
+        <p class="field-note">
+          हर फ़्रेम कितनी देर टिका और कहाँ बैठा था। PNG से भरा फ़ोल्डर यह अपने
+          आप साथ नहीं ले जा सकता।
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="download-all" class="primary">सारे फ़्रेम ZIP में डाउनलोड कीजिए</button>
+      <button type="button" id="download-selected" class="ghost" hidden>चुने हुए फ़्रेम डाउनलोड कीजिए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- चरण 3 &mdash; फ़्रेम -->
+  <section class="card" id="frames-card" hidden>
+    <h2><span class="step">3</span> फ़्रेम</h2>
+
+    <div class="toolbar">
+      <p class="count" id="frames-count" role="status" aria-live="polite"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="select-all" class="ghost">सब चुनें</button>
+        <button type="button" id="select-none" class="ghost">कोई नहीं</button>
+        <button type="button" id="clear" class="ghost danger">फिर से शुरू करें</button>
+      </div>
+    </div>
+
+    <!-- Checkboxes rather than a click-to-select grid: this is a list of files
+         somebody is about to save, and a checkbox is the one control everybody
+         already knows is safe to press. -->
+    <ul class="frames" id="frames"></ul>
+  </section>
+</main>

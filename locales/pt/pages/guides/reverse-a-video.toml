@@ -1,0 +1,17 @@
+#
+# Guia: inverter um vídeo - Brazilian Portuguese.
+#
+
+nav = "Inverter um vídeo"
+title = "Como inverter um vídeo (e o som junto)"
+description = "Tocar um vídeo de trás para frente: o que a inversão faz com a imagem e com o som, por que não dá para fazer sem recodificar, por que demora mais do que cortar, e o que fazer antes."
+heading = "Como inverter um vídeo"
+lede = """
+    Tocar um vídeo de trás para frente parece a edição mais simples que existe, e é
+    justamente aquela para a qual um arquivo de vídeo é menos preparado. Isto é o que
+    precisa acontecer de verdade, quanto custa, e o único passo que vale a pena dar
+    antes."""
+updated = "20 de agosto de 2026"
+og_title = "Como inverter um vídeo"
+og_description = "Por que um decodificador não anda para trás, o que a inversão custa à imagem e ao som, e o passo que vale a pena dar antes."
+og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

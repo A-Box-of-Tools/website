@@ -1,0 +1,17 @@
+#
+# Guia: o que tem de verdade dentro de um arquivo GIF - Portuguese.
+#
+
+nav = "O que tem dentro de um GIF"
+title = "O que tem de verdade dentro de um arquivo GIF (e por que o seu é tão grande)"
+description = "Quadros, atrasos, métodos de descarte e tabelas de cor explicados, por que os navegadores recusam os atrasos mais rápidos, e como descobrir para onde foi mesmo o tamanho de um GIF."
+heading = "O que tem de verdade dentro de um GIF"
+lede = """
+    Um GIF é uma pilha de retângulos, cada um com um cronômetro e uma tabela de
+    cor, e quase toda reclamação que as pessoas têm do formato vem de uma dessas
+    três coisas. Aqui está o que cada parte faz, e como descobrir em qual delas o
+    seu arquivo está gastando o tamanho."""
+updated = "22 de agosto de 2026"
+og_title = "O que tem de verdade dentro de um arquivo GIF"
+og_description = "Quadros, atrasos, descarte e paletas: o que cada um faz, por que o seu GIF toca mais devagar do que diz, e para onde foi o tamanho dele."
+og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

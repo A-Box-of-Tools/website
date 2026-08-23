@@ -1,0 +1,257 @@
+#
+# Standbild aus Video - German.
+#
+# Overrides for tools/grab-frame/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Standbild-Greifer"
+heading = "Standbild&nbsp;aus&nbsp;Video <span class=\"h1-kw\">&mdash; ein Einzelbild speichern</span>"
+tagline = "Ein Standbild in voller Qualität, von jeder Stelle."
+
+title = "Standbild aus Video speichern &mdash; kostenlos, ohne Upload, auch offline"
+description = "Jedes Einzelbild eines MP4, MOV oder WebM in voller Größe als PNG oder JPEG speichern. Bild für Bild vorrücken oder alle paar Sekunden eines nehmen. Läuft im Browser, es wird nichts hochgeladen."
+og_title = "Standbild-Greifer &mdash; ein Standbild von jeder Stelle, ohne den Clip hochzuladen"
+og_description = "Die Stelle suchen, auf das genaue Einzelbild vorrücken und es in der Auflösung des Videos speichern. Die Einzelbilder werden auf Ihrem eigenen Gerät dekodiert, und das Bild wird kein zweites Mal kodiert."
+og_image_alt = "Standbild-Greifer - ein Einzelbild aus einem Video im Browser speichern, ohne dass etwas hochgeladen wird"
+
+pledge = """
+    Die Einzelbilder werden von Ihrem eigenen Browser gefunden, dekodiert und
+    gezeichnet, auf Ihrer eigenen Hardware. Abrufen oder senden kann hier nichts,
+    denn eine Netzfunktion hat dieses Werkzeug überhaupt nicht. Und selbst wenn es
+    einen Weg nach draußen gäbe, stünde am anderen Ende dieser Seite kein Server,
+    an den ein Video gehen könnte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und greifen Sie ein Standbild. Keine einzige
+      Anfrage trägt ein Bild, einen Dateinamen oder ein Byte dessen, was Sie
+      ausgewählt haben. Oder trennen Sie die Internetverbindung und greifen Sie
+      trotzdem eines. Ein Werkzeug, das Ihr Video zum Verarbeiten wegschickt,
+      bliebe dabei einfach stehen."""
+
+read_first = """
+, <code>src/demux.js</code> für den Leser, der die
+      Einzelbilder in einem MP4 findet, und <code>src/frames.js</code> für den
+      Teil, der das gewünschte dekodiert. Keines von beiden importiert etwas, das
+      eine Anfrage stellen könnte."""
+
+howto_heading = "So speichern Sie ein Standbild aus einem Video"
+
+card = """
+            Jedes Einzelbild eines Clips als Bild speichern, in der Größe des
+            Videos selbst. Einzeln oder alle paar Sekunden eines."""
+
+[words]
+plural = "Videos"
+choose = "ein Video"
+analytics_extra = """, und kein
+  Einzelbild, kein Zeitcode und kein Bild"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Volle Auflösung"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[privacy]]
+title = "Ihre Videos haben keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Datei landen könnte, und im Code steht auch nichts, das sie dorthin
+      schicken würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Eine Netzfunktion hat dieses Werkzeug
+      überhaupt nicht. Es gibt keine Adresse zum Einfügen, nichts herunterzuladen
+      und keine Engine, die beim ersten Gebrauch nachgeladen wird. Jedes Byte, das
+      Ihr Video berührt, kam beim Laden der Seite von dieser Domain selbst."""
+
+[[privacy]]
+title = "Dekodiert wird lokal."
+body = """
+ Die Einzelbilder laufen durch WebCodecs in
+      Ihrem eigenen Browser oder durch dieselbe Wiedergabe-Engine, die Ihnen den
+      Clip ohnehin zeigen würde. Das Bild wird auf diesem Gerät auf eine Leinwand
+      gezeichnet und geht von dort direkt in einen Download."""
+
+[[privacy]]
+title = "Die Datei wird in Häppchen von wenigen Megabyte gelesen."
+body = """
+ Ein Video ist
+      die eine Art Datei hier, die nicht verlässlich in den Arbeitsspeicher passt,
+      also wird sie nie ganz geladen. Der Leser nimmt sich ein Fenster um das
+      Einzelbild herum, nach dem Sie gefragt haben. Genau deshalb öffnet sich ein
+      Clip von zwei Gigabyte so schnell wie ein kleiner."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihr
+      Video übergeben, weder eine Datei noch ein Einzelbild, ein Name, eine Größe,
+      eine Länge oder die Stelle, an der Sie stehen geblieben sind. Jede Zeile,
+      die liest, dekodiert oder zeichnet, kommt von dieser Domain selbst und steht
+      im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihr Video bekommt er nichts."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Wählen Sie ein Video aus."
+body = """
+ Ziehen Sie ein MP4, MOV, M4V oder
+      WebM auf das Auswahlfeld oder suchen Sie eines von Hand heraus. Der Browser
+      liest es direkt von Ihrer Festplatte, und dabei geht nichts nach draußen."""
+
+[[howto]]
+title = "Suchen Sie die Stelle."
+body = """
+ Spielen Sie ab und halten Sie an, wo Sie
+      wollen, oder ziehen Sie den Regler. Bei einem MP4 rückt der Regler je Schritt
+      um genau ein Einzelbild vor, zwischen dem, was Sie sehen, und dem, was Sie
+      speichern, wird also nichts gerundet. Die Pfeiltasten gehen ein Einzelbild
+      weiter, mit gehaltener <kbd>Umschalttaste</kbd> zehn."""
+
+[[howto]]
+title = "Wählen Sie ein Format."
+body = """
+ PNG speichert das Einzelbild genau so,
+      wie es dekodiert wurde, und das ist hier mit &bdquo;voller Qualität&ldquo;
+      gemeint. JPEG und WebP sind kleiner und legen eine zweite Kompression über
+      die des Videos. Für eine Vorschau ist das in Ordnung, für alles, was
+      hinterher noch bearbeitet wird, nicht."""
+
+[[howto]]
+title = "Greifen Sie eines, oder eine Reihe."
+body = """
+ Ein einzelnes Standbild geht
+      direkt in Ihre Downloads. &bdquo;Alle N Sekunden&ldquo; geht den Clip einmal
+      durch und nimmt an jeder Marke ein Bild. Das ist für Übersichtstafeln und
+      Vorschaubilder nützlich, und es kommt als ein ZIP heraus statt als hundert
+      Speicherabfragen."""
+
+[[faq]]
+q = "Wird mein Video irgendwohin hochgeladen?"
+a = """
+        Nein. Ihr eigener Browser liest und dekodiert es auf Ihrer eigenen
+        Hardware. Eine Serverseite hat dieses Werkzeug nicht, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die sie
+        kontaktieren darf; keine davon gehört uns. Wer lieber prüft als glaubt,
+        trennt die Internetverbindung und greift trotzdem ein Standbild."""
+
+[[faq]]
+q = "Was heißt &bdquo;volle Qualität&ldquo; eigentlich?"
+a = """
+        Zweierlei. Das Standbild wird in der Auflösung des Videos gespeichert und
+        nicht in der Größe der Vorschau auf der Seite. Ein 4K-Clip ergibt also ein
+        Bild von 3840 x 2160. Und mit PNG wird das Einzelbild genau so abgelegt,
+        wie es aus dem Dekoder kam, die Datei enthält also das Bild, das auch im
+        Video steht, ohne eine zweite Runde Kompression darüber. Ein Bildschirmfoto
+        eines Abspielfensters gibt Ihnen keines von beidem: Es hat die Größe des
+        Fensters und entsteht, nachdem der Player skaliert und farblich angepasst
+        hat."""
+
+[[faq]]
+q = "Aus welchen Videoformaten kann ich ein Einzelbild nehmen?"
+a = """
+        MP4, M4V und MOV werden direkt gelesen, egal was darin steckt, also H.264,
+        HEVC, AV1 oder VP9, solange Ihr Browser diesen Codec dekodieren kann. Das
+        ist der exakte Weg, auf dem das Werkzeug einzelne Einzelbilder ansprechen
+        kann. Alles andere, was Ihr Browser abspielen kann, allen voran WebM, wird
+        behandelt, indem der Player an die Stelle gesetzt und gezeichnet wird, was
+        er zeigt. Das ergibt weiterhin ein Bild in voller Größe, landet aber auf
+        dem Einzelbild, das der Player ausgesucht hat, und nicht auf dem, nach dem
+        Sie gefragt haben. Was der Browser weder lesen noch abspielen kann, in der
+        Praxis AVI, WMV, FLV und die meisten MKVs, wird mit einer entsprechenden
+        Meldung abgelehnt."""
+
+[[faq]]
+q = "Kann ich Einzelbild für Einzelbild vorgehen?"
+a = """
+        Bei einem MP4 ja, und zwar genau. Das Werkzeug liest die Einzelbildliste
+        der Datei selbst, die Pfeiltasten bewegen sich also zwischen den Bildern,
+        die wirklich darin stehen. Das gilt auch für einen Clip mit schwankender
+        Bildrate, bei dem ein fester Schritt von einer Dreißigstelsekunde
+        abdriften würde. Auf dem Wiedergabeweg gibt es keine solche Liste, ein
+        Schritt ist dort ungefähr ein Einzelbild, und die Seite sagt das auch."""
+
+[[faq]]
+q = "Warum steht mein Hochkantvideo vom Handy hier richtig herum?"
+a = """
+        Weil die Drehung mit Absicht angewendet wurde. Ein Telefon filmt im
+        Querformat und schreibt eine Vierteldrehung in die Datei, statt die Pixel
+        zu drehen. Das Einzelbild, das ein Dekoder herausgibt, liegt also auf der
+        Seite, und jeder Player dreht es auf dem Weg zu Ihrem Bildschirm. Ein
+        Werkzeug, das diesen Schritt überspringt, speichert ein plausibles Bild vom
+        richtigen Moment, nur quer. Dieses liest die Drehung von der Spur ab und
+        wendet sie an, bevor überhaupt etwas gezeichnet wird."""
+
+[[faq]]
+q = "Gibt es eine Grenze für Größe oder Länge des Videos?"
+a = """
+        Im Werkzeug ist keine Grenze eingebaut, und die Datei wandert auch nicht
+        auf einmal in den Arbeitsspeicher, sondern läuft in Häppchen von wenigen
+        Megabyte durch. Deshalb öffnet sich ein langer Clip so schnell wie ein
+        kurzer. Die Standbilder liegen bis zum Download auf der Seite, die
+        praktische Obergrenze sind also ein paar hundert 4K-PNGs und nicht das
+        Video selbst."""
+
+[[faq]]
+q = "Kann ich das Standbild hinterher skalieren oder zuschneiden?"
+a = """
+        Hier nicht, aber nebenan. Dieses Werkzeug speichert das Einzelbild, wie es
+        ist. Größe oder Form zu ändern ist eine eigene Aufgabe mit eigenen
+        Entscheidungen, und die
+        <a href="../bildgroesse-aendern/">Bildgrößenänderung</a> kann beides,
+        ebenfalls ohne etwas hochzuladen. Die Datei kleiner machen, ohne das Bild
+        zu ändern, kann die
+        <a href="../bild-komprimieren/">Bildkomprimierung</a>."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase
+        und kein Wasserzeichen. Bezahlt wird die Seite über Werbung, und den
+        Anzeigen wird nichts über Ihr Video übergeben."""
+
+[schema]
+browser_requirements = "Benötigt JavaScript. Für das einzelbildgenaue Greifen braucht es einen Browser mit WebCodecs; sonst wird auf das Anspringen der Stelle im Player zurückgegriffen."
+description = "Jedes Einzelbild eines Videos im Browser als PNG, JPEG oder WebP in voller Größe speichern. MP4, MOV und M4V werden über WebCodecs Bild für Bild gelesen, das gewünschte Einzelbild ist also auch das gespeicherte; alles andere, was der Browser abspielt, wird vom Player abgegriffen. Es wird nichts hochgeladen."
+features = [
+  "Speichert ein Standbild aus MP4-, MOV-, M4V- und WebM-Videos",
+  "H.264-, HEVC-, AV1- und VP9-Quellen, dekodiert über WebCodecs",
+  "Bild-für-Bild-Vorrücken anhand der Einzelbildliste der Datei selbst",
+  "PNG für eine exakte Kopie des Einzelbildes, JPEG und WebP für eine kleinere",
+  "Alle N Sekunden ein Standbild, zusammen als ZIP heruntergeladen",
+  "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
+]
+
+[picker]
+title = "Video hierher ziehen"
+hint = "oder klicken und auswählen &mdash; MP4, MOV, M4V, WebM und alles andere, was dieser Browser abspielt"

@@ -1,0 +1,199 @@
+<main>
+  <!-- Passo 1 &mdash; a gravação -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha uma gravação</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Arquivo</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Tamanho</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Duração</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Som</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>Lido como</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; as marcas -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> Marque os trechos que você quer
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      Toque a gravação inteira e aperte <kbd>I</kbd> onde um trecho deve começar e
+      <kbd>O</kbd> onde ele deve terminar. Faça isso quantas vezes quiser: cada par
+      vira uma linha aqui embaixo, e o arquivo pronto são essas linhas, uma atrás da
+      outra. <kbd>U</kbd> desfaz a última, <kbd>Espaço</kbd> toca e pausa, e as
+      setas pulam cinco segundos. Segure <kbd>Shift</kbd> junto com uma seta para
+      andar dez milissegundos por vez.
+    </p>
+
+    <!-- Built by src/timeline.js: the waveform, a band for every part, the one
+         being marked, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <audio id="preview" class="player" controls preload="metadata"></audio>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">Tocar</button>
+      <button type="button" id="back-5" class="ghost" title="Cinco segundos para trás">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="Cinco segundos para a frente">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> Marcar início</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> Marcar fim</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> Desfazer</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="Velocidade de reprodução">
+      <span class="speed-label">Velocidade</span>
+      <button type="button" class="speed" data-speed="0.5">0,5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0,75&times;</button>
+      <button type="button" class="speed active" data-speed="1">Normal</button>
+      <button type="button" class="speed" data-speed="1.25">1,25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1,5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The parts themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>Trechos <span class="segment-count" id="segment-count">nenhum ainda</span></h3>
+        <p class="segments-total">
+          Total mantido <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">Início</th>
+            <th scope="col">Fim</th>
+            <th scope="col">Duração</th>
+            <th scope="col"><span class="visually-hidden">Ações</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        Nada marcado ainda. Aperte <kbd>I</kbd> e depois <kbd>O</kbd> enquanto
+        toca, ou use os botões acima.
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">Adicionar uma linha na mão</button>
+        <button type="button" id="reset-segments" class="ghost danger">Apagar todas</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">Carregar marcas&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="Formato do arquivo de tempos">
+          <option value="seconds" selected>segundos</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">Salvar marcas</button>
+      </div>
+
+      <p class="field-note">
+        As marcas são salvas como arquivo de texto simples, uma linha por trecho, no
+        formato acima, então uma sessão longa de marcação sobrevive a uma aba
+        fechada, e o mesmo arquivo pode ser entregue ao cortador de vídeo ou a
+        qualquer outra ferramenta que leia esse layout.
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>O que fazer com os trechos marcados</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>Ficar com eles</strong>
+          O arquivo pronto são os trechos marcados, emendados na ordem.
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>Tirar eles fora</strong>
+          Os trechos marcados saem, e todo o resto é emendado.
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Passo 3 &mdash; o arquivo que sai -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Corte</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">O que escrever</label>
+        <select id="depth">
+          <option value="16" selected>WAV de 16 bits &mdash; toca em todo lugar</option>
+          <option value="32">WAV de 32 bits em ponto flutuante &mdash; exatamente as amostras</option>
+        </select>
+        <p class="field-note">
+          Um WAV guarda as amostras do jeito que elas estão, então escrever um não
+          pode custar qualidade. Pequeno ele não é: veja a estimativa abaixo.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fade">Suavizar as emendas</label>
+        <select id="fade">
+          <option value="0">Desligado &mdash; cortar na amostra exata</option>
+          <option value="0.005" selected>5 ms &mdash; o bastante para evitar o estalo</option>
+          <option value="0.02">20 ms</option>
+          <option value="0.05">50 ms</option>
+        </select>
+        <p class="field-note" id="fade-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Mantendo</dt><dd id="sum-parts">&mdash;</dd></div>
+      <div><dt>Duração final</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Começa em</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>Emendas</dt><dd id="sum-joins">&mdash;</dd></div>
+      <div><dt>Som</dt><dd id="sum-sound">&mdash;</dd></div>
+      <div><dt>Mais ou menos</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Cortar o áudio</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" class="player" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Baixar o áudio</a>
+      </div>
+    </div>
+  </section>
+</main>

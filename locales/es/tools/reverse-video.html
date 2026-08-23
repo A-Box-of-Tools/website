@@ -1,0 +1,89 @@
+<main>
+  <!-- Paso 1 &mdash; el archivo -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige un vídeo</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Archivo</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Tamaño</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Fotograma</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Duración</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Vídeo</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <div class="stage-wrap" id="preview-wrap" hidden>
+      <video id="preview" class="stage" playsinline controls></video>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Paso 2 &mdash; la inversión -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">2</span> Inviértelo</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="quality">Calidad</label>
+        <select id="quality">
+          <option value="low">Archivo más pequeño</option>
+          <option value="medium" selected>Equilibrado</option>
+          <option value="high">Máxima calidad</option>
+        </select>
+        <p class="field-note">
+          Nunca más de lo que gastó el original en la misma imagen: un clip
+          invertido tiene los mismos fotogramas, así que gastar más solo hace el
+          archivo más grande.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Invertir también el sonido
+        </label>
+        <p class="field-note" id="audio-note">
+          Se da la vuelta muestra a muestra y se codifica otra vez como AAC.
+          Déjalo apagado para un clip mudo, que va más rápido.
+        </p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Fotograma de salida</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Duración</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Fotogramas</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Cómo</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Invertir el vídeo</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Descargar el vídeo</a>
+      </div>
+    </div>
+  </section>
+</main>

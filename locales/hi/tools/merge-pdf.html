@@ -1,0 +1,155 @@
+<main>
+  <!-- चरण 1 &mdash; फ़ाइलें -->
+  <section class="card">
+    <h2><span class="step">1</span> अपनी PDF चुनिए</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <ul id="source-list" class="source-list" hidden></ul>
+  </section>
+
+  <!-- चरण 2 &mdash; पेज -->
+  <section class="card" id="pages-card" hidden>
+    <h2><span class="step">2</span> पेज लगाइए</h2>
+
+    <p class="card-lede">
+      आपकी चुनी हर फ़ाइल का हर पेज, उसी क्रम में जिसमें वे बाहर आएँगे। किसी पेज को
+      उसके <span class="grip" aria-hidden="true">&#8942;&#8942;</span> हैंडल से
+      खींचकर हटाइए, तीरों से घुमाइए, या &times; से निकाल दीजिए। यहाँ अभी कुछ लिखा
+      नहीं गया है, दस्तावेज़ तब बनता है जब आप चरण 4 का बटन दबाते हैं।
+    </p>
+
+    <div class="toolbar">
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="reverse" class="ghost">उलटा कीजिए</button>
+        <button type="button" id="rotate-all" class="ghost">हर पेज घुमाइए</button>
+        <button type="button" id="restore" class="ghost">जैसे आए थे वैसा कीजिए</button>
+        <button type="button" id="clear-all" class="ghost danger">फिर से शुरू कीजिए</button>
+      </div>
+    </div>
+
+    <div class="range-row">
+      <label for="range">पेज</label>
+      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+             spellcheck="false" aria-describedby="range-note">
+      <button type="button" id="range-keep" class="ghost">सिर्फ़ ये रखिए</button>
+      <button type="button" id="range-drop" class="ghost">ये हटाइए</button>
+      <button type="button" id="range-turn" class="ghost">ये घुमाइए</button>
+    </div>
+    <p id="range-note" class="field-note">
+      नीचे दिखने वाले नंबरों के हिसाब से, जो आपके काम के साथ दोबारा लगते जाते हैं।
+      <code>odd</code>, <code>even</code>, <code>all</code> और <code>last</code>
+      भी चलते हैं।
+    </p>
+    <p id="range-error" class="error" role="alert" hidden></p>
+
+    <ul id="page-list" class="page-list"></ul>
+  </section>
+
+  <!-- चरण 3 &mdash; एक फ़ाइल, या कई -->
+  <section class="card" id="output-card" hidden>
+    <h2><span class="step">3</span> एक दस्तावेज़, या कई</h2>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">पेज किस तरह लिखे जाएँगे</legend>
+      <div class="presets" id="split-modes" role="radiogroup" aria-label="पेज किस तरह लिखे जाएँगे">
+        <label class="preset">
+          <input type="radio" name="split" value="single" checked>
+          <span class="preset-body">
+            <strong>एक दस्तावेज़</strong>
+            <span class="preset-note">ऊपर की हर चीज़, उसी क्रम में, एक ही PDF के रूप में।</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="every">
+          <span class="preset-body">
+            <strong>हर इतने पेज पर बाँटिए</strong>
+            <span class="preset-note">
+              किसी लंबे स्कैन को
+              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+                     inputmode="numeric" aria-label="हर फ़ाइल में पेजों की संख्या">
+              पेज के हिस्सों में काटिए।
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="at">
+          <span class="preset-body">
+            <strong>इस पेज पर बाँटिए&hellip;</strong>
+            <span class="preset-note">
+              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+                     spellcheck="false" aria-label="जिन पेज नंबरों से पहले काटना है">
+              से ठीक पहले काटिए &mdash; इनमें से हर एक नई फ़ाइल शुरू करता है।
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="each">
+          <span class="preset-body">
+            <strong>हर पेज अलग</strong>
+            <span class="preset-note">एक पेज पर एक PDF। हस्ताक्षर वाला पन्ना निकालने के लिए काम का।</span>
+          </span>
+        </label>
+        <label class="preset" id="by-file-preset" hidden>
+          <input type="radio" name="split" value="file">
+          <span class="preset-body">
+            <strong>वापस उन्हीं फ़ाइलों में जिनसे आए थे</strong>
+            <span class="preset-note">हर चुनी हुई फ़ाइल के लिए एक दस्तावेज़, आपके बदलावों समेत।</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="keep-bookmarks" checked>
+      <span>
+        <strong>बुकमार्क रखिए</strong>
+        <span class="check-note">
+          हर फ़ाइल जो सूची लेकर आई थी, वह उन्हीं पेजों के हिसाब से दोबारा बनती है जो
+          सचमुच यहाँ हैं: जिस प्रविष्टि का पेज आपने हटाया वह चली जाती है, और जिसका
+          अध्याय अब भी यहाँ है वह बनी रहती है। कई फ़ाइलें जोड़ने पर हर फ़ाइल के
+          बुकमार्क उसी के नाम वाले शीर्षक के नीचे चले जाते हैं।
+        </span>
+      </span>
+    </label>
+
+    <p id="output-summary" class="field-summary"></p>
+  </section>
+
+  <!-- चरण 4 &mdash; वह एक क्लिक -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> इसे बनाइए</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">दस्तावेज़ बनाइए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>डाउनलोड</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <ul id="file-list" class="out-list" hidden></ul>
+    </div>
+  </section>
+</main>

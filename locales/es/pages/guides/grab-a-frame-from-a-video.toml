@@ -1,0 +1,16 @@
+#
+# Guía: sacar un fotograma de un vídeo - Spanish.
+#
+
+nav = "Capturar un fotograma"
+title = "Cómo guardar un fotograma de un vídeo como imagen"
+description = "Saca una imagen de un clip a su resolución real: por qué una captura de pantalla del reproductor en pausa no es la misma imagen, en qué formato guardarla y cómo caer en el fotograma exacto que querías."
+heading = "Cómo guardar un fotograma de un vídeo como imagen"
+lede = """
+    Pausar el reproductor y pulsar la tecla de captura da una imagen de una
+    ventana. A veces con eso basta. Esto es en qué se diferencian, y cómo
+    conseguir el fotograma en sí cuando importa."""
+updated = "20 de agosto de 2026"
+og_title = "Cómo guardar un fotograma de un vídeo como imagen"
+og_description = "Por qué una captura del reproductor en pausa no es el fotograma, en qué formato guardar una imagen y cómo caer en el fotograma exacto que querías."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

@@ -1,0 +1,16 @@
+#
+# Guía: cortar un archivo de audio - Spanish.
+#
+
+nav = "Cortar un audio"
+title = "Cómo cortar audio sin perder calidad"
+description = "Dónde cae de verdad un corte de audio, por qué puede ser exacto cuando uno de vídeo no puede, por qué a veces una unión chasca, y qué está haciendo en realidad un fundido de cinco milisegundos."
+heading = "Cómo cortar audio sin perder calidad"
+lede = """
+    Un corte de audio puede caer en el instante exacto que marcaste, en
+    cualquier reproductor, siempre &mdash; cosa que no pasa con el vídeo. Aquí
+    está por qué, cuál es la única pega de verdad, y qué hacer con ella."""
+updated = "21 de agosto de 2026"
+og_title = "Cómo cortar audio sin perder calidad"
+og_description = "Por qué un corte de audio puede ser exacto cuando uno de vídeo no, por qué a veces una unión chasca, y qué hace en realidad un fundido de cinco milisegundos."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

@@ -1,0 +1,341 @@
+#
+# Text & Code - German.
+#
+# Overrides for tools/text-tools/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Text & Code"
+heading = "Text&nbsp;&amp;&nbsp;Code <span class=\"h1-kw\">&mdash; formatieren, vergleichen, kodieren, umwandeln</span>"
+tagline = "Auslegen, sehen was sich geändert hat, kodieren oder in das andere Format bringen. Nichts davon wird in den Server eines anderen eingefügt."
+
+title = "JSON formatieren, Texte vergleichen, Base64 und YAML &mdash; ohne Upload"
+description = "JSON, XML, HTML, CSS und YAML formatieren, zwei Texte Zeile für Zeile vergleichen, Base64 oder URLs kodieren und JSON in YAML oder XML umwandeln. Alles läuft in Ihrem Browser, hochgeladen wird nichts."
+og_title = "Text formatieren, vergleichen, kodieren und umwandeln, ohne ihn in einen Server einzufügen"
+og_description = "Ein JSON-Formatierer, ein Vergleich, ein Kodierer und ein Umwandler auf einer Seite, und alles läuft auf Ihrem eigenen Gerät. Fügen Sie ein Token oder eine Konfigurationsdatei ein, ohne sie jemandem zu geben."
+og_image_alt = "Text & Code - formatieren, vergleichen, kodieren und umwandeln, ohne Upload"
+
+pledge = """
+    Alle vier Aufgaben sind Rechnen auf einer Zeichenkette, und zwar hier, auf dieser
+    Seite. Die Parser sind von Hand geschrieben und liegen in <code>src/</code>:
+    <code>json.js</code>, <code>xml.js</code>, <code>css.js</code>,
+    <code>yaml.js</code>. Der Vergleich ist der Myers-Algorithmus in
+    <code>diff.js</code>, derselbe, den <code>git diff</code> benutzt. Eine
+    Netzfunktion hat dieses Werkzeug überhaupt nicht, weder etwas abzurufen noch etwas
+    zu senden. Das wiegt hier schwerer als irgendwo sonst auf dieser Seite, denn was
+    Menschen in einen Formatierer einfügen, sind Zugriffstoken, Sitzungscookies,
+    Kundendaten und unveröffentlichter Code."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und formatieren Sie etwas. Keine einzige Anfrage
+      trägt ein Zeichen dessen, was Sie eingefügt haben. Oder trennen Sie die
+      Internetverbindung und formatieren Sie es trotzdem."""
+
+read_first = """
+, <code>src/json.js</code> für den Parser, der Ihre
+      Schlüssel in der Reihenfolge lässt, in der Sie sie geschrieben haben, und
+      <code>src/diff.js</code> für den Vergleich, also gut zweihundert Zeilen und
+      den Teil dieser Seite mit dem meisten Rechnen darin."""
+
+howto_heading = "So formatieren, vergleichen oder kodieren Sie Text, ohne ihn hochzuladen"
+
+card = """
+            Ein JSON-Formatierer, ein Vergleich, ein Kodierer und ein Umwandler auf
+            einer Seite. Fügen Sie ein Token oder eine Konfigurationsdatei ein, ohne
+            sie jemandem zu geben."""
+
+[words]
+plural = "Text und Code"
+choose = "eine Datei"
+analytics_extra = """, und keine der
+  Sprachen, Kodierungen oder Unterschiede, die dieses Werkzeug ermittelt"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Keine Größengrenze"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Was Sie einfügen, hat keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren darf,
+      und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an dem ein
+      eingefügtes Token eingesammelt werden könnte, und im Code steht auch nichts, das
+      es dorthin schicken würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ In <code>src/</code> gibt es nirgends ein
+      <code>fetch</code>, kein <code>XMLHttpRequest</code> und kein
+      <code>sendBeacon</code>. Jeder Parser, jeder Kodierer und der Vergleich sind
+      Funktionen auf dieser Seite, die eine Zeichenkette nehmen und eine Zeichenkette
+      zurückgeben."""
+
+[[privacy]]
+title = "Die Formatierer behalten, was sie bekommen haben."
+body = """
+ Ein JSON-Objekt kommt mit
+      seinen Schlüsseln in der Reihenfolge zurück, in der Sie sie geschrieben haben,
+      und mit den Zahlen so geschrieben, wie Sie sie geschrieben haben. Denn
+      <code>src/json.js</code> ist ein Parser und kein Aufruf von
+      <code>JSON.parse</code>, das zahlartige Schlüssel umsortiert und aus einer
+      zwanzigstelligen Kennung die nächstgelegene Fließkommazahl macht. Die Tests in
+      <code>tests/js/text-format.test.js</code> prüfen genau das."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee. Keinem
+      davon wird ein Zeichen Ihres Textes übergeben. Jede Zeile, die ihn liest,
+      auswertet oder schreibt, kommt von dieser Domain selbst und steht im
+      Repository."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und das
+      Werkzeug bleibt unverändert, weil darin nie ein Schritt über das Netz vorgesehen
+      war. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Wählen Sie die Aufgabe."
+body = """
+ Vier Reiter, die sich ein Eingabefeld
+      teilen: <em>Formatieren</em> legt JSON, XML, HTML, CSS und YAML aus oder presst
+      sie zusammen; <em>Umwandeln</em> macht aus JSON YAML oder XML und zurück;
+      <em>Kodieren</em> beherrscht Base64, URLs, HTML-Entities, Hex und
+      Backslash-Escapes, in beide Richtungen; <em>Vergleichen</em> zeigt, was sich
+      zwischen zwei Texten geändert hat."""
+
+[[howto]]
+title = "Fügen Sie ihn ein oder ziehen Sie die Datei her."
+body = """
+ Alles, was sich markieren und
+      kopieren lässt, funktioniert. Eine auf das Auswahlfeld gezogene Datei liest Ihr
+      eigener Browser und legt sie ins Feld. Einen Upload-Schritt gibt es hier nicht
+      wegzulassen. Ziehen Sie beim Vergleichen zwei Dateien her, landet je eine auf
+      jeder Seite."""
+
+[[howto]]
+title = "Lassen Sie die Sprache erkennen, oder sagen Sie sie."
+body = """
+ Das Menü zeigt, als was
+      der Text gelesen wurde, und das zu korrigieren ist ein Klick. Eine Erkennung ist
+      nur ein Ausgangspunkt, und deshalb wird sie angezeigt statt stillschweigend
+      angewendet."""
+
+[[howto]]
+title = "Wählen Sie die Einrückung, oder pressen Sie es flach."
+body = """
+ Zwei Leerzeichen, vier
+      oder ein Tabulator. Flach gepresst ist dasselbe Dokument, nur ohne jedes
+      Leerzeichen, das nur zum Lesen da war, und das Ergebnis sagt, wie viele Bytes
+      das gespart hat."""
+
+[[howto]]
+title = "Lesen Sie den Fehler dort, wo der Fehler ist."
+body = """
+ Ein Parser, der hier
+      scheitert, sagt, was er gefunden hat und in welcher Zeile und Spalte, statt
+      &bdquo;unerwartetes Zeichen an Position 4193&ldquo;. Das reicht meist, um eine
+      Konfigurationsdatei zu reparieren, ohne sonst etwas zu öffnen."""
+
+[[howto]]
+title = "Nehmen Sie das Ergebnis mit."
+body = """
+ Kopieren Sie es, oder laden Sie es als
+      Datei herunter. Ein Vergleich kommt als <code>.patch</code> im Unified-Format
+      herunter, und genau das erwarten ein Code-Review, <code>git apply</code> und
+      jeder Diff-Betrachter."""
+
+[[faq]]
+q = "Wird mein Text irgendwohin hochgeladen?"
+a = """
+        Nein. Jeder Parser, jeder Kodierer und der Vergleich auf dieser Seite sind
+        Funktionen, die in Ihrem eigenen Browser auf Ihrer eigenen Hardware laufen.
+        Eine Netzfunktion hat dieses Werkzeug überhaupt nicht, es ruft nie etwas ab und
+        sendet nie etwas, und in der <code>Content-Security-Policy</code> der Seite
+        steht jede Adresse, die sie kontaktieren darf; keine davon gehört uns. Genau
+        deshalb sollte man es für ein Zugriffstoken, ein Sitzungscookie oder einen
+        Kundendatensatz nehmen: So etwas in den Formatierer eines anderen einzufügen,
+        heißt, es ihm zu geben."""
+
+[[faq]]
+q = "Ändert das Formatieren von JSON etwas außer der Anordnung?"
+a = """
+        Nein, und das ist schwerer, als es klingt. Die Schlüssel behalten die
+        Reihenfolge, in der Sie sie geschrieben haben. Ein Formatierer, der auf
+        <code>JSON.parse</code> aufbaut, zieht zahlartige Schlüssel stillschweigend
+        nach vorn, aus <code>{"10":a,"2":b}</code> wird also
+        <code>{"2":b,"10":a}</code>. Zahlen behalten die Ziffern, die Sie getippt
+        haben, eine zwanzigstellige Kennung verliert ihre letzten drei also nicht an
+        eine Fließkommazahl, und <code>1e999</code> wird nicht zu <code>null</code>.
+        Doppelte Schlüssel bleiben beide erhalten, denn der Standard sagt nicht, welcher
+        gewinnt, und einen wegzuwerfen hieße, für Sie zu entscheiden."""
+
+[[faq]]
+q = "Welche Sprachen kann es formatieren?"
+a = """
+        JSON, XML, HTML, CSS und YAML. JSON, XML, HTML und CSS lassen sich auch flach
+        pressen, YAML nicht: Seine Kurzform ist der Flow-Stil, und der ist unlesbar,
+        und unlesbar ist das Gegenteil des Grundes, eine Datei überhaupt in YAML zu
+        halten. JavaScript steht mit Absicht nicht auf der Liste, siehe die Frage
+        weiter unten."""
+
+[[faq]]
+q = "Warum formatiert es kein JavaScript, Python oder SQL?"
+a = """
+        Weil eine Programmiersprache auszulegen bedeutet, sie richtig zu parsen, und
+        ein Formatierer, der es fast richtig macht, ist schlimmer als gar keiner: Er
+        erzeugt Code, der gut aussieht und etwas anderes tut. JSON, XML, CSS und YAML
+        haben kleine genug Grammatiken, um von Hand gelesen und mit Tests geprüft zu
+        werden, die Sie selbst ausführen können. Ein JavaScript-Formatierer ist
+        Prettier, das ist ein Megabyte Parser, und der gehört in Ihren Editor und
+        nicht auf eine Webseite."""
+
+[[faq]]
+q = "Was macht der Vergleich eigentlich?"
+a = """
+        Er findet die kürzeste Folge von Änderungen, die den linken Text in den rechten
+        verwandelt, mit dem Myers-Algorithmus, demselben, den <code>git diff</code>
+        benutzt. Am kürzesten ist das, was einen Vergleich lesbar macht: Eine in der
+        Mitte eingefügte Zeile sollte als eine Einfügung erscheinen und nicht so, als
+        hätte sich jede Zeile danach geändert. Innerhalb einer geänderten Zeile werden
+        auch die Wörter markiert, die sich unterscheiden, ein Vergleich zweier Absätze
+        zeigt also das verschobene Wort und nicht zwei ganze Absätze."""
+
+[[faq]]
+q = "Kann es zwei Dateien statt zweier Einfügungen vergleichen?"
+a = """
+        Ja. Ziehen Sie beide auf das Auswahlfeld, während der Reiter
+        &bdquo;Vergleichen&ldquo; offen ist, dann landen sie je auf einer Seite, in
+        der Reihenfolge, in der Sie sie fallen gelassen haben. Ihr Browser liest sie in
+        diese Seite hinein, und weiter kommen sie nicht. Wenn Sie sie falsch herum
+        abgelegt haben, tauschen Sie die Seiten."""
+
+[[faq]]
+q = "Was kommt bei einem Vergleich heraus, und kann ich es anwenden?"
+a = """
+        Der Download ist ein Unified Diff, also das Format mit
+        <code>@@ -3,5 +3,5 @@</code>, das <code>git apply</code>, <code>patch</code>
+        und jedes Code-Review-Werkzeug lesen. Kopieren legt dasselbe in Ihre
+        Zwischenablage. Was auf dem Bildschirm steht, ist eine Ansicht davon:
+        nebeneinander oder in einer Spalte, wobei die unveränderten Teile zu einer Zahl
+        zusammengeklappt sind, sofern Sie nicht alle sehen wollen."""
+
+[[faq]]
+q = "Ist das hier dasselbe Base64 wie überall sonst?"
+a = """
+        Ja, es wird gegen die Testvektoren aus RFC 4648 geprüft und nicht gegen sich
+        selbst. Beide Alphabete lassen sich dekodieren, ein JWT mit <code>-</code> und
+        <code>_</code> liest sich also genauso leicht wie eines mit <code>+</code> und
+        <code>/</code>, und Eingaben, die auf 64 Zeichen umgebrochen sind, werden für
+        Sie zusammengefügt. Kodiert wird über UTF-8-Bytes, ein Buchstabe mit Akzent
+        oder ein Emoji übersteht die Hin- und Rückrunde also unbeschadet."""
+
+[[faq]]
+q = "Mein YAML sagt no, und aus dem JSON wurde eine Zeichenkette. Warum?"
+a = """
+        Weil es eine Zeichenkette ist: Hier wird YAML 1.2 gelesen und nicht 1.1. In
+        YAML 1.1 waren <code>yes</code>, <code>no</code>, <code>on</code> und
+        <code>off</code> Wahrheitswerte, und das ist der berühmte Fehler, der den
+        Ländercode für Norwegen zu <code>false</code> macht. YAML 1.2 hat das
+        abgeschafft, und dieses Werkzeug ebenso: Nur <code>true</code>,
+        <code>false</code>, <code>null</code> und <code>~</code> werden als etwas
+        anderes gelesen als Text. In die andere Richtung werden diese Wörter
+        <em>in Anführungszeichen</em> zurückgeschrieben, obwohl dieses Werkzeug sie
+        auch ohne als Text läse, denn was die Datei als Nächstes öffnet, tut das
+        vielleicht nicht. PyYAML nimmt weiterhin standardmäßig 1.1. Streng zu lesen und
+        vorsichtig zu schreiben ist die einzige Kombination, die in beide Richtungen
+        stimmt."""
+
+[[faq]]
+q = "Was geht bei der Umwandlung von YAML nach JSON verloren?"
+a = """
+        Kommentare, denn JSON hat keinen Ort für sie. Anker, Aliase und Tags werden
+        rundheraus abgelehnt statt geraten: Jedes davon sagt etwas, was JSON nicht sagen
+        kann, und ein Umwandler, der sich stillschweigend für eine Auslegung entschiede,
+        gäbe Ihnen ein Dokument, das nicht das ist, was in der Datei stand. In die
+        andere Richtung geht nichts verloren: Jedes JSON-Dokument ist bereits ein
+        YAML-Dokument."""
+
+[[faq]]
+q = "Was geht bei der Umwandlung von JSON nach XML verloren?"
+a = """
+        Der Unterschied zwischen einem leeren Objekt, einem leeren Array und einer
+        leeren Zeichenkette, die alle zu einem leeren Element werden, und der Typ jedes
+        Werts, denn XML hat keine Typen. Deshalb lässt die Rückumwandlung auch alles
+        als Zeichenkette stehen, statt zu entscheiden, dass <code>8080</code> eine Zahl
+        war. Aus einem Array wird ein wiederholtes Element, denn nur diese Form lässt
+        sich zurücklesen, und bei einem Schlüssel, den ein Elementname nicht tragen
+        kann, werden die sperrigen Zeichen ersetzt, statt ein Dokument auszugeben, das
+        kein Parser liest."""
+
+[[faq]]
+q = "Ändert das Neu-Einrücken von HTML das Aussehen der Seite?"
+a = """
+        Es kann, und das wird hier ehrlich gesagt. Leerraum zwischen zwei
+        Inline-Elementen ist ein Abstand zwischen zwei Wörtern, ihn zu verschieben ist
+        also nicht umsonst. Zwei Dinge halten das im Zaum: <code>&lt;pre&gt;</code> und
+        <code>&lt;textarea&gt;</code> werden exakt so übernommen, wie sie waren, und
+        ein Element, das nichts als Text enthält, bleibt in einer Zeile. Alles andere
+        wird ausgelegt."""
+
+[[faq]]
+q = "Wie groß darf die Datei sein?"
+a = """
+        Hier ist keine Grenze gesetzt, denn es zahlt kein Server dafür. Die praktische
+        Obergrenze ist Ihr eigenes Gerät: Ein paar Megabyte JSON sind kein Problem. Ein
+        Vergleich zweier Texte, die überhaupt nichts gemeinsam haben, hört früh auf und
+        sagt das, statt eine Minute damit zu verbringen, das Offensichtliche zu
+        beweisen. Und ein sehr langer Vergleich zeichnet die ersten paar tausend Zeilen
+        und überlässt den Rest dem heruntergeladenen Patch."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase und
+        keine Grenze dafür, wie viel Sie einfügen. Bezahlt wird die Seite über Werbung,
+        und den Anzeigen wird nichts über Ihren Text übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung, und
+        sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür, dass nichts
+        hochgeladen wird. Ein Werkzeug, das Ihren Text zum Formatieren wegschickt,
+        bliebe in dem Moment stehen, in dem Sie den Stecker ziehen."""
+
+[schema]
+description = "JSON, XML, HTML, CSS und YAML formatieren und minimieren, zwei Texte zeilen- und wortweise vergleichen, Base64, URLs, HTML-Entities und Hex kodieren und dekodieren sowie JSON in YAML oder XML und zurück umwandeln. Alles läuft im Browser, und es wird nichts hochgeladen."
+features = [
+  "Formatiert und minimiert JSON, XML, HTML und CSS und legt YAML aus",
+  "Behält die Reihenfolge der JSON-Schlüssel und die genauen Ziffern jeder Zahl",
+  "Sagt in Worten, in welcher Zeile und Spalte ein Fehler steht",
+  "Vergleicht zwei Texte mit dem Myers-Algorithmus, nebeneinander oder in einer Spalte",
+  "Markiert die geänderten Wörter innerhalb einer geänderten Zeile",
+  "Lädt einen Vergleich als Unified Diff herunter, den ein Code-Review lesen kann",
+  "Base64 in beiden Alphabeten, Prozentkodierung, HTML-Entities, Hex und Backslash-Escapes",
+  "Wandelt JSON in YAML und XML um und zurück und sagt, was jede Richtung kostet",
+  "Liest YAML 1.2, yes und no bleiben also Zeichenketten",
+  "Arbeitet mit einer hergezogenen Datei genauso wie mit Eingefügtem",
+  "Läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "Datei hierher ziehen"
+hint = "oder klicken und auswählen &mdash; jede Textdatei. Beim Vergleichen zwei davon."

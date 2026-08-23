@@ -1,0 +1,310 @@
+#
+# Unire, dividere e riordinare le pagine di un PDF - Italian.
+#
+# Overrides for tools/merge-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Unire e dividere PDF"
+heading = "Unire&nbsp;PDF <span class=\"h1-kw\">&mdash; e dividere e riordinare le pagine</span>"
+tagline = "Pagine spostate senza un giro fino a un server."
+
+title = "Unire PDF, dividere e riordinare le pagine &mdash; gratis, senza caricare niente"
+description = "Metti insieme PDF, dividine uno in più file e trascina le pagine nell'ordine che vuoi, tutto dentro il tuo browser. Non viene caricato niente, non serve un account, e il file finito viene riaperto e ricontato prima di essere offerto."
+og_title = "Unire, dividere e riordinare le pagine di un PDF &mdash; senza caricare niente"
+og_description = "Metti insieme documenti, tagliane uno a pezzi, sposta le pagine, giralle, toglile. Lo fa il tuo browser, quindi il file non lascia mai il tuo dispositivo."
+og_image_alt = "Unire, dividere e riordinare le pagine di un PDF senza caricarle"
+
+pledge = """
+    Ogni documento che scegli viene aperto, smontato e riscritto nella memoria di
+    questo dispositivo, da codice servito da questo indirizzo. Qui non c'è niente
+    che possa fare un caricamento, e dall'altra parte di questa pagina non c'è
+    nessun server a riceverlo."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori, tieni
+      d'occhio il pannello Rete e unisci due file. Non c'è una sola richiesta che
+      porti con sé una pagina, un'immagine o un nome di file. Oppure stacca la
+      connessione e uniscili lo stesso."""
+
+read_first = """
+ e <code>src/assemble.js</code> per tutta la copia, cioè
+      per come una pagina viene tirata fuori da un documento e messa in un altro, e
+      per cosa viene lasciato indietro di proposito. Non può raggiungere la rete, e
+      non possono nemmeno il lettore e lo scrittore che gli stanno accanto."""
+
+howto_heading = "Come unire, dividere o riordinare un PDF"
+
+card = """
+            Metti insieme documenti, tagliane uno in più file e trascina le pagine
+            nell'ordine che vuoi. I collegamenti e i segnalibri vengono ricostruiti
+            per seguire le pagine a cui puntano, e ogni file finito viene riaperto
+            e ricontato prima di essere offerto."""
+
+[words]
+plural = "documenti"
+choose = "dei PDF"
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "I file restano sul tuo dispositivo"
+
+[[privacy]]
+title = "I tuoi documenti non hanno una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può contattare, e
+      non ne appartiene uno a questo sito. Questo strumento a quell'elenco non
+      aggiunge niente: non ha una funzione di rete sua, nemmeno facoltativa. Qui non
+      esiste un recapito dove i tuoi file possano essere raccolti, e nel codice non
+      c'è niente che li manderebbe lì se esistesse."""
+
+[[privacy]]
+title = "Unire è il lavoro che più vale la pena non caricare."
+body = """
+ I documenti che la
+      gente mette insieme sono proprio quelli che vengono da qualche parte: un
+      contratto e la sua pagina delle firme, la scansione di un passaporto e un
+      estratto conto, una lettera del medico e un modulo di richiesta. Un servizio
+      online se li ritrova tutti, in un posto solo, già ordinati. Questo ha una
+      pagina nel tuo browser e nessun'altra metà."""
+
+[[privacy]]
+title = "L'intero formato sta in questo repository."
+body = """
+ Un PDF è un elenco di
+      oggetti e una tabella di dove comincia ciascuno. <code>src/objects.js</code>
+      legge quella sintassi, <code>src/reader.js</code> segue la tabella,
+      <code>src/assemble.js</code> copia le pagine da un documento all'altro e
+      <code>src/writer.js</code> scrive il risultato. Nessuno dei quattro importa
+      qualcosa in grado di fare una richiesta. Non si scarica nessuna libreria e non
+      viene disegnato niente su un server."""
+
+[[privacy]]
+title = "I file cifrati vengono respinti invece che aperti."
+body = """
+
+      Un PDF con una password addosso viene rifiutato, compreso quello che gli
+      scanner producono con la password vuota e che tecnicamente si aprirebbe.
+      Togliere la protezione a un documento è un lavoro diverso dallo spostare le
+      sue pagine, e farlo in silenzio sarebbe una sorpresa poco gradita da parte di
+      uno strumento."""
+
+[[privacy]]
+title = "Il file finito non dice dove è stato fatto."
+body = """
+
+      Nessuna riga di produttore, nessuna data di creazione, nessun nome dello
+      strumento. E non si porta dietro nemmeno il pacchetto XMP o i blocchi privati
+      che un programma di impaginazione lascia indietro: quelli appartengono al
+      documento che c'era prima, non a quello che hai appena costruito. Tutto quello
+      che sta nelle pagine viene copiato esattamente: questo strumento sposta
+      pagine, non riscrive quello che c'è sopra."""
+
+[[privacy]]
+title = "Le azioni che non sono «vai a una pagina» non vengono copiate."
+body = """
+
+      Un PDF può portarsi dietro istruzioni che partono all'apertura: riproduci
+      questo, manda questo modulo a quell'indirizzo, esegui questo JavaScript. Le
+      pagine che passano da qui tengono i loro collegamenti ad altre pagine e a
+      indirizzi web, e perdono il resto. Riordinare le pagine di qualcun altro non è
+      un motivo per portarsi lo scripting del suo documento dentro il tuo file
+      nuovo."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sui tuoi documenti: né un file, né una pagina, né un nome, una
+      dimensione o un numero di pagine. Ogni riga che legge, copia o scrive un PDF è
+      servita da questa origine ed è elencata nel repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
+body = """
+
+      Il pulsante «Buy me a coffee» in alto è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. Non è niente di
+      più di un collegamento: non segnala nessuna visita e non gli viene passato
+      niente su di te o sui tuoi documenti. Finché non ci clicchi non succede
+      niente, e quello a cui arriveresti è il sito di qualcun altro."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e tutto quello che c'è su questa
+      pagina continua a funzionare. È la prova più semplice che ci sia: uno strumento
+      che spedisse via i tuoi documenti per unirli si fermerebbe."""
+
+[[howto]]
+title = "Scegli i tuoi PDF."
+body = """
+ Trascinali sul selettore oppure cercali a
+      mano, e aggiungine altri più avanti: le pagine di ogni file finiscono in fondo
+      all'ordine corrente, ed è questo che rende possibile unire due cartelle in due
+      momenti diversi. Il browser li legge direttamente dal tuo disco."""
+
+[[howto]]
+title = "Metti le pagine nell'ordine che vuoi."
+body = """
+
+      Trascina una pagina per la sua maniglia, oppure spostala con le frecce. Gira
+      quella che è stata scansionata di traverso, togline una, oppure scrivi
+      <code>1-3, 8, 12-</code> nella casella per tenere, togliere o girare tutta una
+      serie in un colpo solo. I numeri si rinumerano man mano, quindi quello che vedi
+      è sempre quello che sarà il file finito."""
+
+[[howto]]
+title = "Di' se esce un documento o più d'uno."
+body = """
+
+      Uno è la risposta solita. Il resto sono modi di tagliare: ogni tot pagine, ai
+      numeri di pagina che indichi tu, un file per pagina, oppure di nuovo dentro i
+      file da cui le pagine venivano. Più di un file viene consegnato in un solo ZIP,
+      così è un salvataggio invece di cinquanta."""
+
+[[howto]]
+title = "Costruiscilo, e leggi la riga che dice che è stato controllato."
+body = """
+
+      Quando i documenti sono scritti, ognuno viene riaperto dallo stesso lettore di
+      questa pagina e le sue pagine vengono contate. Se il conto non torna con quello
+      che avevi chiesto, l'operazione viene segnalata come fallita e non viene offerto
+      nessun download."""
+
+[[faq]]
+q = "I miei PDF vengono caricati da qualche parte?"
+a = """
+        No. Li legge, li copia e li scrive il tuo browser sul tuo hardware. Questo
+        strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo che
+        può contattare: nessuno appartiene a questo sito. Questo strumento non ha
+        proprio nessuna funzione di rete, nemmeno facoltativa."""
+
+[[faq]]
+q = "Quanti file posso unire, e quanto possono essere grandi?"
+a = """
+        Nello strumento non è scritto nessun limite. Il limite è il tuo dispositivo:
+        i documenti restano in memoria mentre ci si lavora, quindi un portatile unisce
+        qualche centinaio di megabyte senza fiatare e comincia a soffrire da qualche
+        parte più su. Non viene addebitato, rallentato, marchiato né messo in coda
+        niente, perché dall'altra parte non c'è nessuno che possa fare una di queste
+        cose."""
+
+[[faq]]
+q = "Unire o dividere fa perdere qualità?"
+a = """
+        No. Sulla pagina non viene ricodificato, ridisegnato o ricompresso niente. Il
+        flusso di contenuto di ogni pagina e ogni carattere, immagine e disegno
+        vettoriale a cui rimanda vengono copiati byte per byte, quindi il testo resta
+        selezionabile e cercabile e una fotografia è la stessa fotografia. Le uniche
+        cose che cambiano sono l'ordine delle pagine e la struttura attorno."""
+
+[[faq]]
+q = "Cosa succede a segnalibri e collegamenti?"
+a = """
+        Vengono ricostruiti tutti e due invece che buttati. Un segnalibro la cui
+        pagina è ancora nel risultato punta a dove quella pagina è finita; quello la
+        cui pagina hai tolto sparisce, a meno che sotto non gli siano rimaste delle
+        voci, e in quel caso resta come titolo. Unendo più file, i segnalibri di
+        ciascuno finiscono sotto un titolo col suo nome. I collegamenti tra pagine
+        vengono seguiti allo stesso modo, comprese le destinazioni con nome che
+        scrivono Word e LaTeX, e un collegamento la cui destinazione non è venuta
+        resta senza niente dietro invece di mandare chi legge nel posto sbagliato. I
+        collegamenti a indirizzi web restano come sono."""
+
+[[faq]]
+q = "Cosa non viene portato dietro?"
+a = """
+        Quattro cose, e lo strumento lo dice nei risultati invece che in fondo in
+        piccolo. L'albero dell'ordine di lettura con i tag che usano i lettori di
+        schermo, le etichette di pagina (la numerazione «iii, iv, 1, 2»), gli allegati
+        incorporati, e qualsiasi azione che non sia «vai a una pagina» né «apri un
+        indirizzo web», il JavaScript del documento compreso. Le prime due descrivono
+        un ordine che, una volta spostate le pagine, non esiste più; l'ultima non è una
+        cosa che hai chiesto di portarti in un file nuovo. Se i tag di un documento ti
+        interessano, tieni anche l'originale."""
+
+[[faq]]
+q = "I moduli compilati sopravvivono?"
+a = """
+        Sì. I campi modulo e quello che ci è stato scritto dentro arrivano insieme alle
+        loro pagine, e il documento nuovo viene registrato come modulo, così i lettori
+        lo trattano per quello che è. Una cosa da sapere quando si unisce: due campi
+        con lo stesso nome sono un campo solo per qualunque lettore, quindi se unisci
+        due copie dello stesso modulo, riempire una casella su una pagina la riempirà
+        anche sull'altra. Lo strumento se ne accorge e te lo dice."""
+
+[[faq]]
+q = "Riesce ad aprire un PDF protetto da password?"
+a = """
+        No, ed è voluto. Un documento cifrato viene rifiutato con un messaggio che lo
+        dice, anche quando la password è vuota, che è il modo in cui salvano tanti
+        scanner e fotocopiatrici. Togliere la protezione a un file è un lavoro diverso
+        dallo spostare le sue pagine, e uno strumento che lo facesse in silenzio
+        starebbe facendo qualcosa che non hai chiesto."""
+
+[[faq]]
+q = "Perché non ci sono le anteprime delle pagine?"
+a = """
+        Perché disegnare una pagina vuol dire un motore PDF completo, con caratteri,
+        sfumature, gruppi di trasparenza e metodi di fusione, cioè un megabyte o più di
+        motore da scaricare e far girare per quattro miniature. Quello che le
+        caselle mostrano al posto loro è ciò su cui il riordino lavora davvero: il
+        numero di pagina, la forma e la dimensione del foglio, la rotazione con cui
+        verrà scritta e da quale file è uscita. Una scansione orizzontale in mezzo a
+        una pila di pagine verticali si vede lo stesso al primo colpo d'occhio."""
+
+[[faq]]
+q = "Il file finito si aprirà dappertutto?"
+a = """
+        Sì. L'uscita viene scritta come PDF 1.5, o nella versione più alta che uno dei
+        file che gli hai dato richiedeva, e la 1.5 la capisce ogni lettore uscito dal
+        2003 in poi. Lo strumento lo dimostra anche sul tuo dispositivo: riapre ogni
+        file finito e ne conta le pagine percorrendo l'albero delle pagine prima di
+        offrirtelo."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di prova e
+        non c'è limite di dimensione oltre a quello che consente la memoria del tuo
+        dispositivo. Il sito ha della pubblicità, ed è quella che lo mantiene; agli
+        annunci non arriva niente sui tuoi documenti."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la connessione e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene caricato
+        niente, perché uno strumento che spedisse via i tuoi documenti per unirli si
+        fermerebbe nell'istante in cui stacchi la spina."""
+
+[schema]
+description = "Unisci PDF, dividine uno in più file e riordina, ruota o togli pagine nel browser. Le pagine vengono copiate tra i documenti in locale, quindi nessun file viene mai caricato."
+features = [
+  "Unisce quanti PDF vuoi, e ti lascia aggiungere file strada facendo",
+  "Trascina le pagine in ordine, giralle, toglile, o agisci su un intervallo in un colpo",
+  "Divide in un file per pagina, ogni tot pagine, a numeri di pagina, o di nuovo nei file di partenza",
+  "Ricostruisce segnalibri e collegamenti interni sulle pagine sopravvissute",
+  "Tiene i campi modulo compilati, e avvisa quando due di loro hanno lo stesso nome",
+  "Riapre e riconta ogni file finito prima di offrirtelo",
+  "Funziona offline; niente caricamenti, niente account, nessun limite di dimensione",
+]
+
+[picker]
+title = "Trascina qui i tuoi PDF"
+hint = "oppure clicca per sceglierli &mdash; un file o più, e altri puoi aggiungerli dopo"

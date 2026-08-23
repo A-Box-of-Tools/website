@@ -1,0 +1,17 @@
+#
+# Gids: wat er werkelijk in een GIF-bestand zit - Dutch.
+#
+
+nav = "Wat er in een GIF zit"
+title = "Wat er werkelijk in een GIF-bestand zit (en waarom die van jou zo groot is)"
+description = "Frames, vertragingen, opruimmethoden en kleurtabellen uitgelegd, waarom browsers de snelste vertragingen weigeren, en hoe je uitzoekt waar de bestandsgrootte van een GIF echt heen is."
+heading = "Wat er werkelijk in een GIF zit"
+lede = """
+    Een GIF is een stapel rechthoeken, elk met een klokje en een kleurtabel, en
+    bijna elke klacht die mensen over het formaat hebben komt uit een van die
+    drie dingen. Dit is wat elk onderdeel doet, en hoe je uitzoekt aan welk
+    ervan jouw bestand zijn omvang kwijt is."""
+updated = "22 augustus 2026"
+og_title = "Wat er werkelijk in een GIF-bestand zit"
+og_description = "Frames, vertragingen, opruimen en paletten: wat ze elk doen, waarom je GIF trager loopt dan hij zegt, en waar zijn omvang heen ging."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

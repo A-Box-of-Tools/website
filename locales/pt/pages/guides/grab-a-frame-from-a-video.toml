@@ -1,0 +1,16 @@
+#
+# Guia: extrair um quadro de um vídeo - Portuguese.
+#
+
+nav = "Extrair um quadro"
+title = "Como salvar um quadro de um vídeo como imagem"
+description = "Tire uma imagem parada de um vídeo na resolução real: por que uma captura de tela do player pausado não é a mesma imagem, em que formato salvar e como cair exatamente no quadro que você queria."
+heading = "Como salvar um quadro de um vídeo como imagem"
+lede = """
+    Pausar o player e apertar a tecla de captura dá uma imagem de uma janela. Às
+    vezes é só isso que você precisa. Aqui está qual é a diferença, e como pegar
+    o quadro em si quando ela importa."""
+updated = "20 de agosto de 2026"
+og_title = "Como salvar um quadro de um vídeo como imagem"
+og_description = "Por que uma captura de tela do player pausado não é o quadro, em que formato salvar uma imagem parada e como cair no quadro que você queria."
+og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

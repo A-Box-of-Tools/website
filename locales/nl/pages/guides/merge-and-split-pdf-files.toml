@@ -1,0 +1,17 @@
+#
+# Gids: pdf-pagina's samenvoegen, splitsen en herschikken - Dutch.
+#
+
+nav = "Pdf samenvoegen & splitsen"
+title = "Pdf-pagina's samenvoegen, splitsen en herschikken"
+description = "Pdf's combineren, er één in meerdere knippen en pagina's verplaatsen: wat de herschikking overleeft, wat geen enkel hulpmiddel kan meenemen, en waarom je je documenten hiervoor nergens hoeft te uploaden."
+heading = "Pdf-pagina's samenvoegen, splitsen en herschikken"
+lede = """
+    Twee documenten aan elkaar plakken is het gewoonste wat iemand met een pdf
+    doet, en het wordt het vaakst gedaan door beide bestanden aan de server van
+    een vreemde te geven. Dat hoeft niet. Hier staat hoe het wel gaat, en wat er
+    stilletjes verdwijnt wanneer een hulpmiddel pagina's herschikt."""
+updated = "22 augustus 2026"
+og_title = "Pdf-pagina's samenvoegen, splitsen en herschikken"
+og_description = "Pdf's combineren, er één in meerdere knippen, pagina's verplaatsen &mdash; en weten wat de herschikking overleeft en wat niet."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

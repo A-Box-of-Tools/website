@@ -1,0 +1,312 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      <a href="../../json-formatieren/">Text &amp; Code</a> öffnen, das JSON in
+      das Feld einfügen und lesen. Die Einrückung passiert beim Tippen, die
+      Sprache wird aus dem Text erkannt, und eingerückt wird mit zwei
+      Leerzeichen, solange Sie nichts anderes sagen. Nichts wird hochgeladen,
+      denn es gibt keinen Ort, wohin: Der Parser sind ein paar hundert Zeilen
+      JavaScript, die in dem Tab laufen, den Sie ohnehin offen haben.
+    </p>
+    <p>
+      Alles Folgende ist das, was zu wissen sich lohnt, bevor Sie eine
+      Konfigurationsdatei in irgendeine der Alternativen einfügen: was ein
+      Formatierer ändern darf, was die meisten trotzdem ändern, und wie man den
+      Fehler liest, wenn sich die Datei gar nicht erst lesen lässt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was Formatieren ist und was nicht</h2>
+    <p>
+      JSON hat fast keine Syntax. Ein Objekt, ein Array, eine Zeichenkette, eine
+      Zahl und die drei Wörter <code>true</code>, <code>false</code> und
+      <code>null</code>. Zwischen diesen Teilen bedeutet Leerraum nichts: die
+      Datei
+    </p>
+    <pre><code>{"name":"thing","tags":["local","offline"]}</code></pre>
+    <p>
+      und die Datei
+    </p>
+    <pre><code>{
+  "name": "thing",
+  "tags": [
+    "local",
+    "offline"
+  ]
+}</code></pre>
+    <p>
+      sind dasselbe Dokument. Formatieren ist der Weg von der ersten zur zweiten,
+      und <em>das ist die ganze Aufgabe</em>. Alles andere, was ein Formatierer
+      mit Ihrer Datei anstellt &mdash; umsortieren, runden, weglassen &mdash;
+      ist eine Änderung dessen, was das Dokument sagt, ungefragt vorgenommen.
+    </p>
+    <p>
+      Drei dieser Änderungen sind häufig genug, um sie beim Namen zu nennen, denn
+      sie geschehen still, und sie sind das, was ein an einem Nachmittag
+      geschriebener Formatierer von Haus aus tut.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die drei Dinge, die ein Formatierer nicht ändern darf</h2>
+
+    <h3>Die Reihenfolge Ihrer Schlüssel</h3>
+    <p>
+      Das ist die Falle, in die alle tappen. Der naheliegende Weg, einen
+      JSON-Formatierer in JavaScript zu schreiben, ist <code>JSON.parse</code>
+      und danach <code>JSON.stringify</code> mit einer Einrückung &mdash; und
+      dieses Paar erhält die Reihenfolge von Schlüsseln nicht, die wie ganze
+      Zahlen aussehen:
+    </p>
+    <pre><code>Object.keys(JSON.parse('{"10":"a","2":"b","x":"c"}'))
+// ['2', '10', 'x']</code></pre>
+    <p>
+      Das ist kein Fehler in irgendjemandes Code. JavaScript-Objekte sind so
+      spezifiziert, dass ganzzahlartige Schlüssel zuerst kommen, aufsteigend
+      sortiert, und jeder Wert, der durch <code>JSON.parse</code> geht, wird zu
+      einem JavaScript-Objekt. Ein so gebauter Formatierer stellt eine Datei um,
+      die nach ID, Portnummer, Jahr oder HTTP-Statuscode geschlüsselt ist &mdash;
+      und sagt kein Wort dazu.
+    </p>
+    <p>
+      Ob das zählt, hängt von der Datei ab. JSON-Objekte sind im Prinzip
+      ungeordnet, technisch ist also nichts kaputt &mdash; aber der Diff gegen die
+      Fassung in Ihrem Repository wird riesig, das Review unlesbar, und wenn
+      irgendetwas weiter unten die Datei der Reihe nach liest, ändert sich das
+      Verhalten.
+    </p>
+
+    <h3>Die Ziffern Ihrer Zahlen</h3>
+    <p>
+      JSON sagt nicht, wie groß eine Zahl sein darf, JavaScript schon: Jede Zahl
+      ist ein Double. Ein Formatierer, der zu einem Double parst und es
+      zurückschreibt, verliert also alles, was ein Double nicht halten kann.
+    </p>
+    <pre><code>JSON.stringify(JSON.parse('{"id":123456789012345678901}'))
+// {"id":123456789012345680000}
+
+JSON.stringify(JSON.parse('{"size":1e999}'))
+// {"size":null}</code></pre>
+    <p>
+      Eine einundzwanzigstellige ID &mdash; eine Twitter-ID, eine Snowflake-ID,
+      eine Bankreferenz &mdash; kommt als andere Zahl zurück, und ein Wert, der
+      für ein Double zu groß ist, kommt als <code>null</code> zurück. Beide
+      Dateien lassen sich weiterhin lesen, und keine ist die Datei, mit der Sie
+      angefangen haben.
+    </p>
+    <p>
+      Der Ausweg ist, Zahlen gar nicht erst zu parsen. Ein Formatierer muss nur
+      wissen, wo eine Zahl anfängt und aufhört, um das Dokument zu setzen; ihren
+      Wert braucht er nie. Das Sichere ist also, die Ziffern exakt so zu
+      übernehmen, wie sie geschrieben standen. Genau das tut das Werkzeug hier.
+    </p>
+
+    <h3>Ihre doppelten Schlüssel</h3>
+    <p>
+      <code>{"a": 1, "a": 2}</code> ist gültiges JSON, und der Standard sagt
+      nicht, welcher der beiden gewinnt. In der Praxis sind sich die Parser
+      uneins: Die meisten behalten den letzten, manche den ersten, einige lehnen
+      das Dokument ab. Ein Formatierer, der still einen davon ausgibt, hat diese
+      Entscheidung für Sie getroffen &mdash; und die weit nützlichere Tatsache
+      verschwiegen, dass es zwei gab. Das ist fast immer ein Fehler in der Datei,
+      und einer, den man sehen möchte.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wenn sich die Datei nicht lesen lässt</h2>
+    <p>
+      Das meiste JSON, das scheitert, ist nicht exotisch. Es ist eine von etwa
+      sechs Sachen, und der Fehler sagt Ihnen welche &mdash; sofern er die Stelle
+      so nennt, dass Sie sie finden. Ein Versatz wie <code>Position 4193</code>
+      tut das nicht; Zeile und Spalte schon.
+    </p>
+    <ul>
+      <li>
+        <strong>Ein Komma zu viel am Ende.</strong> <code>{"a": 1,}</code> ist in
+        JavaScript erlaubt und in JSON nicht. Die häufigste einzelne Ursache,
+        meist übrig geblieben, weil der letzte Eintrag einer Liste gelöscht
+        wurde.
+      </li>
+      <li>
+        <strong>Einfache Anführungszeichen.</strong> <code>{'a': 1}</code> ist
+        ein JavaScript-Objektliteral, kein JSON. Zeichenketten und Schlüssel
+        stehen beide in doppelten Anführungszeichen, und Schlüssel stehen immer
+        in Anführungszeichen.
+      </li>
+      <li>
+        <strong>Ein Schlüssel ohne Anführungszeichen.</strong> <code>{a: 1}</code>,
+        derselbe Fehler von der anderen Seite &mdash; meist davon, dass etwas aus
+        Code statt aus einer Datei kopiert wurde.
+      </li>
+      <li>
+        <strong>Kommentare.</strong> <code>// so etwas</code> ist ebenfalls kein
+        JSON. Das ist JSONC, das die VS-Code-Einstellungen und
+        <code>tsconfig.json</code> verwenden, und es lässt sich sonst nirgends
+        lesen. Muss ein Kommentar überleben, ist ein Schlüssel die Konvention:
+        <code>"_comment": "..."</code>.
+      </li>
+      <li>
+        <strong>Ein echter Zeilenumbruch oder Tabulator in einer
+        Zeichenkette.</strong> Sie müssen als <code>\n</code> und
+        <code>\t</code> geschrieben werden. Das geht meist schief, wenn ein
+        Shell-Befehl oder ein Zertifikat von Hand in einen Wert eingefügt wurde.
+      </li>
+      <li>
+        <strong>Eine Zahl, die JSON nicht erlaubt.</strong> Führende Nullen
+        (<code>01</code>), ein nackter Dezimalpunkt (<code>.5</code>),
+        <code>NaN</code>, <code>Infinity</code> und <code>+1</code> schreiben
+        Leute alle, und keines davon ist JSON.
+      </li>
+    </ul>
+    <p>
+      Eines, das kein Fehler ist und wie einer aussieht: eine Datei, die mit
+      einer Bytereihenfolge-Markierung beginnt. In den meisten Editoren ist sie
+      unsichtbar, sie ist kein Leerraum, und sie macht das allererste Zeichen des
+      Dokuments unerwartet. Steht der Fehler bei Zeile 1, Spalte 1 in einer Datei,
+      die makellos aussieht, dann ist es das.
+    </p>
+  </section>
+
+  <section>
+    <h2>Minifizieren, und wie wenig es meist bringt</h2>
+    <p>
+      Den Leerraum herauszuquetschen ist dieselbe Operation rückwärts, und es
+      lohnt sich, nüchtern zu sehen, was sie einbringt. Leerraum ist hochgradig
+      wiederholt, und jeder Server und Browser zwischen Ihnen und einem Leser
+      komprimiert die Antwort ohnehin mit gzip oder Brotli, was genau in solchen
+      Wiederholungen sehr gut ist.
+    </p>
+    <p>
+      Minifiziertes JSON ist deshalb als Datei oft dreißig Prozent kleiner und
+      auf der Leitung nur ein paar Prozent. Wo es sich wirklich verdient, sind die
+      Orte ohne Kompression davor: ein Wert in einer Datenbankspalte, ein Feld in
+      einer Logzeile, eine Nutzlast in einem QR-Code oder ein Dokument, das Sie
+      gleich als Base64 in einen Header schreiben.
+    </p>
+    <p>
+      Es kostet Lesbarkeit, und liegt die Datei in einem Repository, kostet es
+      Sie zusätzlich die Diffs &mdash; eine einzeilige Datei ändert sich
+      vollständig, sobald sich irgendetwas darin ändert. Minifizieren Sie auf dem
+      Weg aus dem Editor heraus, nicht hinein.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Schlüssel sortieren, und wann besser nicht</h2>
+    <p>
+      Die Schlüssel jedes Objekts zu sortieren, wird hier als Option angeboten und
+      nicht von selbst gemacht, denn es ist eine echte Änderung an der Datei, und
+      ihr Wert hängt ganz davon ab, was Sie als Nächstes vorhaben.
+    </p>
+    <p>
+      Es hilft, wenn Sie zwei Dokumente vergleichen, die dasselbe sagen sollen
+      &mdash; die Konfiguration zweier Umgebungen, eine API-Antwort vor und nach
+      einer Änderung &mdash; und eines davon seine Schlüssel in anderer
+      Reihenfolge führt. Beide vorher zu sortieren macht aus einem Diff von allem
+      einen Diff der zwei Zeilen, die sich wirklich unterscheiden.
+    </p>
+    <p>
+      Es schadet, wenn die Reihenfolge etwas bedeutet hat. Eine
+      <code>package.json</code> hat Konventionen dafür, was zuerst kommt; eine
+      handgeschriebene Konfiguration gruppiert oft Zusammengehöriges; und eine
+      Datei, deren Schlüssel ein Werkzeug sortiert und die dann eingecheckt wurde,
+      ergibt einen einzigen riesigen, nichtssagenden Commit. Sortieren Sie eine
+      Kopie, nicht das Original.
+    </p>
+    <p>
+      Eine Einzelheit, die zu kennen sich lohnt: Sortiert wird hier danach, wie
+      die Schlüssel sich lesen, und nicht nach ihren Codepunkten, also kommt
+      <code>item2</code> vor <code>item10</code> und nicht dahinter. Nach
+      Codepunkten zu sortieren ist das, was <code>item10</code> mitten unter die
+      Einer stellt &mdash; technisch korrekt und für einen Leser nutzlos.
+    </p>
+  </section>
+
+  <section>
+    <h2>Zwei JSON-Dateien vergleichen</h2>
+    <p>
+      Der verlässliche Weg ist, beide zuerst gleich zu formatieren. Zwei
+      Dokumente, die dasselbe sagen, können sich in jeder Zeile unterscheiden,
+      wenn eines minifiziert war und das andere nicht, und kein Diff kann daran
+      vorbeisehen.
+    </p>
+    <p>
+      Also: das erste formatieren, das zweite formatieren, dann die beiden
+      Ergebnisse vergleichen. Alle drei Schritte sind hier auf derselben Seite
+      &mdash; der Reiter <em>Vergleichen</em> teilt sich das Feld mit
+      <em>Formatieren</em>, genau deshalb. Führen die beiden ihre Schlüssel auch
+      noch in unterschiedlicher Reihenfolge, sortieren Sie beim Formatieren beide,
+      und der Vergleich schrumpft auf den Unterschied zusammen, den Sie gesucht
+      haben.
+    </p>
+  </section>
+
+  <section>
+    <h2>Der Teil, den niemand auf die Seite schreibt</h2>
+    <p>
+      Suchen Sie nach einem JSON-Formatierer, und Sie finden Dutzende Seiten mit
+      einem Feld darauf. In dieses Feld einzufügen ist ein Hochladen. Was auch
+      immer in Ihrer Zwischenablage lag &mdash; eine API-Antwort mit der Adresse
+      eines Kunden darin, eine Konfigurationsdatei mit einer
+      Verbindungszeichenkette, ein Token, an dem Sie gerade fehlersuchen &mdash;
+      ist an eine Maschine gegangen, die Ihnen nicht gehört, und ist jetzt deren
+      Logdatei, deren Fehlerbericht und deren Sicherung.
+    </p>
+    <p>
+      Das ist keine Vermutung über böse Absichten. Auch eine völlig
+      wohlmeinende Seite führt Zugriffsprotokolle, betreibt Analytik und hat einen
+      Hoster. Die sichersten Daten sind die, die nie gegangen sind, und für eine
+      Aufgabe, die reine Zeichenkettenarbeit ist, gibt es überhaupt keinen Grund
+      zu gehen.
+    </p>
+    <p>
+      Zwei Prüfungen, und sie funktionieren bei jeder Seite, die das behauptet,
+      nicht nur bei dieser:
+    </p>
+    <ol>
+      <li>
+        <strong>DevTools öffnen, den Netzwerk-Reiter beobachten und etwas
+        formatieren.</strong> Wird Ihr Text verschickt, gibt es eine Anfrage, die
+        ihn trägt. Etwas anderes kann gleichzeitig nicht wahr sein.
+      </li>
+      <li>
+        <strong>Die Internetverbindung trennen und es noch einmal
+        versuchen.</strong> Ein Werkzeug, das die Arbeit in Ihrem Browser
+        erledigt, merkt davon nichts. Ein Werkzeug, das Ihren Text irgendwohin
+        schickt, hört sofort und vollständig auf zu arbeiten.
+      </li>
+    </ol>
+    <p>
+      Eine längere Fassung von beidem, mit zwei weiteren Prüfungen, steht in
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
+      hochzuladen?</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>Und YAML, XML und der Rest?</h2>
+    <p>
+      Dieselbe Seite liest XML, HTML, CSS und YAML und wandelt zwischen JSON und
+      dem ersten und dem letzten davon um. Zwei Dinge von oben lohnt es sich
+      mitzunehmen, denn sie sind dasselbe Argument in anderem Gewand:
+    </p>
+    <ul>
+      <li>
+        <strong>YAML nach JSON zu wandeln verliert die Kommentare</strong>, denn
+        JSON hat keinen Platz für einen. Anker und Aliasse &mdash; YAMLs Art zu
+        sagen &bdquo;derselbe Knoten zweimal&ldquo; &mdash; lassen sich ebenfalls
+        nicht ausdrücken und werden hier abgelehnt, statt geraten zu werden.
+      </li>
+      <li>
+        <strong><code>no</code> ist eine Zeichenkette.</strong> In YAML 1.1 waren
+        <code>yes</code>, <code>no</code>, <code>on</code> und <code>off</code>
+        Wahrheitswerte, weshalb eine Liste von Ländercodes mit Norwegen darin
+        früher mit <code>false</code> zurückkam. YAML 1.2 hat das fallen lassen,
+        und hier ebenso &mdash; aber diese Wörter werden trotzdem in
+        Anführungszeichen zurückgeschrieben, denn was die Datei als Nächstes
+        öffnet, kann ein 1.1-Leser sein.
+      </li>
+    </ul>
+  </section>

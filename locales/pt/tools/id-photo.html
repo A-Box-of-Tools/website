@@ -1,0 +1,187 @@
+<main>
+  <!-- Passo 1 &mdash; a fotografia -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha a fotografia</h2>
+
+    <p class="card-lede">
+      Qualquer imagem que o seu navegador consiga abrir. Uma foto de celular tirada
+      contra uma parede lisa, de dia, de mais ou menos um metro e meio, é o que a
+      maioria dessas regras tinha em mente &mdash; e ela é lida direto do seu disco,
+      não é mandada para lugar nenhum.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">Escolher outra</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; a regra -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> Escolha o país e o documento</h2>
+
+    <p class="card-lede">
+      Cada número abaixo é a exigência publicada, transcrita da autoridade nomeada
+      logo em seguida. Nada nesta lista é chute, e nada nela é buscado: é uma
+      tabela em <code>src/specs.js</code>, servida junto com a página.
+    </p>
+
+    <div class="option-row">
+      <label for="spec">Especificação</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>Os números, para você digitar</summary>
+      <div class="numbers">
+        <label>Largura (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>Altura (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>Cabeça, mínimo (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>Cabeça, máximo (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>Fundo
+          <select id="custom-background">
+            <option value="white">Branco liso</option>
+            <option value="off-white">Branco ou quase branco</option>
+            <option value="light-grey" selected>Cinza-claro liso</option>
+            <option value="cream">Cinza-claro ou creme</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>Largura de envio (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>Altura de envio (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>Mínimo (KB)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>Máximo (KB)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        KB aqui quer dizer 1024 bytes, que é o que esses formulários querem dizer.
+      </p>
+    </details>
+  </section>
+
+  <!-- Passo 3 &mdash; o enquadramento -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> Marque o rosto e confira o enquadramento</h2>
+
+    <p id="frame-empty" class="field-summary">Escolha uma fotografia e o quadro de corte aparece aqui.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        Arraste os quatro pontinhos até o topo da cabeça, o queixo e cada pupila, e
+        depois aperte <strong>Ajustar o quadro</strong>. Esses quatro pontos são
+        tudo o que a regra mede, e é por isso que esta ferramenta pede que você os
+        coloque em vez de adivinhar com um detector de rosto. Os pontinhos começam
+        onde uma foto de cabeça e ombros costuma pô-los: isso é uma posição de
+        partida, não uma medida.
+      </p>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">Ajustar o quadro à regra</button>
+        <button type="button" id="reset-marks" class="ghost">Devolver os pontinhos</button>
+        <button type="button" id="whole-photo" class="ghost">Maior quadro que couber</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Passo 4 &mdash; o fundo -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> O fundo</h2>
+
+    <p class="card-lede" id="background-lede">
+      Lido de uma faixa no topo do corte e descendo pelas laterais, acima dos
+      ombros &mdash; as partes do enquadramento que deveriam ser só fundo. Medido em
+      CIE Lab em vez de RGB, porque dois cinzas separados por quarenta unidades RGB
+      são indistinguíveis e quarenta unidades de azul são outra cor.
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">O que o seu dá<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">O que a regra pede<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Passo 5 &mdash; os arquivos -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> Salve</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">Resolução de impressão</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; o piso que quase toda regra declara</option>
+          <option value="600">600 dpi &mdash; o que um bom laboratório vai usar</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">Folha para imprimir</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>Gerar os arquivos</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Pronto</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

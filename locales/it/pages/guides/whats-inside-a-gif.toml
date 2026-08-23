@@ -1,0 +1,17 @@
+#
+# Guida: cosa c'è davvero dentro un file GIF - Italian.
+#
+
+nav = "Cosa c'è dentro una GIF"
+title = "Cosa c'è davvero dentro un file GIF (e perché il tuo pesa così tanto)"
+description = "Fotogrammi, ritardi, metodi di smaltimento e tavolozze spiegati, perché i browser rifiutano i ritardi più veloci, e come capire dove se n'è andato davvero il peso di una GIF."
+heading = "Cosa c'è davvero dentro una GIF"
+lede = """
+    Una GIF è una pila di rettangoli, ognuno con un cronometro e una tavolozza,
+    e quasi tutte le lamentele sul formato nascono da una di queste tre cose.
+    Qui c'è cosa fa ogni pezzo, e come scoprire su quale di loro il tuo file sta
+    spendendo il suo peso."""
+updated = "22 agosto 2026"
+og_title = "Cosa c'è davvero dentro un file GIF"
+og_description = "Fotogrammi, ritardi, smaltimento e tavolozze: cosa fa ognuno, perché la tua GIF va più piano di quanto dichiara, e dove è finito il suo peso."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

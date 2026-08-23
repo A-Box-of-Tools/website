@@ -1,0 +1,188 @@
+<main>
+  <!-- Passo 1 &mdash; la fotografia -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli la fotografia</h2>
+
+    <p class="card-lede">
+      Qualsiasi immagine il tuo browser sappia aprire. Una foto col telefono
+      scattata davanti a un muro liscio, di giorno, da un metro e mezzo circa: è
+      attorno a questo che quasi tutte queste norme sono state scritte. E viene
+      letta direttamente dal tuo disco, non spedita da nessuna parte.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">Scegline un'altra</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; la norma -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> Scegli il paese e il documento</h2>
+
+    <p class="card-lede">
+      Ogni numero qui sotto è il requisito pubblicato, trascritto dall'autorità
+      nominata sotto di esso. Niente in questo elenco è tirato a indovinare, e
+      niente viene scaricato: è una tabella in <code>src/specs.js</code>, servita
+      con la pagina.
+    </p>
+
+    <div class="option-row">
+      <label for="spec">Specifica</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>I numeri, da scrivere tu</summary>
+      <div class="numbers">
+        <label>Larghezza (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>Altezza (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>Testa, minimo (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>Testa, massimo (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>Sfondo
+          <select id="custom-background">
+            <option value="white">Bianco pieno</option>
+            <option value="off-white">Bianco o bianco sporco</option>
+            <option value="light-grey" selected>Grigio chiaro pieno</option>
+            <option value="cream">Grigio chiaro o crema</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>Larghezza per il caricamento (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>Altezza per il caricamento (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>Minimo (KB)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>Massimo (KB)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        KB qui vuol dire 1024 byte, che è quello che questi moduli intendono.
+      </p>
+    </details>
+  </section>
+
+  <!-- Passo 3 &mdash; l'inquadratura -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> Segna il volto e controlla l'inquadratura</h2>
+
+    <p id="frame-empty" class="field-summary">Scegli una fotografia e qui comparirà il riquadro di ritaglio.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        Trascina i quattro puntini sulla sommità del capo, sul mento e su ciascuna
+        pupilla, poi premi <strong>Adatta il riquadro</strong>. Quei quattro punti
+        sono tutto quello che la norma misura, ed è per questo che lo strumento ti
+        chiede di posarli invece di indovinarli con un riconoscitore di volti. I
+        puntini partono da dove una foto a mezzo busto di solito li ha: è una
+        posizione di partenza, non una misura.
+      </p>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">Adatta il riquadro alla norma</button>
+        <button type="button" id="reset-marks" class="ghost">Rimetti i puntini</button>
+        <button type="button" id="whole-photo" class="ghost">Il riquadro più grande che ci sta</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Passo 4 &mdash; lo sfondo -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> Lo sfondo</h2>
+
+    <p class="card-lede" id="background-lede">
+      Letto da una fascia in cima al ritaglio e lungo i due lati, sopra le spalle:
+      le parti dell'inquadratura che dovrebbero essere solo sfondo. Misurato in CIE
+      Lab invece che in RGB, perché due grigi distanti quaranta unità RGB sono
+      indistinguibili e quaranta unità di blu fanno un altro colore.
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">Come risulta il tuo<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">Cosa chiede la norma<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Passo 5 &mdash; i file -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> Salvalo</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">Risoluzione di stampa</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; il minimo che quasi ogni norma indica</option>
+          <option value="600">600 dpi &mdash; quello che userà un buon laboratorio</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">Foglio su cui stampare</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>Crea i file</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Fatto</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

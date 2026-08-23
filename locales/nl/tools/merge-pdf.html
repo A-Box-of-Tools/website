@@ -1,0 +1,159 @@
+<main>
+  <!-- Stap 1 &mdash; de bestanden -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies je pdf's</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <ul id="source-list" class="source-list" hidden></ul>
+  </section>
+
+  <!-- Stap 2 &mdash; de pagina's -->
+  <section class="card" id="pages-card" hidden>
+    <h2><span class="step">2</span> Zet de pagina's op volgorde</h2>
+
+    <p class="card-lede">
+      Elke pagina van elk bestand dat je koos, in de volgorde waarin ze eruit
+      komen. Sleep er een aan zijn
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span>-handvat om hem te
+      verplaatsen, draai hem met de pijltjes, of haal hem weg met de &times;. Er is
+      hier nog niets geschreven: het document wordt pas in elkaar gezet als je in
+      stap 4 op de knop drukt.
+    </p>
+
+    <div class="toolbar">
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="reverse" class="ghost">Omkeren</button>
+        <button type="button" id="rotate-all" class="ghost">Alle pagina's draaien</button>
+        <button type="button" id="restore" class="ghost">Terug naar hoe ze binnenkwamen</button>
+        <button type="button" id="clear-all" class="ghost danger">Opnieuw beginnen</button>
+      </div>
+    </div>
+
+    <div class="range-row">
+      <label for="range">Pagina's</label>
+      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+             spellcheck="false" aria-describedby="range-note">
+      <button type="button" id="range-keep" class="ghost">Alleen deze houden</button>
+      <button type="button" id="range-drop" class="ghost">Deze verwijderen</button>
+      <button type="button" id="range-turn" class="ghost">Deze draaien</button>
+    </div>
+    <p id="range-note" class="field-note">
+      Volgens de nummers hieronder, die onderweg hernummerd worden.
+      <code>odd</code>, <code>even</code>, <code>all</code> en <code>last</code>
+      werken ook.
+    </p>
+    <p id="range-error" class="error" role="alert" hidden></p>
+
+    <ul id="page-list" class="page-list"></ul>
+  </section>
+
+  <!-- Stap 3 &mdash; één bestand, of meerdere -->
+  <section class="card" id="output-card" hidden>
+    <h2><span class="step">3</span> Eén document, of meerdere</h2>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">Hoe de pagina's weggeschreven worden</legend>
+      <div class="presets" id="split-modes" role="radiogroup" aria-label="Hoe de pagina's weggeschreven worden">
+        <label class="preset">
+          <input type="radio" name="split" value="single" checked>
+          <span class="preset-body">
+            <strong>Eén document</strong>
+            <span class="preset-note">Alles hierboven, in die volgorde, als één pdf.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="every">
+          <span class="preset-body">
+            <strong>Splitsen om de zoveel pagina's</strong>
+            <span class="preset-note">
+              Een lange scan geknipt in hoofdstukken van
+              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+                     inputmode="numeric" aria-label="Pagina's in elk bestand">
+              pagina's.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="at">
+          <span class="preset-body">
+            <strong>Splitsen bij pagina&hellip;</strong>
+            <span class="preset-note">
+              Knippen vóór
+              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+                     spellcheck="false" aria-label="Paginanummers om vóór te knippen">
+              &mdash; elk daarvan begint een nieuw bestand.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="each">
+          <span class="preset-body">
+            <strong>Elke pagina apart</strong>
+            <span class="preset-note">Eén pdf per pagina. Handig om er een handtekeningblad uit te trekken.</span>
+          </span>
+        </label>
+        <label class="preset" id="by-file-preset" hidden>
+          <input type="radio" name="split" value="file">
+          <span class="preset-body">
+            <strong>Terug in de bestanden waar ze vandaan kwamen</strong>
+            <span class="preset-note">Eén document per gekozen bestand, met jouw bewerkingen erin.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="keep-bookmarks" checked>
+      <span>
+        <strong>De bladwijzers houden</strong>
+        <span class="check-note">
+          De inhoudsopgave waarmee elk bestand binnenkwam, opnieuw opgebouwd tegen
+          de pagina's die er echt zijn: een item waarvan je de pagina weghaalde
+          verdwijnt, en een waarvan het hoofdstuk er nog is blijft staan. Bij het
+          samenvoegen van meerdere bestanden komen de bladwijzers van elk bestand
+          onder een kopje met zijn naam.
+        </span>
+      </span>
+    </label>
+
+    <p id="output-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Stap 4 &mdash; die ene klik -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Zet het in elkaar</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Het document bouwen</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Downloaden</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <ul id="file-list" class="out-list" hidden></ul>
+    </div>
+  </section>
+</main>

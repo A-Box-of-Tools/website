@@ -1,0 +1,18 @@
+#
+# Guía: hacerse una foto de carnet en casa - Spanish.
+#
+
+nav = "Hacer una foto de carnet"
+title = "Cómo hacerse la foto de pasaporte en casa (y que no te la devuelvan)"
+description = "Qué se mide de verdad en una foto de pasaporte &mdash; altura de la cabeza, línea de los ojos, fondo &mdash;, qué números quiere cada país, y cómo cumplir los límites de píxeles y de KB que impone un formulario en línea."
+heading = "Cómo hacerse una foto de pasaporte que no te devuelvan"
+lede = """
+    Una foto de pasaporte no es una imagen de tu cara a un tamaño concreto. Es
+    un conjunto de medidas, y las que fallan casi nunca son las que preocupan a
+    la gente. Esto es lo que se mide de verdad, qué cifras quiere cada país, y
+    qué hacer con los formularios que rechazan un archivo por ser demasiado
+    pequeño."""
+updated = "20 de agosto de 2026"
+og_title = "Cómo hacerse una foto de pasaporte que no te devuelvan"
+og_description = "Altura de la cabeza, línea de los ojos, fondo y tamaño de archivo: qué mide una oficina de pasaportes, y cómo acertar con un móvil y una pared lisa."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

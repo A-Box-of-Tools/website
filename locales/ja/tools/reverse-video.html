@@ -1,0 +1,89 @@
+<main>
+  <!-- ステップ1 &mdash; ファイル -->
+  <section class="card">
+    <h2><span class="step">1</span> 動画を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>ファイル</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>サイズ</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>画面サイズ</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>長さ</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>映像</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>音声</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <div class="stage-wrap" id="preview-wrap" hidden>
+      <video id="preview" class="stage" playsinline controls></video>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 逆にする -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">2</span> 逆にする</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="quality">画質</label>
+        <select id="quality">
+          <option value="low">ファイルを小さく</option>
+          <option value="medium" selected>バランス</option>
+          <option value="high">最高画質</option>
+        </select>
+        <p class="field-note">
+          同じ絵に対して元のファイルが使った量を超えることはありません。逆にした
+          動画は同じコマを持っているので、多く使ってもファイルが大きくなるだけ
+          です。
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          音も逆向きにする
+        </label>
+        <p class="field-note" id="audio-note">
+          標本ひとつずつ逆に並べ替えてから、AACで符号化し直します。音のない動画に
+          するなら外してください。そのほうが速く終わります。
+        </p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>出力サイズ</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>長さ</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>コマ数</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>処理経路</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>動画を逆にする</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>動画をダウンロード</a>
+      </div>
+    </div>
+  </section>
+</main>

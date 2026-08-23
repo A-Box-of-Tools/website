@@ -1,0 +1,334 @@
+#
+# Audio schneiden - German.
+#
+# Overrides for tools/trim-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Audio-Schneider"
+heading = "Audio&nbsp;schneiden <span class=\"h1-kw\">&mdash; Tonaufnahmen online kürzen</span>"
+tagline = "Markieren Sie beim Abspielen, was bleiben soll. Zurück kommt eine Datei, geschnitten genau dort, wo Sie es gesagt haben."
+
+title = "Audio online schneiden &mdash; nur die guten Teile behalten, ohne Upload"
+description = "Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload."
+og_title = "Audio-Schneider &mdash; nur die gewünschten Teile behalten, ohne etwas hochzuladen"
+og_description = "Drücken Sie beim Abspielen I und O, um jeden Teil zu markieren, der bleiben soll. Die markierten Teile werden als eine Datei zurückgeschrieben, auf das genaue Sample geschnitten, ohne dass etwas hochgeladen wird."
+og_image_alt = "Audio-Schneider - die gewünschten Teile markieren und als eine Aufnahme speichern, im Browser"
+
+pledge = """
+    Ihre Aufnahme wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+    gelesen, markiert, geschnitten und geschrieben. Abrufen oder senden kann hier
+    nichts, denn eine Netzfunktion hat dieses Werkzeug überhaupt nicht. Und selbst
+    wenn es einen Weg nach draußen gäbe, stünde am anderen Ende dieser Seite kein
+    Server, an den eine Aufnahme gehen könnte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und schneiden Sie etwas. Keine einzige Anfrage
+      trägt ein Sample, einen Dateinamen oder ein Byte dessen, was Sie ausgewählt
+      haben. Oder trennen Sie die Internetverbindung und schneiden Sie trotzdem
+      eine Aufnahme. Ein Werkzeug, das Ihren Ton zum Schneiden wegschickt, bliebe
+      dabei einfach stehen."""
+
+read_first = """
+, <code>src/segments.js</code> für die Marken und die
+      Datei, in der sie landen, <code>src/decode.js</code> für die zwanzig Zeilen,
+      die Ihre Datei dem Dekoder des Browsers übergeben, <code>src/trim.js</code>
+      für die Rechnung, die aus einer Marke einen Sample-Abschnitt macht, und für
+      die Schleife, die ihn kopiert, sowie <code>src/wav.js</code> für den Kopf,
+      der davor geschrieben wird. Keines davon importiert etwas, das eine Anfrage
+      stellen könnte."""
+
+howto_heading = "So schneiden Sie eine Audiodatei"
+
+card = """
+            Markieren Sie beim Abspielen jeden Teil, der bleiben soll, und
+            speichern Sie sie dann als eine Aufnahme. Die Schnitte landen auf dem
+            genauen Sample, und die Übergänge knacken nicht."""
+
+[words]
+plural = "Aufnahmen"
+choose = "eine Aufnahme"
+analytics_extra = """, und keine
+  Wellenform, keine Länge und kein Schnittpunkt"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Beliebig viele Teile"
+
+[[facts]]
+text = "Schneidet genau dort, wo Sie markiert haben"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[privacy]]
+title = "Ihre Aufnahmen haben keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Datei landen könnte, und im Code steht auch nichts, das sie dorthin
+      schicken würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Eine Netzfunktion hat dieses Werkzeug
+      überhaupt nicht. Es gibt keine Adresse zum Einfügen, nichts herunterzuladen
+      und keine Engine, die beim ersten Gebrauch nachgeladen wird. Jedes Byte, das
+      Ihren Ton berührt, kam beim Laden der Seite von dieser Domain selbst."""
+
+[[privacy]]
+title = "Der Dekoder ist der, den Ihr Browser ohnehin schon hat."
+body = """
+
+      Die Datei wird an <code>decodeAudioData</code> übergeben, also an denselben
+      Code, der ein Stück in einem <code>&lt;audio&gt;</code>-Element abspielt.
+      Hier wird nichts ausgeliefert, um Ihr Format zu lesen, und dafür wird auch
+      nichts außerhalb dieser Seite gefragt."""
+
+[[privacy]]
+title = "Das Bild eines Videos wird gar nicht erst dekodiert."
+body = """
+ Wenn Sie ein Video
+      hineinziehen, wird nur seine Tonspur angefordert. Die Einzelbilder werden
+      nicht gelesen, nicht dekodiert, nicht gezeichnet und nicht angesehen. Es gibt
+      auf dieser Seite keinen Code, der das könnte, und in der Datei, die
+      herauskommt, ist Ton und sonst nichts."""
+
+[[privacy]]
+title = "Der Schnitt ist eine Kopie, im Arbeitsspeicher, auf diesem Gerät."
+body = """
+
+      Schneiden heißt hier ein <code>set</code> je Teil und Kanal: Die behaltenen
+      Samples werden in der von Ihnen gewählten Reihenfolge in ein neues Feld
+      geschoben. Multipliziert werden einzig die paar hundert Samples in jeder
+      Blende, und die Seite sagt Ihnen deren Zahl, bevor Sie den Knopf
+      drücken."""
+
+[[privacy]]
+title = "Die Samples werden aufgeschrieben, nicht neu kodiert."
+body = """
+
+      Ein WAV sind die Samples, die diese Seite hält, mit einem Kopf davor. In der
+      Schleife sitzt kein Kodierer, der Entscheidungen über Ihre Aufnahme trifft,
+      und es gibt nichts, was man als Upload beschreiben könnte, auf dem so etwas
+      passieren würde."""
+
+[[privacy]]
+title = "Die Markendatei entsteht auf der Seite."
+body = """
+ Beim Speichern Ihrer Marken
+      wird aus den Zahlen, die ohnehin schon auf dem Bildschirm stehen, eine
+      Textdatei geschrieben, direkt in Ihre Downloads. Beim Laden wird sie hier
+      gelesen. Weder das eine noch das andere kommt einem Netzwerk nahe, und
+      getragen werden dabei nur Zeitangaben."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihre
+      Aufnahme übergeben, weder eine Datei noch ein Sample, ein Name, eine Größe,
+      eine Länge oder die Stelle, an der Sie geschnitten haben. Jede Zeile, die
+      liest, schneidet und schreibt, kommt von dieser Domain selbst und steht im
+      Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihre Aufnahme bekommt er nichts."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Wählen Sie eine Aufnahme aus."
+body = """
+ Ziehen Sie eine MP3-, WAV-,
+      FLAC-, M4A-, Ogg- oder Opus-Datei auf das Auswahlfeld, oder ein Video, wenn
+      Sie ein Stück von dessen Ton haben wollen. Der Browser liest sie direkt von
+      Ihrer Festplatte und zeichnet sie als Wellenform, und dabei geht nichts nach
+      draußen."""
+
+[[howto]]
+title = "Spielen Sie ab und markieren Sie die gewünschten Teile."
+body = """
+ Drücken Sie
+      <kbd>I</kbd>, wo ein Teil anfangen soll, und <kbd>O</kbd>, wo er aufhören
+      soll. Tun Sie das so oft Sie mögen. Jedes Paar wird zu einer Zeile in der
+      Tabelle darunter und zu einem Band auf der Wellenform. <kbd>U</kbd> nimmt das
+      letzte zurück, <kbd>Leertaste</kbd> spielt ab und pausiert, die Pfeiltasten
+      springen fünf Sekunden, und mit gehaltener <kbd>Umschalttaste</kbd> gehen sie
+      zehn Millisekunden weiter. Wenn die Stelle schwer zu treffen ist, spielen Sie
+      langsamer ab."""
+
+[[howto]]
+title = "Bessern Sie die Marken nach."
+body = """
+ Jede Zeile lässt sich einzeln
+      abspielen, durch Eintippen einer genauen Zeit neu setzen, in der Reihenfolge
+      nach oben oder unten schieben oder löschen. Die beiden Enden des ausgewählten
+      Teils lassen sich außerdem auf der Wellenform ziehen, und das ist der
+      schnellste Weg, eine Marke auf die Stille statt auf das Atmen davor zu
+      setzen. Die Summe oben ist das, worauf die fertige Aufnahme kommen wird."""
+
+[[howto]]
+title = "Behalten oder herausschneiden."
+body = """
+ Behalten ist der übliche Weg:
+      Die fertige Aufnahme sind die markierten Teile, der Reihe nach aneinander
+      gehängt. Herausschneiden ist die andere Aufgabe, die man oft will und selten
+      findet. Markieren Sie die Ähs, das klingelnde Telefon oder die Fehlstarts,
+      und was übrig bleibt, wird ohne sie zusammengesetzt."""
+
+[[howto]]
+title = "Schneiden und herunterladen."
+body = """
+ Jeder Schnitt landet auf dem
+      Sample, das Sie markiert haben. Auf ein Schlüsselbild gerundet wird hier
+      nichts, denn Ton hat keine. Zu entscheiden ist einzig, wie viel Blende auf
+      jeden Übergang kommt. Fünf Millisekunden genügen, um ein Knacken zu
+      verhindern, und sind viel zu kurz, um als Blende hörbar zu sein. Heraus kommt
+      ein WAV, das erst auf der Seite abgespielt und dann direkt an die Downloads
+      Ihres Browsers übergeben wird."""
+
+[[faq]]
+q = "Wird mein Ton irgendwohin hochgeladen?"
+a = """
+        Nein. Ihr eigener Browser liest, markiert, schneidet und schreibt ihn auf
+        Ihrer eigenen Hardware. Eine Serverseite hat dieses Werkzeug nicht, und in
+        der <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf; keine davon gehört uns. Wer lieber prüft als glaubt,
+        trennt die Internetverbindung und schneidet trotzdem eine Aufnahme."""
+
+[[faq]]
+q = "Kann ich mehrere Teile derselben Aufnahme behalten?"
+a = """
+        Genau dafür ist das hier da. Drücken Sie beim Abspielen <kbd>I</kbd> und
+        <kbd>O</kbd>, so oft Sie mögen. Jedes Paar wird eine Zeile, und die fertige
+        Datei ist jede Zeile der Reihe nach, ohne alles andere. Die meisten
+        Online-Schneider geben Ihnen ein Paar Griffe und fragen, welchen einen
+        Abschnitt Sie behalten wollen. Das reicht, um einen Jingle vorn und hinten
+        zu stutzen, und nützt gar nichts, wenn man ein einstündiges Interview einmal
+        anhören und die sechs guten Antworten behalten will."""
+
+[[faq]]
+q = "Landet der Schnitt genau dort, wo ich markiert habe?"
+a = """
+        Ja, bei jedem Teil und in jedem Abspielprogramm. Das ist die eine Stelle, an
+        der Ton einfacher ist als Video: Eine dekodierte Aufnahme ist eine Folge von
+        Zahlen, und jede steht für sich. Es gibt also nichts, was einem Schlüsselbild
+        entspräche und auf das zurückgerundet würde, und keinen Grund, warum ein
+        Schnitt zu früh anfangen sollte. Die Seite zeigt die Sample-Nummer, bei der
+        das Ergebnis beginnt, und das ist Ihre Marke mal der Abtastrate, gerundet auf
+        das nächste ganze Sample."""
+
+[[faq]]
+q = "Warum sollte ein Übergang knacken, und wozu ist die Blende da?"
+a = """
+        Weil ein Schnitt aus der Mitte eines Wortes in die Mitte eines anderen zwei
+        Wellenformen nebeneinanderstellt, die nichts miteinander zu tun haben, und
+        ein Lautsprecher, der dazwischen springen soll, macht ein Knacken. Das ist
+        kein Fehler im Schnitt, so klingt eine Unstetigkeit. Der Ausweg ist eine
+        Blende von wenigen Millisekunden zu beiden Seiten jedes Übergangs: lang
+        genug, damit die Membran hinterherkommt, viel zu kurz, um als Blende gehört
+        zu werden. Fünf Millisekunden sind voreingestellt und lassen sich abschalten.
+        Eine Blende kommt nur auf eine Kante, die wirklich ein Schnitt ist, eine
+        Kante ganz am Anfang oder Ende der Aufnahme bleibt also genau so, wie sie
+        war."""
+
+[[faq]]
+q = "Kann ich stattdessen die schlechten Stellen herausschneiden?"
+a = """
+        Ja. Markieren Sie sie und wählen Sie dann &bdquo;Herausschneiden&ldquo;:
+        Alles, was Sie <em>nicht</em> markiert haben, wird stattdessen der Reihe
+        nach zusammengesetzt. Dieselbe Markenliste beantwortet beide Fragen, Sie
+        können also hin und her schalten und die Länge sich ändern sehen, ohne etwas
+        zweimal zu markieren."""
+
+[[faq]]
+q = "Kann ich meine Marken speichern und später weitermachen?"
+a = """
+        Ja. &bdquo;Marken speichern&ldquo; schreibt eine reine Textdatei, eine Zeile
+        je Teil, Anfang und Ende durch ein Komma getrennt, und &bdquo;Marken
+        laden&ldquo; liest eine wieder ein. Angeboten werden zwei Formate, schlichte
+        Sekunden und <code>HH:MM:SS.mmm</code>, und beide sind das Layout, das auch
+        der Video-Schneider auf dieser Seite schreibt. Eine gegen das Video erstellte
+        Datei lässt sich also auf dessen Ton legen und umgekehrt. Markieren ist
+        sorgfältige Arbeit, und niemand sollte sie zweimal machen müssen."""
+
+[[faq]]
+q = "Welche Formate kann ich öffnen?"
+a = """
+        Alles, was Ihr Browser dekodiert, in der Praxis also MP3, WAV, FLAC, M4A und
+        AAC, Ogg Vorbis und Opus sowie den Ton in MP4-, M4V-, MOV- und WebM-Videos.
+        Draußen bleibt dieselbe kurze Liste wie überall sonst: AVI, WMA und die
+        meisten MKVs. Eine Datei, die dieser Browser nicht liest, wird mit einer
+        entsprechenden Meldung abgelehnt, statt auf halbem Weg zu scheitern."""
+
+[[faq]]
+q = "Warum wird ein WAV gespeichert und kein MP3?"
+a = """
+        Weil kein Browser einen MP3-Kodierer mitbringt und dieses Werkzeug sich
+        weigert, Ihre Aufnahme an einen Server zu schicken, der einen hat. Ein WAV
+        braucht überhaupt keinen Kodierer, es sind die Samples mit einem kurzen Kopf
+        davor. Damit ist es zugleich die ehrliche Möglichkeit und die einzige, die
+        auf dem Weg hinaus keine Qualität kosten kann. Größer ist es allerdings: rund
+        zehn Megabyte je Minute in Stereo. Öffnen kann es jeder Player, jedes Telefon
+        und jedes Schnittprogramm, und was ein MP3 will, kann daraus eines machen.
+        Ein MP3 stattdessen durch Kopieren seiner Frames zu schneiden, hielte die
+        Datei klein, verschöbe aber jeden Schnitt auf die nächste Framegrenze, und
+        genau dieses Runden zu vermeiden, ist der Zweck dieses Werkzeugs."""
+
+[[faq]]
+q = "Gibt es eine Grenze für die Länge der Aufnahme?"
+a = """
+        Im Werkzeug ist keine Grenze eingebaut. Die praktische Obergrenze ist der
+        Arbeitsspeicher: Die ganze Aufnahme wird auf einmal in diese Seite dekodiert,
+        und das WAV entsteht vor dem Download im Arbeitsspeicher. Eine Stunde Stereo
+        braucht also knapp unter einem Gigabyte Platz zum Arbeiten. Ein WAV von vier
+        Gigabyte wird rundheraus abgelehnt, weil das Größenfeld des Formats selbst
+        eines gar nicht beschreiben kann."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase
+        und kein Wasserzeichen. Bezahlt wird die Seite über Werbung, und den Anzeigen
+        wird nichts über Ihre Aufnahme übergeben."""
+
+[schema]
+browser_requirements = "Benötigt JavaScript und einen Browser mit Web Audio, also jeden aktuellen. Über das hinaus, was der Browser zum Abspielen der Datei ohnehin kann, wird keine Codec-Unterstützung gebraucht."
+description = "Beliebig viele Teile einer Aufnahme markieren, während sie läuft, und diese Teile dann als eine einzige Datei speichern, oder sie herausschneiden und den Rest behalten. Die Schnitte landen auf dem genau markierten Sample, wahlweise mit einer Blende von wenigen Millisekunden, damit die Übergänge nicht knacken. Es wird nichts hochgeladen, und das Ergebnis wird als WAV geschrieben, also nichts neu kodiert."
+features = [
+  "Markiert beliebig viele Teile mit I und O, während die Aufnahme läuft",
+  "Fügt die markierten Teile in der von Ihnen gewählten Reihenfolge zu einer Datei",
+  "Schneidet die markierten Teile stattdessen heraus und behält alles andere",
+  "Schneidet auf das genaue Sample, ohne Runden auf ein Frame oder Schlüsselbild",
+  "Blendet jeden Übergang um wenige Millisekunden, damit er nicht knacken kann",
+  "Zeichnet die Wellenform, damit Stillen und Lücken nach Augenmaß markierbar sind",
+  "Speichert die Marken als reine Textdatei und liest sie wieder ein",
+  "Schneidet den Ton in einem MP4, MOV oder WebM, ohne das Bild anzurühren",
+  "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
+]
+
+[picker]
+title = "Audiodatei oder Video hierher ziehen"
+hint = "oder klicken und auswählen &mdash; MP3, WAV, FLAC, M4A, Ogg und der Ton in MP4, MOV oder WebM"

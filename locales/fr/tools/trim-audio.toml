@@ -1,0 +1,332 @@
+#
+# Découpeur audio - French.
+#
+# Overrides for tools/trim-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Découpeur audio"
+heading = "Couper&nbsp;un&nbsp;audio <span class=\"h1-kw\">&mdash; découper un enregistrement en ligne</span>"
+tagline = "Marquez au vol les passages à garder. Ils vous reviennent en un seul fichier, coupé là où vous l'avez dit."
+
+title = "Couper un audio en ligne &mdash; ne garder que ce qui compte, sans envoi"
+description = "Écoutez un enregistrement et marquez au passage chaque morceau qui mérite d'être gardé, puis enregistrez ces morceaux en un seul fichier. Coupes à l'échantillon près, aucun clic aux raccords, rien d'envoyé."
+og_title = "Découpeur audio &mdash; ne garder que ce qui compte, sans rien envoyer"
+og_description = "Appuyez sur I et O pendant la lecture pour marquer chaque passage à garder. Les passages marqués sont réécrits en un seul fichier, coupés à l'échantillon près, sans rien envoyer."
+og_image_alt = "Découpeur audio - marquer les passages voulus et les enregistrer en un seul fichier, dans votre navigateur"
+
+pledge = """
+    Votre enregistrement est lu, marqué, coupé et écrit par votre propre navigateur,
+    sur votre propre matériel. Rien ici ne peut aller chercher ou envoyer quoi que
+    ce soit&nbsp;: cet outil ne comporte aucune fonction réseau. Et même s'il en
+    avait une, il n'y a, à l'autre bout de cette page, aucun serveur à qui envoyer
+    un enregistrement."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et coupez quelque chose.
+      Pas une seule requête ne transporte d'échantillon, de nom de fichier ni le
+      moindre octet de ce que vous avez choisi. Vous pouvez aussi couper la
+      connexion et découper un enregistrement quand même&nbsp;: un outil qui
+      expédierait votre audio ailleurs s'arrêterait tout simplement."""
+
+read_first = """
+, <code>src/segments.js</code> pour les repères et le
+      fichier dans lequel ils sont enregistrés, <code>src/decode.js</code> pour les
+      vingt lignes qui confient votre fichier au décodeur du navigateur,
+      <code>src/trim.js</code> pour le calcul qui transforme un repère en une plage
+      d'échantillons et la boucle qui les copie, et <code>src/wav.js</code> pour
+      l'en-tête qui se place devant. Aucun d'eux n'importe quoi que ce soit capable
+      de faire une requête."""
+
+howto_heading = "Comment couper un fichier audio"
+
+card = """
+            Marquez au vol chaque passage à garder, puis enregistrez-les en un seul
+            fichier. Les coupes tombent à l'échantillon près, et les raccords ne
+            claquent pas."""
+
+[words]
+plural = "enregistrements"
+choose = "un enregistrement"
+analytics_extra = """, ni aucune
+  forme d'onde, durée ou position de coupe"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans filigrane"
+
+[[facts]]
+text = "Autant de passages que voulu"
+
+[[facts]]
+text = "Coupe exactement où vous avez marqué"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[privacy]]
+title = "Vos enregistrements n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page a le droit de
+      contacter, et pas une seule ne nous appartient. Il n'existe ici aucun point de
+      collecte où votre fichier pourrait atterrir, ni rien dans le code qui l'y
+      enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Rien ici ne va chercher quoi que ce soit."
+body = """
+ Cet outil n'a aucune fonction
+      réseau&nbsp;: pas d'adresse à coller, rien à télécharger, aucun moteur chargé
+      à la première utilisation. Chaque octet qui touche votre audio est venu de
+      cette origine au chargement de la page."""
+
+[[privacy]]
+title = "Le décodeur est celui que votre navigateur possède déjà."
+body = """
+
+      Le fichier est confié à <code>decodeAudioData</code>, le même code qui lit une
+      piste dans un élément <code>&lt;audio&gt;</code>. Rien n'est livré ici pour
+      lire votre format, et rien n'est demandé non plus à quoi que ce soit d'extérieur
+      à cette page pour le lire."""
+
+[[privacy]]
+title = "L'image d'une vidéo n'est jamais décodée."
+body = """
+ Quand vous déposez une vidéo,
+      seule sa piste audio est demandée. Les images ne sont pas lues, pas décodées,
+      pas dessinées et pas regardées&nbsp;: il n'existe sur cette page aucun code qui
+      le pourrait, et le fichier qui ressort ne contient que du son."""
+
+[[privacy]]
+title = "La coupe est une copie, en mémoire, sur cette machine."
+body = """
+
+      Couper, c'est un <code>set</code> par passage et par canal&nbsp;: les
+      échantillons que vous avez gardés sont déplacés dans un nouveau tableau, dans
+      l'ordre où vous les avez mis. Les seuls échantillons multipliés par quoi que ce
+      soit sont les quelques centaines de chaque fondu, et la page vous dit combien
+      avant que vous n'appuyiez sur le bouton."""
+
+[[privacy]]
+title = "Les échantillons sont écrits, pas réencodés."
+body = """
+
+      Un WAV, ce sont les échantillons que cette page détient, avec un en-tête
+      devant. Il n'y a aucun encodeur dans la boucle pour prendre des décisions sur
+      votre enregistrement, ni rien qu'on puisse appeler un envoi pendant lequel cela
+      arriverait."""
+
+[[privacy]]
+title = "Le fichier de repères est fabriqué dans la page."
+body = """
+ Enregistrer vos repères
+      écrit un fichier texte à partir des nombres déjà affichés à l'écran,
+      directement dans vos téléchargements. En charger un le lit ici. Ni l'un ni
+      l'autre n'approche d'un réseau, et ni l'un ni l'autre ne transporte autre chose
+      que des durées."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Aucun des deux ne reçoit quoi que
+      ce soit sur votre enregistrement&nbsp;: ni un fichier, ni un échantillon, ni un
+      nom, une taille, une durée, ni l'endroit où vous avez coupé. Chaque ligne qui
+      lit, coupe et écrit est servie depuis cette origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que charge le bouton de don, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l'en-tête est dessiné par
+      un script de cdnjs.buymeacoffee.com et prend sa typographie sur Google Fonts. Ce
+      n'est rien de plus qu'un lien&nbsp;: il ne signale aucune visite et ne reçoit
+      rien sur vous ni sur votre enregistrement."""
+
+[[privacy]]
+title = "Tout fonctionne hors ligne."
+body = """
+ Coupez le réseau et tout sur cette page
+      continue de marcher. C'est la preuve la plus simple de toutes."""
+
+[[howto]]
+title = "Choisissez un enregistrement."
+body = """
+ Déposez un fichier MP3, WAV,
+      FLAC, M4A, Ogg ou Opus sur le sélecteur, ou une vidéo si c'est un morceau de
+      son que vous voulez. Le navigateur le lit directement sur votre disque et le
+      dessine sous forme d'onde&nbsp;; rien ne part nulle part pendant ce temps."""
+
+[[howto]]
+title = "Écoutez, et marquez les passages voulus."
+body = """
+ Appuyez sur
+      <kbd>I</kbd> là où un passage doit commencer et sur <kbd>O</kbd> là où il doit
+      finir. Faites-le autant de fois que vous voulez&nbsp;: chaque paire devient une
+      ligne dans le tableau du dessous et une bande sur l'onde. <kbd>U</kbd> annule la
+      dernière, <kbd>Espace</kbd> lit et met en pause, les flèches sautent cinq
+      secondes, et avec <kbd>Maj</kbd> elles avancent de dix millisecondes.
+      Ralentissez la lecture si le moment est difficile à attraper."""
+
+[[howto]]
+title = "Retouchez les repères."
+body = """
+ Chaque ligne peut être écoutée seule,
+      recalée en tapant une durée exacte, montée ou descendue dans l'ordre, ou
+      supprimée. Les deux extrémités du passage sélectionné peuvent aussi être
+      glissées le long de l'onde, ce qui est la façon la plus rapide de poser un
+      repère sur le silence plutôt que sur la respiration qui le précède. Le total en
+      haut correspond à la durée de l'enregistrement fini."""
+
+[[howto]]
+title = "Les garder, ou les retirer."
+body = """
+ Garder est le sens habituel&nbsp;:
+      l'enregistrement fini, ce sont les passages marqués, mis bout à bout dans
+      l'ordre. Les retirer est l'autre besoin, fréquent et rarement satisfait&nbsp;:
+      marquez les &laquo;&nbsp;euh&nbsp;&raquo;, le téléphone qui sonne ou les faux
+      départs, et ce qui reste est recollé sans eux."""
+
+[[howto]]
+title = "Coupez, puis téléchargez."
+body = """
+ Chaque coupe tombe sur l'échantillon
+      que vous avez marqué&nbsp;; il n'y a ici aucun arrondi à une image clé, puisque
+      le son n'en a pas. La seule chose à choisir est la longueur du fondu à poser sur
+      chaque raccord&nbsp;: cinq millisecondes suffisent à supprimer un clic et sont
+      bien trop courtes pour s'entendre comme un fondu. Ce qui ressort est un WAV,
+      d'abord lu dans la page, puis remis directement aux téléchargements de votre
+      navigateur."""
+
+[[faq]]
+q = "Mon audio est-il envoyé quelque part&nbsp;?"
+a = """
+        Non. Il est lu, marqué, coupé et écrit par votre propre navigateur sur votre
+        propre matériel. Cet outil n'a aucune partie serveur, et la
+        <code>Content-Security-Policy</code> de la page nomme chaque adresse qu'elle a
+        le droit de contacter&nbsp;: aucune ne nous appartient. Si vous préférez
+        vérifier plutôt qu'être cru sur parole, coupez la connexion et découpez un
+        enregistrement quand même."""
+
+[[faq]]
+q = "Puis-je garder plusieurs passages du même enregistrement&nbsp;?"
+a = """
+        C'est fait pour cela. Appuyez sur <kbd>I</kbd> et <kbd>O</kbd> autant de fois
+        que vous voulez pendant la lecture&nbsp;; chaque paire devient une ligne, et
+        le fichier fini est l'ensemble des lignes mises bout à bout, tout le reste
+        ayant disparu. La plupart des découpeurs en ligne vous donnent une seule paire
+        de poignées et demandent quel unique segment garder&nbsp;: parfait pour
+        ébarber un jingle, et totalement inutile pour écouter une heure d'entretien
+        une fois et garder les six réponses qui valent quelque chose."""
+
+[[faq]]
+q = "La coupe tombe-t-elle exactement là où je l'ai marquée&nbsp;?"
+a = """
+        Oui, sur chaque passage et dans tous les lecteurs. C'est le seul endroit où
+        l'audio est plus simple que la vidéo&nbsp;: un enregistrement décodé est une
+        suite de nombres et chacun se suffit à lui-même, il n'existe donc aucun
+        équivalent d'image clé sur lequel arrondir, ni aucune raison qu'une coupe
+        démarre en avance. La page affiche le numéro d'échantillon auquel le résultat
+        commence, c'est-à-dire votre repère multiplié par la fréquence
+        d'échantillonnage et arrondi à l'échantillon entier le plus proche."""
+
+[[faq]]
+q = "Pourquoi un raccord claquerait-il, et à quoi sert le fondu&nbsp;?"
+a = """
+        Parce que couper du milieu d'un mot au milieu d'un autre met côte à côte deux
+        formes d'onde sans rapport, et un haut-parleur à qui l'on demande de sauter de
+        l'une à l'autre produit un clic. Ce n'est pas un défaut de la coupe&nbsp;:
+        c'est le bruit que fait une discontinuité. Le remède est un fondu de quelques
+        millisecondes de part et d'autre de chaque raccord&nbsp;: assez long pour que
+        la membrane suive, bien trop court pour être perçu comme un fondu. Cinq
+        millisecondes par défaut, et cela se désactive. Un fondu n'est posé que sur un
+        bord qui est réellement une coupe&nbsp;: un bord tout au début ou tout à la
+        fin de l'enregistrement reste donc exactement tel quel."""
+
+[[faq]]
+q = "Puis-je plutôt retirer les mauvais passages&nbsp;?"
+a = """
+        Oui. Marquez-les, puis choisissez &laquo;&nbsp;Les retirer&nbsp;&raquo;&nbsp;:
+        tout ce que vous n'avez <em>pas</em> marqué est recollé à la place, dans
+        l'ordre. La même liste de repères répond aux deux questions, vous pouvez donc
+        passer de l'une à l'autre et voir la durée changer sans rien marquer deux
+        fois."""
+
+[[faq]]
+q = "Puis-je enregistrer mes repères et y revenir&nbsp;?"
+a = """
+        Oui. &laquo;&nbsp;Enregistrer les repères&nbsp;&raquo; écrit un fichier texte
+        &mdash; une ligne par passage, un début et une fin séparés par une virgule
+        &mdash; et &laquo;&nbsp;Charger des repères&nbsp;&raquo; en relit un. Deux
+        formats sont proposés, les secondes brutes et <code>HH:MM:SS.mmm</code>, et
+        tous deux sont la mise en forme qu'écrit le découpeur vidéo de ce site&nbsp;:
+        un fichier fait sur la vidéo peut donc être déposé sur son audio, et
+        inversement. Le marquage est un travail minutieux, et personne ne devrait
+        avoir à le refaire."""
+
+[[faq]]
+q = "Quels formats puis-je ouvrir&nbsp;?"
+a = """
+        Tout ce que votre navigateur décode, ce qui en pratique veut dire MP3, WAV,
+        FLAC, M4A et AAC, Ogg Vorbis et Opus, ainsi que l'audio contenu dans les
+        vidéos MP4, M4V, MOV et WebM. Ce qui reste dehors est la même courte liste que
+        partout ailleurs&nbsp;: AVI, WMA et la plupart des MKV. Un fichier que ce
+        navigateur ne saura pas lire est refusé avec un message qui le dit, plutôt que
+        d'échouer à mi-parcours."""
+
+[[faq]]
+q = "Pourquoi enregistre-t-il un WAV plutôt qu'un MP3&nbsp;?"
+a = """
+        Parce qu'aucun navigateur ne livre d'encodeur MP3, et que cet outil refuse
+        d'envoyer votre enregistrement à un serveur qui en aurait un. Un WAV n'a besoin
+        d'aucun encodeur &mdash; ce sont les échantillons avec un court en-tête devant
+        &mdash; c'est donc à la fois l'option honnête et la seule qui ne puisse pas
+        coûter de qualité à la sortie. Il est plus lourd&nbsp;: environ dix mégaoctets
+        par minute en stéréo. Tous les lecteurs, téléphones et logiciels de montage
+        l'ouvrent, et ce qui réclame un MP3 peut en fabriquer un à partir de lui.
+        Découper un MP3 en recopiant ses trames garderait le fichier léger, mais
+        déplacerait chaque coupe à la limite de trame la plus proche&nbsp;: exactement
+        l'arrondi que cet outil existe pour éviter."""
+
+[[faq]]
+q = "Y a-t-il une limite à la durée de l'enregistrement&nbsp;?"
+a = """
+        Aucune limite n'est inscrite dans l'outil. Le plafond réel est la
+        mémoire&nbsp;: l'enregistrement entier est décodé d'un coup dans cette page, et
+        le WAV est assemblé en mémoire avant le téléchargement, si bien qu'une heure de
+        stéréo demande un peu moins d'un gigaoctet pour travailler. Un WAV de quatre
+        gigaoctets est refusé d'emblée, parce que le champ de taille du format
+        lui-même ne peut pas en décrire un."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai, ni
+        filigrane. Le site affiche de la publicité, et c'est elle qui le
+        finance&nbsp;; les annonces ne reçoivent rien sur votre enregistrement."""
+
+[schema]
+browser_requirements = "Nécessite JavaScript et un navigateur doté de Web Audio, ce qui est le cas de tous les navigateurs actuels. Aucune prise en charge de codec au-delà de ce que le navigateur sait déjà lire."
+description = "Marquez autant de passages que vous voulez d'un enregistrement pendant sa lecture, puis enregistrez-les en un seul fichier - ou retirez-les et gardez le reste. Les coupes tombent sur l'échantillon exact marqué, avec un fondu facultatif de quelques millisecondes pour que les raccords ne claquent pas. Rien n'est envoyé et le résultat est écrit en WAV, donc rien n'est réencodé."
+features = [
+  "Marque autant de passages que voulu avec I et O pendant la lecture",
+  "Assemble les passages marqués en un seul fichier, dans l'ordre choisi",
+  "Ou retire les passages marqués et garde tout le reste",
+  "Coupe à l'échantillon près, sans arrondi à une trame ni à une image clé",
+  "Applique un fondu de quelques millisecondes à chaque raccord pour éviter le clic",
+  "Dessine la forme d'onde, pour repérer silences et blancs à l'œil",
+  "Enregistre et recharge les repères sous forme de fichier texte de temps",
+  "Découpe l'audio contenu dans un MP4, MOV ou WebM sans toucher à l'image",
+  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+]
+
+[picker]
+title = "Déposez un fichier audio ou une vidéo ici"
+hint = "ou cliquez pour parcourir &mdash; MP3, WAV, FLAC, M4A, Ogg, et le son contenu dans un MP4, MOV ou WebM"

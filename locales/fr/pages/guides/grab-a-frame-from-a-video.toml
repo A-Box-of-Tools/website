@@ -1,0 +1,16 @@
+#
+# Guide : extraire une image d'une vidéo - French.
+#
+
+nav = "Extraire une image"
+title = "Comment enregistrer une image d'une vidéo en photo"
+description = "Sortir une image d'une vidéo à sa vraie résolution : pourquoi une capture d'écran d'un lecteur en pause n'est pas la même image, dans quel format l'enregistrer, et comment tomber sur l'image exacte que vous visiez."
+heading = "Comment enregistrer une image d'une vidéo en photo"
+lede = """
+    Mettre le lecteur en pause et appuyer sur la touche de capture donne une
+    image d'une fenêtre. Parfois cela suffit. Voici en quoi c'est différent, et
+    comment obtenir l'image elle-même quand cela compte."""
+updated = "20 août 2026"
+og_title = "Comment enregistrer une image d'une vidéo en photo"
+og_description = "Pourquoi une capture d'un lecteur en pause n'est pas l'image, dans quel format l'enregistrer, et comment tomber sur l'image exacte que vous visiez."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

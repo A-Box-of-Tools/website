@@ -1,0 +1,155 @@
+<main>
+  <!--
+    One numbered step, and then six headings without numbers.
+
+    Every other tool on this site numbers all of its cards, because every card
+    is something the visitor does. Here there is exactly one thing to do -
+    choose a file - and everything below it is the answer. Numbering the answer
+    would promise a sequence of decisions that does not exist, and would leave
+    somebody looking for step 4's button.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies een GIF</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- De samenvatting, en de animatie zoals de browser hem zelf tekent. -->
+  <section class="card" id="summary-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="copy-report" class="ghost">Rapport kopiëren</button>
+        <button type="button" id="download-report" class="ghost">Downloaden</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="preview-wrap">
+        <!--
+          The browser's own decoder, drawing the file unchanged. Everything else
+          on this page is drawn by src/frames.js, so having both means a
+          disagreement between them is visible rather than hidden - and it is
+          the disagreement that would tell you this reader had a bug.
+        -->
+        <img id="preview" class="preview" alt="De animatie, zoals deze browser hem tekent">
+        <p class="preview-note">De eigen decoder van je browser, die het bestand afspeelt zoals het is.</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>Versie</dt><dd id="fact-version">&mdash;</dd></div>
+        <div><dt>Canvas</dt><dd id="fact-canvas">&mdash;</dd></div>
+        <div><dt>Bestandsgrootte</dt><dd id="fact-size">&mdash;</dd></div>
+        <div><dt>Frames</dt><dd id="fact-frames">&mdash;</dd></div>
+        <div><dt>Zoals opgeschreven</dt><dd id="fact-written">&mdash;</dd></div>
+        <div><dt>Zoals het speelt</dt><dd id="fact-plays">&mdash;</dd></div>
+        <div><dt>Herhalingen</dt><dd id="fact-loops">&mdash;</dd></div>
+        <div><dt>Getekende kleuren</dt><dd id="fact-colors">&mdash;</dd></div>
+      </dl>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- De bevindingen. Eerst, want daarvoor kwam je. -->
+  <section class="card" id="findings-card" hidden>
+    <h2>Wat eruit springt</h2>
+    <p class="card-lede">
+      Alles hieronder is aan dit bestand gemeten. Niets hier is een gok naar wat
+      je bedoeld had.
+    </p>
+    <ul class="findings" id="findings"></ul>
+  </section>
+
+  <!-- De bytebegroting. -->
+  <section class="card" id="budget-card" hidden>
+    <h2>Waar de bytes heen gingen</h2>
+    <p class="card-lede">
+      Elke byte van het bestand staat in precies één rij, en de rijen zijn samen
+      het bestand. Klopte dat niet, dan zou de laatste rij dat zeggen in plaats
+      van dat de balk stilletjes uitrekt tot het past.
+    </p>
+
+    <div class="budget-bar" id="budget-bar" role="img" aria-labelledby="budget-caption"></div>
+    <p class="visually-hidden" id="budget-caption">
+      Dezelfde cijfers als de tabel hieronder, getekend als één balk.
+    </p>
+
+    <table class="budget">
+      <caption class="visually-hidden">Waar de bytes van dit bestand heen gingen</caption>
+      <thead>
+        <tr>
+          <th scope="col">Onderdeel</th>
+          <th scope="col" class="num">Bytes</th>
+          <th scope="col" class="num">Aandeel</th>
+        </tr>
+      </thead>
+      <tbody id="budget-rows"></tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">Het hele bestand</th>
+          <td class="num" id="budget-total">&mdash;</td>
+          <td class="num">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- Frame voor frame. -->
+  <section class="card" id="frames-card" hidden>
+    <div class="toolbar">
+      <h2>Frame voor frame</h2>
+      <div class="toolbar-actions">
+        <label for="frame-view" class="inline-label">Toon</label>
+        <select id="frame-view">
+          <option value="composited" selected>het canvas na elk frame</option>
+          <option value="stored">alleen wat elk frame opslaat</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="card-lede" id="frames-lede"></p>
+
+    <ul class="frames" id="frames"></ul>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!-- De kleuren. -->
+  <section class="card" id="colors-card" hidden>
+    <h2>De kleuren</h2>
+    <p class="card-lede" id="colors-lede"></p>
+
+    <div id="global-palette-wrap" hidden>
+      <h3>De globale tabel</h3>
+      <p class="palette-note" id="global-palette-note"></p>
+      <ul class="palette" id="global-palette"></ul>
+    </div>
+
+    <details id="local-palettes-wrap" hidden>
+      <summary id="local-palettes-summary">De tabellen per frame</summary>
+      <div id="local-palettes"></div>
+    </details>
+  </section>
+
+  <!-- Alles in het bestand dat geen plaatje is. -->
+  <section class="card" id="extras-card" hidden>
+    <h2>Wat er verder in zit</h2>
+    <p class="card-lede">
+      Blokken die geen plaatje dragen. Een viewer slaat ze allemaal over, en elke
+      kopie van het bestand sleept ze toch mee.
+    </p>
+    <ul class="extras" id="extras"></ul>
+  </section>
+</main>

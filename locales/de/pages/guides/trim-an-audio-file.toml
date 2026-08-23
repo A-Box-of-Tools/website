@@ -1,0 +1,16 @@
+#
+# Ratgeber: eine Audiodatei kürzen - German.
+#
+
+nav = "Audiodatei kürzen"
+title = "Audio schneiden, ohne Qualität zu verlieren"
+description = "Wo ein Audioschnitt wirklich landet, warum er exakt sein kann und ein Videoschnitt nicht, warum eine Naht manchmal knackt, und was fünf Millisekunden Blende in Wahrheit tun."
+heading = "Audio schneiden, ohne Qualität zu verlieren"
+lede = """
+    Ein Audioschnitt landet auf genau dem Moment, den Sie markiert haben, in
+    jedem Player, immer &mdash; was für Video nicht gilt. Hier steht, warum das
+    so ist, worin der eine echte Haken besteht und was man dagegen tut."""
+updated = "21. August 2026"
+og_title = "Audio schneiden, ohne Qualität zu verlieren"
+og_description = "Warum ein Audioschnitt exakt sein kann und ein Videoschnitt nicht, warum eine Naht manchmal knackt, und was fünf Millisekunden Blende wirklich tun."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

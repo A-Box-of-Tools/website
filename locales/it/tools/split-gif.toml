@@ -1,0 +1,270 @@
+#
+# Divisore di GIF - Italian.
+#
+# Overrides for tools/split-gif/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Divisore di GIF"
+heading = "Dividere&nbsp;una&nbsp;GIF <span class=\"h1-kw\">&mdash; ogni fotogramma in un PNG</span>"
+tagline = "Ogni fotogramma fuori, nel suo PNG."
+
+title = "Dividere una GIF in fotogrammi &mdash; gratis e senza caricare niente"
+description = "Dividi una GIF animata nei suoi fotogrammi e salva ognuno come PNG, gratis e interamente nel browser. Trasparenza e tempi restano intatti. Non viene caricato niente e funziona anche offline."
+og_title = "Divisore di GIF &mdash; smonta un'animazione nel tuo browser"
+og_description = "Ogni fotogramma di una GIF nel suo PNG, con i tempi e la trasparenza intatti. Il file viene letto sul tuo dispositivo e non viene mai caricato."
+og_image_alt = "Divisore di GIF - ogni fotogramma di una GIF nel suo PNG"
+
+pledge = """
+    La GIF viene letta, decompressa e disegnata dal tuo browser, e ogni PNG viene
+    codificato nella memoria di questo dispositivo. Dall'altra parte di questa
+    pagina non c'è nessun server a cui mandare un'animazione, nemmeno se qualcosa
+    qui volesse farlo."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori, tieni
+      d'occhio il pannello Rete e dividi una GIF. Non c'è una sola richiesta che
+      porti con sé un'immagine, un fotogramma o un nome di file. Oppure stacca la
+      connessione e dividine una lo stesso."""
+
+read_first = """
+, <code>src/gif.js</code> per il lettore che
+      decomprime i fotogrammi e <code>src/compose.js</code> per le regole con cui
+      vengono sovrapposti: in nessuno dei due c'è una riga che possa raggiungere
+      la rete."""
+
+howto_heading = "Come dividere una GIF nei suoi fotogrammi"
+
+card = """
+            Smonta un'animazione: ogni fotogramma nel suo PNG, con la
+            trasparenza conservata e i tempi annotati. La GIF viene decompressa
+            sul tuo dispositivo."""
+
+[words]
+plural = "GIF"
+choose = "una GIF"
+analytics_extra = """, e nessun
+  fotogramma, durata o immagine"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "I file restano sul tuo dispositivo"
+
+[[privacy]]
+title = "La tua GIF non ha una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può
+      contattare, e non ne appartiene uno a questo sito. Qui non esiste un
+      recapito dove i tuoi file possano essere raccolti, e nel codice non c'è
+      niente che li manderebbe lì se esistesse. Una volta questa riga diceva
+      <code>connect-src 'none'</code>, che non ammetteva eccezioni: la pubblicità
+      è costata quello, e dirlo fa parte dell'accordo."""
+
+[[privacy]]
+title = "Il lettore di GIF sono due file di questo repository."
+body = """
+ Un browser una
+      GIF te la riproduce ma i suoi pezzi non te li consegna, quindi il formato
+      viene letto qui: <code>src/gif.js</code> è il contenitore e il
+      decompressore LZW, <code>src/compose.js</code> sono le regole di
+      smaltimento che decidono che aspetto ha ogni fotogramma una volta che i
+      precedenti gli stanno sotto. Per aprire un file non si scarica niente, e
+      non c'è nessun motore che arrivi al primo utilizzo."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sulla tua animazione: né il file, né un fotogramma, né un
+      nome, una dimensione o un conteggio. Ogni riga che legge, decomprime,
+      disegna o codifica un'immagine è servita da questa origine ed è elencata
+      nel repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
+body = """
+
+      Il pulsante «Buy me a coffee» in alto è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. Non è niente
+      di più di un collegamento: non segnala nessuna visita e non gli viene
+      passato niente su di te o sui tuoi file. Finché non ci clicchi non succede
+      niente, e quello a cui arriveresti è il sito di qualcun altro."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e ogni pezzo di questa pagina
+      continua a funzionare. È la prova più semplice che ci sia: uno strumento
+      che spedisse via la tua animazione per smontarla si fermerebbe nell'istante
+      in cui stacchi la spina."""
+
+[[howto]]
+title = "Scegli la GIF."
+body = """
+ Trascinala sul selettore oppure cercala a
+      mano. Il browser la legge direttamente dal tuo disco, e la pagina ti dice
+      cosa ha trovato: la dimensione, quanti fotogrammi ha, quanto dura e quante
+      volte si ripete."""
+
+[[howto]]
+title = "Decidi cosa contiene ogni PNG."
+body = """
+ <strong>Il fotogramma come
+      appare</strong> è quello che vogliono quasi tutti: l'immagine intera in
+      quel momento dell'animazione. <strong>Solo i pixel che quel fotogramma
+      salva</strong> è la toppa che il file porta davvero, con la sua dimensione
+      e al suo posto, ed è il motivo per cui una GIF resta piccola. Non è
+      l'aspetto dell'animazione."""
+
+[[howto]]
+title = "Decidi cosa succede alla trasparenza."
+body = """
+ Il PNG la tiene, ed è
+      l'impostazione onesta. Riempila con un colore se i fotogrammi finiscono in
+      un posto che la trasparenza la ignora e altrimenti la farebbe diventare
+      nera."""
+
+[[howto]]
+title = "Scegli i fotogrammi che ti servono."
+body = """
+ Di base tutti. «Tenere un
+      fotogramma ogni due» alleggerisce una registrazione lunga, e le caselle
+      sulla griglia hanno la meglio su quella scelta. La numerazione non cambia
+      mai, quindi il fotogramma 42 si chiama fotogramma 42 per quanti pochi
+      vicini tu ne abbia tenuti."""
+
+[[howto]]
+title = "Scaricali."
+body = """
+ Uno alla volta dalla griglia, oppure tutti in
+      un solo ZIP, così c'è una richiesta di salvataggio invece di centinaia. Lo
+      ZIP può portarsi dietro un <code>frames.txt</code> con quanto è durato ogni
+      fotogramma, che è l'unica cosa che una cartella di PNG non sa dire da
+      sola."""
+
+[[faq]]
+q = "La mia GIF viene caricata da qualche parte?"
+a = """
+        No. Il file lo legge, lo decomprime e lo disegna il tuo browser sul tuo
+        hardware, e ogni PNG viene codificato qui in memoria. Questo strumento non
+        ha un lato server, e la <code>Content-Security-Policy</code> della pagina
+        elenca ogni indirizzo che può contattare: nessuno appartiene a questo
+        sito. Stacca la connessione e continua a dividere GIF."""
+
+[[faq]]
+q = "Perché un fotogramma sembra un pezzetto dell'immagine?"
+a = """
+        Perché è quello che c'è nel file. Una GIF è una prima immagine seguita da
+        toppe: ogni fotogramma successivo salva solo il rettangolo che è cambiato,
+        e tutto il resto sullo schermo è quello che i precedenti hanno lasciato
+        lì. Una testa che parla davanti a un muro fermo salva quindi una faccia
+        per fotogramma e non un'immagine per fotogramma, ed è tutto il motivo per
+        cui il formato non è enorme.
+        <br><br>
+        Lo stai vedendo perché è selezionato «Solo i pixel che quel fotogramma
+        salva». Passa a «Il fotogramma come appare» e ogni PNG sarà l'immagine
+        intera, com'è l'animazione in quell'istante."""
+
+[[faq]]
+q = "La trasparenza si mantiene?"
+a = """
+        Sì. La trasparenza di una GIF è un bit soltanto: un pixel o è dipinto o è
+        invisibile, e in mezzo non c'è niente. Il PNG salva esattamente quello,
+        quindi i fotogrammi escono con le zone trasparenti intatte. Se preferisci
+        uno sfondo pieno, metti «Zone trasparenti» su riempi con un colore: quel
+        colore viene scritto nel PNG e dopo non si toglie più."""
+
+[[faq]]
+q = "Perché le durate non sono i numeri che mi aspettavo?"
+a = """
+        Una GIF salva ogni durata in centesimi di secondo, e dagli anni Novanta i
+        browser portano a un decimo qualsiasi valore sotto i due centesimi: una
+        regola scritta per i mappamondi che giravano all'epoca e mai più tolta.
+        Un fotogramma il cui file dice 0,01 s viene quindi riprodotto a 0,10 s
+        dappertutto. Questo strumento mostra la durata com'è davvero riprodotta e
+        scrive accanto cosa dice il file quando le due cose non coincidono."""
+
+[[faq]]
+q = "Posso rimettere insieme i fotogrammi?"
+a = """
+        Sì, con il <a href="../creare-gif/">Creatore di GIF</a> di questo sito o
+        con qualsiasi altra cosa accetti una cartella di immagini. È a questo che
+        serve il <code>frames.txt</code> nello ZIP: dividere un'animazione butta
+        via i tempi, perché un PNG non ha dove annotare quanto è rimasto in
+        scena, quindi l'elenco porta fuori con sé la durata e la posizione di ogni
+        fotogramma."""
+
+[[faq]]
+q = "In che formati posso salvare i fotogrammi?"
+a = """
+        PNG, e di proposito solo PNG. Un fotogramma di GIF ha al massimo 256
+        colori e un bit di trasparenza; il PNG salva esattamente quello e senza
+        perdite, mentre il JPEG butterebbe via la trasparenza, si inventerebbe
+        colori che il fotogramma non ha mai avuto e da un disegno piatto tirerebbe
+        fuori di solito un file <em>più grande</em>. Se ti servono dei JPEG,
+        converti i PNG dopo con il
+        <a href="../ridimensionare-immagine/">Ridimensionatore di immagini</a>."""
+
+[[faq]]
+q = "C'è un limite a quanti fotogrammi legge?"
+a = """
+        Un limite fisso non c'è. Il tetto vero è la memoria del tuo dispositivo:
+        mentre viene letta, una GIF si espande a circa un byte per pixel per
+        fotogramma, quindi un file piccolo può voler dire moltissima memoria, e
+        questa pagina smette di leggere invece di lasciar morire la scheda. Se
+        succede lo dice, e ti restituisce i fotogrammi che è riuscita a
+        ottenere."""
+
+[[faq]]
+q = "Apre anche una GIF rovinata?"
+a = """
+        Di solito sì. I download troncati, il marcatore di fine che manca e un
+        ultimo fotogramma che si interrompe a metà sono cose comunissime, e un
+        lettore che li rifiuta è inutile proprio per i file che la gente vuole
+        smontare di più. Tornano indietro tutti i fotogrammi completi, con una
+        nota su cosa non andava. Viene rifiutato solo un file che non è affatto
+        una GIF."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di
+        prova. Sui fotogrammi non c'è nemmeno una filigrana. Il sito ha della
+        pubblicità, ed è quella che lo mantiene; agli annunci non arriva niente
+        sui tuoi file."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la connessione e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene
+        caricato niente, perché uno strumento che spedisse via la tua animazione
+        per elaborarla si fermerebbe nell'istante in cui stacchi la spina."""
+
+[schema]
+description = "Dividi una GIF animata nei suoi fotogrammi e salva ognuno come PNG. Il file viene decompresso nel tuo browser, quindi nessuna animazione viene mai caricata."
+features = [
+  "Ogni fotogramma di una GIF nel suo PNG, con la trasparenza conservata",
+  "Il fotogramma come appare, oppure solo i pixel che quel fotogramma salva",
+  "Durata, posizione, dimensione e smaltimento mostrati per ogni fotogramma",
+  "Tenere un fotogramma ogni due o ogni cinque, o spuntare quelli che vuoi",
+  "Un solo ZIP per tutti, con l'elenco dei tempi per ricostruire l'animazione",
+  "Funziona offline; niente caricamenti, niente account, niente filigrana",
+]
+
+[picker]
+title = "Trascina qui una GIF"
+hint = "oppure clicca per sceglierla &mdash; animata o ferma, di qualsiasi dimensione"

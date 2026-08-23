@@ -1,0 +1,17 @@
+#
+# Gids: een geanimeerde GIF uit elkaar halen - Dutch.
+#
+
+nav = "Een GIF splitsen"
+title = "Een GIF splitsen in frames (en wat een frame echt is)"
+description = "Elk frame van een geanimeerde GIF als PNG: waarom sommige frames maar een klein lapje van het plaatje zijn, wat er met de transparantie gebeurt, en hoe je de timing bewaart om het weer in elkaar te zetten."
+heading = "Een GIF splitsen in frames"
+lede = """
+    De frames eruit halen kost één sleep en één knop. Wat de moeite van het
+    begrijpen waard is, is wat een &ldquo;frame&rdquo; van een GIF eigenlijk is,
+    want het formaat bewaart iets anders dan wat je ziet &mdash; en dat verschil
+    is waarom je veertiende frame een rechthoek met iemands mond is."""
+updated = "21 augustus 2026"
+og_title = "Een GIF splitsen in frames"
+og_description = "Elk frame van een GIF als PNG: waarom sommige maar een lapje zijn, wat er met de transparantie gebeurt, en hoe je de timing bewaart."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

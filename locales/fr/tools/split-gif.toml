@@ -1,0 +1,278 @@
+#
+# Découpeur de GIF - French.
+#
+# Overrides for tools/split-gif/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Découpeur de GIF"
+heading = "Découper&nbsp;un&nbsp;GIF <span class=\"h1-kw\">&mdash; chaque image dans son propre PNG</span>"
+tagline = "Chaque image du GIF ressort en PNG."
+
+title = "Découper un GIF en images &mdash; gratuit, sans envoi de fichier"
+description = "Découpez un GIF animé en ses images et enregistrez chacune en PNG, gratuitement et entièrement dans le navigateur. La transparence et les durées sont conservées. Rien n'est envoyé, et cela marche hors ligne."
+og_title = "Découpeur de GIF &mdash; démonter une animation dans votre navigateur"
+og_description = "Chaque image d'un GIF dans son propre PNG, avec les durées et la transparence intactes. Le fichier est lu sur votre machine et n'est jamais envoyé."
+og_image_alt = "Découpeur de GIF - chaque image d'un GIF dans son propre PNG"
+
+pledge = """
+    Le GIF est lu, décompressé et dessiné par votre propre navigateur, et chaque
+    PNG est encodé en mémoire sur cette machine. Il n'y a, à l'autre bout de
+    cette page, aucun serveur à qui envoyer une animation, quand bien même
+    quelque chose ici le voudrait."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et découpez un GIF.
+      Pas une seule requête ne transporte d'image, de vignette ni de nom de
+      fichier. Vous pouvez aussi couper la connexion et en découper un quand
+      même."""
+
+read_first = """
+, <code>src/gif.js</code> pour le lecteur qui
+      décompresse les images et <code>src/compose.js</code> pour les règles qui
+      les posent les unes sur les autres&nbsp;: ni l'un ni l'autre ne comporte
+      une ligne capable d'atteindre le réseau."""
+
+howto_heading = "Comment découper un GIF en images"
+
+card = """
+            Démontez une animation&nbsp;: chaque image dans son propre PNG, la
+            transparence conservée et les durées notées. Le GIF est décompressé
+            sur votre propre machine."""
+
+[words]
+plural = "GIF"
+choose = "un GIF"
+analytics_extra = """, ni aucune
+  image, durée ou vignette"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Vos fichiers restent chez vous"
+
+[[privacy]]
+title = "Votre GIF n'a nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page a le droit de
+      contacter, et pas une seule ne nous appartient. Il n'existe ici aucun point
+      de collecte où vos fichiers pourraient atterrir, ni rien dans le code qui
+      les y enverrait s'il en existait un. Cette ligne disait autrefois
+      <code>connect-src 'none'</code>, ce qui ne souffrait aucune
+      exception&nbsp;; la publicité a coûté cela, et le dire fait partie du
+      marché."""
+
+[[privacy]]
+title = "Le lecteur de GIF, ce sont deux fichiers de ce dépôt."
+body = """
+ Un navigateur
+      joue un GIF mais ne vous en rend pas les morceaux, alors le format est lu
+      ici&nbsp;: <code>src/gif.js</code> pour le conteneur et le décompresseur
+      LZW, <code>src/compose.js</code> pour les règles d'effacement qui décident
+      de quoi a l'air chaque image une fois les précédentes posées dessous. Rien
+      n'est téléchargé pour ouvrir un fichier, et aucun moteur ne se charge à la
+      première utilisation."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Aucun des deux ne reçoit
+      quoi que ce soit sur votre animation&nbsp;: ni un fichier, ni une image, ni
+      un nom, une taille ou un nombre. Chaque ligne qui lit, décompresse, dessine
+      ou encode une image est servie depuis cette origine et figure dans le
+      dépôt."""
+
+[[privacy]]
+title = "Ce que charge le bouton de don, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l'en-tête est
+      dessiné par un script de cdnjs.buymeacoffee.com et prend sa typographie sur
+      Google Fonts. Ce n'est rien de plus qu'un lien&nbsp;: il ne signale aucune
+      visite et ne reçoit rien sur vous ni sur vos fichiers. Rien ne se produit
+      tant que vous ne cliquez pas, et ce sur quoi vous cliqueriez alors est le
+      site de quelqu'un d'autre."""
+
+[[privacy]]
+title = "Tout fonctionne hors ligne."
+body = """
+ Coupez le réseau et chaque partie de cette
+      page continue de marcher. C'est la preuve la plus simple de
+      toutes&nbsp;: un outil qui expédierait votre animation ailleurs pour la
+      démonter s'arrêterait à l'instant où vous débranchez."""
+
+[[howto]]
+title = "Choisissez le GIF."
+body = """
+ Déposez-le sur le sélecteur ou allez le
+      chercher à la main. Le navigateur le lit directement sur votre disque, et
+      la page vous dit ce qu'elle a trouvé&nbsp;: la taille, le nombre d'images,
+      la durée de lecture et le nombre de répétitions."""
+
+[[howto]]
+title = "Décidez de ce que contient chaque PNG."
+body = """
+ <strong>L'image telle
+      qu'elle apparaît</strong>, c'est ce que veut presque tout le monde&nbsp;:
+      l'image entière à cet instant de l'animation. <strong>Seulement les pixels
+      que cette image stocke</strong>, c'est la pièce que le fichier transporte
+      réellement, à sa propre taille et à sa propre place&nbsp;: c'est ainsi
+      qu'un GIF reste petit, et ce n'est pas à quoi ressemble l'animation."""
+
+[[howto]]
+title = "Décidez du sort de la transparence."
+body = """
+ Le PNG la
+      conserve, et c'est le choix honnête. Remplissez-la d'une couleur si les
+      images partent vers un endroit qui ignore la transparence et la
+      transformerait en noir."""
+
+[[howto]]
+title = "Choisissez les images voulues."
+body = """
+ Toutes, par défaut.
+      &laquo;&nbsp;Garder une image sur deux&nbsp;&raquo; allège un long
+      enregistrement, et les cases de la grille l'emportent dessus. La
+      numérotation ne change jamais&nbsp;: l'image 42 s'appelle toujours image
+      42, si peu de ses voisines que vous ayez gardées."""
+
+[[howto]]
+title = "Téléchargez-les."
+body = """
+ Une par une depuis la grille, ou toutes
+      dans un seul ZIP pour n'avoir qu'une demande d'enregistrement au lieu de
+      plusieurs centaines. Le ZIP peut emporter un <code>frames.txt</code>
+      indiquant la durée d'affichage de chaque image, la seule chose qu'un
+      dossier de PNG ne sait pas dire tout seul."""
+
+[[faq]]
+q = "Mon GIF est-il envoyé quelque part&nbsp;?"
+a = """
+        Non. Le fichier est lu, décompressé et dessiné par votre propre navigateur
+        sur votre propre matériel, et chaque PNG est encodé ici, en mémoire. Cet
+        outil n'a aucune partie serveur, et la
+        <code>Content-Security-Policy</code> de la page nomme chaque adresse
+        qu'elle a le droit de contacter&nbsp;: aucune ne nous appartient. Coupez
+        le réseau, il découpe toujours des GIF."""
+
+[[faq]]
+q = "Pourquoi une image ressemble-t-elle à un petit bout de l'image&nbsp;?"
+a = """
+        Parce que c'est ce que contient le fichier. Un GIF, c'est une première
+        image suivie de rustines&nbsp;: chaque image ultérieure ne stocke que le
+        rectangle qui a changé, et tout le reste à l'écran est ce que les
+        précédentes y ont laissé. Une tête qui parle devant un mur immobile
+        stocke donc un visage par image plutôt qu'une image par image, et c'est
+        toute la raison pour laquelle le format n'est pas énorme.
+        <br><br>
+        Vous voyez cela parce que &laquo;&nbsp;Seulement les pixels que cette
+        image stocke&nbsp;&raquo; est sélectionné. Passez à &laquo;&nbsp;L'image
+        telle qu'elle apparaît&nbsp;&raquo; et chaque PNG sera l'image entière,
+        telle que l'animation la montre à cet instant."""
+
+[[faq]]
+q = "La transparence est-elle conservée&nbsp;?"
+a = """
+        Oui. La transparence d'un GIF tient dans un seul bit&nbsp;: un pixel est
+        soit peint, soit invisible, sans rien entre les deux, et le PNG stocke
+        exactement cela. Les images ressortent donc avec leurs zones
+        transparentes intactes. Si vous préférez un fond opaque, réglez
+        &laquo;&nbsp;Zones transparentes&nbsp;&raquo; sur un remplissage de
+        couleur&nbsp;: elle est écrite dans le PNG et ne pourra plus en être
+        retirée."""
+
+[[faq]]
+q = "Pourquoi les durées ne sont-elles pas celles que j'attendais&nbsp;?"
+a = """
+        Un GIF stocke chaque durée en centièmes de seconde, et les navigateurs
+        remontent depuis les années 1990 toute valeur inférieure à deux centièmes
+        à un dixième de seconde&nbsp;: une règle écrite pour les globes tournants
+        de l'époque et jamais retirée. Une image dont le fichier dit 0,01&nbsp;s
+        est donc jouée à 0,10&nbsp;s partout. Cet outil affiche la durée telle
+        qu'elle est réellement jouée, et indique à côté ce que stocke le fichier
+        quand les deux diffèrent."""
+
+[[faq]]
+q = "Puis-je remonter les images ensuite&nbsp;?"
+a = """
+        Oui, avec le <a href="../creer-un-gif/">Créateur de GIF</a> de ce site ou
+        avec n'importe quoi d'autre qui accepte un dossier d'images. C'est à cela
+        que sert le <code>frames.txt</code> du ZIP&nbsp;: découper une animation
+        jette les durées, puisqu'un PNG n'a nulle part où noter combien de temps
+        il est resté affiché, et la liste emporte donc avec elle la durée et la
+        position de chaque image."""
+
+[[faq]]
+q = "Dans quels formats les images peuvent-elles être enregistrées&nbsp;?"
+a = """
+        En PNG, et délibérément en PNG seulement. Une image de GIF, c'est au plus
+        256 couleurs et un bit de transparence&nbsp;; le PNG stocke cela
+        exactement et sans perte, là où le JPEG jetterait la transparence,
+        inventerait des couleurs que l'image n'a jamais eues et ferait le plus
+        souvent un fichier <em>plus gros</em> à partir d'un aplat. S'il vous faut
+        des JPEG, convertissez les PNG ensuite avec le
+        <a href="../redimensionner-une-image/">Redimensionneur d'images</a>."""
+
+[[faq]]
+q = "Y a-t-il une limite au nombre d'images lues&nbsp;?"
+a = """
+        Il n'y a pas de limite fixe. Le plafond réel est la mémoire de votre
+        machine&nbsp;: un GIF gonfle à environ un octet par pixel et par image
+        pendant sa lecture, si bien qu'un petit fichier peut représenter énormément
+        de mémoire. La page préfère alors cesser de lire plutôt que de laisser
+        mourir l'onglet. Si cela arrive, elle le dit et vous rend les images
+        qu'elle a obtenues."""
+
+[[faq]]
+q = "Ouvre-t-il un GIF abîmé&nbsp;?"
+a = """
+        Le plus souvent, oui. Les téléchargements tronqués, la marque de fin
+        absente et une dernière image qui s'arrête au milieu du flux sont
+        courants, et un lecteur qui les refuse est inutile pour précisément les
+        fichiers que les gens veulent le plus démonter. Toutes les images
+        complètes reviennent, avec une note disant ce qui n'allait pas. Seul un
+        fichier qui n'est pas du tout un GIF est refusé d'emblée."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période
+        d'essai. Les images ne portent aucun filigrane non plus. Le site affiche
+        de la publicité, et c'est elle qui le finance&nbsp;; les annonces ne
+        reçoivent rien sur vos fichiers."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez ensuite votre connexion et elle
+        continue de travailler. C'est aussi la façon la plus simple de prouver que
+        rien n'est envoyé, car un outil qui expédierait votre animation ailleurs
+        pour la traiter s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Découpez un GIF animé en ses images et enregistrez chacune en PNG. Le fichier est décompressé dans votre navigateur, aucune animation n'est donc jamais envoyée."
+features = [
+  "Chaque image d'un GIF dans son propre PNG, transparence conservée",
+  "L'image telle qu'elle apparaît, ou seulement les pixels qu'elle stocke",
+  "Durée, position, taille et mode d'effacement affichés pour chaque image",
+  "Garder une image sur deux ou sur cinq, ou cocher celles que vous voulez",
+  "Un seul ZIP pour le lot, avec une liste de durées pour remonter l'animation",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
+]
+
+[picker]
+title = "Déposez un GIF ici"
+hint = "ou cliquez pour parcourir &mdash; animé ou fixe, quelle que soit la taille"

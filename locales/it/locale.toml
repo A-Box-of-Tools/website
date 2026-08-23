@@ -50,6 +50,15 @@ complete = true
 "svg-to-image" = "svg-in-png"
 "trim-video" = "tagliare-video"
 "video-to-gif" = "video-in-gif"
+"gif-analyzer" = "analizzare-gif"
+"gif-maker" = "creare-gif"
+"grab-frame" = "estrarre-fotogramma-video"
+"id-photo" = "foto-tessera"
+"merge-pdf" = "unire-pdf"
+"reverse-video" = "invertire-video"
+"split-gif" = "dividere-gif-in-fotogrammi"
+"text-tools" = "formattare-json"
+"trim-audio" = "tagliare-audio"
 
 "guides" = "guide"
 "roadmap" = "roadmap"
@@ -73,6 +82,15 @@ complete = true
 "guides/embed-an-image-in-css" = "guide/inserire-un-immagine-nel-css"
 "guides/make-a-qr-code" = "guide/creare-un-qr-code"
 "guides/turn-a-video-into-a-gif" = "guide/trasformare-un-video-in-gif"
+"guides/format-json-without-uploading-it" = "guide/formattare-json"
+"guides/grab-a-frame-from-a-video" = "guide/estrarre-un-fotogramma-da-un-video"
+"guides/make-a-gif-from-images" = "guide/creare-una-gif-da-immagini"
+"guides/make-a-passport-photo" = "guide/fare-una-foto-tessera"
+"guides/merge-and-split-pdf-files" = "guide/unire-e-dividere-file-pdf"
+"guides/reverse-a-video" = "guide/invertire-un-video"
+"guides/split-a-gif-into-frames" = "guide/dividere-una-gif-in-fotogrammi"
+"guides/trim-an-audio-file" = "guide/tagliare-un-file-audio"
+"guides/whats-inside-a-gif" = "guide/cosa-ce-dentro-una-gif"
 
 #
 # ---------------------------------------------------------------------------

@@ -1,0 +1,175 @@
+<main>
+  <!-- Stap 1 &mdash; de frames -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies afbeeldingen</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="Verander hoe de frames getoond worden">
+          <button type="button" data-view="large" class="active" aria-pressed="true">Groot</button>
+          <button type="button" data-view="small" aria-pressed="false">Klein</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">Sorteer op naam</button>
+        <button type="button" data-sort="date" class="ghost">Sorteer op datum</button>
+        <button type="button" data-sort="reverse" class="ghost">Omkeren</button>
+        <button type="button" id="clear-all" class="ghost danger">Alles weghalen</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Sleep een frame aan zijn <span class="grip" aria-hidden="true">&#8942;&#8942;</span>-handvat
+      om het te verplaatsen, of gebruik de pijltjes erop. De volgorde hier is de volgorde
+      waarin ze spelen.
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">Elk frame blijft staan</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="Eenheid voor hoe lang elk frame blijft staan">
+        <option value="seconds" selected>seconden</option>
+        <option value="fps">frames per seconde</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">Op alle toepassen</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Stap 2 &mdash; instellingen -->
+  <section class="card">
+    <h2><span class="step">2</span> GIF-instellingen</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">Formaat</label>
+        <select id="size">
+          <option value="480" selected>480 px &mdash; een goede standaard</option>
+          <option value="640">640 px</option>
+          <option value="320">320 px</option>
+          <option value="240">240 px</option>
+          <option value="original">Gelijk aan de afbeeldingen</option>
+          <option value="custom">Zelf instellen&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="Eigen breedte in pixels">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="Eigen hoogte in pixels">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">Beeldpassing</label>
+        <select id="fit">
+          <option value="contain" selected>Passend erin (met balken)</option>
+          <option value="cover">Kader vullen (snijdt randen af)</option>
+          <option value="stretch">Uitrekken om te vullen (vervormt)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Achtergrondkleur</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">Kleuren</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; het maximum in een GIF</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; kleinste bestand</option>
+        </select>
+        <p class="field-note">Minder kleuren, kleiner bestand, meer banding.</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">Palet</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>De beste kleuren voor elk frame</option>
+          <option value="shared">Eén palet voor de hele GIF</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">Dithering</label>
+        <select id="dither">
+          <option value="on" selected>Aan &mdash; vloeiender verlopen</option>
+          <option value="off">Uit &mdash; vlakker, schonere randen</option>
+        </select>
+        <p class="field-note">Zet het uit voor logo's, lijntekeningen en schermafdrukken.</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">Herhalen</label>
+        <select id="loop-mode">
+          <option value="forever" selected>Eeuwig herhalen</option>
+          <option value="once">Eén keer afspelen</option>
+          <option value="times">Een vast aantal keer afspelen&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="Hoe vaak de animatie speelt" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">Transparantie</label>
+        <select id="transparent">
+          <option value="off" selected>Op de achtergrond plaatslaan</option>
+          <option value="on">Transparante vlakken houden</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="Voorbeeld van het eerste frame"></canvas>
+        <p id="preview-empty" class="preview-empty">Voeg afbeeldingen toe om een voorbeeld te zien</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Frames</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>Duurt</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>Framegrootte</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Speelt</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Stap 3 &mdash; exporteren -->
+  <section class="card">
+    <h2><span class="step">3</span> Maak de GIF</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>GIF maken</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="De klaargemaakte animatie, spelend"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>GIF downloaden</a>
+      </div>
+    </div>
+  </section>
+</main>

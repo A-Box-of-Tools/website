@@ -1,0 +1,16 @@
+#
+# Gids: een audiobestand inkorten - Dutch.
+#
+
+nav = "Audio inkorten"
+title = "Audio knippen zonder kwaliteitsverlies"
+description = "Waar een audioknip werkelijk valt, waarom die exact kan zijn terwijl een videoknip dat niet kan, waarom een naad soms klikt, en wat een fade van vijf milliseconden echt doet."
+heading = "Audio knippen zonder kwaliteitsverlies"
+lede = """
+    Een audioknip valt op het exacte moment dat je markeerde, in elke speler,
+    altijd &mdash; en dat geldt voor video niet. Hier staat waarom, wat de enige
+    echte adder onder het gras is, en wat je eraan doet."""
+updated = "21 augustus 2026"
+og_title = "Audio knippen zonder kwaliteitsverlies"
+og_description = "Waarom een audioknip exact kan zijn terwijl een videoknip dat niet kan, waarom een naad soms klikt, en wat een fade van vijf milliseconden echt doet."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

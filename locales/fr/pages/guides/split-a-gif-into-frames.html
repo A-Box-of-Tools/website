@@ -1,0 +1,194 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez le <a href="../../decouper-un-gif-en-images/">Découpeur de GIF</a>,
+      déposez le GIF, et chaque image apparaît en PNG à télécharger &mdash; une
+      par une, ou toutes dans une seule archive ZIP. Laissez les réglages
+      tranquilles et vous obtenez exactement ce que la plupart des gens veulent
+      dire&nbsp;: chaque image en entier, telle qu'elle se présente à ce moment de
+      l'animation.
+    </p>
+    <p>
+      Le reste de cette page parle des trois choses qui surprennent
+      ensuite&nbsp;: une image qui n'est qu'un petit morceau, une transparence qui
+      devient noire ailleurs, et des durées qui n'existent plus dès que les images
+      sont des fichiers séparés.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qu'est vraiment une image de GIF</h2>
+    <p>
+      Un GIF n'est pas une pile d'images. C'est <em>une</em> image, suivie d'une
+      série de rustines.
+    </p>
+    <p>
+      Chaque image après la première n'enregistre que le rectangle qui a changé,
+      accompagné d'une règle sur ce qu'il faut faire de la toile ensuite. Tout le
+      reste à l'écran est simplement ce que les images précédentes y ont laissé.
+      Une personne qui parle devant un mur immobile coûte un rectangle de visage
+      par image au lieu d'une image entière par image, et c'est toute la raison
+      pour laquelle un format sans compensation de mouvement et sans étape avec
+      perte n'est pas complètement inutilisable.
+    </p>
+    <p>
+      Il y a donc deux réponses différentes, et aussi honnêtes l'une que l'autre,
+      à «&nbsp;donne-moi l'image 14&nbsp;», et l'outil propose les deux&nbsp;:
+    </p>
+    <p>
+      <strong>L'image telle qu'elle apparaît.</strong> L'image entière à cet
+      instant&nbsp;: la quatorzième dessinée par-dessus tout ce qui précède. C'est
+      le réglage par défaut, et c'est ce que vous voulez pour une
+      planche-contact, une vignette, une image à publier, ou des images qui
+      partent dans un logiciel de montage.
+    </p>
+    <p>
+      <strong>Uniquement les pixels que cette image enregistre.</strong> La
+      rustine elle-même, à sa taille, à sa position, tout ce qu'elle ne porte pas
+      restant transparent. L'image 14 fait peut-être
+      60&nbsp;&times;&nbsp;40&nbsp;pixels de bouche. C'est la vue qui explique où
+      sont passés les octets du GIF, et celle qu'il vous faut si vous modifiez
+      l'animation au lieu d'y récolter des images.
+    </p>
+    <p>
+      Quand une image enregistrée ressemble à un fragment, votre fichier n'a
+      aucun problème. C'est le fichier.
+    </p>
+  </section>
+
+  <section>
+    <h2>La règle d'effacement, et pourquoi certaines images laissent des trous</h2>
+    <p>
+      Chaque image porte aussi l'une des quatre instructions sur ce qui arrive à
+      son rectangle avant que la suivante ne soit dessinée. L'outil l'affiche sous
+      chaque image dans la vue de ce qui est enregistré&nbsp;:
+    </p>
+    <p>
+      <strong>Reste à l'écran.</strong> Le cas courant. La rustine reste là où
+      elle a atterri et l'image suivante dessine par-dessus.
+    </p>
+    <p>
+      <strong>Efface sa zone ensuite.</strong> Le rectangle est nettoyé avant que
+      l'image suivante n'arrive. C'est ce que fait une animation avec un objet
+      transparent en mouvement, et c'est aussi la cause classique des GIF qui
+      clignotent.
+    </p>
+    <p>
+      <strong>Restaure ce qu'il y avait dessous.</strong> La toile revient à ce
+      qu'elle était avant que cette image ne dessine &mdash; un tampon, puis une
+      annulation. Rare, et c'est celle que les lecteurs de GIF faits maison
+      ratent le plus souvent.
+    </p>
+    <p>
+      Un détail à connaître si vous comparez des outils&nbsp;: la spécification
+      dit qu'«&nbsp;efface sa zone&nbsp;» devrait restaurer la <em>couleur de
+      fond</em>, mais tous les navigateurs depuis les années 1990 effacent vers
+      le <em>transparent</em>, parce que c'est ce que supposaient les animations
+      de l'époque. Cet outil suit délibérément les navigateurs, pour que les
+      images que vous récupérez soient les images que vous avez vues.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que devient la transparence</h2>
+    <p>
+      La transparence du GIF tient sur un bit. Un pixel est peint ou invisible, et
+      il n'y a rien entre les deux &mdash; pas de bord doux, pas d'ombre
+      partielle. C'est pour cela qu'un GIF à fond transparent a ce contour dur et
+      un peu dentelé.
+    </p>
+    <p>
+      Le PNG enregistre exactement cela, sans perte, si bien que les images
+      sortent avec leur transparence intacte et que rien n'est inventé. Gardez-la
+      si les images partent quelque part qui comprend la transparence.
+    </p>
+    <p>
+      Remplissez-la d'une couleur dans le cas contraire. Un logiciel qui ignore
+      une couche alpha l'affiche en général en noir&nbsp;: une image qui allait
+      très bien dans le navigateur arrive donc sur fond noir &mdash; et une
+      rustine enregistrée, transparente presque partout, arrive en rectangle noir
+      avec une bouche dedans. Choisir la couleur au départ règle la question. Elle
+      est écrite dans le PNG et ne peut plus être retirée ensuite, ce qui est la
+      seule raison pour laquelle ce n'est pas le réglage par défaut.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les durées, que les images ne peuvent pas porter</h2>
+    <p>
+      Un PNG n'a nulle part où noter combien de temps il est resté à l'écran.
+      Découpez une animation en PNG et les durées disparaissent, ce qui compte dès
+      l'instant où vous voulez tout remonter.
+    </p>
+    <p>
+      C'est à cela que sert le <code>frames.txt</code> de l'archive. Il liste le
+      délai, la position et la taille de chaque image, de sorte que l'animation
+      peut être reconstruite dans le
+      <a href="../../creer-un-gif/">Créateur de GIF</a> ou ailleurs. Cela coûte
+      quelques kilo-octets, et il n'y a aucun moyen de le reconstituer plus tard.
+    </p>
+    <p>
+      Deux choses au sujet des délais de GIF qui prennent tout le monde de
+      court&nbsp;:
+    </p>
+    <p>
+      <strong>L'unité est le centième de seconde</strong>, donc le pas le plus fin
+      du format est 0,01&nbsp;s. Un GIF exactement à 30&nbsp;i/s, cela n'existe
+      pas&nbsp;: 0,03&nbsp;s par image font 33,3&nbsp;i/s et 0,04&nbsp;s font 25.
+    </p>
+    <p>
+      <strong>Tout ce qui est sous 0,02&nbsp;s est joué à 0,10&nbsp;s.</strong>
+      Les navigateurs plafonnent cela depuis les années 1990 &mdash; une règle
+      écrite pour les globes tournants de l'époque et jamais retirée. Un GIF dont
+      le fichier annonce 0,01&nbsp;s par image revendique 100&nbsp;i/s et se joue
+      à 10. L'outil affiche le délai tel qu'il est réellement joué, et indique à
+      côté ce que contient le fichier lorsque les deux diffèrent, parce que cet
+      écart explique qu'un GIF découpé puis remonté puisse ressortir plus lent que
+      l'original.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les numéros d'image, et pourquoi ils sont complétés par des zéros</h2>
+    <p>
+      Les images sortent en <code>nom-001.png</code>, <code>nom-002.png</code>,
+      numérotées à partir de un et complétées à la largeur du dernier numéro. Ce
+      n'est pas de la décoration&nbsp;: <code>image9.png</code> se classe
+      <em>après</em> <code>image10.png</code> dans tous les gestionnaires de
+      fichiers et dans la plupart des logiciels qui importent une séquence, parce
+      qu'ils trient du texte et non des nombres. Des noms complétés se classent
+      correctement partout, et tout logiciel de montage qui importe une séquence
+      d'images les attend ainsi.
+    </p>
+    <p>
+      Alléger une longue animation en «&nbsp;gardant une image sur deux&nbsp;» ne
+      renumérote rien. L'image 42 s'appelle toujours 42, si bien que les fichiers
+      se recoupent avec l'original et avec la liste des durées.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi cela n'a pas besoin d'un serveur</h2>
+    <p>
+      Lire un GIF, ce sont deux travaux&nbsp;: parcourir les blocs du fichier, et
+      défaire la compression LZW dans laquelle ses pixels sont emballés. Ensemble
+      cela fait quelques centaines de lignes, elles sont écrites noir sur blanc
+      dans le dépôt, et elles s'exécutent sur votre propre machine &mdash; c'est
+      pourquoi la page continue de fonctionner le réseau débranché.
+    </p>
+    <p>
+      Votre navigateur sait déjà jouer un GIF, mais il ne vous en donne pas les
+      morceaux&nbsp;: une balise <code>&lt;img&gt;</code> vous donne une
+      animation, en dessiner une sur une toile vous donne la première image pour
+      toujours, et la seule interface qui va plus loin manque à Safari. Le format
+      est donc lu ici même, de la même façon dans tous les navigateurs &mdash; et
+      le lire soi-même est aussi ce qui rend possible de vous montrer les rustines
+      et les règles d'effacement.
+    </p>
+    <p>
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
+      fichiers à un convertisseur en ligne&nbsp;?</a> détaille quatre
+      vérifications qui vous diront la même chose de n'importe quel outil,
+      celui-ci compris.
+    </p>
+  </section>

@@ -1,0 +1,260 @@
+#
+# Créateur de GIF - French.
+#
+# Overrides for tools/gif-maker/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Créateur de GIF"
+heading = "Créer&nbsp;un&nbsp;GIF <span class=\"h1-kw\">&mdash; des images en GIF animé</span>"
+tagline = "Transformer une série d'images en une seule animation."
+
+title = "Créer un GIF à partir d'images &mdash; gratuit, sans envoi de fichier"
+description = "Transformez des images JPG, PNG ou WebP en GIF animé, gratuitement et entièrement dans le navigateur. Vous fixez l'ordre, la vitesse et la taille. Rien n'est envoyé, et cela marche hors ligne."
+og_title = "Créateur de GIF &mdash; des images en GIF animé, dans votre navigateur"
+og_description = "Rangez les images, dites combien de temps chacune reste à l'écran, choisissez une taille, et repartez avec un GIF. La palette et la compression sont calculées sur votre machine ; rien n'est envoyé."
+og_image_alt = "Créateur de GIF - transformer une série d'images en un GIF animé"
+
+pledge = """
+    Chaque image est dessinée, quantifiée et compressée par votre propre navigateur,
+    et le GIF fini est assemblé en mémoire sur cette machine. Il n'y a, à l'autre
+    bout de cette page, aucun serveur à qui envoyer une image, quand bien même
+    quelque chose ici le voudrait."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et fabriquez un GIF. Pas
+      une seule requête ne transporte d'image, de vignette ni de nom de fichier.
+      Vous pouvez aussi couper la connexion et en fabriquer un quand même."""
+
+read_first = """
+, <code>src/quantize.js</code> pour la palette à
+      laquelle chaque image est réduite, ainsi que <code>src/lzw.js</code> et
+      <code>src/gif.js</code> pour le compresseur et le fichier qui l'accueille.
+      Aucun d'eux ne comporte une ligne capable d'atteindre le réseau."""
+
+howto_heading = "Comment créer un GIF à partir d'images"
+
+card = """
+            Rangez des images, dites combien de temps chacune reste à l'écran, et
+            repartez avec un GIF animé. Les couleurs et la compression sont
+            calculées sur votre propre machine."""
+
+[words]
+plural = "images"
+choose = "des images"
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Vos fichiers restent chez vous"
+
+[[privacy]]
+title = "Vos images n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page a le droit de
+      contacter, et pas une seule ne nous appartient. Il n'existe ici aucun point de
+      collecte où vos fichiers pourraient atterrir, ni rien dans le code qui les y
+      enverrait s'il en existait un. Cette ligne disait autrefois
+      <code>connect-src 'none'</code>, ce qui ne souffrait aucune exception&nbsp;;
+      la publicité a coûté cela, et le dire fait partie du marché."""
+
+[[privacy]]
+title = "L'encodeur, ce sont quatre fichiers de ce dépôt."
+body = """
+ Un GIF a besoin d'un
+      quantificateur de couleurs et d'un compresseur LZW, et le navigateur ne fournit
+      ni l'un ni l'autre&nbsp;: les deux sont donc écrits ici, dans
+      <code>src/quantize.js</code> et <code>src/lzw.js</code>, avec le conteneur dans
+      <code>src/gif.js</code>. Rien n'est téléchargé pour en fabriquer un, et aucun
+      moteur ne se charge à la première utilisation."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Aucun des deux ne reçoit quoi
+      que ce soit sur vos images&nbsp;: ni un fichier, ni une vignette, ni un nom,
+      une taille ou un nombre. Chaque ligne qui lit, décode, dessine ou compresse une
+      image est servie depuis cette origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que charge le bouton de don, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l'en-tête est dessiné par
+      un script de cdnjs.buymeacoffee.com et prend sa typographie sur Google Fonts. Ce
+      n'est rien de plus qu'un lien&nbsp;: il ne signale aucune visite et ne reçoit
+      rien sur vous ni sur vos images. Rien ne se produit tant que vous ne cliquez
+      pas, et ce sur quoi vous cliqueriez alors est le site de quelqu'un d'autre."""
+
+[[privacy]]
+title = "Tout fonctionne hors ligne."
+body = """
+ Coupez le réseau et chaque partie de cette
+      page continue de marcher. C'est la preuve la plus simple de toutes&nbsp;: un
+      outil qui expédierait vos images ailleurs pour en faire un GIF s'arrêterait à
+      l'instant où vous débranchez."""
+
+[[howto]]
+title = "Choisissez vos images."
+body = """
+ Déposez un dossier sur le sélecteur, ou
+      allez chercher les fichiers à la main. Le navigateur les lit directement sur
+      votre disque, et rien ne part nulle part pendant ce temps."""
+
+[[howto]]
+title = "Mettez-les dans l'ordre de lecture."
+body = """
+ Faites glisser par la
+      poignée, ou servez-vous des flèches. &laquo;&nbsp;Trier par nom&nbsp;&raquo;
+      compte comme on s'y attend, si bien que <code>frame_2</code> arrive avant
+      <code>frame_10</code>."""
+
+[[howto]]
+title = "Fixez la durée d'affichage de chaque image."
+body = """
+ Une demi-seconde
+      chacune, c'est un diaporama&nbsp;; un vingtième de seconde, c'est de
+      l'animation. Donnez la même durée à toutes d'un coup, ou laissez-en une
+      s'attarder."""
+
+[[howto]]
+title = "Choisissez une taille, et la façon de choisir les couleurs."
+body = """
+ Un GIF grossit
+      avec sa surface et son nombre d'images, et aucun curseur de qualité ne vient
+      le faire redescendre&nbsp;: la taille est donc le réglage qui compte le plus.
+      256 couleurs par image est le meilleur rendu et la valeur par défaut&nbsp;; une
+      palette unique donne un fichier plus léger et plus stable."""
+
+[[howto]]
+title = "Fabriquez le GIF et téléchargez-le."
+body = """
+ Il est construit sur votre
+      propre matériel&nbsp;: la durée dépend donc de votre machine et non d'une file
+      d'attente. L'animation finie se joue dans la page avant que vous ne
+      l'enregistriez."""
+
+[[faq]]
+q = "Mes images sont-elles envoyées quelque part&nbsp;?"
+a = """
+        Non. Vos images sont lues, dessinées, quantifiées et compressées par votre
+        propre navigateur sur votre propre matériel. Cet outil n'a aucune partie
+        serveur, et la <code>Content-Security-Policy</code> de la page nomme chaque
+        adresse qu'elle a le droit de contacter&nbsp;: aucune ne nous appartient.
+        Coupez le réseau, il fabrique toujours des GIF."""
+
+[[faq]]
+q = "Quels formats d'image puis-je utiliser&nbsp;?"
+a = """
+        Tout format d'image fixe que votre navigateur sait décoder, ce qui en pratique
+        veut dire JPG, PNG, WebP, GIF, AVIF et, sur les appareils Apple, HEIC. Il n'y
+        a ici aucune liste séparée à tenir à jour, parce que le décodage est le
+        travail du navigateur et non le nôtre."""
+
+[[faq]]
+q = "Pourquoi mon GIF est-il aussi gros&nbsp;?"
+a = """
+        Parce qu'un GIF stocke chaque image en pixels entiers. Il n'y a pas de
+        compensation de mouvement, rien n'est stocké comme
+        &laquo;&nbsp;pareil qu'avant mais décalé&nbsp;&raquo;, et il n'y a pas de
+        réglage de qualité&nbsp;: la taille vaut à peu près la surface multipliée par
+        le nombre d'images, et seules trois choses la font baisser.
+        <br><br>
+        Réduisez-le&nbsp;: diviser la taille par deux divise le fichier par quatre.
+        Utilisez moins d'images, ou gardez chacune plus longtemps. Descendez à 64 ou
+        32 couleurs et coupez le tramage, ce qui coûte moins qu'on ne le croit sur un
+        aplat et beaucoup sur une photographie. Si cela ne rentre toujours pas, la
+        réponse honnête est que ce que vous fabriquez est une vidéo, et qu'un MP4 de
+        la même chose fera peut-être un dixième de la taille."""
+
+[[faq]]
+q = "À quelle vitesse un GIF peut-il jouer&nbsp;?"
+a = """
+        Pas aussi vite que le chiffre le laisse croire. Le format stocke la durée de
+        chaque image en centièmes de seconde, et les navigateurs remontent depuis les
+        années 1990 toute valeur inférieure à deux centièmes à un dixième de
+        seconde&nbsp;: une règle écrite pour les globes tournants de l'époque et
+        jamais retirée. Une durée de 0,01&nbsp;s ne joue donc pas à 100 images par
+        seconde, mais à 10. C'est pour cela que cet outil ne vous propose rien en
+        dessous de 0,02&nbsp;s, et que 0,05&nbsp;s, soit 20 images par seconde, est à
+        peu près la limite de ce qu'il vaut la peine de demander."""
+
+[[faq]]
+q = "Que change le réglage de la palette&nbsp;?"
+a = """
+        Une image de GIF contient au plus 256 couleurs, et il faut bien que quelqu'un
+        les choisisse.
+        <br><br>
+        <strong>Les meilleures couleurs pour chaque image</strong> en choisit 256 pour
+        chaque dessin séparément&nbsp;: c'est le rendu le plus net, et la bonne
+        réponse pour une série de photographies sans lien entre elles. <strong>Une
+        palette pour tout le GIF</strong> construit une table unique à partir de
+        toutes les images à la fois. Le fichier est plus léger, et cela supprime le
+        scintillement qui apparaît quand la palette saute d'une image à l'autre au
+        sein d'une même scène&nbsp;: c'est donc le choix à faire quand les images sont
+        une séquence plutôt qu'une collection."""
+
+[[faq]]
+q = "Puis-je garder un fond transparent&nbsp;?"
+a = """
+        Oui, si vos images en ont un&nbsp;: réglez
+        &laquo;&nbsp;Transparence&nbsp;&raquo; sur &laquo;&nbsp;Garder les zones
+        transparentes&nbsp;&raquo;. Une chose à savoir avant. La transparence d'un GIF
+        tient dans un seul bit &mdash; un pixel est soit invisible, soit entièrement
+        peint, sans rien entre les deux &mdash; si bien que les bords lissés, les
+        ombres douces et tout ce qui s'estompe se retrouvent avec un bord dur. Si
+        votre animation part sur un fond dont vous connaissez la couleur, l'aplatir
+        sur cette couleur donnera un meilleur résultat."""
+
+[[faq]]
+q = "Y a-t-il une limite au nombre d'images&nbsp;?"
+a = """
+        Aucune limite n'est inscrite dans l'outil. Le plafond réel, c'est la mémoire
+        de votre machine et votre patience face au fichier qui en sort&nbsp;: les
+        images sont lues une par une, donc cent images ne posent pas de problème, mais
+        cent images en 640&nbsp;px font aussi un très gros GIF. Voyez plus haut,
+        &laquo;&nbsp;Pourquoi mon GIF est-il aussi gros&nbsp;?&nbsp;&raquo;"""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai. Il
+        n'y a pas non plus de filigrane sur le résultat. Le site affiche de la
+        publicité, et c'est elle qui le finance&nbsp;; les annonces ne reçoivent rien
+        sur vos images."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
+        de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
+        envoyé, car un outil qui expédierait vos images ailleurs pour les traiter
+        s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Transformez une série d'images en GIF animé. Les images, la palette et la compression sont toutes calculées dans votre navigateur, aucune image n'est donc jamais envoyée."
+features = [
+  "Assemble des images JPG, PNG, WebP, GIF et AVIF en un seul GIF animé",
+  "Durée par image, glisser pour réordonner, tri par nom ou par date",
+  "256, 128, 64 ou 32 couleurs, avec tramage Floyd-Steinberg facultatif",
+  "Une palette commune ou les meilleures couleurs pour chaque image",
+  "Transparence à un bit facultative, et lecture en boucle, une fois ou un nombre fixé de fois",
+  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+]
+
+[picker]
+title = "Déposez vos images ici"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP, GIF, AVIF"
