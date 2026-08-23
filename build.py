@@ -143,6 +143,14 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     lang_js = emit.js_text((SHARED / 'lang.js').read_text(encoding='utf-8'), 'shared/lang.js')
     lang_v = sitelib.text_hash(lang_js)
 
+    # The one question a tool page asks, hashed for the same reason and served
+    # from the same place. Only tool pages include it - it has nothing to ask on
+    # a guide - but it is written once at the root rather than into each tool,
+    # so that moving from one tool to the next is not a second copy to fetch.
+    feedback_js = emit.js_text(
+        (SHARED / 'feedback.js').read_text(encoding='utf-8'), 'shared/feedback.js')
+    feedback_v = sitelib.text_hash(feedback_js)
+
     planned = sitelib.load_toml(CONFIG / 'planned.toml')
 
     tools = [sitelib.load_tool(path, site)
@@ -176,7 +184,8 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     written = []
     for locale in locales:
         written += build_locale(out, templates, locale, locales, site, tools,
-                                prose, planned, css_v, lang_v, site_css, emit)
+                                prose, planned, css_v, lang_v, feedback_v,
+                                site_css, emit)
 
     # After every locale, because a locale only counts as finished once every
     # page in it has been rendered and had the chance to fall back. Raising
@@ -257,6 +266,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     copy_shared(out)
     write(out / 'site.css', site_css)
     write(out / 'lang.js', lang_js)
+    write(out / 'feedback.js', feedback_js)
 
     # Last, because it reads the finished tree rather than the sources. A link
     # is only checkable once everything it could point at has been written.
@@ -282,7 +292,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
 
 
 def build_locale(out, templates, locale, locales, site, tools, prose, planned,
-                 css_v, lang_v, site_css, emit):
+                 css_v, lang_v, feedback_v, site_css, emit):
     """The whole site, in one language, under out/<lang>/ - or at the root of
     out/ for English, whose pages keep the addresses they have always had.
 
@@ -361,7 +371,7 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written = []
     for tool in ltools:
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
-                   links, lang_v, guide_of.get(tool['slug'], {}),
+                   links, lang_v, feedback_v, guide_of.get(tool['slug'], {}),
                    related_of.get(tool['slug'], []), emit)
         written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
 
@@ -615,7 +625,7 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
-               lang_v, guide, related, emit):
+               lang_v, feedback_v, guide, related, emit):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -686,12 +696,13 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     # {% include %} a partial that uses them - the URL importer's warning being
     # the one that does.
     #
-    # [ui.tool] on every tool page and [ui.picker] only where there is a picker
-    # to describe. The second is not a tidiness: those strings name
-    # {{ tool.picker.urls.noun }}, which a tool that does not fetch addresses
-    # has never defined, so rendering them everywhere fails the build on the
-    # first tool that does not.
-    parts = ['tool'] + (['picker'] if sitelib.wants_urls(tool) else [])
+    # [ui.tool] and [ui.feedback] on every tool page, and [ui.picker] only where
+    # there is a picker to describe. The last is not a tidiness: those strings
+    # name {{ tool.picker.urls.noun }}, which a tool that does not fetch
+    # addresses has never defined, so rendering them everywhere fails the build
+    # on the first tool that does not.
+    parts = (['tool', 'feedback']
+             + (['picker'] if sitelib.wants_urls(tool) else []))
     ui_context = {'site': root, 'tool': tool, 'base': '../', 'links': links}
     ui = i18n.render_ui(templates, root['ui'], ui_context,
                         f'ui [{locale["lang"]}]', include=parts)
@@ -726,6 +737,9 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'csp': sitelib.render_csp(root['csp'], root.get('tool_csp', {}),
                                       sitelib.picker_csp(tool), tool['csp']),
             'css_href': css_href,
+            # Root-absolute and versioned, exactly like lang_href beside it and
+            # for the same cache reason. Only a tool page asks for this one.
+            'feedback_href': f'/feedback.js?v={feedback_v}',
             'jsonld': sitelib.tool_jsonld(root, tool),
             'body': body,
         })))
@@ -1385,10 +1399,10 @@ def copy_shared(out):
         # shared/css feeds the stylesheets the build assembles, and shared/js is
         # copied into each tool's src/shared/ by build_tool - minified, cached by
         # that tool's service worker. Copying either here would publish a second,
-        # raw copy at the site root that nothing references; site.css and
-        # lang.js are written separately, minified, by the caller - copying the
-        # source over either here would undo that.
-        if path.name in ('css', 'js', 'site.css', 'lang.js'):
+        # raw copy at the site root that nothing references; site.css, lang.js
+        # and feedback.js are written separately, minified, by the caller -
+        # copying the source over one of them here would undo that.
+        if path.name in ('css', 'js', 'site.css', 'lang.js', 'feedback.js'):
             continue
         if path.is_dir():
             shutil.copytree(path, out / path.name, dirs_exist_ok=True)

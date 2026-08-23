@@ -313,6 +313,26 @@ read_first_lead = """
       まず読むとよいのは、Content-Security-Policyについては\
       <code>config/site.toml</code>"""
 
+[ui.feedback]
+# 親指のラベルはスクリーンリーダーとツールチップのためのもので、アイコン自体は
+# 訳す必要がありません。
+prompt = "うまくいきましたか？"
+up = "はい"
+down = "いいえ"
+dismiss = "閉じる"
+
+reason_prompt = "何がうまくいきませんでしたか？"
+reason_wrong = "結果が違う"
+reason_failed = "最後まで進まない"
+reason_slow = "遅すぎる"
+reason_confusing = "使い方が分かりにくい"
+
+thanks = "ありがとうございます &mdash; 助かります。"
+
+note = """
+      送られるのは答えだけ、しかもボタンを押したときだけです。ファイルも、その
+      名前も、それにまつわる情報も、送られることはありません。"""
+
 [ui.guide]
 open_tool = "{{ tool.name | e }}を開く"
 

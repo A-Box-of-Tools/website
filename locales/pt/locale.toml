@@ -355,6 +355,26 @@ read_first_lead = """
       Os primeiros arquivos que valem a leitura são <code>config/site.toml</code>
       para a Content-Security-Policy"""
 
+[ui.feedback]
+# Os rótulos dos polegares são para o leitor de tela e a dica de ferramenta; os
+# ícones já se explicam sozinhos.
+prompt = "Resolveu o que você precisava?"
+up = "Sim"
+down = "Não"
+dismiss = "Fechar"
+
+reason_prompt = "O que deu errado?"
+reason_wrong = "Resultado errado"
+reason_failed = "Não terminou"
+reason_slow = "Lento demais"
+reason_confusing = "Confuso"
+
+thanks = "Obrigado &mdash; isso ajuda."
+
+note = """
+      Só a resposta é enviada, e só quando você aperta um botão. Nunca o seu
+      arquivo, nem o nome dele, nem nada a respeito."""
+
 [ui.guide]
 open_tool = "Abrir {{ tool.name | e }}"
 

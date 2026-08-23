@@ -325,6 +325,25 @@ read_first_lead = """
       सबसे पहले पढ़ने लायक फ़ाइलें ये हैं &mdash; Content-Security-Policy के लिए
       <code>config/site.toml</code>"""
 
+[ui.feedback]
+# अंगूठे के लेबल सिर्फ़ स्क्रीन रीडर और टूलटिप के लिए हैं - चिह्न खुद ही समझ आ जाते हैं।
+prompt = "क्या इससे काम बन गया?"
+up = "हाँ"
+down = "नहीं"
+dismiss = "बंद करें"
+
+reason_prompt = "क्या गड़बड़ हुई?"
+reason_wrong = "नतीजा गलत आया"
+reason_failed = "पूरा ही नहीं हुआ"
+reason_slow = "बहुत धीमा"
+reason_confusing = "समझ नहीं आया"
+
+thanks = "शुक्रिया &mdash; इससे मदद मिलती है।"
+
+note = """
+      सिर्फ़ आपका जवाब भेजा जाता है, वह भी तभी जब आप बटन दबाते हैं। आपकी फ़ाइल,
+      उसका नाम या उससे जुड़ी कोई बात कभी नहीं।"""
+
 [ui.guide]
 open_tool = "{{ tool.name | e }} खोलें"
 

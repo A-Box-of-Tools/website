@@ -353,6 +353,26 @@ read_first_lead = """
       I file da leggere per primi sono <code>config/site.toml</code> per la
       Content-Security-Policy"""
 
+[ui.feedback]
+# Le etichette dei pollici servono allo screen reader e al tooltip: le icone si
+# capiscono da sole.
+prompt = "Ha funzionato?"
+up = "Sì"
+down = "No"
+dismiss = "Chiudi"
+
+reason_prompt = "Cosa è andato storto?"
+reason_wrong = "Risultato sbagliato"
+reason_failed = "Non è arrivato in fondo"
+reason_slow = "Troppo lento"
+reason_confusing = "Poco chiaro"
+
+thanks = "Grazie &mdash; ci serve."
+
+note = """
+      Viene inviata solo la risposta, e solo quando premi un pulsante. Mai il
+      tuo file, né il suo nome, né niente che lo riguardi."""
+
 [ui.guide]
 open_tool = "Apri {{ tool.name | e }}"
 

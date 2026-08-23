@@ -697,6 +697,53 @@ Two details in there are worth knowing before changing it:
 column so the four land on one row. Changing either number without the other
 leaves an orphan on a second row.
 
+### The one question a tool page asks
+
+A second and a half after a download, a small panel appears under the step it
+came from: *Did this do the job?*, a thumb up and a thumb down. A thumb down
+offers four fixed reasons — wrong result, did not finish, too slow, confusing —
+and that is the whole of it. `shared/feedback.js`.
+
+It exists because nothing else here can tell you whether a tool works. Nothing
+is uploaded, so there is no server log to read, and the page view already
+counted says a tool was opened and cannot say whether anybody left with a file
+they could use. A tool that quietly produces a broken GIF in one browser is
+invisible until somebody writes in.
+
+Four things keep it from being the thing the rest of this site argues against:
+
+- **It sends an answer, not a report.** One `gtag` event carrying the tool's
+  slug, `up` or `down`, and one of four fixed reasons. No filename, no size, no
+  count, no dimension, and **no free-text box** — a comment field on a page that
+  has just handled somebody's passport scan collects filenames and worse, which
+  is the reason the reasons are chips.
+- **It goes where the page view already goes.** `google-analytics.com` is
+  already in `connect-src` and already named in the `PLATFORM_HOSTS` list each
+  tool's network check reads, so this added **no origin, no CSP change**, and
+  the live check on the page still reads green after an answer is sent.
+- **It asks once and then leaves.** An answer buys six months of silence on that
+  tool, a dismissal thirty days, a second dismissal a year — in `localStorage`,
+  like the language choice and for the same reason.
+- **It never gets in the way.** A panel in the flow of the page, not a modal and
+  not a toast: no focus taken, nothing covered, no button blocked.
+
+Two things to know before changing it. It is a **frame script**, delivered like
+`shared/lang.js` from `/feedback.js?v=<hash>` and included only by
+`templates/tool.html` — not a `js_parts` module, which would have to be imported
+by every tool's `main.js` and is the only reason this cost no per-tool code at
+all. And it finds a download **by the click**, in three shapes already in the
+markup: `a[download]` with an href, a button whose id starts with `download`,
+and anything carrying `data-download`. The third is the opt-in for a save button
+named something else, which today is exactly one — exif-editor's "Save this
+photo". Because a tool's `body.html` is copied whole into each
+`locales/<lang>/tools/<slug>.html`, a translation is a chance to lose that
+attribute silently; `DownloadHooks` in `tests/python/test_build.py` fails if a
+locale copy carries a different number of them than the English body.
+
+The words are `[ui.feedback]` in `config/site.toml`, translated in every
+`locale.toml` beside the rest of the frame — so adding a string there is a debt
+in ten languages, and `complete = true` will not build until they are written.
+
 ---
 
 ## Languages

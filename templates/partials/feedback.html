@@ -1,0 +1,65 @@
+<!--
+  "Did this do the job?" - asked once, after a download, and never again for
+  months. shared/feedback.js sets out why a site that measures nothing is
+  allowed to ask this, and the four rules that keep it small.
+
+  Rendered here, hidden, and moved next to the step the download came from when
+  it is actually asked. Rendered rather than built in JavaScript because every
+  word in it is translated, and the translations live in [ui.feedback] in
+  config/site.toml and in each locale.toml beside the rest of the frame - a
+  panel assembled in script would either carry English into ten languages or
+  need a second copy of those strings to fall out of step with.
+
+  `data-tool` is the English slug in every language. It is what the answer is
+  filed under, so it has to mean the same thing whichever page it came from.
+
+  The four reasons are `data-reason` values and not free text, and that is a
+  privacy decision rather than a design one: a comment box on a page that has
+  just handled somebody's passport scan collects filenames and worse. Four
+  fixed strings can only ever say one of four things.
+-->
+<div id="feedback" class="feedback" data-tool="{{ tool.slug }}" role="status" hidden>
+  <div class="feedback-ask">
+    <p class="feedback-q">{{ ui.feedback.prompt }}</p>
+    <div class="feedback-votes">
+      <button type="button" class="feedback-vote" data-verdict="up"
+              title="{{ ui.feedback.up }}" aria-label="{{ ui.feedback.up }}">
+        <span aria-hidden="true">&#128077;</span>
+      </button>
+      <button type="button" class="feedback-vote" data-verdict="down"
+              title="{{ ui.feedback.down }}" aria-label="{{ ui.feedback.down }}">
+        <span aria-hidden="true">&#128078;</span>
+      </button>
+    </div>
+    <button type="button" class="feedback-close"
+            title="{{ ui.feedback.dismiss }}" aria-label="{{ ui.feedback.dismiss }}">
+      <span aria-hidden="true">&#10005;</span>
+    </button>
+  </div>
+
+  <div class="feedback-why" hidden>
+    <p class="feedback-q">{{ ui.feedback.reason_prompt }}</p>
+    <div class="feedback-chips">
+      <button type="button" class="feedback-chip" data-reason="wrong">{{ ui.feedback.reason_wrong }}</button>
+      <button type="button" class="feedback-chip" data-reason="failed">{{ ui.feedback.reason_failed }}</button>
+      <button type="button" class="feedback-chip" data-reason="slow">{{ ui.feedback.reason_slow }}</button>
+      <button type="button" class="feedback-chip" data-reason="confusing">{{ ui.feedback.reason_confusing }}</button>
+    </div>
+  </div>
+
+  <p class="feedback-thanks" hidden>{{ ui.feedback.thanks }}</p>
+
+  <!--
+    What is sent, said where it is being asked rather than in a policy page.
+    The claim is checkable in the file named beside it, which is the same deal
+    every other claim on this page is offered under.
+  -->
+  <p class="feedback-note">{{ ui.feedback.note }}</p>
+</div>
+
+<!--
+  `defer` rather than blocking, unlike shared/lang.js: nothing here has to
+  happen before the first paint, and the panel cannot be asked for until there
+  is a result to download.
+-->
+<script src="{{ feedback_href }}" defer></script>

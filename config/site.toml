@@ -531,6 +531,45 @@ read_first_lead = """
       Content-Security-Policy"""
 
 #
+# The one question this site asks, on the tool page, after a download. Its own
+# table rather than more of [ui.tool] because it is the only part of the frame
+# that sends anything, and the words that say so should be as easy to find as
+# the code that does it - shared/feedback.js.
+#
+
+[ui.feedback]
+prompt = "Did this do the job?"
+
+# Labels rather than visible words: the buttons are a thumb up and a thumb down,
+# which need no translation, and these are what a screen reader and a tooltip
+# say instead. "Yes" and "No" rather than "Good" and "Bad" - the question above
+# them is a question, and the answer to it is not a rating.
+up = "Yes"
+down = "No"
+dismiss = "Close"
+
+reason_prompt = "What went wrong?"
+
+# Four fixed answers, and there will never be a fifth without a reason. They are
+# chips and not a comment box on purpose: this panel appears on a page that has
+# just handled somebody's passport scan or their payslip, and a free-text field
+# there collects filenames and worse - see shared/feedback.js. Each one is a
+# thing the site could actually go and fix.
+reason_wrong = "Wrong result"
+reason_failed = "Did not finish"
+reason_slow = "Too slow"
+reason_confusing = "Confusing"
+
+thanks = "Thank you &mdash; that helps."
+
+# Said where the asking happens rather than in a policy page nobody opens. It
+# has to stay true of shared/feedback.js: the answer, the tool it is about, and
+# nothing else.
+note = """
+      Only the answer is sent, and only when you press a button. Never your
+      file, its name, or anything about it."""
+
+#
 # The one line a guide carries that a legal page does not: the link to the
 # tool the guide is about. Its own table because it needs {{ tool }}, and a
 # guide about no tool in particular - "is it safe to upload files" - has not
