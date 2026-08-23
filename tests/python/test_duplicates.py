@@ -30,9 +30,17 @@ The groups are deliberate, not accidental:
     out of the file whole; the crop, grab-frame and video-to-gif readers
     re-encode and have no use for either. That difference is commented in the
     files and is the only difference between the groups.
-  - mp4.js is shared by trim and reverse alone. crop-video's writer takes a
-    different timescale and a different tkhd signature, and images-to-video's is
-    a much smaller muxer; neither is a copy of anything.
+  - demux.js's first group re-encodes and has no use for the sample entry or
+    the display matrix, and the time-lapse maker joined it for that reason: it
+    draws every frame through a canvas too. What it wants the reader for is
+    different - the sample table is what lets it decode one frame in a hundred -
+    but that is a use of the reader, not a change to it.
+  - mp4.js has two groups. Trim and reverse write the sound that arrived back
+    out with the picture, so their writer interleaves two tracks. Images-to-video
+    and the time-lapse maker both write one video track and no audio - a
+    time-lapse has no sound worth keeping - so they share the smaller muxer.
+    crop-video's writer is its own: it carries audio like the trim pair and takes
+    a different timescale and tkhd signature from either.
 
 Adding a sixth copy of one of these, or a new duplicated module, means adding
 it here. `test_every_copy_is_declared` fails if a copy exists that no group
@@ -49,16 +57,16 @@ TOOLS = ROOT / 'tools'
 
 # (module, tools whose copies must be identical to each other)
 GROUPS = [
-    ('demux.js', ['crop-video', 'grab-frame', 'video-to-gif']),
+    ('demux.js', ['crop-video', 'grab-frame', 'timelapse-video', 'video-to-gif']),
     ('demux.js', ['reverse-video', 'trim-video']),
     ('mp4.js', ['reverse-video', 'trim-video']),
+    ('mp4.js', ['images-to-video', 'timelapse-video']),
 ]
 
 # Copies that are not duplicates of anything, and why. Named so that
 # test_every_copy_is_declared can tell "deliberately its own" from "forgotten".
 SINGLETONS = {
     ('mp4.js', 'crop-video'): 'its own timescale and tkhd signature',
-    ('mp4.js', 'images-to-video'): 'a smaller muxer, written separately',
 }
 
 

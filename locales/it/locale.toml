@@ -56,6 +56,8 @@ complete = true
 # Un nome e non un verbo, come per il QR code: "generatore password" è la
 # forma che si scrive, senza la preposizione che l'italiano scritto vorrebbe.
 "password-generator" = "generatore-password"
+# Il prestito, non "ripresa accelerata": timelapse e' quello che si scrive.
+"timelapse-video" = "creare-timelapse"
 
 "guides" = "guide"
 "roadmap" = "roadmap"

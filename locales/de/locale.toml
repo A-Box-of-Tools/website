@@ -96,6 +96,8 @@ complete = true
 # "Passwort Generator" ist genau das, was getippt wird, und zwar in dieser
 # Reihenfolge. Die Passphrase steht im Titel, nicht in der Adresse.
 "password-generator" = "passwort-generator"
+# Nicht "zeitraffer-video": gesucht wird die Handlung, nicht das Ergebnis.
+"timelapse-video" = "zeitraffer-erstellen"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of

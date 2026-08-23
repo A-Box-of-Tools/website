@@ -1,0 +1,153 @@
+<main>
+  <!-- चरण 1 &mdash; फ़ाइल -->
+  <section class="card">
+    <h2><span class="step">1</span> एक वीडियो चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="preview-wrap" id="preview-wrap" hidden>
+      <video id="preview" playsinline controls muted></video>
+      <canvas id="still" hidden></canvas>
+    </div>
+    <p id="preview-note" class="path-note" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>फ़ाइल</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>साइज़</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>फ़्रेम</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>लंबाई</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>फ़्रेम रेट</dt><dd id="src-fps">&mdash;</dd></div>
+      <div><dt>वीडियो</dt><dd id="src-codec">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- चरण 2 &mdash; रफ़्तार -->
+  <section class="card" id="speed-card" hidden>
+    <h2><span class="step">2</span> रफ़्तार चुनिए</h2>
+
+    <div class="speed-row" role="group" aria-label="क्लिप को कितना तेज़ करना है">
+      <button type="button" data-speed="2">2&times;</button>
+      <button type="button" data-speed="5">5&times;</button>
+      <button type="button" data-speed="10" class="active">10&times;</button>
+      <button type="button" data-speed="20">20&times;</button>
+      <button type="button" data-speed="30">30&times;</button>
+      <button type="button" data-speed="60">60&times;</button>
+      <button type="button" data-speed="120">120&times;</button>
+      <button type="button" data-speed="300">300&times;</button>
+    </div>
+
+    <!--
+      Two ways of saying the same thing, because people arrive with one of two
+      questions: "speed this up thirty times" and "make this fit in twenty
+      seconds". Typing in either box fills in the other.
+    -->
+    <div class="numbers">
+      <label>रफ़्तार
+        <span class="with-unit">
+          <input type="number" id="speed" min="1.1" max="1000" step="0.1" value="10">
+          <span class="unit">&times;</span>
+        </span>
+      </label>
+      <label>तैयार लंबाई
+        <span class="with-unit">
+          <input type="number" id="length" min="0.1" step="0.1">
+          <span class="unit">सेकंड</span>
+        </span>
+      </label>
+    </div>
+
+    <p class="interval-note" id="interval-note"></p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="fps">चलेगा</label>
+        <select id="fps">
+          <option value="24">24 फ़्रेम प्रति सेकंड पर</option>
+          <option value="30" selected>30 फ़्रेम प्रति सेकंड पर</option>
+          <option value="60">60 फ़्रेम प्रति सेकंड पर</option>
+        </select>
+        <p class="field-note">
+          तैयार क्लिप जिस रेट पर चलेगी। यह तय नहीं करता कि क्लिप कितनी तेज़ है,
+          वह ऊपर वाली रफ़्तार का काम है, यह सिर्फ़ यह तय करता है कि वह कितनी
+          चिकनी दिखेगी।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="size">साइज़</label>
+        <select id="size">
+          <option value="0" selected>असली साइज़</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+        <p class="field-note" id="size-note">
+          सिर्फ़ छोटा किया जाता है। टाइमलैप्स आम तौर पर छोटा ही देखा जाता है।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="quality">क्वालिटी</label>
+        <select id="quality">
+          <option value="low">छोटी फ़ाइल</option>
+          <option value="medium" selected>संतुलित</option>
+          <option value="high">सबसे अच्छी क्वालिटी</option>
+        </select>
+        <p class="field-note">
+          यहाँ के बाकी वीडियो टूलों से ज़्यादा, क्योंकि टाइमलैप्स के दो लगातार
+          फ़्रेमों में दबाने लायक एक जैसा बहुत कम होता है।
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- चरण 3 &mdash; नतीजा -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> टाइमलैप्स बनाइए</h2>
+
+    <dl class="summary" id="summary">
+      <div><dt>रखे गए फ़्रेम</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>हर कितने पर एक फ़्रेम</dt><dd id="sum-interval">&mdash;</dd></div>
+      <div><dt>तैयार लंबाई</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>नतीजे का फ़्रेम</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>पढ़ता है</dt><dd id="sum-read">&mdash;</dd></div>
+      <div><dt>लगभग</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-note" class="path-note" hidden></p>
+
+    <p class="silent-note">
+      नतीजे में आवाज़ नहीं होती। तीस गुना रफ़्तार पर बोली और संगीत न बोली रहते
+      हैं न संगीत, इसलिए यहाँ रखने लायक कुछ है ही नहीं। एक घंटे का वीडियो कुछ
+      मेगाबाइट में निकल आने की बड़ी वजह भी यही है।
+    </p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>टाइमलैप्स बनाइए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द करें</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline loop></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>टाइमलैप्स डाउनलोड करें</a>
+      </div>
+    </div>
+  </section>
+</main>

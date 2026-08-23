@@ -1,0 +1,152 @@
+<main>
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose a video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="preview-wrap" id="preview-wrap" hidden>
+      <video id="preview" playsinline controls muted></video>
+      <canvas id="still" hidden></canvas>
+    </div>
+    <p id="preview-note" class="path-note" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Size</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Frame</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Length</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Frame rate</dt><dd id="src-fps">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the speed -->
+  <section class="card" id="speed-card" hidden>
+    <h2><span class="step">2</span> Choose the speed</h2>
+
+    <div class="speed-row" role="group" aria-label="How much to speed the clip up">
+      <button type="button" data-speed="2">2&times;</button>
+      <button type="button" data-speed="5">5&times;</button>
+      <button type="button" data-speed="10" class="active">10&times;</button>
+      <button type="button" data-speed="20">20&times;</button>
+      <button type="button" data-speed="30">30&times;</button>
+      <button type="button" data-speed="60">60&times;</button>
+      <button type="button" data-speed="120">120&times;</button>
+      <button type="button" data-speed="300">300&times;</button>
+    </div>
+
+    <!--
+      Two ways of saying the same thing, because people arrive with one of two
+      questions: "speed this up thirty times" and "make this fit in twenty
+      seconds". Typing in either box fills in the other.
+    -->
+    <div class="numbers">
+      <label>Speed
+        <span class="with-unit">
+          <input type="number" id="speed" min="1.1" max="1000" step="0.1" value="10">
+          <span class="unit">&times;</span>
+        </span>
+      </label>
+      <label>Finished length
+        <span class="with-unit">
+          <input type="number" id="length" min="0.1" step="0.1">
+          <span class="unit">s</span>
+        </span>
+      </label>
+    </div>
+
+    <p class="interval-note" id="interval-note"></p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="fps">Plays at</label>
+        <select id="fps">
+          <option value="24">24 frames a second</option>
+          <option value="30" selected>30 frames a second</option>
+          <option value="60">60 frames a second</option>
+        </select>
+        <p class="field-note">
+          The rate the finished clip plays at. It does not change how fast the
+          clip is &mdash; that is the speed above &mdash; only how smooth it looks.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="size">Size</label>
+        <select id="size">
+          <option value="0" selected>Original size</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+        <p class="field-note" id="size-note">
+          Scaled down only. A time-lapse is usually watched small.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="quality">Quality</label>
+        <select id="quality">
+          <option value="low">Smaller file</option>
+          <option value="medium" selected>Balanced</option>
+          <option value="high">Best quality</option>
+        </select>
+        <p class="field-note">
+          Higher than the video tools here usually spend, because consecutive
+          frames of a time-lapse have little in common to compress away.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the export -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Make the time-lapse</h2>
+
+    <dl class="summary" id="summary">
+      <div><dt>Frames kept</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>One frame every</dt><dd id="sum-interval">&mdash;</dd></div>
+      <div><dt>Finished length</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Output frame</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Reads</dt><dd id="sum-read">&mdash;</dd></div>
+      <div><dt>About</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-note" class="path-note" hidden></p>
+
+    <p class="silent-note">
+      The result has no sound. Speech and music sped up thirty times are not
+      speech and music, so there is nothing here worth keeping &mdash; and
+      dropping it is why a time-lapse of an hour comes out a few megabytes.
+    </p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Make time-lapse</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline loop></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Download time-lapse</a>
+      </div>
+    </div>
+  </section>
+</main>
