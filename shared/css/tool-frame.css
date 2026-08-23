@@ -62,7 +62,7 @@ body {
 
 h1, h2 { line-height: 1.25; }
 
-main, .topbar, .crumbs, .privacy, .pledge, .faq, footer {
+main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   max-width: 940px;
   margin-inline: auto;
 }
@@ -587,40 +587,93 @@ button, .as-button {
 
 /* ---- the other tools --------------------------------------------------- */
 
-/* Four links out of the page, under the guide. Deliberately NOT the hub's
-   .tool-card: a card is a thing to choose between, and these are an aside at
-   the foot of a page whose own tool the reader has already chosen. Making them
-   look the same would put a second set of primary choices below the first.
+/* Four links out of the page, in a panel of their own below the questions.
+
+   They used to be a bare heading and a list of links at the foot of the .faq
+   section, and there they were invisible: a reader who has finished with the
+   tool is already scrolling, and one more quiet heading inside the questions
+   reads as one more question. The panel is what makes them a destination
+   rather than the end of the previous section - a tinted band the eye stops
+   at, the way it stops at the pledge above the tool.
+
+   Still deliberately NOT the hub's .tool-card. The cards on the hub sit on the
+   page background and are the page; these sit inside a recessed band, which
+   says the same thing about them that their position does - an aside at the
+   foot of a page whose own tool the reader has already chosen. The tile is a
+   card so that the whole of it is clickable, not so that it competes with the
+   tool above it.
 
    auto-fit rather than a fixed count, so the row is four across on a desktop,
    two on a tablet and one on a phone without a media query - the same
    arrangement .tool-grid uses on the hub, at a smaller measure.
 
-   13rem is measured rather than picked: the column above is 940px and the gap
-   1.4rem, so a 15rem minimum fits 3.6 of them and RELATED_COUNT is 4 - a row
-   of three with a single orphan under it. 13rem fits 4.18, which is the four
-   on one line, and still falls to two by 620px and one by 380px. Changing
-   either number without the other brings the orphan back. */
+   13rem is measured rather than picked, and the panel's padding is part of the
+   measurement: the column is 940px, 1.5rem of padding each side and the border
+   leave 890px inside, and with a 1rem gap that fits exactly four 13rem columns
+   and can never fit five. Widen the padding or the gap without narrowing the
+   minimum and RELATED_COUNT of 4 comes back as a row of three with an orphan
+   under it. */
+
+.tool-next {
+  margin-top: 2rem;
+  padding: 1.3rem 1.5rem 1.5rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.tool-next h2 {
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
 
 .tool-related {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-  gap: 0.9rem 1.4rem;
+  gap: 0.8rem 1rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.tool-related li { display: grid; gap: 0.15rem; }
+.tool-related li { display: grid; }
 
 .tool-related a {
+  display: grid;
+  gap: 0.3rem;
+  height: 100%;
+  padding: 0.8rem 0.9rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.tool-related a:hover,
+.tool-related a:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tool-related a { transition: none; }
+  .tool-related a:hover,
+  .tool-related a:focus-visible { transform: none; }
+}
+
+.tool-related-head {
   display: flex;
   gap: 0.45rem;
   align-items: baseline;
+}
+
+.tool-related-name {
   color: var(--accent);
   font-weight: 600;
-  font-size: 0.93rem;
-  text-decoration: none;
+  font-size: 0.95rem;
 }
 
 .tool-related a:hover .tool-related-name,
@@ -634,8 +687,9 @@ button, .as-button {
 .tool-related-note {
   font-size: 0.88rem;
   color: var(--text-dim);
-  /* The taglines are one line each at desktop width and two at phone width;
-     without this the rows below them would not line up. */
+  /* The taglines are one line each at desktop width and two or three in a
+     tile this narrow, and without this the last of those lines is often a
+     single word. */
   text-wrap: pretty;
 }
 
