@@ -1,0 +1,185 @@
+<main>
+  <!-- Schritt 1 &mdash; das Bild -->
+  <section class="card">
+    <h2><span class="step">1</span> Bild auswählen</h2>
+
+    <p class="card-lede">
+      Ein Screenshot eines Kontoauszugs, ein Foto eines Reisepasses, eine
+      Rechnung mit einer Adresse darauf: Genau die Bilder, die geschwärzt werden
+      müssen, sind die, die man dafür nicht auf einen fremden Server laden
+      sollte. Dieses hier liest der Browser direkt von Ihrer Festplatte.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">Ein anderes auswählen</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Schritt 2 &mdash; die Kästen -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Abdecken, was niemand sehen soll</h2>
+
+    <p id="edit-empty" class="field-summary">Wählen Sie ein Bild aus, dann erscheint es hier zum Bearbeiten.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Ziehen Sie über das Bild, um einen Kasten aufzuziehen. Einen Kasten
+        verschieben Sie durch Ziehen, seine Größe ändern Sie an den Griffen,
+        oder Sie erreichen ihn mit <kbd>Tab</kbd> und arbeiten mit den
+        Pfeiltasten: <kbd>Alt</kbd> und die Pfeile ändern die Größe,
+        <kbd>Entf</kbd> entfernt ihn. Was unter dem Kasten zu sehen ist, ist das
+        echte Ergebnis. Die Vorschau zeichnet derselbe Code, der später die
+        Datei schreibt, nur in Bildschirmgröße.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>Was ein neuer Kasten macht</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>Schwärzen</strong>
+            <span class="check-note">
+              Eine einzige Farbe, von Rand zu Rand. Von dem, was dort war,
+              bleibt nichts übrig: keine Kontur, kein Mittelwert, nicht einmal
+              die Anzahl der Zeichen. Das ist die einzige der drei Arten, die
+              wirklich abschließt, und die richtige für alles, was sich als Text
+              lesen lässt.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>Verpixeln</strong>
+            <span class="check-note">
+              Jeder Block wird zur Durchschnittsfarbe dieses Blocks. Die
+              ursprünglichen Pixel sind aus der Datei verschwunden, aber ein
+              Raster aus Mittelwerten ist immer noch eine Messung dessen, was
+              darunter lag. Bei Text in einer gewöhnlichen Schrift hat das in
+              veröffentlichten Arbeiten gereicht, um das Original zu
+              rekonstruieren. Gut für ein Gesicht in der Menge, nicht für eine
+              Kontonummer.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>Weichzeichnen</strong>
+            <span class="check-note">
+              Jedes Pixel wird zum gewichteten Mittel seiner Nachbarn. Derselbe
+              Einwand wie beim Verpixeln, nur schärfer: Weichzeichnen ist eine
+              Faltung, und Faltungen lassen sich im Prinzip umkehren. Nehmen Sie
+              es dort, wo etwas weicher werden soll, statt zu verschwinden.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">Wie stark verpixelt und weichgezeichnet wird</label>
+          <select id="strength">
+            <option value="light">Leicht</option>
+            <option value="medium" selected>Mittel</option>
+            <option value="heavy">Stark</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">Kasten in der Mitte hinzufügen</button>
+        <button type="button" id="undo" class="ghost" disabled>Rückgängig</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>Alle Kästen entfernen</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Schritt 3 &mdash; die Datei -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> Die geschwärzte Kopie speichern</h2>
+
+    <p class="card-lede">
+      Das Bild wird in Pixel dekodiert, die Kästen werden über diese Pixel
+      geschrieben, und das Ergebnis wird als neue Datei kodiert. Es gibt keine
+      Ebene, keine Anmerkung und keine Notiz darüber, wo die Kästen lagen, weil
+      die verdeckten Pixel aufhören zu existieren, bevor der Encoder überhaupt
+      etwas bekommt.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="auto" selected>Automatisch &mdash; JPEG für ein Foto, PNG für alles andere</option>
+          <option value="png">PNG (verlustfrei)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          Für die Schwärzung macht das keinen Unterschied: Die Pixel sind schon
+          weg, bevor der Encoder sie sieht. Es entscheidet nur darüber, was der
+          Rest des Bildes kostet und wie er komprimiert wird.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">Qualität</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Schwärzen und speichern</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      Wird in voller Größe geschwärzt&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>Die fertige Datei</h3>
+        <a id="download" class="primary as-button" href="#" download>Herunterladen</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        Öffnen Sie sie danach und versuchen Sie, den abgedeckten Text zu
+        markieren, oder fügen Sie sie in ein Bildbearbeitungsprogramm ein und
+        suchen Sie nach einer Ebene. Da ist nichts zu finden: ein flaches Bild,
+        und die abgedeckten Stellen wurden überschrieben, bevor es geschrieben
+        wurde.
+      </p>
+    </div>
+  </section>
+</main>

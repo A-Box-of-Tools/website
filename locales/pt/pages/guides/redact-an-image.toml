@@ -1,0 +1,19 @@
+#
+# Guia: tarjar uma imagem para que o que foi coberto suma de verdade - Portuguese (Brazil).
+#
+
+nav = "Tarjar uma imagem"
+title = "Como tarjar uma imagem para que o que foi coberto suma de verdade"
+description = "As tarjas pretas desenhadas na maioria dos programas ficam por cima da imagem e podem ser arrastadas. O que separa uma tarja de verdade de uma simples cobertura, por que texto pixelado pode ser lido de volta e como conferir um arquivo antes de enviar."
+
+heading = "Como tarjar uma imagem para que o que foi coberto suma de verdade"
+lede = """
+    Cobrir e remover têm exatamente a mesma aparência na tela e não são a mesma
+    coisa. Aqui está a diferença, os dois estilos que deixam mais rastro do que
+    se imagina, e as conferências que dizem qual das duas coisas você acabou de
+    fazer."""
+updated = "23 de agosto de 2026"
+
+og_title = "Como tarjar uma imagem para que o que foi coberto suma de verdade"
+og_description = "Por que um retângulo preto quase nunca é uma tarja de verdade, por que texto pixelado pode ser lido de volta e como conferir um arquivo antes de enviar."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

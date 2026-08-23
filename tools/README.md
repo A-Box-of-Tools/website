@@ -22,6 +22,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Video Frame Grabber](grab-frame/) | `/grab-frame/` | A full-quality still from any point. |
 | [Video to GIF](video-to-gif/) | `/video-to-gif/` | Pick the section, the size, and the frame rate. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
+| [Image Redactor](redact-image/) | `/redact-image/` | What you cover is deleted from the file, not covered up in it. |
 | [HEIC to JPG](heic-to-jpg/) | `/heic-to-jpg/` | The photos an iPhone makes, in a format everything opens. |
 | [Image to Data URI](image-to-data-uri/) | `/image-to-data-uri/` | The whole picture as one line of text. Paste it straight into CSS or HTML. |
 | [Image to ICO](image-to-ico/) | `/image-to-ico/` | One picture in. Every size a browser, Windows or a Mac asks for, out. |

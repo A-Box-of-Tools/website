@@ -76,6 +76,9 @@ complete = true
 # Named for the job rather than for the format. Almost nobody searches for an
 # "EXIF editor" in German; they search for how to get the data out of a photo.
 "exif-editor" = "exif-daten-entfernen"
+# "Schwaerzen" ist der Behoerdenbegriff und traegt genau die Bedeutung,
+# auf die es ankommt: entfernt, nicht verdeckt.
+"redact-image" = "bild-schwaerzen"
 "images-to-pdf" = "bilder-in-pdf-umwandeln"
 "images-to-video" = "bilder-in-video-umwandeln"
 "resize-image" = "bildgroesse-aendern"
@@ -104,6 +107,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "ratgeber/bild-auf-groesse-komprimieren"
 "guides/resize-an-image" = "ratgeber/bild-skalieren"
 "guides/remove-exif-and-gps-data" = "ratgeber/exif-und-gps-daten-entfernen"
+"guides/redact-an-image" = "ratgeber/bild-unkenntlich-machen"
 "guides/make-a-pdf-smaller" = "ratgeber/pdf-kleiner-machen"
 "guides/combine-images-into-a-pdf" = "ratgeber/bilder-zu-pdf-zusammenfuegen"
 "guides/turn-images-into-a-video" = "ratgeber/aus-bildern-ein-video-machen"

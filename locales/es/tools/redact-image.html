@@ -1,0 +1,179 @@
+<main>
+  <!-- Paso 1 &mdash; la imagen -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige la imagen</h2>
+
+    <p class="card-lede">
+      Una captura de un extracto bancario, la foto de un pasaporte, una factura
+      con una dirección: las imágenes que hace falta censurar son justo las que
+      no habría que subir al servidor de un desconocido para hacerlo. Esta la
+      lee el navegador directamente de tu disco.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">Elegir otra</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Paso 2 &mdash; los recuadros -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Cubre lo que nadie debe ver</h2>
+
+    <p id="edit-empty" class="field-summary">Elige una imagen y aparecerá aquí para dibujar sobre ella.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Arrastra sobre la imagen para dibujar un recuadro. Arrastra un recuadro
+        para moverlo, usa sus tiradores para cambiarlo de tamaño, o alcánzalo con
+        <kbd>Tab</kbd> y trabaja con las flechas: <kbd>Alt</kbd> y las flechas lo
+        redimensionan y <kbd>Supr</kbd> lo elimina. Lo que ves debajo de cada
+        recuadro es el resultado real: la vista previa la dibuja el mismo código
+        que escribe el archivo, al tamaño de la pantalla.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>Qué hace un recuadro nuevo</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>Taparlo en negro</strong>
+            <span class="check-note">
+              Un color plano de borde a borde. De lo que había no sobrevive
+              nada: ni un contorno, ni un promedio, ni el número de caracteres.
+              Es el único de los tres que cierra el asunto, y es lo que hay que
+              usar para cualquier cosa que se lea como texto.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>Pixelarlo</strong>
+            <span class="check-note">
+              Cada bloque pasa a ser el color promedio de ese bloque. Los píxeles
+              originales desaparecen del archivo, pero una cuadrícula de
+              promedios sigue siendo una medida de lo que había debajo, y con
+              texto en una tipografía corriente eso ha bastado, en trabajos
+              publicados, para reconstruir el original. Va bien para una cara
+              entre la gente; no para un número de cuenta.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>Difuminarlo</strong>
+            <span class="check-note">
+              Cada píxel pasa a ser un promedio ponderado de sus vecinos. La
+              misma objeción que con el pixelado, y algo más marcada: difuminar
+              es una convolución, y las convoluciones se pueden invertir en
+              principio. Úsalo cuando quieras suavizar algo, no esconderlo.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">Con qué fuerza se pixela y se difumina</label>
+          <select id="strength">
+            <option value="light">Suave</option>
+            <option value="medium" selected>Media</option>
+            <option value="heavy">Fuerte</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">Añadir un recuadro en el centro</button>
+        <button type="button" id="undo" class="ghost" disabled>Deshacer</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>Quitar todos los recuadros</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Paso 3 &mdash; el archivo -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> Guarda la copia censurada</h2>
+
+    <p class="card-lede">
+      La imagen se decodifica en píxeles, los recuadros se escriben sobre esos
+      píxeles y el resultado se codifica como un archivo nuevo. No hay capa, ni
+      anotación, ni registro de dónde estaban los recuadros, porque los píxeles
+      cubiertos dejan de existir antes de que el codificador reciba nada.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Formato</label>
+        <select id="format">
+          <option value="auto" selected>Automático &mdash; JPEG para una foto, PNG para lo demás</option>
+          <option value="png">PNG (sin pérdida)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          No cambia nada de la censura: los píxeles ya no están cuando el
+          codificador los ve. Solo decide cuánto ocupa el resto de la imagen y
+          cómo se comprime.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">Calidad</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Censurar y guardar</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      Censurando a tamaño completo&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>El archivo terminado</h3>
+        <a id="download" class="primary as-button" href="#" download>Descargar</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        Ábrelo después e intenta seleccionar el texto que tapaste, o pégalo en un
+        editor y busca una capa. No hay nada que encontrar: es una sola imagen
+        plana, y lo que cubriste se sobrescribió antes de escribirla.
+      </p>
+    </div>
+  </section>
+</main>

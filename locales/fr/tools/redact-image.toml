@@ -1,0 +1,269 @@
+#
+# Caviardage d'image - French.
+#
+# Overrides for tools/redact-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# «&nbsp;Caviarder&nbsp;» est le mot exact, et c'est celui qui porte la
+# distinction dont parle toute la page&nbsp;: supprimer plutôt que recouvrir.
+# «&nbsp;Flouter&nbsp;» revient dans le titre et les descriptions parce que
+# c'est le verbe que l'on tape, et il nomme justement le plus faible des trois
+# traitements.
+#
+
+name = "Caviardage d'image"
+heading = "Caviarder&nbsp;une&nbsp;image <span class=\"h1-kw\">&mdash; masquer, pixelliser ou flouter</span>"
+tagline = "Ce que vous recouvrez est supprimé du fichier, pas dissimulé dedans."
+
+title = "Caviarder une image &mdash; masquer, pixelliser ou flouter, sans envoi"
+description = "Recouvrez un nom, une adresse ou un numéro de compte sur une photo ou une capture, puis réenregistrez l'image&nbsp;: les pixels masqués disparaissent du fichier au lieu de rester sous un rectangle. Tout se passe dans le navigateur."
+og_title = "Caviarder une image pour que le masqué disparaisse vraiment"
+og_description = "Tracez des cadres sur ce que personne ne doit voir. Les pixels situés dessous sont écrasés avant l'écriture du fichier&nbsp;: aucun calque à déplacer, rien à récupérer. Rien n'est envoyé."
+og_image_alt = "Caviardage d'image - les pixels masqués sont écrasés, pas cachés"
+
+pledge = """
+    L'image est décodée, repeinte et réencodée par votre propre navigateur, avec
+    les codecs qu'il embarque déjà. Cet outil n'a aucune fonction réseau, ni
+    pour récupérer ni pour envoyer, et cela compte ici plus que presque partout
+    ailleurs sur ce site&nbsp;: les images que l'on apporte à un outil de
+    caviardage sont précisément celles où un nom, une adresse ou un numéro de
+    compte reste lisible."""
+
+live_hint = """
+      Inutile de nous croire sur parole&nbsp;: ouvrez les outils de développement,
+      regardez l'onglet Réseau et caviardez une capture d'écran. Aucune requête ne
+      transporte d'image, de vignette, de nom de fichier ni la position d'un seul
+      cadre. Ou débranchez-vous d'internet et caviardez-en une quand même."""
+
+read_first = """
+, <code>src/redact.js</code> pour les trois
+      fonctions qui écrasent les pixels, et <code>src/preview.js</code> pour
+      comprendre pourquoi ce qui s'affiche à l'écran est dessiné par ces mêmes
+      trois fonctions."""
+
+howto_heading = "Comment caviarder une image pour que le masqué disparaisse vraiment"
+
+card = """
+            Masquer, pixelliser ou flouter une partie d'une image. Les pixels
+            recouverts sont écrasés avant l'écriture du fichier&nbsp;: aucun
+            calque à écarter."""
+
+[words]
+plural = "images"
+choose = "une image"
+
+[[facts]]
+text = "Aucun envoi"
+
+[[facts]]
+text = "Aucun compte"
+
+[[facts]]
+text = "Aucun filigrane"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[privacy]]
+title = "Vos images n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page peut contacter,
+      et aucune ne nous appartient. Il n'existe ici aucun point de collecte où vos
+      fichiers pourraient arriver, ni rien dans le code qui les y enverrait s'il
+      en existait un."""
+
+[[privacy]]
+title = "Les pixels recouverts disparaissent ici, pas en chemin."
+body = """
+ L'image est
+      décodée dans un tampon de pixels, les cadres sont écrits dans ce tampon, et
+      le tampon est remis à l'encodeur. Il n'existe dans cette page aucune version
+      de l'image où les cadres seraient un calque séparé, parce qu'une telle
+      version n'est jamais créée&nbsp;: voir <code>src/redact.js</code>."""
+
+[[privacy]]
+title = "Rien ici ne va chercher quoi que ce soit."
+body = """
+ Il n'y a ni
+      <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
+      <code>sendBeacon</code> nulle part dans <code>src/</code>. Le travail, c'est
+      <code>getImageData</code>, trois boucles sur les octets et
+      <code>canvas.toBlob</code>, tout cela déjà installé dans votre
+      navigateur."""
+
+[[privacy]]
+title = "Les cadres ne sont signalés nulle part."
+body = """
+ Où vous avez
+      tracé, combien de cadres, de quelle taille et avec quel traitement&nbsp;:
+      tout cela reste dans la mémoire de cette page jusqu'à ce que vous la
+      fermiez. Aucun événement de mesure de ce dépôt ne transporte quoi que ce
+      soit de tout cela, et l'unique question posée après un téléchargement envoie
+      un pouce levé ou baissé et le nom de l'outil, rien d'autre."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Débranchez le réseau&nbsp;: l'outil est
+      identique, parce qu'il n'a jamais comporté d'étape réseau. C'est la preuve
+      la plus simple de toutes, et celle qu'il vaut mieux faire avant de caviarder
+      un passeport."""
+
+[[howto]]
+title = "Choisissez l'image."
+body = """
+ Une capture, un scan ou une photo&nbsp;:
+      tout ce que votre navigateur sait ouvrir. Elle est lue directement sur votre
+      disque et rien ne part nulle part pendant ce temps."""
+
+[[howto]]
+title = "Tracez un cadre sur ce que personne ne doit voir."
+body = """
+ Puis un autre
+      pour la suite. Un cadre se déplace en le faisant glisser, se redimensionne
+      par ses poignées, ou s'atteint avec la touche Tab et se déplace avec les
+      flèches. Ce qui apparaît sous le cadre est le résultat réel, dessiné par le
+      code qui écrira le fichier."""
+
+[[howto]]
+title = "Choisissez le noir, la pixellisation ou le flou &mdash; et préférez le noir."
+body = """
+ Un
+      aplat noir ne laisse rien du tout. Pixelliser et flouter remplacent les
+      pixels par des moyennes d'eux-mêmes&nbsp;: cela suffit pour un visage à
+      l'arrière-plan, cela ne suffit pas pour ce qui se lit comme du texte."""
+
+[[howto]]
+title = "Appuyez sur «&nbsp;Caviarder et enregistrer&nbsp;», puis vérifiez le fichier."
+body = """
+ L'image
+      affichée ensuite est le fichier terminé, redécodé. Ouvrez-le dans un éditeur
+      et cherchez un calque, ou essayez de sélectionner le texte masqué&nbsp;: il
+      n'y a qu'une image plate, et ce que vous avez recouvert a été écrasé avant
+      son écriture."""
+
+[[faq]]
+q = "Mon image est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non. Le fichier est décodé, caviardé et encodé par votre propre navigateur,
+        sur votre propre matériel. Cet outil n'a aucune fonction réseau, il ne va
+        jamais rien chercher et n'envoie jamais rien, et la
+        <code>Content-Security-Policy</code> de la page nomme chaque adresse qu'elle
+        peut contacter, dont aucune ne nous appartient. Chargez la page une fois,
+        débranchez-vous d'internet&nbsp;: elle continue de fonctionner."""
+
+[[faq]]
+q = "La partie masquée a-t-elle vraiment disparu du fichier&nbsp;?"
+a = """
+        Oui, et c'est la raison d'être de cet outil. L'image est décodée dans un
+        tampon de pixels&nbsp;; les cadres écrasent les pixels situés à
+        l'intérieur&nbsp;; le tampon est ensuite encodé en un nouveau fichier. Les
+        valeurs d'origine ont quitté la mémoire avant que l'encodeur ne reçoive
+        quoi que ce soit&nbsp;: il n'y a donc aucun calque à cacher, aucune
+        annotation à retirer et aucun historique à annuler. Vous pouvez le vérifier
+        comme vous vérifieriez l'affirmation de n'importe qui d'autre&nbsp;: ouvrez
+        le résultat dans un éditeur d'images et cherchez un second calque, ou
+        essayez de sélectionner le texte que vous avez recouvert."""
+
+[[faq]]
+q = "Une zone pixellisée ou floutée peut-elle être récupérée&nbsp;?"
+a = """
+        Parfois, et c'est le point à lire avant de choisir. Un aplat noir remplace
+        tout ce qui se trouve dessous par une couleur unie&nbsp;: rien ne survit,
+        ni un contour, ni une moyenne, ni le nombre de caractères. La pixellisation
+        remplace chaque bloc par la moyenne de ce bloc, et une grille de moyennes
+        reste une mesure de ce qui se trouvait dessous&nbsp;: pour du texte dans une
+        police ordinaire à une taille prévisible, des travaux publiés ont
+        reconstitué l'original en rendant des chaînes candidates puis en comparant
+        leurs moyennes. Le flou est une convolution, et les convolutions sont en
+        principe inversibles. Pixellisez donc un visage à l'arrière-plan si vous le
+        souhaitez, et masquez en noir tout ce qui se lit comme du texte."""
+
+[[faq]]
+q = "Pourquoi un rectangle noir tracé dans un logiciel de bureautique n'est-il pas la même chose&nbsp;?"
+a = """
+        Parce que la plupart des logiciels enregistrent le rectangle à côté de
+        l'image et non dedans. Une forme tracée dans un lecteur de PDF, une
+        présentation, un traitement de texte ou un éditeur d'images à calques est un
+        objet doté d'une position, posé sur la page&nbsp;: le déplacer, le supprimer
+        ou ouvrir le fichier dans un autre logiciel restitue exactement ce qu'il
+        recouvrait. Des tribunaux, des administrations et plus d'un journal ont
+        publié des documents caviardés de cette façon. Ici, le rectangle n'est pas
+        enregistré du tout&nbsp;: ce sont des valeurs de pixels écrites par-dessus
+        celles qui s'y trouvaient."""
+
+[[faq]]
+q = "Les données EXIF et GPS sont-elles retirées aussi&nbsp;?"
+a = """
+        Oui, par effet de bord. Enregistrer revient à encoder un canevas rempli de
+        pixels, et un canevas ne porte aucune balise&nbsp;: le lieu, le modèle
+        d'appareil, les dates et la vignette intégrée ne sont tout simplement pas
+        écrits dans le nouveau fichier. La vignette compte ici&nbsp;: c'est une
+        petite seconde copie de l'image, elle n'est pas toujours régénérée quand la
+        photo est modifiée, et une photo caviardée qui voyage avec une vignette non
+        caviardée annule tout le travail. Si vous voulez retirer les métadonnées
+        sans que l'image soit réencodée, le
+        <a href="../supprimer-les-donnees-exif/">Lecteur et nettoyeur EXIF</a> réécrit le
+        conteneur à la place."""
+
+[[faq]]
+q = "Quels formats sait-il lire et écrire&nbsp;?"
+a = """
+        Il lit tout ce que votre navigateur sait décoder, c'est-à-dire en pratique
+        JPEG, PNG, WebP, GIF, BMP et, sur la plupart des navigateurs actuels, AVIF.
+        Il écrit JPEG, PNG et WebP, parce que ce sont les encodeurs livrés avec les
+        navigateurs. En mode automatique, un JPEG ressort en JPEG et tout le reste
+        en PNG&nbsp;: une photo garde ainsi un poids de photo, et le texte resté
+        visible sur une capture reste net. Ce choix ne change rien au
+        caviardage&nbsp;: les pixels ont déjà disparu quand l'encodeur les voit."""
+
+[[faq]]
+q = "Puis-je le faire sans souris&nbsp;?"
+a = """
+        Oui. «&nbsp;Ajouter un cadre au centre&nbsp;» en pose un sur l'image, Tab
+        passe d'un cadre à l'autre, les flèches déplacent celui qui a le focus et
+        Alt avec les flèches le redimensionne&nbsp;; Maj porte chaque pas à dix
+        pixels et Suppr le retire. Chaque cadre dispose en outre, sous l'image,
+        d'une ligne indiquant sa taille, sa position, son traitement et un bouton
+        pour le supprimer&nbsp;: l'outil entier s'utilise au clavier et se lit avec
+        un lecteur d'écran."""
+
+[[faq]]
+q = "Est-ce que cela marche sur téléphone&nbsp;?"
+a = """
+        Oui. Tracer, déplacer et redimensionner passent par des événements de
+        pointeur et non de souris&nbsp;: un doigt fonctionne pareil, et les poignées
+        sont dessinées plus grandes sur un écran tactile. L'image à l'écran est
+        redessinée à la taille de l'écran pendant que vous travaillez&nbsp;; le
+        fichier, lui, est toujours caviardé à sa pleine résolution au moment où vous
+        appuyez sur le bouton."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni inscription, ni période d'essai, ni
+        filigrane. Il n'y a pas non plus de limite de taille d'image, parce qu'aucun
+        serveur ne la paie&nbsp;: le travail se fait sur votre propre machine. Le
+        site affiche de la publicité, et c'est elle qui le finance&nbsp;; les
+        annonces ne reçoivent rien de vos images."""
+
+[schema]
+description = "Caviarder une image dans le navigateur&nbsp;: tracer des cadres sur ce que personne ne doit voir, puis les masquer en noir, les pixelliser ou les flouter. Les pixels recouverts sont écrasés avant l'encodage du fichier, si bien que le résultat ne porte ni calque, ni annotation, ni métadonnées. Rien n'est envoyé."
+features = [
+  "Aplat noir, pixellisation et flou, choisis cadre par cadre",
+  "Les pixels recouverts sont écrasés avant l'encodage&nbsp;: aucun calque à écarter",
+  "L'aperçu est dessiné par le code qui écrit le fichier",
+  "Indique de combien de blocs une pixellisation est faite au lieu de la dire «&nbsp;forte&nbsp;»",
+  "Clavier et tactile autant que souris&nbsp;: tout cadre s'ajoute, se déplace, se redimensionne et se retire sans elle",
+  "Retire EXIF, GPS et la vignette intégrée par effet du réencodage",
+  "Sortie JPEG, PNG et WebP, avec choix automatique",
+  "Fonctionne hors ligne&nbsp;; sans envoi ni compte",
+]
+
+[picker]
+title = "Déposez une image ici"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP et tout ce que votre navigateur sait ouvrir"

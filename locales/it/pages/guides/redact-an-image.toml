@@ -1,0 +1,19 @@
+#
+# Guida: oscurare un'immagine perché quel che è coperto sparisca davvero - Italian.
+#
+
+nav = "Oscurare un'immagine"
+title = "Come oscurare un'immagine perché quel che è coperto sparisca davvero"
+description = "I rettangoli neri disegnati dalla maggior parte dei programmi stanno sopra l'immagine e si possono spostare. Che cosa distingue un vero oscuramento da una semplice copertura, perché un testo pixelato si può rileggere e come controllare un file prima di mandarlo."
+
+heading = "Come oscurare un'immagine perché quel che è coperto sparisca davvero"
+lede = """
+    Coprire una cosa e toglierla sembrano identiche a schermo e non sono affatto
+    la stessa cosa. Qui c'è la differenza, i due modi che lasciano più tracce di
+    quanto si creda, e i controlli che ti dicono quale delle due hai appena
+    fatto."""
+updated = "23 agosto 2026"
+
+og_title = "Come oscurare un'immagine perché quel che è coperto sparisca davvero"
+og_description = "Perché un rettangolo nero quasi mai è un oscuramento, perché un testo pixelato si può rileggere e come controllare un file prima di mandarlo."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

@@ -1,0 +1,175 @@
+<main>
+  <!-- चरण 1 &mdash; इमेज -->
+  <section class="card">
+    <h2><span class="step">1</span> इमेज चुनिए</h2>
+
+    <p class="card-lede">
+      बैंक स्टेटमेंट का स्क्रीनशॉट, पासपोर्ट की फ़ोटो, पते वाला कोई बिल। जिन इमेज
+      को छिपाने की ज़रूरत पड़ती है, वही वे इमेज हैं जिन्हें इसी काम के लिए किसी
+      अनजान सर्वर पर नहीं चढ़ाना चाहिए। इसे ब्राउज़र सीधे आपकी डिस्क से पढ़ता है।
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">दूसरी चुनें</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- चरण 2 &mdash; बॉक्स -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> जो नहीं दिखना चाहिए उसे ढकिए</h2>
+
+    <p id="edit-empty" class="field-summary">इमेज चुनिए, वह यहीं दिखने लगेगी और उस पर खींचा जा सकेगा।</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        इमेज पर खींचिए और एक बॉक्स बन जाएगा। बॉक्स को खींचकर हिलाइए, उसके हैंडल से
+        आकार बदलिए, या <kbd>Tab</kbd> से उस तक पहुँचकर तीर वाली कुंजियाँ चलाइए।
+        <kbd>Alt</kbd> के साथ तीर आकार बदलते हैं और <kbd>Delete</kbd> उसे हटा देता
+        है। हर बॉक्स के नीचे जो दिखता है वही असली नतीजा है: प्रीव्यू वही कोड बनाता है
+        जो फ़ाइल लिखता है, बस स्क्रीन के आकार में।
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>नया बॉक्स क्या करेगा</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>काला कर दीजिए</strong>
+            <span class="check-note">
+              किनारे से किनारे तक एक ही रंग। वहाँ जो था उसमें से कुछ नहीं बचता: न
+              कोई किनारा, न कोई औसत, न यह कि कितने अक्षर थे। तीनों में बात यहीं
+              ख़त्म होती है, और जो कुछ अक्षरों की तरह पढ़ा जा सकता है उसके लिए यही
+              चुनिए।
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>पिक्सेलेट कीजिए</strong>
+            <span class="check-note">
+              हर ब्लॉक उस ब्लॉक का औसत रंग बन जाता है। पुराने पिक्सेल फ़ाइल से सचमुच
+              चले जाते हैं, पर औसतों की जाली अब भी इस बात की नाप है कि नीचे क्या था,
+              और आम फ़ॉन्ट के अक्षरों के लिए इतनी सी नाप से मूल पाठ वापस निकाला जा
+              चुका है। भीड़ में किसी चेहरे के लिए ठीक है, खाता नंबर के लिए नहीं।
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>ब्लर कीजिए</strong>
+            <span class="check-note">
+              हर पिक्सेल अपने पड़ोसियों का भारित औसत बन जाता है। वही आपत्ति जो
+              पिक्सेलेट पर है, ज़रा और साफ़ रूप में: ब्लर एक कनवॉल्यूशन है, और
+              कनवॉल्यूशन सैद्धांतिक रूप से उलटा किया जा सकता है। इसे वहाँ लीजिए जहाँ
+              कुछ नरम करना है, छिपाना नहीं।
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">पिक्सेलेट और ब्लर कितने तेज़ हों</label>
+          <select id="strength">
+            <option value="light">हल्का</option>
+            <option value="medium" selected>मध्यम</option>
+            <option value="heavy">तेज़</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">बीच में एक बॉक्स जोड़ें</button>
+        <button type="button" id="undo" class="ghost" disabled>पहले जैसा करें</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>सारे बॉक्स हटाएँ</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- चरण 3 &mdash; फ़ाइल -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> छिपाई हुई कॉपी सेव कीजिए</h2>
+
+    <p class="card-lede">
+      इमेज पिक्सेल में खोली जाती है, बॉक्स उन्हीं पिक्सेल के ऊपर लिख दिए जाते हैं,
+      और नतीजा एक नई फ़ाइल के रूप में लिखा जाता है। न कोई लेयर, न कोई एनोटेशन, और न
+      यह लिखा रहता है कि बॉक्स कहाँ थे, क्योंकि ढके हुए पिक्सेल एनकोडर को कुछ मिलने
+      से पहले ही ख़त्म हो चुके होते हैं।
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">फ़ॉर्मैट</label>
+        <select id="format">
+          <option value="auto" selected>ऑटो &mdash; फ़ोटो के लिए JPEG, बाकी सबके लिए PNG</option>
+          <option value="png">PNG (बिना नुक़सान)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          छिपाने पर इससे कोई फ़र्क नहीं पड़ता: एनकोडर जब पिक्सेल देखता है, वे तब तक
+          जा चुके होते हैं। इससे बस यह तय होता है कि बाकी इमेज कितनी जगह लेगी और
+          कैसे दबाई जाएगी।
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">क्वालिटी</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>छिपाकर सेव करें</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      पूरे आकार में काम चल रहा है&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>तैयार फ़ाइल</h3>
+        <a id="download" class="primary as-button" href="#" download>डाउनलोड</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        बाद में इसे खोलकर ढके हुए अक्षर चुनकर देखिए, या किसी एडिटर में डालकर लेयर
+        ढूँढिए। वहाँ कुछ नहीं मिलेगा: एक सपाट इमेज है, और जो हिस्सा आपने ढका था वह
+        फ़ाइल लिखे जाने से पहले ही ऊपर से लिख दिया गया था।
+      </p>
+    </div>
+  </section>
+</main>

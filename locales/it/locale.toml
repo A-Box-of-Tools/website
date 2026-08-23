@@ -30,6 +30,9 @@ complete = true
 "edit-audio" = "modificare-audio"
 # Quasi nessuno cerca un "editor EXIF": si cerca come togliere i dati da una foto.
 "exif-editor" = "rimuovere-dati-exif"
+# "Oscurare" e il verbo che si usa anche negli atti pubblici, e porta con se
+# la distinzione su cui vive la pagina: togliere, non coprire.
+"redact-image" = "oscurare-immagine"
 # Le conversioni perdono il verbo, come in "immagini-in-pdf": è il modo in cui
 # si scrive una conversione in italiano quando la si cerca.
 "heic-to-jpg" = "heic-in-jpg"
@@ -61,6 +64,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "guide/comprimere-un-immagine-a-una-dimensione-esatta"
 "guides/resize-an-image" = "guide/ridimensionare-un-immagine"
 "guides/remove-exif-and-gps-data" = "guide/rimuovere-i-dati-exif-e-gps"
+"guides/redact-an-image" = "guide/oscurare-un-immagine"
 "guides/make-a-pdf-smaller" = "guide/ridurre-le-dimensioni-di-un-pdf"
 "guides/combine-images-into-a-pdf" = "guide/unire-immagini-in-un-pdf"
 "guides/turn-images-into-a-video" = "guide/trasformare-immagini-in-un-video"

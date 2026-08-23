@@ -1,0 +1,220 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../redact-image/">Image Redactor</a>, drop the picture
+      in, drag a box over each thing that should not be seen, and press
+      &ldquo;Redact and save&rdquo;. Use the black fill for anything that reads
+      as text. The file you get back has different pixel values where the boxes
+      were: there is no rectangle in it to move aside, because there is no
+      rectangle in it at all.
+    </p>
+    <p>
+      Everything below is why that last sentence is the whole point, and how to
+      tell whether a tool you already use can say the same.
+    </p>
+  </section>
+
+  <section>
+    <h2>Covering and removing look identical on screen</h2>
+    <p>
+      Draw a black rectangle over a name in a PDF reader, a slide deck, a word
+      processor or a layered image editor, and what you see is a name with a
+      black rectangle over it. What you have <em>saved</em>, in most of those
+      programs, is a document containing the name and, separately, a rectangle
+      with a position, a size and a colour.
+    </p>
+    <p>
+      Anyone who opens that file can move the rectangle, delete it, or open the
+      document in a program that draws the layers in a different order. The name
+      is still in there. Nothing about the screen tells you which of the two
+      things just happened, which is exactly why this keeps happening to
+      organisations with lawyers.
+    </p>
+    <p>
+      It has published court filings, government reports, contracts, and more
+      than one newspaper's scanned documents. The pattern is always the same: the
+      rectangle was the annotation, and the annotation was not the picture.
+    </p>
+  </section>
+
+  <section>
+    <h2>What a real redaction is</h2>
+    <p>
+      A picture is a grid of numbers, one per pixel. Redacting it means
+      <strong>writing different numbers into the grid</strong> and then saving
+      the grid. After that there is nothing to recover, not because the file
+      hides it well but because the values are not in the file. That is the only
+      version of this that survives being opened by somebody curious.
+    </p>
+    <p>
+      Three consequences worth knowing, because they are what a redacted file
+      should look like:
+    </p>
+    <ul>
+      <li>
+        <strong>The result is one flat picture.</strong> No layers, no objects,
+        no annotation list, nothing to toggle. If your tool hands back a file
+        with a layer in it, it covered rather than removed.
+      </li>
+      <li>
+        <strong>It is a new file, not an edited old one.</strong> The pixels went
+        through a decoder and an encoder, so what comes out is written from the
+        redacted grid.
+      </li>
+      <li>
+        <strong>The metadata is gone too</strong>, as a side effect. A grid of
+        pixels carries no camera model, no GPS position, no timestamp. See
+        <a href="../remove-exif-and-gps-data/">what a photo says about you</a>
+        for what that would otherwise have been.
+      </li>
+    </ul>
+    <p>
+      That last one is worth spelling out, because it hides a trap of its own.
+      Many photos carry an <strong>embedded thumbnail</strong>: a small second
+      copy of the picture, written when the file was created and not always
+      regenerated when the picture is edited. A photo redacted by a tool that
+      edits the file in place, rather than re-encoding it, can travel with a
+      thumbnail of the un-redacted original. It is a small picture, and it is
+      easily large enough to read a name off.
+    </p>
+  </section>
+
+  <section>
+    <h2>Black, pixelate or blur &mdash; and why they are not equivalent</h2>
+    <p>
+      All three overwrite the pixels. Only one of them leaves nothing behind.
+    </p>
+    <h3>Black fill</h3>
+    <p>
+      Every pixel in the box becomes the same colour. Nothing about what was
+      there survives: not an outline, not an average brightness, not the number
+      of characters, not the length of the word. It is the only one of the three
+      where the question &ldquo;could this be undone?&rdquo; has a flat no for an
+      answer, and it is what to use for a name, an address, an account number, a
+      licence plate, a signature or a barcode.
+    </p>
+    <h3>Pixelation</h3>
+    <p>
+      The box is cut into blocks and each block becomes the average colour of
+      that block. The original pixels really are gone &mdash; but a grid of
+      averages is still a measurement of what was underneath, and for text that
+      measurement can be enough.
+    </p>
+    <p>
+      The attack is not subtle. Text is drawn from a small set of possibilities:
+      a font, a size, a position, and a string. Someone who suspects what kind of
+      thing was there can render every candidate string the same way, pixelate
+      each one with the same block grid, and compare the averages with yours. The
+      match is usually unique. This has been demonstrated on real pixelated
+      screenshots, and there is published software that does it.
+    </p>
+    <p>
+      What decides it is <strong>how many blocks the mosaic is made of</strong>.
+      Two blocks across a word are two numbers, and two numbers cannot identify a
+      string. Forty blocks across the same word are forty numbers, and forty is
+      plenty. This is why the Image Redactor tells you the block count for the
+      finest mosaic on the picture rather than calling a setting
+      &ldquo;strong&rdquo; &mdash; the number is the fact, and the adjective is
+      an opinion about it.
+    </p>
+    <h3>Blur</h3>
+    <p>
+      Every pixel becomes a weighted average of its neighbours. That is a
+      convolution, and convolutions are in principle invertible: recovering the
+      original from a blurred copy is a standard problem with standard software,
+      and it does best on exactly the case that matters here, which is crisp
+      text blurred by a small radius.
+    </p>
+    <p>
+      None of this makes pixelation and blur useless. A face in the background of
+      a street photo, a house number across the road, a colleague's screen behind
+      you on a video call &mdash; those are all fine, and they keep the picture
+      looking like a picture. The rule is simply: <strong>if it reads as text,
+      black it out.</strong>
+    </p>
+  </section>
+
+  <section>
+    <h2>Four checks before you send it</h2>
+    <p>
+      These take a minute between them and they work on the output of any tool,
+      including this one. A claim you can check is worth more than a claim you
+      are asked to accept.
+    </p>
+    <ol>
+      <li>
+        <strong>Try to select the text.</strong> Open the file and drag across
+        the covered area. If anything highlights, the text is still in the
+        document and you are looking at a shape drawn on top of it.
+      </li>
+      <li>
+        <strong>Open it in an editor and look for layers.</strong> One layer,
+        called something like &ldquo;Background&rdquo;, is what a redacted image
+        looks like. A separate rectangle object means the original is underneath
+        it.
+      </li>
+      <li>
+        <strong>Look at the thumbnail.</strong> Some file managers and photo
+        viewers show the embedded thumbnail rather than re-reading the picture.
+        If the small version still shows what you covered, the file was edited
+        rather than rebuilt.
+      </li>
+      <li>
+        <strong>Zoom all the way in on the edges of the box.</strong> A
+        redaction that was applied to the pixels has a hard edge at the exact
+        boundary. A soft or semi-transparent edge means something was drawn over
+        the picture with an opacity, and an opacity below 100% is a copy of the
+        original with a tint on it.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Crop rather than cover, where you can</h2>
+    <p>
+      If the thing you are hiding is at the edge of the picture &mdash; a header
+      with an account name, a browser tab, a taskbar with your username in it
+      &mdash; cropping it off is stronger than covering it and produces a
+      cleaner-looking file. There is no box to be suspicious of because there is
+      nothing there at all.
+    </p>
+    <p>
+      The <a href="../../resize-image/">Image Resizer</a> crops, and
+      <a href="../resize-an-image/">its guide</a> covers what else it does. Use
+      the redactor for what is in the middle.
+    </p>
+  </section>
+
+  <section>
+    <h2>A screenshot is often the worst offender</h2>
+    <p>
+      The picture is usually not the only thing in a screenshot that identifies
+      you. Before sending one, look at what surrounds the part you meant to
+      share: the window title, the browser's address bar and its autocomplete
+      dropdown, open tabs, a notification, the clock and the date, the
+      taskbar, a signed-in avatar in the corner, the name of the wifi network.
+      Any one of them can place you, and none of them is what you were looking at
+      when you took the shot.
+    </p>
+  </section>
+
+  <section>
+    <h2>None of this needs an upload</h2>
+    <p>
+      Reading a picture, writing over some of its pixels and encoding it again
+      are things every browser has been able to do for years. There is no
+      technical reason for a photograph of your passport, your payslip or your
+      bank statement to travel to a stranger's server and back in order to have
+      a black box put on it &mdash; and those are precisely the pictures a
+      redaction tool is handed.
+    </p>
+    <p>
+      The tool here does not send it anywhere: the page's
+      <code>Content-Security-Policy</code> names every address it may contact,
+      and none of them belongs to this site. Load the page, unplug from the
+      internet, and redact something anyway if you would rather check than be
+      told.
+      <a href="../is-it-safe-to-upload-files/">Is it safe to upload files to
+      online converters?</a> sets out three more checks you can run on any tool.
+    </p>
+  </section>

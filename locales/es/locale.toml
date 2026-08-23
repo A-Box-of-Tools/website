@@ -49,6 +49,9 @@ complete = true
 "edit-audio" = "editar-audio"
 # Casi nadie busca un "editor EXIF"; se busca cómo quitarle los datos a una foto.
 "exif-editor" = "eliminar-datos-exif"
+# "Censurar" es el verbo que se busca en espanol para tapar datos de una
+# imagen, aunque el ingles "redact" sea mas estrecho.
+"redact-image" = "censurar-imagen"
 "images-to-pdf" = "imagenes-a-pdf"
 "images-to-video" = "imagenes-a-video"
 "resize-image" = "redimensionar-imagen"
@@ -71,6 +74,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "guias/comprimir-una-imagen-a-un-tamano-exacto"
 "guides/resize-an-image" = "guias/redimensionar-una-imagen"
 "guides/remove-exif-and-gps-data" = "guias/eliminar-datos-exif-y-gps"
+"guides/redact-an-image" = "guias/censurar-una-imagen"
 "guides/make-a-pdf-smaller" = "guias/reducir-el-tamano-de-un-pdf"
 "guides/combine-images-into-a-pdf" = "guias/unir-imagenes-en-un-pdf"
 "guides/turn-images-into-a-video" = "guias/convertir-imagenes-en-un-video"
