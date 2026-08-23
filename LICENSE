@@ -1,0 +1,49 @@
+MIT License
+
+Copyright (c) 2026 A Box of Tools
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+=======================================================================
+
+WHAT THE ABOVE COVERS
+
+Two licences, split by what a thing is rather than by which folder it sits in.
+This repository is about as much a writing project as a software one, and one
+licence over both halves would have been the wrong fit for whichever half it
+was not written for.
+
+The MIT licence above covers the CODE. That is the build (build.py, buildlib/,
+tests/), everything under templates/ and shared/, every tool's src/, styles.css
+and body.html, the scripts at the root, and every README - including each
+tool's own, which is meant to travel with the code it explains.
+
+Take a module. That is what it is there for: nothing under tools/*/src/ has an
+import to install, and `node --test` already runs those files outside a browser.
+Keep this notice with it and you have met the whole of the condition.
+
+The WORDS THE SITE PUBLISHES are CC BY 4.0 instead - the guides and legal pages
+under pages/, the taglines, descriptions, how-to steps, privacy panels and FAQ
+answers inside tools/*/tool.toml and config/site.toml, and every translation of
+those under locales/. LICENSE-CONTENT holds that licence and says how to credit
+it. Some files hold both kinds; the licence follows the kind, not the file.
+
+One folder is under neither. tools/heic-to-jpg/vendor/ holds libheif, which
+nobody here wrote; it ships with its own LICENSE file beside it, and that file
+is the one that governs it.
