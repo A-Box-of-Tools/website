@@ -128,26 +128,29 @@ font = "Cookie"
 # the hub has no such thing and does not need the permission.
 [tool_csp]
 "img-src" = ["blob:"]
-# A tool page links a web app manifest and no other page does. manifest-src has
-# no default of its own - it falls back to default-src, which is 'none' here -
-# so without this the browser refuses the file, and the only symptom is that the
-# install button never appears. The page itself is unaffected, so nothing would
-# ever tell you.
+
+# Added to the two kinds of page that can be installed as an app - every tool
+# page, and each language's front page - and to no other. manifest-src has no
+# default of its own: it falls back to default-src, which is 'none' here, so
+# without this the browser refuses the manifest and the only symptom anywhere is
+# that the install button never appears. The page is otherwise unaffected, so
+# nothing would ever tell you.
+[app_csp]
 "manifest-src" = ["'self'"]
 
 #
 # ---------------------------------------------------------------------------
-# The web app manifest, which is what lets a browser install a tool as an app.
+# The web app manifest, which is what lets a browser install a page as an app.
 #
-# One per tool rather than one for the site, because that is how everything else
-# here is arranged: a tool already owns a folder and a service worker over it, so
-# the app you install is a folder that is entirely on your machine and runs with
-# the network unplugged. A single manifest at the root would install the hub,
-# which caches nothing and is a list of links.
+# There are two kinds and both are written per language: one per tool, scoped to
+# that tool's folder, and one per front page, scoped to that language's root and
+# called "A Box of Tools". Each is scoped to exactly what the service worker
+# beside it has already cached, which is the whole point - an app installed from
+# here opens with the network unplugged.
 #
-# The name and the description come from the tool, in the language the page is
-# in, so the German page installs a German app. Only what is true of all of them
-# is written here.
+# The name and the description come from the page, in the language it is in, so
+# the German tool page installs a German-named app. Only what is true of all of
+# them is written here.
 #
 # The colours are `--bg` from shared/css/tool-frame.css, light and dark: the
 # ground the page is already drawn on, so the window frame a browser puts around
@@ -166,11 +169,11 @@ background_color = "#f6f7f9"
 # has one colour and no way to ask which theme is in force.
 theme_color_dark = "#14171b"
 
-# Drawn by og-image.ps1 from shared/logo.svg, and shipped at the root rather
-# than per tool: the mark is the site's, and an installed tool is told apart by
-# its name. The maskable copy is the same drawing with a wider margin, because
-# Android crops an icon to whatever shape the launcher uses and only the middle
-# is guaranteed to survive.
+# What the front page installs as: the site mark, drawn by og-image.ps1 from
+# shared/logo.svg and shipped at the root, because it belongs to the site rather
+# than to any one page. The maskable copy is the same drawing with a wider
+# margin, because Android crops an icon to whatever shape the launcher uses and
+# only the middle of it is guaranteed to survive.
 [[manifest.icons]]
 src = "/icon-192.png"
 sizes = "192x192"
@@ -183,6 +186,29 @@ type = "image/png"
 
 [[manifest.icons]]
 src = "/icon-512-maskable.png"
+sizes = "512x512"
+type = "image/png"
+purpose = "maskable"
+
+# What a TOOL installs as: its own emoji, the one beside its heading, on the same
+# tile. A launcher full of identical toolboxes tells you nothing, and the emoji
+# is already how the site distinguishes one tool from another - it is the tab
+# icon too.
+#
+# Relative, unlike the site's: the file sits in the tool's folder and is copied
+# into all ten of that tool's folders, so the German app gets the copy under
+# /de/ and no path has to know which language it is in.
+#
+# One size, where the site has three. Nothing reads these but the install UI,
+# which scales what it is given; 512 is large enough for every launcher and
+# there is no iOS home-screen tile in the picture.
+[[manifest.tool_icons]]
+src = "icon.png"
+sizes = "512x512"
+type = "image/png"
+
+[[manifest.tool_icons]]
+src = "icon-maskable.png"
 sizes = "512x512"
 type = "image/png"
 purpose = "maskable"

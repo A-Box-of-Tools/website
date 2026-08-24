@@ -26,11 +26,12 @@
   adds its card and nothing here has to be kept in step by hand.
 
 .PARAMETER Icons
-  Draw the four app icons and stop - no cards at all. What to run after a change
-  to logo.svg or to the palette, and nothing else needs it.
+  Draw the app icons and no cards: the four the site installs as, and two per
+  tool. What to run after a change to logo.svg or to the palette. Combine with
+  -Only for one tool's icons and nothing else.
 
 .PARAMETER Only
-  Draw one tool's card instead of all of them. Worth knowing about: the mark on
+  Draw one tool's card and icons instead of every tool's. Worth knowing about: the mark on
   each card is rasterised by a headless Edge, that flakes about one call in
   every run, and the redraws are not byte-identical even when it does not - so
   a full run dirties every og.png whether or not the wording changed. If you
@@ -54,13 +55,6 @@ param(
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
-# The two switches ask for opposite halves of this script, and asking for both
-# would quietly draw nothing at all: -Only skips the icons and -Icons stops
-# before the cards.
-if ($Icons -and $Only) {
-  throw "-Icons and -Only cannot both be given: the icons belong to the site, not to one tool."
-}
-
 # The same line on every card, so it is written once.
 $footer = 'No uploads | No accounts | Works offline'
 
@@ -70,12 +64,16 @@ function Read-ToolFields {
       The named top-level keys of a tool.toml, as a hashtable.
 
     .DESCRIPTION
-      PowerShell has no TOML reader and this needs two keys, both of which are
+      PowerShell has no TOML reader and this needs three keys, all of which are
       plain one-line basic strings in every tool.toml - `name = "Image Resizer"`.
       So it matches those and nothing else, rather than pulling in a parser or,
       worse, half-writing one. A key whose value is a multi-line string or
       carries an escape is simply not found, and the caller throws by name
       rather than drawing a card with a blank on it.
+
+      A trailing `#` comment is allowed, because `icon` carries one in every
+      tool.toml - a line of HTML entities is unreadable without it. The comment
+      cannot be mistaken for part of the value: the value ends at its quote.
   #>
   param(
     [Parameter(Mandatory)][string]$Path,
@@ -86,7 +84,7 @@ function Read-ToolFields {
   foreach ($line in Get-Content -Path $Path -Encoding UTF8) {
     foreach ($key in $Keys) {
       if ($found.ContainsKey($key)) { continue }
-      if ($line -match ('^' + [regex]::Escape($key) + '\s*=\s*"([^"\\]*)"\s*$')) {
+      if ($line -match ('^' + [regex]::Escape($key) + '\s*=\s*"([^"\\]*)"\s*(#.*)?$')) {
         $found[$key] = $Matches[1]
       }
     }
@@ -139,37 +137,26 @@ function Find-Chromium {
 
 <#
 .SYNOPSIS
-  Renders logo.svg to a bitmap, $Size pixels square, on a transparent ground.
+  Screenshots a scrap of HTML into a bitmap, $Size pixels square, on a
+  transparent ground.
 
 .DESCRIPTION
-  System.Drawing cannot read SVG, and hand-porting the mark into GraphicsPath
-  calls means two drawings that drift apart. So the mark is rasterised from the
-  one file that defines it: the SVG is inlined into a scrap of HTML with the
-  wanted palette forced on top of it, and a headless browser screenshots it.
-
-  The window is exactly the size asked for and the SVG is stretched to fill it,
-  so the whole 64x64 view box lands in the frame with no cropping.
+  The one thing System.Drawing cannot do, done by the browser instead. It is
+  needed twice: for logo.svg, which System.Drawing cannot read at all, and for
+  the emoji a tool is marked with, which it can only draw in black - colour
+  emoji are COLR/CBDT fonts and GDI+ renders none of that. A headless browser
+  does both correctly and is already installed on any machine that can look at
+  the site.
 #>
-function Get-MarkImage {
+function Get-HtmlImage {
   param(
-    [Parameter(Mandatory)][int]$Size,
-    [Parameter(Mandatory)][ValidateSet('light', 'dark')][string]$Palette
+    [Parameter(Mandatory)][string]$Html,
+    [Parameter(Mandatory)][int]$Size
   )
-
-  $svg = Get-Content (Join-Path $PSScriptRoot 'shared\logo.svg') -Raw
-  $css = if ($Palette -eq 'dark') { $markPaletteDark } else { $markPaletteLight }
-
-  $html = @"
-<!doctype html><meta charset="utf-8">
-<style>html,body{margin:0;background:transparent}
-svg{display:block;width:${Size}px;height:${Size}px}
-$css</style>
-$svg
-"@
 
   $htmlPath = Join-Path ([System.IO.Path]::GetTempPath()) 'abox-mark.html'
   $pngPath  = Join-Path ([System.IO.Path]::GetTempPath()) 'abox-mark.png'
-  Set-Content -Path $htmlPath -Value $html -Encoding utf8
+  Set-Content -Path $htmlPath -Value $Html -Encoding utf8
 
   # --default-background-color=00000000 is what keeps the ground transparent;
   # without it the shot comes back on opaque white and the mark cannot be laid
@@ -193,12 +180,90 @@ $svg
   # Copied into a new bitmap so the file on disk can be deleted straight away -
   # Image::FromFile keeps the file locked for as long as the image lives.
   $shot = [System.Drawing.Image]::FromFile($pngPath)
-  $mark = New-Object System.Drawing.Bitmap $shot
+  $image = New-Object System.Drawing.Bitmap $shot
   $shot.Dispose()
 
   Remove-Item $htmlPath, $pngPath -Force
 
-  return $mark
+  return $image
+}
+
+<#
+.SYNOPSIS
+  Renders logo.svg to a bitmap, $Size pixels square, on a transparent ground.
+
+.DESCRIPTION
+  Hand-porting the mark into GraphicsPath calls would mean two drawings free to
+  drift apart, so it is rasterised from the one file that defines it: the SVG is
+  inlined into a scrap of HTML with the wanted palette forced on top of it.
+
+  The palette has to be forced because a headless browser screenshotting a file
+  cannot be told which colour scheme to pretend to be in, and logo.svg themes
+  itself with a prefers-color-scheme block.
+
+  The window is exactly the size asked for and the SVG is stretched to fill it,
+  so the whole 64x64 view box lands in the frame with no cropping.
+#>
+function Get-MarkImage {
+  param(
+    [Parameter(Mandatory)][int]$Size,
+    [Parameter(Mandatory)][ValidateSet('light', 'dark')][string]$Palette
+  )
+
+  $svg = Get-Content (Join-Path $PSScriptRoot 'shared\logo.svg') -Raw
+  $css = if ($Palette -eq 'dark') { $markPaletteDark } else { $markPaletteLight }
+
+  return Get-HtmlImage -Size $Size -Html @"
+<!doctype html><meta charset="utf-8">
+<style>html,body{margin:0;background:transparent}
+svg{display:block;width:${Size}px;height:${Size}px}
+$css</style>
+$svg
+"@
+}
+
+<#
+.SYNOPSIS
+  Renders one emoji to a bitmap, $Size pixels square, on a transparent ground.
+
+.DESCRIPTION
+  $Glyph is a tool's `icon` straight out of its tool.toml, HTML entities and
+  all - which is why it can be dropped into the markup below unchanged and why
+  nothing here has to know how many code points a scissors-with-variation-
+  selector is.
+
+  $Scale is the em size as a fraction of the tile, and it is how much of the
+  tile the glyph covers rather than a font size anyone would recognise: an emoji
+  glyph sits inside its em box with its own padding, so the drawn shape comes
+  out at roughly nine tenths of it. It is a parameter because the two icons a
+  tool needs differ in nothing else - see New-ToolIconPng.
+#>
+function Get-GlyphImage {
+  param(
+    [Parameter(Mandatory)][string]$Glyph,
+    [Parameter(Mandatory)][int]$Size,
+    [Parameter(Mandatory)][double]$Scale
+  )
+
+  $em = [int]($Size * $Scale)
+
+  # overflow:hidden is load-bearing. An emoji's ink can spill a few pixels out
+  # of the box its em size asks for, and the browser answers that with
+  # scrollbars - which the screenshot then includes, so the first icons drawn
+  # here shipped with a grey scrollbar down two edges.
+  #
+  # The font stack ends in sans-serif rather than in a colour font this machine
+  # may not have: a missing family means a tofu box saved as an app icon, and a
+  # wrong-but-drawn glyph is easier to notice than a subtly empty one.
+  return Get-HtmlImage -Size $Size -Html @"
+<!doctype html><meta charset="utf-8">
+<style>html,body{margin:0;background:transparent;overflow:hidden}
+div{width:${Size}px;height:${Size}px;display:flex;align-items:center;
+    justify-content:center;font-size:${em}px;line-height:1;
+    font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif}
+</style>
+<div>$Glyph</div>
+"@
 }
 
 function New-OgImage {
@@ -321,14 +386,70 @@ function New-IconPng {
   Write-Host "wrote $full"
 }
 
-# The app icons belong to the site rather than to any tool, so -Only skips them
-# along with the other tools' cards. Without that, asking for one tool still
-# rewrote files it had nothing to do with.
+<#
+.SYNOPSIS
+  Draws one tool's emoji on an opaque tile, as the icon an installed tool wears.
+
+.DESCRIPTION
+  The site mark says which site an app came from; a tool's own emoji says which
+  tool it is, which is what somebody looking at a launcher full of them needs to
+  know. So the front page installs as the toolbox and each tool installs as
+  itself, from the same `icon` that sits beside its heading on the page.
+
+  Two are drawn per tool and they differ only in $Scale, because two different
+  things read them. The plain one is what a desktop and a tab strip show, filling
+  its tile the way an app icon there does. The maskable one is for Android, which
+  crops an icon to whatever shape the launcher uses - a circle, a squircle, a
+  teardrop - and guarantees only the middle 80% of it survives; that glyph is
+  drawn small enough to sit inside a circle of that size however it is cut.
+
+  512 and no smaller, unlike the site icons, which also come in 180 for iOS and
+  192 because that is a size Chrome's install criteria used to name. There is no
+  home-screen tile to match here, and nothing reads a tool icon but the install
+  UI, which scales whatever it is given.
+#>
+function New-ToolIconPng {
+  param(
+    [Parameter(Mandatory)][string]$Path,
+    [Parameter(Mandatory)][string]$Glyph,
+    [Parameter(Mandatory)][double]$Scale
+  )
+
+  $size = 512
+  $tile = [System.Drawing.ColorTranslator]::FromHtml('#f6f7f9')
+
+  $bmp = New-Object System.Drawing.Bitmap $size, $size
+  $g   = [System.Drawing.Graphics]::FromImage($bmp)
+  $g.SmoothingMode = 'AntiAlias'
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush $tile), 0, 0, $size, $size)
+
+  # Rasterised at the full tile size and laid over it corner to corner: the
+  # glyph is centred inside its own frame by the flexbox, so there is no inset to
+  # work out here and no chance of two places disagreeing about the centre.
+  #
+  # Not $glyph, which is $Glyph: variable names are case-insensitive here, so
+  # that assignment would put the bitmap into the [string] parameter and the
+  # parameter would dutifully convert it to "System.Drawing.Bitmap".
+  $drawn = Get-GlyphImage -Glyph $Glyph -Size $size -Scale $Scale
+  $g.DrawImage($drawn, 0, 0, $size, $size)
+  $drawn.Dispose()
+
+  $full = Join-Path $PSScriptRoot $Path
+  $bmp.Save($full, [System.Drawing.Imaging.ImageFormat]::Png)
+
+  $g.Dispose()
+  $bmp.Dispose()
+
+  Write-Host "wrote $full"
+}
+
+# The icons the SITE installs as, drawn from the mark. They belong to no tool, so
+# -Only skips them along with the other tools' files.
 #
-# 180 is what iOS asks for; 192 and 512 are what the web app manifest lists, and
-# the maskable copy is the 512 again with the margin Android's crop needs. The
-# insets are about a tenth of the size for the first three and 22% for the last,
-# which is what keeps the mark inside the circle a launcher may cut it to.
+# 180 is what iOS asks for; 192 and 512 are what the front page's manifest lists,
+# and the maskable copy is the 512 again with the margin Android's crop needs.
+# The insets are about a tenth of the size for the first three and 22% for the
+# last, which is what keeps the mark inside the circle a launcher may cut it to.
 if (-not $Only) {
   New-IconPng -Path 'shared\icon-180.png'          -Size 180 -Inset 18
   New-IconPng -Path 'shared\icon-192.png'          -Size 192 -Inset 19
@@ -336,21 +457,16 @@ if (-not $Only) {
   New-IconPng -Path 'shared\icon-512-maskable.png' -Size 512 -Inset 113
 }
 
-# They are drawn first so that -Icons can stop here. The cards below are the
-# expensive half of this script and none of their redraws are byte-identical, so
-# changing an icon must not arrive as every card in the repository being dirty.
-if ($Icons) { return }
-
 # The hub's own card. Written out here because it is the one that belongs to no
 # tool - everything below reads its words from the tool it belongs to.
-if (-not $Only) {
+if (-not ($Only -or $Icons)) {
   New-OgImage -Path 'shared\og.png' `
     -Title 'Tools that never touch a server' `
     -Subtitle 'Small, single-purpose utilities that do all of their work inside your browser.' `
     -Footer $footer
 }
 
-# One card per tool, from that tool's own tool.toml.
+# One card and two icons per tool, from that tool's own tool.toml.
 #
 # This used to be twenty-two more New-OgImage calls, and keeping them in step by
 # hand did not work: every one repeated the tool's `name` as its -Title and the
@@ -361,19 +477,35 @@ if (-not $Only) {
 #
 # Reading the folder instead means a tool cannot be forgotten, and the card says
 # what tool.toml says.
+#
+# -Icons skips the card and keeps the icons. The card is the expensive half and
+# none of its redraws are byte-identical, so a change to what an icon looks like
+# must not arrive as every card in the repository being dirty.
 foreach ($config in Get-ChildItem -Path (Join-Path $PSScriptRoot 'tools') -Filter 'tool.toml' -Recurse) {
   $slug = $config.Directory.Name
   if ($Only -and $Only -ne $slug) { continue }
 
-  $fields = Read-ToolFields -Path $config.FullName -Keys @('name', 'og_card')
-  foreach ($key in @('name', 'og_card')) {
+  $fields = Read-ToolFields -Path $config.FullName -Keys @('name', 'og_card', 'icon')
+  foreach ($key in @('name', 'og_card', 'icon')) {
     if (-not $fields.ContainsKey($key)) {
-      throw "tools\$slug\tool.toml has no $key, so its share card cannot be drawn"
+      throw "tools\$slug\tool.toml has no $key, so its images cannot be drawn"
     }
   }
 
-  New-OgImage -Path (Join-Path 'tools' (Join-Path $slug 'og.png')) `
-    -Title $fields['name'] `
-    -Subtitle $fields['og_card'] `
-    -Footer $footer
+  if (-not $Icons) {
+    New-OgImage -Path (Join-Path 'tools' (Join-Path $slug 'og.png')) `
+      -Title $fields['name'] `
+      -Subtitle $fields['og_card'] `
+      -Footer $footer
+  }
+
+  # The em box at 0.82 of the tile for the plain icon and 0.55 for the maskable
+  # one. An emoji sits inside its em box with padding of its own, so the drawn
+  # shape comes out at roughly nine tenths of those: the first fills its tile
+  # with a margin left around it, and the second sits comfortably inside the
+  # circle a launcher may crop it to.
+  New-ToolIconPng -Path (Join-Path 'tools' (Join-Path $slug 'icon.png')) `
+    -Glyph $fields['icon'] -Scale 0.82
+  New-ToolIconPng -Path (Join-Path 'tools' (Join-Path $slug 'icon-maskable.png')) `
+    -Glyph $fields['icon'] -Scale 0.55
 }
