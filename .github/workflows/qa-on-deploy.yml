@@ -1,6 +1,5 @@
 #
-# Runs the QA suite (A-Box-of-Tools/qa) against the live site once a deploy
-# actually lands.
+# Asks A-Box-of-Tools/qa to re-run its suite once a deploy actually lands.
 #
 # Triggered on a push to `dist` rather than `main` or a GitHub Release:
 # `dist` is what GitHub Pages serves (see build.yml), and deploys here are
@@ -9,9 +8,21 @@
 # means "a visitor's browser now sees something different", which is what
 # this is meant to catch.
 #
-# The QA suite is checked out fresh from its own repo rather than vendored
-# here, so a fix or a new check added there is picked up on the next deploy
-# with nothing to keep in sync in this repo.
+# This only dispatches; it does not run the suite itself. The qa repo's own
+# report.yml runs it and publishes the result to that repo's gh-pages
+# branch, so there is one place the suite runs and one report to read -
+# rather than this workflow keeping a second copy of the run whose result
+# lived only in an artifact here.
+#
+# Results appear at https://a-box-of-tools.github.io/qa/ and in that repo's
+# Actions tab, not in this one - this job going green means "the run was
+# asked for", not "the site passed".
+#
+# SETUP: needs a QA_DISPATCH_TOKEN secret in this repository - a
+# fine-grained PAT scoped to A-Box-of-Tools/qa with Actions: write. The
+# default GITHUB_TOKEN cannot be used: it is scoped to this repository
+# alone and cannot trigger a workflow in another one. Without the secret
+# this job fails with a clear message rather than silently doing nothing.
 #
 
 name: QA (post-deploy)
@@ -34,29 +45,10 @@ jobs:
   qa:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the QA suite
-        uses: actions/checkout@v4
-        with:
-          repository: A-Box-of-Tools/qa
-          path: qa
-
-      # The QA suite's lib/tools.ts, lib/csp.ts and hasFilePicker() all read
-      # this repo's own source (the tool list, config/site.toml's CSP
-      # allowlist, each tool's body.html) at test time rather than
-      # duplicating it - see its lib/site.ts. This workflow is triggered by
-      # a push to `dist`, though, which holds only the *built* output (see
-      # build.yml) and has no tools/ or config/ at all - so the source has to
-      # be checked out separately, pinned to main rather than whatever ref
-      # triggered this run.
-      - name: Check out this repo's source (tool/CSP metadata)
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          path: etoolbox-src
-
       # GitHub Pages usually publishes within a minute of `dist` moving, but
-      # that isn't guaranteed - poll rather than assume, so a slow publish is
-      # a short wait here instead of a flaky red run against the old build.
+      # that isn't guaranteed. Waiting here rather than in the qa repo keeps
+      # that repo's workflow honest about what it tests: by the time it is
+      # asked to run, the deploy it is meant to check is actually live.
       - name: Wait for the deploy to actually be live
         run: |
           set -euo pipefail
@@ -71,31 +63,30 @@ jobs:
           echo "::error::abox.tools never responded after 5 minutes."
           exit 1
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: qa/package-lock.json
-
-      - name: Install QA dependencies
-        working-directory: qa
-        run: npm ci
-
-      - name: Install Chromium
-        working-directory: qa
-        run: npx playwright install --with-deps chromium
-
-      - name: Run the QA suite against the live site
-        working-directory: qa
+      - name: Ask the QA repo to run its suite
         env:
-          BASE_URL: https://abox.tools/
-          ETOOLBOX_DIR: ${{ github.workspace }}/etoolbox-src
-        run: npx playwright test
+          GH_TOKEN: ${{ secrets.QA_DISPATCH_TOKEN }}
+        run: |
+          set -euo pipefail
 
-      - name: Upload the HTML report
+          if [ -z "${GH_TOKEN}" ]; then
+            echo '::error::QA_DISPATCH_TOKEN is not set - see the comment at the top of this workflow.'
+            exit 1
+          fi
+
+          gh workflow run report.yml --repo A-Box-of-Tools/qa
+          echo 'Dispatched. The run and its report:'
+          echo '  https://github.com/A-Box-of-Tools/qa/actions'
+          echo '  https://a-box-of-tools.github.io/qa/'
+
+      - name: Summary
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: qa-report
-          path: qa/playwright-report/
-          retention-days: 14
+        run: |
+          {
+            echo '### QA dispatched'
+            echo
+            echo 'The suite runs in the QA repository, not here.'
+            echo
+            echo '- [Runs](https://github.com/A-Box-of-Tools/qa/actions)'
+            echo '- [Report](https://a-box-of-tools.github.io/qa/)'
+          } >> "$GITHUB_STEP_SUMMARY"
