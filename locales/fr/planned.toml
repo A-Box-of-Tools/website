@@ -64,7 +64,6 @@ items = [
 id = "beyond"
 name = "Au-delà des médias"
 items = [
-  ["Empreintes &amp; sommes de contrôle", "vérifier qu'un téléchargement est bien le fichier annoncé, sans le confier à personne"],
   ["CSV &amp; JSON", "convertir dans les deux sens, et remettre d'aplomb ce que le tableur a exporté"],
   ["Certificats &amp; clés", "lire un certificat ou une demande de signature sans la coller dans le serveur de quelqu'un d'autre"],
 ]

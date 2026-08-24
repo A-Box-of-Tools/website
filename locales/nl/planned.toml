@@ -64,7 +64,6 @@ items = [
 id = "beyond"
 name = "Verder dan media"
 items = [
-  ["Hashes &amp; controlegetallen", "controleren of een download het bestand is dat het zegt te zijn, zonder het af te staan"],
   ["csv &amp; json", "beide kanten op omzetten, en opruimen wat het rekenblad exporteerde"],
   ["Certificaten &amp; sleutels", "een certificaat of een ondertekeningsverzoek lezen zonder het in andermans server te plakken"],
 ]

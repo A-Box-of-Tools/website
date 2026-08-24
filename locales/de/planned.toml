@@ -64,7 +64,6 @@ items = [
 id = "beyond"
 name = "Jenseits von Medien"
 items = [
-  ["Hashes &amp; Prüfsummen", "prüfen, ob ein Download die Datei ist, die er zu sein behauptet &mdash; ohne sie herzugeben"],
   ["CSV &amp; JSON", "in beide Richtungen umwandeln und aufräumen, was die Tabelle exportiert hat"],
   ["Zertifikate &amp; Schlüssel", "ein Zertifikat oder eine Zertifikatsanfrage lesen, ohne sie in einen fremden Server zu kopieren"],
 ]
