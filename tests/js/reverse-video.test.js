@@ -243,6 +243,19 @@ test('the frame budget falls as the frames get bigger', () => {
   assert.equal(windowLimit(64, 64), 600);
 });
 
+test('a frame that can only be held as a bitmap gets a shorter window', () => {
+  // 4:2:0 is 1.5 bytes a pixel and an ImageBitmap is 4, so the same budget
+  // buys fewer of them - which is the whole reason the caller says which.
+  const readable = windowLimit(3840, 2160);
+  const onGpu = windowLimit(3840, 2160, undefined, 4);
+
+  assert.equal(readable, 32);
+  assert.equal(onGpu, 12);
+  assert.ok(onGpu < readable, 'a bitmap costs more, so fewer fit');
+  // The floor still holds: something has to be held however dear it is.
+  assert.equal(windowLimit(16000, 16000, undefined, 4), 4);
+});
+
 /* -------------------------------------------------------------- the writing */
 
 test('durations are the gaps between one written frame and the next', () => {
