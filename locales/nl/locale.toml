@@ -147,39 +147,24 @@ body = """
         verwerken zou er simpelweg mee ophouden."""
 
 [[hub.categories]]
-id = "images-and-video"
-name = "Afbeeldingen &amp; video"
-note = "Bewerk je foto's en opnames zonder ze uit handen te geven."
+id = "images"
+name = "Afbeeldingen"
+note = "Verklein hem, schaal hem of haal eruit wat hij stilletjes over je vastlegt. Niets daarvan wordt ergens naartoe gestuurd."
 
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIF &amp; animatie"
-note = "Bouw een animatie of haal er een uit elkaar, zonder dat hij je apparaat verlaat."
+id = "video-and-animation"
+name = "Video &amp; animatie"
+note = "Knip hem, zet hem om of bouw er een uit foto's, zonder dat de beelden je apparaat verlaten."
 
 [[hub.categories]]
-id = "audio"
-name = "Audio"
-note = "Bewerk een opname zonder hem uit handen te geven, ook het geluid dat in een video zit."
+id = "documents-and-audio"
+name = "Documenten &amp; audio"
+note = "Herschik een document of kort een opname in, zonder er een van op te sturen om te laten verwerken."
 
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "Documenten &amp; pdf"
-note = "Stel documenten samen en herschik ze, zonder ze op te sturen om ze te laten verwerken."
-
-[[hub.categories]]
-id = "codes-and-data"
-name = "Codes &amp; gegevens"
-note = "Maak iets wat een machine kan lezen, of controleer of een bestand is wat het beweert te zijn. Allebei binnen de pagina."
-
-[[hub.categories]]
-id = "text-and-code"
-name = "Tekst &amp; code"
-note = "Lees het, vergelijk het, codeer het, zonder dat je een token of een configuratiebestand op de server van iemand anders plakt."
-
-[[hub.categories]]
-id = "passwords-and-security"
-name = "Wachtwoorden &amp; beveiliging"
-note = "Maak het geheim hier, op je eigen apparaat, zodat niemand anders er ooit een kopie van had om kwijt te raken."
+id = "text-codes-and-passwords"
+name = "Tekst, codes &amp; wachtwoorden"
+note = "Lees het, controleer het of maak het hier. Geen token, geen configuratiebestand en geen wachtwoord op de server van iemand anders."
 
 #
 # ---------------------------------------------------------------------------

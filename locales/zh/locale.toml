@@ -105,39 +105,24 @@ body = """
         难作假。真要把文件送出去处理，断网当场就停。"""
 
 [[hub.categories]]
-id = "images-and-video"
-name = "图片与视频"
-note = "修图、剪片，不用把东西交给谁。"
+id = "images"
+name = "图片"
+note = "压缩、改尺寸，或者抹掉照片悄悄记下的那些信息，全都不出这台机器。"
 
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIF 与动画"
-note = "做一段动画，或者把动画拆开看，文件都不出这台机器。"
+id = "video-and-animation"
+name = "视频与动画"
+note = "剪片、转格式，或者用照片拼一段，素材都不出这台机器。"
 
 [[hub.categories]]
-id = "audio"
-name = "音频"
-note = "剪录音不用交给别人，剪视频里的声音也一样。"
+id = "documents-and-audio"
+name = "文档与音频"
+note = "拼文档、剪录音，两样都不用送出去处理。"
 
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "文档与 PDF"
-note = "拼文档、拆文档、给文档瘦身，不用送出去处理。"
-
-[[hub.categories]]
-id = "codes-and-data"
-name = "编码与数据"
-note = "把你打进去的内容变成机器读得懂的东西，或者核对一个文件是不是它自称的那个。两件事都在页面里完成。"
-
-[[hub.categories]]
-id = "text-and-code"
-name = "文本与代码"
-note = "看一看、比一比、编个码，不用把令牌和配置文件贴到别人的服务器上。"
-
-[[hub.categories]]
-id = "passwords-and-security"
-name = "密码与安全"
-note = "秘密就在你自己的设备上生成，别人从来没有过副本，也就无从丢失。"
+id = "text-codes-and-passwords"
+name = "文本、编码与密码"
+note = "看一看、核一核，或者就在这里生成。令牌、配置文件和密码都不会落到别人的服务器上。"
 
 #
 # ---------------------------------------------------------------------------

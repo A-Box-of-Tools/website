@@ -15,7 +15,7 @@ heading = "Image&nbsp;to&nbsp;ICO <span class=\"h1-kw\">&mdash; favicon, Windows
 tagline = "One picture in. Every size a browser, Windows or a Mac asks for, out."
 icon = "&#128278;"          # the mark beside the page heading
 favicon = "&#128278;"       # the tab icon, drawn into an inline SVG
-category = "images-and-video"
+category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "images"

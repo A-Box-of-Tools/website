@@ -561,18 +561,18 @@ def related_tools(ordered, count=RELATED_COUNT):
     and every tool has something linking to it - inbound runs a few either side
     of `count` rather than the exact `count` a plain ring would give, because
     sorting siblings to the front pulls the crowded categories forward.
-    Taking the first few of each category instead would point all fourteen pages
-    of `images-and-video` at the same four names and leave the tail of it with
+    Taking the first few of each category instead would point all ten pages of
+    `video-and-animation` at the same four names and leave the tail of it with
     nothing coming in at all, which is the half of the problem that is about
     search engines rather than readers.
 
-    Two categories hold one tool each - `text-tools` and `password-generator` -
-    so a strict reading of "same category" would leave exactly those pages as
-    the dead ends this exists to remove. `codes-and-data` was a third until the
-    reader joined the generator in it, and that is the sort of thing that keeps
-    happening, so the ring runs over every tool and the category merely sorts
-    first: a tool with siblings gets siblings, and a tool without gets the
-    nearest thing the hub has.
+    No category holds a single tool today - the smallest holds five - but three
+    did while the hub still had seven headings, and a category that has just
+    been added holds exactly one until the second tool arrives. A strict reading
+    of "same category" would leave each of those as the dead end this exists to
+    remove, and which categories are small keeps changing, so the ring runs over
+    every tool and the category merely sorts first: a tool with siblings gets
+    siblings, and a tool without gets the nearest thing the hub has.
     """
     total = len(ordered)
     out = {}

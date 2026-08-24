@@ -149,39 +149,24 @@ body = """
         parte se pararía en seco."""
 
 [[hub.categories]]
-id = "images-and-video"
-name = "Imágenes y vídeo"
-note = "Trabaja con tus fotos y tus grabaciones sin entregárselas a nadie."
+id = "images"
+name = "Imágenes"
+note = "Redúcela, cámbiale el tamaño o quítale lo que cuenta de ti sin que lo sepas. Nada de eso se manda a ninguna parte."
 
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIF y animación"
-note = "Monta una animación, o desmóntala, sin que salga de tu dispositivo."
+id = "video-and-animation"
+name = "Vídeo y animación"
+note = "Córtalo, conviértelo o móntalo a partir de fotos, sin que la grabación salga de tu dispositivo."
 
 [[hub.categories]]
-id = "audio"
-name = "Audio"
-note = "Trabaja una grabación sin entregársela a nadie, incluido el audio que va dentro de un vídeo."
+id = "documents-and-audio"
+name = "Documentos y audio"
+note = "Reordena un documento o recorta una grabación, sin mandar ninguno de los dos a procesar fuera."
 
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "Documentos y PDF"
-note = "Crea y reordena documentos sin mandarlos a procesar a ninguna parte."
-
-[[hub.categories]]
-id = "codes-and-data"
-name = "Códigos y datos"
-note = "Crea algo que una máquina pueda leer, o comprueba que un archivo es el que dice ser. Todo dentro de la página."
-
-[[hub.categories]]
-id = "text-and-code"
-name = "Texto y código"
-note = "Léelo, compáralo, codifícalo. Sin pegar un token ni un archivo de configuración en el servidor de otro."
-
-[[hub.categories]]
-id = "passwords-and-security"
-name = "Contraseñas y seguridad"
-note = "Crea aquí el secreto, en tu propio dispositivo, para que nadie más haya tenido nunca una copia que perder."
+id = "text-codes-and-passwords"
+name = "Texto, códigos y contraseñas"
+note = "Léelo, compruébalo o créalo aquí. Ningún token, ningún archivo de configuración y ninguna contraseña acaban en el servidor de otro."
 
 #
 # ---------------------------------------------------------------------------

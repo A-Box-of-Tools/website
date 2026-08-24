@@ -15,7 +15,7 @@ heading = "Text&nbsp;&amp;&nbsp;code <span class=\"h1-kw\">&mdash; formatter, di
 tagline = "Lay it out, see what changed, encode it, or turn it into the other format. Nothing is pasted into anyone else's server."
 icon = "&#128221;"          # the mark beside the page heading
 favicon = "&#128221;"       # the tab icon, drawn into an inline SVG
-category = "text-and-code"
+category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "beyond"

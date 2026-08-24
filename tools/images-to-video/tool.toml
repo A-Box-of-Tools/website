@@ -15,7 +15,7 @@ heading = "Images&nbsp;to&nbsp;Video <span class=\"h1-kw\">&mdash; make an MP4 s
 tagline = "Turn a folder of images into a video."
 icon = "&#127902;&#65039;"          # the mark beside the page heading
 favicon = "&#127902;"      # the tab icon, drawn into an inline SVG
-category = "images-and-video"
+category = "video-and-animation"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "video"

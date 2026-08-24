@@ -22,7 +22,7 @@ heading = "Audio&nbsp;Trimmer <span class=\"h1-kw\">&mdash; trim audio online</s
 tagline = "Mark the parts worth keeping as it plays. Get them back as one file, cut where you said."
 icon = "&#127911;&#65039;"        # the mark beside the page heading
 favicon = "&#127911;"     # the tab icon, drawn into an inline SVG
-category = "audio"
+category = "documents-and-audio"
 
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.

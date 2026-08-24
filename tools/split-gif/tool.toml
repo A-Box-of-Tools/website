@@ -15,7 +15,7 @@ heading = "GIF&nbsp;Splitter <span class=\"h1-kw\">&mdash; every frame as its ow
 tagline = "Every frame out as its own PNG."
 icon = "&#128209;"         # the mark beside the page heading
 favicon = "&#128209;"      # the tab icon, drawn into an inline SVG
-category = "gif-and-animation"
+category = "video-and-animation"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "gif"

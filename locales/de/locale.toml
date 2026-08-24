@@ -184,39 +184,24 @@ body = """
         wegschickt, bliebe an dieser Stelle einfach stehen."""
 
 [[hub.categories]]
-id = "images-and-video"
-name = "Bilder &amp; Video"
-note = "Mit Fotos und Aufnahmen arbeiten, ohne sie aus der Hand zu geben."
+id = "images"
+name = "Bilder"
+note = "Verkleinern, in der Größe ändern oder herausnehmen, was ein Foto still über Sie verrät. Nichts davon wird verschickt."
 
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIF &amp; Animation"
-note = "Eine Animation bauen oder zerlegen, ohne dass sie Ihr Gerät verlässt."
+id = "video-and-animation"
+name = "Video &amp; Animation"
+note = "Schneiden, umwandeln oder aus Einzelbildern bauen, ohne dass die Aufnahme Ihr Gerät verlässt."
 
 [[hub.categories]]
-id = "audio"
-name = "Audio"
-note = "An einer Aufnahme arbeiten, ohne sie aus der Hand zu geben. Auch am Ton in einem Video."
+id = "documents-and-audio"
+name = "Dokumente &amp; Audio"
+note = "Ein Dokument umsortieren oder eine Aufnahme kürzen, ohne eines von beiden zum Verarbeiten wegzuschicken."
 
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "Dokumente &amp; PDF"
-note = "Dokumente erstellen und umsortieren, ohne sie zum Verarbeiten wegzuschicken."
-
-[[hub.categories]]
-id = "codes-and-data"
-name = "Codes &amp; Daten"
-note = "Etwas herstellen, das eine Maschine lesen kann, oder prüfen, ob eine Datei die ist, die sie zu sein behauptet. Beides auf der Seite selbst."
-
-[[hub.categories]]
-id = "text-and-code"
-name = "Text &amp; Code"
-note = "Lesbar machen, vergleichen, kodieren, ohne dafür ein Token oder eine Konfigurationsdatei auf einen fremden Server zu kopieren."
-
-[[hub.categories]]
-id = "passwords-and-security"
-name = "Passwörter &amp; Sicherheit"
-note = "Das Geheimnis hier erzeugen, auf Ihrem eigenen Gerät, damit niemand sonst je eine Kopie davon hatte, die verloren gehen könnte."
+id = "text-codes-and-passwords"
+name = "Text, Codes &amp; Passwörter"
+note = "Lesen, prüfen oder hier erzeugen. Kein Token, keine Konfigurationsdatei und kein Passwort landet auf einem fremden Server."
 
 #
 # ---------------------------------------------------------------------------

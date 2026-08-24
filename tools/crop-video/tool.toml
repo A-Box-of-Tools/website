@@ -15,7 +15,7 @@ heading = "Video&nbsp;Cropper <span class=\"h1-kw\">&mdash; crop a video online<
 tagline = "Cut a clip down to the part that matters."
 icon = "&#9986;&#65039;"          # the mark beside the page heading
 favicon = "&#9986;"      # the tab icon, drawn into an inline SVG
-category = "images-and-video"
+category = "video-and-animation"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "video"

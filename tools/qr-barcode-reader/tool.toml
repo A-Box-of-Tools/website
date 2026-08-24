@@ -25,7 +25,7 @@ heading = "QR&nbsp;&amp;&nbsp;Barcode Reader <span class=\"h1-kw\">&mdash; scan 
 tagline = "Point it at a code, or drop a picture of one. It is read here, and nowhere else."
 icon = "&#128269;"          # the mark beside the page heading
 favicon = "&#128269;"       # the tab icon, drawn into an inline SVG
-category = "codes-and-data"
+category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 roadmap_group = "beyond"
 lastmod = "2026-08-23"

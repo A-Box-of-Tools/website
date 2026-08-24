@@ -15,7 +15,7 @@ heading = "ID&nbsp;Photo Maker <span class=\"h1-kw\">&mdash; passport and visa p
 tagline = "Pick the country. It applies that country's rule, exactly."
 icon = "&#128706;"          # the mark beside the page heading
 favicon = "&#128706;"       # the tab icon, drawn into an inline SVG
-category = "images-and-video"
+category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 roadmap_group = "images"
 

@@ -23,7 +23,7 @@ heading = "Hash&nbsp;&amp;&nbsp;checksum <span class=\"h1-kw\">&mdash; MD5, SHA-
 tagline = "Check a download against the number the publisher printed, without sending it to anyone."
 icon = "&#128273;"          # the key, beside the page heading
 favicon = "&#128273;"       # the tab icon, drawn into an inline SVG
-category = "codes-and-data"
+category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "beyond"
