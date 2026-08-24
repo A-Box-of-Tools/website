@@ -1,0 +1,31 @@
+{
+  "id": "/hi/",
+  "name": "A Box of Tools",
+  "short_name": "A Box of Tools",
+  "description": "\u090f\u0915 \u0939\u0940 \u0915\u093e\u092e \u0915\u0947 \u0932\u093f\u090f \u092c\u0928\u0947 \u091b\u094b\u091f\u0947-\u091b\u094b\u091f\u0947 \u091f\u0942\u0932, \u091c\u094b \u092a\u0942\u0930\u093e \u0915\u093e\u092e \u0906\u092a\u0915\u0947 \u092c\u094d\u0930\u093e\u0909\u091c\u093c\u0930 \u0915\u0947 \u0905\u0902\u0926\u0930 \u0939\u0940 \u0915\u0930 \u0932\u0947\u0924\u0947 \u0939\u0948\u0902\u0964 \u0906\u092a\u0915\u0940 \u092b\u093c\u093e\u0907\u0932\u0947\u0902 \u0906\u092a\u0915\u0947 \u0921\u093f\u0935\u093e\u0907\u0938 \u0938\u0947 \u092c\u093e\u0939\u0930 \u0928\u0939\u0940\u0902 \u091c\u093e\u0924\u0940\u0902\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
