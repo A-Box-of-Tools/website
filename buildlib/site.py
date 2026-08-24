@@ -334,43 +334,53 @@ def dumps_ld(graph):
 # The web app manifest
 
 
-def tool_manifest(site, tool, direction):
-    """The manifest that lets a browser install one tool as an app.
+def app_manifest(site, url, name, description, direction, icons):
+    """The manifest that lets a browser install one page as an app.
 
-    Scoped to the tool's own folder, which is the whole reason there is one of
-    these per tool rather than one for the site: that folder is exactly what the
-    service worker sitting in it has already cached, so the app that gets
-    installed is one that opens with the network unplugged. An app scoped to the
-    site would have the hub as its front door, and the hub caches nothing.
+    Written twice over: once per tool, scoped to that tool's folder, and once
+    per language for the hub, scoped to that language's root. Both are scoped to
+    exactly what the service worker beside them has cached, which is what makes
+    an installed app one that opens with the network unplugged.
+
+    The two nest - `/de/video-zuschneiden/` is inside `/de/`, and `/de/` is
+    inside `/`. That is allowed and is not an accident: a browser resolves a
+    navigation to the most specific scope it has, so the reader who installed
+    both the site and one tool gets the tool's window for the tool and the
+    site's window for everything else. Installing only one of them still covers
+    the other's pages, in the one window there is.
 
     `id` is written out rather than left to default. The default identity of an
-    installed app is its `start_url`, so the day a slug is corrected - and this
-    site publishes ten slugs per tool, one per language - every reader who had
-    installed the tool would silently acquire a second copy of it instead of a
-    moved one. Written down, the address can change and the app stays the app. It
-    is a path because an id is resolved against the origin, and naming the origin
-    here as well would be a second place for it to be wrong.
+    installed app is its `start_url`, so the day an address is corrected - and
+    this site publishes ten of them per tool, one per language - every reader who
+    had installed it would silently acquire a second app instead of a moved one.
+    Written down, the address can change and the app stays the app. It is a path
+    because an id is resolved against the origin, and naming the origin here as
+    well would be a second place for it to be wrong.
 
-    The name and the description are the tool's own, in the language the page is
-    in. Both go through `to_text`: they are written for markup, and a manifest is
-    read by a launcher that would show the entities.
+    `name` and `description` go through `to_text`: they are written for markup,
+    and a manifest is read by a launcher that would show the entities.
+
+    `icons` is passed in rather than read from the site config because it is the
+    one thing the two kinds do not share. A tool installs as its own emoji, from
+    a file in its own folder; the front page installs as the site mark, from the
+    root. config/site.toml holds both lists and says why.
     """
     return json.dumps({
-        'id': urllib.parse.urlsplit(tool['url']).path,
-        'name': to_text(tool['name']),
-        'short_name': to_text(tool['name']),
-        'description': to_text(tool['tagline']),
+        'id': urllib.parse.urlsplit(url).path,
+        'name': to_text(name),
+        'short_name': to_text(name),
+        'description': to_text(description),
         'lang': site['lang'],
         'dir': direction,
-        # Relative to this file, which sits in the tool's folder - so both of
-        # these resolve to the folder, in every language, without the manifest
-        # having to know which language it is in or how deep the path is.
+        # Relative to this file, which sits in the folder being installed - so
+        # both of these are right in every language and at either depth,
+        # without the manifest having to know which one it is.
         'start_url': './',
         'scope': './',
         'display': site['manifest']['display'],
         'background_color': site['manifest']['background_color'],
         'theme_color': site['manifest']['theme_color'],
-        'icons': site['manifest']['icons'],
+        'icons': icons,
     }, indent=2, ensure_ascii=True)
 
 
@@ -526,12 +536,19 @@ def picker_csp(tool):
     return {'img-src': ['http:']}
 
 
-def cache_hash(paths):
+def cache_hash(paths, extra=()):
     """A short digest of everything the service worker caches, used as its cache
     name. It changes exactly when one of the cached files changes, which is what
-    the old hand-bumped version number was trying and regularly failing to do."""
+    the old hand-bumped version number was trying and regularly failing to do.
+
+    `extra` is for a cached file that is not on disk when this runs. The site
+    stylesheet is the one: it is the same bytes in every language and is written
+    once, after the languages are built, so the hub's worker hashes the text it
+    is going to be rather than a file that is not there yet."""
     digest = hashlib.sha256()
     for path in sorted(paths, key=lambda p: p.name):
         digest.update(path.name.encode('utf-8'))
         digest.update(path.read_bytes())
+    for text in extra:
+        digest.update(text.encode('utf-8'))
     return digest.hexdigest()[:10]

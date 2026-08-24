@@ -410,6 +410,12 @@ class BuildTheSite(unittest.TestCase):
         self.assertTrue(found)
         return found
 
+    def hub_pages(self):
+        """The front page of every language: '' and 'de/' and the rest."""
+        found = [f'{locale["prefix"]}index.html' for locale in self.locales]
+        self.assertTrue(all(name in self.written for name in found))
+        return found
+
     def test_it_reports_what_it_wrote(self):
         self.assertIn('index.html', self.written)
         self.assertIn('sitemap.xml', self.written)
@@ -433,29 +439,93 @@ class BuildTheSite(unittest.TestCase):
             with self.subTest(file=name):
                 self.assertTrue((self.out / slug / name).is_file(), name)
 
-    # -- installing a tool as an app --------------------------------------
+    # -- installing a page as an app --------------------------------------
     #
     # Four things have to agree for the browser to offer it, and every one of
     # them fails silently: the page links the manifest, the policy allows the
     # file to be fetched, the manifest names icons, and the icons are there. A
-    # tool page with any one of them missing looks and works exactly like one
-    # with all four, and the only visible difference is an install button that
-    # never appears - which nothing in a build log or a link check would catch.
+    # page with any one of them missing looks and works exactly like one with
+    # all four, and the only visible difference is an install button that never
+    # appears - which nothing in a build log or a link check would catch.
 
-    def test_every_tool_page_links_a_manifest_and_is_allowed_to_fetch_it(self):
-        for name in self.tool_pages():
+    def test_every_installable_page_links_a_manifest_and_may_fetch_it(self):
+        for name in self.tool_pages() + self.hub_pages():
             with self.subTest(page=name):
                 page = (self.out / name).read_text(encoding='utf-8')
                 self.assertIn('<link rel="manifest" href="manifest.json">', page)
                 # manifest-src falls back to default-src, which is 'none'.
                 self.assertIn("manifest-src 'self'", page)
 
-    def test_the_hub_does_not_carry_a_permission_it_never_uses(self):
-        hub = (self.out / 'index.html').read_text(encoding='utf-8')
-        self.assertNotIn('manifest-src', hub)
+    def test_a_page_of_prose_carries_neither(self):
+        """There is nothing to install on a privacy policy.
 
-    def test_a_manifest_is_scoped_to_its_own_tool_in_every_language(self):
-        for name in self.tool_pages():
+        The permission goes with the manifest: a page that links no manifest
+        should not be asking for the right to fetch one.
+        """
+        slug = sorted(path.parent.name for path in ROOT.glob('pages/*/page.toml'))[0]
+        page = (self.out / slug / 'index.html').read_text(encoding='utf-8')
+        self.assertNotIn('rel="manifest"', page)
+        self.assertNotIn('manifest-src', page)
+
+    def test_every_language_can_be_installed_as_the_whole_site(self):
+        """"A Box of Tools" as one app, once per language.
+
+        The name is the site's and is not translatable, so every language
+        installs an app by the same name; what differs is where it opens and
+        what language it opens in. A German reader who installed from /de/ and
+        landed on the English hub would have installed the wrong site.
+        """
+        for locale in self.locales:
+            folder = locale['prefix']
+            with self.subTest(lang=locale['lang']):
+                manifest = json.loads((self.out / folder / 'manifest.json')
+                                      .read_text(encoding='utf-8'))
+                self.assertEqual(manifest['id'], f'/{folder}')
+                self.assertEqual(manifest['name'], 'A Box of Tools')
+                self.assertEqual(manifest['lang'], locale['hreflang'])
+                # And a worker over the same scope, or the installed app is a
+                # shortcut that fails the moment the network does - which is the
+                # one thing this site says it never does.
+                self.assertTrue((self.out / folder / 'sw.js').is_file())
+                page = (self.out / folder / 'index.html').read_text(encoding='utf-8')
+                self.assertIn('/offline.js?v=', page)
+
+    def test_the_script_that_registers_the_front_page_worker_is_written_once(self):
+        self.assertTrue((self.out / 'offline.js').is_file())
+        self.assertEqual(sorted(path.as_posix()
+                                for path in self.out.glob('**/offline.js')),
+                         [(self.out / 'offline.js').as_posix()])
+
+    def test_no_worker_can_delete_another_worker_s_cache(self):
+        """Every worker on the site claims a cache namespace of its own.
+
+        The cache store is one per origin and every registration here shares it,
+        and `activate` empties everything under its own prefix. So two workers
+        sharing a prefix - or one whose prefix is a prefix of another's, which is
+        what bare paths would give for `/de/` and `/de/video-zuschneiden/` -
+        means opening one page silently drops another page's offline copy.
+
+        It did. Before this rule the filter was `name !== CACHE_NAME`, so every
+        worker deleted every cache on the origin but its own: two tools visited,
+        one cache in the browser, and only the second of them worked offline.
+        """
+        prefixes = []
+        for path in sorted(self.out.glob('**/sw.js')):
+            found = re.search(r"CACHE_PREFIX\s*=\s*'([^']+)'",
+                              path.read_text(encoding='utf-8'))
+            self.assertIsNotNone(found, path)
+            prefixes.append(found.group(1))
+
+        self.assertGreater(len(prefixes), 1)
+        self.assertEqual(len(set(prefixes)), len(prefixes),
+                         'two workers share a cache namespace')
+        for i, one in enumerate(prefixes):
+            for j, other in enumerate(prefixes):
+                if i != j and other.startswith(one):
+                    self.fail(f'{one!r} is a prefix of {other!r}')
+
+    def test_a_manifest_is_scoped_to_its_own_folder_in_every_language(self):
+        for name in self.tool_pages() + self.hub_pages():
             folder = name[:-len('index.html')]
             with self.subTest(page=name):
                 manifest = json.loads(
@@ -487,12 +557,55 @@ class BuildTheSite(unittest.TestCase):
                 self.assertEqual(manifest['lang'], locale['hreflang'])
 
     def test_every_icon_a_manifest_names_is_on_disk(self):
+        """Nothing else would catch one that was not.
+
+        check_links reads <a href> and never opens a manifest, and a browser
+        that cannot fetch an icon does not report it either - it declines the
+        install and says nothing.
+        """
+        for name in self.tool_pages() + self.hub_pages():
+            folder = self.out / name[:-len('index.html')]
+            manifest = json.loads(
+                (folder / 'manifest.json').read_text(encoding='utf-8'))
+            self.assertTrue(manifest['icons'])
+            for icon in manifest['icons']:
+                src = icon['src']
+                with self.subTest(page=name, icon=src):
+                    path = (self.out / src.lstrip('/') if src.startswith('/')
+                            else folder / src)
+                    self.assertTrue(path.is_file(), src)
+
+    def test_a_tool_installs_as_itself_and_a_front_page_as_the_site(self):
+        """Which is the whole reason there are two lists of icons.
+
+        A launcher full of identical toolboxes tells you nothing, so a tool
+        installs as the emoji beside its own heading. That icon lives in the
+        tool's folder and is copied into all ten of them, so a relative `src` is
+        the only form that finds the copy for the language being installed - and
+        the site mark, shared by every front page, is the only one that can be
+        named from the root.
+        """
+        tool = json.loads((self.out / self.a_tool() / 'manifest.json')
+                          .read_text(encoding='utf-8'))
+        site = json.loads((self.out / 'manifest.json')
+                          .read_text(encoding='utf-8'))
+
+        for icon in tool['icons']:
+            with self.subTest(icon=icon['src']):
+                self.assertFalse(icon['src'].startswith('/'))
+        for icon in site['icons']:
+            with self.subTest(icon=icon['src']):
+                self.assertTrue(icon['src'].startswith('/'))
+
+    def test_a_tool_ships_a_maskable_icon_and_a_plain_one(self):
+        """Android crops an icon and Chrome on the desktop does not, so a tool
+        that shipped only one of the two either loses its edges on a phone or
+        looks lost in a window on a laptop."""
         manifest = json.loads((self.out / self.a_tool() / 'manifest.json')
                               .read_text(encoding='utf-8'))
-        self.assertTrue(manifest['icons'])
-        for icon in manifest['icons']:
-            with self.subTest(icon=icon['src']):
-                self.assertTrue((self.out / icon['src'].lstrip('/')).is_file())
+        purposes = [icon.get('purpose') for icon in manifest['icons']]
+        self.assertIn('maskable', purposes)
+        self.assertIn(None, purposes)
 
     def test_a_manifest_is_precached_with_the_page_it_belongs_to(self):
         slug = self.a_tool()

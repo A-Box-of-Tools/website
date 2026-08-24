@@ -151,6 +151,17 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
         (SHARED / 'feedback.js').read_text(encoding='utf-8'), 'shared/feedback.js')
     feedback_v = sitelib.text_hash(feedback_js)
 
+    # The eight lines that register the front page's service worker. Written
+    # here rather than into each language because there is nothing in it that
+    # differs between them: `register('sw.js')` resolves against the page that
+    # loaded the script, so this one file registers /sw.js for the hub at the
+    # root and /de/sw.js for the hub at /de/. A tool page does not load it - it
+    # registers its own worker from main.js, where there is an indicator to tell
+    # about it.
+    offline_js = emit.js_text(
+        (TEMPLATES / 'offline.js').read_text(encoding='utf-8'), 'templates/offline.js')
+    offline_v = sitelib.text_hash(offline_js)
+
     planned = sitelib.load_toml(CONFIG / 'planned.toml')
 
     tools = [sitelib.load_tool(path, site)
@@ -185,7 +196,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     for locale in locales:
         written += build_locale(out, templates, locale, locales, site, tools,
                                 prose, planned, css_v, lang_v, feedback_v,
-                                site_css, emit)
+                                offline_v, site_css, emit)
 
     # After every locale, because a locale only counts as finished once every
     # page in it has been rendered and had the chance to fall back. Raising
@@ -266,6 +277,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
     copy_shared(out)
     write(out / 'site.css', site_css)
     write(out / 'lang.js', lang_js)
+    write(out / 'offline.js', offline_js)
     write(out / 'feedback.js', feedback_js)
 
     # Last, because it reads the finished tree rather than the sources. A link
@@ -292,7 +304,7 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
 
 
 def build_locale(out, templates, locale, locales, site, tools, prose, planned,
-                 css_v, lang_v, feedback_v, site_css, emit):
+                 css_v, lang_v, feedback_v, offline_v, site_css, emit):
     """The whole site, in one language, under out/<lang>/ - or at the root of
     out/ for English, whose pages keep the addresses they have always had.
 
@@ -385,7 +397,7 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written.append(f'{locale["prefix"]}{links["guides"]}/index.html')
 
     build_hub(dest_root, templates, locale, locales, site, by_slug, footer,
-              links, css_v, lang_v, emit)
+              links, css_v, lang_v, offline_v, site_css, emit)
     written.append(f'{locale["prefix"]}index.html')
 
     build_roadmap(dest_root, templates, locale, locales, site,
@@ -736,7 +748,8 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'related': related,
             'ui': ui,
             'footer': footer,
-            'csp': sitelib.render_csp(root['csp'], root.get('tool_csp', {}),
+            'csp': sitelib.render_csp(root['csp'], root.get('app_csp', {}),
+                                      root.get('tool_csp', {}),
                                       sitelib.picker_csp(tool), tool['csp']),
             'css_href': css_href,
             # Root-absolute and versioned, exactly like lang_href beside it and
@@ -755,11 +768,12 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
 
     # What makes the tool installable, and the only file here a browser reads
     # before the page rather than because of it. It is written per language, so
-    # the app the German page installs is called what the German page calls it;
-    # config/site.toml says why there is one of these per tool and not one for
-    # the site.
+    # the app the German page installs is called what the German page calls it,
+    # and it is scoped to this folder - the front page has its own, scoped to the
+    # language root, and build_hub says how the two sit together.
     write(dest / 'manifest.json',
-          sitelib.tool_manifest(root, tool, locale['dir']))
+          sitelib.app_manifest(root, tool['url'], tool['name'], tool['tagline'],
+                               locale['dir'], root['manifest']['tool_icons']))
 
     # The service worker caches './', its own src/*.js, analytics.js and the
     # manifest. The list is read off the disk rather than written down, so a new
@@ -774,9 +788,10 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
               + [dest / name for name, _ in assets]
               + [dest / name for name in vendored])
     emit.js(dest / 'sw.js', templates.render('sw.js', {
-        'tool': tool,
+        'words': tool['words'],
         'assets': (['index.html', css_href, 'manifest.json']
                    + [name for name, _ in assets] + vendored),
+        'cache_scope': f'/{locale["prefix"]}{tool["out_slug"]}/',
         'cache_hash': sitelib.cache_hash(cached),
     }), where=f'{locale["prefix"]}{tool["out_slug"]}/sw.js')
 
@@ -792,6 +807,20 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             f'{tool["slug"]}: no og.png. Every tool page claims one in its '
             f'og:image; draw it with .\\og-image.ps1 -Only {tool["slug"]}')
     shutil.copy2(og, dest / 'og.png')
+
+    # And the icons the tool installs as, for the same reason and with the same
+    # failure: the manifest beside them names both whether or not they exist, and
+    # a manifest naming an icon that 404s is a browser that quietly declines to
+    # offer the install. Which files those are is config/site.toml's business
+    # rather than this function's, so the list is read from there.
+    for icon in root['manifest']['tool_icons']:
+        source = tool['dir'] / icon['src']
+        if not source.is_file():
+            raise sitelib.ConfigError(
+                f'{tool["slug"]}: no {icon["src"]}. Its manifest claims one, so a '
+                'browser would refuse to install the tool; draw it with '
+                f'.\\og-image.ps1 -Icons -Only {tool["slug"]}')
+        shutil.copy2(source, dest / icon['src'])
 
 
 def vendor_files(tool, dest):
@@ -951,7 +980,23 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
 
 
 def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
-              css_v, lang_v, emit):
+              css_v, lang_v, offline_v, site_css, emit):
+    """The front page of one language, and the app it can be installed as.
+
+    Installable for the same reason a tool is, and with the same three files
+    beside it: a manifest saying what to install, a worker that has already
+    cached it, and the eight lines that register the worker. What differs is the
+    scope. A tool's is its own folder; this one's is the language root, so an
+    installed "A Box of Tools" opens on this page and keeps the guides, the
+    roadmap and the legal pages inside its window rather than handing them to
+    the browser.
+
+    English is the exception that is worth knowing about: its root is the site
+    root, so its scope is the whole origin, every other language included. That
+    is what a front page at `/` means, and the nesting resolves the way scopes
+    always resolve - most specific wins - so a reader who installed the German
+    front page gets it for German pages either way.
+    """
     root = locale['site']
     categories = []
     listed = set()
@@ -979,12 +1024,18 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
 
     ordered = [tool for category in categories for tool in category['tools']]
 
+    css_href = f'site.css?v={css_v}'
     context = frame(locale, locales, site, '', './', links, lang_v, {
         'categories': categories,
         'footer': footer,
-        'css_href': f'site.css?v={css_v}',
-        'csp': sitelib.render_csp(root['csp']),
+        'css_href': css_href,
+        'csp': sitelib.render_csp(root['csp'], root.get('app_csp', {})),
         'jsonld': sitelib.hub_jsonld(root, ordered),
+        # Root-absolute and versioned, like lang.js and for the same reason. It
+        # is the same bytes in every language - `register('sw.js')` resolves
+        # against the page that loaded it, not against the script - so eleven
+        # copies of it would be eleven ways to fetch one file.
+        'offline_href': f'/offline.js?v={offline_v}',
     })
     context['ui'] = i18n.render_ui(templates, root['ui'], context,
                                    f'ui [{locale["lang"]}]')
@@ -995,6 +1046,26 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
         'site': root,
         'words': {'plural': 'files', 'analytics_extra': ''},
     }), where=f'{locale["prefix"]}analytics.js')
+
+    # The name is the site's and is not translated, so every language installs
+    # an app called "A Box of Tools"; the description and the language tag are
+    # this language's. `home` is this language's front door rather than the
+    # site's, which is what keeps the German app from opening the English page.
+    write(out / 'manifest.json',
+          sitelib.app_manifest(root, root['home'], site['name'],
+                               root['hub']['og_description'], locale['dir'],
+                               root['manifest']['icons']))
+
+    # site.css is hashed as text rather than read off the disk: one copy is
+    # written per language at the end of the build, which has not happened yet.
+    emit.js(out / 'sw.js', templates.render('sw.js', {
+        'words': {'plural': 'files'},
+        'assets': ['index.html', css_href, 'manifest.json'],
+        'cache_scope': f'/{locale["prefix"]}',
+        'cache_hash': sitelib.cache_hash(
+            [out / 'index.html', out / 'analytics.js', out / 'manifest.json'],
+            [site_css]),
+    }), where=f'{locale["prefix"]}sw.js')
 
 
 def build_roadmap(out, templates, locale, locales, site, planned, ordered,
