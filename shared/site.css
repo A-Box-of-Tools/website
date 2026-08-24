@@ -158,6 +158,12 @@ code {
   font-family: ui-monospace, SFMono-Regular, "Cascadia Mono", Consolas, monospace;
   font-size: 0.92em;
   overflow-wrap: anywhere;
+  /* A path or a URL is Latin script sitting inside an Arabic sentence, and
+     the bidi algorithm alone still lets the punctuation in it - the slashes
+     in config/site.toml, the colon in http:// - drift out of order. Isolating
+     the run keeps it internally left-to-right no matter which way the
+     sentence around it reads. */
+  unicode-bidi: isolate;
 }
 
 /* ---- categories -------------------------------------------------------- */
@@ -338,7 +344,7 @@ code {
 .site-logo {
   width: 1.35em;
   height: 1.35em;
-  margin-right: 0.15em;
+  margin-inline-end: 0.15em;
 }
 
 .logo-lid { stroke: var(--accent); }
@@ -368,6 +374,11 @@ code {
 .crumbs a { color: var(--text-dim); text-decoration: none; }
 .crumbs a:hover { color: var(--accent); text-decoration: underline; }
 .crumbs [aria-current="page"] { color: var(--text); }
+
+/* The separator in the markup is &rsaquo;, a glyph that points one way. Its
+   meaning is "deeper into the trail", not "toward the right", so it is
+   mirrored rather than reworded when the trail itself reads the other way. */
+[dir="rtl"] .crumbs [aria-hidden="true"] { display: inline-block; transform: scaleX(-1); }
 
 /* A guide with a crumb above it does not also need the header's usual gap. */
 .crumbs + .hub-head { padding-top: 1.5rem; }
@@ -459,7 +470,7 @@ code {
 }
 
 .legal p, .prose p { margin: 0 0 0.85rem; }
-.legal ul, .prose ul { margin: 0 0 0.95rem; padding-left: 1.25rem; }
+.legal ul, .prose ul { margin: 0 0 0.95rem; padding-inline-start: 1.25rem; }
 .legal li, .prose li { margin: 0.3rem 0; }
 .legal a, .prose a { color: var(--accent); }
 
@@ -477,6 +488,10 @@ code {
   border-radius: 8px;
   font-size: 0.86rem;
   line-height: 1.5;
+  /* A code block is authored left-to-right regardless of the language reading
+     it, so it is set explicitly rather than left to inherit `dir="rtl"`. */
+  direction: ltr;
+  text-align: start;
 }
 
 .legal pre code, .prose pre code { overflow-wrap: normal; }
@@ -727,6 +742,10 @@ footer a:hover { text-decoration: underline; }
    of the page around it would be the one word on the line the reader cannot
    read. */
 .lang-auto-back::after { content: "\00a0\2192"; }
+
+/* The arrow points forward through the sentence, and forward is the other
+   direction in a right-to-left page. */
+[dir="rtl"] .lang-auto-back::after { content: "\00a0\2190"; }
 
 /* The brand and the language control share the top line of the header. A flex
    row rather than the control positioned on top of the header, so that nothing

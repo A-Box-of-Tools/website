@@ -100,7 +100,7 @@
 
 .spec-notes {
   margin: 0 0 0.9rem;
-  padding-left: 1.1rem;
+  padding-inline-start: 1.1rem;
   font-size: 0.86rem;
   line-height: 1.6;
   color: var(--text-dim);
@@ -117,8 +117,8 @@
   line-height: 1.55;
   color: var(--text-dim);
   max-width: 74ch;
-  border-left: 3px solid var(--border);
-  padding-left: 0.7rem;
+  border-inline-start: 3px solid var(--border);
+  padding-inline-start: 0.7rem;
 }
 
 .custom-panel {

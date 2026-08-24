@@ -14,10 +14,10 @@
   background: transparent;
   padding: 0.35rem 0.65rem;
   font-size: 0.82rem;
-  border-right: 1px solid var(--border);
+  border-inline-end: 1px solid var(--border);
 }
 
-.view-switch button:last-child { border-right: none; }
+.view-switch button:last-child { border-inline-end: none; }
 .view-switch button:hover { background: var(--surface-2); }
 
 .view-switch button.active {
@@ -90,15 +90,14 @@
   width: 4px;
 }
 
-.view-large .insert-before::after, .view-small .insert-before::after { left: -7px; }
-.view-large .insert-after::after,  .view-small .insert-after::after  { right: -7px; }
+.view-large .insert-before::after, .view-small .insert-before::after { inset-inline-start: -7px; }
+.view-large .insert-after::after,  .view-small .insert-after::after  { inset-inline-end: -7px; }
 
 .view-list .insert-before::after,
 .view-list .insert-after::after,
 .view-details .insert-before::after,
 .view-details .insert-after::after {
-  left: -2px;
-  right: -2px;
+  inset-inline: -2px;
   height: 4px;
 }
 
@@ -137,12 +136,12 @@
 
 /* Sits over the thumbnail in grid views, inline in the row views. */
 .view-large .drag-handle,
-.view-small .drag-handle { top: 0.35rem; left: 0.35rem; }
+.view-small .drag-handle { top: 0.35rem; inset-inline-start: 0.35rem; }
 
 .view-small .drag-handle { width: 1.5rem; height: 1.5rem; font-size: 0.8rem; }
 
 .view-list .drag-handle,
-.view-details .drag-handle { position: static; flex: none; margin-right: 0.1rem; }
+.view-details .drag-handle { position: static; flex: none; margin-inline-end: 0.1rem; }
 
 .thumb-wrap {
   position: relative;
@@ -167,7 +166,7 @@
 .order-badge {
   position: absolute;
   top: 0.35rem;
-  left: 0.35rem;
+  inset-inline-start: 0.35rem;
   background: rgb(0 0 0 / 70%);
   color: #fff;
   font-size: 0.75rem;
@@ -179,7 +178,7 @@
 .remove-btn {
   position: absolute;
   top: 0.35rem;
-  right: 0.35rem;
+  inset-inline-end: 0.35rem;
   width: 1.5rem;
   height: 1.5rem;
   border: none;

@@ -38,7 +38,7 @@
   padding: 0.6rem 0.7rem;
   font: inherit;
   color: inherit;
-  text-align: left;
+  text-align: start;
   background: none;
   border: none;
   border-radius: 0;
@@ -91,11 +91,15 @@ button.file-main-wrap:focus-visible {
 .file-shown {
   border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
   background: color-mix(in srgb, var(--accent) 10%, var(--surface-2));
+  /* box-shadow has no logical offset, so the flip is a second rule rather
+     than a second property. */
   box-shadow: inset 4px 0 0 var(--accent);
 }
 
+[dir="rtl"] .file-shown { box-shadow: inset -4px 0 0 var(--accent); }
+
 .file-shown .file-name { color: var(--accent); }
-.file-shown .file-main-wrap { padding-left: 0.95rem; }
+.file-shown .file-main-wrap { padding-inline-start: 0.95rem; }
 
 .file-badge {
   flex: none;
@@ -340,7 +344,7 @@ button.file-main-wrap:focus-visible {
   display: flex;
   gap: 0.4rem;
   flex-wrap: wrap;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .apply-row {
@@ -661,7 +665,7 @@ button.file-main-wrap:focus-visible {
 .viewer-facts dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   word-break: break-word;
   font-variant-numeric: tabular-nums;
 }
@@ -677,7 +681,7 @@ button.file-main-wrap:focus-visible {
 
 @media (max-width: 620px) {
   .numbers input { width: 5.2rem; }
-  .number-actions { margin-left: 0; }
+  .number-actions { margin-inline-start: 0; }
   .viewer { width: 100vw; max-width: 100vw; max-height: 100vh; border-radius: 0; }
   .viewer-stage { max-height: 52vh; }
   .viewer-stage img { max-height: 48vh; }

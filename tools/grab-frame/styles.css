@@ -23,7 +23,7 @@
 .source dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   overflow-wrap: anywhere;
 }
 
@@ -88,7 +88,7 @@
    worse than no spinner at all. */
 .stage-busy {
   position: absolute;
-  left: 0.6rem;
+  inset-inline-start: 0.6rem;
   bottom: 0.6rem;
   margin: 0;
   padding: 0.2rem 0.5rem;
@@ -133,7 +133,7 @@
 .readout-dim {
   color: var(--text-dim);
   font-weight: 400;
-  margin-left: 0.4rem;
+  margin-inline-start: 0.4rem;
 }
 
 /* ---------------------------------------------------------------- settings */

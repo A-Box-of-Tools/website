@@ -23,7 +23,7 @@
 .source dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   overflow-wrap: anywhere;
 }
 
@@ -101,7 +101,7 @@
 .summary dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 

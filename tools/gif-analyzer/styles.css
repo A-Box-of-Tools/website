@@ -91,7 +91,7 @@
 .facts dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   overflow-wrap: anywhere;
 }
 .facts dd.warn { color: var(--danger); }
@@ -105,16 +105,16 @@
   gap: 0.7rem;
   padding: 0.7rem 0.8rem;
   border: 1px solid var(--border);
-  border-left-width: 3px;
+  border-inline-start-width: 3px;
   border-radius: 7px;
   margin-bottom: 0.6rem;
   font-size: 0.9rem;
   background: var(--surface-2);
 }
 
-.finding.bad { border-left-color: var(--danger); }
-.finding.warn { border-left-color: #c08a2b; }
-.finding.note { border-left-color: var(--accent); }
+.finding.bad { border-inline-start-color: var(--danger); }
+.finding.warn { border-inline-start-color: #c08a2b; }
+.finding.note { border-inline-start-color: var(--accent); }
 
 .finding-mark { flex: none; font-size: 0.9rem; line-height: 1.5; }
 .finding.bad .finding-mark { color: var(--danger); }
@@ -149,7 +149,7 @@
   width: 10px;
   height: 10px;
   border-radius: 2px;
-  margin-right: 0.5rem;
+  margin-inline-end: 0.5rem;
   flex: none;
 }
 
@@ -172,7 +172,7 @@
 }
 
 .budget th, .budget td {
-  text-align: left;
+  text-align: start;
   padding: 0.5rem 0.4rem;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
@@ -194,7 +194,7 @@
 }
 
 .budget .num {
-  text-align: right;
+  text-align: end;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
@@ -203,7 +203,7 @@
 
 .budget-note {
   flex-basis: 100%;
-  margin-left: 1.1rem;
+  margin-inline-start: 1.1rem;
   margin-top: 0.15rem;
   font-weight: 400;
   color: var(--text-dim);
@@ -270,7 +270,7 @@
 }
 
 .frame-facts dt { color: var(--text-dim); flex: none; }
-.frame-facts dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+.frame-facts dd { margin: 0; text-align: end; overflow-wrap: anywhere; }
 
 .more-row { margin-top: 1rem; }
 

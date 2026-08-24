@@ -322,7 +322,7 @@ kbd {
   border: 0;
   background: none;
   color: var(--text-dim);
-  text-align: left;
+  text-align: start;
   font: inherit;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
@@ -378,7 +378,7 @@ kbd {
 
 .result-facts {
   margin: 0.7rem 0 0;
-  padding-left: 1.1rem;
+  padding-inline-start: 1.1rem;
   font-size: 0.85rem;
   line-height: 1.6;
   color: var(--text-dim);

@@ -23,7 +23,7 @@
 .source dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   overflow-wrap: anywhere;
 }
 
@@ -142,6 +142,9 @@
   top: -6px;
   bottom: -6px;
   width: 2px;
+  /* Left, not inline-start: a scrub bar reads its `left` in pixels from
+     JavaScript and stays oriented start-to-end of the clip in every
+     language, the same way a video timeline does everywhere else. */
   margin-left: -1px;
   background: var(--text);
   pointer-events: none;
@@ -190,7 +193,7 @@
   display: flex;
   gap: 0.4rem;
   flex-wrap: wrap;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 /* ---------------------------------------------------------------- settings */
@@ -234,7 +237,7 @@
 .summary dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 

@@ -199,7 +199,7 @@ textarea:focus-visible, .output:focus-visible {
 
 .ln {
   padding: 0 0.5rem;
-  text-align: right;
+  text-align: end;
   color: var(--text-dim);
   background: color-mix(in srgb, var(--border) 25%, transparent);
   user-select: none;

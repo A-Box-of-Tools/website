@@ -29,8 +29,12 @@
 
 .file-row.selected {
   border-color: var(--accent);
+  /* box-shadow has no logical offset, so the flip is a second rule rather
+     than a second property. */
   box-shadow: inset 3px 0 0 var(--accent);
 }
+
+[dir="rtl"] .file-row.selected { box-shadow: inset -3px 0 0 var(--accent); }
 
 .file-row.unreadable { border-color: color-mix(in srgb, var(--danger) 45%, var(--border)); }
 
@@ -46,7 +50,7 @@
   background: transparent;
   border: none;
   border-radius: 0;
-  text-align: left;
+  text-align: start;
   cursor: pointer;
 }
 
@@ -259,23 +263,23 @@
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--surface-2);
-  border-left-width: 4px;
+  border-inline-start-width: 4px;
 }
 
 .finding-high {
-  border-left-color: var(--danger);
+  border-inline-start-color: var(--danger);
   background: color-mix(in srgb, var(--danger) 7%, var(--surface));
 }
 
 .finding-medium {
-  border-left-color: var(--accent);
+  border-inline-start-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 6%, var(--surface));
 }
 
-.finding-low { border-left-color: var(--text-dim); }
+.finding-low { border-inline-start-color: var(--text-dim); }
 
 .finding-clean {
-  border-left-color: var(--ok);
+  border-inline-start-color: var(--ok);
   background: color-mix(in srgb, var(--ok) 7%, var(--surface));
 }
 
@@ -380,7 +384,7 @@
 }
 
 .tag-table thead th {
-  text-align: left;
+  text-align: start;
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -401,12 +405,12 @@
 .tag-table tbody tr:last-child td { border-bottom: none; }
 
 .tag-table tbody th {
-  text-align: left;
+  text-align: start;
   font-weight: 600;
   white-space: nowrap;
 }
 
-.tag-name { margin-right: 0.4rem; }
+.tag-name { margin-inline-end: 0.4rem; }
 
 .tag-id {
   font: 0.74rem/1 ui-monospace, SFMono-Regular, Consolas, monospace;
@@ -416,7 +420,7 @@
 /* Same three levels as the badges, so a colour means one thing on this page. */
 .tag-risk {
   display: inline-block;
-  margin-right: 0.4rem;
+  margin-inline-end: 0.4rem;
   font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -461,7 +465,7 @@
   overflow-wrap: anywhere;
 }
 
-.tag-actions { text-align: right; }
+.tag-actions { text-align: end; }
 
 .tag-delete {
   border: 1px solid var(--border);
