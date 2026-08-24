@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/video-to-gif/",
+  "name": "\u89c6\u9891\u8f6c GIF",
+  "short_name": "\u89c6\u9891\u8f6c GIF",
+  "description": "\u6311\u597d\u6bb5\u843d\u3001\u5c3a\u5bf8\u548c\u5e27\u7387\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

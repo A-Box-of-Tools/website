@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/compress-image/",
+  "name": "\u56fe\u7247\u538b\u7f29",
+  "short_name": "\u56fe\u7247\u538b\u7f29",
+  "description": "\u8bf4\u4e2a\u5927\u5c0f\uff0c\u5269\u4e0b\u7684\u5b83\u6765\u7b97\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

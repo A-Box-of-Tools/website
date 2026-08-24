@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/compress-pdf/",
+  "name": "PDF \u538b\u7f29",
+  "short_name": "PDF \u538b\u7f29",
+  "description": "\u6587\u6863\u53d8\u5c0f\uff0c\u4e0d\u7528\u9001\u53bb\u4efb\u4f55\u5730\u65b9\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/tr/saglama-toplami-hesaplama/",
+  "name": "Hash & Checksum",
+  "short_name": "Hash & Checksum",
+  "description": "Check a download against the number the publisher printed, without sending it to anyone.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

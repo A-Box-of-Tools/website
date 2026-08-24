@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/exif-editor/",
+  "name": "EXIF \u67e5\u770b\u4e0e\u6e05\u9664",
+  "short_name": "EXIF \u67e5\u770b\u4e0e\u6e05\u9664",
+  "description": "\u770b\u770b\u4e00\u5f20\u7167\u7247\u628a\u4f60\u4ea4\u4ee3\u4e86\u591a\u5c11\uff0c\u7136\u540e\u5220\u6389\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

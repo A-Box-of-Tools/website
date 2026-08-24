@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/password-generator/",
+  "name": "\u5bc6\u7801\u4e0e\u5bc6\u7801\u77ed\u8bed\u751f\u6210\u5668",
+  "short_name": "\u5bc6\u7801\u4e0e\u5bc6\u7801\u77ed\u8bed\u751f\u6210\u5668",
+  "description": "\u5728\u8fd9\u91cc\u751f\u6210\uff0c\u7531\u4f60\u81ea\u5df1\u7684\u6d4f\u89c8\u5668\u751f\u6210\uff0c\u4e0d\u53d1\u5f80\u4efb\u4f55\u5730\u65b9\u3002\u4ec0\u4e48\u90fd\u4e0d\u4fdd\u5b58\uff0c\u4e5f\u6ca1\u6709\u5386\u53f2\u8bb0\u5f55\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/trim-audio/",
+  "name": "\u97f3\u9891\u526a\u8f91",
+  "short_name": "\u97f3\u9891\u526a\u8f91",
+  "description": "\u8fb9\u542c\u8fb9\u6807\u51fa\u503c\u5f97\u7559\u7684\u6bb5\u843d\u3002\u5b83\u4eec\u4f1a\u5408\u6210\u4e00\u4e2a\u6587\u4ef6\u56de\u6765\uff0c\u5c31\u5207\u5728\u4f60\u8bf4\u7684\u4f4d\u7f6e\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

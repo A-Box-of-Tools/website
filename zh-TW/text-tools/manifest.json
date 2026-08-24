@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/text-tools/",
+  "name": "\u6587\u672c\u4e0e\u4ee3\u7801",
+  "short_name": "\u6587\u672c\u4e0e\u4ee3\u7801",
+  "description": "\u628a\u5b83\u6392\u597d\uff0c\u770b\u6e05\u6539\u4e86\u4ec0\u4e48\uff0c\u7f16\u7801\u5b83\uff0c\u6216\u8005\u6362\u6210\u53e6\u4e00\u79cd\u683c\u5f0f\u3002\u6ca1\u6709\u4e00\u4e2a\u5b57\u88ab\u8d34\u8fdb\u522b\u4eba\u7684\u670d\u52a1\u5668\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

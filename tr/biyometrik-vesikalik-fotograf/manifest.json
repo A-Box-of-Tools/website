@@ -1,0 +1,26 @@
+{
+  "id": "/tr/biyometrik-vesikalik-fotograf/",
+  "name": "ID Photo Maker",
+  "short_name": "ID Photo Maker",
+  "description": "Pick the country. It applies that country's rule, exactly.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

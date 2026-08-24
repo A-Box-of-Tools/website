@@ -1,0 +1,26 @@
+{
+  "id": "/id/format-json/",
+  "name": "Text & Code",
+  "short_name": "Text & Code",
+  "description": "Lay it out, see what changed, encode it, or turn it into the other format. Nothing is pasted into anyone else's server.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

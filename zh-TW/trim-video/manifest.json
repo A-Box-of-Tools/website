@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/trim-video/",
+  "name": "\u89c6\u9891\u526a\u5207",
+  "short_name": "\u89c6\u9891\u526a\u5207",
+  "description": "\u4e00\u8fb9\u770b\u4e00\u8fb9\u6807\u51fa\u8981\u7559\u7684\u6bb5\u843d\uff0c\u6700\u540e\u62ff\u56de\u4e00\u4e2a\u89c6\u9891\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
