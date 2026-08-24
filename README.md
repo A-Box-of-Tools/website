@@ -145,7 +145,8 @@ templates/
   tool.html              the frame every tool page wears
   page.html              the frame a prose page wears - the legal ones
   404.html               what GitHub Pages returns for an address that is not here
-  sw.js                  the offline service worker
+  sw.js                  the offline service worker, one per installable folder
+  offline.js             registers that worker, for the front page only
   analytics.js           the Google Analytics bootstrap
   sitemap.xml
   llms.txt               the site in plain text, for something that gets one fetch
@@ -172,7 +173,9 @@ tools/
     styles.css           the rules only this tool needs
     src/*.js             the app itself; minified into dist/, renamed only by --mangle
     og.png               its share card
-  crop-video/            the same six things
+    icon.png             its emoji on a tile, for when it is installed as an app
+    icon-maskable.png    the same, drawn smaller for Android's crop
+  crop-video/            the same eight things
   trim-video/            and again
   exif-editor/           and again
   resize-image/          and again
@@ -204,12 +207,44 @@ the domain root, at `/compress-image/`, or nested deeper, with no configuration.
 The service worker registers with the scope of its own folder, so each tool
 caches only itself and cannot interfere with its neighbours.
 
-That is also why each tool ships its own `manifest.json` rather than the site
-shipping one. A browser offering to install the page installs what the manifest
-scopes, and here that is the folder the service worker has already cached - so an
-installed tool opens with the network unplugged. The install is offered by the
-browser itself, from the address bar; there is no button on the page and no
-script behind it.
+### Installing it as an app
+
+Two kinds of page here can be installed, and both are offered by the browser
+itself from the address bar — there is no button on a page and no script asking.
+
+| Installed from | Is called | Wears | Opens on | Its scope |
+|---|---|---|---|---|
+| a tool page | that tool — "Video Cropper" | that tool's emoji | that tool | that tool's folder |
+| a front page | A Box of Tools | the site mark | that language's hub | that language's root |
+
+The icons are the same `icon` that sits beside the tool's heading and the same
+`logo.svg` the hub wears, drawn onto a tile by `og-image.ps1` — a launcher full
+of identical toolboxes would tell you nothing. Two per tool, because Android
+crops an icon to the launcher's shape and guarantees only the middle 80% of it,
+so the maskable copy is drawn smaller. Four tools share an emoji (🎞️) and so
+install as the same picture; changing that means choosing different emoji in
+their `tool.toml`, which changes their headings and tab icons too.
+
+Each one is scoped to exactly what a service worker beside it has already
+cached, which is the point: an installed app here opens with the network
+unplugged. That is why the front page got a worker of its own in the same change
+that made it installable — an installed app that needs the network to show its
+front door would be advertising the opposite of what this site is.
+
+The scopes nest — `/de/video-zuschneiden/` inside `/de/`, and `/de/` inside `/`
+— and that is fine. A browser resolves a navigation to the most specific scope
+it has, so someone who installed both the site and one tool gets the tool's
+window for the tool and the site's window for everything else, and someone who
+installed only one of them still has the other's pages inside the one window
+there is. English is the case worth knowing about: its front page *is* the site
+root, so its scope is the whole origin.
+
+The cache store, unlike the scopes, is flat — one per origin, shared by every
+worker on the site. Each cache name is therefore prefixed with the scope that
+owns it, so a worker cleaning up after itself deletes only its own superseded
+caches. Without that prefix it deleted *everyone's*: for a long time, visiting a
+second tool dropped the first tool's offline copy, and only the last tool you
+had opened still worked with the network off.
 
 ### What the build does to the output
 
@@ -347,13 +382,14 @@ one.
    merged by position: a locale list longer than the English one is a hard
    failure, and a line removed at the wrong index silently moves every
    translation after it onto the wrong entry.
-7. Draw the share card: `.\og-image.ps1 -Only <slug>`. It reads the heading
-   from `name` and the subtitle from `og_card`, both in your `tool.toml`, so
-   there is no list to add yourself to. The build refuses a tool with no
-   `og.png`, because every tool page claims one in its `og:image` whether or
-   not it is there. Run it without `-Only` and it redraws all of them, which
-   is worth avoiding: the mark is rasterised through a headless Edge that
-   flakes about once a run.
+7. Draw the share card and the app icons: `.\og-image.ps1 -Only <slug>`. It
+   reads the heading from `name`, the subtitle from `og_card` and the icons from
+   `icon`, all in your `tool.toml`, so there is no list to add yourself to. The
+   build refuses a tool missing any of the three files, because its page claims
+   the card in `og:image` and its manifest claims the icons, whether or not they
+   are there. Run it without `-Only` and it redraws every tool, which is worth
+   avoiding: the mark is rasterised through a headless Edge that flakes about
+   once a run.
 8. Write it a guide. See [The guides](#the-guides) — one folder under
    `pages/guides/`, and the link between the two pages is a single `tool` key.
 9. Write `tools/<slug>/README.md`: how the tool works and why it works that way,

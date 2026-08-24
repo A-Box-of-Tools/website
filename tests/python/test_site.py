@@ -78,6 +78,10 @@ TOOL = {
     'url': 'https://example.test/de/video-zuschneiden/',
 }
 
+# Passed in rather than read off SITE, because it is the one thing a tool's
+# manifest and a front page's do not share.
+ICONS = [{'src': 'icon.png', 'sizes': '512x512', 'type': 'image/png'}]
+
 
 PAGE_TOML = '''
 slug = "privacy"
@@ -264,12 +268,14 @@ class StructuredData(unittest.TestCase):
         folder. An absolute start_url would have to be built per locale, and the
         one that was wrong would install an app that opens the English page.
         """
-        manifest = json.loads(sitelib.tool_manifest(SITE, TOOL, 'ltr'))
+        manifest = json.loads(sitelib.app_manifest(SITE, TOOL['url'], TOOL['name'],
+                                            TOOL['tagline'], 'ltr', ICONS))
         self.assertEqual(manifest['start_url'], './')
         self.assertEqual(manifest['scope'], './')
 
     def test_a_manifest_writes_down_the_identity_it_would_otherwise_default_to(self):
-        manifest = json.loads(sitelib.tool_manifest(SITE, TOOL, 'ltr'))
+        manifest = json.loads(sitelib.app_manifest(SITE, TOOL['url'], TOOL['name'],
+                                            TOOL['tagline'], 'ltr', ICONS))
         # A path, not a URL: an id is resolved against the origin, and naming
         # the origin twice is one more thing that can disagree with itself.
         self.assertEqual(manifest['id'], '/de/video-zuschneiden/')
@@ -277,7 +283,8 @@ class StructuredData(unittest.TestCase):
     def test_a_manifest_is_read_by_a_launcher_and_not_by_a_browser(self):
         # Both of these are authored as markup and would show their entities
         # under an icon.
-        manifest = json.loads(sitelib.tool_manifest(SITE, TOOL, 'ltr'))
+        manifest = json.loads(sitelib.app_manifest(SITE, TOOL['url'], TOOL['name'],
+                                            TOOL['tagline'], 'ltr', ICONS))
         self.assertEqual(manifest['name'], 'Video Cropper')
         self.assertEqual(manifest['description'], "Crop a clip - it's quick.")
 

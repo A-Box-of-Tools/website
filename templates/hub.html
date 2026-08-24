@@ -94,6 +94,23 @@
 -->
 <link rel="icon" href="/logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icon-180.png">
+
+<!--
+  What lets this page be installed as "A Box of Tools". The manifest is scoped
+  to this language's root, so the installed window keeps the tools, the guides
+  and the roadmap inside it; offline.js registers the worker that has already
+  cached this page, so it opens with the network unplugged. The browser offers
+  the install itself, from the address bar - there is no button here.
+
+  The two colours are one colour under two themes: `--bg` from
+  shared/css/tool-frame.css, so the window frame the browser draws is the ground
+  the page is already drawn on. The manifest carries the light one, because a
+  manifest has one colour and no way to ask.
+-->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="{{ site.manifest.theme_color }}" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="{{ site.manifest.theme_color_dark }}" media="(prefers-color-scheme: dark)">
+<script src="{{ offline_href }}" defer></script>
 </head>
 <body>
 

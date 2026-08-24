@@ -62,7 +62,14 @@ around 20 files, a locale around 66.
 **`og-image.ps1` without `-Only <slug>` redraws every share card**, and the
 redraws are not byte-identical because it rasterises the logo through headless
 Edge and that flakes. Name the tool you changed. `-Icons` is the other narrow
-form: it draws the four app icons at the root and stops before any card.
+form: it draws every app icon — the site's four and each tool's two — and no
+cards at all. The two combine, so `-Icons -Only <slug>` is one tool's icons.
+
+**A service worker's cache name must stay prefixed with its scope.** The cache
+store is one per origin and every tool and every front page is a separate
+registration sharing it, so `activate` deleting anything but its own prefix
+deletes its neighbours'. It used to, and the symptom was invisible from the
+build: two tools opened, one cache in DevTools.
 
 **A shared module cannot be imported by a unit-tested leaf module.**
 `js_parts` copies `shared/js/x.js` into a tool at `src/shared/x.js` *at build
@@ -84,8 +91,9 @@ The checklist is [README.md → Adding a tool](README.md#adding-a-tool). Two
 steps that section does not spell out, and that every real tool change has
 needed:
 
-- `.\og-image.ps1 -Only <slug>`, to draw `tools/<slug>/og.png`. The build
-  refuses a tool without one;
+- `.\og-image.ps1 -Only <slug>`, to draw `tools/<slug>/og.png` and the two
+  icons the tool installs as. The build refuses a tool missing any of the three,
+  and the icons come from that tool's `icon`, so it has to be set first;
 - if the tool was on the roadmap, drop its line from `config/planned.toml`
   **and** from every `locales/*/planned.toml`. Those lists are matched
   positionally; a locale list longer than English fails the build.
