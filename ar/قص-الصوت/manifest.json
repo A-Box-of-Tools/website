@@ -1,0 +1,26 @@
+{
+  "id": "/ar/\u0642\u0635-\u0627\u0644\u0635\u0648\u062a/",
+  "name": "Audio Trimmer",
+  "short_name": "Audio Trimmer",
+  "description": "Mark the parts worth keeping as it plays. Get them back as one file, cut where you said.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

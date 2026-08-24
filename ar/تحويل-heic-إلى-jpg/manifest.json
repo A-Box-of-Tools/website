@@ -1,0 +1,26 @@
+{
+  "id": "/ar/\u062a\u062d\u0648\u064a\u0644-heic-\u0625\u0644\u0649-jpg/",
+  "name": "HEIC to JPG",
+  "short_name": "HEIC to JPG",
+  "description": "The photos an iPhone makes, in a format everything opens.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
