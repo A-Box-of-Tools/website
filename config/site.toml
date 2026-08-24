@@ -213,58 +213,55 @@ body = """
 # Categories the shipped tools are grouped under. A tool joins one by naming its
 # id in `category` in its own tool.toml; the order of tools within a category is
 # the order they are listed in `order` below.
+#
+# There were seven of these and they had stopped grouping anything. One held
+# sixteen tools; the other six held three or fewer, which at three cards to a
+# row is a heading over a single row. So somebody after a video tool scrolled
+# past nine image tools inside one section, and then past six headings that were
+# mostly heading. A heading earns its space by letting a reader skip everything
+# under it, and a heading with one card under it never does.
+#
+# Four, then, cut where a reader would cut them: three by the kind of file they
+# arrived with - a picture, something that moves, something to read or to listen
+# to - and one for the tools that do not hand back a changed copy of anything.
 [[hub.categories]]
-id = "images-and-video"
-name = "Images &amp; video"
-note = "Work with pictures and footage without handing them to anyone."
-order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "video-to-gif", "exif-editor", "redact-image", "heic-to-jpg", "image-to-data-uri", "image-to-ico", "svg-to-image", "id-photo", "resize-image", "compress-image"]
+id = "images"
+name = "Images"
+note = "Resize one, shrink one, or take out what it quietly records about you - none of it sent anywhere."
+order = ["compress-image", "resize-image", "heic-to-jpg", "id-photo", "redact-image", "exif-editor", "image-to-ico", "image-to-data-uri", "svg-to-image"]
 
+# Video and GIF were two categories, and the line between them was one this site
+# cared about and a reader did not: a GIF is what somebody makes when the MP4
+# will not send, and half of these tools turn one into the other. Under a single
+# heading, "video to GIF" stops being a choice between two sections.
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIF &amp; animation"
-note = "Build an animation, or take one apart, without it leaving your machine."
-order = ["gif-maker", "split-gif", "gif-analyzer"]
+id = "video-and-animation"
+name = "Video &amp; animation"
+note = "Cut it, convert it, or build one out of still pictures, without the footage leaving your machine."
+order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "timelapse-video", "grab-frame", "video-to-gif", "gif-maker", "split-gif", "gif-analyzer"]
 
+# Documents and audio have nothing in common except the thing that matters here:
+# they are what people are most often told to upload to a stranger to have
+# something simple done to them. Three tools and two tools were two headings
+# that each fitted on one row; together they are a section worth a heading.
 [[hub.categories]]
-id = "audio"
-name = "Audio"
-note = "Work on a recording without handing it to anyone, including the sound inside a video."
-order = ["trim-audio", "edit-audio"]
+id = "documents-and-audio"
+name = "Documents &amp; audio"
+note = "Rearrange a document or trim a recording, without sending either off to be processed."
+order = ["merge-pdf", "compress-pdf", "images-to-pdf", "trim-audio", "edit-audio"]
 
+# Everything that is not a file being edited. What goes in is something you
+# typed, something you want read back, or something you want checked, and what
+# comes out is not a changed copy of it. This was three headings - codes, text,
+# secrets - split along a line that only means anything to somebody who already
+# knows what all five tools do. The promise underneath them is one promise, and
+# it is the strongest one on the page: what a reader has here is a token, a
+# config file, or a password that nobody else has ever held a copy of.
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "Documents &amp; PDF"
-note = "Make and rearrange documents without sending them to be processed."
-order = ["merge-pdf", "compress-pdf", "images-to-pdf"]
-
-# The first category here that is not about editing a file. One tool takes a
-# string and hands back a picture of it; the other takes a file and hands back a
-# number about it. Neither produces a changed copy of anything, which is what
-# the note has to cover - it said "turn something you typed" while there was
-# only the code generator here, and that stopped being true the day a checksum
-# arrived.
-[[hub.categories]]
-id = "codes-and-data"
-name = "Codes &amp; data"
-note = "Turn something you typed into something a machine can read, without it leaving the page."
-order = ["qr-barcode", "qr-barcode-reader", "hash-checksum"]
-
-# The second of those, and the one where the promise matters most: what people
-# paste into an online formatter is tokens, config files and customer records.
-[[hub.categories]]
-id = "text-and-code"
-name = "Text &amp; code"
-note = "Read it, compare it, encode it - without pasting a token or a config file into somebody else's server."
-order = ["text-tools"]
-
-# The third, and the one where the output rather than the input is the secret.
-# Everything above takes something you have; this takes nothing at all and
-# hands back something that did not exist a moment ago and must not leave.
-[[hub.categories]]
-id = "passwords-and-security"
-name = "Passwords &amp; security"
-note = "Make the secret here, on your own machine, so that nobody else ever had a copy of it to lose."
-order = ["password-generator"]
+id = "text-codes-and-passwords"
+name = "Text, codes &amp; passwords"
+note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
+order = ["text-tools", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
 
 #
 # ---------------------------------------------------------------------------

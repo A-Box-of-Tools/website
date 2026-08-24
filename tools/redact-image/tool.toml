@@ -15,7 +15,7 @@ heading = "Image&nbsp;Redactor <span class=\"h1-kw\">&mdash; black out, pixelate
 tagline = "What you cover is deleted from the file, not covered up in it."
 icon = "&#11035;"          # the mark beside the page heading
 favicon = "&#11035;"       # the tab icon, drawn into an inline SVG
-category = "images-and-video"
+category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "images"

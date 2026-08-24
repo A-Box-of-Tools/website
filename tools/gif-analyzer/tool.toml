@@ -20,7 +20,7 @@ heading = "GIF&nbsp;Analyzer <span class=\"h1-kw\">&mdash; what is actually insi
 tagline = "Frames, delays, palettes, and where every byte went."
 icon = "&#128269;"         # the mark beside the page heading
 favicon = "&#128269;"      # the tab icon, drawn into an inline SVG
-category = "gif-and-animation"
+category = "video-and-animation"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "gif"

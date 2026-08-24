@@ -683,14 +683,15 @@ Two details in there are worth knowing before changing it:
 
 - **It is a ring, not the head of the category.** Each tool's list is read from
   its own position and wraps round. Taking the first four of each category
-  instead would point all fourteen pages of `images-and-video` at the same four
+  instead would point all ten pages of `video-and-animation` at the same four
   names and leave the tail of it with nothing linking in — which is the half of
   this that is about crawlers rather than readers.
-- **The category sorts the ring; it does not filter it.** `codes-and-data` and
-  `text-and-code` hold one tool each, so a strict reading of "same category"
-  would leave exactly `qr-barcode` and `text-tools` as the dead ends this is
-  meant to remove. A tool with siblings gets siblings, and a tool without gets
-  whatever the hub has nearest.
+- **The category sorts the ring; it does not filter it.** No category holds a
+  single tool today — the smallest holds five — but three did before the hub's
+  headings were cut down to four, and a new category starts life holding exactly
+  one. A strict reading of "same category" would make each of those the dead end
+  this is meant to remove, so a tool with siblings gets siblings, and a tool
+  without gets whatever the hub has nearest.
 
 `RELATED_COUNT` is four, and the `13rem` column minimum in
 `shared/css/tool-frame.css` is measured against it and against the 940px content

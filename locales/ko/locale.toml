@@ -190,39 +190,24 @@ body = """
         그 순간 멈춰 버릴 테니까요."""
 
 [[hub.categories]]
-id = "images-and-video"
-name = "이미지와 영상"
-note = "사진과 영상을 누구에게도 넘기지 않고 다듬습니다."
+id = "images"
+name = "이미지"
+note = "용량을 줄이고, 크기를 바꾸고, 사진이 조용히 담아둔 정보를 지웁니다. 어느 것도 기기 밖으로 나가지 않습니다."
 
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIF와 애니메이션"
-note = "움직이는 이미지를 만들고, 다시 프레임으로 뜯어냅니다. 기기 밖으로 나갈 일은 없습니다."
+id = "video-and-animation"
+name = "영상과 애니메이션"
+note = "자르고, 변환하고, 사진으로 만들어냅니다. 영상이 기기 밖으로 나갈 일은 없습니다."
 
 [[hub.categories]]
-id = "audio"
-name = "오디오"
-note = "녹음 파일을 누구에게도 넘기지 않고 손봅니다. 영상에 들어 있는 소리도 마찬가지예요."
+id = "documents-and-audio"
+name = "문서와 오디오"
+note = "문서 순서를 바꾸거나 녹음을 다듬는 일까지, 어느 쪽도 어디로 보내지 않고 끝냅니다."
 
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "문서와 PDF"
-note = "문서를 만들고 순서를 바꾸는 일까지, 어디로도 보내지 않고 끝냅니다."
-
-[[hub.categories]]
-id = "codes-and-data"
-name = "코드와 데이터"
-note = "기계가 읽는 형태를 만들거나, 그 파일이 자기가 말하는 그 파일인지 확인합니다. 둘 다 페이지 안에서 끝납니다."
-
-[[hub.categories]]
-id = "text-and-code"
-name = "텍스트와 코드"
-note = "읽고, 비교하고, 인코딩합니다. 토큰이나 설정 파일을 남의 서버에 붙여넣지 않고요."
-
-[[hub.categories]]
-id = "passwords-and-security"
-name = "비밀번호와 보안"
-note = "비밀은 여기, 본인 기기에서 만듭니다. 남의 손에 사본이 간 적이 없으니 잃어버릴 것도 없습니다."
+id = "text-codes-and-passwords"
+name = "텍스트와 코드와 비밀번호"
+note = "읽고, 확인하고, 여기서 만듭니다. 토큰도 설정 파일도 비밀번호도 남의 서버로 가지 않습니다."
 
 #
 # ---------------------------------------------------------------------------

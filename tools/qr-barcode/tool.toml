@@ -18,7 +18,7 @@ heading = "QR&nbsp;&amp;&nbsp;Barcode <span class=\"h1-kw\">&mdash; make a QR co
 tagline = "Type it, and it becomes a code. Nothing is sent to make one."
 icon = "&#128307;"          # the mark beside the page heading
 favicon = "&#128307;"       # the tab icon, drawn into an inline SVG
-category = "codes-and-data"
+category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "beyond"

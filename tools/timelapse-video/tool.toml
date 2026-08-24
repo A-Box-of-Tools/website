@@ -15,7 +15,7 @@ heading = "Time&#8209;Lapse&nbsp;Maker <span class=\"h1-kw\">&mdash; speed a lon
 tagline = "An hour of footage, in twenty seconds."
 icon = "&#9193;&#65039;"          # the mark beside the page heading
 favicon = "&#9193;"      # the tab icon, drawn into an inline SVG
-category = "images-and-video"
+category = "video-and-animation"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "video"

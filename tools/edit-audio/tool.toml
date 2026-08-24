@@ -15,7 +15,7 @@ heading = "Audio&nbsp;Editor <span class=\"h1-kw\">&mdash; reverse, speed up or 
 tagline = "Play it backwards, change the speed, lift a quiet recording &mdash; all of it here, on your machine."
 icon = "&#127898;&#65039;"        # the mark beside the page heading
 favicon = "&#127898;"     # the tab icon, drawn into an inline SVG
-category = "audio"
+category = "documents-and-audio"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "audio"

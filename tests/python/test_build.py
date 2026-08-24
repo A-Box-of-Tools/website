@@ -247,9 +247,10 @@ class RelatedTools(unittest.TestCase):
             self.assertNotIn(slug, [t['slug'] for t in others])
 
     def test_a_lone_tool_in_its_category_still_gets_links(self):
-        # qr-barcode and text-tools are the only tools in their categories, and
-        # a strict reading of "same category" would leave exactly those two
-        # pages as the dead ends this exists to remove.
+        # No shipped category holds one tool at the moment, but one that has
+        # just been added does until its second tool arrives, and a strict
+        # reading of "same category" would leave that page the dead end this
+        # exists to remove.
         ordered = self.tools(('a', 'x'), ('b', 'x'), ('lonely', 'z'))
         related = buildmod.related_tools(ordered, count=2)
         self.assertEqual([t['slug'] for t in related['lonely']], ['a', 'b'])

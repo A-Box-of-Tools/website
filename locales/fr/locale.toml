@@ -183,39 +183,24 @@ body = """
         ailleurs pour les traiter s'arrêterait net."""
 
 [[hub.categories]]
-id = "images-and-video"
-name = "Images &amp; vidéo"
-note = "Travailler ses photos et ses rushes sans les confier à personne."
+id = "images"
+name = "Images"
+note = "La réduire, la redimensionner ou lui retirer ce qu'elle raconte de vous sans le dire. Rien de tout cela n'est envoyé ailleurs."
 
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIF &amp; animation"
-note = "Monter une animation, ou la décomposer, sans qu'elle quitte votre machine."
+id = "video-and-animation"
+name = "Vidéo &amp; animation"
+note = "La couper, la convertir ou la fabriquer à partir de photos, sans que les rushes quittent votre machine."
 
 [[hub.categories]]
-id = "audio"
-name = "Audio"
-note = "Travailler un enregistrement sans le confier à personne, y compris le son d'une vidéo."
+id = "documents-and-audio"
+name = "Documents &amp; audio"
+note = "Réorganiser un document ou couper un enregistrement, sans envoyer ni l'un ni l'autre se faire traiter ailleurs."
 
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "Documents &amp; PDF"
-note = "Fabriquer et réorganiser des documents sans les envoyer se faire traiter ailleurs."
-
-[[hub.categories]]
-id = "codes-and-data"
-name = "Codes &amp; données"
-note = "Fabriquer quelque chose qu’une machine sait lire, ou vérifier qu’un fichier est bien celui qu’il prétend être. Le tout dans la page."
-
-[[hub.categories]]
-id = "text-and-code"
-name = "Texte &amp; code"
-note = "Le relire, le comparer, l'encoder, sans coller un jeton ou un fichier de configuration sur le serveur d'un inconnu."
-
-[[hub.categories]]
-id = "passwords-and-security"
-name = "Mots de passe &amp; sécurité"
-note = "Fabriquez le secret ici, sur votre propre appareil, pour que personne d'autre n'en ait jamais eu une copie à perdre."
+id = "text-codes-and-passwords"
+name = "Texte, codes &amp; mots de passe"
+note = "Le lire, le vérifier ou le fabriquer ici. Aucun jeton, aucun fichier de configuration et aucun mot de passe sur le serveur d'un inconnu."
 
 #
 # ---------------------------------------------------------------------------

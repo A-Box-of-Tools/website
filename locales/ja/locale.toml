@@ -94,39 +94,24 @@ body = """
         です。"""
 
 [[hub.categories]]
-id = "images-and-video"
-name = "画像と動画"
-note = "写真も映像も、誰かに預けずに手元で扱えます。"
+id = "images"
+name = "画像"
+note = "縮める、大きさを変える、写真がそっと記録しているものを消す。どれも端末の外には出ません。"
 
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIFとアニメーション"
-note = "アニメーションを作るのも、分解するのも、端末の中だけで済みます。"
+id = "video-and-animation"
+name = "動画とアニメーション"
+note = "切るのも、変換するのも、写真から組み立てるのも、映像は端末の中だけで済みます。"
 
 [[hub.categories]]
-id = "audio"
-name = "音声"
-note = "録音した音声も、動画の中の音声も、誰かに預けずに手を入れられます。"
+id = "documents-and-audio"
+name = "書類と音声"
+note = "書類を並べ替えるのも、録音を切り詰めるのも、どこかへ送って処理してもらう必要はありません。"
 
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "書類とPDF"
-note = "書類を作るのも並べ替えるのも、どこかへ送って処理してもらう必要はありません。"
-
-[[hub.categories]]
-id = "codes-and-data"
-name = "コードとデータ"
-note = "機械が読み取れる形をつくる。あるいは、そのファイルが名乗ったとおりのものか確かめる。どちらもページの中で完結します。"
-
-[[hub.categories]]
-id = "text-and-code"
-name = "テキストとコード"
-note = "読みやすく整形し、差分を比べ、符号化します。トークンや設定ファイルを他人のサーバーに貼り付けずに済みます。"
-
-[[hub.categories]]
-id = "passwords-and-security"
-name = "パスワードとセキュリティ"
-note = "秘密は手元の端末で作ります。ほかの誰かが写しを持ったことがないので、失われようがありません。"
+id = "text-codes-and-passwords"
+name = "テキストとコードとパスワード"
+note = "読む、確かめる、ここで作る。トークンも設定ファイルもパスワードも、他人のサーバーには渡りません。"
 
 #
 # ---------------------------------------------------------------------------

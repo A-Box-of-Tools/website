@@ -159,39 +159,24 @@ body = """
         punto, si fermerebbe."""
 
 [[hub.categories]]
-id = "images-and-video"
-name = "Immagini e video"
-note = "Lavora su foto e riprese senza consegnarle a nessuno."
+id = "images"
+name = "Immagini"
+note = "Comprimila, ridimensionala o togli quello che racconta di te senza dirtelo. Niente di tutto questo viene spedito da qualche parte."
 
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIF e animazione"
-note = "Monta un'animazione, oppure smontala, senza che si muova dal tuo dispositivo."
+id = "video-and-animation"
+name = "Video e animazione"
+note = "Taglialo, convertilo o montalo partendo dalle foto, senza che le riprese lascino il tuo dispositivo."
 
 [[hub.categories]]
-id = "audio"
-name = "Audio"
-note = "Lavora su una registrazione senza consegnarla a nessuno, compreso l'audio che sta dentro un video."
+id = "documents-and-audio"
+name = "Documenti e audio"
+note = "Riordina un documento o accorcia una registrazione, senza mandare né l'uno né l'altra a elaborare altrove."
 
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "Documenti e PDF"
-note = "Crea e riordina documenti senza mandarli a elaborare da qualche altra parte."
-
-[[hub.categories]]
-id = "codes-and-data"
-name = "Codici e dati"
-note = "Crea qualcosa che una macchina sa leggere, oppure verifica che un file sia davvero quello che dice di essere. Tutto dentro la pagina."
-
-[[hub.categories]]
-id = "text-and-code"
-name = "Testo e codice"
-note = "Leggilo, confrontalo, codificalo, senza incollare un token o un file di configurazione sul server di qualcun altro."
-
-[[hub.categories]]
-id = "passwords-and-security"
-name = "Password e sicurezza"
-note = "Crea qui il segreto, sul tuo dispositivo, così nessun altro ne ha mai avuto una copia da perdere."
+id = "text-codes-and-passwords"
+name = "Testo, codici e password"
+note = "Leggilo, verificalo o crealo qui. Nessun token, nessun file di configurazione e nessuna password sul server di qualcun altro."
 
 #
 # ---------------------------------------------------------------------------

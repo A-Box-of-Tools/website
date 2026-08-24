@@ -163,39 +163,24 @@ body = """
         em outro lugar simplesmente pararia."""
 
 [[hub.categories]]
-id = "images-and-video"
-name = "Imagens e vídeo"
-note = "Mexa nas suas fotos e gravações sem entregar nenhuma delas a ninguém."
+id = "images"
+name = "Imagens"
+note = "Reduza, mude o tamanho ou tire o que a foto conta de você sem avisar. Nada disso é mandado para lugar nenhum."
 
 [[hub.categories]]
-id = "gif-and-animation"
-name = "GIF e animação"
-note = "Monte uma animação, ou desmonte uma, sem que ela saia do seu computador."
+id = "video-and-animation"
+name = "Vídeo e animação"
+note = "Corte, converta ou monte a partir de fotos, sem que a gravação saia do seu computador."
 
 [[hub.categories]]
-id = "audio"
-name = "Áudio"
-note = "Mexa numa gravação sem entregá-la a ninguém, inclusive no áudio que está dentro de um vídeo."
+id = "documents-and-audio"
+name = "Documentos e áudio"
+note = "Reorganize um documento ou corte uma gravação, sem mandar nenhum dos dois para ser processado fora."
 
 [[hub.categories]]
-id = "documents-and-pdf"
-name = "Documentos e PDF"
-note = "Crie e reorganize documentos sem mandar nada para ser processado fora."
-
-[[hub.categories]]
-id = "codes-and-data"
-name = "Códigos e dados"
-note = "Crie algo que uma máquina consegue ler, ou confirme que um arquivo é mesmo o que diz ser. Tudo dentro da página."
-
-[[hub.categories]]
-id = "text-and-code"
-name = "Texto e código"
-note = "Leia, compare, codifique, sem precisar colar um token ou um arquivo de configuração no servidor dos outros."
-
-[[hub.categories]]
-id = "passwords-and-security"
-name = "Senhas e segurança"
-note = "Crie o segredo aqui, no seu próprio computador, para que ninguém mais tenha tido uma cópia dele para perder."
+id = "text-codes-and-passwords"
+name = "Texto, códigos e senhas"
+note = "Leia, confira ou crie aqui. Nenhum token, nenhum arquivo de configuração e nenhuma senha vai parar no servidor dos outros."
 
 #
 # ---------------------------------------------------------------------------
