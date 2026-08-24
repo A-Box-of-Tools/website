@@ -27,6 +27,25 @@ class AbortedError extends Error {
   }
 }
 
+/** What the four MediaError codes mean, in words somebody can act on. */
+const MEDIA_ERRORS = {
+  1: 'the read was aborted',
+  2: 'the file could not be read off the disk',
+  3: 'the browser could not decode the video in it',
+  4: 'the browser does not support this format or codec',
+};
+
+/**
+ * The element gave up. Say how far it got, because on a long clip that is the
+ * difference between "this file is not supported" and "it died two thirds of
+ * the way through", and the two have different answers.
+ */
+function playerDied(video, done, total) {
+  const why = MEDIA_ERRORS[video.error?.code] ?? 'the browser stopped being able to read it';
+  return new Error(`The player stopped after ${done} of ${total} frames: ${why}. `
+    + 'Converting the clip to an ordinary MP4 (H.264) first is the reliable fix.');
+}
+
 /**
  * @param {object} args
  * @param {HTMLVideoElement} args.video  already loaded with the file
@@ -47,7 +66,19 @@ export async function timelapseByPlaying({
     for (let i = 0; i < times.length; i += 1) {
       if (signal?.aborted) throw new AbortedError();
 
-      await seek(video, times[i]);
+      // A media element's error is sticky, and it can be set between two seeks
+      // rather than during one - where no listener of ours is attached to hear
+      // it. Without this check a dead element is seeked to the end of the list
+      // anyway, each seek waiting out its own timeout, and the failure is
+      // reported minutes later from wherever it happened to be noticed.
+      if (video.error) throw playerDied(video, i, times.length);
+
+      try {
+        await seek(video, times[i]);
+      } catch (error) {
+        if (error?.name === 'PlayerError') throw playerDied(video, i, times.length);
+        throw error;
+      }
       drawScaled(ctx, video, {
         // The element has already applied whatever rotation the file asks for,
         // so there is nothing left here to turn.
@@ -103,12 +134,16 @@ function seek(video, seconds) {
       }
     };
 
+    // Named rather than described: only the caller knows how far through the
+    // list this happened, and that is half of what the message has to say.
     const onError = () => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
       video.removeEventListener('seeked', onSeeked);
-      reject(new Error('The browser stopped being able to play this file partway through.'));
+      const failure = new Error('the player errored during a seek');
+      failure.name = 'PlayerError';
+      reject(failure);
     };
 
     const timer = setTimeout(finish, SEEK_TIMEOUT);
