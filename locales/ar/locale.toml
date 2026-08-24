@@ -1,0 +1,448 @@
+#
+# العربية.
+#
+# The first right-to-left locale, and the reason `dir="rtl"` in
+# templates/*.html and `locale['dir']` in build.py existed before this file
+# did - see README.md "Adding a language". What is here is the frame: the
+# hub, the guides index, the roadmap, the 404, the footer, and the words the
+# templates themselves use. The tools and the guides are NOT translated yet -
+# they stay in English, fall back page by page, and are held out of the
+# sitemap, the hreflang sets and the switcher exactly as an unfinished part of
+# any other locale is. See buildlib/i18n.py.
+#
+# Nothing structural is repeated here. There is no list of which tools exist,
+# no category ids, no ordering, no Content-Security-Policy - all of that is
+# decided once, in English, in config/site.toml, and a locale that tried to
+# restate any of it would be told so by the build.
+#
+# Modern Standard Arabic, formal register, written for a general reader rather
+# than for one dialect region. Decisions worth recording, because the next
+# translator into this file should not have to re-derive them:
+#
+#   * Arabic verbs and possessive suffixes carry the addressee's grammatical
+#     gender, and this site does not know its reader's. The masculine form is
+#     used as the generic, which is the default convention in Arabic software
+#     localization (Google, Microsoft and Apple all ship Arabic UIs this way)
+#     - not a claim about who is reading.
+#   * Western digits (0-9), not Eastern Arabic-Indic numerals (٠-٩). Version
+#     numbers, file sizes and counts on this site are typed by a build script
+#     and compared against what a browser's own devtools shows, and Western
+#     digits are what most Arabic technical writing on the web already uses.
+#   * "PDF", "GIF", "SVG", "JPG", "QR", "EXIF", "CSS" and similar acronyms
+#     stay in Latin letters, exactly as German keeps "EXIF" and Spanish keeps
+#     "GPS". They are what gets typed into a search box, transliterating them
+#     would invent a word nobody searches for, and several - PDF above all -
+#     are printed on the file's own icon in every operating system this site
+#     is used from.
+#   * Arabic's "few" (3-10) and "many" (11-99) plural forms are both real, but
+#     this file has only two slots to work with - see `guide_one`/`guide_many`
+#     below, which is the same limit Chinese, Japanese, Hindi and Korean run
+#     into for the opposite reason (no plural marking at all). The count this
+#     site actually shows is always past ten, so the "many" (11-99) form, a
+#     bare singular noun, is what both slots carry.
+#
+
+lang = "ar"
+name = "Arabic"
+endonym = "العربية"
+hreflang = "ar"
+dir = "rtl"
+
+# The frame is finished: the nav, the footer, the hub and every [ui] word in
+# this file are Arabic. That is all this flag claims - the tools and the
+# guides are still English, held back a page at a time. See the note at the
+# top of buildlib/i18n.py for why the unit is the page rather than the
+# language, and shared/css for the RTL layout work that had to land beside
+# this file before dir="rtl" was safe to ship at all.
+complete = true
+
+#
+# ---------------------------------------------------------------------------
+# The addresses.
+#
+# Keyed by the ENGLISH slug on the left, which is the name of the thing, and
+# never by the Arabic one. The Arabic is an address and appears only on the
+# right.
+#
+# Written in Arabic script rather than transliterated into Latin letters,
+# because that is what an Arabic speaker actually types - the same reasoning
+# German gives for writing its own slugs in German, applied to a script
+# rather than to a spelling. Korean and the CJK locales already prove a
+# non-Latin slug survives `location.pathname`; Arabic percent-encodes the
+# same way. An acronym that stays Latin in the running prose (PDF, GIF, SVG,
+# HEIC, QR) stays Latin inside the slug too, for the same reason.
+# ---------------------------------------------------------------------------
+#
+
+[slugs]
+# The tools.
+"compress-image" = "ضغط-الصور"
+"compress-pdf" = "ضغط-pdf"
+"crop-video" = "اقتصاص-الفيديو"
+"edit-audio" = "تحرير-الصوت"
+"exif-editor" = "إزالة-بيانات-exif"
+"redact-image" = "طمس-الصورة"
+"images-to-pdf" = "تحويل-الصور-إلى-pdf"
+"images-to-video" = "تحويل-الصور-إلى-فيديو"
+"resize-image" = "تغيير-حجم-الصورة"
+"trim-video" = "تقصير-الفيديو"
+"image-to-ico" = "إنشاء-فافيكون"
+"svg-to-image" = "تحويل-svg-إلى-png"
+"heic-to-jpg" = "تحويل-heic-إلى-jpg"
+"image-to-data-uri" = "تحويل-الصورة-إلى-base64"
+"qr-barcode" = "إنشاء-رمز-qr"
+"qr-barcode-reader" = "مسح-رمز-qr"
+"video-to-gif" = "تحويل-الفيديو-إلى-gif"
+"gif-analyzer" = "تحليل-gif"
+"gif-maker" = "إنشاء-gif"
+"grab-frame" = "استخراج-لقطة-من-الفيديو"
+"id-photo" = "صورة-شخصية-بيومترية"
+"merge-pdf" = "دمج-pdf"
+"reverse-video" = "تشغيل-الفيديو-عكسيا"
+"split-gif" = "تقسيم-gif-إلى-إطارات"
+"text-tools" = "تنسيق-json"
+"trim-audio" = "قص-الصوت"
+"password-generator" = "مولد-كلمات-المرور"
+"timelapse-video" = "إنشاء-فيديو-تايم-لابس"
+"hash-checksum" = "حساب-قيمة-التجزئة"
+
+# The indexes and the legal pages.
+"guides" = "أدلة"
+"roadmap" = "خارطة-الطريق"
+"privacy" = "الخصوصية"
+"terms" = "شروط-الاستخدام"
+
+# The guides. Each one keeps the "أدلة/" prefix written out, the same way the
+# German list keeps "ratgeber/" on every line - the parent slug above is not
+# inherited automatically, so it is repeated here.
+"guides/compress-an-image-to-a-target-size" = "أدلة/ضغط-الصورة-إلى-حجم-محدد"
+"guides/resize-an-image" = "أدلة/تغيير-حجم-الصورة"
+"guides/remove-exif-and-gps-data" = "أدلة/إزالة-بيانات-exif-و-gps"
+"guides/redact-an-image" = "أدلة/طمس-الصورة"
+"guides/make-a-pdf-smaller" = "أدلة/تصغير-حجم-pdf"
+"guides/combine-images-into-a-pdf" = "أدلة/دمج-الصور-في-pdf"
+"guides/turn-images-into-a-video" = "أدلة/تحويل-الصور-إلى-فيديو"
+"guides/trim-a-video" = "أدلة/تقصير-الفيديو"
+"guides/crop-a-video" = "أدلة/اقتصاص-الفيديو"
+"guides/is-it-safe-to-upload-files" = "أدلة/هل-رفع-الملفات-آمن"
+"guides/make-a-favicon" = "أدلة/إنشاء-فافيكون"
+"guides/convert-an-svg-to-png" = "أدلة/تحويل-svg-إلى-png"
+"guides/convert-heic-to-jpg" = "أدلة/تحويل-heic-إلى-jpg"
+"guides/embed-an-image-in-css" = "أدلة/تضمين-صورة-في-css"
+"guides/make-a-qr-code" = "أدلة/إنشاء-رمز-qr"
+"guides/turn-a-video-into-a-gif" = "أدلة/تحويل-الفيديو-إلى-gif"
+"guides/format-json-without-uploading-it" = "أدلة/تنسيق-json-دون-رفعه"
+"guides/grab-a-frame-from-a-video" = "أدلة/استخراج-لقطة-من-فيديو"
+"guides/make-a-gif-from-images" = "أدلة/إنشاء-gif-من-الصور"
+"guides/make-a-passport-photo" = "أدلة/عمل-صورة-شخصية-بيومترية"
+"guides/merge-and-split-pdf-files" = "أدلة/دمج-وتقسيم-ملفات-pdf"
+"guides/reverse-a-video" = "أدلة/تشغيل-الفيديو-عكسيا"
+"guides/split-a-gif-into-frames" = "أدلة/تقسيم-gif-إلى-إطارات"
+"guides/trim-an-audio-file" = "أدلة/قص-ملف-صوتي"
+"guides/whats-inside-a-gif" = "أدلة/ماذا-يوجد-داخل-gif"
+"guides/verify-a-file-checksum" = "أدلة/التحقق-من-قيمة-تجزئة-الملف"
+
+#
+# ---------------------------------------------------------------------------
+# The hub.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "أدوات مجانية في المتصفح &mdash; بلا رفع، بلا تسجيل | abox.tools"
+description = "أدوات مجانية تعمل داخل متصفحك ولا ترفع ملفاتك أبدا. اجمع صورا في ملف PDF أو فيديو، اضغط صورة إلى حجم محدد بدقة، اقتصّ فيديو، أو احذف بيانات EXIF."
+heading = "صندوق أدوات لا يلامس خادما أبدا"
+og_title = "A Box of Tools &mdash; صندوق أدوات لا يلامس خادما أبدا"
+og_description = "أدوات صغيرة، كل واحدة لمهمة واحدة، تعمل بالكامل داخل متصفحك. ملفاتك لا تغادر جهازك أبدا."
+og_image_alt = "abox.tools - صندوق أدوات لا يلامس خادما أبدا"
+schema_description = "أدوات صغيرة، كل واحدة لمهمة واحدة، تنجز كل عملها داخل المتصفح. لا شيء يُرفع، ولا حاجة إلى حساب."
+schema_about = "أدوات متصفح لمعالجة الملفات محليا دون رفعها"
+
+lede = """
+    أدوات صغيرة، كل واحدة لمهمة واحدة، تنجز كل عملها داخل متصفحك. ملفاتك
+    تبقى على جهازك: لا شيء تحتاج إلى رفعه، ولا حساب عليك إنشاؤه، ولا شيء
+    يُتابَع."""
+
+support_note = """
+      هذه الأدوات مجانية وستبقى كذلك. إن وفّرت عليك إحداها عملا، فهذا هو
+      الموضع الوحيد في الموقع الذي يطلب منك شيئا."""
+
+[[hub.guarantees]]
+title = "ملفاتك لا تغادر جهازك أبدا"
+body = """
+        يفتحها متصفحك ويقرؤها ويعالجها بنفسه، على عتادك الخاص. تحدد
+        <code>Content-Security-Policy</code> الخاصة بكل أداة كل عنوان يحق
+        لها الاتصال به، ولا واحد منها يخصنا."""
+
+[[hub.guarantees]]
+title = "لا شيء عن ملفاتك يُرسَل إلى أي مكان"
+body = """
+        لا الملف، ولا صورة مصغرة عنه، ولا اسمه، ولا حجمه، ولا عددها. لا
+        تقرأ أي أداة هنا شيئا من ذلك، ولا يوجد خادم في الطرف الآخر
+        ليستقبله أصلا."""
+
+[[hub.guarantees]]
+title = "تعمل دون اتصال بالإنترنت"
+body = """
+        افتح أداة مرة واحدة، اقطع الاتصال بالإنترنت، وستواصل العمل على
+        ملفاتك كما كانت. يصعب تزييف هذا: أداة ترسل ملفاتك إلى مكان آخر
+        لمعالجتها كانت ستتوقف عن العمل فورا."""
+
+[[hub.categories]]
+id = "images"
+name = "الصور"
+note = "غيّر حجم صورة أو صغّرها أو احذف ما تكشفه بصمت عنك - لا شيء من ذلك يُرسَل إلى أي مكان."
+
+[[hub.categories]]
+id = "video-and-animation"
+name = "الفيديو والرسوم المتحركة"
+note = "قصّه أو حوّله أو ابنِ واحدا من صور ثابتة، دون أن يغادر المقطع جهازك."
+
+[[hub.categories]]
+id = "documents-and-audio"
+name = "المستندات والصوت"
+note = "أعد ترتيب مستند أو قصّ تسجيلا، دون إرسال أي منهما للمعالجة في مكان آخر."
+
+[[hub.categories]]
+id = "text-codes-and-passwords"
+name = "النصوص والرموز وكلمات المرور"
+note = "اقرأه أو تحقق منه أو أنشئه هنا - لا رمز وصول، ولا ملف إعدادات، ولا كلمة مرور تصل إلى خادم شخص آخر."
+
+#
+# ---------------------------------------------------------------------------
+# The guides index.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+nav = "كل الأدلة"
+title = "أدلة &mdash; كيف تنجز المهمة وما تكلفه كل إعداد"
+description = "أدلة واضحة لضغط ملفاتك وتغيير حجمها واقتصاصها وتحويلها. ماذا تعني الإعدادات، وماذا تكلف، ولماذا لا حاجة إلى رفعها."
+heading = "الأدلة"
+lede = """
+    دليل واحد لكل أداة، مكتوب لمن طُلب منه الوصول إلى حجم أو صيغة معينة
+    ويريد أن يعرف مسبقا ماذا يفعل الإعداد الذي يوشك على تحريكه. كل ما
+    يُشرح هنا يحدث على جهازك أنت."""
+og_title = "أدلة abox.tools"
+og_description = "كيف تضغط ملفاتك وتغيّر حجمها وتقتصّها وتقصّها وتحوّلها. وماذا تكلف كل خطوة. دون رفع أي شيء."
+og_image_alt = "abox.tools - صندوق أدوات لا يلامس خادما أبدا"
+
+[[guides.groups]]
+id = "doing-the-job"
+name = "إنجاز المهمة"
+note = "دليل واحد لكل أداة: عن ماذا تدور المهمة، وأي إعداد يهم، وماذا يكلف."
+
+[[guides.groups]]
+id = "before-you-upload"
+name = "قبل أن ترفع أي شيء"
+note = "ماذا يحدث فعلا حين تسلّم ملفا إلى موقع، وكيف تعرف إن كان ذلك ضروريا أصلا."
+
+#
+# ---------------------------------------------------------------------------
+# The roadmap.
+#
+# Only the frame. The list itself is config/planned.toml, and is not
+# translated yet - it stays English and falls back like any other page.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+nav = "خارطة الطريق"
+title = "خارطة الطريق &mdash; ما الذي يبنيه abox.tools تاليا"
+description = "كل أداة مخطط لها في abox.tools، مصنّفة ومعلَنة، مع الأدوات الجاهزة أصلا. كلها تعمل داخل المتصفح ولا ترفع شيئا."
+heading = "ما القادم"
+lede = """
+    كل ما في القائمتين أدناه ينجز عمله داخل متصفحك ولا يرفع شيئا &mdash;
+    هذا هو الشرط الذي يجب أن يجتازه أي اسم قبل أن يصل إلى هذه الصفحة
+    أصلا. الأعداد غير مكتوبة في أي مكان؛ يحسبها البناء من القائمتين
+    نفسيهما."""
+
+intro_heading = "كيف أُعدّت هذه القائمة"
+intro = """
+    <p>
+      ليست قائمة أمنيات. أُعدّت بمراجعة قائمة الأدوات في أكبر موقع
+      للصور المتحركة GIF ومقاطع الفيديو على الإنترنت، وهي أقرب ما
+      يوجد إلى فهرس لما يريد الناس فعله فعليا بملف، مع الإبقاء على كل
+      اسم يمكن بناؤه بحيث يحدث العمل على جهازك أنت ويستمر مع قطع
+      الاتصال بالشبكة.
+    </p>
+    <p>
+      معظم ما بقي يعمل بواجهات يوفرها المتصفح أصلا. بعضها يحتاج مرمّزا
+      (codec) مضمّنا في الأداة الوحيدة التي تستخدمه، وهذا مسموح به
+      &mdash; فالملف مع ذلك لا يغادر الجهاز. وما لا يجتاز هذا الشرط
+      تُرك دون وعد به، فبعض الفراغات الواضحة أدناه مقصودة.
+    </p>
+    <p>
+      الأدوات الموجودة أصلا تقف أعلى مجموعتها، موسومة بـ
+      <em>جاهزة</em> ومرتبطة بصفحتها الخاصة. كل ما تحتها لا يزال
+      قادما، ولن يصبح رابطا حتى يجهز.
+    </p>"""
+
+planned_heading = "كل نوع ملف، وما يمكن فعله به"
+
+og_title = "خارطة طريق abox.tools"
+og_description = "ما هو جاهز، وما القادم تاليا. كل شيء يعمل داخل متصفحك ولا يرفع شيئا."
+og_image_alt = "abox.tools - صندوق أدوات لا يلامس خادما أبدا"
+
+#
+# ---------------------------------------------------------------------------
+# The 404.
+#
+# Built in English only - GitHub Pages serves one file for the whole domain
+# and cannot know which language was being looked for - so nothing here is
+# used today. Translated anyway, for the same reason German's copy is.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "الصفحة غير موجودة &mdash; abox.tools"
+description = "هذا العنوان غير موجود على abox.tools. هذه هي الأدوات الموجودة فعلا. كلها مجانية، ولا واحدة منها ترفع ملفاتك إلى أي مكان."
+heading = "هذه الصفحة غير موجودة هنا"
+tools_heading = "كل الأدوات في مكان واحد"
+tools_note = "كلها مجانية، وكلها تعمل داخل متصفحك، ولا واحدة منها ترفع شيئا."
+
+lede = """
+    إما أن في العنوان خطأ إملائيا، أو أن ما كان في هذا الموضع قد انتقل.
+    لا شيء حدث لملفك ولا شيء ضاع: هذه الصفحة لم تحمل يوما شيئا يخصك
+    لتفقده."""
+
+#
+# ---------------------------------------------------------------------------
+# The footer.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        أدوات لا تلامس خادما أبدا. ملفاتك تبقى على جهازك &mdash; لا
+        شيء تحتاج إلى رفعه، ولا حساب عليك إنشاؤه."""
+base = "كل ادعاء في هذا الموقع مُعَدّ ليُتحقَّق منه، لا ليُصدَّق."
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words.
+#
+# Everything with {{ }} in it is a name the build resolves, and the build
+# refuses to render a name it cannot find - so these may be moved anywhere in
+# the sentence, and may not be renamed.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+languages = "اللغة"
+lang_auto = "تُعرَض هذه الصفحة بالإنجليزية، اللغة التي يفضّلها متصفحك."
+breadcrumb = "مسار التصفح"
+all_tools = "كل الأدوات"
+last_updated = "آخر تحديث"
+built_tag = "جاهزة"
+planned_count = "مخطَّط لها"
+built_count = "جاهزة"
+
+# See the house-style note at the top of this file: the count this site shows
+# is always past ten, so both forms carry the same bare singular noun, which
+# is the grammatically correct Arabic form for 11-99.
+guide_one = "دليل"
+guide_many = "دليل"
+
+footer_tools = "الأدوات"
+footer_site = "هذا الموقع"
+footer_contact = "تواصل معنا"
+footer_sitemap = "خريطة الموقع"
+footer_source = "اقرأ الشيفرة المصدرية على GitHub"
+
+guarantees_note = """
+    لا شيء من هذا عليك تصديقه دون تحقق.
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      كيف تعرف ما إذا كانت أداة ما تحتاج فعلا إلى ملفاتك</a>
+    يعرض أربعة اختبارات يمكنك إجراؤها بنفسك، على هذا الموقع أو على أي
+    موقع آخر."""
+
+hub_guides_note = """
+    لست متأكدا أي إعداد تحرك أو ماذا يكلف؟
+    <a href="{{ base }}{{ links.guides }}/">لكل أداة دليل خاص بها</a>."""
+
+hub_roadmap_note = """
+    المزيد قادم، والقائمة معلَنة:
+    <a href="{{ base }}{{ links.roadmap }}/">اطّلع على المخطَّط تاليا</a>."""
+
+guides_all_note = """
+    كل دليل هنا يصف أداة تعمل على جهازك أنت:
+    <a href="{{ base }}">شاهدها كلها</a>."""
+
+[ui.tool]
+view_source = "عرض الشيفرة المصدرية"
+how_verified = "كيف يمكن التحقق من هذا"
+live_check = "فحص حي:"
+offline = "دون اتصال:"
+checking = "جارٍ الفحص&hellip;"
+questions_heading = "أسئلة"
+guide_heading = "النسخة الأطول"
+related_heading = "أيضا في الصندوق"
+privacy_heading = "كيف يمكن التحقق من وعد الخصوصية"
+
+pledge_line = """
+    {{ tool.words.plural }} لا تُرفع <strong>أبدا</strong>. لا يوجد خادم."""
+
+boot_title = "شيفرة هذه الصفحة لم تبدأ العمل."
+boot_body = """
+    فتح <code>index.html</code> مباشرة من مجلد يمنع المتصفح من تحميل وحدات
+    JavaScript، فلا يحدث شيء عند اختيار {{ tool.words.choose }}. قدّم
+    المجلد عبر HTTP بدلا من ذلك:"""
+boot_then = "ثم افتح <code>http://localhost:8080/</code>."
+
+noscript_title = "JavaScript معطَّل."
+noscript_body = "ينجز هذا التطبيق كل عمله داخل متصفحك، ولا يمكنه العمل دونه."
+
+offline_ready = "جاهزة &mdash; اقطع الاتصال بالإنترنت وستظل تعمل."
+offline_none = "غير متاحة في هذا المتصفح (كل شيء آخر يظل يعمل)."
+offline_insecure = "تحتاج إلى https:// أو localhost للتخزين المؤقت دون اتصال."
+offline_failed = "التخزين المؤقت غير متاح هنا، لكن لا شيء يُرفع في الحالتين."
+
+error_broke = "حدث خطأ ما: {detail}. أعد تحميل الصفحة لتبدأ من جديد."
+
+reading_one = "جارٍ قراءة {count} ملف&hellip;"
+reading_many = "جارٍ قراءة {count} ملف&hellip;"
+
+check_yourself = """
+      <strong>تحقّق بنفسك.</strong> لا شيء مما سبق عليك تصديقه دون تحقق.
+      تُولَّد هذه الصفحة من القوالب والإعدادات في المستودع بواسطة سكربت بناء
+      يمكنك قراءته وتشغيله بنفسك، والنتيجة موجودة في فرع <code>dist</code>
+      &mdash; فقارِن إذن بين ما يُقدَّم فعلا وما ينتجه بناء المصادر:"""
+
+read_first_lead = """
+      الملفات الجديرة بالقراءة أولا هي <code>config/site.toml</code> من أجل
+      سياسة أمان المحتوى (Content-Security-Policy)"""
+
+[ui.feedback]
+prompt = "هل أنجزت المهمة؟"
+up = "نعم"
+down = "لا"
+dismiss = "إغلاق"
+
+reason_prompt = "ما الذي حدث خطأ؟"
+reason_wrong = "نتيجة خاطئة"
+reason_failed = "لم تكتمل"
+reason_slow = "بطيئة جدا"
+reason_confusing = "مربكة"
+
+thanks = "شكرا &mdash; هذا يساعد."
+
+note = """
+      يُرسَل الجواب فقط، وفقط عند الضغط على زر. لا يُرسَل ملفك أبدا،
+      ولا اسمه، ولا أي شيء عنه."""
+
+[ui.guide]
+open_tool = "افتح {{ tool.name | e }}"
+
+[ui.picker]
+warning = """
+      <strong>هذه هي الميزة الوحيدة هنا التي تتصل بالشبكة.</strong>
+      جلب عنوان يُطلع ذلك الخادم على عنوان IP الخاص بك وعلى {{ tool.picker.urls.noun }}
+      الذي طلبته. يُنسَخ {{ tool.picker.urls.noun }} إلى الذاكرة المحلية فور وصوله ولا
+      يُطلَب مرة أخرى. لا شيء مما يخصك يُرسَل إلى الخارج &mdash; هذه الصفحة
+      ما زالت غير قادرة على رفع أي شيء."""
+label = "عنوان واحد في كل سطر"
+note = """
+      يجب أن يسمح الخادم بالاستخدام العابر للنطاقات لـ{{ tool.picker.urls.noun }} الخاص به.
+      كثير من المواقع لا تسمح بذلك، وستفشل تلك برسالة بدل أن تتعطل بصمت
+      لاحقا."""

@@ -62,6 +62,13 @@ body {
 
 h1, h2 { line-height: 1.25; }
 
+/* A path or a URL is Latin script sitting inside an Arabic sentence, and the
+   bidi algorithm alone still lets the punctuation in it - the slashes in
+   config/site.toml, the colon in http:// - drift out of order. Isolating the
+   run keeps it internally left-to-right no matter which way the sentence
+   around it reads. */
+code { unicode-bidi: isolate; }
+
 main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   max-width: 940px;
   margin-inline: auto;
@@ -90,6 +97,11 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   border-radius: 6px;
   font-size: 0.82rem;
   overflow-x: auto;
+  /* A shell command is authored left-to-right regardless of the language
+     reading it, so it is set explicitly rather than left to inherit
+     `dir="rtl"`. */
+  direction: ltr;
+  text-align: start;
 }
 
 .boot-warning code {
@@ -118,6 +130,11 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 .crumbs a { color: var(--text-dim); text-decoration: none; }
 .crumbs a:hover { color: var(--accent); text-decoration: underline; }
 .crumbs [aria-current="page"] { color: var(--text); }
+
+/* The separator in the markup is &rsaquo;, a glyph that points one way. Its
+   meaning is "deeper into the trail", not "toward the right", so it is
+   mirrored rather than reworded when the trail itself reads the other way. */
+[dir="rtl"] .crumbs [aria-hidden="true"] { display: inline-block; transform: scaleX(-1); }
 
 /* ------------------------------------------------------------------ topbar */
 
@@ -298,7 +315,7 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 }
 
 .privacy h2 { margin: 0 0 0.6rem; font-size: 1rem; }
-.privacy ul { margin: 0; padding-left: 1.1rem; }
+.privacy ul { margin: 0; padding-inline-start: 1.1rem; }
 .privacy li { margin-bottom: 0.35rem; font-size: 0.92rem; }
 .privacy code {
   background: var(--surface-2);
@@ -520,7 +537,7 @@ button, .as-button {
 
 .how-to {
   margin: 0;
-  padding-left: 1.2rem;
+  padding-inline-start: 1.2rem;
   display: grid;
   gap: 0.5rem;
   font-size: 0.92rem;
@@ -911,6 +928,10 @@ footer a:hover { text-decoration: underline; }
    read. */
 .lang-auto-back::after { content: "\00a0\2192"; }
 
+/* The arrow points forward through the sentence, and forward is the other
+   direction in a right-to-left page. */
+[dir="rtl"] .lang-auto-back::after { content: "\00a0\2190"; }
+
 /* The way back to the hub, with the site mark on it. It heads the brand column
    now rather than sitting inline in a sentence, so it is a flex row and carries
    its own weight and colour. */
@@ -925,7 +946,7 @@ footer a:hover { text-decoration: underline; }
 .site-logo {
   width: 1.35em;
   height: 1.35em;
-  margin-right: 0.15em;
+  margin-inline-end: 0.15em;
 }
 
 .logo-lid { stroke: var(--accent); }

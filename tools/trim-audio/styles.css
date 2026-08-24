@@ -23,7 +23,7 @@
 .source dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   overflow-wrap: anywhere;
 }
 
@@ -49,7 +49,7 @@ kbd {
 }
 
 .editing {
-  margin-left: 0.5rem;
+  margin-inline-start: 0.5rem;
   font-size: 0.8rem;
   font-weight: 400;
   color: var(--text-dim);
@@ -232,7 +232,7 @@ audio.player {
 }
 
 .transport button { padding: 0.4rem 0.9rem; font-size: 0.86rem; }
-.transport kbd { margin-right: 0.3rem; }
+.transport kbd { margin-inline-end: 0.3rem; }
 
 .speed-row {
   margin-top: 0.6rem;
@@ -242,7 +242,7 @@ audio.player {
   align-items: center;
 }
 
-.speed-label { font-size: 0.8rem; color: var(--text-dim); margin-right: 0.2rem; }
+.speed-label { font-size: 0.8rem; color: var(--text-dim); margin-inline-end: 0.2rem; }
 
 .speed {
   padding: 0.25rem 0.6rem;
@@ -282,7 +282,7 @@ audio.player {
 .segments-head h3 { margin: 0; font-size: 1rem; }
 
 .segment-count {
-  margin-left: 0.35rem;
+  margin-inline-start: 0.35rem;
   font-size: 0.8rem;
   font-weight: 400;
   color: var(--text-dim);
@@ -305,7 +305,7 @@ audio.player {
 }
 
 .segment-table th {
-  text-align: left;
+  text-align: start;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-dim);
@@ -432,7 +432,7 @@ audio.player {
 }
 
 .summary dt { color: var(--text-dim); flex: none; }
-.summary dd { margin: 0; font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+.summary dd { margin: 0; font-weight: 600; text-align: end; overflow-wrap: anywhere; }
 
 /* ------------------------------------------------------------------ export */
 

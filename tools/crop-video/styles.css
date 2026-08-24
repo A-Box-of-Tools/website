@@ -23,7 +23,7 @@
 .source dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   overflow-wrap: anywhere;
 }
 
@@ -234,7 +234,7 @@
   display: flex;
   gap: 0.4rem;
   flex-wrap: wrap;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .even-note {
@@ -284,7 +284,7 @@
 .summary dd {
   margin: 0;
   font-weight: 600;
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 

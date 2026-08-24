@@ -220,7 +220,7 @@
 }
 
 .advanced[open] summary { border-bottom: 1px solid var(--border); }
-.advanced > *:not(summary) { margin-left: 0.9rem; margin-right: 0.9rem; }
+.advanced > *:not(summary) { margin-inline: 0.9rem; }
 .advanced > *:first-of-type:not(summary) { margin-top: 0.9rem; }
 .advanced > *:last-child:not(summary) { margin-bottom: 0.9rem; }
 
@@ -314,7 +314,7 @@ a.primary { text-decoration: none; display: inline-block; }
 
 .result-facts {
   margin: 0.8rem 0 0;
-  padding-left: 1.1rem;
+  padding-inline-start: 1.1rem;
   font-size: 0.87rem;
   line-height: 1.6;
   color: var(--text-dim);

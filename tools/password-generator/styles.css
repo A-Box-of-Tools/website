@@ -74,7 +74,7 @@
 
 .slider-row output {
   min-width: 2.6rem;
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   font-size: 1.05rem;

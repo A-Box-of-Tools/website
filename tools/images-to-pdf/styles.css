@@ -46,14 +46,14 @@
   z-index: 3;
 }
 
-.image-item.insert-before::after { left: -7px; }
-.image-item.insert-after::after { right: -7px; }
+.image-item.insert-before::after { inset-inline-start: -7px; }
+.image-item.insert-after::after { inset-inline-end: -7px; }
 
 .drag-handle {
   position: absolute;
   z-index: 2;
   top: 0.35rem;
-  left: 0.35rem;
+  inset-inline-start: 0.35rem;
   display: grid;
   place-items: center;
   width: 1.75rem;
@@ -104,7 +104,7 @@
 .order-badge {
   position: absolute;
   bottom: 0.35rem;
-  left: 0.35rem;
+  inset-inline-start: 0.35rem;
   background: rgb(0 0 0 / 70%);
   color: #fff;
   font-size: 0.75rem;
@@ -116,7 +116,7 @@
 .remove-btn {
   position: absolute;
   top: 0.35rem;
-  right: 0.35rem;
+  inset-inline-end: 0.35rem;
   width: 1.5rem;
   height: 1.5rem;
   border: none;
@@ -289,7 +289,7 @@
 }
 .summary > div:last-child { border-bottom: none; }
 .summary dt { color: var(--text-dim); }
-.summary dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; text-align: right; }
+.summary dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; text-align: end; }
 
 /* ------------------------------------------------------------------ export */
 

@@ -249,7 +249,8 @@ kbd {
 
 .result-warnings li {
   position: relative;
-  padding: 0.6rem 0.8rem 0.6rem 2.2rem;
+  padding-block: 0.6rem;
+  padding-inline: 2.2rem 0.8rem;
   border-radius: 7px;
   font-size: 0.86rem;
   line-height: 1.55;
@@ -260,7 +261,7 @@ kbd {
 .result-warnings li::before {
   content: "\26A0";
   position: absolute;
-  left: 0.8rem;
+  inset-inline-start: 0.8rem;
   top: 0.55rem;
   font-size: 0.95rem;
 }

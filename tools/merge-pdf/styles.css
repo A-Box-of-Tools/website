@@ -136,14 +136,14 @@
   z-index: 3;
 }
 
-.page-item.insert-before::after { left: -6px; }
-.page-item.insert-after::after { right: -6px; }
+.page-item.insert-before::after { inset-inline-start: -6px; }
+.page-item.insert-after::after { inset-inline-end: -6px; }
 
 .drag-handle {
   position: absolute;
   z-index: 2;
   top: 0.35rem;
-  left: 0.35rem;
+  inset-inline-start: 0.35rem;
   display: grid;
   place-items: center;
   width: 1.6rem;
@@ -206,7 +206,7 @@
 .turn-badge {
   position: absolute;
   bottom: 0.15rem;
-  right: 0.2rem;
+  inset-inline-end: 0.2rem;
   font-size: 0.65rem;
   font-weight: 700;
   color: var(--accent-deep);
@@ -215,7 +215,7 @@
 .remove-btn {
   position: absolute;
   top: 0.35rem;
-  right: 0.35rem;
+  inset-inline-end: 0.35rem;
   width: 1.5rem;
   height: 1.5rem;
   border: none;
@@ -381,7 +381,7 @@ a.primary { text-decoration: none; display: inline-block; }
 
 .result-facts {
   margin: 0.8rem 0 0;
-  padding-left: 1.1rem;
+  padding-inline-start: 1.1rem;
   font-size: 0.87rem;
   line-height: 1.6;
   color: var(--text-dim);

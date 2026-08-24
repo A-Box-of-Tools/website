@@ -197,8 +197,8 @@
   line-height: 1.55;
   max-width: 62ch;
   color: var(--text);
-  border-left: 3px solid var(--accent);
-  padding-left: 0.6rem;
+  border-inline-start: 3px solid var(--accent);
+  padding-inline-start: 0.6rem;
 }
 
 .result-actions { display: flex; gap: 0.4rem; align-items: flex-start; flex-wrap: wrap; }
