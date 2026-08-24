@@ -100,8 +100,11 @@ const picker = wireFilePicker({
 
 /**
  * Ask the <video> element to open the file, and report what it made of it.
- * A browser that will not play a format still says so quickly, so this is also
- * the test for whether the playback path is available at all.
+ *
+ * This says the container was parsed, and nothing more. Whether a frame can
+ * actually be decoded out of it is a separate question, asked by
+ * `firstFrameLands` below - see the note there for why the two are not the
+ * same question.
  */
 function openInPlayer(video, url) {
   return new Promise((resolve) => {
@@ -124,6 +127,67 @@ function openInPlayer(video, url) {
     video.addEventListener('error', bad, { once: true });
     video.src = url;
     video.load();
+  });
+}
+
+/**
+ * How long to wait for the probe frame before giving up on the file.
+ *
+ * The same ten seconds a seek gets during the export itself, deliberately: a
+ * file too slow to answer here would be too slow there several hundred times
+ * over, so this is not a stricter test than the one it is standing in for.
+ */
+const PROBE_TIMEOUT = 10_000;
+
+/**
+ * Whether the player can actually produce a picture, and not merely a width.
+ *
+ * `loadedmetadata` is not a decode test, and treating it as one is what let a
+ * file through that then failed an hour and a half into the export. Matroska
+ * and WebM are the same container - WebM is a subset of Matroska - so Chrome
+ * opens an .mkv with its WebM demuxer, reads the video track's size and
+ * duration, and fires `loadedmetadata` having decoded nothing at all. A Dolby
+ * Vision track inside it gets as far as "3840 x 1540, 1h 30m" on the page and
+ * only fails when the first frame is demanded. `canPlayType` would have said
+ * so - it answers "" for dvh1 and "probably" for hvc1 - but nothing here knows
+ * which of the two is in the file until something tries to decode it.
+ *
+ * So: seek somewhere real and insist on a frame. `requestVideoFrameCallback`
+ * is the one API that means "a frame is on screen"; where it does not fire -
+ * a tab that is not compositing never presents anything - `readyState` of
+ * HAVE_CURRENT_DATA or better is the element's own claim to hold a decoded
+ * frame, which a track it cannot decode never reaches.
+ */
+function firstFrameLands(video, atSeconds) {
+  return new Promise((resolve) => {
+    let settled = false;
+
+    const done = (ok) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      video.removeEventListener('error', onError);
+      video.removeEventListener('seeked', onSeeked);
+      resolve(ok);
+    };
+
+    const decoded = () => video.readyState >= 2 && !video.error;
+    const onError = () => done(false);
+    const onSeeked = () => {
+      if (typeof video.requestVideoFrameCallback === 'function') {
+        video.requestVideoFrameCallback(() => done(true));
+      }
+      setTimeout(() => done(decoded()), 500);
+    };
+
+    const timer = setTimeout(() => done(false), PROBE_TIMEOUT);
+    video.addEventListener('error', onError, { once: true });
+    video.addEventListener('seeked', onSeeked, { once: true });
+
+    // Somewhere other than zero, so this is a real seek and a real decode
+    // rather than whatever the element happened to buffer on load.
+    if (Math.abs(video.currentTime - atSeconds) < 1e-4) onSeeked();
+    else video.currentTime = atSeconds;
   });
 }
 
@@ -161,11 +225,35 @@ async function loadFile(picked) {
     }
 
     canReadDirectly = readable;
-    canPlay = played.ok;
+
+    // Only the file that has to go through the player is asked for a frame.
+    // The direct path already knows the answer: VideoDecoder.isConfigSupported
+    // is a real decodability test on the real codec string, which is why this
+    // asymmetry existed and why it was invisible until an .mkv turned up.
+    let opensButCannotDecode = false;
+    if (canReadDirectly) {
+      canPlay = played.ok;
+    } else if (played.ok) {
+      picker.busy('Checking this browser can decode it...');
+      canPlay = await firstFrameLands(el.preview,
+        Math.min(1, (played.duration || 2) / 2));
+      opensButCannotDecode = !canPlay;
+    } else {
+      canPlay = false;
+    }
 
     if (!canReadDirectly && !canPlay) {
-      showError(`This browser cannot open this file: ${fallbackReason
-        ?? 'the format is not one it plays.'}`);
+      // Worth separating: "I do not know this format" and "I opened it and
+      // then could not decode a frame of it" send you to different answers,
+      // and the second one is the case that used to fail an hour in.
+      showError(opensButCannotDecode
+        ? 'This browser opened the file but cannot decode the video in it. '
+          + 'That is usually Dolby Vision, or HEVC on a machine with no '
+          + 'hardware support for it - the container reads fine and the '
+          + 'picture never arrives. Convert it to an ordinary MP4 (H.264) '
+          + 'first, and this will read it directly.'
+        : `This browser cannot open this file: ${fallbackReason
+          ?? 'the format is not one it plays.'}`);
       resetView();
       return;
     }
@@ -189,7 +277,7 @@ async function loadFile(picked) {
       return;
     }
 
-    await showPreview(played.ok);
+    await showPreview(canPlay);
     describeSource();
     fitSizeOptions();
 
