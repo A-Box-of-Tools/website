@@ -15,6 +15,7 @@ being written. It needs nothing installed - the plain build is pure Python.
 """
 
 import hashlib
+import json
 import re
 import subprocess
 import tempfile
@@ -390,6 +391,25 @@ class BuildTheSite(unittest.TestCase):
             return True
         return name[:-len('index.html')].strip('/') not in self.advertised
 
+    def a_tool(self):
+        return sorted(p.parent.name for p in ROOT.glob('tools/*/tool.toml'))[0]
+
+    def tool_pages(self):
+        """The written pages that are tools, in every language.
+
+        By address rather than by name: `de/video-zuschneiden` is a tool page
+        and `de/anleitungen/...` is not. The folders on disk are the only list
+        of tools there is and the localized slugs are worked out the way the
+        build worked them out, so this cannot drift from what was built.
+        """
+        slugs = [path.parent.name for path in ROOT.glob('tools/*/tool.toml')]
+        folders = {buildmod.i18n.locale_path(locale, slug).strip('/')
+                   for locale in self.locales for slug in slugs}
+        found = [name for name in self.written
+                 if name[:-len('index.html')].strip('/') in folders]
+        self.assertTrue(found)
+        return found
+
     def test_it_reports_what_it_wrote(self):
         self.assertIn('index.html', self.written)
         self.assertIn('sitemap.xml', self.written)
@@ -409,9 +429,75 @@ class BuildTheSite(unittest.TestCase):
     def test_a_tool_page_is_complete(self):
         slug = sorted(p.parent.name for p in ROOT.glob('tools/*/tool.toml'))[0]
         for name in ('index.html', 'styles.css', 'analytics.js', 'sw.js',
-                     'src/main.js'):
+                     'manifest.json', 'src/main.js'):
             with self.subTest(file=name):
                 self.assertTrue((self.out / slug / name).is_file(), name)
+
+    # -- installing a tool as an app --------------------------------------
+    #
+    # Four things have to agree for the browser to offer it, and every one of
+    # them fails silently: the page links the manifest, the policy allows the
+    # file to be fetched, the manifest names icons, and the icons are there. A
+    # tool page with any one of them missing looks and works exactly like one
+    # with all four, and the only visible difference is an install button that
+    # never appears - which nothing in a build log or a link check would catch.
+
+    def test_every_tool_page_links_a_manifest_and_is_allowed_to_fetch_it(self):
+        for name in self.tool_pages():
+            with self.subTest(page=name):
+                page = (self.out / name).read_text(encoding='utf-8')
+                self.assertIn('<link rel="manifest" href="manifest.json">', page)
+                # manifest-src falls back to default-src, which is 'none'.
+                self.assertIn("manifest-src 'self'", page)
+
+    def test_the_hub_does_not_carry_a_permission_it_never_uses(self):
+        hub = (self.out / 'index.html').read_text(encoding='utf-8')
+        self.assertNotIn('manifest-src', hub)
+
+    def test_a_manifest_is_scoped_to_its_own_tool_in_every_language(self):
+        for name in self.tool_pages():
+            folder = name[:-len('index.html')]
+            with self.subTest(page=name):
+                manifest = json.loads(
+                    (self.out / folder / 'manifest.json').read_text(encoding='utf-8'))
+                # Relative, so the app that opens is this folder and not the
+                # site - and so the same two values are right in ten languages.
+                self.assertEqual(manifest['start_url'], './')
+                self.assertEqual(manifest['scope'], './')
+                # The identity is written down rather than defaulted, so the
+                # address can be corrected later without every reader who
+                # installed the tool acquiring a second copy of it.
+                self.assertEqual(manifest['id'], f'/{folder}')
+                self.assertTrue(manifest['name'])
+
+    def test_a_manifest_is_written_in_the_language_of_its_page(self):
+        """And says so with the tag the rest of the page says it with.
+
+        `hreflang`, not the folder name: Portuguese is served from /pt/ and
+        advertised as pt-BR, and Chinese from /zh/ as zh-Hans. An installed app
+        that claimed `pt` would be a fourth answer to a question the page, the
+        sitemap and the switcher already agree on.
+        """
+        slug = self.a_tool()
+        for locale in self.locales:
+            folder = buildmod.i18n.locale_path(locale, slug).strip('/')
+            with self.subTest(lang=locale['lang']):
+                manifest = json.loads((self.out / folder / 'manifest.json')
+                                      .read_text(encoding='utf-8'))
+                self.assertEqual(manifest['lang'], locale['hreflang'])
+
+    def test_every_icon_a_manifest_names_is_on_disk(self):
+        manifest = json.loads((self.out / self.a_tool() / 'manifest.json')
+                              .read_text(encoding='utf-8'))
+        self.assertTrue(manifest['icons'])
+        for icon in manifest['icons']:
+            with self.subTest(icon=icon['src']):
+                self.assertTrue((self.out / icon['src'].lstrip('/')).is_file())
+
+    def test_a_manifest_is_precached_with_the_page_it_belongs_to(self):
+        slug = self.a_tool()
+        worker = (self.out / slug / 'sw.js').read_text(encoding='utf-8')
+        self.assertIn("'manifest.json'", worker)
 
     def test_a_tool_page_carries_a_policy_and_its_structured_data(self):
         slug = sorted(p.parent.name for p in ROOT.glob('tools/*/tool.toml'))[0]

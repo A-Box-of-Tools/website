@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
-  Regenerates the Open Graph share images (og.png) for every page, and the iOS
-  home-screen icon.
+  Regenerates the Open Graph share images (og.png) for every page, and the icons
+  a launcher shows for an installed tool.
 
 .DESCRIPTION
   When a link to this site is pasted into a chat app, a forum, or a social
@@ -25,6 +25,10 @@
   tools/<slug>/tool.toml and its subtitle is `og_card` there, so adding a tool
   adds its card and nothing here has to be kept in step by hand.
 
+.PARAMETER Icons
+  Draw the four app icons and stop - no cards at all. What to run after a change
+  to logo.svg or to the palette, and nothing else needs it.
+
 .PARAMETER Only
   Draw one tool's card instead of all of them. Worth knowing about: the mark on
   each card is rasterised by a headless Edge, that flakes about one call in
@@ -37,14 +41,25 @@
 
 .EXAMPLE
   .\og-image.ps1 -Only resize-image
+
+.EXAMPLE
+  .\og-image.ps1 -Icons
 #>
 
 param(
-  [string]$Only
+  [string]$Only,
+  [switch]$Icons
 )
 
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
+
+# The two switches ask for opposite halves of this script, and asking for both
+# would quietly draw nothing at all: -Only skips the icons and -Icons stops
+# before the cards.
+if ($Icons -and $Only) {
+  throw "-Icons and -Only cannot both be given: the icons belong to the site, not to one tool."
+}
 
 # The same line on every card, so it is written once.
 $footer = 'No uploads | No accounts | Works offline'
@@ -253,6 +268,79 @@ function New-OgImage {
   Write-Host "wrote $full"
 }
 
+<#
+.SYNOPSIS
+  Draws the site mark on an opaque tile, $Size pixels square, as a PNG.
+
+.DESCRIPTION
+  The icon a launcher shows for the site: on an iOS home screen, and - since
+  every tool page carries a web app manifest - in the Chrome and Android app
+  lists for an installed tool. There is one drawing for all of them, because the
+  mark belongs to the site and an installed tool is told apart by its name.
+
+  The tile is opaque rather than transparent. A launcher puts an icon on
+  whatever ground it likes and a mark floating on that ground is not the same
+  picture twice, so the ground comes with it.
+
+  $Inset is the margin, and the reason there is more than one size of it. A
+  plain icon needs about a tenth, so the mark is not jammed against the rounded
+  corners the platform crops the tile to. A maskable one needs far more: Android
+  crops it to whatever shape the launcher uses - a circle, a squircle, a
+  teardrop - and guarantees only the middle 80% survives, so the mark is drawn
+  small enough to sit inside a circle of that size however it is cut.
+
+  This function was deleted in #73 while the call to it at the foot of the file
+  stayed, so a full run threw on its last line with every card already drawn. It
+  is restored here, and takes the size it draws rather than assuming 180.
+#>
+function New-IconPng {
+  param(
+    [Parameter(Mandatory)][string]$Path,
+    [Parameter(Mandatory)][int]$Size,
+    [Parameter(Mandatory)][int]$Inset
+  )
+
+  $tile = [System.Drawing.ColorTranslator]::FromHtml('#f6f7f9')
+
+  $bmp = New-Object System.Drawing.Bitmap $Size, $Size
+  $g   = [System.Drawing.Graphics]::FromImage($bmp)
+  $g.SmoothingMode = 'AntiAlias'
+  $g.FillRectangle((New-Object System.Drawing.SolidBrush $tile), 0, 0, $Size, $Size)
+
+  $side = $Size - ($Inset * 2)
+  $mark = Get-MarkImage -Size $side -Palette light
+  $g.DrawImage($mark, $Inset, $Inset, $side, $side)
+  $mark.Dispose()
+
+  $full = Join-Path $PSScriptRoot $Path
+  $bmp.Save($full, [System.Drawing.Imaging.ImageFormat]::Png)
+
+  $g.Dispose()
+  $bmp.Dispose()
+
+  Write-Host "wrote $full"
+}
+
+# The app icons belong to the site rather than to any tool, so -Only skips them
+# along with the other tools' cards. Without that, asking for one tool still
+# rewrote files it had nothing to do with.
+#
+# 180 is what iOS asks for; 192 and 512 are what the web app manifest lists, and
+# the maskable copy is the 512 again with the margin Android's crop needs. The
+# insets are about a tenth of the size for the first three and 22% for the last,
+# which is what keeps the mark inside the circle a launcher may cut it to.
+if (-not $Only) {
+  New-IconPng -Path 'shared\icon-180.png'          -Size 180 -Inset 18
+  New-IconPng -Path 'shared\icon-192.png'          -Size 192 -Inset 19
+  New-IconPng -Path 'shared\icon-512.png'          -Size 512 -Inset 51
+  New-IconPng -Path 'shared\icon-512-maskable.png' -Size 512 -Inset 113
+}
+
+# They are drawn first so that -Icons can stop here. The cards below are the
+# expensive half of this script and none of their redraws are byte-identical, so
+# changing an icon must not arrive as every card in the repository being dirty.
+if ($Icons) { return }
+
 # The hub's own card. Written out here because it is the one that belongs to no
 # tool - everything below reads its words from the tool it belongs to.
 if (-not $Only) {
@@ -288,11 +376,4 @@ foreach ($config in Get-ChildItem -Path (Join-Path $PSScriptRoot 'tools') -Filte
     -Title $fields['name'] `
     -Subtitle $fields['og_card'] `
     -Footer $footer
-}
-
-# The home-screen icon and the hub's card belong to the site rather than to any
-# tool, so -Only skips them along with the other tools' cards. Without this,
-# asking for one tool still rewrote two files it had nothing to do with.
-if (-not $Only) {
-  New-IconPng -Path 'shared\icon-180.png'
 }

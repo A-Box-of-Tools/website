@@ -13,6 +13,7 @@ import html
 import json
 import re
 import tomllib
+import urllib.parse
 
 REQUIRED_TOOL_KEYS = (
     'slug', 'name', 'heading', 'tagline', 'icon', 'favicon', 'category',
@@ -327,6 +328,50 @@ def dumps_ld(graph):
         {'@context': 'https://schema.org', '@graph': graph},
         indent=2, ensure_ascii=True,
     )
+
+
+# ---------------------------------------------------------------------------
+# The web app manifest
+
+
+def tool_manifest(site, tool, direction):
+    """The manifest that lets a browser install one tool as an app.
+
+    Scoped to the tool's own folder, which is the whole reason there is one of
+    these per tool rather than one for the site: that folder is exactly what the
+    service worker sitting in it has already cached, so the app that gets
+    installed is one that opens with the network unplugged. An app scoped to the
+    site would have the hub as its front door, and the hub caches nothing.
+
+    `id` is written out rather than left to default. The default identity of an
+    installed app is its `start_url`, so the day a slug is corrected - and this
+    site publishes ten slugs per tool, one per language - every reader who had
+    installed the tool would silently acquire a second copy of it instead of a
+    moved one. Written down, the address can change and the app stays the app. It
+    is a path because an id is resolved against the origin, and naming the origin
+    here as well would be a second place for it to be wrong.
+
+    The name and the description are the tool's own, in the language the page is
+    in. Both go through `to_text`: they are written for markup, and a manifest is
+    read by a launcher that would show the entities.
+    """
+    return json.dumps({
+        'id': urllib.parse.urlsplit(tool['url']).path,
+        'name': to_text(tool['name']),
+        'short_name': to_text(tool['name']),
+        'description': to_text(tool['tagline']),
+        'lang': site['lang'],
+        'dir': direction,
+        # Relative to this file, which sits in the tool's folder - so both of
+        # these resolve to the folder, in every language, without the manifest
+        # having to know which language it is in or how deep the path is.
+        'start_url': './',
+        'scope': './',
+        'display': site['manifest']['display'],
+        'background_color': site['manifest']['background_color'],
+        'theme_color': site['manifest']['theme_color'],
+        'icons': site['manifest']['icons'],
+    }, indent=2, ensure_ascii=True)
 
 
 # ---------------------------------------------------------------------------

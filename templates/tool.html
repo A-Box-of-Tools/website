@@ -86,6 +86,24 @@
 -->
 <link rel="stylesheet" href="{{ css_href }}">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>{{ tool.favicon }}</text></svg>">
+<link rel="apple-touch-icon" href="/icon-180.png">
+
+<!--
+  What lets this page be installed as an app. The manifest sits in this tool's
+  own folder and is scoped to it, so what gets installed is the folder the
+  service worker has already cached - an app that opens with the network
+  unplugged, which is the same promise the page makes, made where the browser
+  can act on it. Chrome then offers it from the address bar; nothing on the page
+  asks, and nothing here runs.
+
+  The two colours are one colour under two themes: `--bg` from
+  shared/css/tool-frame.css, so the window frame the browser draws is the ground
+  the page is already drawn on. The manifest carries the light one, because a
+  manifest has one colour and no way to ask.
+-->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="{{ site.manifest.theme_color }}" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="{{ site.manifest.theme_color_dark }}" media="(prefers-color-scheme: dark)">
 </head>
 <body>
 

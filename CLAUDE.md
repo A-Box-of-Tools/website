@@ -61,7 +61,8 @@ around 20 files, a locale around 66.
 
 **`og-image.ps1` without `-Only <slug>` redraws every share card**, and the
 redraws are not byte-identical because it rasterises the logo through headless
-Edge and that flakes. Name the tool you changed.
+Edge and that flakes. Name the tool you changed. `-Icons` is the other narrow
+form: it draws the four app icons at the root and stops before any card.
 
 **A shared module cannot be imported by a unit-tested leaf module.**
 `js_parts` copies `shared/js/x.js` into a tool at `src/shared/x.js` *at build

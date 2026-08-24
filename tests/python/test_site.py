@@ -32,7 +32,9 @@ SITE = {'domain': 'https://example.test/', 'name': 'Site', 'lang': 'en',
         'guides_url': 'https://example.test/guides/',
         'roadmap_url': 'https://example.test/roadmap/',
         'guides': {'slug': 'guides', 'heading': 'Guides',
-                   'description': 'every guide'}}
+                   'description': 'every guide'},
+        'manifest': {'display': 'standalone', 'theme_color': '#fff',
+                     'background_color': '#fff', 'icons': []}}
 
 TOOL_TOML = '''
 slug = "widget"
@@ -67,6 +69,15 @@ category = "UtilitiesApplication"
 description = "d"
 features = []
 '''
+
+# One tool as the manifest sees it: a name and a tagline written for markup,
+# and a URL under a locale, because the manifest is written once per language.
+TOOL = {
+    'name': 'Video&nbsp;Cropper',
+    'tagline': "Crop a clip &mdash; it&rsquo;s quick.",
+    'url': 'https://example.test/de/video-zuschneiden/',
+}
+
 
 PAGE_TOML = '''
 slug = "privacy"
@@ -245,6 +256,30 @@ class StructuredData(unittest.TestCase):
         self.assertEqual(faq['mainEntity'][0]['name'], 'Why?')
         self.assertEqual(faq['mainEntity'][0]['acceptedAnswer']['text'],
                          'Because & so.')
+
+    def test_a_manifest_is_scoped_to_the_folder_it_is_written_into(self):
+        """Relative, so it is the same two values in every language.
+
+        `./` against a manifest at /de/video-zuschneiden/manifest.json is that
+        folder. An absolute start_url would have to be built per locale, and the
+        one that was wrong would install an app that opens the English page.
+        """
+        manifest = json.loads(sitelib.tool_manifest(SITE, TOOL, 'ltr'))
+        self.assertEqual(manifest['start_url'], './')
+        self.assertEqual(manifest['scope'], './')
+
+    def test_a_manifest_writes_down_the_identity_it_would_otherwise_default_to(self):
+        manifest = json.loads(sitelib.tool_manifest(SITE, TOOL, 'ltr'))
+        # A path, not a URL: an id is resolved against the origin, and naming
+        # the origin twice is one more thing that can disagree with itself.
+        self.assertEqual(manifest['id'], '/de/video-zuschneiden/')
+
+    def test_a_manifest_is_read_by_a_launcher_and_not_by_a_browser(self):
+        # Both of these are authored as markup and would show their entities
+        # under an icon.
+        manifest = json.loads(sitelib.tool_manifest(SITE, TOOL, 'ltr'))
+        self.assertEqual(manifest['name'], 'Video Cropper')
+        self.assertEqual(manifest['description'], "Crop a clip - it's quick.")
 
     def test_a_guide_is_an_article(self):
         page = {'kind': 'guide', 'heading': 'H', 'description': 'd', 'nav': 'N',
