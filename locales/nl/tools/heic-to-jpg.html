@@ -110,4 +110,15 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    De offlineregel van het frame zegt alleen dat de pagina blijft werken. Wat
+    hier het toevoegen waard is, is wat daaronder valt: de HEIC-decoder is een
+    meegeleverde WebAssembly-engine, en die wordt mee bewaard. Een sleutel die
+    hier staat wint van die van het frame - zie shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">klaar &mdash; de decoder is ook bewaard,
+      dus dit werkt met de netwerkkabel eruit.</span>
+  </div>
 </main>

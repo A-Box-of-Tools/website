@@ -109,4 +109,15 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    A linha "offline" da moldura diz apenas que a página continua funcionando.
+    O que vale acrescentar aqui é o que isso cobre: o decodificador HEIC é um
+    motor WebAssembly que vem junto com a página, e ele também fica em cache.
+    Uma chave definida aqui ganha da da moldura; veja shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">pronto &mdash; o decodificador também
+      fica em cache, então isto funciona com a rede desconectada.</span>
+  </div>
 </main>

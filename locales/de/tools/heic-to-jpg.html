@@ -111,4 +111,17 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    Die Offline-Zeile des Rahmens sagt nur, dass die Seite weiterläuft. Hier
+    lohnt sich der Zusatz, was das einschließt: Der HEIC-Decoder ist eine
+    mitgelieferte WebAssembly-Engine und wird mit zwischengespeichert. Ein hier
+    definierter Schlüssel geht dem des Rahmens vor - siehe
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">bereit &mdash; der Decoder ist mit
+      zwischengespeichert, das hier funktioniert also auch ohne
+      Netzverbindung.</span>
+  </div>
 </main>

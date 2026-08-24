@@ -386,6 +386,16 @@ boot_then = "Ouvrez ensuite <code>http://localhost:8080/</code>."
 noscript_title = "JavaScript est désactivé."
 noscript_body = "Cette application fait tout son travail dans votre navigateur et ne peut donc pas fonctionner sans lui."
 
+offline_ready = "prêt &mdash; coupez la connexion et ceci continue de fonctionner."
+offline_none = "indisponible dans ce navigateur (tout le reste fonctionne quand même)."
+offline_insecure = "nécessite https:// ou localhost pour mettre en cache hors ligne."
+offline_failed = "la mise en cache est impossible ici, mais rien n'est envoyé de toute façon."
+
+error_broke = "Quelque chose a échoué&nbsp;: {detail}. Rechargez la page pour repartir de zéro."
+
+reading_one = "Lecture de {count} fichier&hellip;"
+reading_many = "Lecture de {count} fichiers&hellip;"
+
 check_yourself = """
       <strong>Vérifiez vous-même.</strong> Rien de ce qui précède n'est à croire sur
       parole. Cette page est produite à partir des gabarits et de la configuration

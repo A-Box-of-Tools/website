@@ -25,6 +25,8 @@
  * by keyboard - and there is no JavaScript in that path at all.
  */
 
+import { phrase } from './phrases.js';
+
 /**
  * @typedef {object} Picker
  * @property {(text: string) => void} busy   drop zone shows it is reading
@@ -94,8 +96,13 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
 }
 
 /**
- * "Reading 1 file..." / "Reading 4 files...", said the same way everywhere.
+ * "Reading 1 file..." / "Reading 4 files...", said the same way everywhere,
+ * and in the language of the page.
+ *
+ * Two keys rather than one with an `s` appended: the plural of a noun is not a
+ * suffix in every language, and a sentence assembled by adding one can only be
+ * right in the language it was assembled for.
  */
 export function readingLabel(count) {
-  return `Reading ${count} file${count === 1 ? '' : 's'}...`;
+  return phrase(count === 1 ? 'reading.one' : 'reading.many', { count });
 }

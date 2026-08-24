@@ -291,6 +291,18 @@ boot_then = "然后打开 <code>http://localhost:8080/</code>。"
 noscript_title = "JavaScript 被停用了。"
 noscript_body = "这个页面全部的活都在你的浏览器里干，没有 JavaScript 就跑不起来。"
 
+offline_ready = "已就绪——断网之后这一页照样能用。"
+offline_none = "这个浏览器里用不了（其余的照样能用）。"
+offline_insecure = "离线缓存需要 https:// 或者 localhost。"
+offline_failed = "这里缓存不了，不过反正什么都不会上传。"
+
+error_broke = "出错了：{detail}。重新加载页面即可从头开始。"
+
+# 中文没有复数形式，两条是同一句。之所以留两个键，是因为别的
+# 语言里它们不一样，不是这里漏了什么。
+reading_one = "正在读取 {count} 个文件&hellip;"
+reading_many = "正在读取 {count} 个文件&hellip;"
+
 check_yourself = """
       <strong>你可以自己核对。</strong>上面这些不用你信。这个页面是仓库里的\
       模板和配置生成出来的，构建脚本你能读，也能自己跑一遍，跑出来的结果就\

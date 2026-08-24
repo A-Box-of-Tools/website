@@ -364,6 +364,16 @@ boot_then = "Depois abra <code>http://localhost:8080/</code>."
 noscript_title = "O JavaScript está desativado."
 noscript_body = "Este aplicativo faz todo o trabalho no seu navegador, então não tem como funcionar sem ele."
 
+offline_ready = "pronto &mdash; desligue a internet e isto continua funcionando."
+offline_none = "indisponível neste navegador (todo o resto continua funcionando)."
+offline_insecure = "precisa de https:// ou localhost para guardar uma cópia offline."
+offline_failed = "não dá para guardar cópia aqui, mas nada é enviado de qualquer maneira."
+
+error_broke = "Algo deu errado: {detail}. Recarregue a página para começar de novo."
+
+reading_one = "Lendo {count} arquivo&hellip;"
+reading_many = "Lendo {count} arquivos&hellip;"
+
 check_yourself = """
       <strong>Confira você mesmo.</strong> Nada do que está acima precisa ser aceito
       na fé. Esta página é gerada a partir dos modelos e da configuração do

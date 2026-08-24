@@ -110,4 +110,16 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    La riga "offline" della cornice dice solo che la pagina continua a
+    funzionare. Qui vale la pena aggiungere cosa comprende: il decodificatore
+    HEIC è un motore WebAssembly incluso nella pagina, e finisce in copia
+    locale anche lui. Una chiave definita qui vince su quella della cornice;
+    vedi shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">pronto &mdash; anche il decodificatore è
+      in copia locale, quindi questo funziona con la rete staccata.</span>
+  </div>
 </main>

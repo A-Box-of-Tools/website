@@ -291,6 +291,18 @@ boot_then = "そのうえで<code>http://localhost:8080/</code>を開いてく�
 noscript_title = "JavaScriptが無効になっています。"
 noscript_body = "このアプリは処理をすべてブラウザの中で行うので、JavaScriptなしでは動きません。"
 
+offline_ready = "準備できました。インターネットを切ってもこのまま動きます。"
+offline_none = "このブラウザーでは利用できません（ほかはそのまま動きます）。"
+offline_insecure = "オフライン用に保存するには https:// か localhost が必要です。"
+offline_failed = "ここでは保存できませんが、どちらにしても何もアップロードされません。"
+
+error_broke = "問題が起きました：{detail}。最初からやり直すにはページを再読み込みしてください。"
+
+# 日本語には複数形がないので、二つの形は同じ文になる。キーが二つあるのは
+# 他の言語で変わるからで、ここで書き忘れているわけではない。
+reading_one = "{count} 個のファイルを読み込み中&hellip;"
+reading_many = "{count} 個のファイルを読み込み中&hellip;"
+
 check_yourself = """
       <strong>自分で確かめてください。</strong>以上のどれも、鵜呑みにする必要は\
       ありません。このページは、リポジトリにあるテンプレートと設定から、誰でも\

@@ -1,5 +1,6 @@
 /** UI wiring and application state. */
 
+import { phrase } from './shared/phrases.js';
 import { classSizes, generate, phraseChoices, SYMBOL_SETS } from './generate.js';
 import {
   bits, crackTime, passphraseSpace, passwordSpace, rating, scientific,
@@ -361,22 +362,22 @@ async function registerServiceWorker() {
   };
 
   if (!('serviceWorker' in navigator)) {
-    fail('not available in this browser (everything else still works).');
+    fail(phrase('offline.none'));
     return;
   }
   if (!window.isSecureContext) {
-    fail('needs https:// or localhost to cache for offline use.');
+    fail(phrase('offline.insecure'));
     return;
   }
 
   try {
     await navigator.serviceWorker.register('sw.js');
     await navigator.serviceWorker.ready;
-    el.offlineStatus.textContent = 'ready - disconnect from the internet and this still works.';
+    el.offlineStatus.textContent = phrase('offline.ready');
     el.offlineStatus.className = 'good';
     el.offlineDot.className = 'live-dot good';
   } catch (error) {
-    fail('caching unavailable here, but nothing is uploaded either way.', error.message);
+    fail(phrase('offline.failed'), error.message);
   }
 }
 
@@ -386,12 +387,11 @@ async function registerServiceWorker() {
 // the page looking functional but doing nothing.
 window.addEventListener('error', (event) => {
   el.error.hidden = false;
-  el.error.textContent = `Something broke: ${event.message}. Reload the page to start over.`;
+  el.error.textContent = phrase('error.broke', { detail: event.message });
 });
 window.addEventListener('unhandledrejection', (event) => {
   el.error.hidden = false;
-  el.error.textContent = `Something broke: ${event.reason?.message ?? event.reason}. `
-    + 'Reload the page to start over.';
+  el.error.textContent = phrase('error.broke', { detail: event.reason?.message ?? event.reason });
 });
 
 showSymbols();
