@@ -187,7 +187,7 @@ what covers the loss of a second pass: 0.8× on "smaller file", 1.25× on
   though the source is not. A very long 4K crop is bounded by that.
 - **AVI, WMV, FLV and most MKVs** are not readable here and not playable in most
   browsers. That is the FFmpeg question in
-  [What can be built here](../../README.md#what-needs-a-vendored-ffmpeg), not a gap that a few
+  [What can be built here](../../docs/what-can-be-built-here.md#what-needs-a-vendored-engine), not a gap that a few
   more lines would close.
 
 ## Testing it

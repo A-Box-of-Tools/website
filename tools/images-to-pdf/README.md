@@ -104,7 +104,7 @@ for is something the sender did not know they were sending.
 - **No OCR and no text layer.** The pages are pictures, so the document is not
   searchable. Nothing in the browser does OCR, and shipping an engine that could
   is the same sort of question as
-  [What needs a vendored FFmpeg](../../README.md#what-needs-a-vendored-ffmpeg).
+  [What needs a vendored engine](../../docs/what-can-be-built-here.md#what-needs-a-vendored-engine).
 - **Existing PDFs cannot be read.** This writes documents; it does not open
   them. The reader lives next door, in [PDF Compressor](../compress-pdf/);
   merging and reordering are on the planned list and would be built on it.

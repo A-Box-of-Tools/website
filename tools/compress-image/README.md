@@ -112,7 +112,7 @@ Two decisions worth keeping:
   is missing, the option is disabled with a reason.
 - **AVIF and JPEG XL are read but not written**, for the same reason: no browser
   ships an encoder for them that `toBlob` will reach. That is on the FFmpeg list
-  in [What can be built here](../../README.md#what-needs-a-vendored-ffmpeg).
+  in [What can be built here](../../docs/what-can-be-built-here.md#what-needs-a-vendored-engine).
 - **A tight target on a large photo takes a few seconds.** Eight to twenty-two
   encodes of a 12-megapixel image is real work, and it is happening on the
   visitor's laptop rather than someone's server. The progress line names the file

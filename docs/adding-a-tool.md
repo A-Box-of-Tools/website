@@ -1,0 +1,245 @@
+# Adding a tool
+
+[← README](../README.md)
+
+1. Make `tools/<slug>/` with five things: `tool.toml`, `body.html` (the `<main>`
+   of the page, and only that), `styles.css` (the rules only this tool needs),
+   `src/*.js` including a `main.js`, and `og.png`. Copying the nearest existing
+   tool and editing it is the fastest way in — `tool.toml` is commented
+   throughout, and every key in it is required, so nothing can be silently
+   forgotten.
+2. Add the slug to the `order` of the matching `[[hub.categories]]` in
+   `config/site.toml`, and set the same category id in the tool's `category`.
+   The card on the hub, the sitemap entry, the structured data and the handful
+   of other tools every tool page links to all follow from that; there is no
+   second place to remember. See
+   [Why tool pages link to each other](guides.md#why-tool-pages-link-to-each-other).
+3. Run `python build.py`. If the tool is missing something, the build says so
+   and writes nothing.
+4. If it belongs to a category that does not exist yet, add a
+   `[[hub.categories]]` table and move that name out of `config/planned.toml`.
+5. Set `roadmap_group` to one of the groups in `config/planned.toml`, so the
+   tool crosses from the planned half of that group to the built half. A tool
+   without one fails the build rather than quietly going missing.
+6. If the tool was itself on the roadmap, take its line out of
+   `config/planned.toml` **and** out of every `locales/*/planned.toml`. Those
+   item lists are plain strings with nothing to name them by, so they are
+   merged by position: a locale list longer than the English one is a hard
+   failure, and a line removed at the wrong index silently moves every
+   translation after it onto the wrong entry.
+7. Draw the share card and the app icons: `.\og-image.ps1 -Only <slug>`. It
+   reads the heading from `name`, the subtitle from `og_card` and the icons from
+   `icon`, all in your `tool.toml`, so there is no list to add yourself to. The
+   build refuses a tool missing any of the three files, because its page claims
+   the card in `og:image` and its manifest claims the icons, whether or not they
+   are there. Run it without `-Only` and it redraws every tool, which is worth
+   avoiding: the mark is rasterised through a headless Edge that flakes about
+   once a run.
+8. Write it a guide. See [The guides](guides.md) — one folder under
+   `pages/guides/`, and the link between the two pages is a single `tool` key.
+9. Write `tools/<slug>/README.md`: how the tool works and why it works that way,
+   for somebody reading the code rather than using the page. The build refuses
+   to finish without one. **Neither this file nor the repository README is one
+   of the places to edit.** They cover the site and the build; a tool documents
+   itself, in its own folder, and the index at [`tools/`](../tools/) is generated.
+
+   You do **not** have to touch the footer, the sitemap, or the other pages. The
+   footer's tool list is derived from `tools/` in the order the hub shows them,
+   so a new tool appears in the footer of every page - hub, tool and legal - as
+   soon as it exists.
+
+   Before adding a *new* name to the planned list, put it through
+   [What can be built here](what-can-be-built-here.md) first. That section is
+   where the ruled-out ones, and the reasons they were ruled out, live.
+
+The frame — the header, the pledge, the live network check, the privacy panel,
+the FAQ layout, the footer, the Content-Security-Policy, the service worker,
+the analytics bootstrap — you get for free and should not reimplement. What a
+tool writes for itself is its interface (`body.html`), its own rules
+(`styles.css`), its own code (`src/`), its own words (`tool.toml`), and its own
+documentation (`README.md`).
+
+## Where a tool's documentation lives
+
+In the tool's own folder, as `tools/<slug>/README.md`, beside the code it
+describes. The build refuses to finish without one.
+
+This file, and the repository README it was split from, cover the site and the
+build: how a page is generated, what the Content-Security-Policy is for, how
+the deploy works. Neither is where a tool is explained, and shipping a tool
+should never mean editing them. The index at [`tools/`](../tools/) is generated
+by `build.py` from the tool configs, in the order the hub shows them, so the
+list of tools cannot fall behind the folders that exist either.
+
+That index is the one file the build writes back into the repository rather than
+into `dist/`, and it is only rewritten when it would actually change, so an
+ordinary build does not dirty the working tree.
+
+## Shared parts
+
+A component more than one tool needs, and that no tool should own, lives under
+`shared/` and is named in the tool's `tool.toml`:
+
+| Part | Named in | Becomes |
+|---|---|---|
+| `shared/css/file-list.css` | `css_parts = ["file-list"]` | appended to the tool's stylesheet |
+| `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
+| `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
+| `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
+| `shared/js/zip.js` | `js_parts = ["zip"]` | the stored-only archive writer |
+| `shared/js/crc32.js` | `js_parts = ["crc32"]` | the CRC the ZIP and PNG writers need |
+| `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
+
+`zip` needs `crc32` listed as well — it is a separate part because a PNG writer
+wants the checksum without the archive.
+
+`phrases` is the one part no tool asks for. Every tool page wears the frame and
+the frame has sentences its JavaScript puts on screen, so `js_parts()` in
+`buildlib/site.py` adds it to every tool. Listing it twenty-nine times would
+make it look like a choice, and the first tool to leave it out would build
+clean and then 404 on a module in somebody's browser.
+
+The **file picker** is all three at once, and is the reason the arrangement
+exists: the drop zone, the hidden input, the drag highlighting, and the "Reading
+3 files…" label were the same in every tool, written out five times.
+
+```toml
+js_parts = ["file-picker"]
+
+[picker]
+accept = "image/*"
+multiple = true
+title = "Drop images here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, GIF, AVIF"
+```
+
+```html
+<!-- in body.html -->
+{% include "partials/file-picker.html" %}
+```
+
+```js
+// in src/main.js
+import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+
+const picker = wireFilePicker({
+  input: el.fileInput,
+  dropzone: el.dropzone,
+  onFiles(files) { addFiles(files); },
+});
+```
+
+`picker.busy(readingLabel(files.length))` while reading, `picker.done()` after.
+The resting label is read off the markup, so it is written once, in `tool.toml`,
+rather than there and in the JavaScript as well.
+
+**Shared JavaScript is copied, not linked.** It lands in the tool's own
+`src/shared/`, so every tool folder in `dist/` is still complete on its own,
+cached by its own service worker, and works offline with nothing fetched from a
+neighbour. That is also why a tool's source folder imports a file it does not
+contain — the import path says `./shared/` to make where it came from obvious.
+
+**So a `./shared/` import belongs in `main.js`, and nowhere else.** The copy
+happens at build time, which means that path does not resolve in the source
+tree, and the JavaScript tests import tool modules straight off the disk with
+no build in front of them. `main.js` is safe because no test loads it. A leaf
+module that is unit-tested is not: give it a `./shared/` import and its whole
+test file stops resolving. That is why `exif-editor/src/png.js` and
+`merge-pdf/src/produce.js` keep a local copy of the CRC and the ZIP writer that
+seven other tools now share — the alternative was trading their tests for the
+deduplication.
+
+The build checks the half of this it can. `buildlib/imports.py` reads every
+module a tool is about to ship, with the tokeniser from `minify.py` rather than
+a regular expression, and refuses a tool whose imports do not all land on a
+file that tool ships. The case it exists for: `shared/js/zip.js` imports
+`./crc32.js`, so a tool asking for `"zip"` and not `"crc32"` would build
+cleanly and 404 in the browser.
+
+Only *choosing* the files is shared. What a tool does with them afterwards — the
+list, the thumbnails, the reordering, the per-row buttons — differs enough per
+tool that sharing it would cost more than it saved.
+
+## A vendored engine
+
+A codec nobody here wrote goes in `tools/<slug>/vendor/`, and only one tool has
+one: `/heic-to-jpg/`, which carries `libheif` because HEIC is the one picture
+format a browser will not decode. `src/` is for code written in this repository
+and is read, minified and token-checked as such; `vendor/` is a different kind
+of file and gets a different door.
+
+    tools/<slug>/vendor/*     copied byte for byte into dist/<slug>/vendor/
+
+Three rules, all of them enforced by `vendor_files` in `build.py` rather than
+remembered:
+
+- **Never minified.** `buildlib/minify.py` is a tokeniser that verifies its own
+  output and refuses input it cannot tokenise exactly. A compiled bundle carries
+  strings with line continuations in them — legal JavaScript, and not something
+  that minifier will touch. That refusal is correct; the answer is to copy the
+  file, not to loosen the check for third-party code.
+- **Precached with everything else.** Every file in the folder goes into the
+  tool's service worker list, so a tool carrying an engine still works with the
+  network unplugged. An engine downloaded on first use is not an offline tool.
+- **The licence rides along.** Vendoring is only honest if what the thing is and
+  what it is licensed under arrive with it, so the whole folder ships and the
+  page links to it.
+
+Everything in the folder is copied and everything is cached. There is no list to
+keep in step, and a file that is in there but not wanted is a file that should
+not have been committed.
+
+The argument about *when* an engine is worth vendoring, and what it costs the
+Content-Security-Policy, is in [What can be built here](what-can-be-built-here.md).
+
+---
+
+## Adding from a web address
+
+Setting `[picker.urls]` in a tool.toml switches on the one feature here that
+contacts anything. It is the only part of this repository that a tool must
+*qualify* for rather than simply ask for.
+
+```toml
+[picker.urls]
+summary = "Add from a web address"
+button = "Download images"
+noun = "image"
+```
+
+That one table pulls in the module, its stylesheet, and the widened `img-src`
+that page needs — together, so they cannot drift apart — and the build refuses
+to finish if the panel itself is then left off `body.html`, because a page would
+otherwise carry a network permission it never uses.
+
+**`<img>`, not `fetch()`.** `connect-src` stays closed, so fetch, XHR,
+WebSocket and `sendBeacon` remain impossible and nothing can ever be sent out.
+Only `img-src` opens, and that is a one-way door: pictures come in, data cannot
+go out. Keeping the original bytes would mean `fetch()`, which would mean
+opening `connect-src` to arbitrary origins — and the promise that there is
+nowhere for your files to go would stop being true.
+
+**Which is why most tools cannot have it.** The image is copied through a
+`<canvas>`, so it arrives as a re-encoded JPEG rather than the bytes the server
+sent. The test is not "would it work" but "would the answer still be true":
+
+| Tool | |
+|---|---|
+| Images to Video | **yes** — the frames are headed into a lossy codec anyway |
+| EXIF Viewer | no — a canvas destroys the tags the tool exists to show |
+| Image Compressor | no — it would report its saving against a re-encode |
+| Images to PDF | no — it would decode the JPEGs it exists to copy through untouched |
+| Crop Video | no — `<video>` yields a playback stream, not the bytes the demuxer needs, so the exact crop would silently drop to re-recording |
+
+A tool that would have to misdescribe what it was given goes without.
+
+Two things to hold the line on, because the whole site rests on them:
+
+- **Nothing about a user's file is ever read out.** Not to Google, not to
+  anywhere. Every byte that touches a file comes from this origin, and the
+  processing happens in the visitor's own browser.
+- **If a tool genuinely needs the network**, it says so on its own page, in plain
+  language, and explains exactly what leaves the machine. Images to Video does this
+  for its "add from a web address" feature (see below). What it must not do is
+  weaken the site-wide claim quietly.
+

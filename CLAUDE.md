@@ -1,8 +1,9 @@
 # Working in this repository
 
-Orientation for an agent. [README.md](README.md) is the real documentation and
-this does not replace it — this is the short list of things that are not
-obvious from reading the tree, and where to look for the rest.
+Orientation for an agent. [README.md](README.md) and the files it links to
+under [`docs/`](docs/) are the real documentation and this does not replace
+them — this is the short list of things that are not obvious from reading the
+tree, and where to look for the rest.
 
 ## What this is
 
@@ -95,7 +96,7 @@ and it will make you declare it.
 
 ## Adding a tool
 
-The checklist is [README.md → Adding a tool](README.md#adding-a-tool). Two
+The checklist is [docs/adding-a-tool.md](docs/adding-a-tool.md). Two
 steps that section does not spell out, and that every real tool change has
 needed:
 

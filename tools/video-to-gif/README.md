@@ -193,7 +193,7 @@ everything.
 - **Encrypted tracks are refused**, with that as the reason.
 - **AVI, WMV, FLV and most MKVs** are neither readable here nor playable in most
   browsers. That is the FFmpeg question in
-  [What can be built here](../../README.md#what-needs-a-vendored-ffmpeg), not a
+  [What can be built here](../../docs/what-can-be-built-here.md#what-needs-a-vendored-engine), not a
   gap a few more lines would close.
 - **No captions, no cropping, no speed change.** Those are separate tools on the
   roadmap; this one picks a section, a size and a rate.

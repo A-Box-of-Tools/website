@@ -13,9 +13,9 @@ brightness, contrast, saturation, blur" reads like a reasonable line on a
 roadmap for years, and the case against it takes a paragraph. Without somewhere
 to put the paragraph, the list only ever grows.
 
-Read [README.md → What can be built here](README.md#what-can-be-built-here)
-first. It holds the test every entry here has already passed, the table of what
-the browser can do unaided, and the three things ruled out for good.
+Read [What can be built here](docs/what-can-be-built-here.md) first. It holds
+the test every entry here has already passed, the table of what the browser
+can do unaided, and the three things ruled out for good.
 
 ## How a line earns its place
 

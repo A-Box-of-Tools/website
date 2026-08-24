@@ -303,7 +303,7 @@ but the tables.
   though the source is barely read at all.
 - **AVI, WMV, FLV and most MKVs** are not readable here and not playable in most
   browsers. That is the FFmpeg question in
-  [What can be built here](../../README.md#what-needs-a-vendored-ffmpeg).
+  [What can be built here](../../docs/what-can-be-built-here.md#what-needs-a-vendored-engine).
 
 ## Testing it
 
