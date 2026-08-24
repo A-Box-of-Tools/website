@@ -157,6 +157,9 @@ shared/
   site.css               the stylesheet for the hub and the legal pages
   logo.svg               the site mark; also the favicon, and inlined in the pages
   icon-180.png           the same mark as a PNG, for iOS home screens
+  icon-192.png           and again, for an installed app's icon
+  icon-512.png           and again, larger
+  icon-512-maskable.png  and again, with the margin Android's crop needs
   og.png                 the hub's share card
   CNAME .nojekyll        read by GitHub Pages
   _headers robots.txt ads.txt
@@ -190,7 +193,7 @@ tests/
 LICENSE                  MIT: the code, and what the MIT half does not cover
 LICENSE-CONTENT          CC BY 4.0: the words the site publishes
 package.json             says the .js files are ES modules; no dependencies
-og-image.ps1             draws the share cards and the icon from shared/logo.svg
+og-image.ps1             draws the share cards and the icons from shared/logo.svg
 serve.ps1                builds, then serves dist/ locally
 cloudflare/              the edge config that adds the security headers
 ```
@@ -200,6 +203,13 @@ nothing about where it is mounted: every path in it is relative, so it works at
 the domain root, at `/compress-image/`, or nested deeper, with no configuration.
 The service worker registers with the scope of its own folder, so each tool
 caches only itself and cannot interfere with its neighbours.
+
+That is also why each tool ships its own `manifest.json` rather than the site
+shipping one. A browser offering to install the page installs what the manifest
+scopes, and here that is the folder the service worker has already cached - so an
+installed tool opens with the network unplugged. The install is offered by the
+browser itself, from the address bar; there is no button on the page and no
+script behind it.
 
 ### What the build does to the output
 
@@ -563,8 +573,10 @@ pages/guides/trim-a-video/          kind = "guide"
 
 Either kind gets the site frame, the site's Content-Security-Policy unchanged,
 and an entry in `sitemap.xml`. Neither gets a service worker, because there is
-nothing here worth keeping offline, or `blob:` in `img-src`, because neither
-ever makes one.
+nothing here worth keeping offline, and neither gets a web app manifest, because
+an installed page of prose is still a page of prose. So neither carries what a
+tool page adds to the policy for those two: `blob:` in `img-src`, for previews
+made in the page, and `manifest-src`.
 
 `nav` is the short label. A legal page uses it for its own link in the footer;
 a guide uses it for the last step of its breadcrumb, because guides are reached

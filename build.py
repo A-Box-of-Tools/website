@@ -753,20 +753,30 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         'words': tool['words'],
     }), where=f'{locale["prefix"]}{tool["out_slug"]}/analytics.js')
 
-    # The service worker caches './', its own src/*.js, and analytics.js. The
-    # list is read off the disk rather than written down, so a new module is
-    # cached the moment it exists.
+    # What makes the tool installable, and the only file here a browser reads
+    # before the page rather than because of it. It is written per language, so
+    # the app the German page installs is called what the German page calls it;
+    # config/site.toml says why there is one of these per tool and not one for
+    # the site.
+    write(dest / 'manifest.json',
+          sitelib.tool_manifest(root, tool, locale['dir']))
+
+    # The service worker caches './', its own src/*.js, analytics.js and the
+    # manifest. The list is read off the disk rather than written down, so a new
+    # module is cached the moment it exists.
     #
     # Hashed from the files as emitted, not as authored: minifying changes the
     # bytes a browser receives, so turning it on or off has to invalidate the
     # cache. Hashing the sources instead would leave a visitor holding the old
     # copy of a file that had genuinely changed.
-    cached = ([dest / 'index.html', dest / 'styles.css', dest / 'analytics.js']
+    cached = ([dest / 'index.html', dest / 'styles.css', dest / 'analytics.js',
+               dest / 'manifest.json']
               + [dest / name for name, _ in assets]
               + [dest / name for name in vendored])
     emit.js(dest / 'sw.js', templates.render('sw.js', {
         'tool': tool,
-        'assets': ['index.html', css_href] + [name for name, _ in assets] + vendored,
+        'assets': (['index.html', css_href, 'manifest.json']
+                   + [name for name, _ in assets] + vendored),
         'cache_hash': sitelib.cache_hash(cached),
     }), where=f'{locale["prefix"]}{tool["out_slug"]}/sw.js')
 
