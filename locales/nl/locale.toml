@@ -66,6 +66,15 @@ complete = true
 # regel die je uiteindelijk in je CSS plakt.
 "image-to-data-uri" = "afbeelding-naar-base64"
 "qr-barcode" = "qr-code-maken"
+"gif-analyzer" = "gif-analyseren"
+"gif-maker" = "gif-maken"
+"grab-frame" = "frame-uit-video-halen"
+"id-photo" = "pasfoto-maken"
+"merge-pdf" = "pdf-samenvoegen"
+"reverse-video" = "video-achteruit-afspelen"
+"split-gif" = "gif-splitsen-in-frames"
+"text-tools" = "json-formatteren"
+"trim-audio" = "audio-knippen"
 # Aaneen geschreven zou het één woord zijn, maar in een adres leest
 # "wachtwoord-generator" beter en het is ook wat er gezocht wordt.
 "password-generator" = "wachtwoord-generator"
@@ -94,6 +103,15 @@ complete = true
 "guides/convert-heic-to-jpg" = "gidsen/heic-naar-jpg-omzetten"
 "guides/embed-an-image-in-css" = "gidsen/een-afbeelding-in-css-zetten"
 "guides/make-a-qr-code" = "gidsen/zelf-een-qr-code-maken"
+"guides/format-json-without-uploading-it" = "gidsen/json-formatteren"
+"guides/grab-a-frame-from-a-video" = "gidsen/een-frame-uit-een-video-halen"
+"guides/make-a-gif-from-images" = "gidsen/van-afbeeldingen-een-gif-maken"
+"guides/make-a-passport-photo" = "gidsen/zelf-een-pasfoto-maken"
+"guides/merge-and-split-pdf-files" = "gidsen/pdf-bestanden-samenvoegen-en-splitsen"
+"guides/reverse-a-video" = "gidsen/een-video-achteruit-afspelen"
+"guides/split-a-gif-into-frames" = "gidsen/een-gif-splitsen-in-frames"
+"guides/trim-an-audio-file" = "gidsen/een-audiobestand-inkorten"
+"guides/whats-inside-a-gif" = "gidsen/wat-zit-er-in-een-gif"
 "guides/verify-a-file-checksum" = "gidsen/de-checksum-van-een-download-controleren"
 
 #

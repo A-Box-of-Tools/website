@@ -1,0 +1,155 @@
+<main>
+  <!--
+    One numbered step, and then six headings without numbers.
+
+    Every other tool on this site numbers all of its cards, because every card
+    is something the visitor does. Here there is exactly one thing to do -
+    choose a file - and everything below it is the answer. Numbering the answer
+    would promise a sequence of decisions that does not exist, and would leave
+    somebody looking for step 4's button.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli una GIF</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Il riepilogo, e l'animazione come la disegna il browser stesso. -->
+  <section class="card" id="summary-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="copy-report" class="ghost">Copia il resoconto</button>
+        <button type="button" id="download-report" class="ghost">Scaricalo</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="preview-wrap">
+        <!--
+          The browser's own decoder, drawing the file unchanged. Everything else
+          on this page is drawn by src/frames.js, so having both means a
+          disagreement between them is visible rather than hidden - and it is
+          the disagreement that would tell you this reader had a bug.
+        -->
+        <img id="preview" class="preview" alt="L'animazione, come la disegna questo browser">
+        <p class="preview-note">Il decodificatore del tuo browser, che riproduce il file così com'è.</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>Versione</dt><dd id="fact-version">&mdash;</dd></div>
+        <div><dt>Tela</dt><dd id="fact-canvas">&mdash;</dd></div>
+        <div><dt>Peso del file</dt><dd id="fact-size">&mdash;</dd></div>
+        <div><dt>Fotogrammi</dt><dd id="fact-frames">&mdash;</dd></div>
+        <div><dt>Come è scritta</dt><dd id="fact-written">&mdash;</dd></div>
+        <div><dt>Come va davvero</dt><dd id="fact-plays">&mdash;</dd></div>
+        <div><dt>Ripetizioni</dt><dd id="fact-loops">&mdash;</dd></div>
+        <div><dt>Colori disegnati</dt><dd id="fact-colors">&mdash;</dd></div>
+      </dl>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Le letture. Per prime, perché è per quelle che si è arrivati qui. -->
+  <section class="card" id="findings-card" hidden>
+    <h2>Cosa salta all'occhio</h2>
+    <p class="card-lede">
+      Tutto quello che segue è misurato su questo file. Niente qui è un'ipotesi
+      su cosa volevi fare.
+    </p>
+    <ul class="findings" id="findings"></ul>
+  </section>
+
+  <!-- Il bilancio dei byte. -->
+  <section class="card" id="budget-card" hidden>
+    <h2>Dove sono finiti i byte</h2>
+    <p class="card-lede">
+      Ogni byte del file sta in esattamente una riga, e le righe fanno il file.
+      Se non lo facessero, lo direbbe l'ultima riga, invece che la barra si
+      allungasse in silenzio fino a tornare.
+    </p>
+
+    <div class="budget-bar" id="budget-bar" role="img" aria-labelledby="budget-caption"></div>
+    <p class="visually-hidden" id="budget-caption">
+      Gli stessi numeri della tabella qui sotto, disegnati come un'unica barra.
+    </p>
+
+    <table class="budget">
+      <caption class="visually-hidden">Dove sono finiti i byte di questo file</caption>
+      <thead>
+        <tr>
+          <th scope="col">Parte</th>
+          <th scope="col" class="num">Byte</th>
+          <th scope="col" class="num">Quota</th>
+        </tr>
+      </thead>
+      <tbody id="budget-rows"></tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">Tutto il file</th>
+          <td class="num" id="budget-total">&mdash;</td>
+          <td class="num">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- Fotogramma per fotogramma. -->
+  <section class="card" id="frames-card" hidden>
+    <div class="toolbar">
+      <h2>Fotogramma per fotogramma</h2>
+      <div class="toolbar-actions">
+        <label for="frame-view" class="inline-label">Mostra</label>
+        <select id="frame-view">
+          <option value="composited" selected>la tela dopo ogni fotogramma</option>
+          <option value="stored">solo quello che ogni fotogramma salva</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="card-lede" id="frames-lede"></p>
+
+    <ul class="frames" id="frames"></ul>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!-- I colori. -->
+  <section class="card" id="colors-card" hidden>
+    <h2>I colori</h2>
+    <p class="card-lede" id="colors-lede"></p>
+
+    <div id="global-palette-wrap" hidden>
+      <h3>La tavola globale</h3>
+      <p class="palette-note" id="global-palette-note"></p>
+      <ul class="palette" id="global-palette"></ul>
+    </div>
+
+    <details id="local-palettes-wrap" hidden>
+      <summary id="local-palettes-summary">Le tavole dei singoli fotogrammi</summary>
+      <div id="local-palettes"></div>
+    </details>
+  </section>
+
+  <!-- Tutto quello che nel file non è immagine. -->
+  <section class="card" id="extras-card" hidden>
+    <h2>Cos'altro c'è là dentro</h2>
+    <p class="card-lede">
+      Blocchi che non portano immagini. Un visualizzatore li salta tutti, e ogni
+      copia del file se li porta dietro lo stesso.
+    </p>
+    <ul class="extras" id="extras"></ul>
+  </section>
+</main>

@@ -1,0 +1,15 @@
+#
+# 指南：用图片做一个动图 GIF - Simplified Chinese.
+#
+
+nav = "图片做成 GIF"
+title = "怎么用图片做一个动图 GIF"
+description = "把一组图片变成一个动图 GIF：GIF 到底能放多快、调色板那个选项改的是什么，以及真正能让文件变小的三件事。"
+heading = "怎么用图片做一个动图 GIF"
+lede = """
+    做出那个 GIF 是容易的部分。真正值得读的，是怎么做出一个小到发得出去的，\
+    因为 GIF 没有画质滑块，能撬动它体积的只有三件事。"""
+updated = "2026年8月20日"
+og_title = "怎么用图片做一个动图 GIF"
+og_description = "GIF 到底能放多快、调色板那个选项改的是什么，以及真正能让文件变小的三件事。"
+og_image_alt = "abox.tools - 从不碰服务器的工具"

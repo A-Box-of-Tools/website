@@ -1,0 +1,16 @@
+#
+# Guida: estrarre un fotogramma da un video - Italian.
+#
+
+nav = "Estrarre un fotogramma"
+title = "Come salvare un fotogramma di un video come immagine"
+description = "Tirare fuori un fermo immagine alla risoluzione vera del video: perché uno screenshot del lettore in pausa non è la stessa immagine, in che formato salvarlo e come finire sul fotogramma che si voleva davvero."
+heading = "Come salvare un fotogramma di un video come immagine"
+lede = """
+    Mettere in pausa il lettore e premere il tasto di cattura dà l'immagine di
+    una finestra. A volte basta così. Qui c'è in che cosa consiste la
+    differenza, e come arrivare al fotogramma vero quando conta."""
+updated = "20 agosto 2026"
+og_title = "Come salvare un fotogramma di un video come immagine"
+og_description = "Perché uno screenshot del lettore in pausa non è il fotogramma, in che formato salvare un fermo immagine e come finire sul fotogramma che si voleva."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

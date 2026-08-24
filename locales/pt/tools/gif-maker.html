@@ -1,0 +1,175 @@
+<main>
+  <!-- Passo 1 &mdash; os quadros -->
+  <section class="card">
+    <h2><span class="step">1</span> Escolha imagens</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="Mudar como os quadros aparecem">
+          <button type="button" data-view="large" class="active" aria-pressed="true">Grandes</button>
+          <button type="button" data-view="small" aria-pressed="false">Pequenos</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">Ordenar por nome</button>
+        <button type="button" data-sort="date" class="ghost">Ordenar por data</button>
+        <button type="button" data-sort="reverse" class="ghost">Inverter</button>
+        <button type="button" id="clear-all" class="ghost danger">Remover todas</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Arraste qualquer quadro pela alça
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> para reordenar, ou use
+      as setas em cada um. A ordem aqui é a ordem em que eles passam.
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">Segurar cada quadro por</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="Unidade do tempo que cada quadro fica">
+        <option value="seconds" selected>segundos</option>
+        <option value="fps">quadros por segundo</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">Aplicar em todos</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Passo 2 &mdash; ajustes -->
+  <section class="card">
+    <h2><span class="step">2</span> Ajustes do GIF</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">Tamanho</label>
+        <select id="size">
+          <option value="480" selected>480 px &mdash; um bom padrão</option>
+          <option value="640">640 px</option>
+          <option value="320">320 px</option>
+          <option value="240">240 px</option>
+          <option value="original">Igual às imagens</option>
+          <option value="custom">Personalizado&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="Largura personalizada em pixels">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="Altura personalizada em pixels">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">Encaixe da imagem</label>
+        <select id="fit">
+          <option value="contain" selected>Caber inteira (com faixas)</option>
+          <option value="cover">Preencher o quadro (corta as bordas)</option>
+          <option value="stretch">Esticar para preencher (distorce)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Cor de fundo</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">Cores</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; o máximo de um GIF</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; arquivo menor</option>
+        </select>
+        <p class="field-note">Menos cores, arquivo menor, mais faixas de cor.</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">Paleta</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>As melhores cores para cada quadro</option>
+          <option value="shared">Uma paleta para o GIF inteiro</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">Dithering</label>
+        <select id="dither">
+          <option value="on" selected>Ligado &mdash; degradês mais suaves</option>
+          <option value="off">Desligado &mdash; mais chapado, bordas mais limpas</option>
+        </select>
+        <p class="field-note">Desligue para logos, desenho de linha e capturas de tela.</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">Repetição</label>
+        <select id="loop-mode">
+          <option value="forever" selected>Repetir para sempre</option>
+          <option value="once">Tocar uma vez</option>
+          <option value="times">Tocar um número fixo de vezes&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="Quantas vezes a animação toca" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">Transparência</label>
+        <select id="transparent">
+          <option value="off" selected>Achatar sobre o fundo</option>
+          <option value="on">Manter as áreas transparentes</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="Prévia do primeiro quadro"></canvas>
+        <p id="preview-empty" class="preview-empty">Adicione imagens para ver uma prévia</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Quadros</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>Dura</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>Tamanho do quadro</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Toca</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Passo 3 &mdash; exportar -->
+  <section class="card">
+    <h2><span class="step">3</span> Faça o GIF</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Fazer o GIF</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="A animação pronta, tocando"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Baixar o GIF</a>
+      </div>
+    </div>
+  </section>
+</main>

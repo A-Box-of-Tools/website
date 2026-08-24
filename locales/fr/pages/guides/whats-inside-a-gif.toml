@@ -1,0 +1,17 @@
+#
+# Guide : ce qu'il y a vraiment dans un fichier GIF - French.
+#
+
+nav = "Ce qu'il y a dans un GIF"
+title = "Ce qu'il y a vraiment dans un fichier GIF (et pourquoi le vôtre est si lourd)"
+description = "Images, délais, méthodes d'effacement et tables de couleurs expliqués, pourquoi les navigateurs refusent les délais les plus courts, et comment savoir où est passé le poids d'un GIF."
+heading = "Ce qu'il y a vraiment dans un GIF"
+lede = """
+    Un GIF est une pile de rectangles, chacun avec un minuteur et une table de
+    couleurs, et presque tous les reproches faits au format viennent de l'une de
+    ces trois choses. Voici ce que fait chaque partie, et comment découvrir dans
+    laquelle votre fichier dépense son poids."""
+updated = "22 août 2026"
+og_title = "Ce qu'il y a vraiment dans un fichier GIF"
+og_description = "Images, délais, effacement et palettes : à quoi sert chacun, pourquoi votre GIF joue plus lentement qu'annoncé, et où est passé son poids."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

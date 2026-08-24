@@ -1,0 +1,154 @@
+<main>
+  <!-- 第一步 &mdash; 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选好你的 PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <ul id="source-list" class="source-list" hidden></ul>
+  </section>
+
+  <!-- 第二步 &mdash; 页面 -->
+  <section class="card" id="pages-card" hidden>
+    <h2><span class="step">2</span> 安排页面</h2>
+
+    <p class="card-lede">
+      你选的每个文件的每一页，都按出来的顺序排在这里。抓住
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动就能挪，
+      用箭头可以转，用 &times; 可以删。这里还什么都没写出去，文档要等你在第四步
+      按下按钮才会拼起来。
+    </p>
+
+    <div class="toolbar">
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="reverse" class="ghost">倒序</button>
+        <button type="button" id="rotate-all" class="ghost">全部旋转</button>
+        <button type="button" id="restore" class="ghost">还原成刚导入时</button>
+        <button type="button" id="clear-all" class="ghost danger">重新来过</button>
+      </div>
+    </div>
+
+    <div class="range-row">
+      <label for="range">页码</label>
+      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+             spellcheck="false" aria-describedby="range-note">
+      <button type="button" id="range-keep" class="ghost">只保留这些</button>
+      <button type="button" id="range-drop" class="ghost">删掉这些</button>
+      <button type="button" id="range-turn" class="ghost">旋转这些</button>
+    </div>
+    <p id="range-note" class="field-note">
+      按下面显示的编号来写，编号会随着你的操作重新编排。<code>odd</code>、
+      <code>even</code>、<code>all</code> 和 <code>last</code> 也能用。
+    </p>
+    <p id="range-error" class="error" role="alert" hidden></p>
+
+    <ul id="page-list" class="page-list"></ul>
+  </section>
+
+  <!-- 第三步 &mdash; 一个文件，还是好几个 -->
+  <section class="card" id="output-card" hidden>
+    <h2><span class="step">3</span> 一份文档，还是好几份</h2>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">页面怎么写出去</legend>
+      <div class="presets" id="split-modes" role="radiogroup" aria-label="页面怎么写出去">
+        <label class="preset">
+          <input type="radio" name="split" value="single" checked>
+          <span class="preset-body">
+            <strong>一份文档</strong>
+            <span class="preset-note">上面的全部内容，按那个顺序，做成一个 PDF。</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="every">
+          <span class="preset-body">
+            <strong>每隔多少页拆一次</strong>
+            <span class="preset-note">
+              把长扫描件切成每份
+              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+                     inputmode="numeric" aria-label="每个文件包含的页数">
+              页的小册。
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="at">
+          <span class="preset-body">
+            <strong>在指定页码处拆</strong>
+            <span class="preset-note">
+              在
+              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+                     spellcheck="false" aria-label="在这些页码之前切开">
+              之前切开 &mdash; 这些页各自成为新文件的第一页。
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="each">
+          <span class="preset-body">
+            <strong>每页各成一个</strong>
+            <span class="preset-note">一页一个 PDF。想单独抽出签字页的时候好用。</span>
+          </span>
+        </label>
+        <label class="preset" id="by-file-preset" hidden>
+          <input type="radio" name="split" value="file">
+          <span class="preset-body">
+            <strong>切回它们原来的文件</strong>
+            <span class="preset-note">你选的每个文件各出一份文档，你的改动都留着。</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="keep-bookmarks" checked>
+      <span>
+        <strong>保留书签</strong>
+        <span class="check-note">
+          每个文件自带的那份目录，会按真正留下来的页面重新搭一遍：目标页被你删掉
+          的条目会消失，所在章节还在的条目会留下。合并多个文件时，每个文件的书签
+          会归到一个以它命名的标题下面。
+        </span>
+      </span>
+    </label>
+
+    <p id="output-summary" class="field-summary"></p>
+  </section>
+
+  <!-- 第四步 &mdash; 那一下点击 -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> 拼起来</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">生成文档</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>下载</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <ul id="file-list" class="out-list" hidden></ul>
+    </div>
+  </section>
+</main>

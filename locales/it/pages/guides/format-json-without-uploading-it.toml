@@ -1,0 +1,18 @@
+#
+# Guida: formattare JSON senza darlo a nessuno - Italian.
+#
+
+nav = "Formattare JSON"
+title = "Come formattare JSON senza caricarlo da nessuna parte"
+description = "Come impaginare, controllare e minificare JSON nel proprio browser: cosa un formattatore non deve mai cambiare del tuo file, come si legge il messaggio di errore, e perché conta in che casella lo incolli."
+heading = "Come formattare JSON senza darlo a nessuno"
+lede = """
+    Formattare JSON dovrebbe cambiare gli spazi e nient'altro. Quasi tutti gli
+    strumenti che si offrono di farlo cambiano di più, e nessuno lo dice. Qui c'è
+    a cosa fare attenzione, come si legge l'errore quando il file non si lascia
+    leggere, e perché vale la pena pensarci prima di incollare un file di
+    configurazione in una casella qualsiasi."""
+updated = "20 agosto 2026"
+og_title = "Formattare JSON senza darlo a nessuno"
+og_description = "Cosa un formattatore JSON non deve mai cambiare del tuo file, come si legge l'errore di lettura, e perché conta il sito in cui lo incolli."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

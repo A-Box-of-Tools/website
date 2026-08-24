@@ -1,0 +1,189 @@
+<main>
+  <!-- Schritt 1 &mdash; das Foto -->
+  <section class="card">
+    <h2><span class="step">1</span> Das Foto auswählen</h2>
+
+    <p class="card-lede">
+      Jedes Bild, das Ihr Browser öffnen kann. Ein Handyfoto vor einer schlichten
+      Wand, bei Tageslicht, aus etwa anderthalb Metern Abstand ist das, worum
+      herum die meisten dieser Vorschriften geschrieben wurden. Gelesen wird es
+      direkt von Ihrer Festplatte und nirgendwohin geschickt.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">Ein anderes auswählen</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Schritt 2 &mdash; die Vorschrift -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> Land und Dokument auswählen</h2>
+
+    <p class="card-lede">
+      Jede Zahl unten ist die veröffentlichte Anforderung, abgeschrieben von der
+      darunter genannten Behörde. Nichts an dieser Liste ist geraten, und nichts
+      daran wird nachgeladen. Sie ist eine Tabelle in
+      <code>src/specs.js</code>, die mit der Seite ausgeliefert wird.
+    </p>
+
+    <div class="option-row">
+      <label for="spec">Vorschrift</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>Die Zahlen, zum Selbsteintippen</summary>
+      <div class="numbers">
+        <label>Breite (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>Höhe (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>Kopf, kleinstens (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>Kopf, größtens (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>Hintergrund
+          <select id="custom-background">
+            <option value="white">Reines Weiß</option>
+            <option value="off-white">Weiß oder gebrochenes Weiß</option>
+            <option value="light-grey" selected>Schlichtes Hellgrau</option>
+            <option value="cream">Hellgrau oder Creme</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>Upload-Breite (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>Upload-Höhe (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>Kleinstens (KB)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>Größtens (KB)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        KB heißt hier 1024 Byte, und genau das meinen diese Formulare damit.
+      </p>
+    </details>
+  </section>
+
+  <!-- Schritt 3 &mdash; die Bildaufteilung -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> Das Gesicht markieren und die Aufteilung prüfen</h2>
+
+    <p id="frame-empty" class="field-summary">Wählen Sie ein Foto aus, dann erscheint hier der Zuschnittrahmen.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        Ziehen Sie die vier Punkte auf Scheitel, Kinn und jede Pupille und drücken
+        Sie dann <strong>Rahmen einpassen</strong>. An diesen vier Punkten hängt
+        alles, was die Vorschrift misst, und deshalb bittet dieses Werkzeug Sie
+        darum, sie zu setzen, statt sie mit einer Gesichtserkennung zu erraten. Die
+        Punkte starten dort, wo ein Brustbild sie üblicherweise hat. Das ist eine
+        Ausgangslage und keine Messung.
+      </p>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">Rahmen an die Vorschrift einpassen</button>
+        <button type="button" id="reset-marks" class="ghost">Punkte zurücksetzen</button>
+        <button type="button" id="whole-photo" class="ghost">Größter passender Rahmen</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Schritt 4 &mdash; der Hintergrund -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> Der Hintergrund</h2>
+
+    <p class="card-lede" id="background-lede">
+      Ausgelesen aus einem Streifen über dem oberen Rand des Zuschnitts und an
+      beiden Seiten oberhalb der Schultern, also den Teilen des Bildes, in denen
+      nichts als Hintergrund sein sollte. Gemessen in CIE Lab statt in RGB, denn
+      zwei Grautöne, die vierzig RGB-Einheiten auseinanderliegen, sind nicht zu
+      unterscheiden, vierzig Einheiten Blau dagegen sind eine andere Farbe.
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">Was Ihrer ergibt<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">Was die Vorschrift verlangt<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Schritt 5 &mdash; die Dateien -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> Speichern</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">Druckauflösung</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; die Untergrenze fast jeder Vorschrift</option>
+          <option value="600">600 dpi &mdash; womit ein gutes Fotolabor arbeitet</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">Bogen zum Drucken</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>Die Dateien erstellen</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Fertig</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

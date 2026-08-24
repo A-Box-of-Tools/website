@@ -96,6 +96,15 @@ complete = true
 # what a German speaker calls it and what they type into a search box.
 "qr-barcode-reader" = "qr-code-scannen"
 "video-to-gif" = "video-in-gif-umwandeln"
+"gif-analyzer" = "gif-analysieren"
+"gif-maker" = "gif-erstellen"
+"grab-frame" = "standbild-aus-video"
+"id-photo" = "biometrisches-passbild"
+"merge-pdf" = "pdf-zusammenfuegen"
+"reverse-video" = "video-rueckwaerts-abspielen"
+"split-gif" = "gif-in-einzelbilder-zerlegen"
+"text-tools" = "json-formatieren"
+"trim-audio" = "audio-schneiden"
 # "Passwort Generator" ist genau das, was getippt wird, und zwar in dieser
 # Reihenfolge. Die Passphrase steht im Titel, nicht in der Adresse.
 "password-generator" = "passwort-generator"
@@ -129,6 +138,15 @@ complete = true
 "guides/embed-an-image-in-css" = "ratgeber/bild-in-css-einbetten"
 "guides/make-a-qr-code" = "ratgeber/qr-code-selbst-erstellen"
 "guides/turn-a-video-into-a-gif" = "ratgeber/aus-einem-video-ein-gif-machen"
+"guides/format-json-without-uploading-it" = "ratgeber/json-formatieren"
+"guides/grab-a-frame-from-a-video" = "ratgeber/standbild-aus-video-speichern"
+"guides/make-a-gif-from-images" = "ratgeber/aus-bildern-ein-gif-machen"
+"guides/make-a-passport-photo" = "ratgeber/passbild-selbst-machen"
+"guides/merge-and-split-pdf-files" = "ratgeber/pdf-zusammenfuegen-und-teilen"
+"guides/reverse-a-video" = "ratgeber/video-rueckwaerts-abspielen"
+"guides/split-a-gif-into-frames" = "ratgeber/gif-in-einzelbilder-zerlegen"
+"guides/trim-an-audio-file" = "ratgeber/audiodatei-kuerzen"
+"guides/whats-inside-a-gif" = "ratgeber/was-steckt-in-einem-gif"
 "guides/verify-a-file-checksum" = "ratgeber/pruefsumme-vergleichen"
 
 #

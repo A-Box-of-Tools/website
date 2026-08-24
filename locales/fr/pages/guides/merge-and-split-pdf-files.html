@@ -1,0 +1,238 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez la <a href="../../fusionner-des-pdf/">Fusion et division de PDF</a>,
+      déposez-y tous les fichiers que vous voulez utiliser, et faites glisser les
+      pages dans l'ordre voulu. Dites ensuite si cela ressort en un document ou
+      en plusieurs, et appuyez sur le bouton. Rien n'est envoyé&nbsp;: les
+      fichiers sont ouverts, démontés et réécrits par votre propre navigateur.
+    </p>
+    <p>
+      Les trois tâches que l'on cherche séparément &mdash; fusionner, diviser,
+      réordonner &mdash; tiennent sur un seul écran, parce que c'est une seule
+      opération avec une réponse différente à la fin&nbsp;: choisir des pages,
+      les mettre dans un ordre, et décider en combien de fichiers elles
+      ressortent.
+    </p>
+  </section>
+
+  <section>
+    <h2>Fusionner deux documents ou plus</h2>
+    <p>
+      Choisissez le premier fichier, puis le second&nbsp;: les pages de chacun se
+      placent à la suite de l'ordre en cours, vous pouvez donc continuer à
+      ajouter des fichiers venus de dossiers différents sans tout recommencer.
+      Si l'ordre est mauvais, faites glisser une page par sa poignée, ou utilisez
+      les flèches de chaque vignette.
+    </p>
+    <p>
+      La fusion ne réencode rien. Le contenu de chaque page et chaque police,
+      image et dessin vectoriel auxquels elle renvoie sont recopiés à
+      l'identique&nbsp;: le texte reste sélectionnable et cherchable, et un scan
+      reste le même scan. Le fichier fusionné est en général un peu plus léger
+      que la somme des deux entrées, ce qui n'est pas de la compression &mdash;
+      c'est la structure autour des pages, écrite une fois au lieu de deux.
+    </p>
+    <p>
+      Les pages gardent leur propre format. Fusionnez un rapport A4 avec une
+      annexe au format Lettre et vous obtenez un document contenant les deux,
+      ce que disent les fichiers. Mettre les pages de quelqu'un à l'échelle d'un
+      seul format de papier est une autre opération, et pas de celles qu'un
+      outil de fusion devrait faire en silence.
+    </p>
+  </section>
+
+  <section>
+    <h2>Diviser un document en plusieurs</h2>
+    <p>
+      Il y a quatre façons de couper, et celle qu'il vous faut dépend de la
+      raison pour laquelle vous coupez&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Toutes les tant de pages.</strong> Pour un long scan de ce qui
+        était à l'origine une pile de documents séparés &mdash; douze bulletins
+        de paie de deux pages chacun.
+      </li>
+      <li>
+        <strong>Aux numéros de page que vous indiquez.</strong> Pour un rapport
+        dont les chapitres commencent à des pages que vous voyez. Chaque numéro
+        saisi ouvre un nouveau fichier.
+      </li>
+      <li>
+        <strong>Un fichier par page.</strong> Pour extraire une seule feuille de
+        signatures ou une attestation d'un lot.
+      </li>
+      <li>
+        <strong>De nouveau dans les fichiers d'origine.</strong> Proposé
+        uniquement quand vous avez fusionné plus d'un fichier, et utile après
+        modification&nbsp;: retirer les pages blanches de trois scans d'un coup,
+        puis récupérer trois fichiers.
+      </li>
+    </ul>
+    <p>
+      Si vous ne voulez que quelques pages d'un long document, inutile de le
+      diviser. Tapez les pages voulues dans le champ d'intervalles &mdash;
+      <code>1-3, 8, 12-</code> &mdash;, appuyez sur «&nbsp;Ne garder que
+      celles-ci&nbsp;», et construisez un document.
+    </p>
+    <p>
+      Quand il y a plus d'un fichier en sortie, tout est remis dans une seule
+      archive ZIP. Cinquante téléchargements, ce sont cinquante boîtes
+      d'enregistrement, et c'est à peu près là que tout le monde abandonne.
+    </p>
+  </section>
+
+  <section>
+    <h2>Réordonner, pivoter et retirer des pages</h2>
+    <p>
+      Faites glisser une vignette par sa poignée pour la déplacer. Les flèches de
+      chaque vignette la décalent d'une place, ou la font pivoter d'un quart de
+      tour à la fois &mdash; c'est le remède pour la page sortie de travers du
+      scanner. La &times; la retire.
+    </p>
+    <p>
+      Dès qu'il s'agit de plus de deux ou trois pages, utilisez plutôt le champ
+      d'intervalles. Il accepte ce que vous écririez sur papier&nbsp;:
+      <code>1-3, 8, 12-</code>, ainsi que <code>impaires</code>,
+      <code>paires</code>, <code>toutes</code> et <code>dernière</code>. Gardez
+      celles-là, retirez celles-là, ou faites-les pivoter. Un cas
+      courant&nbsp;: un scan recto verso où une page sur deux est à l'envers,
+      c'est <code>paires</code> et deux quarts de tour.
+    </p>
+    <p>
+      Les numéros sur les vignettes se renumérotent au fur et à mesure, ils
+      veulent donc toujours dire «&nbsp;position dans le document fini&nbsp;» et
+      non «&nbsp;page dans le fichier d'où elle vient&nbsp;». Rien n'est écrit
+      tant que vous n'avez pas appuyé sur le bouton, il n'y a donc rien à annuler
+      &mdash; et «&nbsp;revenir à l'état d'origine&nbsp;» rétablit l'ordre initial
+      de tout.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qui survit à un remaniement, et ce qui n'y survit pas</h2>
+    <p>
+      C'est la partie qu'aucun outil ne vous dit, et la raison pour laquelle un
+      document fusionné paraît parfois subtilement cassé.
+    </p>
+    <p>
+      Un PDF n'est pas une pile de pages. C'est un graphe, et une bonne part
+      concerne le document plutôt qu'une page en particulier&nbsp;: le panneau de
+      signets, les liens, le formulaire, l'ordre de lecture que suit un lecteur
+      d'écran, la numérotation qui appelle les quatre premières pages
+      «&nbsp;i, ii, iii, iv&nbsp;». Déplacez les pages et chacune de ces choses
+      doit être reconstruite ou abandonnée.
+    </p>
+    <ul>
+      <li>
+        <strong>Les signets sont reconstruits.</strong> Une entrée dont la page
+        est toujours là pointe vers l'endroit où celle-ci est allée. Une entrée
+        dont vous avez retiré la page disparaît &mdash; sauf si des entrées lui
+        survivent en dessous, auquel cas elle reste comme titre, car un titre de
+        chapitre est toujours là où est le chapitre. En fusionnant plusieurs
+        fichiers, les signets de chacun sont rangés sous un titre portant le nom
+        du fichier, et c'est ce qui rend un rapport fusionné navigable.
+      </li>
+      <li>
+        <strong>Les liens sont suivis.</strong> Un lien de la page 2 vers la page
+        40 sait où la page 40 est passée, y compris les destinations nommées que
+        Word et LaTeX écrivent pour chaque titre. Un lien dont la cible n'a pas
+        suivi se retrouve sans rien derrière lui, plutôt que de pointer vers la
+        page qui occupe désormais cette position.
+      </li>
+      <li>
+        <strong>Les formulaires remplis survivent</strong>, et le nouveau
+        document est déclaré comme formulaire pour que les lecteurs le traitent
+        comme tel. Une bizarrerie à connaître&nbsp;: deux champs portant le même
+        nom sont <em>un seul</em> champ pour n'importe quel lecteur, donc
+        fusionner deux copies du même formulaire les relie &mdash; taper dans
+        l'un remplit l'autre.
+      </li>
+      <li>
+        <strong>L'ordre de lecture balisé, non.</strong> Il décrit une séquence
+        qui n'existe plus, et un mauvais ordre est pire pour un lecteur d'écran
+        que pas d'ordre du tout. Si le balisage d'accessibilité d'un document
+        compte, gardez l'original à côté.
+      </li>
+      <li>
+        <strong>Les étiquettes de page, non plus.</strong> La numérotation
+        «&nbsp;iii, iv, 1, 2&nbsp;» est une affirmation sur un ordre que vous
+        venez de changer.
+      </li>
+      <li>
+        <strong>Les pièces jointes et les scripts du document, non plus.</strong>
+        Les fichiers joints appartiennent au document, pas à une page. Les
+        actions qui exécutent du JavaScript, envoient un formulaire quelque part
+        ou lancent un programme ne sont pas reportées dans votre nouveau fichier,
+        ce qui est le bon réglage par défaut pour des pages venues de quelqu'un
+        d'autre.
+      </li>
+    </ul>
+    <p>
+      Une signature numérique est un cas à part, et non la limite d'un
+      outil&nbsp;: une signature certifie un document tel qu'il était. Déplacez
+      une page et elle est rompue, car c'est exactement ce qu'elle est là pour
+      vous dire.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les fichiers protégés par mot de passe</h2>
+    <p>
+      Un PDF chiffré est refusé, y compris ceux à mot de passe vide que
+      produisent beaucoup de photocopieurs de bureau. Retirer la protection d'un
+      document est un travail différent de celui de déplacer ses pages, et un
+      outil qui le ferait en silence ferait quelque chose que vous n'avez pas
+      demandé. Ouvrez-le dans un lecteur avec le mot de passe et enregistrez
+      d'abord une copie non protégée.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vérifier le résultat</h2>
+    <p>
+      Ouvrez-le et vérifiez trois choses&nbsp;: le nombre de pages, l'ordre, et
+      &mdash; si le document en avait &mdash; le panneau de signets et un ou deux
+      liens.
+    </p>
+    <p>
+      L'outil d'ici fait le premier point pour vous avant de proposer le fichier.
+      Chaque document fini est rouvert par le code même qui a lu vos originaux, et
+      ses pages sont comptées en parcourant l'arbre des pages plutôt qu'en croyant
+      le compte inscrit dans le fichier. Si cela ne correspond pas à ce que vous
+      avez demandé, aucun téléchargement n'est proposé.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi cela n'a pas besoin d'un serveur</h2>
+    <p>
+      La fusion a des airs de travail de serveur, et pendant l'essentiel de la vie
+      du web c'en était un. Ce qu'elle demande en réalité, c'est analyser la
+      structure du fichier, copier dans un nouveau fichier les objets dont dépend
+      chaque page, et écrire une table de références croisées neuve. Aucun pixel
+      n'est décodé et rien n'est rendu à l'écran. Un navigateur sait tout faire
+      depuis des années.
+    </p>
+    <p>
+      Et cela compte ici plus que presque partout ailleurs, à cause de
+      <em>ce que</em> les gens fusionnent. Les documents que l'on réunit sont ceux
+      qui viennent de quelque part&nbsp;: un contrat et sa page de signature, le
+      scan d'un passeport et un relevé bancaire, un courrier médical et un
+      formulaire de demande. Un service de fusion en ligne les reçoit tous d'un
+      coup, déjà rassemblés, d'une même personne. C'est l'envoi le plus révélateur
+      que la plupart des gens feront jamais.
+    </p>
+    <p>
+      L'outil d'ici n'a aucune fonction réseau, et la
+      <code>Content-Security-Policy</code> de la page nomme chaque adresse qu'elle
+      a le droit de contacter&nbsp;; aucune n'appartient à ce site. Chargez-la,
+      débranchez, et fusionnez quelque chose quand même.
+    </p>
+    <p>
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
+      fichiers à un convertisseur en ligne&nbsp;?</a> propose trois autres
+      vérifications de ce genre.
+    </p>
+  </section>

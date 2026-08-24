@@ -1,0 +1,175 @@
+<main>
+  <!-- ステップ1 &mdash; コマ -->
+  <section class="card">
+    <h2><span class="step">1</span> 画像を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="コマの表示方法を変える">
+          <button type="button" data-view="large" class="active" aria-pressed="true">大きく</button>
+          <button type="button" data-view="small" aria-pressed="false">小さく</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">名前順に並べ替え</button>
+        <button type="button" data-sort="date" class="ghost">日付順に並べ替え</button>
+        <button type="button" data-sort="reverse" class="ghost">逆順にする</button>
+        <button type="button" id="clear-all" class="ghost danger">すべて外す</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      コマの <span class="grip" aria-hidden="true">&#8942;&#8942;</span> つまみを持って
+      ドラッグすれば並べ替えられます。各コマの矢印でも動かせます。ここでの並びが、
+      そのまま再生される順番になります。
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">すべてのコマの表示時間</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="表示時間の単位">
+        <option value="seconds" selected>秒</option>
+        <option value="fps">フレーム毎秒</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">全部に適用</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- ステップ2 &mdash; 設定 -->
+  <section class="card">
+    <h2><span class="step">2</span> GIFの設定</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">大きさ</label>
+        <select id="size">
+          <option value="480" selected>480 px &mdash; ちょうどいい既定値</option>
+          <option value="640">640 px</option>
+          <option value="320">320 px</option>
+          <option value="240">240 px</option>
+          <option value="original">画像に合わせる</option>
+          <option value="custom">指定する&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="幅（ピクセル）">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="高さ（ピクセル）">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">画像の収め方</label>
+        <select id="fit">
+          <option value="contain" selected>全体を収める（余白が入る）</option>
+          <option value="cover">枠いっぱいに（端が切れる）</option>
+          <option value="stretch">引き伸ばして埋める（形が変わる）</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">背景の色</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">色数</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; GIFの上限</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; いちばん小さい</option>
+        </select>
+        <p class="field-note">色数が少ないほどファイルは小さく、縞は出やすくなります。</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">パレット</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>コマごとに最適な色</option>
+          <option value="shared">GIF全体でひとつのパレット</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">ディザリング</label>
+        <select id="dither">
+          <option value="on" selected>あり &mdash; グラデーションがなめらか</option>
+          <option value="off">なし &mdash; 平坦で、輪郭がきれい</option>
+        </select>
+        <p class="field-note">ロゴ、線画、スクリーンショットでは切ってください。</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">繰り返し</label>
+        <select id="loop-mode">
+          <option value="forever" selected>ずっと繰り返す</option>
+          <option value="once">1回だけ再生</option>
+          <option value="times">回数を決めて再生&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="アニメーションを再生する回数" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">透過</label>
+        <select id="transparent">
+          <option value="off" selected>背景色に重ねる</option>
+          <option value="on">透過部分を残す</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="1コマ目のプレビュー"></canvas>
+        <p id="preview-empty" class="preview-empty">画像を追加するとプレビューが出ます</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>コマ数</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>再生時間</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>1コマの大きさ</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>再生</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ステップ3 &mdash; 書き出し -->
+  <section class="card">
+    <h2><span class="step">3</span> GIFを作る</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>GIFを作る</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="再生中の、仕上がったアニメーション"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>GIFをダウンロード</a>
+      </div>
+    </div>
+  </section>
+</main>

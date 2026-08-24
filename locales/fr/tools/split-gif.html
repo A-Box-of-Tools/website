@@ -1,0 +1,108 @@
+<main>
+  <!-- Étape 1 &mdash; le fichier -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisissez un GIF</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Fichier</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Taille</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Image</dt><dd id="src-picture">&mdash;</dd></div>
+      <div><dt>Images</dt><dd id="src-frames">&mdash;</dd></div>
+      <div><dt>Durée</dt><dd id="src-duration">&mdash;</dd></div>
+      <div><dt>Répétitions</dt><dd id="src-loop">&mdash;</dd></div>
+    </dl>
+
+    <p id="notice" class="path-note" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Étape 2 &mdash; ce qui ressort -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">2</span> Comment les images ressortent</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="mode">Chaque PNG contient</label>
+        <select id="mode">
+          <option value="composited" selected>L'image telle qu'elle apparaît</option>
+          <option value="stored">Seulement les pixels que cette image stocke</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="background">Zones transparentes</label>
+        <select id="background">
+          <option value="keep" selected>Les laisser transparentes</option>
+          <option value="flatten">Remplir d'une couleur&hellip;</option>
+        </select>
+        <div id="colour-row" class="inline-pair" hidden>
+          <input type="color" id="colour" value="#ffffff" aria-label="Couleur de remplissage des zones transparentes">
+          <span id="colour-note">Écrite dans chaque image. Elle ne pourra plus en être retirée.</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="every">Garder une image sur</label>
+        <div class="inline-pair">
+          <input type="number" id="every" min="1" max="100" step="1" value="1">
+          <span id="every-note">image</span>
+        </div>
+        <p class="field-note">
+          Prenez une image sur deux ou sur cinq au lieu de toutes, pour une
+          planche-contact ou un long enregistrement.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="timing">Liste des durées</label>
+        <select id="timing">
+          <option value="yes" selected>Inclure frames.txt dans le ZIP</option>
+          <option value="no">Les images seules</option>
+        </select>
+        <p class="field-note">
+          Combien de temps chaque image est restée affichée, et où elle était
+          posée. Un dossier de PNG ne peut pas transporter cela tout seul.
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="download-all" class="primary">Télécharger toutes les images en ZIP</button>
+      <button type="button" id="download-selected" class="ghost" hidden>Télécharger les images cochées</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- Étape 3 &mdash; les images elles-mêmes -->
+  <section class="card" id="frames-card" hidden>
+    <h2><span class="step">3</span> Les images</h2>
+
+    <div class="toolbar">
+      <p class="count" id="frames-count" role="status" aria-live="polite"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="select-all" class="ghost">Tout cocher</button>
+        <button type="button" id="select-none" class="ghost">Tout décocher</button>
+        <button type="button" id="clear" class="ghost danger">Recommencer</button>
+      </div>
+    </div>
+
+    <!-- Checkboxes rather than a click-to-select grid: this is a list of files
+         somebody is about to save, and a checkbox is the one control everybody
+         already knows is safe to press. -->
+    <ul class="frames" id="frames"></ul>
+  </section>
+</main>

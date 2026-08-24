@@ -1,0 +1,257 @@
+#
+# Extracteur d'image - French.
+#
+# Overrides for tools/grab-frame/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Extracteur d'image"
+heading = "Extraire&nbsp;une&nbsp;image <span class=\"h1-kw\">&mdash; enregistrer une image d'une vidéo</span>"
+tagline = "Un arrêt sur image en pleine qualité, à n'importe quel instant."
+
+title = "Extraire une image d'une vidéo &mdash; gratuit, sans envoi, hors ligne"
+description = "Enregistrez n'importe quelle image d'un MP4, MOV ou WebM en PNG ou JPEG pleine taille. Avancez image par image, ou prenez-en une toutes les quelques secondes. Tout se passe dans le navigateur, rien n'est envoyé."
+og_title = "Extracteur d'image &mdash; un arrêt sur image sans envoyer la vidéo"
+og_description = "Trouvez le moment, avancez jusqu'à l'image exacte et enregistrez-la à la résolution de la vidéo. Les images sont décodées sur votre machine et la photo n'est jamais compressée deux fois."
+og_image_alt = "Extracteur d'image - enregistrer une image d'une vidéo dans le navigateur, sans rien envoyer"
+
+pledge = """
+    Les images sont trouvées, décodées et dessinées par votre propre navigateur, sur
+    votre propre matériel. Rien ici ne peut aller chercher ou envoyer quoi que ce
+    soit&nbsp;: cet outil ne comporte aucune fonction réseau. Et même s'il en avait
+    une, il n'y a, à l'autre bout de cette page, aucun serveur à qui envoyer une
+    vidéo."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et extrayez une image.
+      Pas une seule requête ne transporte d'image, de nom de fichier ni le moindre
+      octet de ce que vous avez choisi. Vous pouvez aussi couper la connexion et en
+      extraire une quand même&nbsp;: un outil qui expédierait votre vidéo ailleurs
+      s'arrêterait tout simplement."""
+
+read_first = """
+, <code>src/demux.js</code> pour le lecteur qui
+      repère les images dans un MP4, et <code>src/frames.js</code> pour la partie
+      qui décode celle que vous avez demandée. Ni l'un ni l'autre n'importe quoi que
+      ce soit capable de faire une requête."""
+
+howto_heading = "Comment extraire une image d'une vidéo"
+
+card = """
+            Enregistrez n'importe quelle image d'un clip en photo, à la taille
+            réelle de la vidéo&nbsp;: une à la fois, ou une toutes les quelques
+            secondes."""
+
+[words]
+plural = "vidéos"
+choose = "une vidéo"
+analytics_extra = """, ni aucune
+  image, aucun code temporel, aucune photo"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans filigrane"
+
+[[facts]]
+text = "Pleine résolution"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[privacy]]
+title = "Vos vidéos n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page a le droit de
+      contacter, et pas une seule ne nous appartient. Il n'existe ici aucun point de
+      collecte où votre fichier pourrait atterrir, ni rien dans le code qui l'y
+      enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Rien ici ne va chercher quoi que ce soit."
+body = """
+ Cet outil n'a aucune fonction
+      réseau&nbsp;: pas d'adresse à coller, rien à télécharger, aucun moteur chargé
+      à la première utilisation. Chaque octet qui touche votre vidéo est venu de
+      cette origine au chargement de la page."""
+
+[[privacy]]
+title = "Le décodage est local."
+body = """
+ Les images passent par WebCodecs dans votre
+      propre navigateur, ou par le moteur de lecture qui vous montrerait le clip de
+      toute façon. La photo est dessinée sur un canevas de cette machine et remise
+      directement à un téléchargement."""
+
+[[privacy]]
+title = "Le fichier est lu par tranches de quelques mégaoctets."
+body = """
+ Une vidéo est le
+      seul type de fichier ici qui ne tient pas de façon fiable en mémoire&nbsp;;
+      elle n'est donc jamais chargée en entier. Le lecteur prend une fenêtre autour
+      de l'image demandée, ce qui explique aussi qu'un clip de deux gigaoctets
+      s'ouvre aussi vite qu'un petit."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Aucun des deux ne reçoit quoi
+      que ce soit sur votre vidéo&nbsp;: ni un fichier, ni une image, ni un nom, une
+      taille, une durée, ou l'instant où vous vous êtes arrêté. Chaque ligne qui lit,
+      décode ou dessine est servie depuis cette origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que charge le bouton de don, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l'en-tête est dessiné
+      par un script de cdnjs.buymeacoffee.com et prend sa typographie sur Google
+      Fonts. Ce n'est rien de plus qu'un lien&nbsp;: il ne signale aucune visite et
+      ne reçoit rien sur vous ni sur votre vidéo."""
+
+[[privacy]]
+title = "Tout fonctionne hors ligne."
+body = """
+ Coupez le réseau et tout sur cette page
+      continue de marcher. C'est la preuve la plus simple de toutes."""
+
+[[howto]]
+title = "Choisissez une vidéo."
+body = """
+ Déposez un MP4, MOV, M4V ou WebM sur le
+      sélecteur, ou allez le chercher à la main. Le navigateur le lit directement
+      sur votre disque, et rien ne part nulle part pendant ce temps."""
+
+[[howto]]
+title = "Trouvez le moment."
+body = """
+ Lisez le clip et arrêtez-vous où vous
+      voulez, ou faites glisser le curseur&nbsp;: sur un MP4, le curseur avance
+      d'une image par cran, il n'y a donc pas d'arrondi entre ce que vous voyez et
+      ce que vous enregistrez. Les flèches avancent d'une image, et
+      <kbd>Maj</kbd> enfoncée de dix."""
+
+[[howto]]
+title = "Choisissez un format."
+body = """
+ Le PNG conserve l'image exactement telle
+      qu'elle a été décodée, et c'est ce que veut dire ici &laquo;&nbsp;pleine
+      qualité&nbsp;&raquo;. JPEG et WebP sont plus petits et ajoutent une deuxième
+      compression par-dessus celle de la vidéo, ce qui convient pour un aperçu et
+      pas pour une photo qui sera retravaillée ensuite."""
+
+[[howto]]
+title = "Extrayez-en une, ou une série."
+body = """
+ Une image seule part directement
+      dans vos téléchargements. &laquo;&nbsp;Toutes les N secondes&nbsp;&raquo;
+      parcourt le clip une fois et prend un arrêt sur image à chaque repère, ce qui
+      est pratique pour les planches-contacts et les vignettes, et le tout arrive
+      dans un seul ZIP plutôt qu'en cent demandes d'enregistrement."""
+
+[[faq]]
+q = "Ma vidéo est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non. Elle est lue et décodée par votre propre navigateur sur votre propre
+        matériel. Cet outil n'a aucune partie serveur, et la
+        <code>Content-Security-Policy</code> de la page nomme chaque adresse qu'elle
+        a le droit de contacter&nbsp;: aucune ne nous appartient. Si vous préférez
+        vérifier plutôt qu'être cru sur parole, coupez la connexion et extrayez une
+        image quand même."""
+
+[[faq]]
+q = "Que veut dire au juste &laquo;&nbsp;pleine qualité&nbsp;&raquo;&nbsp;?"
+a = """
+        Deux choses. L'image est enregistrée à la résolution de la vidéo, pas à la
+        taille de l'aperçu sur la page&nbsp;: un clip 4K donne une photo de 3840 x
+        2160. Et avec le PNG, l'image est stockée exactement telle qu'elle est
+        sortie du décodeur, si bien que le fichier contient la photo que contient la
+        vidéo, sans une deuxième passe de compression par-dessus. Une capture
+        d'écran d'une fenêtre de lecteur ne vous donne ni l'une ni l'autre&nbsp;:
+        elle fait la taille de la fenêtre, et elle est prise après que le lecteur
+        l'a redimensionnée et lui a appliqué sa gestion des couleurs."""
+
+[[faq]]
+q = "De quels formats vidéo puis-je extraire une image&nbsp;?"
+a = """
+        MP4, M4V et MOV sont lus directement, quoi qu'ils contiennent&nbsp;: H.264,
+        HEVC, AV1 ou VP9, tant que votre navigateur sait décoder ce codec. C'est la
+        voie exacte, celle où l'outil s'adresse à des images précises. Tout ce que
+        votre navigateur sait lire par ailleurs, WebM en tête, est traité en
+        déplaçant le lecteur et en dessinant ce qu'il montre&nbsp;: cela enregistre
+        toujours une photo pleine taille, mais tombe sur l'image que le lecteur a
+        choisie plutôt que sur celle que vous avez demandée. Un fichier que le
+        navigateur ne sait ni lire ni jouer, ce qui en pratique veut dire AVI, WMV,
+        FLV et la plupart des MKV, est refusé avec un message qui le dit."""
+
+[[faq]]
+q = "Puis-je avancer image par image&nbsp;?"
+a = """
+        Sur un MP4, oui, et exactement&nbsp;: l'outil lit la liste des images du
+        fichier lui-même, si bien que les flèches se déplacent entre les images qui
+        s'y trouvent réellement, y compris sur un clip dont la cadence varie, où un
+        pas fixe d'un trentième de seconde dériverait. Sur la voie de lecture, cette
+        liste n'existe pas&nbsp;: un pas y vaut environ une image, et la page le
+        dit."""
+
+[[faq]]
+q = "Pourquoi ma vidéo verticale de téléphone est-elle à l'endroit ici&nbsp;?"
+a = """
+        Parce que la rotation a été appliquée exprès. Un téléphone filme en paysage
+        et inscrit un quart de tour dans le fichier plutôt que de tourner les
+        pixels&nbsp;; l'image que rend un décodeur est donc couchée, et chaque
+        lecteur la redresse en route vers votre écran. Un outil qui saute cette
+        étape enregistre une photo plausible du bon moment, mais de travers.
+        Celui-ci lit la rotation sur la piste et l'applique avant de dessiner quoi
+        que ce soit."""
+
+[[faq]]
+q = "Y a-t-il une limite de taille ou de durée de la vidéo&nbsp;?"
+a = """
+        Aucune limite n'est inscrite dans l'outil, et le fichier n'est pas chargé
+        d'un coup en mémoire&nbsp;: il est parcouru par tranches de quelques
+        mégaoctets, ce qui explique qu'un long clip s'ouvre aussi vite qu'un court.
+        Les arrêts sur image que vous prenez restent dans la page jusqu'au
+        téléchargement&nbsp;; le plafond réel, c'est donc quelques centaines de PNG
+        en 4K, et non la vidéo elle-même."""
+
+[[faq]]
+q = "Puis-je redimensionner ou recadrer l'image ensuite&nbsp;?"
+a = """
+        Pas ici, mais juste à côté. Cet outil enregistre l'image telle quelle&nbsp;;
+        en changer la taille ou la forme est un travail à part, avec ses propres
+        décisions, et le
+        <a href="../redimensionner-une-image/">Redimensionneur d'images</a> fait les
+        deux, sans rien envoyer non plus. Pour alléger le fichier sans changer la
+        photo, c'est le
+        <a href="../compresser-une-image/">Compresseur d'images</a>."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai,
+        ni filigrane. Le site affiche de la publicité, et c'est elle qui le
+        finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
+
+[schema]
+browser_requirements = "Nécessite JavaScript. L'extraction à l'image près demande un navigateur doté de WebCodecs ; les autres se rabattent sur le déplacement du lecteur."
+description = "Enregistrez n'importe quelle image d'une vidéo en PNG, JPEG ou WebP pleine taille dans le navigateur. MP4, MOV et M4V sont lus image par image via WebCodecs, si bien que l'image demandée est celle qui est enregistrée ; tout ce que le navigateur sait lire par ailleurs est capturé depuis le lecteur. Rien n'est envoyé."
+features = [
+  "Enregistre un arrêt sur image depuis des vidéos MP4, MOV, M4V et WebM",
+  "Sources H.264, HEVC, AV1 et VP9, décodées via WebCodecs",
+  "Avance image par image dans la liste d'images du fichier lui-même",
+  "PNG pour une copie exacte de l'image, JPEG et WebP pour une version plus légère",
+  "Un arrêt sur image toutes les N secondes, téléchargés ensemble en ZIP",
+  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+]
+
+[picker]
+title = "Déposez une vidéo ici"
+hint = "ou cliquez pour parcourir &mdash; MP4, MOV, M4V, WebM, et tout ce que ce navigateur sait lire"

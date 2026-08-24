@@ -1,0 +1,134 @@
+<main>
+  <!-- चरण 1 &mdash; फ़ाइल -->
+  <section class="card">
+    <h2><span class="step">1</span> एक वीडियो चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>फ़ाइल</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>साइज़</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>फ़्रेम</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>लंबाई</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>वीडियो</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>फ़्रेम गिनती</dt><dd id="src-frames">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- चरण 2 &mdash; वह पल -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> फ़्रेम ढूँढ़िए</h2>
+
+    <p class="stage-hint">
+      क्लिप में घूमने के लिए स्लाइडर खिसकाइए, या उसे चलाइए और जहाँ चाहें रोक
+      दीजिए। <kbd>&larr;</kbd> और <kbd>&rarr;</kbd> एक-एक फ़्रेम आगे बढ़ाती
+      हैं, इनके साथ <kbd>Shift</kbd> दस-दस, और <kbd>Space</kbd> चलाती और रोकती
+      है।
+    </p>
+
+    <!-- The picture you are looking at is the picture that gets saved: on the
+         exact path the canvas holds the decoded frame itself, drawn small here
+         and full size into the file. The <video> element is only for playing
+         and for the files this browser can play but this reader cannot open. -->
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline></video>
+        <canvas id="still" hidden></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>डिकोड हो रहा है&hellip;</p>
+      </div>
+    </div>
+
+    <div class="transport">
+      <div class="transport-buttons" role="group" aria-label="क्लिप में घूमिए">
+        <button type="button" id="step-back" class="ghost" title="पिछला फ़्रेम (बायाँ तीर)"
+          aria-label="पिछला फ़्रेम">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="चलाइए या रोकिए (स्पेस)"
+          aria-label="चलाइए">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="अगला फ़्रेम (दायाँ तीर)"
+          aria-label="अगला फ़्रेम">|&#9654;</button>
+      </div>
+
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="क्लिप में जगह">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-frame"></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- चरण 3 &mdash; तस्वीर -->
+  <section class="card" id="grab-card" hidden>
+    <h2><span class="step">3</span> तस्वीर लीजिए</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">फ़ॉर्मैट</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; ठीक वही फ़्रेम</option>
+          <option value="image/jpeg">JPEG &mdash; छोटी, नुक़सान के साथ</option>
+          <option value="image/webp">WebP &mdash; और छोटी, नुक़सान के साथ</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">क्वालिटी <output id="quality-value">92</output></label>
+        <input type="range" id="quality" min="40" max="100" step="1" value="92">
+        <p class="field-note">
+          फ़्रेम को जस का तस सिर्फ़ PNG सहेजता है। बाकी सब वीडियो की अपनी
+          कंप्रेशन के ऊपर एक दूसरी कंप्रेशन है।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="every">हर</label>
+        <div class="inline-pair">
+          <input type="number" id="every" min="0.1" max="600" step="0.5" value="5">
+          <span>सेकंड</span>
+        </div>
+        <p class="field-note">
+          कॉन्टैक्ट शीट के लिए, या बीच-बीच में एक थंबनेल के लिए। ज़्यादा से
+          ज़्यादा 500 तस्वीरें।
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="grab" class="primary">यह फ़्रेम लीजिए</button>
+      <button type="button" id="grab-series" class="ghost">हर 5 सेकंड में एक लीजिए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- चरण 4 &mdash; जो निकला -->
+  <section class="card" id="shots-card" hidden>
+    <h2><span class="step">4</span> आपकी तस्वीरें</h2>
+
+    <div class="toolbar">
+      <p class="count" id="shots-count" role="status" aria-live="polite"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="download-all" class="ghost">सब एक ZIP में डाउनलोड कीजिए</button>
+        <button type="button" id="clear" class="ghost danger">हटाइए</button>
+      </div>
+    </div>
+
+    <ul class="shots" id="shots"></ul>
+  </section>
+</main>

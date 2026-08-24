@@ -1,0 +1,189 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez l'<a href="../../inverser-une-video/">Inverseur de vidéo</a>, déposez-y le
+      clip, décidez si vous voulez le son inversé lui aussi, puis exportez. Ce qui
+      ressort est le même clip avec sa dernière image en premier, exactement aussi long
+      que celui qui est entré.
+    </p>
+    <p>
+      Contrairement au découpage, cela oblige à réécrire chaque image, et le son avec.
+      Ce n'est pas le défaut d'un outil particulier&nbsp;: c'est ce qu'est une
+      inversion. Le reste de cette page explique pourquoi, et ce que cela signifie pour
+      votre temps d'attente.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi une vidéo ne peut pas simplement être lue à l'envers</h2>
+    <p>
+      Un fichier vidéo n'est pas une pile de photos. Environ une image sur cinquante
+      est une image entière &mdash; une <em>image clé</em> &mdash; et tout ce qui se
+      trouve entre elles est une description de ce qui a changé par rapport aux images
+      voisines. C'est pour cela qu'une heure de vidéo tient dans un téléphone.
+    </p>
+    <p>
+      Cela veut dire aussi qu'un décodeur ne sait aller que vers l'avant. Pour vous
+      montrer la dernière image d'un clip, il doit trouver l'image clé qui la précède
+      et décoder tout ce qui les sépare. Demandez l'avant-dernière, il refait le même
+      travail.
+    </p>
+    <p>
+      L'inversion se fait donc par groupes&nbsp;: décoder un groupe vers l'avant, garder
+      les images, les donner à l'encodeur dans l'autre ordre, passer au groupe
+      précédent. La solution évidente &mdash; décoder tout le clip dans une liste et
+      parcourir la liste à rebours &mdash; demande environ 3&nbsp;Mo de mémoire par
+      image en 1080p, soit 5&nbsp;Go la minute, et c'est pour cela que les outils qui
+      procèdent ainsi s'écroulent sur tout ce qui dépasse quelques secondes.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qui arrive au son</h2>
+    <p>
+      C'est ici que les outils d'inversion diffèrent le plus, et là où il vaut la peine
+      de vérifier ce que vous avez réellement obtenu.
+    </p>
+    <p>
+      Le son est compressé en paquets de quelques dizaines de millisecondes, chacun
+      codé par rapport au précédent. Écrire ces paquets à l'envers ne lit
+      <em>pas</em> une piste à rebours&nbsp;: cela joue de courts morceaux à l'endroit
+      dans le mauvais ordre, ce qui sonne comme un bégaiement ou une panne, pas comme
+      une inversion. La seule manière d'inverser correctement du son est de décoder
+      toute la piste, de remettre les échantillons dans l'autre sens et de la réencoder.
+    </p>
+    <p>
+      C'est ce qui se passe ici, et c'est pourquoi le son est réencodé alors que le
+      <a href="../../couper-une-video/">Découpeur de vidéo</a> et le
+      <a href="../../recadrer-une-video/">Recadreur de vidéo</a> n'y touchent
+      jamais&nbsp;: ces travaux-là ne changent pas <em>quand</em> les choses se
+      produisent, et celui-ci ne change rien d'autre.
+    </p>
+    <p>
+      Si vous voulez l'image à l'envers et pas de son du tout &mdash; le choix habituel
+      pour tout ce qui part dans un fil qui lit en sourdine &mdash; décochez la case.
+      C'est plus rapide, et le fichier est plus léger.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que cela coûte à l'image</h2>
+    <p>
+      Un réencodage. Les images ressortent dans un ordre pour lequel rien dans le
+      fichier d'origine n'avait été codé&nbsp;: chacune doit donc être réécrite.
+    </p>
+    <p>
+      Ce qu'un outil bien élevé ne fera pas, c'est dépenser <em>plus</em> que
+      l'original. Un clip inversé contient exactement les mêmes images que celui qui est
+      arrivé&nbsp;: un débit plus élevé n'a donc rien de neuf à décrire, il grossit le
+      fichier sans améliorer l'image. Le réglage de qualité se déplace ici sous ce
+      plafond, pas au-dessus.
+    </p>
+    <p>
+      Comme toujours, les étapes avec perte s'additionnent. Inverser un original, c'est
+      une génération. Inverser l'export d'un téléchargement d'un enregistrement d'écran,
+      c'est quatre, et cela se voit.
+    </p>
+  </section>
+
+  <section>
+    <h2>Découpez d'abord, inversez ensuite</h2>
+    <p>
+      Si le clip a besoin des deux, coupez-le d'abord. Le découpage est gratuit &mdash;
+      un bon découpeur déplace des images entières sans les décoder &mdash; et chaque
+      seconde retirée est une seconde que personne n'aura à décoder puis réencoder.
+    </p>
+    <p>
+      Dans l'autre sens, vous inversez des images que vous êtes sur le point de jeter.
+      Sur un long clip, c'est la différence entre quelques secondes de travail et
+      plusieurs minutes. Le
+      <a href="../couper-une-video/">guide du découpage</a> explique pourquoi cette
+      première étape peut ne rien vous coûter en qualité.
+    </p>
+    <p>
+      Le même ordre vaut pour le recadrage&nbsp;: couper, recadrer, inverser, et vous
+      payez un seul réencodage du clip le plus court possible.
+    </p>
+  </section>
+
+  <section>
+    <h2>À quoi cela sert vraiment</h2>
+    <ul>
+      <li>
+        <strong>Le gag du rembobinage.</strong> Quelque chose tombe, se casse ou
+        éclabousse, et l'inversion le remet en place. Cela se lit comme une blague parce
+        qu'un vrai plan joué à l'envers est immanquable&nbsp;: la fumée se rassemble,
+        l'eau remonte.
+      </li>
+      <li>
+        <strong>Des boomerangs faits à la main.</strong> Inversez un court clip et
+        collez-le à l'original avec le
+        <a href="../../couper-une-video/">Découpeur de vidéo</a>&nbsp;: vous obtenez la
+        boucle aller-retour sans l'application qui la fabrique d'habitude, et à votre
+        durée plutôt qu'à la sienne.
+      </li>
+      <li>
+        <strong>Les révélations.</strong> Filmez l'état final bien rangé et
+        inversez-le&nbsp;: une assiette terminée redevient des ingrédients, un objet
+        assemblé se démonte. C'est plus facile à filmer que la version à l'endroit, et
+        c'est bien l'intérêt.
+      </li>
+      <li>
+        <strong>La parole à l'envers.</strong> Qui n'a d'intérêt que si le son est
+        vraiment inversé &mdash; voir plus haut.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Formats, et durée</h2>
+    <p>
+      <strong>MP4, M4V et MOV</strong> sont lus directement, quoi qu'ils contiennent
+      &mdash; H.264, HEVC, AV1 ou VP9 &mdash; tant que votre navigateur sait décoder ce
+      codec. C'est la voie rapide&nbsp;: le fichier est parcouru à rebours, un groupe
+      d'images à la fois, aussi vite que va votre machine.
+    </p>
+    <p>
+      <strong>Tout ce que votre navigateur sait lire par ailleurs</strong>, WebM en
+      tête, est inversé en faisant reculer pas à pas le lecteur du navigateur dans le
+      clip, un instant après l'autre. Cela marche, et c'est plus lent, parce que chacun
+      de ces sauts oblige le navigateur à décoder depuis l'image clé qui précède. La
+      page indique laquelle des deux voies elle emprunte, et pourquoi, avant que vous
+      ne commenciez.
+    </p>
+    <p>
+      <strong>AVI, WMV, FLV et la plupart des MKV</strong>, le navigateur ne sait ni les
+      lire ni les jouer, et l'outil les refuse avec un message plutôt que d'échouer à
+      mi-parcours.
+    </p>
+    <p>
+      Dans les deux cas, c'est l'un des travaux les plus lents de ce site, puisque
+      chaque image est décodée puis encodée et que certaines sont décodées plus d'une
+      fois. Un clip court, ce sont des secondes&nbsp;; un long clip en 4K, c'est de ceux
+      qu'on lance et qu'on laisse tranquilles.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi cela n'a pas besoin d'un envoi</h2>
+    <p>
+      Décoder et réencoder de la vidéo dans un navigateur est récent, et c'est
+      réel&nbsp;: WebCodecs expose le même encodeur matériel que votre téléphone utilise
+      pour filmer, et il est rapide pour la même raison. Le travail se fait sur la
+      machine qui a déjà le fichier, ce qui, pour une grosse vidéo, est de toute façon
+      la seule organisation sensée&nbsp;: l'envoyer et retélécharger le résultat coûte
+      plus de temps que l'encodage lui-même.
+    </p>
+    <p>
+      L'outil ici n'a aucune fonction réseau, et la
+      <code>Content-Security-Policy</code> de la page nomme chaque adresse qu'elle a le
+      droit de contacter, dont aucune ne nous appartient. Coupez la connexion et
+      inversez un clip quand même, si vous préférez vérifier plutôt qu'être cru sur
+      parole.
+    </p>
+    <p>
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses fichiers
+      à un convertisseur en ligne&nbsp;?</a> propose trois autres vérifications à faire
+      sur n'importe quel outil.
+    </p>
+  </section>

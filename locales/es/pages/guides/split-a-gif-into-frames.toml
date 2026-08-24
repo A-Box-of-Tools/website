@@ -1,0 +1,18 @@
+#
+# Guía: separar un GIF animado en fotogramas - Spanish.
+#
+
+nav = "Separar un GIF"
+title = "Cómo separar un GIF en fotogramas (y qué es de verdad un fotograma)"
+description = "Saca cada fotograma de un GIF animado como PNG: por qué algunos fotogramas son solo un trozo pequeño de la imagen, qué pasa con la transparencia y cómo conservar los tiempos para volver a montarlo."
+heading = "Cómo separar un GIF en fotogramas"
+lede = """
+    Sacar los fotogramas cuesta un arrastre y un botón. Lo que merece la pena
+    entender es qué es en realidad un «fotograma» de un GIF, porque el formato
+    guarda algo bastante distinto de lo que ves &mdash; y esa diferencia es la
+    razón de que tu fotograma catorce sea un rectángulo con la boca de alguien
+    dentro."""
+updated = "21 de agosto de 2026"
+og_title = "Cómo separar un GIF en fotogramas"
+og_description = "Cada fotograma de un GIF como PNG: por qué algunos son solo un trozo, qué pasa con la transparencia y cómo conservar los tiempos."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

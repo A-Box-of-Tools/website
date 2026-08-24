@@ -1,0 +1,155 @@
+<main>
+  <!--
+    One numbered step, and then six headings without numbers.
+
+    Every other tool on this site numbers all of its cards, because every card
+    is something the visitor does. Here there is exactly one thing to do -
+    choose a file - and everything below it is the answer. Numbering the answer
+    would promise a sequence of decisions that does not exist, and would leave
+    somebody looking for step 4's button.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> एक GIF चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- सारांश, और एनिमेशन वैसा ही जैसा ब्राउज़र ख़ुद बनाता है। -->
+  <section class="card" id="summary-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="copy-report" class="ghost">रिपोर्ट कॉपी कीजिए</button>
+        <button type="button" id="download-report" class="ghost">डाउनलोड कीजिए</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="preview-wrap">
+        <!--
+          The browser's own decoder, drawing the file unchanged. Everything else
+          on this page is drawn by src/frames.js, so having both means a
+          disagreement between them is visible rather than hidden - and it is
+          the disagreement that would tell you this reader had a bug.
+        -->
+        <img id="preview" class="preview" alt="एनिमेशन, जैसा यह ब्राउज़र इसे बनाता है">
+        <p class="preview-note">आपके अपने ब्राउज़र का डिकोडर, फ़ाइल को जस का तस चलाते हुए।</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>वर्शन</dt><dd id="fact-version">&mdash;</dd></div>
+        <div><dt>कैनवस</dt><dd id="fact-canvas">&mdash;</dd></div>
+        <div><dt>फ़ाइल साइज़</dt><dd id="fact-size">&mdash;</dd></div>
+        <div><dt>फ़्रेम</dt><dd id="fact-frames">&mdash;</dd></div>
+        <div><dt>फ़ाइल के मुताबिक</dt><dd id="fact-written">&mdash;</dd></div>
+        <div><dt>असल में</dt><dd id="fact-plays">&mdash;</dd></div>
+        <div><dt>दोहराव</dt><dd id="fact-loops">&mdash;</dd></div>
+        <div><dt>इस्तेमाल हुए रंग</dt><dd id="fact-colors">&mdash;</dd></div>
+      </dl>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- नतीजे। पहले, क्योंकि आप इन्हीं के लिए आए हैं। -->
+  <section class="card" id="findings-card" hidden>
+    <h2>जो उभरकर आता है</h2>
+    <p class="card-lede">
+      नीचे सब कुछ इसी फ़ाइल से नापा गया है। यहाँ कुछ भी इस बारे में अंदाज़ा नहीं
+      है कि आप क्या बनाना चाहते थे।
+    </p>
+    <ul class="findings" id="findings"></ul>
+  </section>
+
+  <!-- बाइट का हिसाब। -->
+  <section class="card" id="budget-card" hidden>
+    <h2>बाइट कहाँ गए</h2>
+    <p class="card-lede">
+      फ़ाइल का हर बाइट ठीक एक ही पंक्ति में है, और पंक्तियाँ मिलकर पूरी फ़ाइल
+      बनती हैं। अगर न बनतीं, तो पट्टी चुपचाप खिंचकर फ़िट होने के बजाय आख़िरी
+      पंक्ति यह बता देती।
+    </p>
+
+    <div class="budget-bar" id="budget-bar" role="img" aria-labelledby="budget-caption"></div>
+    <p class="visually-hidden" id="budget-caption">
+      नीचे की तालिका वाले ही आँकड़े, एक पट्टी के रूप में।
+    </p>
+
+    <table class="budget">
+      <caption class="visually-hidden">इस फ़ाइल के बाइट कहाँ गए</caption>
+      <thead>
+        <tr>
+          <th scope="col">हिस्सा</th>
+          <th scope="col" class="num">बाइट</th>
+          <th scope="col" class="num">अनुपात</th>
+        </tr>
+      </thead>
+      <tbody id="budget-rows"></tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">पूरी फ़ाइल</th>
+          <td class="num" id="budget-total">&mdash;</td>
+          <td class="num">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- फ़्रेम दर फ़्रेम। -->
+  <section class="card" id="frames-card" hidden>
+    <div class="toolbar">
+      <h2>फ़्रेम दर फ़्रेम</h2>
+      <div class="toolbar-actions">
+        <label for="frame-view" class="inline-label">दिखाइए</label>
+        <select id="frame-view">
+          <option value="composited" selected>हर फ़्रेम के बाद का कैनवस</option>
+          <option value="stored">हर फ़्रेम जो सहेजता है सिर्फ़ वही</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="card-lede" id="frames-lede"></p>
+
+    <ul class="frames" id="frames"></ul>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!-- रंग। -->
+  <section class="card" id="colors-card" hidden>
+    <h2>रंग</h2>
+    <p class="card-lede" id="colors-lede"></p>
+
+    <div id="global-palette-wrap" hidden>
+      <h3>ग्लोबल टेबल</h3>
+      <p class="palette-note" id="global-palette-note"></p>
+      <ul class="palette" id="global-palette"></ul>
+    </div>
+
+    <details id="local-palettes-wrap" hidden>
+      <summary id="local-palettes-summary">हर फ़्रेम की अपनी टेबल</summary>
+      <div id="local-palettes"></div>
+    </details>
+  </section>
+
+  <!-- फ़ाइल में जो कुछ तस्वीर नहीं है। -->
+  <section class="card" id="extras-card" hidden>
+    <h2>और क्या-क्या पड़ा है</h2>
+    <p class="card-lede">
+      ऐसे ब्लॉक जिनमें कोई तस्वीर नहीं होती। व्यूअर इन सबको छोड़ देता है, और
+      फ़ाइल की हर कॉपी इन्हें फिर भी ढोती है।
+    </p>
+    <ul class="extras" id="extras"></ul>
+  </section>
+</main>

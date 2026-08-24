@@ -1,0 +1,188 @@
+<main>
+  <!-- Stap 1 &mdash; de foto -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies de foto</h2>
+
+    <p class="card-lede">
+      Elk plaatje dat je browser kan openen. Een telefoonfoto tegen een effen muur,
+      bij daglicht, van zo'n anderhalve meter afstand is waar de meeste van deze
+      regels omheen geschreven zijn &mdash; en hij wordt rechtstreeks van je schijf
+      gelezen, niet ergens heen gestuurd.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">Een andere kiezen</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; de regel -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> Kies het land en het document</h2>
+
+    <p class="card-lede">
+      Elk cijfer hieronder is de gepubliceerde eis, overgenomen van de instantie
+      die eronder genoemd wordt. Niets aan deze lijst is gegokt, en niets ervan
+      wordt opgehaald: het is een tabel in <code>src/specs.js</code>, meegeleverd
+      met de pagina.
+    </p>
+
+    <div class="option-row">
+      <label for="spec">Specificatie</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>De cijfers, om zelf in te typen</summary>
+      <div class="numbers">
+        <label>Breedte (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>Hoogte (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>Dpi<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>Hoofd, kleinst (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>Hoofd, grootst (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>Achtergrond
+          <select id="custom-background">
+            <option value="white">Effen wit</option>
+            <option value="off-white">Wit of gebroken wit</option>
+            <option value="light-grey" selected>Effen lichtgrijs</option>
+            <option value="cream">Lichtgrijs of crème</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>Uploadbreedte (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>Uploadhoogte (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>Kleinst (KB)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>Grootst (KB)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        KB betekent hier 1024 bytes, en dat is ook wat deze formulieren ermee bedoelen.
+      </p>
+    </details>
+  </section>
+
+  <!-- Stap 3 &mdash; de kadrering -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> Markeer het gezicht en controleer de kadrering</h2>
+
+    <p id="frame-empty" class="field-summary">Kies een foto, dan verschijnt hier het uitsnedekader.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        Sleep de vier stippen naar de kruin, de kin en elke pupil, en druk dan op
+        <strong>Pas het kader aan</strong>. Die vier punten zijn het hele verhaal
+        van wat de regel meet, en daarom vraagt deze tool je om ze te zetten in
+        plaats van ze met een gezichtsdetector te gokken. De stippen beginnen waar
+        een pasfoto ze meestal heeft: dat is een startpositie, geen meting.
+      </p>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">Kader passend maken op de regel</button>
+        <button type="button" id="reset-marks" class="ghost">Stippen terugzetten</button>
+        <button type="button" id="whole-photo" class="ghost">Grootste kader dat past</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Stap 4 &mdash; de achtergrond -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> De achtergrond</h2>
+
+    <p class="card-lede" id="background-lede">
+      Gelezen uit een strook over de bovenkant van de uitsnede en langs beide
+      zijkanten, boven de schouders &mdash; de delen van het beeld die niets anders
+      dan achtergrond horen te zijn. Gemeten in CIE Lab in plaats van in RGB, want
+      twee grijzen die veertig RGB-eenheden uit elkaar liggen zijn niet te
+      onderscheiden en veertig eenheden blauw is een andere kleur.
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">Wat die van jou oplevert<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">Wat de regel vraagt<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Stap 5 &mdash; de bestanden -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> Sla het op</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">Printresolutie</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; de ondergrens die bijna elke regel noemt</option>
+          <option value="600">600 dpi &mdash; wat een goed fotolab gebruikt</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">Vel om op te printen</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>De bestanden maken</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Klaar</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

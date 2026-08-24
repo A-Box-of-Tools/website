@@ -1,0 +1,181 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Abra o <a href="../../inverter-video/">Inversor de vídeo</a>, solte o vídeo lá
+      dentro, decida se você quer o som invertido também, e exporte. O que sai é o
+      mesmo vídeo com o último quadro na frente, com exatamente a mesma duração do que
+      entrou.
+    </p>
+    <p>
+      Diferente do corte, aqui todo quadro precisa ser escrito de novo, e o som
+      também. Isso não é falha de uma ferramenta específica; é o que inverter é. O
+      resto desta página explica o porquê, e o que isso significa para o tempo que você
+      vai ficar esperando.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que um vídeo não pode simplesmente ser tocado de trás para frente</h2>
+    <p>
+      Um arquivo de vídeo não é uma pilha de fotos. Mais ou menos um quadro a cada
+      cinquenta é uma imagem inteira &mdash; um <em>quadro-chave</em> &mdash; e tudo o
+      que está entre eles é uma descrição do que mudou em relação aos quadros vizinhos.
+      É por isso que uma hora de vídeo cabe num celular.
+    </p>
+    <p>
+      Isso quer dizer também que um decodificador só sabe ir para a frente. Para mostrar
+      o último quadro de um vídeo, ele precisa achar o quadro-chave antes dele e
+      decodificar tudo o que vem no meio. Peça o penúltimo e ele refaz o mesmo
+      trabalho.
+    </p>
+    <p>
+      Por isso a inversão é feita um grupo por vez: decodificar um grupo para a frente,
+      segurar os quadros, entregar ao codificador na outra ordem, ir para o grupo
+      anterior. A alternativa óbvia &mdash; decodificar o vídeo inteiro numa lista e
+      percorrer a lista de trás para frente &mdash; precisa de uns 3&nbsp;MB de memória
+      por quadro em 1080p, ou 5&nbsp;GB por minuto, que é por isso que as ferramentas
+      feitas assim caem em qualquer coisa mais longa do que uns poucos segundos.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que acontece com o som</h2>
+    <p>
+      É aqui que as ferramentas de inversão mais divergem, e é aqui que vale conferir o
+      que você realmente recebeu.
+    </p>
+    <p>
+      O som é comprimido em pacotes de algumas dezenas de milissegundos, cada um
+      codificado em cima do anterior. Escrever esses pacotes de trás para frente
+      <em>não</em> toca uma trilha ao contrário: toca pedacinhos para a frente na ordem
+      errada, o que soa como gagueira ou defeito, não como inversão. O único jeito de
+      inverter som direito é decodificar a trilha inteira, pôr as amostras na ordem
+      contrária e codificar de novo.
+    </p>
+    <p>
+      É isso que acontece aqui, e é por isso que o som é recodificado, enquanto o
+      <a href="../../aparar-video/">Cortador de vídeo</a> e o
+      <a href="../../cortar-video/">Recortador de vídeo</a> nunca encostam nele: esses
+      trabalhos não mudam <em>quando</em> as coisas acontecem, e este não muda mais
+      nada.
+    </p>
+    <p>
+      Se você quer a imagem ao contrário e nenhum som &mdash; que é a escolha comum para
+      qualquer coisa que vá para um feed que toca mudo &mdash; desmarque a caixinha. É
+      mais rápido, e o arquivo fica menor.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que custa à imagem</h2>
+    <p>
+      Uma recodificação. Os quadros saem numa ordem para a qual nada no arquivo original
+      foi codificado, então cada um precisa ser escrito do zero.
+    </p>
+    <p>
+      O que uma ferramenta bem-comportada não vai fazer é gastar <em>mais</em> do que o
+      original gastou. Um vídeo invertido tem exatamente as mesmas imagens do que
+      chegou, então um bitrate maior não tem nada de novo para descrever: deixa o
+      arquivo maior sem deixar a imagem melhor. O ajuste de qualidade aqui se move
+      abaixo desse teto, e não acima.
+    </p>
+    <p>
+      Como sempre, as etapas com perda se acumulam. Inverter um original é uma geração.
+      Inverter a exportação de um download de uma gravação de tela são quatro, e dá para
+      ver.
+    </p>
+  </section>
+
+  <section>
+    <h2>Corte primeiro, inverta depois</h2>
+    <p>
+      Se o vídeo precisa das duas coisas, corte antes. Cortar é de graça &mdash; um bom
+      cortador passa quadros inteiros sem decodificar &mdash; e cada segundo que você
+      tira é um segundo que ninguém vai ter que decodificar e codificar de novo.
+    </p>
+    <p>
+      Fazer ao contrário significa inverter imagem que você está prestes a jogar fora.
+      Num vídeo longo, essa é a diferença entre um trabalho de poucos segundos e um de
+      vários minutos. O <a href="../aparar-um-video/">guia de corte</a> explica por que
+      esse primeiro passo não precisa custar qualidade nenhuma.
+    </p>
+    <p>
+      A mesma ordem vale para o recorte: corte, recorte, inverta, e você paga uma
+      recodificação só, do vídeo mais curto possível.
+    </p>
+  </section>
+
+  <section>
+    <h2>Para que as pessoas usam isso de verdade</h2>
+    <ul>
+      <li>
+        <strong>A piada do rebobinar.</strong> Alguma coisa cai, quebra ou espirra, e a
+        inversão põe tudo de volta. Lê-se como piada porque imagem real tocada ao
+        contrário é inconfundível: a fumaça se junta, a água sobe.
+      </li>
+      <li>
+        <strong>Boomerangs na mão.</strong> Inverta um vídeo curto e emende no original
+        com o <a href="../../aparar-video/">Cortador de vídeo</a>; você fica com o laço
+        de ida e volta sem o aplicativo que costuma fazer isso, e com a duração que você
+        quiser em vez da dele.
+      </li>
+      <li>
+        <strong>Revelações.</strong> Filme o estado final já pronto e inverta, para um
+        prato montado virar ingredientes ou uma coisa montada se desmontar. É mais fácil
+        de filmar do que a versão para a frente, e é justamente essa a graça.
+      </li>
+      <li>
+        <strong>Fala ao contrário.</strong> Que só tem graça se o som estiver de fato
+        invertido &mdash; veja acima.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Formatos, e quanto tempo leva</h2>
+    <p>
+      <strong>MP4, M4V e MOV</strong> são lidos direto, seja lá o que tiver dentro
+      &mdash; H.264, HEVC, AV1 ou VP9 &mdash; desde que o seu navegador saiba
+      decodificar aquele codec. Esse é o caminho rápido: o arquivo é percorrido de trás
+      para frente, um grupo de quadros por vez, na velocidade da sua máquina.
+    </p>
+    <p>
+      <strong>Qualquer outra coisa que o seu navegador toque</strong>, WebM à frente, é
+      invertida fazendo o player do próprio navegador andar para trás pelo vídeo, um
+      instante de cada vez. Funciona, e é mais devagar, porque cada um desses saltos
+      obriga o navegador a decodificar a partir do quadro-chave anterior. A página avisa
+      qual dos dois caminhos está usando, e por quê, antes de você começar.
+    </p>
+    <p>
+      <strong>AVI, WMV, FLV e a maioria dos MKV</strong> o navegador não consegue nem
+      ler nem tocar, e a ferramenta recusa com uma mensagem em vez de falhar no meio do
+      caminho.
+    </p>
+    <p>
+      De um jeito ou de outro, este é um dos trabalhos mais lentos deste site, porque
+      todo quadro é decodificado e codificado e alguns são decodificados mais de uma
+      vez. Um vídeo curto são segundos; um longo em 4K é daqueles de começar e deixar
+      quieto.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que isso não precisa de envio</h2>
+    <p>
+      Decodificar e recodificar vídeo dentro de um navegador é recente e é real: o
+      WebCodecs expõe o mesmo codificador de hardware que o seu celular usa para gravar
+      vídeo, e é rápido pelo mesmo motivo. O trabalho acontece na máquina que já tem o
+      arquivo, o que para um vídeo grande também é o único arranjo que faz sentido:
+      subir e baixar o resultado custa mais tempo do que a codificação.
+    </p>
+    <p>
+      A ferramenta aqui não tem função de rede de espécie alguma, e a
+      <code>Content-Security-Policy</code> da página lista todo endereço que ela pode
+      contatar, e nenhum deles é nosso. Desligue a internet e inverta um vídeo assim
+      mesmo, se você prefere conferir a acreditar.
+    </p>
+    <p>
+      <a href="../e-seguro-enviar-arquivos/">É seguro enviar arquivos para conversores
+      online?</a> reúne mais três checagens que você pode fazer em qualquer ferramenta.
+    </p>
+  </section>

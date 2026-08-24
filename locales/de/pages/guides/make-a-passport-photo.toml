@@ -1,0 +1,18 @@
+#
+# Ratgeber: ein biometrisches Passbild selbst machen - German.
+#
+
+nav = "Passbild selbst machen"
+title = "Passbild zu Hause machen (und nicht zurückgeschickt bekommen)"
+description = "Woran ein Passbild wirklich gemessen wird &mdash; Kopfhöhe, Augenlinie, Hintergrund &mdash;, welches Land welche Zahlen verlangt, und wie Sie die Pixel- und KB-Grenzen eines Online-Formulars treffen."
+heading = "Ein Passbild machen, das nicht zurückkommt"
+lede = """
+    Ein Passbild ist kein Foto Ihres Gesichts in einer bestimmten Größe. Es ist
+    eine Reihe von Maßen, und die, an denen es scheitert, sind fast nie die, um
+    die man sich sorgt. Hier steht, was tatsächlich gemessen wird, welches Land
+    welche Werte will, und was man gegen Formulare tut, die eine Datei
+    zurückweisen, weil sie zu klein ist."""
+updated = "20. August 2026"
+og_title = "Ein Passbild machen, das nicht zurückkommt"
+og_description = "Kopfhöhe, Augenlinie, Hintergrund und Dateigröße: was ein Passamt misst, und wie Sie es mit einem Handy und einer glatten Wand treffen."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

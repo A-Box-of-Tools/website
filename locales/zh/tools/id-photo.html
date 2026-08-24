@@ -1,0 +1,182 @@
+<main>
+  <!-- 第一步 &mdash; 照片 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选好照片</h2>
+
+    <p class="card-lede">
+      你浏览器能打开的任何图片都行。白天对着一面素净的墙、从大约一米半外用手机拍
+      的那种，正是这些规定当初设想的样子。照片直接从你的磁盘上读，不会发到任何
+      地方。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">换一张</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第二步 &mdash; 规定 -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> 选好国家和证件</h2>
+
+    <p class="card-lede">
+      下面每一个数字都是公布的要求，抄录自其下注明的机构。这份清单里没有一条是猜
+      的，也没有一条是去网上取的：它是 <code>src/specs.js</code> 里的一张表，随
+      页面一起送来。
+    </p>
+
+    <div class="option-row">
+      <label for="spec">规格</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>数字，自己来填</summary>
+      <div class="numbers">
+        <label>宽（mm）<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>高（mm）<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>头高，最小（mm）<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>头高，最大（mm）<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>背景
+          <select id="custom-background">
+            <option value="white">纯白</option>
+            <option value="off-white">白或米白</option>
+            <option value="light-grey" selected>纯浅灰</option>
+            <option value="cream">浅灰或奶油色</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>上传宽（px）<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>上传高（px）<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>最小（KB）<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>最大（KB）<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        这里的 KB 指 1024 字节，这些表单说的也正是这个意思。
+      </p>
+    </details>
+  </section>
+
+  <!-- 第三步 &mdash; 构图 -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> 标出脸，检查构图</h2>
+
+    <p id="frame-empty" class="field-summary">选好一张照片，裁切框就会出现在这里。</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        把四个点拖到头顶、下巴和左右瞳孔上，然后按<strong>套用裁切框</strong>。
+        规定要量的全部就是这四个点，所以这个工具宁愿请你放上去，也不用人脸检测去
+        猜。这些点一开始停在半身照通常的位置上，那是个起点，不是测量结果。
+      </p>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">按规定套用裁切框</button>
+        <button type="button" id="reset-marks" class="ghost">把点放回去</button>
+        <button type="button" id="whole-photo" class="ghost">能放下的最大框</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- 第四步 &mdash; 背景 -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> 背景</h2>
+
+    <p class="card-lede" id="background-lede">
+      取自裁切框顶部的一条带子，以及两侧肩膀以上的部分，也就是画面里本该只有背景
+      的地方。在 CIE Lab 里测量，而不是在 RGB 里，因为相差四十个 RGB 单位的两种灰
+      根本分不出来，而四十个单位的蓝就是另一种颜色了。
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">你这张读出来是<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">规定要求的是<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- 第五步 &mdash; 文件 -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> 保存</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">打印分辨率</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; 几乎每条规定都写明的下限</option>
+          <option value="600">600 dpi &mdash; 好一点的冲印店会用的值</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">打印用的相纸</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>生成文件</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>做好了</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

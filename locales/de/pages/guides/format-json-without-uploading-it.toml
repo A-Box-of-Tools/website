@@ -1,0 +1,18 @@
+#
+# Ratgeber: JSON formatieren, ohne es aus der Hand zu geben - German.
+#
+
+nav = "JSON formatieren"
+title = "JSON formatieren, ohne es hochzuladen"
+description = "JSON im eigenen Browser einrücken, prüfen und minifizieren: was ein Formatierer an Ihrer Datei niemals ändern darf, wie Sie die Fehlermeldung lesen, und warum es zählt, in welches Feld Sie das einfügen."
+heading = "JSON formatieren, ohne es jemandem zu geben"
+lede = """
+    JSON zu formatieren sollte die Leerzeichen ändern und sonst nichts. Die
+    meisten Werkzeuge, die das anbieten, ändern mehr, und keines sagt es dazu.
+    Hier steht, worauf zu achten ist, wie man den Fehler liest, wenn die Datei
+    sich nicht lesen lässt, und warum das Eingabefeld, in das eine
+    Konfigurationsdatei wandert, einen Gedanken wert ist."""
+updated = "20. August 2026"
+og_title = "JSON formatieren, ohne es jemandem zu geben"
+og_description = "Was ein JSON-Formatierer an Ihrer Datei niemals ändern darf, wie Sie den Parse-Fehler lesen, und warum die Seite zählt, in die Sie es einfügen."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

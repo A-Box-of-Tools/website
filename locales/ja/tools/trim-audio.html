@@ -1,0 +1,197 @@
+<main>
+  <!-- ステップ1 &mdash; 録音 -->
+  <section class="card">
+    <h2><span class="step">1</span> 録音を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>ファイル</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>サイズ</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>長さ</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>音声</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>読み取り</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 印 -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> 残したい部分に印を付ける
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      通しで再生しながら、部分の始まりで <kbd>I</kbd>、終わりで <kbd>O</kbd> を
+      押してください。何度でも構いません。1組ごとに下の行になり、仕上がった
+      ファイルはその行が順に並んだものになります。<kbd>U</kbd> で直前の1つを
+      取り消し、<kbd>スペース</kbd> で再生と一時停止、矢印キーで5秒移動します。
+      <kbd>Shift</kbd> を押しながら矢印を押すと、10ミリ秒ずつ動きます。
+    </p>
+
+    <!-- Built by src/timeline.js: the waveform, a band for every part, the one
+         being marked, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <audio id="preview" class="player" controls preload="metadata"></audio>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">再生</button>
+      <button type="button" id="back-5" class="ghost" title="5秒戻る">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="5秒進む">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> 始点</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> 終点</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> 取り消し</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="再生速度">
+      <span class="speed-label">速度</span>
+      <button type="button" class="speed" data-speed="0.5">0.5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0.75&times;</button>
+      <button type="button" class="speed active" data-speed="1">標準</button>
+      <button type="button" class="speed" data-speed="1.25">1.25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1.5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The parts themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>部分 <span class="segment-count" id="segment-count">まだありません</span></h3>
+        <p class="segments-total">
+          残す長さの合計 <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">始点</th>
+            <th scope="col">終点</th>
+            <th scope="col">長さ</th>
+            <th scope="col"><span class="visually-hidden">操作</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        まだ何も印が付いていません。再生しながら <kbd>I</kbd> のあと
+        <kbd>O</kbd> を押すか、上のボタンをお使いください。
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">行を手で追加</button>
+        <button type="button" id="reset-segments" class="ghost danger">すべて消す</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">印を読み込む&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="時刻ファイルの形式">
+          <option value="seconds" selected>秒数</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">印を保存</button>
+      </div>
+
+      <p class="field-note">
+        印はプレーンテキストのファイルとして保存されます。1行が1つの部分で、
+        形式は上のとおりです。長い印付け作業がタブを閉じても残り、同じファイルを
+        動画カットや、その並びを読める別の道具に渡すこともできます。
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>印を付けた部分をどうするか</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>残す</strong>
+          仕上がったファイルは、印を付けた部分を順につないだものになります。
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>抜き取る</strong>
+          印を付けた部分がなくなり、それ以外がつながります。
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- ステップ3 &mdash; 出てくるファイル -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 切り出す</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">書き出す形式</label>
+        <select id="depth">
+          <option value="16" selected>16ビットWAV &mdash; どこでも再生できます</option>
+          <option value="32">32ビット浮動小数点WAV &mdash; 標本そのまま</option>
+        </select>
+        <p class="field-note">
+          WAVは標本をそのまま持つので、書き出しで品質が落ちることはありません。
+          ただし小さいファイルではありません。下の見積もりをご覧ください。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fade">つなぎ目をなじませる</label>
+        <select id="fade">
+          <option value="0">なし &mdash; 標本の位置で正確に切る</option>
+          <option value="0.005" selected>5 ms &mdash; プチッと鳴るのを止めるには十分</option>
+          <option value="0.02">20 ms</option>
+          <option value="0.05">50 ms</option>
+        </select>
+        <p class="field-note" id="fade-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>残す分</dt><dd id="sum-parts">&mdash;</dd></div>
+      <div><dt>仕上がりの長さ</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>開始位置</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>つなぎ目</dt><dd id="sum-joins">&mdash;</dd></div>
+      <div><dt>音声</dt><dd id="sum-sound">&mdash;</dd></div>
+      <div><dt>おおよそ</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>音声を切り出す</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" class="player" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>音声をダウンロード</a>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,336 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Un GIF, c'est une toile, une liste de rectangles à peindre dessus, et une
+      table de couleurs qui dit ce que signifient les nombres contenus dans ces
+      rectangles. Chaque rectangle porte trois choses&nbsp;: combien de temps le
+      laisser, ce qu'il faut en faire ensuite, et éventuellement une table de
+      couleurs à lui.
+    </p>
+    <p>
+      Presque tout ce qui surprend dans ce format sort de cette liste. Si votre
+      GIF est énorme, c'est que les rectangles font toute la toile à chaque fois,
+      ou qu'il contient trois cents tables de couleurs. S'il joue trop lentement,
+      c'est que les délais passent sous un plancher qu'aucun navigateur ne
+      franchit. S'il bave, c'est le champ qu'on appelle
+      <em>l'effacement</em>.
+    </p>
+    <p>
+      Pour voir de quoi il retourne sur un fichier donné, ouvrez
+      l'<a href="../../analyser-un-gif/">Analyseur de GIF</a> et déposez-le. Le
+      reste de cette page explique ce que veulent dire les chiffres.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les images sont des rectangles, pas des photos</h2>
+    <p>
+      C'est la partie qui surprend ceux qui n'ont jamais vu de GIF autrement qu'en
+      lecture. Une image n'est pas une photo de l'animation à cet instant. C'est
+      un rectangle, avec sa position et sa taille, peint par-dessus ce que les
+      images précédentes ont laissé.
+    </p>
+    <p>
+      Ce rectangle peut faire toute la toile, et dans un fichier mal fabriqué
+      c'est toujours le cas. Mais un GIF a le droit de n'enregistrer que la partie
+      de l'image qui a changé depuis la précédente &mdash; et là où l'essentiel de
+      l'image ne bouge pas, c'est la différence entre un fichier de 12&nbsp;Mo et
+      un de 900&nbsp;Ko. C'est pourquoi la capture d'écran d'une fenêtre presque
+      immobile peut être légère, et pourquoi la même capture sortie d'un
+      convertisseur négligent ne l'est pas.
+    </p>
+    <p>
+      En regardant l'animation, impossible de savoir lequel vous avez. Les deux se
+      ressemblent trait pour trait. La seule façon de le voir est de regarder ce
+      que chaque image enregistre, et l'analyseur a une vue faite exactement pour
+      cela&nbsp;: basculez-la sur <em>uniquement ce que chaque image
+      enregistre</em>, et soit vous voyez une rangée de petites formes sur fond
+      transparent, ce qui veut dire que l'encodeur a fait son travail, soit vous
+      revoyez l'image entière encore et encore, ce qui veut dire que non.
+    </p>
+    <p>
+      Il n'y a nulle part de compensation de mouvement dans ce format. Rien n'est
+      jamais enregistré comme «&nbsp;pareil que la fois d'avant mais décalé de
+      quatre pixels&nbsp;», comme le ferait un codec vidéo. L'astuce du rectangle
+      qui change est la seule économie dont dispose le GIF, et elle vaut très
+      cher.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les délais, et le plancher que tout navigateur impose</h2>
+    <p>
+      Chaque image enregistre en centièmes de seconde combien de temps la tenir.
+      C'est la seule unité du format, donc le plus rapide qu'un fichier puisse
+      demander est 0,01&nbsp;seconde &mdash; cent images par seconde &mdash; et le
+      plus long tourne autour de 655&nbsp;secondes.
+    </p>
+    <p>
+      Il n'aura pas cent images par seconde. <strong>Tous les navigateurs
+      arrondissent un délai inférieur à 0,02&nbsp;seconde à 0,10.</strong> La
+      règle a été écrite dans Netscape Navigator en 1996, pour les globes tournants
+      et les panneaux «&nbsp;en travaux&nbsp;» animés de l'époque, et tous les
+      navigateurs depuis l'ont recopiée. Personne ne l'a jamais retirée, et
+      personne ne le fera.
+    </p>
+    <p>
+      Un GIF dont toutes les images disent 0,01&nbsp;s joue donc à dix images par
+      seconde, pas à cent. Il tourne dix fois plus lentement que ce que voulait
+      l'outil qui l'a fabriqué, et le fichier n'en laisse rien
+      paraître&nbsp;: les délais qu'il contient sont exactement ceux qui ont été
+      demandés. C'est la surprise la plus fréquente du format, et c'est pourquoi
+      l'analyseur affiche deux durées &mdash; celle que dit le fichier, et celle
+      qu'un navigateur en fera réellement.
+    </p>
+    <p>
+      Le remède, dans le logiciel qui fabrique le fichier, est d'écrire 0,02
+      plutôt que 0,01. Cela donne 50&nbsp;images par seconde, qui est le vrai
+      plafond, et c'est plus rapide que ce dont quoi que ce soit a besoin. En
+      pratique, 0,05&nbsp;s &mdash; vingt images par seconde &mdash; est à peu
+      près la cadence maximale qu'il vaut la peine de demander.
+    </p>
+    <p>
+      Les délais vous disent encore une chose. S'ils sont tous identiques, le
+      fichier a été fait à partir d'images à cadence fixe. S'ils se dispersent
+      &mdash; 0,04 ici, 0,11 là &mdash;, quelque chose a converti une vidéo en
+      supprimant des images et en étirant les voisines pour combler les trous. Et
+      si la dernière est bien plus longue que les autres, c'est voulu&nbsp;: c'est
+      ainsi qu'on fait marquer une pause à une animation avant qu'elle ne
+      reparte.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'effacement&nbsp;: le champ qui décide si ça bave</h2>
+    <p>
+      Chaque image indique ce qui doit rester à l'écran quand son temps est écoulé.
+      Il y a quatre réponses possibles et elles valent la peine d'être connues,
+      car trois des quatre façons dont une animation peut mal se comporter tiennent
+      à ce champ mal rempli.
+    </p>
+    <ul>
+      <li>
+        <strong>Laisser en place.</strong> L'image suivante peint directement
+        par-dessus. Correct quand les images sont opaques et se recouvrent
+        entièrement, et c'est l'option la moins chère, puisqu'il n'y a rien à
+        effacer.
+      </li>
+      <li>
+        <strong>Revenir au fond.</strong> Le rectangle de l'image est nettoyé
+        avant que la suivante ne dessine. C'est ce qu'exige la transparence&nbsp;:
+        sans cela, les parties transparentes de l'image suivante laissent voir la
+        précédente en dessous, et une animation faite d'images séparées se
+        transforme en tas d'images.
+      </li>
+      <li>
+        <strong>Restaurer ce qu'il y avait dessous.</strong> Ce qui était sur la
+        toile avant que cette image ne dessine est remis en place. C'est ainsi
+        qu'on enregistre un petit objet qui se déplace sur un fond immobile
+        &mdash; chaque image peint l'objet, puis le fond revient, et seul le
+        rectangle de l'objet est jamais écrit.
+      </li>
+      <li>
+        <strong>Non précisé.</strong> Le fichier n'a rien dit. Toutes les visionneuses
+        le traitent comme «&nbsp;laisser en place&nbsp;», ce qui est en général
+        juste et parfois la raison pour laquelle un GIF transparent bave.
+      </li>
+    </ul>
+    <p>
+      Un détail où la spécification et la réalité se séparent. «&nbsp;Revenir au
+      fond&nbsp;» désigne une couleur de fond inscrite dans l'en-tête du fichier,
+      et tous les navigateurs l'ignorent et effacent vers le transparent. Ils font
+      cela depuis vingt-cinq ans. Un fichier qui compte sur l'apparition de cette
+      couleur de fond aura l'air correct pour celui qui l'a fait, dans le logiciel
+      qui l'a fait, et faux partout ailleurs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les tables de couleurs, et les 768 octets qu'elles coûtent</h2>
+    <p>
+      Un pixel de GIF n'est pas une couleur. C'est un nombre qui pointe dans une
+      table d'au plus 256 couleurs, chacune stockée sur trois octets. Une table
+      complète fait donc 768&nbsp;octets, et un fichier peut en avoir une partagée
+      par tout le monde, ou une par image, ou les deux.
+    </p>
+    <p>
+      Les deux arrangements sont légitimes et n'échangent pas la même chose&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Une table partagée</strong>, ce sont 768&nbsp;octets pour tout le
+        fichier, et elle garde les couleurs stables d'une image à l'autre. Le
+        scintillement des GIF &mdash; ce miroitement désagréable sur un fichier
+        tiré d'une vidéo &mdash; n'est très souvent que la palette qui tressaute
+        d'une image à l'autre.
+      </li>
+      <li>
+        <strong>Une table par image</strong> permet à chaque image d'utiliser des
+        couleurs que la table partagée n'a pas, ce qui compte quand la scène change
+        entièrement. Cela coûte 768&nbsp;octets à chaque fois. Sur une animation de
+        300&nbsp;images, cela fait 230&nbsp;Ko de tables de couleurs avant même
+        qu'un seul pixel ne soit enregistré.
+      </li>
+    </ul>
+    <p>
+      Il y a un second coût, plus discret. La longueur d'une table de couleurs doit
+      être une puissance de deux&nbsp;: une image qui utilise neuf couleurs reçoit
+      donc une table de seize, et une qui en utilise 130 en reçoit 256. Un peu
+      d'arrondi est inévitable. Un fichier dont les tables déclarent cinq mille
+      couleurs auxquelles ses pixels ne se réfèrent jamais, c'est autre
+      chose&nbsp;: des palettes construites pour une image autre que celle qui a
+      fini dans le cadre. L'analyseur signale les entrées inutilisées pour que cela
+      se voie d'un coup d'œil.
+    </p>
+  </section>
+
+  <section>
+    <h2>Où passent réellement les octets</h2>
+    <p>
+      Chaque octet d'un GIF se trouve à l'un d'un petit nombre d'endroits, et il
+      vaut la peine de savoir lesquels avant de décréter qu'un fichier est trop
+      lourd.
+    </p>
+    <ul>
+      <li>
+        <strong>Les pixels compressés.</strong> Sur un fichier sain, presque tout.
+        L'image elle-même, passée par LZW &mdash; un procédé de compression de
+        1984 conçu pour des captures d'écran de tableurs, ce qui explique qu'il se
+        débrouille bien sur les aplats et mal sur les photographies.
+      </li>
+      <li>
+        <strong>Les tables de couleurs.</strong> 768&nbsp;octets par table
+        complète, comme ci-dessus.
+      </li>
+      <li>
+        <strong>Les en-têtes par image.</strong> Huit octets de minutage et onze de
+        descripteur pour chaque image. Rien du tout sur un fichier normal&nbsp;;
+        sur une animation de deux mille images minuscules, 38&nbsp;Ko.
+      </li>
+      <li>
+        <strong>Le découpage en blocs.</strong> Les données compressées sont
+        coupées en tronçons d'au plus 255&nbsp;octets, chacun précédé d'un octet de
+        longueur. Environ un octet sur 256, inévitable, et bon à voir puisqu'il est
+        invisible autrement.
+      </li>
+      <li>
+        <strong>Les métadonnées.</strong> Commentaires, profils de couleur et
+        paquets XMP. C'est celle qui produit les résultats franchement
+        absurdes&nbsp;: un logiciel de retouche peut laisser 40&nbsp;Ko de XML décrivant
+        une modification faite il y a des années, et sur un petit GIF cela
+        représente l'essentiel du fichier. Aucune visionneuse n'en dessine quoi que
+        ce soit.
+      </li>
+    </ul>
+    <p>
+      Si l'on regarde cela sous forme de tableau plutôt que de deviner, c'est parce
+      que la réponse change d'un fichier à l'autre, et que le remède découle de la
+      réponse. Un fichier fait à 95&nbsp;% de pixels compressés, c'est simplement
+      beaucoup d'image, et seuls moins d'images, une taille plus petite ou moins de
+      couleurs y changeront quelque chose. Un fichier fait à 30&nbsp;% de tables de
+      couleurs ou à 40&nbsp;% de XMP a un problème bien moins coûteux.
+    </p>
+  </section>
+
+  <section>
+    <h2>La boucle ne fait pas partie du format</h2>
+    <p>
+      Aucun champ de la spécification GIF ne dit qu'une animation se répète. La
+      boucle vient d'un bloc que Netscape a inventé en 1995 &mdash; une
+      «&nbsp;extension applicative&nbsp;» contenant la chaîne
+      <code>NETSCAPE2.0</code> &mdash; que tout le monde a implémenté malgré tout
+      et qui figure aujourd'hui dans tous les GIF animés d'internet.
+    </p>
+    <p>
+      Autrement dit, un fichier dépourvu de ce bloc se joue exactement une fois
+      puis s'arrête, dans tous les navigateurs, et paraît cassé à celui qui l'a
+      fait. Si une animation ne passe qu'une fois, c'est ce bloc qui
+      manque&nbsp;; c'est l'une des premières choses à vérifier, et elle est
+      invisible dans toutes les visionneuses.
+    </p>
+    <p>
+      Le bloc peut aussi indiquer un nombre &mdash; jouer cinq fois puis s'arrêter.
+      Zéro veut dire indéfiniment, et c'est ce que dit presque tout fichier.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les autres choses qu'un GIF peut transporter</h2>
+    <p>
+      Trois blocs qui ne contiennent aucune image et que toutes les visionneuses
+      sautent&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Les commentaires.</strong> Du texte libre, en général le nom du
+        logiciel qui a écrit le fichier, parfois quelque chose que l'auteur
+        n'aurait pas choisi de publier. Rien ne l'affiche, et chaque copie du
+        fichier le transporte.
+      </li>
+      <li>
+        <strong>XMP.</strong> Les métadonnées XML d'Adobe&nbsp;: quel logiciel a
+        modifié le fichier, quand, parfois qui. Cela arrive avec une queue magique
+        de 258&nbsp;octets à la fin, une astuce pour que les longueurs de blocs
+        tombent juste, et c'est pourquoi le lire naïvement remplit l'écran de
+        binaire.
+      </li>
+      <li>
+        <strong>Le texte simple.</strong> Un bloc de la spécification de 1989 qui
+        demande à la visionneuse de dessiner du texte par-dessus l'image dans une
+        grille de cellules. Rien ne l'a jamais implémenté. Si un fichier en
+        contient un, ce qu'il dit n'apparaîtra pas.
+      </li>
+    </ul>
+    <p>
+      Il vaut la peine de connaître les trois avant d'envoyer un fichier quelque
+      part&nbsp;: ce sont les parties d'un GIF qui peuvent dire quelque chose sur
+      vous, et elles survivent à chaque copie et à chaque réenvoi, sauf si quelque
+      chose les retire volontairement.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lire un fichier abîmé</h2>
+    <p>
+      Les GIF se font tronquer &mdash; un téléchargement interrompu, un fichier
+      récupéré sur un disque mourant, quelque chose dont une application n'a écrit
+      que la moitié. Comme le format est un flux de blocs et non une structure
+      indexée, un GIF tronqué reste généralement lisible jusqu'à l'endroit où il
+      s'arrête&nbsp;: toutes les images antérieures à la coupure sont intactes et
+      complètes.
+    </p>
+    <p>
+      C'est bon à savoir, parce que la plupart des logiciels se contentent de
+      refuser le fichier. Un analyseur qui lit aussi loin qu'il le peut et dit où
+      il s'est arrêté vous apprendra au moins combien il en reste, et si la partie
+      manquante est une image ou les deux cents dernières.
+    </p>
+    <p>
+      Le problème inverse existe aussi&nbsp;: des octets posés <em>après</em> la
+      marque de fin du fichier. Tout décodeur s'arrête à cette marque&nbsp;; ils ne
+      sont donc jamais lus ni dessinés, et ce sont d'ordinaire les restes d'un
+      second fichier accolé au premier par quelque chose qui a mal tourné. C'est du
+      poids pur, et les couper ne fait rien perdre.
+    </p>
+  </section>
+
+  <section>
+    <h2>Rien de tout cela n'a besoin d'un envoi</h2>
+    <p>
+      Lire la structure d'un GIF n'est pas un travail exigeant &mdash; c'est une
+      promenade dans une liste de blocs et un petit décompresseur &mdash; et il n'y
+      a jamais eu de raison technique d'envoyer le fichier à un serveur pour cela.
+      L'<a href="../../analyser-un-gif/">Analyseur de GIF</a> fait ici tout dans la
+      page&nbsp;: le parcours des blocs, le LZW, les images dessinées à l'écran et
+      la comptabilité des octets.
+    </p>
+    <p>
+      Cela compte davantage pour cette tâche que pour la plupart, car les fichiers
+      qu'on a le plus envie de démonter sont souvent ceux qu'on est le moins sûr de
+      vouloir partager &mdash; quelque chose de récupéré, quelque chose que
+      quelqu'un vous a envoyé, quelque chose contenant un bloc de commentaire que
+      vous n'avez pas encore lu. L'<a href="../est-il-sur-d-envoyer-ses-fichiers/">argument
+      détaillé sur l'envoi de fichiers</a> vaut ici autant que partout ailleurs sur
+      ce site.
+    </p>
+  </section>

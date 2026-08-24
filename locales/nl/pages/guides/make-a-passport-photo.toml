@@ -1,0 +1,18 @@
+#
+# Gids: zelf een pasfoto maken - Dutch.
+#
+
+nav = "Zelf een pasfoto maken"
+title = "Thuis een pasfoto maken (en hem niet teruggestuurd krijgen)"
+description = "Waar een pasfoto werkelijk op gemeten wordt &mdash; hoofdhoogte, ooglijn, achtergrond &mdash;, welk land welke getallen wil, en hoe je de pixel- en KB-grenzen van een online formulier haalt."
+heading = "Een pasfoto maken die niet teruggestuurd wordt"
+lede = """
+    Een pasfoto is geen plaatje van je gezicht op een bepaald formaat. Het is
+    een verzameling maten, en de maten die het laten afweten zijn bijna nooit de
+    maten waar mensen zich zorgen over maken. Dit is wat er werkelijk gemeten
+    wordt, welk land welke cijfers wil, en wat je doet met formulieren die een
+    bestand weigeren omdat het te klein is."""
+updated = "20 augustus 2026"
+og_title = "Een pasfoto maken die niet teruggestuurd wordt"
+og_description = "Hoofdhoogte, ooglijn, achtergrond en bestandsgrootte: waar een paspoortloket op meet, en hoe je dat haalt met een telefoon en een egale muur."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

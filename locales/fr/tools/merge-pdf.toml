@@ -1,0 +1,318 @@
+#
+# Fusionner, diviser et réordonner les pages d'un PDF - French.
+#
+# Overrides for tools/merge-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Fusion et division de PDF"
+heading = "Fusionner&nbsp;des&nbsp;PDF <span class=\"h1-kw\">&mdash; et diviser et réordonner les pages</span>"
+tagline = "Des pages déplacées sans aller-retour vers un serveur."
+
+title = "Fusionner des PDF, diviser et réordonner les pages &mdash; gratuit, sans envoi"
+description = "Réunissez des PDF, divisez-en un en plusieurs et faites glisser les pages dans l'ordre voulu, le tout dans votre propre navigateur. Rien n'est envoyé, il n'y a pas de compte, et le fichier fini est rouvert et recompté avant de vous être proposé."
+og_title = "Fusionner, diviser et réordonner des pages de PDF &mdash; rien n'est envoyé"
+og_description = "Réunissez des documents, découpez-en un, déplacez des pages, tournez-les, retirez-les. C'est votre navigateur qui le fait, le fichier ne quitte donc jamais votre machine."
+og_image_alt = "Fusionner, diviser et réordonner des pages de PDF sans les envoyer"
+
+pledge = """
+    Chaque document que vous choisissez est ouvert, démonté et réécrit en mémoire
+    sur cette machine, par du code servi depuis cette adresse. Rien ici ne peut
+    déclencher un envoi, et il n'y a, à l'autre bout de cette page, aucun serveur
+    pour le recevoir."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et fusionnez deux
+      fichiers. Pas une seule requête ne transporte de page, d'image ni de nom de
+      fichier. Vous pouvez aussi couper la connexion et les fusionner quand
+      même."""
+
+read_first = """
+ et <code>src/assemble.js</code> pour toute la
+      copie&nbsp;: comment une page est extraite d'un document et posée dans un
+      autre, et ce qui est délibérément laissé de côté. Il ne peut pas atteindre le
+      réseau, et le lecteur et l'écrivain à côté de lui non plus."""
+
+howto_heading = "Comment fusionner, diviser ou réordonner un PDF"
+
+card = """
+            Réunissez des documents, découpez-en un en plusieurs et faites glisser
+            les pages dans l'ordre voulu. Les liens et les signets sont reconstruits
+            pour suivre les pages qu'ils désignent, et chaque fichier fini est
+            rouvert et recompté avant de vous être proposé."""
+
+[words]
+plural = "documents"
+choose = "des PDF"
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Vos fichiers restent chez vous"
+
+[[privacy]]
+title = "Vos documents n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page a le droit de
+      contacter, et pas une seule ne nous appartient. Cet outil n'ajoute rien à cette
+      liste&nbsp;: il n'a aucune fonction réseau à lui, pas même optionnelle. Il
+      n'existe ici aucun point de collecte où vos fichiers pourraient atterrir, ni
+      rien dans le code qui les y enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Fusionner est le travail qu'il vaut le plus la peine de ne pas envoyer."
+body = """
+ Les
+      documents que les gens réunissent sont précisément ceux qui viennent de
+      quelque part&nbsp;: un contrat et sa page de signature, le scan d'un passeport
+      et un relevé bancaire, un courrier médical et un formulaire de demande. Un
+      service en ligne les a alors tous, au même endroit, déjà rassemblés. Celui-ci a
+      une page dans votre navigateur, et pas d'autre moitié."""
+
+[[privacy]]
+title = "Le format entier est dans ce dépôt."
+body = """
+ Un PDF, c'est une liste d'objets
+      et une table indiquant où chacun commence. <code>src/objects.js</code> lit
+      cette syntaxe, <code>src/reader.js</code> suit la table,
+      <code>src/assemble.js</code> copie les pages d'un document à l'autre et
+      <code>src/writer.js</code> écrit le résultat. Aucun des quatre n'importe quoi
+      que ce soit capable de faire une requête. Aucune bibliothèque n'est
+      téléchargée et rien n'est rendu sur un serveur."""
+
+[[privacy]]
+title = "Les fichiers chiffrés sont écartés plutôt qu'ouverts."
+body = """
+
+      Un PDF protégé par mot de passe est refusé, y compris celui que produisent les
+      scanners avec un mot de passe vide et qui s'ouvrirait techniquement. Retirer la
+      protection d'un document est un travail différent du déplacement de ses pages,
+      et le faire discrètement serait une initiative surprenante de la part d'un
+      outil."""
+
+[[privacy]]
+title = "Le fichier fini ne dit rien de l'endroit où il a été fait."
+body = """
+
+      Pas de ligne de producteur, pas de date de création, pas de nom d'outil. Il ne
+      transporte pas non plus le paquet XMP ni les blocs privés qu'un logiciel de mise
+      en page laisse derrière lui&nbsp;: ceux-là appartiennent au document qui
+      existait avant, pas à celui que vous venez de construire. Tout ce qui se trouve
+      dans les pages elles-mêmes est copié exactement&nbsp;: cet outil déplace des
+      pages, il ne réécrit pas ce qu'il y a dessus."""
+
+[[privacy]]
+title = "Les actions qui ne sont pas &laquo;&nbsp;aller à une page&nbsp;&raquo; ne sont pas copiées."
+body = """
+
+      Un PDF peut contenir des instructions qui s'exécutent à l'ouverture&nbsp;: joue
+      ceci, envoie ce formulaire à telle adresse, exécute ce JavaScript. Les pages qui
+      passent par cet outil gardent leurs liens vers d'autres pages et vers des
+      adresses web, et perdent le reste. Réordonner les pages de quelqu'un n'est pas
+      une raison d'emporter le scripting de son document dans votre nouveau
+      fichier."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google. Aucun des deux ne reçoit quoi que
+      ce soit sur vos documents&nbsp;: ni un fichier, ni une page, ni un nom, une
+      taille ou un nombre de pages. Chaque ligne qui lit, copie ou écrit un PDF est
+      servie depuis cette origine et figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que charge le bouton de don, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l'en-tête est dessiné par
+      un script de cdnjs.buymeacoffee.com et prend sa typographie sur Google Fonts. Ce
+      n'est rien de plus qu'un lien&nbsp;: il ne signale aucune visite et ne reçoit
+      rien sur vous ni sur vos documents. Rien ne se produit tant que vous ne cliquez
+      pas, et ce sur quoi vous cliqueriez alors est le site de quelqu'un d'autre."""
+
+[[privacy]]
+title = "Tout fonctionne hors ligne."
+body = """
+ Coupez le réseau et tout sur cette page
+      continue de fonctionner. C'est la preuve la plus simple de toutes&nbsp;: un
+      outil qui expédierait vos documents ailleurs pour les fusionner s'arrêterait."""
+
+[[howto]]
+title = "Choisissez vos PDF."
+body = """
+ Déposez-les sur le sélecteur ou allez les
+      chercher à la main, et ajoutez-en d'autres plus tard&nbsp;: les pages de chaque
+      fichier viennent se mettre au bout de l'ordre en cours, ce qui permet justement
+      de fusionner deux dossiers séparément. Le navigateur les lit directement sur
+      votre disque."""
+
+[[howto]]
+title = "Mettez les pages dans l'ordre voulu."
+body = """
+
+      Faites glisser une page par sa poignée, ou déplacez-la avec les flèches.
+      Tournez-en une qui a été scannée de travers, retirez-en une, ou tapez
+      <code>1-3, 8, 12-</code> dans le champ pour garder, retirer ou tourner toute une
+      série d'un coup. Les numéros se renumérotent au fur et à mesure, si bien que ce
+      que vous voyez est toujours ce que sera le fichier fini."""
+
+[[howto]]
+title = "Dites si cela ressort en un document ou en plusieurs."
+body = """
+
+      Un seul est la réponse habituelle. Le reste, ce sont des façons de
+      découper&nbsp;: toutes les tant de pages, aux numéros de page que vous indiquez,
+      un fichier par page, ou de retour dans les fichiers d'où les pages viennent.
+      Plus d'un fichier est remis dans un seul ZIP, ce qui fait un enregistrement au
+      lieu de cinquante."""
+
+[[howto]]
+title = "Construisez, et lisez la ligne qui dit que c'est vérifié."
+body = """
+
+      Une fois les documents écrits, chacun est rouvert par le même lecteur, sur cette
+      page, et ses pages sont comptées. Si cela ne correspond pas à ce que vous avez
+      demandé, l'opération est signalée comme échouée et aucun téléchargement n'est
+      proposé."""
+
+[[faq]]
+q = "Mes PDF sont-ils envoyés quelque part&nbsp;?"
+a = """
+        Non. Ils sont lus, copiés et écrits par votre propre navigateur sur votre
+        propre matériel. Cet outil n'a aucune partie serveur, et la
+        <code>Content-Security-Policy</code> de la page nomme chaque adresse qu'elle a
+        le droit de contacter&nbsp;: aucune ne nous appartient. Cet outil n'a
+        strictement aucune fonction réseau, même optionnelle."""
+
+[[faq]]
+q = "Combien de fichiers puis-je fusionner, et de quelle taille&nbsp;?"
+a = """
+        Aucune limite n'est inscrite dans l'outil. La limite, c'est votre machine
+        &nbsp;: les documents sont gardés en mémoire pendant le travail, si bien qu'un
+        portable fusionnera quelques centaines de mégaoctets sans broncher et peinera
+        quelque part au-dessus. Rien n'est facturé, bridé, filigrané ni mis en file
+        d'attente, parce qu'il n'y a personne à l'autre bout pour faire l'une de ces
+        choses."""
+
+[[faq]]
+q = "Fusionner ou diviser fait-il perdre de la qualité&nbsp;?"
+a = """
+        Non. Rien sur une page n'est réencodé, redessiné ni recompressé. Le flux de
+        contenu de chaque page, ainsi que chaque police, image et dessin vectoriel
+        auquel il renvoie, est copié octet pour octet&nbsp;: le texte reste
+        sélectionnable et cherchable, et une photographie reste la même photographie.
+        Les seules choses qui changent sont l'ordre des pages et la structure
+        autour."""
+
+[[faq]]
+q = "Qu'advient-il des signets et des liens&nbsp;?"
+a = """
+        Les deux sont reconstruits plutôt que supprimés. Un signet dont la page est
+        toujours dans le résultat pointe là où cette page a été déplacée&nbsp;; celui
+        dont vous avez retiré la page disparaît, sauf s'il lui reste des entrées en
+        dessous, auquel cas il subsiste comme titre. Fusionner plusieurs fichiers place
+        les signets de chacun sous un titre portant son nom. Les liens entre pages
+        sont suivis de la même façon, y compris les destinations nommées qu'écrivent
+        Word et LaTeX, et un lien dont la cible n'a pas suivi reste sans effet plutôt
+        que d'envoyer le lecteur au mauvais endroit. Les liens vers des adresses web
+        sont conservés tels quels."""
+
+[[faq]]
+q = "Qu'est-ce qui n'est pas repris&nbsp;?"
+a = """
+        Quatre choses, et l'outil le dit dans les résultats plutôt qu'en petits
+        caractères. L'arbre d'ordre de lecture balisé qu'utilisent les lecteurs
+        d'écran, les libellés de page (la numérotation
+        &laquo;&nbsp;iii, iv, 1, 2&nbsp;&raquo;), les pièces jointes intégrées, et
+        toute action qui n'est ni &laquo;&nbsp;aller à une page&nbsp;&raquo; ni
+        &laquo;&nbsp;ouvrir une adresse web&nbsp;&raquo;, le JavaScript du document
+        compris. Les deux premières décrivent un ordre qui n'existe plus une fois les
+        pages déplacées&nbsp;; la dernière n'est pas quelque chose que vous avez
+        demandé d'emporter dans un fichier neuf. Si le balisage d'un document compte
+        pour vous, gardez aussi l'original."""
+
+[[faq]]
+q = "Les formulaires remplis survivent-ils&nbsp;?"
+a = """
+        Oui. Les champs de formulaire et ce qui y a été saisi accompagnent leurs
+        pages, et le nouveau document est déclaré comme formulaire pour que les
+        lecteurs le traitent comme tel. Une chose à savoir en fusionnant&nbsp;: deux
+        champs portant le même nom ne font qu'un seul champ pour n'importe quel
+        lecteur, si bien qu'en fusionnant deux copies du même formulaire, remplir une
+        case sur une page la remplira sur l'autre. L'outil repère ce cas et le
+        signale."""
+
+[[faq]]
+q = "Peut-il ouvrir un PDF protégé par mot de passe&nbsp;?"
+a = """
+        Non, et c'est délibéré. Un document chiffré est refusé avec un message qui le
+        dit, même quand le mot de passe est vide &mdash; ce qui est la façon dont
+        beaucoup de scanners et de photocopieurs enregistrent. Retirer la protection
+        d'un fichier est un travail différent du déplacement de ses pages, et un outil
+        qui le ferait en silence ferait quelque chose que vous n'avez pas demandé."""
+
+[[faq]]
+q = "Pourquoi n'y a-t-il pas d'aperçu des pages&nbsp;?"
+a = """
+        Parce que dessiner une page suppose un moteur de rendu PDF complet &mdash;
+        polices, dégradés, groupes de transparence, modes de fusion &mdash; soit un
+        mégaoctet ou plus de moteur à télécharger et à exécuter pour quelques
+        vignettes. Ce que les tuiles montrent à la place, c'est ce sur quoi le
+        réordonnancement travaille réellement&nbsp;: le numéro de page, la forme et la
+        taille du papier, la rotation avec laquelle elle sera écrite, et le fichier
+        d'où elle vient. Un scan à l'italienne au milieu d'une pile de pages verticales
+        saute quand même aux yeux."""
+
+[[faq]]
+q = "Le fichier fini s'ouvrira-t-il partout&nbsp;?"
+a = """
+        Oui. La sortie est écrite en PDF 1.5, ou dans la version la plus élevée
+        qu'exigeait l'un des fichiers que vous avez donnés, et la 1.5 est comprise par
+        tous les lecteurs livrés depuis 2003. L'outil le démontre d'ailleurs sur votre
+        propre machine&nbsp;: il rouvre chaque fichier fini et compte ses pages en
+        parcourant l'arbre des pages avant de vous le proposer."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai, ni
+        limite de taille au-delà de ce que permet la mémoire de votre machine. Le site
+        affiche de la publicité, et c'est elle qui le finance&nbsp;; les annonces ne
+        reçoivent rien sur vos documents."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
+        de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
+        envoyé, car un outil qui expédierait vos documents ailleurs pour les
+        fusionner s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Fusionnez des PDF, divisez-en un en plusieurs fichiers, et réordonnez, faites pivoter ou retirez des pages dans votre navigateur. Les pages sont copiées d'un document à l'autre en local, aucun fichier n'est donc jamais envoyé."
+features = [
+  "Fusionne autant de PDF que vous voulez, et vous laisse en ajouter en cours de route",
+  "Faites glisser les pages dans l'ordre, tournez-les, retirez-les ou agissez sur une plage d'un coup",
+  "Divise en un fichier par page, toutes les tant de pages, à des numéros de page, ou de retour dans les fichiers d'origine",
+  "Reconstruit les signets et les liens internes d'après les pages conservées",
+  "Conserve les champs de formulaire remplis et signale quand deux d'entre eux partagent un nom",
+  "Rouvre et recompte chaque fichier fini avant de le proposer",
+  "Fonctionne hors ligne ; sans envoi, sans compte, sans limite de taille",
+]
+
+[picker]
+title = "Déposez vos PDF ici"
+hint = "ou cliquez pour parcourir &mdash; un fichier ou plusieurs, et vous pourrez en ajouter ensuite"

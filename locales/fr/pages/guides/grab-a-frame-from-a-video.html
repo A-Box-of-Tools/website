@@ -1,0 +1,220 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez l'<a href="../../extraire-une-image-d-une-video/">Extracteur
+      d'image</a>, déposez la vidéo, trouvez le moment et appuyez sur
+      <em>Extraire cette image</em>. Ce qui arrive dans vos téléchargements,
+      c'est l'image à la résolution de la vidéo elle-même &mdash;
+      3840&nbsp;&times;&nbsp;2160 pour une vidéo 4K, quelle qu'ait été la taille
+      de l'aperçu sur la page.
+    </p>
+    <p>
+      Laissez le format sur PNG tant que le poids du fichier n'est pas un
+      problème. Le reste de cette page explique pourquoi ces deux phrases ne
+      décrivent pas une capture d'écran, et quand la différence mérite qu'on s'y
+      arrête.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi une capture d'un lecteur en pause est une autre image</h2>
+    <p>
+      Tout le monde a déjà une méthode pour cela&nbsp;: pause, touche de capture,
+      on rogne les commandes. Cela marche, et pour un partage rapide c'est
+      exactement l'effort qu'il faut. Mais entre-temps quatre choses sont
+      arrivées à l'image, et aucune n'est réversible&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Elle fait la taille de la fenêtre, pas celle de la
+        vidéo.</strong> Une vidéo 4K dans un lecteur en demi-écran donne une
+        image d'un lecteur en demi-écran. Tous les pixels qui étaient dans le
+        fichier et pas à l'écran ont disparu.
+      </li>
+      <li>
+        <strong>Elle a été mise à l'échelle.</strong> Ce que le lecteur a fait
+        pour faire entrer l'image dans cette fenêtre &mdash; lissage,
+        accentuation ou simple rééchantillonnage &mdash; y est cuit.
+      </li>
+      <li>
+        <strong>Elle est passée par la chaîne d'affichage.</strong> Gestion des
+        couleurs, et sur une vidéo HDR un mappage de tons choisi pour votre
+        écran plutôt que pour le fichier.
+      </li>
+      <li>
+        <strong>Elle embarque en général du mobilier.</strong> Commandes, barre
+        de progression, piste de sous-titres, curseur.
+      </li>
+    </ul>
+    <p>
+      Un extracteur d'image saute les quatre&nbsp;: il décode l'image que le
+      fichier contient réellement et écrit ces pixels-là. La photo fait la taille
+      de la vidéo, et personne n'a dessiné dessus.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tomber sur l'image visée</h2>
+    <p>
+      C'est la partie que la plupart des outils ratent en silence, et il vaut la
+      peine de savoir ce qu'il faut regarder, chez n'importe lequel d'entre eux.
+    </p>
+    <p>
+      Une vidéo n'est pas une bande d'images rangées dans l'ordre où vous les
+      regardez. La plupart des images sont stockées comme une description de ce
+      qui les distingue d'autres images, et dans tout fichier avec des images B,
+      l'ordre de stockage n'est pas l'ordre d'affichage. Un outil qui envoie un
+      lecteur sur un horodatage et prend ce qui s'affiche dépend de la façon dont
+      ce lecteur arrondit&nbsp;; et un outil qui avance «&nbsp;d'une image&nbsp;»
+      en ajoutant un trentième de seconde se trompe sur toute vidéo qui n'est pas
+      exactement à 30&nbsp;i/s &mdash; c'est-à-dire presque toutes les vidéos de
+      téléphone, puisqu'elles font varier leur cadence quand la lumière change.
+    </p>
+    <p>
+      La solution est de lire la liste d'images du fichier lui-même et de
+      désigner les images par leur place dedans. Sur un MP4, l'outil d'ici le
+      fait&nbsp;: le curseur avance d'une image par cran, les flèches d'une image,
+      et il peut vous dire que vous êtes sur l'image 812 sur 3&nbsp;540 parce
+      qu'il les a comptées. Sur les formats qu'il ne sait pas lire directement, il
+      le dit, et avance d'à peu près une image au lieu de faire semblant.
+    </p>
+    <p>
+      Un test rapide, valable pour n'importe quel extracteur&nbsp;: avancez de
+      quelques images sur un passage très animé. Si l'image ne change parfois pas,
+      ou saute de deux, l'outil devine à partir d'horodatages.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dans quel format l'enregistrer</h2>
+    <p>
+      Il n'y a vraiment que trois réponses, et le choix dépend de ce qui arrive
+      ensuite à l'image.
+    </p>
+    <ul>
+      <li>
+        <strong>PNG</strong> &mdash; le format par défaut, et le seul qui
+        enregistre l'image telle quelle. Choisissez-le si la photo va être
+        retouchée, imprimée, comparée à une autre image, ou conservée. C'est
+        aussi le plus lourd&nbsp;: comptez quelques mégaoctets en 1080p et autour
+        de huit en 4K, parce qu'une image photographique n'est pas ce que la
+        compression de PNG sait bien faire.
+      </li>
+      <li>
+        <strong>JPEG</strong> &mdash; un dixième du poids, et accepté partout.
+        Choisissez-le pour une vignette, un aperçu, ou tout ce qui part
+        directement dans un document ou une conversation. C'est un second passage
+        avec perte par-dessus celui de la vidéo, donc un mauvais point de départ
+        pour retoucher ensuite.
+      </li>
+      <li>
+        <strong>WebP</strong> &mdash; encore plus léger à qualité visible égale,
+        et pris en charge partout où cela compte désormais. La seule réserve
+        concerne les vieux logiciels&nbsp;: certaines applications de bureau
+        refusent toujours de l'ouvrir.
+      </li>
+    </ul>
+    <p>
+      Une chose mérite d'être dite clairement&nbsp;: une image tirée d'une vidéo
+      est déjà une image compressée. L'enregistrer en PNG n'annule pas cela et ne
+      récupère pas le détail que le codec a jeté au moment du tournage. Ce que le
+      PNG vous apporte, c'est que rien n'est jeté <em>deux fois</em>. Si vous
+      comptez étalonner ou recadrer la photo ensuite, cela compte&nbsp;; si vous
+      l'envoyez à quelqu'un, non.
+    </p>
+  </section>
+
+  <section>
+    <h2>En extraire beaucoup d'un coup</h2>
+    <p>
+      Une image toutes les quelques secondes est un tout autre travail qu'une
+      image à un instant, et cela arrive plus souvent qu'il n'y paraît&nbsp;: une
+      planche-contact d'un long enregistrement, des vignettes parmi lesquelles
+      choisir une couverture, un échantillon régulier des rushes pour vérifier la
+      mise au point ou l'exposition sur un tournage.
+    </p>
+    <p>
+      Réglez un intervalle, appuyez sur le bouton de série, et l'outil parcourt
+      la vidéo une fois en prenant une image à chaque repère. Deux remarques
+      pratiques. Restez généreux sur l'intervalle pour une longue vidéo &mdash;
+      une image par seconde sur une heure de rushes fait 3&nbsp;600 photos, et
+      c'est pour cela que l'outil plafonne une série à 500. Et choisissez le JPEG
+      pour cet usage sauf raison contraire&nbsp;: cent PNG en 4K, c'est presque un
+      gigaoctet retenu dans la page avant même que vous en ayez téléchargé un.
+    </p>
+    <p>
+      Elles reviennent dans une seule archive ZIP, nommées par leur timecode, de
+      sorte qu'elles se classent dans l'ordre où elles se sont produites et que
+      chacune se retrouve dans la vidéo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les vidéos verticales, et la fameuse image couchée</h2>
+    <p>
+      Si vous avez déjà tiré une image d'une vidéo de téléphone et qu'elle est
+      sortie couchée, voici pourquoi. Un téléphone filme en paysage et écrit un
+      quart de tour dans le fichier plutôt que de tourner les pixels. Les lecteurs
+      lisent ce quart de tour et l'appliquent&nbsp;; un outil qui ne lit que les
+      pixels ne le fait pas, et le résultat est une photo parfaitement correcte du
+      bon moment, pivotée de 90 degrés.
+    </p>
+    <p>
+      Rien ne cloche dans le fichier, et repivoter la photo ensuite ne coûte que
+      l'agacement. L'outil d'ici lit la rotation sur la piste et l'applique avant
+      de dessiner, si bien qu'une vidéo verticale donne une photo verticale.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qu'on ne récupère pas</h2>
+    <p>
+      Une image ne peut être que ce que vaut l'image dont elle sort, et deux
+      choses la limitent quel que soit l'outil.
+    </p>
+    <p>
+      <strong>Le flou de bougé est dans l'image.</strong> Si le sujet bougeait
+      pendant l'exposition, chacune des images de ce mouvement est floue, et il
+      n'y a pas d'image nette à y trouver. Filmer avec une vitesse d'obturation
+      plus élevée est le seul remède, et cela doit se décider avant le tournage.
+    </p>
+    <p>
+      <strong>La compression aussi est dans l'image.</strong> La vidéo est
+      compressée bien plus fort qu'une photographie, et plus fort encore sur les
+      images situées entre les images clés. Si une photo paraît en pâtés, essayez
+      d'avancer ou de reculer d'une image ou deux&nbsp;: une image clé est stockée
+      en entier et paraît souvent nettement plus propre que ses voisines.
+    </p>
+    <p>
+      Et si la photo doit ensuite changer de taille ou de forme, faites-en une
+      étape à part&nbsp;: le
+      <a href="../../redimensionner-une-image/">Redimensionneur d'images</a>
+      redimensionne, recadre et convertit, et
+      <a href="../redimensionner-une-image/">son guide</a> détaille ce que chacune
+      de ces opérations coûte.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi cela n'a pas besoin d'un envoi</h2>
+    <p>
+      Décoder de la vidéo dans un navigateur est récent, et c'est réel&nbsp;:
+      WebCodecs expose le décodeur matériel que votre téléphone utilise déjà pour
+      lire des vidéos. Le travail se fait sur la machine qui a déjà le fichier, ce
+      qui, pour une vidéo de plusieurs gigaoctets, est aussi le seul arrangement
+      raisonnable &mdash; envoyer une heure de 4K pour récupérer une photo de
+      8&nbsp;Mo est un mauvais calcul dans tous les sens.
+    </p>
+    <p>
+      L'outil d'ici n'a aucune fonction réseau, et la
+      <code>Content-Security-Policy</code> de la page nomme chaque adresse qu'elle
+      a le droit de contacter&nbsp;; aucune n'appartient à ce site. Débranchez
+      internet et extrayez une image quand même, si vous préférez vérifier plutôt
+      qu'être rassuré.
+    </p>
+    <p>
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
+      fichiers à un convertisseur en ligne&nbsp;?</a> propose trois autres
+      vérifications applicables à n'importe quel outil.
+    </p>
+  </section>

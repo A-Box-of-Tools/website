@@ -1,0 +1,265 @@
+#
+# Separador de GIF - Brazilian Portuguese.
+#
+# Overrides for tools/split-gif/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Separador de GIF"
+heading = "Separador&nbsp;de&nbsp;GIF <span class=\"h1-kw\">&mdash; cada quadro em um PNG</span>"
+tagline = "Cada quadro sai no próprio PNG."
+
+title = "Separar GIF em quadros &mdash; grátis e sem enviar nada"
+description = "Separe um GIF animado nos quadros dele e salve cada um como PNG, de graça e inteiramente no navegador. A transparência e os tempos ficam preservados. Nada é enviado, e funciona offline."
+og_title = "Separador de GIF &mdash; desmonte uma animação no navegador"
+og_description = "Cada quadro de um GIF no próprio PNG, com os tempos e a transparência intactos. O arquivo é lido no seu computador e nunca é enviado."
+og_image_alt = "Separador de GIF - cada quadro de um GIF no próprio PNG"
+
+pledge = """
+    O GIF é lido, descompactado e desenhado pelo seu próprio navegador, e cada
+    PNG é gerado na memória deste computador. Do outro lado desta página não
+    existe servidor nenhum para receber uma animação, mesmo que algo aqui
+    quisesse mandar."""
+
+live_hint = """
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e separe um GIF.
+      Nenhuma requisição leva uma imagem, um quadro ou um nome de arquivo. Ou
+      então desligue a internet e separe um assim mesmo."""
+
+read_first = """
+, <code>src/gif.js</code> para o leitor que
+      descompacta os quadros e <code>src/compose.js</code> para as regras que
+      deitam um quadro em cima do outro. Em nenhum dos dois existe uma linha
+      capaz de alcançar a rede."""
+
+howto_heading = "Como separar um GIF em quadros"
+
+card = """
+            Desmonte uma animação: cada quadro no próprio PNG, com a
+            transparência preservada e os tempos anotados. O GIF é
+            descompactado no seu próprio computador."""
+
+[words]
+plural = "GIFs"
+choose = "um GIF"
+analytics_extra = """, e nenhum
+  quadro, duração ou imagem"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[facts]]
+text = "Os arquivos ficam no seu aparelho"
+
+[[privacy]]
+title = "O seu GIF não tem para onde ir."
+body = """
+ A
+      Content-Security-Policy lista todo endereço que esta página pode contatar,
+      e nenhum deles é nosso. Aqui não existe um ponto de coleta onde os seus
+      arquivos pudessem parar, nem nada no código que os mandasse para lá se
+      existisse. Isto já disse <code>connect-src 'none'</code>, que não abria
+      exceção; a publicidade custou isso, e dizer isso faz parte do acordo."""
+
+[[privacy]]
+title = "O leitor de GIF são dois arquivos deste repositório."
+body = """
+ O navegador toca um
+      GIF, mas não entrega as partes dele, então o formato é lido aqui mesmo:
+      <code>src/gif.js</code> é o contêiner e o descompactador LZW, e
+      <code>src/compose.js</code> são as regras de descarte que decidem com o que
+      cada quadro se parece depois que os anteriores ficam embaixo. Nada é
+      buscado para abrir um arquivo, e não existe motor nenhum baixado no
+      primeiro uso."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não chega até ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google. Nenhum dos dois recebe coisa
+      alguma sobre a sua animação: nem o arquivo, nem um quadro, nem um nome, um
+      tamanho ou uma contagem. Toda linha que lê, descompacta, desenha ou escreve
+      uma imagem é servida desta origem e está listada no repositório."""
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não chega até ele."
+body = """
+
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um
+      script de cdnjs.buymeacoffee.com e pega as letras no Google Fonts. Ele não
+      é mais do que um link: não avisa ninguém da sua visita e não recebe nada
+      sobre você nem sobre os seus arquivos. Nada acontece enquanto você não
+      clicar, e o que você abriria ao clicar é o site de outra pessoa."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desligue a rede e tudo nesta página continua
+      funcionando. Essa é a prova mais simples de todas: uma ferramenta que
+      mandasse a sua animação embora para ser desmontada pararia no instante em
+      que você tirasse da tomada."""
+
+[[howto]]
+title = "Escolha o GIF."
+body = """
+ Arraste até o seletor ou procure na mão. O
+      navegador lê direto do seu disco, e a página conta o que encontrou: o
+      tamanho, quantos quadros tem, quanto tempo dura e quantas vezes se
+      repete."""
+
+[[howto]]
+title = "Decida o que vai dentro de cada PNG."
+body = """
+ <strong>O quadro como ele
+      aparece</strong> é o que quase todo mundo quer: a imagem inteira naquele
+      momento da animação. <strong>Só os pixels que aquele quadro guarda</strong>
+      é o remendo que o arquivo carrega de verdade, no tamanho dele e no lugar
+      dele, que é como um GIF continua pequeno e não é a cara da animação."""
+
+[[howto]]
+title = "Decida o que acontece com a transparência."
+body = """
+ O PNG mantém, e essa é
+      a escolha honesta. Preencha com uma cor se os quadros vão parar em algum
+      lugar que ignora transparência e a deixaria preta."""
+
+[[howto]]
+title = "Escolha os quadros que você quer."
+body = """
+ Todos, por padrão. &ldquo;Ficar
+      com um quadro a cada dois&rdquo; enxuga uma gravação longa, e as caixinhas
+      da grade passam por cima disso. A numeração nunca muda, então o quadro 42
+      continua se chamando quadro 42 por menos vizinhos dele que você tenha
+      guardado."""
+
+[[howto]]
+title = "Baixe."
+body = """
+ Um quadro por vez pela grade, ou todos de uma vez em
+      um único ZIP, para dar uma pergunta de salvar em vez de centenas. O ZIP
+      pode levar junto um <code>frames.txt</code> dizendo quanto tempo cada
+      quadro ficou na tela, que é a única coisa que uma pasta de PNGs não sabe
+      contar sozinha."""
+
+[[faq]]
+q = "O meu GIF é enviado para algum lugar?"
+a = """
+        Não. O arquivo é lido, descompactado e desenhado pelo seu próprio
+        navegador, no seu próprio hardware, e cada PNG é gerado aqui na memória.
+        Esta ferramenta não tem lado servidor, e a
+        <code>Content-Security-Policy</code> da página lista todo endereço que ela
+        pode contatar: nenhum é nosso. Tire da tomada e ela continua separando
+        GIFs."""
+
+[[faq]]
+q = "Por que um quadro parece um pedacinho da imagem?"
+a = """
+        Porque é isso que o arquivo guarda. Um GIF é uma primeira imagem seguida
+        de remendos: cada quadro seguinte guarda só o retângulo que mudou, e todo
+        o resto da tela é o que os quadros anteriores deixaram ali. Uma cabeça
+        falando na frente de uma parede parada guarda, portanto, um rosto por
+        quadro em vez de uma imagem por quadro, e é justamente por isso que o
+        formato não é enorme.
+        <br><br>
+        Você está vendo isso porque está marcado &ldquo;Só os pixels que aquele
+        quadro guarda&rdquo;. Mude para &ldquo;O quadro como ele aparece&rdquo; e
+        cada PNG vira a imagem inteira, do jeito que a animação está naquele
+        instante."""
+
+[[faq]]
+q = "A transparência é preservada?"
+a = """
+        É. A transparência de um GIF é um bit só, ou seja, um pixel está pintado
+        ou está invisível, sem meio-termo, e o PNG guarda exatamente isso. Os
+        quadros saem com as áreas transparentes intactas. Se você preferir um
+        fundo sólido, ponha &ldquo;Áreas transparentes&rdquo; para preencher com
+        uma cor. Ela é escrita no PNG e depois não sai mais."""
+
+[[faq]]
+q = "Por que os tempos dos quadros não são os números que eu esperava?"
+a = """
+        Um GIF guarda cada tempo em centésimos de segundo, e desde os anos 1990 os
+        navegadores empurram qualquer valor abaixo de dois centésimos para um
+        décimo de segundo. Essa regra foi escrita para os globos giratórios da
+        época e nunca foi tirada. Um quadro cujo arquivo diz 0,01 s toca a 0,10 s
+        em todo lugar. Esta ferramenta mostra o tempo do jeito que ele é tocado de
+        verdade, e escreve ao lado o que o arquivo guarda quando os dois não
+        batem."""
+
+[[faq]]
+q = "Dá para juntar os quadros de novo?"
+a = """
+        Dá, com o <a href="../criar-gif/">Criador de GIF</a> deste site ou com
+        qualquer outra coisa que aceite uma pasta de imagens. É para isso que
+        serve o <code>frames.txt</code> do ZIP: separar uma animação joga fora os
+        tempos, porque um PNG não tem onde anotar quanto tempo ficou na tela, e
+        então a lista leva embora a duração e a posição de cada quadro."""
+
+[[faq]]
+q = "Em que formatos os quadros podem ser salvos?"
+a = """
+        Em PNG, e de propósito só em PNG. Um quadro de GIF tem no máximo 256 cores
+        e um bit de transparência; o PNG guarda isso exatamente e sem perda,
+        enquanto o JPEG jogaria a transparência fora, inventaria cores que o
+        quadro nunca teve e, em arte chapada, normalmente geraria um arquivo
+        <em>maior</em>. Se você precisa de JPEG, converta os PNGs depois com o
+        <a href="../redimensionar-imagem/">Redimensionador de imagens</a>."""
+
+[[faq]]
+q = "Tem limite de quantos quadros ele lê?"
+a = """
+        Limite fixo não tem. O teto de verdade é a memória do seu computador: um
+        GIF se expande para mais ou menos um byte por pixel por quadro enquanto
+        está sendo lido, então um arquivo pequeno pode virar muita memória, e esta
+        página prefere parar de ler a deixar a aba morrer. Se isso acontecer, ela
+        avisa e devolve os quadros que conseguiu."""
+
+[[faq]]
+q = "Ele abre um GIF estragado?"
+a = """
+        Quase sempre. Download cortado no meio, marca de fim ausente e um último
+        quadro que para no meio do fluxo são coisas comuns, e um leitor que recusa
+        tudo isso não serve justamente para os arquivos que as pessoas mais querem
+        desmontar. Voltam todos os quadros que estiverem completos, com um aviso
+        do que estava errado. Só é recusado de cara um arquivo que não é um GIF de
+        jeito nenhum."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não tem conta, nem login, nem período de teste. Nos quadros
+        também não tem marca d'água. O site exibe publicidade, e é ela que paga a
+        conta; os anúncios não recebem nada sobre os seus arquivos."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Funciona. Carregue a página uma vez, depois desligue a internet e ela
+        continua funcionando. Esse é também o jeito mais simples de provar que
+        nada está sendo enviado: uma ferramenta que mandasse a sua animação embora
+        para ser processada pararia no instante em que você tirasse da tomada."""
+
+[schema]
+description = "Separe um GIF animado nos quadros dele e salve cada um como PNG. O arquivo é descompactado no seu navegador, então nenhuma animação é enviada."
+features = [
+  "Cada quadro de um GIF no próprio PNG, com a transparência preservada",
+  "O quadro como ele aparece, ou só os pixels que aquele quadro guarda",
+  "Duração, posição, tamanho e descarte mostrados quadro a quadro",
+  "Ficar com um quadro a cada dois ou a cada cinco, ou marcar os que quiser",
+  "Um ZIP para tudo, com lista de tempos opcional para remontar a animação",
+  "Funciona offline; sem envio, sem conta, sem marca d'água",
+]
+
+[picker]
+title = "Arraste um GIF para cá"
+hint = "ou clique para procurar &mdash; animado ou parado, de qualquer tamanho"

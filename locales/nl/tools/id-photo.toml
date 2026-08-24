@@ -1,0 +1,318 @@
+#
+# Pasfoto maken - Dutch.
+#
+# Overrides for tools/id-photo/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pasfotomaker"
+heading = "Pasfoto&nbsp;maken <span class=\"h1-kw\">&mdash; paspoort- en visumfoto's op maat</span>"
+tagline = "Kies het land. Hij past die regel toe, precies."
+
+title = "Pasfoto maken &mdash; de maat van elk land, zonder uploaden"
+description = "Maak een paspoort- of visumfoto volgens de gepubliceerde regel van je land: exacte millimeters en dpi, een meelopende hulplijn voor hoofdhoogte en ooglijn, een achtergrondcontrole, een printklaar vel van 10x15 en een bestand dat binnen de KB-grens van het portaal past. Er wordt niets geüpload."
+og_title = "Een pasfoto precies volgens de regel van je land, zonder hem te uploaden"
+og_description = "Kies een land en een document, en het uitsnedekader neemt de hoofdhoogte en de ooglijn van die regel over. Print op het voorgeschreven formaat en de voorgeschreven resolutie, en schrijft het uploadbestand binnen de KB-band waar het formulier op staat."
+og_image_alt = "Pasfotomaker - paspoort- en visumfoto's op maat, zonder uploaden"
+
+pledge = """
+    Het uitsnijden, het meten, het uitlezen van de achtergrond en het printen gebeuren
+    allemaal in je eigen browser, op je eigen hardware, met de JPEG-encoder die er al
+    in zit. Deze tool heeft geen enkele netwerkfunctie, niets op te halen en niets te
+    versturen, en al was die er wel, dan zit er aan de andere kant van deze pagina nog
+    steeds geen server waar een foto van je gezicht naartoe kan."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en maak een pasfoto. Geen enkel verzoek draagt
+      een afbeelding, een miniatuur, een bestandsnaam of ook maar één byte van wat je
+      koos. Of trek de stekker uit je internet en maak er alsnog een."""
+
+read_first = """
+, <code>src/specs.js</code> voor het regelboek &mdash;
+      de gepubliceerde cijfers van elk land, met de instantie en de datum waarop elk
+      cijfer gelezen is &mdash; <code>src/geometry.js</code> voor het rekenwerk dat
+      vier gezette punten in een uitsnede verandert, en <code>src/jpeg.js</code> voor
+      de twee wijzigingen aan de kop die de printresolutie in het bestand zetten en een
+      te kleine upload optrekken naar de grootte waar een formulier op staat."""
+
+howto_heading = "Zo maak je een pasfoto die niet teruggestuurd wordt"
+
+card = """
+            Kies een land en een document, en het uitsnedekader neemt de hoofdhoogte
+            en de ooglijn van die regel over. Print op de exacte millimeter en
+            resolutie, met een vel van 10&nbsp;&times;&nbsp;15, en perst de upload in
+            de KB-band van het portaal."""
+
+[words]
+plural = "foto's"
+choose = "een foto"
+analytics_extra = """, en geen van de
+  metingen, uitsnedes of landen die deze tool uitrekent"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Een foto van je gezicht verlaat dit apparaat nooit."
+body = """
+ Dat weegt hier zwaarder
+      dan bij de meeste tools: het bestand dat deze pagina in handen heeft is een beeld
+      van je gezicht, en wat je ermee gaat doen noemt bovendien het land waarvan je het
+      document aanvraagt. De <code>Content-Security-Policy</code> noemt elk adres dat
+      deze pagina mag benaderen, en geen daarvan is van ons. Er is hier geen eindpunt
+      waar je foto verzameld zou kunnen worden."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er staat nergens in <code>src/</code> een
+      <code>fetch</code>, een <code>XMLHttpRequest</code> of een
+      <code>sendBeacon</code>. Het regelboek is een tabel in
+      <code>src/specs.js</code>, meegeleverd met de pagina en met haar in de cache
+      gezet: er is geen landenlijst om op te zoeken en niets waartegen je foto op
+      afstand gecontroleerd wordt."""
+
+[[privacy]]
+title = "Er zit geen gezichtsherkenning in, en dat is met opzet."
+body = """
+ De vier punten waar de
+      regels vanaf gemeten worden sleep je zelf. Ze detecteren zou betekenen dat er een
+      model meegeleverd wordt en dat het op een beeld van je gezicht draait, en een
+      model dat fout zit, zit ongelijk fout: bij het ene gezicht slechter dan bij het
+      andere. Vier stippen kosten acht seconden en zijn voor iedereen exact."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen van alle
+      krijgt iets over je foto, je gezicht of het land waarvan je de regel koos. Elke
+      regel die een bestand leest, uitsnijdt, meet of schrijft, wordt vanaf deze
+      herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en de tool werkt
+      onveranderd door, omdat er nooit een netwerkstap in zat. Eenvoudiger bewijs
+      bestaat er niet."""
+
+[[howto]]
+title = "Kies de foto."
+body = """
+ Een telefoonfoto tegen een effen muur, bij
+      daglicht, van zo'n anderhalve meter afstand. De browser leest hem rechtstreeks
+      van je schijf, en er gaat ondertussen niets ergens heen."""
+
+[[howto]]
+title = "Kies het land en het document."
+body = """
+ Het paneel laat dan het printformaat,
+      de hoofdhoogteband, de ooglijn, de achtergrondkleur en de uploadgrenzen van die
+      regel zien, samen met de instantie waar elk cijfer vandaan komt en de datum
+      waarop het gelezen is. Niets op die lijst is gegokt, en alles wat je toegestuurd
+      hebt gekregen en er niet op staat vul je in onder &ldquo;Ergens anders&rdquo;."""
+
+[[howto]]
+title = "Sleep de vier stippen op je gezicht."
+body = """
+ Kruin, kin en elke pupil. Die vier
+      punten zijn het hele verhaal van wat de regel meet, en daarom vraagt deze tool er
+      om in plaats van te gokken. Druk daarna op <em>Pas het kader aan</em> en de
+      uitsnede landt waar dat land hem wil."""
+
+[[howto]]
+title = "Lees de vier controles, en de achtergrond."
+body = """
+ Hoofdhoogte, ooglijn,
+      centrering en scheefstand, elk gemeten aan het kader zoals het nu staat en elk
+      met erbij welke kant je op moet slepen als het buiten de norm valt. De
+      achtergrond wordt uit de bovenkant en de zijkanten van de uitsnede gelezen en
+      vergeleken met de kleur die de regel vraagt; de ongelijkmatigheid, waar foto's
+      werkelijk op worden afgekeurd, wordt los van de kleur gemeten."""
+
+[[howto]]
+title = "Neem de drie bestanden mee."
+body = """
+ De print, op de exacte millimeter, met de
+      resolutie in het bestand geschreven zodat een winkel hem op het juiste formaat
+      afdrukt. Het vel, met zo veel kopieën als er op een 10&nbsp;&times;&nbsp;15
+      passen en snijtekens in de tussenruimtes. En de upload, op het pixelformaat dat
+      het portaal eist en binnen de KB-band die het aan beide kanten afdwingt."""
+
+[[faq]]
+q = "Wordt mijn foto ergens naartoe geüpload?"
+a = """
+        Nee. Het beeld wordt gedecodeerd, uitgesneden, gemeten en weggeschreven door je
+        eigen browser op je eigen hardware, met de JPEG-encoder die de browser al
+        meelevert. Deze tool heeft geen enkele netwerkfunctie: hij haalt nooit iets op
+        en verstuurt nooit iets, en de <code>Content-Security-Policy</code> van de
+        pagina noemt elk adres dat ze mag benaderen, waarvan er geen enkele van ons is.
+        Dat is hier meer waard dan bij de meeste tools: het bestand is een foto van je
+        gezicht."""
+
+[[faq]]
+q = "Welke landen zitten erin?"
+a = """
+        De tot nu toe overgenomen specificaties zijn de ICAO-norm zelf, de Verenigde
+        Staten (paspoort en de inschrijving voor de visumloterij, die verschillende
+        uploadregels hebben), het Verenigd Koninkrijk, het Schengenvisum, Duitsland,
+        Canada, Australië, India (paspoort, de afdruk van
+        35&nbsp;&times;&nbsp;45&nbsp;mm en de formulierfoto en handtekening voor SSC en
+        UPSC), China en Japan. Elke ingang noemt de instantie waar hij vandaan komt en
+        de datum waarop hij gelezen is. Al het andere vul je in onder &ldquo;Ergens
+        anders&rdquo;, waar elk cijfer van jou is; en omdat het grootste deel van de
+        wereld op de ICAO-geometrie uitgeeft, begint die ingang daar ook mee."""
+
+[[faq]]
+q = "Waarom moet ik mijn eigen gezicht markeren in plaats van dat hij het vindt?"
+a = """
+        Omdat een gezicht vinden betekent dat er een model meekomt: gewichten om te
+        downloaden, een runtime om ze in te draaien, en een manier van falen die
+        ongelijk is. Detectoren zijn meetbaar slechter bij het ene gezicht dan bij het
+        andere, en de mensen van wie de foto's nu al het vaakst worden afgekeurd zijn
+        precies degenen die hij in de steek zou laten. Vier gesleepte stippen kosten
+        zo'n acht seconden, zijn exact, en zijn voor iedereen dezelfde acht seconden. De
+        experimentele gezichtsdetector van de browser zou in één browser achter een vlag
+        gewerkt hebben, en dat is geen functie: dat is een tool die anders werkt
+        afhankelijk van waarin je hem opent."""
+
+[[faq]]
+q = "Wat is die hoofdhoogteregel, en waarom haalt de mijne die nooit?"
+a = """
+        Al deze specificaties zeggen hoeveel van het beeld het hoofd moet vullen,
+        gemeten van de onderkant van de kin tot de bovenkant van het hoofd, haar
+        inbegrepen; meestal 70 tot 80 procent, wat bij een foto van 45&nbsp;mm neerkomt
+        op 31,5 tot 36&nbsp;mm. De gebruikelijke reden dat het misgaat is een selfie:
+        een armlengte is ongeveer 60&nbsp;cm, wat het gezicht vervormt en het hoofd te
+        groot in beeld zet. De tweede gebruikelijke reden is de kruin: dat is de
+        bovenkant van het haar, niet de haargrens, en wie de haargrens markeert krijgt
+        elk hoofd te klein."""
+
+[[faq]]
+q = "Waarom moet het bestand minstens 20 KB zijn, en hoe kan het opgevuld worden?"
+a = """
+        Indiase examenportalen, het Chinese visumformulier en de upload voor het Britse
+        paspoort noemen naast een maximum ook een minimum bestandsgrootte, omdat een
+        bestand daaronder meestal een miniatuur is die iemand per ongeluk uploadde. Een
+        foto van 200&nbsp;&times;&nbsp;230 is 46.000 pixels, en op de beste kwaliteit
+        die een browser wegschrijft kan hij nog steeds op 15&nbsp;KB uitkomen, zonder
+        mogelijkheid om hem groter te maken door minder te comprimeren. Dus voegt de
+        tool een JPEG-commentaarsegment vol spaties toe. Dat hoort bij de JPEG-standaard,
+        elke decoder slaat het over, en het beeld is bit voor bit hetzelfde beeld:
+        alleen het bestand is langer. De opvulling zegt precies dat, in het Engels,
+        binnenin het bestand."""
+
+[[faq]]
+q = "Controleert hij de achtergrond, en kan hij er een vervangen?"
+a = """
+        Hij controleert en vervangt niet. De kleur wordt gelezen uit een strook over de
+        bovenkant van de uitsnede en langs beide zijkanten, boven de schouders, en
+        vergeleken met de kleur van de regel in CIE Lab in plaats van in RGB: twee
+        grijzen die veertig RGB-eenheden uit elkaar liggen zijn niet te onderscheiden,
+        terwijl veertig eenheden blauw een andere kleur is. Ongelijkmatigheid wordt
+        apart gemeten, want een schaduw op een witte muur is waar foto's werkelijk op
+        worden afgekeurd, en dat is geen kleurprobleem. Een achtergrond vervangen
+        betekent iemand uit een plaatje knippen, en dat is een segmentatiemodel; een
+        slecht model eet haar op. Een halve meter verder van de muur gaan staan lost hier
+        meer van op dan welk filter ook."""
+
+[[faq]]
+q = "Waar is dat vel van 10 x 15 voor?"
+a = """
+        Een fotohokje rekent een paar euro voor zes foto's. Een fotobalie print een
+        10&nbsp;&times;&nbsp;15 voor centen, en dat kan er eentje. Dus legt de tool zo
+        veel kopieën van je foto op het papier als erop passen &mdash; acht, voor een
+        35&nbsp;&times;&nbsp;45 op een 10&nbsp;&times;&nbsp;15 &mdash; met snijtekens in
+        de tussenruimtes en niets over een plaatje heen gedrukt. Er wordt niets
+        geschaald: elke kopie heeft precies het formaat dat de regel vraagt, want een vel
+        dat ze twee procent kleiner maakte om er nog eentje bij te proppen zou acht
+        foto's van het verkeerde formaat opleveren. Print hem op 100 procent;
+        &ldquo;passend maken op pagina&rdquo; is wat een vel verkeerd laat uitkomen."""
+
+[[faq]]
+q = "Waarom maakt de dpi uit als de pixels hetzelfde zijn?"
+a = """
+        Omdat een JPEG kan zeggen welk formaat hij is, en zegt hij het niet, dan gokt
+        wat hem afdrukt. De resolutie staat in de JFIF-kop, en een browsercanvas
+        schrijft die kop met het eenhedenveld op &ldquo;dit is een beeldverhouding, geen
+        resolutie&rdquo;. Deze tool herschrijft die paar bytes zodat het bestand
+        300&nbsp;dpi meldt, en dat is wat 413&nbsp;&times;&nbsp;531 pixels tot een foto
+        van 35&nbsp;&times;&nbsp;45&nbsp;mm maakt in plaats van een plaatje van geen
+        bepaald formaat. Er wordt daarvoor niets gedecodeerd en er gaat geen kwaliteit
+        verloren."""
+
+[[faq]]
+q = "Kan hij ook het handtekeningbestand doen?"
+a = """
+        Ja &mdash; de SSC- en UPSC-formulieren willen er een van
+        140&nbsp;&times;&nbsp;60 pixels tussen 10 en 20&nbsp;KB, en die staat als eigen
+        specificatie op de lijst. De gezichtshulplijnen gaan daarvoor uit, want een
+        handtekening heeft geen ooglijn; wat er in plaats daarvan gecontroleerd wordt is
+        dat het papier licht is, dat er inkt op staat, en dat de uitsnede geen liniaal
+        of paginarand heeft meegepakt. De 10&nbsp;KB halen is het lastige deel van die
+        regel, niet onder de 20 blijven."""
+
+[[faq]]
+q = "Garandeert dit dat mijn aanvraag geaccepteerd wordt?"
+a = """
+        Nee, en geen enkele tool kan dat eerlijk beloven. Wat hij doet, is de
+        gepubliceerde cijfers precies toepassen en je elke meting laten zien die hij
+        gedaan heeft, zodat de dingen die een formulier automatisch meet &mdash;
+        pixelformaat, bestandsgrootte, formaat &mdash; kloppen, en de dingen die een
+        mens beoordeelt &mdash; hoofdhoogte, ooglijn, de achtergrond &mdash; met getallen
+        erbij voor je neus staan. De regels veranderen bovendien: elke specificatie hier
+        zegt van welke instantie hij komt en wanneer hij gelezen is, zodat je hem kunt
+        toetsen aan het formulier dat je voor je hebt in plaats van op een tabel te
+        vertrouwen."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen
+        watermerk over je gezicht aan te pas. Er zit ook geen limiet op hoeveel foto's je
+        maakt, omdat er geen server is die daarvoor betaalt. De site draait op
+        advertenties, en die betalen hem; die advertenties krijgen niets over je foto
+        mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij werkt
+        gewoon door &mdash; het regelboek is een bestand dat met de pagina meekomt, geen
+        opzoeking. Dat is meteen de eenvoudigste manier om te bewijzen dat er niets
+        geüpload wordt: een tool die je foto wegstuurde om hem te laten uitsnijden zou
+        stoppen op het moment dat je de stekker eruit trok."""
+
+[schema]
+description = "Maak een paspoort-, visum- of identiteitsfoto volgens de gepubliceerde specificatie van een land, in de browser. Past het printformaat, de dpi, de hoofdhoogteband, de ooglijn en de achtergrondkleur van het gekozen document toe, toont en meet elk daarvan meelopend, controleert de achtergrond, legt een printbaar vel van 10x15 op met snijtekens, en schrijft een uploadbestand op het voorgeschreven pixelformaat binnen de KB-band van het portaal. Er wordt niets geüpload."
+features = [
+  "Een regelboek met gepubliceerde specificaties, elk met de instantie en de leesdatum erbij",
+  "De geometrie uit ICAO Doc 9303: hoofdhoogte als deel van het beeld, en de ooglijn boven de onderrand",
+  "Een uitsnedekader vastgezet op de vorm van de specificatie, met de oog- en kinband erin getekend",
+  "Vier gesleepte markeringen - kruin, kin en beide pupillen - in plaats van gezichtsherkenning",
+  "Hoofdhoogte, ooglijn, centrering en scheefstand meelopend, elk met de kant om te corrigeren",
+  "Achtergrondkleur en gelijkmatigheid gemeten in CIE Lab, en apart gerapporteerd",
+  "Print op de exacte millimeter, met de resolutie in de JPEG-kop geschreven",
+  "Een vel van 10 x 15, 13 x 18, A4 of Letter, getegeld met snijtekens in de tussenruimtes en niets over een plaatje",
+  "Een uploadbestand op het voorgeschreven pixelformaat, aan beide kanten binnen de KB-band van het portaal gebracht",
+  "SSC- en UPSC-formulierfoto's op 200 x 230 in 20-50 KB, en handtekeningen op 140 x 60 in 10-20 KB",
+  "Werkt offline; geen upload, geen account, geen gezichtsherkenning",
+]
+
+[picker]
+title = "Sleep hier een foto naartoe"
+hint = "of klik om te bladeren &mdash; één foto, JPEG, PNG, WebP of alles wat je browser verder kan openen"

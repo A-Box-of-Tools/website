@@ -1,0 +1,248 @@
+#
+# Frame uit video halen - Dutch.
+#
+# Overrides for tools/grab-frame/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Framegrabber"
+heading = "Frame&nbsp;uit&nbsp;video&nbsp;halen <span class=\"h1-kw\">&mdash; een beeld uit een video opslaan</span>"
+tagline = "Een stilstaand beeld op volle kwaliteit, van elk moment."
+
+title = "Frame uit een video halen &mdash; gratis, zonder uploaden, ook offline"
+description = "Sla elk frame van een MP4, MOV of WebM op als PNG of JPEG op volle grootte. Stap frame voor frame door de clip, of pak er om de zoveel seconden een. Draait in je browser: er wordt niets geüpload."
+og_title = "Framegrabber &mdash; een beeld van elk moment, zonder de clip te uploaden"
+og_description = "Zoek het moment, stap naar precies het goede frame en sla het op in de resolutie van de video zelf. De frames worden op je eigen apparaat gedecodeerd en het beeld wordt geen tweede keer gecomprimeerd."
+og_image_alt = "Framegrabber - een beeld uit een video opslaan in je browser, zonder iets te uploaden"
+
+pledge = """
+    De frames worden gevonden, gedecodeerd en getekend door je eigen browser, op je
+    eigen hardware. Niets hier kan iets ophalen of versturen, want er zit helemaal
+    geen netwerkfunctie in deze tool. En al was die er wel, dan zit er aan de andere
+    kant van deze pagina nog steeds geen server waar een video naartoe kan."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en pak een frame. Geen enkel verzoek draagt
+      een plaatje, een bestandsnaam of ook maar één byte van wat je koos. Of trek de
+      stekker uit je internet en pak er alsnog een: een tool die je video wegstuurde
+      om hem te laten verwerken zou gewoon stoppen."""
+
+read_first = """
+, <code>src/demux.js</code> voor de lezer die de
+      frames in een MP4 vindt, en <code>src/frames.js</code> voor het deel dat het
+      gevraagde frame decodeert. Geen van beide importeert iets dat een verzoek kan
+      doen."""
+
+howto_heading = "Zo haal je een frame uit een video"
+
+card = """
+            Sla elk frame van een clip op als plaatje, op de eigen grootte van de
+            video: één tegelijk, of om de zoveel seconden een."""
+
+[words]
+plural = "video's"
+choose = "een video"
+analytics_extra = """, en geen
+  frame, tijdcode of plaatje"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Volledige resolutie"
+
+[[facts]]
+text = "Werkt offline"
+
+[[privacy]]
+title = "Je video's kunnen nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en geen
+      daarvan is van ons. Er is hier geen eindpunt waar je bestand verzameld zou
+      kunnen worden, en er staat ook niets in de code dat het daarheen zou sturen als
+      dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Deze tool heeft helemaal geen netwerkfunctie:
+      geen adres om te plakken, niets om te downloaden, geen engine die bij het
+      eerste gebruik binnenkomt. Elke byte die je video aanraakt kwam van deze
+      herkomst toen de pagina laadde."""
+
+[[privacy]]
+title = "Het decoderen gebeurt lokaal."
+body = """
+ De frames gaan door WebCodecs in je eigen
+      browser, of door dezelfde afspeelmotor die je de clip toch al zou laten zien.
+      Het beeld wordt op een canvas op dit apparaat getekend en gaat rechtstreeks
+      naar een download."""
+
+[[privacy]]
+title = "Het bestand wordt een paar megabyte tegelijk gelezen."
+body = """
+ Een video is het
+      enige soort bestand hier dat niet betrouwbaar in het geheugen past, dus het
+      wordt nooit in zijn geheel geladen. De lezer pakt een venster rond het frame dat
+      je vroeg, en daarom opent een clip van twee gigabyte net zo snel als een
+      kleine."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je video mee:
+      geen bestand, geen frame, geen naam, geen grootte, geen lengte en niet het
+      moment waarop je stopte. Elke regel die leest, decodeert of tekent wordt vanaf
+      deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat die niet te zien krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een script
+      van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts. Het is niet
+      meer dan een link: hij meldt geen bezoek en krijgt niets over jou of je video
+      mee."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles op deze pagina
+      blijft werken. Eenvoudiger bewijs bestaat er niet."""
+
+[[howto]]
+title = "Kies een video."
+body = """
+ Sleep een MP4, MOV, M4V of WebM op de kiezer,
+      of zoek er met de hand een op. De browser leest hem rechtstreeks van je schijf,
+      en er gaat ondertussen niets ergens heen."""
+
+[[howto]]
+title = "Zoek het moment."
+body = """
+ Speel hem af en stop waar je wilt, of sleep de
+      schuif. Bij een MP4 gaat de schuif per stap precies één frame verder, dus er
+      wordt niets afgerond tussen wat je ziet en wat je opslaat. De pijltjestoetsen
+      stappen één frame tegelijk, en met <kbd>Shift</kbd> tien."""
+
+[[howto]]
+title = "Kies een formaat."
+body = """
+ PNG bewaart het frame precies zoals het
+      gedecodeerd is, en dat is wat &ldquo;volle kwaliteit&rdquo; hier betekent. JPEG
+      en WebP zijn kleiner en zijn een tweede compressie bovenop die van de video
+      zelf, wat prima is voor een voorbeeld en niet voor iets dat daarna nog bewerkt
+      wordt."""
+
+[[howto]]
+title = "Pak er een, of pak een reeks."
+body = """
+ Eén frame gaat rechtstreeks naar je
+      downloads. &ldquo;Om de N seconden&rdquo; loopt de clip één keer door en neemt
+      bij elke markering een beeld, handig voor contactvellen en miniaturen, en ze
+      komen als één ZIP in plaats van honderd opslaanvragen."""
+
+[[faq]]
+q = "Wordt mijn video ergens naartoe geüpload?"
+a = """
+        Nee. Hij wordt gelezen en gedecodeerd door je eigen browser op je eigen
+        hardware. Deze tool heeft geen serverkant, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat ze mag
+        benaderen: geen daarvan is van ons. Wil je het liever controleren dan
+        aannemen, trek dan de stekker uit je internet en pak alsnog een frame."""
+
+[[faq]]
+q = "Wat betekent &ldquo;volle kwaliteit&rdquo; nu eigenlijk?"
+a = """
+        Twee dingen. Het beeld wordt opgeslagen in de resolutie van de video zelf,
+        niet op de grootte van het voorbeeld op de pagina: een 4K-clip geeft een
+        plaatje van 3840 x 2160. En met PNG gekozen wordt het frame opgeslagen
+        precies zoals het uit de decoder kwam, dus het bestand bevat het beeld dat de
+        video bevat, zonder een tweede ronde compressie eroverheen. Een schermafdruk
+        van een spelervenster geeft je geen van beide: die heeft de grootte van het
+        venster en wordt genomen nadat de speler hem geschaald en kleurbeheerd
+        heeft."""
+
+[[faq]]
+q = "Uit welke videoformaten kan ik een frame halen?"
+a = """
+        MP4, M4V en MOV worden rechtstreeks gelezen, wat er ook in zit: H.264, HEVC,
+        AV1 of VP9, zolang je browser die codec kan decoderen. Dat is het exacte pad,
+        waarop de tool afzonderlijke frames kan aanwijzen. Al het andere dat je
+        browser kan afspelen, WebM voorop, wordt afgehandeld door de speler naar het
+        moment te sturen en te tekenen wat hij toont. Dat levert nog steeds een
+        plaatje op volle grootte op, maar landt op het frame dat de speler koos in
+        plaats van op het frame dat jij vroeg. Een bestand dat de browser niet kan
+        lezen én niet kan afspelen, in de praktijk AVI, WMV, FLV en de meeste MKV's,
+        wordt geweigerd met een bericht dat dat zegt."""
+
+[[faq]]
+q = "Kan ik één frame tegelijk stappen?"
+a = """
+        Bij een MP4 ja, en precies: de tool leest de eigen framelijst van het
+        bestand, dus de pijltjestoetsen bewegen tussen de beelden die er echt in
+        zitten, ook bij een clip waarvan de beeldsnelheid zwabbert en een vaste stap
+        van een dertigste seconde zou weglopen. Op het afspeelpad bestaat zo'n lijst
+        niet, dus is een stap een duwtje van ongeveer één frame, en de pagina zegt
+        dat erbij."""
+
+[[faq]]
+q = "Waarom staat mijn staande telefoonvideo hier wel rechtop?"
+a = """
+        Omdat de draaiing met opzet is toegepast. Een telefoon filmt liggend en
+        schrijft een kwartslag in het bestand in plaats van de pixels te draaien, dus
+        het frame dat een decoder afgeeft ligt op zijn kant en elke speler draait het
+        onderweg naar je scherm. Een tool die die stap overslaat slaat een geloofwaardig
+        plaatje van het goede moment op, maar dan liggend. Deze leest de draaiing van
+        het spoor af en past hem toe voordat er iets getekend wordt."""
+
+[[faq]]
+q = "Zit er een limiet op de grootte of de lengte van de video?"
+a = """
+        Er zit geen limiet in de tool, en het bestand wordt niet in één keer in het
+        geheugen gelezen: het wordt een paar megabyte tegelijk doorlopen, en daarom
+        opent een lange clip net zo snel als een korte. De beelden die je pakt blijven
+        in de pagina tot je ze downloadt, dus het echte plafond is een paar honderd
+        4K-PNG's en niet de video zelf."""
+
+[[faq]]
+q = "Kan ik het beeld daarna verkleinen of bijsnijden?"
+a = """
+        Hier niet, maar hiernaast wel. Deze tool slaat het frame op zoals het is; de
+        grootte of de vorm veranderen is een aparte klus met eigen keuzes erin, en de
+        <a href="../afbeelding-formaat-wijzigen/">Formaatwijzigingstool</a> doet
+        allebei, ook zonder iets te uploaden. Het bestand kleiner maken zonder het
+        beeld te veranderen doet de
+        <a href="../afbeelding-comprimeren/">Afbeeldingscompressor</a>."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen
+        watermerk aan te pas. De site draait op advertenties, en die betalen hem; die
+        advertenties krijgen niets over je video mee."""
+
+[schema]
+browser_requirements = "Vereist JavaScript. Frame-exact pakken heeft een browser met WebCodecs nodig; andere vallen terug op het verplaatsen van de speler."
+description = "Sla elk frame van een video op als PNG, JPEG of WebP op volle grootte in de browser. MP4, MOV en M4V worden frame voor frame via WebCodecs gelezen, dus het gevraagde frame is ook het opgeslagen frame; al het andere dat de browser afspeelt wordt van de speler afgevangen. Er wordt niets geüpload."
+features = [
+  "Slaat een beeld op uit MP4-, MOV-, M4V- en WebM-video",
+  "H.264-, HEVC-, AV1- en VP9-bronnen, gedecodeerd via WebCodecs",
+  "Frame voor frame stappen door de eigen framelijst van het bestand",
+  "PNG voor een exacte kopie van het frame, of JPEG en WebP voor een kleinere",
+  "Om de N seconden een beeld, samen gedownload als één ZIP",
+  "Werkt offline; geen upload, geen account, geen watermerk",
+]
+
+[picker]
+title = "Sleep hier een video naartoe"
+hint = "of klik om te bladeren &mdash; MP4, MOV, M4V, WebM en alles wat deze browser verder afspeelt"

@@ -1,0 +1,16 @@
+#
+# Guida: tagliare un file audio - Italian.
+#
+
+nav = "Tagliare un audio"
+title = "Come tagliare l'audio senza perdere qualità"
+description = "Dove cade davvero un taglio audio, perché può essere esatto quando quello video non può, perché a volte una giunzione fa click, e cosa sta facendo davvero una dissolvenza di cinque millesimi di secondo."
+heading = "Come tagliare l'audio senza perdere qualità"
+lede = """
+    Un taglio audio cade sull'istante esatto che hai segnato, in qualsiasi
+    lettore, sempre &mdash; cosa che con il video non succede. Qui c'è il
+    perché, qual è l'unico vero inghippo, e cosa farci."""
+updated = "21 agosto 2026"
+og_title = "Come tagliare l'audio senza perdere qualità"
+og_description = "Perché un taglio audio può essere esatto quando quello video non può, perché a volte una giunzione fa click, e cosa fa davvero una dissolvenza di cinque millesimi."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

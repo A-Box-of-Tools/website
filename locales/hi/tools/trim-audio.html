@@ -1,0 +1,199 @@
+<main>
+  <!-- चरण 1 &mdash; रिकॉर्डिंग -->
+  <section class="card">
+    <h2><span class="step">1</span> एक रिकॉर्डिंग चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>फ़ाइल</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>साइज़</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>लंबाई</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>आवाज़</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>पढ़ी गई</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- चरण 2 &mdash; निशान -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> मनचाहे हिस्सों पर निशान लगाइए
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      इसे पूरा चलाइए और जहाँ कोई हिस्सा शुरू होना चाहिए वहाँ <kbd>I</kbd> दबाइए
+      और जहाँ ख़त्म होना चाहिए वहाँ <kbd>O</kbd>। जितनी बार चाहें कीजिए: हर जोड़ी
+      नीचे एक पंक्ति बन जाती है, और तैयार फ़ाइल वही पंक्तियाँ हैं, एक के बाद एक।
+      <kbd>U</kbd> आख़िरी वाली मिटा देता है, <kbd>Space</kbd> चलाता और रोकता है,
+      और ऐरो कीज़ पाँच सेकंड कूदती हैं। किसी ऐरो के साथ <kbd>Shift</kbd> दबाए
+      रखिए तो एक बार में दस मिलीसेकंड खिसकेंगे।
+    </p>
+
+    <!-- Built by src/timeline.js: the waveform, a band for every part, the one
+         being marked, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <audio id="preview" class="player" controls preload="metadata"></audio>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">चलाइए</button>
+      <button type="button" id="back-5" class="ghost" title="पाँच सेकंड पीछे">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="पाँच सेकंड आगे">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> शुरुआत</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> अंत</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> वापस</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="चलने की रफ़्तार">
+      <span class="speed-label">रफ़्तार</span>
+      <button type="button" class="speed" data-speed="0.5">0.5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0.75&times;</button>
+      <button type="button" class="speed active" data-speed="1">सामान्य</button>
+      <button type="button" class="speed" data-speed="1.25">1.25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1.5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The parts themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>हिस्से <span class="segment-count" id="segment-count">अभी कोई नहीं</span></h3>
+        <p class="segments-total">
+          कुल रखा हुआ <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">शुरू</th>
+            <th scope="col">अंत</th>
+            <th scope="col">लंबाई</th>
+            <th scope="col"><span class="visually-hidden">क्रियाएँ</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        अभी कुछ भी निशान नहीं लगा। चलते समय <kbd>I</kbd> और फिर <kbd>O</kbd>
+        दबाइए, या ऊपर के बटन इस्तेमाल कीजिए।
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">हाथ से एक पंक्ति जोड़िए</button>
+        <button type="button" id="reset-segments" class="ghost danger">सब हटा दीजिए</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">निशान लोड कीजिए&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="समय वाली फ़ाइल का फ़ॉर्मैट">
+          <option value="seconds" selected>सेकंड</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">निशान सहेजिए</button>
+      </div>
+
+      <p class="field-note">
+        निशान एक सादी टेक्स्ट फ़ाइल में सहेजे जाते हैं, एक पंक्ति में एक हिस्सा,
+        ऊपर चुने फ़ॉर्मैट में। इससे लंबी निशान लगाने की मेहनत टैब बंद होने पर भी
+        बची रहती है, और वही फ़ाइल वीडियो कटर को या इस सजावट को पढ़ने वाले किसी भी
+        और टूल को दी जा सकती है।
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>निशान लगे हिस्सों का क्या करना है</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>इन्हें रखिए</strong>
+          तैयार फ़ाइल वही निशान लगे हिस्से हैं, क्रम से जुड़े हुए।
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>इन्हें काट दीजिए</strong>
+          निशान लगे हिस्से चले जाते हैं, और बाकी सब जुड़ जाता है।
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- चरण 3 &mdash; जो फ़ाइल निकलती है -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> काटिए</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">क्या लिखा जाए</label>
+        <select id="depth">
+          <option value="16" selected>16-बिट WAV &mdash; हर जगह बजता है</option>
+          <option value="32">32-बिट फ़्लोट WAV &mdash; बिल्कुल वही सैंपल</option>
+        </select>
+        <p class="field-note">
+          WAV सैंपलों को जस का तस रखता है, इसलिए उसे लिखने से क्वालिटी नहीं घट
+          सकती। फ़ाइल छोटी नहीं होती: नीचे का अनुमान देखिए।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fade">जोड़ों को नरम कीजिए</label>
+        <select id="fade">
+          <option value="0">बंद &mdash; ठीक सैंपल पर काटिए</option>
+          <option value="0.005" selected>5 मि.से. &mdash; खटका रोकने भर को काफ़ी</option>
+          <option value="0.02">20 मि.से.</option>
+          <option value="0.05">50 मि.से.</option>
+        </select>
+        <p class="field-note" id="fade-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>रखा जा रहा</dt><dd id="sum-parts">&mdash;</dd></div>
+      <div><dt>तैयार लंबाई</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>शुरू होता है</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>जोड़</dt><dd id="sum-joins">&mdash;</dd></div>
+      <div><dt>आवाज़</dt><dd id="sum-sound">&mdash;</dd></div>
+      <div><dt>लगभग</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>ऑडियो काटिए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" class="player" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>ऑडियो डाउनलोड कीजिए</a>
+      </div>
+    </div>
+  </section>
+</main>

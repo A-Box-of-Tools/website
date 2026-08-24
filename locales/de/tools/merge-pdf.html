@@ -1,0 +1,159 @@
+<main>
+  <!-- Schritt 1 &mdash; die Dateien -->
+  <section class="card">
+    <h2><span class="step">1</span> Ihre PDFs auswählen</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <ul id="source-list" class="source-list" hidden></ul>
+  </section>
+
+  <!-- Schritt 2 &mdash; die Seiten -->
+  <section class="card" id="pages-card" hidden>
+    <h2><span class="step">2</span> Die Seiten anordnen</h2>
+
+    <p class="card-lede">
+      Jede Seite jeder ausgewählten Datei, in der Reihenfolge, in der sie
+      herauskommen wird. Ziehen Sie eine am
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span>-Griff, um sie zu
+      verschieben, drehen Sie sie mit den Pfeilen, oder nehmen Sie sie mit dem
+      &times; heraus. Geschrieben ist hier noch nichts. Das Dokument wird erst
+      zusammengesetzt, wenn Sie in Schritt 4 auf den Knopf drücken.
+    </p>
+
+    <div class="toolbar">
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="reverse" class="ghost">Umkehren</button>
+        <button type="button" id="rotate-all" class="ghost">Alle Seiten drehen</button>
+        <button type="button" id="restore" class="ghost">Zurück zum Anfangszustand</button>
+        <button type="button" id="clear-all" class="ghost danger">Von vorn anfangen</button>
+      </div>
+    </div>
+
+    <div class="range-row">
+      <label for="range">Seiten</label>
+      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+             spellcheck="false" aria-describedby="range-note">
+      <button type="button" id="range-keep" class="ghost">Nur diese behalten</button>
+      <button type="button" id="range-drop" class="ghost">Diese entfernen</button>
+      <button type="button" id="range-turn" class="ghost">Diese drehen</button>
+    </div>
+    <p id="range-note" class="field-note">
+      Nach den Nummern unten, die sich laufend neu vergeben. <code>odd</code>,
+      <code>even</code>, <code>all</code> und <code>last</code> funktionieren
+      ebenfalls.
+    </p>
+    <p id="range-error" class="error" role="alert" hidden></p>
+
+    <ul id="page-list" class="page-list"></ul>
+  </section>
+
+  <!-- Schritt 3 &mdash; ein Dokument oder mehrere -->
+  <section class="card" id="output-card" hidden>
+    <h2><span class="step">3</span> Ein Dokument oder mehrere</h2>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">Wie die Seiten herausgeschrieben werden</legend>
+      <div class="presets" id="split-modes" role="radiogroup" aria-label="Wie die Seiten herausgeschrieben werden">
+        <label class="preset">
+          <input type="radio" name="split" value="single" checked>
+          <span class="preset-body">
+            <strong>Ein Dokument</strong>
+            <span class="preset-note">Alles von oben, in dieser Reihenfolge, als ein einziges PDF.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="every">
+          <span class="preset-body">
+            <strong>Alle so und so viele Seiten teilen</strong>
+            <span class="preset-note">
+              Ein langer Scan, geschnitten in Abschnitte von je
+              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+                     inputmode="numeric" aria-label="Seiten je Datei">
+              Seiten.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="at">
+          <span class="preset-body">
+            <strong>Bei Seite&hellip; teilen</strong>
+            <span class="preset-note">
+              Schneiden vor
+              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+                     spellcheck="false" aria-label="Seitenzahlen, vor denen geschnitten wird">
+              &mdash; jede davon beginnt eine neue Datei.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="each">
+          <span class="preset-body">
+            <strong>Jede Seite für sich</strong>
+            <span class="preset-note">Ein PDF je Seite. Praktisch, um ein Unterschriftsblatt herauszulösen.</span>
+          </span>
+        </label>
+        <label class="preset" id="by-file-preset" hidden>
+          <input type="radio" name="split" value="file">
+          <span class="preset-body">
+            <strong>Zurück in die Dateien, aus denen sie kamen</strong>
+            <span class="preset-note">Ein Dokument je ausgewählter Datei, mit Ihren Änderungen darin.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="keep-bookmarks" checked>
+      <span>
+        <strong>Die Lesezeichen behalten</strong>
+        <span class="check-note">
+          Das Inhaltsverzeichnis, das jede Datei mitbrachte, neu aufgebaut gegen
+          die Seiten, die wirklich hier sind: Ein Eintrag, dessen Seite Sie
+          entfernt haben, fällt weg, und einer, dessen Kapitel noch da ist,
+          bleibt. Beim Zusammenfügen mehrerer Dateien landen die Lesezeichen jeder
+          Datei unter einer nach ihr benannten Überschrift.
+        </span>
+      </span>
+    </label>
+
+    <p id="output-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Schritt 4 &mdash; der eine Klick -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Zusammensetzen</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Dokument bauen</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Herunterladen</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <ul id="file-list" class="out-list" hidden></ul>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,88 @@
+<main>
+  <!-- 第一步 &mdash; 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选一个视频</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>文件</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>大小</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>画面</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>时长</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>视频</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>音频</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <div class="stage-wrap" id="preview-wrap" hidden>
+      <video id="preview" class="stage" playsinline controls></video>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 第二步 &mdash; 倒过来 -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">2</span> 倒过来</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="quality">画质</label>
+        <select id="quality">
+          <option value="low">文件更小</option>
+          <option value="medium" selected>均衡</option>
+          <option value="high">最佳画质</option>
+        </select>
+        <p class="field-note">
+          绝不会超过原片在同一画面上花掉的量。倒过来的片子装的是同样的帧，花得
+          更多只会把文件撑大。
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          声音也倒过来
+        </label>
+        <p class="field-note" id="audio-note">
+          一个采样一个采样地掉头，然后重新编码成 AAC。要做无声片子就关掉，那样
+          更快。
+        </p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>输出画面</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>时长</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>帧数</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>走哪条路</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>把视频倒过来</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>下载视频</a>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,237 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Den <a href="../../gif-erstellen/">GIF-Ersteller</a> öffnen, die Bilder
+      hineinziehen, sie in die Reihenfolge bringen, in der sie laufen sollen,
+      einstellen, wie lange jedes Bild steht, und das GIF machen. Es läuft auf
+      der Seite, bevor Sie es speichern.
+    </p>
+    <p>
+      Alles Weitere handelt von den zwei Dingen, die danach schiefgehen: Die
+      Datei ist weit größer als erwartet, oder die Animation läuft langsamer, als
+      die Zahlen versprochen haben. Beides hat bestimmte Ursachen, und keines
+      davon ist ein Fehler des Werkzeugs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum ein GIF so viel größer ist, als man denkt</h2>
+    <p>
+      Ein GIF mit 20 Bildern bei 640 Pixeln liegt regelmäßig bei 8 bis
+      15&nbsp;MB. Dieselbe Animation als MP4 sind ein paar hundert Kilobyte. Das
+      ist kein schlecht gemachtes GIF; das ist das Format.
+    </p>
+    <p>
+      Jedes andere Bewegtbildformat, das Sie benutzt haben, speichert
+      <em>Unterschiede</em>. Ein Video-Codec schreibt ein vollständiges Bild und
+      danach nur noch, was sich bewegt hat und wohin &mdash; weshalb ein Video
+      einer sprechenden Person vor ruhigem Hintergrund pro Bild fast nichts
+      kostet. Ein GIF kann das nicht. Jedes Bild wird als ganze Pixel
+      gespeichert, durch einen verlustfreien Packer geschickt, und das ist der
+      gesamte Werkzeugkasten.
+    </p>
+    <p>
+      Es gibt auch keine Qualitätseinstellung, weil es keinen verlustbehafteten
+      Schritt gibt, den man herunterdrehen könnte. Ein JPEG mit 60&nbsp;%
+      Qualität ist eine echte Wahl mit einem echten Regler dahinter; ein GIF hat
+      nichts Vergleichbares. Die Größe ist also grob
+      <strong>Fläche &times; Anzahl der Bilder</strong>, und der einzige Weg, sie
+      zu bewegen, ist, eine dieser beiden Zahlen zu bewegen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die drei Dinge, die es tatsächlich kleiner machen</h2>
+    <p>
+      In der Reihenfolge, in der sie helfen:
+    </p>
+    <p>
+      <strong>1. Machen Sie es kleiner.</strong> Das ist nicht eine von mehreren
+      Möglichkeiten, das ist die Möglichkeit. Größe ist Fläche, also viertelt das
+      Halbieren der langen Kante die Datei: von 640&nbsp;px auf 320&nbsp;px macht
+      aus 12&nbsp;MB etwa 3&nbsp;MB. Ein GIF auf einer Webseite oder in einem
+      Chatfenster wird ohnehin mit ein paar hundert Pixeln betrachtet.
+      480&nbsp;px sind im Werkzeug genau deshalb die Voreinstellung, und
+      320&nbsp;px sind eine völlig respektable Antwort.
+    </p>
+    <p>
+      <strong>2. Nehmen Sie weniger Bilder.</strong> Zehn Bilder, jedes eine
+      Fünftelsekunde gehalten, sind dieselben zwei Sekunden Animation wie zwanzig
+      Bilder zu einer Zehntelsekunde &mdash; und die halbe Datei. Flüssigkeit
+      kostet Bytes im direkten Verhältnis, geben Sie sie also nur dort aus, wo
+      die Bewegung sie braucht.
+    </p>
+    <p>
+      <strong>3. Dithering aus, und die Farben herunter.</strong> Das ist der
+      unintuitive Punkt. Dithering streut ein feines Muster wechselnder Pixel,
+      um Farben vorzutäuschen, die die Palette nicht hat &mdash; und dieses
+      Muster ist <em>Rauschen</em>, also genau das, was ein verlustfreier Packer
+      nicht packen kann. Bei flachen Grafiken, Bildschirmfotos und Strichzeichnungen
+      kann Ausschalten ein Drittel der Datei sparen und obendrein besser
+      aussehen. Bei Fotografien tauscht es sichtbare Streifenbildung gegen die
+      Ersparnis, also probieren Sie beides und sehen Sie hin.
+    </p>
+    <p>
+      Von 256 auf 64 Farben herunterzugehen hilft ebenfalls, wenn auch weniger
+      als erhofft: Es verkürzt die Codewörter, statt Pixel zu entfernen.
+    </p>
+    <p>
+      Wenn nichts davon es klein genug bekommt, lautet die ehrliche Antwort, dass
+      Sie ein Video machen.
+      <a href="../aus-bildern-ein-video-machen/">Dieselben Bilder in ein MP4 zu
+      verwandeln</a> ergibt vielleicht ein Zehntel der Größe &mdash; und überall,
+      wo ein GIF für etwas anderes als ein <code>&lt;img&gt;</code>-Element
+      angenommen wird, jedes soziale Netzwerk eingeschlossen, wird es beim
+      Hochladen ohnehin in ein Video verwandelt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wie schnell ein GIF wirklich laufen kann</h2>
+    <p>
+      Das Format speichert die Verzögerung jedes Bildes in Hundertstelsekunden,
+      was nahelegt, Sie könnten 0,01&nbsp;s verlangen und hundert Bilder pro
+      Sekunde bekommen. Können Sie nicht.
+    </p>
+    <p>
+      Jeder Browser hebt eine Verzögerung unter zwei Hundertstelsekunden auf eine
+      Zehntelsekunde an. Die Regel stammt aus den 1990ern, als Seiten voller
+      Animationen waren, die so schnell wie möglich laufen sollten, und die
+      Maschinen jener Zeit das nicht überlebten &mdash; und sie hat jeden Grund
+      überdauert, aus dem sie eingeführt wurde. Entfernt wurde sie nie, und sie
+      gilt heute für Ihr GIF.
+    </p>
+    <p>
+      Der praktische Bereich ist also:
+    </p>
+    <ul>
+      <li><strong>0,02&nbsp;s</strong> (50 Bilder pro Sekunde) &mdash; das
+      Schnellste, was ein GIF sein darf, und schneller, als es meist sein
+      muss.</li>
+      <li><strong>0,05&nbsp;s</strong> (20 Bilder pro Sekunde) &mdash; flüssige
+      Animation, und der Ausgangspunkt, wenn Sie Bewegung animieren.</li>
+      <li><strong>0,1&nbsp;s</strong> (10 Bilder pro Sekunde) &mdash; der
+      klassische GIF-Look. Halb so viele Bilder, halb so große Datei, und es
+      wirkt gewollt.</li>
+      <li><strong>0,5&nbsp;s und mehr</strong> &mdash; eine Diaschau. Jedes Bild
+      wird angeschaut, nicht animiert.</li>
+    </ul>
+    <p>
+      Alles unter 0,02&nbsp;s wird nicht angeboten, denn es ist eine Zahl, die in
+      jedem existierenden Browser still zu 0,1&nbsp;s würde.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Palette, und was sie tatsächlich auswählt</h2>
+    <p>
+      Ein GIF-Bild hält höchstens 256 Farben. Eine Fotografie hat Zehntausende.
+      Irgendetwas muss 256 davon auswählen, und diese Wahl ist es, wie das
+      Ergebnis aussieht &mdash; mehr als jede andere Einstellung.
+    </p>
+    <p>
+      Das Werkzeug bietet zwei Wege, sie zu treffen:
+    </p>
+    <p>
+      <strong>Beste Farben für jedes Bild</strong> gibt jedem Bild seine eigenen
+      256. Das sieht am schärfsten aus und ist richtig für eine Reihe
+      unzusammenhängender Fotografien, bei denen jede ohnehin einen völlig
+      anderen Satz will.
+    </p>
+    <p>
+      <strong>Eine Palette für das ganze GIF</strong> baut eine einzige Tabelle
+      aus allen Bildern zugleich. Nehmen Sie sie, wenn die Bilder eine
+      <em>Folge</em> sind &mdash; dieselbe Szene, ein paar Augenblicke
+      auseinander. Mit einer Palette je Bild ändert jede Änderung im Bild, welche
+      256 Farben gewählt werden, und der ganze Hintergrund verschiebt bei jedem
+      Bild leicht seine Farbe. Genau dieses Flimmern lässt ein selbstgemachtes
+      GIF selbstgemacht aussehen. Eine gemeinsame Palette nimmt es weg und macht
+      obendrein die Datei kleiner, weil die Tabelle einmal statt in jedem Bild
+      geschrieben wird.
+    </p>
+    <p>
+      Weniger Farben &mdash; 128, 64, 32 &mdash; lohnt sich bei allem Flachen zu
+      probieren. Eine Logo-Animation mit acht Farben verliert bei 32 nichts, und
+      bei einer Fotografie sehen Sie den Unterschied sofort.
+    </p>
+  </section>
+
+  <section>
+    <h2>Transparenz ist ein Bit, und das ist die ganze Geschichte</h2>
+    <p>
+      Ein GIF-Pixel ist entweder voll gemalt oder ganz unsichtbar. Dazwischen
+      gibt es nichts: kein 50-prozentiger Schatten, keine weiche Kante, kein
+      Verlauf.
+    </p>
+    <p>
+      Haben Ihre Ausgangsbilder also Transparenz, hält das Einschalten die
+      durchsichtigen Flächen durchsichtig &mdash; aber jede kantengeglättete
+      Kante, die ein Übergang von der Form ins Nichts ist, wird auf halbem Weg
+      zu einer harten, sichtbar ausgefransten geschnitten. Runde Formen und Text
+      leiden am meisten.
+    </p>
+    <p>
+      Wenn Sie wissen, auf welcher Farbe das GIF liegen wird, sieht es jedes Mal
+      besser aus, es auf diese Farbe zu legen. Behalten Sie die Transparenz nur,
+      wenn der Hintergrund, auf dem es landet, wirklich unbekannt ist &mdash; und
+      lautet die Antwort &bdquo;es braucht auf jedem Hintergrund eine weiche
+      Kante&ldquo;, ist das Format dafür animiertes PNG oder WebP, nicht GIF.
+    </p>
+  </section>
+
+  <section>
+    <h2>Reihenfolge, Zeiten, und wie die Schleife sitzt</h2>
+    <p>
+      Ein paar Dinge, die zu wissen schneller geht, als sie herauszufinden:
+    </p>
+    <p>
+      <strong>Nach Namen sortieren zählt richtig.</strong> Eine Render- oder
+      Exportfolge sortiert so, wie Sie es meinten, also landet
+      <code>frame_2</code> vor <code>frame_10</code> und nicht dahinter. Nach
+      Datum sortieren bringt eine Kamerarolle zurück in die Reihenfolge der
+      Aufnahme, und das wollen Sie, wenn die Dateinamen wieder bei 0001 begonnen
+      haben.
+    </p>
+    <p>
+      <strong>Geben Sie dem letzten Bild mehr Zeit.</strong> Eine Schleife, in
+      der jedes Bild gleich lang steht, wirkt unerbittlich. Das letzte Bild etwa
+      eine halbe Sekunde zu halten gibt dem Auge einen Ruhepunkt und lässt das
+      Ganze absichtlich aussehen. Jedes Bild hat dafür seine eigene Standzeit.
+    </p>
+    <p>
+      <strong>Eine Schleife sollte nicht springen.</strong> Auf das letzte Bild
+      folgt unmittelbar das erste, sind die beiden also sehr verschieden,
+      schnappt die Schleife. Machen Sie sie entweder ähnlich, oder lehnen Sie
+      sich in den Schnitt, indem Sie das letzte Bild halten.
+    </p>
+    <p>
+      <strong>Einmal abspielen heißt einmal abspielen.</strong> Manche Werkzeuge
+      schreiben eine Schleifenzahl von eins, worüber sich die Dekoder nie ganz
+      einig waren &mdash; ein paar spielen es zweimal. &bdquo;Einmal
+      abspielen&ldquo; schreibt hier gar keine Schleifeninformation, und damit
+      geht jeder je gebaute Dekoder gleich um.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum das keinen Server braucht</h2>
+    <p>
+      Ein GIF zu machen sind zwei Aufgaben, die der Browser nicht anbietet: die
+      Palette wählen und die Pixel mit LZW packen. Keine davon ist groß. Zusammen
+      sind es vielleicht vierhundert Zeilen, sie stehen ausgeschrieben im
+      Repository, und sie laufen auf Ihrem eigenen Rechner wie alles andere hier
+      &mdash; weshalb die Seite auch mit gezogenem Netzstecker weiterarbeitet.
+    </p>
+    <p>
+      Dass so viele GIF-Ersteller hochladen, liegt nicht daran, dass die Aufgabe
+      schwer wäre. Es liegt daran, dass ein Server der Ort ist, an dem die Werbung
+      und die Benutzerkonten sind. Nichts daran, eine Reihe Fotografien in eine
+      Animation zu verwandeln, verlangt, dass Ihre Fotografien den Raum verlassen,
+      in dem sie sind.
+    </p>
+    <p>
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
+      zu Online-Konvertern hochzuladen?</a> nennt vier Prüfungen, die Ihnen
+      dasselbe über jedes Werkzeug sagen, dieses eingeschlossen.
+    </p>
+  </section>

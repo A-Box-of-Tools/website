@@ -1,0 +1,217 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Den <a href="../../standbild-aus-video/">Standbild-Greifer</a> öffnen, den
+      Clip hineinziehen, den Moment suchen und auf <em>Dieses Bild greifen</em>
+      drücken. In Ihren Downloads liegt danach das Einzelbild in der Auflösung
+      des Videos &mdash; 3840&nbsp;&times;&nbsp;2160 aus einem 4K-Clip, egal wie
+      groß die Vorschau auf der Seite war.
+    </p>
+    <p>
+      Lassen Sie das Format auf PNG stehen, solange die Dateigröße kein Problem
+      ist. Der Rest dieser Seite erklärt, warum diese zwei Sätze etwas anderes
+      sind als ein Screenshot, und wann der Unterschied zählt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum der Screenshot eines pausierten Players ein anderes Bild ist</h2>
+    <p>
+      Jeder hat längst einen Weg dafür: anhalten, Screenshot-Taste, Bedienleiste
+      wegschneiden. Das funktioniert, und für ein schnelles Weiterschicken ist es
+      der richtige Aufwand. Nur sind dem Bild bis dahin vier Dinge zugestoßen,
+      und keines davon lässt sich rückgängig machen:
+    </p>
+    <ul>
+      <li>
+        <strong>Es hat die Größe des Fensters, nicht die des Videos.</strong> Ein
+        4K-Clip in einem halbbildschirmgroßen Player ergibt ein Bild von einem
+        halbbildschirmgroßen Player. Jedes Pixel, das in der Datei steckte, aber
+        nicht auf dem Schirm war, ist weg.
+      </li>
+      <li>
+        <strong>Es wurde skaliert.</strong> Was der Player getan hat, um das Bild
+        in dieses Fenster zu bringen &mdash; glätten, schärfen oder schlicht neu
+        abtasten &mdash;, ist eingebrannt.
+      </li>
+      <li>
+        <strong>Es kommt aus der Anzeigekette.</strong> Farbmanagement, und bei
+        einem HDR-Clip ein Tone-Mapping, das für Ihren Monitor gewählt wurde und
+        nicht für die Datei.
+      </li>
+      <li>
+        <strong>Meist ist Mobiliar drauf.</strong> Bedienelemente, ein
+        Fortschrittsbalken, eine Untertitelspur, der Mauszeiger.
+      </li>
+    </ul>
+    <p>
+      Ein Standbild-Greifer überspringt alle vier: Er dekodiert das Einzelbild,
+      das die Datei tatsächlich enthält, und schreibt genau diese Pixel heraus.
+      Das Bild hat die Größe, die das Video hat, und niemand hat darauf gemalt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Genau auf dem gemeinten Bild landen</h2>
+    <p>
+      Das ist der Teil, den die meisten Werkzeuge still falsch machen, und es
+      lohnt sich zu wissen, worauf man bei jedem davon achten sollte.
+    </p>
+    <p>
+      Ein Video ist kein Stapel Bilder in der Reihenfolge, in der Sie sie sehen.
+      Die meisten Einzelbilder sind als Beschreibung gespeichert, wie sie sich
+      von anderen unterscheiden, und in jeder Datei mit B-Frames ist die
+      Speicherreihenfolge nicht die Anzeigereihenfolge. Ein Werkzeug, das einen
+      Player auf einen Zeitpunkt springen lässt und nimmt, was erscheint, ist
+      davon abhängig, wie dieser Player rundet; und eines, das &bdquo;ein Bild
+      weiter&ldquo; als eine Dreißigstelsekunde rechnet, liegt bei jedem Clip
+      falsch, der nicht exakt 30&nbsp;fps hat &mdash; also bei fast jedem
+      Handyvideo, denn die ändern ihre Bildrate mit dem Licht.
+    </p>
+    <p>
+      Der Ausweg ist, die Bildliste der Datei selbst zu lesen und die Bilder über
+      ihren Platz darin anzusprechen. Bei MP4 macht das Werkzeug hier genau das:
+      Der Regler bewegt sich um ein Bild pro Schritt, die Pfeiltasten ebenso, und
+      es kann Ihnen sagen, dass Sie auf Bild 812 von 3.540 stehen, weil es sie
+      gezählt hat. Bei Formaten, die es nicht direkt lesen kann, sagt es das und
+      springt stattdessen um ungefähr ein Bild, statt so zu tun als ob.
+    </p>
+    <p>
+      Ein schneller Test für jeden Standbild-Greifer: Gehen Sie an einer schnellen
+      Bewegung ein paar Bilder vorwärts. Ändert sich das Bild manchmal nicht oder
+      springt es um zwei, rät das Werkzeug an Zeitstempeln herum.
+    </p>
+  </section>
+
+  <section>
+    <h2>In welchem Format speichern</h2>
+    <p>
+      Es gibt eigentlich nur drei Antworten, und die Wahl hängt davon ab, was mit
+      dem Bild als Nächstes passiert.
+    </p>
+    <ul>
+      <li>
+        <strong>PNG</strong> &mdash; die Voreinstellung und das Einzige, was das
+        Bild exakt speichert. Nehmen Sie es, wenn das Standbild bearbeitet,
+        gedruckt, mit einem anderen verglichen oder aufgehoben wird. Es ist auch
+        das größte: rechnen Sie mit ein paar Megabyte aus 1080p und rund acht aus
+        4K, denn ein fotografisches Bild ist nicht das, worin PNGs Kompression
+        gut ist.
+      </li>
+      <li>
+        <strong>JPEG</strong> &mdash; ein Zehntel der Größe und überall
+        akzeptiert. Nehmen Sie es für ein Vorschaubild, eine Voransicht oder
+        alles, was direkt in ein Dokument oder einen Chat wandert. Es ist eine
+        zweite verlustbehaftete Runde auf der des Videos und damit der falsche
+        Ausgangspunkt für weitere Bearbeitung.
+      </li>
+      <li>
+        <strong>WebP</strong> &mdash; bei gleicher sichtbarer Qualität noch
+        kleiner und inzwischen überall unterstützt, wo es zählt. Der eine
+        Vorbehalt ist alte Software: Manche Desktop-Programme öffnen so etwas
+        immer noch nicht.
+      </li>
+    </ul>
+    <p>
+      Eines sollte klar sein: Ein Einzelbild aus einem Video ist bereits ein
+      komprimiertes Bild. Es als PNG zu speichern macht das nicht rückgängig und
+      holt keine Details zurück, die der Codec beim Aufnehmen weggeworfen hat.
+      Was PNG Ihnen bringt, ist, dass nichts <em>zweimal</em> weggeworfen wird.
+      Wenn Sie das Standbild danach farblich korrigieren oder zuschneiden, zählt
+      das; wenn Sie es jemandem schicken, nicht.
+    </p>
+  </section>
+
+  <section>
+    <h2>Viele auf einmal greifen</h2>
+    <p>
+      Alle paar Sekunden ein Standbild ist eine andere Aufgabe als ein Standbild
+      an einer Stelle, und sie kommt öfter vor, als es klingt: eine Übersicht
+      über eine lange Aufnahme, Vorschaubilder, aus denen ein Titelbild gewählt
+      wird, eine gleichmäßige Stichprobe, um Schärfe oder Belichtung über einen
+      Dreh hinweg zu prüfen.
+    </p>
+    <p>
+      Intervall einstellen, Serien-Knopf drücken, und das Werkzeug läuft den Clip
+      einmal durch und nimmt an jeder Marke ein Bild. Zwei Hinweise aus der
+      Praxis. Halten Sie das Intervall bei langen Clips großzügig &mdash; jede
+      Sekunde ein Bild aus einer Stunde Material sind 3.600 Bilder, weshalb das
+      Werkzeug einen Durchlauf bei 500 deckelt. Und wählen Sie dafür JPEG, wenn
+      nichts dagegen spricht: Hundert 4K-PNGs sind fast ein Gigabyte, das die
+      Seite hält, bevor Sie auch nur eines heruntergeladen haben.
+    </p>
+    <p>
+      Sie kommen als eine einzige ZIP-Datei zurück, benannt nach ihrem Timecode,
+      sodass sie sich in der Reihenfolge ihres Auftretens sortieren und jedes
+      wieder im Video zu finden ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hochformat-Videos und das klassisch gekippte Standbild</h2>
+    <p>
+      Falls Sie je ein Einzelbild aus einem Handyvideo geholt haben und es lag
+      auf der Seite: Das ist der Grund. Ein Handy filmt im Querformat und
+      schreibt eine Vierteldrehung in die Datei, statt die Pixel zu drehen.
+      Player lesen diese Drehung und wenden sie an; ein Werkzeug, das nur die
+      Pixel liest, tut das nicht, und heraus kommt ein völlig korrektes Bild des
+      richtigen Moments, um 90 Grad gedreht.
+    </p>
+    <p>
+      An der Datei ist nichts falsch, und das Nachdrehen kostet nichts außer
+      Ärger. Das Werkzeug hier liest die Drehung aus der Spur und wendet sie vor
+      dem Zeichnen an, sodass ein Hochformat-Clip ein Hochformat-Bild ergibt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was nicht zurückzuholen ist</h2>
+    <p>
+      Ein Standbild kann nur so gut sein wie das Einzelbild, aus dem es stammt,
+      und zwei Dinge begrenzen das unabhängig vom Werkzeug.
+    </p>
+    <p>
+      <strong>Bewegungsunschärfe steckt im Bild.</strong> Hat sich das Motiv
+      während der Belichtung bewegt, ist jedes Einzelbild dieser Bewegung
+      unscharf, und es gibt kein scharfes darin zu finden. Kürzer belichten ist
+      der einzige Ausweg, und das muss vor der Aufnahme passieren.
+    </p>
+    <p>
+      <strong>Die Kompression steckt ebenfalls im Bild.</strong> Video wird weit
+      härter komprimiert als ein Foto, und noch härter bei den Bildern zwischen
+      den Keyframes. Sieht ein Standbild klotzig aus, gehen Sie ein, zwei Bilder
+      in die eine oder andere Richtung: Ein Keyframe ist vollständig gespeichert
+      und sieht oft merklich sauberer aus als seine Nachbarn.
+    </p>
+    <p>
+      Und wenn das Standbild danach eine andere Größe oder Form braucht, machen
+      Sie das als eigenen Schritt: Der
+      <a href="../../bildgroesse-aendern/">Bildskalierer</a> skaliert, schneidet
+      zu und wandelt um, und <a href="../bild-skalieren/">sein Ratgeber</a>
+      beschreibt, was jedes davon kostet.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum das kein Hochladen braucht</h2>
+    <p>
+      Video im Browser zu dekodieren ist neu und es ist echt: WebCodecs gibt
+      Zugriff auf denselben Hardware-Dekoder, mit dem Ihr Handy Videos abspielt.
+      Die Arbeit passiert auf dem Gerät, das die Datei schon hat, was bei einem
+      mehrere Gigabyte großen Clip auch die einzig sinnvolle Anordnung ist
+      &mdash; eine Stunde 4K hochzuladen, um ein 8&nbsp;MB großes Bild
+      zurückzubekommen, ist in jeder Richtung ein schlechtes Geschäft.
+    </p>
+    <p>
+      Das Werkzeug hier hat keinerlei Netzfunktion, und die
+      <code>Content-Security-Policy</code> der Seite nennt jede Adresse, die sie
+      kontaktieren darf &mdash; keine davon gehört zu dieser Site. Trennen Sie
+      die Internetverbindung und greifen Sie trotzdem ein Standbild, wenn Sie
+      lieber nachsehen als sich etwas sagen zu lassen.
+    </p>
+    <p>
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
+      zu Online-Konvertern hochzuladen?</a> nennt drei weitere Prüfungen, die Sie
+      an jedem Werkzeug vornehmen können.
+    </p>
+  </section>

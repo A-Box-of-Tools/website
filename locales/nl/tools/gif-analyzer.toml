@@ -1,0 +1,310 @@
+#
+# GIF-analyse - Dutch.
+#
+# Overrides for tools/gif-analyzer/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "GIF-analyse"
+heading = "GIF&nbsp;analyseren <span class=\"h1-kw\">&mdash; wat er echt in een GIF zit</span>"
+tagline = "Frames, vertragingen, paletten, en waar elke byte heen ging."
+
+title = "GIF analyseren &mdash; frames, vertragingen, palet en bestandsgrootte"
+description = "Haal een GIF uit elkaar in je browser: elk frame met zijn vertraging en opruimregel, de kleurtabellen, het aantal herhalingen en een byte-voor-byte overzicht van waar de bestandsgrootte heen ging. Er wordt niets geüpload."
+og_title = "GIF-analyse &mdash; een GIF uit elkaar halen in je browser"
+og_description = "Elk frame, elke vertraging, elk palet, en een eerlijke afrekening van waar de bytes heen gingen. Het bestand wordt op je eigen apparaat gelezen en nooit geüpload."
+og_image_alt = "GIF-analyse - frames, vertragingen, palet en waar de bytes heen gingen"
+
+pledge = """
+    Het bestand wordt door je eigen browser geopend en uit elkaar gehaald: de
+    blokstructuur, het uitpakken van de LZW-compressie en elk frame dat op deze
+    pagina getekend wordt, gebeuren op dit apparaat. Aan de andere kant van deze
+    pagina zit geen server waar een bestand naartoe zou kunnen, ook al zou iets hier
+    dat willen."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en analyseer een GIF. Geen enkel verzoek
+      draagt een afbeelding, een miniatuur of een bestandsnaam. Of trek de stekker uit
+      je internet en analyseer er alsnog een."""
+
+read_first = """
+, <code>src/gif.js</code> voor de bloklezer die het
+      bestand doorloopt, <code>src/lzw.js</code> voor het uitpakken en
+      <code>src/budget.js</code> voor de byteboekhouding. In geen daarvan staat een
+      regel die het netwerk zou kunnen bereiken."""
+
+howto_heading = "Zo analyseer je een GIF"
+
+card = """
+            Open een GIF en zie wat erin zit: elk frame met zijn vertraging en
+            opruimregel, de kleurtabellen, en een eerlijke afrekening van waar de
+            bestandsgrootte heen ging."""
+
+[words]
+plural = "GIF's"
+choose = "een GIF"
+analytics_extra = """, en geen
+  frame, palet of opmerking uit je bestand"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Bestanden blijven op je apparaat"
+
+[[privacy]]
+title = "Je GIF kan nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en geen
+      daarvan is van ons. Er is hier geen eindpunt waar je bestand verzameld zou
+      kunnen worden, en er staat ook niets in de code dat het daarheen zou sturen als
+      dat er wel was. Hier stond ooit <code>connect-src 'none'</code>, en dat was
+      absoluut. Advertenties hebben dat gekost, en dat erbij zeggen hoort bij de
+      afspraak."""
+
+[[privacy]]
+title = "De lezer bestaat uit vier bestanden in deze repository."
+body = """
+ Niets hier gebruikt de
+      eigen GIF-decoder van de browser om uit te zoeken wat er in het bestand zit,
+      want die decoder vertelt niet waar een byte heen ging. Dus wordt het formaat met
+      de hand gelezen: <code>src/gif.js</code> loopt de blokken langs,
+      <code>src/lzw.js</code> pakt de pixels uit, <code>src/frames.js</code> stapelt ze
+      en <code>src/budget.js</code> telt de onderdelen weer op en controleert of ze
+      samen de grootte van het bestand zijn."""
+
+[[privacy]]
+title = "Opmerkingen en metadata krijg jij te zien, en verder niemand."
+body = """
+
+      Een GIF kan een opmerkingenblok bevatten, een XMP-pakket dat een bewerking
+      beschrijft, of een kleurprofiel, en deze pagina drukt ze allemaal af. Ze komen
+      op het scherm voor je neus te staan en gaan verder nergens heen: er is in deze
+      repository geen enkel analytics-event dat er iets van meedraagt, en de pagina
+      zou het niet kunnen versturen als dat er wel was."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je bestand mee:
+      niet het bestand, geen miniatuur, geen naam, geen grootte, geen aantal frames en
+      geen opmerking. Elke regel die een GIF leest, uitpakt of tekent, wordt vanaf deze
+      herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat die niet te zien krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een script
+      van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts. Het is niet
+      meer dan een link: hij meldt geen bezoek en krijgt niets over jou of je
+      bestanden mee. Er gebeurt niets zolang je er niet op klikt, en waar je dan op
+      zou klikken is de site van iemand anders."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles op deze pagina
+      blijft werken. Eenvoudiger bewijs bestaat er niet: een tool die je GIF wegstuurde
+      om hem te laten analyseren zou stoppen op het moment dat je de stekker eruit
+      trok."""
+
+[[howto]]
+title = "Kies een GIF."
+body = """
+ Sleep hem op de kiezer of zoek hem met de hand
+      op. De browser leest hem rechtstreeks van je schijf, en er gaat ondertussen
+      niets ergens heen."""
+
+[[howto]]
+title = "Lees eerst de samenvatting."
+body = """
+ De canvasgrootte, het aantal frames,
+      hoe lang de animatie zegt te duren en hoe lang hij werkelijk speelt. Die laatste
+      twee lopen vaker uiteen dan mensen verwachten, en de reden staat in de volgende
+      sectie."""
+
+[[howto]]
+title = "Kijk naar wat eruit springt."
+body = """
+ Elke regel daar is aan jouw
+      bestand gemeten: vertragingen die geen enkele browser aanhoudt, een ontbrekend
+      herhalingsblok, kleurtabellen waar niets naar verwijst, metadata die groter is
+      dan sommige frames. Niets ervan is een gok naar wat je bedoeld had."""
+
+[[howto]]
+title = "Zie waar de bytes heen gingen."
+body = """
+ Elke byte van het bestand
+      staat in precies één rij, en de rijen zijn samen het bestand. Zit het meeste
+      niet in &ldquo;gecomprimeerde pixels&rdquo;, dan zegt de rest van de tabel waar
+      het wel zit."""
+
+[[howto]]
+title = "Loop de frames langs."
+body = """
+ Elk frame toont zijn vertraging, zijn
+      rechthoek, zijn opruimregel en zijn grootte. Wissel tussen &ldquo;het canvas na
+      elk frame&rdquo; en &ldquo;alleen wat elk frame opslaat&rdquo;. Met het tweede
+      zie je of het bestand geoptimaliseerd is, want een goed gemaakte GIF slaat
+      minuscule rechthoekjes op en een slecht gemaakte elke keer het hele plaatje."""
+
+[[howto]]
+title = "Neem het rapport mee als je het nodig hebt."
+body = """
+ De hele analyse als
+      platte tekst, om in een bericht te plakken of naast het bestand te bewaren. Het
+      wordt in de pagina opgebouwd uit wat al op je scherm staat."""
+
+[[faq]]
+q = "Wordt mijn GIF ergens naartoe geüpload?"
+a = """
+        Nee. Het bestand wordt gelezen, uitgepakt en getekend door je eigen browser op
+        je eigen hardware. Deze tool heeft geen serverkant, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat ze mag
+        benaderen: geen daarvan is van ons. Trek de stekker eruit en hij analyseert
+        nog steeds GIF's."""
+
+[[faq]]
+q = "Waarom speelt mijn GIF trager af dan de vertragingen zeggen?"
+a = """
+        Omdat elke browser weigert een vertraging onder twee honderdsten van een
+        seconde aan te houden en het frame in plaats daarvan een tiende laat staan. De
+        regel is in 1996 in Netscape geschreven, voor de draaiende wereldbollen en
+        bordjes met &ldquo;in aanbouw&rdquo; van toen, en is sindsdien in elke browser
+        overgenomen; niemand heeft hem ooit weggehaald.
+        <br><br>
+        Een GIF waarvan alle frames 0,01 s zeggen, speelt dus niet op 100 frames per
+        seconde. Hij speelt op 10, vijf tot tien keer trager dan wat de maker ervan
+        bedoelde. Deze pagina laat beide getallen zien, wat het bestand zegt en wat
+        het echt gaat doen, en markeert de frames die het treft. De oplossing zit in
+        het programma dat het bestand maakte: schrijf 0,02 in plaats van 0,01."""
+
+[[faq]]
+q = "Wat betekent &ldquo;opruimen&rdquo;?"
+a = """
+        Wat er op het scherm blijft staan als de tijd van een frame om is, en het is
+        het veld dat bepaalt of een animatie er goed uitziet of uitsmeert.
+        <br><br>
+        <strong>Laten staan</strong> betekent dat het volgende frame eroverheen
+        schildert, en dat wil je als frames dekkend zijn en elkaar bedekken.
+        <strong>Terug naar de achtergrond</strong> veegt eerst de rechthoek van het
+        frame schoon, en dat heeft transparantie nodig: zonder dat laten de
+        doorzichtige stukken van het volgende frame het vorige eronder zien.
+        <strong>Herstellen wat eronder zat</strong> zet terug wat er stond voordat dit
+        frame tekende, en zo wordt een klein bewegend voorwerp op een stilstaande
+        achtergrond opgeslagen. En <strong>niet opgegeven</strong> betekent dat het
+        bestand niets zei, en elke viewer behandelt dat als &ldquo;laten
+        staan&rdquo;."""
+
+[[faq]]
+q = "Waarom is mijn GIF zo groot?"
+a = """
+        De tabel &ldquo;Waar de bytes heen gingen&rdquo; beantwoordt dat voor jouw
+        bestand in plaats van in het algemeen, en er zijn maar een paar mogelijke
+        antwoorden.
+        <br><br>
+        Zit bijna alles in <strong>gecomprimeerde pixels</strong>, dan is het bestand
+        eenvoudigweg veel plaatje: een GIF slaat elk frame op als hele pixels, zonder
+        bewegingscompensatie en zonder kwaliteitsknop, dus de grootte is ruwweg de
+        oppervlakte maal het aantal frames. Minder frames, een kleiner formaat of
+        minder kleuren zijn de enige knoppen.
+        <br><br>
+        Zit een grote plak in <strong>kleurtabellen</strong>, dan schrijft het bestand
+        een palet per frame van 768 bytes per stuk. Zit een grote plak in
+        <strong>metadata</strong>, dan heeft een bewerkingsprogramma een XMP-pakket
+        achtergelaten, en dat kan eruit zonder het plaatje aan te raken. En als alle
+        frames het hele canvas beslaan, heeft de encoder nooit uitgezocht welk deel er
+        echt veranderde, en bij alles wat gefilmd of opgenomen is, is dat het grootste
+        deel van het bestand."""
+
+[[faq]]
+q = "Wat is het verschil tussen de twee frameweergaven?"
+a = """
+        <strong>Het canvas na elk frame</strong> is wat een viewer op dat moment laat
+        zien: dit frame getekend bovenop wat de frames ervoor achterlieten.
+        <strong>Alleen wat elk frame opslaat</strong> is de rechthoek die het bestand
+        werkelijk voor dat frame bevat, op zichzelf, met niets eronder.
+        <br><br>
+        De tweede is de interessante. Een GIF mag van een frame alleen het veranderde
+        deel opslaan, en daarom kan een schermopname van een vrijwel stilstaand venster
+        klein zijn. Is elk frame in jouw bestand het volledige canvas, dan heeft
+        niemand dat werk gedaan, en aan de animatie zie je dat niet: alleen aan wat er
+        opgeslagen is."""
+
+[[faq]]
+q = "Er staat dat mijn bestand een opmerking of XMP bevat. Wat is dat?"
+a = """
+        Tekst die met het plaatje meereist en die geen enkele viewer tekent. Een
+        opmerkingenblok is meestal de naam van het programma dat het bestand schreef.
+        Een XMP-pakket is de XML die een fotobewerker schrijft om vast te leggen wat
+        hij deed, en dat kan de bewerkingsgeschiedenis, de programmaversie en soms de
+        naam van de maker bevatten.
+        <br><br>
+        Deze pagina drukt beide volledig af, want de interessante vraag bij metadata is
+        wat erin staat, niet dat het er is. Jij krijgt het te zien en verder niemand:
+        niets in deze repository leest er iets van aan wie dan ook voor."""
+
+[[faq]]
+q = "Kan hij een kapotte GIF openen?"
+a = """
+        Hij probeert het, en vertelt waar hij het opgaf. Een bestand dat midden in een
+        blok ophoudt, dat een byte heeft waar een blokmarkering hoort, of dat een frame
+        draagt waarvan de gecomprimeerde data te vroeg opraakt, laat nog steeds alles
+        zien wat tot dat punt leesbaar was, met het probleem bovenaan benoemd. Dat is
+        precies het geval waarvoor je een analyse het hardst wilt, dus het hele bestand
+        weggooien om één slechte byte zou verkeerd zijn."""
+
+[[faq]]
+q = "Verandert hij mijn bestand?"
+a = """
+        Nee. Deze tool leest alleen. Er is geen uitvoerbestand, geen hercodering en
+        geen knop hier die een GIF schrijft: het enige wat je kunt downloaden is een
+        kopie van de analyse als platte tekst. Je origineel ligt onaangeroerd op je
+        schijf, wat meteen het eerlijke antwoord is op de vraag wat er gebeurt als je
+        het tabblad sluit."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er komt geen account, geen inlog en geen proefperiode aan te
+        pas. Er zit geen limiet op de bestandsgrootte behalve het geheugen van je eigen
+        apparaat. De site draait op advertenties, en die betalen hem; die advertenties
+        krijgen niets over je bestand mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij werkt
+        gewoon door. Dat is meteen de eenvoudigste manier om te bewijzen dat er niets
+        geüpload wordt, want een tool die je GIF wegstuurde om hem te laten analyseren
+        zou ermee ophouden zodra je de stekker eruit trok."""
+
+[schema]
+description = "Haal een GIF uit elkaar in de browser: elk frame met zijn vertraging, rechthoek en opruimregel, de kleurtabellen, het aantal herhalingen, eventuele metadata en een byte-voor-byte afrekening van de bestandsgrootte. Er wordt niets geüpload."
+features = [
+  "Elk frame met vertraging, rechthoek, opruimregel en gecomprimeerde grootte",
+  "Beide weergaven van een frame: wat het opslaat, en het canvas dat een viewer ziet",
+  "Een bytebegroting die optelt tot het bestand, zodat niets onverklaard blijft",
+  "Kleurtabellen uitgetekend, met de items waar geen pixel naar verwijst gemarkeerd",
+  "Leest opmerkingen, XMP-pakketten, ICC-profielen en het Netscape-herhalingsblok",
+  "Meldt vertragingen die geen browser aanhoudt, en op welke snelheid het echt speelt",
+  "Opent beschadigde en afgekapte bestanden en zegt waar ze ophouden",
+  "Werkt offline; geen upload, geen account, geen wijziging aan je bestand",
+]
+
+[picker]
+title = "Sleep hier een GIF naartoe"
+hint = "of klik om te bladeren &mdash; geanimeerd of stil, elk formaat"

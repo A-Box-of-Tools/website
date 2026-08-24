@@ -1,0 +1,312 @@
+#
+# Pdf samenvoegen, splitsen en pagina's herordenen - Dutch.
+#
+# Overrides for tools/merge-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pdf samenvoegen & splitsen"
+heading = "Pdf&nbsp;samenvoegen <span class=\"h1-kw\">&mdash; en pagina's splitsen en herordenen</span>"
+tagline = "Pagina's verschuiven zonder ritje naar een server."
+
+title = "Pdf samenvoegen, splitsen en pagina's herordenen &mdash; gratis, zonder uploaden"
+description = "Voeg pdf's samen, splits er een in meerdere en sleep pagina's in de volgorde die je wilt, allemaal binnen je eigen browser. Er wordt niets geüpload, er komt geen account aan te pas, en het klaargemaakte bestand wordt opnieuw geopend en nageteld voordat het je aangeboden wordt."
+og_title = "Pdf-pagina's samenvoegen, splitsen en herordenen &mdash; er wordt niets geüpload"
+og_description = "Documenten bij elkaar zetten, er een in stukken knippen, pagina's verplaatsen, draaien, weghalen. Je eigen browser doet het, dus het bestand verlaat je apparaat nooit."
+og_image_alt = "Pdf-pagina's samenvoegen, splitsen en herordenen zonder ze te uploaden"
+
+pledge = """
+    Elk document dat je kiest wordt geopend, uit elkaar gehaald en weer
+    weggeschreven in het geheugen van dit apparaat, door code die vanaf dit adres
+    geserveerd is. Niets hier kan een upload doen, en aan de andere kant van deze
+    pagina zit geen server om er een aan te nemen."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en voeg twee bestanden samen. Geen enkel
+      verzoek draagt een pagina, een plaatje of een bestandsnaam. Of trek de stekker
+      uit je internet en voeg ze alsnog samen."""
+
+read_first = """
+ en <code>src/assemble.js</code> voor het hele
+      kopieerwerk: hoe een pagina uit het ene document gelicht wordt en in het
+      andere terechtkomt, en wat er met opzet achterblijft. Dat bestand kan het
+      netwerk niet bereiken, en de lezer en de schrijver ernaast evenmin."""
+
+howto_heading = "Zo voeg je een pdf samen, splits je hem of herorden je hem"
+
+card = """
+            Zet documenten bij elkaar, knip er een in meerdere en sleep pagina's in
+            de volgorde die je wilt. Links en bladwijzers worden opnieuw opgebouwd
+            zodat ze de pagina's volgen waar ze naar wijzen, en elk klaargemaakt
+            bestand wordt opnieuw geopend en nageteld voordat je het krijgt
+            aangeboden."""
+
+[words]
+plural = "documenten"
+choose = "pdf's"
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Bestanden blijven op je apparaat"
+
+[[privacy]]
+title = "Je documenten kunnen nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en geen
+      daarvan is van ons. Deze tool voegt daar niets aan toe, want hij heeft geen
+      eigen netwerkfunctie, zelfs geen optionele. Er is hier geen eindpunt waar je
+      bestanden verzameld zouden kunnen worden, en er staat ook niets in de code dat
+      ze daarheen zou sturen als dat er wel was."""
+
+[[privacy]]
+title = "Samenvoegen is de klus die het meest de moeite waard is om níét te uploaden."
+body = """
+ De
+      documenten die mensen bij elkaar zetten zijn juist die die ergens vandaan
+      komen: een contract met zijn handtekeningpagina, een paspoortscan met een
+      bankafschrift, een doktersbrief met een aanvraagformulier. Een online
+      samenvoeger heeft ze dan allemaal, op één plek, al op volgorde. Deze heeft een
+      pagina in je browser en geen andere helft."""
+
+[[privacy]]
+title = "Het hele formaat staat in deze repository."
+body = """
+ Een pdf is een lijst
+      objecten en een tabel van waar elk object begint. <code>src/objects.js</code>
+      leest die syntaxis, <code>src/reader.js</code> volgt de tabel,
+      <code>src/assemble.js</code> kopieert pagina's tussen documenten en
+      <code>src/writer.js</code> schrijft het resultaat weg. Geen van de vier
+      importeert iets dat een verzoek kan doen. Er wordt geen bibliotheek opgehaald
+      en er wordt niets op een server gerenderd."""
+
+[[privacy]]
+title = "Versleutelde bestanden worden geweigerd in plaats van geopend."
+body = """
+
+      Een pdf met een wachtwoord erop wordt geweigerd, ook het soort dat scanners
+      maken met een leeg wachtwoord en dat technisch gezien open zou gaan. De
+      beveiliging van een document afhalen is een andere klus dan zijn pagina's
+      verschuiven, en het stilletjes doen zou een verrassend eigenzinnige zet zijn
+      voor een tool."""
+
+[[privacy]]
+title = "Het klaargemaakte bestand zegt niets over waar het gemaakt is."
+body = """
+
+      Geen producerregel, geen aanmaakdatum, geen naam van de tool. Het draagt ook
+      het XMP-pakket en de privéblokken niet mee die een opmaakprogramma achterlaat:
+      die horen bij het document dat er eerst was, niet bij het document dat je net
+      hebt gebouwd. Alles wat in de pagina's zelf staat wordt exact gekopieerd: deze
+      tool verplaatst pagina's, hij herschrijft niet wat erop staat."""
+
+[[privacy]]
+title = "Acties die niet &ldquo;ga naar een pagina&rdquo; zijn, gaan niet mee."
+body = """
+
+      Een pdf kan instructies bevatten die bij het openen uitgevoerd worden: speel
+      dit af, verstuur dit formulier naar dat adres, voer deze JavaScript uit.
+      Pagina's die door deze tool gaan houden hun links naar andere pagina's en naar
+      webadressen, en raken de rest kwijt. Dat je andermans pagina's herordent, is
+      geen reden om het scriptwerk van hun document mee te nemen naar jouw nieuwe
+      bestand."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je documenten
+      mee: geen bestand, geen pagina, geen naam, geen grootte en geen aantal
+      pagina's. Elke regel die een pdf leest, kopieert of schrijft, wordt vanaf deze
+      herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat die niet te zien krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een script
+      van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts. Het is niet
+      meer dan een link: hij meldt geen bezoek en krijgt niets over jou of je
+      documenten mee. Er gebeurt niets zolang je er niet op klikt, en waar je dan op
+      zou klikken is de site van iemand anders."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles op deze pagina
+      blijft werken. Eenvoudiger bewijs bestaat er niet: een tool die je documenten
+      wegstuurde om ze te laten samenvoegen zou ermee ophouden."""
+
+[[howto]]
+title = "Kies je pdf's."
+body = """
+ Sleep ze op de kiezer of zoek ze met de hand
+      op, en voeg er later gerust nog meer toe: de pagina's van elk bestand komen
+      achteraan de lopende volgorde te staan, en juist daardoor kun je twee mappen
+      los van elkaar samenvoegen. De browser leest ze rechtstreeks van je schijf."""
+
+[[howto]]
+title = "Zet de pagina's in de volgorde die je wilt."
+body = """
+
+      Sleep een pagina aan zijn handvat, of duw hem met de pijltjes. Draai er een die
+      scheef gescand is, haal er een weg, of typ <code>1-3, 8, 12-</code> in het vak
+      om er in één keer een hele reeks te bewaren, te verwijderen of te draaien. De
+      nummers worden onderweg hernummerd, dus wat je ziet is altijd wat het
+      klaargemaakte bestand wordt."""
+
+[[howto]]
+title = "Zeg of het één document wordt of meerdere."
+body = """
+
+      Eén is het gebruikelijke antwoord. De rest zijn manieren om te knippen: om de
+      zoveel pagina's, bij paginanummers die jij noemt, één bestand per pagina, of
+      terug in de bestanden waar de pagina's vandaan kwamen. Meer dan één bestand
+      krijg je als één ZIP, zodat het één keer opslaan is in plaats van vijftig
+      keer."""
+
+[[howto]]
+title = "Bouw het, en lees de regel die zegt dat het nagekeken is."
+body = """
+
+      Als de documenten geschreven zijn, wordt elk daarvan door dezelfde lezer op
+      deze pagina opnieuw geopend en worden zijn pagina's geteld. Klopt dat niet met
+      wat je gevraagd had, dan wordt de run als mislukt gemeld en krijg je geen
+      download aangeboden."""
+
+[[faq]]
+q = "Worden mijn pdf's ergens naartoe geüpload?"
+a = """
+        Nee. Ze worden gelezen, gekopieerd en geschreven door je eigen browser op je
+        eigen hardware. Deze tool heeft geen serverkant, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat ze mag
+        benaderen: geen daarvan is van ons. Deze tool heeft helemaal geen optionele
+        netwerkfunctie."""
+
+[[faq]]
+q = "Hoeveel bestanden kan ik samenvoegen, en hoe groot mogen ze zijn?"
+a = """
+        Er staat geen limiet in de tool geschreven. De limiet is je eigen apparaat:
+        de documenten blijven in het geheugen zolang eraan gewerkt wordt, dus een
+        laptop voegt een paar honderd megabyte zonder morren samen en gaat ergens
+        daarboven worstelen. Er wordt niets in rekening gebracht, afgeknepen, van een
+        watermerk voorzien of in een wachtrij gezet, want er is niemand aan de andere
+        kant om dat te doen."""
+
+[[faq]]
+q = "Kost samenvoegen of splitsen kwaliteit?"
+a = """
+        Nee. Op een pagina wordt niets opnieuw gecodeerd, opnieuw getekend of opnieuw
+        gecomprimeerd. De inhoudsstroom van elke pagina en elk lettertype, plaatje en
+        vectortekening waar hij naar verwijst worden byte voor byte overgenomen, dus
+        tekst blijft selecteerbaar en doorzoekbaar en een foto is dezelfde foto. Het
+        enige wat verandert is de volgorde van de pagina's en de structuur eromheen."""
+
+[[faq]]
+q = "Wat gebeurt er met bladwijzers en links?"
+a = """
+        Allebei worden ze opnieuw opgebouwd in plaats van weggegooid. Een bladwijzer
+        waarvan de pagina nog in de uitvoer zit wijst naar waar die pagina heen
+        verhuisd is; een waarvan je de pagina hebt weggehaald verdwijnt, tenzij er nog
+        items onder hangen, en dan blijft hij staan als kopje. Bij het samenvoegen van
+        meerdere bestanden komen de bladwijzers van elk bestand onder een kopje met
+        zijn naam. Links tussen pagina's worden op dezelfde manier meegenomen,
+        inclusief de benoemde bestemmingen die Word en LaTeX schrijven, en een link
+        waarvan het doel niet mee is gekomen blijft liever zonder werking achter dan
+        de lezer ergens verkeerd heen te sturen. Links naar webadressen blijven zoals
+        ze zijn."""
+
+[[faq]]
+q = "Wat gaat er niet mee?"
+a = """
+        Vier dingen, en de tool zegt het bij de resultaten in plaats van in de kleine
+        lettertjes. De getagde leesvolgordeboom die schermlezers gebruiken, de
+        paginalabels (de nummering &ldquo;iii, iv, 1, 2&rdquo;), ingebedde bijlagen,
+        en elke actie die noch &ldquo;ga naar een pagina&rdquo; noch &ldquo;open een
+        webadres&rdquo; is, de JavaScript van het document daarbij. De eerste twee
+        beschrijven een volgorde die niet meer bestaat zodra pagina's verplaatst zijn;
+        het laatste is niet iets waar je om vroeg in een nieuw bestand. Als de tagging
+        van een document er voor jou toe doet, bewaar het origineel er dan bij."""
+
+[[faq]]
+q = "Blijven ingevulde formulieren bestaan?"
+a = """
+        Ja. Formuliervelden en wat erin getypt is komen met hun pagina's mee, en het
+        nieuwe document wordt als formulier geregistreerd zodat lezers het ook zo
+        behandelen. Eén ding om te weten bij het samenvoegen: twee velden met dezelfde
+        naam zijn voor elke lezer één veld, dus als je twee kopieën van hetzelfde
+        formulier samenvoegt, vult een vakje op de ene pagina hetzelfde vakje op de
+        andere in. De tool merkt dat geval op en zegt het erbij."""
+
+[[faq]]
+q = "Kan hij een pdf met wachtwoord openen?"
+a = """
+        Nee, en dat is met opzet. Een versleuteld document wordt geweigerd met een
+        bericht dat dat zegt, ook als het wachtwoord leeg is, en zo slaan heel wat
+        scanners en kopieerapparaten op. De beveiliging van een bestand afhalen is een
+        andere klus dan zijn pagina's verschuiven, en een tool die dat stilletjes deed
+        zou iets doen waar je niet om gevraagd had."""
+
+[[faq]]
+q = "Waarom zijn er geen paginavoorbeelden?"
+a = """
+        Omdat een pagina tekenen een volledige pdf-renderer betekent, met lettertypen,
+        verlopen, transparantiegroepen en overvloeimodi, en dat is een megabyte of meer
+        aan engine om op te halen en te draaien voor een setje miniaturen. Wat de
+        tegels in plaats daarvan tonen is waar het herordenen echt op draait: het
+        paginanummer, de vorm en het formaat van het papier, de draaiing waarmee hij
+        geschreven wordt, en uit welk bestand hij kwam. Een liggende scan in een stapel
+        staande pagina's valt zo nog steeds meteen op."""
+
+[[faq]]
+q = "Gaat het klaargemaakte bestand overal open?"
+a = """
+        Ja. De uitvoer wordt geschreven als pdf 1.5, of in de hoogste versie die een
+        van de bestanden die je gaf nodig had, en 1.5 wordt begrepen door elke lezer
+        die sinds 2003 is uitgekomen. De tool bewijst dat bovendien op je eigen
+        apparaat: hij opent elk klaargemaakt bestand opnieuw en telt de pagina's door
+        de paginaboom te doorlopen, voordat hij het je aanbiedt."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er komt geen account, geen inlog en geen proefperiode aan te
+        pas, en geen andere groottelimiet dan wat het geheugen van je eigen apparaat
+        toelaat. De site draait op advertenties, en die betalen hem; die advertenties
+        krijgen niets over je documenten mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij
+        werkt gewoon door. Dat is meteen de eenvoudigste manier om te bewijzen dat er
+        niets geüpload wordt, want een tool die je documenten wegstuurde om ze te
+        laten samenvoegen zou ermee ophouden zodra je de stekker eruit trok."""
+
+[schema]
+description = "Voeg pdf's samen, splits er een in meerdere bestanden en herorden, draai of verwijder pagina's in je browser. Pagina's worden lokaal tussen documenten gekopieerd, dus er wordt nooit een bestand geüpload."
+features = [
+  "Voegt willekeurig veel pdf's samen, en laat je onderweg bestanden blijven toevoegen",
+  "Sleep pagina's op volgorde, draai ze, haal ze weg, of pak een hele reeks in één keer",
+  "Splitst in één bestand per pagina, om de zoveel pagina's, bij paginanummers, of terug in de bronbestanden",
+  "Bouwt bladwijzers en interne links opnieuw op tegen de pagina's die overbleven",
+  "Behoudt ingevulde formuliervelden, en meldt het als er twee dezelfde naam delen",
+  "Opent en telt elk klaargemaakt bestand opnieuw voordat het wordt aangeboden",
+  "Werkt offline; geen upload, geen account, geen groottelimiet",
+]
+
+[picker]
+title = "Sleep hier je pdf's naartoe"
+hint = "of klik om te bladeren &mdash; één bestand of meerdere, en je kunt er later nog bij doen"

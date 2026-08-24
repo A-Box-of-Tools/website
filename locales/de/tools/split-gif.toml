@@ -1,0 +1,276 @@
+#
+# GIF-Zerleger - German.
+#
+# Overrides for tools/split-gif/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "GIF-Zerleger"
+heading = "GIF&nbsp;zerlegen <span class=\"h1-kw\">&mdash; jedes Einzelbild als eigenes PNG</span>"
+tagline = "Jedes Einzelbild einzeln als PNG heraus."
+
+title = "GIF in Einzelbilder zerlegen &mdash; kostenlos, ohne Upload"
+description = "Ein animiertes GIF in seine Einzelbilder zerlegen und jedes davon als PNG speichern, kostenlos und vollständig im Browser. Transparenz und Timing bleiben erhalten. Es wird nichts hochgeladen, und es geht auch offline."
+og_title = "GIF-Zerleger &mdash; eine Animation auseinandernehmen, im Browser"
+og_description = "Jedes Einzelbild eines GIFs als eigenes PNG, mit unversehrter Transparenz und den Anzeigedauern. Die Datei wird auf Ihrem eigenen Gerät gelesen und nie hochgeladen."
+og_image_alt = "GIF-Zerleger - jedes Einzelbild eines GIFs als eigenes PNG"
+
+pledge = """
+    Das GIF wird von Ihrem eigenen Browser gelesen, entpackt und gezeichnet, und
+    jedes PNG entsteht im Arbeitsspeicher dieses Geräts. Am anderen Ende dieser
+    Seite steht gar kein Server, an den eine Animation gehen könnte, selbst wenn
+    hier irgendetwas das wollte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und zerlegen Sie ein GIF. Keine einzige Anfrage
+      trägt ein Bild, ein Einzelbild oder einen Dateinamen. Oder trennen Sie die
+      Internetverbindung und zerlegen Sie trotzdem eines."""
+
+read_first = """
+, <code>src/gif.js</code> für den Leser, der die
+      Einzelbilder entpackt, und <code>src/compose.js</code> für die Regeln, nach
+      denen sie übereinandergelegt werden. In keinem von beiden steht eine Zeile,
+      die ins Netz greifen könnte."""
+
+howto_heading = "So zerlegen Sie ein GIF in seine Einzelbilder"
+
+card = """
+            Eine Animation auseinandernehmen: jedes Einzelbild als eigenes PNG,
+            mit erhaltener Transparenz und notierter Anzeigedauer. Entpackt wird
+            das GIF auf Ihrem eigenen Gerät."""
+
+[words]
+plural = "GIFs"
+choose = "ein GIF"
+analytics_extra = """, und kein
+  Einzelbild, keine Anzeigedauer und kein Bild"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Ihr GIF hat keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Dateien eingesammelt werden könnten, und im Code steht auch
+      nichts, das sie dorthin schicken würde, gäbe es einen. Früher stand hier
+      <code>connect-src 'none'</code>, was keine Ausnahme kannte. Die Werbung hat
+      das gekostet, und das gehört dazugesagt."""
+
+[[privacy]]
+title = "Der GIF-Leser sind zwei Dateien in diesem Repository."
+body = """
+ Ein Browser
+      spielt ein GIF ab, rückt seine Bestandteile aber nicht heraus, also wird
+      das Format hier selbst gelesen. <code>src/gif.js</code> ist der Container
+      samt LZW-Entpacker, <code>src/compose.js</code> sind die Entsorgungsregeln,
+      die festlegen, wie ein Einzelbild aussieht, wenn die vorherigen darunter
+      liegen. Zum Öffnen einer Datei wird nichts nachgeladen, und beim ersten
+      Gebrauch wird auch keine Engine heruntergeladen."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihre
+      Animation übergeben, weder eine Datei noch ein Einzelbild, ein Name, eine
+      Größe oder eine Anzahl. Jede Zeile, die ein Bild liest, entpackt, zeichnet
+      oder schreibt, kommt von dieser Domain selbst und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihre Dateien bekommt er nichts. Es passiert nichts, solange
+      Sie nicht klicken, und was Sie dann öffnen, ist die Seite von jemand
+      anderem."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht: Ein
+      Werkzeug, das Ihre Animation zum Zerlegen wegschickt, bliebe in dem Moment
+      stehen, in dem Sie den Stecker ziehen."""
+
+[[howto]]
+title = "Wählen Sie das GIF aus."
+body = """
+ Ziehen Sie es auf das Auswahlfeld oder
+      suchen Sie es von Hand heraus. Der Browser liest es direkt von Ihrer
+      Festplatte, und die Seite sagt Ihnen, was sie gefunden hat: die Größe, die
+      Zahl der Einzelbilder, die Spieldauer und wie oft die Animation
+      wiederholt."""
+
+[[howto]]
+title = "Entscheiden Sie, was in jedem PNG stehen soll."
+body = """
+ <strong>Das
+      Einzelbild, wie es erscheint</strong> ist das, was fast alle wollen, also
+      das ganze Bild in diesem Moment der Animation. <strong>Nur die Pixel, die
+      dieses Einzelbild speichert</strong> ist der Flicken, den die Datei
+      tatsächlich enthält, in seiner eigenen Größe und an seiner eigenen Stelle.
+      So bleibt ein GIF klein, und so sieht die Animation gerade nicht aus."""
+
+[[howto]]
+title = "Entscheiden Sie, was mit der Transparenz passiert."
+body = """
+ PNG behält
+      sie, und das ist die ehrliche Voreinstellung. Füllen Sie sie stattdessen
+      mit einer Farbe, wenn die Einzelbilder irgendwo landen, wo Transparenz
+      ignoriert und daraus sonst Schwarz wird."""
+
+[[howto]]
+title = "Suchen Sie sich die Einzelbilder aus."
+body = """
+ Voreingestellt sind alle.
+      &bdquo;Jedes zweite Einzelbild behalten&ldquo; dünnt eine lange Aufnahme
+      aus, und die Häkchen im Raster übersteuern das. An der Nummerierung ändert
+      sich dabei nie etwas, Einzelbild 42 heißt also weiter Einzelbild 42, wie
+      wenige seiner Nachbarn Sie auch behalten haben."""
+
+[[howto]]
+title = "Laden Sie sie herunter."
+body = """
+ Einzeln aus dem Raster oder alle
+      zusammen als ein ZIP, damit es eine Speicherabfrage gibt statt hunderter.
+      Das ZIP kann eine <code>frames.txt</code> mitbringen, in der steht, wie
+      lange jedes Einzelbild stand. Das ist das eine, was ein Ordner voller PNGs
+      von sich aus nicht sagen kann."""
+
+[[faq]]
+q = "Wird mein GIF irgendwohin hochgeladen?"
+a = """
+        Nein. Ihr eigener Browser liest, entpackt und zeichnet die Datei auf Ihrer
+        eigenen Hardware, und jedes PNG entsteht hier im Arbeitsspeicher. Eine
+        Serverseite hat dieses Werkzeug nicht, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die sie
+        kontaktieren darf; keine davon gehört uns. Trennen Sie die Netzverbindung,
+        und es zerlegt weiter GIFs."""
+
+[[faq]]
+q = "Warum sieht ein Einzelbild aus wie ein kleiner Ausschnitt?"
+a = """
+        Weil genau das in der Datei steht. Ein GIF ist ein erstes Bild und danach
+        lauter Flicken: Jedes spätere Einzelbild speichert nur das Rechteck, das
+        sich geändert hat, und alles andere auf dem Schirm ist das, was die
+        vorherigen dort hinterlassen haben. Ein sprechender Kopf vor einer
+        ruhigen Wand speichert deshalb ein Gesicht pro Einzelbild statt eines
+        ganzen Bildes, und nur darum ist das Format nicht riesig.
+        <br><br>
+        Zu sehen bekommen Sie das, weil &bdquo;Nur die Pixel, die dieses
+        Einzelbild speichert&ldquo; ausgewählt ist. Stellen Sie auf &bdquo;Das
+        Einzelbild, wie es erscheint&ldquo; um, und jedes PNG ist das ganze Bild,
+        so wie die Animation in diesem Moment aussieht."""
+
+[[faq]]
+q = "Bleibt die Transparenz erhalten?"
+a = """
+        Ja. GIF-Transparenz ist ein einziges Bit, ein Pixel ist also entweder
+        gemalt oder unsichtbar und dazwischen gibt es nichts, und PNG speichert
+        genau das. Die Einzelbilder kommen also mit unversehrten transparenten
+        Flächen heraus. Wenn Ihnen ein deckender Hintergrund lieber ist, stellen
+        Sie &bdquo;Transparente Flächen&ldquo; auf eine Farbe. Die wird ins PNG
+        geschrieben und lässt sich hinterher nicht wieder herausnehmen."""
+
+[[faq]]
+q = "Warum sind die Anzeigedauern nicht die Zahlen, die ich erwartet habe?"
+a = """
+        Ein GIF speichert jede Dauer in Hundertstelsekunden, und Browser heben
+        alles unter zwei davon seit den Neunzigern auf eine Zehntelsekunde an.
+        Diese Regel wurde für die rotierenden Globen jener Zeit geschrieben und
+        nie wieder entfernt. Ein Einzelbild, in dessen Datei 0,01 s steht, läuft
+        deshalb überall mit 0,10 s. Dieses Werkzeug zeigt die Dauer so an, wie sie
+        wirklich abgespielt wird, und schreibt daneben, was in der Datei steht,
+        sobald beides auseinandergeht."""
+
+[[faq]]
+q = "Kann ich die Einzelbilder wieder zusammensetzen?"
+a = """
+        Ja, mit dem <a href="../gif-erstellen/">GIF-Ersteller</a> auf dieser Seite
+        oder mit allem anderen, was einen Ordner voller Bilder annimmt. Genau
+        dafür ist die <code>frames.txt</code> im ZIP da: Beim Zerlegen geht das
+        Timing verloren, weil ein PNG nirgends festhalten kann, wie lange es stand,
+        also trägt die Liste die Dauer und die Position jedes Einzelbildes mit
+        hinaus."""
+
+[[faq]]
+q = "In welchen Formaten lassen sich die Einzelbilder speichern?"
+a = """
+        In PNG, und mit Absicht nur in PNG. Ein GIF-Einzelbild hat höchstens 256
+        Farben und ein Bit Transparenz. PNG speichert das exakt und verlustfrei,
+        während JPEG die Transparenz wegwerfen, Farben erfinden würde, die das
+        Einzelbild nie hatte, und aus flächiger Grafik meist eine
+        <em>größere</em> Datei macht. Wenn Sie JPEGs brauchen, wandeln Sie die
+        PNGs hinterher mit der
+        <a href="../bildgroesse-aendern/">Bildgrößenänderung</a> um."""
+
+[[faq]]
+q = "Gibt es eine Grenze, wie viele Einzelbilder gelesen werden?"
+a = """
+        Eine feste Grenze gibt es nicht. Die praktische Obergrenze ist der
+        Arbeitsspeicher Ihres Geräts: Ein GIF wird beim Lesen auf etwa ein Byte
+        je Pixel und Einzelbild aufgeblasen, eine kleine Datei kann also sehr viel
+        Speicher bedeuten. Diese Seite hört dann lieber auf zu lesen, als den Tab
+        sterben zu lassen. Passiert das, sagt sie es und gibt die Einzelbilder
+        heraus, die sie bekommen hat."""
+
+[[faq]]
+q = "Öffnet es auch ein beschädigtes GIF?"
+a = """
+        Meistens. Abgebrochene Downloads, eine fehlende Endmarke und ein letztes
+        Einzelbild, das mitten im Datenstrom aufhört, sind alle häufig, und ein
+        Leser, der so etwas ablehnt, nützt genau bei den Dateien nichts, die man
+        am dringendsten auseinandernehmen möchte. Was vollständig ist, kommt
+        heraus, mit einem Hinweis darauf, was nicht stimmte. Abgelehnt wird nur,
+        was gar kein GIF ist."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung und keine
+        Testphase. Auf den Einzelbildern liegt auch kein Wasserzeichen. Bezahlt
+        wird die Seite über Werbung, und den Anzeigen wird nichts über Ihre
+        Dateien übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird. Ein Werkzeug, das Ihre Animation zum
+        Verarbeiten wegschickt, bliebe in dem Moment stehen, in dem Sie den
+        Stecker ziehen."""
+
+[schema]
+description = "Ein animiertes GIF in seine Einzelbilder zerlegen und jedes davon als PNG speichern. Entpackt wird die Datei in Ihrem Browser, es wird also nie eine Animation hochgeladen."
+features = [
+  "Jedes Einzelbild eines GIFs als eigenes PNG, mit erhaltener Transparenz",
+  "Das Einzelbild, wie es erscheint, oder nur die Pixel, die es speichert",
+  "Dauer, Position, Größe und Entsorgungsart für jedes Einzelbild",
+  "Jedes zweite oder fünfte Einzelbild behalten, oder die gewünschten ankreuzen",
+  "Alles in einem ZIP, wahlweise mit Zeitliste zum Wiederzusammensetzen",
+  "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
+]
+
+[picker]
+title = "GIF hierher ziehen"
+hint = "oder klicken und auswählen &mdash; animiert oder nicht, jede Größe"

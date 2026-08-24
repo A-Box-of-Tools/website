@@ -93,6 +93,11 @@ complete = true
 # Cropping the picture is 화면-자르기, above.
 "trim-video" = "동영상-자르기"
 "video-to-gif" = "동영상-gif-변환"
+"gif-analyzer" = "gif-분석"
+"grab-frame" = "동영상-캡처"
+"merge-pdf" = "pdf-합치기"
+"split-gif" = "gif-프레임-분리"
+"trim-audio" = "오디오-자르기"
 # 암호가 아니라 비밀번호입니다. 암호는 암호학의 암호고, 로그인에 쓰는 것을
 # 한국 사이트는 모두 비밀번호라고 부릅니다.
 "password-generator" = "비밀번호-생성기"
@@ -129,6 +134,11 @@ complete = true
 "guides/trim-a-video" = "가이드/동영상-구간-자르기"
 "guides/turn-a-video-into-a-gif" = "가이드/동영상-gif-만들기"
 "guides/turn-images-into-a-video" = "가이드/사진으로-동영상-만들기"
+"guides/grab-a-frame-from-a-video" = "가이드/동영상-캡처하는-법"
+"guides/merge-and-split-pdf-files" = "가이드/pdf-합치기와-나누기"
+"guides/split-a-gif-into-frames" = "가이드/gif-프레임-분리하기"
+"guides/trim-an-audio-file" = "가이드/오디오-파일-자르기"
+"guides/whats-inside-a-gif" = "가이드/gif-파일-구조"
 "guides/verify-a-file-checksum" = "가이드/체크섬으로-다운로드-확인하기"
 
 #

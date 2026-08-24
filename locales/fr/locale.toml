@@ -74,6 +74,15 @@ complete = true
 # out of the address and carried by the page title; QR is what the search is
 # about, and a slug naming both would be too long to read in a URL bar.
 "qr-barcode" = "generateur-de-qr-code"
+"gif-analyzer" = "analyser-un-gif"
+"gif-maker" = "creer-un-gif"
+"grab-frame" = "extraire-une-image-d-une-video"
+"id-photo" = "photo-d-identite"
+"merge-pdf" = "fusionner-des-pdf"
+"reverse-video" = "inverser-une-video"
+"split-gif" = "decouper-un-gif-en-images"
+"text-tools" = "formater-du-json"
+"trim-audio" = "couper-un-audio"
 # Un nom, comme le générateur de QR code au-dessus, et pour la même raison :
 # c'est la formule qui se tape. Le singulier, parce que la recherche est
 # faite par quelqu'un qui en veut un.
@@ -110,6 +119,15 @@ complete = true
 "guides/turn-a-video-into-a-gif" = "guides/transformer-une-video-en-gif"
 "guides/embed-an-image-in-css" = "guides/integrer-une-image-dans-le-css"
 "guides/make-a-qr-code" = "guides/creer-un-qr-code"
+"guides/format-json-without-uploading-it" = "guides/formater-du-json"
+"guides/grab-a-frame-from-a-video" = "guides/extraire-une-image-d-une-video"
+"guides/make-a-gif-from-images" = "guides/creer-un-gif-a-partir-d-images"
+"guides/make-a-passport-photo" = "guides/faire-une-photo-d-identite"
+"guides/merge-and-split-pdf-files" = "guides/fusionner-et-diviser-des-pdf"
+"guides/reverse-a-video" = "guides/inverser-une-video"
+"guides/split-a-gif-into-frames" = "guides/decouper-un-gif-en-images"
+"guides/trim-an-audio-file" = "guides/couper-un-fichier-audio"
+"guides/whats-inside-a-gif" = "guides/ce-qu-il-y-a-dans-un-gif"
 "guides/verify-a-file-checksum" = "guides/verifier-la-somme-de-controle-d-un-telechargement"
 
 #

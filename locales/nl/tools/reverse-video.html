@@ -1,0 +1,89 @@
+<main>
+  <!-- Stap 1 &mdash; het bestand -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies een video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Bestand</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Grootte</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Beeld</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Lengte</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <div class="stage-wrap" id="preview-wrap" hidden>
+      <video id="preview" class="stage" playsinline controls></video>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; het omkeren -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">2</span> Keer hem om</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="quality">Kwaliteit</label>
+        <select id="quality">
+          <option value="low">Kleiner bestand</option>
+          <option value="medium" selected>In balans</option>
+          <option value="high">Beste kwaliteit</option>
+        </select>
+        <p class="field-note">
+          Nooit meer dan het origineel aan hetzelfde beeld uitgaf: een omgekeerde
+          clip bevat dezelfde frames, dus meer uitgeven maakt het bestand alleen
+          groter.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Het geluid ook omkeren
+        </label>
+        <p class="field-note" id="audio-note">
+          Sample voor sample omgedraaid en daarna opnieuw als AAC gecodeerd. Laat
+          het uit voor een stille clip, dat gaat sneller.
+        </p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Uitgaand beeld</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Lengte</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Frames</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Hoe</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Video omkeren</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Video downloaden</a>
+      </div>
+    </div>
+  </section>
+</main>

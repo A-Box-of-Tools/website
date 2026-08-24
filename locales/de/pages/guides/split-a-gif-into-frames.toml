@@ -1,0 +1,18 @@
+#
+# Ratgeber: ein animiertes GIF zerlegen - German.
+#
+
+nav = "GIF zerlegen"
+title = "Ein GIF in Einzelbilder zerlegen (und was ein Einzelbild wirklich ist)"
+description = "Jedes Bild eines animierten GIFs als PNG: warum manche Bilder nur ein kleiner Ausschnitt sind, was mit der Transparenz passiert und wie Sie die Zeiten behalten, um die Animation wieder zusammenzusetzen."
+heading = "Ein GIF in Einzelbilder zerlegen"
+lede = """
+    Die Bilder herauszubekommen kostet einen Drop und einen Klick. Verstehen
+    lohnt sich, was ein &bdquo;Einzelbild&ldquo; in einem GIF überhaupt ist,
+    denn das Format speichert etwas anderes als das, was Sie sehen &mdash; und
+    genau daran liegt es, dass Ihr vierzehntes Bild ein Rechteck mit einem Mund
+    darin ist."""
+updated = "21. August 2026"
+og_title = "Ein GIF in Einzelbilder zerlegen"
+og_description = "Jedes Bild eines GIFs als PNG: warum manche nur ein Ausschnitt sind, was mit der Transparenz passiert und wie die Zeiten erhalten bleiben."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

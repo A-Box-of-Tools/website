@@ -1,0 +1,296 @@
+  <section>
+    <h2>La risposta corta</h2>
+    <p>
+      Apri <a href="../../formattare-json/">Testo e codice</a>, incolla il JSON
+      nella casella, e leggilo. L'impaginazione avviene mentre scrivi, il
+      linguaggio viene capito dal testo, e il rientro è di due spazi finché non
+      dici altrimenti. Non viene caricato niente, perché non c'è nessun posto
+      dove andare: il parser sono qualche centinaio di righe di JavaScript che
+      girano nella scheda che hai già aperta.
+    </p>
+    <p>
+      Tutto quello che segue è quanto vale la pena sapere prima di incollare un
+      file di configurazione in una qualsiasi delle alternative: cosa a un
+      formattatore è permesso cambiare, cosa cambiano lo stesso quasi tutti, e
+      come si legge l'errore quando il file non si lascia proprio leggere.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cos'è formattare, e cosa non è</h2>
+    <p>
+      JSON non ha quasi sintassi. Un oggetto, un array, una stringa, un numero, e
+      le tre parole <code>true</code>, <code>false</code> e <code>null</code>.
+      Fra quei pezzi, gli spazi non vogliono dire niente: il file
+    </p>
+    <pre><code>{"name":"thing","tags":["local","offline"]}</code></pre>
+    <p>
+      e il file
+    </p>
+    <pre><code>{
+  "name": "thing",
+  "tags": [
+    "local",
+    "offline"
+  ]
+}</code></pre>
+    <p>
+      sono lo stesso documento. Formattare è passare dal primo al secondo, e
+      <em>il lavoro è tutto lì</em>. Qualsiasi altra cosa un formattatore faccia
+      al tuo file &mdash; riordinare, arrotondare, buttare via &mdash; è un
+      cambiamento a quello che il documento dice, fatto senza che nessuno lo
+      chiedesse.
+    </p>
+    <p>
+      Tre di quei cambiamenti sono abbastanza comuni da meritare un nome, perché
+      sono silenziosi e perché sono quello che fa di suo un formattatore scritto
+      in un pomeriggio.
+    </p>
+  </section>
+
+  <section>
+    <h2>Le tre cose che un formattatore non deve cambiare</h2>
+
+    <h3>L'ordine delle tue chiavi</h3>
+    <p>
+      Questa è quella che frega la gente. Il modo ovvio di scrivere un
+      formattatore JSON in JavaScript è chiamare <code>JSON.parse</code> e poi
+      <code>JSON.stringify</code> con un rientro, e quella coppia non conserva
+      l'ordine delle chiavi che sembrano numeri interi:
+    </p>
+    <pre><code>Object.keys(JSON.parse('{"10":"a","2":"b","x":"c"}'))
+// ['2', '10', 'x']</code></pre>
+    <p>
+      Non è un errore nel codice di nessuno. Gli oggetti JavaScript sono
+      specificati per mettere per prime le chiavi che sembrano interi, in ordine
+      numerico crescente, e ogni valore che passa da <code>JSON.parse</code>
+      diventa un oggetto JavaScript. Un formattatore costruito così rimescolerà
+      un file indicizzato per id, per numero di porta, per anno o per codice di
+      stato HTTP, e lo farà senza dire una parola.
+    </p>
+    <p>
+      Se conti o no dipende dal file. Gli oggetti JSON in linea di principio non
+      hanno ordine, quindi tecnicamente non si rompe niente &mdash; ma il diff
+      contro la versione nel tuo repository sarà enorme, la revisione illeggibile,
+      e se qualcosa più a valle legge il file in ordine, il comportamento cambia.
+    </p>
+
+    <h3>Le cifre dei tuoi numeri</h3>
+    <p>
+      JSON non dice quanto grande può essere un numero, e JavaScript sì: ogni
+      numero è un double. Quindi un formattatore che legge in un double e lo
+      ristampa perde tutto quello che un double non riesce a tenere.
+    </p>
+    <pre><code>JSON.stringify(JSON.parse('{"id":123456789012345678901}'))
+// {"id":123456789012345680000}
+
+JSON.stringify(JSON.parse('{"size":1e999}'))
+// {"size":null}</code></pre>
+    <p>
+      Un id da ventun cifre &mdash; un id di Twitter, uno Snowflake, un
+      riferimento bancario &mdash; torna indietro come un numero diverso, e un
+      valore troppo grande per un double torna come <code>null</code>. Tutti e due
+      i file si leggono ancora, e nessuno dei due è il file da cui eri partito.
+    </p>
+    <p>
+      La via d'uscita è non leggere affatto i numeri. A un formattatore serve solo
+      sapere dove un numero comincia e finisce per impaginare il documento; il suo
+      valore non gli serve mai, quindi la cosa sicura è copiare le cifre esattamente
+      come erano scritte. È quello che fa lo strumento qui.
+    </p>
+
+    <h3>Le tue chiavi doppie</h3>
+    <p>
+      <code>{"a": 1, "a": 2}</code> è JSON valido, e lo standard si rifiuta di
+      dire quale delle due vince. Nella pratica i parser non sono d'accordo: quasi
+      tutti tengono l'ultima, alcuni la prima, qualcuno rifiuta il documento. Un
+      formattatore che ne stampa una in silenzio ha preso quella decisione al posto
+      tuo, e ha nascosto il fatto ben più utile che ce n'erano due &mdash; che
+      quasi sempre è un errore nel file, e uno che vorresti vedere.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando il file non si lascia leggere</h2>
+    <p>
+      Quasi tutto il JSON che fallisce non ha niente di esotico. È una di sei cose
+      circa, e l'errore ti dice quale, se dice dov'è in termini che puoi trovare.
+      Uno scostamento tipo <code>posizione 4193</code> non lo fa; una riga e una
+      colonna sì.
+    </p>
+    <ul>
+      <li>
+        <strong>Una virgola di troppo alla fine.</strong> <code>{"a": 1,}</code> è
+        lecito in JavaScript e non in JSON. La singola causa più frequente, di
+        solito lasciata lì da chi ha cancellato l'ultima voce di un elenco.
+      </li>
+      <li>
+        <strong>Apici singoli.</strong> <code>{'a': 1}</code> è un letterale di
+        oggetto JavaScript, non JSON. Stringhe e chiavi vanno entrambe fra
+        virgolette doppie, e le chiavi vanno sempre fra virgolette.
+      </li>
+      <li>
+        <strong>Una chiave senza virgolette.</strong> <code>{a: 1}</code>, lo
+        stesso errore dall'altro verso &mdash; di solito perché si è incollato
+        qualcosa preso dal codice invece che da un file.
+      </li>
+      <li>
+        <strong>Commenti.</strong> <code>// così</code> non è JSON nemmeno lui. È
+        JSONC, quello che usano le impostazioni di VS Code e
+        <code>tsconfig.json</code>, e altrove non si legge. Se un commento deve
+        sopravvivere, la convenzione è una chiave: <code>"_comment": "..."</code>.
+      </li>
+      <li>
+        <strong>Un vero a capo o una tabulazione dentro a una stringa.</strong>
+        Vanno scritti come <code>\n</code> e <code>\t</code>. È quello che di
+        solito va storto quando un comando da terminale o un certificato sono
+        stati incollati a mano dentro a un valore.
+      </li>
+      <li>
+        <strong>Un numero che JSON non ammette.</strong> Gli zeri iniziali
+        (<code>01</code>), un punto decimale da solo (<code>.5</code>),
+        <code>NaN</code>, <code>Infinity</code> e <code>+1</code> sono tutte cose
+        che la gente scrive, e nessuna di loro è JSON.
+      </li>
+    </ul>
+    <p>
+      Una che non è un errore e ci somiglia: un file che comincia con un contrassegno
+      dell'ordine dei byte. Nella maggior parte degli editor è invisibile, non è uno
+      spazio, e rende inatteso il primissimo carattere del documento. Se l'errore è
+      a riga 1, colonna 1 su un file che sembra perfetto, è quello.
+    </p>
+  </section>
+
+  <section>
+    <h2>Minificare, e quanto poco di solito rende</h2>
+    <p>
+      Spremere via gli spazi è la stessa operazione al contrario, e conviene essere
+      realisti su cosa ci si guadagna. Gli spazi si ripetono moltissimo, e ogni
+      server e ogni browser fra te e chi legge comprimono già la risposta con gzip
+      o Brotli, che su quel tipo di ripetizione vanno benissimo.
+    </p>
+    <p>
+      Quindi il JSON minificato spesso è più piccolo del trenta per cento come file
+      e solo di qualche punto percentuale sul filo. I posti dove si ripaga davvero
+      sono quelli senza compressione davanti: un valore in una colonna di database,
+      un campo dentro a una riga di log, un contenuto dentro a un codice QR, o un
+      documento che stai per mettere in Base64 dentro a un'intestazione.
+    </p>
+    <p>
+      Quello che costa è la leggibilità, e se il file sta in un repository ti costa
+      anche i diff &mdash; un file su una riga sola cambia tutto ogni volta che
+      dentro cambia qualcosa. Minifica in uscita dall'editor, non in entrata.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ordinare le chiavi, e quando invece no</h2>
+    <p>
+      Ordinare le chiavi di ogni oggetto qui è un'opzione e non una cosa applicata
+      di default, perché è un cambiamento vero al file e il suo valore dipende
+      tutto da cosa stai per fare.
+    </p>
+    <p>
+      Aiuta quando stai confrontando due documenti che dovrebbero dire la stessa
+      cosa &mdash; la configurazione di due ambienti, la risposta di un'API prima e
+      dopo una modifica &mdash; e uno dei due elenca le chiavi in un altro ordine.
+      Ordinarli entrambi prima trasforma un diff di tutto in un diff delle due
+      righe che davvero cambiano.
+    </p>
+    <p>
+      Fa danno quando l'ordine stava facendo qualcosa. Un <code>package.json</code>
+      ha delle convenzioni su cosa viene prima; una configurazione scritta a mano
+      spesso tiene vicine le impostazioni imparentate; e un file a cui uno strumento
+      ha ordinato le chiavi e che poi è stato committato produce un unico commit
+      enorme e senza senso. Ordina una copia, non l'originale.
+    </p>
+    <p>
+      Un dettaglio che vale la pena sapere: qui l'ordinamento va per come le chiavi
+      si leggono e non per i loro punti di codice, quindi <code>item2</code> viene
+      prima di <code>item10</code> e non dopo. Ordinare per punto di codice è quello
+      che infila <code>item10</code> in mezzo agli uno, il che è tecnicamente
+      corretto e inutile per chi legge.
+    </p>
+  </section>
+
+  <section>
+    <h2>Confrontare due file JSON</h2>
+    <p>
+      Il modo affidabile è formattarli tutti e due allo stesso modo prima. Due
+      documenti che dicono la stessa cosa possono differire su ogni riga se uno era
+      minificato e l'altro no, e nessun diff riesce a vedere oltre.
+    </p>
+    <p>
+      Quindi: formatta il primo, formatta il secondo, poi confronta i due risultati.
+      Tutti e tre i passaggi qui stanno sulla stessa pagina &mdash; la scheda
+      <em>Confronta</em> divide la casella con <em>Formatta</em> proprio per questo.
+      Se poi i due elencano le chiavi in ordini diversi, ordinale entrambe mentre le
+      formatti e il confronto si stringe sulla differenza che cercavi.
+    </p>
+  </section>
+
+  <section>
+    <h2>La parte che nessuno scrive sulla pagina</h2>
+    <p>
+      Cerca un formattatore JSON e troverai decine di siti con una casella. Incollare
+      in quella casella è un caricamento. Qualsiasi cosa ci fosse nei tuoi appunti
+      &mdash; la risposta di un'API con dentro l'indirizzo di un cliente, un file di
+      configurazione con una stringa di connessione, un token che stavi guardando
+      &mdash; è stata mandata a una macchina che non controlli, e adesso è il loro
+      file di log, la loro segnalazione di errore e il loro backup.
+    </p>
+    <p>
+      Non è un'ipotesi sulla malafede. Un sito perfettamente in buona fede tiene
+      comunque i log degli accessi, fa comunque analytics, e ha comunque un
+      fornitore di hosting. I dati più sicuri sono quelli che non sono mai partiti,
+      e per un lavoro che è tutto manipolazione di testo non c'è nessuna ragione
+      perché partano.
+    </p>
+    <p>
+      Due controlli, e funzionano su qualsiasi sito faccia questa promessa, non solo
+      su questo:
+    </p>
+    <ol>
+      <li>
+        <strong>Apri i DevTools, guarda la scheda Rete, e formatta qualcosa.</strong>
+        Se il tuo testo viene spedito, c'è una richiesta che se lo porta. Nient'altro
+        può essere vero nello stesso momento.
+      </li>
+      <li>
+        <strong>Stacca internet e riprova.</strong> Uno strumento che fa il lavoro
+        nel tuo browser non se ne accorge nemmeno. Uno strumento che manda il tuo
+        testo da qualche parte smette di funzionare, subito e del tutto.
+      </li>
+    </ol>
+    <p>
+      Di entrambi c'è una versione più lunga, con altri due controlli, in
+      <a href="../e-sicuro-caricare-i-propri-file/">è sicuro caricare i propri
+      file</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>E YAML, XML e il resto?</h2>
+    <p>
+      La stessa pagina legge XML, HTML, CSS e YAML, e converte fra JSON e il primo e
+      l'ultimo di quelli. Due cose vale la pena portarsele dietro da sopra, perché
+      sono lo stesso discorso in un altro vestito:
+    </p>
+    <ul>
+      <li>
+        <strong>Convertire YAML in JSON perde i commenti</strong>, perché JSON non
+        ha nessun posto dove metterne uno. Ancore e alias &mdash; il modo che ha
+        YAML di dire «lo stesso nodo due volte» &mdash; non si possono esprimere
+        nemmeno loro, e qui vengono rifiutati invece che indovinati.
+      </li>
+      <li>
+        <strong><code>no</code> è una stringa.</strong> In YAML 1.1
+        <code>yes</code>, <code>no</code>, <code>on</code> e <code>off</code> erano
+        booleani, ed è per questo che un elenco di codici di paese che conteneva la
+        Norvegia tornava indietro con dentro un <code>false</code>. YAML 1.2 ha
+        lasciato perdere, e così fa questo &mdash; ma quelle parole vengono comunque
+        riscritte fra virgolette, perché quello che aprirà il file dopo di te
+        potrebbe essere un lettore 1.1.
+      </li>
+    </ul>
+  </section>

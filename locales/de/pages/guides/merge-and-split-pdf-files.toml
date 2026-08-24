@@ -1,0 +1,18 @@
+#
+# Ratgeber: PDF-Seiten zusammenfügen, teilen und umsortieren - German.
+#
+
+nav = "PDF zusammenfügen & teilen"
+title = "PDF-Seiten zusammenfügen, teilen und umsortieren"
+description = "PDFs verbinden, eines in mehrere zerlegen und Seiten umstellen: was die Umsortierung übersteht, was kein Werkzeug mitnehmen kann, und warum dafür nichts hochgeladen werden muss."
+heading = "PDF-Seiten zusammenfügen, teilen und umsortieren"
+lede = """
+    Zwei Dokumente aneinanderzuhängen ist das Gewöhnlichste, was man mit einem
+    PDF tut &mdash; und das, was am häufigsten dadurch geschieht, dass man beide
+    Dateien dem Server eines Fremden übergibt. Nötig ist das nicht. Hier steht,
+    wie es geht und was still verlorengeht, wenn ein Werkzeug Seiten
+    umsortiert."""
+updated = "22. August 2026"
+og_title = "PDF-Seiten zusammenfügen, teilen und umsortieren"
+og_description = "PDFs verbinden, eines in mehrere zerlegen, Seiten umstellen &mdash; und wissen, was die Umsortierung übersteht und was nicht."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

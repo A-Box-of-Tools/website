@@ -1,0 +1,17 @@
+#
+# Ratgeber: was wirklich in einer GIF-Datei steckt - German.
+#
+
+nav = "Was in einem GIF steckt"
+title = "Was wirklich in einer GIF-Datei steckt (und warum Ihre so groß ist)"
+description = "Einzelbilder, Verzögerungen, Aufräummethoden und Farbtabellen erklärt, warum Browser die schnellsten Verzögerungen verweigern, und wie Sie herausfinden, wohin die Dateigröße eines GIFs wirklich geht."
+heading = "Was wirklich in einem GIF steckt"
+lede = """
+    Ein GIF ist ein Stapel Rechtecke, jedes mit einer Uhr und einer Farbtabelle,
+    und fast jede Klage über das Format kommt von einem dieser drei Dinge. Hier
+    steht, was jeder Teil tut &mdash; und wie Sie herausfinden, welcher davon
+    die Größe Ihrer Datei verbraucht."""
+updated = "22. August 2026"
+og_title = "Was wirklich in einer GIF-Datei steckt"
+og_description = "Einzelbilder, Verzögerungen, Aufräumen und Paletten: was jedes tut, warum Ihr GIF langsamer läuft als angegeben, und wohin seine Dateigröße gegangen ist."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

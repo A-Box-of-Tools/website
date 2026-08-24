@@ -1,0 +1,322 @@
+#
+# PDF zusammenfügen, teilen und neu ordnen - German.
+#
+# Overrides for tools/merge-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "PDF-Zusammenfügen & Teilen"
+heading = "PDF&nbsp;zusammenfügen <span class=\"h1-kw\">&mdash; und Seiten teilen und neu ordnen</span>"
+tagline = "Seiten umsortieren, ohne den Umweg über einen Server."
+
+title = "PDF zusammenfügen, teilen und Seiten neu ordnen &mdash; kostenlos, ohne Upload"
+description = "PDFs zusammenfügen, eines in mehrere teilen und Seiten in die gewünschte Reihenfolge ziehen, alles im eigenen Browser. Es wird nichts hochgeladen, ein Konto brauchen Sie nicht, und die fertige Datei wird noch einmal geöffnet und nachgezählt, bevor sie Ihnen angeboten wird."
+og_title = "PDF-Seiten zusammenfügen, teilen und neu ordnen &mdash; ohne Upload"
+og_description = "Dokumente zusammenlegen, eines zerlegen, Seiten verschieben, drehen, herausnehmen. Das erledigt Ihr eigener Browser, die Datei verlässt Ihr Gerät also nie."
+og_image_alt = "PDF-Seiten zusammenfügen, teilen und neu ordnen, ohne sie hochzuladen"
+
+pledge = """
+    Jedes Dokument, das Sie auswählen, wird im Arbeitsspeicher dieses Geräts
+    geöffnet, auseinandergenommen und wieder hinausgeschrieben, von Code, der von
+    dieser Adresse stammt. Einen Upload kann hier nichts auslösen, und am anderen
+    Ende dieser Seite steht auch kein Server, der einen entgegennähme."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und fügen Sie zwei Dateien zusammen. Keine einzige
+      Anfrage trägt eine Seite, ein Bild oder einen Dateinamen. Oder trennen Sie
+      die Internetverbindung und fügen Sie sie trotzdem zusammen."""
+
+read_first = """
+ und <code>src/assemble.js</code> für das gesamte
+      Kopieren, also dafür, wie eine Seite aus einem Dokument gehoben und in ein
+      anderes gelegt wird und was dabei mit Absicht zurückbleibt. Ans Netz kommt
+      diese Datei nicht, und der Leser und der Schreiber daneben auch nicht."""
+
+howto_heading = "So fügen Sie ein PDF zusammen, teilen es oder ordnen es neu"
+
+card = """
+            Dokumente zusammenlegen, eines in mehrere zerlegen und Seiten in die
+            gewünschte Reihenfolge ziehen. Links und Lesezeichen werden so
+            aufgebaut, dass sie den Seiten folgen, auf die sie zeigen, und jede
+            fertige Datei wird noch einmal geöffnet und nachgezählt, bevor sie
+            Ihnen angeboten wird."""
+
+[words]
+plural = "Dokumente"
+choose = "PDFs"
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Ihre Dokumente haben keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Dieses Werkzeug fügt der Liste
+      nichts hinzu, denn es hat gar keine eigene Netzfunktion, nicht einmal eine
+      wahlweise. Es gibt hier keinen Endpunkt, an dem Ihre Dateien eingesammelt
+      werden könnten, und im Code steht auch nichts, das sie dorthin schicken
+      würde, gäbe es einen."""
+
+[[privacy]]
+title = "Zusammenfügen ist die Aufgabe, bei der ein Upload am meisten wehtut."
+body = """
+ Die
+      Dokumente, die Menschen zusammenlegen, sind gerade die, die irgendwoher
+      stammen: ein Vertrag und seine Unterschriftsseite, ein Passscan und ein
+      Kontoauszug, ein Arztbrief und ein Antragsformular. Ein Online-Dienst hat
+      sie dann alle beisammen, an einer Stelle, schon sortiert. Dieses Werkzeug
+      hat eine Seite in Ihrem Browser und keine zweite Hälfte."""
+
+[[privacy]]
+title = "Das ganze Format steht in diesem Repository."
+body = """
+ Ein PDF ist eine Liste
+      von Objekten und eine Tabelle, wo jedes davon anfängt. <code>src/objects.js</code>
+      liest diese Syntax, <code>src/reader.js</code> folgt der Tabelle,
+      <code>src/assemble.js</code> kopiert Seiten zwischen Dokumenten und
+      <code>src/writer.js</code> schreibt das Ergebnis. Keine der vier Dateien
+      importiert etwas, das eine Anfrage stellen könnte. Es wird keine Bibliothek
+      nachgeladen und nichts auf einem Server gezeichnet."""
+
+[[privacy]]
+title = "Verschlüsselte Dateien werden abgewiesen statt geöffnet."
+body = """
+
+      Ein PDF mit Passwort wird abgelehnt, auch die Sorte, die Scanner mit leerem
+      Passwort erzeugen und die sich technisch öffnen ließe. Einem Dokument den
+      Schutz zu nehmen, ist eine andere Aufgabe als seine Seiten umzusortieren,
+      und es stillschweigend zu tun, wäre eine überraschende Eigenmächtigkeit."""
+
+[[privacy]]
+title = "Die fertige Datei sagt nicht, wo sie entstanden ist."
+body = """
+
+      Keine Erzeugerzeile, kein Erstellungsdatum, kein Name des Werkzeugs. Sie
+      trägt auch nicht das XMP-Paket oder die privaten Blöcke mit, die ein
+      Layoutprogramm hinterlässt. Die gehören zu dem Dokument, das es einmal gab,
+      und nicht zu dem, das Sie gerade gebaut haben. Was auf den Seiten selbst
+      steht, wird exakt kopiert: Dieses Werkzeug verschiebt Seiten und schreibt
+      nicht um, was darauf steht."""
+
+[[privacy]]
+title = "Aktionen, die nicht &bdquo;gehe zu einer Seite&ldquo; heißen, werden nicht mitkopiert."
+body = """
+
+      Ein PDF kann Anweisungen enthalten, die beim Öffnen laufen: Spiele dies,
+      sende dieses Formular an jene Adresse, führe dieses JavaScript aus. Seiten,
+      die durch dieses Werkzeug gehen, behalten ihre Links auf andere Seiten und
+      auf Webadressen und verlieren den Rest. Dass Sie fremde Seiten umsortieren,
+      ist kein Grund, das Skriptwerk eines fremden Dokuments in Ihre neue Datei zu
+      tragen."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihre
+      Dokumente übergeben, weder eine Datei noch eine Seite, ein Name, eine Größe
+      oder eine Seitenzahl. Jede Zeile, die ein PDF liest, kopiert oder schreibt,
+      kommt von dieser Domain selbst und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihre Dokumente bekommt er nichts. Es passiert nichts, solange
+      Sie nicht klicken, und was Sie dann öffnen, ist die Seite von jemand
+      anderem."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht: Ein
+      Werkzeug, das Ihre Dokumente zum Zusammenfügen wegschickt, bliebe
+      stehen."""
+
+[[howto]]
+title = "Wählen Sie Ihre PDFs aus."
+body = """
+ Ziehen Sie sie auf das Auswahlfeld
+      oder suchen Sie sie von Hand heraus, und legen Sie später ruhig noch welche
+      nach. Die Seiten jeder Datei hängen sich hinten an die laufende Reihenfolge
+      an, und genau deshalb lassen sich zwei Ordner nacheinander zusammenfügen.
+      Gelesen werden sie vom Browser direkt von Ihrer Festplatte."""
+
+[[howto]]
+title = "Bringen Sie die Seiten in die gewünschte Reihenfolge."
+body = """
+
+      Ziehen Sie eine Seite am Griff, oder schubsen Sie sie mit den Pfeilen. Drehen
+      Sie eine, die quer eingescannt wurde, nehmen Sie eine heraus, oder tippen Sie
+      <code>1-3, 8, 12-</code> in das Feld, um gleich eine ganze Folge zu behalten,
+      zu entfernen oder zu drehen. Die Nummern werden dabei laufend neu vergeben,
+      was Sie sehen, ist also immer das, was in der fertigen Datei steht."""
+
+[[howto]]
+title = "Sagen Sie, ob ein Dokument herauskommt oder mehrere."
+body = """
+
+      Eines ist die übliche Antwort. Der Rest sind Arten zu schneiden: alle so und
+      so viele Seiten, an von Ihnen genannten Seitenzahlen, eine Datei je Seite,
+      oder zurück in die Dateien, aus denen die Seiten kamen. Mehr als eine Datei
+      wird als ein einziges ZIP übergeben, damit es einmal Speichern gibt statt
+      fünfzigmal."""
+
+[[howto]]
+title = "Bauen Sie es, und lesen Sie die Zeile, die sagt, dass geprüft wurde."
+body = """
+
+      Wenn die Dokumente geschrieben sind, wird jedes davon vom selben Leser auf
+      dieser Seite noch einmal geöffnet und seine Seiten werden gezählt. Weicht das
+      von dem ab, was Sie verlangt haben, gilt der Durchlauf als fehlgeschlagen und
+      es wird kein Download angeboten."""
+
+[[faq]]
+q = "Werden meine PDFs irgendwohin hochgeladen?"
+a = """
+        Nein. Ihr eigener Browser liest, kopiert und schreibt sie auf Ihrer eigenen
+        Hardware. Eine Serverseite hat dieses Werkzeug nicht, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die sie
+        kontaktieren darf; keine davon gehört uns. Eine wahlweise Netzfunktion gibt
+        es hier überhaupt nicht."""
+
+[[faq]]
+q = "Wie viele Dateien kann ich zusammenfügen, und wie groß dürfen sie sein?"
+a = """
+        Im Werkzeug steht keine Grenze. Die Grenze ist Ihr eigenes Gerät: Die
+        Dokumente liegen während der Arbeit im Arbeitsspeicher, ein Laptop fügt
+        also ein paar hundert Megabyte klaglos zusammen und tut sich irgendwo
+        darüber schwer. Es wird nichts berechnet, gedrosselt, mit einem
+        Wasserzeichen versehen oder in eine Warteschlange gestellt, denn am anderen
+        Ende ist niemand, der so etwas täte."""
+
+[[faq]]
+q = "Kostet Zusammenfügen oder Teilen Qualität?"
+a = """
+        Nein. Auf einer Seite wird nichts neu kodiert, neu gezeichnet oder neu
+        komprimiert. Der Inhaltsstrom jeder Seite und jede Schrift, jedes Bild und
+        jede Vektorgrafik, auf die er verweist, werden Byte für Byte übernommen.
+        Text bleibt also markierbar und durchsuchbar, und ein Foto ist dasselbe
+        Foto. Was sich ändert, ist einzig die Reihenfolge der Seiten und die
+        Struktur darum herum."""
+
+[[faq]]
+q = "Was passiert mit Lesezeichen und Links?"
+a = """
+        Beide werden neu aufgebaut statt weggeworfen. Ein Lesezeichen, dessen Seite
+        noch in der Ausgabe steht, zeigt dorthin, wohin diese Seite gewandert ist;
+        eines, dessen Seite Sie entfernt haben, fällt weg, es sei denn, darunter
+        hängen noch Einträge, dann bleibt es als Überschrift stehen. Beim
+        Zusammenfügen mehrerer Dateien landen die Lesezeichen jeder Datei unter
+        einer nach ihr benannten Überschrift. Links zwischen Seiten werden genauso
+        nachgeführt, samt der benannten Ziele, die Word und LaTeX schreiben, und
+        ein Link, dessen Ziel nicht mitgekommen ist, bleibt lieber ohne Wirkung
+        zurück, als den Lesenden irgendwohin Falsches zu schicken. Links auf
+        Webadressen bleiben, wie sie sind."""
+
+[[faq]]
+q = "Was wird nicht mit übernommen?"
+a = """
+        Vier Dinge, und das Werkzeug sagt es beim Ergebnis und nicht im Kleingedruckten.
+        Der Baum der getaggten Lesereihenfolge, den Screenreader benutzen, die
+        Seitenbezeichnungen (die Nummerierung &bdquo;iii, iv, 1, 2&ldquo;),
+        eingebettete Dateianhänge, und jede Aktion, die weder &bdquo;gehe zu einer
+        Seite&ldquo; noch &bdquo;öffne eine Webadresse&ldquo; ist, das JavaScript
+        eines Dokuments eingeschlossen. Die ersten beiden beschreiben eine
+        Reihenfolge, die es nach dem Verschieben von Seiten nicht mehr gibt; das
+        letzte ist nichts, worum Sie gebeten haben. Wenn Ihnen die Barrierefreiheit
+        eines Dokuments wichtig ist, heben Sie das Original mit auf."""
+
+[[faq]]
+q = "Bleiben ausgefüllte Formulare erhalten?"
+a = """
+        Ja. Formularfelder und was darin steht, kommen mit ihren Seiten mit, und das
+        neue Dokument wird als Formular angemeldet, damit Leseprogramme es auch als
+        eines behandeln. Eines sollten Sie beim Zusammenfügen wissen: Zwei Felder
+        mit demselben Namen sind für jedes Leseprogramm ein einziges Feld. Fügen Sie
+        also zwei Kopien desselben Formulars zusammen, füllt ein Eintrag auf der
+        einen Seite dasselbe Feld auf der anderen mit aus. Das Werkzeug erkennt
+        diesen Fall und sagt es."""
+
+[[faq]]
+q = "Öffnet es ein passwortgeschütztes PDF?"
+a = """
+        Nein, und das mit Absicht. Ein verschlüsseltes Dokument wird mit einer
+        entsprechenden Meldung abgelehnt, auch wenn das Passwort leer ist, und
+        genau so speichern viele Scanner und Kopierer. Einer Datei den Schutz zu
+        nehmen, ist eine andere Aufgabe als ihre Seiten zu verschieben, und ein
+        Werkzeug, das es stillschweigend täte, täte etwas, worum Sie nicht gebeten
+        haben."""
+
+[[faq]]
+q = "Warum gibt es keine Seitenvorschauen?"
+a = """
+        Weil eine Seite zu zeichnen einen vollständigen PDF-Renderer bedeutet, mit
+        Schriften, Verläufen, Transparenzgruppen und Mischmodi, also ein Megabyte
+        Engine oder mehr, das für ein paar Vorschaubilder geladen und ausgeführt
+        werden müsste. Die Kacheln zeigen stattdessen das, worauf das Umsortieren
+        tatsächlich beruht: die Seitenzahl, Form und Größe des Papiers, die Drehung,
+        mit der sie geschrieben wird, und aus welcher Datei sie stammt. Ein querer
+        Scan in einem Stapel hochkanter Seiten fällt so trotzdem sofort auf."""
+
+[[faq]]
+q = "Lässt sich die fertige Datei überall öffnen?"
+a = """
+        Ja. Die Ausgabe wird als PDF 1.5 geschrieben, oder in der höchsten Version,
+        die eine der übergebenen Dateien gebraucht hat, und 1.5 versteht jedes
+        Leseprogramm, das seit 2003 ausgeliefert wurde. Das Werkzeug belegt das auch
+        auf Ihrem eigenen Gerät: Es öffnet jede fertige Datei noch einmal und zählt
+        ihre Seiten, indem es den Seitenbaum durchgeht, bevor es sie Ihnen
+        anbietet."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase
+        und keine Größengrenze außer dem, was der Arbeitsspeicher Ihres Geräts
+        hergibt. Bezahlt wird die Seite über Werbung, und den Anzeigen wird nichts
+        über Ihre Dokumente übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür, dass
+        nichts hochgeladen wird. Ein Werkzeug, das Ihre Dokumente zum
+        Zusammenfügen wegschickt, bliebe in dem Moment stehen, in dem Sie den
+        Stecker ziehen."""
+
+[schema]
+description = "PDFs zusammenfügen, eines in mehrere Dateien teilen und Seiten im Browser neu ordnen, drehen oder entfernen. Die Seiten werden lokal zwischen den Dokumenten kopiert, es wird also nie eine Datei hochgeladen."
+features = [
+  "Fügt beliebig viele PDFs zusammen, und Sie können jederzeit weitere nachlegen",
+  "Seiten in die Reihenfolge ziehen, drehen, entfernen oder gleich einen Bereich behandeln",
+  "Teilt in eine Datei je Seite, alle so und so viele Seiten, an genannten Seitenzahlen oder zurück in die Ursprungsdateien",
+  "Baut Lesezeichen und interne Links gegen die verbliebenen Seiten neu auf",
+  "Behält ausgefüllte Formularfelder und meldet, wenn sich zwei einen Namen teilen",
+  "Öffnet jede fertige Datei noch einmal und zählt sie nach, bevor sie angeboten wird",
+  "Läuft offline; kein Upload, kein Konto, keine Größengrenze",
+]
+
+[picker]
+title = "PDFs hierher ziehen"
+hint = "oder klicken und auswählen &mdash; eine Datei oder mehrere, und später können Sie nachlegen"

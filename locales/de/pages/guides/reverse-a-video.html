@@ -1,0 +1,189 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie den
+      <a href="../../video-rueckwaerts-abspielen/">Video-Umkehrer</a>, ziehen Sie den
+      Clip hinein, entscheiden Sie, ob der Ton mit umgekehrt werden soll, und
+      exportieren Sie. Heraus kommt derselbe Clip mit dem letzten Einzelbild zuerst,
+      genauso lang wie der, der hineinging.
+    </p>
+    <p>
+      Anders als beim Kürzen muss dabei jedes Einzelbild neu geschrieben werden, und
+      der Ton ebenso. Das ist kein Mangel eines bestimmten Werkzeugs, das ist
+      Umkehren. Der Rest dieser Seite erklärt, warum, und was es für Ihre Wartezeit
+      bedeutet.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum sich ein Video nicht einfach rückwärts abspielen lässt</h2>
+    <p>
+      Eine Videodatei ist kein Stapel Bilder. Ungefähr jedes fünfzigste Einzelbild ist
+      ein vollständiges Bild, ein <em>Schlüsselbild</em>, und alles dazwischen ist eine
+      Beschreibung dessen, was sich gegenüber den Bildern ringsum geändert hat. Nur
+      deshalb passt eine Stunde Video auf ein Telefon.
+    </p>
+    <p>
+      Es heißt auch, dass ein Dekoder nur vorwärts kann. Um Ihnen das letzte
+      Einzelbild eines Clips zu zeigen, muss er das Schlüsselbild davor suchen und
+      alles dazwischen dekodieren. Fragen Sie nach dem vorletzten, macht er dieselbe
+      Arbeit noch einmal.
+    </p>
+    <p>
+      Umgekehrt wird deshalb gruppenweise: eine Gruppe vorwärts dekodieren, die
+      Einzelbilder festhalten, sie dem Kodierer in der anderen Reihenfolge geben, zur
+      Gruppe davor gehen. Die naheliegende Alternative, nämlich den ganzen Clip in eine
+      Liste zu dekodieren und die Liste rückwärts durchzugehen, braucht etwa
+      3&nbsp;MB Arbeitsspeicher je 1080p-Einzelbild, also 5&nbsp;GB je Minute. Deshalb
+      fallen Werkzeuge, die es so machen, bei allem um, was länger als ein paar
+      Sekunden ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was mit dem Ton passiert</h2>
+    <p>
+      Hier gehen die Umkehrwerkzeuge am weitesten auseinander, und hier lohnt es sich
+      zu prüfen, was Sie tatsächlich bekommen haben.
+    </p>
+    <p>
+      Ton wird in Paketen von einigen Dutzend Millisekunden komprimiert, jedes davon
+      kodiert gegen das vorherige. Diese Pakete verkehrt herum hinauszuschreiben,
+      spielt eine Spur <em>nicht</em> rückwärts. Es spielt kurze Stücke vorwärts in der
+      falschen Reihenfolge, und das klingt nach Stottern oder Defekt und nicht nach
+      Umkehrung. Der einzige Weg, Ton richtig umzukehren, ist, die ganze Spur zu
+      dekodieren, die Samples in die andere Reihenfolge zu bringen und wieder zu
+      kodieren.
+    </p>
+    <p>
+      Genau das passiert hier, und deshalb wird der Ton neu kodiert, während der
+      <a href="../../video-schneiden/">Video-Schneider</a> und der
+      <a href="../../video-zuschneiden/">Video-Zuschneider</a> ihn nie anrühren: Diese
+      Aufgaben ändern nicht, <em>wann</em> etwas passiert, und diese hier ändert nichts
+      anderes.
+    </p>
+    <p>
+      Wenn Sie das Bild rückwärts wollen und gar keinen Ton, was für alles die übliche
+      Wahl ist, das in einem stumm abspielenden Feed landet, schalten Sie das Häkchen
+      ab. Das geht schneller, und die Datei wird kleiner.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was es das Bild kostet</h2>
+    <p>
+      Eine Neukodierung. Die Einzelbilder kommen in einer Reihenfolge heraus, für die
+      in der Originaldatei nichts kodiert war, jedes muss also frisch geschrieben
+      werden.
+    </p>
+    <p>
+      Was ein anständiges Werkzeug nicht tut, ist <em>mehr</em> auszugeben als das
+      Original. Ein umgekehrter Clip enthält genau dieselben Bilder wie der, der ankam,
+      eine höhere Bitrate hat also nichts Neues zu beschreiben: Sie macht die Datei
+      größer, ohne sie besser aussehen zu lassen. Die Qualitätseinstellung bewegt sich
+      hier unterhalb dieser Decke statt darüber.
+    </p>
+    <p>
+      Wie immer summieren sich verlustbehaftete Schritte. Ein Original umzukehren ist
+      eine Generation. Den Export eines Downloads einer Bildschirmaufnahme umzukehren
+      sind vier, und man sieht es.
+    </p>
+  </section>
+
+  <section>
+    <h2>Erst kürzen, dann umkehren</h2>
+    <p>
+      Wenn der Clip beides braucht, schneiden Sie zuerst. Kürzen ist umsonst, denn ein
+      guter Schneider schiebt ganze Einzelbilder hinüber, ohne sie zu dekodieren, und
+      jede Sekunde, die Sie entfernen, ist eine Sekunde, die niemand noch einmal
+      dekodieren und kodieren muss.
+    </p>
+    <p>
+      Andersherum kehren Sie Material um, das Sie gleich wegwerfen. Bei einem langen
+      Clip ist das der Unterschied zwischen ein paar Sekunden und mehreren Minuten. Der
+      <a href="../video-kuerzen/">Ratgeber zum Kürzen</a> erklärt, warum dieser erste
+      Schritt Sie überhaupt keine Qualität kosten muss.
+    </p>
+    <p>
+      Dieselbe Reihenfolge gilt fürs Zuschneiden: schneiden, zuschneiden, umkehren, und
+      Sie bezahlen eine Neukodierung des kürzestmöglichen Clips.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wofür Menschen das wirklich verwenden</h2>
+    <ul>
+      <li>
+        <strong>Der Rückspul-Gag.</strong> Etwas fällt, zerbricht oder spritzt, und die
+        Umkehrung setzt es wieder zusammen. Es liest sich als Witz, weil echtes
+        Material rückwärts unverkennbar ist: Rauch sammelt sich, Wasser klettert.
+      </li>
+      <li>
+        <strong>Boomerangs von Hand.</strong> Kehren Sie einen kurzen Clip um und
+        hängen Sie ihn mit dem
+        <a href="../../video-schneiden/">Video-Schneider</a> an das Original. So
+        bekommen Sie die Vorwärts-dann-rückwärts-Schleife ohne die App, die das sonst
+        macht, und in Ihrer Länge statt in ihrer.
+      </li>
+      <li>
+        <strong>Enthüllungen.</strong> Filmen Sie den fertigen Zustand und kehren Sie
+        ihn um, dann wird aus einem angerichteten Teller wieder eine Zutatenliste oder
+        ein zusammengebautes Ding fällt auseinander. Vorwärts wäre es schwerer zu
+        filmen, und genau das ist der Punkt.
+      </li>
+      <li>
+        <strong>Rückwärts gesprochene Sprache.</strong> Interessant allerdings nur,
+        wenn der Ton wirklich umgekehrt ist, siehe oben.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Formate, und wie lange es dauert</h2>
+    <p>
+      <strong>MP4, M4V und MOV</strong> werden direkt gelesen, egal was darin steckt,
+      also H.264, HEVC, AV1 oder VP9, solange Ihr Browser diesen Codec dekodieren kann.
+      Das ist der schnelle Weg: Die Datei wird Einzelbildgruppe für Einzelbildgruppe
+      rückwärts durchgegangen, so schnell, wie Ihr Gerät eben ist.
+    </p>
+    <p>
+      <strong>Alles andere, was Ihr Browser abspielen kann</strong>, allen voran WebM,
+      wird umgekehrt, indem der eigene Player des Browsers rückwärts durch den Clip
+      gesteppt wird, Moment für Moment. Das funktioniert und dauert länger, denn jeder
+      dieser Schritte zwingt den Browser, ab dem Schlüsselbild davor zu dekodieren. Die
+      Seite sagt, welchen der beiden Wege sie nimmt und warum, bevor Sie anfangen.
+    </p>
+    <p>
+      <strong>AVI, WMV, FLV und die meisten MKVs</strong> kann der Browser weder lesen
+      noch abspielen, und das Werkzeug lehnt sie mit einer Meldung ab, statt auf halbem
+      Weg zu scheitern.
+    </p>
+    <p>
+      So oder so gehört das zu den langsameren Aufgaben auf dieser Seite, denn jedes
+      Einzelbild wird dekodiert und kodiert und manche mehr als einmal. Ein kurzer Clip
+      sind Sekunden; einen langen in 4K startet man und lässt ihn in Ruhe.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum das keinen Upload braucht</h2>
+    <p>
+      Video im Browser zu dekodieren und neu zu kodieren ist neu und es funktioniert:
+      WebCodecs legt denselben Hardware-Kodierer offen, mit dem Ihr Telefon Videos
+      aufnimmt, und es ist aus demselben Grund schnell. Die Arbeit passiert auf dem
+      Gerät, das die Datei schon hat, und bei einem großen Video ist das ohnehin die
+      einzig sinnvolle Anordnung: Es hochzuladen und das Ergebnis herunterzuladen
+      kostet mehr Zeit als das Kodieren.
+    </p>
+    <p>
+      Das Werkzeug hier hat keinerlei Netzfunktion, und in der
+      <code>Content-Security-Policy</code> der Seite steht jede Adresse, die sie
+      kontaktieren darf; keine davon gehört uns. Wer lieber prüft als glaubt, trennt
+      die Internetverbindung und kehrt trotzdem einen Clip um.
+    </p>
+    <p>
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist es sicher, Dateien
+      hochzuladen?</a> nennt drei weitere Prüfungen, die Sie an jedem Werkzeug
+      vornehmen können.
+    </p>
+  </section>

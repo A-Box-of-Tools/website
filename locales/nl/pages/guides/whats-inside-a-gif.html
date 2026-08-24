@@ -1,0 +1,319 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Een GIF is een doek, een lijst rechthoeken om daarop te schilderen, en een
+      kleurtabel die zegt wat de getallen in die rechthoeken betekenen. Elke
+      rechthoek draagt drie dingen mee: hoe lang hij moet blijven staan, wat er
+      daarna met hem gebeurt, en desgewenst een eigen kleurtabel.
+    </p>
+    <p>
+      Bijna alles wat mensen aan dit formaat verrast, komt uit die lijst. Is jouw
+      GIF enorm, dan is dat omdat de rechthoeken elke keer het hele doek zijn, of
+      omdat er driehonderd kleurtabellen in zitten. Loopt hij te traag, dan zitten
+      de vertragingen onder een bodem waar geen browser onderdoor gaat. Smeert
+      hij uit, dan is het het veld dat <em>opruimen</em> heet.
+    </p>
+    <p>
+      Om te zien wat het bij een bepaald bestand is, open je de
+      <a href="../../gif-analyseren/">GIF-analyse</a> en sleep je het erin. De
+      rest van deze pagina gaat over wat de getallen betekenen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Frames zijn rechthoeken, geen plaatjes</h2>
+    <p>
+      Dit is het deel dat mensen verrast die GIF's alleen ooit hebben zien
+      afspelen. Een frame is geen plaatje van de animatie op dat moment. Het is
+      een rechthoek, met een eigen plek en een eigen formaat, geschilderd boven op
+      wat de eerdere frames hebben achtergelaten.
+    </p>
+    <p>
+      Die rechthoek kán het hele doek zijn, en in een slecht gemaakt bestand is
+      hij dat altijd. Maar een GIF mag alleen het deel van het plaatje bewaren dat
+      sinds het vorige frame veranderd is &mdash; en waar het grootste deel van
+      het plaatje stilstaat, is dat het verschil tussen een bestand van 12&nbsp;MB
+      en een van 900&nbsp;KB. Daarom kan een schermopname van een vrijwel stilstaand
+      venster klein zijn, en diezelfde opname uit een slordige omzetter niet.
+    </p>
+    <p>
+      Aan de animatie kun je niet zien welke van de twee je hebt. Ze zien er
+      identiek uit. De enige manier is kijken naar wat elk frame bewaart, en
+      precies daarvoor heeft de analyse een aparte weergave: zet hem op <em>alleen
+      wat elk frame bewaart</em> en je ziet ofwel een rij kleine vormen op een
+      doorzichtige achtergrond, wat betekent dat de encoder zijn werk gedaan
+      heeft, ofwel keer op keer het hele plaatje, wat betekent van niet.
+    </p>
+    <p>
+      Er zit nergens bewegingscompensatie in dit formaat. Niets wordt ooit
+      opgeslagen als &ldquo;hetzelfde als vorige keer maar vier pixels naar
+      links&rdquo;, zoals een videocodec zou doen. De truc met de veranderde
+      rechthoek is de enige besparing die GIF heeft, en hij is bijzonder veel
+      waard.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vertragingen, en de bodem die elke browser afdwingt</h2>
+    <p>
+      Elk frame bewaart in honderdsten van een seconde hoe lang het moet blijven
+      staan. Een andere eenheid heeft het formaat niet, dus het snelste wat een
+      bestand kan vragen is 0,01&nbsp;seconde &mdash; honderd frames per seconde
+      &mdash; en het langste is zo'n 655&nbsp;seconden.
+    </p>
+    <p>
+      Honderd frames per seconde krijgt het niet. <strong>Elke browser rondt een
+      vertraging onder 0,02&nbsp;seconde af naar 0,10.</strong> De regel werd in
+      1996 in Netscape Navigator geschreven, voor de draaiende wereldbollen en
+      geanimeerde &ldquo;in aanbouw&rdquo;-bordjes van die tijd, en elke browser
+      sindsdien heeft hem overgenomen. Niemand heeft hem ooit weggehaald, en
+      niemand gaat dat doen.
+    </p>
+    <p>
+      Een GIF waarvan alle frames 0,01&nbsp;s zeggen loopt dus op tien frames per
+      seconde, niet op honderd. Hij loopt tien keer trager dan wat hem maakte
+      bedoelde, en het bestand geeft daar geen hint over: de vertragingen erin zijn
+      precies wat er gevraagd is. Dit is veruit de meest voorkomende verrassing van
+      het formaat, en daarom meldt de analyse twee looptijden &mdash; wat het
+      bestand zegt, en wat een browser er echt mee gaat doen.
+    </p>
+    <p>
+      De oplossing, waar het bestand ook gemaakt wordt, is 0,02 schrijven in plaats
+      van 0,01. Dat geeft 50 frames per seconde, wat het echte plafond is, en dat is
+      sneller dan wat dan ook hoeft te zijn. In de praktijk is 0,05&nbsp;s &mdash;
+      twintig frames per seconde &mdash; ongeveer zo vlot als het de moeite waard
+      is om te vragen.
+    </p>
+    <p>
+      Nog iets wat de vertragingen je vertellen. Zijn ze allemaal gelijk, dan is
+      het bestand gemaakt uit een reeks frames met een vaste snelheid. Lopen ze
+      uiteen &mdash; 0,04 hier, 0,11 daar &mdash; dan heeft iets een video omgezet
+      en frames laten vallen, en de buren opgerekt om de gaten te dekken. En is de
+      laatste veel langer dan de rest, dan is dat opzet: zo laat je een animatie
+      even stilstaan voordat hij opnieuw begint.
+    </p>
+  </section>
+
+  <section>
+    <h2>Opruimen: het veld dat bepaalt of het uitsmeert</h2>
+    <p>
+      Elk frame zegt wat er op het scherm moet blijven als zijn tijd om is. Er zijn
+      vier mogelijke antwoorden en ze zijn het kennen waard, want drie van de vier
+      manieren waarop een animatie er verkeerd uit kan zien zijn dit veld dat
+      verkeerd staat.
+    </p>
+    <ul>
+      <li>
+        <strong>Laat staan.</strong> Het volgende frame schildert er zo overheen.
+        Juist wanneer frames dekkend zijn en elkaar helemaal bedekken, en de
+        goedkoopste optie, want er hoeft niets gewist te worden.
+      </li>
+      <li>
+        <strong>Terug naar de achtergrond wissen.</strong> De rechthoek van het
+        frame wordt schoongeveegd voordat het volgende tekent. Dit is wat
+        transparantie nodig heeft: zonder dit laten de doorzichtige delen van het
+        volgende frame het vorige eronder zien, en verandert een animatie van losse
+        plaatjes in een stapel plaatjes.
+      </li>
+      <li>
+        <strong>Zet terug wat eronder zat.</strong> Wat er op het doek stond
+        voordat dit frame tekende, komt terug. Zo wordt een klein voorwerp
+        opgeslagen dat over een stilstaande achtergrond beweegt &mdash; elk frame
+        schildert het voorwerp, dan komt de achtergrond terug, en alleen de
+        rechthoek van het voorwerp wordt ooit geschreven.
+      </li>
+      <li>
+        <strong>Niet opgegeven.</strong> Het bestand heeft niets gezegd. Elke
+        weergever behandelt het als &ldquo;laat staan&rdquo;, wat meestal klopt en
+        af en toe de reden is dat een doorzichtige GIF uitsmeert.
+      </li>
+    </ul>
+    <p>
+      Eén detail waar de specificatie en de werkelijkheid uit elkaar gaan.
+      &ldquo;Terug naar de achtergrond wissen&rdquo; noemt een achtergrondkleur in
+      de kop van het bestand, en elke browser negeert die en wist naar
+      doorzichtig. Dat doen ze al vijfentwintig jaar. Een bestand dat erop rekent
+      dat die achtergrondkleur verschijnt, ziet er goed uit voor wie het maakte in
+      waarmee het gemaakt is, en overal elders verkeerd.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kleurtabellen, en de 768 bytes die ze kosten</h2>
+    <p>
+      Een GIF-pixel is geen kleur. Het is een getal dat wijst naar een tabel van
+      hooguit 256 kleuren, elk opgeslagen in drie bytes. Een volle tabel is dus
+      768&nbsp;bytes, en een bestand kan er één hebben die alles deelt, of één per
+      frame, of allebei.
+    </p>
+    <p>
+      Beide opzetten zijn legitiem en ruilen anders:
+    </p>
+    <ul>
+      <li>
+        <strong>Eén gedeelde tabel</strong> is 768&nbsp;bytes voor het hele
+        bestand, en houdt de kleuren rustig tussen frames. GIF-flikkering &mdash;
+        dat onaangename glinsteren op een bestand dat uit video komt &mdash; is heel
+        vaak niet meer dan het palet dat van frame tot frame verspringt.
+      </li>
+      <li>
+        <strong>Een tabel per frame</strong> laat elk frame kleuren gebruiken die de
+        gedeelde niet heeft, en dat telt wanneer het beeld helemaal wisselt. Het
+        kost elke keer 768&nbsp;bytes. Bij een animatie van 300 frames is dat
+        230&nbsp;KB aan kleurtabellen voordat er één pixel is opgeslagen.
+      </li>
+    </ul>
+    <p>
+      Er is een tweede, stillere kostenpost. De lengte van een kleurtabel moet een
+      macht van twee zijn, dus een frame dat negen kleuren gebruikt krijgt er toch
+      zestien, en een frame dat er 130 gebruikt krijgt er toch 256. Wat afronding
+      naar boven is onvermijdelijk. Een bestand waarvan de tabellen vijfduizend
+      kleuren opgeven waar de pixels nooit naar verwijzen, is iets anders: paletten
+      gebouwd voor een ander plaatje dan het plaatje dat in het frame terechtkwam.
+      De analyse markeert de ongebruikte plekken, zodat de vorm daarvan in één
+      oogopslag te zien is.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waar de bytes werkelijk heen gaan</h2>
+    <p>
+      Elke byte van een GIF zit op een van een handvol plekken, en het is nuttig om
+      te weten welke dat zijn voordat je besluit dat een bestand te groot is.
+    </p>
+    <ul>
+      <li>
+        <strong>Gecomprimeerde pixels.</strong> Bij een gezond bestand bijna alles.
+        Het plaatje zelf, door LZW gehaald &mdash; een compressiemethode uit 1984
+        bedoeld voor schermafbeeldingen van spreadsheets, en daarom doet hij het
+        goed op vlakke kleur en slecht op foto's.
+      </li>
+      <li>
+        <strong>Kleurtabellen.</strong> 768&nbsp;bytes per volle tabel, zoals
+        hierboven.
+      </li>
+      <li>
+        <strong>Koppen per frame.</strong> Acht bytes timing en elf bytes
+        beschrijving voor elk frame. Bij een normaal bestand niets; bij een
+        animatie van tweeduizend piepkleine frames 38&nbsp;KB.
+      </li>
+      <li>
+        <strong>Blokindeling.</strong> De gecomprimeerde gegevens worden in stukken
+        van hooguit 255&nbsp;bytes geknipt, elk met een lengtebyte ervoor. Ongeveer
+        één byte op de 256, onvermijdelijk, en het zien waard omdat het anders
+        onzichtbaar is.
+      </li>
+      <li>
+        <strong>Metagegevens.</strong> Opmerkingen, kleurprofielen en XMP-pakketten.
+        Dit is degene die de werkelijk absurde uitkomsten oplevert: een
+        beeldbewerker kan 40&nbsp;KB XML achterlaten die een bewerking van jaren
+        geleden beschrijft, en bij een kleine GIF is dat het grootste deel van het
+        bestand. Geen enkele weergever tekent er iets van.
+      </li>
+    </ul>
+    <p>
+      De reden om hier als tabel naar te kijken in plaats van te gokken, is dat het
+      antwoord per bestand verschilt en de oplossing uit het antwoord volgt. Een
+      bestand dat voor 95&nbsp;% uit gecomprimeerde pixels bestaat is gewoon veel
+      plaatje, en alleen minder frames, een kleiner formaat of minder kleuren
+      helpen daar. Een bestand dat voor 30&nbsp;% uit kleurtabellen of voor
+      40&nbsp;% uit XMP bestaat, heeft een veel goedkoper probleem.
+    </p>
+  </section>
+
+  <section>
+    <h2>Herhalen hoort niet bij het formaat</h2>
+    <p>
+      In de GIF-specificatie staat geen veld dat zegt dat een animatie zich
+      herhaalt. Het herhalen komt uit een blok dat Netscape in 1995 verzon &mdash;
+      een &ldquo;toepassingsuitbreiding&rdquo; met de tekst
+      <code>NETSCAPE2.0</code> erin &mdash; dat iedereen toch heeft ingebouwd en
+      dat nu in elke geanimeerde GIF op internet zit.
+    </p>
+    <p>
+      Dat betekent dat een bestand zonder dat blok in elke browser precies één keer
+      speelt en dan stopt, en er kapot uitziet voor wie het gemaakt heeft. Speelt
+      een animatie maar één keer door, dan ontbreekt dat blok; het is een van de
+      eerste dingen om te controleren en het is in geen enkele weergever te zien.
+    </p>
+    <p>
+      Het blok kan ook een aantal noemen &mdash; vijf keer spelen en dan stoppen.
+      Nul betekent voor altijd, en dat is wat bijna elk bestand zegt.
+    </p>
+  </section>
+
+  <section>
+    <h2>De andere dingen die een GIF kan meedragen</h2>
+    <p>
+      Drie blokken die geen plaatje bevatten en die elke weergever overslaat:
+    </p>
+    <ul>
+      <li>
+        <strong>Opmerkingen.</strong> Vrije tekst, meestal de naam van wat het
+        bestand geschreven heeft, af en toe iets wat de maker niet gekozen zou
+        hebben om te publiceren. Niets toont het, en elke kopie van het bestand
+        draagt het mee.
+      </li>
+      <li>
+        <strong>XMP.</strong> Adobe's XML-metagegevens: waarmee het bestand bewerkt
+        is, wanneer, soms door wie. Het komt met een magische staart van
+        258&nbsp;bytes aan het eind, een truc om de bloklengtes te laten kloppen, en
+        daarom levert het naïef uitlezen je een scherm vol binair op.
+      </li>
+      <li>
+        <strong>Platte tekst.</strong> Een blok uit de specificatie van 1989 dat de
+        weergever vraagt tekst over het plaatje te tekenen in een raster van cellen.
+        Het is nooit ergens ingebouwd. Zit er zo'n blok in een bestand, dan zal wat
+        erin staat niet verschijnen.
+      </li>
+    </ul>
+    <p>
+      Alle drie zijn het weten waard voordat je een bestand ergens heen stuurt: het
+      zijn de delen van een GIF die iets over jou kunnen zeggen, en ze overleven
+      elke kopie en elke nieuwe upload, tenzij iets ze bewust weghaalt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Een beschadigd bestand lezen</h2>
+    <p>
+      GIF's raken afgekapt &mdash; een download die stopte, een bestand van een
+      falende schijf gered, iets waarvan een app de helft schreef. Omdat het
+      formaat een stroom blokken is en geen geïndexeerde structuur, is een afgekapte
+      GIF meestal nog leesbaar tot het punt waar hij ophoudt: elk frame vóór de
+      breuk is heel en compleet.
+    </p>
+    <p>
+      Dat is nuttig om te weten, want de meeste software weigert zo'n bestand
+      gewoon. Een analyse die leest zo ver ze komt en zegt waar ze gestopt is,
+      vertelt je in elk geval hoeveel het overleefd heeft, en of het ontbrekende
+      deel één frame is of de laatste tweehonderd.
+    </p>
+    <p>
+      Het omgekeerde probleem bestaat ook: bytes die <em>na</em> het eindteken van
+      het bestand staan. Elke decoder stopt bij dat teken, dus ze worden nooit
+      gelezen en nooit getekend, en meestal zijn ze een tweede bestand dat er door
+      iets misgegaans achteraan geplakt is. Ze zijn puur gewicht, en ze eraf snijden
+      kost je niets.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hier is geen upload voor nodig</h2>
+    <p>
+      De structuur van een GIF lezen is geen zware klus &mdash; het is een wandeling
+      door een lijst blokken en één kleine uitpakker &mdash; en er is nooit een
+      technische reden geweest om het bestand daarvoor naar een server te sturen. De
+      <a href="../../gif-analyseren/">GIF-analyse</a> hier doet het hele ding in de
+      pagina: de wandeling door de blokken, de LZW, de frames die op het scherm
+      getekend worden en de byte-boekhouding.
+    </p>
+    <p>
+      Dat telt hier zwaarder dan bij de meeste klussen, want de bestanden die mensen
+      het liefst uit elkaar halen zijn vaak juist de bestanden waarvan ze het minst
+      zeker weten of ze die willen delen &mdash; iets wat gered is, iets wat iemand
+      hun stuurde, iets met een opmerkingenblok erin dat ze nog niet gelezen hebben.
+      Het <a href="../is-bestanden-uploaden-veilig/">langere verhaal over bestanden
+      uploaden</a> geldt hier net zo hard als waar dan ook op deze site.
+    </p>
+  </section>

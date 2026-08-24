@@ -1,0 +1,326 @@
+#
+# Taglierino audio - Italian.
+#
+# Overrides for tools/trim-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Taglierino audio"
+heading = "Tagliare&nbsp;l'audio <span class=\"h1-kw\">&mdash; tagliare una registrazione online</span>"
+tagline = "Segna al volo i pezzi che valgono. Tornano in un file solo, tagliato dove hai detto tu."
+
+title = "Tagliare l'audio online &mdash; tieni solo i pezzi che vuoi, senza caricare niente"
+description = "Riproduci una registrazione e segna al volo ogni pezzo che vale la pena tenere, poi salva quei pezzi in un unico file. Tagli esatti al campione, nessun clic ai punti di giunzione, niente caricamenti."
+og_title = "Taglierino audio &mdash; tieni solo i pezzi che vuoi, senza caricare niente"
+og_description = "Premi I e O mentre suona per segnare ogni pezzo che vale la pena tenere. I pezzi segnati vengono riscritti in un file solo, tagliati sul campione esatto, senza caricare niente."
+og_image_alt = "Taglierino audio - segna i pezzi che vuoi e salvali come una registrazione, nel tuo browser"
+
+pledge = """
+    La tua registrazione viene letta, segnata, tagliata e scritta dal tuo browser,
+    sul tuo hardware. Qui non c'è niente che possa scaricare o mandare qualcosa,
+    perché questo strumento non ha proprio nessuna funzione di rete. E anche se ci
+    fosse una via d'uscita, dall'altra parte di questa pagina non c'è nessun server
+    a cui mandare una registrazione."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori, tieni
+      d'occhio il pannello Rete e taglia qualcosa. Non c'è una sola richiesta che
+      porti con sé un campione, un nome di file o un byte di quello che hai scelto.
+      Oppure stacca la connessione e taglia una registrazione lo stesso: uno
+      strumento che spedisse via il tuo audio per tagliarlo si fermerebbe e
+      basta."""
+
+read_first = """
+, <code>src/segments.js</code> per i segni e il file in
+      cui vengono salvati, <code>src/decode.js</code> per le venti righe che passano
+      il tuo file al decodificatore del browser, <code>src/trim.js</code> per i
+      conti che trasformano un segno in una serie di campioni e per il ciclo che li
+      copia, e <code>src/wav.js</code> per l'intestazione che va davanti. Nessuno di
+      loro importa qualcosa in grado di fare una richiesta."""
+
+howto_heading = "Come tagliare un file audio"
+
+card = """
+            Segna al volo ogni pezzo che vale la pena tenere, poi salvali come una
+            registrazione sola. I tagli cadono sul campione esatto, e le giunzioni
+            non fanno clic."""
+
+[words]
+plural = "registrazioni"
+choose = "una registrazione"
+analytics_extra = """, e nessuna
+  forma d'onda, durata o posizione di taglio"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessuna filigrana"
+
+[[facts]]
+text = "Quanti pezzi vuoi"
+
+[[facts]]
+text = "Taglia esattamente dove hai segnato"
+
+[[facts]]
+text = "Funziona offline"
+
+[[privacy]]
+title = "Le tue registrazioni non hanno una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può contattare, e
+      non ne appartiene uno a questo sito. Qui non esiste un recapito dove il tuo
+      file possa essere raccolto, e nel codice non c'è niente che lo manderebbe lì se
+      esistesse."""
+
+[[privacy]]
+title = "Qui niente va a prendere niente."
+body = """
+ Questo strumento non ha proprio nessuna
+      funzione di rete: non c'è un indirizzo da incollare, non c'è niente da
+      scaricare, non c'è un motore che arrivi al primo utilizzo. Ogni byte che tocca
+      il tuo audio è arrivato da questa origine quando la pagina si è caricata."""
+
+[[privacy]]
+title = "Il decodificatore è quello che il tuo browser ha già."
+body = """
+
+      Il file viene passato a <code>decodeAudioData</code>, lo stesso codice che
+      riproduce una traccia in un elemento <code>&lt;audio&gt;</code>. Qui non viene
+      spedito niente per leggere il tuo formato, e per leggerlo non viene chiesto
+      niente nemmeno a qualcosa fuori da questa pagina."""
+
+[[privacy]]
+title = "L'immagine di un video non viene mai decodificata."
+body = """
+ Quando trascini dentro
+      un video, viene chiesta solo la sua traccia audio. I fotogrammi non vengono
+      letti, non decodificati, non disegnati e nemmeno guardati: su questa pagina non
+      c'è codice che potrebbe farlo, e il file che esce contiene suono e niente
+      altro."""
+
+[[privacy]]
+title = "Il taglio è una copia, in memoria, su questo dispositivo."
+body = """
+
+      Tagliare è un <code>set</code> per pezzo e per canale: i campioni che hai
+      tenuto vengono spostati in un nuovo array nell'ordine in cui li hai messi. Gli
+      unici campioni moltiplicati per qualcosa sono le poche centinaia dentro ogni
+      dissolvenza, e la pagina ti dice quanti sono prima che tu prema il pulsante."""
+
+[[privacy]]
+title = "I campioni vengono scritti, non ricodificati."
+body = """
+
+      Un WAV sono i campioni che questa pagina ha in mano, con un'intestazione
+      davanti. Nel ciclo non c'è nessun codificatore che prenda decisioni sulla tua
+      registrazione, e non c'è niente che si possa chiamare caricamento su cui una
+      cosa del genere possa succedere."""
+
+[[privacy]]
+title = "Il file dei segni viene fatto nella pagina."
+body = """
+ Salvare i tuoi segni
+      scrive un file di testo a partire dai numeri già a schermo, dritto nei tuoi
+      download. Caricarne uno lo legge qui. Né l'uno né l'altro si avvicina a una
+      rete, e nessuno dei due porta altro che tempi."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sulla tua registrazione: né il file, né un campione, né un nome,
+      una dimensione, una durata o il punto in cui hai tagliato. Ogni riga che legge,
+      taglia e scrive è servita da questa origine ed è elencata nel repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
+body = """
+
+      Il pulsante «Buy me a coffee» in alto è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. Non è niente di più
+      di un collegamento: non segnala nessuna visita e non gli viene passato niente su
+      di te o sulla tua registrazione."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e tutto quello che c'è su questa
+      pagina continua a funzionare. È la prova più semplice che ci sia."""
+
+[[howto]]
+title = "Scegli una registrazione."
+body = """
+ Trascina un file MP3, WAV, FLAC, M4A,
+      Ogg o Opus sul selettore, oppure un video, se quello che ti serve è un pezzo
+      del suo audio. Il browser lo legge direttamente dal tuo disco e lo disegna come
+      forma d'onda; nel frattempo non esce niente da nessuna parte."""
+
+[[howto]]
+title = "Riproducila e segna i pezzi che vuoi."
+body = """
+ Premi <kbd>I</kbd> dove un
+      pezzo deve cominciare e <kbd>O</kbd> dove deve finire. Fallo quante volte
+      vuoi: ogni coppia diventa una riga nella tabella qui sotto e una banda sulla
+      forma d'onda. <kbd>U</kbd> annulla l'ultima, <kbd>Spazio</kbd> riproduce e
+      mette in pausa, le frecce saltano cinque secondi, e tenendo <kbd>Maiusc</kbd>
+      si spostano di dieci millisecondi. Rallenta la riproduzione se il momento è
+      difficile da prendere."""
+
+[[howto]]
+title = "Sistema i segni."
+body = """
+ Ogni riga si può riascoltare da sola,
+      ritoccare scrivendoci dentro un tempo esatto, spostare su o giù nell'ordine, o
+      cancellare. Le due estremità del pezzo selezionato si possono anche trascinare
+      lungo la forma d'onda, ed è il modo più rapido per mettere un segno sul
+      silenzio invece che sul respiro che lo precede. Il totale in alto è la durata
+      che avrà la registrazione finita."""
+
+[[howto]]
+title = "Tienili, oppure toglili."
+body = """
+ Tenerli è il verso solito: la
+      registrazione finita sono i pezzi che hai segnato, uniti in ordine. Toglierli è
+      l'altro lavoro che la gente vuole e trova di rado: segna gli «ehm», il telefono
+      che squilla o le false partenze, e quello che resta viene unito senza di
+      loro."""
+
+[[howto]]
+title = "Taglia e scarica."
+body = """
+ Ogni taglio cade sul campione che hai
+      segnato; qui non c'è nessun arrotondamento a un fotogramma chiave, perché il
+      suono non ne ha. L'unica cosa che vale la pena scegliere è quanta dissolvenza
+      mettere su ogni giunzione: cinque millisecondi bastano a evitare un clic e sono
+      troppo pochi per sentirsi come una dissolvenza. Quello che esce è un WAV,
+      riprodotto prima sulla pagina e poi consegnato dritto ai download del tuo
+      browser."""
+
+[[faq]]
+q = "Il mio audio viene caricato da qualche parte?"
+a = """
+        No. Lo legge, lo segna, lo taglia e lo scrive il tuo browser sul tuo hardware.
+        Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo che
+        può contattare: nessuno appartiene a questo sito. Se preferisci controllare
+        invece che fidarti, stacca la connessione e taglia una registrazione lo
+        stesso."""
+
+[[faq]]
+q = "Posso tenere più pezzi della stessa registrazione?"
+a = """
+        È esattamente a questo che serve. Premi <kbd>I</kbd> e <kbd>O</kbd> quante
+        volte vuoi mentre suona; ogni coppia diventa una riga, e il file finito è
+        ogni riga unita in ordine, con tutto il resto sparito. Quasi tutti i
+        taglierini online ti danno una coppia di maniglie e ti chiedono quale singolo
+        tratto tenere: va benissimo per spuntare un jingle davanti e dietro, e non
+        serve a niente per ascoltare un'ora di intervista una volta sola e tenere le
+        sei risposte che valgono."""
+
+[[faq]]
+q = "Il taglio cade esattamente dove l'ho segnato?"
+a = """
+        Sì, su ogni pezzo e in qualsiasi lettore. Questo è l'unico punto in cui
+        l'audio è più semplice del video: una registrazione decodificata è una serie
+        di numeri e ognuno sta in piedi da solo, quindi non esiste l'equivalente di un
+        fotogramma chiave a cui arrotondare e non c'è motivo perché un taglio cominci
+        in anticipo. La pagina mostra il numero di campione da cui parte il risultato,
+        cioè il segno che hai fatto moltiplicato per la frequenza di campionamento e
+        arrotondato al campione intero più vicino."""
+
+[[faq]]
+q = "Perché una giunzione dovrebbe fare clic, e a cosa serve la dissolvenza?"
+a = """
+        Perché tagliare dalla metà di una parola alla metà di un'altra mette due forme
+        d'onda che non c'entrano niente una accanto all'altra, e un altoparlante a cui
+        si chiede di saltare tra le due fa un clic. Non è un difetto del taglio: è
+        così che suona una discontinuità. Il rimedio è una dissolvenza di pochi
+        millisecondi da entrambe le parti di ogni giunzione: abbastanza lunga perché
+        il cono ci arrivi, troppo corta per sentirsi come una dissolvenza. Cinque
+        millisecondi è il valore di partenza e si può togliere. La dissolvenza viene
+        messa solo su un bordo che è davvero un taglio, quindi un bordo proprio
+        all'inizio o alla fine della registrazione resta esattamente com'era."""
+
+[[faq]]
+q = "Posso invece togliere i pezzi brutti?"
+a = """
+        Sì. Segnali, poi scegli «Toglili»: tutto quello che <em>non</em> hai segnato
+        viene unito al posto loro, in ordine. Lo stesso elenco di segni risponde a
+        entrambe le domande, quindi puoi passare dall'uno all'altro e vedere la durata
+        cambiare senza segnare niente due volte."""
+
+[[faq]]
+q = "Posso salvare i segni e riprenderli dopo?"
+a = """
+        Sì. «Salva i segni» scrive un file di testo semplice, una riga per pezzo, con
+        inizio e fine separati da una virgola, e «Carica i segni» ne rilegge uno.
+        Vengono offerti due formati, secondi semplici e <code>HH:MM:SS.mmm</code>, e
+        tutti e due sono la disposizione che scrive il taglierino per video di questo
+        sito, quindi un file fatto sul video si può trascinare sul suo audio e
+        viceversa. Segnare è un lavoro di precisione e nessuno dovrebbe doverlo fare
+        due volte."""
+
+[[faq]]
+q = "Quali formati posso aprire?"
+a = """
+        Tutto quello che il tuo browser decodifica, che in pratica vuol dire MP3, WAV,
+        FLAC, M4A e AAC, Ogg Vorbis e Opus, e l'audio dentro i video MP4, M4V, MOV e
+        WebM. Quello che resta fuori è lo stesso elenchino di sempre: AVI, WMA e quasi
+        tutti gli MKV. Un file che questo browser non riesce a leggere viene rifiutato
+        con un messaggio che lo dice, invece di fallire a metà strada."""
+
+[[faq]]
+q = "Perché salva un WAV invece di un MP3?"
+a = """
+        Perché nessun browser porta con sé un codificatore MP3, e questo strumento si
+        rifiuta di mandare la tua registrazione a un server che ce l'ha. Un WAV non ha
+        bisogno di nessun codificatore, sono i campioni con una breve intestazione
+        davanti, quindi è insieme l'opzione onesta e l'unica che non possa costare
+        qualità all'uscita. È più grande: circa dieci megabyte al minuto in stereo.
+        Lo apre qualunque lettore, telefono o programma di montaggio, e chi vuole un
+        MP3 può ricavarlo da lì. Tagliare un MP3 copiandone i frame terrebbe il file
+        piccolo, ma sposterebbe anche ogni taglio al confine di frame più vicino, che è
+        proprio l'arrotondamento che questo strumento esiste per non fare."""
+
+[[faq]]
+q = "C'è un limite alla durata della registrazione?"
+a = """
+        Nello strumento non c'è nessun limite. Il tetto vero è la memoria: tutta la
+        registrazione viene decodificata dentro questa pagina in una volta sola, e il
+        WAV viene assemblato in memoria prima che tu lo scarichi, quindi un'ora di
+        stereo ha bisogno di poco meno di un gigabyte per lavorare. Un WAV da quattro
+        gigabyte viene rifiutato del tutto, perché il campo della dimensione del
+        formato stesso non riesce a descriverlo."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di prova e
+        non c'è filigrana. Il sito ha della pubblicità, ed è quella che lo mantiene;
+        agli annunci non arriva niente sulla tua registrazione."""
+
+[schema]
+browser_requirements = "Richiede JavaScript e un browser con Web Audio, cioè qualunque browser attuale. Non serve alcun supporto per i codec oltre a quello che il browser ha già per riprodurre il file."
+description = "Segna quanti pezzi vuoi di una registrazione mentre suona, poi salvali in un unico file - oppure toglili e tieni tutto il resto. I tagli cadono sul campione esatto che hai segnato, con una dissolvenza facoltativa di pochi millisecondi perché le giunzioni non facciano clic. Non viene caricato niente e il risultato viene scritto come WAV, quindi non si ricodifica nulla."
+features = [
+  "Segna quanti pezzi vuoi con I e O mentre la registrazione suona",
+  "Unisce i pezzi segnati in un file solo, nell'ordine che scegli tu",
+  "Oppure toglie i pezzi segnati e tiene tutto il resto",
+  "Taglia sul campione esatto, senza arrotondare a un frame o a un fotogramma chiave",
+  "Sfuma ogni giunzione di pochi millisecondi perché non possa fare clic",
+  "Disegna la forma d'onda, così silenzi e pause si segnano a occhio",
+  "Salva e ricarica i segni come file di testo con i tempi",
+  "Taglia l'audio dentro un MP4, MOV o WebM senza toccare l'immagine",
+  "Funziona offline; niente caricamenti, niente account, niente filigrana",
+]
+
+[picker]
+title = "Trascina qui un file audio o un video"
+hint = "oppure clicca per sceglierlo &mdash; MP3, WAV, FLAC, M4A, Ogg, e l'audio dentro MP4, MOV o WebM"

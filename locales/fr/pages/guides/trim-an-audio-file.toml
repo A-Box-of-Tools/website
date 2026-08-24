@@ -1,0 +1,16 @@
+#
+# Guide : couper un fichier audio - French.
+#
+
+nav = "Couper un audio"
+title = "Comment couper un audio sans perdre en qualité"
+description = "Où tombe vraiment une coupe audio, pourquoi elle peut être exacte alors qu'une coupe vidéo ne le peut pas, pourquoi un raccord claque parfois, et ce que fait réellement un fondu de cinq millisecondes."
+heading = "Comment couper un audio sans perdre en qualité"
+lede = """
+    Une coupe audio tombe sur l'instant exact que vous avez marqué, dans tous
+    les lecteurs, toujours &mdash; ce qui n'est pas vrai de la vidéo. Voici
+    pourquoi, quel est le seul vrai piège, et quoi y faire."""
+updated = "21 août 2026"
+og_title = "Comment couper un audio sans perdre en qualité"
+og_description = "Pourquoi une coupe audio peut être exacte quand une coupe vidéo ne le peut pas, pourquoi un raccord claque parfois, et ce que fait un fondu de cinq millisecondes."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

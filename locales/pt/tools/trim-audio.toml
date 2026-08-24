@@ -1,0 +1,317 @@
+#
+# Cortar áudio - Brazilian Portuguese.
+#
+# Overrides for tools/trim-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Cortador de áudio"
+heading = "Cortar&nbsp;áudio <span class=\"h1-kw\">&mdash; aparar gravações online</span>"
+tagline = "Marque os trechos que valem enquanto toca. Eles voltam num arquivo só, cortado onde você disse."
+
+title = "Cortar áudio online &mdash; fique só com o que interessa, sem enviar nada"
+description = "Toque uma gravação e marque cada trecho que vale a pena enquanto ele passa, depois salve esses trechos num arquivo só. Cortes exatos na amostra, sem estalo nas emendas, nada enviado."
+og_title = "Cortador de áudio &mdash; fique só com o que interessa, sem enviar nada"
+og_description = "Aperte I e O enquanto toca para marcar cada trecho que vale a pena. Os trechos marcados são escritos de volta num arquivo só, cortados na amostra exata, sem nada ser enviado."
+og_image_alt = "Cortador de áudio - marque os trechos que você quer e salve como uma gravação, no navegador"
+
+pledge = """
+    A sua gravação é lida, marcada, cortada e escrita pelo seu próprio navegador, no
+    seu próprio hardware. Aqui nada consegue buscar nem mandar coisa alguma, porque
+    esta ferramenta não tem função de rede nenhuma. E mesmo que tivesse, do outro
+    lado desta página não existe servidor para receber uma gravação."""
+
+live_hint = """
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e corte alguma coisa.
+      Nenhuma requisição leva uma amostra, um nome de arquivo ou um byte do que você
+      escolheu. Ou então desligue a internet e corte uma gravação assim mesmo: uma
+      ferramenta que mandasse o seu áudio embora para ser cortado simplesmente
+      pararia."""
+
+read_first = """
+, <code>src/segments.js</code> para as marcas e o
+      arquivo em que elas são salvas, <code>src/decode.js</code> para as vinte
+      linhas que entregam o seu arquivo ao decodificador do próprio navegador,
+      <code>src/trim.js</code> para a conta que transforma uma marca numa sequência
+      de amostras e para o laço que as copia, e <code>src/wav.js</code> para o
+      cabeçalho que vai na frente delas. Nenhum deles importa nada capaz de fazer uma
+      requisição."""
+
+howto_heading = "Como cortar um arquivo de áudio"
+
+card = """
+            Marque cada trecho que vale a pena enquanto toca, depois salve tudo como
+            uma gravação só. Os cortes caem na amostra exata, e as emendas não
+            estalam."""
+
+[words]
+plural = "gravações"
+choose = "uma gravação"
+analytics_extra = """, e nenhuma
+  forma de onda, duração ou ponto de corte"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem marca d'água"
+
+[[facts]]
+text = "Quantos trechos você quiser"
+
+[[facts]]
+text = "Corta exatamente onde você marcou"
+
+[[facts]]
+text = "Funciona offline"
+
+[[privacy]]
+title = "As suas gravações não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy lista todo endereço que esta página pode contatar, e
+      nenhum deles é nosso. Aqui não existe um ponto de coleta onde o seu arquivo
+      pudesse parar, nem nada no código que o mandasse para lá se existisse."""
+
+[[privacy]]
+title = "Aqui nada busca nada."
+body = """
+ Esta ferramenta não tem função de rede nenhuma:
+      não tem endereço para colar, não tem nada para baixar, não tem motor nenhum
+      baixado no primeiro uso. Cada byte que encosta no seu áudio veio desta origem
+      quando a página carregou."""
+
+[[privacy]]
+title = "O decodificador é o que já vem no seu navegador."
+body = """
+
+      O arquivo é entregue ao <code>decodeAudioData</code>, o mesmo código que toca
+      uma faixa num elemento <code>&lt;audio&gt;</code>. Nada é entregue aqui para ler
+      o seu formato, e nada fora desta página é consultado para ler também."""
+
+[[privacy]]
+title = "A imagem de um vídeo nunca chega a ser decodificada."
+body = """
+ Quando você solta um
+      vídeo aqui, só a trilha de áudio dele é pedida. Os quadros não são lidos, nem
+      decodificados, nem desenhados, nem olhados: não existe código nesta página que
+      pudesse, e o arquivo que sai tem som e mais nada."""
+
+[[privacy]]
+title = "O corte é uma cópia, na memória, neste computador."
+body = """
+
+      Cortar é um <code>set</code> por trecho e por canal: as amostras que você
+      guardou são movidas para um novo vetor, na ordem em que você as pôs. As únicas
+      amostras multiplicadas por alguma coisa são as poucas centenas dentro de cada
+      fade, e a página diz quantas são antes de você apertar o botão."""
+
+[[privacy]]
+title = "As amostras são escritas, não codificadas de novo."
+body = """
+
+      Um WAV são as amostras que esta página tem em mãos com um cabeçalho na frente.
+      Não existe codificador nenhum no meio do caminho tomando decisões sobre a sua
+      gravação, nem nada que se pudesse chamar de envio para isso acontecer."""
+
+[[privacy]]
+title = "O arquivo de marcas é feito na própria página."
+body = """
+ Salvar as suas marcas
+      escreve um arquivo de texto a partir dos números que já estão na tela, direto
+      para os seus downloads. Carregar um lê ele aqui. Nem um nem outro chega perto de
+      uma rede, e nenhum dos dois leva nada além de tempos."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não chega até ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google. Nenhum dos dois recebe coisa alguma
+      sobre a sua gravação: nem arquivo, nem amostra, nem nome, tamanho, duração, nem
+      onde você cortou. Toda linha que lê, corta e escreve é servida desta origem e
+      está listada no repositório."""
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não chega até ele."
+body = """
+
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um script de
+      cdnjs.buymeacoffee.com e pega as letras no Google Fonts. Ele não é mais do que
+      um link: não avisa ninguém da sua visita e não recebe nada sobre você nem sobre
+      a sua gravação."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desligue a rede e tudo nesta página continua
+      funcionando. Essa é a prova mais simples de todas."""
+
+[[howto]]
+title = "Escolha uma gravação."
+body = """
+ Arraste um arquivo MP3, WAV, FLAC, M4A,
+      Ogg ou Opus até o seletor, ou um vídeo, se o que você quer é um pedaço do som
+      dele. O navegador lê direto do seu disco e desenha como forma de onda; nesse
+      meio-tempo nada sai daqui."""
+
+[[howto]]
+title = "Toque e marque os trechos que você quer."
+body = """
+ Aperte <kbd>I</kbd> onde um
+      trecho deve começar e <kbd>O</kbd> onde ele deve terminar. Faça isso quantas
+      vezes quiser: cada par vira uma linha na tabela de baixo e uma faixa na forma
+      de onda. <kbd>U</kbd> desfaz a última, <kbd>Espaço</kbd> toca e pausa, as setas
+      pulam cinco segundos, e com <kbd>Shift</kbd> andam dez milissegundos. Diminua a
+      velocidade se o momento for difícil de pegar."""
+
+[[howto]]
+title = "Ajeite as marcas."
+body = """
+ Cada linha pode ser tocada sozinha, ajustada
+      digitando um tempo exato nela, movida para cima ou para baixo na ordem, ou
+      apagada. As duas pontas do trecho selecionado também podem ser arrastadas pela
+      forma de onda, que é o jeito mais rápido de pôr uma marca no silêncio em vez de
+      pôr na respiração antes dele. O total lá em cima é o que a gravação pronta vai
+      durar."""
+
+[[howto]]
+title = "Fique com eles, ou tire eles fora."
+body = """
+ Ficar é o jeito de sempre: a
+      gravação pronta são os trechos que você marcou, emendados na ordem. Tirar fora é
+      o outro trabalho que as pessoas querem e raramente encontram: marque os
+      &ldquo;éééé&rdquo;, o telefone tocando ou as saídas em falso, e o que sobra é
+      emendado sem eles."""
+
+[[howto]]
+title = "Corte e baixe."
+body = """
+ Todo corte cai na amostra que você marcou; aqui
+      não existe arredondamento para quadro-chave nenhum, porque som não tem. A única
+      coisa que vale escolher é quanto fade pôr em cada emenda: cinco milissegundos
+      bastam para evitar um estalo e são curtos demais para se ouvir como fade. O que
+      sai é um WAV, tocado primeiro na página e depois entregue direto para os
+      downloads do seu navegador."""
+
+[[faq]]
+q = "O meu áudio é enviado para algum lugar?"
+a = """
+        Não. Ele é lido, marcado, cortado e escrito pelo seu próprio navegador, no seu
+        próprio hardware. Esta ferramenta não tem lado servidor, e a
+        <code>Content-Security-Policy</code> da página lista todo endereço que ela
+        pode contatar: nenhum é nosso. Se você prefere conferir a acreditar, desligue a
+        internet e corte uma gravação assim mesmo."""
+
+[[faq]]
+q = "Dá para ficar com vários trechos da mesma gravação?"
+a = """
+        É exatamente para isso que serve. Aperte <kbd>I</kbd> e <kbd>O</kbd> quantas
+        vezes quiser enquanto toca; cada par vira uma linha, e o arquivo pronto são
+        todas as linhas emendadas na ordem, com todo o resto fora. A maioria dos
+        cortadores online te dá um par de alças e pergunta qual único pedaço você quer
+        manter, o que serve para aparar a ponta de uma vinheta e não serve para nada
+        quando você quer ouvir uma hora de entrevista uma vez só e ficar com as seis
+        respostas que prestam."""
+
+[[faq]]
+q = "O corte cai exatamente onde eu marquei?"
+a = """
+        Cai, em todo trecho e em qualquer player. Este é o único lugar em que áudio é
+        mais simples do que vídeo: uma gravação decodificada é uma sequência de
+        números e cada um se vira sozinho, então não existe equivalente de
+        quadro-chave para arredondar, nem motivo para um corte começar adiantado. A
+        página mostra o número da amostra em que o resultado começa, que é a marca que
+        você fez multiplicada pela taxa de amostragem e arredondada para a amostra
+        inteira mais próxima."""
+
+[[faq]]
+q = "Por que uma emenda estalaria, e para que serve o fade?"
+a = """
+        Porque cortar do meio de uma palavra para o meio de outra põe duas formas de
+        onda sem relação uma do lado da outra, e um alto-falante obrigado a pular entre
+        elas dá um estalo. Não é defeito do corte: é assim que uma descontinuidade
+        soa. O jeito é um fade de poucos milissegundos dos dois lados de cada emenda:
+        longo o bastante para o cone chegar lá, curto demais para se ouvir como fade.
+        Cinco milissegundos é o padrão e dá para desligar. O fade só é posto numa borda
+        que seja mesmo um corte, então uma borda bem no começo ou no fim da gravação
+        fica exatamente como estava."""
+
+[[faq]]
+q = "Dá para tirar os pedaços ruins em vez de ficar com eles?"
+a = """
+        Dá. Marque eles e escolha &ldquo;Tirar fora&rdquo;: tudo o que você
+        <em>não</em> marcou é emendado no lugar, na ordem. A mesma lista de marcas
+        responde às duas perguntas, então você pode alternar e ver a duração mudar sem
+        marcar nada duas vezes."""
+
+[[faq]]
+q = "Dá para salvar as minhas marcas e voltar a elas depois?"
+a = """
+        Dá. &ldquo;Salvar marcas&rdquo; escreve um arquivo de texto simples, uma linha
+        por trecho, com começo e fim separados por vírgula, e &ldquo;Carregar
+        marcas&rdquo; lê um de volta. São oferecidos dois formatos, segundos puros e
+        <code>HH:MM:SS.mmm</code>, e os dois são o mesmo layout que o cortador de
+        vídeo deste site escreve, então um arquivo feito em cima do vídeo pode ser
+        solto no áudio dele e vice-versa. Marcar é trabalho caprichado e ninguém
+        deveria ter que fazer duas vezes."""
+
+[[faq]]
+q = "Quais formatos dá para abrir?"
+a = """
+        O que o seu navegador decodificar, o que na prática quer dizer MP3, WAV, FLAC,
+        M4A e AAC, Ogg Vorbis e Opus, e o áudio dentro de vídeos MP4, M4V, MOV e WebM.
+        O que fica de fora é a mesma listinha de sempre: AVI, WMA e a maioria dos MKV.
+        Um arquivo que este navegador não lê é recusado com uma mensagem dizendo isso,
+        em vez de falhar no meio do caminho."""
+
+[[faq]]
+q = "Por que ele salva WAV e não MP3?"
+a = """
+        Porque nenhum navegador traz um codificador de MP3, e esta ferramenta se recusa
+        a mandar a sua gravação para um servidor que tenha um. Um WAV não precisa de
+        codificador nenhum, são as amostras com um cabeçalho curto na frente, então ele
+        é ao mesmo tempo a opção honesta e a única que não pode custar qualidade na
+        saída. É maior: uns dez megabytes por minuto em estéreo. Todo player, celular e
+        editor abre um, e o que precisar de MP3 consegue fazer um a partir dele. Cortar
+        um MP3 copiando os quadros dele manteria o arquivo pequeno, mas também moveria
+        cada corte para a fronteira de quadro mais próxima, que é justamente o
+        arredondamento que esta ferramenta existe para não fazer."""
+
+[[faq]]
+q = "Tem limite de duração da gravação?"
+a = """
+        Não tem limite embutido na ferramenta. O teto de verdade é a memória: a
+        gravação inteira é decodificada nesta página de uma vez, e o WAV é montado na
+        memória antes de você baixar, então uma hora em estéreo precisa de pouco menos
+        de um gigabyte para trabalhar. Um WAV de quatro gigabytes é recusado de cara,
+        porque o próprio campo de tamanho do formato não consegue descrever um."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não tem conta, nem login, nem período de teste, nem marca d'água. O
+        site exibe publicidade, e é ela que paga a conta; os anúncios não recebem nada
+        sobre a sua gravação."""
+
+[schema]
+browser_requirements = "Precisa de JavaScript e de um navegador com Web Audio, o que qualquer navegador atual tem. Não é preciso suporte a codec além do que o navegador já tem para tocar o arquivo."
+description = "Marque quantos trechos quiser de uma gravação enquanto ela toca, depois salve esses trechos como um arquivo único - ou tire eles fora e fique com o resto. Os cortes caem na amostra exata que foi marcada, com um fade opcional de poucos milissegundos para as emendas não estalarem. Nada é enviado e o resultado é escrito como WAV, então nada é recodificado."
+features = [
+  "Marca quantos trechos você quiser com I e O enquanto a gravação toca",
+  "Emenda os trechos marcados num arquivo só, na ordem que você escolher",
+  "Ou tira os trechos marcados fora e fica com todo o resto",
+  "Corta na amostra exata, sem arredondar para quadro nem para quadro-chave",
+  "Faz um fade de poucos milissegundos em cada emenda para não estalar",
+  "Desenha a forma de onda, para marcar silêncios e pausas no olho",
+  "Salva e recarrega as marcas como arquivo de texto com os tempos",
+  "Corta o áudio de dentro de um MP4, MOV ou WebM sem encostar na imagem",
+  "Funciona offline; sem envio, sem conta, sem marca d'água",
+]
+
+[picker]
+title = "Arraste um arquivo de áudio ou um vídeo para cá"
+hint = "ou clique para procurar &mdash; MP3, WAV, FLAC, M4A, Ogg, e o som de dentro de MP4, MOV ou WebM"

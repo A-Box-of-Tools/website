@@ -1,0 +1,199 @@
+<main>
+  <!-- Passo 1 &mdash; la registrazione -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli una registrazione</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Dimensione</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Durata</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>Letto come</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Passo 2 &mdash; i segni -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> Segna i pezzi che vuoi
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      Ascoltala tutta e premi <kbd>I</kbd> dove un pezzo deve cominciare e
+      <kbd>O</kbd> dove deve finire. Fallo quante volte vuoi: ogni coppia diventa
+      una riga qui sotto, e il file finito è quella serie di righe, una dopo
+      l'altra. <kbd>U</kbd> annulla l'ultima, <kbd>Spazio</kbd> riproduce e mette
+      in pausa, e le frecce saltano cinque secondi. Tieni <kbd>Maiusc</kbd>
+      insieme a una freccia per spostarti di dieci millisecondi alla volta.
+    </p>
+
+    <!-- Built by src/timeline.js: the waveform, a band for every part, the one
+         being marked, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <audio id="preview" class="player" controls preload="metadata"></audio>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">Riproduci</button>
+      <button type="button" id="back-5" class="ghost" title="Cinque secondi indietro">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="Cinque secondi avanti">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> Segna inizio</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> Segna fine</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> Annulla</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="Velocità di riproduzione">
+      <span class="speed-label">Velocità</span>
+      <button type="button" class="speed" data-speed="0.5">0,5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0,75&times;</button>
+      <button type="button" class="speed active" data-speed="1">Normale</button>
+      <button type="button" class="speed" data-speed="1.25">1,25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1,5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The parts themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>Pezzi <span class="segment-count" id="segment-count">ancora nessuno</span></h3>
+        <p class="segments-total">
+          Totale tenuto <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">Inizio</th>
+            <th scope="col">Fine</th>
+            <th scope="col">Durata</th>
+            <th scope="col"><span class="visually-hidden">Azioni</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        Non hai ancora segnato niente. Premi <kbd>I</kbd> e poi <kbd>O</kbd>
+        mentre suona, oppure usa i pulsanti qui sopra.
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">Aggiungi una riga a mano</button>
+        <button type="button" id="reset-segments" class="ghost danger">Cancellale tutte</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">Carica i segni&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="Formato del file dei tempi">
+          <option value="seconds" selected>secondi</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">Salva i segni</button>
+      </div>
+
+      <p class="field-note">
+        I segni si salvano come file di testo semplice, una riga per pezzo, nel
+        formato qui sopra, così una lunga sessione di marcatura sopravvive a una
+        scheda chiusa, e lo stesso file si può passare al taglierino per video o a
+        qualunque altro strumento che legga quella disposizione.
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>Cosa fare con i pezzi segnati</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>Tienili</strong>
+          Il file finito sono i pezzi segnati, uniti in ordine.
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>Toglili</strong>
+          I pezzi segnati se ne vanno, e tutto il resto viene unito.
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Passo 3 &mdash; il file che esce -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Taglia</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">Cosa scrivere</label>
+        <select id="depth">
+          <option value="16" selected>WAV a 16 bit &mdash; si sente dappertutto</option>
+          <option value="32">WAV a 32 bit float &mdash; esattamente i campioni</option>
+        </select>
+        <p class="field-note">
+          Un WAV tiene i campioni come sono, quindi scriverne uno non può costare
+          qualità. Piccolo però non è: guarda la stima qui sotto.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fade">Ammorbidisci le giunzioni</label>
+        <select id="fade">
+          <option value="0">Nessuna &mdash; taglia sul campione esatto</option>
+          <option value="0.005" selected>5 ms &mdash; bastano a evitare il clic</option>
+          <option value="0.02">20 ms</option>
+          <option value="0.05">50 ms</option>
+        </select>
+        <p class="field-note" id="fade-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Si tiene</dt><dd id="sum-parts">&mdash;</dd></div>
+      <div><dt>Durata finale</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Comincia a</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>Giunzioni</dt><dd id="sum-joins">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="sum-sound">&mdash;</dd></div>
+      <div><dt>Circa</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Taglia l'audio</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annulla</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" class="player" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Scarica l'audio</a>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,108 @@
+<main>
+  <!-- ステップ1 &mdash; ファイル -->
+  <section class="card">
+    <h2><span class="step">1</span> GIFを選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>ファイル</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>サイズ</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>画像</dt><dd id="src-picture">&mdash;</dd></div>
+      <div><dt>コマ数</dt><dd id="src-frames">&mdash;</dd></div>
+      <div><dt>再生時間</dt><dd id="src-duration">&mdash;</dd></div>
+      <div><dt>繰り返し</dt><dd id="src-loop">&mdash;</dd></div>
+    </dl>
+
+    <p id="notice" class="path-note" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- ステップ2 &mdash; 出力の中身 -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">2</span> コマの出し方</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="mode">1枚のPNGに入るもの</label>
+        <select id="mode">
+          <option value="composited" selected>見えているとおりのコマ</option>
+          <option value="stored">そのコマが保存している画素だけ</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="background">透過部分</label>
+        <select id="background">
+          <option value="keep" selected>透過のまま残す</option>
+          <option value="flatten">色で塗りつぶす&hellip;</option>
+        </select>
+        <div id="colour-row" class="inline-pair" hidden>
+          <input type="color" id="colour" value="#ffffff" aria-label="透過部分を塗りつぶす色">
+          <span id="colour-note">すべてのコマに書き込まれ、あとから取り除くことはできません。</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="every">残すコマ</label>
+        <div class="inline-pair">
+          <input type="number" id="every" min="1" max="100" step="1" value="1">
+          <span id="every-note">コマに1枚</span>
+        </div>
+        <p class="field-note">
+          全部ではなく2コマに1枚、5コマに1枚だけ取り出します。一覧表を作るときや、
+          長い録画のときに。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="timing">表示時間の一覧</label>
+        <select id="timing">
+          <option value="yes" selected>ZIPにframes.txtを入れる</option>
+          <option value="no">コマだけ</option>
+        </select>
+        <p class="field-note">
+          各コマがどれだけ表示され、どこに置かれていたか。PNGを並べた
+          フォルダだけでは持ち出せない情報です。
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="download-all" class="primary">全コマをZIPでダウンロード</button>
+      <button type="button" id="download-selected" class="ghost" hidden>選んだコマをダウンロード</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- ステップ3 &mdash; コマそのもの -->
+  <section class="card" id="frames-card" hidden>
+    <h2><span class="step">3</span> コマ一覧</h2>
+
+    <div class="toolbar">
+      <p class="count" id="frames-count" role="status" aria-live="polite"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="select-all" class="ghost">すべて選択</button>
+        <button type="button" id="select-none" class="ghost">選択を解除</button>
+        <button type="button" id="clear" class="ghost danger">最初からやり直す</button>
+      </div>
+    </div>
+
+    <!-- Checkboxes rather than a click-to-select grid: this is a list of files
+         somebody is about to save, and a checkbox is the one control everybody
+         already knows is safe to press. -->
+    <ul class="frames" id="frames"></ul>
+  </section>
+</main>

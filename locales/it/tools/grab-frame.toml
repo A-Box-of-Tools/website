@@ -1,0 +1,254 @@
+#
+# Estrattore di fotogrammi - Italian.
+#
+# Overrides for tools/grab-frame/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Estrattore di fotogrammi"
+heading = "Estrarre&nbsp;un&nbsp;fotogramma <span class=\"h1-kw\">&mdash; salvare un'immagine da un video</span>"
+tagline = "Un fermo immagine a piena qualità, da qualsiasi punto."
+
+title = "Estrarre un fotogramma da un video &mdash; gratis, senza caricare niente"
+description = "Salva qualsiasi fotogramma di un MP4, MOV o WebM come PNG o JPEG a dimensione piena. Avanza fotogramma per fotogramma, oppure prendine uno ogni pochi secondi. Gira nel browser: non viene caricato niente."
+og_title = "Estrattore di fotogrammi &mdash; un fermo immagine senza caricare il video"
+og_description = "Trova il momento, arriva al fotogramma esatto e salvalo alla risoluzione del video stesso. I fotogrammi vengono decodificati sul tuo dispositivo e l'immagine non viene compressa due volte."
+og_image_alt = "Estrattore di fotogrammi - salvare un'immagine da un video nel browser, senza caricare niente"
+
+pledge = """
+    I fotogrammi li trova, li decodifica e li disegna il tuo browser, sul tuo
+    hardware. Qui non c'è niente che possa scaricare o mandare qualcosa, perché
+    questo strumento non ha proprio nessuna funzione di rete. E anche se ci fosse
+    una via d'uscita, dall'altra parte di questa pagina non c'è nessun server a cui
+    mandare un video."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori, tieni
+      d'occhio il pannello Rete ed estrai un fotogramma. Non c'è una sola richiesta
+      che porti con sé un'immagine, un nome di file o un byte di quello che hai
+      scelto. Oppure stacca la connessione ed estraine uno lo stesso: uno strumento
+      che spedisse via il tuo video per elaborarlo si fermerebbe e basta."""
+
+read_first = """
+, <code>src/demux.js</code> per il lettore che trova i
+      fotogrammi dentro un MP4 e <code>src/frames.js</code> per la parte che
+      decodifica quello che hai chiesto. Nessuno dei due importa qualcosa in grado
+      di fare una richiesta."""
+
+howto_heading = "Come estrarre un fotogramma da un video"
+
+card = """
+            Salva qualsiasi fotogramma di un video come immagine, alla dimensione
+            vera del video: uno alla volta, oppure uno ogni pochi secondi."""
+
+[words]
+plural = "video"
+choose = "un video"
+analytics_extra = """, e nessun
+  fotogramma, codice di tempo o immagine"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessuna filigrana"
+
+[[facts]]
+text = "Risoluzione piena"
+
+[[facts]]
+text = "Funziona offline"
+
+[[privacy]]
+title = "I tuoi video non hanno una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può contattare, e
+      non ne appartiene uno a questo sito. Qui non esiste un recapito dove il tuo
+      file possa essere raccolto, e nel codice non c'è niente che lo manderebbe lì
+      se esistesse."""
+
+[[privacy]]
+title = "Qui niente va a prendere niente."
+body = """
+ Questo strumento non ha proprio nessuna
+      funzione di rete: non c'è un indirizzo da incollare, non c'è niente da
+      scaricare, non c'è un motore che arrivi al primo utilizzo. Ogni byte che tocca
+      il tuo video è arrivato da questa origine quando la pagina si è caricata."""
+
+[[privacy]]
+title = "La decodifica è locale."
+body = """
+ I fotogrammi passano da WebCodecs nel tuo
+      browser, oppure dallo stesso motore di riproduzione che ti mostrerebbe il
+      video comunque. L'immagine viene disegnata su una tela di questo dispositivo e
+      consegnata direttamente a un download."""
+
+[[privacy]]
+title = "Il file viene letto pochi megabyte alla volta."
+body = """
+ Un video è l'unico tipo
+      di file qui che non sta in memoria in modo affidabile, quindi non viene mai
+      caricato tutto insieme. Il lettore prende una finestra attorno al fotogramma
+      che hai chiesto, ed è anche il motivo per cui un video da due gigabyte si apre
+      veloce come uno piccolo."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente sul tuo video: né il file, né un fotogramma, né un nome, una
+      dimensione, una durata o il momento su cui ti sei fermato. Ogni riga che
+      legge, decodifica o disegna è servita da questa origine ed è elencata nel
+      repository."""
+
+[[privacy]]
+title = "Cosa carica il pulsante delle donazioni, e cosa non gli arriva."
+body = """
+
+      Il pulsante «Buy me a coffee» in alto è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. Non è niente di
+      più di un collegamento: non segnala nessuna visita e non gli viene passato
+      niente su di te o sul tuo video."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e tutto quello che c'è su questa
+      pagina continua a funzionare. È la prova più semplice che ci sia."""
+
+[[howto]]
+title = "Scegli un video."
+body = """
+ Trascina un MP4, MOV, M4V o WebM sul
+      selettore, oppure cercalo a mano. Il browser lo legge direttamente dal tuo
+      disco, e nel frattempo non esce niente da nessuna parte."""
+
+[[howto]]
+title = "Trova il momento."
+body = """
+ Riproducilo e fermati dove vuoi, oppure
+      trascina il cursore: su un MP4 il cursore si muove di un fotogramma per
+      scatto, quindi tra quello che vedi e quello che salvi non c'è nessun
+      arrotondamento. Le frecce avanzano di un fotogramma alla volta, e tenendo
+      <kbd>Maiusc</kbd> di dieci."""
+
+[[howto]]
+title = "Scegli un formato."
+body = """
+ Il PNG salva il fotogramma esattamente com'è
+      stato decodificato, ed è questo che qui vuol dire «piena qualità». JPEG e WebP
+      sono più piccoli e sono una seconda compressione sopra quella del video: va
+      benissimo per un'anteprima, non per qualcosa che verrà ritoccato dopo."""
+
+[[howto]]
+title = "Prendine uno, o prendine una serie."
+body = """
+ Un fotogramma singolo va
+      dritto nei tuoi download. «Ogni N secondi» percorre il video una volta e
+      prende un fermo immagine a ogni tacca, utile per provini a contatto e
+      miniature, e arrivano in un solo ZIP invece che in cento richieste di
+      salvataggio."""
+
+[[faq]]
+q = "Il mio video viene caricato da qualche parte?"
+a = """
+        No. Lo legge e lo decodifica il tuo browser sul tuo hardware. Questo
+        strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo che
+        può contattare: nessuno appartiene a questo sito. Se preferisci controllare
+        invece che fidarti, stacca la connessione ed estrai un fotogramma lo
+        stesso."""
+
+[[faq]]
+q = "Cosa vuol dire davvero «piena qualità»?"
+a = """
+        Due cose. Il fermo immagine viene salvato alla risoluzione del video, non
+        alla dimensione dell'anteprima sulla pagina: da un video 4K esce
+        un'immagine da 3840 x 2160. E scegliendo il PNG, il fotogramma viene salvato
+        esattamente com'è uscito dal decodificatore, quindi il file contiene
+        l'immagine che contiene il video, senza un secondo giro di compressione
+        sopra. Uno screenshot della finestra di un lettore non ti dà né l'una né
+        l'altra cosa: ha la dimensione della finestra ed è preso dopo che il lettore
+        l'ha ridimensionata e le ha applicato la gestione del colore."""
+
+[[faq]]
+q = "Da quali formati video posso prendere un fotogramma?"
+a = """
+        MP4, M4V e MOV vengono letti direttamente, qualunque cosa ci sia dentro:
+        H.264, HEVC, AV1 o VP9, purché il tuo browser sappia decodificare quel
+        codec. Quella è la via esatta, dove lo strumento può puntare al singolo
+        fotogramma. Tutto il resto che il tuo browser sa riprodurre, WebM su tutti,
+        viene gestito spostando il lettore e disegnando quello che mostra: salva
+        comunque un'immagine a dimensione piena, ma cade sul fotogramma scelto dal
+        lettore invece che su quello che hai chiesto tu. Un file che il browser non
+        sa né leggere né riprodurre, che in pratica vuol dire AVI, WMV, FLV e quasi
+        tutti gli MKV, viene rifiutato con un messaggio che lo dice."""
+
+[[faq]]
+q = "Posso avanzare di un fotogramma alla volta?"
+a = """
+        Su un MP4 sì, ed esattamente: lo strumento legge l'elenco dei fotogrammi
+        del file stesso, quindi le frecce si spostano tra le immagini che ci sono
+        davvero, anche su un video con la cadenza ballerina, dove un passo fisso di
+        un trentesimo di secondo andrebbe alla deriva. Sulla via della riproduzione
+        quell'elenco non c'è, quindi un passo è una spinta di circa un fotogramma, e
+        la pagina lo dice."""
+
+[[faq]]
+q = "Perché il mio video verticale del telefono qui è dritto?"
+a = """
+        Perché la rotazione è stata applicata di proposito. Un telefono riprende in
+        orizzontale e scrive un quarto di giro dentro il file invece di ruotare i
+        pixel, quindi il fotogramma che un decodificatore consegna è coricato e ogni
+        lettore lo raddrizza mentre lo porta al tuo schermo. Uno strumento che salta
+        quel passaggio salva un'immagine plausibile del momento giusto, ma di
+        traverso. Questo legge la rotazione dalla traccia e la applica prima di
+        disegnare qualsiasi cosa."""
+
+[[faq]]
+q = "C'è un limite alla dimensione o alla durata del video?"
+a = """
+        Nello strumento non c'è nessun limite, e il file non viene letto tutto in
+        memoria in una volta: viene percorso pochi megabyte alla volta, ed è per
+        questo che un video lungo si apre veloce come uno corto. I fermi immagine
+        che prendi restano nella pagina finché non li scarichi, quindi il tetto vero
+        sono qualche centinaio di PNG in 4K, non il video."""
+
+[[faq]]
+q = "Posso ridimensionare o ritagliare l'immagine dopo?"
+a = """
+        Qui no, ma qui accanto sì. Questo strumento salva il fotogramma com'è;
+        cambiarne la dimensione o la forma è un lavoro a parte con le sue decisioni
+        dentro, e il
+        <a href="../ridimensionare-immagine/">Ridimensionatore di immagini</a> fa
+        entrambe le cose, sempre senza caricare niente. Per rendere il file più
+        piccolo senza cambiare l'immagine c'è il
+        <a href="../comprimere-immagine/">Compressore di immagini</a>."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di prova
+        e non c'è filigrana. Il sito ha della pubblicità, ed è quella che lo
+        mantiene; agli annunci non arriva niente sul tuo video."""
+
+[schema]
+browser_requirements = "Richiede JavaScript. Per l'estrazione al fotogramma esatto serve un browser con WebCodecs; gli altri ripiegano sullo spostamento del lettore."
+description = "Salva qualsiasi fotogramma di un video come PNG, JPEG o WebP a dimensione piena nel browser. MP4, MOV e M4V vengono letti fotogramma per fotogramma con WebCodecs, quindi il fotogramma chiesto è quello salvato; tutto il resto che il browser riproduce viene catturato dal lettore. Non viene caricato niente."
+features = [
+  "Salva un fermo immagine da video MP4, MOV, M4V e WebM",
+  "Sorgenti H.264, HEVC, AV1 e VP9, decodificate con WebCodecs",
+  "Avanzamento fotogramma per fotogramma sull'elenco del file stesso",
+  "PNG per una copia esatta del fotogramma, JPEG e WebP per una più leggera",
+  "Un fermo immagine ogni N secondi, scaricati insieme in uno ZIP",
+  "Funziona offline; niente caricamenti, niente account, niente filigrana",
+]
+
+[picker]
+title = "Trascina qui un video"
+hint = "oppure clicca per sceglierlo &mdash; MP4, MOV, M4V, WebM e tutto il resto che questo browser riproduce"

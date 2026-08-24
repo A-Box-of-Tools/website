@@ -1,0 +1,246 @@
+#
+# Extrator de quadro - Brazilian Portuguese.
+#
+# Overrides for tools/grab-frame/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Extrator de quadro"
+heading = "Extrair&nbsp;quadro&nbsp;de&nbsp;vídeo <span class=\"h1-kw\">&mdash; salvar uma imagem do vídeo</span>"
+tagline = "Uma imagem em qualidade cheia, de qualquer ponto."
+
+title = "Extrair um quadro de um vídeo &mdash; grátis, sem enviar, funciona offline"
+description = "Salve qualquer quadro de um MP4, MOV ou WebM como PNG ou JPEG em tamanho cheio. Avance quadro a quadro, ou tire um a cada poucos segundos. Roda no navegador: nada é enviado."
+og_title = "Extrator de quadro &mdash; uma imagem de qualquer ponto, sem enviar o vídeo"
+og_description = "Ache o momento, chegue no quadro exato e salve na resolução do próprio vídeo. Os quadros são decodificados no seu computador e a imagem não é comprimida duas vezes."
+og_image_alt = "Extrator de quadro - salvar uma imagem de um vídeo no navegador, sem enviar nada"
+
+pledge = """
+    Os quadros são achados, decodificados e desenhados pelo seu próprio navegador,
+    no seu próprio hardware. Aqui nada consegue buscar nem mandar coisa alguma,
+    porque esta ferramenta não tem função de rede nenhuma. E mesmo que tivesse, do
+    outro lado desta página não existe servidor para receber um vídeo."""
+
+live_hint = """
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e extraia um quadro.
+      Nenhuma requisição leva uma imagem, um nome de arquivo ou um byte do que você
+      escolheu. Ou então desligue a internet e extraia um assim mesmo: uma ferramenta
+      que mandasse o seu vídeo embora para ser processado simplesmente pararia."""
+
+read_first = """
+, <code>src/demux.js</code> para o leitor que acha os
+      quadros dentro de um MP4, e <code>src/frames.js</code> para a parte que
+      decodifica o quadro que você pediu. Nenhum dos dois importa nada capaz de
+      fazer uma requisição."""
+
+howto_heading = "Como extrair um quadro de um vídeo"
+
+card = """
+            Salve qualquer quadro de um vídeo como imagem, no tamanho real do
+            vídeo: um de cada vez, ou um a cada poucos segundos."""
+
+[words]
+plural = "vídeos"
+choose = "um vídeo"
+analytics_extra = """, e nenhum
+  quadro, código de tempo ou imagem"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem marca d'água"
+
+[[facts]]
+text = "Resolução cheia"
+
+[[facts]]
+text = "Funciona offline"
+
+[[privacy]]
+title = "Os seus vídeos não têm para onde ir."
+body = """
+ A
+      Content-Security-Policy lista todo endereço que esta página pode contatar, e
+      nenhum deles é nosso. Aqui não existe um ponto de coleta onde o seu arquivo
+      pudesse parar, nem nada no código que o mandasse para lá se existisse."""
+
+[[privacy]]
+title = "Aqui nada busca nada."
+body = """
+ Esta ferramenta não tem função de rede nenhuma:
+      não tem endereço para colar, não tem nada para baixar, não tem motor nenhum
+      baixado no primeiro uso. Cada byte que encosta no seu vídeo veio desta origem
+      quando a página carregou."""
+
+[[privacy]]
+title = "A decodificação é local."
+body = """
+ Os quadros passam pelo WebCodecs no seu
+      próprio navegador, ou pelo mesmo motor de reprodução que mostraria o vídeo de
+      qualquer jeito. A imagem é desenhada num canvas deste computador e entregue
+      direto para um download."""
+
+[[privacy]]
+title = "O arquivo é lido de poucos megabytes por vez."
+body = """
+ Vídeo é o único tipo de
+      arquivo aqui que não cabe com segurança na memória, então ele nunca é carregado
+      inteiro. O leitor pega uma janela em volta do quadro que você pediu, que é
+      também por que um vídeo de dois gigabytes abre tão rápido quanto um
+      pequeno."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não chega até ele."
+body = """
+ Os scripts de
+      publicidade e de medição vêm do Google. Nenhum dos dois recebe coisa alguma
+      sobre o seu vídeo: nem arquivo, nem quadro, nem nome, tamanho, duração ou o
+      momento em que você parou. Toda linha que lê, decodifica ou desenha é servida
+      desta origem e está listada no repositório."""
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não chega até ele."
+body = """
+
+      O botão &ldquo;Buy me a coffee&rdquo; do cabeçalho é desenhado por um script de
+      cdnjs.buymeacoffee.com e pega as letras no Google Fonts. Ele não é mais do que
+      um link: não avisa ninguém da sua visita e não recebe nada sobre você nem sobre
+      o seu vídeo."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desligue a rede e tudo nesta página continua
+      funcionando. Essa é a prova mais simples de todas."""
+
+[[howto]]
+title = "Escolha um vídeo."
+body = """
+ Arraste um MP4, MOV, M4V ou WebM até o
+      seletor, ou procure na mão. O navegador lê direto do seu disco, e nesse
+      meio-tempo nada sai daqui."""
+
+[[howto]]
+title = "Ache o momento."
+body = """
+ Toque o vídeo e pare onde quiser, ou arraste o
+      controle. Num MP4 o controle anda um quadro por passo, então não existe
+      arredondamento entre o que você vê e o que você salva. As setas andam um quadro
+      por vez, e com <kbd>Shift</kbd> andam dez."""
+
+[[howto]]
+title = "Escolha um formato."
+body = """
+ O PNG guarda o quadro exatamente como ele saiu
+      da decodificação, e é isso que &ldquo;qualidade cheia&rdquo; quer dizer aqui.
+      JPEG e WebP são menores e são uma segunda compressão em cima da do próprio
+      vídeo, o que serve para uma prévia e não para algo que ainda vai ser
+      editado."""
+
+[[howto]]
+title = "Tire um, ou tire uma série."
+body = """
+ Um quadro sozinho vai direto para os
+      seus downloads. &ldquo;A cada N segundos&rdquo; percorre o vídeo uma vez e tira
+      uma imagem em cada marca, o que é útil para folhas de contato e miniaturas, e
+      elas saem num único ZIP em vez de cem perguntas de salvar."""
+
+[[faq]]
+q = "O meu vídeo é enviado para algum lugar?"
+a = """
+        Não. Ele é lido e decodificado pelo seu próprio navegador, no seu próprio
+        hardware. Esta ferramenta não tem lado servidor, e a
+        <code>Content-Security-Policy</code> da página lista todo endereço que ela
+        pode contatar: nenhum é nosso. Se você prefere conferir a acreditar, desligue
+        a internet e extraia um quadro assim mesmo."""
+
+[[faq]]
+q = "O que &ldquo;qualidade cheia&rdquo; quer dizer de verdade?"
+a = """
+        Duas coisas. A imagem é salva na resolução do próprio vídeo, não no tamanho
+        da prévia da página: um vídeo em 4K dá uma imagem de 3840 x 2160. E com PNG
+        escolhido, o quadro é guardado exatamente como saiu do decodificador, então o
+        arquivo tem a imagem que o vídeo tem, sem uma segunda rodada de compressão em
+        cima. Uma captura de tela da janela de um player não te dá nenhuma das duas
+        coisas: ela tem o tamanho da janela e é tirada depois que o player
+        redimensionou e aplicou o gerenciamento de cor."""
+
+[[faq]]
+q = "De quais formatos de vídeo dá para tirar um quadro?"
+a = """
+        MP4, M4V e MOV são lidos direto, seja lá o que tiver dentro: H.264, HEVC, AV1
+        ou VP9, desde que o seu navegador saiba decodificar aquele codec. Esse é o
+        caminho exato, em que a ferramenta consegue endereçar quadros individuais.
+        Qualquer outra coisa que o seu navegador toque, WebM à frente, é resolvida
+        movendo o player e desenhando o que ele mostra, o que ainda salva uma imagem
+        em tamanho cheio, mas cai no quadro que o player escolheu e não no que você
+        pediu. Um arquivo que o navegador não consegue nem ler nem tocar, o que na
+        prática quer dizer AVI, WMV, FLV e a maioria dos MKV, é recusado com uma
+        mensagem dizendo isso."""
+
+[[faq]]
+q = "Dá para andar um quadro por vez?"
+a = """
+        Num MP4 dá, e com precisão: a ferramenta lê a própria lista de quadros do
+        arquivo, então as setas se movem entre as imagens que realmente estão nele,
+        inclusive num vídeo cuja taxa de quadros varia, onde um passo fixo de um
+        trinta avos de segundo iria se desencontrando. No caminho de reprodução essa
+        lista não existe, então um passo é um empurrãozinho de mais ou menos um
+        quadro, e a página avisa."""
+
+[[faq]]
+q = "Por que o meu vídeo vertical de celular aparece em pé aqui?"
+a = """
+        Porque a rotação foi aplicada de propósito. O celular filma deitado e escreve
+        um quarto de volta dentro do arquivo em vez de girar os pixels, então o
+        quadro que um decodificador entrega está de lado e todo player o gira no
+        caminho até a sua tela. Uma ferramenta que pula essa etapa salva uma imagem
+        plausível do momento certo, deitada. Esta lê a rotação da trilha e aplica
+        antes de desenhar qualquer coisa."""
+
+[[faq]]
+q = "Tem limite de tamanho ou de duração do vídeo?"
+a = """
+        Não tem limite embutido na ferramenta, e o arquivo não é lido inteiro para a
+        memória de uma vez: ele é percorrido de poucos megabytes por vez, que é por
+        isso que um vídeo longo abre tão rápido quanto um curto. As imagens que você
+        tira ficam na página até você baixar, então o teto de verdade são umas
+        poucas centenas de PNGs em 4K, e não o vídeo."""
+
+[[faq]]
+q = "Dá para redimensionar ou recortar a imagem depois?"
+a = """
+        Aqui não, mas do lado sim. Esta ferramenta salva o quadro do jeito que ele é;
+        mudar o tamanho ou o formato é outro trabalho, com decisões próprias, e o
+        <a href="../redimensionar-imagem/">Redimensionador de imagens</a> faz as
+        duas coisas, também sem enviar nada. Para deixar o arquivo menor sem mudar a
+        imagem existe o
+        <a href="../comprimir-imagem/">Compressor de imagens</a>."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não tem conta, nem login, nem período de teste, nem marca d'água.
+        O site exibe publicidade, e é ela que paga a conta; os anúncios não recebem
+        nada sobre o seu vídeo."""
+
+[schema]
+browser_requirements = "Precisa de JavaScript. A extração exata de quadro precisa de um navegador com WebCodecs; os demais caem no caminho de mover o player."
+description = "Salve qualquer quadro de um vídeo como PNG, JPEG ou WebP em tamanho cheio no navegador. MP4, MOV e M4V são lidos quadro a quadro pelo WebCodecs, então o quadro pedido é o quadro salvo; qualquer outra coisa que o navegador toque é capturada do player. Nada é enviado."
+features = [
+  "Salva uma imagem de vídeos MP4, MOV, M4V e WebM",
+  "Fontes H.264, HEVC, AV1 e VP9, decodificadas pelo WebCodecs",
+  "Avanço quadro a quadro pela própria lista de quadros do arquivo",
+  "PNG para uma cópia exata do quadro, ou JPEG e WebP para uma menor",
+  "Uma imagem a cada N segundos, baixadas juntas num ZIP",
+  "Funciona offline; sem envio, sem conta, sem marca d'água",
+]
+
+[picker]
+title = "Arraste um vídeo para cá"
+hint = "ou clique para procurar &mdash; MP4, MOV, M4V, WebM e qualquer outra coisa que este navegador toque"

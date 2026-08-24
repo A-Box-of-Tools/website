@@ -1,0 +1,252 @@
+#
+# Video rückwärts abspielen - German.
+#
+# Overrides for tools/reverse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Video-Umkehrer"
+heading = "Video&nbsp;rückwärts <span class=\"h1-kw\">&mdash; einen Clip rückwärts abspielen</span>"
+tagline = "Das letzte Einzelbild zuerst, samt Ton."
+
+title = "Video rückwärts abspielen &mdash; kostenlos, ohne Upload, auch offline"
+description = "Ein MP4, MOV oder WebM rückwärts abspielen lassen, mit umgekehrtem Ton. Läuft im Browser: Es wird nichts hochgeladen, es gibt kein Wasserzeichen, und es geht auch offline."
+og_title = "Video-Umkehrer &mdash; einen Clip rückwärts abspielen, ohne ihn hochzuladen"
+og_description = "Ein Video und den Ton darin umkehren, Einzelbild für Einzelbild, auf Ihrem eigenen Gerät. Gelesen, dekodiert und geschrieben wird die Datei von Ihrem eigenen Browser."
+og_image_alt = "Video-Umkehrer - einen Clip im Browser rückwärts abspielen, ohne dass etwas hochgeladen wird"
+
+pledge = """
+    Jedes Einzelbild wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+    dekodiert, umgedreht und wieder kodiert. Abrufen oder senden kann hier nichts,
+    denn eine Netzfunktion hat dieses Werkzeug überhaupt nicht. Und selbst wenn es
+    einen Weg nach draußen gäbe, stünde am anderen Ende dieser Seite kein Server,
+    an den ein Video gehen könnte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und drehen Sie einen Clip um. Keine einzige Anfrage
+      trägt ein Einzelbild, einen Dateinamen oder ein Byte dessen, was Sie
+      ausgewählt haben. Oder trennen Sie die Internetverbindung und drehen Sie
+      trotzdem einen um. Ein Werkzeug, das Ihr Video zum Verarbeiten wegschickt,
+      bliebe dabei einfach stehen."""
+
+read_first = """
+, <code>src/timeline.js</code> für die Rechnung, die
+      entscheidet, welches Einzelbild wann herauskommt, und
+      <code>src/reverse.js</code> für die Schleife, die die Datei gruppenweise
+      rückwärts durchgeht. Keines davon importiert etwas, das eine Anfrage stellen
+      könnte."""
+
+howto_heading = "So spielen Sie ein Video rückwärts ab"
+
+card = """
+            Einen Clip rückwärts abspielen lassen, Bild und Ton, ohne ihn
+            irgendwohin zu schicken."""
+
+[words]
+plural = "Videos"
+choose = "ein Video"
+analytics_extra = """, und kein
+  Einzelbild, keine Länge und kein Dateiname"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Kehrt den Ton mit um"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[privacy]]
+title = "Ihre Videos haben keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem Ihre Datei landen könnte, und im Code steht auch nichts, das sie dorthin
+      schicken würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ Eine Netzfunktion hat dieses Werkzeug
+      überhaupt nicht. Es gibt keine Adresse zum Einfügen, nichts herunterzuladen
+      und keine Engine, die beim ersten Gebrauch nachgeladen wird. Jedes Byte, das
+      Ihr Video berührt, kam beim Laden der Seite von dieser Domain selbst."""
+
+[[privacy]]
+title = "Dekodieren und Kodieren passieren lokal."
+body = """
+ Die Einzelbilder laufen
+      durch WebCodecs in Ihrem eigenen Browser oder durch dieselbe
+      Wiedergabe-Engine, die Ihnen den Clip ohnehin zeigen würde. Die fertige Datei
+      entsteht im Arbeitsspeicher dieses Geräts und geht von dort direkt in einen
+      Download."""
+
+[[privacy]]
+title = "Der Ton wird ebenfalls hier umgedreht."
+body = """
+ Eine Tonspur umzukehren
+      heißt, sie zu dekodieren, und dieses Dekodieren ist das des Browsers und
+      passiert auf diesem Gerät. Nichts hört mit, nichts behält etwas, und
+      weiterreichen könnte es auch nichts: Es gibt hier keinen Weg im Code, der ein
+      Byte verschickt."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google. Keinem von beiden wird irgendetwas über Ihr
+      Video übergeben, weder eine Datei noch ein Einzelbild, ein Name, eine Größe
+      oder eine Länge. Jede Zeile, die liest, dekodiert, umkehrt oder kodiert,
+      kommt von dieser Domain selbst und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Button lädt und was er nicht bekommt."
+body = """
+
+      Der Button &bdquo;Buy me a coffee&ldquo; in der Kopfzeile wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Mehr als ein Link ist er nicht. Er meldet keinen Besuch, und
+      über Sie oder Ihr Video bekommt er nichts."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf
+      dieser Seite arbeitet weiter. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Wählen Sie ein Video aus."
+body = """
+ Ziehen Sie ein MP4, MOV, M4V oder
+      WebM auf das Auswahlfeld oder suchen Sie eines von Hand heraus. Der Browser
+      liest es direkt von Ihrer Festplatte, und dabei geht nichts nach draußen."""
+
+[[howto]]
+title = "Entscheiden Sie über den Ton."
+body = """
+ &bdquo;Den Ton mit
+      umkehren&ldquo; dreht die Spur Sample für Sample um, und nur so kommt
+      Sprache als rückwärts gespielte Sprache heraus statt als Stille. Für einen
+      stummen Clip schalten Sie es ab, das geht schneller."""
+
+[[howto]]
+title = "Entscheiden Sie, wie viel Qualität ausgegeben wird."
+body = """
+ Das Bild muss neu
+      kodiert werden, denn die Einzelbilder kommen in einer Reihenfolge heraus, für
+      die in der Datei nichts kodiert war. &bdquo;Ausgewogen&ldquo; bleibt nah an
+      dem, was das Original ausgegeben hat, &bdquo;Beste Qualität&ldquo; legt noch
+      etwas drauf."""
+
+[[howto]]
+title = "Umkehren und herunterladen."
+body = """
+ Die Arbeit passiert auf Ihrer
+      eigenen Hardware. Wie lange sie dauert, hängt daher von Ihrem Gerät ab und
+      nicht von einer Warteschlange. Das fertige Video geht direkt in die Downloads
+      Ihres Browsers."""
+
+[[faq]]
+q = "Wird mein Video irgendwohin hochgeladen?"
+a = """
+        Nein. Ihr eigener Browser liest, dekodiert, kehrt um und kodiert es auf
+        Ihrer eigenen Hardware. Eine Serverseite hat dieses Werkzeug nicht, und in
+        der <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf; keine davon gehört uns. Wer lieber prüft als glaubt,
+        trennt die Internetverbindung und kehrt trotzdem einen Clip um."""
+
+[[faq]]
+q = "Welche Videoformate kann ich umkehren?"
+a = """
+        MP4, M4V und MOV werden direkt gelesen, egal was darin steckt, also H.264,
+        HEVC, AV1 oder VP9, solange Ihr Browser diesen Codec dekodieren kann. Alles
+        andere, was Ihr Browser abspielen kann, allen voran WebM, wird stattdessen
+        umgekehrt, indem der eigene Player des Browsers rückwärts durch den Clip
+        gesteppt wird. Das funktioniert, dauert aber länger. Was der Browser weder
+        lesen noch abspielen kann, in der Praxis AVI, WMV, FLV und die meisten
+        MKVs, wird gleich mit einer entsprechenden Meldung abgelehnt, statt auf
+        halbem Weg zu scheitern. Heraus kommt immer ein MP4."""
+
+[[faq]]
+q = "Wird der Ton mit umgekehrt?"
+a = """
+        Ja, sofern Sie es nicht abschalten. Die ganze Spur wird dekodiert, die
+        Samples werden in die andere Reihenfolge gebracht, und dann wird wieder als
+        AAC kodiert. Um diese zweite Kodierung kommt man nicht herum: Ein
+        Audio-Paket sind einige Dutzend Millisekunden Klang, kodiert gegen das
+        Paket davor. Die Pakete verkehrt herum hinauszuschreiben, spielte also
+        kurze Stücke vorwärts in der falschen Reihenfolge, und das klingt nach
+        Defekt und nicht nach Umkehrung."""
+
+[[faq]]
+q = "Kostet das Umkehren Qualität?"
+a = """
+        Das Bild wird ein zweites Mal kodiert, und das kostet ein wenig. Hier lässt
+        sich das nicht vermeiden, wie es beim Kürzen möglich ist: Ein umgekehrter
+        Clip zeigt seine Einzelbilder in einer Reihenfolge, für die in der
+        Originaldatei nichts kodiert war, jedes Einzelbild muss also neu
+        geschrieben werden. Was das Werkzeug dabei nicht tut, ist mehr auszugeben,
+        als das Original ausgegeben hat, denn darüber hinaus zu kodieren macht die
+        Datei nur größer, ohne sie besser aussehen zu lassen."""
+
+[[faq]]
+q = "Gibt es eine Grenze für Größe oder Länge des Videos?"
+a = """
+        Im Werkzeug ist keine Grenze eingebaut, und die Datei wandert auch nicht
+        auf einmal in den Arbeitsspeicher, sondern wird Einzelbildgruppe für
+        Einzelbildgruppe rückwärts durchgegangen. Die praktischen Obergrenzen sind
+        das fertige Video, das vor dem Download im Arbeitsspeicher zusammengesetzt
+        wird, und der Ton, der ganz gehalten werden muss, weil eine Umkehrung das
+        letzte Sample braucht, bevor sie das erste schreiben kann."""
+
+[[faq]]
+q = "Warum dauert es bei manchen Dateien länger als bei anderen?"
+a = """
+        Weil es zwei Wege hinein gibt. Ein MP4 oder MOV liest dieses Werkzeug
+        direkt und dekodiert es gruppenweise, und das läuft so schnell, wie Ihr
+        Gerät eben ist. Alles andere wird umgekehrt, indem der eigene Player des
+        Browsers nacheinander nach einzelnen Momenten des Clips gefragt wird, und
+        jeder dieser Sprünge zwingt den Browser, ab dem Schlüsselbild davor zu
+        dekodieren. Welchen der beiden Wege sie nimmt und warum, sagt die Seite,
+        bevor Sie anfangen."""
+
+[[faq]]
+q = "Kann ich auch nur einen Teil eines Clips umkehren?"
+a = """
+        Hier nicht. Dieses Werkzeug kehrt das Ganze um: Der Clip, der herauskommt,
+        ist genauso lang wie der, der hineinging, nur mit dem letzten Einzelbild
+        zuerst. Schneiden Sie den gewünschten Teil vorher mit dem
+        <a href="../video-schneiden/">Video-Schneider</a> heraus, der das ohne die
+        Neukodierung eines einzigen Einzelbildes erledigt, und kehren Sie dann um,
+        was dabei herauskommt."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase
+        und kein Wasserzeichen. Bezahlt wird die Seite über Werbung, und den
+        Anzeigen wird nichts über Ihr Video übergeben."""
+
+[schema]
+browser_requirements = "Benötigt JavaScript und einen Browser mit WebCodecs-Videokodierung: Chrome, Edge, Safari 16.4 oder neuer, oder Firefox 133 oder neuer."
+description = "Ein Video im Browser umkehren, Ton inklusive. MP4, MOV und M4V werden vom Ende her gruppenweise dekodiert und mit den ursprünglichen Bildzeiten neu kodiert; alles andere, was der Browser abspielen kann, wird stattdessen rückwärts durchgesteppt. Es wird nichts hochgeladen."
+features = [
+  "Kehrt MP4-, MOV-, M4V- und WebM-Videos um",
+  "H.264-, HEVC-, AV1- und VP9-Quellen, dekodiert über WebCodecs",
+  "Kehrt den Ton Sample für Sample um oder lässt ihn weg",
+  "Behält die ursprünglichen Bildzeiten, auch bei schwankender Bildrate",
+  "Läuft offline; kein Upload, kein Konto, kein Wasserzeichen",
+]
+
+[picker]
+title = "Video hierher ziehen"
+hint = "oder klicken und auswählen &mdash; MP4, MOV, M4V, WebM und alles andere, was dieser Browser abspielt"

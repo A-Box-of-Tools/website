@@ -1,0 +1,16 @@
+#
+# Guide : créer un GIF animé à partir d'images - French.
+#
+
+nav = "Des images en GIF"
+title = "Comment créer un GIF animé à partir d'images"
+description = "Transformer une série d'images en un GIF animé : à quelle vitesse un GIF peut réellement défiler, ce que change le réglage de la palette, et les trois choses qui allègent vraiment le fichier."
+heading = "Comment créer un GIF animé à partir d'images"
+lede = """
+    Fabriquer le GIF est la partie facile. En obtenir un assez léger pour être
+    publié, voilà ce qui mérite d'être lu, car un GIF n'a pas de curseur de
+    qualité et seules trois choses font bouger son poids."""
+updated = "20 août 2026"
+og_title = "Comment créer un GIF animé à partir d'images"
+og_description = "À quelle vitesse un GIF peut réellement défiler, ce que change le réglage de la palette, et les trois choses qui allègent vraiment le fichier."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

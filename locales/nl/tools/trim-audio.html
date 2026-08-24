@@ -1,0 +1,200 @@
+<main>
+  <!-- Stap 1 &mdash; de opname -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies een opname</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Bestand</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Grootte</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Lengte</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Geluid</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>Gelezen als</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Stap 2 &mdash; de markeringen -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> Markeer de stukken die je wilt
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      Speel hem helemaal af en druk op <kbd>I</kbd> waar een stuk moet beginnen
+      en op <kbd>O</kbd> waar het moet ophouden. Doe dat zo vaak je wilt: elk paar
+      wordt een rij hieronder, en het klaargemaakte bestand is die rijen, de een
+      na de ander. <kbd>U</kbd> maakt de laatste ongedaan, <kbd>Spatie</kbd>
+      speelt af en pauzeert, en de pijltjestoetsen springen vijf seconden. Hou
+      <kbd>Shift</kbd> ingedrukt bij een pijltje om per tien milliseconden te
+      verschuiven.
+    </p>
+
+    <!-- Built by src/timeline.js: the waveform, a band for every part, the one
+         being marked, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <audio id="preview" class="player" controls preload="metadata"></audio>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">Afspelen</button>
+      <button type="button" id="back-5" class="ghost" title="Vijf seconden terug">&minus;5s</button>
+      <button type="button" id="forward-5" class="ghost" title="Vijf seconden vooruit">+5s</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> Begin</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> Eind</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> Ongedaan</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="Afspeelsnelheid">
+      <span class="speed-label">Snelheid</span>
+      <button type="button" class="speed" data-speed="0.5">0,5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0,75&times;</button>
+      <button type="button" class="speed active" data-speed="1">Normaal</button>
+      <button type="button" class="speed" data-speed="1.25">1,25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1,5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The parts themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>Stukken <span class="segment-count" id="segment-count">nog geen</span></h3>
+        <p class="segments-total">
+          Totaal bewaard <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">Begin</th>
+            <th scope="col">Eind</th>
+            <th scope="col">Lengte</th>
+            <th scope="col"><span class="visually-hidden">Acties</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        Nog niets gemarkeerd. Druk op <kbd>I</kbd> en dan <kbd>O</kbd> terwijl
+        hij speelt, of gebruik de knoppen hierboven.
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">Zelf een rij toevoegen</button>
+        <button type="button" id="reset-segments" class="ghost danger">Allemaal wissen</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">Markeringen laden&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="Formaat van het tijdenbestand">
+          <option value="seconds" selected>seconden</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">Markeringen opslaan</button>
+      </div>
+
+      <p class="field-note">
+        De markeringen slaan op als gewoon tekstbestand &mdash; één regel per stuk,
+        in het formaat hierboven &mdash; zodat een lange markeersessie een gesloten
+        tabblad overleeft, en hetzelfde bestand aan de videoknipper of aan elke
+        andere tool gegeven kan worden die die indeling leest.
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>Wat er met de gemarkeerde stukken moet gebeuren</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>Houden</strong>
+          Het klaargemaakte bestand is de gemarkeerde stukken, op volgorde aan elkaar.
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>Eruit knippen</strong>
+          De gemarkeerde stukken gaan weg, en al het andere wordt aan elkaar gezet.
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Stap 3 &mdash; het bestand dat eruit komt -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Knip het</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">Wat er geschreven wordt</label>
+        <select id="depth">
+          <option value="16" selected>16-bits WAV &mdash; speelt overal</option>
+          <option value="32">32-bits float WAV &mdash; precies de samples</option>
+        </select>
+        <p class="field-note">
+          Een WAV bevat de samples zoals ze zijn, dus er een schrijven kan geen
+          kwaliteit kosten. Klein is het bestand niet: zie de schatting hieronder.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fade">Overgangen verzachten</label>
+        <select id="fade">
+          <option value="0">Uit &mdash; knip op precies de goede sample</option>
+          <option value="0.005" selected>5 ms &mdash; genoeg om een klik tegen te houden</option>
+          <option value="0.02">20 ms</option>
+          <option value="0.05">50 ms</option>
+        </select>
+        <p class="field-note" id="fade-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Bewaard</dt><dd id="sum-parts">&mdash;</dd></div>
+      <div><dt>Uiteindelijke lengte</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Begint bij</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>Overgangen</dt><dd id="sum-joins">&mdash;</dd></div>
+      <div><dt>Geluid</dt><dd id="sum-sound">&mdash;</dd></div>
+      <div><dt>Ongeveer</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Audio knippen</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" class="player" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Audio downloaden</a>
+      </div>
+    </div>
+  </section>
+</main>

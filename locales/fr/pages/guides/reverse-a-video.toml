@@ -1,0 +1,17 @@
+#
+# Guide : inverser une vidéo - French.
+#
+
+nav = "Inverser une vidéo"
+title = "Comment inverser une vidéo (et le son avec)"
+description = "Lire un clip à l'envers&nbsp;: ce que l'inversion fait à l'image et au son, pourquoi elle est impossible sans réencodage, pourquoi elle est plus lente qu'un découpage, et quoi faire avant."
+heading = "Comment inverser une vidéo"
+lede = """
+    Lire un clip à l'envers passe pour le montage le plus simple qui soit, et c'est
+    celui pour lequel un fichier vidéo est le plus mal fait. Voici ce qui doit
+    réellement se produire, ce que cela coûte, et la seule étape qui vaut la peine
+    d'être faite avant."""
+updated = "20 août 2026"
+og_title = "Comment inverser une vidéo"
+og_description = "Pourquoi un décodeur ne sait pas reculer, ce que l'inversion coûte à l'image et au son, et l'étape à faire d'abord."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais à un serveur"

@@ -1,0 +1,323 @@
+#
+# Audio knippen - Dutch.
+#
+# Overrides for tools/trim-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Audioknipper"
+heading = "Audio&nbsp;knippen <span class=\"h1-kw\">&mdash; opnames online inkorten</span>"
+tagline = "Markeer tijdens het afspelen wat het waard is. Je krijgt het terug als één bestand, geknipt waar jij het zei."
+
+title = "Audio online knippen &mdash; alleen houden wat je wilt, zonder uploaden"
+description = "Speel een opname af en markeer onderweg elk stuk dat het waard is, en sla die stukken daarna op als één bestand. Knippen tot op de sample, geen klik bij de overgangen, niets geüpload."
+og_title = "Audioknipper &mdash; alleen houden wat je wilt, zonder iets te uploaden"
+og_description = "Druk op I en O terwijl het speelt om elk stuk te markeren dat je wilt houden. De gemarkeerde stukken worden weer weggeschreven als één bestand, geknipt op precies de goede sample, zonder dat er iets geüpload wordt."
+og_image_alt = "Audioknipper - markeer de stukken die je wilt en sla ze op als één opname, in je browser"
+
+pledge = """
+    Je opname wordt gelezen, gemarkeerd, geknipt en weggeschreven door je eigen
+    browser, op je eigen hardware. Niets hier kan iets ophalen of versturen, want er
+    zit helemaal geen netwerkfunctie in deze tool. En al was die er wel, dan zit er
+    aan de andere kant van deze pagina nog steeds geen server waar een opname naartoe
+    kan."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en knip iets. Geen enkel verzoek draagt een
+      sample, een bestandsnaam of ook maar één byte van wat je koos. Of trek de
+      stekker uit je internet en knip alsnog een opname: een tool die je audio
+      wegstuurde om hem te laten knippen zou gewoon stoppen."""
+
+read_first = """
+, <code>src/segments.js</code> voor de markeringen en
+      het bestand waarin ze opgeslagen worden, <code>src/decode.js</code> voor de
+      twintig regels die je bestand aan de eigen decoder van de browser geven,
+      <code>src/trim.js</code> voor het rekenwerk dat van een markering een reeks
+      samples maakt en de lus die ze kopieert, en <code>src/wav.js</code> voor de
+      kop die ervoor komt. Geen daarvan importeert iets dat een verzoek kan doen."""
+
+howto_heading = "Zo kort je een audiobestand in"
+
+card = """
+            Markeer tijdens het afspelen elk stuk dat het waard is en sla ze daarna
+            op als één opname. De knippen landen op precies de goede sample, en de
+            overgangen klikken niet."""
+
+[words]
+plural = "opnames"
+choose = "een opname"
+analytics_extra = """, en geen
+  golfvorm, lengte of knippunt"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Zo veel stukken als je wilt"
+
+[[facts]]
+text = "Knipt precies waar je markeerde"
+
+[[facts]]
+text = "Werkt offline"
+
+[[privacy]]
+title = "Je opnames kunnen nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en geen
+      daarvan is van ons. Er is hier geen eindpunt waar je bestand verzameld zou
+      kunnen worden, en er staat ook niets in de code dat het daarheen zou sturen als
+      dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Deze tool heeft helemaal geen netwerkfunctie:
+      geen adres om te plakken, niets om te downloaden, geen engine die bij het
+      eerste gebruik binnenkomt. Elke byte die je audio aanraakt kwam van deze
+      herkomst toen de pagina laadde."""
+
+[[privacy]]
+title = "De decoder is degene die al in je browser zit."
+body = """
+
+      Het bestand wordt aan <code>decodeAudioData</code> gegeven, dezelfde code die
+      een nummer afspeelt in een <code>&lt;audio&gt;</code>-element. Er wordt hier
+      niets meegeleverd om jouw formaat te lezen, en er wordt ook niets buiten deze
+      pagina om gevraagd om het te lezen."""
+
+[[privacy]]
+title = "Het beeld van een video wordt helemaal niet gedecodeerd."
+body = """
+ Sleep je een video
+      naar binnen, dan wordt alleen zijn geluidsspoor opgevraagd. De frames worden
+      niet gelezen, niet gedecodeerd, niet getekend en niet bekeken: er staat geen
+      code op deze pagina die dat zou kunnen, en het bestand dat eruit komt bevat
+      geluid en verder niets."""
+
+[[privacy]]
+title = "Het knippen is een kopie, in het geheugen, op dit apparaat."
+body = """
+
+      Knippen is één <code>set</code> per stuk per kanaal: de samples die je hield
+      worden naar een nieuwe array verplaatst, in de volgorde waarin jij ze zette. De
+      enige samples die met iets vermenigvuldigd worden zijn de paar honderd binnen
+      elke fade, en de pagina zegt er hoeveel dat zijn voordat je op de knop
+      drukt."""
+
+[[privacy]]
+title = "De samples worden opgeschreven, niet opnieuw gecodeerd."
+body = """
+
+      Een WAV is de samples die deze pagina vasthoudt met een kop ervoor. Er zit geen
+      encoder in de lus die beslissingen over je opname neemt, en er is niets wat je
+      een upload zou kunnen noemen waarop dat zou gebeuren."""
+
+[[privacy]]
+title = "Het markeringenbestand wordt in de pagina gemaakt."
+body = """
+ Je markeringen opslaan
+      schrijft een tekstbestand uit de getallen die al op het scherm staan,
+      rechtstreeks naar je downloads. Er een laden leest het hier. Geen van beide komt
+      in de buurt van een netwerk, en geen van beide draagt iets anders dan tijden."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je opname mee:
+      geen bestand, geen sample, geen naam, geen grootte, geen lengte en niet waar je
+      geknipt hebt. Elke regel die leest, knipt en schrijft wordt vanaf deze herkomst
+      geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat die niet te zien krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een script
+      van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts. Het is niet
+      meer dan een link: hij meldt geen bezoek en krijgt niets over jou of je opname
+      mee."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles op deze pagina
+      blijft werken. Eenvoudiger bewijs bestaat er niet."""
+
+[[howto]]
+title = "Kies een opname."
+body = """
+ Sleep een MP3-, WAV-, FLAC-, M4A-, Ogg- of
+      Opus-bestand op de kiezer, of een video als je een stuk van het geluid daarvan
+      wilt. De browser leest hem rechtstreeks van je schijf en tekent hem als
+      golfvorm; er gaat ondertussen niets ergens heen."""
+
+[[howto]]
+title = "Speel hem af en markeer de stukken die je wilt."
+body = """
+ Druk op <kbd>I</kbd>
+      waar een stuk moet beginnen en op <kbd>O</kbd> waar het moet ophouden. Doe dat
+      zo vaak je wilt: elk paar wordt een rij in de tabel eronder en een band op de
+      golfvorm. <kbd>U</kbd> neemt de laatste terug, <kbd>Spatie</kbd> speelt af en
+      pauzeert, de pijltjestoetsen springen vijf seconden, en met <kbd>Shift</kbd>
+      erbij verschuiven ze tien milliseconden. Zet het afspelen langzamer als het
+      moment lastig te pakken is."""
+
+[[howto]]
+title = "Werk de markeringen bij."
+body = """
+ Elke rij kun je apart afspelen, opnieuw
+      instellen door er een exacte tijd in te typen, in de volgorde omhoog of omlaag
+      schuiven, of verwijderen. De twee uiteinden van het geselecteerde stuk kun je
+      ook langs de golfvorm slepen, en dat is de snelste manier om een markering op
+      de stilte te zetten in plaats van op de ademhaling ervoor. Het totaal bovenaan
+      is wat de klaargemaakte opname gaat duren."""
+
+[[howto]]
+title = "Houden, of eruit knippen."
+body = """
+ Houden is de gewone kant op: de
+      klaargemaakte opname is de gemarkeerde stukken, op volgorde aan elkaar geplakt.
+      Ze eruit knippen is de andere klus die mensen willen en zelden vinden: markeer
+      de ehms, de rinkelende telefoon of de valse starts, en wat overblijft wordt
+      zonder die stukken aan elkaar gezet."""
+
+[[howto]]
+title = "Knip het, en download."
+body = """
+ Elk knip landt op de sample die je
+      markeerde; er wordt hier niets afgerond naar een keyframe, want geluid heeft die
+      niet. Het enige wat je hoeft te kiezen is hoeveel fade er op elke overgang komt:
+      vijf milliseconden is genoeg om een klik tegen te houden en veel te kort om als
+      fade te horen. Wat eruit komt is een WAV, die eerst op de pagina wordt afgespeeld
+      en daarna rechtstreeks naar de downloads van je browser gaat."""
+
+[[faq]]
+q = "Wordt mijn audio ergens naartoe geüpload?"
+a = """
+        Nee. Hij wordt gelezen, gemarkeerd, geknipt en weggeschreven door je eigen
+        browser op je eigen hardware. Deze tool heeft geen serverkant, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat ze mag
+        benaderen: geen daarvan is van ons. Wil je het liever controleren dan
+        aannemen, trek dan de stekker uit je internet en knip alsnog een opname."""
+
+[[faq]]
+q = "Kan ik meerdere stukken van dezelfde opname houden?"
+a = """
+        Daar is dit voor. Druk zo vaak als je wilt op <kbd>I</kbd> en <kbd>O</kbd>
+        terwijl hij speelt; elk paar wordt een rij, en het klaargemaakte bestand is
+        elke rij op volgorde aan elkaar, met al het andere weg. De meeste
+        online-knippers geven je één paar hendels en vragen welk enkel stuk je wilt
+        houden. Dat is prima om een tune voor- en achteraan bij te knippen, en volstrekt
+        nutteloos als je een uur interview één keer wilt beluisteren en de zes goede
+        antwoorden wilt overhouden."""
+
+[[faq]]
+q = "Landt het knip precies waar ik het markeerde?"
+a = """
+        Ja, bij elk stuk en in elke speler. Dit is de ene plek waar audio eenvoudiger
+        is dan video: een gedecodeerde opname is een reeks getallen en elk getal staat
+        op zichzelf, dus er is geen equivalent van een keyframe om naar terug te
+        ronden en geen reden waarom een knip te vroeg zou beginnen. De pagina laat het
+        samplenummer zien waarop het resultaat begint, en dat is jouw markering maal
+        de samplefrequentie, afgerond op de dichtstbijzijnde hele sample."""
+
+[[faq]]
+q = "Waarom zou een overgang klikken, en waar is die fade voor?"
+a = """
+        Omdat knippen van het midden van het ene woord naar het midden van het andere
+        twee golfvormen naast elkaar zet die niets met elkaar te maken hebben, en een
+        luidspreker die daartussen moet springen maakt een klik. Het is geen fout in
+        het knip: zo klinkt een discontinuïteit. De oplossing is een fade van een paar
+        milliseconden aan weerskanten van elke overgang: lang genoeg om de conus te
+        laten volgen, veel te kort om als fade te horen. Vijf milliseconden is de
+        standaard en kan uit. Een fade komt alleen op een rand die ook echt een knip
+        is, dus een rand helemaal aan het begin of eind van de opname blijft precies
+        zoals hij was."""
+
+[[faq]]
+q = "Kan ik de slechte stukken er juist uit knippen?"
+a = """
+        Ja. Markeer ze en kies dan &ldquo;Eruit knippen&rdquo;: alles wat je
+        <em>niet</em> markeerde wordt in plaats daarvan aan elkaar gezet, op volgorde.
+        Dezelfde lijst markeringen beantwoordt allebei de vragen, dus je kunt
+        wisselen en de lengte zien veranderen zonder ook maar iets twee keer te
+        markeren."""
+
+[[faq]]
+q = "Kan ik mijn markeringen opslaan en er later op terugkomen?"
+a = """
+        Ja. &ldquo;Markeringen opslaan&rdquo; schrijft een gewoon tekstbestand &mdash;
+        één regel per stuk, een begin en een eind gescheiden door een komma &mdash; en
+        &ldquo;Markeringen laden&rdquo; leest er een terug. Er worden twee formaten
+        aangeboden, kale seconden en <code>HH:MM:SS.mmm</code>, en allebei zijn het de
+        indeling die de videoknipper op deze site schrijft, dus een bestand dat je op
+        de video maakte kun je op zijn audio loslaten en andersom. Markeren is
+        precisiewerk en niemand zou het twee keer moeten doen."""
+
+[[faq]]
+q = "Welke formaten kan ik openen?"
+a = """
+        Alles wat je browser decodeert, wat in de praktijk MP3, WAV, FLAC, M4A en AAC,
+        Ogg Vorbis en Opus betekent, plus het geluid in MP4-, M4V-, MOV- en
+        WebM-video. Wat erbuiten valt is hetzelfde korte lijstje als overal: AVI, WMA
+        en de meeste MKV's. Een bestand dat deze browser niet leest wordt geweigerd met
+        een bericht dat dat zegt, in plaats van halverwege te stranden."""
+
+[[faq]]
+q = "Waarom slaat hij een WAV op in plaats van een MP3?"
+a = """
+        Omdat geen enkele browser een MP3-encoder meelevert, en deze tool weigert je
+        opname naar een server te sturen die er wel een heeft. Een WAV heeft helemaal
+        geen encoder nodig &mdash; het zijn de samples met een korte kop ervoor &mdash;
+        dus het is tegelijk de eerlijke keuze en de enige die op de uitweg geen
+        kwaliteit kan kosten. Hij is wel groter: ongeveer tien megabyte per minuut in
+        stereo. Elke speler, telefoon en editor opent er een, en wat een MP3 wil kan er
+        daaruit een maken. Een MP3 knippen door zijn frames te kopiëren zou het bestand
+        klein houden, maar zou ook elk knip naar de dichtstbijzijnde framegrens
+        verschuiven, en dat is precies de afronding waarvoor deze tool bestaat om hem
+        niet te doen."""
+
+[[faq]]
+q = "Zit er een limiet op de lengte van de opname?"
+a = """
+        Er zit geen limiet in de tool. Het echte plafond is geheugen: de hele opname
+        wordt in één keer in deze pagina gedecodeerd, en de WAV wordt in het geheugen
+        opgebouwd voordat je hem downloadt, dus een uur stereo heeft iets minder dan
+        een gigabyte nodig om in te werken. Een WAV van vier gigabyte wordt meteen
+        geweigerd, omdat het groottveld van het formaat zelf er geen kan beschrijven."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen
+        watermerk aan te pas. De site draait op advertenties, en die betalen hem; die
+        advertenties krijgen niets over je opname mee."""
+
+[schema]
+browser_requirements = "Vereist JavaScript en een browser met Web Audio, wat elke huidige browser is. Er is geen codec-ondersteuning nodig buiten wat de browser al heeft om het bestand af te spelen."
+description = "Markeer terwijl de opname speelt zo veel stukken als je wilt en sla die stukken daarna op als één bestand - of knip ze eruit en houd de rest. De knippen landen op precies de gemarkeerde sample, met een optionele fade van een paar milliseconden zodat de overgangen niet klikken. Er wordt niets geüpload en het resultaat wordt als WAV geschreven, dus er wordt niets opnieuw gecodeerd."
+features = [
+  "Markeert zo veel stukken als je wilt met I en O terwijl de opname speelt",
+  "Zet de gemarkeerde stukken in één bestand, in de volgorde die je kiest",
+  "Of knipt de gemarkeerde stukken er juist uit en houdt al het andere",
+  "Knipt op precies de goede sample, zonder afronden naar frame of keyframe",
+  "Fadet elke overgang een paar milliseconden zodat hij niet kan klikken",
+  "Tekent de golfvorm, zodat stiltes en gaten op het oog te markeren zijn",
+  "Slaat de markeringen op als gewoon tekstbestand en leest ze weer in",
+  "Knipt het geluid in een MP4, MOV of WebM zonder het beeld aan te raken",
+  "Werkt offline; geen upload, geen account, geen watermerk",
+]
+
+[picker]
+title = "Sleep hier een audiobestand of een video naartoe"
+hint = "of klik om te bladeren &mdash; MP3, WAV, FLAC, M4A, Ogg, en het geluid in een MP4, MOV of WebM"

@@ -1,0 +1,241 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez le <a href="../../creer-un-gif/">Créateur de GIF</a>, déposez-y les
+      images, mettez-les dans l'ordre où elles doivent défiler, réglez la durée
+      d'affichage de chaque image, et fabriquez le GIF. Il se joue sur la page
+      avant même que vous ne l'enregistriez.
+    </p>
+    <p>
+      Tout ce qui suit concerne les deux choses qui déçoivent ensuite&nbsp;: le
+      fichier est bien plus lourd que prévu, ou l'animation défile plus lentement
+      que ce que les chiffres annonçaient. Les deux ont des causes précises, et
+      aucune n'est un défaut de l'outil.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi un GIF est tellement plus lourd qu'on ne le croit</h2>
+    <p>
+      Un GIF de 20 images en 640 pixels pèse couramment 8 à 15&nbsp;Mo. La même
+      animation en MP4 fait quelques centaines de kilo-octets. Ce n'est pas un
+      GIF mal fait&nbsp;; c'est ce qu'est le format.
+    </p>
+    <p>
+      Tous les autres formats d'images animées que vous avez utilisés
+      enregistrent des <em>différences</em>. Un codec vidéo écrit une image
+      complète puis, pour les suivantes, seulement ce qui a bougé et où &mdash;
+      c'est pourquoi une vidéo d'une personne qui parle devant un fond immobile
+      ne coûte presque rien par image. Un GIF ne sait pas faire cela. Chaque
+      image est enregistrée en pixels entiers, passée dans un compresseur sans
+      perte, et c'est là toute la boîte à outils.
+    </p>
+    <p>
+      Il n'y a pas non plus de réglage de qualité, parce qu'il n'y a aucune étape
+      avec perte à baisser. Un JPEG à 60&nbsp;% de qualité est un vrai choix avec
+      un vrai curseur derrière&nbsp;; un GIF n'a pas d'équivalent. Le poids
+      est donc grosso modo <strong>surface &times; nombre d'images</strong>, et
+      la seule façon de le faire bouger est de faire bouger l'un de ces deux
+      nombres.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les trois choses qui l'allègent vraiment</h2>
+    <p>
+      Dans l'ordre où elles servent&nbsp;:
+    </p>
+    <p>
+      <strong>1. Réduisez-le.</strong> Ce n'est pas une option parmi d'autres,
+      c'est l'option. Le poids suit la surface&nbsp;: diviser par deux le grand
+      côté divise le fichier par quatre. Passer de 640&nbsp;px à 320&nbsp;px
+      transforme 12&nbsp;Mo en environ 3&nbsp;Mo. Un GIF dans une page web ou une
+      fenêtre de discussion est de toute façon regardé sur quelques centaines de
+      pixels. C'est exactement pour cela que l'outil propose 480&nbsp;px par
+      défaut, et 320&nbsp;px est une réponse parfaitement honorable.
+    </p>
+    <p>
+      <strong>2. Utilisez moins d'images.</strong> Dix images tenues un cinquième
+      de seconde chacune font les mêmes deux secondes d'animation que vingt
+      images à un dixième, pour la moitié du fichier. La fluidité coûte des
+      octets en proportion directe&nbsp;: dépensez-la seulement là où le
+      mouvement l'exige.
+    </p>
+    <p>
+      <strong>3. Coupez le tramage, et baissez les couleurs.</strong> Celle-ci va
+      à contre-courant de l'intuition. Le tramage sème un motif fin de pixels
+      alternés pour simuler les couleurs que la palette n'a pas, et ce motif est
+      du <em>bruit</em> &mdash; exactement ce qu'un compresseur sans perte ne
+      peut pas compresser. Sur des aplats, des captures d'écran et des dessins au
+      trait, le couper peut retirer un tiers du fichier et rendre mieux par
+      surcroît. Sur des photographies, cela échange un moirage visible contre
+      l'économie&nbsp;: essayez les deux et regardez.
+    </p>
+    <p>
+      Descendre de 256 à 64 couleurs aide aussi, mais moins qu'on ne
+      l'espère&nbsp;: cela raccourcit les mots de code plutôt que d'enlever des
+      pixels.
+    </p>
+    <p>
+      Si rien de tout cela ne suffit à l'alléger, la réponse honnête est que ce
+      que vous fabriquez est une vidéo.
+      <a href="../transformer-des-images-en-video/">Transformer les mêmes images
+      en MP4</a> donnera peut-être le dixième du poids, et partout où un GIF est
+      accepté pour autre chose qu'une balise <code>&lt;img&gt;</code> &mdash;
+      c'est-à-dire tous les réseaux sociaux &mdash; il est de toute façon
+      converti en vidéo à l'envoi.
+    </p>
+  </section>
+
+  <section>
+    <h2>À quelle vitesse un GIF peut réellement défiler</h2>
+    <p>
+      Le format enregistre le délai de chaque image en centièmes de seconde, ce
+      qui laisse croire que vous pourriez demander 0,01&nbsp;s et obtenir cent
+      images par seconde. Vous ne le pouvez pas.
+    </p>
+    <p>
+      Tous les navigateurs remontent un délai inférieur à deux centièmes de
+      seconde à un dixième de seconde. La règle date des années 1990, quand les
+      pages étaient pleines d'animations réglées pour aller le plus vite possible
+      et que les machines de l'époque n'y survivaient pas, et elle a survécu à
+      toutes les raisons de son introduction. Elle n'a jamais été retirée, et
+      elle s'applique aujourd'hui à votre GIF.
+    </p>
+    <p>
+      La plage utile est donc&nbsp;:
+    </p>
+    <ul>
+      <li><strong>0,02&nbsp;s</strong> (50 images par seconde) &mdash; le plus
+      rapide qu'un GIF ait le droit d'être, et plus rapide que nécessaire la
+      plupart du temps.</li>
+      <li><strong>0,05&nbsp;s</strong> (20 images par seconde) &mdash; animation
+      fluide, et point de départ si vous animez du mouvement.</li>
+      <li><strong>0,1&nbsp;s</strong> (10 images par seconde) &mdash; le look GIF
+      classique. Moitié moins d'images, moitié moins de fichier, et cela se lit
+      comme un choix.</li>
+      <li><strong>0,5&nbsp;s et au-delà</strong> &mdash; un diaporama. On regarde
+      chaque image au lieu de l'animer.</li>
+    </ul>
+    <p>
+      Rien en dessous de 0,02&nbsp;s n'est proposé, car c'est un nombre qui
+      deviendrait silencieusement 0,1&nbsp;s dans tous les navigateurs existants.
+    </p>
+  </section>
+
+  <section>
+    <h2>La palette, et ce qu'elle choisit vraiment</h2>
+    <p>
+      Une image de GIF contient au plus 256 couleurs. Une photographie en compte
+      des dizaines de milliers. Quelque chose doit en choisir 256, et c'est ce
+      choix qui décide de l'allure du résultat &mdash; plus que n'importe quel
+      autre réglage.
+    </p>
+    <p>
+      L'outil propose deux façons de le faire&nbsp;:
+    </p>
+    <p>
+      <strong>Les meilleures couleurs pour chaque image</strong> donne à chaque
+      image ses propres 256. C'est le rendu le plus net, et c'est le bon choix
+      pour une série de photographies sans lien, dont chacune veut de toute façon
+      un jeu complètement différent.
+    </p>
+    <p>
+      <strong>Une palette pour tout le GIF</strong> construit une table unique à
+      partir de toutes les images d'un coup. À utiliser quand les images forment
+      une <em>séquence</em> &mdash; la même scène, à quelques instants
+      d'intervalle. Avec une palette par image, le moindre changement dans
+      l'image change les 256 couleurs retenues, et le fond entier se décale
+      légèrement en couleur à chaque image. C'est ce frémissement qui donne à un
+      GIF fait maison son air de GIF fait maison. Une palette partagée le
+      supprime, et allège le fichier par-dessus le marché, puisque la table est
+      écrite une fois au lieu de figurer dans chaque image.
+    </p>
+    <p>
+      Moins de couleurs &mdash; 128, 64, 32 &mdash; vaut la peine d'être essayé
+      sur tout ce qui est en aplats. Une animation de logo à huit couleurs ne
+      perd rien à 32, et sur une photographie la différence saute aux yeux
+      immédiatement.
+    </p>
+  </section>
+
+  <section>
+    <h2>La transparence tient sur un bit, et c'est toute l'histoire</h2>
+    <p>
+      Un pixel de GIF est soit entièrement peint, soit entièrement invisible. Il
+      n'y a rien entre les deux&nbsp;: pas d'ombre à 50&nbsp;%, pas de bord doux,
+      pas de fondu.
+    </p>
+    <p>
+      Donc si vos images de départ ont de la transparence, l'activer garde les
+      zones transparentes transparentes &mdash; mais chaque bord lissé, qui est
+      un dégradé de la forme vers le vide, est coupé à mi-chemin et devient dur
+      et visiblement dentelé. Les formes rondes et le texte en souffrent le plus.
+    </p>
+    <p>
+      Si vous savez sur quelle couleur le GIF va reposer, l'aplatir sur cette
+      couleur donnera toujours un meilleur résultat. Ne gardez la transparence
+      que lorsque le fond d'arrivée est réellement inconnu &mdash; et si la
+      réponse est «&nbsp;il lui faut un bord doux sur n'importe quel
+      fond&nbsp;», le format pour cela est le PNG animé ou le WebP, pas le GIF.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ordre, minutage, et une boucle qui tombe juste</h2>
+    <p>
+      Quelques points qu'il est plus rapide de savoir que de découvrir&nbsp;:
+    </p>
+    <p>
+      <strong>Le tri par nom compte correctement.</strong> Une séquence de rendu
+      ou d'export se classe comme vous l'entendiez, donc <code>frame_2</code>
+      arrive avant <code>frame_10</code> et non après. Le tri par date remet une
+      pellicule dans l'ordre où elle a été prise, ce que vous voulez quand les
+      noms de fichiers sont repartis à 0001.
+    </p>
+    <p>
+      <strong>Donnez plus de temps à la dernière image.</strong> Une boucle dont
+      toutes les images durent pareil se lit comme implacable. Tenir la dernière
+      une demi-seconde environ donne à l'œil un endroit où se poser et fait
+      paraître l'ensemble voulu. Chaque image a sa propre durée pour cela.
+    </p>
+    <p>
+      <strong>Une boucle ne devrait pas sauter.</strong> La dernière image est
+      immédiatement suivie de la première&nbsp;: si ces deux-là sont très
+      différentes, la boucle claque. Soit vous les rapprochez, soit vous assumez
+      la coupe en tenant la dernière image.
+    </p>
+    <p>
+      <strong>Lire une fois veut dire une fois.</strong> Certains outils écrivent
+      un compteur de boucle égal à un, sur lequel les décodeurs ne se sont jamais
+      tout à fait accordés &mdash; quelques-uns le jouent deux fois. Choisir
+      «&nbsp;Lire une fois&nbsp;» ici n'écrit aucune information de boucle du
+      tout, et tous les décodeurs jamais construits traitent cela de la même
+      façon.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi cela n'a pas besoin d'un serveur</h2>
+    <p>
+      Fabriquer un GIF, ce sont deux travaux que le navigateur ne propose
+      pas&nbsp;: choisir la palette, et compresser les pixels en LZW. Ni l'un ni
+      l'autre n'est gros. À eux deux, cela fait peut-être quatre cents lignes,
+      elles sont écrites noir sur blanc dans le dépôt, et elles s'exécutent sur
+      votre machine comme tout le reste ici &mdash; c'est pourquoi la page
+      continue de fonctionner le réseau débranché.
+    </p>
+    <p>
+      Si tant de fabricants de GIF envoient vos fichiers, ce n'est pas parce que
+      le travail est difficile. C'est qu'un serveur est l'endroit où se trouvent
+      la publicité et les comptes. Rien, dans le fait de transformer une série de
+      photographies en animation, n'exige que vos photographies quittent la pièce
+      où elles sont.
+    </p>
+    <p>
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
+      fichiers à un convertisseur en ligne&nbsp;?</a> détaille quatre
+      vérifications qui vous diront la même chose de n'importe quel outil,
+      celui-ci compris.
+    </p>
+  </section>

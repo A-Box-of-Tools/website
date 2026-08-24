@@ -1,0 +1,18 @@
+#
+# Guida: farsi la foto tessera in casa - Italian.
+#
+
+nav = "Fare una foto tessera"
+title = "Come farsi la foto tessera in casa (senza vedersela rifiutare)"
+description = "Cosa viene misurato davvero in una foto tessera &mdash; altezza della testa, linea degli occhi, sfondo &mdash;, quali numeri vuole ciascun paese, e come stare dentro ai limiti in pixel e in KB di un modulo online."
+heading = "Come farsi una foto tessera che non torna indietro"
+lede = """
+    Una foto tessera non è un'immagine della tua faccia a una certa misura. È un
+    insieme di misure, e quelle che fanno bocciare la foto non sono quasi mai
+    quelle di cui la gente si preoccupa. Qui c'è cosa viene misurato davvero,
+    quali cifre vuole quale paese, e cosa fare con i moduli che rifiutano un file
+    perché è troppo piccolo."""
+updated = "20 agosto 2026"
+og_title = "Come farsi una foto tessera che non torna indietro"
+og_description = "Altezza della testa, linea degli occhi, sfondo e peso del file: cosa misura un ufficio passaporti, e come centrarlo con un telefono e un muro liscio."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"
