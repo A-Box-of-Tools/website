@@ -55,6 +55,20 @@ const MAX_BITRATE = 60_000_000;
 /** Frames in flight before the feed loop waits for the pipeline to catch up. */
 const QUEUE_LIMIT = 8;
 
+/**
+ * How long the decode/encode queues may sit without draining before a
+ * reversal gives up rather than waiting forever.
+ *
+ * A codec that has genuinely stalled - a hardware encoder the driver cannot
+ * actually deliver on, say, despite `isConfigSupported` saying yes - does not
+ * reliably fire `error`: the `dequeue` event this waits on simply never comes
+ * again. Without a ceiling on that wait, `settle` spins quietly and the page
+ * sits at "Preparing..." with nothing to show for it and nothing to click.
+ * Thirty seconds is far past what a queue of eight frames takes to drain on
+ * any hardware actually processing them, even in software at 4K.
+ */
+const STALL_TIMEOUT_MS = 30_000;
+
 /** Seconds between keyframes in the output, so seeking stays usable. */
 const KEYFRAME_SECONDS = 2;
 
@@ -112,7 +126,21 @@ export function chooseBitrate({ video, size, fps, quality }) {
 
 /** Wait until both queues have drained below the limit. */
 async function settle(decoder, encoder) {
+  let bestSeen = decoder.decodeQueueSize + encoder.encodeQueueSize;
+  let progressAt = Date.now();
+
   while (decoder.decodeQueueSize > QUEUE_LIMIT || encoder.encodeQueueSize > QUEUE_LIMIT) {
+    const size = decoder.decodeQueueSize + encoder.encodeQueueSize;
+    if (size < bestSeen) {
+      bestSeen = size;
+      progressAt = Date.now();
+    } else if (Date.now() - progressAt > STALL_TIMEOUT_MS) {
+      throw new Error('The video decoder or encoder stopped responding partway through, rather '
+        + 'than reporting an error. This usually means the browser accepted this file at this '
+        + 'resolution and quality but cannot actually deliver on it in hardware; a smaller '
+        + 'clip, a lower quality setting, or a different browser is worth trying.');
+    }
+
     await new Promise((resolve) => {
       let settled = false;
       const done = () => {
