@@ -599,16 +599,42 @@ class BuildTheSite(unittest.TestCase):
                                 'not offered')
 
     def test_a_page_nobody_has_translated_offers_english_and_only_english(self):
-        """gif-analyzer is translated nowhere. It names no alternate in its
-        head, lists no language it has not got - and still renders the control,
-        because English is the way out of a page the reader cannot read."""
-        text = (self.out / 'gif-analyzer' / 'index.html').read_text(encoding='utf-8')
-        self.assertNotIn('<link rel="alternate" hreflang=', text)
-        self.assertIn('<details class="lang-pick">', text)
-        switch = text.split('class="lang-switch"', 1)[1].split('</nav>', 1)[0]
-        self.assertEqual(switch.count('<li>'), 1)
-        for absent in ('lang-partial', 'data-lang', 'hreflang="de"'):
-            self.assertNotIn(absent, switch)
+        """A page no other language has names no alternate in its head, lists no
+        language it has not got - and still renders the control, because English
+        is the way out of a page the reader cannot read.
+
+        Which page that is comes off the build rather than being named here.
+        This used to be spelled `gif-analyzer`, and it failed the day
+        gif-analyzer was translated: a test breaking because the site got
+        better. Every page now exists in all ten languages, so the loop below
+        runs on nothing today, and runs again the moment a tool ships - a tool
+        page is written before its translations are, and that is the day this
+        markup has to hold.
+
+        Which is why the rule itself is not tested here. `alternates` and
+        `switcher` are checked directly, on locales made up for the purpose, in
+        test_i18n.APageNobodyHasTranslatedYet; what this adds is that the
+        templates render that state the way the functions describe it. The pair
+        above covers the other half - a page that DOES name alternates - and
+        skips exactly the pages this one looks at.
+        """
+        for name in self.written:
+            if not name.endswith('.html') or name == '404.html':
+                continue
+            text = (self.out / name).read_text(encoding='utf-8')
+            if '<link rel="alternate" hreflang=' in text:
+                continue
+            switch = text.split('class="lang-switch"', 1)[1].split('</nav>', 1)[0]
+            with self.subTest(page=name):
+                self.assertIn('<details class="lang-pick">', text)
+                self.assertEqual(switch.count('<li>'), 1)
+                # And that one entry is English, whatever language the frame
+                # around it is in. `lang` rather than `hreflang`, because the
+                # entry for the language you are already in is a span with no
+                # href to describe.
+                self.assertIn('lang="en"', switch)
+                for absent in ('lang-partial', 'data-lang'):
+                    self.assertNotIn(absent, switch)
 
     def test_the_switcher_links_this_page_and_not_the_front_door(self):
         """Somebody reading about compressing an image who asks for German
