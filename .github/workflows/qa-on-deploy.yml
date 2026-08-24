@@ -1,0 +1,86 @@
+#
+# Runs the QA suite (A-Box-of-Tools/qa) against the live site once a deploy
+# actually lands.
+#
+# Triggered on a push to `dist` rather than `main` or a GitHub Release:
+# `dist` is what GitHub Pages serves (see build.yml), and deploys here are
+# continuous - every push to main that changes the built output becomes one,
+# with no release or tag involved. A push to `dist` is the one event that
+# means "a visitor's browser now sees something different", which is what
+# this is meant to catch.
+#
+# The QA suite is checked out fresh from its own repo rather than vendored
+# here, so a fix or a new check added there is picked up on the next deploy
+# with nothing to keep in sync in this repo.
+#
+
+name: QA (post-deploy)
+
+on:
+  push:
+    branches: [dist]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A second deploy landing while this is still running should not race it -
+# only the newest deploy is worth checking.
+concurrency:
+  group: qa-post-deploy
+  cancel-in-progress: true
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the QA suite
+        uses: actions/checkout@v4
+        with:
+          repository: A-Box-of-Tools/qa
+          path: qa
+
+      # GitHub Pages usually publishes within a minute of `dist` moving, but
+      # that isn't guaranteed - poll rather than assume, so a slow publish is
+      # a short wait here instead of a flaky red run against the old build.
+      - name: Wait for the deploy to actually be live
+        run: |
+          set -euo pipefail
+          for _ in $(seq 1 30); do
+            if curl -fsS -o /dev/null "https://abox.tools/"; then
+              echo "Site responded, continuing."
+              exit 0
+            fi
+            echo "Not live yet, waiting 10s..."
+            sleep 10
+          done
+          echo "::error::abox.tools never responded after 5 minutes."
+          exit 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: qa/package-lock.json
+
+      - name: Install QA dependencies
+        working-directory: qa
+        run: npm ci
+
+      - name: Install Chromium
+        working-directory: qa
+        run: npx playwright install --with-deps chromium
+
+      - name: Run the QA suite against the live site
+        working-directory: qa
+        env:
+          BASE_URL: https://abox.tools/
+        run: npx playwright test
+
+      - name: Upload the HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-report
+          path: qa/playwright-report/
+          retention-days: 14
