@@ -147,7 +147,7 @@ leaving at 6, it just becomes larger.
   though the source is not.
 - **AVI, WMV, FLV and most MKVs** are not readable here and not playable in
   most browsers. That is the FFmpeg question in
-  [What can be built here](../../README.md#what-needs-a-vendored-ffmpeg), not a
+  [What can be built here](../../docs/what-can-be-built-here.md#what-needs-a-vendored-engine), not a
   gap a few more lines would close.
 
 ## The files

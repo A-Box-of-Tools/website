@@ -196,7 +196,7 @@ which file it came from. The landscape scan in a stack of portrait ones is still
 obvious at a glance.
 
 If that ever changes it will be because a renderer got small enough to vendor
-under the rules in [What can be built here](../../README.md#what-can-be-built-here),
+under the rules in [What can be built here](../../docs/what-can-be-built-here.md),
 not because the thumbnails were worth an upload.
 
 ## Limitations

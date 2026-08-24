@@ -182,7 +182,7 @@ hours only appear when there are any.
 - **Encrypted tracks are refused**, with that as the reason.
 - **AVI, WMV, FLV and most MKVs** are not readable here and not playable in most
   browsers. That is the FFmpeg question in
-  [What can be built here](../../README.md#what-needs-a-vendored-ffmpeg), not a
+  [What can be built here](../../docs/what-can-be-built-here.md#what-needs-a-vendored-engine), not a
   gap that a few more lines would close.
 
 ## Testing it

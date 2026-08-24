@@ -28,7 +28,7 @@ float instead.
 It costs size: about ten megabytes a minute in stereo, against one for an MP3.
 That is said on the page, next to the estimate, rather than discovered in the
 downloads folder. When an FFmpeg build is vendored for the reasons in
-[What needs a vendored FFmpeg](../../README.md#what-needs-a-vendored-ffmpeg), `libmp3lame`
+[What needs a vendored engine](../../docs/what-can-be-built-here.md#what-needs-a-vendored-engine), `libmp3lame`
 turns this into a real choice; until then, offering "MP3" would mean either
 uploading or lying.
 
