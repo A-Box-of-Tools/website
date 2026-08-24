@@ -1,0 +1,446 @@
+#
+# Bahasa Indonesia.
+#
+# What is here is the frame: the hub, the guides index, the roadmap, the 404,
+# the footer, and the words the templates themselves use. The tools and the
+# guides are NOT translated yet - they stay in English, fall back page by
+# page, and are held out of the sitemap, the hreflang sets and the switcher
+# exactly as an unfinished part of any other locale is. See buildlib/i18n.py.
+#
+# Nothing structural is repeated here. There is no list of which tools exist,
+# no category ids, no ordering, no Content-Security-Policy - all of that is
+# decided once, in English, in config/site.toml, and a locale that tried to
+# restate any of it would be told so by the build.
+#
+# House style, decided here:
+#
+#   * Formal "Anda", capitalized, throughout - the register Indonesian
+#     software and government-facing writing already uses, warm rather than
+#     bureaucratic.
+#   * "Pangkas" for cropping a frame, "potong" for shortening a clip's
+#     length, "kompres" for reducing a file's size - three different
+#     Indonesian verbs kept apart on purpose, because this site tells the
+#     three jobs apart too.
+#   * "Pas foto" for a passport/ID photo - the term every Indonesian photo
+#     studio and government form already uses, not a translation of
+#     "passport photo".
+#   * "PDF", "GIF", "SVG", "JPG", "QR", "EXIF" and similar acronyms stay in
+#     Latin letters - what gets typed into a search box, and what appears on
+#     the file's own icon in every operating system.
+#
+
+lang = "id"
+name = "Indonesian"
+endonym = "Bahasa Indonesia"
+hreflang = "id"
+
+# The frame is finished: the nav, the footer, the hub and every [ui] word in
+# this file are Indonesian. That is all this flag claims - the tools and the
+# guides are still English, held back a page at a time. See the note at the
+# top of buildlib/i18n.py for why the unit is the page rather than the
+# language.
+complete = true
+
+#
+# ---------------------------------------------------------------------------
+# The addresses.
+#
+# Keyed by the ENGLISH slug on the left, which is the name of the thing, and
+# never by the Indonesian one. The Indonesian is an address and appears only
+# on the right.
+# ---------------------------------------------------------------------------
+#
+
+[slugs]
+# The tools.
+"compress-image" = "kompres-gambar"
+"compress-pdf" = "kompres-pdf"
+"crop-video" = "pangkas-video"
+"edit-audio" = "sunting-audio"
+"exif-editor" = "hapus-data-exif"
+"redact-image" = "sensor-gambar"
+"images-to-pdf" = "gambar-ke-pdf"
+"images-to-video" = "gambar-ke-video"
+"resize-image" = "ubah-ukuran-gambar"
+"trim-video" = "potong-video"
+"image-to-ico" = "buat-favicon"
+"svg-to-image" = "svg-ke-png"
+"heic-to-jpg" = "heic-ke-jpg"
+"image-to-data-uri" = "gambar-ke-base64"
+"qr-barcode" = "buat-kode-qr"
+"qr-barcode-reader" = "pindai-kode-qr"
+"video-to-gif" = "video-ke-gif"
+"gif-analyzer" = "analisis-gif"
+"gif-maker" = "buat-gif"
+"grab-frame" = "ambil-bingkai-video"
+"id-photo" = "pas-foto-biometrik"
+"merge-pdf" = "gabung-pdf"
+"reverse-video" = "putar-video-terbalik"
+"split-gif" = "pisah-gif-ke-bingkai"
+"text-tools" = "format-json"
+"trim-audio" = "potong-audio"
+"password-generator" = "pembuat-kata-sandi"
+"timelapse-video" = "buat-video-time-lapse"
+"hash-checksum" = "hitung-checksum"
+
+# The indexes and the legal pages.
+"guides" = "panduan"
+"roadmap" = "peta-jalan"
+"privacy" = "privasi"
+"terms" = "ketentuan-penggunaan"
+
+# The guides. Each one keeps the "panduan/" prefix written out, the same way
+# the German list keeps "ratgeber/" on every line - the parent slug above is
+# not inherited automatically, so it is repeated here.
+"guides/compress-an-image-to-a-target-size" = "panduan/kompres-gambar-ke-ukuran-tertentu"
+"guides/resize-an-image" = "panduan/ubah-ukuran-gambar"
+"guides/remove-exif-and-gps-data" = "panduan/hapus-data-exif-dan-gps"
+"guides/redact-an-image" = "panduan/sensor-gambar"
+"guides/make-a-pdf-smaller" = "panduan/perkecil-ukuran-pdf"
+"guides/combine-images-into-a-pdf" = "panduan/gabung-gambar-ke-pdf"
+"guides/turn-images-into-a-video" = "panduan/gambar-ke-video"
+"guides/trim-a-video" = "panduan/potong-video"
+"guides/crop-a-video" = "panduan/pangkas-video"
+"guides/is-it-safe-to-upload-files" = "panduan/apakah-aman-mengunggah-file"
+"guides/make-a-favicon" = "panduan/buat-favicon"
+"guides/convert-an-svg-to-png" = "panduan/svg-ke-png"
+"guides/convert-heic-to-jpg" = "panduan/heic-ke-jpg"
+"guides/embed-an-image-in-css" = "panduan/menyisipkan-gambar-di-css"
+"guides/make-a-qr-code" = "panduan/buat-kode-qr"
+"guides/turn-a-video-into-a-gif" = "panduan/video-ke-gif"
+"guides/format-json-without-uploading-it" = "panduan/format-json-tanpa-mengunggah"
+"guides/grab-a-frame-from-a-video" = "panduan/ambil-bingkai-dari-video"
+"guides/make-a-gif-from-images" = "panduan/buat-gif-dari-gambar"
+"guides/make-a-passport-photo" = "panduan/membuat-pas-foto"
+"guides/merge-and-split-pdf-files" = "panduan/gabung-dan-pisah-file-pdf"
+"guides/reverse-a-video" = "panduan/memutar-video-terbalik"
+"guides/split-a-gif-into-frames" = "panduan/pisah-gif-ke-bingkai"
+"guides/trim-an-audio-file" = "panduan/potong-file-audio"
+"guides/whats-inside-a-gif" = "panduan/apa-isi-di-dalam-gif"
+"guides/verify-a-file-checksum" = "panduan/memverifikasi-checksum-file"
+
+#
+# ---------------------------------------------------------------------------
+# The hub.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "Alat Peramban Gratis &mdash; Tanpa Unggah, Tanpa Masuk Akun | abox.tools"
+description = "Alat peramban gratis yang tidak pernah mengunggah file Anda. Gabungkan gambar menjadi PDF atau MP4, kompres gambar ke ukuran tertentu, pangkas video, atau hapus data EXIF."
+heading = "Kotak alat yang tidak pernah menyentuh server"
+og_title = "A Box of Tools &mdash; alat yang tidak pernah menyentuh server"
+og_description = "Alat kecil untuk satu tugas, yang berjalan sepenuhnya di peramban Anda. File Anda tidak pernah meninggalkan perangkat Anda."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
+schema_description = "Alat kecil untuk satu tugas yang melakukan semua pekerjaannya di dalam peramban Anda. Tidak ada yang diunggah dan tidak perlu akun."
+schema_about = "Alat file berbasis peramban yang memproses file secara lokal tanpa mengunggahnya"
+
+lede = """
+    Alat kecil untuk satu tugas, yang melakukan semua pekerjaannya di
+    dalam peramban Anda. File Anda tetap di perangkat Anda: tidak ada yang
+    perlu diunggah, tidak perlu membuat akun, dan tidak ada yang dilacak."""
+
+support_note = """
+      Alat-alat ini gratis dan akan selalu begitu. Jika salah satu
+      memudahkan pekerjaan Anda, inilah satu-satunya tempat di situs ini
+      yang meminta sesuatu dari Anda."""
+
+[[hub.guarantees]]
+title = "File Anda tidak pernah meninggalkan perangkat Anda"
+body = """
+        Peramban Anda sendiri membuka, membaca, dan memprosesnya,
+        menggunakan perangkat keras Anda sendiri.
+        <code>Content-Security-Policy</code> setiap alat menyebutkan
+        setiap alamat yang boleh dihubunginya, dan tidak satu pun milik
+        kami."""
+
+[[hub.guarantees]]
+title = "Tidak ada apa pun tentang file Anda yang dikirim ke mana pun"
+body = """
+        Bukan filenya, bukan gambar mininya, bukan namanya, ukurannya,
+        atau berapa banyak yang Anda pilih. Tidak ada alat di sini yang
+        membaca semua itu. Tidak ada server di sisi lain alat-alat ini
+        untuk membacanya."""
+
+[[hub.guarantees]]
+title = "Berfungsi tanpa koneksi internet"
+body = """
+        Buka satu alat sekali, putuskan koneksi internet, dan alat itu
+        akan terus bekerja pada file Anda persis seperti sebelumnya. Ini
+        sulit dipalsukan: alat yang mengirim file Anda ke tempat lain
+        untuk diproses akan langsung berhenti bekerja."""
+
+[[hub.categories]]
+id = "images"
+name = "Gambar"
+note = "Ubah ukuran, perkecil, atau hapus apa yang secara diam-diam dicatat sebuah foto tentang Anda - tidak satu pun dikirim ke mana pun."
+
+[[hub.categories]]
+id = "video-and-animation"
+name = "Video &amp; Animasi"
+note = "Potong, ubah, atau buat satu dari gambar diam, tanpa rekamannya meninggalkan perangkat Anda."
+
+[[hub.categories]]
+id = "documents-and-audio"
+name = "Dokumen &amp; Audio"
+note = "Susun ulang dokumen atau potong rekaman, tanpa mengirim keduanya untuk diproses di tempat lain."
+
+[[hub.categories]]
+id = "text-codes-and-passwords"
+name = "Teks, Kode &amp; Kata Sandi"
+note = "Baca, verifikasi, atau buat di sini - tidak ada token, file konfigurasi, atau kata sandi yang sampai ke server orang lain."
+
+#
+# ---------------------------------------------------------------------------
+# The guides index.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+nav = "Semua Panduan"
+title = "Panduan &mdash; cara mengerjakannya dan biaya setiap pilihan"
+description = "Panduan jelas untuk mengompres, mengubah ukuran, memangkas, dan mengonversi file Anda sendiri - apa arti pengaturannya, apa biayanya, dan mengapa tidak perlu mengunggah."
+heading = "Panduan"
+lede = """
+    Satu panduan untuk setiap alat, ditulis untuk orang yang diminta
+    mencapai ukuran atau format tertentu dan ingin tahu lebih dulu apa
+    sebenarnya yang dilakukan pengaturan yang akan mereka geser. Semua
+    yang dijelaskan di sini terjadi di perangkat Anda sendiri."""
+og_title = "Panduan abox.tools"
+og_description = "Cara mengompres, mengubah ukuran, memangkas, memotong, dan mengonversi file Anda sendiri - dan biaya setiap pengaturan. Tanpa unggahan sama sekali."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
+
+[[guides.groups]]
+id = "doing-the-job"
+name = "Mengerjakan tugasnya"
+note = "Satu untuk setiap alat: apa inti tugasnya, pengaturan mana yang penting, dan apa biayanya."
+
+[[guides.groups]]
+id = "before-you-upload"
+name = "Sebelum Anda mengunggah apa pun"
+note = "Apa yang sebenarnya terjadi saat Anda menyerahkan file ke sebuah situs, dan cara mengetahui apakah itu memang perlu."
+
+#
+# ---------------------------------------------------------------------------
+# The roadmap.
+#
+# Only the frame. The list itself is config/planned.toml, and is not
+# translated yet - it stays English and falls back like any other page.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+nav = "Peta Jalan"
+title = "Peta Jalan &mdash; apa yang sedang dibangun abox.tools selanjutnya"
+description = "Setiap alat yang direncanakan untuk abox.tools, dikelompokkan dan terbuka, ditambah yang sudah selesai. Semuanya berjalan di peramban Anda dan tidak mengunggah apa pun."
+heading = "Apa yang akan datang"
+lede = """
+    Semua yang ada di kedua daftar di bawah ini mengerjakan tugasnya di
+    dalam peramban Anda dan tidak mengunggah apa pun &mdash; itulah aturan
+    yang harus dilewati sebuah nama sebelum masuk ke sini sama sekali.
+    Jumlahnya tidak dicatat di mana pun; proses build membacanya dari
+    kedua daftar."""
+
+intro_heading = "Bagaimana daftar ini disusun"
+intro = """
+    <p>
+      Ini bukan daftar keinginan. Daftar ini disusun dengan menelusuri
+      daftar alat dari situs GIF dan video daring terbesar, hal yang
+      paling mendekati katalog tentang apa yang sebenarnya ingin dilakukan
+      orang terhadap sebuah file, dan menyimpan setiap entri yang bisa
+      dibangun sehingga pekerjaannya terjadi di perangkat Anda sendiri dan
+      terus berjalan meski koneksi jaringan diputus.
+    </p>
+    <p>
+      Sebagian besar yang tersisa berjalan dengan API yang sudah dimiliki
+      peramban. Beberapa memerlukan codec yang disertakan langsung di satu
+      alat yang menggunakannya, dan itu diperbolehkan &mdash; filenya
+      tetap tidak pernah meninggalkan perangkat. Apa pun yang tidak lolos
+      syarat ini ditinggalkan alih-alih dijanjikan, jadi beberapa
+      kekosongan yang tampak jelas di bawah ini memang disengaja.
+    </p>
+    <p>
+      Alat yang sudah ada berada di bagian atas kelompoknya, ditandai
+      <em>Selesai</em> dan tertaut ke halamannya sendiri. Semua yang ada
+      di bawahnya masih akan datang, dan tidak akan menjadi tautan sampai
+      benar-benar selesai.
+    </p>"""
+
+planned_heading = "Setiap jenis file, dan apa yang bisa dilakukan terhadapnya"
+
+og_title = "Peta jalan abox.tools"
+og_description = "Apa yang sudah selesai, dan apa selanjutnya. Semuanya berjalan di peramban Anda dan tidak mengunggah apa pun."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
+
+#
+# ---------------------------------------------------------------------------
+# The 404.
+#
+# Built in English only - GitHub Pages serves one file for the whole domain
+# and cannot know which language was being looked for - so nothing here is
+# used today. Translated anyway, for the same reason German's copy is.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "Halaman tidak ditemukan &mdash; abox.tools"
+description = "Alamat itu tidak ada di abox.tools. Berikut alat-alat yang memang ada - semuanya gratis, dan tidak satu pun mengunggah file Anda ke mana pun."
+heading = "Halaman itu tidak ada di sini"
+tools_heading = "Semua alat, di satu tempat"
+tools_note = "Semuanya gratis, semuanya berjalan di peramban Anda, tidak satu pun mengunggah apa pun."
+
+lede = """
+    Entah ada salah ketik di alamatnya, atau sesuatu yang dulu ada di
+    alamat itu sudah dipindahkan. Tidak terjadi apa-apa pada file Anda
+    dan tidak ada yang hilang: halaman ini tidak pernah menyimpan apa pun
+    milik Anda yang bisa hilang."""
+
+#
+# ---------------------------------------------------------------------------
+# The footer.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        Alat yang tidak pernah menyentuh server. File Anda tetap di
+        perangkat Anda &mdash; tidak ada yang perlu diunggah, tidak perlu
+        membuat akun."""
+base = "Setiap klaim di situs ini dimaksudkan untuk diperiksa, bukan dipercaya begitu saja."
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words.
+#
+# Everything with {{ }} in it is a name the build resolves, and the build
+# refuses to render a name it cannot find - so these may be moved anywhere in
+# the sentence, and may not be renamed.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+languages = "Bahasa"
+lang_auto = "Halaman ini ditampilkan dalam bahasa Indonesia, bahasa yang diminta peramban Anda."
+breadcrumb = "Jejak navigasi"
+all_tools = "Semua alat"
+last_updated = "Terakhir diperbarui"
+built_tag = "Selesai"
+planned_count = "direncanakan"
+built_count = "selesai"
+
+guide_one = "panduan"
+guide_many = "panduan"
+
+footer_tools = "Alat"
+footer_site = "Situs ini"
+footer_contact = "Hubungi kami"
+footer_sitemap = "Peta situs"
+footer_source = "Baca kode sumber di GitHub"
+
+guarantees_note = """
+    Anda tidak perlu memercayai semua itu begitu saja.
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      Cara mengetahui apakah sebuah alat benar-benar membutuhkan file
+      Anda</a>
+    memberikan empat pemeriksaan yang bisa Anda jalankan sendiri, di situs
+    ini atau situs mana pun."""
+
+hub_guides_note = """
+    Tidak yakin pengaturan mana yang harus digeser, atau apa biayanya?
+    <a href="{{ base }}{{ links.guides }}/">Ada panduan untuk setiap
+    alat</a>."""
+
+hub_roadmap_note = """
+    Masih akan ada lebih banyak lagi, dan daftarnya terbuka untuk dilihat:
+    <a href="{{ base }}{{ links.roadmap }}/">lihat apa yang direncanakan
+    selanjutnya</a>."""
+
+guides_all_note = """
+    Setiap panduan di sini menjelaskan alat yang berjalan di perangkat
+    Anda sendiri:
+    <a href="{{ base }}">lihat semuanya</a>."""
+
+[ui.tool]
+view_source = "Lihat kode sumber"
+how_verified = "Cara memverifikasi ini"
+live_check = "Pemeriksaan langsung:"
+offline = "Luring:"
+checking = "memeriksa&hellip;"
+questions_heading = "Pertanyaan"
+guide_heading = "Versi lebih lengkap"
+related_heading = "Juga ada di dalam kotak"
+privacy_heading = "Cara memverifikasi klaim privasi ini"
+
+pledge_line = """
+    {{ tool.words.plural }} Anda <strong>tidak pernah diunggah</strong>.
+    Tidak ada server."""
+
+boot_title = "Kode halaman ini tidak berjalan."
+boot_body = """
+    Membuka <code>index.html</code> langsung dari sebuah folder memblokir
+    modul JavaScript, sehingga tidak akan terjadi apa-apa saat Anda
+    memilih {{ tool.words.choose }}. Sajikan folder tersebut lewat http
+    sebagai gantinya:"""
+boot_then = "Lalu buka <code>http://localhost:8080/</code>."
+
+noscript_title = "JavaScript dinonaktifkan."
+noscript_body = "Aplikasi ini melakukan semua pekerjaannya di dalam peramban Anda, dan tidak bisa berjalan tanpanya."
+
+offline_ready = "siap &mdash; putuskan koneksi internet dan ini akan tetap berfungsi."
+offline_none = "tidak tersedia di peramban ini (semua yang lain tetap berfungsi)."
+offline_insecure = "membutuhkan https:// atau localhost untuk menyimpan cache demi penggunaan luring."
+offline_failed = "penyimpanan cache tidak tersedia di sini, tetapi tidak ada yang diunggah dengan cara apa pun."
+
+error_broke = "Ada yang tidak berjalan dengan benar: {detail}. Muat ulang halaman untuk memulai dari awal."
+
+reading_one = "Membaca {count} file&hellip;"
+reading_many = "Membaca {count} file&hellip;"
+
+check_yourself = """
+      <strong>Periksa sendiri.</strong> Anda tidak perlu memercayai semua
+      ini begitu saja. Halaman ini dihasilkan dari templat dan konfigurasi
+      di repositori oleh skrip build yang bisa Anda baca dan jalankan
+      sendiri, dan hasilnya dikirim ke cabang <code>dist</code> &mdash;
+      jadi Anda bisa membandingkan apa yang disajikan dengan apa yang
+      dihasilkan oleh build dari kode sumbernya:"""
+
+read_first_lead = """
+      File yang layak dibaca lebih dulu adalah
+      <code>config/site.toml</code> untuk Content-Security-Policy"""
+
+[ui.feedback]
+prompt = "Apakah ini berhasil?"
+up = "Ya"
+down = "Tidak"
+dismiss = "Tutup"
+
+reason_prompt = "Apa yang salah?"
+reason_wrong = "Hasil salah"
+reason_failed = "Tidak selesai"
+reason_slow = "Terlalu lambat"
+reason_confusing = "Membingungkan"
+
+thanks = "Terima kasih &mdash; ini membantu."
+
+note = """
+      Hanya jawabannya yang dikirim, dan hanya saat Anda menekan tombol.
+      File Anda, namanya, atau apa pun tentangnya tidak pernah dikirim."""
+
+[ui.guide]
+open_tool = "Buka {{ tool.name | e }}"
+
+[ui.picker]
+warning = """
+      <strong>Ini satu-satunya fitur di sini yang terhubung ke
+      jaringan.</strong> Mengambil sebuah alamat memberi tahu server
+      tersebut alamat IP Anda dan {{ tool.picker.urls.noun }} mana yang
+      Anda minta. {{ tool.picker.urls.noun }} disalin ke memori lokal
+      begitu tiba dan tidak akan diminta lagi. Tidak ada apa pun milik
+      Anda yang pernah dikirim keluar &mdash; halaman ini tetap tidak
+      bisa melakukan unggahan dalam bentuk apa pun."""
+label = "Satu alamat per baris"
+note = """
+      Server harus mengizinkan penggunaan lintas asal untuk
+      {{ tool.picker.urls.noun }} miliknya. Banyak situs tidak
+      mengizinkannya, dan situs-situs itu akan gagal dengan sebuah pesan
+      alih-alih rusak diam-diam di kemudian hari."""

@@ -1,0 +1,436 @@
+#
+# Türkçe.
+#
+# What is here is the frame: the hub, the guides index, the roadmap, the 404,
+# the footer, and the words the templates themselves use. The tools and the
+# guides are NOT translated yet - they stay in English, fall back page by
+# page, and are held out of the sitemap, the hreflang sets and the switcher
+# exactly as an unfinished part of any other locale is. See buildlib/i18n.py.
+#
+# Nothing structural is repeated here. There is no list of which tools exist,
+# no category ids, no ordering, no Content-Security-Policy - all of that is
+# decided once, in English, in config/site.toml, and a locale that tried to
+# restate any of it would be told so by the build.
+#
+# House style, decided here:
+#
+#   * Formal, impersonal register - the possessive/second-person suffix
+#     (-ınız/-iniz, as in "dosyalarınız") rather than an imperative or a bare
+#     "sen" form. That is the register Turkish software and documentation
+#     already uses, and it does not force a guess about who is reading.
+#   * "Sıkıştırma", "kırpma", "kesme" kept distinct on purpose: this site
+#     tells apart cropping a frame (kırpma), shortening a clip (kesme) and
+#     reducing a file's size (sıkıştırma), and Turkish has three different
+#     verbs for exactly that split.
+#   * "PDF", "GIF", "SVG", "JPG", "QR", "EXIF" and similar acronyms stay in
+#     Latin letters - what gets typed into a search box, and what appears on
+#     the file's own icon in every operating system.
+#   * No dotless/dotted-I confusion in the slugs: [slugs] below is ASCII, the
+#     way Turkish web addresses conventionally drop diacritics (ı, ğ, ş, ç,
+#     ö, ü each fold to their plain Latin letter), the same reasoning German
+#     gives for oe/ue/ae/ss in its own [slugs].
+#
+
+lang = "tr"
+name = "Turkish"
+endonym = "Türkçe"
+hreflang = "tr"
+
+# The frame is finished: the nav, the footer, the hub and every [ui] word in
+# this file are Turkish. That is all this flag claims - the tools and the
+# guides are still English, held back a page at a time. See the note at the
+# top of buildlib/i18n.py for why the unit is the page rather than the
+# language.
+complete = true
+
+#
+# ---------------------------------------------------------------------------
+# The addresses.
+#
+# Keyed by the ENGLISH slug on the left, which is the name of the thing, and
+# never by the Turkish one. The Turkish is an address and appears only on the
+# right.
+# ---------------------------------------------------------------------------
+#
+
+[slugs]
+# The tools.
+"compress-image" = "resim-sikistirma"
+"compress-pdf" = "pdf-sikistirma"
+"crop-video" = "video-kirpma"
+"edit-audio" = "ses-duzenleme"
+"exif-editor" = "exif-verisi-silme"
+"redact-image" = "resim-karartma"
+"images-to-pdf" = "resimleri-pdfe-donusturme"
+"images-to-video" = "resimleri-videoya-donusturme"
+"resize-image" = "resim-boyutlandirma"
+"trim-video" = "video-kesme"
+"image-to-ico" = "favicon-olusturma"
+"svg-to-image" = "svg-yi-pnge-donusturme"
+"heic-to-jpg" = "heic-jpg-donusturme"
+"image-to-data-uri" = "resmi-base64e-donusturme"
+"qr-barcode" = "qr-kod-olusturma"
+"qr-barcode-reader" = "qr-kod-okuma"
+"video-to-gif" = "videoyu-gife-donusturme"
+"gif-analyzer" = "gif-analiz-etme"
+"gif-maker" = "gif-olusturma"
+"grab-frame" = "videodan-kare-yakalama"
+"id-photo" = "biyometrik-vesikalik-fotograf"
+"merge-pdf" = "pdf-birlestirme"
+"reverse-video" = "videoyu-ters-oynatma"
+"split-gif" = "gifi-karelere-ayirma"
+"text-tools" = "json-bicimlendirme"
+"trim-audio" = "ses-kesme"
+"password-generator" = "sifre-olusturucu"
+"timelapse-video" = "time-lapse-video-olusturma"
+"hash-checksum" = "saglama-toplami-hesaplama"
+
+# The indexes and the legal pages.
+"guides" = "rehberler"
+"roadmap" = "yol-haritasi"
+"privacy" = "gizlilik"
+"terms" = "kullanim-kosullari"
+
+# The guides. Each one keeps the "rehberler/" prefix written out, the same
+# way the German list keeps "ratgeber/" on every line - the parent slug above
+# is not inherited automatically, so it is repeated here.
+"guides/compress-an-image-to-a-target-size" = "rehberler/resmi-hedef-boyuta-sikistirma"
+"guides/resize-an-image" = "rehberler/resim-boyutlandirma"
+"guides/remove-exif-and-gps-data" = "rehberler/exif-ve-gps-verisini-silme"
+"guides/redact-an-image" = "rehberler/resim-karartma"
+"guides/make-a-pdf-smaller" = "rehberler/pdf-boyutunu-kucultme"
+"guides/combine-images-into-a-pdf" = "rehberler/resimleri-pdfde-birlestirme"
+"guides/turn-images-into-a-video" = "rehberler/resimleri-videoya-donusturme"
+"guides/trim-a-video" = "rehberler/video-kesme"
+"guides/crop-a-video" = "rehberler/video-kirpma"
+"guides/is-it-safe-to-upload-files" = "rehberler/dosya-yuklemek-guvenli-mi"
+"guides/make-a-favicon" = "rehberler/favicon-olusturma"
+"guides/convert-an-svg-to-png" = "rehberler/svg-yi-pnge-donusturme"
+"guides/convert-heic-to-jpg" = "rehberler/heic-jpg-donusturme"
+"guides/embed-an-image-in-css" = "rehberler/cssye-resim-gomme"
+"guides/make-a-qr-code" = "rehberler/qr-kod-olusturma"
+"guides/turn-a-video-into-a-gif" = "rehberler/videoyu-gife-donusturme"
+"guides/format-json-without-uploading-it" = "rehberler/json-yuklemeden-bicimlendirme"
+"guides/grab-a-frame-from-a-video" = "rehberler/videodan-kare-yakalama"
+"guides/make-a-gif-from-images" = "rehberler/resimlerden-gif-olusturma"
+"guides/make-a-passport-photo" = "rehberler/vesikalik-fotograf-cekme"
+"guides/merge-and-split-pdf-files" = "rehberler/pdf-birlestirme-ve-bolme"
+"guides/reverse-a-video" = "rehberler/videoyu-ters-oynatma"
+"guides/split-a-gif-into-frames" = "rehberler/gifi-karelere-ayirma"
+"guides/trim-an-audio-file" = "rehberler/ses-dosyasi-kesme"
+"guides/whats-inside-a-gif" = "rehberler/gifin-icinde-ne-var"
+"guides/verify-a-file-checksum" = "rehberler/dosya-saglama-toplamini-dogrulama"
+
+#
+# ---------------------------------------------------------------------------
+# The hub.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "Ücretsiz Tarayıcı Araçları &mdash; Yükleme Yok, Üyelik Yok | abox.tools"
+description = "Dosyalarınızı asla yüklemeyen ücretsiz tarayıcı araçları. Resimleri PDF veya MP4'e birleştirin, bir resmi tam boyuta sıkıştırın, video kırpın veya EXIF verisini silin."
+heading = "Sunucuya hiç dokunmayan bir araç kutusu"
+og_title = "A Box of Tools &mdash; sunucuya hiç dokunmayan araçlar"
+og_description = "Tamamen tarayıcınızda çalışan, tek işe özel küçük araçlar. Dosyalarınız cihazınızdan asla çıkmaz."
+og_image_alt = "abox.tools - sunucuya hiç dokunmayan araçlar"
+schema_description = "Tüm işini tarayıcınızın içinde yapan, tek işe özel küçük araçlar. Hiçbir şey yüklenmez ve hesap gerekmez."
+schema_about = "Dosyaları yüklemeden yerel olarak işleyen tarayıcı tabanlı dosya araçları"
+
+lede = """
+    Tüm işini tarayıcınızın içinde yapan, tek işe özel küçük araçlar.
+    Dosyalarınız cihazınızda kalır: yükleyecek bir şey yok, oluşturulacak
+    bir hesap yok, izlenecek hiçbir şey yok."""
+
+support_note = """
+      Bu araçlar ücretsizdir ve öyle kalacaktır. Biri size bir işi
+      kolaylaştırdıysa, sitede sizden bir şey isteyen tek yer burasıdır."""
+
+[[hub.guarantees]]
+title = "Dosyalarınız cihazınızdan asla çıkmaz"
+body = """
+        Kendi tarayıcınız onları kendi donanımınızda açar, okur ve işler.
+        Her aracın <code>Content-Security-Policy</code>'si, iletişim
+        kurabileceği her adresi belirtir ve bunların hiçbiri bize ait
+        değildir."""
+
+[[hub.guarantees]]
+title = "Dosyalarınız hakkında hiçbir şey hiçbir yere gönderilmez"
+body = """
+        Ne dosya, ne küçük resmi, ne adı, ne boyutu, ne de kaç tane
+        seçtiğiniz. Buradaki hiçbir araç bunlardan hiçbirini okumaz. Bunu
+        okuyacak bir sunucu da zaten yoktur."""
+
+[[hub.guarantees]]
+title = "Çevrimdışı çalışır"
+body = """
+        Bir aracı bir kez açın, internet bağlantısını kesin; dosyalarınız
+        üzerinde tıpkı önceki gibi çalışmaya devam eder. Bunu taklit etmek
+        zordur: dosyalarınızı işlenmek üzere başka bir yere gönderen bir
+        araç bu noktada basitçe duraklardı."""
+
+[[hub.categories]]
+id = "images"
+name = "Resimler"
+note = "Birini yeniden boyutlandırın, küçültün veya bir fotoğrafın sizin hakkınızda sessizce kaydettiği şeyi çıkarın - hiçbiri hiçbir yere gönderilmez."
+
+[[hub.categories]]
+id = "video-and-animation"
+name = "Video ve Animasyon"
+note = "Görüntü cihazınızdan çıkmadan kesin, dönüştürün veya durgun resimlerden bir tane oluşturun."
+
+[[hub.categories]]
+id = "documents-and-audio"
+name = "Belgeler ve Ses"
+note = "İkisini de işlenmek üzere göndermeden bir belgeyi yeniden düzenleyin veya bir kaydı kesin."
+
+[[hub.categories]]
+id = "text-codes-and-passwords"
+name = "Metin, Kodlar ve Parolalar"
+note = "Burada okuyun, doğrulayın veya oluşturun - hiçbir jeton, yapılandırma dosyası veya parola başkasının sunucusuna ulaşmaz."
+
+#
+# ---------------------------------------------------------------------------
+# The guides index.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+nav = "Tüm Rehberler"
+title = "Rehberler &mdash; işi nasıl yapacağınız ve her seçimin bedeli"
+description = "Kendi dosyalarınızı sıkıştırma, yeniden boyutlandırma, kırpma ve dönüştürme üzerine anlaşılır rehberler - ayarların ne anlama geldiği, bedeli ve neden yükleme gerekmediği."
+heading = "Rehberler"
+lede = """
+    Her araç için bir rehber, kendisine bir boyut veya biçim söylenen ve
+    hareket ettireceği ayarın gerçekte ne yaptığını önceden bilmek isteyen
+    kişi için yazıldı. Burada anlatılan her şey kendi cihazınızda
+    gerçekleşir."""
+og_title = "abox.tools rehberleri"
+og_description = "Kendi dosyalarınızı nasıl sıkıştırır, yeniden boyutlandırır, kırpar, keser ve dönüştürürsünüz - ve her ayarın bedeli nedir. Hiçbir yükleme olmadan."
+og_image_alt = "abox.tools - sunucuya hiç dokunmayan araçlar"
+
+[[guides.groups]]
+id = "doing-the-job"
+name = "İşi yapmak"
+note = "Her araç için bir tane: iş neyle ilgili, hangi ayar önemli ve bedeli ne."
+
+[[guides.groups]]
+id = "before-you-upload"
+name = "Bir şey yüklemeden önce"
+note = "Bir dosyayı bir siteye vermek gerçekte ne yapar ve bunun gerekli olup olmadığını nasıl anlarsınız."
+
+#
+# ---------------------------------------------------------------------------
+# The roadmap.
+#
+# Only the frame. The list itself is config/planned.toml, and is not
+# translated yet - it stays English and falls back like any other page.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+nav = "Yol Haritası"
+title = "Yol Haritası &mdash; abox.tools sırada ne inşa ediyor"
+description = "abox.tools için planlanan her araç, gruplandırılmış ve açık şekilde, ayrıca zaten tamamlananlar. Hepsi tarayıcınızda çalışır ve hiçbir şey yüklemez."
+heading = "Sırada ne var"
+lede = """
+    Aşağıdaki iki listedeki her şey işini tarayıcınızın içinde yapar ve
+    hiçbir şey yüklemez &mdash; buraya girmeden önce bir adın geçmesi
+    gereken kural budur. Sayılar hiçbir yerde yazılı değildir; derleme
+    bunları iki listeden okur."""
+
+intro_heading = "Bu liste nasıl oluşturuldu"
+intro = """
+    <p>
+      Bu bir dilek listesi değil. En büyük çevrimiçi GIF ve video sitesinin
+      araç listesi taranarak oluşturuldu - insanların bir dosyaya gerçekte
+      ne yapmak istediğinin kataloğuna en yakın şey budur - ve işin kendi
+      cihazınızda gerçekleşecek ve ağ bağlantısı kesikken de çalışmaya
+      devam edecek şekilde inşa edilebilecek her giriş tutuldu.
+    </p>
+    <p>
+      Hayatta kalanların çoğu tarayıcının zaten sunduğu arayüzlerle çalışır.
+      Birkaçı, onu kullanan tek araca gömülü bir codec gerektirir - bu da
+      izinlidir, çünkü dosya yine de cihazdan çıkmaz. Bu çıtayı aşamayan
+      her şey söz verilmek yerine dışarıda bırakıldı, bu yüzden aşağıdaki
+      bazı belirgin boşluklar kasıtlıdır.
+    </p>
+    <p>
+      Zaten var olan araçlar kendi grubunun en üstünde, <em>Hazır</em>
+      olarak işaretlenmiş ve kendi sayfasına bağlanmış şekilde durur.
+      Altındaki her şey henüz gelmedi ve hazır olana kadar bir bağlantı
+      olmayacak.
+    </p>"""
+
+planned_heading = "Her dosya türü ve onunla yapılabilecekler"
+
+og_title = "abox.tools yol haritası"
+og_description = "Ne hazır, sırada ne var. Her şey tarayıcınızda çalışır ve hiçbir şey yüklemez."
+og_image_alt = "abox.tools - sunucuya hiç dokunmayan araçlar"
+
+#
+# ---------------------------------------------------------------------------
+# The 404.
+#
+# Built in English only - GitHub Pages serves one file for the whole domain
+# and cannot know which language was being looked for - so nothing here is
+# used today. Translated anyway, for the same reason German's copy is.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "Sayfa bulunamadı &mdash; abox.tools"
+description = "Bu adres abox.tools üzerinde yok. İşte var olan araçlar - hepsi ücretsiz ve hiçbiri dosyalarınızı hiçbir yere yüklemiyor."
+heading = "Bu sayfa burada yok"
+tools_heading = "Tüm araçlar tek yerde"
+tools_note = "Hepsi ücretsiz, hepsi tarayıcınızda çalışır, hiçbiri hiçbir şey yüklemez."
+
+lede = """
+    Ya adreste bir yazım hatası var ya da o adreste olan bir şey taşındı.
+    Dosyanıza hiçbir şey olmadı ve hiçbir şey kaybolmadı: bu sayfa
+    kaybedebileceği hiçbir şeyinizi hiç tutmadı."""
+
+#
+# ---------------------------------------------------------------------------
+# The footer.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        Sunucuya hiç dokunmayan araçlar. Dosyalarınız cihazınızda kalır
+        &mdash; yükleyecek bir şey yok, oluşturulacak bir hesap yok."""
+base = "Bu sitedeki her iddia inanılmak için değil, doğrulanmak için var."
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words.
+#
+# Everything with {{ }} in it is a name the build resolves, and the build
+# refuses to render a name it cannot find - so these may be moved anywhere in
+# the sentence, and may not be renamed.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+languages = "Dil"
+lang_auto = "Bu sayfa, tarayıcınızın tercih ettiği dil olan Türkçe olarak gösteriliyor."
+breadcrumb = "Gezinme yolu"
+all_tools = "Tüm araçlar"
+last_updated = "Son güncelleme"
+built_tag = "Hazır"
+planned_count = "planlanan"
+built_count = "hazır"
+
+guide_one = "rehber"
+guide_many = "rehber"
+
+footer_tools = "Araçlar"
+footer_site = "Bu site"
+footer_contact = "Bize ulaşın"
+footer_sitemap = "Site haritası"
+footer_source = "Kaynak kodu GitHub'da okuyun"
+
+guarantees_note = """
+    Bunların hiçbirine güvenmeniz gerekmez.
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      Bir aracın dosyalarınıza gerçekten ihtiyacı olup olmadığını nasıl
+      anlarsınız</a>
+    kendi başınıza çalıştırabileceğiniz dört kontrol sunar, bu sitede de
+    başka herhangi bir sitede de."""
+
+hub_guides_note = """
+    Hangi ayarı hareket ettireceğinizden veya bedelinin ne olduğundan emin
+    değil misiniz?
+    <a href="{{ base }}{{ links.guides }}/">Her araç için bir rehber
+    var</a>."""
+
+hub_roadmap_note = """
+    Daha fazlası geliyor ve liste açık:
+    <a href="{{ base }}{{ links.roadmap }}/">sırada ne planlandığını
+    görün</a>."""
+
+guides_all_note = """
+    Buradaki her rehber kendi cihazınızda çalışan bir aracı anlatır:
+    <a href="{{ base }}">hepsini görün</a>."""
+
+[ui.tool]
+view_source = "Kaynak kodu görüntüle"
+how_verified = "Bu nasıl doğrulanır"
+live_check = "Canlı kontrol:"
+offline = "Çevrimdışı:"
+checking = "kontrol ediliyor&hellip;"
+questions_heading = "Sorular"
+guide_heading = "Uzun sürüm"
+related_heading = "Kutuda ayrıca"
+privacy_heading = "Gizlilik iddiası nasıl doğrulanabilir"
+
+pledge_line = """
+    {{ tool.words.plural }} <strong>asla yüklenmez</strong>. Sunucu yoktur."""
+
+boot_title = "Bu sayfanın kodu başlamadı."
+boot_body = """
+    <code>index.html</code> dosyasını doğrudan bir klasörden açmak
+    JavaScript modüllerini engeller, bu yüzden {{ tool.words.choose }}
+    seçildiğinde hiçbir şey olmaz. Klasörü bunun yerine http üzerinden
+    sunun:"""
+boot_then = "Ardından <code>http://localhost:8080/</code> adresini açın."
+
+noscript_title = "JavaScript devre dışı."
+noscript_body = "Bu uygulama tüm işini tarayıcınızın içinde yapar ve onsuz çalışamaz."
+
+offline_ready = "hazır &mdash; internet bağlantısını kesin, bu yine de çalışır."
+offline_none = "bu tarayıcıda kullanılamıyor (diğer her şey çalışmaya devam eder)."
+offline_insecure = "çevrimdışı kullanım için önbelleğe almak https:// veya localhost gerektirir."
+offline_failed = "önbelleğe alma burada mümkün değil, ancak zaten hiçbir şey yüklenmiyor."
+
+error_broke = "Bir şeyler bozuldu: {detail}. Baştan başlamak için sayfayı yeniden yükleyin."
+
+reading_one = "{count} dosya okunuyor&hellip;"
+reading_many = "{count} dosya okunuyor&hellip;"
+
+check_yourself = """
+      <strong>Kendiniz kontrol edin.</strong> Yukarıdakilerin hiçbirine
+      güvenmeniz gerekmez. Bu sayfa, depodaki şablonlardan ve
+      yapılandırmadan, okuyup kendiniz çalıştırabileceğiniz bir derleme
+      betiği tarafından üretilir ve sonuç <code>dist</code> dalına işlenir
+      &mdash; yani sunulan şeyi kaynakların bir derlemesinin ürettiğiyle
+      karşılaştırabilirsiniz:"""
+
+read_first_lead = """
+      Önce okunmaya değer dosyalar, Content-Security-Policy için
+      <code>config/site.toml</code>"""
+
+[ui.feedback]
+prompt = "İşe yaradı mı?"
+up = "Evet"
+down = "Hayır"
+dismiss = "Kapat"
+
+reason_prompt = "Ne yanlış gitti?"
+reason_wrong = "Yanlış sonuç"
+reason_failed = "Tamamlanmadı"
+reason_slow = "Çok yavaş"
+reason_confusing = "Kafa karıştırıcı"
+
+thanks = "Teşekkürler &mdash; bu yardımcı oluyor."
+
+note = """
+      Yalnızca yanıt gönderilir, yalnızca bir düğmeye bastığınızda.
+      Dosyanız, adı veya onun hakkında hiçbir şey asla gönderilmez."""
+
+[ui.guide]
+open_tool = "{{ tool.name | e }} aracını açın"
+
+[ui.picker]
+warning = """
+      <strong>Ağa dokunan tek özellik budur.</strong> Bir adresi almak, o
+      sunucuya IP adresinizi ve istediğiniz {{ tool.picker.urls.noun }}'i
+      bildirir. {{ tool.picker.urls.noun }}, geldiğinde yerel belleğe
+      kopyalanır ve bir daha istenmez. Sizden hiçbir şey dışarı
+      gönderilmez &mdash; bu sayfa yine de hiçbir türde yükleme yapamaz."""
+label = "Satır başına bir adres"
+note = """
+      Sunucu, {{ tool.picker.urls.noun }}'inin kaynaklar arası kullanımına
+      izin vermelidir. Birçok site buna izin vermez ve bunlar daha sonra
+      sessizce bozulmak yerine bir mesajla başarısız olur."""
