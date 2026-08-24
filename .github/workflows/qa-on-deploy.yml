@@ -40,6 +40,20 @@ jobs:
           repository: A-Box-of-Tools/qa
           path: qa
 
+      # The QA suite's lib/tools.ts, lib/csp.ts and hasFilePicker() all read
+      # this repo's own source (the tool list, config/site.toml's CSP
+      # allowlist, each tool's body.html) at test time rather than
+      # duplicating it - see its lib/site.ts. This workflow is triggered by
+      # a push to `dist`, though, which holds only the *built* output (see
+      # build.yml) and has no tools/ or config/ at all - so the source has to
+      # be checked out separately, pinned to main rather than whatever ref
+      # triggered this run.
+      - name: Check out this repo's source (tool/CSP metadata)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: etoolbox-src
+
       # GitHub Pages usually publishes within a minute of `dist` moving, but
       # that isn't guaranteed - poll rather than assume, so a slow publish is
       # a short wait here instead of a flaky red run against the old build.
@@ -75,6 +89,7 @@ jobs:
         working-directory: qa
         env:
           BASE_URL: https://abox.tools/
+          ETOOLBOX_DIR: ${{ github.workspace }}/etoolbox-src
         run: npx playwright test
 
       - name: Upload the HTML report
