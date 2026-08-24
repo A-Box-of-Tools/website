@@ -1,0 +1,31 @@
+{
+  "id": "/fr/creer-un-gif/",
+  "name": "Cr\u00e9ateur de GIF",
+  "short_name": "Cr\u00e9ateur de GIF",
+  "description": "Transformer une s\u00e9rie d'images en une seule animation.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

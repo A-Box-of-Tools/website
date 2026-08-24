@@ -1,0 +1,31 @@
+{
+  "id": "/ko/\ub3d9\uc601\uc0c1-\uac70\uafb8\ub85c-\uc7ac\uc0dd/",
+  "name": "\ub3d9\uc601\uc0c1 \uac70\uafb8\ub85c \uc7ac\uc0dd",
+  "short_name": "\ub3d9\uc601\uc0c1 \uac70\uafb8\ub85c \uc7ac\uc0dd",
+  "description": "\ub9c8\uc9c0\ub9c9 \ud504\ub808\uc784\ubd80\ud130, \uc18c\ub9ac\uae4c\uc9c0 \ud568\uaed8.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

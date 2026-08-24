@@ -1,0 +1,31 @@
+{
+  "id": "/ja/image-to-data-uri/",
+  "name": "\u753b\u50cf\u2192\u30c7\u30fc\u30bfURI\u5909\u63db\u30c4\u30fc\u30eb",
+  "short_name": "\u753b\u50cf\u2192\u30c7\u30fc\u30bfURI\u5909\u63db\u30c4\u30fc\u30eb",
+  "description": "\u753b\u50cf\u307e\u308b\u3054\u3068\u30921\u884c\u306e\u30c6\u30ad\u30b9\u30c8\u306b\u3002\u305d\u306e\u307e\u307eCSS\u3084HTML\u306b\u8cbc\u308c\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

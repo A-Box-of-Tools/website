@@ -1,0 +1,31 @@
+{
+  "id": "/fr/analyser-un-gif/",
+  "name": "Analyseur de GIF",
+  "short_name": "Analyseur de GIF",
+  "description": "Images, dur\u00e9es, palettes, et o\u00f9 est pass\u00e9 chaque octet.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

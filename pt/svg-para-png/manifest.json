@@ -1,0 +1,31 @@
+{
+  "id": "/pt/svg-para-png/",
+  "name": "SVG para imagem",
+  "short_name": "SVG para imagem",
+  "description": "Diga o tamanho. Um vetor n\u00e3o tem tamanho pr\u00f3prio a perder.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

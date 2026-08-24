@@ -1,0 +1,31 @@
+{
+  "id": "/ja/qr-barcode-reader/",
+  "name": "QR\u30b3\u30fc\u30c9\u30fb\u30d0\u30fc\u30b3\u30fc\u30c9\u8aad\u307f\u53d6\u308a\u30c4\u30fc\u30eb",
+  "short_name": "QR\u30b3\u30fc\u30c9\u30fb\u30d0\u30fc\u30b3\u30fc\u30c9\u8aad\u307f\u53d6\u308a\u30c4\u30fc\u30eb",
+  "description": "\u30b3\u30fc\u30c9\u306b\u30ab\u30e1\u30e9\u3092\u5411\u3051\u308b\u304b\u3001\u5199\u3063\u305f\u753b\u50cf\u3092\u7f6e\u3044\u3066\u304f\u3060\u3055\u3044\u3002\u8aad\u3080\u306e\u306f\u3053\u3053\u3060\u3051\u3001\u307b\u304b\u306e\u3069\u3053\u3067\u3082\u3042\u308a\u307e\u305b\u3093\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

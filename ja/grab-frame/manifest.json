@@ -1,0 +1,31 @@
+{
+  "id": "/ja/grab-frame/",
+  "name": "\u52d5\u753b\u306e\u30b3\u30de\u5207\u308a\u51fa\u3057",
+  "short_name": "\u52d5\u753b\u306e\u30b3\u30de\u5207\u308a\u51fa\u3057",
+  "description": "\u3069\u306e\u77ac\u9593\u3067\u3082\u3001\u753b\u8cea\u3092\u843d\u3068\u3055\u305a\u306b1\u679a\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

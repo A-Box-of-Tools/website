@@ -1,0 +1,31 @@
+{
+  "id": "/ja/trim-audio/",
+  "name": "\u97f3\u58f0\u306e\u5207\u308a\u51fa\u3057",
+  "short_name": "\u97f3\u58f0\u306e\u5207\u308a\u51fa\u3057",
+  "description": "\u518d\u751f\u3057\u306a\u304c\u3089\u6b8b\u3057\u305f\u3044\u5834\u6240\u306b\u5370\u3092\u4ed8\u3051\u307e\u3059\u3002\u5370\u306e\u4ed8\u3044\u305f\u5206\u304c1\u3064\u306e\u30d5\u30a1\u30a4\u30eb\u306b\u306a\u3063\u3066\u3001\u6307\u5b9a\u3069\u304a\u308a\u306e\u4f4d\u7f6e\u3067\u5207\u308c\u3066\u623b\u3063\u3066\u304d\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

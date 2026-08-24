@@ -1,0 +1,31 @@
+{
+  "id": "/fr/photo-d-identite/",
+  "name": "Photo d'identit\u00e9",
+  "short_name": "Photo d'identit\u00e9",
+  "description": "Choisissez le pays. L'outil applique sa r\u00e8gle, exactement.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

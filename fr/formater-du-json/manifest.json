@@ -1,0 +1,31 @@
+{
+  "id": "/fr/formater-du-json/",
+  "name": "Texte & code",
+  "short_name": "Texte & code",
+  "description": "Mettez-le en forme, voyez ce qui a chang\u00e9, encodez-le ou passez-le dans l'autre format. Rien n'est coll\u00e9 dans le serveur de quelqu'un d'autre.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

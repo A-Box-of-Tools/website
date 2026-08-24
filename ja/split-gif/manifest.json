@@ -1,0 +1,31 @@
+{
+  "id": "/ja/split-gif/",
+  "name": "GIF\u5206\u89e3",
+  "short_name": "GIF\u5206\u89e3",
+  "description": "\u3059\u3079\u3066\u306e\u30b3\u30de\u3092\u30011\u679a\u305a\u3064PNG\u3067\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

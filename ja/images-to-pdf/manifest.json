@@ -1,0 +1,31 @@
+{
+  "id": "/ja/images-to-pdf/",
+  "name": "\u753b\u50cf\u2192PDF\u5909\u63db\u30c4\u30fc\u30eb",
+  "short_name": "\u753b\u50cf\u2192PDF\u5909\u63db\u30c4\u30fc\u30eb",
+  "description": "\u624b\u5143\u306e\u753b\u50cf\u3092\u30011\u3064\u306e\u66f8\u985e\u306b\u307e\u3068\u3081\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

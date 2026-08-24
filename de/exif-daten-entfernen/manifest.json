@@ -1,0 +1,31 @@
+{
+  "id": "/de/exif-daten-entfernen/",
+  "name": "EXIF-Betrachter & -Entferner",
+  "short_name": "EXIF-Betrachter & -Entferner",
+  "description": "Sehen, was ein Foto \u00fcber Sie verr\u00e4t. Und es dann herausnehmen.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

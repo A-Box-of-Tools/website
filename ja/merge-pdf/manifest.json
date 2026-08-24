@@ -1,0 +1,31 @@
+{
+  "id": "/ja/merge-pdf/",
+  "name": "PDF\u7d50\u5408\u30fb\u5206\u5272",
+  "short_name": "PDF\u7d50\u5408\u30fb\u5206\u5272",
+  "description": "\u30b5\u30fc\u30d0\u30fc\u3092\u4e00\u5f80\u5fa9\u305b\u305a\u306b\u3001\u30da\u30fc\u30b8\u3092\u5165\u308c\u66ff\u3048\u308b\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

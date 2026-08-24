@@ -1,0 +1,31 @@
+{
+  "id": "/zh/id-photo/",
+  "name": "\u8bc1\u4ef6\u7167\u5236\u4f5c",
+  "short_name": "\u8bc1\u4ef6\u7167\u5236\u4f5c",
+  "description": "\u9009\u597d\u56fd\u5bb6\uff0c\u5b83\u5c31\u7167\u90a3\u4e2a\u56fd\u5bb6\u7684\u89c4\u5b9a\uff0c\u4e00\u5b57\u4e0d\u5dee\u5730\u529e\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

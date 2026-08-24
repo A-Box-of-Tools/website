@@ -1,0 +1,31 @@
+{
+  "id": "/zh/merge-pdf/",
+  "name": "PDF \u5408\u5e76\u4e0e\u62c6\u5206",
+  "short_name": "PDF \u5408\u5e76\u4e0e\u62c6\u5206",
+  "description": "\u632a\u52a8\u9875\u9762\uff0c\u4e0d\u7528\u5f80\u670d\u52a1\u5668\u8dd1\u4e00\u8d9f\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

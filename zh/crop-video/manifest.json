@@ -1,0 +1,31 @@
+{
+  "id": "/zh/crop-video/",
+  "name": "\u89c6\u9891\u88c1\u526a",
+  "short_name": "\u89c6\u9891\u88c1\u526a",
+  "description": "\u628a\u7247\u5b50\u5207\u5230\u53ea\u5269\u8981\u7d27\u7684\u90a3\u5757\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

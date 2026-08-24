@@ -1,0 +1,31 @@
+{
+  "id": "/zh/timelapse-video/",
+  "name": "\u5ef6\u65f6\u89c6\u9891",
+  "short_name": "\u5ef6\u65f6\u89c6\u9891",
+  "description": "\u4e00\u5c0f\u65f6\u7684\u7d20\u6750\uff0c\u4e8c\u5341\u79d2\u770b\u5b8c\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "/ko/\ub3d9\uc601\uc0c1-\ucea1\ucc98/",
+  "name": "\ub3d9\uc601\uc0c1 \ucea1\ucc98",
+  "short_name": "\ub3d9\uc601\uc0c1 \ucea1\ucc98",
+  "description": "\uc5b4\ub290 \uc9c0\uc810\uc774\ub4e0, \uc6d0\ubcf8 \ud654\uc9c8 \uadf8\ub300\ub85c \ud55c \uc7a5.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

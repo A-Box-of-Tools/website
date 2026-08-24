@@ -1,0 +1,31 @@
+{
+  "id": "/zh/heic-to-jpg/",
+  "name": "HEIC \u8f6c JPG",
+  "short_name": "HEIC \u8f6c JPG",
+  "description": "iPhone \u62cd\u7684\u7167\u7247\uff0c\u6362\u6210\u4ec0\u4e48\u90fd\u6253\u5f97\u5f00\u7684\u683c\u5f0f\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

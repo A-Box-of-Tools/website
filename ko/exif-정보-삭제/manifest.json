@@ -1,0 +1,31 @@
+{
+  "id": "/ko/exif-\uc815\ubcf4-\uc0ad\uc81c/",
+  "name": "EXIF \ud655\uc778 \ubc0f \uc81c\uac70",
+  "short_name": "EXIF \ud655\uc778 \ubc0f \uc81c\uac70",
+  "description": "\uc0ac\uc9c4\uc774 \ub098\uc5d0 \ub300\ud574 \ubb58 \ud758\ub9ac\uace0 \uc788\ub294\uc9c0 \ud655\uc778\ud558\uace0, \ube7c\ub0c5\ub2c8\ub2e4.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

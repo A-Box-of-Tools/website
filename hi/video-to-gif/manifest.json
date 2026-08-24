@@ -1,0 +1,31 @@
+{
+  "id": "/hi/video-to-gif/",
+  "name": "\u0935\u0940\u0921\u093f\u092f\u094b \u0938\u0947 GIF",
+  "short_name": "\u0935\u0940\u0921\u093f\u092f\u094b \u0938\u0947 GIF",
+  "description": "\u0939\u093f\u0938\u094d\u0938\u093e \u091a\u0941\u0928\u093f\u090f, \u0938\u093e\u0907\u091c\u093c \u091a\u0941\u0928\u093f\u090f, \u0914\u0930 \u092b\u093c\u094d\u0930\u0947\u092e \u0926\u0930 \u091a\u0941\u0928\u093f\u090f\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

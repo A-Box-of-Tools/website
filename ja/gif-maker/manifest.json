@@ -1,0 +1,31 @@
+{
+  "id": "/ja/gif-maker/",
+  "name": "GIF\u4f5c\u6210",
+  "short_name": "GIF\u4f5c\u6210",
+  "description": "\u4f55\u679a\u304b\u306e\u753b\u50cf\u3092\u3001\u3072\u3068\u3064\u306e\u30a2\u30cb\u30e1\u30fc\u30b7\u30e7\u30f3\u306b\u3057\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

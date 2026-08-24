@@ -1,0 +1,31 @@
+{
+  "id": "/hi/images-to-video/",
+  "name": "\u0924\u0938\u094d\u0935\u0940\u0930\u094b\u0902 \u0938\u0947 \u0935\u0940\u0921\u093f\u092f\u094b",
+  "short_name": "\u0924\u0938\u094d\u0935\u0940\u0930\u094b\u0902 \u0938\u0947 \u0935\u0940\u0921\u093f\u092f\u094b",
+  "description": "\u0924\u0938\u094d\u0935\u0940\u0930\u094b\u0902 \u0915\u0947 \u090f\u0915 \u092b\u093c\u094b\u0932\u094d\u0921\u0930 \u0915\u094b \u0935\u0940\u0921\u093f\u092f\u094b \u092c\u0928\u093e \u0926\u0940\u091c\u093f\u090f\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

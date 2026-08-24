@@ -1,0 +1,31 @@
+{
+  "id": "/zh/gif-maker/",
+  "name": "GIF \u5236\u4f5c",
+  "short_name": "GIF \u5236\u4f5c",
+  "description": "\u628a\u4e00\u7ec4\u56fe\u7247\u53d8\u6210\u4e00\u6bb5\u52a8\u753b\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "/hi/password-generator/",
+  "name": "\u092a\u093e\u0938\u0935\u0930\u094d\u0921 \u0914\u0930 \u092a\u093e\u0938\u092b\u093c\u094d\u0930\u0947\u091c\u093c \u091c\u0928\u0930\u0947\u091f\u0930",
+  "short_name": "\u092a\u093e\u0938\u0935\u0930\u094d\u0921 \u0914\u0930 \u092a\u093e\u0938\u092b\u093c\u094d\u0930\u0947\u091c\u093c \u091c\u0928\u0930\u0947\u091f\u0930",
+  "description": "\u092f\u0939\u0940\u0902 \u092c\u0928\u0924\u093e \u0939\u0948, \u0906\u092a\u0915\u0947 \u0905\u092a\u0928\u0947 \u092c\u094d\u0930\u093e\u0909\u091c\u093c\u0930 \u0938\u0947, \u0914\u0930 \u0915\u0939\u0940\u0902 \u0928\u0939\u0940\u0902 \u092d\u0947\u091c\u093e \u091c\u093e\u0924\u093e\u0964 \u0915\u0941\u091b \u092d\u0940 \u0938\u0947\u0935 \u0928\u0939\u0940\u0902 \u0939\u094b\u0924\u093e \u0914\u0930 \u0915\u094b\u0908 \u0939\u093f\u0938\u094d\u091f\u094d\u0930\u0940 \u0928\u0939\u0940\u0902 \u0930\u0939\u0924\u0940\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

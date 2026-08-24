@@ -1,0 +1,31 @@
+{
+  "id": "/fr/generateur-de-mot-de-passe/",
+  "name": "G\u00e9n\u00e9rateur de mot de passe & de phrase secr\u00e8te",
+  "short_name": "G\u00e9n\u00e9rateur de mot de passe & de phrase secr\u00e8te",
+  "description": "Fabriqu\u00e9 ici, par votre propre navigateur, et envoy\u00e9 nulle part. Rien n'est enregistr\u00e9 et il n'y a pas d'historique.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

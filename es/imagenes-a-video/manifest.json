@@ -1,0 +1,31 @@
+{
+  "id": "/es/imagenes-a-video/",
+  "name": "Im\u00e1genes a v\u00eddeo",
+  "short_name": "Im\u00e1genes a v\u00eddeo",
+  "description": "Convierte una carpeta de im\u00e1genes en un v\u00eddeo.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

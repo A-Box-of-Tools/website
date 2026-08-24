@@ -1,0 +1,31 @@
+{
+  "id": "/zh/image-to-ico/",
+  "name": "\u56fe\u7247\u8f6c ICO",
+  "short_name": "\u56fe\u7247\u8f6c ICO",
+  "description": "\u8fdb\u53bb\u4e00\u5f20\u56fe\uff0c\u51fa\u6765\u7684\u662f\u6d4f\u89c8\u5668\u3001Windows \u548c Mac \u5404\u81ea\u8981\u7684\u6bcf\u4e00\u4e2a\u5c3a\u5bf8\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

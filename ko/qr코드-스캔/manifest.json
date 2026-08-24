@@ -1,0 +1,31 @@
+{
+  "id": "/ko/qr\ucf54\ub4dc-\uc2a4\uce94/",
+  "name": "QR\uacfc \ubc14\ucf54\ub4dc \uc2a4\uce94",
+  "short_name": "QR\uacfc \ubc14\ucf54\ub4dc \uc2a4\uce94",
+  "description": "\ucf54\ub4dc\uc5d0 \uce74\uba54\ub77c\ub97c \ub300\uac70\ub098, \ucc0d\uc5b4 \ub454 \uc0ac\uc9c4\uc744 \uc62c\ub824\ub193\uc73c\uc138\uc694. \uc77d\ub294 \uc77c\uc740 \uc5ec\uae30\uc11c\ub9cc \uc77c\uc5b4\ub0a9\ub2c8\ub2e4.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

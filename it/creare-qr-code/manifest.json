@@ -1,0 +1,31 @@
+{
+  "id": "/it/creare-qr-code/",
+  "name": "Generatore di QR code e codici a barre",
+  "short_name": "Generatore di QR code e codici a barre",
+  "description": "Lo scrivi, e diventa un codice. Per farne uno non parte niente.",
+  "lang": "it",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

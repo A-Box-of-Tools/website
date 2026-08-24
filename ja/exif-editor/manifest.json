@@ -1,0 +1,31 @@
+{
+  "id": "/ja/exif-editor/",
+  "name": "EXIF\u30d3\u30e5\u30fc\u30a2\u30fc\u30fb\u524a\u9664\u30c4\u30fc\u30eb",
+  "short_name": "EXIF\u30d3\u30e5\u30fc\u30a2\u30fc\u30fb\u524a\u9664\u30c4\u30fc\u30eb",
+  "description": "\u5199\u771f\u304c\u6301\u3061\u4e3b\u306b\u3064\u3044\u3066\u8a9e\u3063\u3066\u3044\u308b\u3053\u3068\u3092\u898b\u3066\u3001\u305d\u308c\u304b\u3089\u5916\u3057\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "/it/generatore-password/",
+  "name": "Generatore di password e passphrase",
+  "short_name": "Generatore di password e passphrase",
+  "description": "Generate qui, dal tuo browser, e non spedite da nessuna parte. Non viene salvato niente e non c'\u00e8 cronologia.",
+  "lang": "it",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

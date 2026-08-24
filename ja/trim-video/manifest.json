@@ -1,0 +1,31 @@
+{
+  "id": "/ja/trim-video/",
+  "name": "\u52d5\u753b\u30ab\u30c3\u30c8\u30c4\u30fc\u30eb",
+  "short_name": "\u52d5\u753b\u30ab\u30c3\u30c8\u30c4\u30fc\u30eb",
+  "description": "\u518d\u751f\u3057\u306a\u304c\u3089\u6b8b\u3059\u5834\u6240\u306b\u5370\u3092\u4ed8\u3051\u308b\u3060\u3051\u3002\u307e\u3068\u3081\u30661\u672c\u306e\u52d5\u753b\u3067\u8fd4\u3057\u307e\u3059\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

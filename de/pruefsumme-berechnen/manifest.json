@@ -1,0 +1,31 @@
+{
+  "id": "/de/pruefsumme-berechnen/",
+  "name": "Hash & Pr\u00fcfsumme",
+  "short_name": "Hash & Pr\u00fcfsumme",
+  "description": "Einen Download gegen die Zahl pr\u00fcfen, die der Anbieter ver\u00f6ffentlicht hat. Ohne sie jemandem zu schicken.",
+  "lang": "de",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

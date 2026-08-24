@@ -1,0 +1,31 @@
+{
+  "id": "/pt/gerador-de-senha/",
+  "name": "Gerador de senha e frase secreta",
+  "short_name": "Gerador de senha e frase secreta",
+  "description": "Gerada aqui, pelo seu pr\u00f3prio navegador, e n\u00e3o enviada para lugar nenhum. Nada \u00e9 guardado e n\u00e3o existe hist\u00f3rico.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

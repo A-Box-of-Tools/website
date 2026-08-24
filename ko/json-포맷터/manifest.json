@@ -1,0 +1,31 @@
+{
+  "id": "/ko/json-\ud3ec\ub9f7\ud130/",
+  "name": "\ud14d\uc2a4\ud2b8\uc640 \ucf54\ub4dc",
+  "short_name": "\ud14d\uc2a4\ud2b8\uc640 \ucf54\ub4dc",
+  "description": "\ubcf4\uae30 \uc88b\uac8c \ud3bc\uce58\uace0, \ubb34\uc5c7\uc774 \ub2ec\ub77c\uc84c\ub294\uc9c0 \ubcf4\uace0, \uc778\ucf54\ub529\ud558\uace0, \ub2e4\ub978 \ud615\uc2dd\uc73c\ub85c \ubc14\uafc9\ub2c8\ub2e4. \ub0a8\uc758 \uc11c\ubc84\uc5d0 \ubd99\uc5ec \ub123\ub294 \uac83\uc740 \uc5c6\uc2b5\ub2c8\ub2e4.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

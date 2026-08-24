@@ -1,0 +1,31 @@
+{
+  "id": "/hi/edit-audio/",
+  "name": "\u0911\u0921\u093f\u092f\u094b \u090f\u0921\u093f\u091f\u0930",
+  "short_name": "\u0911\u0921\u093f\u092f\u094b \u090f\u0921\u093f\u091f\u0930",
+  "description": "\u0909\u0932\u091f\u0940 \u0926\u093f\u0936\u093e \u092e\u0947\u0902 \u091a\u0932\u093e\u0907\u090f, \u0930\u092b\u093c\u094d\u0924\u093e\u0930 \u092c\u0926\u0932\u093f\u090f, \u0927\u0940\u092e\u0940 \u0930\u093f\u0915\u0949\u0930\u094d\u0921\u093f\u0902\u0917 \u0915\u094b \u0909\u0920\u093e\u0907\u090f\u0964 \u092f\u0939 \u0938\u092c \u092f\u0939\u0940\u0902, \u0906\u092a\u0915\u0940 \u0905\u092a\u0928\u0940 \u092e\u0936\u0940\u0928 \u092a\u0930\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

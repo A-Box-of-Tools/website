@@ -1,0 +1,31 @@
+{
+  "id": "/zh/image-to-data-uri/",
+  "name": "\u56fe\u7247\u8f6c Data URI",
+  "short_name": "\u56fe\u7247\u8f6c Data URI",
+  "description": "\u6574\u5f20\u56fe\u53d8\u6210\u4e00\u884c\u6587\u672c\uff0c\u76f4\u63a5\u7c98\u8fdb CSS \u6216\u8005 HTML\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

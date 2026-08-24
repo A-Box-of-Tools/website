@@ -1,0 +1,31 @@
+{
+  "id": "/ko/gif-\ubd84\uc11d/",
+  "name": "GIF \ubd84\uc11d",
+  "short_name": "GIF \ubd84\uc11d",
+  "description": "\ud504\ub808\uc784, \uc7ac\uc0dd \uc2dc\uac04, \ud314\ub808\ud2b8, \uadf8\ub9ac\uace0 \ubc14\uc774\ud2b8\uac00 \uc5b4\ub514\ub85c \uac14\ub294\uc9c0.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "/es/generar-codigo-qr/",
+  "name": "Generador de QR y c\u00f3digos de barras",
+  "short_name": "Generador de QR y c\u00f3digos de barras",
+  "description": "Escr\u00edbelo y se convierte en un c\u00f3digo. Para hacerlo no se env\u00eda nada.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "/hi/svg-to-image/",
+  "name": "SVG \u0938\u0947 \u0924\u0938\u094d\u0935\u0940\u0930",
+  "short_name": "SVG \u0938\u0947 \u0924\u0938\u094d\u0935\u0940\u0930",
+  "description": "\u0938\u093e\u0907\u091c\u093c \u092c\u0924\u093e\u0907\u090f\u0964 \u0935\u0947\u0915\u094d\u091f\u0930 \u0915\u0947 \u092a\u093e\u0938 \u0916\u094b\u0928\u0947 \u0915\u094b \u0905\u092a\u0928\u093e \u0915\u094b\u0908 \u0938\u093e\u0907\u091c\u093c \u0939\u0948 \u0939\u0940 \u0928\u0939\u0940\u0902\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

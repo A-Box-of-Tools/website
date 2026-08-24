@@ -1,0 +1,31 @@
+{
+  "id": "/ja/reverse-video/",
+  "name": "\u52d5\u753b\u306e\u9006\u518d\u751f",
+  "short_name": "\u52d5\u753b\u306e\u9006\u518d\u751f",
+  "description": "\u6700\u5f8c\u306e\u30b3\u30de\u304b\u3089\u3001\u97f3\u3082\u4e00\u7dd2\u306b\u3002",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

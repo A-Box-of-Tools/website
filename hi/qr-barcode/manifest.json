@@ -1,0 +1,31 @@
+{
+  "id": "/hi/qr-barcode/",
+  "name": "QR \u0914\u0930 \u092c\u093e\u0930\u0915\u094b\u0921 \u091c\u0928\u0930\u0947\u091f\u0930",
+  "short_name": "QR \u0914\u0930 \u092c\u093e\u0930\u0915\u094b\u0921 \u091c\u0928\u0930\u0947\u091f\u0930",
+  "description": "\u091f\u093e\u0907\u092a \u0915\u0940\u091c\u093f\u090f, \u0914\u0930 \u0935\u0939 \u0915\u094b\u0921 \u092c\u0928 \u091c\u093e\u0924\u093e \u0939\u0948\u0964 \u092c\u0928\u093e\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u0915\u0941\u091b \u092d\u0940 \u0915\u0939\u0940\u0902 \u0928\u0939\u0940\u0902 \u092d\u0947\u091c\u093e \u091c\u093e\u0924\u093e\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "/hi/heic-to-jpg/",
+  "name": "HEIC \u0938\u0947 JPG",
+  "short_name": "HEIC \u0938\u0947 JPG",
+  "description": "iPhone \u091c\u094b \u092b\u093c\u094b\u091f\u094b \u092c\u0928\u093e\u0924\u093e \u0939\u0948, \u0909\u0938 \u092b\u093c\u0949\u0930\u094d\u092e\u0948\u091f \u092e\u0947\u0902 \u091c\u093f\u0938\u0947 \u0938\u092c \u0916\u094b\u0932 \u0932\u0947\u0924\u0947 \u0939\u0948\u0902\u0964",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
