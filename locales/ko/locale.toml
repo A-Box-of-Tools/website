@@ -394,6 +394,18 @@ boot_then = "그런 다음 <code>http://localhost:8080/</code>을 여세요."
 noscript_title = "JavaScript가 꺼져 있습니다."
 noscript_body = "이 앱은 모든 작업을 브라우저 안에서 하기 때문에 JavaScript가 없으면 동작하지 않습니다."
 
+offline_ready = "준비됨 &mdash; 인터넷을 끊어도 이대로 동작합니다."
+offline_none = "이 브라우저에서는 쓸 수 없습니다 (나머지는 그대로 동작합니다)."
+offline_insecure = "오프라인 저장에는 https:// 또는 localhost가 필요합니다."
+offline_failed = "여기서는 저장할 수 없지만, 어느 쪽이든 올라가는 것은 없습니다."
+
+error_broke = "문제가 생겼습니다: {detail}. 처음부터 다시 하려면 페이지를 새로 고치세요."
+
+# 한국어에는 복수형이 없어 두 형태가 같은 문장이다. 키가 둘인 것은
+# 다른 언어에서 달라지기 때문이지 여기서 빠뜨린 것이 아니다.
+reading_one = "파일 {count}개를 읽는 중&hellip;"
+reading_many = "파일 {count}개를 읽는 중&hellip;"
+
 check_yourself = """
       <strong>직접 확인해 보세요.</strong> 위에 적은 어느 것도 그냥 믿으실 필요는
       없습니다. 이 페이지는 저장소 안의 템플릿과 설정을 빌드 스크립트가 찍어 낸

@@ -115,6 +115,25 @@
 </noscript>
 
 <!--
+  The sentences the frame's JavaScript puts on screen, carried in the page so
+  that they arrive in the page's language. shared/js/phrases.js reads them back
+  out; the words are [ui.tool] in config/site.toml, translated in
+  locales/<lang>/locale.toml along with the rest of the frame.
+
+  A tool that needs to say one of these differently defines the same key in the
+  #phrases block of its own body.html, which is looked up first.
+-->
+<div id="frame-phrases" hidden aria-hidden="true">
+  <span data-phrase="offline.ready">{{ ui.tool.offline_ready }}</span>
+  <span data-phrase="offline.none">{{ ui.tool.offline_none }}</span>
+  <span data-phrase="offline.insecure">{{ ui.tool.offline_insecure }}</span>
+  <span data-phrase="offline.failed">{{ ui.tool.offline_failed }}</span>
+  <span data-phrase="error.broke">{{ ui.tool.error_broke }}</span>
+  <span data-phrase="reading.one">{{ ui.tool.reading_one }}</span>
+  <span data-phrase="reading.many">{{ ui.tool.reading_many }}</span>
+</div>
+
+<!--
   The source link appears four times on this page: the header button, the
   privacy panel (twice - once as the link, once as the visible text), and the
   footer. Being able to read the source is the whole point of the claims made

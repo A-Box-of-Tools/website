@@ -361,6 +361,18 @@ boot_then = "Poi apri <code>http://localhost:8080/</code>."
 noscript_title = "JavaScript è disattivato."
 noscript_body = "Questa applicazione fa tutto il suo lavoro dentro il browser, quindi senza non può funzionare."
 
+offline_ready = "pronto &mdash; stacca la connessione e questo continua a funzionare."
+offline_none = "non disponibile in questo browser (tutto il resto funziona lo stesso)."
+offline_insecure = "serve https:// oppure localhost per tenere una copia offline."
+offline_failed = "qui non si può tenere una copia, ma non viene caricato niente in nessun caso."
+
+error_broke = "Qualcosa è andato storto: {detail}. Ricarica la pagina per ricominciare."
+
+# Le due forme sono identiche: in italiano "file" non cambia al plurale. Restano
+# due chiavi perché in altre lingue cambia, non perché qui manchi qualcosa.
+reading_one = "Lettura di {count} file&hellip;"
+reading_many = "Lettura di {count} file&hellip;"
+
 check_yourself = """
       <strong>Verifica tu stesso.</strong> Niente di quanto sopra va preso per
       buono. Questa pagina la genera, dai modelli e dalla configurazione del

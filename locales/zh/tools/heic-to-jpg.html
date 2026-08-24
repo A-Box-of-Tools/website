@@ -104,4 +104,14 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    外框的离线那一行只说这一页还能用。这里值得补的是它覆盖了什么：HEIC 解码器
+    是随页面一起带的 WebAssembly 引擎，它也一并缓存了。这里定义的键会盖过外框
+    的键，见 shared/js/phrases.js。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <!-- 不要换行：行首的缩进会变成空格，落在句子中间。 -->
+    <span data-phrase="offline.ready">已就绪——解码器也一起缓存了，所以拔掉网线这一页照样能用。</span>
+  </div>
 </main>

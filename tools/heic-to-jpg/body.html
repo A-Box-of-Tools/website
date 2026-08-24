@@ -109,4 +109,15 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    The frame's "offline" line says only that this page keeps working. What is
+    worth saying here is what that covers: the HEIC decoder is a vendored
+    WebAssembly engine, and it is cached with the rest. A key defined here wins
+    over the frame's one - see shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">ready &mdash; the decoder is cached too,
+      so this works with the network unplugged.</span>
+  </div>
 </main>

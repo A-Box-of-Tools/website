@@ -397,9 +397,16 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
 | `shared/js/zip.js` | `js_parts = ["zip"]` | the stored-only archive writer |
 | `shared/js/crc32.js` | `js_parts = ["crc32"]` | the CRC the ZIP and PNG writers need |
+| `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
 
 `zip` needs `crc32` listed as well — it is a separate part because a PNG writer
 wants the checksum without the archive.
+
+`phrases` is the one part no tool asks for. Every tool page wears the frame and
+the frame has sentences its JavaScript puts on screen, so `js_parts()` in
+`buildlib/site.py` adds it to every tool. Listing it twenty-nine times would
+make it look like a choice, and the first tool to leave it out would build
+clean and then 404 on a module in somebody's browser.
 
 The **file picker** is all three at once, and is the reason the arrangement
 exists: the drop zone, the hidden input, the drag highlighting, and the "Reading
@@ -878,19 +885,73 @@ region, and `hreflang` is the only place that distinction is expressed. Set
 `dir = "rtl"` for Arabic or Hebrew; note that the stylesheets have not been
 written for it yet, so that is a layout job as well as a translation one.
 
-### The strings still in the JavaScript
+### The strings in the JavaScript
 
-Not done. There are about 380 user-facing strings inline in `tools/*/src/*.js`
-- 213 of them in `exif-editor` alone, most of those EXIF tag names - and they
-are still English in every language. They need extracting to a source of their
-own before a locale can reach them, which is a change to the tools' own code
-rather than to the build, and is the one part of this that cannot be checked by
-reading the output: it has to be exercised in a browser.
+Nothing under `shared/js/` or `tools/<slug>/src/` is translated. The build
+copies both byte for byte into every language, so a sentence written in a
+module is that sentence in English at ten of the eleven addresses its page has.
 
-Worth deciding when it is done: the long tail of EXIF tag names is probably
-better left in English. They are identifiers people cross-reference against
-ExifTool, Lightroom and Windows' own properties dialog, and localizing the
-obscure ones makes the tool harder to use rather than easier.
+The answer is not to translate the JavaScript. It is to keep the words out of
+it. HTML already goes through the locale machinery, so a sentence held in the
+markup is a sentence a translator can already reach, with no new file format
+and nothing new for the build to learn. `shared/js/phrases.js` reads them back
+out:
+
+```html
+<div id="phrases" hidden aria-hidden="true">
+  <span data-phrase="status.broken">That file could not be opened as a
+    picture.</span>
+</div>
+```
+
+```js
+import { phrase } from './shared/phrases.js';
+
+el.error.textContent = phrase('status.broken');
+el.picker.textContent = phrase('reading.many', { count: files.length });
+```
+
+Two blocks are looked up, in this order: `#phrases`, which is the tool's own
+and lives in its `body.html`, and `#frame-phrases`, which is the frame's and is
+filled in from `[ui.tool]` in `config/site.toml`. The tool's own wins, which is
+what lets `heic-to-jpg` say something sharper about being cached offline than
+the generic line without every other tool having to care. A key nothing defines
+comes back as the key: one of the callers is the window's own `error` handler,
+and a lookup that could throw there would replace a legible failure with an
+illegible one.
+
+The indentation is collapsed, so a phrase may be wrapped across lines like any
+other markup — except in Japanese and Chinese, where it may not. Those
+languages put no space between words, so a line break inside a sentence arrives
+as a space inside a sentence, and nothing downstream can tell it from one
+somebody meant. Keep a `ja` or `zh` phrase on one line. Korean wraps freely; it
+has spaces to wrap at.
+
+A module too deep to reach the page returns a **key** rather than a sentence,
+and whoever has the DOM resolves it — `qr-barcode-reader/src/camera.js` is the
+worked example. That also keeps the module unit-testable: a key is a value to
+assert on, and a translated sentence is not.
+
+**Done:** the frame's seven, in all ten languages — the four "Offline:" lines,
+what the window's error handlers say, and the drop zone's "Reading 3 files…".
+They used to be written out twenty-nine times, once per `main.js`.
+
+**Left:** about 340 sentences, in 454 places, all of them a tool's own. The
+live-check line is the pick of them, because it is nearly the same sentence in
+every tool and differs only in the noun.
+
+Two decisions already taken, so they need not be taken again:
+
+* **everything a visitor can read gets translated**, parser failures included.
+  `main.js` prints `error.message` verbatim after its own sentence, so a
+  half-translated failure is a German page with an English clause in it;
+* **EXIF tag names stay in English.** They are the bulk of `exif-editor`'s
+  strings and they are identifiers, not prose — people cross-reference them
+  against ExifTool, Lightroom and Windows' own properties dialog, and
+  localizing the obscure ones makes the tool harder to use rather than easier.
+
+This is the one part of the translation that cannot be checked by reading the
+output. It has to be exercised in a browser.
 
 ---
 

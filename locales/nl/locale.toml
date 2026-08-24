@@ -366,6 +366,16 @@ boot_then = "Open daarna <code>http://localhost:8080/</code>."
 noscript_title = "JavaScript staat uit."
 noscript_body = "Deze app doet al zijn werk in je browser en kan dus niet zonder."
 
+offline_ready = "klaar &mdash; verbreek de verbinding en dit blijft gewoon werken."
+offline_none = "niet beschikbaar in deze browser (al het andere werkt gewoon)."
+offline_insecure = "heeft https:// of localhost nodig om offline te kunnen bewaren."
+offline_failed = "bewaren lukt hier niet, maar er wordt hoe dan ook niets geüpload."
+
+error_broke = "Er ging iets mis: {detail}. Herlaad de pagina om opnieuw te beginnen."
+
+reading_one = "{count} bestand wordt gelezen&hellip;"
+reading_many = "{count} bestanden worden gelezen&hellip;"
+
 check_yourself = """
       <strong>Controleer het zelf.</strong> Je hoeft niets van het bovenstaande op
       ons woord aan te nemen. Een buildscript maakt deze pagina uit de sjablonen en

@@ -70,6 +70,14 @@ import tool modules straight off the disk. So `./shared/` imports belong in
 `main.js`, which no test loads. `buildlib/imports.py` fails the build if an
 import does not land on a file the tool ships.
 
+**A sentence a visitor reads never lives in the JavaScript.** `src/` is copied
+byte for byte into all eleven languages, so a string written there is English
+at ten of them. Put it in the markup - `#phrases` in the tool's `body.html`, or
+`[ui.tool]` for something the whole frame says - and read it back with
+`phrase()` from `shared/js/phrases.js`, which every tool ships whether or not
+it asks. A module too deep to reach the DOM returns a *key* and lets the caller
+resolve it. See "The strings in the JavaScript" in [README.md](README.md).
+
 **Some modules are deliberately copied, and must stay in step.** The MP4
 reader is in five tools and the writer in two, because the rule above blocks
 sharing them. `tests/python/test_duplicates.py` declares which copies must

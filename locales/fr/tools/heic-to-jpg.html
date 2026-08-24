@@ -110,4 +110,16 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    La ligne «&nbsp;hors ligne&nbsp;» du cadre dit seulement que la page
+    continue de fonctionner. Ce qui mérite d'être précisé ici, c'est ce que
+    cela couvre&nbsp;: le décodeur HEIC est un moteur WebAssembly embarqué, et
+    il est mis en cache lui aussi. Une clé définie ici l'emporte sur celle du
+    cadre&nbsp;; voir shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">prêt &mdash; le décodeur est mis en cache
+      lui aussi, donc ceci fonctionne sans réseau.</span>
+  </div>
 </main>

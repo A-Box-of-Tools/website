@@ -109,4 +109,15 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    La línea "sin conexión" del marco solo dice que la página sigue
+    funcionando. Aquí conviene añadir qué incluye eso: el decodificador HEIC es
+    un motor WebAssembly incluido en la página, y también queda en caché. Una
+    clave definida aquí gana a la del marco; véase shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">listo &mdash; el decodificador también
+      queda en caché, así que esto funciona con la red desconectada.</span>
+  </div>
 </main>

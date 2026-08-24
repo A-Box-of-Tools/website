@@ -3,6 +3,7 @@
 import * as camera from './camera.js';
 import { scan } from './scan.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+import { phrase } from './shared/phrases.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -22,7 +23,6 @@ const el = {
   resultsCard: $('results-card'),
   results: $('results'),
   resultTemplate: $('result-template'),
-  phrases: $('phrases'),
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
   networkCount: $('network-count'),
@@ -30,21 +30,6 @@ const el = {
   offlineStatus: $('offline-status'),
   offlineDot: $('offline-dot'),
 };
-
-/**
- * The words, out of the markup.
- *
- * Every string this file puts on screen comes from `#phrases` in body.html,
- * which is translated per language; src/*.js is the same file at every one of
- * the eleven addresses this page has, so a sentence written here would be
- * English at ten of them. `{name}` in a phrase is filled in from `values`.
- */
-function phrase(key, values = {}) {
-  const node = el.phrases.querySelector(`[data-phrase="${key}"]`);
-  const text = (node?.textContent ?? key).replace(/\s+/g, ' ').trim();
-  return text.replace(/\{(\w+)\}/g, (whole, name) => (
-    name in values ? String(values[name]) : whole));
-}
 
 /* ------------------------------------------------------------ the pictures */
 
@@ -517,12 +502,11 @@ async function registerServiceWorker() {
 // the page looking functional and doing nothing.
 window.addEventListener('error', (event) => {
   el.pickError.hidden = false;
-  el.pickError.textContent = `Something broke: ${event.message}. Reload the page to start over.`;
+  el.pickError.textContent = phrase('error.broke', { detail: event.message });
 });
 window.addEventListener('unhandledrejection', (event) => {
   el.pickError.hidden = false;
-  el.pickError.textContent = `Something broke: ${event.reason?.message ?? event.reason}. `
-    + 'Reload the page to start over.';
+  el.pickError.textContent = phrase('error.broke', { detail: event.reason?.message ?? event.reason });
 });
 
 monitorNetwork();

@@ -417,6 +417,16 @@ boot_then = "Öffnen Sie dann <code>http://localhost:8080/</code>."
 noscript_title = "JavaScript ist deaktiviert."
 noscript_body = "Diese Anwendung erledigt ihre gesamte Arbeit in Ihrem Browser und kann ohne JavaScript nicht laufen."
 
+offline_ready = "bereit &mdash; trennen Sie die Internetverbindung, und das hier funktioniert weiter."
+offline_none = "in diesem Browser nicht verfügbar (alles andere funktioniert weiter)."
+offline_insecure = "braucht https:// oder localhost, um für offline zwischenzuspeichern."
+offline_failed = "Zwischenspeichern ist hier nicht möglich, hochgeladen wird aber so oder so nichts."
+
+error_broke = "Etwas ist schiefgegangen: {detail}. Laden Sie die Seite neu, um von vorn zu beginnen."
+
+reading_one = "{count} Datei wird gelesen&hellip;"
+reading_many = "{count} Dateien werden gelesen&hellip;"
+
 check_yourself = """
       <strong>Prüfen Sie es selbst.</strong> Nichts davon müssen Sie uns glauben.
       Ein Build-Skript erzeugt diese Seite aus den Vorlagen und der Konfiguration

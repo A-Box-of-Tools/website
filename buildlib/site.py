@@ -451,6 +451,13 @@ def text_hash(text):
 
 URL_IMPORT_PART = 'url-import'
 
+# The one shared module no tool asks for, because every tool page needs it:
+# shared/js/phrases.js reads the words off the page, and every tool page has
+# words on it that JavaScript puts there. Listing it in twenty-nine tool.toml
+# files would make it look like a choice, and the first tool to leave it out
+# would build clean and then fail in the browser on a module that is not there.
+FRAME_PART = 'phrases'
+
 
 def wants_urls(tool):
     return bool(tool.get('picker', {}).get('urls'))
@@ -458,6 +465,8 @@ def wants_urls(tool):
 
 def js_parts(tool):
     parts = list(tool.get('js_parts', []))
+    if FRAME_PART not in parts:
+        parts.insert(0, FRAME_PART)
     if wants_urls(tool) and URL_IMPORT_PART not in parts:
         parts.append(URL_IMPORT_PART)
     return parts

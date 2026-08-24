@@ -108,4 +108,15 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    프레임의 오프라인 줄은 이 페이지가 계속 동작한다는 것만 말한다. 여기서
+    덧붙일 만한 것은 그 범위다. HEIC 디코더는 페이지에 함께 넣은 WebAssembly
+    엔진이고, 그것까지 함께 저장된다. 여기서 정의한 키가 프레임의 키를
+    이긴다 - shared/js/phrases.js 참고.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">준비됨 &mdash; 디코더까지 함께 저장되므로
+      네트워크를 뽑아도 동작합니다.</span>
+  </div>
 </main>

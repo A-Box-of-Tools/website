@@ -1,5 +1,6 @@
 /** UI wiring and application state. */
 
+import { phrase } from './shared/phrases.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { loadImages, releaseItem, rotateItem, sortItems, moveItem } from './images.js';
 import { layoutPage, seenSize, PAGE_SIZES } from './layout.js';
@@ -772,25 +773,25 @@ async function registerServiceWorker() {
   };
 
   if (!('serviceWorker' in navigator)) {
-    fail('not available in this browser (everything else still works).');
+    fail(phrase('offline.none'));
     return;
   }
   // Service workers need a secure context, so file:// and plain http:// are out.
   if (!window.isSecureContext) {
-    fail('needs https:// or localhost to cache for offline use.');
+    fail(phrase('offline.insecure'));
     return;
   }
 
   try {
     await navigator.serviceWorker.register('sw.js');
     await navigator.serviceWorker.ready;
-    el.offlineStatus.textContent = 'ready - disconnect from the internet and this still works.';
+    el.offlineStatus.textContent = phrase('offline.ready');
     el.offlineStatus.className = 'good';
     el.offlineDot.className = 'live-dot good';
   } catch (error) {
     // Caching is an optimisation, not the privacy guarantee. Everything the
     // page claims still holds when this fails, so say so rather than alarming.
-    fail('caching unavailable here, but nothing is uploaded either way.', error.message);
+    fail(phrase('offline.failed'), error.message);
   }
 }
 
@@ -799,10 +800,10 @@ async function registerServiceWorker() {
 // An error thrown after boot would otherwise only reach the console, leaving
 // the page looking functional but doing nothing.
 window.addEventListener('error', (event) => {
-  showError(`Something broke: ${event.message}. Reload the page to start over.`);
+  showError(phrase('error.broke', { detail: event.message }));
 });
 window.addEventListener('unhandledrejection', (event) => {
-  showError(`Something broke: ${event.reason?.message ?? event.reason}. Reload the page to start over.`);
+  showError(phrase('error.broke', { detail: event.reason?.message ?? event.reason }));
 });
 
 render();

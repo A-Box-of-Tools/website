@@ -522,6 +522,44 @@ boot_then = "Then open <code>http://localhost:8080/</code>."
 noscript_title = "JavaScript is disabled."
 noscript_body = "This app does all of its work in your browser, so it cannot run without it."
 
+#
+# The sentences the frame's own JavaScript puts on screen.
+#
+# They were written twenty-nine times, once in each tools/<slug>/src/main.js,
+# and nothing under src/ is translated - the build copies it byte for byte into
+# every language - so a reader whose browser refused the service worker was
+# told about it in English on an otherwise translated page.
+#
+# They are here instead. templates/tool.html renders them into a hidden block
+# of <span data-phrase> elements and shared/js/phrases.js reads them back out,
+# which is how qr-barcode-reader has said everything it says since it shipped.
+# A tool that wants to put it differently defines the same key in its own
+# body.html, and that one wins; heic-to-jpg does, for `offline.ready`.
+#
+# `{detail}` and `{count}` are filled in by shared/js/phrases.js and not by the
+# build. Single braces on purpose: these strings pass through the build's own
+# {{ ... }} templating first, and a placeholder it recognised would be one a
+# translator could fill in and have quietly rendered away.
+#
+
+# The one way offline caching succeeds, and the three ways it does not. Each is
+# read as the tail of the "Offline:" label, so in the languages that have a
+# lower case each begins in it.
+offline_ready = "ready &mdash; disconnect from the internet and this still works."
+offline_none = "not available in this browser (everything else still works)."
+offline_insecure = "needs https:// or localhost to cache for offline use."
+offline_failed = "caching unavailable here, but nothing is uploaded either way."
+
+# What the window's own `error` and `unhandledrejection` handlers say. `detail`
+# is the browser's own message, which stays in whatever language the browser
+# speaks: it comes from the engine, and no translation here can reach it.
+error_broke = "Something broke: {detail}. Reload the page to start over."
+
+# The drop zone while it reads. Two keys rather than one with an `s` appended,
+# for the same reason `guide_one` and `guide_many` are two keys.
+reading_one = "Reading {count} file&hellip;"
+reading_many = "Reading {count} files&hellip;"
+
 check_yourself = """
       <strong>Check it yourself.</strong> None of the above has to be taken on trust.
       This page is generated from the templates and config in the repository by a

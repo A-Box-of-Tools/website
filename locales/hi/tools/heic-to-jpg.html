@@ -110,4 +110,15 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    फ़्रेम की ऑफ़लाइन पंक्ति इतना ही कहती है कि पेज चलता रहता है। यहाँ यह जोड़ना
+    काम का है कि उसमें क्या शामिल है: HEIC डिकोडर पेज के साथ आने वाला एक
+    WebAssembly इंजन है, और वह भी कैश हो जाता है। यहाँ दी गई कुंजी फ़्रेम की
+    कुंजी पर भारी पड़ती है - shared/js/phrases.js देखिए।
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">तैयार &mdash; डिकोडर भी कैश में है, इसलिए
+      नेटवर्क बंद होने पर भी यह चलता है।</span>
+  </div>
 </main>

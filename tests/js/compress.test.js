@@ -23,7 +23,6 @@ import {
   alternativeFormat, keepFormat,
 } from '../../tools/compress-image/src/compress.js';
 import { FORMATS, JPEG, PNG, READABLE, WEBP } from '../../tools/compress-image/src/codecs.js';
-import { readingLabel } from '../../shared/js/file-picker.js';
 import { parseImageUrl } from '../../shared/js/url-import.js';
 
 /* ================================================================= sizes */
@@ -144,12 +143,6 @@ test('psnrText: identical pictures have no finite ratio to report', () => {
   assert.equal(psnrText(Infinity), 'identical');
   assert.equal(psnrText(NaN), 'identical');
   assert.equal(psnrText(42.35), '42.4 dB');
-});
-
-test('readingLabel: one file, or several', () => {
-  assert.equal(readingLabel(1), 'Reading 1 file...');
-  assert.equal(readingLabel(0), 'Reading 0 files...');
-  assert.equal(readingLabel(12), 'Reading 12 files...');
 });
 
 /* ================================================================ formats */

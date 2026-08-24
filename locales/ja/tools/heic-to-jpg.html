@@ -98,4 +98,15 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+
+  <!--
+    枠のオフライン行は、このページが動き続けることしか言わない。ここで足す価値が
+    あるのは、それに何が含まれるかである。HEIC デコーダーはページに同梱した
+    WebAssembly エンジンで、これも一緒に保存される。ここで定義したキーは枠の
+    キーより優先される。shared/js/phrases.js を参照。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <!-- 折り返さない。行頭の字下げが空白になって文の中に入ってしまう。 -->
+    <span data-phrase="offline.ready">準備できました。デコーダーも一緒に保存されているので、ネットワークを抜いても動きます。</span>
+  </div>
 </main>

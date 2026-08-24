@@ -365,6 +365,16 @@ boot_then = "Abre después <code>http://localhost:8080/</code>."
 noscript_title = "JavaScript está desactivado."
 noscript_body = "Esta aplicación hace todo su trabajo dentro del navegador, así que sin él no puede funcionar."
 
+offline_ready = "listo &mdash; desconéctate de internet y esto sigue funcionando."
+offline_none = "no disponible en este navegador (todo lo demás sigue funcionando)."
+offline_insecure = "necesita https:// o localhost para guardar en caché sin conexión."
+offline_failed = "aquí no se puede guardar en caché, pero de todas formas no se sube nada."
+
+error_broke = "Algo ha fallado: {detail}. Recarga la página para empezar de nuevo."
+
+reading_one = "Leyendo {count} archivo&hellip;"
+reading_many = "Leyendo {count} archivos&hellip;"
+
 check_yourself = """
       <strong>Compruébalo tú.</strong> Nada de lo anterior hay que aceptarlo por
       fe. Esta página se genera a partir de las plantillas y la configuración del
