@@ -128,8 +128,20 @@ Both work with the script blocked.
 
 Set `hreflang` where it differs from `lang` - `pt-BR` is a language and a
 region, and `hreflang` is the only place that distinction is expressed. Set
-`dir = "rtl"` for Arabic or Hebrew; note that the stylesheets have not been
-written for it yet, so that is a layout job as well as a translation one.
+`dir = "rtl"` for Arabic or Hebrew; the shared stylesheets use logical
+properties (`inset-inline-start`, `margin-inline-end`, …) rather than
+`left`/`right` for anything that describes reading order, and mirror
+correctly as a result - a tool's own `styles.css` may not, if it was written
+before this and has not been checked yet.
+
+Set `fallback = "<lang>"` if this locale is a close relative of one that
+already has translated tools and guides - Traditional Chinese pointing at
+Simplified is the case this exists for. A page this locale has not
+translated yet then shows the fallback locale's words instead of English's,
+which is a real improvement for the reader but changes nothing about what
+counts as finished: `complete` and the per-page debt are still judged
+against this locale's own work, exactly as without `fallback`. See
+"FALLING BACK TO A NEAR RELATIVE INSTEAD OF ENGLISH" in buildlib/i18n.py.
 
 ## The strings in the JavaScript
 

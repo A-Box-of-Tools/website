@@ -1,0 +1,339 @@
+#
+# 繁體中文.
+#
+# The frame: the hub, the guides index, the roadmap, the 404, the footer, and
+# the words the templates themselves use. Tools and guides are NOT translated
+# yet - they stay in whatever language they fall back to (see `fallback`
+# below) and are held out of the sitemap, the hreflang sets and the switcher
+# exactly as an unfinished part of any other locale is.
+#
+# HOW THIS FILE WAS MADE, AND WHAT THAT MEANS FOR MAINTAINING IT
+#
+# locales/zh/ was "written, not translated" - its own header says so at
+# length, and the result reads as native Chinese rather than as English in
+# Chinese characters. This file is NOT that. It is locales/zh/'s prose put
+# through script conversion (simplified -> traditional glyphs) plus the
+# handful of vocabulary swaps a Taiwan reader actually notices - 文件 ->
+# 檔案 for a computer file (and 文档 -> 文件 for the *document* sense, which
+# swaps the other way), 服务器 -> 伺服器, 网络/网线 -> 網路/網路線, 缓存 ->
+# 快取, 内存 -> 記憶體, 视频 -> 影片, 硬件 -> 硬體, 源码/代码 -> 原始碼/程式
+# 碼, 联系 -> 聯絡, 接口 -> 介面, 链接 -> 連結, 文件夹 -> 資料夾, 缩略图 ->
+# 縮圖, 设置 -> 設定, 信息 -> 資訊, and 干/干活 reworded away entirely - 幹
+# is the traditional form of 干 and is vulgar in Taiwan Mandarin, so every
+# "干完/照干不误" in the source became "做完/照常運作" rather than a literal
+# character conversion.
+#
+# That is a mechanical pass, not a native Taiwan rewrite, and the two are not
+# the same quality bar. If locales/zh/'s wording changes, this file is the
+# next place to check, and a native Taiwan reader improving a line here is
+# improving the file rather than fighting it.
+#
+# `fallback = "zh"` (see buildlib/i18n.py) is what makes that gap survivable
+# for tools and guides: a page this locale has not translated shows
+# locales/zh/'s Simplified-script version rather than English, and only
+# falls all the way to English where zh has not translated it either. The
+# FRAME below is not part of that - `complete = true` still means every
+# string here is genuinely Traditional Chinese, the same rule every other
+# locale is held to.
+#
+# No [slugs] table, for the same reason locales/zh/ has none: a Han slug has
+# to be percent-encoded to survive being pasted around, and pinyin or zhuyin
+# is not a phrase anybody searches for. The keyword weight goes into the
+# title, the description and the h1 instead.
+#
+# `hreflang` is zh-Hant rather than zh-TW, on the same reasoning locales/zh/
+# gives for zh-Hans over zh-CN: the distinction that matters to a reader here
+# is the script, not the country, and zh-Hant is what tells Google that.
+#
+
+lang = "zh-TW"
+name = "Chinese (Traditional)"
+endonym = "繁體中文"
+hreflang = "zh-Hant"
+
+# Read locales/zh/'s prose first when a tool or guide is genuinely
+# translated here - `fallback` only changes what an UNTRANSLATED page
+# borrows, not how `complete` is judged.
+fallback = "zh"
+
+complete = true
+
+#
+# ---------------------------------------------------------------------------
+# The hub.
+# ---------------------------------------------------------------------------
+#
+
+[hub]
+title = "免費線上工具箱 | 不上傳檔案，不用註冊 | abox.tools"
+description = "全部免費，檔案不用上傳。圖片拼成 PDF 或 MP4、把圖片壓到指定大小、裁切影片、清除 EXIF，都在你自己的瀏覽器裡做完。"
+heading = "一箱子工具，都不走伺服器"
+og_title = "A Box of Tools | 不走伺服器的工具"
+og_description = "一個工具只做一件事，全程在你的瀏覽器裡跑。檔案不會離開這台機器。"
+og_image_alt = "abox.tools - 不走伺服器的工具"
+schema_description = "一個工具只做一件事，活全在瀏覽器裡做完。沒有東西要上傳，也不用帳號。"
+schema_about = "在瀏覽器裡就地處理檔案、不需要上傳的檔案工具"
+
+lede = """
+    一個工具只做一件事，全程在你的瀏覽器裡跑。檔案留在你自己的機器上，沒有\
+    東西要傳，沒有帳號要註冊，也沒人在旁邊記你做了什麼。"""
+
+support_note = """
+      這些工具免費，以後也一樣。要是哪個真幫你省了事，全站開口跟你要點什麼\
+      的地方，就這一處。"""
+
+[[hub.guarantees]]
+title = "檔案不出你這台機器"
+body = """
+        打開、讀取、處理，全是你自己的瀏覽器在做，用的是你自己的硬體。每個\
+        工具的 <code>Content-Security-Policy</code> 都把允許連的地址列全了，\
+        裡面沒有一個是我們的。"""
+
+[[hub.guarantees]]
+title = "連你檔案的資訊也傳不出去"
+body = """
+        檔案本身不傳，縮圖、檔案名稱、大小、選了幾個，一樣不傳。這裡沒有哪個\
+        工具去讀這些，另一頭也沒有伺服器等著收。"""
+
+[[hub.guarantees]]
+title = "斷網照樣能用"
+body = """
+        把工具打開一次，然後拔掉網路線，它照常運作，跟連網時沒有差別。這一步\
+        很難作假。真要把檔案送出去處理，斷網當場就停。"""
+
+[[hub.categories]]
+id = "images"
+name = "圖片"
+note = "壓縮、改尺寸，或者抹掉照片悄悄記下的那些資訊，全都不出這台機器。"
+
+[[hub.categories]]
+id = "video-and-animation"
+name = "影片與動畫"
+note = "剪片、轉格式，或者用照片拼一段，素材都不出這台機器。"
+
+[[hub.categories]]
+id = "documents-and-audio"
+name = "文件與音訊"
+note = "拼接文件、剪輯錄音，兩樣都不用送出去處理。"
+
+[[hub.categories]]
+id = "text-codes-and-passwords"
+name = "文字、代碼與密碼"
+note = "看一看、核一核，或者就在這裡產生。令牌、設定檔和密碼都不會落到別人的伺服器上。"
+
+#
+# ---------------------------------------------------------------------------
+# The guides index.
+# ---------------------------------------------------------------------------
+#
+
+[guides]
+nav = "全部指南"
+title = "指南 | 這件事怎麼做，每個選擇又要付出什麼"
+description = "壓縮、縮放、裁剪、剪輯、轉格式，一件一件說清楚。設定到底動了什麼，代價在哪裡，為什麼這些都用不著上傳。"
+heading = "指南"
+lede = """
+    一個工具一篇。寫給那些被人要求交出某個大小、某種格式，又想弄明白手上這個\
+    設定到底在動什麼的人。這裡講的每一步，都發生在你自己的機器上。"""
+og_title = "abox.tools 指南"
+og_description = "怎麼壓縮、縮放、裁剪、剪輯、轉換自己的檔案，每個設定又要付出什麼。全程用不著上傳。"
+og_image_alt = "abox.tools - 不走伺服器的工具"
+
+[[guides.groups]]
+id = "doing-the-job"
+name = "把工作做完"
+note = "一個工具一篇：這活要做什麼，哪個設定真管用，代價又是什麼。"
+
+[[guides.groups]]
+id = "before-you-upload"
+name = "上傳之前"
+note = "把檔案交給一個網站，到底等於交出了什麼，以及這一步是不是非做不可。"
+
+#
+# ---------------------------------------------------------------------------
+# The roadmap. Only the frame - the list itself is config/planned.toml, which
+# has no locale file yet and is therefore still English on this page.
+# ---------------------------------------------------------------------------
+#
+
+[roadmap]
+nav = "路線圖"
+title = "路線圖 | abox.tools 接下來做什麼"
+description = "abox.tools 打算做的工具都在這裡，分好類，公開列著，已經做完的也在。全都在瀏覽器裡跑，全都不上傳。"
+heading = "接下來做什麼"
+lede = """
+    下面兩份清單上的每一項，都得在你的瀏覽器裡運作，都得不上傳東西。過不了\
+    這一關，名字根本上不了榜。兩個數字沒寫死在任何地方，是建置腳本從清單上\
+    數出來的。"""
+
+intro_heading = "這份清單是怎麼定出來的"
+intro = """
+    <p>
+      這不是許願單。做法是把網上最大那家 GIF 和影片站點的工具列表從頭到尾過\
+      一遍，那份列表大概是現存最接近「人們到底想拿檔案做什麼」的一份目錄，\
+      然後只留下那些能做到在你自己機器上完成、拔了網路線也照常運作的條目。
+    </p>
+    <p>
+      留下來的絕大多數，靠瀏覽器本來就帶的介面就夠了。少數幾個得把編解碼器\
+      打包進唯一用到它的那個工具裡，這也算過關，檔案照樣不出這台機器。達不到\
+      這條線的寧可不寫，所以下面幾個看著很明顯的空缺，是故意空著的。
+    </p>
+    <p>
+      已經做出來的排在各自分組最前面，標著<em>已完成</em>，點進去就是它自己\
+      的頁面。下面的都還沒做，做出來之前不會變成連結。
+    </p>"""
+
+planned_heading = "每一類檔案，以及能拿它做什麼"
+
+og_title = "abox.tools 路線圖"
+og_description = "哪些做好了，接下來做什麼。全都在瀏覽器裡跑，全都不上傳。"
+og_image_alt = "abox.tools - 不走伺服器的工具"
+
+#
+# ---------------------------------------------------------------------------
+# The 404. Built in English only today, but translated anyway.
+# ---------------------------------------------------------------------------
+#
+
+[not_found]
+title = "頁面不存在 | abox.tools"
+description = "abox.tools 上沒有這個地址。下面這些工具是真有的，全部免費，也沒有一個會把你的檔案傳去別處。"
+heading = "這個頁面不在這裡"
+tools_heading = "全部工具，都在這裡"
+tools_note = "全部免費，全在你的瀏覽器裡跑，沒有一個上傳東西。"
+
+lede = """
+    要麼地址打錯了，要麼原來在這裡的東西挪了地方。你的檔案沒事，也沒丟掉\
+    什麼。本站從來沒拿到過你的東西，想丟也無從丟起。"""
+
+#
+# ---------------------------------------------------------------------------
+# The footer.
+# ---------------------------------------------------------------------------
+#
+
+[footer]
+blurb = """
+        不走伺服器的工具。檔案留在你自己的機器上，沒有東西要傳，也不用註冊\
+        帳號。"""
+base = "本站說的每一句話，都是寫來給你核對的，不是寫來讓你信的。"
+
+#
+# ---------------------------------------------------------------------------
+# The frame's own words. Everything with {{ }} in it is a name the build
+# resolves, and the build refuses to render a name it cannot find.
+# ---------------------------------------------------------------------------
+#
+
+[ui]
+languages = "語言"
+lang_auto = "你的瀏覽器要的是繁體中文，所以這個頁面按繁體中文顯示。"
+breadcrumb = "麵包屑導覽"
+all_tools = "全部工具"
+last_updated = "最後更新"
+built_tag = "已完成"
+planned_count = "項計畫中"
+built_count = "項已完成"
+
+guide_one = "篇指南"
+guide_many = "篇指南"
+
+footer_tools = "工具"
+footer_site = "本站"
+footer_contact = "聯絡我們"
+footer_sitemap = "網站地圖"
+footer_source = "在 GitHub 上讀原始碼"
+
+guarantees_note = """
+    上面這些不用你信。
+    <a href="{{ base }}{{ links.safety_guide }}/">
+      怎麼判斷一個工具是不是真需要你的檔案</a>
+    裡有四項你自己動手就能做的檢查，用在本站管用，用在別家也一樣。"""
+
+hub_guides_note = """
+    不知道該動哪個設定，也不清楚代價？
+    <a href="{{ base }}{{ links.guides }}/">每個工具都配了一篇指南</a>。"""
+
+hub_roadmap_note = """
+    後面還有，清單也是公開的。
+    <a href="{{ base }}{{ links.roadmap }}/">看看接下來做什麼</a>。"""
+
+guides_all_note = """
+    這裡每篇指南講的工具，都跑在你自己的機器上。
+    <a href="{{ base }}">全都在這裡</a>。"""
+
+[ui.tool]
+view_source = "檢視原始碼"
+how_verified = "這條怎麼核實"
+live_check = "即時檢查："
+offline = "離線："
+checking = "檢查中&hellip;"
+questions_heading = "常見問題"
+guide_heading = "說得更細的版本"
+related_heading = "工具箱裡還有"
+privacy_heading = "這條隱私承諾怎麼核實"
+
+pledge_line = """
+    你的{{ tool.words.plural }}<strong>不會上傳</strong>。這裡根本沒有伺服器。"""
+
+boot_title = "這個頁面的程式碼沒有跑起來。"
+boot_body = """
+    直接從資料夾裡打開 <code>index.html</code>，瀏覽器會擋下 JavaScript 模組，\
+    於是你選好{{ tool.words.choose }}之後，頁面不會有任何反應。改用 http 把這個\
+    資料夾提供出去："""
+boot_then = "然後打開 <code>http://localhost:8080/</code>。"
+
+noscript_title = "JavaScript 被停用了。"
+noscript_body = "這個頁面全部的工作都在你的瀏覽器裡完成，沒有 JavaScript 就跑不起來。"
+
+offline_ready = "已就緒——斷網之後這一頁照樣能用。"
+offline_none = "這個瀏覽器裡用不了（其餘的照樣能用）。"
+offline_insecure = "離線快取需要 https:// 或者 localhost。"
+offline_failed = "這裡快取不了，不過反正什麼都不會上傳。"
+
+error_broke = "出錯了：{detail}。重新載入頁面即可從頭開始。"
+
+reading_one = "正在讀取 {count} 個檔案&hellip;"
+reading_many = "正在讀取 {count} 個檔案&hellip;"
+
+check_yourself = """
+      <strong>你可以自己核對。</strong>上面這些不用你信。這個頁面是儲存庫裡的\
+      範本和設定產生出來的，建置腳本你能讀，也能自己跑一遍，跑出來的結果就\
+      提交在 <code>dist</code> 分支上。拿實際發給你的內容，跟你自己從原始碼\
+      建置出來的結果對一遍就知道了："""
+
+read_first_lead = """
+      最值得先讀的幾個檔案：<code>config/site.toml</code> 裡是
+      Content-Security-Policy"""
+
+[ui.feedback]
+prompt = "這次管用嗎？"
+up = "管用"
+down = "不管用"
+dismiss = "關閉"
+
+reason_prompt = "哪裡不對？"
+reason_wrong = "結果不對"
+reason_failed = "沒跑完"
+reason_slow = "太慢"
+reason_confusing = "不會用"
+
+thanks = "謝謝，這很有用。"
+
+note = """
+      發出去的只有你這個回答，而且只在你按下按鈕的時候。你的檔案、它的名字，\
+      以及跟它有關的任何東西，一樣都不發。"""
+
+[ui.guide]
+open_tool = "打開{{ tool.name | e }}"
+
+[ui.picker]
+warning = """
+      <strong>這是唯一一處會碰網路的功能。</strong>
+      抓一個網址，等於告訴那台伺服器你的 IP 位址，以及你要的是哪個{{ tool.picker.urls.noun }}。\
+      {{ tool.picker.urls.noun }}到手之後複製進本機記憶體，不會再請求第二次。你這邊\
+      始終沒有東西發出去，這個頁面照樣做不了任何形式的上傳。"""
+label = "一行一個網址"
+note = """
+      對方伺服器得允許跨域使用它的{{ tool.picker.urls.noun }}。很多站點不允許，\
+      這類會當場失敗並說明原因，不會過一陣子悄沒聲地出問題。"""

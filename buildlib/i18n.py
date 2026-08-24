@@ -97,6 +97,31 @@ Every language's debt is worked out by `survey` BEFORE any page is rendered,
 because the hreflang set on the English page is a fact about German. And an
 English body falling back inside German has its links rewritten by `relocate`,
 because it was written for a tree whose addresses are English.
+
+FALLING BACK TO A NEAR RELATIVE INSTEAD OF ENGLISH
+
+English is not the only sensible thing to fall back to. Traditional Chinese
+next to Simplified is the case this was built for: two scripts, one language,
+and a reader of one can make out the other far better than either can make
+out English. A locale names its near relative with `fallback` in
+locale.toml, `link_fallbacks` resolves the name once every locale is loaded,
+and `fallback_base` is where an untranslated key actually borrows the near
+relative's word instead of English's - the near relative's word if it has
+one, English's if it does not, so the chain never dead-ends.
+
+This changes what a reader SEES on an unfinished page. It changes nothing
+about what counts as FINISHED: `complete`, `debt`, `translated` and
+`published` are all still judged against this locale's own translation
+work, exactly as for a locale with no `fallback` - so a Traditional Chinese
+page showing Simplified Chinese prose is exactly as unfinished, and exactly
+as absent from the sitemap and the hreflang set, as one showing English
+would be. `fallback` is a courtesy to the reader of a half-built locale, not
+a second way to be complete.
+
+Only one level. `fallback` is refused if it names a locale that itself has a
+`fallback` - resolving a chain in dependency order is a real feature this
+does not need until a second locale wants to point at the first one that
+already borrows.
 """
 
 import posixpath
@@ -210,6 +235,7 @@ REQUIRED_LOCALE_KEYS = ('lang', 'name', 'endonym')
 
 RESERVED_LOCALE_KEYS = frozenset({
     'lang', 'name', 'endonym', 'hreflang', 'dir', 'complete', 'slugs',
+    'fallback',
 })
 
 # config/planned.toml, translated in locales/<lang>/planned.toml. It is a file
@@ -245,7 +271,53 @@ def load_locales(root, site):
         if locale['lang'] in seen:
             raise LocaleError(f'two locales both call themselves {locale["lang"]!r}')
         seen.add(locale['lang'])
+    link_fallbacks(locales)
     return locales
+
+
+def link_fallbacks(locales):
+    """Resolve each locale's `fallback` name to the locale object it names.
+
+    A page a locale has not translated normally shows English - see
+    `localize_tool` and `body_for`. `fallback` is the one exception: a
+    locale written in a script another locale already has a finished
+    translation in (Traditional Chinese next to Simplified, one day perhaps
+    Cantonese next to Mandarin) can name that locale instead, so an
+    untranslated page shows the near relative's words rather than English's.
+
+    Resolved here, once, rather than looked up by name every time a page is
+    rendered - a locale's own tools/pages tables are read straight off
+    `fallback_locale`, and doing that lookup by string on every tool and
+    every guide would be the same search repeated hundreds of times for an
+    answer that cannot change mid-build.
+
+    One level only. A chain would have to be resolved in dependency order,
+    and a locale falling back through two near relatives to reach English is
+    a design nobody has asked for yet - refusing it here is cheaper than
+    writing the topological sort for a feature with no user.
+    """
+    by_lang = {locale['lang']: locale for locale in locales}
+    for locale in locales:
+        name = locale.get('fallback')
+        locale['fallback_locale'] = None
+        if name is None:
+            continue
+        if name == locale['lang']:
+            raise LocaleError(
+                f'locales/{locale["lang"]}/locale.toml: fallback = {name!r} names '
+                'itself.')
+        if name not in by_lang:
+            raise LocaleError(
+                f'locales/{locale["lang"]}/locale.toml: fallback = {name!r} names '
+                f'no locale. Known: {", ".join(sorted(by_lang))}')
+        target = by_lang[name]
+        if target.get('fallback'):
+            raise LocaleError(
+                f'locales/{locale["lang"]}/locale.toml: fallback = {name!r}, but '
+                f'{name} itself falls back to {target["fallback"]!r}. Only one '
+                'level is supported - point both locales at the same target '
+                'instead of chaining them.')
+        locale['fallback_locale'] = target
 
 
 def base_locale(site):
@@ -260,6 +332,8 @@ def base_locale(site):
         'complete': True,
         'is_base': True,
         'prefix': '',
+        'fallback': None,
+        'fallback_locale': None,
         'slugs': {},
         'site': site,
         'tools': {},
@@ -302,6 +376,12 @@ def load_locale(path, site):
         'complete': bool(config.get('complete', False)),
         'is_base': False,
         'prefix': f'{config["lang"]}/',
+        # A name, not the locale itself - locales/*/locale.toml files are
+        # loaded one at a time, so the locale `fallback` names has not
+        # necessarily been read yet. `link_fallbacks` resolves the name to
+        # `fallback_locale` once every locale is loaded.
+        'fallback': config.get('fallback'),
+        'fallback_locale': None,
         'slugs': dict(config.get('slugs', {})),
         'tools': {},
         'pages': {},
@@ -616,6 +696,31 @@ def translate(source, over, keys, where, missing, path, transform=None):
                  over, where, missing, path, STRUCTURAL_KEYS, transform)
 
 
+def fallback_base(source, over_key, keys, locale, slug):
+    """What an untranslated key in `locale` falls back to: English, or - for
+    a locale with `fallback` set - its near relative's own words instead.
+
+    Returns a tree shaped like `source` but limited to `keys`, UNRELOCATED:
+    any link in it is still written relative to the page's generic position,
+    exactly as English's own markup is. That is what lets the result be fed
+    straight into `merge` as the new base and have `locale`'s own `relocate`
+    - applied once, by the caller, to whatever ends up falling back - resolve
+    it correctly for `locale`'s tree. Relocating it here, for the fallback
+    locale's own tree, would leave a Traditional Chinese page linking into
+    the middle of the Simplified Chinese site instead of its own.
+
+    `missing` is thrown away: which keys the near relative has not itself
+    translated is that locale's own debt, tallied when it is charged
+    directly, and must not also count against `locale`.
+    """
+    fallback = locale['fallback_locale']
+    if fallback is None:
+        return {key: source[key] for key in keys if key in source}
+    return translate(source, over_key(fallback), keys,
+                     f'locales/{fallback["lang"]}/ (as a fallback for {locale["lang"]})',
+                     [], 'fallback', transform=None)
+
+
 def localize_tool(tool, locale, site):
     """One tool, said in one language, at its own URL.
 
@@ -627,11 +732,12 @@ def localize_tool(tool, locale, site):
     slug = tool['slug']
     merged = dict(tool)
     debt = charge(locale, slug)
-    merged.update(translate(tool, locale['tools'].get(slug, {}),
-                            TRANSLATABLE_TOOL_KEYS,
-                            f'locales/{locale["lang"]}/tools/{slug}.toml',
-                            debt, f'tools.{slug}',
-                            lambda text: relocate(text, locale, slug)))
+    base = fallback_base(tool, lambda fb: fb['tools'].get(slug, {}),
+                         TRANSLATABLE_TOOL_KEYS, locale, slug)
+    merged.update(merge(base, locale['tools'].get(slug, {}),
+                        f'locales/{locale["lang"]}/tools/{slug}.toml',
+                        debt, f'tools.{slug}', STRUCTURAL_KEYS,
+                        lambda text: relocate(text, locale, slug)))
     merged['out_slug'] = locale['slugs'].get(slug, slug)
     merged['url'] = f'{site["domain"]}{locale["prefix"]}{merged["out_slug"]}/'
     return merged
@@ -658,11 +764,12 @@ def localize_page(page, locale, site):
     slug = page['slug']
     merged = dict(page)
     debt = charge(locale, slug)
-    merged.update(translate(page, locale['pages'].get(slug, {}),
-                            TRANSLATABLE_PAGE_KEYS,
-                            f'locales/{locale["lang"]}/pages/{slug}.toml',
-                            debt, f'pages.{slug}',
-                            lambda text: relocate(text, locale, slug)))
+    base = fallback_base(page, lambda fb: fb['pages'].get(slug, {}),
+                         TRANSLATABLE_PAGE_KEYS, locale, slug)
+    merged.update(merge(base, locale['pages'].get(slug, {}),
+                        f'locales/{locale["lang"]}/pages/{slug}.toml',
+                        debt, f'pages.{slug}', STRUCTURAL_KEYS,
+                        lambda text: relocate(text, locale, slug)))
     merged['out_slug'] = locale['slugs'].get(slug, slug)
     merged['url'] = f'{site["domain"]}{locale["prefix"]}{merged["out_slug"]}/'
     merged['depth'] = merged['out_slug'].count('/') + 1
@@ -743,18 +850,30 @@ def relocate(html, locale, slug):
 
 
 def body_for(locale, kind_name, slug, fallback):
-    """The translated body.html for a tool or a page, or the English one.
+    """The translated body.html for a tool or a page - this locale's own, its
+    `fallback` locale's, or the English one.
 
     Prose bodies are whole files rather than keys in a table, so they fall back
     as whole files too: a guide is either translated or it is not, and there is
     no useful halfway state where three of its paragraphs are in German.
+
+    A body borrowed from the fallback locale is read straight off disk,
+    UNRELOCATED - it is written relative to the generic page position, the
+    same as an English body is, so `relocate` below resolves it correctly
+    for THIS locale in one pass. Relocating it twice, once for the fallback
+    locale and once for this one, is how a Traditional Chinese page would
+    end up linking into the middle of the Simplified Chinese site instead of
+    its own - see `fallback_base`, which the same reasoning is written out
+    in full for.
     """
     key = f'{kind_name}/{slug}'
     if key in locale['bodies']:
         return locale['bodies'][key]
     if not locale['is_base']:
         locale['debt'].setdefault(slug, []).append(f'{kind_name}.{slug}.body')
-        return relocate(fallback, locale, slug)
+        near = locale['fallback_locale']
+        source = near['bodies'].get(key) if near else None
+        return relocate(fallback if source is None else source, locale, slug)
     return fallback
 
 

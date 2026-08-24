@@ -37,6 +37,7 @@ def locale(**over):
     base = {
         'lang': 'de', 'name': 'German', 'endonym': 'Deutsch', 'hreflang': 'de',
         'dir': 'ltr', 'complete': False, 'is_base': False, 'prefix': 'de/',
+        'fallback': None, 'fallback_locale': None,
         'slugs': {}, 'site': SITE, 'tools': {}, 'pages': {}, 'bodies': {},
         'planned': {}, 'frame': [], 'debt': {},
     }
@@ -369,6 +370,119 @@ class FallingBackInsideALanguage(unittest.TestCase):
         found = self.relocate('<a href="../trim-video/#faq">Trim</a>',
                               'reverse-video')
         self.assertIn('href="/de/video-schneiden/#faq"', found)
+
+
+class FallingBackToANearRelative(unittest.TestCase):
+    """`fallback`: what an untranslated page shows when a near relative's
+    words are a better stand-in than English's - Traditional Chinese next to
+    Simplified is the case this exists for.
+    """
+
+    def test_link_fallbacks_resolves_the_name(self):
+        zh = {'lang': 'zh'}
+        tw = {'lang': 'zh-TW', 'fallback': 'zh'}
+        i18n.link_fallbacks([zh, tw])
+        self.assertIs(tw['fallback_locale'], zh)
+        self.assertIsNone(zh['fallback_locale'])
+
+    def test_a_locale_with_no_fallback_gets_none(self):
+        de = {'lang': 'de'}
+        i18n.link_fallbacks([de])
+        self.assertIsNone(de['fallback_locale'])
+
+    def test_naming_itself_is_refused(self):
+        with self.assertRaises(ConfigError):
+            i18n.link_fallbacks([{'lang': 'zh-TW', 'fallback': 'zh-TW'}])
+
+    def test_naming_an_unknown_locale_is_refused(self):
+        with self.assertRaises(ConfigError) as caught:
+            i18n.link_fallbacks([{'lang': 'zh-TW', 'fallback': 'zh'}])
+        self.assertIn('zh', str(caught.exception))
+
+    def test_a_chain_is_refused(self):
+        """Only one level - a fallback's own fallback would have to be
+        resolved in dependency order first, and nothing has asked for a
+        second level yet."""
+        x = {'lang': 'x'}
+        y = {'lang': 'y', 'fallback': 'x'}
+        z = {'lang': 'z', 'fallback': 'y'}
+        with self.assertRaises(ConfigError) as caught:
+            i18n.link_fallbacks([x, y, z])
+        self.assertIn('y', str(caught.exception))
+
+    def test_an_untranslated_page_borrows_the_near_relatives_word(self):
+        page = {'slug': 'a-guide', 'nav': 'A guide'}
+        zh = locale(lang='zh', prefix='zh/',
+                   pages={'a-guide': {'nav': '一篇指南'}})
+        tw = locale(lang='zh-TW', prefix='zh-TW/', fallback='zh',
+                   fallback_locale=zh)
+        found = i18n.localize_page(page, tw, SITE)
+        self.assertEqual(found['nav'], '一篇指南')
+
+    def test_a_page_neither_has_falls_back_to_english(self):
+        """The chain never dead-ends: the near relative's own gap is filled
+        from English, exactly as it would be for the near relative itself."""
+        page = {'slug': 'a-guide', 'nav': 'A guide'}
+        zh = locale(lang='zh', prefix='zh/')
+        tw = locale(lang='zh-TW', prefix='zh-TW/', fallback='zh',
+                   fallback_locale=zh)
+        found = i18n.localize_page(page, tw, SITE)
+        self.assertEqual(found['nav'], 'A guide')
+
+    def test_the_locales_own_translation_still_wins(self):
+        page = {'slug': 'a-guide', 'nav': 'A guide'}
+        zh = locale(lang='zh', prefix='zh/',
+                   pages={'a-guide': {'nav': '一篇指南'}})
+        tw = locale(lang='zh-TW', prefix='zh-TW/', fallback='zh',
+                   fallback_locale=zh,
+                   pages={'a-guide': {'nav': '一篇指南（繁體）'}})
+        found = i18n.localize_page(page, tw, SITE)
+        self.assertEqual(found['nav'], '一篇指南（繁體）')
+
+    def test_a_borrowed_link_is_relocated_for_this_locale_not_the_near_relative(self):
+        """The regression this mechanism could ship with on day one: a page
+        borrowed from `zh` linking into `zh`'s own tree instead of
+        `zh-TW`'s, because it was relocated once for `zh` and again for
+        `zh-TW` on top of that. It must be relocated exactly once, against
+        the address `zh-TW` itself gives the linked page."""
+        page = {'slug': 'guide-a', 'nav': 'Guide A'}
+        zh = locale(lang='zh', prefix='zh/', slugs={'guide-b': 'zh-b'},
+                   pages={'guide-a': {'nav': '<a href="../guide-b/">B</a>'}})
+        tw = locale(lang='zh-TW', prefix='zh-TW/', fallback='zh',
+                   fallback_locale=zh, slugs={'guide-b': 'tw-b'})
+        found = i18n.localize_page(page, tw, SITE)
+        self.assertIn('href="/zh-TW/tw-b/"', found['nav'])
+
+    def test_a_body_borrows_the_near_relatives_and_is_relocated_once(self):
+        """`body_for` has the same borrowed-link hazard `localize_page` does,
+        for a whole file rather than one key - see the test above."""
+        zh = locale(lang='zh', prefix='zh/', slugs={'guide-b': 'zh-b'},
+                   bodies={'pages/guide-a': '<a href="../guide-b/">B</a>'})
+        tw = locale(lang='zh-TW', prefix='zh-TW/', fallback='zh',
+                   fallback_locale=zh, slugs={'guide-b': 'tw-b'})
+        found = i18n.body_for(tw, 'pages', 'guide-a', 'English fallback')
+        self.assertIn('href="/zh-TW/tw-b/"', found)
+        self.assertEqual(tw['debt']['guide-a'], ['pages.guide-a.body'])
+
+    def test_a_body_neither_has_falls_back_to_english(self):
+        zh = locale(lang='zh', prefix='zh/')
+        tw = locale(lang='zh-TW', prefix='zh-TW/', fallback='zh',
+                   fallback_locale=zh)
+        found = i18n.body_for(tw, 'pages', 'guide-a', 'English fallback')
+        self.assertEqual(found, 'English fallback')
+
+    def test_debt_is_unaffected_by_the_fallback(self):
+        """Showing the near relative's words is a courtesy to the reader,
+        not a second way to be finished: the page is exactly as
+        untranslated, and exactly as absent from the sitemap and the
+        hreflang set, as if it had fallen back to English."""
+        page = {'slug': 'a-guide', 'nav': 'A guide'}
+        zh = locale(lang='zh', prefix='zh/',
+                   pages={'a-guide': {'nav': '一篇指南'}})
+        tw = locale(lang='zh-TW', prefix='zh-TW/', fallback='zh',
+                   fallback_locale=zh, complete=True)
+        i18n.localize_page(page, tw, SITE)
+        self.assertFalse(i18n.translated(tw, 'a-guide'))
 
 
 class Advertising(unittest.TestCase):

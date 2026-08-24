@@ -225,8 +225,14 @@ def build(out, clean=False, minify_output=True, mangle_names=False):
             continue
         behind = i18n.debt_report(locale, tools, prose)
         if behind:
+            # A locale with `fallback` set shows its near relative's words on
+            # a page it has not translated itself, not English's - see
+            # buildlib/i18n.py. The count and the pages are the same either
+            # way: what changes is only what a reader sees while they wait.
+            near = locale['fallback_locale']
+            shows = f'still falling back to {near["lang"]}' if near else 'still in English'
             print(f'  {locale["lang"]}: published, {len(behind)} of '
-                  f'{len(tools) + len(prose)} pages still in English '
+                  f'{len(tools) + len(prose)} pages {shows} '
                   f'(built and readable, kept out of the sitemap): '
                   + ', '.join(sorted(behind)[:4])
                   + (' ...' if len(behind) > 4 else ''))
