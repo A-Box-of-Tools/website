@@ -29,11 +29,12 @@
   <!-- 第 2 步，标记 -->
   <section class="card" id="section-card" hidden>
     <h2>
-      <span class="step">2</span> 把你要的部分标出来<span class="editing" id="editing" hidden></span>
+      <span class="step">2</span> 把要留的段落标出来
+      <span class="editing" id="editing" hidden></span>
     </h2>
 
     <p class="stage-hint">
-      从头播一遍，一段该开始的地方按 <kbd>I</kbd>，该结束的地方按 <kbd>O</kbd>。想标多少次就标多少次，每一对都会在下面成为一行，最终视频就是这些行一个接一个。<kbd>U</kbd> 撤销最后一次，<kbd>Space</kbd> 播放和暂停，方向键跳五秒。
+      放一遍，该开始的地方按 <kbd>I</kbd>，该结束的地方按 <kbd>O</kbd>，想标几次标几次。每一对就是下面的一行，成品视频就是这些行一段接一段。<kbd>U</kbd> 撤销刚才那一次，<kbd>Space</kbd> 播放和暂停，方向键跳五秒。
     </p>
 
     <div class="stage-wrap">
@@ -58,8 +59,8 @@
       <button type="button" id="play" class="primary">播放</button>
       <button type="button" id="back-5" class="ghost" title="后退五秒">&minus;5s</button>
       <button type="button" id="forward-5" class="ghost" title="前进五秒">+5s</button>
-      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> 标起点</button>
-      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> 标终点</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> 标入点</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> 标出点</button>
       <button type="button" id="undo" class="ghost"><kbd>U</kbd> 撤销</button>
     </div>
 
@@ -77,9 +78,9 @@
     <!-- The segments themselves. This is the tool. -->
     <div class="segments">
       <div class="segments-head">
-        <h3>片段 <span class="segment-count" id="segment-count">还没有</span></h3>
+        <h3>段落 <span class="segment-count" id="segment-count">还没标</span></h3>
         <p class="segments-total">
-          共留下 <strong id="total-kept">0:00.000</strong>
+          留下的总长 <strong id="total-kept">0:00.000</strong>
         </p>
       </div>
 
@@ -87,9 +88,9 @@
         <thead>
           <tr>
             <th scope="col" class="col-index">#</th>
-            <th scope="col">起点</th>
-            <th scope="col">终点</th>
-            <th scope="col">长度</th>
+            <th scope="col">开始</th>
+            <th scope="col">结束</th>
+            <th scope="col">时长</th>
             <th scope="col"><span class="visually-hidden">操作</span></th>
           </tr>
         </thead>
@@ -97,14 +98,14 @@
       </table>
 
       <p class="segments-empty" id="segments-empty">
-        还什么都没标。播放时先按 <kbd>I</kbd> 再按 <kbd>O</kbd>，或者用上面那几个按钮。
+        还什么都没标。播放时先按 <kbd>I</kbd> 再按 <kbd>O</kbd>，或者用上面的按钮。
       </p>
 
       <div class="segment-actions">
         <button type="button" id="add-segment" class="ghost">手动加一行</button>
-        <button type="button" id="reset-segments" class="ghost danger">全部清空</button>
+        <button type="button" id="reset-segments" class="ghost danger">全部清掉</button>
         <span class="segment-actions-spacer"></span>
-        <button type="button" id="import-marks" class="ghost">加载标记&hellip;</button>
+        <button type="button" id="import-marks" class="ghost">载入标记&hellip;</button>
         <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
         <select id="marks-format" aria-label="时间戳文件格式">
           <option value="seconds" selected>秒数</option>
@@ -114,22 +115,24 @@
       </div>
 
       <p class="field-note">
-        标记存成一个纯文本文件，一段一行，格式就是上面选的那个，所以一次漫长的标记工作扛得住标签页被关掉，而同一个文件也可以交给任何读这种排版的工具。
+        标记存成一个纯文本文件，一行一段，格式就是上面选的那种。所以标了半天的活，不会因为关掉标签页就没了，同一个文件也能拿给任何读这种排布的工具用。
       </p>
     </div>
 
     <fieldset class="modes">
-      <legend>标出来的部分怎么处理</legend>
+      <legend>标出来的这些段落怎么处理</legend>
       <label class="mode">
         <input type="radio" name="mode" value="keep" checked>
         <span>
-          <strong>留下它们</strong>最终视频就是标出来的那些部分，按顺序接起来。
+          <strong>留下它们</strong>
+          成品就是标出来的段落，按顺序接在一起。
         </span>
       </label>
       <label class="mode">
         <input type="radio" name="mode" value="cut">
         <span>
-          <strong>把它们剪掉</strong>标出来的部分去掉，其余全部接起来。
+          <strong>剪掉它们</strong>
+          标出来的部分拿走，其余的自动接上。
         </span>
       </label>
     </fieldset>
@@ -137,48 +140,48 @@
 
   <!-- 第 3 步，导出 -->
   <section class="card" id="export-card" hidden>
-    <h2><span class="step">3</span> 剪切</h2>
+    <h2><span class="step">3</span> 开剪</h2>
 
     <div class="settings">
       <div class="field">
         <label for="method">怎么剪</label>
         <select id="method">
-          <option value="copy" selected>每个字节都保留，什么都不重新编码</option>
-          <option value="exact">就在这里精确切开，会重新编码画面</option>
+          <option value="copy" selected>一个字节都不动，什么都不重编</option>
+          <option value="exact">就在这儿下刀，画面重新编码</option>
           <option value="record">一边播一边录</option>
         </select>
         <p class="field-note" id="method-note"></p>
       </div>
 
       <div class="field" id="frame-field" hidden>
-        <label for="frame">画幅尺寸</label>
+        <label for="frame">画面尺寸</label>
         <select id="frame">
-          <option value="first" selected>跟随第一段视频</option>
-          <option value="largest">跟随最大的那个</option>
+          <option value="first" selected>跟第一段视频一致</option>
+          <option value="largest">跟最大的那段一致</option>
           <option value="1080p">1920 &times; 1080</option>
           <option value="720p">1280 &times; 720</option>
         </select>
         <p class="field-note">
-          整个文件只用一个尺寸。形状不同的视频会加黑边装进去，绝不拉伸。
+          整个文件只能有一个尺寸。比例不同的视频会加黑边放进去，绝不会被拉伸。
         </p>
       </div>
 
       <div class="field" id="quality-field">
-        <label for="quality">质量</label>
+        <label for="quality">画质</label>
         <select id="quality">
-          <option value="low">文件更小</option>
+          <option value="low">文件小一点</option>
           <option value="medium" selected>均衡</option>
-          <option value="high">最高质量</option>
+          <option value="high">最好画质</option>
         </select>
         <p class="field-note">
-          绝不会超过原片花的量，超过那个量再编码，只会让文件变大。
+          绝不会比原片花得还多，超过那个数只会让文件变大。
         </p>
       </div>
 
       <div class="field">
         <label class="check" for="keep-audio">
           <input type="checkbox" id="keep-audio" checked>
-          保留声音
+          留着声音
         </label>
         <p class="field-note" id="audio-note"></p>
       </div>
@@ -186,9 +189,9 @@
 
     <dl class="summary" id="summary">
       <div><dt>留下</dt><dd id="sum-clips">&mdash;</dd></div>
-      <div><dt>成片时长</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>成品时长</dt><dd id="sum-length">&mdash;</dd></div>
       <div><dt>从哪儿开始</dt><dd id="sum-start">&mdash;</dd></div>
-      <div><dt>大约</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>大致体积</dt><dd id="sum-size">&mdash;</dd></div>
       <div><dt>画面</dt><dd id="sum-picture">&mdash;</dd></div>
       <div><dt>声音</dt><dd id="sum-sound">&mdash;</dd></div>
     </dl>

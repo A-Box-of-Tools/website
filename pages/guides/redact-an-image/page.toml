@@ -1,0 +1,36 @@
+#
+# Guide: redacting an image so the hidden part is actually gone.
+#
+# Written for the person who has already drawn a black rectangle over something
+# and is about to send it. The failure this page is about is not doing it wrong;
+# it is doing it in a program that saves the rectangle beside the picture rather
+# than into it, and having no way of telling from the screen which of the two
+# just happened. So the page leads with how to check, and only then with which
+# style to use and why pixelation is not the safe option people assume.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/redact-an-image"
+kind = "guide"
+nav = "Redacting an image"
+group = "doing-the-job"
+tool = "redact-image"
+
+title = "How to Redact an Image So the Hidden Part Is Really Gone"
+description = "Black boxes drawn in most programs sit on top of the picture and can be moved aside. What separates a real redaction from a covered one, why pixelated text can be read back, and how to check a file before you send it."
+
+heading = "How to redact an image so the hidden part is really gone"
+lede = """
+    Covering something up and removing it look identical on screen and are not
+    the same thing at all. This is the difference, the two styles that leave more
+    behind than people expect, and the checks that tell you which of the two you
+    have just done."""
+
+updated = "23 August 2026"
+published = "2026-08-23"
+lastmod = "2026-08-23"
+
+og_title = "How to redact an image so the hidden part is really gone"
+og_description = "Why a black rectangle usually is not a redaction, why pixelated text can be read back, and how to check a file before you send it."
+og_image_alt = "abox.tools - tools that never touch a server"

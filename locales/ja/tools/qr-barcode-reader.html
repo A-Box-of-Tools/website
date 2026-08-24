@@ -1,0 +1,221 @@
+<!--
+  tools/qr-barcode-reader/body.html, in Japanese.
+
+  Prose runs are written on one line each: a line break inside Japanese text
+  collapses to a space in HTML, and a space between two Japanese characters is
+  visible on the page.
+-->
+<main>
+  <!-- ステップ1｜画像はどこから来るか -->
+  <section class="card">
+    <h2><span class="step">1</span> コードを見せる</h2>
+
+    <p class="card-lede">
+      写真でも、スクリーンショットでも、カメラでも。どれを選んでも、画像はここで、このページの中で、あなたの端末の上で読まれます。何もアップロードされず、カメラの一コマは調べられて捨てられるだけで、記録はされません。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div class="run-row">
+      <button type="button" id="start-camera" class="primary">カメラを使う</button>
+      <button type="button" id="stop-camera" class="ghost" hidden>カメラを止める</button>
+    </div>
+
+    <p class="field-summary" id="pick-note">
+      <kbd>Ctrl</kbd>+<kbd>V</kbd> で画像をそのまま貼り付けることもできます。画面に映っているコードのスクリーンショットが一番速い道です。
+    </p>
+
+    <p id="pick-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- カメラ。動き出してから現れます -->
+  <section class="card" id="camera-card" hidden>
+    <h2>カメラ</h2>
+
+    <div class="viewfinder">
+      <video id="video" playsinline muted disablepictureinpicture></video>
+      <div class="reticle" aria-hidden="true"></div>
+    </div>
+
+    <div class="camera-controls">
+      <div class="option-row" id="camera-pick-row" hidden>
+        <label for="camera-pick">どのカメラ</label>
+        <select id="camera-pick"></select>
+      </div>
+
+      <label class="check" id="torch-row" hidden>
+        <input type="checkbox" id="torch">
+        <span>
+          <strong>ライトを点ける</strong>
+          <span class="check-note">
+            ライトが付いているカメラは一部だけで、ページからの要求を通すブラウザーも一部だけです。ここに出ていないなら、それは付いていないということです。
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary" id="camera-status" role="status"></p>
+
+    <p class="field-summary">
+      ここで正直な表示はカメラのランプです。映像が届いている間は点いていて、止めた瞬間に消えます。その二点の間にあるものは何一つディスクに書かれませんし、このページの<code>Content-Security-Policy</code>には、画像を送れる宛先が一つもありません。
+    </p>
+  </section>
+
+  <!-- ステップ2｜答え -->
+  <section class="card" id="results-card" hidden>
+    <h2><span class="step">2</span> 中身</h2>
+
+    <p class="card-lede">
+      見せるだけで、開きません。印刷されたコードは誰にも読めないアドレスであり、その上にシールを貼ることが誰かにとって割に合うのは、まさにそのせいです。ですから文字列は全体がここに出ていて、実際にたどり着くホストは独立した一行に取り出してあります。
+    </p>
+
+    <div id="results"></div>
+  </section>
+
+  <!--
+    結果ひとつ分。見つかったコードごとに複製し、スクリプトが埋めるのは値だけです。
+    ここにある語がすべて記述されているのは、このファイルが言語ごとに翻訳される
+    一方で、src/*.js は十一のアドレスに共通の一つのファイルだからです。
+  -->
+  <template id="result-template">
+    <article class="result">
+      <header class="result-head">
+        <span class="result-kind"></span>
+        <span class="result-symbology"></span>
+      </header>
+
+      <pre class="result-text"></pre>
+
+      <div class="run-row">
+        <button type="button" class="primary copy">文字列をコピー</button>
+        <a class="as-button open" target="_blank" rel="noopener noreferrer nofollow" hidden>
+          新しいタブで開く
+        </a>
+      </div>
+
+      <dl class="result-rows"></dl>
+      <ul class="result-warnings"></ul>
+
+      <details class="result-facts">
+        <summary>これをどう読んだか</summary>
+
+        <dl class="facts-list">
+          <div><dt>シンボル</dt><dd data-fact="symbol"></dd></div>
+          <div data-only="qr"><dt>バージョン</dt><dd data-fact="version"></dd></div>
+          <div data-only="qr"><dt>誤り訂正レベル</dt><dd data-fact="level"></dd></div>
+          <div data-only="qr"><dt>マスク</dt><dd data-fact="mask"></dd></div>
+          <div data-only="qr"><dt>直した符号語</dt><dd data-fact="repaired"></dd></div>
+          <div data-only="qr"><dt>書かれ方</dt><dd data-fact="mode"></dd></div>
+          <div data-only="qr" data-optional><dt>宣言された文字集合</dt><dd data-fact="eci"></dd></div>
+          <div data-only="qr" data-optional><dt>連結シンボルの一枚</dt><dd data-fact="part"></dd></div>
+          <div data-only="linear" data-optional><dt>一致した走査線</dt><dd data-fact="lines"></dd></div>
+          <div><dt>文字数</dt><dd data-fact="characters"></dd></div>
+          <div><dt>見つけ方</dt><dd data-fact="how"></dd></div>
+        </dl>
+
+        <figure class="grid-figure" hidden>
+          <canvas class="grid" width="1" height="1"></canvas>
+          <figcaption>
+            このページが読み取ったモジュールを描き戻したものです。撮ったコードに似ていれば正しいものを読んでいます。砂嵐に見えるなら読めておらず、上の答えは信用できません。
+          </figcaption>
+        </figure>
+      </details>
+    </article>
+  </template>
+
+  <!--
+    スクリプトが必要とする語です。翻訳する人がページの他の部分と同じ場所で
+    出会えるように記述の中に置いてあります。中の {host} は読み取ったホストで
+    埋められます。それ以外は置き換わりません。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="kind.url">ウェブアドレス</span>
+    <span data-phrase="kind.url-plain">ウェブアドレス（暗号化なし）</span>
+    <span data-phrase="kind.wifi">Wi-Fiネットワーク</span>
+    <span data-phrase="kind.vcard">連絡先カード</span>
+    <span data-phrase="kind.mecard">連絡先カード</span>
+    <span data-phrase="kind.email">メール</span>
+    <span data-phrase="kind.phone">電話番号</span>
+    <span data-phrase="kind.sms">SMS</span>
+    <span data-phrase="kind.place">地図上の場所</span>
+    <span data-phrase="kind.otp">二要素認証の秘密鍵</span>
+    <span data-phrase="kind.other-scheme">別のプログラムが開くもの</span>
+    <span data-phrase="kind.number">数字</span>
+    <span data-phrase="kind.text">ただの文字列</span>
+    <span data-phrase="symbology.qr">QRコード</span>
+
+
+    <span data-phrase="field.host">行き先</span>
+    <span data-phrase="field.port">ポート</span>
+    <span data-phrase="field.path">パス</span>
+    <span data-phrase="field.ssid">ネットワーク名</span>
+    <span data-phrase="field.security">暗号化方式</span>
+    <span data-phrase="field.password">パスワード</span>
+    <span data-phrase="field.hidden">ステルスネットワーク</span>
+    <span data-phrase="field.name">名前</span>
+    <span data-phrase="field.org">組織</span>
+    <span data-phrase="field.title">肩書き</span>
+    <span data-phrase="field.phone">電話</span>
+    <span data-phrase="field.email">メール</span>
+    <span data-phrase="field.web">ウェブサイト</span>
+    <span data-phrase="field.address">住所</span>
+    <span data-phrase="field.note">メモ</span>
+    <span data-phrase="field.to">宛先</span>
+    <span data-phrase="field.subject">件名</span>
+    <span data-phrase="field.message">本文</span>
+    <span data-phrase="field.number">番号</span>
+    <span data-phrase="field.latitude">緯度</span>
+    <span data-phrase="field.longitude">経度</span>
+    <span data-phrase="field.account">アカウント</span>
+    <span data-phrase="field.issuer">発行元</span>
+    <span data-phrase="field.secret">秘密鍵</span>
+    <span data-phrase="field.scheme">スキーム</span>
+
+    <span data-phrase="value.yes">はい</span>
+    <span data-phrase="value.open-network">オープン｜パスワードなし</span>
+    <span data-phrase="value.none">なし</span>
+    <span data-phrase="value.copied">コピーしました</span>
+    <span data-phrase="value.modules">一辺{n}モジュール</span>
+
+    <span data-phrase="warn.userinfo">@ より前はすべてユーザー名であって、アドレスではありません。このリンクが何と書いてあるように見えても、行き先は {host} です。</span>
+    <span data-phrase="warn.punycode">このアドレスはラテン文字以外の文字体系で書かれています。ほかの文字体系には、こちらの字とそっくりな形の文字があり、見慣れた名前に見せかける手口はそれを使います。</span>
+    <span data-phrase="warn.unicode-host">ホスト名に、素のラテン文字の外にある文字が含まれています。ある名前を別の名前に見せかけるのに使われます。</span>
+    <span data-phrase="warn.plain-http">これは素の http:// のアドレスです。ここへ送るものは暗号化されずに流れ、途中にあるものが読むことも書き換えることもできます。</span>
+    <span data-phrase="warn.shortener">{host} は転送です。実際にたどり着くアドレスはこのコードの中になく、それを知るにはサーバーに尋ねることになります。このページはそれを決してしません。</span>
+    <span data-phrase="warn.wifi-secret">このコードにはパスワードがそのままの文字で入っています。コードを写真に撮った人はそれを手に入れます。壁に貼る前に知っておく価値のあることです。</span>
+    <span data-phrase="warn.otp-secret">これは認証アプリの種です。手にした人は、そのアカウントのコードをいつまでも作れます。この情報はこのページから出ていません。この先どこへ渡すかには気をつける価値があります。</span>
+    <span data-phrase="warn.not-openable">これはウェブアドレスではないので、差し出せるリンクもありません。上に全文が出ています。あなたの端末の何かがこれに従うかどうかは、あなたとそのプログラムの間の話です。</span>
+
+    <span data-phrase="mode.numeric">数字のみ</span>
+    <span data-phrase="mode.alphanumeric">英大文字と数字</span>
+    <span data-phrase="mode.byte">バイト</span>
+    <span data-phrase="mode.kanji">漢字</span>
+
+    <span data-phrase="how.local">区画ごとに求めたしきい値</span>
+    <span data-phrase="how.inverted">濃淡の入れ替え</span>
+    <span data-phrase="how.global">画像全体で一つのしきい値</span>
+    <span data-phrase="how.softened">先に画像をなめらかにする方法</span>
+    <span data-phrase="how.dense">（全行を調べたうえで）</span>
+
+    <span data-phrase="status.reading">画像を読んでいます&hellip;</span>
+    <span data-phrase="status.nothing">この画像にコードは見つかりませんでした。白い余白まで含めてシンボル全体が画面に入っていること、そして濃い四角がきちんと濃く写る明るさが必要です。</span>
+    <span data-phrase="status.broken">このファイルは画像として開けませんでした。</span>
+    <span data-phrase="status.looking">探しています&hellip;コードを動かさず、画面の半分ほどを埋めてください。</span>
+    <span data-phrase="status.on">カメラが動いています。記録はされていません。</span>
+
+    <span data-phrase="camera.denied">ブラウザーがこのページへのカメラの受け渡しを拒みました。これは変えられる権限です。アドレスバーのカメラのアイコンを見てください。代わりに画像を選ぶのなら、権限はまったく要りません。</span>
+    <span data-phrase="camera.none">この端末でカメラが見つかりませんでした。上に写真かスクリーンショットを置けば、同じように読まれます。</span>
+    <span data-phrase="camera.busy">カメラはありますが、ほかの何かが使っています。開いているもの、たいていはビデオ通話を閉じてから、もう一度試してください。</span>
+    <span data-phrase="camera.insecure">ブラウザーがカメラを渡すのは https で配信されたページだけで、このページは今そうなっていません。</span>
+    <span data-phrase="camera.unsupported">このブラウザーには、ページから要求できるカメラの仕組みがありません。ほかの機能はそのまま使えます。</span>
+    <span data-phrase="camera.failed">カメラを開始できませんでした。理由はブラウザーから示されていません。</span>
+
+    <span data-phrase="live.clean">あなたの画像はどこへも行っていません。読み込んだファイルは {total} 件、すべてこのページ自身のものです。</span>
+    <span data-phrase="live.dirty">何かが {hosts} に接続しました。この道具が決してしないことです。調べる価値があります。</span>
+    <span data-phrase="live.platform">このページの広告・計測・寄付ボタンのスクリプトは {count} 台のホストから読み込まれました。そのどれにも、画像も、カメラの一コマも、コードに書かれていた文字も渡されていません。</span>
+    <span data-phrase="offline.ready">準備できました。インターネットを切ってもこのまま動きます。</span>
+    <span data-phrase="offline.none">このブラウザーでは利用できません（ほかはそのまま動きます）。</span>
+    <span data-phrase="offline.insecure">オフライン用に保存するには https:// か localhost が必要です。</span>
+    <span data-phrase="offline.failed">ここでは保存できませんが、どちらにしても何もアップロードされません。</span>
+  </div>
+</main>

@@ -1,0 +1,185 @@
+<main>
+  <!--
+    Drei Schritte, und der dritte ist der Grund, warum jemand hier ist.
+    
+    Eine Prüfsumme auszurechnen ist nicht die Aufgabe. Die Aufgabe ist
+    herauszufinden, ob die eben heruntergeladene Datei die ist, die der Anbieter
+    gemessen hat. Eine Seite, die bei "hier ist Ihr Hashwert" aufhört,
+    überlässt den letzten und einzig schwierigen Teil dem Besucher, nämlich
+    vierundsechzig Zeichen mit dem Auge zu vergleichen. Deshalb ist der Vergleich
+    ein eigener Schritt, nimmt die Prüfsumme in jeder veröffentlichten Form an
+    und antwortet in einem Satz statt in einer Farbe.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Datei auswählen</h2>
+
+    <!--
+      Ein echtes <label> öffnet den Dateidialog von sich aus. Ein .click() auf ein
+      per display:none verstecktes Input verweigern Safari und manche
+      Chrome-Konfigurationen, deshalb bleibt das Input im Layout: visuell versteckt,
+      weiterhin fokussierbar und mit der Tastatur erreichbar. In diesem Weg steckt
+      überhaupt kein JavaScript.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="run-card">
+    <h2><span class="step">2</span> Die Prüfsummen</h2>
+    <p class="card-lede">
+      MD5 und SHA-256 werden standardmäßig berechnet, denn zusammen decken sie fast
+      jede Downloadseite ab. Setzen Sie ein weiteres Häkchen, wird die Datei dafür
+      noch einmal gelesen. Das Lesen ist die langsame Hälfte, und alles, was vor der
+      Auswahl angehakt ist, entsteht in einem einzigen Durchgang.
+    </p>
+
+    <fieldset class="algorithms">
+      <legend class="visually-hidden">Welche Prüfsummen berechnet werden</legend>
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="md5" checked>
+        <span class="algorithm-name">MD5</span>
+        <span class="algorithm-note">Kollisionen sind seit 2004 billig. Steht trotzdem neben der Hälfte aller Downloads im Netz.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha1">
+        <span class="algorithm-name">SHA-1</span>
+        <span class="algorithm-note">2017 öffentlich gebrochen. Benennt trotzdem jedes Objekt in Git und steht auf vielen Releaseseiten.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha256" checked>
+        <span class="algorithm-name">SHA-256</span>
+        <span class="algorithm-note">Was eine Prüfsumme heute bedeutet. Jede Distribution, die eine veröffentlicht, veröffentlicht diese.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha384">
+        <span class="algorithm-name">SHA-384</span>
+        <span class="algorithm-note">SHA-512, abgeschnitten. Begegnet Ihnen vor allem in integrity-Attributen an Script-Tags.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha512">
+        <span class="algorithm-name">SHA-512</span>
+        <span class="algorithm-note">Breiter, und in keiner je praktisch relevanten Hinsicht stärker. Manche Projekte veröffentlichen es trotzdem.</span>
+      </label>
+    </fieldset>
+
+    <div class="progress" id="progress" hidden>
+      <div class="progress-track" role="progressbar" id="progress-track"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="progress-fill" id="progress-fill"></span>
+      </div>
+      <p class="progress-line">
+        <span id="progress-text" role="status" aria-live="polite"></span>
+        <button type="button" id="stop" class="ghost danger">Anhalten</button>
+      </p>
+    </div>
+
+    <p class="stopped" id="stopped" hidden>
+      Angehalten. Für diese Datei wurde nichts berechnet.
+      <button type="button" id="restart" class="ghost">Neu starten</button>
+    </p>
+
+    <div class="results" id="results" hidden>
+      <div class="toolbar">
+        <h3 class="file-name" id="file-name">&mdash;</h3>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">Alle kopieren</button>
+          <button type="button" id="download-checksums" class="ghost">Als Datei sichern</button>
+        </div>
+      </div>
+
+      <p class="file-facts" id="file-facts"></p>
+
+      <ul class="digests" id="digests">
+        <li class="digest" data-algorithm="md5" hidden>
+          <span class="digest-name">MD5</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>passt</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>weicht ab</span>
+          <button type="button" class="ghost" data-slot="copy">Kopieren</button>
+        </li>
+        <li class="digest" data-algorithm="sha1" hidden>
+          <span class="digest-name">SHA-1</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>passt</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>weicht ab</span>
+          <button type="button" class="ghost" data-slot="copy">Kopieren</button>
+        </li>
+        <li class="digest" data-algorithm="sha256" hidden>
+          <span class="digest-name">SHA-256</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>passt</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>weicht ab</span>
+          <button type="button" class="ghost" data-slot="copy">Kopieren</button>
+        </li>
+        <li class="digest" data-algorithm="sha384" hidden>
+          <span class="digest-name">SHA-384</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>passt</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>weicht ab</span>
+          <button type="button" class="ghost" data-slot="copy">Kopieren</button>
+        </li>
+        <li class="digest" data-algorithm="sha512" hidden>
+          <span class="digest-name">SHA-512</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>passt</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>weicht ab</span>
+          <button type="button" class="ghost" data-slot="copy">Kopieren</button>
+        </li>
+      </ul>
+
+      <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="compare-card">
+    <h2><span class="step">3</span> Gegen den erwarteten Wert prüfen</h2>
+    <p class="card-lede">
+      Fügen Sie die Prüfsumme ein, die die Downloadseite Ihnen gegeben hat. Die Form
+      spielt keine Rolle: bloße Hexzeichen, eine Zeile aus <code>sha256sum</code>, eine
+      ganze <code>SHA256SUMS</code>-Datei, die Form
+      <code>SHA256 (datei) = &hellip;</code> oder das <code>integrity</code>-Attribut
+      aus einem Script-Tag. Welches Verfahren es ist, ergibt sich aus der Länge, Sie
+      müssen also nichts auswählen.
+    </p>
+
+    <label class="visually-hidden" for="expected">Die erwartete Prüfsumme</label>
+    <textarea id="expected" rows="3" spellcheck="false" autocapitalize="off"
+              autocomplete="off"
+              placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
+
+    <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
+      <span data-read="one">Das ist eine <b data-slot="algorithm"></b>.</span>
+      <span data-read="many">Das ist eine Liste. <b data-slot="count"></b> Prüfsummen stehen darin.</span>
+      <span data-read="stray">Das sind <b data-slot="length"></b> Hexzeichen, und keine der Prüfsummen hier ist so lang. Meist fehlt einer Kopie das Ende.</span>
+      <span data-read="nothing">Darin sieht nichts nach einer Prüfsumme aus.</span>
+    </p>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-line good" data-outcome="match">
+        <span class="verdict-mark">&#10003;</span>
+        <span>Das ist die Datei, die diese Prüfsumme beschreibt. Ihre <b data-slot="algorithm"></b> ist Zeichen für Zeichen die, die Sie eingefügt haben.</span>
+      </p>
+      <p class="verdict-line good" data-outcome="renamed">
+        <span class="verdict-mark">&#10003;</span>
+        <span>Die Bytes passen, aber zu einer anderen Zeile. Was Sie eingefügt haben, nennt diese Datei <b data-slot="name"></b>, und die ausgewählte Datei heißt anders. Entweder wurde sie unterwegs umbenannt, oder es ist nicht der Download, den Sie prüfen wollten. Die <b data-slot="algorithm"></b> stimmt in beiden Fällen.</span>
+      </p>
+      <p class="verdict-line bad" data-outcome="mismatch">
+        <span class="verdict-mark">&#10007;</span>
+        <span>Das ist <b>nicht</b> die Datei, die diese Prüfsumme beschreibt. Ihre <b data-slot="algorithm"></b> ist eine andere, also sind die Bytes andere: ein abgebrochener Download, die falsche Version oder ein Spiegelserver, der etwas anderes ausliefert. Holen Sie die Datei noch einmal, bevor Sie sie öffnen.</span>
+      </p>
+      <p class="verdict-line" data-outcome="waiting">
+        <span class="verdict-mark">&hellip;</span>
+        <span>Die <b data-slot="algorithm"></b> für den Vergleich wird gerade berechnet.</span>
+      </p>
+      <p class="verdict-line" data-outcome="nofile">
+        <span class="verdict-mark">&hellip;</span>
+        <span>Wählen Sie oben eine Datei aus, dann steht hier, ob sie passt.</span>
+      </p>
+    </div>
+  </section>
+</main>

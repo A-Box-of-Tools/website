@@ -1,16 +1,24 @@
 #
-# 指南：给图片改尺寸 - Simplified Chinese.
+# Guide: resizing an image - Simplified Chinese.
+#
+# Overrides for pages/guides/resize-an-image/page.toml. Prose in the .html
+# beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
 #
 
-nav = "给图片改尺寸"
-title = "怎么给图片改尺寸而不把它毁掉"
-description = "改变像素尺寸时，一张图片会经历什么：为什么缩小是安全的而放大不是、框的形状不对时该怎么办，以及什么时候该改成裁剪。"
-heading = "怎么给图片改尺寸而不把它毁掉"
+nav = "改图片尺寸"
+
+title = "怎么改图片尺寸而不把它弄坏"
+description = "改像素尺寸时画面到底经历了什么：为什么缩小安全、放大不安全，框的比例跟照片对不上该怎么办，以及什么时候其实该裁而不是缩。"
+
+heading = "怎么改图片尺寸而不把它弄坏"
 lede = """
-    改尺寸是图片处理里唯一一件在你按下按钮之前、损伤就已经定好了的事，定它
-    的是你填的那个数字和你要求的那个形状。这里讲的是每个选择对画面做了什么，
-    以及其中哪些还撤得回来。"""
+    在图片这摊活里，缩放是损伤在按下按钮之前就定好的那一件，定它的是你打进去\
+    的数字和你要的那个形状。这一页讲每个选择对画面做了什么，以及哪些还救\
+    得回来。"""
+
 updated = "2026年8月20日"
-og_title = "给图片改尺寸而不把它毁掉"
-og_description = "为什么缩小是安全的而放大不是、框的形状不对时该怎么办，以及什么时候该改成裁剪。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+
+og_title = "改图片尺寸而不把它弄坏"
+og_description = "为什么缩小安全、放大不安全，框的比例对不上该怎么办，以及什么时候该裁而不是缩。"
+og_image_alt = "abox.tools - 不走服务器的工具"

@@ -290,12 +290,14 @@ a = """
 [[faq]]
 q = "Can it read a QR code as well as make one?"
 a = """
-        Not yet. Reading one means decoding an image &mdash; finding the symbol
-        in a photograph, correcting for the angle it was taken at, and repairing
-        the damage &mdash; which is a different and considerably larger job than
-        drawing one. It could be built here on the same terms as everything else,
-        and it is on the list. Meanwhile your phone's camera already does it,
-        and does it well."""
+        Not this page, but the one next door does:
+        <a href="../qr-barcode-reader/">the reader</a> takes a photograph, a
+        screenshot or your camera and gives back the string. It is a
+        considerably larger job than drawing one &mdash; finding the symbol in a
+        picture, correcting for the angle it was taken at and repairing the
+        damage are three problems this page does not have &mdash; which is why
+        it is a tool of its own rather than a button here. It runs on the same
+        terms as everything else: nothing uploaded, and no camera frame kept."""
 
 [[faq]]
 q = "What is the margin for, and can I make it smaller?"

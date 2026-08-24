@@ -1,0 +1,532 @@
+/** UI wiring and application state. */
+
+import * as camera from './camera.js';
+import { scan } from './scan.js';
+import { wireFilePicker, readingLabel } from './shared/file-picker.js';
+
+const $ = (id) => document.getElementById(id);
+
+const el = {
+  dropzone: $('dropzone'),
+  fileInput: $('file-input'),
+  startCamera: $('start-camera'),
+  stopCamera: $('stop-camera'),
+  pickError: $('pick-error'),
+  cameraCard: $('camera-card'),
+  video: $('video'),
+  cameraPickRow: $('camera-pick-row'),
+  cameraPick: $('camera-pick'),
+  torchRow: $('torch-row'),
+  torch: $('torch'),
+  cameraStatus: $('camera-status'),
+  resultsCard: $('results-card'),
+  results: $('results'),
+  resultTemplate: $('result-template'),
+  phrases: $('phrases'),
+  privacyToggle: $('privacy-toggle'),
+  privacyPanel: $('privacy-panel'),
+  networkCount: $('network-count'),
+  networkDot: $('network-dot'),
+  offlineStatus: $('offline-status'),
+  offlineDot: $('offline-dot'),
+};
+
+/**
+ * The words, out of the markup.
+ *
+ * Every string this file puts on screen comes from `#phrases` in body.html,
+ * which is translated per language; src/*.js is the same file at every one of
+ * the eleven addresses this page has, so a sentence written here would be
+ * English at ten of them. `{name}` in a phrase is filled in from `values`.
+ */
+function phrase(key, values = {}) {
+  const node = el.phrases.querySelector(`[data-phrase="${key}"]`);
+  const text = (node?.textContent ?? key).replace(/\s+/g, ' ').trim();
+  return text.replace(/\{(\w+)\}/g, (whole, name) => (
+    name in values ? String(values[name]) : whole));
+}
+
+/* ------------------------------------------------------------ the pictures */
+
+/**
+ * The longest side a picture is examined at.
+ *
+ * A twelve-megapixel photograph is forty times the work of this and holds no
+ * more code than it does: the modules of a symbol big enough to read are
+ * several pixels across either way. A picture that fails at this size is tried
+ * again whole, because the exception is a code that was small in a very large
+ * frame, and that one does need the pixels.
+ */
+const WORKING_SIDE = 1800;
+
+const decodeCanvas = document.createElement('canvas');
+
+/** A decoded picture, at a given longest side, as pixels. */
+function pixelsOf(source, width, height, maxSide) {
+  const scale = Math.min(1, maxSide / Math.max(width, height));
+  const target = {
+    width: Math.max(1, Math.round(width * scale)),
+    height: Math.max(1, Math.round(height * scale)),
+  };
+
+  decodeCanvas.width = target.width;
+  decodeCanvas.height = target.height;
+  const context = decodeCanvas.getContext('2d', { willReadFrequently: true });
+  // A code drawn light on dark is common; a transparent PNG of one is not
+  // unheard of, and its background would otherwise come out black.
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, target.width, target.height);
+  context.drawImage(source, 0, 0, target.width, target.height);
+  return context.getImageData(0, 0, target.width, target.height);
+}
+
+/**
+ * Get a picture out of a file.
+ *
+ * `createImageBitmap` is the fast path and the one every browser here has, and
+ * it is the one that refuses an SVG in Safari - so an ordinary <img> stands
+ * behind it. Both decode on this machine; neither fetches anything.
+ */
+async function pictureFrom(file) {
+  if (typeof createImageBitmap === 'function') {
+    try {
+      return await createImageBitmap(file);
+    } catch {
+      // Fall through: some browsers refuse some formats here and manage them
+      // perfectly well through an <img>.
+    }
+  }
+
+  const url = URL.createObjectURL(file);
+  try {
+    return await new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error('not a picture this browser can open'));
+      image.src = url;
+    });
+  } finally {
+    // Revoked after the load either way: the pixels are copied onto a canvas
+    // and nothing afterwards needs the URL.
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+  }
+}
+
+/** Read one file, at the working size and then, if that found nothing, whole. */
+async function readFile(file) {
+  const picture = await pictureFrom(file);
+  const width = picture.width ?? picture.naturalWidth;
+  const height = picture.height ?? picture.naturalHeight;
+
+  let found = scan(pixelsOf(picture, width, height, WORKING_SIDE));
+  if (!found && Math.max(width, height) > WORKING_SIDE) {
+    found = scan(pixelsOf(picture, width, height, Math.max(width, height)));
+  }
+
+  picture.close?.();
+  return found;
+}
+
+/* -------------------------------------------------------------- the results */
+
+/** What is on screen, newest first, so the same code is not listed twice. */
+const shown = [];
+const MOST_KEPT = 20;
+
+/**
+ * The symbol's own name.
+ *
+ * Not translated, because these are not words: EAN-13 and Code 128 are what
+ * the standards are called, and what the person asking for one will say. The
+ * exception is the QR code, which is an ordinary noun in most languages and is
+ * spelled differently in several of them, so it comes out of the markup.
+ */
+const SYMBOLOGY_NAMES = {
+  ean13: 'EAN-13',
+  ean8: 'EAN-8',
+  upca: 'UPC-A',
+  upce: 'UPC-E',
+  itf14: 'ITF-14',
+  itf: 'Interleaved 2 of 5',
+  code128: 'Code 128',
+  code39: 'Code 39',
+};
+
+const symbologyName = (id) => SYMBOLOGY_NAMES[id] ?? phrase(`symbology.${id}`);
+
+/** Draw the sampled modules back out, so the reading can be checked by eye. */
+function drawGrid(canvas, size, modules) {
+  const scale = Math.max(1, Math.floor(240 / size));
+  const quiet = 2;
+  const side = (size + quiet * 2) * scale;
+  canvas.width = side;
+  canvas.height = side;
+
+  const context = canvas.getContext('2d');
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, side, side);
+  context.fillStyle = '#000000';
+  for (let row = 0; row < size; row += 1) {
+    for (let column = 0; column < size; column += 1) {
+      if (!modules[row * size + column]) continue;
+      context.fillRect((column + quiet) * scale, (row + quiet) * scale, scale, scale);
+    }
+  }
+}
+
+/** Fill in the technical facts, hiding the rows this kind of code has no answer for. */
+function fillFacts(node, found) {
+  const set = (name, value) => {
+    const cell = node.querySelector(`[data-fact="${name}"]`);
+    if (!cell) return;
+    const holder = cell.closest('div');
+    if (value === null || value === undefined || value === '') {
+      if (holder?.hasAttribute('data-optional')) holder.hidden = true;
+      return;
+    }
+    cell.textContent = String(value);
+  };
+
+  for (const holder of node.querySelectorAll('[data-only]')) {
+    holder.hidden = holder.dataset.only !== found.kind;
+  }
+
+  set('symbol', symbologyName(found.symbology));
+  set('characters', [...found.text].length);
+  set('how', phrase(`how.${found.how}`) + (found.dense ? phrase('how.dense') : ''));
+
+  if (found.kind === 'qr') {
+    set('version', `${found.version} (${phrase('value.modules', { n: found.dimension })})`);
+    set('level', found.level);
+    set('mask', found.mask);
+    set('repaired', found.corrections);
+    const modes = [...new Set(found.segments.map((segment) => segment.mode))];
+    set('mode', modes.map((mode) => phrase(`mode.${mode}`)).join(', '));
+    set('eci', found.eci === null ? '' : found.eci);
+    set('part', found.structuredAppend
+      ? `${found.structuredAppend.index} / ${found.structuredAppend.total}` : '');
+  } else {
+    set('lines', found.lines);
+  }
+}
+
+/** One result, cloned out of the template in body.html and filled in. */
+function render(found) {
+  const node = el.resultTemplate.content.firstElementChild.cloneNode(true);
+  const payload = found.payload;
+
+  node.querySelector('.result-kind').textContent = phrase(payload.kindKey);
+  node.querySelector('.result-symbology').textContent = symbologyName(found.symbology);
+  node.querySelector('.result-text').textContent = found.text;
+  node.dataset.kind = payload.kind;
+
+  const rows = node.querySelector('.result-rows');
+  for (const entry of payload.rows) {
+    const holder = document.createElement('div');
+    const label = document.createElement('dt');
+    const value = document.createElement('dd');
+    label.textContent = phrase(entry.key);
+    value.textContent = entry.phrase ? phrase(entry.phrase) : entry.value;
+    if (entry.emphasis) value.className = 'emphasis';
+    if (entry.secret) value.classList.add('secret');
+    holder.append(label, value);
+    rows.append(holder);
+  }
+  rows.hidden = !payload.rows.length;
+
+  const warnings = node.querySelector('.result-warnings');
+  for (const warning of payload.warnings) {
+    const item = document.createElement('li');
+    item.textContent = phrase(warning.key, warning.values);
+    warnings.append(item);
+  }
+  warnings.hidden = !payload.warnings.length;
+
+  const open = node.querySelector('.open');
+  if (payload.link) {
+    open.href = payload.link.href;
+    open.hidden = false;
+  }
+
+  const copy = node.querySelector('.copy');
+  const original = copy.textContent;
+  copy.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(found.text);
+      copy.textContent = phrase('value.copied');
+      setTimeout(() => { copy.textContent = original; }, 1600);
+    } catch {
+      // No clipboard permission. The text is selectable, which is the fallback
+      // that has always worked.
+      getSelection()?.selectAllChildren(node.querySelector('.result-text'));
+    }
+  });
+
+  fillFacts(node, found);
+
+  if (found.kind === 'qr' && found.modules) {
+    const figure = node.querySelector('.grid-figure');
+    drawGrid(figure.querySelector('.grid'), found.dimension, found.modules);
+    figure.hidden = false;
+  }
+
+  return node;
+}
+
+/** Put a result on the page, unless it is one that is already there. */
+function report(found) {
+  if (shown.some((seen) => seen === `${found.symbology}:${found.text}`)) return false;
+  shown.unshift(`${found.symbology}:${found.text}`);
+  shown.length = Math.min(shown.length, MOST_KEPT);
+
+  el.results.prepend(render(found));
+  while (el.results.children.length > MOST_KEPT) el.results.lastElementChild.remove();
+  el.resultsCard.hidden = false;
+  return true;
+}
+
+function fail(key) {
+  el.pickError.hidden = false;
+  el.pickError.textContent = phrase(key);
+}
+
+/* --------------------------------------------------------------- the files */
+
+const picker = wireFilePicker({
+  input: el.fileInput,
+  dropzone: el.dropzone,
+  onFiles(files) { void readFiles(files); },
+});
+
+async function readFiles(files) {
+  el.pickError.hidden = true;
+  picker.busy(readingLabel(files.length));
+
+  let any = false;
+  let broken = false;
+  for (const file of files) {
+    try {
+      const found = await readFile(file);
+      if (found) any = report(found) || any;
+    } catch {
+      broken = true;
+    }
+  }
+
+  picker.done();
+  if (broken) fail('status.broken');
+  else if (!any) fail('status.nothing');
+}
+
+// A screenshot on the clipboard is the fastest way to read a code that is on
+// screen, and it is the one route into this page that needs no file at all.
+window.addEventListener('paste', (event) => {
+  const files = [...(event.clipboardData?.files ?? [])]
+    .filter((file) => file.type.startsWith('image/'));
+  if (files.length) {
+    event.preventDefault();
+    void readFiles(files);
+  }
+});
+
+/* -------------------------------------------------------------- the camera */
+
+let stream = null;
+let looking = false;
+let lastLook = 0;
+
+/** How often a frame is examined. */
+const EVERY_MS = 120;
+
+function look() {
+  if (!looking) return;
+  requestAnimationFrame(look);
+
+  const now = performance.now();
+  if (now - lastLook < EVERY_MS) return;
+  lastLook = now;
+
+  const frame = camera.frameInto(el.video, decodeCanvas);
+  if (!frame) return;
+
+  const found = scan(frame, { thorough: false });
+  if (found && report(found)) {
+    el.cameraCard.classList.add('hit');
+    setTimeout(() => el.cameraCard.classList.remove('hit'), 700);
+  }
+}
+
+async function startCamera(deviceId) {
+  el.pickError.hidden = true;
+  try {
+    if (stream) camera.close(stream);
+    stream = await camera.open({ deviceId });
+  } catch (error) {
+    stream = null;
+    fail(camera.reasonFor(error));
+    stopCamera();
+    return;
+  }
+
+  el.video.srcObject = stream;
+  el.cameraCard.hidden = false;
+  el.startCamera.hidden = true;
+  el.stopCamera.hidden = false;
+  el.cameraStatus.textContent = phrase('status.on');
+  await el.video.play().catch(() => {});
+
+  const devices = await camera.cameras();
+  if (devices.length > 1 && !el.cameraPick.options.length) {
+    for (const device of devices) el.cameraPick.append(new Option(device.label, device.deviceId));
+    el.cameraPickRow.hidden = false;
+  }
+  if (devices.length > 1) {
+    const active = stream.getVideoTracks()[0]?.getSettings?.().deviceId;
+    if (active) el.cameraPick.value = active;
+  }
+
+  el.torchRow.hidden = !camera.torchable(stream);
+  el.torch.checked = false;
+
+  looking = true;
+  lastLook = 0;
+  requestAnimationFrame(look);
+  setTimeout(() => {
+    if (looking) el.cameraStatus.textContent = phrase('status.looking');
+  }, 2500);
+}
+
+function stopCamera() {
+  looking = false;
+  if (stream) camera.close(stream);
+  stream = null;
+  el.video.srcObject = null;
+  el.cameraCard.hidden = true;
+  el.startCamera.hidden = false;
+  el.stopCamera.hidden = true;
+}
+
+el.startCamera.addEventListener('click', () => { void startCamera(); });
+el.stopCamera.addEventListener('click', stopCamera);
+el.cameraPick.addEventListener('change', () => { void startCamera(el.cameraPick.value); });
+el.torch.addEventListener('change', () => {
+  void camera.setTorch(stream, el.torch.checked);
+});
+
+// A tab put into the background keeps the camera light on and the frames
+// coming, which is both a waste and a thing nobody asked for.
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && stream) stopCamera();
+});
+window.addEventListener('pagehide', stopCamera);
+
+el.privacyToggle.addEventListener('click', () => {
+  const open = el.privacyPanel.hidden;
+  el.privacyPanel.hidden = !open;
+  el.privacyToggle.setAttribute('aria-expanded', String(open));
+});
+
+/* ------------------------------------------------ the live network check */
+
+// Google's ad and measurement scripts, and the donate button's. They are the
+// price of the site being free, they load without the visitor asking, and none
+// of them is handed a picture, a frame, or anything read out of one - so they
+// are reported as themselves rather than counted as an intruder.
+const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+
+/**
+ * Report what this page has actually fetched.
+ *
+ * The claim on trial is not "this page is silent" - it is not, it carries ads -
+ * but "no picture and nothing read out of one has left this machine". On this
+ * tool that is sharper than usual, because the pictures include live frames
+ * from a camera and the things read out of them include Wi-Fi passwords.
+ */
+function monitorNetwork() {
+  const platform = new Set();
+  const external = new Set();
+
+  const inspect = (entries) => {
+    for (const entry of entries) {
+      if (entry.name.startsWith('blob:') || entry.name.startsWith('data:')) continue;
+      const url = new URL(entry.name, location.href);
+      if (url.origin === location.origin) continue;
+      if (PLATFORM_HOSTS.test(url.hostname)) platform.add(url.hostname);
+      else external.add(url.hostname);
+    }
+
+    const total = performance.getEntriesByType('resource')
+      .filter((entry) => !entry.name.startsWith('blob:')
+        && !entry.name.startsWith('data:')).length;
+
+    const clean = external.size === 0;
+    const said = clean
+      ? phrase('live.clean', { total })
+      : phrase('live.dirty', { hosts: [...external].join(', ') });
+    // Joined here rather than by a leading space inside the phrase, which
+    // `phrase` trims off along with the indentation of the markup it came from.
+    const note = platform.size === 0 ? '' : phrase('live.platform', { count: platform.size });
+
+    el.networkCount.textContent = note ? `${said} ${note}` : said;
+    el.networkCount.className = clean ? 'good' : 'warn';
+    el.networkDot.className = `live-dot ${clean ? 'good' : 'warn'}`;
+  };
+
+  inspect(performance.getEntriesByType('resource'));
+  try {
+    new PerformanceObserver((list) => inspect(list.getEntries()))
+      .observe({ type: 'resource', buffered: true });
+  } catch {
+    // PerformanceObserver is unavailable; the one-time snapshot above stands.
+  }
+}
+
+async function registerServiceWorker() {
+  const stop = (key, detail) => {
+    el.offlineStatus.textContent = phrase(key);
+    el.offlineDot.className = 'live-dot';
+    if (detail) {
+      el.offlineStatus.title = detail;
+      console.info('Offline caching unavailable:', detail);
+    }
+  };
+
+  if (!('serviceWorker' in navigator)) {
+    stop('offline.none');
+    return;
+  }
+  if (!window.isSecureContext) {
+    stop('offline.insecure');
+    return;
+  }
+
+  try {
+    await navigator.serviceWorker.register('sw.js');
+    await navigator.serviceWorker.ready;
+    el.offlineStatus.textContent = phrase('offline.ready');
+    el.offlineStatus.className = 'good';
+    el.offlineDot.className = 'live-dot good';
+  } catch (error) {
+    stop('offline.failed', error.message);
+  }
+}
+
+/* -------------------------------------------------------------------- boot */
+
+// An error thrown after boot would otherwise only reach the console, leaving
+// the page looking functional and doing nothing.
+window.addEventListener('error', (event) => {
+  el.pickError.hidden = false;
+  el.pickError.textContent = `Something broke: ${event.message}. Reload the page to start over.`;
+});
+window.addEventListener('unhandledrejection', (event) => {
+  el.pickError.hidden = false;
+  el.pickError.textContent = `Something broke: ${event.reason?.message ?? event.reason}. `
+    + 'Reload the page to start over.';
+});
+
+monitorNetwork();
+registerServiceWorker();
+
+// Reached only if every step above ran without throwing.
+document.getElementById('boot-warning')?.remove();

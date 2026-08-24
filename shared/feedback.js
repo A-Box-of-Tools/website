@@ -138,15 +138,33 @@
   /**
    * The whole of what leaves this page, and only when a button is pressed.
    *
-   * gtag is missing whenever the measurement script is blocked, which is an
+   * THE QUEUE IS THE INTERFACE, NOT THE FUNCTION. `gtag` is an ordinary
+   * function declaration in analytics.js, and the deployed build renames
+   * declarations - so on the live site the global is called something else and
+   * `window.gtag` is undefined. This file used to look it up by name and return
+   * when it found nothing, which meant every answer was silently dropped in
+   * production and nowhere else: the readable build keeps the name, so it
+   * worked on a local server and in every test.
+   *
+   * What gtag does is push its own `arguments` onto window.dataLayer, and
+   * gtag.js reads that queue. `dataLayer` is a property name rather than a
+   * declaration, so no minifier touches it, and pushing to it directly is the
+   * same call by a route that cannot be renamed.
+   *
+   * A missing queue means the measurement script was blocked, which is an
    * ordinary thing for a browser to do and not something to show anybody an
    * error about. The panel thanks them either way: they answered, and whether
    * the answer arrived is not their problem.
    */
   function send(verdict, reason) {
-    if (typeof window.gtag !== 'function') return;
+    var queue = window.dataLayer;
+    if (!queue || typeof queue.push !== 'function') return;
+    // Named for what it is, and never looked up by that name - the payload is
+    // the arguments object, so what this function ends up being called in the
+    // built file does not matter.
+    function gtag() { queue.push(arguments); }
     try {
-      window.gtag('event', 'tool_feedback', {
+      gtag('event', 'tool_feedback', {
         tool_slug: slug,
         verdict: verdict,
         reason: reason,

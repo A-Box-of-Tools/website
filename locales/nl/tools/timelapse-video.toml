@@ -1,0 +1,260 @@
+#
+# Timelapsemaker - Dutch.
+#
+# Overrides for tools/timelapse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Timelapsemaker"
+# Het staartje is de zoekterm. Net als in het Engels blijft de productnaam de
+# luide helft.
+heading = "Timelapse&nbsp;maken <span class=\"h1-kw\">&mdash; online een video versnellen</span>"
+tagline = "Een uur beeldmateriaal in twintig seconden."
+
+title = "Timelapse maken van een video &mdash; gratis, zonder uploaden, werkt offline"
+description = "Maak van een lange video een timelapse: 10x, 60x of elke snelheid die je intypt. Draait in je browser, uploadt niets, zet er geen watermerk op en werkt offline."
+og_title = "Timelapsemaker &mdash; een video versnellen zonder hem te uploaden"
+og_description = "Pak om de zoveel seconden één frame uit een lang filmpje en schrijf ze terug als een kort filmpje. Je eigen browser leest, decodeert en codeert het bestand."
+og_image_alt = "Timelapsemaker - een lange video versnellen in je browser, zonder iets te uploaden"
+
+pledge = """
+    Je eigen browser kiest, decodeert en hercodeert elk frame, op je eigen
+    hardware. Niets hier kan iets ophalen of versturen, want er zit helemaal
+    geen netwerkfunctie in deze tool. En al was die er wel, dan stond aan de
+    andere kant van deze pagina nog steeds geen server om een video naartoe te
+    sturen."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en maak een timelapse. Geen enkel
+      verzoek draagt een frame, een bestandsnaam of ook maar één byte van wat je
+      koos. Of trek de stekker uit je internet en maak er alsnog een, want een
+      tool die je video wegstuurde om hem te laten verwerken zou er domweg mee
+      ophouden."""
+
+read_first = """
+, <code>src/plan.js</code> voor de rekensom die bepaalt
+      uit welk moment elk frame komt, en <code>src/decode.js</code> voor de lus
+      die alleen de stukken van het bestand leest die die momenten nodig hebben.
+      Geen van beide importeert iets wat een verzoek kan doen."""
+
+howto_heading = "Zo maak je een timelapse van een video"
+
+card = """
+            Maak van een lang filmpje een kort filmpje, van uren seconden,
+            zonder het ergens heen te sturen."""
+
+[words]
+plural = "video's"
+choose = "een video"
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Elke snelheid die je intypt"
+
+[[facts]]
+text = "Werkt offline"
+
+[[privacy]]
+title = "Je video's kunnen nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en
+      geen daarvan hoort bij deze site. Er is hier geen eindpunt waar je bestand
+      verzameld zou kunnen worden, en in de code staat niets wat het zou versturen
+      als dat eindpunt er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Deze tool heeft helemaal geen
+      netwerkfunctie: geen adres om te plakken, niets om te downloaden, geen engine
+      die bij het eerste gebruik opgehaald wordt. Elke byte die je video aanraakt,
+      kwam bij het laden van de pagina van deze herkomst."""
+
+[[privacy]]
+title = "Het decoderen en coderen gebeuren allebei hier."
+body = """
+ De frames gaan door
+      WebCodecs in je eigen browser, of door dezelfde afspeelmotor die je het
+      filmpje toch al zou tonen. Het gereedgekomen bestand wordt op dit apparaat in
+      het geheugen opgebouwd en meteen aan een download doorgegeven."""
+
+[[privacy]]
+title = "Het grootste deel van het bestand wordt niet eens gelezen."
+body = """
+ Een timelapse
+      heeft om de zoveel seconden één frame nodig, dus leest de tool alleen het
+      korte stukje bestand rond elk van die momenten en slaat de rest over. Dat is
+      een keuze om het snel te houden en niet om de privacy, maar het is toch goed
+      om te weten: zelfs hier, op je eigen apparaat, gaat het grootste deel van je
+      video nooit open."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google. Geen van beide krijgt iets over je video mee:
+      geen bestand, geen frame, geen naam, geen grootte en geen lengte. Elke regel
+      die leest, decodeert, kiest of codeert, wordt vanaf deze herkomst geserveerd
+      en staat in de repository."""
+
+[[privacy]]
+title = "Wat de doneerknop laadt, en wat hij niet te zien krijgt."
+body = """
+
+      De knop &ldquo;Buy me a coffee&rdquo; in de kop wordt getekend door een
+      script van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts.
+      Het is een link en verder niets. Hij meldt geen bezoek en krijgt niets over
+      jou of je video mee."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Trek de stekker uit het netwerk en alles op deze
+      pagina blijft gewoon werken. Een eenvoudiger bewijs bestaat er niet."""
+
+[[howto]]
+title = "Kies een video."
+body = """
+ Sleep een mp4, mov, m4v of WebM op het
+      keuzevak, of zoek er met de hand een op. De browser leest hem rechtstreeks
+      van je schijf, en ondertussen gaat er niets weg."""
+
+[[howto]]
+title = "Zeg hoeveel sneller."
+body = """
+ Druk op een van de snelheden of
+      typ je eigen snelheid in. Wil je liever zeggen hoe lang het resultaat moet
+      worden, bijvoorbeeld &ldquo;pas dit in twintig seconden&rdquo;, typ dat dan
+      in, want dan volgt de snelheid daaruit."""
+
+[[howto]]
+title = "Controleer het interval."
+body = """
+ De regel onder de snelheid zegt
+      wat er echt gaat gebeuren: om de zoveel seconden van het origineel één
+      frame. Dat is het getal dat je op een camera zou instellen, en het getal dat
+      je het beste even naloopt voordat je begint."""
+
+[[howto]]
+title = "Maak hem en download hem."
+body = """
+ Het werk gebeurt op je eigen
+      hardware, dus hoe lang het duurt hangt af van je apparaat en niet van een
+      wachtrij. De gereedgekomen video gaat rechtstreeks naar de downloads van je
+      browser."""
+
+[[faq]]
+q = "Wordt mijn video ergens naartoe geüpload?"
+a = """
+        Nee. Je eigen browser leest hem, decodeert hem, kiest de frames en
+        codeert ze, op je eigen hardware. Deze tool heeft geen serverkant, en in
+        de <code>Content-Security-Policy</code> van de pagina staat elk adres dat
+        ze mag benaderen &mdash; geen daarvan hoort bij deze site. Controleer je
+        liever zelf dan dat je het aanneemt, trek dan de stekker uit je internet
+        en maak alsnog een timelapse."""
+
+[[faq]]
+q = "Wat betekent die snelheid precies?"
+a = """
+        De verhouding tussen wat erin gaat en wat eruit komt. Op 60&times; wordt
+        een uur beeldmateriaal een minuut, ongeacht de framerate waarmee je het
+        afspeelt. Daaronder pakt de tool om de <em>snelheid &divide;
+        framerate</em> seconden één frame: 60&times; op 30 frames per seconde is
+        er één per twee seconden. De pagina laat dat interval zien voordat je
+        begint, want dat is het getal dat zegt wat er echt gebeurt."""
+
+[[faq]]
+q = "Welke videoformaten kan ik versnellen?"
+a = """
+        Mp4, m4v en mov worden rechtstreeks gelezen, wat er ook in zit: H.264,
+        HEVC, AV1 of VP9, zolang je browser die codec kan decoderen. Al het
+        andere dat je browser kan afspelen, WebM voorop, wordt gelezen door de
+        eigen speler van de browser naar elk moment te laten springen, en dat
+        werkt bij elk formaat dat hij afspeelt. Een bestand dat de browser noch
+        kan lezen noch kan afspelen &mdash; in de praktijk avi, wmv, flv en de
+        meeste mkv's &mdash; wordt met een melding geweigerd in plaats van
+        halverwege te stranden. Wat eruit komt is altijd een mp4."""
+
+[[faq]]
+q = "Waarom heeft de timelapse geen geluid?"
+a = """
+        Omdat er niets te bewaren valt. Geluid op dertig keer de snelheid is geen
+        spraak en geen muziek meer maar een piepje, en het alternatief &mdash;
+        de audio op de originele snelheid onder beeld dat er allang vandoor is
+        &mdash; zou een ander filmpje zijn dan je vroeg. Het spoor gaat er dus
+        af, en dat is meteen de belangrijkste reden waarom een uur video als een
+        paar megabyte terugkomt. Wil je het geluid apart, dan bewaart de
+        <a href="../audio-bewerken/">Audiobewerker</a> het."""
+
+[[faq]]
+q = "Gaat dit sneller dan de hele video omzetten?"
+a = """
+        Veel sneller, en daarvoor wordt het bestand rechtstreeks gelezen. Een
+        frame is alleen te decoderen door bij het keyframe ervoor te beginnen,
+        maar nergens staat dat de frames ertussen bewaard moeten blijven. Een
+        timelapse op 60&times; van een uur decodeert daardoor een paar duizend
+        frames in plaats van honderdduizend. Het overzicht zegt precies hoeveel er
+        gelezen worden voordat je op de knop drukt."""
+
+[[faq]]
+q = "Kost het kwaliteit?"
+a = """
+        De frames die bewaard blijven worden een tweede keer gecodeerd, en dat
+        kost een beetje. Daar is niet omheen te komen, want het gereedgekomen
+        filmpje toont ze op momenten waarvoor in het originele bestand niets
+        gecodeerd was. Waar deze tool wél meer aan uitgeeft dan de andere
+        videotools hier is de bitrate, en dat is met opzet: twee frames die twee
+        seconden uit elkaar liggen hebben veel minder gemeen dan twee frames die
+        een dertigste seconde uit elkaar liggen, dus een codec kan minder
+        hergebruiken en een getal dat op gewoon beeldmateriaal is afgestemd zou
+        blokkerig uitpakken."""
+
+[[faq]]
+q = "Zit er een grens aan de grootte of de lengte?"
+a = """
+        In de tool zit geen grens, en het bestand gaat ook niet in één keer het
+        geheugen in: er worden alleen korte stukjes rond elk moment gelezen. De
+        praktische bovengrens is de gereedgekomen timelapse, die in het geheugen
+        wordt opgebouwd voordat je hem downloadt, en een timelapse is per
+        definitie kort. Het overzicht laat vooraf zien hoe groot hij ongeveer
+        wordt."""
+
+[[faq]]
+q = "Kan ik maar een stuk van het filmpje versnellen?"
+a = """
+        Hier niet. Deze tool pakt het hele filmpje, van het eerste frame tot het
+        laatste. Knip het stuk dat je wilt er eerst uit met de
+        <a href="../video-knippen/">Videoknipper</a>, die dat doet zonder ook maar
+        één frame opnieuw te coderen, en versnel daarna wat daaruit komt."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inlog, geen proefperiode en
+        geen watermerk. De site wordt betaald met advertenties, en die krijgen
+        niets over je video mee."""
+
+[schema]
+browser_requirements = "Vereist JavaScript en een browser die video kan coderen met WebCodecs: Chrome, Edge, Safari 16.4 of nieuwer, of Firefox 133 of nieuwer."
+description = "Van een lange video een timelapse maken in de browser. Om de zoveel seconden van het origineel wordt één frame gepakt, en die frames worden teruggeschreven als een korte mp4 op 24, 30 of 60 frames per seconde. Mp4, mov en m4v worden rechtstreeks gelezen, en alleen rond de momenten die nodig zijn; al het andere dat de browser kan afspelen wordt met sprongen doorlopen. Er wordt niets geüpload."
+features = [
+  "Versnelt mp4-, mov-, m4v- en WebM-video van 1,1x tot 1000x",
+  "Zeg de snelheid, of zeg hoe lang het resultaat moet worden",
+  "Leest alleen de stukken van het bestand die de gekozen momenten nodig hebben",
+  "24, 30 of 60 frames per seconde, op originele grootte of kleiner",
+  "Werkt offline; geen upload, geen account, geen watermerk",
+]
+
+[picker]
+title = "Sleep hier een video heen"
+hint = "of klik om te bladeren &mdash; mp4, mov, m4v, WebM en al het andere dat deze browser afspeelt"

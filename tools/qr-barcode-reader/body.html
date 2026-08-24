@@ -1,0 +1,264 @@
+<main>
+  <!-- Step 1 &mdash; where the picture comes from -->
+  <section class="card">
+    <h2><span class="step">1</span> Show it the code</h2>
+
+    <p class="card-lede">
+      A photograph, a screenshot, or the camera. Whichever you pick, the picture
+      is read here, in this page, on your machine &mdash; nothing is uploaded,
+      and a camera frame is examined and thrown away rather than recorded.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div class="run-row">
+      <button type="button" id="start-camera" class="primary">Use the camera</button>
+      <button type="button" id="stop-camera" class="ghost" hidden>Stop the camera</button>
+    </div>
+
+    <p class="field-summary" id="pick-note">
+      You can also paste a picture straight in with <kbd>Ctrl</kbd>+<kbd>V</kbd>
+      &mdash; a screenshot of a code on screen is the fastest way in.
+    </p>
+
+    <p id="pick-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- The camera, which only appears once it is running -->
+  <section class="card" id="camera-card" hidden>
+    <h2>The camera</h2>
+
+    <div class="viewfinder">
+      <video id="video" playsinline muted disablepictureinpicture></video>
+      <div class="reticle" aria-hidden="true"></div>
+    </div>
+
+    <div class="camera-controls">
+      <div class="option-row" id="camera-pick-row" hidden>
+        <label for="camera-pick">Which camera</label>
+        <select id="camera-pick"></select>
+      </div>
+
+      <label class="check" id="torch-row" hidden>
+        <input type="checkbox" id="torch">
+        <span>
+          <strong>Switch the light on</strong>
+          <span class="check-note">
+            Only some cameras have one, and only some browsers will let a page
+            ask for it. Where it is not offered, it is not there.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary" id="camera-status" role="status"></p>
+
+    <p class="field-summary">
+      The camera light is the honest indicator here: it is on while frames are
+      arriving and off the moment you stop. Nothing between those two points is
+      written to disk, and there is no address in this page's
+      <code>Content-Security-Policy</code> that a picture could be sent to.
+    </p>
+  </section>
+
+  <!-- Step 2 &mdash; the answer -->
+  <section class="card" id="results-card" hidden>
+    <h2><span class="step">2</span> What it says</h2>
+
+    <p class="card-lede">
+      Shown, never opened. A printed code is an address nobody can read, which
+      is exactly what makes a sticker over one worth somebody's trouble &mdash;
+      so the whole string is here to look at first, with the host it would
+      actually reach called out on its own line.
+    </p>
+
+    <div id="results"></div>
+  </section>
+
+  <!--
+    One result. Cloned per code found, with only the values filled in from
+    script: every word in it is here, in the markup, because this file is
+    translated per language and src/*.js is one file serving all eleven.
+  -->
+  <template id="result-template">
+    <article class="result">
+      <header class="result-head">
+        <span class="result-kind"></span>
+        <span class="result-symbology"></span>
+      </header>
+
+      <pre class="result-text"></pre>
+
+      <div class="run-row">
+        <button type="button" class="primary copy">Copy the text</button>
+        <a class="as-button open" target="_blank" rel="noopener noreferrer nofollow" hidden>
+          Open it in a new tab
+        </a>
+      </div>
+
+      <dl class="result-rows"></dl>
+      <ul class="result-warnings"></ul>
+
+      <details class="result-facts">
+        <summary>How this one was read</summary>
+
+        <dl class="facts-list">
+          <div><dt>Symbol</dt><dd data-fact="symbol"></dd></div>
+          <div data-only="qr"><dt>Version</dt><dd data-fact="version"></dd></div>
+          <div data-only="qr"><dt>Error correction</dt><dd data-fact="level"></dd></div>
+          <div data-only="qr"><dt>Mask</dt><dd data-fact="mask"></dd></div>
+          <div data-only="qr"><dt>Codewords repaired</dt><dd data-fact="repaired"></dd></div>
+          <div data-only="qr"><dt>Written as</dt><dd data-fact="mode"></dd></div>
+          <div data-only="qr" data-optional><dt>Declared character set</dt><dd data-fact="eci"></dd></div>
+          <div data-only="qr" data-optional><dt>One of a set</dt><dd data-fact="part"></dd></div>
+          <div data-only="linear" data-optional><dt>Scan lines that agreed</dt><dd data-fact="lines"></dd></div>
+          <div><dt>Characters</dt><dd data-fact="characters"></dd></div>
+          <div><dt>Found by</dt><dd data-fact="how"></dd></div>
+        </dl>
+
+        <figure class="grid-figure" hidden>
+          <canvas class="grid" width="1" height="1"></canvas>
+          <figcaption>
+            The modules this page sampled, drawn back out. If this looks like
+            the code you photographed, it read the right thing; if it looks like
+            static, it did not, and the answer above is not to be trusted.
+          </figcaption>
+        </figure>
+      </details>
+    </article>
+  </template>
+
+  <!--
+    The words script needs, sitting in the markup so that a translator meets
+    them where they meet the rest of the page. A `{host}` in one of these is
+    filled in with the host that was read; nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="kind.url">A web address</span>
+    <span data-phrase="kind.url-plain">A web address, unencrypted</span>
+    <span data-phrase="kind.wifi">A Wi-Fi network</span>
+    <span data-phrase="kind.vcard">A contact card</span>
+    <span data-phrase="kind.mecard">A contact card</span>
+    <span data-phrase="kind.email">An email</span>
+    <span data-phrase="kind.phone">A phone number</span>
+    <span data-phrase="kind.sms">A text message</span>
+    <span data-phrase="kind.place">A place on a map</span>
+    <span data-phrase="kind.otp">A two-factor authentication secret</span>
+    <span data-phrase="kind.other-scheme">Something for another program to open</span>
+    <span data-phrase="kind.number">A number</span>
+    <span data-phrase="kind.text">Plain text</span>
+    <span data-phrase="symbology.qr">QR code</span>
+
+
+    <span data-phrase="field.host">Goes to</span>
+    <span data-phrase="field.port">Port</span>
+    <span data-phrase="field.path">Path</span>
+    <span data-phrase="field.ssid">Network name</span>
+    <span data-phrase="field.security">Security</span>
+    <span data-phrase="field.password">Password</span>
+    <span data-phrase="field.hidden">Hidden network</span>
+    <span data-phrase="field.name">Name</span>
+    <span data-phrase="field.org">Organisation</span>
+    <span data-phrase="field.title">Job title</span>
+    <span data-phrase="field.phone">Phone</span>
+    <span data-phrase="field.email">Email</span>
+    <span data-phrase="field.web">Website</span>
+    <span data-phrase="field.address">Address</span>
+    <span data-phrase="field.note">Note</span>
+    <span data-phrase="field.to">To</span>
+    <span data-phrase="field.subject">Subject</span>
+    <span data-phrase="field.message">Message</span>
+    <span data-phrase="field.number">Number</span>
+    <span data-phrase="field.latitude">Latitude</span>
+    <span data-phrase="field.longitude">Longitude</span>
+    <span data-phrase="field.account">Account</span>
+    <span data-phrase="field.issuer">Issued by</span>
+    <span data-phrase="field.secret">Secret</span>
+    <span data-phrase="field.scheme">Scheme</span>
+
+    <span data-phrase="value.yes">Yes</span>
+    <span data-phrase="value.open-network">Open &mdash; no password</span>
+    <span data-phrase="value.none">None</span>
+    <span data-phrase="value.copied">Copied</span>
+    <span data-phrase="value.modules">{n} modules square</span>
+
+    <span data-phrase="warn.userinfo">Everything before the @ is a username, not
+      an address. Whatever this link appears to say, it goes to {host}.</span>
+    <span data-phrase="warn.punycode">This address is written in a non-Latin
+      script. Some letters in other alphabets are shaped exactly like ours,
+      which is how a name is made to look like one you already trust.</span>
+    <span data-phrase="warn.unicode-host">The host name has characters outside
+      the plain Latin alphabet in it, which can be used to make one name look
+      like another.</span>
+    <span data-phrase="warn.plain-http">This is a plain http:// address, so
+      whatever you send to it travels unencrypted and anything in between can
+      read or change it.</span>
+    <span data-phrase="warn.shortener">{host} is a redirect. The address you
+      would actually arrive at is not in this code, and finding out what it is
+      would mean contacting a server &mdash; which this page never does.</span>
+    <span data-phrase="warn.wifi-secret">This code carries a password in plain
+      text. Anyone who photographs the code has it, which is worth knowing
+      before one goes up on a wall.</span>
+    <span data-phrase="warn.otp-secret">This is the seed for an authenticator
+      app: anyone holding it can generate your codes for that account
+      indefinitely. It has not left this page, and it is worth being careful
+      where else it goes.</span>
+    <span data-phrase="warn.not-openable">This is not a web address, so there is
+      no link to offer. It is printed in full above; whether anything on your
+      machine will act on it is between you and that program.</span>
+
+    <span data-phrase="mode.numeric">digits only</span>
+    <span data-phrase="mode.alphanumeric">capitals and digits</span>
+    <span data-phrase="mode.byte">bytes</span>
+    <span data-phrase="mode.kanji">kanji</span>
+
+    <span data-phrase="how.local">a threshold worked out block by block</span>
+    <span data-phrase="how.inverted">swapping dark for light</span>
+    <span data-phrase="how.global">one threshold for the whole picture</span>
+    <span data-phrase="how.softened">softening the picture first</span>
+    <span data-phrase="how.dense">, checking every row</span>
+
+    <span data-phrase="status.reading">Reading the picture&hellip;</span>
+    <span data-phrase="status.nothing">No code found in that picture. It needs
+      the whole symbol in frame, its white margin included, and enough light
+      that the dark squares are properly dark.</span>
+    <span data-phrase="status.broken">That file could not be opened as a
+      picture.</span>
+    <span data-phrase="status.looking">Looking&hellip; hold the code still and
+      fill about half the frame with it.</span>
+    <span data-phrase="status.on">Camera on. Nothing is being recorded.</span>
+
+    <span data-phrase="camera.denied">The browser refused the camera for this
+      page. That is a permission you can change: look for the camera icon in
+      the address bar. Choosing a picture instead needs no permission at
+      all.</span>
+    <span data-phrase="camera.none">No camera was found on this machine. Drop a
+      photograph or a screenshot in above and it will be read the same
+      way.</span>
+    <span data-phrase="camera.busy">The camera is there but something else is
+      using it. Close whatever has it open &mdash; a video call, usually &mdash;
+      and try again.</span>
+    <span data-phrase="camera.insecure">A browser only hands the camera to a
+      page served over https, which this one is not right now.</span>
+    <span data-phrase="camera.unsupported">This browser has no camera interface
+      for a page to ask for. Everything else here still works.</span>
+    <span data-phrase="camera.failed">The camera could not be started, and the
+      browser did not say why.</span>
+
+    <span data-phrase="live.clean">your pictures have gone nowhere. {total} files
+      loaded, all of them this page's own.</span>
+    <span data-phrase="live.dirty">something contacted {hosts}, which this tool
+      never does. Treat that as worth investigating.</span>
+    <span data-phrase="live.platform">The page's own ad, measurement and
+      donate-button scripts loaded from {count} hosts; not one of them was given
+      a picture, a frame, or a character of what a code said.</span>
+    <span data-phrase="offline.ready">ready &mdash; disconnect from the internet
+      and this still works.</span>
+    <span data-phrase="offline.none">not available in this browser (everything
+      else still works).</span>
+    <span data-phrase="offline.insecure">needs https:// or localhost to cache for
+      offline use.</span>
+    <span data-phrase="offline.failed">caching unavailable here, but nothing is
+      uploaded either way.</span>
+  </div>
+</main>

@@ -6,15 +6,17 @@
 # one. Move a name out of this file when the tool actually ships, and add its
 # folder to tools/ at the same time.
 #
-# The media groups below are what is left after walking the tool list of the
-# best-known online GIF and video site and keeping every entry that can be built
-# so that the work happens on the visitor's own machine, and keeps happening
-# with the network unplugged. Most of them run on APIs the browser already
-# ships. A few need an FFmpeg build vendored into the one tool that uses it,
-# which is allowed - the file still never leaves the machine. What that costs,
-# and what was left out anyway, is written down in README.md under "What can be
-# built here". Read it before adding a name back: a few of the obvious-looking
-# gaps are gaps on purpose.
+# Why each line is here - and why the lines that used to be here are not - is
+# argued one paragraph at a time in ROADMAP.md. A card of four words cannot
+# carry its own reason, and a list nobody can argue with is a list nobody
+# prunes. Read it before adding a name back: several of the obvious-looking
+# gaps below are gaps on purpose, and a couple of the lines that look small
+# need an encoder vendored into them to keep the promise the rest of the site
+# keeps for free.
+#
+# Every line costs eleven files. The translations in locales/*/planned.toml are
+# merged positionally, so a line added here without its ten translations - or a
+# locale list left one item longer than this one - fails the build.
 #
 
 note = "Not built yet. Listed so you can see where this is going."
@@ -23,10 +25,9 @@ note = "Not built yet. Listed so you can see where this is going."
 id = "images"
 name = "Images"
 items = [
-  ["Rotate &amp; flip", "quarter turns, or straightening by a few degrees"],
   ["Add text", "over the picture, or in a caption box above it"],
-  ["Filters", "brightness, contrast, saturation, blur, grayscale"],
-  ["AVIF &amp; JPEG XL", "convert either way, in whichever browser you happen to use"],
+  ["AVIF", "the format one browser writes and the rest only read"],
+  ["DICOM anonymizer", "take the patient out of a scan without touching the scan"],
 ]
 
 [[group]]
@@ -34,11 +35,8 @@ id = "gif"
 name = "GIF &amp; animation"
 items = [
   ["GIF to MP4 or WebM", "the same animation, usually a tenth of the size"],
-  ["Resize, crop &amp; rotate GIFs", "frame by frame, with the timing kept"],
-  ["Reverse a GIF", "last frame first"],
-  ["Change GIF speed", "retime it without re-rendering the frames"],
-  ["APNG maker", "animation with real transparency and full color"],
-  ["Animated WebP", "the same animation again, at a fraction of the size"],
+  ["Edit a GIF", "resize, crop, rotate, reverse it, or change how fast it plays"],
+  ["Animated WebP", "the same animation at a fraction of the size &mdash; and the one here that needs a vendored encoder"],
 ]
 
 [[group]]
@@ -46,19 +44,17 @@ id = "video"
 name = "Video"
 items = [
   ["Resize", "down to a size that will actually send"],
-  ["Rotate", "for the clip that was filmed sideways"],
-  ["Mute, or save the audio", "drop the sound, or keep it on its own"],
-  ["Convert to MP4 or WebM", "whichever one the site you are posting to insists on"],
-  ["Filters", "brightness, contrast, saturation, blur"],
+  ["Rotate", "for the clip that was filmed sideways &mdash; and not one frame is decoded to do it"],
+  ["Mute a video", "drop the sound and leave the picture untouched"],
+  ["Convert to MP4", "whatever came off the camera, as the file that will actually upload"],
   ["Burn in subtitles", "an SRT file drawn into the picture"],
+  ["Subtitle converter", "SRT, VTT, ASS, SBV and LRC in any direction, and timings that can be shifted"],
 ]
 
 [[group]]
 id = "audio"
 name = "Audio"
 items = [
-  ["Fade in &amp; out", "so it does not start and stop on a cliff"],
-  ["Waveform image", "draw a track as a picture"],
   ["Convert format", "MP3, WAV and Opus, in any direction"],
 ]
 
@@ -68,12 +64,14 @@ name = "Documents &amp; PDF"
 items = [
   ["Rotate &amp; crop pages", "fix a scan that came in sideways, or trim its margins"],
   ["Extract images", "pull the pictures back out of a document"],
+  ["Redact a PDF", "take the words out, rather than drawing a black box over them"],
+  ["Document scanner", "a photo of a page, straightened and cleaned up into a document"],
 ]
 
 [[group]]
 id = "beyond"
 name = "Beyond media"
 items = [
-  ["Data", "CSV and JSON conversion, cleaning, inspection"],
-  ["Privacy &amp; security", "hashes, checksums, metadata stripping"],
+  ["CSV &amp; JSON", "convert either way, and tidy up what the spreadsheet exported"],
+  ["Certificates &amp; keys", "read a certificate or a signing request without pasting it into someone's server"],
 ]

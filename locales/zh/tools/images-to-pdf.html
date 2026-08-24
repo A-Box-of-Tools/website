@@ -4,14 +4,11 @@
   Prose paragraphs are written on one line each: a line break inside Chinese
   text collapses to a space in HTML, and a space between two Han characters is
   visible on the page.
-
-  The &mdash; inside each <dd> is a placeholder for a value not read yet, not
-  punctuation, so it stays exactly as the English source has it.
 -->
 <main>
-  <!-- 第 1 步，选图片 -->
+  <!-- 第 1 步，选图 -->
   <section class="card">
-    <h2><span class="step">1</span> 选择图片</h2>
+    <h2><span class="step">1</span> 选图片</h2>
 
     <!--
       A real <label> drives the file picker natively. Calling .click() on a
@@ -26,43 +23,43 @@
     <div id="list-toolbar" class="toolbar" hidden>
       <span id="count-label" class="count"></span>
       <div class="toolbar-actions">
-        <button type="button" data-sort="name" class="ghost">按名称排序</button>
-        <button type="button" data-sort="date" class="ghost">按日期排序</button>
-        <button type="button" data-sort="reverse" class="ghost">倒序</button>
+        <button type="button" data-sort="name" class="ghost">按名字排</button>
+        <button type="button" data-sort="date" class="ghost">按日期排</button>
+        <button type="button" data-sort="reverse" class="ghost">倒过来</button>
         <button type="button" id="clear-all" class="ghost danger">全部移除</button>
       </div>
     </div>
 
     <p id="reorder-hint" class="reorder-hint" hidden>
-      一张图一页，顺序就是这个。抓住 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖动就能挪动一页，用它上面的箭头也行。
+      一张图一页，顺序就是这个。抓住<span class="grip" aria-hidden="true">&#8942;&#8942;</span>手柄拖动，或者按卡片上的箭头。
     </p>
 
     <ul id="image-list" class="image-list"></ul>
   </section>
 
-  <!-- 第 2 步，页面 -->
+  <!-- 第 2 步，页面设置 -->
   <section class="card">
     <h2><span class="step">2</span> 页面设置</h2>
 
     <div class="settings">
       <div class="field">
-        <label for="page-size">页面尺寸</label>
+        <label for="page-size">页面大小</label>
         <select id="page-size">
-          <option value="fit" selected>让页面适应每张图片</option>
+          <option value="fit" selected>页面跟着每张图走</option>
           <option value="a4">A4，210 &times; 297 毫米</option>
           <option value="letter">Letter，8.5 &times; 11 英寸</option>
           <option value="legal">Legal，8.5 &times; 14 英寸</option>
           <option value="a3">A3，297 &times; 420 毫米</option>
           <option value="a5">A5，148 &times; 210 毫米</option>
           <option value="tabloid">Tabloid，11 &times; 17 英寸</option>
-          <option value="custom">自定义&hellip;</option>
+          <option value="custom">自己填&hellip;</option>
         </select>
         <div id="custom-size" class="inline-pair" hidden>
           <input type="number" id="custom-width" min="1" max="5000" step="1" value="210"
-                 aria-label="自定义页面宽度">
+                 aria-label="自定义页宽">
           <span aria-hidden="true">&times;</span>
           <input type="number" id="custom-height" min="1" max="5000" step="1" value="297"
-                 aria-label="自定义页面高度">
+                 aria-label="自定义页高">
           <select id="custom-unit" aria-label="自定义页面尺寸的单位">
             <option value="mm" selected>毫米</option>
             <option value="in">英寸</option>
@@ -78,29 +75,29 @@
           <option value="96">96 DPI</option>
           <option value="150" selected>150 DPI</option>
           <option value="200">200 DPI</option>
-          <option value="300">300 DPI，打印</option>
+          <option value="300">300 DPI，印刷</option>
           <option value="600">600 DPI</option>
         </select>
         <p class="field-note">
-          它决定给定的像素数对应多大的页面，不会改动画面本身。
+          决定同样多的像素铺成多大一页，不会动到画面本身。
         </p>
       </div>
 
       <div class="field" id="orientation-field" hidden>
-        <label for="orientation">方向</label>
+        <label for="orientation">纸张方向</label>
         <select id="orientation">
-          <option value="auto" selected>跟着每张图片走</option>
-          <option value="portrait">纵向</option>
+          <option value="auto" selected>跟着每张图</option>
+          <option value="portrait">竖向</option>
           <option value="landscape">横向</option>
         </select>
       </div>
 
       <div class="field" id="fit-field" hidden>
-        <label for="fit">图片在页面上怎么放</label>
+        <label for="fit">图片怎么摆在页面上</label>
         <select id="fit">
-          <option value="contain" selected>装进页边距以内</option>
-          <option value="cover">铺满页面（会裁掉边缘）</option>
-          <option value="stretch">拉伸到页边距（会变形）</option>
+          <option value="contain" selected>放进页边距以内</option>
+          <option value="cover">铺满整页（边上会被裁掉）</option>
+          <option value="stretch">拉满到页边距（会变形）</option>
         </select>
       </div>
 
@@ -108,24 +105,24 @@
         <label for="margin">页边距</label>
         <div class="inline-pair">
           <input type="number" id="margin" min="0" max="100" step="1" value="0"
-                 aria-label="页边距，以毫米计">
+                 aria-label="页边距，单位毫米">
           <span class="unit-label">毫米</span>
         </div>
       </div>
 
       <div class="field">
-        <label for="background">页面颜色</label>
+        <label for="background">页面底色</label>
         <input type="color" id="background" value="#ffffff">
         <p class="field-note">
-          出现在页边距里，以及任何透明区域的后面。
+          页边距那一圈会露出来，透明的地方也垫在下面。
         </p>
       </div>
 
       <div class="field">
         <label for="mode">图片质量</label>
         <select id="mode">
-          <option value="keep" selected>JPEG 原样保留</option>
-          <option value="jpeg">全部重新编码成 JPEG</option>
+          <option value="keep" selected>JPEG 原样不动</option>
+          <option value="jpeg">全部重编成 JPEG</option>
           <option value="lossless">无损，一点压缩损失都没有</option>
         </select>
         <p class="field-note" id="mode-note"></p>
@@ -134,30 +131,30 @@
       <div class="field" id="quality-field">
         <label for="quality">JPEG 质量</label>
         <select id="quality">
-          <option value="0.75">文件更小</option>
+          <option value="0.75">文件小一点</option>
           <option value="0.88" selected>均衡</option>
-          <option value="0.95">最高质量</option>
+          <option value="0.95">最好画质</option>
         </select>
-        <p class="field-note">只对这个工具不得不重新编码的图片起作用。</p>
+        <p class="field-note">只对那些不得不重编的图片起作用。</p>
       </div>
 
       <div class="field">
-        <label for="max-side">把大图缩小</label>
+        <label for="max-side">大图缩一缩</label>
         <select id="max-side">
-          <option value="0" selected>从不缩，保持原尺寸</option>
-          <option value="4000">最长边 4000 px</option>
-          <option value="2000">最长边 2000 px</option>
-          <option value="1200">最长边 1200 px</option>
+          <option value="0" selected>不缩，保持原尺寸</option>
+          <option value="4000">最长边 4000 像素</option>
+          <option value="2000">最长边 2000 像素</option>
+          <option value="1200">最长边 1200 像素</option>
         </select>
         <p class="field-note" id="shrink-note"></p>
       </div>
     </div>
 
     <details class="meta-panel">
-      <summary>文档信息，全部可选，默认全空</summary>
+      <summary>文档信息，全都可填可不填，默认全空</summary>
       <div class="meta-body">
         <p class="meta-note">
-          PDF 里带着一小块关于它自己的信息，大多数工具不管你要不要，都会往里面填一个时间戳和一个程序名。这一个只写你在这里输入的内容，别的什么都不写，没有文件名，没有机器名，你不勾那个框也没有日期。
+          PDF 里带着一小块关于它自己的信息，多数工具不管你要不要，都往里塞一个时间戳和自己的程序名。这一个只写你在这儿打进去的，别的什么都不写：没有文件名，没有机器名，你不勾那个框，连日期都没有。
         </p>
         <div class="settings">
           <div class="field">
@@ -190,8 +187,8 @@
 
     <div class="preview-row">
       <div class="preview-frame">
-        <canvas id="preview" width="480" height="640" aria-label="其中一页的预览"></canvas>
-        <p id="preview-empty" class="preview-empty">加入图片就能看到页面</p>
+        <canvas id="preview" width="480" height="640" aria-label="单页预览"></canvas>
+        <p id="preview-empty" class="preview-empty">加几张图，就能看到页面了</p>
         <div id="preview-nav" class="preview-nav" hidden>
           <button type="button" id="preview-prev" class="ghost" aria-label="上一页">&lsaquo;</button>
           <span id="preview-label" class="preview-label"></span>
@@ -200,9 +197,9 @@
       </div>
       <dl class="summary" id="summary">
         <div><dt>页数</dt><dd id="sum-pages">&mdash;</dd></div>
-        <div><dt>页面尺寸</dt><dd id="sum-size">&mdash;</dd></div>
-        <div><dt>选中的图片</dt><dd id="sum-input">&mdash;</dd></div>
-        <div><dt>原样复制的</dt><dd id="sum-copied">&mdash;</dd></div>
+        <div><dt>页面大小</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>选了几张图</dt><dd id="sum-input">&mdash;</dd></div>
+        <div><dt>原样抄进去的</dt><dd id="sum-copied">&mdash;</dd></div>
       </dl>
     </div>
   </section>

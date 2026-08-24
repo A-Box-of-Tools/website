@@ -1,0 +1,270 @@
+<main>
+  <!-- Passo 1 &mdash; de onde vem a imagem -->
+  <section class="card">
+    <h2><span class="step">1</span> Mostre o código para ela</h2>
+
+    <p class="card-lede">
+      Uma fotografia, um print, ou a câmera. Escolha o que escolher, a imagem é
+      lida aqui, nesta página, na sua máquina &mdash; nada é enviado, e um quadro
+      da câmera é examinado e jogado fora, não gravado.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div class="run-row">
+      <button type="button" id="start-camera" class="primary">Usar a câmera</button>
+      <button type="button" id="stop-camera" class="ghost" hidden>Parar a câmera</button>
+    </div>
+
+    <p class="field-summary" id="pick-note">
+      Você também pode colar uma imagem direto com
+      <kbd>Ctrl</kbd>+<kbd>V</kbd> &mdash; um print de um código que já está na
+      tela é o caminho mais rápido.
+    </p>
+
+    <p id="pick-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- A câmera, que só aparece depois de ligada -->
+  <section class="card" id="camera-card" hidden>
+    <h2>A câmera</h2>
+
+    <div class="viewfinder">
+      <video id="video" playsinline muted disablepictureinpicture></video>
+      <div class="reticle" aria-hidden="true"></div>
+    </div>
+
+    <div class="camera-controls">
+      <div class="option-row" id="camera-pick-row" hidden>
+        <label for="camera-pick">Qual câmera</label>
+        <select id="camera-pick"></select>
+      </div>
+
+      <label class="check" id="torch-row" hidden>
+        <input type="checkbox" id="torch">
+        <span>
+          <strong>Acender a luz</strong>
+          <span class="check-note">
+            Só algumas câmeras têm, e só alguns navegadores deixam uma página
+            pedir. Onde não é oferecida, não existe.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary" id="camera-status" role="status"></p>
+
+    <p class="field-summary">
+      A luz da câmera é aqui o indicador honesto: fica acesa enquanto chegam
+      quadros e apaga no instante em que você para. Nada do que existe entre
+      esses dois pontos é escrito em disco, e não há na
+      <code>Content-Security-Policy</code> desta página nenhum endereço para
+      onde uma imagem pudesse ir.
+    </p>
+  </section>
+
+  <!-- Passo 2 &mdash; a resposta -->
+  <section class="card" id="results-card" hidden>
+    <h2><span class="step">2</span> O que está escrito</h2>
+
+    <p class="card-lede">
+      Mostrado, nunca aberto. Um código impresso é um endereço que ninguém
+      consegue ler, que é exatamente o que faz valer a pena para alguém colar um
+      adesivo por cima &mdash; então o texto inteiro está aqui para você olhar,
+      com o host onde você realmente cairia numa linha só dele.
+    </p>
+
+    <div id="results"></div>
+  </section>
+
+  <!--
+    Um resultado. Clonado para cada código encontrado, com o script preenchendo
+    só os valores: cada palavra está aqui, na marcação, porque este arquivo é
+    traduzido por idioma e src/*.js é um arquivo só para os onze.
+  -->
+  <template id="result-template">
+    <article class="result">
+      <header class="result-head">
+        <span class="result-kind"></span>
+        <span class="result-symbology"></span>
+      </header>
+
+      <pre class="result-text"></pre>
+
+      <div class="run-row">
+        <button type="button" class="primary copy">Copiar o texto</button>
+        <a class="as-button open" target="_blank" rel="noopener noreferrer nofollow" hidden>
+          Abrir numa aba nova
+        </a>
+      </div>
+
+      <dl class="result-rows"></dl>
+      <ul class="result-warnings"></ul>
+
+      <details class="result-facts">
+        <summary>Como este foi lido</summary>
+
+        <dl class="facts-list">
+          <div><dt>Símbolo</dt><dd data-fact="symbol"></dd></div>
+          <div data-only="qr"><dt>Versão</dt><dd data-fact="version"></dd></div>
+          <div data-only="qr"><dt>Correção de erro</dt><dd data-fact="level"></dd></div>
+          <div data-only="qr"><dt>Máscara</dt><dd data-fact="mask"></dd></div>
+          <div data-only="qr"><dt>Palavras de código reparadas</dt><dd data-fact="repaired"></dd></div>
+          <div data-only="qr"><dt>Escrito como</dt><dd data-fact="mode"></dd></div>
+          <div data-only="qr" data-optional><dt>Conjunto de caracteres declarado</dt><dd data-fact="eci"></dd></div>
+          <div data-only="qr" data-optional><dt>Parte de um conjunto</dt><dd data-fact="part"></dd></div>
+          <div data-only="linear" data-optional><dt>Linhas de leitura que concordaram</dt><dd data-fact="lines"></dd></div>
+          <div><dt>Caracteres</dt><dd data-fact="characters"></dd></div>
+          <div><dt>Encontrado com</dt><dd data-fact="how"></dd></div>
+        </dl>
+
+        <figure class="grid-figure" hidden>
+          <canvas class="grid" width="1" height="1"></canvas>
+          <figcaption>
+            Os módulos que esta página amostrou, redesenhados. Se isto parece o
+            código que você fotografou, ela leu a coisa certa; se parece chuvisco,
+            não leu, e a resposta acima não é de confiança.
+          </figcaption>
+        </figure>
+      </details>
+    </article>
+  </template>
+
+  <!--
+    As palavras de que o script precisa, postas na marcação para quem traduz
+    encontrá-las onde encontra o resto da página. Um {host} é preenchido com o
+    host que foi lido; nada mais é substituído.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="kind.url">Um endereço da web</span>
+    <span data-phrase="kind.url-plain">Um endereço da web, sem criptografia</span>
+    <span data-phrase="kind.wifi">Uma rede Wi-Fi</span>
+    <span data-phrase="kind.vcard">Um cartão de contato</span>
+    <span data-phrase="kind.mecard">Um cartão de contato</span>
+    <span data-phrase="kind.email">Um e-mail</span>
+    <span data-phrase="kind.phone">Um número de telefone</span>
+    <span data-phrase="kind.sms">Um SMS</span>
+    <span data-phrase="kind.place">Um ponto no mapa</span>
+    <span data-phrase="kind.otp">Um segredo de autenticação em duas etapas</span>
+    <span data-phrase="kind.other-scheme">Algo para outro programa abrir</span>
+    <span data-phrase="kind.number">Um número</span>
+    <span data-phrase="kind.text">Texto simples</span>
+    <span data-phrase="symbology.qr">QR Code</span>
+
+
+    <span data-phrase="field.host">Leva a</span>
+    <span data-phrase="field.port">Porta</span>
+    <span data-phrase="field.path">Caminho</span>
+    <span data-phrase="field.ssid">Nome da rede</span>
+    <span data-phrase="field.security">Segurança</span>
+    <span data-phrase="field.password">Senha</span>
+    <span data-phrase="field.hidden">Rede oculta</span>
+    <span data-phrase="field.name">Nome</span>
+    <span data-phrase="field.org">Organização</span>
+    <span data-phrase="field.title">Cargo</span>
+    <span data-phrase="field.phone">Telefone</span>
+    <span data-phrase="field.email">E-mail</span>
+    <span data-phrase="field.web">Site</span>
+    <span data-phrase="field.address">Endereço</span>
+    <span data-phrase="field.note">Observação</span>
+    <span data-phrase="field.to">Para</span>
+    <span data-phrase="field.subject">Assunto</span>
+    <span data-phrase="field.message">Mensagem</span>
+    <span data-phrase="field.number">Número</span>
+    <span data-phrase="field.latitude">Latitude</span>
+    <span data-phrase="field.longitude">Longitude</span>
+    <span data-phrase="field.account">Conta</span>
+    <span data-phrase="field.issuer">Emitido por</span>
+    <span data-phrase="field.secret">Segredo</span>
+    <span data-phrase="field.scheme">Esquema</span>
+
+    <span data-phrase="value.yes">Sim</span>
+    <span data-phrase="value.open-network">Aberta &mdash; sem senha</span>
+    <span data-phrase="value.none">Nenhuma</span>
+    <span data-phrase="value.copied">Copiado</span>
+    <span data-phrase="value.modules">{n} módulos de lado</span>
+
+    <span data-phrase="warn.userinfo">Tudo o que vem antes do @ é um nome de
+      usuário, não um endereço. Diga o que disser, este link leva a
+      {host}.</span>
+    <span data-phrase="warn.punycode">Este endereço está escrito num alfabeto não
+      latino. Algumas letras de outros alfabetos têm exatamente a forma das
+      nossas, e é assim que se faz um nome parecer um em que você já
+      confia.</span>
+    <span data-phrase="warn.unicode-host">O nome do host tem caracteres fora do
+      alfabeto latino simples, o que serve para fazer um nome parecer
+      outro.</span>
+    <span data-phrase="warn.plain-http">Este é um endereço http:// puro, então o
+      que você mandar para ele viaja sem criptografia e qualquer coisa no meio do
+      caminho pode ler ou alterar.</span>
+    <span data-phrase="warn.shortener">{host} é um redirecionamento. O endereço
+      onde você realmente chegaria não está neste código, e descobrir qual é
+      significaria contatar um servidor &mdash; coisa que esta página nunca
+      faz.</span>
+    <span data-phrase="warn.wifi-secret">Este código carrega uma senha em texto
+      aberto. Quem fotografar o código fica com ela, o que vale saber antes de um
+      deles ir parar numa parede.</span>
+    <span data-phrase="warn.otp-secret">Esta é a semente de um app autenticador:
+      quem tiver ela consegue gerar os seus códigos daquela conta
+      indefinidamente. Ela não saiu desta página, e vale a pena ter cuidado com
+      para onde ela vai depois.</span>
+    <span data-phrase="warn.not-openable">Isto não é um endereço da web, então não
+      há link a oferecer. Está impresso inteiro acima; se alguma coisa na sua
+      máquina vai obedecer a ele é assunto entre você e aquele programa.</span>
+
+    <span data-phrase="mode.numeric">só dígitos</span>
+    <span data-phrase="mode.alphanumeric">maiúsculas e dígitos</span>
+    <span data-phrase="mode.byte">bytes</span>
+    <span data-phrase="mode.kanji">kanji</span>
+
+    <span data-phrase="how.local">um limiar calculado bloco a bloco</span>
+    <span data-phrase="how.inverted">trocar escuro por claro</span>
+    <span data-phrase="how.global">um limiar só para a imagem inteira</span>
+    <span data-phrase="how.softened">suavizar a imagem antes</span>
+    <span data-phrase="how.dense">, conferindo cada linha</span>
+
+    <span data-phrase="status.reading">Lendo a imagem&hellip;</span>
+    <span data-phrase="status.nothing">Nenhum código encontrado nessa imagem.
+      Precisa do símbolo inteiro no quadro, margem branca incluída, e luz
+      suficiente para os quadradinhos escuros serem escuros de verdade.</span>
+    <span data-phrase="status.broken">Não deu para abrir esse arquivo como
+      imagem.</span>
+    <span data-phrase="status.looking">Procurando&hellip; segure o código parado e
+      encha com ele mais ou menos metade do quadro.</span>
+    <span data-phrase="status.on">Câmera ligada. Nada está sendo gravado.</span>
+
+    <span data-phrase="camera.denied">O navegador negou a câmera para esta página.
+      É uma permissão que você pode mudar: procure o ícone de câmera na barra de
+      endereço. Escolher uma imagem no lugar não precisa de permissão
+      nenhuma.</span>
+    <span data-phrase="camera.none">Nenhuma câmera foi encontrada nesta máquina.
+      Solte uma fotografia ou um print lá em cima e ele vai ser lido do mesmo
+      jeito.</span>
+    <span data-phrase="camera.busy">A câmera está aí, mas outra coisa está usando.
+      Feche o que estiver com ela aberta &mdash; em geral uma chamada de vídeo
+      &mdash; e tente de novo.</span>
+    <span data-phrase="camera.insecure">Um navegador só entrega a câmera para uma
+      página servida por https, e esta agora não está.</span>
+    <span data-phrase="camera.unsupported">Este navegador não tem interface de
+      câmera para uma página pedir. Todo o resto daqui continua
+      funcionando.</span>
+    <span data-phrase="camera.failed">A câmera não pôde ser iniciada, e o
+      navegador não disse por quê.</span>
+
+    <span data-phrase="live.clean">as suas imagens não foram a lugar nenhum.
+      {total} arquivos carregados, todos da própria página.</span>
+    <span data-phrase="live.dirty">alguma coisa contatou {hosts}, o que esta
+      ferramenta nunca faz. Vale a pena investigar.</span>
+    <span data-phrase="live.platform">Os scripts de anúncio, de medição e do
+      botão de doação da página carregaram de {count} hosts; nenhum deles recebeu
+      uma imagem, um quadro, nem um caractere do que um código dizia.</span>
+    <span data-phrase="offline.ready">pronto &mdash; desligue a internet e isto
+      continua funcionando.</span>
+    <span data-phrase="offline.none">indisponível neste navegador (todo o resto
+      continua funcionando).</span>
+    <span data-phrase="offline.insecure">precisa de https:// ou localhost para
+      guardar uma cópia offline.</span>
+    <span data-phrase="offline.failed">não dá para guardar cópia aqui, mas nada é
+      enviado de qualquer maneira.</span>
+  </div>
+</main>

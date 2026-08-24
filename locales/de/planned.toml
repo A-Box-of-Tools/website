@@ -17,10 +17,9 @@ note = "Noch nicht gebaut. Hier aufgeführt, damit Sie sehen, wohin das geht."
 id = "images"
 name = "Bilder"
 items = [
-  ["Drehen &amp; spiegeln", "in Vierteldrehungen oder um wenige Grad geradegerückt"],
   ["Text hinzufügen", "über dem Bild oder in einem Textkasten darüber"],
-  ["Filter", "Helligkeit, Kontrast, Sättigung, Weichzeichnen, Graustufen"],
-  ["AVIF &amp; JPEG XL", "in beide Richtungen umwandeln, in welchem Browser Sie auch sitzen"],
+  ["AVIF", "das Format, das nur ein Browser schreibt und alle anderen bloß lesen"],
+  ["DICOM anonymisieren", "die Patientendaten aus einem Scan nehmen, ohne den Scan anzufassen"],
 ]
 
 [[group]]
@@ -28,11 +27,8 @@ id = "gif"
 name = "GIF &amp; Animation"
 items = [
   ["GIF zu MP4 oder WebM", "dieselbe Animation, meist ein Zehntel der Größe"],
-  ["GIFs skalieren, zuschneiden &amp; drehen", "Bild für Bild, mit erhaltenem Timing"],
-  ["GIF rückwärts", "das letzte Einzelbild zuerst"],
-  ["GIF-Tempo ändern", "neu takten, ohne die Einzelbilder neu zu rendern"],
-  ["APNG erstellen", "Animation mit echter Transparenz und voller Farbtiefe"],
-  ["Animiertes WebP", "wieder dieselbe Animation, bei einem Bruchteil der Größe"],
+  ["Ein GIF bearbeiten", "skalieren, zuschneiden, drehen, rückwärts laufen lassen oder das Tempo ändern"],
+  ["Animiertes WebP", "dieselbe Animation bei einem Bruchteil der Größe &mdash; und das einzige hier, das einen mitgelieferten Encoder braucht"],
 ]
 
 [[group]]
@@ -40,19 +36,17 @@ id = "video"
 name = "Video"
 items = [
   ["Skalieren", "herunter auf eine Größe, die sich wirklich verschicken lässt"],
-  ["Drehen", "für den Clip, der quer gefilmt wurde"],
-  ["Stummschalten oder Ton sichern", "den Ton weglassen oder ihn separat behalten"],
-  ["In MP4 oder WebM umwandeln", "je nachdem, worauf die Seite besteht, auf der Sie posten"],
-  ["Filter", "Helligkeit, Kontrast, Sättigung, Weichzeichnen"],
+  ["Drehen", "für den Clip, der quer gefilmt wurde &mdash; und kein einziges Einzelbild wird dafür dekodiert"],
+  ["Video stummschalten", "den Ton weglassen und das Bild unangetastet lassen"],
+  ["In MP4 umwandeln", "was auch immer aus der Kamera kam, als Datei, die sich wirklich hochladen lässt"],
   ["Untertitel einbrennen", "eine SRT-Datei fest ins Bild gezeichnet"],
+  ["Untertitel umwandeln", "SRT, VTT, ASS, SBV und LRC in jede Richtung, samt verschiebbaren Zeiten"],
 ]
 
 [[group]]
 id = "audio"
 name = "Audio"
 items = [
-  ["Ein- &amp; ausblenden", "damit es nicht an einer Kante anfängt und aufhört"],
-  ["Wellenform als Bild", "eine Aufnahme als Grafik zeichnen"],
   ["Format umwandeln", "MP3, WAV und Opus, in jede Richtung"],
 ]
 
@@ -62,12 +56,14 @@ name = "Dokumente &amp; PDF"
 items = [
   ["Seiten drehen &amp; zuschneiden", "einen quer eingelesenen Scan geraderücken oder seine Ränder beschneiden"],
   ["Bilder extrahieren", "die Bilder wieder aus einem Dokument herausholen"],
+  ["PDF schwärzen", "die Wörter herausnehmen, statt einen schwarzen Kasten darüber zu malen"],
+  ["Dokumentenscanner", "das Foto einer Seite, geradegerückt und sauber als Dokument"],
 ]
 
 [[group]]
 id = "beyond"
 name = "Jenseits von Medien"
 items = [
-  ["Daten", "CSV und JSON umwandeln, bereinigen, prüfen"],
-  ["Datenschutz &amp; Sicherheit", "Hashes, Prüfsummen, Metadaten entfernen"],
+  ["CSV &amp; JSON", "in beide Richtungen umwandeln und aufräumen, was die Tabelle exportiert hat"],
+  ["Zertifikate &amp; Schlüssel", "ein Zertifikat oder eine Zertifikatsanfrage lesen, ohne sie in einen fremden Server zu kopieren"],
 ]

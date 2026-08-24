@@ -260,12 +260,15 @@ a = """
 [[faq]]
 q = "Sa anche leggere un QR code, oltre a farlo?"
 a = """
-        Non ancora. Leggerne uno vuol dire decodificare un'immagine, cioè trovare
-        il simbolo dentro una fotografia, correggere l'angolo da cui è stata
-        scattata e riparare i danni, che è un lavoro diverso e parecchio più
-        grosso che disegnarne uno. Si potrebbe costruire qui alle stesse
-        condizioni di tutto il resto, ed è in lista. Nel frattempo la fotocamera
-        del tuo telefono lo fa già, e lo fa bene."""
+        Non questa pagina, ma quella accanto sì:
+        <a href="../leggere-qr-code/">il lettore</a> prende una foto, uno
+        screenshot o la tua fotocamera e ti restituisce la stringa. È un lavoro
+        parecchio più grosso che disegnarne uno &mdash; trovare il simbolo
+        dentro un'immagine, correggere l'angolo da cui è stata scattata e
+        riparare i danni sono tre problemi che questa pagina non ha &mdash;, ed
+        è per questo che è uno strumento a sé e non un bottone qui. Funziona
+        alle stesse condizioni di tutto il resto: niente caricato, e nessun
+        fotogramma della fotocamera conservato."""
 
 [[faq]]
 q = "A cosa serve il margine, e posso ridurlo?"

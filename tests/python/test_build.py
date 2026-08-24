@@ -927,5 +927,71 @@ class BuildMinified(unittest.TestCase):
                 sorted(p.relative_to(small).as_posix() for p in small.rglob('*')))
 
 
+class BuildMangled(unittest.TestCase):
+    """What survives having every name in the file changed.
+
+    This class exists because of one bug, and it is the kind that only the
+    deployed build can have. `gtag` is a function declaration in analytics.js;
+    esbuild renames declarations; so on the live site the global was called
+    something else and `window.gtag` was undefined. shared/feedback.js looked it
+    up by that name and returned when it found nothing, so every answer anybody
+    gave was dropped - in production only, because the readable build keeps the
+    name and so does every test stub. It worked perfectly everywhere it was
+    tested and nowhere that mattered.
+
+    So the rule now has a test: the things the outside world knows this site by
+    - a global it publishes, an event name, a parameter name - have to still be
+    spelled that way after the mangler has been over them.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = tempfile.TemporaryDirectory()
+        cls.out = Path(cls.tmp.name) / 'mangled'
+        try:
+            buildmod.build(cls.out, clean=True, minify_output=True,
+                           mangle_names=True)
+        except Exception as error:
+            # esbuild is not installed, or not the pinned version. CI has it and
+            # the deploy needs it; a laptop without it should not fail here.
+            cls.tmp.cleanup()
+            raise unittest.SkipTest(f'no mangled build available: {error}')
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
+    def test_the_measurement_global_keeps_its_name(self):
+        """`gtag` is an interface, not an internal.
+
+        Anything else on the page that measures anything reaches for this by
+        name, because that is the name Google's own documentation gives it.
+        """
+        analytics = (self.out / 'analytics.js').read_text(encoding='utf-8')
+        self.assertIn('window.gtag=', analytics.replace(' ', ''))
+
+    def test_the_feedback_event_keeps_every_name_it_is_read_by(self):
+        """The event name and its three parameters are strings in a report.
+
+        A mangled parameter name would arrive at Google as a dimension nobody
+        had registered, which reports as nothing at all rather than as an error.
+        """
+        feedback = (self.out / 'feedback.js').read_text(encoding='utf-8')
+        for name in ('tool_feedback', 'tool_slug', 'verdict', 'reason'):
+            with self.subTest(name=name):
+                self.assertIn(name, feedback)
+
+    def test_the_answer_is_pushed_to_the_queue_rather_than_through_a_global(self):
+        """The fix itself, pinned.
+
+        `dataLayer` is a property and cannot be renamed; a global function can.
+        Reaching for the queue is what makes this work in a build where every
+        declaration has been given a one-letter name.
+        """
+        feedback = (self.out / 'feedback.js').read_text(encoding='utf-8')
+        self.assertIn('dataLayer', feedback)
+        self.assertNotIn('window.gtag', feedback)
+
+
 if __name__ == '__main__':
     unittest.main()

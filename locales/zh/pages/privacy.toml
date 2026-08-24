@@ -1,15 +1,20 @@
 #
 # 隐私与 Cookie - Simplified Chinese. Overrides for pages/privacy/page.toml.
 #
+# Written in Chinese rather than translated out of the English; the house style
+# is at the top of locales/zh/locale.toml. The reader is 你 here as well - a
+# legal page written in 您 would be the one page on the site that talks to
+# somebody else.
+#
 
 nav = "隐私与 Cookie"
 title = "隐私与 Cookie | abox.tools"
-description = "abox.tools 收集什么、不收集什么。你的文件不会被上传，而广告、访问统计和捐助按钮这三样，这里逐一写清楚。"
+description = "abox.tools 收集什么、不收集什么。你的文件不会上传，而广告、访问统计和捐助按钮这三样，这里逐一写清楚。"
 heading = "隐私与 Cookie"
 lede = """
-    先说短的，你的文件不会被上传，因为根本没有可以上传到的地方。这个页面剩下
-    的内容讲的是广告、访问统计和托管，也就是确实牵涉到其他公司的那几部分。"""
+    先说短的：你的文件不会上传，因为根本没有可以传到的地方。这一页剩下的内容\
+    讲的是广告、访问统计和托管，也就是确实牵涉到别家公司的那几部分。"""
 updated = "2026年8月22日"
 og_title = "隐私与 Cookie | abox.tools"
-og_description = "你的文件不会被上传。什么被收集了、由谁收集，以及怎么把它关掉。"
-og_image_alt = "abox.tools - 不碰服务器的工具"
+og_description = "你的文件不会上传。什么被收集了、由谁收集，以及怎么把它关掉。"
+og_image_alt = "abox.tools - 不走服务器的工具"

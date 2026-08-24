@@ -4,9 +4,6 @@
   Prose paragraphs are written on one line each: a line break inside Chinese
   text collapses to a space in HTML, and a space between two Han characters is
   visible on the page.
-
-  The &mdash; inside each <dd> is a placeholder for a value not read yet, not
-  punctuation, so it stays exactly as the English source has it.
 -->
 <main>
   <!-- 第 1 步，选文件 -->
@@ -26,8 +23,8 @@
       <div><dt>大小</dt><dd id="src-size">&mdash;</dd></div>
       <div><dt>时长</dt><dd id="src-length">&mdash;</dd></div>
       <div><dt>声音</dt><dd id="src-format">&mdash;</dd></div>
-      <div><dt>最响的一瞬</dt><dd id="src-peak">&mdash;</dd></div>
-      <div><dt>读取为</dt><dd id="src-rate">&mdash;</dd></div>
+      <div><dt>最响的那一下</dt><dd id="src-peak">&mdash;</dd></div>
+      <div><dt>读进来的采样率</dt><dd id="src-rate">&mdash;</dd></div>
     </dl>
 
     <div class="wave-wrap" id="src-wave-wrap" hidden>
@@ -38,9 +35,9 @@
     <p id="path-note" class="path-note" hidden></p>
   </section>
 
-  <!-- 第 2 步，改动 -->
+  <!-- 第 2 步，改点什么 -->
   <section class="card" id="edit-card" hidden>
-    <h2><span class="step">2</span> 改它</h2>
+    <h2><span class="step">2</span> 动手改</h2>
 
     <div class="edit-block">
       <label class="check" for="reverse">
@@ -48,7 +45,7 @@
         倒着放
       </label>
       <p class="field-note">
-        采样按从后往前的顺序写出去，除此之外一点没变，所以倒放两次，拿回来的正是你一开始那个文件。
+        采样从最后一个开始往前写出去，除此之外什么都不变，所以倒两次拿回来的就是你一开始那个文件。
       </p>
     </div>
 
@@ -56,7 +53,7 @@
       <div class="block-head">
         <label for="speed">速度</label>
         <input type="text" id="speed-value" class="value-box" inputmode="decimal"
-               spellcheck="false" autocomplete="off" aria-label="速度，以倍数计">
+               spellcheck="false" autocomplete="off" aria-label="速度倍数">
       </div>
 
       <!-- The slider is in octaves, not multiples: half speed and double speed
@@ -65,7 +62,7 @@
       <input type="range" id="speed" min="-2" max="2" step="0.01" value="0"
              aria-describedby="speed-note">
 
-      <div class="presets" role="group" aria-label="速度预设">
+      <div class="presets" role="group" aria-label="常用速度">
         <button type="button" class="ghost" data-speed="0.5">0.5&times;</button>
         <button type="button" class="ghost" data-speed="0.75">0.75&times;</button>
         <button type="button" class="ghost" data-speed="1">1&times;</button>
@@ -79,13 +76,15 @@
         <label class="mode">
           <input type="radio" name="pitch" value="keep" checked>
           <span>
-            <strong>钉住音高</strong>人声听着还是同一个人，只是快了或者慢了。
+            <strong>钉住音高</strong>
+            嗓音还是那个嗓音，只是快了或者慢了。
           </span>
         </label>
         <label class="mode">
           <input type="radio" name="pitch" value="move">
           <span>
-            <strong>让它跟着变</strong>快了就高，慢了就低，跟磁带一个道理。
+            <strong>让它跟着变</strong>
+            快了就尖，慢了就闷，跟磁带一个道理。
           </span>
         </label>
       </fieldset>
@@ -97,24 +96,26 @@
       <div class="block-head">
         <label for="volume">音量</label>
         <input type="text" id="volume-value" class="value-box" inputmode="decimal"
-               spellcheck="false" aria-label="音量变化，以分贝计">
+               spellcheck="false" aria-label="音量增减，单位分贝">
       </div>
 
       <input type="range" id="volume" min="-24" max="24" step="0.5" value="0"
              aria-describedby="volume-note">
 
       <fieldset class="modes">
-        <legend>要调多响</legend>
+        <legend>提到多响</legend>
         <label class="mode">
           <input type="radio" name="level" value="gain" checked>
           <span>
-            <strong>就调这么多</strong>每一个采样都乘上同一个数，别的一概不动。
+            <strong>加减这么多</strong>
+            每个采样都乘同一个数，别的什么都不变。
           </span>
         </label>
         <label class="mode">
           <input type="radio" name="level" value="normalize">
           <span>
-            <strong>能多响就多响</strong>一路提到最响的那一瞬刚好顶在上限之下。
+            <strong>提到最响</strong>
+            一路往上，直到最响那一下刚好顶在上限之下。
           </span>
         </label>
       </fieldset>
@@ -125,14 +126,14 @@
     <dl class="summary" id="summary">
       <div><dt>时长</dt><dd id="sum-length">&mdash;</dd></div>
       <div><dt>速度</dt><dd id="sum-speed">&mdash;</dd></div>
-      <div><dt>最响的一瞬</dt><dd id="sum-peak">&mdash;</dd></div>
-      <div><dt>大约</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>最响的那一下</dt><dd id="sum-peak">&mdash;</dd></div>
+      <div><dt>大致体积</dt><dd id="sum-size">&mdash;</dd></div>
     </dl>
 
     <p id="clip-note" class="path-note" hidden></p>
   </section>
 
-  <!-- 第 3 步，出来的那个文件 -->
+  <!-- 第 3 步，出文件 -->
   <section class="card" id="export-card" hidden>
     <h2><span class="step">3</span> 保存</h2>
 
@@ -140,17 +141,17 @@
       <div class="field">
         <label for="depth">写成什么</label>
         <select id="depth">
-          <option value="16" selected>16 位 WAV，到哪儿都能放</option>
-          <option value="32">32 位浮点 WAV，什么都不会被削平</option>
+          <option value="16" selected>16 位 WAV，哪儿都能放</option>
+          <option value="32">32 位浮点 WAV，什么都不削顶</option>
         </select>
         <p class="field-note" id="depth-note">
-          WAV 原样保存采样，所以写一个 WAV 不可能损失质量。代价是文件不小，估算见上面。
+          WAV 里装的就是采样本身，所以写出来这一步不可能掉质量。缺点是文件不小，上面那个估算就是。
         </p>
       </div>
     </div>
 
     <div class="export-row">
-      <button type="button" id="export" class="primary">处理音频</button>
+      <button type="button" id="export" class="primary">开始处理</button>
       <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 

@@ -45,6 +45,9 @@ complete = true
 # Nobody searches for an "éditeur EXIF" in French; they search for how to get
 # the data out of a photo.
 "exif-editor" = "supprimer-les-donnees-exif"
+# "Caviarder" est le mot exact, et c'est celui qui porte la distinction
+# dont vit la page : supprimer plutot que recouvrir.
+"redact-image" = "caviarder-une-image"
 "images-to-pdf" = "images-en-pdf"
 "images-to-video" = "images-en-video"
 "resize-image" = "redimensionner-une-image"
@@ -61,6 +64,9 @@ complete = true
 # The same shape as "images-en-pdf" and "images-en-video" above: a conversion
 # named by its two ends.
 "video-to-gif" = "video-en-gif"
+# L'anglicisme, parce que c'est ce qui se tape : "acceleration" ou
+# "hyperlapse" ne sont pas ce que cherche quelqu'un qui veut cet outil.
+"timelapse-video" = "faire-un-timelapse"
 "image-to-data-uri" = "image-en-base64"
 # The one tool here named by a noun rather than by a verb, because that is the
 # phrase: "générateur de QR code" is what French speakers type, in a way that
@@ -77,6 +83,15 @@ complete = true
 "split-gif" = "decouper-un-gif-en-images"
 "text-tools" = "formater-du-json"
 "trim-audio" = "couper-un-audio"
+# Un nom, comme le générateur de QR code au-dessus, et pour la même raison :
+# c'est la formule qui se tape. Le singulier, parce que la recherche est
+# faite par quelqu'un qui en veut un.
+"password-generator" = "generateur-de-mot-de-passe"
+# Un nom, comme "generateur-de-qr-code" plus haut, et pour la même raison :
+# "lecteur de QR code" est la formule qui se tape. Les codes-barres restent
+# hors de l'adresse, portés par le titre de la page.
+"qr-barcode-reader" = "lecteur-de-qr-code"
+"hash-checksum" = "verifier-une-somme-de-controle"
 
 "guides" = "guides"
 "roadmap" = "feuille-de-route"
@@ -86,6 +101,7 @@ complete = true
 "guides/compress-an-image-to-a-target-size" = "guides/compresser-une-image-a-une-taille-precise"
 "guides/resize-an-image" = "guides/redimensionner-une-image"
 "guides/remove-exif-and-gps-data" = "guides/supprimer-les-donnees-exif-et-gps"
+"guides/redact-an-image" = "guides/caviarder-une-image"
 "guides/make-a-pdf-smaller" = "guides/reduire-la-taille-d-un-pdf"
 "guides/combine-images-into-a-pdf" = "guides/reunir-des-images-dans-un-pdf"
 "guides/turn-images-into-a-video" = "guides/transformer-des-images-en-video"
@@ -112,6 +128,7 @@ complete = true
 "guides/split-a-gif-into-frames" = "guides/decouper-un-gif-en-images"
 "guides/trim-an-audio-file" = "guides/couper-un-fichier-audio"
 "guides/whats-inside-a-gif" = "guides/ce-qu-il-y-a-dans-un-gif"
+"guides/verify-a-file-checksum" = "guides/verifier-la-somme-de-controle-d-un-telechargement"
 
 #
 # ---------------------------------------------------------------------------
@@ -188,12 +205,17 @@ note = "Fabriquer et réorganiser des documents sans les envoyer se faire traite
 [[hub.categories]]
 id = "codes-and-data"
 name = "Codes &amp; données"
-note = "Transformer ce que vous avez tapé en quelque chose qu'une machine sait lire, sans que cela quitte la page."
+note = "Fabriquer quelque chose qu’une machine sait lire, ou vérifier qu’un fichier est bien celui qu’il prétend être. Le tout dans la page."
 
 [[hub.categories]]
 id = "text-and-code"
 name = "Texte &amp; code"
 note = "Le relire, le comparer, l'encoder, sans coller un jeton ou un fichier de configuration sur le serveur d'un inconnu."
+
+[[hub.categories]]
+id = "passwords-and-security"
+name = "Mots de passe &amp; sécurité"
+note = "Fabriquez le secret ici, sur votre propre appareil, pour que personne d'autre n'en ait jamais eu une copie à perdre."
 
 #
 # ---------------------------------------------------------------------------

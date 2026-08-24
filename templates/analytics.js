@@ -23,5 +23,14 @@
 window.dataLayer = window.dataLayer || [];
 function gtag() { dataLayer.push(arguments); }
 
+// Google's snippet stops at the line above, and this one puts back what the
+// build takes away. `gtag` is a function declaration, and the deployed build
+// renames declarations, so the global that every piece of documentation and
+// every other script on the page expects does not exist once it is minified.
+// A property name survives, so saying it this way makes the name real in both
+// builds. Found when shared/feedback.js sent nothing at all in production and
+// everything in every test.
+window.gtag = gtag;
+
 gtag('js', new Date());
 gtag('config', '{{ site.analytics_id }}');

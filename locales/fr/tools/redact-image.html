@@ -1,0 +1,183 @@
+<main>
+  <!-- Étape 1 &mdash; l'image -->
+  <section class="card">
+    <h2><span class="step">1</span> Choisir l'image</h2>
+
+    <p class="card-lede">
+      La capture d'un relevé bancaire, la photo d'un passeport, une facture avec
+      une adresse dessus&nbsp;: les images qu'il faut caviarder sont exactement
+      celles qu'il ne faudrait pas envoyer sur le serveur d'un inconnu pour le
+      faire. Celle-ci est lue directement sur votre disque par le navigateur.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">En choisir une autre</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Étape 2 &mdash; les cadres -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Recouvrir ce que personne ne doit voir</h2>
+
+    <p id="edit-empty" class="field-summary">Choisissez une image&nbsp;: elle apparaîtra ici pour être annotée.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Faites glisser sur l'image pour tracer un cadre. Un cadre se déplace en
+        le faisant glisser, se redimensionne par ses poignées, ou s'atteint avec
+        <kbd>Tab</kbd> et se manipule aux flèches&nbsp;: <kbd>Alt</kbd> et les
+        flèches redimensionnent, <kbd>Suppr</kbd> retire. Ce que vous voyez sous
+        chaque cadre est le résultat réel&nbsp;: l'aperçu est dessiné par le code
+        qui écrit le fichier, à la taille de l'écran.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>Ce que fait un nouveau cadre</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>Masquer en noir</strong>
+            <span class="check-note">
+              Une couleur unie, d'un bord à l'autre. De ce qui était là, rien ne
+              survit&nbsp;: ni un contour, ni une moyenne, ni le nombre de
+              caractères. C'est le seul des trois traitements qui clôt la
+              question, et c'est celui à employer pour tout ce qui se lit comme
+              du texte.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>Pixelliser</strong>
+            <span class="check-note">
+              Chaque bloc devient la couleur moyenne de ce bloc. Les pixels
+              d'origine ont bien disparu du fichier, mais une grille de moyennes
+              reste une mesure de ce qui se trouvait dessous&nbsp;: pour du texte
+              dans une police ordinaire, cela a suffi, dans des travaux publiés,
+              à reconstituer l'original. Très bien pour un visage dans une foule,
+              pas pour un numéro de compte.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>Flouter</strong>
+            <span class="check-note">
+              Chaque pixel devient une moyenne pondérée de ses voisins. La même
+              objection que pour la pixellisation, en plus net&nbsp;: le flou est
+              une convolution, et les convolutions sont en principe inversibles.
+              À employer quand vous voulez adoucir quelque chose plutôt que le
+              cacher.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">Intensité de la pixellisation et du flou</label>
+          <select id="strength">
+            <option value="light">Légère</option>
+            <option value="medium" selected>Moyenne</option>
+            <option value="heavy">Forte</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">Ajouter un cadre au centre</button>
+        <button type="button" id="undo" class="ghost" disabled>Annuler</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>Retirer tous les cadres</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Étape 3 &mdash; le fichier -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> Enregistrer la copie caviardée</h2>
+
+    <p class="card-lede">
+      L'image est décodée en pixels, les cadres sont écrits par-dessus ces
+      pixels, et le résultat est encodé en un nouveau fichier. Il n'y a ni
+      calque, ni annotation, ni trace de l'endroit où étaient les cadres, parce
+      que les pixels recouverts cessent d'exister avant que l'encodeur ne reçoive
+      quoi que ce soit.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="auto" selected>Automatique &mdash; JPEG pour une photo, PNG pour le reste</option>
+          <option value="png">PNG (sans perte)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          Cela ne change rien au caviardage&nbsp;: les pixels ont déjà disparu
+          quand l'encodeur les voit. Cela décide seulement de ce que coûte le
+          reste de l'image et de la façon dont il est compressé.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">Qualité</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Caviarder et enregistrer</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      Caviardage en pleine résolution&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>Le fichier terminé</h3>
+        <a id="download" class="primary as-button" href="#" download>Télécharger</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        Ouvrez-le ensuite et essayez de sélectionner le texte recouvert, ou
+        collez-le dans un éditeur et cherchez un calque. Il n'y a rien à
+        trouver&nbsp;: une seule image plate, dont les parties recouvertes ont été
+        écrasées avant l'écriture.
+      </p>
+    </div>
+  </section>
+</main>

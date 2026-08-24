@@ -26,7 +26,7 @@
           },
           "Permissions-Policy": {
             "operation": "set",
-            "value": "camera=(), microphone=(), geolocation=(), usb=(), payment=()"
+            "value": "camera=(self), microphone=(), geolocation=(), usb=(), payment=()"
           }
         }
       }
