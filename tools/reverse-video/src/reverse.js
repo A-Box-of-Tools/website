@@ -56,16 +56,18 @@ const MAX_BITRATE = 60_000_000;
 const QUEUE_LIMIT = 8;
 
 /**
- * How long the decode/encode queues may sit without draining before a
- * reversal gives up rather than waiting forever.
+ * How long the queues may sit without draining before a reversal gives up.
  *
- * A codec that has genuinely stalled - a hardware encoder the driver cannot
- * actually deliver on, say, despite `isConfigSupported` saying yes - does not
- * reliably fire `error`: the `dequeue` event this waits on simply never comes
- * again. Without a ceiling on that wait, `settle` spins quietly and the page
- * sits at "Preparing..." with nothing to show for it and nothing to click.
- * Thirty seconds is far past what a queue of eight frames takes to drain on
- * any hardware actually processing them, even in software at 4K.
+ * A stalled codec does not reliably report anything: it stops draining and the
+ * `dequeue` event this waits on simply never comes again. Without a ceiling on
+ * that wait the page sits at "Preparing..." forever, which is the one failure
+ * a visitor cannot tell from slow progress.
+ *
+ * The stall this was written for - holding a window of frames and starving the
+ * decoder's surface pool - is fixed above, so reaching this now means something
+ * genuinely unexplained. It is kept because an indefinite hang is a bad enough
+ * outcome to be worth a backstop, and thirty seconds is far longer than a queue
+ * of eight frames takes anywhere that is really working, software 4K included.
  */
 const STALL_TIMEOUT_MS = 30_000;
 
@@ -135,10 +137,9 @@ async function settle(decoder, encoder) {
       bestSeen = size;
       progressAt = Date.now();
     } else if (Date.now() - progressAt > STALL_TIMEOUT_MS) {
-      throw new Error('The video decoder or encoder stopped responding partway through, rather '
-        + 'than reporting an error. This usually means the browser accepted this file at this '
-        + 'resolution and quality but cannot actually deliver on it in hardware; a smaller '
-        + 'clip, a lower quality setting, or a different browser is worth trying.');
+      throw new Error('The video decoder or encoder stopped responding partway through, without '
+        + 'reporting a reason. A shorter clip, a lower quality setting, or a different browser '
+        + 'is worth trying.');
     }
 
     await new Promise((resolve) => {
@@ -294,16 +295,76 @@ export async function reverseExact({
    * shown in another.
    */
   let wanted = new Map();
-  let held = [];
+
+  /** The wanted frames' pixels, owned by us rather than by the decoder. */
+  let kept = [];
+
+  /** Copies still running. `flush` promises the callbacks ran, not that these did. */
+  let copies = [];
 
   const decoder = new VideoDecoder({
     output: (videoFrame) => {
-      if (wanted.has(videoFrame.timestamp)) held.push(videoFrame);
-      else videoFrame.close();
+      if (!wanted.has(videoFrame.timestamp)) {
+        videoFrame.close();
+        return;
+      }
+
+      // The pixels are copied out and the frame released immediately, rather
+      // than the frame being held until the window is ready to encode it.
+      //
+      // That is not a memory optimisation - the copy is the same size as the
+      // frame - it is what keeps the decoder running at all. A decoder hands
+      // back pictures from a small pool of surfaces, and it is a pool rather
+      // than an allocation: a dozen or so at 4K, whatever the machine has.
+      // While the application holds them it cannot decode, and holding a
+      // window of them is therefore not slow but stuck, because the frames
+      // that would release the pool are the ones still queued behind it. The
+      // budget in windowLimit() is counted in bytes and cannot see this, and
+      // at 4K it asks for about three times what the pool can spare.
+      const rect = videoFrame.visibleRect;
+      const slot = {
+        timestamp: videoFrame.timestamp,
+        format: videoFrame.format,
+        // Sized to the visible rectangle, which is what copyTo() writes out:
+        // a frame coded taller than it is shown has that padding dropped here
+        // rather than travelling with it.
+        width: rect ? rect.width : videoFrame.codedWidth,
+        height: rect ? rect.height : videoFrame.codedHeight,
+        displayWidth: videoFrame.displayWidth,
+        displayHeight: videoFrame.displayHeight,
+        colorSpace: videoFrame.colorSpace,
+        data: null,
+        layout: null,
+      };
+      kept.push(slot);
+
+      // Left to run rather than awaited in turn: each frame is released the
+      // moment its own copy lands, and making them queue behind one another
+      // would hold the surfaces this exists to give back.
+      const buffer = new ArrayBuffer(videoFrame.allocationSize());
+      copies.push(videoFrame.copyTo(buffer)
+        .then((layout) => {
+          slot.data = buffer;
+          slot.layout = layout;
+        })
+        .catch((error) => { failure ??= error; })
+        .finally(() => videoFrame.close()));
     },
     error: (error) => { failure ??= error; },
   });
   decoder.configure(decoderConfig(video));
+
+  /** A kept frame, built back into something the canvas will draw. */
+  const rebuild = (slot) => new VideoFrame(slot.data, {
+    format: slot.format,
+    codedWidth: slot.width,
+    codedHeight: slot.height,
+    timestamp: slot.timestamp,
+    layout: slot.layout,
+    displayWidth: slot.displayWidth,
+    displayHeight: slot.displayHeight,
+    colorSpace: slot.colorSpace,
+  });
 
   /** One held frame, drawn and encoded at the time the reversal gives it. */
   const emit = (videoFrame, index) => {
@@ -359,7 +420,8 @@ export async function reverseExact({
         const run = shown.slice(window.from, window.to + 1);
         wanted = new Map(
           run.map((index) => [micros(video.samples[index].pts, video.timescale), index]));
-        held = [];
+        kept = [];
+        copies = [];
 
         // Everything a frame is built from decodes before it, so the feed can
         // stop at the last frame of this run rather than finishing the group.
@@ -379,15 +441,21 @@ export async function reverseExact({
         }
 
         await decoder.flush();
+        // `flush` waits for the output callbacks, and each of those starts a
+        // copy rather than finishing one. The pixels are only ours after this.
+        await Promise.all(copies);
+        copies = [];
         if (failure) throw failure;
 
         // Last shown, first written. This is the reversal.
-        held.sort((a, b) => b.timestamp - a.timestamp);
-        for (const videoFrame of held) {
-          emit(videoFrame, wanted.get(videoFrame.timestamp));
+        kept.sort((a, b) => b.timestamp - a.timestamp);
+        for (const slot of kept) {
+          if (!slot.data) continue;   // its copy failed; `failure` already holds why
+          emit(rebuild(slot), wanted.get(slot.timestamp));
+          slot.data = null;
           await settle(decoder, encoder);
         }
-        held = [];
+        kept = [];
 
         onProgress?.({ phase: 'reversing', done: drawn, total });
       }
@@ -399,7 +467,12 @@ export async function reverseExact({
     if (!encoded.length) throw new Error('No frames could be decoded from this file.');
     if (!avcC) throw new Error('The encoder never reported a decoder configuration.');
   } finally {
-    for (const videoFrame of held) videoFrame.close();
+    // The frames themselves were handed back as they arrived, so what is left
+    // to drop here is the copies. Any still running own a frame apiece and
+    // close it themselves, so they are waited for rather than abandoned.
+    await Promise.allSettled(copies);
+    kept = [];
+    copies = [];
     if (decoder.state !== 'closed') decoder.close();
     if (encoder.state !== 'closed') encoder.close();
   }
