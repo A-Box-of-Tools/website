@@ -1,0 +1,405 @@
+/*
+  Only the rules this tool needs. The frame around the page - the header, the
+  pledge, the privacy panel, the FAQ, the footer - is shared/css/tool-frame.css,
+  which the build puts in front of this file.
+*/
+
+/* The one button on the page big enough to be found without reading. */
+.big { font-size: 1.02rem; padding: 0.7rem 1.3rem; }
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+  color: var(--danger);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  max-width: 72ch;
+  white-space: pre-line;
+}
+
+.card-lede {
+  margin: -0.4rem 0 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 68ch;
+}
+
+.field-summary {
+  margin: 0.9rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.field-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+/* -------------------------------------------------------- what was opened */
+
+.doc-facts {
+  margin-top: 1rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.doc-name {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-sub {
+  margin: 0.15rem 0 0;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+  The warnings that say what this tool cannot do to the file in front of it: a
+  page that is a picture, letters whose font gives no way back to text, a scan
+  with a searchable layer laid over it. They are the most important thing on
+  the page when they appear, so they are not small print.
+*/
+.doc-warnings {
+  margin: 0.7rem 0 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text);
+  max-width: 72ch;
+}
+
+.doc-warnings:empty { display: none; }
+.doc-warnings li { margin-bottom: 0.35rem; }
+
+/* ------------------------------------------------------------ the search */
+
+.find-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+#terms {
+  display: block;
+  width: 100%;
+  max-width: 34rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.92rem;
+  resize: vertical;
+}
+
+.find-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  margin-top: 0.7rem;
+}
+
+.inline-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.finders {
+  margin: 1.2rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.finders legend {
+  padding: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--surface);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.chip:hover { border-color: var(--accent); }
+
+.chip:has(input:checked) {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+}
+
+.chip:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ------------------------------------------------------------ the matches */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}
+
+.toolbar-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.count { color: var(--text-dim); font-size: 0.9rem; }
+
+.match-list {
+  list-style: none;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  max-height: 26rem;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.match-row { border-bottom: 1px solid var(--border); }
+.match-row:last-child { border-bottom: 0; }
+
+.match-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+}
+
+.match-label:hover { background: var(--surface-2); }
+.match-label input { flex: none; align-self: center; }
+
+.match-page {
+  flex: none;
+  width: 3.2rem;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+  The line the match sits on, as one line. A match whose context wrapped would
+  push the next row down the list and make a long list impossible to scan, and
+  the whole point of this list is that it can be scanned.
+*/
+.match-line {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.85rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-dim);
+}
+
+.match-line mark {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+  color: var(--text);
+  font-weight: 600;
+  border-radius: 3px;
+}
+
+/* --------------------------------------------------------- the page panel */
+
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.pager-spacer { flex: 1; }
+
+/* The frame's ghost button has no disabled state, because until this tool none
+   of them were ever disabled. Paging past the last page, and clearing a page
+   with nothing on it to clear, are both buttons worth greying. */
+.ghost:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.ghost:disabled:hover { border-color: var(--border); }
+
+/*
+  The document's text, laid out as text rather than as a picture of a page.
+  Monospaced because the panel's job is to be read carefully rather than to
+  look like the original - and because a proportional face makes a struck-out
+  word and the word beside it hard to tell apart at a glance.
+*/
+.page-text {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 0.8rem 1rem;
+  max-height: 34rem;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.86rem;
+  line-height: 1.75;
+}
+
+.text-line {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.word {
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 0 1px;
+}
+
+.word:hover {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.word.picked { background: color-mix(in srgb, var(--danger) 15%, transparent); }
+
+.word s {
+  color: var(--danger);
+  text-decoration-thickness: 2px;
+}
+
+/* --------------------------------------------------------------- the run */
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.check input { margin-top: 0.25rem; flex: none; }
+.check strong { display: block; font-size: 0.9rem; }
+
+.check-note {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 70ch;
+}
+
+.run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+
+.progress { margin-top: 1rem; }
+
+.progress-track {
+  height: 6px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Width is set from script as each stage finishes. No animation: a bar that
+   slides while a document is rewritten suggests progress nothing measured. */
+.progress-bar { height: 100%; width: 0; background: var(--accent); }
+
+.progress-label { margin: 0.45rem 0 0; font-size: 0.85rem; color: var(--text-dim); }
+
+/* ---------------------------------------------------------------- results */
+
+.result { margin-top: 1.2rem; }
+
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.result-size { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.result-sub { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--text-dim); max-width: 52ch; }
+
+a.primary { text-decoration: none; display: inline-block; }
+
+/* The line that says the finished file was opened again and searched. It is
+   the whole argument for trusting this tool, so it is not small print. */
+.check-line {
+  margin: 0.8rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.check-line.good { color: var(--ok); }
+.check-line.bad { color: var(--danger); }
+
+.check-terms {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.check-terms li {
+  padding: 0.15rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--ok) 40%, transparent);
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--ok) 10%, transparent);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.result-facts {
+  margin: 0.8rem 0 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.87rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+@media (max-width: 560px) {
+  .result-head { flex-direction: column; align-items: stretch; }
+  .match-page { width: 2.6rem; }
+  .pager-spacer { display: none; }
+}

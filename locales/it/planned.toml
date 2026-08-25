@@ -56,7 +56,6 @@ name = "Documenti e PDF"
 items = [
   ["Ruotare e ritagliare le pagine", "raddrizzare una scansione storta, oppure tagliarne i margini"],
   ["Estrarre le immagini", "tirare fuori le figure da un documento"],
-  ["Oscurare un PDF", "togliere davvero le parole, invece di disegnarci sopra un rettangolo nero"],
   ["Scanner di documenti", "la foto di una pagina, raddrizzata e ripulita in un documento"],
 ]
 

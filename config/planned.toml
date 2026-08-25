@@ -64,7 +64,6 @@ name = "Documents &amp; PDF"
 items = [
   ["Rotate &amp; crop pages", "fix a scan that came in sideways, or trim its margins"],
   ["Extract images", "pull the pictures back out of a document"],
-  ["Redact a PDF", "take the words out, rather than drawing a black box over them"],
   ["Document scanner", "a photo of a page, straightened and cleaned up into a document"],
 ]
 

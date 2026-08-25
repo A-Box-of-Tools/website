@@ -56,7 +56,6 @@ name = "Documents &amp; PDF"
 items = [
   ["Faire pivoter &amp; recadrer des pages", "redresser un scan couché, ou rogner ses marges"],
   ["Extraire les images", "ressortir les images d'un document"],
-  ["Caviarder un PDF", "retirer les mots, au lieu de peindre un rectangle noir par-dessus"],
   ["Scanner de documents", "la photo d'une page, redressée et nettoyée en document"],
 ]
 

@@ -200,25 +200,6 @@ Pulling the pictures back out of a document is the reader
 other direction, and it answers a question people ask constantly: the picture
 is in the PDF and nowhere else, and they need it back.
 
-### Redact a PDF
-
-Every free web redaction tool draws a black rectangle and leaves the text layer
-underneath it. The result looks identical to a real redaction until somebody
-selects the box and copies out what is under it, which is why the same failure
-keeps making the news — most recently in December 2025, when blacked-out text
-in a mass release of Department of Justice documents came back out within hours
-of publication.
-
-Doing it correctly means deleting the text operators from the content stream
-and re-writing the page, not painting over it. That is out of reach of a
-one-page competitor and *not* out of reach here, because
-[`compress-pdf`](tools/compress-pdf/src/) already parses objects, decodes the
-Flate every stream is wrapped in, and writes the file back out. It is the
-strongest "this one is the only one that does it properly" claim available to
-this site, and the people who need it — lawyers, clerks, anyone filing a
-document with something private in it — are exactly the people who should not
-be uploading the file.
-
 ### Document scanner
 
 A phone photo of a page, with the corners found, the perspective straightened,
