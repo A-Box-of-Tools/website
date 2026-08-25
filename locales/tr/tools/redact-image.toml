@@ -1,0 +1,264 @@
+#
+# Görsel Karartıcı - Türkçe.
+#
+# Overrides for tools/redact-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Bu sayfa da PDF karartıcısıyla aynı ayrım üzerine kurulu: "karartma"
+# piksellerin üzerine yazmak, "üstünü örtme" ise resmin üzerine bir nesne
+# koymak. İkisi ayrı tutulmazsa buradaki hiçbir cümle bir şey söylemez.
+#
+
+name = "Görsel Karartıcı"
+heading = "Görsel&nbsp;Karartıcı <span class=\"h1-kw\">&mdash; karartın, pikselleştirin ya da bulanıklaştırın</span>"
+tagline = "Kapattığınız şey dosyanın içinde örtülmez, dosyadan silinir."
+
+title = "Bir Görseli Karartma &mdash; Karartın, Pikselleştirin ya da Bulanıklaştırın, Yüklemesiz"
+description = "Bir fotoğraftaki ya da ekran görüntüsündeki bir ismi, adresi veya hesap numarasını kapatın ve resmi yeniden kodlayın; böylece gizlenen pikseller bir dikdörtgenin altında durmak yerine dosyadan gitmiş olur. Tamamen tarayıcınızda çalışır."
+og_title = "Bir görseli, kapatılan kısım gerçekten gidecek şekilde karartın"
+og_description = "Görünmemesi gerekenlerin üzerine kutular çizin. Altlarındaki pikseller dosya yazılmadan önce üzerine yazılır; yani taşınacak bir katman ve kurtarılacak bir şey kalmaz. Hiçbir şey yüklenmez."
+og_image_alt = "Görsel Karartıcı - kapatılan piksellerin üzerine yazılır, gizlenmez"
+
+pledge = """
+    Resim kendi tarayıcınız tarafından, zaten beraberinde getirdiği
+    kodlayıcılarla çözülür, üzeri boyanır ve yeniden kodlanır. Bu aracın hiçbir
+    türde ağ özelliği yoktur &mdash; getirecek bir şey yok, gönderecek bir şey
+    yok &mdash; ve bu, bu sitedeki neredeyse her yerden çok burada önemlidir:
+    insanların bir karartma aracına getirdiği resimler, üzerinde hâlâ okunabilir
+    bir isim, adres ya da hesap numarası olanlardır."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir şeyin ekran görüntüsünü karartın. Tek bir istek bile bir
+      görsel, bir küçük resim, bir dosya adı ya da tek bir kutunun konumunu
+      taşımıyor. Ya da internet bağlantısını kesip yine de bir tanesini
+      karartın."""
+
+read_first = """
+, piksellerin üzerine yazan üç işlev için
+      <code>src/redact.js</code> ve ekranda gördüğünüz şeyin neden aynı üç işlev
+      tarafından çizildiği için <code>src/preview.js</code>."""
+
+howto_heading = "Bir görsel, gizlenen kısım gerçekten gidecek şekilde nasıl karartılır"
+
+card = """
+            Bir resmin bir bölümünü karartın, pikselleştirin ya da
+            bulanıklaştırın. Kapatılan piksellerin üzerine dosya yazılmadan önce
+            yazılır; yani kenara itilecek bir katman yoktur."""
+
+[words]
+plural = "görseller"
+choose = "bir görsel"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Görsellerinizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onları oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Kapatılan pikseller çıkış yolunda değil burada var olmayı bırakıyor."
+body = """
+ Resim bir
+      piksel arabelleğine çözülür, kutular o arabelleğin üzerine yazılır ve
+      arabellek kodlayıcıya verilir. Bu sayfada, kutuları ayrı bir katman olarak
+      taşıyan bir resim sürümü yoktur; çünkü öyle bir sürüm hiç üretilmez
+      &mdash; <code>src/redact.js</code>'e bakın."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ <code>src/</code> içinde hiçbir yerde
+      <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. İş, <code>getImageData</code>, baytlar
+      üzerinde üç döngü ve <code>canvas.toBlob</code> &mdash; hepsi
+      tarayıcınızda zaten kurulu."""
+
+[[privacy]]
+title = "Kutular hiçbir yere bildirilmez."
+body = """
+ Nereye çizdiğiniz, kaç tane
+      olduğu, ne kadar büyük olduğu ve hangi stili seçtiğiniz, siz sayfayı
+      kapatana kadar bu sayfanın belleğinde tutulur. Bu depoda bunlardan
+      herhangi birini taşıyan özel bir analitik olayı yoktur ve bu sitenin bir
+      indirmeden sonra sorduğu tek soru, bir başparmak yönü ile aracın adını
+      gönderir, başka hiçbir şeyi."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde en baştan beri bir ağ adımı yoktu. Hepsinin içindeki en basit
+      kanıt bu &mdash; ve bir pasaportu karartmadan önce çalıştırmaya değen de
+      bu."""
+
+[[howto]]
+title = "Görseli seçin."
+body = """
+ Bir ekran görüntüsü, bir tarama ya da bir
+      fotoğraf &mdash; tarayıcınızın açabildiği her şey. Doğrudan diskinizden
+      okunur; siz bunu yaparken hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Görünmemesi gerekenin üzerine bir kutu sürükleyin."
+body = """
+ Bir sonraki için
+      yeniden sürükleyin. Bir kutu taşınabilir, tutamaklarından yeniden
+      boyutlandırılabilir ya da Tab tuşuyla erişilip oklarla oynatılabilir.
+      Kutunun altında görünen şey gerçek sonuçtur; dosyayı yazan aynı kod
+      tarafından çizilmiştir."""
+
+[[howto]]
+title = "Karartma, pikselleştirme ya da bulanıklaştırma seçin &mdash; ve karartmayı tercih edin."
+body = """
+      Karartma altında hiçbir şey bırakmaz. Pikselleştirme ve bulanıklaştırma
+      ise pikselleri kendi ortalamalarıyla değiştirir; bu, arka plandaki bir yüz
+      için yeterlidir ve metin olarak okunan hiçbir şey için yeterli
+      değildir."""
+
+[[howto]]
+title = "\"Karart ve kaydet\"e basın, sonra dosyayı denetleyin."
+body = """
+      Sonrasında gösterilen resim, yeniden çözülmüş hâliyle bitmiş dosyadır. Onu
+      bir düzenleyicide açıp bir katman arayın ya da kapattığınız metni seçmeyi
+      deneyin: tek bir düz resim vardır ve kapattığınız kısımların üzerine, dosya
+      yazılmadan önce yazılmıştır."""
+
+[[faq]]
+q = "Görselim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya kendi donanımınızda, kendi tarayıcınız tarafından çözülür,
+        karartılır ve kodlanır. Bu aracın hiçbir türde ağ özelliği yoktur
+        &mdash; hiçbir zaman bir şey getirmez ve hiçbir zaman bir şey göndermez
+        &mdash; ve sayfanın <code>Content-Security-Policy</code>'si iletişim
+        kurabileceği her adresi tek tek sayar; bunların hiçbiri bu siteye ait
+        değildir. Sayfayı bir kez yükleyin, internet bağlantısını kesin, yine de
+        çalışır."""
+
+[[faq]]
+q = "Kapatılan kısım dosyadan gerçekten gitti mi?"
+a = """
+        Evet ve bu aracın var olma sebebi budur. Resim bir piksel arabelleğine
+        çözülür; kutular içlerindeki piksellerin üzerine yazar; sonra arabellek
+        yeni bir dosya olarak kodlanır. Orijinal değerler, kodlayıcıya bir şey
+        verilmeden önce bellekten gitmiştir; yani gizlenecek bir katman,
+        kaldırılacak bir açıklama ve geri alınacak bir geçmiş yoktur. Bunu,
+        başkasının iddiasını denetleyeceğiniz gibi denetleyebilirsiniz: sonucu
+        bir görsel düzenleyicide açıp ikinci bir katman arayın ya da kapattığınız
+        metni seçmeyi deneyin."""
+
+[[faq]]
+q = "Pikselleştirilmiş ya da bulanıklaştırılmış bir alan geri kazanılabilir mi?"
+a = """
+        Bazen ve seçim yapmadan önce okumaya değen tek şey budur. Karartma,
+        altındaki her şeyi tek bir düz renkle değiştirir; yani hiçbir şey hayatta
+        kalmaz &mdash; ne bir kenar, ne bir ortalama, ne de karakter sayısı.
+        Pikselleştirme her bloğu o bloğun ortalamasıyla değiştirir ve bir
+        ortalamalar ızgarası hâlâ altında ne olduğunun bir ölçümüdür: sıradan bir
+        yazı tipinde ve tahmin edilebilir bir boyuttaki metin için, yayımlanmış
+        çalışmalar aday dizeleri çizip ortalamalarını karşılaştırarak orijinali
+        yeniden kurmuştur. Bulanıklaştırma bir konvolüsyondur ve
+        konvolüsyonlar ilkesel olarak tersine çevrilebilir. Yani arka plandaki bir
+        yüzü isterseniz pikselleştirin ya da bulanıklaştırın; metin olarak okunan
+        her şeyi ise karartın."""
+
+[[faq]]
+q = "Bir belge düzenleyicide çizilmiş siyah bir dikdörtgen neden aynı şey değil?"
+a = """
+        Çünkü çoğu düzenleyici dikdörtgeni resmin içine değil yanına kaydeder. Bir
+        PDF okuyucuda, bir sunum programında, bir kelime işlemcide ya da katmanlı
+        bir görsel düzenleyicide çizilmiş bir şekil, sayfanın üzerinde duran ve
+        bir konumu olan bir nesnedir &mdash; onu taşımak, silmek ya da dosyayı
+        başka bir programda açmak, kapattığı şeyi olduğu gibi geri getirir.
+        Gazeteler, mahkemeler ve devlet kurumlarının hepsi bu şekilde
+        "karartılmış" belgeler yayımladı. Burada ise dikdörtgen hiç kaydedilmez:
+        o, orada olanların üzerine yazılmış bir dizi piksel değeridir."""
+
+[[faq]]
+q = "EXIF ve GPS verisini de siliyor mu?"
+a = """
+        Evet, yan etki olarak. Kaydetmek, piksellerle dolu bir tuvali kodlamak
+        demektir ve bir tuval hiçbir etiket taşımaz; dolayısıyla konum, kamera
+        modeli, zaman damgaları ve gömülü küçük resim yeni dosyaya hiç yazılmaz.
+        Burada küçük resim önemlidir: görüntünün küçük ikinci bir kopyasıdır, bir
+        fotoğraf düzenlendiğinde her zaman yeniden üretilmez ve karartılmamış bir
+        küçük resimle yolculuk eden karartılmış bir fotoğraf, bu emeği boşa
+        çıkarmanın gerçek bir yoludur. Üst verinin, resim hiç yeniden
+        kodlanmadan gitmesini istiyorsanız
+        <a href="../exif-verisi-silme/">EXIF Görüntüleyici ve Silici</a> bunun
+        yerine kabı yeniden yazar."""
+
+[[faq]]
+q = "Hangi biçimleri okuyabiliyor ve yazabiliyor?"
+a = """
+        Tarayıcınızın çözebildiği her şeyi okur; pratikte bu JPEG, PNG, WebP,
+        GIF, BMP ve &mdash; güncel tarayıcıların çoğunda &mdash; AVIF demektir.
+        JPEG, PNG ve WebP yazar, çünkü tarayıcıların beraberinde getirdiği
+        kodlayıcılar bunlardır. "Otomatik"te bir JPEG JPEG olarak, başka her şey
+        PNG olarak geri döner; bu da bir fotoğrafı fotoğraf boyutunda tutar ve
+        bir ekran görüntüsünde kalan metni keskin bırakır. Seçim, karartma
+        açısından hiçbir fark yaratmaz: pikseller kodlayıcı onları görmeden çoktan
+        gitmiştir."""
+
+[[faq]]
+q = "Bunu faresiz yapabilir miyim?"
+a = """
+        Evet. "Ortaya bir kutu ekle" resmin üzerine bir tane koyar, Tab kutular
+        arasında gezer, ok tuşları odaktakini oynatır ve Alt ile ok tuşları onu
+        yeniden boyutlandırır &mdash; Shift her adımı on piksel yapar &mdash;
+        Delete ise onu kaldırır. Her kutunun ayrıca resmin altında boyutunu,
+        konumunu, ne yaptığını ve onu kaldıracak bir düğmeyi taşıyan bir satırı
+        vardır; yani aracın tamamı klavyeden kullanılabilir ve bir ekran okuyucu
+        tarafından okunabilir."""
+
+[[faq]]
+q = "Telefonda çalışıyor mu?"
+a = """
+        Evet. Çizme, taşıma ve yeniden boyutlandırma; hepsi fare olayları değil
+        işaretçi olaylarıdır, yani bir parmak da aynı şekilde çalışır ve
+        tutamaklar dokunmatik ekranda daha büyük çizilir. Ekrandaki resim siz
+        çalışırken ekran boyutunda yeniden çizilir &mdash; dosyanın kendisi ise
+        düğmeye bastığınızda her zaman kendi tam çözünürlüğünde karartılır."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Resmin
+        boyutunda da bir sınır yok, çünkü bunun bedelini ödeyen bir sunucu yok
+        &mdash; iş sizin kendi cihazınızda oluyor. Sitede reklam var, masrafı
+        karşılayan da o; reklamlara görselleriniz hakkında hiçbir şey
+        verilmiyor."""
+
+[schema]
+description = "Bir görseli tarayıcıda karartın: görünmemesi gerekenlerin üzerine kutular çizip onları karartın, pikselleştirin ya da bulanıklaştırın. Kapatılan piksellerin üzerine dosya kodlanmadan önce yazılır; yani sonuç hiçbir katman, hiçbir açıklama ve hiçbir üst veri taşımaz. Hiçbir şey yüklenmez."
+features = [
+  "Kutu başına seçilen karartma, pikselleştirme ve bulanıklaştırma",
+  "Kapatılan piksellerin üzerine kodlamadan önce yazılır, yani kenara itilecek bir katman yoktur",
+  "Ön izleme, dosyayı yazan aynı kod tarafından çizilir",
+  "Bir ayara \"güçlü\" demek yerine bir mozaiğin kaç bloktan oluştuğunu bildirir",
+  "Fare kadar klavye ve dokunma da: her kutu faresiz eklenebilir, taşınabilir, yeniden boyutlandırılabilir ve kaldırılabilir",
+  "Yeniden kodlamanın yan etkisi olarak EXIF, GPS ve gömülü küçük resmi siler",
+  "Otomatik seçimle JPEG, PNG ve WebP çıktı",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Bir görseli buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; JPEG, PNG, WebP ve tarayıcınızın açabildiği her şey"

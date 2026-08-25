@@ -1,0 +1,250 @@
+<!--
+  tools/id-photo/body.html, in Turkish.
+
+  Every id, class, option value and data-phrase key below is what src/main.js
+  reaches for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; fotoğraf -->
+  <section class="card">
+    <h2><span class="step">1</span> Fotoğrafı seçin</h2>
+
+    <p class="card-lede">
+      Tarayıcınızın açabildiği her resim. Düz bir duvarın önünde, gün ışığında,
+      yaklaşık bir buçuk metreden çekilmiş bir telefon fotoğrafı, bu kuralların
+      çoğunun etrafında yazıldığı şeydir &mdash; ve doğrudan diskinizden okunur,
+      hiçbir yere gönderilmez.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">Başkasını seç</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; kural -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> Ülkeyi ve belgeyi seçin</h2>
+
+    <p class="card-lede">
+      Aşağıdaki her rakam, altında adı geçen kurumdan aktarılmış yayımlanmış
+      gerekliliktir. Bu listeyle ilgili hiçbir şey tahmin değildir ve hiçbir şey
+      getirilmez &mdash; <code>src/specs.js</code> içindeki bir tablodur ve
+      sayfayla birlikte sunulur.
+    </p>
+
+    <div class="option-row">
+      <label for="spec">Şartname</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>Kendiniz yazacağınız rakamlar</summary>
+      <div class="numbers">
+        <label>Genişlik (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>Yükseklik (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>Kafa, en küçük (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>Kafa, en büyük (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>Arka plan
+          <select id="custom-background">
+            <option value="white">Düz beyaz</option>
+            <option value="off-white">Beyaz ya da kırık beyaz</option>
+            <option value="light-grey" selected>Düz açık gri</option>
+            <option value="cream">Açık gri ya da krem</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>Yükleme genişliği (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>Yükleme yüksekliği (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>En küçük (KB)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>En büyük (KB)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        Buradaki KB, 1024 bayt demektir; bu formların da kastettiği budur.
+      </p>
+    </details>
+  </section>
+
+  <!-- Adım 3 &mdash; çerçeveleme -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> Yüzü işaretleyin ve çerçevelemeyi denetleyin</h2>
+
+    <p id="frame-empty" class="field-summary">Bir fotoğraf seçin, kırpma kutusu burada görünsün.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        Tepe, çene ve her iki bebek. Bir kuralın ölçtüğü şeyin tamamı bu dört
+        noktadır; yani kırpma, onlar nerede biterse oradan alınır &mdash; yanlış
+        düşenleri sürükleyin, sonra <strong>Kutuyu yerleştir</strong>'e basın.
+        Onları bulmak resmin kendisini okur: kafanızın arkasındaki duvara karşı
+        oluşan kenarı ve gözlerin bulunduğu daha koyu lekeleri. İçinde model yok
+        ve hiçbir şey getirilmiyor; bu bir hüküm değil bir başlangıç konumudur ve
+        düzeltmenin size ait olmasının ve alttaki panelin dört noktadan hangisini
+        ölçemediğini söylemesinin sebebi de budur.
+      </p>
+
+      <!--
+        Where the dots come from. Choosing "I'll place them" leaves them exactly
+        where they are and stops anything moving them again; moving one by hand
+        chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="Dört nokta nereden geliyor">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>Benim için bul</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>Ben yerleştireceğim</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">Kutuyu kurala yerleştir</button>
+        <button type="button" id="reset-marks" class="ghost">Yüzü yeniden bul</button>
+        <button type="button" id="whole-photo" class="ghost">Sığan en büyük kutu</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Adım 4 &mdash; arka plan -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> Arka plan</h2>
+
+    <p class="card-lede" id="background-lede">
+      Kırpmanın üst kısmındaki bir şeritten ve omuzların üstünde her iki yanından
+      okunur &mdash; kadrajın arka plandan başka bir şey olmaması gereken
+      bölümlerinden. RGB'de değil CIE Lab'da ölçülür; çünkü kırk RGB birimi
+      uzaktaki iki gri birbirinden ayırt edilemez, kırk birim mavi ise başka bir
+      renktir.
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">Sizinki ne okunuyor<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">Kuralın istediği<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Adım 5 &mdash; dosyalar -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> Kaydedin</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">Baskı çözünürlüğü</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; neredeyse her kuralın belirttiği alt sınır</option>
+          <option value="600">600 dpi &mdash; iyi bir fotoğraf laboratuvarının kullanacağı</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">Basılacak sayfa</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>Dosyaları yap</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Bitti</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. The
+    `marks.why.*` lines are listed under the note, one line each, rather than
+    strung into the sentence: joining them would have meant a separator in the
+    JavaScript, and a semicolon is not the mark half these languages join with.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="marks.measured">Dördü de fotoğraftan ölçüldü &mdash; tepe
+      kafanızın dış hattından, bebekler kendi koyuluklarından, çene ise çene
+      hattının boyuna karıştığı yerden. Yine de denetleyin ve yanlış düşenleri
+      sürükleyin: kırpma, onların bittiği yerden alınır.</span>
+    <span data-phrase="marks.rough">Yerleştirildi ama hepsi ölçülmedi. Kutuyu
+      yerleştirmeden önce dört noktayı da denetleyin.</span>
+    <span data-phrase="marks.none">Bu fotoğrafta hiçbir şey ölçülemedi. Noktalar
+      bunun yerine açılış konumlarında duruyor &mdash; onları tepeye, çeneye ve
+      her iki bebeğe sürükleyin.</span>
+    <span data-phrase="marks.manual">Dört nokta sizin ve hiçbir şey onları
+      oynatmayacak. Her birini tepeye, çeneye ve bir bebeğe sürükleyin.</span>
+    <span data-phrase="marks.edited">Bir noktayı oynattınız, yani artık dördü de
+      sizin. &laquo;Benim için bul&raquo; resmi yeniden ölçer.</span>
+
+    <span data-phrase="marks.why.background">Arkanızdaki duvar, bir kafanın
+      kenarını bulacak kadar düz değil.</span>
+    <span data-phrase="marks.why.top">Kafa fotoğrafın üstünden taşıyor, yani
+      bulunacak bir tepe noktası yoktu.</span>
+    <span data-phrase="marks.why.eyes">Gözler seçilemedi, bu yüzden ikisi de bu
+      boyutta bir kafada genellikle bulundukları yere kondu.</span>
+    <span data-phrase="marks.why.chin">Çene, bu kafanın dış hattından değil bir
+      kafanın oranlarından geldi.</span>
+
+    <span data-phrase="marks.button.again">Yüzü yeniden bul</span>
+    <span data-phrase="marks.button.back">Noktaları geri koy</span>
+  </div>
+</main>
