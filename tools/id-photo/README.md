@@ -106,8 +106,9 @@ the same scene — one person, facing the camera, against a plain evenly-lit wal
   included — which is the point people most often get wrong by hand, because
   they mark the hairline;
 * **the eyes** come from contrast inside the face, never from skin colour. What
-  is scored is how much darker a patch is than the ring of picture around it, so
-  a patch twelve units darker than its surroundings scores twelve on every face
+  is scored is how much darker a patch is than what lies to its left, to its
+  right and below it — the *worst* of the three, not their average — so a patch
+  twelve units darker than its own surroundings scores twelve on every face
   there is. Two of them are wanted, level with each other and either side of the
   middle of the head, which is what stops a nostril winning; and when a second
   pair is found close below the first, the lower one is taken, because eyebrows
@@ -117,6 +118,26 @@ the same scene — one person, facing the camera, against a plain evenly-lit wal
   which sit at almost exactly half the height of a head, and then checked
   against the point where the outline falls away into the neck.
 
+### Four things the first real photograph did that no fixture had
+
+Every one of these passed on synthetic faces and failed on a photograph, and
+each has a test now because the fixture that would have caught it did not exist.
+
+| What happened | Why | What it needed |
+|---|---|---|
+| The eye line landed on the **hairline** | The four sides around a patch were averaged into one number, so one bright forehead under a mass of hair outvoted three dark sides. Hair is far darker against skin than an iris is | Score against the *worst* of left, right and below, never their mean |
+| **Hair beside a cheek** outscored the eyes | It is a narrow dark band with the wall on one side and a face on the other, which is exactly what an eye looks like locally | An eye is well inside the outline; anything whose neighbourhood strays off the silhouette is not one |
+| The eyes were **not found at all** on a white background | The white of an eye is close enough to a pale wall to be cut out of the mask, so both eyes were holes punched through the head and every candidate sat on the edge of one | Fill what the outline encloses: paint inward from the border and keep whatever is left |
+| The head came out **twice its real width** | Where a head stops was assumed to be a fraction of the picture. In the photograph this tool asks for — taken a metre and a half away — the shoulders start well inside that fraction, and the widest row was one | Walk down and find the neck: a head narrows, then the shoulders widen again, and that turn is the only honest mark |
+
+The eyes are looked for at three box sizes, the smallest about the size of an
+iris. That one is doing most of the work: an eye is not a dark patch, it is a
+small dark iris with bright sclera either side, and a box drawn around the whole
+opening averages that white back in until the eye is barely darker than a cheek.
+It also happens to be the cheapest way to lose an eyebrow, which is a long dark
+bar with more of itself to the left and right of any box you put in the middle
+of it.
+
 Which is why none of it is final. The page says which of the four it measured
 and which it had to work out, refuses outright on a picture with no plain
 background rather than inventing an answer, and leaves every dot draggable —
@@ -125,7 +146,8 @@ wherever the dots end up. Moving one by hand switches the page to *I'll place
 them*, and so does choosing it, which turns the whole thing off.
 
 `tests/js/id-photo-detect.test.js` is where that holds: the same synthetic face
-at four skin tones and two hair colours, to one tolerance.
+at four skin tones and two hair colours, to one tolerance, plus one fixture for
+each row of the table above.
 
 ### Colour is measured in Lab, and evenness is measured separately
 
