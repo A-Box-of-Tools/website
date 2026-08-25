@@ -1,0 +1,299 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      Bir GIF; bir tuval, onun üstüne boyanacak bir dikdörtgenler listesi ve o
+      dikdörtgenlerdeki sayıların ne anlama geldiğini söyleyen bir renk tablosudur. Her
+      dikdörtgen üç şey taşır: ne kadar kalacağı, sonrasında ona ne yapılacağı ve
+      isteğe bağlı olarak kendine ait bir renk tablosu.
+    </p>
+    <p>
+      İnsanların bu biçimde şaşırtıcı bulduğu hemen her şey o listeden çıkar. GIF'iniz
+      devasaysa, sebep dikdörtgenlerin her seferinde tuvalin tamamı olması ya da içinde
+      üç yüz renk tablosu bulunmasıdır. Fazla yavaş oynuyorsa, sebep gecikmelerin
+      hiçbir tarayıcının altına inmeyeceği bir tabanın altında olmasıdır. Bulaşıyorsa,
+      sebep <em>elden çıkarma</em> denen alandır.
+    </p>
+    <p>
+      Belirli bir dosyada bunlardan hangisi olduğunu görmek için
+      <a href="../../gif-analiz-etme/">GIF Çözümleyici</a>'yi açın ve dosyayı bırakın.
+      Bu sayfanın geri kalanı, sayıların ne anlama geldiğidir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kareler resim değil, dikdörtgendir</h2>
+    <p>
+      GIF'leri yalnızca oynarken görmüş insanları şaşırtan kısım budur. Bir kare,
+      canlandırmanın o andaki resmi değildir. Kendi konumu ve kendi boyutu olan, önceki
+      karelerin geride bıraktığının üstüne boyanmış bir dikdörtgendir.
+    </p>
+    <p>
+      O dikdörtgen tuvalin tamamı olabilir ve kötü yapılmış bir dosyada her zaman
+      öyledir. Ama bir GIF'in, resmin yalnızca son kareden bu yana değişen kısmını
+      saklamasına izin verilir &mdash; ve resmin çoğunun durduğu yerde bu, 12 MB'lik
+      bir dosyayla 900 KB'lik bir dosya arasındaki farktır. Çoğunlukla durağan bir
+      pencerenin ekran kaydının küçük olabilmesinin ve aynı kaydın özensiz bir
+      dönüştürücüden çıkanının olmamasının sebebi budur.
+    </p>
+    <p>
+      Hangisine sahip olduğunuzu canlandırmayı izleyerek anlayamazsınız. İkisi de aynı
+      görünür. Görmenin tek yolu, her karenin ne sakladığına bakmaktır; çözümleyicinin
+      tam olarak bu yüzden bir görünümü var: onu <em>her karenin yalnızca
+      sakladığı</em> hâline getirin; ya saydam bir arka planda küçük şekillerden oluşan
+      bir sıra görürsünüz ki bu, kodlayıcının işini yaptığı anlamına gelir, ya da
+      resmin tamamını tekrar tekrar görürsünüz ki bu, yapmadığı anlamına gelir.
+    </p>
+    <p>
+      Biçimin hiçbir yerinde hareket telafisi yoktur. Hiçbir şey, bir video
+      kodlayıcısının yapacağı gibi &ldquo;geçen seferkiyle aynı ama dört piksel
+      sola&rdquo; olarak saklanmaz. Değişen dikdörtgen numarası, GIF'in sahip olduğu
+      tek kazançtır ve epeyce değerlidir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Gecikmeler ve her tarayıcının dayattığı taban</h2>
+    <p>
+      Her kare, saniyenin yüzde biri cinsinden ne kadar tutulacağını saklar. Biçimin
+      sahip olduğu tek birim budur; yani bir dosyanın isteyebileceği en hızlı değer
+      0,01 saniyedir &mdash; saniyede yüz kare &mdash; ve en uzunu yaklaşık 655
+      saniyedir.
+    </p>
+    <p>
+      Saniyede yüz kare alamayacaktır. <strong>Her tarayıcı, 0,02 saniyenin altındaki
+      bir gecikmeyi 0,10'a yuvarlar.</strong> Kural, 1996'da dönemin dönen dünyaları ve
+      hareketli "yapım aşamasında" tabelaları için Netscape Navigator'a yazıldı ve o
+      günden beri her tarayıcı onu kopyaladı. Hiçbir zaman kaldırılmadı ve
+      kaldırılmayacak.
+    </p>
+    <p>
+      Yani kareleri 0,01 sn diyen bir GIF, saniyede yüz değil on karede oynar. Onu
+      yapan şeyin niyetinden on kat yavaş çalışır ve dosya buna dair hiçbir ipucu
+      vermez: içindeki gecikmeler tam olarak istenen gecikmelerdir. Bu, biçimdeki en
+      yaygın tek sürprizdir ve çözümleyicinin iki süre bildirmesinin sebebi de budur
+      &mdash; dosyanın söylediği ve bir tarayıcının onunla gerçekten yapacağı.
+    </p>
+    <p>
+      Dosya nerede yapılmış olursa olsun çözüm, 0,01 yerine 0,02 yazmaktır. Bu, gerçek
+      tavan olan saniyede 50 kareyi verir ve hiçbir şeyin ihtiyaç duyacağından
+      hızlıdır. Pratikte 0,05 sn &mdash; saniyede yirmi kare &mdash; kabaca istemeye
+      değecek en hızlı değerdir.
+    </p>
+    <p>
+      Gecikmelerin size söylediği bir şey daha. Hepsi aynıysa dosya, sabit hızlı bir
+      kare setinden yapılmıştır. Dağınıklarsa &mdash; burada 0,04, şurada 0,11 &mdash;
+      bir şey bir videoyu dönüştürüp kareler düşürmüş ve boşlukları kapatmak için
+      komşuları uzatmıştır. Ve sonuncusu gerisinden çok daha uzunsa bu bilinçlidir:
+      bir canlandırmayı döngüye girmeden önce duraklatmanın yolu budur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Elden çıkarma: bulaşıp bulaşmayacağına karar veren alan</h2>
+    <p>
+      Her kare, süresi dolduğunda ekranda ne bırakılması gerektiğini söyler. Dört olası
+      cevap var ve bilmeye değerler; çünkü bir canlandırmanın yanlış görünebileceği
+      dört yoldan üçü, bu alanın yanlış olmasıdır.
+    </p>
+    <ul>
+      <li>
+        <strong>Yerinde bırak.</strong> Bir sonraki kare doğrudan bunun üstüne boyar.
+        Kareler opaksa ve birbirini tamamen kapatıyorsa doğrudur ve en ucuz
+        seçenektir; çünkü temizlenecek bir şey yoktur.
+      </li>
+      <li>
+        <strong>Arka plana geri temizle.</strong> Karenin dikdörtgeni, bir sonraki
+        çizmeden önce silinir. Saydamlığın istediği budur: onsuz, bir sonraki karenin
+        saydam kısımları altındaki önceki kareyi gösterir ve ayrı resimlerden oluşan bir
+        canlandırma, onların bir yığınına dönüşür.
+      </li>
+      <li>
+        <strong>Altındakini geri getir.</strong> Bu kare çizmeden önce tuvalde ne varsa
+        geri konur. Durağan bir arka planın üstünde hareket eden küçük bir nesnenin
+        saklanma biçimi budur &mdash; her kare nesneyi boyar, sonra arka plan geri
+        gelir ve yalnızca nesnenin dikdörtgeni yazılır.
+      </li>
+      <li>
+        <strong>Belirtilmemiş.</strong> Dosya söylemedi. Her görüntüleyici bunu
+        &ldquo;yerinde bırak&rdquo; olarak işler ki genellikle doğrudur ve ara sıra
+        saydam bir GIF'in bulaşmasının sebebidir.
+      </li>
+    </ul>
+    <p>
+      Belirtimle gerçeğin yollarının ayrıldığı bir ayrıntı. &ldquo;Arka plana geri
+      temizle&rdquo;, dosyanın başlığında bir arka plan rengi adlandırır ve her tarayıcı
+      onu yok sayıp bunun yerine saydama temizler. Yirmi beş yıldır böyle yapıyorlar. O
+      arka plan renginin görünmesine dayanan bir dosya, onu yapana, yapıldığı yerde doğru
+      görünür ve başka her yerde yanlış görünür.
+    </p>
+  </section>
+
+  <section>
+    <h2>Renk tabloları ve mal oldukları 768 bayt</h2>
+    <p>
+      Bir GIF pikseli bir renk değildir. Her biri üç baytta saklanan, en fazla 256
+      renklik bir tabloya işaret eden bir sayıdır. Yani tam bir tablo 768 bayttır ve bir
+      dosyada her şeyin paylaştığı bir tane, ya kare başına bir tane ya da ikisi birden
+      olabilir.
+    </p>
+    <p>
+      İki düzen de meşrudur ve farklı takaslar yapar:
+    </p>
+    <ul>
+      <li>
+        <strong>Tek paylaşılan tablo</strong>, bütün dosya için 768 bayttır ve renkleri
+        kareler arasında sabit tutar. GIF titremesi &mdash; videodan yapılmış bir
+        dosyadaki o rahatsız edici titreşim &mdash; çok sık, paletin kareden kareye
+        sendelemesinden başka bir şey değildir.
+      </li>
+      <li>
+        <strong>Kare başına bir tablo</strong>, her karenin paylaşılan tabloda olmayan
+        renkleri kullanmasını sağlar ki sahne tamamen değiştiğinde bu önemlidir. Her
+        seferinde 768 bayta mal olur. 300 karelik bir canlandırmada bu, tek bir piksel
+        saklanmadan önce 230 KB renk tablosu demektir.
+      </li>
+    </ul>
+    <p>
+      İkinci ve daha sessiz bir bedeli var. Bir renk tablosunun uzunluğunun ikinin bir
+      kuvveti olması gerekir; yani dokuz renk kullanan bir kare yine on altılık bir
+      tablo alır ve 130 kullanan bir kare yine 256 alır. Bir miktar yukarı yuvarlama
+      kaçınılmazdır. Tabloları, piksellerinin hiç göstermediği beş bin renk bildiren bir
+      dosya ise başka bir şeydir: karede sonunda yer alandan başka bir resim için
+      kurulmuş paletler. Çözümleyici, kullanılmayan girdileri işaretler; böylece bunun
+      şekli bir bakışta görünür.
+    </p>
+  </section>
+
+  <section>
+    <h2>Baytlar gerçekte nereye gidiyor</h2>
+    <p>
+      Bir GIF'in her baytı az sayıda yerden birindedir ve bir dosyanın fazla büyük
+      olduğuna karar vermeden önce bunların ne olduğunu bilmeye değer.
+    </p>
+    <ul>
+      <li>
+        <strong>Sıkıştırılmış pikseller.</strong> Sağlıklı bir dosyada neredeyse
+        tamamı. Resmin kendisi, LZW'den geçirilmiş hâlde &mdash; 1984'ten kalma ve
+        hesap tablosu ekran görüntüleri için tasarlanmış bir sıkıştırma şeması; düz
+        renkte iyi, fotoğraflarda kötü olmasının sebebi de budur.
+      </li>
+      <li>
+        <strong>Renk tabloları.</strong> Yukarıdaki gibi, tam tablo başına 768 bayt.
+      </li>
+      <li>
+        <strong>Kare başına başlıklar.</strong> Her kare için sekiz bayt zamanlama ve
+        on bir bayt tanımlayıcı. Normal bir dosyada hiçbir şey; iki bin minik kareden
+        oluşan bir canlandırmada 38 KB.
+      </li>
+      <li>
+        <strong>Blok çerçeveleme.</strong> Sıkıştırılmış veri, her birinin önünde bir
+        uzunluk baytı olan en fazla 255 baytlık dizilere bölünür. Kabaca her 256 baytta
+        bir bayt; kaçınılmaz ve görmeye değer, çünkü aksi hâlde görünmez.
+      </li>
+      <li>
+        <strong>Üstveri.</strong> Yorumlar, renk profilleri ve XMP paketleri. Gerçekten
+        saçma sonuçlar üreten kısım budur: bir görüntü düzenleyici, yıllar önce yapılmış
+        bir düzenlemeyi tarif eden 40 KB'lik XML bırakabilir ve küçük bir GIF'te bu,
+        dosyanın büyük kısmıdır. Hiçbir görüntüleyici bunların hiçbirini çizmez.
+      </li>
+    </ul>
+    <p>
+      Buna tahmin yerine bir tablo olarak bakmanın sebebi, cevabın farklı dosyalarda
+      farklı olması ve çözümün cevaptan doğmasıdır. %95'i sıkıştırılmış piksel olan bir
+      dosya düpedüz çok fazla resimdir ve yalnızca daha az kare, daha küçük bir boyut
+      ya da daha az renk yardımcı olur. %30'u renk tablosu ya da %40'ı XMP olan bir
+      dosyanın ise çok daha ucuz bir sorunu vardır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Döngü, biçimin bir parçası değildir</h2>
+    <p>
+      GIF belirtiminde bir canlandırmanın tekrarlandığını söyleyen bir alan yoktur.
+      Döngü, Netscape'in 1995'te icat ettiği bir bloktan gelir &mdash; içinde
+      <code>NETSCAPE2.0</code> dizgesi olan bir &ldquo;uygulama uzantısı&rdquo; &mdash;
+      ki her şey yine de onu uyguladı ve şimdi internetteki her hareketli GIF'in
+      içinde.
+    </p>
+    <p>
+      Bu, o bloğu olmayan bir dosyanın her tarayıcıda tam olarak bir kez oynayıp
+      duracağı ve onu yapana bozuk görüneceği anlamına gelir. Bir canlandırma yalnızca
+      bir kez oynuyorsa o blok eksiktir; denetlemeye değen ilk şeylerden biridir ve
+      hiçbir görüntüleyicide görünmez.
+    </p>
+    <p>
+      Blok bir sayı da belirtebilir &mdash; beş kez oyna ve dur. Sıfır sonsuz demektir
+      ve neredeyse her dosyanın söylediği de budur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir GIF'in taşıyabildiği diğer şeyler</h2>
+    <p>
+      Hiç resim tutmayan ve her görüntüleyicinin atladığı üç blok:
+    </p>
+    <ul>
+      <li>
+        <strong>Yorumlar.</strong> Serbest metin; genellikle dosyayı yazan şeyin adı,
+        ara sıra da yazarın yayımlamayı seçmeyeceği bir şey. Hiçbir şey onu göstermez ve
+        dosyanın her kopyası onu taşır.
+      </li>
+      <li>
+        <strong>XMP.</strong> Adobe'nin XML üstverisi: dosyayı neyin, ne zaman, bazen
+        kimin düzenlediği. Sonunda 258 baytlık sihirli bir kuyrukla gelir; bu, blok
+        uzunlukları doğru çıksın diye kullanılan bir numaradır ve bir tanesini saf saf
+        okumanın size neden bir ekran dolusu ikili verdiğinin sebebidir.
+      </li>
+      <li>
+        <strong>Düz metin.</strong> 1989 belirtiminden kalma, görüntüleyiciden resmin
+        üstüne bir hücre ızgarasında metin çizmesini isteyen bir blok. Hiçbir şey
+        tarafından hiç uygulanmadı. Bir dosyada varsa, ne diyorsa görünmeyecektir.
+      </li>
+    </ul>
+    <p>
+      Üçünü de bir dosyayı bir yere göndermeden önce bilmeye değer: bunlar, bir GIF'in
+      sizin hakkınızda bir şey söyleyebilecek kısımlarıdır ve bir şey onları bilerek
+      temizlemedikçe her kopyadan ve yeniden yüklemeden sağ çıkarlar.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hasarlı bir dosyayı okumak</h2>
+    <p>
+      GIF'ler kesilir &mdash; duran bir indirme, bozulan bir diskten kurtarılmış bir
+      dosya, bir uygulamanın yarısını yazdığı bir şey. Biçim, tek bir dizinlenmiş yapı
+      değil bir bloklar akışı olduğu için kesilmiş bir GIF genellikle durduğu noktaya
+      kadar hâlâ okunabilir: kopmadan önceki her kare eksiksiz ve sağlamdır.
+    </p>
+    <p>
+      Bunu bilmeye değer; çünkü çoğu yazılım dosyayı düpedüz reddeder. Okuyabildiği
+      kadar okuyup nerede durduğunu söyleyen bir çözümleyici, en azından ne kadarının
+      hayatta kaldığını ve eksik kısmın bir kare mi yoksa son iki yüz kare mi olduğunu
+      söyler.
+    </p>
+    <p>
+      Bunun tersi sorun da var: dosyanın bitiş işaretinden <em>sonra</em> duran baytlar.
+      Her çözücü o işarette durur, yani onlar hiç okunmaz ve hiç çizilmez ve genellikle
+      ters giden bir şey tarafından birincinin sonuna eklenmiş ikinci bir dosyadır. Saf
+      ağırlıktırlar ve kesip atmak hiçbir şey kaybettirmez.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bunların hiçbirinin bir yüklemeye ihtiyacı yok</h2>
+    <p>
+      Bir GIF'in yapısını okumak zorlu bir iş değildir &mdash; bir bloklar listesinde
+      bir gezinti ve küçük bir açıcı &mdash; ve bunu yapmak için dosyayı bir sunucuya
+      göndermenin hiçbir zaman teknik bir sebebi olmadı. Buradaki
+      <a href="../../gif-analiz-etme/">GIF Çözümleyici</a> her şeyi sayfanın içinde
+      yapıyor: blok gezintisi, LZW, ekrana çizilen kareler ve bayt muhasebesi.
+    </p>
+    <p>
+      Bu, çoğu işten çok bu iş için önemlidir; çünkü insanların en çok parçalarına
+      ayırmak istediği dosyalar, çoğu zaman paylaşmak konusunda en az emin oldukları
+      dosyalardır &mdash; kurtarılmış bir şey, birinin onlara gönderdiği bir şey, henüz
+      okumadıkları bir yorum bloğu olan bir şey.
+      <a href="../dosya-yuklemek-guvenli-mi/">Dosya yüklemek üzerine daha uzun sav</a>,
+      burada da bu sitenin her yerindeki kadar güçlü biçimde geçerlidir.
+    </p>
+  </section>

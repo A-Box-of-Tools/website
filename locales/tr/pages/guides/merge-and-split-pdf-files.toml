@@ -1,0 +1,17 @@
+#
+# Rehber: PDF sayfalarını birleştirmek, bölmek ve yeniden sıralamak - Türkçe.
+#
+
+nav = "PDF birleştirme ve bölme"
+title = "PDF Sayfaları Nasıl Birleştirilir, Bölünür ve Yeniden Sıralanır"
+description = "PDF'leri birleştirin, birini birkaç parçaya ayırın ve sayfaları oynatın: yeniden dizmeden neyin sağ çıktığı, hiçbir aracın karşıya taşıyamadığı şeyler ve bunların hiçbirinin neden belgelerinizi bir yere yüklemeyi gerektirmediği."
+heading = "PDF sayfaları nasıl birleştirilir, bölünür ve yeniden sıralanır"
+lede = """
+    İki belgeyi bir araya getirmek, birinin bir PDF'e yaptığı en sıradan şeydir
+    ve en sık, iki dosyayı birden bir yabancının sunucusuna vererek yapılanıdır.
+    Buna gerek yok. Bu rehber bunu nasıl yapacağınızı ve bir araç sayfaları
+    yeniden dizdiğinde nelerin sessizce kaybolduğunu anlatıyor."""
+updated = "22 Ağustos 2026"
+og_title = "PDF sayfaları nasıl birleştirilir, bölünür ve yeniden sıralanır"
+og_description = "PDF'leri birleştirin, birini birkaç parçaya ayırın, sayfaları oynatın - ve yeniden dizmeden neyin sağ çıkıp neyin çıkmadığını bilin."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

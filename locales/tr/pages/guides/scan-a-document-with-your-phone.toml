@@ -1,0 +1,18 @@
+#
+# Rehber: bir belgeyi telefon kamerasıyla taramak - Türkçe.
+#
+
+nav = "Telefonla tarama"
+title = "Bir Belge Telefonla Nasıl Taranır (Uygulama Yok, Yükleme Yok)"
+description = "Bir sayfanın fotoğrafını, o sayfanın taramasından ayıran şey: açı, dengesiz ışık ve dosya boyutu. Fotoğrafın nasıl çekileceği, sonradan neyin düzeltileceği ve bunların hiçbirinin neden bir sunucuya ihtiyacı olmadığı."
+heading = "Bir belge telefonla nasıl taranır"
+lede = """
+    Biri sizden bir formu &ldquo;tarayıp geri göndermenizi&rdquo; istedi;
+    elinizde bir telefon var, tarayıcı yok. Bir sayfanın fotoğrafı ile taraması
+    arasındaki fark göründüğünden küçüktür ve büyük ölçüde açıyla ilgili değildir
+    &mdash; bu rehber onları gerçekte neyin ayırdığını ve her parça için ne
+    yapmanız gerektiğini anlatıyor."""
+updated = "25 Ağustos 2026"
+og_title = "Bir belge telefonla nasıl taranır"
+og_description = "Açı, gölge ve dosya boyutu - bir sayfanın fotoğrafını taramasından ayıran şey ve sayfayı yüklemeden her birini nasıl düzelteceğiniz."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

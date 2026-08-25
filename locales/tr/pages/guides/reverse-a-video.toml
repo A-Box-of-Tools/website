@@ -1,0 +1,17 @@
+#
+# Rehber: bir videoyu ters oynatmak - Türkçe.
+#
+
+nav = "Videoyu ters oynatma"
+title = "Bir Video Nasıl Ters Oynatılır (Sesiyle Birlikte)"
+description = "Bir klibi geriye doğru oynatın: ters çevirmenin resme ve sese ne yaptığı, neden yeniden kodlamadan yapılamayacağı, neden kesmekten yavaş olduğu ve önce ne yapılması gerektiği."
+heading = "Bir video nasıl ters oynatılır"
+lede = """
+    Bir klibi geriye doğru oynatmak var olan en basit düzenleme gibi geliyor ve
+    bir video dosyasının en az hazırlıklı olduğu iş bu. Bu rehber gerçekte ne
+    olması gerektiğini, bunun bedelini ve ondan önce yapmaya değen tek adımı
+    anlatıyor."""
+updated = "20 Ağustos 2026"
+og_title = "Bir video nasıl ters oynatılır"
+og_description = "Bir çözücü neden geriye doğru çalışamaz, ters çevirmek resme ve sese neye mal olur ve önce yapmaya değen tek adım."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

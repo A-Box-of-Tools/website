@@ -1,0 +1,16 @@
+#
+# Kullanım Koşulları - Türkçe. Overrides for pages/terms/page.toml.
+#
+
+nav = "Kullanım Koşulları"
+title = "Kullanım Koşulları &mdash; abox.tools"
+description = "Bu sitenin sunulduğu koşullar: ücretsiz, olduğu gibi, hesap yok, garanti yok ve dosyalarınız tamamen sizin kalır, çünkü hiçbir zaman bize gönderilmez."
+heading = "Kullanım Koşulları"
+lede = """
+    Açılacak bir hesap ve imzalanacak bir sözleşme yok; bu yüzden koşullar kısa.
+    Bu siteden ne bekleyebileceğinizi ve nelerin sözünü vermediğini
+    anlatıyorlar."""
+updated = "19 Ağustos 2026"
+og_title = "Kullanım Koşulları &mdash; abox.tools"
+og_description = "Ücretsiz, olduğu gibi, hesap yok, garanti yok. Dosyalarınız tamamen sizin kalır."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"
