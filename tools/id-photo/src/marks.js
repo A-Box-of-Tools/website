@@ -3,19 +3,24 @@
  *
  * The crown, the chin and the two pupils. Between them they fix everything a
  * specification constrains - how tall the head is and where the eye line falls -
- * so the crop box can be placed exactly rather than eyeballed, with no face
- * detection in the tool at all. geometry.js explains why that trade is the right
- * way round; this file is only the dragging.
+ * so the crop box can be placed exactly rather than eyeballed. geometry.js
+ * explains that arithmetic; this file is only the dragging.
  *
  * The dots live in the coordinates of the picture, not of the crop box, so
  * moving or resizing the box does not move them: the marks describe the face,
  * and the face does not move when you change your mind about the framing. They
  * are drawn in percentages of the stage, so a window resize costs nothing.
  *
- * They start in the places a head-and-shoulders photograph usually puts them.
- * That is a starting position and the page says so - it is not a detection, and
- * a tool that quietly presented a guess as a measurement would be worse than one
- * that asks for eight seconds of dragging.
+ * WHERE THEY START is not this file's business. detect.js measures the picture
+ * and main.js hands the answer to `place`; when there is nothing to measure, or
+ * when somebody has asked to do it themselves, `open` puts them where a
+ * head-and-shoulders photograph usually has them. Both are starting positions
+ * and the page says which one it used - a guess quietly presented as a
+ * measurement would be worse than either.
+ *
+ * Every change reports WHY it happened, because the page says something
+ * different about dots it worked out and dots you moved, and the only moment
+ * either can be told apart is here.
  */
 
 /** The dots, in the order they are tabbed through. */
@@ -85,13 +90,25 @@ export class Marks {
   open() {
     const { width, height } = this.#source;
     if (!width || !height) return;
-    this.#points = Object.fromEntries(MARK_KEYS.map(({ key }) => [key, {
-      x: Math.round(OPENING[key].x * width),
-      y: Math.round(OPENING[key].y * height),
-    }]));
-    for (const dot of this.#dots.values()) dot.hidden = false;
-    this.#paint();
-    this.#onChange?.(this.marks);
+    this.#show(Object.fromEntries(MARK_KEYS.map(({ key }) => [key, {
+      x: OPENING[key].x * width,
+      y: OPENING[key].y * height,
+    }])), 'open');
+  }
+
+  /**
+   * Put the dots where something else worked out they belong.
+   *
+   * Clamped and rounded by the same code that clamps a drag, so a detector
+   * that came back with a pupil half a pixel off the edge of the picture
+   * cannot put a dot somewhere a hand could not have put it.
+   *
+   * @param {import('./geometry.js').Marks} points  in source pixels
+   */
+  place(points) {
+    const { width, height } = this.#source;
+    if (!width || !height || !points) return;
+    this.#show(points, 'place');
   }
 
   hide() {
@@ -108,7 +125,7 @@ export class Marks {
   clear() {
     this.#points = null;
     this.hide();
-    this.#onChange?.(null);
+    this.#onChange?.(null, 'clear');
   }
 
   /* -------------------------------------------------------------- dragging */
@@ -167,14 +184,30 @@ export class Marks {
     this.#set(key, { x: at.x + direction[0] * step, y: at.y + direction[1] * step });
   };
 
-  #set(key, point) {
-    const { width, height } = this.#source;
-    this.#points[key] = {
-      x: Math.max(0, Math.min(Math.round(point.x), width)),
-      y: Math.max(0, Math.min(Math.round(point.y), height)),
-    };
+  /** All four at once, shown, painted and announced. */
+  #show(points, why) {
+    this.#points = Object.fromEntries(MARK_KEYS.map(({ key }) => [
+      key, this.#inside(points[key]),
+    ]));
+    for (const dot of this.#dots.values()) dot.hidden = false;
     this.#paint();
-    this.#onChange?.(this.marks);
+    this.#onChange?.(this.marks, why);
+  }
+
+  #set(key, point) {
+    this.#points[key] = this.#inside(point);
+    this.#paint();
+    // 'drag' whether it came from a pointer or from the arrow keys: what the
+    // page needs to know is that a person moved it, not which hand they used.
+    this.#onChange?.(this.marks, 'drag');
+  }
+
+  #inside(point) {
+    const { width, height } = this.#source;
+    return {
+      x: Math.max(0, Math.min(Math.round(point?.x ?? 0), width)),
+      y: Math.max(0, Math.min(Math.round(point?.y ?? 0), height)),
+    };
   }
 
   #paint() {

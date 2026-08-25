@@ -38,13 +38,14 @@ So there are three separate problems here, and each has its own module.
 | File | What it holds |
 |---|---|
 | `src/specs.js` | The rulebook. Every country's published figures, with the authority and the date each was read. |
+| `src/detect.js` | Where the four points come from: an outline against the wall, and the dark patches where eyes are. No model. |
 | `src/geometry.js` | The arithmetic: four marked points in, one crop rectangle out, and every measurement back again. |
 | `src/sheet.js` | The 4 × 6 layout: how many copies fit, where they go, and where the cut marks go. |
 | `src/background.js` | Colour and evenness, in CIE Lab. Also the signature check, which is a different question. |
 | `src/jpeg.js` | The two byte-level header edits a canvas cannot make: the print resolution, and the padding. |
 | `src/encode.js` | Canvas drawing, and the search that lands a file inside a KB band at both ends. |
 | `src/cropper.js` | The crop box and the overlay drawn inside it. |
-| `src/marks.js` | The four dots you drag onto the face. |
+| `src/marks.js` | The four dots on the face: placing them, and dragging them. |
 | `src/files.js` | Names, and the sentences the page reads out. |
 | `src/main.js` | The wiring, and nothing else. |
 
@@ -78,24 +79,53 @@ Every entry also carries `source.authority`, `source.document` and
 tool that quietly applies a rule from three years ago is worse than one that
 admits it is a transcription and says when it was made.
 
-### There is no face detection, on purpose
+### The four points are found, and there is still no face model
 
-The tool asks you to drag four dots — crown, chin, both pupils — and that is
-enough to place the box exactly. A crop of a fixed shape has two degrees of
-freedom that matter: how tall it is, which fixes the head height, and where its
-top edge sits, which fixes the eye line. One each.
+Four points — crown, chin, both pupils — are enough to place the box exactly. A
+crop of a fixed shape has two degrees of freedom that matter: how tall it is,
+which fixes the head height, and where its top edge sits, which fixes the eye
+line. One each.
 
-Detecting those points instead would mean shipping a model: weights to download,
-an inference runtime to run them in, and a failure mode that is uneven — face
-detectors are measurably worse on some faces than on others, and the people
-whose photographs already get rejected most often are the ones it would let
-down. Four dots take about eight seconds, are exact, and are the same eight
-seconds for everybody.
+The first version of this tool asked you to drag all four, and the reason was
+never that finding them is hard. It was that finding them the usual way means
+shipping a model: weights to download, an inference runtime to run them in, and
+a failure mode that is uneven — published detectors are measurably worse on some
+faces than on others, and the people whose photographs already get rejected most
+often are the ones a bad one lets down. The browser's own `FaceDetector` had a
+second problem on top of that: it exists in one browser behind a flag, which is
+not a feature, it is a difference in how well the site works depending on what
+you opened it in.
 
-The browser's own `FaceDetector` was considered and rejected for a different
-reason: it exists in one browser behind a flag. A tool that works well in Chrome
-and not at all in Firefox is not a feature, it is a difference in how well the
-site works depending on what you opened it in.
+`src/detect.js` does it without either, by using something a general detector is
+not allowed to assume and this tool is: every specification in `specs.js` demands
+the same scene — one person, facing the camera, against a plain evenly-lit wall.
+
+* **the crown** comes from the wall. The colour of the border of the picture is
+  read, everything that is not that colour is the person, the highest
+  substantial run of it is the head, and the top of that is the crown, hair
+  included — which is the point people most often get wrong by hand, because
+  they mark the hairline;
+* **the eyes** come from contrast inside the face, never from skin colour. What
+  is scored is how much darker a patch is than the ring of picture around it, so
+  a patch twelve units darker than its surroundings scores twelve on every face
+  there is. Two of them are wanted, level with each other and either side of the
+  middle of the head, which is what stops a nostril winning; and when a second
+  pair is found close below the first, the lower one is taken, because eyebrows
+  beat eyes at everything except being where eyes are;
+* **the chin** cannot honestly be found this way — a jaw against a neck is a
+  soft edge with no colour change across it. It is worked out from the pupils,
+  which sit at almost exactly half the height of a head, and then checked
+  against the point where the outline falls away into the neck.
+
+Which is why none of it is final. The page says which of the four it measured
+and which it had to work out, refuses outright on a picture with no plain
+background rather than inventing an answer, and leaves every dot draggable —
+`geometry.js` never learns which were measured, because the crop is taken from
+wherever the dots end up. Moving one by hand switches the page to *I'll place
+them*, and so does choosing it, which turns the whole thing off.
+
+`tests/js/id-photo-detect.test.js` is where that holds: the same synthetic face
+at four skin tones and two hair colours, to one tolerance.
 
 ### Colour is measured in Lab, and evenness is measured separately
 
@@ -180,7 +210,7 @@ at 4 and 3 the same sheet holds six photographs instead of eight.
 | Left out | Why |
 |---|---|
 | Background replacement | A segmentation model. See above. |
-| Face detection | A model, and an unevenly wrong one. See above. |
+| A shipped face model | The four points are found by arithmetic instead. A model would be weights to download and unevenly wrong. See above. |
 | Straightening a tilted head | Rotating re-samples the picture, and every specification here asks for a level camera rather than a corrected photograph. The tilt is measured and reported instead. |
 | Smile/eyes-open/glasses checks | These are classifiers, not measurements, and a wrong "your eyes are closed" is worse than no check. The guide says what an examiner looks for. |
 | A promise that the application will be accepted | No tool can honestly make one. What this does is apply the published figures exactly and show every measurement it made. |

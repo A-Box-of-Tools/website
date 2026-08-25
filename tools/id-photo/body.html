@@ -86,13 +86,34 @@
 
     <div id="frame-controls" hidden>
       <p class="stage-hint" id="mark-hint">
-        Drag the four dots onto the crown, the chin and each pupil, then press
-        <strong>Fit the box</strong>. Those four points are the whole of what the
-        rule measures, which is why this tool asks you to place them rather than
-        guessing at them with a face detector. The dots start in the place a
-        head-and-shoulders photo usually puts them &mdash; that is a starting
-        position, not a measurement.
+        The crown, the chin and each pupil. Those four points are the whole of
+        what a rule measures, so the crop is taken from wherever they end up
+        &mdash; drag any that landed wrong, then press <strong>Fit the box</strong>.
+        Finding them reads the picture itself: the edge of your head against the
+        wall behind it, and the darker patches where eyes are. There is no model
+        in it and nothing is fetched, and it is a starting position rather than
+        a verdict, which is why it is yours to correct and why the panel below
+        says which of the four it could not measure.
       </p>
+
+      <!--
+        Where the dots come from. Choosing "I'll place them" leaves them exactly
+        where they are and stops anything moving them again; moving one by hand
+        chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="Where the four dots come from">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>Find them for me</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>I&rsquo;ll place them</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
 
       <!-- The crop box, its overlay and the four marks are all added here by
            src/cropper.js and src/marks.js. The stage is given the picture's own
@@ -105,7 +126,7 @@
 
       <div class="frame-actions">
         <button type="button" id="fit-box" class="primary">Fit the box to the rule</button>
-        <button type="button" id="reset-marks" class="ghost">Put the dots back</button>
+        <button type="button" id="reset-marks" class="ghost">Find the face again</button>
         <button type="button" id="whole-photo" class="ghost">Largest box that fits</button>
       </div>
 
@@ -186,4 +207,38 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. The
+    `marks.why.*` lines are listed under the note, one line each, rather than
+    strung into the sentence: joining them would have meant a separator in the
+    JavaScript, and a semicolon is not the mark half these languages join with.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="marks.measured">All four were measured off the photograph
+      &mdash; the crown from the outline of your head, the pupils from the dark of
+      them, the chin from where the jaw runs into the neck. Check them anyway, and
+      drag any that landed wrong: the crop is taken from where they end up.</span>
+    <span data-phrase="marks.rough">Placed, but not all of it measured. Check all
+      four dots before you fit the box.</span>
+    <span data-phrase="marks.none">Nothing could be measured on this photograph.
+      The dots are at their opening positions instead &mdash; drag them onto the
+      crown, the chin and each pupil.</span>
+    <span data-phrase="marks.manual">The four dots are yours, and nothing will
+      move them. Drag each onto the crown, the chin and a pupil.</span>
+    <span data-phrase="marks.edited">You have moved a dot, so all four are yours
+      now. &ldquo;Find them for me&rdquo; measures the picture again.</span>
+
+    <span data-phrase="marks.why.background">The wall behind you is not plain
+      enough to find the edge of a head against.</span>
+    <span data-phrase="marks.why.top">The head runs off the top of the
+      photograph, so there was no crown to find.</span>
+    <span data-phrase="marks.why.eyes">The eyes could not be picked out, so both
+      were put where a head this size usually has them.</span>
+    <span data-phrase="marks.why.chin">The chin came from the proportions of a
+      head rather than from the outline of this one.</span>
+
+    <span data-phrase="marks.button.again">Find the face again</span>
+    <span data-phrase="marks.button.back">Put the dots back</span>
+  </div>
 </main>

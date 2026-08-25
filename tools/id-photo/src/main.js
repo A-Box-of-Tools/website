@@ -16,6 +16,7 @@ import {
   decode, drawCrop, drawSheet, encodePrint, encodeToBand, free, release,
   samplePixels, sizeText,
 } from './encode.js';
+import { WORKING_EDGE, findMarks } from './detect.js';
 import { Cropper } from './cropper.js';
 import { Marks } from './marks.js';
 import {
@@ -43,6 +44,13 @@ const el = {
   frameEmpty: $('frame-empty'),
   frameControls: $('frame-controls'),
   markHint: $('mark-hint'),
+  // The switch itself, reached through one of its radios: it is the group that
+  // is hidden for a signature, and the group has no id of its own to hide by.
+  markModes: $('mark-mode-auto').closest('.mark-mode'),
+  modeAuto: $('mark-mode-auto'),
+  modeManual: $('mark-mode-manual'),
+  markNote: $('mark-note'),
+  markWhy: $('mark-why'),
   stage: $('stage'),
   preview: $('preview'),
   fitBox: $('fit-box'),
@@ -112,6 +120,20 @@ let photo = null;
 let specId = SPECS[0].id;
 let busy = false;
 
+/**
+ * Where the four dots come from, and what happened the last time they were put
+ * somewhere.
+ *
+ * Two states, not a flag on a detector: 'auto' means the picture was measured,
+ * 'manual' means the dots are somebody's own. Moving one by hand moves the
+ * whole page into 'manual', because from that moment the page cannot honestly
+ * describe them as a measurement - and the note under the switch says so.
+ */
+let markMode = 'auto';
+
+/** What detect.js last said, so the note can be redrawn without measuring again. */
+let lastFinding = null;
+
 /** The last background reading, kept so the panel redraws without re-sampling. */
 let reading = null;
 
@@ -128,7 +150,17 @@ let backgroundTimer = 0;
 let resultUrls = [];
 
 const cropper = new Cropper(el.stage, { onChange: onCropChange });
-const marks = new Marks(el.stage, { onChange: () => refreshFrame() });
+const marks = new Marks(el.stage, {
+  onChange: (_, why) => {
+    if (why === 'drag' && markMode === 'auto') {
+      markMode = 'manual';
+      el.modeManual.checked = true;
+      lastFinding = { quality: 'edited', notes: [] };
+      renderMarkNote();
+    }
+    refreshFrame();
+  },
+});
 
 /* -------------------------------------------------------- the specification */
 
@@ -222,6 +254,9 @@ function renderSpec() {
   // rule that has never heard of eyes.
   const signature = spec.kind === 'signature';
   el.markHint.hidden = signature;
+  el.markModes.hidden = signature;
+  el.markNote.hidden = signature;
+  el.markWhy.hidden = signature;
   el.fitBox.hidden = signature;
   el.resetMarks.hidden = signature;
   if (signature) marks.hide();
@@ -229,7 +264,7 @@ function renderSpec() {
     // Coming back from the signature rule, the dots are still where they were
     // put; they only need showing again.
     if (marks.placed) marks.show();
-    else marks.open();
+    else placeMarks();
   }
 
   el.backgroundLede.textContent = signature
@@ -330,7 +365,7 @@ async function load(file) {
     cropper.setAspect(frameAspect(currentSpec()));
     marks.setSource(photo.width, photo.height);
     if (currentSpec().kind !== 'signature') {
-      marks.open();
+      placeMarks();
       fitToRule();
     }
     refreshFrame();
@@ -361,9 +396,92 @@ el.clearPhoto.addEventListener('click', () => {
   el.results.hidden = true;
   el.make.disabled = true;
   reading = null;
+  lastFinding = null;
   marks.clear();
   renderBackground();
 });
+
+/* --------------------------------------------------------------- the marks */
+
+/**
+ * Put the four dots somewhere to start from.
+ *
+ * In 'auto' that means measuring the picture; when there is nothing measurable
+ * on it - a patterned wall, no subject - the dots fall back to their opening
+ * positions and the note says why, rather than the page pretending the opening
+ * positions were a finding.
+ */
+function placeMarks() {
+  if (!photo) return;
+  lastFinding = markMode === 'auto' ? detect() : { quality: 'manual', notes: [] };
+
+  if (lastFinding?.marks) marks.place(lastFinding.marks);
+  else marks.open();
+
+  renderMarkNote();
+}
+
+/**
+ * Measure the picture, in the picture's own pixels.
+ *
+ * The detector reads a small copy - see WORKING_EDGE - so what comes back is in
+ * that copy's coordinates and has to be scaled up. The two axes are scaled
+ * separately because the small copy's width and height were each rounded on
+ * their own, and a single ratio would put every mark a fraction of a per cent
+ * out on one of them.
+ *
+ * Wrapped because this is the one part of the tool that can fail on a picture
+ * it has already decoded - a canvas the browser will not hand back pixels for -
+ * and a page that stopped dead there would have taken the dragging away too.
+ */
+function detect() {
+  try {
+    const pixels = samplePixels(
+      photo.bitmap,
+      { x: 0, y: 0, width: photo.width, height: photo.height },
+      WORKING_EDGE,
+    );
+    const found = findMarks(pixels);
+    if (!found.marks) return found;
+
+    const scaleX = photo.width / pixels.width;
+    const scaleY = photo.height / pixels.height;
+    return {
+      ...found,
+      marks: Object.fromEntries(Object.entries(found.marks).map(([key, point]) => [key, {
+        x: point.x * scaleX,
+        y: point.y * scaleY,
+      }])),
+    };
+  } catch {
+    return { marks: null, quality: 'none', notes: ['background'] };
+  }
+}
+
+/** The line under the switch: what was measured, what was not, and whose the dots are. */
+function renderMarkNote() {
+  // 'measured', 'rough', 'none', 'manual' or 'edited' - one sentence each, and
+  // nothing before a photograph is chosen, when the whole panel is hidden anyway.
+  const quality = lastFinding?.quality ?? 'manual';
+  el.markNote.textContent = phrase(`marks.${quality}`);
+
+  // Whatever could not be measured, a line each rather than strung into the
+  // sentence above. Joining them would have put the separator in this file, and
+  // a semicolon is not what half of these languages join a clause with.
+  el.markWhy.replaceChildren(...(lastFinding?.notes ?? []).map((note) => {
+    const li = document.createElement('li');
+    li.textContent = phrase(`marks.why.${note}`);
+    return li;
+  }));
+
+  // The reset button does whichever of its two jobs matches the switch. One
+  // button rather than two, because they are the same button - "put them back
+  // where this page would have started them" - and what that means is exactly
+  // what the switch has already been asked.
+  el.resetMarks.textContent = phrase(
+    markMode === 'auto' ? 'marks.button.again' : 'marks.button.back',
+  );
+}
 
 /* ------------------------------------------------------------- the framing */
 
@@ -474,9 +592,27 @@ function renderReady() {
 el.fitBox.addEventListener('click', fitToRule);
 el.wholePhoto.addEventListener('click', () => cropper.maximize());
 el.resetMarks.addEventListener('click', () => {
-  marks.open();
+  placeMarks();
   fitToRule();
 });
+
+for (const radio of [el.modeAuto, el.modeManual]) {
+  radio.addEventListener('change', () => {
+    if (!radio.checked) return;
+    markMode = radio.value;
+    // Asking to place them yourself does not move them. They are wherever they
+    // were, which after a measurement is a better place to start dragging from
+    // than the middle of the picture - and "Put the dots back" is right there
+    // for anybody who wanted the plain opening positions.
+    if (markMode === 'auto') {
+      placeMarks();
+      fitToRule();
+    } else {
+      lastFinding = { quality: 'manual', notes: [] };
+      renderMarkNote();
+    }
+  });
+}
 
 /* ---------------------------------------------------------- the background */
 
