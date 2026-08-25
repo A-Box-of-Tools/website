@@ -37,6 +37,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [PDF Merger & Splitter](merge-pdf/) | `/merge-pdf/` | Pages moved around without a round trip to a server. |
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |
+| [Document Scanner](document-scanner/) | `/document-scanner/` | Photograph the page. Get back something that looks scanned. |
 | [Audio Trimmer](trim-audio/) | `/trim-audio/` | Mark the parts worth keeping as it plays. Get them back as one file, cut where you said. |
 | [Audio Editor](edit-audio/) | `/edit-audio/` | Play it backwards, change the speed, lift a quiet recording — all of it here, on your machine. |
 | [Text & Code](text-tools/) | `/text-tools/` | Lay it out, see what changed, encode it, or turn it into the other format. Nothing is pasted into anyone else's server. |
