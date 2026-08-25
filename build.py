@@ -86,6 +86,25 @@ LOCALES = ROOT / 'locales'
 
 
 def main(argv=None):
+    # This build writes pages whose paths are not ASCII - ar/, ja/, zh/ and the
+    # translated slugs under them - and then prints every one of them. On a
+    # console whose encoding is not UTF-8, which is the default on a good many
+    # Windows installations, printing the first Arabic path raises
+    # UnicodeEncodeError.
+    #
+    # The failure is worse than it sounds, because by then the build has
+    # already finished: every page is written and correct, and the process dies
+    # on the report. Anything reading the exit code - serve.ps1 refuses to
+    # start the server, CI would call it a failed build - sees a build that
+    # failed, and the only clue is a traceback about a codec.
+    #
+    # Replacing rather than raising: a path that cannot be spelled in the
+    # console's encoding is a cosmetic problem with one line of a listing, and
+    # never a reason to fail a build that has already succeeded.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, 'reconfigure'):
+            stream.reconfigure(encoding='utf-8', errors='replace')
+
     parser = argparse.ArgumentParser(description=__doc__.split('\n')[1])
     parser.add_argument('--out', default='dist', help='where to write (default: dist)')
     parser.add_argument('--clean', action='store_true', help='empty the output first')
