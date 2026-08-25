@@ -1,0 +1,181 @@
+<!--
+  tools/gif-maker/body.html, in Indonesian.
+
+  Every id, class, data-view, data-sort and option value below is what
+  src/main.js reaches for, so they are the same in every language. Only the
+  words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; bingkainya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih gambar</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="Ubah cara bingkai ditampilkan">
+          <button type="button" data-view="large" class="active" aria-pressed="true">Besar</button>
+          <button type="button" data-view="small" aria-pressed="false">Kecil</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">Urutkan berdasarkan nama</button>
+        <button type="button" data-sort="date" class="ghost">Urutkan berdasarkan tanggal</button>
+        <button type="button" data-sort="reverse" class="ghost">Balik urutan</button>
+        <button type="button" id="clear-all" class="ghost danger">Hapus semua</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Seret bingkai mana pun lewat pegangan <span class="grip" aria-hidden="true">&#8942;&#8942;</span>-nya
+      untuk mengurutkan ulang, atau pakai panah pada masing-masingnya. Urutan di sini adalah urutan mainnya.
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">Tahan setiap bingkai selama</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="Satuan untuk berapa lama setiap bingkai ditahan">
+        <option value="seconds" selected>detik</option>
+        <option value="fps">bingkai per detik</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">Terapkan ke semua</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Langkah 2 &mdash; setelan -->
+  <section class="card">
+    <h2><span class="step">2</span> Setelan GIF</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">Ukuran</label>
+        <select id="size">
+          <option value="480" selected>480 px &mdash; bawaan yang baik</option>
+          <option value="640">640 px</option>
+          <option value="320">320 px</option>
+          <option value="240">240 px</option>
+          <option value="original">Ikuti gambarnya</option>
+          <option value="custom">Sesuai keinginan&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="Lebar sesuai keinginan dalam piksel">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="Tinggi sesuai keinginan dalam piksel">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">Cara gambar dipaskan</label>
+        <select id="fit">
+          <option value="contain" selected>Muat di dalam (dengan bilah)</option>
+          <option value="cover">Penuhi bingkai (memangkas tepinya)</option>
+          <option value="stretch">Regangkan sampai penuh (mengubah bentuk)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Warna latar</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">Warna</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; sebanyak yang bisa dimuat GIF</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; file paling kecil</option>
+        </select>
+        <p class="field-note">Makin sedikit warna, makin kecil file, makin banyak pita warna.</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">Palet</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>Warna terbaik untuk setiap bingkai</option>
+          <option value="shared">Satu palet untuk seluruh GIF</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">Titik-titik campur</label>
+        <select id="dither">
+          <option value="on" selected>Nyala &mdash; gradasi lebih halus</option>
+          <option value="off">Mati &mdash; lebih rata, tepi lebih bersih</option>
+        </select>
+        <p class="field-note">Matikan untuk logo, seni garis, dan tangkapan layar.</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">Pengulangan</label>
+        <select id="loop-mode">
+          <option value="forever" selected>Ulang terus</option>
+          <option value="once">Putar sekali</option>
+          <option value="times">Putar sejumlah tertentu&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="Berapa kali animasi diputar" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">Transparansi</label>
+        <select id="transparent">
+          <option value="off" selected>Ratakan ke warna latar</option>
+          <option value="on">Jaga area transparan</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="Pratinjau bingkai pertama"></canvas>
+        <p id="preview-empty" class="preview-empty">Tambahkan gambar untuk melihat pratinjau</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Bingkai</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>Berjalan selama</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>Ukuran bingkai</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Diputar</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Langkah 3 &mdash; ekspor -->
+  <section class="card">
+    <h2><span class="step">3</span> Buat GIF-nya</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Buat GIF</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="Animasi yang sudah jadi, sedang diputar"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Unduh GIF</a>
+      </div>
+    </div>
+  </section>
+</main>

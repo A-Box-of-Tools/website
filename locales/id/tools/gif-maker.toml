@@ -1,0 +1,255 @@
+#
+# Pembuat GIF - Bahasa Indonesia.
+#
+# Overrides for tools/gif-maker/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pembuat GIF"
+heading = "Pembuat&nbsp;GIF <span class=\"h1-kw\">&mdash; gambar menjadi GIF bergerak</span>"
+tagline = "Ubah sekumpulan gambar menjadi satu animasi."
+
+title = "Pembuat GIF &mdash; Gambar ke GIF Bergerak, Gratis dan Tanpa Unggah"
+description = "Ubah gambar JPG, PNG, atau WebP menjadi GIF bergerak, gratis dan sepenuhnya di peramban Anda. Atur urutan, kecepatan, dan ukurannya. Tidak ada yang diunggah, dan jalan tanpa internet."
+og_title = "Pembuat GIF &mdash; gambar menjadi GIF bergerak, di peramban Anda"
+og_description = "Urutkan bingkainya, atur berapa lama setiap bingkai ditahan, pilih ukuran, dan dapatkan sebuah GIF. Palet dan kompresinya dihitung di perangkat Anda sendiri; tidak ada yang diunggah."
+og_image_alt = "Pembuat GIF - ubah sekumpulan gambar menjadi satu GIF bergerak"
+
+pledge = """
+    Setiap bingkai digambar, dikuantisasi, dan dikompres oleh peramban Anda
+    sendiri, dan GIF yang sudah jadi dirakit di memori mesin ini. Tidak ada
+    server di ujung lain halaman ini untuk menerima sebuah gambar, bahkan
+    seandainya ada sesuatu di sini yang menginginkannya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu buat sebuah GIF. Tidak satu pun permintaan membawa gambar, gambar
+      mini, atau nama file. Atau cabut koneksi internet dan tetap buat satu."""
+
+read_first = """
+, <code>src/quantize.js</code> untuk palet yang
+      dipakai setiap bingkai, dan <code>src/lzw.js</code> serta
+      <code>src/gif.js</code> untuk kompresornya dan file tempatnya masuk
+      &mdash; tidak satu pun punya baris yang bisa menjangkau jaringan."""
+
+howto_heading = "Cara membuat GIF dari gambar"
+
+card = """
+            Urutkan gambarnya, sebutkan berapa lama setiap gambar ditahan, dan
+            dapatkan satu GIF bergerak. Warna dan kompresinya dihitung di
+            perangkat Anda sendiri."""
+
+[words]
+plural = "gambar"
+choose = "beberapa gambar"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "File tetap di perangkat Anda"
+
+[[privacy]]
+title = "Gambar Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya ada.
+      Dulu ini tertulis <code>connect-src 'none'</code>, yang mutlak; memasang
+      iklan memakan itu, dan mengatakannya adalah bagian dari kesepakatan."""
+
+[[privacy]]
+title = "Encoder-nya adalah empat file di repositori ini."
+body = """
+ Sebuah GIF butuh kuantiser warna dan
+      kompresor LZW, dan peramban tidak menyediakan keduanya &mdash; jadi
+      keduanya ditulis di sini, di <code>src/quantize.js</code> dan
+      <code>src/lzw.js</code>, dengan wadahnya di <code>src/gif.js</code>. Tidak
+      ada yang diambil untuk membuatnya, dan tidak ada mesin yang diunduh saat
+      pertama dipakai."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang gambar Anda: bukan file,
+      bukan gambar mini, bukan nama, ukuran, atau jumlah. Setiap baris yang
+      membaca, mendekode, menggambar, atau mengompres sebuah gambar disajikan
+      dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau gambar Anda. Tidak
+      ada yang terjadi kecuali Anda mengekliknya, dan yang akan Anda tuju adalah
+      situs milik orang lain."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan setiap bagian
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana: alat yang
+      mengirim gambar Anda ke tempat lain untuk dijadikan GIF akan berhenti
+      begitu Anda mencabut koneksi."""
+
+[[howto]]
+title = "Pilih gambar Anda."
+body = """
+ Jatuhkan sebuah folder ke pemilih file,
+      atau pilih file-nya sendiri. Peramban membacanya langsung dari disk Anda;
+      tidak ada yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Urutkan sesuai urutan mainnya."
+body = """
+ Seret lewat pegangannya, atau pakai
+      panahnya. "Urutkan berdasarkan nama" menghitung seperti yang Anda harapkan,
+      jadi <code>frame_2</code> mendarat sebelum <code>frame_10</code>."""
+
+[[howto]]
+title = "Atur berapa lama setiap bingkai ditahan."
+body = """
+ Setengah detik per bingkai adalah
+      slide; seperdua puluh detik adalah animasi. Beri semua bingkai waktu tahan
+      yang sama sekaligus, atau bedakan salah satunya supaya berlama-lama."""
+
+[[howto]]
+title = "Pilih ukuran, dan cara warnanya dipilih."
+body = """
+ Sebuah GIF tumbuh mengikuti luasnya
+      dan jumlah bingkainya, dan tidak ada penggeser kualitas untuk menurunkannya
+      lagi, jadi ukuran adalah setelan yang paling menentukan. 256 warna per
+      bingkai adalah bawaan yang paling enak dilihat; satu palet bersama lebih
+      kecil dan lebih stabil."""
+
+[[howto]]
+title = "Buat GIF-nya dan unduh."
+body = """
+ Ia dibangun di perangkat keras Anda
+      sendiri, jadi lamanya tergantung mesin Anda, bukan pada antrean. Animasi
+      yang sudah jadi diputar di halaman sebelum Anda menyimpannya."""
+
+[[faq]]
+q = "Apakah gambar saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Gambar Anda dibaca, digambar, dikuantisasi, dan dikompres oleh
+        peramban Anda sendiri di perangkat keras Anda sendiri. Alat ini tidak
+        punya sisi server, dan <code>Content-Security-Policy</code> halaman ini
+        menyebut satu per satu setiap alamat yang boleh dihubunginya &mdash;
+        tidak satu pun milik situs ini. Cabut koneksi jaringan dan ia tetap
+        membuat GIF."""
+
+[[faq]]
+q = "Format gambar apa saja yang bisa saya pakai?"
+a = """
+        Format gambar diam apa pun yang bisa didekode peramban Anda, yang dalam
+        praktiknya berarti JPG, PNG, WebP, GIF, AVIF, dan di perangkat Apple,
+        HEIC. Tidak ada daftar terpisah yang harus dijaga tetap mutakhir di sini,
+        karena pendekodean adalah tugas peramban, bukan tugas kami."""
+
+[[faq]]
+q = "Kenapa GIF saya begitu besar?"
+a = """
+        Karena sebuah GIF menyimpan setiap bingkai sebagai piksel utuh. Tidak ada
+        kompensasi gerak, tidak ada yang disimpan sebagai "sama seperti tadi tapi
+        digeser", dan tidak ada tombol kualitas: ukurannya kira-kira luas
+        dikalikan jumlah bingkai, dan hanya tiga hal yang menurunkannya.
+        <br><br>
+        Perkecil &mdash; memangkas ukuran jadi separuh membuat file-nya tinggal
+        seperempat. Pakai lebih sedikit bingkai, atau tahan setiap bingkai lebih
+        lama. Turunkan ke 64 atau 32 warna, dan matikan titik-titik campur, yang
+        biayanya lebih ringan daripada kedengarannya pada gambar datar dan sangat
+        besar pada foto. Kalau tetap tidak muat, jawaban jujurnya adalah bahwa
+        yang Anda buat itu sebenarnya video, dan MP4-nya mungkin hanya sepersepuluh
+        ukurannya."""
+
+[[faq]]
+q = "Secepat apa sebuah GIF bisa diputar?"
+a = """
+        Tidak secepat yang disiratkan angkanya. Formatnya menyimpan jeda setiap
+        bingkai dalam perseratus detik, dan peramban sudah membatasi apa pun di
+        bawah dua perseratus menjadi sepersepuluh detik sejak 1990-an &mdash;
+        aturan yang ditulis untuk bola dunia berputar pada zaman itu dan tidak
+        pernah dicabut. Jadi jeda 0,01 dtk tidak diputar pada 100 bingkai per
+        detik; ia diputar pada 10. Karena itu alat ini tidak akan menawarkan apa
+        pun di bawah 0,02 dtk, dan 0,05 dtk (20 bingkai per detik) kira-kira
+        secepat yang layak diminta."""
+
+[[faq]]
+q = "Apa yang diubah setelan palet?"
+a = """
+        Satu bingkai GIF memuat paling banyak 256 warna, dan sesuatu harus
+        memilihnya.
+        <br><br>
+        <strong>Warna terbaik untuk setiap bingkai</strong> memilih 256 untuk
+        setiap gambar secara terpisah, yang tampak paling tajam dan merupakan
+        jawaban yang tepat untuk sekumpulan foto yang tidak berhubungan.
+        <strong>Satu palet untuk seluruh GIF</strong> membangun satu tabel dari
+        semua bingkai sekaligus. Ia membuat file lebih kecil, dan menghentikan
+        kedipan yang muncul ketika palet tersentak-sentak di antara bingkai dari
+        adegan yang sama &mdash; jadi itulah yang dipilih ketika bingkainya adalah
+        sebuah rangkaian, bukan sebuah kumpulan."""
+
+[[faq]]
+q = "Bisakah saya menjaga latar tetap transparan?"
+a = """
+        Bisa, kalau gambar Anda memang punya: ubah "Transparansi" menjadi "Jaga
+        area transparan". Satu hal yang perlu diketahui sebelum melakukannya.
+        Transparansi GIF hanya satu bit &mdash; sebuah piksel entah tidak terlihat
+        entah dicat penuh, tanpa apa pun di antaranya &mdash; jadi tepi yang
+        dihaluskan, bayangan lembut, dan apa pun yang memudar akan berubah menjadi
+        tepi keras. Kalau animasi Anda akan diletakkan di atas latar yang warnanya
+        Anda ketahui, meratakannya ke warna itu akan tampak lebih baik."""
+
+[[faq]]
+q = "Adakah batas berapa banyak gambar yang bisa saya pakai?"
+a = """
+        Tidak ada batas yang tertanam di alat ini. Batas praktisnya adalah memori
+        mesin Anda sendiri dan kesabaran Anda terhadap file yang keluar:
+        gambarnya dibaca satu per satu, jadi seratus bingkai tidak masalah, tapi
+        seratus bingkai pada 640 px juga berarti GIF yang sangat besar. Lihat
+        "Kenapa GIF saya begitu besar?" di atas."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, dan tidak ada masa uji coba.
+        Tidak ada tanda air pada keluarannya juga. Situs ini memasang iklan, dan
+        itulah yang membiayainya; iklan tidak diberi apa pun tentang gambar
+        Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim gambar Anda ke tempat lain untuk diproses
+        akan berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Ubah sekumpulan gambar menjadi GIF bergerak. Bingkai, palet, dan kompresinya semua dihitung di peramban Anda, jadi tidak ada gambar yang pernah diunggah."
+features = [
+  "Menggabungkan gambar JPG, PNG, WebP, GIF, dan AVIF menjadi satu GIF bergerak",
+  "Waktu tahan per bingkai, seret untuk mengurutkan ulang, urutkan berdasarkan nama atau tanggal",
+  "256, 128, 64, atau 32 warna, dengan titik-titik campur Floyd-Steinberg opsional",
+  "Satu palet bersama atau warna terbaik untuk setiap bingkai",
+  "Transparansi satu bit opsional, dan ulang terus, sekali, atau sejumlah tertentu",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan gambar di sini"
+hint = "atau klik untuk menelusuri &mdash; JPEG, PNG, WebP, GIF, AVIF"

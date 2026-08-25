@@ -1,0 +1,167 @@
+<!--
+  tools/compress-pdf/body.html, in Indonesian.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; file -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih sebuah PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Pilih yang lain</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; layar yang akan dipertahankan alat ini kalau hanya boleh satu -->
+  <section class="card" id="inventory-card" hidden>
+    <h2><span class="step">2</span> Lihat di mana ukurannya berada</h2>
+
+    <p class="card-lede">
+      "Kompres PDF" adalah dua pekerjaan berbeda yang memakai satu nama.
+      Pindaian adalah setumpuk foto, dan mengodekannya ulang bernilai sebagian
+      besar isi file. Sebuah kontrak adalah teks dan font, yang sudah dikompres
+      oleh apa pun yang membuatnya &mdash; tidak ada delapan puluh persen yang
+      bersembunyi di dalamnya, dan tidak ada alat yang bisa menemukannya. Anda
+      punya yang mana dari keduanya bukan soal pendapat, jadi ini dia sebelum
+      apa pun disentuh.
+    </p>
+
+    <p id="verdict" class="verdict"></p>
+
+    <div class="breakdown">
+      <div id="breakdown-bar" class="breakdown-bar" role="img" aria-labelledby="breakdown-list"></div>
+      <ul id="breakdown-list" class="breakdown-list"></ul>
+    </div>
+
+    <p id="inventory-notes" class="field-summary"></p>
+  </section>
+
+  <!-- Langkah 3 &mdash; berapa banyak yang boleh dibelanjakan -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">3</span> Sebutkan seberapa keras memerasnya</h2>
+
+    <p class="card-lede">
+      Sebuah PDF mencatat seberapa besar setiap gambar digambar, sehingga alat
+      ini bisa mengukur apa yang benar-benar dipakai halaman alih-alih menebak.
+      Pindaian 4000 piksel yang ditempatkan selebar delapan inci kertas membawa
+      500 piksel per inci; pada 150 ia tercetak sama dan tampak sama di layar.
+      Piksel yang tidak bisa dilihat siapa pun dibelanjakan lebih dulu, karena
+      tidak ada biayanya.
+    </p>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">Berapa banyak kualitas yang boleh dibelanjakan</legend>
+      <div class="presets" id="presets" role="radiogroup" aria-label="Berapa banyak kualitas yang boleh dibelanjakan">
+        <label class="preset">
+          <input type="radio" name="preset" value="smallest">
+          <span class="preset-body">
+            <strong>Paling kecil</strong>
+            <span class="preset-note">96 DPI. Untuk sesuatu yang hanya perlu dibaca di layar.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="screen" checked>
+          <span class="preset-body">
+            <strong>Bagus di layar</strong>
+            <span class="preset-note">130 DPI. Jawaban biasa untuk file yang perlu Anda kirim lewat email.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="print">
+          <span class="preset-body">
+            <strong>Masih bagus di kertas</strong>
+            <span class="preset-note">220 DPI. Lebih kecil, dan tetap tercetak dengan benar.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="gentle">
+          <span class="preset-body">
+            <strong>Nyaris tidak menyentuh gambarnya</strong>
+            <span class="preset-note">Tanpa pengubahan ukuran sama sekali. Sebagian besar penghematan datang dari mengemas ulang file.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <details class="advanced">
+      <summary>Tentukan sendiri kedua angkanya</summary>
+      <div class="option-row">
+        <label for="dpi-value">Piksel terbanyak per inci ruang gambar</label>
+        <div class="inline-pair">
+          <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
+          <span class="unit">DPI &mdash; 0 membiarkan setiap gambar pada ukuran penuhnya</span>
+        </div>
+      </div>
+      <div class="option-row">
+        <label for="quality-value">Kualitas JPEG</label>
+        <div class="inline-pair">
+          <input type="range" id="quality-value" min="30" max="95" step="1" value="68">
+          <output id="quality-out" for="quality-value">68</output>
+        </div>
+      </div>
+    </details>
+
+    <label class="check">
+      <input type="checkbox" id="strip-meta" checked>
+      <span>
+        <strong>Keluarkan apa yang diingat file tentang asal-usulnya</strong>
+        <span class="check-note">
+          Nama dan versi program yang membuatnya, kapan ia dibuat dan terakhir
+          disunting, paket XMP, dan gumpalan privat yang ditinggalkan aplikasi
+          tata letak agar bisa mengimpor ulang pekerjaannya sendiri &mdash; yang
+          kadang berukuran megabyte. Tidak satu pun dibutuhkan untuk menampilkan
+          dokumen.
+        </span>
+      </span>
+    </label>
+
+    <p id="settings-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Langkah 4 &mdash; satu klik -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Kompres</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Kompres PDF ini</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Unduh</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <details id="per-image" class="advanced" hidden>
+        <summary>Apa yang terjadi pada setiap gambar</summary>
+        <ul id="image-list" class="image-list"></ul>
+      </details>
+    </div>
+  </section>
+</main>

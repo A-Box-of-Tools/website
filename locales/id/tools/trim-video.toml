@@ -1,0 +1,322 @@
+#
+# Pemotong Video - Bahasa Indonesia.
+#
+# Overrides for tools/trim-video/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Potong" di sini berarti memendekkan durasi; mengubah bentuk gambar adalah
+# "pangkas" dan itu alat yang berbeda.
+#
+
+name = "Pemotong Video"
+heading = "Pemotong&nbsp;Video <span class=\"h1-kw\">&mdash; potong video daring</span>"
+tagline = "Tandai bagian yang layak disimpan sambil diputar. Dapatkan kembali sebagai satu video."
+
+title = "Potong Video Daring &mdash; Simpan Hanya Bagian yang Anda Mau, Tanpa Unggah"
+description = "Tonton sebuah video dan tandai setiap bagian yang layak disimpan sambil diputar, lalu simpan bagian-bagian itu sebagai satu file. Berjalan di peramban Anda: tidak ada yang diunggah, tidak ada yang dikodekan ulang, jalan tanpa internet."
+og_title = "Pemotong Video &mdash; simpan hanya bagian yang Anda mau, tanpa mengunggah apa pun"
+og_description = "Tekan I dan O sambil diputar untuk menandai setiap bagian yang layak disimpan. Bagian yang ditandai ditulis kembali sebagai satu video, bingkai demi bingkai, tanpa ada yang diunggah."
+og_image_alt = "Pemotong Video - tandai bagian yang Anda mau dan simpan sebagai satu video, di peramban Anda"
+
+pledge = """
+    Video Anda dibaca, ditandai, dipotong, dan ditulis oleh peramban Anda
+    sendiri, di perangkat keras Anda sendiri. Tidak ada di sini yang bisa
+    mengambil atau mengirim apa pun &mdash; alat ini sama sekali tidak punya
+    fitur jaringan &mdash; dan seandainya pun ada, tidak ada server di ujung lain
+    halaman ini untuk menerima sebuah video."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu potong sebuah video. Tidak satu pun permintaan membawa bingkai, nama
+      file, atau satu byte pun dari yang Anda pilih. Atau cabut koneksi internet
+      dan tetap potong satu &mdash; alat yang mengirim video Anda ke tempat lain
+      untuk dipotong akan langsung berhenti."""
+
+read_first = """
+, <code>src/segments.js</code> untuk penanda dan file
+      tempat menyimpannya, <code>src/demux.js</code> untuk pembaca yang mencari
+      bingkai di dalam MP4, <code>src/ranges.js</code> untuk aritmetika yang
+      mengubah sebuah penanda menjadi deretan sampel, dan
+      <code>src/copy.js</code> untuk perulangan yang memindahkan sampel itu ke
+      file baru. Tidak satu pun mengimpor sesuatu yang bisa membuat
+      permintaan."""
+
+howto_heading = "Cara memotong video"
+
+card = """
+            Tandai setiap bagian yang layak disimpan sambil diputar, lalu simpan
+            sebagai satu video. Bingkainya disalin, bukan dikodekan ulang, jadi
+            tidak ada yang hilang."""
+
+[words]
+plural = "video"
+choose = "sebuah video"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Sebanyak apa pun bagiannya"
+
+[[facts]]
+text = "Tanpa kehilangan kualitas"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[privacy]]
+title = "Video Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Alat ini sama sekali tidak punya
+      fitur jaringan: tidak ada alamat untuk ditempelkan, tidak ada yang
+      diunduh, tidak ada mesin yang diambil saat pertama dipakai. Setiap byte
+      yang menyentuh video Anda datang dari asal ini ketika halaman dimuat."""
+
+[[privacy]]
+title = "Di jalur biasa, tidak ada yang bahkan didekode."
+body = """
+ Memotong tidak mengubah tampilan
+      bingkai mana pun, jadi bingkai terkode dari bagian yang Anda tandai
+      dipindahkan ke file baru persis seperti ditemukan. Masing-masing disimpan
+      sebagai potongan file di disk Anda &mdash; catatan tentang byte yang mana,
+      bukan byte-nya sendiri &mdash; dan peramban Anda membacanya untuk pertama
+      kali saat menulis unduhan. Tidak ada di sini yang pernah mengubah video
+      Anda kembali menjadi gambar."""
+
+[[privacy]]
+title = "File penanda dibuat di dalam halaman."
+body = """
+ Menyimpan penanda Anda menulis sebuah
+      file teks dari angka-angka yang sudah ada di layar, langsung ke unduhan
+      Anda. Memuatnya membacanya di sini. Tidak satu pun mendekati jaringan, dan
+      tidak satu pun membawa apa pun selain waktu."""
+
+[[privacy]]
+title = "Suaranya disalin, bukan didengarkan."
+body = """
+ Di kedua jalur MP4, sampel audio
+      dipindahkan menyeberang tanpa didekode sama sekali &mdash; tidak ada di
+      sini yang pernah mengubahnya kembali menjadi suara, dan tidak ada yang bisa
+      meneruskannya ke mana pun seandainya ada."""
+
+[[privacy]]
+title = "Kalaupun bingkai didekode, itu terjadi di sini."
+body = """
+ Pemotongan yang persis, dan pratinjau
+      untuk file yang tidak mau diputar peramban ini, melewati WebCodecs di mesin
+      Anda sendiri. Itu dekoder yang sama yang toh akan menampilkan video itu
+      kepada Anda, berjalan di tempat yang sama."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang video Anda: bukan file,
+      bukan bingkai, bukan nama, ukuran, durasi, atau di mana Anda memotongnya.
+      Setiap baris yang membaca, memotong, dan menulis disajikan dari asal ini
+      dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau video Anda."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih sebuah video."
+body = """
+ Jatuhkan MP4, MOV, M4V, atau WebM ke
+      pemilih file. Peramban membacanya langsung dari disk Anda; tidak ada yang
+      dikirim ke mana pun saat Anda melakukannya. Jatuhkan beberapa dan mereka
+      digabungkan, dalam urutan yang Anda masukkan."""
+
+[[howto]]
+title = "Putar, dan tandai bagian yang Anda mau."
+body = """
+ Tekan <kbd>I</kbd> di tempat sebuah
+      bagian harus dimulai dan <kbd>O</kbd> di tempat ia harus berakhir. Lakukan
+      sebanyak yang Anda mau &mdash; setiap pasangan menjadi satu baris di tabel
+      di bawahnya, dan satu pita di lini masa. <kbd>U</kbd> menarik kembali yang
+      terakhir, <kbd>Space</kbd> memutar dan menjeda, dan tombol panah melompat
+      lima detik sekali tekan. Perlambat pemutarannya kalau momennya sulit
+      ditangkap."""
+
+[[howto]]
+title = "Rapikan penandanya."
+body = """
+ Setiap baris bisa diputar sendiri, diatur
+      ulang waktunya dengan mengetikkan waktu yang persis, dipindahkan naik atau
+      turun urutannya, atau dihapus. Kedua ujung bagian yang terpilih juga bisa
+      diseret di sepanjang lini masa. Total di bagian atas adalah durasi video
+      yang sudah jadi nanti."""
+
+[[howto]]
+title = "Simpan bagian itu, atau buang."
+body = """
+ Menyimpan adalah cara yang biasa:
+      video yang sudah jadi adalah bagian yang Anda tandai, digabungkan berurutan.
+      Membuangnya adalah pekerjaan lain yang diinginkan orang dan jarang
+      ditemukan &mdash; tandai iklannya, keheningannya, atau awal yang gagal, dan
+      sisanya digabungkan tanpa itu semua."""
+
+[[howto]]
+title = "Potong, dan unduh."
+body = """
+ "Simpan setiap byte" memindahkan bingkai
+      tanpa disentuh: cepat, dan tidak mungkin memakan kualitas, tapi setiap
+      bagian dimulai pada bingkai kunci sebelum penanda Anda. "Potong tepat di
+      sini" mendekode dan menulis gambarnya lagi sehingga setiap bagian mulai
+      pada bingkai yang Anda pilih. Halaman ini mengatakan mana yang akan Anda
+      dapat, dan apa biayanya, sebelum Anda menekan tombolnya."""
+
+[[faq]]
+q = "Apakah video saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Ia dibaca, ditandai, dipotong, dan ditulis oleh peramban Anda
+        sendiri di perangkat keras Anda sendiri. Alat ini tidak punya sisi
+        server, dan <code>Content-Security-Policy</code> halaman ini menyebut
+        satu per satu setiap alamat yang boleh dihubunginya &mdash; tidak satu
+        pun milik situs ini. Cabut koneksi internet dan tetap potong sebuah video
+        kalau Anda lebih suka memeriksa daripada diberi tahu."""
+
+[[faq]]
+q = "Bisakah saya menyimpan beberapa bagian dari video yang sama?"
+a = """
+        Justru untuk itulah alat ini. Tekan <kbd>I</kbd> dan <kbd>O</kbd>
+        sebanyak yang Anda mau sambil diputar; setiap pasangan menjadi satu
+        baris, dan video yang sudah jadi adalah semua baris digabungkan berurutan
+        dengan segala yang lain hilang. Kebanyakan pemotong daring memberi Anda
+        satu pasang pegangan dan bertanya rentang tunggal mana yang disimpan,
+        yang cukup untuk merapikan awal dan akhir sebuah klip dan sama sekali
+        tidak berguna untuk menonton rekaman satu jam sekali lalu menyimpan enam
+        momen yang layak."""
+
+[[faq]]
+q = "Apakah memotong menurunkan kualitas?"
+a = """
+        Tidak di jalur biasa, dan tidak dengan cara yang penting. Memotong tidak
+        mengubah tampilan bingkai mana pun, jadi bingkainya dipindahkan ke file
+        baru persis seperti adanya: byte yang sama, setelan encoder yang sama,
+        semuanya sama. Satu-satunya jalur di sini yang mengodekan ulang sesuatu
+        adalah pemotongan yang persis, dan itu tertulis di tombolnya."""
+
+[[faq]]
+q = "Kenapa sebuah bagian mulai lebih awal daripada yang saya tandai?"
+a = """
+        Karena cara video disimpan, dan hanya pada pemutar yang mengabaikan
+        bagian standar dari formatnya. Kebanyakan bingkai disimpan sebagai
+        deskripsi perbedaannya dari tetangganya, jadi tidak bisa didekode
+        tanpanya; hanya bingkai kunci yang berdiri sendiri, dan bingkai kunci
+        biasanya berjarak satu sampai sepuluh detik. Karena itu pemotongan yang
+        menyalin bingkai harus membawa deretan dari bingkai kunci di depan
+        penanda Anda &mdash; dan file itu berkata <em>mulai putar pada penanda
+        Anda</em>, yang dipatuhi setiap pemutar arus utama. Kalau Anda butuh
+        persis di semua pemutar, pilih "Potong tepat di sini", yang mengodekan
+        ulang. Halaman ini memberi tahu Anda ada di kasus yang mana, dan
+        selisihnya berapa, sebelum Anda mengekspor."""
+
+[[faq]]
+q = "Bisakah saya memotong iklannya saja?"
+a = """
+        Bisa. Tandai iklannya, lalu pilih "Buang yang ditandai": semua yang
+        <em>tidak</em> Anda tandai yang digabungkan, berurutan. Daftar penanda
+        yang sama menjawab kedua pertanyaan, jadi Anda bisa berpindah di antara
+        keduanya dan melihat durasinya berubah tanpa menandai apa pun dua
+        kali."""
+
+[[faq]]
+q = "Bisakah saya menyimpan penanda saya dan kembali lagi nanti?"
+a = """
+        Bisa. "Simpan penanda" menulis sebuah file teks biasa &mdash; satu baris
+        satu bagian, awal dan akhir dipisahkan koma &mdash; dan "Muat penanda"
+        membacanya kembali. Dua format ditawarkan, detik biasa dan
+        <code>HH:MM:SS.mmm</code>, dan keduanya mengikuti tata letak yang sudah
+        dipakai alat lain yang bekerja begini, jadi file yang ditulis di sini
+        bisa diserahkan ke salah satunya dan file yang ditulis di sana bisa
+        dijatuhkan ke halaman ini. Menandai adalah pekerjaan yang butuh
+        ketelitian dan tidak ada yang seharusnya melakukannya dua kali."""
+
+[[faq]]
+q = "Format video apa saja yang bisa saya potong?"
+a = """
+        MP4, M4V, dan MOV dibaca langsung, apa pun isinya: H.264, HEVC, AV1, atau
+        VP9. Menyalin bingkai tidak melibatkan pendekodean, jadi jalur ini
+        berhasil bahkan untuk kodek yang sama sekali tidak punya dekoder di
+        peramban Anda. Apa pun lain yang bisa diputar peramban Anda &mdash; yang
+        paling jelas WebM &mdash; dipotong dengan memutarnya dan merekam
+        hasilnya, yang berhasil, memakan waktu selama hasilnya, dan hanya bisa
+        menyimpan satu bagian. File yang tidak bisa dibaca maupun diputar
+        peramban, yang dalam praktiknya berarti AVI, WMV, FLV, dan sebagian besar
+        MKV, ditolak dengan pesan alih-alih gagal di tengah jalan."""
+
+[[faq]]
+q = "Adakah batas ukuran atau durasi videonya?"
+a = """
+        Tidak ada batas yang tertanam di alat ini, dan di jalur penyalinan file
+        nyaris tidak dibaca sama sekali: bingkai yang Anda simpan ditunjuk,
+        bukan dimuat, jadi menyimpan empat menit dari rekaman empat gigabyte
+        kira-kira sama biayanya dengan menulis empat menit itu ke disk.
+        Pemotongan yang persis menelusuri file beberapa megabyte sekali jalan.
+        Bagaimanapun, batas praktisnya adalah file yang sudah jadi, yang dirakit
+        di memori sebelum Anda mengunduhnya."""
+
+[[faq]]
+q = "Apakah suaranya selamat?"
+a = """
+        Di kedua jalur MP4 ia disalin sampel demi sampel tanpa pernah didekode,
+        jadi ia sama persis byte demi byte dengan yang ada di file, dan sebuah
+        penanda suntingan menjaga setiap bagian sejajar dengan gambarnya dalam
+        seperseribu detik. Satu pengecualian adalah menggabungkan video terpisah
+        yang suaranya dijelaskan berbeda &mdash; laju sampel yang berbeda,
+        misalnya &mdash; di mana tidak ada cara memasukkan keduanya ke satu jalur
+        tanpa mendekodenya, dan halaman ini mengatakannya sebelum melakukannya.
+        Di jalur perekaman, ia ditangkap dari pemutaran dan dikodekan ulang.
+        Bagaimanapun ada kotak centang untuk meninggalkannya sama sekali."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang video Anda."""
+
+[schema]
+browser_requirements = "Memerlukan JavaScript. Menyalin bingkai sama sekali tidak memerlukan dukungan kodek video; pemotongan yang persis memerlukan peramban dengan WebCodecs, dan format lain kembali ke perekaman."
+description = "Tandai sebanyak apa pun bagian sebuah video sambil diputar, lalu simpan bagian-bagian itu sebagai satu file - atau buang bagian itu dan simpan sisanya. MP4, MOV, dan M4V dipotong dengan memindahkan bingkai terkode ke file baru tanpa disentuh, dengan audio asli dibawa menyeberang sampel demi sampel; tidak ada yang diunggah dan tidak ada yang dikodekan ulang."
+features = [
+  "Menandai sebanyak apa pun bagian dengan I dan O sambil video diputar",
+  "Menggabungkan bagian yang ditandai menjadi satu file, dalam urutan yang Anda pilih",
+  "Atau membuang bagian yang ditandai dan menyimpan semua sisanya",
+  "Memotong tanpa mengodekan ulang, jadi tidak ada kualitas yang hilang",
+  "Menyimpan dan memuat kembali penanda sebagai file teks biasa berisi stempel waktu",
+  "Penanda akurat per bingkai, dengan bingkai kunci ditampilkan di lini masa",
+  "Menjaga audio asli tanpa mengodekannya ulang",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan video di sini"
+hint = "atau klik untuk menelusuri &mdash; MP4, MOV, M4V, WebM. Jatuhkan beberapa untuk menggabungkannya."

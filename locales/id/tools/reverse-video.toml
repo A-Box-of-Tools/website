@@ -1,0 +1,245 @@
+#
+# Pembalik Video - Bahasa Indonesia.
+#
+# Overrides for tools/reverse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pembalik Video"
+heading = "Pembalik&nbsp;Video <span class=\"h1-kw\">&mdash; putar video terbalik</span>"
+tagline = "Bingkai terakhir lebih dulu, lengkap dengan suaranya."
+
+title = "Putar Video Terbalik Daring &mdash; Gratis, Tanpa Unggah, Jalan Tanpa Internet"
+description = "Putar MP4, MOV, atau WebM secara terbalik, dengan suaranya ikut dibalik. Berjalan di peramban Anda: tidak ada yang diunggah, tidak ada tanda air, dan jalan tanpa internet."
+og_title = "Pembalik Video &mdash; putar klip terbalik tanpa mengunggahnya"
+og_description = "Balik sebuah video beserta suaranya, bingkai demi bingkai, di perangkat Anda sendiri. File dibaca, didekode, dan ditulis oleh peramban Anda sendiri."
+og_image_alt = "Pembalik Video - putar klip terbalik di peramban Anda, tanpa ada yang diunggah"
+
+pledge = """
+    Setiap bingkai didekode, dibalik, dan dikodekan lagi oleh peramban Anda
+    sendiri, di perangkat keras Anda sendiri. Tidak ada di sini yang bisa
+    mengambil atau mengirim apa pun &mdash; alat ini sama sekali tidak punya
+    fitur jaringan &mdash; dan seandainya pun ada, tidak ada server di ujung lain
+    halaman ini untuk menerima sebuah video."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu balik sebuah klip. Tidak satu pun permintaan membawa bingkai, nama
+      file, atau satu byte pun dari yang Anda pilih. Atau cabut koneksi internet
+      dan tetap balik satu &mdash; alat yang mengirim video Anda ke tempat lain
+      untuk diproses akan langsung berhenti."""
+
+read_first = """
+, <code>src/timeline.js</code> untuk aritmetika yang
+      memutuskan bingkai mana keluar kapan, dan <code>src/reverse.js</code> untuk
+      perulangan yang menelusuri file secara mundur satu kelompok bingkai sekali
+      jalan. Tidak satu pun mengimpor sesuatu yang bisa membuat permintaan."""
+
+howto_heading = "Cara memutar video terbalik"
+
+card = """
+            Putar sebuah klip terbalik &mdash; gambar dan suaranya sekaligus
+            &mdash; tanpa mengirimnya ke mana pun."""
+
+[words]
+plural = "video"
+choose = "sebuah video"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Membalik suaranya juga"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[privacy]]
+title = "Video Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Alat ini sama sekali tidak punya
+      fitur jaringan: tidak ada alamat untuk ditempelkan, tidak ada yang diunduh,
+      tidak ada mesin yang diambil saat pertama dipakai. Setiap byte yang
+      menyentuh video Anda datang dari asal ini ketika halaman dimuat."""
+
+[[privacy]]
+title = "Pendekodean dan pengodean berjalan lokal."
+body = """
+ Bingkainya melewati WebCodecs di
+      peramban Anda sendiri, atau melewati mesin pemutar yang sama yang toh akan
+      menampilkan klip itu kepada Anda. File yang sudah jadi dibangun di memori
+      mesin ini dan diserahkan langsung ke unduhan."""
+
+[[privacy]]
+title = "Suaranya juga dibalik di sini."
+body = """
+ Membalik sebuah jalur berarti
+      mendekodenya, dan pendekodean itu milik peramban sendiri, berjalan di mesin
+      ini. Tidak ada yang mendengarkannya, tidak ada yang menyimpannya, dan tidak
+      ada yang bisa meneruskannya ke mana pun: tidak ada jalur kode di sini yang
+      mengirim satu byte pun."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang video Anda: bukan file,
+      bukan bingkai, bukan nama, ukuran, atau durasi. Setiap baris yang membaca,
+      mendekode, membalik, atau mengodekan disajikan dari asal ini dan terdaftar
+      di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau video Anda."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih sebuah video."
+body = """
+ Jatuhkan MP4, MOV, M4V, atau WebM ke
+      pemilih file, atau pilih sendiri. Peramban membacanya langsung dari disk
+      Anda; tidak ada yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Putuskan soal suaranya."
+body = """
+ &ldquo;Balik suaranya juga&rdquo;
+      membalik jalurnya sampel demi sampel, dan itulah yang membuat ucapan keluar
+      sebagai ucapan yang diputar terbalik, bukan sebagai keheningan. Matikan
+      untuk klip tanpa suara, yang lebih cepat."""
+
+[[howto]]
+title = "Pilih berapa banyak kualitas yang dibelanjakan."
+body = """
+ Gambarnya harus dikodekan lagi,
+      karena bingkainya keluar dalam urutan yang tidak pernah dikodekan oleh apa
+      pun di dalam file itu. &ldquo;Seimbang&rdquo; tetap dekat dengan apa yang
+      dibelanjakan aslinya; &ldquo;Kualitas terbaik&rdquo; membelanjakan
+      lebih."""
+
+[[howto]]
+title = "Balik dan unduh."
+body = """
+ Pekerjaannya terjadi di perangkat keras Anda
+      sendiri, jadi lamanya tergantung mesin Anda, bukan pada antrean. Video yang
+      sudah jadi diserahkan langsung ke unduhan peramban Anda."""
+
+[[faq]]
+q = "Apakah video saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Ia dibaca, didekode, dibalik, dan dikodekan oleh peramban Anda
+        sendiri di perangkat keras Anda sendiri. Alat ini tidak punya sisi
+        server, dan <code>Content-Security-Policy</code> halaman ini menyebut
+        satu per satu setiap alamat yang boleh dihubunginya &mdash; tidak satu
+        pun milik situs ini. Cabut koneksi internet dan tetap balik sebuah klip
+        kalau Anda lebih suka memeriksa daripada diberi tahu."""
+
+[[faq]]
+q = "Format video apa saja yang bisa saya balik?"
+a = """
+        MP4, M4V, dan MOV dibaca langsung, apa pun isinya: H.264, HEVC, AV1, atau
+        VP9, selama peramban Anda bisa mendekode kodek itu. Apa pun lain yang
+        bisa diputar peramban Anda &mdash; yang paling jelas WebM &mdash; dibalik
+        dengan cara melangkahkan pemutar peramban sendiri mundur melewatinya,
+        yang berhasil tapi lebih lambat. File yang tidak bisa dibaca maupun
+        diputar peramban, yang dalam praktiknya berarti AVI, WMV, FLV, dan
+        sebagian besar MKV, ditolak dengan pesan alih-alih gagal di tengah jalan.
+        Yang keluar selalu berupa MP4."""
+
+[[faq]]
+q = "Apakah suaranya ikut dibalik?"
+a = """
+        Ya, kecuali Anda mematikannya. Seluruh jalur didekode, sampelnya
+        diletakkan dalam urutan terbalik, dan dikodekan lagi sebagai AAC. Tidak
+        ada cara menghindari pengodean kedua itu: sebuah paket audio adalah suara
+        selama beberapa puluh milidetik yang dikodekan terhadap paket sebelumnya,
+        jadi menulis paketnya dari belakang ke depan akan memutar potongan-potongan
+        pendek ke arah maju dalam urutan yang salah &mdash; yang terdengar seperti
+        kerusakan, bukan seperti pembalikan."""
+
+[[faq]]
+q = "Apakah membalik menurunkan kualitas?"
+a = """
+        Gambarnya dikodekan untuk kedua kalinya, dan itu memakan sedikit. Di sini
+        hal itu tidak bisa dihindari seperti saat memotong: klip yang dibalik
+        menampilkan bingkainya dalam urutan yang tidak pernah dikodekan oleh apa
+        pun di file aslinya, jadi setiap bingkai harus ditulis dari awal. Yang
+        tidak akan dilakukan alat ini adalah membelanjakan lebih banyak daripada
+        aslinya, karena mengodekan di atas itu hanya membuat file lebih besar
+        tanpa membuatnya tampak lebih baik."""
+
+[[faq]]
+q = "Adakah batas ukuran atau durasi videonya?"
+a = """
+        Tidak ada batas yang tertanam di alat ini, dan file tidak dibaca ke
+        memori sekaligus &mdash; ia ditelusuri satu kelompok bingkai demi
+        kelompok bingkai, secara mundur. Batas praktisnya adalah video yang sudah
+        jadi, yang dirakit di memori sebelum Anda mengunduhnya, dan suaranya,
+        yang harus ditahan utuh karena membalik butuh sampel terakhir sebelum
+        bisa menulis yang pertama."""
+
+[[faq]]
+q = "Kenapa pada sebagian file lebih lambat daripada yang lain?"
+a = """
+        Karena ada dua jalan masuk. MP4 atau MOV dibaca alat ini secara langsung
+        dan didekode satu kelompok bingkai sekali jalan, secepat mesin Anda bisa.
+        Selain itu, pembalikan dilakukan dengan meminta pemutar peramban sendiri
+        satu momen klip demi satu momen, dan setiap pencarian itu membuat
+        peramban mendekode dari bingkai kunci di depannya. Halaman ini
+        mengatakan yang mana dari keduanya yang dipakai, dan alasannya, sebelum
+        Anda mulai."""
+
+[[faq]]
+q = "Bisakah saya membalik hanya sebagian klip?"
+a = """
+        Tidak di sini. Alat ini membalik keseluruhannya: klip yang keluar sama
+        persis panjangnya dengan yang masuk, dengan bingkai terakhir lebih dulu.
+        Potong dulu bagian yang Anda mau dengan
+        <a href="../potong-video/">Pemotong Video</a> &mdash; yang melakukannya
+        tanpa mengodekan ulang satu bingkai pun &mdash; lalu balik hasilnya."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang video Anda."""
+
+[schema]
+browser_requirements = "Memerlukan JavaScript dan peramban dengan pengodean video WebCodecs: Chrome, Edge, Safari 16.4 atau lebih baru, atau Firefox 133 atau lebih baru."
+description = "Balik sebuah video di peramban, suaranya termasuk. MP4, MOV, dan M4V didekode kelompok demi kelompok dari ujung dan dikodekan lagi dengan waktu bingkai aslinya; apa pun lain yang bisa diputar peramban dilangkahi secara mundur. Tidak ada yang diunggah."
+features = [
+  "Membalik video MP4, MOV, M4V, dan WebM",
+  "Sumber H.264, HEVC, AV1, dan VP9, didekode lewat WebCodecs",
+  "Membalik suaranya sampel demi sampel, atau meninggalkannya",
+  "Menjaga waktu bingkai asli, termasuk laju bingkai yang tidak rata",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan video di sini"
+hint = "atau klik untuk menelusuri &mdash; MP4, MOV, M4V, WebM, dan apa pun lain yang bisa diputar peramban ini"

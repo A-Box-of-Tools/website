@@ -1,0 +1,243 @@
+#
+# Pemangkas Video - Bahasa Indonesia.
+#
+# Overrides for tools/crop-video/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Pangkas" di sini berarti mengubah bentuk gambar; memendekkan durasi klip
+# adalah "potong" dan itu alat yang berbeda. Kedua kata dijaga terpisah di
+# seluruh locale ini.
+#
+
+name = "Pemangkas Video"
+heading = "Pemangkas&nbsp;Video <span class=\"h1-kw\">&mdash; pangkas video daring</span>"
+tagline = "Potong klip sampai tersisa bagian yang penting."
+
+title = "Pangkas Video Daring &mdash; Gratis, Tanpa Unggah, Jalan Tanpa Internet"
+description = "Pangkas MP4, MOV, atau WebM ke bentuk apa pun - persegi, 9:16, atau kotak piksel yang persis. Berjalan di peramban Anda: tidak ada yang diunggah, suaranya tetap ada, jalan tanpa internet."
+og_title = "Pemangkas Video &mdash; pangkas klip tanpa mengunggahnya"
+og_description = "Seret sebuah kotak di atas klip Anda dan pangkas ke bentuk apa pun. Bingkainya didekode dan dikodekan ulang di perangkat Anda sendiri, dan suara aslinya dibawa menyeberang tanpa disentuh."
+og_image_alt = "Pemangkas Video - pangkas klip di peramban Anda, tanpa ada yang diunggah"
+
+pledge = """
+    Setiap bingkai didekode, dipangkas, dan dikodekan oleh peramban Anda
+    sendiri, di perangkat keras Anda sendiri. Tidak ada di sini yang bisa
+    mengambil atau mengirim apa pun &mdash; alat ini sama sekali tidak punya
+    fitur jaringan &mdash; dan seandainya pun ada, tidak ada server di ujung
+    lain halaman ini untuk menerima sebuah video."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu pangkas sebuah klip. Tidak satu pun permintaan membawa bingkai, nama
+      file, atau satu byte pun dari yang Anda pilih. Atau cabut koneksi internet
+      dan tetap pangkas satu &mdash; alat yang mengirim video Anda ke tempat lain
+      untuk diproses akan langsung berhenti."""
+
+read_first = """
+, <code>src/demux.js</code> untuk pembaca yang mencari
+      bingkai di dalam MP4, dan <code>src/transcode.js</code> untuk perulangan
+      yang mendekode, memangkas, dan mengodekannya. Tidak satu pun mengimpor
+      sesuatu yang bisa membuat permintaan."""
+
+howto_heading = "Cara memangkas video"
+
+card = """
+            Seret sebuah kotak di atas klip dan potong sampai tinggal bentuk itu
+            &mdash; persegi untuk lini masa, tinggi untuk ponsel, atau kotak
+            piksel yang persis."""
+
+[words]
+plural = "video"
+choose = "sebuah video"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Suaranya tetap ada"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[privacy]]
+title = "Video Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Alat ini sama sekali tidak punya
+      fitur jaringan: tidak ada alamat untuk ditempelkan, tidak ada yang
+      diunduh, tidak ada mesin yang diambil saat pertama dipakai. Setiap byte
+      yang menyentuh video Anda datang dari asal ini ketika halaman dimuat."""
+
+[[privacy]]
+title = "Pendekodean dan pengodean berjalan lokal."
+body = """
+ Bingkainya melewati WebCodecs di
+      peramban Anda sendiri, atau melewati mesin pemutar yang sama yang toh akan
+      menampilkan klip itu kepada Anda. File yang sudah jadi dibangun di memori
+      mesin ini dan diserahkan langsung ke unduhan."""
+
+[[privacy]]
+title = "Suaranya disalin, bukan didengarkan."
+body = """
+ Di jalur MP4, sampel audio dipindahkan
+      menyeberang tanpa didekode sama sekali &mdash; tidak ada di sini yang
+      pernah mengubahnya kembali menjadi suara, dan tidak ada yang bisa
+      meneruskannya ke mana pun seandainya ada."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang video Anda: bukan file,
+      bukan bingkai, bukan nama, ukuran, durasi, atau bentuk hasil pangkasan
+      Anda. Setiap baris yang membaca, mendekode, memangkas, atau mengodekan
+      disajikan dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau video Anda."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih sebuah video."
+body = """
+ Jatuhkan MP4, MOV, M4V, atau WebM ke
+      pemilih file, atau pilih sendiri. Peramban membacanya langsung dari disk
+      Anda; tidak ada yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Seret kotaknya ke bagian yang ingin Anda simpan."
+body = """
+ Seret di
+      dalamnya untuk memindahkan dan sudut mana pun untuk mengubah ukuran. Kunci
+      dulu ke sebuah bentuk &mdash; 1:1 untuk unggahan persegi, 9:16 untuk
+      ponsel, 16:9 untuk bingkai lebar &mdash; atau ketikkan kotak piksel yang
+      persis ke empat kolom di bawahnya."""
+
+[[howto]]
+title = "Pilih berapa banyak kualitas yang dibelanjakan."
+body = """
+ Gambarnya harus
+      dikodekan ulang, karena bingkai yang dipangkas adalah gambar yang berbeda.
+      "Seimbang" menjaganya tetap dekat dengan apa yang sudah dibelanjakan file
+      itu untuk area tersebut; "Kualitas terbaik" membelanjakan lebih. Suaranya
+      tetap ada kecuali Anda mematikannya."""
+
+[[howto]]
+title = "Pangkas dan unduh."
+body = """
+ Pekerjaannya terjadi di perangkat keras Anda
+      sendiri, jadi lamanya tergantung mesin Anda, bukan pada antrean. Video yang
+      sudah jadi diserahkan langsung ke unduhan peramban Anda."""
+
+[[faq]]
+q = "Apakah video saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Ia dibaca, didekode, dipangkas, dan dikodekan oleh peramban Anda
+        sendiri di perangkat keras Anda sendiri. Alat ini tidak punya sisi
+        server, dan <code>Content-Security-Policy</code> halaman ini menyebut
+        satu per satu setiap alamat yang boleh dihubunginya &mdash; tidak satu
+        pun milik situs ini. Cabut koneksi internet dan tetap pangkas sebuah klip
+        kalau Anda lebih suka memeriksa daripada diberi tahu."""
+
+[[faq]]
+q = "Format video apa saja yang bisa saya pangkas?"
+a = """
+        MP4, M4V, dan MOV dibaca langsung, apa pun isinya: H.264, HEVC, AV1, atau
+        VP9, selama peramban Anda bisa mendekode kodek itu. Apa pun lain yang
+        bisa diputar peramban Anda &mdash; yang paling jelas WebM &mdash;
+        dipangkas dengan cara memutarnya dan merekam hasilnya, yang berhasil tapi
+        memakan waktu selama klipnya. File yang tidak bisa dibaca maupun diputar
+        peramban, yang dalam praktiknya berarti AVI, WMV, FLV, dan sebagian besar
+        MKV, ditolak dengan pesan alih-alih gagal di tengah jalan."""
+
+[[faq]]
+q = "Adakah batas ukuran atau durasi videonya?"
+a = """
+        Tidak ada batas yang tertanam di alat ini, dan file tidak dibaca ke
+        memori sekaligus &mdash; ia ditelusuri beberapa megabyte sekali jalan.
+        Batas praktisnya adalah video yang sudah jadi, yang dirakit di memori
+        sebelum Anda mengunduhnya, dan waktu yang dibutuhkan mesin Anda untuk
+        mengodekannya."""
+
+[[faq]]
+q = "Apakah suaranya selamat?"
+a = """
+        Di jalur MP4, persis: audio disalin sampel demi sampel tanpa pernah
+        didekode, jadi ia sama persis byte demi byte dengan yang ada di file. Di
+        jalur perekaman, ia ditangkap dari pemutaran dan dikodekan ulang, yang
+        memakan sedikit kualitas. Bagaimanapun ada kotak centang untuk
+        meninggalkannya sama sekali."""
+
+[[faq]]
+q = "Apakah memangkas menurunkan kualitas?"
+a = """
+        Gambarnya dikodekan ulang, karena bingkai yang dipangkas adalah gambar
+        yang berbeda dan tidak ada cara menyimpannya tanpa menulis pikselnya dari
+        awal. Yang tidak akan dilakukan alat ini adalah membelanjakan lebih
+        banyak daripada aslinya untuk area yang sama, karena mengodekan di atas
+        itu hanya membuat file lebih besar tanpa membuatnya tampak lebih
+        baik."""
+
+[[faq]]
+q = "Bisakah saya memotong durasinya juga?"
+a = """
+        Tidak di sini, tapi di sebelah. Alat ini mengubah bentuk gambar dan tidak
+        lebih: klip yang keluar sama persis panjangnya dengan yang masuk, dengan
+        waktu dan suaranya utuh. Memotong durasi adalah pekerjaan terpisah dan
+        alat terpisah &mdash; <a href="../potong-video/">Pemotong Video</a>
+        menandai bagian klip yang layak disimpan dan menyimpannya sebagai satu
+        file, tanpa mengodekan ulang satu bingkai pun."""
+
+[[faq]]
+q = "Kenapa lebar dan tingginya bergerak dua-dua?"
+a = """
+        H.264, kodek di dalam MP4, menyimpan gambar dalam blok dan tidak punya
+        cara menggambarkan bingkai dengan jumlah piksel ganjil di salah satu
+        sisinya. Alih-alih diam-diam membulatkan pangkasan Anda setelah Anda
+        menetapkannya, kotaknya sejak awal hanya menawarkan angka genap."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang video Anda."""
+
+[schema]
+browser_requirements = "Memerlukan JavaScript. Keluaran MP4 memerlukan peramban dengan WebCodecs; selain itu kembali ke perekaman WebM."
+description = "Pangkas video ke bentuk apa pun atau kotak piksel yang persis di peramban. MP4, MOV, dan M4V didekode dan dikodekan ulang bingkai demi bingkai dengan audio asli dibawa menyeberang tanpa disentuh; apa pun lain yang bisa diputar peramban dipangkas dengan merekamnya. Tidak ada yang diunggah."
+features = [
+  "Memangkas video MP4, MOV, M4V, dan WebM",
+  "Sumber H.264, HEVC, AV1, dan VP9, didekode lewat WebCodecs",
+  "Pangkasan bebas, rasio terkunci (1:1, 4:5, 9:16, 16:9, 4:3, 3:2), atau kotak piksel yang persis",
+  "Menjaga audio asli tanpa mengodekannya ulang",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan video di sini"
+hint = "atau klik untuk menelusuri &mdash; MP4, MOV, M4V, WebM, dan apa pun lain yang bisa diputar peramban ini"

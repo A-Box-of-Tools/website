@@ -1,0 +1,95 @@
+<!--
+  tools/reverse-video/body.html, in Indonesian.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; file -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih sebuah video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Ukuran</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Bingkai</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Durasi</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <div class="stage-wrap" id="preview-wrap" hidden>
+      <video id="preview" class="stage" playsinline controls></video>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; pembalikan -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">2</span> Balik</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="quality">Kualitas</label>
+        <select id="quality">
+          <option value="low">File lebih kecil</option>
+          <option value="medium" selected>Seimbang</option>
+          <option value="high">Kualitas terbaik</option>
+        </select>
+        <p class="field-note">
+          Tidak pernah lebih dari yang dibelanjakan aslinya untuk gambar yang sama
+          &mdash; klip yang dibalik memuat bingkai yang sama, jadi membelanjakan
+          lebih hanya membuat file lebih besar.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Balik suaranya juga
+        </label>
+        <p class="field-note" id="audio-note">
+          Dibalik sampel demi sampel, lalu dikodekan lagi sebagai AAC. Biarkan
+          mati untuk klip tanpa suara, yang lebih cepat.
+        </p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Bingkai keluaran</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Durasi</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Bingkai</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Caranya</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Balik video</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Unduh video</a>
+      </div>
+    </div>
+  </section>
+</main>
