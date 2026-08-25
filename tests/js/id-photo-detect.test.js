@@ -51,13 +51,16 @@ function portrait({
   hair = [58, 44, 38],
   skin = [214, 173, 148],
   eye = [46, 38, 34],
+  sclera = [242, 237, 230],
   brow = [70, 54, 46],
   crownY = 68, chinY = 281,
   faceHalf = 70,
+  hairHalf = null,          // hair wider than the face, for a bushy head
+  hairlineAt = 0.22,        // how far down the head the forehead starts
   eyeGap = 58,
   centreX = 180,
   neck = true,
-  shoulders = true,
+  shoulders = 0.30,         // where they start, below the chin, in head heights
 } = {}) {
   const data = new Uint8ClampedArray(width * height * 4);
   const headH = chinY - crownY;
@@ -70,21 +73,28 @@ function portrait({
     for (let x = 0; x < width; x += 1) {
       let rgb = wall;
 
-      if (shoulders && y > chinY + headH * 0.30
-          && Math.abs(x - centreX) < faceHalf * 0.55 + (y - chinY - headH * 0.30) * 2.6) {
+      if (shoulders !== null && y > chinY + headH * shoulders
+          && Math.abs(x - centreX) < faceHalf * 0.55 + (y - chinY - headH * shoulders) * 2.6) {
         rgb = [70, 78, 96];
       }
       if (neck && y > chinY - headH * 0.04 && y < chinY + headH * 0.34
           && Math.abs(x - centreX) < faceHalf * 0.46) rgb = [190, 150, 128];
 
-      if (inside(x, y, centreX, headCy, faceHalf * 1.12, headH / 2)) rgb = hair;
+      if (inside(x, y, centreX, headCy, hairHalf ?? faceHalf * 1.12, headH / 2)) rgb = hair;
       if (inside(x, y, centreX, headCy + headH * 0.06, faceHalf, headH * 0.43)
-          && y > crownY + headH * 0.22) rgb = skin;
+          && y > crownY + headH * hairlineAt) rgb = skin;
 
       for (const side of [-1, 1]) {
         const ex = centreX + side * eyeGap / 2;
         if (brow && Math.abs(x - ex) < headH * 0.075 && Math.abs(y - browY) < headH * 0.018) rgb = brow;
-        if (eye && inside(x, y, ex, eyeY, headH * 0.055, headH * 0.028)) rgb = eye;
+        // An eye is a small dark iris with white either side of it, not a dark
+        // patch. Drawn as a dark patch, every version of this file passed and
+        // the first real photograph did not: a box around the whole opening
+        // averages that white back in until the iris is barely darker than a
+        // cheek, and the white itself is close enough to a pale wall to be cut
+        // out of the head altogether.
+        if (eye && inside(x, y, ex, eyeY, headH * 0.075, headH * 0.032)) rgb = sclera;
+        if (eye && inside(x, y, ex, eyeY, headH * 0.032, headH * 0.030)) rgb = eye;
       }
       if (Math.abs(x - centreX) < headH * 0.10
           && Math.abs(y - (chinY - headH * 0.19)) < headH * 0.016) rgb = [140, 84, 82];
@@ -239,6 +249,74 @@ test('findMarks: shoulders that are their own shape do not become the head', () 
     `the crown landed at ${found.marks.crown.y}, which is down on the body`,
   );
   near(found, truth, 0.03, 'a detached pair of shoulders');
+});
+
+test('findMarks: hair wider than the face does not become the eyes', () => {
+  // What the first real photograph did, and neither the arithmetic nor any
+  // fixture here had met: a head of hair half as wide again as the face, coming
+  // down past the eyes on both sides and over the forehead to a low hairline.
+  //
+  // Two things about it beat the first version of this file. The bottom edge of
+  // the hair is dark with a bright forehead under it, which read as a pair of
+  // eyes once the four sides around it were averaged into one number - so the
+  // eye line landed on the hairline and dragged the chin up with it. And the
+  // hair beside each cheek is a narrow dark band with the wall on one side and a
+  // face on the other, which looks like an eye from every angle except that it
+  // sits on the edge of the silhouette, where an eye never does.
+  const { image, truth } = portrait({ hairHalf: 104, faceHalf: 70, hairlineAt: 0.34 });
+  const found = findMarks(image);
+  const eyeY = (found.marks.leftEye.y + found.marks.rightEye.y) / 2;
+  const hairline = truth.crownY + truth.headH * 0.34;
+
+  assert.ok(
+    Math.abs(eyeY - truth.eyeY) < Math.abs(eyeY - hairline),
+    `the eye line came out at ${eyeY.toFixed(0)}, nearer the hairline (${hairline.toFixed(0)}) `
+    + `than the eyes (${truth.eyeY.toFixed(0)})`,
+  );
+  assert.equal(found.quality, 'measured');
+  near(found, truth, 0.03, 'a bushy head of hair');
+});
+
+test('findMarks: bushy hair, a low hairline and eyes with little contrast', () => {
+  // The same head, with eyes only half as dark against the skin, and dark skin
+  // under dark hair - the two ways the eyes have least to say for themselves.
+  for (const face of [
+    { name: 'low contrast', eye: [96, 78, 66], brow: [70, 56, 46] },
+    { name: 'dark skin', skin: [92, 66, 54], hair: [26, 20, 18], eye: [20, 15, 13], brow: [40, 30, 26] },
+  ]) {
+    const { image, truth } = portrait({
+      hairHalf: 104, faceHalf: 70, hairlineAt: 0.34, ...face,
+    });
+    near(findMarks(image), truth, 0.03, face.name);
+  }
+});
+
+test('findMarks: wide shoulders are not measured as the width of a head', () => {
+  // The photograph this tool spends its whole guide asking for: taken from a
+  // metre and a half away, so the head is small in the frame and the shoulders
+  // are wide and start not far below the chin. Deciding where a head stops by
+  // assuming it fills the top of the picture put the widest row on a shoulder,
+  // came out with a head twice its real width, and made every box the eyes were
+  // looked for in too big to find one. A head narrows into a neck and only then
+  // widens again, and that turn is what is looked for instead.
+  const { image, truth } = portrait({
+    crownY: 152, chinY: 280, faceHalf: 40, eyeGap: 34, shoulders: 0.25,
+  });
+  const found = findMarks(image);
+  assert.equal(found.quality, 'measured', `notes were ${found.notes.join(',')}`);
+  near(found, truth, 0.04, 'a small head over wide shoulders');
+});
+
+test('findMarks: the white of an eye is not mistaken for the wall behind it', () => {
+  // A mask made by subtracting the wall colour has a hole in it wherever the
+  // person is that colour, and against a white background the whitest thing on
+  // a face is the white of an eye. Both eyes came out as holes punched through
+  // the head, every candidate for a pupil was on the edge of one, and the eyes
+  // were reported as unfindable on a photograph they are perfectly visible in.
+  const { image, truth } = portrait({ wall: [253, 253, 252] });
+  const found = findMarks(image);
+  assert.ok(!found.notes.includes('eyes'), 'the eyes went missing into the background');
+  near(found, truth, 0.03, 'a white wall behind a white sclera');
 });
 
 test('findMarks: a head cropped at the top says so rather than guessing', () => {

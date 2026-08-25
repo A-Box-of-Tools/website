@@ -22,12 +22,15 @@
  *     included - which is the point people most often get wrong by hand,
  *     because they mark the hairline.
  *   - THE EYES come from contrast within the face rather than from skin colour.
- *     A pupil is a small dark patch with lighter face around it, on every face
- *     there is; what is scored is how much darker a patch is than its own
- *     surroundings, so nothing here has an opinion about what colour a face is
- *     meant to be. Two of them are wanted, level with each other and either
- *     side of the middle of the head, which is what stops a nostril or a
- *     shadow winning.
+ *     A pupil is a small dark patch with lighter face to its left, to its right
+ *     and below it, well inside the outline of the head; what is scored is how
+ *     much darker it is than its own surroundings, so nothing here has an
+ *     opinion about what colour a face is meant to be. Two of them are wanted,
+ *     level with each other and either side of the middle of the head, which is
+ *     what stops a nostril or a shadow winning. The two things that beat it on
+ *     the first real photograph - a hairline, and hair running down beside a
+ *     cheek - are why those conditions are as specific as they are, and
+ *     findEyes says which is for which.
  *   - THE CHIN is the one that cannot honestly be found this way. A jaw against
  *     a neck is a soft edge with no colour change across it, and hair down the
  *     sides removes even the outline. So it is worked out - the pupils sit at
@@ -102,6 +105,28 @@ const HEAD_SHAPE = 1.45;
 const JAW_WIDTH = 0.70;
 const JAW_LEVEL = 0.5 + 0.5 * Math.sqrt(1 - JAW_WIDTH * JAW_WIDTH);
 
+/**
+ * The boxes an eye is looked for in, as fractions of the width of the head:
+ * across, then down.
+ *
+ * Three, and the smallest is the one that matters. An eye is not a dark patch;
+ * it is a small dark IRIS with bright sclera either side of it, and a box drawn
+ * around the whole opening averages that white back in until the eye is barely
+ * darker than the cheek. An iris is about a twelfth of the width of a head, so
+ * the first box is a square roughly that size, and it lands inside the iris
+ * with the sclera outside it where it belongs - which turns a diluted patch
+ * into the strongest thing on the face.
+ *
+ * The other two are wider and flatter, for eyes that show little white: a
+ * squint, a smile, a photograph taken in bright sun. Three sweeps of a summed
+ * table is a few milliseconds and the best answer of the three wins.
+ *
+ * They are fractions of the head rather than the face because the head is what
+ * the outline gives. Under a lot of hair the head is half as wide again as the
+ * face, which is the other reason for a spread rather than one size.
+ */
+const EYE_BOXES = [[0.055, 0.055], [0.09, 0.06], [0.14, 0.085]];
+
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 
 /** The value a given fraction of the way through an already-sorted array. */
@@ -162,7 +187,7 @@ export function findMarks(image) {
   if (wall.noise > 12 && !cropped) notes.push('background');
 
   const centreX = centreOf(blob, crownY, shape.head, height);
-  const eyes = findEyes(lab, width, height, { crownY, centreX, ...shape });
+  const eyes = findEyes(lab, blob.mask, width, height, { crownY, centreX, ...shape });
   if (!eyes) notes.push('eyes');
 
   const eyeY = eyes ? (eyes.left.y + eyes.right.y) / 2 : crownY + EYE_LEVEL * shape.head;
@@ -291,7 +316,7 @@ function readWall(lab, width, height) {
  * person by being nearer the ceiling, and a bounding box at least a seventh of
  * the picture tall, which is what a band of shadow along the top edge fails.
  *
- * @returns {{rows: Int32Array, sumX: Float64Array, area: number}|null}
+ * @returns {{rows: Int32Array, sumX: Float64Array, area: number, mask: Uint8Array}|null}
  */
 function subjectOf(lab, wall, width, height) {
   const count = width * height;
@@ -377,15 +402,72 @@ function subjectOf(lab, wall, width, height) {
 
   const rows = new Int32Array(height);
   const sumX = new Float64Array(height);
+  const mask = new Uint8Array(count);
   for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
       if (label[y * width + x] !== winner) continue;
+      mask[y * width + x] = 1;
       rows[y] += 1;
       sumX[y] += x;
     }
   }
 
-  return { rows, sumX, area: areas[winner] };
+  fillHoles(mask, stack, width, height);
+  return { rows, sumX, area: areas[winner], mask };
+}
+
+/**
+ * Close up the parts of a person that read as wall.
+ *
+ * A mask made by subtracting a colour has holes in it wherever the person
+ * happens to be that colour, and on a light background the brightest thing on a
+ * face is the white of an eye. So the eyes come out as two holes punched
+ * through the head - which is fine for measuring an outline and fatal for the
+ * one thing the mask is otherwise used for, deciding whether a candidate for a
+ * pupil is inside the head or on the edge of it. Every eye was on the edge of a
+ * hole, and none of them was found.
+ *
+ * The distinction that fixes it is enclosure rather than colour: paint from the
+ * border of the picture inwards through everything that is not the person, and
+ * whatever is left unpainted is surrounded by them. It is their eye, or a
+ * highlight on their forehead, or a gap in their hair, and all three are inside
+ * a head. The row counts above are deliberately taken BEFORE this runs: the
+ * outline of a head is what it is, and filling it in must not change the width
+ * anything is measured against.
+ */
+function fillHoles(mask, stack, width, height) {
+  const count = width * height;
+  const wall = new Uint8Array(count);
+  let top = 0;
+
+  const reach = (at) => {
+    if (mask[at] || wall[at]) return;
+    wall[at] = 1;
+    stack[top] = at;
+    top += 1;
+  };
+
+  for (let x = 0; x < width; x += 1) {
+    reach(x);
+    reach((height - 1) * width + x);
+  }
+  for (let y = 0; y < height; y += 1) {
+    reach(y * width);
+    reach(y * width + width - 1);
+  }
+
+  while (top > 0) {
+    top -= 1;
+    const here = stack[top];
+    const x = here % width;
+    const y = (here - x) / width;
+    if (x > 0) reach(here - 1);
+    if (x + 1 < width) reach(here + 1);
+    if (y > 0) reach(here - width);
+    if (y + 1 < height) reach(here + width);
+  }
+
+  for (let i = 0; i < count; i += 1) if (!wall[i]) mask[i] = 1;
 }
 
 /**
@@ -447,26 +529,56 @@ function smoothed(rows, span) {
  * How wide the head is, how tall that makes it, and where the jaw runs into
  * the neck.
  *
- * The width and the height chase each other - the widest part of a head can
- * only be looked for over the part of the picture that is head, and how much of
- * the picture that is depends on the width - so it is settled by going round
- * three times from a deliberately generous first guess. Three is plenty: the
- * second pass is already within a few per cent and the third does not move.
+ * WHERE A HEAD STOPS is the question, and there is exactly one mark of it in an
+ * outline: a head widens to the ears, narrows into a neck, and then the
+ * shoulders widen again. That turn - narrowest, then growing - is the neck, and
+ * everything above it is head.
+ *
+ * The first version of this guessed instead: it assumed the head filled roughly
+ * the top four tenths of what was below the crown, and took the widest row in
+ * there. That is true of a photograph taken close up and false of the one this
+ * tool spends its whole guide asking for - taken a metre and a half away, where
+ * the head is small, the shoulders are wide, and they begin well inside the top
+ * four tenths. The widest row was then a shoulder, the head came out twice its
+ * real width, and every box the eyes were looked for in was too big to find
+ * one.
+ *
+ * Walking down and watching for the turn costs the same single pass and needs
+ * no guess about proportions at all. Hair long enough to hide the neck leaves
+ * no turn to find, and then this falls back to the widest row there was, which
+ * is the honest answer for an outline that has no neck in it.
  */
 function silhouette(rows, crownY, height) {
   const profile = smoothed(rows, Math.max(1, Math.round(height * 0.008)));
   const below = height - crownY;
-  let head = 0.42 * below;
-  let widest = 0;
 
-  for (let pass = 0; pass < 3; pass += 1) {
-    widest = 0;
-    const to = Math.min(height, Math.round(crownY + 0.85 * head));
-    for (let y = crownY; y < to; y += 1) widest = Math.max(widest, profile[y]);
-    head = clamp(widest * HEAD_SHAPE, 0.1 * below, 0.95 * below);
+  let peak = 0;
+  let valley = Infinity;
+  let neckY = -1;
+  let end = height;
+
+  for (let y = crownY; y < height; y += 1) {
+    const at = profile[y];
+    // Still on the way to the widest part of the head.
+    if (neckY < 0 && at >= peak) {
+      peak = at;
+      continue;
+    }
+    // Past it, and narrowing: this is the jaw and then the neck.
+    if (at < peak * 0.85) {
+      if (at <= valley) {
+        valley = at;
+        neckY = y;
+      } else if (at > valley * 1.35) {
+        // Widening again, by more than noise. Shoulders.
+        end = y;
+        break;
+      }
+    }
   }
 
-  return { headWidth: widest, head, jawY: jawOf(profile, crownY, head, height) };
+  const head = clamp(peak * HEAD_SHAPE, 0.1 * below, 0.95 * below);
+  return { headWidth: peak, head, neckY, jawY: jawOf(profile, crownY, head, peak, end) };
 }
 
 /**
@@ -474,15 +586,15 @@ function silhouette(rows, crownY, height) {
  *
  * Looked for only below the middle of the head, because above it the widest
  * thing in the picture is hair and the narrowing under it is a forehead, not a
- * jaw. On a head with hair down past the shoulders there is no fall at all, and
- * -1 says so rather than naming a row that means nothing.
+ * jaw; and never below the shoulders, because a shoulder is not a jaw however
+ * much the arithmetic would like it to be. On a head with hair down past the
+ * shoulders there is no fall at all, and -1 says so rather than naming a row
+ * that means nothing.
  */
-function jawOf(profile, crownY, head, height) {
-  let widest = 0;
-  const from = Math.max(0, Math.round(crownY + 0.55 * head));
-  const to = Math.min(height, Math.round(crownY + 1.45 * head));
-  for (let y = crownY; y < from; y += 1) widest = Math.max(widest, profile[y]);
+function jawOf(profile, crownY, head, widest, end) {
   if (widest <= 0) return -1;
+  const from = Math.max(0, Math.round(crownY + 0.55 * head));
+  const to = Math.min(end, Math.round(crownY + 1.45 * head));
 
   for (let y = from; y < to; y += 1) {
     if (profile[y] < widest * JAW_WIDTH) return y;
@@ -496,12 +608,35 @@ function jawOf(profile, crownY, head, height) {
  * The two pupils, as the best pair of small dark patches in the face.
  *
  * WHAT IS SCORED. Not darkness, which would find hair and the shadow under a
- * chin, but darkness *relative to the ring of picture around it*: an eye is
- * dark with lighter face on both sides of it, and little else on a face is, at
- * this size. Because the comparison is local, nothing in it depends on how
- * light or dark the face is - a patch twelve units darker than what surrounds
- * it scores twelve on every face there is, which is the whole reason it is
- * written this way rather than as a model of what skin looks like.
+ * chin, but darkness *relative to what is beside and below it*. Because the
+ * comparison is local, nothing in it depends on how light or dark the face is -
+ * a patch twelve units darker than its own surroundings scores twelve on every
+ * face there is, which is the whole reason it is written this way rather than
+ * as a model of what skin looks like.
+ *
+ * AGAINST THE WORST NEIGHBOUR, NOT THEIR AVERAGE, and that is the difference
+ * between this working and not. An eye has lighter face to its left, to its
+ * right and below it: three sides, all light. The bottom edge of a head of hair
+ * has hair to its left, hair to its right and forehead below it - and averaging
+ * the four sides together lets that one bright forehead carry three dark ones.
+ * Hair is far darker against skin than an iris is, so the average scored the
+ * hairline above the eyes and put the whole face two features high on the first
+ * real photograph it met. Taking the WORST of the three sides costs nothing and
+ * asks the question that actually separates them: is this patch dark on its
+ * own, or is it a piece of something bigger that is dark?
+ *
+ * Above is deliberately not one of the three. On a heavy fringe, and on anybody
+ * whose brow sits low, what is above an eye is hair or eyebrow, and demanding
+ * light there would reject the eyes of the people hardest to place by hand.
+ *
+ * AND ENTIRELY INSIDE THE HEAD, which is the other half of it. Hair running
+ * down beside a cheek is a narrow dark band with the wall on one side of it and
+ * a face on the other, and by every test above it looks exactly like an eye -
+ * it outscored the real ones on the second photograph tried. But it lies on the
+ * edge of the silhouette, and an eye never does: so a candidate is only
+ * considered when it and all three of its neighbours are wholly inside the run
+ * of pixels that is the person. The outline is doing a second job here, and it
+ * is the constraint no amount of local contrast could have supplied.
  *
  * WHY A PAIR. Singly, the best-scoring patch on a face is as often a nostril or
  * the corner of a mouth. Two of them, level with each other, either side of the
@@ -509,24 +644,28 @@ function jawOf(profile, crownY, head, height) {
  * all of that at once costs one loop and throws out nearly every wrong answer a
  * single patch would have given.
  *
- * WHY THE LOWER PAIR WINS. Eyebrows are the one thing that beats eyes at this
- * game: darker, larger and no less paired. So when a second pair is found close
- * below the first and is not much worse, the lower one is taken - brows sit
- * above eyes on everybody, and a dot on a brow puts the whole eye line about
- * two millimetres high on a 45 mm photograph.
+ * WHY THE LOWER PAIR WINS. Eyebrows are the one thing left that beats eyes at
+ * this game: darker, larger and no less paired, with light skin either side of
+ * them and below. So when a second pair is found close below the first and is
+ * not much worse, the lower one is taken - brows sit above eyes on everybody,
+ * and a dot on a brow puts the eye line about two millimetres high on a 45 mm
+ * photograph. The smallest of the boxes below helps here on its own: a box the
+ * size of an iris, sitting in the middle of a brow, has more brow to its left
+ * and right and so scores nothing, while the same box on an iris has sclera on
+ * both sides.
  *
  * @returns {{left: {x: number, y: number}, right: {x: number, y: number}}|null}
  */
-function findEyes(lab, width, height, face) {
+function findEyes(lab, mask, width, height, face) {
   const { crownY, centreX, headWidth, head } = face;
 
-  const x0 = Math.max(0, Math.round(centreX - 0.55 * headWidth));
-  const x1 = Math.min(width, Math.round(centreX + 0.55 * headWidth));
-  const y0 = Math.max(0, Math.round(crownY + 0.20 * head));
-  const y1 = Math.min(height, Math.round(crownY + 0.72 * head));
+  const x0 = Math.max(0, Math.round(centreX - 0.58 * headWidth));
+  const x1 = Math.min(width, Math.round(centreX + 0.58 * headWidth));
+  const y0 = Math.max(0, Math.round(crownY + 0.15 * head));
+  const y1 = Math.min(height, Math.round(crownY + 0.85 * head));
   const w = x1 - x0;
   const h = y1 - y0;
-  if (w < 16 || h < 10) return null;
+  if (w < 20 || h < 14) return null;
 
   // What the lit part of the face reads as. The upper end of the window rather
   // than its average, because a good part of the window is hair, brow and
@@ -536,40 +675,72 @@ function findEyes(lab, width, height, face) {
     for (let x = x0; x < x1; x += 1) lights.push(lab[(y * width + x) * 3]);
   }
   lights.sort((a, b) => a - b);
-  const skin = at(lights, 0.7);
+  const skin = at(lights, 0.75);
 
   const dark = new Float64Array(w * h);
+  const outside = new Float64Array(w * h);
   for (let y = 0; y < h; y += 1) {
     for (let x = 0; x < w; x += 1) {
-      dark[y * w + x] = Math.max(0, skin - lab[((y + y0) * width + (x + x0)) * 3]);
+      const at3 = (y + y0) * width + (x + x0);
+      dark[y * w + x] = Math.max(0, skin - lab[at3 * 3]);
+      outside[y * w + x] = mask[at3] ? 0 : 1;
     }
   }
 
   const sums = integral(dark, w, h);
-  const bw = clamp(Math.round(0.16 * headWidth), 3, Math.floor(w / 3));
-  const bh = clamp(Math.round(0.09 * headWidth), 3, Math.floor(h / 3));
-  const inside = bw * bh;
+  const off = integral(outside, w, h);
+  const localCentre = centreX - x0;
 
-  const found = [];
-  for (let y = 0; y + bh <= h; y += 1) {
-    for (let x = 0; x + bw <= w; x += 1) {
-      const middle = patch(sums, w, x, y, x + bw, y + bh);
-      if (middle <= 0) continue;
-      const ax = clamp(x - bw, 0, w);
-      const ay = clamp(y - bh, 0, h);
-      const bx = clamp(x + 2 * bw, 0, w);
-      const by = clamp(y + 2 * bh, 0, h);
-      const around = (bx - ax) * (by - ay) - inside;
-      if (around <= 0) continue;
-      const ring = (patch(sums, w, ax, ay, bx, by) - middle) / around;
-      found.push({ x, y, score: middle / inside - ring });
-    }
+  let best = null;
+  for (const [across, down] of EYE_BOXES) {
+    const bw = clamp(Math.round(across * headWidth), 3, Math.floor(w / 5));
+    const bh = clamp(Math.round(down * headWidth), 2, Math.floor(h / 5));
+    const pair = bestPair(scan(sums, off, w, h, bw, bh), bw, headWidth, localCentre);
+    if (pair && (!best || pair.score > best.score)) best = { ...pair, bw, bh };
   }
 
-  const localCentre = centreX - x0;
+  if (!best) return null;
+  return {
+    left: pupil(dark, w, h, best.l, best.bw, best.bh, x0, y0),
+    right: pupil(dark, w, h, best.r, best.bw, best.bh, x0, y0),
+  };
+}
+
+/**
+ * Every box in the window, scored against the worst of the three sides that
+ * ought to be lighter than it.
+ *
+ * The sweep starts a box in from the left and stops a box short of the right
+ * and of the bottom, so all three neighbours are real picture rather than a
+ * clamped sliver; and a box whose neighbourhood strays off the silhouette is
+ * skipped before it is scored at all, because whatever it is, it is not an eye.
+ */
+function scan(sums, off, w, h, bw, bh) {
+  const mean = (ax, ay, bx, by) => patch(sums, w, ax, ay, bx, by) / ((bx - ax) * (by - ay));
+  const found = [];
+
+  for (let y = 0; y + 2 * bh <= h; y += 1) {
+    for (let x = bw; x + 2 * bw <= w; x += 1) {
+      // One lookup, and it throws out every candidate on the edge of the head.
+      if (patch(off, w, x - bw, y, x + 2 * bw, y + 2 * bh) > 0) continue;
+      const inner = mean(x, y, x + bw, y + bh);
+      if (inner <= 0) continue;
+      const beside = Math.max(
+        mean(x - bw, y, x, y + bh),
+        mean(x + bw, y, x + 2 * bw, y + bh),
+        mean(x, y + bh, x + bw, y + 2 * bh),
+      );
+      if (inner > beside) found.push({ x, y, score: inner - beside });
+    }
+  }
+  return found;
+}
+
+/** The best two boxes that could be a pair of eyes, at one box size. */
+function bestPair(found, bw, headWidth, localCentre) {
   const apart = 0.06 * headWidth;
-  const left = pick(found.filter((one) => one.x + bw / 2 < localCentre - apart), bw, bh);
-  const right = pick(found.filter((one) => one.x + bw / 2 > localCentre + apart), bw, bh);
+  const left = pick(found.filter((one) => one.x + bw / 2 < localCentre - apart), bw, bw);
+  const right = pick(found.filter((one) => one.x + bw / 2 > localCentre + apart), bw, bw);
 
   const pairs = [];
   for (const l of left) {
@@ -603,21 +774,18 @@ function findEyes(lab, width, height, face) {
   let best = pairs[0];
   if (best.score < 3) return null;
 
-  // A pupil sits about a seventh of a head width below its eyebrow. Anything in
-  // that window scoring more than half as well as the winner is taken to be the
-  // eyes, and the winner to have been the brows.
+  // A pupil sits roughly a seventh of a head width below its eyebrow - less of
+  // one, on somebody whose hair makes the head wider than the face. Anything in
+  // that window scoring nearly as well as the winner is taken to be the eyes,
+  // and the winner to have been the brows.
   for (const pair of pairs) {
     const drop = pair.y - best.y;
-    if (drop > 0.05 * headWidth && drop < 0.20 * headWidth && pair.score > best.score * 0.5) {
+    if (drop > 0.03 * headWidth && drop < 0.25 * headWidth && pair.score > best.score * 0.45) {
       best = pair;
       break;
     }
   }
-
-  return {
-    left: pupil(dark, w, h, best.l, bw, bh, x0, y0),
-    right: pupil(dark, w, h, best.r, bw, bh, x0, y0),
-  };
+  return best;
 }
 
 /** A summed-area table, so any rectangle's total is four lookups. */
