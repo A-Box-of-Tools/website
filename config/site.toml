@@ -312,7 +312,7 @@ body = """
 id = "images"
 name = "Images"
 note = "Resize one, shrink one, or take out what it quietly records about you - none of it sent anywhere."
-order = ["compress-image", "resize-image", "heic-to-jpg", "id-photo", "redact-image", "exif-editor", "image-to-ico", "image-to-data-uri", "svg-to-image"]
+order = ["compress-image", "resize-image", "heic-to-jpg", "id-photo", "redact-image", "exif-editor", "dicom-viewer", "image-to-ico", "image-to-data-uri", "svg-to-image"]
 
 # Video and GIF were two categories, and the line between them was one this site
 # cared about and a reader did not: a GIF is what somebody makes when the MP4
@@ -463,6 +463,7 @@ order = [
   "embed-an-image-in-css",
   "remove-exif-and-gps-data",
   "redact-an-image",
+  "open-a-dicom-file",
   "convert-heic-to-jpg",
   "merge-and-split-pdf-files",
   "make-a-pdf-smaller",

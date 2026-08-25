@@ -1,0 +1,40 @@
+#
+# Guide: opening a DICOM file.
+#
+# Written for the person who has been handed a disc, a USB stick or a download
+# link by a hospital, has found a folder full of files with no extension and a
+# Windows installer from 2011, and wants to look at the scan. And for the
+# student or researcher who has the file open already and needs to know what
+# else is in it before it goes into a deck.
+#
+# The line this guide holds: what a viewer is for, what it is not for, and why
+# uploading the file to look at it is a different act from uploading a
+# holiday photograph.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/open-a-dicom-file"
+kind = "guide"
+nav = "Opening a DICOM file"
+group = "doing-the-job"
+tool = "dicom-viewer"
+
+title = "How to Open a DICOM File (.dcm) Without Installing Anything"
+description = "What is on a hospital disc, why the files have no extension, how to open a .dcm scan in a browser, what window and level actually does, and what a scan carries about the patient besides the picture."
+
+heading = "How to open a DICOM file, and what is in one"
+lede = """
+    A hospital disc is a folder of files with no extensions and a viewer written
+    for Windows XP. The files are DICOM, and there is nothing exotic about
+    them: a scan is a header full of fields and a block of pixels. This is how
+    to look at one, what the controls mean, and what else the file is carrying
+    besides the picture."""
+
+updated = "25 August 2026"
+published = "2026-08-25"
+lastmod = "2026-08-25"
+
+og_title = "How to open a DICOM file without installing anything"
+og_description = "What is on a hospital disc, why the files have no extension, and what a .dcm scan carries about the patient besides the picture."
+og_image_alt = "abox.tools - tools that never touch a server"
