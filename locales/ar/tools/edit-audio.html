@@ -1,0 +1,169 @@
+<main>
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر ملفاً</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>الملف</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>الحجم</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>المدة</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>الصوت</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>أعلى لحظة</dt><dd id="src-peak">&mdash;</dd></div>
+      <div><dt>قُرِئ على أنه</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <div class="wave-wrap" id="src-wave-wrap" hidden>
+      <canvas id="src-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="preview" controls preload="metadata"></audio>
+    </div>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the edits -->
+  <section class="card" id="edit-card" hidden>
+    <h2><span class="step">2</span> غيّره</h2>
+
+    <div class="edit-block">
+      <label class="check" for="reverse">
+        <input type="checkbox" id="reverse">
+        شغّله بالمقلوب
+      </label>
+      <p class="field-note">
+        تُكتَب العيّنات آخرها أولاً. ولا يتغيّر فيها شيء غير ذلك، فالعكس مرتين
+        يعيد إليك الملف الذي بدأت به بالضبط.
+      </p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="speed">السرعة</label>
+        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+               spellcheck="false" autocomplete="off" aria-label="السرعة، بوصفها مضاعفاً">
+      </div>
+
+      <!-- The slider is in octaves, not multiples: half speed and double speed
+           are then the same distance either side of the middle, which is how
+           they sound. main.js does the conversion. -->
+      <input type="range" id="speed" min="-2" max="2" step="0.01" value="0"
+             aria-describedby="speed-note">
+
+      <div class="presets" role="group" aria-label="سرعات جاهزة">
+        <button type="button" class="ghost" data-speed="0.5">0.5&times;</button>
+        <button type="button" class="ghost" data-speed="0.75">0.75&times;</button>
+        <button type="button" class="ghost" data-speed="1">1&times;</button>
+        <button type="button" class="ghost" data-speed="1.25">1.25&times;</button>
+        <button type="button" class="ghost" data-speed="1.5">1.5&times;</button>
+        <button type="button" class="ghost" data-speed="2">2&times;</button>
+      </div>
+
+      <fieldset class="modes">
+        <legend>ماذا يحدث لطبقة الصوت</legend>
+        <label class="mode">
+          <input type="radio" name="pitch" value="keep" checked>
+          <span>
+            <strong>أبقِ طبقة الصوت</strong>
+            يظل الصوت يبدو الصوتَ نفسه، أسرع لا غير أو أبطأ.
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="pitch" value="move">
+          <span>
+            <strong>دعها تتحرّك</strong>
+            الأسرع أعلى والأبطأ أخفض، كما يفعل الشريط.
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="speed-note"></p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="volume">مستوى الصوت</label>
+        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+               spellcheck="false" aria-label="تغيير مستوى الصوت، بالديسيبل">
+      </div>
+
+      <input type="range" id="volume" min="-24" max="24" step="0.5" value="0"
+             aria-describedby="volume-note">
+
+      <fieldset class="modes">
+        <legend>كم يُرفَع</legend>
+        <label class="mode">
+          <input type="radio" name="level" value="gain" checked>
+          <span>
+            <strong>بهذا القدر</strong>
+            كل عيّنة مضروبة في الرقم نفسه. ولا يتغيّر شيء غير ذلك.
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="level" value="normalize">
+          <span>
+            <strong>أعلى ما يمكن</strong>
+            يُرفَع حتى تحطّ أعلى لحظة تحت السقف بقليل.
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="volume-note"></p>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>المدة</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>السرعة</dt><dd id="sum-speed">&mdash;</dd></div>
+      <div><dt>أعلى لحظة</dt><dd id="sum-peak">&mdash;</dd></div>
+      <div><dt>تقريباً</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="clip-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Step 3 &mdash; the file that comes out -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> احفظه</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">ماذا يُكتَب</label>
+        <select id="depth">
+          <option value="16" selected>WAV بـ 16 بتّاً &mdash; يعمل في كل مكان</option>
+          <option value="32">WAV عائم بـ 32 بتّاً &mdash; لا شيء يُقيَّد</option>
+        </select>
+        <p class="field-note" id="depth-note">
+          ملف WAV يحمل العيّنات كما هي، فكتابةُ واحد لا يمكن أن تكلّف جودة. وهو
+          ليس ملفاً صغيراً: انظر التقدير أعلاه.
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary">حرِّر الصوت</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>نزِّل الصوت</a>
+      </div>
+    </div>
+  </section>
+</main>
