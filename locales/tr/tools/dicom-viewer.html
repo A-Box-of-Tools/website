@@ -1,0 +1,254 @@
+<!--
+  tools/dicom-viewer/body.html, in Turkish.
+
+  Every id, class, data-phrase key and {placeholder} below is what src/main.js
+  reaches for, so they are the same in every language. Only the words change.
+
+  The window presets are the names a radiologist reads at a workstation, so
+  they are translated; the tag numbers, VR codes and transfer syntax names are
+  not, because those are looked up in the DICOM standard exactly as written.
+-->
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Bir tarama seçin</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      Bir klasör dolusu dosyayı bir seferde bırakın; serilerine geri konsunlar
+      ve sıraya dizilsinler. Hiçbir şey yüklenmez ve dosyalarınıza hiçbir şey
+      geri yazılmaz.
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- The viewer. -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>Bu kareyi PNG olarak kaydet</button>
+        <button type="button" id="copy-header" class="ghost">Başlığı kopyala</button>
+        <button type="button" id="download-header" class="ghost">İndir</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">Seri</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="Ekrandaki kare, seçtiğiniz dosyadan çizilmiş"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="Kareleri baştan sona oynat">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="Hangi kesit ya da kare gösteriliyor">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">Resmin üzerinde sürüklemek ne yapar</legend>
+        <label><input type="radio" name="mode" value="window" checked> Pencere ve seviye</label>
+        <label><input type="radio" name="mode" value="pan"> Kaydır</label>
+        <label><input type="radio" name="mode" value="measure"> Ölç</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">Yakınlaştırma</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">%100</span>
+        <button type="button" id="reset-view" class="ghost">Sığdır</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">Pencere</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">Merkez</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">Genişlik</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> Tersle</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> Hasta bilgilerini resmin üzerinde göster</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- What the file is. -->
+  <section class="card" id="facts-card" hidden>
+    <h2>Bu dosya nedir</h2>
+    <dl class="facts">
+      <div><dt>Nesne</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>Modalite</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>Görüntü</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>Saklanma biçimi</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Aktarım söz dizimi</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>Piksel aralığı</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>Değer aralığı</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>Dosya</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- What is in it about the person. -->
+  <section class="card" id="identity-card" hidden>
+    <h2>Bu dosyada hastayı ne tanımlıyor</h2>
+    <p class="card-lede">
+      Bu dosyadan, bu makinede okundu ve başka hiç kimseye gösterilmedi. Bu araç
+      hiçbir şey yazmaz: bunların hiçbirini çıkaramaz ve hiçbirini hiçbir yere
+      göndermemiştir. Burada olmasının sebebi, bir taramanın bir addan çok
+      fazlasını taşıması ve geri kalanının, özensiz bir anonimleştirmeden sağ
+      çıkan şey olmasıdır.
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- Every tag in the file. -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>Dosyadaki her etiket</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">Etiketlerde ara</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="Ada, numaraya ya da değere göre ara">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">Bu dosyadaki her öğe</caption>
+        <thead>
+          <tr>
+            <th scope="col">Etiket</th>
+            <th scope="col">VR</th>
+            <th scope="col">Ad</th>
+            <th scope="col">Değer</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">Pencereyi genişletmek ya da daraltmak için resim üzerinde yatay, merkezini kaydırmak için dikey sürükleyin. İki sayı da aşağıda ve içlerine yazmak da aynı şeyi yapar.</span>
+    <span data-phrase="mode.pan">Resmi kendi çerçevesi içinde taşımak için sürükleyin. Fare tekerleği yakınlaştırır, &laquo;Sığdır&raquo; ise geri koyar.</span>
+    <span data-phrase="mode.measure">Ölçmek için resmin üzerine bir çizgi sürükleyin. Dosya piksellerinin birbirine ne kadar uzak olduğunu söylüyorsa cevap milimetre cinsindendir; söylemiyorsa cevap piksel cinsindendir ve bunu söyler.</span>
+
+    <span data-phrase="probe.value">Sütun {column}, satır {row} konumunda {value}</span>
+    <span data-phrase="measure.pixels">{length} px &mdash; bu dosya piksellerinin birbirine ne kadar uzak olduğunu söylemiyor, bu yüzden bu milimetre cinsinden olamaz</span>
+
+    <span data-phrase="stack.position">Her kesitin hastadaki konumuna göre dizildi; tarayıcının onları aldığı sıra da budur.</span>
+    <span data-phrase="stack.number">Örnek numarasına göre dizildi: bu dosyalar sıralanacak bir hasta konumu taşımıyor.</span>
+    <span data-phrase="stack.gap">Kesitler arasındaki aralık baştan sona aynı değil, yani bu seriden en az bir kesit eksik.</span>
+
+    <span data-phrase="pixels.none">Bu dosyanın pikselleri {codec} ile sıkıştırılmış; bunu hiçbir tarayıcı çözemez ve bu sayfa da bunun için bir çözücü taşımaz. Dosya hakkındaki diğer her şey aşağıda.</span>
+    <span data-phrase="pixels.failed">Resim çözülemedi: {reason}. Aşağıdaki başlık tam olarak okundu.</span>
+    <span data-phrase="pixels.absent">Bu dosya hiç piksel verisi taşımıyor. Bir başlıktan ibaret ve içindeki her şey aşağıda.</span>
+    <span data-phrase="pixels.jpeg">Bu pikseller baseline JPEG, yani tarayıcının kendi çözücüsü onları açtı ve geri verdiği şey sekiz bit derinliğinde. Pencere yine çalışır; tarayıcının kaydettiği hassasiyetin tamamı orada değil.</span>
+
+    <span data-phrase="tags.count">{total} öğeden {shown} tanesi. {hidden} tane daha var.</span>
+    <span data-phrase="tags.all">Bu dosyadaki {total} öğenin tamamı.</span>
+    <span data-phrase="tags.found">&laquo;{query}&raquo; ile {total} öğe eşleşiyor.</span>
+    <span data-phrase="tags.found.one">&laquo;{query}&raquo; ile bir öğe eşleşiyor.</span>
+    <span data-phrase="tags.none">&laquo;{query}&raquo; ile hiçbir şey eşleşmiyor.</span>
+    <span data-phrase="tags.more">Kalan {count} tanesini göster</span>
+    <span data-phrase="tags.private">özel öğe</span>
+    <span data-phrase="tags.unknown">bu sözlükte yok</span>
+    <span data-phrase="tags.guessed">Dosya söylemedi; bu, veri sözlüğünün bu etiket için verdiği değer.</span>
+
+    <span data-phrase="working.one">{name} okunuyor&hellip;</span>
+    <span data-phrase="working.many">{total} dosyadan {at} tanesi okunuyor&hellip;</span>
+    <span data-phrase="error.none">Buradaki hiçbir şey DICOM olarak okunamadı. {why} Bu araç DICOM biçiminin kendisini okur, dolayısıyla başka dosyalar hakkında söyleyecek bir şeyi yoktur.</span>
+    <span data-phrase="error.skipped.one">Bir dosya atlandı: {files}</span>
+    <span data-phrase="error.skipped">{count} dosya atlandı: {files}</span>
+
+    <span data-phrase="series.number">Seri {number}</span>
+    <span data-phrase="series.files.one">1 dosya</span>
+    <span data-phrase="series.files">{count} dosya</span>
+    <span data-phrase="stack.spacing">Kesitler arası {gap}.</span>
+
+    <span data-phrase="at.position">{total} içinde {at}</span>
+    <span data-phrase="at.frame">{total} kareden {at}. kare</span>
+    <span data-phrase="at.instance">örnek {number}</span>
+
+    <span data-phrase="window.file">Dosyadan</span>
+    <span data-phrase="window.file.n">Dosyadan, {n}</span>
+    <span data-phrase="window.full">Bu karedeki her şey</span>
+    <span data-phrase="window.custom">Elle ayarlandı</span>
+    <span data-phrase="window.soft">Yumuşak doku</span>
+    <span data-phrase="window.lung">Akciğer</span>
+    <span data-phrase="window.bone">Kemik</span>
+    <span data-phrase="window.brain">Beyin</span>
+    <span data-phrase="window.liver">Karaciğer</span>
+    <span data-phrase="window.mediastinum">Mediasten</span>
+    <span data-phrase="window.angio">Anjiyografi</span>
+
+    <span data-phrase="facts.frames">{count} kare</span>
+    <span data-phrase="facts.nopixels">piksel verisi yok</span>
+    <span data-phrase="facts.nospacing">bu dosyada belirtilmemiş</span>
+    <span data-phrase="facts.signed">işaretli</span>
+    <span data-phrase="facts.unsigned">işaretsiz</span>
+    <span data-phrase="facts.stored.one">{bits} bit, {sign}, piksel başına 1 örnek, {photometric}</span>
+    <span data-phrase="facts.stored">{bits} bit, {sign}, piksel başına {samples} örnek, {photometric}</span>
+    <span data-phrase="facts.range">{low} ile {high} arası</span>
+    <span data-phrase="facts.colour">renkli &mdash; bildirilecek bir ölçüm yok</span>
+
+    <span data-phrase="identity.clean">Bu dosyada bir kişiyi adlandıran ya da numaralandıran hiçbir şey yok. Bir taramanın genellikle taşıdığı tanımlayıcılar ya yok ya da boş.</span>
+    <span data-phrase="identity.uids">Ayrıca kendine ait {count} tanımlayıcı taşıyor &mdash; çalışma, seri ve örnek UID'leri. Hiçbiri bir ad değil ve her biri, dosyayı üreten arşive açılan mükemmel bir anahtar.</span>
+    <span data-phrase="identity.private">Bir de anlamı hiçbir yerde yayımlanmamış {count} özel öğe: bazı tarayıcılar hastanın adının ikinci bir kopyasını bunlardan birinde tutar.</span>
+
+    <span data-phrase="copied">Kopyalandı.</span>
+    <span data-phrase="copy.failed">Tarayıcınız sayfanın kopyalamasına izin vermedi. Yanındaki indirme düğmesi aynı metni bir dosyaya yazar.</span>
+    <span data-phrase="saved">{name} kaydedildi.</span>
+  </div>
+</main>
