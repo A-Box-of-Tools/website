@@ -1,0 +1,205 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر ملفات SVG</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل من القائمة</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the size -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> قل كم يكون كبيراً</h2>
+
+    <p class="card-lede">
+      هذا هو السؤال الوحيد الذي لا يستطيع الرسم المتجهي أن يجيبك عنه. فملف SVG
+      ليس فيه بكسلات &mdash; فيه تعليمات للرسم، وسيتّبعها عند أي حجم تُسمّيه.
+      والرقم أدناه ليس حدّاً تدفع في وجهه كما يكون مع صورة فوتوغرافية؛ فـ 4000
+      بكسل من أيقونة بحجم 24&nbsp;بكسلاً حادٌّ تماماً كما كان 24.
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">اضبط الحجم بـ</label>
+      <select id="size-mode">
+        <option value="scale" selected>مضاعف للحجم الذي يطلبه الملف</option>
+        <option value="width">العرض بالبكسل</option>
+        <option value="height">الارتفاع بالبكسل</option>
+        <option value="longest">أطول ضلع</option>
+        <option value="box">إطار، بضلعيه معاً</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>اضرب في<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="مضاعفات شائعة">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        كل ملف في القائمة يُضرَب من حجمه هو، فتبقى دفعة أيقونات مرسومة بأحجام
+        مختلفة متناسبة بعضها مع بعض.
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>العرض<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="عروض شائعة">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">ويتبع الارتفاعُ نسبةَ الرسم.</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>الارتفاع<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">ويتبع العرضُ نسبةَ الرسم.</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>أطول ضلع<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        أيُّ الضلعين كان أطول صار هذا ويتبعه الآخر، فيخرج الشعار العريض والشعار
+        الطويل بالحجم نفسه على ضلعهما الطويل.
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>العرض<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>الارتفاع<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">إن كان الرسم بنسبة أخرى</label>
+        <select id="box-fit">
+          <option value="fit" selected>احتواء &mdash; الرسم كله، ويخرج أحد الضلعين أقصر</option>
+          <option value="pad">حشو &mdash; هذا الحجم بالضبط، والخلفية على الجانبين</option>
+          <option value="stretch">مطّ &mdash; هذا الحجم بالضبط، مع تشوّه النسبة</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">واكتب كذلك نُسَخ الكثافة العالية</label>
+      <select id="density">
+        <option value="1" selected>لا &mdash; ملف واحد لكل رسم</option>
+        <option value="2">و‎@2x‎ كذلك &mdash; لشاشة عالية الدقة</option>
+        <option value="3">‎@2x‎ و‎@3x‎ &mdash; الطقم الكامل الذي يطلبه الهاتف</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- Step 3 &mdash; the format -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> اختر الصيغة</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">الصيغة</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; تحفظ الشفافية، وحوافّ دقيقة</option>
+          <option value="image/jpeg">JPEG &mdash; بلا شفافية، وصور فوتوغرافية أصغر</option>
+          <option value="image/webp">WebP &mdash; شفافية وملف أصغر</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">الجودة &mdash; <output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          لصيغتَي JPEG وWebP فقط؛ أما PNG فليس فيها مقبض جودة لأنها بلا خسارة.
+          واللون المسطَّح والحوافّ الحادّة &mdash; وهي أكثر ما يتألف منه ملف
+          SVG &mdash; هي بالضبط أسوأ ما يتعامل معه مرمِّزٌ ذو خسارة، ولذلك يقف
+          هذا هنا أعلى مما كان سيقف لصورة فوتوغرافية.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">الخلفية</label>
+        <select id="background-mode">
+          <option value="transparent" selected>شفافة</option>
+          <option value="colour">لون</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="لون الخلفية" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 4 &mdash; look at it, then take it -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> انظر إليه، ثم احفظه</h2>
+
+    <p class="card-lede">
+      ترسم المعاينةَ الشيفرةُ نفسها التي تكتب الملف، من الملف الذي اخترته، على
+      هذا الجهاز. والذي يستحق التحقق منه شيئان يتغيّران حين يصير الرسم بكسلات:
+      خطٌّ شعري كان بعرض نصف بكسل وقد صار رمادياً، وأيُّ نصّ، فهو يُرسَم بخطّ
+      يملكه هذا الجهاز لا بخطّ يُجلَب من الويب.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">أضِف ملف SVG فيظهر هنا.</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>حوِّل إلى بكسلات</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>انتهى</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>نزِّل الكل في ملف zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
