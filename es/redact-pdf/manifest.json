@@ -1,0 +1,26 @@
+{
+  "id": "/es/redact-pdf/",
+  "name": "PDF Redactor",
+  "short_name": "PDF Redactor",
+  "description": "The letters are deleted from the file, and the file is searched afterwards to prove it.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
