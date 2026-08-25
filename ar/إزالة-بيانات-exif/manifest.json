@@ -1,8 +1,8 @@
 {
   "id": "/ar/\u0625\u0632\u0627\u0644\u0629-\u0628\u064a\u0627\u0646\u0627\u062a-exif/",
-  "name": "EXIF Viewer & Remover",
-  "short_name": "EXIF Viewer & Remover",
-  "description": "See what a photo says about you. Then take it out.",
+  "name": "\u0639\u0627\u0631\u0636 EXIF \u0648\u0645\u064f\u0632\u064a\u0644\u0647",
+  "short_name": "\u0639\u0627\u0631\u0636 EXIF \u0648\u0645\u064f\u0632\u064a\u0644\u0647",
+  "description": "\u0627\u0646\u0638\u0631 \u0645\u0627\u0630\u0627 \u062a\u0642\u0648\u0644 \u0635\u0648\u0631\u062a\u0643 \u0639\u0646\u0643. \u062b\u0645 \u0623\u062e\u0631\u0650\u062c\u0647 \u0645\u0646\u0647\u0627.",
   "lang": "ar",
   "dir": "rtl",
   "start_url": "./",

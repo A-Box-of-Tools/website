@@ -1,8 +1,8 @@
 {
   "id": "/ar/\u062a\u0642\u0633\u064a\u0645-gif-\u0625\u0644\u0649-\u0625\u0637\u0627\u0631\u0627\u062a/",
-  "name": "GIF Splitter",
-  "short_name": "GIF Splitter",
-  "description": "Every frame out as its own PNG.",
+  "name": "\u062a\u0642\u0633\u064a\u0645 GIF",
+  "short_name": "\u062a\u0642\u0633\u064a\u0645 GIF",
+  "description": "\u0643\u0644 \u0625\u0637\u0627\u0631 \u064a\u062e\u0631\u062c \u0645\u0644\u0641\u064e\u0651 PNG \u062e\u0627\u0635\u0627\u064b \u0628\u0647.",
   "lang": "ar",
   "dir": "rtl",
   "start_url": "./",
