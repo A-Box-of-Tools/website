@@ -1,2 +1,85 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{bitLength as p,blocks as y}from"./blocks.js";const A=new Int32Array([1116352408,1899447441,-1245643825,-373957723,961987163,1508970993,-1841331548,-1424204075,-670586216,310598401,607225278,1426881987,1925078388,-2132889090,-1680079193,-1046744716,-459576895,-272742522,264347078,604807628,770255983,1249150122,1555081692,1996064986,-1740746414,-1473132947,-1341970488,-1084653625,-958395405,-710438585,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,-2117940946,-1838011259,-1564481375,-1474664885,-1035236496,-949202525,-778901479,-694614492,-200395387,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,-2067236844,-1933114872,-1866530822,-1538233109,-1090935817,-965641998]),g=new Int32Array([1779033703,-1150833019,1013904242,-1521486534,1359893119,-1694144372,528734635,1541459225]);function k(){const x=Int32Array.from(g),b=new Int32Array(64),u=y(64,o=>{for(let c=0;c<16;c+=1)b[c]=o.getInt32(c*4,!1);for(let c=16;c<64;c+=1){const n=b[c-15],s=b[c-2],i=(n>>>7|n<<25)^(n>>>18|n<<14)^n>>>3,I=(s>>>17|s<<15)^(s>>>19|s<<13)^s>>>10;b[c]=b[c-16]+i+b[c-7]+I|0}let e=x[0],t=x[1],f=x[2],r=x[3],a=x[4],d=x[5],l=x[6],h=x[7];for(let c=0;c<64;c+=1){const n=(a>>>6|a<<26)^(a>>>11|a<<21)^(a>>>25|a<<7),s=a&d^~a&l,i=h+n+s+A[c]+b[c]|0,I=(e>>>2|e<<30)^(e>>>13|e<<19)^(e>>>22|e<<10),w=e&t^e&f^t&f,m=I+w|0;h=l,l=d,d=a,a=r+i|0,r=f,f=t,t=e,e=i+m|0}x[0]=x[0]+e|0,x[1]=x[1]+t|0,x[2]=x[2]+f|0,x[3]=x[3]+r|0,x[4]=x[4]+a|0,x[5]=x[5]+d|0,x[6]=x[6]+l|0,x[7]=x[7]+h|0});return{update(o){u.update(o)},digest(){u.finish(8,(t,f,r)=>{const{hi:a,lo:d}=p(r);t.setUint32(f,a,!1),t.setUint32(f+4,d,!1)});const o=new Uint8Array(32),e=new DataView(o.buffer);for(let t=0;t<8;t+=1)e.setInt32(t*4,x[t],!1);return o}}}export{k as sha256};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{bitLength,blocks}from'./blocks.js';
+const K=new Int32Array([
+0x428a2f98|0,0x71374491|0,0xb5c0fbcf|0,0xe9b5dba5|0,
+0x3956c25b|0,0x59f111f1|0,0x923f82a4|0,0xab1c5ed5|0,
+0xd807aa98|0,0x12835b01|0,0x243185be|0,0x550c7dc3|0,
+0x72be5d74|0,0x80deb1fe|0,0x9bdc06a7|0,0xc19bf174|0,
+0xe49b69c1|0,0xefbe4786|0,0x0fc19dc6|0,0x240ca1cc|0,
+0x2de92c6f|0,0x4a7484aa|0,0x5cb0a9dc|0,0x76f988da|0,
+0x983e5152|0,0xa831c66d|0,0xb00327c8|0,0xbf597fc7|0,
+0xc6e00bf3|0,0xd5a79147|0,0x06ca6351|0,0x14292967|0,
+0x27b70a85|0,0x2e1b2138|0,0x4d2c6dfc|0,0x53380d13|0,
+0x650a7354|0,0x766a0abb|0,0x81c2c92e|0,0x92722c85|0,
+0xa2bfe8a1|0,0xa81a664b|0,0xc24b8b70|0,0xc76c51a3|0,
+0xd192e819|0,0xd6990624|0,0xf40e3585|0,0x106aa070|0,
+0x19a4c116|0,0x1e376c08|0,0x2748774c|0,0x34b0bcb5|0,
+0x391c0cb3|0,0x4ed8aa4a|0,0x5b9cca4f|0,0x682e6ff3|0,
+0x748f82ee|0,0x78a5636f|0,0x84c87814|0,0x8cc70208|0,
+0x90befffa|0,0xa4506ceb|0,0xbef9a3f7|0,0xc67178f2|0,
+]);
+const INIT=new Int32Array([
+0x6a09e667|0,0xbb67ae85|0,0x3c6ef372|0,0xa54ff53a|0,
+0x510e527f|0,0x9b05688c|0,0x1f83d9ab|0,0x5be0cd19|0,
+]);
+export function sha256(){
+const h=Int32Array.from(INIT);
+const w=new Int32Array(64);
+const compress=(view)=>{
+for(let i=0;i<16;i+=1)w[i]=view.getInt32(i*4,false);
+for(let i=16;i<64;i+=1){
+const x=w[i-15];
+const y=w[i-2];
+const s0=((x>>>7)|(x<<25))^((x>>>18)|(x<<14))^(x>>>3);
+const s1=((y>>>17)|(y<<15))^((y>>>19)|(y<<13))^(y>>>10);
+w[i]=(w[i-16]+s0+w[i-7]+s1)|0;
+}
+let a=h[0];
+let b=h[1];
+let c=h[2];
+let d=h[3];
+let e=h[4];
+let f=h[5];
+let g=h[6];
+let hh=h[7];
+for(let i=0;i<64;i+=1){
+const s1=((e>>>6)|(e<<26))^((e>>>11)|(e<<21))^((e>>>25)|(e<<7));
+const ch=(e&f)^(~e&g);
+const t1=(hh+s1+ch+K[i]+w[i])|0;
+const s0=((a>>>2)|(a<<30))^((a>>>13)|(a<<19))^((a>>>22)|(a<<10));
+const maj=(a&b)^(a&c)^(b&c);
+const t2=(s0+maj)|0;
+hh=g;
+g=f;
+f=e;
+e=(d+t1)|0;
+d=c;
+c=b;
+b=a;
+a=(t1+t2)|0;
+}
+h[0]=(h[0]+a)|0;
+h[1]=(h[1]+b)|0;
+h[2]=(h[2]+c)|0;
+h[3]=(h[3]+d)|0;
+h[4]=(h[4]+e)|0;
+h[5]=(h[5]+f)|0;
+h[6]=(h[6]+g)|0;
+h[7]=(h[7]+hh)|0;
+};
+const state=blocks(64,compress);
+return{
+update(chunk){state.update(chunk);},
+digest(){
+state.finish(8,(view,at,bytes)=>{
+const{hi,lo}=bitLength(bytes);
+view.setUint32(at,hi,false);
+view.setUint32(at+4,lo,false);
+});
+const out=new Uint8Array(32);
+const view=new DataView(out.buffer);
+for(let i=0;i<8;i+=1)view.setInt32(i*4,h[i],false);
+return out;
+},
+};
+}

@@ -1,2 +1,29 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function u(t,s,{rotation:n=0,displayWidth:e,displayHeight:o,frame:h,background:w="#000"}){const r=Math.min(h.width/e,h.height/o),i=(h.width-e*r)/2,f=(h.height-o*r)/2;t.setTransform(1,0,0,1,0,0),t.fillStyle=w,t.fillRect(0,0,h.width,h.height),t.setTransform(r,0,0,r,i,f),n===90?t.transform(0,1,-1,0,e,0):n===180?t.transform(-1,0,0,-1,e,o):n===270&&t.transform(0,-1,1,0,0,o),t.drawImage(s,0,0),t.setTransform(1,0,0,1,0,0)}function M({displayWidth:t,displayHeight:s,frame:n}){const e=Math.min(n.width/t,n.height/s),o=Math.round(t*e),h=Math.round(s*e);return{width:o,height:h,left:Math.round((n.width-o)/2),top:Math.round((n.height-h)/2),fits:o===n.width&&h===n.height}}export{u as drawFitted,M as fittedBox};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function drawFitted(ctx,source,{
+rotation=0,displayWidth,displayHeight,frame,background='#000',
+}){
+const scale=Math.min(frame.width/displayWidth,frame.height/displayHeight);
+const left=(frame.width-displayWidth*scale)/2;
+const top=(frame.height-displayHeight*scale)/2;
+ctx.setTransform(1,0,0,1,0,0);
+ctx.fillStyle=background;
+ctx.fillRect(0,0,frame.width,frame.height);
+ctx.setTransform(scale,0,0,scale,left,top);
+if(rotation===90)ctx.transform(0,1,-1,0,displayWidth,0);
+else if(rotation===180)ctx.transform(-1,0,0,-1,displayWidth,displayHeight);
+else if(rotation===270)ctx.transform(0,-1,1,0,0,displayHeight);
+ctx.drawImage(source,0,0);
+ctx.setTransform(1,0,0,1,0,0);
+}
+export function fittedBox({displayWidth,displayHeight,frame}){
+const scale=Math.min(frame.width/displayWidth,frame.height/displayHeight);
+const width=Math.round(displayWidth*scale);
+const height=Math.round(displayHeight*scale);
+return{
+width,
+height,
+left:Math.round((frame.width-width)/2),
+top:Math.round((frame.height-height)/2),
+fits:width===frame.width&&height===frame.height,
+};
+}

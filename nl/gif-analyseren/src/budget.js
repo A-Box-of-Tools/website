@@ -1,2 +1,139 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{HEADER_BYTES as f}from"./gif.js";function m(e){let l=0,o=0,a=0,n=0,t=0;for(const r of e.frames)r.control&&(l+=r.control.bytes),o+=11,r.palette&&(a+=r.palette.bytes),n+=r.payloadBytes,t+=r.framingBytes;let i=0;for(const r of e.extensions)i+=r.bytes;const s=[{key:"header",label:"Header and screen descriptor",bytes:f,note:"The signature, the canvas size, and the flags. Thirteen bytes, in every GIF ever made."},{key:"global",label:"Global colour table",bytes:e.globalPalette?e.globalPalette.bytes:0,note:e.globalPalette?`${e.globalPalette.count} colours at three bytes each, shared by every frame that does not bring its own.`:"This file has none: every frame carries its own palette."},{key:"local",label:"Per-frame colour tables",bytes:a,note:"A palette of its own for a frame that needed different colours. Three bytes a colour, every time."},{key:"control",label:"Frame timing blocks",bytes:l,note:"Eight bytes per frame: the delay, the disposal method, and which colour is transparent."},{key:"descriptor",label:"Frame descriptors",bytes:o,note:"Eleven bytes per frame: where the rectangle sits, how big it is, and the compressor\u2019s starting code size."},{key:"pixels",label:"Compressed pixels",bytes:n,note:"The picture itself, LZW-compressed. On a healthy GIF this is nearly all of the file."},{key:"framing",label:"Block framing",bytes:t,note:"One length byte for every 255 bytes of data, plus a zero to end each run. Unavoidable, and worth seeing."},{key:"metadata",label:"Comments and metadata",bytes:i,note:"Loop blocks, comments, colour profiles, and any XMP an editor left behind."},{key:"trailer",label:"Trailer",bytes:e.trailerAt>=0?1:0,note:"One byte saying the file is over."},{key:"after",label:"Bytes after the end",bytes:e.trailingBytes,note:"Data sitting past the trailer. No decoder reads it, and it is pure weight."}],c=s.reduce((r,y)=>r+y.bytes,0),b=e.size-c;b!==0&&s.push({key:"unaccounted",label:b>0?"Not accounted for":"Counted twice",bytes:Math.abs(b),note:b>0?"Bytes inside blocks this reader stopped at. A file that ends mid-block leaves some.":"The blocks overlap, which means this file disagrees with itself about where they start."});for(const r of s)r.share=e.size>0?r.bytes/e.size:0;return{total:e.size,accounted:c,rows:s}}function p(e,l){let o=0,a=0;for(const[n,t]of e.frames.entries())!t.palette||!l[n]||(o+=t.palette.count,a+=d(l[n],t.palette.count));if(e.globalPalette){o+=e.globalPalette.count;const n=new Uint8Array(256);for(const[t,i]of e.frames.entries())if(!(i.palette||!l[t]))for(let s=0;s<256;s+=1)l[t][s]&&(n[s]=1);a+=d(n,e.globalPalette.count)}return{declared:o,referenced:a,wastedEntries:Math.max(0,o-a),wastedBytes:Math.max(0,o-a)*3}}const d=(e,l)=>{let o=0;for(let a=0;a<l;a+=1)e[a]&&(o+=1);return o};function u(e,l){const o=new Set;for(const[a,n]of e.frames.entries()){const t=n.palette??e.globalPalette;if(!t)continue;const i=l[a];for(let s=0;s<t.count;s+=1){if(i&&!i[s])continue;const c=s*3;o.add(t.colors[c]<<16|t.colors[c+1]<<8|t.colors[c+2])}}return o}export{m as budget,u as distinctColors,p as paletteWaste};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{HEADER_BYTES}from'./gif.js';
+export function budget(gif){
+let controls=0;
+let descriptors=0;
+let localTables=0;
+let pixels=0;
+let framing=0;
+for(const frame of gif.frames){
+if(frame.control)controls+=frame.control.bytes;
+descriptors+=11;
+if(frame.palette)localTables+=frame.palette.bytes;
+pixels+=frame.payloadBytes;
+framing+=frame.framingBytes;
+}
+let metadata=0;
+for(const extension of gif.extensions)metadata+=extension.bytes;
+const rows=[
+{
+key:'header',
+label:'Header and screen descriptor',
+bytes:HEADER_BYTES,
+note:'The signature, the canvas size, and the flags. Thirteen bytes, in every GIF ever made.',
+},
+{
+key:'global',
+label:'Global colour table',
+bytes:gif.globalPalette?gif.globalPalette.bytes:0,
+note:gif.globalPalette
+?`${gif.globalPalette.count} colours at three bytes each, shared by every frame that does not bring its own.`
+:'This file has none: every frame carries its own palette.',
+},
+{
+key:'local',
+label:'Per-frame colour tables',
+bytes:localTables,
+note:'A palette of its own for a frame that needed different colours. Three bytes a colour, every time.',
+},
+{
+key:'control',
+label:'Frame timing blocks',
+bytes:controls,
+note:'Eight bytes per frame: the delay, the disposal method, and which colour is transparent.',
+},
+{
+key:'descriptor',
+label:'Frame descriptors',
+bytes:descriptors,
+note:'Eleven bytes per frame: where the rectangle sits, how big it is, and the compressor’s starting code size.',
+},
+{
+key:'pixels',
+label:'Compressed pixels',
+bytes:pixels,
+note:'The picture itself, LZW-compressed. On a healthy GIF this is nearly all of the file.',
+},
+{
+key:'framing',
+label:'Block framing',
+bytes:framing,
+note:'One length byte for every 255 bytes of data, plus a zero to end each run. Unavoidable, and worth seeing.',
+},
+{
+key:'metadata',
+label:'Comments and metadata',
+bytes:metadata,
+note:'Loop blocks, comments, colour profiles, and any XMP an editor left behind.',
+},
+{
+key:'trailer',
+label:'Trailer',
+bytes:gif.trailerAt>=0?1:0,
+note:'One byte saying the file is over.',
+},
+{
+key:'after',
+label:'Bytes after the end',
+bytes:gif.trailingBytes,
+note:'Data sitting past the trailer. No decoder reads it, and it is pure weight.',
+},
+];
+const accounted=rows.reduce((sum,row)=>sum+row.bytes,0);
+const missing=gif.size-accounted;
+if(missing!==0){
+rows.push({
+key:'unaccounted',
+label:missing>0?'Not accounted for':'Counted twice',
+bytes:Math.abs(missing),
+note:missing>0
+?'Bytes inside blocks this reader stopped at. A file that ends mid-block leaves some.'
+:'The blocks overlap, which means this file disagrees with itself about where they start.',
+});
+}
+for(const row of rows)row.share=gif.size>0?row.bytes/gif.size:0;
+return{total:gif.size,accounted,rows};
+}
+export function paletteWaste(gif,used){
+let declared=0;
+let referenced=0;
+for(const[index,frame]of gif.frames.entries()){
+if(!frame.palette||!used[index])continue;
+declared+=frame.palette.count;
+referenced+=count(used[index],frame.palette.count);
+}
+if(gif.globalPalette){
+declared+=gif.globalPalette.count;
+const union=new Uint8Array(256);
+for(const[index,frame]of gif.frames.entries()){
+if(frame.palette||!used[index])continue;
+for(let i=0;i<256;i+=1)if(used[index][i])union[i]=1;
+}
+referenced+=count(union,gif.globalPalette.count);
+}
+return{
+declared,
+referenced,
+wastedEntries:Math.max(0,declared-referenced),
+wastedBytes:Math.max(0,declared-referenced)*3,
+};
+}
+const count=(flags,limit)=>{
+let total=0;
+for(let i=0;i<limit;i+=1)if(flags[i])total+=1;
+return total;
+};
+export function distinctColors(gif,used){
+const seen=new Set();
+for(const[index,frame]of gif.frames.entries()){
+const palette=frame.palette??gif.globalPalette;
+if(!palette)continue;
+const flags=used[index];
+for(let i=0;i<palette.count;i+=1){
+if(flags&&!flags[i])continue;
+const at=i*3;
+seen.add((palette.colors[at]<<16)|(palette.colors[at+1]<<8)|palette.colors[at+2]);
+}
+}
+return seen;
+}

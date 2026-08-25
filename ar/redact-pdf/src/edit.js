@@ -1,7 +1,157 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{formatNumber as h,formatString as y,formatValue as $}from"./content.js";import{PdfString as g}from"./objects.js";import{decodeText as x,encodeText as k}from"./strings.js";import{cornersOf as b,endOf as M}from"./text.js";function O(n,i,{boxes:s=!0,remove:e=null}={}){const r=new Map,t=new Map;for(const c of i){const o=n.glyphs[c];if(!o)continue;const f=`${o.sid} ${o.op}`;t.has(f)||t.set(f,[]),t.get(f).push(o)}for(const c of t.values()){const{sid:o,op:f}=c[0],u=n.streams.get(o)?.ops?.[f];if(!u)continue;const d=v(u,c);d!==null&&(r.has(o)||r.set(o,[]),r.get(o).push({start:u.start,end:u.end,text:d}))}e&&w(n,e,r);const a=s?S(n,i):[];return{splices:r,overlay:F(n,a),marks:a}}function w(n,i,s){for(const e of n.marked){const t=n.streams.get(e.sid)?.ops?.[e.op];if(!t)continue;let a=!1;for(const o of["ActualText","Alt","E"]){const f=e.dict.get(o);if(!(f instanceof g))continue;const l=x(f.bytes),u=i(l);u!==l&&(e.dict.set(o,new g(k(u))),a=!0)}if(!a)continue;const c=t.args[t.args.length-2];s.has(e.sid)||s.set(e.sid,[]),s.get(e.sid).push({start:t.start,end:t.end,text:`${$(c)} ${$(e.dict)} BDC`})}}function v(n,i){const s=new Map;for(const t of i)s.has(t.part)||s.set(t.part,[]),s.get(t.part).push(t);const e=n.args[n.args.length-1];if(n.name==="Tj"||n.name==="'"||n.name==='"'){if(!(e instanceof g))return null;const t=T(e.bytes,s.get(-1)??[]);if(n.name==="Tj")return`${t} TJ`;if(n.name==="'")return`T* ${t} TJ`;const a=n.args.slice(-3,-1).map(Number);return a.length!==2||!a.every(Number.isFinite)?null:`${h(a[0])} Tw ${h(a[1])} Tc T* ${t} TJ`}return n.name!=="TJ"||!Array.isArray(e)?null:`[${e.map((t,a)=>t instanceof g?T(t.bytes,s.get(a)??[],!0):Number.isFinite(t)?h(t):"").filter(Boolean).join(" ")}] TJ`}function T(n,i,s=!1){const e=[...i].sort((c,o)=>c.at-o.at),r=[];let t=0;for(let c=0;c<e.length;){let o=c;for(;o+1<e.length&&e[o+1].at===e[o].at+e[o].size;)o+=1;const f=e.slice(c,o+1),l=f[0].at,u=f[f.length-1].at+f[f.length-1].size;l>t&&r.push(y(n.subarray(t,l)));const d=z(f);d&&r.push(d),t=u,c=o+1}t<n.length&&r.push(y(n.subarray(t)));const a=r.join(" ");return s?a:`[${a}]`}function z(n){const i=n[0].fontSize;if(!i)return"";let s=0;for(const r of n)s+=r.advanceWidth/1e3*r.fontSize+r.charSpacing+r.wordSpacing;const e=-s*1e3/i;return Math.abs(e)<5e-4?"":h(p(e))}function p(n){return Math.round(n*1e3)/1e3}function S(n,i){const s=[...i].map(t=>n.glyphs[t]).filter(Boolean).sort((t,a)=>t.order-a.order),e=[];let r=null;for(const t of s)r&&j(r[r.length-1],t)?r.push(t):(r=[t],e.push(r));return e.map(t=>{const a=b(t[0]),c=b(t[t.length-1]);return{points:[a[0],c[1],c[2],a[3]],invisible:t.every(o=>o.invisible)}})}function j(n,i){if(i.order!==n.order+1)return!1;const s=Math.max(n.height,1);if(Math.abs(i.origin.y-n.origin.y)>s*.1)return!1;const e=M(n);return Math.hypot(i.origin.x-e.x,i.origin.y-e.y)<s}function F(n,i){if(!i.length)return"";let s=`
-${"Q".repeat(Math.max(0,n.unbalanced??0))}
-q 0 g
-`;for(const e of i){const[r,t,a,c]=e.points;s+=`${m(r)} m ${m(t)} l ${m(a)} l ${m(c)} l h f
-`}return`${s}Q
-`}function m({x:n,y:i}){return`${h(p(n))} ${h(p(i))}`}export{O as planEdits};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{formatNumber,formatString,formatValue}from'./content.js';
+import{PdfString}from'./objects.js';
+import{decodeText,encodeText}from'./strings.js';
+import{cornersOf,endOf}from'./text.js';
+export function planEdits(page,removing,{boxes=true,remove=null}={}){
+const splices=new Map();
+const byOperator=new Map();
+for(const index of removing){
+const glyph=page.glyphs[index];
+if(!glyph)continue;
+const key=`${glyph.sid} ${glyph.op}`;
+if(!byOperator.has(key))byOperator.set(key,[]);
+byOperator.get(key).push(glyph);
+}
+for(const glyphs of byOperator.values()){
+const{sid,op}=glyphs[0];
+const stream=page.streams.get(sid);
+const operator=stream?.ops?.[op];
+if(!operator)continue;
+const text=rewrite(operator,glyphs);
+if(text===null)continue;
+if(!splices.has(sid))splices.set(sid,[]);
+splices.get(sid).push({start:operator.start,end:operator.end,text});
+}
+if(remove)markedText(page,remove,splices);
+const marks=boxes?blackBoxes(page,removing):[];
+return{splices,overlay:overlayFor(page,marks),marks};
+}
+function markedText(page,remove,splices){
+for(const mark of page.marked){
+const stream=page.streams.get(mark.sid);
+const operator=stream?.ops?.[mark.op];
+if(!operator)continue;
+let changed=false;
+for(const key of['ActualText','Alt','E']){
+const value=mark.dict.get(key);
+if(!(value instanceof PdfString))continue;
+const before=decodeText(value.bytes);
+const after=remove(before);
+if(after===before)continue;
+mark.dict.set(key,new PdfString(encodeText(after)));
+changed=true;
+}
+if(!changed)continue;
+const tag=operator.args[operator.args.length-2];
+if(!splices.has(mark.sid))splices.set(mark.sid,[]);
+splices.get(mark.sid).push({
+start:operator.start,
+end:operator.end,
+text:`${formatValue(tag)} ${formatValue(mark.dict)} BDC`,
+});
+}
+}
+function rewrite(operator,glyphs){
+const removed=new Map();
+for(const glyph of glyphs){
+if(!removed.has(glyph.part))removed.set(glyph.part,[]);
+removed.get(glyph.part).push(glyph);
+}
+const last=operator.args[operator.args.length-1];
+if(operator.name==='Tj'||operator.name==="'"||operator.name==='"'){
+if(!(last instanceof PdfString))return null;
+const array=arrayFor(last.bytes,removed.get(-1)??[]);
+if(operator.name==='Tj')return`${array} TJ`;
+if(operator.name==="'")return`T* ${array} TJ`;
+const spacing=operator.args.slice(-3,-1).map(Number);
+if(spacing.length!==2||!spacing.every(Number.isFinite))return null;
+return`${formatNumber(spacing[0])} Tw ${formatNumber(spacing[1])} Tc `
++`T* ${array} TJ`;
+}
+if(operator.name!=='TJ'||!Array.isArray(last))return null;
+const parts=last.map((item,part)=>{
+if(item instanceof PdfString){
+return arrayFor(item.bytes,removed.get(part)??[],true);
+}
+return Number.isFinite(item)?formatNumber(item):'';
+});
+return`[${parts.filter(Boolean).join(' ')}] TJ`;
+}
+function arrayFor(bytes,glyphs,bare=false){
+const cuts=[...glyphs].sort((a,b)=>a.at-b.at);
+const pieces=[];
+let at=0;
+for(let index=0;index<cuts.length;){
+let last=index;
+while(last+1<cuts.length
+&&cuts[last+1].at===cuts[last].at+cuts[last].size)last+=1;
+const run=cuts.slice(index,last+1);
+const from=run[0].at;
+const to=run[run.length-1].at+run[run.length-1].size;
+if(from>at)pieces.push(formatString(bytes.subarray(at,from)));
+const kern=kernFor(run);
+if(kern)pieces.push(kern);
+at=to;
+index=last+1;
+}
+if(at<bytes.length)pieces.push(formatString(bytes.subarray(at)));
+const body=pieces.join(' ');
+return bare?body:`[${body}]`;
+}
+function kernFor(run){
+const size=run[0].fontSize;
+if(!size)return'';
+let advance=0;
+for(const glyph of run){
+advance+=(glyph.advanceWidth/1000)*glyph.fontSize
++glyph.charSpacing+glyph.wordSpacing;
+}
+const kern=(-advance*1000)/size;
+return Math.abs(kern)<0.0005?'':formatNumber(round(kern));
+}
+function round(value){
+return Math.round(value*1000)/1000;
+}
+function blackBoxes(page,removing){
+const ordered=[...removing]
+.map((index)=>page.glyphs[index])
+.filter(Boolean)
+.sort((a,b)=>a.order-b.order);
+const runs=[];
+let current=null;
+for(const glyph of ordered){
+if(current&&joins(current[current.length-1],glyph))current.push(glyph);
+else{
+current=[glyph];
+runs.push(current);
+}
+}
+return runs.map((run)=>{
+const first=cornersOf(run[0]);
+const last=cornersOf(run[run.length-1]);
+return{
+points:[first[0],last[1],last[2],first[3]],
+invisible:run.every((glyph)=>glyph.invisible),
+};
+});
+}
+function joins(previous,glyph){
+if(glyph.order!==previous.order+1)return false;
+const size=Math.max(previous.height,1);
+if(Math.abs(glyph.origin.y-previous.origin.y)>size*0.1)return false;
+const end=endOf(previous);
+return Math.hypot(glyph.origin.x-end.x,glyph.origin.y-end.y)<size;
+}
+function overlayFor(page,marks){
+if(!marks.length)return'';
+let out=`\n${'Q'.repeat(Math.max(0, page.unbalanced ?? 0))}\nq 0 g\n`;
+for(const mark of marks){
+const[a,b,c,d]=mark.points;
+out+=`${point(a)} m ${point(b)} l ${point(c)} l ${point(d)} l h f\n`;
+}
+return`${out}Q\n`;
+}
+function point({x,y}){
+return`${formatNumber(round(x))} ${formatNumber(round(y))}`;
+}

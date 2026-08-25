@@ -1,2 +1,423 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as w}from"./shared/phrases.js";import{MIN_SIZE as S,clampRect as j}from"./regions.js";import{applyRegions as F}from"./redact.js";import{Preview as D}from"./preview.js";import{Stage as M}from"./stage.js";import{chooseFormat as N,countSummary as I,describeRegion as q,outName as A,riskNote as G,sizeText as H,stemOf as V,strengthNote as _}from"./files.js";import{readingLabel as X,wireFilePicker as Z}from"./shared/file-picker.js";const r=e=>document.getElementById(e),t={dropzone:r("dropzone"),fileInput:r("file-input"),loaded:r("loaded"),loadedName:r("loaded-name"),clearImage:r("clear-image"),loadError:r("load-error"),editEmpty:r("edit-empty"),editControls:r("edit-controls"),stage:r("stage"),preview:r("preview"),styleGroup:r("style-group"),strength:r("strength"),strengthNote:r("strength-note"),addBox:r("add-box"),undo:r("undo"),clearBoxes:r("clear-boxes"),boxSummary:r("box-summary"),regionList:r("region-list"),riskNote:r("risk-note"),format:r("format"),qualityRow:r("quality-row"),quality:r("quality"),qualityValue:r("quality-value"),save:r("save"),busy:r("busy"),result:r("result"),resultImage:r("result-image"),resultFacts:r("result-facts"),download:r("download"),privacyToggle:r("privacy-toggle"),privacyPanel:r("privacy-panel"),networkCount:r("network-count"),networkDot:r("network-dot"),offlineStatus:r("offline-status"),offlineDot:r("offline-dot")};let a=null,i=[],p=[],u=null,B="fill",k=0,b=!1,g=null,L=0;const $=new D(t.preview),E=new M(t.stage,{onCreate:e=>P(e),onChange:(e,o)=>Q(e,o),onSelect:e=>U(e),onDelete:e=>O(e),onGestureStart:()=>y(),regionOf:e=>i.find(o=>o.id===e),describe:(e,o)=>`Area ${o+1}: ${q(e,t.strength.value)}. The arrow keys move it, Alt and the arrow keys resize it, and Delete removes it.`});async function J(e){if(typeof createImageBitmap=="function")try{const n=await createImageBitmap(e);return{bitmap:n,width:n.width,height:n.height}}catch{}const o=URL.createObjectURL(e);try{const n=await new Promise((l,f)=>{const s=new Image;s.onload=()=>l(s),s.onerror=()=>f(new Error("this browser could not decode the picture.")),s.src=o});return{bitmap:n,width:n.naturalWidth,height:n.naturalHeight}}finally{URL.revokeObjectURL(o)}}async function K(e){ne(),z.busy(X(1));try{const o=await J(e);T(),a={file:e,...o},t.stage.style.aspectRatio=`${o.width} / ${o.height}`,$.setSource(o.bitmap,o),E.setSource(o.width,o.height),i=[],p=[],u=null,k=0,t.loadedName.textContent=`${e.name} - ${o.width} x ${o.height}`,t.loaded.hidden=!1,t.editEmpty.hidden=!0,t.editControls.hidden=!1,C(),m()}catch(o){x(`That file could not be opened: ${o.message}`)}finally{z.done()}}function T(){a?.bitmap&&typeof a.bitmap.close=="function"&&a.bitmap.close(),a=null,g&&URL.revokeObjectURL(g),g=null,t.result.hidden=!0,t.resultImage.removeAttribute("src")}const z=Z({input:t.fileInput,dropzone:t.dropzone,onFiles(e){e.length>0&&K(e[0])}});t.clearImage.addEventListener("click",()=>{T(),$.clear(),i=[],p=[],u=null,t.loaded.hidden=!0,t.editControls.hidden=!0,t.editEmpty.hidden=!1,t.fileInput.value="",m()});const y=()=>{p.push(i.map(e=>({...e}))),p.length>100&&p.shift()};function P(e,{focus:o=!1}={}){y(),k+=1;const n={id:`r${k}`,...j(e,a),style:B};i.push(n),u=n.id,m(),o&&E.focus(n.id)}function Q(e,o){const n=i.find(l=>l.id===e);n&&(Object.assign(n,o),m())}function O(e){i=i.filter(o=>o.id!==e),u===e&&(u=i.at(-1)?.id??null),m()}function U(e){u!==e&&(u=e,m())}function Y(e){B=e;const o=i.find(n=>n.id===u);o&&o.style!==e&&(y(),o.style=e),m()}t.addBox.addEventListener("click",()=>{if(!a)return;const e=Math.max(S,Math.round(a.width/4)),o=Math.max(S,Math.round(a.height/6));P({x:Math.round((a.width-e)/2),y:Math.round((a.height-o)/2),width:e,height:o},{focus:!0})}),t.undo.addEventListener("click",()=>{const e=p.pop();e&&(i=e,i.some(o=>o.id===u)||(u=i.at(-1)?.id??null),m())}),t.clearBoxes.addEventListener("click",()=>{i.length!==0&&(y(),i=[],u=null,m())}),t.styleGroup.addEventListener("change",e=>{e.target.name==="style"&&Y(e.target.value)}),t.strength.addEventListener("change",()=>m());function m(){E.render(i,u),ee(),L||(L=requestAnimationFrame(()=>{L=0,$.draw(i,t.strength.value)})),t.undo.disabled=p.length===0,t.clearBoxes.disabled=i.length===0,t.save.disabled=!a||b,t.strengthNote.textContent=_(t.strength.value)}function ee(){const e=t.strength.value;t.boxSummary.textContent=I(i);const o=G(i,e);t.riskNote.textContent=o??"",t.riskNote.hidden=o===null,t.regionList.replaceChildren(...i.map((n,l)=>{const f=document.createElement("li");f.className=`region-row${n.id===u?" selected":""}`;const s=document.createElement("span");s.className="region-tag",s.textContent=String(l+1);const h=document.createElement("button");h.type="button",h.className="region-text",h.textContent=q(n,e),h.addEventListener("click",()=>{U(n.id),E.focus(n.id)});const d=document.createElement("select");d.className="region-style",d.setAttribute("aria-label",`What area ${l+1} does`);for(const[R,W]of[["fill","Black out"],["pixelate","Pixelate"],["blur","Blur"]]){const v=document.createElement("option");v.value=R,v.textContent=W,v.selected=n.style===R,d.append(v)}d.addEventListener("change",()=>{y(),n.style=d.value,m()});const c=document.createElement("button");return c.type="button",c.className="ghost danger region-remove",c.textContent="Remove",c.addEventListener("click",()=>{y(),O(n.id)}),f.append(s,h,d,c),f}))}function C(){t.qualityRow.hidden=!N(t.format.value,a?.file.type??"").lossy}t.format.addEventListener("change",C),t.quality.addEventListener("input",()=>{t.qualityValue.textContent=`${t.quality.value}%`}),t.save.addEventListener("click",()=>te());async function te(){if(!(!a||b)){b=!0,t.save.disabled=!0,t.busy.hidden=!1,t.result.hidden=!0,await new Promise(e=>setTimeout(e,0));try{const e=N(t.format.value,a.file.type),o=document.createElement("canvas");o.width=a.width,o.height=a.height;const n=o.getContext("2d",{willReadFrequently:!0});e.mime==="image/jpeg"&&(n.fillStyle="#ffffff",n.fillRect(0,0,o.width,o.height)),n.drawImage(a.bitmap,0,0);const l=n.getImageData(0,0,o.width,o.height);F(l,i,t.strength.value),n.putImageData(l,0,0);const f=e.lossy?Number(t.quality.value)/100:void 0,s=await new Promise((h,d)=>{o.toBlob(c=>c?h(c):d(new Error("the browser could not encode it.")),e.mime,f)});o.width=0,o.height=0,oe(s,e)}catch(e){x(`Something went wrong writing the file: ${e.message}`)}finally{b=!1,t.busy.hidden=!0,t.save.disabled=!1}}}function oe(e,o){g&&URL.revokeObjectURL(g),g=URL.createObjectURL(e);const n=A(V(a.file.name),o);t.resultImage.src=g,t.resultImage.alt=`The redacted picture, ${a.width} by ${a.height} pixels`,t.download.href=g,t.download.download=n;const l=[`${n} - ${H(e.size)}, ${a.width} x ${a.height}`,I(i)||"No areas were marked, so this is the same picture re-encoded.","Written from the redacted pixels, so it carries no EXIF, no GPS, no embedded thumbnail and no layer with the original in it."];t.resultFacts.replaceChildren(...l.map(f=>{const s=document.createElement("li");return s.textContent=f,s})),t.result.hidden=!1}function x(e){t.loadError.textContent=e,t.loadError.hidden=!1}function ne(){t.loadError.textContent="",t.loadError.hidden=!0}t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const re=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function ae(){const e=new Set,o=new Set,n=l=>{for(const d of l){if(d.name.startsWith("blob:")||d.name.startsWith("data:"))continue;const c=new URL(d.name,location.href);c.origin!==location.origin&&(re.test(c.hostname)?e.add(c.hostname):o.add(c.hostname))}const f=performance.getEntriesByType("resource").filter(d=>!d.name.startsWith("blob:")&&!d.name.startsWith("data:")).length,s=o.size===0,h=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a picture or a byte of one.`;t.networkCount.textContent=s?`your images have gone nowhere. ${f} files loaded, all of them this page's own.${h}`:`something contacted ${[...o].join(", ")}, which this tool never does. Treat that as worth investigating.${h}`,t.networkCount.className=s?"good":"warn",t.networkDot.className=`live-dot ${s?"good":"warn"}`};n(performance.getEntriesByType("resource"));try{new PerformanceObserver(l=>n(l.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function ie(){const e=(o,n)=>{t.offlineStatus.textContent=o,t.offlineDot.className="live-dot",n&&(t.offlineStatus.title=n,console.info("Offline caching unavailable:",n))};if(!("serviceWorker"in navigator)){e(w("offline.none"));return}if(!window.isSecureContext){e(w("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=w("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(o){e(w("offline.failed"),o.message)}}window.addEventListener("error",e=>{x(w("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{x(w("error.broke",{detail:e.reason?.message??e.reason}))}),m(),C(),ae(),ie(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{MIN_SIZE,clampRect}from'./regions.js';
+import{applyRegions}from'./redact.js';
+import{Preview}from'./preview.js';
+import{Stage}from'./stage.js';
+import{
+chooseFormat,countSummary,describeRegion,outName,riskNote,sizeText,
+stemOf,strengthNote,
+}from'./files.js';
+import{readingLabel,wireFilePicker}from'./shared/file-picker.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+loaded:$('loaded'),
+loadedName:$('loaded-name'),
+clearImage:$('clear-image'),
+loadError:$('load-error'),
+editEmpty:$('edit-empty'),
+editControls:$('edit-controls'),
+stage:$('stage'),
+preview:$('preview'),
+styleGroup:$('style-group'),
+strength:$('strength'),
+strengthNote:$('strength-note'),
+addBox:$('add-box'),
+undo:$('undo'),
+clearBoxes:$('clear-boxes'),
+boxSummary:$('box-summary'),
+regionList:$('region-list'),
+riskNote:$('risk-note'),
+format:$('format'),
+qualityRow:$('quality-row'),
+quality:$('quality'),
+qualityValue:$('quality-value'),
+save:$('save'),
+busy:$('busy'),
+result:$('result'),
+resultImage:$('result-image'),
+resultFacts:$('result-facts'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let picture=null;
+let regions=[];
+let history=[];
+let selectedId=null;
+let style='fill';
+let counter=0;
+let busy=false;
+let resultUrl=null;
+let pending=0;
+const preview=new Preview(el.preview);
+const stage=new Stage(el.stage,{
+onCreate:(rect)=>addRegion(rect),
+onChange:(id,rect)=>moveRegion(id,rect),
+onSelect:(id)=>select(id),
+onDelete:(id)=>removeRegion(id),
+onGestureStart:()=>snapshot(),
+regionOf:(id)=>regions.find((region)=>region.id===id),
+describe:(region,index)=>`Area ${index + 1}: ${describeRegion(region, el.strength.value)}. `
++'The arrow keys move it, Alt and the arrow keys resize it, and Delete removes it.',
+});
+async function decode(file){
+if(typeof createImageBitmap==='function'){
+try{
+const bitmap=await createImageBitmap(file);
+return{bitmap,width:bitmap.width,height:bitmap.height};
+}catch{
+}
+}
+const url=URL.createObjectURL(file);
+try{
+const image=await new Promise((resolve,reject)=>{
+const element=new Image();
+element.onload=()=>resolve(element);
+element.onerror=()=>reject(new Error('this browser could not decode the picture.'));
+element.src=url;
+});
+return{bitmap:image,width:image.naturalWidth,height:image.naturalHeight};
+}finally{
+URL.revokeObjectURL(url);
+}
+}
+async function load(file){
+clearLoadError();
+wired.busy(readingLabel(1));
+try{
+const decoded=await decode(file);
+dropPicture();
+picture={file,...decoded};
+el.stage.style.aspectRatio=`${decoded.width} / ${decoded.height}`;
+preview.setSource(decoded.bitmap,decoded);
+stage.setSource(decoded.width,decoded.height);
+regions=[];
+history=[];
+selectedId=null;
+counter=0;
+el.loadedName.textContent=`${file.name} - ${decoded.width} x ${decoded.height}`;
+el.loaded.hidden=false;
+el.editEmpty.hidden=true;
+el.editControls.hidden=false;
+showFormatRow();
+refresh();
+}catch(error){
+showLoadError(`That file could not be opened: ${error.message}`);
+}finally{
+wired.done();
+}
+}
+function dropPicture(){
+if(picture?.bitmap&&typeof picture.bitmap.close==='function')picture.bitmap.close();
+picture=null;
+if(resultUrl)URL.revokeObjectURL(resultUrl);
+resultUrl=null;
+el.result.hidden=true;
+el.resultImage.removeAttribute('src');
+}
+const wired=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+if(files.length>0)load(files[0]);
+},
+});
+el.clearImage.addEventListener('click',()=>{
+dropPicture();
+preview.clear();
+regions=[];
+history=[];
+selectedId=null;
+el.loaded.hidden=true;
+el.editControls.hidden=true;
+el.editEmpty.hidden=false;
+el.fileInput.value='';
+refresh();
+});
+const snapshot=()=>{
+history.push(regions.map((region)=>({...region})));
+if(history.length>100)history.shift();
+};
+function addRegion(rect,{focus=false}={}){
+snapshot();
+counter+=1;
+const region={id:`r${counter}`,...clampRect(rect,picture),style};
+regions.push(region);
+selectedId=region.id;
+refresh();
+if(focus)stage.focus(region.id);
+}
+function moveRegion(id,rect){
+const region=regions.find((item)=>item.id===id);
+if(!region)return;
+Object.assign(region,rect);
+refresh();
+}
+function removeRegion(id){
+regions=regions.filter((region)=>region.id!==id);
+if(selectedId===id)selectedId=regions.at(-1)?.id??null;
+refresh();
+}
+function select(id){
+if(selectedId===id)return;
+selectedId=id;
+refresh();
+}
+function setStyle(next){
+style=next;
+const region=regions.find((item)=>item.id===selectedId);
+if(region&&region.style!==next){
+snapshot();
+region.style=next;
+}
+refresh();
+}
+el.addBox.addEventListener('click',()=>{
+if(!picture)return;
+const width=Math.max(MIN_SIZE,Math.round(picture.width/4));
+const height=Math.max(MIN_SIZE,Math.round(picture.height/6));
+addRegion({
+x:Math.round((picture.width-width)/2),
+y:Math.round((picture.height-height)/2),
+width,
+height,
+},{focus:true});
+});
+el.undo.addEventListener('click',()=>{
+const previous=history.pop();
+if(!previous)return;
+regions=previous;
+if(!regions.some((region)=>region.id===selectedId))selectedId=regions.at(-1)?.id??null;
+refresh();
+});
+el.clearBoxes.addEventListener('click',()=>{
+if(regions.length===0)return;
+snapshot();
+regions=[];
+selectedId=null;
+refresh();
+});
+el.styleGroup.addEventListener('change',(event)=>{
+if(event.target.name==='style')setStyle(event.target.value);
+});
+el.strength.addEventListener('change',()=>refresh());
+function refresh(){
+stage.render(regions,selectedId);
+renderList();
+if(!pending){
+pending=requestAnimationFrame(()=>{
+pending=0;
+preview.draw(regions,el.strength.value);
+});
+}
+el.undo.disabled=history.length===0;
+el.clearBoxes.disabled=regions.length===0;
+el.save.disabled=!picture||busy;
+el.strengthNote.textContent=strengthNote(el.strength.value);
+}
+function renderList(){
+const strength=el.strength.value;
+el.boxSummary.textContent=countSummary(regions);
+const risk=riskNote(regions,strength);
+el.riskNote.textContent=risk??'';
+el.riskNote.hidden=risk===null;
+el.regionList.replaceChildren(...regions.map((region,index)=>{
+const row=document.createElement('li');
+row.className=`region-row${region.id === selectedId ? ' selected' : ''}`;
+const tag=document.createElement('span');
+tag.className='region-tag';
+tag.textContent=String(index+1);
+const text=document.createElement('button');
+text.type='button';
+text.className='region-text';
+text.textContent=describeRegion(region,strength);
+text.addEventListener('click',()=>{
+select(region.id);
+stage.focus(region.id);
+});
+const choice=document.createElement('select');
+choice.className='region-style';
+choice.setAttribute('aria-label',`What area ${index + 1} does`);
+for(const[value,label]of[
+['fill','Black out'],['pixelate','Pixelate'],['blur','Blur'],
+]){
+const option=document.createElement('option');
+option.value=value;
+option.textContent=label;
+option.selected=region.style===value;
+choice.append(option);
+}
+choice.addEventListener('change',()=>{
+snapshot();
+region.style=choice.value;
+refresh();
+});
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='ghost danger region-remove';
+remove.textContent='Remove';
+remove.addEventListener('click',()=>{
+snapshot();
+removeRegion(region.id);
+});
+row.append(tag,text,choice,remove);
+return row;
+}));
+}
+function showFormatRow(){
+el.qualityRow.hidden=!chooseFormat(el.format.value,picture?.file.type??'').lossy;
+}
+el.format.addEventListener('change',showFormatRow);
+el.quality.addEventListener('input',()=>{
+el.qualityValue.textContent=`${el.quality.value}%`;
+});
+el.save.addEventListener('click',()=>save());
+async function save(){
+if(!picture||busy)return;
+busy=true;
+el.save.disabled=true;
+el.busy.hidden=false;
+el.result.hidden=true;
+await new Promise((resolve)=>setTimeout(resolve,0));
+try{
+const format=chooseFormat(el.format.value,picture.file.type);
+const canvas=document.createElement('canvas');
+canvas.width=picture.width;
+canvas.height=picture.height;
+const context=canvas.getContext('2d',{willReadFrequently:true});
+if(format.mime==='image/jpeg'){
+context.fillStyle='#ffffff';
+context.fillRect(0,0,canvas.width,canvas.height);
+}
+context.drawImage(picture.bitmap,0,0);
+const pixels=context.getImageData(0,0,canvas.width,canvas.height);
+applyRegions(pixels,regions,el.strength.value);
+context.putImageData(pixels,0,0);
+const quality=format.lossy?Number(el.quality.value)/100:undefined;
+const blob=await new Promise((resolve,reject)=>{
+canvas.toBlob(
+(made)=>(made?resolve(made):reject(new Error('the browser could not encode it.'))),
+format.mime,
+quality,
+);
+});
+canvas.width=0;
+canvas.height=0;
+showResult(blob,format);
+}catch(error){
+showLoadError(`Something went wrong writing the file: ${error.message}`);
+}finally{
+busy=false;
+el.busy.hidden=true;
+el.save.disabled=false;
+}
+}
+function showResult(blob,format){
+if(resultUrl)URL.revokeObjectURL(resultUrl);
+resultUrl=URL.createObjectURL(blob);
+const name=outName(stemOf(picture.file.name),format);
+el.resultImage.src=resultUrl;
+el.resultImage.alt=`The redacted picture, ${picture.width} by ${picture.height} pixels`;
+el.download.href=resultUrl;
+el.download.download=name;
+const facts=[
+`${name} - ${sizeText(blob.size)}, ${picture.width} x ${picture.height}`,
+countSummary(regions)||'No areas were marked, so this is the same picture re-encoded.',
+'Written from the redacted pixels, so it carries no EXIF, no GPS, no embedded '
++'thumbnail and no layer with the original in it.',
+];
+el.resultFacts.replaceChildren(...facts.map((line)=>{
+const item=document.createElement('li');
+item.textContent=line;
+return item;
+}));
+el.result.hidden=false;
+}
+function showLoadError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function clearLoadError(){
+el.loadError.textContent='';
+el.loadError.hidden=true;
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a picture or a byte of one.`;
+el.networkCount.textContent=clean
+?`your images have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+refresh();
+showFormatRow();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

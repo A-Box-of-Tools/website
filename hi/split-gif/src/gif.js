@@ -1,2 +1,288 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-class A extends Error{constructor(e){super(e),this.name="GifFormatError"}}class w extends Error{}const U=33,k=44,F=59,P=249,L=254,z=1,_=255,C=new TextDecoder("latin1"),O=[[0,8],[4,8],[2,4],[1,2]];function H(t,{maxPixels:e=512e6}={}){if(t.length<13)throw new A("That file is too short to be a GIF.");const n=C.decode(t.subarray(0,6));if(n!=="GIF87a"&&n!=="GIF89a")throw new A("That is not a GIF. The file does not start with GIF87a or GIF89a.");const r=new DataView(t.buffer,t.byteOffset,t.byteLength),l=t[10],o={version:n,width:r.getUint16(6,!0),height:r.getUint16(8,!0),backgroundIndex:t[11],loopCount:null,globalPalette:null,frames:[],comment:null,truncated:null};let a=13;if(l&128){const i=1<<(l&7)+1;o.globalPalette=t.subarray(a,a+i*3),a+=i*3}let f=null,d=0;const s={at:a};try{for(;s.at<t.length;){const i=t[s.at];if(i===F)break;if(i===U){s.at+=1;const c=t[s.at];if(s.at+=1,c===P)f=S(t,r,s);else if(c===L){const h=C.decode(x(t,s)).trim();h&&!o.comment&&(o.comment=h)}else c===_?B(t,s,o):c===z?(M(t,s),x(t,s),f=null):x(t,s);continue}if(i===k){const c=N(t,r,s,o,f);if(o.frames.push(c),f=null,d+=c.width*c.height,d>e){o.truncated=`This GIF is enormous: the first ${o.frames.length} frames filled the memory this page is willing to hold at once, so the rest were left unread.`;break}continue}if(i===0){s.at+=1;continue}throw new w(`unknown block 0x${i.toString(16)}`)}}catch(i){if(!(i instanceof w))throw i;o.truncated=o.frames.length?"This GIF ends in the middle of a frame, so the last one may be incomplete.":"This GIF is damaged: it ends before the first frame is complete."}if(!o.frames.length)throw new A(o.truncated??"That GIF holds no frames this reader could open.");if(!o.width||!o.height)for(const i of o.frames)o.width=Math.max(o.width,i.x+i.width),o.height=Math.max(o.height,i.y+i.height);return o}function S(t,e,n){const r=t[n.at];if(n.at+1+r>=t.length)throw new w("graphic control");const l=t[n.at+1],o={disposal:l>>2&7,delay:e.getUint16(n.at+2,!0),transparentIndex:l&1?t[n.at+4]:-1};return n.at+=1+r,x(t,n),o}function B(t,e,n){const r=t[e.at],l=C.decode(t.subarray(e.at+1,e.at+1+r));e.at+=1+r;const o=x(t,e);l.startsWith("NETSCAPE")&&o.length>=3&&o[0]===1&&(n.loopCount=o[1]|o[2]<<8)}function N(t,e,n,r,l){if(n.at+10>t.length)throw new w("image descriptor");const o=t[n.at+9],a={x:e.getUint16(n.at+1,!0),y:e.getUint16(n.at+3,!0),width:e.getUint16(n.at+5,!0),height:e.getUint16(n.at+7,!0),interlaced:!!(o&64),hasLocalPalette:!!(o&128),disposal:l?.disposal??0,delay:l?.delay??0,transparentIndex:l?.transparentIndex??-1,palette:r.globalPalette,indices:null,dataBytes:0,partial:!1};if(n.at+=10,a.hasLocalPalette){const h=1<<(o&7)+1;a.palette=t.subarray(n.at,n.at+h*3),n.at+=h*3}if(n.at>=t.length)throw new w("image data");const f=t[n.at];n.at+=1;const d=n.at,s=x(t,n);a.dataBytes=n.at-d,(!a.palette||a.palette.length<3)&&(a.palette=X());const i=a.width*a.height;if(!i)throw new w("a frame of no size");const c=D(s,f,i);return a.partial=c.partial,a.indices=a.interlaced?R(c.indices,a.width,a.height):c.indices,a}function M(t,e){const n=t[e.at];e.at+=1+n}function x(t,e){const n=[];let r=0;for(;;){if(e.at>=t.length)throw new w("sub-blocks");const a=t[e.at];if(e.at+=1,a===0)break;if(e.at+a>t.length)throw new w("sub-block payload");n.push(t.subarray(e.at,e.at+a)),e.at+=a,r+=a}if(n.length===1)return n[0];const l=new Uint8Array(r);let o=0;for(const a of n)l.set(a,o),o+=a.length;return l}function X(){const t=new Uint8Array(768);for(let e=0;e<256;e+=1)t[e*3]=e,t[e*3+1]=e,t[e*3+2]=e;return t}function D(t,e,n){const r=Math.min(8,Math.max(2,e)),l=1<<r,o=l+1,a=new Uint16Array(4096),f=new Uint8Array(4096),d=new Uint8Array(4096);for(let u=0;u<l;u+=1)f[u]=u;const s=new Uint8Array(n);let i=0,c=r+1,h=o+1,p=-1,T=0,I=0,E=0;for(;i<n;){for(;I<c;){if(E>=t.length)return{indices:s,partial:!0};T|=t[E]<<I,E+=1,I+=8}const u=T&(1<<c)-1;if(T>>=c,I-=c,u===o)return{indices:s,partial:i<n};if(u===l){c=r+1,h=o+1,p=-1;continue}let g=0,m=u;if(u>=h){if(p<0||u>h)return{indices:s,partial:!0};d[g]=f[p],g+=1,m=p}for(;m>=l;){if(g>=d.length)return{indices:s,partial:!0};d[g]=f[m],g+=1,m=a[m]}const G=f[m];for(d[g]=G,g+=1;g>0&&i<n;)g-=1,s[i]=d[g],i+=1;p>=0&&h<4096&&(a[h]=p,f[h]=G,h+=1,h===1<<c&&c<12&&(c+=1)),p=u}return{indices:s,partial:!1}}function R(t,e,n){const r=new Uint8Array(t.length);let l=0;for(const[o,a]of O)for(let f=o;f<n;f+=a)r.set(t.subarray(l,l+e),f*e),l+=e;return r}function K(t){return(t<2?10:t)/100}function $(t){return t.reduce((e,n)=>e+K(n.delay),0)}export{A as GifFormatError,H as decodeGif,R as deinterlace,D as lzwDecode,K as playedDelay,$ as totalDuration};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export class GifFormatError extends Error{
+constructor(message){
+super(message);
+this.name='GifFormatError';
+}
+}
+class Truncated extends Error{}
+const BLOCK_EXTENSION=0x21;
+const BLOCK_IMAGE=0x2c;
+const BLOCK_TRAILER=0x3b;
+const EXT_GRAPHIC_CONTROL=0xf9;
+const EXT_COMMENT=0xfe;
+const EXT_PLAIN_TEXT=0x01;
+const EXT_APPLICATION=0xff;
+const latin1=new TextDecoder('latin1');
+const INTERLACE_PASSES=[[0,8],[4,8],[2,4],[1,2]];
+export function decodeGif(bytes,{maxPixels=512e6}={}){
+if(bytes.length<13)throw new GifFormatError('That file is too short to be a GIF.');
+const signature=latin1.decode(bytes.subarray(0,6));
+if(signature!=='GIF87a'&&signature!=='GIF89a'){
+throw new GifFormatError(
+'That is not a GIF. The file does not start with GIF87a or GIF89a.',
+);
+}
+const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+const packed=bytes[10];
+const gif={
+version:signature,
+width:view.getUint16(6,true),
+height:view.getUint16(8,true),
+backgroundIndex:bytes[11],
+loopCount:null,
+globalPalette:null,
+frames:[],
+comment:null,
+truncated:null,
+};
+let at=13;
+if(packed&0x80){
+const size=1<<((packed&7)+1);
+gif.globalPalette=bytes.subarray(at,at+size*3);
+at+=size*3;
+}
+let control=null;
+let decoded=0;
+const reader={at};
+try{
+while(reader.at<bytes.length){
+const marker=bytes[reader.at];
+if(marker===BLOCK_TRAILER)break;
+if(marker===BLOCK_EXTENSION){
+reader.at+=1;
+const label=bytes[reader.at];
+reader.at+=1;
+if(label===EXT_GRAPHIC_CONTROL){
+control=readGraphicControl(bytes,view,reader);
+}else if(label===EXT_COMMENT){
+const text=latin1.decode(readSubBlocks(bytes,reader)).trim();
+if(text&&!gif.comment)gif.comment=text;
+}else if(label===EXT_APPLICATION){
+readApplication(bytes,reader,gif);
+}else if(label===EXT_PLAIN_TEXT){
+skipHeader(bytes,reader);
+readSubBlocks(bytes,reader);
+control=null;
+}else{
+readSubBlocks(bytes,reader);
+}
+continue;
+}
+if(marker===BLOCK_IMAGE){
+const frame=readImage(bytes,view,reader,gif,control);
+gif.frames.push(frame);
+control=null;
+decoded+=frame.width*frame.height;
+if(decoded>maxPixels){
+gif.truncated=`This GIF is enormous: the first ${gif.frames.length} frames `
++'filled the memory this page is willing to hold at once, so the rest '
++'were left unread.';
+break;
+}
+continue;
+}
+if(marker===0){
+reader.at+=1;
+continue;
+}
+throw new Truncated(`unknown block 0x${marker.toString(16)}`);
+}
+}catch(error){
+if(!(error instanceof Truncated))throw error;
+gif.truncated=gif.frames.length
+?'This GIF ends in the middle of a frame, so the last one may be incomplete.'
+:'This GIF is damaged: it ends before the first frame is complete.';
+}
+if(!gif.frames.length){
+throw new GifFormatError(
+gif.truncated??'That GIF holds no frames this reader could open.',
+);
+}
+if(!gif.width||!gif.height){
+for(const frame of gif.frames){
+gif.width=Math.max(gif.width,frame.x+frame.width);
+gif.height=Math.max(gif.height,frame.y+frame.height);
+}
+}
+return gif;
+}
+function readGraphicControl(bytes,view,reader){
+const size=bytes[reader.at];
+if(reader.at+1+size>=bytes.length)throw new Truncated('graphic control');
+const flags=bytes[reader.at+1];
+const control={
+disposal:(flags>>2)&7,
+delay:view.getUint16(reader.at+2,true),
+transparentIndex:flags&1?bytes[reader.at+4]:-1,
+};
+reader.at+=1+size;
+readSubBlocks(bytes,reader);
+return control;
+}
+function readApplication(bytes,reader,gif){
+const size=bytes[reader.at];
+const name=latin1.decode(bytes.subarray(reader.at+1,reader.at+1+size));
+reader.at+=1+size;
+const payload=readSubBlocks(bytes,reader);
+if(name.startsWith('NETSCAPE')&&payload.length>=3&&payload[0]===1){
+gif.loopCount=payload[1]|(payload[2]<<8);
+}
+}
+function readImage(bytes,view,reader,gif,control){
+if(reader.at+10>bytes.length)throw new Truncated('image descriptor');
+const flags=bytes[reader.at+9];
+const frame={
+x:view.getUint16(reader.at+1,true),
+y:view.getUint16(reader.at+3,true),
+width:view.getUint16(reader.at+5,true),
+height:view.getUint16(reader.at+7,true),
+interlaced:Boolean(flags&0x40),
+hasLocalPalette:Boolean(flags&0x80),
+disposal:control?.disposal??0,
+delay:control?.delay??0,
+transparentIndex:control?.transparentIndex??-1,
+palette:gif.globalPalette,
+indices:null,
+dataBytes:0,
+partial:false,
+};
+reader.at+=10;
+if(frame.hasLocalPalette){
+const size=1<<((flags&7)+1);
+frame.palette=bytes.subarray(reader.at,reader.at+size*3);
+reader.at+=size*3;
+}
+if(reader.at>=bytes.length)throw new Truncated('image data');
+const minCodeSize=bytes[reader.at];
+reader.at+=1;
+const from=reader.at;
+const data=readSubBlocks(bytes,reader);
+frame.dataBytes=reader.at-from;
+if(!frame.palette||frame.palette.length<3)frame.palette=greyPalette();
+const pixels=frame.width*frame.height;
+if(!pixels)throw new Truncated('a frame of no size');
+const decoded=lzwDecode(data,minCodeSize,pixels);
+frame.partial=decoded.partial;
+frame.indices=frame.interlaced
+?deinterlace(decoded.indices,frame.width,frame.height)
+:decoded.indices;
+return frame;
+}
+function skipHeader(bytes,reader){
+const size=bytes[reader.at];
+reader.at+=1+size;
+}
+function readSubBlocks(bytes,reader){
+const runs=[];
+let total=0;
+for(;;){
+if(reader.at>=bytes.length)throw new Truncated('sub-blocks');
+const size=bytes[reader.at];
+reader.at+=1;
+if(size===0)break;
+if(reader.at+size>bytes.length)throw new Truncated('sub-block payload');
+runs.push(bytes.subarray(reader.at,reader.at+size));
+reader.at+=size;
+total+=size;
+}
+if(runs.length===1)return runs[0];
+const out=new Uint8Array(total);
+let at=0;
+for(const run of runs){
+out.set(run,at);
+at+=run.length;
+}
+return out;
+}
+function greyPalette(){
+const table=new Uint8Array(256*3);
+for(let i=0;i<256;i+=1){
+table[i*3]=i;
+table[i*3+1]=i;
+table[i*3+2]=i;
+}
+return table;
+}
+export function lzwDecode(data,minCodeSize,pixels){
+const codeSize=Math.min(8,Math.max(2,minCodeSize));
+const clearCode=1<<codeSize;
+const endCode=clearCode+1;
+const prefix=new Uint16Array(4096);
+const suffix=new Uint8Array(4096);
+const stack=new Uint8Array(4096);
+for(let i=0;i<clearCode;i+=1)suffix[i]=i;
+const out=new Uint8Array(pixels);
+let written=0;
+let width=codeSize+1;
+let next=endCode+1;
+let previous=-1;
+let bits=0;
+let bitCount=0;
+let at=0;
+while(written<pixels){
+while(bitCount<width){
+if(at>=data.length)return{indices:out,partial:true};
+bits|=data[at]<<bitCount;
+at+=1;
+bitCount+=8;
+}
+const code=bits&((1<<width)-1);
+bits>>=width;
+bitCount-=width;
+if(code===endCode)return{indices:out,partial:written<pixels};
+if(code===clearCode){
+width=codeSize+1;
+next=endCode+1;
+previous=-1;
+continue;
+}
+let top=0;
+let current=code;
+if(code>=next){
+if(previous<0||code>next)return{indices:out,partial:true};
+stack[top]=suffix[previous];
+top+=1;
+current=previous;
+}
+while(current>=clearCode){
+if(top>=stack.length)return{indices:out,partial:true};
+stack[top]=suffix[current];
+top+=1;
+current=prefix[current];
+}
+const first=suffix[current];
+stack[top]=first;
+top+=1;
+while(top>0&&written<pixels){
+top-=1;
+out[written]=stack[top];
+written+=1;
+}
+if(previous>=0&&next<4096){
+prefix[next]=previous;
+suffix[next]=first;
+next+=1;
+if(next===(1<<width)&&width<12)width+=1;
+}
+previous=code;
+}
+return{indices:out,partial:false};
+}
+export function deinterlace(indices,width,height){
+const out=new Uint8Array(indices.length);
+let from=0;
+for(const[start,step]of INTERLACE_PASSES){
+for(let row=start;row<height;row+=step){
+out.set(indices.subarray(from,from+width),row*width);
+from+=width;
+}
+}
+return out;
+}
+export function playedDelay(centiseconds){
+return(centiseconds<2?10:centiseconds)/100;
+}
+export function totalDuration(frames){
+return frames.reduce((total,frame)=>total+playedDelay(frame.delay),0);
+}

@@ -1,3 +1,579 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as y}from"./shared/phrases.js";import{wireFilePicker as V,readingLabel as _}from"./shared/file-picker.js";import{loadImages as J,releaseItem as T,rotateItem as F,sortItems as X,moveItem as z}from"./images.js";import{layoutPage as K,seenSize as R,PAGE_SIZES as Z}from"./layout.js";import{buildDocument as Q}from"./document.js";const r=e=>document.getElementById(e),t={dropzone:r("dropzone"),fileInput:r("file-input"),loadError:r("load-error"),list:r("image-list"),listToolbar:r("list-toolbar"),countLabel:r("count-label"),reorderHint:r("reorder-hint"),clearAll:r("clear-all"),pageSize:r("page-size"),customSize:r("custom-size"),customWidth:r("custom-width"),customHeight:r("custom-height"),customUnit:r("custom-unit"),sizeNote:r("size-note"),dpiField:r("dpi-field"),dpi:r("dpi"),orientationField:r("orientation-field"),orientation:r("orientation"),fitField:r("fit-field"),fit:r("fit"),margin:r("margin"),background:r("background"),mode:r("mode"),modeNote:r("mode-note"),qualityField:r("quality-field"),quality:r("quality"),maxSide:r("max-side"),shrinkNote:r("shrink-note"),docTitle:r("doc-title"),docAuthor:r("doc-author"),fileName:r("file-name"),dated:r("dated"),preview:r("preview"),previewEmpty:r("preview-empty"),previewNav:r("preview-nav"),previewPrev:r("preview-prev"),previewNext:r("preview-next"),previewLabel:r("preview-label"),sumPages:r("sum-pages"),sumSize:r("sum-size"),sumInput:r("sum-input"),sumCopied:r("sum-copied"),exportBtn:r("export"),cancelBtn:r("cancel"),progressWrap:r("progress-wrap"),progressBar:r("progress-bar"),progressLabel:r("progress-label"),error:r("error"),result:r("result"),resultInfo:r("result-info"),download:r("download"),privacyToggle:r("privacy-toggle"),privacyPanel:r("privacy-panel"),networkCount:r("network-count"),networkDot:r("network-dot"),offlineStatus:r("offline-status"),offlineDot:r("offline-dot")};let l=[],c=!1,$=!1,E=null,x=null,h=0;const q=V({input:t.fileInput,dropzone:t.dropzone,onFiles(e){Y(e)}});async function Y(e){if(!(!e?.length||c)){q.busy(_(e.length));try{const{items:n,skipped:o}=await J(e);l.push(...n),o.length?de(o.join(`
-`)):j()}finally{q.done()}f()}}let p=null,b=null;function S(){for(const e of t.list.querySelectorAll(".insert-before, .insert-after"))e.classList.remove("insert-before","insert-after")}function ee(e,n){const o=document.createElement("li");o.className="image-item",o.dataset.index=String(n);const a=document.createElement("button");a.type="button",a.className="drag-handle",a.draggable=!0,a.textContent="\u22EE\u22EE",a.title=`Drag to move ${e.name}`,a.setAttribute("aria-label",`Drag to move ${e.name}`);const i=document.createElement("div");i.className="thumb-wrap",i.draggable=!0;const d=document.createElement("canvas");d.className="thumb",te(d,e),i.append(d);const m=document.createElement("span");m.className="order-badge",m.textContent=String(n+1),i.append(m);const s=document.createElement("button");s.type="button",s.className="remove-btn",s.textContent="\xD7",s.title=`Remove ${e.name}`,s.setAttribute("aria-label",`Remove ${e.name}`),s.addEventListener("click",()=>{c||(T(e),l.splice(n,1),f())}),i.append(s);const u=document.createElement("div");u.className="image-meta";const v=R(e),w=document.createElement("p");w.className="image-name",w.textContent=e.name,w.title=`${e.name} \u2014 ${v.width} \xD7 ${v.height}`,u.append(w);const C=document.createElement("p");C.className="image-dims",C.textContent=`${v.width} \xD7 ${v.height} \xB7 ${M(e.file.size)}`,u.append(C);const N=document.createElement("div");N.className="image-controls",N.append(k("\u21BA",`Rotate ${e.name} anticlockwise`,!1,()=>{c||(F(e,-1),f())}),k("\u21BB",`Rotate ${e.name} clockwise`,!1,()=>{c||(F(e,1),f())}),k("\u2039",`Move ${e.name} earlier`,n===0,()=>{c||(z(l,n,n-1),f())}),k("\u203A",`Move ${e.name} later`,n===l.length-1,()=>{c||(z(l,n,n+1),f())})),u.append(N),o.append(a,i,u);const O=g=>{if(c){g.preventDefault();return}p=n,o.classList.add("dragging"),g.dataTransfer.effectAllowed="move",g.dataTransfer.setData("text/plain",String(n))},G=()=>{p=null,b=null,o.classList.remove("dragging"),S()};for(const g of[a,i])g.addEventListener("dragstart",O),g.addEventListener("dragend",G);return o.addEventListener("dragover",g=>{if(p===null)return;g.preventDefault(),g.dataTransfer.dropEffect="move";const A=o.getBoundingClientRect(),D=g.clientX>A.left+A.width/2;S(),o.classList.add(D?"insert-after":"insert-before"),b={index:n,after:D}}),o.addEventListener("drop",g=>{g.preventDefault(),g.stopPropagation(),H()}),o}function k(e,n,o,a){const i=document.createElement("button");return i.type="button",i.className="tile-btn",i.textContent=e,i.title=n,i.setAttribute("aria-label",n),i.disabled=o,i.addEventListener("click",a),i}function te(e,n){const o=n.thumb.image;if(!o.naturalWidth)return;const a=n.rotate===90||n.rotate===270;e.width=a?o.naturalHeight:o.naturalWidth,e.height=a?o.naturalWidth:o.naturalHeight;const i=e.getContext("2d");i.save(),i.translate(e.width/2,e.height/2),i.rotate(n.rotate*Math.PI/180),i.drawImage(o,-o.naturalWidth/2,-o.naturalHeight/2),i.restore()}function H(){if(p===null||b===null){S();return}let e=b.after?b.index+1:b.index;p<e&&(e-=1);const n=p;if(p=null,b=null,n===e){S();return}z(l,n,e),f()}t.list.addEventListener("dragover",e=>{p!==null&&e.preventDefault()}),t.list.addEventListener("drop",e=>{p!==null&&(e.preventDefault(),H())});for(const e of document.querySelectorAll("[data-sort]"))e.addEventListener("click",()=>{c||(X(l,e.dataset.sort),f())});t.clearAll.addEventListener("click",()=>{if(!(!l.length||c)){for(const e of l)T(e);l=[],j(),f()}});function P(){return{pageSize:t.pageSize.value,customWidth:Number(t.customWidth.value),customHeight:Number(t.customHeight.value),customUnit:t.customUnit.value,dpi:Number(t.dpi.value),orientation:t.orientation.value,fit:t.fit.value,margin:Number(t.margin.value),background:t.background.value,mode:t.mode.value,quality:Number(t.quality.value),maxSide:Number(t.maxSide.value),title:t.docTitle.value,author:t.docAuthor.value,dated:t.dated.checked}}function ne(){const e=t.pageSize.value==="fit";t.customSize.hidden=t.pageSize.value!=="custom",t.dpiField.hidden=!e,t.orientationField.hidden=e,t.fitField.hidden=e,t.qualityField.hidden=t.mode.value==="lossless",t.sizeNote.textContent=e?"Every page is exactly its picture, so nothing is cropped or letterboxed.":"Pictures are placed on a page of this size.",t.modeNote.textContent={keep:"JPEG photos go in byte for byte, with no decoding and no quality lost. Other formats are re-encoded, or kept lossless if they are see-through.",jpeg:"Everything is decoded and encoded again. Smallest file, and the only setting that costs quality on a picture that was already a JPEG.",lossless:"Every picture is stored exactly, deflated. Largest file by some way, and the right answer for scans of text, line art and screenshots."}[t.mode.value],t.shrinkNote.textContent=t.maxSide.value==="0"?"Full resolution. A folder of phone photos makes a large PDF.":"Anything larger is scaled down, which means it is re-encoded rather than copied."}const re=[[t.pageSize,"change"],[t.customWidth,"input"],[t.customHeight,"input"],[t.customUnit,"change"],[t.dpi,"change"],[t.orientation,"change"],[t.fit,"change"],[t.margin,"input"],[t.background,"input"],[t.mode,"change"],[t.quality,"change"],[t.maxSide,"change"]];for(const[e,n]of re)e.addEventListener(n,()=>{I(),U()});t.previewPrev.addEventListener("click",()=>{h=Math.max(0,h-1),W()}),t.previewNext.addEventListener("click",()=>{h=Math.min(l.length-1,h+1),W()});const oe=360;function W(){const e=t.preview.getContext("2d");h=Math.min(h,Math.max(0,l.length-1));const n=l.length>0;if(t.preview.classList.toggle("empty",!n),t.previewEmpty.hidden=n,t.previewNav.hidden=l.length<2,t.previewLabel.textContent=`Page ${h+1} of ${l.length}`,t.previewPrev.disabled=h===0,t.previewNext.disabled=h>=l.length-1,!n)return;const o=l[h],a=K(o,P()),i=oe/Math.max(a.width,a.height),d=Math.min(2,window.devicePixelRatio||1);t.preview.width=Math.max(1,Math.round(a.width*i*d)),t.preview.height=Math.max(1,Math.round(a.height*i*d)),t.preview.style.width=`${Math.round(a.width*i)}px`,t.preview.style.height=`${Math.round(a.height*i)}px`,e.setTransform(i*d,0,0,i*d,0,0),e.fillStyle=t.background.value,e.fillRect(0,0,a.width,a.height);const m=o.thumb.image;if(!m.naturalWidth)return;e.save(),a.clip&&(e.beginPath(),e.rect(a.clip.x,a.height-a.clip.y-a.clip.height,a.clip.width,a.clip.height),e.clip());const{rect:s}=a;e.translate(s.x+s.width/2,a.height-s.y-s.height/2),e.rotate(o.rotate*Math.PI/180);const u=o.rotate===90||o.rotate===270,v=u?s.height:s.width,w=u?s.width:s.height;e.drawImage(m,-v/2,-w/2,v,w),e.restore()}function f(){I(),t.list.replaceChildren(...l.map(ee)),U()}function U(){const e=l.length>0;t.listToolbar.hidden=!e,t.reorderHint.hidden=l.length<2,t.countLabel.textContent=`${l.length} image${l.length===1?"":"s"}`,t.exportBtn.disabled=!e||c,ne(),ae(),W()}function ae(){const e=P();t.sumPages.textContent=l.length?`${l.length} page${l.length===1?"":"s"}`:"\u2014",t.sumSize.textContent=le(e);const n=l.reduce((a,i)=>a+i.file.size,0);t.sumInput.textContent=l.length?M(n):"\u2014";const o=l.filter(a=>ie(a,e)).length;t.sumCopied.textContent=l.length?`${o} of ${l.length}`:"\u2014"}function ie(e,n){return n.mode!=="keep"||n.maxSide&&Math.max(e.width,e.height)>n.maxSide?!1:/^image\/jpe?g$/i.test(e.file.type)||/\.jpe?g$/i.test(e.name)}function le(e){if(!l.length)return"\u2014";if(e.pageSize==="fit")return"matches each image";const n=Z[e.pageSize],o=n?`${L(n[0])} \xD7 ${L(n[1])} mm`:`${L(e.customWidth)} \xD7 ${L(e.customHeight)} ${e.customUnit}`;if(e.orientation==="auto"){const a=l.filter(i=>{const d=R(i);return d.height>=d.width}).length;return a&&a<l.length?`${o}, mixed`:`${o}, ${a?"portrait":"landscape"}`}return`${o}, ${e.orientation}`}function L(e){return String(Math.round(Number(e)*10)/10)}function M(e){return e<1024?`${e} B`:e<1024*1024?`${(e/1024).toFixed(0)} KB`:`${(e/(1024*1024)).toFixed(1)} MB`}function B(e){t.error.textContent=e,t.error.hidden=!1}function se(){t.error.textContent="",t.error.hidden=!0}function de(e){t.loadError.textContent=e,t.loadError.hidden=!1}function j(){t.loadError.textContent="",t.loadError.hidden=!0}function I(){x&&(URL.revokeObjectURL(x),x=null),t.result.hidden=!0,t.download.removeAttribute("href")}function ce(){return`${t.fileName.value.trim().replace(/\.pdf$/i,"").replace(/[\\/:*?"<>|]/g,"-").slice(0,120).trim()||"images"}.pdf`}async function ue(){if(!l.length||c)return;c=!0,$=!1,E=new AbortController,se(),I(),t.exportBtn.disabled=!0,t.cancelBtn.hidden=!1,t.progressWrap.hidden=!1,t.progressBar.style.width="0%",t.progressLabel.textContent="Starting...";const e=l.map(n=>({...n}));try{const{blob:n,pages:o,copied:a}=await Q(e,P(),{signal:E.signal,onProgress:({done:i,total:d,name:m})=>{t.progressBar.style.width=`${Math.round(i/d*100)}%`,t.progressLabel.textContent=i<d?`Page ${i+1} of ${d}\u2003${m}`:"Writing the document..."}});x=URL.createObjectURL(n),t.download.href=x,t.download.download=ce(),t.resultInfo.textContent=`${o} page${o===1?"":"s"}, ${M(n.size)}. `+(a?`${a} of ${o} put in exactly as ${a===1?"it was":"they were"}.`:"Every picture was encoded again for the document."),t.result.hidden=!1}catch(n){$=n?.name==="AbortError",$?t.progressLabel.textContent="Cancelled.":B(n?.message??String(n))}finally{c=!1,E=null,t.cancelBtn.hidden=!0,t.exportBtn.disabled=!l.length,t.progressWrap.hidden=!$}}t.exportBtn.addEventListener("click",ue),t.cancelBtn.addEventListener("click",()=>E?.abort()),window.addEventListener("beforeunload",e=>{c&&(e.preventDefault(),e.returnValue="")}),t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const ge=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function me(){const e=new Set,n=new Set,o=a=>{for(const s of a){if(s.name.startsWith("blob:")||s.name.startsWith("data:"))continue;const u=new URL(s.name,location.href);u.origin!==location.origin&&(ge.test(u.hostname)?e.add(u.hostname):n.add(u.hostname))}const i=performance.getEntriesByType("resource").filter(s=>!s.name.startsWith("blob:")&&!s.name.startsWith("data:")).length,d=n.size===0,m=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given an image or a byte of one.`;t.networkCount.textContent=d?`your images have gone nowhere. ${i} files loaded, all of them this page's own.${m}`:`something contacted ${[...n].join(", ")}, which this tool never does. Treat that as worth investigating.${m}`,t.networkCount.className=d?"good":"warn",t.networkDot.className=`live-dot ${d?"good":"warn"}`};o(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>o(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function he(){const e=(n,o)=>{t.offlineStatus.textContent=n,t.offlineDot.className="live-dot",o&&(t.offlineStatus.title=o,console.info("Offline caching unavailable:",o))};if(!("serviceWorker"in navigator)){e(y("offline.none"));return}if(!window.isSecureContext){e(y("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=y("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(n){e(y("offline.failed"),n.message)}}window.addEventListener("error",e=>{B(y("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{B(y("error.broke",{detail:e.reason?.message??e.reason}))}),f(),me(),he(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{loadImages,releaseItem,rotateItem,sortItems,moveItem}from'./images.js';
+import{layoutPage,seenSize,PAGE_SIZES}from'./layout.js';
+import{buildDocument}from'./document.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+loadError:$('load-error'),
+list:$('image-list'),
+listToolbar:$('list-toolbar'),
+countLabel:$('count-label'),
+reorderHint:$('reorder-hint'),
+clearAll:$('clear-all'),
+pageSize:$('page-size'),
+customSize:$('custom-size'),
+customWidth:$('custom-width'),
+customHeight:$('custom-height'),
+customUnit:$('custom-unit'),
+sizeNote:$('size-note'),
+dpiField:$('dpi-field'),
+dpi:$('dpi'),
+orientationField:$('orientation-field'),
+orientation:$('orientation'),
+fitField:$('fit-field'),
+fit:$('fit'),
+margin:$('margin'),
+background:$('background'),
+mode:$('mode'),
+modeNote:$('mode-note'),
+qualityField:$('quality-field'),
+quality:$('quality'),
+maxSide:$('max-side'),
+shrinkNote:$('shrink-note'),
+docTitle:$('doc-title'),
+docAuthor:$('doc-author'),
+fileName:$('file-name'),
+dated:$('dated'),
+preview:$('preview'),
+previewEmpty:$('preview-empty'),
+previewNav:$('preview-nav'),
+previewPrev:$('preview-prev'),
+previewNext:$('preview-next'),
+previewLabel:$('preview-label'),
+sumPages:$('sum-pages'),
+sumSize:$('sum-size'),
+sumInput:$('sum-input'),
+sumCopied:$('sum-copied'),
+exportBtn:$('export'),
+cancelBtn:$('cancel'),
+progressWrap:$('progress-wrap'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+error:$('error'),
+result:$('result'),
+resultInfo:$('result-info'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let items=[];
+let exporting=false;
+let cancelled=false;
+let abortController=null;
+let resultUrl=null;
+let previewAt=0;
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+addFiles(files);
+},
+});
+async function addFiles(files){
+if(!files?.length||exporting)return;
+picker.busy(readingLabel(files.length));
+try{
+const{items:added,skipped}=await loadImages(files);
+items.push(...added);
+if(skipped.length)showLoadError(skipped.join('\n'));
+else clearLoadError();
+}finally{
+picker.done();
+}
+render();
+}
+let dragIndex=null;
+let dropAt=null;
+function clearDropMarkers(){
+for(const node of el.list.querySelectorAll('.insert-before, .insert-after')){
+node.classList.remove('insert-before','insert-after');
+}
+}
+function buildItemNode(item,index){
+const li=document.createElement('li');
+li.className='image-item';
+li.dataset.index=String(index);
+const handle=document.createElement('button');
+handle.type='button';
+handle.className='drag-handle';
+handle.draggable=true;
+handle.textContent='⋮⋮';
+handle.title=`Drag to move ${item.name}`;
+handle.setAttribute('aria-label',`Drag to move ${item.name}`);
+const thumbWrap=document.createElement('div');
+thumbWrap.className='thumb-wrap';
+thumbWrap.draggable=true;
+const canvas=document.createElement('canvas');
+canvas.className='thumb';
+drawThumb(canvas,item);
+thumbWrap.append(canvas);
+const badge=document.createElement('span');
+badge.className='order-badge';
+badge.textContent=String(index+1);
+thumbWrap.append(badge);
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='remove-btn';
+remove.textContent='×';
+remove.title=`Remove ${item.name}`;
+remove.setAttribute('aria-label',`Remove ${item.name}`);
+remove.addEventListener('click',()=>{
+if(exporting)return;
+releaseItem(item);
+items.splice(index,1);
+render();
+});
+thumbWrap.append(remove);
+const meta=document.createElement('div');
+meta.className='image-meta';
+const seen=seenSize(item);
+const name=document.createElement('p');
+name.className='image-name';
+name.textContent=item.name;
+name.title=`${item.name} — ${seen.width} × ${seen.height}`;
+meta.append(name);
+const dims=document.createElement('p');
+dims.className='image-dims';
+dims.textContent=`${seen.width} × ${seen.height} · ${formatBytes(item.file.size)}`;
+meta.append(dims);
+const controls=document.createElement('div');
+controls.className='image-controls';
+controls.append(
+tileButton('↺',`Rotate ${item.name} anticlockwise`,false,()=>{
+if(exporting)return;
+rotateItem(item,-1);
+render();
+}),
+tileButton('↻',`Rotate ${item.name} clockwise`,false,()=>{
+if(exporting)return;
+rotateItem(item,1);
+render();
+}),
+tileButton('‹',`Move ${item.name} earlier`,index===0,()=>{
+if(exporting)return;
+moveItem(items,index,index-1);
+render();
+}),
+tileButton('›',`Move ${item.name} later`,index===items.length-1,()=>{
+if(exporting)return;
+moveItem(items,index,index+1);
+render();
+}),
+);
+meta.append(controls);
+li.append(handle,thumbWrap,meta);
+const startDrag=(event)=>{
+if(exporting){event.preventDefault();return;}
+dragIndex=index;
+li.classList.add('dragging');
+event.dataTransfer.effectAllowed='move';
+event.dataTransfer.setData('text/plain',String(index));
+};
+const endDrag=()=>{
+dragIndex=null;
+dropAt=null;
+li.classList.remove('dragging');
+clearDropMarkers();
+};
+for(const source of[handle,thumbWrap]){
+source.addEventListener('dragstart',startDrag);
+source.addEventListener('dragend',endDrag);
+}
+li.addEventListener('dragover',(event)=>{
+if(dragIndex===null)return;
+event.preventDefault();
+event.dataTransfer.dropEffect='move';
+const rect=li.getBoundingClientRect();
+const after=event.clientX>rect.left+rect.width/2;
+clearDropMarkers();
+li.classList.add(after?'insert-after':'insert-before');
+dropAt={index,after};
+});
+li.addEventListener('drop',(event)=>{
+event.preventDefault();
+event.stopPropagation();
+applyDrop();
+});
+return li;
+}
+function tileButton(glyph,label,disabled,onClick){
+const button=document.createElement('button');
+button.type='button';
+button.className='tile-btn';
+button.textContent=glyph;
+button.title=label;
+button.setAttribute('aria-label',label);
+button.disabled=disabled;
+button.addEventListener('click',onClick);
+return button;
+}
+function drawThumb(canvas,item){
+const image=item.thumb.image;
+if(!image.naturalWidth)return;
+const turned=item.rotate===90||item.rotate===270;
+canvas.width=turned?image.naturalHeight:image.naturalWidth;
+canvas.height=turned?image.naturalWidth:image.naturalHeight;
+const ctx=canvas.getContext('2d');
+ctx.save();
+ctx.translate(canvas.width/2,canvas.height/2);
+ctx.rotate((item.rotate*Math.PI)/180);
+ctx.drawImage(image,-image.naturalWidth/2,-image.naturalHeight/2);
+ctx.restore();
+}
+function applyDrop(){
+if(dragIndex===null||dropAt===null){
+clearDropMarkers();
+return;
+}
+let target=dropAt.after?dropAt.index+1:dropAt.index;
+if(dragIndex<target)target-=1;
+const from=dragIndex;
+dragIndex=null;
+dropAt=null;
+if(from===target){
+clearDropMarkers();
+return;
+}
+moveItem(items,from,target);
+render();
+}
+el.list.addEventListener('dragover',(event)=>{
+if(dragIndex!==null)event.preventDefault();
+});
+el.list.addEventListener('drop',(event)=>{
+if(dragIndex===null)return;
+event.preventDefault();
+applyDrop();
+});
+for(const button of document.querySelectorAll('[data-sort]')){
+button.addEventListener('click',()=>{
+if(exporting)return;
+sortItems(items,button.dataset.sort);
+render();
+});
+}
+el.clearAll.addEventListener('click',()=>{
+if(!items.length||exporting)return;
+for(const item of items)releaseItem(item);
+items=[];
+clearLoadError();
+render();
+});
+function currentSettings(){
+return{
+pageSize:el.pageSize.value,
+customWidth:Number(el.customWidth.value),
+customHeight:Number(el.customHeight.value),
+customUnit:el.customUnit.value,
+dpi:Number(el.dpi.value),
+orientation:el.orientation.value,
+fit:el.fit.value,
+margin:Number(el.margin.value),
+background:el.background.value,
+mode:el.mode.value,
+quality:Number(el.quality.value),
+maxSide:Number(el.maxSide.value),
+title:el.docTitle.value,
+author:el.docAuthor.value,
+dated:el.dated.checked,
+};
+}
+function syncSettingVisibility(){
+const fitPage=el.pageSize.value==='fit';
+el.customSize.hidden=el.pageSize.value!=='custom';
+el.dpiField.hidden=!fitPage;
+el.orientationField.hidden=fitPage;
+el.fitField.hidden=fitPage;
+el.qualityField.hidden=el.mode.value==='lossless';
+el.sizeNote.textContent=fitPage
+?'Every page is exactly its picture, so nothing is cropped or letterboxed.'
+:'Pictures are placed on a page of this size.';
+el.modeNote.textContent={
+keep:'JPEG photos go in byte for byte, with no decoding and no quality lost. '
++'Other formats are re-encoded, or kept lossless if they are see-through.',
+jpeg:'Everything is decoded and encoded again. Smallest file, and the only '
++'setting that costs quality on a picture that was already a JPEG.',
+lossless:'Every picture is stored exactly, deflated. Largest file by some way, '
++'and the right answer for scans of text, line art and screenshots.',
+}[el.mode.value];
+el.shrinkNote.textContent=el.maxSide.value==='0'
+?'Full resolution. A folder of phone photos makes a large PDF.'
+:'Anything larger is scaled down, which means it is re-encoded rather than copied.';
+}
+const settingInputs=[
+[el.pageSize,'change'],[el.customWidth,'input'],[el.customHeight,'input'],
+[el.customUnit,'change'],[el.dpi,'change'],[el.orientation,'change'],
+[el.fit,'change'],[el.margin,'input'],[el.background,'input'],
+[el.mode,'change'],[el.quality,'change'],[el.maxSide,'change'],
+];
+for(const[input,type]of settingInputs){
+input.addEventListener(type,()=>{
+clearResult();
+refresh();
+});
+}
+el.previewPrev.addEventListener('click',()=>{
+previewAt=Math.max(0,previewAt-1);
+drawPreview();
+});
+el.previewNext.addEventListener('click',()=>{
+previewAt=Math.min(items.length-1,previewAt+1);
+drawPreview();
+});
+const PREVIEW_MAX=360;
+function drawPreview(){
+const ctx=el.preview.getContext('2d');
+previewAt=Math.min(previewAt,Math.max(0,items.length-1));
+const any=items.length>0;
+el.preview.classList.toggle('empty',!any);
+el.previewEmpty.hidden=any;
+el.previewNav.hidden=items.length<2;
+el.previewLabel.textContent=`Page ${previewAt + 1} of ${items.length}`;
+el.previewPrev.disabled=previewAt===0;
+el.previewNext.disabled=previewAt>=items.length-1;
+if(!any)return;
+const item=items[previewAt];
+const page=layoutPage(item,currentSettings());
+const scale=PREVIEW_MAX/Math.max(page.width,page.height);
+const ratio=Math.min(2,window.devicePixelRatio||1);
+el.preview.width=Math.max(1,Math.round(page.width*scale*ratio));
+el.preview.height=Math.max(1,Math.round(page.height*scale*ratio));
+el.preview.style.width=`${Math.round(page.width * scale)}px`;
+el.preview.style.height=`${Math.round(page.height * scale)}px`;
+ctx.setTransform(scale*ratio,0,0,scale*ratio,0,0);
+ctx.fillStyle=el.background.value;
+ctx.fillRect(0,0,page.width,page.height);
+const image=item.thumb.image;
+if(!image.naturalWidth)return;
+ctx.save();
+if(page.clip){
+ctx.beginPath();
+ctx.rect(page.clip.x,page.height-page.clip.y-page.clip.height,
+page.clip.width,page.clip.height);
+ctx.clip();
+}
+const{rect}=page;
+ctx.translate(rect.x+rect.width/2,page.height-rect.y-rect.height/2);
+ctx.rotate((item.rotate*Math.PI)/180);
+const turned=item.rotate===90||item.rotate===270;
+const width=turned?rect.height:rect.width;
+const height=turned?rect.width:rect.height;
+ctx.drawImage(image,-width/2,-height/2,width,height);
+ctx.restore();
+}
+function render(){
+clearResult();
+el.list.replaceChildren(...items.map(buildItemNode));
+refresh();
+}
+function refresh(){
+const any=items.length>0;
+el.listToolbar.hidden=!any;
+el.reorderHint.hidden=items.length<2;
+el.countLabel.textContent=`${items.length} image${items.length === 1 ? '' : 's'}`;
+el.exportBtn.disabled=!any||exporting;
+syncSettingVisibility();
+updateSummary();
+drawPreview();
+}
+function updateSummary(){
+const settings=currentSettings();
+el.sumPages.textContent=items.length
+?`${items.length} page${items.length === 1 ? '' : 's'}`
+:'—';
+el.sumSize.textContent=describePageSize(settings);
+const bytes=items.reduce((total,item)=>total+item.file.size,0);
+el.sumInput.textContent=items.length?formatBytes(bytes):'—';
+const kept=items.filter((item)=>likelyCopied(item,settings)).length;
+el.sumCopied.textContent=items.length?`${kept} of ${items.length}`:'—';
+}
+function likelyCopied(item,settings){
+if(settings.mode!=='keep')return false;
+if(settings.maxSide&&Math.max(item.width,item.height)>settings.maxSide)return false;
+return/^image\/jpe?g$/i.test(item.file.type)||/\.jpe?g$/i.test(item.name);
+}
+function describePageSize(settings){
+if(!items.length)return'—';
+if(settings.pageSize==='fit')return'matches each image';
+const named=PAGE_SIZES[settings.pageSize];
+const label=named
+?`${trim(named[0])} × ${trim(named[1])} mm`
+:`${trim(settings.customWidth)} × ${trim(settings.customHeight)} ${settings.customUnit}`;
+if(settings.orientation==='auto'){
+const upright=items.filter((item)=>{
+const seen=seenSize(item);
+return seen.height>=seen.width;
+}).length;
+if(upright&&upright<items.length)return`${label}, mixed`;
+return`${label}, ${upright ? 'portrait' : 'landscape'}`;
+}
+return`${label}, ${settings.orientation}`;
+}
+function trim(value){
+return String(Math.round(Number(value)*10)/10);
+}
+function formatBytes(bytes){
+if(bytes<1024)return`${bytes} B`;
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
+return`${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+}
+function clearError(){
+el.error.textContent='';
+el.error.hidden=true;
+}
+function showLoadError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function clearLoadError(){
+el.loadError.textContent='';
+el.loadError.hidden=true;
+}
+function clearResult(){
+if(resultUrl){
+URL.revokeObjectURL(resultUrl);
+resultUrl=null;
+}
+el.result.hidden=true;
+el.download.removeAttribute('href');
+}
+function outputName(){
+const typed=el.fileName.value.trim().replace(/\.pdf$/i,'');
+const safe=typed.replace(/[\\/:*?"<>|]/g,'-').slice(0,120).trim();
+return`${safe || 'images'}.pdf`;
+}
+async function runExport(){
+if(!items.length||exporting)return;
+exporting=true;
+cancelled=false;
+abortController=new AbortController();
+clearError();
+clearResult();
+el.exportBtn.disabled=true;
+el.cancelBtn.hidden=false;
+el.progressWrap.hidden=false;
+el.progressBar.style.width='0%';
+el.progressLabel.textContent='Starting...';
+const queue=items.map((item)=>({...item}));
+try{
+const{blob,pages,copied}=await buildDocument(queue,currentSettings(),{
+signal:abortController.signal,
+onProgress:({done,total,name})=>{
+el.progressBar.style.width=`${Math.round((done / total) * 100)}%`;
+el.progressLabel.textContent=done<total
+?`Page ${done + 1} of ${total} ${name}`
+:'Writing the document...';
+},
+});
+resultUrl=URL.createObjectURL(blob);
+el.download.href=resultUrl;
+el.download.download=outputName();
+el.resultInfo.textContent=`${pages} page${pages === 1 ? '' : 's'}, `
++`${formatBytes(blob.size)}. `
++(copied
+?`${copied} of ${pages} put in exactly as ${copied === 1 ? 'it was' : 'they were'}.`
+:'Every picture was encoded again for the document.');
+el.result.hidden=false;
+}catch(error){
+cancelled=error?.name==='AbortError';
+if(cancelled)el.progressLabel.textContent='Cancelled.';
+else showError(error?.message??String(error));
+}finally{
+exporting=false;
+abortController=null;
+el.cancelBtn.hidden=true;
+el.exportBtn.disabled=!items.length;
+el.progressWrap.hidden=!cancelled;
+}
+}
+el.exportBtn.addEventListener('click',runExport);
+el.cancelBtn.addEventListener('click',()=>abortController?.abort());
+window.addEventListener('beforeunload',(event)=>{
+if(!exporting)return;
+event.preventDefault();
+event.returnValue='';
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given an image or a byte of one.`;
+el.networkCount.textContent=clean
+?`your images have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+render();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

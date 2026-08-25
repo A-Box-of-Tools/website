@@ -1,2 +1,36 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function x(t){return t<1024?`${t} B`:t<1024*1024?`${(t/1024).toFixed(t<10240?1:0)} KB`:`${(t/1048576).toFixed(t<10485760?2:1)} MB`}const u=t=>`${t.toLocaleString()} bytes`;function p(t){if(t===0)return"0s";const r=t/100;return r>=10?`${r.toFixed(1)}s`:`${r.toFixed(2)}s`}function $(t){const r=t/100;if(r<60)return`${r.toFixed(r<10?2:1)}s`;const e=Math.floor(r/60),n=r-e*60;return`${e}m ${n.toFixed(1)}s`}function s(t,r){return t<2||r<=0?null:t/(r/100)}const a=t=>{const r=t*100;return r===0?"0%":r<.1?"<0.1%":`${r.toFixed(r<10?1:0)}%`},i=t=>t.toLocaleString();function f(t,r){const e=r*3,n=o=>o.toString(16).padStart(2,"0");return`#${n(t[e])}${n(t[e+1])}${n(t[e+2])}`.toUpperCase()}const c=(t,r,e)=>`${i(t)} ${t===1?r:e}`;export{$ as clock,i as count,p as delay,u as exact,x as fileSize,f as hex,a as percent,c as plural,s as rate};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function fileSize(count){
+if(count<1024)return`${count} B`;
+if(count<1024*1024)return`${(count / 1024).toFixed(count < 10240 ? 1 : 0)} KB`;
+return`${(count / 1048576).toFixed(count < 10485760 ? 2 : 1)} MB`;
+}
+export const exact=(count)=>`${count.toLocaleString()} bytes`;
+export function delay(centiseconds){
+if(centiseconds===0)return'0s';
+const value=centiseconds/100;
+return value>=10?`${value.toFixed(1)}s`:`${value.toFixed(2)}s`;
+}
+export function clock(centiseconds){
+const total=centiseconds/100;
+if(total<60)return`${total.toFixed(total < 10 ? 2 : 1)}s`;
+const minutes=Math.floor(total/60);
+const seconds=total-minutes*60;
+return`${minutes}m ${seconds.toFixed(1)}s`;
+}
+export function rate(frames,centiseconds){
+if(frames<2||centiseconds<=0)return null;
+return frames/(centiseconds/100);
+}
+export const percent=(fraction)=>{
+const value=fraction*100;
+if(value===0)return'0%';
+if(value<0.1)return'<0.1%';
+return`${value.toFixed(value < 10 ? 1 : 0)}%`;
+};
+export const count=(value)=>value.toLocaleString();
+export function hex(colors,index){
+const at=index*3;
+const pair=(byte)=>byte.toString(16).padStart(2,'0');
+return`#${pair(colors[at])}${pair(colors[at + 1])}${pair(colors[at + 2])}`.toUpperCase();
+}
+export const plural=(value,one,many)=>`${count(value)} ${value === 1 ? one : many}`;

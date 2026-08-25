@@ -1,2 +1,213 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{encodeText as F}from"./qr-encode.js";import{alignmentPositions as w,LEVEL_BITS as M,RECOVERY as p,sizeOf as x}from"./qr-tables.js";const k=[(t,i)=>(t+i)%2===0,t=>t%2===0,(t,i)=>i%3===0,(t,i)=>(t+i)%3===0,(t,i)=>(Math.floor(t/2)+Math.floor(i/3))%2===0,(t,i)=>t*i%2+t*i%3===0,(t,i)=>(t*i%2+t*i%3)%2===0,(t,i)=>((t+i)%2+t*i%3)%2===0],d=[1,0,1,1,1,0,1,0,0,0,0];class g{constructor(i){this.version=i,this.size=x(i),this.modules=new Uint8Array(this.size*this.size),this.reserved=new Uint8Array(this.size*this.size)}at(i,r){return this.modules[i*this.size+r]}set(i,r,e){this.modules[i*this.size+r]=e?1:0}setFunction(i,r,e){this.set(i,r,e),this.reserved[i*this.size+r]=1}isReserved(i,r){return this.reserved[i*this.size+r]===1}}function R(t){const{size:i}=t;for(let e=0;e<i;e+=1)t.setFunction(6,e,e%2===0),t.setFunction(e,6,e%2===0);for(const[e,n]of[[3,3],[3,i-4],[i-4,3]])E(t,e,n);const r=w(t.version);for(const e of r)for(const n of r)e===6&&n===6||e===6&&n===i-7||e===i-7&&n===6||A(t,e,n);l(t,"M",0),S(t)}function E(t,i,r){for(let e=-4;e<=4;e+=1)for(let n=-4;n<=4;n+=1){const f=i+e,s=r+n;if(f<0||f>=t.size||s<0||s>=t.size)continue;const c=Math.max(Math.abs(n),Math.abs(e));t.setFunction(f,s,c!==2&&c!==4)}}function A(t,i,r){for(let e=-2;e<=2;e+=1)for(let n=-2;n<=2;n+=1)t.setFunction(i+e,r+n,Math.max(Math.abs(n),Math.abs(e))!==1)}function l(t,i,r){const e=M[i]<<3|r;let n=e;for(let o=0;o<10;o+=1)n=n<<1^(n>>>9)*1335;const f=(e<<10|n)^21522,s=o=>(f>>>o&1)===1,{size:c}=t;for(let o=0;o<=5;o+=1)t.setFunction(o,8,s(o));t.setFunction(7,8,s(6)),t.setFunction(8,8,s(7)),t.setFunction(8,7,s(8));for(let o=9;o<15;o+=1)t.setFunction(8,14-o,s(o));for(let o=0;o<8;o+=1)t.setFunction(8,c-1-o,s(o));for(let o=8;o<15;o+=1)t.setFunction(c-15+o,8,s(o));t.setFunction(c-8,8,!0)}function S(t){if(t.version<7)return;let i=t.version;for(let e=0;e<12;e+=1)i=i<<1^(i>>>11)*7973;const r=t.version<<12|i;for(let e=0;e<18;e+=1){const n=(r>>>e&1)===1,f=t.size-11+e%3,s=Math.floor(e/3);t.setFunction(s,f,n),t.setFunction(f,s,n)}}function B(t,i){const{size:r}=t;let e=0;for(let n=r-1;n>=1;n-=2){n===6&&(n=5);for(let f=0;f<r;f+=1)for(let s=0;s<2;s+=1){const c=n-s,a=(n+1&2)===0?r-1-f:f;t.isReserved(a,c)||e>=i.length*8||(t.set(a,c,(i[e>>>3]>>>7-(e&7)&1)===1),e+=1)}}}function h(t,i){const r=k[i];for(let e=0;e<t.size;e+=1)for(let n=0;n<t.size;n+=1)t.isReserved(e,n)||r(e,n)&&(t.modules[e*t.size+n]^=1)}function I(t){const{size:i}=t;let r=0;for(let s=0;s<i;s+=1)for(const c of[o=>t.at(s,o),o=>t.at(o,s)]){let o=1;for(let a=1;a<i;a+=1)c(a)===c(a-1)?(o+=1,o===5?r+=3:o>5&&(r+=1)):o=1}for(let s=0;s<i-1;s+=1)for(let c=0;c<i-1;c+=1){const o=t.at(s,c);o===t.at(s,c+1)&&o===t.at(s+1,c)&&o===t.at(s+1,c+1)&&(r+=3)}for(let s=0;s<i;s+=1)for(const c of[o=>t.at(s,o),o=>t.at(o,s)])for(let o=0;o+d.length<=i;o+=1){let a=!0,z=!0;for(let u=0;u<d.length;u+=1){const v=c(o+u);v!==d[u]&&(a=!1),v!==d[d.length-1-u]&&(z=!1)}a&&(r+=40),z&&(r+=40)}let e=0;for(const s of t.modules)e+=s;const n=i*i,f=Math.floor(Math.abs(e*20-n*10)/n);return r+=f*10,r}function C(t,i={}){const r=F(t,i),e=new g(r.version);R(e),B(e,r.codewords);let n=i.mask??-1;if(n<0||n>7){let f=1/0;for(let s=0;s<8;s+=1){h(e,s),l(e,r.level,s);const c=I(e);c<f&&(f=c,n=s),h(e,s)}}return h(e,n),l(e,r.level,n),{size:e.size,modules:e.modules,version:r.version,level:r.level,mode:r.mode,mask:n,recovery:p[r.level],bits:r.bits,capacityBits:r.capacityBits}}export{C as makeQr,I as penalty};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{encodeText}from'./qr-encode.js';
+import{
+alignmentPositions,LEVEL_BITS,RECOVERY,sizeOf,
+}from'./qr-tables.js';
+const MASKS=[
+(row,col)=>(row+col)%2===0,
+(row)=>row%2===0,
+(row,col)=>col%3===0,
+(row,col)=>(row+col)%3===0,
+(row,col)=>(Math.floor(row/2)+Math.floor(col/3))%2===0,
+(row,col)=>((row*col)%2)+((row*col)%3)===0,
+(row,col)=>(((row*col)%2)+((row*col)%3))%2===0,
+(row,col)=>(((row+col)%2)+((row*col)%3))%2===0,
+];
+const FINDER_RUN=[1,0,1,1,1,0,1,0,0,0,0];
+class QrSymbol{
+constructor(version){
+this.version=version;
+this.size=sizeOf(version);
+this.modules=new Uint8Array(this.size*this.size);
+this.reserved=new Uint8Array(this.size*this.size);
+}
+at(row,col){
+return this.modules[row*this.size+col];
+}
+set(row,col,dark){
+this.modules[row*this.size+col]=dark?1:0;
+}
+setFunction(row,col,dark){
+this.set(row,col,dark);
+this.reserved[row*this.size+col]=1;
+}
+isReserved(row,col){
+return this.reserved[row*this.size+col]===1;
+}
+}
+function drawFunctionPatterns(symbol){
+const{size}=symbol;
+for(let i=0;i<size;i+=1){
+symbol.setFunction(6,i,i%2===0);
+symbol.setFunction(i,6,i%2===0);
+}
+for(const[row,col]of[[3,3],[3,size-4],[size-4,3]]){
+drawFinder(symbol,row,col);
+}
+const positions=alignmentPositions(symbol.version);
+for(const row of positions){
+for(const col of positions){
+const corner=(row===6&&col===6)
+||(row===6&&col===size-7)
+||(row===size-7&&col===6);
+if(!corner)drawAlignment(symbol,row,col);
+}
+}
+drawFormat(symbol,'M',0);
+drawVersion(symbol);
+}
+function drawFinder(symbol,row,col){
+for(let dy=-4;dy<=4;dy+=1){
+for(let dx=-4;dx<=4;dx+=1){
+const y=row+dy;
+const x=col+dx;
+if(y<0||y>=symbol.size||x<0||x>=symbol.size)continue;
+const ring=Math.max(Math.abs(dx),Math.abs(dy));
+symbol.setFunction(y,x,ring!==2&&ring!==4);
+}
+}
+}
+function drawAlignment(symbol,row,col){
+for(let dy=-2;dy<=2;dy+=1){
+for(let dx=-2;dx<=2;dx+=1){
+symbol.setFunction(row+dy,col+dx,Math.max(Math.abs(dx),Math.abs(dy))!==1);
+}
+}
+}
+function drawFormat(symbol,level,mask){
+const data=(LEVEL_BITS[level]<<3)|mask;
+let rem=data;
+for(let i=0;i<10;i+=1)rem=(rem<<1)^((rem>>>9)*0x537);
+const bits=((data<<10)|rem)^0x5412;
+const bit=(i)=>((bits>>>i)&1)===1;
+const{size}=symbol;
+for(let i=0;i<=5;i+=1)symbol.setFunction(i,8,bit(i));
+symbol.setFunction(7,8,bit(6));
+symbol.setFunction(8,8,bit(7));
+symbol.setFunction(8,7,bit(8));
+for(let i=9;i<15;i+=1)symbol.setFunction(8,14-i,bit(i));
+for(let i=0;i<8;i+=1)symbol.setFunction(8,size-1-i,bit(i));
+for(let i=8;i<15;i+=1)symbol.setFunction(size-15+i,8,bit(i));
+symbol.setFunction(size-8,8,true);
+}
+function drawVersion(symbol){
+if(symbol.version<7)return;
+let rem=symbol.version;
+for(let i=0;i<12;i+=1)rem=(rem<<1)^((rem>>>11)*0x1f25);
+const bits=(symbol.version<<12)|rem;
+for(let i=0;i<18;i+=1){
+const dark=((bits>>>i)&1)===1;
+const a=symbol.size-11+(i%3);
+const b=Math.floor(i/3);
+symbol.setFunction(b,a,dark);
+symbol.setFunction(a,b,dark);
+}
+}
+function drawCodewords(symbol,codewords){
+const{size}=symbol;
+let i=0;
+for(let right=size-1;right>=1;right-=2){
+if(right===6)right=5;
+for(let vertical=0;vertical<size;vertical+=1){
+for(let j=0;j<2;j+=1){
+const col=right-j;
+const upward=((right+1)&2)===0;
+const row=upward?size-1-vertical:vertical;
+if(symbol.isReserved(row,col)||i>=codewords.length*8)continue;
+symbol.set(row,col,((codewords[i>>>3]>>>(7-(i&7)))&1)===1);
+i+=1;
+}
+}
+}
+}
+function applyMask(symbol,mask){
+const condition=MASKS[mask];
+for(let row=0;row<symbol.size;row+=1){
+for(let col=0;col<symbol.size;col+=1){
+if(symbol.isReserved(row,col))continue;
+if(condition(row,col)){
+symbol.modules[row*symbol.size+col]^=1;
+}
+}
+}
+}
+export function penalty(symbol){
+const{size}=symbol;
+let score=0;
+for(let i=0;i<size;i+=1){
+for(const read of[(k)=>symbol.at(i,k),(k)=>symbol.at(k,i)]){
+let run=1;
+for(let k=1;k<size;k+=1){
+if(read(k)===read(k-1)){
+run+=1;
+if(run===5)score+=3;
+else if(run>5)score+=1;
+}else{
+run=1;
+}
+}
+}
+}
+for(let row=0;row<size-1;row+=1){
+for(let col=0;col<size-1;col+=1){
+const first=symbol.at(row,col);
+if(first===symbol.at(row,col+1)
+&&first===symbol.at(row+1,col)
+&&first===symbol.at(row+1,col+1))score+=3;
+}
+}
+for(let i=0;i<size;i+=1){
+for(const read of[(k)=>symbol.at(i,k),(k)=>symbol.at(k,i)]){
+for(let start=0;start+FINDER_RUN.length<=size;start+=1){
+let forward=true;
+let backward=true;
+for(let k=0;k<FINDER_RUN.length;k+=1){
+const value=read(start+k);
+if(value!==FINDER_RUN[k])forward=false;
+if(value!==FINDER_RUN[FINDER_RUN.length-1-k])backward=false;
+}
+if(forward)score+=40;
+if(backward)score+=40;
+}
+}
+}
+let dark=0;
+for(const module of symbol.modules)dark+=module;
+const total=size*size;
+const steps=Math.floor(Math.abs(dark*20-total*10)/total);
+score+=steps*10;
+return score;
+}
+export function makeQr(text,options={}){
+const encoded=encodeText(text,options);
+const symbol=new QrSymbol(encoded.version);
+drawFunctionPatterns(symbol);
+drawCodewords(symbol,encoded.codewords);
+let mask=options.mask??-1;
+if(mask<0||mask>7){
+let best=Infinity;
+for(let candidate=0;candidate<8;candidate+=1){
+applyMask(symbol,candidate);
+drawFormat(symbol,encoded.level,candidate);
+const score=penalty(symbol);
+if(score<best){
+best=score;
+mask=candidate;
+}
+applyMask(symbol,candidate);
+}
+}
+applyMask(symbol,mask);
+drawFormat(symbol,encoded.level,mask);
+return{
+size:symbol.size,
+modules:symbol.modules,
+version:encoded.version,
+level:encoded.level,
+mode:encoded.mode,
+mask,
+recovery:RECOVERY[encoded.level],
+bits:encoded.bits,
+capacityBits:encoded.capacityBits,
+};
+}

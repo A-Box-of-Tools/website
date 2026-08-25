@@ -1,2 +1,748 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as S}from"./shared/phrases.js";import{wireFilePicker as ae}from"./shared/file-picker.js";import{demux as ie,UnsupportedFile as se}from"./demux.js";import{FrameReader as le,decodeSeries as de,frameNear as K,seriesFrames as ce}from"./frames.js";import{drawUpright as he,frameCanvas as V}from"./draw.js";import{FORMATS as ue,clockTime as P,encodeStill as O,stillName as fe}from"./still.js";import{makeZip as me}from"./shared/zip.js";import{hasWebCodecs as _,canDecode as ge,encodableTypes as pe}from"./support.js";const o=e=>document.getElementById(e),t={dropzone:o("dropzone"),fileInput:o("file-input"),source:o("source"),srcName:o("src-name"),srcSize:o("src-size"),srcFrame:o("src-frame"),srcLength:o("src-length"),srcCodec:o("src-codec"),srcFrames:o("src-frames"),pathNote:o("path-note"),findCard:o("find-card"),stage:o("stage"),preview:o("preview"),still:o("still"),stageBusy:o("stage-busy"),stepBack:o("step-back"),play:o("play"),stepOn:o("step-on"),scrub:o("scrub"),atTime:o("at-time"),atFrame:o("at-frame"),grabCard:o("grab-card"),format:o("format"),formatNote:o("format-note"),qualityField:o("quality-field"),quality:o("quality"),qualityValue:o("quality-value"),every:o("every"),grab:o("grab"),grabSeries:o("grab-series"),cancel:o("cancel"),progressWrap:o("progress-wrap"),progressBar:o("progress-bar"),progressLabel:o("progress-label"),error:o("error"),shotsCard:o("shots-card"),shotsCount:o("shots-count"),shots:o("shots"),downloadAll:o("download-all"),clear:o("clear"),privacyToggle:o("privacy-toggle"),privacyPanel:o("privacy-panel"),networkCount:o("network-count"),networkDot:o("network-dot"),offlineStatus:o("offline-status"),offlineDot:o("offline-dot")};let y=null,N=null,l=null,f=null,d=!1,b=!1,L=null,c={width:0,height:0},C=0,w=0,v=0,g=!1,E=!1,R=null,F=-1,z=-1,B=!1,m=[],we=1,M=new Set(["image/png"]);const X=ae({input:t.fileInput,dropzone:t.dropzone,onFiles(e){const[r]=e;r&&be(r)}});function ye(e,r){return new Promise(n=>{const a=u=>{clearTimeout(h),e.removeEventListener("loadedmetadata",s),e.removeEventListener("error",i),n(u)},s=()=>a({ok:e.videoWidth>0&&e.videoHeight>0,width:e.videoWidth,height:e.videoHeight,duration:Number.isFinite(e.duration)?e.duration:0}),i=()=>a({ok:!1,width:0,height:0,duration:0}),h=setTimeout(i,15e3);e.addEventListener("loadedmetadata",s,{once:!0}),e.addEventListener("error",i,{once:!0}),e.src=r,e.load()})}async function be(e){if(!E){G(),Z(),y=e,X.busy("Reading the file...");try{N=URL.createObjectURL(e);const r=await ye(t.preview,N);try{l=await ie(e),L=null}catch(a){l=null,L=a instanceof se?a.reason:a.message||"the file could not be read as an MP4."}let n=!1;if(l&&_()?(n=await ge({codec:l.video.codec,codedWidth:l.video.codedWidth,codedHeight:l.video.codedHeight,...l.video.description?{description:l.video.description}:{}}),n||(L=`this browser will not decode ${l.video.codec} directly.`)):l&&!_()&&(L="this browser has no WebCodecs, so frames cannot be decoded one by one."),n&&r.ok&&(r.width!==l.video.displayWidth||r.height!==l.video.displayHeight)&&(n=!1,L="this file is stored turned in a way the reader and the player disagree on."),d=n,b=r.ok,!d&&!b){x(`This browser cannot open this file: ${L??"the format is not one it plays."}`),J();return}c=d?{width:l.video.displayWidth,height:l.video.displayHeight}:{width:r.width,height:r.height},C=r.duration||(l?l.duration:0),d&&(f=new le(e,l.video),C||(C=f.timeOf(f.count-1))),ve(),ke(),A(),xe(),t.findCard.hidden=!1,t.grabCard.hidden=!1,await W(0)}catch(r){console.error(r),x(r?.message||"That file could not be opened."),J()}finally{X.done()}}}function ve(){t.stage.style.aspectRatio=`${c.width} / ${c.height}`,t.stage.style.maxWidth=`calc(62vh * ${c.width/c.height})`,t.preview.hidden=d,t.still.hidden=!d}function ke(){if(t.source.hidden=!1,t.srcName.textContent=y.name,t.srcSize.textContent=oe(y.size),t.srcFrame.textContent=`${c.width} x ${c.height}`,t.srcLength.textContent=C?Ne(C):"unknown",d){const e=l.video.rotation?`, turned ${l.video.rotation} degrees`:"";t.srcCodec.textContent=`${l.video.codec} (${l.video.entryType})${e}`,t.srcFrames.textContent=`${f.count.toLocaleString()} frames`}else t.srcCodec.textContent="read by the browser's own player",t.srcFrames.textContent="not counted on this path";t.pathNote.hidden=d&&b,d?b||(t.pathNote.textContent="This browser will not play this file, so there is nothing to press play on - but it will decode it, which is what the stills are made from. Use the slider and the arrow keys to move through it."):t.pathNote.textContent=`This file is read by the browser's own player rather than frame by frame, because ${L??"its layout is not one the reader here understands."} The picture is still saved at the video's full size, but the frame you land on is the one the player chooses, and stepping moves by roughly a frame rather than exactly one.`}function Z(){N&&(t.preview.removeAttribute("src"),t.preview.load(),URL.revokeObjectURL(N),N=null),f?.release(),f=null,l=null,y=null,g=!1,F=-1,z=-1}function J(){t.source.hidden=!0,t.findCard.hidden=!0,t.grabCard.hidden=!0,t.pathNote.hidden=!0,Z()}function xe(){d?(t.scrub.min="0",t.scrub.max=String(Math.max(0,f.count-1)),t.scrub.step="1"):(t.scrub.min="0",t.scrub.max=String(Math.max(1,Math.round(C*1e3))),t.scrub.step="1"),t.play.disabled=!b,t.play.title=b?"Play or pause (space)":"This browser will not play this file"}async function W(e){const r=Math.max(0,Math.min(e,C||e));d?await q(K(f.order,r)):(w=r,t.scrub.value=String(Math.round(r*1e3)),j(),await Q(r))}async function q(e){d&&(v=Math.max(0,Math.min(e,f.count-1)),w=f.timeOf(v),t.scrub.value=String(v),j(),await Le(v),Ce())}function Ce(){d&&(t.still.hidden=!1,t.preview.hidden=!0)}function j(){t.atTime.textContent=P(w),t.atFrame.textContent=d?`frame ${(v+1).toLocaleString()} of ${f.count.toLocaleString()}`:"frame times are not read on this path"}async function Le(e){if(F=e,!B){B=!0;try{for(;F!==z;){const r=F,n=setTimeout(()=>{t.stageBusy.hidden=!1},120);try{const a=await f.frameAt(r);if(F!==r)continue;Se(a),z=r}finally{clearTimeout(n),t.stageBusy.hidden=!0}}}catch(r){r?.name!=="AbortError"&&x(r?.message||"That frame could not be decoded.")}finally{B=!1}}}function Se(e){const r=Math.max(2,Math.min(c.width,Math.round(t.stage.clientWidth||960))),n=r/c.width;t.still.width=r,t.still.height=Math.max(2,Math.round(c.height*n)),he(t.still.getContext("2d",{alpha:!1}),e,{rotation:l.video.rotation,displayWidth:c.width,displayHeight:c.height,scale:n})}function Q(e){return b?new Promise(r=>{if(Math.abs(t.preview.currentTime-e)<.001&&t.preview.readyState>=2){r();return}const n=()=>{clearTimeout(a),t.preview.removeEventListener("seeked",n),r()},a=setTimeout(n,4e3);t.preview.addEventListener("seeked",n,{once:!0}),t.preview.currentTime=e}):Promise.resolve()}function U(e){g&&k(),d?q(v+e):W(w+e/30)}function Y(){!b||g||(g=!0,t.play.textContent="\u23F8",t.play.setAttribute("aria-label","Pause"),t.preview.hidden=!1,t.still.hidden=!0,t.preview.currentTime=w,t.preview.play().catch(()=>k()),ee())}function k(){g&&(g=!1,t.play.textContent="\u25B6",t.play.setAttribute("aria-label","Play"),t.preview.pause(),W(t.preview.currentTime))}function ee(){g&&(w=t.preview.currentTime,d?(v=K(f.order,w),t.scrub.value=String(v)):t.scrub.value=String(Math.round(w*1e3)),j(),requestAnimationFrame(ee))}t.play.addEventListener("click",()=>g?k():Y()),t.preview.addEventListener("pause",()=>k()),t.preview.addEventListener("ended",()=>k()),t.stepBack.addEventListener("click",()=>U(-1)),t.stepOn.addEventListener("click",()=>U(1)),t.scrub.addEventListener("input",()=>{g&&k();const e=Number(t.scrub.value);d?q(e):W(e/1e3)}),document.addEventListener("keydown",e=>{if(t.findCard.hidden||e.ctrlKey||e.metaKey||e.altKey)return;const r=e.target?.tagName;if(!(r==="INPUT"||r==="SELECT"||r==="TEXTAREA")){if(e.key==="ArrowLeft")U(e.shiftKey?-10:-1);else if(e.key==="ArrowRight")U(e.shiftKey?10:1);else if(e.key===" "&&r!=="BUTTON"&&r!=="A"){if(!b)return;g?k():Y()}else return;e.preventDefault()}});function te(){const e=t.format.value;return M.has(e)?e:"image/png"}function A(){const e=te();t.qualityField.hidden=e==="image/png",t.formatNote.textContent=e==="image/png"?`Lossless: the still holds exactly the pixels the frame decoded to, at ${c.width||"?"} x ${c.height||"?"}.`:"Compressed again on top of the video's own compression. Fine for a preview, not for anything that will be edited further."}t.format.addEventListener("change",A),t.quality.addEventListener("input",()=>{t.qualityValue.textContent=t.quality.value}),t.every.addEventListener("change",H),t.every.addEventListener("input",H);function H(){const e=Number(t.every.value);t.grabSeries.textContent=e>0?`Grab one every ${e%1?e.toFixed(1):e} seconds`:"Grab a series"}function I({blob:e,time:r,width:n,height:a,type:s}){const i={id:we++,blob:e,time:r,width:n,height:a,type:s,name:fe(y?.name,r,s),url:URL.createObjectURL(e)};return m.push(i),D(),i}function D(){t.shotsCard.hidden=m.length===0,t.shotsCount.textContent=m.length===1?"1 still, held in this page only":`${m.length} stills, held in this page only`,t.shots.replaceChildren(...m.map(e=>{const r=document.createElement("li");r.className="shot";const n=document.createElement("img");n.src=e.url,n.alt=`The frame at ${P(e.time)}`,n.loading="lazy";const a=document.createElement("div");a.className="shot-body";const s=document.createElement("span");s.className="shot-time",s.textContent=P(e.time);const i=document.createElement("span");i.className="shot-meta",i.textContent=`${ue[e.type]?.label??"PNG"} \xB7 ${e.width} x ${e.height} \xB7 ${oe(e.blob.size)}`,a.append(s,i);const h=document.createElement("div");h.className="shot-actions";const u=document.createElement("a");u.className="as-button",u.href=e.url,u.download=e.name,u.textContent="Save";const p=document.createElement("button");return p.type="button",p.className="ghost danger",p.textContent="Remove",p.addEventListener("click",()=>Ee(e.id)),h.append(u,p),r.append(n,a,h),r}))}function Ee(e){const r=m.find(n=>n.id===e);r&&URL.revokeObjectURL(r.url),m=m.filter(n=>n.id!==e),D()}function $e(){for(const e of m)URL.revokeObjectURL(e.url);m=[],D()}t.clear.addEventListener("click",$e),t.downloadAll.addEventListener("click",async()=>{if(!(!m.length||E)){$(!0),t.progressWrap.hidden=!1,T({done:0,total:m.length,label:"Packing..."});try{const e=new Set,r=[];let n=0;for(const s of m){let i=s.name;for(let h=2;e.has(i);h++)i=s.name.replace(/(\.[^.]+)$/,`-${h}$1`);e.add(i),r.push({name:i,data:new Uint8Array(await s.blob.arrayBuffer())}),T({done:++n,total:m.length,label:"Packing..."})}const a=(y?.name??"video").replace(/\.[^.]+$/,"");Te(me(r),`${a}-stills.zip`)}catch(e){x(e?.message||"That archive could not be built.")}finally{$(!1),t.progressWrap.hidden=!0}}});function Te(e,r){const n=URL.createObjectURL(e),a=document.createElement("a");a.href=n,a.download=r,a.click(),setTimeout(()=>URL.revokeObjectURL(n),6e4)}async function re(){if(d){const e=await f.frameAt(v);return V(e,{rotation:l.video.rotation,displayWidth:c.width,displayHeight:c.height})}return await Q(w),V(t.preview,{rotation:0,displayWidth:c.width,displayHeight:c.height})}function ne(){return{type:te(),quality:Number(t.quality.value)/100}}t.grab.addEventListener("click",async()=>{if(!(E||!y)){g&&k(),G(),$(!0);try{const e=await re(),r=ne(),n=await O(e,r),a=I({blob:n,time:w,width:e.width,height:e.height,type:r.type});t.shotsCard.scrollIntoView({behavior:"smooth",block:"nearest"}),t.grab.title=`Last saved: ${a.name}`}catch(e){x(e?.message||"That frame could not be saved."),console.error(e)}finally{$(!1)}}}),t.grabSeries.addEventListener("click",async()=>{if(E||!y)return;g&&k();const e=Number(t.every.value);if(!(e>0)){x("Set an interval of more than zero seconds.");return}G(),$(!0),R=new AbortController,t.cancel.hidden=!1,t.progressWrap.hidden=!1;const r=ne(),{signal:n}=R;try{if(d){const a=ce(f.order,{every:e});if(!a.length)throw new Error("That interval picks out no frames.");T({done:0,total:a.length,label:"Grabbing"}),await de({file:y,video:l.video,indexes:a,signal:n,onProgress:({done:s,total:i})=>T({done:s,total:i,label:"Grabbing"}),async onFrame(s,i){const h=await O(i,r);I({blob:h,time:f.timeOf(s),width:i.width,height:i.height,type:r.type})}})}else{const a=[];for(let s=0;s<=C&&a.length<500;s+=e)a.push(s);T({done:0,total:a.length,label:"Grabbing"});for(const[s,i]of a.entries()){if(n.aborted)break;await W(i);const h=await re(),u=await O(h,r);I({blob:u,time:t.preview.currentTime||i,width:h.width,height:h.height,type:r.type}),T({done:s+1,total:a.length,label:"Grabbing"})}}t.shotsCard.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(a){a?.name!=="AbortError"&&(x(a?.message||"Something went wrong while grabbing the series."),console.error(a))}finally{R=null,t.cancel.hidden=!0,t.progressWrap.hidden=!0,$(!1)}}),t.cancel.addEventListener("click",()=>R?.abort());function $(e){E=e,t.grab.disabled=e,t.grabSeries.disabled=e,t.downloadAll.disabled=e}function T({done:e,total:r,label:n}){const a=r>0?Math.min(1,e/r):0;t.progressBar.style.width=`${(a*100).toFixed(1)}%`,t.progressLabel.textContent=`${n} ${e.toLocaleString()} of ${r.toLocaleString()} (${Math.round(a*100)}%)`}function x(e){t.error.textContent=e,t.error.hidden=!1}function G(){t.error.hidden=!0,t.error.textContent=""}function oe(e){return e<1024*1024?`${(e/1024).toFixed(0)} KB`:e<1024*1024*1024?`${(e/1024/1024).toFixed(1)} MB`:`${(e/1024/1024/1024).toFixed(2)} GB`}function Ne(e){const r=Math.max(0,Math.round(e)),n=Math.floor(r/60);return n?`${n}m ${String(r%60).padStart(2,"0")}s`:`${e<10?e.toFixed(1):r}s`}window.addEventListener("beforeunload",e=>{E&&(e.preventDefault(),e.returnValue="")}),t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const Fe=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function We(){const e=new Set,r=new Set,n=a=>{for(const u of a){if(u.name.startsWith("blob:")||u.name.startsWith("data:"))continue;const p=new URL(u.name,location.href);p.origin!==location.origin&&(Fe.test(p.hostname)?e.add(p.hostname):r.add(p.hostname))}const s=performance.getEntriesByType("resource").filter(u=>!u.name.startsWith("blob:")&&!u.name.startsWith("data:")).length,i=r.size===0,h=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a file.`;t.networkCount.textContent=i?`your video has gone nowhere. ${s} files loaded.${h}`:`something contacted ${[...r].join(", ")}, which this tool never does.${h}`,t.networkCount.className=i?"good":"warn",t.networkDot.className=`live-dot ${i?"good":"warn"}`};n(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>n(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function Re(){const e=(r,n)=>{t.offlineStatus.textContent=r,t.offlineDot.className="live-dot",n&&(t.offlineStatus.title=n,console.info("Offline caching unavailable:",n))};if(!("serviceWorker"in navigator)){e(S("offline.none"));return}if(!window.isSecureContext){e(S("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=S("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(r){e(S("offline.failed"),r.message)}}window.addEventListener("error",e=>{x(S("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{x(S("error.broke",{detail:e.reason?.message??e.reason}))});async function Me(){M=await pe();for(const e of t.format.options)e.disabled=!M.has(e.value);M.has(t.format.value)||(t.format.value="image/png"),A()}H(),A(),Me(),We(),Re(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker}from'./shared/file-picker.js';
+import{demux,UnsupportedFile}from'./demux.js';
+import{FrameReader,decodeSeries,frameNear,seriesFrames}from'./frames.js';
+import{drawUpright,frameCanvas}from'./draw.js';
+import{FORMATS,clockTime,encodeStill,stillName}from'./still.js';
+import{makeZip}from'./shared/zip.js';
+import{hasWebCodecs,canDecode,encodableTypes}from'./support.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+source:$('source'),
+srcName:$('src-name'),
+srcSize:$('src-size'),
+srcFrame:$('src-frame'),
+srcLength:$('src-length'),
+srcCodec:$('src-codec'),
+srcFrames:$('src-frames'),
+pathNote:$('path-note'),
+findCard:$('find-card'),
+stage:$('stage'),
+preview:$('preview'),
+still:$('still'),
+stageBusy:$('stage-busy'),
+stepBack:$('step-back'),
+play:$('play'),
+stepOn:$('step-on'),
+scrub:$('scrub'),
+atTime:$('at-time'),
+atFrame:$('at-frame'),
+grabCard:$('grab-card'),
+format:$('format'),
+formatNote:$('format-note'),
+qualityField:$('quality-field'),
+quality:$('quality'),
+qualityValue:$('quality-value'),
+every:$('every'),
+grab:$('grab'),
+grabSeries:$('grab-series'),
+cancel:$('cancel'),
+progressWrap:$('progress-wrap'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+error:$('error'),
+shotsCard:$('shots-card'),
+shotsCount:$('shots-count'),
+shots:$('shots'),
+downloadAll:$('download-all'),
+clear:$('clear'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let file=null;
+let objectUrl=null;
+let media=null;
+let reader=null;
+let exact=false;
+let playable=false;
+let fallbackReason=null;
+let source={width:0,height:0};
+let duration=0;
+let position=0;
+let frameIndex=0;
+let playing=false;
+let working=false;
+let abortController=null;
+let wantedFrame=-1;
+let shownFrame=-1;
+let drawing=false;
+let shots=[];
+let nextShotId=1;
+let formats=new Set(['image/png']);
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+const[picked]=files;
+if(picked)loadFile(picked);
+},
+});
+function openInPlayer(video,url){
+return new Promise((resolve)=>{
+const done=(result)=>{
+clearTimeout(timer);
+video.removeEventListener('loadedmetadata',ok);
+video.removeEventListener('error',bad);
+resolve(result);
+};
+const ok=()=>done({
+ok:video.videoWidth>0&&video.videoHeight>0,
+width:video.videoWidth,
+height:video.videoHeight,
+duration:Number.isFinite(video.duration)?video.duration:0,
+});
+const bad=()=>done({ok:false,width:0,height:0,duration:0});
+const timer=setTimeout(bad,15000);
+video.addEventListener('loadedmetadata',ok,{once:true});
+video.addEventListener('error',bad,{once:true});
+video.src=url;
+video.load();
+});
+}
+async function loadFile(picked){
+if(working)return;
+clearError();
+releaseFile();
+file=picked;
+picker.busy('Reading the file...');
+try{
+objectUrl=URL.createObjectURL(picked);
+const played=await openInPlayer(el.preview,objectUrl);
+try{
+media=await demux(picked);
+fallbackReason=null;
+}catch(error){
+media=null;
+fallbackReason=error instanceof UnsupportedFile
+?error.reason
+:(error.message||'the file could not be read as an MP4.');
+}
+let decodable=false;
+if(media&&hasWebCodecs()){
+decodable=await canDecode({
+codec:media.video.codec,
+codedWidth:media.video.codedWidth,
+codedHeight:media.video.codedHeight,
+...(media.video.description?{description:media.video.description}:{}),
+});
+if(!decodable){
+fallbackReason=`this browser will not decode ${media.video.codec} directly.`;
+}
+}else if(media&&!hasWebCodecs()){
+fallbackReason='this browser has no WebCodecs, so frames cannot be decoded one by one.';
+}
+if(decodable&&played.ok
+&&(played.width!==media.video.displayWidth||played.height!==media.video.displayHeight)){
+decodable=false;
+fallbackReason='this file is stored turned in a way the reader and the player disagree on.';
+}
+exact=decodable;
+playable=played.ok;
+if(!exact&&!playable){
+showError(`This browser cannot open this file: ${fallbackReason ?? 'the format is not one it plays.'}`);
+resetView();
+return;
+}
+source=exact
+?{width:media.video.displayWidth,height:media.video.displayHeight}
+:{width:played.width,height:played.height};
+duration=played.duration||(media?media.duration:0);
+if(exact){
+reader=new FrameReader(picked,media.video);
+if(!duration)duration=reader.timeOf(reader.count-1);
+}
+layOutStage();
+describeSource();
+updateFormatNote();
+setUpTransport();
+el.findCard.hidden=false;
+el.grabCard.hidden=false;
+await goTo(0);
+}catch(error){
+console.error(error);
+showError(error?.message||'That file could not be opened.');
+resetView();
+}finally{
+picker.done();
+}
+}
+function layOutStage(){
+el.stage.style.aspectRatio=`${source.width} / ${source.height}`;
+el.stage.style.maxWidth=`calc(62vh * ${source.width / source.height})`;
+el.preview.hidden=exact;
+el.still.hidden=!exact;
+}
+function describeSource(){
+el.source.hidden=false;
+el.srcName.textContent=file.name;
+el.srcSize.textContent=formatBytes(file.size);
+el.srcFrame.textContent=`${source.width} x ${source.height}`;
+el.srcLength.textContent=duration?formatDuration(duration):'unknown';
+if(exact){
+const turned=media.video.rotation?`, turned ${media.video.rotation} degrees`:'';
+el.srcCodec.textContent=`${media.video.codec} (${media.video.entryType})${turned}`;
+el.srcFrames.textContent=`${reader.count.toLocaleString()} frames`;
+}else{
+el.srcCodec.textContent="read by the browser's own player";
+el.srcFrames.textContent='not counted on this path';
+}
+el.pathNote.hidden=exact&&playable;
+if(!exact){
+el.pathNote.textContent='This file is read by the browser\'s own player rather than '
++`frame by frame, because ${fallbackReason ?? 'its layout is not one the reader here understands.'} `
++'The picture is still saved at the video\'s full size, but the frame you land on is the '
++'one the player chooses, and stepping moves by roughly a frame rather than exactly one.';
+}else if(!playable){
+el.pathNote.textContent='This browser will not play this file, so there is nothing to press '
++'play on - but it will decode it, which is what the stills are made from. Use the slider '
++'and the arrow keys to move through it.';
+}
+}
+function releaseFile(){
+if(objectUrl){
+el.preview.removeAttribute('src');
+el.preview.load();
+URL.revokeObjectURL(objectUrl);
+objectUrl=null;
+}
+reader?.release();
+reader=null;
+media=null;
+file=null;
+playing=false;
+wantedFrame=-1;
+shownFrame=-1;
+}
+function resetView(){
+el.source.hidden=true;
+el.findCard.hidden=true;
+el.grabCard.hidden=true;
+el.pathNote.hidden=true;
+releaseFile();
+}
+function setUpTransport(){
+if(exact){
+el.scrub.min='0';
+el.scrub.max=String(Math.max(0,reader.count-1));
+el.scrub.step='1';
+}else{
+el.scrub.min='0';
+el.scrub.max=String(Math.max(1,Math.round(duration*1000)));
+el.scrub.step='1';
+}
+el.play.disabled=!playable;
+el.play.title=playable?'Play or pause (space)':'This browser will not play this file';
+}
+async function goTo(seconds){
+const clamped=Math.max(0,Math.min(seconds,duration||seconds));
+if(exact){
+await goToFrame(frameNear(reader.order,clamped));
+}else{
+position=clamped;
+el.scrub.value=String(Math.round(clamped*1000));
+updateReadout();
+await seekPlayer(clamped);
+}
+}
+async function goToFrame(index){
+if(!exact)return;
+frameIndex=Math.max(0,Math.min(index,reader.count-1));
+position=reader.timeOf(frameIndex);
+el.scrub.value=String(frameIndex);
+updateReadout();
+await showFrame(frameIndex);
+showStill();
+}
+function showStill(){
+if(!exact)return;
+el.still.hidden=false;
+el.preview.hidden=true;
+}
+function updateReadout(){
+el.atTime.textContent=clockTime(position);
+el.atFrame.textContent=exact
+?`frame ${(frameIndex + 1).toLocaleString()} of ${reader.count.toLocaleString()}`
+:'frame times are not read on this path';
+}
+async function showFrame(index){
+wantedFrame=index;
+if(drawing)return;
+drawing=true;
+try{
+while(wantedFrame!==shownFrame){
+const target=wantedFrame;
+const slow=setTimeout(()=>{el.stageBusy.hidden=false;},120);
+try{
+const bitmap=await reader.frameAt(target);
+if(wantedFrame!==target)continue;
+paintStage(bitmap);
+shownFrame=target;
+}finally{
+clearTimeout(slow);
+el.stageBusy.hidden=true;
+}
+}
+}catch(error){
+if(error?.name!=='AbortError')showError(error?.message||'That frame could not be decoded.');
+}finally{
+drawing=false;
+}
+}
+function paintStage(bitmap){
+const width=Math.max(2,Math.min(source.width,Math.round(el.stage.clientWidth||960)));
+const scale=width/source.width;
+el.still.width=width;
+el.still.height=Math.max(2,Math.round(source.height*scale));
+drawUpright(el.still.getContext('2d',{alpha:false}),bitmap,{
+rotation:media.video.rotation,
+displayWidth:source.width,
+displayHeight:source.height,
+scale,
+});
+}
+function seekPlayer(seconds){
+if(!playable)return Promise.resolve();
+return new Promise((resolve)=>{
+if(Math.abs(el.preview.currentTime-seconds)<0.001&&el.preview.readyState>=2){
+resolve();
+return;
+}
+const done=()=>{
+clearTimeout(timer);
+el.preview.removeEventListener('seeked',done);
+resolve();
+};
+const timer=setTimeout(done,4000);
+el.preview.addEventListener('seeked',done,{once:true});
+el.preview.currentTime=seconds;
+});
+}
+function step(by){
+if(playing)pause();
+if(exact){
+goToFrame(frameIndex+by);
+}else{
+goTo(position+by/30);
+}
+}
+function play(){
+if(!playable||playing)return;
+playing=true;
+el.play.textContent='⏸';
+el.play.setAttribute('aria-label','Pause');
+el.preview.hidden=false;
+el.still.hidden=true;
+el.preview.currentTime=position;
+el.preview.play().catch(()=>pause());
+follow();
+}
+function pause(){
+if(!playing)return;
+playing=false;
+el.play.textContent='▶';
+el.play.setAttribute('aria-label','Play');
+el.preview.pause();
+goTo(el.preview.currentTime);
+}
+function follow(){
+if(!playing)return;
+position=el.preview.currentTime;
+if(exact){
+frameIndex=frameNear(reader.order,position);
+el.scrub.value=String(frameIndex);
+}else{
+el.scrub.value=String(Math.round(position*1000));
+}
+updateReadout();
+requestAnimationFrame(follow);
+}
+el.play.addEventListener('click',()=>(playing?pause():play()));
+el.preview.addEventListener('pause',()=>pause());
+el.preview.addEventListener('ended',()=>pause());
+el.stepBack.addEventListener('click',()=>step(-1));
+el.stepOn.addEventListener('click',()=>step(1));
+el.scrub.addEventListener('input',()=>{
+if(playing)pause();
+const value=Number(el.scrub.value);
+if(exact)goToFrame(value);
+else goTo(value/1000);
+});
+document.addEventListener('keydown',(event)=>{
+if(el.findCard.hidden||event.ctrlKey||event.metaKey||event.altKey)return;
+const tag=event.target?.tagName;
+if(tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA')return;
+if(event.key==='ArrowLeft')step(event.shiftKey?-10:-1);
+else if(event.key==='ArrowRight')step(event.shiftKey?10:1);
+else if(event.key===' '&&tag!=='BUTTON'&&tag!=='A'){
+if(!playable)return;
+if(playing)pause();
+else play();
+}else return;
+event.preventDefault();
+});
+function currentType(){
+const type=el.format.value;
+return formats.has(type)?type:'image/png';
+}
+function updateFormatNote(){
+const type=currentType();
+el.qualityField.hidden=type==='image/png';
+el.formatNote.textContent=type==='image/png'
+?`Lossless: the still holds exactly the pixels the frame decoded to, at ${source.width || '?'} x ${source.height || '?'}.`
+:'Compressed again on top of the video\'s own compression. Fine for a preview, '
++'not for anything that will be edited further.';
+}
+el.format.addEventListener('change',updateFormatNote);
+el.quality.addEventListener('input',()=>{
+el.qualityValue.textContent=el.quality.value;
+});
+el.every.addEventListener('change',updateSeriesButton);
+el.every.addEventListener('input',updateSeriesButton);
+function updateSeriesButton(){
+const every=Number(el.every.value);
+el.grabSeries.textContent=every>0
+?`Grab one every ${every % 1 ? every.toFixed(1) : every} seconds`
+:'Grab a series';
+}
+function addShot({blob,time,width,height,type}){
+const shot={
+id:nextShotId++,
+blob,
+time,
+width,
+height,
+type,
+name:stillName(file?.name,time,type),
+url:URL.createObjectURL(blob),
+};
+shots.push(shot);
+renderShots();
+return shot;
+}
+function renderShots(){
+el.shotsCard.hidden=shots.length===0;
+el.shotsCount.textContent=shots.length===1
+?'1 still, held in this page only'
+:`${shots.length} stills, held in this page only`;
+el.shots.replaceChildren(...shots.map((shot)=>{
+const item=document.createElement('li');
+item.className='shot';
+const image=document.createElement('img');
+image.src=shot.url;
+image.alt=`The frame at ${clockTime(shot.time)}`;
+image.loading='lazy';
+const body=document.createElement('div');
+body.className='shot-body';
+const when=document.createElement('span');
+when.className='shot-time';
+when.textContent=clockTime(shot.time);
+const meta=document.createElement('span');
+meta.className='shot-meta';
+meta.textContent=`${FORMATS[shot.type]?.label ?? 'PNG'} · ${shot.width} x ${shot.height} · ${formatBytes(shot.blob.size)}`;
+body.append(when,meta);
+const actions=document.createElement('div');
+actions.className='shot-actions';
+const save=document.createElement('a');
+save.className='as-button';
+save.href=shot.url;
+save.download=shot.name;
+save.textContent='Save';
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='ghost danger';
+remove.textContent='Remove';
+remove.addEventListener('click',()=>removeShot(shot.id));
+actions.append(save,remove);
+item.append(image,body,actions);
+return item;
+}));
+}
+function removeShot(id){
+const shot=shots.find((other)=>other.id===id);
+if(shot)URL.revokeObjectURL(shot.url);
+shots=shots.filter((other)=>other.id!==id);
+renderShots();
+}
+function clearShots(){
+for(const shot of shots)URL.revokeObjectURL(shot.url);
+shots=[];
+renderShots();
+}
+el.clear.addEventListener('click',clearShots);
+el.downloadAll.addEventListener('click',async()=>{
+if(!shots.length||working)return;
+setWorking(true);
+el.progressWrap.hidden=false;
+setProgress({done:0,total:shots.length,label:'Packing...'});
+try{
+const used=new Set();
+const files=[];
+let done=0;
+for(const shot of shots){
+let name=shot.name;
+for(let n=2;used.has(name);n++){
+name=shot.name.replace(/(\.[^.]+)$/,`-${n}$1`);
+}
+used.add(name);
+files.push({name,data:new Uint8Array(await shot.blob.arrayBuffer())});
+setProgress({done:++done,total:shots.length,label:'Packing...'});
+}
+const base=(file?.name??'video').replace(/\.[^.]+$/,'');
+saveBlob(makeZip(files),`${base}-stills.zip`);
+}catch(error){
+showError(error?.message||'That archive could not be built.');
+}finally{
+setWorking(false);
+el.progressWrap.hidden=true;
+}
+});
+function saveBlob(blob,name){
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=name;
+link.click();
+setTimeout(()=>URL.revokeObjectURL(url),60_000);
+}
+async function currentCanvas(){
+if(exact){
+const bitmap=await reader.frameAt(frameIndex);
+return frameCanvas(bitmap,{
+rotation:media.video.rotation,
+displayWidth:source.width,
+displayHeight:source.height,
+});
+}
+await seekPlayer(position);
+return frameCanvas(el.preview,{
+rotation:0,
+displayWidth:source.width,
+displayHeight:source.height,
+});
+}
+function encodeOptions(){
+return{type:currentType(),quality:Number(el.quality.value)/100};
+}
+el.grab.addEventListener('click',async()=>{
+if(working||!file)return;
+if(playing)pause();
+clearError();
+setWorking(true);
+try{
+const canvas=await currentCanvas();
+const options=encodeOptions();
+const blob=await encodeStill(canvas,options);
+const shot=addShot({
+blob,
+time:position,
+width:canvas.width,
+height:canvas.height,
+type:options.type,
+});
+el.shotsCard.scrollIntoView({behavior:'smooth',block:'nearest'});
+el.grab.title=`Last saved: ${shot.name}`;
+}catch(error){
+showError(error?.message||'That frame could not be saved.');
+console.error(error);
+}finally{
+setWorking(false);
+}
+});
+el.grabSeries.addEventListener('click',async()=>{
+if(working||!file)return;
+if(playing)pause();
+const every=Number(el.every.value);
+if(!(every>0)){
+showError('Set an interval of more than zero seconds.');
+return;
+}
+clearError();
+setWorking(true);
+abortController=new AbortController();
+el.cancel.hidden=false;
+el.progressWrap.hidden=false;
+const options=encodeOptions();
+const{signal}=abortController;
+try{
+if(exact){
+const indexes=seriesFrames(reader.order,{every});
+if(!indexes.length)throw new Error('That interval picks out no frames.');
+setProgress({done:0,total:indexes.length,label:'Grabbing'});
+await decodeSeries({
+file,
+video:media.video,
+indexes,
+signal,
+onProgress:({done,total})=>setProgress({done,total,label:'Grabbing'}),
+async onFrame(index,canvas){
+const blob=await encodeStill(canvas,options);
+addShot({
+blob,
+time:reader.timeOf(index),
+width:canvas.width,
+height:canvas.height,
+type:options.type,
+});
+},
+});
+}else{
+const times=[];
+for(let at=0;at<=duration&&times.length<500;at+=every)times.push(at);
+setProgress({done:0,total:times.length,label:'Grabbing'});
+for(const[n,at]of times.entries()){
+if(signal.aborted)break;
+await goTo(at);
+const canvas=await currentCanvas();
+const blob=await encodeStill(canvas,options);
+addShot({
+blob,
+time:el.preview.currentTime||at,
+width:canvas.width,
+height:canvas.height,
+type:options.type,
+});
+setProgress({done:n+1,total:times.length,label:'Grabbing'});
+}
+}
+el.shotsCard.scrollIntoView({behavior:'smooth',block:'nearest'});
+}catch(error){
+if(error?.name!=='AbortError'){
+showError(error?.message||'Something went wrong while grabbing the series.');
+console.error(error);
+}
+}finally{
+abortController=null;
+el.cancel.hidden=true;
+el.progressWrap.hidden=true;
+setWorking(false);
+}
+});
+el.cancel.addEventListener('click',()=>abortController?.abort());
+function setWorking(state){
+working=state;
+el.grab.disabled=state;
+el.grabSeries.disabled=state;
+el.downloadAll.disabled=state;
+}
+function setProgress({done,total,label}){
+const fraction=total>0?Math.min(1,done/total):0;
+el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
+el.progressLabel.textContent=`${label} ${done.toLocaleString()} of ${total.toLocaleString()}`
++` (${Math.round(fraction * 100)}%)`;
+}
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+}
+function clearError(){
+el.error.hidden=true;
+el.error.textContent='';
+}
+function formatBytes(bytes){
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
+if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
+return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
+function formatDuration(seconds){
+const whole=Math.max(0,Math.round(seconds));
+const minutes=Math.floor(whole/60);
+return minutes
+?`${minutes}m ${String(whole % 60).padStart(2, '0')}s`
+:`${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+}
+window.addEventListener('beforeunload',(event)=>{
+if(!working)return;
+event.preventDefault();
+event.returnValue='';
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+el.networkCount.textContent=clean
+?`your video has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+async function offerFormats(){
+formats=await encodableTypes();
+for(const option of el.format.options){
+option.disabled=!formats.has(option.value);
+}
+if(!formats.has(el.format.value))el.format.value='image/png';
+updateFormatNote();
+}
+updateSeriesButton();
+updateFormatNote();
+offerFormats();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

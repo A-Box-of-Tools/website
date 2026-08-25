@@ -1,2 +1,223 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{drawFitted as I}from"./draw.js";import{pickH264Codec as U}from"./support.js";import{reversedAudioTrack as C}from"./audio.js";import{writeFile as S}from"./reverse.js";const k={low:.05,medium:.1,high:.2},B={low:.8,medium:1.25,high:2},H=2e5,O=6e7,P=2,R=8,q=1e4,M=30;class V extends Error{constructor(){super("Reverse cancelled."),this.name="AbortError"}}function v(e){if(e?.aborted)throw new V}function z({fileSize:e,seconds:r,size:i,fps:t,quality:a}){let l=i.width*i.height*t*(k[a]??k.medium);if(r>0){const n=e*8/r;l=Math.min(l,n*(B[a]??1.25))}return Math.round(Math.min(O,Math.max(H,l)))}function K(e,r){return{width:Math.max(2,Math.floor(e/2)*2),height:Math.max(2,Math.floor(r/2)*2)}}function F(e,r){return new Promise((i,t)=>{const a=n=>{clearTimeout(l),e.removeEventListener("seeked",u),e.removeEventListener("error",s),n?t(n):i()},u=()=>a(null),s=()=>a(new Error("The browser stopped being able to read this clip.")),l=setTimeout(()=>a(new Error("The browser took too long to seek in this clip.")),q);e.addEventListener("seeked",u,{once:!0}),e.addEventListener("error",s,{once:!0}),e.currentTime=r})}async function $(e,r=1){if(typeof e.requestVideoFrameCallback!="function")return{fps:M,measured:!1};try{await F(e,0),e.muted=!0;const i=await new Promise(a=>{let u=0,s=null;const l=setTimeout(()=>a({frames:u,span:0}),(r+2)*1e3),n=(h,p)=>{const f=p.mediaTime;if(s===null&&(s=f),u++,f-s>=r||e.ended){clearTimeout(l),a({frames:u-1,span:f-s});return}e.requestVideoFrameCallback(n)};e.requestVideoFrameCallback(n),e.play().catch(()=>a({frames:0,span:0}))});if(e.pause(),i.span<=0||i.frames<2)return{fps:M,measured:!1};const t=i.frames/i.span;return!Number.isFinite(t)||t<5||t>120?{fps:M,measured:!1}:{fps:Math.round(t),measured:!0}}catch{return{fps:M,measured:!1}}}async function N(e){for(;e.encodeQueueSize>R;)await new Promise(r=>{let i=!1;const t=()=>{i||(i=!0,clearTimeout(a),e.removeEventListener("dequeue",t),r())},a=setTimeout(t,20);e.addEventListener("dequeue",t)})}async function X({file:e,video:r,duration:i,fps:t,quality:a="medium",keepAudio:u=!0,onProgress:s,signal:l}){const n=K(r.videoWidth,r.videoHeight),h=Math.max(1,Math.floor(i*t)),p=z({fileSize:e.size,seconds:i,size:n,fps:t,quality:a}),f=await U({width:n.width,height:n.height,framerate:Math.round(t),bitrate:p});if(!f)throw new Error(`This browser will not encode H.264 at ${n.width}x${n.height}. A smaller clip will work; this one will not.`);s?.({phase:"preparing",done:0,total:h});const y=document.createElement("canvas");y.width=n.width,y.height=n.height;const L=y.getContext("2d",{alpha:!1}),E=[];let b=null,m=null,T=-1/0;const w=new VideoEncoder({output:(o,g)=>{try{if(!b&&g?.decoderConfig?.description){const c=g.decoderConfig.description;b=c instanceof Uint8Array?c:new Uint8Array(c instanceof ArrayBuffer?c:c.buffer.slice(c.byteOffset,c.byteOffset+c.byteLength))}const d=new Uint8Array(o.byteLength);o.copyTo(d),E.push({data:d,isKey:o.type==="key",time:Math.round(o.timestamp/1e6*9e4)})}catch(d){m??=d}},error:o=>{m??=o}});w.configure({codec:f,width:n.width,height:n.height,bitrate:p,framerate:Math.round(t),avc:{format:"avc"},alpha:"discard",latencyMode:"quality"}),r.pause();try{for(let o=0;o<h;o++){if(v(l),m)throw m;const g=Math.min(Math.max(0,i-5e-4),(h-1-o)/t+.5/t);await F(r,g),await N(w),I(L,r,{rotation:0,displayWidth:r.videoWidth,displayHeight:r.videoHeight,frame:n});const d=Math.round(o/t*1e6),c=d-T>=P*1e6;c&&(T=d);const A=new VideoFrame(y,{timestamp:d,duration:Math.round(1e6/t)});try{w.encode(A,{keyFrame:c})}finally{A.close()}(o%5===0||o===h-1)&&s?.({phase:"reversing",done:o+1,total:h})}if(s?.({phase:"finishing",done:h,total:h}),await w.flush(),m)throw m;if(!E.length)throw new Error("No frames could be read out of this file.");if(!b)throw new Error("The encoder never reported a decoder configuration.")}finally{w.state!=="closed"&&w.close()}let _=null,x=null;if(u){const o=await C({file:e,audio:null,onProgress:s,signal:l});_=o.track,x=o.note}return{blob:S({frame:n,avcC:b,encoded:E,fps:t,sound:_}),extension:"mp4",codec:f,frames:E.length,exact:!1,warning:x}}export{z as chooseBitrate,$ as measureFps,K as outputSize,X as reverseByPlayback};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{drawFitted}from'./draw.js';
+import{pickH264Codec}from'./support.js';
+import{reversedAudioTrack}from'./audio.js';
+import{writeFile}from'./reverse.js';
+const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
+const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};
+const MIN_BITRATE=200_000;
+const MAX_BITRATE=60_000_000;
+const KEYFRAME_SECONDS=2;
+const QUEUE_LIMIT=8;
+const SEEK_TIMEOUT=10_000;
+const ASSUMED_FPS=30;
+class AbortedError extends Error{
+constructor(){
+super('Reverse cancelled.');
+this.name='AbortError';
+}
+}
+function throwIfAborted(signal){
+if(signal?.aborted)throw new AbortedError();
+}
+export function chooseBitrate({fileSize,seconds,size,fps,quality}){
+const pixels=size.width*size.height;
+const byPixels=pixels*fps*(QUALITY_BPP[quality]??QUALITY_BPP.medium);
+let ceiling=byPixels;
+if(seconds>0){
+const sourceRate=fileSize*8/seconds;
+ceiling=Math.min(ceiling,sourceRate*(QUALITY_HEADROOM[quality]??1.25));
+}
+return Math.round(Math.min(MAX_BITRATE,Math.max(MIN_BITRATE,ceiling)));
+}
+export function outputSize(width,height){
+return{
+width:Math.max(2,Math.floor(width/2)*2),
+height:Math.max(2,Math.floor(height/2)*2),
+};
+}
+function seekTo(video,seconds){
+return new Promise((resolve,reject)=>{
+const done=(fail)=>{
+clearTimeout(timer);
+video.removeEventListener('seeked',ok);
+video.removeEventListener('error',bad);
+if(fail)reject(fail);
+else resolve();
+};
+const ok=()=>done(null);
+const bad=()=>done(new Error('The browser stopped being able to read this clip.'));
+const timer=setTimeout(
+()=>done(new Error('The browser took too long to seek in this clip.')),SEEK_TIMEOUT);
+video.addEventListener('seeked',ok,{once:true});
+video.addEventListener('error',bad,{once:true});
+video.currentTime=seconds;
+});
+}
+export async function measureFps(video,seconds=1){
+if(typeof video.requestVideoFrameCallback!=='function'){
+return{fps:ASSUMED_FPS,measured:false};
+}
+try{
+await seekTo(video,0);
+video.muted=true;
+const counted=await new Promise((resolve)=>{
+let frames=0;
+let first=null;
+const stop=setTimeout(()=>resolve({frames,span:0}),(seconds+2)*1000);
+const tick=(now,metadata)=>{
+const at=metadata.mediaTime;
+if(first===null)first=at;
+frames++;
+if(at-first>=seconds||video.ended){
+clearTimeout(stop);
+resolve({frames:frames-1,span:at-first});
+return;
+}
+video.requestVideoFrameCallback(tick);
+};
+video.requestVideoFrameCallback(tick);
+video.play().catch(()=>resolve({frames:0,span:0}));
+});
+video.pause();
+if(counted.span<=0||counted.frames<2)return{fps:ASSUMED_FPS,measured:false};
+const rate=counted.frames/counted.span;
+if(!Number.isFinite(rate)||rate<5||rate>120){
+return{fps:ASSUMED_FPS,measured:false};
+}
+return{fps:Math.round(rate),measured:true};
+}catch{
+return{fps:ASSUMED_FPS,measured:false};
+}
+}
+async function settle(encoder){
+while(encoder.encodeQueueSize>QUEUE_LIMIT){
+await new Promise((resolve)=>{
+let settled=false;
+const done=()=>{
+if(settled)return;
+settled=true;
+clearTimeout(timer);
+encoder.removeEventListener('dequeue',done);
+resolve();
+};
+const timer=setTimeout(done,20);
+encoder.addEventListener('dequeue',done);
+});
+}
+}
+export async function reverseByPlayback({
+file,video,duration,fps,quality='medium',keepAudio=true,onProgress,signal,
+}){
+const frame=outputSize(video.videoWidth,video.videoHeight);
+const total=Math.max(1,Math.floor(duration*fps));
+const bitrate=chooseBitrate({
+fileSize:file.size,seconds:duration,size:frame,fps,quality,
+});
+const codec=await pickH264Codec({
+width:frame.width,height:frame.height,framerate:Math.round(fps),bitrate,
+});
+if(!codec){
+throw new Error(`This browser will not encode H.264 at ${frame.width}x${frame.height}. `
++'A smaller clip will work; this one will not.');
+}
+onProgress?.({phase:'preparing',done:0,total});
+const canvas=document.createElement('canvas');
+canvas.width=frame.width;
+canvas.height=frame.height;
+const ctx=canvas.getContext('2d',{alpha:false});
+const encoded=[];
+let avcC=null;
+let failure=null;
+let lastKeyframeUs=-Infinity;
+const encoder=new VideoEncoder({
+output:(chunk,metadata)=>{
+try{
+if(!avcC&&metadata?.decoderConfig?.description){
+const description=metadata.decoderConfig.description;
+avcC=description instanceof Uint8Array
+?description
+:new Uint8Array(description instanceof ArrayBuffer
+?description
+:description.buffer.slice(
+description.byteOffset,description.byteOffset+description.byteLength));
+}
+const data=new Uint8Array(chunk.byteLength);
+chunk.copyTo(data);
+encoded.push({
+data,
+isKey:chunk.type==='key',
+time:Math.round(chunk.timestamp/1_000_000*90000),
+});
+}catch(error){
+failure??=error;
+}
+},
+error:(error)=>{failure??=error;},
+});
+encoder.configure({
+codec,
+width:frame.width,
+height:frame.height,
+bitrate,
+framerate:Math.round(fps),
+avc:{format:'avc'},
+alpha:'discard',
+latencyMode:'quality',
+});
+video.pause();
+try{
+for(let k=0;k<total;k++){
+throwIfAborted(signal);
+if(failure)throw failure;
+const at=Math.min(
+Math.max(0,duration-0.0005),
+(total-1-k)/fps+0.5/fps);
+await seekTo(video,at);
+await settle(encoder);
+drawFitted(ctx,video,{
+rotation:0,
+displayWidth:video.videoWidth,
+displayHeight:video.videoHeight,
+frame,
+});
+const timestamp=Math.round(k/fps*1_000_000);
+const keyFrame=timestamp-lastKeyframeUs>=KEYFRAME_SECONDS*1_000_000;
+if(keyFrame)lastKeyframeUs=timestamp;
+const picture=new VideoFrame(canvas,{
+timestamp,
+duration:Math.round(1_000_000/fps),
+});
+try{
+encoder.encode(picture,{keyFrame});
+}finally{
+picture.close();
+}
+if(k%5===0||k===total-1){
+onProgress?.({phase:'reversing',done:k+1,total});
+}
+}
+onProgress?.({phase:'finishing',done:total,total});
+await encoder.flush();
+if(failure)throw failure;
+if(!encoded.length)throw new Error('No frames could be read out of this file.');
+if(!avcC)throw new Error('The encoder never reported a decoder configuration.');
+}finally{
+if(encoder.state!=='closed')encoder.close();
+}
+let sound=null;
+let warning=null;
+if(keepAudio){
+const result=await reversedAudioTrack({file,audio:null,onProgress,signal});
+sound=result.track;
+warning=result.note;
+}
+return{
+blob:writeFile({frame,avcC,encoded,fps,sound}),
+extension:'mp4',
+codec,
+frames:encoded.length,
+exact:false,
+warning,
+};
+}

@@ -1,2 +1,86 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{drawScaled as f,frameCanvas as d}from"./draw.js";const p=1e4;class E extends Error{constructor(){super("Cancelled."),this.name="AbortError"}}const m={1:"the read was aborted",2:"the file could not be read off the disk",3:"the browser could not decode the video in it",4:"the browser does not support this format or codec"};function u(e,r,a){const s=m[e.error?.code]??"the browser stopped being able to read it";return new Error(`The player stopped after ${r} of ${a} frames: ${s}. Converting the clip to an ordinary MP4 (H.264) first is the reliable fix.`)}async function b({video:e,times:r,width:a,height:s,writer:t,onProgress:o,signal:i}){const{canvas:l,ctx:c}=d(a,s);e.pause();try{for(let n=0;n<r.length;n+=1){if(i?.aborted)throw new E;if(e.error)throw u(e,n,r.length);try{await w(e,r[n])}catch(h){throw h?.name==="PlayerError"?u(e,n,r.length):h}for(f(c,e,{displayWidth:e.videoWidth,displayHeight:e.videoHeight,width:a,height:s}),t.write(l);t.busy;)await t.settle();o?.({phase:"working",done:n+1,total:r.length})}return o?.({phase:"finishing",done:r.length,total:r.length}),await t.finish()}finally{l.width=0}}function w(e,r){return new Promise((a,s)=>{let t=!1;const o=()=>{t||(t=!0,clearTimeout(c),e.removeEventListener("seeked",i),e.removeEventListener("error",l),a())},i=()=>{typeof e.requestVideoFrameCallback=="function"?(e.requestVideoFrameCallback(()=>o()),setTimeout(o,120)):setTimeout(o,40)},l=()=>{if(t)return;t=!0,clearTimeout(c),e.removeEventListener("seeked",i);const n=new Error("the player errored during a seek");n.name="PlayerError",s(n)},c=setTimeout(o,p);e.addEventListener("seeked",i,{once:!0}),e.addEventListener("error",l,{once:!0}),Math.abs(e.currentTime-r)<1e-4?o():e.currentTime=r})}export{b as timelapseByPlaying};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{drawScaled,frameCanvas}from'./draw.js';
+const SEEK_TIMEOUT=10_000;
+class AbortedError extends Error{
+constructor(){
+super('Cancelled.');
+this.name='AbortError';
+}
+}
+const MEDIA_ERRORS={
+1:'the read was aborted',
+2:'the file could not be read off the disk',
+3:'the browser could not decode the video in it',
+4:'the browser does not support this format or codec',
+};
+function playerDied(video,done,total){
+const why=MEDIA_ERRORS[video.error?.code]??'the browser stopped being able to read it';
+return new Error(`The player stopped after ${done} of ${total} frames: ${why}. `
++'Converting the clip to an ordinary MP4 (H.264) first is the reliable fix.');
+}
+export async function timelapseByPlaying({
+video,times,width,height,writer,onProgress,signal,
+}){
+const{canvas,ctx}=frameCanvas(width,height);
+video.pause();
+try{
+for(let i=0;i<times.length;i+=1){
+if(signal?.aborted)throw new AbortedError();
+if(video.error)throw playerDied(video,i,times.length);
+try{
+await seek(video,times[i]);
+}catch(error){
+if(error?.name==='PlayerError')throw playerDied(video,i,times.length);
+throw error;
+}
+drawScaled(ctx,video,{
+displayWidth:video.videoWidth,
+displayHeight:video.videoHeight,
+width,
+height,
+});
+writer.write(canvas);
+while(writer.busy)await writer.settle();
+onProgress?.({phase:'working',done:i+1,total:times.length});
+}
+onProgress?.({phase:'finishing',done:times.length,total:times.length});
+return await writer.finish();
+}finally{
+canvas.width=0;
+}
+}
+function seek(video,seconds){
+return new Promise((resolve,reject)=>{
+let settled=false;
+const finish=()=>{
+if(settled)return;
+settled=true;
+clearTimeout(timer);
+video.removeEventListener('seeked',onSeeked);
+video.removeEventListener('error',onError);
+resolve();
+};
+const onSeeked=()=>{
+if(typeof video.requestVideoFrameCallback==='function'){
+video.requestVideoFrameCallback(()=>finish());
+setTimeout(finish,120);
+}else{
+setTimeout(finish,40);
+}
+};
+const onError=()=>{
+if(settled)return;
+settled=true;
+clearTimeout(timer);
+video.removeEventListener('seeked',onSeeked);
+const failure=new Error('the player errored during a seek');
+failure.name='PlayerError';
+reject(failure);
+};
+const timer=setTimeout(finish,SEEK_TIMEOUT);
+video.addEventListener('seeked',onSeeked,{once:true});
+video.addEventListener('error',onError,{once:true});
+if(Math.abs(video.currentTime-seconds)<1e-4)finish();
+else video.currentTime=seconds;
+});
+}

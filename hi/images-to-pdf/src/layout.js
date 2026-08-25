@@ -1,2 +1,119 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{PT_PER_INCH as w,PT_PER_MM as f}from"./pdf.js";const m={a3:[297,420],a4:[210,297],a5:[148,210],letter:[215.9,279.4],legal:[215.9,355.6],tabloid:[279.4,431.8]},p={1:[1,0,0,1,0,0],2:[-1,0,0,1,1,0],3:[-1,0,0,-1,1,1],4:[1,0,0,-1,0,1],5:[0,-1,-1,0,1,1],6:[0,-1,1,0,0,1],7:[0,1,1,0,0,0],8:[0,1,-1,0,1,0]},g={0:p[1],90:p[6],180:p[3],270:p[8]};function S(t,i){const[n,h,e,o,a,u]=t,[r,c,d,l,x,M]=i;return[n*r+h*d,n*c+h*l,e*r+o*d,e*c+o*l,a*r+u*d+x,a*c+u*l+M]}function T(t=1,i=0){return(t>=5&&t<=8)!==(i===90||i===270)}function s(t,i,n=1,h=0){return T(n,h)?{width:i,height:t}:{width:t,height:i}}function z(t){return s(t.width,t.height,t.orientation,t.rotate)}function E(t,i=1,n=0){const h=S(p[i]??p[1],g[n]??g[0]),[e,o,a,u,r,c]=h;return[e*t.width,o*t.height,a*t.width,u*t.height,r*t.width+t.x,c*t.height+t.y]}function y(t){if(t.pageSize==="custom"){const h=t.customUnit==="in"?w:f;return[Math.max(1,Number(t.customWidth)||0)*h,Math.max(1,Number(t.customHeight)||0)*h]}const[i,n]=m[t.pageSize]??m.a4;return[i*f,n*f]}function I(t,i){const n=s(t.width,t.height,t.orientation,t.rotate),h=Math.max(0,Number(i.margin)||0)*f;if(i.pageSize==="fit"){const r=Math.min(1200,Math.max(18,Number(i.dpi)||150)),c=n.width*w/r,d=n.height*w/r;return{width:c+h*2,height:d+h*2,rect:{x:h,y:h,width:c,height:d},clip:null}}let[e,o]=y(i);(i.orientation==="landscape"||i.orientation==="auto"&&n.width>n.height)!==e>o&&([e,o]=[o,e]);const u={x:h,y:h,width:Math.max(1,e-h*2),height:Math.max(1,o-h*2)};return{width:e,height:o,rect:N(n.width,n.height,u,i.fit),clip:i.fit==="cover"?u:null}}function N(t,i,n,h){if(h==="stretch")return{...n};const e=h==="cover"?Math.max(n.width/t,n.height/i):Math.min(n.width/t,n.height/i),o=t*e,a=i*e;return{x:n.x+(n.width-o)/2,y:n.y+(n.height-a)/2,width:o,height:a}}export{m as PAGE_SIZES,s as displaySize,N as fitRect,I as layoutPage,y as pageSizePt,E as placement,z as seenSize,T as swapsAxes};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{PT_PER_INCH,PT_PER_MM}from'./pdf.js';
+export const PAGE_SIZES={
+a3:[297,420],
+a4:[210,297],
+a5:[148,210],
+letter:[215.9,279.4],
+legal:[215.9,355.6],
+tabloid:[279.4,431.8],
+};
+const ORIENTATIONS={
+1:[1,0,0,1,0,0],
+2:[-1,0,0,1,1,0],
+3:[-1,0,0,-1,1,1],
+4:[1,0,0,-1,0,1],
+5:[0,-1,-1,0,1,1],
+6:[0,-1,1,0,0,1],
+7:[0,1,1,0,0,0],
+8:[0,1,-1,0,1,0],
+};
+const ROTATIONS={
+0:ORIENTATIONS[1],
+90:ORIENTATIONS[6],
+180:ORIENTATIONS[3],
+270:ORIENTATIONS[8],
+};
+function multiply(first,second){
+const[a1,b1,c1,d1,e1,f1]=first;
+const[a2,b2,c2,d2,e2,f2]=second;
+return[
+a1*a2+b1*c2,
+a1*b2+b1*d2,
+c1*a2+d1*c2,
+c1*b2+d1*d2,
+e1*a2+f1*c2+e2,
+e1*b2+f1*d2+f2,
+];
+}
+export function swapsAxes(orientation=1,rotate=0){
+const tagTurns=orientation>=5&&orientation<=8;
+const ownTurns=rotate===90||rotate===270;
+return tagTurns!==ownTurns;
+}
+export function displaySize(width,height,orientation=1,rotate=0){
+return swapsAxes(orientation,rotate)
+?{width:height,height:width}
+:{width,height};
+}
+export function seenSize(item){
+return displaySize(item.width,item.height,item.orientation,item.rotate);
+}
+export function placement(rect,orientation=1,rotate=0){
+const turn=multiply(
+ORIENTATIONS[orientation]??ORIENTATIONS[1],
+ROTATIONS[rotate]??ROTATIONS[0],
+);
+const[a,b,c,d,e,f]=turn;
+return[
+a*rect.width,b*rect.height,
+c*rect.width,d*rect.height,
+e*rect.width+rect.x,f*rect.height+rect.y,
+];
+}
+export function pageSizePt(settings){
+if(settings.pageSize==='custom'){
+const unit=settings.customUnit==='in'?PT_PER_INCH:PT_PER_MM;
+return[
+Math.max(1,Number(settings.customWidth)||0)*unit,
+Math.max(1,Number(settings.customHeight)||0)*unit,
+];
+}
+const[width,height]=PAGE_SIZES[settings.pageSize]??PAGE_SIZES.a4;
+return[width*PT_PER_MM,height*PT_PER_MM];
+}
+export function layoutPage(image,settings){
+const seen=displaySize(image.width,image.height,image.orientation,image.rotate);
+const margin=Math.max(0,Number(settings.margin)||0)*PT_PER_MM;
+if(settings.pageSize==='fit'){
+const dpi=Math.min(1200,Math.max(18,Number(settings.dpi)||150));
+const width=(seen.width*PT_PER_INCH)/dpi;
+const height=(seen.height*PT_PER_INCH)/dpi;
+return{
+width:width+margin*2,
+height:height+margin*2,
+rect:{x:margin,y:margin,width,height},
+clip:null,
+};
+}
+let[width,height]=pageSizePt(settings);
+const landscape=settings.orientation==='landscape'
+||(settings.orientation==='auto'&&seen.width>seen.height);
+if(landscape!==(width>height))[width,height]=[height,width];
+const box={
+x:margin,
+y:margin,
+width:Math.max(1,width-margin*2),
+height:Math.max(1,height-margin*2),
+};
+return{
+width,
+height,
+rect:fitRect(seen.width,seen.height,box,settings.fit),
+clip:settings.fit==='cover'?box:null,
+};
+}
+export function fitRect(sw,sh,box,mode){
+if(mode==='stretch')return{...box};
+const scale=mode==='cover'
+?Math.max(box.width/sw,box.height/sh)
+:Math.min(box.width/sw,box.height/sh);
+const width=sw*scale;
+const height=sh*scale;
+return{
+x:box.x+(box.width-width)/2,
+y:box.y+(box.height-height)/2,
+width,
+height,
+};
+}

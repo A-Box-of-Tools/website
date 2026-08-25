@@ -1,2 +1,76 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function l(o){const n=o.samples,t=n.length,r=Array.from({length:t},(e,i)=>i);r.sort((e,i)=>n[e].pts-n[i].pts||e-i);const a=new Int32Array(t);for(let e=0;e<t;e++)a[r[e]]=e;const s=t?n[r[0]].pts:0,u=new Float64Array(t),c=new Float64Array(t);for(let e=0;e<t;e++)u[r[e]]=n[r[e]].pts-s;for(let e=0;e<t-1;e++)c[r[e]]=Math.max(1,u[r[e+1]]-u[r[e]]);if(t){const e=r[t-1],i=o.duration-u[e];c[e]=i>=1?i:f(r,c)}const h=t?u[r[t-1]]+c[r[t-1]]:0;return{position:a,pts:u,duration:c,totalTicks:h}}function f(o,n){if(o.length<2)return 1;const t=[];for(let r=0;r<o.length-1;r++)t.push(n[o[r]]);return t.sort((r,a)=>r-a),Math.max(1,t[t.length>>1])}function p(o){const{pts:n,duration:t,totalTicks:r}=l(o),a=new Float64Array(n.length);for(let s=0;s<n.length;s++)a[s]=r-n[s]-t[s];return{start:a,duration:t,totalTicks:r}}function x(o){const n=[];for(let t=0;t<o.length;t++)t===0||o[t].isKey?n.push({from:t,to:t}):n[n.length-1].to=t;return n}function m(o,n,t=384<<20,r=1.5){const a=Math.max(1,o*n*r);return Math.max(4,Math.min(600,Math.floor(t/a)))}function g(o,n){const t=[],r=Math.max(1,n);for(let a=o-1;a>=0;a-=r)t.push({from:Math.max(0,a-r+1),to:a});return t}function d(o){for(let n=0;n<o.length;n++){const t=o[n+1];o[n].duration=t?Math.max(1,t.dts-o[n].dts):Math.max(1,o[n].tailDuration)}return o}function M(o){const n=o.duration/o.timescale;return n?Math.min(240,Math.max(1,o.samples.length/n)):30}function w(o){return{width:Math.max(2,Math.floor(o.displayWidth/2)*2),height:Math.max(2,Math.floor(o.displayHeight/2)*2)}}export{M as averageFps,d as closeDurations,l as displayTimes,g as frameWindows,x as gopRanges,w as outputSize,p as reversedTimes,m as windowLimit};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function displayTimes(video){
+const samples=video.samples;
+const count=samples.length;
+const order=Array.from({length:count},(unused,i)=>i);
+order.sort((a,b)=>samples[a].pts-samples[b].pts||a-b);
+const position=new Int32Array(count);
+for(let k=0;k<count;k++)position[order[k]]=k;
+const base=count?samples[order[0]].pts:0;
+const pts=new Float64Array(count);
+const duration=new Float64Array(count);
+for(let k=0;k<count;k++)pts[order[k]]=samples[order[k]].pts-base;
+for(let k=0;k<count-1;k++){
+duration[order[k]]=Math.max(1,pts[order[k+1]]-pts[order[k]]);
+}
+if(count){
+const last=order[count-1];
+const declared=video.duration-pts[last];
+duration[last]=declared>=1?declared:usualGap(order,duration);
+}
+const totalTicks=count?pts[order[count-1]]+duration[order[count-1]]:0;
+return{position,pts,duration,totalTicks};
+}
+function usualGap(order,duration){
+if(order.length<2)return 1;
+const gaps=[];
+for(let k=0;k<order.length-1;k++)gaps.push(duration[order[k]]);
+gaps.sort((a,b)=>a-b);
+return Math.max(1,gaps[gaps.length>>1]);
+}
+export function reversedTimes(video){
+const{pts,duration,totalTicks}=displayTimes(video);
+const start=new Float64Array(pts.length);
+for(let i=0;i<pts.length;i++)start[i]=totalTicks-pts[i]-duration[i];
+return{start,duration,totalTicks};
+}
+export function gopRanges(samples){
+const groups=[];
+for(let i=0;i<samples.length;i++){
+if(i===0||samples[i].isKey)groups.push({from:i,to:i});
+else groups[groups.length-1].to=i;
+}
+return groups;
+}
+export function windowLimit(width,height,budgetBytes=384<<20,bytesPerPixel=1.5){
+const perFrame=Math.max(1,width*height*bytesPerPixel);
+return Math.max(4,Math.min(600,Math.floor(budgetBytes/perFrame)));
+}
+export function frameWindows(count,limit){
+const windows=[];
+const size=Math.max(1,limit);
+for(let end=count-1;end>=0;end-=size){
+windows.push({from:Math.max(0,end-size+1),to:end});
+}
+return windows;
+}
+export function closeDurations(samples){
+for(let i=0;i<samples.length;i++){
+const next=samples[i+1];
+samples[i].duration=next
+?Math.max(1,next.dts-samples[i].dts)
+:Math.max(1,samples[i].tailDuration);
+}
+return samples;
+}
+export function averageFps(video){
+const seconds=video.duration/video.timescale;
+if(!seconds)return 30;
+return Math.min(240,Math.max(1,video.samples.length/seconds));
+}
+export function outputSize(video){
+return{
+width:Math.max(2,Math.floor(video.displayWidth/2)*2),
+height:Math.max(2,Math.floor(video.displayHeight/2)*2),
+};
+}

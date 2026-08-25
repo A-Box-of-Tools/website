@@ -1,2 +1,688 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as f}from"./shared/phrases.js";import{SPECS as ae,backgroundOf as T,pixelLabel as se,portalBytes as I,portalPixels as U,printLabel as ie,specById as ce,specsByCountry as de,trim as C,withCustom as le}from"./specs.js";import{fitFrame as he,frameAspect as q,guideLines as ue,measure as pe,passes as me,printPixels as P,resampling as ge}from"./geometry.js";import{PAPERS as fe,bestSheet as ke,describeSheet as G,paperById as z}from"./sheet.js";import{checkBackground as be,checkSignature as we,readBackground as ye,readSignature as xe}from"./background.js";import{decode as ve,drawCrop as H,drawSheet as Ce,encodePrint as _,encodeToBand as $e,free as B,release as Ee,samplePixels as K,sizeText as w}from"./encode.js";import{WORKING_EDGE as Ne,findMarks as Le}from"./detect.js";import{Cropper as Me}from"./cropper.js";import{Marks as Se}from"./marks.js";import{bandText as J,centreText as Te,outName as R,readyText as Pe,resamplingText as ze,statusClass as Be,stemOf as Re,tiltText as We,verdictText as Y}from"./files.js";import{readingLabel as Fe,wireFilePicker as Oe}from"./shared/file-picker.js";const o=e=>document.getElementById(e),t={dropzone:o("dropzone"),fileInput:o("file-input"),loaded:o("loaded"),loadedName:o("loaded-name"),clearPhoto:o("clear-photo"),loadError:o("load-error"),specSelect:o("spec"),specFacts:o("spec-facts"),specNotes:o("spec-notes"),specSource:o("spec-source"),customPanel:o("custom-panel"),frameEmpty:o("frame-empty"),frameControls:o("frame-controls"),markHint:o("mark-hint"),markModes:o("mark-mode-auto").closest(".mark-mode"),modeAuto:o("mark-mode-auto"),modeManual:o("mark-mode-manual"),markNote:o("mark-note"),markWhy:o("mark-why"),stage:o("stage"),preview:o("preview"),fitBox:o("fit-box"),resetMarks:o("reset-marks"),wholePhoto:o("whole-photo"),shortNote:o("short-note"),geometryChecks:o("geometry-checks"),resampleNote:o("resample-note"),backgroundLede:o("background-lede"),swatches:o("swatches"),swatchFound:o("swatch-found"),swatchFoundText:o("swatch-found-text"),swatchWanted:o("swatch-wanted"),swatchWantedText:o("swatch-wanted-text"),backgroundChecks:o("background-checks"),backgroundNote:o("background-note"),readyLine:o("ready-line"),dpiField:o("dpi-field"),printDpi:o("print-dpi"),dpiNote:o("dpi-note"),paperField:o("paper-field"),paper:o("paper"),paperNote:o("paper-note"),make:o("make"),progress:o("progress"),progressBar:o("progress-bar"),progressLabel:o("progress-label"),results:o("results"),resultList:o("result-list"),privacyToggle:o("privacy-toggle"),privacyPanel:o("privacy-panel"),networkCount:o("network-count"),networkDot:o("network-dot"),offlineStatus:o("offline-status"),offlineDot:o("offline-dot")},X={widthMm:o("custom-width"),heightMm:o("custom-height"),dpi:o("custom-dpi"),headMinMm:o("custom-head-min"),headMaxMm:o("custom-head-max"),background:o("custom-background"),pxWidth:o("custom-px-width"),pxHeight:o("custom-px-height"),minKb:o("custom-min-kb"),maxKb:o("custom-max-kb")};let c=null,W=ae[0].id,$=!1,y="auto",b=null,p=null,E=null,Q=0,F=[];const m=new Me(t.stage,{onChange:Ge}),u=new Se(t.stage,{onChange:(e,n)=>{n==="drag"&&y==="auto"&&(y="manual",t.modeManual.checked=!0,b={quality:"edited",notes:[]},O()),M()}});function k(){const e=ce(W);if(e.id!=="custom")return e;const n=Object.fromEntries(Object.entries(X).map(([r,s])=>[r,s.value]));return le(e,n)}function je(){for(const e of de()){const n=document.createElement("optgroup");n.label=e.country;for(const r of e.specs){const s=document.createElement("option");s.value=r.id,s.textContent=r.document,n.append(s)}t.specSelect.append(n)}t.specSelect.value=W}function De(){for(const e of fe){const n=document.createElement("option");n.value=e.id,n.textContent=e.label,t.paper.append(n)}}function N(){const e=k(),n=T(e),r=e.print?.heightMm??null,s=[["Print size",ie(e)]];if(e.kind!=="signature"&&s.push(["Head, chin to crown",J(e.head,r)+(e.head.advisory?" (guidance)":"")],["Eye line, from the bottom",J(e.eye,r)+(e.eye.advisory?" (guidance)":"")]),s.push(["Background",n.label]),e.digital){const i=I(e),d=Number.isFinite(i.max)?i.min?`${w(i.min)} to ${w(i.max)}`:`up to ${w(i.max)}`:i.min?`${w(i.min)} and up`:"no file-size rule stated";s.push([e.digital.label,`${se(e)}, JPEG, ${d}`])}else s.push(["Upload rule","none published - this one is a print"]);t.specFacts.replaceChildren(...s.flatMap(([i,d])=>{const l=document.createElement("dt");l.textContent=i;const h=document.createElement("dd");return h.textContent=d,[l,h]})),t.specNotes.replaceChildren(...e.notes.map(i=>{const d=document.createElement("li");return d.textContent=i,d})),t.specSource.textContent=e.source.checked?`Transcribed from ${e.source.authority} - ${e.source.document}. Checked ${e.source.checked}. Rules change; the figures above are what to check against the form in front of you.`:"Your own figures. Nothing here is checked against anything.",t.customPanel.hidden=e.id!=="custom";const a=e.kind==="signature";t.markHint.hidden=a,t.markModes.hidden=a,t.markNote.hidden=a,t.markWhy.hidden=a,t.fitBox.hidden=a,t.resetMarks.hidden=a,a?u.hide():c&&(u.placed?u.show():L()),t.backgroundLede.textContent=a?"A signature is checked differently: that the paper is light, that there is ink on it, and that the crop has not taken in a ruled line or the edge of the page.":"Read from a band across the top of the crop and down each side, above the shoulders - the parts of the frame that ought to be nothing but background. Measured in CIE Lab rather than in RGB, because two greys forty RGB units apart are indistinguishable and forty units of blue is a different colour.",t.dpiField.hidden=!e.print,t.paperField.hidden=!e.print,t.dpiNote.textContent=e.print?`${e.print.dpi} dpi is this rule's floor. At ${t.printDpi.value} dpi the file comes out ${Ae(e)}, and the JPEG carries that resolution in its header, so a print shop prints it at the right size rather than guessing.`:"",c&&(m.setAspect(q(e)),a?u.hide():u.placed&&x(),M()),V()}function Ae(e){const n=P(e,Number(t.printDpi.value));return n?`${n.width} x ${n.height} pixels`:""}function V(){const e=k();if(!e.print){t.paperNote.textContent="";return}const n=Z(e);t.paperNote.textContent=`${G(n)}, with cut marks in the gaps and nothing printed over a photograph.`}function Z(e){return ke({photo:{widthMm:e.print.widthMm,heightMm:e.print.heightMm},paper:z(t.paper.value),dpi:Number(t.printDpi.value)||e.print.dpi})}const ee=Oe({input:t.fileInput,dropzone:t.dropzone,onFiles(e){Ie(e[0])}});async function Ie(e){if(!(!e||$)){Ke(),ee.busy(Fe(1));try{if(!Ue(e))throw new Error("that is not an image this browser can open.");const n=await ve(e);te(),c={file:e,url:URL.createObjectURL(e),bitmap:n.bitmap,width:n.width,height:n.height},t.preview.src=c.url,t.stage.style.aspectRatio=`${c.width} / ${c.height}`,t.stage.style.maxWidth=`calc(62vh * ${c.width/c.height})`,t.loadedName.textContent=`${e.name} - ${c.width} x ${c.height} pixels`,t.loaded.hidden=!1,t.frameEmpty.hidden=!0,t.frameControls.hidden=!1,m.setSource(c.width,c.height),m.setAspect(q(k())),u.setSource(c.width,c.height),k().kind!=="signature"&&(L(),x()),M()}catch(n){S(`${e.name}: ${n.message}`)}finally{ee.done()}}}function Ue(e){return e.type.startsWith("image/")||/\.(jpe?g|png|webp|bmp|gif|avif|heic)$/i.test(e.name)}function te(){c&&(URL.revokeObjectURL(c.url),Ee(c.bitmap),c=null)}t.clearPhoto.addEventListener("click",()=>{te(),t.preview.removeAttribute("src"),t.loaded.hidden=!0,t.frameControls.hidden=!0,t.frameEmpty.hidden=!1,t.results.hidden=!0,t.make.disabled=!0,p=null,b=null,u.clear(),re()});function L(){c&&(b=y==="auto"?qe():{quality:"manual",notes:[]},b?.marks?u.place(b.marks):u.open(),O())}function qe(){try{const e=K(c.bitmap,{x:0,y:0,width:c.width,height:c.height},Ne),n=Le(e);if(!n.marks)return n;const r=c.width/e.width,s=c.height/e.height;return{...n,marks:Object.fromEntries(Object.entries(n.marks).map(([a,i])=>[a,{x:i.x*r,y:i.y*s}]))}}catch{return{marks:null,quality:"none",notes:["background"]}}}function O(){const e=b?.quality??"manual";t.markNote.textContent=f(`marks.${e}`),t.markWhy.replaceChildren(...(b?.notes??[]).map(n=>{const r=document.createElement("li");return r.textContent=f(`marks.why.${n}`),r})),t.resetMarks.textContent=f(y==="auto"?"marks.button.again":"marks.button.back")}function x(){if(!c||!u.placed)return;const e=k(),n=he(u.marks,e,c);m.setRect(n.rect);const r=n.short,s=Object.entries(r).filter(([,a])=>a>2);if(t.shortNote.hidden=s.length===0,s.length){const a=s.map(([i,d])=>`${d} px at the ${i}`);t.shortNote.textContent=`The rule wanted more picture than there is: ${a.join(", ")}. The box has been kept inside the photograph instead, which is why the figures below may not all be green. A photo taken a step further back is the fix.`}}function Ge(){M(),clearTimeout(Q),Q=setTimeout(D,180)}function M(){if(!c)return;const e=k(),n=m.rect;if(e.kind==="signature"||!u.placed){m.setGuides(null),t.geometryChecks.replaceChildren(),t.make.disabled=!1,E=null,oe(e,n),j(e);return}const r=pe(n,u.marks,e);E=r;const s=ue(e),a=u.marks;m.setGuides({eye:s.eye,head:s.head,marks:{crown:(a.crown.y-n.y)/n.height,chin:(a.chin.y-n.y)/n.height},pass:{head:r.head.status==="ok",eye:r.eye.status==="ok"}});const i=e.print?.heightMm??null,d=[[r.head,Y(r.head,"Head height",i)],[r.eye,Y(r.eye,"Eye line",i)],[r.centre,Te(r.centre)],[r.tilt,We(r.tilt)]];t.geometryChecks.replaceChildren(...d.map(([l,h])=>ne(Be(l.status,l.advisory),h))),oe(e,n),j(e),t.make.disabled=!1}function ne(e,n){const r=document.createElement("li");r.className=`check check-${e}`;const s=document.createElement("span");s.className="check-mark",s.textContent=e==="good"?"\u2713":e==="warn"?"!":"\u2717";const a=document.createElement("span");return a.textContent=n,r.append(s,a),r}function oe(e,n){const r=[P(e,Number(t.printDpi.value)),U(e)].filter(Boolean);if(!r.length){t.resampleNote.textContent="";return}const s=r.reduce((a,i)=>a.height>=i.height?a:i);t.resampleNote.textContent=ze(ge(n,s))}function j(){t.readyLine.textContent=Pe(E?me(E):!0,p?.status??"unknown")}t.fitBox.addEventListener("click",x),t.wholePhoto.addEventListener("click",()=>m.maximize()),t.resetMarks.addEventListener("click",()=>{L(),x()});for(const e of[t.modeAuto,t.modeManual])e.addEventListener("change",()=>{e.checked&&(y=e.value,y==="auto"?(L(),x()):(b={quality:"manual",notes:[]},O()))});function D(){if(!c)return;const e=k(),n=K(c.bitmap,m.rect);if(e.kind==="signature")p=we(xe(n)),p.found=null;else{const r=ye(n);p=be(r,T(e)),p.found=r}re(),j()}function re(){const e=k(),n=T(e);if(!p){t.swatches.hidden=!0,t.backgroundChecks.replaceChildren(),t.backgroundNote.textContent="";return}t.swatches.hidden=!p.found,p.found&&(t.swatchFound.style.background=p.found.hex,t.swatchFoundText.textContent=p.found.hex,t.swatchWanted.style.background=n.hex,t.swatchWantedText.textContent=`${n.label} (${n.hex})`),t.backgroundChecks.replaceChildren(...p.findings.map(r=>ne(r.status,r.text))),t.backgroundNote.textContent=e.kind==="signature"?"Nothing here changes your signature. It is measured and reported, and the crop is yours to move.":`${n.note} This tool will not replace a background: cutting a person out of a photograph needs a segmentation model, and a bad one eats the hair of exactly the people whose photographs already get rejected most often. Standing a foot further from the wall fixes more of these than any filter would.`}t.make.addEventListener("click",He),t.printDpi.addEventListener("change",()=>{N()}),t.paper.addEventListener("change",V),t.specSelect.addEventListener("change",()=>{W=t.specSelect.value,N(),D()});for(const e of Object.values(X))e.addEventListener("change",()=>{N(),D()});async function He(){if(!c||$)return;$=!0,t.make.disabled=!0,t.results.hidden=!0,v(0,"cropping");for(const a of F)URL.revokeObjectURL(a);F=[];const e=k(),n=m.rect,r=Re(c.file.name),s=[];try{const a=Number(t.printDpi.value)||e.print?.dpi||300;let i=null;if(e.print){const d=P(e,a);v(.15,`writing the ${C(e.print.widthMm)} x ${C(e.print.heightMm)} mm print`),i=H(c.bitmap,n,d);const{blob:l}=await _(i,{dpi:a});s.push({blob:l,name:R(r,e,"print"),title:`The print - ${C(e.print.widthMm)} x ${C(e.print.heightMm)} mm`,detail:`${d.width} x ${d.height} pixels, ${w(l.size)}, tagged ${a} dpi in the file itself so a print shop reproduces it at the right size.`}),v(.5,"laying out the sheet");const h=Z(e);if(h.count>0){const g=Ce(h,i),A=await _(g,{dpi:a,quality:.92});B(g),s.push({blob:A.blob,name:R(r,e,"sheet",{paper:z(t.paper.value).id}),title:`The sheet - ${z(t.paper.value).label}`,detail:`${G(h)}, ${w(A.blob.size)}, tagged ${a} dpi. Print it at 100 per cent - "fit to page" is what makes a sheet come out the wrong size.`})}}if(e.digital){const d=U(e);v(.75,`squeezing to ${e.digital.label.toLowerCase()}`);const l=H(c.bitmap,n,d),h=I(e),g=await $e(l,h);B(l),s.push({blob:new Blob([g.bytes],{type:"image/jpeg"}),name:R(r,e,"upload",d),title:`The upload - ${d.width} x ${d.height}`,detail:`${w(g.bytes.length)} after ${g.encodes} ${g.encodes===1?"encode":"encodes"}. ${g.how}`,warn:!g.fitted})}i&&B(i),v(1,"done"),_e(s)}catch(a){S(`Something went wrong making the files: ${a.message}`)}finally{$=!1,t.make.disabled=!1,setTimeout(()=>{t.progress.hidden=!0},600)}}function _e(e){t.resultList.replaceChildren(...e.map(n=>{const r=URL.createObjectURL(n.blob);F.push(r);const s=document.createElement("li");s.className=`result-row${n.warn?" result-warn":""}`;const a=document.createElement("p");a.className="result-title",a.textContent=n.title;const i=document.createElement("p");i.className="result-detail",i.textContent=n.detail;const d=document.createElement("a");d.className="primary as-button",d.href=r,d.download=n.name,d.textContent="Download";const l=document.createElement("p");l.className="result-name",l.textContent=n.name;const h=document.createElement("div");return h.className="result-text",h.append(a,i,l),s.append(h,d),s})),t.results.hidden=e.length===0}function v(e,n){t.progress.hidden=!1,t.progressBar.style.width=`${Math.round(e*100)}%`,t.progressLabel.textContent=n}function S(e){t.loadError.textContent=e,t.loadError.hidden=!1}function Ke(){t.loadError.textContent="",t.loadError.hidden=!0}t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const Je=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function Ye(){const e=new Set,n=new Set,r=s=>{for(const l of s){if(l.name.startsWith("blob:")||l.name.startsWith("data:"))continue;const h=new URL(l.name,location.href);h.origin!==location.origin&&(Je.test(h.hostname)?e.add(h.hostname):n.add(h.hostname))}const a=performance.getEntriesByType("resource").filter(l=>!l.name.startsWith("blob:")&&!l.name.startsWith("data:")).length,i=n.size===0,d=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a photograph or a byte of one.`;t.networkCount.textContent=i?`your photographs have gone nowhere. ${a} files loaded, all of them this page's own.${d}`:`something contacted ${[...n].join(", ")}, which this tool never does. Treat that as worth investigating.${d}`,t.networkCount.className=i?"good":"warn",t.networkDot.className=`live-dot ${i?"good":"warn"}`};r(performance.getEntriesByType("resource"));try{new PerformanceObserver(s=>r(s.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function Xe(){const e=(n,r)=>{t.offlineStatus.textContent=n,t.offlineDot.className="live-dot",r&&(t.offlineStatus.title=r,console.info("Offline caching unavailable:",r))};if(!("serviceWorker"in navigator)){e(f("offline.none"));return}if(!window.isSecureContext){e(f("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=f("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(n){e(f("offline.failed"),n.message)}}window.addEventListener("error",e=>{S(f("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{S(f("error.broke",{detail:e.reason?.message??e.reason}))}),je(),De(),N(),Ye(),Xe(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{
+SPECS,backgroundOf,pixelLabel,portalBytes,portalPixels,printLabel,
+specById,specsByCountry,trim,withCustom,
+}from'./specs.js';
+import{
+fitFrame,frameAspect,guideLines,measure,passes,printPixels,resampling,
+}from'./geometry.js';
+import{PAPERS,bestSheet,describeSheet,paperById}from'./sheet.js';
+import{
+checkBackground,checkSignature,readBackground,readSignature,
+}from'./background.js';
+import{
+decode,drawCrop,drawSheet,encodePrint,encodeToBand,free,release,
+samplePixels,sizeText,
+}from'./encode.js';
+import{WORKING_EDGE,findMarks}from'./detect.js';
+import{Cropper}from'./cropper.js';
+import{Marks}from'./marks.js';
+import{
+bandText,centreText,outName,readyText,resamplingText,statusClass,stemOf,
+tiltText,verdictText,
+}from'./files.js';
+import{readingLabel,wireFilePicker}from'./shared/file-picker.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+loaded:$('loaded'),
+loadedName:$('loaded-name'),
+clearPhoto:$('clear-photo'),
+loadError:$('load-error'),
+specSelect:$('spec'),
+specFacts:$('spec-facts'),
+specNotes:$('spec-notes'),
+specSource:$('spec-source'),
+customPanel:$('custom-panel'),
+frameEmpty:$('frame-empty'),
+frameControls:$('frame-controls'),
+markHint:$('mark-hint'),
+markModes:$('mark-mode-auto').closest('.mark-mode'),
+modeAuto:$('mark-mode-auto'),
+modeManual:$('mark-mode-manual'),
+markNote:$('mark-note'),
+markWhy:$('mark-why'),
+stage:$('stage'),
+preview:$('preview'),
+fitBox:$('fit-box'),
+resetMarks:$('reset-marks'),
+wholePhoto:$('whole-photo'),
+shortNote:$('short-note'),
+geometryChecks:$('geometry-checks'),
+resampleNote:$('resample-note'),
+backgroundLede:$('background-lede'),
+swatches:$('swatches'),
+swatchFound:$('swatch-found'),
+swatchFoundText:$('swatch-found-text'),
+swatchWanted:$('swatch-wanted'),
+swatchWantedText:$('swatch-wanted-text'),
+backgroundChecks:$('background-checks'),
+backgroundNote:$('background-note'),
+readyLine:$('ready-line'),
+dpiField:$('dpi-field'),
+printDpi:$('print-dpi'),
+dpiNote:$('dpi-note'),
+paperField:$('paper-field'),
+paper:$('paper'),
+paperNote:$('paper-note'),
+make:$('make'),
+progress:$('progress'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+results:$('results'),
+resultList:$('result-list'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+const CUSTOM_FIELDS={
+widthMm:$('custom-width'),
+heightMm:$('custom-height'),
+dpi:$('custom-dpi'),
+headMinMm:$('custom-head-min'),
+headMaxMm:$('custom-head-max'),
+background:$('custom-background'),
+pxWidth:$('custom-px-width'),
+pxHeight:$('custom-px-height'),
+minKb:$('custom-min-kb'),
+maxKb:$('custom-max-kb'),
+};
+let photo=null;
+let specId=SPECS[0].id;
+let busy=false;
+let markMode='auto';
+let lastFinding=null;
+let reading=null;
+let lastMetrics=null;
+let backgroundTimer=0;
+let resultUrls=[];
+const cropper=new Cropper(el.stage,{onChange:onCropChange});
+const marks=new Marks(el.stage,{
+onChange:(_,why)=>{
+if(why==='drag'&&markMode==='auto'){
+markMode='manual';
+el.modeManual.checked=true;
+lastFinding={quality:'edited',notes:[]};
+renderMarkNote();
+}
+refreshFrame();
+},
+});
+function currentSpec(){
+const spec=specById(specId);
+if(spec.id!=='custom')return spec;
+const values=Object.fromEntries(
+Object.entries(CUSTOM_FIELDS).map(([key,input])=>[key,input.value]),
+);
+return withCustom(spec,values);
+}
+function buildSpecSelect(){
+for(const group of specsByCountry()){
+const optgroup=document.createElement('optgroup');
+optgroup.label=group.country;
+for(const spec of group.specs){
+const option=document.createElement('option');
+option.value=spec.id;
+option.textContent=spec.document;
+optgroup.append(option);
+}
+el.specSelect.append(optgroup);
+}
+el.specSelect.value=specId;
+}
+function buildPaperSelect(){
+for(const paper of PAPERS){
+const option=document.createElement('option');
+option.value=paper.id;
+option.textContent=paper.label;
+el.paper.append(option);
+}
+}
+function renderSpec(){
+const spec=currentSpec();
+const background=backgroundOf(spec);
+const heightMm=spec.print?.heightMm??null;
+const facts=[['Print size',printLabel(spec)]];
+if(spec.kind!=='signature'){
+facts.push(
+['Head, chin to crown',bandText(spec.head,heightMm)+(spec.head.advisory?' (guidance)':'')],
+['Eye line, from the bottom',bandText(spec.eye,heightMm)+(spec.eye.advisory?' (guidance)':'')],
+);
+}
+facts.push(['Background',background.label]);
+if(spec.digital){
+const bytes=portalBytes(spec);
+const size=Number.isFinite(bytes.max)
+?(bytes.min?`${sizeText(bytes.min)} to ${sizeText(bytes.max)}`:`up to ${sizeText(bytes.max)}`)
+:(bytes.min?`${sizeText(bytes.min)} and up`:'no file-size rule stated');
+facts.push([spec.digital.label,`${pixelLabel(spec)}, JPEG, ${size}`]);
+}else{
+facts.push(['Upload rule','none published - this one is a print']);
+}
+el.specFacts.replaceChildren(...facts.flatMap(([term,value])=>{
+const dt=document.createElement('dt');
+dt.textContent=term;
+const dd=document.createElement('dd');
+dd.textContent=value;
+return[dt,dd];
+}));
+el.specNotes.replaceChildren(...spec.notes.map((note)=>{
+const li=document.createElement('li');
+li.textContent=note;
+return li;
+}));
+el.specSource.textContent=spec.source.checked
+?`Transcribed from ${spec.source.authority} - ${spec.source.document}. Checked ${spec.source.checked}. `
++'Rules change; the figures above are what to check against the form in front of you.'
+:'Your own figures. Nothing here is checked against anything.';
+el.customPanel.hidden=spec.id!=='custom';
+const signature=spec.kind==='signature';
+el.markHint.hidden=signature;
+el.markModes.hidden=signature;
+el.markNote.hidden=signature;
+el.markWhy.hidden=signature;
+el.fitBox.hidden=signature;
+el.resetMarks.hidden=signature;
+if(signature)marks.hide();
+else if(photo){
+if(marks.placed)marks.show();
+else placeMarks();
+}
+el.backgroundLede.textContent=signature
+?'A signature is checked differently: that the paper is light, that there is ink '
++'on it, and that the crop has not taken in a ruled line or the edge of the page.'
+:'Read from a band across the top of the crop and down each side, above the '
++'shoulders - the parts of the frame that ought to be nothing but background. '
++'Measured in CIE Lab rather than in RGB, because two greys forty RGB units '
++'apart are indistinguishable and forty units of blue is a different colour.';
+el.dpiField.hidden=!spec.print;
+el.paperField.hidden=!spec.print;
+el.dpiNote.textContent=spec.print
+?`${spec.print.dpi} dpi is this rule's floor. At ${el.printDpi.value} dpi the file `
++`comes out ${describePrint(spec)}, and the JPEG carries that resolution in its `
++'header, so a print shop prints it at the right size rather than guessing.'
+:'';
+if(photo){
+cropper.setAspect(frameAspect(spec));
+if(signature)marks.hide();
+else if(marks.placed)fitToRule();
+refreshFrame();
+}
+renderPaperNote();
+}
+function describePrint(spec){
+const pixels=printPixels(spec,Number(el.printDpi.value));
+return pixels?`${pixels.width} x ${pixels.height} pixels`:'';
+}
+function renderPaperNote(){
+const spec=currentSpec();
+if(!spec.print){
+el.paperNote.textContent='';
+return;
+}
+const plan=sheetPlan(spec);
+el.paperNote.textContent=`${describeSheet(plan)}, with cut marks in the gaps and `
++'nothing printed over a photograph.';
+}
+function sheetPlan(spec){
+return bestSheet({
+photo:{widthMm:spec.print.widthMm,heightMm:spec.print.heightMm},
+paper:paperById(el.paper.value),
+dpi:Number(el.printDpi.value)||spec.print.dpi,
+});
+}
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+load(files[0]);
+},
+});
+async function load(file){
+if(!file||busy)return;
+clearLoadError();
+picker.busy(readingLabel(1));
+try{
+if(!looksLikeImage(file))throw new Error('that is not an image this browser can open.');
+const decoded=await decode(file);
+dropPhoto();
+photo={
+file,
+url:URL.createObjectURL(file),
+bitmap:decoded.bitmap,
+width:decoded.width,
+height:decoded.height,
+};
+el.preview.src=photo.url;
+el.stage.style.aspectRatio=`${photo.width} / ${photo.height}`;
+el.stage.style.maxWidth=`calc(62vh * ${photo.width / photo.height})`;
+el.loadedName.textContent=`${file.name} - ${photo.width} x ${photo.height} pixels`;
+el.loaded.hidden=false;
+el.frameEmpty.hidden=true;
+el.frameControls.hidden=false;
+cropper.setSource(photo.width,photo.height);
+cropper.setAspect(frameAspect(currentSpec()));
+marks.setSource(photo.width,photo.height);
+if(currentSpec().kind!=='signature'){
+placeMarks();
+fitToRule();
+}
+refreshFrame();
+}catch(error){
+showLoadError(`${file.name}: ${error.message}`);
+}finally{
+picker.done();
+}
+}
+function looksLikeImage(file){
+return file.type.startsWith('image/')||/\.(jpe?g|png|webp|bmp|gif|avif|heic)$/i.test(file.name);
+}
+function dropPhoto(){
+if(!photo)return;
+URL.revokeObjectURL(photo.url);
+release(photo.bitmap);
+photo=null;
+}
+el.clearPhoto.addEventListener('click',()=>{
+dropPhoto();
+el.preview.removeAttribute('src');
+el.loaded.hidden=true;
+el.frameControls.hidden=true;
+el.frameEmpty.hidden=false;
+el.results.hidden=true;
+el.make.disabled=true;
+reading=null;
+lastFinding=null;
+marks.clear();
+renderBackground();
+});
+function placeMarks(){
+if(!photo)return;
+lastFinding=markMode==='auto'?detect():{quality:'manual',notes:[]};
+if(lastFinding?.marks)marks.place(lastFinding.marks);
+else marks.open();
+renderMarkNote();
+}
+function detect(){
+try{
+const pixels=samplePixels(
+photo.bitmap,
+{x:0,y:0,width:photo.width,height:photo.height},
+WORKING_EDGE,
+);
+const found=findMarks(pixels);
+if(!found.marks)return found;
+const scaleX=photo.width/pixels.width;
+const scaleY=photo.height/pixels.height;
+return{
+...found,
+marks:Object.fromEntries(Object.entries(found.marks).map(([key,point])=>[key,{
+x:point.x*scaleX,
+y:point.y*scaleY,
+}])),
+};
+}catch{
+return{marks:null,quality:'none',notes:['background']};
+}
+}
+function renderMarkNote(){
+const quality=lastFinding?.quality??'manual';
+el.markNote.textContent=phrase(`marks.${quality}`);
+el.markWhy.replaceChildren(...(lastFinding?.notes??[]).map((note)=>{
+const li=document.createElement('li');
+li.textContent=phrase(`marks.why.${note}`);
+return li;
+}));
+el.resetMarks.textContent=phrase(
+markMode==='auto'?'marks.button.again':'marks.button.back',
+);
+}
+function fitToRule(){
+if(!photo||!marks.placed)return;
+const spec=currentSpec();
+const fitted=fitFrame(marks.marks,spec,photo);
+cropper.setRect(fitted.rect);
+const short=fitted.short;
+const missing=Object.entries(short).filter(([,value])=>value>2);
+el.shortNote.hidden=missing.length===0;
+if(missing.length){
+const parts=missing.map(([side,value])=>`${value} px at the ${side}`);
+el.shortNote.textContent=`The rule wanted more picture than there is: ${parts.join(', ')}. `
++'The box has been kept inside the photograph instead, which is why the figures '
++'below may not all be green. A photo taken a step further back is the fix.';
+}
+}
+function onCropChange(){
+refreshFrame();
+clearTimeout(backgroundTimer);
+backgroundTimer=setTimeout(readBackgroundNow,180);
+}
+function refreshFrame(){
+if(!photo)return;
+const spec=currentSpec();
+const rect=cropper.rect;
+if(spec.kind==='signature'||!marks.placed){
+cropper.setGuides(null);
+el.geometryChecks.replaceChildren();
+el.make.disabled=false;
+lastMetrics=null;
+renderResample(spec,rect);
+renderReady(spec);
+return;
+}
+const metrics=measure(rect,marks.marks,spec);
+lastMetrics=metrics;
+const lines=guideLines(spec);
+const points=marks.marks;
+cropper.setGuides({
+eye:lines.eye,
+head:lines.head,
+marks:{
+crown:(points.crown.y-rect.y)/rect.height,
+chin:(points.chin.y-rect.y)/rect.height,
+},
+pass:{head:metrics.head.status==='ok',eye:metrics.eye.status==='ok'},
+});
+const heightMm=spec.print?.heightMm??null;
+const rows=[
+[metrics.head,verdictText(metrics.head,'Head height',heightMm)],
+[metrics.eye,verdictText(metrics.eye,'Eye line',heightMm)],
+[metrics.centre,centreText(metrics.centre)],
+[metrics.tilt,tiltText(metrics.tilt)],
+];
+el.geometryChecks.replaceChildren(...rows.map(([check,text])=>checkRow(
+statusClass(check.status,check.advisory),text,
+)));
+renderResample(spec,rect);
+renderReady(spec);
+el.make.disabled=false;
+}
+function checkRow(status,text){
+const li=document.createElement('li');
+li.className=`check check-${status}`;
+const mark=document.createElement('span');
+mark.className='check-mark';
+mark.textContent=status==='good'?'✓':status==='warn'?'!':'✗';
+const body=document.createElement('span');
+body.textContent=text;
+li.append(mark,body);
+return li;
+}
+function renderResample(spec,rect){
+const outputs=[printPixels(spec,Number(el.printDpi.value)),portalPixels(spec)]
+.filter(Boolean);
+if(!outputs.length){
+el.resampleNote.textContent='';
+return;
+}
+const largest=outputs.reduce((a,b)=>(a.height>=b.height?a:b));
+el.resampleNote.textContent=resamplingText(resampling(rect,largest));
+}
+function renderReady(){
+el.readyLine.textContent=readyText(
+lastMetrics?passes(lastMetrics):true,
+reading?.status??'unknown',
+);
+}
+el.fitBox.addEventListener('click',fitToRule);
+el.wholePhoto.addEventListener('click',()=>cropper.maximize());
+el.resetMarks.addEventListener('click',()=>{
+placeMarks();
+fitToRule();
+});
+for(const radio of[el.modeAuto,el.modeManual]){
+radio.addEventListener('change',()=>{
+if(!radio.checked)return;
+markMode=radio.value;
+if(markMode==='auto'){
+placeMarks();
+fitToRule();
+}else{
+lastFinding={quality:'manual',notes:[]};
+renderMarkNote();
+}
+});
+}
+function readBackgroundNow(){
+if(!photo)return;
+const spec=currentSpec();
+const pixels=samplePixels(photo.bitmap,cropper.rect);
+if(spec.kind==='signature'){
+reading=checkSignature(readSignature(pixels));
+reading.found=null;
+}else{
+const read=readBackground(pixels);
+reading=checkBackground(read,backgroundOf(spec));
+reading.found=read;
+}
+renderBackground();
+renderReady();
+}
+function renderBackground(){
+const spec=currentSpec();
+const wanted=backgroundOf(spec);
+if(!reading){
+el.swatches.hidden=true;
+el.backgroundChecks.replaceChildren();
+el.backgroundNote.textContent='';
+return;
+}
+el.swatches.hidden=!reading.found;
+if(reading.found){
+el.swatchFound.style.background=reading.found.hex;
+el.swatchFoundText.textContent=reading.found.hex;
+el.swatchWanted.style.background=wanted.hex;
+el.swatchWantedText.textContent=`${wanted.label} (${wanted.hex})`;
+}
+el.backgroundChecks.replaceChildren(...reading.findings.map(
+(finding)=>checkRow(finding.status,finding.text),
+));
+el.backgroundNote.textContent=spec.kind==='signature'
+?'Nothing here changes your signature. It is measured and reported, and the crop '
++'is yours to move.'
+:`${wanted.note} This tool will not replace a background: cutting a person out of a `
++'photograph needs a segmentation model, and a bad one eats the hair of exactly '
++'the people whose photographs already get rejected most often. Standing a foot '
++'further from the wall fixes more of these than any filter would.';
+}
+el.make.addEventListener('click',run);
+el.printDpi.addEventListener('change',()=>{renderSpec();});
+el.paper.addEventListener('change',renderPaperNote);
+el.specSelect.addEventListener('change',()=>{
+specId=el.specSelect.value;
+renderSpec();
+readBackgroundNow();
+});
+for(const input of Object.values(CUSTOM_FIELDS)){
+input.addEventListener('change',()=>{renderSpec();readBackgroundNow();});
+}
+async function run(){
+if(!photo||busy)return;
+busy=true;
+el.make.disabled=true;
+el.results.hidden=true;
+showProgress(0,'cropping');
+for(const url of resultUrls)URL.revokeObjectURL(url);
+resultUrls=[];
+const spec=currentSpec();
+const rect=cropper.rect;
+const stem=stemOf(photo.file.name);
+const made=[];
+try{
+const dpi=Number(el.printDpi.value)||spec.print?.dpi||300;
+let printCanvas=null;
+if(spec.print){
+const size=printPixels(spec,dpi);
+showProgress(0.15,`writing the ${trim(spec.print.widthMm)} x ${trim(spec.print.heightMm)} mm print`);
+printCanvas=drawCrop(photo.bitmap,rect,size);
+const{blob}=await encodePrint(printCanvas,{dpi});
+made.push({
+blob,
+name:outName(stem,spec,'print'),
+title:`The print - ${trim(spec.print.widthMm)} x ${trim(spec.print.heightMm)} mm`,
+detail:`${size.width} x ${size.height} pixels, ${sizeText(blob.size)}, tagged ${dpi} dpi `
++'in the file itself so a print shop reproduces it at the right size.',
+});
+showProgress(0.5,'laying out the sheet');
+const plan=sheetPlan(spec);
+if(plan.count>0){
+const sheetCanvas=drawSheet(plan,printCanvas);
+const sheet=await encodePrint(sheetCanvas,{dpi,quality:0.92});
+free(sheetCanvas);
+made.push({
+blob:sheet.blob,
+name:outName(stem,spec,'sheet',{paper:paperById(el.paper.value).id}),
+title:`The sheet - ${paperById(el.paper.value).label}`,
+detail:`${describeSheet(plan)}, ${sizeText(sheet.blob.size)}, tagged ${dpi} dpi. `
++'Print it at 100 per cent - "fit to page" is what makes a sheet come out '
++'the wrong size.',
+});
+}
+}
+if(spec.digital){
+const size=portalPixels(spec);
+showProgress(0.75,`squeezing to ${spec.digital.label.toLowerCase()}`);
+const canvas=drawCrop(photo.bitmap,rect,size);
+const band=portalBytes(spec);
+const result=await encodeToBand(canvas,band);
+free(canvas);
+made.push({
+blob:new Blob([result.bytes],{type:'image/jpeg'}),
+name:outName(stem,spec,'upload',size),
+title:`The upload - ${size.width} x ${size.height}`,
+detail:`${sizeText(result.bytes.length)} after ${result.encodes} `
++`${result.encodes === 1 ? 'encode' : 'encodes'}. ${result.how}`,
+warn:!result.fitted,
+});
+}
+if(printCanvas)free(printCanvas);
+showProgress(1,'done');
+renderResults(made);
+}catch(error){
+showLoadError(`Something went wrong making the files: ${error.message}`);
+}finally{
+busy=false;
+el.make.disabled=false;
+setTimeout(()=>{el.progress.hidden=true;},600);
+}
+}
+function renderResults(made){
+el.resultList.replaceChildren(...made.map((item)=>{
+const url=URL.createObjectURL(item.blob);
+resultUrls.push(url);
+const li=document.createElement('li');
+li.className=`result-row${item.warn ? ' result-warn' : ''}`;
+const head=document.createElement('p');
+head.className='result-title';
+head.textContent=item.title;
+const detail=document.createElement('p');
+detail.className='result-detail';
+detail.textContent=item.detail;
+const link=document.createElement('a');
+link.className='primary as-button';
+link.href=url;
+link.download=item.name;
+link.textContent='Download';
+const name=document.createElement('p');
+name.className='result-name';
+name.textContent=item.name;
+const text=document.createElement('div');
+text.className='result-text';
+text.append(head,detail,name);
+li.append(text,link);
+return li;
+}));
+el.results.hidden=made.length===0;
+}
+function showProgress(fraction,label){
+el.progress.hidden=false;
+el.progressBar.style.width=`${Math.round(fraction * 100)}%`;
+el.progressLabel.textContent=label;
+}
+function showLoadError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function clearLoadError(){
+el.loadError.textContent='';
+el.loadError.hidden=true;
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a photograph or a byte of one.`;
+el.networkCount.textContent=clean
+?`your photographs have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+buildSpecSelect();
+buildPaperSelect();
+renderSpec();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

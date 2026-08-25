@@ -1,4 +1,211 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const h="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",l="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_",f={encode:e=>new TextEncoder().encode(e),decode:e=>new TextDecoder("utf-8",{fatal:!0}).decode(e)};class s extends Error{constructor(t){super(t),this.name="CodecError"}}function p(e,{urlSafe:t=!1,pad:n=!t}={}){const o=t?l:h;let a="";for(let r=0;r<e.length;r+=3){const i=e[r],d=e[r+1],c=e[r+2];a+=o[i>>2],a+=o[(i&3)<<4|(d??0)>>4],a+=d===void 0?n?"=":"":o[(d&15)<<2|(c??0)>>6],a+=c===void 0?n?"=":"":o[c&63]}return a}function g(e){const t=e.replace(/[\s\r\n]+/g,""),n=t.replace(/=+$/,""),o=t.length-n.length;if(o>2)throw new s("That has more than two padding characters on the end.");if(o&&t.length%4!==0)throw new s("That is padded, but its length is not a multiple of four.");if(n.length%4===1)throw new s("That is one character too long or three too short to be Base64.");const a=new Uint8Array(Math.floor(n.length*6/8));let r=0,i=0,d=0;for(const c of n){let u=h.indexOf(c);if(u<0&&(u=l.indexOf(c)),u<0)throw new s(`"${c}" is not a character Base64 uses.`);r=(r<<6|u)&65535,i+=6,i>=8&&(i-=8,a[d]=r>>i&255,d+=1)}return a}const w={amp:"&",lt:"<",gt:">",quot:'"',apos:"'",nbsp:"\xA0",copy:"\xA9",reg:"\xAE",trade:"\u2122",hellip:"\u2026",mdash:"\u2014",ndash:"\u2013",lsquo:"\u2018",rsquo:"\u2019",ldquo:"\u201C",rdquo:"\u201D",bull:"\u2022",middot:"\xB7",deg:"\xB0",plusmn:"\xB1",times:"\xD7",divide:"\xF7",euro:"\u20AC",pound:"\xA3",yen:"\xA5",cent:"\xA2",sect:"\xA7",para:"\xB6",dagger:"\u2020",laquo:"\xAB",raquo:"\xBB",frac12:"\xBD",frac14:"\xBC",frac34:"\xBE",larr:"\u2190",rarr:"\u2192",harr:"\u2194",crarr:"\u21B5",infin:"\u221E",ne:"\u2260",le:"\u2264",ge:"\u2265"};function b(e){return e.replace(/[&<>"']/g,t=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[t])}function T(e){return e.replace(/&(#[0-9]+|#[xX][0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]*);/g,(t,n)=>{if(n[0]==="#"){const o=n[1]==="x"||n[1]==="X"?parseInt(n.slice(2),16):parseInt(n.slice(1),10);return!Number.isFinite(o)||o<0||o>1114111?t:String.fromCodePoint(o)}return w[n]??t})}function A(e,{spaced:t=!1}={}){const n=Array.from(e,o=>o.toString(16).padStart(2,"0"));return t?n.join(" "):n.join("")}function v(e){const t=e.replace(/0x|\\x|[\s,:;-]+/gi,"");if(t==="")return new Uint8Array(0);if(!/^[0-9a-fA-F]+$/.test(t)){const o=t.match(/[^0-9a-fA-F]/)[0];throw new s(`"${o}" is not a hex digit.`)}if(t.length%2)throw new s("That is an odd number of hex digits.");const n=new Uint8Array(t.length/2);for(let o=0;o<n.length;o+=1)n[o]=parseInt(t.slice(o*2,o*2+2),16);return n}function U(e){let t="";for(const n of e){const o=n.codePointAt(0);if(n==="\\"){t+="\\\\";continue}if(n===`
-`){t+="\\n";continue}if(n==="\r"){t+="\\r";continue}if(n==="	"){t+="\\t";continue}if(o<32||o===127){t+=`\\u${o.toString(16).padStart(4,"0")}`;continue}if(o<127){t+=n;continue}for(let a=0;a<n.length;a+=1)t+=`\\u${n.charCodeAt(a).toString(16).padStart(4,"0")}`}return t}function y(e){let t="";for(let n=0;n<e.length;n+=1){if(e[n]!=="\\"){t+=e[n];continue}const o=e[n+1],a={n:`
-`,r:"\r",t:"	",b:"\b",f:"\f",v:"\v",0:"\0","\\":"\\","'":"'",'"':'"',"/":"/"};if(o==="u"&&e[n+2]==="{"){const r=e.indexOf("}",n+3),i=r<0?"":e.slice(n+3,r);if(!/^[0-9a-fA-F]{1,6}$/.test(i))throw new s("\\u{...} needs hex digits in the braces.");t+=String.fromCodePoint(parseInt(i,16)),n=r;continue}if(o==="u"||o==="x"){const r=o==="u"?4:2,i=e.slice(n+2,n+2+r);if(!new RegExp(`^[0-9a-fA-F]{${r}}$`).test(i))throw new s(`\\${o} needs ${r} hex digits after it.`);t+=String.fromCharCode(parseInt(i,16)),n+=1+r;continue}if(o!==void 0&&o in a){t+=a[o],n+=1;continue}throw new s(`\\${o??""} is not an escape this reads.`)}return t}function m(e,t){try{return t?decodeURI(e):decodeURIComponent(e)}catch{const n=/%[0-9a-fA-F]{0,2}/.exec(e.replace(/%[0-9a-fA-F]{2}/g,""));throw new s(n?`"${n[0]}" is not a complete percent escape.`:"Those percent escapes are not valid UTF-8.")}}const x=[{id:"base64",name:"Base64",note:"Text to Base64 and back. Line breaks in the input are ignored, so a wrapped key pastes in as it is.",encode:e=>p(f.encode(e)),decode:e=>f.decode(g(e))},{id:"base64url",name:"Base64, URL-safe",note:"The same, with - and _ instead of + and /, and no padding. This is what a JWT and most tokens use.",encode:e=>p(f.encode(e),{urlSafe:!0}),decode:e=>f.decode(g(e))},{id:"url",name:"Web address, one value",note:"Percent-encoding for a value going into a query string: everything a URL gives a meaning to is escaped.",encode:e=>encodeURIComponent(e),decode:e=>m(e,!1)},{id:"url-whole",name:"Web address, whole URL",note:"Percent-encoding that leaves the address itself working - the slashes, the ? and the & are kept.",encode:e=>encodeURI(e),decode:e=>m(e,!0)},{id:"html",name:"HTML entities",note:"The five characters that have to be escaped in markup. Decoding also reads numeric entities and the common named ones.",encode:b,decode:T},{id:"hex",name:"Hex bytes",note:"The UTF-8 bytes of the text, in hex. Decoding ignores whatever separator the dump used.",encode:e=>A(f.encode(e),{spaced:!0}),decode:e=>f.decode(v(e))},{id:"escapes",name:"Backslash escapes",note:"What a string literal in JavaScript, Java or JSON looks like: \\n, \\t and \\uXXXX for anything above ASCII.",encode:U,decode:y}],S=e=>x.find(t=>t.id===e)??x[0];export{x as CODECS,s as CodecError,g as base64ToBytes,p as bytesToBase64,A as bytesToHex,S as codecById,b as escapeHtml,U as escapeUnicode,v as hexToBytes,T as unescapeHtml,y as unescapeUnicode};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const ALPHABET='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const URL_ALPHABET='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+const utf8={
+encode:(text)=>new TextEncoder().encode(text),
+decode:(bytes)=>new TextDecoder('utf-8',{fatal:true}).decode(bytes),
+};
+export class CodecError extends Error{
+constructor(message){
+super(message);
+this.name='CodecError';
+}
+}
+export function bytesToBase64(bytes,{urlSafe=false,pad=!urlSafe}={}){
+const table=urlSafe?URL_ALPHABET:ALPHABET;
+let out='';
+for(let i=0;i<bytes.length;i+=3){
+const a=bytes[i];
+const b=bytes[i+1];
+const c=bytes[i+2];
+out+=table[a>>2];
+out+=table[((a&0x03)<<4)|((b??0)>>4)];
+out+=b===undefined?(pad?'=':''):table[((b&0x0f)<<2)|((c??0)>>6)];
+out+=c===undefined?(pad?'=':''):table[c&0x3f];
+}
+return out;
+}
+export function base64ToBytes(text){
+const cleaned=text.replace(/[\s\r\n]+/g,'');
+const body=cleaned.replace(/=+$/,'');
+const padding=cleaned.length-body.length;
+if(padding>2)throw new CodecError('That has more than two padding characters on the end.');
+if(padding&&cleaned.length%4!==0){
+throw new CodecError('That is padded, but its length is not a multiple of four.');
+}
+if(body.length%4===1){
+throw new CodecError('That is one character too long or three too short to be Base64.');
+}
+const bytes=new Uint8Array(Math.floor((body.length*6)/8));
+let held=0;
+let bits=0;
+let out=0;
+for(const ch of body){
+let value=ALPHABET.indexOf(ch);
+if(value<0)value=URL_ALPHABET.indexOf(ch);
+if(value<0){
+throw new CodecError(`"${ch}" is not a character Base64 uses.`);
+}
+held=((held<<6)|value)&0xffff;
+bits+=6;
+if(bits>=8){
+bits-=8;
+bytes[out]=(held>>bits)&0xff;
+out+=1;
+}
+}
+return bytes;
+}
+const NAMED={
+amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' ',
+copy:'©',reg:'®',trade:'™',hellip:'…',
+mdash:'—',ndash:'–',lsquo:'‘',rsquo:'’',
+ldquo:'“',rdquo:'”',bull:'•',middot:'·',
+deg:'°',plusmn:'±',times:'×',divide:'÷',
+euro:'€',pound:'£',yen:'¥',cent:'¢',
+sect:'§',para:'¶',dagger:'†',laquo:'«',
+raquo:'»',frac12:'½',frac14:'¼',frac34:'¾',
+larr:'←',rarr:'→',harr:'↔',crarr:'↵',
+infin:'∞',ne:'≠',le:'≤',ge:'≥',
+};
+export function escapeHtml(text){
+return text.replace(/[&<>"']/g,(ch)=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;',
+}[ch]));
+}
+export function unescapeHtml(text){
+return text.replace(/&(#[0-9]+|#[xX][0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]*);/g,(whole,body)=>{
+if(body[0]==='#'){
+const code=body[1]==='x'||body[1]==='X'
+?parseInt(body.slice(2),16):parseInt(body.slice(1),10);
+if(!Number.isFinite(code)||code<0||code>0x10ffff)return whole;
+return String.fromCodePoint(code);
+}
+return NAMED[body]??whole;
+});
+}
+export function bytesToHex(bytes,{spaced=false}={}){
+const parts=Array.from(bytes,(byte)=>byte.toString(16).padStart(2,'0'));
+return spaced?parts.join(' '):parts.join('');
+}
+export function hexToBytes(text){
+const cleaned=text.replace(/0x|\\x|[\s,:;-]+/gi,'');
+if(cleaned==='')return new Uint8Array(0);
+if(!/^[0-9a-fA-F]+$/.test(cleaned)){
+const bad=cleaned.match(/[^0-9a-fA-F]/)[0];
+throw new CodecError(`"${bad}" is not a hex digit.`);
+}
+if(cleaned.length%2)throw new CodecError('That is an odd number of hex digits.');
+const bytes=new Uint8Array(cleaned.length/2);
+for(let i=0;i<bytes.length;i+=1){
+bytes[i]=parseInt(cleaned.slice(i*2,i*2+2),16);
+}
+return bytes;
+}
+export function escapeUnicode(text){
+let out='';
+for(const ch of text){
+const code=ch.codePointAt(0);
+if(ch==='\\'){out+='\\\\';continue;}
+if(ch==='\n'){out+='\\n';continue;}
+if(ch==='\r'){out+='\\r';continue;}
+if(ch==='\t'){out+='\\t';continue;}
+if(code<0x20||code===0x7f){out+=`\\u${code.toString(16).padStart(4, '0')}`;continue;}
+if(code<0x7f){out+=ch;continue;}
+for(let i=0;i<ch.length;i+=1){
+out+=`\\u${ch.charCodeAt(i).toString(16).padStart(4, '0')}`;
+}
+}
+return out;
+}
+export function unescapeUnicode(text){
+let out='';
+for(let i=0;i<text.length;i+=1){
+if(text[i]!=='\\'){out+=text[i];continue;}
+const next=text[i+1];
+const short={n:'\n',r:'\r',t:'\t',b:'\b',f:'\f',v:'\v','0':'\0','\\':'\\',"'":"'",'"':'"','/':'/'};
+if(next==='u'&&text[i+2]==='{'){
+const end=text.indexOf('}',i+3);
+const digits=end<0?'':text.slice(i+3,end);
+if(!/^[0-9a-fA-F]{1,6}$/.test(digits))throw new CodecError('\\u{...} needs hex digits in the braces.');
+out+=String.fromCodePoint(parseInt(digits,16));
+i=end;
+continue;
+}
+if(next==='u'||next==='x'){
+const width=next==='u'?4:2;
+const digits=text.slice(i+2,i+2+width);
+if(!new RegExp(`^[0-9a-fA-F]{${width}}$`).test(digits)){
+throw new CodecError(`\\${next} needs ${width} hex digits after it.`);
+}
+out+=String.fromCharCode(parseInt(digits,16));
+i+=1+width;
+continue;
+}
+if(next!==undefined&&next in short){out+=short[next];i+=1;continue;}
+throw new CodecError(`\\${next ?? ''} is not an escape this reads.`);
+}
+return out;
+}
+function decodePercent(text,whole){
+try{
+return whole?decodeURI(text):decodeURIComponent(text);
+}catch{
+const bad=/%[0-9a-fA-F]{0,2}/.exec(text.replace(/%[0-9a-fA-F]{2}/g,''));
+throw new CodecError(bad
+?`"${bad[0]}" is not a complete percent escape.`
+:'Those percent escapes are not valid UTF-8.');
+}
+}
+export const CODECS=[
+{
+id:'base64',
+name:'Base64',
+note:'Text to Base64 and back. Line breaks in the input are ignored, so a wrapped key pastes in as it is.',
+encode:(text)=>bytesToBase64(utf8.encode(text)),
+decode:(text)=>utf8.decode(base64ToBytes(text)),
+},
+{
+id:'base64url',
+name:'Base64, URL-safe',
+note:'The same, with - and _ instead of + and /, and no padding. This is what a JWT and most tokens use.',
+encode:(text)=>bytesToBase64(utf8.encode(text),{urlSafe:true}),
+decode:(text)=>utf8.decode(base64ToBytes(text)),
+},
+{
+id:'url',
+name:'Web address, one value',
+note:'Percent-encoding for a value going into a query string: everything a URL gives a meaning to is escaped.',
+encode:(text)=>encodeURIComponent(text),
+decode:(text)=>decodePercent(text,false),
+},
+{
+id:'url-whole',
+name:'Web address, whole URL',
+note:'Percent-encoding that leaves the address itself working - the slashes, the ? and the & are kept.',
+encode:(text)=>encodeURI(text),
+decode:(text)=>decodePercent(text,true),
+},
+{
+id:'html',
+name:'HTML entities',
+note:'The five characters that have to be escaped in markup. Decoding also reads numeric entities and the common named ones.',
+encode:escapeHtml,
+decode:unescapeHtml,
+},
+{
+id:'hex',
+name:'Hex bytes',
+note:'The UTF-8 bytes of the text, in hex. Decoding ignores whatever separator the dump used.',
+encode:(text)=>bytesToHex(utf8.encode(text),{spaced:true}),
+decode:(text)=>utf8.decode(hexToBytes(text)),
+},
+{
+id:'escapes',
+name:'Backslash escapes',
+note:'What a string literal in JavaScript, Java or JSON looks like: \\n, \\t and \\uXXXX for anything above ASCII.',
+encode:escapeUnicode,
+decode:unescapeUnicode,
+},
+];
+export const codecById=(id)=>CODECS.find((codec)=>codec.id===id)??CODECS[0];

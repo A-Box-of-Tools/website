@@ -1,2 +1,354 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const k=16e4,C="mp4a.40.2",F=1024;function E(e,t){let n=0,r=t;for(let a=0;a<4;a++){const o=e.getUint8(r);if(r++,n=n<<7|o&127,!(o&128))break}return{value:n,next:r}}function U(e,t){return String.fromCharCode(e.getUint8(t),e.getUint8(t+1),e.getUint8(t+2),e.getUint8(t+3))}function _(e){if(!e.length)return 2;const t=e[0]>>3;return t!==31?t:e.length<2?2:32+((e[0]&7)<<3|e[1]>>5)}function M(e){if(!e?.sampleEntry||e.entryType!=="mp4a")return null;const t=e.sampleEntry,n=new DataView(t.buffer,t.byteOffset,t.byteLength);let r=36,a=null;for(;r+8<=t.byteLength;){const o=n.getUint32(r);if(o<8||r+o>t.byteLength)break;if(U(n,r+4)==="esds"){a={body:r+8,end:r+o};break}r+=o}if(!a)return null;try{let o=a.body+4;if(n.getUint8(o)!==3)return null;o=E(n,o+1).next,o+=2;const u=n.getUint8(o);if(o+=1,u&128&&(o+=2),u&64&&(o+=1+n.getUint8(o)),u&32&&(o+=2),n.getUint8(o)!==4||(o=E(n,o+1).next,n.getUint8(o)!==64)||(o+=13,n.getUint8(o)!==5))return null;const s=E(n,o+1),h=new Uint8Array(t.buffer.slice(t.byteOffset+s.next,t.byteOffset+s.next+s.value));return h.length?{codec:`mp4a.40.${_(h)}`,description:h,sampleRate:Math.round(e.sampleRate),numberOfChannels:e.channels}:null}catch{return null}}function m(...e){return new Uint8Array(e)}function w(e){let t=0;for(const a of e)t+=a.byteLength;const n=new Uint8Array(t);let r=0;for(const a of e)n.set(a,r),r+=a.byteLength;return n}function g(e){return m(e>>8&255,e&255)}function b(e){return m(e>>>24&255,e>>>16&255,e>>>8&255,e&255)}function T(e,...t){const n=w(t),r=w([b(n.byteLength+8),m(e.charCodeAt(0),e.charCodeAt(1),e.charCodeAt(2),e.charCodeAt(3))]);return w([r,n])}function A(e,...t){const n=w(t);if(n.byteLength>127)throw new Error("Internal error: the audio description is larger than expected.");return w([m(e,n.byteLength),n])}function R({channels:e,sampleRate:t,asc:n,bitrate:r=16e4}){const a=T("esds",b(0),A(3,g(1),m(0),A(4,m(64),m(21),m(0,0,0),b(r),b(r),A(5,n)),A(6,m(2))));return T("mp4a",new Uint8Array(6),g(1),new Uint8Array(8),g(e),g(16),g(0),g(0),b(t<<16),a)}function D(e){for(const t of e)for(let n=0,r=t.length-1;n<r;n++,r--){const a=t[n];t[n]=t[r],t[r]=a}return e}async function v({sampleRate:e,numberOfChannels:t}){if(typeof window>"u"||typeof window.AudioEncoder!="function")return!1;try{const{supported:n}=await AudioEncoder.isConfigSupported({codec:C,sampleRate:e,numberOfChannels:t,bitrate:16e4});return!!n}catch{return!1}}async function L({file:e,track:t,config:n,onProgress:r,signal:a}){const o=[];let u=0,d=null;const s=new AudioDecoder({output:i=>{try{const c=[];for(let l=0;l<i.numberOfChannels;l++){const p=new Float32Array(i.numberOfFrames);i.copyTo(p,{planeIndex:l,format:"f32-planar"}),c.push(p)}o.push(c),u+=i.numberOfFrames}catch(c){d??=c}finally{i.close()}},error:i=>{d??=i}});s.configure(n);try{for(let i=0;i<t.samples.length;i++){if(a?.aborted)throw Object.assign(new Error("Cancelled."),{name:"AbortError"});if(d)throw d;const c=t.samples[i],l=new Uint8Array(await e.slice(c.offset,c.offset+c.size).arrayBuffer());s.decode(new EncodedAudioChunk({type:"key",timestamp:Math.round(c.dts/t.timescale*1e6),data:l})),i%200===0&&r?.({done:i,total:t.samples.length})}if(await s.flush(),d)throw d}finally{s.state!=="closed"&&s.close()}const h=Math.max(1,o[0]?.length??n.numberOfChannels),y=[];for(let i=0;i<h;i++)y.push(new Float32Array(u));let f=0;for(const i of o){const c=i[0]?.length??0;for(let l=0;l<h;l++)y[l].set(i[Math.min(l,i.length-1)],f);f+=c}return{channels:y,sampleRate:n.sampleRate}}async function B(e,t=48e3){const n=await e.arrayBuffer(),a=await new OfflineAudioContext(1,1,t).decodeAudioData(n),o=[];for(let u=0;u<a.numberOfChannels;u++)o.push(a.getChannelData(u));if(!o.length||!o[0].length)throw new Error("No sound came back from this file.");return{channels:o,sampleRate:a.sampleRate}}async function S({channels:e,sampleRate:t,onProgress:n,signal:r}){const a=Math.min(2,Math.max(1,e.length)),o=e[0]?.length??0,u=[];let d=null,s=null;const h=new AudioEncoder({output:(f,i)=>{try{if(!d&&i?.decoderConfig?.description){const l=i.decoderConfig.description;d=l instanceof Uint8Array?new Uint8Array(l):new Uint8Array(l instanceof ArrayBuffer?l:l.buffer.slice(l.byteOffset,l.byteOffset+l.byteLength))}const c=new Uint8Array(f.byteLength);f.copyTo(c),u.push({data:c,timestamp:f.timestamp,duration:f.duration})}catch(c){s??=c}},error:f=>{s??=f}});h.configure({codec:C,sampleRate:t,numberOfChannels:a,bitrate:16e4});try{for(let f=0;f<o;f+=1024){if(r?.aborted)throw Object.assign(new Error("Cancelled."),{name:"AbortError"});if(s)throw s;const i=Math.min(1024,o-f),c=new Float32Array(i*a);for(let p=0;p<a;p++){const O=e[Math.min(p,e.length-1)];for(let x=0;x<i;x++)c[x*a+p]=O[f+x]}const l=new AudioData({format:"f32",sampleRate:t,numberOfFrames:i,numberOfChannels:a,timestamp:Math.round(f/t*1e6),data:c});try{h.encode(l)}finally{l.close()}f/1024%200===0&&n?.({done:f,total:o})}if(await h.flush(),s)throw s;if(!u.length||!d)throw new Error("The sound was decoded but nothing came back from the encoder.")}finally{h.state!=="closed"&&h.close()}const y=u.map((f,i)=>{const c=u[i+1],l=Math.round(f.timestamp/1e6*t),p=c?Math.round(c.timestamp/1e6*t):l+Math.round((f.duration??21333)/1e6*t);return{data:f.data,dts:l,duration:Math.max(1,p-l)}});return{sampleEntry:R({channels:a,sampleRate:t,asc:d}),timescale:t,samples:y}}async function I({file:e,audio:t,maxDecodeBytes:n=800<<20,onProgress:r,signal:a}){const o=t?M(t):null,u=!!o&&typeof window.AudioDecoder=="function",d=o?o.sampleRate:48e3;let s;if(u)r?.({phase:"sound-reading",done:0,total:1}),s=await L({file:e,track:t,config:o,signal:a});else{if(e.size>n)return{track:null,note:"The sound in this file is not AAC, so reversing it would mean handing the whole file to the browser for reading - and this file is too large for that. The video has been reversed without sound."};r?.({phase:"sound-reading",done:0,total:1});try{s=await B(e,d)}catch{return{track:null,note:"No sound could be read out of this file, so the reversed video has none. Either it has no audio track, or this browser will not decode the one it has."}}}return!s.channels.length||!s.channels[0].length?{track:null,note:null}:await v({sampleRate:s.sampleRate,numberOfChannels:Math.min(2,s.channels.length)})?(D(s.channels),r?.({phase:"sound-writing",done:0,total:1}),{track:await S({channels:s.channels,sampleRate:s.sampleRate,onProgress:y=>r?.({phase:"sound-writing",...y}),signal:a}),note:null}):{track:null,note:"Reversing the sound means encoding it again, and this browser will not encode AAC. The video has been reversed without sound; Chrome, Edge and Safari will do it with."}}export{M as audioDecoderConfig,v as canEncodeAudio,L as decodeTrack,B as decodeWholeFile,S as encodeAudioTrack,R as mp4aSampleEntry,D as reverseChannels,I as reversedAudioTrack};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const TARGET_BITRATE=160_000;
+const AAC_CODEC='mp4a.40.2';
+const ENCODE_STEP=1024;
+function descriptorLength(view,at){
+let value=0;
+let next=at;
+for(let i=0;i<4;i++){
+const byte=view.getUint8(next);
+next++;
+value=(value<<7)|(byte&0x7f);
+if(!(byte&0x80))break;
+}
+return{value,next};
+}
+function fourcc(view,at){
+return String.fromCharCode(
+view.getUint8(at),view.getUint8(at+1),view.getUint8(at+2),view.getUint8(at+3));
+}
+function objectType(asc){
+if(!asc.length)return 2;
+const top=asc[0]>>3;
+if(top!==31)return top;
+if(asc.length<2)return 2;
+return 32+(((asc[0]&0x7)<<3)|(asc[1]>>5));
+}
+export function audioDecoderConfig(track){
+if(!track?.sampleEntry||track.entryType!=='mp4a')return null;
+const entry=track.sampleEntry;
+const view=new DataView(entry.buffer,entry.byteOffset,entry.byteLength);
+let at=8+28;
+let esds=null;
+while(at+8<=entry.byteLength){
+const size=view.getUint32(at);
+if(size<8||at+size>entry.byteLength)break;
+if(fourcc(view,at+4)==='esds'){
+esds={body:at+8,end:at+size};
+break;
+}
+at+=size;
+}
+if(!esds)return null;
+try{
+let read=esds.body+4;
+if(view.getUint8(read)!==0x03)return null;
+read=descriptorLength(view,read+1).next;
+read+=2;
+const flags=view.getUint8(read);
+read+=1;
+if(flags&0x80)read+=2;
+if(flags&0x40)read+=1+view.getUint8(read);
+if(flags&0x20)read+=2;
+if(view.getUint8(read)!==0x04)return null;
+read=descriptorLength(view,read+1).next;
+const indication=view.getUint8(read);
+if(indication!==0x40)return null;
+read+=1+1+3+4+4;
+if(view.getUint8(read)!==0x05)return null;
+const length=descriptorLength(view,read+1);
+const asc=new Uint8Array(
+entry.buffer.slice(
+entry.byteOffset+length.next,entry.byteOffset+length.next+length.value));
+if(!asc.length)return null;
+return{
+codec:`mp4a.40.${objectType(asc)}`,
+description:asc,
+sampleRate:Math.round(track.sampleRate),
+numberOfChannels:track.channels,
+};
+}catch{
+return null;
+}
+}
+function bytes(...values){
+return new Uint8Array(values);
+}
+function concat(parts){
+let length=0;
+for(const part of parts)length+=part.byteLength;
+const out=new Uint8Array(length);
+let at=0;
+for(const part of parts){
+out.set(part,at);
+at+=part.byteLength;
+}
+return out;
+}
+function u16(n){
+return bytes((n>>8)&0xff,n&0xff);
+}
+function u32(n){
+return bytes((n>>>24)&0xff,(n>>>16)&0xff,(n>>>8)&0xff,n&0xff);
+}
+function box(type,...payload){
+const body=concat(payload);
+const header=concat([u32(body.byteLength+8),bytes(
+type.charCodeAt(0),type.charCodeAt(1),type.charCodeAt(2),type.charCodeAt(3))]);
+return concat([header,body]);
+}
+function descriptor(tag,...payload){
+const body=concat(payload);
+if(body.byteLength>0x7f){
+throw new Error('Internal error: the audio description is larger than expected.');
+}
+return concat([bytes(tag,body.byteLength),body]);
+}
+export function mp4aSampleEntry({channels,sampleRate,asc,bitrate=TARGET_BITRATE}){
+const esds=box('esds',u32(0),
+descriptor(0x03,
+u16(1),
+bytes(0x00),
+descriptor(0x04,
+bytes(0x40),
+bytes(0x15),
+bytes(0,0,0),
+u32(bitrate),
+u32(bitrate),
+descriptor(0x05,asc),
+),
+descriptor(0x06,bytes(0x02)),
+),
+);
+return box('mp4a',
+new Uint8Array(6),
+u16(1),
+new Uint8Array(8),
+u16(channels),
+u16(16),
+u16(0),
+u16(0),
+u32(sampleRate<<16),
+esds,
+);
+}
+export function reverseChannels(channels){
+for(const samples of channels){
+for(let i=0,j=samples.length-1;i<j;i++,j--){
+const held=samples[i];
+samples[i]=samples[j];
+samples[j]=held;
+}
+}
+return channels;
+}
+export async function canEncodeAudio({sampleRate,numberOfChannels}){
+if(typeof window==='undefined'||typeof window.AudioEncoder!=='function')return false;
+try{
+const{supported}=await AudioEncoder.isConfigSupported({
+codec:AAC_CODEC,
+sampleRate,
+numberOfChannels,
+bitrate:TARGET_BITRATE,
+});
+return Boolean(supported);
+}catch{
+return false;
+}
+}
+export async function decodeTrack({file,track,config,onProgress,signal}){
+const pieces=[];
+let frames=0;
+let failure=null;
+const decoder=new AudioDecoder({
+output:(data)=>{
+try{
+const planes=[];
+for(let channel=0;channel<data.numberOfChannels;channel++){
+const plane=new Float32Array(data.numberOfFrames);
+data.copyTo(plane,{planeIndex:channel,format:'f32-planar'});
+planes.push(plane);
+}
+pieces.push(planes);
+frames+=data.numberOfFrames;
+}catch(error){
+failure??=error;
+}finally{
+data.close();
+}
+},
+error:(error)=>{failure??=error;},
+});
+decoder.configure(config);
+try{
+for(let i=0;i<track.samples.length;i++){
+if(signal?.aborted)throw Object.assign(new Error('Cancelled.'),{name:'AbortError'});
+if(failure)throw failure;
+const sample=track.samples[i];
+const data=new Uint8Array(
+await file.slice(sample.offset,sample.offset+sample.size).arrayBuffer());
+decoder.decode(new EncodedAudioChunk({
+type:'key',
+timestamp:Math.round(sample.dts/track.timescale*1_000_000),
+data,
+}));
+if(i%200===0)onProgress?.({done:i,total:track.samples.length});
+}
+await decoder.flush();
+if(failure)throw failure;
+}finally{
+if(decoder.state!=='closed')decoder.close();
+}
+const count=Math.max(1,pieces[0]?.length??config.numberOfChannels);
+const channels=[];
+for(let c=0;c<count;c++)channels.push(new Float32Array(frames));
+let at=0;
+for(const planes of pieces){
+const length=planes[0]?.length??0;
+for(let c=0;c<count;c++)channels[c].set(planes[Math.min(c,planes.length-1)],at);
+at+=length;
+}
+return{channels,sampleRate:config.sampleRate};
+}
+export async function decodeWholeFile(file,sampleRate=48000){
+const bytes=await file.arrayBuffer();
+const context=new OfflineAudioContext(1,1,sampleRate);
+const audio=await context.decodeAudioData(bytes);
+const channels=[];
+for(let c=0;c<audio.numberOfChannels;c++)channels.push(audio.getChannelData(c));
+if(!channels.length||!channels[0].length){
+throw new Error('No sound came back from this file.');
+}
+return{channels,sampleRate:audio.sampleRate};
+}
+export async function encodeAudioTrack({channels,sampleRate,onProgress,signal}){
+const numberOfChannels=Math.min(2,Math.max(1,channels.length));
+const length=channels[0]?.length??0;
+const encoded=[];
+let asc=null;
+let failure=null;
+const encoder=new AudioEncoder({
+output:(chunk,metadata)=>{
+try{
+if(!asc&&metadata?.decoderConfig?.description){
+const description=metadata.decoderConfig.description;
+asc=description instanceof Uint8Array
+?new Uint8Array(description)
+:new Uint8Array(description instanceof ArrayBuffer
+?description
+:description.buffer.slice(
+description.byteOffset,description.byteOffset+description.byteLength));
+}
+const data=new Uint8Array(chunk.byteLength);
+chunk.copyTo(data);
+encoded.push({data,timestamp:chunk.timestamp,duration:chunk.duration});
+}catch(error){
+failure??=error;
+}
+},
+error:(error)=>{failure??=error;},
+});
+encoder.configure({
+codec:AAC_CODEC,sampleRate,numberOfChannels,bitrate:TARGET_BITRATE,
+});
+try{
+for(let offset=0;offset<length;offset+=ENCODE_STEP){
+if(signal?.aborted)throw Object.assign(new Error('Cancelled.'),{name:'AbortError'});
+if(failure)throw failure;
+const count=Math.min(ENCODE_STEP,length-offset);
+const interleaved=new Float32Array(count*numberOfChannels);
+for(let c=0;c<numberOfChannels;c++){
+const plane=channels[Math.min(c,channels.length-1)];
+for(let i=0;i<count;i++)interleaved[i*numberOfChannels+c]=plane[offset+i];
+}
+const data=new AudioData({
+format:'f32',
+sampleRate,
+numberOfFrames:count,
+numberOfChannels,
+timestamp:Math.round(offset/sampleRate*1_000_000),
+data:interleaved,
+});
+try{
+encoder.encode(data);
+}finally{
+data.close();
+}
+if((offset/ENCODE_STEP)%200===0)onProgress?.({done:offset,total:length});
+}
+await encoder.flush();
+if(failure)throw failure;
+if(!encoded.length||!asc){
+throw new Error('The sound was decoded but nothing came back from the encoder.');
+}
+}finally{
+if(encoder.state!=='closed')encoder.close();
+}
+const samples=encoded.map((chunk,index)=>{
+const next=encoded[index+1];
+const start=Math.round(chunk.timestamp/1_000_000*sampleRate);
+const end=next
+?Math.round(next.timestamp/1_000_000*sampleRate)
+:start+Math.round((chunk.duration??21_333)/1_000_000*sampleRate);
+return{data:chunk.data,dts:start,duration:Math.max(1,end-start)};
+});
+return{
+sampleEntry:mp4aSampleEntry({channels:numberOfChannels,sampleRate,asc}),
+timescale:sampleRate,
+samples,
+};
+}
+export async function reversedAudioTrack({
+file,audio,maxDecodeBytes=800<<20,onProgress,signal,
+}){
+const config=audio?audioDecoderConfig(audio):null;
+const canDecodeTrack=Boolean(config)&&typeof window.AudioDecoder==='function';
+const sampleRate=config?config.sampleRate:48000;
+let decoded;
+if(canDecodeTrack){
+onProgress?.({phase:'sound-reading',done:0,total:1});
+decoded=await decodeTrack({file,track:audio,config,signal});
+}else{
+if(file.size>maxDecodeBytes){
+return{
+track:null,
+note:'The sound in this file is not AAC, so reversing it would mean handing the '
++'whole file to the browser for reading - and this file is too large for that. '
++'The video has been reversed without sound.',
+};
+}
+onProgress?.({phase:'sound-reading',done:0,total:1});
+try{
+decoded=await decodeWholeFile(file,sampleRate);
+}catch{
+return{
+track:null,
+note:'No sound could be read out of this file, so the reversed video has none. '
++'Either it has no audio track, or this browser will not decode the one it has.',
+};
+}
+}
+if(!decoded.channels.length||!decoded.channels[0].length){
+return{track:null,note:null};
+}
+if(!await canEncodeAudio({
+sampleRate:decoded.sampleRate,
+numberOfChannels:Math.min(2,decoded.channels.length),
+})){
+return{
+track:null,
+note:'Reversing the sound means encoding it again, and this browser will not encode '
++'AAC. The video has been reversed without sound; Chrome, Edge and Safari will do '
++'it with.',
+};
+}
+reverseChannels(decoded.channels);
+onProgress?.({phase:'sound-writing',done:0,total:1});
+const track=await encodeAudioTrack({
+channels:decoded.channels,
+sampleRate:decoded.sampleRate,
+onProgress:(progress)=>onProgress?.({phase:'sound-writing',...progress}),
+signal,
+});
+return{track,note:null};
+}

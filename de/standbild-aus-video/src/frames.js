@@ -1,2 +1,264 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{FileWindow as k}from"./demux.js";import{drawUpright as H}from"./draw.js";function w(s,t){return Math.round(s/t*1e6)}function b(s){const t=s.samples.map((e,i)=>({decode:i,pts:e.pts,time:e.pts/s.timescale,isKey:!!e.isKey}));return t.sort((e,i)=>e.pts-i.pts||e.decode-i.decode),t}function C(s,t){if(!s.length)return-1;if(t<=s[0].time)return 0;let e=0,i=s.length-1;for(;e<i;){const n=e+i+1>>1;s[n].time<=t?e=n:i=n-1}return e}function W(s,t){for(let e=Math.min(t,s.length-1);e>=0;e--)if(s[e].isKey)return e;return 0}function T(s,{every:t,from:e=0,to:i=1/0,limit:n=500}){if(!s.length||!(t>0))return[];const h=Math.max(t,.001),r=Math.min(i,s[s.length-1].time),d=[];let c=-1;for(let l=Math.max(e,s[0].time);l<=r+1e-9;l+=h){const a=C(s,l);if(a!==c&&(d.push(a),c=a),d.length>=n)break}return d}function A(s,t,e=96<<20){const i=Math.max(1,s*t*4);return Math.max(2,Math.min(16,Math.floor(e/i)))}class F extends Error{constructor(t="Cancelled."){super(t),this.name="AbortError"}}function K(s){if(s?.aborted)throw new F}class V{constructor(t,e){this.file=t,this.video=e,this.order=b(e),this.displayOf=new Int32Array(e.samples.length),this.order.forEach((i,n)=>{this.displayOf[i.decode]=n}),this.window=new k(t,4<<20),this.lookahead=A(e.codedWidth,e.codedHeight),this.cache=new Map,this.maxCached=this.lookahead+4,this.decoder=null,this.chain=Promise.resolve(),this.failure=null,this.pending=null}get count(){return this.order.length}timeOf(t){const e=this.order[Math.max(0,Math.min(t,this.order.length-1))];return e?e.time:0}frameAt(t){const e=Math.max(0,Math.min(t,this.order.length-1)),i=this.cache.get(e);return i?Promise.resolve(i):(this.chain=this.chain.then(()=>this.#t(e),()=>this.#t(e)),this.chain)}#i(){if(this.decoder&&this.decoder.state==="configured")return this.decoder;const t={codec:this.video.codec,codedWidth:this.video.codedWidth,codedHeight:this.video.codedHeight};this.video.description&&(t.description=this.video.description);const e=new VideoDecoder({output:i=>this.#s(i),error:i=>{this.failure??=i}});return e.configure(t),this.decoder=e,e}#s(t){const e=this.pending,i=e?.byTime.get(t.timestamp),n=i!==void 0&&i===e.target,h=e&&e.copies.length<=this.lookahead;if(!e||i===void 0||i<e.target||!n&&!h){t.close();return}e.copies.push(createImageBitmap(t).then(r=>this.#o(i,r)).catch(r=>{this.failure??=r}).finally(()=>t.close()))}#o(t,e){const i=this.cache.get(t);for(i&&(i.close(),this.cache.delete(t)),this.cache.set(t,e);this.cache.size>this.maxCached;){const[n,h]=this.cache.entries().next().value;h.close(),this.cache.delete(n)}}async#t(t){const e=this.cache.get(t);if(e)return e;const{samples:i}=this.video,n=W(i,this.order[t].decode),h=Math.min(i.length-1,this.order[t].decode+this.lookahead),r=new Map;for(let c=n;c<=h;c++)r.set(w(i[c].pts,this.video.timescale),this.displayOf[c]);this.pending={target:t,byTime:r,copies:[]},this.failure=null;const d=this.#i();try{for(let l=n;l<=h;l++){if(this.failure)throw this.failure;const a=i[l],m=await this.window.read(a.offset,a.size);d.decode(new EncodedVideoChunk({type:a.isKey?"key":"delta",timestamp:w(a.pts,this.video.timescale),data:m}))}if(await d.flush(),await Promise.all(this.pending.copies),this.failure)throw this.failure;const c=this.cache.get(t);if(!c)throw new Error("That frame could not be decoded from this file.");return c}catch(c){throw this.#e(),c}finally{this.pending=null}}#e(){if(this.decoder&&this.decoder.state!=="closed")try{this.decoder.close()}catch{}this.decoder=null}release(){this.#e();for(const t of this.cache.values())t.close();this.cache.clear()}}async function z({file:s,video:t,indexes:e,onFrame:i,onProgress:n,signal:h}){if(!e.length)return;const r=b(t),d=new Map;for(const o of e)d.set(w(r[o].pts,t.timescale),o);const c=Math.min(...e.map(o=>r[o].decode)),l=Math.max(...e.map(o=>r[o].decode)),a=W(t.samples,c),m=[];let p=null,y=0;const g=new VideoDecoder({output:o=>{try{const f=d.get(o.timestamp);if(f===void 0)return;const u=document.createElement("canvas");u.width=t.displayWidth,u.height=t.displayHeight,H(u.getContext("2d",{alpha:!1}),o,{rotation:t.rotation,displayWidth:t.displayWidth,displayHeight:t.displayHeight}),m.push({index:f,canvas:u})}catch(f){p??=f}finally{o.close()}},error:o=>{p??=o}}),x={codec:t.codec,codedWidth:t.codedWidth,codedHeight:t.codedHeight};t.description&&(x.description=t.description),g.configure(x);const E=new k(s,4<<20),M=async()=>{for(;m.length;){const o=m.shift();await i(o.index,o.canvas),y++,n?.({done:y,total:e.length})}};try{for(let o=a;o<=l;o++){if(K(h),p)throw p;const f=t.samples[o],u=await E.read(f.offset,f.size);g.decode(new EncodedVideoChunk({type:f.isKey?"key":"delta",timestamp:w(f.pts,t.timescale),data:u})),await M()}if(await g.flush(),p)throw p;await M()}finally{g.state!=="closed"&&g.close()}}export{V as FrameReader,z as decodeSeries,b as displayOrder,C as frameNear,W as keyframeBefore,A as lookaheadFor,w as micros,T as seriesFrames};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{FileWindow}from'./demux.js';
+import{drawUpright}from'./draw.js';
+export function micros(ticks,timescale){
+return Math.round(ticks/timescale*1_000_000);
+}
+export function displayOrder(video){
+const list=video.samples.map((sample,decode)=>({
+decode,
+pts:sample.pts,
+time:sample.pts/video.timescale,
+isKey:Boolean(sample.isKey),
+}));
+list.sort((a,b)=>(a.pts-b.pts)||(a.decode-b.decode));
+return list;
+}
+export function frameNear(order,seconds){
+if(!order.length)return-1;
+if(seconds<=order[0].time)return 0;
+let low=0;
+let high=order.length-1;
+while(low<high){
+const mid=(low+high+1)>>1;
+if(order[mid].time<=seconds)low=mid;
+else high=mid-1;
+}
+return low;
+}
+export function keyframeBefore(samples,decodeIndex){
+for(let i=Math.min(decodeIndex,samples.length-1);i>=0;i--){
+if(samples[i].isKey)return i;
+}
+return 0;
+}
+export function seriesFrames(order,{every,from=0,to=Infinity,limit=500}){
+if(!order.length||!(every>0))return[];
+const step=Math.max(every,0.001);
+const end=Math.min(to,order[order.length-1].time);
+const picked=[];
+let last=-1;
+for(let at=Math.max(from,order[0].time);at<=end+1e-9;at+=step){
+const index=frameNear(order,at);
+if(index!==last){
+picked.push(index);
+last=index;
+}
+if(picked.length>=limit)break;
+}
+return picked;
+}
+export function lookaheadFor(width,height,budgetBytes=96<<20){
+const perFrame=Math.max(1,width*height*4);
+return Math.max(2,Math.min(16,Math.floor(budgetBytes/perFrame)));
+}
+class AbortedError extends Error{
+constructor(message='Cancelled.'){
+super(message);
+this.name='AbortError';
+}
+}
+function throwIfAborted(signal){
+if(signal?.aborted)throw new AbortedError();
+}
+export class FrameReader{
+constructor(file,video){
+this.file=file;
+this.video=video;
+this.order=displayOrder(video);
+this.displayOf=new Int32Array(video.samples.length);
+this.order.forEach((frame,index)=>{this.displayOf[frame.decode]=index;});
+this.window=new FileWindow(file,4<<20);
+this.lookahead=lookaheadFor(video.codedWidth,video.codedHeight);
+this.cache=new Map();
+this.maxCached=this.lookahead+4;
+this.decoder=null;
+this.chain=Promise.resolve();
+this.failure=null;
+this.pending=null;
+}
+get count(){
+return this.order.length;
+}
+timeOf(index){
+const frame=this.order[Math.max(0,Math.min(index,this.order.length-1))];
+return frame?frame.time:0;
+}
+frameAt(index){
+const wanted=Math.max(0,Math.min(index,this.order.length-1));
+const hit=this.cache.get(wanted);
+if(hit)return Promise.resolve(hit);
+this.chain=this.chain.then(
+()=>this.#run(wanted),
+()=>this.#run(wanted),
+);
+return this.chain;
+}
+#open(){
+if(this.decoder&&this.decoder.state==='configured')return this.decoder;
+const config={
+codec:this.video.codec,
+codedWidth:this.video.codedWidth,
+codedHeight:this.video.codedHeight,
+};
+if(this.video.description)config.description=this.video.description;
+const decoder=new VideoDecoder({
+output:(frame)=>this.#collect(frame),
+error:(error)=>{this.failure??=error;},
+});
+decoder.configure(config);
+this.decoder=decoder;
+return decoder;
+}
+#collect(frame){
+const pending=this.pending;
+const index=pending?.byTime.get(frame.timestamp);
+const isTarget=index!==undefined&&index===pending.target;
+const room=pending&&pending.copies.length<=this.lookahead;
+if(!pending||index===undefined||index<pending.target||(!isTarget&&!room)){
+frame.close();
+return;
+}
+pending.copies.push(
+createImageBitmap(frame)
+.then((bitmap)=>this.#store(index,bitmap))
+.catch((error)=>{this.failure??=error;})
+.finally(()=>frame.close()),
+);
+}
+#store(index,bitmap){
+const existing=this.cache.get(index);
+if(existing){
+existing.close();
+this.cache.delete(index);
+}
+this.cache.set(index,bitmap);
+while(this.cache.size>this.maxCached){
+const[oldest,value]=this.cache.entries().next().value;
+value.close();
+this.cache.delete(oldest);
+}
+}
+async#run(target){
+const cached=this.cache.get(target);
+if(cached)return cached;
+const{samples}=this.video;
+const from=keyframeBefore(samples,this.order[target].decode);
+const to=Math.min(samples.length-1,this.order[target].decode+this.lookahead);
+const byTime=new Map();
+for(let i=from;i<=to;i++){
+byTime.set(micros(samples[i].pts,this.video.timescale),this.displayOf[i]);
+}
+this.pending={target,byTime,copies:[]};
+this.failure=null;
+const decoder=this.#open();
+try{
+for(let i=from;i<=to;i++){
+if(this.failure)throw this.failure;
+const sample=samples[i];
+const bytes=await this.window.read(sample.offset,sample.size);
+decoder.decode(new EncodedVideoChunk({
+type:sample.isKey?'key':'delta',
+timestamp:micros(sample.pts,this.video.timescale),
+data:bytes,
+}));
+}
+await decoder.flush();
+await Promise.all(this.pending.copies);
+if(this.failure)throw this.failure;
+const frame=this.cache.get(target);
+if(!frame)throw new Error('That frame could not be decoded from this file.');
+return frame;
+}catch(error){
+this.#discard();
+throw error;
+}finally{
+this.pending=null;
+}
+}
+#discard(){
+if(this.decoder&&this.decoder.state!=='closed'){
+try{
+this.decoder.close();
+}catch{
+}
+}
+this.decoder=null;
+}
+release(){
+this.#discard();
+for(const bitmap of this.cache.values())bitmap.close();
+this.cache.clear();
+}
+}
+export async function decodeSeries({file,video,indexes,onFrame,onProgress,signal}){
+if(!indexes.length)return;
+const order=displayOrder(video);
+const wanted=new Map();
+for(const index of indexes){
+wanted.set(micros(order[index].pts,video.timescale),index);
+}
+const first=Math.min(...indexes.map((index)=>order[index].decode));
+const last=Math.max(...indexes.map((index)=>order[index].decode));
+const from=keyframeBefore(video.samples,first);
+const ready=[];
+let failure=null;
+let done=0;
+const decoder=new VideoDecoder({
+output:(frame)=>{
+try{
+const index=wanted.get(frame.timestamp);
+if(index===undefined)return;
+const canvas=document.createElement('canvas');
+canvas.width=video.displayWidth;
+canvas.height=video.displayHeight;
+drawUpright(canvas.getContext('2d',{alpha:false}),frame,{
+rotation:video.rotation,
+displayWidth:video.displayWidth,
+displayHeight:video.displayHeight,
+});
+ready.push({index,canvas});
+}catch(error){
+failure??=error;
+}finally{
+frame.close();
+}
+},
+error:(error)=>{failure??=error;},
+});
+const config={
+codec:video.codec,
+codedWidth:video.codedWidth,
+codedHeight:video.codedHeight,
+};
+if(video.description)config.description=video.description;
+decoder.configure(config);
+const window=new FileWindow(file,4<<20);
+const drain=async()=>{
+while(ready.length){
+const next=ready.shift();
+await onFrame(next.index,next.canvas);
+done++;
+onProgress?.({done,total:indexes.length});
+}
+};
+try{
+for(let i=from;i<=last;i++){
+throwIfAborted(signal);
+if(failure)throw failure;
+const sample=video.samples[i];
+const bytes=await window.read(sample.offset,sample.size);
+decoder.decode(new EncodedVideoChunk({
+type:sample.isKey?'key':'delta',
+timestamp:micros(sample.pts,video.timescale),
+data:bytes,
+}));
+await drain();
+}
+await decoder.flush();
+if(failure)throw failure;
+await drain();
+}finally{
+if(decoder.state!=='closed')decoder.close();
+}
+}

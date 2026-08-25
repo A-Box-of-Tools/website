@@ -1,2 +1,506 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as w}from"./shared/phrases.js";import{wireFilePicker as H}from"./shared/file-picker.js";import{demux as D,UnsupportedFile as j}from"./demux.js";import{cropExact as I,grabFrame as O,decoderConfig as V,averageFps as X}from"./transcode.js";import{cropByRecording as Y}from"./record.js";import{Cropper as K}from"./cropper.js";import{hasWebCodecs as N,hasMediaRecorder as z,canDecode as G}from"./support.js";const r=t=>document.getElementById(t),e={dropzone:r("dropzone"),fileInput:r("file-input"),source:r("source"),srcName:r("src-name"),srcSize:r("src-size"),srcFrame:r("src-frame"),srcLength:r("src-length"),srcCodec:r("src-codec"),srcAudio:r("src-audio"),pathNote:r("path-note"),cropCard:r("crop-card"),stage:r("stage"),preview:r("preview"),still:r("still"),stageNote:r("stage-note"),aspectRow:document.querySelector(".aspect-row"),swapAspect:r("swap-aspect"),cropX:r("crop-x"),cropY:r("crop-y"),cropW:r("crop-w"),cropH:r("crop-h"),cropMax:r("crop-max"),cropCentre:r("crop-centre"),cropReset:r("crop-reset"),exportCard:r("export-card"),format:r("format"),formatNote:r("format-note"),quality:r("quality"),keepAudio:r("keep-audio"),audioNote:r("audio-note"),sumSize:r("sum-size"),sumKept:r("sum-kept"),sumLength:r("sum-length"),sumPath:r("sum-path"),exportBtn:r("export"),cancelBtn:r("cancel"),progressWrap:r("progress-wrap"),progressBar:r("progress-bar"),progressLabel:r("progress-label"),error:r("error"),result:r("result"),resultVideo:r("result-video"),resultInfo:r("result-info"),download:r("download"),privacyToggle:r("privacy-toggle"),privacyPanel:r("privacy-panel"),networkCount:r("network-count"),networkDot:r("network-dot"),offlineStatus:r("offline-status"),offlineDot:r("offline-dot")};let u=null,b=null,a=null,m=null,s={width:0,height:0},v=0,F=30,p=!1,W=!1,y=!1,x=null,C=null;const c=new K(e.stage,{onChange:ee}),B=H({input:e.fileInput,dropzone:e.dropzone,onFiles(t){const[o]=t;o&&J(o)}});function _(t,o){return new Promise(n=>{const i=h=>{clearTimeout($),t.removeEventListener("loadedmetadata",l),t.removeEventListener("error",g),n(h)},l=()=>i({ok:t.videoWidth>0&&t.videoHeight>0,width:t.videoWidth,height:t.videoHeight,duration:Number.isFinite(t.duration)?t.duration:0}),g=()=>i({ok:!1,width:0,height:0,duration:0}),$=setTimeout(g,15e3);t.addEventListener("loadedmetadata",l,{once:!0}),t.addEventListener("error",g,{once:!0}),t.src=o,t.load()})}async function J(t){if(!y){q(),A(),u=t,B.busy("Reading the file...");try{b=URL.createObjectURL(t);const o=await _(e.preview,b);try{a=await D(t),m=null}catch(i){a=null,m=i instanceof j?i.reason:i.message||"the file could not be read as an MP4."}let n=!1;if(a&&N()?(n=await G(V(a.video)),n||(m=`this browser will not decode ${a.video.codec} directly.`)):a&&!N()&&(m="this browser has no WebCodecs, so frames cannot be decoded one by one."),n&&o.ok&&(o.width!==a.video.displayWidth||o.height!==a.video.displayHeight)&&(n=!1,m="this file is stored turned in a way the reader and the player disagree on."),p=n,W=o.ok&&z(),!p&&!W){f(o.ok?"This browser cannot record video, so it cannot crop this file.":`This browser cannot open this file: ${m??"the format is not one it plays."}`),M();return}s=p?{width:a.video.displayWidth,height:a.video.displayHeight}:{width:o.width,height:o.height},v=o.duration||(a?a.duration:0),F=a?X(a.video):30,await Q(o.ok),Z(o),c.setSource(s.width,s.height),S("free",e.aspectRow.querySelector('[data-aspect="free"]')),e.cropCard.hidden=!1,e.exportCard.hidden=!1,e.exportBtn.disabled=!1,te(),k()}catch(o){console.error(o),f(o?.message||"That file could not be opened."),M()}finally{B.done()}}}async function Q(t){if(e.stage.style.aspectRatio=`${s.width} / ${s.height}`,e.stage.style.maxWidth=`calc(62vh * ${s.width/s.height})`,t){e.preview.hidden=!1,e.still.hidden=!0,e.stageNote.hidden=!0;return}e.preview.hidden=!0,e.stageNote.hidden=!1,e.stageNote.textContent="This browser will not play this file, so the frame below was decoded to show you what you are cropping. The crop itself is unaffected.";try{const o=await O({file:u,media:a,atSeconds:0}),n=e.still.getContext("2d");e.still.width=o.width,e.still.height=o.height,n.drawImage(o,0,0),e.still.hidden=!1}catch(o){e.still.hidden=!0,e.stageNote.textContent=`This browser will not play this file and no frame could be decoded from it either (${o.message}). The crop box below still works on its size.`}}function Z(t){if(e.source.hidden=!1,e.srcName.textContent=u.name,e.srcSize.textContent=U(u.size),e.srcFrame.textContent=`${s.width} x ${s.height}`,e.srcLength.textContent=v?R(v):"unknown",a){const o=a.video.rotation?`, turned ${a.video.rotation} degrees`:"";e.srcCodec.textContent=`${a.video.codec} (${a.video.entryType})${o}`,e.srcAudio.textContent=a.audio?`${a.audio.entryType}, ${a.audio.channels} channel${a.audio.channels===1?"":"s"}, ${Math.round(a.audio.sampleRate)} Hz`:"none"}else e.srcCodec.textContent=t.ok?"read by the browser's own player":"unknown",e.srcAudio.textContent="whatever the player finds";e.pathNote.hidden=p,p||(e.pathNote.textContent=`This one is cropped by playing it and recording the result, because ${m??"its layout is not one the reader here understands."} That takes as long as the video is long, and the sound is re-encoded rather than copied.`)}function A(){b&&(e.preview.removeAttribute("src"),e.preview.load(),URL.revokeObjectURL(b),b=null),a=null,u=null}function M(){e.source.hidden=!0,e.cropCard.hidden=!0,e.exportCard.hidden=!0,e.pathNote.hidden=!0,A()}let d=null;function ee(t){e.cropX.value=String(t.x),e.cropY.value=String(t.y),e.cropW.value=String(t.width),e.cropH.value=String(t.height),e.cropX.max=String(Math.max(0,s.width-t.width)),e.cropY.max=String(Math.max(0,s.height-t.height)),e.cropW.max=String(s.width),e.cropH.max=String(s.height),k()}function S(t,o){for(const n of e.aspectRow.querySelectorAll("[data-aspect]"))n.classList.toggle("active",n===o);if(t==="free")d=null;else if(t==="source")d=s.width/s.height;else{const[n,i]=t.split(":").map(Number);d=n/i}c.setAspect(d)}e.aspectRow.addEventListener("click",t=>{const o=t.target.closest("[data-aspect]");o&&S(o.dataset.aspect,o)}),e.swapAspect.addEventListener("click",()=>{d&&(d=1/d,c.setAspect(d))}),e.cropMax.addEventListener("click",()=>c.maximize()),e.cropCentre.addEventListener("click",()=>c.centre()),e.cropReset.addEventListener("click",()=>{S("free",e.aspectRow.querySelector('[data-aspect="free"]')),c.reset()});for(const t of[e.cropX,e.cropY,e.cropW,e.cropH])t.addEventListener("change",()=>{d&&(t===e.cropW||t===e.cropH)&&S("free",e.aspectRow.querySelector('[data-aspect="free"]')),c.setRect({x:Number(e.cropX.value)||0,y:Number(e.cropY.value)||0,width:Number(e.cropW.value)||16,height:Number(e.cropH.value)||16})});function E(){return e.format.value==="mp4"&&p}function te(){const t=e.format.querySelector('option[value="mp4"]'),o=e.format.querySelector('option[value="webm"]');t.disabled=!p,o.disabled=!W,e.format.value=p?"mp4":"webm",P()}function P(){e.formatNote.textContent=E()?"Decodes and re-encodes every frame, faster than real time, and copies the original sound across untouched.":"Plays the clip through and records it, so it takes as long as the video is long and the sound is re-encoded. Keep this tab in front while it runs.",e.audioNote.textContent=E()?"Copied from the file byte for byte, so it loses nothing.":"Captured from playback and re-encoded, because that is all a recording can do.",k()}e.format.addEventListener("change",P),e.quality.addEventListener("change",k),e.keepAudio.addEventListener("change",k);function k(){const t=c.rect;if(!s.width)return;e.sumSize.textContent=`${t.width} x ${t.height} (from ${s.width} x ${s.height})`;const o=t.width*t.height/(s.width*s.height);e.sumKept.textContent=o>=.999?"the whole frame":`${Math.round(o*100)}% of the picture`,e.sumLength.textContent=v?R(v):"unknown",e.sumPath.textContent=E()?"Re-encoded frame by frame, into MP4":"Recorded in real time, into "+(e.format.value==="webm"?"WebM":"MP4")}function f(t){e.error.textContent=t,e.error.hidden=!1}function q(){e.error.hidden=!0,e.error.textContent=""}function T({phase:t,done:o,total:n,realtime:i}){const l=n>0?Math.min(1,o/n):0;e.progressBar.style.width=`${(l*100).toFixed(1)}%`,t==="preparing"?e.progressLabel.textContent="Preparing...":t==="finishing"?e.progressLabel.textContent="Finishing up...":i?e.progressLabel.textContent=`Recording in real time - ${R(o)} of ${R(n)} (${Math.round(l*100)}%)`:e.progressLabel.textContent=`Cropping frame ${o.toLocaleString()} of ${n.toLocaleString()} (${Math.round(l*100)}%)`}function oe(t){return`${(u?.name??"video").replace(/\.[^.]+$/,"")}-cropped.${t}`}function U(t){return t<1024*1024?`${(t/1024).toFixed(0)} KB`:t<1024*1024*1024?`${(t/1024/1024).toFixed(1)} MB`:`${(t/1024/1024/1024).toFixed(2)} GB`}function R(t){const o=Math.max(0,Math.round(t)),n=Math.floor(o/60);return n?`${n}m ${String(o%60).padStart(2,"0")}s`:`${t<10?t.toFixed(1):o}s`}async function re(){if(y||!u)return;const t=c.rect;if(t.width<16||t.height<16){f("The crop is too small. Drag it out to at least 16 pixels each way.");return}q(),y=!0,x=new AbortController,e.exportBtn.disabled=!0,e.cancelBtn.hidden=!1,e.progressWrap.hidden=!1,e.result.hidden=!0,c.setEnabled(!1),e.preview.pause(),T({phase:"preparing",done:0,total:1});const o=e.quality.value,n=e.keepAudio.checked;try{const i=E()?await I({file:u,media:a,crop:t,quality:o,keepAudio:n,onProgress:T,signal:x.signal}):await Y({src:b,crop:t,quality:o,keepAudio:n,fps:F,onProgress:T,signal:x.signal});i.warning&&f(i.warning),C&&URL.revokeObjectURL(C),C=URL.createObjectURL(i.blob),e.resultVideo.src=C,e.download.href=C,e.download.download=oe(i.extension),e.resultInfo.textContent=[i.extension.toUpperCase(),`${t.width} x ${t.height}`,U(i.blob.size),i.codec].join(" \xB7 "),e.result.hidden=!1,e.progressWrap.hidden=!0,e.result.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(i){e.progressWrap.hidden=!0,i?.name!=="AbortError"&&(f(i?.message||"Something went wrong while cropping."),console.error(i))}finally{y=!1,x=null,e.cancelBtn.hidden=!0,e.exportBtn.disabled=!1,c.setEnabled(!0)}}e.exportBtn.addEventListener("click",re),e.cancelBtn.addEventListener("click",()=>x?.abort()),window.addEventListener("beforeunload",t=>{y&&(t.preventDefault(),t.returnValue="")}),e.privacyToggle.addEventListener("click",()=>{const t=e.privacyPanel.hidden;e.privacyPanel.hidden=!t,e.privacyToggle.setAttribute("aria-expanded",String(t))});const ne=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function ae(){const t=new Set,o=new Set,n=i=>{for(const h of i){if(h.name.startsWith("blob:")||h.name.startsWith("data:"))continue;const L=new URL(h.name,location.href);L.origin!==location.origin&&(ne.test(L.hostname)?t.add(L.hostname):o.add(L.hostname))}const l=performance.getEntriesByType("resource").filter(h=>!h.name.startsWith("blob:")&&!h.name.startsWith("data:")).length,g=o.size===0,$=t.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${t.size} host${t.size===1?"":"s"}; not one of them was given a file.`;e.networkCount.textContent=g?`your video has gone nowhere. ${l} files loaded.${$}`:`something contacted ${[...o].join(", ")}, which this tool never does.${$}`,e.networkCount.className=g?"good":"warn",e.networkDot.className=`live-dot ${g?"good":"warn"}`};n(performance.getEntriesByType("resource"));try{new PerformanceObserver(i=>n(i.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function ie(){const t=(o,n)=>{e.offlineStatus.textContent=o,e.offlineDot.className="live-dot",n&&(e.offlineStatus.title=n,console.info("Offline caching unavailable:",n))};if(!("serviceWorker"in navigator)){t(w("offline.none"));return}if(!window.isSecureContext){t(w("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,e.offlineStatus.textContent=w("offline.ready"),e.offlineStatus.className="good",e.offlineDot.className="live-dot good"}catch(o){t(w("offline.failed"),o.message)}}window.addEventListener("error",t=>{f(w("error.broke",{detail:t.message}))}),window.addEventListener("unhandledrejection",t=>{f(w("error.broke",{detail:t.reason?.message??t.reason}))}),!N()&&!z()&&f("This browser can neither decode nor record video, so this tool has nothing to work with. A recent Chrome, Edge, Firefox or Safari will."),ae(),ie(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker}from'./shared/file-picker.js';
+import{demux,UnsupportedFile}from'./demux.js';
+import{cropExact,grabFrame,decoderConfig,averageFps}from'./transcode.js';
+import{cropByRecording}from'./record.js';
+import{Cropper}from'./cropper.js';
+import{hasWebCodecs,hasMediaRecorder,canDecode}from'./support.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+source:$('source'),
+srcName:$('src-name'),
+srcSize:$('src-size'),
+srcFrame:$('src-frame'),
+srcLength:$('src-length'),
+srcCodec:$('src-codec'),
+srcAudio:$('src-audio'),
+pathNote:$('path-note'),
+cropCard:$('crop-card'),
+stage:$('stage'),
+preview:$('preview'),
+still:$('still'),
+stageNote:$('stage-note'),
+aspectRow:document.querySelector('.aspect-row'),
+swapAspect:$('swap-aspect'),
+cropX:$('crop-x'),
+cropY:$('crop-y'),
+cropW:$('crop-w'),
+cropH:$('crop-h'),
+cropMax:$('crop-max'),
+cropCentre:$('crop-centre'),
+cropReset:$('crop-reset'),
+exportCard:$('export-card'),
+format:$('format'),
+formatNote:$('format-note'),
+quality:$('quality'),
+keepAudio:$('keep-audio'),
+audioNote:$('audio-note'),
+sumSize:$('sum-size'),
+sumKept:$('sum-kept'),
+sumLength:$('sum-length'),
+sumPath:$('sum-path'),
+exportBtn:$('export'),
+cancelBtn:$('cancel'),
+progressWrap:$('progress-wrap'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+error:$('error'),
+result:$('result'),
+resultVideo:$('result-video'),
+resultInfo:$('result-info'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let file=null;
+let objectUrl=null;
+let media=null;
+let fallbackReason=null;
+let source={width:0,height:0};
+let duration=0;
+let fps=30;
+let canCropExactly=false;
+let canRecord=false;
+let exporting=false;
+let abortController=null;
+let lastResultUrl=null;
+const cropper=new Cropper(el.stage,{onChange:onCropChanged});
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+const[file]=files;
+if(file)loadFile(file);
+},
+});
+function openInPlayer(video,url){
+return new Promise((resolve)=>{
+const done=(result)=>{
+clearTimeout(timer);
+video.removeEventListener('loadedmetadata',ok);
+video.removeEventListener('error',bad);
+resolve(result);
+};
+const ok=()=>done({
+ok:video.videoWidth>0&&video.videoHeight>0,
+width:video.videoWidth,
+height:video.videoHeight,
+duration:Number.isFinite(video.duration)?video.duration:0,
+});
+const bad=()=>done({ok:false,width:0,height:0,duration:0});
+const timer=setTimeout(bad,15000);
+video.addEventListener('loadedmetadata',ok,{once:true});
+video.addEventListener('error',bad,{once:true});
+video.src=url;
+video.load();
+});
+}
+async function loadFile(picked){
+if(exporting)return;
+clearError();
+releaseFile();
+file=picked;
+picker.busy('Reading the file...');
+try{
+objectUrl=URL.createObjectURL(picked);
+const played=await openInPlayer(el.preview,objectUrl);
+try{
+media=await demux(picked);
+fallbackReason=null;
+}catch(error){
+media=null;
+fallbackReason=error instanceof UnsupportedFile
+?error.reason
+:(error.message||'the file could not be read as an MP4.');
+}
+let decodable=false;
+if(media&&hasWebCodecs()){
+decodable=await canDecode(decoderConfig(media.video));
+if(!decodable){
+fallbackReason=`this browser will not decode ${media.video.codec} directly.`;
+}
+}else if(media&&!hasWebCodecs()){
+fallbackReason='this browser has no WebCodecs, so frames cannot be decoded one by one.';
+}
+if(decodable&&played.ok
+&&(played.width!==media.video.displayWidth||played.height!==media.video.displayHeight)){
+decodable=false;
+fallbackReason='this file is stored turned in a way the reader and the player disagree on.';
+}
+canCropExactly=decodable;
+canRecord=played.ok&&hasMediaRecorder();
+if(!canCropExactly&&!canRecord){
+showError(played.ok
+?'This browser cannot record video, so it cannot crop this file.'
+:`This browser cannot open this file: ${fallbackReason ?? 'the format is not one it plays.'}`);
+resetView();
+return;
+}
+source=canCropExactly
+?{width:media.video.displayWidth,height:media.video.displayHeight}
+:{width:played.width,height:played.height};
+duration=played.duration||(media?media.duration:0);
+fps=media?averageFps(media.video):30;
+await showPreview(played.ok);
+describeSource(played);
+cropper.setSource(source.width,source.height);
+setAspect('free',el.aspectRow.querySelector('[data-aspect="free"]'));
+el.cropCard.hidden=false;
+el.exportCard.hidden=false;
+el.exportBtn.disabled=false;
+updateFormatOptions();
+updateSummary();
+}catch(error){
+console.error(error);
+showError(error?.message||'That file could not be opened.');
+resetView();
+}finally{
+picker.done();
+}
+}
+async function showPreview(playable){
+el.stage.style.aspectRatio=`${source.width} / ${source.height}`;
+el.stage.style.maxWidth=`calc(62vh * ${source.width / source.height})`;
+if(playable){
+el.preview.hidden=false;
+el.still.hidden=true;
+el.stageNote.hidden=true;
+return;
+}
+el.preview.hidden=true;
+el.stageNote.hidden=false;
+el.stageNote.textContent='This browser will not play this file, so the frame below was '
++'decoded to show you what you are cropping. The crop itself is unaffected.';
+try{
+const canvas=await grabFrame({file,media,atSeconds:0});
+const ctx=el.still.getContext('2d');
+el.still.width=canvas.width;
+el.still.height=canvas.height;
+ctx.drawImage(canvas,0,0);
+el.still.hidden=false;
+}catch(error){
+el.still.hidden=true;
+el.stageNote.textContent='This browser will not play this file and no frame could be '
++`decoded from it either (${error.message}). The crop box below still works on its size.`;
+}
+}
+function describeSource(played){
+el.source.hidden=false;
+el.srcName.textContent=file.name;
+el.srcSize.textContent=formatBytes(file.size);
+el.srcFrame.textContent=`${source.width} x ${source.height}`;
+el.srcLength.textContent=duration?formatDuration(duration):'unknown';
+if(media){
+const turned=media.video.rotation?`, turned ${media.video.rotation} degrees`:'';
+el.srcCodec.textContent=`${media.video.codec} (${media.video.entryType})${turned}`;
+el.srcAudio.textContent=media.audio
+?`${media.audio.entryType}, ${media.audio.channels} channel`
++`${media.audio.channels === 1 ? '' : 's'}, ${Math.round(media.audio.sampleRate)} Hz`
+:'none';
+}else{
+el.srcCodec.textContent=played.ok?"read by the browser's own player":'unknown';
+el.srcAudio.textContent='whatever the player finds';
+}
+el.pathNote.hidden=canCropExactly;
+if(!canCropExactly){
+el.pathNote.textContent=`This one is cropped by playing it and recording the result, `
++`because ${fallbackReason ?? 'its layout is not one the reader here understands.'} `
++'That takes as long as the video is long, and the sound is re-encoded rather than copied.';
+}
+}
+function releaseFile(){
+if(objectUrl){
+el.preview.removeAttribute('src');
+el.preview.load();
+URL.revokeObjectURL(objectUrl);
+objectUrl=null;
+}
+media=null;
+file=null;
+}
+function resetView(){
+el.source.hidden=true;
+el.cropCard.hidden=true;
+el.exportCard.hidden=true;
+el.pathNote.hidden=true;
+releaseFile();
+}
+let aspect=null;
+function onCropChanged(rect){
+el.cropX.value=String(rect.x);
+el.cropY.value=String(rect.y);
+el.cropW.value=String(rect.width);
+el.cropH.value=String(rect.height);
+el.cropX.max=String(Math.max(0,source.width-rect.width));
+el.cropY.max=String(Math.max(0,source.height-rect.height));
+el.cropW.max=String(source.width);
+el.cropH.max=String(source.height);
+updateSummary();
+}
+function setAspect(value,button){
+for(const other of el.aspectRow.querySelectorAll('[data-aspect]')){
+other.classList.toggle('active',other===button);
+}
+if(value==='free')aspect=null;
+else if(value==='source')aspect=source.width/source.height;
+else{
+const[w,h]=value.split(':').map(Number);
+aspect=w/h;
+}
+cropper.setAspect(aspect);
+}
+el.aspectRow.addEventListener('click',(event)=>{
+const button=event.target.closest('[data-aspect]');
+if(button)setAspect(button.dataset.aspect,button);
+});
+el.swapAspect.addEventListener('click',()=>{
+if(!aspect)return;
+aspect=1/aspect;
+cropper.setAspect(aspect);
+});
+el.cropMax.addEventListener('click',()=>cropper.maximize());
+el.cropCentre.addEventListener('click',()=>cropper.centre());
+el.cropReset.addEventListener('click',()=>{
+setAspect('free',el.aspectRow.querySelector('[data-aspect="free"]'));
+cropper.reset();
+});
+for(const input of[el.cropX,el.cropY,el.cropW,el.cropH]){
+input.addEventListener('change',()=>{
+if(aspect&&(input===el.cropW||input===el.cropH)){
+setAspect('free',el.aspectRow.querySelector('[data-aspect="free"]'));
+}
+cropper.setRect({
+x:Number(el.cropX.value)||0,
+y:Number(el.cropY.value)||0,
+width:Number(el.cropW.value)||16,
+height:Number(el.cropH.value)||16,
+});
+});
+}
+function usingExact(){
+return el.format.value==='mp4'&&canCropExactly;
+}
+function updateFormatOptions(){
+const mp4=el.format.querySelector('option[value="mp4"]');
+const webm=el.format.querySelector('option[value="webm"]');
+mp4.disabled=!canCropExactly;
+webm.disabled=!canRecord;
+el.format.value=canCropExactly?'mp4':'webm';
+updateFormatNote();
+}
+function updateFormatNote(){
+el.formatNote.textContent=usingExact()
+?'Decodes and re-encodes every frame, faster than real time, and copies the '
++'original sound across untouched.'
+:'Plays the clip through and records it, so it takes as long as the video is '
++'long and the sound is re-encoded. Keep this tab in front while it runs.';
+el.audioNote.textContent=usingExact()
+?'Copied from the file byte for byte, so it loses nothing.'
+:'Captured from playback and re-encoded, because that is all a recording can do.';
+updateSummary();
+}
+el.format.addEventListener('change',updateFormatNote);
+el.quality.addEventListener('change',updateSummary);
+el.keepAudio.addEventListener('change',updateSummary);
+function updateSummary(){
+const rect=cropper.rect;
+if(!source.width)return;
+el.sumSize.textContent=`${rect.width} x ${rect.height}`
++` (from ${source.width} x ${source.height})`;
+const kept=(rect.width*rect.height)/(source.width*source.height);
+el.sumKept.textContent=kept>=0.999
+?'the whole frame'
+:`${Math.round(kept * 100)}% of the picture`;
+el.sumLength.textContent=duration?formatDuration(duration):'unknown';
+el.sumPath.textContent=usingExact()
+?'Re-encoded frame by frame, into MP4'
+:'Recorded in real time, into '+(el.format.value==='webm'?'WebM':'MP4');
+}
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+}
+function clearError(){
+el.error.hidden=true;
+el.error.textContent='';
+}
+function setProgress({phase,done,total,realtime}){
+const fraction=total>0?Math.min(1,done/total):0;
+el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
+if(phase==='preparing'){
+el.progressLabel.textContent='Preparing...';
+}else if(phase==='finishing'){
+el.progressLabel.textContent='Finishing up...';
+}else if(realtime){
+el.progressLabel.textContent='Recording in real time - '
++`${formatDuration(done)} of ${formatDuration(total)} (${Math.round(fraction * 100)}%)`;
+}else{
+el.progressLabel.textContent=`Cropping frame ${done.toLocaleString()} `
++`of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+}
+}
+function outputFilename(extension){
+const base=(file?.name??'video').replace(/\.[^.]+$/,'');
+return`${base}-cropped.${extension}`;
+}
+function formatBytes(bytes){
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
+if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
+return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
+function formatDuration(seconds){
+const whole=Math.max(0,Math.round(seconds));
+const minutes=Math.floor(whole/60);
+return minutes
+?`${minutes}m ${String(whole % 60).padStart(2, '0')}s`
+:`${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+}
+async function runExport(){
+if(exporting||!file)return;
+const crop=cropper.rect;
+if(crop.width<16||crop.height<16){
+showError('The crop is too small. Drag it out to at least 16 pixels each way.');
+return;
+}
+clearError();
+exporting=true;
+abortController=new AbortController();
+el.exportBtn.disabled=true;
+el.cancelBtn.hidden=false;
+el.progressWrap.hidden=false;
+el.result.hidden=true;
+cropper.setEnabled(false);
+el.preview.pause();
+setProgress({phase:'preparing',done:0,total:1});
+const quality=el.quality.value;
+const keepAudio=el.keepAudio.checked;
+try{
+const result=usingExact()
+?await cropExact({
+file,media,crop,quality,keepAudio,
+onProgress:setProgress,signal:abortController.signal,
+})
+:await cropByRecording({
+src:objectUrl,crop,quality,keepAudio,fps,
+onProgress:setProgress,signal:abortController.signal,
+});
+if(result.warning)showError(result.warning);
+if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
+lastResultUrl=URL.createObjectURL(result.blob);
+el.resultVideo.src=lastResultUrl;
+el.download.href=lastResultUrl;
+el.download.download=outputFilename(result.extension);
+el.resultInfo.textContent=[
+result.extension.toUpperCase(),
+`${crop.width} x ${crop.height}`,
+formatBytes(result.blob.size),
+result.codec,
+].join(' · ');
+el.result.hidden=false;
+el.progressWrap.hidden=true;
+el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}catch(error){
+el.progressWrap.hidden=true;
+if(error?.name!=='AbortError'){
+showError(error?.message||'Something went wrong while cropping.');
+console.error(error);
+}
+}finally{
+exporting=false;
+abortController=null;
+el.cancelBtn.hidden=true;
+el.exportBtn.disabled=false;
+cropper.setEnabled(true);
+}
+}
+el.exportBtn.addEventListener('click',runExport);
+el.cancelBtn.addEventListener('click',()=>abortController?.abort());
+window.addEventListener('beforeunload',(event)=>{
+if(!exporting)return;
+event.preventDefault();
+event.returnValue='';
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+el.networkCount.textContent=clean
+?`your video has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+if(!hasWebCodecs()&&!hasMediaRecorder()){
+showError('This browser can neither decode nor record video, so this tool has nothing '
++'to work with. A recent Chrome, Edge, Firefox or Safari will.');
+}
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

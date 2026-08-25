@@ -1,2 +1,53 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function c(t,e,h,i,n){if(n==="stretch")return{x:0,y:0,w:h,h:i};const r=n==="cover"?Math.max(h/t,i/e):Math.min(h/t,i/e),a=t*r,l=e*r;return{x:(h-a)/2,y:(i-l)/2,w:a,h:l}}function s(t,e,{fit:h,background:i}){const n=t.canvas.width,r=t.canvas.height;t.save(),t.globalAlpha=1,t.imageSmoothingQuality="high",t.clearRect(0,0,n,r),i!==null&&(t.fillStyle=i,t.fillRect(0,0,n,r));const a=c(e.width,e.height,n,r,h);t.drawImage(e,a.x,a.y,a.w,a.h),t.restore()}const u=1e3,g=16,o=t=>Math.max(g,Math.min(u,Math.round(t)));function m(t){let e=0,h=0;for(const i of t)e=Math.max(e,i.width),h=Math.max(h,i.height);return e&&h?{width:e,height:h}:{width:480,height:270}}function f(t,e,h){if(t==="custom")return{width:o(Number(h?.width)>0?Number(h.width):480),height:o(Number(h?.height)>0?Number(h.height):270)};const i=m(e),n=Math.max(i.width,i.height),r=t==="original"?Math.min(n,u):Number(t),a=Math.min(1,(Number.isFinite(r)?r:n)/n);return{width:o(i.width*a),height:o(i.height*a)}}export{u as MAX_SIDE,s as drawFrame,m as naturalBox,f as resolveOutputSize};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+function fitRect(sw,sh,dw,dh,mode){
+if(mode==='stretch')return{x:0,y:0,w:dw,h:dh};
+const scale=mode==='cover'
+?Math.max(dw/sw,dh/sh)
+:Math.min(dw/sw,dh/sh);
+const w=sw*scale;
+const h=sh*scale;
+return{x:(dw-w)/2,y:(dh-h)/2,w,h};
+}
+export function drawFrame(ctx,image,{fit,background}){
+const dw=ctx.canvas.width;
+const dh=ctx.canvas.height;
+ctx.save();
+ctx.globalAlpha=1;
+ctx.imageSmoothingQuality='high';
+ctx.clearRect(0,0,dw,dh);
+if(background!==null){
+ctx.fillStyle=background;
+ctx.fillRect(0,0,dw,dh);
+}
+const target=fitRect(image.width,image.height,dw,dh,fit);
+ctx.drawImage(image,target.x,target.y,target.w,target.h);
+ctx.restore();
+}
+export const MAX_SIDE=1000;
+const MIN_SIDE=16;
+const clampSide=(value)=>Math.max(MIN_SIDE,Math.min(MAX_SIDE,Math.round(value)));
+export function naturalBox(items){
+let width=0;
+let height=0;
+for(const item of items){
+width=Math.max(width,item.width);
+height=Math.max(height,item.height);
+}
+return width&&height?{width,height}:{width:480,height:270};
+}
+export function resolveOutputSize(preset,items,custom){
+if(preset==='custom'){
+return{
+width:clampSide(Number(custom?.width)>0?Number(custom.width):480),
+height:clampSide(Number(custom?.height)>0?Number(custom.height):270),
+};
+}
+const box=naturalBox(items);
+const longest=Math.max(box.width,box.height);
+const target=preset==='original'?Math.min(longest,MAX_SIDE):Number(preset);
+const scale=Math.min(1,(Number.isFinite(target)?target:longest)/longest);
+return{
+width:clampSide(box.width*scale),
+height:clampSide(box.height*scale),
+};
+}

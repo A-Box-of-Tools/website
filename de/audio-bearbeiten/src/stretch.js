@@ -1,2 +1,129 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const k=4,F=(t,o)=>Math.max(1,Math.round(t/o));async function B(t,o,n,{onProgress:r,signal:s}={}){if(!(o>0))throw new Error("speed must be greater than zero");const e=t[0].length,i=F(e,o),c=z(Math.min(Math.round(n*.046),Math.floor(e/2)));if(c<64)return v(t,i);const f=c/2,D=4*Math.max(1,Math.round(n*.006/4)),y=P(c),E=j(t),C=q(E),a=t.map(()=>new Float32Array(i)),u=new Float32Array(i),h=Math.max(0,e-c);let I=0,g=0,l=0,T=0;for(;l<i;){for(let m=0;m<t.length;m+=1){const w=t[m],p=a[m],x=Math.min(c,i-l,e-I);for(let A=0;A<x;A+=1)p[l+A]+=w[I+A]*y[A]}{const m=Math.min(c,i-l,e-I);for(let w=0;w<m;w+=1)u[l+w]+=y[w]}const d=I+f;g+=f*o;const M=Math.min(h,Math.max(0,Math.round(g)));I=M+L(E,C,d,M,D,f,h),l+=f,T+=1,T>=64&&(s?.throwIfAborted(),r?.(Math.min(1,l/i)),await O(),T=0)}for(const d of a)for(let M=0;M<i;M+=1)u[M]>1e-4&&(d[M]/=u[M]);return r?.(1),a}function L(t,o,n,r,s,e,i){let c=0,f=-1/0;const D=Math.round(n/4),y=Math.floor(e/4);for(let a=-s;a<=s;a+=4){const u=r+a;if(u<0||u>i)continue;const h=b(o,D,Math.round(u/4),y);h>f&&(f=h,c=a)}let E=c;f=-1/0;for(let a=c-4+1;a<=c+4-1;a+=1){const u=r+a;if(u<0||u>i)continue;const h=b(t,n,u,e);h>f&&(f=h,E=a)}const C=r+E;return C<0||C>i?0:E}function b(t,o,n,r){if(o<0||n<0)return-1/0;const s=Math.min(r,t.length-o,t.length-n);if(s<=0)return-1/0;let e=0,i=0;for(let c=0;c<s;c+=1){const f=t[n+c];e+=t[o+c]*f,i+=f*f}return e/Math.sqrt(i+1e-9)}function P(t){const o=new Float32Array(t);for(let n=0;n<t;n+=1)o[n]=.5-.5*Math.cos(2*Math.PI*n/t);return o}function j(t){if(t.length===1)return t[0];const o=t[0].length,n=new Float32Array(o);for(const s of t)for(let e=0;e<o;e+=1)n[e]+=s[e];const r=1/t.length;for(let s=0;s<o;s+=1)n[s]*=r;return n}function q(t){const o=Math.ceil(t.length/4),n=new Float32Array(o);for(let r=0;r<o;r+=1){let s=0,e=0;for(let i=r*4;i<Math.min(t.length,r*4+4);i+=1)s+=t[i],e+=1;n[r]=e?s/e:0}return n}function v(t,o){return t.map(n=>{const r=new Float32Array(o);return r.set(n.subarray(0,Math.min(n.length,o))),r})}const z=t=>t%2===0?t:t-1,O=()=>new Promise(t=>{setTimeout(t,0)});export{B as stretch,F as stretchedLength};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const DECIMATE=4;
+export const stretchedLength=(frames,speed)=>Math.max(1,Math.round(frames/speed));
+export async function stretch(channels,speed,sampleRate,{onProgress,signal}={}){
+if(!(speed>0))throw new Error('speed must be greater than zero');
+const frames=channels[0].length;
+const outFrames=stretchedLength(frames,speed);
+const frame=even(Math.min(Math.round(sampleRate*0.046),Math.floor(frames/2)));
+if(frame<64)return shortened(channels,outFrames);
+const hop=frame/2;
+const search=DECIMATE*Math.max(1,Math.round((sampleRate*0.006)/DECIMATE));
+const window=hann(frame);
+const mono=mixdown(channels);
+const coarse=averageDown(mono);
+const out=channels.map(()=>new Float32Array(outFrames));
+const weight=new Float32Array(outFrames);
+const lastStart=Math.max(0,frames-frame);
+let position=0;
+let ideal=0;
+let outAt=0;
+let sincePause=0;
+while(outAt<outFrames){
+for(let c=0;c<channels.length;c+=1){
+const input=channels[c];
+const output=out[c];
+const limit=Math.min(frame,outFrames-outAt,frames-position);
+for(let i=0;i<limit;i+=1)output[outAt+i]+=input[position+i]*window[i];
+}
+{
+const limit=Math.min(frame,outFrames-outAt,frames-position);
+for(let i=0;i<limit;i+=1)weight[outAt+i]+=window[i];
+}
+const continues=position+hop;
+ideal+=hop*speed;
+const target=Math.min(lastStart,Math.max(0,Math.round(ideal)));
+position=target+bestOffset(mono,coarse,continues,target,search,hop,lastStart);
+outAt+=hop;
+sincePause+=1;
+if(sincePause>=64){
+signal?.throwIfAborted();
+onProgress?.(Math.min(1,outAt/outFrames));
+await pause();
+sincePause=0;
+}
+}
+for(const output of out){
+for(let i=0;i<outFrames;i+=1){
+if(weight[i]>1e-4)output[i]/=weight[i];
+}
+}
+onProgress?.(1);
+return out;
+}
+function bestOffset(mono,coarse,continues,target,search,overlap,lastStart){
+let bestCoarse=0;
+let best=-Infinity;
+const shortRef=Math.round(continues/DECIMATE);
+const shortLength=Math.floor(overlap/DECIMATE);
+for(let offset=-search;offset<=search;offset+=DECIMATE){
+const at=target+offset;
+if(at<0||at>lastStart)continue;
+const score=similarity(coarse,shortRef,Math.round(at/DECIMATE),shortLength);
+if(score>best){best=score;bestCoarse=offset;}
+}
+let bestFine=bestCoarse;
+best=-Infinity;
+for(let offset=bestCoarse-DECIMATE+1;offset<=bestCoarse+DECIMATE-1;offset+=1){
+const at=target+offset;
+if(at<0||at>lastStart)continue;
+const score=similarity(mono,continues,at,overlap);
+if(score>best){best=score;bestFine=offset;}
+}
+const at=target+bestFine;
+return at<0||at>lastStart?0:bestFine;
+}
+function similarity(signal,refAt,candidateAt,length){
+if(refAt<0||candidateAt<0)return-Infinity;
+const limit=Math.min(length,signal.length-refAt,signal.length-candidateAt);
+if(limit<=0)return-Infinity;
+let dot=0;
+let energy=0;
+for(let i=0;i<limit;i+=1){
+const candidate=signal[candidateAt+i];
+dot+=signal[refAt+i]*candidate;
+energy+=candidate*candidate;
+}
+return dot/Math.sqrt(energy+1e-9);
+}
+function hann(length){
+const window=new Float32Array(length);
+for(let i=0;i<length;i+=1){
+window[i]=0.5-0.5*Math.cos((2*Math.PI*i)/length);
+}
+return window;
+}
+function mixdown(channels){
+if(channels.length===1)return channels[0];
+const frames=channels[0].length;
+const mono=new Float32Array(frames);
+for(const samples of channels){
+for(let i=0;i<frames;i+=1)mono[i]+=samples[i];
+}
+const scale=1/channels.length;
+for(let i=0;i<frames;i+=1)mono[i]*=scale;
+return mono;
+}
+function averageDown(mono){
+const length=Math.ceil(mono.length/DECIMATE);
+const out=new Float32Array(length);
+for(let i=0;i<length;i+=1){
+let sum=0;
+let count=0;
+for(let j=i*DECIMATE;j<Math.min(mono.length,i*DECIMATE+DECIMATE);j+=1){
+sum+=mono[j];
+count+=1;
+}
+out[i]=count?sum/count:0;
+}
+return out;
+}
+function shortened(channels,outFrames){
+return channels.map((samples)=>{
+const out=new Float32Array(outFrames);
+out.set(samples.subarray(0,Math.min(samples.length,outFrames)));
+return out;
+});
+}
+const even=(n)=>(n%2===0?n:n-1);
+const pause=()=>new Promise((resolve)=>{setTimeout(resolve,0);});

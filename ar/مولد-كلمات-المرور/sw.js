@@ -1,2 +1,56 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const r="abox:/ar/\u0645\u0648\u0644\u062F-\u0643\u0644\u0645\u0627\u062A-\u0627\u0644\u0645\u0631\u0648\u0631/:",a=r+"e4c1f06381",h=["./","index.html","styles.css?v=cfaabb1dd8","manifest.json","src/shared/phrases.js","src/generate.js","src/main.js","src/random.js","src/strength.js","src/wordlist.js","analytics.js"];self.addEventListener("install",n=>{n.waitUntil(caches.open(a).then(t=>t.addAll(h)).then(()=>self.skipWaiting()))}),self.addEventListener("activate",n=>{const t=e=>e.startsWith(r),c=e=>!e.startsWith("abox:");n.waitUntil(caches.keys().then(e=>Promise.all(e.filter(s=>s!==a&&(t(s)||c(s))).map(s=>caches.delete(s)))).then(()=>self.clients.claim()))}),self.addEventListener("fetch",n=>{const{request:t}=n;t.method==="GET"&&new URL(t.url).origin===self.location.origin&&n.respondWith(caches.match(t).then(c=>c||fetch(t).then(e=>{if(e.ok&&e.type==="basic"){const s=e.clone();caches.open(a).then(i=>i.put(t,s))}return e}).catch(()=>t.mode==="navigate"?caches.match("index.html"):Promise.reject(new Error("offline and not cached")))))});
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const CACHE_PREFIX='abox:/ar/مولد-كلمات-المرور/:';
+const CACHE_NAME=CACHE_PREFIX+'359b7aaff1';
+const ASSETS=[
+'./',
+'index.html',
+'styles.css?v=cfaabb1dd8',
+'manifest.json',
+'src/shared/phrases.js',
+'src/generate.js',
+'src/main.js',
+'src/random.js',
+'src/strength.js',
+'src/wordlist.js',
+'analytics.js',
+];
+self.addEventListener('install',(event)=>{
+event.waitUntil(
+caches.open(CACHE_NAME)
+.then((cache)=>cache.addAll(ASSETS))
+.then(()=>self.skipWaiting()),
+);
+});
+self.addEventListener('activate',(event)=>{
+const ours=(name)=>name.startsWith(CACHE_PREFIX);
+const orphaned=(name)=>!name.startsWith('abox:');
+event.waitUntil(
+caches.keys()
+.then((names)=>Promise.all(
+names.filter((name)=>name!==CACHE_NAME&&(ours(name)||orphaned(name)))
+.map((name)=>caches.delete(name)),
+))
+.then(()=>self.clients.claim()),
+);
+});
+self.addEventListener('fetch',(event)=>{
+const{request}=event;
+if(request.method!=='GET')return;
+if(new URL(request.url).origin!==self.location.origin)return;
+event.respondWith(
+caches.match(request).then((cached)=>{
+if(cached)return cached;
+return fetch(request).then((response)=>{
+if(response.ok&&response.type==='basic'){
+const copy=response.clone();
+caches.open(CACHE_NAME).then((cache)=>cache.put(request,copy));
+}
+return response;
+}).catch(()=>(
+request.mode==='navigate'
+?caches.match('index.html')
+:Promise.reject(new Error('offline and not cached'))
+));
+}),
+);
+});

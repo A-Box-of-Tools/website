@@ -1,2 +1,20 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function i(t){return t<1024?`${t} B`:t<1024*1024?`${(t/1024).toFixed(t<10240?1:0)} KB`:`${(t/1048576).toFixed(t<10485760?2:1)} MB`}const o=t=>`${t.toLocaleString()} bytes`,n=t=>t.toLocaleString();function x(t){const e=Math.abs(t);return e>=100?`${t.toFixed(0)} mm`:e>=10?`${t.toFixed(1)} mm`:`${t.toFixed(2)} mm`}function $(t,e){const r=Number.isInteger(t)?String(t):Math.abs(t)>=100?t.toFixed(1):t.toFixed(3).replace(/0+$/,"").replace(/\.$/,"");return e?`${r} ${e}`:r}const s=(t,e)=>`C ${Math.round(t)} / W ${Math.round(e)}`;export{n as count,o as exact,i as fileSize,x as millimetres,$ as quantity,s as windowLabel};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function fileSize(count){
+if(count<1024)return`${count} B`;
+if(count<1024*1024)return`${(count / 1024).toFixed(count < 10240 ? 1 : 0)} KB`;
+return`${(count / 1048576).toFixed(count < 10485760 ? 2 : 1)} MB`;
+}
+export const exact=(count)=>`${count.toLocaleString()} bytes`;
+export const count=(value)=>value.toLocaleString();
+export function millimetres(value){
+const size=Math.abs(value);
+if(size>=100)return`${value.toFixed(0)} mm`;
+if(size>=10)return`${value.toFixed(1)} mm`;
+return`${value.toFixed(2)} mm`;
+}
+export function quantity(value,unit){
+const shown=Number.isInteger(value)?String(value)
+:Math.abs(value)>=100?value.toFixed(1):value.toFixed(3).replace(/0+$/,'').replace(/\.$/,'');
+return unit?`${shown} ${unit}`:shown;
+}
+export const windowLabel=(center,width)=>`C ${Math.round(center)} / W ${Math.round(width)}`;

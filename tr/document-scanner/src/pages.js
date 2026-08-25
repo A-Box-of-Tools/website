@@ -1,2 +1,72 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const l=[{key:"paper.a",aspect:1/Math.SQRT2},{key:"paper.letter",aspect:.7727272727272728},{key:"paper.legal",aspect:.6071428571428571},{key:"paper.card",aspect:.630607476635514}],c=.03;function f(e){if(!Number.isFinite(e)||e<=0)return null;for(const r of l){if(Math.abs(Math.log(e/r.aspect))<=c)return{key:r.key,landscape:!1};if(Math.abs(Math.log(e/(1/r.aspect)))<=c)return{key:r.key,landscape:!0}}return null}function u(e){return String(e??"").replace(/\.[a-z0-9]{1,8}$/i,"").trim()||"scan"}function s(e,r){return`${p(e)}-scan.${r}`}function x(e,r,t,n){const i=String(t).length;return`${p(e)}-page-${String(r+1).padStart(i,"0")}.${n}`}function p(e){return String(e??"").replace(/[\\/:*?"<>|]+/g,"-").slice(0,60)||"scan"}function g(e){return!Number.isFinite(e)||e<0?"":e<1024?`${e} B`:e<1024*1024?`${(e/1024).toFixed(e<10*1024?1:0)} kB`:`${(e/(1024*1024)).toFixed(e<10*1024*1024?1:0)} MB`}function m(e){return!Number.isFinite(e)||e<=0?"":`1:${(e>1?e:1/e).toFixed(2)}`}function y(e,r,t){const n=Math.abs(e[0].x*e[1].y-e[1].x*e[0].y+(e[1].x*e[2].y-e[2].x*e[1].y)+(e[2].x*e[3].y-e[3].x*e[2].y)+(e[3].x*e[0].y-e[0].x*e[3].y))/2,i=r*t;return i>0?n/i:0}function h(e,r){const t=f(r);if(!t)return null;const n={"paper.a":[210,297],"paper.letter":[215.9,279.4],"paper.legal":[215.9,355.6],"paper.card":[85.6,53.98]}[t.key];if(!n)return null;const i=t.landscape?Math.max(...n):Math.min(...n),a=Math.round(e/i*25.4);let o="quality.good";return a<120?o="quality.low":a<200&&(o="quality.fair"),{dpi:a,key:o}}export{y as coverage,f as matchPaper,s as outName,x as pageName,m as ratioText,h as scanQuality,g as sizeText,u as stemOf};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const PAPER=[
+{key:'paper.a',aspect:1/Math.SQRT2},
+{key:'paper.letter',aspect:215.9/279.4},
+{key:'paper.legal',aspect:215.9/355.6},
+{key:'paper.card',aspect:53.98/85.6},
+];
+const TOLERANCE=0.03;
+export function matchPaper(aspect){
+if(!Number.isFinite(aspect)||aspect<=0)return null;
+for(const paper of PAPER){
+if(Math.abs(Math.log(aspect/paper.aspect))<=TOLERANCE){
+return{key:paper.key,landscape:false};
+}
+if(Math.abs(Math.log(aspect/(1/paper.aspect)))<=TOLERANCE){
+return{key:paper.key,landscape:true};
+}
+}
+return null;
+}
+export function stemOf(name){
+const clean=String(name??'').replace(/\.[a-z0-9]{1,8}$/i,'').trim();
+return clean||'scan';
+}
+export function outName(stem,extension){
+return`${safeStem(stem)}-scan.${extension}`;
+}
+export function pageName(stem,index,total,extension){
+const width=String(total).length;
+return`${safeStem(stem)}-page-${String(index + 1).padStart(width, '0')}.${extension}`;
+}
+function safeStem(stem){
+return String(stem??'').replace(/[\\/:*?"<>|]+/g,'-').slice(0,60)||'scan';
+}
+export function sizeText(bytes){
+if(!Number.isFinite(bytes)||bytes<0)return'';
+if(bytes<1024)return`${bytes} B`;
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(bytes < 10 * 1024 ? 1 : 0)} kB`;
+return`${(bytes / (1024 * 1024)).toFixed(bytes < 10 * 1024 * 1024 ? 1 : 0)} MB`;
+}
+export function ratioText(aspect){
+if(!Number.isFinite(aspect)||aspect<=0)return'';
+const ratio=aspect>1?aspect:1/aspect;
+return`1:${ratio.toFixed(2)}`;
+}
+export function coverage(quad,width,height){
+const area=Math.abs(
+(quad[0].x*quad[1].y-quad[1].x*quad[0].y)
++(quad[1].x*quad[2].y-quad[2].x*quad[1].y)
++(quad[2].x*quad[3].y-quad[3].x*quad[2].y)
++(quad[3].x*quad[0].y-quad[0].x*quad[3].y),
+)/2;
+const frame=width*height;
+return frame>0?area/frame:0;
+}
+export function scanQuality(widthPx,aspect){
+const paper=matchPaper(aspect);
+if(!paper)return null;
+const millimetres={
+'paper.a':[210,297],
+'paper.letter':[215.9,279.4],
+'paper.legal':[215.9,355.6],
+'paper.card':[85.6,53.98],
+}[paper.key];
+if(!millimetres)return null;
+const across=paper.landscape?Math.max(...millimetres):Math.min(...millimetres);
+const dpi=Math.round((widthPx/across)*25.4);
+let key='quality.good';
+if(dpi<120)key='quality.low';
+else if(dpi<200)key='quality.fair';
+return{dpi,key};
+}

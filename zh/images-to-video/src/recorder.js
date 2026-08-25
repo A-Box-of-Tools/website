@@ -1,2 +1,125 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{drawFrame as I}from"./compose.js";import{decodeFull as J}from"./images.js";import{pickWebmMimeType as N}from"./support.js";async function X({items:l,settings:L,onProgress:_,signal:q}){const{width:y,height:E,fps:u,fit:M,background:T,quality:z}=L,i=N();if(!i)throw new Error("This browser supports neither WebCodecs nor canvas recording.");const H={low:.03,medium:.07,high:.15}[z]??.07,K=Math.min(5e7,Math.round(y*E*u*H)),h=document.createElement("canvas");h.width=y,h.height=E;const k=h.getContext("2d",{alpha:!1}),t=new Map,m=new Map,w=e=>{if(e>=l.length||t.has(e)||m.has(e))return;const a=J(l[e]).then(r=>{t.set(e,r)}).catch(()=>{}).finally(()=>{m.delete(e)});m.set(e,a)};w(0),await m.get(0),t.has(0)&&I(k,t.get(0),{fit:M,background:T}),w(1);const x=[];let b=0;for(const e of l)b+=Math.max(.1,e.duration),x.push(b);const f=b,P=h.captureStream(u),o=new MediaRecorder(P,{mimeType:i,videoBitsPerSecond:K}),R=[];o.ondataavailable=e=>{e.data.size&&R.push(e.data)};const V=new Promise((e,a)=>{o.onstop=e,o.onerror=r=>a(r.error??new Error("Recording failed."))}),D=()=>{for(const e of t.values())e.close();t.clear();for(const e of P.getTracks())e.stop()};let S=document.hidden;const W=()=>{document.hidden&&(S=!0)};document.addEventListener("visibilitychange",W),o.start();const A=performance.now();try{await new Promise((a,r)=>{let c=0,g=!1;const B=1e3/u,G=A+f*3e3+3e4,v=(p,d)=>{g||(g=!0,p(d))},C=()=>{if(g)return;if(q?.aborted){const n=new Error("Export cancelled.");n.name="AbortError",v(r,n);return}const p=performance.now();if(p>G){v(r,new Error("Recording stalled \u2014 this browser pauses canvas capture in background tabs. Keep this tab visible while the video is being created."));return}const d=(p-A)/1e3;let s=x.findIndex(n=>d<n);if(s===-1&&(s=l.length-1),s!==c&&t.has(s)){const n=t.get(c);n&&(n.close(),t.delete(c)),c=s,w(s+1)}const F=t.get(c);F&&I(k,F,{fit:M,background:T}),_?.({phase:"recording",done:Math.min(d,f),total:f,realtime:!0}),d>=f?v(a):setTimeout(C,B)};setTimeout(C,B)}),o.stop(),await V;const e=i.includes("webm")?"webm":"mp4";return{blob:new Blob(R,{type:i}),extension:e,codec:i,warning:S?"The tab was hidden during recording, so some frames may be missing. Re-run the export with this tab visible for a clean result.":null}}catch(e){throw o.state!=="inactive"&&o.stop(),e}finally{document.removeEventListener("visibilitychange",W),D()}}export{X as recordToWebm};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{drawFrame}from'./compose.js';
+import{decodeFull}from'./images.js';
+import{pickWebmMimeType}from'./support.js';
+export async function recordToWebm({items,settings,onProgress,signal}){
+const{width,height,fps,fit,background,quality}=settings;
+const mimeType=pickWebmMimeType();
+if(!mimeType)throw new Error('This browser supports neither WebCodecs nor canvas recording.');
+const bitsPerPixel={low:0.03,medium:0.07,high:0.15}[quality]??0.07;
+const videoBitsPerSecond=Math.min(50_000_000,Math.round(width*height*fps*bitsPerPixel));
+const canvas=document.createElement('canvas');
+canvas.width=width;
+canvas.height=height;
+const ctx=canvas.getContext('2d',{alpha:false});
+const bitmaps=new Map();
+const decoding=new Map();
+const prefetch=(index)=>{
+if(index>=items.length||bitmaps.has(index)||decoding.has(index))return;
+const promise=decodeFull(items[index])
+.then((bitmap)=>{bitmaps.set(index,bitmap);})
+.catch(()=>{})
+.finally(()=>{decoding.delete(index);});
+decoding.set(index,promise);
+};
+prefetch(0);
+await decoding.get(0);
+if(bitmaps.has(0))drawFrame(ctx,bitmaps.get(0),{fit,background});
+prefetch(1);
+const boundaries=[];
+let clock=0;
+for(const item of items){
+clock+=Math.max(0.1,item.duration);
+boundaries.push(clock);
+}
+const totalSeconds=clock;
+const stream=canvas.captureStream(fps);
+const recorder=new MediaRecorder(stream,{mimeType,videoBitsPerSecond});
+const parts=[];
+recorder.ondataavailable=(event)=>{if(event.data.size)parts.push(event.data);};
+const finished=new Promise((resolve,reject)=>{
+recorder.onstop=resolve;
+recorder.onerror=(event)=>reject(event.error??new Error('Recording failed.'));
+});
+const cleanup=()=>{
+for(const bitmap of bitmaps.values())bitmap.close();
+bitmaps.clear();
+for(const track of stream.getTracks())track.stop();
+};
+let wentHidden=document.hidden;
+const onVisibility=()=>{if(document.hidden)wentHidden=true;};
+document.addEventListener('visibilitychange',onVisibility);
+recorder.start();
+const startedAt=performance.now();
+try{
+await new Promise((resolve,reject)=>{
+let shownIndex=0;
+let settled=false;
+const interval=1000/fps;
+const deadline=startedAt+totalSeconds*3000+30000;
+const settle=(fn,value)=>{
+if(settled)return;
+settled=true;
+fn(value);
+};
+const tick=()=>{
+if(settled)return;
+if(signal?.aborted){
+const error=new Error('Export cancelled.');
+error.name='AbortError';
+settle(reject,error);
+return;
+}
+const now=performance.now();
+if(now>deadline){
+settle(reject,new Error(
+'Recording stalled — this browser pauses canvas capture in background tabs. '
++'Keep this tab visible while the video is being created.',
+));
+return;
+}
+const elapsed=(now-startedAt)/1000;
+let index=boundaries.findIndex((end)=>elapsed<end);
+if(index===-1)index=items.length-1;
+if(index!==shownIndex&&bitmaps.has(index)){
+const previous=bitmaps.get(shownIndex);
+if(previous){
+previous.close();
+bitmaps.delete(shownIndex);
+}
+shownIndex=index;
+prefetch(index+1);
+}
+const bitmap=bitmaps.get(shownIndex);
+if(bitmap)drawFrame(ctx,bitmap,{fit,background});
+onProgress?.({
+phase:'recording',
+done:Math.min(elapsed,totalSeconds),
+total:totalSeconds,
+realtime:true,
+});
+if(elapsed>=totalSeconds)settle(resolve);
+else setTimeout(tick,interval);
+};
+setTimeout(tick,interval);
+});
+recorder.stop();
+await finished;
+const extension=mimeType.includes('webm')?'webm':'mp4';
+return{
+blob:new Blob(parts,{type:mimeType}),
+extension,
+codec:mimeType,
+warning:wentHidden
+?'The tab was hidden during recording, so some frames may be missing. '
++'Re-run the export with this tab visible for a clean result.'
+:null,
+};
+}catch(error){
+if(recorder.state!=='inactive')recorder.stop();
+throw error;
+}finally{
+document.removeEventListener('visibilitychange',onVisibility);
+cleanup();
+}
+}

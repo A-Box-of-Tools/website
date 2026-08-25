@@ -1,2 +1,98 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{homography as A,project as E}from"./geometry.js";const C=2,P=3;function N(t,c,h){const s=Math.max(1,Math.round(h.width)),o=Math.max(1,Math.round(h.height)),n=j(c,s,o),r=A([{x:0,y:0},{x:s,y:0},{x:s,y:o},{x:0,y:o}],T(c,P*n));if(!r)throw new Error("Those four corners do not make a page.");const x=new Uint8ClampedArray(s*o*4),y=1/n,f=y/2;let p=0;for(let l=0;l<o;l+=1)for(let M=0;M<s;M+=1){let i=0,S=0,a=0;for(let m=0;m<n;m+=1)for(let e=0;e<n;e+=1){const b=E(r,M+f+e*y,l+f+m*y),w=I(t,b.x-.5,b.y-.5);i+=w[0],S+=w[1],a+=w[2]}const g=n*n;x[p]=i/g,x[p+1]=S/g,x[p+2]=a/g,x[p+3]=255,p+=4}return{data:x,width:s,height:o}}function T(t,c){const h=[];for(let s=0;s<4;s+=1){const o=t[s],n=t[(s+1)%4],r=Math.hypot(n.x-o.x,n.y-o.y);if(r<1e-6)return t.map(f=>({...f}));const x=-(n.y-o.y)/r,y=(n.x-o.x)/r;h.push({nx:x,ny:y,c:(o.x+x*c)*x+(o.y+y*c)*y})}return[0,1,2,3].map(s=>{const o=h[(s+3)%4],n=h[s],r=o.nx*n.ny-o.ny*n.nx;return Math.abs(r)<1e-9?{...t[s]}:{x:(o.c*n.ny-n.c*o.ny)/r,y:(o.nx*n.c-n.nx*o.c)/r}})}function j(t,c,h){const s=Math.max(Math.hypot(t[1].x-t[0].x,t[1].y-t[0].y),Math.hypot(t[2].x-t[3].x,t[2].y-t[3].y)),o=Math.max(Math.hypot(t[3].x-t[0].x,t[3].y-t[0].y),Math.hypot(t[2].x-t[1].x,t[2].y-t[1].y)),n=Math.max(s/c,o/h);return Math.min(C,Math.max(1,Math.round(n)))}function I({data:t,width:c,height:h},s,o){const n=Math.floor(s),r=Math.floor(o),x=s-n,y=o-r,f=k(n,c),p=k(n+1,c),l=k(r,h)*c,M=k(r+1,h)*c,i=(l+f)*4,S=(l+p)*4,a=(M+f)*4,g=(M+p)*4,m=[0,0,0];for(let e=0;e<3;e+=1){const b=t[i+e]+(t[S+e]-t[i+e])*x,w=t[a+e]+(t[g+e]-t[a+e])*x;m[e]=b+(w-b)*y}return m}const k=(t,c)=>t<0?0:t>c-1?c-1:t,Q=t=>[t[3],t[0],t[1],t[2]];export{Q as turnQuad,N as warpPage};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{homography,project}from'./geometry.js';
+const MAX_SAMPLES=2;
+const INSET=3;
+export function warpPage(source,quad,size){
+const width=Math.max(1,Math.round(size.width));
+const height=Math.max(1,Math.round(size.height));
+const samples=sampleCount(quad,width,height);
+const toSource=homography(
+[{x:0,y:0},{x:width,y:0},{x:width,y:height},{x:0,y:height}],
+inset(quad,INSET*samples),
+);
+if(!toSource)throw new Error('Those four corners do not make a page.');
+const out=new Uint8ClampedArray(width*height*4);
+const step=1/samples;
+const first=step/2;
+let at=0;
+for(let y=0;y<height;y+=1){
+for(let x=0;x<width;x+=1){
+let r=0;
+let g=0;
+let b=0;
+for(let sy=0;sy<samples;sy+=1){
+for(let sx=0;sx<samples;sx+=1){
+const point=project(toSource,x+first+sx*step,y+first+sy*step);
+const pixel=bilinear(source,point.x-0.5,point.y-0.5);
+r+=pixel[0];
+g+=pixel[1];
+b+=pixel[2];
+}
+}
+const taken=samples*samples;
+out[at]=r/taken;
+out[at+1]=g/taken;
+out[at+2]=b/taken;
+out[at+3]=255;
+at+=4;
+}
+}
+return{data:out,width,height};
+}
+function inset(quad,by){
+const sides=[];
+for(let i=0;i<4;i+=1){
+const a=quad[i];
+const b=quad[(i+1)%4];
+const length=Math.hypot(b.x-a.x,b.y-a.y);
+if(length<1e-6)return quad.map((point)=>({...point}));
+const nx=-(b.y-a.y)/length;
+const ny=(b.x-a.x)/length;
+sides.push({nx,ny,c:(a.x+nx*by)*nx+(a.y+ny*by)*ny});
+}
+return[0,1,2,3].map((i)=>{
+const previous=sides[(i+3)%4];
+const here=sides[i];
+const det=previous.nx*here.ny-previous.ny*here.nx;
+if(Math.abs(det)<1e-9)return{...quad[i]};
+return{
+x:(previous.c*here.ny-here.c*previous.ny)/det,
+y:(previous.nx*here.c-here.nx*previous.c)/det,
+};
+});
+}
+function sampleCount(quad,width,height){
+const across=Math.max(
+Math.hypot(quad[1].x-quad[0].x,quad[1].y-quad[0].y),
+Math.hypot(quad[2].x-quad[3].x,quad[2].y-quad[3].y),
+);
+const down=Math.max(
+Math.hypot(quad[3].x-quad[0].x,quad[3].y-quad[0].y),
+Math.hypot(quad[2].x-quad[1].x,quad[2].y-quad[1].y),
+);
+const shrink=Math.max(across/width,down/height);
+return Math.min(MAX_SAMPLES,Math.max(1,Math.round(shrink)));
+}
+function bilinear({data,width,height},x,y){
+const x0=Math.floor(x);
+const y0=Math.floor(y);
+const fx=x-x0;
+const fy=y-y0;
+const left=clamp(x0,width);
+const right=clamp(x0+1,width);
+const top=clamp(y0,height)*width;
+const bottom=clamp(y0+1,height)*width;
+const tl=(top+left)*4;
+const tr=(top+right)*4;
+const bl=(bottom+left)*4;
+const br=(bottom+right)*4;
+const out=[0,0,0];
+for(let c=0;c<3;c+=1){
+const upper=data[tl+c]+(data[tr+c]-data[tl+c])*fx;
+const lower=data[bl+c]+(data[br+c]-data[bl+c])*fx;
+out[c]=upper+(lower-upper)*fy;
+}
+return out;
+}
+const clamp=(value,size)=>(value<0?0:(value>size-1?size-1:value));
+export const turnQuad=(quad)=>[quad[3],quad[0],quad[1],quad[2]];

@@ -1,2 +1,227 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const p=.05,f=400;function l(d,t,e){return Math.max(t,Math.min(e,d))}function m(d){const t=Math.round(Math.max(0,d||0)*1e3),e=Math.floor(t/1e3),i=Math.floor(e/3600),n=Math.floor(e%3600/60),s=`${String(e%60).padStart(2,"0")}.${String(t%1e3).padStart(3,"0")}`;return i?`${i}:${String(n).padStart(2,"0")}:${s}`:`${n}:${s}`}function M(d){const t=String(d??"").trim();if(!t)return null;const e=t.split(":");if(e.length>3)return null;let i=0;for(const n of e){if(!/^\d*\.?\d*$/.test(n)||n===""||n===".")return null;i=i*60+Number(n)}return Number.isFinite(i)?i:null}class g{#p;#e;#s;#l;#i;#d;#c;#f;#M;#t=0;#m=null;#u=[];#a=null;#o=null;#h=0;#g=!0;constructor(t,{onSeek:e,onSelect:i,onAdjust:n}={}){this.#p=t,this.#c=e,this.#f=i,this.#M=n,t.innerHTML="",t.classList.add("timeline"),this.#e=document.createElement("div"),this.#e.className="tl-track",this.#s=document.createElement("div"),this.#s.className="tl-ticks",this.#s.setAttribute("aria-hidden","true"),this.#l=document.createElement("div"),this.#l.className="tl-bands",this.#i=document.createElement("div"),this.#i.className="tl-pending",this.#i.hidden=!0,this.#d=document.createElement("div"),this.#d.className="tl-playhead",this.#d.setAttribute("aria-hidden","true"),this.#e.append(this.#s,this.#l,this.#i,this.#d),t.append(this.#e),this.#e.addEventListener("pointerdown",this.#$)}get duration(){return this.#t}setSource({duration:t,keyframes:e=null,frameTimes:i=null}){this.#t=Math.max(0,t||0),this.#m=i&&i.length?i:null,this.#h=0,this.#o=null,this.#u=[],this.#a=null,this.#S(e),this.#w()}setSegments(t,e=null){this.#u=t,this.#a=e,this.#w()}setPending(t){this.#o=t,this.#E()}setEnabled(t){this.#g=t,this.#p.classList.toggle("disabled",!t)}setPlayhead(t){this.#h=l(t||0,0,this.#t),this.#d.style.left=`${this.#r(this.#h)*100}%`,this.#E()}snap(t){const e=this.#m;if(!e)return l(t,0,this.#t);let i=0,n=e.length-1;for(;i<n;){const a=i+n>>1;e[a]<t?i=a+1:n=a}const s=e[i],h=i>0?e[i-1]:s,r=Math.abs(s-t)<Math.abs(t-h)?s:h;return l(r,0,this.#t)}get frameStep(){const t=this.#m;return!t||t.length<2?1/30:Math.max(1/240,(t[t.length-1]-t[0])/(t.length-1))}#r(t){return this.#t>0?l(t/this.#t,0,1):0}#S(t){if(this.#s.innerHTML="",!t||!t.length||!this.#t)return;const e=Math.max(1,Math.ceil(t.length/400));for(let i=0;i<t.length;i+=e){const n=document.createElement("span");n.className="tl-tick",n.style.left=`${this.#r(t[i])*100}%`,this.#s.append(n)}}#w(){this.#l.innerHTML="",this.#u.forEach((t,e)=>{if(t.end===null)return;const i=this.#r(t.start)*100,n=this.#r(t.end)*100,s=document.createElement("div");s.className=`tl-band${t.id===this.#a?" selected":""}`,s.dataset.id=String(t.id),s.style.left=`${i}%`,s.style.width=`${Math.max(.4,n-i)}%`,s.title=`Segment ${e+1}: ${m(t.start)} to ${m(t.end)}`;const h=document.createElement("span");if(h.className="tl-band-number",h.textContent=String(e+1),s.append(h),t.id===this.#a)for(const r of["start","end"]){const a=document.createElement("span");a.className=`tl-handle tl-handle-${r}`,a.dataset.handle=r,s.append(a)}this.#l.append(s)}),this.setPlayhead(this.#h)}#E(){if(this.#o===null||!this.#t){this.#i.hidden=!0;return}const t=this.#r(Math.min(this.#o,this.#h))*100,e=this.#r(Math.max(this.#o,this.#h))*100;this.#i.hidden=!1,this.#i.style.left=`${t}%`,this.#i.style.width=`${Math.max(.3,e-t)}%`}#b(t){const e=this.#e.getBoundingClientRect();return e.width?l((t.clientX-e.left)/e.width,0,1)*this.#t:0}#$=t=>{if(!this.#g||!this.#t||t.button!==0)return;const e=t.target.closest(".tl-handle"),i=t.target.closest(".tl-band"),n=this.#b(t);if(t.preventDefault(),i&&!e&&i.dataset.id!==String(this.#a)){this.#f?.(Number(i.dataset.id));return}if(!e)this.#c?.(n),this.#n={kind:"seek"};else{const r=this.#u.find(a=>a.id===this.#a);if(!r)return;this.#n={kind:e.dataset.handle,segment:r}}this.#e.setPointerCapture?.(t.pointerId);const s=r=>{const a=this.#b(r);if(this.#n.kind==="seek"){this.#c?.(a);return}const{segment:o}=this.#n,u=this.snap(a),c=this.#n.kind==="start"?{start:Math.min(u,o.end-.05),end:o.end}:{start:o.start,end:Math.max(u,o.start+.05)};this.#M?.(o.id,{start:l(c.start,0,this.#t),end:l(c.end,0,this.#t)}),this.#c?.(this.#n.kind==="start"?c.start:c.end)},h=()=>{this.#n=null,this.#e.releasePointerCapture?.(t.pointerId),window.removeEventListener("pointermove",s),window.removeEventListener("pointerup",h),window.removeEventListener("pointercancel",h)};window.addEventListener("pointermove",s),window.addEventListener("pointerup",h),window.addEventListener("pointercancel",h)};#n=null}export{g as Timeline,m as formatTime,M as parseTime};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MIN_SEGMENT=0.05;
+const MAX_TICKS=400;
+function clamp(value,low,high){
+return Math.max(low,Math.min(high,value));
+}
+export function formatTime(seconds){
+const total=Math.round(Math.max(0,seconds||0)*1000);
+const whole=Math.floor(total/1000);
+const hours=Math.floor(whole/3600);
+const minutes=Math.floor((whole%3600)/60);
+const tail=`${String(whole % 60).padStart(2, '0')}.${String(total % 1000).padStart(3, '0')}`;
+return hours
+?`${hours}:${String(minutes).padStart(2, '0')}:${tail}`
+:`${minutes}:${tail}`;
+}
+export function parseTime(text){
+const trimmed=String(text??'').trim();
+if(!trimmed)return null;
+const parts=trimmed.split(':');
+if(parts.length>3)return null;
+let total=0;
+for(const part of parts){
+if(!/^\d*\.?\d*$/.test(part)||part===''||part==='.')return null;
+total=total*60+Number(part);
+}
+return Number.isFinite(total)?total:null;
+}
+export class Timeline{
+#root;
+#track;
+#ticks;
+#bands;
+#pendingBand;
+#playhead;
+#onSeek;
+#onSelect;
+#onAdjust;
+#duration=0;
+#frameTimes=null;
+#segments=[];
+#selectedId=null;
+#pending=null;
+#playAt=0;
+#enabled=true;
+constructor(root,{onSeek,onSelect,onAdjust}={}){
+this.#root=root;
+this.#onSeek=onSeek;
+this.#onSelect=onSelect;
+this.#onAdjust=onAdjust;
+root.innerHTML='';
+root.classList.add('timeline');
+this.#track=document.createElement('div');
+this.#track.className='tl-track';
+this.#ticks=document.createElement('div');
+this.#ticks.className='tl-ticks';
+this.#ticks.setAttribute('aria-hidden','true');
+this.#bands=document.createElement('div');
+this.#bands.className='tl-bands';
+this.#pendingBand=document.createElement('div');
+this.#pendingBand.className='tl-pending';
+this.#pendingBand.hidden=true;
+this.#playhead=document.createElement('div');
+this.#playhead.className='tl-playhead';
+this.#playhead.setAttribute('aria-hidden','true');
+this.#track.append(this.#ticks,this.#bands,this.#pendingBand,this.#playhead);
+root.append(this.#track);
+this.#track.addEventListener('pointerdown',this.#onPointerDown);
+}
+get duration(){
+return this.#duration;
+}
+setSource({duration,keyframes=null,frameTimes=null}){
+this.#duration=Math.max(0,duration||0);
+this.#frameTimes=frameTimes&&frameTimes.length?frameTimes:null;
+this.#playAt=0;
+this.#pending=null;
+this.#segments=[];
+this.#selectedId=null;
+this.#drawTicks(keyframes);
+this.#paint();
+}
+setSegments(segments,selectedId=null){
+this.#segments=segments;
+this.#selectedId=selectedId;
+this.#paint();
+}
+setPending(startSeconds){
+this.#pending=startSeconds;
+this.#paintPending();
+}
+setEnabled(enabled){
+this.#enabled=enabled;
+this.#root.classList.toggle('disabled',!enabled);
+}
+setPlayhead(seconds){
+this.#playAt=clamp(seconds||0,0,this.#duration);
+this.#playhead.style.left=`${this.#fraction(this.#playAt) * 100}%`;
+this.#paintPending();
+}
+snap(seconds){
+const times=this.#frameTimes;
+if(!times)return clamp(seconds,0,this.#duration);
+let low=0;
+let high=times.length-1;
+while(low<high){
+const middle=(low+high)>>1;
+if(times[middle]<seconds)low=middle+1;
+else high=middle;
+}
+const after=times[low];
+const before=low>0?times[low-1]:after;
+const nearest=Math.abs(after-seconds)<Math.abs(seconds-before)?after:before;
+return clamp(nearest,0,this.#duration);
+}
+get frameStep(){
+const times=this.#frameTimes;
+if(!times||times.length<2)return 1/30;
+return Math.max(1/240,(times[times.length-1]-times[0])/(times.length-1));
+}
+#fraction(seconds){
+return this.#duration>0?clamp(seconds/this.#duration,0,1):0;
+}
+#drawTicks(keyframes){
+this.#ticks.innerHTML='';
+if(!keyframes||!keyframes.length||!this.#duration)return;
+const step=Math.max(1,Math.ceil(keyframes.length/MAX_TICKS));
+for(let i=0;i<keyframes.length;i+=step){
+const tick=document.createElement('span');
+tick.className='tl-tick';
+tick.style.left=`${this.#fraction(keyframes[i]) * 100}%`;
+this.#ticks.append(tick);
+}
+}
+#paint(){
+this.#bands.innerHTML='';
+this.#segments.forEach((segment,index)=>{
+if(segment.end===null)return;
+const from=this.#fraction(segment.start)*100;
+const to=this.#fraction(segment.end)*100;
+const band=document.createElement('div');
+band.className=`tl-band${segment.id === this.#selectedId ? ' selected' : ''}`;
+band.dataset.id=String(segment.id);
+band.style.left=`${from}%`;
+band.style.width=`${Math.max(0.4, to - from)}%`;
+band.title=`Segment ${index + 1}: ${formatTime(segment.start)} to ${formatTime(segment.end)}`;
+const number=document.createElement('span');
+number.className='tl-band-number';
+number.textContent=String(index+1);
+band.append(number);
+if(segment.id===this.#selectedId){
+for(const which of['start','end']){
+const handle=document.createElement('span');
+handle.className=`tl-handle tl-handle-${which}`;
+handle.dataset.handle=which;
+band.append(handle);
+}
+}
+this.#bands.append(band);
+});
+this.setPlayhead(this.#playAt);
+}
+#paintPending(){
+if(this.#pending===null||!this.#duration){
+this.#pendingBand.hidden=true;
+return;
+}
+const from=this.#fraction(Math.min(this.#pending,this.#playAt))*100;
+const to=this.#fraction(Math.max(this.#pending,this.#playAt))*100;
+this.#pendingBand.hidden=false;
+this.#pendingBand.style.left=`${from}%`;
+this.#pendingBand.style.width=`${Math.max(0.3, to - from)}%`;
+}
+#timeAt(event){
+const box=this.#track.getBoundingClientRect();
+if(!box.width)return 0;
+return clamp((event.clientX-box.left)/box.width,0,1)*this.#duration;
+}
+#onPointerDown=(event)=>{
+if(!this.#enabled||!this.#duration||event.button!==0)return;
+const handle=event.target.closest('.tl-handle');
+const band=event.target.closest('.tl-band');
+const at=this.#timeAt(event);
+event.preventDefault();
+if(band&&!handle&&band.dataset.id!==String(this.#selectedId)){
+this.#onSelect?.(Number(band.dataset.id));
+return;
+}
+if(!handle){
+this.#onSeek?.(at);
+this.#drag={kind:'seek'};
+}else{
+const segment=this.#segments.find((one)=>one.id===this.#selectedId);
+if(!segment)return;
+this.#drag={kind:handle.dataset.handle,segment};
+}
+this.#track.setPointerCapture?.(event.pointerId);
+const move=(moveEvent)=>{
+const now=this.#timeAt(moveEvent);
+if(this.#drag.kind==='seek'){
+this.#onSeek?.(now);
+return;
+}
+const{segment}=this.#drag;
+const snapped=this.snap(now);
+const next=this.#drag.kind==='start'
+?{start:Math.min(snapped,segment.end-MIN_SEGMENT),end:segment.end}
+:{start:segment.start,end:Math.max(snapped,segment.start+MIN_SEGMENT)};
+this.#onAdjust?.(segment.id,{
+start:clamp(next.start,0,this.#duration),
+end:clamp(next.end,0,this.#duration),
+});
+this.#onSeek?.(this.#drag.kind==='start'?next.start:next.end);
+};
+const up=()=>{
+this.#drag=null;
+this.#track.releasePointerCapture?.(event.pointerId);
+window.removeEventListener('pointermove',move);
+window.removeEventListener('pointerup',up);
+window.removeEventListener('pointercancel',up);
+};
+window.addEventListener('pointermove',move);
+window.addEventListener('pointerup',up);
+window.addEventListener('pointercancel',up);
+};
+#drag=null;
+}

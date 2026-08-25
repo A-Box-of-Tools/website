@@ -1,2 +1,216 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{pickRecorderMimeType as Q}from"./support.js";const k={low:.05,medium:.1,high:.2},Y=2e4,G=2e4;function $({size:n,fps:t,quality:s,seconds:m}){const i=k[s]??k.medium,o=Math.min(5e7,Math.round(n.width*n.height*t*i));return Math.round((o+128e3)/8*Math.max(0,m))}function P(){const n=new Error("Trim cancelled.");return n.name="AbortError",n}function J(n){const t=document.createElement("video");return t.src=n,t.className="recording-player",t.playsInline=!0,t.preload="auto",document.body.append(t),t}function W(n,t){return new Promise((s,m)=>{const i=r=>{clearTimeout(u),n.removeEventListener("canplay",o),n.removeEventListener("error",d),t?.removeEventListener("abort",c),r?m(r):s()},o=()=>i(null),d=()=>i(new Error("This browser could not play the file back to trim it.")),c=()=>i(P()),u=setTimeout(()=>i(new Error("The file took too long to open.")),Y);if(n.readyState>=2){i(null);return}n.addEventListener("canplay",o,{once:!0}),n.addEventListener("error",d,{once:!0}),t?.addEventListener("abort",c,{once:!0})})}function X(n,t,s){return new Promise((m,i)=>{const o=r=>{clearTimeout(u),n.removeEventListener("seeked",d),s?.removeEventListener("abort",c),r?i(r):m()},d=()=>o(null),c=()=>o(P()),u=setTimeout(()=>o(new Error("The browser could not seek to the start of the section.")),G);if(Math.abs(n.currentTime-t)<.001){o(null);return}n.addEventListener("seeked",d,{once:!0}),s?.addEventListener("abort",c,{once:!0}),n.currentTime=t})}async function z({src:n,range:t,size:s,quality:m="medium",keepAudio:i=!0,fps:o=30,onProgress:d,signal:c}){const u=Q();if(!u)throw new Error("This browser can neither re-encode nor record video.");const r=document.createElement("canvas");r.width=Math.max(2,Math.floor(s.width/2)*2),r.height=Math.max(2,Math.floor(s.height/2)*2);const D=r.getContext("2d",{alpha:!1}),e=J(n);let E=null,x=!1,v=[],l=null;const O=()=>{e.pause();for(const h of v)h.stop();e.removeAttribute("src"),e.load(),e.remove(),E?.close().catch(()=>{})};let _=document.hidden;const A=()=>{document.hidden&&(_=!0)};document.addEventListener("visibilitychange",A);try{d?.({phase:"preparing",done:0,total:1}),await W(e,c),await X(e,t.start,c);let h=r.captureStream(0),[y]=h.getVideoTracks();const C=typeof y.requestFrame=="function";if(C||(h=r.captureStream(Math.max(1,Math.round(o))),[y]=h.getVideoTracks()),v=[y],i)try{E=new(window.AudioContext??window.webkitAudioContext);const a=E.createMediaStreamDestination();E.createMediaElementSource(e).connect(a);const[f]=a.stream.getAudioTracks();f?v.push(f):x=!0}catch{x=!0,e.muted=!0}else e.muted=!0;const U=k[m]??k.medium;l=new MediaRecorder(new MediaStream(v),{mimeType:u,videoBitsPerSecond:Math.min(5e7,Math.round(r.width*r.height*o*U))});const R=[];l.ondataavailable=a=>{a.data.size&&R.push(a.data)};const N=new Promise((a,f)=>{l.onstop=a,l.onerror=w=>f(w.error??new Error("Recording failed."))}),j=Math.max(0,t.end-t.start),L=()=>{D.drawImage(e,0,0,r.width,r.height),C&&y.requestFrame(),d?.({phase:"recording",done:Math.max(0,e.currentTime-t.start),total:j,realtime:!0})};return await E?.resume().catch(()=>{}),L(),l.start(),await e.play(),await new Promise((a,f)=>{let w=!1;const p=(b,g)=>{w||(w=!0,clearInterval(K),e.removeEventListener("ended",S),c?.removeEventListener("abort",I),b(g))},S=()=>p(a),I=()=>p(f,P());let F=0,T=typeof e.requestVideoFrameCallback=="function";const V=()=>{if(!w){if(F++,e.currentTime>=t.end){p(a);return}L(),e.ended?p(a):T&&e.requestVideoFrameCallback(V)}};T&&e.requestVideoFrameCallback(V);const q=Math.max(10,1e3/Math.max(1,o)),H=performance.now();let B=-1,M=0;const K=setInterval(()=>{if(w)return;if(e.currentTime>=t.end){p(a);return}T&&F===0&&performance.now()-H>700&&(T=!1),T||L();const b=e.currentTime;b===B?M+=q:(M=0,B=b);const g=Number.isFinite(e.duration)&&e.duration>0&&b>=e.duration-.05;(e.ended||e.paused&&b>0||g&&M>400||M>3e3)&&p(a)},q);e.addEventListener("ended",S),c?.addEventListener("abort",I)}),e.pause(),l.stop(),await N,{blob:new Blob(R,{type:u}),extension:u.includes("webm")?"webm":"mp4",codec:u,exact:!0,preRoll:0,warning:[_?"The tab was hidden while recording, so some frames may be missing. Run it again with this tab in front for a clean result.":null,x&&i?"The sound could not be captured in this browser, so the result has no audio track.":null].filter(Boolean).join(" ")||null}}catch(h){throw l&&l.state!=="inactive"&&l.stop(),h}finally{document.removeEventListener("visibilitychange",A),O()}}export{$ as estimateRecording,z as trimByRecording};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{pickRecorderMimeType}from'./support.js';
+const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
+const LOAD_TIMEOUT=20_000;
+const SEEK_TIMEOUT=20_000;
+export function estimateRecording({size,fps,quality,seconds}){
+const bitsPerPixel=QUALITY_BPP[quality]??QUALITY_BPP.medium;
+const video=Math.min(50_000_000,Math.round(size.width*size.height*fps*bitsPerPixel));
+const audio=128_000;
+return Math.round((video+audio)/8*Math.max(0,seconds));
+}
+function aborted(){
+const error=new Error('Trim cancelled.');
+error.name='AbortError';
+return error;
+}
+function hiddenPlayer(src){
+const video=document.createElement('video');
+video.src=src;
+video.className='recording-player';
+video.playsInline=true;
+video.preload='auto';
+document.body.append(video);
+return video;
+}
+function whenReady(video,signal){
+return new Promise((resolve,reject)=>{
+const done=(error)=>{
+clearTimeout(timer);
+video.removeEventListener('canplay',ok);
+video.removeEventListener('error',bad);
+signal?.removeEventListener('abort',cancel);
+if(error)reject(error);else resolve();
+};
+const ok=()=>done(null);
+const bad=()=>done(new Error('This browser could not play the file back to trim it.'));
+const cancel=()=>done(aborted());
+const timer=setTimeout(()=>done(new Error('The file took too long to open.')),LOAD_TIMEOUT);
+if(video.readyState>=2){done(null);return;}
+video.addEventListener('canplay',ok,{once:true});
+video.addEventListener('error',bad,{once:true});
+signal?.addEventListener('abort',cancel,{once:true});
+});
+}
+function seekTo(video,seconds,signal){
+return new Promise((resolve,reject)=>{
+const done=(error)=>{
+clearTimeout(timer);
+video.removeEventListener('seeked',ok);
+signal?.removeEventListener('abort',cancel);
+if(error)reject(error);else resolve();
+};
+const ok=()=>done(null);
+const cancel=()=>done(aborted());
+const timer=setTimeout(
+()=>done(new Error('The browser could not seek to the start of the section.')),
+SEEK_TIMEOUT);
+if(Math.abs(video.currentTime-seconds)<0.001){done(null);return;}
+video.addEventListener('seeked',ok,{once:true});
+signal?.addEventListener('abort',cancel,{once:true});
+video.currentTime=seconds;
+});
+}
+export async function trimByRecording({
+src,range,size,quality='medium',keepAudio=true,fps=30,onProgress,signal,
+}){
+const mimeType=pickRecorderMimeType();
+if(!mimeType)throw new Error('This browser can neither re-encode nor record video.');
+const canvas=document.createElement('canvas');
+canvas.width=Math.max(2,Math.floor(size.width/2)*2);
+canvas.height=Math.max(2,Math.floor(size.height/2)*2);
+const ctx=canvas.getContext('2d',{alpha:false});
+const video=hiddenPlayer(src);
+let audioContext=null;
+let audioMissing=false;
+let tracks=[];
+let recorder=null;
+const teardown=()=>{
+video.pause();
+for(const track of tracks)track.stop();
+video.removeAttribute('src');
+video.load();
+video.remove();
+audioContext?.close().catch(()=>{});
+};
+let wentHidden=document.hidden;
+const onVisibility=()=>{if(document.hidden)wentHidden=true;};
+document.addEventListener('visibilitychange',onVisibility);
+try{
+onProgress?.({phase:'preparing',done:0,total:1});
+await whenReady(video,signal);
+await seekTo(video,range.start,signal);
+let stream=canvas.captureStream(0);
+let[videoTrack]=stream.getVideoTracks();
+const onDemand=typeof videoTrack.requestFrame==='function';
+if(!onDemand){
+stream=canvas.captureStream(Math.max(1,Math.round(fps)));
+[videoTrack]=stream.getVideoTracks();
+}
+tracks=[videoTrack];
+if(keepAudio){
+try{
+audioContext=new(window.AudioContext??window.webkitAudioContext)();
+const destination=audioContext.createMediaStreamDestination();
+audioContext.createMediaElementSource(video).connect(destination);
+const[audioTrack]=destination.stream.getAudioTracks();
+if(audioTrack)tracks.push(audioTrack);
+else audioMissing=true;
+}catch{
+audioMissing=true;
+video.muted=true;
+}
+}else{
+video.muted=true;
+}
+const bitsPerPixel=QUALITY_BPP[quality]??QUALITY_BPP.medium;
+recorder=new MediaRecorder(new MediaStream(tracks),{
+mimeType,
+videoBitsPerSecond:Math.min(50_000_000,
+Math.round(canvas.width*canvas.height*fps*bitsPerPixel)),
+});
+const parts=[];
+recorder.ondataavailable=(event)=>{if(event.data.size)parts.push(event.data);};
+const finished=new Promise((resolve,reject)=>{
+recorder.onstop=resolve;
+recorder.onerror=(event)=>reject(event.error??new Error('Recording failed.'));
+});
+const wanted=Math.max(0,range.end-range.start);
+const draw=()=>{
+ctx.drawImage(video,0,0,canvas.width,canvas.height);
+if(onDemand)videoTrack.requestFrame();
+onProgress?.({
+phase:'recording',
+done:Math.max(0,video.currentTime-range.start),
+total:wanted,
+realtime:true,
+});
+};
+await audioContext?.resume().catch(()=>{});
+draw();
+recorder.start();
+await video.play();
+await new Promise((resolve,reject)=>{
+let settled=false;
+const done=(fn,value)=>{
+if(settled)return;
+settled=true;
+clearInterval(ticker);
+video.removeEventListener('ended',onEnded);
+signal?.removeEventListener('abort',onAbort);
+fn(value);
+};
+const onEnded=()=>done(resolve);
+const onAbort=()=>done(reject,aborted());
+let presented=0;
+let byCallback=typeof video.requestVideoFrameCallback==='function';
+const pump=()=>{
+if(settled)return;
+presented++;
+if(video.currentTime>=range.end){done(resolve);return;}
+draw();
+if(video.ended)done(resolve);
+else if(byCallback)video.requestVideoFrameCallback(pump);
+};
+if(byCallback)video.requestVideoFrameCallback(pump);
+const interval=Math.max(10,1000/Math.max(1,fps));
+const startedAt=performance.now();
+let lastTime=-1;
+let stalled=0;
+const ticker=setInterval(()=>{
+if(settled)return;
+if(video.currentTime>=range.end){done(resolve);return;}
+if(byCallback&&presented===0&&performance.now()-startedAt>700){
+byCallback=false;
+}
+if(!byCallback)draw();
+const now=video.currentTime;
+if(now===lastTime)stalled+=interval;
+else{stalled=0;lastTime=now;}
+const atEnd=Number.isFinite(video.duration)&&video.duration>0
+&&now>=video.duration-0.05;
+if(video.ended
+||(video.paused&&now>0)
+||(atEnd&&stalled>400)
+||stalled>3000)done(resolve);
+},interval);
+video.addEventListener('ended',onEnded);
+signal?.addEventListener('abort',onAbort);
+});
+video.pause();
+recorder.stop();
+await finished;
+return{
+blob:new Blob(parts,{type:mimeType}),
+extension:mimeType.includes('webm')?'webm':'mp4',
+codec:mimeType,
+exact:true,
+preRoll:0,
+warning:[
+wentHidden
+?'The tab was hidden while recording, so some frames may be missing. '
++'Run it again with this tab in front for a clean result.'
+:null,
+audioMissing&&keepAudio
+?'The sound could not be captured in this browser, so the result has no audio track.'
+:null,
+].filter(Boolean).join(' ')||null,
+};
+}catch(error){
+if(recorder&&recorder.state!=='inactive')recorder.stop();
+throw error;
+}finally{
+document.removeEventListener('visibilitychange',onVisibility);
+teardown();
+}
+}

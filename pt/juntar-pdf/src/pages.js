@@ -1,2 +1,114 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{isName as p,PdfString as b,Ref as g}from"./objects.js";const m=["Resources","MediaBox","CropBox","Rotate"],x=[0,0,612,792];function E(e){const t=[],r=new Set,n=(o,s,a,c)=>{if(!(o instanceof Map)||c>64||t.length>2e4)return;const i=new Map(a);for(const f of m)o.has(f)&&i.set(f,o.get(f));const l=e.resolve(o.get("Kids"));if(!Array.isArray(l)){if(p(o.get("Type"),"Pages"))return;t.push(y(e,o,s,i));return}for(const f of l){const u=f instanceof g?f.key:null;if(u){if(r.has(u))continue;r.add(u)}n(e.resolve(f),f instanceof g?f:null,i,c+1)}};return n(e.get(e.catalog,"Pages"),null,new Map,0),t}function y(e,t,r,n){const o=new Map;for(const i of m)!t.has(i)&&n.has(i)&&o.set(i,n.get(i));const s=A(e.resolve(t.get("MediaBox")??n.get("MediaBox"))),a=R(e.resolve(t.get("Rotate")??n.get("Rotate"))),c=a===90||a===270;return{ref:r,dict:t,inherited:o,box:s,rotate:a,width:c?s[3]-s[1]:s[2]-s[0],height:c?s[2]-s[0]:s[3]-s[1]}}function A(e){if(!Array.isArray(e)||e.length<4)return[...x];const t=e.slice(0,4).map(n=>Number.isFinite(n)?n:0),r=[Math.min(t[0],t[2]),Math.min(t[1],t[3]),Math.max(t[0],t[2]),Math.max(t[1],t[3])];return r[2]-r[0]<1||r[3]-r[1]<1?[...x]:r}function R(e){return Number.isFinite(e)?(Math.round(e/90)%4+4)%4*90:0}const T=[["A3",841.89,1190.55],["A4",595.28,841.89],["A5",419.53,595.28],["A6",297.64,419.53],["B5",498.9,708.66],["Letter",612,792],["Legal",612,1008],["Tabloid",792,1224],["Executive",522,756]],M=3;function d(e,t){const r=e<=t,n=Math.min(e,t),o=Math.max(e,t);for(const[a,c,i]of T)if(Math.abs(n-c)<=M&&Math.abs(o-i)<=M)return`${a} ${r?"portrait":"landscape"}`;const s=[e/72,t/72];return s.every(a=>Math.abs(a-Math.round(a*2)/2)<.02)?`${h(s[0])} \xD7 ${h(s[1])} in`:`${Math.round(e/72*25.4)} \xD7 ${Math.round(t/72*25.4)} mm`}function h(e){return String(Math.round(e*2)/2)}function k(e){const t=e?.bytes;if(!t||!t.length)return"";if(t[0]===254&&t[1]===255){let n="";for(let o=2;o+1<t.length;o+=2)n+=String.fromCharCode(t[o]<<8|t[o+1]);return n.replace(/\0/g,"").trim()}let r="";for(const n of t)r+=String.fromCharCode(n);return r.replace(/\0/g,"").trim()}function C(e){const t=e.info,r=t instanceof Map?e.resolve(t.get("Title")):null,n=r instanceof b?k(r):"";return n.length>0&&n.length<200?n:""}export{k as decodeText,C as documentTitle,A as normalizeBox,R as normalizeRotation,E as readPages,d as sizeLabel};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{isName,PdfString,Ref}from'./objects.js';
+const INHERITED=['Resources','MediaBox','CropBox','Rotate'];
+const DEFAULT_BOX=[0,0,612,792];
+export function readPages(doc){
+const found=[];
+const seen=new Set();
+const walk=(node,ref,inherited,depth)=>{
+if(!(node instanceof Map)||depth>64||found.length>20000)return;
+const carried=new Map(inherited);
+for(const key of INHERITED){
+if(node.has(key))carried.set(key,node.get(key));
+}
+const kids=doc.resolve(node.get('Kids'));
+if(!Array.isArray(kids)){
+if(isName(node.get('Type'),'Pages'))return;
+found.push(describe(doc,node,ref,carried));
+return;
+}
+for(const kid of kids){
+const key=kid instanceof Ref?kid.key:null;
+if(key){
+if(seen.has(key))continue;
+seen.add(key);
+}
+walk(doc.resolve(kid),kid instanceof Ref?kid:null,carried,depth+1);
+}
+};
+walk(doc.get(doc.catalog,'Pages'),null,new Map(),0);
+return found;
+}
+function describe(doc,dict,ref,carried){
+const inherited=new Map();
+for(const key of INHERITED){
+if(!dict.has(key)&&carried.has(key))inherited.set(key,carried.get(key));
+}
+const box=normalizeBox(doc.resolve(dict.get('MediaBox')??carried.get('MediaBox')));
+const rotate=normalizeRotation(doc.resolve(dict.get('Rotate')??carried.get('Rotate')));
+const turned=rotate===90||rotate===270;
+return{
+ref,
+dict,
+inherited,
+box,
+rotate,
+width:turned?box[3]-box[1]:box[2]-box[0],
+height:turned?box[2]-box[0]:box[3]-box[1],
+};
+}
+export function normalizeBox(value){
+if(!Array.isArray(value)||value.length<4)return[...DEFAULT_BOX];
+const numbers=value.slice(0,4).map((n)=>(Number.isFinite(n)?n:0));
+const box=[
+Math.min(numbers[0],numbers[2]),Math.min(numbers[1],numbers[3]),
+Math.max(numbers[0],numbers[2]),Math.max(numbers[1],numbers[3]),
+];
+if(box[2]-box[0]<1||box[3]-box[1]<1)return[...DEFAULT_BOX];
+return box;
+}
+export function normalizeRotation(value){
+if(!Number.isFinite(value))return 0;
+const turns=Math.round(value/90)%4;
+return((turns+4)%4)*90;
+}
+const NAMED=[
+['A3',841.89,1190.55],
+['A4',595.28,841.89],
+['A5',419.53,595.28],
+['A6',297.64,419.53],
+['B5',498.90,708.66],
+['Letter',612,792],
+['Legal',612,1008],
+['Tabloid',792,1224],
+['Executive',522,756],
+];
+const TOLERANCE=3;
+export function sizeLabel(width,height){
+const portrait=width<=height;
+const short=Math.min(width,height);
+const long=Math.max(width,height);
+for(const[label,w,h]of NAMED){
+if(Math.abs(short-w)<=TOLERANCE&&Math.abs(long-h)<=TOLERANCE){
+return`${label} ${portrait ? 'portrait' : 'landscape'}`;
+}
+}
+const inches=[width/72,height/72];
+if(inches.every((value)=>Math.abs(value-Math.round(value*2)/2)<0.02)){
+return`${trim(inches[0])} × ${trim(inches[1])} in`;
+}
+return`${Math.round((width / 72) * 25.4)} × ${Math.round((height / 72) * 25.4)} mm`;
+}
+function trim(value){
+return String(Math.round(value*2)/2);
+}
+export function decodeText(value){
+const bytes=value?.bytes;
+if(!bytes||!bytes.length)return'';
+if(bytes[0]===0xfe&&bytes[1]===0xff){
+let text='';
+for(let i=2;i+1<bytes.length;i+=2){
+text+=String.fromCharCode((bytes[i]<<8)|bytes[i+1]);
+}
+return text.replace(/\0/g,'').trim();
+}
+let text='';
+for(const byte of bytes)text+=String.fromCharCode(byte);
+return text.replace(/\0/g,'').trim();
+}
+export function documentTitle(doc){
+const info=doc.info;
+const title=info instanceof Map?doc.resolve(info.get('Title')):null;
+const text=title instanceof PdfString?decodeText(title):'';
+return text.length>0&&text.length<200?text:'';
+}

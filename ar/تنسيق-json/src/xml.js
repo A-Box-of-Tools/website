@@ -1,4 +1,231 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{ParseError as f}from"./errors.js";const m=new Set(["area","base","br","col","embed","hr","img","input","link","meta","param","source","track","wbr"]),v=new Set(["script","style"]),S=new Set(["pre","textarea"]),T={li:new Set(["li"]),dt:new Set(["dt","dd"]),dd:new Set(["dt","dd"]),p:new Set(["address","article","aside","blockquote","div","dl","fieldset","footer","form","h1","h2","h3","h4","h5","h6","header","hr","main","nav","ol","p","pre","section","table","ul"]),option:new Set(["option","optgroup"]),optgroup:new Set(["optgroup"]),tr:new Set(["tr"]),td:new Set(["td","th","tr"]),th:new Set(["td","th","tr"]),thead:new Set(["tbody","tfoot"]),tbody:new Set(["tbody","tfoot"])},A=new Set(["a","abbr","b","bdi","bdo","br","cite","code","data","dfn","em","i","img","kbd","mark","q","rp","rt","ruby","s","samp","small","span","strong","sub","sup","time","u","var","wbr"]);function W(e,{html:l=!1}={}){const u={t:"element",name:"#document",attrs:[],children:[]},n=[u],r=()=>n[n.length-1];let s=0;const d=c=>{c!==""&&r().children.push({t:"text",text:c})};for(;s<e.length;){const c=e.indexOf("<",s);if(c<0){d(e.slice(s));break}if(d(e.slice(s,c)),s=c,e.startsWith("<!--",s)){const t=e.indexOf("-->",s+4);if(t<0)throw new f("This comment is never closed",s,e);r().children.push({t:"comment",text:e.slice(s+4,t)}),s=t+3;continue}if(e.startsWith("<![CDATA[",s)){const t=e.indexOf("]]>",s+9);if(t<0)throw new f("This CDATA section is never closed",s,e);r().children.push({t:"cdata",text:e.slice(s+9,t)}),s=t+3;continue}if(e.startsWith("<?",s)||e.startsWith("<!",s)){const t=e.startsWith("<?",s)?"?>":">",a=e.indexOf(t,s+2);if(a<0)throw new f("This declaration is never closed",s,e);r().children.push({t:"directive",text:e.slice(s,a+t.length)}),s=a+t.length;continue}if(e.startsWith("</",s)){const t=e.indexOf(">",s);if(t<0)throw new f("This closing tag is never finished",s,e);const a=g(e.slice(s+2,t).trim(),l);s=t+1;const o=C(n,a);if(o<0){if(!l)throw new f(`</${a}> closes a tag that was never opened`,c,e);continue}if(o<n.length-1&&!l)throw new f(`</${a}> closes an element while <${r().name}> is still open`,c,e);n.length=o;continue}const h=E(e,s,l);s=h.end;const p={t:"element",name:h.name,attrs:h.attrs,children:[],selfClosed:h.selfClosed};if(l)for(;n.length>1&&T[r().name]?.has(h.name);)n.pop();if(r().children.push(p),!(h.selfClosed||l&&m.has(h.name))){if(l&&v.has(h.name)){const t=new RegExp(`</${h.name}\\s*>`,"i"),a=e.slice(s),o=t.exec(a),i=o?a.slice(0,o.index):a;i!==""&&p.children.push({t:"text",text:i,raw:!0}),s+=i.length+(o?o[0].length:0);continue}n.push(p)}}if(n.length>1&&!l){const c=n[n.length-1];throw new f(`<${c.name}> is never closed`,e.length,e)}return u.children}function C(e,l){for(let u=e.length-1;u>0;u-=1)if(e[u].name===l)return u;return-1}function g(e,l){return l?e.toLowerCase():e}const O=/[A-Za-z_:]/;function E(e,l,u){let n=l+1;if(!O.test(e[n]??""))throw new f("A tag name has to start with a letter",n,e);for(;n<e.length&&!/[\s/>]/.test(e[n]);)n+=1;const r=g(e.slice(l+1,n),u),s=[];for(;;){for(;n<e.length&&/\s/.test(e[n]);)n+=1;if(n>=e.length)throw new f(`<${r}> is never finished`,l,e);if(e[n]===">")return{name:r,attrs:s,selfClosed:!1,end:n+1};if(e.startsWith("/>",n))return{name:r,attrs:s,selfClosed:!0,end:n+2};const d=n;for(;n<e.length&&!/[\s=/>]/.test(e[n]);)n+=1;const c=e.slice(d,n);if(c==="")throw new f(`Unexpected "${e[n]}" inside <${r}>`,n,e);for(;n<e.length&&/\s/.test(e[n]);)n+=1;if(e[n]!=="="){if(!u)throw new f(`The attribute "${c}" has no value, which XML does not allow`,d,e);s.push({name:c,value:null,quote:'"'});continue}for(n+=1;n<e.length&&/\s/.test(e[n]);)n+=1;const h=e[n];if(h==='"'||h==="'"){const t=e.indexOf(h,n+1);if(t<0)throw new f("This attribute value is never closed",n,e);s.push({name:c,value:e.slice(n+1,t),quote:h}),n=t+1;continue}if(!u)throw new f("An attribute value has to be quoted in XML",n,e);const p=n;for(;n<e.length&&!/[\s>]/.test(e[n]);)n+=1;s.push({name:c,value:e.slice(p,n),quote:'"'})}}function k(e,{indent:l="  ",minify:u=!1,html:n=!1}={}){const r=[],s=t=>{const a=t.attrs.map(o=>o.value===null?` ${o.name}`:` ${o.name}=${o.quote}${o.value}${o.quote}`).join("");return t.selfClosed||n&&m.has(t.name)&&!t.children.length?n&&m.has(t.name)?`<${t.name}${a}>`:`<${t.name}${a}/>`:`<${t.name}${a}>`},d=t=>!(t.selfClosed||n&&m.has(t.name)),c=t=>t.children.every(a=>a.t==="text"||n&&a.t==="element"&&A.has(a.name)&&c(a)),h=t=>{if(t.t==="text")return b(t.text);if(t.t==="comment")return`<!--${t.text}-->`;if(t.t==="cdata")return`<![CDATA[${t.text}]]>`;if(t.t==="directive")return t.text;const a=t.children.map(h).join("");return d(t)?`${s(t)}${a}</${t.name}>`:s(t)},p=(t,a)=>{const o=u?"":l.repeat(a);for(const i of t){if(i.t==="text"){if(i.raw){r.push(o+i.text.trim());continue}const w=b(i.text);if(w.trim()==="")continue;r.push(o+w.trim());continue}if(i.t==="comment"){r.push(`${o}<!--${i.text}-->`);continue}if(i.t==="cdata"){r.push(`${o}<![CDATA[${i.text}]]>`);continue}if(i.t==="directive"){r.push(o+i.text);continue}if(!d(i)||!i.children.length){r.push(o+s(i)+(d(i)?`</${i.name}>`:""));continue}if(S.has(i.name)&&n){const w=i.children.map($=>$.t==="text"?$.text:h($)).join("");r.push(`${o}${s(i)}${w}</${i.name}>`);continue}if(c(i)){const w=i.children.map(h).join("").trim();r.push(`${o}${s(i)}${w}</${i.name}>`);continue}r.push(o+s(i)),p(i.children,a+1),r.push(`${o}</${i.name}>`)}};return p(e,0),u?r.join(""):`${r.join(`
-`)}
-`}function b(e){return e.replace(/\s+/g," ")}export{W as parseXml,k as printXml};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{ParseError}from'./errors.js';
+const VOID=new Set([
+'area','base','br','col','embed','hr','img','input',
+'link','meta','param','source','track','wbr',
+]);
+const RAW_TEXT=new Set(['script','style']);
+const PRESERVE=new Set(['pre','textarea']);
+const CLOSED_BY={
+li:new Set(['li']),
+dt:new Set(['dt','dd']),
+dd:new Set(['dt','dd']),
+p:new Set(['address','article','aside','blockquote','div','dl','fieldset',
+'footer','form','h1','h2','h3','h4','h5','h6','header','hr','main',
+'nav','ol','p','pre','section','table','ul']),
+option:new Set(['option','optgroup']),
+optgroup:new Set(['optgroup']),
+tr:new Set(['tr']),
+td:new Set(['td','th','tr']),
+th:new Set(['td','th','tr']),
+thead:new Set(['tbody','tfoot']),
+tbody:new Set(['tbody','tfoot']),
+};
+const INLINE=new Set([
+'a','abbr','b','bdi','bdo','br','cite','code','data','dfn','em',
+'i','img','kbd','mark','q','rp','rt','ruby','s','samp','small',
+'span','strong','sub','sup','time','u','var','wbr',
+]);
+export function parseXml(text,{html=false}={}){
+const root={t:'element',name:'#document',attrs:[],children:[]};
+const stack=[root];
+const top=()=>stack[stack.length-1];
+let at=0;
+const pushText=(raw)=>{
+if(raw==='')return;
+top().children.push({t:'text',text:raw});
+};
+while(at<text.length){
+const next=text.indexOf('<',at);
+if(next<0){pushText(text.slice(at));break;}
+pushText(text.slice(at,next));
+at=next;
+if(text.startsWith('<!--',at)){
+const end=text.indexOf('-->',at+4);
+if(end<0)throw new ParseError('This comment is never closed',at,text);
+top().children.push({t:'comment',text:text.slice(at+4,end)});
+at=end+3;
+continue;
+}
+if(text.startsWith('<![CDATA[',at)){
+const end=text.indexOf(']]>',at+9);
+if(end<0)throw new ParseError('This CDATA section is never closed',at,text);
+top().children.push({t:'cdata',text:text.slice(at+9,end)});
+at=end+3;
+continue;
+}
+if(text.startsWith('<?',at)||text.startsWith('<!',at)){
+const close=text.startsWith('<?',at)?'?>':'>';
+const end=text.indexOf(close,at+2);
+if(end<0)throw new ParseError('This declaration is never closed',at,text);
+top().children.push({t:'directive',text:text.slice(at,end+close.length)});
+at=end+close.length;
+continue;
+}
+if(text.startsWith('</',at)){
+const end=text.indexOf('>',at);
+if(end<0)throw new ParseError('This closing tag is never finished',at,text);
+const name=normalise(text.slice(at+2,end).trim(),html);
+at=end+1;
+const depth=findOpen(stack,name);
+if(depth<0){
+if(!html){
+throw new ParseError(`</${name}> closes a tag that was never opened`,next,text);
+}
+continue;
+}
+if(depth<stack.length-1&&!html){
+throw new ParseError(
+`</${name}> closes an element while <${top().name}> is still open`,next,text);
+}
+stack.length=depth;
+continue;
+}
+const tag=readTag(text,at,html);
+at=tag.end;
+const element={
+t:'element',
+name:tag.name,
+attrs:tag.attrs,
+children:[],
+selfClosed:tag.selfClosed,
+};
+if(html){
+while(stack.length>1&&CLOSED_BY[top().name]?.has(tag.name))stack.pop();
+}
+top().children.push(element);
+if(tag.selfClosed||(html&&VOID.has(tag.name)))continue;
+if(html&&RAW_TEXT.has(tag.name)){
+const close=new RegExp(`</${tag.name}\\s*>`,'i');
+const rest=text.slice(at);
+const found=close.exec(rest);
+const body=found?rest.slice(0,found.index):rest;
+if(body!=='')element.children.push({t:'text',text:body,raw:true});
+at+=body.length+(found?found[0].length:0);
+continue;
+}
+stack.push(element);
+}
+if(stack.length>1&&!html){
+const open=stack[stack.length-1];
+throw new ParseError(`<${open.name}> is never closed`,text.length,text);
+}
+return root.children;
+}
+function findOpen(stack,name){
+for(let i=stack.length-1;i>0;i-=1){
+if(stack[i].name===name)return i;
+}
+return-1;
+}
+function normalise(name,html){
+return html?name.toLowerCase():name;
+}
+const NAME_START=/[A-Za-z_:]/;
+function readTag(text,start,html){
+let at=start+1;
+if(!NAME_START.test(text[at]??'')){
+throw new ParseError('A tag name has to start with a letter',at,text);
+}
+while(at<text.length&&!/[\s/>]/.test(text[at]))at+=1;
+const name=normalise(text.slice(start+1,at),html);
+const attrs=[];
+for(;;){
+while(at<text.length&&/\s/.test(text[at]))at+=1;
+if(at>=text.length)throw new ParseError(`<${name}> is never finished`,start,text);
+if(text[at]==='>')return{name,attrs,selfClosed:false,end:at+1};
+if(text.startsWith('/>',at))return{name,attrs,selfClosed:true,end:at+2};
+const nameStart=at;
+while(at<text.length&&!/[\s=/>]/.test(text[at]))at+=1;
+const attrName=text.slice(nameStart,at);
+if(attrName===''){
+throw new ParseError(`Unexpected "${text[at]}" inside <${name}>`,at,text);
+}
+while(at<text.length&&/\s/.test(text[at]))at+=1;
+if(text[at]!=='='){
+if(!html){
+throw new ParseError(
+`The attribute "${attrName}" has no value, which XML does not allow`,nameStart,text);
+}
+attrs.push({name:attrName,value:null,quote:'"'});
+continue;
+}
+at+=1;
+while(at<text.length&&/\s/.test(text[at]))at+=1;
+const quote=text[at];
+if(quote==='"'||quote==="'"){
+const end=text.indexOf(quote,at+1);
+if(end<0)throw new ParseError('This attribute value is never closed',at,text);
+attrs.push({name:attrName,value:text.slice(at+1,end),quote});
+at=end+1;
+continue;
+}
+if(!html){
+throw new ParseError('An attribute value has to be quoted in XML',at,text);
+}
+const valueStart=at;
+while(at<text.length&&!/[\s>]/.test(text[at]))at+=1;
+attrs.push({name:attrName,value:text.slice(valueStart,at),quote:'"'});
+}
+}
+export function printXml(nodes,{indent='  ',minify=false,html=false}={}){
+const out=[];
+const openTag=(node)=>{
+const attrs=node.attrs.map((attr)=>(attr.value===null
+?` ${attr.name}`
+:` ${attr.name}=${attr.quote}${attr.value}${attr.quote}`)).join('');
+if(node.selfClosed||(html&&VOID.has(node.name)&&!node.children.length)){
+return html&&VOID.has(node.name)?`<${node.name}${attrs}>`:`<${node.name}${attrs}/>`;
+}
+return`<${node.name}${attrs}>`;
+};
+const isClosed=(node)=>!(node.selfClosed||(html&&VOID.has(node.name)));
+const inlineOnly=(node)=>node.children.every(
+(child)=>child.t==='text'
+||(html&&child.t==='element'&&INLINE.has(child.name)&&inlineOnly(child)));
+const flat=(node)=>{
+if(node.t==='text')return collapse(node.text);
+if(node.t==='comment')return`<!--${node.text}-->`;
+if(node.t==='cdata')return`<![CDATA[${node.text}]]>`;
+if(node.t==='directive')return node.text;
+const inner=node.children.map(flat).join('');
+return isClosed(node)?`${openTag(node)}${inner}</${node.name}>`:openTag(node);
+};
+const walk=(list,depth)=>{
+const pad=minify?'':indent.repeat(depth);
+for(const node of list){
+if(node.t==='text'){
+if(node.raw){out.push(pad+node.text.trim());continue;}
+const text=collapse(node.text);
+if(text.trim()==='')continue;
+out.push(pad+text.trim());
+continue;
+}
+if(node.t==='comment'){out.push(`${pad}<!--${node.text}-->`);continue;}
+if(node.t==='cdata'){out.push(`${pad}<![CDATA[${node.text}]]>`);continue;}
+if(node.t==='directive'){out.push(pad+node.text);continue;}
+if(!isClosed(node)||!node.children.length){
+out.push(pad+openTag(node)+(isClosed(node)?`</${node.name}>`:''));
+continue;
+}
+if(PRESERVE.has(node.name)&&html){
+const inner=node.children.map((child)=>(child.t==='text'?child.text:flat(child))).join('');
+out.push(`${pad}${openTag(node)}${inner}</${node.name}>`);
+continue;
+}
+if(inlineOnly(node)){
+const inner=node.children.map(flat).join('').trim();
+out.push(`${pad}${openTag(node)}${inner}</${node.name}>`);
+continue;
+}
+out.push(pad+openTag(node));
+walk(node.children,depth+1);
+out.push(`${pad}</${node.name}>`);
+}
+};
+walk(nodes,0);
+return minify?out.join(''):`${out.join('\n')}\n`;
+}
+function collapse(text){
+return text.replace(/\s+/g,' ');
+}

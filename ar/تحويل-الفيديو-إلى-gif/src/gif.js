@@ -1,2 +1,195 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const p=255,B=4096,g=new TextEncoder;function U(r){return g.encode(r)}function d(r){let s=2;for(;1<<s<r;)s+=1;return Math.min(8,s)}function M(r){const s=Math.ceil(r.length/255)||0,n=new Uint8Array(r.length+s+1);let t=0,o=0;for(;o<r.length;){const e=Math.min(255,r.length-o);n[t]=e,n.set(r.subarray(o,o+e),t+1),t+=e+1,o+=e}return n[t]=0,n.subarray(0,t+1)}function C(r,s){const n=Math.max(2,s),t=1<<n,o=t+1,e=new Int32Array(1<<20),u=[];let a=0,c=0,x=n+1,h=o+1;const f=i=>{for(a|=i<<c,c+=x;c>=8;)u.push(a&255),a>>=8,c-=8},y=()=>{e.fill(0),x=n+1,h=o+1};if(f(t),r.length){let i=r[0];for(let w=1;w<r.length;w+=1){const l=r[w],b=i<<8|l,m=e[b];if(m){i=m-1;continue}f(i),h<4096?(e[b]=h+1,h===1<<x&&x<12&&(x+=1),h+=1):(f(t),y()),i=l}f(i)}return f(o),c>0&&u.push(a&255),M(Uint8Array.from(u))}function X(r,s,n,t,o){let e=n,u=t,a=-1,c=-1;for(let i=0;i<t;i+=1){const w=i*n;for(let l=0;l<n;l+=1)r[w+l]!==s[w+l]&&(l<e&&(e=l),l>a&&(a=l),i<u&&(u=i),i>c&&(c=i))}if(a<0)return null;const x=a-e+1,h=c-u+1,f=new Uint8Array(x*h);let y=0;for(let i=0;i<h;i+=1){const w=(i+u)*n+e,l=i*x;for(let b=0;b<x;b+=1){const m=r[w+b],A=s[w+b];m===A?(f[l+b]=o,y+=1):f[l+b]=A}}return{x:e,y:u,width:x,height:h,indices:f,transparent:y>0}}class E{#s=[];#n;#i;#e;#r=0;constructor({width:s,height:n,palette:t,loop:o=0,transparentIndex:e=null}){this.#n=s,this.#i=n,this.#e=d(Math.max(t.length/3,e===null?0:e+1)),this.#o(t,o)}get byteLength(){return this.#r}#t(s){this.#s.push(s),this.#r+=s.length}#o(s,n){this.#t(U("GIF89a"));const t=new Uint8Array(7),o=new DataView(t.buffer);o.setUint16(0,this.#n,!0),o.setUint16(2,this.#i,!0),t[4]=240|this.#e-1,t[5]=0,t[6]=0,this.#t(t);const e=new Uint8Array((1<<this.#e)*3);e.set(s.subarray(0,e.length)),this.#t(e);const u=new Uint8Array([33,255,11,...U("NETSCAPE2.0"),3,1,n&255,n>>8&255,0]);this.#t(u)}addFrame(s,{delay:n,x:t=0,y:o=0,width:e=this.#n,height:u=this.#i,transparent:a=null}){const c=new Uint8Array(8),x=new DataView(c.buffer);c[0]=33,c[1]=249,c[2]=4,c[3]=4|(a===null?0:1),x.setUint16(4,Math.max(0,Math.round(n)),!0),c[6]=a===null?0:a,c[7]=0,this.#t(c);const h=new Uint8Array(10),f=new DataView(h.buffer);h[0]=44,f.setUint16(1,t,!0),f.setUint16(3,o,!0),f.setUint16(5,e,!0),f.setUint16(7,u,!0),h[9]=0,this.#t(h);const y=Math.max(2,this.#e);this.#t(new Uint8Array([y])),this.#t(C(s,y))}finish(){return this.#t(new Uint8Array([59])),new Blob(this.#s,{type:"image/gif"})}}export{E as GifWriter,X as diffFrame,C as lzwEncode,d as tableBits};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MAX_BLOCK=255;
+const MAX_CODES=4096;
+const encoder=new TextEncoder();
+function ascii(text){
+return encoder.encode(text);
+}
+export function tableBits(colors){
+let bits=2;
+while((1<<bits)<colors)bits+=1;
+return Math.min(8,bits);
+}
+function subBlocks(data){
+const blocks=Math.ceil(data.length/MAX_BLOCK)||0;
+const out=new Uint8Array(data.length+blocks+1);
+let at=0;
+let from=0;
+while(from<data.length){
+const size=Math.min(MAX_BLOCK,data.length-from);
+out[at]=size;
+out.set(data.subarray(from,from+size),at+1);
+at+=size+1;
+from+=size;
+}
+out[at]=0;
+return out.subarray(0,at+1);
+}
+export function lzwEncode(indices,minCodeSize){
+const codeSize=Math.max(2,minCodeSize);
+const clearCode=1<<codeSize;
+const endCode=clearCode+1;
+const dictionary=new Int32Array(1<<(12+8));
+const out=[];
+let bitBuffer=0;
+let bitCount=0;
+let width=codeSize+1;
+let next=endCode+1;
+const emit=(code)=>{
+bitBuffer|=code<<bitCount;
+bitCount+=width;
+while(bitCount>=8){
+out.push(bitBuffer&0xff);
+bitBuffer>>=8;
+bitCount-=8;
+}
+};
+const reset=()=>{
+dictionary.fill(0);
+width=codeSize+1;
+next=endCode+1;
+};
+emit(clearCode);
+if(indices.length){
+let prefix=indices[0];
+for(let i=1;i<indices.length;i+=1){
+const k=indices[i];
+const key=(prefix<<8)|k;
+const found=dictionary[key];
+if(found){
+prefix=found-1;
+continue;
+}
+emit(prefix);
+if(next<MAX_CODES){
+dictionary[key]=next+1;
+if(next===(1<<width)&&width<12)width+=1;
+next+=1;
+}else{
+emit(clearCode);
+reset();
+}
+prefix=k;
+}
+emit(prefix);
+}
+emit(endCode);
+if(bitCount>0)out.push(bitBuffer&0xff);
+return subBlocks(Uint8Array.from(out));
+}
+export function diffFrame(previous,current,width,height,transparent){
+let minX=width;
+let minY=height;
+let maxX=-1;
+let maxY=-1;
+for(let y=0;y<height;y+=1){
+const row=y*width;
+for(let x=0;x<width;x+=1){
+if(previous[row+x]===current[row+x])continue;
+if(x<minX)minX=x;
+if(x>maxX)maxX=x;
+if(y<minY)minY=y;
+if(y>maxY)maxY=y;
+}
+}
+if(maxX<0)return null;
+const boxWidth=maxX-minX+1;
+const boxHeight=maxY-minY+1;
+const indices=new Uint8Array(boxWidth*boxHeight);
+let unchanged=0;
+for(let y=0;y<boxHeight;y+=1){
+const from=(y+minY)*width+minX;
+const to=y*boxWidth;
+for(let x=0;x<boxWidth;x+=1){
+const before=previous[from+x];
+const after=current[from+x];
+if(before===after){
+indices[to+x]=transparent;
+unchanged+=1;
+}else{
+indices[to+x]=after;
+}
+}
+}
+return{
+x:minX,
+y:minY,
+width:boxWidth,
+height:boxHeight,
+indices,
+transparent:unchanged>0,
+};
+}
+export class GifWriter{
+#chunks=[];
+#width;
+#height;
+#bits;
+#bytes=0;
+constructor({width,height,palette,loop=0,transparentIndex=null}){
+this.#width=width;
+this.#height=height;
+this.#bits=tableBits(Math.max(
+palette.length/3,
+transparentIndex===null?0:transparentIndex+1,
+));
+this.#writeHeader(palette,loop);
+}
+get byteLength(){
+return this.#bytes;
+}
+#push(bytes){
+this.#chunks.push(bytes);
+this.#bytes+=bytes.length;
+}
+#writeHeader(palette,loop){
+this.#push(ascii('GIF89a'));
+const screen=new Uint8Array(7);
+const view=new DataView(screen.buffer);
+view.setUint16(0,this.#width,true);
+view.setUint16(2,this.#height,true);
+screen[4]=0x80|0x70|(this.#bits-1);
+screen[5]=0;
+screen[6]=0;
+this.#push(screen);
+const table=new Uint8Array((1<<this.#bits)*3);
+table.set(palette.subarray(0,table.length));
+this.#push(table);
+const netscape=new Uint8Array([
+0x21,0xff,0x0b,
+...ascii('NETSCAPE2.0'),
+0x03,0x01,loop&0xff,(loop>>8)&0xff,0x00,
+]);
+this.#push(netscape);
+}
+addFrame(indices,{
+delay,x=0,y=0,width=this.#width,height=this.#height,transparent=null,
+}){
+const control=new Uint8Array(8);
+const view=new DataView(control.buffer);
+control[0]=0x21;
+control[1]=0xf9;
+control[2]=0x04;
+control[3]=(1<<2)|(transparent===null?0:1);
+view.setUint16(4,Math.max(0,Math.round(delay)),true);
+control[6]=transparent===null?0:transparent;
+control[7]=0;
+this.#push(control);
+const descriptor=new Uint8Array(10);
+const descriptorView=new DataView(descriptor.buffer);
+descriptor[0]=0x2c;
+descriptorView.setUint16(1,x,true);
+descriptorView.setUint16(3,y,true);
+descriptorView.setUint16(5,width,true);
+descriptorView.setUint16(7,height,true);
+descriptor[9]=0;
+this.#push(descriptor);
+const minCodeSize=Math.max(2,this.#bits);
+this.#push(new Uint8Array([minCodeSize]));
+this.#push(lzwEncode(indices,minCodeSize));
+}
+finish(){
+this.#push(new Uint8Array([0x3b]));
+return new Blob(this.#chunks,{type:'image/gif'});
+}
+}

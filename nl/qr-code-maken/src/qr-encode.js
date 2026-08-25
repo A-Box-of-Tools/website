@@ -1,2 +1,140 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{remainder as m}from"./gf256.js";import{blockLayout as d,countBits as a,dataCapacity as f,remainderBits as y}from"./qr-tables.js";const b="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:",M={numeric:1,alphanumeric:2,byte:4};function k(t){if(/^[0-9]*$/.test(t))return"numeric";for(const r of t)if(!b.includes(r))return"byte";return"alphanumeric"}function g(t){return new TextEncoder().encode(t)}function h(t,r){return r==="byte"?g(t).length:[...t].length}function w(t,r){return r==="numeric"?10*Math.floor(t/3)+[0,4,7][t%3]:r==="alphanumeric"?11*Math.floor(t/2)+6*(t%2):8*t}function B(t,r,o){return 4+a(r,o)+w(t,r)}function v(t,r,o,e=1,n=40){const c=h(t,r);for(let i=Math.max(1,e);i<=n;i+=1)if(B(c,r,i)<=f(i,o)*8)return i;return 0}function x(t,r,o){const e=f(r,o)*8-4-a(t,r);if(t==="numeric"){const n=Math.floor(e/10)*3,c=e%10;return n+(c>=7?2:c>=4?1:0)}return t==="alphanumeric"?Math.floor(e/11)*2+(e%11>=6?1:0):Math.floor(e/8)}function L(){const t=[];return{bits:t,push(r,o){for(let e=o-1;e>=0;e-=1)t.push(r>>>e&1)}}}function $(t,r,o){const e=L();if(e.push(M[r],4),e.push(h(t,r),a(r,o)),r==="numeric")for(let n=0;n<t.length;n+=3){const c=t.slice(n,n+3);e.push(Number(c),c.length*3+1)}else if(r==="alphanumeric"){const n=[...t].map(c=>b.indexOf(c));for(let c=0;c<n.length;c+=2)c+1<n.length?e.push(n[c]*45+n[c+1],11):e.push(n[c],6)}else for(const n of g(t))e.push(n,8);return e.bits}function A(t,r){const o=t.slice(0,r*8),e=Math.min(4,r*8-o.length);for(let i=0;i<e;i+=1)o.push(0);for(;o.length%8!==0;)o.push(0);const n=new Uint8Array(r);for(let i=0;i<o.length;i+=8){let l=0;for(let s=0;s<8;s+=1)l=l<<1|o[i+s];n[i/8]=l}const c=[236,17];for(let i=o.length/8,l=0;i<r;i+=1,l+=1)n[i]=c[l%2];return n}function C(t,r,o){const e=d(r,o),n=[];let c=0;for(let s=0;s<e.blocks;s+=1){const u=e.shortLength+(s>=e.blocks-e.longBlocks?1:0),p=t.subarray(c,c+u);c+=u,n.push({data:p,ec:m(p,e.ecPerBlock)})}const i=new Uint8Array(t.length+e.ecPerBlock*e.blocks);let l=0;for(let s=0;s<=e.shortLength;s+=1)for(const u of n)s<u.data.length&&(i[l++]=u.data[s]);for(let s=0;s<e.ecPerBlock;s+=1)for(const u of n)i[l++]=u.ec[s];return i}function V(t,r={}){const o=r.level??"M",e=r.mode??k(t),n=v(t,e,o,r.minVersion??1,r.maxVersion??40);if(n===0)throw new RangeError(`too long for a QR code at level ${o}: ${h(t,e)} ${e==="byte"?"bytes":"characters"}, and the largest symbol holds ${x(e,r.maxVersion??40,o)}`);const c=f(n,o),i=$(t,e,n);return{codewords:C(A(i,c),n,o),version:n,level:o,mode:e,bits:i.length,capacityBits:c*8,remainderBits:y(n)}}export{b as ALPHANUMERIC,x as capacityFor,k as chooseMode,V as encodeText,v as fitVersion,C as interleave,g as utf8};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{remainder}from'./gf256.js';
+import{
+blockLayout,countBits,dataCapacity,remainderBits,
+}from'./qr-tables.js';
+export const ALPHANUMERIC='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
+const MODE_BITS={numeric:0b0001,alphanumeric:0b0010,byte:0b0100};
+export function chooseMode(text){
+if(/^[0-9]*$/.test(text))return'numeric';
+for(const character of text){
+if(!ALPHANUMERIC.includes(character))return'byte';
+}
+return'alphanumeric';
+}
+export function utf8(text){
+return new TextEncoder().encode(text);
+}
+function unitCount(text,mode){
+return mode==='byte'?utf8(text).length:[...text].length;
+}
+function payloadBits(count,mode){
+if(mode==='numeric')return 10*Math.floor(count/3)+[0,4,7][count%3];
+if(mode==='alphanumeric')return 11*Math.floor(count/2)+6*(count%2);
+return 8*count;
+}
+function bitLength(count,mode,version){
+return 4+countBits(mode,version)+payloadBits(count,mode);
+}
+export function fitVersion(text,mode,level,min=1,max=40){
+const count=unitCount(text,mode);
+for(let version=Math.max(1,min);version<=max;version+=1){
+if(bitLength(count,mode,version)<=dataCapacity(version,level)*8){
+return version;
+}
+}
+return 0;
+}
+export function capacityFor(mode,version,level){
+const bits=dataCapacity(version,level)*8-4-countBits(mode,version);
+if(mode==='numeric'){
+const whole=Math.floor(bits/10)*3;
+const spare=bits%10;
+return whole+(spare>=7?2:spare>=4?1:0);
+}
+if(mode==='alphanumeric'){
+return Math.floor(bits/11)*2+(bits%11>=6?1:0);
+}
+return Math.floor(bits/8);
+}
+function bitWriter(){
+const bits=[];
+return{
+bits,
+push(value,width){
+for(let i=width-1;i>=0;i-=1)bits.push((value>>>i)&1);
+},
+};
+}
+function writeSegment(text,mode,version){
+const writer=bitWriter();
+writer.push(MODE_BITS[mode],4);
+writer.push(unitCount(text,mode),countBits(mode,version));
+if(mode==='numeric'){
+for(let i=0;i<text.length;i+=3){
+const group=text.slice(i,i+3);
+writer.push(Number(group),group.length*3+1);
+}
+}else if(mode==='alphanumeric'){
+const values=[...text].map((character)=>ALPHANUMERIC.indexOf(character));
+for(let i=0;i<values.length;i+=2){
+if(i+1<values.length)writer.push(values[i]*45+values[i+1],11);
+else writer.push(values[i],6);
+}
+}else{
+for(const byte of utf8(text))writer.push(byte,8);
+}
+return writer.bits;
+}
+function toCodewords(bits,capacity){
+const padded=bits.slice(0,capacity*8);
+const terminator=Math.min(4,capacity*8-padded.length);
+for(let i=0;i<terminator;i+=1)padded.push(0);
+while(padded.length%8!==0)padded.push(0);
+const codewords=new Uint8Array(capacity);
+for(let i=0;i<padded.length;i+=8){
+let byte=0;
+for(let j=0;j<8;j+=1)byte=(byte<<1)|padded[i+j];
+codewords[i/8]=byte;
+}
+const pad=[0xec,0x11];
+for(let i=padded.length/8,n=0;i<capacity;i+=1,n+=1){
+codewords[i]=pad[n%2];
+}
+return codewords;
+}
+export function interleave(codewords,version,level){
+const layout=blockLayout(version,level);
+const blocks=[];
+let offset=0;
+for(let i=0;i<layout.blocks;i+=1){
+const length=layout.shortLength+(i>=layout.blocks-layout.longBlocks?1:0);
+const data=codewords.subarray(offset,offset+length);
+offset+=length;
+blocks.push({data,ec:remainder(data,layout.ecPerBlock)});
+}
+const result=new Uint8Array(codewords.length+layout.ecPerBlock*layout.blocks);
+let at=0;
+for(let i=0;i<=layout.shortLength;i+=1){
+for(const block of blocks){
+if(i<block.data.length)result[at++]=block.data[i];
+}
+}
+for(let i=0;i<layout.ecPerBlock;i+=1){
+for(const block of blocks)result[at++]=block.ec[i];
+}
+return result;
+}
+export function encodeText(text,options={}){
+const level=options.level??'M';
+const mode=options.mode??chooseMode(text);
+const version=fitVersion(text,mode,level,options.minVersion??1,
+options.maxVersion??40);
+if(version===0){
+throw new RangeError(
+`too long for a QR code at level ${level}: ${unitCount(text, mode)} `
++`${mode === 'byte' ? 'bytes' : 'characters'}, and the largest symbol holds `
++`${capacityFor(mode, options.maxVersion ?? 40, level)}`);
+}
+const capacity=dataCapacity(version,level);
+const bits=writeSegment(text,mode,version);
+return{
+codewords:interleave(toCodewords(bits,capacity),version,level),
+version,
+level,
+mode,
+bits:bits.length,
+capacityBits:capacity*8,
+remainderBits:remainderBits(version),
+};
+}

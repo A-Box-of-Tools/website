@@ -1,2 +1,98 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{isGoTo as h,resolveDestination as v}from"./dests.js";import{decodeText as k}from"./pages.js";import{name as w,PdfString as d,Ref as u}from"./objects.js";const y=5e3;function S(t,n){const r=t.get(t.catalog,"Outlines");if(!(r instanceof Map))return[];const e=new Set;let i=y;const f=(c,g)=>{const l=[];let s=c;for(;s instanceof u&&i>0&&g<24&&!e.has(s.key);){e.add(s.key),i-=1;const o=t.resolve(s);if(!(o instanceof Map))break;l.push({title:k(t.resolve(o.get("Title")))||"Untitled",...A(t,o,n),kids:f(o.get("First"),g+1)}),s=o.get("Next")}return l};return f(r.get("First"),0)}function A(t,n,r){let e=n.get("Dest");if(e===void 0||t.resolve(e)===null){const f=t.resolve(n.get("A"));e=h(t,f)?f.get("D"):void 0}if(e===void 0)return{target:null,view:[]};const i=v(t,e instanceof u?t.resolve(e):e,r);return{target:i?.ref??null,view:i?.view??[]}}function M(t,n){const r=[];for(const e of t){const i=M(e.kids,n),f=e.target?n(e.target):null;!f&&i.length===0||r.push({title:e.title,page:f,view:e.view,kids:i})}return r}function m(t,n){if(!n.length)return null;const r=t.reserve(),e=new Map([["Type",w("Outlines")]]),i=(c,g)=>{const l=c.map(()=>t.reserve());return c.forEach((s,o)=>{const a=new Map([["Title",x(s.title)],["Parent",g]]);if(o>0&&a.set("Prev",new u(l[o-1],0)),o+1<l.length&&a.set("Next",new u(l[o+1],0)),s.page&&a.set("Dest",[s.page,...T(s.view)]),s.kids.length){const p=i(s.kids,new u(l[o],0));a.set("First",p.first),a.set("Last",p.last),a.set("Count",-s.kids.length)}t.put(l[o],a)}),{first:new u(l[0],0),last:new u(l[l.length-1],0)}},f=i(n,new u(r,0));return e.set("First",f.first),e.set("Last",f.last),e.set("Count",n.length),t.put(r,e)}function T(t){return!Array.isArray(t)||t.length===0?[w("Fit")]:t}function x(t){const n=new Uint8Array(2+t.length*2);n[0]=254,n[1]=255;for(let r=0;r<t.length;r+=1){const e=t.charCodeAt(r);n[2+r*2]=e>>8&255,n[3+r*2]=e&255}return new d(n)}export{M as pruneOutline,S as readOutline,x as textString,m as writeOutline};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{isGoTo,resolveDestination}from'./dests.js';
+import{decodeText}from'./pages.js';
+import{name,PdfString,Ref}from'./objects.js';
+const MAX_ITEMS=5000;
+export function readOutline(doc,named){
+const root=doc.get(doc.catalog,'Outlines');
+if(!(root instanceof Map))return[];
+const seen=new Set();
+let budget=MAX_ITEMS;
+const chain=(first,depth)=>{
+const out=[];
+let ref=first;
+while(ref instanceof Ref&&budget>0&&depth<24){
+if(seen.has(ref.key))break;
+seen.add(ref.key);
+budget-=1;
+const item=doc.resolve(ref);
+if(!(item instanceof Map))break;
+out.push({
+title:decodeText(doc.resolve(item.get('Title')))||'Untitled',
+...place(doc,item,named),
+kids:chain(item.get('First'),depth+1),
+});
+ref=item.get('Next');
+}
+return out;
+};
+return chain(root.get('First'),0);
+}
+function place(doc,item,named){
+let dest=item.get('Dest');
+if(dest===undefined||doc.resolve(dest)===null){
+const action=doc.resolve(item.get('A'));
+dest=isGoTo(doc,action)?action.get('D'):undefined;
+}
+if(dest===undefined)return{target:null,view:[]};
+const found=resolveDestination(doc,dest instanceof Ref?doc.resolve(dest):dest,named);
+return{target:found?.ref??null,view:found?.view??[]};
+}
+export function pruneOutline(nodes,locate){
+const kept=[];
+for(const node of nodes){
+const kids=pruneOutline(node.kids,locate);
+const page=node.target?locate(node.target):null;
+if(!page&&kids.length===0)continue;
+kept.push({title:node.title,page,view:node.view,kids});
+}
+return kept;
+}
+export function writeOutline(build,nodes){
+if(!nodes.length)return null;
+const rootNum=build.reserve();
+const root=new Map([['Type',name('Outlines')]]);
+const level=(items,parentRef)=>{
+const numbers=items.map(()=>build.reserve());
+items.forEach((item,index)=>{
+const dict=new Map([
+['Title',textString(item.title)],
+['Parent',parentRef],
+]);
+if(index>0)dict.set('Prev',new Ref(numbers[index-1],0));
+if(index+1<numbers.length)dict.set('Next',new Ref(numbers[index+1],0));
+if(item.page)dict.set('Dest',[item.page,...destinationView(item.view)]);
+if(item.kids.length){
+const kids=level(item.kids,new Ref(numbers[index],0));
+dict.set('First',kids.first);
+dict.set('Last',kids.last);
+dict.set('Count',-item.kids.length);
+}
+build.put(numbers[index],dict);
+});
+return{
+first:new Ref(numbers[0],0),
+last:new Ref(numbers[numbers.length-1],0),
+};
+};
+const top=level(nodes,new Ref(rootNum,0));
+root.set('First',top.first);
+root.set('Last',top.last);
+root.set('Count',nodes.length);
+return build.put(rootNum,root);
+}
+function destinationView(view){
+if(!Array.isArray(view)||view.length===0)return[name('Fit')];
+return view;
+}
+export function textString(text){
+const bytes=new Uint8Array(2+text.length*2);
+bytes[0]=0xfe;
+bytes[1]=0xff;
+for(let i=0;i<text.length;i+=1){
+const code=text.charCodeAt(i);
+bytes[2+i*2]=(code>>8)&0xff;
+bytes[3+i*2]=code&0xff;
+}
+return new PdfString(bytes);
+}

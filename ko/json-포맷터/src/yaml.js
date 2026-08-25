@@ -1,20 +1,452 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{ParseError as W}from"./errors.js";function V(i,{indent:t=2}={}){const s=" ".repeat(Math.max(1,t)),n=[],e=a=>{switch(a.t){case"num":return a.raw;case"bool":return a.value?"true":"false";case"null":return"null";default:return E(a.value)}},l=a=>a.t==="map"&&!a.pairs.length||a.t==="seq"&&!a.items.length,r=a=>a.t==="map"?"{}":"[]",c=(a,u,h)=>{if(a.t==="map"||a.t==="seq"){if(l(a)){n.push(`${h}${u}${r(a)}`);return}n.push(`${h}${u.trimEnd()}`),o(a,h+s);return}const f=a.t==="str"?a.value:null;if(f!==null&&f.includes(`
-`)&&q(f)){const[w,y]=v(f,h+s);n.push(`${h}${u}${w}`),n.push(...y);return}n.push(`${h}${u}${e(a)}`)},o=(a,u)=>{if(a.t==="map"){for(const h of a.pairs)c(h.value,`${S(h.key)}: `,u);return}for(const h of a.items){if((h.t==="map"||h.t==="seq")&&!l(h)){const f=n.length;o(h,u+s),n[f]=`${u}-${n[f].slice(u.length+s.length-1)}`;continue}c(h,"- ",u)}};if(i.t==="map"||i.t==="seq"){if(l(i))return`${r(i)}
-`;o(i,"")}else c(i,"","");return`${n.join(`
-`)}
-`}function S(i){return k(i)?i:$(i)}function E(i){return k(i)?i:$(i)}function k(i){return i===""||/^[\s]|[\s]$/.test(i)||/[\n\r\t]/.test(i)||"-?:,[]{}#&*!|>'\"%@`".includes(i[0])||i.includes(": ")||i.endsWith(":")||i.includes(" #")||/^(y|Y|n|N|yes|Yes|YES|no|No|NO|on|On|ON|off|Off|OFF)$/.test(i)?!1:g(i).t==="str"}function $(i){if(/[\n\r\t\x00-\x1f]/.test(i)){let t='"';for(const s of i){const n=s.codePointAt(0);s==='"'?t+='\\"':s==="\\"?t+="\\\\":s===`
-`?t+="\\n":s==="\r"?t+="\\r":s==="	"?t+="\\t":n<32?t+=`\\x${n.toString(16).padStart(2,"0")}`:t+=s}return`${t}"`}return`'${i.replace(/'/g,"''")}'`}function q(i){const t=i.endsWith(`
-`)?i.slice(0,-1):i;return/^[ \t]/.test(t)?!1:t.split(`
-`).every(s=>!/[ \t]$/.test(s)&&!/[\r\x00-\x08\x0b\x0c\x0e-\x1f]/.test(s))}function v(i,t){let s=i,n="|-";s.endsWith(`
-
-`)?(n="|+",s=s.slice(0,-1)):s.endsWith(`
-`)&&(n="|",s=s.slice(0,-1));const e=s.split(`
-`).map(l=>l===""?"":t+l);return[n,e]}function P(i){const t=i.replace(/\r\n?/g,`
-`).replace(/^\ufeff/,""),s=new N(t);if(s.skipBlank(),s.at>=s.lines.length)return{t:"null"};const n=s.parseNode(0);return s.skipBlank(),s.at<s.lines.length&&s.fail("This line is indented less than the block it is in",s.at),n}class N{constructor(t){this.source=t,this.lines=t.split(`
-`),this.at=0,this.starts=[];let s=0;for(const n of this.lines)this.starts.push(s),s+=n.length+1}fail(t,s,n=0){throw new W(t,this.starts[Math.min(s,this.lines.length-1)]+n,this.source)}skipBlank(){for(;this.at<this.lines.length;){const s=this.lines[this.at].trim();if(s===""||s.startsWith("#")){this.at+=1;continue}if(s==="---"&&this.startedDocument&&this.fail("More than one document in this file. Convert them one at a time.",this.at),s==="---"){this.startedDocument=!0,this.at+=1;continue}if(s==="..."){this.at+=1;continue}return}}indentOf(t){const s=this.lines[t];return s.length-s.trimStart().length}parseNode(t){if(this.skipBlank(),this.at>=this.lines.length)return{t:"null"};const s=this.indentOf(this.at);if(s<t)return{t:"null"};const n=this.lines[this.at].slice(s);return n==="-"||n.startsWith("- ")?this.parseSequence(s):this.keyEnd(n)>=0?this.parseMapping(s):(this.at+=1,this.scalarValue(n,this.at-1,s))}parseMapping(t){const s=[];for(;this.skipBlank(),!(this.at>=this.lines.length);){const n=this.indentOf(this.at);if(n<t)break;const e=this.at;n>t&&this.fail("This line is indented further than the key above it",e);const l=this.lines[e].slice(n),r=this.keyEnd(l);r<0&&this.fail('Expected "key: value" here',e,n);const c=this.readKey(l.slice(0,r),e,n),o=l.slice(r+1).trim();this.at+=1,s.push({key:c,value:this.valueAfterKey(o,t,e,n+r+1)})}return{t:"map",pairs:s}}valueAfterKey(t,s,n,e){if(t!==""&&!t.startsWith("#"))return t[0]==="|"||t[0]===">"?this.blockScalar(t,s,n):this.scalarValue(t,n,e);if(this.skipBlank(),this.at>=this.lines.length)return{t:"null"};const l=this.indentOf(this.at);if(l>s)return this.parseNode(l);const r=this.lines[this.at].slice(l);return l===s&&(r==="-"||r.startsWith("- "))?this.parseSequence(l):{t:"null"}}parseSequence(t){const s=[];for(;this.skipBlank(),!(this.at>=this.lines.length);){const n=this.indentOf(this.at);if(n<t)break;const e=this.at,l=this.lines[e].slice(n);if(n>t||!(l==="-"||l.startsWith("- ")))break;const r=l.slice(1).replace(/^ +/,""),c=this.lines[e].length-r.length;if(r===""||r.startsWith("#")){this.at+=1,this.skipBlank();const o=this.at<this.lines.length?this.indentOf(this.at):-1;s.push(o>t?this.parseNode(o):{t:"null"});continue}if(r[0]==="|"||r[0]===">"){this.at+=1,s.push(this.blockScalar(r,c-1,e));continue}if(this.keyEnd(r)>=0||r==="-"||r.startsWith("- ")){this.lines[e]=" ".repeat(c)+r,s.push(this.parseNode(c));continue}this.at+=1,s.push(this.scalarValue(r,e,c))}return{t:"seq",items:s}}keyEnd(t){let s=null;for(let n=0;n<t.length;n+=1){const e=t[n];if(s){if(e==="\\"&&s==='"'){n+=1;continue}e===s&&(s=null);continue}if(e==='"'||e==="'"){s=e;continue}if(e==="#"&&n>0&&t[n-1]===" ")return-1;if(e===":"&&(n+1===t.length||t[n+1]===" "))return n;if(e==="["||e==="{")return-1}return-1}readKey(t,s,n){const e=t.trim();return e.startsWith('"')||e.startsWith("'")?B(e,l=>this.fail(l,s,n)):((e.startsWith("&")||e.startsWith("*")||e.startsWith("!"))&&this.fail(b(e[0]),s,n),e==="?"&&this.fail('A "?" key is not supported here',s,n),e)}blockScalar(t,s,n){const e=/^([|>])([+-]?)([0-9]?)([+-]?)\s*(#.*)?$/.exec(t.trim());e||this.fail(`"${t.trim()}" is not a block scalar this reads`,n);const l=e[1]===">",r=e[2]||e[4]||"",c=e[3]?Number(e[3]):0,o=[];let a=c?s+c:0;for(;this.at<this.lines.length;){const h=this.lines[this.at];if(h.trim()===""){o.push(""),this.at+=1;continue}const f=this.indentOf(this.at);if(f<=s||(a||(a=f),f<a))break;o.push(h.slice(a)),this.at+=1}for(;o.length&&o[o.length-1]==="";)o.pop();let u=l?Y(o):o.join(`
-`);if(r!=="-"&&o.length&&(u+=`
-`),r==="+"){const h=this.trailingBlanks(s);u+=`
-`.repeat(h)}return{t:"str",value:u}}trailingBlanks(){let t=0,s=this.at-1;for(;s>=0&&this.lines[s].trim()==="";)t+=1,s-=1;return t}scalarValue(t,s,n){const e=t.trim();if((e.startsWith("&")||e.startsWith("*")||e.startsWith("!"))&&this.fail(b(e[0]),s,n),e.startsWith("[")||e.startsWith("{"))return T(e,l=>this.fail(l,s,n));if(e.startsWith('"')||e.startsWith("'")){const[l,r]=m(e,o=>this.fail(o,s,n)),c=e.slice(r).trim();return c!==""&&!c.startsWith("#")&&this.fail("There is text after the closing quote",s,n),{t:"str",value:l}}return g(O(e))}}function b(i){return i==="&"?'Anchors (&name) are not supported - JSON has no way to say "the same node twice"':i==="*"?'Aliases (*name) are not supported - JSON has no way to say "the same node twice"':"Tags (!name) are not supported - the type would have to be guessed"}function O(i){const t=i.search(/(^|\s)#/);return t<0?i:i.slice(0,t===0?0:t).trimEnd()}function g(i){if(i===""||i==="~"||/^(null|Null|NULL)$/.test(i))return{t:"null"};if(/^(true|True|TRUE)$/.test(i))return{t:"bool",value:!0};if(/^(false|False|FALSE)$/.test(i))return{t:"bool",value:!1};if(/^[-+]?[0-9]+$/.test(i)||/^[-+]?[0-9]*\.[0-9]*(?:[eE][-+]?[0-9]+)?$/.test(i)||/^[-+]?[0-9]+[eE][-+]?[0-9]+$/.test(i))return i==="."||i==="-."||i==="+."?{t:"str",value:i}:{t:"num",raw:F(i)};if(/^[-+]?0x[0-9a-fA-F]+$/.test(i)||/^[-+]?0o[0-7]+$/.test(i)){const t=i.startsWith("-"),s=i.replace(/^[-+]/,""),n=s.startsWith("0x")?parseInt(s.slice(2),16):parseInt(s.slice(2),8);return{t:"num",raw:String(t?-n:n)}}return{t:"str",value:i}}function F(i){if(/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][-+]?[0-9]+)?$/.test(i))return i;const t=Number(i);return Number.isFinite(t)?String(t):"0"}function B(i,t){const[s,n]=m(i,t);return i.slice(n).trim()!==""&&t("There is text after the closing quote"),s}function m(i,t){const s=i[0];let n="",e=1;for(;e<i.length;e+=1){const l=i[e];if(s==="'"){if(l==="'"){if(i[e+1]==="'"){n+="'",e+=1;continue}return[n,e+1]}n+=l;continue}if(l==="\\"){const r=i[e+1],c={n:`
-`,t:"	",r:"\r",0:"\0",b:"\b",f:"\f",'"':'"',"\\":"\\","/":"/"};if(r==="u"||r==="x"||r==="U"){const o=r==="x"?2:r==="u"?4:8,a=i.slice(e+2,e+2+o);new RegExp(`^[0-9a-fA-F]{${o}}$`).test(a)||t(`\\${r} needs ${o} hex digits after it`),n+=String.fromCodePoint(parseInt(a,16)),e+=1+o;continue}if(r in c){n+=c[r],e+=1;continue}t(`\\${r??""} is not an escape this reads`)}if(l==='"')return[n,e+1];n+=l}return t("This quoted string is never closed"),["",i.length]}function T(i,t){const s={at:0},n=d(i,s,t);return p(i,s),s.at<i.length&&!i.slice(s.at).trim().startsWith("#")&&t("There is text after the end of the flow collection"),n}function p(i,t){for(;t.at<i.length&&" 	".includes(i[t.at]);)t.at+=1}function d(i,t,s){p(i,t);const n=i[t.at];if(n===void 0&&s("The flow collection ends early"),n==="[")return A(i,t,s);if(n==="{")return M(i,t,s);if(n==='"'||n==="'"){const[l,r]=m(i.slice(t.at),s);return t.at+=r,{t:"str",value:l}}const e=t.at;for(;t.at<i.length&&!",]}".includes(i[t.at]);)t.at+=1;return g(i.slice(e,t.at).trim())}function A(i,t,s){t.at+=1;const n=[];if(p(i,t),i[t.at]==="]")return t.at+=1,{t:"seq",items:n};for(;;){if(n.push(d(i,t,s)),p(i,t),i[t.at]===","){t.at+=1;continue}if(i[t.at]==="]")return t.at+=1,{t:"seq",items:n};s("Expected a comma or a closing bracket in this flow sequence")}}function M(i,t,s){t.at+=1;const n=[];if(p(i,t),i[t.at]==="}")return t.at+=1,{t:"map",pairs:n};for(;;){p(i,t);let e;if(i[t.at]==='"'||i[t.at]==="'"){const[l,r]=m(i.slice(t.at),s);t.at+=r,e=l}else{const l=t.at;for(;t.at<i.length&&!":,}".includes(i[t.at]);)t.at+=1;e=i.slice(l,t.at).trim()}if(p(i,t),i[t.at]!==":"&&s("Expected a colon after a key in this flow mapping"),t.at+=1,n.push({key:e,value:d(i,t,s)}),p(i,t),i[t.at]===","){t.at+=1;continue}if(i[t.at]==="}")return t.at+=1,{t:"map",pairs:n};s("Expected a comma or a closing brace in this flow mapping")}}function Y(i){let t="";for(let s=0;s<i.length;s+=1){const n=i[s];if(s===0){t=n;continue}n===""||i[s-1]===""||/^[ \t]/.test(n)?t+=`
-${n}`:t+=` ${n}`}return t}export{T as parseFlow,P as parseYaml,V as printYaml,g as resolvePlain};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{ParseError}from'./errors.js';
+export function printYaml(data,{indent=2}={}){
+const step=' '.repeat(Math.max(1,indent));
+const lines=[];
+const scalar=(node)=>{
+switch(node.t){
+case'num':return node.raw;
+case'bool':return node.value?'true':'false';
+case'null':return'null';
+default:return yamlString(node.value);
+}
+};
+const isEmpty=(node)=>(node.t==='map'&&!node.pairs.length)
+||(node.t==='seq'&&!node.items.length);
+const emptyOf=(node)=>(node.t==='map'?'{}':'[]');
+const write=(node,prefix,pad)=>{
+if(node.t==='map'||node.t==='seq'){
+if(isEmpty(node)){lines.push(`${pad}${prefix}${emptyOf(node)}`);return;}
+lines.push(`${pad}${prefix.trimEnd()}`);
+block(node,pad+step);
+return;
+}
+const text=node.t==='str'?node.value:null;
+if(text!==null&&text.includes('\n')&&blockScalarSafe(text)){
+const[header,body]=blockScalar(text,pad+step);
+lines.push(`${pad}${prefix}${header}`);
+lines.push(...body);
+return;
+}
+lines.push(`${pad}${prefix}${scalar(node)}`);
+};
+const block=(node,pad)=>{
+if(node.t==='map'){
+for(const pair of node.pairs)write(pair.value,`${yamlKey(pair.key)}: `,pad);
+return;
+}
+for(const item of node.items){
+if((item.t==='map'||item.t==='seq')&&!isEmpty(item)){
+const before=lines.length;
+block(item,pad+step);
+lines[before]=`${pad}-${lines[before].slice(pad.length + step.length - 1)}`;
+continue;
+}
+write(item,'- ',pad);
+}
+};
+if(data.t==='map'||data.t==='seq'){
+if(isEmpty(data))return`${emptyOf(data)}\n`;
+block(data,'');
+}else{
+write(data,'','');
+}
+return`${lines.join('\n')}\n`;
+}
+function yamlKey(key){
+return plainSafe(key)?key:quoteYaml(key);
+}
+function yamlString(value){
+return plainSafe(value)?value:quoteYaml(value);
+}
+function plainSafe(value){
+if(value==='')return false;
+if(/^[\s]|[\s]$/.test(value))return false;
+if(/[\n\r\t]/.test(value))return false;
+if('-?:,[]{}#&*!|>\'"%@`'.includes(value[0]))return false;
+if(value.includes(': ')||value.endsWith(':'))return false;
+if(value.includes(' #'))return false;
+if(/^(y|Y|n|N|yes|Yes|YES|no|No|NO|on|On|ON|off|Off|OFF)$/.test(value))return false;
+return resolvePlain(value).t==='str';
+}
+function quoteYaml(value){
+if(/[\n\r\t\x00-\x1f]/.test(value)){
+let out='"';
+for(const ch of value){
+const code=ch.codePointAt(0);
+if(ch==='"')out+='\\"';
+else if(ch==='\\')out+='\\\\';
+else if(ch==='\n')out+='\\n';
+else if(ch==='\r')out+='\\r';
+else if(ch==='\t')out+='\\t';
+else if(code<0x20)out+=`\\x${code.toString(16).padStart(2, '0')}`;
+else out+=ch;
+}
+return`${out}"`;
+}
+return`'${value.replace(/'/g, "''")}'`;
+}
+function blockScalarSafe(text){
+const body=text.endsWith('\n')?text.slice(0,-1):text;
+if(/^[ \t]/.test(body))return false;
+return body.split('\n').every((line)=>!/[ \t]$/.test(line)&&!/[\r\x00-\x08\x0b\x0c\x0e-\x1f]/.test(line));
+}
+function blockScalar(text,pad){
+let body=text;
+let header='|-';
+if(body.endsWith('\n\n')){header='|+';body=body.slice(0,-1);}
+else if(body.endsWith('\n')){header='|';body=body.slice(0,-1);}
+const lines=body.split('\n').map((line)=>(line===''?'':pad+line));
+return[header,lines];
+}
+export function parseYaml(text){
+const source=text.replace(/\r\n?/g,'\n').replace(/^\ufeff/,'');
+const doc=new Doc(source);
+doc.skipBlank();
+if(doc.at>=doc.lines.length)return{t:'null'};
+const value=doc.parseNode(0);
+doc.skipBlank();
+if(doc.at<doc.lines.length){
+doc.fail('This line is indented less than the block it is in',doc.at);
+}
+return value;
+}
+class Doc{
+constructor(source){
+this.source=source;
+this.lines=source.split('\n');
+this.at=0;
+this.starts=[];
+let offset=0;
+for(const line of this.lines){
+this.starts.push(offset);
+offset+=line.length+1;
+}
+}
+fail(message,lineIndex,column=0){
+throw new ParseError(message,this.starts[Math.min(lineIndex,this.lines.length-1)]+column,
+this.source);
+}
+skipBlank(){
+while(this.at<this.lines.length){
+const line=this.lines[this.at];
+const trimmed=line.trim();
+if(trimmed===''||trimmed.startsWith('#')){this.at+=1;continue;}
+if(trimmed==='---'&&this.startedDocument){
+this.fail('More than one document in this file. Convert them one at a time.',this.at);
+}
+if(trimmed==='---'){this.startedDocument=true;this.at+=1;continue;}
+if(trimmed==='...'){this.at+=1;continue;}
+return;
+}
+}
+indentOf(index){
+const line=this.lines[index];
+return line.length-line.trimStart().length;
+}
+parseNode(indent){
+this.skipBlank();
+if(this.at>=this.lines.length)return{t:'null'};
+const here=this.indentOf(this.at);
+if(here<indent)return{t:'null'};
+const rest=this.lines[this.at].slice(here);
+if(rest==='-'||rest.startsWith('- '))return this.parseSequence(here);
+if(this.keyEnd(rest)>=0)return this.parseMapping(here);
+this.at+=1;
+return this.scalarValue(rest,this.at-1,here);
+}
+parseMapping(indent){
+const pairs=[];
+for(;;){
+this.skipBlank();
+if(this.at>=this.lines.length)break;
+const here=this.indentOf(this.at);
+if(here<indent)break;
+const lineIndex=this.at;
+if(here>indent)this.fail('This line is indented further than the key above it',lineIndex);
+const rest=this.lines[lineIndex].slice(here);
+const end=this.keyEnd(rest);
+if(end<0)this.fail('Expected "key: value" here',lineIndex,here);
+const key=this.readKey(rest.slice(0,end),lineIndex,here);
+const after=rest.slice(end+1).trim();
+this.at+=1;
+pairs.push({key,value:this.valueAfterKey(after,indent,lineIndex,here+end+1)});
+}
+return{t:'map',pairs};
+}
+valueAfterKey(after,indent,lineIndex,column){
+if(after!==''&&!after.startsWith('#')){
+if(after[0]==='|'||after[0]==='>')return this.blockScalar(after,indent,lineIndex);
+return this.scalarValue(after,lineIndex,column);
+}
+this.skipBlank();
+if(this.at>=this.lines.length)return{t:'null'};
+const next=this.indentOf(this.at);
+if(next>indent)return this.parseNode(next);
+const rest=this.lines[this.at].slice(next);
+if(next===indent&&(rest==='-'||rest.startsWith('- ')))return this.parseSequence(next);
+return{t:'null'};
+}
+parseSequence(indent){
+const items=[];
+for(;;){
+this.skipBlank();
+if(this.at>=this.lines.length)break;
+const here=this.indentOf(this.at);
+if(here<indent)break;
+const lineIndex=this.at;
+const rest=this.lines[lineIndex].slice(here);
+if(here>indent||!(rest==='-'||rest.startsWith('- ')))break;
+const after=rest.slice(1).replace(/^ +/,'');
+const column=this.lines[lineIndex].length-after.length;
+if(after===''||after.startsWith('#')){
+this.at+=1;
+this.skipBlank();
+const deeper=this.at<this.lines.length?this.indentOf(this.at):-1;
+items.push(deeper>indent?this.parseNode(deeper):{t:'null'});
+continue;
+}
+if(after[0]==='|'||after[0]==='>'){
+this.at+=1;
+items.push(this.blockScalar(after,column-1,lineIndex));
+continue;
+}
+if(this.keyEnd(after)>=0||after==='-'||after.startsWith('- ')){
+this.lines[lineIndex]=' '.repeat(column)+after;
+items.push(this.parseNode(column));
+continue;
+}
+this.at+=1;
+items.push(this.scalarValue(after,lineIndex,column));
+}
+return{t:'seq',items};
+}
+keyEnd(rest){
+let quote=null;
+for(let i=0;i<rest.length;i+=1){
+const ch=rest[i];
+if(quote){
+if(ch==='\\'&&quote==='"'){i+=1;continue;}
+if(ch===quote)quote=null;
+continue;
+}
+if(ch==='"'||ch==="'"){quote=ch;continue;}
+if(ch==='#'&&i>0&&rest[i-1]===' ')return-1;
+if(ch===':'&&(i+1===rest.length||rest[i+1]===' '))return i;
+if(ch==='['||ch==='{')return-1;
+}
+return-1;
+}
+readKey(raw,lineIndex,column){
+const text=raw.trim();
+if(text.startsWith('"')||text.startsWith("'")){
+return readQuoted(text,(message)=>this.fail(message,lineIndex,column));
+}
+if(text.startsWith('&')||text.startsWith('*')||text.startsWith('!')){
+this.fail(unsupported(text[0]),lineIndex,column);
+}
+if(text==='?')this.fail('A "?" key is not supported here',lineIndex,column);
+return text;
+}
+blockScalar(header,indent,lineIndex){
+const match=/^([|>])([+-]?)([0-9]?)([+-]?)\s*(#.*)?$/.exec(header.trim());
+if(!match)this.fail(`"${header.trim()}" is not a block scalar this reads`,lineIndex);
+const folded=match[1]==='>';
+const chomp=match[2]||match[4]||'';
+const explicit=match[3]?Number(match[3]):0;
+const body=[];
+let contentIndent=explicit?indent+explicit:0;
+while(this.at<this.lines.length){
+const line=this.lines[this.at];
+if(line.trim()===''){body.push('');this.at+=1;continue;}
+const here=this.indentOf(this.at);
+if(here<=indent)break;
+if(!contentIndent)contentIndent=here;
+if(here<contentIndent)break;
+body.push(line.slice(contentIndent));
+this.at+=1;
+}
+while(body.length&&body[body.length-1]==='')body.pop();
+let value=folded?fold(body):body.join('\n');
+if(chomp!=='-'&&body.length)value+='\n';
+if(chomp==='+'){
+const kept=this.trailingBlanks(indent);
+value+='\n'.repeat(kept);
+}
+return{t:'str',value};
+}
+trailingBlanks(){
+let count=0;
+let index=this.at-1;
+while(index>=0&&this.lines[index].trim()===''){count+=1;index-=1;}
+return count;
+}
+scalarValue(text,lineIndex,column){
+const trimmed=text.trim();
+if(trimmed.startsWith('&')||trimmed.startsWith('*')||trimmed.startsWith('!')){
+this.fail(unsupported(trimmed[0]),lineIndex,column);
+}
+if(trimmed.startsWith('[')||trimmed.startsWith('{')){
+return parseFlow(trimmed,(message)=>this.fail(message,lineIndex,column));
+}
+if(trimmed.startsWith('"')||trimmed.startsWith("'")){
+const[value,end]=readQuotedWithEnd(trimmed,(message)=>this.fail(message,lineIndex,column));
+const after=trimmed.slice(end).trim();
+if(after!==''&&!after.startsWith('#')){
+this.fail('There is text after the closing quote',lineIndex,column);
+}
+return{t:'str',value};
+}
+return resolvePlain(stripComment(trimmed));
+}
+}
+function unsupported(mark){
+if(mark==='&')return'Anchors (&name) are not supported - JSON has no way to say "the same node twice"';
+if(mark==='*')return'Aliases (*name) are not supported - JSON has no way to say "the same node twice"';
+return'Tags (!name) are not supported - the type would have to be guessed';
+}
+function stripComment(text){
+const at=text.search(/(^|\s)#/);
+return at<0?text:text.slice(0,at===0?0:at).trimEnd();
+}
+export function resolvePlain(text){
+if(text===''||text==='~'||/^(null|Null|NULL)$/.test(text))return{t:'null'};
+if(/^(true|True|TRUE)$/.test(text))return{t:'bool',value:true};
+if(/^(false|False|FALSE)$/.test(text))return{t:'bool',value:false};
+if(/^[-+]?[0-9]+$/.test(text)||/^[-+]?[0-9]*\.[0-9]*(?:[eE][-+]?[0-9]+)?$/.test(text)
+||/^[-+]?[0-9]+[eE][-+]?[0-9]+$/.test(text)){
+if(text==='.'||text==='-.'||text==='+.')return{t:'str',value:text};
+return{t:'num',raw:jsonNumber(text)};
+}
+if(/^[-+]?0x[0-9a-fA-F]+$/.test(text)||/^[-+]?0o[0-7]+$/.test(text)){
+const negative=text.startsWith('-');
+const digits=text.replace(/^[-+]/,'');
+const value=digits.startsWith('0x')
+?parseInt(digits.slice(2),16):parseInt(digits.slice(2),8);
+return{t:'num',raw:String(negative?-value:value)};
+}
+return{t:'str',value:text};
+}
+function jsonNumber(text){
+if(/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][-+]?[0-9]+)?$/.test(text))return text;
+const value=Number(text);
+return Number.isFinite(value)?String(value):'0';
+}
+function readQuoted(text,fail){
+const[value,end]=readQuotedWithEnd(text,fail);
+if(text.slice(end).trim()!=='')fail('There is text after the closing quote');
+return value;
+}
+function readQuotedWithEnd(text,fail){
+const quote=text[0];
+let value='';
+let i=1;
+for(;i<text.length;i+=1){
+const ch=text[i];
+if(quote==="'"){
+if(ch==="'"){
+if(text[i+1]==="'"){value+="'";i+=1;continue;}
+return[value,i+1];
+}
+value+=ch;
+continue;
+}
+if(ch==='\\'){
+const next=text[i+1];
+const short={n:'\n',t:'\t',r:'\r','0':'\0',b:'\b',f:'\f','"':'"','\\':'\\','/':'/'};
+if(next==='u'||next==='x'||next==='U'){
+const width=next==='x'?2:next==='u'?4:8;
+const digits=text.slice(i+2,i+2+width);
+if(!new RegExp(`^[0-9a-fA-F]{${width}}$`).test(digits)){
+fail(`\\${next} needs ${width} hex digits after it`);
+}
+value+=String.fromCodePoint(parseInt(digits,16));
+i+=1+width;
+continue;
+}
+if(next in short){value+=short[next];i+=1;continue;}
+fail(`\\${next ?? ''} is not an escape this reads`);
+}
+if(ch==='"')return[value,i+1];
+value+=ch;
+}
+fail('This quoted string is never closed');
+return['',text.length];
+}
+export function parseFlow(text,fail){
+const state={at:0};
+const value=readFlowValue(text,state,fail);
+skipFlowSpace(text,state);
+if(state.at<text.length&&!text.slice(state.at).trim().startsWith('#')){
+fail('There is text after the end of the flow collection');
+}
+return value;
+}
+function skipFlowSpace(text,state){
+while(state.at<text.length&&' \t'.includes(text[state.at]))state.at+=1;
+}
+function readFlowValue(text,state,fail){
+skipFlowSpace(text,state);
+const ch=text[state.at];
+if(ch===undefined)fail('The flow collection ends early');
+if(ch==='[')return readFlowSeq(text,state,fail);
+if(ch==='{')return readFlowMap(text,state,fail);
+if(ch==='"'||ch==="'"){
+const[value,end]=readQuotedWithEnd(text.slice(state.at),fail);
+state.at+=end;
+return{t:'str',value};
+}
+const start=state.at;
+while(state.at<text.length&&!',]}'.includes(text[state.at]))state.at+=1;
+return resolvePlain(text.slice(start,state.at).trim());
+}
+function readFlowSeq(text,state,fail){
+state.at+=1;
+const items=[];
+skipFlowSpace(text,state);
+if(text[state.at]===']'){state.at+=1;return{t:'seq',items};}
+for(;;){
+items.push(readFlowValue(text,state,fail));
+skipFlowSpace(text,state);
+if(text[state.at]===','){state.at+=1;continue;}
+if(text[state.at]===']'){state.at+=1;return{t:'seq',items};}
+fail('Expected a comma or a closing bracket in this flow sequence');
+}
+}
+function readFlowMap(text,state,fail){
+state.at+=1;
+const pairs=[];
+skipFlowSpace(text,state);
+if(text[state.at]==='}'){state.at+=1;return{t:'map',pairs};}
+for(;;){
+skipFlowSpace(text,state);
+let key;
+if(text[state.at]==='"'||text[state.at]==="'"){
+const[value,end]=readQuotedWithEnd(text.slice(state.at),fail);
+state.at+=end;
+key=value;
+}else{
+const start=state.at;
+while(state.at<text.length&&!':,}'.includes(text[state.at]))state.at+=1;
+key=text.slice(start,state.at).trim();
+}
+skipFlowSpace(text,state);
+if(text[state.at]!==':')fail('Expected a colon after a key in this flow mapping');
+state.at+=1;
+pairs.push({key,value:readFlowValue(text,state,fail)});
+skipFlowSpace(text,state);
+if(text[state.at]===','){state.at+=1;continue;}
+if(text[state.at]==='}'){state.at+=1;return{t:'map',pairs};}
+fail('Expected a comma or a closing brace in this flow mapping');
+}
+}
+function fold(lines){
+let out='';
+for(let i=0;i<lines.length;i+=1){
+const line=lines[i];
+if(i===0){out=line;continue;}
+if(line===''||lines[i-1]===''||/^[ \t]/.test(line))out+=`\n${line}`;
+else out+=` ${line}`;
+}
+return out;
+}

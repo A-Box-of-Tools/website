@@ -1,2 +1,192 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{Mp4Writer as L,MOVIE_TIMESCALE as _}from"./mp4.js";import{planRanges as B}from"./ranges.js";class $ extends Error{constructor(){super("Trim cancelled."),this.name="AbortError"}}function I(e){if(e?.aborted)throw new $}function h(e,t,o){return t===o?e:e*o/t}function K(e){for(let t=0;t<e.length;t++){const o=e[t+1];e[t].duration=o?Math.max(1,o.dts-e[t].dts):Math.max(1,e[t].tailDuration)}return e}function q({file:e,audio:t,plan:o,durations:r,seam:a,outTimescale:n}){const p=[];if(!o.audio)return p;for(let d=o.audio.from;d<=o.audio.to;d++){const u=t.samples[d],f=u.dts-o.audio.base+o.audio.offset,c=a+Math.round(h(f,t.timescale,n));p.push({data:e.slice(u.offset,u.offset+u.size),isKey:!0,dts:c,pts:c,tailDuration:Math.round(h(r[d],t.timescale,n))})}return p}async function G({clips:e,keepAudio:t=!0,onProgress:o,signal:r}){const a=e.filter(s=>s.ranges.length);if(!a.length)throw new Error("There is nothing selected to keep.");const n=a[0].media.video,p=a[0].media.audio,d=!!(t&&p&&a.every(s=>s.media.audio?.samples.length)),u=n.timescale,f=d?p.timescale:0,c=[],m=[],S=[],w=[],g=a.reduce((s,l)=>s+l.media.video.samples.length+(d?l.media.audio.samples.length:0),0);let M=0,b=0;const R=()=>{M++,M%500===0&&o?.({phase:"copying",done:M,total:g})};o?.({phase:"preparing",done:0,total:g});let x=0;for(const s of a){I(r);const{video:l,audio:T}=s.media,{plans:O,videoDurations:V,audioDurations:W}=B({video:l,audio:d?T:null,ranges:s.ranges,anchor:"keyframe"}),k=Math.round(x*u),D=d?Math.round(x*f):0;let z=0;for(const i of O){for(let y=i.video.from;y<=i.video.to;y++){const v=l.samples[y],H=v.dts-i.video.base+i.video.offset,J=v.pts-i.video.base+i.video.offset;c.push({data:s.file.slice(v.offset,v.offset+v.size),isKey:v.isKey,dts:k+Math.round(h(H,l.timescale,u)),pts:k+Math.round(h(J,l.timescale,u)),tailDuration:Math.round(h(V[y],l.timescale,u))}),R()}if(d&&i.audio)for(const y of q({file:s.file,audio:T,plan:i,durations:W,seam:D,outTimescale:f}))m.push(y),R();const j=i.end-i.start,F=(i.video.spanTs-i.video.editStart)/l.timescale,C=Math.round(Math.max(0,Math.min(j,F))*_);S.push({mediaTime:k+Math.round(h(i.video.offset+i.video.editStart,l.timescale,u)),duration:C}),d&&i.audio&&w.push({mediaTime:D+Math.round(h(i.audio.offset+i.audio.editStart,T.timescale,f)),duration:C}),z+=i.video.spanTs/l.timescale,b=Math.max(b,i.preRoll)}x+=z}I(r),o?.({phase:"finishing",done:g,total:g});const E=new L,A=E.addTrack({kind:"vide",timescale:u,sampleEntry:n.sampleEntry,matrix:n.matrix,width:n.trackWidth,height:n.trackHeight});for(const s of K(c))A.addSample(s);for(const s of S)A.addEdit(s.mediaTime,s.duration);if(d&&m.length){const s=E.addTrack({kind:"soun",timescale:f,sampleEntry:p.sampleEntry});for(const l of K(m))s.addSample(l);for(const l of w)s.addEdit(l.mediaTime,l.duration)}return{blob:E.finalize(),extension:"mp4",codec:`${n.codec}, copied`,frames:c.length,clips:a.length,exact:!1,preRoll:b}}function X({file:e,media:t,ranges:o,keepAudio:r=!0,onProgress:a,signal:n}){return G({clips:[{file:e,media:t,ranges:o}],keepAudio:r,onProgress:a,signal:n})}function N({media:e,ranges:t,keepAudio:o=!0}){const{video:r,audio:a}=e;if(!t.length)return{bytes:0,preRoll:0,frames:0};const n=!!(o&&a&&a.samples.length),{plans:p}=B({video:r,audio:n?a:null,ranges:t,anchor:"keyframe"});let d=0,u=0,f=0;for(const c of p){for(let m=c.video.from;m<=c.video.to;m++)d+=r.samples[m].size,u++;if(c.audio)for(let m=c.audio.from;m<=c.audio.to;m++)d+=a.samples[m].size;f=Math.max(f,c.preRoll)}return{bytes:Math.round(d*1.01),preRoll:f,frames:u}}function Y(e,t=!0){const o=t&&e.every(r=>r.media?.audio?.samples.length);return e.reduce((r,a)=>{if(!a.media||!a.ranges.length)return r;const n=N({media:a.media,ranges:a.ranges,keepAudio:o});return{bytes:r.bytes+n.bytes,frames:r.frames+n.frames,preRoll:Math.max(r.preRoll,n.preRoll)}},{bytes:0,frames:0,preRoll:0})}export{q as audioSamplesFor,K as closeDurations,N as estimateCopy,Y as estimateJoinCopy,G as joinByCopy,X as trimByCopy};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{Mp4Writer,MOVIE_TIMESCALE}from'./mp4.js';
+import{planRanges}from'./ranges.js';
+class AbortedError extends Error{
+constructor(){
+super('Trim cancelled.');
+this.name='AbortError';
+}
+}
+function throwIfAborted(signal){
+if(signal?.aborted)throw new AbortedError();
+}
+function rescale(ticks,from,to){
+return from===to?ticks:ticks*to/from;
+}
+export function closeDurations(samples){
+for(let i=0;i<samples.length;i++){
+const next=samples[i+1];
+samples[i].duration=next
+?Math.max(1,next.dts-samples[i].dts)
+:Math.max(1,samples[i].tailDuration);
+}
+return samples;
+}
+export function audioSamplesFor({file,audio,plan,durations,seam,outTimescale}){
+const out=[];
+if(!plan.audio)return out;
+for(let i=plan.audio.from;i<=plan.audio.to;i++){
+const sample=audio.samples[i];
+const at=sample.dts-plan.audio.base+plan.audio.offset;
+const when=seam+Math.round(rescale(at,audio.timescale,outTimescale));
+out.push({
+data:file.slice(sample.offset,sample.offset+sample.size),
+isKey:true,
+dts:when,
+pts:when,
+tailDuration:Math.round(rescale(durations[i],audio.timescale,outTimescale)),
+});
+}
+return out;
+}
+export async function joinByCopy({clips,keepAudio=true,onProgress,signal}){
+const usable=clips.filter((clip)=>clip.ranges.length);
+if(!usable.length)throw new Error('There is nothing selected to keep.');
+const firstVideo=usable[0].media.video;
+const firstAudio=usable[0].media.audio;
+const useAudio=Boolean(
+keepAudio&&firstAudio&&usable.every((clip)=>clip.media.audio?.samples.length));
+const outVideoTs=firstVideo.timescale;
+const outAudioTs=useAudio?firstAudio.timescale:0;
+const videoOut=[];
+const audioOut=[];
+const videoEdits=[];
+const audioEdits=[];
+const total=usable.reduce((count,clip)=>count
++clip.media.video.samples.length
++(useAudio?clip.media.audio.samples.length:0),0);
+let done=0;
+let preRoll=0;
+const tick=()=>{
+done++;
+if(done%500===0)onProgress?.({phase:'copying',done,total});
+};
+onProgress?.({phase:'preparing',done:0,total});
+let seamSeconds=0;
+for(const clip of usable){
+throwIfAborted(signal);
+const{video,audio}=clip.media;
+const{plans,videoDurations,audioDurations}=planRanges({
+video,
+audio:useAudio?audio:null,
+ranges:clip.ranges,
+anchor:'keyframe',
+});
+const videoSeam=Math.round(seamSeconds*outVideoTs);
+const audioSeam=useAudio?Math.round(seamSeconds*outAudioTs):0;
+let clipSpanSeconds=0;
+for(const plan of plans){
+for(let i=plan.video.from;i<=plan.video.to;i++){
+const sample=video.samples[i];
+const at=sample.dts-plan.video.base+plan.video.offset;
+const shown=sample.pts-plan.video.base+plan.video.offset;
+videoOut.push({
+data:clip.file.slice(sample.offset,sample.offset+sample.size),
+isKey:sample.isKey,
+dts:videoSeam+Math.round(rescale(at,video.timescale,outVideoTs)),
+pts:videoSeam+Math.round(rescale(shown,video.timescale,outVideoTs)),
+tailDuration:Math.round(rescale(videoDurations[i],video.timescale,outVideoTs)),
+});
+tick();
+}
+if(useAudio&&plan.audio){
+for(const sample of audioSamplesFor({
+file:clip.file,audio,plan,durations:audioDurations,
+seam:audioSeam,outTimescale:outAudioTs,
+})){
+audioOut.push(sample);
+tick();
+}
+}
+const wanted=plan.end-plan.start;
+const available=(plan.video.spanTs-plan.video.editStart)/video.timescale;
+const playMs=Math.round(Math.max(0,Math.min(wanted,available))*MOVIE_TIMESCALE);
+videoEdits.push({
+mediaTime:videoSeam+Math.round(rescale(
+plan.video.offset+plan.video.editStart,video.timescale,outVideoTs)),
+duration:playMs,
+});
+if(useAudio&&plan.audio){
+audioEdits.push({
+mediaTime:audioSeam+Math.round(rescale(
+plan.audio.offset+plan.audio.editStart,audio.timescale,outAudioTs)),
+duration:playMs,
+});
+}
+clipSpanSeconds+=plan.video.spanTs/video.timescale;
+preRoll=Math.max(preRoll,plan.preRoll);
+}
+seamSeconds+=clipSpanSeconds;
+}
+throwIfAborted(signal);
+onProgress?.({phase:'finishing',done:total,total});
+const writer=new Mp4Writer();
+const videoTrack=writer.addTrack({
+kind:'vide',
+timescale:outVideoTs,
+sampleEntry:firstVideo.sampleEntry,
+matrix:firstVideo.matrix,
+width:firstVideo.trackWidth,
+height:firstVideo.trackHeight,
+});
+for(const sample of closeDurations(videoOut))videoTrack.addSample(sample);
+for(const edit of videoEdits)videoTrack.addEdit(edit.mediaTime,edit.duration);
+if(useAudio&&audioOut.length){
+const audioTrack=writer.addTrack({
+kind:'soun',
+timescale:outAudioTs,
+sampleEntry:firstAudio.sampleEntry,
+});
+for(const sample of closeDurations(audioOut))audioTrack.addSample(sample);
+for(const edit of audioEdits)audioTrack.addEdit(edit.mediaTime,edit.duration);
+}
+return{
+blob:writer.finalize(),
+extension:'mp4',
+codec:`${firstVideo.codec}, copied`,
+frames:videoOut.length,
+clips:usable.length,
+exact:false,
+preRoll,
+};
+}
+export function trimByCopy({file,media,ranges,keepAudio=true,onProgress,signal}){
+return joinByCopy({clips:[{file,media,ranges}],keepAudio,onProgress,signal});
+}
+export function estimateCopy({media,ranges,keepAudio=true}){
+const{video,audio}=media;
+if(!ranges.length)return{bytes:0,preRoll:0,frames:0};
+const useAudio=Boolean(keepAudio&&audio&&audio.samples.length);
+const{plans}=planRanges({
+video,
+audio:useAudio?audio:null,
+ranges,
+anchor:'keyframe',
+});
+let bytes=0;
+let frames=0;
+let preRoll=0;
+for(const plan of plans){
+for(let i=plan.video.from;i<=plan.video.to;i++){
+bytes+=video.samples[i].size;
+frames++;
+}
+if(plan.audio){
+for(let i=plan.audio.from;i<=plan.audio.to;i++)bytes+=audio.samples[i].size;
+}
+preRoll=Math.max(preRoll,plan.preRoll);
+}
+return{bytes:Math.round(bytes*1.01),preRoll,frames};
+}
+export function estimateJoinCopy(clips,keepAudio=true){
+const sound=keepAudio&&clips.every((clip)=>clip.media?.audio?.samples.length);
+return clips.reduce((total,clip)=>{
+if(!clip.media||!clip.ranges.length)return total;
+const one=estimateCopy({media:clip.media,ranges:clip.ranges,keepAudio:sound});
+return{
+bytes:total.bytes+one.bytes,
+frames:total.frames+one.frames,
+preRoll:Math.max(total.preRoll,one.preRoll),
+};
+},{bytes:0,frames:0,preRoll:0});
+}

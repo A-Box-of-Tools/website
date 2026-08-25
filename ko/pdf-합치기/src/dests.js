@@ -1,2 +1,53 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{isName as v,Name as a,PdfString as l,Ref as y}from"./objects.js";function p(e){const n=new Map,r=e.catalog;if(!r)return n;const o=e.get(r,"Dests");if(o instanceof Map)for(const[i,s]of o)n.set(i,s);const t=e.get(r,"Names");return t instanceof Map&&u(e,e.resolve(t.get("Dests")),n,0),n}function u(e,n,r,o){if(!(n instanceof Map)||o>32||r.size>5e4)return;const t=e.resolve(n.get("Names"));if(Array.isArray(t))for(let s=0;s+1<t.length;s+=2){const f=e.resolve(t[s]);f instanceof l&&r.set(c(f),t[s+1])}const i=e.resolve(n.get("Kids"));if(Array.isArray(i))for(const s of i)u(e,e.resolve(s),r,o+1)}function c(e){let n="";for(const r of e.bytes)n+=String.fromCharCode(r);return n}function g(e,n,r,o=0){if(o>8)return null;if(n instanceof a||n instanceof l){const s=n instanceof a?n.value:c(n),f=r.get(s);return f===void 0?null:g(e,e.resolve(f),r,o+1)}const t=e.resolve(n);if(t instanceof Map)return g(e,e.resolve(t.get("D")),r,o+1);if(!Array.isArray(t)||t.length===0)return null;const i=t[0];return i instanceof y?{ref:i,view:t.slice(1)}:null}function k(e,n){return n instanceof Map&&v(e.resolve(n.get("S")),"GoTo")}export{k as isGoTo,p as namedDestinations,g as resolveDestination};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{isName,Name,PdfString,Ref}from'./objects.js';
+export function namedDestinations(doc){
+const found=new Map();
+const catalog=doc.catalog;
+if(!catalog)return found;
+const old=doc.get(catalog,'Dests');
+if(old instanceof Map){
+for(const[key,value]of old)found.set(key,value);
+}
+const names=doc.get(catalog,'Names');
+if(names instanceof Map)walkNameTree(doc,doc.resolve(names.get('Dests')),found,0);
+return found;
+}
+function walkNameTree(doc,node,into,depth){
+if(!(node instanceof Map)||depth>32||into.size>50000)return;
+const entries=doc.resolve(node.get('Names'));
+if(Array.isArray(entries)){
+for(let i=0;i+1<entries.length;i+=2){
+const key=doc.resolve(entries[i]);
+if(key instanceof PdfString)into.set(keyOf(key),entries[i+1]);
+}
+}
+const kids=doc.resolve(node.get('Kids'));
+if(Array.isArray(kids)){
+for(const kid of kids)walkNameTree(doc,doc.resolve(kid),into,depth+1);
+}
+}
+function keyOf(value){
+let text='';
+for(const byte of value.bytes)text+=String.fromCharCode(byte);
+return text;
+}
+export function resolveDestination(doc,dest,named,depth=0){
+if(depth>8)return null;
+if(dest instanceof Name||dest instanceof PdfString){
+const key=dest instanceof Name?dest.value:keyOf(dest);
+const found=named.get(key);
+if(found===undefined)return null;
+return resolveDestination(doc,doc.resolve(found),named,depth+1);
+}
+const value=doc.resolve(dest);
+if(value instanceof Map){
+return resolveDestination(doc,doc.resolve(value.get('D')),named,depth+1);
+}
+if(!Array.isArray(value)||value.length===0)return null;
+const page=value[0];
+if(!(page instanceof Ref))return null;
+return{ref:page,view:value.slice(1)};
+}
+export function isGoTo(doc,action){
+return action instanceof Map&&isName(doc.resolve(action.get('S')),'GoTo');
+}

@@ -1,2 +1,61 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const r="abox:/tr/saglama-toplami-hesaplama/:",n=r+"0984dd828a",h=["./","index.html","styles.css?v=1211e546ef","manifest.json","src/shared/phrases.js","src/shared/file-picker.js","src/blocks.js","src/expected.js","src/format.js","src/hash.js","src/main.js","src/md5.js","src/sha1.js","src/sha256.js","src/sha512.js","analytics.js"];self.addEventListener("install",a=>{a.waitUntil(caches.open(n).then(s=>s.addAll(h)).then(()=>self.skipWaiting()))}),self.addEventListener("activate",a=>{const s=e=>e.startsWith(r),c=e=>!e.startsWith("abox:");a.waitUntil(caches.keys().then(e=>Promise.all(e.filter(t=>t!==n&&(s(t)||c(t))).map(t=>caches.delete(t)))).then(()=>self.clients.claim()))}),self.addEventListener("fetch",a=>{const{request:s}=a;s.method==="GET"&&new URL(s.url).origin===self.location.origin&&a.respondWith(caches.match(s).then(c=>c||fetch(s).then(e=>{if(e.ok&&e.type==="basic"){const t=e.clone();caches.open(n).then(i=>i.put(s,t))}return e}).catch(()=>s.mode==="navigate"?caches.match("index.html"):Promise.reject(new Error("offline and not cached")))))});
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const CACHE_PREFIX='abox:/tr/saglama-toplami-hesaplama/:';
+const CACHE_NAME=CACHE_PREFIX+'58d5ca4107';
+const ASSETS=[
+'./',
+'index.html',
+'styles.css?v=1211e546ef',
+'manifest.json',
+'src/shared/phrases.js',
+'src/shared/file-picker.js',
+'src/blocks.js',
+'src/expected.js',
+'src/format.js',
+'src/hash.js',
+'src/main.js',
+'src/md5.js',
+'src/sha1.js',
+'src/sha256.js',
+'src/sha512.js',
+'analytics.js',
+];
+self.addEventListener('install',(event)=>{
+event.waitUntil(
+caches.open(CACHE_NAME)
+.then((cache)=>cache.addAll(ASSETS))
+.then(()=>self.skipWaiting()),
+);
+});
+self.addEventListener('activate',(event)=>{
+const ours=(name)=>name.startsWith(CACHE_PREFIX);
+const orphaned=(name)=>!name.startsWith('abox:');
+event.waitUntil(
+caches.keys()
+.then((names)=>Promise.all(
+names.filter((name)=>name!==CACHE_NAME&&(ours(name)||orphaned(name)))
+.map((name)=>caches.delete(name)),
+))
+.then(()=>self.clients.claim()),
+);
+});
+self.addEventListener('fetch',(event)=>{
+const{request}=event;
+if(request.method!=='GET')return;
+if(new URL(request.url).origin!==self.location.origin)return;
+event.respondWith(
+caches.match(request).then((cached)=>{
+if(cached)return cached;
+return fetch(request).then((response)=>{
+if(response.ok&&response.type==='basic'){
+const copy=response.clone();
+caches.open(CACHE_NAME).then((cache)=>cache.put(request,copy));
+}
+return response;
+}).catch(()=>(
+request.mode==='navigate'
+?caches.match('index.html')
+:Promise.reject(new Error('offline and not cached'))
+));
+}),
+);
+});

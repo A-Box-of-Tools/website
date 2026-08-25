@@ -1,2 +1,101 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{encode as Q,FORMATS as I,JPEG as M,PNG as q,WEBP as p}from"./codecs.js";const x=.94,y=.62,z=.8,L=.1,T=.2,C=16;async function Y(t,{targetBytes:e,mime:o,allowResize:h,onStep:r}){const f=I[o]?.lossy??!0;let s=0,i=null,l=null;const n=async(a,b)=>{if(s>=C)throw new Error("gave up after too many attempts.");s+=1;const A=Math.max(1,Math.round(t.width*a)),E=Math.max(1,Math.round(t.height*a)),d=await Q(t.bitmap,{width:A,height:E,mime:o,quality:f?b:void 0}),g={blob:d,quality:f?b:1,scale:a,width:A,height:E};return d.size<=e&&(!i||d.size>i.blob.size)&&(i=g),(!l||d.size<l.blob.size)&&(l=g),g},u=a=>a.blob.size<=e;r?.("checking what it costs at full quality");const w=await n(1,x);if(u(w))return c(w,!0);if(!f)return h?(r?.("finding the largest size that fits"),await _(n,u,e,w.blob.size,void 0),c(i??l,!!i)):c(l,!1);r?.("searching the quality dial");const F=await n(1,y);if(u(F))return await m(n,u,1,y,x,6),c(i,!0);if(!h){r?.("going below the quality floor, because resizing is off");const a=await n(1,T);return u(a)?(await m(n,u,1,T,y,5),c(i,!0)):c(l,!1)}r?.("trading resolution for quality");const N=await n(1,z);if(await _(n,u,e,N.blob.size,z),!i)return c(l,!1);return r?.("spending what is left of the budget"),await m(n,u,i.scale,z,x,3),c(i,!0);function c(a,b){return{blob:a.blob,width:a.width,height:a.height,quality:a.quality,scale:a.scale,fitted:b,resized:a.scale<1,encodes:s,mime:o}}}async function m(t,e,o,h,r,f){for(let s=0;s<f;s+=1){const i=(h+r)/2;e(await t(o,i))?h=i:r=i}}async function _(t,e,o,h,r){const f=O(Math.sqrt(o/h)*.95,L,1);let s=L,i=1;e(await t(f,r))?s=f:i=f;for(let l=0;l<4;l+=1){const n=(s+i)/2;e(await t(n,r))?s=n:i=n}}function O(t,e,o){return Math.min(o,Math.max(e,t))}function G(t,e){return e.has(t)&&I[t]?t:t==="image/gif"?q:M}function P(t,e,o){return t!==p&&e.has(p)?p:t===q&&!o?M:null}export{L as MIN_SCALE,x as QUALITY_CEILING,y as QUALITY_FLOOR,T as QUALITY_HARD_MIN,z as SEARCH_QUALITY,P as alternativeFormat,Y as fitToTarget,G as keepFormat};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{encode,FORMATS,JPEG,PNG,WEBP}from'./codecs.js';
+export const QUALITY_CEILING=0.94;
+export const QUALITY_FLOOR=0.62;
+export const SEARCH_QUALITY=0.8;
+export const MIN_SCALE=0.1;
+export const QUALITY_HARD_MIN=0.2;
+const MAX_ENCODES=16;
+export async function fitToTarget(source,{targetBytes,mime,allowResize,onStep}){
+const lossy=FORMATS[mime]?.lossy??true;
+let encodes=0;
+let best=null;
+let smallest=null;
+const attempt=async(scale,quality)=>{
+if(encodes>=MAX_ENCODES)throw new Error('gave up after too many attempts.');
+encodes+=1;
+const width=Math.max(1,Math.round(source.width*scale));
+const height=Math.max(1,Math.round(source.height*scale));
+const blob=await encode(source.bitmap,{
+width,height,mime,quality:lossy?quality:undefined,
+});
+const made={blob,quality:lossy?quality:1,scale,width,height};
+if(blob.size<=targetBytes&&(!best||blob.size>best.blob.size))best=made;
+if(!smallest||blob.size<smallest.blob.size)smallest=made;
+return made;
+};
+const fits=(a)=>a.blob.size<=targetBytes;
+onStep?.('checking what it costs at full quality');
+const top=await attempt(1,QUALITY_CEILING);
+if(fits(top))return finish(top,true);
+if(!lossy){
+if(!allowResize)return finish(smallest,false);
+onStep?.('finding the largest size that fits');
+await searchScale(attempt,fits,targetBytes,top.blob.size,undefined);
+return finish(best??smallest,Boolean(best));
+}
+onStep?.('searching the quality dial');
+const atFloor=await attempt(1,QUALITY_FLOOR);
+if(fits(atFloor)){
+await bisectQuality(attempt,fits,1,QUALITY_FLOOR,QUALITY_CEILING,6);
+return finish(best,true);
+}
+if(!allowResize){
+onStep?.('going below the quality floor, because resizing is off');
+const bottom=await attempt(1,QUALITY_HARD_MIN);
+if(!fits(bottom))return finish(smallest,false);
+await bisectQuality(attempt,fits,1,QUALITY_HARD_MIN,QUALITY_FLOOR,5);
+return finish(best,true);
+}
+onStep?.('trading resolution for quality');
+const reference=await attempt(1,SEARCH_QUALITY);
+await searchScale(attempt,fits,targetBytes,reference.blob.size,SEARCH_QUALITY);
+if(!best)return finish(smallest,false);
+onStep?.('spending what is left of the budget');
+await bisectQuality(attempt,fits,best.scale,SEARCH_QUALITY,QUALITY_CEILING,3);
+return finish(best,true);
+function finish(chosen,fitted){
+return{
+blob:chosen.blob,
+width:chosen.width,
+height:chosen.height,
+quality:chosen.quality,
+scale:chosen.scale,
+fitted,
+resized:chosen.scale<1,
+encodes,
+mime,
+};
+}
+}
+async function bisectQuality(attempt,fits,scale,low,high,rounds){
+for(let i=0;i<rounds;i+=1){
+const mid=(low+high)/2;
+if(fits(await attempt(scale,mid)))low=mid;
+else high=mid;
+}
+}
+async function searchScale(attempt,fits,targetBytes,referenceBytes,quality){
+const guess=clamp(Math.sqrt(targetBytes/referenceBytes)*0.95,MIN_SCALE,1);
+let low=MIN_SCALE;
+let high=1;
+if(fits(await attempt(guess,quality)))low=guess;
+else high=guess;
+for(let i=0;i<4;i+=1){
+const mid=(low+high)/2;
+if(fits(await attempt(mid,quality)))low=mid;
+else high=mid;
+}
+}
+function clamp(n,low,high){
+return Math.min(high,Math.max(low,n));
+}
+export function keepFormat(sourceMime,available){
+if(available.has(sourceMime)&&FORMATS[sourceMime])return sourceMime;
+return sourceMime==='image/gif'?PNG:JPEG;
+}
+export function alternativeFormat(mime,available,hasAlpha){
+if(mime!==WEBP&&available.has(WEBP))return WEBP;
+if(mime===PNG&&!hasAlpha)return JPEG;
+return null;
+}

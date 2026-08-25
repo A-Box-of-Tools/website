@@ -1,2 +1,583 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as v}from"./shared/phrases.js";import{wireFilePicker as H}from"./shared/file-picker.js";import{demux as _,UnsupportedFile as G}from"./demux.js";import{timelapseByDecoding as K,previewFrame as J,decoderConfig as Q,averageFps as X}from"./decode.js";import{timelapseByPlaying as Y}from"./playback.js";import{TimelapseWriter as Z}from"./encode.js";import{hasEncoder as M,hasWebCodecs as W,canDecode as ee,pickH264Codec as te}from"./support.js";import{MIN_FRAMES as N,clampSpeed as F,speedForLength as P,lengthForSpeed as re,sampleInterval as ne,frameTimes as oe,repeatsFrames as ie,outputSize as se,chooseBitrate as ae,estimateBytes as le,decodeRuns as de,decodeCost as ce}from"./plan.js";const o=e=>document.getElementById(e),t={dropzone:o("dropzone"),fileInput:o("file-input"),previewWrap:o("preview-wrap"),preview:o("preview"),still:o("still"),previewNote:o("preview-note"),source:o("source"),srcName:o("src-name"),srcSize:o("src-size"),srcFrame:o("src-frame"),srcLength:o("src-length"),srcFps:o("src-fps"),srcCodec:o("src-codec"),pathNote:o("path-note"),speedCard:o("speed-card"),speedRow:document.querySelector(".speed-row"),speed:o("speed"),length:o("length"),intervalNote:o("interval-note"),fps:o("fps"),size:o("size"),sizeNote:o("size-note"),quality:o("quality"),exportCard:o("export-card"),sumFrames:o("sum-frames"),sumInterval:o("sum-interval"),sumLength:o("sum-length"),sumSize:o("sum-size"),sumRead:o("sum-read"),sumBytes:o("sum-bytes"),planNote:o("plan-note"),exportBtn:o("export"),cancelBtn:o("cancel"),progressWrap:o("progress-wrap"),progressBar:o("progress-bar"),progressLabel:o("progress-label"),error:o("error"),result:o("result"),resultVideo:o("result-video"),resultInfo:o("result-info"),download:o("download"),privacyToggle:o("privacy-toggle"),privacyPanel:o("privacy-panel"),networkCount:o("network-count"),networkDot:o("network-dot"),offlineStatus:o("offline-status"),offlineDot:o("offline-dot")};let f=null,C=null,s=null,b=null,d={width:0,height:0},c=0,$=0,u=!1,y=!1,x=!1,L=null,S=null;const T=H({input:t.fileInput,dropzone:t.dropzone,onFiles(e){const[r]=e;r&&pe(r)}});function he(e,r){return new Promise(n=>{const i=l=>{clearTimeout(m),e.removeEventListener("loadedmetadata",a),e.removeEventListener("error",h),n(l)},a=()=>i({ok:e.videoWidth>0&&e.videoHeight>0,width:e.videoWidth,height:e.videoHeight,duration:Number.isFinite(e.duration)?e.duration:0}),h=()=>i({ok:!1,width:0,height:0,duration:0}),m=setTimeout(h,15e3);e.addEventListener("loadedmetadata",a,{once:!0}),e.addEventListener("error",h,{once:!0}),e.src=r,e.load()})}const ue=1e4;function fe(e,r){return new Promise(n=>{let i=!1;const a=V=>{i||(i=!0,clearTimeout(w),e.removeEventListener("error",m),e.removeEventListener("seeked",l),n(V))},h=()=>e.readyState>=2&&!e.error,m=()=>a(!1),l=()=>{typeof e.requestVideoFrameCallback=="function"&&e.requestVideoFrameCallback(()=>a(!0)),setTimeout(()=>a(h()),500)},w=setTimeout(()=>a(!1),ue);e.addEventListener("error",m,{once:!0}),e.addEventListener("seeked",l,{once:!0}),Math.abs(e.currentTime-r)<1e-4?l():e.currentTime=r})}async function pe(e){if(!x){j(),I(),f=e,T.busy("Reading the file...");try{C=URL.createObjectURL(e);const r=await he(t.preview,C);try{s=await _(e),b=null}catch(a){s=null,b=a instanceof G?a.reason:a.message||"the file could not be read as an MP4."}let n=!1;s&&W()?(n=await ee(Q(s.video)),n||(b=`this browser will not decode ${s.video.codec} directly.`)):s&&!W()&&(b="this browser has no WebCodecs, so frames cannot be decoded one by one."),u=n;let i=!1;if(u?y=r.ok:r.ok?(T.busy("Checking this browser can decode it..."),y=await fe(t.preview,Math.min(1,(r.duration||2)/2)),i=!y):y=!1,!u&&!y){p(i?"This browser opened the file but cannot decode the video in it. That is usually Dolby Vision, or HEVC on a machine with no hardware support for it - the container reads fine and the picture never arrives. Convert it to an ordinary MP4 (H.264) first, and this will read it directly.":`This browser cannot open this file: ${b??"the format is not one it plays."}`),k();return}if(!M()){p("This browser cannot encode video, so it cannot write a time-lapse. A recent Chrome, Edge, Safari or Firefox will."),k();return}if(d=u?{width:s.video.displayWidth,height:s.video.displayHeight}:{width:r.width,height:r.height},c=r.duration||(s?s.duration:0),$=u?X(s.video):0,!(c>0)){p("This file does not say how long it is, so there is nothing to work a speed out from."),k();return}await me(y),ge(),ve(),t.speedCard.hidden=!1,t.exportCard.hidden=!1,t.exportBtn.disabled=!1,g(we(),null)}catch(r){console.error(r),p(r?.message||"That file could not be opened."),k()}finally{T.done()}}}async function me(e){if(t.previewWrap.hidden=!1,e){t.preview.hidden=!1,t.still.hidden=!0,t.previewNote.hidden=!0;return}t.preview.hidden=!0,t.previewNote.hidden=!1,t.previewNote.textContent="This browser will not play this file, so the frame below was decoded to show you what you picked. The time-lapse itself is unaffected.";try{const r=await J({file:f,media:s,atSeconds:0});t.still.width=r.width,t.still.height=r.height,t.still.getContext("2d").drawImage(r,0,0),t.still.hidden=!1}catch(r){t.still.hidden=!0,t.previewNote.textContent=`This browser will not play this file and no frame could be decoded from it either (${r.message}).`}}function ge(){if(t.source.hidden=!1,t.srcName.textContent=f.name,t.srcSize.textContent=B(f.size),t.srcFrame.textContent=`${d.width} x ${d.height}`,t.srcLength.textContent=R(c),t.srcFps.textContent=$?`${$.toFixed($<10?1:0)} fps`:"whatever the player reports",s){const e=s.video.rotation?`, turned ${s.video.rotation} degrees`:"";t.srcCodec.textContent=`${s.video.codec} (${s.video.entryType})${e}`}else t.srcCodec.textContent="read by the browser's own player";t.pathNote.hidden=u,u||(t.pathNote.textContent=`This one is read by seeking the browser's own player to each instant, because ${b??"its layout is not one the reader here understands."} That works on every format the browser plays, and is a little slower.`)}function we(){const e=[...t.speedRow.querySelectorAll("[data-speed]")].map(i=>Number(i.dataset.speed)),r=c/15;let n=e[0];for(const i of e)Math.abs(i-r)<Math.abs(n-r)&&(n=i);return F(Math.min(n,c/(N/O())))}function I(){C&&(t.preview.removeAttribute("src"),t.preview.load(),URL.revokeObjectURL(C),C=null),s=null,f=null}function k(){t.source.hidden=!0,t.previewWrap.hidden=!0,t.previewNote.hidden=!0,t.speedCard.hidden=!0,t.exportCard.hidden=!0,t.pathNote.hidden=!0,I()}function O(){return Number(t.fps.value)||30}function U(){return F(Number(t.speed.value))}function ve(){const e=Math.min(d.width,d.height);for(const r of t.size.options){const n=Number(r.value);r.disabled=n>0&&n>=e}t.size.selectedOptions[0]?.disabled&&(t.size.value="0")}function g(e,r){const n=F(e);r!==t.speed&&(t.speed.value=D(n,1)),r!==t.length&&(t.length.value=D(re({duration:c,speed:n}),1));for(const i of t.speedRow.querySelectorAll("[data-speed]"))i.classList.toggle("active",Math.abs(Number(i.dataset.speed)-n)<.05);E()}function D(e,r){const n=10**r;return String(Math.round(e*n)/n)}t.speedRow.addEventListener("click",e=>{const r=e.target.closest("[data-speed]");r&&g(Number(r.dataset.speed),null)}),t.speed.addEventListener("input",()=>g(Number(t.speed.value),t.speed)),t.speed.addEventListener("change",()=>g(Number(t.speed.value),null)),t.length.addEventListener("input",()=>{g(P({duration:c,seconds:Number(t.length.value)}),t.length)}),t.length.addEventListener("change",()=>{g(P({duration:c,seconds:Number(t.length.value)}),null)}),t.fps.addEventListener("change",()=>g(U(),null)),t.size.addEventListener("change",E),t.quality.addEventListener("change",E);function q(){const e=U(),r=O(),n=oe({duration:c,speed:e,fps:r}),i=se({width:d.width,height:d.height,shortEdge:Number(t.size.value)}),a=ae({width:i.width,height:i.height,fps:r,quality:t.quality.value});return{speed:e,fps:r,times:n,frame:i,bitrate:a,interval:ne({speed:e,fps:r}),bytes:le({frames:n.length,fps:r,bitrate:a})}}function E(){if(!d.width||!c)return;const e=q(),r=e.times.length>=N;if(t.intervalNote.textContent=`One frame every ${A(e.interval)} of the original, played back at ${e.fps} frames a second.`,t.sumFrames.textContent=`${e.times.length.toLocaleString()} frames`,t.sumInterval.textContent=A(e.interval),t.sumLength.textContent=R(e.times.length/e.fps),t.sumSize.textContent=`${e.frame.width} x ${e.frame.height}`+(e.frame.width===d.width?" (unchanged)":` (from ${d.width} x ${d.height})`),t.sumBytes.textContent=`about ${B(e.bytes)}`,u){const i=de({samples:s.video.samples,timescale:s.video.timescale,times:e.times}),a=ce(i,s.video.samples.length);t.sumRead.textContent=`${a.read.toLocaleString()} of the ${a.total.toLocaleString()} frames in the file`}else t.sumRead.textContent=`${e.times.length.toLocaleString()} seeks through the player`;const n=[];r||n.push(`At this speed there are ${e.times.length} frames left, which is a photograph rather than a clip. Slow it down, or ask for a longer finished length.`),ie({speed:e.speed,fps:e.fps,sourceFps:$})&&n.push("The instants are closer together than this file has frames, so some of them come out twice. Nothing is wrong with that, but a lower frame rate would make the same clip out of fewer frames."),t.planNote.hidden=n.length===0,t.planNote.textContent=n.join(" "),t.exportBtn.disabled=x||!r}function p(e){t.error.textContent=e,t.error.hidden=!1}function j(){t.error.hidden=!0,t.error.textContent=""}function z({phase:e,done:r,total:n}){const i=n>0?Math.min(1,r/n):0;t.progressBar.style.width=`${(i*100).toFixed(1)}%`,e==="preparing"?t.progressLabel.textContent="Preparing...":e==="finishing"?t.progressLabel.textContent="Finishing up...":t.progressLabel.textContent=`Frame ${r.toLocaleString()} of ${n.toLocaleString()} (${Math.round(i*100)}%)`}function be(){return`${(f?.name??"video").replace(/\.[^.]+$/,"")}-timelapse.mp4`}function B(e){return e<1024*1024?`${(e/1024).toFixed(0)} KB`:e<1024*1024*1024?`${(e/1024/1024).toFixed(1)} MB`:`${(e/1024/1024/1024).toFixed(2)} GB`}function R(e){const r=Math.max(0,Math.round(e)),n=Math.floor(r/3600),i=Math.floor(r%3600/60);return n?`${n}h ${String(i).padStart(2,"0")}m`:i?`${i}m ${String(r%60).padStart(2,"0")}s`:`${e<10?e.toFixed(1):r}s`}function A(e){return e<1?`${Math.round(e*1e3)} ms`:e<60?`${e<10?e.toFixed(2):e.toFixed(1)} s`:`${(e/60).toFixed(1)} min`}async function ye(){if(x||!f)return;const e=q();if(e.times.length<N)return;j(),x=!0,L=new AbortController,t.exportBtn.disabled=!0,t.cancelBtn.hidden=!1,t.progressWrap.hidden=!1,t.result.hidden=!0,t.preview.pause(),z({phase:"preparing",done:0,total:1});let r=null;try{const n=await te({width:e.frame.width,height:e.frame.height,framerate:e.fps,bitrate:e.bitrate});if(!n)throw new Error(`This browser will not encode H.264 at ${e.frame.width}x${e.frame.height}. Choose a smaller size.`);r=new Z({width:e.frame.width,height:e.frame.height,fps:e.fps,bitrate:e.bitrate,codec:n}),r.open();const i=u?await K({file:f,media:s,times:e.times,width:e.frame.width,height:e.frame.height,writer:r,onProgress:z,signal:L.signal}):await Y({video:t.preview,times:e.times,width:e.frame.width,height:e.frame.height,writer:r,onProgress:z,signal:L.signal});S&&URL.revokeObjectURL(S),S=URL.createObjectURL(i.blob),t.resultVideo.src=S,t.download.href=S,t.download.download=be(),t.resultInfo.textContent=[`${e.frame.width} x ${e.frame.height}`,`${i.frames.toLocaleString()} frames`,R(i.frames/e.fps),B(i.blob.size)].join(" \xB7 "),t.result.hidden=!1,t.progressWrap.hidden=!0,t.result.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(n){t.progressWrap.hidden=!0,n?.name!=="AbortError"&&(p(n?.message||"Something went wrong while making the time-lapse."),console.error(n))}finally{r?.close(),x=!1,L=null,t.cancelBtn.hidden=!0,E()}}t.exportBtn.addEventListener("click",ye),t.cancelBtn.addEventListener("click",()=>L?.abort()),window.addEventListener("beforeunload",e=>{x&&(e.preventDefault(),e.returnValue="")}),t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const xe=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function Ce(){const e=new Set,r=new Set,n=i=>{for(const l of i){if(l.name.startsWith("blob:")||l.name.startsWith("data:"))continue;const w=new URL(l.name,location.href);w.origin!==location.origin&&(xe.test(w.hostname)?e.add(w.hostname):r.add(w.hostname))}const a=performance.getEntriesByType("resource").filter(l=>!l.name.startsWith("blob:")&&!l.name.startsWith("data:")).length,h=r.size===0,m=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a file.`;t.networkCount.textContent=h?`your video has gone nowhere. ${a} files loaded.${m}`:`something contacted ${[...r].join(", ")}, which this tool never does.${m}`,t.networkCount.className=h?"good":"warn",t.networkDot.className=`live-dot ${h?"good":"warn"}`};n(performance.getEntriesByType("resource"));try{new PerformanceObserver(i=>n(i.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function $e(){const e=(r,n)=>{t.offlineStatus.textContent=r,t.offlineDot.className="live-dot",n&&(t.offlineStatus.title=n,console.info("Offline caching unavailable:",n))};if(!("serviceWorker"in navigator)){e(v("offline.none"));return}if(!window.isSecureContext){e(v("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=v("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(r){e(v("offline.failed"),r.message)}}window.addEventListener("error",e=>{p(v("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{p(v("error.broke",{detail:e.reason?.message??e.reason}))}),M()||p("This browser cannot encode video, so it has nothing to write a time-lapse with. Chrome, Edge, Safari 16.4 or Firefox 133 and newer can."),Ce(),$e(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker}from'./shared/file-picker.js';
+import{demux,UnsupportedFile}from'./demux.js';
+import{timelapseByDecoding,previewFrame,decoderConfig,averageFps}from'./decode.js';
+import{timelapseByPlaying}from'./playback.js';
+import{TimelapseWriter}from'./encode.js';
+import{hasEncoder,hasWebCodecs,canDecode,pickH264Codec}from'./support.js';
+import{
+MIN_FRAMES,
+clampSpeed,speedForLength,lengthForSpeed,sampleInterval,frameTimes,repeatsFrames,
+outputSize,chooseBitrate,estimateBytes,decodeRuns,decodeCost,
+}from'./plan.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+previewWrap:$('preview-wrap'),
+preview:$('preview'),
+still:$('still'),
+previewNote:$('preview-note'),
+source:$('source'),
+srcName:$('src-name'),
+srcSize:$('src-size'),
+srcFrame:$('src-frame'),
+srcLength:$('src-length'),
+srcFps:$('src-fps'),
+srcCodec:$('src-codec'),
+pathNote:$('path-note'),
+speedCard:$('speed-card'),
+speedRow:document.querySelector('.speed-row'),
+speed:$('speed'),
+length:$('length'),
+intervalNote:$('interval-note'),
+fps:$('fps'),
+size:$('size'),
+sizeNote:$('size-note'),
+quality:$('quality'),
+exportCard:$('export-card'),
+sumFrames:$('sum-frames'),
+sumInterval:$('sum-interval'),
+sumLength:$('sum-length'),
+sumSize:$('sum-size'),
+sumRead:$('sum-read'),
+sumBytes:$('sum-bytes'),
+planNote:$('plan-note'),
+exportBtn:$('export'),
+cancelBtn:$('cancel'),
+progressWrap:$('progress-wrap'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+error:$('error'),
+result:$('result'),
+resultVideo:$('result-video'),
+resultInfo:$('result-info'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let file=null;
+let objectUrl=null;
+let media=null;
+let fallbackReason=null;
+let source={width:0,height:0};
+let duration=0;
+let sourceFps=0;
+let canReadDirectly=false;
+let canPlay=false;
+let working=false;
+let abortController=null;
+let lastResultUrl=null;
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+const[picked]=files;
+if(picked)loadFile(picked);
+},
+});
+function openInPlayer(video,url){
+return new Promise((resolve)=>{
+const done=(result)=>{
+clearTimeout(timer);
+video.removeEventListener('loadedmetadata',ok);
+video.removeEventListener('error',bad);
+resolve(result);
+};
+const ok=()=>done({
+ok:video.videoWidth>0&&video.videoHeight>0,
+width:video.videoWidth,
+height:video.videoHeight,
+duration:Number.isFinite(video.duration)?video.duration:0,
+});
+const bad=()=>done({ok:false,width:0,height:0,duration:0});
+const timer=setTimeout(bad,15000);
+video.addEventListener('loadedmetadata',ok,{once:true});
+video.addEventListener('error',bad,{once:true});
+video.src=url;
+video.load();
+});
+}
+const PROBE_TIMEOUT=10_000;
+function firstFrameLands(video,atSeconds){
+return new Promise((resolve)=>{
+let settled=false;
+const done=(ok)=>{
+if(settled)return;
+settled=true;
+clearTimeout(timer);
+video.removeEventListener('error',onError);
+video.removeEventListener('seeked',onSeeked);
+resolve(ok);
+};
+const decoded=()=>video.readyState>=2&&!video.error;
+const onError=()=>done(false);
+const onSeeked=()=>{
+if(typeof video.requestVideoFrameCallback==='function'){
+video.requestVideoFrameCallback(()=>done(true));
+}
+setTimeout(()=>done(decoded()),500);
+};
+const timer=setTimeout(()=>done(false),PROBE_TIMEOUT);
+video.addEventListener('error',onError,{once:true});
+video.addEventListener('seeked',onSeeked,{once:true});
+if(Math.abs(video.currentTime-atSeconds)<1e-4)onSeeked();
+else video.currentTime=atSeconds;
+});
+}
+async function loadFile(picked){
+if(working)return;
+clearError();
+releaseFile();
+file=picked;
+picker.busy('Reading the file...');
+try{
+objectUrl=URL.createObjectURL(picked);
+const played=await openInPlayer(el.preview,objectUrl);
+try{
+media=await demux(picked);
+fallbackReason=null;
+}catch(error){
+media=null;
+fallbackReason=error instanceof UnsupportedFile
+?error.reason
+:(error.message||'the file could not be read as an MP4.');
+}
+let readable=false;
+if(media&&hasWebCodecs()){
+readable=await canDecode(decoderConfig(media.video));
+if(!readable){
+fallbackReason=`this browser will not decode ${media.video.codec} directly.`;
+}
+}else if(media&&!hasWebCodecs()){
+fallbackReason='this browser has no WebCodecs, so frames cannot be decoded one by one.';
+}
+canReadDirectly=readable;
+let opensButCannotDecode=false;
+if(canReadDirectly){
+canPlay=played.ok;
+}else if(played.ok){
+picker.busy('Checking this browser can decode it...');
+canPlay=await firstFrameLands(el.preview,
+Math.min(1,(played.duration||2)/2));
+opensButCannotDecode=!canPlay;
+}else{
+canPlay=false;
+}
+if(!canReadDirectly&&!canPlay){
+showError(opensButCannotDecode
+?'This browser opened the file but cannot decode the video in it. '
++'That is usually Dolby Vision, or HEVC on a machine with no '
++'hardware support for it - the container reads fine and the '
++'picture never arrives. Convert it to an ordinary MP4 (H.264) '
++'first, and this will read it directly.'
+:`This browser cannot open this file: ${fallbackReason
+          ?? 'the format is not one it plays.'}`
+);
+resetView();
+return;
+}
+if(!hasEncoder()){
+showError('This browser cannot encode video, so it cannot write a time-lapse. '
++'A recent Chrome, Edge, Safari or Firefox will.');
+resetView();
+return;
+}
+source=canReadDirectly
+?{width:media.video.displayWidth,height:media.video.displayHeight}
+:{width:played.width,height:played.height};
+duration=played.duration||(media?media.duration:0);
+sourceFps=canReadDirectly?averageFps(media.video):0;
+if(!(duration>0)){
+showError('This file does not say how long it is, so there is nothing to '
++'work a speed out from.');
+resetView();
+return;
+}
+await showPreview(canPlay);
+describeSource();
+fitSizeOptions();
+el.speedCard.hidden=false;
+el.exportCard.hidden=false;
+el.exportBtn.disabled=false;
+setSpeed(defaultSpeed(),null);
+}catch(error){
+console.error(error);
+showError(error?.message||'That file could not be opened.');
+resetView();
+}finally{
+picker.done();
+}
+}
+async function showPreview(playable){
+el.previewWrap.hidden=false;
+if(playable){
+el.preview.hidden=false;
+el.still.hidden=true;
+el.previewNote.hidden=true;
+return;
+}
+el.preview.hidden=true;
+el.previewNote.hidden=false;
+el.previewNote.textContent='This browser will not play this file, so the frame below '
++'was decoded to show you what you picked. The time-lapse itself is unaffected.';
+try{
+const canvas=await previewFrame({file,media,atSeconds:0});
+el.still.width=canvas.width;
+el.still.height=canvas.height;
+el.still.getContext('2d').drawImage(canvas,0,0);
+el.still.hidden=false;
+}catch(error){
+el.still.hidden=true;
+el.previewNote.textContent='This browser will not play this file and no frame could '
++`be decoded from it either (${error.message}).`;
+}
+}
+function describeSource(){
+el.source.hidden=false;
+el.srcName.textContent=file.name;
+el.srcSize.textContent=formatBytes(file.size);
+el.srcFrame.textContent=`${source.width} x ${source.height}`;
+el.srcLength.textContent=formatDuration(duration);
+el.srcFps.textContent=sourceFps
+?`${sourceFps.toFixed(sourceFps < 10 ? 1 : 0)} fps`
+:"whatever the player reports";
+if(media){
+const turned=media.video.rotation?`, turned ${media.video.rotation} degrees`:'';
+el.srcCodec.textContent=`${media.video.codec} (${media.video.entryType})${turned}`;
+}else{
+el.srcCodec.textContent="read by the browser's own player";
+}
+el.pathNote.hidden=canReadDirectly;
+if(!canReadDirectly){
+el.pathNote.textContent='This one is read by seeking the browser\'s own player to each '
++`instant, because ${fallbackReason ?? 'its layout is not one the reader here understands.'} `
++'That works on every format the browser plays, and is a little slower.';
+}
+}
+function defaultSpeed(){
+const presets=[...el.speedRow.querySelectorAll('[data-speed]')]
+.map((button)=>Number(button.dataset.speed));
+const wanted=duration/15;
+let best=presets[0];
+for(const preset of presets){
+if(Math.abs(preset-wanted)<Math.abs(best-wanted))best=preset;
+}
+return clampSpeed(Math.min(best,duration/(MIN_FRAMES/outputFps())));
+}
+function releaseFile(){
+if(objectUrl){
+el.preview.removeAttribute('src');
+el.preview.load();
+URL.revokeObjectURL(objectUrl);
+objectUrl=null;
+}
+media=null;
+file=null;
+}
+function resetView(){
+el.source.hidden=true;
+el.previewWrap.hidden=true;
+el.previewNote.hidden=true;
+el.speedCard.hidden=true;
+el.exportCard.hidden=true;
+el.pathNote.hidden=true;
+releaseFile();
+}
+function outputFps(){
+return Number(el.fps.value)||30;
+}
+function currentSpeed(){
+return clampSpeed(Number(el.speed.value));
+}
+function fitSizeOptions(){
+const shorter=Math.min(source.width,source.height);
+for(const option of el.size.options){
+const edge=Number(option.value);
+option.disabled=edge>0&&edge>=shorter;
+}
+if(el.size.selectedOptions[0]?.disabled)el.size.value='0';
+}
+function setSpeed(speed,from){
+const value=clampSpeed(speed);
+if(from!==el.speed)el.speed.value=round(value,1);
+if(from!==el.length)el.length.value=round(lengthForSpeed({duration,speed:value}),1);
+for(const button of el.speedRow.querySelectorAll('[data-speed]')){
+button.classList.toggle('active',Math.abs(Number(button.dataset.speed)-value)<0.05);
+}
+updateSummary();
+}
+function round(value,places){
+const factor=10**places;
+return String(Math.round(value*factor)/factor);
+}
+el.speedRow.addEventListener('click',(event)=>{
+const button=event.target.closest('[data-speed]');
+if(button)setSpeed(Number(button.dataset.speed),null);
+});
+el.speed.addEventListener('input',()=>setSpeed(Number(el.speed.value),el.speed));
+el.speed.addEventListener('change',()=>setSpeed(Number(el.speed.value),null));
+el.length.addEventListener('input',()=>{
+setSpeed(speedForLength({duration,seconds:Number(el.length.value)}),el.length);
+});
+el.length.addEventListener('change',()=>{
+setSpeed(speedForLength({duration,seconds:Number(el.length.value)}),null);
+});
+el.fps.addEventListener('change',()=>setSpeed(currentSpeed(),null));
+el.size.addEventListener('change',updateSummary);
+el.quality.addEventListener('change',updateSummary);
+function currentPlan(){
+const speed=currentSpeed();
+const fps=outputFps();
+const times=frameTimes({duration,speed,fps});
+const frame=outputSize({
+width:source.width,height:source.height,shortEdge:Number(el.size.value),
+});
+const bitrate=chooseBitrate({
+width:frame.width,height:frame.height,fps,quality:el.quality.value,
+});
+return{
+speed,fps,times,frame,bitrate,
+interval:sampleInterval({speed,fps}),
+bytes:estimateBytes({frames:times.length,fps,bitrate}),
+};
+}
+function updateSummary(){
+if(!source.width||!duration)return;
+const plan=currentPlan();
+const enough=plan.times.length>=MIN_FRAMES;
+el.intervalNote.textContent=`One frame every ${formatInterval(plan.interval)} of the `
++`original, played back at ${plan.fps} frames a second.`;
+el.sumFrames.textContent=`${plan.times.length.toLocaleString()} frames`;
+el.sumInterval.textContent=formatInterval(plan.interval);
+el.sumLength.textContent=formatDuration(plan.times.length/plan.fps);
+el.sumSize.textContent=`${plan.frame.width} x ${plan.frame.height}`
++(plan.frame.width===source.width?' (unchanged)':` (from ${source.width} x ${source.height})`);
+el.sumBytes.textContent=`about ${formatBytes(plan.bytes)}`;
+if(canReadDirectly){
+const runs=decodeRuns({
+samples:media.video.samples,timescale:media.video.timescale,times:plan.times,
+});
+const cost=decodeCost(runs,media.video.samples.length);
+el.sumRead.textContent=`${cost.read.toLocaleString()} of the `
++`${cost.total.toLocaleString()} frames in the file`;
+}else{
+el.sumRead.textContent=`${plan.times.length.toLocaleString()} seeks through the player`;
+}
+const notes=[];
+if(!enough){
+notes.push(`At this speed there are ${plan.times.length} frames left, which is a `
++'photograph rather than a clip. Slow it down, or ask for a longer finished length.');
+}
+if(repeatsFrames({speed:plan.speed,fps:plan.fps,sourceFps})){
+notes.push('The instants are closer together than this file has frames, so some of '
++'them come out twice. Nothing is wrong with that, but a lower frame rate '
++'would make the same clip out of fewer frames.');
+}
+el.planNote.hidden=notes.length===0;
+el.planNote.textContent=notes.join(' ');
+el.exportBtn.disabled=working||!enough;
+}
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+}
+function clearError(){
+el.error.hidden=true;
+el.error.textContent='';
+}
+function setProgress({phase,done,total}){
+const fraction=total>0?Math.min(1,done/total):0;
+el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
+if(phase==='preparing'){
+el.progressLabel.textContent='Preparing...';
+}else if(phase==='finishing'){
+el.progressLabel.textContent='Finishing up...';
+}else{
+el.progressLabel.textContent=`Frame ${done.toLocaleString()} of `
++`${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+}
+}
+function outputFilename(){
+const base=(file?.name??'video').replace(/\.[^.]+$/,'');
+return`${base}-timelapse.mp4`;
+}
+function formatBytes(bytes){
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
+if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
+return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
+function formatDuration(seconds){
+const whole=Math.max(0,Math.round(seconds));
+const hours=Math.floor(whole/3600);
+const minutes=Math.floor((whole%3600)/60);
+if(hours)return`${hours}h ${String(minutes).padStart(2, '0')}m`;
+if(minutes)return`${minutes}m ${String(whole % 60).padStart(2, '0')}s`;
+return`${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+}
+function formatInterval(seconds){
+if(seconds<1)return`${Math.round(seconds * 1000)} ms`;
+if(seconds<60)return`${seconds < 10 ? seconds.toFixed(2) : seconds.toFixed(1)} s`;
+return`${(seconds / 60).toFixed(1)} min`;
+}
+async function runExport(){
+if(working||!file)return;
+const plan=currentPlan();
+if(plan.times.length<MIN_FRAMES)return;
+clearError();
+working=true;
+abortController=new AbortController();
+el.exportBtn.disabled=true;
+el.cancelBtn.hidden=false;
+el.progressWrap.hidden=false;
+el.result.hidden=true;
+el.preview.pause();
+setProgress({phase:'preparing',done:0,total:1});
+let writer=null;
+try{
+const codec=await pickH264Codec({
+width:plan.frame.width,
+height:plan.frame.height,
+framerate:plan.fps,
+bitrate:plan.bitrate,
+});
+if(!codec){
+throw new Error('This browser will not encode H.264 at '
++`${plan.frame.width}x${plan.frame.height}. Choose a smaller size.`);
+}
+writer=new TimelapseWriter({
+width:plan.frame.width,
+height:plan.frame.height,
+fps:plan.fps,
+bitrate:plan.bitrate,
+codec,
+});
+writer.open();
+const result=canReadDirectly
+?await timelapseByDecoding({
+file,media,times:plan.times,
+width:plan.frame.width,height:plan.frame.height,
+writer,onProgress:setProgress,signal:abortController.signal,
+})
+:await timelapseByPlaying({
+video:el.preview,times:plan.times,
+width:plan.frame.width,height:plan.frame.height,
+writer,onProgress:setProgress,signal:abortController.signal,
+});
+if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
+lastResultUrl=URL.createObjectURL(result.blob);
+el.resultVideo.src=lastResultUrl;
+el.download.href=lastResultUrl;
+el.download.download=outputFilename();
+el.resultInfo.textContent=[
+`${plan.frame.width} x ${plan.frame.height}`,
+`${result.frames.toLocaleString()} frames`,
+formatDuration(result.frames/plan.fps),
+formatBytes(result.blob.size),
+].join(' · ');
+el.result.hidden=false;
+el.progressWrap.hidden=true;
+el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}catch(error){
+el.progressWrap.hidden=true;
+if(error?.name!=='AbortError'){
+showError(error?.message||'Something went wrong while making the time-lapse.');
+console.error(error);
+}
+}finally{
+writer?.close();
+working=false;
+abortController=null;
+el.cancelBtn.hidden=true;
+updateSummary();
+}
+}
+el.exportBtn.addEventListener('click',runExport);
+el.cancelBtn.addEventListener('click',()=>abortController?.abort());
+window.addEventListener('beforeunload',(event)=>{
+if(!working)return;
+event.preventDefault();
+event.returnValue='';
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+el.networkCount.textContent=clean
+?`your video has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+if(!hasEncoder()){
+showError('This browser cannot encode video, so it has nothing to write a time-lapse '
++'with. Chrome, Edge, Safari 16.4 or Firefox 133 and newer can.');
+}
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

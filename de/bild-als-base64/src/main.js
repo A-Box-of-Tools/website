@@ -1,3 +1,410 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as f}from"./shared/phrases.js";import{base64DataUri as W,svgDataUri as F}from"./encode.js";import{sniff as H,extensionType as q}from"./sniff.js";import{metadata as K}from"./metadata.js";import{SHAPES as M,render as R,bundle as z,bundleName as _,fileName as G,identifiers as J}from"./shapes.js";import{bytes as k,count as A,overhead as Q,verdict as V,metadataNote as X,dimensions as B}from"./files.js";import{wireFilePicker as Y,readingLabel as Z}from"./shared/file-picker.js";const i=e=>document.getElementById(e),o={dropzone:i("dropzone"),fileInput:i("file-input"),fileList:i("file-list"),listToolbar:i("list-toolbar"),countLabel:i("count-label"),clearAll:i("clear-all"),loadError:i("load-error"),shapes:i("shapes"),svgBase64:i("svg-base64"),emptyNote:i("empty-note"),results:i("results"),resultsSummary:i("results-summary"),copyAll:i("copy-all"),downloadAll:i("download-all"),resultList:i("result-list"),privacyToggle:i("privacy-toggle"),privacyPanel:i("privacy-panel"),networkCount:i("network-count"),networkDot:i("network-dot"),offlineStatus:i("offline-status"),offlineDot:i("offline-dot")};let c=[],j=1,w=!1;const ee=new TextDecoder("utf-8"),D=Y({input:o.fileInput,dropzone:o.dropzone,onFiles(e){te(e)}});async function te(e){if(!e?.length||w)return;w=!0,D.busy(Z(e.length));const n=[],t=[];try{for(const a of e){const l=new Uint8Array(await a.arrayBuffer()),s=H(l);if(!s){n.push(`${a.name}: this is not an image format this tool recognises. The type in a data URI has to be right, so it will not guess one.`);continue}const d=q(a.name),r={id:j,file:a,data:l,thumbUrl:URL.createObjectURL(a),mime:s.mime,label:s.label,note:s.note??"",mismatch:d&&d!==s.mime?`The name says ${a.name.replace(/^.*\./,".")}, but the bytes are ${s.label}. The URI says ${s.mime}, which is the one that will work.`:"",meta:K(l,s.mime),svg:s.mime==="image/svg+xml",text:s.mime==="image/svg+xml"?ee.decode(l):"",width:0,height:0,renders:!0,cache:null};j+=1,c.push(r),t.push(r)}}finally{w=!1,D.done()}n.length?$(n.join(`
-`)):S(),h();for(const a of t)ne(a).then(h)}function ne(e){return new Promise(n=>{const t=new Image;t.onload=()=>{e.width=t.naturalWidth,e.height=t.naturalHeight,e.renders=!0,n()},t.onerror=()=>{e.renders=!1,n()},t.src=I(e)})}function oe(e){const n=c.find(t=>t.id===e);n&&URL.revokeObjectURL(n.thumbUrl),c=c.filter(t=>t.id!==e),S(),h()}o.clearAll.addEventListener("click",()=>{for(const e of c)URL.revokeObjectURL(e.thumbUrl);c=[],S(),h()});const ae=e=>e.svg&&!o.svgBase64.checked?"svg":"base64";function I(e){const n=ae(e);if(e.cache?.key===n)return e.cache.uri;const t=n==="svg"?F(e.text):W(e.data,e.mime);return e.cache={key:n,uri:t},t}function L(){const e=J(c.map(n=>n.file.name));return c.map((n,t)=>({item:n,name:n.file.name,ident:e[t],uri:I(n),width:n.width,height:n.height,svg:n.svg}))}const N=()=>o.shapes.querySelector('input[name="shape"]:checked')?.value??M[0].id;o.shapes.addEventListener("change",h),o.svgBase64.addEventListener("change",()=>{h()});const T=1200;function h(){const e=N(),n=L();if(o.countLabel.textContent=`${c.length} ${c.length===1?"image":"images"}`,o.listToolbar.hidden=c.length===0,o.emptyNote.hidden=c.length>0,o.results.hidden=c.length===0,re(),!c.length)return;const t=n.reduce((a,l)=>a+R(e,l).length,0);o.resultsSummary.textContent=`${c.length} ${c.length===1?"picture":"pictures"}, ${k(t)} of text in total. None of it has been anywhere.`,o.resultList.replaceChildren(...n.map(a=>se(e,a)))}function re(){o.fileList.replaceChildren(...c.map(e=>{const n=document.createElement("li");n.className="file-row";const t=document.createElement("div");t.className="file-main-wrap";const a=document.createElement("img");a.className="file-thumb",a.src=e.thumbUrl,a.alt="",t.appendChild(a);const l=document.createElement("div");l.className="file-main";const s=document.createElement("p");s.className="file-name",s.textContent=e.file.name,l.appendChild(s);const d=document.createElement("p");d.className="file-sub",d.textContent=[e.label,k(e.file.size),e.width&&e.height&&e.renders?B(e.width,e.height):null].filter(Boolean).join(" \xB7 "),l.appendChild(d),t.appendChild(l),n.appendChild(t);const r=document.createElement("button");return r.type="button",r.className="row-remove",r.title=`Take ${e.file.name} off the list`,r.setAttribute("aria-label",`Take ${e.file.name} off the list`),r.textContent="\xD7",r.disabled=w,r.addEventListener("click",()=>oe(e.id)),n.appendChild(r),n}))}function se(e,n){const{item:t}=n,a=R(e,n),l=document.createElement("li");l.className="result";const s=document.createElement("div");s.className="result-head";const d=document.createElement("img");d.className="result-preview",d.src=n.uri,d.alt="",s.appendChild(d);const r=document.createElement("div");r.className="result-meta";const u=document.createElement("p");u.className="result-name",u.textContent=t.file.name,r.appendChild(u);const O=[t.mime,t.width&&t.height&&t.renders?B(t.width,t.height):null,`${k(t.file.size)} in`,`${A(a.length)} characters out`,Q(t.file.size,n.uri.length)].filter(Boolean),y=document.createElement("p");y.className="result-sub",y.textContent=O.join(" \xB7 "),r.appendChild(y);const U=V(n.uri.length),b=document.createElement("p");b.className=`result-verdict ${U.level}`,b.textContent=U.text,r.appendChild(b);for(const m of[t.mismatch,t.note,t.renders?"":"This browser would not draw the result. The URI is well formed; the format is one it cannot decode.",t.meta?X(t.meta,t.file.size):""]){if(!m)continue;const x=document.createElement("p");x.className="result-warn",x.textContent=m,r.appendChild(x)}s.appendChild(r);const g=document.createElement("div");g.className="result-actions",g.appendChild(le(a,"primary"));const p=document.createElement("button");p.type="button",p.className="ghost",p.textContent="Download",p.addEventListener("click",()=>P(a,G(e,n))),g.appendChild(p),s.appendChild(g),l.appendChild(s);const C=document.createElement("pre");C.className="result-code";const E=document.createElement("code");if(E.textContent=a.length>T?`${a.slice(0,T)}\u2026`:a,C.appendChild(E),l.appendChild(C),a.length>T){const m=document.createElement("button");m.type="button",m.className="ghost show-all",m.textContent=`Show all ${A(a.length)} characters`,m.addEventListener("click",()=>{E.textContent=a,m.remove()}),l.appendChild(m)}return l}function le(e,n){const t=document.createElement("button");return t.type="button",t.className=n,t.textContent="Copy",t.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(e),v(t,"Copied")}catch{v(t,"Copy refused - use Download")}}),t}function v(e,n){const t=e.textContent;e.textContent=n,e.disabled=!0,setTimeout(()=>{e.textContent=t,e.disabled=!1},1600)}o.copyAll.addEventListener("click",async()=>{if(!c.length)return;const e=z(N(),L());try{await navigator.clipboard.writeText(e),v(o.copyAll,"Copied")}catch{v(o.copyAll,"Copy refused - use Download")}}),o.downloadAll.addEventListener("click",()=>{if(!c.length)return;const e=N();P(z(e,L()),_(e))});function P(e,n){const t=new Blob([e],{type:"text/plain;charset=utf-8"}),a=URL.createObjectURL(t),l=document.createElement("a");l.href=a,l.download=n,l.click(),setTimeout(()=>URL.revokeObjectURL(a),6e4)}function $(e){o.loadError.textContent=e,o.loadError.hidden=!1}function S(){o.loadError.textContent="",o.loadError.hidden=!0}o.privacyToggle.addEventListener("click",()=>{const e=o.privacyPanel.hidden;o.privacyPanel.hidden=!e,o.privacyToggle.setAttribute("aria-expanded",String(e))});const ie=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function ce(){const e=new Set,n=new Set,t=a=>{for(const r of a){if(r.name.startsWith("blob:")||r.name.startsWith("data:"))continue;const u=new URL(r.name,location.href);u.origin!==location.origin&&(ie.test(u.hostname)?e.add(u.hostname):n.add(u.hostname))}const l=performance.getEntriesByType("resource").filter(r=>!r.name.startsWith("blob:")&&!r.name.startsWith("data:")).length,s=n.size===0,d=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given an image or a byte of one.`;o.networkCount.textContent=s?`your images have gone nowhere. ${l} files loaded, all of them this page's own.${d}`:`something contacted ${[...n].join(", ")}, which this tool never does. Treat that as worth investigating.${d}`,o.networkCount.className=s?"good":"warn",o.networkDot.className=`live-dot ${s?"good":"warn"}`};t(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>t(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function de(){const e=(n,t)=>{o.offlineStatus.textContent=n,o.offlineDot.className="live-dot",t&&(o.offlineStatus.title=t,console.info("Offline caching unavailable:",t))};if(!("serviceWorker"in navigator)){e(f("offline.none"));return}if(!window.isSecureContext){e(f("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,o.offlineStatus.textContent=f("offline.ready"),o.offlineStatus.className="good",o.offlineDot.className="live-dot good"}catch(n){e(f("offline.failed"),n.message)}}window.addEventListener("error",e=>{$(f("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{$(f("error.broke",{detail:e.reason?.message??e.reason}))}),h(),ce(),de(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{base64DataUri,svgDataUri}from'./encode.js';
+import{sniff,extensionType}from'./sniff.js';
+import{metadata}from'./metadata.js';
+import{
+SHAPES,render as renderShape,bundle,bundleName,fileName,identifiers,
+}from'./shapes.js';
+import{
+bytes as humanBytes,count,overhead,verdict,metadataNote,dimensions,
+}from'./files.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+fileList:$('file-list'),
+listToolbar:$('list-toolbar'),
+countLabel:$('count-label'),
+clearAll:$('clear-all'),
+loadError:$('load-error'),
+shapes:$('shapes'),
+svgBase64:$('svg-base64'),
+emptyNote:$('empty-note'),
+results:$('results'),
+resultsSummary:$('results-summary'),
+copyAll:$('copy-all'),
+downloadAll:$('download-all'),
+resultList:$('result-list'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let items=[];
+let nextId=1;
+let busy=false;
+const utf8=new TextDecoder('utf-8');
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+addFiles(files);
+},
+});
+async function addFiles(files){
+if(!files?.length||busy)return;
+busy=true;
+picker.busy(readingLabel(files.length));
+const failures=[];
+const added=[];
+try{
+for(const file of files){
+const data=new Uint8Array(await file.arrayBuffer());
+const kind=sniff(data);
+if(!kind){
+failures.push(`${file.name}: this is not an image format this tool recognises. The type in a data URI has to be right, so it will not guess one.`);
+continue;
+}
+const declared=extensionType(file.name);
+const item={
+id:nextId,
+file,
+data,
+thumbUrl:URL.createObjectURL(file),
+mime:kind.mime,
+label:kind.label,
+note:kind.note??'',
+mismatch:declared&&declared!==kind.mime
+?`The name says ${file.name.replace(/^.*\./, '.')}, but the bytes are ${kind.label}. The URI says ${kind.mime}, which is the one that will work.`
+:'',
+meta:metadata(data,kind.mime),
+svg:kind.mime==='image/svg+xml',
+text:kind.mime==='image/svg+xml'?utf8.decode(data):'',
+width:0,
+height:0,
+renders:true,
+cache:null,
+};
+nextId+=1;
+items.push(item);
+added.push(item);
+}
+}finally{
+busy=false;
+picker.done();
+}
+if(failures.length)showLoadError(failures.join('\n'));
+else clearLoadError();
+draw();
+for(const item of added)measure(item).then(draw);
+}
+function measure(item){
+return new Promise((resolve)=>{
+const image=new Image();
+image.onload=()=>{
+item.width=image.naturalWidth;
+item.height=image.naturalHeight;
+item.renders=true;
+resolve();
+};
+image.onerror=()=>{
+item.renders=false;
+resolve();
+};
+image.src=uriFor(item);
+});
+}
+function removeItem(id){
+const item=items.find((one)=>one.id===id);
+if(item)URL.revokeObjectURL(item.thumbUrl);
+items=items.filter((one)=>one.id!==id);
+clearLoadError();
+draw();
+}
+el.clearAll.addEventListener('click',()=>{
+for(const item of items)URL.revokeObjectURL(item.thumbUrl);
+items=[];
+clearLoadError();
+draw();
+});
+const modeKey=(item)=>(item.svg&&!el.svgBase64.checked?'svg':'base64');
+function uriFor(item){
+const key=modeKey(item);
+if(item.cache?.key===key)return item.cache.uri;
+const uri=key==='svg'
+?svgDataUri(item.text)
+:base64DataUri(item.data,item.mime);
+item.cache={key,uri};
+return uri;
+}
+function results(){
+const idents=identifiers(items.map((item)=>item.file.name));
+return items.map((item,at)=>({
+item,
+name:item.file.name,
+ident:idents[at],
+uri:uriFor(item),
+width:item.width,
+height:item.height,
+svg:item.svg,
+}));
+}
+const currentShape=()=>
+el.shapes.querySelector('input[name="shape"]:checked')?.value??SHAPES[0].id;
+el.shapes.addEventListener('change',draw);
+el.svgBase64.addEventListener('change',()=>{
+draw();
+});
+const SNIPPET=1200;
+function draw(){
+const shape=currentShape();
+const rows=results();
+el.countLabel.textContent=`${items.length} ${items.length === 1 ? 'image' : 'images'}`;
+el.listToolbar.hidden=items.length===0;
+el.emptyNote.hidden=items.length>0;
+el.results.hidden=items.length===0;
+drawFileList();
+if(!items.length)return;
+const total=rows.reduce((sum,row)=>sum+renderShape(shape,row).length,0);
+el.resultsSummary.textContent=
+`${items.length} ${items.length === 1 ? 'picture' : 'pictures'}, ${humanBytes(total)} of text in total. None of it has been anywhere.`;
+el.resultList.replaceChildren(...rows.map((row)=>resultRow(shape,row)));
+}
+function drawFileList(){
+el.fileList.replaceChildren(...items.map((item)=>{
+const row=document.createElement('li');
+row.className='file-row';
+const main=document.createElement('div');
+main.className='file-main-wrap';
+const thumb=document.createElement('img');
+thumb.className='file-thumb';
+thumb.src=item.thumbUrl;
+thumb.alt='';
+main.appendChild(thumb);
+const text=document.createElement('div');
+text.className='file-main';
+const name=document.createElement('p');
+name.className='file-name';
+name.textContent=item.file.name;
+text.appendChild(name);
+const sub=document.createElement('p');
+sub.className='file-sub';
+sub.textContent=[
+item.label,
+humanBytes(item.file.size),
+item.width&&item.height&&item.renders?dimensions(item.width,item.height):null,
+].filter(Boolean).join(' · ');
+text.appendChild(sub);
+main.appendChild(text);
+row.appendChild(main);
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='row-remove';
+remove.title=`Take ${item.file.name} off the list`;
+remove.setAttribute('aria-label',`Take ${item.file.name} off the list`);
+remove.textContent='×';
+remove.disabled=busy;
+remove.addEventListener('click',()=>removeItem(item.id));
+row.appendChild(remove);
+return row;
+}));
+}
+function resultRow(shape,row){
+const{item}=row;
+const code=renderShape(shape,row);
+const li=document.createElement('li');
+li.className='result';
+const head=document.createElement('div');
+head.className='result-head';
+const preview=document.createElement('img');
+preview.className='result-preview';
+preview.src=row.uri;
+preview.alt='';
+head.appendChild(preview);
+const meta=document.createElement('div');
+meta.className='result-meta';
+const name=document.createElement('p');
+name.className='result-name';
+name.textContent=item.file.name;
+meta.appendChild(name);
+const facts=[
+item.mime,
+item.width&&item.height&&item.renders?dimensions(item.width,item.height):null,
+`${humanBytes(item.file.size)} in`,
+`${count(code.length)} characters out`,
+overhead(item.file.size,row.uri.length),
+].filter(Boolean);
+const sub=document.createElement('p');
+sub.className='result-sub';
+sub.textContent=facts.join(' · ');
+meta.appendChild(sub);
+const call=verdict(row.uri.length);
+const judgement=document.createElement('p');
+judgement.className=`result-verdict ${call.level}`;
+judgement.textContent=call.text;
+meta.appendChild(judgement);
+for(const warning of[
+item.mismatch,
+item.note,
+item.renders?'':'This browser would not draw the result. The URI is well formed; the format is one it cannot decode.',
+item.meta?metadataNote(item.meta,item.file.size):'',
+]){
+if(!warning)continue;
+const line=document.createElement('p');
+line.className='result-warn';
+line.textContent=warning;
+meta.appendChild(line);
+}
+head.appendChild(meta);
+const actions=document.createElement('div');
+actions.className='result-actions';
+actions.appendChild(copyButton(code,'primary'));
+const download=document.createElement('button');
+download.type='button';
+download.className='ghost';
+download.textContent='Download';
+download.addEventListener('click',()=>saveText(code,fileName(shape,row)));
+actions.appendChild(download);
+head.appendChild(actions);
+li.appendChild(head);
+const pre=document.createElement('pre');
+pre.className='result-code';
+const holder=document.createElement('code');
+holder.textContent=code.length>SNIPPET?`${code.slice(0, SNIPPET)}…`:code;
+pre.appendChild(holder);
+li.appendChild(pre);
+if(code.length>SNIPPET){
+const more=document.createElement('button');
+more.type='button';
+more.className='ghost show-all';
+more.textContent=`Show all ${count(code.length)} characters`;
+more.addEventListener('click',()=>{
+holder.textContent=code;
+more.remove();
+});
+li.appendChild(more);
+}
+return li;
+}
+function copyButton(text,className){
+const button=document.createElement('button');
+button.type='button';
+button.className=className;
+button.textContent='Copy';
+button.addEventListener('click',async()=>{
+try{
+await navigator.clipboard.writeText(text);
+flash(button,'Copied');
+}catch{
+flash(button,'Copy refused - use Download');
+}
+});
+return button;
+}
+function flash(button,message){
+const was=button.textContent;
+button.textContent=message;
+button.disabled=true;
+setTimeout(()=>{
+button.textContent=was;
+button.disabled=false;
+},1600);
+}
+el.copyAll.addEventListener('click',async()=>{
+if(!items.length)return;
+const text=bundle(currentShape(),results());
+try{
+await navigator.clipboard.writeText(text);
+flash(el.copyAll,'Copied');
+}catch{
+flash(el.copyAll,'Copy refused - use Download');
+}
+});
+el.downloadAll.addEventListener('click',()=>{
+if(!items.length)return;
+const shape=currentShape();
+saveText(bundle(shape,results()),bundleName(shape));
+});
+function saveText(text,name){
+const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=name;
+link.click();
+setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function showLoadError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function clearLoadError(){
+el.loadError.textContent='';
+el.loadError.hidden=true;
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given an image or a byte of one.`;
+el.networkCount.textContent=clean
+?`your images have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+draw();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

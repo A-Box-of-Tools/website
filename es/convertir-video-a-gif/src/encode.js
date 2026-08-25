@@ -1,2 +1,86 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{ColorHistogram as L,Palette as Y,medianCut as _,amplitudeFor as G,quantizeFrame as I}from"./quantize.js";import{GifWriter as O,diffFrame as R}from"./gif.js";const b=255,U=65535,X=8,k=()=>new Promise(e=>{setTimeout(e,0)});async function H({frames:e,histogram:A,delays:u,width:o,height:i,colors:E=b,dither:C=!0,loop:F=!0,onProgress:h,signal:M}){const l=new Y(_(A,Math.min(b,E))),z=C?G(l.rgb):0,s=l.size,f=new O({width:o,height:i,palette:l.rgb,transparentIndex:s,loop:F?0:1}),m=o*i;let a=null,x=new Uint8Array(m),n=null,c=0,w=0,g=0;const y=()=>{n&&(f.addFrame(n.indices,{x:n.x,y:n.y,width:n.width,height:n.height,transparent:n.transparent,delay:Math.min(U,c)}),w+=1)};for(let r=0;r<e.length;r+=1){if(M?.aborted){const t=new Error("Cancelled.");throw t.name="AbortError",t}const d=I(e[r],o,i,l,z,x);e[r]=null;let p;if(a===null)p={indices:d.slice(),x:0,y:0,width:o,height:i,transparent:null};else{const t=R(a,d,o,i,s);if(!t){c+=u[r],g+=1;continue}p={indices:t.indices,x:t.x,y:t.y,width:t.width,height:t.height,transparent:t.transparent?s:null}}y(),n=p,c=u[r];const D=a??new Uint8Array(m);a=d,x=D,r%X===0&&(h?.({phase:"encoding",done:r+1,total:e.length}),await k())}return y(),h?.({phase:"encoding",done:e.length,total:e.length}),{blob:f.finish(),colors:l.size,written:w,dropped:g}}export{L as ColorHistogram,b as MAX_COLORS,H as encodeGif};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{ColorHistogram,Palette,medianCut,amplitudeFor,quantizeFrame}from'./quantize.js';
+import{GifWriter,diffFrame}from'./gif.js';
+export const MAX_COLORS=255;
+const MAX_DELAY=0xffff;
+const YIELD_EVERY=8;
+const breathe=()=>new Promise((resolve)=>{setTimeout(resolve,0);});
+export async function encodeGif({
+frames,histogram,delays,width,height,
+colors=MAX_COLORS,dither=true,loop=true,onProgress,signal,
+}){
+const palette=new Palette(medianCut(histogram,Math.min(MAX_COLORS,colors)));
+const amplitude=dither?amplitudeFor(palette.rgb):0;
+const transparent=palette.size;
+const writer=new GifWriter({
+width,height,palette:palette.rgb,transparentIndex:transparent,loop:loop?0:1,
+});
+const pixels=width*height;
+let previous=null;
+let current=new Uint8Array(pixels);
+let held=null;
+let heldDelay=0;
+let written=0;
+let dropped=0;
+const flush=()=>{
+if(!held)return;
+writer.addFrame(held.indices,{
+x:held.x,
+y:held.y,
+width:held.width,
+height:held.height,
+transparent:held.transparent,
+delay:Math.min(MAX_DELAY,heldDelay),
+});
+written+=1;
+};
+for(let i=0;i<frames.length;i+=1){
+if(signal?.aborted){
+const error=new Error('Cancelled.');
+error.name='AbortError';
+throw error;
+}
+const indices=quantizeFrame(frames[i],width,height,palette,amplitude,current);
+frames[i]=null;
+let block;
+if(previous===null){
+block={
+indices:indices.slice(),x:0,y:0,width,height,transparent:null,
+};
+}else{
+const changed=diffFrame(previous,indices,width,height,transparent);
+if(!changed){
+heldDelay+=delays[i];
+dropped+=1;
+continue;
+}
+block={
+indices:changed.indices,
+x:changed.x,
+y:changed.y,
+width:changed.width,
+height:changed.height,
+transparent:changed.transparent?transparent:null,
+};
+}
+flush();
+held=block;
+heldDelay=delays[i];
+const spare=previous??new Uint8Array(pixels);
+previous=indices;
+current=spare;
+if(i%YIELD_EVERY===0){
+onProgress?.({phase:'encoding',done:i+1,total:frames.length});
+await breathe();
+}
+}
+flush();
+onProgress?.({phase:'encoding',done:frames.length,total:frames.length});
+return{
+blob:writer.finish(),
+colors:palette.size,
+written,
+dropped,
+};
+}
+export{ColorHistogram};

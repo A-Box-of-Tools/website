@@ -1,2 +1,119 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const g=[{id:"soft",center:40,width:400},{id:"lung",center:-600,width:1500},{id:"bone",center:300,width:1500},{id:"brain",center:40,width:80},{id:"liver",center:60,width:160},{id:"mediastinum",center:50,width:350},{id:"angio",center:300,width:600}];function C(t){const n=[];for(let i=0;i<t.windowCenters.length;i+=1){const e=t.windowCenters[i],o=t.windowWidths[i]??t.windowWidths[0];!Number.isFinite(e)||!Number.isFinite(o)||o<=0||n.push({id:`file-${i}`,name:t.windowNames[i]||null,center:e,width:o})}return n}function b(t,n){const i=t.min*n.slope+n.intercept,e=t.max*n.slope+n.intercept,o=Math.max(1,e-i);return{id:"full",center:i+o/2,width:o}}function y(t,n,i){const{width:e,height:o,samples:r,values:s}=t,u=new Uint8ClampedArray(e*o*4);return r===3?(M(u,s,e*o,n),{data:u,width:e,height:o}):n.palette?(f(u,s,e*o,n.palette),{data:u,width:e,height:o}):(m(u,t,n,i),{data:u,width:e,height:o})}function m(t,n,i,e){const{values:o}=n,r=n.width*n.height,s=e.invert!==(i.photometric==="MONOCHROME1"),u=n.max-n.min;if(u>=0&&u<=65535){const h=new Uint8Array(u+1);for(let c=0;c<=u;c+=1)h[c]=w(c+n.min,i,e,s);for(let c=0;c<r;c+=1){const d=o[c],l=d<n.min?h[0]:d>n.max?h[u]:h[d-n.min];t[c*4]=l,t[c*4+1]=l,t[c*4+2]=l,t[c*4+3]=255}return}for(let h=0;h<r;h+=1){const c=w(o[h],i,e,s);t[h*4]=c,t[h*4+1]=c,t[h*4+2]=c,t[h*4+3]=255}}function w(t,n,i,e){const o=t*n.slope+n.intercept,r=x(o,i.center,i.width,i.voiFunction);return e?255-r:r}function x(t,n,i,e){if(e==="SIGMOID")return p(255/(1+Math.exp(-4*(t-n)/Math.max(i,1e-6))));if(e==="LINEAR_EXACT"){const s=i/2;return t<=n-s?0:t>n+s?255:p(((t-n)/i+.5)*255)}const o=n-.5,r=Math.max(i,1)-1;return r<=0?t<=o?0:255:t<=o-r/2?0:t>o+r/2?255:p(((t-o)/r+.5)*255)}const p=t=>t<0?0:t>255?255:Math.round(t);function M(t,n,i,e){const o=Math.max(0,e.bitsStored-8);for(let r=0;r<i;r+=1)t[r*4]=n[r*3]>>o,t[r*4+1]=n[r*3+1]>>o,t[r*4+2]=n[r*3+2]>>o,t[r*4+3]=255}function f(t,n,i,e){const o=e.count-1;for(let r=0;r<i;r+=1){const s=Math.min(o,Math.max(0,n[r]-e.first));t[r*4]=e.red[s],t[r*4+1]=e.green[s],t[r*4+2]=e.blue[s],t[r*4+3]=255}}function a(t,n){const i=t*n.slope+n.intercept;let e=n.rescaleType;return!e&&n.modality==="CT"&&(e="HU"),e==="US"&&(e=""),{value:i,unit:e}}export{g as CT_PRESETS,C as fileWindows,b as fullRange,a as measured,y as render,x as voi};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const CT_PRESETS=[
+{id:'soft',center:40,width:400},
+{id:'lung',center:-600,width:1500},
+{id:'bone',center:300,width:1500},
+{id:'brain',center:40,width:80},
+{id:'liver',center:60,width:160},
+{id:'mediastinum',center:50,width:350},
+{id:'angio',center:300,width:600},
+];
+export function fileWindows(info){
+const out=[];
+for(let at=0;at<info.windowCenters.length;at+=1){
+const center=info.windowCenters[at];
+const width=info.windowWidths[at]??info.windowWidths[0];
+if(!Number.isFinite(center)||!Number.isFinite(width)||width<=0)continue;
+out.push({id:`file-${at}`,name:info.windowNames[at]||null,center,width});
+}
+return out;
+}
+export function fullRange(frame,info){
+const low=frame.min*info.slope+info.intercept;
+const high=frame.max*info.slope+info.intercept;
+const width=Math.max(1,high-low);
+return{id:'full',center:low+width/2,width};
+}
+export function render(frame,info,view){
+const{width,height,samples,values}=frame;
+const data=new Uint8ClampedArray(width*height*4);
+if(samples===3){
+paintColour(data,values,width*height,info);
+return{data,width,height};
+}
+if(info.palette){
+paintPalette(data,values,width*height,info.palette);
+return{data,width,height};
+}
+paintGrey(data,frame,info,view);
+return{data,width,height};
+}
+function paintGrey(data,frame,info,view){
+const{values}=frame;
+const count=frame.width*frame.height;
+const inverted=view.invert!==(info.photometric==='MONOCHROME1');
+const span=frame.max-frame.min;
+if(span>=0&&span<=65535){
+const table=new Uint8Array(span+1);
+for(let at=0;at<=span;at+=1){
+table[at]=grey(at+frame.min,info,view,inverted);
+}
+for(let at=0;at<count;at+=1){
+const value=values[at];
+const shade=value<frame.min?table[0]
+:value>frame.max?table[span]
+:table[value-frame.min];
+data[at*4]=shade;
+data[at*4+1]=shade;
+data[at*4+2]=shade;
+data[at*4+3]=255;
+}
+return;
+}
+for(let at=0;at<count;at+=1){
+const shade=grey(values[at],info,view,inverted);
+data[at*4]=shade;
+data[at*4+1]=shade;
+data[at*4+2]=shade;
+data[at*4+3]=255;
+}
+}
+function grey(stored,info,view,inverted){
+const value=stored*info.slope+info.intercept;
+const shade=voi(value,view.center,view.width,view.voiFunction);
+return inverted?255-shade:shade;
+}
+export function voi(value,center,width,fn){
+if(fn==='SIGMOID'){
+return clamp(255/(1+Math.exp((-4*(value-center))/Math.max(width,1e-6))));
+}
+if(fn==='LINEAR_EXACT'){
+const half=width/2;
+if(value<=center-half)return 0;
+if(value>center+half)return 255;
+return clamp(((value-center)/width+0.5)*255);
+}
+const c=center-0.5;
+const w=Math.max(width,1)-1;
+if(w<=0)return value<=c?0:255;
+if(value<=c-w/2)return 0;
+if(value>c+w/2)return 255;
+return clamp(((value-c)/w+0.5)*255);
+}
+const clamp=(value)=>(value<0?0:value>255?255:Math.round(value));
+function paintColour(data,values,count,info){
+const shift=Math.max(0,info.bitsStored-8);
+for(let at=0;at<count;at+=1){
+data[at*4]=values[at*3]>>shift;
+data[at*4+1]=values[at*3+1]>>shift;
+data[at*4+2]=values[at*3+2]>>shift;
+data[at*4+3]=255;
+}
+}
+function paintPalette(data,values,count,palette){
+const last=palette.count-1;
+for(let at=0;at<count;at+=1){
+const index=Math.min(last,Math.max(0,values[at]-palette.first));
+data[at*4]=palette.red[index];
+data[at*4+1]=palette.green[index];
+data[at*4+2]=palette.blue[index];
+data[at*4+3]=255;
+}
+}
+export function measured(stored,info){
+const value=stored*info.slope+info.intercept;
+let unit=info.rescaleType;
+if(!unit&&info.modality==='CT')unit='HU';
+if(unit==='US')unit='';
+return{value,unit};
+}

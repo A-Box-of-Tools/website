@@ -1,2 +1,50 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{blur as u,globalBinarize as m,grayscale as h,invert as c,localBinarize as d}from"./binarize.js";import{readQr as p}from"./detect.js";import{readLinear as w}from"./linear.js";import{describe as b}from"./payload.js";function k(f,{thorough:n=!0}={}){const{width:o,height:t}=f;if(!o||!t)return null;const i=h(f.data,o,t),a=d(i,o,t),e=[{bits:a,how:"local"}];n?e.push({bits:c(a),how:"inverted"},{bits:m(i,o,t),how:"global"},{bits:d(u(i,o,t),o,t),how:"softened"}):e.push({bits:c(a),how:"inverted"});for(const s of n?[!1,!0]:[!1])for(const r of e){const l=p(r.bits,o,t,s);if(l)return{kind:"qr",symbology:"qr",name:"QR code",how:r.how,dense:s,...l,...b(l.text)}}for(const s of e){const r=w(s.bits,o,t,n?24:12);if(r)return{kind:"linear",symbology:r.format,how:s.how,...r,...b(r.text)}}return null}export{k as scan};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{blur,globalBinarize,grayscale,invert,localBinarize}from'./binarize.js';
+import{readQr}from'./detect.js';
+import{readLinear}from'./linear.js';
+import{describe}from'./payload.js';
+export function scan(image,{thorough=true}={}){
+const{width,height}=image;
+if(!width||!height)return null;
+const gray=grayscale(image.data,width,height);
+const local=localBinarize(gray,width,height);
+const passes=[{bits:local,how:'local'}];
+if(thorough){
+passes.push(
+{bits:invert(local),how:'inverted'},
+{bits:globalBinarize(gray,width,height),how:'global'},
+{bits:localBinarize(blur(gray,width,height),width,height),how:'softened'},
+);
+}else{
+passes.push({bits:invert(local),how:'inverted'});
+}
+for(const dense of thorough?[false,true]:[false]){
+for(const pass of passes){
+const found=readQr(pass.bits,width,height,dense);
+if(found){
+return{
+kind:'qr',
+symbology:'qr',
+name:'QR code',
+how:pass.how,
+dense,
+...found,
+...describe(found.text),
+};
+}
+}
+}
+for(const pass of passes){
+const found=readLinear(pass.bits,width,height,thorough?24:12);
+if(found){
+return{
+kind:'linear',
+symbology:found.format,
+how:pass.how,
+...found,
+...describe(found.text),
+};
+}
+}
+return null;
+}

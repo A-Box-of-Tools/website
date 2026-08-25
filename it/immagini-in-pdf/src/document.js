@@ -1,3 +1,116 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{PdfWriter as w,num as c,textString as f}from"./pdf.js";import{prepareImage as D}from"./encode.js";import{layoutPage as y,placement as g}from"./layout.js";const I="abox.tools images to PDF";async function G(t,e,{onProgress:o,signal:n}={}){if(!t.length)throw new Error("Choose at least one image first.");const r=new w,u=r.reserve(),s=r.reserve(),i=[];let h=0;for(const[a,$]of t.entries()){p(n),o?.({done:a,total:t.length,name:$.name});const d=await D($,e);d.copied&&(h+=1);const C=y({width:d.width,height:d.height,orientation:d.orientation,rotate:$.rotate},e);i.push(P(r,s,d,C,e,$.rotate)),await new Promise(b=>setTimeout(b,0))}p(n),o?.({done:t.length,total:t.length,name:""}),r.object(u,`<< /Type /Catalog /Pages ${s} 0 R >>`),r.object(s,`<< /Type /Pages /Count ${i.length} /Kids [${i.map(a=>`${a} 0 R`).join(" ")}] >>`);const l=S(r,e);return{blob:r.finish({root:u,info:l}),pages:i.length,copied:h}}function p(t){if(t?.aborted)throw new DOMException("Cancelled","AbortError")}function P(t,e,o,n,r,u){const s=t.reserve(),i=t.reserve(),h=t.reserve(),l=o.smask?t.reserve():0,a=R(o)?t.reserve():0;l&&t.stream(l,` /Type /XObject /Subtype /Image /Width ${o.width} /Height ${o.height} /ColorSpace /DeviceGray /BitsPerComponent 8 /Filter /FlateDecode`+m(o,1),o.smask.data),a&&t.stream(a,` /N ${o.gray?1:3} /Alternate ${o.gray?"/DeviceGray":"/DeviceRGB"}`,o.icc);const $=a?`[/ICCBased ${a} 0 R]`:o.gray?"/DeviceGray":"/DeviceRGB";return t.stream(s,` /Type /XObject /Subtype /Image /Width ${o.width} /Height ${o.height} /ColorSpace ${$} /BitsPerComponent 8`+(o.kind==="dct"?" /Filter /DCTDecode":" /Filter /FlateDecode")+(o.predictor?m(o,3):"")+(l?` /SMask ${l} 0 R`:""),o.data),t.stream(i,"",v(o,n,r,u)),t.object(h,`<< /Type /Page /Parent ${e} 0 R /MediaBox [0 0 ${c(n.width)} ${c(n.height)}] /Resources << /XObject << /Im0 ${s} 0 R >> >> /Contents ${i} 0 R >>`),h}function m(t,e){return` /DecodeParms << /Predictor 15 /Colors ${e} /BitsPerComponent 8 /Columns ${t.width} >>`}function R(t){if(!t.icc||t.icc.length<20)return!1;const e=String.fromCharCode(...t.icc.subarray(16,20));return t.gray?e==="GRAY":e==="RGB "}function v(t,e,o,n){const r=["q"],[u,s,i]=x(o.background);r.push(`${c(u)} ${c(s)} ${c(i)} rg`),r.push(`0 0 ${c(e.width)} ${c(e.height)} re f`),e.clip&&r.push(`${c(e.clip.x)} ${c(e.clip.y)} ${c(e.clip.width)} ${c(e.clip.height)} re W n`);const h=g(e.rect,t.orientation,n);return r.push(`${h.map(c).join(" ")} cm`),r.push("/Im0 Do","Q",""),new TextEncoder().encode(r.join(`
-`))}function x(t){const e=/^#?([0-9a-f]{6})$/i.exec(String(t??""));if(!e)return[1,1,1];const o=parseInt(e[1],16);return[o>>16&255,o>>8&255,o&255].map(n=>n/255)}function S(t,e){const o=[`/Producer ${f(I)}`];e.title?.trim()&&o.push(`/Title ${f(e.title.trim())}`),e.author?.trim()&&o.push(`/Author ${f(e.author.trim())}`),e.dated&&o.push(`/CreationDate ${j(new Date)}`);const n=t.reserve();return t.object(n,`<< ${o.join(" ")} >>`),n}function j(t){const e=r=>String(Math.floor(Math.abs(r))).padStart(2,"0"),o=-t.getTimezoneOffset(),n=o===0?"Z":`${o>0?"+":"-"}${e(o/60)}'${e(o%60)}'`;return`(D:${t.getFullYear()}${e(t.getMonth()+1)}${e(t.getDate())}${e(t.getHours())}${e(t.getMinutes())}${e(t.getSeconds())}${n})`}export{G as buildDocument};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{PdfWriter,num,textString}from'./pdf.js';
+import{prepareImage}from'./encode.js';
+import{layoutPage,placement}from'./layout.js';
+const PRODUCER='abox.tools images to PDF';
+export async function buildDocument(items,settings,{onProgress,signal}={}){
+if(!items.length)throw new Error('Choose at least one image first.');
+const pdf=new PdfWriter();
+const catalog=pdf.reserve();
+const pageTree=pdf.reserve();
+const pageIds=[];
+let copied=0;
+for(const[index,item]of items.entries()){
+stopIfCancelled(signal);
+onProgress?.({done:index,total:items.length,name:item.name});
+const image=await prepareImage(item,settings);
+if(image.copied)copied+=1;
+const page=layoutPage({
+width:image.width,
+height:image.height,
+orientation:image.orientation,
+rotate:item.rotate,
+},settings);
+pageIds.push(writePage(pdf,pageTree,image,page,settings,item.rotate));
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+stopIfCancelled(signal);
+onProgress?.({done:items.length,total:items.length,name:''});
+pdf.object(catalog,`<< /Type /Catalog /Pages ${pageTree} 0 R >>`);
+pdf.object(pageTree,`<< /Type /Pages /Count ${pageIds.length} `
++`/Kids [${pageIds.map((id) => `${id} 0 R`).join(' ')}] >>`);
+const info=writeInfo(pdf,settings);
+return{blob:pdf.finish({root:catalog,info}),pages:pageIds.length,copied};
+}
+function stopIfCancelled(signal){
+if(signal?.aborted)throw new DOMException('Cancelled','AbortError');
+}
+function writePage(pdf,pageTree,image,page,settings,rotate){
+const imageId=pdf.reserve();
+const contentsId=pdf.reserve();
+const pageId=pdf.reserve();
+const smaskId=image.smask?pdf.reserve():0;
+const iccId=usableIcc(image)?pdf.reserve():0;
+if(smaskId){
+pdf.stream(smaskId,` /Type /XObject /Subtype /Image`
++` /Width ${image.width} /Height ${image.height}`
++' /ColorSpace /DeviceGray /BitsPerComponent 8 /Filter /FlateDecode'
++decodeParms(image,1),image.smask.data);
+}
+if(iccId){
+pdf.stream(iccId,` /N ${image.gray ? 1 : 3}`
++` /Alternate ${image.gray ? '/DeviceGray' : '/DeviceRGB'}`,image.icc);
+}
+const colorSpace=iccId
+?`[/ICCBased ${iccId} 0 R]`
+:(image.gray?'/DeviceGray':'/DeviceRGB');
+pdf.stream(imageId,' /Type /XObject /Subtype /Image'
++` /Width ${image.width} /Height ${image.height}`
++` /ColorSpace ${colorSpace} /BitsPerComponent 8`
++(image.kind==='dct'?' /Filter /DCTDecode':' /Filter /FlateDecode')
++(image.predictor?decodeParms(image,3):'')
++(smaskId?` /SMask ${smaskId} 0 R`:''),image.data);
+pdf.stream(contentsId,'',contentStream(image,page,settings,rotate));
+pdf.object(pageId,`<< /Type /Page /Parent ${pageTree} 0 R`
++` /MediaBox [0 0 ${num(page.width)} ${num(page.height)}]`
++` /Resources << /XObject << /Im0 ${imageId} 0 R >> >>`
++` /Contents ${contentsId} 0 R >>`);
+return pageId;
+}
+function decodeParms(image,colors){
+return` /DecodeParms << /Predictor 15 /Colors ${colors}`
++` /BitsPerComponent 8 /Columns ${image.width} >>`;
+}
+function usableIcc(image){
+if(!image.icc||image.icc.length<20)return false;
+const space=String.fromCharCode(...image.icc.subarray(16,20));
+return image.gray?space==='GRAY':space==='RGB ';
+}
+function contentStream(image,page,settings,rotate){
+const lines=['q'];
+const[r,g,b]=parseColor(settings.background);
+lines.push(`${num(r)} ${num(g)} ${num(b)} rg`);
+lines.push(`0 0 ${num(page.width)} ${num(page.height)} re f`);
+if(page.clip){
+lines.push(`${num(page.clip.x)} ${num(page.clip.y)} `
++`${num(page.clip.width)} ${num(page.clip.height)} re W n`);
+}
+const matrix=placement(page.rect,image.orientation,rotate);
+lines.push(`${matrix.map(num).join(' ')} cm`);
+lines.push('/Im0 Do','Q','');
+return new TextEncoder().encode(lines.join('\n'));
+}
+function parseColor(value){
+const match=/^#?([0-9a-f]{6})$/i.exec(String(value??''));
+if(!match)return[1,1,1];
+const int=parseInt(match[1],16);
+return[(int>>16)&0xff,(int>>8)&0xff,int&0xff].map((c)=>c/255);
+}
+function writeInfo(pdf,settings){
+const entries=[`/Producer ${textString(PRODUCER)}`];
+if(settings.title?.trim())entries.push(`/Title ${textString(settings.title.trim())}`);
+if(settings.author?.trim())entries.push(`/Author ${textString(settings.author.trim())}`);
+if(settings.dated)entries.push(`/CreationDate ${pdfDate(new Date())}`);
+const id=pdf.reserve();
+pdf.object(id,`<< ${entries.join(' ')} >>`);
+return id;
+}
+function pdfDate(date){
+const pad=(value)=>String(Math.floor(Math.abs(value))).padStart(2,'0');
+const offset=-date.getTimezoneOffset();
+const zone=offset===0
+?'Z'
+:`${offset > 0 ? '+' : '-'}${pad(offset / 60)}'${pad(offset % 60)}'`;
+return`(D:${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}`
++`${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}${zone})`;
+}

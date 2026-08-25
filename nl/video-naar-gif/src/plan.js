@@ -1,2 +1,36 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const M=100,s=2,c=50;function x(t,o,r){const n=Math.max(1,Math.round(r));if(!t||!o)return{width:n,height:n};const a=Math.max(1,Math.round(n*(o/t)));return{width:n,height:a}}function p({start:t,end:o,fps:r}){const n=Math.max(0,o-t),a=Math.max(.1,Math.min(50,r)),e=Math.max(1,Math.floor(n*a+1e-6)),u=new Array(e);for(let h=0;h<e;h+=1)u[h]=t+h/a;return u}function i(t,o){if(!t.length)return[];const r=t[0],n=t.map(e=>Math.round((e-r)*100));n.push(Math.round((Math.max(o,t[t.length-1])-r)*100));const a=[];for(let e=0;e<t.length;e+=1)a.push(Math.max(2,n[e+1]-n[e]));return a}function f({frames:t,width:o,height:r}){return t*o*r*4}function l({frames:t,width:o,height:r}){const n=t*o*r;return{low:Math.round(n*.4/8),high:Math.round(n*2.5/8)}}export{M as CENTIS,c as MAX_FPS,s as MIN_DELAY,l as estimateBytes,i as frameDelays,p as frameTimes,x as outputSize,f as workingBytes};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const CENTIS=100;
+export const MIN_DELAY=2;
+export const MAX_FPS=CENTIS/MIN_DELAY;
+export function outputSize(sourceWidth,sourceHeight,targetWidth){
+const width=Math.max(1,Math.round(targetWidth));
+if(!sourceWidth||!sourceHeight)return{width,height:width};
+const height=Math.max(1,Math.round(width*(sourceHeight/sourceWidth)));
+return{width,height};
+}
+export function frameTimes({start,end,fps}){
+const span=Math.max(0,end-start);
+const rate=Math.max(0.1,Math.min(MAX_FPS,fps));
+const count=Math.max(1,Math.floor(span*rate+1e-6));
+const times=new Array(count);
+for(let i=0;i<count;i+=1)times[i]=start+i/rate;
+return times;
+}
+export function frameDelays(times,end){
+if(!times.length)return[];
+const base=times[0];
+const edges=times.map((time)=>Math.round((time-base)*CENTIS));
+edges.push(Math.round((Math.max(end,times[times.length-1])-base)*CENTIS));
+const delays=[];
+for(let i=0;i<times.length;i+=1){
+delays.push(Math.max(MIN_DELAY,edges[i+1]-edges[i]));
+}
+return delays;
+}
+export function workingBytes({frames,width,height}){
+return frames*width*height*4;
+}
+export function estimateBytes({frames,width,height}){
+const pixels=frames*width*height;
+return{low:Math.round(pixels*0.4/8),high:Math.round(pixels*2.5/8)};
+}

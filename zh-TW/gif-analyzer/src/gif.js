@@ -1,2 +1,277 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{ByteReader as g,Truncated as B,text as x}from"./reader.js";const I=33,A=44,S=59,E=249,P=254,T=1,N=255,R=13,M=["Unspecified","Leave it in place","Clear back to the background","Restore what was underneath"];function X(t){if(t.length<6||x(t.subarray(0,3))!=="GIF")throw new C(`this file starts with ${z(t)}, not "GIF"`);const e=new g(t);e.skip(3);const s=e.ascii(3),i=e.u16(),n=e.u16(),o=e.u8(),l=e.u8(),c=e.u8(),a={size:t.length,version:s,width:i,height:n,colorResolution:(o>>4&7)+1,globalSorted:!!(o&8),backgroundIndex:l,aspectByte:c,aspect:c===0?null:(c+15)/64,globalPalette:null,loop:null,loopSource:null,frames:[],extensions:[],trailerAt:-1,trailingBytes:0,truncated:!1,problems:[]};if(o&128){const r=1<<(o&7)+1;a.globalPalette=m(e,r,a.globalSorted)}return G(e,a),a}class C extends Error{constructor(e){super(e),this.name="NotAGif"}}function z(t){const e=[[[255,216,255],"a JPEG"],[[137,80,78,71],"a PNG"],[[82,73,70,70],"a RIFF file - a WebP or a WAV"],[[37,80,68,70],"a PDF"],[[80,75,3,4],"a zip file"]];for(const[i,n]of e)if(i.every((o,l)=>t[l]===o))return n;return`the bytes ${Array.from(t.subarray(0,3),i=>i.toString(16).padStart(2,"0")).join(" ")}`}function m(t,e,s){const i=t.at,n=t.slice(e*3);return{at:i,bytes:e*3,count:e,sorted:s,colors:n}}function G(t,e){let s=null;const i=n=>{e.problems.push(n)};for(;;){if(t.done){e.truncated=!0,i("The file ends without a trailer byte, so it is incomplete - a download that stopped early, or a file cut short.");return}const n=t.at;let o;try{if(o=t.u8(),o===S){e.trailerAt=n,e.trailingBytes=t.left;return}if(o===A){e.frames.push($(t,e,s,s?s.at:n)),s=null;continue}if(o!==I){i(`Byte ${n} is 0x${o.toString(16).padStart(2,"0")}, which is not the start of any block this format has. Everything after it was ignored.`),e.truncated=!0;return}const l=t.u8();if(l===E){s&&i(`Two graphic control blocks in a row, at ${s.at} and ${n}. The first one describes no image and does nothing.`),s=O(t,n);continue}e.extensions.push(F(t,e,l,n))}catch(l){if(!(l instanceof B))throw l;e.truncated=!0,i(`The file ends in the middle of a block that starts at ${n}. ${l.message}.`);return}}}function O(t,e){const s=t.u8(),i=t.slice(s),n=i[0]??0,o=s>=3?i[1]|i[2]<<8:0,l=i[3]??0;let c=0;for(;;){const a=t.u8();if(a===0)break;t.skip(a),c+=1}return{at:e,bytes:t.at-e,size:s,delay:o,disposal:n>>2&7,userInput:!!(n&2),transparent:!!(n&1),transparentIndex:l,wellFormed:s===4&&c===0}}function $(t,e,s,i){const n=t.u16(),o=t.u16(),l=t.u16(),c=t.u16(),a=t.u8(),r=!!(a&64),b=!!(a&32);let u=null;a&128&&(u=m(t,1<<(a&7)+1,b));const k=t.u8(),d=t.at,f=[];let h=0;for(;;){const p=t.u8();if(p===0)break;f.push([t.at,p]),t.skip(p),h+=p}const w=u?u.bytes:0;return{index:e.frames.length,at:i,bytes:(s?s.bytes:0)+11+w+h+f.length+1,control:s,left:n,top:o,width:l,height:c,interlaced:r,palette:u,localPalette:!!u,minCodeSize:k,dataAt:d,dataBytes:t.at-d,payloadBytes:h,framingBytes:f.length+1,subBlocks:f.length,runs:f,delay:s?s.delay:0,disposal:s?s.disposal:0,transparentIndex:s&&s.transparent?s.transparentIndex:-1}}function F(t,e,s,i){const n={at:i,label:s,kind:"unknown",name:"",bytes:0,dataBytes:0,text:null};let o=null;if(s===N){const a=t.u8();o=t.slice(a),n.kind="application",n.name=x(o.subarray(0,8)).trim(),n.auth=x(o.subarray(8,11))}else if(s===T){const a=t.u8();o=t.slice(a),n.kind="plain-text",n.name="Plain text"}else s===P?(n.kind="comment",n.name="Comment"):n.name=`Extension 0x${s.toString(16).padStart(2,"0")}`;const l=[];let c=0;for(;;){const a=t.u8();if(a===0)break;l.push(t.slice(a)),c+=a}if(n.bytes=t.at-i,n.dataBytes=c,n.subBlocks=l.length,L(n)?n.text=y(l,!0):n.kind==="comment"&&(n.text=y(l,!1)),n.kind==="application"&&(n.name==="NETSCAPE"||n.name==="ANIMEXTS1.0")){const a=l[0];if(a&&a.length>=3&&a[0]===1){const r=a[1]|a[2]<<8;e.loop===null&&(e.loop=r,e.loopSource=n.name),n.loop=r}}return n}const L=t=>t.kind==="application"&&t.name.startsWith("XMP");function y(t,e){const s=t.reduce((a,r)=>a+r.length,0),i=new Uint8Array(s);let n=0;for(const a of t)i.set(a,n),n+=a.length;const o=x(i);if(!e)return o;const l=o.lastIndexOf("<?xpacket end");if(l<0)return o;const c=o.indexOf(">",l);return c<0?o:o.slice(0,c+1)}function v(t,e){const s=new Uint8Array(e.payloadBytes);let i=0;for(const[n,o]of e.runs)s.set(t.subarray(n,n+o),i),i+=o;return s}const _=(t,e)=>e.palette??t.globalPalette;export{M as DISPOSALS,R as HEADER_BYTES,C as NotAGif,v as frameData,_ as paletteFor,X as parseGif};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{ByteReader,Truncated,text}from'./reader.js';
+const EXTENSION=0x21;
+const IMAGE_DESCRIPTOR=0x2c;
+const TRAILER=0x3b;
+const GRAPHIC_CONTROL=0xf9;
+const COMMENT=0xfe;
+const PLAIN_TEXT=0x01;
+const APPLICATION=0xff;
+const HEADER_BYTES=13;
+export const DISPOSALS=[
+'Unspecified',
+'Leave it in place',
+'Clear back to the background',
+'Restore what was underneath',
+];
+export function parseGif(bytes){
+if(bytes.length<6||text(bytes.subarray(0,3))!=='GIF'){
+throw new NotAGif(`this file starts with ${describe(bytes)}, not "GIF"`);
+}
+const reader=new ByteReader(bytes);
+reader.skip(3);
+const version=reader.ascii(3);
+const width=reader.u16();
+const height=reader.u16();
+const packed=reader.u8();
+const backgroundIndex=reader.u8();
+const aspectByte=reader.u8();
+const gif={
+size:bytes.length,
+version,
+width,
+height,
+colorResolution:((packed>>4)&7)+1,
+globalSorted:Boolean(packed&8),
+backgroundIndex,
+aspectByte,
+aspect:aspectByte===0?null:(aspectByte+15)/64,
+globalPalette:null,
+loop:null,
+loopSource:null,
+frames:[],
+extensions:[],
+trailerAt:-1,
+trailingBytes:0,
+truncated:false,
+problems:[],
+};
+if(packed&0x80){
+const count=1<<((packed&7)+1);
+gif.globalPalette=readPalette(reader,count,gif.globalSorted);
+}
+walk(reader,gif);
+return gif;
+}
+export class NotAGif extends Error{
+constructor(message){
+super(message);
+this.name='NotAGif';
+}
+}
+function describe(bytes){
+const magic=[
+[[0xff,0xd8,0xff],'a JPEG'],
+[[0x89,0x50,0x4e,0x47],'a PNG'],
+[[0x52,0x49,0x46,0x46],'a RIFF file - a WebP or a WAV'],
+[[0x25,0x50,0x44,0x46],'a PDF'],
+[[0x50,0x4b,0x03,0x04],'a zip file'],
+];
+for(const[prefix,name]of magic){
+if(prefix.every((byte,i)=>bytes[i]===byte))return name;
+}
+const head=Array.from(bytes.subarray(0,3),(b)=>b.toString(16).padStart(2,'0'));
+return`the bytes ${head.join(' ')}`;
+}
+function readPalette(reader,count,sorted){
+const at=reader.at;
+const colors=reader.slice(count*3);
+return{at,bytes:count*3,count,sorted,colors};
+}
+function walk(reader,gif){
+let control=null;
+const stop=(why)=>{
+gif.problems.push(why);
+};
+while(true){
+if(reader.done){
+gif.truncated=true;
+stop('The file ends without a trailer byte, so it is incomplete - '
++'a download that stopped early, or a file cut short.');
+return;
+}
+const start=reader.at;
+let marker;
+try{
+marker=reader.u8();
+if(marker===TRAILER){
+gif.trailerAt=start;
+gif.trailingBytes=reader.left;
+return;
+}
+if(marker===IMAGE_DESCRIPTOR){
+gif.frames.push(readImage(reader,gif,control,control?control.at:start));
+control=null;
+continue;
+}
+if(marker!==EXTENSION){
+stop(`Byte ${start} is 0x${marker.toString(16).padStart(2, '0')}, which is not the `
++'start of any block this format has. Everything after it was ignored.');
+gif.truncated=true;
+return;
+}
+const label=reader.u8();
+if(label===GRAPHIC_CONTROL){
+if(control){
+stop(`Two graphic control blocks in a row, at ${control.at} and ${start}. `
++'The first one describes no image and does nothing.');
+}
+control=readControl(reader,start);
+continue;
+}
+gif.extensions.push(readExtension(reader,gif,label,start));
+}catch(error){
+if(!(error instanceof Truncated))throw error;
+gif.truncated=true;
+stop(`The file ends in the middle of a block that starts at ${start}. `
++`${error.message}.`);
+return;
+}
+}
+}
+function readControl(reader,at){
+const size=reader.u8();
+const fields=reader.slice(size);
+const packed=fields[0]??0;
+const delay=size>=3?fields[1]|(fields[2]<<8):0;
+const transparentIndex=fields[3]??0;
+let blocks=0;
+while(true){
+const next=reader.u8();
+if(next===0)break;
+reader.skip(next);
+blocks+=1;
+}
+return{
+at,
+bytes:reader.at-at,
+size,
+delay,
+disposal:(packed>>2)&7,
+userInput:Boolean(packed&2),
+transparent:Boolean(packed&1),
+transparentIndex,
+wellFormed:size===4&&blocks===0,
+};
+}
+function readImage(reader,gif,control,at){
+const left=reader.u16();
+const top=reader.u16();
+const width=reader.u16();
+const height=reader.u16();
+const packed=reader.u8();
+const interlaced=Boolean(packed&0x40);
+const sorted=Boolean(packed&0x20);
+let palette=null;
+if(packed&0x80){
+palette=readPalette(reader,1<<((packed&7)+1),sorted);
+}
+const minCodeSize=reader.u8();
+const dataAt=reader.at;
+const runs=[];
+let payloadBytes=0;
+while(true){
+const size=reader.u8();
+if(size===0)break;
+runs.push([reader.at,size]);
+reader.skip(size);
+payloadBytes+=size;
+}
+const paletteBytes=palette?palette.bytes:0;
+return{
+index:gif.frames.length,
+at,
+bytes:(control?control.bytes:0)+11+paletteBytes+payloadBytes+runs.length+1,
+control,
+left,
+top,
+width,
+height,
+interlaced,
+palette,
+localPalette:Boolean(palette),
+minCodeSize,
+dataAt,
+dataBytes:reader.at-dataAt,
+payloadBytes,
+framingBytes:runs.length+1,
+subBlocks:runs.length,
+runs,
+delay:control?control.delay:0,
+disposal:control?control.disposal:0,
+transparentIndex:control&&control.transparent?control.transparentIndex:-1,
+};
+}
+function readExtension(reader,gif,label,at){
+const block={at,label,kind:'unknown',name:'',bytes:0,dataBytes:0,text:null};
+let head=null;
+if(label===APPLICATION){
+const size=reader.u8();
+head=reader.slice(size);
+block.kind='application';
+block.name=text(head.subarray(0,8)).trim();
+block.auth=text(head.subarray(8,11));
+}else if(label===PLAIN_TEXT){
+const size=reader.u8();
+head=reader.slice(size);
+block.kind='plain-text';
+block.name='Plain text';
+}else if(label===COMMENT){
+block.kind='comment';
+block.name='Comment';
+}else{
+block.name=`Extension 0x${label.toString(16).padStart(2, '0')}`;
+}
+const runs=[];
+let dataBytes=0;
+while(true){
+const size=reader.u8();
+if(size===0)break;
+runs.push(reader.slice(size));
+dataBytes+=size;
+}
+block.bytes=reader.at-at;
+block.dataBytes=dataBytes;
+block.subBlocks=runs.length;
+if(isXmp(block))block.text=joinText(runs,true);
+else if(block.kind==='comment')block.text=joinText(runs,false);
+if(block.kind==='application'&&(block.name==='NETSCAPE'||block.name==='ANIMEXTS1.0')){
+const first=runs[0];
+if(first&&first.length>=3&&first[0]===1){
+const times=first[1]|(first[2]<<8);
+if(gif.loop===null){
+gif.loop=times;
+gif.loopSource=block.name;
+}
+block.loop=times;
+}
+}
+return block;
+}
+const isXmp=(block)=>block.kind==='application'&&block.name.startsWith('XMP');
+function joinText(runs,trimXmpTrailer){
+const total=runs.reduce((sum,run)=>sum+run.length,0);
+const joined=new Uint8Array(total);
+let at=0;
+for(const run of runs){
+joined.set(run,at);
+at+=run.length;
+}
+const asText=text(joined);
+if(!trimXmpTrailer)return asText;
+const marker=asText.lastIndexOf('<?xpacket end');
+if(marker<0)return asText;
+const close=asText.indexOf('>',marker);
+return close<0?asText:asText.slice(0,close+1);
+}
+export function frameData(bytes,frame){
+const out=new Uint8Array(frame.payloadBytes);
+let at=0;
+for(const[start,size]of frame.runs){
+out.set(bytes.subarray(start,start+size),at);
+at+=size;
+}
+return out;
+}
+export const paletteFor=(gif,frame)=>frame.palette??gif.globalPalette;
+export{HEADER_BYTES};

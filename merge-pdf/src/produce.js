@@ -1,2 +1,70 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{assemble as k}from"./assemble.js";import{archiveName as b,outputNames as w,splitInto as $}from"./plan.js";import{PdfDocument as x}from"./reader.js";import{makeZip as y}from"./zip.js";import{writeDocument as v}from"./writer.js";async function C(f,e,{onProgress:a,signal:n}={}){const o=$(f,e.split),p=w(o,{stem:e.stem,mode:e.split?.mode??"single",suffix:e.suffix}),s=[],d=new Set;let m="";for(let t=0;t<o.length;t+=1){if(n?.aborted)throw new DOMException("Cancelled","AbortError");a?.(t,o.length,p[t]);const r=o[t],i=k(r.entries,{bookmarks:e.bookmarks});for(const g of i.notes)d.add(g);const h=await v(i.build,{signal:n}),l=new Uint8Array(await h.arrayBuffer()),c=await D(l,r.entries.length);c.ok||(m=c.text),s.push({name:p[t],data:l,size:l.length,pages:r.entries.length,from:r.from,to:r.to,fields:i.fields,links:i.links,check:c})}a?.(o.length,o.length,"");const u=s.length>1?{name:b(e.stem),blob:y(s.map(t=>({name:t.name,data:t.data})))}:null;return{files:s,archive:u,notes:[...d],ok:!m,problem:m}}async function D(f,e){try{const n=(await x.open(f)).countPages();return n!==e?{ok:!1,text:`the finished file opens with ${n} page${n===1?"":"s"} where ${e} ${e===1?"was":"were"} asked for`}:{ok:!0,text:`opened again here and counted ${n} page${n===1?"":"s"}`}}catch(a){return{ok:!1,text:`the finished file would not open again (${a.message})`}}}export{C as produce};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{assemble}from'./assemble.js';
+import{archiveName,outputNames,splitInto}from'./plan.js';
+import{PdfDocument}from'./reader.js';
+import{makeZip}from'./zip.js';
+import{writeDocument}from'./writer.js';
+export async function produce(entries,how,{onProgress,signal}={}){
+const parts=splitInto(entries,how.split);
+const names=outputNames(parts,{
+stem:how.stem,mode:how.split?.mode??'single',suffix:how.suffix,
+});
+const files=[];
+const notes=new Set();
+let failed='';
+for(let at=0;at<parts.length;at+=1){
+if(signal?.aborted)throw new DOMException('Cancelled','AbortError');
+onProgress?.(at,parts.length,names[at]);
+const part=parts[at];
+const built=assemble(part.entries,{bookmarks:how.bookmarks});
+for(const note of built.notes)notes.add(note);
+const written=await writeDocument(built.build,{signal});
+const data=new Uint8Array(await written.arrayBuffer());
+const check=await verify(data,part.entries.length);
+if(!check.ok)failed=check.text;
+files.push({
+name:names[at],
+data,
+size:data.length,
+pages:part.entries.length,
+from:part.from,
+to:part.to,
+fields:built.fields,
+links:built.links,
+check,
+});
+}
+onProgress?.(parts.length,parts.length,'');
+const archive=files.length>1
+?{
+name:archiveName(how.stem),
+blob:makeZip(files.map((file)=>({name:file.name,data:file.data}))),
+}
+:null;
+return{
+files,
+archive,
+notes:[...notes],
+ok:!failed,
+problem:failed,
+};
+}
+async function verify(bytes,expected){
+try{
+const doc=await PdfDocument.open(bytes);
+const pages=doc.countPages();
+if(pages!==expected){
+return{
+ok:false,
+text:`the finished file opens with ${pages} page${pages === 1 ? '' : 's'} `
++`where ${expected} ${expected === 1 ? 'was' : 'were'} asked for`,
+};
+}
+return{
+ok:true,
+text:`opened again here and counted ${pages} page${pages === 1 ? '' : 's'}`,
+};
+}catch(error){
+return{ok:false,text:`the finished file would not open again (${error.message})`};
+}
+}

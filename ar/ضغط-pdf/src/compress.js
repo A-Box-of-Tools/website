@@ -1,2 +1,150 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{takeInventory as x}from"./inventory.js";import{decodeImage as S,findImages as $,reencode as q,replaceImage as I,SKIP as w}from"./images.js";import{effectiveDpi as g,measurePlacements as E}from"./placements.js";import{PdfDocument as b}from"./reader.js";import{stripMetadata as v,writeDocument as B}from"./writer.js";const J={smallest:{dpi:96,quality:.55,label:"Smallest"},screen:{dpi:130,quality:.68,label:"Good on screen"},print:{dpi:220,quality:.82,label:"Still good on paper"},gentle:{dpi:0,quality:.9,label:"Barely touch the pictures"}},D=32;async function K(o,t,r={}){const{onStage:i,onProgress:e,signal:c}=r,u=o.length;i?.("Reading the document");const s=await b.open(o),d=x(s);i?.("Measuring how big each picture is drawn");const n=await E(s);k(c),i?.("Recompressing the pictures");const a=$(s),p=[];for(const[f,h]of a.entries()){k(c),e?.(f,a.length);const M=n.get(h.num)??n.get(h.maskOf);p.push(await R(s,h,M,t)),await new Promise(P=>setTimeout(P,0))}e?.(a.length,a.length);let m=0;t.stripMeta&&(i?.("Taking out what the file remembers about where it came from"),m=v(s)),i?.("Writing the document");const l=await B(s,{signal:c,onProgress:(f,h)=>e?.(f,h)});i?.("Reading it back to check");const y=await A(l,d.pages);return{blob:l,before:u,after:l.size,inventory:d,images:p,metadataRemoved:m,check:y,repaired:s.repaired,incremental:s.incremental}}function k(o){if(o?.aborted)throw new DOMException("Cancelled","AbortError")}async function R(o,t,r,i){const e={num:t.num,before:t.bytes,after:t.bytes,action:"kept",note:"",width:t.width,height:t.height,dpiBefore:0,dpiAfter:0};if(t.skip)return e.note=t.skip,e;if(!r)return e.note=w.unused,e;const c=g(t.width,r.widthPt);e.dpiBefore=c;const u=i.dpi>0&&r.widthPt>0?Math.round(r.widthPt/72*i.dpi):t.width,d=Math.max(D,Math.min(t.width,u))/t.width,n=await S(o,t);if(!n)return e.note=w.unreadable,e;try{const a=await q(n,{width:Math.max(1,Math.round(n.width*d)),height:Math.max(1,Math.round(n.height*d)),quality:i.quality,gray:t.isSMask});return a?a.bytes.length>=t.bytes?(e.note="already smaller than anything this could make of it",e):(I(t,a,{gray:t.isSMask}),e.after=a.bytes.length,e.width=a.width,e.height=a.height,e.dpiAfter=g(a.width,r.widthPt),e.action=a.width<t.width?"downsampled":"recompressed",e):(e.note="this browser would not re-encode it",e)}finally{n.source&&typeof n.source.close=="function"&&n.source.close()}}async function A(o,t){try{const r=new Uint8Array(await o.arrayBuffer()),i=await b.open(r),e=i.countPages();return e!==t?{ok:!1,text:`the rewritten file came back with ${e} page${e===1?"":"s"} instead of ${t}`}:i.repaired?{ok:!1,text:"the rewritten file did not read back cleanly"}:{ok:!0,text:`opened again from memory: ${e} page${e===1?"":"s"}, the same as the original.`}}catch(r){return{ok:!1,text:`the rewritten file would not reopen (${r.message})`}}}function L(o){const t=`JPEG quality ${Math.round(o.quality*100)}`;return o.dpi?`Pictures are reduced to at most ${o.dpi} pixels per inch of the space they are drawn in, then encoded at ${t}.`:`Pictures are re-encoded at ${t} and kept at their full size.`}export{J as PRESETS,K as compressDocument,L as describeSettings};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{takeInventory}from'./inventory.js';
+import{
+decodeImage,findImages,reencode,replaceImage,SKIP,
+}from'./images.js';
+import{effectiveDpi,measurePlacements}from'./placements.js';
+import{PdfDocument}from'./reader.js';
+import{stripMetadata,writeDocument}from'./writer.js';
+export const PRESETS={
+smallest:{dpi:96,quality:0.55,label:'Smallest'},
+screen:{dpi:130,quality:0.68,label:'Good on screen'},
+print:{dpi:220,quality:0.82,label:'Still good on paper'},
+gentle:{dpi:0,quality:0.9,label:'Barely touch the pictures'},
+};
+const MIN_PIXELS=32;
+export async function compressDocument(bytes,settings,hooks={}){
+const{onStage,onProgress,signal}=hooks;
+const before=bytes.length;
+onStage?.('Reading the document');
+const doc=await PdfDocument.open(bytes);
+const inventory=takeInventory(doc);
+onStage?.('Measuring how big each picture is drawn');
+const placements=await measurePlacements(doc);
+stop(signal);
+onStage?.('Recompressing the pictures');
+const images=findImages(doc);
+const reports=[];
+for(const[index,entry]of images.entries()){
+stop(signal);
+onProgress?.(index,images.length);
+const placement=placements.get(entry.num)??placements.get(entry.maskOf);
+reports.push(await handleImage(doc,entry,placement,settings));
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+onProgress?.(images.length,images.length);
+let metadataRemoved=0;
+if(settings.stripMeta){
+onStage?.('Taking out what the file remembers about where it came from');
+metadataRemoved=stripMetadata(doc);
+}
+onStage?.('Writing the document');
+const blob=await writeDocument(doc,{
+signal,
+onProgress:(done,total)=>onProgress?.(done,total),
+});
+onStage?.('Reading it back to check');
+const check=await verify(blob,inventory.pages);
+return{
+blob,
+before,
+after:blob.size,
+inventory,
+images:reports,
+metadataRemoved,
+check,
+repaired:doc.repaired,
+incremental:doc.incremental,
+};
+}
+function stop(signal){
+if(signal?.aborted)throw new DOMException('Cancelled','AbortError');
+}
+async function handleImage(doc,entry,placement,settings){
+const report={
+num:entry.num,
+before:entry.bytes,
+after:entry.bytes,
+action:'kept',
+note:'',
+width:entry.width,
+height:entry.height,
+dpiBefore:0,
+dpiAfter:0,
+};
+if(entry.skip){
+report.note=entry.skip;
+return report;
+}
+if(!placement){
+report.note=SKIP.unused;
+return report;
+}
+const dpiBefore=effectiveDpi(entry.width,placement.widthPt);
+report.dpiBefore=dpiBefore;
+const wanted=settings.dpi>0&&placement.widthPt>0
+?Math.round((placement.widthPt/72)*settings.dpi)
+:entry.width;
+const target=Math.max(MIN_PIXELS,Math.min(entry.width,wanted));
+const scale=target/entry.width;
+const source=await decodeImage(doc,entry);
+if(!source){
+report.note=SKIP.unreadable;
+return report;
+}
+try{
+const made=await reencode(source,{
+width:Math.max(1,Math.round(source.width*scale)),
+height:Math.max(1,Math.round(source.height*scale)),
+quality:settings.quality,
+gray:entry.isSMask,
+});
+if(!made){
+report.note='this browser would not re-encode it';
+return report;
+}
+if(made.bytes.length>=entry.bytes){
+report.note='already smaller than anything this could make of it';
+return report;
+}
+replaceImage(entry,made,{gray:entry.isSMask});
+report.after=made.bytes.length;
+report.width=made.width;
+report.height=made.height;
+report.dpiAfter=effectiveDpi(made.width,placement.widthPt);
+report.action=made.width<entry.width?'downsampled':'recompressed';
+return report;
+}finally{
+if(source.source&&typeof source.source.close==='function')source.source.close();
+}
+}
+async function verify(blob,expectedPages){
+try{
+const bytes=new Uint8Array(await blob.arrayBuffer());
+const reopened=await PdfDocument.open(bytes);
+const pages=reopened.countPages();
+if(pages!==expectedPages){
+return{
+ok:false,
+text:`the rewritten file came back with ${pages} page${pages === 1 ? '' : 's'} `
++`instead of ${expectedPages}`,
+};
+}
+if(reopened.repaired){
+return{ok:false,text:'the rewritten file did not read back cleanly'};
+}
+return{
+ok:true,
+text:`opened again from memory: ${pages} page${pages === 1 ? '' : 's'}, `
++'the same as the original.',
+};
+}catch(error){
+return{ok:false,text:`the rewritten file would not reopen (${error.message})`};
+}
+}
+export function describeSettings(settings){
+const quality=`JPEG quality ${Math.round(settings.quality * 100)}`;
+if(!settings.dpi)return`Pictures are re-encoded at ${quality} and kept at their full size.`;
+return`Pictures are reduced to at most ${settings.dpi} pixels per inch of the space `
++`they are drawn in, then encoded at ${quality}.`;
+}

@@ -1,2 +1,196 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{FileWindow as x}from"./demux.js";import{drawScaled as E,frameCanvas as k}from"./draw.js";const C=8,W=.5,H=1e4;class I extends Error{constructor(){super("Cancelled."),this.name="AbortError"}}function b(e){if(e?.aborted)throw new I}function S(e){const t={codec:e.codec,codedWidth:e.codedWidth,codedHeight:e.codedHeight};return e.description&&(t.description=e.description),t}class D{#e;#r;#s;#n;#i;#o;frames=[];#t=!1;constructor({times:t,ctx:r,width:i,height:o,histogram:a,step:l}){this.#e=t,this.#r=r,this.#s=i,this.#n=o,this.#i=a,this.#o=l}get done(){return this.frames.length>=this.#e.length}#a(){const{data:t}=this.#r.getImageData(0,0,this.#s,this.#n);this.#i?.add(t,this.#o),this.frames.push(t)}offer(t,r){if(this.#t)for(;!this.done&&this.#e[this.frames.length]<t-1e-9;)this.#a();this.done||(r(),this.#t=!0)}finish(){if(this.#t)for(;!this.done;)this.#a()}}async function V({file:e,media:t,times:r,width:i,height:o,histogram:a,step:l=1,onProgress:u,signal:m}){const{video:s}=t,{canvas:g,ctx:p}=k(i,o),c=new D({times:r,ctx:p,width:i,height:o,histogram:a,step:l}),w=r[0]*s.timescale,T=r[r.length-1]*s.timescale;let y=0;for(let n=0;n<s.samples.length&&(s.samples[n].isKey&&s.samples[n].pts<=w&&(y=n),!(s.samples[n].pts>w));n+=1);let d=null;const h=new VideoDecoder({output:n=>{try{if(d||c.done)return;c.offer(n.timestamp/1e6,()=>E(p,n,{rotation:s.rotation,displayWidth:s.displayWidth,displayHeight:s.displayHeight,width:i,height:o})),u?.({phase:"reading",done:c.frames.length,total:r.length})}catch(f){d??=f}finally{n.close()}},error:n=>{d??=n}});h.configure(S(s));const L=new x(e);try{for(let n=y;n<s.samples.length;n+=1){if(b(m),d)throw d;if(c.done)break;const f=s.samples[n],_=await L.read(f.offset,f.size);if(h.decode(new EncodedVideoChunk({type:f.isKey?"key":"delta",timestamp:Math.round(f.pts/s.timescale*1e6),data:_})),f.pts>T+W*s.timescale)break;for(;h.decodeQueueSize>C;)await q(h)}if(await h.flush(),d)throw d;if(c.finish(),!c.frames.length)throw new Error("No frames could be decoded from this file.");return c.frames}finally{h.state!=="closed"&&h.close(),g.width=0}}function q(e){return new Promise(t=>{let r=!1;const i=()=>{r||(r=!0,clearTimeout(o),e.removeEventListener("dequeue",i),t())},o=setTimeout(i,20);e.addEventListener("dequeue",i)})}async function F({video:e,times:t,width:r,height:i,histogram:o,step:a=1,onProgress:l,signal:u}){const{canvas:m,ctx:s}=k(r,i),g=[];e.pause();try{for(let p=0;p<t.length;p+=1){b(u),await A(e,t[p]),E(s,e,{displayWidth:e.videoWidth,displayHeight:e.videoHeight,width:r,height:i});const{data:c}=s.getImageData(0,0,r,i);o?.add(c,a),g.push(c),l?.({phase:"reading",done:g.length,total:t.length})}return g}finally{m.width=0}}function A(e,t){return new Promise((r,i)=>{let o=!1;const a=()=>{o||(o=!0,clearTimeout(m),e.removeEventListener("seeked",l),e.removeEventListener("error",u),r())},l=()=>{typeof e.requestVideoFrameCallback=="function"?(e.requestVideoFrameCallback(()=>a()),setTimeout(a,120)):setTimeout(a,40)},u=()=>{o||(o=!0,clearTimeout(m),e.removeEventListener("seeked",l),i(new Error("The browser stopped being able to play this file partway through.")))},m=setTimeout(a,H);e.addEventListener("seeked",l,{once:!0}),e.addEventListener("error",u,{once:!0}),Math.abs(e.currentTime-t)<1e-4?a():e.currentTime=t})}export{S as decoderConfig,V as framesByDecoding,F as framesByPlaying};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{FileWindow}from'./demux.js';
+import{drawScaled,frameCanvas}from'./draw.js';
+const QUEUE_LIMIT=8;
+const REORDER_SLACK=0.5;
+const SEEK_TIMEOUT=10_000;
+class AbortedError extends Error{
+constructor(){
+super('Cancelled.');
+this.name='AbortError';
+}
+}
+function throwIfAborted(signal){
+if(signal?.aborted)throw new AbortedError();
+}
+export function decoderConfig(video){
+const config={
+codec:video.codec,
+codedWidth:video.codedWidth,
+codedHeight:video.codedHeight,
+};
+if(video.description)config.description=video.description;
+return config;
+}
+class Sampler{
+#times;
+#ctx;
+#width;
+#height;
+#histogram;
+#step;
+frames=[];
+#drawn=false;
+constructor({times,ctx,width,height,histogram,step}){
+this.#times=times;
+this.#ctx=ctx;
+this.#width=width;
+this.#height=height;
+this.#histogram=histogram;
+this.#step=step;
+}
+get done(){
+return this.frames.length>=this.#times.length;
+}
+#take(){
+const{data}=this.#ctx.getImageData(0,0,this.#width,this.#height);
+this.#histogram?.add(data,this.#step);
+this.frames.push(data);
+}
+offer(time,paint){
+if(this.#drawn){
+while(!this.done&&this.#times[this.frames.length]<time-1e-9)this.#take();
+}
+if(this.done)return;
+paint();
+this.#drawn=true;
+}
+finish(){
+if(!this.#drawn)return;
+while(!this.done)this.#take();
+}
+}
+export async function framesByDecoding({
+file,media,times,width,height,histogram,step=1,onProgress,signal,
+}){
+const{video}=media;
+const{canvas,ctx}=frameCanvas(width,height);
+const sampler=new Sampler({times,ctx,width,height,histogram,step});
+const startTicks=times[0]*video.timescale;
+const endTicks=times[times.length-1]*video.timescale;
+let first=0;
+for(let i=0;i<video.samples.length;i+=1){
+if(video.samples[i].isKey&&video.samples[i].pts<=startTicks)first=i;
+if(video.samples[i].pts>startTicks)break;
+}
+let failure=null;
+const decoder=new VideoDecoder({
+output:(frame)=>{
+try{
+if(failure||sampler.done)return;
+sampler.offer(frame.timestamp/1_000_000,()=>drawScaled(ctx,frame,{
+rotation:video.rotation,
+displayWidth:video.displayWidth,
+displayHeight:video.displayHeight,
+width,
+height,
+}));
+onProgress?.({phase:'reading',done:sampler.frames.length,total:times.length});
+}catch(error){
+failure??=error;
+}finally{
+frame.close();
+}
+},
+error:(error)=>{failure??=error;},
+});
+decoder.configure(decoderConfig(video));
+const window=new FileWindow(file);
+try{
+for(let i=first;i<video.samples.length;i+=1){
+throwIfAborted(signal);
+if(failure)throw failure;
+if(sampler.done)break;
+const sample=video.samples[i];
+const bytes=await window.read(sample.offset,sample.size);
+decoder.decode(new EncodedVideoChunk({
+type:sample.isKey?'key':'delta',
+timestamp:Math.round(sample.pts/video.timescale*1_000_000),
+data:bytes,
+}));
+if(sample.pts>endTicks+REORDER_SLACK*video.timescale)break;
+while(decoder.decodeQueueSize>QUEUE_LIMIT)await tick(decoder);
+}
+await decoder.flush();
+if(failure)throw failure;
+sampler.finish();
+if(!sampler.frames.length)throw new Error('No frames could be decoded from this file.');
+return sampler.frames;
+}finally{
+if(decoder.state!=='closed')decoder.close();
+canvas.width=0;
+}
+}
+function tick(decoder){
+return new Promise((resolve)=>{
+let settled=false;
+const done=()=>{
+if(settled)return;
+settled=true;
+clearTimeout(timer);
+decoder.removeEventListener('dequeue',done);
+resolve();
+};
+const timer=setTimeout(done,20);
+decoder.addEventListener('dequeue',done);
+});
+}
+export async function framesByPlaying({
+video,times,width,height,histogram,step=1,onProgress,signal,
+}){
+const{canvas,ctx}=frameCanvas(width,height);
+const frames=[];
+video.pause();
+try{
+for(let i=0;i<times.length;i+=1){
+throwIfAborted(signal);
+await seek(video,times[i]);
+drawScaled(ctx,video,{
+displayWidth:video.videoWidth,
+displayHeight:video.videoHeight,
+width,
+height,
+});
+const{data}=ctx.getImageData(0,0,width,height);
+histogram?.add(data,step);
+frames.push(data);
+onProgress?.({phase:'reading',done:frames.length,total:times.length});
+}
+return frames;
+}finally{
+canvas.width=0;
+}
+}
+function seek(video,seconds){
+return new Promise((resolve,reject)=>{
+let settled=false;
+const finish=()=>{
+if(settled)return;
+settled=true;
+clearTimeout(timer);
+video.removeEventListener('seeked',onSeeked);
+video.removeEventListener('error',onError);
+resolve();
+};
+const onSeeked=()=>{
+if(typeof video.requestVideoFrameCallback==='function'){
+video.requestVideoFrameCallback(()=>finish());
+setTimeout(finish,120);
+}else{
+setTimeout(finish,40);
+}
+};
+const onError=()=>{
+if(settled)return;
+settled=true;
+clearTimeout(timer);
+video.removeEventListener('seeked',onSeeked);
+reject(new Error('The browser stopped being able to play this file partway through.'));
+};
+const timer=setTimeout(finish,SEEK_TIMEOUT);
+video.addEventListener('seeked',onSeeked,{once:true});
+video.addEventListener('error',onError,{once:true});
+if(Math.abs(video.currentTime-seconds)<1e-4)finish();
+else video.currentTime=seconds;
+});
+}

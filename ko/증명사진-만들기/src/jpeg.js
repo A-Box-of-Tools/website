@@ -1,2 +1,125 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const O=216,M=217,k=218,S=224,I=254,h=new Set([1,208,209,210,211,212,213,214,215,216,217]),x=[74,70,73,70,0],s=t=>t.length>3&&t[0]===255&&t[1]===216;function i(t){const e=[];if(!s(t))return e;let n=2;for(;n+3<t.length&&t[n]===255;){const o=t[n+1];if(o===218||o===217)break;if(h.has(o)){n+=2;continue}const r=t[n+2]<<8|t[n+3];if(r<2)break;e.push({marker:o,at:n,length:r,dataAt:n+4}),n+=2+r}return e}const d=(t,e)=>e.marker===224&&e.length>=16&&x.every((n,o)=>t[e.dataAt+o]===n);function P(t){const e=i(t).find(a=>d(t,a));if(!e)return null;const n=e.dataAt+7,o=t[n],r=t[n+1]<<8|t[n+2],f=t[n+3]<<8|t[n+4],c=o===1?r:o===2?Math.round(r*2.54):null;return{units:o,x:r,y:f,dpi:c}}function C(t,e){const n=Math.max(1,Math.min(65535,Math.round(e))),o=i(t).find(f=>d(t,f));if(o){const f=t.slice(),c=o.dataAt+7;return f[c]=1,f[c+1]=n>>8&255,f[c+2]=n&255,f[c+3]=n>>8&255,f[c+4]=n&255,f}const r=Uint8Array.from([255,224,0,16,...x,1,1,1,n>>8&255,n&255,n>>8&255,n&255,0,0]);return l(t,2,r)}function m(t){let e=2;for(const n of i(t))if(n.marker>=224&&n.marker<=239)e=n.at+2+n.length;else break;return e}const u="Padding added by abox.tools so this file meets the minimum size the form asks for. It is a JPEG comment segment: the picture itself is unchanged and every decoder skips these bytes. ",A=65533;function E(t,e){const n=Math.ceil(e)-t.length;if(n<=0||!s(t))return t;const o=m(t),r=[];let f=n;for(;f>0;){const a=Math.min(Math.max(f-4,1),A);r.push(g(a)),f-=a+4}const c=p(r);return l(t,o,c)}function g(t){const e=new Uint8Array(t+4);e[0]=255,e[1]=254,e[2]=t+2>>8&255,e[3]=t+2&255;for(let n=0;n<t;n+=1)e[4+n]=n<u.length?u.charCodeAt(n):32;return e}function w(t){return i(t).filter(e=>e.marker===254).map(e=>String.fromCharCode(...t.slice(e.dataAt,e.at+2+e.length)))}function l(t,e,n){const o=new Uint8Array(t.length+n.length);return o.set(t.subarray(0,e),0),o.set(n,e),o.set(t.subarray(e),e+n.length),o}function p(t){const e=t.reduce((r,f)=>r+f.length,0),n=new Uint8Array(e);let o=0;for(const r of t)n.set(r,o),o+=r.length;return n}export{i as headerSegments,s as isJpeg,E as padTo,w as readComments,P as readDensity,C as setDensity};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const SOI=0xd8;
+const EOI=0xd9;
+const SOS=0xda;
+const APP0=0xe0;
+const COM=0xfe;
+const STANDALONE=new Set([0x01,0xd0,0xd1,0xd2,0xd3,0xd4,0xd5,0xd6,0xd7,SOI,EOI]);
+const JFIF=[0x4a,0x46,0x49,0x46,0x00];
+export const isJpeg=(bytes)=>bytes.length>3&&bytes[0]===0xff&&bytes[1]===SOI;
+export function headerSegments(bytes){
+const found=[];
+if(!isJpeg(bytes))return found;
+let at=2;
+while(at+3<bytes.length){
+if(bytes[at]!==0xff)break;
+const marker=bytes[at+1];
+if(marker===SOS||marker===EOI)break;
+if(STANDALONE.has(marker)){
+at+=2;
+continue;
+}
+const length=(bytes[at+2]<<8)|bytes[at+3];
+if(length<2)break;
+found.push({marker,at,length,dataAt:at+4});
+at+=2+length;
+}
+return found;
+}
+const isJfif=(bytes,segment)=>(
+segment.marker===APP0
+&&segment.length>=16
+&&JFIF.every((byte,index)=>bytes[segment.dataAt+index]===byte)
+);
+export function readDensity(bytes){
+const jfif=headerSegments(bytes).find((segment)=>isJfif(bytes,segment));
+if(!jfif)return null;
+const at=jfif.dataAt+7;
+const units=bytes[at];
+const x=(bytes[at+1]<<8)|bytes[at+2];
+const y=(bytes[at+3]<<8)|bytes[at+4];
+const dpi=units===1?x:units===2?Math.round(x*2.54):null;
+return{units,x,y,dpi};
+}
+export function setDensity(bytes,dpi){
+const density=Math.max(1,Math.min(65535,Math.round(dpi)));
+const jfif=headerSegments(bytes).find((segment)=>isJfif(bytes,segment));
+if(jfif){
+const out=bytes.slice();
+const at=jfif.dataAt+7;
+out[at]=1;
+out[at+1]=(density>>8)&0xff;
+out[at+2]=density&0xff;
+out[at+3]=(density>>8)&0xff;
+out[at+4]=density&0xff;
+return out;
+}
+const segment=Uint8Array.from([
+0xff,APP0,0x00,0x10,...JFIF,0x01,0x01,0x01,
+(density>>8)&0xff,density&0xff,
+(density>>8)&0xff,density&0xff,
+0x00,0x00,
+]);
+return spliceIn(bytes,2,segment);
+}
+function commentPoint(bytes){
+let at=2;
+for(const segment of headerSegments(bytes)){
+if(segment.marker>=0xe0&&segment.marker<=0xef)at=segment.at+2+segment.length;
+else break;
+}
+return at;
+}
+const PADDING_NOTE='Padding added by abox.tools so this file meets the minimum '
++'size the form asks for. It is a JPEG comment segment: the picture itself is '
++'unchanged and every decoder skips these bytes. ';
+const MAX_COMMENT=65533;
+export function padTo(bytes,target){
+const needed=Math.ceil(target)-bytes.length;
+if(needed<=0||!isJpeg(bytes))return bytes;
+const insertAt=commentPoint(bytes);
+const pieces=[];
+let left=needed;
+while(left>0){
+const chunk=Math.min(Math.max(left-4,1),MAX_COMMENT);
+pieces.push(comment(chunk));
+left-=chunk+4;
+}
+const payload=concat(pieces);
+return spliceIn(bytes,insertAt,payload);
+}
+function comment(size){
+const out=new Uint8Array(size+4);
+out[0]=0xff;
+out[1]=COM;
+out[2]=((size+2)>>8)&0xff;
+out[3]=(size+2)&0xff;
+for(let i=0;i<size;i+=1){
+out[4+i]=i<PADDING_NOTE.length?PADDING_NOTE.charCodeAt(i):0x20;
+}
+return out;
+}
+export function readComments(bytes){
+return headerSegments(bytes)
+.filter((segment)=>segment.marker===COM)
+.map((segment)=>String.fromCharCode(
+...bytes.slice(segment.dataAt,segment.at+2+segment.length),
+));
+}
+function spliceIn(bytes,at,insert){
+const out=new Uint8Array(bytes.length+insert.length);
+out.set(bytes.subarray(0,at),0);
+out.set(insert,at);
+out.set(bytes.subarray(at),at+insert.length);
+return out;
+}
+function concat(pieces){
+const total=pieces.reduce((sum,piece)=>sum+piece.length,0);
+const out=new Uint8Array(total);
+let at=0;
+for(const piece of pieces){
+out.set(piece,at);
+at+=piece.length;
+}
+return out;
+}

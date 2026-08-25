@@ -1,2 +1,118 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const w="http://www.w3.org/2000/svg";function d(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}function f(t,e,r,n,u=0,c=0){const s=[];for(let i=0;i<r;i+=1){let a=0;for(;a<e;){if(!t(a,i)){a+=1;continue}let o=1;for(;a+o<e&&t(a+o,i);)o+=1;s.push(`M${(u+a)*n} ${(c+i)*n}h${o*n}v${n}h-${o*n}z`),a+=o}}return s.join("")}function m(t,e,r){const n=r==="none"?"":`<rect width="${t}" height="${e}" fill="${d(r)}"/>`;return`<svg xmlns="${w}" width="${t}" height="${e}" viewBox="0 0 ${t} ${e}" shape-rendering="crispEdges">${n}`}function x(t,e){const n=(t.size+e.quiet*2)*e.scale,c=f((s,i)=>t.modules[i*t.size+s]===1,t.size,t.size,e.scale,e.quiet,e.quiet);return`${m(n,n,e.background)}<path fill="${d(e.foreground)}" d="${c}"/></svg>`}function $(t,e){const r=t.modules.length*e.scale,n=e.text?Math.max(8,e.scale*7):0,u=e.text?Math.round(n*.25):0,c=e.height+(e.text?n+u:0),s=e.text?n*.6:0,i=[m(r,c,e.background)],a=d(e.foreground);let o=0;for(;o<t.modules.length;){if(t.modules[o]===0){o+=1;continue}const l=t.guards[o]===1;let h=1;for(;o+h<t.modules.length&&t.modules[o+h]===1&&t.guards[o+h]===1===l;)h+=1;const g=Math.round(e.height+(l?s:0));i.push(`<rect x="${o*e.scale}" y="0" width="${h*e.scale}" height="${g}" fill="${a}"/>`),o+=h}if(e.text){const l=c-Math.round(n*.15);for(const h of t.labels){const g=(h.from+h.to)/2*e.scale;i.push(`<text x="${g}" y="${l}" fill="${a}" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="${n}" text-anchor="middle">${d(h.text)}</text>`)}}return i.push("</svg>"),i.join("")}function p(t){const e=Number(/width="(\d+(?:\.\d+)?)"/.exec(t)?.[1]??0),r=Number(/height="(\d+(?:\.\d+)?)"/.exec(t)?.[1]??0);return{width:e,height:r}}async function b(t,e=1){const{width:r,height:n}=p(t),u=URL.createObjectURL(new Blob([t],{type:"image/svg+xml"}));try{const c=new Image;c.width=r,c.height=n,await new Promise((a,o)=>{c.onload=a,c.onerror=()=>o(new Error("this browser would not draw the SVG")),c.src=u});const s=document.createElement("canvas");s.width=Math.round(r*e),s.height=Math.round(n*e);const i=s.getContext("2d");return i.imageSmoothingEnabled=!1,i.drawImage(c,0,0,s.width,s.height),await new Promise((a,o)=>{s.toBlob(l=>{l?a(l):o(new Error("this browser would not write a PNG"))},"image/png")})}finally{URL.revokeObjectURL(u)}}function v(t,e){const r=URL.createObjectURL(t),n=document.createElement("a");n.href=r,n.download=e,n.rel="noopener",document.body.append(n),n.click(),n.remove(),setTimeout(()=>URL.revokeObjectURL(r),1e3)}export{$ as barcodeSvg,v as download,x as qrSvg,p as sizeOfSvg,b as svgToPng};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const SVG_NS='http://www.w3.org/2000/svg';
+function escape(text){
+return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+.replace(/"/g,'&quot;');
+}
+function runsToPath(isDark,width,height,scale,offsetX=0,offsetY=0){
+const parts=[];
+for(let y=0;y<height;y+=1){
+let x=0;
+while(x<width){
+if(!isDark(x,y)){
+x+=1;
+continue;
+}
+let run=1;
+while(x+run<width&&isDark(x+run,y))run+=1;
+parts.push(`M${(offsetX + x) * scale} ${(offsetY + y) * scale}`
++`h${run * scale}v${scale}h-${run * scale}z`);
+x+=run;
+}
+}
+return parts.join('');
+}
+function open(width,height,background){
+const fill=background==='none'
+?''
+:`<rect width="${width}" height="${height}" fill="${escape(background)}"/>`;
+return`<svg xmlns="${SVG_NS}" width="${width}" height="${height}" `
++`viewBox="0 0 ${width} ${height}" shape-rendering="crispEdges">${fill}`;
+}
+export function qrSvg(qr,style){
+const across=qr.size+style.quiet*2;
+const pixels=across*style.scale;
+const dark=(x,y)=>qr.modules[y*qr.size+x]===1;
+const path=runsToPath(dark,qr.size,qr.size,style.scale,style.quiet,style.quiet);
+return`${open(pixels, pixels, style.background)}`
++`<path fill="${escape(style.foreground)}" d="${path}"/></svg>`;
+}
+export function barcodeSvg(code,style){
+const width=code.modules.length*style.scale;
+const fontSize=style.text?Math.max(8,style.scale*7):0;
+const textGap=style.text?Math.round(fontSize*0.25):0;
+const height=style.height+(style.text?fontSize+textGap:0);
+const guardExtra=style.text?fontSize*0.6:0;
+const parts=[open(width,height,style.background)];
+const fill=escape(style.foreground);
+let x=0;
+while(x<code.modules.length){
+if(code.modules[x]===0){
+x+=1;
+continue;
+}
+const guard=code.guards[x]===1;
+let run=1;
+while(x+run<code.modules.length&&code.modules[x+run]===1
+&&(code.guards[x+run]===1)===guard)run+=1;
+const barHeight=Math.round(style.height+(guard?guardExtra:0));
+parts.push(`<rect x="${x * style.scale}" y="0" width="${run * style.scale}" `
++`height="${barHeight}" fill="${fill}"/>`);
+x+=run;
+}
+if(style.text){
+const baseline=height-Math.round(fontSize*0.15);
+for(const label of code.labels){
+const middle=((label.from+label.to)/2)*style.scale;
+parts.push(`<text x="${middle}" y="${baseline}" fill="${fill}" `
++`font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" `
++`font-size="${fontSize}" text-anchor="middle">${escape(label.text)}</text>`);
+}
+}
+parts.push('</svg>');
+return parts.join('');
+}
+export function sizeOfSvg(svg){
+const width=Number(/width="(\d+(?:\.\d+)?)"/.exec(svg)?.[1]??0);
+const height=Number(/height="(\d+(?:\.\d+)?)"/.exec(svg)?.[1]??0);
+return{width,height};
+}
+export async function svgToPng(svg,multiple=1){
+const{width,height}=sizeOfSvg(svg);
+const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+try{
+const image=new Image();
+image.width=width;
+image.height=height;
+await new Promise((resolve,reject)=>{
+image.onload=resolve;
+image.onerror=()=>reject(new Error('this browser would not draw the SVG'));
+image.src=url;
+});
+const canvas=document.createElement('canvas');
+canvas.width=Math.round(width*multiple);
+canvas.height=Math.round(height*multiple);
+const context=canvas.getContext('2d');
+context.imageSmoothingEnabled=false;
+context.drawImage(image,0,0,canvas.width,canvas.height);
+return await new Promise((resolve,reject)=>{
+canvas.toBlob((blob)=>{
+if(blob)resolve(blob);
+else reject(new Error('this browser would not write a PNG'));
+},'image/png');
+});
+}finally{
+URL.revokeObjectURL(url);
+}
+}
+export function download(blob,name){
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=name;
+link.rel='noopener';
+document.body.append(link);
+link.click();
+link.remove();
+setTimeout(()=>URL.revokeObjectURL(url),1000);
+}

@@ -1,2 +1,38 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{FORMATS as i}from"./codecs.js";function c(t){return t<1024?`${t} bytes`:t<1024*1024?`${(t/1024).toFixed(t<10240?1:0)} KB`:`${(t/(1024*1024)).toFixed(2)} MB`}const n={KB:1024,MB:1024*1024};function s(t,e){const r=Number.parseFloat(t);return!Number.isFinite(r)||r<=0?null:Math.round(r*(n[e]??n.KB))}function a(t,e){return`${t} \xD7 ${e}`}function f(t,e){const r=i[e]?.ext??"jpg";return`${t.replace(/\.[^.]+$/,"")||"image"}-compressed.${r}`}function x(t,e){if(t===0)return"";const r=Math.round((t-e)/t*100);return r===0?"about the same size":r>0?`${r}% smaller`:`${-r}% larger`}function $(t){const e=(t*100).toFixed(1);return t>=.995?`${e}% - indistinguishable`:t>=.985?`${e}% - no visible difference`:t>=.96?`${e}% - very close`:t>=.92?`${e}% - slight softening`:`${e}% - visibly compressed`}function p(t){return Number.isFinite(t)?`${t.toFixed(1)} dB`:"identical"}export{n as UNITS,c as bytes,x as change,a as dimensions,$ as matchText,f as outName,p as psnrText,s as targetBytes};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{FORMATS}from'./codecs.js';
+export function bytes(n){
+if(n<1024)return`${n} bytes`;
+if(n<1024*1024)return`${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
+return`${(n / (1024 * 1024)).toFixed(2)} MB`;
+}
+export const UNITS={KB:1024,MB:1024*1024};
+export function targetBytes(value,unit){
+const amount=Number.parseFloat(value);
+if(!Number.isFinite(amount)||amount<=0)return null;
+return Math.round(amount*(UNITS[unit]??UNITS.KB));
+}
+export function dimensions(width,height){
+return`${width} × ${height}`;
+}
+export function outName(name,mime){
+const ext=FORMATS[mime]?.ext??'jpg';
+const stem=name.replace(/\.[^.]+$/,'')||'image';
+return`${stem}-compressed.${ext}`;
+}
+export function change(before,after){
+if(before===0)return'';
+const delta=Math.round(((before-after)/before)*100);
+if(delta===0)return'about the same size';
+return delta>0?`${delta}% smaller`:`${-delta}% larger`;
+}
+export function matchText(ssim){
+const percent=(ssim*100).toFixed(1);
+if(ssim>=0.995)return`${percent}% - indistinguishable`;
+if(ssim>=0.985)return`${percent}% - no visible difference`;
+if(ssim>=0.96)return`${percent}% - very close`;
+if(ssim>=0.92)return`${percent}% - slight softening`;
+return`${percent}% - visibly compressed`;
+}
+export function psnrText(psnr){
+return Number.isFinite(psnr)?`${psnr.toFixed(1)} dB`:'identical';
+}

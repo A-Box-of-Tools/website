@@ -1,2 +1,143 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const A=18761,D=271,_=272,M=274,N=34665,b=34853,L=36867,O=306,w=2,R=3,S=12,m=65533,i=[69,120,105,102,0,0];function E(t){if(t.length<8)return null;const o=new DataView(t.buffer,t.byteOffset,t.byteLength),n=o.getUint16(0),e=n===18761;return!e&&n!==19789||o.getUint16(2,e)!==42?null:{view:o,little:e,u16:s=>o.getUint16(s,e),u32:s=>o.getUint32(s,e),first:o.getUint32(4,e)}}function h(t,o){const n=[];let e=o.first;for(;e>0&&e+2<=t.length&&n.length<4;){const s=o.u16(e),r=e+2+s*12;if(r+4>t.length)break;n.push({at:e,count:s}),e=o.u32(r)}return n}function x(t,o,n){for(let e=0;e<o.count;e+=1){const s=o.at+2+e*12;n({tag:t.u16(s),type:t.u16(s+2),count:t.u32(s+4),value:s+8})}}function f(t,o,n){if(n.type!==2||n.count===0)return"";const e=n.count,s=e<=4?n.value:o.u32(n.value);if(s+e>t.length)return"";let r="";for(let l=0;l<e;l+=1){const c=t[s+l];if(c===0)break;r+=String.fromCharCode(c)}return r.trim()}function v(t){const o={present:!1,camera:"",taken:"",gps:!1,bytes:0};if(!t)return o;const n=E(t);if(!n)return o;let e="",s="",r="",l=!1,c=0;const g=h(t,n);if(g.length===0)return o;if(x(n,g[0],u=>{if(u.tag===271)e=f(t,n,u);else if(u.tag===272)s=f(t,n,u);else if(u.tag===306)r=f(t,n,u);else if(u.tag===34665)c=n.u32(u.value);else if(u.tag===34853){const a=n.u32(u.value);l=a>0&&a+2<=t.length&&n.u16(a)>0}}),c>0&&c+2<=t.length){const u=n.u16(c);c+2+u*12+4<=t.length&&x(n,{at:c,count:u},a=>{a.tag===36867&&(r=f(t,n,a)||r)})}return{present:!0,camera:s.toLowerCase().startsWith(e.toLowerCase())&&e?s:[e,s].filter(Boolean).join(" "),taken:I(r),gps:l,bytes:t.length}}function I(t){const o=/^(\d{4}):(\d{2}):(\d{2})[ T](\d{2}:\d{2})/.exec(t);return o?`${o[1]}-${o[2]}-${o[3]} ${o[4]}`:t}function U(t){const o=t.slice(),n=E(o);if(!n)return o;for(const e of h(o,n))x(n,e,s=>{s.tag!==274||s.type!==3||s.count!==1||n.view.setUint16(s.value,1,n.little)});return o}function F(t){return t.length+i.length<=65533}function k(t,o){const n=i.length+o.length,e=new Uint8Array(4+n);e[0]=255,e[1]=225,e[2]=n+2>>8&255,e[3]=n+2&255,e.set(i,4),e.set(o,4+i.length);const s=T(t);if(s<0)return t;const r=new Uint8Array(t.length+e.length);return r.set(t.subarray(0,s),0),r.set(e,s),r.set(t.subarray(s),s+e.length),r}function T(t){return t.length<4||t[0]!==255||t[1]!==216?-1:t[2]===255&&t[3]===224&&t.length>=6?4+(t[4]<<8|t[5]):2}export{v as describeExif,F as fitsInJpeg,U as uprightExif,k as withExif};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const LITTLE=0x4949;
+const MAKE=0x010f;
+const MODEL=0x0110;
+const ORIENTATION=0x0112;
+const EXIF_IFD=0x8769;
+const GPS_IFD=0x8825;
+const DATE_TIME_ORIGINAL=0x9003;
+const DATE_TIME=0x0132;
+const ASCII=2;
+const SHORT=3;
+const ENTRY=12;
+const MAX_SEGMENT=0xfffd;
+const EXIF_ID=[0x45,0x78,0x69,0x66,0x00,0x00];
+function reader(tiff){
+if(tiff.length<8)return null;
+const view=new DataView(tiff.buffer,tiff.byteOffset,tiff.byteLength);
+const order=view.getUint16(0);
+const little=order===LITTLE;
+if(!little&&order!==0x4d4d)return null;
+if(view.getUint16(2,little)!==42)return null;
+return{
+view,
+little,
+u16:(at)=>view.getUint16(at,little),
+u32:(at)=>view.getUint32(at,little),
+first:view.getUint32(4,little),
+};
+}
+function directories(tiff,read){
+const found=[];
+let at=read.first;
+while(at>0&&at+2<=tiff.length&&found.length<4){
+const count=read.u16(at);
+const end=at+2+count*ENTRY;
+if(end+4>tiff.length)break;
+found.push({at,count});
+at=read.u32(end);
+}
+return found;
+}
+function entries(read,directory,visit){
+for(let i=0;i<directory.count;i+=1){
+const at=directory.at+2+i*ENTRY;
+visit({
+tag:read.u16(at),
+type:read.u16(at+2),
+count:read.u32(at+4),
+value:at+8,
+});
+}
+}
+function text(tiff,read,entry){
+if(entry.type!==ASCII||entry.count===0)return'';
+const size=entry.count;
+const at=size<=4?entry.value:read.u32(entry.value);
+if(at+size>tiff.length)return'';
+let out='';
+for(let i=0;i<size;i+=1){
+const code=tiff[at+i];
+if(code===0)break;
+out+=String.fromCharCode(code);
+}
+return out.trim();
+}
+export function describeExif(tiff){
+const nothing={present:false,camera:'',taken:'',gps:false,bytes:0};
+if(!tiff)return nothing;
+const read=reader(tiff);
+if(!read)return nothing;
+let make='';
+let model='';
+let taken='';
+let gps=false;
+let exifAt=0;
+const all=directories(tiff,read);
+if(all.length===0)return nothing;
+entries(read,all[0],(entry)=>{
+if(entry.tag===MAKE)make=text(tiff,read,entry);
+else if(entry.tag===MODEL)model=text(tiff,read,entry);
+else if(entry.tag===DATE_TIME)taken=text(tiff,read,entry);
+else if(entry.tag===EXIF_IFD)exifAt=read.u32(entry.value);
+else if(entry.tag===GPS_IFD){
+const at=read.u32(entry.value);
+gps=at>0&&at+2<=tiff.length&&read.u16(at)>0;
+}
+});
+if(exifAt>0&&exifAt+2<=tiff.length){
+const count=read.u16(exifAt);
+if(exifAt+2+count*ENTRY+4<=tiff.length){
+entries(read,{at:exifAt,count},(entry)=>{
+if(entry.tag===DATE_TIME_ORIGINAL)taken=text(tiff,read,entry)||taken;
+});
+}
+}
+const camera=model.toLowerCase().startsWith(make.toLowerCase())&&make
+?model
+:[make,model].filter(Boolean).join(' ');
+return{present:true,camera,taken:readableDate(taken),gps,bytes:tiff.length};
+}
+function readableDate(stamp){
+const match=/^(\d{4}):(\d{2}):(\d{2})[ T](\d{2}:\d{2})/.exec(stamp);
+return match?`${match[1]}-${match[2]}-${match[3]} ${match[4]}`:stamp;
+}
+export function uprightExif(tiff){
+const copy=tiff.slice();
+const read=reader(copy);
+if(!read)return copy;
+for(const directory of directories(copy,read)){
+entries(read,directory,(entry)=>{
+if(entry.tag!==ORIENTATION||entry.type!==SHORT||entry.count!==1)return;
+read.view.setUint16(entry.value,1,read.little);
+});
+}
+return copy;
+}
+export function fitsInJpeg(tiff){
+return tiff.length+EXIF_ID.length<=MAX_SEGMENT;
+}
+export function withExif(jpeg,tiff){
+const payload=EXIF_ID.length+tiff.length;
+const segment=new Uint8Array(4+payload);
+segment[0]=0xff;
+segment[1]=0xe1;
+segment[2]=((payload+2)>>8)&0xff;
+segment[3]=(payload+2)&0xff;
+segment.set(EXIF_ID,4);
+segment.set(tiff,4+EXIF_ID.length);
+const at=afterHeader(jpeg);
+if(at<0)return jpeg;
+const out=new Uint8Array(jpeg.length+segment.length);
+out.set(jpeg.subarray(0,at),0);
+out.set(segment,at);
+out.set(jpeg.subarray(at),at+segment.length);
+return out;
+}
+function afterHeader(jpeg){
+if(jpeg.length<4||jpeg[0]!==0xff||jpeg[1]!==0xd8)return-1;
+if(jpeg[2]===0xff&&jpeg[3]===0xe0&&jpeg.length>=6){
+return 4+((jpeg[4]<<8)|jpeg[5]);
+}
+return 2;
+}

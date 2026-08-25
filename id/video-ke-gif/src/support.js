@@ -1,2 +1,13 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function n(){return typeof window.VideoDecoder=="function"&&typeof window.VideoFrame=="function"}async function t(e){if(!n())return!1;try{const{supported:o}=await VideoDecoder.isConfigSupported(e);return!!o}catch{return!1}}export{t as canDecode,n as hasWebCodecs};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function hasWebCodecs(){
+return typeof window.VideoDecoder==='function'&&typeof window.VideoFrame==='function';
+}
+export async function canDecode(config){
+if(!hasWebCodecs())return false;
+try{
+const{supported}=await VideoDecoder.isConfigSupported(config);
+return Boolean(supported);
+}catch{
+return false;
+}
+}

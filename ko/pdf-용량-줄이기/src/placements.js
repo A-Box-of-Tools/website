@@ -1,2 +1,207 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{decodeStream as y}from"./filters.js";import{indexOfAscii as I,Name as d,Parser as D,PdfStream as k,Ref as M}from"./objects.js";const R=12;async function K(e){const t=new Map,o=S(e);for(const[n,s]of o.entries()){const r=await j(e,s);if(!r)continue;const l=T(e,s);try{await v(e,r,l,P,t,n+1,0,new Set)}catch{}}return t}const P=[1,0,0,1,0,0];function A(e,t){return[e[0]*t[0]+e[1]*t[2],e[0]*t[1]+e[1]*t[3],e[2]*t[0]+e[3]*t[2],e[2]*t[1]+e[3]*t[3],e[4]*t[0]+e[5]*t[2]+t[4],e[4]*t[1]+e[5]*t[3]+t[5]]}function S(e){const t=[],o=new Set,n=(s,r)=>{if(!(s instanceof Map)||r>64||t.length>5e3)return;const l=e.get(s,"Kids");if(!Array.isArray(l)){t.push(s);return}for(const i of l){if(i instanceof M){if(o.has(i.key))continue;o.add(i.key)}n(e.resolve(i),r+1)}};return n(e.get(e.catalog,"Pages"),0),t}function T(e,t){let o=t;for(let n=0;o instanceof Map&&n<64;n+=1){const s=e.get(o,"Resources");if(s instanceof Map)return s;o=e.get(o,"Parent")}return new Map}async function j(e,t){const o=e.get(t,"Contents"),n=(Array.isArray(o)?o:[o]).map(f=>e.resolve(f)).filter(f=>f instanceof k);if(!n.length)return null;const s=[];let r=0;for(const f of n)try{const{bytes:a,remaining:g}=await y(f,c=>e.resolve(c));if(g.length)continue;s.push(a),r+=a.length+1}catch{}if(!s.length)return null;const l=new Uint8Array(r);let i=0;for(const f of s)l.set(f,i),i+=f.length,l[i]=10,i+=1;return l}async function v(e,t,o,n,s,r,l,i){if(l>R)return;const f=e.get(o,"XObject"),a=new D(t,0),g=[];let c=n,u=[];for(;;){if(a.skip(),a.pos>=t.length)return;const p=t[a.pos];if(p===47||p===40||p===91||p===60||p===46||p===43||p===45||p>=48&&p<=57){try{u.push(a.parseValue())}catch{a.pos+=1,u=[]}u.length>32&&(u=u.slice(-8));continue}const x=a.peekKeyword();if(!x){a.pos+=1;continue}if(a.pos+=x.length,x==="true"||x==="false"||x==="null"){u.push(x==="true");continue}switch(x){case"q":g.push(c);break;case"Q":c=g.pop()??P;break;case"cm":{const m=u.slice(-6);m.length===6&&m.every(w=>typeof w=="number")&&(c=A(m,c));break}case"BI":a.pos=V(t,a.pos);break;case"Do":{const m=u[u.length-1];m instanceof d&&f instanceof Map&&await O(e,f,m.value,c,s,r,l,i);break}default:break}u=[]}}async function O(e,t,o,n,s,r,l,i){const f=t.get(o),a=e.resolve(f);if(!(a instanceof k))return;const g=a.dict.get("Subtype"),c=f instanceof M?f.num:-1;if(g instanceof d&&g.value==="Image"){if(c<0)return;const u=Math.hypot(n[0],n[1]),p=Math.hypot(n[2],n[3]),h=s.get(c);h?(h.widthPt=Math.max(h.widthPt,u),h.heightPt=Math.max(h.heightPt,p),h.uses+=1):s.set(c,{widthPt:u,heightPt:p,uses:1,firstPage:r});return}if(g instanceof d&&g.value==="Form"){if(c>=0&&i.has(c))return;c>=0&&i.add(c);try{const{bytes:u,remaining:p}=await y(a,w=>e.resolve(w));if(p.length)return;const h=e.get(a.dict,"Matrix"),x=Array.isArray(h)&&h.length===6?A(h.map(w=>e.resolve(w)),n):n,m=e.get(a.dict,"Resources");await v(e,u,m instanceof Map?m:new Map,x,s,r,l+1,i)}catch{}finally{c>=0&&i.delete(c)}}}function V(e,t){const o=I(e,"ID",t);if(o<0)return e.length;for(let n=o+3;n<e.length-1;n+=1){if(e[n]!==69||e[n+1]!==73)continue;const s=e[n-1],r=e[n+2]??32;if((s===32||s===10||s===13||s===9)&&(r===32||r===10||r===13||r===9||r===47||r===91||r===81))return n+2}return e.length}function N(e,t){return!(t>.01)||!(e>0)?0:e*72/t}export{N as effectiveDpi,K as measurePlacements};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{decodeStream}from'./filters.js';
+import{
+indexOfAscii,Name,Parser,PdfStream,Ref,
+}from'./objects.js';
+const MAX_DEPTH=12;
+export async function measurePlacements(doc){
+const found=new Map();
+const pages=collectPages(doc);
+for(const[index,page]of pages.entries()){
+const content=await contentBytes(doc,page);
+if(!content)continue;
+const resources=inheritedResources(doc,page);
+try{
+await walk(doc,content,resources,IDENTITY,found,index+1,0,new Set());
+}catch{
+}
+}
+return found;
+}
+const IDENTITY=[1,0,0,1,0,0];
+function multiply(a,b){
+return[
+a[0]*b[0]+a[1]*b[2],
+a[0]*b[1]+a[1]*b[3],
+a[2]*b[0]+a[3]*b[2],
+a[2]*b[1]+a[3]*b[3],
+a[4]*b[0]+a[5]*b[2]+b[4],
+a[4]*b[1]+a[5]*b[3]+b[5],
+];
+}
+function collectPages(doc){
+const pages=[];
+const seen=new Set();
+const walkTree=(node,depth)=>{
+if(!(node instanceof Map)||depth>64||pages.length>5000)return;
+const kids=doc.get(node,'Kids');
+if(!Array.isArray(kids)){
+pages.push(node);
+return;
+}
+for(const kid of kids){
+if(kid instanceof Ref){
+if(seen.has(kid.key))continue;
+seen.add(kid.key);
+}
+walkTree(doc.resolve(kid),depth+1);
+}
+};
+walkTree(doc.get(doc.catalog,'Pages'),0);
+return pages;
+}
+function inheritedResources(doc,page){
+let node=page;
+for(let depth=0;node instanceof Map&&depth<64;depth+=1){
+const resources=doc.get(node,'Resources');
+if(resources instanceof Map)return resources;
+node=doc.get(node,'Parent');
+}
+return new Map();
+}
+async function contentBytes(doc,page){
+const contents=doc.get(page,'Contents');
+const streams=(Array.isArray(contents)?contents:[contents])
+.map((entry)=>doc.resolve(entry))
+.filter((entry)=>entry instanceof PdfStream);
+if(!streams.length)return null;
+const parts=[];
+let total=0;
+for(const stream of streams){
+try{
+const{bytes,remaining}=await decodeStream(stream,(v)=>doc.resolve(v));
+if(remaining.length)continue;
+parts.push(bytes);
+total+=bytes.length+1;
+}catch{
+}
+}
+if(!parts.length)return null;
+const joined=new Uint8Array(total);
+let at=0;
+for(const part of parts){
+joined.set(part,at);
+at+=part.length;
+joined[at]=0x0a;
+at+=1;
+}
+return joined;
+}
+async function walk(doc,bytes,resources,matrix,found,page,depth,active){
+if(depth>MAX_DEPTH)return;
+const xobjects=doc.get(resources,'XObject');
+const parser=new Parser(bytes,0);
+const stack=[];
+let ctm=matrix;
+let operands=[];
+for(;;){
+parser.skip();
+if(parser.pos>=bytes.length)return;
+const code=bytes[parser.pos];
+const startsValue=code===0x2f||code===0x28||code===0x5b
+||code===0x3c||code===0x2e||code===0x2b||code===0x2d
+||(code>=0x30&&code<=0x39);
+if(startsValue){
+try{
+operands.push(parser.parseValue());
+}catch{
+parser.pos+=1;
+operands=[];
+}
+if(operands.length>32)operands=operands.slice(-8);
+continue;
+}
+const operator=parser.peekKeyword();
+if(!operator){parser.pos+=1;continue;}
+parser.pos+=operator.length;
+if(operator==='true'||operator==='false'||operator==='null'){
+operands.push(operator==='true');
+continue;
+}
+switch(operator){
+case'q':
+stack.push(ctm);
+break;
+case'Q':
+ctm=stack.pop()??IDENTITY;
+break;
+case'cm':{
+const six=operands.slice(-6);
+if(six.length===6&&six.every((n)=>typeof n==='number')){
+ctm=multiply(six,ctm);
+}
+break;
+}
+case'BI':
+parser.pos=endOfInlineImage(bytes,parser.pos);
+break;
+case'Do':{
+const named=operands[operands.length-1];
+if(named instanceof Name&&xobjects instanceof Map){
+await paint(doc,xobjects,named.value,ctm,found,page,depth,active);
+}
+break;
+}
+default:
+break;
+}
+operands=[];
+}
+}
+async function paint(doc,xobjects,key,ctm,found,page,depth,active){
+const ref=xobjects.get(key);
+const target=doc.resolve(ref);
+if(!(target instanceof PdfStream))return;
+const subtype=target.dict.get('Subtype');
+const num=ref instanceof Ref?ref.num:-1;
+if(subtype instanceof Name&&subtype.value==='Image'){
+if(num<0)return;
+const widthPt=Math.hypot(ctm[0],ctm[1]);
+const heightPt=Math.hypot(ctm[2],ctm[3]);
+const existing=found.get(num);
+if(existing){
+existing.widthPt=Math.max(existing.widthPt,widthPt);
+existing.heightPt=Math.max(existing.heightPt,heightPt);
+existing.uses+=1;
+}else{
+found.set(num,{widthPt,heightPt,uses:1,firstPage:page});
+}
+return;
+}
+if(subtype instanceof Name&&subtype.value==='Form'){
+if(num>=0&&active.has(num))return;
+if(num>=0)active.add(num);
+try{
+const{bytes,remaining}=await decodeStream(target,(v)=>doc.resolve(v));
+if(remaining.length)return;
+const own=doc.get(target.dict,'Matrix');
+const inner=Array.isArray(own)&&own.length===6
+?multiply(own.map((n)=>doc.resolve(n)),ctm)
+:ctm;
+const formResources=doc.get(target.dict,'Resources');
+await walk(doc,bytes,formResources instanceof Map?formResources:new Map(),
+inner,found,page,depth+1,active);
+}catch{
+}finally{
+if(num>=0)active.delete(num);
+}
+}
+}
+function endOfInlineImage(bytes,from){
+const id=indexOfAscii(bytes,'ID',from);
+if(id<0)return bytes.length;
+for(let at=id+3;at<bytes.length-1;at+=1){
+if(bytes[at]!==0x45||bytes[at+1]!==0x49)continue;
+const before=bytes[at-1];
+const after=bytes[at+2]??0x20;
+const spaced=before===0x20||before===0x0a||before===0x0d||before===0x09;
+const ended=after===0x20||after===0x0a||after===0x0d||after===0x09
+||after===0x2f||after===0x5b||after===0x51;
+if(spaced&&ended)return at+2;
+}
+return bytes.length;
+}
+export function effectiveDpi(pixels,points){
+if(!(points>0.01)||!(pixels>0))return 0;
+return(pixels*72)/points;
+}

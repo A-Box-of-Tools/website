@@ -1,2 +1,104 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-(function(){"use strict";var d="abox-lang",i="abox-lang-from",v=/^[a-z]{2,3}(-[a-z0-9]{2,8})*$/i;function m(t,r){try{var e=window[t].getItem(r);return e&&v.test(e)?e:null}catch{return null}}function A(t,r){try{window[t].removeItem(r)}catch{}}function p(t,r,e){try{window[t].setItem(r,e)}catch{}}function C(){for(var t=document.querySelectorAll('link[rel="alternate"][hreflang]'),r=[],e=0;e<t.length;e+=1)r.push({tag:t[e].getAttribute("hreflang"),path:new URL(t[e].getAttribute("href"),location.href).pathname});return r}function y(t,r){for(var e=0;e<t.length;e+=1){for(var n=String(t[e]).toLowerCase(),a=n.split("-")[0],g=0;g<r.length;g+=1)if(r[g].tag.toLowerCase()===n)return r[g];for(var f=0;f<r.length;f+=1)if(r[f].tag.toLowerCase().split("-")[0]===a)return r[f]}return null}function L(t,r){for(var e=0;e<t.length;e+=1)if(t[e].tag.toLowerCase()===String(r).toLowerCase())return t[e];return null}for(var l=C(),w=document.documentElement.getAttribute("lang")||"",u=[],c=null,o=0;o<l.length;o+=1)l[o].tag==="x-default"?c=l[o]:u.push(l[o]);var S=!1;if(c&&u.length>1&&c.path===location.pathname){var s=m("localStorage",d),h=s&&L(u,s)||(s?null:y(navigator.languages||[navigator.language],u));h&&h.path!==location.pathname&&(p("sessionStorage",i,w),S=!0,location.replace(h.path+location.search+location.hash))}document.addEventListener("click",function(t){var r=t.target;if(!(!r||!r.closest)){var e=r.closest("a[hreflang]");if(!(!e||!e.closest(".lang-switch, .lang-pick, .lang-auto"))){var n=e.getAttribute("hreflang");n&&v.test(n)&&p("localStorage",d,n)}}});function b(t){document.readyState!=="loading"?t():document.addEventListener("DOMContentLoaded",t)}S||b(function(){var t=m("sessionStorage",i);if(A("sessionStorage",i),!(!t||t===w)){var r=document.getElementById("lang-auto"),e='a[hreflang="'+t+'"]',n=document.querySelector(".lang-switch "+e+", .lang-pick "+e);if(!(!r||!n)){var a=r.querySelector(".lang-auto-back");a&&(a.setAttribute("href",n.getAttribute("href")),a.setAttribute("hreflang",t),a.setAttribute("lang",t),a.textContent=n.textContent.trim(),r.hidden=!1)}}})})();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+(function(){
+'use strict';
+var CHOICE='abox-lang';
+var MOVED='abox-lang-from';
+var TAG=/^[a-z]{2,3}(-[a-z0-9]{2,8})*$/i;
+function read(store,key){
+try{
+var value=window[store].getItem(key);
+return value&&TAG.test(value)?value:null;
+}catch(err){
+return null;
+}
+}
+function forget(store,key){
+try{
+window[store].removeItem(key);
+}catch(err){}
+}
+function remember(store,key,value){
+try{
+window[store].setItem(key,value);
+}catch(err){}
+}
+function offered(){
+var links=document.querySelectorAll('link[rel="alternate"][hreflang]');
+var out=[];
+for(var i=0;i<links.length;i+=1){
+out.push({
+tag:links[i].getAttribute('hreflang'),
+path:new URL(links[i].getAttribute('href'),location.href).pathname,
+});
+}
+return out;
+}
+function preferred(wanted,available){
+for(var i=0;i<wanted.length;i+=1){
+var want=String(wanted[i]).toLowerCase();
+var root=want.split('-')[0];
+for(var j=0;j<available.length;j+=1){
+if(available[j].tag.toLowerCase()===want)return available[j];
+}
+for(var k=0;k<available.length;k+=1){
+if(available[k].tag.toLowerCase().split('-')[0]===root)return available[k];
+}
+}
+return null;
+}
+function named(available,tag){
+for(var i=0;i<available.length;i+=1){
+if(available[i].tag.toLowerCase()===String(tag).toLowerCase())return available[i];
+}
+return null;
+}
+var all=offered();
+var here=document.documentElement.getAttribute('lang')||'';
+var languages=[];
+var base=null;
+for(var i=0;i<all.length;i+=1){
+if(all[i].tag==='x-default')base=all[i];
+else languages.push(all[i]);
+}
+var leaving=false;
+if(base&&languages.length>1&&base.path===location.pathname){
+var choice=read('localStorage',CHOICE);
+var want=(choice&&named(languages,choice))
+||(choice?null:preferred(navigator.languages||[navigator.language],languages));
+if(want&&want.path!==location.pathname){
+remember('sessionStorage',MOVED,here);
+leaving=true;
+location.replace(want.path+location.search+location.hash);
+}
+}
+document.addEventListener('click',function(event){
+var target=event.target;
+if(!target||!target.closest)return;
+var link=target.closest('a[hreflang]');
+if(!link||!link.closest('.lang-switch, .lang-pick, .lang-auto'))return;
+var tag=link.getAttribute('hreflang');
+if(tag&&TAG.test(tag))remember('localStorage',CHOICE,tag);
+});
+function ready(fn){
+if(document.readyState!=='loading')fn();
+else document.addEventListener('DOMContentLoaded',fn);
+}
+if(!leaving){
+ready(function(){
+var from=read('sessionStorage',MOVED);
+forget('sessionStorage',MOVED);
+if(!from||from===here)return;
+var notice=document.getElementById('lang-auto');
+var wanted='a[hreflang="'+from+'"]';
+var link=document.querySelector('.lang-switch '+wanted+', .lang-pick '+wanted);
+if(!notice||!link)return;
+var back=notice.querySelector('.lang-auto-back');
+if(!back)return;
+back.setAttribute('href',link.getAttribute('href'));
+back.setAttribute('hreflang',from);
+back.setAttribute('lang',from);
+back.textContent=link.textContent.trim();
+notice.hidden=false;
+});
+}
+}());

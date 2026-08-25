@@ -1,2 +1,560 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as y}from"./shared/phrases.js";import{wireFilePicker as J,readingLabel as Q}from"./shared/file-picker.js";import{loadImages as Z,releaseItem as T,sortItems as ee,moveItem as A,decodeFull as te,clampDelay as B,DEFAULT_DELAY as ne,MIN_DELAY as D,MAX_DELAY as I}from"./images.js";import{drawFrame as oe,resolveOutputSize as re,MAX_SIDE as ae}from"./compose.js";import{encodeGif as se,loopValue as le}from"./encode.js";const o=e=>document.getElementById(e),t={dropzone:o("dropzone"),fileInput:o("file-input"),list:o("frame-list"),listToolbar:o("list-toolbar"),reorderHint:o("reorder-hint"),countLabel:o("count-label"),clearAll:o("clear-all"),bulk:o("bulk-delay"),bulkAmount:o("bulk-amount"),bulkUnit:o("bulk-unit"),bulkNote:o("bulk-note"),applyBulk:o("apply-bulk"),size:o("size"),sizeCustom:o("size-custom"),customWidth:o("custom-width"),customHeight:o("custom-height"),sizeNote:o("size-note"),fit:o("fit"),background:o("background"),backgroundField:o("background-field"),colors:o("colors"),paletteMode:o("palette-mode"),paletteNote:o("palette-note"),dither:o("dither"),loopMode:o("loop-mode"),loopTimes:o("loop-times"),transparent:o("transparent"),transparentNote:o("transparent-note"),previewFrame:o("preview-frame"),preview:o("preview"),previewEmpty:o("preview-empty"),sumFrames:o("sum-frames"),sumDuration:o("sum-duration"),sumSize:o("sum-size"),sumLoop:o("sum-loop"),exportBtn:o("export"),cancelBtn:o("cancel"),progressWrap:o("progress-wrap"),progressBar:o("progress-bar"),progressLabel:o("progress-label"),error:o("error"),result:o("result"),resultImage:o("result-image"),resultInfo:o("result-info"),download:o("download"),privacyToggle:o("privacy-toggle"),privacyPanel:o("privacy-panel"),networkCount:o("network-count"),networkDot:o("network-dot"),offlineStatus:o("offline-status"),offlineDot:o("offline-dot")};let a=[],k=!1,L=null,E=null,W=0;const P=J({input:t.fileInput,dropzone:t.dropzone,onFiles(e){ie(e)}});async function ie(e){if(e?.length){P.busy(Q(e.length));try{const{items:n,skipped:r}=await Z(e,R());a=a.concat(n),r.length?C(`Skipped ${r.length} file(s) that could not be read as images: ${r.slice(0,3).join(", ")}${r.length>3?"\u2026":""}`):Y()}finally{P.done()}u()}}function U(e){const n=Number(t.bulkAmount.value);return!Number.isFinite(n)||n<=0?ne:B(e==="fps"?1/n:n)}const R=()=>U(t.bulkUnit.value);let O="large",p=null,v=null;function $(){for(const e of t.list.querySelectorAll(".insert-before, .insert-after"))e.classList.remove("insert-before","insert-after")}function ce(e,n){const r=document.createElement("li");r.className="frame-item",r.dataset.index=String(n);const s=document.createElement("button");s.type="button",s.className="drag-handle",s.draggable=!0,s.textContent="\u22EE\u22EE",s.title=`Drag to reorder ${e.name}`,s.setAttribute("aria-label",`Drag to reorder ${e.name}`);const i=document.createElement("div");i.className="thumb-wrap",i.draggable=!0;const f=document.createElement("img");f.src=e.thumbUrl,f.alt=e.name,f.draggable=!1,i.append(f);const b=document.createElement("span");b.className="order-badge",b.textContent=String(n+1),i.append(b);const l=document.createElement("button");l.type="button",l.className="remove-btn",l.textContent="\xD7",l.title=`Remove ${e.name}`,l.setAttribute("aria-label",`Remove ${e.name}`),l.addEventListener("click",()=>{T(e),a.splice(n,1),u()}),i.append(l);const m=document.createElement("div");m.className="frame-meta";const S=document.createElement("p");S.className="frame-name",S.textContent=e.name,S.title=`${e.name} \u2014 ${e.width}\xD7${e.height}`,m.append(S);const w=document.createElement("div");w.className="frame-controls";const d=document.createElement("input");d.type="number",d.min=String(D),d.max=String(I),d.step="0.05",d.value=String(e.delay),d.setAttribute("aria-label",`Seconds to hold ${e.name}`),d.addEventListener("change",()=>{e.delay=B(d.value),d.value=String(e.delay),z()}),w.append(d);const N=document.createElement("span");N.className="unit",N.textContent="sec",w.append(N);const g=document.createElement("button");g.type="button",g.className="move-btn",g.textContent="\u2039",g.title="Move earlier",g.setAttribute("aria-label",`Move ${e.name} earlier`),g.disabled=n===0,g.addEventListener("click",()=>{A(a,n,n-1),u()}),w.append(g);const h=document.createElement("button");h.type="button",h.className="move-btn",h.textContent="\u203A",h.title="Move later",h.setAttribute("aria-label",`Move ${e.name} later`),h.disabled=n===a.length-1,h.addEventListener("click",()=>{A(a,n,n+1),u()}),w.append(h),m.append(w),r.append(s,i,m);const X=c=>{p=n,r.classList.add("dragging"),c.dataTransfer.effectAllowed="move",c.dataTransfer.setData("text/plain",String(n))},K=()=>{p=null,v=null,r.classList.remove("dragging"),$()};for(const c of[s,i])c.addEventListener("dragstart",X),c.addEventListener("dragend",K);return r.addEventListener("dragover",c=>{if(p===null)return;c.preventDefault(),c.dataTransfer.dropEffect="move";const M=r.getBoundingClientRect(),F=c.clientX>M.left+M.width/2;$(),r.classList.add(F?"insert-after":"insert-before"),v={index:n,after:F}}),r.addEventListener("drop",c=>{c.preventDefault(),c.stopPropagation(),j()}),r}function j(){if(p===null||v===null){$();return}let e=v.after?v.index+1:v.index;p<e&&(e-=1);const n=p;if(p=null,v=null,n===e){$();return}A(a,n,e),u()}function u(){t.list.replaceChildren(...a.map(ce)),t.list.className=`frame-list view-${O}`;const e=a.length>0;t.listToolbar.hidden=!e,t.reorderHint.hidden=a.length<2,t.bulk.hidden=!e,t.countLabel.textContent=`${a.length} frame${a.length===1?"":"s"}`,t.exportBtn.disabled=!e||k,q(),z(),G()}for(const e of document.querySelectorAll("[data-sort]"))e.addEventListener("click",()=>{ee(a,e.dataset.sort),u()});for(const e of document.querySelectorAll("[data-view]"))e.addEventListener("click",()=>{O=e.dataset.view;for(const n of document.querySelectorAll("[data-view]"))n.classList.toggle("active",n===e),n.setAttribute("aria-pressed",String(n===e));u()});t.list.addEventListener("dragover",e=>{p!==null&&e.preventDefault()}),t.list.addEventListener("drop",e=>{p!==null&&(e.preventDefault(),j())}),t.clearAll.addEventListener("click",()=>{if(a.length){for(const e of a)T(e);a=[],u()}}),t.applyBulk.addEventListener("click",()=>{const e=R();for(const n of a)n.delay=e;u()}),t.bulkUnit.addEventListener("change",()=>{const e=U(t.bulkUnit.value==="fps"?"seconds":"fps"),n=t.bulkUnit.value==="fps";t.bulkAmount.min=n?"1":String(D),t.bulkAmount.max=String(n?Math.round(1/D):I),t.bulkAmount.step=n?"1":"0.05",t.bulkAmount.value=String(n?Math.min(50,Math.max(1,Math.round(1/e))):e)});function x(){const{width:e,height:n}=re(t.size.value,a,{width:Number(t.customWidth.value),height:Number(t.customHeight.value)}),r=t.loopMode.value;return{width:e,height:n,fit:t.fit.value,background:t.background.value,colors:Number(t.colors.value),dither:t.dither.value==="on",sharedPalette:t.paletteMode.value==="shared",transparent:t.transparent.value==="on",loop:le(r,t.loopTimes.value),loopMode:r}}let H=0;function de(){clearTimeout(H),H=setTimeout(G,150)}function q(){t.sizeCustom.hidden=t.size.value!=="custom",t.loopTimes.hidden=t.loopMode.value!=="times";const e=x();t.backgroundField.style.visibility=t.fit.value==="contain"&&!e.transparent?"visible":"hidden",t.size.value==="custom"?t.sizeNote.textContent=`Output ${e.width} \xD7 ${e.height}, up to ${ae} px a side.`:a.length?t.sizeNote.textContent=`Each frame is ${e.width} \xD7 ${e.height}.`:t.sizeNote.textContent="The shape comes from your images.",t.paletteNote.textContent=e.sharedPalette?"Steadier colour between frames, and a smaller file. Takes a second pass.":"Sharpest colour. Can shift between frames of the same scene.",t.transparentNote.textContent=e.transparent?"A GIF pixel is either fully transparent or not at all, so soft edges get a hard one.":"",t.previewFrame.classList.toggle("checkered",e.transparent)}function _(e){const n=Math.round(e),r=Math.floor(n/60),s=n%60;return r?`${r}m ${String(s).padStart(2,"0")}s`:`${e.toFixed(2)}s`}function z(){if(!a.length){t.sumFrames.textContent="\u2014",t.sumDuration.textContent="\u2014",t.sumSize.textContent="\u2014",t.sumLoop.textContent="\u2014",t.bulkNote.textContent="";return}const e=x(),n=a.reduce((s,i)=>s+i.delay,0);t.sumFrames.textContent=String(a.length),t.sumDuration.textContent=_(n),t.sumSize.textContent=`${e.width} \xD7 ${e.height}`,t.sumLoop.textContent=e.loopMode==="forever"?"Forever":e.loopMode==="once"?"Once":`${e.loop} times`;const r=n/a.length;t.bulkNote.textContent=`${_(n)} in all, about ${(1/r).toFixed(1)} frames a second`}async function G(){const e=++W;if(!a.length){t.preview.classList.add("empty"),t.previewEmpty.hidden=!1;return}const n=x();t.preview.width=n.width,t.preview.height=n.height;const r=t.preview.getContext("2d");let s;try{s=await te(a[0])}catch{return}if(e!==W){s.close();return}try{oe(r,s,{fit:n.fit,background:n.transparent?null:n.background}),t.preview.classList.remove("empty"),t.previewEmpty.hidden=!0}finally{s.close()}}const ue=[t.size,t.customWidth,t.customHeight,t.fit,t.background,t.colors,t.paletteMode,t.dither,t.loopMode,t.loopTimes,t.transparent];for(const e of ue)for(const n of["change","input"])e.addEventListener(n,()=>{q(),z(),de()});function C(e){t.error.textContent=e,t.error.hidden=!1}function Y(){t.error.hidden=!0,t.error.textContent=""}function V({phase:e,done:n,total:r}){const s=r>0?Math.min(1,n/r):0;t.progressBar.style.width=`${(s*100).toFixed(1)}%`;const i=e==="palette"?"Choosing colours":"Writing frame";t.progressLabel.textContent=`${i} \u2014 ${n.toLocaleString()} of ${r.toLocaleString()} (${Math.round(s*100)}%)`}function me(){const e=new Date;return`animation-${[e.getFullYear(),String(e.getMonth()+1).padStart(2,"0"),String(e.getDate()).padStart(2,"0")].join("-")}.gif`}function pe(e){return e<1024*1024?`${(e/1024).toFixed(0)} KB`:`${(e/1024/1024).toFixed(1)} MB`}async function fe(){if(k||!a.length)return;Y(),k=!0,L=new AbortController,t.exportBtn.disabled=!0,t.cancelBtn.hidden=!1,t.progressWrap.hidden=!1,t.result.hidden=!0,V({phase:"palette",done:0,total:1});const e=x();try{const{blob:n,frames:r}=await se({items:a,settings:e,onProgress:V,signal:L.signal});E&&URL.revokeObjectURL(E),E=URL.createObjectURL(n),t.resultImage.src=E,t.download.href=E,t.download.download=me(),t.resultInfo.textContent=`GIF \xB7 ${e.width}\xD7${e.height} \xB7 ${r} frames \xB7 ${pe(n.size)}`,t.result.hidden=!1,t.progressWrap.hidden=!0,t.result.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(n){t.progressWrap.hidden=!0,n?.name!=="AbortError"&&(C(n?.message||"Something went wrong while making the GIF."),console.error(n))}finally{k=!1,L=null,t.cancelBtn.hidden=!0,t.exportBtn.disabled=a.length===0}}t.exportBtn.addEventListener("click",fe),t.cancelBtn.addEventListener("click",()=>L?.abort()),window.addEventListener("beforeunload",e=>{k&&(e.preventDefault(),e.returnValue="")}),t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const ge=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function he(){const e=new Set,n=new Set,r=s=>{for(const l of s){if(l.name.startsWith("blob:")||l.name.startsWith("data:"))continue;const m=new URL(l.name,location.href);m.origin!==location.origin&&(ge.test(m.hostname)?e.add(m.hostname):n.add(m.hostname))}const i=performance.getEntriesByType("resource").filter(l=>!l.name.startsWith("blob:")&&!l.name.startsWith("data:")).length,f=n.size===0,b=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a file.`;t.networkCount.textContent=f?`your images have gone nowhere. ${i} files loaded.${b}`:`something contacted ${[...n].join(", ")}, which this tool never does.${b}`,t.networkCount.className=f?"good":"warn",t.networkDot.className=`live-dot ${f?"good":"warn"}`};r(performance.getEntriesByType("resource"));try{new PerformanceObserver(s=>r(s.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function ve(){const e=(n,r)=>{t.offlineStatus.textContent=n,t.offlineDot.className="live-dot",r&&(t.offlineStatus.title=r,console.info("Offline caching unavailable:",r))};if(!("serviceWorker"in navigator)){e(y("offline.none"));return}if(!window.isSecureContext){e(y("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=y("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(n){e(y("offline.failed"),n.message)}}window.addEventListener("error",e=>{C(y("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{C(y("error.broke",{detail:e.reason?.message??e.reason}))}),u(),he(),ve(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{
+loadImages,releaseItem,sortItems,moveItem,decodeFull,
+clampDelay,DEFAULT_DELAY,MIN_DELAY,MAX_DELAY,
+}from'./images.js';
+import{drawFrame,resolveOutputSize,MAX_SIDE}from'./compose.js';
+import{encodeGif,loopValue}from'./encode.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+list:$('frame-list'),
+listToolbar:$('list-toolbar'),
+reorderHint:$('reorder-hint'),
+countLabel:$('count-label'),
+clearAll:$('clear-all'),
+bulk:$('bulk-delay'),
+bulkAmount:$('bulk-amount'),
+bulkUnit:$('bulk-unit'),
+bulkNote:$('bulk-note'),
+applyBulk:$('apply-bulk'),
+size:$('size'),
+sizeCustom:$('size-custom'),
+customWidth:$('custom-width'),
+customHeight:$('custom-height'),
+sizeNote:$('size-note'),
+fit:$('fit'),
+background:$('background'),
+backgroundField:$('background-field'),
+colors:$('colors'),
+paletteMode:$('palette-mode'),
+paletteNote:$('palette-note'),
+dither:$('dither'),
+loopMode:$('loop-mode'),
+loopTimes:$('loop-times'),
+transparent:$('transparent'),
+transparentNote:$('transparent-note'),
+previewFrame:$('preview-frame'),
+preview:$('preview'),
+previewEmpty:$('preview-empty'),
+sumFrames:$('sum-frames'),
+sumDuration:$('sum-duration'),
+sumSize:$('sum-size'),
+sumLoop:$('sum-loop'),
+exportBtn:$('export'),
+cancelBtn:$('cancel'),
+progressWrap:$('progress-wrap'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+error:$('error'),
+result:$('result'),
+resultImage:$('result-image'),
+resultInfo:$('result-info'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let items=[];
+let exporting=false;
+let abortController=null;
+let lastResultUrl=null;
+let previewToken=0;
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+addFiles(files);
+},
+});
+async function addFiles(files){
+if(!files?.length)return;
+picker.busy(readingLabel(files.length));
+try{
+const{items:loaded,skipped}=await loadImages(files,defaultDelay());
+items=items.concat(loaded);
+if(skipped.length){
+showError(`Skipped ${skipped.length} file(s) that could not be read as images: ${skipped.slice(0, 3).join(', ')}${skipped.length > 3 ? '…' : ''}`);
+}else{
+clearError();
+}
+}finally{
+picker.done();
+}
+render();
+}
+function defaultDelayFrom(unit){
+const typed=Number(el.bulkAmount.value);
+if(!Number.isFinite(typed)||typed<=0)return DEFAULT_DELAY;
+return clampDelay(unit==='fps'?1/typed:typed);
+}
+const defaultDelay=()=>defaultDelayFrom(el.bulkUnit.value);
+let view='large';
+let dragIndex=null;
+let dropAt=null;
+function clearDropMarkers(){
+for(const node of el.list.querySelectorAll('.insert-before, .insert-after')){
+node.classList.remove('insert-before','insert-after');
+}
+}
+function buildItemNode(item,index){
+const li=document.createElement('li');
+li.className='frame-item';
+li.dataset.index=String(index);
+const handle=document.createElement('button');
+handle.type='button';
+handle.className='drag-handle';
+handle.draggable=true;
+handle.textContent='⋮⋮';
+handle.title=`Drag to reorder ${item.name}`;
+handle.setAttribute('aria-label',`Drag to reorder ${item.name}`);
+const thumbWrap=document.createElement('div');
+thumbWrap.className='thumb-wrap';
+thumbWrap.draggable=true;
+const img=document.createElement('img');
+img.src=item.thumbUrl;
+img.alt=item.name;
+img.draggable=false;
+thumbWrap.append(img);
+const badge=document.createElement('span');
+badge.className='order-badge';
+badge.textContent=String(index+1);
+thumbWrap.append(badge);
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='remove-btn';
+remove.textContent='×';
+remove.title=`Remove ${item.name}`;
+remove.setAttribute('aria-label',`Remove ${item.name}`);
+remove.addEventListener('click',()=>{
+releaseItem(item);
+items.splice(index,1);
+render();
+});
+thumbWrap.append(remove);
+const meta=document.createElement('div');
+meta.className='frame-meta';
+const name=document.createElement('p');
+name.className='frame-name';
+name.textContent=item.name;
+name.title=`${item.name} — ${item.width}×${item.height}`;
+meta.append(name);
+const controls=document.createElement('div');
+controls.className='frame-controls';
+const amount=document.createElement('input');
+amount.type='number';
+amount.min=String(MIN_DELAY);
+amount.max=String(MAX_DELAY);
+amount.step='0.05';
+amount.value=String(item.delay);
+amount.setAttribute('aria-label',`Seconds to hold ${item.name}`);
+amount.addEventListener('change',()=>{
+item.delay=clampDelay(amount.value);
+amount.value=String(item.delay);
+updateSummary();
+});
+controls.append(amount);
+const unit=document.createElement('span');
+unit.className='unit';
+unit.textContent='sec';
+controls.append(unit);
+const earlier=document.createElement('button');
+earlier.type='button';
+earlier.className='move-btn';
+earlier.textContent='‹';
+earlier.title='Move earlier';
+earlier.setAttribute('aria-label',`Move ${item.name} earlier`);
+earlier.disabled=index===0;
+earlier.addEventListener('click',()=>{moveItem(items,index,index-1);render();});
+controls.append(earlier);
+const later=document.createElement('button');
+later.type='button';
+later.className='move-btn';
+later.textContent='›';
+later.title='Move later';
+later.setAttribute('aria-label',`Move ${item.name} later`);
+later.disabled=index===items.length-1;
+later.addEventListener('click',()=>{moveItem(items,index,index+1);render();});
+controls.append(later);
+meta.append(controls);
+li.append(handle,thumbWrap,meta);
+const startDrag=(event)=>{
+dragIndex=index;
+li.classList.add('dragging');
+event.dataTransfer.effectAllowed='move';
+event.dataTransfer.setData('text/plain',String(index));
+};
+const endDrag=()=>{
+dragIndex=null;
+dropAt=null;
+li.classList.remove('dragging');
+clearDropMarkers();
+};
+for(const source of[handle,thumbWrap]){
+source.addEventListener('dragstart',startDrag);
+source.addEventListener('dragend',endDrag);
+}
+li.addEventListener('dragover',(event)=>{
+if(dragIndex===null)return;
+event.preventDefault();
+event.dataTransfer.dropEffect='move';
+const rect=li.getBoundingClientRect();
+const after=event.clientX>rect.left+rect.width/2;
+clearDropMarkers();
+li.classList.add(after?'insert-after':'insert-before');
+dropAt={index,after};
+});
+li.addEventListener('drop',(event)=>{
+event.preventDefault();
+event.stopPropagation();
+applyDrop();
+});
+return li;
+}
+function applyDrop(){
+if(dragIndex===null||dropAt===null){
+clearDropMarkers();
+return;
+}
+let target=dropAt.after?dropAt.index+1:dropAt.index;
+if(dragIndex<target)target-=1;
+const from=dragIndex;
+dragIndex=null;
+dropAt=null;
+if(from===target){
+clearDropMarkers();
+return;
+}
+moveItem(items,from,target);
+render();
+}
+function render(){
+el.list.replaceChildren(...items.map(buildItemNode));
+el.list.className=`frame-list view-${view}`;
+const any=items.length>0;
+el.listToolbar.hidden=!any;
+el.reorderHint.hidden=items.length<2;
+el.bulk.hidden=!any;
+el.countLabel.textContent=`${items.length} frame${items.length === 1 ? '' : 's'}`;
+el.exportBtn.disabled=!any||exporting;
+syncSettingControls();
+updateSummary();
+updatePreview();
+}
+for(const button of document.querySelectorAll('[data-sort]')){
+button.addEventListener('click',()=>{
+sortItems(items,button.dataset.sort);
+render();
+});
+}
+for(const button of document.querySelectorAll('[data-view]')){
+button.addEventListener('click',()=>{
+view=button.dataset.view;
+for(const other of document.querySelectorAll('[data-view]')){
+other.classList.toggle('active',other===button);
+other.setAttribute('aria-pressed',String(other===button));
+}
+render();
+});
+}
+el.list.addEventListener('dragover',(event)=>{
+if(dragIndex!==null)event.preventDefault();
+});
+el.list.addEventListener('drop',(event)=>{
+if(dragIndex===null)return;
+event.preventDefault();
+applyDrop();
+});
+el.clearAll.addEventListener('click',()=>{
+if(!items.length)return;
+for(const item of items)releaseItem(item);
+items=[];
+render();
+});
+el.applyBulk.addEventListener('click',()=>{
+const delay=defaultDelay();
+for(const item of items)item.delay=delay;
+render();
+});
+el.bulkUnit.addEventListener('change',()=>{
+const seconds=defaultDelayFrom(el.bulkUnit.value==='fps'?'seconds':'fps');
+const toFps=el.bulkUnit.value==='fps';
+el.bulkAmount.min=toFps?'1':String(MIN_DELAY);
+el.bulkAmount.max=toFps?String(Math.round(1/MIN_DELAY)):String(MAX_DELAY);
+el.bulkAmount.step=toFps?'1':'0.05';
+el.bulkAmount.value=toFps
+?String(Math.min(50,Math.max(1,Math.round(1/seconds))))
+:String(seconds);
+});
+function currentSettings(){
+const{width,height}=resolveOutputSize(el.size.value,items,{
+width:Number(el.customWidth.value),
+height:Number(el.customHeight.value),
+});
+const mode=el.loopMode.value;
+return{
+width,
+height,
+fit:el.fit.value,
+background:el.background.value,
+colors:Number(el.colors.value),
+dither:el.dither.value==='on',
+sharedPalette:el.paletteMode.value==='shared',
+transparent:el.transparent.value==='on',
+loop:loopValue(mode,el.loopTimes.value),
+loopMode:mode,
+};
+}
+let previewTimer=0;
+function schedulePreview(){
+clearTimeout(previewTimer);
+previewTimer=setTimeout(updatePreview,150);
+}
+function syncSettingControls(){
+el.sizeCustom.hidden=el.size.value!=='custom';
+el.loopTimes.hidden=el.loopMode.value!=='times';
+const settings=currentSettings();
+el.backgroundField.style.visibility=
+el.fit.value==='contain'&&!settings.transparent?'visible':'hidden';
+if(el.size.value==='custom'){
+el.sizeNote.textContent=`Output ${settings.width} × ${settings.height}, up to ${MAX_SIDE} px a side.`;
+}else if(items.length){
+el.sizeNote.textContent=`Each frame is ${settings.width} × ${settings.height}.`;
+}else{
+el.sizeNote.textContent='The shape comes from your images.';
+}
+el.paletteNote.textContent=settings.sharedPalette
+?'Steadier colour between frames, and a smaller file. Takes a second pass.'
+:'Sharpest colour. Can shift between frames of the same scene.';
+el.transparentNote.textContent=settings.transparent
+?'A GIF pixel is either fully transparent or not at all, so soft edges get a hard one.'
+:'';
+el.previewFrame.classList.toggle('checkered',settings.transparent);
+}
+function formatDuration(seconds){
+const whole=Math.round(seconds);
+const mins=Math.floor(whole/60);
+const secs=whole%60;
+return mins?`${mins}m ${String(secs).padStart(2, '0')}s`:`${seconds.toFixed(2)}s`;
+}
+function updateSummary(){
+if(!items.length){
+el.sumFrames.textContent='—';
+el.sumDuration.textContent='—';
+el.sumSize.textContent='—';
+el.sumLoop.textContent='—';
+el.bulkNote.textContent='';
+return;
+}
+const settings=currentSettings();
+const total=items.reduce((sum,item)=>sum+item.delay,0);
+el.sumFrames.textContent=String(items.length);
+el.sumDuration.textContent=formatDuration(total);
+el.sumSize.textContent=`${settings.width} × ${settings.height}`;
+el.sumLoop.textContent=settings.loopMode==='forever'
+?'Forever'
+:(settings.loopMode==='once'?'Once':`${settings.loop} times`);
+const each=total/items.length;
+el.bulkNote.textContent=
+`${formatDuration(total)} in all, about ${(1 / each).toFixed(1)} frames a second`;
+}
+async function updatePreview(){
+const token=++previewToken;
+if(!items.length){
+el.preview.classList.add('empty');
+el.previewEmpty.hidden=false;
+return;
+}
+const settings=currentSettings();
+el.preview.width=settings.width;
+el.preview.height=settings.height;
+const ctx=el.preview.getContext('2d');
+let bitmap;
+try{
+bitmap=await decodeFull(items[0]);
+}catch{
+return;
+}
+if(token!==previewToken){
+bitmap.close();
+return;
+}
+try{
+drawFrame(ctx,bitmap,{
+fit:settings.fit,
+background:settings.transparent?null:settings.background,
+});
+el.preview.classList.remove('empty');
+el.previewEmpty.hidden=true;
+}finally{
+bitmap.close();
+}
+}
+const settingsInputs=[
+el.size,el.customWidth,el.customHeight,
+el.fit,el.background,el.colors,el.paletteMode,el.dither,
+el.loopMode,el.loopTimes,el.transparent,
+];
+for(const input of settingsInputs){
+for(const type of['change','input']){
+input.addEventListener(type,()=>{
+syncSettingControls();
+updateSummary();
+schedulePreview();
+});
+}
+}
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+}
+function clearError(){
+el.error.hidden=true;
+el.error.textContent='';
+}
+function setProgress({phase,done,total}){
+const fraction=total>0?Math.min(1,done/total):0;
+el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
+const what=phase==='palette'?'Choosing colours':'Writing frame';
+el.progressLabel.textContent=
+`${what} — ${done.toLocaleString()} of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+}
+function outputFilename(){
+const now=new Date();
+const stamp=[
+now.getFullYear(),
+String(now.getMonth()+1).padStart(2,'0'),
+String(now.getDate()).padStart(2,'0'),
+].join('-');
+return`animation-${stamp}.gif`;
+}
+function formatBytes(bytes){
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
+return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}
+async function runExport(){
+if(exporting||!items.length)return;
+clearError();
+exporting=true;
+abortController=new AbortController();
+el.exportBtn.disabled=true;
+el.cancelBtn.hidden=false;
+el.progressWrap.hidden=false;
+el.result.hidden=true;
+setProgress({phase:'palette',done:0,total:1});
+const settings=currentSettings();
+try{
+const{blob,frames}=await encodeGif({
+items,
+settings,
+onProgress:setProgress,
+signal:abortController.signal,
+});
+if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
+lastResultUrl=URL.createObjectURL(blob);
+el.resultImage.src=lastResultUrl;
+el.download.href=lastResultUrl;
+el.download.download=outputFilename();
+el.resultInfo.textContent=
+`GIF · ${settings.width}×${settings.height} · ${frames} frames · ${formatBytes(blob.size)}`;
+el.result.hidden=false;
+el.progressWrap.hidden=true;
+el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}catch(error){
+el.progressWrap.hidden=true;
+if(error?.name!=='AbortError'){
+showError(error?.message||'Something went wrong while making the GIF.');
+console.error(error);
+}
+}finally{
+exporting=false;
+abortController=null;
+el.cancelBtn.hidden=true;
+el.exportBtn.disabled=items.length===0;
+}
+}
+el.exportBtn.addEventListener('click',runExport);
+el.cancelBtn.addEventListener('click',()=>abortController?.abort());
+window.addEventListener('beforeunload',(event)=>{
+if(!exporting)return;
+event.preventDefault();
+event.returnValue='';
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+el.networkCount.textContent=clean
+?`your images have gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+render();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById("boot-warning")?.remove();

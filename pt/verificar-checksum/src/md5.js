@@ -1,2 +1,85 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{bitLength as m,blocks as p}from"./blocks.js";const w=new Int32Array([-680876936,-389564586,606105819,-1044525330,-176418897,1200080426,-1473231341,-45705983,1770035416,-1958414417,-42063,-1990404162,1804603682,-40341101,-1502002290,1236535329,-165796510,-1069501632,643717713,-373897302,-701558691,38016083,-660478335,-405537848,568446438,-1019803690,-187363961,1163531501,-1444681467,-51403784,1735328473,-1926607734,-378558,-2022574463,1839030562,-35309556,-1530992060,1272893353,-155497632,-1094730640,681279174,-358537222,-722521979,76029189,-640364487,-421815835,530742520,-995338651,-198630844,1126891415,-1416354905,-57434055,1700485571,-1894986606,-1051523,-2054922799,1873313359,-30611744,-1560198380,1309151649,-145523070,-1120210379,718787259,-343485551]),g=new Int32Array([7,12,17,22,5,9,14,20,4,11,16,23,6,10,15,21]);function A(){let n=1732584193,s=-271733879,r=-1732584194,o=271733878;const i=new Int32Array(16),l=p(64,d=>{for(let e=0;e<16;e+=1)i[e]=d.getInt32(e*4,!0);let a=n,x=s,t=r,f=o;for(let e=0;e<64;e+=1){let c,b;e<16?(c=x&t|~x&f,b=e):e<32?(c=f&x|~f&t,b=5*e+1&15):e<48?(c=x^t^f,b=3*e+5&15):(c=t^(x|~f),b=7*e&15);const u=a+c+w[e]+i[b]|0,I=g[e>>4<<2|e&3];a=f,f=t,t=x,x=x+(u<<I|u>>>32-I)|0}n=n+a|0,s=s+x|0,r=r+t|0,o=o+f|0});return{update(d){l.update(d)},digest(){l.finish(8,(x,t,f)=>{const{hi:e,lo:c}=m(f);x.setUint32(t,c,!0),x.setUint32(t+4,e,!0)});const d=new Uint8Array(16),a=new DataView(d.buffer);return a.setInt32(0,n,!0),a.setInt32(4,s,!0),a.setInt32(8,r,!0),a.setInt32(12,o,!0),d}}}export{A as md5};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{bitLength,blocks}from'./blocks.js';
+const K=new Int32Array([
+0xd76aa478|0,0xe8c7b756|0,0x242070db|0,0xc1bdceee|0,
+0xf57c0faf|0,0x4787c62a|0,0xa8304613|0,0xfd469501|0,
+0x698098d8|0,0x8b44f7af|0,0xffff5bb1|0,0x895cd7be|0,
+0x6b901122|0,0xfd987193|0,0xa679438e|0,0x49b40821|0,
+0xf61e2562|0,0xc040b340|0,0x265e5a51|0,0xe9b6c7aa|0,
+0xd62f105d|0,0x02441453|0,0xd8a1e681|0,0xe7d3fbc8|0,
+0x21e1cde6|0,0xc33707d6|0,0xf4d50d87|0,0x455a14ed|0,
+0xa9e3e905|0,0xfcefa3f8|0,0x676f02d9|0,0x8d2a4c8a|0,
+0xfffa3942|0,0x8771f681|0,0x6d9d6122|0,0xfde5380c|0,
+0xa4beea44|0,0x4bdecfa9|0,0xf6bb4b60|0,0xbebfbc70|0,
+0x289b7ec6|0,0xeaa127fa|0,0xd4ef3085|0,0x04881d05|0,
+0xd9d4d039|0,0xe6db99e5|0,0x1fa27cf8|0,0xc4ac5665|0,
+0xf4292244|0,0x432aff97|0,0xab9423a7|0,0xfc93a039|0,
+0x655b59c3|0,0x8f0ccc92|0,0xffeff47d|0,0x85845dd1|0,
+0x6fa87e4f|0,0xfe2ce6e0|0,0xa3014314|0,0x4e0811a1|0,
+0xf7537e82|0,0xbd3af235|0,0x2ad7d2bb|0,0xeb86d391|0,
+]);
+const S=new Int32Array([
+7,12,17,22,
+5,9,14,20,
+4,11,16,23,
+6,10,15,21,
+]);
+export function md5(){
+let a0=0x67452301|0;
+let b0=0xefcdab89|0;
+let c0=0x98badcfe|0;
+let d0=0x10325476|0;
+const m=new Int32Array(16);
+const compress=(view)=>{
+for(let i=0;i<16;i+=1)m[i]=view.getInt32(i*4,true);
+let a=a0;
+let b=b0;
+let c=c0;
+let d=d0;
+for(let i=0;i<64;i+=1){
+let f;
+let g;
+if(i<16){
+f=(b&c)|(~b&d);
+g=i;
+}else if(i<32){
+f=(d&b)|(~d&c);
+g=(5*i+1)&15;
+}else if(i<48){
+f=b^c^d;
+g=(3*i+5)&15;
+}else{
+f=c^(b|~d);
+g=(7*i)&15;
+}
+const sum=(a+f+K[i]+m[g])|0;
+const shift=S[((i>>4)<<2)|(i&3)];
+a=d;
+d=c;
+c=b;
+b=(b+((sum<<shift)|(sum>>>(32-shift))))|0;
+}
+a0=(a0+a)|0;
+b0=(b0+b)|0;
+c0=(c0+c)|0;
+d0=(d0+d)|0;
+};
+const state=blocks(64,compress);
+return{
+update(chunk){state.update(chunk);},
+digest(){
+state.finish(8,(view,at,bytes)=>{
+const{hi,lo}=bitLength(bytes);
+view.setUint32(at,lo,true);
+view.setUint32(at+4,hi,true);
+});
+const out=new Uint8Array(16);
+const view=new DataView(out.buffer);
+view.setInt32(0,a0,true);
+view.setInt32(4,b0,true);
+view.setInt32(8,c0,true);
+view.setInt32(12,d0,true);
+return out;
+},
+};
+}

@@ -1,2 +1,74 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const y=6,g=["fill","pixelate","blur"],s={light:{id:"light",label:"Light",blocks:14,blur:22},medium:{id:"medium",label:"Medium",blocks:9,blur:14},heavy:{id:"heavy",label:"Heavy",blocks:5,blur:7}},a=t=>s[t]??s.medium,i=(t,n,o)=>Math.max(n,Math.min(t,o));function M(t,n){const o=Math.min(t.width,t.height),h=Math.round(o/a(n).blocks);return i(h,3,Math.max(3,o))}function p(t,n){const o=Math.min(t.width,t.height),h=Math.round(o/a(n).blur);return i(h,2,Math.max(2,o))}function w(t,n){const o=M(t,n);return{across:Math.ceil(t.width/o),down:Math.ceil(t.height/o),size:o}}function m(t,n){const o=Math.round(Math.min(t.x,n.x)),h=Math.round(Math.min(t.y,n.y));return{x:o,y:h,width:Math.round(Math.abs(n.x-t.x)),height:Math.round(Math.abs(n.y-t.y))}}const f=t=>t.width>=6&&t.height>=6;function u(t,n){const o=i(Math.round(t.width),0,n.width),h=i(Math.round(t.height),0,n.height);return{x:i(Math.round(t.x),0,n.width-o),y:i(Math.round(t.y),0,n.height-h),width:o,height:h}}const S=(t,n,o,h)=>u({...t,x:t.x+n,y:t.y+o},h),k=["n","s","e","w","ne","nw","se","sw"];function E(t,n,o,h,l){const e=String(n??""),x=t.x+(e.includes("w")?o:0),r=t.y+(e.includes("n")?h:0),d=t.x+t.width+(e.includes("e")?o:0),c=t.y+t.height+(e.includes("s")?h:0);return u(m({x,y:r},{x:d,y:c}),l)}const b=(t,n)=>n.x>=t.x&&n.x<=t.x+t.width&&n.y>=t.y&&n.y<=t.y+t.height;function I(t,n){for(let o=t.length-1;o>=0;o-=1)if(b(t[o],n))return t[o];return null}export{k as HANDLES,y as MIN_SIZE,s as STRENGTHS,g as STYLES,w as blockCount,M as blockSize,p as blurRadius,u as clampRect,b as contains,m as fromDrag,f as isUsable,S as moveRect,E as resizeRect,a as strengthOf,I as topmostAt};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const MIN_SIZE=6;
+export const STYLES=['fill','pixelate','blur'];
+export const STRENGTHS={
+light:{id:'light',label:'Light',blocks:14,blur:22},
+medium:{id:'medium',label:'Medium',blocks:9,blur:14},
+heavy:{id:'heavy',label:'Heavy',blocks:5,blur:7},
+};
+export const strengthOf=(id)=>STRENGTHS[id]??STRENGTHS.medium;
+const clamp=(value,low,high)=>Math.max(low,Math.min(value,high));
+export function blockSize(rect,strength){
+const shorter=Math.min(rect.width,rect.height);
+const size=Math.round(shorter/strengthOf(strength).blocks);
+return clamp(size,3,Math.max(3,shorter));
+}
+export function blurRadius(rect,strength){
+const shorter=Math.min(rect.width,rect.height);
+const radius=Math.round(shorter/strengthOf(strength).blur);
+return clamp(radius,2,Math.max(2,shorter));
+}
+export function blockCount(rect,strength){
+const size=blockSize(rect,strength);
+return{
+across:Math.ceil(rect.width/size),
+down:Math.ceil(rect.height/size),
+size,
+};
+}
+export function fromDrag(start,end){
+const x=Math.round(Math.min(start.x,end.x));
+const y=Math.round(Math.min(start.y,end.y));
+return{
+x,
+y,
+width:Math.round(Math.abs(end.x-start.x)),
+height:Math.round(Math.abs(end.y-start.y)),
+};
+}
+export const isUsable=(rect)=>rect.width>=MIN_SIZE&&rect.height>=MIN_SIZE;
+export function clampRect(rect,source){
+const width=clamp(Math.round(rect.width),0,source.width);
+const height=clamp(Math.round(rect.height),0,source.height);
+return{
+x:clamp(Math.round(rect.x),0,source.width-width),
+y:clamp(Math.round(rect.y),0,source.height-height),
+width,
+height,
+};
+}
+export const moveRect=(rect,dx,dy,source)=>clampRect(
+{...rect,x:rect.x+dx,y:rect.y+dy},source,
+);
+export const HANDLES=['n','s','e','w','ne','nw','se','sw'];
+export function resizeRect(rect,handle,dx,dy,source){
+const name=String(handle??'');
+const left=rect.x+(name.includes('w')?dx:0);
+const top=rect.y+(name.includes('n')?dy:0);
+const right=rect.x+rect.width+(name.includes('e')?dx:0);
+const bottom=rect.y+rect.height+(name.includes('s')?dy:0);
+return clampRect(
+fromDrag({x:left,y:top},{x:right,y:bottom}),
+source,
+);
+}
+export const contains=(rect,point)=>(
+point.x>=rect.x&&point.x<=rect.x+rect.width
+&&point.y>=rect.y&&point.y<=rect.y+rect.height
+);
+export function topmostAt(regions,point){
+for(let i=regions.length-1;i>=0;i-=1){
+if(contains(regions[i],point))return regions[i];
+}
+return null;
+}

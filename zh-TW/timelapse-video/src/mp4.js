@@ -1,2 +1,212 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const H=9e4;function u(n){const e=new Uint8Array(n.length);for(let o=0;o<n.length;o++)e[o]=n.charCodeAt(o);return e}function s(n){return new Uint8Array([n>>8&255,n&255])}function t(n){return new Uint8Array([n>>>24&255,n>>>16&255,n>>>8&255,n&255])}function c(n){return new Uint8Array(n)}function d(n){let e=0;for(const f of n)e+=f.byteLength;const o=new Uint8Array(e);let r=0;for(const f of n)o.set(f,r),r+=f.byteLength;return o}function h(n,...e){const o=d(e);return d([t(o.byteLength+8),u(n),o])}function i(n,e,o,...r){const f=new Uint8Array([e,o>>16&255,o>>8&255,o&255]);return h(n,f,...r)}const w=d([t(65536),t(0),t(0),t(0),t(65536),t(0),t(0),t(0),t(1073741824)]);function C(){return h("ftyp",u("isom"),t(512),u("isom"),u("iso2"),u("avc1"),u("mp41"))}function M(n){return i("mvhd",0,0,t(0),t(0),t(9e4),t(n),t(65536),s(256),c(2),c(8),w,c(24),t(2))}function U(n,e,o){return i("tkhd",0,7,t(0),t(0),t(1),c(4),t(n),c(8),s(0),s(0),s(0),c(2),w,t(e<<16),t(o<<16))}function B(n){return i("mdhd",0,0,t(0),t(0),t(9e4),t(n),s(21956),s(0))}function T(){return i("hdlr",0,0,t(0),u("vide"),c(12),u("VideoHandler\0"))}function I(){return h("dinf",i("dref",0,0,t(1),i("url ",0,1)))}function z(n,e,o){const r=new Uint8Array(32);return h("avc1",c(6),s(1),s(0),s(0),c(12),s(n),s(e),t(4718592),t(4718592),t(0),s(1),r,s(24),s(65535),h("avcC",o))}function S(n){const e=[];for(const r of n){const f=e[e.length-1];f&&f.delta===r?f.count++:e.push({count:1,delta:r})}const o=[t(e.length)];for(const r of e)o.push(t(r.count),t(r.delta));return i("stts",0,0,...o)}function k(n){const e=[t(n.length)];for(const o of n)e.push(t(o+1));return i("stss",0,0,...e)}function D(n){return i("stsc",0,0,t(1),t(1),t(n),t(1))}function N(n){const e=[t(0),t(n.length)];for(const o of n)e.push(t(o));return i("stsz",0,0,...e)}function O(n){return i("stco",0,0,t(1),t(n))}class K{constructor({width:e,height:o}){this.width=e,this.height=o,this.avcC=null,this.samples=[],this.totalBytes=0}setDecoderConfig(e){if(!this.avcC){if(!e)throw new Error("Encoder produced no decoder configuration.");this.avcC=new Uint8Array(e instanceof ArrayBuffer?e:e.buffer.slice(e.byteOffset,e.byteOffset+e.byteLength))}}addSample(e,o,r){this.samples.push({data:e,isKey:o,durationTs:Math.max(1,Math.round(r*9e4))}),this.totalBytes+=e.byteLength}finalize(){if(!this.samples.length)throw new Error("No frames were encoded.");if(!this.avcC)throw new Error("Encoder never reported a decoder configuration.");if(this.totalBytes>4294967280)throw new Error("Video exceeds the 4 GB limit. Lower the quality, resolution, or duration.");const e=this.samples.map(a=>a.durationTs),o=this.samples.map(a=>a.data.byteLength),r=[];this.samples.forEach((a,l)=>{a.isKey&&r.push(l)});const f=e.reduce((a,l)=>a+l,0),g=r.length===this.samples.length,m=a=>{const l=h("stbl",i("stsd",0,0,t(1),z(this.width,this.height,this.avcC)),S(e),...g?[]:[k(r)],D(this.samples.length),N(o),O(a)),E=h("minf",i("vmhd",0,1,s(0),c(6)),I(),l),A=h("mdia",B(f),T(),E),L=h("trak",U(f,this.width,this.height),A);return h("moov",M(f),L)},y=C(),p=m(0),b=y.byteLength+p.byteLength+8,x=m(b);if(x.byteLength!==p.byteLength)throw new Error("Internal error: moov size was not stable between passes.");const v=d([t(this.totalBytes+8),u("mdat")]);return new Blob([y,x,v,...this.samples.map(a=>a.data)],{type:"video/mp4"})}}export{K as Mp4Muxer};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const TIMESCALE=90000;
+function ascii(s){
+const out=new Uint8Array(s.length);
+for(let i=0;i<s.length;i++)out[i]=s.charCodeAt(i);
+return out;
+}
+function u16(n){
+return new Uint8Array([(n>>8)&0xff,n&0xff]);
+}
+function u32(n){
+return new Uint8Array([(n>>>24)&0xff,(n>>>16)&0xff,(n>>>8)&0xff,n&0xff]);
+}
+function zeros(n){
+return new Uint8Array(n);
+}
+function concat(parts){
+let length=0;
+for(const p of parts)length+=p.byteLength;
+const out=new Uint8Array(length);
+let at=0;
+for(const p of parts){
+out.set(p,at);
+at+=p.byteLength;
+}
+return out;
+}
+function box(type,...payload){
+const body=concat(payload);
+return concat([u32(body.byteLength+8),ascii(type),body]);
+}
+function fullBox(type,version,flags,...payload){
+const header=new Uint8Array([version,(flags>>16)&0xff,(flags>>8)&0xff,flags&0xff]);
+return box(type,header,...payload);
+}
+const UNITY_MATRIX=concat([
+u32(0x00010000),u32(0),u32(0),
+u32(0),u32(0x00010000),u32(0),
+u32(0),u32(0),u32(0x40000000),
+]);
+function ftyp(){
+return box('ftyp',ascii('isom'),u32(0x200),ascii('isom'),ascii('iso2'),ascii('avc1'),ascii('mp41'));
+}
+function mvhd(durationTs){
+return fullBox('mvhd',0,0,
+u32(0),
+u32(0),
+u32(TIMESCALE),
+u32(durationTs),
+u32(0x00010000),
+u16(0x0100),
+zeros(2),
+zeros(8),
+UNITY_MATRIX,
+zeros(24),
+u32(2),
+);
+}
+function tkhd(durationTs,width,height){
+return fullBox('tkhd',0,0x000007,
+u32(0),
+u32(0),
+u32(1),
+zeros(4),
+u32(durationTs),
+zeros(8),
+u16(0),
+u16(0),
+u16(0),
+zeros(2),
+UNITY_MATRIX,
+u32(width<<16),
+u32(height<<16),
+);
+}
+function mdhd(durationTs){
+return fullBox('mdhd',0,0,
+u32(0),
+u32(0),
+u32(TIMESCALE),
+u32(durationTs),
+u16(0x55c4),
+u16(0),
+);
+}
+function hdlr(){
+return fullBox('hdlr',0,0,
+u32(0),
+ascii('vide'),
+zeros(12),
+ascii('VideoHandler\0'),
+);
+}
+function dinf(){
+return box('dinf',fullBox('dref',0,0,u32(1),fullBox('url ',0,1)));
+}
+function avc1(width,height,avcC){
+const compressorName=new Uint8Array(32);
+return box('avc1',
+zeros(6),
+u16(1),
+u16(0),
+u16(0),
+zeros(12),
+u16(width),
+u16(height),
+u32(0x00480000),
+u32(0x00480000),
+u32(0),
+u16(1),
+compressorName,
+u16(0x0018),
+u16(0xffff),
+box('avcC',avcC),
+);
+}
+function stts(durations){
+const entries=[];
+for(const d of durations){
+const last=entries[entries.length-1];
+if(last&&last.delta===d)last.count++;
+else entries.push({count:1,delta:d});
+}
+const payload=[u32(entries.length)];
+for(const e of entries)payload.push(u32(e.count),u32(e.delta));
+return fullBox('stts',0,0,...payload);
+}
+function stss(keyframeIndices){
+const payload=[u32(keyframeIndices.length)];
+for(const i of keyframeIndices)payload.push(u32(i+1));
+return fullBox('stss',0,0,...payload);
+}
+function stsc(sampleCount){
+return fullBox('stsc',0,0,u32(1),u32(1),u32(sampleCount),u32(1));
+}
+function stsz(sizes){
+const payload=[u32(0),u32(sizes.length)];
+for(const s of sizes)payload.push(u32(s));
+return fullBox('stsz',0,0,...payload);
+}
+function stco(mdatDataOffset){
+return fullBox('stco',0,0,u32(1),u32(mdatDataOffset));
+}
+export class Mp4Muxer{
+constructor({width,height}){
+this.width=width;
+this.height=height;
+this.avcC=null;
+this.samples=[];
+this.totalBytes=0;
+}
+setDecoderConfig(description){
+if(this.avcC)return;
+if(!description)throw new Error('Encoder produced no decoder configuration.');
+this.avcC=new Uint8Array(
+description instanceof ArrayBuffer?description:description.buffer.slice(
+description.byteOffset,description.byteOffset+description.byteLength,
+),
+);
+}
+addSample(data,isKey,durationSeconds){
+this.samples.push({
+data,
+isKey,
+durationTs:Math.max(1,Math.round(durationSeconds*TIMESCALE)),
+});
+this.totalBytes+=data.byteLength;
+}
+finalize(){
+if(!this.samples.length)throw new Error('No frames were encoded.');
+if(!this.avcC)throw new Error('Encoder never reported a decoder configuration.');
+if(this.totalBytes>0xfffffff0){
+throw new Error('Video exceeds the 4 GB limit. Lower the quality, resolution, or duration.');
+}
+const durations=this.samples.map((s)=>s.durationTs);
+const sizes=this.samples.map((s)=>s.data.byteLength);
+const keyframes=[];
+this.samples.forEach((s,i)=>{if(s.isKey)keyframes.push(i);});
+const totalDuration=durations.reduce((a,b)=>a+b,0);
+const allKeyframes=keyframes.length===this.samples.length;
+const buildMoov=(mdatDataOffset)=>{
+const stbl=box('stbl',
+fullBox('stsd',0,0,u32(1),avc1(this.width,this.height,this.avcC)),
+stts(durations),
+...(allKeyframes?[]:[stss(keyframes)]),
+stsc(this.samples.length),
+stsz(sizes),
+stco(mdatDataOffset),
+);
+const minf=box('minf',
+fullBox('vmhd',0,1,u16(0),zeros(6)),
+dinf(),
+stbl,
+);
+const mdia=box('mdia',mdhd(totalDuration),hdlr(),minf);
+const trak=box('trak',tkhd(totalDuration,this.width,this.height),mdia);
+return box('moov',mvhd(totalDuration),trak);
+};
+const header=ftyp();
+const probe=buildMoov(0);
+const mdatDataOffset=header.byteLength+probe.byteLength+8;
+const moov=buildMoov(mdatDataOffset);
+if(moov.byteLength!==probe.byteLength){
+throw new Error('Internal error: moov size was not stable between passes.');
+}
+const mdatHeader=concat([u32(this.totalBytes+8),ascii('mdat')]);
+return new Blob(
+[header,moov,mdatHeader,...this.samples.map((s)=>s.data)],
+{type:'video/mp4'},
+);
+}
+}

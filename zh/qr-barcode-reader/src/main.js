@@ -1,2 +1,376 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import*as h from"./camera.js";import{scan as k}from"./scan.js";import{wireFilePicker as R,readingLabel as A}from"./shared/file-picker.js";import{phrase as d}from"./shared/phrases.js";const c=t=>document.getElementById(t),o={dropzone:c("dropzone"),fileInput:c("file-input"),startCamera:c("start-camera"),stopCamera:c("stop-camera"),pickError:c("pick-error"),cameraCard:c("camera-card"),video:c("video"),cameraPickRow:c("camera-pick-row"),cameraPick:c("camera-pick"),torchRow:c("torch-row"),torch:c("torch"),cameraStatus:c("camera-status"),resultsCard:c("results-card"),results:c("results"),resultTemplate:c("result-template"),privacyToggle:c("privacy-toggle"),privacyPanel:c("privacy-panel"),networkCount:c("network-count"),networkDot:c("network-dot"),offlineStatus:c("offline-status"),offlineDot:c("offline-dot")},S=1800,p=document.createElement("canvas");function b(t,e,r,a){const n=Math.min(1,a/Math.max(e,r)),i={width:Math.max(1,Math.round(e*n)),height:Math.max(1,Math.round(r*n))};p.width=i.width,p.height=i.height;const l=p.getContext("2d",{willReadFrequently:!0});return l.fillStyle="#ffffff",l.fillRect(0,0,i.width,i.height),l.drawImage(t,0,0,i.width,i.height),l.getImageData(0,0,i.width,i.height)}async function O(t){if(typeof createImageBitmap=="function")try{return await createImageBitmap(t)}catch{}const e=URL.createObjectURL(t);try{return await new Promise((r,a)=>{const n=new Image;n.onload=()=>r(n),n.onerror=()=>a(new Error("not a picture this browser can open")),n.src=e})}finally{setTimeout(()=>URL.revokeObjectURL(e),0)}}async function N(t){const e=await O(t),r=e.width??e.naturalWidth,a=e.height??e.naturalHeight;let n=k(b(e,r,a,S));return!n&&Math.max(r,a)>S&&(n=k(b(e,r,a,Math.max(r,a)))),e.close?.(),n}const y=[],L=20,F={ean13:"EAN-13",ean8:"EAN-8",upca:"UPC-A",upce:"UPC-E",itf14:"ITF-14",itf:"Interleaved 2 of 5",code128:"Code 128",code39:"Code 39"},q=t=>F[t]??d(`symbology.${t}`);function W(t,e,r){const a=Math.max(1,Math.floor(240/e)),n=2,i=(e+n*2)*a;t.width=i,t.height=i;const l=t.getContext("2d");l.fillStyle="#ffffff",l.fillRect(0,0,i,i),l.fillStyle="#000000";for(let u=0;u<e;u+=1)for(let s=0;s<e;s+=1)r[u*e+s]&&l.fillRect((s+n)*a,(u+n)*a,a,a)}function D(t,e){const r=(a,n)=>{const i=t.querySelector(`[data-fact="${a}"]`);if(!i)return;const l=i.closest("div");if(n==null||n===""){l?.hasAttribute("data-optional")&&(l.hidden=!0);return}i.textContent=String(n)};for(const a of t.querySelectorAll("[data-only]"))a.hidden=a.dataset.only!==e.kind;if(r("symbol",q(e.symbology)),r("characters",[...e.text].length),r("how",d(`how.${e.how}`)+(e.dense?d("how.dense"):"")),e.kind==="qr"){r("version",`${e.version} (${d("value.modules",{n:e.dimension})})`),r("level",e.level),r("mask",e.mask),r("repaired",e.corrections);const a=[...new Set(e.segments.map(n=>n.mode))];r("mode",a.map(n=>d(`mode.${n}`)).join(", ")),r("eci",e.eci===null?"":e.eci),r("part",e.structuredAppend?`${e.structuredAppend.index} / ${e.structuredAppend.total}`:"")}else r("lines",e.lines)}function j(t){const e=o.resultTemplate.content.firstElementChild.cloneNode(!0),r=t.payload;e.querySelector(".result-kind").textContent=d(r.kindKey),e.querySelector(".result-symbology").textContent=q(t.symbology),e.querySelector(".result-text").textContent=t.text,e.dataset.kind=r.kind;const a=e.querySelector(".result-rows");for(const s of r.rows){const f=document.createElement("div"),E=document.createElement("dt"),g=document.createElement("dd");E.textContent=d(s.key),g.textContent=s.phrase?d(s.phrase):s.value,s.emphasis&&(g.className="emphasis"),s.secret&&g.classList.add("secret"),f.append(E,g),a.append(f)}a.hidden=!r.rows.length;const n=e.querySelector(".result-warnings");for(const s of r.warnings){const f=document.createElement("li");f.textContent=d(s.key,s.values),n.append(f)}n.hidden=!r.warnings.length;const i=e.querySelector(".open");r.link&&(i.href=r.link.href,i.hidden=!1);const l=e.querySelector(".copy"),u=l.textContent;if(l.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(t.text),l.textContent=d("value.copied"),setTimeout(()=>{l.textContent=u},1600)}catch{getSelection()?.selectAllChildren(e.querySelector(".result-text"))}}),D(e,t),t.kind==="qr"&&t.modules){const s=e.querySelector(".grid-figure");W(s.querySelector(".grid"),t.dimension,t.modules),s.hidden=!1}return e}function T(t){if(y.some(e=>e===`${t.symbology}:${t.text}`))return!1;for(y.unshift(`${t.symbology}:${t.text}`),y.length=Math.min(y.length,L),o.results.prepend(j(t));o.results.children.length>L;)o.results.lastElementChild.remove();return o.resultsCard.hidden=!1,!0}function C(t){o.pickError.hidden=!1,o.pickError.textContent=d(t)}const P=R({input:o.fileInput,dropzone:o.dropzone,onFiles(t){$(t)}});async function $(t){o.pickError.hidden=!0,P.busy(A(t.length));let e=!1,r=!1;for(const a of t)try{const n=await N(a);n&&(e=T(n)||e)}catch{r=!0}P.done(),r?C("status.broken"):e||C("status.nothing")}window.addEventListener("paste",t=>{const e=[...t.clipboardData?.files??[]].filter(r=>r.type.startsWith("image/"));e.length&&(t.preventDefault(),$(e))});let m=null,w=!1,x=0;const B=120;function I(){if(!w)return;requestAnimationFrame(I);const t=performance.now();if(t-x<B)return;x=t;const e=h.frameInto(o.video,p);if(!e)return;const r=k(e,{thorough:!1});r&&T(r)&&(o.cameraCard.classList.add("hit"),setTimeout(()=>o.cameraCard.classList.remove("hit"),700))}async function M(t){o.pickError.hidden=!0;try{m&&h.close(m),m=await h.open({deviceId:t})}catch(r){m=null,C(h.reasonFor(r)),v();return}o.video.srcObject=m,o.cameraCard.hidden=!1,o.startCamera.hidden=!0,o.stopCamera.hidden=!1,o.cameraStatus.textContent=d("status.on"),await o.video.play().catch(()=>{});const e=await h.cameras();if(e.length>1&&!o.cameraPick.options.length){for(const r of e)o.cameraPick.append(new Option(r.label,r.deviceId));o.cameraPickRow.hidden=!1}if(e.length>1){const r=m.getVideoTracks()[0]?.getSettings?.().deviceId;r&&(o.cameraPick.value=r)}o.torchRow.hidden=!h.torchable(m),o.torch.checked=!1,w=!0,x=0,requestAnimationFrame(I),setTimeout(()=>{w&&(o.cameraStatus.textContent=d("status.looking"))},2500)}function v(){w=!1,m&&h.close(m),m=null,o.video.srcObject=null,o.cameraCard.hidden=!0,o.startCamera.hidden=!1,o.stopCamera.hidden=!0}o.startCamera.addEventListener("click",()=>{M()}),o.stopCamera.addEventListener("click",v),o.cameraPick.addEventListener("change",()=>{M(o.cameraPick.value)}),o.torch.addEventListener("change",()=>{h.setTorch(m,o.torch.checked)}),document.addEventListener("visibilitychange",()=>{document.hidden&&m&&v()}),window.addEventListener("pagehide",v),o.privacyToggle.addEventListener("click",()=>{const t=o.privacyPanel.hidden;o.privacyPanel.hidden=!t,o.privacyToggle.setAttribute("aria-expanded",String(t))});const U=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function z(){const t=new Set,e=new Set,r=a=>{for(const s of a){if(s.name.startsWith("blob:")||s.name.startsWith("data:"))continue;const f=new URL(s.name,location.href);f.origin!==location.origin&&(U.test(f.hostname)?t.add(f.hostname):e.add(f.hostname))}const n=performance.getEntriesByType("resource").filter(s=>!s.name.startsWith("blob:")&&!s.name.startsWith("data:")).length,i=e.size===0,l=i?d("live.clean",{total:n}):d("live.dirty",{hosts:[...e].join(", ")}),u=t.size===0?"":d("live.platform",{count:t.size});o.networkCount.textContent=u?`${l} ${u}`:l,o.networkCount.className=i?"good":"warn",o.networkDot.className=`live-dot ${i?"good":"warn"}`};r(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>r(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function _(){const t=(e,r)=>{o.offlineStatus.textContent=d(e),o.offlineDot.className="live-dot",r&&(o.offlineStatus.title=r,console.info("Offline caching unavailable:",r))};if(!("serviceWorker"in navigator)){t("offline.none");return}if(!window.isSecureContext){t("offline.insecure");return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,o.offlineStatus.textContent=d("offline.ready"),o.offlineStatus.className="good",o.offlineDot.className="live-dot good"}catch(e){t("offline.failed",e.message)}}window.addEventListener("error",t=>{o.pickError.hidden=!1,o.pickError.textContent=d("error.broke",{detail:t.message})}),window.addEventListener("unhandledrejection",t=>{o.pickError.hidden=!1,o.pickError.textContent=d("error.broke",{detail:t.reason?.message??t.reason})}),z(),_(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import*as camera from'./camera.js';
+import{scan}from'./scan.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{phrase}from'./shared/phrases.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+startCamera:$('start-camera'),
+stopCamera:$('stop-camera'),
+pickError:$('pick-error'),
+cameraCard:$('camera-card'),
+video:$('video'),
+cameraPickRow:$('camera-pick-row'),
+cameraPick:$('camera-pick'),
+torchRow:$('torch-row'),
+torch:$('torch'),
+cameraStatus:$('camera-status'),
+resultsCard:$('results-card'),
+results:$('results'),
+resultTemplate:$('result-template'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+const WORKING_SIDE=1800;
+const decodeCanvas=document.createElement('canvas');
+function pixelsOf(source,width,height,maxSide){
+const scale=Math.min(1,maxSide/Math.max(width,height));
+const target={
+width:Math.max(1,Math.round(width*scale)),
+height:Math.max(1,Math.round(height*scale)),
+};
+decodeCanvas.width=target.width;
+decodeCanvas.height=target.height;
+const context=decodeCanvas.getContext('2d',{willReadFrequently:true});
+context.fillStyle='#ffffff';
+context.fillRect(0,0,target.width,target.height);
+context.drawImage(source,0,0,target.width,target.height);
+return context.getImageData(0,0,target.width,target.height);
+}
+async function pictureFrom(file){
+if(typeof createImageBitmap==='function'){
+try{
+return await createImageBitmap(file);
+}catch{
+}
+}
+const url=URL.createObjectURL(file);
+try{
+return await new Promise((resolve,reject)=>{
+const image=new Image();
+image.onload=()=>resolve(image);
+image.onerror=()=>reject(new Error('not a picture this browser can open'));
+image.src=url;
+});
+}finally{
+setTimeout(()=>URL.revokeObjectURL(url),0);
+}
+}
+async function readFile(file){
+const picture=await pictureFrom(file);
+const width=picture.width??picture.naturalWidth;
+const height=picture.height??picture.naturalHeight;
+let found=scan(pixelsOf(picture,width,height,WORKING_SIDE));
+if(!found&&Math.max(width,height)>WORKING_SIDE){
+found=scan(pixelsOf(picture,width,height,Math.max(width,height)));
+}
+picture.close?.();
+return found;
+}
+const shown=[];
+const MOST_KEPT=20;
+const SYMBOLOGY_NAMES={
+ean13:'EAN-13',
+ean8:'EAN-8',
+upca:'UPC-A',
+upce:'UPC-E',
+itf14:'ITF-14',
+itf:'Interleaved 2 of 5',
+code128:'Code 128',
+code39:'Code 39',
+};
+const symbologyName=(id)=>SYMBOLOGY_NAMES[id]??phrase(`symbology.${id}`);
+function drawGrid(canvas,size,modules){
+const scale=Math.max(1,Math.floor(240/size));
+const quiet=2;
+const side=(size+quiet*2)*scale;
+canvas.width=side;
+canvas.height=side;
+const context=canvas.getContext('2d');
+context.fillStyle='#ffffff';
+context.fillRect(0,0,side,side);
+context.fillStyle='#000000';
+for(let row=0;row<size;row+=1){
+for(let column=0;column<size;column+=1){
+if(!modules[row*size+column])continue;
+context.fillRect((column+quiet)*scale,(row+quiet)*scale,scale,scale);
+}
+}
+}
+function fillFacts(node,found){
+const set=(name,value)=>{
+const cell=node.querySelector(`[data-fact="${name}"]`);
+if(!cell)return;
+const holder=cell.closest('div');
+if(value===null||value===undefined||value===''){
+if(holder?.hasAttribute('data-optional'))holder.hidden=true;
+return;
+}
+cell.textContent=String(value);
+};
+for(const holder of node.querySelectorAll('[data-only]')){
+holder.hidden=holder.dataset.only!==found.kind;
+}
+set('symbol',symbologyName(found.symbology));
+set('characters',[...found.text].length);
+set('how',phrase(`how.${found.how}`)+(found.dense?phrase('how.dense'):''));
+if(found.kind==='qr'){
+set('version',`${found.version} (${phrase('value.modules', { n: found.dimension })})`);
+set('level',found.level);
+set('mask',found.mask);
+set('repaired',found.corrections);
+const modes=[...new Set(found.segments.map((segment)=>segment.mode))];
+set('mode',modes.map((mode)=>phrase(`mode.${mode}`)).join(', '));
+set('eci',found.eci===null?'':found.eci);
+set('part',found.structuredAppend
+?`${found.structuredAppend.index} / ${found.structuredAppend.total}`:'');
+}else{
+set('lines',found.lines);
+}
+}
+function render(found){
+const node=el.resultTemplate.content.firstElementChild.cloneNode(true);
+const payload=found.payload;
+node.querySelector('.result-kind').textContent=phrase(payload.kindKey);
+node.querySelector('.result-symbology').textContent=symbologyName(found.symbology);
+node.querySelector('.result-text').textContent=found.text;
+node.dataset.kind=payload.kind;
+const rows=node.querySelector('.result-rows');
+for(const entry of payload.rows){
+const holder=document.createElement('div');
+const label=document.createElement('dt');
+const value=document.createElement('dd');
+label.textContent=phrase(entry.key);
+value.textContent=entry.phrase?phrase(entry.phrase):entry.value;
+if(entry.emphasis)value.className='emphasis';
+if(entry.secret)value.classList.add('secret');
+holder.append(label,value);
+rows.append(holder);
+}
+rows.hidden=!payload.rows.length;
+const warnings=node.querySelector('.result-warnings');
+for(const warning of payload.warnings){
+const item=document.createElement('li');
+item.textContent=phrase(warning.key,warning.values);
+warnings.append(item);
+}
+warnings.hidden=!payload.warnings.length;
+const open=node.querySelector('.open');
+if(payload.link){
+open.href=payload.link.href;
+open.hidden=false;
+}
+const copy=node.querySelector('.copy');
+const original=copy.textContent;
+copy.addEventListener('click',async()=>{
+try{
+await navigator.clipboard.writeText(found.text);
+copy.textContent=phrase('value.copied');
+setTimeout(()=>{copy.textContent=original;},1600);
+}catch{
+getSelection()?.selectAllChildren(node.querySelector('.result-text'));
+}
+});
+fillFacts(node,found);
+if(found.kind==='qr'&&found.modules){
+const figure=node.querySelector('.grid-figure');
+drawGrid(figure.querySelector('.grid'),found.dimension,found.modules);
+figure.hidden=false;
+}
+return node;
+}
+function report(found){
+if(shown.some((seen)=>seen===`${found.symbology}:${found.text}`))return false;
+shown.unshift(`${found.symbology}:${found.text}`);
+shown.length=Math.min(shown.length,MOST_KEPT);
+el.results.prepend(render(found));
+while(el.results.children.length>MOST_KEPT)el.results.lastElementChild.remove();
+el.resultsCard.hidden=false;
+return true;
+}
+function fail(key){
+el.pickError.hidden=false;
+el.pickError.textContent=phrase(key);
+}
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){void readFiles(files);},
+});
+async function readFiles(files){
+el.pickError.hidden=true;
+picker.busy(readingLabel(files.length));
+let any=false;
+let broken=false;
+for(const file of files){
+try{
+const found=await readFile(file);
+if(found)any=report(found)||any;
+}catch{
+broken=true;
+}
+}
+picker.done();
+if(broken)fail('status.broken');
+else if(!any)fail('status.nothing');
+}
+window.addEventListener('paste',(event)=>{
+const files=[...(event.clipboardData?.files??[])]
+.filter((file)=>file.type.startsWith('image/'));
+if(files.length){
+event.preventDefault();
+void readFiles(files);
+}
+});
+let stream=null;
+let looking=false;
+let lastLook=0;
+const EVERY_MS=120;
+function look(){
+if(!looking)return;
+requestAnimationFrame(look);
+const now=performance.now();
+if(now-lastLook<EVERY_MS)return;
+lastLook=now;
+const frame=camera.frameInto(el.video,decodeCanvas);
+if(!frame)return;
+const found=scan(frame,{thorough:false});
+if(found&&report(found)){
+el.cameraCard.classList.add('hit');
+setTimeout(()=>el.cameraCard.classList.remove('hit'),700);
+}
+}
+async function startCamera(deviceId){
+el.pickError.hidden=true;
+try{
+if(stream)camera.close(stream);
+stream=await camera.open({deviceId});
+}catch(error){
+stream=null;
+fail(camera.reasonFor(error));
+stopCamera();
+return;
+}
+el.video.srcObject=stream;
+el.cameraCard.hidden=false;
+el.startCamera.hidden=true;
+el.stopCamera.hidden=false;
+el.cameraStatus.textContent=phrase('status.on');
+await el.video.play().catch(()=>{});
+const devices=await camera.cameras();
+if(devices.length>1&&!el.cameraPick.options.length){
+for(const device of devices)el.cameraPick.append(new Option(device.label,device.deviceId));
+el.cameraPickRow.hidden=false;
+}
+if(devices.length>1){
+const active=stream.getVideoTracks()[0]?.getSettings?.().deviceId;
+if(active)el.cameraPick.value=active;
+}
+el.torchRow.hidden=!camera.torchable(stream);
+el.torch.checked=false;
+looking=true;
+lastLook=0;
+requestAnimationFrame(look);
+setTimeout(()=>{
+if(looking)el.cameraStatus.textContent=phrase('status.looking');
+},2500);
+}
+function stopCamera(){
+looking=false;
+if(stream)camera.close(stream);
+stream=null;
+el.video.srcObject=null;
+el.cameraCard.hidden=true;
+el.startCamera.hidden=false;
+el.stopCamera.hidden=true;
+}
+el.startCamera.addEventListener('click',()=>{void startCamera();});
+el.stopCamera.addEventListener('click',stopCamera);
+el.cameraPick.addEventListener('change',()=>{void startCamera(el.cameraPick.value);});
+el.torch.addEventListener('change',()=>{
+void camera.setTorch(stream,el.torch.checked);
+});
+document.addEventListener('visibilitychange',()=>{
+if(document.hidden&&stream)stopCamera();
+});
+window.addEventListener('pagehide',stopCamera);
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')
+&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const said=clean
+?phrase('live.clean',{total})
+:phrase('live.dirty',{hosts:[...external].join(', ')});
+const note=platform.size===0?'':phrase('live.platform',{count:platform.size});
+el.networkCount.textContent=note?`${said} ${note}`:said;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const stop=(key,detail)=>{
+el.offlineStatus.textContent=phrase(key);
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+stop('offline.none');
+return;
+}
+if(!window.isSecureContext){
+stop('offline.insecure');
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+stop('offline.failed',error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+el.pickError.hidden=false;
+el.pickError.textContent=phrase('error.broke',{detail:event.message});
+});
+window.addEventListener('unhandledrejection',(event)=>{
+el.pickError.hidden=false;
+el.pickError.textContent=phrase('error.broke',{detail:event.reason?.message??event.reason});
+});
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

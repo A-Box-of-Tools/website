@@ -1,2 +1,449 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as w}from"./shared/phrases.js";import{wireFilePicker as O}from"./shared/file-picker.js";import{demux as H,UnsupportedFile as q}from"./demux.js";import{reverseExact as V,decoderConfig as G}from"./reverse.js";import{measureFps as K,reverseByPlayback as _}from"./playback.js";import{averageFps as J,gopRanges as Q}from"./timeline.js";import{hasWebCodecs as W,hasEncoder as R,canDecode as X}from"./support.js";const r=t=>document.getElementById(t),e={dropzone:r("dropzone"),fileInput:r("file-input"),source:r("source"),srcName:r("src-name"),srcSize:r("src-size"),srcFrame:r("src-frame"),srcLength:r("src-length"),srcCodec:r("src-codec"),srcAudio:r("src-audio"),previewWrap:r("preview-wrap"),preview:r("preview"),stageNote:r("stage-note"),pathNote:r("path-note"),exportCard:r("export-card"),quality:r("quality"),keepAudio:r("keep-audio"),audioNote:r("audio-note"),sumSize:r("sum-size"),sumLength:r("sum-length"),sumFrames:r("sum-frames"),sumPath:r("sum-path"),exportBtn:r("export"),cancelBtn:r("cancel"),progressWrap:r("progress-wrap"),progressBar:r("progress-bar"),progressLabel:r("progress-label"),error:r("error"),result:r("result"),resultVideo:r("result-video"),resultInfo:r("result-info"),download:r("download"),privacyToggle:r("privacy-toggle"),privacyPanel:r("privacy-panel"),networkCount:r("network-count"),networkDot:r("network-dot"),offlineStatus:r("offline-status"),offlineDot:r("offline-dot")};let c=null,v=null,a=null,g=null,s={width:0,height:0},p=0,L=0,m=30,S=!1,d=!1,T=!1,E=!1,b=!1,y=null,x=null;const u=document.createElement("video");u.muted=!0,u.playsInline=!0,u.preload="auto";const B=O({input:e.fileInput,dropzone:e.dropzone,onFiles(t){const[o]=t;o&&Y(o)}});function A(t,o){return new Promise(n=>{const i=l=>{clearTimeout(k),t.removeEventListener("loadedmetadata",$),t.removeEventListener("error",f),n(l)},$=()=>i({ok:t.videoWidth>0&&t.videoHeight>0,width:t.videoWidth,height:t.videoHeight,duration:Number.isFinite(t.duration)?t.duration:0}),f=()=>i({ok:!1,width:0,height:0,duration:0}),k=setTimeout(f,15e3);t.addEventListener("loadedmetadata",$,{once:!0}),t.addEventListener("error",f,{once:!0}),t.src=o,t.load()})}async function Y(t){if(!b){D(),P(),E=!0,c=t,e.exportBtn.disabled=!0,B.busy("Reading the file...");try{v=URL.createObjectURL(t);const o=await A(e.preview,v);o.ok&&await A(u,v);try{a=await H(t),g=null}catch(i){a=null,g=i instanceof q?i.reason:i.message||"the file could not be read as an MP4."}let n=!1;if(a&&W()?(n=await X(G(a.video)),n||(g=`this browser will not decode ${a.video.codec} directly.`)):a&&!W()&&(g="this browser has no WebCodecs, so frames cannot be decoded one by one."),n&&o.ok&&(o.width!==a.video.displayWidth||o.height!==a.video.displayHeight)&&(n=!1,g="this file is stored turned in a way the reader and the player disagree on."),d=n,T=o.ok,!d&&!T){h(`This browser cannot open this file: ${g??"the format is not one it plays."}`),F();return}if(!R()){h("This browser has no video encoder, so nothing here can write the reversed clip. A recent Chrome, Edge or Safari will."),F();return}if(s=d?{width:a.video.displayWidth,height:a.video.displayHeight}:{width:o.width,height:o.height},p=o.duration||(a?a.duration:0),d)m=J(a.video),S=!0,L=a.video.samples.length;else{B.busy("Measuring the frame rate...");const i=await K(u);m=i.fps,S=i.measured,L=Math.max(1,Math.floor(p*m))}Z(o.ok),ee(o),e.exportCard.hidden=!1,e.exportBtn.disabled=!1,z(),U()}catch(o){console.error(o),h(o?.message||"That file could not be opened."),F()}finally{E=!1,B.done()}}}function Z(t){e.previewWrap.hidden=!t,e.stageNote.hidden=t,t||(e.stageNote.textContent="This browser will not play this file, so there is no preview. Reversing it does not go through the player, so it will still work.")}function ee(t){if(e.source.hidden=!1,e.srcName.textContent=c.name,e.srcSize.textContent=j(c.size),e.srcFrame.textContent=`${s.width} x ${s.height}`,e.srcLength.textContent=p?I(p):"unknown",a){const o=a.video.rotation?`, turned ${a.video.rotation} degrees`:"";e.srcCodec.textContent=`${a.video.codec} (${a.video.entryType})${o}`,e.srcAudio.textContent=a.audio?`${a.audio.entryType}, ${a.audio.channels} channel${a.audio.channels===1?"":"s"}, ${Math.round(a.audio.sampleRate)} Hz`:"none"}else e.srcCodec.textContent=t.ok?"read by the browser's own player":"unknown",e.srcAudio.textContent="whatever the player finds";if(e.pathNote.hidden=d,!d){const o=g??"its layout is not one the reader here understands.",n=S?`${m} frames a second, measured off a second of it`:`${m} frames a second - assumed, because this browser will not report a frame rate`;e.pathNote.textContent=`This one is reversed by stepping the browser's own player backwards through it, because ${o} That is slower than reading the file directly, and the clip is sampled at ${n}.`}}function P(){v&&(e.preview.removeAttribute("src"),e.preview.load(),u.removeAttribute("src"),u.load(),URL.revokeObjectURL(v),v=null),a=null,c=null}function F(){e.exportBtn.disabled=!0,e.source.hidden=!0,e.previewWrap.hidden=!0,e.stageNote.hidden=!0,e.exportCard.hidden=!0,e.pathNote.hidden=!0,P()}function z(){if(!e.keepAudio.checked){e.audioNote.textContent="The reversed clip will have no sound at all.";return}e.audioNote.textContent=d&&a?.audio?"Decoded, turned round sample by sample, and encoded again as AAC. That second encode is unavoidable: packets played in the other order are not a reversal.":"Read by the browser, turned round sample by sample, and encoded again as AAC."}function M(){return{width:Math.max(2,Math.floor(s.width/2)*2),height:Math.max(2,Math.floor(s.height/2)*2)}}function U(){if(!s.width)return;const t=M();e.sumSize.textContent=t.width===s.width&&t.height===s.height?`${t.width} x ${t.height}`:`${t.width} x ${t.height} (from ${s.width} x ${s.height}; H.264 has no way to store an odd-sided frame)`,e.sumLength.textContent=p?I(p):"unknown",e.sumFrames.textContent=d?`${L.toLocaleString()} in ${Q(a.video.samples).length.toLocaleString()} groups`:`about ${L.toLocaleString()}, at ${m} a second`,e.sumPath.textContent=d?"Decoded group by group from the end, into MP4":"Stepped backwards through the player, into MP4"}e.quality.addEventListener("change",U),e.keepAudio.addEventListener("change",z);function h(t){e.error.textContent=t,e.error.hidden=!1}function D(){e.error.hidden=!0,e.error.textContent=""}function N({phase:t,done:o,total:n}){const i=n>0?Math.min(1,o/n):0;if(t==="preparing")e.progressLabel.textContent="Preparing...";else if(t==="sound-reading")e.progressLabel.textContent="Reading the sound...";else if(t==="sound-writing")e.progressLabel.textContent="Reversing the sound...";else if(t==="finishing")e.progressLabel.textContent="Finishing up...";else{e.progressBar.style.width=`${(i*100).toFixed(1)}%`,e.progressLabel.textContent=`Reversing frame ${o.toLocaleString()} of ${n.toLocaleString()} (${Math.round(i*100)}%)`;return}t==="preparing"&&(e.progressBar.style.width="0%")}function te(t){return`${(c?.name??"video").replace(/\.[^.]+$/,"")}-reversed.${t}`}function j(t){return t<1024*1024?`${(t/1024).toFixed(0)} KB`:t<1024*1024*1024?`${(t/1024/1024).toFixed(1)} MB`:`${(t/1024/1024/1024).toFixed(2)} GB`}function I(t){const o=Math.max(0,Math.round(t)),n=Math.floor(o/60);return n?`${n}m ${String(o%60).padStart(2,"0")}s`:`${t<10?t.toFixed(1):o}s`}async function oe(){if(b||E||!c)return;D(),b=!0,y=new AbortController,e.exportBtn.disabled=!0,e.cancelBtn.hidden=!1,e.progressWrap.hidden=!1,e.result.hidden=!0,e.preview.pause(),N({phase:"preparing",done:0,total:1});const t=e.quality.value,o=e.keepAudio.checked;try{const n=d?await V({file:c,media:a,quality:t,keepAudio:o,onProgress:N,signal:y.signal}):await _({file:c,video:u,duration:p,fps:m,quality:t,keepAudio:o,onProgress:N,signal:y.signal});n.warning&&h(n.warning),x&&URL.revokeObjectURL(x),x=URL.createObjectURL(n.blob),e.resultVideo.src=x,e.download.href=x,e.download.download=te(n.extension);const i=M();e.resultInfo.textContent=[n.extension.toUpperCase(),`${i.width} x ${i.height}`,`${n.frames.toLocaleString()} frames`,j(n.blob.size),n.codec].join(" \xB7 "),e.result.hidden=!1,e.progressWrap.hidden=!0,e.result.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(n){e.progressWrap.hidden=!0,n?.name!=="AbortError"&&(h(n?.message||"Something went wrong while reversing."),console.error(n))}finally{b=!1,y=null,e.cancelBtn.hidden=!0,e.exportBtn.disabled=!1}}e.exportBtn.addEventListener("click",oe),e.cancelBtn.addEventListener("click",()=>y?.abort()),window.addEventListener("beforeunload",t=>{b&&(t.preventDefault(),t.returnValue="")}),e.privacyToggle.addEventListener("click",()=>{const t=e.privacyPanel.hidden;e.privacyPanel.hidden=!t,e.privacyToggle.setAttribute("aria-expanded",String(t))});const re=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function ne(){const t=new Set,o=new Set,n=i=>{for(const l of i){if(l.name.startsWith("blob:")||l.name.startsWith("data:"))continue;const C=new URL(l.name,location.href);C.origin!==location.origin&&(re.test(C.hostname)?t.add(C.hostname):o.add(C.hostname))}const $=performance.getEntriesByType("resource").filter(l=>!l.name.startsWith("blob:")&&!l.name.startsWith("data:")).length,f=o.size===0,k=t.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${t.size} host${t.size===1?"":"s"}; not one of them was given a file.`;e.networkCount.textContent=f?`your video has gone nowhere. ${$} files loaded.${k}`:`something contacted ${[...o].join(", ")}, which this tool never does.${k}`,e.networkCount.className=f?"good":"warn",e.networkDot.className=`live-dot ${f?"good":"warn"}`};n(performance.getEntriesByType("resource"));try{new PerformanceObserver(i=>n(i.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function ae(){const t=(o,n)=>{e.offlineStatus.textContent=o,e.offlineDot.className="live-dot",n&&(e.offlineStatus.title=n,console.info("Offline caching unavailable:",n))};if(!("serviceWorker"in navigator)){t(w("offline.none"));return}if(!window.isSecureContext){t(w("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,e.offlineStatus.textContent=w("offline.ready"),e.offlineStatus.className="good",e.offlineDot.className="live-dot good"}catch(o){t(w("offline.failed"),o.message)}}window.addEventListener("error",t=>{h(w("error.broke",{detail:t.message}))}),window.addEventListener("unhandledrejection",t=>{h(w("error.broke",{detail:t.reason?.message??t.reason}))}),R()||h("This browser has no video encoder (WebCodecs), so it cannot write a reversed video. Chrome, Edge and Safari 16.4 or newer can; so can Firefox 133 and newer."),ne(),ae(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker}from'./shared/file-picker.js';
+import{demux,UnsupportedFile}from'./demux.js';
+import{reverseExact,decoderConfig}from'./reverse.js';
+import{measureFps,reverseByPlayback}from'./playback.js';
+import{averageFps,gopRanges}from'./timeline.js';
+import{hasWebCodecs,hasEncoder,canDecode}from'./support.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+source:$('source'),
+srcName:$('src-name'),
+srcSize:$('src-size'),
+srcFrame:$('src-frame'),
+srcLength:$('src-length'),
+srcCodec:$('src-codec'),
+srcAudio:$('src-audio'),
+previewWrap:$('preview-wrap'),
+preview:$('preview'),
+stageNote:$('stage-note'),
+pathNote:$('path-note'),
+exportCard:$('export-card'),
+quality:$('quality'),
+keepAudio:$('keep-audio'),
+audioNote:$('audio-note'),
+sumSize:$('sum-size'),
+sumLength:$('sum-length'),
+sumFrames:$('sum-frames'),
+sumPath:$('sum-path'),
+exportBtn:$('export'),
+cancelBtn:$('cancel'),
+progressWrap:$('progress-wrap'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+error:$('error'),
+result:$('result'),
+resultVideo:$('result-video'),
+resultInfo:$('result-info'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let file=null;
+let objectUrl=null;
+let media=null;
+let fallbackReason=null;
+let source={width:0,height:0};
+let duration=0;
+let frames=0;
+let fps=30;
+let fpsMeasured=false;
+let canReverseExactly=false;
+let canPlay=false;
+let loading=false;
+let exporting=false;
+let abortController=null;
+let lastResultUrl=null;
+const worker=document.createElement('video');
+worker.muted=true;
+worker.playsInline=true;
+worker.preload='auto';
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+const[picked]=files;
+if(picked)loadFile(picked);
+},
+});
+function openInPlayer(video,url){
+return new Promise((resolve)=>{
+const done=(result)=>{
+clearTimeout(timer);
+video.removeEventListener('loadedmetadata',ok);
+video.removeEventListener('error',bad);
+resolve(result);
+};
+const ok=()=>done({
+ok:video.videoWidth>0&&video.videoHeight>0,
+width:video.videoWidth,
+height:video.videoHeight,
+duration:Number.isFinite(video.duration)?video.duration:0,
+});
+const bad=()=>done({ok:false,width:0,height:0,duration:0});
+const timer=setTimeout(bad,15000);
+video.addEventListener('loadedmetadata',ok,{once:true});
+video.addEventListener('error',bad,{once:true});
+video.src=url;
+video.load();
+});
+}
+async function loadFile(picked){
+if(exporting)return;
+clearError();
+releaseFile();
+loading=true;
+file=picked;
+el.exportBtn.disabled=true;
+picker.busy('Reading the file...');
+try{
+objectUrl=URL.createObjectURL(picked);
+const played=await openInPlayer(el.preview,objectUrl);
+if(played.ok)await openInPlayer(worker,objectUrl);
+try{
+media=await demux(picked);
+fallbackReason=null;
+}catch(error){
+media=null;
+fallbackReason=error instanceof UnsupportedFile
+?error.reason
+:(error.message||'the file could not be read as an MP4.');
+}
+let decodable=false;
+if(media&&hasWebCodecs()){
+decodable=await canDecode(decoderConfig(media.video));
+if(!decodable){
+fallbackReason=`this browser will not decode ${media.video.codec} directly.`;
+}
+}else if(media&&!hasWebCodecs()){
+fallbackReason='this browser has no WebCodecs, so frames cannot be decoded one by one.';
+}
+if(decodable&&played.ok
+&&(played.width!==media.video.displayWidth
+||played.height!==media.video.displayHeight)){
+decodable=false;
+fallbackReason='this file is stored turned in a way the reader and the player '
++'disagree on.';
+}
+canReverseExactly=decodable;
+canPlay=played.ok;
+if(!canReverseExactly&&!canPlay){
+showError('This browser cannot open this file: '
++`${fallbackReason ?? 'the format is not one it plays.'}`);
+resetView();
+return;
+}
+if(!hasEncoder()){
+showError('This browser has no video encoder, so nothing here can write the reversed '
++'clip. A recent Chrome, Edge or Safari will.');
+resetView();
+return;
+}
+source=canReverseExactly
+?{width:media.video.displayWidth,height:media.video.displayHeight}
+:{width:played.width,height:played.height};
+duration=played.duration||(media?media.duration:0);
+if(canReverseExactly){
+fps=averageFps(media.video);
+fpsMeasured=true;
+frames=media.video.samples.length;
+}else{
+picker.busy('Measuring the frame rate...');
+const measured=await measureFps(worker);
+fps=measured.fps;
+fpsMeasured=measured.measured;
+frames=Math.max(1,Math.floor(duration*fps));
+}
+showPreview(played.ok);
+describeSource(played);
+el.exportCard.hidden=false;
+el.exportBtn.disabled=false;
+updateAudioNote();
+updateSummary();
+}catch(error){
+console.error(error);
+showError(error?.message||'That file could not be opened.');
+resetView();
+}finally{
+loading=false;
+picker.done();
+}
+}
+function showPreview(playable){
+el.previewWrap.hidden=!playable;
+el.stageNote.hidden=playable;
+if(!playable){
+el.stageNote.textContent='This browser will not play this file, so there is no preview. '
++'Reversing it does not go through the player, so it will still work.';
+}
+}
+function describeSource(played){
+el.source.hidden=false;
+el.srcName.textContent=file.name;
+el.srcSize.textContent=formatBytes(file.size);
+el.srcFrame.textContent=`${source.width} x ${source.height}`;
+el.srcLength.textContent=duration?formatDuration(duration):'unknown';
+if(media){
+const turned=media.video.rotation?`, turned ${media.video.rotation} degrees`:'';
+el.srcCodec.textContent=`${media.video.codec} (${media.video.entryType})${turned}`;
+el.srcAudio.textContent=media.audio
+?`${media.audio.entryType}, ${media.audio.channels} channel`
++`${media.audio.channels === 1 ? '' : 's'}, ${Math.round(media.audio.sampleRate)} Hz`
+:'none';
+}else{
+el.srcCodec.textContent=played.ok?"read by the browser's own player":'unknown';
+el.srcAudio.textContent='whatever the player finds';
+}
+el.pathNote.hidden=canReverseExactly;
+if(!canReverseExactly){
+const why=fallbackReason??'its layout is not one the reader here understands.';
+const rate=fpsMeasured
+?`${fps} frames a second, measured off a second of it`
+:`${fps} frames a second - assumed, because this browser will not report a frame rate`;
+el.pathNote.textContent="This one is reversed by stepping the browser's own player "
++`backwards through it, because ${why} That is slower than reading the file directly, `
++`and the clip is sampled at ${rate}.`;
+}
+}
+function releaseFile(){
+if(objectUrl){
+el.preview.removeAttribute('src');
+el.preview.load();
+worker.removeAttribute('src');
+worker.load();
+URL.revokeObjectURL(objectUrl);
+objectUrl=null;
+}
+media=null;
+file=null;
+}
+function resetView(){
+el.exportBtn.disabled=true;
+el.source.hidden=true;
+el.previewWrap.hidden=true;
+el.stageNote.hidden=true;
+el.exportCard.hidden=true;
+el.pathNote.hidden=true;
+releaseFile();
+}
+function updateAudioNote(){
+const off=!el.keepAudio.checked;
+if(off){
+el.audioNote.textContent='The reversed clip will have no sound at all.';
+return;
+}
+el.audioNote.textContent=canReverseExactly&&media?.audio
+?'Decoded, turned round sample by sample, and encoded again as AAC. That second '
++'encode is unavoidable: packets played in the other order are not a reversal.'
+:'Read by the browser, turned round sample by sample, and encoded again as AAC.';
+}
+function outputFrame(){
+return{
+width:Math.max(2,Math.floor(source.width/2)*2),
+height:Math.max(2,Math.floor(source.height/2)*2),
+};
+}
+function updateSummary(){
+if(!source.width)return;
+const frame=outputFrame();
+el.sumSize.textContent=frame.width===source.width&&frame.height===source.height
+?`${frame.width} x ${frame.height}`
+:`${frame.width} x ${frame.height} (from ${source.width} x ${source.height}; `
++'H.264 has no way to store an odd-sided frame)';
+el.sumLength.textContent=duration?formatDuration(duration):'unknown';
+el.sumFrames.textContent=canReverseExactly
+?`${frames.toLocaleString()} in ${gopRanges(media.video.samples).length.toLocaleString()} `
++'groups'
+:`about ${frames.toLocaleString()}, at ${fps} a second`;
+el.sumPath.textContent=canReverseExactly
+?'Decoded group by group from the end, into MP4'
+:'Stepped backwards through the player, into MP4';
+}
+el.quality.addEventListener('change',updateSummary);
+el.keepAudio.addEventListener('change',updateAudioNote);
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+}
+function clearError(){
+el.error.hidden=true;
+el.error.textContent='';
+}
+function setProgress({phase,done,total}){
+const fraction=total>0?Math.min(1,done/total):0;
+if(phase==='preparing'){
+el.progressLabel.textContent='Preparing...';
+}else if(phase==='sound-reading'){
+el.progressLabel.textContent='Reading the sound...';
+}else if(phase==='sound-writing'){
+el.progressLabel.textContent='Reversing the sound...';
+}else if(phase==='finishing'){
+el.progressLabel.textContent='Finishing up...';
+}else{
+el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
+el.progressLabel.textContent=`Reversing frame ${done.toLocaleString()} `
++`of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+return;
+}
+if(phase==='preparing')el.progressBar.style.width='0%';
+}
+function outputFilename(extension){
+const base=(file?.name??'video').replace(/\.[^.]+$/,'');
+return`${base}-reversed.${extension}`;
+}
+function formatBytes(bytes){
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
+if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
+return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
+function formatDuration(seconds){
+const whole=Math.max(0,Math.round(seconds));
+const minutes=Math.floor(whole/60);
+return minutes
+?`${minutes}m ${String(whole % 60).padStart(2, '0')}s`
+:`${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+}
+async function runExport(){
+if(exporting||loading||!file)return;
+clearError();
+exporting=true;
+abortController=new AbortController();
+el.exportBtn.disabled=true;
+el.cancelBtn.hidden=false;
+el.progressWrap.hidden=false;
+el.result.hidden=true;
+el.preview.pause();
+setProgress({phase:'preparing',done:0,total:1});
+const quality=el.quality.value;
+const keepAudio=el.keepAudio.checked;
+try{
+const result=canReverseExactly
+?await reverseExact({
+file,media,quality,keepAudio,
+onProgress:setProgress,signal:abortController.signal,
+})
+:await reverseByPlayback({
+file,video:worker,duration,fps,quality,keepAudio,
+onProgress:setProgress,signal:abortController.signal,
+});
+if(result.warning)showError(result.warning);
+if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
+lastResultUrl=URL.createObjectURL(result.blob);
+el.resultVideo.src=lastResultUrl;
+el.download.href=lastResultUrl;
+el.download.download=outputFilename(result.extension);
+const frame=outputFrame();
+el.resultInfo.textContent=[
+result.extension.toUpperCase(),
+`${frame.width} x ${frame.height}`,
+`${result.frames.toLocaleString()} frames`,
+formatBytes(result.blob.size),
+result.codec,
+].join(' · ');
+el.result.hidden=false;
+el.progressWrap.hidden=true;
+el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}catch(error){
+el.progressWrap.hidden=true;
+if(error?.name!=='AbortError'){
+showError(error?.message||'Something went wrong while reversing.');
+console.error(error);
+}
+}finally{
+exporting=false;
+abortController=null;
+el.cancelBtn.hidden=true;
+el.exportBtn.disabled=false;
+}
+}
+el.exportBtn.addEventListener('click',runExport);
+el.cancelBtn.addEventListener('click',()=>abortController?.abort());
+window.addEventListener('beforeunload',(event)=>{
+if(!exporting)return;
+event.preventDefault();
+event.returnValue='';
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+el.networkCount.textContent=clean
+?`your video has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+if(!hasEncoder()){
+showError('This browser has no video encoder (WebCodecs), so it cannot write a reversed '
++'video. Chrome, Edge and Safari 16.4 or newer can; so can Firefox 133 and newer.');
+}
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

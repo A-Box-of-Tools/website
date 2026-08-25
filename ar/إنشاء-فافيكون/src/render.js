@@ -1,2 +1,148 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const l={pad:"pad",crop:"crop",stretch:"stretch"},g=1024,m=t=>t.type==="image/svg+xml"||/\.svg$/i.test(t.name??"");async function p(t){const e=m(t);if(!e&&typeof createImageBitmap=="function")try{const h=await createImageBitmap(t);return{bitmap:h,width:h.width,height:h.height,vector:!1,url:null}}catch{}const a=URL.createObjectURL(t);let o;try{o=await new Promise((h,n)=>{const c=new Image;c.onload=()=>h(c),c.onerror=()=>n(new Error("this browser could not decode the picture.")),c.src=a})}catch(h){throw URL.revokeObjectURL(a),h}return{bitmap:o,width:o.naturalWidth||(e?g:0),height:o.naturalHeight||(e?g:0),vector:e,url:a}}function y(t){t&&(typeof t.bitmap?.close=="function"&&t.bitmap.close(),t.url&&URL.revokeObjectURL(t.url))}function f(t,e,a,o,h=0){const n=Math.max(1,Math.round(a*(1-2*h))),c=Math.round((a-n)/2),d={x:0,y:0,width:t,height:e};if(o===l.stretch||t===e)return{source:d,draw:{x:c,y:c,width:n,height:n},padded:n!==a};if(o===l.crop){const r=Math.min(t,e);return{source:{x:Math.round((t-r)/2),y:Math.round((e-r)/2),width:r,height:r},draw:{x:c,y:c,width:n,height:n},padded:n!==a}}const i=Math.min(n/t,n/e),u=Math.max(1,Math.round(t*i)),s=Math.max(1,Math.round(e*i));return{source:d,draw:{x:Math.round((a-u)/2),y:Math.round((a-s)/2),width:u,height:s},padded:!0}}function M(t,e,a,o,{fit:h,background:n,inset:c=0,vector:d=!1}){const i=f(e,a,o,h,c),u=document.createElement("canvas");u.width=o,u.height=o;const s=u.getContext("2d");s.imageSmoothingEnabled=!0,s.imageSmoothingQuality="high",n&&(s.fillStyle=n,s.fillRect(0,0,o,o));const r=d?{canvas:null,source:i.source}:x(t,i.source,i.draw.width,i.draw.height);return s.drawImage(r.canvas??t,r.source.x,r.source.y,r.source.width,r.source.height,i.draw.x,i.draw.y,i.draw.width,i.draw.height),r.canvas&&(r.canvas.width=0,r.canvas.height=0),u}function x(t,e,a,o){if(e.width<=a*2&&e.height<=o*2)return{canvas:null,source:e};let h=e.width,n=e.height,c=t,d=e,i=null;for(;h>a*2&&n>o*2;){const u=Math.max(a,Math.floor(h/2)),s=Math.max(o,Math.floor(n/2)),r=document.createElement("canvas");r.width=u,r.height=s;const w=r.getContext("2d");w.imageSmoothingEnabled=!0,w.imageSmoothingQuality="high",w.drawImage(c,d.x,d.y,d.width,d.height,0,0,u,s),i&&(i.width=0,i.height=0),i=r,c=r,d={x:0,y:0,width:u,height:s},h=u,n=s}return{canvas:i,source:d}}function v(t){const a=t.getContext("2d").getImageData(0,0,t.width,t.height);return{width:a.width,height:a.height,data:a.data}}async function b(t){const e=await new Promise(a=>t.toBlob(a,"image/png"));if(!e)throw new Error("this browser would not write a PNG.");return new Uint8Array(await e.arrayBuffer())}export{l as FIT,g as NOMINAL_VECTOR,p as decode,v as pixels,f as plan,b as png,y as release,M as square};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const FIT={
+pad:'pad',
+crop:'crop',
+stretch:'stretch',
+};
+export const NOMINAL_VECTOR=1024;
+const isVector=(file)=>file.type==='image/svg+xml'||/\.svg$/i.test(file.name??'');
+export async function decode(file){
+const vector=isVector(file);
+if(!vector&&typeof createImageBitmap==='function'){
+try{
+const bitmap=await createImageBitmap(file);
+return{bitmap,width:bitmap.width,height:bitmap.height,vector:false,url:null};
+}catch{
+}
+}
+const url=URL.createObjectURL(file);
+let img;
+try{
+img=await new Promise((resolve,reject)=>{
+const element=new Image();
+element.onload=()=>resolve(element);
+element.onerror=()=>reject(new Error('this browser could not decode the picture.'));
+element.src=url;
+});
+}catch(error){
+URL.revokeObjectURL(url);
+throw error;
+}
+return{
+bitmap:img,
+width:img.naturalWidth||(vector?NOMINAL_VECTOR:0),
+height:img.naturalHeight||(vector?NOMINAL_VECTOR:0),
+vector,
+url,
+};
+}
+export function release(decoded){
+if(!decoded)return;
+if(typeof decoded.bitmap?.close==='function')decoded.bitmap.close();
+if(decoded.url)URL.revokeObjectURL(decoded.url);
+}
+export function plan(width,height,px,fit,inset=0){
+const inner=Math.max(1,Math.round(px*(1-2*inset)));
+const margin=Math.round((px-inner)/2);
+const whole={x:0,y:0,width,height};
+if(fit===FIT.stretch||width===height){
+return{
+source:whole,
+draw:{x:margin,y:margin,width:inner,height:inner},
+padded:inner!==px,
+};
+}
+if(fit===FIT.crop){
+const side=Math.min(width,height);
+return{
+source:{
+x:Math.round((width-side)/2),
+y:Math.round((height-side)/2),
+width:side,
+height:side,
+},
+draw:{x:margin,y:margin,width:inner,height:inner},
+padded:inner!==px,
+};
+}
+const scale=Math.min(inner/width,inner/height);
+const drawWidth=Math.max(1,Math.round(width*scale));
+const drawHeight=Math.max(1,Math.round(height*scale));
+return{
+source:whole,
+draw:{
+x:Math.round((px-drawWidth)/2),
+y:Math.round((px-drawHeight)/2),
+width:drawWidth,
+height:drawHeight,
+},
+padded:true,
+};
+}
+export function square(source,sourceWidth,sourceHeight,px,{fit,background,inset=0,vector=false}){
+const layout=plan(sourceWidth,sourceHeight,px,fit,inset);
+const canvas=document.createElement('canvas');
+canvas.width=px;
+canvas.height=px;
+const ctx=canvas.getContext('2d');
+ctx.imageSmoothingEnabled=true;
+ctx.imageSmoothingQuality='high';
+if(background){
+ctx.fillStyle=background;
+ctx.fillRect(0,0,px,px);
+}
+const reduced=vector
+?{canvas:null,source:layout.source}
+:stepDown(source,layout.source,layout.draw.width,layout.draw.height);
+ctx.drawImage(
+reduced.canvas??source,
+reduced.source.x,reduced.source.y,reduced.source.width,reduced.source.height,
+layout.draw.x,layout.draw.y,layout.draw.width,layout.draw.height,
+);
+if(reduced.canvas){
+reduced.canvas.width=0;
+reduced.canvas.height=0;
+}
+return canvas;
+}
+function stepDown(source,rect,targetWidth,targetHeight){
+if(rect.width<=targetWidth*2&&rect.height<=targetHeight*2){
+return{canvas:null,source:rect};
+}
+let width=rect.width;
+let height=rect.height;
+let from=source;
+let take=rect;
+let scratch=null;
+while(width>targetWidth*2&&height>targetHeight*2){
+const nextWidth=Math.max(targetWidth,Math.floor(width/2));
+const nextHeight=Math.max(targetHeight,Math.floor(height/2));
+const step=document.createElement('canvas');
+step.width=nextWidth;
+step.height=nextHeight;
+const ctx=step.getContext('2d');
+ctx.imageSmoothingEnabled=true;
+ctx.imageSmoothingQuality='high';
+ctx.drawImage(from,take.x,take.y,take.width,take.height,0,0,nextWidth,nextHeight);
+if(scratch){
+scratch.width=0;
+scratch.height=0;
+}
+scratch=step;
+from=step;
+take={x:0,y:0,width:nextWidth,height:nextHeight};
+width=nextWidth;
+height=nextHeight;
+}
+return{canvas:scratch,source:take};
+}
+export function pixels(canvas){
+const ctx=canvas.getContext('2d');
+const data=ctx.getImageData(0,0,canvas.width,canvas.height);
+return{width:data.width,height:data.height,data:data.data};
+}
+export async function png(canvas){
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,'image/png'));
+if(!blob)throw new Error('this browser would not write a PNG.');
+return new Uint8Array(await blob.arrayBuffer());
+}

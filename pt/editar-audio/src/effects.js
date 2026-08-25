@@ -1,2 +1,41 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function p(t){for(const e of t)for(let o=0,n=e.length-1;o<n;o+=1,n-=1){const r=e[o];e[o]=e[n],e[n]=r}return t}function a(t){let e=0;for(const o of t)for(let n=0;n<o.length;n+=1){const r=Math.abs(o[n]);r>e&&(e=r)}return e}function c(t,e){let o=0,n=0;for(const r of t)for(let i=0;i<r.length;i+=1){const f=r[i]*e;r[i]=f;const s=Math.abs(f);s>o&&(o=s),s>1&&(n+=1)}return{peak:o,clipped:n}}const l=t=>10**(t/20),h=t=>t>0?20*Math.log10(t):-1/0;function u(t,e=-1){return t>0?l(e)/t:1}export{c as applyGain,l as dbToGain,h as gainToDb,u as normalizeGain,a as peak,p as reverse};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function reverse(channels){
+for(const samples of channels){
+for(let i=0,j=samples.length-1;i<j;i+=1,j-=1){
+const held=samples[i];
+samples[i]=samples[j];
+samples[j]=held;
+}
+}
+return channels;
+}
+export function peak(channels){
+let highest=0;
+for(const samples of channels){
+for(let i=0;i<samples.length;i+=1){
+const size=Math.abs(samples[i]);
+if(size>highest)highest=size;
+}
+}
+return highest;
+}
+export function applyGain(channels,gain){
+let highest=0;
+let over=0;
+for(const samples of channels){
+for(let i=0;i<samples.length;i+=1){
+const value=samples[i]*gain;
+samples[i]=value;
+const size=Math.abs(value);
+if(size>highest)highest=size;
+if(size>1)over+=1;
+}
+}
+return{peak:highest,clipped:over};
+}
+export const dbToGain=(db)=>10**(db/20);
+export const gainToDb=(gain)=>(gain>0?20*Math.log10(gain):-Infinity);
+export function normalizeGain(currentPeak,targetDb=-1){
+if(!(currentPeak>0))return 1;
+return dbToGain(targetDb)/currentPeak;
+}

@@ -1,2 +1,82 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function d(){return typeof navigator<"u"&&!!navigator.mediaDevices?.getUserMedia}function s(t){if(!d())return typeof window<"u"&&!window.isSecureContext?"camera.insecure":"camera.unsupported";switch(t?.name){case"NotAllowedError":case"PermissionDeniedError":return"camera.denied";case"NotFoundError":case"DevicesNotFoundError":case"OverconstrainedError":return"camera.none";case"NotReadableError":case"TrackStartError":case"AbortError":return"camera.busy";case"SecurityError":return"camera.insecure";default:return"camera.failed"}}async function u({deviceId:t}={}){if(!d())throw new Error("no camera interface");const e=t?{deviceId:{exact:t}}:{facingMode:{ideal:"environment"}};return e.width={ideal:1920},e.height={ideal:1080},navigator.mediaDevices.getUserMedia({video:e,audio:!1})}async function h(){if(!navigator.mediaDevices?.enumerateDevices)return[];try{return(await navigator.mediaDevices.enumerateDevices()).filter(e=>e.kind==="videoinput").map((e,a)=>({deviceId:e.deviceId,label:e.label||`Camera ${a+1}`}))}catch{return[]}}function f(t){return!!t?.getVideoTracks?.()[0]?.getCapabilities?.().torch}async function l(t,e){const a=t?.getVideoTracks?.()[0];if(!a?.applyConstraints)return!1;try{return await a.applyConstraints({advanced:[{torch:e}]}),!0}catch{return!1}}function g(t){for(const e of t?.getTracks?.()??[])e.stop()}function m(t,e,a=960){const i=t.videoWidth,n=t.videoHeight;if(!i||!n)return null;const o=Math.min(1,a/Math.max(i,n)),r={width:Math.round(i*o),height:Math.round(n*o)};(e.width!==r.width||e.height!==r.height)&&(e.width=r.width,e.height=r.height);const c=e.getContext("2d",{willReadFrequently:!0});return c.drawImage(t,0,0,r.width,r.height),c.getImageData(0,0,r.width,r.height)}export{d as available,h as cameras,g as close,m as frameInto,u as open,s as reasonFor,l as setTorch,f as torchable};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function available(){
+return typeof navigator!=='undefined'
+&&!!navigator.mediaDevices?.getUserMedia;
+}
+export function reasonFor(error){
+if(!available()){
+return typeof window!=='undefined'&&!window.isSecureContext
+?'camera.insecure':'camera.unsupported';
+}
+switch(error?.name){
+case'NotAllowedError':
+case'PermissionDeniedError':
+return'camera.denied';
+case'NotFoundError':
+case'DevicesNotFoundError':
+case'OverconstrainedError':
+return'camera.none';
+case'NotReadableError':
+case'TrackStartError':
+case'AbortError':
+return'camera.busy';
+case'SecurityError':
+return'camera.insecure';
+default:
+return'camera.failed';
+}
+}
+export async function open({deviceId}={}){
+if(!available())throw new Error('no camera interface');
+const video=deviceId
+?{deviceId:{exact:deviceId}}
+:{facingMode:{ideal:'environment'}};
+video.width={ideal:1920};
+video.height={ideal:1080};
+return navigator.mediaDevices.getUserMedia({video,audio:false});
+}
+export async function cameras(){
+if(!navigator.mediaDevices?.enumerateDevices)return[];
+try{
+const devices=await navigator.mediaDevices.enumerateDevices();
+return devices
+.filter((device)=>device.kind==='videoinput')
+.map((device,index)=>({
+deviceId:device.deviceId,
+label:device.label||`Camera ${index + 1}`,
+}));
+}catch{
+return[];
+}
+}
+export function torchable(stream){
+const track=stream?.getVideoTracks?.()[0];
+return!!track?.getCapabilities?.().torch;
+}
+export async function setTorch(stream,on){
+const track=stream?.getVideoTracks?.()[0];
+if(!track?.applyConstraints)return false;
+try{
+await track.applyConstraints({advanced:[{torch:on}]});
+return true;
+}catch{
+return false;
+}
+}
+export function close(stream){
+for(const track of stream?.getTracks?.()??[])track.stop();
+}
+export function frameInto(video,canvas,maxSide=960){
+const width=video.videoWidth;
+const height=video.videoHeight;
+if(!width||!height)return null;
+const scale=Math.min(1,maxSide/Math.max(width,height));
+const target={width:Math.round(width*scale),height:Math.round(height*scale)};
+if(canvas.width!==target.width||canvas.height!==target.height){
+canvas.width=target.width;
+canvas.height=target.height;
+}
+const context=canvas.getContext('2d',{willReadFrequently:true});
+context.drawImage(video,0,0,target.width,target.height);
+return context.getImageData(0,0,target.width,target.height);
+}

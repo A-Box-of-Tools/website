@@ -1,2 +1,42 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function x(e){return e<1024?`${e} bytes`:e<1024*1024?`${(e/1024).toFixed(e<10240?1:0)} KB`:`${(e/(1024*1024)).toFixed(2)} MB`}const f=(e,t)=>`${e} \xD7 ${t}`,$=e=>`${e} file${e===1?"":"s"}`;function n(e){return String(e??"").replace(/\.[^.]+$/,"").trim()||"image"}function a(e,t,o=1){const r=o>1?`@${o}x`:"";return`${n(e)}${r}.${t}`}const d=e=>n(e).replace(/[\\/:*?"<>|]+/g,"-");function l(e){const t=new Map;return e.map(o=>{const r=o.toLowerCase(),i=t.get(r)??0;if(t.set(r,i+1),i===0)return o;const s=o.lastIndexOf("."),c=s>0?o.slice(0,s):o,u=s>0?o.slice(s):"";return`${c}-${i+1}${u}`})}function p(e){const t=f(e.width,e.height);switch(e.source){case"attributes":return`${t} \u2014 the size the file asks for`;case"mixed":return`${t} \u2014 one side from the file, the other from its viewBox`;case"viewbox":return`${t} \u2014 no pixel size, taken from the viewBox`;default:return`${t} assumed \u2014 this file declares no size and no viewBox`}}export{x as bytes,$ as countOf,p as describeSource,f as dimensions,d as folderFor,a as outName,n as stemOf,l as uniqueNames};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function bytes(n){
+if(n<1024)return`${n} bytes`;
+if(n<1024*1024)return`${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
+return`${(n / (1024 * 1024)).toFixed(2)} MB`;
+}
+export const dimensions=(width,height)=>`${width} × ${height}`;
+export const countOf=(n)=>`${n} file${n === 1 ? '' : 's'}`;
+export function stemOf(name){
+return String(name??'').replace(/\.[^.]+$/,'').trim()||'image';
+}
+export function outName(sourceName,ext,density=1){
+const suffix=density>1?`@${density}x`:'';
+return`${stemOf(sourceName)}${suffix}.${ext}`;
+}
+export const folderFor=(name)=>stemOf(name).replace(/[\\/:*?"<>|]+/g,'-');
+export function uniqueNames(names){
+const seen=new Map();
+return names.map((name)=>{
+const key=name.toLowerCase();
+const count=seen.get(key)??0;
+seen.set(key,count+1);
+if(count===0)return name;
+const dot=name.lastIndexOf('.');
+const stem=dot>0?name.slice(0,dot):name;
+const ext=dot>0?name.slice(dot):'';
+return`${stem}-${count + 1}${ext}`;
+});
+}
+export function describeSource(intrinsic){
+const size=dimensions(intrinsic.width,intrinsic.height);
+switch(intrinsic.source){
+case'attributes':
+return`${size} — the size the file asks for`;
+case'mixed':
+return`${size} — one side from the file, the other from its viewBox`;
+case'viewbox':
+return`${size} — no pixel size, taken from the viewBox`;
+default:
+return`${size} assumed — this file declares no size and no viewBox`;
+}
+}

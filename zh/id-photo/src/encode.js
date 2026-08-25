@@ -1,2 +1,151 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{padTo as b,setDensity as M}from"./jpeg.js";const w="image/jpeg";async function S(t){if(typeof createImageBitmap=="function")try{const n=await createImageBitmap(t);return{bitmap:n,width:n.width,height:n.height}}catch{}const o=URL.createObjectURL(t);try{const n=await new Promise((e,i)=>{const a=new Image;a.onload=()=>e(a),a.onerror=()=>i(new Error("this browser could not decode the picture.")),a.src=o});return{bitmap:n,width:n.naturalWidth,height:n.naturalHeight}}finally{URL.revokeObjectURL(o)}}function $(t){t&&typeof t.close=="function"&&t.close()}function E(t,o,n,{background:e="#ffffff"}={}){const i=document.createElement("canvas");i.width=Math.max(1,Math.round(n.width)),i.height=Math.max(1,Math.round(n.height));const a=i.getContext("2d",{alpha:!1});return a.imageSmoothingEnabled=!0,a.imageSmoothingQuality="high",a.fillStyle=e,a.fillRect(0,0,i.width,i.height),a.drawImage(t,o.x,o.y,o.width,o.height,0,0,i.width,i.height),i}function q(t,o,n=240){const e=Math.min(1,n/Math.max(o.width,o.height)),i=E(t,o,{width:Math.max(1,Math.round(o.width*e)),height:Math.max(1,Math.round(o.height*e))}),h=i.getContext("2d",{alpha:!1}).getImageData(0,0,i.width,i.height);return v(i),h}function v(t){t.width=0,t.height=0}async function y(t,o){const n=await new Promise(e=>t.toBlob(e,w,o));if(!n)throw new Error("this browser would not write a JPEG.");return new Uint8Array(await n.arrayBuffer())}const x=.95,p=.25,B=10;async function P(t,o){const n=o.max??1/0,e=o.min??0;let i=0;const a=async r=>{if(i>=B)throw new Error("gave up after too many attempts.");return i+=1,{bytes:await y(t,r),quality:r}};let h=await a(x);if(h.bytes.length>n){const r=await a(p);if(r.bytes.length>n)return u(r,!1,`Even at the lowest quality worth using, this comes out at ${Math.round(r.bytes.length/1024)} KB, which is over the limit. The picture has more detail in it than the form allows for.`);let c=p,l=x;h=r;for(let d=0;d<5;d+=1){const g=(c+l)/2,m=await a(g);m.bytes.length<=n?(c=g,h=m):l=g}}if(h.bytes.length<e&&h.quality<1){const r=await a(1);r.bytes.length<=n&&r.bytes.length>h.bytes.length&&(h=r)}if(h.bytes.length>=e)return u(h,!0,`Written at quality ${Math.round(h.quality*100)}, which is ${f(h.bytes.length)} - inside the band the form accepts.`);const s=b(h.bytes,e);return u({bytes:s,quality:h.quality},s.length>=e,`The picture encodes to ${f(h.bytes.length)} at the very top of the quality dial, which is still under the ${f(e)} floor the form insists on. ${f(s.length-h.bytes.length)} of JPEG comment was added to reach it; the picture itself is untouched.`,s.length-h.bytes.length);function u(r,c,l,d=0){return{bytes:r.bytes,quality:r.quality,encodes:i,padded:d,fitted:c,how:l}}}function f(t){return t<1024?`${t} bytes`:t<1024*1024?`${(t/1024).toFixed(1)} KB`:`${(t/(1024*1024)).toFixed(2)} MB`}async function R(t,{dpi:o,quality:n=.94}){const e=M(await y(t,n),o);return{blob:new Blob([e],{type:w}),bytes:e}}function T(t,o){const n=document.createElement("canvas");n.width=t.canvas.width,n.height=t.canvas.height;const e=n.getContext("2d",{alpha:!1});e.imageSmoothingEnabled=!0,e.imageSmoothingQuality="high",e.fillStyle="#ffffff",e.fillRect(0,0,n.width,n.height);for(const i of t.cells)e.drawImage(o,i.x,i.y,i.width,i.height);e.strokeStyle="#444444",e.lineWidth=Math.max(1,Math.round(t.dpi/300)),e.beginPath();for(const i of t.marks){const a=e.lineWidth%2===1?.5:0;e.moveTo(i.x1+a,i.y1+a),e.lineTo(i.x2+a,i.y2+a)}return e.stroke(),n}export{w as JPEG,S as decode,E as drawCrop,T as drawSheet,R as encodePrint,P as encodeToBand,v as free,$ as release,q as samplePixels,f as sizeText,y as toBytes};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{padTo,setDensity}from'./jpeg.js';
+export const JPEG='image/jpeg';
+export async function decode(file){
+if(typeof createImageBitmap==='function'){
+try{
+const bitmap=await createImageBitmap(file);
+return{bitmap,width:bitmap.width,height:bitmap.height};
+}catch{
+}
+}
+const url=URL.createObjectURL(file);
+try{
+const img=await new Promise((resolve,reject)=>{
+const element=new Image();
+element.onload=()=>resolve(element);
+element.onerror=()=>reject(new Error('this browser could not decode the picture.'));
+element.src=url;
+});
+return{bitmap:img,width:img.naturalWidth,height:img.naturalHeight};
+}finally{
+URL.revokeObjectURL(url);
+}
+}
+export function release(bitmap){
+if(bitmap&&typeof bitmap.close==='function')bitmap.close();
+}
+export function drawCrop(source,rect,out,{background='#ffffff'}={}){
+const canvas=document.createElement('canvas');
+canvas.width=Math.max(1,Math.round(out.width));
+canvas.height=Math.max(1,Math.round(out.height));
+const ctx=canvas.getContext('2d',{alpha:false});
+ctx.imageSmoothingEnabled=true;
+ctx.imageSmoothingQuality='high';
+ctx.fillStyle=background;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.drawImage(
+source,
+rect.x,rect.y,rect.width,rect.height,
+0,0,canvas.width,canvas.height,
+);
+return canvas;
+}
+export function samplePixels(source,rect,longEdge=240){
+const scale=Math.min(1,longEdge/Math.max(rect.width,rect.height));
+const canvas=drawCrop(source,rect,{
+width:Math.max(1,Math.round(rect.width*scale)),
+height:Math.max(1,Math.round(rect.height*scale)),
+});
+const ctx=canvas.getContext('2d',{alpha:false});
+const image=ctx.getImageData(0,0,canvas.width,canvas.height);
+free(canvas);
+return image;
+}
+export function free(canvas){
+canvas.width=0;
+canvas.height=0;
+}
+export async function toBytes(canvas,quality){
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,JPEG,quality));
+if(!blob)throw new Error('this browser would not write a JPEG.');
+return new Uint8Array(await blob.arrayBuffer());
+}
+const CEILING=0.95;
+const FLOOR=0.25;
+const MAX_ENCODES=10;
+export async function encodeToBand(canvas,band){
+const max=band.max??Infinity;
+const min=band.min??0;
+let encodes=0;
+const attempt=async(quality)=>{
+if(encodes>=MAX_ENCODES)throw new Error('gave up after too many attempts.');
+encodes+=1;
+return{bytes:await toBytes(canvas,quality),quality};
+};
+let best=await attempt(CEILING);
+if(best.bytes.length>max){
+const bottom=await attempt(FLOOR);
+if(bottom.bytes.length>max){
+return finish(bottom,false,`Even at the lowest quality worth using, this comes out at `
++`${Math.round(bottom.bytes.length / 1024)} KB, which is over the limit. `
++`The picture has more detail in it than the form allows for.`);
+}
+let low=FLOOR;
+let high=CEILING;
+best=bottom;
+for(let round=0;round<5;round+=1){
+const mid=(low+high)/2;
+const tried=await attempt(mid);
+if(tried.bytes.length<=max){
+low=mid;
+best=tried;
+}else{
+high=mid;
+}
+}
+}
+if(best.bytes.length<min&&best.quality<1){
+const top=await attempt(1);
+if(top.bytes.length<=max&&top.bytes.length>best.bytes.length)best=top;
+}
+if(best.bytes.length>=min){
+return finish(best,true,`Written at quality ${Math.round(best.quality * 100)}, `
++`which is ${sizeText(best.bytes.length)} - inside the band the form accepts.`);
+}
+const padded=padTo(best.bytes,min);
+return finish(
+{bytes:padded,quality:best.quality},
+padded.length>=min,
+`The picture encodes to ${sizeText(best.bytes.length)} at the very top of the quality `
++`dial, which is still under the ${sizeText(min)} floor the form insists on. `
++`${sizeText(padded.length - best.bytes.length)} of JPEG comment was added to reach it; `
++`the picture itself is untouched.`,
+padded.length-best.bytes.length,
+);
+function finish(result,fitted,how,padding=0){
+return{bytes:result.bytes,quality:result.quality,encodes,padded:padding,fitted,how};
+}
+}
+export function sizeText(bytes){
+if(bytes<1024)return`${bytes} bytes`;
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(1)} KB`;
+return`${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
+export async function encodePrint(canvas,{dpi,quality=0.94}){
+const bytes=setDensity(await toBytes(canvas,quality),dpi);
+return{blob:new Blob([bytes],{type:JPEG}),bytes};
+}
+export function drawSheet(plan,photo){
+const canvas=document.createElement('canvas');
+canvas.width=plan.canvas.width;
+canvas.height=plan.canvas.height;
+const ctx=canvas.getContext('2d',{alpha:false});
+ctx.imageSmoothingEnabled=true;
+ctx.imageSmoothingQuality='high';
+ctx.fillStyle='#ffffff';
+ctx.fillRect(0,0,canvas.width,canvas.height);
+for(const cell of plan.cells){
+ctx.drawImage(photo,cell.x,cell.y,cell.width,cell.height);
+}
+ctx.strokeStyle='#444444';
+ctx.lineWidth=Math.max(1,Math.round(plan.dpi/300));
+ctx.beginPath();
+for(const mark of plan.marks){
+const shift=ctx.lineWidth%2===1?0.5:0;
+ctx.moveTo(mark.x1+shift,mark.y1+shift);
+ctx.lineTo(mark.x2+shift,mark.y2+shift);
+}
+ctx.stroke();
+return canvas;
+}

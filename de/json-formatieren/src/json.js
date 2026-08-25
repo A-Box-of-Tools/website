@@ -1,7 +1,205 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{ParseError as i}from"./errors.js";function T(n){const r={text:n,at:0};u(r);const o=h(r);if(u(r),r.at<n.length)throw new i(`Unexpected ${f(n[r.at])} after the end of the value`,r.at,n);return o}function h(n){const{text:r}=n,o=r[n.at];if(o===void 0)throw new i("The text ended early",n.at,r);if(o==="{")return x(n);if(o==="[")return y(n);if(o==='"')return b(n);if(o==="-"||o>="0"&&o<="9")return v(n);for(const e of["true","false","null"])if(r.startsWith(e,n.at))return n.at+=e.length,e==="null"?{t:"null"}:{t:"bool",value:e==="true"};throw new i(`Unexpected ${f(o)}`,n.at,r)}function x(n){const{text:r}=n,o=n.at;n.at+=1;const e=[];if(u(n),r[n.at]==="}")return n.at+=1,{t:"map",pairs:e};for(;;){if(u(n),r[n.at]!=='"')throw new i(`A key has to be a double-quoted string, and this is ${f(r[n.at])}`,n.at,r);const t=b(n);if(u(n),r[n.at]!==":")throw new i(`Expected a colon after the key, found ${f(r[n.at])}`,n.at,r);n.at+=1,u(n);const a=h(n);if(e.push({key:t.value,keyRaw:t.raw,value:a}),u(n),r[n.at]===","){n.at+=1;continue}if(r[n.at]==="}")return n.at+=1,{t:"map",pairs:e};throw n.at>=r.length?new i("This object is never closed",o,r):new i(`Expected a comma or a closing brace, found ${f(r[n.at])}`,n.at,r)}}function y(n){const{text:r}=n,o=n.at;n.at+=1;const e=[];if(u(n),r[n.at]==="]")return n.at+=1,{t:"seq",items:e};for(;;){if(u(n),e.push(h(n)),u(n),r[n.at]===","){n.at+=1;continue}if(r[n.at]==="]")return n.at+=1,{t:"seq",items:e};throw n.at>=r.length?new i("This array is never closed",o,r):new i(`Expected a comma or a closing bracket, found ${f(r[n.at])}`,n.at,r)}}const m={'"':'"',"\\":"\\","/":"/",b:"\b",f:"\f",n:`
-`,r:"\r",t:"	"};function b(n){const{text:r}=n,o=n.at;n.at+=1;let e="";for(;;){const t=r[n.at];if(t===void 0)throw new i("This string is never closed",o,r);if(t==='"')return n.at+=1,{t:"str",value:e,raw:r.slice(o,n.at)};if(t==="\\"){const a=r[n.at+1];if(a==="u"){const c=r.slice(n.at+2,n.at+6);if(!/^[0-9a-fA-F]{4}$/.test(c))throw new i("\\u has to be followed by four hex digits",n.at,r);e+=String.fromCharCode(parseInt(c,16)),n.at+=6;continue}if(a in m){e+=m[a],n.at+=2;continue}throw new i(`\\${a??""} is not an escape JSON knows`,n.at,r)}if(t<" ")throw new i("A raw control character in a string - write it as an escape",n.at,r);e+=t,n.at+=1}}const k=/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/;function v(n){const{text:r}=n,o=k.exec(r.slice(n.at));if(!o)throw new i("This is not a number JSON allows",n.at,r);const e=o[0],t=r[n.at+e.length];if(t==="."||t==="e"||t==="E"||/[0-9]/.test(t??""))throw new i("This is not a number JSON allows",n.at,r);return n.at+=e.length,{t:"num",raw:e}}function u(n){const{text:r}=n;for(;n.at<r.length&&` 	
-\r`.includes(r[n.at]);)n.at+=1}function f(n){return n===void 0?"the end of the text":n===`
-`?"a line break":n==="	"?"a tab":`"${n}"`}function A(n,{indent:r="  ",sortKeys:o=!1}={}){const e=r===""?"":`
-`,t=r===""?":":": ",a=(c,l)=>{const p=r===""?"":r.repeat(l+1),d=r===""?"":r.repeat(l);switch(c.t){case"map":{if(!c.pairs.length)return"{}";const s=(o?S(c.pairs):c.pairs).map(w=>`${p}${g(w.key,w.keyRaw)}${t}${a(w.value,l+1)}`).join(`,${e}`);return`{${e}${s}${e}${d}}`}case"seq":{if(!c.items.length)return"[]";const $=c.items.map(s=>`${p}${a(s,l+1)}`).join(`,${e}`);return`[${e}${$}${e}${d}]`}case"str":return g(c.value,c.raw);case"num":return c.raw;case"bool":return c.value?"true":"false";default:return"null"}};return a(n,0)}function S(n){const r=new Intl.Collator("en",{numeric:!0,sensitivity:"variant"});return[...n].sort((o,e)=>r.compare(o.key,e.key))}function g(n,r){if(r!==void 0)return r;let o='"';for(const e of n){const t=e.codePointAt(0);e==='"'?o+='\\"':e==="\\"?o+="\\\\":e===`
-`?o+="\\n":e==="\r"?o+="\\r":e==="	"?o+="\\t":e==="\b"?o+="\\b":e==="\f"?o+="\\f":t<32?o+=`\\u${t.toString(16).padStart(4,"0")}`:o+=e}return`${o}"`}export{g as jsonString,T as parseJson,A as printJson};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{ParseError}from'./errors.js';
+export function parseJson(text){
+const state={text,at:0};
+skipSpace(state);
+const value=readValue(state);
+skipSpace(state);
+if(state.at<text.length){
+throw new ParseError(
+`Unexpected ${describe(text[state.at])} after the end of the value`,
+state.at,text);
+}
+return value;
+}
+function readValue(state){
+const{text}=state;
+const ch=text[state.at];
+if(ch===undefined)throw new ParseError('The text ended early',state.at,text);
+if(ch==='{')return readObject(state);
+if(ch==='[')return readArray(state);
+if(ch==='"')return readString(state);
+if(ch==='-'||(ch>='0'&&ch<='9'))return readNumber(state);
+for(const word of['true','false','null']){
+if(text.startsWith(word,state.at)){
+state.at+=word.length;
+return word==='null'?{t:'null'}:{t:'bool',value:word==='true'};
+}
+}
+throw new ParseError(`Unexpected ${describe(ch)}`,state.at,text);
+}
+function readObject(state){
+const{text}=state;
+const start=state.at;
+state.at+=1;
+const pairs=[];
+skipSpace(state);
+if(text[state.at]==='}'){
+state.at+=1;
+return{t:'map',pairs};
+}
+for(;;){
+skipSpace(state);
+if(text[state.at]!=='"'){
+throw new ParseError(
+`A key has to be a double-quoted string, and this is ${describe(text[state.at])}`,
+state.at,text);
+}
+const key=readString(state);
+skipSpace(state);
+if(text[state.at]!==':'){
+throw new ParseError(
+`Expected a colon after the key, found ${describe(text[state.at])}`,state.at,text);
+}
+state.at+=1;
+skipSpace(state);
+const value=readValue(state);
+pairs.push({key:key.value,keyRaw:key.raw,value});
+skipSpace(state);
+if(text[state.at]===','){state.at+=1;continue;}
+if(text[state.at]==='}'){state.at+=1;return{t:'map',pairs};}
+if(state.at>=text.length){
+throw new ParseError('This object is never closed',start,text);
+}
+throw new ParseError(
+`Expected a comma or a closing brace, found ${describe(text[state.at])}`,
+state.at,text);
+}
+}
+function readArray(state){
+const{text}=state;
+const start=state.at;
+state.at+=1;
+const items=[];
+skipSpace(state);
+if(text[state.at]===']'){
+state.at+=1;
+return{t:'seq',items};
+}
+for(;;){
+skipSpace(state);
+items.push(readValue(state));
+skipSpace(state);
+if(text[state.at]===','){state.at+=1;continue;}
+if(text[state.at]===']'){state.at+=1;return{t:'seq',items};}
+if(state.at>=text.length){
+throw new ParseError('This array is never closed',start,text);
+}
+throw new ParseError(
+`Expected a comma or a closing bracket, found ${describe(text[state.at])}`,
+state.at,text);
+}
+}
+const SHORT_ESCAPES={'"':'"','\\':'\\','/':'/',b:'\b',f:'\f',n:'\n',r:'\r',t:'\t'};
+function readString(state){
+const{text}=state;
+const start=state.at;
+state.at+=1;
+let value='';
+for(;;){
+const ch=text[state.at];
+if(ch===undefined)throw new ParseError('This string is never closed',start,text);
+if(ch==='"'){
+state.at+=1;
+return{t:'str',value,raw:text.slice(start,state.at)};
+}
+if(ch==='\\'){
+const next=text[state.at+1];
+if(next==='u'){
+const digits=text.slice(state.at+2,state.at+6);
+if(!/^[0-9a-fA-F]{4}$/.test(digits)){
+throw new ParseError('\\u has to be followed by four hex digits',state.at,text);
+}
+value+=String.fromCharCode(parseInt(digits,16));
+state.at+=6;
+continue;
+}
+if(next in SHORT_ESCAPES){
+value+=SHORT_ESCAPES[next];
+state.at+=2;
+continue;
+}
+throw new ParseError(`\\${next ?? ''} is not an escape JSON knows`,state.at,text);
+}
+if(ch<' '){
+throw new ParseError(
+'A raw control character in a string - write it as an escape',state.at,text);
+}
+value+=ch;
+state.at+=1;
+}
+}
+const NUMBER=/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/;
+function readNumber(state){
+const{text}=state;
+const match=NUMBER.exec(text.slice(state.at));
+if(!match)throw new ParseError('This is not a number JSON allows',state.at,text);
+const raw=match[0];
+const after=text[state.at+raw.length];
+if(after==='.'||after==='e'||after==='E'||/[0-9]/.test(after??'')){
+throw new ParseError('This is not a number JSON allows',state.at,text);
+}
+state.at+=raw.length;
+return{t:'num',raw};
+}
+function skipSpace(state){
+const{text}=state;
+while(state.at<text.length&&' \t\n\r'.includes(text[state.at]))state.at+=1;
+}
+function describe(ch){
+if(ch===undefined)return'the end of the text';
+if(ch==='\n')return'a line break';
+if(ch==='\t')return'a tab';
+return`"${ch}"`;
+}
+export function printJson(data,{indent='  ',sortKeys=false}={}){
+const gap=indent===''?'':'\n';
+const colon=indent===''?':':': ';
+const walk=(node,depth)=>{
+const pad=indent===''?'':indent.repeat(depth+1);
+const closePad=indent===''?'':indent.repeat(depth);
+switch(node.t){
+case'map':{
+if(!node.pairs.length)return'{}';
+const pairs=sortKeys?sortPairs(node.pairs):node.pairs;
+const body=pairs
+.map((pair)=>`${pad}${jsonString(pair.key, pair.keyRaw)}${colon}${walk(pair.value, depth + 1)}`)
+.join(`,${gap}`);
+return`{${gap}${body}${gap}${closePad}}`;
+}
+case'seq':{
+if(!node.items.length)return'[]';
+const body=node.items
+.map((item)=>`${pad}${walk(item, depth + 1)}`)
+.join(`,${gap}`);
+return`[${gap}${body}${gap}${closePad}]`;
+}
+case'str':return jsonString(node.value,node.raw);
+case'num':return node.raw;
+case'bool':return node.value?'true':'false';
+default:return'null';
+}
+};
+return walk(data,0);
+}
+function sortPairs(pairs){
+const collator=new Intl.Collator('en',{numeric:true,sensitivity:'variant'});
+return[...pairs].sort((a,b)=>collator.compare(a.key,b.key));
+}
+export function jsonString(value,raw){
+if(raw!==undefined)return raw;
+let out='"';
+for(const ch of value){
+const code=ch.codePointAt(0);
+if(ch==='"')out+='\\"';
+else if(ch==='\\')out+='\\\\';
+else if(ch==='\n')out+='\\n';
+else if(ch==='\r')out+='\\r';
+else if(ch==='\t')out+='\\t';
+else if(ch==='\b')out+='\\b';
+else if(ch==='\f')out+='\\f';
+else if(code<0x20)out+=`\\u${code.toString(16).padStart(4, '0')}`;
+else out+=ch;
+}
+return`${out}"`;
+}

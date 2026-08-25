@@ -1,2 +1,49 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const l="image/jpeg",i="image/png",s="image/webp",f={[l]:{label:"JPEG",ext:"jpg",lossy:!0},[i]:{label:"PNG",ext:"png",lossy:!1},[s]:{label:"WebP",ext:"webp",lossy:!0}};async function g(e){const n=document.createElement("canvas");n.width=1,n.height=1;const o=await new Promise(t=>n.toBlob(t,e,.8));return!!o&&o.type===e}async function d(){const e=new Set([l,i]);return await g(s)&&e.add(s),e}async function x(e,{mime:n,quality:o}){const t=r(e.width,e.height,!0);t.ctx.putImageData(new ImageData(e.pixels,e.width,e.height),0,0);let a=t;n===l&&(a=r(e.width,e.height,!1),a.ctx.fillStyle="#ffffff",a.ctx.fillRect(0,0,e.width,e.height),a.ctx.drawImage(t.el,0,0),h(t.el));const c=await new Promise(w=>a.el.toBlob(w,n,o));if(h(a.el),!c)throw new Error(`this browser would not write ${f[n]?.label??n}.`);return c}function r(e,n,o){const t=document.createElement("canvas");return t.width=e,t.height=n,{el:t,ctx:t.getContext("2d",{alpha:o})}}function h(e){e.width=0,e.height=0}export{f as FORMATS,l as JPEG,i as PNG,s as WEBP,d as encodableTypes,x as encodePixels};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const JPEG='image/jpeg';
+export const PNG='image/png';
+export const WEBP='image/webp';
+export const FORMATS={
+[JPEG]:{label:'JPEG',ext:'jpg',lossy:true},
+[PNG]:{label:'PNG',ext:'png',lossy:false},
+[WEBP]:{label:'WebP',ext:'webp',lossy:true},
+};
+async function canEncode(mime){
+const canvas=document.createElement('canvas');
+canvas.width=1;
+canvas.height=1;
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,mime,0.8));
+return Boolean(blob)&&blob.type===mime;
+}
+export async function encodableTypes(){
+const found=new Set([JPEG,PNG]);
+if(await canEncode(WEBP))found.add(WEBP);
+return found;
+}
+export async function encodePixels(picture,{mime,quality}){
+const surface=canvas(picture.width,picture.height,true);
+surface.ctx.putImageData(
+new ImageData(picture.pixels,picture.width,picture.height),0,0,
+);
+let target=surface;
+if(mime===JPEG){
+target=canvas(picture.width,picture.height,false);
+target.ctx.fillStyle='#ffffff';
+target.ctx.fillRect(0,0,picture.width,picture.height);
+target.ctx.drawImage(surface.el,0,0);
+release(surface.el);
+}
+const blob=await new Promise((resolve)=>target.el.toBlob(resolve,mime,quality));
+release(target.el);
+if(!blob)throw new Error(`this browser would not write ${FORMATS[mime]?.label ?? mime}.`);
+return blob;
+}
+function canvas(width,height,alpha){
+const el=document.createElement('canvas');
+el.width=width;
+el.height=height;
+return{el,ctx:el.getContext('2d',{alpha})};
+}
+function release(el){
+el.width=0;
+el.height=0;
+}

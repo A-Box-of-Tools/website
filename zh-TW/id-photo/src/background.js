@@ -1,2 +1,217 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function E(e){const t=String(e).trim().replace(/^#/,""),o=t.length===3?t.replace(/./g,s=>s+s):t;return/^[0-9a-f]{6}$/i.test(o)?[Number.parseInt(o.slice(0,2),16),Number.parseInt(o.slice(2,4),16),Number.parseInt(o.slice(4,6),16)]:[255,255,255]}function C([e,t,o]){const s=n=>Math.max(0,Math.min(255,Math.round(n))).toString(16).padStart(2,"0");return`#${s(e)}${s(t)}${s(o)}`}const y=e=>{const t=e/255;return t<=.04045?t/12.92:((t+.055)/1.055)**2.4},I=[.95047,1,1.08883],M=e=>e>.008856?Math.cbrt(e):7.787*e+16/116;function d([e,t,o]){const s=y(e),n=y(t),r=y(o),h=(.4124*s+.3576*n+.1805*r)/I[0],p=(.2126*s+.7152*n+.0722*r)/I[1],u=(.0193*s+.1192*n+.9505*r)/I[2],l=M(h),c=M(p),i=M(u);return[116*c-16,500*(l-c),200*(c-i)]}function L(e,t){return Math.hypot(e[0]-t[0],e[1]-t[1],e[2]-t[2])}const R=(e,t)=>t<=.16||t<=.55&&(e<=.12||e>=.88);function A(e,{stride:t=4}={}){const{data:o,width:s,height:n}=e;if(!s||!n)return null;let r=[0,0,0],h=0;const p=[],u={top:[0,0,0,0],left:[0,0,0,0],right:[0,0,0,0]};for(let a=0;a<n;a+=t){const g=a/n;for(let b=0;b<s;b+=t){const $=b/s;if(!R($,g))continue;const m=(a*s+b)*4,f=[o[m],o[m+1],o[m+2]];r=[r[0]+f[0],r[1]+f[1],r[2]+f[2]],p.push(d(f)),h+=1;const k=g<=.16?u.top:$<=.12?u.left:u.right;k[0]+=f[0],k[1]+=f[1],k[2]+=f[2],k[3]+=1}}if(!h)return null;const l=[r[0]/h,r[1]/h,r[2]/h],c=d(l),i=p.map(a=>L(a,c)).sort((a,g)=>a-g),x=i.reduce((a,g)=>a+g,0)/i.length,v=i[Math.min(i.length-1,Math.floor(i.length*.95))],w=Object.values(u).filter(a=>a[3]>0).map(a=>d([a[0]/a[3],a[1]/a[3],a[2]/a[3]])[0]);return{rgb:l,hex:C(l),lab:c,spread:x,worst:v,lightRange:w.length>1?Math.max(...w)-Math.min(...w):0,samples:h}}const T=6,S=5;function B(e,t){if(!e)return{status:"unknown",findings:[],distance:0};const o=d(E(t.hex)),s=L(e.lab,o),n=[];return s>t.tolerance*2?n.push({key:"colour",status:"bad",text:`The background reads ${e.hex}, which is a long way from ${t.label.toLowerCase()}.`}):s>t.tolerance?n.push({key:"colour",status:"warn",text:`The background reads ${e.hex} - close to ${t.label.toLowerCase()}, but not quite it.`}):n.push({key:"colour",status:"good",text:`The background reads ${e.hex}, which passes as ${t.label.toLowerCase()}.`}),e.spread>T*2||e.worst>T*4?n.push({key:"uniform",status:"bad",text:"It is not one flat colour - there is a shadow, a pattern or an object behind you."}):e.spread>T?n.push({key:"uniform",status:"warn",text:"Slightly uneven. Standing a foot further from the wall is usually the whole fix."}):n.push({key:"uniform",status:"good",text:"Evenly lit, with no shadow behind the head."}),e.lightRange>S*2?n.push({key:"sides",status:"bad",text:"One side of the background is much darker than the other, which reads as side lighting."}):e.lightRange>S&&n.push({key:"sides",status:"warn",text:"One side is a little darker than the other."}),{status:n.some(h=>h.status==="bad")?"bad":n.some(h=>h.status==="warn")?"warn":"good",findings:n,distance:s}}const N=55;function O(e,{stride:t=2}={}){const{data:o,width:s,height:n}=e;if(!s||!n)return null;let r=0,h=0,p=0,u=0;for(let l=0;l<n;l+=t)for(let c=0;c<s;c+=t){const i=(l*s+c)*4,x=d([o[i],o[i+1],o[i+2]])[0];u+=1,x<N?r+=1:(h+=x,p+=1)}return u?{coverage:r/u,paperLightness:p?h/p:0,samples:u}:null}function _(e){if(!e)return{status:"unknown",findings:[]};const t=[];return e.coverage<.01?t.push({key:"ink",status:"bad",text:"Almost no ink in the crop. Either the box is off the signature, or the pen was too light to photograph."}):e.coverage>.35?t.push({key:"ink",status:"warn",text:"A great deal of dark pixels - check the crop has not taken in a ruled line or the edge of the page."}):t.push({key:"ink",status:"good",text:`Ink covers ${(e.coverage*100).toFixed(1)}% of the crop, which reads as a signature.`}),e.paperLightness<75?t.push({key:"paper",status:"bad",text:"The paper is coming out grey rather than white. More light on the page, or a scan rather than a photo."}):e.paperLightness<88?t.push({key:"paper",status:"warn",text:"The paper is a little dull. Most forms want a clean white page behind the signature."}):t.push({key:"paper",status:"good",text:"The paper is clean and white."}),{status:t.some(s=>s.status==="bad")?"bad":t.some(s=>s.status==="warn")?"warn":"good",findings:t}}export{B as checkBackground,_ as checkSignature,L as deltaE,E as hexToRgb,R as inBackgroundZone,A as readBackground,O as readSignature,C as rgbToHex,d as rgbToLab};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function hexToRgb(hex){
+const text=String(hex).trim().replace(/^#/,'');
+const full=text.length===3?text.replace(/./g,(ch)=>ch+ch):text;
+if(!/^[0-9a-f]{6}$/i.test(full))return[255,255,255];
+return[
+Number.parseInt(full.slice(0,2),16),
+Number.parseInt(full.slice(2,4),16),
+Number.parseInt(full.slice(4,6),16),
+];
+}
+export function rgbToHex([r,g,b]){
+const pair=(value)=>Math.max(0,Math.min(255,Math.round(value))).toString(16).padStart(2,'0');
+return`#${pair(r)}${pair(g)}${pair(b)}`;
+}
+const linear=(channel)=>{
+const value=channel/255;
+return value<=0.04045?value/12.92:((value+0.055)/1.055)**2.4;
+};
+const WHITE=[0.95047,1,1.08883];
+const labCurve=(value)=>(value>0.008856?Math.cbrt(value):7.787*value+16/116);
+export function rgbToLab([r,g,b]){
+const rl=linear(r);
+const gl=linear(g);
+const bl=linear(b);
+const x=(0.4124*rl+0.3576*gl+0.1805*bl)/WHITE[0];
+const y=(0.2126*rl+0.7152*gl+0.0722*bl)/WHITE[1];
+const z=(0.0193*rl+0.1192*gl+0.9505*bl)/WHITE[2];
+const fx=labCurve(x);
+const fy=labCurve(y);
+const fz=labCurve(z);
+return[116*fy-16,500*(fx-fy),200*(fy-fz)];
+}
+export function deltaE(a,b){
+return Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2]);
+}
+export const inBackgroundZone=(fx,fy)=>(
+fy<=0.16||(fy<=0.55&&(fx<=0.12||fx>=0.88))
+);
+export function readBackground(image,{stride=4}={}){
+const{data,width,height}=image;
+if(!width||!height)return null;
+let sum=[0,0,0];
+let samples=0;
+const labs=[];
+const sides={top:[0,0,0,0],left:[0,0,0,0],right:[0,0,0,0]};
+for(let y=0;y<height;y+=stride){
+const fy=y/height;
+for(let x=0;x<width;x+=stride){
+const fx=x/width;
+if(!inBackgroundZone(fx,fy))continue;
+const at=(y*width+x)*4;
+const rgb=[data[at],data[at+1],data[at+2]];
+sum=[sum[0]+rgb[0],sum[1]+rgb[1],sum[2]+rgb[2]];
+labs.push(rgbToLab(rgb));
+samples+=1;
+const side=fy<=0.16?sides.top:fx<=0.12?sides.left:sides.right;
+side[0]+=rgb[0];
+side[1]+=rgb[1];
+side[2]+=rgb[2];
+side[3]+=1;
+}
+}
+if(!samples)return null;
+const rgb=[sum[0]/samples,sum[1]/samples,sum[2]/samples];
+const lab=rgbToLab(rgb);
+const distances=labs.map((one)=>deltaE(one,lab)).sort((a,b)=>a-b);
+const spread=distances.reduce((total,one)=>total+one,0)/distances.length;
+const worst=distances[Math.min(distances.length-1,Math.floor(distances.length*0.95))];
+const lightness=Object.values(sides)
+.filter((side)=>side[3]>0)
+.map((side)=>rgbToLab([side[0]/side[3],side[1]/side[3],side[2]/side[3]])[0]);
+return{
+rgb,
+hex:rgbToHex(rgb),
+lab,
+spread,
+worst,
+lightRange:lightness.length>1?Math.max(...lightness)-Math.min(...lightness):0,
+samples,
+};
+}
+const SPREAD_LIMIT=6;
+const SIDE_LIMIT=5;
+export function checkBackground(reading,required){
+if(!reading){
+return{status:'unknown',findings:[],distance:0};
+}
+const wanted=rgbToLab(hexToRgb(required.hex));
+const distance=deltaE(reading.lab,wanted);
+const findings=[];
+if(distance>required.tolerance*2){
+findings.push({
+key:'colour',
+status:'bad',
+text:`The background reads ${reading.hex}, which is a long way from ${required.label.toLowerCase()}.`,
+});
+}else if(distance>required.tolerance){
+findings.push({
+key:'colour',
+status:'warn',
+text:`The background reads ${reading.hex} - close to ${required.label.toLowerCase()}, but not quite it.`,
+});
+}else{
+findings.push({
+key:'colour',
+status:'good',
+text:`The background reads ${reading.hex}, which passes as ${required.label.toLowerCase()}.`,
+});
+}
+if(reading.spread>SPREAD_LIMIT*2||reading.worst>SPREAD_LIMIT*4){
+findings.push({
+key:'uniform',
+status:'bad',
+text:'It is not one flat colour - there is a shadow, a pattern or an object behind you.',
+});
+}else if(reading.spread>SPREAD_LIMIT){
+findings.push({
+key:'uniform',
+status:'warn',
+text:'Slightly uneven. Standing a foot further from the wall is usually the whole fix.',
+});
+}else{
+findings.push({
+key:'uniform',
+status:'good',
+text:'Evenly lit, with no shadow behind the head.',
+});
+}
+if(reading.lightRange>SIDE_LIMIT*2){
+findings.push({
+key:'sides',
+status:'bad',
+text:'One side of the background is much darker than the other, which reads as side lighting.',
+});
+}else if(reading.lightRange>SIDE_LIMIT){
+findings.push({
+key:'sides',
+status:'warn',
+text:'One side is a little darker than the other.',
+});
+}
+const status=findings.some((one)=>one.status==='bad')
+?'bad'
+:findings.some((one)=>one.status==='warn')?'warn':'good';
+return{status,findings,distance};
+}
+const INK_LIMIT=55;
+export function readSignature(image,{stride=2}={}){
+const{data,width,height}=image;
+if(!width||!height)return null;
+let ink=0;
+let paperSum=0;
+let paperCount=0;
+let samples=0;
+for(let y=0;y<height;y+=stride){
+for(let x=0;x<width;x+=stride){
+const at=(y*width+x)*4;
+const lightness=rgbToLab([data[at],data[at+1],data[at+2]])[0];
+samples+=1;
+if(lightness<INK_LIMIT){
+ink+=1;
+}else{
+paperSum+=lightness;
+paperCount+=1;
+}
+}
+}
+if(!samples)return null;
+return{
+coverage:ink/samples,
+paperLightness:paperCount?paperSum/paperCount:0,
+samples,
+};
+}
+export function checkSignature(reading){
+if(!reading)return{status:'unknown',findings:[]};
+const findings=[];
+if(reading.coverage<0.01){
+findings.push({
+key:'ink',
+status:'bad',
+text:'Almost no ink in the crop. Either the box is off the signature, or the pen was too light to photograph.',
+});
+}else if(reading.coverage>0.35){
+findings.push({
+key:'ink',
+status:'warn',
+text:'A great deal of dark pixels - check the crop has not taken in a ruled line or the edge of the page.',
+});
+}else{
+findings.push({
+key:'ink',
+status:'good',
+text:`Ink covers ${(reading.coverage * 100).toFixed(1)}% of the crop, which reads as a signature.`,
+});
+}
+if(reading.paperLightness<75){
+findings.push({
+key:'paper',
+status:'bad',
+text:'The paper is coming out grey rather than white. More light on the page, or a scan rather than a photo.',
+});
+}else if(reading.paperLightness<88){
+findings.push({
+key:'paper',
+status:'warn',
+text:'The paper is a little dull. Most forms want a clean white page behind the signature.',
+});
+}else{
+findings.push({key:'paper',status:'good',text:'The paper is clean and white.'});
+}
+const status=findings.some((one)=>one.status==='bad')
+?'bad'
+:findings.some((one)=>one.status==='warn')?'warn':'good';
+return{status,findings};
+}

@@ -1,2 +1,91 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const M=.001,w=12,p=()=>new Promise(t=>{setTimeout(t,0)});function x(t,r){const e=[...t].sort((n,c)=>n.start-c.start),a=[];let o=0;for(const n of e)n.start>o&&a.push({start:o,end:Math.min(n.start,r)}),o=Math.max(o,n.end);return o<r&&a.push({start:o,end:r}),a.filter(n=>n.end-n.start>.001)}function y(t){return t.reduce((r,e)=>r+(e.end-e.start),0)}function I(t,{sampleRate:r,totalFrames:e,fadeSeconds:a=0}){const o=Math.max(0,Math.round((Number(a)||0)*r)),n=[];for(const c of t){const f=d(Math.round(c.start*r),0,e),s=d(Math.round(c.end*r),f,e),u=s-f;if(u<1)continue;const h=Math.floor(u/2);n.push({from:f,to:s,frames:u,fadeIn:f>0?Math.min(o,h):0,fadeOut:s<e?Math.min(o,h):0})}return n}function i(t){return t.reduce((r,e)=>r+e.frames,0)}function S(t,r){return t.length===1&&t[0].from===0&&t[0].to===r&&t[0].fadeIn===0&&t[0].fadeOut===0}function l(t,r,{frames:e,fadeIn:a,fadeOut:o}){for(let n=0;n<a;n+=1)t[r+n]*=n/a;for(let n=0;n<o;n+=1)t[r+e-1-n]*=n/o}function m(t,r,e,a){for(let o=0;o<t.length;o+=1)r[o].set(t[o].subarray(a.from,a.to),e),l(r[o],e,a)}function g(t,r){const e=i(r),a=t.map(()=>new Float32Array(e));let o=0;for(const n of r)m(t,a,o,n),o+=n.frames;return a}async function T(t,r,{onProgress:e,signal:a,budgetMs:o=12}={}){const n=i(r);if(!n)throw new Error("There is nothing marked to keep.");const c=t.channels.map(()=>new Float32Array(n));let f=0,s=0,u=performance.now();for(const h of r)a?.throwIfAborted(),m(t.channels,c,f,h),f+=h.frames,s+=1,e?.(f/n,`Copying part ${s} of ${r.length}\u2026`),performance.now()-u>=o&&(await p(),u=performance.now());return a?.throwIfAborted(),{channels:c,frames:n}}function d(t,r,e){return Math.max(r,Math.min(e,t))}export{g as cutChannels,x as invertRanges,S as isUntouched,I as planSections,i as sectionFrames,y as totalSeconds,T as trim};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MIN_SECTION=0.001;
+const BUDGET_MS=12;
+const handBack=()=>new Promise((resolve)=>{setTimeout(resolve,0);});
+export function invertRanges(ranges,duration){
+const ordered=[...ranges].sort((a,b)=>a.start-b.start);
+const gaps=[];
+let at=0;
+for(const range of ordered){
+if(range.start>at)gaps.push({start:at,end:Math.min(range.start,duration)});
+at=Math.max(at,range.end);
+}
+if(at<duration)gaps.push({start:at,end:duration});
+return gaps.filter((gap)=>gap.end-gap.start>MIN_SECTION);
+}
+export function totalSeconds(ranges){
+return ranges.reduce((total,range)=>total+(range.end-range.start),0);
+}
+export function planSections(ranges,{sampleRate,totalFrames,fadeSeconds=0}){
+const wanted=Math.max(0,Math.round((Number(fadeSeconds)||0)*sampleRate));
+const sections=[];
+for(const range of ranges){
+const from=clamp(Math.round(range.start*sampleRate),0,totalFrames);
+const to=clamp(Math.round(range.end*sampleRate),from,totalFrames);
+const frames=to-from;
+if(frames<1)continue;
+const cap=Math.floor(frames/2);
+sections.push({
+from,
+to,
+frames,
+fadeIn:from>0?Math.min(wanted,cap):0,
+fadeOut:to<totalFrames?Math.min(wanted,cap):0,
+});
+}
+return sections;
+}
+export function sectionFrames(sections){
+return sections.reduce((total,section)=>total+section.frames,0);
+}
+export function isUntouched(sections,totalFrames){
+return sections.length===1
+&&sections[0].from===0
+&&sections[0].to===totalFrames
+&&sections[0].fadeIn===0
+&&sections[0].fadeOut===0;
+}
+function applyFades(samples,at,{frames,fadeIn,fadeOut}){
+for(let j=0;j<fadeIn;j+=1)samples[at+j]*=j/fadeIn;
+for(let j=0;j<fadeOut;j+=1)samples[at+frames-1-j]*=j/fadeOut;
+}
+function copySection(channels,out,at,section){
+for(let c=0;c<channels.length;c+=1){
+out[c].set(channels[c].subarray(section.from,section.to),at);
+applyFades(out[c],at,section);
+}
+}
+export function cutChannels(channels,sections){
+const frames=sectionFrames(sections);
+const out=channels.map(()=>new Float32Array(frames));
+let at=0;
+for(const section of sections){
+copySection(channels,out,at,section);
+at+=section.frames;
+}
+return out;
+}
+export async function trim(source,sections,{onProgress,signal,budgetMs=BUDGET_MS}={}){
+const frames=sectionFrames(sections);
+if(!frames)throw new Error('There is nothing marked to keep.');
+const out=source.channels.map(()=>new Float32Array(frames));
+let at=0;
+let done=0;
+let since=performance.now();
+for(const section of sections){
+signal?.throwIfAborted();
+copySection(source.channels,out,at,section);
+at+=section.frames;
+done+=1;
+onProgress?.(at/frames,`Copying part ${done} of ${sections.length}…`);
+if(performance.now()-since>=budgetMs){
+await handBack();
+since=performance.now();
+}
+}
+signal?.throwIfAborted();
+return{channels:out,frames};
+}
+function clamp(value,low,high){
+return Math.max(low,Math.min(high,value));
+}

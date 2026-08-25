@@ -1,4 +1,73 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const p=["seconds","HHMMSSmmm"],S=.02;function m(e){const t=Math.round(Math.max(0,Number(e)||0)*1e3),r=Math.floor(t/1e3),n=(o,s)=>String(o).padStart(s,"0");return`${n(Math.floor(r/3600),2)}:${n(Math.floor(r/60)%60,2)}:${n(r%60,2)}.${n(t%1e3,3)}`}function h(e){const t=String(e??"").trim();if(!t)return null;const r=t.split(":");if(r.length>3)return null;let n=0;for(const o of r){if(!/^\d*\.?\d*$/.test(o)||o===""||o===".")return null;n=n*60+Number(o)}return Number.isFinite(n)?n:null}function M(e){return e.filter(t=>t.end!==null&&t.end-t.start>.02).map(t=>({start:t.start,end:t.end}))}function $(e){return M(e).reduce((t,r)=>t+(r.end-r.start),0)}function g(e){const t=e[e.length-1];return t&&t.end===null?t:null}function x(e,{format:t="seconds",name:r=""}={}){const n=p.includes(t)?t:"seconds",o=[`${n},${String(r).replace(/[,\r\n]+/g," ").trim()}`];for(const s of M(e))o.push(n==="seconds"?`${s.start.toFixed(3)},${s.end.toFixed(3)}`:`${m(s.start)},${m(s.end)}`);return`${o.join(`
-`)}
-`}function N(e){const t=String(e??"").split(/\r?\n/);let r="seconds",n="",o=0;const s=(t[0]??"").trim().split(",");p.includes(s[0])&&(r=s[0],n=(s[1]??"").trim(),o=1);const l=[];let i=0;for(let a=o;a<t.length;a++){const f=t[a].trim();if(!f)continue;const c=f.split(",");if(c.length<2){i++;continue}const u=h(c[0]),d=h(c[1]);if(u===null||d===null||d<=u){i++;continue}l.push({start:u,end:d})}if(!l.length)throw new Error("No segments could be read from that file. Each line after the first should be a start and an end, separated by a comma.");return{format:r,name:n,segments:l,skipped:i}}export{p as TIMESTAMP_FORMATS,m as formatClock,g as openSegment,h as parseClock,N as readTimestamps,M as segmentRanges,$ as totalCaptured,x as writeTimestamps};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const TIMESTAMP_FORMATS=['seconds','HHMMSSmmm'];
+const MIN_SEGMENT=0.02;
+export function formatClock(seconds){
+const total=Math.round(Math.max(0,Number(seconds)||0)*1000);
+const whole=Math.floor(total/1000);
+const pad=(value,size)=>String(value).padStart(size,'0');
+return`${pad(Math.floor(whole / 3600), 2)}:${pad(Math.floor(whole / 60) % 60, 2)}`
++`:${pad(whole % 60, 2)}.${pad(total % 1000, 3)}`;
+}
+export function parseClock(text){
+const trimmed=String(text??'').trim();
+if(!trimmed)return null;
+const parts=trimmed.split(':');
+if(parts.length>3)return null;
+let total=0;
+for(const part of parts){
+if(!/^\d*\.?\d*$/.test(part)||part===''||part==='.')return null;
+total=total*60+Number(part);
+}
+return Number.isFinite(total)?total:null;
+}
+export function segmentRanges(segments){
+return segments
+.filter((segment)=>segment.end!==null&&segment.end-segment.start>MIN_SEGMENT)
+.map((segment)=>({start:segment.start,end:segment.end}));
+}
+export function totalCaptured(segments){
+return segmentRanges(segments).reduce((total,range)=>total+(range.end-range.start),0);
+}
+export function openSegment(segments){
+const last=segments[segments.length-1];
+return last&&last.end===null?last:null;
+}
+export function writeTimestamps(segments,{format='seconds',name=''}={}){
+const chosen=TIMESTAMP_FORMATS.includes(format)?format:'seconds';
+const lines=[`${chosen},${String(name).replace(/[,\r\n]+/g, ' ').trim()}`];
+for(const range of segmentRanges(segments)){
+lines.push(chosen==='seconds'
+?`${range.start.toFixed(3)},${range.end.toFixed(3)}`
+:`${formatClock(range.start)},${formatClock(range.end)}`);
+}
+return`${lines.join('\n')}\n`;
+}
+export function readTimestamps(text){
+const lines=String(text??'').split(/\r?\n/);
+let format='seconds';
+let name='';
+let at=0;
+const head=(lines[0]??'').trim().split(',');
+if(TIMESTAMP_FORMATS.includes(head[0])){
+format=head[0];
+name=(head[1]??'').trim();
+at=1;
+}
+const segments=[];
+let skipped=0;
+for(let i=at;i<lines.length;i++){
+const line=lines[i].trim();
+if(!line)continue;
+const fields=line.split(',');
+if(fields.length<2){skipped++;continue;}
+const start=parseClock(fields[0]);
+const end=parseClock(fields[1]);
+if(start===null||end===null||end<=start){skipped++;continue;}
+segments.push({start,end});
+}
+if(!segments.length){
+throw new Error('No segments could be read from that file. Each line after the '
++'first should be a start and an end, separated by a comma.');
+}
+return{format,name,segments,skipped};
+}

@@ -1,4 +1,119 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const $=2e4,b=.95;function w(o){const t=o.pathname.split("/").filter(Boolean).pop()||"image",e=decodeURIComponent(t);return/\.(jpe?g|png|webp|gif|avif|bmp)$/i.test(e)?e:`${e}.jpg`}function m(o){let t;try{t=new URL(o.trim())}catch{throw new Error(`Not a valid web address: ${o.trim().slice(0,60)}`)}if(t.protocol!=="https:"&&t.protocol!=="http:")throw new Error(`Only http and https addresses are supported (got ${t.protocol}).`);return t}async function u(o){const t=m(o),e=new Image;e.crossOrigin="anonymous",e.decoding="async",e.referrerPolicy="no-referrer";let a;try{await new Promise((l,i)=>{e.onload=l,e.onerror=()=>i(new Error(`Could not load ${t.hostname}. The server may not allow other sites to use its images (no CORS header), or the address may be wrong.`)),a=setTimeout(()=>i(new Error(`${t.hostname} did not respond within 20 seconds.`)),2e4),e.src=t.href})}finally{clearTimeout(a)}if(!e.naturalWidth||!e.naturalHeight)throw new Error(`${t.hostname} returned something that is not a usable image.`);const n=document.createElement("canvas");n.width=e.naturalWidth,n.height=e.naturalHeight,n.getContext("2d",{alpha:!1}).drawImage(e,0,0);const d=await new Promise((l,i)=>{n.toBlob(s=>s?l(s):i(new Error("Could not copy the image locally.")),"image/jpeg",.95)});return new File([d],w(t),{type:"image/jpeg"})}async function y(o,t){const e=[],a=[];for(let n=0;n<o.length;n++){t?.({done:n,total:o.length,url:o[n]});try{e.push({file:await u(o[n]),url:m(o[n])})}catch(d){a.push({url:o[n],reason:d.message})}}return t?.({done:o.length,total:o.length}),{downloaded:e,failures:a}}function I({input:o,button:t,status:e,onFiles:a,onError:n,onClear:d}){let l=!1;t.addEventListener("click",async()=>{if(l)return;const i=o.value.split(`
-`).map(r=>r.trim()).filter(Boolean);if(!i.length){e.textContent="Paste at least one address first.";return}const s=[],h=[];for(const r of i)try{m(r),s.push(r)}catch(g){h.push(g.message)}if(!s.length){n(h.join(" ")),e.textContent="Nothing to download.";return}l=!0,t.disabled=!0,d?.();try{const{downloaded:r,failures:g}=await y(s,({done:c,total:f})=>{e.textContent=`Downloading ${Math.min(c+1,f)} of ${f}...`});e.textContent=r.length?`Downloaded ${r.length} of ${s.length}.`:"Nothing could be downloaded.",r.length&&(await a(r),o.value="");const p=[...h,...g.map(c=>`${c.url}: ${c.reason}`)];p.length&&n(p.join(`
-`))}catch(r){n(r.message),e.textContent="Download failed."}finally{l=!1,t.disabled=!1}})}export{u as fetchImageAsFile,y as fetchImages,m as parseImageUrl,I as wireUrlImport};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const TIMEOUT_MS=20000;
+const JPEG_QUALITY=0.95;
+function filenameFromUrl(url){
+const last=url.pathname.split('/').filter(Boolean).pop()||'image';
+const decoded=decodeURIComponent(last);
+return/\.(jpe?g|png|webp|gif|avif|bmp)$/i.test(decoded)?decoded:`${decoded}.jpg`;
+}
+export function parseImageUrl(raw){
+let url;
+try{
+url=new URL(raw.trim());
+}catch{
+throw new Error(`Not a valid web address: ${raw.trim().slice(0, 60)}`);
+}
+if(url.protocol!=='https:'&&url.protocol!=='http:'){
+throw new Error(`Only http and https addresses are supported (got ${url.protocol}).`);
+}
+return url;
+}
+export async function fetchImageAsFile(raw){
+const url=parseImageUrl(raw);
+const img=new Image();
+img.crossOrigin='anonymous';
+img.decoding='async';
+img.referrerPolicy='no-referrer';
+let timer;
+try{
+await new Promise((resolve,reject)=>{
+img.onload=resolve;
+img.onerror=()=>reject(new Error(
+`Could not load ${url.hostname}. The server may not allow other sites to `
++'use its images (no CORS header), or the address may be wrong.',
+));
+timer=setTimeout(()=>reject(new Error(`${url.hostname} did not respond within 20 seconds.`)),TIMEOUT_MS);
+img.src=url.href;
+});
+}finally{
+clearTimeout(timer);
+}
+if(!img.naturalWidth||!img.naturalHeight){
+throw new Error(`${url.hostname} returned something that is not a usable image.`);
+}
+const canvas=document.createElement('canvas');
+canvas.width=img.naturalWidth;
+canvas.height=img.naturalHeight;
+canvas.getContext('2d',{alpha:false}).drawImage(img,0,0);
+const blob=await new Promise((resolve,reject)=>{
+canvas.toBlob(
+(result)=>(result?resolve(result):reject(new Error('Could not copy the image locally.'))),
+'image/jpeg',
+JPEG_QUALITY,
+);
+});
+return new File([blob],filenameFromUrl(url),{type:'image/jpeg'});
+}
+export async function fetchImages(urls,onProgress){
+const downloaded=[];
+const failures=[];
+for(let i=0;i<urls.length;i++){
+onProgress?.({done:i,total:urls.length,url:urls[i]});
+try{
+downloaded.push({file:await fetchImageAsFile(urls[i]),url:parseImageUrl(urls[i])});
+}catch(error){
+failures.push({url:urls[i],reason:error.message});
+}
+}
+onProgress?.({done:urls.length,total:urls.length});
+return{downloaded,failures};
+}
+export function wireUrlImport({input,button,status,onFiles,onError,onClear}){
+let busy=false;
+button.addEventListener('click',async()=>{
+if(busy)return;
+const lines=input.value.split('\n').map((s)=>s.trim()).filter(Boolean);
+if(!lines.length){
+status.textContent='Paste at least one address first.';
+return;
+}
+const valid=[];
+const rejected=[];
+for(const line of lines){
+try{
+parseImageUrl(line);
+valid.push(line);
+}catch(error){
+rejected.push(error.message);
+}
+}
+if(!valid.length){
+onError(rejected.join(' '));
+status.textContent='Nothing to download.';
+return;
+}
+busy=true;
+button.disabled=true;
+onClear?.();
+try{
+const{downloaded,failures}=await fetchImages(valid,({done,total})=>{
+status.textContent=`Downloading ${Math.min(done + 1, total)} of ${total}...`;
+});
+status.textContent=downloaded.length
+?`Downloaded ${downloaded.length} of ${valid.length}.`
+:'Nothing could be downloaded.';
+if(downloaded.length){
+await onFiles(downloaded);
+input.value='';
+}
+const problems=[...rejected,...failures.map((f)=>`${f.url}: ${f.reason}`)];
+if(problems.length)onError(problems.join('\n'));
+}catch(error){
+onError(error.message);
+status.textContent='Download failed.';
+}finally{
+busy=false;
+button.disabled=false;
+}
+});
+}

@@ -1,2 +1,491 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as g}from"./shared/phrases.js";import{wireFilePicker as M}from"./shared/file-picker.js";import{decodeGif as Z,GifFormatError as q,playedDelay as H,totalDuration as V}from"./gif.js";import{GifCanvas as S,flatten as $,parseColour as _,patchPixels as T}from"./compose.js";import{disposalLabel as J,encodePng as z,formatBytes as K,formatSeconds as F,frameName as Q,thumbnail as X,timingList as Y,zipName as ee}from"./frames.js";import{makeZip as te}from"./shared/zip.js";const r=e=>document.getElementById(e),t={dropzone:r("dropzone"),fileInput:r("file-input"),source:r("source"),srcName:r("src-name"),srcSize:r("src-size"),srcPicture:r("src-picture"),srcFrames:r("src-frames"),srcDuration:r("src-duration"),srcLoop:r("src-loop"),notice:r("notice"),error:r("error"),settingsCard:r("settings-card"),mode:r("mode"),modeNote:r("mode-note"),background:r("background"),colourRow:r("colour-row"),colour:r("colour"),every:r("every"),everyNote:r("every-note"),timing:r("timing"),downloadAll:r("download-all"),downloadSelected:r("download-selected"),cancel:r("cancel"),progressWrap:r("progress-wrap"),progressBar:r("progress-bar"),progressLabel:r("progress-label"),framesCard:r("frames-card"),framesCount:r("frames-count"),frames:r("frames"),selectAll:r("select-all"),selectNone:r("select-none"),clear:r("clear"),privacyToggle:r("privacy-toggle"),privacyPanel:r("privacy-panel"),networkCount:r("network-count"),networkDot:r("network-dot"),offlineStatus:r("offline-status"),offlineDot:r("offline-dot")};let u=null,i=null,f=[],p=!1,b=!1,v=0;const R=M({input:t.fileInput,dropzone:t.dropzone,onFiles(e){const[n]=e;n&&ne(n)}});async function ne(e){if(!p){E(),R.busy("Reading the GIF...");try{const n=new Uint8Array(await e.arrayBuffer()),o=Z(n);B(),u=e,i=o,oe(),ae(),await L()}catch(n){n instanceof q?w(n.message):w(`That file could not be read: ${n.message}`)}finally{R.done()}}}function oe(){const e=i.frames.filter(a=>a.partial).length,n=i.frames.filter(a=>a.hasLocalPalette).length;t.srcName.textContent=u.name,t.srcSize.textContent=K(u.size),t.srcPicture.textContent=`${i.width} x ${i.height}`,t.srcFrames.textContent=String(i.frames.length),t.srcDuration.textContent=F(V(i.frames)),t.srcLoop.textContent=re(i.loopCount),t.source.hidden=!1;const o=[];i.truncated&&o.push(i.truncated),e&&o.push(`${e} frame${e===1?"":"s"} stop short in the file itself; the missing pixels come out transparent.`),n&&o.push(`${n} of the frames carry a colour table of their own, which is why this GIF is larger than its size suggests.`),i.comment&&o.push(`The file carries a comment: "${i.comment.slice(0,120)}"`),t.notice.textContent=o.join(" "),t.notice.hidden=o.length===0}function re(e){return e===null?"plays once (no loop block)":e===0?"forever":`${e} more time${e===1?"":"s"}`}function ae(){const e=i.frames.length;f=i.frames.map((n,o)=>({index:o,frame:n,played:H(n.delay),name:Q(u.name,o+1,e),checked:!0,thumbUrl:null,node:null,image:null,meta:null})),t.frames.replaceChildren(...f.map(ie)),t.settingsCard.hidden=!1,t.framesCard.hidden=!1,P()}function ie(e){const n=document.createElement("li");n.className="frame";const o=document.createElement("label");o.className="frame-pick";const a=document.createElement("input");a.type="checkbox",a.checked=e.checked,a.addEventListener("change",()=>{e.checked=a.checked,n.classList.toggle("unpicked",!a.checked),C()}),o.append(a,document.createTextNode(`Frame ${e.index+1}`));const c=document.createElement("img");c.alt=`Frame ${e.index+1}`,c.loading="lazy";const d=document.createElement("p");d.className="frame-meta";const l=document.createElement("button");l.type="button",l.className="ghost",l.textContent="Download",l.addEventListener("click",()=>le(e));const s=document.createElement("div");return s.className="frame-body",s.append(o,d,l),n.append(c,s),e.node=n,e.image=c,e.meta=d,e.box=a,n}function k(){return{stored:t.mode.value==="stored",colour:t.background.value==="flatten"?_(t.colour.value):null,every:Math.max(1,Math.min(100,Math.round(Number(t.every.value)||1))),timing:t.timing.value==="yes"}}async function L(){const e=v+=1,{stored:n,colour:o}=k(),a=n?null:new S(i);U(0,f.length,"Drawing the frames...");for(const c of f){if(e!==v)return;const{frame:d}=c;let l,s,m;n?(l=T(d),s=d.width,m=d.height):(l=a.next().pixels.slice(),s=i.width,m=i.height),o&&$(l,o);const h=await X(l,s,m);if(e!==v){URL.revokeObjectURL(h.url);return}c.thumbUrl&&URL.revokeObjectURL(c.thumbUrl),c.thumbUrl=h.url,c.image.src=h.url,c.meta.textContent=se(c,n),U(c.index+1,f.length,"Drawing the frames..."),await new Promise(y=>setTimeout(y,0))}e===v&&(x(),C())}function se(e,n){const{frame:o}=e,a=`${F(e.played)}`,c=o.delay<2?` (stored as ${(o.delay/100).toFixed(2)}s)`:"";return n?`${a}${c} - ${o.width} x ${o.height} at ${o.x}, ${o.y} - ${J(o.disposal)}`:`${a}${c} - ${i.width} x ${i.height}`}function C(){const e=f.filter(n=>n.checked).length;t.framesCount.textContent=`${f.length} frame${f.length===1?"":"s"}, ${e} selected`,t.downloadSelected.hidden=e===f.length||e===0,t.downloadAll.disabled=f.length===0}function P(){const{every:e}=k();for(const n of f)n.checked=n.index%e===0,n.box&&(n.box.checked=n.checked),n.node?.classList.toggle("unpicked",!n.checked);C()}function D(e){for(const n of f)n.checked=e,n.box&&(n.box.checked=e),n.node?.classList.toggle("unpicked",!e);C()}function ce(e,{stored:n,colour:o}){const a=i.frames[e];if(n){const s=T(a);return o&&$(s,o),{pixels:s,width:a.width,height:a.height}}const c=new S(i);let d=null;for(let s=0;s<=e;s+=1)d=c.next();const l=d.pixels.slice();return o&&$(l,o),{pixels:l,width:i.width,height:i.height}}async function le(e){if(!p){E();try{const n=k(),{pixels:o,width:a,height:c}=ce(e.index,n);A(await z(o,a,c),e.name)}catch(n){w(`That frame could not be written: ${n.message}`)}}}async function W(e){if(p||!e.length)return;p=!0,b=!1,E(),t.cancel.hidden=!1,t.downloadAll.disabled=!0,t.downloadSelected.disabled=!0;const n=k(),o=n.stored?null:new S(i),a=new Set(e.map(l=>l.index)),c=[],d=[];try{let l=0;for(const s of f){if(b)break;let m=null,h=i.width,y=i.height;if(n.stored){if(!a.has(s.index))continue;m=T(s.frame),h=s.frame.width,y=s.frame.height}else{const N=o.next();if(!a.has(s.index))continue;m=N.pixels.slice()}n.colour&&$(m,n.colour);const I=await z(m,h,y);c.push({name:s.name,data:new Uint8Array(await I.arrayBuffer())}),d.push(s),l+=1,U(l,e.length,`Writing frame ${l} of ${e.length}...`),await new Promise(N=>setTimeout(N,0))}if(b){x();return}n.timing&&c.push({name:"frames.txt",data:new TextEncoder().encode(Y(u.name,i,d))}),A(te(c),ee(u.name)),x()}catch(l){w(`The frames could not be written: ${l.message}`),x()}finally{p=!1,b=!1,t.cancel.hidden=!0,t.downloadAll.disabled=!1,t.downloadSelected.disabled=!1}}function A(e,n){const o=URL.createObjectURL(e),a=document.createElement("a");a.href=o,a.download=n,a.click(),setTimeout(()=>URL.revokeObjectURL(o),6e4)}function U(e,n,o){t.progressWrap.hidden=!1,t.progressBar.style.width=`${n?e/n*100:0}%`,t.progressLabel.textContent=o}function x(){t.progressWrap.hidden=!0,t.progressBar.style.width="0%",t.progressLabel.textContent=""}function w(e){t.error.textContent=e,t.error.hidden=!1}function E(){t.error.hidden=!0,t.error.textContent=""}function B(){v+=1;for(const e of f)e.thumbUrl&&URL.revokeObjectURL(e.thumbUrl);f=[],i=null,u=null,t.frames.replaceChildren(),t.source.hidden=!0,t.notice.hidden=!0,t.settingsCard.hidden=!0,t.framesCard.hidden=!0,x()}function O(){t.modeNote.textContent=t.mode.value==="stored"?"What the file holds: the patch each frame redraws, at its own size. This is how a GIF stays small, and it is not what the animation looks like.":"Every PNG is the whole picture, exactly as that moment of the animation looks. This is what almost everybody wants."}function j(){const{every:e}=k();t.everyNote.textContent=e===1?"frame":`${de(e)} frame`}function de(e){return e===2?"second":e===3?"third":`${e}th`}t.mode.addEventListener("change",()=>{O(),i&&L()}),t.background.addEventListener("change",()=>{t.colourRow.hidden=t.background.value!=="flatten",i&&L()});let G=null;t.colour.addEventListener("input",()=>{clearTimeout(G),G=setTimeout(()=>{i&&L()},150)}),t.every.addEventListener("change",()=>{j(),i&&P()}),t.selectAll.addEventListener("click",()=>D(!0)),t.selectNone.addEventListener("click",()=>D(!1)),t.clear.addEventListener("click",()=>{B(),E()}),t.downloadAll.addEventListener("click",()=>W(f)),t.downloadSelected.addEventListener("click",()=>W(f.filter(e=>e.checked))),t.cancel.addEventListener("click",()=>{b=!0}),window.addEventListener("beforeunload",e=>{p&&(e.preventDefault(),e.returnValue="")}),t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const fe=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function me(){const e=new Set,n=new Set,o=a=>{for(const s of a){if(s.name.startsWith("blob:")||s.name.startsWith("data:"))continue;const m=new URL(s.name,location.href);m.origin!==location.origin&&(fe.test(m.hostname)?e.add(m.hostname):n.add(m.hostname))}const c=performance.getEntriesByType("resource").filter(s=>!s.name.startsWith("blob:")&&!s.name.startsWith("data:")).length,d=n.size===0,l=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a file.`;t.networkCount.textContent=d?`your GIF has gone nowhere. ${c} files loaded.${l}`:`something contacted ${[...n].join(", ")}, which this tool never does.${l}`,t.networkCount.className=d?"good":"warn",t.networkDot.className=`live-dot ${d?"good":"warn"}`};o(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>o(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function ue(){const e=(n,o)=>{t.offlineStatus.textContent=n,t.offlineDot.className="live-dot",o&&(t.offlineStatus.title=o,console.info("Offline caching unavailable:",o))};if(!("serviceWorker"in navigator)){e(g("offline.none"));return}if(!window.isSecureContext){e(g("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=g("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(n){e(g("offline.failed"),n.message)}}window.addEventListener("error",e=>{w(g("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{w(g("error.broke",{detail:e.reason?.message??e.reason}))}),O(),j(),me(),ue(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker}from'./shared/file-picker.js';
+import{decodeGif,GifFormatError,playedDelay,totalDuration}from'./gif.js';
+import{GifCanvas,flatten,parseColour,patchPixels}from'./compose.js';
+import{
+disposalLabel,encodePng,formatBytes,formatSeconds,
+frameName,thumbnail,timingList,zipName,
+}from'./frames.js';
+import{makeZip}from'./shared/zip.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+source:$('source'),
+srcName:$('src-name'),
+srcSize:$('src-size'),
+srcPicture:$('src-picture'),
+srcFrames:$('src-frames'),
+srcDuration:$('src-duration'),
+srcLoop:$('src-loop'),
+notice:$('notice'),
+error:$('error'),
+settingsCard:$('settings-card'),
+mode:$('mode'),
+modeNote:$('mode-note'),
+background:$('background'),
+colourRow:$('colour-row'),
+colour:$('colour'),
+every:$('every'),
+everyNote:$('every-note'),
+timing:$('timing'),
+downloadAll:$('download-all'),
+downloadSelected:$('download-selected'),
+cancel:$('cancel'),
+progressWrap:$('progress-wrap'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+framesCard:$('frames-card'),
+framesCount:$('frames-count'),
+frames:$('frames'),
+selectAll:$('select-all'),
+selectNone:$('select-none'),
+clear:$('clear'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let file=null;
+let gif=null;
+let rows=[];
+let working=false;
+let cancelled=false;
+let pass=0;
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+const[picked]=files;
+if(picked)loadFile(picked);
+},
+});
+async function loadFile(picked){
+if(working)return;
+clearError();
+picker.busy('Reading the GIF...');
+try{
+const bytes=new Uint8Array(await picked.arrayBuffer());
+const decoded=decodeGif(bytes);
+reset();
+file=picked;
+gif=decoded;
+describe();
+build();
+await draw();
+}catch(error){
+if(error instanceof GifFormatError)showError(error.message);
+else showError(`That file could not be read: ${error.message}`);
+}finally{
+picker.done();
+}
+}
+function describe(){
+const partial=gif.frames.filter((frame)=>frame.partial).length;
+const local=gif.frames.filter((frame)=>frame.hasLocalPalette).length;
+el.srcName.textContent=file.name;
+el.srcSize.textContent=formatBytes(file.size);
+el.srcPicture.textContent=`${gif.width} x ${gif.height}`;
+el.srcFrames.textContent=String(gif.frames.length);
+el.srcDuration.textContent=formatSeconds(totalDuration(gif.frames));
+el.srcLoop.textContent=loopLabel(gif.loopCount);
+el.source.hidden=false;
+const notes=[];
+if(gif.truncated)notes.push(gif.truncated);
+if(partial){
+notes.push(`${partial} frame${partial === 1 ? '' : 's'} stop short in the file itself; `
++'the missing pixels come out transparent.');
+}
+if(local){
+notes.push(`${local} of the frames carry a colour table of their own, which is why `
++'this GIF is larger than its size suggests.');
+}
+if(gif.comment)notes.push(`The file carries a comment: "${gif.comment.slice(0, 120)}"`);
+el.notice.textContent=notes.join(' ');
+el.notice.hidden=notes.length===0;
+}
+function loopLabel(loop){
+if(loop===null)return'plays once (no loop block)';
+if(loop===0)return'forever';
+return`${loop} more time${loop === 1 ? '' : 's'}`;
+}
+function build(){
+const total=gif.frames.length;
+rows=gif.frames.map((frame,index)=>({
+index,
+frame,
+played:playedDelay(frame.delay),
+name:frameName(file.name,index+1,total),
+checked:true,
+thumbUrl:null,
+node:null,
+image:null,
+meta:null,
+}));
+el.frames.replaceChildren(...rows.map(makeRow));
+el.settingsCard.hidden=false;
+el.framesCard.hidden=false;
+applyEvery();
+}
+function makeRow(row){
+const item=document.createElement('li');
+item.className='frame';
+const label=document.createElement('label');
+label.className='frame-pick';
+const box=document.createElement('input');
+box.type='checkbox';
+box.checked=row.checked;
+box.addEventListener('change',()=>{
+row.checked=box.checked;
+item.classList.toggle('unpicked',!box.checked);
+countFrames();
+});
+label.append(box,document.createTextNode(`Frame ${row.index + 1}`));
+const image=document.createElement('img');
+image.alt=`Frame ${row.index + 1}`;
+image.loading='lazy';
+const meta=document.createElement('p');
+meta.className='frame-meta';
+const save=document.createElement('button');
+save.type='button';
+save.className='ghost';
+save.textContent='Download';
+save.addEventListener('click',()=>downloadOne(row));
+const body=document.createElement('div');
+body.className='frame-body';
+body.append(label,meta,save);
+item.append(image,body);
+row.node=item;
+row.image=image;
+row.meta=meta;
+row.box=box;
+return item;
+}
+function settings(){
+return{
+stored:el.mode.value==='stored',
+colour:el.background.value==='flatten'?parseColour(el.colour.value):null,
+every:Math.max(1,Math.min(100,Math.round(Number(el.every.value)||1))),
+timing:el.timing.value==='yes',
+};
+}
+async function draw(){
+const mine=(pass+=1);
+const{stored,colour}=settings();
+const canvas=stored?null:new GifCanvas(gif);
+progress(0,rows.length,'Drawing the frames...');
+for(const row of rows){
+if(mine!==pass)return;
+const{frame}=row;
+let pixels;
+let width;
+let height;
+if(stored){
+pixels=patchPixels(frame);
+width=frame.width;
+height=frame.height;
+}else{
+const step=canvas.next();
+pixels=step.pixels.slice();
+width=gif.width;
+height=gif.height;
+}
+if(colour)flatten(pixels,colour);
+const thumb=await thumbnail(pixels,width,height);
+if(mine!==pass){
+URL.revokeObjectURL(thumb.url);
+return;
+}
+if(row.thumbUrl)URL.revokeObjectURL(row.thumbUrl);
+row.thumbUrl=thumb.url;
+row.image.src=thumb.url;
+row.meta.textContent=describeFrame(row,stored);
+progress(row.index+1,rows.length,'Drawing the frames...');
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+if(mine===pass){
+hideProgress();
+countFrames();
+}
+}
+function describeFrame(row,stored){
+const{frame}=row;
+const delay=`${formatSeconds(row.played)}`;
+const clamped=frame.delay<2?` (stored as ${(frame.delay / 100).toFixed(2)}s)`:'';
+if(!stored)return`${delay}${clamped} - ${gif.width} x ${gif.height}`;
+return`${delay}${clamped} - ${frame.width} x ${frame.height} at ${frame.x}, ${frame.y}`
++` - ${disposalLabel(frame.disposal)}`;
+}
+function countFrames(){
+const picked=rows.filter((row)=>row.checked).length;
+el.framesCount.textContent=`${rows.length} frame${rows.length === 1 ? '' : 's'}`
++`, ${picked} selected`;
+el.downloadSelected.hidden=picked===rows.length||picked===0;
+el.downloadAll.disabled=rows.length===0;
+}
+function applyEvery(){
+const{every}=settings();
+for(const row of rows){
+row.checked=row.index%every===0;
+if(row.box)row.box.checked=row.checked;
+row.node?.classList.toggle('unpicked',!row.checked);
+}
+countFrames();
+}
+function pick(all){
+for(const row of rows){
+row.checked=all;
+if(row.box)row.box.checked=all;
+row.node?.classList.toggle('unpicked',!all);
+}
+countFrames();
+}
+function pixelsFor(index,{stored,colour}){
+const frame=gif.frames[index];
+if(stored){
+const pixels=patchPixels(frame);
+if(colour)flatten(pixels,colour);
+return{pixels,width:frame.width,height:frame.height};
+}
+const canvas=new GifCanvas(gif);
+let step=null;
+for(let at=0;at<=index;at+=1)step=canvas.next();
+const pixels=step.pixels.slice();
+if(colour)flatten(pixels,colour);
+return{pixels,width:gif.width,height:gif.height};
+}
+async function downloadOne(row){
+if(working)return;
+clearError();
+try{
+const options=settings();
+const{pixels,width,height}=pixelsFor(row.index,options);
+save(await encodePng(pixels,width,height),row.name);
+}catch(error){
+showError(`That frame could not be written: ${error.message}`);
+}
+}
+async function downloadZip(wanted){
+if(working||!wanted.length)return;
+working=true;
+cancelled=false;
+clearError();
+el.cancel.hidden=false;
+el.downloadAll.disabled=true;
+el.downloadSelected.disabled=true;
+const options=settings();
+const canvas=options.stored?null:new GifCanvas(gif);
+const picked=new Set(wanted.map((row)=>row.index));
+const files=[];
+const written=[];
+try{
+let done=0;
+for(const row of rows){
+if(cancelled)break;
+let pixels=null;
+let width=gif.width;
+let height=gif.height;
+if(options.stored){
+if(!picked.has(row.index))continue;
+pixels=patchPixels(row.frame);
+width=row.frame.width;
+height=row.frame.height;
+}else{
+const step=canvas.next();
+if(!picked.has(row.index))continue;
+pixels=step.pixels.slice();
+}
+if(options.colour)flatten(pixels,options.colour);
+const blob=await encodePng(pixels,width,height);
+files.push({name:row.name,data:new Uint8Array(await blob.arrayBuffer())});
+written.push(row);
+done+=1;
+progress(done,wanted.length,`Writing frame ${done} of ${wanted.length}...`);
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+if(cancelled){
+hideProgress();
+return;
+}
+if(options.timing){
+files.push({
+name:'frames.txt',
+data:new TextEncoder().encode(timingList(file.name,gif,written)),
+});
+}
+save(makeZip(files),zipName(file.name));
+hideProgress();
+}catch(error){
+showError(`The frames could not be written: ${error.message}`);
+hideProgress();
+}finally{
+working=false;
+cancelled=false;
+el.cancel.hidden=true;
+el.downloadAll.disabled=false;
+el.downloadSelected.disabled=false;
+}
+}
+function save(blob,name){
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=name;
+link.click();
+setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function progress(done,total,label){
+el.progressWrap.hidden=false;
+el.progressBar.style.width=`${total ? (done / total) * 100 : 0}%`;
+el.progressLabel.textContent=label;
+}
+function hideProgress(){
+el.progressWrap.hidden=true;
+el.progressBar.style.width='0%';
+el.progressLabel.textContent='';
+}
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+}
+function clearError(){
+el.error.hidden=true;
+el.error.textContent='';
+}
+function reset(){
+pass+=1;
+for(const row of rows){
+if(row.thumbUrl)URL.revokeObjectURL(row.thumbUrl);
+}
+rows=[];
+gif=null;
+file=null;
+el.frames.replaceChildren();
+el.source.hidden=true;
+el.notice.hidden=true;
+el.settingsCard.hidden=true;
+el.framesCard.hidden=true;
+hideProgress();
+}
+function updateModeNote(){
+el.modeNote.textContent=el.mode.value==='stored'
+?'What the file holds: the patch each frame redraws, at its own size. '
++'This is how a GIF stays small, and it is not what the animation looks like.'
+:'Every PNG is the whole picture, exactly as that moment of the animation '
++'looks. This is what almost everybody wants.';
+}
+function updateEveryNote(){
+const{every}=settings();
+el.everyNote.textContent=every===1?'frame':`${ordinal(every)} frame`;
+}
+function ordinal(value){
+if(value===2)return'second';
+if(value===3)return'third';
+return`${value}th`;
+}
+el.mode.addEventListener('change',()=>{
+updateModeNote();
+if(gif)draw();
+});
+el.background.addEventListener('change',()=>{
+el.colourRow.hidden=el.background.value!=='flatten';
+if(gif)draw();
+});
+let colourTimer=null;
+el.colour.addEventListener('input',()=>{
+clearTimeout(colourTimer);
+colourTimer=setTimeout(()=>{if(gif)draw();},150);
+});
+el.every.addEventListener('change',()=>{
+updateEveryNote();
+if(gif)applyEvery();
+});
+el.selectAll.addEventListener('click',()=>pick(true));
+el.selectNone.addEventListener('click',()=>pick(false));
+el.clear.addEventListener('click',()=>{reset();clearError();});
+el.downloadAll.addEventListener('click',()=>downloadZip(rows));
+el.downloadSelected.addEventListener('click',()=>downloadZip(rows.filter((row)=>row.checked)));
+el.cancel.addEventListener('click',()=>{cancelled=true;});
+window.addEventListener('beforeunload',(event)=>{
+if(!working)return;
+event.preventDefault();
+event.returnValue='';
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+el.networkCount.textContent=clean
+?`your GIF has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+updateModeNote();
+updateEveryNote();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

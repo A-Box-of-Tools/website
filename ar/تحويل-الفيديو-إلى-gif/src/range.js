@@ -1,2 +1,139 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const d=.1,a=(h,t,e)=>Math.max(t,Math.min(e,h));function l(h){const t=Math.max(0,h||0),e=Math.floor(t),i=Math.floor(e/3600),s=Math.floor(e%3600/60),n=e%60,o=Math.round((t-e)*1e3),r=`${String(n).padStart(2,"0")}.${String(o).padStart(3,"0")}`;return i?`${i}:${String(s).padStart(2,"0")}:${r}`:`${s}:${r}`}function c(h){const t=String(h??"").trim();if(!t)return null;const e=t.split(":");if(e.length>3)return null;let i=0;for(const s of e){if(!/^\d*\.?\d*$/.test(s)||s===""||s===".")return null;i=i*60+Number(s)}return Number.isFinite(i)?i:null}class u{#l;#e;#i;#a;#h;#c;#t=0;#s=0;#n=0;#o=0;#u=!0;#r=null;constructor(t,{onSeek:e,onAdjust:i}={}){this.#l=t,this.#h=e,this.#c=i,t.innerHTML="",t.classList.add("rangebar"),this.#e=document.createElement("div"),this.#e.className="rb-track",this.#i=document.createElement("div"),this.#i.className="rb-band";for(const s of["start","end"]){const n=document.createElement("span");n.className=`rb-handle rb-handle-${s}`,n.dataset.handle=s,this.#i.append(n)}this.#a=document.createElement("div"),this.#a.className="rb-playhead",this.#a.setAttribute("aria-hidden","true"),this.#e.append(this.#i,this.#a),t.append(this.#e),this.#e.addEventListener("pointerdown",this.#f)}get selection(){return{start:this.#s,end:this.#n}}setSource(t){this.#t=Math.max(0,t||0),this.#s=0,this.#n=this.#t,this.#o=0,this.#m()}setSelection(t,e){this.#s=a(t,0,this.#t),this.#n=a(e,this.#s,this.#t),this.#m()}setPlayhead(t){this.#o=a(t||0,0,this.#t),this.#a.style.left=`${this.#d(this.#o)*100}%`}setEnabled(t){this.#u=t,this.#l.classList.toggle("disabled",!t)}#d(t){return this.#t>0?a(t/this.#t,0,1):0}#m(){const t=this.#d(this.#s)*100,e=this.#d(this.#n)*100;this.#i.style.left=`${t}%`,this.#i.style.width=`${Math.max(.5,e-t)}%`,this.setPlayhead(this.#o)}#p(t){const e=this.#e.getBoundingClientRect();return e.width?a((t.clientX-e.left)/e.width,0,1)*this.#t:0}#f=t=>{if(!this.#u||!this.#t||t.button!==0)return;const e=t.target.closest(".rb-handle");t.preventDefault(),e?this.#r=e.dataset.handle:(this.#r="seek",this.#h?.(this.#p(t))),this.#e.setPointerCapture?.(t.pointerId);const i=n=>{const o=this.#p(n);if(this.#r==="seek"){this.#h?.(o);return}const r=this.#r==="start"?{start:Math.min(o,this.#n-.1),end:this.#n}:{start:this.#s,end:Math.max(o,this.#s+.1)};this.#c?.({start:a(r.start,0,this.#t),end:a(r.end,0,this.#t)}),this.#h?.(this.#r==="start"?r.start:r.end)},s=()=>{this.#r=null,this.#e.releasePointerCapture?.(t.pointerId),window.removeEventListener("pointermove",i),window.removeEventListener("pointerup",s),window.removeEventListener("pointercancel",s)};window.addEventListener("pointermove",i),window.addEventListener("pointerup",s),window.addEventListener("pointercancel",s)}}export{u as RangeBar,l as formatTime,c as parseTime};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MIN_SECTION=0.1;
+const clamp=(value,low,high)=>Math.max(low,Math.min(high,value));
+export function formatTime(seconds){
+const safe=Math.max(0,seconds||0);
+const whole=Math.floor(safe);
+const hours=Math.floor(whole/3600);
+const minutes=Math.floor((whole%3600)/60);
+const rest=whole%60;
+const millis=Math.round((safe-whole)*1000);
+const tail=`${String(rest).padStart(2, '0')}.${String(millis).padStart(3, '0')}`;
+return hours
+?`${hours}:${String(minutes).padStart(2, '0')}:${tail}`
+:`${minutes}:${tail}`;
+}
+export function parseTime(text){
+const trimmed=String(text??'').trim();
+if(!trimmed)return null;
+const parts=trimmed.split(':');
+if(parts.length>3)return null;
+let total=0;
+for(const part of parts){
+if(!/^\d*\.?\d*$/.test(part)||part===''||part==='.')return null;
+total=total*60+Number(part);
+}
+return Number.isFinite(total)?total:null;
+}
+export class RangeBar{
+#root;
+#track;
+#band;
+#playhead;
+#onSeek;
+#onAdjust;
+#duration=0;
+#start=0;
+#end=0;
+#playAt=0;
+#enabled=true;
+#drag=null;
+constructor(root,{onSeek,onAdjust}={}){
+this.#root=root;
+this.#onSeek=onSeek;
+this.#onAdjust=onAdjust;
+root.innerHTML='';
+root.classList.add('rangebar');
+this.#track=document.createElement('div');
+this.#track.className='rb-track';
+this.#band=document.createElement('div');
+this.#band.className='rb-band';
+for(const which of['start','end']){
+const handle=document.createElement('span');
+handle.className=`rb-handle rb-handle-${which}`;
+handle.dataset.handle=which;
+this.#band.append(handle);
+}
+this.#playhead=document.createElement('div');
+this.#playhead.className='rb-playhead';
+this.#playhead.setAttribute('aria-hidden','true');
+this.#track.append(this.#band,this.#playhead);
+root.append(this.#track);
+this.#track.addEventListener('pointerdown',this.#onPointerDown);
+}
+get selection(){
+return{start:this.#start,end:this.#end};
+}
+setSource(duration){
+this.#duration=Math.max(0,duration||0);
+this.#start=0;
+this.#end=this.#duration;
+this.#playAt=0;
+this.#paint();
+}
+setSelection(start,end){
+this.#start=clamp(start,0,this.#duration);
+this.#end=clamp(end,this.#start,this.#duration);
+this.#paint();
+}
+setPlayhead(seconds){
+this.#playAt=clamp(seconds||0,0,this.#duration);
+this.#playhead.style.left=`${this.#fraction(this.#playAt) * 100}%`;
+}
+setEnabled(enabled){
+this.#enabled=enabled;
+this.#root.classList.toggle('disabled',!enabled);
+}
+#fraction(seconds){
+return this.#duration>0?clamp(seconds/this.#duration,0,1):0;
+}
+#paint(){
+const from=this.#fraction(this.#start)*100;
+const to=this.#fraction(this.#end)*100;
+this.#band.style.left=`${from}%`;
+this.#band.style.width=`${Math.max(0.5, to - from)}%`;
+this.setPlayhead(this.#playAt);
+}
+#timeAt(event){
+const box=this.#track.getBoundingClientRect();
+if(!box.width)return 0;
+return clamp((event.clientX-box.left)/box.width,0,1)*this.#duration;
+}
+#onPointerDown=(event)=>{
+if(!this.#enabled||!this.#duration||event.button!==0)return;
+const handle=event.target.closest('.rb-handle');
+event.preventDefault();
+if(handle){
+this.#drag=handle.dataset.handle;
+}else{
+this.#drag='seek';
+this.#onSeek?.(this.#timeAt(event));
+}
+this.#track.setPointerCapture?.(event.pointerId);
+const move=(moveEvent)=>{
+const at=this.#timeAt(moveEvent);
+if(this.#drag==='seek'){
+this.#onSeek?.(at);
+return;
+}
+const next=this.#drag==='start'
+?{start:Math.min(at,this.#end-MIN_SECTION),end:this.#end}
+:{start:this.#start,end:Math.max(at,this.#start+MIN_SECTION)};
+this.#onAdjust?.({
+start:clamp(next.start,0,this.#duration),
+end:clamp(next.end,0,this.#duration),
+});
+this.#onSeek?.(this.#drag==='start'?next.start:next.end);
+};
+const up=()=>{
+this.#drag=null;
+this.#track.releasePointerCapture?.(event.pointerId);
+window.removeEventListener('pointermove',move);
+window.removeEventListener('pointerup',up);
+window.removeEventListener('pointercancel',up);
+};
+window.addEventListener('pointermove',move);
+window.addEventListener('pointerup',up);
+window.addEventListener('pointercancel',up);
+};
+}

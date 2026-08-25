@@ -1,2 +1,43 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{md5 as f}from"./md5.js";import{sha1 as l}from"./sha1.js";import{sha256 as x}from"./sha256.js";import{sha384 as m,sha512 as g}from"./sha512.js";const u={md5:{create:f,tag:"MD5",hex:32},sha1:{create:l,tag:"SHA1",hex:40},sha256:{create:x,tag:"SHA256",hex:64},sha384:{create:m,tag:"SHA384",hex:96},sha512:{create:g,tag:"SHA512",hex:128}},M=["md5","sha1","sha256","sha384","sha512"],w=4*1024*1024;class S extends Error{}class i extends Error{}function A(e){let o="";for(let r=0;r<e.length;r+=1)o+=e[r].toString(16).padStart(2,"0");return o}async function R(e,o,{onProgress:r,signal:p,chunkSize:d=w}={}){const h=o.map(t=>({id:t,state:u[t].create()})),s=e.size;let a=0;for(r?.(0,s);a<s;){if(p?.aborted)throw new S("stopped");let t;try{t=new Uint8Array(await e.slice(a,Math.min(a+d,s)).arrayBuffer())}catch(n){throw new i(n?.message??"the file could not be read")}if(t.length===0)throw new i("the file ended sooner than its size said");for(const n of h)n.state.update(t);a+=t.length,r?.(a,s)}const c={};for(const t of h)c[t.id]=A(t.state.digest());return c}export{u as ALGORITHMS,w as CHUNK,M as ORDER,S as Stopped,i as Unreadable,R as hashFile,A as hex};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{md5}from'./md5.js';
+import{sha1}from'./sha1.js';
+import{sha256}from'./sha256.js';
+import{sha384,sha512}from'./sha512.js';
+export const ALGORITHMS={
+md5:{create:md5,tag:'MD5',hex:32},
+sha1:{create:sha1,tag:'SHA1',hex:40},
+sha256:{create:sha256,tag:'SHA256',hex:64},
+sha384:{create:sha384,tag:'SHA384',hex:96},
+sha512:{create:sha512,tag:'SHA512',hex:128},
+};
+export const ORDER=['md5','sha1','sha256','sha384','sha512'];
+export const CHUNK=4*1024*1024;
+export class Stopped extends Error{}
+export class Unreadable extends Error{}
+export function hex(bytes){
+let out='';
+for(let i=0;i<bytes.length;i+=1)out+=bytes[i].toString(16).padStart(2,'0');
+return out;
+}
+export async function hashFile(file,ids,{onProgress,signal,chunkSize=CHUNK}={}){
+const running=ids.map((id)=>({id,state:ALGORITHMS[id].create()}));
+const total=file.size;
+let at=0;
+onProgress?.(0,total);
+while(at<total){
+if(signal?.aborted)throw new Stopped('stopped');
+let bytes;
+try{
+bytes=new Uint8Array(await file.slice(at,Math.min(at+chunkSize,total)).arrayBuffer());
+}catch(error){
+throw new Unreadable(error?.message??'the file could not be read');
+}
+if(bytes.length===0)throw new Unreadable('the file ended sooner than its size said');
+for(const one of running)one.state.update(bytes);
+at+=bytes.length;
+onProgress?.(at,total);
+}
+const out={};
+for(const one of running)out[one.id]=hex(one.state.digest());
+return out;
+}

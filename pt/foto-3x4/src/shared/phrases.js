@@ -1,2 +1,8 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function c(t,e={}){return((document.querySelector(`#phrases [data-phrase="${t}"]`)??document.querySelector(`#frame-phrases [data-phrase="${t}"]`))?.textContent??t).replace(/\s+/g," ").trim().replace(/\{(\w+)\}/g,(n,r)=>r in e?String(e[r]):n)}export{c as phrase};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function phrase(key,values={}){
+const found=document.querySelector(`#phrases [data-phrase="${key}"]`)
+??document.querySelector(`#frame-phrases [data-phrase="${key}"]`);
+const text=(found?.textContent??key).replace(/\s+/g,' ').trim();
+return text.replace(/\{(\w+)\}/g,(whole,name)=>(
+name in values?String(values[name]):whole));
+}

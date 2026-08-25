@@ -1,2 +1,108 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{describe as d,isPrivate as a}from"./dictionary.js";const s={"00100010":"direct","00100020":"direct","00100021":"direct","00101000":"direct","00101001":"direct","00101005":"direct","00101040":"direct","00101060":"direct","00102154":"direct","00101090":"direct","00102297":"direct","00380010":"direct","00080050":"direct","00402016":"direct","00402017":"direct","00100030":"context","00100032":"context","00100040":"context","00101010":"context","00101020":"context","00101030":"context","00102150":"context","00102152":"context","00102160":"context","00102180":"context","00102000":"context","00102110":"context","001021b0":"context","00104000":"context","00101080":"context","00102299":"context","00080080":"context","00080081":"context","00080090":"context","00080092":"context","00080094":"context","00081010":"context","00081040":"context","00081048":"context","00081050":"context","00081060":"context","00081070":"context","00081080":"context","00321032":"context","00321033":"context","00321060":"context","00400006":"context","00700084":"context","0040a123":"context","4008010c":"context",40080114:"context","4008011a":"context","00080020":"context","00080021":"context","00080022":"context","00080023":"context","00080030":"context","00080031":"context","00080032":"context","00080033":"context","0008002a":"context","00080012":"context","00080013":"context","00400244":"context","00400245":"context","00400002":"context","00400003":"context","00181000":"context","00200010":"context","00401001":"context","00400253":"context","00400009":"context","00204000":"context","00384000":"context","00380300":"context","00380400":"context"};function l(i,r){const c=[];let n=0,o=0;for(const{element:t}of i){const x=s[t.tag];if(a(t.tag)&&t.length>0&&!t.items&&(n+=1),t.vr==="UI"&&u.has(t.tag)&&t.length>0&&(o+=1),!x||!t.value||t.length===0)continue;const{shown:e}=r(t);!e||e==="(empty)"||c.push({tag:t.tag,name:d(t.tag).name,level:x,value:e})}return{found:c,privateCount:n,uidCount:o}}const u=new Set(["0020000d","0020000e","00080018","00200052","00080014","00083010"]);export{l as identifiers};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{describe,isPrivate}from'./dictionary.js';
+const IDENTIFIERS={
+'00100010':'direct',
+'00100020':'direct',
+'00100021':'direct',
+'00101000':'direct',
+'00101001':'direct',
+'00101005':'direct',
+'00101040':'direct',
+'00101060':'direct',
+'00102154':'direct',
+'00101090':'direct',
+'00102297':'direct',
+'00380010':'direct',
+'00080050':'direct',
+'00402016':'direct',
+'00402017':'direct',
+'00100030':'context',
+'00100032':'context',
+'00100040':'context',
+'00101010':'context',
+'00101020':'context',
+'00101030':'context',
+'00102150':'context',
+'00102152':'context',
+'00102160':'context',
+'00102180':'context',
+'00102000':'context',
+'00102110':'context',
+'001021b0':'context',
+'00104000':'context',
+'00101080':'context',
+'00102299':'context',
+'00080080':'context',
+'00080081':'context',
+'00080090':'context',
+'00080092':'context',
+'00080094':'context',
+'00081010':'context',
+'00081040':'context',
+'00081048':'context',
+'00081050':'context',
+'00081060':'context',
+'00081070':'context',
+'00081080':'context',
+'00321032':'context',
+'00321033':'context',
+'00321060':'context',
+'00400006':'context',
+'00700084':'context',
+'0040a123':'context',
+'4008010c':'context',
+'40080114':'context',
+'4008011a':'context',
+'00080020':'context',
+'00080021':'context',
+'00080022':'context',
+'00080023':'context',
+'00080030':'context',
+'00080031':'context',
+'00080032':'context',
+'00080033':'context',
+'0008002a':'context',
+'00080012':'context',
+'00080013':'context',
+'00400244':'context',
+'00400245':'context',
+'00400002':'context',
+'00400003':'context',
+'00181000':'context',
+'00200010':'context',
+'00401001':'context',
+'00400253':'context',
+'00400009':'context',
+'00204000':'context',
+'00384000':'context',
+'00380300':'context',
+'00380400':'context',
+};
+export function identifiers(elements,show){
+const found=[];
+let privateCount=0;
+let uidCount=0;
+for(const{element}of elements){
+const level=IDENTIFIERS[element.tag];
+if(isPrivate(element.tag)&&element.length>0&&!element.items){
+privateCount+=1;
+}
+if(element.vr==='UI'&&UID_TAGS.has(element.tag)&&element.length>0){
+uidCount+=1;
+}
+if(!level)continue;
+if(!element.value||element.length===0)continue;
+const{shown}=show(element);
+if(!shown||shown==='(empty)')continue;
+found.push({tag:element.tag,name:describe(element.tag).name,level,value:shown});
+}
+return{found,privateCount,uidCount};
+}
+const UID_TAGS=new Set([
+'0020000d',
+'0020000e',
+'00080018',
+'00200052',
+'00080014',
+'00083010',
+]);

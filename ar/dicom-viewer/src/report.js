@@ -1,3 +1,57 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{walk as c}from"./dicom.js";import{describe as $,formatTag as h}from"./dictionary.js";import{display as u}from"./values.js";import{fileSize as w}from"./format.js";function z(a,t){const o=[],n=(e="")=>o.push(e);if(n(`DICOM header \u2014 ${a.name}`),n("=".repeat(Math.min(72,16+a.name.length))),n(),n(`File size          ${w(a.size)} (${a.size.toLocaleString()} bytes)`),n(`Transfer syntax    ${a.syntax.name}`),n(`                   ${a.syntax.uid}`),a.sopClass&&n(`Object             ${a.sopClass}`),a.image){const{rows:e,columns:i,samplesPerPixel:s,bitsStored:m,frames:r,photometric:g}=a.image;n(`Image              ${i} \xD7 ${e}, ${m}-bit, ${s===1?"greyscale":`${s} samples`}, ${g}`),r>1&&n(`Frames             ${r}`),a.image.spacing&&n(`Pixel spacing      ${a.image.spacing.row} \xD7 ${a.image.spacing.column} mm`)}if(a.warnings.length){n(),n("Notes on reading this file"),n("-".repeat(26));for(const e of a.warnings)n(`  \u2022 ${e}`)}return n(),n("File meta information"),n("-".repeat(21)),p(a.meta,t,n),n(),n("Dataset"),n("-".repeat(7)),p(a.dataset,t,n),n(),n(`Read in a browser at ${a.origin}, which uploads nothing.`),o.join(`
-`)}function p(a,t,o){if(!a||a.elements.length===0){o("  (none)");return}for(const{element:n,depth:e}of c(a)){const i="  ".repeat(e+1),s=$(n.tag),m=s.name??(s.private?"(private)":"(unknown)"),{shown:r}=u(n,t);o(`${i}${h(n.tag)} ${n.vr} ${d(m,44-e*2)} ${r}`)}}const d=(a,t)=>a.length>=t?a:a+" ".repeat(t-a.length);export{z as report};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{walk}from'./dicom.js';
+import{describe,formatTag}from'./dictionary.js';
+import{display}from'./values.js';
+import{fileSize}from'./format.js';
+export function report(file,decoder){
+const lines=[];
+const say=(text='')=>lines.push(text);
+say(`DICOM header — ${file.name}`);
+say('='.repeat(Math.min(72,16+file.name.length)));
+say();
+say(`File size          ${fileSize(file.size)} (${file.size.toLocaleString()} bytes)`);
+say(`Transfer syntax    ${file.syntax.name}`);
+say(`                   ${file.syntax.uid}`);
+if(file.sopClass)say(`Object             ${file.sopClass}`);
+if(file.image){
+const{rows,columns,samplesPerPixel,bitsStored,frames,photometric}=file.image;
+say(`Image              ${columns} × ${rows}, ${bitsStored}-bit, ${
+      samplesPerPixel === 1 ? 'greyscale' : `${samplesPerPixel} samples`}, ${photometric}`
+);
+if(frames>1)say(`Frames             ${frames}`);
+if(file.image.spacing){
+say(`Pixel spacing      ${file.image.spacing.row} × ${file.image.spacing.column} mm`);
+}
+}
+if(file.warnings.length){
+say();
+say('Notes on reading this file');
+say('-'.repeat(26));
+for(const warning of file.warnings)say(`  • ${warning}`);
+}
+say();
+say('File meta information');
+say('-'.repeat(21));
+dump(file.meta,decoder,say);
+say();
+say('Dataset');
+say('-'.repeat(7));
+dump(file.dataset,decoder,say);
+say();
+say(`Read in a browser at ${file.origin}, which uploads nothing.`);
+return lines.join('\n');
+}
+function dump(dataset,decoder,say){
+if(!dataset||dataset.elements.length===0){
+say('  (none)');
+return;
+}
+for(const{element,depth}of walk(dataset)){
+const indent='  '.repeat(depth+1);
+const known=describe(element.tag);
+const name=known.name??(known.private?'(private)':'(unknown)');
+const{shown}=display(element,decoder);
+say(`${indent}${formatTag(element.tag)} ${element.vr} ${pad(name, 44 - depth * 2)} ${shown}`);
+}
+}
+const pad=(text,width)=>(text.length>=width?text:text+' '.repeat(width-text.length));

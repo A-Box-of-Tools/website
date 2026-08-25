@@ -1,5 +1,194 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{ParseError as a}from"./errors.js";function x(t){return w({text:t,at:0},!0)}function w(t,i){const{text:e}=t,r=[];let n="",u=t.at;const o=l=>{const c=n.trim();n="",c!==""&&r.push(c.startsWith("@")?{t:"at",prelude:c,children:null}:{t:"decl",...g(c,u,e,l)})};for(;t.at<e.length;){const l=e[t.at];if(l==="/"&&e[t.at+1]==="*"){const c=e.indexOf("*/",t.at+2);if(c<0)throw new a("This comment is never closed",t.at,e);n.trim()===""?r.push({t:"comment",text:e.slice(t.at+2,c)}):n+=e.slice(t.at,c+2),t.at=c+2;continue}if(l==='"'||l==="'"){n+=f(t);continue}if(l==="("){n+=p(t);continue}if(l==="{"){const c=n.trim();n="",t.at+=1;const h=w(t,!1);r.push(c.startsWith("@")?{t:"at",prelude:c,children:h}:{t:"rule",prelude:c,children:h}),u=t.at;continue}if(l==="}"){if(i)throw new a("A closing brace with no block open",t.at,e);return t.at+=1,o(t.at),r}if(l===";"){t.at+=1,o(t.at),u=t.at;continue}n===""&&(u=t.at),n+=l,t.at+=1}if(!i)throw new a("This block is never closed",e.length,e);return o(t.at),r}function f(t){const{text:i}=t,e=i[t.at],r=t.at;for(t.at+=1;t.at<i.length;){const n=i[t.at];if(n==="\\"){t.at+=2;continue}if(n===e)return t.at+=1,i.slice(r,t.at);t.at+=1}throw new a("This string is never closed",r,i)}function p(t){const{text:i}=t,e=t.at;let r=0;for(;t.at<i.length;){const n=i[t.at];if(n==='"'||n==="'"){f(t);continue}if(n==="("&&(r+=1),n===")"){if(r-=1,t.at+=1,r===0)return i.slice(e,t.at);continue}t.at+=1}throw new a("This bracket is never closed",e,i)}function g(t,i,e,r){const n={text:t,at:0};for(;n.at<t.length;){const u=t[n.at];if(u==='"'||u==="'"){f(n);continue}if(u==="("){p(n);continue}if(u===":"){const o=t.slice(0,n.at).trim(),l=t.slice(n.at+1).trim();return{prop:o,value:l}}n.at+=1}throw new a(`"${t}" is not a declaration - there is no colon in it`,Math.min(i,Math.max(0,r-1)),e)}function T(t,{indent:i="  ",minify:e=!1}={}){if(e)return $(t);const r=[],n=(u,o)=>{const l=i.repeat(o);u.forEach((c,h)=>{switch(c.t){case"comment":r.push(`${l}/*${c.text}*/`);break;case"decl":r.push(`${l}${c.prop}: ${m(c)};`);break;case"at":if(!c.children){r.push(`${l}${s(c.prelude)};`);break}r.push(`${l}${s(c.prelude)} {`),n(c.children,o+1),r.push(`${l}}`);break;default:r.push(`${l}${d(c.prelude).join(`,
-${l}`)} {`),n(c.children,o+1),r.push(`${l}}`)}u[h+1]&&(c.t==="rule"||c.t==="at"&&c.children)&&r.push("")})};return n(t,0),`${r.join(`
-`)}
-`}function $(t){return t.map(i=>{switch(i.t){case"comment":return"";case"decl":return`${i.prop}:${m(i)};`;case"at":return i.children?`${s(i.prelude)}{${$(i.children)}}`:`${s(i.prelude)};`;default:return`${d(i.prelude).join(",")}{${$(i.children)}}`}}).join("").replace(/;\}/g,"}")}function m(t){return t.prop.startsWith("--")?t.value:s(t.value)}function d(t){return b(t,",").map(i=>s(i))}function s(t){return t.replace(/\s+/g," ").trim()}function b(t,i){const e=[],r={text:t,at:0};let n=0;for(;r.at<t.length;){const u=t[r.at];if(u==='"'||u==="'"){f(r);continue}if(u==="("){p(r);continue}if(u===i){e.push(t.slice(n,r.at)),r.at+=1,n=r.at;continue}r.at+=1}return e.push(t.slice(n)),e.map(u=>u.trim()).filter(u=>u!=="")}export{x as parseCss,T as printCss};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{ParseError}from'./errors.js';
+export function parseCss(text){
+const state={text,at:0};
+const nodes=readBlock(state,true);
+return nodes;
+}
+function readBlock(state,top){
+const{text}=state;
+const nodes=[];
+let buffer='';
+let bufferStart=state.at;
+const flushStatement=(end)=>{
+const statement=buffer.trim();
+buffer='';
+if(statement==='')return;
+nodes.push(statement.startsWith('@')
+?{t:'at',prelude:statement,children:null}
+:{t:'decl',...splitDeclaration(statement,bufferStart,text,end)});
+};
+while(state.at<text.length){
+const ch=text[state.at];
+if(ch==='/'&&text[state.at+1]==='*'){
+const end=text.indexOf('*/',state.at+2);
+if(end<0)throw new ParseError('This comment is never closed',state.at,text);
+if(buffer.trim()===''){
+nodes.push({t:'comment',text:text.slice(state.at+2,end)});
+}else{
+buffer+=text.slice(state.at,end+2);
+}
+state.at=end+2;
+continue;
+}
+if(ch==='"'||ch==="'"){
+buffer+=readString(state);
+continue;
+}
+if(ch==='('){
+buffer+=readBrackets(state);
+continue;
+}
+if(ch==='{'){
+const prelude=buffer.trim();
+buffer='';
+state.at+=1;
+const children=readBlock(state,false);
+nodes.push(prelude.startsWith('@')
+?{t:'at',prelude,children}
+:{t:'rule',prelude,children});
+bufferStart=state.at;
+continue;
+}
+if(ch==='}'){
+if(top)throw new ParseError('A closing brace with no block open',state.at,text);
+state.at+=1;
+flushStatement(state.at);
+return nodes;
+}
+if(ch===';'){
+state.at+=1;
+flushStatement(state.at);
+bufferStart=state.at;
+continue;
+}
+if(buffer==='')bufferStart=state.at;
+buffer+=ch;
+state.at+=1;
+}
+if(!top)throw new ParseError('This block is never closed',text.length,text);
+flushStatement(state.at);
+return nodes;
+}
+function readString(state){
+const{text}=state;
+const quote=text[state.at];
+const start=state.at;
+state.at+=1;
+while(state.at<text.length){
+const ch=text[state.at];
+if(ch==='\\'){state.at+=2;continue;}
+if(ch===quote){
+state.at+=1;
+return text.slice(start,state.at);
+}
+state.at+=1;
+}
+throw new ParseError('This string is never closed',start,text);
+}
+function readBrackets(state){
+const{text}=state;
+const start=state.at;
+let depth=0;
+while(state.at<text.length){
+const ch=text[state.at];
+if(ch==='"'||ch==="'"){readString(state);continue;}
+if(ch==='(')depth+=1;
+if(ch===')'){
+depth-=1;
+state.at+=1;
+if(depth===0)return text.slice(start,state.at);
+continue;
+}
+state.at+=1;
+}
+throw new ParseError('This bracket is never closed',start,text);
+}
+function splitDeclaration(statement,start,text,end){
+const state={text:statement,at:0};
+while(state.at<statement.length){
+const ch=statement[state.at];
+if(ch==='"'||ch==="'"){readString(state);continue;}
+if(ch==='('){readBrackets(state);continue;}
+if(ch===':'){
+const prop=statement.slice(0,state.at).trim();
+const value=statement.slice(state.at+1).trim();
+return{prop,value};
+}
+state.at+=1;
+}
+throw new ParseError(
+`"${statement}" is not a declaration - there is no colon in it`,
+Math.min(start,Math.max(0,end-1)),text);
+}
+export function printCss(nodes,{indent='  ',minify=false}={}){
+if(minify)return squeeze(nodes);
+const out=[];
+const walk=(list,depth)=>{
+const pad=indent.repeat(depth);
+list.forEach((node,index)=>{
+switch(node.t){
+case'comment':
+out.push(`${pad}/*${node.text}*/`);
+break;
+case'decl':
+out.push(`${pad}${node.prop}: ${value(node)};`);
+break;
+case'at':
+if(!node.children){out.push(`${pad}${collapse(node.prelude)};`);break;}
+out.push(`${pad}${collapse(node.prelude)} {`);
+walk(node.children,depth+1);
+out.push(`${pad}}`);
+break;
+default:
+out.push(`${pad}${selectors(node.prelude).join(`,\n${pad}`)} {`);
+walk(node.children,depth+1);
+out.push(`${pad}}`);
+}
+const next=list[index+1];
+if(next&&(node.t==='rule'||(node.t==='at'&&node.children)))out.push('');
+});
+};
+walk(nodes,0);
+return`${out.join('\n')}\n`;
+}
+function squeeze(nodes){
+return nodes.map((node)=>{
+switch(node.t){
+case'comment':return'';
+case'decl':return`${node.prop}:${value(node)};`;
+case'at':return node.children
+?`${collapse(node.prelude)}{${squeeze(node.children)}}`
+:`${collapse(node.prelude)};`;
+default:return`${selectors(node.prelude).join(',')}{${squeeze(node.children)}}`;
+}
+}).join('').replace(/;\}/g,'}');
+}
+function value(node){
+return node.prop.startsWith('--')?node.value:collapse(node.value);
+}
+function selectors(prelude){
+return splitTop(prelude,',').map((part)=>collapse(part));
+}
+function collapse(text){
+return text.replace(/\s+/g,' ').trim();
+}
+function splitTop(text,separator){
+const parts=[];
+const state={text,at:0};
+let start=0;
+while(state.at<text.length){
+const ch=text[state.at];
+if(ch==='"'||ch==="'"){readString(state);continue;}
+if(ch==='('){readBrackets(state);continue;}
+if(ch===separator){
+parts.push(text.slice(start,state.at));
+state.at+=1;
+start=state.at;
+continue;
+}
+state.at+=1;
+}
+parts.push(text.slice(start));
+return parts.map((part)=>part.trim()).filter((part)=>part!=='');
+}

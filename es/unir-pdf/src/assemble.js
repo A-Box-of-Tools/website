@@ -1,2 +1,331 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{isGoTo as P,namedDestinations as D,resolveDestination as S}from"./dests.js";import{decodeText as x,normalizeRotation as R,readPages as T}from"./pages.js";import{pruneOutline as k,readOutline as $,writeOutline as O}from"./outline.js";import{isName as b,name as m,Name as j,PdfStream as y,Ref as g}from"./objects.js";const I=new Set(["Parent","B","StructParents","Metadata","PieceInfo","AA","Annots","Rotate","MediaBox","Type","LastModified","Tabs"]),N=new Set(["P","Dest","A","AA"]);class F{constructor(e="1.5"){this.objects=new Map,this.trailer=new Map,this.version=e,this.next=1}reserve(){const e=this.next;return this.next+=1,e}put(e,t){return this.objects.set(e,t),new g(e,0)}add(e){return this.put(this.reserve(),e)}getObject(e){return this.objects.has(e)?this.objects.get(e):null}resolve(e){let t=e,s=0;for(;t instanceof g;){if(s>64)return null;s+=1,t=this.getObject(t.num)}return t}get(e,t){return e instanceof Map?this.resolve(e.get(t)):null}}function H(n,e){const t=D(n);return{doc:n,label:e,pages:T(n),named:t,outline:$(n,t),version:n.version}}class E{constructor(e,t){this.build=e,this.placed=t,this.maps=new Map,this.queue=[]}mapFor(e){let t=this.maps.get(e);return t||(t=new Map,this.maps.set(e,t)),t}ref(e,t){const s=this.mapFor(e),a=s.get(t.num);if(a!==void 0)return a===null?null:new g(a,0);const o=e.doc.getObject(t.num);if(L(o)){const c=this.placed.get(e)?.get(t.key)??null;return s.set(t.num,null),c}const i=this.build.reserve();return s.set(t.num,i),this.queue.push({source:e,from:o,to:i}),new g(i,0)}value(e,t,s=0){return s>100?null:t instanceof g?this.ref(e,t):Array.isArray(t)?t.map(a=>this.value(e,a,s+1)):t instanceof y?new y(this.dict(e,t.dict,s),t.raw):t instanceof Map?this.dict(e,t,s):t}dict(e,t,s){const a=new Map;for(const[o,i]of t)a.set(o,this.value(e,i,s+1));return a}drain(){for(let e=0;e<this.queue.length;e+=1){const t=this.queue[e];this.build.put(t.to,this.value(t.source,t.from,0))}this.queue.length=0}}function L(n){return n instanceof Map?b(n.get("Type"),"Page")||b(n.get("Type"),"Pages")?!0:n.has("Contents")&&(n.has("MediaBox")||n.has("Parent")):!1}function J(n,{bookmarks:e=!0}={}){if(!n.length)throw new Error("a document with no pages in it is not a document");const t=n.reduce((d,h)=>h.source.version>d?h.source.version:d,"1.5"),s=new F(t),a=s.reserve(),o=s.reserve(),i=new g(o,0),c=n.map(()=>s.reserve()),r=new Map;n.forEach((d,h)=>{const v=d.source.pages[d.index];if(!v?.ref)return;let M=r.get(d.source);M||(M=new Map,r.set(d.source,M)),M.has(v.ref.key)||M.set(v.ref.key,new g(c[h],0))});const f=new E(s,r),u={widgets:[],links:0,actionsDropped:0,brokenLinks:0};n.forEach((d,h)=>{s.put(c[h],B(f,d,i,new g(c[h],0),u))}),f.drain(),s.put(o,new Map([["Type",m("Pages")],["Kids",c.map(d=>new g(d,0))],["Count",c.length]]));const l=new Map([["Type",m("Catalog")],["Pages",i]]),p=[];if(e){const d=_(n,r),h=O(s,d);h&&(l.set("Outlines",h),l.set("PageMode",m("UseOutlines")))}const w=C(s,f,u.widgets,p);return w&&l.set("AcroForm",w),s.put(a,l),s.trailer.set("Root",new g(a,0)),f.drain(),u.brokenLinks&&p.push(`${u.brokenLinks} link${u.brokenLinks===1?"":"s"} pointed at a page that is not in this file, so they were left in place with nothing behind them rather than sending the reader somewhere wrong.`),u.actionsDropped&&p.push(`${u.actionsDropped} action${u.actionsDropped===1?"":"s"} that were neither "go to a page" nor "open a web address" - run this JavaScript, open this file, submit this form - were not copied.`),{build:s,notes:p,fields:u.widgets.length,links:u.links}}function B(n,e,t,s,a){const{source:o}=e,i=o.pages[e.index],c=new Map([["Type",m("Page")],["Parent",t]]),r=new Map;for(const[l,p]of i.inherited)r.set(l,p);for(const[l,p]of i.dict)r.set(l,p);for(const[l,p]of r)I.has(l)||c.set(l,n.value(o,p,0));c.set("MediaBox",[...i.box]);const f=R(i.rotate+e.rotate);f&&c.set("Rotate",f);const u=q(n,o,r.get("Annots"),s,a);return u.length&&c.set("Annots",u),c}function q(n,e,t,s,a){const o=e.doc.resolve(t);if(!Array.isArray(o))return[];const i=[];for(const c of o){const r=e.doc.resolve(c);if(!(r instanceof Map))continue;const f=new Map;for(const[p,w]of r)N.has(p)||f.set(p,n.value(e,w,0));f.set("P",s),b(r.get("Subtype"),"Link")&&(a.links+=1);const u=A(n,e,r.get("Dest"),a);u&&f.set("Dest",u);const l=U(n,e,r.get("A"),a);l&&f.set("A",l),b(r.get("Subtype"),"Widget")&&a.widgets.push({source:e,annot:r}),i.push(n.build.add(f))}return i}function A(n,e,t,s){if(t==null)return null;const a=t instanceof g?e.doc.resolve(t):t,o=S(e.doc,a,e.named);if(!o)return null;const i=n.placed.get(e)?.get(o.ref.key);return i?[i,...o.view.length?o.view.map(c=>n.value(e,c,1)):[m("Fit")]]:(s.brokenLinks+=1,null)}function U(n,e,t,s){const a=e.doc.resolve(t);if(!(a instanceof Map))return null;if(P(e.doc,a)){const i=A(n,e,a.get("D"),s);return i?new Map([["S",m("GoTo")],["D",i]]):null}const o=e.doc.resolve(a.get("S"));if(b(o,"URI")){const i=e.doc.resolve(a.get("URI"));if(i==null)return null;const c=new Map([["S",m("URI")],["URI",n.value(e,i,1)]]);return a.has("IsMap")&&c.set("IsMap",e.doc.resolve(a.get("IsMap"))),c}return o instanceof j&&(s.actionsDropped+=1),null}function _(n,e){const t=[];for(const o of n)t.includes(o.source)||t.push(o.source);const s=o=>i=>e.get(o)?.get(i.key)??null;if(t.length===1)return k(t[0].outline,s(t[0]));const a=[];for(const o of t){const i=k(o.outline,s(o)),c=n.find(u=>u.source===o),r=c?o.pages[c.index]?.ref:null,f=r?s(o)(r):null;!i.length&&!f||a.push({title:o.label,page:f,view:[],kids:i})}return a}function C(n,e,t,s){if(!t.length)return null;const a=new Map,o=new Map;for(const{source:r,annot:f}of t){let u=f,l=null,p=0;for(;;){const h=u.get("Parent");if(!(h instanceof g)||p>32)break;const v=r.doc.resolve(h);if(!(v instanceof Map))break;l=h,u=v,p+=1}const w=l?e.ref(r,l):null;if(!w)continue;a.set(`${r.label}:${l.key}`,w);const d=x(r.doc.resolve(u.get("T")));d&&(o.has(d)||o.set(d,new Set),o.get(d).add(r.label))}if(!a.size)return null;const i=new Map([["Fields",[...a.values()]]]);for(const{source:r}of t){const f=r.doc.get(r.doc.catalog,"AcroForm");if(!(f instanceof Map))continue;for(const l of["DA","Q","NeedAppearances","SigFlags"])f.has(l)&&!i.has(l)&&i.set(l,e.value(r,f.get(l),1));const u=r.doc.resolve(f.get("DR"));if(u instanceof Map){const l=i.get("DR")??new Map;for(const[p,w]of u)l.has(p)||l.set(p,e.value(r,w,1));i.set("DR",l)}}const c=[...o.entries()].filter(([,r])=>r.size>1);return c.length&&s.push(`${c.length} form field${c.length===1?"":"s"} have the same name in more than one of these files (${c.slice(0,3).map(([r])=>`"${r}"`).join(", ")}${c.length>3?", \u2026":""}). A reader treats fields sharing a name as one field, so filling one will fill the other.`),n.add(i)}export{F as Build,J as assemble,H as readSource};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{isGoTo,namedDestinations,resolveDestination}from'./dests.js';
+import{decodeText,normalizeRotation,readPages}from'./pages.js';
+import{pruneOutline,readOutline,writeOutline}from'./outline.js';
+import{
+isName,name,Name,PdfStream,Ref,
+}from'./objects.js';
+const SKIPPED_PAGE_KEYS=new Set([
+'Parent','B','StructParents','Metadata','PieceInfo','AA','Annots',
+'Rotate','MediaBox','Type','LastModified','Tabs',
+]);
+const ANNOT_KEYS_BY_HAND=new Set(['P','Dest','A','AA']);
+export class Build{
+constructor(version='1.5'){
+this.objects=new Map();
+this.trailer=new Map();
+this.version=version;
+this.next=1;
+}
+reserve(){
+const num=this.next;
+this.next+=1;
+return num;
+}
+put(num,value){
+this.objects.set(num,value);
+return new Ref(num,0);
+}
+add(value){
+return this.put(this.reserve(),value);
+}
+getObject(num){
+return this.objects.has(num)?this.objects.get(num):null;
+}
+resolve(value){
+let current=value;
+let hops=0;
+while(current instanceof Ref){
+if(hops>64)return null;
+hops+=1;
+current=this.getObject(current.num);
+}
+return current;
+}
+get(dict,key){
+return dict instanceof Map?this.resolve(dict.get(key)):null;
+}
+}
+export function readSource(doc,label){
+const named=namedDestinations(doc);
+return{
+doc,
+label,
+pages:readPages(doc),
+named,
+outline:readOutline(doc,named),
+version:doc.version,
+};
+}
+class Copier{
+constructor(build,placed){
+this.build=build;
+this.placed=placed;
+this.maps=new Map();
+this.queue=[];
+}
+mapFor(source){
+let map=this.maps.get(source);
+if(!map){
+map=new Map();
+this.maps.set(source,map);
+}
+return map;
+}
+ref(source,from){
+const map=this.mapFor(source);
+const seen=map.get(from.num);
+if(seen!==undefined)return seen===null?null:new Ref(seen,0);
+const value=source.doc.getObject(from.num);
+if(isPageNode(value)){
+const landed=this.placed.get(source)?.get(from.key)??null;
+map.set(from.num,null);
+return landed;
+}
+const num=this.build.reserve();
+map.set(from.num,num);
+this.queue.push({source,from:value,to:num});
+return new Ref(num,0);
+}
+value(source,item,depth=0){
+if(depth>100)return null;
+if(item instanceof Ref)return this.ref(source,item);
+if(Array.isArray(item)){
+return item.map((entry)=>this.value(source,entry,depth+1));
+}
+if(item instanceof PdfStream){
+return new PdfStream(this.dict(source,item.dict,depth),item.raw);
+}
+if(item instanceof Map)return this.dict(source,item,depth);
+return item;
+}
+dict(source,from,depth){
+const out=new Map();
+for(const[key,item]of from)out.set(key,this.value(source,item,depth+1));
+return out;
+}
+drain(){
+for(let at=0;at<this.queue.length;at+=1){
+const job=this.queue[at];
+this.build.put(job.to,this.value(job.source,job.from,0));
+}
+this.queue.length=0;
+}
+}
+function isPageNode(value){
+if(!(value instanceof Map))return false;
+if(isName(value.get('Type'),'Page')||isName(value.get('Type'),'Pages'))return true;
+return value.has('Contents')&&(value.has('MediaBox')||value.has('Parent'));
+}
+export function assemble(entries,{bookmarks=true}={}){
+if(!entries.length)throw new Error('a document with no pages in it is not a document');
+const version=entries.reduce(
+(best,entry)=>(entry.source.version>best?entry.source.version:best),'1.5');
+const build=new Build(version);
+const catalogNum=build.reserve();
+const pagesNum=build.reserve();
+const pagesRef=new Ref(pagesNum,0);
+const numbers=entries.map(()=>build.reserve());
+const placed=new Map();
+entries.forEach((entry,at)=>{
+const page=entry.source.pages[entry.index];
+if(!page?.ref)return;
+let map=placed.get(entry.source);
+if(!map){
+map=new Map();
+placed.set(entry.source,map);
+}
+if(!map.has(page.ref.key))map.set(page.ref.key,new Ref(numbers[at],0));
+});
+const copier=new Copier(build,placed);
+const state={widgets:[],links:0,actionsDropped:0,brokenLinks:0};
+entries.forEach((entry,at)=>{
+build.put(numbers[at],copyPage(copier,entry,pagesRef,
+new Ref(numbers[at],0),state));
+});
+copier.drain();
+build.put(pagesNum,new Map([
+['Type',name('Pages')],
+['Kids',numbers.map((num)=>new Ref(num,0))],
+['Count',numbers.length],
+]));
+const catalog=new Map([
+['Type',name('Catalog')],
+['Pages',pagesRef],
+]);
+const notes=[];
+if(bookmarks){
+const tree=collectOutlines(entries,placed);
+const root=writeOutline(build,tree);
+if(root){
+catalog.set('Outlines',root);
+catalog.set('PageMode',name('UseOutlines'));
+}
+}
+const form=buildAcroForm(build,copier,state.widgets,notes);
+if(form)catalog.set('AcroForm',form);
+build.put(catalogNum,catalog);
+build.trailer.set('Root',new Ref(catalogNum,0));
+copier.drain();
+if(state.brokenLinks){
+notes.push(`${state.brokenLinks} link${state.brokenLinks === 1 ? '' : 's'} pointed at `
++'a page that is not in this file, so they were left in place with nothing behind '
++'them rather than sending the reader somewhere wrong.');
+}
+if(state.actionsDropped){
+notes.push(`${state.actionsDropped} action${state.actionsDropped === 1 ? '' : 's'} `
++'that were neither "go to a page" nor "open a web address" - run this JavaScript, '
++'open this file, submit this form - were not copied.');
+}
+return{build,notes,fields:state.widgets.length,links:state.links};
+}
+function copyPage(copier,entry,pagesRef,selfRef,state){
+const{source}=entry;
+const page=source.pages[entry.index];
+const out=new Map([['Type',name('Page')],['Parent',pagesRef]]);
+const merged=new Map();
+for(const[key,value]of page.inherited)merged.set(key,value);
+for(const[key,value]of page.dict)merged.set(key,value);
+for(const[key,value]of merged){
+if(SKIPPED_PAGE_KEYS.has(key))continue;
+out.set(key,copier.value(source,value,0));
+}
+out.set('MediaBox',[...page.box]);
+const turned=normalizeRotation(page.rotate+entry.rotate);
+if(turned)out.set('Rotate',turned);
+const annots=copyAnnots(copier,source,merged.get('Annots'),selfRef,state);
+if(annots.length)out.set('Annots',annots);
+return out;
+}
+function copyAnnots(copier,source,value,selfRef,state){
+const list=source.doc.resolve(value);
+if(!Array.isArray(list))return[];
+const out=[];
+for(const item of list){
+const annot=source.doc.resolve(item);
+if(!(annot instanceof Map))continue;
+const copy=new Map();
+for(const[key,entry]of annot){
+if(ANNOT_KEYS_BY_HAND.has(key))continue;
+copy.set(key,copier.value(source,entry,0));
+}
+copy.set('P',selfRef);
+if(isName(annot.get('Subtype'),'Link'))state.links+=1;
+const dest=mapDestination(copier,source,annot.get('Dest'),state);
+if(dest)copy.set('Dest',dest);
+const action=mapAction(copier,source,annot.get('A'),state);
+if(action)copy.set('A',action);
+if(isName(annot.get('Subtype'),'Widget')){
+state.widgets.push({source,annot});
+}
+out.push(copier.build.add(copy));
+}
+return out;
+}
+function mapDestination(copier,source,value,state){
+if(value===undefined||value===null)return null;
+const raw=value instanceof Ref?source.doc.resolve(value):value;
+const found=resolveDestination(source.doc,raw,source.named);
+if(!found)return null;
+const landed=copier.placed.get(source)?.get(found.ref.key);
+if(!landed){
+state.brokenLinks+=1;
+return null;
+}
+return[landed,...(found.view.length?found.view.map(
+(item)=>copier.value(source,item,1)):[name('Fit')])];
+}
+function mapAction(copier,source,value,state){
+const action=source.doc.resolve(value);
+if(!(action instanceof Map))return null;
+if(isGoTo(source.doc,action)){
+const dest=mapDestination(copier,source,action.get('D'),state);
+if(!dest)return null;
+return new Map([['S',name('GoTo')],['D',dest]]);
+}
+const kind=source.doc.resolve(action.get('S'));
+if(isName(kind,'URI')){
+const uri=source.doc.resolve(action.get('URI'));
+if(uri===null||uri===undefined)return null;
+const copy=new Map([['S',name('URI')],['URI',copier.value(source,uri,1)]]);
+if(action.has('IsMap'))copy.set('IsMap',source.doc.resolve(action.get('IsMap')));
+return copy;
+}
+if(kind instanceof Name)state.actionsDropped+=1;
+return null;
+}
+function collectOutlines(entries,placed){
+const sources=[];
+for(const entry of entries){
+if(!sources.includes(entry.source))sources.push(entry.source);
+}
+const locate=(source)=>(ref)=>placed.get(source)?.get(ref.key)??null;
+if(sources.length===1){
+return pruneOutline(sources[0].outline,locate(sources[0]));
+}
+const tree=[];
+for(const source of sources){
+const kids=pruneOutline(source.outline,locate(source));
+const first=entries.find((entry)=>entry.source===source);
+const opening=first?source.pages[first.index]?.ref:null;
+const page=opening?locate(source)(opening):null;
+if(!kids.length&&!page)continue;
+tree.push({title:source.label,page,view:[],kids});
+}
+return tree;
+}
+function buildAcroForm(build,copier,widgets,notes){
+if(!widgets.length)return null;
+const roots=new Map();
+const owners=new Map();
+for(const{source,annot}of widgets){
+let node=annot;
+let ref=null;
+let hops=0;
+for(;;){
+const parent=node.get('Parent');
+if(!(parent instanceof Ref)||hops>32)break;
+const above=source.doc.resolve(parent);
+if(!(above instanceof Map))break;
+ref=parent;
+node=above;
+hops+=1;
+}
+const copied=ref?copier.ref(source,ref):null;
+if(!copied)continue;
+roots.set(`${source.label}:${ref.key}`,copied);
+const title=decodeText(source.doc.resolve(node.get('T')));
+if(title){
+if(!owners.has(title))owners.set(title,new Set());
+owners.get(title).add(source.label);
+}
+}
+if(!roots.size)return null;
+const form=new Map([['Fields',[...roots.values()]]]);
+for(const{source}of widgets){
+const acro=source.doc.get(source.doc.catalog,'AcroForm');
+if(!(acro instanceof Map))continue;
+for(const key of['DA','Q','NeedAppearances','SigFlags']){
+if(acro.has(key)&&!form.has(key)){
+form.set(key,copier.value(source,acro.get(key),1));
+}
+}
+const resources=source.doc.resolve(acro.get('DR'));
+if(resources instanceof Map){
+const into=form.get('DR')??new Map();
+for(const[key,value]of resources){
+if(!into.has(key))into.set(key,copier.value(source,value,1));
+}
+form.set('DR',into);
+}
+}
+const shared=[...owners.entries()].filter(([,files])=>files.size>1);
+if(shared.length){
+notes.push(`${shared.length} form field${shared.length === 1 ? '' : 's'} have the `
++`same name in more than one of these files (${shared.slice(0, 3)
+        .map(([field]) => `"${field}"`).join(', ')}${shared.length > 3 ? ', …' : ''}). `
++'A reader treats fields sharing a name as one field, so filling one will fill '
++'the other.');
+}
+return build.add(form);
+}

@@ -1,3 +1,556 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{lex as D}from"./content.js";import{decodeStream as B}from"./filters.js";import{glyphsOf as L,readFonts as _}from"./fonts.js";import{isName as S,Name as E,PdfStream as N,PdfString as I,Ref as M}from"./objects.js";import{decodeText as $}from"./strings.js";const G=.25,W=.4,X=12,v=[1,0,0,1,0,0];function b(e,n){return[e[0]*n[0]+e[1]*n[2],e[0]*n[1]+e[1]*n[3],e[2]*n[0]+e[3]*n[2],e[2]*n[1]+e[3]*n[3],e[4]*n[0]+e[5]*n[2]+n[4],e[4]*n[1]+e[5]*n[3]+n[5]]}function x(e,n,t){return{x:e[0]*n+e[2]*t+e[4],y:e[1]*n+e[3]*t+e[5]}}function q(e){return Math.sqrt(Math.abs(e[0]*e[3]-e[1]*e[2]))||1}function w(e,n){if(e.length<n)return null;const t=e.slice(e.length-n).map(Number);return t.every(r=>Number.isFinite(r))?t:null}async function ce(e,n,t){const r={doc:e,number:t,glyphs:[],marked:[],spans:new Map,streams:new Map,unreadable:0,images:[],fonts:new Map},a=await U(e,n);return a&&(r.streams.set("page",{kind:"page",bytes:a,page:n}),await F(r,"page",a,e.get(n,"Resources"),v,0)),await K(r,n),V(r,n)}async function U(e,n){const t=e.get(n,"Contents"),r=Array.isArray(t)?t:[t],a=[];for(const i of r){const o=e.resolve(i);if(o instanceof N)try{const{bytes:m}=await B(o,f=>e.resolve(f));a.push(m)}catch{return null}}if(!a.length)return null;const s=a.reduce((i,o)=>i+o.length+1,0),p=new Uint8Array(s);let l=0;for(const i of a)p.set(i,l),l+=i.length,p[l]=10,l+=1;return p}async function F(e,n,t,r,a,s){const{doc:p}=e,l=await H(e,r),i=D(t);e.streams.get(n).ops||(e.streams.get(n).ops=i);let o={ctm:a,font:null,fontName:"",size:0,charSpacing:0,wordSpacing:0,hscale:1,leading:0,rise:0,render:0};const m=[],f=[];let u=v,h=v,y=0;const T=()=>{for(let d=f.length-1;d>=0;d-=1)if(f[d]!==null)return f[d];return null},z=(d,P)=>{d instanceof I&&(u=C(e,{sid:n,op:P,part:-1,bytes:d.bytes,gs:o,tm:u,group:T()}))};for(let d=0;d<i.length;d+=1){const P=i[d],{name:j,args:g}=P;switch(j){case"q":m.push(o),y+=1;break;case"Q":m.length&&(o=m.pop(),y-=1);break;case"cm":{const c=w(g,6);c&&(o={...o,ctm:b(c,o.ctm)});break}case"BT":u=v,h=v;break;case"ET":break;case"Tf":{const c=w(g,1),k=g.find(A=>A instanceof E);o={...o,size:c?c[0]:o.size,fontName:k?k.value:o.fontName,font:k?l.get(k.value)??O:o.font};break}case"Tc":{const c=w(g,1);c&&(o={...o,charSpacing:c[0]});break}case"Tw":{const c=w(g,1);c&&(o={...o,wordSpacing:c[0]});break}case"Tz":{const c=w(g,1);c&&(o={...o,hscale:c[0]/100});break}case"TL":{const c=w(g,1);c&&(o={...o,leading:c[0]});break}case"Ts":{const c=w(g,1);c&&(o={...o,rise:c[0]});break}case"Tr":{const c=w(g,1);c&&(o={...o,render:c[0]});break}case"Td":{const c=w(g,2);c&&(h=b([1,0,0,1,c[0],c[1]],h),u=h);break}case"TD":{const c=w(g,2);c&&(o={...o,leading:-c[1]},h=b([1,0,0,1,c[0],c[1]],h),u=h);break}case"Tm":{const c=w(g,6);c&&(h=c,u=c);break}case"T*":h=b([1,0,0,1,0,-o.leading],h),u=h;break;case"Tj":z(g[g.length-1],d);break;case"'":h=b([1,0,0,1,0,-o.leading],h),u=h,z(g[g.length-1],d);break;case'"':{const c=w(g.slice(0,-1),2);c&&(o={...o,wordSpacing:c[0],charSpacing:c[1]}),h=b([1,0,0,1,0,-o.leading],h),u=h,z(g[g.length-1],d);break}case"TJ":{const c=g[g.length-1];if(!Array.isArray(c))break;c.forEach((k,A)=>{if(k instanceof I)u=C(e,{sid:n,op:d,part:A,bytes:k.bytes,gs:o,tm:u,group:T()});else if(Number.isFinite(k)){const R=-k/1e3*o.size*o.hscale;u=b([1,0,0,1,R,0],u)}});break}case"BDC":{const c=g[g.length-1],k=c instanceof Map?c.get("ActualText")??c.get("Alt"):null;if(k instanceof I){const A=e.marked.length;e.marked.push({sid:n,op:d,dict:c}),e.spans.set(A,$(k.bytes)),f.push(A)}else f.push(null);break}case"BMC":f.push(null);break;case"EMC":f.pop();break;case"Do":await J(e,g[g.length-1],r,o.ctm,s);break;case"INLINE_IMAGE":e.images.push({ctm:o.ctm,inline:!0});break;default:break}}n==="page"&&(e.unbalanced=y)}const O={split:e=>[...e].map(n=>({code:n,size:1})),singleByte:!0,text:()=>"",width:()=>500,ascent:750,descent:-220,scale:1,toUnicode:null,missing:!0};async function H(e,n){const t=n instanceof Map?n:null;if(t&&e.fonts.has(t))return e.fonts.get(t);const r=await _(e.doc,n);return t&&e.fonts.set(t,r),r}function C(e,{sid:n,op:t,part:r,bytes:a,gs:s,tm:p,group:l=null}){const i=s.font??O,o=L(i,a);let m=p;for(const f of o){const u=b([s.size*s.hscale,0,0,s.size,0,s.rise],b(m,s.ctm)),h=i.singleByte&&f.code===32&&f.size===1?s.wordSpacing:0,y=f.width/1e3*s.size+s.charSpacing+h;e.glyphs.push({sid:n,op:t,part:r,at:f.at,size:f.size,code:f.code,text:f.text,advanceWidth:f.width,fontSize:s.size,charSpacing:s.charSpacing,wordSpacing:h,hscale:s.hscale,render:s.render,invisible:s.render===3||s.render===7,group:l,origin:x(u,0,0),height:Math.abs(s.size*q(b(m,s.ctm))),trm:u,ascent:i.ascent,descent:i.descent,order:e.glyphs.length}),f.known||(e.unreadable+=1),m=b([1,0,0,1,y*s.hscale,0],m)}return m}async function J(e,n,t,r,a){if(a>=X||!(n instanceof E))return;const{doc:s}=e,p=s.get(t,"XObject"),l=p instanceof Map?p.get(n.value):null,i=s.resolve(l);if(!(i instanceof N))return;if(S(s.get(i.dict,"Subtype"),"Image")){e.images.push({ctm:r,dict:i.dict});return}if(!S(s.get(i.dict,"Subtype"),"Form"))return;const o=l instanceof M?`obj:${l.num}`:`inline:${e.streams.size}`;if(e.streams.has(o)&&e.streams.get(o).walked)return;let m;try{({bytes:m}=await B(i,h=>s.resolve(h)))}catch{return}e.streams.set(o,{kind:"xobject",bytes:m,stream:i,ref:l instanceof M?l:null,walked:!0});const f=s.get(i.dict,"Matrix"),u=Array.isArray(f)&&f.length===6?b(f.map(Number),r):r;await F(e,o,m,s.get(i.dict,"Resources")??t,u,a+1)}async function K(e,n){const{doc:t}=e,r=t.get(n,"Annots");if(Array.isArray(r))for(const a of r){const s=t.resolve(a);if(!(s instanceof Map)||S(t.get(s,"Subtype"),"Link")||S(t.get(s,"Subtype"),"Popup"))continue;const p=Q(t,s),l=p?.ref,i=p?.stream;if(!(i instanceof N))continue;const o=l instanceof M?`obj:${l.num}`:`annot:${e.streams.size}`;if(e.streams.has(o))continue;let m;try{({bytes:m}=await B(i,f=>t.resolve(f)))}catch{continue}e.streams.set(o,{kind:"annotation",bytes:m,stream:i,ref:l instanceof M?l:null,annot:s}),await F(e,o,m,t.get(i.dict,"Resources")??t.get(n,"Resources"),Y(t,s,i),1)}}function Q(e,n){const t=e.get(n,"AP"),r=t instanceof Map?t.get("N"):null,a=e.resolve(r);if(a instanceof N)return{stream:a,ref:r instanceof M?r:null};if(!(a instanceof Map))return null;const s=e.get(n,"AS"),p=s instanceof E?s.value:[...a.keys()][0],l=a.get(p),i=e.resolve(l);return i instanceof N?{stream:i,ref:l instanceof M?l:null}:null}function Y(e,n,t){const r=(e.get(n,"Rect")??[]).map(y=>Number(e.resolve(y))),a=(e.get(t.dict,"BBox")??[]).map(y=>Number(e.resolve(y))),s=e.get(t.dict,"Matrix"),p=Array.isArray(s)&&s.length===6?s.map(Number):v;if(r.length!==4||a.length!==4||!r.every(Number.isFinite)||!a.every(Number.isFinite))return v;const l=[x(p,a[0],a[1]),x(p,a[2],a[1]),x(p,a[2],a[3]),x(p,a[0],a[3])],i=l.map(y=>y.x),o=l.map(y=>y.y),m=Math.max(...i)-Math.min(...i),f=Math.max(...o)-Math.min(...o),u=m>0?Math.abs(r[2]-r[0])/m:1,h=f>0?Math.abs(r[3]-r[1])/f:1;return b(p,[u,0,0,h,Math.min(r[0],r[2])-Math.min(...i)*u,Math.min(r[1],r[3])-Math.min(...o)*h])}function V(e,n){const t=ne(e.glyphs),r=new Map;for(const i of e.glyphs)i.group===null||i.group===void 0||(r.has(i.group)||r.set(i.group,[]),r.get(i.group).push(i.order));let a="";const s=[],p=[],l=new Set;return t.forEach((i,o)=>{o&&(a+=`
-`,s.push(-1));const m=a.length;let f=null;for(const u of i){const h=u.group!==null&&u.group!==void 0;if(h&&l.has(u.group)){f=u;continue}f&&ee(f,u)&&(a+=" ",s.push(-1));const y=h?e.spans.get(u.group)??"":u.text;h&&l.add(u.group);for(const T of y)a+=T,s.push(u.order);f=u}p.push({from:m,to:a.length})}),{number:e.number,page:n,text:a,owner:Int32Array.from(s),glyphs:e.glyphs,lines:p,streams:e.streams,marked:e.marked,groups:r,unreadable:e.unreadable,images:e.images,unbalanced:e.unbalanced??0,box:te(e.doc,n)}}function Z(e){return x(e.trm,e.advanceWidth/1e3,0)}function le(e){const n=e.ascent/1e3,t=e.descent/1e3,r=e.advanceWidth/1e3;return[x(e.trm,0,t),x(e.trm,r,t),x(e.trm,r,n),x(e.trm,0,n)]}function ee(e,n){if(/\s$/.test(e.text)||/^\s/.test(n.text))return!1;const t=Math.max(e.height,1),r=Z(e);return Math.hypot(n.origin.x-r.x,n.origin.y-r.y)>t*G}function ne(e){if(!e.length)return[];const n=[];for(const t of e){const r=Math.max(t.height,1),a=n.find(s=>Math.abs(s.y-t.origin.y)<=r*W);a?(a.glyphs.push(t),a.y=(a.y*(a.glyphs.length-1)+t.origin.y)/a.glyphs.length):n.push({y:t.origin.y,glyphs:[t]})}n.sort((t,r)=>r.y-t.y);for(const t of n)t.glyphs.sort((r,a)=>r.origin.x-a.origin.x);return n.map(t=>t.glyphs)}function te(e,n){let t=n;for(let r=0;t instanceof Map&&r<32;r+=1){const a=e.get(t,"MediaBox");if(Array.isArray(a)&&a.length===4){const s=a.map(p=>Number(e.resolve(p)));if(s.every(Number.isFinite))return{x:Math.min(s[0],s[2]),y:Math.min(s[1],s[3]),width:Math.abs(s[2]-s[0]),height:Math.abs(s[3]-s[1])}}t=e.get(t,"Parent")}return{x:0,y:0,width:612,height:792}}function fe(e){const n=[],t=new Set,r=(a,s)=>{if(!(a instanceof Map)||s>64||n.length>1e4)return;const p=e.get(a,"Kids");if(!Array.isArray(p)){(S(a.get("Type"),"Page")||a.has("Contents"))&&n.push(a);return}for(const l of p){const i=l instanceof M?l.key:null;if(i){if(t.has(i))continue;t.add(i)}r(e.resolve(l),s+1)}};return r(e.get(e.catalog,"Pages"),0),n}export{le as cornersOf,Z as endOf,fe as pagesOf,ce as readPage};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{lex}from'./content.js';
+import{decodeStream}from'./filters.js';
+import{glyphsOf,readFonts}from'./fonts.js';
+import{isName,Name,PdfStream,PdfString,Ref}from'./objects.js';
+import{decodeText}from'./strings.js';
+const SPACE_GAP=0.25;
+const LINE_GAP=0.4;
+const MAX_DEPTH=12;
+const IDENTITY=[1,0,0,1,0,0];
+function times(a,b){
+return[
+a[0]*b[0]+a[1]*b[2],
+a[0]*b[1]+a[1]*b[3],
+a[2]*b[0]+a[3]*b[2],
+a[2]*b[1]+a[3]*b[3],
+a[4]*b[0]+a[5]*b[2]+b[4],
+a[4]*b[1]+a[5]*b[3]+b[5],
+];
+}
+function apply(m,x,y){
+return{x:m[0]*x+m[2]*y+m[4],y:m[1]*x+m[3]*y+m[5]};
+}
+function scaleOf(m){
+return Math.sqrt(Math.abs(m[0]*m[3]-m[1]*m[2]))||1;
+}
+function numbers(args,count){
+if(args.length<count)return null;
+const out=args.slice(args.length-count).map(Number);
+return out.every((value)=>Number.isFinite(value))?out:null;
+}
+export async function readPage(doc,page,number){
+const state={
+doc,
+number,
+glyphs:[],
+marked:[],
+spans:new Map(),
+streams:new Map(),
+unreadable:0,
+images:[],
+fonts:new Map(),
+};
+const contents=await pageContent(doc,page);
+if(contents){
+state.streams.set('page',{kind:'page',bytes:contents,page});
+await walk(state,'page',contents,doc.get(page,'Resources'),IDENTITY,0);
+}
+await readAnnotations(state,page);
+return assemble(state,page);
+}
+async function pageContent(doc,page){
+const value=doc.get(page,'Contents');
+const list=Array.isArray(value)?value:[value];
+const parts=[];
+for(const item of list){
+const stream=doc.resolve(item);
+if(!(stream instanceof PdfStream))continue;
+try{
+const{bytes}=await decodeStream(stream,(v)=>doc.resolve(v));
+parts.push(bytes);
+}catch{
+return null;
+}
+}
+if(!parts.length)return null;
+const size=parts.reduce((sum,part)=>sum+part.length+1,0);
+const bytes=new Uint8Array(size);
+let at=0;
+for(const part of parts){
+bytes.set(part,at);
+at+=part.length;
+bytes[at]=0x0a;
+at+=1;
+}
+return bytes;
+}
+async function walk(state,sid,bytes,resources,ctm,depth){
+const{doc}=state;
+const fonts=await fontsFor(state,resources);
+const ops=lex(bytes);
+if(!state.streams.get(sid).ops)state.streams.get(sid).ops=ops;
+let gs={
+ctm,
+font:null,
+fontName:'',
+size:0,
+charSpacing:0,
+wordSpacing:0,
+hscale:1,
+leading:0,
+rise:0,
+render:0,
+};
+const stack=[];
+const spans=[];
+let tm=IDENTITY;
+let tlm=IDENTITY;
+let unbalanced=0;
+const inside=()=>{
+for(let at=spans.length-1;at>=0;at-=1){
+if(spans[at]!==null)return spans[at];
+}
+return null;
+};
+const show=(value,index)=>{
+if(!(value instanceof PdfString))return;
+tm=showString(state,{
+sid,op:index,part:-1,bytes:value.bytes,gs,tm,group:inside(),
+});
+};
+for(let index=0;index<ops.length;index+=1){
+const op=ops[index];
+const{name,args}=op;
+switch(name){
+case'q':
+stack.push(gs);
+unbalanced+=1;
+break;
+case'Q':
+if(stack.length){
+gs=stack.pop();
+unbalanced-=1;
+}
+break;
+case'cm':{
+const m=numbers(args,6);
+if(m)gs={...gs,ctm:times(m,gs.ctm)};
+break;
+}
+case'BT':
+tm=IDENTITY;
+tlm=IDENTITY;
+break;
+case'ET':
+break;
+case'Tf':{
+const size=numbers(args,1);
+const named=args.find((value)=>value instanceof Name);
+gs={
+...gs,
+size:size?size[0]:gs.size,
+fontName:named?named.value:gs.fontName,
+font:named?fonts.get(named.value)??MISSING_FONT:gs.font,
+};
+break;
+}
+case'Tc':{
+const value=numbers(args,1);
+if(value)gs={...gs,charSpacing:value[0]};
+break;
+}
+case'Tw':{
+const value=numbers(args,1);
+if(value)gs={...gs,wordSpacing:value[0]};
+break;
+}
+case'Tz':{
+const value=numbers(args,1);
+if(value)gs={...gs,hscale:value[0]/100};
+break;
+}
+case'TL':{
+const value=numbers(args,1);
+if(value)gs={...gs,leading:value[0]};
+break;
+}
+case'Ts':{
+const value=numbers(args,1);
+if(value)gs={...gs,rise:value[0]};
+break;
+}
+case'Tr':{
+const value=numbers(args,1);
+if(value)gs={...gs,render:value[0]};
+break;
+}
+case'Td':{
+const value=numbers(args,2);
+if(value){
+tlm=times([1,0,0,1,value[0],value[1]],tlm);
+tm=tlm;
+}
+break;
+}
+case'TD':{
+const value=numbers(args,2);
+if(value){
+gs={...gs,leading:-value[1]};
+tlm=times([1,0,0,1,value[0],value[1]],tlm);
+tm=tlm;
+}
+break;
+}
+case'Tm':{
+const m=numbers(args,6);
+if(m){
+tlm=m;
+tm=m;
+}
+break;
+}
+case'T*':
+tlm=times([1,0,0,1,0,-gs.leading],tlm);
+tm=tlm;
+break;
+case'Tj':
+show(args[args.length-1],index);
+break;
+case"'":
+tlm=times([1,0,0,1,0,-gs.leading],tlm);
+tm=tlm;
+show(args[args.length-1],index);
+break;
+case'"':{
+const value=numbers(args.slice(0,-1),2);
+if(value)gs={...gs,wordSpacing:value[0],charSpacing:value[1]};
+tlm=times([1,0,0,1,0,-gs.leading],tlm);
+tm=tlm;
+show(args[args.length-1],index);
+break;
+}
+case'TJ':{
+const array=args[args.length-1];
+if(!Array.isArray(array))break;
+array.forEach((item,part)=>{
+if(item instanceof PdfString){
+tm=showString(state,{
+sid,op:index,part,bytes:item.bytes,gs,tm,group:inside(),
+});
+}else if(Number.isFinite(item)){
+const shift=(-item/1000)*gs.size*gs.hscale;
+tm=times([1,0,0,1,shift,0],tm);
+}
+});
+break;
+}
+case'BDC':{
+const dict=args[args.length-1];
+const replacement=dict instanceof Map
+?dict.get('ActualText')??dict.get('Alt'):null;
+if(replacement instanceof PdfString){
+const id=state.marked.length;
+state.marked.push({sid,op:index,dict});
+state.spans.set(id,decodeText(replacement.bytes));
+spans.push(id);
+}else{
+spans.push(null);
+}
+break;
+}
+case'BMC':
+spans.push(null);
+break;
+case'EMC':
+spans.pop();
+break;
+case'Do':
+await drawXObject(state,args[args.length-1],resources,gs.ctm,depth);
+break;
+case'INLINE_IMAGE':
+state.images.push({ctm:gs.ctm,inline:true});
+break;
+default:
+break;
+}
+}
+if(sid==='page')state.unbalanced=unbalanced;
+}
+const MISSING_FONT={
+split:(bytes)=>[...bytes].map((code)=>({code,size:1})),
+singleByte:true,
+text:()=>'',
+width:()=>500,
+ascent:750,
+descent:-220,
+scale:1,
+toUnicode:null,
+missing:true,
+};
+async function fontsFor(state,resources){
+const key=resources instanceof Map?resources:null;
+if(key&&state.fonts.has(key))return state.fonts.get(key);
+const fonts=await readFonts(state.doc,resources);
+if(key)state.fonts.set(key,fonts);
+return fonts;
+}
+function showString(state,{
+sid,op,part,bytes,gs,tm,group=null,
+}){
+const font=gs.font??MISSING_FONT;
+const glyphs=glyphsOf(font,bytes);
+let matrix=tm;
+for(const glyph of glyphs){
+const trm=times(
+[gs.size*gs.hscale,0,0,gs.size,0,gs.rise],
+times(matrix,gs.ctm),
+);
+const spacing=font.singleByte&&glyph.code===32&&glyph.size===1
+?gs.wordSpacing:0;
+const advance=((glyph.width/1000)*gs.size+gs.charSpacing+spacing);
+state.glyphs.push({
+sid,
+op,
+part,
+at:glyph.at,
+size:glyph.size,
+code:glyph.code,
+text:glyph.text,
+advanceWidth:glyph.width,
+fontSize:gs.size,
+charSpacing:gs.charSpacing,
+wordSpacing:spacing,
+hscale:gs.hscale,
+render:gs.render,
+invisible:gs.render===3||gs.render===7,
+group,
+origin:apply(trm,0,0),
+height:Math.abs(gs.size*scaleOf(times(matrix,gs.ctm))),
+trm,
+ascent:font.ascent,
+descent:font.descent,
+order:state.glyphs.length,
+});
+if(!glyph.known)state.unreadable+=1;
+matrix=times([1,0,0,1,advance*gs.hscale,0],matrix);
+}
+return matrix;
+}
+async function drawXObject(state,named,resources,ctm,depth){
+if(depth>=MAX_DEPTH||!(named instanceof Name))return;
+const{doc}=state;
+const table=doc.get(resources,'XObject');
+const ref=table instanceof Map?table.get(named.value):null;
+const stream=doc.resolve(ref);
+if(!(stream instanceof PdfStream))return;
+if(isName(doc.get(stream.dict,'Subtype'),'Image')){
+state.images.push({ctm,dict:stream.dict});
+return;
+}
+if(!isName(doc.get(stream.dict,'Subtype'),'Form'))return;
+const sid=ref instanceof Ref?`obj:${ref.num}`:`inline:${state.streams.size}`;
+if(state.streams.has(sid)&&state.streams.get(sid).walked)return;
+let bytes;
+try{
+({bytes}=await decodeStream(stream,(value)=>doc.resolve(value)));
+}catch{
+return;
+}
+state.streams.set(sid,{
+kind:'xobject',bytes,stream,ref:ref instanceof Ref?ref:null,walked:true,
+});
+const matrix=doc.get(stream.dict,'Matrix');
+const inner=Array.isArray(matrix)&&matrix.length===6
+?times(matrix.map(Number),ctm):ctm;
+await walk(state,sid,bytes,
+doc.get(stream.dict,'Resources')??resources,inner,depth+1);
+}
+async function readAnnotations(state,page){
+const{doc}=state;
+const annots=doc.get(page,'Annots');
+if(!Array.isArray(annots))return;
+for(const item of annots){
+const annot=doc.resolve(item);
+if(!(annot instanceof Map))continue;
+if(isName(doc.get(annot,'Subtype'),'Link'))continue;
+if(isName(doc.get(annot,'Subtype'),'Popup'))continue;
+const appearance=normalAppearance(doc,annot);
+const ref=appearance?.ref;
+const stream=appearance?.stream;
+if(!(stream instanceof PdfStream))continue;
+const sid=ref instanceof Ref?`obj:${ref.num}`:`annot:${state.streams.size}`;
+if(state.streams.has(sid))continue;
+let bytes;
+try{
+({bytes}=await decodeStream(stream,(value)=>doc.resolve(value)));
+}catch{
+continue;
+}
+state.streams.set(sid,{
+kind:'annotation',bytes,stream,ref:ref instanceof Ref?ref:null,annot,
+});
+await walk(state,sid,bytes,
+doc.get(stream.dict,'Resources')??doc.get(page,'Resources'),
+appearanceMatrix(doc,annot,stream),1);
+}
+}
+function normalAppearance(doc,annot){
+const ap=doc.get(annot,'AP');
+const normal=ap instanceof Map?ap.get('N'):null;
+const resolved=doc.resolve(normal);
+if(resolved instanceof PdfStream){
+return{stream:resolved,ref:normal instanceof Ref?normal:null};
+}
+if(!(resolved instanceof Map))return null;
+const as=doc.get(annot,'AS');
+const key=as instanceof Name?as.value:[...resolved.keys()][0];
+const chosen=resolved.get(key);
+const stream=doc.resolve(chosen);
+return stream instanceof PdfStream
+?{stream,ref:chosen instanceof Ref?chosen:null}:null;
+}
+function appearanceMatrix(doc,annot,stream){
+const rect=(doc.get(annot,'Rect')??[]).map((v)=>Number(doc.resolve(v)));
+const box=(doc.get(stream.dict,'BBox')??[]).map((v)=>Number(doc.resolve(v)));
+const matrix=doc.get(stream.dict,'Matrix');
+const form=Array.isArray(matrix)&&matrix.length===6?matrix.map(Number):IDENTITY;
+if(rect.length!==4||box.length!==4||!rect.every(Number.isFinite)
+||!box.every(Number.isFinite))return IDENTITY;
+const corners=[
+apply(form,box[0],box[1]),apply(form,box[2],box[1]),
+apply(form,box[2],box[3]),apply(form,box[0],box[3]),
+];
+const xs=corners.map((point)=>point.x);
+const ys=corners.map((point)=>point.y);
+const width=Math.max(...xs)-Math.min(...xs);
+const height=Math.max(...ys)-Math.min(...ys);
+const sx=width>0?(Math.abs(rect[2]-rect[0]))/width:1;
+const sy=height>0?(Math.abs(rect[3]-rect[1]))/height:1;
+return times(form,[
+sx,0,0,sy,
+Math.min(rect[0],rect[2])-Math.min(...xs)*sx,
+Math.min(rect[1],rect[3])-Math.min(...ys)*sy,
+]);
+}
+function assemble(state,page){
+const lines=intoLines(state.glyphs);
+const groups=new Map();
+for(const glyph of state.glyphs){
+if(glyph.group===null||glyph.group===undefined)continue;
+if(!groups.has(glyph.group))groups.set(glyph.group,[]);
+groups.get(glyph.group).push(glyph.order);
+}
+let text='';
+const owner=[];
+const ranges=[];
+const spent=new Set();
+lines.forEach((line,index)=>{
+if(index){
+text+='\n';
+owner.push(-1);
+}
+const from=text.length;
+let previous=null;
+for(const glyph of line){
+const replaced=glyph.group!==null&&glyph.group!==undefined;
+if(replaced&&spent.has(glyph.group)){
+previous=glyph;
+continue;
+}
+if(previous&&gapBefore(previous,glyph)){
+text+=' ';
+owner.push(-1);
+}
+const said=replaced?state.spans.get(glyph.group)??'':glyph.text;
+if(replaced)spent.add(glyph.group);
+for(const character of said){
+text+=character;
+owner.push(glyph.order);
+}
+previous=glyph;
+}
+ranges.push({from,to:text.length});
+});
+return{
+number:state.number,
+page,
+text,
+owner:Int32Array.from(owner),
+glyphs:state.glyphs,
+lines:ranges,
+streams:state.streams,
+marked:state.marked,
+groups,
+unreadable:state.unreadable,
+images:state.images,
+unbalanced:state.unbalanced??0,
+box:mediaBox(state.doc,page),
+};
+}
+export function endOf(glyph){
+return apply(glyph.trm,glyph.advanceWidth/1000,0);
+}
+export function cornersOf(glyph){
+const top=glyph.ascent/1000;
+const bottom=glyph.descent/1000;
+const right=glyph.advanceWidth/1000;
+return[
+apply(glyph.trm,0,bottom),apply(glyph.trm,right,bottom),
+apply(glyph.trm,right,top),apply(glyph.trm,0,top),
+];
+}
+function gapBefore(previous,glyph){
+if(/\s$/.test(previous.text)||/^\s/.test(glyph.text))return false;
+const size=Math.max(previous.height,1);
+const end=endOf(previous);
+return Math.hypot(glyph.origin.x-end.x,glyph.origin.y-end.y)>size*SPACE_GAP;
+}
+function intoLines(glyphs){
+if(!glyphs.length)return[];
+const rows=[];
+for(const glyph of glyphs){
+const size=Math.max(glyph.height,1);
+const row=rows.find((item)=>Math.abs(item.y-glyph.origin.y)<=size*LINE_GAP);
+if(row){
+row.glyphs.push(glyph);
+row.y=(row.y*(row.glyphs.length-1)+glyph.origin.y)/row.glyphs.length;
+}else{
+rows.push({y:glyph.origin.y,glyphs:[glyph]});
+}
+}
+rows.sort((a,b)=>b.y-a.y);
+for(const row of rows)row.glyphs.sort((a,b)=>a.origin.x-b.origin.x);
+return rows.map((row)=>row.glyphs);
+}
+function mediaBox(doc,page){
+let node=page;
+for(let depth=0;node instanceof Map&&depth<32;depth+=1){
+const box=doc.get(node,'MediaBox');
+if(Array.isArray(box)&&box.length===4){
+const values=box.map((value)=>Number(doc.resolve(value)));
+if(values.every(Number.isFinite)){
+return{
+x:Math.min(values[0],values[2]),
+y:Math.min(values[1],values[3]),
+width:Math.abs(values[2]-values[0]),
+height:Math.abs(values[3]-values[1]),
+};
+}
+}
+node=doc.get(node,'Parent');
+}
+return{x:0,y:0,width:612,height:792};
+}
+export function pagesOf(doc){
+const pages=[];
+const seen=new Set();
+const visit=(node,depth)=>{
+if(!(node instanceof Map)||depth>64||pages.length>10000)return;
+const kids=doc.get(node,'Kids');
+if(!Array.isArray(kids)){
+if(isName(node.get('Type'),'Page')||node.has('Contents'))pages.push(node);
+return;
+}
+for(const kid of kids){
+const key=kid instanceof Ref?kid.key:null;
+if(key){
+if(seen.has(key))continue;
+seen.add(key);
+}
+visit(doc.resolve(kid),depth+1);
+}
+};
+visit(doc.get(doc.catalog,'Pages'),0);
+return pages;
+}

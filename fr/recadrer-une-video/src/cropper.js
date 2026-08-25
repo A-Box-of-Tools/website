@@ -1,2 +1,221 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const M=16,y={n:[.5,1],s:[.5,0],e:[0,.5],w:[1,.5],ne:[0,1],nw:[1,1],se:[0,0],sw:[1,0]},x=Object.keys(y);function f(d){return Math.max(16,Math.floor(d/2)*2)}class v{#a;#i;#o;#c;#e={width:0,height:0};#s={x:0,y:0,width:0,height:0};#t=null;#h=null;#r=!0;constructor(t,{onChange:e}={}){this.#a=t,this.#c=e,this.#i=document.createElement("div"),this.#i.className="crop-box",this.#i.tabIndex=0,this.#i.setAttribute("role","application"),this.#i.setAttribute("aria-label","Crop area. The arrow keys move it, Alt and the arrow keys resize it, and holding Shift makes each step ten pixels."),this.#o=document.createElement("span"),this.#o.className="crop-size",this.#i.append(this.#o);for(const s of x){const i=document.createElement("span");i.className=`crop-handle handle-${s}`,i.dataset.handle=s,this.#i.append(i)}t.append(this.#i),this.#i.addEventListener("pointerdown",this.#p),this.#i.addEventListener("keydown",this.#u)}get rect(){return{...this.#s}}get aspect(){return this.#t}setSource(t,e){this.#e={width:t,height:e},this.#t=null,this.reset()}setEnabled(t){this.#r=t,this.#i.classList.toggle("disabled",!t)}reset(){this.#n({x:0,y:0,width:this.#e.width,height:this.#e.height})}setAspect(t){if(this.#t=t||null,!this.#t){this.#d();return}const e=this.#s.x+this.#s.width/2,s=this.#s.y+this.#s.height/2,i=Math.min(this.#s.width,this.#s.height*this.#t),h=i/this.#t;this.#n({x:e-i/2,y:s-h/2,width:i,height:h})}maximize(){const{width:t,height:e}=this.#e;let s=t,i=e;this.#t&&(s=Math.min(t,e*this.#t),i=s/this.#t),this.#n({x:(t-s)/2,y:(e-i)/2,width:s,height:i})}centre(){this.#n({...this.#s,x:(this.#e.width-this.#s.width)/2,y:(this.#e.height-this.#s.height)/2})}setRect(t){this.#n(t)}#w(){const t=this.#a.getBoundingClientRect();return t.width?this.#e.width/t.width:1}#p=t=>{if(!this.#r||t.button!==0)return;const e=t.target.dataset?.handle??"move";this.#h={handle:e,pointerX:t.clientX,pointerY:t.clientY,scale:this.#w(),start:{...this.#s}},t.target.setPointerCapture?.(t.pointerId),t.preventDefault(),this.#i.focus({preventScroll:!0}),this.#i.classList.add("dragging");const s=h=>{if(!this.#h)return;const n=(h.clientX-this.#h.pointerX)*this.#h.scale,a=(h.clientY-this.#h.pointerY)*this.#h.scale;this.#h.handle==="move"?this.#l(n,a):this.#m(this.#h.handle,n,a)},i=()=>{this.#h=null,this.#i.classList.remove("dragging"),window.removeEventListener("pointermove",s),window.removeEventListener("pointerup",i),window.removeEventListener("pointercancel",i)};window.addEventListener("pointermove",s),window.addEventListener("pointerup",i),window.addEventListener("pointercancel",i)};#u=t=>{if(!this.#r)return;const s={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[t.key];if(!s)return;t.preventDefault();const[i,h]=s;if(t.altKey){const n=t.shiftKey?10:2;this.#g(i*n,h*n)}else{const n=t.shiftKey?10:1;this.#l(i*n,h*n,this.#s)}};#l(t,e,s=this.#h?.start??this.#s){this.#n({...s,x:s.x+t,y:s.y+e})}#g(t,e){const s=this.#s;let i=s.width+t,h=s.height+e;this.#t&&(t?h=i/this.#t:i=h*this.#t),this.#n({...s,width:i,height:h})}#m(t,e,s){const i=this.#h.start,[h,n]=y[t],a=i.x+h*i.width,w=i.y+n*i.height;let o=i.width+(t.includes("e")?e:t.includes("w")?-e:0),r=i.height+(t.includes("s")?s:t.includes("n")?-s:0);this.#t&&(t==="e"||t==="w"?r=o/this.#t:t==="n"||t==="s"?o=r*this.#t:o/this.#t>=r?r=o/this.#t:o=r*this.#t);const p=(c,l,m)=>m===0?l-c:m===1?c:2*Math.min(c,l-c);let u=p(a,this.#e.width,h),g=p(w,this.#e.height,n);if(this.#t){const c=Math.min(u,g*this.#t);o=Math.min(o,c),r=o/this.#t}else o=Math.min(o,u),r=Math.min(r,g);this.#n({x:a-h*o,y:w-n*r,width:o,height:r})}#n(t){const{width:e,height:s}=this.#e;if(!e||!s)return;const i=f(Math.min(Math.round(t.width),e)),h=f(Math.min(Math.round(t.height),s)),n=Math.max(0,Math.min(Math.round(t.x),e-i)),a=Math.max(0,Math.min(Math.round(t.y),s-h));this.#s={x:n,y:a,width:i,height:h},this.#y(),this.#d()}#y(){const{width:t,height:e}=this.#e;if(!t||!e)return;const{x:s,y:i,width:h,height:n}=this.#s;this.#i.style.left=`${s/t*100}%`,this.#i.style.top=`${i/e*100}%`,this.#i.style.width=`${h/t*100}%`,this.#i.style.height=`${n/e*100}%`,this.#o.textContent=`${h} x ${n}`}#d(){this.#c?.(this.rect)}}export{v as Cropper};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MIN_SIZE=16;
+const ANCHORS={
+n:[0.5,1],s:[0.5,0],e:[0,0.5],w:[1,0.5],
+ne:[0,1],nw:[1,1],se:[0,0],sw:[1,0],
+};
+const HANDLES=Object.keys(ANCHORS);
+function even(value){
+return Math.max(MIN_SIZE,Math.floor(value/2)*2);
+}
+export class Cropper{
+#stage;
+#box;
+#label;
+#onChange;
+#source={width:0,height:0};
+#rect={x:0,y:0,width:0,height:0};
+#aspect=null;
+#drag=null;
+#enabled=true;
+constructor(stage,{onChange}={}){
+this.#stage=stage;
+this.#onChange=onChange;
+this.#box=document.createElement('div');
+this.#box.className='crop-box';
+this.#box.tabIndex=0;
+this.#box.setAttribute('role','application');
+this.#box.setAttribute('aria-label',
+'Crop area. The arrow keys move it, Alt and the arrow keys resize it, '
++'and holding Shift makes each step ten pixels.');
+this.#label=document.createElement('span');
+this.#label.className='crop-size';
+this.#box.append(this.#label);
+for(const handle of HANDLES){
+const grip=document.createElement('span');
+grip.className=`crop-handle handle-${handle}`;
+grip.dataset.handle=handle;
+this.#box.append(grip);
+}
+stage.append(this.#box);
+this.#box.addEventListener('pointerdown',this.#onPointerDown);
+this.#box.addEventListener('keydown',this.#onKeyDown);
+}
+get rect(){
+return{...this.#rect};
+}
+get aspect(){
+return this.#aspect;
+}
+setSource(width,height){
+this.#source={width,height};
+this.#aspect=null;
+this.reset();
+}
+setEnabled(enabled){
+this.#enabled=enabled;
+this.#box.classList.toggle('disabled',!enabled);
+}
+reset(){
+this.#apply({
+x:0,y:0,width:this.#source.width,height:this.#source.height,
+});
+}
+setAspect(aspect){
+this.#aspect=aspect||null;
+if(!this.#aspect){
+this.#emit();
+return;
+}
+const centreX=this.#rect.x+this.#rect.width/2;
+const centreY=this.#rect.y+this.#rect.height/2;
+const width=Math.min(this.#rect.width,this.#rect.height*this.#aspect);
+const height=width/this.#aspect;
+this.#apply({x:centreX-width/2,y:centreY-height/2,width,height});
+}
+maximize(){
+const{width:sw,height:sh}=this.#source;
+let width=sw;
+let height=sh;
+if(this.#aspect){
+width=Math.min(sw,sh*this.#aspect);
+height=width/this.#aspect;
+}
+this.#apply({x:(sw-width)/2,y:(sh-height)/2,width,height});
+}
+centre(){
+this.#apply({
+...this.#rect,
+x:(this.#source.width-this.#rect.width)/2,
+y:(this.#source.height-this.#rect.height)/2,
+});
+}
+setRect(rect){
+this.#apply(rect);
+}
+#scale(){
+const bounds=this.#stage.getBoundingClientRect();
+return bounds.width?this.#source.width/bounds.width:1;
+}
+#onPointerDown=(event)=>{
+if(!this.#enabled||event.button!==0)return;
+const handle=event.target.dataset?.handle??'move';
+this.#drag={
+handle,
+pointerX:event.clientX,
+pointerY:event.clientY,
+scale:this.#scale(),
+start:{...this.#rect},
+};
+event.target.setPointerCapture?.(event.pointerId);
+event.preventDefault();
+this.#box.focus({preventScroll:true});
+this.#box.classList.add('dragging');
+const move=(moved)=>{
+if(!this.#drag)return;
+const dx=(moved.clientX-this.#drag.pointerX)*this.#drag.scale;
+const dy=(moved.clientY-this.#drag.pointerY)*this.#drag.scale;
+if(this.#drag.handle==='move')this.#move(dx,dy);
+else this.#resize(this.#drag.handle,dx,dy);
+};
+const up=()=>{
+this.#drag=null;
+this.#box.classList.remove('dragging');
+window.removeEventListener('pointermove',move);
+window.removeEventListener('pointerup',up);
+window.removeEventListener('pointercancel',up);
+};
+window.addEventListener('pointermove',move);
+window.addEventListener('pointerup',up);
+window.addEventListener('pointercancel',up);
+};
+#onKeyDown=(event)=>{
+if(!this.#enabled)return;
+const directions={
+ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],
+};
+const direction=directions[event.key];
+if(!direction)return;
+event.preventDefault();
+const[x,y]=direction;
+if(event.altKey){
+const step=event.shiftKey?10:2;
+this.#resizeBy(x*step,y*step);
+}else{
+const step=event.shiftKey?10:1;
+this.#move(x*step,y*step,this.#rect);
+}
+};
+#move(dx,dy,from=this.#drag?.start??this.#rect){
+this.#apply({...from,x:from.x+dx,y:from.y+dy});
+}
+#resizeBy(dx,dy){
+const start=this.#rect;
+let width=start.width+dx;
+let height=start.height+dy;
+if(this.#aspect){
+if(dx)height=width/this.#aspect;
+else width=height*this.#aspect;
+}
+this.#apply({...start,width,height});
+}
+#resize(handle,dx,dy){
+const start=this.#drag.start;
+const[ax,ay]=ANCHORS[handle];
+const anchorX=start.x+ax*start.width;
+const anchorY=start.y+ay*start.height;
+let width=start.width+(handle.includes('e')?dx:handle.includes('w')?-dx:0);
+let height=start.height+(handle.includes('s')?dy:handle.includes('n')?-dy:0);
+if(this.#aspect){
+const horizontal=handle==='e'||handle==='w';
+const vertical=handle==='n'||handle==='s';
+if(horizontal)height=width/this.#aspect;
+else if(vertical)width=height*this.#aspect;
+else if(width/this.#aspect>=height)height=width/this.#aspect;
+else width=height*this.#aspect;
+}
+const room=(anchor,span,side)=>(
+side===0?span-anchor:side===1?anchor:2*Math.min(anchor,span-anchor)
+);
+let maxWidth=room(anchorX,this.#source.width,ax);
+let maxHeight=room(anchorY,this.#source.height,ay);
+if(this.#aspect){
+const limit=Math.min(maxWidth,maxHeight*this.#aspect);
+width=Math.min(width,limit);
+height=width/this.#aspect;
+}else{
+width=Math.min(width,maxWidth);
+height=Math.min(height,maxHeight);
+}
+this.#apply({
+x:anchorX-ax*width,
+y:anchorY-ay*height,
+width,
+height,
+});
+}
+#apply(rect){
+const{width:sw,height:sh}=this.#source;
+if(!sw||!sh)return;
+const width=even(Math.min(Math.round(rect.width),sw));
+const height=even(Math.min(Math.round(rect.height),sh));
+const x=Math.max(0,Math.min(Math.round(rect.x),sw-width));
+const y=Math.max(0,Math.min(Math.round(rect.y),sh-height));
+this.#rect={x,y,width,height};
+this.#paint();
+this.#emit();
+}
+#paint(){
+const{width:sw,height:sh}=this.#source;
+if(!sw||!sh)return;
+const{x,y,width,height}=this.#rect;
+this.#box.style.left=`${(x / sw) * 100}%`;
+this.#box.style.top=`${(y / sh) * 100}%`;
+this.#box.style.width=`${(width / sw) * 100}%`;
+this.#box.style.height=`${(height / sh) * 100}%`;
+this.#label.textContent=`${width} x ${height}`;
+}
+#emit(){
+this.#onChange?.(this.rect);
+}
+}

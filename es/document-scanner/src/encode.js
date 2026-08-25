@@ -1,2 +1,67 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function h({data:t,width:a,height:e}){const r=Math.ceil(a/8),n=new Uint8Array(r*e);for(let i=0;i<e;i+=1){const s=i*r;for(let o=0;o<a;o+=1)t[(i*a+o)*4]>=128&&(n[s+(o>>3)]|=128>>(o&7))}return n}async function m(t){if(typeof CompressionStream!="function")throw new Error("This browser has no CompressionStream, which the black and white mode needs to compress a page. Choose one of the other modes instead.");const a=new Blob([t]).stream().pipeThrough(new CompressionStream("deflate"));return new Uint8Array(await new Response(a).arrayBuffer())}async function d(t,a){const{width:e,height:r}=t;if(t.mono)return{kind:"flate1",data:await m(h(t)),width:e,height:r,gray:!0};const n=document.createElement("canvas");n.width=e,n.height=r,n.getContext("2d").putImageData(new ImageData(t.data,e,r),0,0);const s=Math.min(1,Math.max(.3,Number(a?.quality)||.82)),o=await new Promise(c=>n.toBlob(c,"image/jpeg",s));if(n.width=0,n.height=0,!o)throw new Error("This browser could not encode the page as a JPEG.");return{kind:"dct",data:new Uint8Array(await o.arrayBuffer()),width:e,height:r,gray:!1}}async function w(t,a){const e=document.createElement("canvas");e.width=t.width,e.height=t.height,e.getContext("2d").putImageData(new ImageData(t.data,t.width,t.height),0,0);const n=t.mono?"image/png":"image/jpeg",i=t.mono?void 0:Math.min(1,Math.max(.3,Number(a?.quality)||.82)),s=await new Promise(o=>e.toBlob(o,n,i));if(e.width=0,e.height=0,!s)throw new Error("This browser could not encode the page.");return{blob:s,extension:t.mono?"png":"jpg"}}export{m as deflate,w as encodeImage,d as encodePage,h as packMono};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function packMono({data,width,height}){
+const stride=Math.ceil(width/8);
+const out=new Uint8Array(stride*height);
+for(let y=0;y<height;y+=1){
+const row=y*stride;
+for(let x=0;x<width;x+=1){
+if(data[(y*width+x)*4]>=128)out[row+(x>>3)]|=0x80>>(x&7);
+}
+}
+return out;
+}
+export async function deflate(bytes){
+if(typeof CompressionStream!=='function'){
+throw new Error(
+'This browser has no CompressionStream, which the black and white mode '
++'needs to compress a page. Choose one of the other modes instead.',
+);
+}
+const stream=new Blob([bytes]).stream().pipeThrough(new CompressionStream('deflate'));
+return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+export async function encodePage(page,settings){
+const{width,height}=page;
+if(page.mono){
+return{
+kind:'flate1',
+data:await deflate(packMono(page)),
+width,
+height,
+gray:true,
+};
+}
+const canvas=document.createElement('canvas');
+canvas.width=width;
+canvas.height=height;
+const context=canvas.getContext('2d');
+context.putImageData(new ImageData(page.data,width,height),0,0);
+const quality=Math.min(1,Math.max(0.3,Number(settings?.quality)||0.82));
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,'image/jpeg',quality));
+canvas.width=0;
+canvas.height=0;
+if(!blob)throw new Error('This browser could not encode the page as a JPEG.');
+return{
+kind:'dct',
+data:new Uint8Array(await blob.arrayBuffer()),
+width,
+height,
+gray:false,
+};
+}
+export async function encodeImage(page,settings){
+const canvas=document.createElement('canvas');
+canvas.width=page.width;
+canvas.height=page.height;
+const context=canvas.getContext('2d');
+context.putImageData(new ImageData(page.data,page.width,page.height),0,0);
+const type=page.mono?'image/png':'image/jpeg';
+const quality=page.mono
+?undefined
+:Math.min(1,Math.max(0.3,Number(settings?.quality)||0.82));
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,type,quality));
+canvas.width=0;
+canvas.height=0;
+if(!blob)throw new Error('This browser could not encode the page.');
+return{blob,extension:page.mono?'png':'jpg'};
+}

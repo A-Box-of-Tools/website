@@ -1,2 +1,47 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const r={"image/png":{extension:"png",label:"PNG",lossless:!0},"image/jpeg":{extension:"jpg",label:"JPEG",lossless:!1},"image/webp":{extension:"webp",label:"WebP",lossless:!1}};function a(o){const e=Math.max(0,Math.round(o*1e3)),t=Math.floor(e/1e3);return{hours:Math.floor(t/3600),minutes:Math.floor(t%3600/60),secs:t%60,millis:String(e%1e3).padStart(3,"0")}}function u(o){const{hours:e,minutes:t,secs:s,millis:i}=a(o),n=c=>String(c).padStart(2,"0"),l=`${n(t)}-${n(s)}.${i}`;return e?`${n(e)}-${l}`:l}function g(o){const{hours:e,minutes:t,secs:s,millis:i}=a(o),n=l=>String(l).padStart(2,"0");return e?`${e}:${n(t)}:${n(s)}.${i}`:`${t}:${n(s)}.${i}`}function m(o,e,t){const s=String(o??"video").replace(/\.[^./\\]+$/,"").replace(/[\\/:*?"<>|]+/g,"_").trim()||"video",{extension:i}=r[t]??r["image/png"];return`${s}-${u(e)}.${i}`}function p(o,{type:e="image/png",quality:t=.92}={}){return new Promise((s,i)=>{const n=l=>{l?s(l):i(new Error(`This browser would not write a ${r[e]?.label??e}.`))};e==="image/png"?o.toBlob(n,e):o.toBlob(n,e,t)})}export{r as FORMATS,g as clockTime,p as encodeStill,m as stillName,u as timecode};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const FORMATS={
+'image/png':{extension:'png',label:'PNG',lossless:true},
+'image/jpeg':{extension:'jpg',label:'JPEG',lossless:false},
+'image/webp':{extension:'webp',label:'WebP',lossless:false},
+};
+function split(seconds){
+const total=Math.max(0,Math.round(seconds*1000));
+const whole=Math.floor(total/1000);
+return{
+hours:Math.floor(whole/3600),
+minutes:Math.floor((whole%3600)/60),
+secs:whole%60,
+millis:String(total%1000).padStart(3,'0'),
+};
+}
+export function timecode(seconds){
+const{hours,minutes,secs,millis}=split(seconds);
+const pad=(value)=>String(value).padStart(2,'0');
+const tail=`${pad(minutes)}-${pad(secs)}.${millis}`;
+return hours?`${pad(hours)}-${tail}`:tail;
+}
+export function clockTime(seconds){
+const{hours,minutes,secs,millis}=split(seconds);
+const pad=(value)=>String(value).padStart(2,'0');
+return hours
+?`${hours}:${pad(minutes)}:${pad(secs)}.${millis}`
+:`${minutes}:${pad(secs)}.${millis}`;
+}
+export function stillName(sourceName,seconds,type){
+const base=String(sourceName??'video')
+.replace(/\.[^./\\]+$/,'')
+.replace(/[\\/:*?"<>|]+/g,'_')
+.trim()||'video';
+const{extension}=FORMATS[type]??FORMATS['image/png'];
+return`${base}-${timecode(seconds)}.${extension}`;
+}
+export function encodeStill(canvas,{type='image/png',quality=0.92}={}){
+return new Promise((resolve,reject)=>{
+const done=(blob)=>{
+if(blob)resolve(blob);
+else reject(new Error(`This browser would not write a ${FORMATS[type]?.label ?? type}.`));
+};
+if(type==='image/png')canvas.toBlob(done,type);
+else canvas.toBlob(done,type,quality);
+});
+}

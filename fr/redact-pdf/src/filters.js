@@ -1,2 +1,248 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{Name as k}from"./objects.js";const C=new Set(["DCTDecode","DCT","JPXDecode","JBIG2Decode","CCITTFaxDecode","CCF"]);class m extends Error{}async function F(r){try{return await A(r,"deflate")}catch(s){try{return await A(r,"deflate-raw")}catch{throw new m(`Flate stream would not decompress (${s.message})`)}}}async function Z(r){return A(r,"deflate",!0)}async function A(r,s,e=!1){const n=e?CompressionStream:DecompressionStream;if(typeof n!="function")throw new m("this browser has no CompressionStream");const t=new Blob([r]).stream().pipeThrough(new n(s));return new Uint8Array(await new Response(t).arrayBuffer())}function L(r,s=1){const e=[],n=[];let t=258,o=9,c=null,a=0,i=0;const l=()=>{n.length=0,t=258,o=9,c=null};for(let x=0;x<=r.length;x+=1){if(x<r.length)a=a<<8|r[x],i+=8;else if(i<o)break;for(;i>=o;){const p=a>>i-o&(1<<o)-1;if(i-=o,p===256){l();continue}if(p===257)return Uint8Array.from(e);let h;if(p<256)h=[p];else if(n[p-258])h=n[p-258];else if(c)h=[...c,c[0]];else throw new m("LZW stream starts with an undefined code");e.push(...h),c&&(n[t-258]=[...c,h[0]],t+=1,t+s>=1<<o&&o<12&&(o+=1)),c=h}}return Uint8Array.from(e)}function M(r){const s=[];let e=-1;for(const n of r){if(n===62)break;let t;if(n>=48&&n<=57)t=n-48;else if(n>=65&&n<=70)t=n-55;else if(n>=97&&n<=102)t=n-87;else continue;e<0?e=t:(s.push(e*16+t),e=-1)}return e>=0&&s.push(e*16),Uint8Array.from(s)}function S(r){const s=[];let e=0,n=0,t=0;for(r[0]===60&&r[1]===126&&(t=2);t<r.length;t+=1){const o=r[t];if(o===126)break;if(!(o<=32||o===0)){if(o===122&&n===0){s.push(0,0,0,0);continue}o<33||o>117||(e=e*85+(o-33),n+=1,n===5&&(s.push(e>>>24&255,e>>>16&255,e>>>8&255,e&255),e=0,n=0))}}if(n>0){for(let c=n;c<5;c+=1)e=e*85+84;const o=[e>>>24&255,e>>>16&255,e>>>8&255,e&255];s.push(...o.slice(0,n-1))}return Uint8Array.from(s)}function U(r){const s=[];let e=0;for(;e<r.length;){const n=r[e];if(e+=1,n===128)break;if(n<128){for(let t=0;t<=n;t+=1)s.push(r[e+t]??0);e+=n+1}else{const t=r[e]??0;e+=1;for(let o=0;o<257-n;o+=1)s.push(t)}}return Uint8Array.from(s)}function B(r,s,e){const n=(d,y)=>{const w=e(s.get(d));return typeof w=="number"?w:y},t=n("Predictor",1);if(t<=1)return r;const o=n("Colors",1),c=n("BitsPerComponent",8),a=n("Columns",1),i=Math.max(1,Math.ceil(o*c/8)),l=Math.ceil(o*c*a/8);if(t===2)return P(r,o,c,a);const x=Math.floor(r.length/(l+1)),p=new Uint8Array(x*l);let h=new Uint8Array(l);for(let d=0;d<x;d+=1){const y=r[d*(l+1)],w=d*(l+1)+1,u=p.subarray(d*l,(d+1)*l);u.set(r.subarray(w,w+l));for(let f=0;f<l;f+=1){const g=f>=i?u[f-i]:0,D=h[f],b=f>=i?h[f-i]:0;switch(y){case 1:u[f]=u[f]+g&255;break;case 2:u[f]=u[f]+D&255;break;case 3:u[f]=u[f]+(g+D>>1)&255;break;case 4:u[f]=u[f]+I(g,D,b)&255;break;default:break}}h=u}return p}function I(r,s,e){const n=r+s-e,t=Math.abs(n-r),o=Math.abs(n-s),c=Math.abs(n-e);return t<=o&&t<=c?r:o<=c?s:e}function P(r,s,e,n){if(e!==8)return r;const t=s*n,o=new Uint8Array(r);for(let c=0;c*t<o.length;c+=1){const a=c*t;for(let i=s;i<t&&a+i<o.length;i+=1)o[a+i]=o[a+i]+o[a+i-s]&255}return o}function T(r,s=e=>e){const e=s(r.get("Filter"));return e?(Array.isArray(e)?e:[e]).map(s).filter(t=>t instanceof k).map(t=>t.value):[]}function E(r,s,e){const n=e(r.get("DecodeParms")??r.get("DP")),t=Array.isArray(n)?n:[n];return Array.from({length:s},(o,c)=>{const a=e(t[c]);return a instanceof Map?a:new Map})}async function R(r,s=e=>e){const e=T(r.dict,s),n=E(r.dict,e.length,s);let t=r.raw;for(let o=0;o<e.length;o+=1){const c=e[o];if(C.has(c))return{bytes:t,remaining:e.slice(o)};switch(c){case"FlateDecode":case"Fl":t=await F(t);break;case"LZWDecode":case"LZW":{const a=s(n[o].get("EarlyChange"));t=L(t,a===0?0:1);break}case"ASCIIHexDecode":case"AHx":t=M(t);break;case"ASCII85Decode":case"A85":t=S(t);break;case"RunLengthDecode":case"RL":t=U(t);break;case"Crypt":throw new m("this stream is encrypted");default:throw new m(`unknown filter /${c}`)}(c==="FlateDecode"||c==="Fl"||c==="LZWDecode"||c==="LZW")&&(t=B(t,n[o],s))}return{bytes:t,remaining:[]}}export{R as decodeStream,Z as deflate,T as filterNames};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{Name}from'./objects.js';
+const IMAGE_FILTERS=new Set([
+'DCTDecode','DCT','JPXDecode','JBIG2Decode','CCITTFaxDecode','CCF',
+]);
+class FilterError extends Error{}
+async function inflate(bytes){
+try{
+return await pump(bytes,'deflate');
+}catch(first){
+try{
+return await pump(bytes,'deflate-raw');
+}catch{
+throw new FilterError(`Flate stream would not decompress (${first.message})`);
+}
+}
+}
+export async function deflate(bytes){
+return pump(bytes,'deflate',true);
+}
+async function pump(bytes,format,compress=false){
+const Stream=compress?CompressionStream:DecompressionStream;
+if(typeof Stream!=='function'){
+throw new FilterError('this browser has no CompressionStream');
+}
+const stream=new Blob([bytes]).stream().pipeThrough(new Stream(format));
+return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+function lzwDecode(bytes,early=1){
+const out=[];
+const dict=[];
+let dictSize=258;
+let codeBits=9;
+let previous=null;
+let buffer=0;
+let bits=0;
+const reset=()=>{
+dict.length=0;
+dictSize=258;
+codeBits=9;
+previous=null;
+};
+for(let i=0;i<=bytes.length;i+=1){
+if(i<bytes.length){
+buffer=(buffer<<8)|bytes[i];
+bits+=8;
+}else if(bits<codeBits){
+break;
+}
+while(bits>=codeBits){
+const code=(buffer>>(bits-codeBits))&((1<<codeBits)-1);
+bits-=codeBits;
+if(code===256){reset();continue;}
+if(code===257)return Uint8Array.from(out);
+let entry;
+if(code<256)entry=[code];
+else if(dict[code-258])entry=dict[code-258];
+else if(previous)entry=[...previous,previous[0]];
+else throw new FilterError('LZW stream starts with an undefined code');
+out.push(...entry);
+if(previous){
+dict[dictSize-258]=[...previous,entry[0]];
+dictSize+=1;
+if(dictSize+early>=(1<<codeBits)&&codeBits<12)codeBits+=1;
+}
+previous=entry;
+}
+}
+return Uint8Array.from(out);
+}
+function asciiHexDecode(bytes){
+const out=[];
+let high=-1;
+for(const code of bytes){
+if(code===0x3e)break;
+let value;
+if(code>=0x30&&code<=0x39)value=code-0x30;
+else if(code>=0x41&&code<=0x46)value=code-0x37;
+else if(code>=0x61&&code<=0x66)value=code-0x57;
+else continue;
+if(high<0)high=value;
+else{out.push(high*16+value);high=-1;}
+}
+if(high>=0)out.push(high*16);
+return Uint8Array.from(out);
+}
+function ascii85Decode(bytes){
+const out=[];
+let tuple=0;
+let count=0;
+let i=0;
+if(bytes[0]===0x3c&&bytes[1]===0x7e)i=2;
+for(;i<bytes.length;i+=1){
+const code=bytes[i];
+if(code===0x7e)break;
+if(code<=0x20||code===0)continue;
+if(code===0x7a&&count===0){out.push(0,0,0,0);continue;}
+if(code<0x21||code>0x75)continue;
+tuple=tuple*85+(code-0x21);
+count+=1;
+if(count===5){
+out.push((tuple>>>24)&0xff,(tuple>>>16)&0xff,
+(tuple>>>8)&0xff,tuple&0xff);
+tuple=0;
+count=0;
+}
+}
+if(count>0){
+for(let pad=count;pad<5;pad+=1)tuple=tuple*85+84;
+const full=[(tuple>>>24)&0xff,(tuple>>>16)&0xff,
+(tuple>>>8)&0xff,tuple&0xff];
+out.push(...full.slice(0,count-1));
+}
+return Uint8Array.from(out);
+}
+function runLengthDecode(bytes){
+const out=[];
+let i=0;
+while(i<bytes.length){
+const run=bytes[i];
+i+=1;
+if(run===128)break;
+if(run<128){
+for(let j=0;j<=run;j+=1)out.push(bytes[i+j]??0);
+i+=run+1;
+}else{
+const value=bytes[i]??0;
+i+=1;
+for(let j=0;j<257-run;j+=1)out.push(value);
+}
+}
+return Uint8Array.from(out);
+}
+function undoPredictor(data,params,resolve){
+const value=(key,fallback)=>{
+const raw=resolve(params.get(key));
+return typeof raw==='number'?raw:fallback;
+};
+const predictor=value('Predictor',1);
+if(predictor<=1)return data;
+const colors=value('Colors',1);
+const bpc=value('BitsPerComponent',8);
+const columns=value('Columns',1);
+const pixelBytes=Math.max(1,Math.ceil((colors*bpc)/8));
+const rowBytes=Math.ceil((colors*bpc*columns)/8);
+if(predictor===2)return undoTiffPredictor(data,colors,bpc,columns);
+const rows=Math.floor(data.length/(rowBytes+1));
+const out=new Uint8Array(rows*rowBytes);
+let previous=new Uint8Array(rowBytes);
+for(let row=0;row<rows;row+=1){
+const tag=data[row*(rowBytes+1)];
+const from=row*(rowBytes+1)+1;
+const line=out.subarray(row*rowBytes,(row+1)*rowBytes);
+line.set(data.subarray(from,from+rowBytes));
+for(let i=0;i<rowBytes;i+=1){
+const left=i>=pixelBytes?line[i-pixelBytes]:0;
+const up=previous[i];
+const upLeft=i>=pixelBytes?previous[i-pixelBytes]:0;
+switch(tag){
+case 1:line[i]=(line[i]+left)&0xff;break;
+case 2:line[i]=(line[i]+up)&0xff;break;
+case 3:line[i]=(line[i]+((left+up)>>1))&0xff;break;
+case 4:line[i]=(line[i]+paeth(left,up,upLeft))&0xff;break;
+default:break;
+}
+}
+previous=line;
+}
+return out;
+}
+function paeth(a,b,c){
+const p=a+b-c;
+const pa=Math.abs(p-a);
+const pb=Math.abs(p-b);
+const pc=Math.abs(p-c);
+if(pa<=pb&&pa<=pc)return a;
+return pb<=pc?b:c;
+}
+function undoTiffPredictor(data,colors,bpc,columns){
+if(bpc!==8)return data;
+const rowBytes=colors*columns;
+const out=new Uint8Array(data);
+for(let row=0;row*rowBytes<out.length;row+=1){
+const start=row*rowBytes;
+for(let i=colors;i<rowBytes&&start+i<out.length;i+=1){
+out[start+i]=(out[start+i]+out[start+i-colors])&0xff;
+}
+}
+return out;
+}
+export function filterNames(dict,resolve=(v)=>v){
+const filter=resolve(dict.get('Filter'));
+if(!filter)return[];
+const list=Array.isArray(filter)?filter:[filter];
+return list.map(resolve).filter((f)=>f instanceof Name).map((f)=>f.value);
+}
+function decodeParms(dict,count,resolve){
+const parms=resolve(dict.get('DecodeParms')??dict.get('DP'));
+const list=Array.isArray(parms)?parms:[parms];
+return Array.from({length:count},(_,i)=>{
+const entry=resolve(list[i]);
+return entry instanceof Map?entry:new Map();
+});
+}
+export async function decodeStream(stream,resolve=(v)=>v){
+const names=filterNames(stream.dict,resolve);
+const parms=decodeParms(stream.dict,names.length,resolve);
+let bytes=stream.raw;
+for(let i=0;i<names.length;i+=1){
+const filter=names[i];
+if(IMAGE_FILTERS.has(filter)){
+return{bytes,remaining:names.slice(i)};
+}
+switch(filter){
+case'FlateDecode':
+case'Fl':
+bytes=await inflate(bytes);
+break;
+case'LZWDecode':
+case'LZW':{
+const early=resolve(parms[i].get('EarlyChange'));
+bytes=lzwDecode(bytes,early===0?0:1);
+break;
+}
+case'ASCIIHexDecode':
+case'AHx':
+bytes=asciiHexDecode(bytes);
+break;
+case'ASCII85Decode':
+case'A85':
+bytes=ascii85Decode(bytes);
+break;
+case'RunLengthDecode':
+case'RL':
+bytes=runLengthDecode(bytes);
+break;
+case'Crypt':
+throw new FilterError('this stream is encrypted');
+default:
+throw new FilterError(`unknown filter /${filter}`);
+}
+if(filter==='FlateDecode'||filter==='Fl'
+||filter==='LZWDecode'||filter==='LZW'){
+bytes=undoPredictor(bytes,parms[i],resolve);
+}
+}
+return{bytes,remaining:[]};
+}

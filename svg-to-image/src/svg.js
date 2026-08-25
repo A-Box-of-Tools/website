@@ -1,2 +1,177 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const y=300,E=150,h={"":1,px:1,pt:1.3333333333333333,pc:16,in:96,cm:37.79527559055118,mm:3.7795275590551185,q:.9448818897637796};function L(n){return n?.type==="image/svg+xml"||/\.svgz?$/i.test(n?.name??"")}function S(n){const e=n instanceof Uint8Array?n:new Uint8Array(n);if(e[0]===255&&e[1]===254)return u(e.subarray(2),"utf-16le");if(e[0]===254&&e[1]===255)return u(e.subarray(2),"utf-16be");if(e[0]===239&&e[1]===187&&e[2]===191)return u(e.subarray(3),"utf-8");if(e[0]===60&&e[1]===0)return u(e,"utf-16le");if(e[0]===0&&e[1]===60)return u(e,"utf-16be");const t=u(e.subarray(0,200),"latin1"),r=/<\?xml[^>]*encoding\s*=\s*["']([\w-]+)["']/i.exec(t)?.[1];if(r&&!/^utf-?8$/i.test(r))try{return new TextDecoder(r).decode(e)}catch{}return u(e,"utf-8")}const u=(n,e)=>new TextDecoder(e).decode(n);function f(n){let e=w(n,0);if(!/^<svg[\s/>]/i.test(n.slice(e,e+5)))return null;const t=m(n,e);if(t<0)return null;const r=n.slice(e+4,n[t-1]==="/"?t-1:t),i={},s=new Map,o=/([:A-Za-z_][-.:\w]*)\s*=\s*("[^"]*"|'[^']*')/g;for(let c=o.exec(r);c;c=o.exec(r)){const l=c[1].toLowerCase();i[l]=A(c[2].slice(1,-1)),s.set(l,c[1])}return{attrs:i,spelling:s,start:e,end:t+1}}function w(n,e){for(;;){for(;e<n.length&&/\s/.test(n[e]);)e+=1;if(n.startsWith("<?",e)){const t=n.indexOf("?>",e);if(t<0)return n.length;e=t+2}else if(n.startsWith("<!--",e)){const t=n.indexOf("-->",e);if(t<0)return n.length;e=t+3}else if(/^<!doctype/i.test(n.slice(e,e+9)))e=x(n,e);else return e}}function x(n,e){const t=n.indexOf("[",e),r=n.indexOf(">",e);if(t>=0&&r>=0&&t<r){const i=n.indexOf("]",t);if(i<0)return n.length;const s=n.indexOf(">",i);return s<0?n.length:s+1}return r<0?n.length:r+1}function m(n,e){let t=null;for(let r=e;r<n.length;r+=1){const i=n[r];if(t)i===t&&(t=null);else if(i==='"'||i==="'")t=i;else if(i===">")return r}return-1}function a(n){if(n==null)return null;const e=/^\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)\s*([a-z%]*)\s*$/i.exec(String(n));if(!e)return null;const t=h[e[2].toLowerCase()];if(t===void 0)return null;const r=Number(e[1])*t;return Number.isFinite(r)&&r>0?r:null}function g(n){if(!n)return null;const e=String(n).trim().split(/[\s,]+/);if(e.length!==4)return null;const t=e.map(Number);if(t.some(c=>!Number.isFinite(c)))return null;const[r,i,s,o]=t;return s<=0||o<=0?null:{x:r,y:i,width:s,height:o}}function b(n){const e=f(n);if(!e)return null;const t=g(e.attrs.viewbox),r=a(e.attrs.width),i=a(e.attrs.height),s=(c,l,p)=>({width:d(c),height:d(l),ratio:c/l,source:p,viewBox:t});if(r&&i)return s(r,i,"attributes");const o=t?t.width/t.height:null;return r&&o?s(r,r/o,"mixed"):i&&o?s(i*o,i,"mixed"):t?s(t.width,t.height,"viewbox"):r?s(r,150,"mixed"):i?s(300,i,"mixed"):s(300,150,"default")}const d=n=>Math.max(1,Math.round(n*1e3)/1e3);function H(n,e,t,{stretch:r=!1}={}){const i=f(n);if(!i)throw new Error("there is no <svg> element in this file.");const s={...i.attrs},o=b(n);return g(s.viewbox)||(s.viewbox=`0 0 ${o.width} ${o.height}`),s.xmlns||(s.xmlns="http://www.w3.org/2000/svg"),r&&(s.preserveaspectratio="none"),s.width=String(e),s.height=String(t),n.slice(0,i.start)+T(s,i.spelling)+n.slice(i.end)}const v={viewbox:"viewBox",preserveaspectratio:"preserveAspectRatio"};function T(n,e){return`<svg ${Object.entries(n).map(([r,i])=>`${e.get(r)??v[r]??r}="${D(i)}"`).join(" ")}>`}function A(n){return n.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&amp;/g,"&")}function D(n){return String(n).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}export{E as DEFAULT_HEIGHT,y as DEFAULT_WIDTH,S as decodeSvgText,b as intrinsicSize,L as looksLikeSvg,a as parseLength,g as parseViewBox,f as readRoot,H as sizedSvg};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const DEFAULT_WIDTH=300;
+export const DEFAULT_HEIGHT=150;
+const UNITS={
+'':1,
+px:1,
+pt:96/72,
+pc:16,
+in:96,
+cm:96/2.54,
+mm:96/25.4,
+q:96/101.6,
+};
+export function looksLikeSvg(file){
+return file?.type==='image/svg+xml'||/\.svgz?$/i.test(file?.name??'');
+}
+export function decodeSvgText(buffer){
+const bytes=buffer instanceof Uint8Array?buffer:new Uint8Array(buffer);
+if(bytes[0]===0xff&&bytes[1]===0xfe)return decodeWith(bytes.subarray(2),'utf-16le');
+if(bytes[0]===0xfe&&bytes[1]===0xff)return decodeWith(bytes.subarray(2),'utf-16be');
+if(bytes[0]===0xef&&bytes[1]===0xbb&&bytes[2]===0xbf){
+return decodeWith(bytes.subarray(3),'utf-8');
+}
+if(bytes[0]===0x3c&&bytes[1]===0x00)return decodeWith(bytes,'utf-16le');
+if(bytes[0]===0x00&&bytes[1]===0x3c)return decodeWith(bytes,'utf-16be');
+const head=decodeWith(bytes.subarray(0,200),'latin1');
+const declared=/<\?xml[^>]*encoding\s*=\s*["']([\w-]+)["']/i.exec(head)?.[1];
+if(declared&&!/^utf-?8$/i.test(declared)){
+try{
+return new TextDecoder(declared).decode(bytes);
+}catch{
+}
+}
+return decodeWith(bytes,'utf-8');
+}
+const decodeWith=(bytes,label)=>new TextDecoder(label).decode(bytes);
+export function readRoot(text){
+let at=skipProlog(text,0);
+if(!/^<svg[\s/>]/i.test(text.slice(at,at+5)))return null;
+const end=findTagEnd(text,at);
+if(end<0)return null;
+const inner=text.slice(at+4,text[end-1]==='/'?end-1:end);
+const attrs={};
+const spelling=new Map();
+const pattern=/([:A-Za-z_][-.:\w]*)\s*=\s*("[^"]*"|'[^']*')/g;
+for(let match=pattern.exec(inner);match;match=pattern.exec(inner)){
+const key=match[1].toLowerCase();
+attrs[key]=unescapeAttr(match[2].slice(1,-1));
+spelling.set(key,match[1]);
+}
+return{attrs,spelling,start:at,end:end+1};
+}
+function skipProlog(text,at){
+for(;;){
+while(at<text.length&&/\s/.test(text[at]))at+=1;
+if(text.startsWith('<?',at)){
+const close=text.indexOf('?>',at);
+if(close<0)return text.length;
+at=close+2;
+}else if(text.startsWith('<!--',at)){
+const close=text.indexOf('-->',at);
+if(close<0)return text.length;
+at=close+3;
+}else if(/^<!doctype/i.test(text.slice(at,at+9))){
+at=skipDoctype(text,at);
+}else{
+return at;
+}
+}
+}
+function skipDoctype(text,at){
+const bracket=text.indexOf('[',at);
+const close=text.indexOf('>',at);
+if(bracket>=0&&close>=0&&bracket<close){
+const subset=text.indexOf(']',bracket);
+if(subset<0)return text.length;
+const after=text.indexOf('>',subset);
+return after<0?text.length:after+1;
+}
+return close<0?text.length:close+1;
+}
+function findTagEnd(text,at){
+let quote=null;
+for(let i=at;i<text.length;i+=1){
+const ch=text[i];
+if(quote){
+if(ch===quote)quote=null;
+}else if(ch==='"'||ch==="'"){
+quote=ch;
+}else if(ch==='>'){
+return i;
+}
+}
+return-1;
+}
+export function parseLength(value){
+if(value==null)return null;
+const match=/^\s*([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)\s*([a-z%]*)\s*$/i.exec(String(value));
+if(!match)return null;
+const scale=UNITS[match[2].toLowerCase()];
+if(scale===undefined)return null;
+const px=Number(match[1])*scale;
+return Number.isFinite(px)&&px>0?px:null;
+}
+export function parseViewBox(value){
+if(!value)return null;
+const parts=String(value).trim().split(/[\s,]+/);
+if(parts.length!==4)return null;
+const numbers=parts.map(Number);
+if(numbers.some((n)=>!Number.isFinite(n)))return null;
+const[x,y,width,height]=numbers;
+if(width<=0||height<=0)return null;
+return{x,y,width,height};
+}
+export function intrinsicSize(text){
+const root=readRoot(text);
+if(!root)return null;
+const viewBox=parseViewBox(root.attrs.viewbox);
+const width=parseLength(root.attrs.width);
+const height=parseLength(root.attrs.height);
+const answer=(w,h,source)=>({
+width:round(w),
+height:round(h),
+ratio:w/h,
+source,
+viewBox,
+});
+if(width&&height)return answer(width,height,'attributes');
+const boxRatio=viewBox?viewBox.width/viewBox.height:null;
+if(width&&boxRatio)return answer(width,width/boxRatio,'mixed');
+if(height&&boxRatio)return answer(height*boxRatio,height,'mixed');
+if(viewBox)return answer(viewBox.width,viewBox.height,'viewbox');
+if(width)return answer(width,DEFAULT_HEIGHT,'mixed');
+if(height)return answer(DEFAULT_WIDTH,height,'mixed');
+return answer(DEFAULT_WIDTH,DEFAULT_HEIGHT,'default');
+}
+const round=(n)=>Math.max(1,Math.round(n*1000)/1000);
+export function sizedSvg(text,width,height,{stretch=false}={}){
+const root=readRoot(text);
+if(!root)throw new Error('there is no <svg> element in this file.');
+const attrs={...root.attrs};
+const size=intrinsicSize(text);
+if(!parseViewBox(attrs.viewbox)){
+attrs.viewbox=`0 0 ${size.width} ${size.height}`;
+}
+if(!attrs.xmlns)attrs.xmlns='http://www.w3.org/2000/svg';
+if(stretch)attrs.preserveaspectratio='none';
+attrs.width=String(width);
+attrs.height=String(height);
+return text.slice(0,root.start)+renderRoot(attrs,root.spelling)+text.slice(root.end);
+}
+const CANONICAL={
+viewbox:'viewBox',
+preserveaspectratio:'preserveAspectRatio',
+};
+function renderRoot(attrs,spelling){
+const written=Object.entries(attrs).map(([key,value])=>{
+const name=spelling.get(key)??CANONICAL[key]??key;
+return`${name}="${escapeAttr(value)}"`;
+});
+return`<svg ${written.join(' ')}>`;
+}
+function unescapeAttr(value){
+return value
+.replace(/&lt;/g,'<')
+.replace(/&gt;/g,'>')
+.replace(/&quot;/g,'"')
+.replace(/&apos;/g,"'")
+.replace(/&amp;/g,'&');
+}
+function escapeAttr(value){
+return String(value)
+.replace(/&/g,'&amp;')
+.replace(/</g,'&lt;')
+.replace(/>/g,'&gt;')
+.replace(/"/g,'&quot;');
+}

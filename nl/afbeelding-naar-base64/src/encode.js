@@ -1,2 +1,35 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function r(t){let o="";for(let n=0;n<t.length;n+=32768)o+=String.fromCharCode.apply(null,t.subarray(n,n+32768));return btoa(o)}function u(t){const e=atob(t),o=new Uint8Array(e.length);for(let n=0;n<e.length;n+=1)o[n]=e.charCodeAt(n);return o}const a=/["#%<>]/;function c(t){let e="";for(const o of i(t)){const n=o.codePointAt(0);e+=n<32||n>126||a.test(o)?encodeURIComponent(o):o}return e}function i(t){return t.charCodeAt(0)===65279?t.slice(1):t}function f(t){return`data:image/svg+xml,${c(t)}`}function s(t,e){return`data:${e};base64,${r(t)}`}export{r as base64,s as base64DataUri,c as encodeSvg,u as fromBase64,f as svgDataUri};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function base64(bytes){
+const CHUNK=0x8000;
+let binary='';
+for(let at=0;at<bytes.length;at+=CHUNK){
+binary+=String.fromCharCode.apply(null,bytes.subarray(at,at+CHUNK));
+}
+return btoa(binary);
+}
+export function fromBase64(text){
+const binary=atob(text);
+const out=new Uint8Array(binary.length);
+for(let i=0;i<binary.length;i+=1)out[i]=binary.charCodeAt(i);
+return out;
+}
+const MUST_ESCAPE=/["#%<>]/;
+export function encodeSvg(text){
+let out='';
+for(const ch of stripBom(text)){
+const code=ch.codePointAt(0);
+out+=(code<0x20||code>0x7e||MUST_ESCAPE.test(ch))
+?encodeURIComponent(ch)
+:ch;
+}
+return out;
+}
+function stripBom(text){
+return text.charCodeAt(0)===0xfeff?text.slice(1):text;
+}
+export function svgDataUri(text){
+return`data:image/svg+xml,${encodeSvg(text)}`;
+}
+export function base64DataUri(bytes,mime){
+return`data:${mime};base64,${base64(bytes)}`;
+}

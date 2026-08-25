@@ -1,4 +1,84 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const p=["seconds","HHMMSSmmm"],$=.001;function h(r){const t=Math.round(Math.max(0,Number(r)||0)*1e3),n=Math.floor(t/1e3),e=(o,s)=>String(o).padStart(s,"0");return`${e(Math.floor(n/3600),2)}:${e(Math.floor(n/60)%60,2)}:${e(n%60,2)}.${e(t%1e3,3)}`}function m(r){const t=String(r??"").trim();if(!t)return null;const n=t.split(":");if(n.length>3)return null;let e=0;for(const o of n){if(!/^\d*\.?\d*$/.test(o)||o===""||o===".")return null;e=e*60+Number(o)}return Number.isFinite(e)?e:null}function M(r){return r.filter(t=>t.end!==null&&t.end-t.start>.001).map(t=>({start:t.start,end:t.end}))}function S(r){return M(r).reduce((t,n)=>t+(n.end-n.start),0)}function g(r){const t=r[r.length-1];return t&&t.end===null?t:null}function x(r,{format:t="seconds",name:n=""}={}){const e=p.includes(t)?t:"seconds",o=[`${e},${String(n).replace(/[,\r\n]+/g," ").trim()}`];for(const s of M(r))o.push(e==="seconds"?`${s.start.toFixed(3)},${s.end.toFixed(3)}`:`${h(s.start)},${h(s.end)}`);return`${o.join(`
-`)}
-`}function N(r){const t=String(r??"").split(/\r?\n/);let n="seconds",e="",o=0;const s=(t[0]??"").trim().split(",");p.includes(s[0])&&(n=s[0],e=(s[1]??"").trim(),o=1);const i=[];let l=0;for(let a=o;a<t.length;a++){const f=t[a].trim();if(!f)continue;const c=f.split(",");if(c.length<2){l++;continue}const u=m(c[0]),d=m(c[1]);if(u===null||d===null||d<=u){l++;continue}i.push({start:u,end:d})}if(!i.length)throw new Error("No segments could be read from that file. Each line after the first should be a start and an end, separated by a comma.");return{format:n,name:e,segments:i,skipped:l}}function b(r){if(!Number.isFinite(r))return"-";const t=Math.round(Math.max(0,r)*10),n=Math.floor(t/10),e=Math.floor(n/3600),o=Math.floor(n%3600/60),s=`${String(n%60).padStart(2,"0")}.${t%10}`;return e?`${e}:${String(o).padStart(2,"0")}:${s}`:`${o}:${s}`}export{p as TIMESTAMP_FORMATS,h as formatClock,b as formatDuration,g as openSegment,m as parseClock,N as readTimestamps,M as segmentRanges,S as totalCaptured,x as writeTimestamps};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const TIMESTAMP_FORMATS=['seconds','HHMMSSmmm'];
+const MIN_SEGMENT=0.001;
+export function formatClock(seconds){
+const total=Math.round(Math.max(0,Number(seconds)||0)*1000);
+const whole=Math.floor(total/1000);
+const pad=(value,size)=>String(value).padStart(size,'0');
+return`${pad(Math.floor(whole / 3600), 2)}:${pad(Math.floor(whole / 60) % 60, 2)}`
++`:${pad(whole % 60, 2)}.${pad(total % 1000, 3)}`;
+}
+export function parseClock(text){
+const trimmed=String(text??'').trim();
+if(!trimmed)return null;
+const parts=trimmed.split(':');
+if(parts.length>3)return null;
+let total=0;
+for(const part of parts){
+if(!/^\d*\.?\d*$/.test(part)||part===''||part==='.')return null;
+total=total*60+Number(part);
+}
+return Number.isFinite(total)?total:null;
+}
+export function segmentRanges(segments){
+return segments
+.filter((segment)=>segment.end!==null&&segment.end-segment.start>MIN_SEGMENT)
+.map((segment)=>({start:segment.start,end:segment.end}));
+}
+export function totalCaptured(segments){
+return segmentRanges(segments).reduce((total,range)=>total+(range.end-range.start),0);
+}
+export function openSegment(segments){
+const last=segments[segments.length-1];
+return last&&last.end===null?last:null;
+}
+export function writeTimestamps(segments,{format='seconds',name=''}={}){
+const chosen=TIMESTAMP_FORMATS.includes(format)?format:'seconds';
+const lines=[`${chosen},${String(name).replace(/[,\r\n]+/g, ' ').trim()}`];
+for(const range of segmentRanges(segments)){
+lines.push(chosen==='seconds'
+?`${range.start.toFixed(3)},${range.end.toFixed(3)}`
+:`${formatClock(range.start)},${formatClock(range.end)}`);
+}
+return`${lines.join('\n')}\n`;
+}
+export function readTimestamps(text){
+const lines=String(text??'').split(/\r?\n/);
+let format='seconds';
+let name='';
+let at=0;
+const head=(lines[0]??'').trim().split(',');
+if(TIMESTAMP_FORMATS.includes(head[0])){
+format=head[0];
+name=(head[1]??'').trim();
+at=1;
+}
+const segments=[];
+let skipped=0;
+for(let i=at;i<lines.length;i++){
+const line=lines[i].trim();
+if(!line)continue;
+const fields=line.split(',');
+if(fields.length<2){skipped++;continue;}
+const start=parseClock(fields[0]);
+const end=parseClock(fields[1]);
+if(start===null||end===null||end<=start){skipped++;continue;}
+segments.push({start,end});
+}
+if(!segments.length){
+throw new Error('No segments could be read from that file. Each line after the '
++'first should be a start and an end, separated by a comma.');
+}
+return{format,name,segments,skipped};
+}
+export function formatDuration(seconds){
+if(!Number.isFinite(seconds))return'-';
+const tenths=Math.round(Math.max(0,seconds)*10);
+const whole=Math.floor(tenths/10);
+const hours=Math.floor(whole/3600);
+const minutes=Math.floor((whole%3600)/60);
+const shown=`${String(whole % 60).padStart(2, '0')}.${tenths % 10}`;
+return hours
+?`${hours}:${String(minutes).padStart(2, '0')}:${shown}`
+:`${minutes}:${shown}`;
+}

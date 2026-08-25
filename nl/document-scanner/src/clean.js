@@ -1,2 +1,208 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const U=["photo","colour","grey","mono"],g=16,H=.8,O=.6;function F({data:a,width:t,height:r}){const n=new Float32Array(t*r);for(let o=0,e=0;e<n.length;o+=4,e+=1)n[e]=.299*a[o]+.587*a[o+1]+.114*a[o+2];return n}function S(a,t,r){const n=Math.max(8,Math.round(Math.min(t,r)/16)),o=Math.max(1,Math.ceil(t/n)),e=Math.max(1,Math.ceil(r/n)),l=new Float32Array(o*e),f=new Uint32Array(256);for(let M=0;M<e;M+=1)for(let u=0;u<o;u+=1){f.fill(0);let c=0;const h=Math.min(r,(M+1)*n),m=Math.min(t,(u+1)*n);for(let s=M*n;s<h;s+=1){const i=s*t;for(let x=u*n;x<m;x+=1)f[Math.max(0,Math.min(255,Math.round(a[i+x])))]+=1,c+=1}l[M*o+u]=c?b(f,c,.8):255}return{grid:w(k(l,o,e),o,e),cols:o,rows:e,cell:n}}function b(a,t,r){let n=0;const o=t*r;for(let e=0;e<256;e+=1)if(n+=a[e],n>=o)return e;return 255}function k(a,t,r){const n=new Float32Array(a),o=[];for(let e=0;e<r;e+=1)for(let l=0;l<t;l+=1){o.length=0;for(let u=-1;u<=1;u+=1)for(let c=-1;c<=1;c+=1){if(!c&&!u)continue;const h=e+u,m=l+c;h<0||m<0||h>=r||m>=t||o.push(a[h*t+m])}if(!o.length)continue;o.sort((u,c)=>u-c);const f=o[Math.floor(o.length/2)];a[e*t+l]<f*.6&&(n[e*t+l]=f)}return n}function w(a,t,r){const n=new Float32Array(a.length);for(let o=0;o<r;o+=1)for(let e=0;e<t;e+=1){let l=0,f=0;for(let M=-1;M<=1;M+=1)for(let u=-1;u<=1;u+=1){const c=Math.min(r-1,Math.max(0,o+M)),h=Math.min(t-1,Math.max(0,e+u));l+=a[c*t+h],f+=1}n[o*t+e]=l/f}return n}function q({grid:a,cols:t,rows:r,cell:n},o,e){const l=Math.min(t-1,Math.max(0,(o-n/2)/n)),f=Math.min(r-1,Math.max(0,(e-n/2)/n)),M=Math.floor(l),u=Math.floor(f),c=Math.min(t-1,M+1),h=Math.min(r-1,u+1),m=l-M,s=f-u,i=a[u*t+M]*(1-m)+a[u*t+c]*m,x=a[h*t+M]*(1-m)+a[h*t+c]*m;return Math.max(1,i*(1-s)+x*s)}function C(a,t="grey"){const r=Math.min(100,Math.max(0,Number(a)||0)),n=t==="colour"?.5:1;return{black:r*1.6*n,white:255-r*.25}}function I(a,t,r){const n=Math.min(100,Math.max(0,Number(r)||0));return{window:N(Math.round(Math.min(a,t)/24),15),k:.08+n*.0034}}const N=(a,t)=>{const r=Math.max(t,a);return r%2?r:r+1};function _(a,{mode:t="colour",strength:r=50}={}){const{width:n,height:o}=a;if(t==="photo")return{data:a.data,width:n,height:o,mono:!1,grey:!1};const e=F(a),l=S(e,n,o),f=R(e,l,n,o);if(t==="mono"){const m=I(n,o,r),s=T(f,n,o,m),i=new Uint8ClampedArray(n*o*4);for(let x=0,y=0;x<s.length;x+=1,y+=4){const p=s[x]?0:255;i[y]=p,i[y+1]=p,i[y+2]=p,i[y+3]=255}return{data:i,width:n,height:o,mono:!0,grey:!0}}const{black:M,white:u}=C(r,t),c=new Uint8ClampedArray(n*o*4),h=Math.max(1,u-M);for(let m=0,s=0;m<f.length;m+=1,s+=4){const i=(f[m]-M)/h*255;if(t==="grey")c[s]=i,c[s+1]=i,c[s+2]=i;else{const x=Math.max(1,e[m]),y=i/x;c[s]=a.data[s]*y,c[s+1]=a.data[s+1]*y,c[s+2]=a.data[s+2]*y}c[s+3]=255}return{data:c,width:n,height:o,mono:!1,grey:t==="grey"}}function R(a,t,r,n){const o=new Float32Array(a.length);for(let e=0,l=0;e<n;e+=1)for(let f=0;f<r;f+=1,l+=1)o[l]=Math.min(255,a[l]/q(t,f,e)*255);return o}function T(a,t,r,{window:n=25,k:o=.25,range:e=128}={}){const l=new Float64Array((t+1)*(r+1)),f=new Float64Array((t+1)*(r+1));for(let c=0;c<r;c+=1){let h=0,m=0;for(let s=0;s<t;s+=1){const i=a[c*t+s];h+=i,m+=i*i;const x=(c+1)*(t+1)+(s+1);l[x]=l[x-(t+1)]+h,f[x]=f[x-(t+1)]+m}}const M=Math.floor(n/2),u=new Uint8Array(t*r);for(let c=0;c<r;c+=1){const h=Math.max(0,c-M),m=Math.min(r-1,c+M);for(let s=0;s<t;s+=1){const i=Math.max(0,s-M),x=Math.min(t-1,s+M),y=(x-i+1)*(m-h+1),p=E(l,t,i,h,x,m),v=E(f,t,i,h,x,m),A=p/y,L=Math.max(0,v/y-A*A),P=A*(1+o*(Math.sqrt(L)/e-1));u[c*t+s]=a[c*t+s]<P?1:0}}return u}function E(a,t,r,n,o,e){const l=t+1;return a[(e+1)*l+(o+1)]-a[n*l+(o+1)]-a[(e+1)*l+r]+a[n*l+r]}export{U as MODES,_ as cleanPage,C as levels,S as paperGrid,q as samplePaper,T as sauvola,F as toLuma};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const MODES=['photo','colour','grey','mono'];
+const TILES=16;
+const PAPER_PERCENTILE=0.8;
+const HOLE=0.6;
+export function toLuma({data,width,height}){
+const out=new Float32Array(width*height);
+for(let i=0,p=0;p<out.length;i+=4,p+=1){
+out[p]=0.299*data[i]+0.587*data[i+1]+0.114*data[i+2];
+}
+return out;
+}
+export function paperGrid(luma,width,height){
+const cell=Math.max(8,Math.round(Math.min(width,height)/TILES));
+const cols=Math.max(1,Math.ceil(width/cell));
+const rows=Math.max(1,Math.ceil(height/cell));
+const grid=new Float32Array(cols*rows);
+const bins=new Uint32Array(256);
+for(let row=0;row<rows;row+=1){
+for(let col=0;col<cols;col+=1){
+bins.fill(0);
+let counted=0;
+const y1=Math.min(height,(row+1)*cell);
+const x1=Math.min(width,(col+1)*cell);
+for(let y=row*cell;y<y1;y+=1){
+const at=y*width;
+for(let x=col*cell;x<x1;x+=1){
+bins[Math.max(0,Math.min(255,Math.round(luma[at+x])))]+=1;
+counted+=1;
+}
+}
+grid[row*cols+col]=counted?percentile(bins,counted,PAPER_PERCENTILE):255;
+}
+}
+return{grid:smooth(fillHoles(grid,cols,rows),cols,rows),cols,rows,cell};
+}
+function percentile(bins,counted,fraction){
+let seen=0;
+const want=counted*fraction;
+for(let value=0;value<256;value+=1){
+seen+=bins[value];
+if(seen>=want)return value;
+}
+return 255;
+}
+function fillHoles(grid,cols,rows){
+const out=new Float32Array(grid);
+const neighbours=[];
+for(let row=0;row<rows;row+=1){
+for(let col=0;col<cols;col+=1){
+neighbours.length=0;
+for(let dy=-1;dy<=1;dy+=1){
+for(let dx=-1;dx<=1;dx+=1){
+if(!dx&&!dy)continue;
+const y=row+dy;
+const x=col+dx;
+if(y<0||x<0||y>=rows||x>=cols)continue;
+neighbours.push(grid[y*cols+x]);
+}
+}
+if(!neighbours.length)continue;
+neighbours.sort((a,b)=>a-b);
+const middle=neighbours[Math.floor(neighbours.length/2)];
+const own=grid[row*cols+col];
+if(own<middle*HOLE)out[row*cols+col]=middle;
+}
+}
+return out;
+}
+function smooth(grid,cols,rows){
+const out=new Float32Array(grid.length);
+for(let row=0;row<rows;row+=1){
+for(let col=0;col<cols;col+=1){
+let total=0;
+let taken=0;
+for(let dy=-1;dy<=1;dy+=1){
+for(let dx=-1;dx<=1;dx+=1){
+const y=Math.min(rows-1,Math.max(0,row+dy));
+const x=Math.min(cols-1,Math.max(0,col+dx));
+total+=grid[y*cols+x];
+taken+=1;
+}
+}
+out[row*cols+col]=total/taken;
+}
+}
+return out;
+}
+export function samplePaper({grid,cols,rows,cell},x,y){
+const fx=Math.min(cols-1,Math.max(0,(x-cell/2)/cell));
+const fy=Math.min(rows-1,Math.max(0,(y-cell/2)/cell));
+const x0=Math.floor(fx);
+const y0=Math.floor(fy);
+const x1=Math.min(cols-1,x0+1);
+const y1=Math.min(rows-1,y0+1);
+const ax=fx-x0;
+const ay=fy-y0;
+const top=grid[y0*cols+x0]*(1-ax)+grid[y0*cols+x1]*ax;
+const bottom=grid[y1*cols+x0]*(1-ax)+grid[y1*cols+x1]*ax;
+return Math.max(1,top*(1-ay)+bottom*ay);
+}
+export function levels(strength,mode='grey'){
+const amount=Math.min(100,Math.max(0,Number(strength)||0));
+const floor=mode==='colour'?0.5:1;
+return{black:amount*1.6*floor,white:255-amount*0.25};
+}
+function sauvolaSettings(width,height,strength){
+const amount=Math.min(100,Math.max(0,Number(strength)||0));
+return{
+window:oddAtLeast(Math.round(Math.min(width,height)/24),15),
+k:0.08+amount*0.0034,
+};
+}
+const oddAtLeast=(value,floor)=>{
+const size=Math.max(floor,value);
+return size%2?size:size+1;
+};
+export function cleanPage(page,{mode='colour',strength=50}={}){
+const{width,height}=page;
+if(mode==='photo'){
+return{data:page.data,width,height,mono:false,grey:false};
+}
+const luma=toLuma(page);
+const paper=paperGrid(luma,width,height);
+const flat=flatten(luma,paper,width,height);
+if(mode==='mono'){
+const settings=sauvolaSettings(width,height,strength);
+const ink=sauvola(flat,width,height,settings);
+const data=new Uint8ClampedArray(width*height*4);
+for(let p=0,i=0;p<ink.length;p+=1,i+=4){
+const value=ink[p]?0:255;
+data[i]=value;
+data[i+1]=value;
+data[i+2]=value;
+data[i+3]=255;
+}
+return{data,width,height,mono:true,grey:true};
+}
+const{black,white}=levels(strength,mode);
+const data=new Uint8ClampedArray(width*height*4);
+const span=Math.max(1,white-black);
+for(let p=0,i=0;p<flat.length;p+=1,i+=4){
+const value=((flat[p]-black)/span)*255;
+if(mode==='grey'){
+data[i]=value;
+data[i+1]=value;
+data[i+2]=value;
+}else{
+const before=Math.max(1,luma[p]);
+const scale=value/before;
+data[i]=page.data[i]*scale;
+data[i+1]=page.data[i+1]*scale;
+data[i+2]=page.data[i+2]*scale;
+}
+data[i+3]=255;
+}
+return{data,width,height,mono:false,grey:mode==='grey'};
+}
+function flatten(luma,paper,width,height){
+const out=new Float32Array(luma.length);
+for(let y=0,p=0;y<height;y+=1){
+for(let x=0;x<width;x+=1,p+=1){
+out[p]=Math.min(255,(luma[p]/samplePaper(paper,x,y))*255);
+}
+}
+return out;
+}
+export function sauvola(luma,width,height,{window=25,k=0.25,range=128}={}){
+const sums=new Float64Array((width+1)*(height+1));
+const squares=new Float64Array((width+1)*(height+1));
+for(let y=0;y<height;y+=1){
+let rowSum=0;
+let rowSquares=0;
+for(let x=0;x<width;x+=1){
+const value=luma[y*width+x];
+rowSum+=value;
+rowSquares+=value*value;
+const at=(y+1)*(width+1)+(x+1);
+sums[at]=sums[at-(width+1)]+rowSum;
+squares[at]=squares[at-(width+1)]+rowSquares;
+}
+}
+const half=Math.floor(window/2);
+const ink=new Uint8Array(width*height);
+for(let y=0;y<height;y+=1){
+const top=Math.max(0,y-half);
+const bottom=Math.min(height-1,y+half);
+for(let x=0;x<width;x+=1){
+const left=Math.max(0,x-half);
+const right=Math.min(width-1,x+half);
+const count=(right-left+1)*(bottom-top+1);
+const total=box(sums,width,left,top,right,bottom);
+const totalSquares=box(squares,width,left,top,right,bottom);
+const mean=total/count;
+const variance=Math.max(0,totalSquares/count-mean*mean);
+const threshold=mean*(1+k*(Math.sqrt(variance)/range-1));
+ink[y*width+x]=luma[y*width+x]<threshold?1:0;
+}
+}
+return ink;
+}
+function box(table,width,left,top,right,bottom){
+const stride=width+1;
+return table[(bottom+1)*stride+(right+1)]
+-table[top*stride+(right+1)]
+-table[(bottom+1)*stride+left]
++table[top*stride+left];
+}

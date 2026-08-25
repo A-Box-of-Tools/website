@@ -1,2 +1,141 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function w(n,t){const i=String(n??"").trim();if(!i)return{pages:[],error:""};const s=new Set,e=[];for(const o of i.split(/[,;]+/)){const u=o.trim();if(!u)continue;const f=u.toLowerCase();if(f==="all"){for(let c=1;c<=t;c+=1)s.add(c);continue}if(f==="odd"||f==="even"){const c=f==="odd"?1:2;for(let a=c;a<=t;a+=2)s.add(a);continue}if(f==="last"){t&&s.add(t);continue}const p=/^(\d*)\s*(?:-|–|\.\.|to)\s*(\d*)$/.exec(u);if(p&&(p[1]||p[2])){const c=p[1]?Number(p[1]):1,a=p[2]?Number(p[2]):t;if(c<1||a<1||c>t||a>t){e.push(u);continue}const[g,$]=c<=a?[c,a]:[a,c];for(let d=g;d<=$;d+=1)s.add(d);continue}if(/^\d+$/.test(u)){const c=Number(u);c>=1&&c<=t?s.add(c):e.push(u);continue}e.push(u)}const r=[...s].sort((o,u)=>o-u);return e.length?{pages:r,error:`${e.length===1?"This is not":"These are not"} a page number or a range of them: ${e.join(", ")}. There ${t===1?"is":"are"} ${t} page${t===1?"":"s"}; write them as 1-3, 8, 12-.`}:{pages:r,error:""}}function x(n){if(!n.length)return"none";const t=[];let i=n[0],s=n[0];for(const e of n.slice(1)){if(e===s+1){s=e;continue}t.push([i,s]),i=e,s=e}return t.push([i,s]),t.map(([e,r])=>e===r?String(e):r===e+1?`${e}, ${r}`:`${e}-${r}`).join(", ")}function S(n,{mode:t="single",size:i=1,at:s=[]}={}){if(!n.length)return[];if(t==="each")return n.map((e,r)=>l([e],r+1));if(t==="every"){const e=Math.max(1,Math.floor(i)||1),r=[];for(let o=0;o<n.length;o+=e)r.push(l(n.slice(o,o+e),o+1));return r}if(t==="at"){const e=[...new Set(s.filter(u=>u>1&&u<=n.length))].sort((u,f)=>u-f),r=[];let o=0;for(const u of[...e,n.length+1]){const f=Math.min(u-1,n.length);f>o&&r.push(l(n.slice(o,f),o+1)),o=f}return r}if(t==="file"){const e=new Map;for(const r of n)e.has(r.source)||e.set(r.source,[]),e.get(r.source).push(r);return[...e.values()].map(r=>l(r,1))}return[l(n,1)]}function l(n,t){return{entries:n,from:t,to:t+n.length-1}}function M(n,{stem:t,mode:i,suffix:s="edited"}){const e=h(t)||"document",r=n.map(o=>n.length===1?`${e}-${s}.pdf`:i==="file"?`${h(b(o))||e}.pdf`:o.from===o.to?`${e}-page-${o.from}.pdf`:`${e}-pages-${o.from}-${o.to}.pdf`);return m(r)}function m(n){const t=new Map;return n.map(i=>{const s=t.get(i)??0;return t.set(i,s+1),s?i.replace(/\.pdf$/i,`-${s+1}.pdf`):i})}function b(n){return n.entries[0]?.source?.label??""}function h(n){return String(n??"").replace(/\.pdf$/i,"").replace(/[\\/:*?"<>|]+/g,"-").replace(/\s+/g," ").trim().slice(0,80)}function N(n){return`${h(n)||"document"}-split.zip`}export{N as archiveName,x as describeRanges,M as outputNames,w as parseRanges,S as splitInto};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function parseRanges(text,total){
+const trimmed=String(text??'').trim();
+if(!trimmed)return{pages:[],error:''};
+const wanted=new Set();
+const bad=[];
+for(const piece of trimmed.split(/[,;]+/)){
+const part=piece.trim();
+if(!part)continue;
+const word=part.toLowerCase();
+if(word==='all'){
+for(let n=1;n<=total;n+=1)wanted.add(n);
+continue;
+}
+if(word==='odd'||word==='even'){
+const start=word==='odd'?1:2;
+for(let n=start;n<=total;n+=2)wanted.add(n);
+continue;
+}
+if(word==='last'){
+if(total)wanted.add(total);
+continue;
+}
+const range=/^(\d*)\s*(?:-|–|\.\.|to)\s*(\d*)$/.exec(part);
+if(range&&(range[1]||range[2])){
+const from=range[1]?Number(range[1]):1;
+const to=range[2]?Number(range[2]):total;
+if(from<1||to<1||from>total||to>total){
+bad.push(part);
+continue;
+}
+const[low,high]=from<=to?[from,to]:[to,from];
+for(let n=low;n<=high;n+=1)wanted.add(n);
+continue;
+}
+if(/^\d+$/.test(part)){
+const n=Number(part);
+if(n>=1&&n<=total)wanted.add(n);
+else bad.push(part);
+continue;
+}
+bad.push(part);
+}
+const pages=[...wanted].sort((a,b)=>a-b);
+if(!bad.length)return{pages,error:''};
+return{
+pages,
+error:`${bad.length === 1 ? 'This is not' : 'These are not'} a page number or a `
++`range of them: ${bad.join(', ')}. There ${total === 1 ? 'is' : 'are'} `
++`${total} page${total === 1 ? '' : 's'}; write them as 1-3, 8, 12-.`,
+};
+}
+export function describeRanges(pages){
+if(!pages.length)return'none';
+const runs=[];
+let start=pages[0];
+let last=pages[0];
+for(const page of pages.slice(1)){
+if(page===last+1){
+last=page;
+continue;
+}
+runs.push([start,last]);
+start=page;
+last=page;
+}
+runs.push([start,last]);
+return runs.map(([from,to])=>{
+if(from===to)return String(from);
+if(to===from+1)return`${from}, ${to}`;
+return`${from}-${to}`;
+}).join(', ');
+}
+export function splitInto(entries,{mode='single',size=1,at=[]}={}){
+if(!entries.length)return[];
+if(mode==='each')return entries.map((entry,index)=>group([entry],index+1));
+if(mode==='every'){
+const step=Math.max(1,Math.floor(size)||1);
+const parts=[];
+for(let start=0;start<entries.length;start+=step){
+parts.push(group(entries.slice(start,start+step),start+1));
+}
+return parts;
+}
+if(mode==='at'){
+const cuts=[...new Set(at.filter((n)=>n>1&&n<=entries.length))]
+.sort((a,b)=>a-b);
+const parts=[];
+let start=0;
+for(const cut of[...cuts,entries.length+1]){
+const end=Math.min(cut-1,entries.length);
+if(end>start)parts.push(group(entries.slice(start,end),start+1));
+start=end;
+}
+return parts;
+}
+if(mode==='file'){
+const bySource=new Map();
+for(const entry of entries){
+if(!bySource.has(entry.source))bySource.set(entry.source,[]);
+bySource.get(entry.source).push(entry);
+}
+return[...bySource.values()].map((list)=>group(list,1));
+}
+return[group(entries,1)];
+}
+function group(list,from){
+return{entries:list,from,to:from+list.length-1};
+}
+export function outputNames(parts,{stem,mode,suffix='edited'}){
+const base=clean(stem)||'document';
+const names=parts.map((part)=>{
+if(parts.length===1)return`${base}-${suffix}.pdf`;
+if(mode==='file')return`${clean(labelOf(part)) || base}.pdf`;
+if(part.from===part.to)return`${base}-page-${part.from}.pdf`;
+return`${base}-pages-${part.from}-${part.to}.pdf`;
+});
+return unique(names);
+}
+function unique(names){
+const seen=new Map();
+return names.map((name)=>{
+const taken=seen.get(name)??0;
+seen.set(name,taken+1);
+if(!taken)return name;
+return name.replace(/\.pdf$/i,`-${taken + 1}.pdf`);
+});
+}
+function labelOf(part){
+return part.entries[0]?.source?.label??'';
+}
+function clean(text){
+return String(text??'').replace(/\.pdf$/i,'')
+.replace(/[\\/:*?"<>|]+/g,'-')
+.replace(/\s+/g,' ')
+.trim()
+.slice(0,80);
+}
+export function archiveName(stem){
+return`${clean(stem) || 'document'}-split.zip`;
+}

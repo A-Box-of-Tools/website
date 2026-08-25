@@ -1,2 +1,427 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{decodeMatrix as q,UnreadableError as B}from"./qr-decode.js";import{sizeOf as O}from"./qr-tables.js";const D=177;function L(t){let e=0;for(const o of t){if(o===0)return!1;e+=o}if(e<7)return!1;const a=e/7,f=a/2;return Math.abs(a-t[0])<f&&Math.abs(a-t[1])<f&&Math.abs(3*a-t[2])<3*f&&Math.abs(a-t[3])<f&&Math.abs(a-t[4])<f}function Q(t,e){return e-t[4]-t[3]-t[2]/2}function A(t,e,a,f,o,u,i,c,s){const n=[0,0,0,0,0],x=(d,b)=>d>=0&&b>=0&&d<e&&b<a?t[b*e+d]===1:!1,r=c*2,h=c*4;let l=f,y=o;for(;x(l,y)&&n[2]<=r;)n[2]+=1,l-=u,y-=i;if(n[2]>r)return NaN;for(;!x(l,y)&&n[1]<=r;)n[1]+=1,l-=u,y-=i;if(n[1]>r)return NaN;for(;x(l,y)&&n[0]<=h;)n[0]+=1,l-=u,y-=i;if(n[0]>h)return NaN;for(l=f+u,y=o+i;x(l,y)&&n[2]<=r;)n[2]+=1,l+=u,y+=i;if(n[2]>r)return NaN;for(;!x(l,y)&&n[3]<=r;)n[3]+=1,l+=u,y+=i;if(n[3]>r)return NaN;for(;x(l,y)&&n[4]<=h;)n[4]+=1,l+=u,y+=i;if(n[4]>h)return NaN;const M=n[0]+n[1]+n[2]+n[3]+n[4];return s!==null&&Math.abs(M-s)*5>=2*s?NaN:L(n)?Q(n,u!==0?l:y):NaN}function G(t,e,a,f=!1){const o=[],u=f?1:Math.max(3,Math.floor(3*a/(4*D))),i=(c,s,n)=>{const x=c[0]+c[1]+c[2]+c[3]+c[4];let r=Q(c,n);const h=A(t,e,a,Math.floor(r),s,0,1,c[2],x);if(Number.isNaN(h)||(r=A(t,e,a,Math.floor(r),Math.floor(h),1,0,c[2],x),Number.isNaN(r)))return;const l=A(t,e,a,Math.floor(r),Math.floor(h),1,1,c[2],null);if(Number.isNaN(l))return;const y=x/7;for(const M of o)if(Math.abs(M.x-r)<=y&&Math.abs(M.y-h)<=y&&Math.abs(M.size-y)<=Math.max(y,M.size)/2){const N=M.seen+1;M.x=(M.x*M.seen+r)/N,M.y=(M.y*M.seen+h)/N,M.size=(M.size*M.seen+y)/N,M.seen=N;return}o.push({x:r,y:h,size:y,seen:1})};for(let c=u-1;c<a;c+=u){const s=[0,0,0,0,0];let n=0;for(let x=0;x<e;x+=1)t[c*e+x]===1?((n&1)===1&&(n+=1),s[n]+=1):(n&1)===1?s[n]+=1:n===4?L(s)?(i(s,c,x),s.fill(0),n=0):(s[0]=s[2],s[1]=s[3],s[2]=s[4],s[3]=1,s[4]=0,n=3):(n+=1,s[n]+=1);n===4&&L(s)&&i(s,c,e)}return o}function g(t,e){return Math.hypot(t.x-e.x,t.y-e.y)}function I(t,e=4){if(t.length<3)return[];const a=[...t].sort((o,u)=>u.seen-o.seen).slice(0,12),f=[];for(let o=0;o<a.length;o+=1)for(let u=o+1;u<a.length;u+=1)for(let i=u+1;i<a.length;i+=1){const c=[a[o],a[u],a[i]],s=c.map(N=>N.size),n=(s[0]+s[1]+s[2])/3,x=Math.max(...s)-Math.min(...s),r=[g(c[0],c[1]),g(c[1],c[2]),g(c[0],c[2])].sort((N,d)=>N-d);if(r[0]<n*4)continue;const h=Math.acos(Math.min(1,Math.max(-1,(r[0]**2+r[1]**2-r[2]**2)/(2*r[0]*r[1]))));if(h<.96||h>2.18)continue;const l=Math.abs(r[0]-r[1])/r[1],y=Math.abs(r[2]-r[1]*Math.SQRT2)/r[2],M=x/n+l*2+y*3;M<3&&f.push({three:c,score:M})}return f.sort((o,u)=>o.score-u.score),f.slice(0,e).map(o=>o.three)}function Z(t){const e=[{length:g(t[0],t[1]),opposite:2},{length:g(t[1],t[2]),opposite:0},{length:g(t[0],t[2]),opposite:1}].sort((c,s)=>s.length-c.length),a=t[e[0].opposite],f=t.filter(c=>c!==a),[o,u]=f;return(u.x-a.x)*(o.y-a.y)-(u.y-a.y)*(o.x-a.x)<0?{topLeft:a,topRight:o,bottomLeft:u}:{topLeft:a,topRight:u,bottomLeft:o}}function C(t,e,a,f,o,u,i){const c=Math.abs(i-o)>Math.abs(u-f);let[s,n,x,r]=c?[o,f,i,u]:[f,o,u,i];const h=Math.abs(x-s),l=Math.abs(r-n),y=s<x?1:-1,M=n<r?1:-1;let N=-h/2,d=0;const b=(T,E)=>{const R=c?E:T,z=c?T:E;return R>=0&&z>=0&&R<e&&z<a&&t[z*e+R]===1};let k=s,w=n;for(;k!==x+y;k+=y){if(d===1===b(k,w)){if(d===2)return Math.hypot(k-s,w-n);d+=1}if(N+=l,N>0){if(w===r)break;w+=M,N-=h}}return d===2?Math.hypot(x+y-s,r-n):NaN}function F(t,e,a,f,o){const u=(s,n)=>{const x=C(t,e,a,Math.round(s.x),Math.round(s.y),Math.round(n.x),Math.round(n.y)),r=C(t,e,a,Math.round(s.x),Math.round(s.y),Math.round(s.x-(n.x-s.x)),Math.round(s.y-(n.y-s.y)));return x+r-1},i=u(f,o),c=u(o,f);return Number.isNaN(i)?Number.isNaN(c)?NaN:c/7:Number.isNaN(c)?i/7:(i+c)/14}function U(t,e){const a=e/2;return Math.abs(e-t[0])<a&&Math.abs(e-t[1])<a&&Math.abs(e-t[2])<a}function _(t,e,a,f,o,u,i){const c=Math.max(0,Math.floor(f-i)),s=Math.min(e-1,Math.ceil(f+i)),n=Math.max(0,Math.floor(o-i)),x=Math.min(a-1,Math.ceil(o+i));if(s-c<u*3||x-n<u*3)return null;const r=[];for(let h=n;h<=x;h+=1){const l=[0,0,0];let y=0;for(let M=c;M<=s;M+=1){const N=t[h*e+M]===1;if(y===1?N:!N)l[y]+=1;else if(y===2){if(U(l,u)){const d=M-l[2]-l[1]/2,b=v(t,e,a,Math.round(d),h,l[1],l[0]+l[1]+l[2],u);Number.isNaN(b)||r.push({x:d,y:b,size:(l[0]+l[1]+l[2])/3})}l[0]=l[2],l[1]=1,l[2]=0,y=1}else y+=1,l[y]+=1}}return r.length?r.reduce((h,l)=>Math.hypot(l.x-f,l.y-o)<Math.hypot(h.x-f,h.y-o)?l:h):null}function v(t,e,a,f,o,u,i,c){if(f<0||f>=e)return NaN;const s=d=>d>=0&&d<a&&t[d*e+f]===1,n=u*2;let x=0,r=o;for(;s(r)&&x<=n;)x+=1,r-=1;if(r<0||x>n)return NaN;let h=0;for(;r>=0&&!s(r)&&h<=n;)h+=1,r-=1;if(h>n)return NaN;let l=0;for(r=o+1;s(r)&&x+l<=n;)l+=1,r+=1;if(r>=a||x+l>n)return NaN;let y=0;for(;r<a&&!s(r)&&y<=n;)y+=1,r+=1;if(y>n)return NaN;const M=[h,x+l,y],N=M[0]+M[1]+M[2];return 5*Math.abs(N-i)>=2*i?NaN:U(M,c)?r-y-M[1]/2:NaN}function j(t){const e=t[0].x-t[1].x+t[2].x-t[3].x,a=t[0].y-t[1].y+t[2].y-t[3].y;if(e===0&&a===0)return[t[1].x-t[0].x,t[2].x-t[1].x,t[0].x,t[1].y-t[0].y,t[2].y-t[1].y,t[0].y,0,0,1];const f=t[1].x-t[2].x,o=t[3].x-t[2].x,u=t[1].y-t[2].y,i=t[3].y-t[2].y,c=f*i-o*u,s=(e*i-o*a)/c,n=(f*a-e*u)/c;return[t[1].x-t[0].x+s*t[1].x,t[3].x-t[0].x+n*t[3].x,t[0].x,t[1].y-t[0].y+s*t[1].y,t[3].y-t[0].y+n*t[3].y,t[0].y,s,n,1]}function H(t){return[t[4]*t[8]-t[5]*t[7],t[2]*t[7]-t[1]*t[8],t[1]*t[5]-t[2]*t[4],t[5]*t[6]-t[3]*t[8],t[0]*t[8]-t[2]*t[6],t[2]*t[3]-t[0]*t[5],t[3]*t[7]-t[4]*t[6],t[1]*t[6]-t[0]*t[7],t[0]*t[4]-t[1]*t[3]]}function J(t,e){const a=new Array(9);for(let f=0;f<3;f+=1)for(let o=0;o<3;o+=1)a[f*3+o]=t[f*3]*e[o]+t[f*3+1]*e[3+o]+t[f*3+2]*e[6+o];return a}function K(t,e){return J(j(e),H(j(t)))}function P(t,e,a){const f=t[6]*e+t[7]*a+t[8];return{x:(t[0]*e+t[1]*a+t[2])/f,y:(t[3]*e+t[4]*a+t[5])/f}}function S(t,e,a,f,o){const u=new Uint8Array(f*f);for(let i=0;i<f;i+=1)for(let c=0;c<f;c+=1){const s=P(o,c+.5,i+.5),n=Math.floor(s.x),x=Math.floor(s.y);if(n<0||x<0||n>=e||x>=a)return null;u[i*f+c]=t[x*e+n]}return u}function V(t,e,a,f,o,u){if(o<21||o>177||(o-17)%4!==0)return null;const{topLeft:i,topRight:c,bottomLeft:s}=f,n=o-3.5;let x={x:c.x-i.x+s.x,y:c.y-i.y+s.y},r=n;if(o>21){const M=1-3/(o-7),N=i.x+M*(x.x-i.x),d=i.y+M*(x.y-i.y);for(const b of[4,8,16]){const k=_(t,e,a,N,d,u,u*b);if(k){x=k,r=o-6.5;break}}}const y=S(t,e,a,o,K([{x:3.5,y:3.5},{x:n,y:3.5},{x:r,y:r},{x:3.5,y:n}],[i,c,x,s]));if(!y)return null;try{return{...q(o,y),modules:y,dimension:o,corners:f}}catch(M){if(M instanceof B)return null;throw M}}function X(t,e,a,f=!1){for(const o of I(G(t,e,a,f))){const u=W(t,e,a,Z(o));if(u)return u}return null}function W(t,e,a,f){const{topLeft:o,topRight:u,bottomLeft:i}=f,c=[F(t,e,a,o,u),F(t,e,a,o,i)].filter(l=>!Number.isNaN(l)&&l>=1),s=c.length?c.reduce((l,y)=>l+y,0)/c.length:(o.size+u.size+i.size)/3;if(!(s>=1))return null;const n=Math.round(g(o,u)/s),x=Math.round(g(o,i)/s);let r=Math.round((n+x)/2)+7;const h=(r%4+4)%4;h===0?r+=1:h===2?r-=1:h===3&&(r+=2);for(const l of[r,r-4,r+4,r-8,r+8]){const y=V(t,e,a,f,l,s);if(y)return y}return null}const Y=Array.from({length:40},(t,e)=>O(e+1));export{Y as SIZES,G as findFinders,Z as orient,I as rankTriples,X as readQr};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{decodeMatrix,UnreadableError}from'./qr-decode.js';
+import{sizeOf}from'./qr-tables.js';
+const MAX_MODULES=177;
+function isFinderRatio(runs){
+let total=0;
+for(const run of runs){
+if(run===0)return false;
+total+=run;
+}
+if(total<7)return false;
+const module=total/7;
+const allowance=module/2;
+return Math.abs(module-runs[0])<allowance
+&&Math.abs(module-runs[1])<allowance
+&&Math.abs(3*module-runs[2])<3*allowance
+&&Math.abs(module-runs[3])<allowance
+&&Math.abs(module-runs[4])<allowance;
+}
+function centreFromEnd(runs,end){
+return end-runs[4]-runs[3]-runs[2]/2;
+}
+function crossCheck(bits,width,height,startX,startY,stepX,stepY,middle,expected){
+const runs=[0,0,0,0,0];
+const dark=(x,y)=>(x>=0&&y>=0&&x<width&&y<height
+?bits[y*width+x]===1:false);
+const centre=middle*2;
+const outer=middle*4;
+let x=startX;
+let y=startY;
+while(dark(x,y)&&runs[2]<=centre){
+runs[2]+=1;
+x-=stepX;
+y-=stepY;
+}
+if(runs[2]>centre)return NaN;
+while(!dark(x,y)&&runs[1]<=centre){
+runs[1]+=1;
+x-=stepX;
+y-=stepY;
+}
+if(runs[1]>centre)return NaN;
+while(dark(x,y)&&runs[0]<=outer){
+runs[0]+=1;
+x-=stepX;
+y-=stepY;
+}
+if(runs[0]>outer)return NaN;
+x=startX+stepX;
+y=startY+stepY;
+while(dark(x,y)&&runs[2]<=centre){
+runs[2]+=1;
+x+=stepX;
+y+=stepY;
+}
+if(runs[2]>centre)return NaN;
+while(!dark(x,y)&&runs[3]<=centre){
+runs[3]+=1;
+x+=stepX;
+y+=stepY;
+}
+if(runs[3]>centre)return NaN;
+while(dark(x,y)&&runs[4]<=outer){
+runs[4]+=1;
+x+=stepX;
+y+=stepY;
+}
+if(runs[4]>outer)return NaN;
+const total=runs[0]+runs[1]+runs[2]+runs[3]+runs[4];
+if(expected!==null&&Math.abs(total-expected)*5>=2*expected)return NaN;
+if(!isFinderRatio(runs))return NaN;
+const end=stepX!==0?x:y;
+return centreFromEnd(runs,end);
+}
+export function findFinders(bits,width,height,dense=false){
+const found=[];
+const stride=dense?1:Math.max(3,Math.floor((3*height)/(4*MAX_MODULES)));
+const remember=(runs,row,endColumn)=>{
+const total=runs[0]+runs[1]+runs[2]+runs[3]+runs[4];
+let x=centreFromEnd(runs,endColumn);
+const y=crossCheck(bits,width,height,Math.floor(x),row,0,1,runs[2],total);
+if(Number.isNaN(y))return;
+x=crossCheck(bits,width,height,Math.floor(x),Math.floor(y),1,0,runs[2],total);
+if(Number.isNaN(x))return;
+const diagonal=crossCheck(bits,width,height,Math.floor(x),Math.floor(y),
+1,1,runs[2],null);
+if(Number.isNaN(diagonal))return;
+const size=total/7;
+for(const centre of found){
+if(Math.abs(centre.x-x)<=size&&Math.abs(centre.y-y)<=size
+&&Math.abs(centre.size-size)<=Math.max(size,centre.size)/2){
+const n=centre.seen+1;
+centre.x=(centre.x*centre.seen+x)/n;
+centre.y=(centre.y*centre.seen+y)/n;
+centre.size=(centre.size*centre.seen+size)/n;
+centre.seen=n;
+return;
+}
+}
+found.push({x,y,size,seen:1});
+};
+for(let row=stride-1;row<height;row+=stride){
+const runs=[0,0,0,0,0];
+let state=0;
+for(let column=0;column<width;column+=1){
+if(bits[row*width+column]===1){
+if((state&1)===1)state+=1;
+runs[state]+=1;
+}else if((state&1)===1){
+runs[state]+=1;
+}else if(state===4){
+if(isFinderRatio(runs)){
+remember(runs,row,column);
+runs.fill(0);
+state=0;
+}else{
+runs[0]=runs[2];
+runs[1]=runs[3];
+runs[2]=runs[4];
+runs[3]=1;
+runs[4]=0;
+state=3;
+}
+}else{
+state+=1;
+runs[state]+=1;
+}
+}
+if(state===4&&isFinderRatio(runs))remember(runs,row,width);
+}
+return found;
+}
+function distance(a,b){
+return Math.hypot(a.x-b.x,a.y-b.y);
+}
+export function rankTriples(candidates,keep=4){
+if(candidates.length<3)return[];
+const pool=[...candidates].sort((a,b)=>b.seen-a.seen).slice(0,12);
+const scored=[];
+for(let i=0;i<pool.length;i+=1){
+for(let j=i+1;j<pool.length;j+=1){
+for(let k=j+1;k<pool.length;k+=1){
+const three=[pool[i],pool[j],pool[k]];
+const sizes=three.map((centre)=>centre.size);
+const meanSize=(sizes[0]+sizes[1]+sizes[2])/3;
+const spread=Math.max(...sizes)-Math.min(...sizes);
+const sides=[
+distance(three[0],three[1]),
+distance(three[1],three[2]),
+distance(three[0],three[2]),
+].sort((a,b)=>a-b);
+if(sides[0]<meanSize*4)continue;
+const corner=Math.acos(
+Math.min(1,Math.max(-1,(sides[0]**2+sides[1]**2-sides[2]**2)
+/(2*sides[0]*sides[1]))));
+if(corner<0.96||corner>2.18)continue;
+const legs=Math.abs(sides[0]-sides[1])/sides[1];
+const right=Math.abs(sides[2]-sides[1]*Math.SQRT2)/sides[2];
+const score=spread/meanSize+legs*2+right*3;
+if(score<3)scored.push({three,score});
+}
+}
+}
+scored.sort((a,b)=>a.score-b.score);
+return scored.slice(0,keep).map((entry)=>entry.three);
+}
+export function orient(three){
+const sides=[
+{length:distance(three[0],three[1]),opposite:2},
+{length:distance(three[1],three[2]),opposite:0},
+{length:distance(three[0],three[2]),opposite:1},
+].sort((a,b)=>b.length-a.length);
+const topLeft=three[sides[0].opposite];
+const others=three.filter((centre)=>centre!==topLeft);
+const[a,b]=others;
+const cross=(b.x-topLeft.x)*(a.y-topLeft.y)
+-(b.y-topLeft.y)*(a.x-topLeft.x);
+return cross<0
+?{topLeft,topRight:a,bottomLeft:b}
+:{topLeft,topRight:b,bottomLeft:a};
+}
+function runTowards(bits,width,height,fromX,fromY,toX,toY){
+const steep=Math.abs(toY-fromY)>Math.abs(toX-fromX);
+let[ax,ay,bx,by]=steep?[fromY,fromX,toY,toX]:[fromX,fromY,toX,toY];
+const dx=Math.abs(bx-ax);
+const dy=Math.abs(by-ay);
+const stepX=ax<bx?1:-1;
+const stepY=ay<by?1:-1;
+let error=-dx/2;
+let state=0;
+const dark=(x,y)=>{
+const realX=steep?y:x;
+const realY=steep?x:y;
+return realX>=0&&realY>=0&&realX<width&&realY<height
+&&bits[realY*width+realX]===1;
+};
+let x=ax;
+let y=ay;
+for(;x!==bx+stepX;x+=stepX){
+if((state===1)===dark(x,y)){
+if(state===2)return Math.hypot(x-ax,y-ay);
+state+=1;
+}
+error+=dy;
+if(error>0){
+if(y===by)break;
+y+=stepY;
+error-=dx;
+}
+}
+if(state===2)return Math.hypot(bx+stepX-ax,by-ay);
+return NaN;
+}
+function moduleSizeBetween(bits,width,height,a,b){
+const both=(from,to)=>{
+const forwards=runTowards(bits,width,height,
+Math.round(from.x),Math.round(from.y),
+Math.round(to.x),Math.round(to.y));
+const backwards=runTowards(bits,width,height,
+Math.round(from.x),Math.round(from.y),
+Math.round(from.x-(to.x-from.x)),
+Math.round(from.y-(to.y-from.y)));
+return forwards+backwards-1;
+};
+const one=both(a,b);
+const other=both(b,a);
+if(Number.isNaN(one))return Number.isNaN(other)?NaN:other/7;
+if(Number.isNaN(other))return one/7;
+return(one+other)/14;
+}
+function isAlignmentRatio(runs,moduleSize){
+const allowance=moduleSize/2;
+return Math.abs(moduleSize-runs[0])<allowance
+&&Math.abs(moduleSize-runs[1])<allowance
+&&Math.abs(moduleSize-runs[2])<allowance;
+}
+function findAlignment(bits,width,height,centreX,centreY,moduleSize,allowance){
+const left=Math.max(0,Math.floor(centreX-allowance));
+const right=Math.min(width-1,Math.ceil(centreX+allowance));
+const top=Math.max(0,Math.floor(centreY-allowance));
+const bottom=Math.min(height-1,Math.ceil(centreY+allowance));
+if(right-left<moduleSize*3||bottom-top<moduleSize*3)return null;
+const candidates=[];
+for(let row=top;row<=bottom;row+=1){
+const runs=[0,0,0];
+let state=0;
+for(let column=left;column<=right;column+=1){
+const dark=bits[row*width+column]===1;
+if(state===1?dark:!dark){
+runs[state]+=1;
+}else if(state===2){
+if(isAlignmentRatio(runs,moduleSize)){
+const x=column-runs[2]-runs[1]/2;
+const y=alignmentColumn(bits,width,height,Math.round(x),row,
+runs[1],runs[0]+runs[1]+runs[2],moduleSize);
+if(!Number.isNaN(y))candidates.push({x,y,size:(runs[0]+runs[1]+runs[2])/3});
+}
+runs[0]=runs[2];
+runs[1]=1;
+runs[2]=0;
+state=1;
+}else{
+state+=1;
+runs[state]+=1;
+}
+}
+}
+if(!candidates.length)return null;
+return candidates.reduce((best,candidate)=>(
+Math.hypot(candidate.x-centreX,candidate.y-centreY)
+<Math.hypot(best.x-centreX,best.y-centreY)?candidate:best));
+}
+function alignmentColumn(bits,width,height,x,startY,middle,expected,moduleSize){
+if(x<0||x>=width)return NaN;
+const dark=(y)=>y>=0&&y<height&&bits[y*width+x]===1;
+const limit=middle*2;
+let centre=0;
+let y=startY;
+while(dark(y)&&centre<=limit){centre+=1;y-=1;}
+if(y<0||centre>limit)return NaN;
+let above=0;
+while(y>=0&&!dark(y)&&above<=limit){above+=1;y-=1;}
+if(above>limit)return NaN;
+let downward=0;
+y=startY+1;
+while(dark(y)&&centre+downward<=limit){downward+=1;y+=1;}
+if(y>=height||centre+downward>limit)return NaN;
+let below=0;
+while(y<height&&!dark(y)&&below<=limit){below+=1;y+=1;}
+if(below>limit)return NaN;
+const runs=[above,centre+downward,below];
+const total=runs[0]+runs[1]+runs[2];
+if(5*Math.abs(total-expected)>=2*expected)return NaN;
+if(!isAlignmentRatio(runs,moduleSize))return NaN;
+return y-below-runs[1]/2;
+}
+function squareToQuad(p){
+const dx3=p[0].x-p[1].x+p[2].x-p[3].x;
+const dy3=p[0].y-p[1].y+p[2].y-p[3].y;
+if(dx3===0&&dy3===0){
+return[p[1].x-p[0].x,p[2].x-p[1].x,p[0].x,
+p[1].y-p[0].y,p[2].y-p[1].y,p[0].y,
+0,0,1];
+}
+const dx1=p[1].x-p[2].x;
+const dx2=p[3].x-p[2].x;
+const dy1=p[1].y-p[2].y;
+const dy2=p[3].y-p[2].y;
+const denominator=dx1*dy2-dx2*dy1;
+const a13=(dx3*dy2-dx2*dy3)/denominator;
+const a23=(dx1*dy3-dx3*dy1)/denominator;
+return[
+p[1].x-p[0].x+a13*p[1].x,p[3].x-p[0].x+a23*p[3].x,p[0].x,
+p[1].y-p[0].y+a13*p[1].y,p[3].y-p[0].y+a23*p[3].y,p[0].y,
+a13,a23,1,
+];
+}
+function adjoint(m){
+return[
+m[4]*m[8]-m[5]*m[7],m[2]*m[7]-m[1]*m[8],m[1]*m[5]-m[2]*m[4],
+m[5]*m[6]-m[3]*m[8],m[0]*m[8]-m[2]*m[6],m[2]*m[3]-m[0]*m[5],
+m[3]*m[7]-m[4]*m[6],m[1]*m[6]-m[0]*m[7],m[0]*m[4]-m[1]*m[3],
+];
+}
+function times(a,b){
+const out=new Array(9);
+for(let row=0;row<3;row+=1){
+for(let column=0;column<3;column+=1){
+out[row*3+column]=a[row*3]*b[column]
++a[row*3+1]*b[3+column]
++a[row*3+2]*b[6+column];
+}
+}
+return out;
+}
+function quadToQuad(from,to){
+return times(squareToQuad(to),adjoint(squareToQuad(from)));
+}
+function apply(m,x,y){
+const w=m[6]*x+m[7]*y+m[8];
+return{x:(m[0]*x+m[1]*y+m[2])/w,y:(m[3]*x+m[4]*y+m[5])/w};
+}
+function sampleGrid(bits,width,height,dimension,transform){
+const modules=new Uint8Array(dimension*dimension);
+for(let row=0;row<dimension;row+=1){
+for(let column=0;column<dimension;column+=1){
+const point=apply(transform,column+0.5,row+0.5);
+const x=Math.floor(point.x);
+const y=Math.floor(point.y);
+if(x<0||y<0||x>=width||y>=height)return null;
+modules[row*dimension+column]=bits[y*width+x];
+}
+}
+return modules;
+}
+function attempt(bits,width,height,corners,dimension,moduleSize){
+if(dimension<21||dimension>177||(dimension-17)%4!==0)return null;
+const{topLeft,topRight,bottomLeft}=corners;
+const far=dimension-3.5;
+let bottomRight={
+x:topRight.x-topLeft.x+bottomLeft.x,
+y:topRight.y-topLeft.y+bottomLeft.y,
+};
+let sourceBottomRight=far;
+if(dimension>21){
+const fraction=1-3/(dimension-7);
+const guessX=topLeft.x+fraction*(bottomRight.x-topLeft.x);
+const guessY=topLeft.y+fraction*(bottomRight.y-topLeft.y);
+for(const factor of[4,8,16]){
+const found=findAlignment(bits,width,height,guessX,guessY,
+moduleSize,moduleSize*factor);
+if(found){
+bottomRight=found;
+sourceBottomRight=dimension-6.5;
+break;
+}
+}
+}
+const grid=[
+{x:3.5,y:3.5},
+{x:far,y:3.5},
+{x:sourceBottomRight,y:sourceBottomRight},
+{x:3.5,y:far},
+];
+const picture=[topLeft,topRight,bottomRight,bottomLeft];
+const modules=sampleGrid(bits,width,height,dimension,
+quadToQuad(grid,picture));
+if(!modules)return null;
+try{
+const decoded=decodeMatrix(dimension,modules);
+return{...decoded,modules,dimension,corners};
+}catch(error){
+if(error instanceof UnreadableError)return null;
+throw error;
+}
+}
+export function readQr(bits,width,height,dense=false){
+for(const three of rankTriples(findFinders(bits,width,height,dense))){
+const read=fromCorners(bits,width,height,orient(three));
+if(read)return read;
+}
+return null;
+}
+function fromCorners(bits,width,height,corners){
+const{topLeft,topRight,bottomLeft}=corners;
+const measured=[
+moduleSizeBetween(bits,width,height,topLeft,topRight),
+moduleSizeBetween(bits,width,height,topLeft,bottomLeft),
+].filter((value)=>!Number.isNaN(value)&&value>=1);
+const moduleSize=measured.length
+?measured.reduce((sum,value)=>sum+value,0)/measured.length
+:(topLeft.size+topRight.size+bottomLeft.size)/3;
+if(!(moduleSize>=1))return null;
+const across=Math.round(distance(topLeft,topRight)/moduleSize);
+const down=Math.round(distance(topLeft,bottomLeft)/moduleSize);
+let guess=Math.round((across+down)/2)+7;
+const remainder=((guess%4)+4)%4;
+if(remainder===0)guess+=1;
+else if(remainder===2)guess-=1;
+else if(remainder===3)guess+=2;
+for(const dimension of[guess,guess-4,guess+4,guess-8,guess+8]){
+const read=attempt(bits,width,height,corners,dimension,moduleSize);
+if(read)return read;
+}
+return null;
+}
+export const SIZES=Array.from({length:40},(unused,i)=>sizeOf(i+1));

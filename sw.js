@@ -1,2 +1,50 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const a="abox:/:",s=a+"ac93fcf077",r=["./","index.html","site.css?v=0a6ea8fe09","manifest.json","analytics.js"];self.addEventListener("install",c=>{c.waitUntil(caches.open(s).then(t=>t.addAll(r)).then(()=>self.skipWaiting()))}),self.addEventListener("activate",c=>{const t=e=>e.startsWith(a),i=e=>!e.startsWith("abox:");c.waitUntil(caches.keys().then(e=>Promise.all(e.filter(n=>n!==s&&(t(n)||i(n))).map(n=>caches.delete(n)))).then(()=>self.clients.claim()))}),self.addEventListener("fetch",c=>{const{request:t}=c;t.method==="GET"&&new URL(t.url).origin===self.location.origin&&c.respondWith(caches.match(t).then(i=>i||fetch(t).then(e=>{if(e.ok&&e.type==="basic"){const n=e.clone();caches.open(s).then(o=>o.put(t,n))}return e}).catch(()=>t.mode==="navigate"?caches.match("index.html"):Promise.reject(new Error("offline and not cached")))))});
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const CACHE_PREFIX='abox:/:';
+const CACHE_NAME=CACHE_PREFIX+'785a77c970';
+const ASSETS=[
+'./',
+'index.html',
+'site.css?v=0a6ea8fe09',
+'manifest.json',
+'analytics.js',
+];
+self.addEventListener('install',(event)=>{
+event.waitUntil(
+caches.open(CACHE_NAME)
+.then((cache)=>cache.addAll(ASSETS))
+.then(()=>self.skipWaiting()),
+);
+});
+self.addEventListener('activate',(event)=>{
+const ours=(name)=>name.startsWith(CACHE_PREFIX);
+const orphaned=(name)=>!name.startsWith('abox:');
+event.waitUntil(
+caches.keys()
+.then((names)=>Promise.all(
+names.filter((name)=>name!==CACHE_NAME&&(ours(name)||orphaned(name)))
+.map((name)=>caches.delete(name)),
+))
+.then(()=>self.clients.claim()),
+);
+});
+self.addEventListener('fetch',(event)=>{
+const{request}=event;
+if(request.method!=='GET')return;
+if(new URL(request.url).origin!==self.location.origin)return;
+event.respondWith(
+caches.match(request).then((cached)=>{
+if(cached)return cached;
+return fetch(request).then((response)=>{
+if(response.ok&&response.type==='basic'){
+const copy=response.clone();
+caches.open(CACHE_NAME).then((cache)=>cache.put(request,copy));
+}
+return response;
+}).catch(()=>(
+request.mode==='navigate'
+?caches.match('index.html')
+:Promise.reject(new Error('offline and not cached'))
+));
+}),
+);
+});

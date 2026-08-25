@@ -1,2 +1,554 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as y}from"./shared/phrases.js";import{wireFilePicker as I,readingLabel as z}from"./shared/file-picker.js";import{DISPOSALS as F,NotAGif as R,frameData as W,parseGif as A}from"./gif.js";import{lzwDecode as M}from"./lzw.js";import{Compositor as B,duration as D,isFullCanvas as U,paintFrame as G}from"./frames.js";import{budget as O,distinctColors as V,paletteWaste as _}from"./budget.js";import{findings as j}from"./findings.js";import{report as k}from"./report.js";import{clock as $,count as u,delay as X,exact as P,fileSize as x,hex as H,percent as N,plural as h,rate as q}from"./format.js";const l=e=>document.getElementById(e),o={dropzone:l("dropzone"),fileInput:l("file-input"),loadError:l("load-error"),working:l("working"),summaryCard:l("summary-card"),fileName:l("file-name"),copyReport:l("copy-report"),downloadReport:l("download-report"),copyStatus:l("copy-status"),preview:l("preview"),factVersion:l("fact-version"),factCanvas:l("fact-canvas"),factSize:l("fact-size"),factFrames:l("fact-frames"),factWritten:l("fact-written"),factPlays:l("fact-plays"),factLoops:l("fact-loops"),factColors:l("fact-colors"),findingsCard:l("findings-card"),findings:l("findings"),budgetCard:l("budget-card"),budgetBar:l("budget-bar"),budgetRows:l("budget-rows"),budgetTotal:l("budget-total"),framesCard:l("frames-card"),framesLede:l("frames-lede"),frames:l("frames"),frameView:l("frame-view"),showMore:l("show-more"),colorsCard:l("colors-card"),colorsLede:l("colors-lede"),globalPaletteWrap:l("global-palette-wrap"),globalPaletteNote:l("global-palette-note"),globalPalette:l("global-palette"),localPalettesWrap:l("local-palettes-wrap"),localPalettesSummary:l("local-palettes-summary"),localPalettes:l("local-palettes"),extrasCard:l("extras-card"),extras:l("extras"),privacyToggle:l("privacy-toggle"),privacyPanel:l("privacy-panel"),networkCount:l("network-count"),networkDot:l("network-dot"),offlineStatus:l("offline-status"),offlineDot:l("offline-dot")},K=3e8,J=60,Q=120;let p=null,C=null,g=0;const L=I({input:o.fileInput,dropzone:o.dropzone,onFiles(e){Y(e[0])}});async function Y(e){fe(),L.busy(z(1)),o.working.hidden=!1,o.working.textContent=`Reading ${e.name}\u2026`;try{const n=new Uint8Array(await e.arrayBuffer());await new Promise(t=>{setTimeout(t,0)}),Z(e,n)}catch(n){n instanceof R?v(`${e.name} is not a GIF: ${n.message}. This tool reads the GIF format itself, so it has nothing to say about other files.`):v(`${e.name} could not be read: ${n.message}`)}finally{L.done(),o.working.hidden=!0}}function Z(e,n){const t=A(n),{drawn:a,identical:c}=ee(t,n),s=a.map(m=>m?m.used:null),i=_(t,s),r=V(t,s).size,d={name:e.name,budget:O(t),findings:j(t,{decoded:a,waste:i,colors:r,identical:c}),colors:r,waste:i};p={name:e.name,gif:t,view:d,drawn:a},C&&URL.revokeObjectURL(C),C=URL.createObjectURL(e),o.preview.src=C,ne(t,d),re(d.findings),se(t,d.budget),le(t,a),ie(t,d,s),de(t),o.summaryCard.hidden=!1,o.budgetCard.hidden=!1,o.findingsCard.hidden=d.findings.length===0,o.framesCard.hidden=t.frames.length===0,o.colorsCard.hidden=!t.globalPalette&&!t.frames.some(m=>m.palette),o.extrasCard.hidden=t.extensions.length===0,o.summaryCard.scrollIntoView({behavior:"smooth",block:"start"})}function ee(e,n){const t=[];if(e.width===0||e.height===0)return{drawn:e.frames.map(()=>null),identical:0};const a=new B(e.width,e.height);let c=0,s=0,i=null;for(const r of e.frames){const d=r.width*r.height;if(d===0||c+d>K){t.push(null),i=null;continue}c+=d;const m=r.palette??e.globalPalette,f=M(W(n,r),r.minCodeSize,d),w=G(r,f.indices,m),b=a.draw(r,w.pixels);i&&te(i,b)&&(s+=1),i=b,t.push({stored:S(w.pixels,r.width,r.height,`What frame ${r.index+1} stores, on its own`),composited:S(b,e.width,e.height,`The canvas after frame ${r.index+1}`),used:w.used,missing:w.missing,clears:f.clears,codes:f.codes,pixels:f.pixels,truncated:f.truncated,corrupt:f.corrupt,ratio:r.payloadBytes>0?d/r.payloadBytes:0})}return{drawn:t,identical:s}}function te(e,n){for(let t=0;t<e.length;t+=1)if(e[t]!==n[t])return!1;return!0}function S(e,n,t,a){const c=Q/Math.max(n,t),s={width:Math.max(1,Math.round(n*c)),height:Math.max(1,Math.round(t*c))},i=c>=1?{width:n,height:t}:s,r=document.createElement("canvas");r.width=i.width,r.height=i.height,r.className="frame-canvas",r.style.width=`${s.width}px`,r.style.height=`${s.height}px`,r.setAttribute("role","img"),r.setAttribute("aria-label",a);const d=r.getContext("2d"),m=new ImageData(e,n,t);if(c>=1)return d.putImageData(m,0,0),r;const f=document.createElement("canvas");return f.width=n,f.height=t,f.getContext("2d").putImageData(m,0,0),d.drawImage(f,0,0,i.width,i.height),r}function ne(e,n){const t=D(e.frames),a=q(e.frames.length,t.real);o.fileName.textContent=n.name,o.factVersion.textContent=`GIF${e.version}`,o.factCanvas.textContent=`${e.width} \xD7 ${e.height}`,o.factSize.textContent=x(e.size),o.factSize.title=P(e.size),o.factFrames.textContent=u(e.frames.length),o.factWritten.textContent=e.frames.length?$(t.nominal):"\u2014",t.clamped>0?(o.factPlays.textContent=`${$(t.real)}${a?` (${a.toFixed(1)} fps)`:""}`,o.factPlays.className="warn",o.factPlays.title=`${u(t.clamped)} frames ask for less than 0.02s and every browser holds them for 0.10s instead.`):(o.factPlays.textContent=e.frames.length?`${$(t.real)}${a?` (${a.toFixed(1)} fps)`:""}`:"\u2014",o.factPlays.className="",o.factPlays.title=""),o.factLoops.textContent=e.loop===null?"once \u2014 no loop block":e.loop===0?"forever":`${u(e.loop)} times`,o.factColors.textContent=h(n.colors,"colour","colours")}const oe={bad:"\u2716",warn:"\u26A0",note:"\u2022"},ae={bad:"Problem",warn:"Worth knowing",note:"Note"};function re(e){o.findings.replaceChildren();for(const n of e){const t=document.createElement("li");t.className=`finding ${n.level}`;const a=document.createElement("span");a.className="finding-mark",a.textContent=oe[n.level],a.title=ae[n.level];const c=document.createElement("div");c.innerHTML=`<strong>${n.title}</strong> ${n.body}`,t.append(a,c),o.findings.append(t)}}function se(e,n){o.budgetBar.replaceChildren(),o.budgetRows.replaceChildren(),o.budgetTotal.textContent=P(e.size);for(const t of n.rows){if(t.bytes===0&&t.key!=="pixels")continue;const a=document.createElement("span");a.className=`slice slice-${t.key}`,a.style.width=`${t.share*100}%`,a.title=`${t.label}: ${x(t.bytes)}`,o.budgetBar.append(a);const c=document.createElement("tr"),s=document.createElement("th");s.scope="row";const i=document.createElement("span");i.className=`key key-${t.key}`;const r=document.createElement("span");r.textContent=t.label;const d=document.createElement("span");d.className="budget-note",d.textContent=t.note,s.append(i,r,d);const m=document.createElement("td");m.className="num",m.textContent=u(t.bytes);const f=document.createElement("td");f.className="num",f.textContent=N(t.share),c.append(s,m,f),o.budgetRows.append(c)}}function le(e,n){o.frames.replaceChildren(),g=0;const t=n.filter(c=>c===null).length,a=e.frames.filter(c=>U(e,c)).length;o.framesLede.textContent=t>0?`${h(e.frames.length,"frame","frames")}. ${u(e.frames.length-t)} of them are drawn here; the rest are too large to hold in memory all at once and are reported from their headers alone.`:`${h(e.frames.length,"frame","frames")}, ${a===0?"none":a===e.frames.length?"all":u(a)} of them covering the whole canvas.`,E(e,n)}function E(e,n){const t=Math.min(e.frames.length,g+J);for(let c=g;c<t;c+=1)o.frames.append(ce(e,e.frames[c],n[c]));g=t;const a=e.frames.length-g;o.showMore.hidden=a<=0,o.showMore.textContent=`Show the other ${h(a,"frame","frames")}`}function ce(e,n,t){const a=document.createElement("li");a.className="frame";const c=document.createElement("div");if(c.className="frame-shot",t)c.append(o.frameView.value==="stored"?t.stored:t.composited);else{const d=document.createElement("p");d.className="frame-blank",d.textContent="not drawn",c.append(d)}const s=document.createElement("p");s.className="frame-head",s.textContent=`Frame ${n.index+1}`;const i=[["Delay",X(n.delay)+(n.delay<2?" \u2192 0.10s":"")],["Rectangle",`${n.width} \xD7 ${n.height} at ${n.left}, ${n.top}`],["Disposal",F[n.disposal]??`Reserved (${n.disposal})`],["Palette",n.palette?`${u(n.palette.count)} of its own`:e.globalPalette?"the global one":"none at all"],["Transparent",n.transparentIndex>=0?`index ${n.transparentIndex}`:"no"],["Size",`${x(n.bytes)} \u2014 ${N(n.bytes/e.size)}`]];n.interlaced&&i.push(["Interlaced","yes"]),t&&t.ratio>0&&i.push(["Compressed",`${t.ratio.toFixed(1)}\xD7`]),t&&(t.corrupt||t.truncated)&&i.push(["Trouble",t.corrupt??"the data ends early"]);const r=document.createElement("dl");r.className="frame-facts";for(const[d,m]of i){const f=document.createElement("div"),w=document.createElement("dt");w.textContent=d;const b=document.createElement("dd");b.textContent=m,f.append(w,b),r.append(f)}return a.append(c,s,r),a}o.frameView.addEventListener("change",()=>{if(!p)return;const{gif:e,drawn:n}=p;o.frames.replaceChildren();const t=g;for(g=0;g<t;)E(e,n)}),o.showMore.addEventListener("click",()=>{p&&E(p.gif,p.drawn)});function ie(e,n,t){const a=e.frames.filter(s=>s.palette),c=n.waste;if(o.colorsLede.textContent=`The tables in this file declare ${h(c.declared,"colour","colours")} between them, the pixels refer to ${u(c.referenced)} of those, and ${u(n.colors)} of those are different from each other.`,o.globalPaletteWrap.hidden=!e.globalPalette,e.globalPalette){const s=new Uint8Array(256);for(const[r,d]of e.frames.entries())if(!(d.palette||!t[r]))for(let m=0;m<256;m+=1)t[r][m]&&(s[m]=1);const i=e.frames.filter(r=>!r.palette).length;o.globalPaletteNote.textContent=`${h(e.globalPalette.count,"entry","entries")}, ${x(e.globalPalette.bytes)}, shared by ${h(i,"frame","frames")}. Faded entries are ones no pixel ever refers to.`,o.globalPalette.replaceChildren(...T(e.globalPalette,s))}if(o.localPalettesWrap.hidden=a.length===0,a.length>0){o.localPalettesSummary.textContent=`${h(a.length,"per-frame table","per-frame tables")} (${x(a.reduce((s,i)=>s+i.palette.bytes,0))} in total)`,o.localPalettes.replaceChildren();for(const s of a.slice(0,24)){const i=document.createElement("h4");i.textContent=`Frame ${s.index+1} \u2014 ${h(s.palette.count,"colour","colours")}`;const r=document.createElement("ul");r.className="palette",r.append(...T(s.palette,t[s.index])),o.localPalettes.append(i,r)}if(a.length>24){const s=document.createElement("p");s.className="palette-note",s.textContent=`The first 24 of ${u(a.length)} are shown. The rest are in the downloadable report.`,o.localPalettes.append(s)}}}function T(e,n){const t=[];for(let a=0;a<e.count;a+=1){const c=document.createElement("li"),s=H(e.colors,a);c.className=n&&!n[a]?"swatch unused":"swatch",c.style.background=s,c.title=n&&!n[a]?`${a}: ${s} \u2014 never used`:`${a}: ${s}`,t.push(c)}return t}function de(e){o.extras.replaceChildren();for(const n of e.extensions){const t=document.createElement("li"),a=document.createElement("p");a.className="extra-head",a.textContent=`${n.name} \u2014 ${x(n.bytes)}`,t.append(a);const c=document.createElement("p");if(c.className="extra-note",c.textContent=me(n),t.append(c),n.text){const s=document.createElement("pre");s.className="extra-text";const i=n.text.trim();s.textContent=i.length>4e3?`${i.slice(0,4e3)}\u2026`:i,t.append(s)}o.extras.append(t)}}function me(e){return e.kind==="comment"?"A comment. No viewer shows it, and every copy of the file carries it.":e.loop!==void 0?e.loop===0?"The loop block, saying to play forever. It is not part of the GIF specification: Netscape invented it in 1995 and everything implemented it anyway.":`The loop block, saying to play ${h(e.loop,"time","times")}.`:e.name.startsWith("XMP")?"An XMP packet: the XML an image editor writes to record what it did. Nothing draws it.":e.name.startsWith("ICCRGBG1")?"An ICC colour profile, saying what the palette\u2019s numbers mean as colours. Almost nothing reads one out of a GIF.":e.kind==="plain-text"?"A plain-text block, which asks the viewer to draw text over the picture. It was in the 1989 specification and was never implemented by anything.":"An application block. Viewers skip the ones they do not recognise."}o.downloadReport.addEventListener("click",()=>{if(!p)return;const e=k(p.gif,p.view),n=new Blob([e],{type:"text/plain"}),t=URL.createObjectURL(n),a=document.createElement("a");a.href=t,a.download=`${p.name.replace(/\.gif$/i,"")}-analysis.txt`,a.click(),setTimeout(()=>URL.revokeObjectURL(t),1e4)}),o.copyReport.addEventListener("click",async()=>{if(!p)return;const e=k(p.gif,p.view);try{await navigator.clipboard.writeText(e),o.copyStatus.textContent="Copied. It is plain text, and it went to your clipboard only."}catch{o.copyStatus.textContent='This browser would not let the page write to the clipboard. Use "Download it" instead.'}});function v(e){o.loadError.textContent=e,o.loadError.hidden=!1}function fe(){o.loadError.hidden=!0,o.copyStatus.textContent=""}o.privacyToggle?.addEventListener("click",()=>{const e=o.privacyPanel.hidden;o.privacyPanel.hidden=!e,o.privacyToggle.setAttribute("aria-expanded",String(e))});const pe=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function ue(){const e=new Set,n=new Set,t=a=>{for(const r of a){if(r.name.startsWith("blob:")||r.name.startsWith("data:"))continue;const d=new URL(r.name,location.href);d.origin!==location.origin&&(pe.test(d.hostname)?e.add(d.hostname):n.add(d.hostname))}const c=performance.getEntriesByType("resource").filter(r=>!r.name.startsWith("blob:")&&!r.name.startsWith("data:")).length,s=n.size===0,i=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a file.`;o.networkCount.textContent=s?`your GIF has gone nowhere. ${c} files loaded.${i}`:`something contacted ${[...n].join(", ")}, which this tool never does.${i}`,o.networkCount.className=s?"good":"warn",o.networkDot.className=`live-dot ${s?"good":"warn"}`};t(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>t(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function he(){const e=(n,t)=>{o.offlineStatus.textContent=n,o.offlineDot.className="live-dot",t&&(o.offlineStatus.title=t,console.info("Offline caching unavailable:",t))};if(!("serviceWorker"in navigator)){e(y("offline.none"));return}if(!window.isSecureContext){e(y("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,o.offlineStatus.textContent=y("offline.ready"),o.offlineStatus.className="good",o.offlineDot.className="live-dot good"}catch(n){e(y("offline.failed"),n.message)}}window.addEventListener("error",e=>{v(y("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{v(y("error.broke",{detail:e.reason?.message??e.reason}))}),ue(),he(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{DISPOSALS,NotAGif,frameData,parseGif}from'./gif.js';
+import{lzwDecode}from'./lzw.js';
+import{Compositor,duration,isFullCanvas,paintFrame}from'./frames.js';
+import{budget,distinctColors,paletteWaste}from'./budget.js';
+import{findings}from'./findings.js';
+import{report}from'./report.js';
+import{clock,count,delay,exact,fileSize,hex,percent,plural,rate}from'./format.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+loadError:$('load-error'),
+working:$('working'),
+summaryCard:$('summary-card'),
+fileName:$('file-name'),
+copyReport:$('copy-report'),
+downloadReport:$('download-report'),
+copyStatus:$('copy-status'),
+preview:$('preview'),
+factVersion:$('fact-version'),
+factCanvas:$('fact-canvas'),
+factSize:$('fact-size'),
+factFrames:$('fact-frames'),
+factWritten:$('fact-written'),
+factPlays:$('fact-plays'),
+factLoops:$('fact-loops'),
+factColors:$('fact-colors'),
+findingsCard:$('findings-card'),
+findings:$('findings'),
+budgetCard:$('budget-card'),
+budgetBar:$('budget-bar'),
+budgetRows:$('budget-rows'),
+budgetTotal:$('budget-total'),
+framesCard:$('frames-card'),
+framesLede:$('frames-lede'),
+frames:$('frames'),
+frameView:$('frame-view'),
+showMore:$('show-more'),
+colorsCard:$('colors-card'),
+colorsLede:$('colors-lede'),
+globalPaletteWrap:$('global-palette-wrap'),
+globalPaletteNote:$('global-palette-note'),
+globalPalette:$('global-palette'),
+localPalettesWrap:$('local-palettes-wrap'),
+localPalettesSummary:$('local-palettes-summary'),
+localPalettes:$('local-palettes'),
+extrasCard:$('extras-card'),
+extras:$('extras'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+const PIXEL_BUDGET=300_000_000;
+const FIRST_PAGE=60;
+const THUMB=120;
+let current=null;
+let previewUrl=null;
+let shown=0;
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){openFile(files[0]);},
+});
+async function openFile(file){
+hideError();
+picker.busy(readingLabel(1));
+el.working.hidden=false;
+el.working.textContent=`Reading ${file.name}…`;
+try{
+const bytes=new Uint8Array(await file.arrayBuffer());
+await new Promise((resolve)=>{setTimeout(resolve,0);});
+show(file,bytes);
+}catch(error){
+if(error instanceof NotAGif){
+showError(`${file.name} is not a GIF: ${error.message}. `
++'This tool reads the GIF format itself, so it has nothing to say about other files.');
+}else{
+showError(`${file.name} could not be read: ${error.message}`);
+}
+}finally{
+picker.done();
+el.working.hidden=true;
+}
+}
+function show(file,bytes){
+const gif=parseGif(bytes);
+const{drawn,identical}=decodeAll(gif,bytes);
+const used=drawn.map((frame)=>(frame?frame.used:null));
+const waste=paletteWaste(gif,used);
+const colors=distinctColors(gif,used).size;
+const view={
+name:file.name,
+budget:budget(gif),
+findings:findings(gif,{decoded:drawn,waste,colors,identical}),
+colors,
+waste,
+};
+current={name:file.name,gif,view,drawn};
+if(previewUrl)URL.revokeObjectURL(previewUrl);
+previewUrl=URL.createObjectURL(file);
+el.preview.src=previewUrl;
+renderSummary(gif,view);
+renderFindings(view.findings);
+renderBudget(gif,view.budget);
+renderFrames(gif,drawn);
+renderColors(gif,view,used);
+renderExtras(gif);
+el.summaryCard.hidden=false;
+el.budgetCard.hidden=false;
+el.findingsCard.hidden=view.findings.length===0;
+el.framesCard.hidden=gif.frames.length===0;
+el.colorsCard.hidden=!gif.globalPalette&&!gif.frames.some((frame)=>frame.palette);
+el.extrasCard.hidden=gif.extensions.length===0;
+el.summaryCard.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function decodeAll(gif,bytes){
+const drawn=[];
+if(gif.width===0||gif.height===0){
+return{drawn:gif.frames.map(()=>null),identical:0};
+}
+const canvas=new Compositor(gif.width,gif.height);
+let spent=0;
+let identical=0;
+let previous=null;
+for(const frame of gif.frames){
+const pixels=frame.width*frame.height;
+if(pixels===0||spent+pixels>PIXEL_BUDGET){
+drawn.push(null);
+previous=null;
+continue;
+}
+spent+=pixels;
+const palette=frame.palette??gif.globalPalette;
+const stream=lzwDecode(frameData(bytes,frame),frame.minCodeSize,pixels);
+const painted=paintFrame(frame,stream.indices,palette);
+const composited=canvas.draw(frame,painted.pixels);
+if(previous&&same(previous,composited))identical+=1;
+previous=composited;
+drawn.push({
+stored:thumbnail(painted.pixels,frame.width,frame.height,
+`What frame ${frame.index + 1} stores, on its own`),
+composited:thumbnail(composited,gif.width,gif.height,
+`The canvas after frame ${frame.index + 1}`),
+used:painted.used,
+missing:painted.missing,
+clears:stream.clears,
+codes:stream.codes,
+pixels:stream.pixels,
+truncated:stream.truncated,
+corrupt:stream.corrupt,
+ratio:frame.payloadBytes>0?pixels/frame.payloadBytes:0,
+});
+}
+return{drawn,identical};
+}
+function same(a,b){
+for(let at=0;at<a.length;at+=1)if(a[at]!==b[at])return false;
+return true;
+}
+function thumbnail(pixels,width,height,label){
+const scale=THUMB/Math.max(width,height);
+const shown={width:Math.max(1,Math.round(width*scale)),
+height:Math.max(1,Math.round(height*scale))};
+const store=scale>=1?{width,height}:shown;
+const canvas=document.createElement('canvas');
+canvas.width=store.width;
+canvas.height=store.height;
+canvas.className='frame-canvas';
+canvas.style.width=`${shown.width}px`;
+canvas.style.height=`${shown.height}px`;
+canvas.setAttribute('role','img');
+canvas.setAttribute('aria-label',label);
+const context=canvas.getContext('2d');
+const image=new ImageData(pixels,width,height);
+if(scale>=1){
+context.putImageData(image,0,0);
+return canvas;
+}
+const scratch=document.createElement('canvas');
+scratch.width=width;
+scratch.height=height;
+scratch.getContext('2d').putImageData(image,0,0);
+context.drawImage(scratch,0,0,store.width,store.height);
+return canvas;
+}
+function renderSummary(gif,view){
+const timing=duration(gif.frames);
+const fps=rate(gif.frames.length,timing.real);
+el.fileName.textContent=view.name;
+el.factVersion.textContent=`GIF${gif.version}`;
+el.factCanvas.textContent=`${gif.width} × ${gif.height}`;
+el.factSize.textContent=fileSize(gif.size);
+el.factSize.title=exact(gif.size);
+el.factFrames.textContent=count(gif.frames.length);
+el.factWritten.textContent=gif.frames.length?clock(timing.nominal):'—';
+if(timing.clamped>0){
+el.factPlays.textContent=`${clock(timing.real)}${fps ? ` (${fps.toFixed(1)} fps)` : ''}`;
+el.factPlays.className='warn';
+el.factPlays.title=`${count(timing.clamped)} frames ask for less than 0.02s and every `
++'browser holds them for 0.10s instead.';
+}else{
+el.factPlays.textContent=gif.frames.length
+?`${clock(timing.real)}${fps ? ` (${fps.toFixed(1)} fps)` : ''}`
+:'—';
+el.factPlays.className='';
+el.factPlays.title='';
+}
+el.factLoops.textContent=gif.loop===null
+?'once — no loop block'
+:gif.loop===0?'forever':`${count(gif.loop)} times`;
+el.factColors.textContent=plural(view.colors,'colour','colours');
+}
+const LEVEL_MARK={bad:'✖',warn:'⚠',note:'•'};
+const LEVEL_NAME={bad:'Problem',warn:'Worth knowing',note:'Note'};
+function renderFindings(list){
+el.findings.replaceChildren();
+for(const finding of list){
+const item=document.createElement('li');
+item.className=`finding ${finding.level}`;
+const mark=document.createElement('span');
+mark.className='finding-mark';
+mark.textContent=LEVEL_MARK[finding.level];
+mark.title=LEVEL_NAME[finding.level];
+const body=document.createElement('div');
+body.innerHTML=`<strong>${finding.title}</strong> ${finding.body}`;
+item.append(mark,body);
+el.findings.append(item);
+}
+}
+function renderBudget(gif,plan){
+el.budgetBar.replaceChildren();
+el.budgetRows.replaceChildren();
+el.budgetTotal.textContent=exact(gif.size);
+for(const row of plan.rows){
+if(row.bytes===0&&row.key!=='pixels')continue;
+const slice=document.createElement('span');
+slice.className=`slice slice-${row.key}`;
+slice.style.width=`${row.share * 100}%`;
+slice.title=`${row.label}: ${fileSize(row.bytes)}`;
+el.budgetBar.append(slice);
+const line=document.createElement('tr');
+const head=document.createElement('th');
+head.scope='row';
+const swatch=document.createElement('span');
+swatch.className=`key key-${row.key}`;
+const label=document.createElement('span');
+label.textContent=row.label;
+const note=document.createElement('span');
+note.className='budget-note';
+note.textContent=row.note;
+head.append(swatch,label,note);
+const size=document.createElement('td');
+size.className='num';
+size.textContent=count(row.bytes);
+const portion=document.createElement('td');
+portion.className='num';
+portion.textContent=percent(row.share);
+line.append(head,size,portion);
+el.budgetRows.append(line);
+}
+}
+function renderFrames(gif,drawn){
+el.frames.replaceChildren();
+shown=0;
+const undrawn=drawn.filter((frame)=>frame===null).length;
+const full=gif.frames.filter((frame)=>isFullCanvas(gif,frame)).length;
+el.framesLede.textContent=undrawn>0
+?`${plural(gif.frames.length, 'frame', 'frames')}. `
++`${count(gif.frames.length - undrawn)} of them are drawn here; the rest are too large `
++'to hold in memory all at once and are reported from their headers alone.'
+:`${plural(gif.frames.length, 'frame', 'frames')}, `
++`${full === 0 ? 'none' : full === gif.frames.length ? 'all' : count(full)} of them `
++'covering the whole canvas.';
+more(gif,drawn);
+}
+function more(gif,drawn){
+const end=Math.min(gif.frames.length,shown+FIRST_PAGE);
+for(let index=shown;index<end;index+=1){
+el.frames.append(frameCard(gif,gif.frames[index],drawn[index]));
+}
+shown=end;
+const left=gif.frames.length-shown;
+el.showMore.hidden=left<=0;
+el.showMore.textContent=`Show the other ${plural(left, 'frame', 'frames')}`;
+}
+function frameCard(gif,frame,drawn){
+const item=document.createElement('li');
+item.className='frame';
+const figure=document.createElement('div');
+figure.className='frame-shot';
+if(drawn){
+figure.append(el.frameView.value==='stored'?drawn.stored:drawn.composited);
+}else{
+const blank=document.createElement('p');
+blank.className='frame-blank';
+blank.textContent='not drawn';
+figure.append(blank);
+}
+const heading=document.createElement('p');
+heading.className='frame-head';
+heading.textContent=`Frame ${frame.index + 1}`;
+const rows=[
+['Delay',delay(frame.delay)+(frame.delay<2?' → 0.10s':'')],
+['Rectangle',`${frame.width} × ${frame.height} at ${frame.left}, ${frame.top}`],
+['Disposal',DISPOSALS[frame.disposal]??`Reserved (${frame.disposal})`],
+['Palette',frame.palette
+?`${count(frame.palette.count)} of its own`
+:gif.globalPalette?'the global one':'none at all'],
+['Transparent',frame.transparentIndex>=0?`index ${frame.transparentIndex}`:'no'],
+['Size',`${fileSize(frame.bytes)} — ${percent(frame.bytes / gif.size)}`],
+];
+if(frame.interlaced)rows.push(['Interlaced','yes']);
+if(drawn&&drawn.ratio>0)rows.push(['Compressed',`${drawn.ratio.toFixed(1)}×`]);
+if(drawn&&(drawn.corrupt||drawn.truncated)){
+rows.push(['Trouble',drawn.corrupt??'the data ends early']);
+}
+const list=document.createElement('dl');
+list.className='frame-facts';
+for(const[label,value]of rows){
+const pair=document.createElement('div');
+const term=document.createElement('dt');
+term.textContent=label;
+const detail=document.createElement('dd');
+detail.textContent=value;
+pair.append(term,detail);
+list.append(pair);
+}
+item.append(figure,heading,list);
+return item;
+}
+el.frameView.addEventListener('change',()=>{
+if(!current)return;
+const{gif,drawn}=current;
+el.frames.replaceChildren();
+const upTo=shown;
+shown=0;
+while(shown<upTo)more(gif,drawn);
+});
+el.showMore.addEventListener('click',()=>{
+if(current)more(current.gif,current.drawn);
+});
+function renderColors(gif,view,used){
+const locals=gif.frames.filter((frame)=>frame.palette);
+const waste=view.waste;
+el.colorsLede.textContent='The tables in this file declare '
++`${plural(waste.declared, 'colour', 'colours')} between them, the pixels refer to `
++`${count(waste.referenced)} of those, and ${count(view.colors)} of those are different `
++'from each other.';
+el.globalPaletteWrap.hidden=!gif.globalPalette;
+if(gif.globalPalette){
+const union=new Uint8Array(256);
+for(const[index,frame]of gif.frames.entries()){
+if(frame.palette||!used[index])continue;
+for(let at=0;at<256;at+=1)if(used[index][at])union[at]=1;
+}
+const sharing=gif.frames.filter((frame)=>!frame.palette).length;
+el.globalPaletteNote.textContent=`${plural(gif.globalPalette.count, 'entry', 'entries')}, `
++`${fileSize(gif.globalPalette.bytes)}, shared by `
++`${plural(sharing, 'frame', 'frames')}. `
++'Faded entries are ones no pixel ever refers to.';
+el.globalPalette.replaceChildren(...swatches(gif.globalPalette,union));
+}
+el.localPalettesWrap.hidden=locals.length===0;
+if(locals.length>0){
+el.localPalettesSummary.textContent=`${plural(locals.length, 'per-frame table', 'per-frame tables')} `
++`(${fileSize(locals.reduce((sum, frame) => sum + frame.palette.bytes, 0))} in total)`;
+el.localPalettes.replaceChildren();
+for(const frame of locals.slice(0,24)){
+const heading=document.createElement('h4');
+heading.textContent=`Frame ${frame.index + 1} — `
++`${plural(frame.palette.count, 'colour', 'colours')}`;
+const list=document.createElement('ul');
+list.className='palette';
+list.append(...swatches(frame.palette,used[frame.index]));
+el.localPalettes.append(heading,list);
+}
+if(locals.length>24){
+const note=document.createElement('p');
+note.className='palette-note';
+note.textContent=`The first 24 of ${count(locals.length)} are shown. `
++'The rest are in the downloadable report.';
+el.localPalettes.append(note);
+}
+}
+}
+function swatches(palette,used){
+const out=[];
+for(let index=0;index<palette.count;index+=1){
+const item=document.createElement('li');
+const code=hex(palette.colors,index);
+item.className=used&&!used[index]?'swatch unused':'swatch';
+item.style.background=code;
+item.title=used&&!used[index]
+?`${index}: ${code} — never used`
+:`${index}: ${code}`;
+out.push(item);
+}
+return out;
+}
+function renderExtras(gif){
+el.extras.replaceChildren();
+for(const extension of gif.extensions){
+const item=document.createElement('li');
+const head=document.createElement('p');
+head.className='extra-head';
+head.textContent=`${extension.name} — ${fileSize(extension.bytes)}`;
+item.append(head);
+const what=document.createElement('p');
+what.className='extra-note';
+what.textContent=describe(extension);
+item.append(what);
+if(extension.text){
+const body=document.createElement('pre');
+body.className='extra-text';
+const text=extension.text.trim();
+body.textContent=text.length>4000?`${text.slice(0, 4000)}…`:text;
+item.append(body);
+}
+el.extras.append(item);
+}
+}
+function describe(extension){
+if(extension.kind==='comment'){
+return'A comment. No viewer shows it, and every copy of the file carries it.';
+}
+if(extension.loop!==undefined){
+return extension.loop===0
+?'The loop block, saying to play forever. It is not part of the GIF specification: '
++'Netscape invented it in 1995 and everything implemented it anyway.'
+:`The loop block, saying to play ${plural(extension.loop, 'time', 'times')}.`;
+}
+if(extension.name.startsWith('XMP')){
+return'An XMP packet: the XML an image editor writes to record what it did. Nothing '
++'draws it.';
+}
+if(extension.name.startsWith('ICCRGBG1')){
+return'An ICC colour profile, saying what the palette’s numbers mean as colours. '
++'Almost nothing reads one out of a GIF.';
+}
+if(extension.kind==='plain-text'){
+return'A plain-text block, which asks the viewer to draw text over the picture. It was '
++'in the 1989 specification and was never implemented by anything.';
+}
+return'An application block. Viewers skip the ones they do not recognise.';
+}
+el.downloadReport.addEventListener('click',()=>{
+if(!current)return;
+const text=report(current.gif,current.view);
+const blob=new Blob([text],{type:'text/plain'});
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=`${current.name.replace(/\.gif$/i, '')}-analysis.txt`;
+link.click();
+setTimeout(()=>URL.revokeObjectURL(url),10_000);
+});
+el.copyReport.addEventListener('click',async()=>{
+if(!current)return;
+const text=report(current.gif,current.view);
+try{
+await navigator.clipboard.writeText(text);
+el.copyStatus.textContent='Copied. It is plain text, and it went to your clipboard only.';
+}catch{
+el.copyStatus.textContent='This browser would not let the page write to the clipboard. '
++'Use "Download it" instead.';
+}
+});
+function showError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function hideError(){
+el.loadError.hidden=true;
+el.copyStatus.textContent='';
+}
+el.privacyToggle?.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+el.networkCount.textContent=clean
+?`your GIF has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

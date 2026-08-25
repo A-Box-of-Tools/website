@@ -1,2 +1,61 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const a=1768124019,h=8,l=[{type:"icp4",px:16,role:"icon_16x16"},{type:"ic11",px:32,role:"icon_16x16@2x"},{type:"icp5",px:32,role:"icon_32x32"},{type:"ic12",px:64,role:"icon_32x32@2x"},{type:"ic07",px:128,role:"icon_128x128"},{type:"ic13",px:256,role:"icon_128x128@2x"},{type:"ic08",px:256,role:"icon_256x256"},{type:"ic14",px:512,role:"icon_256x256@2x"},{type:"ic09",px:512,role:"icon_512x512"},{type:"ic10",px:1024,role:"icon_512x512@2x"}],p=[...new Set(l.map(({px:e})=>e))];function f(e){if(!e.length)throw new Error("an icon needs at least one image in it.");for(const t of e)if(t.type.length!==4)throw new Error(`"${t.type}" is not a four-letter icns type.`);const r=8+e.reduce((t,n)=>t+8+n.data.length,0),o=new Uint8Array(r),c=new DataView(o.buffer);c.setUint32(0,1768124019,!1),c.setUint32(4,r,!1);let E=8;for(const t of e){for(let n=0;n<4;n+=1)o[E+n]=t.type.charCodeAt(n);c.setUint32(E+4,8+t.data.length,!1),o.set(t.data,E+8),E+=8+t.data.length}return o}function s(e){if(e.length<8)throw new Error("not an .icns: too short to hold a header.");const r=new DataView(e.buffer,e.byteOffset,e.byteLength);if(r.getUint32(0,!1)!==1768124019)throw new Error('not an .icns: the magic is not "icns".');const o=r.getUint32(4,!1);if(o!==e.length)throw new Error(`the header claims ${o} bytes and the file is ${e.length}.`);const c=new Map(l.map(({type:n,px:i})=>[n,i])),E=[];let t=8;for(;t<e.length;){if(t+8>e.length)throw new Error("an element runs past the end of the file.");const n=String.fromCharCode(e[t],e[t+1],e[t+2],e[t+3]),i=r.getUint32(t+4,!1);if(i<8||t+i>e.length)throw new Error(`the ${n} element claims a length the file cannot hold.`);E.push({type:n,px:c.get(n)??null,bytes:i-8}),t+=i}return E}export{p as ICNS_SIZES,l as ICNS_TYPES,s as readIcnsElements,f as writeIcns};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MAGIC=0x69636e73;
+const ELEMENT_HEADER=8;
+export const ICNS_TYPES=[
+{type:'icp4',px:16,role:'icon_16x16'},
+{type:'ic11',px:32,role:'icon_16x16@2x'},
+{type:'icp5',px:32,role:'icon_32x32'},
+{type:'ic12',px:64,role:'icon_32x32@2x'},
+{type:'ic07',px:128,role:'icon_128x128'},
+{type:'ic13',px:256,role:'icon_128x128@2x'},
+{type:'ic08',px:256,role:'icon_256x256'},
+{type:'ic14',px:512,role:'icon_256x256@2x'},
+{type:'ic09',px:512,role:'icon_512x512'},
+{type:'ic10',px:1024,role:'icon_512x512@2x'},
+];
+export const ICNS_SIZES=[...new Set(ICNS_TYPES.map(({px})=>px))];
+export function writeIcns(elements){
+if(!elements.length)throw new Error('an icon needs at least one image in it.');
+for(const element of elements){
+if(element.type.length!==4){
+throw new Error(`"${element.type}" is not a four-letter icns type.`);
+}
+}
+const total=ELEMENT_HEADER
++elements.reduce((n,element)=>n+ELEMENT_HEADER+element.data.length,0);
+const out=new Uint8Array(total);
+const view=new DataView(out.buffer);
+view.setUint32(0,MAGIC,false);
+view.setUint32(4,total,false);
+let at=ELEMENT_HEADER;
+for(const element of elements){
+for(let i=0;i<4;i+=1)out[at+i]=element.type.charCodeAt(i);
+view.setUint32(at+4,ELEMENT_HEADER+element.data.length,false);
+out.set(element.data,at+ELEMENT_HEADER);
+at+=ELEMENT_HEADER+element.data.length;
+}
+return out;
+}
+export function readIcnsElements(bytes){
+if(bytes.length<ELEMENT_HEADER)throw new Error('not an .icns: too short to hold a header.');
+const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+if(view.getUint32(0,false)!==MAGIC)throw new Error('not an .icns: the magic is not "icns".');
+const claimed=view.getUint32(4,false);
+if(claimed!==bytes.length){
+throw new Error(`the header claims ${claimed} bytes and the file is ${bytes.length}.`);
+}
+const sizeOf=new Map(ICNS_TYPES.map(({type,px})=>[type,px]));
+const found=[];
+let at=ELEMENT_HEADER;
+while(at<bytes.length){
+if(at+ELEMENT_HEADER>bytes.length)throw new Error('an element runs past the end of the file.');
+const type=String.fromCharCode(bytes[at],bytes[at+1],bytes[at+2],bytes[at+3]);
+const length=view.getUint32(at+4,false);
+if(length<ELEMENT_HEADER||at+length>bytes.length){
+throw new Error(`the ${type} element claims a length the file cannot hold.`);
+}
+found.push({type,px:sizeOf.get(type)??null,bytes:length-ELEMENT_HEADER});
+at+=length;
+}
+return found;
+}

@@ -1,2 +1,49 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function g(e,n){const a=e[0].length,i=new Float32Array(n),h=new Float32Array(n),r=a/n;for(let t=0;t<n;t+=1){const o=Math.floor(t*r),m=Math.max(o+1,Math.min(a,Math.floor((t+1)*r)));let c=0,l=0;for(const f of e)for(let d=o;d<m;d+=1){const s=f[d];s<c&&(c=s),s>l&&(l=s)}i[t]=c,h[t]=l}return{low:i,high:h}}function M(e,n){const a=getComputedStyle(e),i=Math.max(1,Math.round(e.clientWidth)),h=Math.max(1,Math.round(e.clientHeight)),r=Math.min(2,window.devicePixelRatio||1);e.width=Math.round(i*r),e.height=Math.round(h*r);const t=e.getContext("2d");t.scale(r,r),t.clearRect(0,0,i,h);const o=h/2;if(t.strokeStyle=a.getPropertyValue("--wave-line")||"#888",t.lineWidth=1,t.beginPath(),t.moveTo(0,o+.5),t.lineTo(i,o+.5),t.stroke(),!n?.length||!n[0].length)return;const{low:m,high:c}=g(n,i);t.fillStyle=a.getPropertyValue("--wave-fill")||"#5b9bd8";for(let l=0;l<i;l+=1){const f=o-Math.min(1,c[l])*o,d=o-Math.max(-1,m[l])*o;t.fillRect(l,f,1,Math.max(1,d-f))}}export{M as drawWaveform,g as envelope};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function envelope(channels,columns){
+const frames=channels[0].length;
+const low=new Float32Array(columns);
+const high=new Float32Array(columns);
+const perColumn=frames/columns;
+for(let column=0;column<columns;column+=1){
+const start=Math.floor(column*perColumn);
+const end=Math.max(start+1,Math.min(frames,Math.floor((column+1)*perColumn)));
+let lowest=0;
+let highest=0;
+for(const samples of channels){
+for(let i=start;i<end;i+=1){
+const value=samples[i];
+if(value<lowest)lowest=value;
+if(value>highest)highest=value;
+}
+}
+low[column]=lowest;
+high[column]=highest;
+}
+return{low,high};
+}
+export function drawWaveform(canvas,channels){
+const style=getComputedStyle(canvas);
+const width=Math.max(1,Math.round(canvas.clientWidth));
+const height=Math.max(1,Math.round(canvas.clientHeight));
+const density=Math.min(2,window.devicePixelRatio||1);
+canvas.width=Math.round(width*density);
+canvas.height=Math.round(height*density);
+const context=canvas.getContext('2d');
+context.scale(density,density);
+context.clearRect(0,0,width,height);
+const middle=height/2;
+context.strokeStyle=style.getPropertyValue('--wave-line')||'#888';
+context.lineWidth=1;
+context.beginPath();
+context.moveTo(0,middle+0.5);
+context.lineTo(width,middle+0.5);
+context.stroke();
+if(!channels?.length||!channels[0].length)return;
+const{low,high}=envelope(channels,width);
+context.fillStyle=style.getPropertyValue('--wave-fill')||'#5b9bd8';
+for(let column=0;column<width;column+=1){
+const top=middle-Math.min(1,high[column])*middle;
+const bottom=middle-Math.max(-1,low[column])*middle;
+context.fillRect(column,top,1,Math.max(1,bottom-top));
+}
+}

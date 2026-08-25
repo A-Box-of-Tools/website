@@ -1,2 +1,121 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const _=4096;function $(u,t,l){if(t<2||t>8)return X(l,`the code size is ${t}, and the format allows 2 to 8`);const i=1<<t,c=i+1,A=new Uint8Array(l),b=new Uint16Array(4096),d=new Uint8Array(4096),w=new Uint8Array(4096);for(let e=0;e<i;e+=1)d[e]=e;let r=c+1,a=t+1,o=-1,k=0,h=0,y=0,f=0,D=0,p=0,E=!1,O=!1,M=null;e:for(;;){for(;h<a;){if(y>=u.length){O=!0;break e}k|=u[y]<<h,y+=1,h+=8}const e=k&(1<<a)-1;if(k>>=a,h-=a,D+=1,e===i){r=c+1,a=t+1,o=-1,p+=1;continue}if(e===c){E=!0;break}if(o<0){if(e>=i){M=`code ${e} came first, before the dictionary held anything`;break}f<l&&(A[f]=d[e]),f+=1,o=e;continue}let s=e,n=0;if(e>r){M=`code ${e} refers to dictionary entry ${e}, and only ${r} exist`;break}for(e===r&&(w[n]=U(b,d,i,o),n+=1,s=o);s>=i;)w[n]=d[s],n+=1,s=b[s];for(w[n]=s,n+=1;n>0;)n-=1,f<l&&(A[f]=w[n]),f+=1;r<4096&&(b[r]=o,d[r]=s,r+=1,r===1<<a&&a<12&&(a+=1)),o=e}return{indices:A,pixels:Math.min(f,l),overrun:Math.max(0,f-l),codes:D,clears:p,bytesRead:y,complete:E,truncated:O,corrupt:M}}function U(u,t,l,i){let c=i;for(;c>=l;)c=u[c];return c}function X(u,t){return{indices:new Uint8Array(u),pixels:0,overrun:0,codes:0,clears:0,bytesRead:0,complete:!1,truncated:!1,corrupt:t}}export{$ as lzwDecode};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MAX_CODES=4096;
+export function lzwDecode(data,minCodeSize,pixelCount){
+if(minCodeSize<2||minCodeSize>8){
+return fail(pixelCount,`the code size is ${minCodeSize}, and the format allows 2 to 8`);
+}
+const clearCode=1<<minCodeSize;
+const endCode=clearCode+1;
+const indices=new Uint8Array(pixelCount);
+const prefix=new Uint16Array(MAX_CODES);
+const suffix=new Uint8Array(MAX_CODES);
+const stack=new Uint8Array(MAX_CODES);
+for(let code=0;code<clearCode;code+=1)suffix[code]=code;
+let next=endCode+1;
+let width=minCodeSize+1;
+let previous=-1;
+let bitBuffer=0;
+let bitCount=0;
+let at=0;
+let out=0;
+let codes=0;
+let clears=0;
+let complete=false;
+let truncated=false;
+let corrupt=null;
+reading:while(true){
+while(bitCount<width){
+if(at>=data.length){
+truncated=true;
+break reading;
+}
+bitBuffer|=data[at]<<bitCount;
+at+=1;
+bitCount+=8;
+}
+const code=bitBuffer&((1<<width)-1);
+bitBuffer>>=width;
+bitCount-=width;
+codes+=1;
+if(code===clearCode){
+next=endCode+1;
+width=minCodeSize+1;
+previous=-1;
+clears+=1;
+continue;
+}
+if(code===endCode){
+complete=true;
+break;
+}
+if(previous<0){
+if(code>=clearCode){
+corrupt=`code ${code} came first, before the dictionary held anything`;
+break;
+}
+if(out<pixelCount)indices[out]=suffix[code];
+out+=1;
+previous=code;
+continue;
+}
+let walk=code;
+let top=0;
+if(code>next){
+corrupt=`code ${code} refers to dictionary entry ${code}, and only ${next} exist`;
+break;
+}
+if(code===next){
+stack[top]=firstByte(prefix,suffix,clearCode,previous);
+top+=1;
+walk=previous;
+}
+while(walk>=clearCode){
+stack[top]=suffix[walk];
+top+=1;
+walk=prefix[walk];
+}
+stack[top]=walk;
+top+=1;
+while(top>0){
+top-=1;
+if(out<pixelCount)indices[out]=stack[top];
+out+=1;
+}
+if(next<MAX_CODES){
+prefix[next]=previous;
+suffix[next]=walk;
+next+=1;
+if(next===(1<<width)&&width<12)width+=1;
+}
+previous=code;
+}
+return{
+indices,
+pixels:Math.min(out,pixelCount),
+overrun:Math.max(0,out-pixelCount),
+codes,
+clears,
+bytesRead:at,
+complete,
+truncated,
+corrupt,
+};
+}
+function firstByte(prefix,suffix,clearCode,code){
+let walk=code;
+while(walk>=clearCode)walk=prefix[walk];
+return walk;
+}
+function fail(pixelCount,why){
+return{
+indices:new Uint8Array(pixelCount),
+pixels:0,
+overrun:0,
+codes:0,
+clears:0,
+bytesRead:0,
+complete:false,
+truncated:false,
+corrupt:why,
+};
+}

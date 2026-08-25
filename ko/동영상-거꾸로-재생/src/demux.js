@@ -1,2 +1,472 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-class m extends Error{constructor(e){super(e),this.name="UnsupportedFile",this.reason=e}}function L(t,e){return String.fromCharCode(t.getUint8(e),t.getUint8(e+1),t.getUint8(e+2),t.getUint8(e+3))}function*F(t,e,s){let o=e;for(;o+8<=s;){let n=t.getUint32(o);const a=L(t,o+4);let d=8;if(n===1){if(o+16>s)return;n=Number(t.getBigUint64(o+8)),d=16}else n===0&&(n=s-o);if(n<d||o+n>s)return;yield{type:a,start:o,body:o+d,end:o+n},o+=n}}function U(t,e,s,o){for(const n of F(t,e,s))if(n.type===o)return n;return null}function T(t,e,...s){let o=e;for(const n of s){if(!o)return null;o=U(t,o.body,o.end,n)}return o}function k(t,e){return{version:t.getUint8(e.body),flags:t.getUint32(e.body)&16777215,at:e.body+4}}class w{constructor(e,s=8<<20){this.file=e,this.windowSize=s,this.start=0,this.bytes=new Uint8Array(0)}async read(e,s){if(e<this.start||e+s>this.start+this.bytes.length){const n=Math.max(this.windowSize,s),a=Math.min(this.file.size,e+n);this.start=e,this.bytes=new Uint8Array(await this.file.slice(e,a).arrayBuffer())}const o=e-this.start;if(o+s>this.bytes.length)throw new m("the file ends in the middle of a frame.");return this.bytes.subarray(o,o+s)}}async function P(t){const e=[];let s=0;for(;s+8<=t.size;){const o=new DataView(await t.slice(s,Math.min(t.size,s+16)).arrayBuffer());if(o.byteLength<8)break;let n=o.getUint32(0);const a=L(o,4);let d=8;if(n===1){if(o.byteLength<16)break;n=Number(o.getBigUint64(8)),d=16}else n===0&&(n=t.size-s);if(n<d)break;e.push({type:a,start:s,body:s+d,end:s+n}),s+=n}return e}const W=t=>t.toString(16).padStart(2,"0");function R(t,e){if(e.length<4)throw new m("the H.264 configuration record is too short.");return`${t}.${W(e[1])}${W(e[2])}${W(e[3])}`}function j(t,e){if(e.length<13)throw new m("the HEVC configuration record is too short.");const s=["","A","B","C"][e[1]>>6&3],o=e[1]>>5&1?"H":"L",n=e[1]&31;let a=0;for(let i=0;i<4;i++)a=a<<8|e[2+i];let d=0;for(let i=0;i<32;i++)d=d<<1|a>>>i&1;const r=[];for(let i=6;i<=11;i++)r.push(e[i]);for(;r.length&&r[r.length-1]===0;)r.pop();return[`${t}.${s}${n}`,(d>>>0).toString(16),`${o}${e[12]}`,...r.map(i=>i.toString(16).toUpperCase())].join(".")}function _(t){if(t.length<3)throw new m("the AV1 configuration record is too short.");const e=t[1]>>5&7,s=t[1]&31,o=t[2]>>7&1?"H":"M",n=t[2]>>6&1,a=t[2]>>5&1,d=n?a?12:10:8;return`av01.${e}.${String(s).padStart(2,"0")}${o}.${String(d).padStart(2,"0")}`}function q(t,e){const{at:s}=k(t,e),o=t.getUint8(s),n=t.getUint8(s+1),a=t.getUint8(s+2)>>4&15;return`vp09.${String(o).padStart(2,"0")}.${String(n).padStart(2,"0")}.${String(a).padStart(2,"0")}`}function K(t,e){const s=U(t,e.body,e.end,"stts"),o=U(t,e.body,e.end,"stsc"),n=U(t,e.body,e.end,"stsz"),a=U(t,e.body,e.end,"stco")??U(t,e.body,e.end,"co64"),d=U(t,e.body,e.end,"ctts"),r=U(t,e.body,e.end,"stss");if(!n&&U(t,e.body,e.end,"stz2"))throw new m("sample sizes are in a compact table this reader does not decode.");if(!s||!o||!n||!a)throw new m("the sample tables are incomplete.");const i=k(t,n),f=t.getUint32(i.at),y=t.getUint32(i.at+4),g=c=>f||t.getUint32(i.at+8+c*4),l=new Float64Array(y);{const c=k(t,s),B=t.getUint32(c.at);let u=0,b=0;for(let H=0;H<B&&u<y;H++){const V=t.getUint32(c.at+4+H*8),E=t.getUint32(c.at+8+H*8);for(let D=0;D<V&&u<y;D++)l[u++]=b,b+=E}for(;u<y;u++)l[u]=b,b+=1}const S=new Float64Array(y);if(d){const c=k(t,d),B=t.getUint32(c.at);let u=0;for(let b=0;b<B&&u<y;b++){const H=t.getUint32(c.at+4+b*8),V=c.version===1?t.getInt32(c.at+8+b*8):t.getUint32(c.at+8+b*8);for(let E=0;E<H&&u<y;E++)S[u++]=V}}let h=null;if(r){const c=k(t,r),B=t.getUint32(c.at);h=new Set;for(let u=0;u<B;u++)h.add(t.getUint32(c.at+4+u*4)-1)}const z=k(t,a),M=t.getUint32(z.at),N=a.type==="co64",A=c=>N?Number(t.getBigUint64(z.at+4+c*8)):t.getUint32(z.at+4+c*4),$=k(t,o),O=t.getUint32($.at),I=[];for(let c=0;c<O;c++)I.push({first:t.getUint32($.at+4+c*12)-1,perChunk:t.getUint32($.at+8+c*12)});if(!I.length)throw new m("the chunk table is empty.");const x=[];let p=0,C=0;for(let c=0;c<M&&p<y;c++){for(;C+1<I.length&&I[C+1].first<=c;)C++;let B=A(c);for(let u=0;u<I[C].perChunk&&p<y;u++){const b=g(p);x.push({offset:B,size:b,dts:l[p],pts:l[p]+S[p],isKey:h?h.has(p):!0}),B+=b,p++}}if(!x.length)throw new m("the track holds no samples.");return x}function G(t,e){const s=new Map,o=U(t,e.body,e.end,"mvex");if(!o)return s;for(const n of F(t,o.body,o.end)){if(n.type!=="trex")continue;const{at:a}=k(t,n);s.set(t.getUint32(a),{duration:t.getUint32(a+8),size:t.getUint32(a+12),flags:t.getUint32(a+16)})}return s}async function J(t,e,s,o){const n=new Map;for(const a of e){if(a.type!=="moof")continue;const d=new Uint8Array(await t.slice(a.start,a.end).arrayBuffer()),r=new DataView(d.buffer),i={body:a.body-a.start,end:d.length};for(const f of F(r,i.body,i.end)){if(f.type!=="traf")continue;const y=U(r,f.body,f.end,"tfhd");if(!y)continue;const g=k(r,y);let l=g.at;const S=r.getUint32(l);l+=4;let h=a.start;g.flags&1&&(h=Number(r.getBigUint64(l)),l+=8),g.flags&2&&(l+=4);const z=s.get(S)??{duration:0,size:0,flags:0};let M=z.duration,N=z.size,A=z.flags;g.flags&8&&(M=r.getUint32(l),l+=4),g.flags&16&&(N=r.getUint32(l),l+=4),g.flags&32&&(A=r.getUint32(l),l+=4);const $=o.get(S);if(!$)continue;let O=n.get(S)??0;const I=U(r,f.body,f.end,"tfdt");if(I){const p=k(r,I);O=p.version===1?Number(r.getBigUint64(p.at)):r.getUint32(p.at)}let x=h;for(const p of F(r,f.body,f.end)){if(p.type!=="trun")continue;const C=k(r,p);let c=C.at;const B=r.getUint32(c);c+=4,C.flags&1&&(x=h+r.getInt32(c),c+=4);let u=null;C.flags&4&&(u=r.getUint32(c),c+=4);for(let b=0;b<B;b++){let H=M,V=N,E=b===0&&u!==null?u:A,D=0;C.flags&256&&(H=r.getUint32(c),c+=4),C.flags&512&&(V=r.getUint32(c),c+=4),C.flags&1024&&(E=r.getUint32(c),c+=4),C.flags&2048&&(D=C.version===0?r.getUint32(c):r.getInt32(c),c+=4),$.push({offset:x,size:V,dts:O,pts:O+D,isKey:(E&65536)===0}),x+=V,O+=H}}n.set(S,O)}}return n}function Q(t,e){const s=t.getInt32(e)/65536,o=t.getInt32(e+4)/65536,n=t.getInt32(e+12)/65536,a=t.getInt32(e+16)/65536;if(s===0&&a===0){if(o===1&&n===-1)return 90;if(o===-1&&n===1)return 270}return s===-1&&a===-1?180:0}const X=new Set(["avc1","avc3","hvc1","hev1","av01","vp09"]);function Y(t,e,s,o,n){const a=U(t,e.body,e.end,"tkhd"),d=T(t,e,"mdia","minf","stbl");if(!a||!d)throw new m("the video track is missing its sample tables.");const r=k(t,a),i=t.getUint32(r.at+(r.version===1?16:8)),f=Q(t,a.end-44),y=new Uint8Array(t.buffer.slice(t.byteOffset+a.end-44,t.byteOffset+a.end-8)),g=t.getUint32(a.end-8),l=t.getUint32(a.end-4),S=U(t,d.body,d.end,"stsd");if(!S)throw new m("the video track has no sample description.");const[h]=[...F(t,k(t,S).at+4,S.end)];if(!h)throw new m("the video sample description is empty.");if(h.type==="encv"||U(t,h.body+78,h.end,"sinf"))throw new m("the video track is encrypted.");if(!X.has(h.type))throw new m(`the video is stored as "${h.type}", which this reader does not know.`);const z=t.getUint16(h.body+24),M=t.getUint16(h.body+26),N=new Uint8Array(t.buffer.slice(t.byteOffset+h.start,t.byteOffset+h.end));let A=null,$=null;for(const x of F(t,h.body+78,h.end)){const p=()=>new Uint8Array(t.buffer.slice(t.byteOffset+x.body,t.byteOffset+x.end));if(x.type==="avcC"?($=p(),A=R(h.type==="avc3"?"avc3":"avc1",$)):x.type==="hvcC"?($=p(),A=j(h.type==="hev1"?"hev1":"hvc1",$)):x.type==="av1C"?($=p(),A=_($)):x.type==="vpcC"&&(A=q(t,x)),A)break}if(!A)throw new m(`the "${h.type}" track carries no decoder configuration.`);const O=n?[]:K(t,d),I=f===90||f===270;return{trackId:i,codec:A,description:$,sampleEntry:N,matrix:y,trackWidth:g,trackHeight:l,entryType:h.type,codedWidth:z,codedHeight:M,displayWidth:I?M:z,displayHeight:I?z:M,rotation:f,timescale:s,duration:o,samples:O}}function Z(t,e,s,o,n){const a=U(t,e.body,e.end,"tkhd"),d=T(t,e,"mdia","minf","stbl"),r=d&&U(t,d.body,d.end,"stsd");if(!r||!a)return null;const[i]=[...F(t,k(t,r).at+4,r.end)];if(!i||i.type==="enca"||U(t,i.body+28,i.end,"sinf"))return null;const f=k(t,a);return{trackId:t.getUint32(f.at+(f.version===1?16:8)),sampleEntry:new Uint8Array(t.buffer.slice(t.byteOffset+i.start,t.byteOffset+i.end)),entryType:i.type,channels:t.getUint16(i.body+16),sampleRate:t.getUint32(i.body+24)/65536,timescale:s,duration:o,samples:n?[]:K(t,d)}}async function v(t){const e=await P(t);if(!e.some(f=>f.type==="ftyp"||f.type==="moov"))throw new m("this is not an MP4 or MOV file.");const s=e.find(f=>f.type==="moov");if(!s)throw new m("the file has no movie header.");const o=new Uint8Array(await t.slice(s.start,s.end).arrayBuffer()),n=new DataView(o.buffer),a={body:s.body-s.start,end:o.length},d=!!U(n,a.body,a.end,"mvex")||e.some(f=>f.type==="moof");let r=null,i=null;for(const f of F(n,a.body,a.end)){if(f.type!=="trak")continue;const y=T(n,f,"mdia","mdhd"),g=T(n,f,"mdia","hdlr");if(!y||!g)continue;const l=k(n,y),S=l.version===1?n.getUint32(l.at+16):n.getUint32(l.at+8),h=l.version===1?Number(n.getBigUint64(l.at+20)):n.getUint32(l.at+12),z=L(n,g.body+8);z==="vide"&&!r?r=Y(n,f,S,h,d):z==="soun"&&!i&&(i=Z(n,f,S,h,d))}if(!r)throw new m("the file has no video track this reader can use.");if(!r.timescale)throw new m("the video track has no timescale.");if(d){const f=new Map([[r.trackId,r.samples]]);i&&f.set(i.trackId,i.samples);const y=await J(t,e,G(n,a),f);if(!r.samples.length)throw new m("the fragments in this file hold no frames for its video track.");for(const g of[r,i]){const l=g&&y.get(g.trackId);g&&l&&l>g.duration&&(g.duration=l)}i&&!i.samples.length&&(i=null)}return{video:r,audio:i,duration:r.duration/r.timescale}}export{w as FileWindow,m as UnsupportedFile,v as demux};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export class UnsupportedFile extends Error{
+constructor(reason){
+super(reason);
+this.name='UnsupportedFile';
+this.reason=reason;
+}
+}
+function fourcc(view,at){
+return String.fromCharCode(
+view.getUint8(at),view.getUint8(at+1),view.getUint8(at+2),view.getUint8(at+3),
+);
+}
+function*boxes(view,start,end){
+let at=start;
+while(at+8<=end){
+let size=view.getUint32(at);
+const type=fourcc(view,at+4);
+let header=8;
+if(size===1){
+if(at+16>end)return;
+size=Number(view.getBigUint64(at+8));
+header=16;
+}else if(size===0){
+size=end-at;
+}
+if(size<header||at+size>end)return;
+yield{type,start:at,body:at+header,end:at+size};
+at+=size;
+}
+}
+function findBox(view,start,end,type){
+for(const box of boxes(view,start,end)){
+if(box.type===type)return box;
+}
+return null;
+}
+function findPath(view,box,...types){
+let current=box;
+for(const type of types){
+if(!current)return null;
+current=findBox(view,current.body,current.end,type);
+}
+return current;
+}
+function fullBox(view,box){
+return{
+version:view.getUint8(box.body),
+flags:view.getUint32(box.body)&0xffffff,
+at:box.body+4,
+};
+}
+export class FileWindow{
+constructor(file,windowSize=8<<20){
+this.file=file;
+this.windowSize=windowSize;
+this.start=0;
+this.bytes=new Uint8Array(0);
+}
+async read(offset,length){
+if(offset<this.start||offset+length>this.start+this.bytes.length){
+const size=Math.max(this.windowSize,length);
+const end=Math.min(this.file.size,offset+size);
+this.start=offset;
+this.bytes=new Uint8Array(await this.file.slice(offset,end).arrayBuffer());
+}
+const at=offset-this.start;
+if(at+length>this.bytes.length){
+throw new UnsupportedFile('the file ends in the middle of a frame.');
+}
+return this.bytes.subarray(at,at+length);
+}
+}
+async function topLevel(file){
+const found=[];
+let at=0;
+while(at+8<=file.size){
+const head=new DataView(await file.slice(at,Math.min(file.size,at+16)).arrayBuffer());
+if(head.byteLength<8)break;
+let size=head.getUint32(0);
+const type=fourcc(head,4);
+let header=8;
+if(size===1){
+if(head.byteLength<16)break;
+size=Number(head.getBigUint64(8));
+header=16;
+}else if(size===0){
+size=file.size-at;
+}
+if(size<header)break;
+found.push({type,start:at,body:at+header,end:at+size});
+at+=size;
+}
+return found;
+}
+const hex=(n)=>n.toString(16).padStart(2,'0');
+function avcCodec(prefix,config){
+if(config.length<4)throw new UnsupportedFile('the H.264 configuration record is too short.');
+return`${prefix}.${hex(config[1])}${hex(config[2])}${hex(config[3])}`;
+}
+function hevcCodec(prefix,config){
+if(config.length<13)throw new UnsupportedFile('the HEVC configuration record is too short.');
+const space=['','A','B','C'][(config[1]>>6)&0x3];
+const tier=((config[1]>>5)&0x1)?'H':'L';
+const profile=config[1]&0x1f;
+let compat=0;
+for(let i=0;i<4;i++)compat=(compat<<8)|config[2+i];
+let reversed=0;
+for(let i=0;i<32;i++)reversed=(reversed<<1)|((compat>>>i)&1);
+const constraints=[];
+for(let i=6;i<=11;i++)constraints.push(config[i]);
+while(constraints.length&&constraints[constraints.length-1]===0)constraints.pop();
+return[
+`${prefix}.${space}${profile}`,
+(reversed>>>0).toString(16),
+`${tier}${config[12]}`,
+...constraints.map((byte)=>byte.toString(16).toUpperCase()),
+].join('.');
+}
+function av1Codec(config){
+if(config.length<3)throw new UnsupportedFile('the AV1 configuration record is too short.');
+const profile=(config[1]>>5)&0x7;
+const level=config[1]&0x1f;
+const tier=((config[2]>>7)&0x1)?'H':'M';
+const high=(config[2]>>6)&0x1;
+const twelve=(config[2]>>5)&0x1;
+const depth=high?(twelve?12:10):8;
+return`av01.${profile}.${String(level).padStart(2, '0')}${tier}.${String(depth).padStart(2, '0')}`;
+}
+function vp9Codec(view,box){
+const{at}=fullBox(view,box);
+const profile=view.getUint8(at);
+const level=view.getUint8(at+1);
+const depth=(view.getUint8(at+2)>>4)&0xf;
+return`vp09.${String(profile).padStart(2, '0')}.${String(level).padStart(2, '0')}`
++`.${String(depth).padStart(2, '0')}`;
+}
+function readSamples(view,stbl){
+const stts=findBox(view,stbl.body,stbl.end,'stts');
+const stsc=findBox(view,stbl.body,stbl.end,'stsc');
+const stsz=findBox(view,stbl.body,stbl.end,'stsz');
+const stco=findBox(view,stbl.body,stbl.end,'stco')
+??findBox(view,stbl.body,stbl.end,'co64');
+const ctts=findBox(view,stbl.body,stbl.end,'ctts');
+const stss=findBox(view,stbl.body,stbl.end,'stss');
+if(!stsz&&findBox(view,stbl.body,stbl.end,'stz2')){
+throw new UnsupportedFile('sample sizes are in a compact table this reader does not decode.');
+}
+if(!stts||!stsc||!stsz||!stco){
+throw new UnsupportedFile('the sample tables are incomplete.');
+}
+const sizesHead=fullBox(view,stsz);
+const uniform=view.getUint32(sizesHead.at);
+const count=view.getUint32(sizesHead.at+4);
+const sizeAt=(index)=>(uniform||view.getUint32(sizesHead.at+8+index*4));
+const times=new Float64Array(count);
+{
+const head=fullBox(view,stts);
+const entries=view.getUint32(head.at);
+let sample=0;
+let clock=0;
+for(let e=0;e<entries&&sample<count;e++){
+const runs=view.getUint32(head.at+4+e*8);
+const delta=view.getUint32(head.at+8+e*8);
+for(let i=0;i<runs&&sample<count;i++){
+times[sample++]=clock;
+clock+=delta;
+}
+}
+for(;sample<count;sample++){
+times[sample]=clock;
+clock+=1;
+}
+}
+const offsets=new Float64Array(count);
+if(ctts){
+const head=fullBox(view,ctts);
+const entries=view.getUint32(head.at);
+let sample=0;
+for(let e=0;e<entries&&sample<count;e++){
+const runs=view.getUint32(head.at+4+e*8);
+const value=head.version===1
+?view.getInt32(head.at+8+e*8)
+:view.getUint32(head.at+8+e*8);
+for(let i=0;i<runs&&sample<count;i++)offsets[sample++]=value;
+}
+}
+let keyframes=null;
+if(stss){
+const head=fullBox(view,stss);
+const entries=view.getUint32(head.at);
+keyframes=new Set();
+for(let e=0;e<entries;e++)keyframes.add(view.getUint32(head.at+4+e*4)-1);
+}
+const chunkHead=fullBox(view,stco);
+const chunkCount=view.getUint32(chunkHead.at);
+const wide=stco.type==='co64';
+const chunkAt=(index)=>(wide
+?Number(view.getBigUint64(chunkHead.at+4+index*8))
+:view.getUint32(chunkHead.at+4+index*4));
+const runsHead=fullBox(view,stsc);
+const runCount=view.getUint32(runsHead.at);
+const runs=[];
+for(let r=0;r<runCount;r++){
+runs.push({
+first:view.getUint32(runsHead.at+4+r*12)-1,
+perChunk:view.getUint32(runsHead.at+8+r*12),
+});
+}
+if(!runs.length)throw new UnsupportedFile('the chunk table is empty.');
+const samples=[];
+let index=0;
+let run=0;
+for(let chunk=0;chunk<chunkCount&&index<count;chunk++){
+while(run+1<runs.length&&runs[run+1].first<=chunk)run++;
+let offset=chunkAt(chunk);
+for(let i=0;i<runs[run].perChunk&&index<count;i++){
+const size=sizeAt(index);
+samples.push({
+offset,
+size,
+dts:times[index],
+pts:times[index]+offsets[index],
+isKey:keyframes?keyframes.has(index):true,
+});
+offset+=size;
+index++;
+}
+}
+if(!samples.length)throw new UnsupportedFile('the track holds no samples.');
+return samples;
+}
+function fragmentDefaults(view,moov){
+const defaults=new Map();
+const mvex=findBox(view,moov.body,moov.end,'mvex');
+if(!mvex)return defaults;
+for(const trex of boxes(view,mvex.body,mvex.end)){
+if(trex.type!=='trex')continue;
+const{at}=fullBox(view,trex);
+defaults.set(view.getUint32(at),{
+duration:view.getUint32(at+8),
+size:view.getUint32(at+12),
+flags:view.getUint32(at+16),
+});
+}
+return defaults;
+}
+async function readFragments(file,top,defaults,wanted){
+const clocks=new Map();
+for(const fragment of top){
+if(fragment.type!=='moof')continue;
+const bytes=new Uint8Array(
+await file.slice(fragment.start,fragment.end).arrayBuffer());
+const view=new DataView(bytes.buffer);
+const moof={body:fragment.body-fragment.start,end:bytes.length};
+for(const traf of boxes(view,moof.body,moof.end)){
+if(traf.type!=='traf')continue;
+const tfhd=findBox(view,traf.body,traf.end,'tfhd');
+if(!tfhd)continue;
+const head=fullBox(view,tfhd);
+let at=head.at;
+const trackId=view.getUint32(at);
+at+=4;
+let base=fragment.start;
+if(head.flags&0x1){base=Number(view.getBigUint64(at));at+=8;}
+if(head.flags&0x2)at+=4;
+const fallback=defaults.get(trackId)??{duration:0,size:0,flags:0};
+let defaultDuration=fallback.duration;
+let defaultSize=fallback.size;
+let defaultFlags=fallback.flags;
+if(head.flags&0x8){defaultDuration=view.getUint32(at);at+=4;}
+if(head.flags&0x10){defaultSize=view.getUint32(at);at+=4;}
+if(head.flags&0x20){defaultFlags=view.getUint32(at);at+=4;}
+const samples=wanted.get(trackId);
+if(!samples)continue;
+let clock=clocks.get(trackId)??0;
+const tfdt=findBox(view,traf.body,traf.end,'tfdt');
+if(tfdt){
+const time=fullBox(view,tfdt);
+clock=time.version===1
+?Number(view.getBigUint64(time.at))
+:view.getUint32(time.at);
+}
+let offset=base;
+for(const trun of boxes(view,traf.body,traf.end)){
+if(trun.type!=='trun')continue;
+const run=fullBox(view,trun);
+let read=run.at;
+const count=view.getUint32(read);
+read+=4;
+if(run.flags&0x1){offset=base+view.getInt32(read);read+=4;}
+let firstFlags=null;
+if(run.flags&0x4){firstFlags=view.getUint32(read);read+=4;}
+for(let i=0;i<count;i++){
+let duration=defaultDuration;
+let size=defaultSize;
+let flags=i===0&&firstFlags!==null?firstFlags:defaultFlags;
+let composition=0;
+if(run.flags&0x100){duration=view.getUint32(read);read+=4;}
+if(run.flags&0x200){size=view.getUint32(read);read+=4;}
+if(run.flags&0x400){flags=view.getUint32(read);read+=4;}
+if(run.flags&0x800){
+composition=run.version===0?view.getUint32(read):view.getInt32(read);
+read+=4;
+}
+samples.push({
+offset,
+size,
+dts:clock,
+pts:clock+composition,
+isKey:(flags&0x10000)===0,
+});
+offset+=size;
+clock+=duration;
+}
+}
+clocks.set(trackId,clock);
+}
+}
+return clocks;
+}
+function rotationOf(view,at){
+const a=view.getInt32(at)/65536;
+const b=view.getInt32(at+4)/65536;
+const c=view.getInt32(at+12)/65536;
+const d=view.getInt32(at+16)/65536;
+if(a===0&&d===0){
+if(b===1&&c===-1)return 90;
+if(b===-1&&c===1)return 270;
+}
+if(a===-1&&d===-1)return 180;
+return 0;
+}
+const VIDEO_ENTRIES=new Set(['avc1','avc3','hvc1','hev1','av01','vp09']);
+function readVideoTrack(view,trak,timescale,duration,fragmented){
+const tkhd=findBox(view,trak.body,trak.end,'tkhd');
+const stbl=findPath(view,trak,'mdia','minf','stbl');
+if(!tkhd||!stbl)throw new UnsupportedFile('the video track is missing its sample tables.');
+const head=fullBox(view,tkhd);
+const trackId=view.getUint32(head.at+(head.version===1?16:8));
+const rotation=rotationOf(view,tkhd.end-44);
+const matrix=new Uint8Array(view.buffer.slice(
+view.byteOffset+tkhd.end-44,view.byteOffset+tkhd.end-8));
+const trackWidth=view.getUint32(tkhd.end-8);
+const trackHeight=view.getUint32(tkhd.end-4);
+const stsd=findBox(view,stbl.body,stbl.end,'stsd');
+if(!stsd)throw new UnsupportedFile('the video track has no sample description.');
+const[entry]=[...boxes(view,fullBox(view,stsd).at+4,stsd.end)];
+if(!entry)throw new UnsupportedFile('the video sample description is empty.');
+if(entry.type==='encv'||findBox(view,entry.body+78,entry.end,'sinf')){
+throw new UnsupportedFile('the video track is encrypted.');
+}
+if(!VIDEO_ENTRIES.has(entry.type)){
+throw new UnsupportedFile(
+`the video is stored as "${entry.type}", which this reader does not know.`);
+}
+const codedWidth=view.getUint16(entry.body+24);
+const codedHeight=view.getUint16(entry.body+26);
+const sampleEntry=new Uint8Array(view.buffer.slice(
+view.byteOffset+entry.start,view.byteOffset+entry.end));
+let codec=null;
+let description=null;
+for(const box of boxes(view,entry.body+78,entry.end)){
+const payload=()=>new Uint8Array(
+view.buffer.slice(view.byteOffset+box.body,view.byteOffset+box.end));
+if(box.type==='avcC'){
+description=payload();
+codec=avcCodec(entry.type==='avc3'?'avc3':'avc1',description);
+}else if(box.type==='hvcC'){
+description=payload();
+codec=hevcCodec(entry.type==='hev1'?'hev1':'hvc1',description);
+}else if(box.type==='av1C'){
+description=payload();
+codec=av1Codec(description);
+}else if(box.type==='vpcC'){
+codec=vp9Codec(view,box);
+}
+if(codec)break;
+}
+if(!codec)throw new UnsupportedFile(`the "${entry.type}" track carries no decoder configuration.`);
+const samples=fragmented?[]:readSamples(view,stbl);
+const turned=rotation===90||rotation===270;
+return{
+trackId,
+codec,
+description,
+sampleEntry,
+matrix,
+trackWidth,
+trackHeight,
+entryType:entry.type,
+codedWidth,
+codedHeight,
+displayWidth:turned?codedHeight:codedWidth,
+displayHeight:turned?codedWidth:codedHeight,
+rotation,
+timescale,
+duration,
+samples,
+};
+}
+function readAudioTrack(view,trak,timescale,duration,fragmented){
+const tkhd=findBox(view,trak.body,trak.end,'tkhd');
+const stbl=findPath(view,trak,'mdia','minf','stbl');
+const stsd=stbl&&findBox(view,stbl.body,stbl.end,'stsd');
+if(!stsd||!tkhd)return null;
+const[entry]=[...boxes(view,fullBox(view,stsd).at+4,stsd.end)];
+if(!entry)return null;
+if(entry.type==='enca'||findBox(view,entry.body+28,entry.end,'sinf'))return null;
+const head=fullBox(view,tkhd);
+return{
+trackId:view.getUint32(head.at+(head.version===1?16:8)),
+sampleEntry:new Uint8Array(
+view.buffer.slice(view.byteOffset+entry.start,view.byteOffset+entry.end)),
+entryType:entry.type,
+channels:view.getUint16(entry.body+16),
+sampleRate:view.getUint32(entry.body+24)/65536,
+timescale,
+duration,
+samples:fragmented?[]:readSamples(view,stbl),
+};
+}
+export async function demux(file){
+const top=await topLevel(file);
+if(!top.some((box)=>box.type==='ftyp'||box.type==='moov')){
+throw new UnsupportedFile('this is not an MP4 or MOV file.');
+}
+const outer=top.find((box)=>box.type==='moov');
+if(!outer)throw new UnsupportedFile('the file has no movie header.');
+const bytes=new Uint8Array(await file.slice(outer.start,outer.end).arrayBuffer());
+const view=new DataView(bytes.buffer);
+const moov={body:outer.body-outer.start,end:bytes.length};
+const fragmented=Boolean(findBox(view,moov.body,moov.end,'mvex'))
+||top.some((box)=>box.type==='moof');
+let video=null;
+let audio=null;
+for(const trak of boxes(view,moov.body,moov.end)){
+if(trak.type!=='trak')continue;
+const mdhd=findPath(view,trak,'mdia','mdhd');
+const hdlr=findPath(view,trak,'mdia','hdlr');
+if(!mdhd||!hdlr)continue;
+const head=fullBox(view,mdhd);
+const timescale=head.version===1
+?view.getUint32(head.at+16)
+:view.getUint32(head.at+8);
+const duration=head.version===1
+?Number(view.getBigUint64(head.at+20))
+:view.getUint32(head.at+12);
+const kind=fourcc(view,hdlr.body+8);
+if(kind==='vide'&&!video){
+video=readVideoTrack(view,trak,timescale,duration,fragmented);
+}else if(kind==='soun'&&!audio){
+audio=readAudioTrack(view,trak,timescale,duration,fragmented);
+}
+}
+if(!video)throw new UnsupportedFile('the file has no video track this reader can use.');
+if(!video.timescale)throw new UnsupportedFile('the video track has no timescale.');
+if(fragmented){
+const wanted=new Map([[video.trackId,video.samples]]);
+if(audio)wanted.set(audio.trackId,audio.samples);
+const clocks=await readFragments(file,top,fragmentDefaults(view,moov),wanted);
+if(!video.samples.length){
+throw new UnsupportedFile('the fragments in this file hold no frames for its video track.');
+}
+for(const track of[video,audio]){
+const clock=track&&clocks.get(track.trackId);
+if(track&&clock&&clock>track.duration)track.duration=clock;
+}
+if(audio&&!audio.samples.length)audio=null;
+}
+return{video,audio,duration:video.duration/video.timescale};
+}

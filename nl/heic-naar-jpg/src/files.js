@@ -1,2 +1,45 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{FORMATS as c}from"./codecs.js";function $(t){return t<1024?`${t} bytes`:t<1024*1024?`${(t/1024).toFixed(t<10240?1:0)} KB`:`${(t/(1024*1024)).toFixed(2)} MB`}function l(t,e){return`${t} \xD7 ${e}`}function h(t,e,n=0){const o=c[e]?.ext??"jpg",r=t.replace(/\.[^.]+$/,"")||"image";return n===0?`${r}.${o}`:`${r}-${n+1}.${o}`}function f(t){const e=new Map;return t.map(n=>{const o=e.get(n)??0;if(e.set(n,o+1),o===0)return n;const r=n.lastIndexOf("."),i=r>0?n.slice(0,r):n,u=r>0?n.slice(r):"";let s=o+1;for(;e.has(`${i}-${s}${u}`);)s+=1;const a=`${i}-${s}${u}`;return e.set(a,1),a})}function d(t,e){if(t===0)return"";const n=Math.round((t-e)/t*100);return n===0?"about the same size":n>0?`${n}% smaller`:`${-n}% larger`}function g(t){if(!t.present)return"no photo details in this file";const e=[];return t.gps&&e.push("GPS coordinates"),t.taken&&e.push(t.taken),t.camera&&e.push(t.camera),e.length?e.join(" \xB7 "):"photo details, but nothing identifying"}export{$ as bytes,d as change,l as dimensions,g as metadataText,h as outName,f as uniqueNames};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{FORMATS}from'./codecs.js';
+export function bytes(n){
+if(n<1024)return`${n} bytes`;
+if(n<1024*1024)return`${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
+return`${(n / (1024 * 1024)).toFixed(2)} MB`;
+}
+export function dimensions(width,height){
+return`${width} × ${height}`;
+}
+export function outName(name,mime,index=0){
+const ext=FORMATS[mime]?.ext??'jpg';
+const stem=name.replace(/\.[^.]+$/,'')||'image';
+return index===0?`${stem}.${ext}`:`${stem}-${index + 1}.${ext}`;
+}
+export function uniqueNames(names){
+const seen=new Map();
+return names.map((name)=>{
+const taken=seen.get(name)??0;
+seen.set(name,taken+1);
+if(taken===0)return name;
+const dot=name.lastIndexOf('.');
+const stem=dot>0?name.slice(0,dot):name;
+const ext=dot>0?name.slice(dot):'';
+let attempt=taken+1;
+while(seen.has(`${stem}-${attempt}${ext}`))attempt+=1;
+const unique=`${stem}-${attempt}${ext}`;
+seen.set(unique,1);
+return unique;
+});
+}
+export function change(before,after){
+if(before===0)return'';
+const delta=Math.round(((before-after)/before)*100);
+if(delta===0)return'about the same size';
+return delta>0?`${delta}% smaller`:`${-delta}% larger`;
+}
+export function metadataText(exif){
+if(!exif.present)return'no photo details in this file';
+const parts=[];
+if(exif.gps)parts.push('GPS coordinates');
+if(exif.taken)parts.push(exif.taken);
+if(exif.camera)parts.push(exif.camera);
+return parts.length?parts.join(' · '):'photo details, but nothing identifying';
+}

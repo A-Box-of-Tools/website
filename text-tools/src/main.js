@@ -1,5 +1,529 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as g}from"./shared/phrases.js";import{wireFilePicker as D}from"./shared/file-picker.js";import{LANGUAGES as M,languageById as m,formatText as W,detectLanguage as z}from"./format.js";import{CONVERSIONS as F,conversionById as L}from"./convert.js";import{CODECS as P,codecById as N,CodecError as U}from"./encode.js";import{compareText as I,alignRows as V,diffWords as j,formatUnified as q}from"./diff.js";import{SAMPLES as K}from"./samples.js";const a=e=>document.getElementById(e),t={tabs:Array.from(document.querySelectorAll(".tab")),panels:{format:a("options-format"),convert:a("options-convert"),encode:a("options-encode"),diff:a("options-diff")},dropzone:a("dropzone"),fileInput:a("file-input"),input:a("input"),inputB:a("input-b"),paneB:a("pane-b"),inputLabel:a("input-label"),inputCount:a("input-count"),inputBCount:a("input-b-count"),detected:a("detected"),language:a("language"),languageNote:a("language-note"),indent:a("indent"),style:a("style"),styleNote:a("style-note"),sortKeys:a("sort-keys"),conversion:a("conversion"),conversionNote:a("conversion-note"),rootField:a("root-field"),rootName:a("root-name"),codec:a("codec"),codecNote:a("codec-note"),view:a("view"),onlyChanges:a("only-changes"),ignoreWhitespace:a("ignore-whitespace"),ignoreCase:a("ignore-case"),ignoreBlank:a("ignore-blank"),sample:a("sample"),swap:a("swap"),clear:a("clear"),error:a("error"),output:a("output"),diffView:a("diff-view"),resultNote:a("result-note"),copy:a("copy"),download:a("download"),privacyToggle:a("privacy-toggle"),privacyPanel:a("privacy-panel"),networkCount:a("network-count"),networkDot:a("network-dot"),offlineStatus:a("offline-status"),offlineDot:a("offline-dot")};let d="format",v=null,u=null;const Y=4e3;for(const e of F)t.conversion.append(new Option(e.name,e.id));for(const e of P)t.codec.append(new Option(e.name,e.id));function k(e){d=e;for(const i of t.tabs){const r=i.dataset.mode===e;i.setAttribute("aria-selected",String(r)),i.tabIndex=r?0:-1}for(const[i,r]of Object.entries(t.panels))r.hidden=i!==e;const n=e==="diff";t.paneB.hidden=!n,t.swap.hidden=!n,t.output.hidden=n,t.diffView.hidden=!n,t.inputLabel.textContent=n?"The original":"Your text",t.fileInput.multiple=n,t.detected.hidden=e!=="format",f()}for(const e of t.tabs)e.addEventListener("click",()=>k(e.dataset.mode)),e.addEventListener("keydown",n=>{const i=n.key==="ArrowRight"?1:n.key==="ArrowLeft"?-1:0;if(!i)return;n.preventDefault();const r=t.tabs.indexOf(e),o=t.tabs[(r+i+t.tabs.length)%t.tabs.length];o.focus(),k(o.dataset.mode)});const E=D({input:t.fileInput,dropzone:t.dropzone,onFiles(e){G(e)}});async function G(e){E.busy(`Reading ${e.length===1?"the file":`${e.length} files`}...`);try{const n=await Promise.all(e.slice(0,2).map(i=>i.text()));d==="diff"&&n.length>1?(t.input.value=n[0],t.inputB.value=n[1]):d==="diff"&&t.input.value.trim()&&!t.inputB.value.trim()?t.inputB.value=n[0]:t.input.value=n[0],f()}catch(n){b(`That file could not be read: ${n?.message??n}`)}finally{E.done()}}let S=null;function H(){clearTimeout(S);const e=t.input.value.length+t.inputB.value.length;S=setTimeout(f,e>2e5?500:120)}for(const e of[t.input,t.inputB])e.addEventListener("input",()=>{y(),H()});for(const e of[t.language,t.indent,t.style,t.sortKeys,t.conversion,t.rootName,t.codec,t.view,t.onlyChanges,t.ignoreWhitespace,t.ignoreCase,t.ignoreBlank])e.addEventListener("change",f);for(const e of document.querySelectorAll('input[name="direction"]'))e.addEventListener("change",f);t.swap.addEventListener("click",()=>{const e=t.input.value;t.input.value=t.inputB.value,t.inputB.value=e,y(),f()}),t.clear.addEventListener("click",()=>{t.input.value="",t.inputB.value="",y(),f(),t.input.focus()}),t.sample.addEventListener("click",()=>{const e=K[d];t.input.value=e.a,e.b!==void 0&&(t.inputB.value=e.b),e.language&&d==="format"&&(t.language.value=e.language),e.conversion&&d==="convert"&&(t.conversion.value=e.conversion),y(),f()});function y(){t.inputCount.textContent=B(t.input.value),t.inputBCount.textContent=B(t.inputB.value)}function B(e){if(e==="")return"empty";const n=e.split(`
-`).length;return`${n.toLocaleString()} line${n===1?"":"s"}, ${e.length.toLocaleString()} character${e.length===1?"":"s"}, `+p(h(e))}const h=e=>new TextEncoder().encode(e).length;function f(){ie(),oe(),X();const e=t.input.value;if(d!=="diff"&&e.trim()===""){t.resultNote.textContent="Nothing yet.";return}try{d==="format"?_(e):d==="convert"?J(e):d==="encode"?Q(e):Z(e,t.inputB.value)}catch(n){b(n?.message??String(n)),n?.name!=="ParseError"&&n?.name!=="CodecError"&&console.error(n)}}function X(){const e=T();t.sortKeys.closest(".field").hidden=!(e&&m(e).sorts),t.style.disabled=!!e&&!m(e).minifies,t.styleNote.textContent=t.style.disabled?"YAML has no squeezed form worth writing: the short one is flow style, which is unreadable.":"",t.rootField.hidden=t.conversion.value!=="json-xml",t.conversionNote.textContent=L(t.conversion.value).note,t.codecNote.textContent=N(t.codec.value).note}function T(){return t.language.value!=="auto"?t.language.value:z(t.input.value)}function _(e){const n=T();if(!n){t.detected.textContent="",b("This does not look like JSON, XML, HTML, CSS or YAML. Pick the language from the menu if it is one of them.");return}t.detected.textContent=t.language.value==="auto"?`Read as ${m(n).name}.`:"";const i=t.style.value==="minify"&&m(n).minifies,r=W(e,{language:n,minify:i,indent:A(),sortKeys:t.sortKeys.checked&&m(n).sorts}),o=h(e),s=h(r),c=i&&o>0?` - ${p(o)} down to ${p(s)}, ${Math.round((1-s/o)*100)}% off`:"";x(r,`${m(n).name}, ${i?"squeezed flat":"laid out"}${c||` - ${r.split(`
-`).length-1} lines, ${p(s)}`}`,`formatted.${n}`)}function J(e){const n=L(t.conversion.value),i=n.run(e,{indent:A(),spaces:t.indent.value==="tab"?2:Number(t.indent.value),sortKeys:t.sortKeys.checked,root:t.rootName.value.trim()});x(i,`${n.name} - ${i.split(`
-`).length-1} lines, ${p(h(i))}`,`converted.${n.output}`)}function Q(e){const n=N(t.codec.value),i=ae()==="decode";let r;try{r=i?n.decode(e):n.encode(e)}catch(o){throw o?.name==="TypeError"?new U("Those bytes are not UTF-8 text, so there is nothing to show. They may be a file rather than a string."):o}x(r,`${n.name}, ${i?"decoded":"encoded"} - ${p(h(e))} in, ${p(h(r))} out`,i?"decoded.txt":"encoded.txt")}function Z(e,n){if(e===""&&n===""){t.resultNote.textContent="Paste something into both boxes.",t.diffView.replaceChildren();return}const i={ignoreWhitespace:t.ignoreWhitespace.checked,ignoreCase:t.ignoreCase.checked,ignoreBlankLines:t.ignoreBlank.checked},{ops:r,stats:o}=I(e,n,i),s=V(r);t.diffView.replaceChildren(ee(s)),t.diffView.classList.toggle("split",t.view.value==="split");const c=q(r,{aLabel:"original",bLabel:"changed"});if(v={text:c,name:"changes.patch"},t.copy.disabled=c==="",O(c,"changes.patch"),o.identical){t.resultNote.textContent="These two are identical, byte for byte.";return}const l=o.added===0&&o.removed===0?"The same, once the differences you asked to ignore are ignored.":`${o.added.toLocaleString()} added, ${o.removed.toLocaleString()} removed`;t.resultNote.textContent=`${l} - ${Math.round(o.similarity*100)}% of the lines are shared.`+(o.trailingDiffers?" One of them ends with a newline and the other does not.":"")}function ee(e){const n=document.createElement("div");n.className="diff-table";const i=t.onlyChanges.checked?te(e,3):e.map(o=>({row:o}));let r=0;for(const o of i){if(o.skipped){const s=document.createElement("div");s.className="diff-skip",s.textContent=`${o.skipped.toLocaleString()} unchanged line${o.skipped===1?"":"s"}`,n.append(s);continue}if(r>=Y){const s=document.createElement("div");s.className="diff-skip",s.textContent="The rest is not drawn - use Download to get the whole patch.",n.append(s);break}n.append(t.view.value==="split"?ne(o.row):$(o.row)),r+=1}return n}function te(e,n){const i=new Array(e.length).fill(!1);e.forEach((s,c)=>{if(s.type!=="equal")for(let l=Math.max(0,c-n);l<=Math.min(e.length-1,c+n);l+=1)i[l]=!0});const r=[];let o=0;return e.forEach((s,c)=>{if(i[c]){o&&(r.push({skipped:o}),o=0),r.push({row:s});return}o+=1}),o&&r.push({skipped:o}),r}function ne(e){const n=document.createElement("div");n.className=`diff-row ${e.type}`;const i=e.type==="change"?j(e.a.text,e.b.text):null;return n.append(C(e.a?.a),R(e.a?e.a.text:null,i?.a,"left",e.type==="change"||e.type==="delete"),C(e.b?.b),R(e.b?e.b.text:null,i?.b,"right",e.type==="change"||e.type==="insert")),n}function $(e){if(e.type==="change"){const s=document.createDocumentFragment();return s.append($({type:"delete",a:e.a,b:null})),s.append($({type:"insert",a:null,b:e.b})),s}const n=document.createElement("div");n.className=`diff-row ${e.type}`;const i=e.type==="insert"?"+":e.type==="delete"?"-":" ",r=(e.a??e.b).text;n.append(C(e.a?.a),C(e.b?.b));const o=document.createElement("span");return o.className=`side ${e.type==="insert"?"right marked":e.type==="delete"?"left marked":"left"}`,o.textContent=`${i}${r}`,n.append(o),n}function C(e){const n=document.createElement("span");return n.className="ln",n.textContent=e==null?"":String(e+1),n}function R(e,n,i,r){const o=document.createElement("span");if(o.className=`side ${i}${r?" marked":""}`,e===null)return o.classList.add("empty"),o;if(!n)return o.textContent=e,o;for(const s of n){if(s.same){o.append(s.text);continue}const c=document.createElement("mark");c.textContent=s.text,o.append(c)}return o}function x(e,n,i){t.output.textContent=e,t.resultNote.textContent=n,v={text:e,name:i},t.copy.disabled=e==="",O(e,i)}function O(e,n){if(u&&URL.revokeObjectURL(u),u=null,e===""){t.download.hidden=!0;return}u=URL.createObjectURL(new Blob([e],{type:"text/plain;charset=utf-8"})),t.download.href=u,t.download.download=n,t.download.hidden=!1}t.copy.addEventListener("click",async()=>{if(v){try{await navigator.clipboard.writeText(v.text),t.copy.textContent="Copied"}catch{const e=document.createRange();e.selectNodeContents(d==="diff"?t.diffView:t.output);const n=window.getSelection();n.removeAllRanges(),n.addRange(e),t.copy.textContent="Selected - press Ctrl+C"}setTimeout(()=>{t.copy.textContent="Copy"},2500)}});function oe(){t.output.textContent="",t.diffView.replaceChildren(),t.copy.disabled=!0,t.download.hidden=!0,v=null,u&&URL.revokeObjectURL(u),u=null}function b(e){t.error.textContent=e,t.error.hidden=!1,t.resultNote.textContent="Nothing came out."}function ie(){t.error.hidden=!0,t.error.textContent=""}const A=()=>t.indent.value==="tab"?"	":" ".repeat(Number(t.indent.value)),ae=()=>document.querySelector('input[name="direction"]:checked').value;function p(e){return e<1024?`${e} B`:e<1024*1024?`${(e/1024).toFixed(1)} KB`:`${(e/(1024*1024)).toFixed(2)} MB`}t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const re=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function se(){const e=new Set,n=new Set,i=r=>{for(const l of r){if(l.name.startsWith("blob:")||l.name.startsWith("data:"))continue;const w=new URL(l.name,location.href);w.origin!==location.origin&&(re.test(w.hostname)?e.add(w.hostname):n.add(w.hostname))}const o=performance.getEntriesByType("resource").filter(l=>!l.name.startsWith("blob:")&&!l.name.startsWith("data:")).length,s=n.size===0,c=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a character of it.`;t.networkCount.textContent=s?`your text has gone nowhere. ${o} files loaded.${c}`:`something contacted ${[...n].join(", ")}, which this tool never does.${c}`,t.networkCount.className=s?"good":"warn",t.networkDot.className=`live-dot ${s?"good":"warn"}`};i(performance.getEntriesByType("resource"));try{new PerformanceObserver(r=>i(r.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function ce(){const e=(n,i)=>{t.offlineStatus.textContent=n,t.offlineDot.className="live-dot",i&&(t.offlineStatus.title=i,console.info("Offline caching unavailable:",i))};if(!("serviceWorker"in navigator)){e(g("offline.none"));return}if(!window.isSecureContext){e(g("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=g("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(n){e(g("offline.failed"),n.message)}}window.addEventListener("error",e=>{b(g("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{b(g("error.broke",{detail:e.reason?.message??e.reason}))});for(const e of M)t.language.querySelector(`option[value="${e.id}"]`)||console.warn(`the language menu is missing ${e.id}`);window.matchMedia("(max-width: 620px)").matches&&(t.view.value="unified"),y(),k("format"),se(),ce(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker}from'./shared/file-picker.js';
+import{LANGUAGES,languageById,formatText,detectLanguage}from'./format.js';
+import{CONVERSIONS,conversionById}from'./convert.js';
+import{CODECS,codecById,CodecError}from'./encode.js';
+import{compareText,alignRows,diffWords,formatUnified}from'./diff.js';
+import{SAMPLES}from'./samples.js';
+const $=(id)=>document.getElementById(id);
+const el={
+tabs:Array.from(document.querySelectorAll('.tab')),
+panels:{
+format:$('options-format'),
+convert:$('options-convert'),
+encode:$('options-encode'),
+diff:$('options-diff'),
+},
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+input:$('input'),
+inputB:$('input-b'),
+paneB:$('pane-b'),
+inputLabel:$('input-label'),
+inputCount:$('input-count'),
+inputBCount:$('input-b-count'),
+detected:$('detected'),
+language:$('language'),
+languageNote:$('language-note'),
+indent:$('indent'),
+style:$('style'),
+styleNote:$('style-note'),
+sortKeys:$('sort-keys'),
+conversion:$('conversion'),
+conversionNote:$('conversion-note'),
+rootField:$('root-field'),
+rootName:$('root-name'),
+codec:$('codec'),
+codecNote:$('codec-note'),
+view:$('view'),
+onlyChanges:$('only-changes'),
+ignoreWhitespace:$('ignore-whitespace'),
+ignoreCase:$('ignore-case'),
+ignoreBlank:$('ignore-blank'),
+sample:$('sample'),
+swap:$('swap'),
+clear:$('clear'),
+error:$('error'),
+output:$('output'),
+diffView:$('diff-view'),
+resultNote:$('result-note'),
+copy:$('copy'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let mode='format';
+let result=null;
+let downloadUrl=null;
+const MAX_ROWS=4000;
+for(const conversion of CONVERSIONS){
+el.conversion.append(new Option(conversion.name,conversion.id));
+}
+for(const codec of CODECS){
+el.codec.append(new Option(codec.name,codec.id));
+}
+function setMode(next){
+mode=next;
+for(const tab of el.tabs){
+const on=tab.dataset.mode===next;
+tab.setAttribute('aria-selected',String(on));
+tab.tabIndex=on?0:-1;
+}
+for(const[name,panel]of Object.entries(el.panels))panel.hidden=name!==next;
+const comparing=next==='diff';
+el.paneB.hidden=!comparing;
+el.swap.hidden=!comparing;
+el.output.hidden=comparing;
+el.diffView.hidden=!comparing;
+el.inputLabel.textContent=comparing?'The original':'Your text';
+el.fileInput.multiple=comparing;
+el.detected.hidden=next!=='format';
+run();
+}
+for(const tab of el.tabs){
+tab.addEventListener('click',()=>setMode(tab.dataset.mode));
+tab.addEventListener('keydown',(event)=>{
+const step=event.key==='ArrowRight'?1:event.key==='ArrowLeft'?-1:0;
+if(!step)return;
+event.preventDefault();
+const index=el.tabs.indexOf(tab);
+const next=el.tabs[(index+step+el.tabs.length)%el.tabs.length];
+next.focus();
+setMode(next.dataset.mode);
+});
+}
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){loadFiles(files);},
+});
+async function loadFiles(files){
+picker.busy(`Reading ${files.length === 1 ? 'the file' : `${files.length} files`}...`);
+try{
+const texts=await Promise.all(files.slice(0,2).map((file)=>file.text()));
+if(mode==='diff'&&texts.length>1){
+el.input.value=texts[0];
+el.inputB.value=texts[1];
+}else if(mode==='diff'&&el.input.value.trim()&&!el.inputB.value.trim()){
+el.inputB.value=texts[0];
+}else{
+el.input.value=texts[0];
+}
+run();
+}catch(error){
+showError(`That file could not be read: ${error?.message ?? error}`);
+}finally{
+picker.done();
+}
+}
+let timer=null;
+function schedule(){
+clearTimeout(timer);
+const size=el.input.value.length+el.inputB.value.length;
+timer=setTimeout(run,size>200000?500:120);
+}
+for(const box of[el.input,el.inputB]){
+box.addEventListener('input',()=>{updateCounts();schedule();});
+}
+for(const control of[el.language,el.indent,el.style,el.sortKeys,el.conversion,
+el.rootName,el.codec,el.view,el.onlyChanges,el.ignoreWhitespace,el.ignoreCase,
+el.ignoreBlank]){
+control.addEventListener('change',run);
+}
+for(const radio of document.querySelectorAll('input[name="direction"]')){
+radio.addEventListener('change',run);
+}
+el.swap.addEventListener('click',()=>{
+const held=el.input.value;
+el.input.value=el.inputB.value;
+el.inputB.value=held;
+updateCounts();
+run();
+});
+el.clear.addEventListener('click',()=>{
+el.input.value='';
+el.inputB.value='';
+updateCounts();
+run();
+el.input.focus();
+});
+el.sample.addEventListener('click',()=>{
+const sample=SAMPLES[mode];
+el.input.value=sample.a;
+if(sample.b!==undefined)el.inputB.value=sample.b;
+if(sample.language&&mode==='format')el.language.value=sample.language;
+if(sample.conversion&&mode==='convert')el.conversion.value=sample.conversion;
+updateCounts();
+run();
+});
+function updateCounts(){
+el.inputCount.textContent=describe(el.input.value);
+el.inputBCount.textContent=describe(el.inputB.value);
+}
+function describe(text){
+if(text==='')return'empty';
+const lines=text.split('\n').length;
+return`${lines.toLocaleString()} line${lines === 1 ? '' : 's'}, `
++`${text.length.toLocaleString()} character${text.length === 1 ? '' : 's'}, `
++humanBytes(byteLength(text));
+}
+const byteLength=(text)=>new TextEncoder().encode(text).length;
+function run(){
+clearError();
+clearResult();
+updateOptionVisibility();
+const text=el.input.value;
+if(mode!=='diff'&&text.trim()===''){
+el.resultNote.textContent='Nothing yet.';
+return;
+}
+try{
+if(mode==='format')runFormat(text);
+else if(mode==='convert')runConvert(text);
+else if(mode==='encode')runEncode(text);
+else runDiff(text,el.inputB.value);
+}catch(error){
+showError(error?.message??String(error));
+if(error?.name!=='ParseError'&&error?.name!=='CodecError')console.error(error);
+}
+}
+function updateOptionVisibility(){
+const language=chosenLanguage();
+el.sortKeys.closest('.field').hidden=!(language&&languageById(language).sorts);
+el.style.disabled=!!language&&!languageById(language).minifies;
+el.styleNote.textContent=el.style.disabled
+?'YAML has no squeezed form worth writing: the short one is flow style, which is unreadable.'
+:'';
+el.rootField.hidden=el.conversion.value!=='json-xml';
+el.conversionNote.textContent=conversionById(el.conversion.value).note;
+el.codecNote.textContent=codecById(el.codec.value).note;
+}
+function chosenLanguage(){
+if(el.language.value!=='auto')return el.language.value;
+return detectLanguage(el.input.value);
+}
+function runFormat(text){
+const language=chosenLanguage();
+if(!language){
+el.detected.textContent='';
+showError('This does not look like JSON, XML, HTML, CSS or YAML. '
++'Pick the language from the menu if it is one of them.');
+return;
+}
+el.detected.textContent=el.language.value==='auto'
+?`Read as ${languageById(language).name}.`:'';
+const minify=el.style.value==='minify'&&languageById(language).minifies;
+const out=formatText(text,{
+language,
+minify,
+indent:indentString(),
+sortKeys:el.sortKeys.checked&&languageById(language).sorts,
+});
+const before=byteLength(text);
+const after=byteLength(out);
+const change=minify&&before>0
+?` - ${humanBytes(before)} down to ${humanBytes(after)}, `
++`${Math.round((1 - after / before) * 100)}% off`
+:'';
+show(out,`${languageById(language).name}, ${minify ? 'squeezed flat' : 'laid out'}`
++`${change || ` - ${out.split('\n').length - 1} lines, ${humanBytes(after)}`}`,
+`formatted.${language}`);
+}
+function runConvert(text){
+const conversion=conversionById(el.conversion.value);
+const out=conversion.run(text,{
+indent:indentString(),
+spaces:el.indent.value==='tab'?2:Number(el.indent.value),
+sortKeys:el.sortKeys.checked,
+root:el.rootName.value.trim(),
+});
+show(out,`${conversion.name} - ${out.split('\n').length - 1} lines, ${humanBytes(byteLength(out))}`,
+`converted.${conversion.output}`);
+}
+function runEncode(text){
+const codec=codecById(el.codec.value);
+const decoding=pickedDirection()==='decode';
+let out;
+try{
+out=decoding?codec.decode(text):codec.encode(text);
+}catch(error){
+if(error?.name==='TypeError'){
+throw new CodecError('Those bytes are not UTF-8 text, so there is nothing to show. '
++'They may be a file rather than a string.');
+}
+throw error;
+}
+show(out,`${codec.name}, ${decoding ? 'decoded' : 'encoded'} - `
++`${humanBytes(byteLength(text))} in, ${humanBytes(byteLength(out))} out`,
+decoding?'decoded.txt':'encoded.txt');
+}
+function runDiff(aText,bText){
+if(aText===''&&bText===''){
+el.resultNote.textContent='Paste something into both boxes.';
+el.diffView.replaceChildren();
+return;
+}
+const options={
+ignoreWhitespace:el.ignoreWhitespace.checked,
+ignoreCase:el.ignoreCase.checked,
+ignoreBlankLines:el.ignoreBlank.checked,
+};
+const{ops,stats}=compareText(aText,bText,options);
+const rows=alignRows(ops);
+el.diffView.replaceChildren(drawDiff(rows));
+el.diffView.classList.toggle('split',el.view.value==='split');
+const patch=formatUnified(ops,{aLabel:'original',bLabel:'changed'});
+result={text:patch,name:'changes.patch'};
+el.copy.disabled=patch==='';
+offerDownload(patch,'changes.patch');
+if(stats.identical){
+el.resultNote.textContent='These two are identical, byte for byte.';
+return;
+}
+const sameText=stats.added===0&&stats.removed===0
+?'The same, once the differences you asked to ignore are ignored.'
+:`${stats.added.toLocaleString()} added, ${stats.removed.toLocaleString()} removed`;
+el.resultNote.textContent=`${sameText} - `
++`${Math.round(stats.similarity * 100)}% of the lines are shared.`
++(stats.trailingDiffers?' One of them ends with a newline and the other does not.':'');
+}
+function drawDiff(rows){
+const table=document.createElement('div');
+table.className='diff-table';
+const kept=el.onlyChanges.checked?collapse(rows,3):rows.map((row)=>({row}));
+let drawn=0;
+for(const entry of kept){
+if(entry.skipped){
+const gap=document.createElement('div');
+gap.className='diff-skip';
+gap.textContent=`${entry.skipped.toLocaleString()} unchanged line`
++`${entry.skipped === 1 ? '' : 's'}`;
+table.append(gap);
+continue;
+}
+if(drawn>=MAX_ROWS){
+const gap=document.createElement('div');
+gap.className='diff-skip';
+gap.textContent='The rest is not drawn - use Download to get the whole patch.';
+table.append(gap);
+break;
+}
+table.append(el.view.value==='split'?splitRow(entry.row):unifiedRow(entry.row));
+drawn+=1;
+}
+return table;
+}
+function collapse(rows,context){
+const keep=new Array(rows.length).fill(false);
+rows.forEach((row,index)=>{
+if(row.type==='equal')return;
+for(let i=Math.max(0,index-context);i<=Math.min(rows.length-1,index+context);i+=1){
+keep[i]=true;
+}
+});
+const out=[];
+let skipped=0;
+rows.forEach((row,index)=>{
+if(keep[index]){
+if(skipped){out.push({skipped});skipped=0;}
+out.push({row});
+return;
+}
+skipped+=1;
+});
+if(skipped)out.push({skipped});
+return out;
+}
+function splitRow(row){
+const line=document.createElement('div');
+line.className=`diff-row ${row.type}`;
+const words=row.type==='change'?diffWords(row.a.text,row.b.text):null;
+line.append(
+lineNumber(row.a?.a),
+side(row.a?row.a.text:null,words?.a,'left',row.type==='change'||row.type==='delete'),
+lineNumber(row.b?.b),
+side(row.b?row.b.text:null,words?.b,'right',row.type==='change'||row.type==='insert'),
+);
+return line;
+}
+function unifiedRow(row){
+if(row.type==='change'){
+const wrap=document.createDocumentFragment();
+wrap.append(unifiedRow({type:'delete',a:row.a,b:null}));
+wrap.append(unifiedRow({type:'insert',a:null,b:row.b}));
+return wrap;
+}
+const line=document.createElement('div');
+line.className=`diff-row ${row.type}`;
+const sign=row.type==='insert'?'+':row.type==='delete'?'-':' ';
+const text=(row.a??row.b).text;
+line.append(lineNumber(row.a?.a),lineNumber(row.b?.b));
+const cell=document.createElement('span');
+cell.className=`side ${row.type === 'insert' ? 'right marked'
+    : row.type === 'delete' ? 'left marked' : 'left'}`
+;
+cell.textContent=`${sign}${text}`;
+line.append(cell);
+return line;
+}
+function lineNumber(value){
+const cell=document.createElement('span');
+cell.className='ln';
+cell.textContent=value===undefined||value===null?'':String(value+1);
+return cell;
+}
+function side(text,words,where,marked){
+const cell=document.createElement('span');
+cell.className=`side ${where}${marked ? ' marked' : ''}`;
+if(text===null){cell.classList.add('empty');return cell;}
+if(!words){cell.textContent=text;return cell;}
+for(const part of words){
+if(part.same){cell.append(part.text);continue;}
+const mark=document.createElement('mark');
+mark.textContent=part.text;
+cell.append(mark);
+}
+return cell;
+}
+function show(text,note,name){
+el.output.textContent=text;
+el.resultNote.textContent=note;
+result={text,name};
+el.copy.disabled=text==='';
+offerDownload(text,name);
+}
+function offerDownload(text,name){
+if(downloadUrl)URL.revokeObjectURL(downloadUrl);
+downloadUrl=null;
+if(text===''){el.download.hidden=true;return;}
+downloadUrl=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
+el.download.href=downloadUrl;
+el.download.download=name;
+el.download.hidden=false;
+}
+el.copy.addEventListener('click',async()=>{
+if(!result)return;
+try{
+await navigator.clipboard.writeText(result.text);
+el.copy.textContent='Copied';
+}catch{
+const range=document.createRange();
+range.selectNodeContents(mode==='diff'?el.diffView:el.output);
+const selection=window.getSelection();
+selection.removeAllRanges();
+selection.addRange(range);
+el.copy.textContent='Selected - press Ctrl+C';
+}
+setTimeout(()=>{el.copy.textContent='Copy';},2500);
+});
+function clearResult(){
+el.output.textContent='';
+el.diffView.replaceChildren();
+el.copy.disabled=true;
+el.download.hidden=true;
+result=null;
+if(downloadUrl)URL.revokeObjectURL(downloadUrl);
+downloadUrl=null;
+}
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+el.resultNote.textContent='Nothing came out.';
+}
+function clearError(){
+el.error.hidden=true;
+el.error.textContent='';
+}
+const indentString=()=>(el.indent.value==='tab'?'\t':' '.repeat(Number(el.indent.value)));
+const pickedDirection=()=>document.querySelector('input[name="direction"]:checked').value;
+function humanBytes(bytes){
+if(bytes<1024)return`${bytes} B`;
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(1)} KB`;
+return`${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a character of it.`;
+el.networkCount.textContent=clean
+?`your text has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+for(const language of LANGUAGES){
+if(!el.language.querySelector(`option[value="${language.id}"]`)){
+console.warn(`the language menu is missing ${language.id}`);
+}
+}
+if(window.matchMedia('(max-width: 620px)').matches)el.view.value='unified';
+updateCounts();
+setMode('format');
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

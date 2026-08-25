@@ -1,2 +1,205 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{drawWaveform as f}from"./waveform.js";const m=.02;function l(d,t,e){return Math.max(t,Math.min(e,d))}function p(d){const t=Math.round(Math.max(0,d||0)*1e3),e=Math.floor(t/1e3),i=Math.floor(e/3600),n=Math.floor(e%3600/60),s=`${String(e%60).padStart(2,"0")}.${String(t%1e3).padStart(3,"0")}`;return i?`${i}:${String(n).padStart(2,"0")}:${s}`:`${n}:${s}`}function g(d){const t=String(d??"").trim();if(!t)return null;const e=t.split(":");if(e.length>3)return null;let i=0;for(const n of e){if(!/^\d*\.?\d*$/.test(n)||n===""||n===".")return null;i=i*60+Number(n)}return Number.isFinite(i)?i:null}class E{#m;#e;#n;#h;#i;#d;#c;#p;#f;#t=0;#w=null;#u=[];#a=null;#l=null;#r=0;#g=!0;constructor(t,{onSeek:e,onSelect:i,onAdjust:n}={}){this.#m=t,this.#c=e,this.#p=i,this.#f=n,t.innerHTML="",t.classList.add("timeline"),this.#e=document.createElement("div"),this.#e.className="tl-track",this.#n=document.createElement("canvas"),this.#n.className="tl-wave",this.#n.setAttribute("aria-hidden","true"),this.#h=document.createElement("div"),this.#h.className="tl-bands",this.#i=document.createElement("div"),this.#i.className="tl-pending",this.#i.hidden=!0,this.#d=document.createElement("div"),this.#d.className="tl-playhead",this.#d.setAttribute("aria-hidden","true"),this.#e.append(this.#n,this.#h,this.#i,this.#d),t.append(this.#e),this.#e.addEventListener("pointerdown",this.#$)}get duration(){return this.#t}setSource({duration:t,summary:e=null}){this.#t=Math.max(0,t||0),this.#w=e,this.#r=0,this.#l=null,this.#u=[],this.#a=null,this.redraw(),this.#E()}redraw(){this.#n.clientWidth&&f(this.#n,this.#w)}setSegments(t,e=null){this.#u=t,this.#a=e,this.#E()}setPending(t){this.#l=t,this.#b()}setEnabled(t){this.#g=t,this.#m.classList.toggle("disabled",!t)}setPlayhead(t){this.#r=l(t||0,0,this.#t),this.#d.style.left=`${this.#o(this.#r)*100}%`,this.#b()}snap(t){return l(t,0,this.#t)}get fineStep(){return .01}#o(t){return this.#t>0?l(t/this.#t,0,1):0}#E(){this.#h.innerHTML="",this.#u.forEach((t,e)=>{if(t.end===null)return;const i=this.#o(t.start)*100,n=this.#o(t.end)*100,s=document.createElement("div");s.className=`tl-band${t.id===this.#a?" selected":""}`,s.dataset.id=String(t.id),s.style.left=`${i}%`,s.style.width=`${Math.max(.4,n-i)}%`,s.title=`Part ${e+1}: ${p(t.start)} to ${p(t.end)}`;const a=document.createElement("span");if(a.className="tl-band-number",a.textContent=String(e+1),s.append(a),t.id===this.#a)for(const h of["start","end"]){const r=document.createElement("span");r.className=`tl-handle tl-handle-${h}`,r.dataset.handle=h,s.append(r)}this.#h.append(s)}),this.setPlayhead(this.#r)}#b(){if(this.#l===null||!this.#t){this.#i.hidden=!0;return}const t=this.#o(Math.min(this.#l,this.#r))*100,e=this.#o(Math.max(this.#l,this.#r))*100;this.#i.hidden=!1,this.#i.style.left=`${t}%`,this.#i.style.width=`${Math.max(.3,e-t)}%`}#M(t){const e=this.#e.getBoundingClientRect();return e.width?l((t.clientX-e.left)/e.width,0,1)*this.#t:0}#$=t=>{if(!this.#g||!this.#t||t.button!==0)return;const e=t.target.closest(".tl-handle"),i=t.target.closest(".tl-band"),n=this.#M(t);if(t.preventDefault(),i&&!e&&i.dataset.id!==String(this.#a)){this.#p?.(Number(i.dataset.id));return}if(!e)this.#c?.(n),this.#s={kind:"seek"};else{const h=this.#u.find(r=>r.id===this.#a);if(!h)return;this.#s={kind:e.dataset.handle,segment:h}}this.#e.setPointerCapture?.(t.pointerId);const s=h=>{const r=this.#M(h);if(this.#s.kind==="seek"){this.#c?.(r);return}const{segment:o}=this.#s,u=this.snap(r),c=this.#s.kind==="start"?{start:Math.min(u,o.end-m),end:o.end}:{start:o.start,end:Math.max(u,o.start+m)};this.#f?.(o.id,{start:l(c.start,0,this.#t),end:l(c.end,0,this.#t)}),this.#c?.(this.#s.kind==="start"?c.start:c.end)},a=()=>{this.#s=null,this.#e.releasePointerCapture?.(t.pointerId),window.removeEventListener("pointermove",s),window.removeEventListener("pointerup",a),window.removeEventListener("pointercancel",a)};window.addEventListener("pointermove",s),window.addEventListener("pointerup",a),window.addEventListener("pointercancel",a)};#s=null}export{E as Timeline,p as formatTime,g as parseTime};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{drawWaveform}from'./waveform.js';
+const MIN_SEGMENT=0.02;
+function clamp(value,low,high){
+return Math.max(low,Math.min(high,value));
+}
+export function formatTime(seconds){
+const total=Math.round(Math.max(0,seconds||0)*1000);
+const whole=Math.floor(total/1000);
+const hours=Math.floor(whole/3600);
+const minutes=Math.floor((whole%3600)/60);
+const tail=`${String(whole % 60).padStart(2, '0')}.${String(total % 1000).padStart(3, '0')}`;
+return hours
+?`${hours}:${String(minutes).padStart(2, '0')}:${tail}`
+:`${minutes}:${tail}`;
+}
+export function parseTime(text){
+const trimmed=String(text??'').trim();
+if(!trimmed)return null;
+const parts=trimmed.split(':');
+if(parts.length>3)return null;
+let total=0;
+for(const part of parts){
+if(!/^\d*\.?\d*$/.test(part)||part===''||part==='.')return null;
+total=total*60+Number(part);
+}
+return Number.isFinite(total)?total:null;
+}
+export class Timeline{
+#root;
+#track;
+#canvas;
+#bands;
+#pendingBand;
+#playhead;
+#onSeek;
+#onSelect;
+#onAdjust;
+#duration=0;
+#summary=null;
+#segments=[];
+#selectedId=null;
+#pending=null;
+#playAt=0;
+#enabled=true;
+constructor(root,{onSeek,onSelect,onAdjust}={}){
+this.#root=root;
+this.#onSeek=onSeek;
+this.#onSelect=onSelect;
+this.#onAdjust=onAdjust;
+root.innerHTML='';
+root.classList.add('timeline');
+this.#track=document.createElement('div');
+this.#track.className='tl-track';
+this.#canvas=document.createElement('canvas');
+this.#canvas.className='tl-wave';
+this.#canvas.setAttribute('aria-hidden','true');
+this.#bands=document.createElement('div');
+this.#bands.className='tl-bands';
+this.#pendingBand=document.createElement('div');
+this.#pendingBand.className='tl-pending';
+this.#pendingBand.hidden=true;
+this.#playhead=document.createElement('div');
+this.#playhead.className='tl-playhead';
+this.#playhead.setAttribute('aria-hidden','true');
+this.#track.append(this.#canvas,this.#bands,this.#pendingBand,this.#playhead);
+root.append(this.#track);
+this.#track.addEventListener('pointerdown',this.#onPointerDown);
+}
+get duration(){
+return this.#duration;
+}
+setSource({duration,summary=null}){
+this.#duration=Math.max(0,duration||0);
+this.#summary=summary;
+this.#playAt=0;
+this.#pending=null;
+this.#segments=[];
+this.#selectedId=null;
+this.redraw();
+this.#paint();
+}
+redraw(){
+if(this.#canvas.clientWidth)drawWaveform(this.#canvas,this.#summary);
+}
+setSegments(segments,selectedId=null){
+this.#segments=segments;
+this.#selectedId=selectedId;
+this.#paint();
+}
+setPending(startSeconds){
+this.#pending=startSeconds;
+this.#paintPending();
+}
+setEnabled(enabled){
+this.#enabled=enabled;
+this.#root.classList.toggle('disabled',!enabled);
+}
+setPlayhead(seconds){
+this.#playAt=clamp(seconds||0,0,this.#duration);
+this.#playhead.style.left=`${this.#fraction(this.#playAt) * 100}%`;
+this.#paintPending();
+}
+snap(seconds){
+return clamp(seconds,0,this.#duration);
+}
+get fineStep(){
+return 0.01;
+}
+#fraction(seconds){
+return this.#duration>0?clamp(seconds/this.#duration,0,1):0;
+}
+#paint(){
+this.#bands.innerHTML='';
+this.#segments.forEach((segment,index)=>{
+if(segment.end===null)return;
+const from=this.#fraction(segment.start)*100;
+const to=this.#fraction(segment.end)*100;
+const band=document.createElement('div');
+band.className=`tl-band${segment.id === this.#selectedId ? ' selected' : ''}`;
+band.dataset.id=String(segment.id);
+band.style.left=`${from}%`;
+band.style.width=`${Math.max(0.4, to - from)}%`;
+band.title=`Part ${index + 1}: ${formatTime(segment.start)} to ${formatTime(segment.end)}`;
+const number=document.createElement('span');
+number.className='tl-band-number';
+number.textContent=String(index+1);
+band.append(number);
+if(segment.id===this.#selectedId){
+for(const which of['start','end']){
+const handle=document.createElement('span');
+handle.className=`tl-handle tl-handle-${which}`;
+handle.dataset.handle=which;
+band.append(handle);
+}
+}
+this.#bands.append(band);
+});
+this.setPlayhead(this.#playAt);
+}
+#paintPending(){
+if(this.#pending===null||!this.#duration){
+this.#pendingBand.hidden=true;
+return;
+}
+const from=this.#fraction(Math.min(this.#pending,this.#playAt))*100;
+const to=this.#fraction(Math.max(this.#pending,this.#playAt))*100;
+this.#pendingBand.hidden=false;
+this.#pendingBand.style.left=`${from}%`;
+this.#pendingBand.style.width=`${Math.max(0.3, to - from)}%`;
+}
+#timeAt(event){
+const box=this.#track.getBoundingClientRect();
+if(!box.width)return 0;
+return clamp((event.clientX-box.left)/box.width,0,1)*this.#duration;
+}
+#onPointerDown=(event)=>{
+if(!this.#enabled||!this.#duration||event.button!==0)return;
+const handle=event.target.closest('.tl-handle');
+const band=event.target.closest('.tl-band');
+const at=this.#timeAt(event);
+event.preventDefault();
+if(band&&!handle&&band.dataset.id!==String(this.#selectedId)){
+this.#onSelect?.(Number(band.dataset.id));
+return;
+}
+if(!handle){
+this.#onSeek?.(at);
+this.#drag={kind:'seek'};
+}else{
+const segment=this.#segments.find((one)=>one.id===this.#selectedId);
+if(!segment)return;
+this.#drag={kind:handle.dataset.handle,segment};
+}
+this.#track.setPointerCapture?.(event.pointerId);
+const move=(moveEvent)=>{
+const now=this.#timeAt(moveEvent);
+if(this.#drag.kind==='seek'){
+this.#onSeek?.(now);
+return;
+}
+const{segment}=this.#drag;
+const snapped=this.snap(now);
+const next=this.#drag.kind==='start'
+?{start:Math.min(snapped,segment.end-MIN_SEGMENT),end:segment.end}
+:{start:segment.start,end:Math.max(snapped,segment.start+MIN_SEGMENT)};
+this.#onAdjust?.(segment.id,{
+start:clamp(next.start,0,this.#duration),
+end:clamp(next.end,0,this.#duration),
+});
+this.#onSeek?.(this.#drag.kind==='start'?next.start:next.end);
+};
+const up=()=>{
+this.#drag=null;
+this.#track.releasePointerCapture?.(event.pointerId);
+window.removeEventListener('pointermove',move);
+window.removeEventListener('pointerup',up);
+window.removeEventListener('pointercancel',up);
+};
+window.addEventListener('pointermove',move);
+window.addEventListener('pointerup',up);
+window.addEventListener('pointercancel',up);
+};
+#drag=null;
+}

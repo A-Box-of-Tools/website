@@ -1,2 +1,141 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const S=40,N=3,Z=8,b=24;function A(t,r,l){const s=new Uint8Array(r*l);for(let c=0;c<s.length;c+=1){const n=c*4,i=t[n+3];if(i===255)s[c]=t[n]*77+t[n+1]*151+t[n+2]*28>>8;else{const o=i/255,e=t[n]*o+255*(1-o),f=t[n+1]*o+255*(1-o),M=t[n+2]*o+255*(1-o);s[c]=e*77+f*151+M*28>>8}}return s}function K(t){const r=new Uint32Array(256);for(const e of t)r[e]+=1;const l=t.length;let s=0;for(let e=0;e<256;e+=1)s+=e*r[e];let c=0,n=0,i=0,o=-1;for(let e=0;e<256;e+=1){if(n+=r[e],n===0)continue;const f=l-n;if(f===0)break;c+=e*r[e];const M=c/n,u=(s-c)/f,a=n*f*(M-u)**2;a>o&&(o=a,i=e)}return i}function L(t,r,l){const s=K(t),c=new Uint8Array(r*l);for(let n=0;n<c.length;n+=1)c[n]=t[n]<=s?1:0;return c}function p(t,r,l){if(r<40||l<40)return L(t,r,l);const s=Math.ceil(r/8),c=Math.ceil(l/8),n=new Uint8Array(s*c);for(let o=0;o<c;o+=1){const e=Math.min(o*8,l-8);for(let f=0;f<s;f+=1){const M=Math.min(f*8,r-8);let u=0,a=255,E=0;for(let _=0;_<8;_+=1){const C=(e+_)*r+M;for(let m=0;m<8;m+=1){const I=t[C+m];u+=I,I<a&&(a=I),I>E&&(E=I)}}let O;if(E-a>24)O=u>>3*2;else if(O=a>>1,o>0&&f>0){const _=n[(o-1)*s+f]+2*n[o*s+f-1]+n[(o-1)*s+f-1]>>2;a<_&&(O=_)}n[o*s+f]=O}}const i=new Uint8Array(r*l);for(let o=0;o<c;o+=1){const e=Math.min(o*8,l-8),f=Math.max(o-2,0),M=Math.min(o+2,c-1);for(let u=0;u<s;u+=1){const a=Math.min(u*8,r-8),E=Math.max(u-2,0),O=Math.min(u+2,s-1);let _=0,C=0;for(let I=f;I<=M;I+=1)for(let B=E;B<=O;B+=1)_+=n[I*s+B],C+=1;const m=_/C;for(let I=0;I<8;I+=1){const B=(e+I)*r+a;for(let x=0;x<8;x+=1)i[B+x]=t[B+x]<=m?1:0}}}return i}function U(t,r,l){const s=new Uint8Array(t.length);for(let c=0;c<l;c+=1){const n=Math.max(c-1,0)*r,i=c*r,o=Math.min(c+1,l-1)*r;for(let e=0;e<r;e+=1){const f=Math.max(e-1,0),M=Math.min(e+1,r-1);s[i+e]=(t[n+f]+t[n+e]+t[n+M]+t[i+f]+t[i+e]+t[i+M]+t[o+f]+t[o+e]+t[o+M])/9}}return s}function h(t){const r=new Uint8Array(t.length);for(let l=0;l<t.length;l+=1)r[l]=t[l]^1;return r}export{U as blur,L as globalBinarize,A as grayscale,h as invert,p as localBinarize,K as otsuThreshold};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MINIMUM_DIMENSION=40;
+const BLOCK_POWER=3;
+const BLOCK_SIZE=1<<BLOCK_POWER;
+const MIN_DYNAMIC_RANGE=24;
+export function grayscale(data,width,height){
+const gray=new Uint8Array(width*height);
+for(let i=0;i<gray.length;i+=1){
+const at=i*4;
+const alpha=data[at+3];
+if(alpha===255){
+gray[i]=(data[at]*77+data[at+1]*151+data[at+2]*28)>>8;
+}else{
+const k=alpha/255;
+const r=data[at]*k+255*(1-k);
+const g=data[at+1]*k+255*(1-k);
+const b=data[at+2]*k+255*(1-k);
+gray[i]=(r*77+g*151+b*28)>>8;
+}
+}
+return gray;
+}
+export function otsuThreshold(gray){
+const histogram=new Uint32Array(256);
+for(const value of gray)histogram[value]+=1;
+const total=gray.length;
+let sum=0;
+for(let i=0;i<256;i+=1)sum+=i*histogram[i];
+let sumBelow=0;
+let countBelow=0;
+let best=0;
+let bestVariance=-1;
+for(let t=0;t<256;t+=1){
+countBelow+=histogram[t];
+if(countBelow===0)continue;
+const countAbove=total-countBelow;
+if(countAbove===0)break;
+sumBelow+=t*histogram[t];
+const meanBelow=sumBelow/countBelow;
+const meanAbove=(sum-sumBelow)/countAbove;
+const variance=countBelow*countAbove*(meanBelow-meanAbove)**2;
+if(variance>bestVariance){
+bestVariance=variance;
+best=t;
+}
+}
+return best;
+}
+export function globalBinarize(gray,width,height){
+const threshold=otsuThreshold(gray);
+const bits=new Uint8Array(width*height);
+for(let i=0;i<bits.length;i+=1)bits[i]=gray[i]<=threshold?1:0;
+return bits;
+}
+export function localBinarize(gray,width,height){
+if(width<MINIMUM_DIMENSION||height<MINIMUM_DIMENSION){
+return globalBinarize(gray,width,height);
+}
+const across=Math.ceil(width/BLOCK_SIZE);
+const down=Math.ceil(height/BLOCK_SIZE);
+const points=new Uint8Array(across*down);
+for(let by=0;by<down;by+=1){
+const top=Math.min(by*BLOCK_SIZE,height-BLOCK_SIZE);
+for(let bx=0;bx<across;bx+=1){
+const left=Math.min(bx*BLOCK_SIZE,width-BLOCK_SIZE);
+let sum=0;
+let min=255;
+let max=0;
+for(let y=0;y<BLOCK_SIZE;y+=1){
+const row=(top+y)*width+left;
+for(let x=0;x<BLOCK_SIZE;x+=1){
+const value=gray[row+x];
+sum+=value;
+if(value<min)min=value;
+if(value>max)max=value;
+}
+}
+let average;
+if(max-min>MIN_DYNAMIC_RANGE){
+average=sum>>(BLOCK_POWER*2);
+}else{
+average=min>>1;
+if(by>0&&bx>0){
+const neighbours=(points[(by-1)*across+bx]
++2*points[by*across+bx-1]
++points[(by-1)*across+bx-1])>>2;
+if(min<neighbours)average=neighbours;
+}
+}
+points[by*across+bx]=average;
+}
+}
+const bits=new Uint8Array(width*height);
+for(let by=0;by<down;by+=1){
+const top=Math.min(by*BLOCK_SIZE,height-BLOCK_SIZE);
+const yFrom=Math.max(by-2,0);
+const yTo=Math.min(by+2,down-1);
+for(let bx=0;bx<across;bx+=1){
+const left=Math.min(bx*BLOCK_SIZE,width-BLOCK_SIZE);
+const xFrom=Math.max(bx-2,0);
+const xTo=Math.min(bx+2,across-1);
+let total=0;
+let count=0;
+for(let y=yFrom;y<=yTo;y+=1){
+for(let x=xFrom;x<=xTo;x+=1){
+total+=points[y*across+x];
+count+=1;
+}
+}
+const threshold=total/count;
+for(let y=0;y<BLOCK_SIZE;y+=1){
+const row=(top+y)*width+left;
+for(let x=0;x<BLOCK_SIZE;x+=1){
+bits[row+x]=gray[row+x]<=threshold?1:0;
+}
+}
+}
+}
+return bits;
+}
+export function blur(gray,width,height){
+const out=new Uint8Array(gray.length);
+for(let y=0;y<height;y+=1){
+const up=Math.max(y-1,0)*width;
+const here=y*width;
+const down=Math.min(y+1,height-1)*width;
+for(let x=0;x<width;x+=1){
+const left=Math.max(x-1,0);
+const right=Math.min(x+1,width-1);
+out[here+x]=(gray[up+left]+gray[up+x]+gray[up+right]
++gray[here+left]+gray[here+x]+gray[here+right]
++gray[down+left]+gray[down+x]+gray[down+right])/9;
+}
+}
+return out;
+}
+export function invert(bits){
+const out=new Uint8Array(bits.length);
+for(let i=0;i<bits.length;i+=1)out[i]=bits[i]^1;
+return out;
+}

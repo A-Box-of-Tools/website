@@ -1,2 +1,132 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const _=25.4,l=(t,h)=>t*h/25.4,I=(t,h)=>t*25.4/h,M=t=>Math.max(1,Math.round(t)),m=(t,h,i)=>Math.min(i,Math.max(h,t)),s=t=>(t.min+t.max)/2;function E(t){if(t.print)return t.print.widthMm/t.print.heightMm;const h=t.digital,i=h?.width?.exact??h?.width?.min,n=h?.height?.exact??h?.height?.min;if(i&&n)return i/n;throw new Error("a specification with neither a print size nor a pixel size cannot be cropped to.")}function T(t,h){if(!t.print)return null;const i=Math.max(t.print.dpi,Math.round(Number(h)||0)||t.print.dpi);return{width:M(l(t.print.widthMm,i)),height:M(l(t.print.heightMm,i)),dpi:i}}function c(t){const h=(t.leftEye.y+t.rightEye.y)/2,i=(t.leftEye.x+t.rightEye.x)/2,n=t.rightEye.x-t.leftEye.x,o=t.rightEye.y-t.leftEye.y;return{eyeY:h,centreX:i,headPx:t.chin.y-t.crown.y,eyeSpacing:Math.hypot(n,o),tilt:n===0&&o===0?0:Math.atan2(o,n)*180/Math.PI}}function N(t,h,i){const n=c(t),o=E(h),r=s(h.head),d=s(h.eye);let e=n.headPx>0?n.headPx/r:i.height,a=e*o;const y=Math.min(1,i.width/a,i.height/e);e*=y,a*=y;const g=n.eyeY-(1-d)*e,x=n.centreX-a/2,u=m(g,0,i.height-e),w=m(x,0,i.width-a),p={x:Math.round(w),y:Math.round(u),width:M(a),height:M(e)};return{rect:P(p,i),ideal:{x,y:g,width:a,height:e},short:{top:Math.max(0,Math.round(-g)),bottom:Math.max(0,Math.round(g+e-i.height)),left:Math.max(0,Math.round(-x)),right:Math.max(0,Math.round(x+a-i.width))}}}function P(t,h){const i=Math.min(t.width,h.width),n=Math.min(t.height,h.height);return{x:m(Math.round(t.x),0,h.width-i),y:m(Math.round(t.y),0,h.height-n),width:i,height:n}}function C(t,h,i){const n=c(h),o=t.height>0?n.headPx/t.height:0,r=t.height>0?1-(n.eyeY-t.y)/t.height:0,d=t.width>0?(n.centreX-(t.x+t.width/2))/t.width:0,e=i.print?.heightMm??null;return{head:{...f(o,i.head),mm:e===null?null:o*e},eye:{...f(r,i.eye),mm:e===null?null:r*e},centre:{offset:d,status:Math.abs(d)<=.02?"ok":d<0?"low":"high"},tilt:{degrees:n.tilt,status:Math.abs(n.tilt)<=3?"ok":"high"},eyeSpacing:n.eyeSpacing}}function f(t,h){const i=t<h.min?"low":t>h.max?"high":"ok";return{value:t,status:i,min:h.min,max:h.max,advisory:!!h.advisory}}function F(t){return t.head.status==="ok"&&t.eye.status==="ok"&&t.centre.status==="ok"&&t.tilt.status==="ok"}function H(t,h){const i=Math.min(t.width/h.width,t.height/h.height);return{scale:i,enlarging:i<.95,severe:i<.6,have:{width:t.width,height:t.height},need:{width:h.width,height:h.height}}}function R(t){return{eye:{from:1-t.eye.max,to:1-t.eye.min},head:{min:t.head.min,max:t.head.max}}}export{_ as MM_PER_INCH,f as checkBand,P as containIn,c as faceOf,N as fitFrame,E as frameAspect,R as guideLines,C as measure,l as mmToPx,F as passes,T as printPixels,I as pxToMm,H as resampling};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const MM_PER_INCH=25.4;
+export const mmToPx=(mm,dpi)=>(mm*dpi)/MM_PER_INCH;
+export const pxToMm=(px,dpi)=>(px*MM_PER_INCH)/dpi;
+const px=(value)=>Math.max(1,Math.round(value));
+const clamp=(value,low,high)=>Math.min(high,Math.max(low,value));
+const mid=(band)=>(band.min+band.max)/2;
+export function frameAspect(spec){
+if(spec.print)return spec.print.widthMm/spec.print.heightMm;
+const digital=spec.digital;
+const width=digital?.width?.exact??digital?.width?.min;
+const height=digital?.height?.exact??digital?.height?.min;
+if(width&&height)return width/height;
+throw new Error('a specification with neither a print size nor a pixel size cannot be cropped to.');
+}
+export function printPixels(spec,dpi){
+if(!spec.print)return null;
+const used=Math.max(spec.print.dpi,Math.round(Number(dpi)||0)||spec.print.dpi);
+return{
+width:px(mmToPx(spec.print.widthMm,used)),
+height:px(mmToPx(spec.print.heightMm,used)),
+dpi:used,
+};
+}
+export function faceOf(marks){
+const eyeY=(marks.leftEye.y+marks.rightEye.y)/2;
+const centreX=(marks.leftEye.x+marks.rightEye.x)/2;
+const dx=marks.rightEye.x-marks.leftEye.x;
+const dy=marks.rightEye.y-marks.leftEye.y;
+return{
+eyeY,
+centreX,
+headPx:marks.chin.y-marks.crown.y,
+eyeSpacing:Math.hypot(dx,dy),
+tilt:dx===0&&dy===0?0:(Math.atan2(dy,dx)*180)/Math.PI,
+};
+}
+export function fitFrame(marks,spec,source){
+const face=faceOf(marks);
+const aspect=frameAspect(spec);
+const headTarget=mid(spec.head);
+const eyeTarget=mid(spec.eye);
+let height=face.headPx>0?face.headPx/headTarget:source.height;
+let width=height*aspect;
+const shrink=Math.min(1,source.width/width,source.height/height);
+height*=shrink;
+width*=shrink;
+const idealTop=face.eyeY-(1-eyeTarget)*height;
+const idealLeft=face.centreX-width/2;
+const top=clamp(idealTop,0,source.height-height);
+const left=clamp(idealLeft,0,source.width-width);
+const rect={
+x:Math.round(left),
+y:Math.round(top),
+width:px(width),
+height:px(height),
+};
+return{
+rect:containIn(rect,source),
+ideal:{x:idealLeft,y:idealTop,width,height},
+short:{
+top:Math.max(0,Math.round(-idealTop)),
+bottom:Math.max(0,Math.round(idealTop+height-source.height)),
+left:Math.max(0,Math.round(-idealLeft)),
+right:Math.max(0,Math.round(idealLeft+width-source.width)),
+},
+};
+}
+export function containIn(rect,source){
+const width=Math.min(rect.width,source.width);
+const height=Math.min(rect.height,source.height);
+return{
+x:clamp(Math.round(rect.x),0,source.width-width),
+y:clamp(Math.round(rect.y),0,source.height-height),
+width,
+height,
+};
+}
+export function measure(rect,marks,spec){
+const face=faceOf(marks);
+const headFraction=rect.height>0?face.headPx/rect.height:0;
+const eyeFraction=rect.height>0?1-(face.eyeY-rect.y)/rect.height:0;
+const centreOffset=rect.width>0
+?(face.centreX-(rect.x+rect.width/2))/rect.width
+:0;
+const heightMm=spec.print?.heightMm??null;
+return{
+head:{
+...checkBand(headFraction,spec.head),
+mm:heightMm===null?null:headFraction*heightMm,
+},
+eye:{
+...checkBand(eyeFraction,spec.eye),
+mm:heightMm===null?null:eyeFraction*heightMm,
+},
+centre:{
+offset:centreOffset,
+status:Math.abs(centreOffset)<=0.02?'ok':centreOffset<0?'low':'high',
+},
+tilt:{
+degrees:face.tilt,
+status:Math.abs(face.tilt)<=3?'ok':'high',
+},
+eyeSpacing:face.eyeSpacing,
+};
+}
+export function checkBand(value,band){
+const status=value<band.min?'low':value>band.max?'high':'ok';
+return{value,status,min:band.min,max:band.max,advisory:Boolean(band.advisory)};
+}
+export function passes(metrics){
+return metrics.head.status==='ok'
+&&metrics.eye.status==='ok'
+&&metrics.centre.status==='ok'
+&&metrics.tilt.status==='ok';
+}
+export function resampling(rect,output){
+const scale=Math.min(rect.width/output.width,rect.height/output.height);
+return{
+scale,
+enlarging:scale<0.95,
+severe:scale<0.6,
+have:{width:rect.width,height:rect.height},
+need:{width:output.width,height:output.height},
+};
+}
+export function guideLines(spec){
+return{
+eye:{from:1-spec.eye.max,to:1-spec.eye.min},
+head:{min:spec.head.min,max:spec.head.max},
+};
+}

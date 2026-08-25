@@ -1,2 +1,108 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const g=256,N=6,x=16,A=40,O=0,p=128;function C(t){if(!t.length)throw new Error("an icon needs at least one image in it.");for(const e of t){if(e.width<1||e.height<1)throw new Error("an icon image cannot be zero pixels across.");if(e.width>256||e.height>256)throw new Error(`${e.width}x${e.height} does not fit in an .ico: the format stores each side in one byte, so 256 is the largest there is.`)}const n=6+t.length*16+t.reduce((e,c)=>e+c.data.length,0),r=new Uint8Array(n),s=new DataView(r.buffer);s.setUint16(0,0,!0),s.setUint16(2,1,!0),s.setUint16(4,t.length,!0);let o=6,i=6+t.length*16;for(const e of t)r[o]=e.width%256,r[o+1]=e.height%256,r[o+2]=0,r[o+3]=0,s.setUint16(o+4,1,!0),s.setUint16(o+6,32,!0),s.setUint32(o+8,e.data.length,!0),s.setUint32(o+12,i,!0),r.set(e.data,i),o+=16,i+=e.data.length;return r}function _({width:t,height:n,data:r}){if(r.length!==t*n*4)throw new Error("the pixel buffer does not match the size it claims to be.");const s=t*4,o=(t+31>>5)*4,i=s*n,e=o*n,c=new Uint8Array(40+i+e),u=new DataView(c.buffer);u.setUint32(0,40,!0),u.setInt32(4,t,!0),u.setInt32(8,n*2,!0),u.setUint16(12,1,!0),u.setUint16(14,32,!0),u.setUint32(16,0,!0),u.setUint32(20,i+e,!0),u.setInt32(24,0,!0),u.setInt32(28,0,!0),u.setUint32(32,0,!0),u.setUint32(36,0,!0);const w=40,E=w+i;for(let I=0;I<n;I+=1){const l=I*s,R=w+(n-1-I)*s,U=E+(n-1-I)*o;for(let f=0;f<t;f+=1){const h=l+f*4,a=R+f*4,D=r[h+3];c[a]=r[h+2],c[a+1]=r[h+1],c[a+2]=r[h],c[a+3]=D,D<128&&(c[U+(f>>3)]|=128>>(f&7))}}return c}function m(t){if(t.length<6)throw new Error("not an .ico: too short to hold a header.");const n=new DataView(t.buffer,t.byteOffset,t.byteLength);if(n.getUint16(2,!0)!==1)throw new Error("not an .ico: the type field is not 1.");const r=n.getUint16(4,!0),s=[];for(let o=0;o<r;o+=1){const i=6+o*16;if(i+16>t.length)throw new Error("the directory runs past the end of the file.");const e=n.getUint32(i+8,!0),c=n.getUint32(i+12,!0);if(c+e>t.length)throw new Error("an entry points past the end of the file.");s.push({width:t[i]===0?256:t[i],height:t[i+1]===0?256:t[i+1],kind:d(t,c)?"png":"bmp",bytes:e})}return s}function d(t,n){return t[n]===137&&t[n+1]===80&&t[n+2]===78&&t[n+3]===71}export{g as MAX_SIDE,_ as dibEntry,m as readIcoDirectory,C as writeIco};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const MAX_SIDE=256;
+const ICONDIR=6;
+const ICONDIRENTRY=16;
+const DIB_HEADER=40;
+const BI_RGB=0;
+const MASK_CUTOFF=128;
+export function writeIco(entries){
+if(!entries.length)throw new Error('an icon needs at least one image in it.');
+for(const entry of entries){
+if(entry.width<1||entry.height<1){
+throw new Error('an icon image cannot be zero pixels across.');
+}
+if(entry.width>MAX_SIDE||entry.height>MAX_SIDE){
+throw new Error(
+`${entry.width}x${entry.height} does not fit in an .ico: the format stores `
++`each side in one byte, so 256 is the largest there is.`);
+}
+}
+const total=ICONDIR+entries.length*ICONDIRENTRY
++entries.reduce((n,entry)=>n+entry.data.length,0);
+const out=new Uint8Array(total);
+const view=new DataView(out.buffer);
+view.setUint16(0,0,true);
+view.setUint16(2,1,true);
+view.setUint16(4,entries.length,true);
+let dir=ICONDIR;
+let at=ICONDIR+entries.length*ICONDIRENTRY;
+for(const entry of entries){
+out[dir]=entry.width%256;
+out[dir+1]=entry.height%256;
+out[dir+2]=0;
+out[dir+3]=0;
+view.setUint16(dir+4,1,true);
+view.setUint16(dir+6,32,true);
+view.setUint32(dir+8,entry.data.length,true);
+view.setUint32(dir+12,at,true);
+out.set(entry.data,at);
+dir+=ICONDIRENTRY;
+at+=entry.data.length;
+}
+return out;
+}
+export function dibEntry({width,height,data}){
+if(data.length!==width*height*4){
+throw new Error('the pixel buffer does not match the size it claims to be.');
+}
+const xorStride=width*4;
+const maskStride=((width+31)>>5)*4;
+const xorSize=xorStride*height;
+const maskSize=maskStride*height;
+const out=new Uint8Array(DIB_HEADER+xorSize+maskSize);
+const view=new DataView(out.buffer);
+view.setUint32(0,DIB_HEADER,true);
+view.setInt32(4,width,true);
+view.setInt32(8,height*2,true);
+view.setUint16(12,1,true);
+view.setUint16(14,32,true);
+view.setUint32(16,BI_RGB,true);
+view.setUint32(20,xorSize+maskSize,true);
+view.setInt32(24,0,true);
+view.setInt32(28,0,true);
+view.setUint32(32,0,true);
+view.setUint32(36,0,true);
+const xorAt=DIB_HEADER;
+const maskAt=xorAt+xorSize;
+for(let y=0;y<height;y+=1){
+const source=y*xorStride;
+const dest=xorAt+(height-1-y)*xorStride;
+const maskRow=maskAt+(height-1-y)*maskStride;
+for(let x=0;x<width;x+=1){
+const from=source+x*4;
+const to=dest+x*4;
+const alpha=data[from+3];
+out[to]=data[from+2];
+out[to+1]=data[from+1];
+out[to+2]=data[from];
+out[to+3]=alpha;
+if(alpha<MASK_CUTOFF)out[maskRow+(x>>3)]|=0x80>>(x&7);
+}
+}
+return out;
+}
+export function readIcoDirectory(bytes){
+if(bytes.length<ICONDIR)throw new Error('not an .ico: too short to hold a header.');
+const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+if(view.getUint16(2,true)!==1)throw new Error('not an .ico: the type field is not 1.');
+const count=view.getUint16(4,true);
+const found=[];
+for(let i=0;i<count;i+=1){
+const dir=ICONDIR+i*ICONDIRENTRY;
+if(dir+ICONDIRENTRY>bytes.length)throw new Error('the directory runs past the end of the file.');
+const size=view.getUint32(dir+8,true);
+const offset=view.getUint32(dir+12,true);
+if(offset+size>bytes.length)throw new Error('an entry points past the end of the file.');
+found.push({
+width:bytes[dir]===0?MAX_SIDE:bytes[dir],
+height:bytes[dir+1]===0?MAX_SIDE:bytes[dir+1],
+kind:isPng(bytes,offset)?'png':'bmp',
+bytes:size,
+});
+}
+return found;
+}
+function isPng(bytes,at){
+return bytes[at]===0x89&&bytes[at+1]===0x50
+&&bytes[at+2]===0x4e&&bytes[at+3]===0x47;
+}

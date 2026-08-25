@@ -1,2 +1,198 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{FileWindow as M}from"./demux.js";import{decodeRuns as b}from"./plan.js";import{drawScaled as W,frameCanvas as _}from"./draw.js";const C=8;class T extends Error{constructor(){super("Cancelled."),this.name="AbortError"}}function k(e){if(e?.aborted)throw new T}function v(e){const s={codec:e.codec,codedWidth:e.codedWidth,codedHeight:e.codedHeight};return e.description&&(s.description=e.description),s}function F(e){const s=e.duration/e.timescale;return s?Math.min(240,Math.max(1,e.samples.length/s)):30}class H{#t;#i;#s;#e=0;#o=!1;constructor({times:s,canvas:n,write:c}){this.#t=s,this.#i=n,this.#s=c}get served(){return this.#e}get done(){return this.#e>=this.#t.length}offer(s,n){if(this.#o)for(;!this.done&&this.#t[this.#e]<s-1e-9;)this.#s(this.#i),this.#e+=1;this.done||(n(),this.#o=!0)}finish(){if(this.#o)for(;!this.done;)this.#s(this.#i),this.#e+=1}}async function I({file:e,media:s,times:n,width:c,height:f,writer:t,onProgress:p,signal:m}){const{video:a}=s,{canvas:w,ctx:y}=_(c,f),g=b({samples:a.samples,timescale:a.timescale,times:n}),h=new H({times:n,canvas:w,write:i=>t.write(i)});let o=null;const l=new VideoDecoder({output:i=>{try{if(o||h.done)return;h.offer(i.timestamp/1e6,()=>W(y,i,{rotation:a.rotation,displayWidth:a.displayWidth,displayHeight:a.displayHeight,width:c,height:f}))}catch(u){o??=u}finally{i.close()}},error:i=>{o??=i}});l.configure(v(a));const x=new M(e);try{let i=0;for(const u of g){if(h.done)break;for(let r=u.first;r<=u.last;r+=1){if(k(m),o)throw o;if(h.done)break;const d=a.samples[r],E=await x.read(d.offset,d.size);for(l.decode(new EncodedVideoChunk({type:d.isKey?"key":"delta",timestamp:Math.round(d.pts/a.timescale*1e6),data:E}));l.decodeQueueSize>C;)await V(l);for(;t.busy;)await t.settle();i+=1,i%10===0&&p?.({phase:"working",done:h.served,total:n.length})}}if(await l.flush(),o)throw o;return h.finish(),p?.({phase:"finishing",done:n.length,total:n.length}),await t.finish()}finally{l.state!=="closed"&&l.close(),w.width=0}}function V(e){return new Promise(s=>{let n=!1;const c=()=>{n||(n=!0,clearTimeout(f),e.removeEventListener("dequeue",c),s())},f=setTimeout(c,20);e.addEventListener("dequeue",c)})}async function L({file:e,media:s,atSeconds:n=0,maxWidth:c=640,signal:f}){const{video:t}=s,p=[Math.max(0,n)],[m]=b({samples:t.samples,timescale:t.timescale,times:p});if(!m)throw new Error("This file has no frames in it.");const a=Math.min(1,c/t.displayWidth),w=Math.max(2,Math.round(t.displayWidth*a)),y=Math.max(2,Math.round(t.displayHeight*a)),{canvas:g,ctx:h}=_(w,y);let o=null,l=!1;const x=new H({times:p,canvas:g,write:()=>{l=!0}}),i=new VideoDecoder({output:r=>{try{if(o)return;x.offer(r.timestamp/1e6,()=>W(h,r,{rotation:t.rotation,displayWidth:t.displayWidth,displayHeight:t.displayHeight,width:w,height:y}))}catch(d){o??=d}finally{r.close()}},error:r=>{o??=r}});i.configure(v(t));const u=new M(e,4<<20);try{for(let r=m.first;r<=m.last;r+=1){if(k(f),o)throw o;const d=t.samples[r],E=await u.read(d.offset,d.size);i.decode(new EncodedVideoChunk({type:d.isKey?"key":"delta",timestamp:Math.round(d.pts/t.timescale*1e6),data:E}))}if(await i.flush(),o)throw o;if(x.finish(),!l)throw new Error("No frame could be decoded from this file.");return g}finally{i.state!=="closed"&&i.close()}}export{F as averageFps,v as decoderConfig,L as previewFrame,I as timelapseByDecoding};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{FileWindow}from'./demux.js';
+import{decodeRuns}from'./plan.js';
+import{drawScaled,frameCanvas}from'./draw.js';
+const QUEUE_LIMIT=8;
+class AbortedError extends Error{
+constructor(){
+super('Cancelled.');
+this.name='AbortError';
+}
+}
+function throwIfAborted(signal){
+if(signal?.aborted)throw new AbortedError();
+}
+export function decoderConfig(video){
+const config={
+codec:video.codec,
+codedWidth:video.codedWidth,
+codedHeight:video.codedHeight,
+};
+if(video.description)config.description=video.description;
+return config;
+}
+export function averageFps(video){
+const seconds=video.duration/video.timescale;
+if(!seconds)return 30;
+return Math.min(240,Math.max(1,video.samples.length/seconds));
+}
+class Sampler{
+#times;
+#canvas;
+#write;
+#served=0;
+#drawn=false;
+constructor({times,canvas,write}){
+this.#times=times;
+this.#canvas=canvas;
+this.#write=write;
+}
+get served(){
+return this.#served;
+}
+get done(){
+return this.#served>=this.#times.length;
+}
+offer(time,paint){
+if(this.#drawn){
+while(!this.done&&this.#times[this.#served]<time-1e-9){
+this.#write(this.#canvas);
+this.#served+=1;
+}
+}
+if(this.done)return;
+paint();
+this.#drawn=true;
+}
+finish(){
+if(!this.#drawn)return;
+while(!this.done){
+this.#write(this.#canvas);
+this.#served+=1;
+}
+}
+}
+export async function timelapseByDecoding({
+file,media,times,width,height,writer,onProgress,signal,
+}){
+const{video}=media;
+const{canvas,ctx}=frameCanvas(width,height);
+const runs=decodeRuns({samples:video.samples,timescale:video.timescale,times});
+const sampler=new Sampler({
+times,
+canvas,
+write:(source)=>writer.write(source),
+});
+let failure=null;
+const decoder=new VideoDecoder({
+output:(frame)=>{
+try{
+if(failure||sampler.done)return;
+sampler.offer(frame.timestamp/1_000_000,()=>drawScaled(ctx,frame,{
+rotation:video.rotation,
+displayWidth:video.displayWidth,
+displayHeight:video.displayHeight,
+width,
+height,
+}));
+}catch(error){
+failure??=error;
+}finally{
+frame.close();
+}
+},
+error:(error)=>{failure??=error;},
+});
+decoder.configure(decoderConfig(video));
+const window=new FileWindow(file);
+try{
+let fed=0;
+for(const run of runs){
+if(sampler.done)break;
+for(let i=run.first;i<=run.last;i+=1){
+throwIfAborted(signal);
+if(failure)throw failure;
+if(sampler.done)break;
+const sample=video.samples[i];
+const bytes=await window.read(sample.offset,sample.size);
+decoder.decode(new EncodedVideoChunk({
+type:sample.isKey?'key':'delta',
+timestamp:Math.round(sample.pts/video.timescale*1_000_000),
+data:bytes,
+}));
+while(decoder.decodeQueueSize>QUEUE_LIMIT)await tick(decoder);
+while(writer.busy)await writer.settle();
+fed+=1;
+if(fed%10===0){
+onProgress?.({phase:'working',done:sampler.served,total:times.length});
+}
+}
+}
+await decoder.flush();
+if(failure)throw failure;
+sampler.finish();
+onProgress?.({phase:'finishing',done:times.length,total:times.length});
+return await writer.finish();
+}finally{
+if(decoder.state!=='closed')decoder.close();
+canvas.width=0;
+}
+}
+function tick(decoder){
+return new Promise((resolve)=>{
+let settled=false;
+const done=()=>{
+if(settled)return;
+settled=true;
+clearTimeout(timer);
+decoder.removeEventListener('dequeue',done);
+resolve();
+};
+const timer=setTimeout(done,20);
+decoder.addEventListener('dequeue',done);
+});
+}
+export async function previewFrame({file,media,atSeconds=0,maxWidth=640,signal}){
+const{video}=media;
+const times=[Math.max(0,atSeconds)];
+const[run]=decodeRuns({samples:video.samples,timescale:video.timescale,times});
+if(!run)throw new Error('This file has no frames in it.');
+const scale=Math.min(1,maxWidth/video.displayWidth);
+const width=Math.max(2,Math.round(video.displayWidth*scale));
+const height=Math.max(2,Math.round(video.displayHeight*scale));
+const{canvas,ctx}=frameCanvas(width,height);
+let failure=null;
+let drawn=false;
+const sampler=new Sampler({times,canvas,write:()=>{drawn=true;}});
+const decoder=new VideoDecoder({
+output:(frame)=>{
+try{
+if(failure)return;
+sampler.offer(frame.timestamp/1_000_000,()=>drawScaled(ctx,frame,{
+rotation:video.rotation,
+displayWidth:video.displayWidth,
+displayHeight:video.displayHeight,
+width,
+height,
+}));
+}catch(error){
+failure??=error;
+}finally{
+frame.close();
+}
+},
+error:(error)=>{failure??=error;},
+});
+decoder.configure(decoderConfig(video));
+const window=new FileWindow(file,4<<20);
+try{
+for(let i=run.first;i<=run.last;i+=1){
+throwIfAborted(signal);
+if(failure)throw failure;
+const sample=video.samples[i];
+const bytes=await window.read(sample.offset,sample.size);
+decoder.decode(new EncodedVideoChunk({
+type:sample.isKey?'key':'delta',
+timestamp:Math.round(sample.pts/video.timescale*1_000_000),
+data:bytes,
+}));
+}
+await decoder.flush();
+if(failure)throw failure;
+sampler.finish();
+if(!drawn)throw new Error('No frame could be decoded from this file.');
+return canvas;
+}finally{
+if(decoder.state!=='closed')decoder.close();
+}
+}

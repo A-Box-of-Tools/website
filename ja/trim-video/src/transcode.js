@@ -1,2 +1,410 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{FileWindow as $}from"./demux.js";import{Mp4Writer as ce,MOVIE_TIMESCALE as X,avcSampleEntry as le}from"./mp4.js";import{planRanges as he}from"./ranges.js";import{closeDurations as G,audioSamplesFor as ue}from"./copy.js";import{encodeJoinedAudio as me,targetAudioFormat as fe}from"./audio.js";import{drawFitted as P}from"./draw.js";import{pickH264Codec as pe}from"./support.js";const W=9e4,Z={low:.05,medium:.1,high:.2},we={low:.8,medium:1.25,high:2},ee=2e5,ye=6e7,te=8,ge=2;class Ee extends Error{constructor(){super("Trim cancelled."),this.name="AbortError"}}function oe(o){if(o?.aborted)throw new Ee}function ie(o){const e={codec:o.codec,codedWidth:o.codedWidth,codedHeight:o.codedHeight};return o.description&&(e.description=o.description),e}function Me(o){const e=o.duration/o.timescale;return e?Math.min(240,Math.max(1,o.samples.length/e)):30}function xe(o){return{width:Math.max(2,Math.floor(o.displayWidth/2)*2),height:Math.max(2,Math.floor(o.displayHeight/2)*2)}}function Te({video:o,size:e,fps:f,quality:c}){const n=e.width*e.height*f*(Z[c]??Z.medium),l=o.samples.reduce((u,M)=>u+M.size,0),w=o.duration/o.timescale;let y=n;if(w>0){const u=l*8/w;y=Math.min(y,u*(we[c]??1.25))}return Math.round(Math.min(ye,Math.max(ee,y)))}function be({clips:o,frame:e,fps:f,quality:c}){let r=ee;for(const n of o)n.media&&(r=Math.max(r,Te({video:n.media.video,size:e,fps:f,quality:c})));return r}async function Ae(o,e){for(;o.decodeQueueSize>te||e.encodeQueueSize>te;)await new Promise(f=>{let c=!1;const r=()=>{c||(c=!0,clearTimeout(n),o.removeEventListener("dequeue",r),e.removeEventListener("dequeue",r),f())},n=setTimeout(r,20);o.addEventListener("dequeue",r),e.addEventListener("dequeue",r)})}function B(o,e){return Math.round(o/e*1e6)}async function _e({clips:o,frame:e,quality:f="medium",audioMode:c="copy",onProgress:r,signal:n}){const l=o.filter(t=>t.ranges.length&&t.media);if(!l.length)throw new Error("There is nothing selected to keep.");const w=Math.max(...l.map(t=>Me(t.media.video))),y=be({clips:l,frame:e,fps:w,quality:f}),u=await pe({width:e.width,height:e.height,framerate:Math.round(w),bitrate:y});if(!u)throw new Error(`This browser will not encode H.264 at ${e.width}x${e.height}. Choose a smaller frame, or use "Keep every byte", which encodes nothing at all.`);r?.({phase:"preparing",done:0,total:1});const M=document.createElement("canvas");M.width=e.width,M.height=e.height;const x=M.getContext("2d",{alpha:!1}),g=[];let T=null,m=null,E=0,C=-1/0,s=!0,p=0,k=0,D=0,V=0,z=e.width,R=e.height;const A=new VideoEncoder({output:(t,i)=>{try{if(!T&&i?.decoderConfig?.description){const d=i.decoderConfig.description;T=d instanceof Uint8Array?d:new Uint8Array(d instanceof ArrayBuffer?d:d.buffer.slice(d.byteOffset,d.byteOffset+d.byteLength))}const a=new Uint8Array(t.byteLength);t.copyTo(a),g.push({data:a,isKey:t.type==="key",time:Math.round(t.timestamp/1e6*W)})}catch(a){m??=a}},error:t=>{m??=t}});A.configure({codec:u,width:e.width,height:e.height,bitrate:y,framerate:Math.round(w),avc:{format:"avc"},alpha:"discard",latencyMode:"quality"});const ne=t=>{try{if(m)return;const i=t.timestamp/1e6;if(i<p-1e-6||i>=k-1e-6)return;P(x,t,{rotation:V,displayWidth:z,displayHeight:R,frame:e});const a=Math.round((i-p)*1e6+D),d=s||a-C>=ge*1e6;d&&(C=a,s=!1);const v=new VideoFrame(M,{timestamp:a,duration:t.duration??void 0});try{A.encode(v,{keyFrame:d})}finally{v.close()}E++}catch(i){m??=i}finally{t.close()}},K=l.reduce((t,i)=>t+i.media.video.samples.length,0);let L=0;const U=[],Q=[],O=[];let b=0,q=0;try{for(const t of l){const{video:i,audio:a}=t.media,d=!!a?.samples.length,v=c!=="none"&&d?a:null,F=c==="copy"&&d,{plans:Y,audioDurations:se}=he({video:i,audio:v,ranges:t.ranges,anchor:"start"});c==="encode"&&O.push({file:t.file,media:t.media,plans:Y}),F&&!b&&(b=a.timescale);const J=b?Math.round(q*b):0;V=i.rotation,z=i.displayWidth,R=i.displayHeight;const _=new VideoDecoder({output:ne,error:h=>{m??=h}});_.configure(ie(i));const re=new $(t.file);try{for(const h of Y){p=h.start,k=h.end,s=!0;for(let S=h.video.from;S<=h.video.to;S++){if(oe(n),m)throw m;await Ae(_,A);const H=i.samples[S],de=await re.read(H.offset,H.size);_.decode(new EncodedVideoChunk({type:H.isKey?"key":"delta",timestamp:B(H.pts,i.timescale),data:de})),L++,(L%10===0||L===K)&&r?.({phase:"trimming",done:E,total:K})}if(await _.flush(),m)throw m;if(F&&h.audio){for(const S of ue({file:t.file,audio:a,plan:h,durations:se,seam:J,outTimescale:b}))U.push(S);Q.push({mediaTime:J+Math.round((h.audio.offset+h.audio.editStart)*b/a.timescale),duration:Math.round((h.end-h.start)*X)})}D+=Math.round((h.end-h.start)*1e6),q+=h.end-h.start}}finally{_.state!=="closed"&&_.close()}}if(r?.({phase:"finishing",done:E,total:K}),await A.flush(),m)throw m;if(!g.length)throw new Error("No frames could be decoded from what you chose.");if(!T)throw new Error("The encoder never reported a decoder configuration.")}finally{A.state!=="closed"&&A.close()}const I=new ce,N=I.addTrack({kind:"vide",timescale:W,sampleEntry:le(e.width,e.height,T),matrix:null,width:e.width<<16,height:e.height<<16});g.sort((t,i)=>t.time-i.time);const ae=Math.max(1,Math.round(W/Math.max(1,w)));for(const t of G(g.map(i=>({data:i.data,isKey:i.isKey,dts:i.time,pts:i.time,tailDuration:ae}))))N.addSample(t);let j=null;if(c==="copy"&&U.length){const t=I.addTrack({kind:"soun",timescale:b,sampleEntry:l.find(a=>a.media.audio?.samples.length).media.audio.sampleEntry});for(const a of G(U))t.addSample(a);let i=0;for(const a of Q)N.addEdit(Math.round(i/X*W),a.duration),t.addEdit(a.mediaTime,a.duration),i+=a.duration}else if(c==="encode"){r?.({phase:"sound",done:0,total:O.length});const t=fe(l),i=await me({clips:O,format:t,onProgress:r,signal:n});if(i){const a=I.addTrack({kind:"soun",timescale:i.timescale,sampleEntry:i.sampleEntry});for(const d of i.samples)a.addSample({data:d.data,isKey:!0,dts:d.dts,pts:d.dts,duration:d.duration})}else j="These clips describe their sound differently, so it had to be re-encoded to be joined - and this browser will not encode AAC. The video has been joined without sound. Chrome and Edge will do it."}return{blob:I.finalize(),extension:"mp4",codec:u,frames:g.length,clips:l.length,exact:!0,preRoll:0,warning:j}}function Ke({file:o,media:e,ranges:f,quality:c="medium",keepAudio:r=!0,onProgress:n,signal:l}){return _e({clips:[{file:o,media:e,ranges:f}],frame:xe(e.video),quality:c,audioMode:r&&e.audio?.samples.length?"copy":"none",onProgress:n,signal:l})}async function Le({file:o,media:e,atSeconds:f=0,maxWidth:c=960,signal:r}){const{video:n}=e,l=f*n.timescale;let w=0;for(let s=0;s<n.samples.length&&(n.samples[s].isKey&&n.samples[s].pts<=l&&(w=s),!(n.samples[s].pts>l));s++);const y=Math.min(1,c/n.displayWidth),u=document.createElement("canvas");u.width=Math.max(2,Math.round(n.displayWidth*y)),u.height=Math.max(2,Math.round(n.displayHeight*y));const M=u.getContext("2d",{alpha:!1});let x=null,g=!1,T=-1/0;const m=B(l,n.timescale),E=new VideoDecoder({output:s=>{try{(!g||s.timestamp<=m&&s.timestamp>T)&&(P(M,s,{rotation:n.rotation,displayWidth:n.displayWidth,displayHeight:n.displayHeight,frame:{width:u.width,height:u.height}}),T=s.timestamp,g=!0)}catch(p){x??=p}finally{s.close()}},error:s=>{x??=s}});E.configure(ie(n));const C=new $(o,4<<20);try{for(let s=w;s<n.samples.length;s++){if(oe(r),x)throw x;const p=n.samples[s],k=await C.read(p.offset,p.size);if(E.decode(new EncodedVideoChunk({type:p.isKey?"key":"delta",timestamp:B(p.pts,n.timescale),data:k})),p.pts>l+n.timescale*.4)break}if(await E.flush(),x)throw x;if(!g)throw new Error("No frame could be decoded from this file.");return u}finally{E.state!=="closed"&&E.close()}}export{Me as averageFps,Te as chooseBitrate,be as chooseJoinBitrate,ie as decoderConfig,Le as grabFrame,_e as joinExact,xe as outputSize,Ke as trimExact};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{FileWindow}from'./demux.js';
+import{Mp4Writer,MOVIE_TIMESCALE,avcSampleEntry}from'./mp4.js';
+import{planRanges}from'./ranges.js';
+import{closeDurations,audioSamplesFor}from'./copy.js';
+import{encodeJoinedAudio,targetAudioFormat}from'./audio.js';
+import{drawFitted}from'./draw.js';
+import{pickH264Codec}from'./support.js';
+const VIDEO_TIMESCALE=90000;
+const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
+const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};
+const MIN_BITRATE=200_000;
+const MAX_BITRATE=60_000_000;
+const QUEUE_LIMIT=8;
+const KEYFRAME_SECONDS=2;
+class AbortedError extends Error{
+constructor(){
+super('Trim cancelled.');
+this.name='AbortError';
+}
+}
+function throwIfAborted(signal){
+if(signal?.aborted)throw new AbortedError();
+}
+export function decoderConfig(video){
+const config={
+codec:video.codec,
+codedWidth:video.codedWidth,
+codedHeight:video.codedHeight,
+};
+if(video.description)config.description=video.description;
+return config;
+}
+export function averageFps(video){
+const seconds=video.duration/video.timescale;
+if(!seconds)return 30;
+return Math.min(240,Math.max(1,video.samples.length/seconds));
+}
+export function outputSize(video){
+return{
+width:Math.max(2,Math.floor(video.displayWidth/2)*2),
+height:Math.max(2,Math.floor(video.displayHeight/2)*2),
+};
+}
+export function chooseBitrate({video,size,fps,quality}){
+const pixels=size.width*size.height;
+const byPixels=pixels*fps*(QUALITY_BPP[quality]??QUALITY_BPP.medium);
+const sourceBytes=video.samples.reduce((total,sample)=>total+sample.size,0);
+const seconds=video.duration/video.timescale;
+let ceiling=byPixels;
+if(seconds>0){
+const sourceRate=sourceBytes*8/seconds;
+ceiling=Math.min(ceiling,sourceRate*(QUALITY_HEADROOM[quality]??1.25));
+}
+return Math.round(Math.min(MAX_BITRATE,Math.max(MIN_BITRATE,ceiling)));
+}
+export function chooseJoinBitrate({clips,frame,fps,quality}){
+let best=MIN_BITRATE;
+for(const clip of clips){
+if(!clip.media)continue;
+best=Math.max(best,chooseBitrate({
+video:clip.media.video,size:frame,fps,quality,
+}));
+}
+return best;
+}
+async function settle(decoder,encoder){
+while(decoder.decodeQueueSize>QUEUE_LIMIT||encoder.encodeQueueSize>QUEUE_LIMIT){
+await new Promise((resolve)=>{
+let settled=false;
+const done=()=>{
+if(settled)return;
+settled=true;
+clearTimeout(timer);
+decoder.removeEventListener('dequeue',done);
+encoder.removeEventListener('dequeue',done);
+resolve();
+};
+const timer=setTimeout(done,20);
+decoder.addEventListener('dequeue',done);
+encoder.addEventListener('dequeue',done);
+});
+}
+}
+function micros(ticks,timescale){
+return Math.round(ticks/timescale*1_000_000);
+}
+export async function joinExact({
+clips,frame,quality='medium',audioMode='copy',onProgress,signal,
+}){
+const usable=clips.filter((clip)=>clip.ranges.length&&clip.media);
+if(!usable.length)throw new Error('There is nothing selected to keep.');
+const fps=Math.max(...usable.map((clip)=>averageFps(clip.media.video)));
+const bitrate=chooseJoinBitrate({clips:usable,frame,fps,quality});
+const codec=await pickH264Codec({
+width:frame.width,height:frame.height,framerate:Math.round(fps),bitrate,
+});
+if(!codec){
+throw new Error(`This browser will not encode H.264 at ${frame.width}x${frame.height}. `
++'Choose a smaller frame, or use "Keep every byte", which encodes nothing at all.');
+}
+onProgress?.({phase:'preparing',done:0,total:1});
+const canvas=document.createElement('canvas');
+canvas.width=frame.width;
+canvas.height=frame.height;
+const ctx=canvas.getContext('2d',{alpha:false});
+const encoded=[];
+let avcC=null;
+let failure=null;
+let drawn=0;
+let lastKeyframeUs=-Infinity;
+let wantKeyframe=true;
+let rangeStartSeconds=0;
+let rangeEndSeconds=0;
+let rangeOffsetUs=0;
+let rotation=0;
+let sourceWidth=frame.width;
+let sourceHeight=frame.height;
+const encoder=new VideoEncoder({
+output:(chunk,metadata)=>{
+try{
+if(!avcC&&metadata?.decoderConfig?.description){
+const description=metadata.decoderConfig.description;
+avcC=description instanceof Uint8Array
+?description
+:new Uint8Array(description instanceof ArrayBuffer
+?description
+:description.buffer.slice(
+description.byteOffset,description.byteOffset+description.byteLength));
+}
+const data=new Uint8Array(chunk.byteLength);
+chunk.copyTo(data);
+encoded.push({
+data,
+isKey:chunk.type==='key',
+time:Math.round(chunk.timestamp/1_000_000*VIDEO_TIMESCALE),
+});
+}catch(error){
+failure??=error;
+}
+},
+error:(error)=>{failure??=error;},
+});
+encoder.configure({
+codec,
+width:frame.width,
+height:frame.height,
+bitrate,
+framerate:Math.round(fps),
+avc:{format:'avc'},
+alpha:'discard',
+latencyMode:'quality',
+});
+const onFrame=(videoFrame)=>{
+try{
+if(failure)return;
+const seconds=videoFrame.timestamp/1_000_000;
+if(seconds<rangeStartSeconds-1e-6||seconds>=rangeEndSeconds-1e-6)return;
+drawFitted(ctx,videoFrame,{
+rotation,
+displayWidth:sourceWidth,
+displayHeight:sourceHeight,
+frame,
+});
+const timestamp=Math.round((seconds-rangeStartSeconds)*1_000_000+rangeOffsetUs);
+const keyFrame=wantKeyframe
+||timestamp-lastKeyframeUs>=KEYFRAME_SECONDS*1_000_000;
+if(keyFrame){
+lastKeyframeUs=timestamp;
+wantKeyframe=false;
+}
+const picture=new VideoFrame(canvas,{
+timestamp,
+duration:videoFrame.duration??undefined,
+});
+try{
+encoder.encode(picture,{keyFrame});
+}finally{
+picture.close();
+}
+drawn++;
+}catch(error){
+failure??=error;
+}finally{
+videoFrame.close();
+}
+};
+const total=usable.reduce((count,clip)=>count+clip.media.video.samples.length,0);
+let fed=0;
+const audioOut=[];
+const audioEdits=[];
+const forEncoding=[];
+let outAudioTs=0;
+let seamSeconds=0;
+try{
+for(const clip of usable){
+const{video,audio}=clip.media;
+const hasAudio=Boolean(audio?.samples.length);
+const planAudio=audioMode!=='none'&&hasAudio?audio:null;
+const useAudio=audioMode==='copy'&&hasAudio;
+const{plans,audioDurations}=planRanges({
+video,
+audio:planAudio,
+ranges:clip.ranges,
+anchor:'start',
+});
+if(audioMode==='encode'){
+forEncoding.push({file:clip.file,media:clip.media,plans});
+}
+if(useAudio&&!outAudioTs)outAudioTs=audio.timescale;
+const audioSeam=outAudioTs?Math.round(seamSeconds*outAudioTs):0;
+rotation=video.rotation;
+sourceWidth=video.displayWidth;
+sourceHeight=video.displayHeight;
+const decoder=new VideoDecoder({
+output:onFrame,
+error:(error)=>{failure??=error;},
+});
+decoder.configure(decoderConfig(video));
+const window=new FileWindow(clip.file);
+try{
+for(const plan of plans){
+rangeStartSeconds=plan.start;
+rangeEndSeconds=plan.end;
+wantKeyframe=true;
+for(let i=plan.video.from;i<=plan.video.to;i++){
+throwIfAborted(signal);
+if(failure)throw failure;
+await settle(decoder,encoder);
+const sample=video.samples[i];
+const data=await window.read(sample.offset,sample.size);
+decoder.decode(new EncodedVideoChunk({
+type:sample.isKey?'key':'delta',
+timestamp:micros(sample.pts,video.timescale),
+data,
+}));
+fed++;
+if(fed%10===0||fed===total){
+onProgress?.({phase:'trimming',done:drawn,total});
+}
+}
+await decoder.flush();
+if(failure)throw failure;
+if(useAudio&&plan.audio){
+for(const sample of audioSamplesFor({
+file:clip.file,audio,plan,durations:audioDurations,
+seam:audioSeam,outTimescale:outAudioTs,
+})){
+audioOut.push(sample);
+}
+audioEdits.push({
+mediaTime:audioSeam+Math.round(
+(plan.audio.offset+plan.audio.editStart)*outAudioTs/audio.timescale),
+duration:Math.round((plan.end-plan.start)*MOVIE_TIMESCALE),
+});
+}
+rangeOffsetUs+=Math.round((plan.end-plan.start)*1_000_000);
+seamSeconds+=plan.end-plan.start;
+}
+}finally{
+if(decoder.state!=='closed')decoder.close();
+}
+}
+onProgress?.({phase:'finishing',done:drawn,total});
+await encoder.flush();
+if(failure)throw failure;
+if(!encoded.length)throw new Error('No frames could be decoded from what you chose.');
+if(!avcC)throw new Error('The encoder never reported a decoder configuration.');
+}finally{
+if(encoder.state!=='closed')encoder.close();
+}
+const writer=new Mp4Writer();
+const videoTrack=writer.addTrack({
+kind:'vide',
+timescale:VIDEO_TIMESCALE,
+sampleEntry:avcSampleEntry(frame.width,frame.height,avcC),
+matrix:null,
+width:frame.width<<16,
+height:frame.height<<16,
+});
+encoded.sort((a,b)=>a.time-b.time);
+const tail=Math.max(1,Math.round(VIDEO_TIMESCALE/Math.max(1,fps)));
+for(const sample of closeDurations(encoded.map((chunk)=>({
+data:chunk.data,isKey:chunk.isKey,dts:chunk.time,pts:chunk.time,tailDuration:tail,
+})))){
+videoTrack.addSample(sample);
+}
+let warning=null;
+if(audioMode==='copy'&&audioOut.length){
+const audioTrack=writer.addTrack({
+kind:'soun',
+timescale:outAudioTs,
+sampleEntry:usable.find((clip)=>clip.media.audio?.samples.length).media.audio.sampleEntry,
+});
+for(const sample of closeDurations(audioOut))audioTrack.addSample(sample);
+let offsetMs=0;
+for(const edit of audioEdits){
+videoTrack.addEdit(Math.round(offsetMs/MOVIE_TIMESCALE*VIDEO_TIMESCALE),edit.duration);
+audioTrack.addEdit(edit.mediaTime,edit.duration);
+offsetMs+=edit.duration;
+}
+}else if(audioMode==='encode'){
+onProgress?.({phase:'sound',done:0,total:forEncoding.length});
+const format=targetAudioFormat(usable);
+const sound=await encodeJoinedAudio({clips:forEncoding,format,onProgress,signal});
+if(sound){
+const audioTrack=writer.addTrack({
+kind:'soun',
+timescale:sound.timescale,
+sampleEntry:sound.sampleEntry,
+});
+for(const sample of sound.samples){
+audioTrack.addSample({
+data:sample.data,
+isKey:true,
+dts:sample.dts,
+pts:sample.dts,
+duration:sample.duration,
+});
+}
+}else{
+warning='These clips describe their sound differently, so it had to be re-encoded '
++'to be joined - and this browser will not encode AAC. The video has been joined '
++'without sound. Chrome and Edge will do it.';
+}
+}
+return{
+blob:writer.finalize(),
+extension:'mp4',
+codec,
+frames:encoded.length,
+clips:usable.length,
+exact:true,
+preRoll:0,
+warning,
+};
+}
+export function trimExact({
+file,media,ranges,quality='medium',keepAudio=true,onProgress,signal,
+}){
+return joinExact({
+clips:[{file,media,ranges}],
+frame:outputSize(media.video),
+quality,
+audioMode:keepAudio&&media.audio?.samples.length?'copy':'none',
+onProgress,
+signal,
+});
+}
+export async function grabFrame({file,media,atSeconds=0,maxWidth=960,signal}){
+const{video}=media;
+const targetTicks=atSeconds*video.timescale;
+let start=0;
+for(let i=0;i<video.samples.length;i++){
+if(video.samples[i].isKey&&video.samples[i].pts<=targetTicks)start=i;
+if(video.samples[i].pts>targetTicks)break;
+}
+const scale=Math.min(1,maxWidth/video.displayWidth);
+const canvas=document.createElement('canvas');
+canvas.width=Math.max(2,Math.round(video.displayWidth*scale));
+canvas.height=Math.max(2,Math.round(video.displayHeight*scale));
+const ctx=canvas.getContext('2d',{alpha:false});
+let failure=null;
+let drawn=false;
+let bestUs=-Infinity;
+const targetUs=micros(targetTicks,video.timescale);
+const decoder=new VideoDecoder({
+output:(videoFrame)=>{
+try{
+if(!drawn||(videoFrame.timestamp<=targetUs&&videoFrame.timestamp>bestUs)){
+drawFitted(ctx,videoFrame,{
+rotation:video.rotation,
+displayWidth:video.displayWidth,
+displayHeight:video.displayHeight,
+frame:{width:canvas.width,height:canvas.height},
+});
+bestUs=videoFrame.timestamp;
+drawn=true;
+}
+}catch(error){
+failure??=error;
+}finally{
+videoFrame.close();
+}
+},
+error:(error)=>{failure??=error;},
+});
+decoder.configure(decoderConfig(video));
+const window=new FileWindow(file,4<<20);
+try{
+for(let i=start;i<video.samples.length;i++){
+throwIfAborted(signal);
+if(failure)throw failure;
+const sample=video.samples[i];
+const data=await window.read(sample.offset,sample.size);
+decoder.decode(new EncodedVideoChunk({
+type:sample.isKey?'key':'delta',
+timestamp:micros(sample.pts,video.timescale),
+data,
+}));
+if(sample.pts>targetTicks+video.timescale*0.4)break;
+}
+await decoder.flush();
+if(failure)throw failure;
+if(!drawn)throw new Error('No frame could be decoded from this file.');
+return canvas;
+}finally{
+if(decoder.state!=='closed')decoder.close();
+}
+}

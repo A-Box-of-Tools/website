@@ -1,2 +1,147 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const u=/[\p{L}\p{N}_]/u,a=[{id:"email",pattern:/[\p{L}\p{N}._%+-]+@[\p{L}\p{N}.-]+\.[\p{L}]{2,}/gu},{id:"card",pattern:/\b(?:\d[ -]?){12,18}\d\b/g,confirm:t=>h(t.replace(/\D/g,""))},{id:"iban",pattern:/\b[A-Z]{2}\d{2}(?:[ ]?[A-Z0-9]{4}){2,7}(?:[ ]?[A-Z0-9]{1,3})?\b/g,confirm:t=>m(t.replace(/\s/g,""))},{id:"nationalid",pattern:/\b(?:\d{3}-\d{2}-\d{4}|[A-CEGHJ-PR-TW-Z]{2}[ ]?(?:\d{2}[ ]?){3}[A-D])\b/g},{id:"phone",pattern:/(?:\+\d{1,3}[ .-]?)?(?:\(\d{1,5}\)[ .-]?)?\d{2,5}(?:[ .-]\d{2,6}){1,4}/g,confirm:t=>{const r=t.replace(/\D/g,"").length;return r>=7&&r<=15}}];function g(t,r){const o=a.find(s=>s.id===r);if(!o)return[];const n=[],e=new RegExp(o.pattern.source,o.pattern.flags);for(const s of t.matchAll(e)){const f=s[0];if(o.confirm&&!o.confirm(f))continue;const i=f.replace(/[\s.,;:]+$/,"");i&&n.push({from:s.index,to:s.index+i.length})}return n}function x(t,r,{matchCase:o=!1,wholeWord:n=!1}={}){const e=r.trim();if(!e)return[];const s=e.split(/\s+/).map(c=>c.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("\\s*"),f=[],i=new RegExp(s,o?"g":"gi");for(const c of t.matchAll(i)){const l=c.index,d=l+c[0].length;if(!c[0])break;n&&!p(t,l,d)||f.push({from:l,to:d})}return f}function p(t,r,o){const n=t[r-1],e=t[o];return!(n&&u.test(n))&&!(e&&u.test(e))}function b(t){const r=[];for(const o of t.lines){let n=-1;for(let e=o.from;e<=o.to;e+=1){const s=e<o.to?t.text[e]:" ";/\s/.test(s)?n>=0&&(r.push({from:n,to:e,text:t.text.slice(n,e)}),n=-1):n<0&&(n=e)}}return r}function A(t,r,o){const n=new Set;for(let e=r;e<o&&e<t.owner.length;e+=1){const s=t.owner[e];if(s<0)continue;n.add(s);const f=t.glyphs[s]?.group;if(f!=null)for(const i of t.groups.get(f)??[])n.add(i)}return n}function w(t,r,o){const n=t.lines.find(e=>r>=e.from&&r<=e.to)??{from:Math.max(0,r-40),to:Math.min(t.text.length,o+40)};return{before:t.text.slice(n.from,r),hit:t.text.slice(r,o),after:t.text.slice(o,n.to)}}function R(t){const r=[...t].sort((n,e)=>n.from-e.from||n.to-e.to),o=[];for(const n of r){const e=o[o.length-1];e&&n.from<=e.to?e.to=Math.max(e.to,n.to):o.push({...n})}return o}function h(t){if(t.length<13||t.length>19)return!1;let r=0,o=!1;for(let n=t.length-1;n>=0;n-=1){let e=t.charCodeAt(n)-48;if(e<0||e>9)return!1;o&&(e*=2,e>9&&(e-=9)),r+=e,o=!o}return r%10===0}function m(t){if(t.length<15||t.length>34||!/^[A-Z]{2}\d{2}[A-Z0-9]+$/.test(t))return!1;const r=t.slice(4)+t.slice(0,4);let o=0;for(const n of r){const e=/\d/.test(n)?n:String(n.charCodeAt(0)-55);for(const s of e)o=(o*10+Number(s))%97}return o===1}export{a as FINDERS,w as contextOf,g as findPattern,x as findTerm,A as glyphsIn,h as luhn,R as mergeRanges,m as mod97,b as wordsOf};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const WORD=/[\p{L}\p{N}_]/u;
+export const FINDERS=[
+{
+id:'email',
+pattern:/[\p{L}\p{N}._%+-]+@[\p{L}\p{N}.-]+\.[\p{L}]{2,}/gu,
+},
+{
+id:'card',
+pattern:/\b(?:\d[ -]?){12,18}\d\b/g,
+confirm:(text)=>luhn(text.replace(/\D/g,'')),
+},
+{
+id:'iban',
+pattern:/\b[A-Z]{2}\d{2}(?:[ ]?[A-Z0-9]{4}){2,7}(?:[ ]?[A-Z0-9]{1,3})?\b/g,
+confirm:(text)=>mod97(text.replace(/\s/g,'')),
+},
+{
+id:'nationalid',
+pattern:/\b(?:\d{3}-\d{2}-\d{4}|[A-CEGHJ-PR-TW-Z]{2}[ ]?(?:\d{2}[ ]?){3}[A-D])\b/g,
+},
+{
+id:'phone',
+pattern:/(?:\+\d{1,3}[ .-]?)?(?:\(\d{1,5}\)[ .-]?)?\d{2,5}(?:[ .-]\d{2,6}){1,4}/g,
+confirm:(text)=>{
+const digits=text.replace(/\D/g,'').length;
+return digits>=7&&digits<=15;
+},
+},
+];
+export function findPattern(text,id){
+const finder=FINDERS.find((item)=>item.id===id);
+if(!finder)return[];
+const found=[];
+const pattern=new RegExp(finder.pattern.source,finder.pattern.flags);
+for(const match of text.matchAll(pattern)){
+const value=match[0];
+if(finder.confirm&&!finder.confirm(value))continue;
+const trimmed=value.replace(/[\s.,;:]+$/,'');
+if(!trimmed)continue;
+found.push({from:match.index,to:match.index+trimmed.length});
+}
+return found;
+}
+export function findTerm(text,term,{matchCase=false,wholeWord=false}={}){
+const needle=term.trim();
+if(!needle)return[];
+const pattern=needle
+.split(/\s+/)
+.map((part)=>part.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'))
+.join('\\s*');
+const found=[];
+const search=new RegExp(pattern,matchCase?'g':'gi');
+for(const match of text.matchAll(search)){
+const from=match.index;
+const to=from+match[0].length;
+if(!match[0])break;
+if(wholeWord&&!standsAlone(text,from,to))continue;
+found.push({from,to});
+}
+return found;
+}
+function standsAlone(text,from,to){
+const before=text[from-1];
+const after=text[to];
+return!(before&&WORD.test(before))&&!(after&&WORD.test(after));
+}
+export function wordsOf(page){
+const words=[];
+for(const line of page.lines){
+let start=-1;
+for(let at=line.from;at<=line.to;at+=1){
+const character=at<line.to?page.text[at]:' ';
+if(/\s/.test(character)){
+if(start>=0){
+words.push({from:start,to:at,text:page.text.slice(start,at)});
+start=-1;
+}
+}else if(start<0){
+start=at;
+}
+}
+}
+return words;
+}
+export function glyphsIn(page,from,to){
+const found=new Set();
+for(let at=from;at<to&&at<page.owner.length;at+=1){
+const index=page.owner[at];
+if(index<0)continue;
+found.add(index);
+const group=page.glyphs[index]?.group;
+if(group===null||group===undefined)continue;
+for(const sibling of page.groups.get(group)??[])found.add(sibling);
+}
+return found;
+}
+export function contextOf(page,from,to){
+const line=page.lines.find((item)=>from>=item.from&&from<=item.to)
+??{from:Math.max(0,from-40),to:Math.min(page.text.length,to+40)};
+return{
+before:page.text.slice(line.from,from),
+hit:page.text.slice(from,to),
+after:page.text.slice(to,line.to),
+};
+}
+export function mergeRanges(ranges){
+const ordered=[...ranges].sort((a,b)=>a.from-b.from||a.to-b.to);
+const out=[];
+for(const range of ordered){
+const last=out[out.length-1];
+if(last&&range.from<=last.to)last.to=Math.max(last.to,range.to);
+else out.push({...range});
+}
+return out;
+}
+export function luhn(digits){
+if(digits.length<13||digits.length>19)return false;
+let sum=0;
+let double=false;
+for(let at=digits.length-1;at>=0;at-=1){
+let value=digits.charCodeAt(at)-48;
+if(value<0||value>9)return false;
+if(double){
+value*=2;
+if(value>9)value-=9;
+}
+sum+=value;
+double=!double;
+}
+return sum%10===0;
+}
+export function mod97(account){
+if(account.length<15||account.length>34)return false;
+if(!/^[A-Z]{2}\d{2}[A-Z0-9]+$/.test(account))return false;
+const moved=account.slice(4)+account.slice(0,4);
+let remainder=0;
+for(const character of moved){
+const value=/\d/.test(character)
+?character
+:String(character.charCodeAt(0)-55);
+for(const digit of value){
+remainder=(remainder*10+Number(digit))%97;
+}
+}
+return remainder===1;
+}

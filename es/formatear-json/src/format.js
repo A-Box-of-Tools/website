@@ -1,5 +1,95 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{parseJson as n,printJson as m}from"./json.js";import{parseXml as o,printXml as a}from"./xml.js";import{parseCss as p,printCss as h}from"./css.js";import{parseYaml as u,printYaml as d}from"./yaml.js";const f=[{id:"json",name:"JSON",minifies:!0,sorts:!0},{id:"xml",name:"XML",minifies:!0,sorts:!1},{id:"html",name:"HTML",minifies:!0,sorts:!1},{id:"css",name:"CSS",minifies:!0,sorts:!1},{id:"yaml",name:"YAML",minifies:!1,sorts:!1}],C=t=>f.find(r=>r.id===t)??f[0];function M(t,{language:r,minify:e=!1,indent:s="  ",sortKeys:l=!1}){return L(c());function c(){switch(r){case"json":return m(n(t),{indent:e?"":s,sortKeys:l});case"xml":return a(o(t),{indent:s,minify:e});case"html":return a(o(t,{html:!0}),{indent:s,minify:e,html:!0});case"css":return h(p(t),{indent:s,minify:e});case"yaml":return d(u(t),{indent:s==="	"?2:s.length||2});default:throw new Error(`${r} is not a language this formats.`)}}}function L(t){return t.endsWith(`
-`)?t:`${t}
-`}function O(t){const r=k(t.trim());return r===""?null:r.startsWith("<")?g(r)?"html":"xml":r.startsWith("{")||r.startsWith("[")?(i(()=>n(t)),"json"):y(r)?"css":i(()=>n(t))?"json":S(r)&&i(()=>u(t))?"yaml":null}function i(t){try{return t(),!0}catch{return!1}}function k(t){let r=t;for(;;){if(r.startsWith("/*")){const e=r.indexOf("*/");if(e<0)return r;r=r.slice(e+2).trimStart();continue}if(r.startsWith("//")){const e=r.indexOf(`
-`);if(e<0)return"";r=r.slice(e+1).trimStart();continue}return r}}const b=/^<(!doctype html|html|head|body|div|p|span|table|ul|ol|section|main|nav|header|footer|h[1-6]|script|style|meta|link|form|a|img|br)\b/i;function g(t){return/^<\?xml/i.test(t)?!1:b.test(t)?!0:/<(br|hr|img|meta|link|input)\b[^>]*[^/]>/i.test(t)}function y(t){if(/^@(media|import|charset|font-face|supports|layer|keyframes|tailwind|use)\b/i.test(t))return!0;const r=t.indexOf("{");if(r<1)return!1;const e=t.indexOf("}",r);if(e<0)return!1;const s=t.slice(r+1,e);return/[-a-zA-Z]\s*:\s*[^;]+;/.test(s)&&!/^\s*["']/.test(t)}function S(t){return t.startsWith("---")?!0:/^[ \t]*(-\s+\S|[A-Za-z_"'][^\n:]*:(\s|$))/m.test(t)}export{f as LANGUAGES,O as detectLanguage,M as formatText,C as languageById};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{parseJson,printJson}from'./json.js';
+import{parseXml,printXml}from'./xml.js';
+import{parseCss,printCss}from'./css.js';
+import{parseYaml,printYaml}from'./yaml.js';
+export const LANGUAGES=[
+{id:'json',name:'JSON',minifies:true,sorts:true},
+{id:'xml',name:'XML',minifies:true,sorts:false},
+{id:'html',name:'HTML',minifies:true,sorts:false},
+{id:'css',name:'CSS',minifies:true,sorts:false},
+{id:'yaml',name:'YAML',minifies:false,sorts:false},
+];
+export const languageById=(id)=>LANGUAGES.find((item)=>item.id===id)??LANGUAGES[0];
+export function formatText(text,{language,minify=false,indent='  ',sortKeys=false}){
+return endWithNewline(run());
+function run(){
+switch(language){
+case'json':
+return printJson(parseJson(text),{indent:minify?'':indent,sortKeys});
+case'xml':
+return printXml(parseXml(text),{indent,minify});
+case'html':
+return printXml(parseXml(text,{html:true}),{indent,minify,html:true});
+case'css':
+return printCss(parseCss(text),{indent,minify});
+case'yaml':
+return printYaml(parseYaml(text),{indent:indent==='\t'?2:indent.length||2});
+default:
+throw new Error(`${language} is not a language this formats.`);
+}
+}
+}
+function endWithNewline(text){
+return text.endsWith('\n')?text:`${text}\n`;
+}
+export function detectLanguage(text){
+const trimmed=stripLeadingComments(text.trim());
+if(trimmed==='')return null;
+if(trimmed.startsWith('<')){
+return looksLikeHtml(trimmed)?'html':'xml';
+}
+if(trimmed.startsWith('{')||trimmed.startsWith('[')){
+if(parses(()=>parseJson(text)))return'json';
+return'json';
+}
+if(looksLikeCss(trimmed))return'css';
+if(parses(()=>parseJson(text)))return'json';
+if(looksLikeYaml(trimmed)&&parses(()=>parseYaml(text)))return'yaml';
+return null;
+}
+function parses(run){
+try{
+run();
+return true;
+}catch{
+return false;
+}
+}
+function stripLeadingComments(text){
+let rest=text;
+for(;;){
+if(rest.startsWith('/*')){
+const end=rest.indexOf('*/');
+if(end<0)return rest;
+rest=rest.slice(end+2).trimStart();
+continue;
+}
+if(rest.startsWith('//')){
+const end=rest.indexOf('\n');
+if(end<0)return'';
+rest=rest.slice(end+1).trimStart();
+continue;
+}
+return rest;
+}
+}
+const HTML_MARKERS=/^<(!doctype html|html|head|body|div|p|span|table|ul|ol|section|main|nav|header|footer|h[1-6]|script|style|meta|link|form|a|img|br)\b/i;
+function looksLikeHtml(trimmed){
+if(/^<\?xml/i.test(trimmed))return false;
+if(HTML_MARKERS.test(trimmed))return true;
+return/<(br|hr|img|meta|link|input)\b[^>]*[^/]>/i.test(trimmed);
+}
+function looksLikeCss(trimmed){
+if(/^@(media|import|charset|font-face|supports|layer|keyframes|tailwind|use)\b/i.test(trimmed))return true;
+const open=trimmed.indexOf('{');
+if(open<1)return false;
+const close=trimmed.indexOf('}',open);
+if(close<0)return false;
+const body=trimmed.slice(open+1,close);
+return/[-a-zA-Z]\s*:\s*[^;]+;/.test(body)&&!/^\s*["']/.test(trimmed);
+}
+function looksLikeYaml(trimmed){
+if(trimmed.startsWith('---'))return true;
+return/^[ \t]*(-\s+\S|[A-Za-z_"'][^\n:]*:(\s|$))/m.test(trimmed);
+}

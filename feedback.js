@@ -1,2 +1,116 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-(function(){"use strict";var l="abox-feedback-",f=/^(a|d1|d2)\.(\d{1,15})$/,m={a:180,d1:30,d2:365},y=864e5,p=1500,E=2500,r=document.getElementById("feedback");if(!r)return;var d=r.getAttribute("data-tool")||"",u=r.querySelector(".feedback-ask"),i=r.querySelector(".feedback-why"),v=r.querySelector(".feedback-thanks"),h=r.querySelector(".feedback-note");if(!d||!u||!i||!v)return;var w=!1,a=null;function g(){try{var e=window.localStorage.getItem(l+d);return e&&f.test(e)?f.exec(e):null}catch{return null}}function A(e){try{window.localStorage.setItem(l+d,e+"."+Date.now())}catch{}}function S(){var e=g();if(!e)return!1;var t=Number(e[2]);return t>Date.now()?!1:Date.now()-t<m[e[1]]*y}function L(){var e=g();return e&&e[1].charAt(0)==="d"?"d2":"d1"}function b(e,t){var n=window.dataLayer;if(!n||typeof n.push!="function")return;function o(){n.push(arguments)}try{o("event","tool_feedback",{tool_slug:d,verdict:e,reason:t})}catch{}}function c(){a!==null&&(b("down",a),a=null)}function q(e){var t=e&&e.closest?e.closest("section"):null;t&&t.parentNode&&!t.contains(r)&&t.insertAdjacentElement("afterend",r),r.hidden=!1}function s(e){A(e),u.hidden=!0,i.hidden=!0,h&&(h.hidden=!0),v.hidden=!1,window.setTimeout(function(){r.hidden=!0},E)}r.addEventListener("click",function(e){var t=e.target;if(!(!t||!t.closest)){var n=t.closest("[data-verdict]");if(n){n.getAttribute("data-verdict")==="up"?(b("up","none"),s("a")):(a="none",u.hidden=!0,i.hidden=!1);return}var o=t.closest("[data-reason]");if(o){a=o.getAttribute("data-reason"),c(),s("a");return}if(t.closest(".feedback-close")){var k=a!==null;c(),s(k?"a":L())}}}),window.addEventListener("pagehide",c),!S()&&document.addEventListener("click",function(e){if(!w){var t=e.target;if(!(!t||!t.closest)){var n=t.closest('a[download][href], button[id^="download"], [data-download]');!n||n.disabled||(w=!0,window.setTimeout(function(){q(n)},p))}}},!0)})();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+(function(){
+'use strict';
+var KEY='abox-feedback-';
+var STATE=/^(a|d1|d2)\.(\d{1,15})$/;
+var SILENCE={a:180,d1:30,d2:365};
+var DAY=86400000;
+var DELAY=1500;
+var THANKS=2500;
+var panel=document.getElementById('feedback');
+if(!panel)return;
+var slug=panel.getAttribute('data-tool')||'';
+var ask=panel.querySelector('.feedback-ask');
+var why=panel.querySelector('.feedback-why');
+var thanks=panel.querySelector('.feedback-thanks');
+var note=panel.querySelector('.feedback-note');
+if(!slug||!ask||!why||!thanks)return;
+var asked=false;
+var pending=null;
+function stored(){
+try{
+var raw=window.localStorage.getItem(KEY+slug);
+return raw&&STATE.test(raw)?STATE.exec(raw):null;
+}catch(err){
+return null;
+}
+}
+function remember(state){
+try{
+window.localStorage.setItem(KEY+slug,state+'.'+Date.now());
+}catch(err){}
+}
+function silent(){
+var was=stored();
+if(!was)return false;
+var when=Number(was[2]);
+if(when>Date.now())return false;
+return Date.now()-when<SILENCE[was[1]]*DAY;
+}
+function refusal(){
+var was=stored();
+return was&&was[1].charAt(0)==='d'?'d2':'d1';
+}
+function send(verdict,reason){
+var queue=window.dataLayer;
+if(!queue||typeof queue.push!=='function')return;
+function gtag(){queue.push(arguments);}
+try{
+gtag('event','tool_feedback',{
+tool_slug:slug,
+verdict:verdict,
+reason:reason,
+});
+}catch(err){}
+}
+function flush(){
+if(pending===null)return;
+send('down',pending);
+pending=null;
+}
+function show(after){
+var host=after&&after.closest?after.closest('section'):null;
+if(host&&host.parentNode&&!host.contains(panel)){
+host.insertAdjacentElement('afterend',panel);
+}
+panel.hidden=false;
+}
+function settle(state){
+remember(state);
+ask.hidden=true;
+why.hidden=true;
+if(note)note.hidden=true;
+thanks.hidden=false;
+window.setTimeout(function(){panel.hidden=true;},THANKS);
+}
+panel.addEventListener('click',function(event){
+var target=event.target;
+if(!target||!target.closest)return;
+var vote=target.closest('[data-verdict]');
+if(vote){
+if(vote.getAttribute('data-verdict')==='up'){
+send('up','none');
+settle('a');
+}else{
+pending='none';
+ask.hidden=true;
+why.hidden=false;
+}
+return;
+}
+var chip=target.closest('[data-reason]');
+if(chip){
+pending=chip.getAttribute('data-reason');
+flush();
+settle('a');
+return;
+}
+if(target.closest('.feedback-close')){
+var answered=pending!==null;
+flush();
+settle(answered?'a':refusal());
+}
+});
+window.addEventListener('pagehide',flush);
+if(silent())return;
+document.addEventListener('click',function(event){
+if(asked)return;
+var target=event.target;
+if(!target||!target.closest)return;
+var trigger=target.closest(
+'a[download][href], button[id^="download"], [data-download]');
+if(!trigger||trigger.disabled)return;
+asked=true;
+window.setTimeout(function(){show(trigger);},DELAY);
+},true);
+}());

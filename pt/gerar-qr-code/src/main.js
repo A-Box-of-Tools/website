@@ -1,2 +1,370 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as f}from"./shared/phrases.js";import{KINDS as h,compose as z,missing as T}from"./payload.js";import{makeQr as q}from"./qr.js";import{capacityFor as O}from"./qr-encode.js";import{SYMBOLOGIES as L,makeBarcode as P}from"./barcode.js";import{barcodeSvg as B,download as w,qrSvg as M,sizeOfSvg as R,svgToPng as x}from"./render.js";const r=t=>document.getElementById(t),e={symbology:r("symbology"),symbologyNote:r("symbology-note"),formatRow:r("format-row"),format:r("format"),formatNote:r("format-note"),fields:r("fields"),inputError:r("input-error"),encodedPanel:r("encoded-panel"),encoded:r("encoded"),encodedNote:r("encoded-note"),qrOptions:r("qr-options"),barcodeOptions:r("barcode-options"),level:r("level"),quiet:r("quiet"),barWidth:r("bar-width"),barHeight:r("bar-height"),showText:r("show-text"),code39CheckRow:r("code39-check-row"),code39Check:r("code39-check"),foreground:r("foreground"),background:r("background"),transparent:r("transparent"),sizeRow:r("size-row"),size:r("size"),sizeNote:r("size-note"),preview:r("preview"),facts:r("facts"),downloadSvg:r("download-svg"),downloadPng:r("download-png"),copyPng:r("copy-png"),downloadNote:r("download-note"),privacyToggle:r("privacy-toggle"),privacyPanel:r("privacy-panel"),networkCount:r("network-count"),networkDot:r("network-dot"),offlineStatus:r("offline-status"),offlineDot:r("offline-dot")},W={code128:["The text","ABOX-TOOLS-128"],ean13:["The number","590123412345"],upca:["The number","03600029145"],ean8:["The number","9638507"],itf14:["The number","1540014128876"],itf:["The number","1234567890"],code39:["The text","ABOX TOOLS"]},k=new Map;let d=null;function $(){return e.symbology.value==="qr"?e.format.value:`barcode:${e.symbology.value}`}function p(t){return k.get(`${$()}:${t}`)??""}function y(t,n){k.set(`${$()}:${t}`,n)}function v(){if(e.symbology.value!=="qr"){const[t,n]=W[e.symbology.value];return[{id:"text",label:t,type:"text",placeholder:n}]}return h.find(t=>t.id===e.format.value).fields}function C(){e.fields.replaceChildren();for(const t of v()){const n=document.createElement("div");n.className=t.type==="checkbox"?"field check-field":"field";const o=t.type==="textarea"?document.createElement("textarea"):t.type==="select"?document.createElement("select"):document.createElement("input");if(o.id=`field-${t.id}`,t.type==="textarea")o.rows=3;else if(t.type==="select")for(const[i,s]of t.options)o.append(new Option(s,i));else o.type=t.type;t.placeholder&&(o.placeholder=t.placeholder);const a=document.createElement("label");if(a.htmlFor=o.id,a.textContent=t.label+(t.optional&&t.type!=="checkbox"?" (optional)":""),t.type==="checkbox")o.checked=p(t.id)===!0,n.append(o,a);else{const i=p(t.id);o.value=i||(t.type==="select"?t.options[0][0]:""),y(t.id,o.value),n.append(a,o)}o.addEventListener("input",()=>{y(t.id,t.type==="checkbox"?o.checked:o.value),m()}),o.addEventListener("change",()=>{y(t.id,t.type==="checkbox"?o.checked:o.value),m()}),e.fields.append(n)}}function D(){const t={};for(const n of v())t[n.id]=p(n.id);return t}function N(){return{foreground:e.foreground.value,background:e.transparent.checked?"none":e.background.value}}function m(){const t=D(),n=e.symbology.value==="qr",o=n?e.format.value:"text",a=n?T(o,t):t.text?[]:["Something to put in it"];if(a.length){b(`Fill in: ${a.join(", ")}.`,a.length===v().length);return}let i;try{i=n?z(o,t):t.text}catch(c){b(c.message,!1);return}e.encoded.textContent=i,e.encodedNote.textContent=A(i);try{d=n?F(i):I(i)}catch(c){b(c.message,!1);return}e.inputError.hidden=!0;const s=new DOMParser().parseFromString(d.svg,"image/svg+xml");e.preview.replaceChildren(document.importNode(s.documentElement,!0)),e.facts.textContent=d.facts;for(const c of[e.downloadSvg,e.downloadPng,e.copyPng])c.disabled=!1}function F(t){const n=g(Number(e.quiet.value),0,16),o=q(t,{level:e.level.value}),a=o.size+n*2,i=g(Number(e.size.value),64,4096),s=Math.max(1,Math.floor(i/a)),c=a*s;e.sizeNote.textContent=c===i?`${c} pixels square, at ${s} per module.`:`${c} pixels square rather than ${i}, because ${a} modules across only divides evenly at ${s} pixels each. The SVG has no such limit - it prints at any size.`;const l=M(o,{...N(),scale:s,quiet:n}),u=Math.round(o.bits/o.capacityBits*100);return{svg:l,name:"qr-code",facts:`Version ${o.version}: ${o.size} modules square, ${o.mode} mode, level ${o.level} - about ${o.recovery}% of it can be destroyed and still read. Mask ${o.mask}. Using ${o.bits} of the ${o.capacityBits} bits this version holds (${u}%), which at this version and level is room for ${O(o.mode,o.version,o.level)} ${Q(o.mode)} in all.`}}function I(t){const n=P(t,{symbology:e.symbology.value,code39Check:e.code39Check.checked}),o=g(Number(e.barWidth.value),1,10),a=g(Number(e.barHeight.value),20,600),i=B(n,{...N(),scale:o,height:a,text:e.showText.checked}),s=R(i);return e.sizeNote.textContent=`${s.width} by ${s.height} pixels, at ${o} pixel${o===1?"":"s"} for the narrowest bar.`,{svg:i,name:`${n.symbology}-${n.text}`.replace(/[^a-z0-9-]/gi,"-").toLowerCase(),facts:`${n.name}, holding ${n.text}. ${n.modules.length} modules across, ${n.quiet.left} of them the quiet zone on the left and ${n.quiet.right} on the right - white space the scanner needs, so it is part of the picture rather than something to crop off.${n.note?` ${n.note}`:""}`}}function A(t){const n=new TextEncoder().encode(t).length,o=[...t].length;return n===o?`${o} character${o===1?"":"s"}.`:`${o} characters, ${n} bytes - some of them are not ASCII, and a QR code counts what it stores in bytes.`}function Q(t){return t==="byte"?"bytes":"characters"}function b(t,n){d=null,e.preview.replaceChildren(),e.facts.textContent="",e.encoded.textContent="",e.encodedNote.textContent="",e.sizeNote.textContent="",e.inputError.textContent=t,e.inputError.hidden=n;for(const o of[e.downloadSvg,e.downloadPng,e.copyPng])o.disabled=!0}function g(t,n,o){return Number.isFinite(t)?Math.min(o,Math.max(n,Math.round(t))):n}function E(){const t=e.symbology.value==="qr";if(e.formatRow.hidden=!t,e.qrOptions.hidden=!t,e.barcodeOptions.hidden=t,e.sizeRow.hidden=!t,e.code39CheckRow.hidden=e.symbology.value!=="code39",e.encodedPanel.hidden=!t,t){const n=h.find(o=>o.id===e.format.value);e.symbologyNote.textContent="A QR code holds any text at all, and every phone camera made in the last ten years reads one without an app.",e.formatNote.textContent=n.note}else{const n=L.find(o=>o.id===e.symbology.value);e.symbologyNote.textContent=n.holds,e.formatNote.textContent=""}C(),m()}function S(){return d?.name??"code"}e.downloadSvg.addEventListener("click",()=>{d&&(w(new Blob([d.svg],{type:"image/svg+xml"}),`${S()}.svg`),e.downloadNote.textContent="Saved. Nothing was sent anywhere to make it.")}),e.downloadPng.addEventListener("click",async()=>{if(d)try{w(await x(d.svg),`${S()}.png`),e.downloadNote.textContent="Saved. Nothing was sent anywhere to make it."}catch(t){e.downloadNote.textContent=`${t.message}. The SVG will still download.`}}),e.copyPng.addEventListener("click",async()=>{if(d)try{const t=await x(d.svg);await navigator.clipboard.write([new ClipboardItem({"image/png":t})]),e.downloadNote.textContent="Copied. Paste it wherever you need it."}catch{e.downloadNote.textContent="This browser would not let the page write to the clipboard. Download it instead."}}),e.symbology.addEventListener("change",E),e.format.addEventListener("change",()=>{e.formatNote.textContent=h.find(t=>t.id===e.format.value).note,C(),m()});for(const t of[e.level,e.quiet,e.barWidth,e.barHeight,e.showText,e.code39Check,e.foreground,e.background,e.transparent,e.size])t.addEventListener("input",m),t.addEventListener("change",m);e.privacyToggle.addEventListener("click",()=>{const t=e.privacyPanel.hidden;e.privacyPanel.hidden=!t,e.privacyToggle.setAttribute("aria-expanded",String(t))});const V=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function j(){const t=new Set,n=new Set,o=a=>{for(const l of a){if(l.name.startsWith("blob:")||l.name.startsWith("data:"))continue;const u=new URL(l.name,location.href);u.origin!==location.origin&&(V.test(u.hostname)?t.add(u.hostname):n.add(u.hostname))}const i=performance.getEntriesByType("resource").filter(l=>!l.name.startsWith("blob:")&&!l.name.startsWith("data:")).length,s=n.size===0,c=t.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${t.size} host${t.size===1?"":"s"}; not one of them was given a character of it.`;e.networkCount.textContent=s?`what you typed has gone nowhere. ${i} files loaded.${c}`:`something contacted ${[...n].join(", ")}, which this tool never does.${c}`,e.networkCount.className=s?"good":"warn",e.networkDot.className=`live-dot ${s?"good":"warn"}`};o(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>o(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function H(){const t=(n,o)=>{e.offlineStatus.textContent=n,e.offlineDot.className="live-dot",o&&(e.offlineStatus.title=o,console.info("Offline caching unavailable:",o))};if(!("serviceWorker"in navigator)){t(f("offline.none"));return}if(!window.isSecureContext){t(f("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,e.offlineStatus.textContent=f("offline.ready"),e.offlineStatus.className="good",e.offlineDot.className="live-dot good"}catch(n){t(f("offline.failed"),n.message)}}window.addEventListener("error",t=>{e.inputError.hidden=!1,e.inputError.textContent=f("error.broke",{detail:t.message})}),window.addEventListener("unhandledrejection",t=>{e.inputError.hidden=!1,e.inputError.textContent=f("error.broke",{detail:t.reason?.message??t.reason})});for(const t of h)e.format.append(new Option(t.name,t.id));E(),j(),H(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{KINDS,compose,missing}from'./payload.js';
+import{makeQr}from'./qr.js';
+import{capacityFor}from'./qr-encode.js';
+import{SYMBOLOGIES,makeBarcode}from'./barcode.js';
+import{
+barcodeSvg,download,qrSvg,sizeOfSvg,svgToPng,
+}from'./render.js';
+const $=(id)=>document.getElementById(id);
+const el={
+symbology:$('symbology'),
+symbologyNote:$('symbology-note'),
+formatRow:$('format-row'),
+format:$('format'),
+formatNote:$('format-note'),
+fields:$('fields'),
+inputError:$('input-error'),
+encodedPanel:$('encoded-panel'),
+encoded:$('encoded'),
+encodedNote:$('encoded-note'),
+qrOptions:$('qr-options'),
+barcodeOptions:$('barcode-options'),
+level:$('level'),
+quiet:$('quiet'),
+barWidth:$('bar-width'),
+barHeight:$('bar-height'),
+showText:$('show-text'),
+code39CheckRow:$('code39-check-row'),
+code39Check:$('code39-check'),
+foreground:$('foreground'),
+background:$('background'),
+transparent:$('transparent'),
+sizeRow:$('size-row'),
+size:$('size'),
+sizeNote:$('size-note'),
+preview:$('preview'),
+facts:$('facts'),
+downloadSvg:$('download-svg'),
+downloadPng:$('download-png'),
+copyPng:$('copy-png'),
+downloadNote:$('download-note'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+const BARCODE_FIELD={
+code128:['The text','ABOX-TOOLS-128'],
+ean13:['The number','590123412345'],
+upca:['The number','03600029145'],
+ean8:['The number','9638507'],
+itf14:['The number','1540014128876'],
+itf:['The number','1234567890'],
+code39:['The text','ABOX TOOLS'],
+};
+const typed=new Map();
+let current=null;
+function formatId(){
+return el.symbology.value==='qr'?el.format.value:`barcode:${el.symbology.value}`;
+}
+function fieldValue(id){
+return typed.get(`${formatId()}:${id}`)??'';
+}
+function setFieldValue(id,value){
+typed.set(`${formatId()}:${id}`,value);
+}
+function fieldsFor(){
+if(el.symbology.value!=='qr'){
+const[label,placeholder]=BARCODE_FIELD[el.symbology.value];
+return[{id:'text',label,type:'text',placeholder}];
+}
+return KINDS.find((kind)=>kind.id===el.format.value).fields;
+}
+function buildFields(){
+el.fields.replaceChildren();
+for(const field of fieldsFor()){
+const wrapper=document.createElement('div');
+wrapper.className=field.type==='checkbox'?'field check-field':'field';
+const input=field.type==='textarea'
+?document.createElement('textarea')
+:field.type==='select'
+?document.createElement('select')
+:document.createElement('input');
+input.id=`field-${field.id}`;
+if(field.type==='textarea')input.rows=3;
+else if(field.type==='select'){
+for(const[value,text]of field.options){
+input.append(new Option(text,value));
+}
+}else{
+input.type=field.type;
+}
+if(field.placeholder)input.placeholder=field.placeholder;
+const label=document.createElement('label');
+label.htmlFor=input.id;
+label.textContent=field.label
++(field.optional&&field.type!=='checkbox'?' (optional)':'');
+if(field.type==='checkbox'){
+input.checked=fieldValue(field.id)===true;
+wrapper.append(input,label);
+}else{
+const stored=fieldValue(field.id);
+input.value=stored||(field.type==='select'?field.options[0][0]:'');
+setFieldValue(field.id,input.value);
+wrapper.append(label,input);
+}
+input.addEventListener('input',()=>{
+setFieldValue(field.id,field.type==='checkbox'?input.checked:input.value);
+update();
+});
+input.addEventListener('change',()=>{
+setFieldValue(field.id,field.type==='checkbox'?input.checked:input.value);
+update();
+});
+el.fields.append(wrapper);
+}
+}
+function currentValues(){
+const values={};
+for(const field of fieldsFor())values[field.id]=fieldValue(field.id);
+return values;
+}
+function style(){
+return{
+foreground:el.foreground.value,
+background:el.transparent.checked?'none':el.background.value,
+};
+}
+function update(){
+const values=currentValues();
+const isQr=el.symbology.value==='qr';
+const kind=isQr?el.format.value:'text';
+const blanks=isQr?missing(kind,values):(values.text?[]:['Something to put in it']);
+if(blanks.length){
+showNothing(`Fill in: ${blanks.join(', ')}.`,blanks.length===fieldsFor().length);
+return;
+}
+let text;
+try{
+text=isQr?compose(kind,values):values.text;
+}catch(error){
+showNothing(error.message,false);
+return;
+}
+el.encoded.textContent=text;
+el.encodedNote.textContent=describeString(text);
+try{
+current=isQr?drawQr(text):drawBarcode(text);
+}catch(error){
+showNothing(error.message,false);
+return;
+}
+el.inputError.hidden=true;
+const parsed=new DOMParser().parseFromString(current.svg,'image/svg+xml');
+el.preview.replaceChildren(document.importNode(parsed.documentElement,true));
+el.facts.textContent=current.facts;
+for(const button of[el.downloadSvg,el.downloadPng,el.copyPng])button.disabled=false;
+}
+function drawQr(text){
+const quiet=clamp(Number(el.quiet.value),0,16);
+const qr=makeQr(text,{level:el.level.value});
+const across=qr.size+quiet*2;
+const asked=clamp(Number(el.size.value),64,4096);
+const scale=Math.max(1,Math.floor(asked/across));
+const pixels=across*scale;
+el.sizeNote.textContent=pixels===asked
+?`${pixels} pixels square, at ${scale} per module.`
+:`${pixels} pixels square rather than ${asked}, because ${across} modules `
++`across only divides evenly at ${scale} pixels each. The SVG has no such `
++'limit - it prints at any size.';
+const svg=qrSvg(qr,{...style(),scale,quiet});
+const used=Math.round((qr.bits/qr.capacityBits)*100);
+return{
+svg,
+name:'qr-code',
+facts:`Version ${qr.version}: ${qr.size} modules square, ${qr.mode} mode, `
++`level ${qr.level} - about ${qr.recovery}% of it can be destroyed and still read. `
++`Mask ${qr.mask}. Using ${qr.bits} of the ${qr.capacityBits} bits this version holds `
++`(${used}%), which at this version and level is room for `
++`${capacityFor(qr.mode, qr.version, qr.level)} ${countedIn(qr.mode)} in all.`,
+};
+}
+function drawBarcode(text){
+const code=makeBarcode(text,{
+symbology:el.symbology.value,
+code39Check:el.code39Check.checked,
+});
+const scale=clamp(Number(el.barWidth.value),1,10);
+const height=clamp(Number(el.barHeight.value),20,600);
+const svg=barcodeSvg(code,{
+...style(),scale,height,text:el.showText.checked,
+});
+const size=sizeOfSvg(svg);
+el.sizeNote.textContent=`${size.width} by ${size.height} pixels, at ${scale} `
++`pixel${scale === 1 ? '' : 's'} for the narrowest bar.`;
+return{
+svg,
+name:`${code.symbology}-${code.text}`.replace(/[^a-z0-9-]/gi,'-').toLowerCase(),
+facts:`${code.name}, holding ${code.text}. ${code.modules.length} modules across, `
++`${code.quiet.left} of them the quiet zone on the left and ${code.quiet.right} on `
++`the right - white space the scanner needs, so it is part of the picture rather `
++`than something to crop off.${code.note ? ` ${code.note}` : ''}`,
+};
+}
+function describeString(text){
+const bytes=new TextEncoder().encode(text).length;
+const characters=[...text].length;
+return bytes===characters
+?`${characters} character${characters === 1 ? '' : 's'}.`
+:`${characters} characters, ${bytes} bytes - some of them are not ASCII, and a QR `
++'code counts what it stores in bytes.';
+}
+function countedIn(mode){
+return mode==='byte'?'bytes':'characters';
+}
+function showNothing(message,quiet){
+current=null;
+el.preview.replaceChildren();
+el.facts.textContent='';
+el.encoded.textContent='';
+el.encodedNote.textContent='';
+el.sizeNote.textContent='';
+el.inputError.textContent=message;
+el.inputError.hidden=quiet;
+for(const button of[el.downloadSvg,el.downloadPng,el.copyPng])button.disabled=true;
+}
+function clamp(value,low,high){
+if(!Number.isFinite(value))return low;
+return Math.min(high,Math.max(low,Math.round(value)));
+}
+function switchSymbology(){
+const isQr=el.symbology.value==='qr';
+el.formatRow.hidden=!isQr;
+el.qrOptions.hidden=!isQr;
+el.barcodeOptions.hidden=isQr;
+el.sizeRow.hidden=!isQr;
+el.code39CheckRow.hidden=el.symbology.value!=='code39';
+el.encodedPanel.hidden=!isQr;
+if(isQr){
+const kind=KINDS.find((entry)=>entry.id===el.format.value);
+el.symbologyNote.textContent='A QR code holds any text at all, and every phone '
++'camera made in the last ten years reads one without an app.';
+el.formatNote.textContent=kind.note;
+}else{
+const symbology=SYMBOLOGIES.find((entry)=>entry.id===el.symbology.value);
+el.symbologyNote.textContent=symbology.holds;
+el.formatNote.textContent='';
+}
+buildFields();
+update();
+}
+function baseName(){
+return current?.name??'code';
+}
+el.downloadSvg.addEventListener('click',()=>{
+if(!current)return;
+download(new Blob([current.svg],{type:'image/svg+xml'}),`${baseName()}.svg`);
+el.downloadNote.textContent='Saved. Nothing was sent anywhere to make it.';
+});
+el.downloadPng.addEventListener('click',async()=>{
+if(!current)return;
+try{
+download(await svgToPng(current.svg),`${baseName()}.png`);
+el.downloadNote.textContent='Saved. Nothing was sent anywhere to make it.';
+}catch(error){
+el.downloadNote.textContent=`${error.message}. The SVG will still download.`;
+}
+});
+el.copyPng.addEventListener('click',async()=>{
+if(!current)return;
+try{
+const blob=await svgToPng(current.svg);
+await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+el.downloadNote.textContent='Copied. Paste it wherever you need it.';
+}catch{
+el.downloadNote.textContent='This browser would not let the page write to the '
++'clipboard. Download it instead.';
+}
+});
+el.symbology.addEventListener('change',switchSymbology);
+el.format.addEventListener('change',()=>{
+el.formatNote.textContent=KINDS.find((kind)=>kind.id===el.format.value).note;
+buildFields();
+update();
+});
+for(const control of[el.level,el.quiet,el.barWidth,el.barHeight,el.showText,
+el.code39Check,el.foreground,el.background,el.transparent,el.size]){
+control.addEventListener('input',update);
+control.addEventListener('change',update);
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a character of it.`;
+el.networkCount.textContent=clean
+?`what you typed has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+el.inputError.hidden=false;
+el.inputError.textContent=phrase('error.broke',{detail:event.message});
+});
+window.addEventListener('unhandledrejection',(event)=>{
+el.inputError.hidden=false;
+el.inputError.textContent=phrase('error.broke',{detail:event.reason?.message??event.reason});
+});
+for(const kind of KINDS)el.format.append(new Option(kind.name,kind.id));
+switchSymbology();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

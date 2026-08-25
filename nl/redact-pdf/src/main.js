@@ -1,3 +1,643 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as i}from"./shared/phrases.js";import{bytes as F,outName as Q,tally as L}from"./format.js";import{contextOf as V,FINDERS as Y,findPattern as Z,findTerm as ee,glyphsIn as te,mergeRanges as ne,wordsOf as M}from"./matches.js";import{EncryptedPdfError as oe,NotAPdfError as z,PdfDocument as O}from"./reader.js";import{redact as re}from"./redact.js";import{pagesOf as R,readPage as D}from"./text.js";import{harvestAll as ae,verify as ce}from"./verify.js";import{wireFilePicker as se,readingLabel as ie}from"./shared/file-picker.js";const a=e=>document.getElementById(e),t={dropzone:a("dropzone"),fileInput:a("file-input"),loadError:a("load-error"),loadNote:a("load-note"),docFacts:a("doc-facts"),docName:a("doc-name"),docSub:a("doc-sub"),docWarnings:a("doc-warnings"),findCard:a("find-card"),terms:a("terms"),find:a("find"),matchCase:a("match-case"),wholeWord:a("whole-word"),finders:a("finders"),matchBar:a("match-bar"),matchCount:a("match-count"),tickAll:a("tick-all"),tickNone:a("tick-none"),clearFound:a("clear-found"),matchList:a("match-list"),matchMore:a("match-more"),pageCard:a("page-card"),prevPage:a("prev-page"),nextPage:a("next-page"),pageOf:a("page-of"),pagePicked:a("page-picked"),clearPage:a("clear-page"),pageNote:a("page-note"),pageText:a("page-text"),runCard:a("run-card"),optBoxes:a("opt-boxes"),optElsewhere:a("opt-elsewhere"),optAttachments:a("opt-attachments"),runSummary:a("run-summary"),run:a("run"),cancel:a("cancel"),progress:a("progress"),progressBar:a("progress-bar"),progressLabel:a("progress-label"),runError:a("run-error"),result:a("result"),resultSize:a("result-size"),resultSub:a("result-sub"),download:a("download"),checkLine:a("check-line"),checkTerms:a("check-terms"),resultFacts:a("result-facts"),privacyToggle:a("privacy-toggle"),privacyPanel:a("privacy-panel"),networkCount:a("network-count"),networkDot:a("network-dot"),offlineStatus:a("offline-status"),offlineDot:a("offline-dot")},le=400;let m=null,f=[];const g=new Map;let b=[],E=0,y=null,v="";const T=se({input:t.fileInput,dropzone:t.dropzone,onFiles(e){de(e[0])}});async function de(e){if(!y){T.busy(ie(1)),t.loadError.hidden=!0,t.loadNote.hidden=!0,me();try{if(!fe(e))throw new z(i("load.notpdf"));const n=new Uint8Array(await e.arrayBuffer()),o=await O.open(n),c=R(o);if(!c.length)throw new z(i("load.nopages"));f=[];for(let r=0;r<c.length;r+=1)T.busy(i("page.of",{number:r+1,total:c.length})),f.push(await D(o,c[r],r+1)),r%8===7&&await U();m={file:e,raw:n,doc:o,read:f,words:f.reduce((r,d)=>r+M(d).length,0)},o.repaired&&I(i("load.repaired"))}catch(n){f=[],m=null,A(ue(n))}T.done(),k()}}function fe(e){return e.type==="application/pdf"||/\.pdf$/i.test(e.name)}function ue(e){return e instanceof oe?i("load.encrypted"):e instanceof z?e.message:i("load.broken",{detail:e?.message??e})}function me(){m=null,f=[],g.clear(),b=[],E=0,G(),t.result.hidden=!0,t.runError.hidden=!0}function A(e){t.loadError.textContent=e,t.loadError.hidden=!1}function I(e){t.loadNote.textContent=e,t.loadNote.hidden=!1}function U(){return new Promise(e=>{setTimeout(e,0)})}function pe(){const e=f.length>0&&m!==null;if(t.docFacts.hidden=!e,t.findCard.hidden=!e,t.pageCard.hidden=!e,t.runCard.hidden=!e,!e)return;t.docName.textContent=m.file.name,t.docSub.textContent=i("doc.sub",{pages:w(f.length,"page"),words:w(m.words,"word"),size:F(m.file.size)});const n=[],o=f.filter(d=>!d.text.trim()).length,c=f.reduce((d,s)=>d+s.unreadable,0),r=f.some(d=>d.glyphs.some(s=>s.invisible));o&&n.push(i("doc.notext",{count:o})),c&&n.push(i("doc.unreadable",{count:L(c)})),r&&n.push(i("doc.scan")),t.docWarnings.replaceChildren(...n.map(d=>{const s=document.createElement("li");return s.textContent=d,s}))}function ge(){t.finders.replaceChildren(...Y.map(e=>{const n=document.createElement("label");n.className="chip";const o=document.createElement("input");o.type="checkbox",o.dataset.finder=e.id;const c=document.createElement("span");return c.textContent=i(`finder.${e.id}`),n.append(o,c),n}))}function j(){const e=t.terms.value.split(`
-`).map(r=>r.trim()).filter(Boolean),n=[...t.finders.querySelectorAll("input:checked")].map(r=>r.dataset.finder);if(!e.length&&!n.length){I(i("find.terms"));return}t.loadNote.hidden=!0;const o={matchCase:t.matchCase.checked,wholeWord:t.wholeWord.checked},c=[];f.forEach((r,d)=>{for(const s of e)for(const l of ee(r.text,s,o))c.push({page:d,...l,kind:"term"});for(const s of n)for(const l of Z(r.text,s))c.push({page:d,...l,kind:s})}),b=c.map(r=>({...r,text:f[r.page].text.slice(r.from,r.to),key:`${r.from}:${r.to}`}));for(const r of b)r.kind==="term"&&N(r.page,r);E=le,k()}function he(){const e=b.length>0;if(t.matchBar.hidden=!e,t.matchList.hidden=!e,t.matchMore.hidden=b.length<=E,!e){t.matchList.replaceChildren();return}const n=new Set(b.map(o=>o.page)).size;t.matchCount.textContent=i("find.some",{count:w(b.length,"match","matches"),pages:w(n,"page")}),t.matchMore.textContent=i("find.more",{shown:L(E)}),t.matchList.replaceChildren(...b.slice(0,E).map(o=>we(o)))}function we(e){const n=f[e.page],o=document.createElement("li");o.className="match-row";const c=document.createElement("label");c.className="match-label";const r=document.createElement("input");r.type="checkbox",r.checked=be(e.page,e),r.addEventListener("change",()=>{r.checked?N(e.page,e):q(e.page,e),X(),P()});const d=document.createElement("span");d.className="match-page",d.textContent=`p. ${n.number}`;const s=document.createElement("span");s.className="match-line";const{before:l,after:u}=V(n,e.from,e.to),h=document.createElement("mark");return h.textContent=e.text,s.append(_(l,!0),h,_(u,!1)),c.append(r,d,s),o.append(c),o}function _(e,n){return e.length<=46?e:n?`\u2026${e.slice(-46)}`:`${e.slice(0,46)}\u2026`}function N(e,n){g.has(e)||g.set(e,new Map),g.get(e).set(`${n.from}:${n.to}`,{from:n.from,to:n.to,text:n.text})}function q(e,n){g.get(e)?.delete(`${n.from}:${n.to}`)}function be(e,n){return g.get(e)?.has(`${n.from}:${n.to}`)??!1}function K(e){const n=f[e],o=new Uint8Array(n.text.length);for(const c of g.get(e)?.values()??[])for(let r=c.from;r<c.to&&r<o.length;r+=1)o[r]=1;return o}function H(){let e=0;for(const n of g.values())e+=n.size;return e}let p=0;function X(){if(!f.length)return;p=Math.min(Math.max(p,0),f.length-1);const e=f[p];t.pageOf.textContent=i("page.of",{number:e.number,total:f.length}),t.prevPage.disabled=p===0,t.nextPage.disabled=p===f.length-1;const n=g.get(p)?.size??0;t.pagePicked.textContent=n?i("page.picked",{count:n}):"",t.clearPage.disabled=n===0;const o=[];e.text.trim()||o.push(i("page.notext")),e.unreadable&&o.push(i("page.unreadable",{count:e.unreadable})),e.glyphs.some(u=>u.invisible)&&o.push(i("page.scan")),t.pageNote.textContent=o.join(" "),t.pageNote.hidden=!o.length;const c=K(p),r=M(e),d=document.createDocumentFragment();let s=0,l=0;for(const u of e.lines){const h=document.createElement("p");for(h.className="text-line",s=u.from;l<r.length&&r[l].from<u.to;){const x=r[l];x.from>s&&h.append(e.text.slice(s,x.from)),h.append(ke(x,c)),s=x.to,l+=1}s<u.to&&h.append(e.text.slice(s,u.to)),h.childNodes.length||h.append("\xA0"),d.append(h)}t.pageText.replaceChildren(d)}function ke(e,n){const o=document.createElement("span");o.className="word",o.dataset.from=String(e.from),o.dataset.to=String(e.to);let c="",r=n[e.from]===1,d=r;const s=()=>{if(c){if(r){const l=document.createElement("s");l.textContent=c,o.append(l)}else o.append(c);c=""}};for(let l=e.from;l<e.to;l+=1){const u=n[l]===1;u!==r&&(s(),r=u),d=d||u,c+=f[p].text[l]}return s(),d&&o.classList.add("picked"),o}t.pageText.addEventListener("click",e=>{const n=e.target.closest?.(".word");if(!n||!f.length)return;const o=Number(n.dataset.from),c=Number(n.dataset.to),r=K(p);let d=!0;for(let s=o;s<c;s+=1)r[s]||(d=!1);if(d)for(const[s,l]of g.get(p)??[])l.from<c&&l.to>o&&g.get(p).delete(s);else N(p,{from:o,to:c,text:f[p].text.slice(o,c)});k()});function P(){const e=H(),n=[...g.values()].filter(o=>o.size).length;t.runSummary.textContent=e?i("run.summary",{words:w(e,"piece","pieces"),pages:w(n,"page")}):i("run.nothing"),t.run.disabled=!e||!!y}async function xe(){if(y||!m)return;const e=new AbortController;y=e,t.runError.hidden=!0,t.result.hidden=!0,t.cancel.hidden=!1,t.progress.hidden=!1,G(),S(.1,i("run.editing")),P();try{const{doc:n,read:o}=await ye(),c=new Map,r=new Set;g.forEach((u,h)=>{const x=o[h];if(!x)return;const $=new Set;for(const C of ne([...u.values()])){for(const J of te(x,C.from,C.to))$.add(J);const W=x.text.slice(C.from,C.to).trim();W&&r.add(W)}$.size&&c.set(h,$)});const d=await ae(n,o);S(.45,i("run.writing"));const s=await re(n,o,c,{boxes:t.optBoxes.checked,elsewhere:t.optElsewhere.checked,attachments:t.optAttachments.checked,texts:[...r]},{signal:e.signal});S(.8,i("run.checking"));const l=await ce(s.bytes,{text:d,pages:o.length,terms:[...r].map(u=>({text:u,removed:Ee(o,u)}))});S(1,""),ve(s,l,r.size)}catch(n){n?.name==="AbortError"?B(i("run.cancelled")):B(i("run.failed",{detail:n?.message??n}))}y=null,t.cancel.hidden=!0,t.progress.hidden=!0,P()}async function ye(){if(!m.spent&&m.doc&&m.read)return m.spent=!0,{doc:m.doc,read:m.read};const e=await O.open(m.raw),n=R(e),o=[];for(let c=0;c<n.length;c+=1)o.push(await D(e,n[c],c+1)),c%8===7&&await U();return{doc:e,read:o}}function Ee(e,n){let o=0;return g.forEach((c,r)=>{const d=e[r];if(d)for(const s of c.values())d.text.slice(s.from,s.to).trim()===n&&(o+=1)}),o}function S(e,n){t.progressBar.style.width=`${Math.round(e*100)}%`,t.progressLabel.textContent=n}function B(e){t.runError.textContent=e,t.runError.hidden=!1}function ve(e,n,o){if(!n.ok){B(i(n.problem));return}const c=e.report.pages.length,r=e.report.pages.reduce((s,l)=>s+l.boxes,0);t.resultSize.textContent=i("result.headline",{words:w(H(),"piece","pieces")}),t.resultSub.textContent=i("result.sub",{size:F(e.bytes.length),pages:w(c,"page"),boxes:w(r,"box","boxes")});const d=n.terms.every(s=>s.now===0);t.checkLine.textContent=i(d?"check.good":"check.partial"),t.checkLine.className="check-line good",t.checkTerms.hidden=o===0,t.checkTerms.replaceChildren(...n.terms.map(s=>{const l=document.createElement("li");return l.textContent=`\u201C${s.text}\u201D \u2014 ${s.was} \u2192 ${s.now}`,l})),t.resultFacts.replaceChildren(...Ce(e.report,r).map(s=>{const l=document.createElement("li");return l.textContent=s,l})),v=URL.createObjectURL(new Blob([e.bytes],{type:"application/pdf"})),t.download.href=v,t.download.download=Q(m.file.name),t.result.hidden=!1}function Ce(e,n){const o=[];return o.push(n?i("fact.boxes",{count:w(n,"box","boxes")}):i("fact.noboxes")),e.strings.changed&&o.push(i("fact.elsewhere",{where:e.strings.where.join(", ")})),o.push(i("fact.metadata")),(e.attachments||e.actions)&&o.push(i("fact.carried",{attachments:w(e.attachments,"attachment"),actions:w(e.actions,"action")})),e.shared&&o.push(i("fact.shared")),e.overImage&&o.push(i("fact.overimage",{count:L(e.overImage)})),o.push(i("fact.untouched")),o}function G(){v&&URL.revokeObjectURL(v),v="",t.download.removeAttribute("href")}t.find.addEventListener("click",j),t.terms.addEventListener("keydown",e=>{e.key==="Enter"&&(e.metaKey||e.ctrlKey)&&j()}),t.tickAll.addEventListener("click",()=>{for(const e of b)N(e.page,e);k()}),t.tickNone.addEventListener("click",()=>{for(const e of b)q(e.page,e);k()}),t.clearFound.addEventListener("click",()=>{b=[],k()}),t.prevPage.addEventListener("click",()=>{p-=1,k()}),t.nextPage.addEventListener("click",()=>{p+=1,k()}),t.clearPage.addEventListener("click",()=>{g.delete(p),k()}),t.run.addEventListener("click",xe),t.cancel.addEventListener("click",()=>y?.abort());function k(){pe(),he(),f.length&&X(),P()}function w(e,n,o=`${n}s`){return i(e===1?`count.${n}`:`count.${o}`,{count:L(e)})}t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const Le=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function Ne(){const e=new Set,n=new Set,o=c=>{for(const l of c){if(l.name.startsWith("blob:")||l.name.startsWith("data:"))continue;const u=new URL(l.name,window.location.href);u.origin!==window.location.origin&&(Le.test(u.hostname)?e.add(u.hostname):n.add(u.hostname))}const r=performance.getEntriesByType("resource").filter(l=>!l.name.startsWith("blob:")&&!l.name.startsWith("data:")).length,d=n.size===0,s=e.size?i("net.platform",{hosts:w(e.size,"host")}):"";t.networkCount.textContent=d?i("net.clean",{total:r,platform:s}):i("net.dirty",{hosts:[...n].join(", "),platform:s}),t.networkCount.className=d?"good":"warn",t.networkDot.className=`live-dot ${d?"good":"warn"}`};o(performance.getEntriesByType("resource"));try{new PerformanceObserver(c=>o(c.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function Pe(){const e=(n,o)=>{t.offlineStatus.textContent=n,t.offlineDot.className="live-dot",o&&(t.offlineStatus.title=o)};if(!("serviceWorker"in navigator)){e(i("offline.none"));return}if(!window.isSecureContext){e(i("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=i("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(n){e(i("offline.failed"),n.message)}}window.addEventListener("error",e=>{A(i("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{A(i("error.broke",{detail:e.reason?.message??e.reason}))}),ge(),k(),Ne(),Pe(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{bytes as humanBytes,outName,tally}from'./format.js';
+import{
+contextOf,FINDERS,findPattern,findTerm,glyphsIn,mergeRanges,wordsOf,
+}from'./matches.js';
+import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./reader.js';
+import{redact}from'./redact.js';
+import{pagesOf,readPage}from'./text.js';
+import{harvestAll,verify}from'./verify.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+loadError:$('load-error'),
+loadNote:$('load-note'),
+docFacts:$('doc-facts'),
+docName:$('doc-name'),
+docSub:$('doc-sub'),
+docWarnings:$('doc-warnings'),
+findCard:$('find-card'),
+terms:$('terms'),
+find:$('find'),
+matchCase:$('match-case'),
+wholeWord:$('whole-word'),
+finders:$('finders'),
+matchBar:$('match-bar'),
+matchCount:$('match-count'),
+tickAll:$('tick-all'),
+tickNone:$('tick-none'),
+clearFound:$('clear-found'),
+matchList:$('match-list'),
+matchMore:$('match-more'),
+pageCard:$('page-card'),
+prevPage:$('prev-page'),
+nextPage:$('next-page'),
+pageOf:$('page-of'),
+pagePicked:$('page-picked'),
+clearPage:$('clear-page'),
+pageNote:$('page-note'),
+pageText:$('page-text'),
+runCard:$('run-card'),
+optBoxes:$('opt-boxes'),
+optElsewhere:$('opt-elsewhere'),
+optAttachments:$('opt-attachments'),
+runSummary:$('run-summary'),
+run:$('run'),
+cancel:$('cancel'),
+progress:$('progress'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+runError:$('run-error'),
+result:$('result'),
+resultSize:$('result-size'),
+resultSub:$('result-sub'),
+download:$('download'),
+checkLine:$('check-line'),
+checkTerms:$('check-terms'),
+resultFacts:$('result-facts'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+const MAX_ROWS=400;
+let source=null;
+let pages=[];
+const picked=new Map();
+let found=[];
+let showing=0;
+let running=null;
+let downloadUrl='';
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+open(files[0]);
+},
+});
+async function open(file){
+if(running)return;
+picker.busy(readingLabel(1));
+el.loadError.hidden=true;
+el.loadNote.hidden=true;
+reset();
+try{
+if(!looksLikePdf(file))throw new NotAPdfError(phrase('load.notpdf'));
+const raw=new Uint8Array(await file.arrayBuffer());
+const doc=await PdfDocument.open(raw);
+const list=pagesOf(doc);
+if(!list.length)throw new NotAPdfError(phrase('load.nopages'));
+pages=[];
+for(let index=0;index<list.length;index+=1){
+picker.busy(phrase('page.of',{number:index+1,total:list.length}));
+pages.push(await readPage(doc,list[index],index+1));
+if(index%8===7)await breathe();
+}
+source={
+file,
+raw,
+doc,
+read:pages,
+words:pages.reduce((sum,page)=>sum+wordsOf(page).length,0),
+};
+if(doc.repaired)note(phrase('load.repaired'));
+}catch(error){
+pages=[];
+source=null;
+fail(messageFor(error));
+}
+picker.done();
+render();
+}
+function looksLikePdf(file){
+return file.type==='application/pdf'||/\.pdf$/i.test(file.name);
+}
+function messageFor(error){
+if(error instanceof EncryptedPdfError)return phrase('load.encrypted');
+if(error instanceof NotAPdfError)return error.message;
+return phrase('load.broken',{detail:error?.message??error});
+}
+function reset(){
+source=null;
+pages=[];
+picked.clear();
+found=[];
+showing=0;
+releaseDownload();
+el.result.hidden=true;
+el.runError.hidden=true;
+}
+function fail(text){
+el.loadError.textContent=text;
+el.loadError.hidden=false;
+}
+function note(text){
+el.loadNote.textContent=text;
+el.loadNote.hidden=false;
+}
+function breathe(){
+return new Promise((resolve)=>{setTimeout(resolve,0);});
+}
+function renderDocument(){
+const ready=pages.length>0&&source!==null;
+el.docFacts.hidden=!ready;
+el.findCard.hidden=!ready;
+el.pageCard.hidden=!ready;
+el.runCard.hidden=!ready;
+if(!ready)return;
+el.docName.textContent=source.file.name;
+el.docSub.textContent=phrase('doc.sub',{
+pages:plural(pages.length,'page'),
+words:plural(source.words,'word'),
+size:humanBytes(source.file.size),
+});
+const warnings=[];
+const blank=pages.filter((page)=>!page.text.trim()).length;
+const unreadable=pages.reduce((sum,page)=>sum+page.unreadable,0);
+const scanned=pages.some((page)=>page.glyphs.some((glyph)=>glyph.invisible));
+if(blank)warnings.push(phrase('doc.notext',{count:blank}));
+if(unreadable)warnings.push(phrase('doc.unreadable',{count:tally(unreadable)}));
+if(scanned)warnings.push(phrase('doc.scan'));
+el.docWarnings.replaceChildren(...warnings.map((text)=>{
+const item=document.createElement('li');
+item.textContent=text;
+return item;
+}));
+}
+function renderFinders(){
+el.finders.replaceChildren(...FINDERS.map((finder)=>{
+const label=document.createElement('label');
+label.className='chip';
+const box=document.createElement('input');
+box.type='checkbox';
+box.dataset.finder=finder.id;
+const text=document.createElement('span');
+text.textContent=phrase(`finder.${finder.id}`);
+label.append(box,text);
+return label;
+}));
+}
+function search(){
+const terms=el.terms.value.split('\n').map((line)=>line.trim()).filter(Boolean);
+const chosen=[...el.finders.querySelectorAll('input:checked')]
+.map((box)=>box.dataset.finder);
+if(!terms.length&&!chosen.length){
+note(phrase('find.terms'));
+return;
+}
+el.loadNote.hidden=true;
+const how={matchCase:el.matchCase.checked,wholeWord:el.wholeWord.checked};
+const hits=[];
+pages.forEach((page,index)=>{
+for(const term of terms){
+for(const range of findTerm(page.text,term,how)){
+hits.push({page:index,...range,kind:'term'});
+}
+}
+for(const id of chosen){
+for(const range of findPattern(page.text,id)){
+hits.push({page:index,...range,kind:id});
+}
+}
+});
+found=hits.map((hit)=>({
+...hit,
+text:pages[hit.page].text.slice(hit.from,hit.to),
+key:`${hit.from}:${hit.to}`,
+}));
+for(const hit of found){
+if(hit.kind==='term')pick(hit.page,hit);
+}
+showing=MAX_ROWS;
+render();
+}
+function renderMatches(){
+const any=found.length>0;
+el.matchBar.hidden=!any;
+el.matchList.hidden=!any;
+el.matchMore.hidden=found.length<=showing;
+if(!any){
+el.matchList.replaceChildren();
+return;
+}
+const onPages=new Set(found.map((hit)=>hit.page)).size;
+el.matchCount.textContent=phrase('find.some',{
+count:plural(found.length,'match','matches'),
+pages:plural(onPages,'page'),
+});
+el.matchMore.textContent=phrase('find.more',{shown:tally(showing)});
+el.matchList.replaceChildren(...found.slice(0,showing).map((hit)=>matchRow(hit)));
+}
+function matchRow(hit){
+const page=pages[hit.page];
+const item=document.createElement('li');
+item.className='match-row';
+const label=document.createElement('label');
+label.className='match-label';
+const box=document.createElement('input');
+box.type='checkbox';
+box.checked=isPicked(hit.page,hit);
+box.addEventListener('change',()=>{
+if(box.checked)pick(hit.page,hit);
+else unpick(hit.page,hit);
+renderPage();
+renderRun();
+});
+const number=document.createElement('span');
+number.className='match-page';
+number.textContent=`p. ${page.number}`;
+const line=document.createElement('span');
+line.className='match-line';
+const{before,after}=contextOf(page,hit.from,hit.to);
+const mark=document.createElement('mark');
+mark.textContent=hit.text;
+line.append(clip(before,true),mark,clip(after,false));
+label.append(box,number,line);
+item.append(label);
+return item;
+}
+function clip(text,fromEnd){
+const limit=46;
+if(text.length<=limit)return text;
+return fromEnd?`…${text.slice(-limit)}`:`${text.slice(0, limit)}…`;
+}
+function pick(index,range){
+if(!picked.has(index))picked.set(index,new Map());
+picked.get(index).set(`${range.from}:${range.to}`,{
+from:range.from,to:range.to,text:range.text,
+});
+}
+function unpick(index,range){
+picked.get(index)?.delete(`${range.from}:${range.to}`);
+}
+function isPicked(index,range){
+return picked.get(index)?.has(`${range.from}:${range.to}`)??false;
+}
+function markedOn(index){
+const page=pages[index];
+const marked=new Uint8Array(page.text.length);
+for(const range of picked.get(index)?.values()??[]){
+for(let at=range.from;at<range.to&&at<marked.length;at+=1)marked[at]=1;
+}
+return marked;
+}
+function pickedCount(){
+let total=0;
+for(const ranges of picked.values())total+=ranges.size;
+return total;
+}
+let current=0;
+function renderPage(){
+if(!pages.length)return;
+current=Math.min(Math.max(current,0),pages.length-1);
+const page=pages[current];
+el.pageOf.textContent=phrase('page.of',{
+number:page.number,total:pages.length,
+});
+el.prevPage.disabled=current===0;
+el.nextPage.disabled=current===pages.length-1;
+const here=picked.get(current)?.size??0;
+el.pagePicked.textContent=here?phrase('page.picked',{count:here}):'';
+el.clearPage.disabled=here===0;
+const notes=[];
+if(!page.text.trim())notes.push(phrase('page.notext'));
+if(page.unreadable)notes.push(phrase('page.unreadable',{count:page.unreadable}));
+if(page.glyphs.some((glyph)=>glyph.invisible))notes.push(phrase('page.scan'));
+el.pageNote.textContent=notes.join(' ');
+el.pageNote.hidden=!notes.length;
+const marked=markedOn(current);
+const words=wordsOf(page);
+const lines=document.createDocumentFragment();
+let at=0;
+let index=0;
+for(const line of page.lines){
+const row=document.createElement('p');
+row.className='text-line';
+at=line.from;
+while(index<words.length&&words[index].from<line.to){
+const word=words[index];
+if(word.from>at)row.append(page.text.slice(at,word.from));
+row.append(wordSpan(word,marked));
+at=word.to;
+index+=1;
+}
+if(at<line.to)row.append(page.text.slice(at,line.to));
+if(!row.childNodes.length)row.append(' ');
+lines.append(row);
+}
+el.pageText.replaceChildren(lines);
+}
+function wordSpan(word,marked){
+const span=document.createElement('span');
+span.className='word';
+span.dataset.from=String(word.from);
+span.dataset.to=String(word.to);
+let run='';
+let state=marked[word.from]===1;
+let any=state;
+const flush=()=>{
+if(!run)return;
+if(state){
+const gone=document.createElement('s');
+gone.textContent=run;
+span.append(gone);
+}else{
+span.append(run);
+}
+run='';
+};
+for(let at=word.from;at<word.to;at+=1){
+const now=marked[at]===1;
+if(now!==state){
+flush();
+state=now;
+}
+any=any||now;
+run+=pages[current].text[at];
+}
+flush();
+if(any)span.classList.add('picked');
+return span;
+}
+el.pageText.addEventListener('click',(event)=>{
+const span=event.target.closest?.('.word');
+if(!span||!pages.length)return;
+const from=Number(span.dataset.from);
+const to=Number(span.dataset.to);
+const marked=markedOn(current);
+let whole=true;
+for(let at=from;at<to;at+=1)if(!marked[at])whole=false;
+if(whole){
+for(const[key,range]of picked.get(current)??[]){
+if(range.from<to&&range.to>from)picked.get(current).delete(key);
+}
+}else{
+pick(current,{from,to,text:pages[current].text.slice(from,to)});
+}
+render();
+});
+function renderRun(){
+const count=pickedCount();
+const onPages=[...picked.values()].filter((ranges)=>ranges.size).length;
+el.runSummary.textContent=count
+?phrase('run.summary',{
+words:plural(count,'piece','pieces'),pages:plural(onPages,'page'),
+})
+:phrase('run.nothing');
+el.run.disabled=!count||Boolean(running);
+}
+async function go(){
+if(running||!source)return;
+const controller=new AbortController();
+running=controller;
+el.runError.hidden=true;
+el.result.hidden=true;
+el.cancel.hidden=false;
+el.progress.hidden=false;
+releaseDownload();
+step(0.1,phrase('run.editing'));
+renderRun();
+try{
+const{doc,read:fresh}=await documentToEdit();
+const chosen=new Map();
+const texts=new Set();
+picked.forEach((ranges,index)=>{
+const page=fresh[index];
+if(!page)return;
+const glyphs=new Set();
+for(const range of mergeRanges([...ranges.values()])){
+for(const glyph of glyphsIn(page,range.from,range.to))glyphs.add(glyph);
+const text=page.text.slice(range.from,range.to).trim();
+if(text)texts.add(text);
+}
+if(glyphs.size)chosen.set(index,glyphs);
+});
+const before=await harvestAll(doc,fresh);
+step(0.45,phrase('run.writing'));
+const result=await redact(doc,fresh,chosen,{
+boxes:el.optBoxes.checked,
+elsewhere:el.optElsewhere.checked,
+attachments:el.optAttachments.checked,
+texts:[...texts],
+},{signal:controller.signal});
+step(0.8,phrase('run.checking'));
+const check=await verify(result.bytes,{
+text:before,
+pages:fresh.length,
+terms:[...texts].map((text)=>({text,removed:countPicked(fresh,text)})),
+});
+step(1,'');
+show(result,check,texts.size);
+}catch(error){
+if(error?.name==='AbortError')showRunError(phrase('run.cancelled'));
+else showRunError(phrase('run.failed',{detail:error?.message??error}));
+}
+running=null;
+el.cancel.hidden=true;
+el.progress.hidden=true;
+renderRun();
+}
+async function documentToEdit(){
+if(!source.spent&&source.doc&&source.read){
+source.spent=true;
+return{doc:source.doc,read:source.read};
+}
+const doc=await PdfDocument.open(source.raw);
+const list=pagesOf(doc);
+const read=[];
+for(let index=0;index<list.length;index+=1){
+read.push(await readPage(doc,list[index],index+1));
+if(index%8===7)await breathe();
+}
+return{doc,read};
+}
+function countPicked(read,text){
+let count=0;
+picked.forEach((ranges,index)=>{
+const page=read[index];
+if(!page)return;
+for(const range of ranges.values()){
+if(page.text.slice(range.from,range.to).trim()===text)count+=1;
+}
+});
+return count;
+}
+function step(fraction,label){
+el.progressBar.style.width=`${Math.round(fraction * 100)}%`;
+el.progressLabel.textContent=label;
+}
+function showRunError(text){
+el.runError.textContent=text;
+el.runError.hidden=false;
+}
+function show(result,check,terms){
+if(!check.ok){
+showRunError(phrase(check.problem));
+return;
+}
+const changed=result.report.pages.length;
+const boxes=result.report.pages.reduce((sum,page)=>sum+page.boxes,0);
+el.resultSize.textContent=phrase('result.headline',{
+words:plural(pickedCount(),'piece','pieces'),
+});
+el.resultSub.textContent=phrase('result.sub',{
+size:humanBytes(result.bytes.length),
+pages:plural(changed,'page'),
+boxes:plural(boxes,'box','boxes'),
+});
+const clean=check.terms.every((term)=>term.now===0);
+el.checkLine.textContent=phrase(clean?'check.good':'check.partial');
+el.checkLine.className='check-line good';
+el.checkTerms.hidden=terms===0;
+el.checkTerms.replaceChildren(...check.terms.map((term)=>{
+const item=document.createElement('li');
+item.textContent=`“${term.text}” — ${term.was} → ${term.now}`;
+return item;
+}));
+el.resultFacts.replaceChildren(...facts(result.report,boxes).map((text)=>{
+const item=document.createElement('li');
+item.textContent=text;
+return item;
+}));
+downloadUrl=URL.createObjectURL(new Blob([result.bytes],{type:'application/pdf'}));
+el.download.href=downloadUrl;
+el.download.download=outName(source.file.name);
+el.result.hidden=false;
+}
+function facts(report,boxes){
+const lines=[];
+lines.push(boxes
+?phrase('fact.boxes',{count:plural(boxes,'box','boxes')})
+:phrase('fact.noboxes'));
+if(report.strings.changed){
+lines.push(phrase('fact.elsewhere',{where:report.strings.where.join(', ')}));
+}
+lines.push(phrase('fact.metadata'));
+if(report.attachments||report.actions){
+lines.push(phrase('fact.carried',{
+attachments:plural(report.attachments,'attachment'),
+actions:plural(report.actions,'action'),
+}));
+}
+if(report.shared)lines.push(phrase('fact.shared'));
+if(report.overImage){
+lines.push(phrase('fact.overimage',{count:tally(report.overImage)}));
+}
+lines.push(phrase('fact.untouched'));
+return lines;
+}
+function releaseDownload(){
+if(downloadUrl)URL.revokeObjectURL(downloadUrl);
+downloadUrl='';
+el.download.removeAttribute('href');
+}
+el.find.addEventListener('click',search);
+el.terms.addEventListener('keydown',(event)=>{
+if(event.key==='Enter'&&(event.metaKey||event.ctrlKey))search();
+});
+el.tickAll.addEventListener('click',()=>{
+for(const hit of found)pick(hit.page,hit);
+render();
+});
+el.tickNone.addEventListener('click',()=>{
+for(const hit of found)unpick(hit.page,hit);
+render();
+});
+el.clearFound.addEventListener('click',()=>{
+found=[];
+render();
+});
+el.prevPage.addEventListener('click',()=>{current-=1;render();});
+el.nextPage.addEventListener('click',()=>{current+=1;render();});
+el.clearPage.addEventListener('click',()=>{
+picked.delete(current);
+render();
+});
+el.run.addEventListener('click',go);
+el.cancel.addEventListener('click',()=>running?.abort());
+function render(){
+renderDocument();
+renderMatches();
+if(pages.length)renderPage();
+renderRun();
+}
+function plural(count,one,many=`${one}s`){
+return phrase(count===1?`count.${one}`:`count.${many}`,{count:tally(count)});
+}
+el.privacyToggle.addEventListener('click',()=>{
+const opening=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!opening;
+el.privacyToggle.setAttribute('aria-expanded',String(opening));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,window.location.href);
+if(url.origin===window.location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:'))
+.length;
+const clean=unexplained.size===0;
+const note_=platform.size
+?phrase('net.platform',{hosts:plural(platform.size,'host')})
+:'';
+el.networkCount.textContent=clean
+?phrase('net.clean',{total,platform:note_})
+:phrase('net.dirty',{hosts:[...unexplained].join(', '),platform:note_});
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const failed=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail)el.offlineStatus.title=detail;
+};
+if(!('serviceWorker'in navigator)){
+failed(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+failed(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+failed(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+fail(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+fail(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+renderFinders();
+render();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

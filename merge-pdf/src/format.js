@@ -1,2 +1,15 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function i(t){return!Number.isFinite(t)||t<0?"0 bytes":t<1024?`${Math.round(t)} bytes`:t<1024*1024?`${(t/1024).toFixed(t<10240?1:0)} KB`:`${(t/(1024*1024)).toFixed(2)} MB`}function u(t,r,e=`${r}s`){return`${t} ${t===1?r:e}`}function n(t,r=28){const e=String(t??"");return e.length<=r?e:`${e.slice(0,r-12)}\u2026${e.slice(-11)}`}export{i as bytes,u as count,n as shortName};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function bytes(n){
+if(!Number.isFinite(n)||n<0)return'0 bytes';
+if(n<1024)return`${Math.round(n)} bytes`;
+if(n<1024*1024)return`${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
+return`${(n / (1024 * 1024)).toFixed(2)} MB`;
+}
+export function count(n,singular,plural=`${singular}s`){
+return`${n} ${n === 1 ? singular : plural}`;
+}
+export function shortName(text,most=28){
+const name=String(text??'');
+if(name.length<=most)return name;
+return`${name.slice(0, most - 12)}…${name.slice(-11)}`;
+}

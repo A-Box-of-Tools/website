@@ -1,3 +1,78 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{PdfDocument as h}from"./reader.js";import{harvestStrings as d}from"./strings.js";import{pagesOf as m,readPage as p}from"./text.js";async function v(t,o=null){const e=o??await Promise.all(m(t).map((n,a)=>p(t,n,a+1))),r=e.map(n=>n.text);for(const n of e)for(const a of n.marked??[])for(const i of["ActualText","Alt"]){const s=a.dict.get(i);s?.bytes&&r.push(k(s.bytes))}return r.push(...d(t)),r.join(`
-`)}function k(t){if(t.length>=2&&t[0]===254&&t[1]===255){let e="";for(let r=2;r+1<t.length;r+=2)e+=String.fromCharCode(t[r]<<8|t[r+1]);return e}let o="";for(const e of t)o+=String.fromCharCode(e);return o}async function A(t,o){const e=await h.open(t),r=m(e),n=await Promise.all(r.map((f,c)=>p(e,f,c+1))),a=await v(e,n),i=o.terms.map(f=>{const c=g(o.text,f.text),u=g(a,f.text);return{text:f.text,was:c,now:u,removed:f.removed,ok:u<=Math.max(0,c-f.removed)}}),s=i.filter(f=>!f.ok),l=w(s,r.length,o.pages);return{ok:!l,pages:r.length,terms:i,survived:s,problem:l}}function w(t,o,e){return o!==e?"check.pages":t.length?"check.survived":""}function g(t,o){const e=x(o);if(!e)return 0;const r=x(t);let n=0;for(let a=r.indexOf(e);a>=0;a=r.indexOf(e,a+e.length))n+=1;return n}function x(t){return t.replace(/\s+/g," ").trim().toLowerCase()}export{g as countOf,v as harvestAll,A as verify};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{PdfDocument}from'./reader.js';
+import{harvestStrings}from'./strings.js';
+import{pagesOf,readPage}from'./text.js';
+export async function harvestAll(doc,pages=null){
+const read=pages??await Promise.all(
+pagesOf(doc).map((page,index)=>readPage(doc,page,index+1)),
+);
+const parts=read.map((page)=>page.text);
+for(const page of read){
+for(const mark of page.marked??[]){
+for(const key of['ActualText','Alt']){
+const value=mark.dict.get(key);
+if(value?.bytes)parts.push(textOf(value.bytes));
+}
+}
+}
+parts.push(...harvestStrings(doc));
+return parts.join('\n');
+}
+function textOf(bytes){
+if(bytes.length>=2&&bytes[0]===0xfe&&bytes[1]===0xff){
+let text='';
+for(let at=2;at+1<bytes.length;at+=2){
+text+=String.fromCharCode((bytes[at]<<8)|bytes[at+1]);
+}
+return text;
+}
+let text='';
+for(const byte of bytes)text+=String.fromCharCode(byte);
+return text;
+}
+export async function verify(bytes,expected){
+const doc=await PdfDocument.open(bytes);
+const pages=pagesOf(doc);
+const read=await Promise.all(
+pages.map((page,index)=>readPage(doc,page,index+1)),
+);
+const after=await harvestAll(doc,read);
+const terms=expected.terms.map((term)=>{
+const was=countOf(expected.text,term.text);
+const now=countOf(after,term.text);
+return{
+text:term.text,
+was,
+now,
+removed:term.removed,
+ok:now<=Math.max(0,was-term.removed),
+};
+});
+const survived=terms.filter((term)=>!term.ok);
+const problem=problemWith(survived,pages.length,expected.pages);
+return{
+ok:!problem,
+pages:pages.length,
+terms,
+survived,
+problem,
+};
+}
+function problemWith(survived,found,expected){
+if(found!==expected)return'check.pages';
+if(survived.length)return'check.survived';
+return'';
+}
+export function countOf(haystack,needle){
+const target=normalise(needle);
+if(!target)return 0;
+const text=normalise(haystack);
+let count=0;
+for(let at=text.indexOf(target);at>=0;at=text.indexOf(target,at+target.length)){
+count+=1;
+}
+return count;
+}
+function normalise(text){
+return text.replace(/\s+/g,' ').trim().toLowerCase();
+}

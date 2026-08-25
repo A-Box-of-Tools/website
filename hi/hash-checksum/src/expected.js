@@ -1,2 +1,97 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{ALGORITHMS as x,ORDER as g}from"./hash.js";const u=new Map(g.map(t=>[x[t].hex,t])),w=/^[^\S\n]*[A-Za-z0-9-]+[^\S\n]*\(([^)]*)\)[^\S\n]*=[^\S\n]*([0-9a-fA-F]+)[^\S\n]*$/,A=/^[^\S\n]*([0-9a-fA-F]{16,160})[^\S\n]+[*?^ ]?[^\S\n]*(\S.*?)[^\S\n]*$/,y=/\b(sha256|sha384|sha512)-([A-Za-z0-9+/]{20,}={0,2})/,p=/^[0-9a-fA-F]+$/;function G(t){const n=[],r=[],o=new Set,c=(a,h)=>{const s=a.toLowerCase(),l=u.get(s.length);if(!l){o.has(s)||r.push({hex:s}),o.add(s);return}const f=`${l}:${s}:${h??""}`;o.has(f)||(o.add(f),n.push({hex:s,algorithm:l,name:h||null}))};for(const a of t.split(/\r?\n/)){if(!a.trim())continue;const h=w.exec(a);if(h){c(h[2],h[1].trim());continue}const s=y.exec(a);if(s){const m=$(s[2]);if(m){c([...m].map(d=>d.toString(16).padStart(2,"0")).join(""),null);continue}}const l=A.exec(a);if(l){c(l[1],l[2]);continue}const f=a.replace(/^[^:=]*[:=]/,"").replace(/\s+/g,"");p.test(f)&&f.length>=8&&c(f,null)}const i=t.replace(/\s+/g,""),e=n.length!==1&&n.every(a=>a.name===null)&&p.test(i)&&u.has(i.length);return e&&(r.length=0,n.unshift({hex:i.toLowerCase(),algorithm:u.get(i.length),name:null})),{entries:n,strays:r,wrapped:e}}function $(t){try{const n=atob(t),r=new Uint8Array(n.length);for(let o=0;o<n.length;o+=1)r[o]=n.charCodeAt(o);return r}catch{return null}}function b(t){const n=new Set(t.map(r=>r.algorithm));return g.filter(r=>n.has(r))}function R(t,n,r){if(!t.length)return{state:"none"};const o=r?t.filter(e=>e.name&&S(e.name)===S(r)):[],c=o.length?o:t;for(const e of c)if(n[e.algorithm]===e.hex)return{state:"match",entry:e,renamed:!1};if(o.length){for(const e of t)if(n[e.algorithm]===e.hex)return{state:"match",entry:e,renamed:!0}}const i=b(c).filter(e=>!(e in n));return i.length?{state:"waiting",missing:i}:{state:"mismatch",entry:c[0]}}function S(t){return t.split(/[\/]/).pop().trim()}export{b as algorithmsIn,G as readExpected,R as verdict};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{ALGORITHMS,ORDER}from'./hash.js';
+const BY_LENGTH=new Map(ORDER.map((id)=>[ALGORITHMS[id].hex,id]));
+const TAGGED=/^[^\S\n]*[A-Za-z0-9-]+[^\S\n]*\(([^)]*)\)[^\S\n]*=[^\S\n]*([0-9a-fA-F]+)[^\S\n]*$/;
+const GNU=/^[^\S\n]*([0-9a-fA-F]{16,160})[^\S\n]+[*?^ ]?[^\S\n]*(\S.*?)[^\S\n]*$/;
+const SRI=/\b(sha256|sha384|sha512)-([A-Za-z0-9+/]{20,}={0,2})/;
+const HEX_RUN=/^[0-9a-fA-F]+$/;
+export function readExpected(text){
+const entries=[];
+const strays=[];
+const seen=new Set();
+const take=(digest,name)=>{
+const lower=digest.toLowerCase();
+const algorithm=BY_LENGTH.get(lower.length);
+if(!algorithm){
+if(!seen.has(lower))strays.push({hex:lower});
+seen.add(lower);
+return;
+}
+const key=`${algorithm}:${lower}:${name ?? ''}`;
+if(seen.has(key))return;
+seen.add(key);
+entries.push({hex:lower,algorithm,name:name||null});
+};
+for(const line of text.split(/\r?\n/)){
+if(!line.trim())continue;
+const tagged=TAGGED.exec(line);
+if(tagged){
+take(tagged[2],tagged[1].trim());
+continue;
+}
+const sri=SRI.exec(line);
+if(sri){
+const bytes=fromBase64(sri[2]);
+if(bytes){
+take([...bytes].map((b)=>b.toString(16).padStart(2,'0')).join(''),null);
+continue;
+}
+}
+const gnu=GNU.exec(line);
+if(gnu){
+take(gnu[1],gnu[2]);
+continue;
+}
+const bare=line.replace(/^[^:=]*[:=]/,'').replace(/\s+/g,'');
+if(HEX_RUN.test(bare)&&bare.length>=8)take(bare,null);
+}
+const joined=text.replace(/\s+/g,'');
+const wrapped=entries.length!==1
+&&entries.every((entry)=>entry.name===null)
+&&HEX_RUN.test(joined)
+&&BY_LENGTH.has(joined.length);
+if(wrapped){
+strays.length=0;
+entries.unshift({hex:joined.toLowerCase(),algorithm:BY_LENGTH.get(joined.length),name:null});
+}
+return{entries,strays,wrapped};
+}
+function fromBase64(text){
+try{
+const raw=atob(text);
+const out=new Uint8Array(raw.length);
+for(let i=0;i<raw.length;i+=1)out[i]=raw.charCodeAt(i);
+return out;
+}catch{
+return null;
+}
+}
+export function algorithmsIn(entries){
+const wanted=new Set(entries.map((entry)=>entry.algorithm));
+return ORDER.filter((id)=>wanted.has(id));
+}
+export function verdict(entries,digests,fileName){
+if(!entries.length)return{state:'none'};
+const named=fileName
+?entries.filter((entry)=>entry.name&&basename(entry.name)===basename(fileName))
+:[];
+const candidates=named.length?named:entries;
+for(const entry of candidates){
+if(digests[entry.algorithm]===entry.hex){
+return{state:'match',entry,renamed:false};
+}
+}
+if(named.length){
+for(const entry of entries){
+if(digests[entry.algorithm]===entry.hex){
+return{state:'match',entry,renamed:true};
+}
+}
+}
+const missing=algorithmsIn(candidates).filter((id)=>!(id in digests));
+if(missing.length)return{state:'waiting',missing};
+return{state:'mismatch',entry:candidates[0]};
+}
+function basename(name){
+return name.split(/[\/]/).pop().trim();
+}

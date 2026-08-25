@@ -1,2 +1,51 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const p=285,i=new Uint8Array(512),f=new Uint8Array(256);(()=>{let n=1;for(let t=0;t<255;t+=1)i[t]=n,f[n]=t,n<<=1,n&256&&(n^=285);for(let t=255;t<512;t+=1)i[t]=i[t-255]})();function s(n,t){return n===0||t===0?0:i[f[n]+f[t]]}function a(n){let t=new Uint8Array([1]);for(let e=0;e<n;e+=1){const r=new Uint8Array(t.length+1);for(let o=0;o<t.length;o+=1)r[o]^=t[o],r[o+1]^=s(t[o],i[e]);t=r}return t.subarray(1)}const u=new Map;function y(n){let t=u.get(n);return t||(t=a(n),u.set(n,t)),t}function U(n,t){const e=y(t),r=new Uint8Array(t);for(const o of n){const l=o^r[0];if(r.copyWithin(0,1),r[t-1]=0,l!==0)for(let c=0;c<t;c+=1)r[c]^=s(e[c],l)}return r}export{a as generator,s as multiply,U as remainder};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MODULUS=0x11d;
+const EXP=new Uint8Array(512);
+const LOG=new Uint8Array(256);
+(()=>{
+let x=1;
+for(let i=0;i<255;i+=1){
+EXP[i]=x;
+LOG[x]=i;
+x<<=1;
+if(x&0x100)x^=MODULUS;
+}
+for(let i=255;i<512;i+=1)EXP[i]=EXP[i-255];
+})();
+export function multiply(a,b){
+if(a===0||b===0)return 0;
+return EXP[LOG[a]+LOG[b]];
+}
+export function generator(degree){
+let poly=new Uint8Array([1]);
+for(let i=0;i<degree;i+=1){
+const next=new Uint8Array(poly.length+1);
+for(let j=0;j<poly.length;j+=1){
+next[j]^=poly[j];
+next[j+1]^=multiply(poly[j],EXP[i]);
+}
+poly=next;
+}
+return poly.subarray(1);
+}
+const generators=new Map();
+function generatorFor(degree){
+let poly=generators.get(degree);
+if(!poly){
+poly=generator(degree);
+generators.set(degree,poly);
+}
+return poly;
+}
+export function remainder(data,degree){
+const poly=generatorFor(degree);
+const result=new Uint8Array(degree);
+for(const byte of data){
+const factor=byte^result[0];
+result.copyWithin(0,1);
+result[degree-1]=0;
+if(factor===0)continue;
+for(let i=0;i<degree;i+=1)result[i]^=multiply(poly[i],factor);
+}
+return result;
+}

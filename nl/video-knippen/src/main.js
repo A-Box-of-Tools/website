@@ -1,2 +1,1116 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as L}from"./shared/phrases.js";import{wireFilePicker as ue,readingLabel as me}from"./shared/file-picker.js";import{demux as he,UnsupportedFile as pe}from"./demux.js";import{joinByCopy as fe,estimateJoinCopy as ge}from"./copy.js";import{joinExact as ye,grabFrame as V,decoderConfig as ve,averageFps as J,chooseJoinBitrate as we}from"./transcode.js";import{trimByRecording as ke,estimateRecording as be}from"./record.js";import{joinability as A,outputFrame as I}from"./clips.js";import{fittedBox as xe}from"./draw.js";import{Timeline as Ce,formatTime as k,parseTime as Ee}from"./timeline.js";import{openSegment as _,readTimestamps as Le,segmentRanges as P,totalCaptured as $e,writeTimestamps as Se}from"./segments.js";import{keyframeTimes as Te,keyframeBefore as Ne,invertRanges as Me,totalSeconds as D}from"./ranges.js";import{hasWebCodecs as Re,hasMediaRecorder as je,canDecode as Be}from"./support.js";const i=e=>document.getElementById(e),n={dropzone:i("dropzone"),fileInput:i("file-input"),clipList:i("clip-list"),joinNote:i("join-note"),pathNote:i("path-note"),sectionCard:i("section-card"),editing:i("editing"),stage:i("stage"),preview:i("preview"),still:i("still"),stageNote:i("stage-note"),timeline:i("timeline"),tlNow:i("tl-now"),tlTotal:i("tl-total"),play:i("play"),back5:i("back-5"),forward5:i("forward-5"),markIn:i("mark-in"),markOut:i("mark-out"),undo:i("undo"),speedRow:document.querySelector(".speed-row"),segmentCount:i("segment-count"),totalKept:i("total-kept"),segmentTable:i("segment-table"),segmentRows:i("segment-rows"),segmentsEmpty:i("segments-empty"),addSegment:i("add-segment"),resetSegments:i("reset-segments"),importMarks:i("import-marks"),marksInput:i("marks-input"),marksFormat:i("marks-format"),exportMarks:i("export-marks"),exportCard:i("export-card"),method:i("method"),methodNote:i("method-note"),frameField:i("frame-field"),frame:i("frame"),qualityField:i("quality-field"),quality:i("quality"),keepAudio:i("keep-audio"),audioNote:i("audio-note"),sumClips:i("sum-clips"),sumLength:i("sum-length"),sumStart:i("sum-start"),sumSize:i("sum-size"),sumPicture:i("sum-picture"),sumSound:i("sum-sound"),cutNote:i("cut-note"),exportBtn:i("export"),cancelBtn:i("cancel"),progressWrap:i("progress-wrap"),progressBar:i("progress-bar"),progressLabel:i("progress-label"),error:i("error"),result:i("result"),resultVideo:i("result-video"),resultInfo:i("result-info"),download:i("download"),privacyToggle:i("privacy-toggle"),privacyPanel:i("privacy-panel"),networkCount:i("network-count"),networkDot:i("network-dot"),offlineStatus:i("offline-status"),offlineDot:i("offline-dot")};let c=[],b=-1,g=null,$="keep",x=!1,U=null,N=null,Ae=1,F=0,S=null;const w=new Ce(n.timeline,{onSeek:M,onSelect:e=>{g=e,f()},onAdjust:De}),m=()=>b>=0?c[b]:null,G=ue({input:n.fileInput,dropzone:n.dropzone,onFiles(e){Ie(e)}});async function Ie(e){if(!(x||!e.length)){j(),G.busy(me(e.length));try{for(const t of e)await Ue(t)&&b<0&&H(c.length-1)}finally{G.done()}c.length&&(z(),T(),n.sectionCard.hidden=!1,n.exportCard.hidden=!1,O())}}function Pe(e,t){return new Promise(o=>{const a=d=>{clearTimeout(l),e.removeEventListener("loadedmetadata",r),e.removeEventListener("error",s),o(d)},r=()=>a({ok:e.videoWidth>0&&e.videoHeight>0,width:e.videoWidth,height:e.videoHeight,duration:Number.isFinite(e.duration)?e.duration:0}),s=()=>a({ok:!1,width:0,height:0,duration:0}),l=setTimeout(s,15e3);e.addEventListener("loadedmetadata",r,{once:!0}),e.addEventListener("error",s,{once:!0}),e.src=t,e.load()})}async function Ue(e){const t=URL.createObjectURL(e),o=document.createElement("video");o.preload="metadata",o.muted=!0,o.playsInline=!0;try{const a=await Pe(o,t);let r=null,s=null;try{r=await he(e)}catch(h){s=h instanceof pe?h.reason:h.message||"the file could not be read as an MP4."}const l=!!r&&Re()&&await Be(ve(r.video)),d=a.ok&&je();if(!r&&!d)return y(a.ok?`${e.name} cannot be recorded by this browser, so it cannot be cut.`:`${e.name} could not be opened: ${s??"the format is not one this browser plays."}`),URL.revokeObjectURL(t),!1;const u=r?{width:r.video.displayWidth,height:r.video.displayHeight}:{width:a.width,height:a.height},p={id:Ae++,file:e,name:e.name,objectUrl:t,media:r,fallbackReason:s,playable:a.ok,source:u,duration:r?Math.max(r.duration,a.duration):a.duration,fps:r?J(r.video):30,canExact:l,canRecord:d,thumbnail:null,segments:[],nextSegmentId:1};return c.push(p),Fe(p,o).then(h=>{h&&(p.thumbnail=h,T())}),!0}catch(a){return console.error(a),y(`${e.name} could not be opened: ${a?.message??a}`),URL.revokeObjectURL(t),!1}}async function Fe(e,t){const o=Math.min(1,e.duration/2)||0;if(e.media&&e.canExact)try{return(await V({file:e.file,media:e.media,atSeconds:o,maxWidth:240})).toDataURL("image/jpeg",.7)}catch{}if(!e.playable)return null;try{await new Promise(s=>{const l=()=>{clearTimeout(d),s()},d=setTimeout(l,4e3);t.addEventListener("seeked",l,{once:!0}),t.currentTime=o});const a=Math.min(1,240/Math.max(1,t.videoWidth)),r=document.createElement("canvas");return r.width=Math.max(2,Math.round(t.videoWidth*a)),r.height=Math.max(2,Math.round(t.videoHeight*a)),r.getContext("2d").drawImage(t,0,0,r.width,r.height),r.toDataURL("image/jpeg",.7)}catch{return null}}function T(){n.clipList.hidden=c.length<2,n.clipList.innerHTML="",!(c.length<2)&&c.forEach((e,t)=>{const o=document.createElement("li");o.className=`clip${t===b?" selected":""}`;const a=document.createElement("div");if(a.className="clip-shot",e.thumbnail){const p=document.createElement("img");p.src=e.thumbnail,p.alt="",a.append(p)}else a.textContent=String(t+1),a.classList.add("clip-shot-empty");const r=document.createElement("div");r.className="clip-body";const s=document.createElement("button");s.type="button",s.className="clip-name",s.textContent=e.name,s.title="Mark this video",s.addEventListener("click",()=>H(t));const l=P(e.segments).length,d=document.createElement("p");d.className="clip-facts",d.textContent=[`${e.source.width} x ${e.source.height}`,B(e.duration),l?`${l} segment${l===1?"":"s"}`:"not marked",e.media?e.media.audio?"with sound":"no sound":"recorded to cut"].join(" \xB7 "),r.append(s,d);const u=document.createElement("div");u.className="clip-actions",u.append(C("\u2191","Move up",()=>Q(t,-1),t===0),C("\u2193","Move down",()=>Q(t,1),t===c.length-1),C("\u2715","Remove",()=>We(t),!1,"danger")),o.append(a,r,u),n.clipList.append(o)})}function C(e,t,o,a=!1,r=""){const s=document.createElement("button");return s.type="button",s.className=`clip-button ghost${r?` ${r}`:""}`,s.textContent=e,s.title=t,s.setAttribute("aria-label",t),s.disabled=a||x,s.addEventListener("click",o),s}function Q(e,t){const o=e+t;if(o<0||o>=c.length)return;const[a]=c.splice(e,1);c.splice(o,0,a),b===e?b=o:b===o&&(b=e),z(),T(),R()}function We(e){const[t]=c.splice(e,1);if(URL.revokeObjectURL(t.objectUrl),!c.length){b=-1,n.sectionCard.hidden=!0,n.exportCard.hidden=!0,n.preview.removeAttribute("src"),n.preview.load(),T();return}H(Math.min(e,c.length-1)),O()}function z(){const e=m();n.editing.hidden=c.length<2||!e,e&&(n.editing.textContent=`${e.name} \u2014 ${b+1} of ${c.length}`)}function H(e){if(e<0||e>=c.length)return;b=e;const t=c[e];g=t.segments.length?t.segments[t.segments.length-1].id:null,z(),t.playable?(n.preview.src!==t.objectUrl&&(n.preview.src=t.objectUrl),n.preview.hidden=!1,n.still.hidden=!0,n.stageNote.hidden=!0,X(!0)):(n.preview.removeAttribute("src"),n.preview.hidden=!0,n.stageNote.hidden=!1,X(!1),n.stageNote.textContent="This browser will not play this video, so the frames below are decoded one at a time to show you where the marks are. The cut itself is unaffected.",Z(t,0)),n.stage.style.aspectRatio=`${t.source.width} / ${t.source.height}`,n.stage.style.maxWidth=`calc(52vh * ${t.source.width/t.source.height})`,w.setSource({duration:t.duration,keyframes:t.media?Te(t.media.video):null,frameTimes:t.media?qe(t.media.video):null}),F=0,w.setPlayhead(0),n.tlTotal.textContent=k(t.duration),n.tlNow.textContent=k(0),n.pathNote.hidden=!!t.media,t.media||(n.pathNote.textContent=`${t.name} is cut by playing it and recording the result, because ${t.fallbackReason??"its layout is not one the reader here understands."} That takes as long as the result is long, everything is re-encoded rather than copied, and it can only keep one segment.`),f(),T()}function qe(e){const t=e.samples.map(o=>o.pts/e.timescale);return t.sort((o,a)=>o-a),t}function X(e){for(const t of[n.play,n.back5,n.forward5])t.disabled=!e;for(const t of n.speedRow.querySelectorAll(".speed"))t.disabled=!e}let K=!1,W=null,Y=null;async function Z(e,t){if(!(!e?.media||e.playable)&&(W=t,!K)){K=!0;try{for(;W!==null;){const o=W;W=null;const a=await V({file:e.file,media:e.media,atSeconds:o});n.still.width=a.width,n.still.height=a.height,n.still.getContext("2d").drawImage(a,0,0),n.still.hidden=!1}}catch(o){n.stageNote.textContent=`This browser will not play this video and no frame could be decoded from it either (${o.message}). The marks below still work on its length.`}finally{K=!1}}}function M(e){const t=m();if(!t)return;const o=Math.max(0,Math.min(e,t.duration));S=null,F=o,t.playable?n.preview.currentTime=o:Oe(t,o),w.setPlayhead(o),n.tlNow.textContent=k(o)}function Oe(e,t){clearTimeout(Y),Y=setTimeout(()=>Z(e,t),180)}function E(){return m()?.playable?n.preview.currentTime:F}n.preview.addEventListener("timeupdate",()=>{const e=n.preview.currentTime;F=e,w.setPlayhead(e),n.tlNow.textContent=k(e),S!==null&&e>=S&&(n.preview.pause(),S=null)}),n.preview.addEventListener("play",()=>{n.play.textContent="Pause"}),n.preview.addEventListener("pause",()=>{n.play.textContent="Play"});function ee(){m()?.playable&&(S=null,n.preview.paused?n.preview.play().catch(()=>{}):n.preview.pause())}n.play.addEventListener("click",ee),n.back5.addEventListener("click",()=>M(E()-5)),n.forward5.addEventListener("click",()=>M(E()+5)),n.speedRow.addEventListener("click",e=>{const t=e.target.closest(".speed");if(t){for(const o of n.speedRow.querySelectorAll(".speed"))o.classList.toggle("active",o===t);n.preview.playbackRate=Number(t.dataset.speed)}});function te(){const e=m();if(!e)return;const t=w.snap(E()),o=_(e.segments);o?o.start=t:e.segments.push({id:e.nextSegmentId++,start:t,end:null}),g=e.segments[e.segments.length-1].id,j(),f()}function ne(){const e=m();if(!e)return;const t=e.segments[e.segments.length-1];if(!t){y("Nothing is open yet. Press I where the part should start, then O where it ends.");return}const o=w.snap(E());if(o<=t.start){y(`That would end the segment at ${k(o)}, which is before it starts at ${k(t.start)}. Move the playhead past the start first.`);return}t.end=o,g=t.id,j(),f()}function oe(){const e=m();e?.segments.length&&(e.segments.pop(),g=e.segments.length?e.segments[e.segments.length-1].id:null,f())}n.markIn.addEventListener("click",te),n.markOut.addEventListener("click",ne),n.undo.addEventListener("click",oe),n.addSegment.addEventListener("click",()=>{const e=m();if(!e)return;const t=w.snap(E()),o=Math.min(e.duration,t+Math.min(5,e.duration-t));if(o-t<.05){y("There is not enough video left here to add a segment. Move the playhead back.");return}e.segments.push({id:e.nextSegmentId++,start:t,end:o}),g=e.segments[e.segments.length-1].id,f()}),n.resetSegments.addEventListener("click",()=>{const e=m();e?.segments.length&&window.confirm(`Clear all ${e.segments.length} segments of ${e.name}?`)&&(e.segments=[],g=null,f())});function De(e,{start:t,end:o}){const r=m()?.segments.find(s=>s.id===e);r&&(r.start=t,r.end=o,f())}function f(){const e=m(),t=e?.segments??[],o=P(t);n.segmentTable.hidden=t.length===0,n.segmentsEmpty.hidden=t.length>0,n.segmentRows.innerHTML="",n.segmentCount.textContent=t.length===0?"none yet \u2014 the whole video":`${o.length} of ${t.length}`,n.totalKept.textContent=k($==="keep"&&o.length?$e(t):D(se(e??{segments:[],duration:0}))),t.forEach((a,r)=>{const s=document.createElement("tr");s.className=`segment${a.id===g?" selected":""}`,a.end===null&&s.classList.add("open"),s.addEventListener("click",()=>{g=a.id,f()});const l=document.createElement("td");l.className="col-index",l.textContent=String(r+1),s.append(l,ae(a,"start"),ae(a,"end"),ze(a),He(a,r)),n.segmentRows.append(s)}),w.setSegments(t,g),w.setPending(_(t)?.start??null),T(),R()}function ae(e,t){const o=document.createElement("td"),a=document.createElement("input");a.type="text",a.className="segment-time",a.inputMode="decimal",a.spellcheck=!1,a.autocomplete="off",a.setAttribute("aria-label",t==="start"?"Start time":"End time"),a.value=e[t]===null?"":k(e[t]),a.placeholder=t==="end"?"press O":"";const r=()=>{const s=m(),l=Ee(a.value);if(l===null){a.value=e[t]===null?"":k(e[t]);return}const d=Math.max(0,Math.min(l,s.duration));if(t==="start"&&e.end!==null&&d>=e.end){a.value=k(e.start);return}if(t==="end"&&d<=e.start){a.value=e.end===null?"":k(e.end);return}e[t]=d,f()};return a.addEventListener("change",r),a.addEventListener("blur",r),o.append(a),o}function ze(e){const t=document.createElement("td");return t.className="segment-length",t.textContent=e.end===null?"\u2014":k(e.end-e.start),t}function He(e,t){const o=document.createElement("td");o.className="segment-buttons";const a=m();return o.append(C("\u25B6","Play this segment",()=>Ke(e),e.end===null),C("\u2191","Move up",()=>re(t,-1),t===0),C("\u2193","Move down",()=>re(t,1),t===a.segments.length-1),C("\u2715","Remove",()=>Ve(t),!1,"danger")),o}function Ke(e){!m()?.playable||e.end===null||(n.preview.currentTime=e.start,S=e.end,g=e.id,n.preview.play().catch(()=>{}),f())}function re(e,t){const o=m(),a=e+t;if(!o||a<0||a>=o.segments.length)return;const[r]=o.segments.splice(e,1);o.segments.splice(a,0,r),f()}function Ve(e){const t=m();if(!t)return;const[o]=t.segments.splice(e,1);g===o.id&&(g=t.segments.length?t.segments[Math.min(e,t.segments.length-1)].id:null),f()}n.exportMarks.addEventListener("click",()=>{const e=m();if(!e)return;if(!P(e.segments).length){y("There is nothing marked to save yet.");return}const o=Se(e.segments,{format:n.marksFormat.value,name:e.name}),a=new Blob([o],{type:"text/plain"}),r=URL.createObjectURL(a),s=document.createElement("a");s.href=r,s.download=`${e.name.replace(/\.[^.]+$/,"")}-marks.txt`,s.click(),setTimeout(()=>URL.revokeObjectURL(r),1e3)}),n.importMarks.addEventListener("click",()=>n.marksInput.click()),n.marksInput.addEventListener("change",async()=>{const[e]=n.marksInput.files??[];n.marksInput.value="";const t=m();if(!(!e||!t))try{const o=Le(await e.text()),a=o.segments.filter(s=>s.start<t.duration);if(!a.length){y(`Every segment in ${e.name} starts after this video ends. It was probably marked against a different one.`);return}t.segments=a.map(s=>({id:t.nextSegmentId++,start:s.start,end:Math.min(s.end,t.duration)})),g=t.segments[t.segments.length-1].id,n.marksFormat.value=o.format;const r=o.segments.length-a.length;if(j(),r||o.skipped){const s=[];r&&s.push(`${r} segment${r===1?"":"s"} in ${e.name} ${r===1?"starts":"start"} past the end of this video, so ${r===1?"it was":"they were"} left out.`),o.skipped&&s.push(`${o.skipped} line${o.skipped===1?"":"s"} could not be read as a segment.`),s.push(`${a.length} loaded.`),y(s.join(" "))}f()}catch(o){y(`${e.name} could not be read: ${o.message}`)}});function Je(e){return e instanceof HTMLInputElement||e instanceof HTMLTextAreaElement||e instanceof HTMLSelectElement||e?.isContentEditable}window.addEventListener("keydown",e=>{if(n.sectionCard.hidden||x||Je(e.target)||e.metaKey||e.ctrlKey||e.altKey)return;const t=e.key.toLowerCase();t==="i"?(e.preventDefault(),te()):t==="o"?(e.preventDefault(),ne()):t==="u"?(e.preventDefault(),oe()):e.key===" "&&!(e.target instanceof HTMLButtonElement)?(e.preventDefault(),ee()):e.key==="ArrowLeft"?(e.preventDefault(),M(E()-(e.shiftKey?w.frameStep:5))):e.key==="ArrowRight"&&(e.preventDefault(),M(E()+(e.shiftKey?w.frameStep:5)))});function se(e){const t=P(e.segments);return $==="cut"?Me(t,e.duration):t.length?t:[{start:0,end:e.duration}]}function q(){return c.map(e=>({file:e.file,media:e.media,name:e.name,source:e.source,ranges:se(e)})).filter(e=>e.ranges.length)}document.querySelectorAll('input[name="mode"]').forEach(e=>{e.addEventListener("change",()=>{$=e.value,f(),O()})});function O(){const e=q(),t=n.keepAudio.checked,o=e.length?A(e,{keepAudio:t}):{copy:!1,reason:null,sound:"none"},r=e.length>0&&e.every(u=>u.media)&&o.copy,s=c.length>0&&c.every(u=>u.canExact)&&e.length>0,l=c.length===1&&c[0].canRecord&&e.length===1&&e[0].ranges.length===1;n.method.querySelector('option[value="copy"]').disabled=!r,n.method.querySelector('option[value="exact"]').disabled=!s,n.method.querySelector('option[value="record"]').disabled=!l;const d=[r?"copy":null,s?"exact":null,l?"record":null].filter(Boolean);d.includes(n.method.value)||(n.method.value=d[0]??"copy"),n.joinNote.hidden=c.length<2||r||!o.reason,n.joinNote.hidden||(n.joinNote.textContent=`These videos cannot be joined without re-encoding: ${o.reason} One track carries one description of what is in it, so videos that disagree have to be written out again to share one.`),ie()}function ie(){const e=n.method.value,t=q(),o=t.reduce((l,d)=>l+d.ranges.length,0),a=t.length>1;e==="copy"?n.methodNote.textContent=o>1?"Every marked part is moved into the new file exactly as it is, one after another. Nothing is decoded and nothing is encoded, so no part of this costs quality.":"The frames are moved into the new file exactly as they are, so nothing is decoded and nothing is encoded. Quick, and it cannot cost quality. Each part starts at the nearest keyframe before your mark.":e==="exact"?n.methodNote.textContent=a?"Every video is decoded and written out again into one stream, so videos that disagree about size or codec can still be joined. The sound is copied where they agree about it and re-encoded where they do not.":"Every part starts on the frame you marked, by decoding from the keyframe in front of it and encoding the picture again. The sound is still copied rather than re-encoded.":n.methodNote.textContent="Plays the marked part through and records it, so it takes as long as that part is long and everything is re-encoded. Keep this tab in front while it runs.",n.qualityField.hidden=e==="copy",n.frameField.hidden=!(e==="exact"&&a);const r=t.some(l=>l.media?.audio?.samples.length)||c.some(l=>!l.media),s=A(t,{keepAudio:n.keepAudio.checked}).sound;r?e==="record"?n.audioNote.textContent="Captured from playback and re-encoded, because that is all a recording can do.":s==="encode"&&e==="exact"?n.audioNote.textContent="These videos describe their sound differently, so it is decoded and encoded once for the whole result. That is the only case in this tool where the sound is not carried across untouched.":n.audioNote.textContent="Copied from the file sample by sample, without ever being decoded, so it loses nothing.":n.audioNote.textContent="There is no audio track here, so there is nothing to keep.",n.keepAudio.disabled=!r,R()}n.method.addEventListener("change",ie),n.frame.addEventListener("change",R),n.quality.addEventListener("change",R),n.keepAudio.addEventListener("change",()=>O());function R(){const e=q();if(!e.length){n.exportBtn.disabled=!0,n.sumLength.textContent="0s",n.sumClips.textContent=$==="cut"?"nothing \u2014 the marks cover the whole video":"nothing marked";return}const t=n.method.value,o=n.keepAudio.checked&&!n.keepAudio.disabled,a=e.reduce((h,v)=>h+D(v.ranges),0),r=e.reduce((h,v)=>h+v.ranges.length,0),s=`${r} part${r===1?"":"s"}`;n.sumClips.textContent=e.length===1?$==="cut"?`${s}, once the marked ones are gone`:s:`${s} from ${e.length} videos`,n.sumLength.textContent=B(a);const l=e[0];if(t==="copy"&&l.media){const h=Ne(l.media.video,l.ranges[0].start),v=Math.max(0,l.ranges[0].start-h);n.sumStart.textContent=v<.001?"exactly where you marked (it is on a keyframe)":"exactly where you marked, through an edit mark",n.cutNote.hidden=v<.001,v>=.001&&(n.cutNote.textContent=`The nearest keyframe before your first mark is ${v.toFixed(2)}s earlier, and the frames in between have to stay in the file - nothing after them can be decoded without them. They are marked not to be played, which every mainstream player honours. A player that ignores edit marks will show those ${v.toFixed(2)}s at the front. Choose "Cut exactly here" if that matters more than keeping the original bytes.`)}else n.sumStart.textContent="exactly where you marked",n.cutNote.hidden=!0;const d=t==="exact"&&e.length>1?I(e,n.frame.value):I(e.slice(0,1),"first");let u=0;if(t==="copy")u=ge(e,o).bytes;else if(t==="exact"){const h=Math.max(...e.map(ce=>J(ce.media.video)));u=we({clips:e,frame:d,fps:h,quality:n.quality.value})/8*a+(o?2e4*a:0)}else u=be({size:l.source,fps:c[0].fps,quality:n.quality.value,seconds:a});if(n.sumSize.textContent=u?`about ${de(u)}`:"\u2014",t==="copy")n.sumPicture.textContent="copied, frame for frame";else if(t==="exact"){const h=e.filter(v=>!xe({displayWidth:v.source.width,displayHeight:v.source.height,frame:d}).fits).length;n.sumPicture.textContent=`re-encoded to H.264, ${d.width} x ${d.height}`+(h?` (${h} fitted with bars)`:"")}else n.sumPicture.textContent="recorded as it plays";const p=A(e,{keepAudio:!0}).sound;p==="none"?n.sumSound.textContent="none in this video":o?t==="record"?n.sumSound.textContent="re-encoded from playback":p==="encode"&&t==="exact"?n.sumSound.textContent="decoded and re-encoded once":n.sumSound.textContent="copied, sample for sample":n.sumSound.textContent="left out",n.exportBtn.disabled=x,n.exportBtn.textContent=r>1?`Cut and join ${r} parts`:"Cut video"}function y(e){n.error.textContent=e,n.error.hidden=!1}function j(){n.error.hidden=!0,n.error.textContent=""}function le({phase:e,done:t,total:o,realtime:a}){const r=o>0?Math.min(1,t/o):0;n.progressBar.style.width=`${(r*100).toFixed(1)}%`,e==="preparing"?n.progressLabel.textContent="Preparing...":e==="finishing"?n.progressLabel.textContent="Writing the file...":e==="sound"?n.progressLabel.textContent=`Encoding the sound - ${t+1} of ${o}`:e==="copying"?n.progressLabel.textContent=`Copying sample ${t.toLocaleString()} of ${o.toLocaleString()} (${Math.round(r*100)}%)`:a?n.progressLabel.textContent=`Recording in real time - ${B(t)} of ${B(o)} (${Math.round(r*100)}%)`:n.progressLabel.textContent=`Frame ${t.toLocaleString()} of ${o.toLocaleString()} (${Math.round(r*100)}%)`}function _e(e){return`${(c[0]?.name??"video").replace(/\.[^.]+$/,"")}-cut.${e}`}function de(e){return e<1024*1024?`${(e/1024).toFixed(0)} KB`:e<1024*1024*1024?`${(e/1024/1024).toFixed(1)} MB`:`${(e/1024/1024/1024).toFixed(2)} GB`}function B(e){const t=Math.max(0,Math.round(e)),o=Math.floor(t/60);return o?`${o}m ${String(t%60).padStart(2,"0")}s`:`${e<10?e.toFixed(1):t}s`}async function Ge(){if(x)return;const e=q();if(!e.length){y($==="cut"?"The marks cover the whole video, so cutting them out would leave nothing.":"There is nothing marked to keep. Press I and O while it plays.");return}j(),x=!0,U=new AbortController,n.exportBtn.disabled=!0,n.cancelBtn.hidden=!1,n.progressWrap.hidden=!1,n.result.hidden=!0,w.setEnabled(!1),n.preview.pause(),le({phase:"preparing",done:0,total:1});const t=n.method.value,o=n.quality.value,a=n.keepAudio.checked&&!n.keepAudio.disabled,r=le,s=U.signal;try{let l;if(t==="copy")l=await fe({clips:e,keepAudio:a,onProgress:r,signal:s});else if(t==="exact"){const u=e.length>1?I(e,n.frame.value):I(e.slice(0,1),"first"),p=A(e,{keepAudio:a}).sound;l=await ye({clips:e,frame:u,quality:o,audioMode:a?p:"none",onProgress:r,signal:s})}else l=await ke({src:c[0].objectUrl,range:e[0].ranges[0],size:c[0].source,quality:o,keepAudio:a,fps:c[0].fps,onProgress:r,signal:s});l.warning&&y(l.warning),N&&URL.revokeObjectURL(N),N=URL.createObjectURL(l.blob);const d=e.reduce((u,p)=>u+p.ranges.length,0);n.resultVideo.src=N,n.download.href=N,n.download.download=_e(l.extension),n.resultInfo.textContent=[l.extension.toUpperCase(),d>1?`${d} parts`:null,B(e.reduce((u,p)=>u+D(p.ranges),0)),de(l.blob.size),t==="copy"?"not re-encoded":l.codec].filter(Boolean).join(" \xB7 "),n.result.hidden=!1,n.progressWrap.hidden=!0,n.result.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(l){n.progressWrap.hidden=!0,l?.name!=="AbortError"&&(y(l?.message||"Something went wrong."),console.error(l))}finally{x=!1,U=null,n.cancelBtn.hidden=!0,n.exportBtn.disabled=!1,w.setEnabled(!0),f()}}n.exportBtn.addEventListener("click",Ge),n.cancelBtn.addEventListener("click",()=>U?.abort()),window.addEventListener("beforeunload",e=>{x&&(e.preventDefault(),e.returnValue="")}),n.privacyToggle.addEventListener("click",()=>{const e=n.privacyPanel.hidden;n.privacyPanel.hidden=!e,n.privacyToggle.setAttribute("aria-expanded",String(e))});const Qe=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function Xe(){const e=new Set,t=new Set,o=a=>{for(const d of a){if(d.name.startsWith("blob:")||d.name.startsWith("data:"))continue;const u=new URL(d.name,location.href);u.origin!==location.origin&&(Qe.test(u.hostname)?e.add(u.hostname):t.add(u.hostname))}const r=performance.getEntriesByType("resource").filter(d=>!d.name.startsWith("blob:")&&!d.name.startsWith("data:")).length,s=t.size===0,l=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a file.`;n.networkCount.textContent=s?`your videos have gone nowhere. ${r} files loaded.${l}`:`something contacted ${[...t].join(", ")}, which this tool never does.${l}`,n.networkCount.className=s?"good":"warn",n.networkDot.className=`live-dot ${s?"good":"warn"}`};o(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>o(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function Ye(){const e=(t,o)=>{n.offlineStatus.textContent=t,n.offlineDot.className="live-dot",o&&(n.offlineStatus.title=o,console.info("Offline caching unavailable:",o))};if(!("serviceWorker"in navigator)){e(L("offline.none"));return}if(!window.isSecureContext){e(L("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,n.offlineStatus.textContent=L("offline.ready"),n.offlineStatus.className="good",n.offlineDot.className="live-dot good"}catch(t){e(L("offline.failed"),t.message)}}window.addEventListener("error",e=>{y(L("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{y(L("error.broke",{detail:e.reason?.message??e.reason}))}),Xe(),Ye(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{demux,UnsupportedFile}from'./demux.js';
+import{joinByCopy,estimateJoinCopy}from'./copy.js';
+import{
+joinExact,grabFrame,decoderConfig,averageFps,chooseJoinBitrate,
+}from'./transcode.js';
+import{trimByRecording,estimateRecording}from'./record.js';
+import{joinability,outputFrame}from'./clips.js';
+import{fittedBox}from'./draw.js';
+import{Timeline,formatTime,parseTime}from'./timeline.js';
+import{
+openSegment,readTimestamps,segmentRanges,totalCaptured,writeTimestamps,
+}from'./segments.js';
+import{keyframeTimes,keyframeBefore,invertRanges,totalSeconds}from'./ranges.js';
+import{hasWebCodecs,hasMediaRecorder,canDecode}from'./support.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+clipList:$('clip-list'),
+joinNote:$('join-note'),
+pathNote:$('path-note'),
+sectionCard:$('section-card'),
+editing:$('editing'),
+stage:$('stage'),
+preview:$('preview'),
+still:$('still'),
+stageNote:$('stage-note'),
+timeline:$('timeline'),
+tlNow:$('tl-now'),
+tlTotal:$('tl-total'),
+play:$('play'),
+back5:$('back-5'),
+forward5:$('forward-5'),
+markIn:$('mark-in'),
+markOut:$('mark-out'),
+undo:$('undo'),
+speedRow:document.querySelector('.speed-row'),
+segmentCount:$('segment-count'),
+totalKept:$('total-kept'),
+segmentTable:$('segment-table'),
+segmentRows:$('segment-rows'),
+segmentsEmpty:$('segments-empty'),
+addSegment:$('add-segment'),
+resetSegments:$('reset-segments'),
+importMarks:$('import-marks'),
+marksInput:$('marks-input'),
+marksFormat:$('marks-format'),
+exportMarks:$('export-marks'),
+exportCard:$('export-card'),
+method:$('method'),
+methodNote:$('method-note'),
+frameField:$('frame-field'),
+frame:$('frame'),
+qualityField:$('quality-field'),
+quality:$('quality'),
+keepAudio:$('keep-audio'),
+audioNote:$('audio-note'),
+sumClips:$('sum-clips'),
+sumLength:$('sum-length'),
+sumStart:$('sum-start'),
+sumSize:$('sum-size'),
+sumPicture:$('sum-picture'),
+sumSound:$('sum-sound'),
+cutNote:$('cut-note'),
+exportBtn:$('export'),
+cancelBtn:$('cancel'),
+progressWrap:$('progress-wrap'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+error:$('error'),
+result:$('result'),
+resultVideo:$('result-video'),
+resultInfo:$('result-info'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let clips=[];
+let selected=-1;
+let selectedSegment=null;
+let mode='keep';
+let exporting=false;
+let abortController=null;
+let lastResultUrl=null;
+let nextId=1;
+let playAt=0;
+let watchUntil=null;
+const timeline=new Timeline(el.timeline,{
+onSeek:seekTo,
+onSelect:(id)=>{selectedSegment=id;renderSegments();},
+onAdjust:adjustSegment,
+});
+const clip=()=>(selected>=0?clips[selected]:null);
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){addFiles(files);},
+});
+async function addFiles(files){
+if(exporting||!files.length)return;
+clearError();
+picker.busy(readingLabel(files.length));
+try{
+for(const file of files){
+const added=await addClip(file);
+if(added&&selected<0)selectClip(clips.length-1);
+}
+}finally{
+picker.done();
+}
+if(!clips.length)return;
+describeSelection();
+renderClips();
+el.sectionCard.hidden=false;
+el.exportCard.hidden=false;
+updateMethodOptions();
+}
+function openInPlayer(video,url){
+return new Promise((resolve)=>{
+const done=(result)=>{
+clearTimeout(timer);
+video.removeEventListener('loadedmetadata',ok);
+video.removeEventListener('error',bad);
+resolve(result);
+};
+const ok=()=>done({
+ok:video.videoWidth>0&&video.videoHeight>0,
+width:video.videoWidth,
+height:video.videoHeight,
+duration:Number.isFinite(video.duration)?video.duration:0,
+});
+const bad=()=>done({ok:false,width:0,height:0,duration:0});
+const timer=setTimeout(bad,15000);
+video.addEventListener('loadedmetadata',ok,{once:true});
+video.addEventListener('error',bad,{once:true});
+video.src=url;
+video.load();
+});
+}
+async function addClip(file){
+const objectUrl=URL.createObjectURL(file);
+const probe=document.createElement('video');
+probe.preload='metadata';
+probe.muted=true;
+probe.playsInline=true;
+try{
+const played=await openInPlayer(probe,objectUrl);
+let media=null;
+let fallbackReason=null;
+try{
+media=await demux(file);
+}catch(error){
+fallbackReason=error instanceof UnsupportedFile
+?error.reason
+:(error.message||'the file could not be read as an MP4.');
+}
+const canExact=Boolean(media)&&hasWebCodecs()
+&&await canDecode(decoderConfig(media.video));
+const canRecord=played.ok&&hasMediaRecorder();
+if(!media&&!canRecord){
+showError(played.ok
+?`${file.name} cannot be recorded by this browser, so it cannot be cut.`
+:`${file.name} could not be opened: ${fallbackReason ?? 'the format is not one this browser plays.'}`);
+URL.revokeObjectURL(objectUrl);
+return false;
+}
+const source=media
+?{width:media.video.displayWidth,height:media.video.displayHeight}
+:{width:played.width,height:played.height};
+const entry={
+id:nextId++,
+file,
+name:file.name,
+objectUrl,
+media,
+fallbackReason,
+playable:played.ok,
+source,
+duration:media?Math.max(media.duration,played.duration):played.duration,
+fps:media?averageFps(media.video):30,
+canExact,
+canRecord,
+thumbnail:null,
+segments:[],
+nextSegmentId:1,
+};
+clips.push(entry);
+makeThumbnail(entry,probe).then((url)=>{
+if(!url)return;
+entry.thumbnail=url;
+renderClips();
+});
+return true;
+}catch(error){
+console.error(error);
+showError(`${file.name} could not be opened: ${error?.message ?? error}`);
+URL.revokeObjectURL(objectUrl);
+return false;
+}
+}
+async function makeThumbnail(entry,probe){
+const at=Math.min(1,entry.duration/2)||0;
+if(entry.media&&entry.canExact){
+try{
+const canvas=await grabFrame({
+file:entry.file,media:entry.media,atSeconds:at,maxWidth:240,
+});
+return canvas.toDataURL('image/jpeg',0.7);
+}catch{
+}
+}
+if(!entry.playable)return null;
+try{
+await new Promise((resolve)=>{
+const done=()=>{clearTimeout(timer);resolve();};
+const timer=setTimeout(done,4000);
+probe.addEventListener('seeked',done,{once:true});
+probe.currentTime=at;
+});
+const scale=Math.min(1,240/Math.max(1,probe.videoWidth));
+const canvas=document.createElement('canvas');
+canvas.width=Math.max(2,Math.round(probe.videoWidth*scale));
+canvas.height=Math.max(2,Math.round(probe.videoHeight*scale));
+canvas.getContext('2d').drawImage(probe,0,0,canvas.width,canvas.height);
+return canvas.toDataURL('image/jpeg',0.7);
+}catch{
+return null;
+}
+}
+function renderClips(){
+el.clipList.hidden=clips.length<2;
+el.clipList.innerHTML='';
+if(clips.length<2)return;
+clips.forEach((entry,index)=>{
+const row=document.createElement('li');
+row.className=`clip${index === selected ? ' selected' : ''}`;
+const shot=document.createElement('div');
+shot.className='clip-shot';
+if(entry.thumbnail){
+const image=document.createElement('img');
+image.src=entry.thumbnail;
+image.alt='';
+shot.append(image);
+}else{
+shot.textContent=String(index+1);
+shot.classList.add('clip-shot-empty');
+}
+const body=document.createElement('div');
+body.className='clip-body';
+const title=document.createElement('button');
+title.type='button';
+title.className='clip-name';
+title.textContent=entry.name;
+title.title='Mark this video';
+title.addEventListener('click',()=>selectClip(index));
+const marked=segmentRanges(entry.segments).length;
+const facts=document.createElement('p');
+facts.className='clip-facts';
+facts.textContent=[
+`${entry.source.width} x ${entry.source.height}`,
+formatDuration(entry.duration),
+marked?`${marked} segment${marked === 1 ? '' : 's'}`:'not marked',
+entry.media?(entry.media.audio?'with sound':'no sound'):'recorded to cut',
+].join(' · ');
+body.append(title,facts);
+const actions=document.createElement('div');
+actions.className='clip-actions';
+actions.append(
+iconButton('↑','Move up',()=>moveClip(index,-1),index===0),
+iconButton('↓','Move down',()=>moveClip(index,1),index===clips.length-1),
+iconButton('✕','Remove',()=>removeClip(index),false,'danger'),
+);
+row.append(shot,body,actions);
+el.clipList.append(row);
+});
+}
+function iconButton(label,title,onClick,disabled=false,extra=''){
+const element=document.createElement('button');
+element.type='button';
+element.className=`clip-button ghost${extra ? ` ${extra}` : ''}`;
+element.textContent=label;
+element.title=title;
+element.setAttribute('aria-label',title);
+element.disabled=disabled||exporting;
+element.addEventListener('click',onClick);
+return element;
+}
+function moveClip(index,by){
+const to=index+by;
+if(to<0||to>=clips.length)return;
+const[moved]=clips.splice(index,1);
+clips.splice(to,0,moved);
+if(selected===index)selected=to;
+else if(selected===to)selected=index;
+describeSelection();
+renderClips();
+updateSummary();
+}
+function removeClip(index){
+const[gone]=clips.splice(index,1);
+URL.revokeObjectURL(gone.objectUrl);
+if(!clips.length){
+selected=-1;
+el.sectionCard.hidden=true;
+el.exportCard.hidden=true;
+el.preview.removeAttribute('src');
+el.preview.load();
+renderClips();
+return;
+}
+selectClip(Math.min(index,clips.length-1));
+updateMethodOptions();
+}
+function describeSelection(){
+const entry=clip();
+el.editing.hidden=clips.length<2||!entry;
+if(entry)el.editing.textContent=`${entry.name} — ${selected + 1} of ${clips.length}`;
+}
+function selectClip(index){
+if(index<0||index>=clips.length)return;
+selected=index;
+const entry=clips[index];
+selectedSegment=entry.segments.length?entry.segments[entry.segments.length-1].id:null;
+describeSelection();
+if(entry.playable){
+if(el.preview.src!==entry.objectUrl)el.preview.src=entry.objectUrl;
+el.preview.hidden=false;
+el.still.hidden=true;
+el.stageNote.hidden=true;
+setTransportEnabled(true);
+}else{
+el.preview.removeAttribute('src');
+el.preview.hidden=true;
+el.stageNote.hidden=false;
+setTransportEnabled(false);
+el.stageNote.textContent='This browser will not play this video, so the frames below are '
++'decoded one at a time to show you where the marks are. The cut itself is unaffected.';
+drawStill(entry,0);
+}
+el.stage.style.aspectRatio=`${entry.source.width} / ${entry.source.height}`;
+el.stage.style.maxWidth=`calc(52vh * ${entry.source.width / entry.source.height})`;
+timeline.setSource({
+duration:entry.duration,
+keyframes:entry.media?keyframeTimes(entry.media.video):null,
+frameTimes:entry.media?frameTimesOf(entry.media.video):null,
+});
+playAt=0;
+timeline.setPlayhead(0);
+el.tlTotal.textContent=formatTime(entry.duration);
+el.tlNow.textContent=formatTime(0);
+el.pathNote.hidden=Boolean(entry.media);
+if(!entry.media){
+el.pathNote.textContent=`${entry.name} is cut by playing it and recording the result, `
++`because ${entry.fallbackReason ?? 'its layout is not one the reader here understands.'} `
++'That takes as long as the result is long, everything is re-encoded rather than copied, '
++'and it can only keep one segment.';
+}
+renderSegments();
+renderClips();
+}
+function frameTimesOf(video){
+const times=video.samples.map((sample)=>sample.pts/video.timescale);
+times.sort((a,b)=>a-b);
+return times;
+}
+function setTransportEnabled(enabled){
+for(const control of[el.play,el.back5,el.forward5])control.disabled=!enabled;
+for(const control of el.speedRow.querySelectorAll('.speed'))control.disabled=!enabled;
+}
+let stillBusy=false;
+let stillWanted=null;
+let stillTimer=null;
+async function drawStill(entry,atSeconds){
+if(!entry?.media||entry.playable)return;
+stillWanted=atSeconds;
+if(stillBusy)return;
+stillBusy=true;
+try{
+while(stillWanted!==null){
+const at=stillWanted;
+stillWanted=null;
+const canvas=await grabFrame({file:entry.file,media:entry.media,atSeconds:at});
+el.still.width=canvas.width;
+el.still.height=canvas.height;
+el.still.getContext('2d').drawImage(canvas,0,0);
+el.still.hidden=false;
+}
+}catch(error){
+el.stageNote.textContent='This browser will not play this video and no frame could be '
++`decoded from it either (${error.message}). The marks below still work on its length.`;
+}finally{
+stillBusy=false;
+}
+}
+function seekTo(seconds){
+const entry=clip();
+if(!entry)return;
+const at=Math.max(0,Math.min(seconds,entry.duration));
+watchUntil=null;
+playAt=at;
+if(entry.playable)el.preview.currentTime=at;
+else scheduleStill(entry,at);
+timeline.setPlayhead(at);
+el.tlNow.textContent=formatTime(at);
+}
+function scheduleStill(entry,at){
+clearTimeout(stillTimer);
+stillTimer=setTimeout(()=>drawStill(entry,at),180);
+}
+function currentTime(){
+const entry=clip();
+return entry?.playable?el.preview.currentTime:playAt;
+}
+el.preview.addEventListener('timeupdate',()=>{
+const at=el.preview.currentTime;
+playAt=at;
+timeline.setPlayhead(at);
+el.tlNow.textContent=formatTime(at);
+if(watchUntil!==null&&at>=watchUntil){
+el.preview.pause();
+watchUntil=null;
+}
+});
+el.preview.addEventListener('play',()=>{el.play.textContent='Pause';});
+el.preview.addEventListener('pause',()=>{el.play.textContent='Play';});
+function togglePlay(){
+if(!clip()?.playable)return;
+watchUntil=null;
+if(el.preview.paused)el.preview.play().catch(()=>{});
+else el.preview.pause();
+}
+el.play.addEventListener('click',togglePlay);
+el.back5.addEventListener('click',()=>seekTo(currentTime()-5));
+el.forward5.addEventListener('click',()=>seekTo(currentTime()+5));
+el.speedRow.addEventListener('click',(event)=>{
+const button=event.target.closest('.speed');
+if(!button)return;
+for(const other of el.speedRow.querySelectorAll('.speed')){
+other.classList.toggle('active',other===button);
+}
+el.preview.playbackRate=Number(button.dataset.speed);
+});
+function markIn(){
+const entry=clip();
+if(!entry)return;
+const at=timeline.snap(currentTime());
+const open=openSegment(entry.segments);
+if(open)open.start=at;
+else entry.segments.push({id:entry.nextSegmentId++,start:at,end:null});
+selectedSegment=entry.segments[entry.segments.length-1].id;
+clearError();
+renderSegments();
+}
+function markOut(){
+const entry=clip();
+if(!entry)return;
+const last=entry.segments[entry.segments.length-1];
+if(!last){
+showError('Nothing is open yet. Press I where the part should start, then O where it ends.');
+return;
+}
+const at=timeline.snap(currentTime());
+if(at<=last.start){
+showError(`That would end the segment at ${formatTime(at)}, which is before it starts `
++`at ${formatTime(last.start)}. Move the playhead past the start first.`);
+return;
+}
+last.end=at;
+selectedSegment=last.id;
+clearError();
+renderSegments();
+}
+function undoSegment(){
+const entry=clip();
+if(!entry?.segments.length)return;
+entry.segments.pop();
+selectedSegment=entry.segments.length
+?entry.segments[entry.segments.length-1].id
+:null;
+renderSegments();
+}
+el.markIn.addEventListener('click',markIn);
+el.markOut.addEventListener('click',markOut);
+el.undo.addEventListener('click',undoSegment);
+el.addSegment.addEventListener('click',()=>{
+const entry=clip();
+if(!entry)return;
+const start=timeline.snap(currentTime());
+const end=Math.min(entry.duration,start+Math.min(5,entry.duration-start));
+if(end-start<0.05){
+showError('There is not enough video left here to add a segment. Move the playhead back.');
+return;
+}
+entry.segments.push({id:entry.nextSegmentId++,start,end});
+selectedSegment=entry.segments[entry.segments.length-1].id;
+renderSegments();
+});
+el.resetSegments.addEventListener('click',()=>{
+const entry=clip();
+if(!entry?.segments.length)return;
+if(!window.confirm(`Clear all ${entry.segments.length} segments of ${entry.name}?`))return;
+entry.segments=[];
+selectedSegment=null;
+renderSegments();
+});
+function adjustSegment(id,{start,end}){
+const entry=clip();
+const segment=entry?.segments.find((one)=>one.id===id);
+if(!segment)return;
+segment.start=start;
+segment.end=end;
+renderSegments();
+}
+function renderSegments(){
+const entry=clip();
+const segments=entry?.segments??[];
+const finished=segmentRanges(segments);
+el.segmentTable.hidden=segments.length===0;
+el.segmentsEmpty.hidden=segments.length>0;
+el.segmentRows.innerHTML='';
+el.segmentCount.textContent=segments.length===0
+?'none yet — the whole video'
+:`${finished.length} of ${segments.length}`;
+el.totalKept.textContent=formatTime(
+mode==='keep'&&finished.length
+?totalCaptured(segments)
+:totalSeconds(rangesOf(entry??{segments:[],duration:0})));
+segments.forEach((segment,index)=>{
+const row=document.createElement('tr');
+row.className=`segment${segment.id === selectedSegment ? ' selected' : ''}`;
+if(segment.end===null)row.classList.add('open');
+row.addEventListener('click',()=>{
+selectedSegment=segment.id;
+renderSegments();
+});
+const number=document.createElement('td');
+number.className='col-index';
+number.textContent=String(index+1);
+row.append(
+number,
+timeCell(segment,'start'),
+timeCell(segment,'end'),
+lengthCell(segment),
+actionsCell(segment,index),
+);
+el.segmentRows.append(row);
+});
+timeline.setSegments(segments,selectedSegment);
+timeline.setPending(openSegment(segments)?.start??null);
+renderClips();
+updateSummary();
+}
+function timeCell(segment,which){
+const cell=document.createElement('td');
+const input=document.createElement('input');
+input.type='text';
+input.className='segment-time';
+input.inputMode='decimal';
+input.spellcheck=false;
+input.autocomplete='off';
+input.setAttribute('aria-label',which==='start'?'Start time':'End time');
+input.value=segment[which]===null?'':formatTime(segment[which]);
+input.placeholder=which==='end'?'press O':'';
+const commit=()=>{
+const entry=clip();
+const seconds=parseTime(input.value);
+if(seconds===null){
+input.value=segment[which]===null?'':formatTime(segment[which]);
+return;
+}
+const at=Math.max(0,Math.min(seconds,entry.duration));
+if(which==='start'&&segment.end!==null&&at>=segment.end){
+input.value=formatTime(segment.start);
+return;
+}
+if(which==='end'&&at<=segment.start){
+input.value=segment.end===null?'':formatTime(segment.end);
+return;
+}
+segment[which]=at;
+renderSegments();
+};
+input.addEventListener('change',commit);
+input.addEventListener('blur',commit);
+cell.append(input);
+return cell;
+}
+function lengthCell(segment){
+const cell=document.createElement('td');
+cell.className='segment-length';
+cell.textContent=segment.end===null?'—':formatTime(segment.end-segment.start);
+return cell;
+}
+function actionsCell(segment,index){
+const cell=document.createElement('td');
+cell.className='segment-buttons';
+const entry=clip();
+cell.append(
+iconButton('▶','Play this segment',()=>playSegment(segment),segment.end===null),
+iconButton('↑','Move up',()=>moveSegment(index,-1),index===0),
+iconButton('↓','Move down',()=>moveSegment(index,1),index===entry.segments.length-1),
+iconButton('✕','Remove',()=>removeSegment(index),false,'danger'),
+);
+return cell;
+}
+function playSegment(segment){
+const entry=clip();
+if(!entry?.playable||segment.end===null)return;
+el.preview.currentTime=segment.start;
+watchUntil=segment.end;
+selectedSegment=segment.id;
+el.preview.play().catch(()=>{});
+renderSegments();
+}
+function moveSegment(index,by){
+const entry=clip();
+const to=index+by;
+if(!entry||to<0||to>=entry.segments.length)return;
+const[moved]=entry.segments.splice(index,1);
+entry.segments.splice(to,0,moved);
+renderSegments();
+}
+function removeSegment(index){
+const entry=clip();
+if(!entry)return;
+const[gone]=entry.segments.splice(index,1);
+if(selectedSegment===gone.id){
+selectedSegment=entry.segments.length
+?entry.segments[Math.min(index,entry.segments.length-1)].id
+:null;
+}
+renderSegments();
+}
+el.exportMarks.addEventListener('click',()=>{
+const entry=clip();
+if(!entry)return;
+const ranges=segmentRanges(entry.segments);
+if(!ranges.length){
+showError('There is nothing marked to save yet.');
+return;
+}
+const text=writeTimestamps(entry.segments,{
+format:el.marksFormat.value,
+name:entry.name,
+});
+const blob=new Blob([text],{type:'text/plain'});
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=`${entry.name.replace(/\.[^.]+$/, '')}-marks.txt`;
+link.click();
+setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+el.importMarks.addEventListener('click',()=>el.marksInput.click());
+el.marksInput.addEventListener('change',async()=>{
+const[file]=el.marksInput.files??[];
+el.marksInput.value='';
+const entry=clip();
+if(!file||!entry)return;
+try{
+const parsed=readTimestamps(await file.text());
+const kept=parsed.segments.filter((segment)=>segment.start<entry.duration);
+if(!kept.length){
+showError(`Every segment in ${file.name} starts after this video ends. `
++'It was probably marked against a different one.');
+return;
+}
+entry.segments=kept.map((segment)=>({
+id:entry.nextSegmentId++,
+start:segment.start,
+end:Math.min(segment.end,entry.duration),
+}));
+selectedSegment=entry.segments[entry.segments.length-1].id;
+el.marksFormat.value=parsed.format;
+const dropped=parsed.segments.length-kept.length;
+clearError();
+if(dropped||parsed.skipped){
+const says=[];
+if(dropped){
+says.push(`${dropped} segment${dropped === 1 ? '' : 's'} in ${file.name} `
++`${dropped === 1 ? 'starts' : 'start'} past the end of this video, so `
++`${dropped === 1 ? 'it was' : 'they were'} left out.`);
+}
+if(parsed.skipped){
+says.push(`${parsed.skipped} line${parsed.skipped === 1 ? '' : 's'} could not be `
++'read as a segment.');
+}
+says.push(`${kept.length} loaded.`);
+showError(says.join(' '));
+}
+renderSegments();
+}catch(error){
+showError(`${file.name} could not be read: ${error.message}`);
+}
+});
+function typing(target){
+return target instanceof HTMLInputElement
+||target instanceof HTMLTextAreaElement
+||target instanceof HTMLSelectElement
+||target?.isContentEditable;
+}
+window.addEventListener('keydown',(event)=>{
+if(el.sectionCard.hidden||exporting)return;
+if(typing(event.target)||event.metaKey||event.ctrlKey||event.altKey)return;
+const key=event.key.toLowerCase();
+if(key==='i'){
+event.preventDefault();
+markIn();
+}else if(key==='o'){
+event.preventDefault();
+markOut();
+}else if(key==='u'){
+event.preventDefault();
+undoSegment();
+}else if(event.key===' '&&!(event.target instanceof HTMLButtonElement)){
+event.preventDefault();
+togglePlay();
+}else if(event.key==='ArrowLeft'){
+event.preventDefault();
+seekTo(currentTime()-(event.shiftKey?timeline.frameStep:5));
+}else if(event.key==='ArrowRight'){
+event.preventDefault();
+seekTo(currentTime()+(event.shiftKey?timeline.frameStep:5));
+}
+});
+function rangesOf(entry){
+const marked=segmentRanges(entry.segments);
+if(mode==='cut')return invertRanges(marked,entry.duration);
+return marked.length?marked:[{start:0,end:entry.duration}];
+}
+function exportClips(){
+return clips
+.map((entry)=>({
+file:entry.file,
+media:entry.media,
+name:entry.name,
+source:entry.source,
+ranges:rangesOf(entry),
+}))
+.filter((entry)=>entry.ranges.length);
+}
+document.querySelectorAll('input[name="mode"]').forEach((radio)=>{
+radio.addEventListener('change',()=>{
+mode=radio.value;
+renderSegments();
+updateMethodOptions();
+});
+});
+function updateMethodOptions(){
+const chosen=exportClips();
+const keepAudio=el.keepAudio.checked;
+const join=chosen.length
+?joinability(chosen,{keepAudio})
+:{copy:false,reason:null,sound:'none'};
+const everyDemuxed=chosen.length>0&&chosen.every((entry)=>entry.media);
+const canCopy=everyDemuxed&&join.copy;
+const canExact=clips.length>0&&clips.every((entry)=>entry.canExact)&&chosen.length>0;
+const canRecord=clips.length===1&&clips[0].canRecord&&chosen.length===1
+&&chosen[0].ranges.length===1;
+el.method.querySelector('option[value="copy"]').disabled=!canCopy;
+el.method.querySelector('option[value="exact"]').disabled=!canExact;
+el.method.querySelector('option[value="record"]').disabled=!canRecord;
+const available=[
+canCopy?'copy':null,
+canExact?'exact':null,
+canRecord?'record':null,
+].filter(Boolean);
+if(!available.includes(el.method.value))el.method.value=available[0]??'copy';
+el.joinNote.hidden=clips.length<2||canCopy||!join.reason;
+if(!el.joinNote.hidden){
+el.joinNote.textContent=`These videos cannot be joined without re-encoding: ${join.reason} `
++'One track carries one description of what is in it, so videos that disagree have to be '
++'written out again to share one.';
+}
+updateMethodNote();
+}
+function updateMethodNote(){
+const method=el.method.value;
+const chosen=exportClips();
+const sections=chosen.reduce((total,entry)=>total+entry.ranges.length,0);
+const many=chosen.length>1;
+if(method==='copy'){
+el.methodNote.textContent=sections>1
+?'Every marked part is moved into the new file exactly as it is, one after another. '
++'Nothing is decoded and nothing is encoded, so no part of this costs quality.'
+:'The frames are moved into the new file exactly as they are, so nothing is decoded '
++'and nothing is encoded. Quick, and it cannot cost quality. Each part starts at the '
++'nearest keyframe before your mark.';
+}else if(method==='exact'){
+el.methodNote.textContent=many
+?'Every video is decoded and written out again into one stream, so videos that disagree '
++'about size or codec can still be joined. The sound is copied where they agree about '
++'it and re-encoded where they do not.'
+:'Every part starts on the frame you marked, by decoding from the keyframe in front of '
++'it and encoding the picture again. The sound is still copied rather than re-encoded.';
+}else{
+el.methodNote.textContent='Plays the marked part through and records it, so it takes as '
++'long as that part is long and everything is re-encoded. Keep this tab in front while '
++'it runs.';
+}
+el.qualityField.hidden=method==='copy';
+el.frameField.hidden=!(method==='exact'&&many);
+const anySound=chosen.some((entry)=>entry.media?.audio?.samples.length)
+||clips.some((entry)=>!entry.media);
+const sound=joinability(chosen,{keepAudio:el.keepAudio.checked}).sound;
+if(!anySound){
+el.audioNote.textContent='There is no audio track here, so there is nothing to keep.';
+}else if(method==='record'){
+el.audioNote.textContent='Captured from playback and re-encoded, because that is all '
++'a recording can do.';
+}else if(sound==='encode'&&method==='exact'){
+el.audioNote.textContent='These videos describe their sound differently, so it is decoded '
++'and encoded once for the whole result. That is the only case in this tool where the '
++'sound is not carried across untouched.';
+}else{
+el.audioNote.textContent='Copied from the file sample by sample, without ever being '
++'decoded, so it loses nothing.';
+}
+el.keepAudio.disabled=!anySound;
+updateSummary();
+}
+el.method.addEventListener('change',updateMethodNote);
+el.frame.addEventListener('change',updateSummary);
+el.quality.addEventListener('change',updateSummary);
+el.keepAudio.addEventListener('change',()=>updateMethodOptions());
+function updateSummary(){
+const chosen=exportClips();
+if(!chosen.length){
+el.exportBtn.disabled=true;
+el.sumLength.textContent='0s';
+el.sumClips.textContent=mode==='cut'
+?'nothing — the marks cover the whole video'
+:'nothing marked';
+return;
+}
+const method=el.method.value;
+const keepAudio=el.keepAudio.checked&&!el.keepAudio.disabled;
+const kept=chosen.reduce((total,entry)=>total+totalSeconds(entry.ranges),0);
+const sections=chosen.reduce((total,entry)=>total+entry.ranges.length,0);
+const parts=`${sections} part${sections === 1 ? '' : 's'}`;
+el.sumClips.textContent=chosen.length===1
+?(mode==='cut'?`${parts}, once the marked ones are gone`:parts)
+:`${parts} from ${chosen.length} videos`;
+el.sumLength.textContent=formatDuration(kept);
+const first=chosen[0];
+if(method==='copy'&&first.media){
+const behind=keyframeBefore(first.media.video,first.ranges[0].start);
+const preRoll=Math.max(0,first.ranges[0].start-behind);
+el.sumStart.textContent=preRoll<0.001
+?'exactly where you marked (it is on a keyframe)'
+:'exactly where you marked, through an edit mark';
+el.cutNote.hidden=preRoll<0.001;
+if(preRoll>=0.001){
+el.cutNote.textContent='The nearest keyframe before your first mark is '
++`${preRoll.toFixed(2)}s earlier, and the frames in between have to stay in the `
++'file - nothing after them can be decoded without them. They are marked not to '
++'be played, which every mainstream player honours. A player that ignores edit '
++`marks will show those ${preRoll.toFixed(2)}s at the front. Choose "Cut exactly `
++'here" if that matters more than keeping the original bytes.';
+}
+}else{
+el.sumStart.textContent='exactly where you marked';
+el.cutNote.hidden=true;
+}
+const frame=method==='exact'&&chosen.length>1
+?outputFrame(chosen,el.frame.value)
+:outputFrame(chosen.slice(0,1),'first');
+let bytes=0;
+if(method==='copy'){
+bytes=estimateJoinCopy(chosen,keepAudio).bytes;
+}else if(method==='exact'){
+const fps=Math.max(...chosen.map((entry)=>averageFps(entry.media.video)));
+const bitrate=chooseJoinBitrate({clips:chosen,frame,fps,quality:el.quality.value});
+bytes=(bitrate/8)*kept+(keepAudio?20_000*kept:0);
+}else{
+bytes=estimateRecording({
+size:first.source,fps:clips[0].fps,quality:el.quality.value,seconds:kept,
+});
+}
+el.sumSize.textContent=bytes?`about ${formatBytes(bytes)}`:'—';
+if(method==='copy'){
+el.sumPicture.textContent='copied, frame for frame';
+}else if(method==='exact'){
+const bars=chosen.filter((entry)=>!fittedBox({
+displayWidth:entry.source.width,displayHeight:entry.source.height,frame,
+}).fits).length;
+el.sumPicture.textContent=`re-encoded to H.264, ${frame.width} x ${frame.height}`
++(bars?` (${bars} fitted with bars)`:'');
+}else{
+el.sumPicture.textContent='recorded as it plays';
+}
+const sound=joinability(chosen,{keepAudio:true}).sound;
+if(sound==='none')el.sumSound.textContent='none in this video';
+else if(!keepAudio)el.sumSound.textContent='left out';
+else if(method==='record')el.sumSound.textContent='re-encoded from playback';
+else if(sound==='encode'&&method==='exact')el.sumSound.textContent='decoded and re-encoded once';
+else el.sumSound.textContent='copied, sample for sample';
+el.exportBtn.disabled=exporting;
+el.exportBtn.textContent=sections>1?`Cut and join ${sections} parts`:'Cut video';
+}
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+}
+function clearError(){
+el.error.hidden=true;
+el.error.textContent='';
+}
+function setProgress({phase,done,total,realtime}){
+const fraction=total>0?Math.min(1,done/total):0;
+el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
+if(phase==='preparing'){
+el.progressLabel.textContent='Preparing...';
+}else if(phase==='finishing'){
+el.progressLabel.textContent='Writing the file...';
+}else if(phase==='sound'){
+el.progressLabel.textContent=`Encoding the sound - ${done + 1} of ${total}`;
+}else if(phase==='copying'){
+el.progressLabel.textContent=`Copying sample ${done.toLocaleString()} `
++`of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+}else if(realtime){
+el.progressLabel.textContent='Recording in real time - '
++`${formatDuration(done)} of ${formatDuration(total)} (${Math.round(fraction * 100)}%)`;
+}else{
+el.progressLabel.textContent=`Frame ${done.toLocaleString()} `
++`of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+}
+}
+function outputFilename(extension){
+const base=(clips[0]?.name??'video').replace(/\.[^.]+$/,'');
+return`${base}-cut.${extension}`;
+}
+function formatBytes(bytes){
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
+if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
+return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
+function formatDuration(seconds){
+const whole=Math.max(0,Math.round(seconds));
+const minutes=Math.floor(whole/60);
+return minutes
+?`${minutes}m ${String(whole % 60).padStart(2, '0')}s`
+:`${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+}
+async function runExport(){
+if(exporting)return;
+const chosen=exportClips();
+if(!chosen.length){
+showError(mode==='cut'
+?'The marks cover the whole video, so cutting them out would leave nothing.'
+:'There is nothing marked to keep. Press I and O while it plays.');
+return;
+}
+clearError();
+exporting=true;
+abortController=new AbortController();
+el.exportBtn.disabled=true;
+el.cancelBtn.hidden=false;
+el.progressWrap.hidden=false;
+el.result.hidden=true;
+timeline.setEnabled(false);
+el.preview.pause();
+setProgress({phase:'preparing',done:0,total:1});
+const method=el.method.value;
+const quality=el.quality.value;
+const keepAudio=el.keepAudio.checked&&!el.keepAudio.disabled;
+const onProgress=setProgress;
+const signal=abortController.signal;
+try{
+let result;
+if(method==='copy'){
+result=await joinByCopy({clips:chosen,keepAudio,onProgress,signal});
+}else if(method==='exact'){
+const frame=chosen.length>1
+?outputFrame(chosen,el.frame.value)
+:outputFrame(chosen.slice(0,1),'first');
+const sound=joinability(chosen,{keepAudio}).sound;
+result=await joinExact({
+clips:chosen,
+frame,
+quality,
+audioMode:keepAudio?sound:'none',
+onProgress,
+signal,
+});
+}else{
+result=await trimByRecording({
+src:clips[0].objectUrl,
+range:chosen[0].ranges[0],
+size:clips[0].source,
+quality,
+keepAudio,
+fps:clips[0].fps,
+onProgress,
+signal,
+});
+}
+if(result.warning)showError(result.warning);
+if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
+lastResultUrl=URL.createObjectURL(result.blob);
+const sections=chosen.reduce((total,entry)=>total+entry.ranges.length,0);
+el.resultVideo.src=lastResultUrl;
+el.download.href=lastResultUrl;
+el.download.download=outputFilename(result.extension);
+el.resultInfo.textContent=[
+result.extension.toUpperCase(),
+sections>1?`${sections} parts`:null,
+formatDuration(chosen.reduce((total,entry)=>total+totalSeconds(entry.ranges),0)),
+formatBytes(result.blob.size),
+method==='copy'?'not re-encoded':result.codec,
+].filter(Boolean).join(' · ');
+el.result.hidden=false;
+el.progressWrap.hidden=true;
+el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}catch(error){
+el.progressWrap.hidden=true;
+if(error?.name!=='AbortError'){
+showError(error?.message||'Something went wrong.');
+console.error(error);
+}
+}finally{
+exporting=false;
+abortController=null;
+el.cancelBtn.hidden=true;
+el.exportBtn.disabled=false;
+timeline.setEnabled(true);
+renderSegments();
+}
+}
+el.exportBtn.addEventListener('click',runExport);
+el.cancelBtn.addEventListener('click',()=>abortController?.abort());
+window.addEventListener('beforeunload',(event)=>{
+if(!exporting)return;
+event.preventDefault();
+event.returnValue='';
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+el.networkCount.textContent=clean
+?`your videos have gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

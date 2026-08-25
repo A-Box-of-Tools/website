@@ -1,4 +1,487 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as g}from"./shared/phrases.js";import{encodePixels as G,encodableTypes as H,FORMATS as y,JPEG as w,PNG as B,WEBP as $}from"./codecs.js";import{heifBrand as O,isAvif as D,readExif as q}from"./boxes.js";import{describeExif as F,fitsInJpeg as J,uprightExif as M,withExif as Z}from"./exif.js";import{decodeHeic as V,engine as z,warmEngine as _}from"./heif.js";import{bytes as h,change as A,dimensions as Y,metadataText as K,outName as Q,uniqueNames as X}from"./files.js";import{wireFilePicker as ee,readingLabel as te}from"./shared/file-picker.js";import{makeZip as ne}from"./shared/zip.js";const r=e=>document.getElementById(e),t={dropzone:r("dropzone"),fileInput:r("file-input"),fileList:r("file-list"),listToolbar:r("list-toolbar"),countLabel:r("count-label"),clearAll:r("clear-all"),loadError:r("load-error"),formatSelect:r("format-select"),qualityRow:r("quality-row"),quality:r("quality"),qualityValue:r("quality-value"),formatNote:r("format-note"),keepExif:r("keep-exif"),convertAll:r("convert-all"),engineStatus:r("engine-status"),progress:r("progress"),progressBar:r("progress-bar"),progressLabel:r("progress-label"),results:r("results"),resultList:r("result-list"),downloadZip:r("download-zip"),resultsSummary:r("results-summary"),privacyToggle:r("privacy-toggle"),privacyPanel:r("privacy-panel"),networkCount:r("network-count"),networkDot:r("network-dot"),offlineStatus:r("offline-status"),offlineDot:r("offline-dot")},oe=256*1024;let d=[],I=1,p=!1,f=[],L=[],R=new Set([w,B]);const U=ee({input:t.fileInput,dropzone:t.dropzone,onFiles(e){ae(e)}});async function ae(e){if(!e?.length||p)return;U.busy(te(e.length));const n=[];try{for(const o of e){const a=new Uint8Array(await o.slice(0,oe).arrayBuffer()),l=O(a);if(!l){n.push(`${o.name}: ${ie(a,o)}`);continue}d.push({id:I,file:o,brand:l,exif:F(q(a))}),I+=1}}finally{U.done()}n.length?C(n.join(`
-`)):P(),d.length&&(_(),ye()),v(),b()}function ie(e,n){return D(e)?"this is an AVIF, not a HEIC. Every current browser opens one already, so there is nothing here it needs doing to it.":e[0]===255&&e[1]===216?"this is already a JPEG.":e[0]===137&&e[1]===80?"this is a PNG, which already opens everywhere.":`this is not a HEIC. Whatever ${n.name} is, the first bytes of it are not a HEIF container, and the name is not evidence either way.`}function re(e){const n=d.findIndex(o=>o.id===e);n<0||(d.splice(n,1),v(),b())}t.clearAll.addEventListener("click",()=>{d=[],v(),P(),b()});function b(){const e=d.length>0;t.listToolbar.hidden=!e,t.clearAll.disabled=p,t.countLabel.textContent=e?`${d.length} photo${d.length===1?"":"s"}, ${h(se())} in total`:"",t.convertAll.disabled=!e||p,le(),S()}const se=()=>d.reduce((e,n)=>e+n.file.size,0);function le(){t.fileList.replaceChildren();for(const e of d){const n=document.createElement("li");n.className="file-row";const o=document.createElement("div");o.className="file-main-wrap";const a=document.createElement("div");a.className="file-main";const l=document.createElement("p");l.className="file-name",l.textContent=e.file.name,a.appendChild(l);const i=document.createElement("p");i.className="file-sub",i.textContent=[`HEIC (${e.brand})`,h(e.file.size)].join(" \xB7 "),a.appendChild(i);const s=document.createElement("p");s.className=e.exif.gps?"file-note file-note-gps":"file-note",s.textContent=K(e.exif),a.appendChild(s),o.appendChild(a),n.appendChild(o);const c=document.createElement("button");c.type="button",c.className="row-remove",c.title=`Take ${e.file.name} off the list`,c.setAttribute("aria-label",`Take ${e.file.name} off the list`),c.textContent="\xD7",c.disabled=p,c.addEventListener("click",()=>re(e.id)),n.appendChild(c),t.fileList.appendChild(n)}}function S(){const e=t.formatSelect.value,n=y[e]?.lossy;t.qualityRow.hidden=!n;const o={[w]:"JPEG is what the phone would have written if it had been asked to. Every program, every website and every printer opens one.",[B]:"PNG throws nothing away, and a photograph saved as one is typically five to ten times the size of the JPEG. It is the right choice for a screenshot or a diagram and the wrong one for a holiday.",[$]:"WebP is smaller than JPEG at the same quality and is opened by every browser released since 2020 - but not by every desktop program, which is the thing to check before sending one to somebody."}[e]??"",a=t.keepExif.checked?e===w?"The date, camera and location are copied across, with the rotation tag corrected because the picture itself has already been turned the right way up.":`The photo details cannot come along: only JPEG has a standard place to put them that the canvas can write, so a ${y[e]?.label??"file"} comes out with the picture and nothing else.`:"The date, camera and location are left out.";t.formatNote.textContent=`${o} ${a}`}for(const e of[t.formatSelect,t.keepExif])e.addEventListener("change",()=>{v(),S()});t.quality.addEventListener("input",()=>{t.qualityValue.textContent=t.quality.value,v()}),t.convertAll.addEventListener("click",async()=>{if(!d.length||p)return;p=!0,v(),P(),b(),t.progress.hidden=!1;const e=[],n=[];try{T(0,d.length,"","waiting for the decoder"),await z();for(const[o,a]of d.entries()){T(o,d.length,a.file.name,"reading");try{for(const l of await ce(a,i=>{T(o,d.length,a.file.name,i)}))e.push(l)}catch(l){n.push(`${a.file.name}: ${l.message}`)}await new Promise(l=>setTimeout(l,0))}}catch(o){n.push(o.message)}finally{p=!1,t.progress.hidden=!0,b()}n.length&&C(n.join(`
-`)),f=e,de()});function T(e,n,o,a){t.progressBar.style.width=`${Math.round(e/n*100)}%`,t.progressLabel.textContent=o?`${e+1} of ${n}: ${o} - ${a}`:a}async function ce(e,n){const o=t.formatSelect.value,a=Number(t.quality.value)/100,l=t.keepExif.checked,i=new Uint8Array(await e.file.arrayBuffer());n("decoding");const s=await V(i),c=l&&o===w?q(i):null,u=[];for(const[m,E]of s.entries()){n(s.length>1?`writing picture ${m+1} of ${s.length}`:`writing the ${y[o]?.label??"file"}`);let x=await G(E,{mime:o,quality:a}),N="none";if(c&&E.primary)if(J(c)){const j=Z(new Uint8Array(await x.arrayBuffer()),M(c));x=new Blob([j],{type:w}),N="kept"}else N="too large";u.push({name:e.file.name,before:e.file.size,after:x.size,blob:x,mime:o,quality:a,width:E.width,height:E.height,metadata:N,exif:e.exif,part:s.length>1?m+1:0,parts:s.length,outName:Q(e.file.name,o,m)})}return u}function v(){for(const e of L)URL.revokeObjectURL(e);L=[],f=[],t.resultList.replaceChildren(),t.results.hidden=!0}function de(){if(!f.length)return;const e=X(f.map(i=>i.outName));f.forEach((i,s)=>{i.outName=e[s]}),t.results.hidden=!1;for(const i of f)t.resultList.appendChild(fe(i));const n=new Set(f.map(i=>i.name)).size,o=[...new Map(f.map(i=>[i.name,i.before])).values()].reduce((i,s)=>i+s,0),a=f.reduce((i,s)=>i+s.after,0),l=y[f[0].mime]?.label??"the new format";t.resultsSummary.textContent=`${n} HEIC ${n===1?"file":"files"} \u2192 ${f.length} ${l} ${f.length===1?"picture":"pictures"}. ${h(o)} \u2192 ${h(a)}, ${A(o,a)}.`,t.downloadZip.hidden=f.length<2,t.downloadZip.onclick=async()=>{t.downloadZip.disabled=!0;try{const i=await Promise.all(f.map(async s=>({name:s.outName,data:new Uint8Array(await s.blob.arrayBuffer())})));me(ne(i),"converted-photos.zip")}finally{t.downloadZip.disabled=!1}}}function fe(e){const n=document.createElement("li");n.className="result-row";const o=URL.createObjectURL(e.blob);L.push(o);const a=document.createElement("img");a.className="result-thumb",a.src=o,a.alt=`The converted picture: ${e.outName}`,a.loading="lazy",n.appendChild(a);const l=document.createElement("div");l.className="result-text";const i=document.createElement("p");i.className="result-name",i.textContent=e.outName,l.appendChild(i);const s=document.createElement("p");s.className="result-headline",s.textContent=e.parts>1?h(e.after):`${h(e.before)} \u2192 ${h(e.after)} \xB7 ${A(e.before,e.after)}`,l.appendChild(s);const c=document.createElement("p");c.className="result-detail",c.textContent=ue(e),l.appendChild(c),n.appendChild(l);const u=document.createElement("div");u.className="result-actions";const m=document.createElement("a");return m.className="primary as-button",m.href=o,m.download=e.outName,m.textContent="Download",u.appendChild(m),n.appendChild(u),n}function ue(e){const n=[`${y[e.mime]?.label??e.mime} at ${Y(e.width,e.height)}`];return y[e.mime]?.lossy&&n.push(`quality ${Math.round(e.quality*100)}`),e.part&&n.push(`picture ${e.part} of ${e.parts} in the file`),n.push({kept:`photo details kept${e.exif.gps?", GPS coordinates included":""}`,none:"no photo details written","too large":"the photo details were too large for a JPEG segment and were left out"}[e.metadata]),`${n.join(" \xB7 ")}.`}function me(e,n){const o=URL.createObjectURL(e),a=document.createElement("a");a.href=o,a.download=n,a.click(),setTimeout(()=>URL.revokeObjectURL(o),6e4)}function C(e){t.loadError.textContent=e,t.loadError.hidden=!1}function P(){t.loadError.textContent="",t.loadError.hidden=!0}t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const he=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function pe(){const e=new Set,n=new Set,o=a=>{for(const c of a){if(c.name.startsWith("blob:")||c.name.startsWith("data:"))continue;const u=new URL(c.name,location.href);u.origin!==location.origin&&(he.test(u.hostname)?e.add(u.hostname):n.add(u.hostname))}const l=performance.getEntriesByType("resource").filter(c=>!c.name.startsWith("blob:")&&!c.name.startsWith("data:")).length,i=n.size===0,s=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a photo or a byte of one.`;t.networkCount.textContent=i?`your photos have gone nowhere. ${l} files loaded, all of them this page's own - the decoder among them.${s}`:`something contacted ${[...n].join(", ")}, which this tool never does. Treat that as worth investigating.${s}`,t.networkCount.className=i?"good":"warn",t.networkDot.className=`live-dot ${i?"good":"warn"}`};o(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>o(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function ge(){const e=(n,o)=>{t.offlineStatus.textContent=n,t.offlineDot.className="live-dot",o&&(t.offlineStatus.title=o,console.info("Offline caching unavailable:",o))};if(!("serviceWorker"in navigator)){e(g("offline.none"));return}if(!window.isSecureContext){e(g("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=g("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(n){e(g("offline.failed"),n.message)}}function k(e,n=""){t.engineStatus.textContent=e,t.engineStatus.className=`engine-status ${n}`.trim()}let W=!1;function ye(){W||(W=!0,k("Loading the HEIC decoder from this site: about 1.4 MB, once."),z().then(()=>{k("Decoder ready - served from this site, and cached so it is here next time and with the network unplugged.","good")}).catch(e=>{k(`The decoder could not start: ${e.message}`,"warn")}))}async function we(){if(R=await H(),!R.has($)){for(const e of t.formatSelect.options)e.value===$&&(e.disabled=!0,e.textContent="WebP - not supported by this browser");t.formatSelect.value===$&&(t.formatSelect.value=w),S()}}window.addEventListener("error",e=>{C(g("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{C(g("error.broke",{detail:e.reason?.message??e.reason}))}),t.qualityValue.textContent=t.quality.value,k("The HEIC decoder loads from this site the first time you use it: about 1.4 MB, once, then cached."),b(),we(),pe(),ge(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{encodePixels,encodableTypes,FORMATS,JPEG,PNG,WEBP}from'./codecs.js';
+import{heifBrand,isAvif,readExif}from'./boxes.js';
+import{describeExif,fitsInJpeg,uprightExif,withExif}from'./exif.js';
+import{decodeHeic,engine,warmEngine}from'./heif.js';
+import{
+bytes as humanBytes,change,dimensions,metadataText,outName,uniqueNames,
+}from'./files.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{makeZip}from'./shared/zip.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+fileList:$('file-list'),
+listToolbar:$('list-toolbar'),
+countLabel:$('count-label'),
+clearAll:$('clear-all'),
+loadError:$('load-error'),
+formatSelect:$('format-select'),
+qualityRow:$('quality-row'),
+quality:$('quality'),
+qualityValue:$('quality-value'),
+formatNote:$('format-note'),
+keepExif:$('keep-exif'),
+convertAll:$('convert-all'),
+engineStatus:$('engine-status'),
+progress:$('progress'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+results:$('results'),
+resultList:$('result-list'),
+downloadZip:$('download-zip'),
+resultsSummary:$('results-summary'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+const HEAD_BYTES=256*1024;
+let items=[];
+let nextId=1;
+let busy=false;
+let results=[];
+let resultUrls=[];
+let writable=new Set([JPEG,PNG]);
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+addFiles(files);
+},
+});
+async function addFiles(files){
+if(!files?.length||busy)return;
+picker.busy(readingLabel(files.length));
+const failures=[];
+try{
+for(const file of files){
+const head=new Uint8Array(await file.slice(0,HEAD_BYTES).arrayBuffer());
+const brand=heifBrand(head);
+if(!brand){
+failures.push(`${file.name}: ${refusal(head, file)}`);
+continue;
+}
+items.push({
+id:nextId,
+file,
+brand,
+exif:describeExif(readExif(head)),
+});
+nextId+=1;
+}
+}finally{
+picker.done();
+}
+if(failures.length)showLoadError(failures.join('\n'));
+else clearLoadError();
+if(items.length){
+warmEngine();
+watchEngine();
+}
+clearResults();
+render();
+}
+function refusal(head,file){
+if(isAvif(head)){
+return'this is an AVIF, not a HEIC. Every current browser opens one already, '
++'so there is nothing here it needs doing to it.';
+}
+if(head[0]===0xff&&head[1]===0xd8){
+return'this is already a JPEG.';
+}
+if(head[0]===0x89&&head[1]===0x50){
+return'this is a PNG, which already opens everywhere.';
+}
+return`this is not a HEIC. Whatever ${file.name} is, the first bytes of it are `
++'not a HEIF container, and the name is not evidence either way.';
+}
+function removeItem(id){
+const at=items.findIndex((i)=>i.id===id);
+if(at<0)return;
+items.splice(at,1);
+clearResults();
+render();
+}
+el.clearAll.addEventListener('click',()=>{
+items=[];
+clearResults();
+clearLoadError();
+render();
+});
+function render(){
+const any=items.length>0;
+el.listToolbar.hidden=!any;
+el.clearAll.disabled=busy;
+el.countLabel.textContent=any
+?`${items.length} photo${items.length === 1 ? '' : 's'}, ${humanBytes(totalBytes())} in total`
+:'';
+el.convertAll.disabled=!any||busy;
+renderList();
+renderFormatNote();
+}
+const totalBytes=()=>items.reduce((n,i)=>n+i.file.size,0);
+function renderList(){
+el.fileList.replaceChildren();
+for(const item of items){
+const li=document.createElement('li');
+li.className='file-row';
+const main=document.createElement('div');
+main.className='file-main-wrap';
+const text=document.createElement('div');
+text.className='file-main';
+const name=document.createElement('p');
+name.className='file-name';
+name.textContent=item.file.name;
+text.appendChild(name);
+const sub=document.createElement('p');
+sub.className='file-sub';
+sub.textContent=[
+`HEIC (${item.brand})`,
+humanBytes(item.file.size),
+].join(' · ');
+text.appendChild(sub);
+const note=document.createElement('p');
+note.className=item.exif.gps?'file-note file-note-gps':'file-note';
+note.textContent=metadataText(item.exif);
+text.appendChild(note);
+main.appendChild(text);
+li.appendChild(main);
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='row-remove';
+remove.title=`Take ${item.file.name} off the list`;
+remove.setAttribute('aria-label',`Take ${item.file.name} off the list`);
+remove.textContent='×';
+remove.disabled=busy;
+remove.addEventListener('click',()=>removeItem(item.id));
+li.appendChild(remove);
+el.fileList.appendChild(li);
+}
+}
+function renderFormatNote(){
+const mime=el.formatSelect.value;
+const lossy=FORMATS[mime]?.lossy;
+el.qualityRow.hidden=!lossy;
+const format={
+[JPEG]:'JPEG is what the phone would have written if it had been asked to. '
++'Every program, every website and every printer opens one.',
+[PNG]:'PNG throws nothing away, and a photograph saved as one is typically '
++'five to ten times the size of the JPEG. It is the right choice for a '
++'screenshot or a diagram and the wrong one for a holiday.',
+[WEBP]:'WebP is smaller than JPEG at the same quality and is opened by every '
++'browser released since 2020 - but not by every desktop program, which is '
++'the thing to check before sending one to somebody.',
+}[mime]??'';
+const details=!el.keepExif.checked
+?'The date, camera and location are left out.'
+:mime===JPEG
+?'The date, camera and location are copied across, with the rotation tag '
++'corrected because the picture itself has already been turned the right way up.'
+:`The photo details cannot come along: only JPEG has a standard place to put `
++`them that the canvas can write, so a ${FORMATS[mime]?.label ?? 'file'} `
++`comes out with the picture and nothing else.`;
+el.formatNote.textContent=`${format} ${details}`;
+}
+for(const control of[el.formatSelect,el.keepExif]){
+control.addEventListener('change',()=>{
+clearResults();
+renderFormatNote();
+});
+}
+el.quality.addEventListener('input',()=>{
+el.qualityValue.textContent=el.quality.value;
+clearResults();
+});
+el.convertAll.addEventListener('click',async()=>{
+if(!items.length||busy)return;
+busy=true;
+clearResults();
+clearLoadError();
+render();
+el.progress.hidden=false;
+const collected=[];
+const failures=[];
+try{
+showProgress(0,items.length,'','waiting for the decoder');
+await engine();
+for(const[index,item]of items.entries()){
+showProgress(index,items.length,item.file.name,'reading');
+try{
+for(const result of await convertOne(item,(note)=>{
+showProgress(index,items.length,item.file.name,note);
+})){
+collected.push(result);
+}
+}catch(error){
+failures.push(`${item.file.name}: ${error.message}`);
+}
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+}catch(error){
+failures.push(error.message);
+}finally{
+busy=false;
+el.progress.hidden=true;
+render();
+}
+if(failures.length)showLoadError(failures.join('\n'));
+results=collected;
+showResults();
+});
+function showProgress(index,total,name,note){
+el.progressBar.style.width=`${Math.round((index / total) * 100)}%`;
+el.progressLabel.textContent=name
+?`${index + 1} of ${total}: ${name} - ${note}`
+:note;
+}
+async function convertOne(item,onStep){
+const mime=el.formatSelect.value;
+const quality=Number(el.quality.value)/100;
+const keepExif=el.keepExif.checked;
+const bytes=new Uint8Array(await item.file.arrayBuffer());
+onStep('decoding');
+const pictures=await decodeHeic(bytes);
+const tiff=keepExif&&mime===JPEG?readExif(bytes):null;
+const out=[];
+for(const[index,picture]of pictures.entries()){
+onStep(pictures.length>1
+?`writing picture ${index + 1} of ${pictures.length}`
+:`writing the ${FORMATS[mime]?.label ?? 'file'}`);
+let blob=await encodePixels(picture,{mime,quality});
+let metadata='none';
+if(tiff&&picture.primary){
+if(fitsInJpeg(tiff)){
+const patched=withExif(new Uint8Array(await blob.arrayBuffer()),uprightExif(tiff));
+blob=new Blob([patched],{type:JPEG});
+metadata='kept';
+}else{
+metadata='too large';
+}
+}
+out.push({
+name:item.file.name,
+before:item.file.size,
+after:blob.size,
+blob,
+mime,
+quality,
+width:picture.width,
+height:picture.height,
+metadata,
+exif:item.exif,
+part:pictures.length>1?index+1:0,
+parts:pictures.length,
+outName:outName(item.file.name,mime,index),
+});
+}
+return out;
+}
+function clearResults(){
+for(const url of resultUrls)URL.revokeObjectURL(url);
+resultUrls=[];
+results=[];
+el.resultList.replaceChildren();
+el.results.hidden=true;
+}
+function showResults(){
+if(!results.length)return;
+const names=uniqueNames(results.map((r)=>r.outName));
+results.forEach((result,at)=>{result.outName=names[at];});
+el.results.hidden=false;
+for(const result of results)el.resultList.appendChild(resultRow(result));
+const before=new Set(results.map((r)=>r.name)).size;
+const beforeBytes=[...new Map(results.map((r)=>[r.name,r.before])).values()]
+.reduce((n,size)=>n+size,0);
+const afterBytes=results.reduce((n,r)=>n+r.after,0);
+const label=FORMATS[results[0].mime]?.label??'the new format';
+el.resultsSummary.textContent=`${before} HEIC ${before === 1 ? 'file' : 'files'} `
++`→ ${results.length} ${label} ${results.length === 1 ? 'picture' : 'pictures'}. `
++`${humanBytes(beforeBytes)} → ${humanBytes(afterBytes)}, ${change(beforeBytes, afterBytes)}.`;
+el.downloadZip.hidden=results.length<2;
+el.downloadZip.onclick=async()=>{
+el.downloadZip.disabled=true;
+try{
+const files=await Promise.all(results.map(async(r)=>({
+name:r.outName,
+data:new Uint8Array(await r.blob.arrayBuffer()),
+})));
+saveBlob(makeZip(files),'converted-photos.zip');
+}finally{
+el.downloadZip.disabled=false;
+}
+};
+}
+function resultRow(result){
+const li=document.createElement('li');
+li.className='result-row';
+const url=URL.createObjectURL(result.blob);
+resultUrls.push(url);
+const thumb=document.createElement('img');
+thumb.className='result-thumb';
+thumb.src=url;
+thumb.alt=`The converted picture: ${result.outName}`;
+thumb.loading='lazy';
+li.appendChild(thumb);
+const text=document.createElement('div');
+text.className='result-text';
+const name=document.createElement('p');
+name.className='result-name';
+name.textContent=result.outName;
+text.appendChild(name);
+const headline=document.createElement('p');
+headline.className='result-headline';
+headline.textContent=result.parts>1
+?humanBytes(result.after)
+:`${humanBytes(result.before)} → ${humanBytes(result.after)} · ${change(result.before, result.after)}`;
+text.appendChild(headline);
+const detail=document.createElement('p');
+detail.className='result-detail';
+detail.textContent=describe(result);
+text.appendChild(detail);
+li.appendChild(text);
+const actions=document.createElement('div');
+actions.className='result-actions';
+const link=document.createElement('a');
+link.className='primary as-button';
+link.href=url;
+link.download=result.outName;
+link.textContent='Download';
+actions.appendChild(link);
+li.appendChild(actions);
+return li;
+}
+function describe(result){
+const parts=[`${FORMATS[result.mime]?.label ?? result.mime} at ${dimensions(result.width, result.height)}`];
+if(FORMATS[result.mime]?.lossy)parts.push(`quality ${Math.round(result.quality * 100)}`);
+if(result.part)parts.push(`picture ${result.part} of ${result.parts} in the file`);
+parts.push({
+kept:`photo details kept${result.exif.gps ? ', GPS coordinates included' : ''}`,
+none:'no photo details written',
+'too large':'the photo details were too large for a JPEG segment and were left out',
+}[result.metadata]);
+return`${parts.join(' · ')}.`;
+}
+function saveBlob(blob,name){
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=name;
+link.click();
+setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function showLoadError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function clearLoadError(){
+el.loadError.textContent='';
+el.loadError.hidden=true;
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a photo or a byte of one.`;
+el.networkCount.textContent=clean
+?`your photos have gone nowhere. ${total} files loaded, all of them this page's own - the decoder among them.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+function sayEngine(text,state=''){
+el.engineStatus.textContent=text;
+el.engineStatus.className=`engine-status ${state}`.trim();
+}
+let watching=false;
+function watchEngine(){
+if(watching)return;
+watching=true;
+sayEngine('Loading the HEIC decoder from this site: about 1.4 MB, once.');
+engine().then(()=>{
+sayEngine('Decoder ready - served from this site, and cached so it is here '
++'next time and with the network unplugged.','good');
+}).catch((error)=>{
+sayEngine(`The decoder could not start: ${error.message}`,'warn');
+});
+}
+async function checkEncoders(){
+writable=await encodableTypes();
+if(writable.has(WEBP))return;
+for(const option of el.formatSelect.options){
+if(option.value===WEBP){
+option.disabled=true;
+option.textContent='WebP - not supported by this browser';
+}
+}
+if(el.formatSelect.value===WEBP)el.formatSelect.value=JPEG;
+renderFormatNote();
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+el.qualityValue.textContent=el.quality.value;
+sayEngine('The HEIC decoder loads from this site the first time you use it: about 1.4 MB, once, then cached.');
+render();
+checkEncoders();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

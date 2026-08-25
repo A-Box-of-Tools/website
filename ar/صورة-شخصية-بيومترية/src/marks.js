@@ -1,2 +1,149 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const a=[{key:"crown",label:"Crown",hint:"the very top of the head, hair included"},{key:"chin",label:"Chin",hint:"the bottom of the chin"},{key:"leftEye",label:"Left eye",hint:"the pupil, on the left as you look at it"},{key:"rightEye",label:"Right eye",hint:"the other pupil"}],d={crown:{x:.5,y:.14},chin:{x:.5,y:.54},leftEye:{x:.42,y:.28},rightEye:{x:.58,y:.28}};class u{#o;#n;#i=new Map;#e={width:0,height:0};#t=null;constructor(t,{onChange:i}={}){this.#o=t,this.#n=i;for(const{key:e,label:s,hint:o}of a){const n=document.createElement("button");n.type="button",n.className=`face-mark mark-${e}`,n.dataset.key=e,n.hidden=!0,n.setAttribute("aria-label",`${s}: ${o}. The arrow keys move it; hold Shift for ten pixels at a time.`);const r=document.createElement("span");r.className="face-mark-label",r.textContent=s,n.append(r),n.addEventListener("pointerdown",this.#d),n.addEventListener("keydown",this.#l),this.#i.set(e,n),t.append(n)}}get placed(){return this.#t!==null}get marks(){return this.#t?structuredClone(this.#t):null}setSource(t,i){this.#e={width:t,height:i},this.#t=null,this.hide()}open(){const{width:t,height:i}=this.#e;!t||!i||this.#r(Object.fromEntries(a.map(({key:e})=>[e,{x:d[e].x*t,y:d[e].y*i}])),"open")}place(t){const{width:i,height:e}=this.#e;!i||!e||!t||this.#r(t,"place")}hide(){for(const t of this.#i.values())t.hidden=!0}show(){if(this.#t){for(const t of this.#i.values())t.hidden=!1;this.#s()}}clear(){this.#t=null,this.hide(),this.#n?.(null,"clear")}#c(){const t=this.#o.getBoundingClientRect();return t.width?this.#e.width/t.width:1}#d=t=>{if(t.button!==0||!this.#t)return;const i=t.currentTarget,e=i.dataset.key,s={...this.#t[e]},o=this.#c();i.setPointerCapture?.(t.pointerId),t.preventDefault(),i.focus({preventScroll:!0}),i.classList.add("dragging");const n={x:t.clientX,y:t.clientY},r=c=>{this.#h(e,{x:s.x+(c.clientX-n.x)*o,y:s.y+(c.clientY-n.y)*o})},h=()=>{i.classList.remove("dragging"),window.removeEventListener("pointermove",r),window.removeEventListener("pointerup",h),window.removeEventListener("pointercancel",h)};window.addEventListener("pointermove",r),window.addEventListener("pointerup",h),window.addEventListener("pointercancel",h)};#l=t=>{const e={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[t.key];if(!e||!this.#t)return;t.preventDefault();const s=t.currentTarget.dataset.key,o=t.shiftKey?10:1,n=this.#t[s];this.#h(s,{x:n.x+e[0]*o,y:n.y+e[1]*o})};#r(t,i){this.#t=Object.fromEntries(a.map(({key:e})=>[e,this.#a(t[e])]));for(const e of this.#i.values())e.hidden=!1;this.#s(),this.#n?.(this.marks,i)}#h(t,i){this.#t[t]=this.#a(i),this.#s(),this.#n?.(this.marks,"drag")}#a(t){const{width:i,height:e}=this.#e;return{x:Math.max(0,Math.min(Math.round(t?.x??0),i)),y:Math.max(0,Math.min(Math.round(t?.y??0),e))}}#s(){const{width:t,height:i}=this.#e;if(!(!this.#t||!t||!i))for(const[e,s]of this.#i){const o=this.#t[e];s.style.left=`${o.x/t*100}%`,s.style.top=`${o.y/i*100}%`}}}export{a as MARK_KEYS,u as Marks};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const MARK_KEYS=[
+{key:'crown',label:'Crown',hint:'the very top of the head, hair included'},
+{key:'chin',label:'Chin',hint:'the bottom of the chin'},
+{key:'leftEye',label:'Left eye',hint:'the pupil, on the left as you look at it'},
+{key:'rightEye',label:'Right eye',hint:'the other pupil'},
+];
+const OPENING={
+crown:{x:0.5,y:0.14},
+chin:{x:0.5,y:0.54},
+leftEye:{x:0.42,y:0.28},
+rightEye:{x:0.58,y:0.28},
+};
+export class Marks{
+#stage;
+#onChange;
+#dots=new Map();
+#source={width:0,height:0};
+#points=null;
+constructor(stage,{onChange}={}){
+this.#stage=stage;
+this.#onChange=onChange;
+for(const{key,label,hint}of MARK_KEYS){
+const dot=document.createElement('button');
+dot.type='button';
+dot.className=`face-mark mark-${key}`;
+dot.dataset.key=key;
+dot.hidden=true;
+dot.setAttribute('aria-label',`${label}: ${hint}. The arrow keys move it; hold Shift for ten pixels at a time.`);
+const caption=document.createElement('span');
+caption.className='face-mark-label';
+caption.textContent=label;
+dot.append(caption);
+dot.addEventListener('pointerdown',this.#onPointerDown);
+dot.addEventListener('keydown',this.#onKeyDown);
+this.#dots.set(key,dot);
+stage.append(dot);
+}
+}
+get placed(){
+return this.#points!==null;
+}
+get marks(){
+return this.#points?structuredClone(this.#points):null;
+}
+setSource(width,height){
+this.#source={width,height};
+this.#points=null;
+this.hide();
+}
+open(){
+const{width,height}=this.#source;
+if(!width||!height)return;
+this.#show(Object.fromEntries(MARK_KEYS.map(({key})=>[key,{
+x:OPENING[key].x*width,
+y:OPENING[key].y*height,
+}])),'open');
+}
+place(points){
+const{width,height}=this.#source;
+if(!width||!height||!points)return;
+this.#show(points,'place');
+}
+hide(){
+for(const dot of this.#dots.values())dot.hidden=true;
+}
+show(){
+if(!this.#points)return;
+for(const dot of this.#dots.values())dot.hidden=false;
+this.#paint();
+}
+clear(){
+this.#points=null;
+this.hide();
+this.#onChange?.(null,'clear');
+}
+#scale(){
+const bounds=this.#stage.getBoundingClientRect();
+return bounds.width?this.#source.width/bounds.width:1;
+}
+#onPointerDown=(event)=>{
+if(event.button!==0||!this.#points)return;
+const dot=event.currentTarget;
+const key=dot.dataset.key;
+const start={...this.#points[key]};
+const scale=this.#scale();
+dot.setPointerCapture?.(event.pointerId);
+event.preventDefault();
+dot.focus({preventScroll:true});
+dot.classList.add('dragging');
+const from={x:event.clientX,y:event.clientY};
+const move=(moved)=>{
+this.#set(key,{
+x:start.x+(moved.clientX-from.x)*scale,
+y:start.y+(moved.clientY-from.y)*scale,
+});
+};
+const up=()=>{
+dot.classList.remove('dragging');
+window.removeEventListener('pointermove',move);
+window.removeEventListener('pointerup',up);
+window.removeEventListener('pointercancel',up);
+};
+window.addEventListener('pointermove',move);
+window.addEventListener('pointerup',up);
+window.addEventListener('pointercancel',up);
+};
+#onKeyDown=(event)=>{
+const directions={
+ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],
+};
+const direction=directions[event.key];
+if(!direction||!this.#points)return;
+event.preventDefault();
+const key=event.currentTarget.dataset.key;
+const step=event.shiftKey?10:1;
+const at=this.#points[key];
+this.#set(key,{x:at.x+direction[0]*step,y:at.y+direction[1]*step});
+};
+#show(points,why){
+this.#points=Object.fromEntries(MARK_KEYS.map(({key})=>[
+key,this.#inside(points[key]),
+]));
+for(const dot of this.#dots.values())dot.hidden=false;
+this.#paint();
+this.#onChange?.(this.marks,why);
+}
+#set(key,point){
+this.#points[key]=this.#inside(point);
+this.#paint();
+this.#onChange?.(this.marks,'drag');
+}
+#inside(point){
+const{width,height}=this.#source;
+return{
+x:Math.max(0,Math.min(Math.round(point?.x??0),width)),
+y:Math.max(0,Math.min(Math.round(point?.y??0),height)),
+};
+}
+#paint(){
+const{width,height}=this.#source;
+if(!this.#points||!width||!height)return;
+for(const[key,dot]of this.#dots){
+const at=this.#points[key];
+dot.style.left=`${(at.x / width) * 100}%`;
+dot.style.top=`${(at.y / height) * 100}%`;
+}
+}
+}

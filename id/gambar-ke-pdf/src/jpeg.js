@@ -1,2 +1,80 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const x=new Set([192,193]),f=new Set([192,193,194,195,197,198,199,201,202,203,205,206,207]);function d(n){if(n.length<4||n[0]!==255||n[1]!==216)return null;const c=new DataView(n.buffer,n.byteOffset,n.byteLength),t=[];let u=null,i=1,e=2;for(;e+4<=n.length;){if(n[e]!==255){e+=1;continue}const r=n[e+1];if(e+=2,r===255){e-=1;continue}if(r===216||r===1||r>=208&&r<=215)continue;if(r===217||r===218)break;const o=c.getUint16(e);if(o<2||e+o>n.length)return null;const l=n.subarray(e+2,e+o);if(f.has(r)&&!u){if(l.length<6)return null;u={sequential:x.has(r),height:l[1]<<8|l[2],width:l[3]<<8|l[4],components:l[5]}}else r===225&&a(l,"Exif\0\0")?i=g(l.subarray(6))??i:r===226&&a(l,"ICC_PROFILE\0")&&t.push({index:l[12],data:l.subarray(14)});e+=o}return!u||!u.width||!u.height?null:{...u,orientation:i,icc:h(t)}}function a(n,c){if(n.length<c.length)return!1;for(let t=0;t<c.length;t+=1)if(n[t]!==c.charCodeAt(t))return!1;return!0}function h(n){if(!n.length)return null;n.sort((i,e)=>i.index-e.index);const c=n.reduce((i,e)=>i+e.data.length,0),t=new Uint8Array(c);let u=0;for(const i of n)t.set(i.data,u),u+=i.data.length;return t}function g(n){if(n.length<8)return null;const c=new DataView(n.buffer,n.byteOffset,n.byteLength),t=n[0]===73&&n[1]===73,u=n[0]===77&&n[1]===77;if(!t&&!u||c.getUint16(2,t)!==42)return null;const i=c.getUint32(4,t);if(i+2>n.length)return null;const e=c.getUint16(i,t);for(let r=0;r<e;r+=1){const o=i+2+r*12;if(o+12>n.length)return null;if(c.getUint16(o,t)!==274)continue;const l=c.getUint16(o+8,t);return l>=1&&l<=8?l:null}return null}export{d as inspectJpeg};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const SEQUENTIAL=new Set([0xc0,0xc1]);
+const FRAME=new Set([0xc0,0xc1,0xc2,0xc3,0xc5,0xc6,0xc7,
+0xc9,0xca,0xcb,0xcd,0xce,0xcf]);
+export function inspectJpeg(bytes){
+if(bytes.length<4||bytes[0]!==0xff||bytes[1]!==0xd8)return null;
+const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+const iccParts=[];
+let frame=null;
+let orientation=1;
+let at=2;
+while(at+4<=bytes.length){
+if(bytes[at]!==0xff){
+at+=1;
+continue;
+}
+const marker=bytes[at+1];
+at+=2;
+if(marker===0xff){at-=1;continue;}
+if(marker===0xd8||marker===0x01||(marker>=0xd0&&marker<=0xd7))continue;
+if(marker===0xd9||marker===0xda)break;
+const length=view.getUint16(at);
+if(length<2||at+length>bytes.length)return null;
+const body=bytes.subarray(at+2,at+length);
+if(FRAME.has(marker)&&!frame){
+if(body.length<6)return null;
+frame={
+sequential:SEQUENTIAL.has(marker),
+height:(body[1]<<8)|body[2],
+width:(body[3]<<8)|body[4],
+components:body[5],
+};
+}else if(marker===0xe1&&startsWith(body,'Exif\0\0')){
+orientation=readOrientation(body.subarray(6))??orientation;
+}else if(marker===0xe2&&startsWith(body,'ICC_PROFILE\0')){
+iccParts.push({index:body[12],data:body.subarray(14)});
+}
+at+=length;
+}
+if(!frame||!frame.width||!frame.height)return null;
+return{...frame,orientation,icc:joinIcc(iccParts)};
+}
+function startsWith(bytes,prefix){
+if(bytes.length<prefix.length)return false;
+for(let i=0;i<prefix.length;i+=1){
+if(bytes[i]!==prefix.charCodeAt(i))return false;
+}
+return true;
+}
+function joinIcc(parts){
+if(!parts.length)return null;
+parts.sort((a,b)=>a.index-b.index);
+const total=parts.reduce((sum,part)=>sum+part.data.length,0);
+const out=new Uint8Array(total);
+let at=0;
+for(const part of parts){
+out.set(part.data,at);
+at+=part.data.length;
+}
+return out;
+}
+function readOrientation(tiff){
+if(tiff.length<8)return null;
+const view=new DataView(tiff.buffer,tiff.byteOffset,tiff.byteLength);
+const little=tiff[0]===0x49&&tiff[1]===0x49;
+const big=tiff[0]===0x4d&&tiff[1]===0x4d;
+if(!little&&!big)return null;
+if(view.getUint16(2,little)!==42)return null;
+const ifd=view.getUint32(4,little);
+if(ifd+2>tiff.length)return null;
+const count=view.getUint16(ifd,little);
+for(let i=0;i<count;i+=1){
+const entry=ifd+2+i*12;
+if(entry+12>tiff.length)return null;
+if(view.getUint16(entry,little)!==0x0112)continue;
+const value=view.getUint16(entry+8,little);
+return value>=1&&value<=8?value:null;
+}
+return null;
+}

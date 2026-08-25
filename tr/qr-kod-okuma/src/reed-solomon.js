@@ -1,2 +1,111 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const A=285,h=new Uint8Array(512),a=new Uint8Array(256);(()=>{let n=1;for(let t=0;t<255;t+=1)h[t]=n,a[n]=t,n<<=1,n&256&&(n^=285);for(let t=255;t<512;t+=1)h[t]=h[t-255]})();function s(n,t){return n===0||t===0?0:h[a[n]+a[t]]}function g(n){return h[(n%255+255)%255]}function w(n){return h[255-a[n]]}function U(n,t){let r=0;for(let e=n.length-1;e>=0;e-=1)r=s(r,t)^n[e];return r}function m(n,t,r){const e=Math.min(n.length+t.length-1,r),l=new Uint8Array(Math.max(e,1));for(let i=0;i<n.length;i+=1)if(n[i]!==0)for(let u=0;u<t.length&&i+u<l.length;u+=1)l[i+u]^=s(n[i],t[u]);return l}function d(n,t){const r=new Uint8Array(t);for(let e=0;e<t;e+=1){let l=0;for(const i of n)l=s(l,h[e])^i;r[e]=l}return r}function v(n){let t=new Uint8Array([1]),r=new Uint8Array([1]),e=0,l=1,i=1;for(let o=0;o<n.length;o+=1){let c=n[o];for(let f=1;f<=e&&f<t.length;f+=1)c^=s(t[f],n[o-f]);if(c===0){l+=1;continue}const y=s(c,w(i)),p=new Uint8Array(Math.max(t.length,r.length+l));p.set(t);for(let f=0;f<r.length;f+=1)p[f+l]^=s(y,r[f]);2*e<=o?(r=t,i=c,e=o+1-e,l=1):l+=1,t=p}let u=t.length;for(;u>1&&t[u-1]===0;)u-=1;return t.subarray(0,u)}function x(n,t){const r=[];for(let e=0;e<255;e+=1)if(U(n,g(-e))===0){if(e>=t)return null;r.push(e)}return r.length===n.length-1?r:null}function M(n,t){const r=d(n,t);if(r.every(o=>o===0))return 0;const e=v(r),l=x(e,n.length);if(!l||l.length===0)return-1;const i=m(r,e,t),u=new Uint8Array(Math.max(e.length-1,1));for(let o=1;o<e.length;o+=2)u[o-1]=e[o];for(const o of l){const c=U(u,g(-o));if(c===0)return-1;const y=U(i,g(-o));n[n.length-1-o]^=s(g(o),s(y,w(c)))}return d(n,t).every(o=>o===0)?l.length:-1}export{M as correct,s as multiply};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const MODULUS=0x11d;
+const EXP=new Uint8Array(512);
+const LOG=new Uint8Array(256);
+(()=>{
+let x=1;
+for(let i=0;i<255;i+=1){
+EXP[i]=x;
+LOG[x]=i;
+x<<=1;
+if(x&0x100)x^=MODULUS;
+}
+for(let i=255;i<512;i+=1)EXP[i]=EXP[i-255];
+})();
+export function multiply(a,b){
+if(a===0||b===0)return 0;
+return EXP[LOG[a]+LOG[b]];
+}
+function power(exponent){
+return EXP[((exponent%255)+255)%255];
+}
+function inverse(a){
+return EXP[255-LOG[a]];
+}
+function evaluate(poly,x){
+let value=0;
+for(let i=poly.length-1;i>=0;i-=1)value=multiply(value,x)^poly[i];
+return value;
+}
+function multiplyPoly(a,b,limit){
+const length=Math.min(a.length+b.length-1,limit);
+const out=new Uint8Array(Math.max(length,1));
+for(let i=0;i<a.length;i+=1){
+if(a[i]===0)continue;
+for(let j=0;j<b.length&&i+j<out.length;j+=1){
+out[i+j]^=multiply(a[i],b[j]);
+}
+}
+return out;
+}
+function syndromes(block,count){
+const out=new Uint8Array(count);
+for(let j=0;j<count;j+=1){
+let value=0;
+for(const codeword of block)value=multiply(value,EXP[j])^codeword;
+out[j]=value;
+}
+return out;
+}
+function errorLocator(syndrome){
+let lambda=new Uint8Array([1]);
+let previous=new Uint8Array([1]);
+let degree=0;
+let shift=1;
+let last=1;
+for(let n=0;n<syndrome.length;n+=1){
+let delta=syndrome[n];
+for(let i=1;i<=degree&&i<lambda.length;i+=1){
+delta^=multiply(lambda[i],syndrome[n-i]);
+}
+if(delta===0){
+shift+=1;
+continue;
+}
+const scale=multiply(delta,inverse(last));
+const updated=new Uint8Array(Math.max(lambda.length,previous.length+shift));
+updated.set(lambda);
+for(let i=0;i<previous.length;i+=1){
+updated[i+shift]^=multiply(scale,previous[i]);
+}
+if(2*degree<=n){
+previous=lambda;
+last=delta;
+degree=n+1-degree;
+shift=1;
+}else{
+shift+=1;
+}
+lambda=updated;
+}
+let end=lambda.length;
+while(end>1&&lambda[end-1]===0)end-=1;
+return lambda.subarray(0,end);
+}
+function errorPositions(lambda,length){
+const positions=[];
+for(let p=0;p<255;p+=1){
+if(evaluate(lambda,power(-p))!==0)continue;
+if(p>=length)return null;
+positions.push(p);
+}
+return positions.length===lambda.length-1?positions:null;
+}
+export function correct(block,ecCount){
+const syndrome=syndromes(block,ecCount);
+if(syndrome.every((value)=>value===0))return 0;
+const lambda=errorLocator(syndrome);
+const positions=errorPositions(lambda,block.length);
+if(!positions||positions.length===0)return-1;
+const omega=multiplyPoly(syndrome,lambda,ecCount);
+const derivative=new Uint8Array(Math.max(lambda.length-1,1));
+for(let i=1;i<lambda.length;i+=2)derivative[i-1]=lambda[i];
+for(const p of positions){
+const bottom=evaluate(derivative,power(-p));
+if(bottom===0)return-1;
+const top=evaluate(omega,power(-p));
+block[block.length-1-p]^=multiply(power(p),multiply(top,inverse(bottom)));
+}
+if(!syndromes(block,ecCount).every((value)=>value===0))return-1;
+return positions.length;
+}

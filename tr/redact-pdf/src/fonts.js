@@ -1,2 +1,301 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{base14Widths as z,encodingByName as b,glyphText as w,STANDARD as D,WIN_ANSI as W}from"./base14.js";import{lex as A}from"./content.js";import{decodeStream as F}from"./filters.js";import{Name as y,PdfStream as v,PdfString as h}from"./objects.js";const N=1e3;async function k(t,e){const n=t.get(e,"Subtype"),r=n instanceof y?n.value:"",s=r==="Type0"?await O(t,e):await E(t,e,r);return s.toUnicode=await _(t,e),s.kind=r,s}async function E(t,e,n){const r=U(t,e,n),s=I(t,e,r),{ascent:o,descent:i}=B(t,e),f=n==="Type3"?t.get(e,"FontMatrix"):null,l=Array.isArray(f)&&Number.isFinite(f[0])?f[0]*N:1;return{split:M,singleByte:!0,text:a=>w(r[a]??""),width:a=>s(a)*l,ascent:o,descent:i,scale:l}}function M(t){const e=new Array(t.length);for(let n=0;n<t.length;n+=1)e[n]={code:t[n],size:1};return e}function U(t,e,n){const r=(n==="TrueType"?W:D).slice(),s=t.get(e,"Encoding"),o=s instanceof y?b(s.value):b(T(t.get(s,"BaseEncoding")));o&&o.forEach((f,l)=>{r[l]=f});const i=t.get(s,"Differences");if(Array.isArray(i)){let f=0;for(const l of i.map(a=>t.resolve(a)))typeof l=="number"?f=Math.trunc(l):l instanceof y&&f>=0&&f<256&&(r[f]=l.value,f+=1)}return r}function I(t,e,n){const r=t.get(e,"FirstChar"),s=t.get(e,"Widths"),o=t.get(e,"FontDescriptor"),i=t.get(o,"MissingWidth"),f=new Map;Array.isArray(s)&&Number.isFinite(r)&&s.forEach((a,c)=>{const u=t.resolve(a);Number.isFinite(u)&&f.set(r+c,u)});const l=f.size?null:z(T(t.get(e,"BaseFont")));return a=>{const c=f.get(a);return c!==void 0?c:l?l.width(n[a]??""):Number.isFinite(i)?i:f.size?0:500}}async function O(t,e){const n=t.get(e,"DescendantFonts"),r=t.resolve(Array.isArray(n)?n[0]:null),s=r instanceof Map?r:new Map,o=t.get(e,"Encoding"),i=o instanceof v?await R(t,o):S(),f=P(t,s),{ascent:l,descent:a}=B(t,s);return{split:c=>i.split(c),singleByte:i.hasSingleBytes,text:()=>"",width:c=>f(i.cid(c)),ascent:l,descent:a,scale:1}}function S(){return{split:x,cid:t=>t,hasSingleBytes:!1}}function x(t){const e=[];for(let n=0;n<t.length;n+=2)e.push({code:t[n]<<8|(t[n+1]??0),size:2});return e}function P(t,e){const n=t.get(e,"DW"),r=new Map,s=t.get(e,"W");if(Array.isArray(s)){let o=0;for(;o<s.length;){const i=t.resolve(s[o]),f=t.resolve(s[o+1]);if(Array.isArray(f))f.forEach((l,a)=>{const c=t.resolve(l);Number.isFinite(c)&&r.set(i+a,c)}),o+=2;else if(Number.isFinite(i)&&Number.isFinite(f)){const l=t.resolve(s[o+2]),a=Math.min(f,i+65535);if(Number.isFinite(l))for(let c=i;c<=a;c+=1)r.set(c,l);o+=3}else break}}return o=>r.get(o)??(Number.isFinite(n)?n:N)}async function R(t,e){const n=[],r=new Map,s=[];let o;try{({bytes:o}=await F(e,a=>t.resolve(a)))}catch{return S()}for(const a of A(o))if(a.name==="endcodespacerange")for(let c=0;c+1<a.args.length;c+=2){const u=a.args[c];u instanceof h&&u.bytes.length&&s.push(u.bytes.length)}else if(a.name==="endcidrange")for(let c=0;c+2<a.args.length;c+=3){const[u,p,g]=a.args.slice(c,c+3);u instanceof h&&p instanceof h&&Number.isFinite(g)&&n.push({low:m(u.bytes),high:m(p.bytes),first:g})}else if(a.name==="endcidchar")for(let c=0;c+1<a.args.length;c+=2){const[u,p]=a.args.slice(c,c+2);u instanceof h&&Number.isFinite(p)&&r.set(m(u.bytes),p)}const i=new Set(s),f=i.has(1),l=i.size===1?[...i][0]:0;return{hasSingleBytes:f,split:l===1?M:x,cid(a){const c=r.get(a);if(c!==void 0)return c;for(const u of n)if(a>=u.low&&a<=u.high)return u.first+(a-u.low);return a}}}async function _(t,e){const n=t.get(e,"ToUnicode");if(!(n instanceof v))return null;let r;try{({bytes:r}=await F(n,o=>t.resolve(o)))}catch{return null}const s=new Map;for(const o of A(r))if(o.name==="endbfchar")for(let i=0;i+1<o.args.length;i+=2){const[f,l]=o.args.slice(i,i+2);f instanceof h&&s.set(m(f.bytes),d(l))}else if(o.name==="endbfrange")for(let i=0;i+2<o.args.length;i+=3){const[f,l,a]=o.args.slice(i,i+3);if(!(f instanceof h)||!(l instanceof h))continue;const c=m(f.bytes),u=Math.min(m(l.bytes),c+65535);if(Array.isArray(a)){for(let g=c;g<=u;g+=1)s.set(g,d(a[g-c]));continue}if(!(a instanceof h))continue;const p=d(a);for(let g=c;g<=u;g+=1)s.set(g,j(p,g-c))}return s.size?s:null}function m(t){let e=0;for(const n of t.subarray(0,4))e=e<<8|n;return e>>>0}function d(t){if(t instanceof y)return w(t.value);if(!(t instanceof h))return"";const{bytes:e}=t;let n="";for(let r=0;r+1<e.length;r+=2)n+=String.fromCharCode(e[r]<<8|e[r+1]);return e.length%2&&(n+=String.fromCharCode(e[e.length-1])),n}function j(t,e){if(!t||!e)return t;const n=t.charCodeAt(t.length-1)+e;return n>65535?t:t.slice(0,-1)+String.fromCharCode(n)}function B(t,e){const n=t.get(e,"FontDescriptor"),r=t.get(n,"Ascent"),s=t.get(n,"Descent"),o=t.get(n,"FontBBox"),i=Array.isArray(o)?{top:t.resolve(o[3]),bottom:t.resolve(o[1])}:{};return{ascent:C(r,i.top,750),descent:C(s,i.bottom,-220)}}function C(...t){for(const e of t)if(Number.isFinite(e)&&e!==0)return e;return 0}function T(t){return t instanceof y?t.value:""}function K(t,e){const n=[];let r=0;for(const{code:s,size:o}of t.split(e)){const i=t.toUnicode?.get(s),f=t.text(s),l=i!==void 0&&i!==""?i:f;n.push({code:s,size:o,at:r,text:l,width:t.width(s),known:l!==""}),r+=o}return n}async function L(t,e){const n=new Map,r=t.get(e,"Font");if(!(r instanceof Map))return n;for(const[s,o]of r){const i=t.resolve(o);if(i instanceof Map)try{n.set(s,await k(t,i))}catch{}}return n}export{K as glyphsOf,k as readFont,L as readFonts};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{base14Widths,encodingByName,glyphText,STANDARD,WIN_ANSI}from'./base14.js';
+import{lex}from'./content.js';
+import{decodeStream}from'./filters.js';
+import{Name,PdfStream,PdfString}from'./objects.js';
+const UNITS=1000;
+export async function readFont(doc,dict){
+const subtype=doc.get(dict,'Subtype');
+const kind=subtype instanceof Name?subtype.value:'';
+const font=kind==='Type0'
+?await composite(doc,dict)
+:await simple(doc,dict,kind);
+font.toUnicode=await readToUnicode(doc,dict);
+font.kind=kind;
+return font;
+}
+async function simple(doc,dict,kind){
+const encoding=simpleEncoding(doc,dict,kind);
+const widths=simpleWidths(doc,dict,encoding);
+const{ascent,descent}=vertical(doc,dict);
+const matrix=kind==='Type3'?doc.get(dict,'FontMatrix'):null;
+const scale=Array.isArray(matrix)&&Number.isFinite(matrix[0])
+?matrix[0]*UNITS:1;
+return{
+split:splitSingleBytes,
+singleByte:true,
+text:(code)=>glyphText(encoding[code]??''),
+width:(code)=>widths(code)*scale,
+ascent,
+descent,
+scale,
+};
+}
+function splitSingleBytes(bytes){
+const out=new Array(bytes.length);
+for(let at=0;at<bytes.length;at+=1)out[at]={code:bytes[at],size:1};
+return out;
+}
+function simpleEncoding(doc,dict,kind){
+const table=(kind==='TrueType'?WIN_ANSI:STANDARD).slice();
+const encoding=doc.get(dict,'Encoding');
+const base=encoding instanceof Name
+?encodingByName(encoding.value)
+:encodingByName(nameOf(doc.get(encoding,'BaseEncoding')));
+if(base)base.forEach((glyph,code)=>{table[code]=glyph;});
+const differences=doc.get(encoding,'Differences');
+if(Array.isArray(differences)){
+let code=0;
+for(const item of differences.map((value)=>doc.resolve(value))){
+if(typeof item==='number')code=Math.trunc(item);
+else if(item instanceof Name&&code>=0&&code<256){
+table[code]=item.value;
+code+=1;
+}
+}
+}
+return table;
+}
+function simpleWidths(doc,dict,encoding){
+const first=doc.get(dict,'FirstChar');
+const listed=doc.get(dict,'Widths');
+const descriptor=doc.get(dict,'FontDescriptor');
+const missing=doc.get(descriptor,'MissingWidth');
+const table=new Map();
+if(Array.isArray(listed)&&Number.isFinite(first)){
+listed.forEach((value,index)=>{
+const width=doc.resolve(value);
+if(Number.isFinite(width))table.set(first+index,width);
+});
+}
+const builtIn=table.size?null:base14Widths(nameOf(doc.get(dict,'BaseFont')));
+return(code)=>{
+const known=table.get(code);
+if(known!==undefined)return known;
+if(builtIn)return builtIn.width(encoding[code]??'');
+if(Number.isFinite(missing))return missing;
+return table.size?0:500;
+};
+}
+async function composite(doc,dict){
+const descendants=doc.get(dict,'DescendantFonts');
+const first=doc.resolve(Array.isArray(descendants)?descendants[0]:null);
+const child=first instanceof Map?first:new Map();
+const encoding=doc.get(dict,'Encoding');
+const cmap=encoding instanceof PdfStream
+?await readCMap(doc,encoding)
+:identityCMap();
+const widths=cidWidths(doc,child);
+const{ascent,descent}=vertical(doc,child);
+return{
+split:(bytes)=>cmap.split(bytes),
+singleByte:cmap.hasSingleBytes,
+text:()=>'',
+width:(code)=>widths(cmap.cid(code)),
+ascent,
+descent,
+scale:1,
+};
+}
+function identityCMap(){
+return{split:splitTwoBytes,cid:(code)=>code,hasSingleBytes:false};
+}
+function splitTwoBytes(bytes){
+const out=[];
+for(let at=0;at<bytes.length;at+=2){
+out.push({code:(bytes[at]<<8)|(bytes[at+1]??0),size:2});
+}
+return out;
+}
+function cidWidths(doc,child){
+const fallback=doc.get(child,'DW');
+const table=new Map();
+const list=doc.get(child,'W');
+if(Array.isArray(list)){
+let at=0;
+while(at<list.length){
+const start=doc.resolve(list[at]);
+const next=doc.resolve(list[at+1]);
+if(Array.isArray(next)){
+next.forEach((value,index)=>{
+const width=doc.resolve(value);
+if(Number.isFinite(width))table.set(start+index,width);
+});
+at+=2;
+}else if(Number.isFinite(start)&&Number.isFinite(next)){
+const width=doc.resolve(list[at+2]);
+const last=Math.min(next,start+65535);
+if(Number.isFinite(width)){
+for(let cid=start;cid<=last;cid+=1)table.set(cid,width);
+}
+at+=3;
+}else{
+break;
+}
+}
+}
+return(cid)=>table.get(cid)??(Number.isFinite(fallback)?fallback:UNITS);
+}
+async function readCMap(doc,stream){
+const ranges=[];
+const cids=new Map();
+const spans=[];
+let bytes;
+try{
+({bytes}=await decodeStream(stream,(value)=>doc.resolve(value)));
+}catch{
+return identityCMap();
+}
+for(const op of lex(bytes)){
+if(op.name==='endcodespacerange'){
+for(let at=0;at+1<op.args.length;at+=2){
+const low=op.args[at];
+if(low instanceof PdfString&&low.bytes.length)spans.push(low.bytes.length);
+}
+}else if(op.name==='endcidrange'){
+for(let at=0;at+2<op.args.length;at+=3){
+const[low,high,first]=op.args.slice(at,at+3);
+if(low instanceof PdfString&&high instanceof PdfString
+&&Number.isFinite(first)){
+ranges.push({low:codeOf(low.bytes),high:codeOf(high.bytes),first});
+}
+}
+}else if(op.name==='endcidchar'){
+for(let at=0;at+1<op.args.length;at+=2){
+const[code,cid]=op.args.slice(at,at+2);
+if(code instanceof PdfString&&Number.isFinite(cid)){
+cids.set(codeOf(code.bytes),cid);
+}
+}
+}
+}
+const sizes=new Set(spans);
+const oneByte=sizes.has(1);
+const width=sizes.size===1?[...sizes][0]:0;
+return{
+hasSingleBytes:oneByte,
+split:width===1?splitSingleBytes:splitTwoBytes,
+cid(code){
+const exact=cids.get(code);
+if(exact!==undefined)return exact;
+for(const range of ranges){
+if(code>=range.low&&code<=range.high)return range.first+(code-range.low);
+}
+return code;
+},
+};
+}
+async function readToUnicode(doc,dict){
+const stream=doc.get(dict,'ToUnicode');
+if(!(stream instanceof PdfStream))return null;
+let bytes;
+try{
+({bytes}=await decodeStream(stream,(value)=>doc.resolve(value)));
+}catch{
+return null;
+}
+const map=new Map();
+for(const op of lex(bytes)){
+if(op.name==='endbfchar'){
+for(let at=0;at+1<op.args.length;at+=2){
+const[code,value]=op.args.slice(at,at+2);
+if(code instanceof PdfString)map.set(codeOf(code.bytes),unicodeOf(value));
+}
+}else if(op.name==='endbfrange'){
+for(let at=0;at+2<op.args.length;at+=3){
+const[low,high,value]=op.args.slice(at,at+3);
+if(!(low instanceof PdfString)||!(high instanceof PdfString))continue;
+const from=codeOf(low.bytes);
+const to=Math.min(codeOf(high.bytes),from+65535);
+if(Array.isArray(value)){
+for(let code=from;code<=to;code+=1){
+map.set(code,unicodeOf(value[code-from]));
+}
+continue;
+}
+if(!(value instanceof PdfString))continue;
+const text=unicodeOf(value);
+for(let code=from;code<=to;code+=1){
+map.set(code,step(text,code-from));
+}
+}
+}
+}
+return map.size?map:null;
+}
+function codeOf(bytes){
+let value=0;
+for(const byte of bytes.subarray(0,4))value=(value<<8)|byte;
+return value>>>0;
+}
+function unicodeOf(value){
+if(value instanceof Name)return glyphText(value.value);
+if(!(value instanceof PdfString))return'';
+const{bytes}=value;
+let text='';
+for(let at=0;at+1<bytes.length;at+=2){
+text+=String.fromCharCode((bytes[at]<<8)|bytes[at+1]);
+}
+if(bytes.length%2)text+=String.fromCharCode(bytes[bytes.length-1]);
+return text;
+}
+function step(text,by){
+if(!text||!by)return text;
+const last=text.charCodeAt(text.length-1)+by;
+if(last>0xffff)return text;
+return text.slice(0,-1)+String.fromCharCode(last);
+}
+function vertical(doc,dict){
+const descriptor=doc.get(dict,'FontDescriptor');
+const ascent=doc.get(descriptor,'Ascent');
+const descent=doc.get(descriptor,'Descent');
+const box=doc.get(descriptor,'FontBBox');
+const fromBox=Array.isArray(box)
+?{top:doc.resolve(box[3]),bottom:doc.resolve(box[1])}
+:{};
+return{
+ascent:pick(ascent,fromBox.top,750),
+descent:pick(descent,fromBox.bottom,-220),
+};
+}
+function pick(...values){
+for(const value of values)if(Number.isFinite(value)&&value!==0)return value;
+return 0;
+}
+function nameOf(value){
+return value instanceof Name?value.value:'';
+}
+export function glyphsOf(font,bytes){
+const out=[];
+let at=0;
+for(const{code,size}of font.split(bytes)){
+const mapped=font.toUnicode?.get(code);
+const named=font.text(code);
+const text=mapped!==undefined&&mapped!==''?mapped:named;
+out.push({
+code,
+size,
+at,
+text,
+width:font.width(code),
+known:text!=='',
+});
+at+=size;
+}
+return out;
+}
+export async function readFonts(doc,resources){
+const fonts=new Map();
+const dict=doc.get(resources,'Font');
+if(!(dict instanceof Map))return fonts;
+for(const[key,value]of dict){
+const font=doc.resolve(value);
+if(font instanceof Map){
+try{
+fonts.set(key,await readFont(doc,font));
+}catch{
+}
+}
+}
+return fonts;
+}

@@ -1,3 +1,651 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as k}from"./shared/phrases.js";import{readSource as K}from"./assemble.js";import{bytes as L,count as g,shortName as _}from"./format.js";import{sizeLabel as Z}from"./pages.js";import{parseRanges as B}from"./plan.js";import{produce as H}from"./produce.js";import{EncryptedPdfError as J,NotAPdfError as X,PdfDocument as G}from"./reader.js";import{wireFilePicker as Q,readingLabel as V}from"./shared/file-picker.js";const i=e=>document.getElementById(e),n={dropzone:i("dropzone"),fileInput:i("file-input"),loadError:i("load-error"),loadNote:i("load-note"),sourceList:i("source-list"),pagesCard:i("pages-card"),countLabel:i("count-label"),reverse:i("reverse"),rotateAll:i("rotate-all"),restore:i("restore"),clearAll:i("clear-all"),range:i("range"),rangeKeep:i("range-keep"),rangeDrop:i("range-drop"),rangeTurn:i("range-turn"),rangeError:i("range-error"),pageList:i("page-list"),outputCard:i("output-card"),splitModes:i("split-modes"),splitSize:i("split-size"),splitAt:i("split-at"),byFilePreset:i("by-file-preset"),keepBookmarks:i("keep-bookmarks"),outputSummary:i("output-summary"),runCard:i("run-card"),run:i("run"),cancel:i("cancel"),progress:i("progress"),progressBar:i("progress-bar"),progressLabel:i("progress-label"),runError:i("run-error"),result:i("result"),resultSize:i("result-size"),resultSub:i("result-sub"),download:i("download"),checkLine:i("check-line"),resultFacts:i("result-facts"),fileList:i("file-list"),privacyToggle:i("privacy-toggle"),privacyPanel:i("privacy-panel"),networkCount:i("network-count"),networkDot:i("network-dot"),offlineStatus:i("offline-status"),offlineDot:i("offline-dot")};let p=[],l=[],u=null,D=[];const F=Q({input:n.fileInput,dropzone:n.dropzone,onFiles(e){Y(e)}});async function Y(e){if(u)return;F.busy(V(e.length)),n.loadError.hidden=!0;const t=[],s=[];for(const a of e)try{if(!ee(a)){t.push(`${a.name}: not a PDF, so there are no pages in it to move.`);continue}const o=new Uint8Array(await a.arrayBuffer()),r=await G.open(o),d=K(r,a.name);if(!d.pages.length){t.push(`${a.name}: opened, but no pages could be found in it.`);continue}p.push({source:d,name:a.name,size:a.size});for(let c=0;c<d.pages.length;c+=1)l.push({source:d,index:c,rotate:0});r.repaired&&s.push(`${a.name} had a cross-reference table that did not match its contents, so it was read by scanning for objects instead. That is a repair, and it worked, but check the result before you send it anywhere.`)}catch(o){t.push(`${a.name}: ${te(o)}`)}F.done(),t.length&&A(t.join(`
-`)),s.length?ne(s.join(" ")):n.loadNote.hidden=!0,m()}function ee(e){return e.type==="application/pdf"||/\.pdf$/i.test(e.name)}function te(e){return e instanceof J?"this PDF is encrypted. Taking a password off a document is a different job from moving its pages around, and this tool will not do it behind your back.":e instanceof X?e.message:e?.name==="AbortError"?"cancelled.":`could not be read (${e?.message??e}).`}function A(e){n.loadError.textContent=e,n.loadError.hidden=!1}function ne(e){n.loadNote.textContent=e,n.loadNote.hidden=!1}function re(){n.sourceList.hidden=p.length===0,n.sourceList.replaceChildren(...p.map(e=>{const t=document.createElement("li");t.className="source-row";const s=document.createElement("div");s.className="source-main";const a=document.createElement("strong");a.className="source-name",a.textContent=e.name,a.title=e.name;const o=document.createElement("span");o.className="source-facts";const r=l.filter(f=>f.source===e.source).length,d=e.source.pages.length;o.textContent=`${L(e.size)} \xB7 ${g(d,"page")}`+(r===d?"":` \xB7 ${r} of them still in the running order`),s.append(a,o);const c=document.createElement("button");return c.type="button",c.className="ghost danger",c.textContent="Remove",c.setAttribute("aria-label",`Remove ${e.name} and all of its pages`),c.addEventListener("click",()=>{u||(p=p.filter(f=>f!==e),l=l.filter(f=>f.source!==e.source),m())}),t.append(s,c),t}))}let b=null,w=null;function $(){for(const e of n.pageList.querySelectorAll(".insert-before, .insert-after"))e.classList.remove("insert-before","insert-after")}function oe(e,t){const s=e.source.pages[e.index],a=document.createElement("li");a.className="page-item",a.dataset.index=String(t);const o=document.createElement("button");o.type="button",o.className="drag-handle",o.draggable=!0,o.textContent="\u22EE\u22EE",o.title=`Drag to move page ${t+1}`,o.setAttribute("aria-label",`Drag to move page ${t+1}`);const r=document.createElement("div");r.className="shape-wrap",r.draggable=!0;const d=e.rotate%180!==0,c=d?s.height:s.width,f=d?s.width:s.height,E=document.createElement("div");E.className="page-shape",E.style.aspectRatio=`${Math.max(1,c)} / ${Math.max(1,f)}`;const S=document.createElement("span");if(S.className="page-number",S.textContent=String(t+1),E.append(S),e.rotate%360!==0){const h=document.createElement("span");h.className="turn-badge",h.textContent=`${(e.rotate%360+360)%360}\xB0`,h.title="Turned by this tool",E.append(h)}r.append(E);const v=document.createElement("button");v.type="button",v.className="remove-btn",v.textContent="\xD7",v.title=`Remove page ${t+1}`,v.setAttribute("aria-label",`Remove page ${t+1}`),v.addEventListener("click",()=>{u||(l.splice(t,1),m())}),r.append(v);const y=document.createElement("div");if(y.className="page-meta",p.length>1){const h=document.createElement("p");h.className="page-from",h.textContent=_(e.source.label),h.title=`${e.source.label}, page ${e.index+1}`,y.append(h)}const x=document.createElement("p");x.className="page-dims",x.textContent=Z(c,f),y.append(x);const z=document.createElement("div");return z.className="page-controls",z.append(C("\u21BA",`Turn page ${t+1} anticlockwise`,!1,()=>{R(e,-90)}),C("\u21BB",`Turn page ${t+1} clockwise`,!1,()=>{R(e,90)}),C("\u2039",`Move page ${t+1} earlier`,t===0,()=>{P(t,t-1)}),C("\u203A",`Move page ${t+1} later`,t===l.length-1,()=>{P(t,t+1)})),y.append(z),a.append(o,r,y),ae(a,[o,r],t),a}function C(e,t,s,a){const o=document.createElement("button");return o.type="button",o.className="tile-btn",o.textContent=e,o.title=t,o.setAttribute("aria-label",t),o.disabled=s,o.addEventListener("click",a),o}function R(e,t){u||(e.rotate=((e.rotate+t)%360+360)%360,m())}function P(e,t){if(u||t<0||t>=l.length)return;const[s]=l.splice(e,1);l.splice(t,0,s),m()}function ae(e,t,s){const a=r=>{if(u){r.preventDefault();return}b=s,e.classList.add("dragging"),r.dataTransfer.effectAllowed="move",r.dataTransfer.setData("text/plain",String(s))},o=()=>{b=null,w=null,e.classList.remove("dragging"),$()};for(const r of t)r.addEventListener("dragstart",a),r.addEventListener("dragend",o);e.addEventListener("dragover",r=>{if(b===null)return;r.preventDefault(),r.dataTransfer.dropEffect="move";const d=e.getBoundingClientRect(),c=r.clientX>d.left+d.width/2;$(),e.classList.add(c?"insert-after":"insert-before"),w={index:s,after:c}}),e.addEventListener("drop",r=>{r.preventDefault(),r.stopPropagation(),M()})}function M(){if(b===null||w===null){$();return}let e=w.after?w.index+1:w.index;b<e&&(e-=1);const t=b;if(b=null,w=null,t===e){$();return}P(t,e)}n.pageList.addEventListener("dragover",e=>{b!==null&&e.preventDefault()}),n.pageList.addEventListener("drop",e=>{b!==null&&(e.preventDefault(),M())}),n.reverse.addEventListener("click",()=>{u||(l.reverse(),m())}),n.rotateAll.addEventListener("click",()=>{if(!u){for(const e of l)e.rotate=(e.rotate+90)%360;m()}}),n.restore.addEventListener("click",()=>{if(!u){l=[];for(const e of p)for(let t=0;t<e.source.pages.length;t+=1)l.push({source:e.source,index:t,rotate:0});n.range.value="",m()}}),n.clearAll.addEventListener("click",()=>{u||(p=[],l=[],n.range.value="",n.loadError.hidden=!0,n.loadNote.hidden=!0,m(),n.dropzone.focus())}),n.rangeKeep.addEventListener("click",()=>T("keep")),n.rangeDrop.addEventListener("click",()=>T("drop")),n.rangeTurn.addEventListener("click",()=>T("turn"));function T(e){if(u)return;const{pages:t,error:s}=B(n.range.value,l.length);if(n.rangeError.hidden=!s,n.rangeError.textContent=s,s)return;if(!t.length){n.rangeError.textContent="Name some pages first - 1-3, 8, 12- and so on.",n.rangeError.hidden=!1;return}const a=new Set(t.map(o=>o-1));if(e==="keep"&&(l=l.filter((o,r)=>a.has(r))),e==="drop"&&(l=l.filter((o,r)=>!a.has(r))),e==="turn")for(const o of a){const r=l[o];r&&(r.rotate=(r.rotate+90)%360)}e!=="turn"&&(n.range.value=""),m()}n.splitModes.addEventListener("change",N);for(const e of[n.splitSize,n.splitAt])e.addEventListener("input",()=>{const t=e.closest(".preset")?.querySelector('input[type="radio"]');t&&(t.checked=!0),N()});n.keepBookmarks.addEventListener("change",N);function j(){return n.splitModes.querySelector("input:checked")?.value??"single"}function W(){const e=j(),t=e==="at"?B(n.splitAt.value,l.length).pages:[];return{mode:e,size:Number(n.splitSize.value)||1,at:t}}function N(){const e=W(),t=se(e),s=new Set(l.map(o=>o.source)).size,a=[`${g(l.length,"page")} from ${g(s,"file")}`,t===1?"as one PDF":`as ${g(t,"PDF")}, handed over in one ZIP so it is one save rather than ${t}`];e.mode==="at"&&!e.at.length&&n.splitAt.value.trim()&&a.push("- but nothing in that box names a page in range, so it would come out as one file"),n.outputSummary.textContent=`${a.join(" ")}.`,n.run.textContent=t===1?"Build the document":`Build ${t} documents`}function se(e){return l.length?e.mode==="each"?l.length:e.mode==="every"?Math.ceil(l.length/Math.max(1,e.size)):e.mode==="at"?new Set(e.at.filter(t=>t>1&&t<=l.length)).size+1:e.mode==="file"?new Set(l.map(t=>t.source)).size:1:0}function m(){re();const e=l.length>0;n.pagesCard.hidden=p.length===0,n.outputCard.hidden=!e,n.runCard.hidden=!e,n.countLabel.textContent=e?`${g(l.length,"page")} in the running order`:'No pages left. Add a file, or press "Back to how they came".',n.byFilePreset.hidden=new Set(l.map(t=>t.source)).size<2,n.byFilePreset.hidden&&j()==="file"&&(n.splitModes.querySelector('input[value="single"]').checked=!0),n.pageList.replaceChildren(...l.map(oe)),N()}n.run.addEventListener("click",ie),n.cancel.addEventListener("click",()=>u?.abort());async function ie(){if(!l.length||u)return;u=new AbortController,n.run.disabled=!0,n.cancel.hidden=!1,n.result.hidden=!0,n.runError.hidden=!0,n.progress.hidden=!1,I(0,1,"Copying pages"),ue();let e=!1;try{const t=await H(l,{split:W(),stem:p[0]?.name??"document",suffix:p.length>1?"merged":"edited",bookmarks:n.keepBookmarks.checked},{signal:u.signal,onProgress:(s,a,o)=>I(s,a,o?`Writing ${o}`:"Checking what was written")});le(t)}catch(t){t?.name==="AbortError"?(e=!0,n.progressLabel.textContent="Cancelled. Nothing was changed; the pages above are still exactly as you left them."):(n.runError.textContent=`That did not work: ${t?.message??t}`,n.runError.hidden=!1)}finally{u=null,n.run.disabled=!1,n.cancel.hidden=!0,n.progress.hidden=!e,e&&(n.progressBar.style.width="0%")}}let O="";function I(e,t,s){s&&(O=s),Number.isFinite(e)&&t&&(n.progressBar.style.width=`${Math.round(e/Math.max(1,t)*100)}%`),n.progressLabel.textContent=`${O}...`}function le(e){const t=e.files.reduce((o,r)=>o+r.size,0),s=e.files.reduce((o,r)=>o+r.pages,0);n.resultSize.textContent=e.files.length===1?`One document, ${L(t)}`:`${g(e.files.length,"document")}, ${L(t)} altogether`,n.resultSub.textContent=`${g(s,"page")} from ${g(p.length,"file")}.`,n.checkLine.textContent=e.ok?"Checked: every file was opened again by this page and its pages counted.":`This run did not check out - ${e.problem}. Keep your originals.`,n.checkLine.className=`check-line ${e.ok?"good":"bad"}`,ce(e),de(e);const a=e.archive??{name:e.files[0].name,blob:U(e.files[0])};n.download.href=q(a.blob),n.download.download=a.name,n.download.textContent=e.archive?`Download all ${e.files.length} as a ZIP`:"Download",n.download.hidden=!e.ok,n.result.hidden=!1}function ce(e){const t=[...e.notes],s=e.files.reduce((o,r)=>o+r.fields,0),a=e.files.reduce((o,r)=>o+r.links,0);a&&t.push(`${g(a,"link")} came across, with the ones that point inside the document rewritten to follow their page to where it now is.`),s&&t.push(`${g(s,"form field")} came across, filled in as they were.`),t.push('Not carried across, because it describes an order that no longer exists: the tagged-reading-order tree, page labels ("iii, iv, 1, 2"), embedded attachments, and any document-level JavaScript. Nor is any producer line, creation date, or name for the tool that made it.'),n.resultFacts.replaceChildren(...t.map(o=>{const r=document.createElement("li");return r.textContent=o,r}))}function de(e){if(n.fileList.hidden=e.files.length<2,e.files.length<2){n.fileList.replaceChildren();return}n.fileList.replaceChildren(...e.files.map(t=>{const s=document.createElement("li"),a=document.createElement("span");a.className="out-name",a.textContent=t.name;const o=document.createElement("span");o.className="out-facts",o.textContent=`${g(t.pages,"page")} \xB7 ${L(t.size)}`;const r=document.createElement("a");r.className="ghost",r.textContent="Download",r.download=t.name,r.href=q(U(t)),r.hidden=!t.check.ok;const d=document.createElement("span");return d.className="out-problem",d.textContent=t.check.ok?"":t.check.text,s.append(a,o,d,r),s}))}function U(e){return new Blob([e.data],{type:"application/pdf"})}function q(e){const t=URL.createObjectURL(e);return D.push(t),t}function ue(){for(const e of D)URL.revokeObjectURL(e);D=[],n.download.removeAttribute("href"),n.fileList.replaceChildren()}n.privacyToggle.addEventListener("click",()=>{const e=n.privacyPanel.hidden;n.privacyPanel.hidden=!e,n.privacyToggle.setAttribute("aria-expanded",String(e))});const fe=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function pe(){const e=new Set,t=new Set,s=a=>{for(const c of a){if(c.name.startsWith("blob:")||c.name.startsWith("data:"))continue;const f=new URL(c.name,location.href);f.origin!==location.origin&&(fe.test(f.hostname)?e.add(f.hostname):t.add(f.hostname))}const o=performance.getEntriesByType("resource").filter(c=>!c.name.startsWith("blob:")&&!c.name.startsWith("data:")).length,r=t.size===0,d=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a document or a byte of one.`;n.networkCount.textContent=r?`your documents have gone nowhere. ${o} files loaded, all of them this page's own.${d}`:`something contacted ${[...t].join(", ")}, which this tool never does. Treat that as worth investigating.${d}`,n.networkCount.className=r?"good":"warn",n.networkDot.className=`live-dot ${r?"good":"warn"}`};s(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>s(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function ge(){const e=(t,s)=>{n.offlineStatus.textContent=t,n.offlineDot.className="live-dot",s&&(n.offlineStatus.title=s,console.info("Offline caching unavailable:",s))};if(!("serviceWorker"in navigator)){e(k("offline.none"));return}if(!window.isSecureContext){e(k("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,n.offlineStatus.textContent=k("offline.ready"),n.offlineStatus.className="good",n.offlineDot.className="live-dot good"}catch(t){e(k("offline.failed"),t.message)}}window.addEventListener("error",e=>{A(k("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{A(k("error.broke",{detail:e.reason?.message??e.reason}))}),m(),pe(),ge(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{readSource}from'./assemble.js';
+import{bytes as humanBytes,count,shortName}from'./format.js';
+import{sizeLabel}from'./pages.js';
+import{describeRanges,parseRanges}from'./plan.js';
+import{produce}from'./produce.js';
+import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./reader.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+loadError:$('load-error'),
+loadNote:$('load-note'),
+sourceList:$('source-list'),
+pagesCard:$('pages-card'),
+countLabel:$('count-label'),
+reverse:$('reverse'),
+rotateAll:$('rotate-all'),
+restore:$('restore'),
+clearAll:$('clear-all'),
+range:$('range'),
+rangeKeep:$('range-keep'),
+rangeDrop:$('range-drop'),
+rangeTurn:$('range-turn'),
+rangeError:$('range-error'),
+pageList:$('page-list'),
+outputCard:$('output-card'),
+splitModes:$('split-modes'),
+splitSize:$('split-size'),
+splitAt:$('split-at'),
+byFilePreset:$('by-file-preset'),
+keepBookmarks:$('keep-bookmarks'),
+outputSummary:$('output-summary'),
+runCard:$('run-card'),
+run:$('run'),
+cancel:$('cancel'),
+progress:$('progress'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+runError:$('run-error'),
+result:$('result'),
+resultSize:$('result-size'),
+resultSub:$('result-sub'),
+download:$('download'),
+checkLine:$('check-line'),
+resultFacts:$('result-facts'),
+fileList:$('file-list'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let sources=[];
+let entries=[];
+let running=null;
+let urls=[];
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+addFiles(files);
+},
+});
+async function addFiles(files){
+if(running)return;
+picker.busy(readingLabel(files.length));
+el.loadError.hidden=true;
+const refused=[];
+const notes=[];
+for(const file of files){
+try{
+if(!looksLikePdf(file)){
+refused.push(`${file.name}: not a PDF, so there are no pages in it to move.`);
+continue;
+}
+const raw=new Uint8Array(await file.arrayBuffer());
+const doc=await PdfDocument.open(raw);
+const source=readSource(doc,file.name);
+if(!source.pages.length){
+refused.push(`${file.name}: opened, but no pages could be found in it.`);
+continue;
+}
+sources.push({source,name:file.name,size:file.size});
+for(let index=0;index<source.pages.length;index+=1){
+entries.push({source,index,rotate:0});
+}
+if(doc.repaired){
+notes.push(`${file.name} had a cross-reference table that did not match its `
++'contents, so it was read by scanning for objects instead. That is a repair, '
++'and it worked, but check the result before you send it anywhere.');
+}
+}catch(error){
+refused.push(`${file.name}: ${messageFor(error)}`);
+}
+}
+picker.done();
+if(refused.length)showLoadError(refused.join('\n'));
+if(notes.length)note(notes.join(' '));
+else el.loadNote.hidden=true;
+render();
+}
+function looksLikePdf(file){
+return file.type==='application/pdf'||/\.pdf$/i.test(file.name);
+}
+function messageFor(error){
+if(error instanceof EncryptedPdfError){
+return'this PDF is encrypted. Taking a password off a document is a different job '
++'from moving its pages around, and this tool will not do it behind your back.';
+}
+if(error instanceof NotAPdfError)return error.message;
+if(error?.name==='AbortError')return'cancelled.';
+return`could not be read (${error?.message ?? error}).`;
+}
+function showLoadError(text){
+el.loadError.textContent=text;
+el.loadError.hidden=false;
+}
+function note(text){
+el.loadNote.textContent=text;
+el.loadNote.hidden=false;
+}
+function renderSources(){
+el.sourceList.hidden=sources.length===0;
+el.sourceList.replaceChildren(...sources.map((item)=>{
+const row=document.createElement('li');
+row.className='source-row';
+const main=document.createElement('div');
+main.className='source-main';
+const name=document.createElement('strong');
+name.className='source-name';
+name.textContent=item.name;
+name.title=item.name;
+const facts=document.createElement('span');
+facts.className='source-facts';
+const used=entries.filter((entry)=>entry.source===item.source).length;
+const total=item.source.pages.length;
+facts.textContent=`${humanBytes(item.size)} · ${count(total, 'page')}`
++(used===total?'':` · ${used} of them still in the running order`);
+main.append(name,facts);
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='ghost danger';
+remove.textContent='Remove';
+remove.setAttribute('aria-label',`Remove ${item.name} and all of its pages`);
+remove.addEventListener('click',()=>{
+if(running)return;
+sources=sources.filter((other)=>other!==item);
+entries=entries.filter((entry)=>entry.source!==item.source);
+render();
+});
+row.append(main,remove);
+return row;
+}));
+}
+let dragIndex=null;
+let dropAt=null;
+function clearDropMarkers(){
+for(const node of el.pageList.querySelectorAll('.insert-before, .insert-after')){
+node.classList.remove('insert-before','insert-after');
+}
+}
+function buildPageNode(entry,index){
+const page=entry.source.pages[entry.index];
+const li=document.createElement('li');
+li.className='page-item';
+li.dataset.index=String(index);
+const handle=document.createElement('button');
+handle.type='button';
+handle.className='drag-handle';
+handle.draggable=true;
+handle.textContent='⋮⋮';
+handle.title=`Drag to move page ${index + 1}`;
+handle.setAttribute('aria-label',`Drag to move page ${index + 1}`);
+const shapeWrap=document.createElement('div');
+shapeWrap.className='shape-wrap';
+shapeWrap.draggable=true;
+const turned=entry.rotate%180!==0;
+const width=turned?page.height:page.width;
+const height=turned?page.width:page.height;
+const shape=document.createElement('div');
+shape.className='page-shape';
+shape.style.aspectRatio=`${Math.max(1, width)} / ${Math.max(1, height)}`;
+const number=document.createElement('span');
+number.className='page-number';
+number.textContent=String(index+1);
+shape.append(number);
+if(entry.rotate%360!==0){
+const turn=document.createElement('span');
+turn.className='turn-badge';
+turn.textContent=`${((entry.rotate % 360) + 360) % 360}°`;
+turn.title='Turned by this tool';
+shape.append(turn);
+}
+shapeWrap.append(shape);
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='remove-btn';
+remove.textContent='×';
+remove.title=`Remove page ${index + 1}`;
+remove.setAttribute('aria-label',`Remove page ${index + 1}`);
+remove.addEventListener('click',()=>{
+if(running)return;
+entries.splice(index,1);
+render();
+});
+shapeWrap.append(remove);
+const meta=document.createElement('div');
+meta.className='page-meta';
+if(sources.length>1){
+const from=document.createElement('p');
+from.className='page-from';
+from.textContent=shortName(entry.source.label);
+from.title=`${entry.source.label}, page ${entry.index + 1}`;
+meta.append(from);
+}
+const dims=document.createElement('p');
+dims.className='page-dims';
+dims.textContent=sizeLabel(width,height);
+meta.append(dims);
+const controls=document.createElement('div');
+controls.className='page-controls';
+controls.append(
+tileButton('↺',`Turn page ${index + 1} anticlockwise`,false,()=>{
+turn(entry,-90);
+}),
+tileButton('↻',`Turn page ${index + 1} clockwise`,false,()=>{
+turn(entry,90);
+}),
+tileButton('‹',`Move page ${index + 1} earlier`,index===0,()=>{
+move(index,index-1);
+}),
+tileButton('›',`Move page ${index + 1} later`,index===entries.length-1,()=>{
+move(index,index+1);
+}),
+);
+meta.append(controls);
+li.append(handle,shapeWrap,meta);
+wireDrag(li,[handle,shapeWrap],index);
+return li;
+}
+function tileButton(glyph,label,disabled,onClick){
+const button=document.createElement('button');
+button.type='button';
+button.className='tile-btn';
+button.textContent=glyph;
+button.title=label;
+button.setAttribute('aria-label',label);
+button.disabled=disabled;
+button.addEventListener('click',onClick);
+return button;
+}
+function turn(entry,degrees){
+if(running)return;
+entry.rotate=(((entry.rotate+degrees)%360)+360)%360;
+render();
+}
+function move(from,to){
+if(running||to<0||to>=entries.length)return;
+const[item]=entries.splice(from,1);
+entries.splice(to,0,item);
+render();
+}
+function wireDrag(li,handles,index){
+const startDrag=(event)=>{
+if(running){event.preventDefault();return;}
+dragIndex=index;
+li.classList.add('dragging');
+event.dataTransfer.effectAllowed='move';
+event.dataTransfer.setData('text/plain',String(index));
+};
+const endDrag=()=>{
+dragIndex=null;
+dropAt=null;
+li.classList.remove('dragging');
+clearDropMarkers();
+};
+for(const source of handles){
+source.addEventListener('dragstart',startDrag);
+source.addEventListener('dragend',endDrag);
+}
+li.addEventListener('dragover',(event)=>{
+if(dragIndex===null)return;
+event.preventDefault();
+event.dataTransfer.dropEffect='move';
+const rect=li.getBoundingClientRect();
+const after=event.clientX>rect.left+rect.width/2;
+clearDropMarkers();
+li.classList.add(after?'insert-after':'insert-before');
+dropAt={index,after};
+});
+li.addEventListener('drop',(event)=>{
+event.preventDefault();
+event.stopPropagation();
+applyDrop();
+});
+}
+function applyDrop(){
+if(dragIndex===null||dropAt===null){
+clearDropMarkers();
+return;
+}
+let target=dropAt.after?dropAt.index+1:dropAt.index;
+if(dragIndex<target)target-=1;
+const from=dragIndex;
+dragIndex=null;
+dropAt=null;
+if(from===target){
+clearDropMarkers();
+return;
+}
+move(from,target);
+}
+el.pageList.addEventListener('dragover',(event)=>{
+if(dragIndex!==null)event.preventDefault();
+});
+el.pageList.addEventListener('drop',(event)=>{
+if(dragIndex===null)return;
+event.preventDefault();
+applyDrop();
+});
+el.reverse.addEventListener('click',()=>{
+if(running)return;
+entries.reverse();
+render();
+});
+el.rotateAll.addEventListener('click',()=>{
+if(running)return;
+for(const entry of entries)entry.rotate=(entry.rotate+90)%360;
+render();
+});
+el.restore.addEventListener('click',()=>{
+if(running)return;
+entries=[];
+for(const item of sources){
+for(let index=0;index<item.source.pages.length;index+=1){
+entries.push({source:item.source,index,rotate:0});
+}
+}
+el.range.value='';
+render();
+});
+el.clearAll.addEventListener('click',()=>{
+if(running)return;
+sources=[];
+entries=[];
+el.range.value='';
+el.loadError.hidden=true;
+el.loadNote.hidden=true;
+render();
+el.dropzone.focus();
+});
+el.rangeKeep.addEventListener('click',()=>applyRange('keep'));
+el.rangeDrop.addEventListener('click',()=>applyRange('drop'));
+el.rangeTurn.addEventListener('click',()=>applyRange('turn'));
+function applyRange(what){
+if(running)return;
+const{pages,error}=parseRanges(el.range.value,entries.length);
+el.rangeError.hidden=!error;
+el.rangeError.textContent=error;
+if(error)return;
+if(!pages.length){
+el.rangeError.textContent='Name some pages first - 1-3, 8, 12- and so on.';
+el.rangeError.hidden=false;
+return;
+}
+const chosen=new Set(pages.map((page)=>page-1));
+if(what==='keep')entries=entries.filter((_,index)=>chosen.has(index));
+if(what==='drop')entries=entries.filter((_,index)=>!chosen.has(index));
+if(what==='turn'){
+for(const index of chosen){
+const entry=entries[index];
+if(entry)entry.rotate=(entry.rotate+90)%360;
+}
+}
+if(what!=='turn')el.range.value='';
+render();
+}
+el.splitModes.addEventListener('change',renderPlan);
+for(const input of[el.splitSize,el.splitAt]){
+input.addEventListener('input',()=>{
+const owner=input.closest('.preset')?.querySelector('input[type="radio"]');
+if(owner)owner.checked=true;
+renderPlan();
+});
+}
+el.keepBookmarks.addEventListener('change',renderPlan);
+function splitMode(){
+return el.splitModes.querySelector('input:checked')?.value??'single';
+}
+function currentSplit(){
+const mode=splitMode();
+const at=mode==='at'
+?parseRanges(el.splitAt.value,entries.length).pages
+:[];
+return{mode,size:Number(el.splitSize.value)||1,at};
+}
+function renderPlan(){
+const split=currentSplit();
+const files=countOutputs(split);
+const from=new Set(entries.map((entry)=>entry.source)).size;
+const parts=[
+`${count(entries.length, 'page')} from ${count(from, 'file')}`,
+files===1
+?'as one PDF'
+:`as ${count(files, 'PDF')}, handed over in one ZIP so it is one save rather `
++`than ${files}`,
+];
+if(split.mode==='at'&&!split.at.length&&el.splitAt.value.trim()){
+parts.push('- but nothing in that box names a page in range, so it would come out '
++'as one file');
+}
+el.outputSummary.textContent=`${parts.join(' ')}.`;
+el.run.textContent=files===1?'Build the document':`Build ${files} documents`;
+}
+function countOutputs(split){
+if(!entries.length)return 0;
+if(split.mode==='each')return entries.length;
+if(split.mode==='every')return Math.ceil(entries.length/Math.max(1,split.size));
+if(split.mode==='at'){
+return new Set(split.at.filter((n)=>n>1&&n<=entries.length)).size+1;
+}
+if(split.mode==='file')return new Set(entries.map((entry)=>entry.source)).size;
+return 1;
+}
+function render(){
+renderSources();
+const has=entries.length>0;
+el.pagesCard.hidden=sources.length===0;
+el.outputCard.hidden=!has;
+el.runCard.hidden=!has;
+el.countLabel.textContent=has
+?`${count(entries.length, 'page')} in the running order`
+:'No pages left. Add a file, or press "Back to how they came".';
+el.byFilePreset.hidden=new Set(entries.map((entry)=>entry.source)).size<2;
+if(el.byFilePreset.hidden&&splitMode()==='file'){
+el.splitModes.querySelector('input[value="single"]').checked=true;
+}
+el.pageList.replaceChildren(...entries.map(buildPageNode));
+renderPlan();
+}
+el.run.addEventListener('click',run);
+el.cancel.addEventListener('click',()=>running?.abort());
+async function run(){
+if(!entries.length||running)return;
+running=new AbortController();
+el.run.disabled=true;
+el.cancel.hidden=false;
+el.result.hidden=true;
+el.runError.hidden=true;
+el.progress.hidden=false;
+setProgress(0,1,'Copying pages');
+releaseDownloads();
+let cancelled=false;
+try{
+const result=await produce(entries,{
+split:currentSplit(),
+stem:sources[0]?.name??'document',
+suffix:sources.length>1?'merged':'edited',
+bookmarks:el.keepBookmarks.checked,
+},{
+signal:running.signal,
+onProgress:(done,total,what)=>setProgress(done,total,
+what?`Writing ${what}`:'Checking what was written'),
+});
+showResult(result);
+}catch(error){
+if(error?.name==='AbortError'){
+cancelled=true;
+el.progressLabel.textContent='Cancelled. Nothing was changed; the pages above '
++'are still exactly as you left them.';
+}else{
+el.runError.textContent=`That did not work: ${error?.message ?? error}`;
+el.runError.hidden=false;
+}
+}finally{
+running=null;
+el.run.disabled=false;
+el.cancel.hidden=true;
+el.progress.hidden=!cancelled;
+if(cancelled)el.progressBar.style.width='0%';
+}
+}
+let stageText='';
+function setProgress(done,total,stage){
+if(stage)stageText=stage;
+if(Number.isFinite(done)&&total){
+el.progressBar.style.width=`${Math.round((done / Math.max(1, total)) * 100)}%`;
+}
+el.progressLabel.textContent=`${stageText}...`;
+}
+function showResult(result){
+const total=result.files.reduce((sum,file)=>sum+file.size,0);
+const pages=result.files.reduce((sum,file)=>sum+file.pages,0);
+el.resultSize.textContent=result.files.length===1
+?`One document, ${humanBytes(total)}`
+:`${count(result.files.length, 'document')}, ${humanBytes(total)} altogether`;
+el.resultSub.textContent=`${count(pages, 'page')} from `
++`${count(sources.length, 'file')}.`;
+el.checkLine.textContent=result.ok
+?'Checked: every file was opened again by this page and its pages counted.'
+:`This run did not check out - ${result.problem}. Keep your originals.`;
+el.checkLine.className=`check-line ${result.ok ? 'good' : 'bad'}`;
+renderFacts(result);
+renderFiles(result);
+const handed=result.archive??{name:result.files[0].name,blob:blobFor(result.files[0])};
+el.download.href=keepUrl(handed.blob);
+el.download.download=handed.name;
+el.download.textContent=result.archive
+?`Download all ${result.files.length} as a ZIP`
+:'Download';
+el.download.hidden=!result.ok;
+el.result.hidden=false;
+}
+function renderFacts(result){
+const facts=[...result.notes];
+const fields=result.files.reduce((sum,file)=>sum+file.fields,0);
+const links=result.files.reduce((sum,file)=>sum+file.links,0);
+if(links){
+facts.push(`${count(links, 'link')} came across, with the ones that point inside `
++'the document rewritten to follow their page to where it now is.');
+}
+if(fields){
+facts.push(`${count(fields, 'form field')} came across, filled in as they were.`);
+}
+facts.push('Not carried across, because it describes an order that no longer exists: '
++'the tagged-reading-order tree, page labels ("iii, iv, 1, 2"), embedded '
++'attachments, and any document-level JavaScript. Nor is any producer line, '
++'creation date, or name for the tool that made it.');
+el.resultFacts.replaceChildren(...facts.map((text)=>{
+const row=document.createElement('li');
+row.textContent=text;
+return row;
+}));
+}
+function renderFiles(result){
+el.fileList.hidden=result.files.length<2;
+if(result.files.length<2){
+el.fileList.replaceChildren();
+return;
+}
+el.fileList.replaceChildren(...result.files.map((file)=>{
+const row=document.createElement('li');
+const name=document.createElement('span');
+name.className='out-name';
+name.textContent=file.name;
+const facts=document.createElement('span');
+facts.className='out-facts';
+facts.textContent=`${count(file.pages, 'page')} · ${humanBytes(file.size)}`;
+const link=document.createElement('a');
+link.className='ghost';
+link.textContent='Download';
+link.download=file.name;
+link.href=keepUrl(blobFor(file));
+link.hidden=!file.check.ok;
+const problem=document.createElement('span');
+problem.className='out-problem';
+problem.textContent=file.check.ok?'':file.check.text;
+row.append(name,facts,problem,link);
+return row;
+}));
+}
+function blobFor(file){
+return new Blob([file.data],{type:'application/pdf'});
+}
+function keepUrl(blob){
+const url=URL.createObjectURL(blob);
+urls.push(url);
+return url;
+}
+function releaseDownloads(){
+for(const url of urls)URL.revokeObjectURL(url);
+urls=[];
+el.download.removeAttribute('href');
+el.fileList.replaceChildren();
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(found)=>{
+for(const entry of found){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a document or a byte of one.`;
+el.networkCount.textContent=clean
+?`your documents have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+render();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

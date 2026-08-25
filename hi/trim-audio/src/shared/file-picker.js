@@ -1,2 +1,43 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as l}from"./phrases.js";function c({input:r,dropzone:t,onFiles:d,idleTitle:i}){const n=t.querySelector(".dropzone-title"),o=i??n?.textContent??"",s=e=>{const a=Array.from(e??[]);a.length&&d(a)};r.addEventListener("change",()=>{const e=Array.from(r.files);r.value="",s(e)});for(const e of["dragenter","dragover"])t.addEventListener(e,a=>{a.preventDefault(),t.classList.add("dragover")});for(const e of["dragleave","drop"])t.addEventListener(e,()=>t.classList.remove("dragover"));return t.addEventListener("drop",e=>{e.preventDefault(),s(e.dataTransfer?.files)}),window.addEventListener("dragover",e=>e.preventDefault()),window.addEventListener("drop",e=>e.preventDefault()),{busy(e){t.classList.add("busy"),n&&e&&(n.textContent=e)},done(){t.classList.remove("busy"),n&&(n.textContent=o)}}}function v(r){return l(r===1?"reading.one":"reading.many",{count:r})}export{v as readingLabel,c as wireFilePicker};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./phrases.js';
+export function wireFilePicker({input,dropzone,onFiles,idleTitle}){
+const titleEl=dropzone.querySelector('.dropzone-title');
+const idle=idleTitle??titleEl?.textContent??'';
+const hand=(files)=>{
+const picked=Array.from(files??[]);
+if(picked.length)onFiles(picked);
+};
+input.addEventListener('change',()=>{
+const picked=Array.from(input.files);
+input.value='';
+hand(picked);
+});
+for(const type of['dragenter','dragover']){
+dropzone.addEventListener(type,(event)=>{
+event.preventDefault();
+dropzone.classList.add('dragover');
+});
+}
+for(const type of['dragleave','drop']){
+dropzone.addEventListener(type,()=>dropzone.classList.remove('dragover'));
+}
+dropzone.addEventListener('drop',(event)=>{
+event.preventDefault();
+hand(event.dataTransfer?.files);
+});
+window.addEventListener('dragover',(event)=>event.preventDefault());
+window.addEventListener('drop',(event)=>event.preventDefault());
+return{
+busy(text){
+dropzone.classList.add('busy');
+if(titleEl&&text)titleEl.textContent=text;
+},
+done(){
+dropzone.classList.remove('busy');
+if(titleEl)titleEl.textContent=idle;
+},
+};
+}
+export function readingLabel(count){
+return phrase(count===1?'reading.one':'reading.many',{count});
+}

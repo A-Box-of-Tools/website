@@ -1,2 +1,34 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function n(t){return!Number.isFinite(t)||t<0?"0 bytes":t<1024?`${Math.round(t)} bytes`:t<1024*1024?`${(t/1024).toFixed(t<10240?1:0)} KB`:`${(t/(1024*1024)).toFixed(2)} MB`}function u(t,r){if(!t)return"";const e=Math.round((t-r)/t*100);return e===0?"about the same size":e>0?`${e}% smaller`:`${-e}% larger`}function i(t,r){if(!r)return"0%";const e=t/r*100;return e>0&&e<1?"<1%":e>99&&t<r?"99%":`${Math.round(e)}%`}function o(t){return t>0?`${Math.round(t)} DPI`:""}function s(t,r){return`${t} \xD7 ${r}`}function c(t){return`${t.replace(/\.pdf$/i,"")||"document"}-compressed.pdf`}function f(t,r,e=`${r}s`){return`${t} ${t===1?r:e}`}export{n as bytes,u as change,f as count,s as dimensions,o as dpi,c as outName,i as share};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function bytes(n){
+if(!Number.isFinite(n)||n<0)return'0 bytes';
+if(n<1024)return`${Math.round(n)} bytes`;
+if(n<1024*1024)return`${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
+return`${(n / (1024 * 1024)).toFixed(2)} MB`;
+}
+export function change(before,after){
+if(!before)return'';
+const delta=Math.round(((before-after)/before)*100);
+if(delta===0)return'about the same size';
+return delta>0?`${delta}% smaller`:`${-delta}% larger`;
+}
+export function share(part,whole){
+if(!whole)return'0%';
+const percent=(part/whole)*100;
+if(percent>0&&percent<1)return'<1%';
+if(percent>99&&part<whole)return'99%';
+return`${Math.round(percent)}%`;
+}
+export function dpi(value){
+if(!(value>0))return'';
+return`${Math.round(value)} DPI`;
+}
+export function dimensions(width,height){
+return`${width} × ${height}`;
+}
+export function outName(name){
+const stem=name.replace(/\.pdf$/i,'')||'document';
+return`${stem}-compressed.pdf`;
+}
+export function count(n,singular,plural=`${singular}s`){
+return`${n} ${n === 1 ? singular : plural}`;
+}

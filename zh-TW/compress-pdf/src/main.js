@@ -1,2 +1,412 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as f}from"./shared/phrases.js";import{compressDocument as T,describeSettings as z,PRESETS as P}from"./compress.js";import{takeInventory as F,verdict as M}from"./inventory.js";import{EncryptedPdfError as R,NotAPdfError as k,PdfDocument as q}from"./reader.js";import{wireFilePicker as B,readingLabel as D}from"./shared/file-picker.js";import{bytes as c,change as A,count as u,dimensions as j,dpi as v,outName as I,share as O}from"./format.js";const o=e=>document.getElementById(e),t={dropzone:o("dropzone"),fileInput:o("file-input"),fileRow:o("file-row"),fileName:o("file-name"),fileFacts:o("file-facts"),clearFile:o("clear-file"),loadError:o("load-error"),loadNote:o("load-note"),inventoryCard:o("inventory-card"),verdict:o("verdict"),breakdownBar:o("breakdown-bar"),breakdownList:o("breakdown-list"),inventoryNotes:o("inventory-notes"),settingsCard:o("settings-card"),presets:o("presets"),dpiValue:o("dpi-value"),qualityValue:o("quality-value"),qualityOut:o("quality-out"),stripMeta:o("strip-meta"),settingsSummary:o("settings-summary"),runCard:o("run-card"),run:o("run"),cancel:o("cancel"),progress:o("progress"),progressBar:o("progress-bar"),progressLabel:o("progress-label"),runError:o("run-error"),result:o("result"),resultSize:o("result-size"),resultSub:o("result-sub"),download:o("download"),checkLine:o("check-line"),resultFacts:o("result-facts"),perImage:o("per-image"),imageList:o("image-list"),privacyToggle:o("privacy-toggle"),privacyPanel:o("privacy-panel"),networkCount:o("network-count"),networkDot:o("network-dot"),offlineStatus:o("offline-status"),offlineDot:o("offline-dot")};let p=null,m="",h=null;const $=B({input:t.fileInput,dropzone:t.dropzone,onFiles(e){V(e[0])}});async function V(e){if(!(!e||h)){E(),$.busy(D(1));try{if(!W(e))throw new k("That is not a PDF. This tool only works on PDF files.");const n=new Uint8Array(await e.arrayBuffer()),r=await q.open(n),a=F(r);p={file:e,bytes:n,inventory:a},t.fileName.textContent=e.name,t.fileFacts.textContent=`${c(n.length)} \xB7 ${u(a.pages,"page")}`,t.fileRow.hidden=!1,U(a),t.inventoryCard.hidden=!1,t.settingsCard.hidden=!1,t.runCard.hidden=!1,g(),r.repaired?x("This file's cross-reference table did not match its contents, so it was read by scanning for objects instead. That is a repair, and it worked, but check the result before you send it anywhere."):r.incremental&&x("This document has been edited and re-saved at least once, so it is carrying older copies of objects that nothing points at any more. Those are left out of the rewrite.")}catch(n){b(C(n))}finally{$.done()}}}function W(e){return e.type==="application/pdf"||/\.pdf$/i.test(e.name)}function C(e){return e instanceof R||e instanceof k?e.message:e?.name==="AbortError"?"Cancelled.":`This PDF could not be read: ${e?.message??e}`}function E(){p=null,t.fileRow.hidden=!0,t.inventoryCard.hidden=!0,t.settingsCard.hidden=!0,t.runCard.hidden=!0,t.result.hidden=!0,t.progress.hidden=!0,t.loadError.hidden=!0,t.loadNote.hidden=!0,t.runError.hidden=!0,S()}function b(e){t.loadError.textContent=e,t.loadError.hidden=!1}function x(e){t.loadNote.textContent=e,t.loadNote.hidden=!1}t.clearFile.addEventListener("click",()=>{E(),t.dropzone.focus()});function U(e){const n=M(e);t.verdict.textContent=n.text,t.verdict.className=`verdict ${n.tone}`,t.breakdownBar.replaceChildren(),t.breakdownList.replaceChildren();for(const r of e.groups){const a=document.createElement("span");a.className=`slice slice-${r.id}`,a.style.flexGrow=String(r.bytes),a.title=`${r.label}: ${c(r.bytes)}`,t.breakdownBar.append(a);const i=document.createElement("li"),s=document.createElement("span");s.className=`key key-${r.id}`;const d=document.createElement("span");d.className="key-label",d.textContent=r.label;const l=document.createElement("span");l.className="key-size",l.textContent=`${c(r.bytes)} \xB7 ${O(r.bytes,e.total)}`,i.append(s,d,l),t.breakdownList.append(i)}t.inventoryNotes.textContent=K(e)}function K(e){const n=[`${c(e.total)} across ${u(e.pages,"page")}.`],r=e.groups.find(s=>s.id==="images");r&&n.push(`${u(r.count,"image")} embedded.`);const a=e.groups.find(s=>s.id==="orphans");a&&n.push(`${c(a.bytes)} of it is no longer referenced by anything - left behind by an earlier edit - and will simply not be copied over.`);const i=e.groups.find(s=>s.id==="fonts");return i&&i.bytes>e.total*.15&&n.push("The embedded fonts are a large share of this file. They are kept whole: subsetting a font is how a document ends up missing characters when somebody else opens it."),n.join(" ")}t.presets.addEventListener("change",()=>{const e=P[G()];e&&(t.dpiValue.value=String(e.dpi),t.qualityValue.value=String(Math.round(e.quality*100)),g())});for(const e of[t.dpiValue,t.qualityValue])e.addEventListener("input",()=>{for(const n of t.presets.querySelectorAll("input"))n.checked=!1;g()});t.stripMeta.addEventListener("change",g);function G(){return t.presets.querySelector("input:checked")?.value??""}function N(){return{dpi:Math.max(0,Math.min(1200,Number(t.dpiValue.value)||0)),quality:Math.max(.3,Math.min(.95,(Number(t.qualityValue.value)||68)/100)),stripMeta:t.stripMeta.checked}}function g(){const e=N();t.qualityOut.textContent=String(Math.round(e.quality*100)),t.settingsSummary.textContent=z(e)}t.run.addEventListener("click",H),t.cancel.addEventListener("click",()=>h?.abort());async function H(){if(!p||h)return;h=new AbortController,t.run.disabled=!0,t.cancel.hidden=!1,t.result.hidden=!0,t.runError.hidden=!0,t.progress.hidden=!1,y(0,1,"Reading the document"),S();let e=!1;try{const n=await T(p.bytes,N(),{signal:h.signal,onStage:r=>y(null,null,r),onProgress:(r,a)=>y(r,a,null)});_(n)}catch(n){n?.name==="AbortError"?(e=!0,t.progressLabel.textContent="Cancelled. Nothing was changed; press Compress to start again."):(t.runError.textContent=C(n),t.runError.hidden=!1)}finally{h=null,t.run.disabled=!1,t.cancel.hidden=!0,t.progress.hidden=!e,e&&(t.progressBar.style.width="0%")}}let L="";function y(e,n,r){if(r!=null&&(L=r),e!=null&&n){const a=Math.round(e/Math.max(1,n)*100);t.progressBar.style.width=`${a}%`}t.progressLabel.textContent=`${L}...`}function _(e){const n=e.before-e.after;t.resultSize.textContent=n>0?`${c(e.before)} \u2192 ${c(e.after)}`:`${c(e.after)} - no smaller than it started`,t.resultSub.textContent=n>0?`${A(e.before,e.after)}, ${c(n)} saved.`:"Everything in this file was already about as small as it goes. The original is the better file to keep.",t.checkLine.textContent=e.check.ok?`Checked: ${e.check.text}`:`This run did not check out - ${e.check.text}. Keep your original.`,t.checkLine.className=`check-line ${e.check.ok?"good":"bad"}`,J(e),Q(e.images),m=URL.createObjectURL(e.blob),t.download.href=m,t.download.download=I(p.file.name),t.download.hidden=!e.check.ok,t.result.hidden=!1}function J(e){const n=e.images.filter(s=>s.action!=="kept"),r=n.filter(s=>s.action==="downsampled"),a=[];e.images.length===0?a.push("No images in this document, so nothing was re-encoded. The saving is from repacking it and leaving out what nothing referred to."):a.push(`${u(n.length,"image")} of ${e.images.length} re-encoded${r.length?`, ${r.length} of them with fewer pixels`:""}.`);const i=e.images.filter(s=>s.action==="kept"&&s.note);if(i.length){const s=new Map;for(const d of i)s.set(d.note,(s.get(d.note)??0)+1);for(const[d,l]of s)a.push(`${u(l,"image")} left alone: ${d}.`)}e.metadataRemoved&&a.push(`${u(e.metadataRemoved,"entry","entries")} of application metadata removed.`),e.incremental&&a.push("Older, superseded copies of objects from earlier edits were not copied over."),e.repaired&&a.push("The original's cross-reference table was broken and had to be rebuilt by scanning. Check this file before sending it on."),t.resultFacts.replaceChildren(...a.map(s=>{const d=document.createElement("li");return d.textContent=s,d}))}function Q(e){t.perImage.hidden=e.length===0,e.length&&t.imageList.replaceChildren(...e.map(n=>{const r=document.createElement("li"),a=document.createElement("span");a.className="image-what",a.textContent=n.action==="kept"?`Kept: ${n.note}`:`${n.action==="downsampled"?"Downsampled":"Recompressed"} to ${j(n.width,n.height)}${n.dpiAfter?` (${v(n.dpiAfter)})`:""}`;const i=document.createElement("span");i.className="image-size",i.textContent=n.after<n.before?`${c(n.before)} \u2192 ${c(n.after)}`:c(n.before);const s=document.createElement("span");return s.className="image-was",s.textContent=n.dpiBefore?`was ${v(n.dpiBefore)}`:"",r.append(a,s,i),r}))}function S(){m&&URL.revokeObjectURL(m),m="",t.download.removeAttribute("href")}t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const X=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function Y(){const e=new Set,n=new Set,r=a=>{for(const l of a){if(l.name.startsWith("blob:")||l.name.startsWith("data:"))continue;const w=new URL(l.name,location.href);w.origin!==location.origin&&(X.test(w.hostname)?e.add(w.hostname):n.add(w.hostname))}const i=performance.getEntriesByType("resource").filter(l=>!l.name.startsWith("blob:")&&!l.name.startsWith("data:")).length,s=n.size===0,d=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a document or a byte of one.`;t.networkCount.textContent=s?`your document has gone nowhere. ${i} files loaded, all of them this page's own.${d}`:`something contacted ${[...n].join(", ")}, which this tool never does. Treat that as worth investigating.${d}`,t.networkCount.className=s?"good":"warn",t.networkDot.className=`live-dot ${s?"good":"warn"}`};r(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>r(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function Z(){const e=(n,r)=>{t.offlineStatus.textContent=n,t.offlineDot.className="live-dot",r&&(t.offlineStatus.title=r,console.info("Offline caching unavailable:",r))};if(!("serviceWorker"in navigator)){e(f("offline.none"));return}if(!window.isSecureContext){e(f("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=f("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(n){e(f("offline.failed"),n.message)}}window.addEventListener("error",e=>{b(f("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{b(f("error.broke",{detail:e.reason?.message??e.reason}))}),g(),Y(),Z(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{
+compressDocument,describeSettings,PRESETS,
+}from'./compress.js';
+import{takeInventory,verdict}from'./inventory.js';
+import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./reader.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{
+bytes as humanBytes,change,count,dimensions,dpi,outName,share,
+}from'./format.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+fileRow:$('file-row'),
+fileName:$('file-name'),
+fileFacts:$('file-facts'),
+clearFile:$('clear-file'),
+loadError:$('load-error'),
+loadNote:$('load-note'),
+inventoryCard:$('inventory-card'),
+verdict:$('verdict'),
+breakdownBar:$('breakdown-bar'),
+breakdownList:$('breakdown-list'),
+inventoryNotes:$('inventory-notes'),
+settingsCard:$('settings-card'),
+presets:$('presets'),
+dpiValue:$('dpi-value'),
+qualityValue:$('quality-value'),
+qualityOut:$('quality-out'),
+stripMeta:$('strip-meta'),
+settingsSummary:$('settings-summary'),
+runCard:$('run-card'),
+run:$('run'),
+cancel:$('cancel'),
+progress:$('progress'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+runError:$('run-error'),
+result:$('result'),
+resultSize:$('result-size'),
+resultSub:$('result-sub'),
+download:$('download'),
+checkLine:$('check-line'),
+resultFacts:$('result-facts'),
+perImage:$('per-image'),
+imageList:$('image-list'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let loaded=null;
+let downloadUrl='';
+let running=null;
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+load(files[0]);
+},
+});
+async function load(file){
+if(!file||running)return;
+reset();
+picker.busy(readingLabel(1));
+try{
+if(!looksLikePdf(file)){
+throw new NotAPdfError('That is not a PDF. This tool only works on PDF files.');
+}
+const raw=new Uint8Array(await file.arrayBuffer());
+const doc=await PdfDocument.open(raw);
+const inventory=takeInventory(doc);
+loaded={file,bytes:raw,inventory};
+el.fileName.textContent=file.name;
+el.fileFacts.textContent=`${humanBytes(raw.length)} · `
++`${count(inventory.pages, 'page')}`;
+el.fileRow.hidden=false;
+renderInventory(inventory);
+el.inventoryCard.hidden=false;
+el.settingsCard.hidden=false;
+el.runCard.hidden=false;
+renderSettings();
+if(doc.repaired){
+note('This file\'s cross-reference table did not match its contents, so it was '
++'read by scanning for objects instead. That is a repair, and it worked, but '
++'check the result before you send it anywhere.');
+}else if(doc.incremental){
+note('This document has been edited and re-saved at least once, so it is carrying '
++'older copies of objects that nothing points at any more. Those are left out '
++'of the rewrite.');
+}
+}catch(error){
+showLoadError(messageFor(error));
+}finally{
+picker.done();
+}
+}
+function looksLikePdf(file){
+return file.type==='application/pdf'||/\.pdf$/i.test(file.name);
+}
+function messageFor(error){
+if(error instanceof EncryptedPdfError||error instanceof NotAPdfError){
+return error.message;
+}
+if(error?.name==='AbortError')return'Cancelled.';
+return`This PDF could not be read: ${error?.message ?? error}`;
+}
+function reset(){
+loaded=null;
+el.fileRow.hidden=true;
+el.inventoryCard.hidden=true;
+el.settingsCard.hidden=true;
+el.runCard.hidden=true;
+el.result.hidden=true;
+el.progress.hidden=true;
+el.loadError.hidden=true;
+el.loadNote.hidden=true;
+el.runError.hidden=true;
+releaseDownload();
+}
+function showLoadError(text){
+el.loadError.textContent=text;
+el.loadError.hidden=false;
+}
+function note(text){
+el.loadNote.textContent=text;
+el.loadNote.hidden=false;
+}
+el.clearFile.addEventListener('click',()=>{
+reset();
+el.dropzone.focus();
+});
+function renderInventory(inventory){
+const said=verdict(inventory);
+el.verdict.textContent=said.text;
+el.verdict.className=`verdict ${said.tone}`;
+el.breakdownBar.replaceChildren();
+el.breakdownList.replaceChildren();
+for(const group of inventory.groups){
+const slice=document.createElement('span');
+slice.className=`slice slice-${group.id}`;
+slice.style.flexGrow=String(group.bytes);
+slice.title=`${group.label}: ${humanBytes(group.bytes)}`;
+el.breakdownBar.append(slice);
+const row=document.createElement('li');
+const key=document.createElement('span');
+key.className=`key key-${group.id}`;
+const label=document.createElement('span');
+label.className='key-label';
+label.textContent=group.label;
+const size=document.createElement('span');
+size.className='key-size';
+size.textContent=`${humanBytes(group.bytes)} · ${share(group.bytes, inventory.total)}`;
+row.append(key,label,size);
+el.breakdownList.append(row);
+}
+el.inventoryNotes.textContent=notesFor(inventory);
+}
+function notesFor(inventory){
+const parts=[`${humanBytes(inventory.total)} across `
++`${count(inventory.pages, 'page')}.`];
+const images=inventory.groups.find((group)=>group.id==='images');
+if(images)parts.push(`${count(images.count, 'image')} embedded.`);
+const orphans=inventory.groups.find((group)=>group.id==='orphans');
+if(orphans){
+parts.push(`${humanBytes(orphans.bytes)} of it is no longer referenced by `
++'anything - left behind by an earlier edit - and will simply not be copied over.');
+}
+const fonts=inventory.groups.find((group)=>group.id==='fonts');
+if(fonts&&fonts.bytes>inventory.total*0.15){
+parts.push('The embedded fonts are a large share of this file. They are kept '
++'whole: subsetting a font is how a document ends up missing characters '
++'when somebody else opens it.');
+}
+return parts.join(' ');
+}
+el.presets.addEventListener('change',()=>{
+const chosen=PRESETS[presetName()];
+if(!chosen)return;
+el.dpiValue.value=String(chosen.dpi);
+el.qualityValue.value=String(Math.round(chosen.quality*100));
+renderSettings();
+});
+for(const input of[el.dpiValue,el.qualityValue]){
+input.addEventListener('input',()=>{
+for(const radio of el.presets.querySelectorAll('input'))radio.checked=false;
+renderSettings();
+});
+}
+el.stripMeta.addEventListener('change',renderSettings);
+function presetName(){
+return el.presets.querySelector('input:checked')?.value??'';
+}
+function settings(){
+return{
+dpi:Math.max(0,Math.min(1200,Number(el.dpiValue.value)||0)),
+quality:Math.max(0.3,Math.min(0.95,(Number(el.qualityValue.value)||68)/100)),
+stripMeta:el.stripMeta.checked,
+};
+}
+function renderSettings(){
+const chosen=settings();
+el.qualityOut.textContent=String(Math.round(chosen.quality*100));
+el.settingsSummary.textContent=describeSettings(chosen);
+}
+el.run.addEventListener('click',run);
+el.cancel.addEventListener('click',()=>running?.abort());
+async function run(){
+if(!loaded||running)return;
+running=new AbortController();
+el.run.disabled=true;
+el.cancel.hidden=false;
+el.result.hidden=true;
+el.runError.hidden=true;
+el.progress.hidden=false;
+setProgress(0,1,'Reading the document');
+releaseDownload();
+let cancelled=false;
+try{
+const result=await compressDocument(loaded.bytes,settings(),{
+signal:running.signal,
+onStage:(stage)=>setProgress(null,null,stage),
+onProgress:(done,total)=>setProgress(done,total,null),
+});
+showResult(result);
+}catch(error){
+if(error?.name==='AbortError'){
+cancelled=true;
+el.progressLabel.textContent='Cancelled. Nothing was changed; press Compress to start again.';
+}else{
+el.runError.textContent=messageFor(error);
+el.runError.hidden=false;
+}
+}finally{
+running=null;
+el.run.disabled=false;
+el.cancel.hidden=true;
+el.progress.hidden=!cancelled;
+if(cancelled)el.progressBar.style.width='0%';
+}
+}
+let stageText='';
+function setProgress(done,total,stage){
+if(stage!==null&&stage!==undefined)stageText=stage;
+if(done!==null&&done!==undefined&&total){
+const percent=Math.round((done/Math.max(1,total))*100);
+el.progressBar.style.width=`${percent}%`;
+}
+el.progressLabel.textContent=`${stageText}...`;
+}
+function showResult(result){
+const saved=result.before-result.after;
+el.resultSize.textContent=saved>0
+?`${humanBytes(result.before)} → ${humanBytes(result.after)}`
+:`${humanBytes(result.after)} - no smaller than it started`;
+el.resultSub.textContent=saved>0
+?`${change(result.before, result.after)}, ${humanBytes(saved)} saved.`
+:'Everything in this file was already about as small as it goes. The original '
++'is the better file to keep.';
+el.checkLine.textContent=result.check.ok
+?`Checked: ${result.check.text}`
+:`This run did not check out - ${result.check.text}. Keep your original.`;
+el.checkLine.className=`check-line ${result.check.ok ? 'good' : 'bad'}`;
+renderFacts(result);
+renderImages(result.images);
+downloadUrl=URL.createObjectURL(result.blob);
+el.download.href=downloadUrl;
+el.download.download=outName(loaded.file.name);
+el.download.hidden=!result.check.ok;
+el.result.hidden=false;
+}
+function renderFacts(result){
+const touched=result.images.filter((image)=>image.action!=='kept');
+const shrunk=touched.filter((image)=>image.action==='downsampled');
+const facts=[];
+if(result.images.length===0){
+facts.push('No images in this document, so nothing was re-encoded. The saving '
++'is from repacking it and leaving out what nothing referred to.');
+}else{
+facts.push(`${count(touched.length, 'image')} of ${result.images.length} re-encoded`
++`${shrunk.length ? `, ${shrunk.length} of them with fewer pixels` : ''}.`);
+}
+const kept=result.images.filter((image)=>image.action==='kept'&&image.note);
+if(kept.length){
+const reasons=new Map();
+for(const image of kept)reasons.set(image.note,(reasons.get(image.note)??0)+1);
+for(const[reason,howMany]of reasons){
+facts.push(`${count(howMany, 'image')} left alone: ${reason}.`);
+}
+}
+if(result.metadataRemoved){
+facts.push(`${count(result.metadataRemoved, 'entry', 'entries')} of `
++'application metadata removed.');
+}
+if(result.incremental){
+facts.push('Older, superseded copies of objects from earlier edits were not copied over.');
+}
+if(result.repaired){
+facts.push('The original\'s cross-reference table was broken and had to be rebuilt '
++'by scanning. Check this file before sending it on.');
+}
+el.resultFacts.replaceChildren(...facts.map((text)=>{
+const row=document.createElement('li');
+row.textContent=text;
+return row;
+}));
+}
+function renderImages(images){
+el.perImage.hidden=images.length===0;
+if(!images.length)return;
+el.imageList.replaceChildren(...images.map((image)=>{
+const row=document.createElement('li');
+const left=document.createElement('span');
+left.className='image-what';
+left.textContent=image.action==='kept'
+?`Kept: ${image.note}`
+:`${image.action === 'downsampled' ? 'Downsampled' : 'Recompressed'} to `
++`${dimensions(image.width, image.height)}`
++`${image.dpiAfter ? ` (${dpi(image.dpiAfter)})` : ''}`;
+const right=document.createElement('span');
+right.className='image-size';
+right.textContent=image.after<image.before
+?`${humanBytes(image.before)} → ${humanBytes(image.after)}`
+:humanBytes(image.before);
+const was=document.createElement('span');
+was.className='image-was';
+was.textContent=image.dpiBefore?`was ${dpi(image.dpiBefore)}`:'';
+row.append(left,was,right);
+return row;
+}));
+}
+function releaseDownload(){
+if(downloadUrl)URL.revokeObjectURL(downloadUrl);
+downloadUrl='';
+el.download.removeAttribute('href');
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a document or a byte of one.`;
+el.networkCount.textContent=clean
+?`your document has gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+renderSettings();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

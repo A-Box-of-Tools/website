@@ -1,7 +1,146 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{parseJson as g,printJson as p}from"./json.js";import{parseYaml as $,printYaml as d}from"./yaml.js";import{parseXml as w}from"./xml.js";function N(t,{indent:e=2}={}){return d(g(t),{indent:e})}function S(t,{indent:e="  ",sortKeys:r=!1}={}){return`${p(f($(t)),{indent:e,sortKeys:r})}
-`}function f(t){switch(t.t){case"map":return{t:"map",pairs:t.pairs.map(e=>({key:e.key,value:f(e.value)}))};case"seq":return{t:"seq",items:t.items.map(f)};case"str":return{t:"str",value:t.value};default:return t}}function j(t,{indent:e="  ",root:r="root"}={}){const s=g(t),a=[],o=u=>e.repeat(u),n=(u,l,i)=>{const m=h(u);switch(l.t){case"map":if(!l.pairs.length){a.push(`${o(i)}<${m}/>`);return}a.push(`${o(i)}<${m}>`);for(const c of l.pairs)n(c.key,c.value,i+1);a.push(`${o(i)}</${m}>`);return;case"seq":if(!l.items.length){a.push(`${o(i)}<${m}/>`);return}for(const c of l.items)n(u,c,i);return;case"null":a.push(`${o(i)}<${m}/>`);return;default:a.push(`${o(i)}<${m}>${A(b(l))}</${m}>`)}};if(a.push('<?xml version="1.0" encoding="UTF-8"?>'),s.t==="seq"){a.push(`<${h(r)}>`);for(const u of s.items)n("item",u,1);a.push(`</${h(r)}>`)}else n(r,s,0);return`${a.join(`
-`)}
-`}function b(t){return t.t==="num"?t.raw:t.t==="bool"?t.value?"true":"false":t.value}function h(t){const e=String(t).replace(/[^A-Za-z0-9_.:-]/g,"_");return/^[A-Za-z_]/.test(e)?e:`_${e}`}function A(t){return String(t).replace(/[&<>]/g,e=>({"&":"&amp;","<":"&lt;",">":"&gt;"})[e])}function J(t,{indent:e="  "}={}){const s=w(t).filter(n=>n.t==="element");if(!s.length)return`${p({t:"map",pairs:[]},{indent:e})}
-`;const a=s[0],o={t:"map",pairs:[{key:a.name,value:v(a)}]};return`${p(o,{indent:e})}
-`}function v(t){const e=[];for(const n of t.attrs)e.push({key:`@${n.name}`,value:{t:"str",value:x(n.value??"")}});const r=t.children.filter(n=>n.t==="element"),s=t.children.filter(n=>n.t==="text"||n.t==="cdata").map(n=>n.t==="cdata"?n.text:x(n.text)).join("").trim();if(!r.length)return e.length?(s!==""&&e.push({key:"#text",value:{t:"str",value:s}}),{t:"map",pairs:e}):s===""?{t:"null"}:{t:"str",value:s};const a=[],o=new Map;for(const n of r)o.has(n.name)||(o.set(n.name,[]),a.push(n.name)),o.get(n.name).push(v(n));for(const n of a){const u=o.get(n);e.push({key:n,value:u.length===1?u[0]:{t:"seq",items:u}})}return s!==""&&e.push({key:"#text",value:{t:"str",value:s}}),{t:"map",pairs:e}}function x(t){return t.replace(/&(lt|gt|amp|quot|apos|#[0-9]+|#[xX][0-9a-fA-F]+);/g,(e,r)=>{if(r[0]==="#"){const s=r[1]==="x"||r[1]==="X"?parseInt(r.slice(2),16):parseInt(r.slice(1),10);return Number.isFinite(s)?String.fromCodePoint(s):e}return{lt:"<",gt:">",amp:"&",quot:'"',apos:"'"}[r]})}const y=[{id:"json-yaml",name:"JSON to YAML",note:"Nothing is lost: every JSON document is already a YAML document. Strings are only quoted where leaving them bare would change what they say.",run:(t,e)=>N(t,{indent:e.spaces}),output:"yaml"},{id:"yaml-json",name:"YAML to JSON",note:"Comments are lost, because JSON has nowhere to put one. Anchors, aliases and tags stop the conversion rather than being guessed at.",run:(t,e)=>S(t,{indent:e.indent,sortKeys:e.sortKeys}),output:"json"},{id:"json-xml",name:"JSON to XML",note:"An array becomes a repeated element, which is the only shape that reads back. An empty object and an empty string both come out as an empty element.",run:(t,e)=>j(t,{indent:e.indent,root:e.root||"root"}),output:"xml"},{id:"xml-json",name:"XML to JSON",note:"Attributes become members named with an @, an element's own text becomes #text where it has to share, and every value stays a string - XML never said which were numbers.",run:(t,e)=>J(t,{indent:e.indent}),output:"json"}],M=t=>y.find(e=>e.id===t)??y[0];export{y as CONVERSIONS,M as conversionById,j as jsonToXml,N as jsonToYaml,J as xmlToJson,S as yamlToJson};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{parseJson,printJson}from'./json.js';
+import{parseYaml,printYaml}from'./yaml.js';
+import{parseXml,printXml}from'./xml.js';
+export function jsonToYaml(text,{indent=2}={}){
+return printYaml(parseJson(text),{indent});
+}
+export function yamlToJson(text,{indent='  ',sortKeys=false}={}){
+return`${printJson(stripRaw(parseYaml(text)), { indent, sortKeys })}\n`;
+}
+function stripRaw(node){
+switch(node.t){
+case'map':return{t:'map',pairs:node.pairs.map((pair)=>({key:pair.key,value:stripRaw(pair.value)}))};
+case'seq':return{t:'seq',items:node.items.map(stripRaw)};
+case'str':return{t:'str',value:node.value};
+default:return node;
+}
+}
+export function jsonToXml(text,{indent='  ',root='root'}={}){
+const data=parseJson(text);
+const lines=[];
+const pad=(depth)=>indent.repeat(depth);
+const write=(name,node,depth)=>{
+const tag=xmlName(name);
+switch(node.t){
+case'map':
+if(!node.pairs.length){lines.push(`${pad(depth)}<${tag}/>`);return;}
+lines.push(`${pad(depth)}<${tag}>`);
+for(const pair of node.pairs)write(pair.key,pair.value,depth+1);
+lines.push(`${pad(depth)}</${tag}>`);
+return;
+case'seq':
+if(!node.items.length){lines.push(`${pad(depth)}<${tag}/>`);return;}
+for(const item of node.items)write(name,item,depth);
+return;
+case'null':
+lines.push(`${pad(depth)}<${tag}/>`);
+return;
+default:
+lines.push(`${pad(depth)}<${tag}>${escapeXml(scalarText(node))}</${tag}>`);
+}
+};
+lines.push('<?xml version="1.0" encoding="UTF-8"?>');
+if(data.t==='seq'){
+lines.push(`<${xmlName(root)}>`);
+for(const item of data.items)write('item',item,1);
+lines.push(`</${xmlName(root)}>`);
+}else{
+write(root,data,0);
+}
+return`${lines.join('\n')}\n`;
+}
+function scalarText(node){
+if(node.t==='num')return node.raw;
+if(node.t==='bool')return node.value?'true':'false';
+return node.value;
+}
+function xmlName(key){
+const cleaned=String(key).replace(/[^A-Za-z0-9_.:-]/g,'_');
+return/^[A-Za-z_]/.test(cleaned)?cleaned:`_${cleaned}`;
+}
+function escapeXml(text){
+return String(text).replace(/[&<>]/g,(ch)=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));
+}
+export function xmlToJson(text,{indent='  '}={}){
+const nodes=parseXml(text);
+const elements=nodes.filter((node)=>node.t==='element');
+if(!elements.length){
+return`${printJson({ t: 'map', pairs: [] }, { indent })}\n`;
+}
+const root=elements[0];
+const data={t:'map',pairs:[{key:root.name,value:elementData(root)}]};
+return`${printJson(data, { indent })}\n`;
+}
+function elementData(element){
+const pairs=[];
+for(const attr of element.attrs){
+pairs.push({key:`@${attr.name}`,value:{t:'str',value:unescapeXml(attr.value??'')}});
+}
+const children=element.children.filter((child)=>child.t==='element');
+const text=element.children
+.filter((child)=>child.t==='text'||child.t==='cdata')
+.map((child)=>(child.t==='cdata'?child.text:unescapeXml(child.text)))
+.join('')
+.trim();
+if(!children.length){
+if(!pairs.length){
+return text===''?{t:'null'}:{t:'str',value:text};
+}
+if(text!=='')pairs.push({key:'#text',value:{t:'str',value:text}});
+return{t:'map',pairs};
+}
+const order=[];
+const byName=new Map();
+for(const child of children){
+if(!byName.has(child.name)){byName.set(child.name,[]);order.push(child.name);}
+byName.get(child.name).push(elementData(child));
+}
+for(const name of order){
+const list=byName.get(name);
+pairs.push({key:name,value:list.length===1?list[0]:{t:'seq',items:list}});
+}
+if(text!=='')pairs.push({key:'#text',value:{t:'str',value:text}});
+return{t:'map',pairs};
+}
+function unescapeXml(text){
+return text.replace(/&(lt|gt|amp|quot|apos|#[0-9]+|#[xX][0-9a-fA-F]+);/g,(whole,body)=>{
+if(body[0]==='#'){
+const code=body[1]==='x'||body[1]==='X'
+?parseInt(body.slice(2),16):parseInt(body.slice(1),10);
+return Number.isFinite(code)?String.fromCodePoint(code):whole;
+}
+return{lt:'<',gt:'>',amp:'&',quot:'"',apos:"'"}[body];
+});
+}
+export const CONVERSIONS=[
+{
+id:'json-yaml',
+name:'JSON to YAML',
+note:'Nothing is lost: every JSON document is already a YAML document. Strings are only quoted where leaving them bare would change what they say.',
+run:(text,options)=>jsonToYaml(text,{indent:options.spaces}),
+output:'yaml',
+},
+{
+id:'yaml-json',
+name:'YAML to JSON',
+note:'Comments are lost, because JSON has nowhere to put one. Anchors, aliases and tags stop the conversion rather than being guessed at.',
+run:(text,options)=>yamlToJson(text,{indent:options.indent,sortKeys:options.sortKeys}),
+output:'json',
+},
+{
+id:'json-xml',
+name:'JSON to XML',
+note:'An array becomes a repeated element, which is the only shape that reads back. An empty object and an empty string both come out as an empty element.',
+run:(text,options)=>jsonToXml(text,{indent:options.indent,root:options.root||'root'}),
+output:'xml',
+},
+{
+id:'xml-json',
+name:'XML to JSON',
+note:'Attributes become members named with an @, an element\'s own text becomes #text where it has to share, and every value stays a string - XML never said which were numbers.',
+run:(text,options)=>xmlToJson(text,{indent:options.indent}),
+output:'json',
+},
+];
+export const conversionById=(id)=>CONVERSIONS.find((item)=>item.id===id)??CONVERSIONS[0];

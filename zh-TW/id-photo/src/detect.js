@@ -1,2 +1,416 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{deltaE as S,rgbToLab as G}from"./background.js";const cn=480,J=24,T=.49,N=1.45,Y=.7,P=.5+.5*Math.sqrt(1-Y*Y),V=[[.055,.055],[.09,.06],[.14,.085]],O=(l,e,n)=>Math.min(n,Math.max(e,l));function H(l,e){return l.length?l[O(Math.round((l.length-1)*e),0,l.length-1)]:0}const B=l=>H([...l].sort((e,n)=>e-n),.5);function fn(l){const{width:e,height:n}=l;if(!e||!n)return F();const s=R(l),c=Q(s,e,n);if(!c||c.noise>25)return F();const f=Z(s,c,e,n);if(!f||f.area<e*n*.04)return F();const o=C(f.rows,n);if(o<0)return F();const a=nn(f.rows,o,n);if(a.headWidth<J)return F();const t=[],r=o===0;r&&t.push("top"),c.noise>12&&!r&&t.push("background");const u=d(f,o,a.head,n),i=on(s,f.mask,e,n,{crownY:o,centreX:u,...a});i||t.push("eyes");const p=i?(i.left.y+i.right.y)/2:o+T*a.head,m=i?(i.left.x+i.right.x)/2:u;let x=o+(p-o)/T;const g=a.jawY>p?o+(a.jawY-o)/P:-1;g>0&&Math.abs(g-x)<=(x-o)/6?x=(x+g)/2:t.push("chin");const X={crown:{x:b(f,o,n,u),y:o},chin:{x:m,y:x},leftEye:i?i.left:{x:m-.2*a.headWidth,y:p},rightEye:i?i.right:{x:m+.2*a.headWidth,y:p}};return{marks:K(X,e,n),quality:t.length?"rough":"measured",notes:t}}const F=()=>({marks:null,quality:"none",notes:["background"]});function K(l,e,n){return Object.fromEntries(Object.entries(l).map(([s,c])=>[s,{x:O(Math.round(c.x),0,e-1),y:O(Math.round(c.y),0,n-1)}]))}function R({data:l,width:e,height:n}){const s=new Float32Array(e*n*3);for(let c=0,f=0;c<e*n;c+=1,f+=4){const[o,a,t]=G([l[f],l[f+1],l[f+2]]);s[c*3]=o,s[c*3+1]=a,s[c*3+2]=t}return s}const z=25;function Q(l,e,n){const s=Math.max(2,Math.round(e*.06)),c=Math.max(2,Math.round(n*.06)),f=[];for(let r=0;r<n;r+=1){const u=r<n*.6;for(let i=0;i<e;i+=1){if(!(r<c||u&&(i<s||i>=e-s)))continue;const p=(r*e+i)*3;f.push([l[p],l[p+1],l[p+2]])}}if(f.length<64)return null;const o=[0,1,2].map(r=>B(f.map(u=>u[r]))),a=f.map(r=>S(r,o)).sort((r,u)=>r-u),t=a.filter(r=>r<=z);return t.length<a.length/2?null:{lab:o,noise:H(t,.9)}}function Z(l,e,n,s){const c=n*s,f=O(e.noise*2.2,8,26),o=new Uint8Array(c),a=[0,0,0];for(let y=0;y<c;y+=1)a[0]=l[y*3],a[1]=l[y*3+1],a[2]=l[y*3+2],S(a,e.lab)>f&&(o[y]=1);const t=new Int32Array(c).fill(-1),r=new Int32Array(c),u=[],i=[],p=[];for(let y=0;y<c;y+=1){if(!o[y]||t[y]!==-1)continue;const A=u.length;u.push(0),i.push(s),p.push(0);let k=0;for(r[k]=y,k+=1,t[y]=A;k>0;){k-=1;const M=r[k];u[A]+=1;const h=M%n,E=(M-h)/n;E<i[A]&&(i[A]=E),E>p[A]&&(p[A]=E),h>0&&o[M-1]&&t[M-1]===-1&&(t[M-1]=A,r[k]=M-1,k+=1),h+1<n&&o[M+1]&&t[M+1]===-1&&(t[M+1]=A,r[k]=M+1,k+=1),E>0&&o[M-n]&&t[M-n]===-1&&(t[M-n]=A,r[k]=M-n,k+=1),E+1<s&&o[M+n]&&t[M+n]===-1&&(t[M+n]=A,r[k]=M+n,k+=1)}}if(!u.length)return null;let m=0;for(const y of u)m=Math.max(m,y);let x=u.indexOf(m),g=s;for(let y=0;y<u.length;y+=1)u[y]<m*.25||p[y]-i[y]<s*.14||i[y]<g&&(g=i[y],x=y);const X=new Int32Array(s),L=new Float64Array(s),_=new Uint8Array(c);for(let y=0;y<s;y+=1)for(let A=0;A<n;A+=1)t[y*n+A]===x&&(_[y*n+A]=1,X[y]+=1,L[y]+=A);return $(_,r,n,s),{rows:X,sumX:L,area:u[x],mask:_}}function $(l,e,n,s){const c=n*s,f=new Uint8Array(c);let o=0;const a=t=>{l[t]||f[t]||(f[t]=1,e[o]=t,o+=1)};for(let t=0;t<n;t+=1)a(t),a((s-1)*n+t);for(let t=0;t<s;t+=1)a(t*n),a(t*n+n-1);for(;o>0;){o-=1;const t=e[o],r=t%n,u=(t-r)/n;r>0&&a(t-1),r+1<n&&a(t+1),u>0&&a(t-n),u+1<s&&a(t+n)}for(let t=0;t<c;t+=1)f[t]||(l[t]=1)}function C(l,e){for(let n=0;n+2<e;n+=1)if(l[n]>=3&&l[n+1]>=3&&l[n+2]>=3)return n;return-1}function b(l,e,n,s){const c=Math.max(2,Math.round(n*.03));let f=0,o=0;for(let a=e;a<Math.min(n,e+c);a+=1)f+=l.rows[a],o+=l.sumX[a];return f?o/f:s}function d(l,e,n,s){const c=Math.max(0,Math.round(e+.25*n)),f=Math.min(s,Math.round(e+.65*n));let o=0,a=0;for(let t=c;t<f;t+=1)o+=l.rows[t],a+=l.sumX[t];return o?a/o:0}function w(l,e){const n=new Float64Array(l.length);for(let s=0;s<l.length;s+=1){let c=0,f=0;for(let o=-e;o<=e;o+=1)s+o<0||s+o>=l.length||(c+=l[s+o],f+=1);n[s]=c/f}return n}function nn(l,e,n){const s=w(l,Math.max(1,Math.round(n*.008))),c=n-e;let f=0,o=1/0,a=-1,t=n;for(let u=e;u<n;u+=1){const i=s[u];if(a<0&&i>=f){f=i;continue}if(i<f*.85){if(i<=o)o=i,a=u;else if(i>o*1.35){t=u;break}}}const r=O(f*N,.1*c,.95*c);return{headWidth:f,head:r,neckY:a,jawY:tn(s,e,r,f,t)}}function tn(l,e,n,s,c){if(s<=0)return-1;const f=Math.max(0,Math.round(e+.55*n)),o=Math.min(c,Math.round(e+1.45*n));for(let a=f;a<o;a+=1)if(l[a]<s*Y)return a;return-1}function on(l,e,n,s,c){const{crownY:f,centreX:o,headWidth:a,head:t}=c,r=Math.max(0,Math.round(o-.58*a)),u=Math.min(n,Math.round(o+.58*a)),i=Math.max(0,Math.round(f+.15*t)),p=Math.min(s,Math.round(f+.85*t)),m=u-r,x=p-i;if(m<20||x<14)return null;const g=[];for(let h=i;h<p;h+=1)for(let E=r;E<u;E+=1)g.push(l[(h*n+E)*3]);g.sort((h,E)=>h-E);const X=H(g,.75),L=new Float64Array(m*x),_=new Float64Array(m*x);for(let h=0;h<x;h+=1)for(let E=0;E<m;E+=1){const j=(h+i)*n+(E+r);L[h*m+E]=Math.max(0,X-l[j*3]),_[h*m+E]=e[j]?0:1}const y=W(L,m,x),A=W(_,m,x),k=o-r;let M=null;for(const[h,E]of V){const j=O(Math.round(h*a),3,Math.floor(m/5)),D=O(Math.round(E*a),2,Math.floor(x/5)),I=en(rn(y,A,m,x,j,D),j,a,k);I&&(!M||I.score>M.score)&&(M={...I,bw:j,bh:D})}return M?{left:U(L,m,x,M.l,M.bw,M.bh,r,i),right:U(L,m,x,M.r,M.bw,M.bh,r,i)}:null}function rn(l,e,n,s,c,f){const o=(t,r,u,i)=>q(l,n,t,r,u,i)/((u-t)*(i-r)),a=[];for(let t=0;t+2*f<=s;t+=1)for(let r=c;r+2*c<=n;r+=1){if(q(e,n,r-c,t,r+2*c,t+2*f)>0)continue;const u=o(r,t,r+c,t+f);if(u<=0)continue;const i=Math.max(o(r-c,t,r,t+f),o(r+c,t,r+2*c,t+f),o(r,t+f,r+c,t+2*f));u>i&&a.push({x:r,y:t,score:u-i})}return a}function en(l,e,n,s){const c=.06*n,f=v(l.filter(r=>r.x+e/2<s-c),e,e),o=v(l.filter(r=>r.x+e/2>s+c),e,e),a=[];for(const r of f)for(const u of o){const i=u.x-r.x;if(i<.24*n||i>.62*n)continue;const p=Math.abs(u.y-r.y);if(p>.12*n)continue;const m=Math.abs((r.x+u.x+e)/2-s);a.push({l:r,r:u,y:(r.y+u.y)/2,score:(r.score+u.score)*(1-.5*O(p/(.12*n),0,1))*(1-.4*O(m/(.2*n),0,1))})}if(!a.length)return null;a.sort((r,u)=>u.score-r.score);let t=a[0];if(t.score<3)return null;for(const r of a){const u=r.y-t.y;if(u>.03*n&&u<.25*n&&r.score>t.score*.45){t=r;break}}return t}function W(l,e,n){const s=new Float64Array((e+1)*(n+1));for(let c=0;c<n;c+=1){let f=0;for(let o=0;o<e;o+=1)f+=l[c*e+o],s[(c+1)*(e+1)+(o+1)]=s[c*(e+1)+(o+1)]+f}return s}const q=(l,e,n,s,c,f)=>l[f*(e+1)+c]-l[s*(e+1)+c]-l[f*(e+1)+n]+l[s*(e+1)+n];function v(l,e,n){const s=[...l].sort((f,o)=>o.score-f.score),c=[];for(const f of s)if(!c.some(o=>Math.abs(o.x-f.x)<e&&Math.abs(o.y-f.y)<n)&&(c.push(f),c.length===8))break;return c}function U(l,e,n,s,c,f,o,a){let t=0,r=0,u=0;for(let i=s.y;i<Math.min(n,s.y+f);i+=1)for(let p=s.x;p<Math.min(e,s.x+c);p+=1){const m=l[i*e+p];t+=m,r+=m*p,u+=m*i}return t?{x:o+r/t,y:a+u/t}:{x:o+s.x+c/2,y:a+s.y+f/2}}export{cn as WORKING_EDGE,fn as findMarks};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{deltaE,rgbToLab}from'./background.js';
+export const WORKING_EDGE=480;
+const SMALLEST_HEAD=24;
+const EYE_LEVEL=0.49;
+const HEAD_SHAPE=1.45;
+const JAW_WIDTH=0.70;
+const JAW_LEVEL=0.5+0.5*Math.sqrt(1-JAW_WIDTH*JAW_WIDTH);
+const EYE_BOXES=[[0.055,0.055],[0.09,0.06],[0.14,0.085]];
+const clamp=(value,low,high)=>Math.min(high,Math.max(low,value));
+function at(sorted,fraction){
+if(!sorted.length)return 0;
+return sorted[clamp(Math.round((sorted.length-1)*fraction),0,sorted.length-1)];
+}
+const median=(values)=>at([...values].sort((a,b)=>a-b),0.5);
+export function findMarks(image){
+const{width,height}=image;
+if(!width||!height)return nothing();
+const lab=labField(image);
+const wall=readWall(lab,width,height);
+if(!wall||wall.noise>25)return nothing();
+const blob=subjectOf(lab,wall,width,height);
+if(!blob||blob.area<width*height*0.04)return nothing();
+const crownY=crownOf(blob.rows,height);
+if(crownY<0)return nothing();
+const shape=silhouette(blob.rows,crownY,height);
+if(shape.headWidth<SMALLEST_HEAD)return nothing();
+const notes=[];
+const cropped=crownY===0;
+if(cropped)notes.push('top');
+if(wall.noise>12&&!cropped)notes.push('background');
+const centreX=centreOf(blob,crownY,shape.head,height);
+const eyes=findEyes(lab,blob.mask,width,height,{crownY,centreX,...shape});
+if(!eyes)notes.push('eyes');
+const eyeY=eyes?(eyes.left.y+eyes.right.y)/2:crownY+EYE_LEVEL*shape.head;
+const eyeX=eyes?(eyes.left.x+eyes.right.x)/2:centreX;
+let chinY=crownY+(eyeY-crownY)/EYE_LEVEL;
+const outlined=shape.jawY>eyeY
+?crownY+(shape.jawY-crownY)/JAW_LEVEL
+:-1;
+if(outlined>0&&Math.abs(outlined-chinY)<=(chinY-crownY)/6){
+chinY=(chinY+outlined)/2;
+}else{
+notes.push('chin');
+}
+const marks={
+crown:{x:crownXOf(blob,crownY,height,centreX),y:crownY},
+chin:{x:eyeX,y:chinY},
+leftEye:eyes?eyes.left:{x:eyeX-0.20*shape.headWidth,y:eyeY},
+rightEye:eyes?eyes.right:{x:eyeX+0.20*shape.headWidth,y:eyeY},
+};
+return{
+marks:contain(marks,width,height),
+quality:notes.length?'rough':'measured',
+notes,
+};
+}
+const nothing=()=>({marks:null,quality:'none',notes:['background']});
+function contain(marks,width,height){
+return Object.fromEntries(Object.entries(marks).map(([key,point])=>[key,{
+x:clamp(Math.round(point.x),0,width-1),
+y:clamp(Math.round(point.y),0,height-1),
+}]));
+}
+function labField({data,width,height}){
+const lab=new Float32Array(width*height*3);
+for(let i=0,p=0;i<width*height;i+=1,p+=4){
+const[l,a,b]=rgbToLab([data[p],data[p+1],data[p+2]]);
+lab[i*3]=l;
+lab[i*3+1]=a;
+lab[i*3+2]=b;
+}
+return lab;
+}
+const NOT_WALL=25;
+function readWall(lab,width,height){
+const edgeX=Math.max(2,Math.round(width*0.06));
+const edgeY=Math.max(2,Math.round(height*0.06));
+const seen=[];
+for(let y=0;y<height;y+=1){
+const flanking=y<height*0.6;
+for(let x=0;x<width;x+=1){
+if(!(y<edgeY||(flanking&&(x<edgeX||x>=width-edgeX))))continue;
+const i=(y*width+x)*3;
+seen.push([lab[i],lab[i+1],lab[i+2]]);
+}
+}
+if(seen.length<64)return null;
+const colour=[0,1,2].map((channel)=>median(seen.map((one)=>one[channel])));
+const away=seen.map((one)=>deltaE(one,colour)).sort((a,b)=>a-b);
+const wall=away.filter((one)=>one<=NOT_WALL);
+if(wall.length<away.length/2)return null;
+return{lab:colour,noise:at(wall,0.9)};
+}
+function subjectOf(lab,wall,width,height){
+const count=width*height;
+const limit=clamp(wall.noise*2.2,8,26);
+const fore=new Uint8Array(count);
+const pixel=[0,0,0];
+for(let i=0;i<count;i+=1){
+pixel[0]=lab[i*3];
+pixel[1]=lab[i*3+1];
+pixel[2]=lab[i*3+2];
+if(deltaE(pixel,wall.lab)>limit)fore[i]=1;
+}
+const label=new Int32Array(count).fill(-1);
+const stack=new Int32Array(count);
+const areas=[];
+const tops=[];
+const bottoms=[];
+for(let seed=0;seed<count;seed+=1){
+if(!fore[seed]||label[seed]!==-1)continue;
+const id=areas.length;
+areas.push(0);
+tops.push(height);
+bottoms.push(0);
+let top=0;
+stack[top]=seed;
+top+=1;
+label[seed]=id;
+while(top>0){
+top-=1;
+const here=stack[top];
+areas[id]+=1;
+const x=here%width;
+const y=(here-x)/width;
+if(y<tops[id])tops[id]=y;
+if(y>bottoms[id])bottoms[id]=y;
+if(x>0&&fore[here-1]&&label[here-1]===-1){
+label[here-1]=id;
+stack[top]=here-1;
+top+=1;
+}
+if(x+1<width&&fore[here+1]&&label[here+1]===-1){
+label[here+1]=id;
+stack[top]=here+1;
+top+=1;
+}
+if(y>0&&fore[here-width]&&label[here-width]===-1){
+label[here-width]=id;
+stack[top]=here-width;
+top+=1;
+}
+if(y+1<height&&fore[here+width]&&label[here+width]===-1){
+label[here+width]=id;
+stack[top]=here+width;
+top+=1;
+}
+}
+}
+if(!areas.length)return null;
+let largest=0;
+for(const area of areas)largest=Math.max(largest,area);
+let winner=areas.indexOf(largest);
+let highest=height;
+for(let id=0;id<areas.length;id+=1){
+if(areas[id]<largest*0.25)continue;
+if(bottoms[id]-tops[id]<height*0.14)continue;
+if(tops[id]<highest){
+highest=tops[id];
+winner=id;
+}
+}
+const rows=new Int32Array(height);
+const sumX=new Float64Array(height);
+const mask=new Uint8Array(count);
+for(let y=0;y<height;y+=1){
+for(let x=0;x<width;x+=1){
+if(label[y*width+x]!==winner)continue;
+mask[y*width+x]=1;
+rows[y]+=1;
+sumX[y]+=x;
+}
+}
+fillHoles(mask,stack,width,height);
+return{rows,sumX,area:areas[winner],mask};
+}
+function fillHoles(mask,stack,width,height){
+const count=width*height;
+const wall=new Uint8Array(count);
+let top=0;
+const reach=(at)=>{
+if(mask[at]||wall[at])return;
+wall[at]=1;
+stack[top]=at;
+top+=1;
+};
+for(let x=0;x<width;x+=1){
+reach(x);
+reach((height-1)*width+x);
+}
+for(let y=0;y<height;y+=1){
+reach(y*width);
+reach(y*width+width-1);
+}
+while(top>0){
+top-=1;
+const here=stack[top];
+const x=here%width;
+const y=(here-x)/width;
+if(x>0)reach(here-1);
+if(x+1<width)reach(here+1);
+if(y>0)reach(here-width);
+if(y+1<height)reach(here+width);
+}
+for(let i=0;i<count;i+=1)if(!wall[i])mask[i]=1;
+}
+function crownOf(rows,height){
+for(let y=0;y+2<height;y+=1){
+if(rows[y]>=3&&rows[y+1]>=3&&rows[y+2]>=3)return y;
+}
+return-1;
+}
+function crownXOf(blob,crownY,height,fallback){
+const span=Math.max(2,Math.round(height*0.03));
+let count=0;
+let total=0;
+for(let y=crownY;y<Math.min(height,crownY+span);y+=1){
+count+=blob.rows[y];
+total+=blob.sumX[y];
+}
+return count?total/count:fallback;
+}
+function centreOf(blob,crownY,head,height){
+const from=Math.max(0,Math.round(crownY+0.25*head));
+const to=Math.min(height,Math.round(crownY+0.65*head));
+let count=0;
+let total=0;
+for(let y=from;y<to;y+=1){
+count+=blob.rows[y];
+total+=blob.sumX[y];
+}
+return count?total/count:0;
+}
+function smoothed(rows,span){
+const out=new Float64Array(rows.length);
+for(let y=0;y<rows.length;y+=1){
+let total=0;
+let seen=0;
+for(let k=-span;k<=span;k+=1){
+if(y+k<0||y+k>=rows.length)continue;
+total+=rows[y+k];
+seen+=1;
+}
+out[y]=total/seen;
+}
+return out;
+}
+function silhouette(rows,crownY,height){
+const profile=smoothed(rows,Math.max(1,Math.round(height*0.008)));
+const below=height-crownY;
+let peak=0;
+let valley=Infinity;
+let neckY=-1;
+let end=height;
+for(let y=crownY;y<height;y+=1){
+const at=profile[y];
+if(neckY<0&&at>=peak){
+peak=at;
+continue;
+}
+if(at<peak*0.85){
+if(at<=valley){
+valley=at;
+neckY=y;
+}else if(at>valley*1.35){
+end=y;
+break;
+}
+}
+}
+const head=clamp(peak*HEAD_SHAPE,0.1*below,0.95*below);
+return{headWidth:peak,head,neckY,jawY:jawOf(profile,crownY,head,peak,end)};
+}
+function jawOf(profile,crownY,head,widest,end){
+if(widest<=0)return-1;
+const from=Math.max(0,Math.round(crownY+0.55*head));
+const to=Math.min(end,Math.round(crownY+1.45*head));
+for(let y=from;y<to;y+=1){
+if(profile[y]<widest*JAW_WIDTH)return y;
+}
+return-1;
+}
+function findEyes(lab,mask,width,height,face){
+const{crownY,centreX,headWidth,head}=face;
+const x0=Math.max(0,Math.round(centreX-0.58*headWidth));
+const x1=Math.min(width,Math.round(centreX+0.58*headWidth));
+const y0=Math.max(0,Math.round(crownY+0.15*head));
+const y1=Math.min(height,Math.round(crownY+0.85*head));
+const w=x1-x0;
+const h=y1-y0;
+if(w<20||h<14)return null;
+const lights=[];
+for(let y=y0;y<y1;y+=1){
+for(let x=x0;x<x1;x+=1)lights.push(lab[(y*width+x)*3]);
+}
+lights.sort((a,b)=>a-b);
+const skin=at(lights,0.75);
+const dark=new Float64Array(w*h);
+const outside=new Float64Array(w*h);
+for(let y=0;y<h;y+=1){
+for(let x=0;x<w;x+=1){
+const at3=(y+y0)*width+(x+x0);
+dark[y*w+x]=Math.max(0,skin-lab[at3*3]);
+outside[y*w+x]=mask[at3]?0:1;
+}
+}
+const sums=integral(dark,w,h);
+const off=integral(outside,w,h);
+const localCentre=centreX-x0;
+let best=null;
+for(const[across,down]of EYE_BOXES){
+const bw=clamp(Math.round(across*headWidth),3,Math.floor(w/5));
+const bh=clamp(Math.round(down*headWidth),2,Math.floor(h/5));
+const pair=bestPair(scan(sums,off,w,h,bw,bh),bw,headWidth,localCentre);
+if(pair&&(!best||pair.score>best.score))best={...pair,bw,bh};
+}
+if(!best)return null;
+return{
+left:pupil(dark,w,h,best.l,best.bw,best.bh,x0,y0),
+right:pupil(dark,w,h,best.r,best.bw,best.bh,x0,y0),
+};
+}
+function scan(sums,off,w,h,bw,bh){
+const mean=(ax,ay,bx,by)=>patch(sums,w,ax,ay,bx,by)/((bx-ax)*(by-ay));
+const found=[];
+for(let y=0;y+2*bh<=h;y+=1){
+for(let x=bw;x+2*bw<=w;x+=1){
+if(patch(off,w,x-bw,y,x+2*bw,y+2*bh)>0)continue;
+const inner=mean(x,y,x+bw,y+bh);
+if(inner<=0)continue;
+const beside=Math.max(
+mean(x-bw,y,x,y+bh),
+mean(x+bw,y,x+2*bw,y+bh),
+mean(x,y+bh,x+bw,y+2*bh),
+);
+if(inner>beside)found.push({x,y,score:inner-beside});
+}
+}
+return found;
+}
+function bestPair(found,bw,headWidth,localCentre){
+const apart=0.06*headWidth;
+const left=pick(found.filter((one)=>one.x+bw/2<localCentre-apart),bw,bw);
+const right=pick(found.filter((one)=>one.x+bw/2>localCentre+apart),bw,bw);
+const pairs=[];
+for(const l of left){
+for(const r of right){
+const gap=r.x-l.x;
+if(gap<0.24*headWidth||gap>0.62*headWidth)continue;
+const level=Math.abs(r.y-l.y);
+if(level>0.12*headWidth)continue;
+const off=Math.abs((l.x+r.x+bw)/2-localCentre);
+pairs.push({
+l,
+r,
+y:(l.y+r.y)/2,
+score:(l.score+r.score)
+*(1-0.5*clamp(level/(0.12*headWidth),0,1))
+*(1-0.4*clamp(off/(0.20*headWidth),0,1)),
+});
+}
+}
+if(!pairs.length)return null;
+pairs.sort((a,b)=>b.score-a.score);
+let best=pairs[0];
+if(best.score<3)return null;
+for(const pair of pairs){
+const drop=pair.y-best.y;
+if(drop>0.03*headWidth&&drop<0.25*headWidth&&pair.score>best.score*0.45){
+best=pair;
+break;
+}
+}
+return best;
+}
+function integral(values,width,height){
+const sums=new Float64Array((width+1)*(height+1));
+for(let y=0;y<height;y+=1){
+let run=0;
+for(let x=0;x<width;x+=1){
+run+=values[y*width+x];
+sums[(y+1)*(width+1)+(x+1)]=sums[y*(width+1)+(x+1)]+run;
+}
+}
+return sums;
+}
+const patch=(sums,width,ax,ay,bx,by)=>(
+sums[by*(width+1)+bx]-sums[ay*(width+1)+bx]
+-sums[by*(width+1)+ax]+sums[ay*(width+1)+ax]
+);
+function pick(boxes,bw,bh){
+const sorted=[...boxes].sort((a,b)=>b.score-a.score);
+const kept=[];
+for(const box of sorted){
+if(kept.some((one)=>Math.abs(one.x-box.x)<bw&&Math.abs(one.y-box.y)<bh))continue;
+kept.push(box);
+if(kept.length===8)break;
+}
+return kept;
+}
+function pupil(dark,w,h,box,bw,bh,x0,y0){
+let weight=0;
+let sx=0;
+let sy=0;
+for(let y=box.y;y<Math.min(h,box.y+bh);y+=1){
+for(let x=box.x;x<Math.min(w,box.x+bw);x+=1){
+const value=dark[y*w+x];
+weight+=value;
+sx+=value*x;
+sy+=value*y;
+}
+}
+if(!weight)return{x:x0+box.x+bw/2,y:y0+box.y+bh/2};
+return{x:x0+sx/weight,y:y0+sy/weight};
+}

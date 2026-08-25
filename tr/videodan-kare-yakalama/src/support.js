@@ -1,2 +1,31 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function i(){return typeof window.VideoDecoder=="function"&&typeof window.VideoFrame=="function"}async function r(o){if(!i())return!1;try{const{supported:e}=await VideoDecoder.isConfigSupported(o);return!!e}catch{return!1}}async function d(o=["image/webp","image/jpeg"]){const e=new Set(["image/png"]),t=document.createElement("canvas");t.width=1,t.height=1;for(const n of o){const c=await new Promise(a=>{try{t.toBlob(a,n,.9)}catch{a(null)}});c&&c.type===n&&e.add(n)}return e}export{r as canDecode,d as encodableTypes,i as hasWebCodecs};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function hasWebCodecs(){
+return typeof window.VideoDecoder==='function'
+&&typeof window.VideoFrame==='function';
+}
+export async function canDecode(config){
+if(!hasWebCodecs())return false;
+try{
+const{supported}=await VideoDecoder.isConfigSupported(config);
+return Boolean(supported);
+}catch{
+return false;
+}
+}
+export async function encodableTypes(candidates=['image/webp','image/jpeg']){
+const ok=new Set(['image/png']);
+const canvas=document.createElement('canvas');
+canvas.width=1;
+canvas.height=1;
+for(const type of candidates){
+const blob=await new Promise((resolve)=>{
+try{
+canvas.toBlob(resolve,type,0.9);
+}catch{
+resolve(null);
+}
+});
+if(blob&&blob.type===type)ok.add(type);
+}
+return ok;
+}

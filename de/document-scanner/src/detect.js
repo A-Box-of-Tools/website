@@ -1,2 +1,402 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{clampPoint as C,isConvex as G,orderCorners as H,quadArea as D,sharpestCorner as B,wholeFrame as q}from"./geometry.js";const At=480,x=180,T=2,N=5,w=[1,.83,.67,.5,.33,.2],L=3,k=4,Q=4,U=6,g=10,X=.3,K=.25,O=.42,W=.5,j=.45,V=.1,z=.12,J=90,Y=16,Z=32,$=40,m=Math.PI/180;function bt(t){const{width:s,height:r}=t,c=q(s,r);if(s<24||r<24)return{quad:c,found:!1,score:0,reason:"detect.tiny"};const a=ot(tt(t),s,r),e=nt(a,s,r),f=st(e.magnitude);if(f.strong<=0)return{quad:c,found:!1,score:0,reason:"detect.flat"};const n=rt(e,s,r,f.vote),o=it(n,e,s,r,f.support);return o?{quad:o.quad.map(h=>C(h,s,r)),found:o.score>=O,score:o.score,reason:o.score>=O?"detect.found":"detect.unsure"}:{quad:c,found:!1,score:0,reason:"detect.nothing"}}function tt(t){const{data:s,width:r,height:c}=t,a=new Float32Array(r*c);for(let e=0,f=0;f<a.length;e+=4,f+=1)a[f]=.299*s[e]+.587*s[e+1]+.114*s[e+2];return a}function ot(t,s,r){const c=new Float32Array(t.length);for(let e=0;e<r;e+=1){const f=e*s;for(let n=0;n<s;n+=1){const o=t[f+Math.max(0,n-1)],u=t[f+Math.min(s-1,n+1)];c[f+n]=(o+t[f+n]+u)/3}}const a=new Float32Array(t.length);for(let e=0;e<r;e+=1){const f=Math.max(0,e-1)*s,n=Math.min(r-1,e+1)*s,o=e*s;for(let u=0;u<s;u+=1)a[o+u]=(c[f+u]+c[o+u]+c[n+u])/3}return a}function nt(t,s,r){const c=new Float32Array(t.length),a=new Float32Array(t.length),e=new Float32Array(t.length);for(let f=1;f<r-1;f+=1)for(let n=1;n<s-1;n+=1){const o=f*s+n,u=o-s,h=o+s,l=t[u+1]+2*t[o+1]+t[h+1]-(t[u-1]+2*t[o-1]+t[h-1]),i=t[h-1]+2*t[h]+t[h+1]-(t[u-1]+2*t[u]+t[u+1]);c[o]=l/4,a[o]=i/4,e[o]=Math.hypot(c[o],a[o])}return{gx:c,gy:a,magnitude:e}}function st(t){let s=0;for(let o=0;o<t.length;o+=1)t[o]>s&&(s=t[o]);if(s<=0)return{strong:0,vote:0,support:0};const r=new Uint32Array(256),c=255/s;let a=0;for(let o=0;o<t.length;o+=1)t[o]<=0||(r[Math.min(255,Math.round(t[o]*c))]+=1,a+=1);let e=0,f=255;for(let o=0;o<256;o+=1)if(e+=r[o],e>=a*.99){f=o;break}const n=f/c||s;return{strong:n,vote:Math.max(8,n*.35),support:Math.max(5,n*.15)}}function et({gx:t,gy:s,magnitude:r},c,a,e){const f=Math.hypot(c,a)/2,n=Math.ceil(2*f/T)+2,o=n/2,u=new Float32Array(x*n),h=new Float32Array(x),l=new Float32Array(x);for(let M=0;M<x;M+=1)h[M]=Math.cos(M*m),l[M]=Math.sin(M*m);const i=c/2,d=a/2;for(let M=1;M<a-1;M+=1)for(let p=1;p<c-1;p+=1){const E=M*c+p,b=r[E];if(b<e)continue;let y=Math.atan2(s[E],t[E])/m;y<0&&(y+=180);const S=Math.round(y)%x,A=p-i,R=M-d;for(let _=-N;_<=N;_+=1){const P=(S+_+x)%x,I=A*h[P]+R*l[P],v=Math.round(o+I/T);v<0||v>=n||(u[P*n+v]+=b*w[Math.abs(_)])}}return{votes:u,rhoBins:n,centre:o,cos:h,sin:l}}function rt(t,s,r,c){const{votes:a,rhoBins:e,centre:f}=et(t,s,r,c),n=[];for(let l=0;l<x;l+=1)for(let i=1;i<e-1;i+=1){const d=a[l*e+i];if(d<=0)continue;let M=!0;for(let p=-L;p<=L&&M;p+=1){const E=((l+p)%x+x)%x;for(let b=-k;b<=k;b+=1){const y=i+b;if(!(y<0||y>=e)&&a[E*e+y]>d){M=!1;break}}}M&&n.push({theta:l*m,rho:(i-f)*T,votes:d,border:!1})}n.sort((l,i)=>i.votes-l.votes);const o=[];for(const l of n)o.some(i=>ft(l,i,s,r))||o.push(l);const u=ct(o),h=at(u);for(const l of[{theta:0,rho:-s/2},{theta:0,rho:s/2},{theta:Math.PI/2,rho:-r/2},{theta:Math.PI/2,rho:r/2}])u.push({...l,votes:h,border:!0});return u}function ct(t){const s=new Map;for(const a of t){const e=Math.round(a.theta/m/g)%(180/g);s.has(e)||s.set(e,[]),s.get(e).push(a)}const r=[...s.values()].sort((a,e)=>e[0].votes-a[0].votes).slice(0,U),c=[];for(const a of r){const e=new Set(a.slice(0,Q)),f=a.filter(n=>n.votes>=a[0].votes*.3);f.length&&(e.add(f.reduce((n,o)=>o.rho<n.rho?o:n)),e.add(f.reduce((n,o)=>o.rho>n.rho?o:n))),c.push(...e)}return c}function at(t){if(!t.length)return 0;const s=t.map(r=>r.votes).sort((r,c)=>r-c);return s[Math.floor(s.length/2)]}function ft(t,s,r,c){const{angle:a,gap:e}=F(t,s);return Math.abs(a)<4&&Math.abs(e)<Math.min(r,c)*.04}function F(t,s){let r=(s.theta-t.theta)/m,c=s.rho;return r>90?(r-=180,c=-c):r<-90&&(r+=180,c=-c),{angle:r,gap:c-t.rho}}function lt(t,s,r,c){const a=Math.cos(t.theta),e=Math.sin(t.theta),f=Math.cos(s.theta),n=Math.sin(s.theta),o=a*n-e*f;return Math.abs(o)<1e-6?null:{x:(t.rho*n-s.rho*e)/o+r/2,y:(a*s.rho-f*t.rho)/o+c/2}}function ut(t,s,r){const c=Math.min(s,r)*z,a=[];for(let n=0;n<t.length;n+=1)for(let o=n+1;o<t.length;o+=1){const{angle:u,gap:h}=F(t[n],t[o]);if(Math.abs(u)>Z||Math.abs(h)<c)continue;let l=t[n].theta+u*m/2;l<0&&(l+=Math.PI),l>=Math.PI&&(l-=Math.PI),a.push({lines:[t[n],t[o]],theta:l,votes:Math.min(t[n].votes,t[o].votes),borders:(t[n].border?1:0)+(t[o].border?1:0)})}const e=new Map;for(const n of a){const o=Math.round(n.theta/m/g)%(180/g);e.has(o)||e.set(o,[]),e.get(o).push(n)}const f=[];for(const n of e.values())n.sort((o,u)=>u.votes-o.votes),f.push(...n.slice(0,Y));return f.sort((n,o)=>o.votes-n.votes).slice(0,J)}function it(t,s,r,c,a){const e=ut(t,r,c),f=r*c;let n=null;for(let o=0;o<e.length;o+=1)for(let u=o+1;u<e.length;u+=1){const h=e[o],l=e[u];let i=Math.abs(h.theta-l.theta)/m;if(i>90&&(i=180-i),Math.abs(i-90)>$||h.borders+l.borders>=4)continue;const d=[];let M=!0;for(const y of h.lines){for(const S of l.lines){const A=lt(y,S,r,c);if((!A||A.x<-r*.02||A.x>r*1.02||A.y<-c*.02||A.y>c*1.02)&&(M=!1),!M)break;d.push(A)}if(!M)break}if(!M)continue;const p=H(d);if(!G(p)||B(p)<40)continue;const E=D(p)/f;if(E<V)continue;const b=ht(p,[...h.lines,...l.lines],s,r,c,a,E);b!==null&&(!n||b>n.score)&&(n={quad:p,score:b})}return n}function ht(t,s,r,c,a,e,f){const n=[];for(let i=0;i<4;i+=1){const d=Mt(t,i,s,c,a);n.push(d?.border?{support:X,polarity:0}:pt(t[i],t[(i+1)%4],r,c,a,e))}if(Math.min(...n.map(i=>i.support))<K)return null;const u=n.reduce((i,d)=>i+d.support,0)/4,h=n.map(i=>i.polarity).filter(i=>Math.abs(i)>W),l=h.length>=2&&(h.every(i=>i>0)||h.every(i=>i<0));return u*f**.35*(l?1:j)}function Mt(t,s,r,c,a){const e=t[s],f=t[(s+1)%4],n=(h,l)=>Math.abs((h.x-c/2)*Math.cos(l.theta)+(h.y-a/2)*Math.sin(l.theta)-l.rho);let o=null,u=1/0;for(const h of r){const l=Math.max(n(e,h),n(f,h));l<u&&(u=l,o=h)}return o}function pt(t,s,{gx:r,gy:c,magnitude:a},e,f,n){const o=Math.hypot(s.x-t.x,s.y-t.y);if(o<8)return{support:0,polarity:0};const u=Math.min(64,Math.max(16,Math.round(o/3))),h=-(s.y-t.y)/o,l=(s.x-t.x)/o;let i=0,d=0,M=0,p=0;for(let E=0;E<u;E+=1){const b=.06+.88*E/(u-1),y=t.x+(s.x-t.x)*b,S=t.y+(s.y-t.y)*b;let A=0;for(let R=-2;R<=2;R+=1){const _=Math.round(y+h*R),P=Math.round(S+l*R);if(_<1||P<1||_>=e-1||P>=f-1)continue;const I=P*e+_;if(a[I]<n)continue;const v=r[I]*h+c[I]*l;Math.abs(v)>Math.abs(A)&&(A=v)}d+=1,i+=Math.min(1,Math.abs(A)/(n*2)),M+=A,p+=Math.abs(A)}return{support:d?i/d:0,polarity:p>0?M/p:0}}export{At as WORKING_EDGE,bt as findPageQuad};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{
+clampPoint,isConvex,orderCorners,quadArea,sharpestCorner,wholeFrame,
+}from'./geometry.js';
+export const WORKING_EDGE=480;
+const THETA_STEPS=180;
+const RHO_STEP=2;
+const SMEAR=5;
+const SMEAR_WEIGHT=[1,0.83,0.67,0.5,0.33,0.2];
+const PEAK_THETA=3;
+const PEAK_RHO=4;
+const MAX_PER_ANGLE=4;
+const MAX_ANGLE_BANDS=6;
+const ANGLE_BAND=10;
+const BORDER_SUPPORT=0.3;
+const MIN_SIDE_SUPPORT=0.25;
+const ACCEPT_SCORE=0.42;
+const CLEAR_STEP=0.5;
+const DISAGREEMENT=0.45;
+const MIN_AREA_SHARE=0.1;
+const MIN_SEPARATION_SHARE=0.12;
+const MAX_PAIRS=90;
+const MAX_PAIRS_PER_ANGLE=16;
+const PARALLEL_TOLERANCE=32;
+const SQUARE_TOLERANCE=40;
+const RADIANS=Math.PI/180;
+export function findPageQuad(image){
+const{width,height}=image;
+const frame=wholeFrame(width,height);
+if(width<24||height<24){
+return{quad:frame,found:false,score:0,reason:'detect.tiny'};
+}
+const grey=blur(luma(image),width,height);
+const edges=gradient(grey,width,height);
+const bars=thresholds(edges.magnitude);
+if(bars.strong<=0){
+return{quad:frame,found:false,score:0,reason:'detect.flat'};
+}
+const lines=strongLines(edges,width,height,bars.vote);
+const best=bestQuad(lines,edges,width,height,bars.support);
+if(!best)return{quad:frame,found:false,score:0,reason:'detect.nothing'};
+const quad=best.quad.map((point)=>clampPoint(point,width,height));
+return{
+quad,
+found:best.score>=ACCEPT_SCORE,
+score:best.score,
+reason:best.score>=ACCEPT_SCORE?'detect.found':'detect.unsure',
+};
+}
+function luma(image){
+const{data,width,height}=image;
+const out=new Float32Array(width*height);
+for(let i=0,p=0;p<out.length;i+=4,p+=1){
+out[p]=0.299*data[i]+0.587*data[i+1]+0.114*data[i+2];
+}
+return out;
+}
+function blur(values,width,height){
+const across=new Float32Array(values.length);
+for(let y=0;y<height;y+=1){
+const row=y*width;
+for(let x=0;x<width;x+=1){
+const left=values[row+Math.max(0,x-1)];
+const right=values[row+Math.min(width-1,x+1)];
+across[row+x]=(left+values[row+x]+right)/3;
+}
+}
+const out=new Float32Array(values.length);
+for(let y=0;y<height;y+=1){
+const up=Math.max(0,y-1)*width;
+const down=Math.min(height-1,y+1)*width;
+const row=y*width;
+for(let x=0;x<width;x+=1){
+out[row+x]=(across[up+x]+across[row+x]+across[down+x])/3;
+}
+}
+return out;
+}
+function gradient(grey,width,height){
+const gx=new Float32Array(grey.length);
+const gy=new Float32Array(grey.length);
+const magnitude=new Float32Array(grey.length);
+for(let y=1;y<height-1;y+=1){
+for(let x=1;x<width-1;x+=1){
+const at=y*width+x;
+const up=at-width;
+const down=at+width;
+const dx=(grey[up+1]+2*grey[at+1]+grey[down+1])
+-(grey[up-1]+2*grey[at-1]+grey[down-1]);
+const dy=(grey[down-1]+2*grey[down]+grey[down+1])
+-(grey[up-1]+2*grey[up]+grey[up+1]);
+gx[at]=dx/4;
+gy[at]=dy/4;
+magnitude[at]=Math.hypot(gx[at],gy[at]);
+}
+}
+return{gx,gy,magnitude};
+}
+function thresholds(magnitude){
+let peak=0;
+for(let i=0;i<magnitude.length;i+=1){
+if(magnitude[i]>peak)peak=magnitude[i];
+}
+if(peak<=0)return{strong:0,vote:0,support:0};
+const bins=new Uint32Array(256);
+const scale=255/peak;
+let counted=0;
+for(let i=0;i<magnitude.length;i+=1){
+if(magnitude[i]<=0)continue;
+bins[Math.min(255,Math.round(magnitude[i]*scale))]+=1;
+counted+=1;
+}
+let seen=0;
+let bin=255;
+for(let i=0;i<256;i+=1){
+seen+=bins[i];
+if(seen>=counted*0.99){
+bin=i;
+break;
+}
+}
+const strong=(bin/scale)||peak;
+return{
+strong,
+vote:Math.max(8,strong*0.35),
+support:Math.max(5,strong*0.15),
+};
+}
+function accumulate({gx,gy,magnitude},width,height,bar){
+const diagonal=Math.hypot(width,height)/2;
+const rhoBins=Math.ceil((2*diagonal)/RHO_STEP)+2;
+const centre=rhoBins/2;
+const votes=new Float32Array(THETA_STEPS*rhoBins);
+const cos=new Float32Array(THETA_STEPS);
+const sin=new Float32Array(THETA_STEPS);
+for(let t=0;t<THETA_STEPS;t+=1){
+cos[t]=Math.cos(t*RADIANS);
+sin[t]=Math.sin(t*RADIANS);
+}
+const halfWidth=width/2;
+const halfHeight=height/2;
+for(let y=1;y<height-1;y+=1){
+for(let x=1;x<width-1;x+=1){
+const at=y*width+x;
+const strength=magnitude[at];
+if(strength<bar)continue;
+let angle=Math.atan2(gy[at],gx[at])/RADIANS;
+if(angle<0)angle+=180;
+const middle=Math.round(angle)%THETA_STEPS;
+const px=x-halfWidth;
+const py=y-halfHeight;
+for(let step=-SMEAR;step<=SMEAR;step+=1){
+const t=(middle+step+THETA_STEPS)%THETA_STEPS;
+const rho=px*cos[t]+py*sin[t];
+const bin=Math.round(centre+rho/RHO_STEP);
+if(bin<0||bin>=rhoBins)continue;
+votes[t*rhoBins+bin]+=strength*SMEAR_WEIGHT[Math.abs(step)];
+}
+}
+}
+return{votes,rhoBins,centre,cos,sin};
+}
+function strongLines(edges,width,height,bar){
+const{votes,rhoBins,centre}=accumulate(edges,width,height,bar);
+const peaks=[];
+for(let t=0;t<THETA_STEPS;t+=1){
+for(let r=1;r<rhoBins-1;r+=1){
+const value=votes[t*rhoBins+r];
+if(value<=0)continue;
+let top=true;
+for(let dt=-PEAK_THETA;dt<=PEAK_THETA&&top;dt+=1){
+const tt=((t+dt)%THETA_STEPS+THETA_STEPS)%THETA_STEPS;
+for(let dr=-PEAK_RHO;dr<=PEAK_RHO;dr+=1){
+const rr=r+dr;
+if(rr<0||rr>=rhoBins)continue;
+if(votes[tt*rhoBins+rr]>value){
+top=false;
+break;
+}
+}
+}
+if(!top)continue;
+peaks.push({
+theta:t*RADIANS,
+rho:(r-centre)*RHO_STEP,
+votes:value,
+border:false,
+});
+}
+}
+peaks.sort((a,b)=>b.votes-a.votes);
+const distinct=[];
+for(const peak of peaks){
+if(distinct.some((other)=>nearlyTheSameLine(peak,other,width,height)))continue;
+distinct.push(peak);
+}
+const kept=shareOutByAngle(distinct);
+const nominal=medianVotes(kept);
+for(const border of[
+{theta:0,rho:-width/2},
+{theta:0,rho:width/2},
+{theta:Math.PI/2,rho:-height/2},
+{theta:Math.PI/2,rho:height/2},
+]){
+kept.push({...border,votes:nominal,border:true});
+}
+return kept;
+}
+function shareOutByAngle(lines){
+const bands=new Map();
+for(const line of lines){
+const band=Math.round(line.theta/RADIANS/ANGLE_BAND)%(180/ANGLE_BAND);
+if(!bands.has(band))bands.set(band,[]);
+bands.get(band).push(line);
+}
+const strongest=[...bands.values()]
+.sort((a,b)=>b[0].votes-a[0].votes)
+.slice(0,MAX_ANGLE_BANDS);
+const kept=[];
+for(const band of strongest){
+const chosen=new Set(band.slice(0,MAX_PER_ANGLE));
+const worth=band.filter((line)=>line.votes>=band[0].votes*0.3);
+if(worth.length){
+chosen.add(worth.reduce((a,b)=>(b.rho<a.rho?b:a)));
+chosen.add(worth.reduce((a,b)=>(b.rho>a.rho?b:a)));
+}
+kept.push(...chosen);
+}
+return kept;
+}
+function medianVotes(lines){
+if(!lines.length)return 0;
+const sorted=lines.map((line)=>line.votes).sort((a,b)=>a-b);
+return sorted[Math.floor(sorted.length/2)];
+}
+function nearlyTheSameLine(a,b,width,height){
+const{angle,gap}=relate(a,b);
+return Math.abs(angle)<4&&Math.abs(gap)<Math.min(width,height)*0.04;
+}
+function relate(a,b){
+let difference=(b.theta-a.theta)/RADIANS;
+let rho=b.rho;
+if(difference>90){
+difference-=180;
+rho=-rho;
+}else if(difference<-90){
+difference+=180;
+rho=-rho;
+}
+return{angle:difference,gap:rho-a.rho};
+}
+function intersect(a,b,width,height){
+const ca=Math.cos(a.theta);
+const sa=Math.sin(a.theta);
+const cb=Math.cos(b.theta);
+const sb=Math.sin(b.theta);
+const det=ca*sb-sa*cb;
+if(Math.abs(det)<1e-6)return null;
+return{
+x:(a.rho*sb-b.rho*sa)/det+width/2,
+y:(ca*b.rho-cb*a.rho)/det+height/2,
+};
+}
+function oppositePairs(lines,width,height){
+const apart=Math.min(width,height)*MIN_SEPARATION_SHARE;
+const pairs=[];
+for(let i=0;i<lines.length;i+=1){
+for(let j=i+1;j<lines.length;j+=1){
+const{angle,gap}=relate(lines[i],lines[j]);
+if(Math.abs(angle)>PARALLEL_TOLERANCE)continue;
+if(Math.abs(gap)<apart)continue;
+let theta=lines[i].theta+(angle*RADIANS)/2;
+if(theta<0)theta+=Math.PI;
+if(theta>=Math.PI)theta-=Math.PI;
+pairs.push({
+lines:[lines[i],lines[j]],
+theta,
+votes:Math.min(lines[i].votes,lines[j].votes),
+borders:(lines[i].border?1:0)+(lines[j].border?1:0),
+});
+}
+}
+const bands=new Map();
+for(const pair of pairs){
+const band=Math.round(pair.theta/RADIANS/ANGLE_BAND)%(180/ANGLE_BAND);
+if(!bands.has(band))bands.set(band,[]);
+bands.get(band).push(pair);
+}
+const shared=[];
+for(const band of bands.values()){
+band.sort((a,b)=>b.votes-a.votes);
+shared.push(...band.slice(0,MAX_PAIRS_PER_ANGLE));
+}
+return shared.sort((a,b)=>b.votes-a.votes).slice(0,MAX_PAIRS);
+}
+function bestQuad(lines,edges,width,height,bar){
+const pairs=oppositePairs(lines,width,height);
+const area=width*height;
+let best=null;
+for(let i=0;i<pairs.length;i+=1){
+for(let j=i+1;j<pairs.length;j+=1){
+const across=pairs[i];
+const down=pairs[j];
+let between=Math.abs(across.theta-down.theta)/RADIANS;
+if(between>90)between=180-between;
+if(Math.abs(between-90)>SQUARE_TOLERANCE)continue;
+if(across.borders+down.borders>=4)continue;
+const corners=[];
+let usable=true;
+for(const a of across.lines){
+for(const b of down.lines){
+const point=intersect(a,b,width,height);
+if(!point||point.x<-width*0.02||point.x>width*1.02
+||point.y<-height*0.02||point.y>height*1.02){
+usable=false;
+}
+if(!usable)break;
+corners.push(point);
+}
+if(!usable)break;
+}
+if(!usable)continue;
+const quad=orderCorners(corners);
+if(!isConvex(quad))continue;
+if(sharpestCorner(quad)<40)continue;
+const share=quadArea(quad)/area;
+if(share<MIN_AREA_SHARE)continue;
+const score=scoreQuad(quad,[...across.lines,...down.lines],edges,width,height,bar,share);
+if(score!==null&&(!best||score>best.score))best={quad,score};
+}
+}
+return best;
+}
+function scoreQuad(quad,lines,edges,width,height,bar,share){
+const sides=[];
+for(let i=0;i<4;i+=1){
+const line=sideLine(quad,i,lines,width,height);
+sides.push(line?.border
+?{support:BORDER_SUPPORT,polarity:0}
+:sideEvidence(quad[i],quad[(i+1)%4],edges,width,height,bar));
+}
+const weakest=Math.min(...sides.map((side)=>side.support));
+if(weakest<MIN_SIDE_SUPPORT)return null;
+const mean=sides.reduce((sum,side)=>sum+side.support,0)/4;
+const opinions=sides.map((side)=>side.polarity).filter((value)=>Math.abs(value)>CLEAR_STEP);
+const agree=opinions.length>=2
+&&(opinions.every((value)=>value>0)||opinions.every((value)=>value<0));
+return mean*share**0.35*(agree?1:DISAGREEMENT);
+}
+function sideLine(quad,index,lines,width,height){
+const a=quad[index];
+const b=quad[(index+1)%4];
+const offset=(point,line)=>Math.abs(
+(point.x-width/2)*Math.cos(line.theta)
++(point.y-height/2)*Math.sin(line.theta)
+-line.rho,
+);
+let best=null;
+let closest=Infinity;
+for(const line of lines){
+const away=Math.max(offset(a,line),offset(b,line));
+if(away<closest){
+closest=away;
+best=line;
+}
+}
+return best;
+}
+function sideEvidence(a,b,{gx,gy,magnitude},width,height,bar){
+const length=Math.hypot(b.x-a.x,b.y-a.y);
+if(length<8)return{support:0,polarity:0};
+const steps=Math.min(64,Math.max(16,Math.round(length/3)));
+const nx=-(b.y-a.y)/length;
+const ny=(b.x-a.x)/length;
+let credit=0;
+let taken=0;
+let signed=0;
+let total=0;
+for(let i=0;i<steps;i+=1){
+const along=0.06+(0.88*i)/(steps-1);
+const x=a.x+(b.x-a.x)*along;
+const y=a.y+(b.y-a.y)*along;
+let best=0;
+for(let off=-2;off<=2;off+=1){
+const sx=Math.round(x+nx*off);
+const sy=Math.round(y+ny*off);
+if(sx<1||sy<1||sx>=width-1||sy>=height-1)continue;
+const at=sy*width+sx;
+if(magnitude[at]<bar)continue;
+const across=gx[at]*nx+gy[at]*ny;
+if(Math.abs(across)>Math.abs(best))best=across;
+}
+taken+=1;
+credit+=Math.min(1,Math.abs(best)/(bar*2));
+signed+=best;
+total+=Math.abs(best);
+}
+return{
+support:taken?credit/taken:0,
+polarity:total>0?signed/total:0,
+};
+}

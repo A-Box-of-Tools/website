@@ -1,2 +1,92 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const l=new TextDecoder("utf-8");function m(e,i,a=4){let t="";for(let f=0;f<a;f+=1)t+=String.fromCharCode(e[i+f]??0);return t}const n=(e,...i)=>i.every((a,t)=>e[t]===a);function x(e){if(e.length<12||m(e,4)!=="ftyp")return[];const i=(e[0]<<24|e[1]<<16|e[2]<<8|e[3])>>>0,a=Math.min(i,e.length),t=[m(e,8)];for(let f=16;f+4<=a;f+=4)t.push(m(e,f));return t}const r="No browser except Safari draws this format, so the URI will be valid and the picture will not appear. Convert it first.",o=[e=>n(e,137,80,78,71,13,10,26,10)&&{mime:"image/png",label:"PNG"},e=>n(e,255,216,255)&&{mime:"image/jpeg",label:"JPEG"},e=>(m(e,0,6)==="GIF87a"||m(e,0,6)==="GIF89a")&&{mime:"image/gif",label:"GIF"},e=>m(e,0)==="RIFF"&&m(e,8)==="WEBP"&&{mime:"image/webp",label:"WebP"},e=>n(e,66,77)&&{mime:"image/bmp",label:"BMP"},e=>n(e,0,0,1,0)&&{mime:"image/x-icon",label:"ICO"},e=>x(e).some(i=>i==="avif"||i==="avis")&&{mime:"image/avif",label:"AVIF"},e=>x(e).some(i=>/^(heic|heix|hevc|hevx|mif1|msf1)$/.test(i))&&{mime:"image/heic",label:"HEIC",note:r},e=>(n(e,255,10)||n(e,0,0,0,12,74,88,76,32,13,10,135,10))&&{mime:"image/jxl",label:"JPEG XL"},e=>(n(e,73,73,42,0)||n(e,77,77,0,42))&&{mime:"image/tiff",label:"TIFF",note:r},e=>g(e)&&{mime:"image/svg+xml",label:"SVG"}];function g(e){let i=l.decode(e.subarray(0,1024));i.charCodeAt(0)===65279&&(i=i.slice(1));for(let a=0;a<32;a+=1){if(i=i.trimStart(),i.startsWith("<svg"))return!0;if(i.startsWith("<!--")){const t=i.indexOf("-->");if(t<0)return!1;i=i.slice(t+3);continue}if(i.startsWith("<?")||i.startsWith("<!")){const t=i.indexOf(">");if(t<0)return!1;i=i.slice(t+1);continue}return!1}return!1}function c(e){for(const i of o){const a=i(e);if(a)return a}return null}function u(e){const i=/\.([a-z0-9]+)$/i.exec(e)?.[1]?.toLowerCase();return i?s[i]??null:null}const s={png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",jpe:"image/jpeg",gif:"image/gif",webp:"image/webp",bmp:"image/bmp",ico:"image/x-icon",cur:"image/x-icon",avif:"image/avif",heic:"image/heic",heif:"image/heic",jxl:"image/jxl",tif:"image/tiff",tiff:"image/tiff",svg:"image/svg+xml"};export{u as extensionType,g as looksLikeSvg,c as sniff};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const utf8=new TextDecoder('utf-8');
+function tag(bytes,at,length=4){
+let out='';
+for(let i=0;i<length;i+=1)out+=String.fromCharCode(bytes[at+i]??0);
+return out;
+}
+const starts=(bytes,...values)=>values.every((v,i)=>bytes[i]===v);
+function brands(bytes){
+if(bytes.length<12||tag(bytes,4)!=='ftyp')return[];
+const declared=(bytes[0]<<24|bytes[1]<<16|bytes[2]<<8|bytes[3])>>>0;
+const size=Math.min(declared,bytes.length);
+const found=[tag(bytes,8)];
+for(let at=16;at+4<=size;at+=4)found.push(tag(bytes,at));
+return found;
+}
+const UNRENDERABLE='No browser except Safari draws this format, so the URI will be valid and the picture will not appear. Convert it first.';
+const TESTS=[
+(b)=>starts(b,0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a)
+&&{mime:'image/png',label:'PNG'},
+(b)=>starts(b,0xff,0xd8,0xff)
+&&{mime:'image/jpeg',label:'JPEG'},
+(b)=>(tag(b,0,6)==='GIF87a'||tag(b,0,6)==='GIF89a')
+&&{mime:'image/gif',label:'GIF'},
+(b)=>tag(b,0)==='RIFF'&&tag(b,8)==='WEBP'
+&&{mime:'image/webp',label:'WebP'},
+(b)=>starts(b,0x42,0x4d)
+&&{mime:'image/bmp',label:'BMP'},
+(b)=>starts(b,0x00,0x00,0x01,0x00)
+&&{mime:'image/x-icon',label:'ICO'},
+(b)=>brands(b).some((brand)=>brand==='avif'||brand==='avis')
+&&{mime:'image/avif',label:'AVIF'},
+(b)=>brands(b).some((brand)=>/^(heic|heix|hevc|hevx|mif1|msf1)$/.test(brand))
+&&{mime:'image/heic',label:'HEIC',note:UNRENDERABLE},
+(b)=>(starts(b,0xff,0x0a)
+||starts(b,0x00,0x00,0x00,0x0c,0x4a,0x58,0x4c,0x20,0x0d,0x0a,0x87,0x0a))
+&&{mime:'image/jxl',label:'JPEG XL'},
+(b)=>(starts(b,0x49,0x49,0x2a,0x00)||starts(b,0x4d,0x4d,0x00,0x2a))
+&&{mime:'image/tiff',label:'TIFF',note:UNRENDERABLE},
+(b)=>looksLikeSvg(b)&&{mime:'image/svg+xml',label:'SVG'},
+];
+export function looksLikeSvg(bytes){
+let head=utf8.decode(bytes.subarray(0,1024));
+if(head.charCodeAt(0)===0xfeff)head=head.slice(1);
+for(let guard=0;guard<32;guard+=1){
+head=head.trimStart();
+if(head.startsWith('<svg'))return true;
+if(head.startsWith('<!--')){
+const end=head.indexOf('-->');
+if(end<0)return false;
+head=head.slice(end+3);
+continue;
+}
+if(head.startsWith('<?')||head.startsWith('<!')){
+const end=head.indexOf('>');
+if(end<0)return false;
+head=head.slice(end+1);
+continue;
+}
+return false;
+}
+return false;
+}
+export function sniff(bytes){
+for(const test of TESTS){
+const hit=test(bytes);
+if(hit)return hit;
+}
+return null;
+}
+export function extensionType(name){
+const ext=/\.([a-z0-9]+)$/i.exec(name)?.[1]?.toLowerCase();
+return ext?EXTENSIONS[ext]??null:null;
+}
+const EXTENSIONS={
+png:'image/png',
+jpg:'image/jpeg',
+jpeg:'image/jpeg',
+jpe:'image/jpeg',
+gif:'image/gif',
+webp:'image/webp',
+bmp:'image/bmp',
+ico:'image/x-icon',
+cur:'image/x-icon',
+avif:'image/avif',
+heic:'image/heic',
+heif:'image/heic',
+jxl:'image/jxl',
+tif:'image/tiff',
+tiff:'image/tiff',
+svg:'image/svg+xml',
+};

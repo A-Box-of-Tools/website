@@ -1,2 +1,88 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{inspectJpeg as c}from"./jpeg.js";const s=320,h=512*1024;let u=1;async function f(t){const n=[],e=[];for(const a of Array.from(t)){if(!d(a)){e.push(`${a.name}: not an image this tool can read.`);continue}let r;try{r=await createImageBitmap(a,{imageOrientation:"from-image"})}catch{e.push(`${a.name}: this browser could not decode it.`);continue}try{const o=await m(a),i=o?{width:o.width,height:o.height,orientation:o.orientation}:{width:r.width,height:r.height,orientation:1};n.push({id:u++,file:a,name:a.name,lastModified:a.lastModified,...i,rotate:0,thumb:await g(r)})}finally{r.close()}}return{items:n,skipped:e}}function d(t){return t.type?t.type.startsWith("image/"):/\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(t.name)}async function m(t){if(!/^image\/jpe?g$/i.test(t.type)&&!/\.jpe?g$/i.test(t.name))return null;try{const n=new Uint8Array(await t.slice(0,h).arrayBuffer());return c(n)}catch{return null}}async function g(t){const n=Math.min(1,s/Math.max(t.width,t.height)),e=document.createElement("canvas");e.width=Math.max(1,Math.round(t.width*n)),e.height=Math.max(1,Math.round(t.height*n)),e.getContext("2d").drawImage(t,0,0,e.width,e.height);const a=await new Promise(i=>e.toBlob(i,"image/jpeg",.82)),r=URL.createObjectURL(a),o=new Image;o.src=r;try{await o.decode()}catch{}return{url:r,image:o}}function w(t){URL.revokeObjectURL(t.thumb.url)}function y(t,n){t.rotate=((t.rotate+n*90)%360+360)%360}const l=new Intl.Collator(void 0,{numeric:!0,sensitivity:"base"});function M(t,n){return n==="name"?t.sort((e,a)=>l.compare(e.name,a.name)):n==="date"?t.sort((e,a)=>e.lastModified-a.lastModified):n==="reverse"?t.reverse():t}function I(t,n,e){if(e<0||e>=t.length||n===e)return t;const[a]=t.splice(n,1);return t.splice(e,0,a),t}export{f as loadImages,I as moveItem,w as releaseItem,y as rotateItem,M as sortItems};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{inspectJpeg}from'./jpeg.js';
+const THUMB_MAX=320;
+const HEAD_BYTES=512*1024;
+let nextId=1;
+export async function loadImages(files){
+const items=[];
+const skipped=[];
+for(const file of Array.from(files)){
+if(!looksLikeImage(file)){
+skipped.push(`${file.name}: not an image this tool can read.`);
+continue;
+}
+let bitmap;
+try{
+bitmap=await createImageBitmap(file,{imageOrientation:'from-image'});
+}catch{
+skipped.push(`${file.name}: this browser could not decode it.`);
+continue;
+}
+try{
+const jpeg=await peekJpeg(file);
+const stored=jpeg
+?{width:jpeg.width,height:jpeg.height,orientation:jpeg.orientation}
+:{width:bitmap.width,height:bitmap.height,orientation:1};
+items.push({
+id:nextId++,
+file,
+name:file.name,
+lastModified:file.lastModified,
+...stored,
+rotate:0,
+thumb:await makeThumbnail(bitmap),
+});
+}finally{
+bitmap.close();
+}
+}
+return{items,skipped};
+}
+function looksLikeImage(file){
+if(file.type)return file.type.startsWith('image/');
+return/\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name);
+}
+async function peekJpeg(file){
+if(!/^image\/jpe?g$/i.test(file.type)&&!/\.jpe?g$/i.test(file.name))return null;
+try{
+const head=new Uint8Array(await file.slice(0,HEAD_BYTES).arrayBuffer());
+return inspectJpeg(head);
+}catch{
+return null;
+}
+}
+async function makeThumbnail(bitmap){
+const scale=Math.min(1,THUMB_MAX/Math.max(bitmap.width,bitmap.height));
+const canvas=document.createElement('canvas');
+canvas.width=Math.max(1,Math.round(bitmap.width*scale));
+canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,'image/jpeg',0.82));
+const url=URL.createObjectURL(blob);
+const image=new Image();
+image.src=url;
+try{
+await image.decode();
+}catch{
+}
+return{url,image};
+}
+export function releaseItem(item){
+URL.revokeObjectURL(item.thumb.url);
+}
+export function rotateItem(item,quarters){
+item.rotate=(((item.rotate+quarters*90)%360)+360)%360;
+}
+const collator=new Intl.Collator(undefined,{numeric:true,sensitivity:'base'});
+export function sortItems(items,key){
+if(key==='name')return items.sort((a,b)=>collator.compare(a.name,b.name));
+if(key==='date')return items.sort((a,b)=>a.lastModified-b.lastModified);
+if(key==='reverse')return items.reverse();
+return items;
+}
+export function moveItem(items,from,to){
+if(to<0||to>=items.length||from===to)return items;
+const[moved]=items.splice(from,1);
+items.splice(to,0,moved);
+return items;
+}

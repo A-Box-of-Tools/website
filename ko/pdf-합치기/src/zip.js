@@ -1,2 +1,62 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{crc32 as w}from"./crc32.js";const d=67324752,m=33639248,y=101010256,f=2048,b=new TextEncoder;function x(e){const i=e.getHours()<<11|e.getMinutes()<<5|e.getSeconds()>>1,o=e.getFullYear()-1980<<9|e.getMonth()+1<<5|e.getDate();return{time:i,day:o}}function D(e){const i=x(new Date),o=[],c=[];let U=0;for(const n of e){const r=b.encode(n.name),h=w([n.data]),a=new Uint8Array(30+r.length),s=new DataView(a.buffer);s.setUint32(0,d,!0),s.setUint16(4,20,!0),s.setUint16(6,f,!0),s.setUint16(8,0,!0),s.setUint16(10,i.time,!0),s.setUint16(12,i.day,!0),s.setUint32(14,h,!0),s.setUint32(18,n.data.length,!0),s.setUint32(22,n.data.length,!0),s.setUint16(26,r.length,!0),a.set(r,30),o.push(a,n.data);const l=new Uint8Array(46+r.length),t=new DataView(l.buffer);t.setUint32(0,m,!0),t.setUint16(4,20,!0),t.setUint16(6,20,!0),t.setUint16(8,f,!0),t.setUint16(10,0,!0),t.setUint16(12,i.time,!0),t.setUint16(14,i.day,!0),t.setUint32(16,h,!0),t.setUint32(20,n.data.length,!0),t.setUint32(24,n.data.length,!0),t.setUint16(28,r.length,!0),t.setUint32(42,U,!0),l.set(r,46),c.push(l),U+=a.length+n.data.length}const p=c.reduce((n,r)=>n+r.length,0),g=new Uint8Array(22),u=new DataView(g.buffer);return u.setUint32(0,y,!0),u.setUint16(8,e.length,!0),u.setUint16(10,e.length,!0),u.setUint32(12,p,!0),u.setUint32(16,U,!0),new Blob([...o,...c,g],{type:"application/zip"})}export{D as makeZip};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{crc32}from'./crc32.js';
+const LOCAL_SIG=0x04034b50;
+const CENTRAL_SIG=0x02014b50;
+const END_SIG=0x06054b50;
+const FLAG_UTF8=0x0800;
+const utf8=new TextEncoder();
+function dosStamp(date){
+const time=(date.getHours()<<11)|(date.getMinutes()<<5)|(date.getSeconds()>>1);
+const day=((date.getFullYear()-1980)<<9)|((date.getMonth()+1)<<5)|date.getDate();
+return{time,day};
+}
+export function makeZip(files){
+const stamp=dosStamp(new Date());
+const parts=[];
+const central=[];
+let offset=0;
+for(const file of files){
+const name=utf8.encode(file.name);
+const sum=crc32([file.data]);
+const local=new Uint8Array(30+name.length);
+const lv=new DataView(local.buffer);
+lv.setUint32(0,LOCAL_SIG,true);
+lv.setUint16(4,20,true);
+lv.setUint16(6,FLAG_UTF8,true);
+lv.setUint16(8,0,true);
+lv.setUint16(10,stamp.time,true);
+lv.setUint16(12,stamp.day,true);
+lv.setUint32(14,sum,true);
+lv.setUint32(18,file.data.length,true);
+lv.setUint32(22,file.data.length,true);
+lv.setUint16(26,name.length,true);
+local.set(name,30);
+parts.push(local,file.data);
+const entry=new Uint8Array(46+name.length);
+const cv=new DataView(entry.buffer);
+cv.setUint32(0,CENTRAL_SIG,true);
+cv.setUint16(4,20,true);
+cv.setUint16(6,20,true);
+cv.setUint16(8,FLAG_UTF8,true);
+cv.setUint16(10,0,true);
+cv.setUint16(12,stamp.time,true);
+cv.setUint16(14,stamp.day,true);
+cv.setUint32(16,sum,true);
+cv.setUint32(20,file.data.length,true);
+cv.setUint32(24,file.data.length,true);
+cv.setUint16(28,name.length,true);
+cv.setUint32(42,offset,true);
+entry.set(name,46);
+central.push(entry);
+offset+=local.length+file.data.length;
+}
+const centralSize=central.reduce((n,e)=>n+e.length,0);
+const end=new Uint8Array(22);
+const ev=new DataView(end.buffer);
+ev.setUint32(0,END_SIG,true);
+ev.setUint16(8,files.length,true);
+ev.setUint16(10,files.length,true);
+ev.setUint32(12,centralSize,true);
+ev.setUint32(16,offset,true);
+return new Blob([...parts,...central,end],{type:'application/zip'});
+}

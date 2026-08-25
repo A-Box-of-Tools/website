@@ -1,2 +1,69 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{bitLength as p,blocks as w}from"./blocks.js";function U(){let r=1732584193,x=-271733879,d=-1732584194,b=271733878,h=-1009589776;const a=new Int32Array(80),u=w(64,c=>{for(let e=0;e<16;e+=1)a[e]=c.getInt32(e*4,!1);for(let e=16;e<80;e+=1){const f=a[e-3]^a[e-8]^a[e-14]^a[e-16];a[e]=f<<1|f>>>31}let s=r,t=x,l=d,n=b,o=h;for(let e=0;e<80;e+=1){let f,i;e<20?(f=t&l|~t&n,i=1518500249):e<40?(f=t^l^n,i=1859775393):e<60?(f=t&l|t&n|l&n,i=-1894007588):(f=t^l^n,i=-899497514);const I=(s<<5|s>>>27)+f+o+i+a[e]|0;o=n,n=l,l=t<<30|t>>>2,t=s,s=I}r=r+s|0,x=x+t|0,d=d+l|0,b=b+n|0,h=h+o|0});return{update(c){u.update(c)},digest(){u.finish(8,(t,l,n)=>{const{hi:o,lo:e}=p(n);t.setUint32(l,o,!1),t.setUint32(l+4,e,!1)});const c=new Uint8Array(20),s=new DataView(c.buffer);return s.setInt32(0,r,!1),s.setInt32(4,x,!1),s.setInt32(8,d,!1),s.setInt32(12,b,!1),s.setInt32(16,h,!1),c}}}export{U as sha1};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{bitLength,blocks}from'./blocks.js';
+export function sha1(){
+let h0=0x67452301|0;
+let h1=0xefcdab89|0;
+let h2=0x98badcfe|0;
+let h3=0x10325476|0;
+let h4=0xc3d2e1f0|0;
+const w=new Int32Array(80);
+const compress=(view)=>{
+for(let i=0;i<16;i+=1)w[i]=view.getInt32(i*4,false);
+for(let i=16;i<80;i+=1){
+const x=w[i-3]^w[i-8]^w[i-14]^w[i-16];
+w[i]=(x<<1)|(x>>>31);
+}
+let a=h0;
+let b=h1;
+let c=h2;
+let d=h3;
+let e=h4;
+for(let i=0;i<80;i+=1){
+let f;
+let k;
+if(i<20){
+f=(b&c)|(~b&d);
+k=0x5a827999|0;
+}else if(i<40){
+f=b^c^d;
+k=0x6ed9eba1|0;
+}else if(i<60){
+f=(b&c)|(b&d)|(c&d);
+k=0x8f1bbcdc|0;
+}else{
+f=b^c^d;
+k=0xca62c1d6|0;
+}
+const t=(((a<<5)|(a>>>27))+f+e+k+w[i])|0;
+e=d;
+d=c;
+c=(b<<30)|(b>>>2);
+b=a;
+a=t;
+}
+h0=(h0+a)|0;
+h1=(h1+b)|0;
+h2=(h2+c)|0;
+h3=(h3+d)|0;
+h4=(h4+e)|0;
+};
+const state=blocks(64,compress);
+return{
+update(chunk){state.update(chunk);},
+digest(){
+state.finish(8,(view,at,bytes)=>{
+const{hi,lo}=bitLength(bytes);
+view.setUint32(at,hi,false);
+view.setUint32(at+4,lo,false);
+});
+const out=new Uint8Array(20);
+const view=new DataView(out.buffer);
+view.setInt32(0,h0,false);
+view.setInt32(4,h1,false);
+view.setInt32(8,h2,false);
+view.setInt32(12,h3,false);
+view.setInt32(16,h4,false);
+return out;
+},
+};
+}

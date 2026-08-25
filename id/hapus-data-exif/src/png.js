@@ -1,2 +1,158 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{crc32 as g}from"./crc32.js";const x=[137,80,78,71,13,10,26,10],f=new Set(["tEXt","zTXt","iTXt"]),c=new TextDecoder("latin1"),m=new TextEncoder,w=new TextDecoder("utf-8"),u="XML:com.adobe.xmp";function E(r){const e=new Uint8Array(4);for(let t=0;t<4;t+=1)e[t]=r.charCodeAt(t);return e}async function h(r){const e=new Blob([r]).stream().pipeThrough(new DecompressionStream("deflate"));return new Uint8Array(await new Response(e).arrayBuffer())}async function A(r){if(r.length<12||x.some((n,i)=>r[i]!==n))return{ok:!1,kind:"png",error:"This does not start like a PNG."};const e=new DataView(r.buffer,r.byteOffset,r.byteLength),t=[];let o=8;for(;o+8<=r.length;){const n=e.getUint32(o),i=c.decode(r.subarray(o+4,o+8));if(o+12+n>r.length)return{ok:!1,kind:"png",error:"A chunk claims a length that runs off the end of the file."};const a={type:i,data:r.slice(o+8,o+8+n)};if(f.has(i)&&(a.text=await k(a)),t.push(a),o+=12+n,i==="IEND")break}return!t.length||t[0].type!=="IHDR"?{ok:!1,kind:"png",error:"The header chunk is missing."}:{ok:!0,kind:"png",chunks:t}}function I(r){let e=8;for(const i of r.chunks)e+=12+i.data.length;const t=new Uint8Array(e);t.set(x);const o=new DataView(t.buffer);let n=8;for(const i of r.chunks){const a=E(i.type);o.setUint32(n,i.data.length),t.set(a,n+4),t.set(i.data,n+8),o.setUint32(n+8+i.data.length,g([a,i.data])),n+=12+i.data.length}return t}const d=(r,e)=>{for(let t=e;t<r.length;t+=1)if(r[t]===0)return t;return-1};async function k(r){const{type:e,data:t}=r,o=d(t,0);if(o<0)return{keyword:"(malformed)",value:"",encoding:e};const n=c.decode(t.subarray(0,o));try{if(e==="tEXt")return{keyword:n,value:c.decode(t.subarray(o+1)),encoding:e};if(e==="zTXt"){const y=await h(t.subarray(o+2));return{keyword:n,value:c.decode(y),encoding:e}}const i=t[o+1]===1,a=d(t,o+3),s=d(t,a+1);if(a<0||s<0)return{keyword:n,value:"",encoding:e};const l=t.subarray(s+1);return{keyword:n,value:w.decode(i?await h(l):l),encoding:e,language:c.decode(t.subarray(o+3,a))}}catch{return{keyword:n,value:null,encoding:e,unreadable:!0}}}function p(r,e){const t=r.slice(0,79);if(/^[\x20-\xff]*$/.test(e)&&!/[\x80-\x9f]/.test(e)){const a=new Uint8Array(t.length+1+e.length);for(let s=0;s<t.length;s+=1)a[s]=t.charCodeAt(s);for(let s=0;s<e.length;s+=1)a[t.length+1+s]=e.charCodeAt(s)&255;return{type:"tEXt",data:a,text:{keyword:t,value:e,encoding:"tEXt"}}}const n=m.encode(e),i=new Uint8Array(t.length+5+n.length);for(let a=0;a<t.length;a+=1)i[a]=t.charCodeAt(a);return i.set(n,t.length+5),{type:"iTXt",data:i,text:{keyword:t,value:e,encoding:"iTXt"}}}function T(r){return c.decode(r.subarray(0,6))==="Exif\0\0"?r.slice(6):r}function b(r){const e={exif:null,xmp:null,iptc:null,icc:null,comments:[],text:[],extras:[],notes:[]};return r.chunks.forEach((t,o)=>{if(t.type==="eXIf"&&!e.exif)e.exif=T(t.data);else if(f.has(t.type))t.text?.keyword===u?e.xmp=t.text.value:e.text.push({...t.text,index:o});else if(t.type==="iCCP"){const n=d(t.data,0);e.icc=t.data.slice(n+2),e.iccName=n>0?c.decode(t.data.subarray(0,n)):null}else t.type==="tIME"?e.extras.push({label:"Last-modified time (tIME)",size:t.data.length}):t.type==="dSIG"&&e.extras.push({label:"Embedded digital signature (dSIG)",size:t.data.length})}),e}function D(r,e){const t=[];if(e.exif&&t.push({type:"eXIf",data:e.exif}),Array.isArray(e.text))for(const n of e.text)t.push(p(n.keyword,n.value));typeof e.xmp=="string"&&e.xmp&&t.push(p(u,e.xmp));const o=[];for(const n of r.chunks){if(n.type==="IHDR"){o.push(n,...t);continue}if(!(n.type==="eXIf"&&e.exif!==void 0)){if(f.has(n.type)){if(n.text?.keyword===u?e.xmp!==void 0:e.text!==void 0)continue;o.push(n);continue}n.type==="iCCP"&&e.icc===null||(n.type==="tIME"||n.type==="dSIG")&&e.extras===null||o.push(n)}}r.chunks=o}export{D as apply,b as collect,A as read,I as write};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{crc32}from'./crc32.js';
+const SIGNATURE=[0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a];
+const TEXT_TYPES=new Set(['tEXt','zTXt','iTXt']);
+const latin1=new TextDecoder('latin1');
+const utf8=new TextEncoder();
+const utf8Decoder=new TextDecoder('utf-8');
+const XMP_KEYWORD='XML:com.adobe.xmp';
+function typeBytes(type){
+const out=new Uint8Array(4);
+for(let i=0;i<4;i+=1)out[i]=type.charCodeAt(i);
+return out;
+}
+async function inflate(bytes){
+const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate'));
+return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+export async function read(bytes){
+if(bytes.length<12||SIGNATURE.some((b,i)=>bytes[i]!==b)){
+return{ok:false,kind:'png',error:'This does not start like a PNG.'};
+}
+const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+const chunks=[];
+let at=8;
+while(at+8<=bytes.length){
+const length=view.getUint32(at);
+const type=latin1.decode(bytes.subarray(at+4,at+8));
+if(at+12+length>bytes.length){
+return{ok:false,kind:'png',error:'A chunk claims a length that runs off the end of the file.'};
+}
+const chunk={type,data:bytes.slice(at+8,at+8+length)};
+if(TEXT_TYPES.has(type))chunk.text=await readText(chunk);
+chunks.push(chunk);
+at+=12+length;
+if(type==='IEND')break;
+}
+if(!chunks.length||chunks[0].type!=='IHDR'){
+return{ok:false,kind:'png',error:'The header chunk is missing.'};
+}
+return{ok:true,kind:'png',chunks};
+}
+export function write(doc){
+let total=8;
+for(const c of doc.chunks)total+=12+c.data.length;
+const out=new Uint8Array(total);
+out.set(SIGNATURE);
+const view=new DataView(out.buffer);
+let at=8;
+for(const chunk of doc.chunks){
+const type=typeBytes(chunk.type);
+view.setUint32(at,chunk.data.length);
+out.set(type,at+4);
+out.set(chunk.data,at+8);
+view.setUint32(at+8+chunk.data.length,crc32([type,chunk.data]));
+at+=12+chunk.data.length;
+}
+return out;
+}
+const nulAt=(bytes,from)=>{
+for(let i=from;i<bytes.length;i+=1)if(bytes[i]===0)return i;
+return-1;
+};
+async function readText(chunk){
+const{type,data}=chunk;
+const split=nulAt(data,0);
+if(split<0)return{keyword:'(malformed)',value:'',encoding:type};
+const keyword=latin1.decode(data.subarray(0,split));
+try{
+if(type==='tEXt'){
+return{keyword,value:latin1.decode(data.subarray(split+1)),encoding:type};
+}
+if(type==='zTXt'){
+const body=await inflate(data.subarray(split+2));
+return{keyword,value:latin1.decode(body),encoding:type};
+}
+const compressed=data[split+1]===1;
+const langEnd=nulAt(data,split+3);
+const transEnd=nulAt(data,langEnd+1);
+if(langEnd<0||transEnd<0)return{keyword,value:'',encoding:type};
+const body=data.subarray(transEnd+1);
+return{
+keyword,
+value:utf8Decoder.decode(compressed?await inflate(body):body),
+encoding:type,
+language:latin1.decode(data.subarray(split+3,langEnd)),
+};
+}catch{
+return{keyword,value:null,encoding:type,unreadable:true};
+}
+}
+function makeTextChunk(keyword,value){
+const key=keyword.slice(0,79);
+const plain=/^[\x20-\xff]*$/.test(value)&&!/[\x80-\x9f]/.test(value);
+if(plain){
+const data=new Uint8Array(key.length+1+value.length);
+for(let i=0;i<key.length;i+=1)data[i]=key.charCodeAt(i);
+for(let i=0;i<value.length;i+=1)data[key.length+1+i]=value.charCodeAt(i)&0xff;
+return{type:'tEXt',data,text:{keyword:key,value,encoding:'tEXt'}};
+}
+const body=utf8.encode(value);
+const data=new Uint8Array(key.length+5+body.length);
+for(let i=0;i<key.length;i+=1)data[i]=key.charCodeAt(i);
+data.set(body,key.length+5);
+return{type:'iTXt',data,text:{keyword:key,value,encoding:'iTXt'}};
+}
+function stripExifId(data){
+const head=latin1.decode(data.subarray(0,6));
+return head==='Exif\0\0'?data.slice(6):data;
+}
+export function collect(doc){
+const meta={
+exif:null,xmp:null,iptc:null,icc:null,
+comments:[],text:[],extras:[],notes:[],
+};
+doc.chunks.forEach((chunk,index)=>{
+if(chunk.type==='eXIf'&&!meta.exif){
+meta.exif=stripExifId(chunk.data);
+}else if(TEXT_TYPES.has(chunk.type)){
+if(chunk.text?.keyword===XMP_KEYWORD)meta.xmp=chunk.text.value;
+else meta.text.push({...chunk.text,index});
+}else if(chunk.type==='iCCP'){
+const split=nulAt(chunk.data,0);
+meta.icc=chunk.data.slice(split+2);
+meta.iccName=split>0?latin1.decode(chunk.data.subarray(0,split)):null;
+}else if(chunk.type==='tIME'){
+meta.extras.push({label:'Last-modified time (tIME)',size:chunk.data.length});
+}else if(chunk.type==='dSIG'){
+meta.extras.push({label:'Embedded digital signature (dSIG)',size:chunk.data.length});
+}
+});
+return meta;
+}
+export function apply(doc,plan){
+const inserted=[];
+if(plan.exif)inserted.push({type:'eXIf',data:plan.exif});
+if(Array.isArray(plan.text)){
+for(const item of plan.text)inserted.push(makeTextChunk(item.keyword,item.value));
+}
+if(typeof plan.xmp==='string'&&plan.xmp)inserted.push(makeTextChunk(XMP_KEYWORD,plan.xmp));
+const out=[];
+for(const chunk of doc.chunks){
+if(chunk.type==='IHDR'){
+out.push(chunk,...inserted);
+continue;
+}
+if(chunk.type==='eXIf'&&plan.exif!==undefined)continue;
+if(TEXT_TYPES.has(chunk.type)){
+const isXmp=chunk.text?.keyword===XMP_KEYWORD;
+if(isXmp?plan.xmp!==undefined:plan.text!==undefined)continue;
+out.push(chunk);
+continue;
+}
+if(chunk.type==='iCCP'&&plan.icc===null)continue;
+if((chunk.type==='tIME'||chunk.type==='dSIG')&&plan.extras===null)continue;
+out.push(chunk);
+}
+doc.chunks=out;
+}

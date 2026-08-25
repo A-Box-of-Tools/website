@@ -1,2 +1,41 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{reverse as f,applyGain as d,peak as u,dbToGain as v,normalizeGain as b}from"./effects.js";import{resample as k,resampledLength as s}from"./speed.js";import{stretch as w,stretchedLength as A}from"./stretch.js";async function M(r,e,{onProgress:n,signal:o}={}){const a=(p,l)=>n?.(Math.min(1,Math.max(0,p)),l);let t=r.channels.map(p=>Float32Array.from(p));if(o?.throwIfAborted(),e.reverse&&(a(.02,"Reversing\u2026"),f(t)),e.speed!==1){const p=e.keepPitch?"Stretching, keeping the pitch\u2026":"Resampling\u2026";a(.05,p);const l=m=>a(.05+m*.88,p);t=e.keepPitch?await w(t,e.speed,r.sampleRate,{onProgress:l,signal:o}):await k(t,e.speed,{onProgress:l,signal:o})}o?.throwIfAborted(),a(.95,"Setting the level\u2026");const c=u(t),i=e.volume.mode==="normalize"?b(c,e.volume.db):v(e.volume.db),h=i===1?{peak:c,clipped:P(t)}:d(t,i);return a(1,"Writing the file\u2026"),{channels:t,peak:h.peak,clipped:h.clipped,gain:i}}function P(r){let e=0;for(const n of r)for(let o=0;o<n.length;o+=1)Math.abs(n[o])>1&&(e+=1);return e}function R(r,e,n){return e===1?r:n?A(r,e):s(r,e)}export{R as lengthAfter,M as render};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{reverse,applyGain,peak,dbToGain,normalizeGain}from'./effects.js';
+import{resample,resampledLength}from'./speed.js';
+import{stretch,stretchedLength}from'./stretch.js';
+export async function render(source,settings,{onProgress,signal}={}){
+const report=(done,label)=>onProgress?.(Math.min(1,Math.max(0,done)),label);
+let channels=source.channels.map((samples)=>Float32Array.from(samples));
+signal?.throwIfAborted();
+if(settings.reverse){
+report(0.02,'Reversing…');
+reverse(channels);
+}
+if(settings.speed!==1){
+const label=settings.keepPitch?'Stretching, keeping the pitch…':'Resampling…';
+report(0.05,label);
+const onStep=(done)=>report(0.05+done*0.88,label);
+channels=settings.keepPitch
+?await stretch(channels,settings.speed,source.sampleRate,{onProgress:onStep,signal})
+:await resample(channels,settings.speed,{onProgress:onStep,signal});
+}
+signal?.throwIfAborted();
+report(0.95,'Setting the level…');
+const before=peak(channels);
+const gain=settings.volume.mode==='normalize'
+?normalizeGain(before,settings.volume.db)
+:dbToGain(settings.volume.db);
+const after=gain===1?{peak:before,clipped:countOver(channels)}:applyGain(channels,gain);
+report(1,'Writing the file…');
+return{channels,peak:after.peak,clipped:after.clipped,gain};
+}
+function countOver(channels){
+let over=0;
+for(const samples of channels){
+for(let i=0;i<samples.length;i+=1)if(Math.abs(samples[i])>1)over+=1;
+}
+return over;
+}
+export function lengthAfter(frames,speed,keepPitch){
+if(speed===1)return frames;
+return keepPitch?stretchedLength(frames,speed):resampledLength(frames,speed);
+}

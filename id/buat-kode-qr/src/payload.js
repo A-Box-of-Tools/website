@@ -1,3 +1,144 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const p=[{id:"text",name:"Text or a link",note:"Anything at all. A web address is what a phone camera will offer to open.",fields:[{id:"text",label:"Text or web address",type:"textarea",placeholder:"https://abox.tools/"}]},{id:"wifi",name:"Wi-Fi network",note:"Scanning it offers to join the network. Android reads this natively; so does the iPhone camera from iOS 11 onwards.",fields:[{id:"ssid",label:"Network name (SSID)",type:"text",placeholder:"The Coffee Shop"},{id:"password",label:"Password",type:"text",placeholder:"",optional:!0},{id:"security",label:"Security",type:"select",options:[["WPA","WPA / WPA2 / WPA3"],["WEP","WEP"],["nopass","Open - no password"]]},{id:"hidden",label:"The network is hidden",type:"checkbox",optional:!0}]},{id:"contact",name:"Contact card",note:"A vCard, which is what a phone offers to save into its address book.",fields:[{id:"first",label:"First name",type:"text",placeholder:"Ada",optional:!0},{id:"last",label:"Last name",type:"text",placeholder:"Lovelace",optional:!0},{id:"org",label:"Organisation",type:"text",placeholder:"",optional:!0},{id:"title",label:"Job title",type:"text",placeholder:"",optional:!0},{id:"phone",label:"Phone",type:"tel",placeholder:"+44 20 7946 0000",optional:!0},{id:"email",label:"Email",type:"email",placeholder:"",optional:!0},{id:"url",label:"Website",type:"text",placeholder:"",optional:!0},{id:"address",label:"Address",type:"text",placeholder:"",optional:!0}]},{id:"email",name:"Email",note:"Opens a new message with the address, and the subject and body if you fill them in.",fields:[{id:"to",label:"To",type:"email",placeholder:"hi@abox.tools"},{id:"subject",label:"Subject",type:"text",placeholder:"",optional:!0},{id:"body",label:"Message",type:"textarea",placeholder:"",optional:!0}]},{id:"sms",name:"Text message",note:"Opens a new message to that number, with the text ready to send.",fields:[{id:"number",label:"Phone number",type:"tel",placeholder:"+15551234567"},{id:"message",label:"Message",type:"textarea",placeholder:"",optional:!0}]},{id:"phone",name:"Phone number",note:"Offers to call the number.",fields:[{id:"number",label:"Phone number",type:"tel",placeholder:"+15551234567"}]},{id:"location",name:"A place on the map",note:"Opens the coordinates in whichever map application the phone uses.",fields:[{id:"latitude",label:"Latitude",type:"text",placeholder:"51.5007"},{id:"longitude",label:"Longitude",type:"text",placeholder:"-0.1246"}]}];function r(o){return o.replace(/([\\;,:"])/g,"\\$1")}function a(o){return o.replace(/([\\;,])/g,"\\$1").replace(/\r?\n/g,"\\n")}function d(o,i){const e=t=>String(i[t]??"").trim();if(o==="text")return String(i.text??"");if(o==="wifi"){const t=e("security")||"WPA",l=[`T:${t}`,`S:${r(e("ssid"))}`];return t!=="nopass"&&e("password")&&l.push(`P:${r(e("password"))}`),i.hidden&&l.push("H:true"),`WIFI:${l.join(";")};;`}if(o==="contact"){const t=["BEGIN:VCARD","VERSION:3.0"],l=a(e("first")),s=a(e("last"));t.push(`N:${s};${l};;;`);const n=[e("first"),e("last")].filter(Boolean).join(" ");return n&&t.push(`FN:${a(n)}`),e("org")&&t.push(`ORG:${a(e("org"))}`),e("title")&&t.push(`TITLE:${a(e("title"))}`),e("phone")&&t.push(`TEL;TYPE=CELL:${a(e("phone"))}`),e("email")&&t.push(`EMAIL:${a(e("email"))}`),e("url")&&t.push(`URL:${a(e("url"))}`),e("address")&&t.push(`ADR:;;${a(e("address"))};;;;`),t.push("END:VCARD"),t.join(`
-`)}if(o==="email"){const t=[];return e("subject")&&t.push(`subject=${encodeURIComponent(e("subject"))}`),e("body")&&t.push(`body=${encodeURIComponent(e("body"))}`),`mailto:${e("to")}${t.length?`?${t.join("&")}`:""}`}if(o==="sms"){const t=e("number").replace(/\s+/g,"");return e("message")?`SMSTO:${t}:${i.message}`:`SMSTO:${t}`}if(o==="phone")return`tel:${e("number").replace(/\s+/g,"")}`;if(o==="location")return`geo:${e("latitude")},${e("longitude")}`;throw new RangeError(`no such kind: ${o}`)}function c(o,i){const e=p.find(t=>t.id===o);return o==="contact"?e.fields.some(l=>String(i[l.id]??"").trim())?[]:["At least one detail"]:e.fields.filter(t=>!t.optional&&t.type!=="checkbox"&&!String(i[t.id]??"").trim()).map(t=>t.label)}export{p as KINDS,d as compose,c as missing};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const KINDS=[
+{
+id:'text',
+name:'Text or a link',
+note:'Anything at all. A web address is what a phone camera will offer to open.',
+fields:[
+{
+id:'text',
+label:'Text or web address',
+type:'textarea',
+placeholder:'https://abox.tools/',
+},
+],
+},
+{
+id:'wifi',
+name:'Wi-Fi network',
+note:'Scanning it offers to join the network. Android reads this natively; '
++'so does the iPhone camera from iOS 11 onwards.',
+fields:[
+{id:'ssid',label:'Network name (SSID)',type:'text',placeholder:'The Coffee Shop'},
+{id:'password',label:'Password',type:'text',placeholder:'',optional:true},
+{
+id:'security',
+label:'Security',
+type:'select',
+options:[['WPA','WPA / WPA2 / WPA3'],['WEP','WEP'],['nopass','Open - no password']],
+},
+{id:'hidden',label:'The network is hidden',type:'checkbox',optional:true},
+],
+},
+{
+id:'contact',
+name:'Contact card',
+note:'A vCard, which is what a phone offers to save into its address book.',
+fields:[
+{id:'first',label:'First name',type:'text',placeholder:'Ada',optional:true},
+{id:'last',label:'Last name',type:'text',placeholder:'Lovelace',optional:true},
+{id:'org',label:'Organisation',type:'text',placeholder:'',optional:true},
+{id:'title',label:'Job title',type:'text',placeholder:'',optional:true},
+{id:'phone',label:'Phone',type:'tel',placeholder:'+44 20 7946 0000',optional:true},
+{id:'email',label:'Email',type:'email',placeholder:'',optional:true},
+{id:'url',label:'Website',type:'text',placeholder:'',optional:true},
+{id:'address',label:'Address',type:'text',placeholder:'',optional:true},
+],
+},
+{
+id:'email',
+name:'Email',
+note:'Opens a new message with the address, and the subject and body if you fill them in.',
+fields:[
+{id:'to',label:'To',type:'email',placeholder:'hi@abox.tools'},
+{id:'subject',label:'Subject',type:'text',placeholder:'',optional:true},
+{id:'body',label:'Message',type:'textarea',placeholder:'',optional:true},
+],
+},
+{
+id:'sms',
+name:'Text message',
+note:'Opens a new message to that number, with the text ready to send.',
+fields:[
+{id:'number',label:'Phone number',type:'tel',placeholder:'+15551234567'},
+{id:'message',label:'Message',type:'textarea',placeholder:'',optional:true},
+],
+},
+{
+id:'phone',
+name:'Phone number',
+note:'Offers to call the number.',
+fields:[
+{id:'number',label:'Phone number',type:'tel',placeholder:'+15551234567'},
+],
+},
+{
+id:'location',
+name:'A place on the map',
+note:'Opens the coordinates in whichever map application the phone uses.',
+fields:[
+{id:'latitude',label:'Latitude',type:'text',placeholder:'51.5007'},
+{id:'longitude',label:'Longitude',type:'text',placeholder:'-0.1246'},
+],
+},
+];
+function wifiEscape(value){
+return value.replace(/([\\;,:"])/g,'\\$1');
+}
+function vcardEscape(value){
+return value.replace(/([\\;,])/g,'\\$1').replace(/\r?\n/g,'\\n');
+}
+export function compose(kind,values){
+const value=(id)=>String(values[id]??'').trim();
+if(kind==='text')return String(values.text??'');
+if(kind==='wifi'){
+const security=value('security')||'WPA';
+const parts=[`T:${security}`,`S:${wifiEscape(value('ssid'))}`];
+if(security!=='nopass'&&value('password')){
+parts.push(`P:${wifiEscape(value('password'))}`);
+}
+if(values.hidden)parts.push('H:true');
+return`WIFI:${parts.join(';')};;`;
+}
+if(kind==='contact'){
+const lines=['BEGIN:VCARD','VERSION:3.0'];
+const first=vcardEscape(value('first'));
+const last=vcardEscape(value('last'));
+lines.push(`N:${last};${first};;;`);
+const full=[value('first'),value('last')].filter(Boolean).join(' ');
+if(full)lines.push(`FN:${vcardEscape(full)}`);
+if(value('org'))lines.push(`ORG:${vcardEscape(value('org'))}`);
+if(value('title'))lines.push(`TITLE:${vcardEscape(value('title'))}`);
+if(value('phone'))lines.push(`TEL;TYPE=CELL:${vcardEscape(value('phone'))}`);
+if(value('email'))lines.push(`EMAIL:${vcardEscape(value('email'))}`);
+if(value('url'))lines.push(`URL:${vcardEscape(value('url'))}`);
+if(value('address'))lines.push(`ADR:;;${vcardEscape(value('address'))};;;;`);
+lines.push('END:VCARD');
+return lines.join('\n');
+}
+if(kind==='email'){
+const query=[];
+if(value('subject'))query.push(`subject=${encodeURIComponent(value('subject'))}`);
+if(value('body'))query.push(`body=${encodeURIComponent(value('body'))}`);
+return`mailto:${value('to')}${query.length ? `?${query.join('&')}` : ''}`;
+}
+if(kind==='sms'){
+const number=value('number').replace(/\s+/g,'');
+return value('message')?`SMSTO:${number}:${values.message}`:`SMSTO:${number}`;
+}
+if(kind==='phone')return`tel:${value('number').replace(/\s+/g, '')}`;
+if(kind==='location')return`geo:${value('latitude')},${value('longitude')}`;
+throw new RangeError(`no such kind: ${kind}`);
+}
+export function missing(kind,values){
+const definition=KINDS.find((entry)=>entry.id===kind);
+if(kind==='contact'){
+const anything=definition.fields
+.some((field)=>String(values[field.id]??'').trim());
+return anything?[]:['At least one detail'];
+}
+return definition.fields
+.filter((field)=>!field.optional&&field.type!=='checkbox'
+&&!String(values[field.id]??'').trim())
+.map((field)=>field.label);
+}

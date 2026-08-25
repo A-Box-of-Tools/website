@@ -1,2 +1,261 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const c=new Set(["http:","https:","mailto:","tel:","sms:","geo:"]),d=new Set(["bit.ly","tinyurl.com","t.co","goo.gl","ow.ly","is.gd","buff.ly","rebrand.ly","cutt.ly","shorturl.at","rb.gy","lnkd.in","qrco.de","qrs.ly","linktr.ee","tiny.cc","s.id"]);function u(n){const t=new Map;let e="",s="",i=!0;for(let r=0;r<n.length;r+=1){const l=n[r];l==="\\"&&r+1<n.length?(s+=n[r+1],r+=1):l===":"&&i?i=!1:l===";"?(e&&t.set(e.toUpperCase(),s),e="",s="",i=!0):i?e+=l:s+=l}return e&&t.set(e.toUpperCase(),s),t}function f(n){const t=new Map;for(const e of n.replace(/\r?\n[ \t]/g,"").split(/\r?\n/)){const s=e.indexOf(":");if(s<0)continue;const i=e.slice(0,s).split(";")[0].toUpperCase(),r=e.slice(s+1);!t.has(i)&&r&&t.set(i,r)}return t}const o=(n,t,e={})=>({key:n,value:t,...e});function h(n){let t;try{t=new URL(n)}catch{return null}const e=t.hostname,s=[];(t.username||t.password)&&s.push({key:"warn.userinfo",values:{host:e}}),e.startsWith("xn--")||e.includes(".xn--")?s.push({key:"warn.punycode",values:{host:e}}):/[^ -~]/.test(e)&&s.push({key:"warn.unicode-host",values:{host:e}}),t.protocol==="http:"&&s.push({key:"warn.plain-http",values:{}}),d.has(e.toLowerCase().replace(/^www\./,""))&&s.push({key:"warn.shortener",values:{host:e}});const i=[o("field.host",e,{emphasis:!0})];return t.port&&i.push(o("field.port",t.port)),i.push(o("field.path",`${t.pathname}${t.search}${t.hash}`)),{kind:"url",kindKey:t.protocol==="https:"?"kind.url":"kind.url-plain",rows:i,warnings:s,link:{href:t.href,host:e}}}function p(n){const t=u(n.slice(5)),e=(t.get("T")||"nopass").toUpperCase(),s={WPA:"WPA/WPA2",WPA2:"WPA2",WPA3:"WPA3",WEP:"WEP"}[e],i=[o("field.ssid",t.get("S")??"",{emphasis:!0})];return i.push(s?o("field.security",s):o("field.security","",{phrase:"value.open-network"})),t.get("P")&&i.push(o("field.password",t.get("P"),{secret:!0})),t.get("H")==="true"&&i.push(o("field.hidden","",{phrase:"value.yes"})),{kind:"wifi",kindKey:"kind.wifi",rows:i,warnings:[{key:"warn.wifi-secret",values:{}}],link:null}}function m(n){const t=/^BEGIN:VCARD/i.test(n),e=[];if(t){const s=f(n),i=s.get("FN")??(s.get("N")??"").split(";").filter(Boolean).reverse().join(" ");i.trim()&&e.push(o("field.name",i.trim(),{emphasis:!0}));for(const[r,l]of[["ORG","field.org"],["TITLE","field.title"],["TEL","field.phone"],["EMAIL","field.email"],["URL","field.web"],["ADR","field.address"]]){const a=s.get(r);a&&e.push(o(l,a.replace(/;+/g," ").trim()))}}else{const s=u(n.slice(7)),i=(s.get("N")??"").split(",").reverse().join(" ").trim();i&&e.push(o("field.name",i,{emphasis:!0}));for(const[r,l]of[["ORG","field.org"],["TEL","field.phone"],["EMAIL","field.email"],["URL","field.web"],["ADR","field.address"],["NOTE","field.note"]]){const a=s.get(r);a&&e.push(o(l,a))}}return{kind:"contact",kindKey:t?"kind.vcard":"kind.mecard",rows:e,warnings:[],link:null}}function k(n){if(/^MATMSG:/i.test(n)){const i=u(n.slice(7)),r=i.get("TO")??"";return{kind:"email",kindKey:"kind.email",rows:[o("field.to",r,{emphasis:!0}),o("field.subject",i.get("SUB")??""),o("field.message",i.get("BODY")??"")].filter(l=>l.value),warnings:[],link:r?{href:`mailto:${r}`,host:r}:null}}let t;try{t=new URL(n)}catch{return null}const e=decodeURIComponent(t.pathname),s=[o("field.to",e,{emphasis:!0})];for(const[i,r]of[["subject","field.subject"],["body","field.message"]]){const l=t.searchParams.get(i);l&&s.push(o(r,l))}return{kind:"email",kindKey:"kind.email",rows:s,warnings:[],link:{href:t.href,host:e}}}function w(n){const t=n.toLowerCase();if(t.startsWith("tel:")){const e=n.slice(4);return{kind:"phone",kindKey:"kind.phone",rows:[o("field.number",e,{emphasis:!0})],warnings:[],link:{href:`tel:${e}`,host:e}}}if(t.startsWith("smsto:")||t.startsWith("sms:")){const e=n.slice(n.indexOf(":")+1),s=e.indexOf(":"),i=s<0?e:e.slice(0,s),r=s<0?"":e.slice(s+1);return{kind:"sms",kindKey:"kind.sms",rows:[o("field.to",i,{emphasis:!0}),...r?[o("field.message",r)]:[]],warnings:[],link:{href:`sms:${i}`,host:i}}}if(t.startsWith("geo:")){const[e]=n.slice(4).split("?"),[s,i]=e.split(",");return{kind:"place",kindKey:"kind.place",rows:[o("field.latitude",s??"",{emphasis:!0}),o("field.longitude",i??"",{emphasis:!0})],warnings:[],link:{href:n,host:e}}}return null}function g(n){let t;try{t=new URL(n)}catch{return null}return{kind:"otp",kindKey:"kind.otp",rows:[o("field.account",decodeURIComponent(t.pathname.replace(/^\/+/,"")),{emphasis:!0}),o("field.issuer",t.searchParams.get("issuer")??""),o("field.secret",t.searchParams.get("secret")??"",{secret:!0})].filter(e=>e.value),warnings:[{key:"warn.otp-secret",values:{}}],link:null}}function y(n){const t=n.trim(),e=t.toLowerCase(),s=e.startsWith("wifi:")?p(t):e.startsWith("begin:vcard")||e.startsWith("mecard:")?m(t):e.startsWith("mailto:")||e.startsWith("matmsg:")?k(t):e.startsWith("otpauth://")?g(t):e.startsWith("http://")||e.startsWith("https://")?h(t):w(t);if(s)return{payload:s};const i=/^([a-z][a-z0-9+.-]*):/i.exec(t);if(i&&!c.has(`${i[1].toLowerCase()}:`))return{payload:{kind:"other-scheme",kindKey:"kind.other-scheme",rows:[o("field.scheme",`${i[1].toLowerCase()}:`,{emphasis:!0})],warnings:[{key:"warn.not-openable",values:{}}],link:null}};const r=/^[0-9]+$/.test(t);return{payload:{kind:r?"number":"text",kindKey:r?"kind.number":"kind.text",rows:[],warnings:[],link:null}}}export{y as describe};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const OPENABLE=new Set(['http:','https:','mailto:','tel:','sms:','geo:']);
+const SHORTENERS=new Set([
+'bit.ly','tinyurl.com','t.co','goo.gl','ow.ly','is.gd','buff.ly',
+'rebrand.ly','cutt.ly','shorturl.at','rb.gy','lnkd.in','qrco.de',
+'qrs.ly','linktr.ee','tiny.cc','s.id',
+]);
+function fields(body){
+const out=new Map();
+let key='';
+let value='';
+let inKey=true;
+for(let i=0;i<body.length;i+=1){
+const character=body[i];
+if(character==='\\'&&i+1<body.length){
+value+=body[i+1];
+i+=1;
+}else if(character===':'&&inKey){
+inKey=false;
+}else if(character===';'){
+if(key)out.set(key.toUpperCase(),value);
+key='';
+value='';
+inKey=true;
+}else if(inKey){
+key+=character;
+}else{
+value+=character;
+}
+}
+if(key)out.set(key.toUpperCase(),value);
+return out;
+}
+function vcard(text){
+const out=new Map();
+for(const line of text.replace(/\r?\n[ \t]/g,'').split(/\r?\n/)){
+const split=line.indexOf(':');
+if(split<0)continue;
+const name=line.slice(0,split).split(';')[0].toUpperCase();
+const value=line.slice(split+1);
+if(!out.has(name)&&value)out.set(name,value);
+}
+return out;
+}
+const row=(key,value,extra={})=>({key,value,...extra});
+function aboutUrl(text){
+let url;
+try{
+url=new URL(text);
+}catch{
+return null;
+}
+const host=url.hostname;
+const warnings=[];
+if(url.username||url.password){
+warnings.push({key:'warn.userinfo',values:{host}});
+}
+if(host.startsWith('xn--')||host.includes('.xn--')){
+warnings.push({key:'warn.punycode',values:{host}});
+}else if(/[^ -~]/.test(host)){
+warnings.push({key:'warn.unicode-host',values:{host}});
+}
+if(url.protocol==='http:')warnings.push({key:'warn.plain-http',values:{}});
+if(SHORTENERS.has(host.toLowerCase().replace(/^www\./,''))){
+warnings.push({key:'warn.shortener',values:{host}});
+}
+const rows=[row('field.host',host,{emphasis:true})];
+if(url.port)rows.push(row('field.port',url.port));
+rows.push(row('field.path',`${url.pathname}${url.search}${url.hash}`));
+return{
+kind:'url',
+kindKey:url.protocol==='https:'?'kind.url':'kind.url-plain',
+rows,
+warnings,
+link:{href:url.href,host},
+};
+}
+function aboutWifi(text){
+const map=fields(text.slice(5));
+const security=(map.get('T')||'nopass').toUpperCase();
+const named={WPA:'WPA/WPA2',WPA2:'WPA2',WPA3:'WPA3',WEP:'WEP'}[security];
+const rows=[row('field.ssid',map.get('S')??'',{emphasis:true})];
+rows.push(named
+?row('field.security',named)
+:row('field.security','',{phrase:'value.open-network'}));
+if(map.get('P'))rows.push(row('field.password',map.get('P'),{secret:true}));
+if(map.get('H')==='true')rows.push(row('field.hidden','',{phrase:'value.yes'}));
+return{
+kind:'wifi',
+kindKey:'kind.wifi',
+rows,
+warnings:[{key:'warn.wifi-secret',values:{}}],
+link:null,
+};
+}
+function aboutContact(text){
+const isVcard=/^BEGIN:VCARD/i.test(text);
+const rows=[];
+if(isVcard){
+const card=vcard(text);
+const name=card.get('FN')
+??(card.get('N')??'').split(';').filter(Boolean).reverse().join(' ');
+if(name.trim())rows.push(row('field.name',name.trim(),{emphasis:true}));
+for(const[tag,key]of[['ORG','field.org'],['TITLE','field.title'],
+['TEL','field.phone'],['EMAIL','field.email'],['URL','field.web'],
+['ADR','field.address']]){
+const value=card.get(tag);
+if(value)rows.push(row(key,value.replace(/;+/g,' ').trim()));
+}
+}else{
+const map=fields(text.slice(7));
+const name=(map.get('N')??'').split(',').reverse().join(' ').trim();
+if(name)rows.push(row('field.name',name,{emphasis:true}));
+for(const[tag,key]of[['ORG','field.org'],['TEL','field.phone'],
+['EMAIL','field.email'],['URL','field.web'],['ADR','field.address'],
+['NOTE','field.note']]){
+const value=map.get(tag);
+if(value)rows.push(row(key,value));
+}
+}
+return{
+kind:'contact',
+kindKey:isVcard?'kind.vcard':'kind.mecard',
+rows,
+warnings:[],
+link:null,
+};
+}
+function aboutEmail(text){
+if(/^MATMSG:/i.test(text)){
+const map=fields(text.slice(7));
+const to=map.get('TO')??'';
+return{
+kind:'email',
+kindKey:'kind.email',
+rows:[
+row('field.to',to,{emphasis:true}),
+row('field.subject',map.get('SUB')??''),
+row('field.message',map.get('BODY')??''),
+].filter((entry)=>entry.value),
+warnings:[],
+link:to?{href:`mailto:${to}`,host:to}:null,
+};
+}
+let url;
+try{
+url=new URL(text);
+}catch{
+return null;
+}
+const to=decodeURIComponent(url.pathname);
+const rows=[row('field.to',to,{emphasis:true})];
+for(const[name,key]of[['subject','field.subject'],['body','field.message']]){
+const value=url.searchParams.get(name);
+if(value)rows.push(row(key,value));
+}
+return{
+kind:'email',
+kindKey:'kind.email',
+rows,
+warnings:[],
+link:{href:url.href,host:to},
+};
+}
+function aboutSimple(text){
+const lower=text.toLowerCase();
+if(lower.startsWith('tel:')){
+const number=text.slice(4);
+return{
+kind:'phone',
+kindKey:'kind.phone',
+rows:[row('field.number',number,{emphasis:true})],
+warnings:[],
+link:{href:`tel:${number}`,host:number},
+};
+}
+if(lower.startsWith('smsto:')||lower.startsWith('sms:')){
+const body=text.slice(text.indexOf(':')+1);
+const split=body.indexOf(':');
+const number=split<0?body:body.slice(0,split);
+const message=split<0?'':body.slice(split+1);
+return{
+kind:'sms',
+kindKey:'kind.sms',
+rows:[
+row('field.to',number,{emphasis:true}),
+...(message?[row('field.message',message)]:[]),
+],
+warnings:[],
+link:{href:`sms:${number}`,host:number},
+};
+}
+if(lower.startsWith('geo:')){
+const[coordinates]=text.slice(4).split('?');
+const[latitude,longitude]=coordinates.split(',');
+return{
+kind:'place',
+kindKey:'kind.place',
+rows:[
+row('field.latitude',latitude??'',{emphasis:true}),
+row('field.longitude',longitude??'',{emphasis:true}),
+],
+warnings:[],
+link:{href:text,host:coordinates},
+};
+}
+return null;
+}
+function aboutOtp(text){
+let url;
+try{
+url=new URL(text);
+}catch{
+return null;
+}
+return{
+kind:'otp',
+kindKey:'kind.otp',
+rows:[
+row('field.account',decodeURIComponent(url.pathname.replace(/^\/+/,'')),
+{emphasis:true}),
+row('field.issuer',url.searchParams.get('issuer')??''),
+row('field.secret',url.searchParams.get('secret')??'',{secret:true}),
+].filter((entry)=>entry.value),
+warnings:[{key:'warn.otp-secret',values:{}}],
+link:null,
+};
+}
+export function describe(text){
+const trimmed=text.trim();
+const lower=trimmed.toLowerCase();
+const found=lower.startsWith('wifi:')?aboutWifi(trimmed)
+:lower.startsWith('begin:vcard')||lower.startsWith('mecard:')?aboutContact(trimmed)
+:lower.startsWith('mailto:')||lower.startsWith('matmsg:')?aboutEmail(trimmed)
+:lower.startsWith('otpauth://')?aboutOtp(trimmed)
+:lower.startsWith('http://')||lower.startsWith('https://')?aboutUrl(trimmed)
+:aboutSimple(trimmed);
+if(found)return{payload:found};
+const scheme=/^([a-z][a-z0-9+.-]*):/i.exec(trimmed);
+if(scheme&&!OPENABLE.has(`${scheme[1].toLowerCase()}:`)){
+return{
+payload:{
+kind:'other-scheme',
+kindKey:'kind.other-scheme',
+rows:[row('field.scheme',`${scheme[1].toLowerCase()}:`,{emphasis:true})],
+warnings:[{key:'warn.not-openable',values:{}}],
+link:null,
+},
+};
+}
+const digits=/^[0-9]+$/.test(trimmed);
+return{
+payload:{
+kind:digits?'number':'text',
+kindKey:digits?'kind.number':'kind.text',
+rows:[],
+warnings:[],
+link:null,
+},
+};
+}

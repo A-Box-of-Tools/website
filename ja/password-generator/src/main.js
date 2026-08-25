@@ -1,5 +1,295 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as u}from"./shared/phrases.js";import{classSizes as h,generate as b,phraseChoices as v,SYMBOL_SETS as k}from"./generate.js";import{bits as S,crackTime as C,passphraseSpace as x,passwordSpace as L,rating as E,scientific as N}from"./strength.js";import{wordlist as O}from"./wordlist.js";const o=t=>document.getElementById(t),e={tabs:Array.from(document.querySelectorAll(".tab")),panels:{password:o("options-password"),passphrase:o("options-passphrase")},length:o("length"),lengthOut:o("length-out"),useLower:o("use-lower"),useUpper:o("use-upper"),useDigits:o("use-digits"),useSymbols:o("use-symbols"),symbolSet:o("symbol-set"),symbolChars:o("symbol-chars"),requireEach:o("require-each"),avoidLookalikes:o("avoid-lookalikes"),words:o("words"),wordsOut:o("words-out"),list:o("list"),separator:o("separator"),capitals:o("capitals"),addDigit:o("add-digit"),addSymbol:o("add-symbol"),noClasses:o("no-classes"),error:o("error"),result:o("result"),secret:o("secret"),regenerate:o("regenerate"),copy:o("copy"),copyNote:o("copy-note"),strength:o("strength"),bits:o("bits"),verdict:o("verdict"),fill:o("strength-fill"),crack:o("crack"),space:o("space"),count:o("count"),countOut:o("count-out"),batch:o("batch"),copyAll:o("copy-all"),download:o("download-txt"),privacyToggle:o("privacy-toggle"),privacyPanel:o("privacy-panel"),networkCount:o("network-count"),networkDot:o("network-dot"),offlineStatus:o("offline-status"),offlineDot:o("offline-dot")},D={"very-weak":"veryWeak",weak:"weak",fair:"fair",strong:"strong","very-strong":"veryStrong"},A={instant:"instant",minutes:"minutes",hours:"hours",days:"days",months:"months",years:"years",centuries:"centuries",ages:"ages"};let i=[],g="password";function f(t){g=t;for(const s of e.tabs){const n=s.dataset.mode===t;s.setAttribute("aria-selected",String(n)),s.tabIndex=n?0:-1}for(const[s,n]of Object.entries(e.panels))n.hidden=s!==t;c()}for(const t of e.tabs)t.addEventListener("click",()=>f(t.dataset.mode)),t.addEventListener("keydown",s=>{const n=s.key==="ArrowRight"?1:s.key==="ArrowLeft"?-1:0;if(!n)return;s.preventDefault();const a=e.tabs.indexOf(t),r=e.tabs[(a+n+e.tabs.length)%e.tabs.length];r.focus(),f(r.dataset.mode)});function T(){return{mode:g,length:Number(e.length.value),lower:e.useLower.checked,upper:e.useUpper.checked,digits:e.useDigits.checked,symbols:e.useSymbols.checked,symbolSet:e.symbolSet.value,requireEach:e.requireEach.checked,avoidLookalikes:e.avoidLookalikes.checked,words:Number(e.words.value),list:e.list.value,separator:e.separator.value,capitals:e.capitals.value,addDigit:e.addDigit.checked,addSymbol:e.addSymbol.checked}}function $(t){return t.mode==="passphrase"?x(O(t.list).length,t.words,v(t)):L(h(t),t.length,t.requireEach)}function R(t){const s=$(t),n=S(s);e.bits.textContent=String(Math.floor(n));const a=E(n);e.strength.dataset.rating=a,e.verdict.textContent=e.strength.dataset[D[a]],e.crack.textContent=e.strength.dataset[A[C(n)]],e.fill.style.width=`${Math.min(100,n/128*100)}%`;const{mantissa:r,exponent:l}=N(n);l<6?e.space.textContent=s.toLocaleString():e.space.replaceChildren(document.createTextNode(`${r} \xD7 10`),Object.assign(document.createElement("sup"),{textContent:String(l)}))}function c(){const t=T(),s=t.mode==="password"&&h(t).length===0;if(e.noClasses.hidden=!s,e.result.hidden=s,e.strength.hidden=s,s){i=[],e.batch.hidden=!0,e.copyAll.hidden=!0,e.download.hidden=!0;return}const n=Number(e.count.value);i=Array.from({length:n},()=>b(t)),e.secret.textContent=i[0],e.batch.replaceChildren(...i.slice(1).map(a=>{const r=document.createElement("li");return r.textContent=a,r})),e.batch.hidden=n<2,e.copyAll.hidden=n<2,e.download.hidden=n<2,R(t),e.copyNote.textContent=""}async function y(t){try{await navigator.clipboard.writeText(t),e.copyNote.textContent=e.result.dataset.copied,e.copyNote.className="copy-note good"}catch{e.copyNote.textContent=e.result.dataset.copyFailed,e.copyNote.className="copy-note warn"}}function W(){const t=new Blob([`${i.join(`
-`)}
-`],{type:"text/plain"}),s=URL.createObjectURL(t),n=document.createElement("a");n.href=s,n.download=g==="passphrase"?"passphrases.txt":"passwords.txt",n.click(),URL.revokeObjectURL(s)}e.regenerate.addEventListener("click",c),e.copy.addEventListener("click",()=>y(i[0]??"")),e.copyAll.addEventListener("click",()=>y(i.join(`
-`))),e.download.addEventListener("click",W),e.length.addEventListener("input",()=>{e.lengthOut.textContent=e.length.value,c()}),e.words.addEventListener("input",()=>{e.wordsOut.textContent=e.words.value,c()}),e.count.addEventListener("input",()=>{e.countOut.textContent=e.count.value,c()});for(const t of[e.useLower,e.useUpper,e.useDigits,e.useSymbols,e.symbolSet,e.requireEach,e.avoidLookalikes,e.list,e.separator,e.capitals,e.addDigit,e.addSymbol])t.addEventListener("change",()=>{t===e.symbolSet&&w(),c()});function w(){e.symbolChars.textContent=k[e.symbolSet.value]}e.privacyToggle.addEventListener("click",()=>{const t=e.privacyPanel.hidden;e.privacyPanel.hidden=!t,e.privacyToggle.setAttribute("aria-expanded",String(t))});const j=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function q(){const t=new Set,s=new Set,n=a=>{for(const d of a){if(d.name.startsWith("blob:")||d.name.startsWith("data:"))continue;const p=new URL(d.name,location.href);p.origin!==location.origin&&(j.test(p.hostname)?t.add(p.hostname):s.add(p.hostname))}const r=performance.getEntriesByType("resource").filter(d=>!d.name.startsWith("blob:")&&!d.name.startsWith("data:")).length,l=s.size===0,m=t.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${t.size} host${t.size===1?"":"s"}; not one of them was given a character of it.`;e.networkCount.textContent=l?`what this page made has gone nowhere. ${r} files loaded.${m}`:`something contacted ${[...s].join(", ")}, which this tool never does.${m}`,e.networkCount.className=l?"good":"warn",e.networkDot.className=`live-dot ${l?"good":"warn"}`};n(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>n(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function U(){const t=(s,n)=>{e.offlineStatus.textContent=s,e.offlineDot.className="live-dot",n&&(e.offlineStatus.title=n,console.info("Offline caching unavailable:",n))};if(!("serviceWorker"in navigator)){t(u("offline.none"));return}if(!window.isSecureContext){t(u("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,e.offlineStatus.textContent=u("offline.ready"),e.offlineStatus.className="good",e.offlineDot.className="live-dot good"}catch(s){t(u("offline.failed"),s.message)}}window.addEventListener("error",t=>{e.error.hidden=!1,e.error.textContent=u("error.broke",{detail:t.message})}),window.addEventListener("unhandledrejection",t=>{e.error.hidden=!1,e.error.textContent=u("error.broke",{detail:t.reason?.message??t.reason})}),w(),c(),q(),U(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{classSizes,generate,phraseChoices,SYMBOL_SETS}from'./generate.js';
+import{
+bits,crackTime,passphraseSpace,passwordSpace,rating,scientific,
+}from'./strength.js';
+import{wordlist}from'./wordlist.js';
+const $=(id)=>document.getElementById(id);
+const el={
+tabs:Array.from(document.querySelectorAll('.tab')),
+panels:{
+password:$('options-password'),
+passphrase:$('options-passphrase'),
+},
+length:$('length'),
+lengthOut:$('length-out'),
+useLower:$('use-lower'),
+useUpper:$('use-upper'),
+useDigits:$('use-digits'),
+useSymbols:$('use-symbols'),
+symbolSet:$('symbol-set'),
+symbolChars:$('symbol-chars'),
+requireEach:$('require-each'),
+avoidLookalikes:$('avoid-lookalikes'),
+words:$('words'),
+wordsOut:$('words-out'),
+list:$('list'),
+separator:$('separator'),
+capitals:$('capitals'),
+addDigit:$('add-digit'),
+addSymbol:$('add-symbol'),
+noClasses:$('no-classes'),
+error:$('error'),
+result:$('result'),
+secret:$('secret'),
+regenerate:$('regenerate'),
+copy:$('copy'),
+copyNote:$('copy-note'),
+strength:$('strength'),
+bits:$('bits'),
+verdict:$('verdict'),
+fill:$('strength-fill'),
+crack:$('crack'),
+space:$('space'),
+count:$('count'),
+countOut:$('count-out'),
+batch:$('batch'),
+copyAll:$('copy-all'),
+download:$('download-txt'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+const RATING_WORD={
+'very-weak':'veryWeak',
+weak:'weak',
+fair:'fair',
+strong:'strong',
+'very-strong':'veryStrong',
+};
+const CRACK_WORD={
+instant:'instant',
+minutes:'minutes',
+hours:'hours',
+days:'days',
+months:'months',
+years:'years',
+centuries:'centuries',
+ages:'ages',
+};
+let shown=[];
+let mode='password';
+function setMode(next){
+mode=next;
+for(const tab of el.tabs){
+const on=tab.dataset.mode===next;
+tab.setAttribute('aria-selected',String(on));
+tab.tabIndex=on?0:-1;
+}
+for(const[name,panel]of Object.entries(el.panels))panel.hidden=name!==next;
+make();
+}
+for(const tab of el.tabs){
+tab.addEventListener('click',()=>setMode(tab.dataset.mode));
+tab.addEventListener('keydown',(event)=>{
+const step=event.key==='ArrowRight'?1:event.key==='ArrowLeft'?-1:0;
+if(!step)return;
+event.preventDefault();
+const index=el.tabs.indexOf(tab);
+const next=el.tabs[(index+step+el.tabs.length)%el.tabs.length];
+next.focus();
+setMode(next.dataset.mode);
+});
+}
+function options(){
+return{
+mode,
+length:Number(el.length.value),
+lower:el.useLower.checked,
+upper:el.useUpper.checked,
+digits:el.useDigits.checked,
+symbols:el.useSymbols.checked,
+symbolSet:el.symbolSet.value,
+requireEach:el.requireEach.checked,
+avoidLookalikes:el.avoidLookalikes.checked,
+words:Number(el.words.value),
+list:el.list.value,
+separator:el.separator.value,
+capitals:el.capitals.value,
+addDigit:el.addDigit.checked,
+addSymbol:el.addSymbol.checked,
+};
+}
+function space(chosen){
+if(chosen.mode==='passphrase'){
+return passphraseSpace(
+wordlist(chosen.list).length,chosen.words,phraseChoices(chosen),
+);
+}
+return passwordSpace(classSizes(chosen),chosen.length,chosen.requireEach);
+}
+function showStrength(chosen){
+const total=space(chosen);
+const value=bits(total);
+el.bits.textContent=String(Math.floor(value));
+const grade=rating(value);
+el.strength.dataset.rating=grade;
+el.verdict.textContent=el.strength.dataset[RATING_WORD[grade]];
+el.crack.textContent=el.strength.dataset[CRACK_WORD[crackTime(value)]];
+el.fill.style.width=`${Math.min(100, (value / 128) * 100)}%`;
+const{mantissa,exponent}=scientific(value);
+if(exponent<6){
+el.space.textContent=total.toLocaleString();
+}else{
+el.space.replaceChildren(
+document.createTextNode(`${mantissa} \u00d7 10`),
+Object.assign(document.createElement('sup'),{textContent:String(exponent)}),
+);
+}
+}
+function make(){
+const chosen=options();
+const empty=chosen.mode==='password'&&classSizes(chosen).length===0;
+el.noClasses.hidden=!empty;
+el.result.hidden=empty;
+el.strength.hidden=empty;
+if(empty){
+shown=[];
+el.batch.hidden=true;
+el.copyAll.hidden=true;
+el.download.hidden=true;
+return;
+}
+const wanted=Number(el.count.value);
+shown=Array.from({length:wanted},()=>generate(chosen));
+el.secret.textContent=shown[0];
+el.batch.replaceChildren(...shown.slice(1).map((secret)=>{
+const item=document.createElement('li');
+item.textContent=secret;
+return item;
+}));
+el.batch.hidden=wanted<2;
+el.copyAll.hidden=wanted<2;
+el.download.hidden=wanted<2;
+showStrength(chosen);
+el.copyNote.textContent='';
+}
+async function toClipboard(text){
+try{
+await navigator.clipboard.writeText(text);
+el.copyNote.textContent=el.result.dataset.copied;
+el.copyNote.className='copy-note good';
+}catch{
+el.copyNote.textContent=el.result.dataset.copyFailed;
+el.copyNote.className='copy-note warn';
+}
+}
+function downloadList(){
+const blob=new Blob([`${shown.join('\n')}\n`],{type:'text/plain'});
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=mode==='passphrase'?'passphrases.txt':'passwords.txt';
+link.click();
+URL.revokeObjectURL(url);
+}
+el.regenerate.addEventListener('click',make);
+el.copy.addEventListener('click',()=>toClipboard(shown[0]??''));
+el.copyAll.addEventListener('click',()=>toClipboard(shown.join('\n')));
+el.download.addEventListener('click',downloadList);
+el.length.addEventListener('input',()=>{
+el.lengthOut.textContent=el.length.value;
+make();
+});
+el.words.addEventListener('input',()=>{
+el.wordsOut.textContent=el.words.value;
+make();
+});
+el.count.addEventListener('input',()=>{
+el.countOut.textContent=el.count.value;
+make();
+});
+for(const control of[
+el.useLower,el.useUpper,el.useDigits,el.useSymbols,el.symbolSet,
+el.requireEach,el.avoidLookalikes,el.list,el.separator,el.capitals,
+el.addDigit,el.addSymbol,
+]){
+control.addEventListener('change',()=>{
+if(control===el.symbolSet)showSymbols();
+make();
+});
+}
+function showSymbols(){
+el.symbolChars.textContent=SYMBOL_SETS[el.symbolSet.value];
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a character of it.`;
+el.networkCount.textContent=clean
+?`what this page made has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+el.error.hidden=false;
+el.error.textContent=phrase('error.broke',{detail:event.message});
+});
+window.addEventListener('unhandledrejection',(event)=>{
+el.error.hidden=false;
+el.error.textContent=phrase('error.broke',{detail:event.reason?.message??event.reason});
+});
+showSymbols();
+make();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

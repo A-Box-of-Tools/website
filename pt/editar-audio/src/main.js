@@ -1,2 +1,417 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as u}from"./shared/phrases.js";import{wireFilePicker as I}from"./shared/file-picker.js";import{decodeAudio as j,UnreadableFile as O}from"./decode.js";import{render as H,lengthAfter as q}from"./edit.js";import{peak as G,dbToGain as _,gainToDb as C,normalizeGain as K}from"./effects.js";import{writeWav as Z,wavSize as J}from"./wav.js";import{drawWaveform as $}from"./waveform.js";const n=e=>document.getElementById(e),t={dropzone:n("dropzone"),fileInput:n("file-input"),source:n("source"),srcName:n("src-name"),srcSize:n("src-size"),srcLength:n("src-length"),srcFormat:n("src-format"),srcPeak:n("src-peak"),srcRate:n("src-rate"),srcWaveWrap:n("src-wave-wrap"),srcWave:n("src-wave"),preview:n("preview"),pathNote:n("path-note"),editCard:n("edit-card"),reverse:n("reverse"),speed:n("speed"),speedValue:n("speed-value"),speedNote:n("speed-note"),volume:n("volume"),volumeValue:n("volume-value"),volumeNote:n("volume-note"),sumLength:n("sum-length"),sumSpeed:n("sum-speed"),sumPeak:n("sum-peak"),sumSize:n("sum-size"),clipNote:n("clip-note"),exportCard:n("export-card"),depth:n("depth"),exportBtn:n("export"),cancelBtn:n("cancel"),progressWrap:n("progress-wrap"),progressBar:n("progress-bar"),progressLabel:n("progress-label"),error:n("error"),result:n("result"),outWave:n("out-wave"),resultAudio:n("result-audio"),resultInfo:n("result-info"),download:n("download"),privacyToggle:n("privacy-toggle"),privacyPanel:n("privacy-panel"),networkCount:n("network-count"),networkDot:n("network-dot"),offlineStatus:n("offline-status"),offlineDot:n("offline-dot")};let m=null,s=null,k=0,y=null,p=null,f=null,h=!1,L=null,g=1;const F={min:.25,max:4},R=-1,B=I({input:t.fileInput,dropzone:t.dropzone,onFiles(e){const[o]=e;o&&Q(o)}});async function Q(e){if(!h){T(),V(),B.busy("Reading the sound...");try{const o=await j(e);m=e,s=o,k=G(o.channels),X(),t.editCard.hidden=!1,t.exportCard.hidden=!1,c()}catch(o){o instanceof O?v(o.message):(v(`That file could not be read: ${o?.message??o}`),console.error(o))}finally{B.done()}}}function X(){t.srcName.textContent=m.name,t.srcSize.textContent=W(m.size),t.srcLength.textContent=E(s.duration),t.srcFormat.textContent=`${ne(s.channels.length)}, ${(s.sampleRate/1e3).toFixed(1)} kHz`,t.srcPeak.textContent=N(k),t.srcRate.textContent=s.guessedRate?`${s.sampleRate} Hz (assumed)`:`${s.sampleRate} Hz (from the file)`,t.source.hidden=!1,t.pathNote.hidden=!s.guessedRate,s.guessedRate&&(t.pathNote.textContent="This format does not say what rate it was recorded at in a header this tool reads, so it was decoded at 48 kHz. If the recording was made at some other rate, the browser resampled it on the way in - which is the one thing here that is not exact."),y&&URL.revokeObjectURL(y),y=URL.createObjectURL(m),t.preview.src=y,t.srcWaveWrap.hidden=!1,$(t.srcWave,s.channels)}function A(){return{reverse:t.reverse.checked,speed:g,keepPitch:z("pitch")==="keep",volume:{mode:z("level"),db:z("level")==="normalize"?R:Number(t.volume.value)}}}const z=e=>document.querySelector(`input[name="${e}"]:checked`).value;function S(e){g=U(Math.round(e*100)/100,F.min,F.max),t.speed.value=String(Math.log2(g)),t.speedValue.value=w(g),c()}function M(e){t.volume.value=String(U(e,-24,24)),t.volumeValue.value=D(Number(t.volume.value)),c()}t.speed.addEventListener("input",()=>S(2**Number(t.speed.value))),t.speedValue.addEventListener("change",()=>{const e=Number(t.speedValue.value.replace(/[^0-9.]/g,""));S(Number.isFinite(e)&&e>0?e:g)}),t.volume.addEventListener("input",()=>{t.volumeValue.value=D(Number(t.volume.value)),c()}),t.volumeValue.addEventListener("change",()=>{const e=t.volumeValue.value.replace(/[^0-9.+-]/g,""),o=Number(e);M(e&&Number.isFinite(o)?o:Number(t.volume.value))});for(const e of document.querySelectorAll(".presets button"))e.addEventListener("click",()=>S(Number(e.dataset.speed)));for(const e of document.querySelectorAll('input[name="pitch"], input[name="level"]'))e.addEventListener("change",c);t.reverse.addEventListener("change",c),t.depth.addEventListener("change",c);function c(){if(!s)return;const e=A(),o=q(s.frames,e.speed,e.keepPitch),a=Number(t.depth.value);t.sumLength.textContent=E(o/s.sampleRate),t.sumSpeed.textContent=e.speed===1?"unchanged":`${w(e.speed)}, ${e.keepPitch?"same pitch":`pitch ${e.speed>1?"up":"down"}`}`;const r=e.volume.mode==="normalize"?K(k,R):_(e.volume.db),l=k*r;t.sumPeak.textContent=N(l),t.sumSize.textContent=W(J(o,s.channels.length,a)),t.speedNote.textContent=Y(e),t.volumeNote.textContent=ee(e,r,l);const i=l>1.0001;t.clipNote.hidden=!i,i&&(t.clipNote.textContent=`At this setting the loudest moment lands ${C(l).toFixed(1)} dB above full scale. `+(a===32?'A 32-bit float WAV will hold those samples, so nothing is lost in the file itself - but anything playing it has to bring the level back down, and most things will flatten it at the ceiling instead. Turn it down, or choose "as loud as it will go".':'A 16-bit WAV cannot hold that, so those samples would be flattened at the ceiling, which is what distortion sounds like. Turn it down, choose "as loud as it will go", or write 32-bit float, which keeps them.'))}function Y(e){if(e.speed===1)return"Left alone at 1x.";const o=e.speed>1?"faster":"slower";return e.keepPitch?`${w(e.speed)} ${o}, with the pitch held where it is. The recording is cut into overlapping windows and laid back down closer together or further apart, which is done here rather than sent anywhere.`:`${w(e.speed)} ${o}, and everything moves with it: ${Math.abs(12*Math.log2(e.speed)).toFixed(1)} semitones ${e.speed>1?"up":"down"}, the way playing a tape at the wrong speed does.`}function ee(e,o,a){if(e.volume.mode==="normalize"){const r=C(o);return Math.abs(r)<.05?"Already exactly where this setting would put it.":`${r>0?"Raised":"Lowered"} by ${Math.abs(r).toFixed(1)} dB, which puts the loudest moment in the recording just under full scale.`}return e.volume.db===0?"Left exactly as it is.":`${e.volume.db>0?"Up":"Down"} ${Math.abs(e.volume.db).toFixed(1)} dB, which multiplies every sample by ${o.toFixed(3)} and takes the loudest moment to ${N(a)}.`}async function te(){if(!s||h)return;T(),V(),h=!0,L=new AbortController,t.exportBtn.disabled=!0,t.cancelBtn.hidden=!1,t.progressWrap.hidden=!1,P(0,"Starting...");const e=A(),o=Number(t.depth.value);try{const a=performance.now(),r=await H(s,e,{signal:L.signal,onProgress:(b,d)=>P(b,d)}),l=Z(r.channels,s.sampleRate,{bits:o}),i=r.channels[0].length/s.sampleRate;p=URL.createObjectURL(l),t.resultAudio.src=p,t.download.href=p,t.download.download=oe(m.name,e),t.result.hidden=!1,f=r.channels,$(t.outWave,f),t.resultInfo.textContent=[`WAV, ${o===32?"32-bit float":"16-bit"}`,E(i),W(l.size),`peak ${N(r.peak)}`,r.clipped?`${r.clipped.toLocaleString()} samples over full scale`:null,`${((performance.now()-a)/1e3).toFixed(1)}s`].filter(Boolean).join(" \xB7 "),t.progressWrap.hidden=!0,t.result.scrollIntoView({behavior:"smooth",block:"nearest"})}catch(a){t.progressWrap.hidden=!0,a?.name!=="AbortError"&&(v(a?.message||"Something went wrong while editing the audio."),console.error(a))}finally{h=!1,L=null,t.cancelBtn.hidden=!0,t.exportBtn.disabled=!1}}function oe(e,o){const a=e.replace(/\.[^.]+$/,"")||"audio",r=[];return o.reverse&&r.push("reversed"),o.speed!==1&&r.push(`${w(o.speed).replace(".","-")}`),o.volume.mode==="normalize"?r.push("normalised"):o.volume.db&&r.push(`${o.volume.db>0?"up":"down"}${Math.abs(o.volume.db)}db`),r.length||r.push("edited"),`${a}-${r.join("-")}.wav`}function P(e,o){t.progressBar.style.width=`${Math.round(e*100)}%`,o&&(t.progressLabel.textContent=o)}t.exportBtn.addEventListener("click",te),t.cancelBtn.addEventListener("click",()=>L?.abort()),window.addEventListener("beforeunload",e=>{h&&(e.preventDefault(),e.returnValue="")}),window.addEventListener("resize",()=>{s&&$(t.srcWave,s.channels),f&&$(t.outWave,f)});function v(e){t.error.textContent=e,t.error.hidden=!1}function T(){t.error.hidden=!0,t.error.textContent=""}function V(){t.result.hidden=!0,t.resultAudio.removeAttribute("src"),p&&URL.revokeObjectURL(p),p=null,f=null}const U=(e,o,a)=>Math.min(a,Math.max(o,e)),ne=e=>e===1?"mono":e===2?"stereo":`${e} channels`;function w(e){return`${(e>=10?e.toFixed(1):e.toFixed(2)).replace(/\.?0+$/,"")}x`}const D=e=>`${e>0?"+":""}${e.toFixed(1)} dB`;function N(e){return e>0?`${C(e).toFixed(1)} dBFS`:"silence"}function E(e){if(!Number.isFinite(e))return"-";const o=Math.floor(e),a=Math.floor(o/3600),r=Math.floor(o%3600/60),i=(e-a*3600-r*60).toFixed(1).padStart(4,"0");return a?`${a}:${String(r).padStart(2,"0")}:${i}`:`${r}:${i}`}function W(e){return e<1024?`${e} B`:e<1024*1024?`${(e/1024).toFixed(1)} KB`:e<1024*1024*1024?`${(e/(1024*1024)).toFixed(1)} MB`:`${(e/(1024*1024*1024)).toFixed(2)} GB`}t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const re=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function ae(){const e=new Set,o=new Set,a=r=>{for(const d of r){if(d.name.startsWith("blob:")||d.name.startsWith("data:"))continue;const x=new URL(d.name,location.href);x.origin!==location.origin&&(re.test(x.hostname)?e.add(x.hostname):o.add(x.hostname))}const l=performance.getEntriesByType("resource").filter(d=>!d.name.startsWith("blob:")&&!d.name.startsWith("data:")).length,i=o.size===0,b=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a file.`;t.networkCount.textContent=i?`your audio has gone nowhere. ${l} files loaded.${b}`:`something contacted ${[...o].join(", ")}, which this tool never does.${b}`,t.networkCount.className=i?"good":"warn",t.networkDot.className=`live-dot ${i?"good":"warn"}`};a(performance.getEntriesByType("resource"));try{new PerformanceObserver(r=>a(r.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function se(){const e=(o,a)=>{t.offlineStatus.textContent=o,t.offlineDot.className="live-dot",a&&(t.offlineStatus.title=a,console.info("Offline caching unavailable:",a))};if(!("serviceWorker"in navigator)){e(u("offline.none"));return}if(!window.isSecureContext){e(u("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=u("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(o){e(u("offline.failed"),o.message)}}window.addEventListener("error",e=>{v(u("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{v(u("error.broke",{detail:e.reason?.message??e.reason}))}),S(1),M(0),ae(),se(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker}from'./shared/file-picker.js';
+import{decodeAudio,UnreadableFile}from'./decode.js';
+import{render,lengthAfter}from'./edit.js';
+import{peak,dbToGain,gainToDb,normalizeGain}from'./effects.js';
+import{writeWav,wavSize}from'./wav.js';
+import{drawWaveform}from'./waveform.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+source:$('source'),
+srcName:$('src-name'),
+srcSize:$('src-size'),
+srcLength:$('src-length'),
+srcFormat:$('src-format'),
+srcPeak:$('src-peak'),
+srcRate:$('src-rate'),
+srcWaveWrap:$('src-wave-wrap'),
+srcWave:$('src-wave'),
+preview:$('preview'),
+pathNote:$('path-note'),
+editCard:$('edit-card'),
+reverse:$('reverse'),
+speed:$('speed'),
+speedValue:$('speed-value'),
+speedNote:$('speed-note'),
+volume:$('volume'),
+volumeValue:$('volume-value'),
+volumeNote:$('volume-note'),
+sumLength:$('sum-length'),
+sumSpeed:$('sum-speed'),
+sumPeak:$('sum-peak'),
+sumSize:$('sum-size'),
+clipNote:$('clip-note'),
+exportCard:$('export-card'),
+depth:$('depth'),
+exportBtn:$('export'),
+cancelBtn:$('cancel'),
+progressWrap:$('progress-wrap'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+error:$('error'),
+result:$('result'),
+outWave:$('out-wave'),
+resultAudio:$('result-audio'),
+resultInfo:$('result-info'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let file=null;
+let source=null;
+let sourcePeak=0;
+let previewUrl=null;
+let resultUrl=null;
+let lastEdited=null;
+let exporting=false;
+let abortController=null;
+let speed=1;
+const SPEED_LIMITS={min:0.25,max:4};
+const NORMALIZE_TARGET=-1;
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+const[picked]=files;
+if(picked)loadFile(picked);
+},
+});
+async function loadFile(picked){
+if(exporting)return;
+clearError();
+clearResult();
+picker.busy('Reading the sound...');
+try{
+const decoded=await decodeAudio(picked);
+file=picked;
+source=decoded;
+sourcePeak=peak(decoded.channels);
+showSource();
+el.editCard.hidden=false;
+el.exportCard.hidden=false;
+updateSummary();
+}catch(error){
+if(error instanceof UnreadableFile)showError(error.message);
+else{
+showError(`That file could not be read: ${error?.message ?? error}`);
+console.error(error);
+}
+}finally{
+picker.done();
+}
+}
+function showSource(){
+el.srcName.textContent=file.name;
+el.srcSize.textContent=formatBytes(file.size);
+el.srcLength.textContent=formatDuration(source.duration);
+el.srcFormat.textContent=`${channelWord(source.channels.length)}, `
++`${(source.sampleRate / 1000).toFixed(1)} kHz`;
+el.srcPeak.textContent=formatPeak(sourcePeak);
+el.srcRate.textContent=source.guessedRate
+?`${source.sampleRate} Hz (assumed)`
+:`${source.sampleRate} Hz (from the file)`;
+el.source.hidden=false;
+el.pathNote.hidden=!source.guessedRate;
+if(source.guessedRate){
+el.pathNote.textContent='This format does not say what rate it was recorded '
++'at in a header this tool reads, so it was decoded at 48 kHz. If the '
++'recording was made at some other rate, the browser resampled it on the '
++'way in - which is the one thing here that is not exact.';
+}
+if(previewUrl)URL.revokeObjectURL(previewUrl);
+previewUrl=URL.createObjectURL(file);
+el.preview.src=previewUrl;
+el.srcWaveWrap.hidden=false;
+drawWaveform(el.srcWave,source.channels);
+}
+function settings(){
+return{
+reverse:el.reverse.checked,
+speed,
+keepPitch:pickedValue('pitch')==='keep',
+volume:{
+mode:pickedValue('level'),
+db:pickedValue('level')==='normalize'?NORMALIZE_TARGET:Number(el.volume.value),
+},
+};
+}
+const pickedValue=(name)=>document.querySelector(`input[name="${name}"]:checked`).value;
+function setSpeed(wanted){
+speed=clamp(Math.round(wanted*100)/100,SPEED_LIMITS.min,SPEED_LIMITS.max);
+el.speed.value=String(Math.log2(speed));
+el.speedValue.value=formatSpeed(speed);
+updateSummary();
+}
+function setVolume(db){
+el.volume.value=String(clamp(db,-24,24));
+el.volumeValue.value=formatDb(Number(el.volume.value));
+updateSummary();
+}
+el.speed.addEventListener('input',()=>setSpeed(2**Number(el.speed.value)));
+el.speedValue.addEventListener('change',()=>{
+const typed=Number(el.speedValue.value.replace(/[^0-9.]/g,''));
+setSpeed(Number.isFinite(typed)&&typed>0?typed:speed);
+});
+el.volume.addEventListener('input',()=>{
+el.volumeValue.value=formatDb(Number(el.volume.value));
+updateSummary();
+});
+el.volumeValue.addEventListener('change',()=>{
+const cleaned=el.volumeValue.value.replace(/[^0-9.+-]/g,'');
+const typed=Number(cleaned);
+setVolume(cleaned&&Number.isFinite(typed)?typed:Number(el.volume.value));
+});
+for(const button of document.querySelectorAll('.presets button')){
+button.addEventListener('click',()=>setSpeed(Number(button.dataset.speed)));
+}
+for(const input of document.querySelectorAll('input[name="pitch"], input[name="level"]')){
+input.addEventListener('change',updateSummary);
+}
+el.reverse.addEventListener('change',updateSummary);
+el.depth.addEventListener('change',updateSummary);
+function updateSummary(){
+if(!source)return;
+const chosen=settings();
+const frames=lengthAfter(source.frames,chosen.speed,chosen.keepPitch);
+const bits=Number(el.depth.value);
+el.sumLength.textContent=formatDuration(frames/source.sampleRate);
+el.sumSpeed.textContent=chosen.speed===1
+?'unchanged'
+:`${formatSpeed(chosen.speed)}, ${chosen.keepPitch ? 'same pitch' : `pitch ${chosen.speed > 1 ? 'up' : 'down'}`}`;
+const gain=chosen.volume.mode==='normalize'
+?normalizeGain(sourcePeak,NORMALIZE_TARGET)
+:dbToGain(chosen.volume.db);
+const after=sourcePeak*gain;
+el.sumPeak.textContent=formatPeak(after);
+el.sumSize.textContent=formatBytes(wavSize(frames,source.channels.length,bits));
+el.speedNote.textContent=speedNote(chosen);
+el.volumeNote.textContent=volumeNote(chosen,gain,after);
+const clips=after>1.0001;
+el.clipNote.hidden=!clips;
+if(clips){
+el.clipNote.textContent=`At this setting the loudest moment lands `
++`${gainToDb(after).toFixed(1)} dB above full scale. `
++(bits===32
+?'A 32-bit float WAV will hold those samples, so nothing is lost in the '
++'file itself - but anything playing it has to bring the level back '
++'down, and most things will flatten it at the ceiling instead. Turn '
++'it down, or choose "as loud as it will go".'
+:'A 16-bit WAV cannot hold that, so those samples would be flattened at '
++'the ceiling, which is what distortion sounds like. Turn it down, '
++'choose "as loud as it will go", or write 32-bit float, which keeps '
++'them.');
+}
+}
+function speedNote(chosen){
+if(chosen.speed===1)return'Left alone at 1x.';
+const direction=chosen.speed>1?'faster':'slower';
+return chosen.keepPitch
+?`${formatSpeed(chosen.speed)} ${direction}, with the pitch held where it is. `
++'The recording is cut into overlapping windows and laid back down closer '
++'together or further apart, which is done here rather than sent anywhere.'
+:`${formatSpeed(chosen.speed)} ${direction}, and everything moves with it: `
++`${Math.abs(12 * Math.log2(chosen.speed)).toFixed(1)} semitones `
++`${chosen.speed > 1 ? 'up' : 'down'}, the way playing a tape at the wrong `
++'speed does.';
+}
+function volumeNote(chosen,gain,after){
+if(chosen.volume.mode==='normalize'){
+const change=gainToDb(gain);
+if(Math.abs(change)<0.05)return'Already exactly where this setting would put it.';
+return`${change > 0 ? 'Raised' : 'Lowered'} by ${Math.abs(change).toFixed(1)} dB, `
++`which puts the loudest moment in the recording just under full scale.`;
+}
+if(chosen.volume.db===0)return'Left exactly as it is.';
+return`${chosen.volume.db > 0 ? 'Up' : 'Down'} `
++`${Math.abs(chosen.volume.db).toFixed(1)} dB, which multiplies every sample `
++`by ${gain.toFixed(3)} and takes the loudest moment to ${formatPeak(after)}.`;
+}
+async function runExport(){
+if(!source||exporting)return;
+clearError();
+clearResult();
+exporting=true;
+abortController=new AbortController();
+el.exportBtn.disabled=true;
+el.cancelBtn.hidden=false;
+el.progressWrap.hidden=false;
+progress(0,'Starting...');
+const chosen=settings();
+const bits=Number(el.depth.value);
+try{
+const started=performance.now();
+const edited=await render(source,chosen,{
+signal:abortController.signal,
+onProgress:(done,label)=>progress(done,label),
+});
+const blob=writeWav(edited.channels,source.sampleRate,{bits});
+const seconds=edited.channels[0].length/source.sampleRate;
+resultUrl=URL.createObjectURL(blob);
+el.resultAudio.src=resultUrl;
+el.download.href=resultUrl;
+el.download.download=outputName(file.name,chosen);
+el.result.hidden=false;
+lastEdited=edited.channels;
+drawWaveform(el.outWave,lastEdited);
+el.resultInfo.textContent=[
+`WAV, ${bits === 32 ? '32-bit float' : '16-bit'}`,
+formatDuration(seconds),
+formatBytes(blob.size),
+`peak ${formatPeak(edited.peak)}`,
+edited.clipped?`${edited.clipped.toLocaleString()} samples over full scale`:null,
+`${((performance.now() - started) / 1000).toFixed(1)}s`,
+].filter(Boolean).join(' · ');
+el.progressWrap.hidden=true;
+el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}catch(error){
+el.progressWrap.hidden=true;
+if(error?.name!=='AbortError'){
+showError(error?.message||'Something went wrong while editing the audio.');
+console.error(error);
+}
+}finally{
+exporting=false;
+abortController=null;
+el.cancelBtn.hidden=true;
+el.exportBtn.disabled=false;
+}
+}
+function outputName(name,chosen){
+const base=name.replace(/\.[^.]+$/,'')||'audio';
+const parts=[];
+if(chosen.reverse)parts.push('reversed');
+if(chosen.speed!==1)parts.push(`${formatSpeed(chosen.speed).replace('.', '-')}`);
+if(chosen.volume.mode==='normalize')parts.push('normalised');
+else if(chosen.volume.db)parts.push(`${chosen.volume.db > 0 ? 'up' : 'down'}${Math.abs(chosen.volume.db)}db`);
+if(!parts.length)parts.push('edited');
+return`${base}-${parts.join('-')}.wav`;
+}
+function progress(done,label){
+el.progressBar.style.width=`${Math.round(done * 100)}%`;
+if(label)el.progressLabel.textContent=label;
+}
+el.exportBtn.addEventListener('click',runExport);
+el.cancelBtn.addEventListener('click',()=>abortController?.abort());
+window.addEventListener('beforeunload',(event)=>{
+if(!exporting)return;
+event.preventDefault();
+event.returnValue='';
+});
+window.addEventListener('resize',()=>{
+if(source)drawWaveform(el.srcWave,source.channels);
+if(lastEdited)drawWaveform(el.outWave,lastEdited);
+});
+function showError(message){
+el.error.textContent=message;
+el.error.hidden=false;
+}
+function clearError(){
+el.error.hidden=true;
+el.error.textContent='';
+}
+function clearResult(){
+el.result.hidden=true;
+el.resultAudio.removeAttribute('src');
+if(resultUrl)URL.revokeObjectURL(resultUrl);
+resultUrl=null;
+lastEdited=null;
+}
+const clamp=(value,low,high)=>Math.min(high,Math.max(low,value));
+const channelWord=(count)=>(
+count===1?'mono':count===2?'stereo':`${count} channels`);
+function formatSpeed(value){
+const shown=value>=10?value.toFixed(1):value.toFixed(2);
+return`${shown.replace(/\.?0+$/, '')}x`;
+}
+const formatDb=(db)=>`${db > 0 ? '+' : ''}${db.toFixed(1)} dB`;
+function formatPeak(value){
+if(!(value>0))return'silence';
+return`${gainToDb(value).toFixed(1)} dBFS`;
+}
+function formatDuration(seconds){
+if(!Number.isFinite(seconds))return'-';
+const whole=Math.floor(seconds);
+const hours=Math.floor(whole/3600);
+const minutes=Math.floor((whole%3600)/60);
+const rest=seconds-hours*3600-minutes*60;
+const shown=rest.toFixed(1).padStart(4,'0');
+return hours?`${hours}:${String(minutes).padStart(2, '0')}:${shown}`:`${minutes}:${shown}`;
+}
+function formatBytes(bytes){
+if(bytes<1024)return`${bytes} B`;
+if(bytes<1024*1024)return`${(bytes / 1024).toFixed(1)} KB`;
+if(bytes<1024*1024*1024)return`${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+return`${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const external=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else external.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((entry)=>!entry.name.startsWith('blob:')&&!entry.name.startsWith('data:')).length;
+const clean=external.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
++`host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+el.networkCount.textContent=clean
+?`your audio has gone nowhere. ${total} files loaded.${platformNote}`
+:`something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries()))
+.observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+setSpeed(1);
+setVolume(0);
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

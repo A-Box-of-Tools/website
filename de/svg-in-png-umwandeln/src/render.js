@@ -1,2 +1,79 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{sizedSvg as d}from"./svg.js";const h="image/png",l="image/jpeg",s="image/webp",g={[h]:{label:"PNG",ext:"png",lossy:!1,alpha:!0},[l]:{label:"JPEG",ext:"jpg",lossy:!0,alpha:!1},[s]:{label:"WebP",ext:"webp",lossy:!0,alpha:!0}};async function u(o){const e=document.createElement("canvas");e.width=1,e.height=1;const a=await new Promise(t=>e.toBlob(t,o,.8));return!!a&&a.type===o}async function p(){const o=new Set([h,l]);return await u(s)&&o.add(s),o}async function f(o,e,a,{stretch:t=!1}={}){const n=d(o,e,a,{stretch:t}),i=URL.createObjectURL(new Blob([n],{type:"image/svg+xml"})),r=new Image;try{if(await new Promise((c,w)=>{r.onload=()=>c(),r.onerror=()=>w(new Error("this browser could not draw the SVG. It may not be valid XML.")),r.src=i}),typeof r.decode=="function")try{await r.decode()}catch{}}catch(c){throw URL.revokeObjectURL(i),c}return{image:r,release:()=>URL.revokeObjectURL(i)}}function b(o,e,{background:a}){const t=document.createElement("canvas");t.width=e.width,t.height=e.height;const n=t.getContext("2d",{alpha:!a});return n.imageSmoothingEnabled=!0,n.imageSmoothingQuality="high",a&&(n.fillStyle=a,n.fillRect(0,0,t.width,t.height)),n.drawImage(o,e.draw.x,e.draw.y,e.draw.width,e.draw.height),t}async function y(o,e,a){const t=await new Promise(n=>o.toBlob(n,e,a));if(!t)throw new Error(`this browser would not write ${g[e]?.label??e} at that size.`);return t}async function x(o,e,{mime:a,quality:t,background:n}){const i=await f(o,e.draw.width,e.draw.height,{stretch:e.stretch});let r;try{return r=b(i.image,e,{background:n}),await y(r,a,t)}finally{i.release(),r&&(r.width=0,r.height=0)}}export{g as FORMATS,l as JPEG,h as PNG,s as WEBP,b as draw,p as encodableTypes,y as encode,f as loadAt,x as rasterize};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{sizedSvg}from'./svg.js';
+export const PNG='image/png';
+export const JPEG='image/jpeg';
+export const WEBP='image/webp';
+export const FORMATS={
+[PNG]:{label:'PNG',ext:'png',lossy:false,alpha:true},
+[JPEG]:{label:'JPEG',ext:'jpg',lossy:true,alpha:false},
+[WEBP]:{label:'WebP',ext:'webp',lossy:true,alpha:true},
+};
+async function canEncode(mime){
+const canvas=document.createElement('canvas');
+canvas.width=1;
+canvas.height=1;
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,mime,0.8));
+return Boolean(blob)&&blob.type===mime;
+}
+export async function encodableTypes(){
+const found=new Set([PNG,JPEG]);
+if(await canEncode(WEBP))found.add(WEBP);
+return found;
+}
+export async function loadAt(text,width,height,{stretch=false}={}){
+const markup=sizedSvg(text,width,height,{stretch});
+const url=URL.createObjectURL(new Blob([markup],{type:'image/svg+xml'}));
+const image=new Image();
+try{
+await new Promise((resolve,reject)=>{
+image.onload=()=>resolve();
+image.onerror=()=>reject(new Error('this browser could not draw the SVG. It may not be valid XML.'));
+image.src=url;
+});
+if(typeof image.decode==='function'){
+try{
+await image.decode();
+}catch{
+}
+}
+}catch(error){
+URL.revokeObjectURL(url);
+throw error;
+}
+return{image,release:()=>URL.revokeObjectURL(url)};
+}
+export function draw(image,plan,{background}){
+const canvas=document.createElement('canvas');
+canvas.width=plan.width;
+canvas.height=plan.height;
+const ctx=canvas.getContext('2d',{alpha:!background});
+ctx.imageSmoothingEnabled=true;
+ctx.imageSmoothingQuality='high';
+if(background){
+ctx.fillStyle=background;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+}
+ctx.drawImage(image,plan.draw.x,plan.draw.y,plan.draw.width,plan.draw.height);
+return canvas;
+}
+export async function encode(canvas,mime,quality){
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,mime,quality));
+if(!blob){
+throw new Error(`this browser would not write ${FORMATS[mime]?.label ?? mime} at that size.`);
+}
+return blob;
+}
+export async function rasterize(text,plan,{mime,quality,background}){
+const held=await loadAt(text,plan.draw.width,plan.draw.height,{stretch:plan.stretch});
+let canvas;
+try{
+canvas=draw(held.image,plan,{background});
+return await encode(canvas,mime,quality);
+}finally{
+held.release();
+if(canvas){
+canvas.width=0;
+canvas.height=0;
+}
+}
+}

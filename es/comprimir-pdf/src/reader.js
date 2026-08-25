@@ -1,2 +1,337 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{decodeStream as j}from"./filters.js";import{ascii as S,indexOfAscii as u,isName as p,lastIndexOfAscii as R,Parser as b,parseIndirectObject as N,PdfStream as g,PdfSyntaxError as w,Ref as m}from"./objects.js";class M extends Error{}class T extends Error{}class P{constructor(t){this.bytes=t,this.entries=new Map,this.objects=new Map,this.trailer=new Map,this.repaired=!1,this.incremental=!1,this.version="1.4",this.parsing=new Set}static async open(t){const s=new P(t);s.readHeader();try{await s.readXref()}catch{s.entries.clear(),s.trailer=new Map}if(s.looksUsable()||(s.rebuildByScanning(),s.repaired=!0,await s.expandObjectStreams({discover:!0})),s.trailer.get("Encrypt"))throw new T("This PDF is encrypted. Even when the password is blank, removing that protection is a different job from making the file smaller, and this tool will not do it behind your back.");if(s.loadAll(),!s.catalog)throw new M("This file has no document catalogue, so there is nothing to rewrite. It is either not a PDF or damaged past what can be repaired here.");return s}readHeader(){const t=u(this.bytes.subarray(0,1024),"%PDF-");if(t<0)throw new M("This does not start like a PDF: there is no %PDF- header.");const s=S(this.bytes,t+5,t+8);/^\d\.\d$/.test(s)&&(this.version=s)}looksUsable(){if(this.entries.size===0)return!1;try{const t=this.resolve(this.trailer.get("Root"));return t instanceof Map&&t.size>0}catch{return!1}}async readXref(){const t=R(this.bytes,"startxref",this.bytes.length)??-1;if(t<0)throw new w("no startxref");const s=new b(this.bytes,t+9);s.skip();let e=s.readNumber();const i=new Set;let n=0;for(;Number.isInteger(e)&&e>=0&&e<this.bytes.length&&!i.has(e);){i.add(e),n+=1;const a=await this.readXrefSection(e);if(!a)break;for(const[c,f]of a)this.trailer.has(c)||this.trailer.set(c,f);const o=a.get("XRefStm");if(typeof o=="number"&&!i.has(o)){i.add(o);try{await this.readXrefSection(o)}catch{}}if(e=a.get("Prev"),typeof e!="number")break}this.incremental=n>1,await this.expandObjectStreams()}async readXrefSection(t){const s=new b(this.bytes,t);if(s.eatKeyword("xref"))return this.readXrefTable(s);const{value:e}=N(this.bytes,t,i=>this.resolve(i));if(!(e instanceof g))throw new w("not an xref section");return await this.readXrefStream(e),e.dict}readXrefTable(t){for(;;){if(t.skip(),t.eatKeyword("trailer")){const i=t.parseValue();return i instanceof Map?i:new Map}const s=t.readNumber();t.skip();const e=t.readNumber();if(!Number.isInteger(s)||!Number.isInteger(e)||e<0)throw new w("a malformed xref subsection header");for(let i=0;i<e;i+=1){t.skip();const n=t.readNumber();t.skip(),t.readNumber(),t.skip();const a=String.fromCharCode(t.bytes[t.pos]);t.pos+=1,a==="n"&&!this.entries.has(s+i)&&this.entries.set(s+i,{offset:n})}}}async readXrefStream(t){const{bytes:s}=await j(t,f=>this.resolve(f)),e=(this.resolve(t.dict.get("W"))??[]).map(f=>this.resolve(f));if(e.length<3)throw new w("an xref stream with no /W");const i=this.resolve(t.dict.get("Size"))??0,n=this.resolve(t.dict.get("Index"))??[0,i],a=e.reduce((f,h)=>f+h,0);if(a<=0)throw new w("an xref stream with zero-width fields");let o=0;const c=f=>{let h=0;for(let d=0;d<f;d+=1)h=h*256+(s[o]??0),o+=1;return h};for(let f=0;f+1<n.length;f+=2){const h=this.resolve(n[f]),d=this.resolve(n[f+1]);for(let l=0;l<d&&o+a<=s.length;l+=1){const x=e[0]===0?1:c(e[0]),k=c(e[1]),I=c(e[2]),y=h+l;this.entries.has(y)||(x===1?this.entries.set(y,{offset:k}):x===2&&this.entries.set(y,{stm:k,index:I}))}}}async expandObjectStreams({discover:t=!1}={}){const s=new Set;for(const e of this.entries.values())"stm"in e&&s.add(e.stm);if(t)for(const e of[...this.entries.keys()]){const i=this.getObject(e);i instanceof g&&p(i.dict.get("Type"),"ObjStm")&&s.add(e)}for(const e of s)try{const i=this.getObject(e);if(!(i instanceof g))continue;const{bytes:n}=await j(i,h=>this.resolve(h)),a=this.resolve(i.dict.get("N"))??0,o=this.resolve(i.dict.get("First"))??0,c=new b(n,0),f=[];for(let h=0;h<a;h+=1){c.skip();const d=c.readNumber();c.skip();const l=c.readNumber();if(!Number.isInteger(d)||!Number.isInteger(l))break;f.push([d,o+l])}for(const[h,d]of f){const l=this.entries.get(h);if(!(t?l!==void 0:!l||l.stm!==e)&&!this.objects.has(h))try{this.objects.set(h,new b(n,d).parseValue())}catch{this.objects.set(h,null)}}}catch{}}rebuildByScanning(){const{bytes:t}=this;this.entries.clear(),this.objects.clear();for(const{num:s,offset:e}of X(t))this.entries.set(s,{offset:e});this.trailer=new Map;for(let s=u(t,"trailer");s>=0;s=u(t,"trailer",s+7))try{const e=new b(t,s+7,i=>this.resolve(i)).parseValue();e instanceof Map&&e.has("Root")&&(this.trailer=e)}catch{}this.trailer.has("Root")||this.findRootTheHardWay()}findRootTheHardWay(){for(const t of this.entries.keys()){const s=this.getObject(t),e=s instanceof g?s.dict:s;if(e instanceof Map){if(s instanceof g&&p(e.get("Type"),"XRef")&&e.has("Root"))for(const[i,n]of e)this.trailer.has(i)||this.trailer.set(i,n);p(e.get("Type"),"Catalog")&&!this.trailer.has("Root")&&this.trailer.set("Root",new m(t,0))}}}getObject(t){if(this.objects.has(t))return this.objects.get(t);const s=this.entries.get(t);if(!s||!("offset"in s))return this.objects.set(t,null),null;if(this.parsing.has(t))return null;this.parsing.add(t);let e=null;try{const i=N(this.bytes,s.offset,n=>this.resolve(n));i.num===t?e=i.value:this.repaired=!0}catch{e=null}finally{this.parsing.delete(t)}return this.objects.set(t,e),e}loadAll(){for(const t of[...this.entries.keys()])this.getObject(t)}resolve(t){let s=0,e=t;for(;e instanceof m;){if(s>64)return null;s+=1,e=this.getObject(e.num)}return e}get(t,s){return t instanceof Map?this.resolve(t.get(s)):null}get catalog(){const t=this.resolve(this.trailer.get("Root"));return t instanceof Map?t:null}get info(){const t=this.resolve(this.trailer.get("Info"));return t instanceof Map?t:null}countPages(){const t=new Set;let s=0;const e=(i,n)=>{if(!(i instanceof Map)||n>64)return;const a=this.get(i,"Kids");if(!Array.isArray(a)){(p(i.get("Type"),"Page")||i.has("Contents"))&&(s+=1);return}for(const o of a){const c=o instanceof m?o.key:null;if(c){if(t.has(c))continue;t.add(c)}e(this.resolve(o),n+1)}};return e(this.get(this.catalog,"Pages"),0),s}}function X(r){const t=[];for(let s=u(r,"obj");s>=0;s=u(r,"obj",s+3)){let e=s-1;for(;e>=0&&v(r[e]);)e-=1;const i=e+1;for(;e>=0&&O(r[e]);)e-=1;const n=e+1;if(n===i)continue;for(;e>=0&&v(r[e]);)e-=1;const a=e+1;if(a===n)continue;for(;e>=0&&O(r[e]);)e-=1;const o=e+1;if(o===a||o>0&&!v(r[o-1])&&r[o-1]!==62)continue;const c=Number.parseInt(S(r,o,a),10);Number.isInteger(c)&&t.push({num:c,offset:o})}return t}function v(r){return r===32||r===10||r===13||r===9||r===0||r===12}function O(r){return r>=48&&r<=57}export{T as EncryptedPdfError,M as NotAPdfError,P as PdfDocument,X as scanObjectHeaders};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{decodeStream}from'./filters.js';
+import{
+ascii,indexOfAscii,isName,lastIndexOfAscii,Parser,parseIndirectObject,
+PdfStream,PdfSyntaxError,Ref,
+}from'./objects.js';
+export class NotAPdfError extends Error{}
+export class EncryptedPdfError extends Error{}
+export class PdfDocument{
+constructor(bytes){
+this.bytes=bytes;
+this.entries=new Map();
+this.objects=new Map();
+this.trailer=new Map();
+this.repaired=false;
+this.incremental=false;
+this.version='1.4';
+this.parsing=new Set();
+}
+static async open(bytes){
+const doc=new PdfDocument(bytes);
+doc.readHeader();
+try{
+await doc.readXref();
+}catch{
+doc.entries.clear();
+doc.trailer=new Map();
+}
+if(!doc.looksUsable()){
+doc.rebuildByScanning();
+doc.repaired=true;
+await doc.expandObjectStreams({discover:true});
+}
+if(doc.trailer.get('Encrypt')){
+throw new EncryptedPdfError(
+'This PDF is encrypted. Even when the password is blank, removing that '
++'protection is a different job from making the file smaller, and this '
++'tool will not do it behind your back.');
+}
+doc.loadAll();
+if(!doc.catalog){
+throw new NotAPdfError(
+'This file has no document catalogue, so there is nothing to rewrite. '
++'It is either not a PDF or damaged past what can be repaired here.');
+}
+return doc;
+}
+readHeader(){
+const at=indexOfAscii(this.bytes.subarray(0,1024),'%PDF-');
+if(at<0){
+throw new NotAPdfError('This does not start like a PDF: there is no %PDF- header.');
+}
+const found=ascii(this.bytes,at+5,at+8);
+if(/^\d\.\d$/.test(found))this.version=found;
+}
+looksUsable(){
+if(this.entries.size===0)return false;
+try{
+const root=this.resolve(this.trailer.get('Root'));
+return root instanceof Map&&root.size>0;
+}catch{
+return false;
+}
+}
+async readXref(){
+const at=lastIndexOfAscii(this.bytes,'startxref',
+this.bytes.length)??-1;
+if(at<0)throw new PdfSyntaxError('no startxref');
+const parser=new Parser(this.bytes,at+9);
+parser.skip();
+let offset=parser.readNumber();
+const seen=new Set();
+let sections=0;
+while(Number.isInteger(offset)&&offset>=0&&offset<this.bytes.length){
+if(seen.has(offset))break;
+seen.add(offset);
+sections+=1;
+const trailer=await this.readXrefSection(offset);
+if(!trailer)break;
+for(const[key,value]of trailer){
+if(!this.trailer.has(key))this.trailer.set(key,value);
+}
+const hybrid=trailer.get('XRefStm');
+if(typeof hybrid==='number'&&!seen.has(hybrid)){
+seen.add(hybrid);
+try{
+await this.readXrefSection(hybrid);
+}catch{
+}
+}
+offset=trailer.get('Prev');
+if(typeof offset!=='number')break;
+}
+this.incremental=sections>1;
+await this.expandObjectStreams();
+}
+async readXrefSection(offset){
+const parser=new Parser(this.bytes,offset);
+if(parser.eatKeyword('xref'))return this.readXrefTable(parser);
+const{value}=parseIndirectObject(this.bytes,offset,(ref)=>this.resolve(ref));
+if(!(value instanceof PdfStream))throw new PdfSyntaxError('not an xref section');
+await this.readXrefStream(value);
+return value.dict;
+}
+readXrefTable(parser){
+for(;;){
+parser.skip();
+if(parser.eatKeyword('trailer')){
+const trailer=parser.parseValue();
+return trailer instanceof Map?trailer:new Map();
+}
+const start=parser.readNumber();
+parser.skip();
+const count=parser.readNumber();
+if(!Number.isInteger(start)||!Number.isInteger(count)||count<0){
+throw new PdfSyntaxError('a malformed xref subsection header');
+}
+for(let i=0;i<count;i+=1){
+parser.skip();
+const offset=parser.readNumber();
+parser.skip();
+parser.readNumber();
+parser.skip();
+const kind=String.fromCharCode(parser.bytes[parser.pos]);
+parser.pos+=1;
+if(kind==='n'&&!this.entries.has(start+i)){
+this.entries.set(start+i,{offset});
+}
+}
+}
+}
+async readXrefStream(stream){
+const{bytes}=await decodeStream(stream,(v)=>this.resolve(v));
+const widths=(this.resolve(stream.dict.get('W'))??[]).map((w)=>this.resolve(w));
+if(widths.length<3)throw new PdfSyntaxError('an xref stream with no /W');
+const size=this.resolve(stream.dict.get('Size'))??0;
+const index=this.resolve(stream.dict.get('Index'))??[0,size];
+const rowBytes=widths.reduce((sum,w)=>sum+w,0);
+if(rowBytes<=0)throw new PdfSyntaxError('an xref stream with zero-width fields');
+let at=0;
+const field=(width)=>{
+let value=0;
+for(let i=0;i<width;i+=1){
+value=value*256+(bytes[at]??0);
+at+=1;
+}
+return value;
+};
+for(let pair=0;pair+1<index.length;pair+=2){
+const start=this.resolve(index[pair]);
+const count=this.resolve(index[pair+1]);
+for(let i=0;i<count&&at+rowBytes<=bytes.length;i+=1){
+const type=widths[0]===0?1:field(widths[0]);
+const second=field(widths[1]);
+const third=field(widths[2]);
+const num=start+i;
+if(this.entries.has(num))continue;
+if(type===1)this.entries.set(num,{offset:second});
+else if(type===2)this.entries.set(num,{stm:second,index:third});
+}
+}
+}
+async expandObjectStreams({discover=false}={}){
+const wanted=new Set();
+for(const entry of this.entries.values()){
+if('stm'in entry)wanted.add(entry.stm);
+}
+if(discover){
+for(const num of[...this.entries.keys()]){
+const value=this.getObject(num);
+if(value instanceof PdfStream&&isName(value.dict.get('Type'),'ObjStm')){
+wanted.add(num);
+}
+}
+}
+for(const num of wanted){
+try{
+const container=this.getObject(num);
+if(!(container instanceof PdfStream))continue;
+const{bytes}=await decodeStream(container,(v)=>this.resolve(v));
+const count=this.resolve(container.dict.get('N'))??0;
+const first=this.resolve(container.dict.get('First'))??0;
+const header=new Parser(bytes,0);
+const pairs=[];
+for(let i=0;i<count;i+=1){
+header.skip();
+const objNum=header.readNumber();
+header.skip();
+const offset=header.readNumber();
+if(!Number.isInteger(objNum)||!Number.isInteger(offset))break;
+pairs.push([objNum,first+offset]);
+}
+for(const[objNum,offset]of pairs){
+const entry=this.entries.get(objNum);
+if(discover?entry!==undefined:(!entry||entry.stm!==num))continue;
+if(this.objects.has(objNum))continue;
+try{
+this.objects.set(objNum,new Parser(bytes,offset).parseValue());
+}catch{
+this.objects.set(objNum,null);
+}
+}
+}catch{
+}
+}
+}
+rebuildByScanning(){
+const{bytes}=this;
+this.entries.clear();
+this.objects.clear();
+for(const{num,offset}of scanObjectHeaders(bytes)){
+this.entries.set(num,{offset});
+}
+this.trailer=new Map();
+for(let at=indexOfAscii(bytes,'trailer');at>=0;
+at=indexOfAscii(bytes,'trailer',at+7)){
+try{
+const found=new Parser(bytes,at+7,(ref)=>this.resolve(ref)).parseValue();
+if(found instanceof Map&&found.has('Root'))this.trailer=found;
+}catch{
+}
+}
+if(!this.trailer.has('Root'))this.findRootTheHardWay();
+}
+findRootTheHardWay(){
+for(const num of this.entries.keys()){
+const value=this.getObject(num);
+const dict=value instanceof PdfStream?value.dict:value;
+if(!(dict instanceof Map))continue;
+if(value instanceof PdfStream&&isName(dict.get('Type'),'XRef')&&dict.has('Root')){
+for(const[key,entry]of dict){
+if(!this.trailer.has(key))this.trailer.set(key,entry);
+}
+}
+if(isName(dict.get('Type'),'Catalog')&&!this.trailer.has('Root')){
+this.trailer.set('Root',new Ref(num,0));
+}
+}
+}
+getObject(num){
+if(this.objects.has(num))return this.objects.get(num);
+const entry=this.entries.get(num);
+if(!entry||!('offset'in entry)){
+this.objects.set(num,null);
+return null;
+}
+if(this.parsing.has(num))return null;
+this.parsing.add(num);
+let value=null;
+try{
+const parsed=parseIndirectObject(this.bytes,entry.offset,(ref)=>this.resolve(ref));
+if(parsed.num===num)value=parsed.value;
+else this.repaired=true;
+}catch{
+value=null;
+}finally{
+this.parsing.delete(num);
+}
+this.objects.set(num,value);
+return value;
+}
+loadAll(){
+for(const num of[...this.entries.keys()])this.getObject(num);
+}
+resolve(value){
+let seen=0;
+let current=value;
+while(current instanceof Ref){
+if(seen>64)return null;
+seen+=1;
+current=this.getObject(current.num);
+}
+return current;
+}
+get(dict,key){
+if(!(dict instanceof Map))return null;
+return this.resolve(dict.get(key));
+}
+get catalog(){
+const root=this.resolve(this.trailer.get('Root'));
+return root instanceof Map?root:null;
+}
+get info(){
+const info=this.resolve(this.trailer.get('Info'));
+return info instanceof Map?info:null;
+}
+countPages(){
+const seen=new Set();
+let pages=0;
+const walk=(node,depth)=>{
+if(!(node instanceof Map)||depth>64)return;
+const kids=this.get(node,'Kids');
+if(!Array.isArray(kids)){
+if(isName(node.get('Type'),'Page')||node.has('Contents'))pages+=1;
+return;
+}
+for(const kid of kids){
+const key=kid instanceof Ref?kid.key:null;
+if(key){
+if(seen.has(key))continue;
+seen.add(key);
+}
+walk(this.resolve(kid),depth+1);
+}
+};
+walk(this.get(this.catalog,'Pages'),0);
+return pages;
+}
+}
+export function scanObjectHeaders(bytes){
+const found=[];
+for(let at=indexOfAscii(bytes,'obj');at>=0;at=indexOfAscii(bytes,'obj',at+3)){
+let i=at-1;
+while(i>=0&&isSpace(bytes[i]))i-=1;
+const genEnd=i+1;
+while(i>=0&&isDigitByte(bytes[i]))i-=1;
+const genStart=i+1;
+if(genStart===genEnd)continue;
+while(i>=0&&isSpace(bytes[i]))i-=1;
+const numEnd=i+1;
+if(numEnd===genStart)continue;
+while(i>=0&&isDigitByte(bytes[i]))i-=1;
+const numStart=i+1;
+if(numStart===numEnd)continue;
+if(numStart>0&&!isSpace(bytes[numStart-1])&&bytes[numStart-1]!==0x3e)continue;
+const num=Number.parseInt(ascii(bytes,numStart,numEnd),10);
+if(Number.isInteger(num))found.push({num,offset:numStart});
+}
+return found;
+}
+function isSpace(code){
+return code===0x20||code===0x0a||code===0x0d||code===0x09
+||code===0x00||code===0x0c;
+}
+function isDigitByte(code){
+return code>=0x30&&code<=0x39;
+}

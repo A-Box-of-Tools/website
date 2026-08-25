@@ -1,2 +1,112 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{PdfStream as s,PdfString as a}from"./objects.js";const m=["Title","Author","Subject","Keywords","Creator","Producer","Contents","RC","Subj","T","V","DV","TU","Alt","ActualText","E","Desc","F","UF"];function l(t){if(t.length>=2&&t[0]===254&&t[1]===255){let n="";for(let e=2;e+1<t.length;e+=2)n+=String.fromCharCode(t[e]<<8|t[e+1]);return n}let o="";for(const n of t)o+=String.fromCharCode(n);return o}function h(t){const o=new Uint8Array(2+t.length*2);o[0]=254,o[1]=255;for(let n=0;n<t.length;n+=1){const e=t.charCodeAt(n);o[2+n*2]=e>>8&255,o[3+n*2]=e&255}return o}function g(t,o){let n=0;const e=new Set;for(const i of t.objects.values()){const f=i instanceof s?i.dict:i;if(f instanceof Map)for(const r of m){const c=f.get(r);if(!(c instanceof a)||r==="T"&&p(f))continue;const u=l(c.bytes),d=o(u);d!==u&&(f.set(r,new a(h(d))),n+=1,e.add(x(r)))}}return{changed:n,where:[...e]}}function p(t){return t.has("FT")||t.has("Ff")||t.has("Kids")}function x(t){return t==="V"||t==="DV"||t==="TU"?"a form field":t==="Contents"||t==="RC"||t==="Subj"||t==="T"?"a comment":t==="ActualText"||t==="Alt"||t==="E"?"a copy-and-paste replacement":t==="F"||t==="UF"||t==="Desc"?"an attachment":"the document properties"}function T(t){const o=[],n=(e,i)=>{if(i>32)return;if(e instanceof a){const r=l(e.bytes);r.trim()&&o.push(r);return}if(Array.isArray(e)){for(const r of e)n(r,i+1);return}const f=e instanceof s?e.dict:e;if(f instanceof Map)for(const[r,c]of f)r==="ID"||r==="O"||r==="U"||n(c,i+1)};for(const e of t.objects.values())n(e,0);return o}function A(t){let o=0,n=0;for(const i of t.objects.values()){const f=i instanceof s?i.dict:i;if(f instanceof Map){f.has("EF")&&(f.delete("EF"),o+=1),f.has("EmbeddedFiles")&&(f.delete("EmbeddedFiles"),o+=1);for(const r of["JS","OpenAction","AA"])f.has(r)&&(f.delete(r),n+=1)}}const e=t.get(t.catalog,"Names");return e instanceof Map&&e.has("JavaScript")&&(e.delete("JavaScript"),n+=1),{attachments:o,actions:n}}export{l as decodeText,h as encodeText,T as harvestStrings,A as removeCarriedFiles,g as scrubStrings};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{PdfStream,PdfString}from'./objects.js';
+const TEXT_KEYS=[
+'Title','Author','Subject','Keywords','Creator','Producer',
+'Contents','RC','Subj','T','V','DV','TU','Alt','ActualText','E',
+'Desc','F','UF',
+];
+export function decodeText(bytes){
+if(bytes.length>=2&&bytes[0]===0xfe&&bytes[1]===0xff){
+let text='';
+for(let at=2;at+1<bytes.length;at+=2){
+text+=String.fromCharCode((bytes[at]<<8)|bytes[at+1]);
+}
+return text;
+}
+let text='';
+for(const byte of bytes)text+=String.fromCharCode(byte);
+return text;
+}
+export function encodeText(text){
+const out=new Uint8Array(2+text.length*2);
+out[0]=0xfe;
+out[1]=0xff;
+for(let at=0;at<text.length;at+=1){
+const code=text.charCodeAt(at);
+out[2+at*2]=(code>>8)&0xff;
+out[3+at*2]=code&0xff;
+}
+return out;
+}
+export function scrubStrings(doc,remove){
+let changed=0;
+const where=new Set();
+for(const value of doc.objects.values()){
+const dict=value instanceof PdfStream?value.dict:value;
+if(!(dict instanceof Map))continue;
+for(const key of TEXT_KEYS){
+const item=dict.get(key);
+if(!(item instanceof PdfString))continue;
+if(key==='T'&&isFieldName(dict))continue;
+const before=decodeText(item.bytes);
+const after=remove(before);
+if(after===before)continue;
+dict.set(key,new PdfString(encodeText(after)));
+changed+=1;
+where.add(describe(key));
+}
+}
+return{changed,where:[...where]};
+}
+function isFieldName(dict){
+return dict.has('FT')||dict.has('Ff')||dict.has('Kids');
+}
+function describe(key){
+if(key==='V'||key==='DV'||key==='TU')return'a form field';
+if(key==='Contents'||key==='RC'||key==='Subj'||key==='T')return'a comment';
+if(key==='ActualText'||key==='Alt'||key==='E')return'a copy-and-paste replacement';
+if(key==='F'||key==='UF'||key==='Desc')return'an attachment';
+return'the document properties';
+}
+export function harvestStrings(doc){
+const found=[];
+const visit=(value,depth)=>{
+if(depth>32)return;
+if(value instanceof PdfString){
+const text=decodeText(value.bytes);
+if(text.trim())found.push(text);
+return;
+}
+if(Array.isArray(value)){
+for(const item of value)visit(item,depth+1);
+return;
+}
+const dict=value instanceof PdfStream?value.dict:value;
+if(dict instanceof Map){
+for(const[key,item]of dict){
+if(key==='ID'||key==='O'||key==='U')continue;
+visit(item,depth+1);
+}
+}
+};
+for(const value of doc.objects.values())visit(value,0);
+return found;
+}
+export function removeCarriedFiles(doc){
+let attachments=0;
+let actions=0;
+for(const value of doc.objects.values()){
+const dict=value instanceof PdfStream?value.dict:value;
+if(!(dict instanceof Map))continue;
+if(dict.has('EF')){
+dict.delete('EF');
+attachments+=1;
+}
+if(dict.has('EmbeddedFiles')){
+dict.delete('EmbeddedFiles');
+attachments+=1;
+}
+for(const key of['JS','OpenAction','AA']){
+if(dict.has(key)){
+dict.delete(key);
+actions+=1;
+}
+}
+}
+const names=doc.get(doc.catalog,'Names');
+if(names instanceof Map&&names.has('JavaScript')){
+names.delete('JavaScript');
+actions+=1;
+}
+return{attachments,actions};
+}

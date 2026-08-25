@@ -1,2 +1,69 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function s(t,e,n,h,a){if(a==="stretch")return{x:0,y:0,w:n,h};const r=a==="cover"?Math.max(n/t,h/e):Math.min(n/t,h/e),o=t*r,l=e*r;return{x:(n-o)/2,y:(h-l)/2,w:o,h:l}}function w(t,e,{fit:n,background:h}){const a=t.canvas.width,r=t.canvas.height,o=e.width,l=e.height;if(t.save(),t.filter="none",t.globalAlpha=1,n==="blur"){const i=s(o,l,a,r,"cover"),c=.12;t.filter=`blur(${Math.max(8,Math.round(Math.min(a,r)*.04))}px)`,t.drawImage(e,i.x-i.w*c,i.y-i.h*c,i.w*(1+c*2),i.h*(1+c*2)),t.filter="none"}else t.fillStyle=h,t.fillRect(0,0,a,r);const u=s(o,l,a,r,n==="blur"?"contain":n);t.drawImage(e,u.x,u.y,u.w,u.h),t.restore()}function f(t,e){return{width:Math.max(2,Math.floor(t/2)*2),height:Math.max(2,Math.floor(e/2)*2)}}const m=7680;function M(t,e){const n=Math.min(1,m/Math.max(t,e));return f(t*n,e*n)}function b(t,e,n){if(t==="custom")return M(Number(n?.width)>0?Number(n.width):1920,Number(n?.height)>0?Number(n.height):1080);if(t!=="auto"){const[r,o]=t.split("x").map(Number);return f(r,o)}if(!e.length)return f(1920,1080);let h=0,a=0;for(const r of e)h=Math.max(h,r.width),a=Math.max(a,r.height);return M(h,a)}export{w as drawFrame,b as resolveOutputSize,f as toEvenSize};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+function fitRect(sw,sh,dw,dh,mode){
+if(mode==='stretch')return{x:0,y:0,w:dw,h:dh};
+const scale=mode==='cover'
+?Math.max(dw/sw,dh/sh)
+:Math.min(dw/sw,dh/sh);
+const w=sw*scale;
+const h=sh*scale;
+return{x:(dw-w)/2,y:(dh-h)/2,w,h};
+}
+export function drawFrame(ctx,image,{fit,background}){
+const dw=ctx.canvas.width;
+const dh=ctx.canvas.height;
+const sw=image.width;
+const sh=image.height;
+ctx.save();
+ctx.filter='none';
+ctx.globalAlpha=1;
+if(fit==='blur'){
+const cover=fitRect(sw,sh,dw,dh,'cover');
+const bleed=0.12;
+ctx.filter=`blur(${Math.max(8, Math.round(Math.min(dw, dh) * 0.04))}px)`;
+ctx.drawImage(
+image,
+cover.x-cover.w*bleed,
+cover.y-cover.h*bleed,
+cover.w*(1+bleed*2),
+cover.h*(1+bleed*2),
+);
+ctx.filter='none';
+}else{
+ctx.fillStyle=background;
+ctx.fillRect(0,0,dw,dh);
+}
+const target=fitRect(sw,sh,dw,dh,fit==='blur'?'contain':fit);
+ctx.drawImage(image,target.x,target.y,target.w,target.h);
+ctx.restore();
+}
+export function toEvenSize(width,height){
+return{
+width:Math.max(2,Math.floor(width/2)*2),
+height:Math.max(2,Math.floor(height/2)*2),
+};
+}
+const MAX_DIMENSION=7680;
+function capped(width,height){
+const scale=Math.min(1,MAX_DIMENSION/Math.max(width,height));
+return toEvenSize(width*scale,height*scale);
+}
+export function resolveOutputSize(preset,items,custom){
+if(preset==='custom'){
+return capped(
+Number(custom?.width)>0?Number(custom.width):1920,
+Number(custom?.height)>0?Number(custom.height):1080,
+);
+}
+if(preset!=='auto'){
+const[w,h]=preset.split('x').map(Number);
+return toEvenSize(w,h);
+}
+if(!items.length)return toEvenSize(1920,1080);
+let width=0;
+let height=0;
+for(const item of items){
+width=Math.max(width,item.width);
+height=Math.max(height,item.height);
+}
+return capped(width,height);
+}

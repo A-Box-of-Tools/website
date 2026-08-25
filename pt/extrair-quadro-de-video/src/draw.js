@@ -1,2 +1,19 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function m(e,s,{rotation:n=0,displayWidth:a,displayHeight:r,scale:f=1}){e.setTransform(f,0,0,f,0,0),n===90?e.transform(0,1,-1,0,a,0):n===180?e.transform(-1,0,0,-1,a,r):n===270&&e.transform(0,-1,1,0,0,r),e.drawImage(s,0,0),e.setTransform(1,0,0,1,0,0)}function o(e,{rotation:s,displayWidth:n,displayHeight:a}){const r=document.createElement("canvas");r.width=n,r.height=a;const f=r.getContext("2d",{alpha:!1});return m(f,e,{rotation:s,displayWidth:n,displayHeight:a}),r}export{m as drawUpright,o as frameCanvas};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function drawUpright(ctx,source,{
+rotation=0,displayWidth,displayHeight,scale=1,
+}){
+ctx.setTransform(scale,0,0,scale,0,0);
+if(rotation===90)ctx.transform(0,1,-1,0,displayWidth,0);
+else if(rotation===180)ctx.transform(-1,0,0,-1,displayWidth,displayHeight);
+else if(rotation===270)ctx.transform(0,-1,1,0,0,displayHeight);
+ctx.drawImage(source,0,0);
+ctx.setTransform(1,0,0,1,0,0);
+}
+export function frameCanvas(source,{rotation,displayWidth,displayHeight}){
+const canvas=document.createElement('canvas');
+canvas.width=displayWidth;
+canvas.height=displayHeight;
+const ctx=canvas.getContext('2d',{alpha:false});
+drawUpright(ctx,source,{rotation,displayWidth,displayHeight});
+return canvas;
+}

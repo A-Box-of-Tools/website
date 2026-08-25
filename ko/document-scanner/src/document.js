@@ -1,3 +1,99 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{PdfWriter as b,PT_PER_INCH as m,PT_PER_MM as a,num as h,textString as x}from"./pdf.js";const f="abox.tools document scanner",P={a4:[210,297],a5:[148,210],letter:[215.9,279.4],legal:[215.9,355.6]};function y(e,o){const t=Math.max(0,Number(o.margin)||0)*a;if(o.pageSize==="fit"){const w=Math.min(1200,Math.max(36,Number(o.dpi)||200)),$=e.width*m/w,l=e.height*m/w;return{width:$+t*2,height:l+t*2,rect:{x:t,y:t,width:$,height:l}}}const[i,r]=P[o.pageSize]??P.a4,c=e.height>=e.width?[i*a,r*a]:[r*a,i*a],n={x:t,y:t,width:Math.max(1,c[0]-t*2),height:Math.max(1,c[1]-t*2)},d=Math.min(n.width/e.width,n.height/e.height),u=e.width*d,g=e.height*d;return{width:c[0],height:c[1],rect:{x:n.x+(n.width-u)/2,y:n.y+(n.height-g)/2,width:u,height:g}}}function j(e,o){if(!e.length)throw new Error("There are no pages to write.");const t=new b,i=t.reserve(),r=t.reserve(),s=[];for(const n of e)s.push(R(t,r,n,y(n,o)));t.object(i,`<< /Type /Catalog /Pages ${r} 0 R >>`),t.object(r,`<< /Type /Pages /Count ${s.length} /Kids [${s.map(n=>`${n} 0 R`).join(" ")}] >>`);const c=S(t,o);return t.finish({root:i,info:c})}function R(e,o,t,i){const r=e.reserve(),s=e.reserve(),c=e.reserve(),n=t.kind==="flate1"?1:8;return e.stream(r,` /Type /XObject /Subtype /Image /Width ${t.width} /Height ${t.height} /ColorSpace ${t.gray?"/DeviceGray":"/DeviceRGB"} /BitsPerComponent ${n}`+(t.kind==="dct"?" /Filter /DCTDecode":" /Filter /FlateDecode"),t.data),e.stream(s,"",p(i)),e.object(c,`<< /Type /Page /Parent ${o} 0 R /MediaBox [0 0 ${h(i.width)} ${h(i.height)}] /Resources << /XObject << /Im0 ${r} 0 R >> >> /Contents ${s} 0 R >>`),c}function p(e){const{rect:o}=e,t=["q","1 1 1 rg",`0 0 ${h(e.width)} ${h(e.height)} re f`,`${h(o.width)} 0 0 ${h(o.height)} ${h(o.x)} ${h(o.y)} cm`,"/Im0 Do","Q",""];return new TextEncoder().encode(t.join(`
-`))}function S(e,o){const t=[`/Producer ${x(f)}`],i=o.title?.trim();i&&t.push(`/Title ${x(i)}`);const r=e.reserve();return e.object(r,`<< ${t.join(" ")} >>`),r}export{P as PAGE_SIZES,j as buildDocument,y as layoutPage};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{PdfWriter,PT_PER_INCH,PT_PER_MM,num,textString}from'./pdf.js';
+const PRODUCER='abox.tools document scanner';
+export const PAGE_SIZES={
+a4:[210,297],
+a5:[148,210],
+letter:[215.9,279.4],
+legal:[215.9,355.6],
+};
+export function layoutPage(page,settings){
+const margin=Math.max(0,Number(settings.margin)||0)*PT_PER_MM;
+if(settings.pageSize==='fit'){
+const dpi=Math.min(1200,Math.max(36,Number(settings.dpi)||200));
+const width=(page.width*PT_PER_INCH)/dpi;
+const height=(page.height*PT_PER_INCH)/dpi;
+return{
+width:width+margin*2,
+height:height+margin*2,
+rect:{x:margin,y:margin,width,height},
+};
+}
+const[shortSide,longSide]=PAGE_SIZES[settings.pageSize]??PAGE_SIZES.a4;
+const portrait=page.height>=page.width;
+const sheet=portrait
+?[shortSide*PT_PER_MM,longSide*PT_PER_MM]
+:[longSide*PT_PER_MM,shortSide*PT_PER_MM];
+const box={
+x:margin,
+y:margin,
+width:Math.max(1,sheet[0]-margin*2),
+height:Math.max(1,sheet[1]-margin*2),
+};
+const scale=Math.min(box.width/page.width,box.height/page.height);
+const width=page.width*scale;
+const height=page.height*scale;
+return{
+width:sheet[0],
+height:sheet[1],
+rect:{
+x:box.x+(box.width-width)/2,
+y:box.y+(box.height-height)/2,
+width,
+height,
+},
+};
+}
+export function buildDocument(pages,settings){
+if(!pages.length)throw new Error('There are no pages to write.');
+const pdf=new PdfWriter();
+const catalog=pdf.reserve();
+const tree=pdf.reserve();
+const ids=[];
+for(const page of pages){
+ids.push(writePage(pdf,tree,page,layoutPage(page,settings)));
+}
+pdf.object(catalog,`<< /Type /Catalog /Pages ${tree} 0 R >>`);
+pdf.object(tree,`<< /Type /Pages /Count ${ids.length} `
++`/Kids [${ids.map((id) => `${id} 0 R`).join(' ')}] >>`);
+const info=writeInfo(pdf,settings);
+return pdf.finish({root:catalog,info});
+}
+function writePage(pdf,tree,image,sheet){
+const imageId=pdf.reserve();
+const contentsId=pdf.reserve();
+const pageId=pdf.reserve();
+const bits=image.kind==='flate1'?1:8;
+pdf.stream(imageId,' /Type /XObject /Subtype /Image'
++` /Width ${image.width} /Height ${image.height}`
++` /ColorSpace ${image.gray ? '/DeviceGray' : '/DeviceRGB'}`
++` /BitsPerComponent ${bits}`
++(image.kind==='dct'?' /Filter /DCTDecode':' /Filter /FlateDecode'),image.data);
+pdf.stream(contentsId,'',contentStream(sheet));
+pdf.object(pageId,`<< /Type /Page /Parent ${tree} 0 R`
++` /MediaBox [0 0 ${num(sheet.width)} ${num(sheet.height)}]`
++` /Resources << /XObject << /Im0 ${imageId} 0 R >> >>`
++` /Contents ${contentsId} 0 R >>`);
+return pageId;
+}
+function contentStream(sheet){
+const{rect}=sheet;
+const lines=[
+'q',
+'1 1 1 rg',
+`0 0 ${num(sheet.width)} ${num(sheet.height)} re f`,
+`${num(rect.width)} 0 0 ${num(rect.height)} ${num(rect.x)} ${num(rect.y)} cm`,
+'/Im0 Do',
+'Q',
+'',
+];
+return new TextEncoder().encode(lines.join('\n'));
+}
+function writeInfo(pdf,settings){
+const entries=[`/Producer ${textString(PRODUCER)}`];
+const title=settings.title?.trim();
+if(title)entries.push(`/Title ${textString(title)}`);
+const id=pdf.reserve();
+pdf.object(id,`<< ${entries.join(' ')} >>`);
+return id;
+}

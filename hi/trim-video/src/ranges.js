@@ -1,2 +1,143 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function k(e){const t=e.samples,n=new Float64Array(t.length);if(!t.length)return n;for(let a=0;a<t.length-1;a++)n[a]=Math.max(0,t[a+1].dts-t[a].dts);const o=t.length-1,s=o>0?n[o-1]:0,r=e.duration-t[o].dts;return n[o]=r>0&&(!s||r<=s*20)?r:s||1,n}function D(e){const t=[];for(const n of e.samples)n.isKey&&t.push(n.pts/e.timescale);return t.sort((n,o)=>n-o),t}function F(e,t){const n=t*e.timescale;let o=null;for(const s of e.samples)!s.isKey||s.pts>n||(o===null||s.pts>o)&&(o=s.pts);return o===null?0:o/e.timescale}function S(e,t){let n=-1,o=-1/0;if(e.samples.forEach((r,a)=>{r.isKey&&r.pts<=t&&r.pts>o&&(n=a,o=r.pts)}),n>=0)return n;const s=e.samples.findIndex(r=>r.isKey);return s>=0?s:0}function M(e,t,n){let o=t;for(let s=t;s<e.length;s++)e[s].pts<n&&(o=s);return o}function B(e,t){let n=0;for(let o=0;o<e.length&&e[o].dts<=t;o++)n=o;return n}function K({video:e,audio:t,videoDurations:n,audioDurations:o,start:s,end:r,anchor:a}){const c=e.timescale,f=s*c,i=r*c,l=S(e,f),u=Math.max(l,M(e.samples,l,i)),m=e.samples[l].dts,d=e.samples[l].pts/c,b=e.samples[u].dts+n[u]-m,I=a==="keyframe"?Math.min(d,s):s,y={start:s,end:r,keyframeSeconds:d,preRoll:Math.max(0,s-d),video:{from:l,to:u,base:m,spanTs:b,editStart:Math.max(0,f-m)},audio:null};if(t&&t.samples.length){const h=t.timescale,p=B(t.samples,I*h),x=Math.max(p,M(t.samples,p,r*h)),g=t.samples[p].dts;y.audio={from:p,to:x,base:g,spanTs:t.samples[x].dts+o[x]-g,editStart:Math.max(0,s*h-g)}}return y}function O({video:e,audio:t,ranges:n,anchor:o}){const s=k(e),r=t&&t.samples.length?k(t):null,a=[];let c=0,f=0;for(const i of n){const l=K({video:e,audio:t,videoDurations:s,audioDurations:r,start:i.start,end:i.end,anchor:o});l.video.offset=c,c+=l.video.spanTs,l.audio&&(l.audio.offset=f,f+=l.audio.spanTs),a.push(l)}return{plans:a,videoDurations:s,audioDurations:r}}const T=.02;function R(e,t){const n=[...e].sort((r,a)=>r.start-a.start),o=[];let s=0;for(const r of n)r.start>s&&o.push({start:s,end:Math.min(r.start,t)}),s=Math.max(s,r.end);return s<t&&o.push({start:s,end:t}),o.filter(r=>r.end-r.start>T)}function C({mode:e,start:t,end:n,duration:o}){const s=n-t>T?[{start:t,end:n}]:[];return e==="keep"?s:R(s,o)}function E(e){return e.reduce((t,n)=>t+(n.end-n.start),0)}export{R as invertRanges,F as keyframeBefore,D as keyframeTimes,K as planRange,O as planRanges,C as rangesFor,k as sampleDurations,E as totalSeconds};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function sampleDurations(track){
+const samples=track.samples;
+const out=new Float64Array(samples.length);
+if(!samples.length)return out;
+for(let i=0;i<samples.length-1;i++){
+out[i]=Math.max(0,samples[i+1].dts-samples[i].dts);
+}
+const last=samples.length-1;
+const previous=last>0?out[last-1]:0;
+const declared=track.duration-samples[last].dts;
+out[last]=declared>0&&(!previous||declared<=previous*20)
+?declared
+:(previous||1);
+return out;
+}
+export function keyframeTimes(video){
+const times=[];
+for(const sample of video.samples){
+if(sample.isKey)times.push(sample.pts/video.timescale);
+}
+times.sort((a,b)=>a-b);
+return times;
+}
+export function keyframeBefore(video,seconds){
+const ticks=seconds*video.timescale;
+let best=null;
+for(const sample of video.samples){
+if(!sample.isKey||sample.pts>ticks)continue;
+if(best===null||sample.pts>best)best=sample.pts;
+}
+return best===null?0:best/video.timescale;
+}
+function keyframeIndexBefore(video,ticks){
+let best=-1;
+let bestPts=-Infinity;
+video.samples.forEach((sample,index)=>{
+if(sample.isKey&&sample.pts<=ticks&&sample.pts>bestPts){
+best=index;
+bestPts=sample.pts;
+}
+});
+if(best>=0)return best;
+const first=video.samples.findIndex((sample)=>sample.isKey);
+return first>=0?first:0;
+}
+function lastIndexBefore(samples,from,ticks){
+let best=from;
+for(let i=from;i<samples.length;i++){
+if(samples[i].pts<ticks)best=i;
+}
+return best;
+}
+function indexCovering(samples,ticks){
+let best=0;
+for(let i=0;i<samples.length;i++){
+if(samples[i].dts<=ticks)best=i;
+else break;
+}
+return best;
+}
+export function planRange({
+video,audio,videoDurations,audioDurations,start,end,anchor,
+}){
+const vts=video.timescale;
+const startTicks=start*vts;
+const endTicks=end*vts;
+const from=keyframeIndexBefore(video,startTicks);
+const to=Math.max(from,lastIndexBefore(video.samples,from,endTicks));
+const base=video.samples[from].dts;
+const keyframeSeconds=video.samples[from].pts/vts;
+const spanTs=video.samples[to].dts+videoDurations[to]-base;
+const anchorSeconds=anchor==='keyframe'?Math.min(keyframeSeconds,start):start;
+const plan={
+start,
+end,
+keyframeSeconds,
+preRoll:Math.max(0,start-keyframeSeconds),
+video:{
+from,
+to,
+base,
+spanTs,
+editStart:Math.max(0,startTicks-base),
+},
+audio:null,
+};
+if(audio&&audio.samples.length){
+const ats=audio.timescale;
+const audioFrom=indexCovering(audio.samples,anchorSeconds*ats);
+const audioTo=Math.max(audioFrom,
+lastIndexBefore(audio.samples,audioFrom,end*ats));
+const audioBase=audio.samples[audioFrom].dts;
+plan.audio={
+from:audioFrom,
+to:audioTo,
+base:audioBase,
+spanTs:audio.samples[audioTo].dts+audioDurations[audioTo]-audioBase,
+editStart:Math.max(0,start*ats-audioBase),
+};
+}
+return plan;
+}
+export function planRanges({video,audio,ranges,anchor}){
+const videoDurations=sampleDurations(video);
+const audioDurations=audio&&audio.samples.length?sampleDurations(audio):null;
+const plans=[];
+let videoOffset=0;
+let audioOffset=0;
+for(const range of ranges){
+const plan=planRange({
+video,audio,videoDurations,audioDurations,
+start:range.start,end:range.end,anchor,
+});
+plan.video.offset=videoOffset;
+videoOffset+=plan.video.spanTs;
+if(plan.audio){
+plan.audio.offset=audioOffset;
+audioOffset+=plan.audio.spanTs;
+}
+plans.push(plan);
+}
+return{plans,videoDurations,audioDurations};
+}
+const MIN_SECTION=0.02;
+export function invertRanges(ranges,duration){
+const ordered=[...ranges].sort((a,b)=>a.start-b.start);
+const gaps=[];
+let at=0;
+for(const range of ordered){
+if(range.start>at)gaps.push({start:at,end:Math.min(range.start,duration)});
+at=Math.max(at,range.end);
+}
+if(at<duration)gaps.push({start:at,end:duration});
+return gaps.filter((gap)=>gap.end-gap.start>MIN_SECTION);
+}
+export function rangesFor({mode,start,end,duration}){
+const kept=end-start>MIN_SECTION?[{start,end}]:[];
+return mode==='keep'?kept:invertRanges(kept,duration);
+}
+export function totalSeconds(ranges){
+return ranges.reduce((total,range)=>total+(range.end-range.start),0);
+}

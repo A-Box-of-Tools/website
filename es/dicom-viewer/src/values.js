@@ -1,2 +1,201 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{uidName as h}from"./uids.js";const p=new Set(["AE","AS","CS","DA","DS","DT","IS","LO","LT","PN","SH","ST","TM","UC","UI","UR","UT"]),O=new Set(["LT","ST","UT","UR"]),b={US:["getUint16",2],SS:["getInt16",2],UL:["getUint32",4],SL:["getInt32",4],FL:["getFloat32",4],FD:["getFloat64",8],OL:["getUint32",4],OF:["getFloat32",4],OD:["getFloat64",8]};function N(t){const n=String(t??"").split("\\")[0].trim().toUpperCase(),r={"":"windows-1252","ISO_IR 6":"windows-1252","ISO_IR 100":"iso-8859-1","ISO_IR 101":"iso-8859-2","ISO_IR 109":"iso-8859-3","ISO_IR 110":"iso-8859-4","ISO_IR 126":"iso-8859-7","ISO_IR 127":"iso-8859-6","ISO_IR 138":"iso-8859-8","ISO_IR 144":"iso-8859-5","ISO_IR 148":"iso-8859-9","ISO_IR 166":"windows-874","ISO_IR 192":"utf-8",GB18030:"gb18030",GBK:"gbk"}[n]??"windows-1252";try{return new TextDecoder(r)}catch{return new TextDecoder("windows-1252")}}function m(t,n){const{vr:r,value:e}=t;if(!e)return[];if(r==="AT"){const c=[],u=new DataView(e.buffer,e.byteOffset,e.byteLength);for(let f=0;f+4<=e.length;f+=4){const S=u.getUint16(f,t.little??!0),a=u.getUint16(f+2,t.little??!0);c.push(`(${d(S)},${d(a)})`.toUpperCase())}return c}const i=b[r];if(i){const[c,u]=i,f=new DataView(e.buffer,e.byteOffset,e.byteLength),S=[];for(let a=0;a+u<=e.length;a+=u)S.push(f[c](a,t.little??!0));return S}if(!p.has(r))return[];const s=g(n.decode(e));if(O.has(r))return[s];const o=s.split("\\");return r==="DS"||r==="IS"?o.map(c=>{const u=Number(c.trim());return c.trim()!==""&&Number.isFinite(u)?u:c.trim()}):o}function M(t,n,r,e=null){const i=t?.byTag.get(n);if(!i)return e;const s=m(i,r)[0];if(typeof s=="number")return s;const o=Number(String(s??"").trim());return Number.isFinite(o)?o:e}function _(t,n,r){const e=t?.byTag.get(n);return e?m(e,r).map(i=>typeof i=="number"?i:Number(String(i).trim())).filter(i=>Number.isFinite(i)):[]}function D(t,n,r){const e=t?.byTag.get(n);if(!e)return"";const i=m(e,r)[0];return i===void 0?"":String(i).trim()}const g=t=>t.replace(/[\0\s]+$/,""),d=t=>t.toString(16).padStart(4,"0");function C(t,n){const{vr:r}=t;if(t.items){const o=t.items.length;return{shown:o===1?"1 item":`${o} items`,raw:"",sequence:!0}}if(t.fragments){const o=t.fragments.reduce((u,f)=>u+f.length,0),c=t.fragments.length;return{shown:`${c===1?"1 compressed fragment":`${c} compressed fragments`}, ${o.toLocaleString()} bytes`,raw:""}}if(!t.value)return{shown:`${t.length.toLocaleString()} bytes, not shown`,raw:""};const e=m(t,n);if(e.length===0)return{shown:t.length===0?"(empty)":w(t),raw:""};const i=p.has(r)?g(n.decode(t.value)):"",s=e.map(o=>I(r,o)).join(" \\ ");return{shown:s,raw:s===i?"":i}}function w(t){const n=Array.from(t.value.subarray(0,16)).map(e=>e.toString(16).padStart(2,"0")).join(" "),r=t.value.length>16?" \u2026":"";return`${t.length.toLocaleString()} bytes: ${n}${r}`}function I(t,n){if(t==="DA")return l(String(n))??String(n);if(t==="TM")return y(String(n))??String(n);if(t==="DT")return F(String(n))??String(n);if(t==="PN")return R(String(n));if(t==="AS")return L(String(n))??String(n);if(t==="UI"){const r=h(g(String(n)));return r?`${r} (${g(String(n))})`:g(String(n))}return t==="CS"?U(String(n)):String(n)}const $=["January","February","March","April","May","June","July","August","September","October","November","December"];function l(t){const n=t.replace(/[.\s]/g,"");if(!/^\d{8}$/.test(n))return null;const r=Number(n.slice(0,4)),e=Number(n.slice(4,6)),i=Number(n.slice(6,8));return e<1||e>12||i<1||i>31?null:`${i} ${$[e-1]} ${r}`}function y(t){const n=t.replace(/[:\s]/g,"");if(!/^\d{2}(\d{2}(\d{2}(\.\d+)?)?)?$/.test(n))return null;const r=n.slice(0,2),e=n.slice(2,4)||"00",i=n.slice(4,6)||"00",s=n.includes(".")?n.slice(n.indexOf(".")):"";return`${r}:${e}:${i}${s}`}function F(t){const n=t.trim(),r=/^(\d{8})(\d{2})?(\d{2})?(\d{2})?/.exec(n);if(!r)return null;const e=l(r[1]);return e?r[2]?`${e}, ${r[2]}:${r[3]??"00"}:${r[4]??"00"}`:e:null}function R(t){return String(t).split("=").map(n=>{const[r="",e="",i="",s="",o=""]=n.split("^");return[s,e,i,r,o].map(f=>f.trim()).filter(Boolean).join(" ")||n.trim()}).filter(Boolean).join(" \u2014 ")}function L(t){const n=/^(\d{3})([DWMY])$/.exec(t.trim().toUpperCase());if(!n)return null;const r=Number(n[1]),e={D:"day",W:"week",M:"month",Y:"year"}[n[2]];return`${r} ${e}${r===1?"":"s"}`}const T={MONOCHROME1:"MONOCHROME1 (0 is white)",MONOCHROME2:"MONOCHROME2 (0 is black)","PALETTE COLOR":"PALETTE COLOR (indexes into the lookup tables)",RGB:"RGB",YBR_FULL:"YBR_FULL (colour, as luminance and two differences)",YBR_FULL_422:"YBR_FULL_422 (colour, with the differences at half width)",HFS:"HFS (head first, supine)",HFP:"HFP (head first, prone)",FFS:"FFS (feet first, supine)",FFP:"FFP (feet first, prone)",M:"M (male)",F:"F (female)",O:"O (other)"},U=t=>T[String(t).trim().toUpperCase()]??String(t).trim();export{L as age,N as charset,l as date,F as dateTime,C as display,M as number,_ as numbers,R as personName,D as text,y as time,m as values};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{uidName}from'./uids.js';
+const TEXT=new Set(['AE','AS','CS','DA','DS','DT','IS','LO','LT',
+'PN','SH','ST','TM','UC','UI','UR','UT']);
+const SINGLE=new Set(['LT','ST','UT','UR']);
+const NUMERIC={
+US:['getUint16',2],SS:['getInt16',2],
+UL:['getUint32',4],SL:['getInt32',4],
+FL:['getFloat32',4],FD:['getFloat64',8],
+OL:['getUint32',4],OF:['getFloat32',4],OD:['getFloat64',8],
+};
+export function charset(declared){
+const first=String(declared??'').split('\\')[0].trim().toUpperCase();
+const label={
+'':'windows-1252',
+'ISO_IR 6':'windows-1252',
+'ISO_IR 100':'iso-8859-1',
+'ISO_IR 101':'iso-8859-2',
+'ISO_IR 109':'iso-8859-3',
+'ISO_IR 110':'iso-8859-4',
+'ISO_IR 126':'iso-8859-7',
+'ISO_IR 127':'iso-8859-6',
+'ISO_IR 138':'iso-8859-8',
+'ISO_IR 144':'iso-8859-5',
+'ISO_IR 148':'iso-8859-9',
+'ISO_IR 166':'windows-874',
+'ISO_IR 192':'utf-8',
+GB18030:'gb18030',
+GBK:'gbk',
+}[first]??'windows-1252';
+try{
+return new TextDecoder(label);
+}catch{
+return new TextDecoder('windows-1252');
+}
+}
+export function values(element,decoder){
+const{vr,value}=element;
+if(!value)return[];
+if(vr==='AT'){
+const out=[];
+const view=new DataView(value.buffer,value.byteOffset,value.byteLength);
+for(let at=0;at+4<=value.length;at+=4){
+const group=view.getUint16(at,element.little??true);
+const number=view.getUint16(at+2,element.little??true);
+out.push(`(${hex4(group)},${hex4(number)})`.toUpperCase());
+}
+return out;
+}
+const numeric=NUMERIC[vr];
+if(numeric){
+const[read,width]=numeric;
+const view=new DataView(value.buffer,value.byteOffset,value.byteLength);
+const out=[];
+for(let at=0;at+width<=value.length;at+=width){
+out.push(view[read](at,element.little??true));
+}
+return out;
+}
+if(!TEXT.has(vr))return[];
+const text=trim(decoder.decode(value));
+if(SINGLE.has(vr))return[text];
+const parts=text.split('\\');
+if(vr==='DS'||vr==='IS'){
+return parts.map((part)=>{
+const number=Number(part.trim());
+return part.trim()!==''&&Number.isFinite(number)?number:part.trim();
+});
+}
+return parts;
+}
+export function number(dataset,tag,decoder,fallback=null){
+const element=dataset?.byTag.get(tag);
+if(!element)return fallback;
+const first=values(element,decoder)[0];
+if(typeof first==='number')return first;
+const parsed=Number(String(first??'').trim());
+return Number.isFinite(parsed)?parsed:fallback;
+}
+export function numbers(dataset,tag,decoder){
+const element=dataset?.byTag.get(tag);
+if(!element)return[];
+return values(element,decoder)
+.map((value)=>(typeof value==='number'?value:Number(String(value).trim())))
+.filter((value)=>Number.isFinite(value));
+}
+export function text(dataset,tag,decoder){
+const element=dataset?.byTag.get(tag);
+if(!element)return'';
+const first=values(element,decoder)[0];
+return first===undefined?'':String(first).trim();
+}
+const trim=(value)=>value.replace(/[\0\s]+$/,'');
+const hex4=(value)=>value.toString(16).padStart(4,'0');
+export function display(element,decoder){
+const{vr}=element;
+if(element.items){
+const count=element.items.length;
+return{shown:count===1?'1 item':`${count} items`,raw:'',sequence:true};
+}
+if(element.fragments){
+const total=element.fragments.reduce((sum,part)=>sum+part.length,0);
+const count=element.fragments.length;
+return{
+shown:`${count === 1 ? '1 compressed fragment' : `${count} compressed fragments`}, ${
+        total.toLocaleString()} bytes`
+,
+raw:'',
+};
+}
+if(!element.value){
+return{shown:`${element.length.toLocaleString()} bytes, not shown`,raw:''};
+}
+const list=values(element,decoder);
+if(list.length===0){
+return{shown:element.length===0?'(empty)':binary(element),raw:''};
+}
+const raw=TEXT.has(vr)?trim(decoder.decode(element.value)):'';
+const shown=list.map((value)=>pretty(vr,value)).join(' \\ ');
+return{shown,raw:shown===raw?'':raw};
+}
+function binary(element){
+const head=Array.from(element.value.subarray(0,16))
+.map((byte)=>byte.toString(16).padStart(2,'0'))
+.join(' ');
+const more=element.value.length>16?' …':'';
+return`${element.length.toLocaleString()} bytes: ${head}${more}`;
+}
+function pretty(vr,value){
+if(vr==='DA')return date(String(value))??String(value);
+if(vr==='TM')return time(String(value))??String(value);
+if(vr==='DT')return dateTime(String(value))??String(value);
+if(vr==='PN')return personName(String(value));
+if(vr==='AS')return age(String(value))??String(value);
+if(vr==='UI'){
+const name=uidName(trim(String(value)));
+return name?`${name} (${trim(String(value))})`:trim(String(value));
+}
+if(vr==='CS')return code(String(value));
+return String(value);
+}
+const MONTHS=['January','February','March','April','May','June','July',
+'August','September','October','November','December'];
+export function date(value){
+const digits=value.replace(/[.\s]/g,'');
+if(!/^\d{8}$/.test(digits))return null;
+const year=Number(digits.slice(0,4));
+const month=Number(digits.slice(4,6));
+const day=Number(digits.slice(6,8));
+if(month<1||month>12||day<1||day>31)return null;
+return`${day} ${MONTHS[month - 1]} ${year}`;
+}
+export function time(value){
+const digits=value.replace(/[:\s]/g,'');
+if(!/^\d{2}(\d{2}(\d{2}(\.\d+)?)?)?$/.test(digits))return null;
+const hour=digits.slice(0,2);
+const minute=digits.slice(2,4)||'00';
+const second=digits.slice(4,6)||'00';
+const fraction=digits.includes('.')?digits.slice(digits.indexOf('.')):'';
+return`${hour}:${minute}:${second}${fraction}`;
+}
+export function dateTime(value){
+const clean=value.trim();
+const match=/^(\d{8})(\d{2})?(\d{2})?(\d{2})?/.exec(clean);
+if(!match)return null;
+const day=date(match[1]);
+if(!day)return null;
+if(!match[2])return day;
+return`${day}, ${match[2]}:${match[3] ?? '00'}:${match[4] ?? '00'}`;
+}
+export function personName(value){
+return String(value).split('=').map((group)=>{
+const[family='',given='',middle='',prefix='',suffix='']=group.split('^');
+const parts=[prefix,given,middle,family,suffix].map((part)=>part.trim());
+const joined=parts.filter(Boolean).join(' ');
+return joined||group.trim();
+}).filter(Boolean).join(' — ');
+}
+export function age(value){
+const match=/^(\d{3})([DWMY])$/.exec(value.trim().toUpperCase());
+if(!match)return null;
+const count=Number(match[1]);
+const unit={D:'day',W:'week',M:'month',Y:'year'}[match[2]];
+return`${count} ${unit}${count === 1 ? '' : 's'}`;
+}
+const CODES={
+MONOCHROME1:'MONOCHROME1 (0 is white)',
+MONOCHROME2:'MONOCHROME2 (0 is black)',
+'PALETTE COLOR':'PALETTE COLOR (indexes into the lookup tables)',
+RGB:'RGB',
+'YBR_FULL':'YBR_FULL (colour, as luminance and two differences)',
+'YBR_FULL_422':'YBR_FULL_422 (colour, with the differences at half width)',
+HFS:'HFS (head first, supine)',
+HFP:'HFP (head first, prone)',
+FFS:'FFS (feet first, supine)',
+FFP:'FFP (feet first, prone)',
+M:'M (male)',
+F:'F (female)',
+O:'O (other)',
+};
+const code=(value)=>CODES[String(value).trim().toUpperCase()]??String(value).trim();

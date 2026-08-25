@@ -1,2 +1,678 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as c}from"./shared/phrases.js";import{readingLabel as oe,wireFilePicker as ae}from"./shared/file-picker.js";import{makeZip as ie}from"./shared/zip.js";import{WORKING_EDGE as re,findPageQuad as se}from"./detect.js";import{clampPoint as I,copyQuad as R,orderCorners as ce,outputSize as q,pageAspect as F,scaleQuad as P,wholeFrame as $}from"./geometry.js";import{turnQuad as de,warpPage as O}from"./warp.js";import{cleanPage as D}from"./clean.js";import{encodeImage as le,encodePage as ue}from"./encode.js";import{buildDocument as he}from"./document.js";import{coverage as ge,matchPaper as me,outName as W,pageName as pe,ratioText as j,scanQuality as fe,sizeText as S,stemOf as A}from"./pages.js";import{Corners as we}from"./stage.js";const i=e=>document.getElementById(e),n={dropzone:i("dropzone"),fileInput:i("file-input"),loadError:i("load-error"),stripToolbar:i("strip-toolbar"),countLabel:i("count-label"),detectAll:i("detect-all"),clearAll:i("clear-all"),strip:i("page-strip"),editEmpty:i("edit-empty"),editControls:i("edit-controls"),stage:i("stage"),photo:i("photo"),detectNote:i("detect-note"),detectOne:i("detect-one"),wholePhoto:i("whole-photo"),turnLeft:i("turn-left"),turnRight:i("turn-right"),undo:i("undo"),cleanEmpty:i("clean-empty"),cleanControls:i("clean-controls"),scanPreview:i("scan-preview"),scanBusy:i("scan-busy"),scanFacts:i("scan-facts"),modeGroup:i("mode-group"),strengthRow:i("strength-row"),strength:i("strength"),strengthValue:i("strength-value"),strengthNote:i("strength-note"),pageSize:i("page-size"),sizeNote:i("size-note"),dpiField:i("dpi-field"),dpi:i("dpi"),marginField:i("margin-field"),margin:i("margin"),maxSide:i("max-side"),quality:i("quality"),qualityValue:i("quality-value"),qualityField:i("quality-field"),title:i("title"),savePdf:i("save-pdf"),saveImages:i("save-images"),busy:i("busy"),result:i("result"),resultFacts:i("result-facts"),download:i("download"),privacyToggle:i("privacy-toggle"),privacyPanel:i("privacy-panel"),networkCount:i("network-count"),networkDot:i("network-dot"),offlineStatus:i("offline-status"),offlineDot:i("offline-dot")},ye=1e3,ve=900,be=40;let d=[],h=0,E=null,y=!1,v=0,B=0;const U=new we(n.stage,{onChange:(e,t)=>qe(e,t),onGestureStart:()=>T(),cornerOf:e=>d[h]?.quad[e]??{x:0,y:0},describe:e=>Se(e)});async function G(e){if(typeof createImageBitmap=="function")try{const o=await createImageBitmap(e,{imageOrientation:"from-image"});return{bitmap:o,width:o.width,height:o.height}}catch{}const t=URL.createObjectURL(e);try{const o=await new Promise((a,r)=>{const s=new Image;s.onload=()=>a(s),s.onerror=()=>r(new Error("undecodable")),s.src=t});return{bitmap:o,width:o.naturalWidth,height:o.naturalHeight}}finally{URL.revokeObjectURL(t)}}function z(e,t,o,a){const r=a>0?Math.min(1,a/Math.max(t,o)):1,s=document.createElement("canvas");s.width=Math.max(1,Math.round(t*r)),s.height=Math.max(1,Math.round(o*r));const u=s.getContext("2d",{willReadFrequently:!0});return u.imageSmoothingEnabled=!0,u.imageSmoothingQuality="high",u.drawImage(e,0,0,s.width,s.height),s}async function xe(e){J();const t=e.filter(a=>/^image\//i.test(a.type)||/\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(a.name));if(!t.length)return;X.busy(oe(t.length));const o=d.length;for(const a of t){try{const r=await G(a);d.push(Ee(a,r)),r.bitmap.close?.()}catch{w(c("error.decode",{name:a.name}))}p(),await new Promise(r=>setTimeout(r,0))}X.done(),d.length>o&&Q(o),p(),f()}function Ee(e,t){const o=z(t.bitmap,t.width,t.height,ye),a={file:e,name:e.name,width:t.width,height:t.height,preview:o,scale:t.width/o.width,quad:$(t.width,t.height),found:!1,reason:"detect.nothing",edited:!1,history:[]};return L(a),a}function L(e){const t=z(e.preview,e.preview.width,e.preview.height,re),a=t.getContext("2d",{willReadFrequently:!0}).getImageData(0,0,t.width,t.height),r=se(a),s=e.width/t.width;e.quad=P(r.quad,s).map(u=>I(u,e.width,e.height)),e.found=r.found,e.reason=r.reason,e.edited=!1,e.history=[],t.width=0,t.height=0}function Q(e){h=Math.min(d.length-1,Math.max(0,e)),p(),f()}function ke(e){d.splice(e,1),h>=d.length&&(h=Math.max(0,d.length-1)),p(),f()}function V(e,t){const o=e+t;o<0||o>=d.length||([d[e],d[o]]=[d[o],d[e]],h=o,p())}function _(){n.strip.replaceChildren(...d.map((e,t)=>{const o=document.createElement("li");o.className=`page-tile${t===h?" selected":""}`;const a=document.createElement("button");a.type="button",a.className="tile-choose",a.setAttribute("aria-label",c("page.select",{index:t+1})),a.setAttribute("aria-pressed",String(t===h)),a.addEventListener("click",()=>Q(t));const r=document.createElement("canvas");r.className="tile-thumb",Ce(r,e),a.append(r);const s=document.createElement("span");if(s.className="tile-badge",s.textContent=String(t+1),a.append(s),!e.found&&!e.edited){const l=document.createElement("span");l.className="tile-warn",l.textContent="?",l.title=c(e.reason),a.append(l)}o.append(a);const u=document.createElement("div");return u.className="tile-actions",u.append(N("\u2039",c("page.earlier",{index:t+1}),()=>V(t,-1),t===0),N("\u203A",c("page.later",{index:t+1}),()=>V(t,1),t===d.length-1),N("\xD7",c("page.remove",{index:t+1}),()=>ke(t),!1,"danger")),o.append(u),o}))}function N(e,t,o,a,r=""){const s=document.createElement("button");return s.type="button",s.className=`tile-button ${r}`.trim(),s.textContent=e,s.setAttribute("aria-label",t),s.disabled=a,s.addEventListener("click",o),s}function Ce(e,t){const a=Math.min(96/t.preview.width,96/t.preview.height);e.width=Math.max(1,Math.round(t.preview.width*a)),e.height=Math.max(1,Math.round(t.preview.height*a));const r=e.getContext("2d");r.drawImage(t.preview,0,0,e.width,e.height);const s=e.width/t.width;r.beginPath(),t.quad.forEach((u,l)=>{const g=u.x*s,m=u.y*s;l===0?r.moveTo(g,m):r.lineTo(g,m)}),r.closePath(),r.lineWidth=2,r.strokeStyle=t.found?"rgba(64, 220, 160, 0.95)":"rgba(255, 190, 80, 0.95)",r.stroke()}function T(){const e=d[h];e&&(e.history.push(R(e.quad)),e.history.length>be&&e.history.shift(),n.undo.disabled=!1)}function qe(e,t){const o=d[h];if(!o)return;const a=R(o.quad);a[e]=I(t,o.width,o.height),o.quad=ce(a),o.edited=!0,H(),f()}function Pe(){const e=d[h],t=e?.history.pop();t&&(e.quad=t,n.undo.disabled=!e.history.length,p(),f())}function Se(e){const o=d[h]?.quad[e]??{x:0,y:0};return c("corner.at",{corner:c(["corner.tl","corner.tr","corner.br","corner.bl"][e]),x:Math.round(o.x),y:Math.round(o.y)})}function p(){const e=d[h],t=d.length>0;n.stripToolbar.hidden=!t,n.editControls.hidden=!t,n.editEmpty.hidden=t,n.cleanControls.hidden=!t,n.cleanEmpty.hidden=t,n.savePdf.disabled=!t||y,n.saveImages.disabled=!t||y,n.countLabel.textContent=t?c(d.length===1?"page.count":"page.counts",{count:d.length}):"",_(),e&&(n.stage.style.aspectRatio=`${e.width} / ${e.height}`,n.photo.width=e.preview.width,n.photo.height=e.preview.height,n.photo.getContext("2d").drawImage(e.preview,0,0),U.setSource(e.width,e.height),H())}function H(){const e=d[h];e&&(U.render(e.quad,{unsure:!e.found&&!e.edited}),n.detectNote.textContent=e.edited?c("detect.edited"):c(e.reason),n.detectNote.className=`hint-line${e.found||e.edited?"":" warn-line"}`,n.undo.disabled=!e.history.length)}function f(){window.clearTimeout(B),B=window.setTimeout(K,120)}async function K(){const e=d[h];if(!e)return;const t=v+1;if(v=t,n.scanBusy.hidden=!1,await new Promise(o=>setTimeout(o,0)),v===t)try{const o=P(e.quad,1/e.scale),a=F(o,e.preview.width,e.preview.height),r=q(o,a.aspect,ve),s=e.preview.getContext("2d",{willReadFrequently:!0}).getImageData(0,0,e.preview.width,e.preview.height),u=O(s,o,r),l=D(u,k());if(v!==t)return;n.scanPreview.width=l.width,n.scanPreview.height=l.height,n.scanPreview.getContext("2d").putImageData(new ImageData(l.data,l.width,l.height),0,0),ze(e,a),_()}catch(o){w(c("error.failed",{detail:o.message}))}finally{v===t&&(n.scanBusy.hidden=!0)}}function ze(e,t){const o=e.quad,a=q(o,t.aspect,Number(n.maxSide.value)||0),r=me(t.aspect),s=fe(a.width,t.aspect),u=Math.round(ge(o,e.width,e.height)*100),l=[r?c(r.landscape?"shape.sideways":"shape.known",{ratio:j(t.aspect),paper:c(r.key)}):c("shape.unknown",{ratio:j(t.aspect)}),c(`method.${t.method}`),s?c(s.key,{width:a.width,height:a.height,dpi:s.dpi}):c("quality.pixels",{width:a.width,height:a.height}),c(u<25?"coverage.small":"coverage.note",{percent:u})];n.scanFacts.replaceChildren(...l.map(g=>{const m=document.createElement("li");return m.textContent=g,m}))}function k(){return{mode:n.modeGroup.querySelector('input[name="mode"]:checked')?.value??"colour",strength:Number(n.strength.value),pageSize:n.pageSize.value,dpi:Number(n.dpi.value),margin:Number(n.margin.value),maxSide:Number(n.maxSide.value),quality:Number(n.quality.value)/100,title:n.title.value}}function b(){const e=k().mode;n.strengthRow.hidden=e==="photo",n.strengthNote.hidden=e==="photo",n.qualityField.hidden=e==="mono";const t=Number(n.strength.value);n.strengthValue.textContent=String(t),n.strengthNote.textContent=c(t<34?"strength.gentle":t>66?"strength.hard":"strength.middling");const o=n.pageSize.value==="fit";n.dpiField.hidden=!o,n.marginField.hidden=o,n.sizeNote.textContent=o?c("size.fit"):c("size.named",{name:n.pageSize.selectedOptions[0].textContent.split("\u2014")[0].trim()}),n.qualityValue.textContent=`${n.quality.value}%`}async function Y(e,t){const o=await G(e.file);try{const a=e.quad,r=F(a,e.width,e.height),s=q(a,r.aspect,t.maxSide),u=Math.max(Math.hypot(a[1].x-a[0].x,a[1].y-a[0].y),Math.hypot(a[2].x-a[3].x,a[2].y-a[3].y),Math.hypot(a[3].x-a[0].x,a[3].y-a[0].y),Math.hypot(a[2].x-a[1].x,a[2].y-a[1].y)),l=Math.max(s.width,s.height),g=Math.min(1,l*1.1/Math.max(1,u)),m=z(o.bitmap,e.width,e.height,Math.max(e.width,e.height)*g),C=m.getContext("2d",{willReadFrequently:!0}).getImageData(0,0,m.width,m.height),te=m.width/e.width;m.width=0,m.height=0;const ne=O(C,P(a,te),s);return D(ne,t)}finally{o.bitmap.close?.()}}async function Le(){await Z(async e=>{const t=k(),o=[];for(const[u,l]of d.entries()){e(c("busy.page",{done:u+1,total:d.length}));const g=await Y(l,t);o.push(await ue(g,t)),await new Promise(m=>setTimeout(m,0))}e(c("busy.writing"));const a=he(o,t),r=W(A(d[0].name),"pdf"),s=t.mode==="mono";M(a,r,[c("result.pdf",{name:r,size:S(a.size),pages:c(d.length===1?"page.count":"page.counts",{count:d.length})}),c(s?"result.mono":"result.jpeg"),c("result.clean")])})}async function Ne(){await Z(async e=>{const t=k(),o=A(d[0].name),a=[];let r="jpg";for(const[l,g]of d.entries()){e(c("busy.page",{done:l+1,total:d.length}));const m=await Y(g,t),x=await le(m,t);r=x.extension,a.push({name:pe(o,l,d.length,x.extension),blob:x.blob}),await new Promise(C=>setTimeout(C,0))}if(a.length===1){M(a[0].blob,a[0].name,[c("result.images",{name:a[0].name,size:S(a[0].blob.size),pages:c("page.count",{count:1})})]);return}const s=ie(await Promise.all(a.map(async({name:l,blob:g})=>({name:l,data:new Uint8Array(await g.arrayBuffer())})))),u=W(o,"zip");M(s,u,[c("result.images",{name:u,size:S(s.size),pages:c("page.counts",{count:a.length})}),c(r==="png"?"result.png":"result.jpeg")])})}async function Z(e){if(y||!d.length){d.length||w(c("error.none"));return}y=!0,n.savePdf.disabled=!0,n.saveImages.disabled=!0,n.busy.hidden=!1,J();const t=o=>{n.busy.textContent=o};t(c("busy.page",{done:1,total:d.length}));try{await new Promise(o=>setTimeout(o,0)),await e(t)}catch(o){w(c("error.failed",{detail:o.message}))}finally{y=!1,n.busy.hidden=!0,p()}}function M(e,t,o){E&&URL.revokeObjectURL(E),E=URL.createObjectURL(e),n.download.href=E,n.download.download=t,n.resultFacts.replaceChildren(...o.map(a=>{const r=document.createElement("li");return r.textContent=a,r})),n.result.hidden=!1}function w(e){n.loadError.textContent=e,n.loadError.hidden=!1}function J(){n.loadError.textContent="",n.loadError.hidden=!0}const X=ae({input:n.fileInput,dropzone:n.dropzone,onFiles:e=>xe(e)});n.detectOne.addEventListener("click",()=>{const e=d[h];e&&(L(e),p(),f())}),n.detectAll.addEventListener("click",()=>{for(const e of d)L(e);p(),f()}),n.wholePhoto.addEventListener("click",()=>{const e=d[h];e&&(T(),e.quad=$(e.width,e.height),e.edited=!0,p(),f())});const ee=e=>{const t=d[h];if(t){T();for(let o=0;o<e;o+=1)t.quad=de(t.quad);p(),f()}};n.turnRight.addEventListener("click",()=>ee(1)),n.turnLeft.addEventListener("click",()=>ee(3)),n.undo.addEventListener("click",Pe),n.clearAll.addEventListener("click",()=>{d=[],h=0,p()}),n.modeGroup.addEventListener("change",()=>{b(),f()}),n.strength.addEventListener("input",()=>{b(),f()}),n.maxSide.addEventListener("change",()=>K()),n.pageSize.addEventListener("change",b),n.quality.addEventListener("input",b),n.savePdf.addEventListener("click",Le),n.saveImages.addEventListener("click",Ne),n.privacyToggle.addEventListener("click",()=>{const e=n.privacyPanel.hidden;n.privacyPanel.hidden=!e,n.privacyToggle.setAttribute("aria-expanded",String(e))});const Te=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function Me(){const e=new Set,t=new Set,o=a=>{for(const l of a){if(l.name.startsWith("blob:")||l.name.startsWith("data:"))continue;const g=new URL(l.name,location.href);g.origin!==location.origin&&(Te.test(g.hostname)?e.add(g.hostname):t.add(g.hostname))}const r=performance.getEntriesByType("resource").filter(l=>!l.name.startsWith("blob:")&&!l.name.startsWith("data:")).length,s=t.size===0,u=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a photo or a byte of one.`;n.networkCount.textContent=s?`your documents have gone nowhere. ${r} files loaded, all of them this page's own.${u}`:`something contacted ${[...t].join(", ")}, which this tool never does. Treat that as worth investigating.${u}`,n.networkCount.className=s?"good":"warn",n.networkDot.className=`live-dot ${s?"good":"warn"}`};o(performance.getEntriesByType("resource"));try{new PerformanceObserver(a=>o(a.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function Ie(){const e=(t,o)=>{n.offlineStatus.textContent=t,n.offlineDot.className="live-dot",o&&(n.offlineStatus.title=o,console.info("Offline caching unavailable:",o))};if(!("serviceWorker"in navigator)){e(c("offline.none"));return}if(!window.isSecureContext){e(c("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,n.offlineStatus.textContent=c("offline.ready"),n.offlineStatus.className="good",n.offlineDot.className="live-dot good"}catch(t){e(c("offline.failed"),t.message)}}window.addEventListener("error",e=>{w(c("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{w(c("error.broke",{detail:e.reason?.message??e.reason}))}),b(),p(),Me(),Ie(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{readingLabel,wireFilePicker}from'./shared/file-picker.js';
+import{makeZip}from'./shared/zip.js';
+import{WORKING_EDGE,findPageQuad}from'./detect.js';
+import{
+clampPoint,copyQuad,orderCorners,outputSize,pageAspect,scaleQuad,wholeFrame,
+}from'./geometry.js';
+import{turnQuad,warpPage}from'./warp.js';
+import{cleanPage}from'./clean.js';
+import{encodeImage,encodePage}from'./encode.js';
+import{buildDocument}from'./document.js';
+import{
+coverage,matchPaper,outName,pageName,ratioText,scanQuality,sizeText,stemOf,
+}from'./pages.js';
+import{Corners}from'./stage.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+loadError:$('load-error'),
+stripToolbar:$('strip-toolbar'),
+countLabel:$('count-label'),
+detectAll:$('detect-all'),
+clearAll:$('clear-all'),
+strip:$('page-strip'),
+editEmpty:$('edit-empty'),
+editControls:$('edit-controls'),
+stage:$('stage'),
+photo:$('photo'),
+detectNote:$('detect-note'),
+detectOne:$('detect-one'),
+wholePhoto:$('whole-photo'),
+turnLeft:$('turn-left'),
+turnRight:$('turn-right'),
+undo:$('undo'),
+cleanEmpty:$('clean-empty'),
+cleanControls:$('clean-controls'),
+scanPreview:$('scan-preview'),
+scanBusy:$('scan-busy'),
+scanFacts:$('scan-facts'),
+modeGroup:$('mode-group'),
+strengthRow:$('strength-row'),
+strength:$('strength'),
+strengthValue:$('strength-value'),
+strengthNote:$('strength-note'),
+pageSize:$('page-size'),
+sizeNote:$('size-note'),
+dpiField:$('dpi-field'),
+dpi:$('dpi'),
+marginField:$('margin-field'),
+margin:$('margin'),
+maxSide:$('max-side'),
+quality:$('quality'),
+qualityValue:$('quality-value'),
+qualityField:$('quality-field'),
+title:$('title'),
+savePdf:$('save-pdf'),
+saveImages:$('save-images'),
+busy:$('busy'),
+result:$('result'),
+resultFacts:$('result-facts'),
+download:$('download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+const EDIT_EDGE=1000;
+const PREVIEW_EDGE=900;
+const HISTORY=40;
+let pages=[];
+let current=0;
+let resultUrl=null;
+let busy=false;
+let previewToken=0;
+let previewTimer=0;
+const corners=new Corners(el.stage,{
+onChange:(index,point)=>moveCorner(index,point),
+onGestureStart:()=>snapshot(),
+cornerOf:(index)=>pages[current]?.quad[index]??{x:0,y:0},
+describe:(index)=>describeCorner(index),
+});
+async function decode(file){
+if(typeof createImageBitmap==='function'){
+try{
+const bitmap=await createImageBitmap(file,{imageOrientation:'from-image'});
+return{bitmap,width:bitmap.width,height:bitmap.height};
+}catch{
+}
+}
+const url=URL.createObjectURL(file);
+try{
+const image=await new Promise((resolve,reject)=>{
+const element=new Image();
+element.onload=()=>resolve(element);
+element.onerror=()=>reject(new Error('undecodable'));
+element.src=url;
+});
+return{bitmap:image,width:image.naturalWidth,height:image.naturalHeight};
+}finally{
+URL.revokeObjectURL(url);
+}
+}
+function shrinkTo(bitmap,width,height,edge){
+const scale=edge>0?Math.min(1,edge/Math.max(width,height)):1;
+const canvas=document.createElement('canvas');
+canvas.width=Math.max(1,Math.round(width*scale));
+canvas.height=Math.max(1,Math.round(height*scale));
+const context=canvas.getContext('2d',{willReadFrequently:true});
+context.imageSmoothingEnabled=true;
+context.imageSmoothingQuality='high';
+context.drawImage(bitmap,0,0,canvas.width,canvas.height);
+return canvas;
+}
+async function addFiles(files){
+clearError();
+const wanted=files.filter((file)=>/^image\//i.test(file.type)||/\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name));
+if(!wanted.length)return;
+picker.busy(readingLabel(wanted.length));
+const started=pages.length;
+for(const file of wanted){
+try{
+const decoded=await decode(file);
+pages.push(preparePage(file,decoded));
+decoded.bitmap.close?.();
+}catch{
+showError(phrase('error.decode',{name:file.name}));
+}
+refresh();
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+picker.done();
+if(pages.length>started)select(started);
+refresh();
+schedulePreview();
+}
+function preparePage(file,decoded){
+const preview=shrinkTo(decoded.bitmap,decoded.width,decoded.height,EDIT_EDGE);
+const page={
+file,
+name:file.name,
+width:decoded.width,
+height:decoded.height,
+preview,
+scale:decoded.width/preview.width,
+quad:wholeFrame(decoded.width,decoded.height),
+found:false,
+reason:'detect.nothing',
+edited:false,
+history:[],
+};
+detect(page);
+return page;
+}
+function detect(page){
+const working=shrinkTo(page.preview,page.preview.width,page.preview.height,WORKING_EDGE);
+const context=working.getContext('2d',{willReadFrequently:true});
+const image=context.getImageData(0,0,working.width,working.height);
+const found=findPageQuad(image);
+const up=page.width/working.width;
+page.quad=scaleQuad(found.quad,up).map((point)=>clampPoint(point,page.width,page.height));
+page.found=found.found;
+page.reason=found.reason;
+page.edited=false;
+page.history=[];
+working.width=0;
+working.height=0;
+}
+function select(index){
+current=Math.min(pages.length-1,Math.max(0,index));
+refresh();
+schedulePreview();
+}
+function removePage(index){
+pages.splice(index,1);
+if(current>=pages.length)current=Math.max(0,pages.length-1);
+refresh();
+schedulePreview();
+}
+function movePage(index,by){
+const to=index+by;
+if(to<0||to>=pages.length)return;
+[pages[index],pages[to]]=[pages[to],pages[index]];
+current=to;
+refresh();
+}
+function renderStrip(){
+el.strip.replaceChildren(...pages.map((page,index)=>{
+const item=document.createElement('li');
+item.className=`page-tile${index === current ? ' selected' : ''}`;
+const choose=document.createElement('button');
+choose.type='button';
+choose.className='tile-choose';
+choose.setAttribute('aria-label',phrase('page.select',{index:index+1}));
+choose.setAttribute('aria-pressed',String(index===current));
+choose.addEventListener('click',()=>select(index));
+const thumb=document.createElement('canvas');
+thumb.className='tile-thumb';
+drawThumb(thumb,page);
+choose.append(thumb);
+const badge=document.createElement('span');
+badge.className='tile-badge';
+badge.textContent=String(index+1);
+choose.append(badge);
+if(!page.found&&!page.edited){
+const warn=document.createElement('span');
+warn.className='tile-warn';
+warn.textContent='?';
+warn.title=phrase(page.reason);
+choose.append(warn);
+}
+item.append(choose);
+const actions=document.createElement('div');
+actions.className='tile-actions';
+actions.append(
+tileButton('‹',phrase('page.earlier',{index:index+1}),()=>movePage(index,-1),index===0),
+tileButton('›',phrase('page.later',{index:index+1}),()=>movePage(index,1),index===pages.length-1),
+tileButton('×',phrase('page.remove',{index:index+1}),()=>removePage(index),false,'danger'),
+);
+item.append(actions);
+return item;
+}));
+}
+function tileButton(glyph,label,onClick,disabled,extra=''){
+const button=document.createElement('button');
+button.type='button';
+button.className=`tile-button ${extra}`.trim();
+button.textContent=glyph;
+button.setAttribute('aria-label',label);
+button.disabled=disabled;
+button.addEventListener('click',onClick);
+return button;
+}
+function drawThumb(canvas,page){
+const edge=96;
+const scale=Math.min(edge/page.preview.width,edge/page.preview.height);
+canvas.width=Math.max(1,Math.round(page.preview.width*scale));
+canvas.height=Math.max(1,Math.round(page.preview.height*scale));
+const context=canvas.getContext('2d');
+context.drawImage(page.preview,0,0,canvas.width,canvas.height);
+const shrink=canvas.width/page.width;
+context.beginPath();
+page.quad.forEach((point,index)=>{
+const x=point.x*shrink;
+const y=point.y*shrink;
+if(index===0)context.moveTo(x,y);
+else context.lineTo(x,y);
+});
+context.closePath();
+context.lineWidth=2;
+context.strokeStyle=page.found?'rgba(64, 220, 160, 0.95)':'rgba(255, 190, 80, 0.95)';
+context.stroke();
+}
+function snapshot(){
+const page=pages[current];
+if(!page)return;
+page.history.push(copyQuad(page.quad));
+if(page.history.length>HISTORY)page.history.shift();
+el.undo.disabled=false;
+}
+function moveCorner(index,point){
+const page=pages[current];
+if(!page)return;
+const quad=copyQuad(page.quad);
+quad[index]=clampPoint(point,page.width,page.height);
+page.quad=orderCorners(quad);
+page.edited=true;
+drawCorners();
+schedulePreview();
+}
+function undo(){
+const page=pages[current];
+const previous=page?.history.pop();
+if(!previous)return;
+page.quad=previous;
+el.undo.disabled=!page.history.length;
+refresh();
+schedulePreview();
+}
+function describeCorner(index){
+const page=pages[current];
+const point=page?.quad[index]??{x:0,y:0};
+return phrase('corner.at',{
+corner:phrase(['corner.tl','corner.tr','corner.br','corner.bl'][index]),
+x:Math.round(point.x),
+y:Math.round(point.y),
+});
+}
+function refresh(){
+const page=pages[current];
+const any=pages.length>0;
+el.stripToolbar.hidden=!any;
+el.editControls.hidden=!any;
+el.editEmpty.hidden=any;
+el.cleanControls.hidden=!any;
+el.cleanEmpty.hidden=any;
+el.savePdf.disabled=!any||busy;
+el.saveImages.disabled=!any||busy;
+el.countLabel.textContent=any
+?phrase(pages.length===1?'page.count':'page.counts',{count:pages.length})
+:'';
+renderStrip();
+if(!page)return;
+el.stage.style.aspectRatio=`${page.width} / ${page.height}`;
+el.photo.width=page.preview.width;
+el.photo.height=page.preview.height;
+el.photo.getContext('2d').drawImage(page.preview,0,0);
+corners.setSource(page.width,page.height);
+drawCorners();
+}
+function drawCorners(){
+const page=pages[current];
+if(!page)return;
+corners.render(page.quad,{unsure:!page.found&&!page.edited});
+el.detectNote.textContent=page.edited?phrase('detect.edited'):phrase(page.reason);
+el.detectNote.className=`hint-line${page.found || page.edited ? '' : ' warn-line'}`;
+el.undo.disabled=!page.history.length;
+}
+function schedulePreview(){
+window.clearTimeout(previewTimer);
+previewTimer=window.setTimeout(renderPreview,120);
+}
+async function renderPreview(){
+const page=pages[current];
+if(!page)return;
+const token=previewToken+1;
+previewToken=token;
+el.scanBusy.hidden=false;
+await new Promise((resolve)=>setTimeout(resolve,0));
+if(previewToken!==token)return;
+try{
+const quad=scaleQuad(page.quad,1/page.scale);
+const shape=pageAspect(quad,page.preview.width,page.preview.height);
+const size=outputSize(quad,shape.aspect,PREVIEW_EDGE);
+const source=page.preview
+.getContext('2d',{willReadFrequently:true})
+.getImageData(0,0,page.preview.width,page.preview.height);
+const flat=warpPage(source,quad,size);
+const cleaned=cleanPage(flat,settings());
+if(previewToken!==token)return;
+el.scanPreview.width=cleaned.width;
+el.scanPreview.height=cleaned.height;
+el.scanPreview.getContext('2d')
+.putImageData(new ImageData(cleaned.data,cleaned.width,cleaned.height),0,0);
+describeScan(page,shape);
+renderStrip();
+}catch(error){
+showError(phrase('error.failed',{detail:error.message}));
+}finally{
+if(previewToken===token)el.scanBusy.hidden=true;
+}
+}
+function describeScan(page,shape){
+const quad=page.quad;
+const size=outputSize(quad,shape.aspect,Number(el.maxSide.value)||0);
+const paper=matchPaper(shape.aspect);
+const quality=scanQuality(size.width,shape.aspect);
+const share=Math.round(coverage(quad,page.width,page.height)*100);
+const lines=[
+paper
+?phrase(paper.landscape?'shape.sideways':'shape.known',{
+ratio:ratioText(shape.aspect),
+paper:phrase(paper.key),
+})
+:phrase('shape.unknown',{ratio:ratioText(shape.aspect)}),
+phrase(`method.${shape.method}`),
+quality
+?phrase(quality.key,{width:size.width,height:size.height,dpi:quality.dpi})
+:phrase('quality.pixels',{width:size.width,height:size.height}),
+phrase(share<25?'coverage.small':'coverage.note',{percent:share}),
+];
+el.scanFacts.replaceChildren(...lines.map((line)=>{
+const item=document.createElement('li');
+item.textContent=line;
+return item;
+}));
+}
+function settings(){
+return{
+mode:el.modeGroup.querySelector('input[name="mode"]:checked')?.value??'colour',
+strength:Number(el.strength.value),
+pageSize:el.pageSize.value,
+dpi:Number(el.dpi.value),
+margin:Number(el.margin.value),
+maxSide:Number(el.maxSide.value),
+quality:Number(el.quality.value)/100,
+title:el.title.value,
+};
+}
+function showSettingNotes(){
+const mode=settings().mode;
+el.strengthRow.hidden=mode==='photo';
+el.strengthNote.hidden=mode==='photo';
+el.qualityField.hidden=mode==='mono';
+const strength=Number(el.strength.value);
+el.strengthValue.textContent=String(strength);
+el.strengthNote.textContent=phrase(
+strength<34?'strength.gentle':(strength>66?'strength.hard':'strength.middling'),
+);
+const fit=el.pageSize.value==='fit';
+el.dpiField.hidden=!fit;
+el.marginField.hidden=fit;
+el.sizeNote.textContent=fit
+?phrase('size.fit')
+:phrase('size.named',{name:el.pageSize.selectedOptions[0].textContent.split('—')[0].trim()});
+el.qualityValue.textContent=`${el.quality.value}%`;
+}
+async function renderFull(page,options){
+const decoded=await decode(page.file);
+try{
+const quad=page.quad;
+const shape=pageAspect(quad,page.width,page.height);
+const size=outputSize(quad,shape.aspect,options.maxSide);
+const longestEdge=Math.max(
+Math.hypot(quad[1].x-quad[0].x,quad[1].y-quad[0].y),
+Math.hypot(quad[2].x-quad[3].x,quad[2].y-quad[3].y),
+Math.hypot(quad[3].x-quad[0].x,quad[3].y-quad[0].y),
+Math.hypot(quad[2].x-quad[1].x,quad[2].y-quad[1].y),
+);
+const wanted=Math.max(size.width,size.height);
+const factor=Math.min(1,(wanted*1.1)/Math.max(1,longestEdge));
+const canvas=shrinkTo(
+decoded.bitmap,page.width,page.height,Math.max(page.width,page.height)*factor,
+);
+const context=canvas.getContext('2d',{willReadFrequently:true});
+const source=context.getImageData(0,0,canvas.width,canvas.height);
+const applied=canvas.width/page.width;
+canvas.width=0;
+canvas.height=0;
+const flat=warpPage(source,scaleQuad(quad,applied),size);
+return cleanPage(flat,options);
+}finally{
+decoded.bitmap.close?.();
+}
+}
+async function savePdf(){
+await run(async(report)=>{
+const options=settings();
+const encoded=[];
+for(const[index,page]of pages.entries()){
+report(phrase('busy.page',{done:index+1,total:pages.length}));
+const cleaned=await renderFull(page,options);
+encoded.push(await encodePage(cleaned,options));
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+report(phrase('busy.writing'));
+const blob=buildDocument(encoded,options);
+const name=outName(stemOf(pages[0].name),'pdf');
+const mono=options.mode==='mono';
+show(blob,name,[
+phrase('result.pdf',{
+name,
+size:sizeText(blob.size),
+pages:phrase(pages.length===1?'page.count':'page.counts',{count:pages.length}),
+}),
+phrase(mono?'result.mono':'result.jpeg'),
+phrase('result.clean'),
+]);
+});
+}
+async function saveImages(){
+await run(async(report)=>{
+const options=settings();
+const stem=stemOf(pages[0].name);
+const files=[];
+let extension='jpg';
+for(const[index,page]of pages.entries()){
+report(phrase('busy.page',{done:index+1,total:pages.length}));
+const cleaned=await renderFull(page,options);
+const written=await encodeImage(cleaned,options);
+extension=written.extension;
+files.push({
+name:pageName(stem,index,pages.length,written.extension),
+blob:written.blob,
+});
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+if(files.length===1){
+show(files[0].blob,files[0].name,[
+phrase('result.images',{
+name:files[0].name,
+size:sizeText(files[0].blob.size),
+pages:phrase('page.count',{count:1}),
+}),
+]);
+return;
+}
+const zip=makeZip(await Promise.all(files.map(async({name,blob})=>({
+name,
+data:new Uint8Array(await blob.arrayBuffer()),
+}))));
+const name=outName(stem,'zip');
+show(zip,name,[
+phrase('result.images',{
+name,
+size:sizeText(zip.size),
+pages:phrase('page.counts',{count:files.length}),
+}),
+phrase(extension==='png'?'result.png':'result.jpeg'),
+]);
+});
+}
+async function run(work){
+if(busy||!pages.length){
+if(!pages.length)showError(phrase('error.none'));
+return;
+}
+busy=true;
+el.savePdf.disabled=true;
+el.saveImages.disabled=true;
+el.busy.hidden=false;
+clearError();
+const report=(text)=>{
+el.busy.textContent=text;
+};
+report(phrase('busy.page',{done:1,total:pages.length}));
+try{
+await new Promise((resolve)=>setTimeout(resolve,0));
+await work(report);
+}catch(error){
+showError(phrase('error.failed',{detail:error.message}));
+}finally{
+busy=false;
+el.busy.hidden=true;
+refresh();
+}
+}
+function show(blob,name,facts){
+if(resultUrl)URL.revokeObjectURL(resultUrl);
+resultUrl=URL.createObjectURL(blob);
+el.download.href=resultUrl;
+el.download.download=name;
+el.resultFacts.replaceChildren(...facts.map((line)=>{
+const item=document.createElement('li');
+item.textContent=line;
+return item;
+}));
+el.result.hidden=false;
+}
+function showError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function clearError(){
+el.loadError.textContent='';
+el.loadError.hidden=true;
+}
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles:(files)=>addFiles(files),
+});
+el.detectOne.addEventListener('click',()=>{
+const page=pages[current];
+if(!page)return;
+detect(page);
+refresh();
+schedulePreview();
+});
+el.detectAll.addEventListener('click',()=>{
+for(const page of pages)detect(page);
+refresh();
+schedulePreview();
+});
+el.wholePhoto.addEventListener('click',()=>{
+const page=pages[current];
+if(!page)return;
+snapshot();
+page.quad=wholeFrame(page.width,page.height);
+page.edited=true;
+refresh();
+schedulePreview();
+});
+const turn=(times)=>{
+const page=pages[current];
+if(!page)return;
+snapshot();
+for(let i=0;i<times;i+=1)page.quad=turnQuad(page.quad);
+refresh();
+schedulePreview();
+};
+el.turnRight.addEventListener('click',()=>turn(1));
+el.turnLeft.addEventListener('click',()=>turn(3));
+el.undo.addEventListener('click',undo);
+el.clearAll.addEventListener('click',()=>{
+pages=[];
+current=0;
+refresh();
+});
+el.modeGroup.addEventListener('change',()=>{
+showSettingNotes();
+schedulePreview();
+});
+el.strength.addEventListener('input',()=>{
+showSettingNotes();
+schedulePreview();
+});
+el.maxSide.addEventListener('change',()=>renderPreview());
+el.pageSize.addEventListener('change',showSettingNotes);
+el.quality.addEventListener('input',showSettingNotes);
+el.savePdf.addEventListener('click',savePdf);
+el.saveImages.addEventListener('click',saveImages);
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a photo or a byte of one.`;
+el.networkCount.textContent=clean
+?`your documents have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+showSettingNotes();
+refresh();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

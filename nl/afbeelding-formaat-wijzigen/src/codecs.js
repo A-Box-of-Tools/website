@@ -1,2 +1,72 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const h="image/jpeg",i="image/png",c="image/webp",u={[h]:{label:"JPEG",ext:"jpg",lossy:!0,alpha:!1},[i]:{label:"PNG",ext:"png",lossy:!1,alpha:!0},[c]:{label:"WebP",ext:"webp",lossy:!0,alpha:!0}},f=[h,i,c,"image/gif","image/bmp","image/avif"];function p(t,e){return e.has(t)?t:i}async function g(t){const e=document.createElement("canvas");e.width=1,e.height=1;const o=await new Promise(r=>e.toBlob(r,t,.8));return!!o&&o.type===t}async function b(){const t=new Set([h,i]);return await g(c)&&t.add(c),t}async function m(t,e,{mime:o,quality:r,background:s="#ffffff"}){const a=document.createElement("canvas");a.width=e.canvas.width,a.height=e.canvas.height;const d=!u[o]?.alpha,n=a.getContext("2d",{alpha:!d});n.imageSmoothingEnabled=!0,n.imageSmoothingQuality="high",(d||e.padded)&&(n.fillStyle=s,n.fillRect(0,0,a.width,a.height)),n.drawImage(t,e.source.x,e.source.y,e.source.width,e.source.height,e.draw.x,e.draw.y,e.draw.width,e.draw.height);const l=await new Promise(w=>a.toBlob(w,o,r));if(!l)throw new Error(`this browser would not write ${u[o]?.label??o}.`);return a.width=0,a.height=0,l}async function x(t){if(typeof createImageBitmap=="function")try{const o=await createImageBitmap(t);return{bitmap:o,width:o.width,height:o.height}}catch{}const e=URL.createObjectURL(t);try{const o=await new Promise((r,s)=>{const a=new Image;a.onload=()=>r(a),a.onerror=()=>s(new Error("this browser could not decode the picture.")),a.src=e});return{bitmap:o,width:o.naturalWidth,height:o.naturalHeight}}finally{URL.revokeObjectURL(e)}}function y(t){t&&typeof t.close=="function"&&t.close()}export{u as FORMATS,h as JPEG,i as PNG,f as READABLE,c as WEBP,x as decode,b as encodableTypes,p as keepFormat,y as release,m as render};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const JPEG='image/jpeg';
+export const PNG='image/png';
+export const WEBP='image/webp';
+export const FORMATS={
+[JPEG]:{label:'JPEG',ext:'jpg',lossy:true,alpha:false},
+[PNG]:{label:'PNG',ext:'png',lossy:false,alpha:true},
+[WEBP]:{label:'WebP',ext:'webp',lossy:true,alpha:true},
+};
+export const READABLE=[JPEG,PNG,WEBP,'image/gif','image/bmp','image/avif'];
+export function keepFormat(type,writable){
+return writable.has(type)?type:PNG;
+}
+async function canEncode(mime){
+const canvas=document.createElement('canvas');
+canvas.width=1;
+canvas.height=1;
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,mime,0.8));
+return Boolean(blob)&&blob.type===mime;
+}
+export async function encodableTypes(){
+const found=new Set([JPEG,PNG]);
+if(await canEncode(WEBP))found.add(WEBP);
+return found;
+}
+export async function render(source,plan,{mime,quality,background='#ffffff'}){
+const canvas=document.createElement('canvas');
+canvas.width=plan.canvas.width;
+canvas.height=plan.canvas.height;
+const opaque=!FORMATS[mime]?.alpha;
+const ctx=canvas.getContext('2d',{alpha:!opaque});
+ctx.imageSmoothingEnabled=true;
+ctx.imageSmoothingQuality='high';
+if(opaque||plan.padded){
+ctx.fillStyle=background;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+}
+ctx.drawImage(
+source,
+plan.source.x,plan.source.y,plan.source.width,plan.source.height,
+plan.draw.x,plan.draw.y,plan.draw.width,plan.draw.height,
+);
+const blob=await new Promise((resolve)=>canvas.toBlob(resolve,mime,quality));
+if(!blob)throw new Error(`this browser would not write ${FORMATS[mime]?.label ?? mime}.`);
+canvas.width=0;
+canvas.height=0;
+return blob;
+}
+export async function decode(file){
+if(typeof createImageBitmap==='function'){
+try{
+const bitmap=await createImageBitmap(file);
+return{bitmap,width:bitmap.width,height:bitmap.height};
+}catch{
+}
+}
+const url=URL.createObjectURL(file);
+try{
+const img=await new Promise((resolve,reject)=>{
+const element=new Image();
+element.onload=()=>resolve(element);
+element.onerror=()=>reject(new Error('this browser could not decode the picture.'));
+element.src=url;
+});
+return{bitmap:img,width:img.naturalWidth,height:img.naturalHeight};
+}finally{
+URL.revokeObjectURL(url);
+}
+}
+export function release(bitmap){
+if(bitmap&&typeof bitmap.close==='function')bitmap.close();
+}

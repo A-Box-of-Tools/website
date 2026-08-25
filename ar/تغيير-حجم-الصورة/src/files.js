@@ -1,2 +1,42 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{FORMATS as h}from"./codecs.js";function d(t){return t<1024?`${t} bytes`:t<1024*1024?`${(t/1024).toFixed(t<10240?1:0)} KB`:`${(t/(1024*1024)).toFixed(2)} MB`}function r(t,e){return`${t} \xD7 ${e}`}function c(t,e,n,a){const i=h[e]?.ext??"jpg";return`${t.replace(/\.[^.]+$/,"")||"image"}-${n}x${a}.${i}`}function u(t,e){if(t===0)return"";const n=Math.round((t-e)/t*100);return n===0?"about the same size":n>0?`${n}% smaller`:`${-n}% larger`}const $=t=>`${t} image${t===1?"":"s"}`;function p(t){const e=t*100;return e>=10?`${Math.round(e)}%`:`${e.toFixed(1)}%`}function f(t,e,n,a){const i=[],o=e.width!==t.width||e.height!==t.height;return o&&i.push(`cropped to ${r(e.width,e.height)}`),n.canvas.width!==e.width||n.canvas.height!==e.height?i.push(`${o?"then ":""}resized to ${r(n.canvas.width,n.canvas.height)}`):o||i.push(`kept at ${r(n.canvas.width,n.canvas.height)}`),n.padded&&i.push("padded out to the exact frame you asked for"),a&&i.push(`written as ${h[a]?.label??a}`),`${i.join(", ")}.`}export{d as bytes,u as change,$ as countOf,f as describePlan,r as dimensions,c as outName,p as scaleText};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{FORMATS}from'./codecs.js';
+export function bytes(n){
+if(n<1024)return`${n} bytes`;
+if(n<1024*1024)return`${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
+return`${(n / (1024 * 1024)).toFixed(2)} MB`;
+}
+export function dimensions(width,height){
+return`${width} × ${height}`;
+}
+export function outName(name,mime,width,height){
+const ext=FORMATS[mime]?.ext??'jpg';
+const stem=name.replace(/\.[^.]+$/,'')||'image';
+return`${stem}-${width}x${height}.${ext}`;
+}
+export function change(before,after){
+if(before===0)return'';
+const delta=Math.round(((before-after)/before)*100);
+if(delta===0)return'about the same size';
+return delta>0?`${delta}% smaller`:`${-delta}% larger`;
+}
+export const countOf=(n)=>`${n} image${n === 1 ? '' : 's'}`;
+export function scaleText(scale){
+const percent=scale*100;
+if(percent>=10)return`${Math.round(percent)}%`;
+return`${percent.toFixed(1)}%`;
+}
+export function describePlan(size,crop,result,mime){
+const parts=[];
+const cropped=crop.width!==size.width||crop.height!==size.height;
+if(cropped){
+parts.push(`cropped to ${dimensions(crop.width, crop.height)}`);
+}
+if(result.canvas.width!==crop.width||result.canvas.height!==crop.height){
+parts.push(`${cropped ? 'then ' : ''}resized to ${dimensions(result.canvas.width, result.canvas.height)}`);
+}else if(!cropped){
+parts.push(`kept at ${dimensions(result.canvas.width, result.canvas.height)}`);
+}
+if(result.padded)parts.push('padded out to the exact frame you asked for');
+if(mime)parts.push(`written as ${FORMATS[mime]?.label ?? mime}`);
+return`${parts.join(', ')}.`;
+}

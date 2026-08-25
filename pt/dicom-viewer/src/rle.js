@@ -1,2 +1,54 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-function E(t,s,i,f){if(t.length<64)throw new Error("the RLE segment header is 64 bytes and this fragment is shorter");const l=new DataView(t.buffer,t.byteOffset,t.byteLength),e=l.getUint32(0,!0),o=i*f;if(e<1||e>15)throw new Error(`an RLE frame declares ${e} segments, and the format allows 1 to 15`);if(e<o)throw new Error(`this image needs ${o} RLE segments and the frame has ${e}`);const r=[];for(let n=0;n<e;n+=1)r.push(l.getUint32(4+n*4,!0));const h=new Uint8Array(s*o);for(let n=0;n<o;n+=1){const a=r[n],c=n+1<e?r[n+1]:t.length;if(a<64||a>t.length||c>t.length||c<a)throw new Error(`RLE segment ${n} points outside the fragment`);const u=Math.floor(n/f),w=n%f,g=u*f+(f-1-w);d(t.subarray(a,c),h,g,o,s)}return h}function d(t,s,i,f,l){const e=i+l*f;let o=i,r=0;for(;r<t.length&&o<e;){const h=t[r++];if(h===128)continue;if(h<128){const c=h+1;for(let u=0;u<c&&r<t.length&&o<e;u+=1)s[o]=t[r++],o+=f;continue}const n=257-h;if(r>=t.length)break;const a=t[r++];for(let c=0;c<n&&o<e;c+=1)s[o]=a,o+=f}}export{E as decodeRLE};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export function decodeRLE(bytes,pixels,samples,bytesPerSample){
+if(bytes.length<64){
+throw new Error('the RLE segment header is 64 bytes and this fragment is shorter');
+}
+const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
+const count=view.getUint32(0,true);
+const wanted=samples*bytesPerSample;
+if(count<1||count>15){
+throw new Error(`an RLE frame declares ${count} segments, and the format allows 1 to 15`);
+}
+if(count<wanted){
+throw new Error(`this image needs ${wanted} RLE segments and the frame has ${count}`);
+}
+const offsets=[];
+for(let at=0;at<count;at+=1)offsets.push(view.getUint32(4+at*4,true));
+const out=new Uint8Array(pixels*wanted);
+for(let segment=0;segment<wanted;segment+=1){
+const from=offsets[segment];
+const to=segment+1<count?offsets[segment+1]:bytes.length;
+if(from<64||from>bytes.length||to>bytes.length||to<from){
+throw new Error(`RLE segment ${segment} points outside the fragment`);
+}
+const sample=Math.floor(segment/bytesPerSample);
+const byte=segment%bytesPerSample;
+const start=sample*bytesPerSample+(bytesPerSample-1-byte);
+unpack(bytes.subarray(from,to),out,start,wanted,pixels);
+}
+return out;
+}
+function unpack(segment,out,start,stride,pixels){
+const end=start+pixels*stride;
+let write=start;
+let at=0;
+while(at<segment.length&&write<end){
+const control=segment[at++];
+if(control===128)continue;
+if(control<128){
+const run=control+1;
+for(let step=0;step<run&&at<segment.length&&write<end;step+=1){
+out[write]=segment[at++];
+write+=stride;
+}
+continue;
+}
+const run=257-control;
+if(at>=segment.length)break;
+const value=segment[at++];
+for(let step=0;step<run&&write<end;step+=1){
+out[write]=value;
+write+=stride;
+}
+}
+}

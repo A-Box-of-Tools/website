@@ -1,2 +1,139 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const e=t=>Math.max(1,Math.round(t)),c=["1:1","4:5","9:16","16:9","4:3","3:2"];function p(t){if(typeof t=="number")return Number.isFinite(t)&&t>0?t:null;const h=String(t??"").trim();if(!h)return null;const n=h.match(/^(\d*\.?\d+)\s*[:/x×]\s*(\d*\.?\d+)$/i);if(n){const a=Number.parseFloat(n[1]),o=Number.parseFloat(n[2]);return a>0&&o>0?a/o:null}if(!/^\d*\.?\d+$/.test(h))return null;const i=Number.parseFloat(h);return Number.isFinite(i)&&i>0?i:null}function u(t,h){if(!h||!Number.isFinite(h))return{...t};let n=t.width,i=t.height;return n/i>h?n=i*h:i=n/h,n=Math.min(t.width,e(n)),i=Math.min(t.height,e(i)),{x:t.x+Math.round((t.width-n)/2),y:t.y+Math.round((t.height-i)/2),width:n,height:i}}function x(t,h){return{x:t.x/h.width,y:t.y/h.height,width:t.width/h.width,height:t.height/h.height}}function M(t,h){const n=Math.min(h.width,e(t.width*h.width)),i=Math.min(h.height,e(t.height*h.height));return{x:Math.max(0,Math.min(Math.round(t.x*h.width),h.width-n)),y:Math.max(0,Math.min(Math.round(t.y*h.height),h.height-i)),width:n,height:i}}const b=t=>({x:0,y:0,width:t.width,height:t.height}),f=["contain","cover","pad","stretch"];function s(t,h){const n={...t},i=h.mode??"none";if(i==="percent"){const a=(Number(h.percent)||100)/100;return r(n,n.width*a,n.height*a)}if(i==="longest"){const a=Math.max(n.width,n.height),o=Number(h.longest)||a,d=g(o/a,h.noEnlarge);return r(n,n.width*d,n.height*d)}return i==="pixels"?m(n,h):r(n,n.width,n.height)}function m(t,h){const n=l(h.width),i=l(h.height);if(!n&&!i)return r(t,t.width,t.height);if(n&&!i){const d=g(n/t.width,h.noEnlarge);return r(t,t.width*d,t.height*d)}if(i&&!n){const d=g(i/t.height,h.noEnlarge);return r(t,t.width*d,t.height*d)}const a=f.includes(h.fit)?h.fit:"contain";if(a==="stretch")return{source:t,canvas:{width:n,height:i},draw:{x:0,y:0,width:n,height:i},padded:!1,scale:n/t.width};if(a==="cover"){const d=u(t,n/i),w=g(n/d.width,h.noEnlarge);return r(d,d.width*w,d.height*w)}const o=g(Math.min(n/t.width,i/t.height),h.noEnlarge);if(a==="pad"){const d={width:e(t.width*o),height:e(t.height*o)};return{source:t,canvas:{width:n,height:i},draw:{x:Math.round((n-d.width)/2),y:Math.round((i-d.height)/2),width:d.width,height:d.height},padded:d.width!==n||d.height!==i,scale:o}}return r(t,t.width*o,t.height*o)}function r(t,h,n){const i={width:e(h),height:e(n)};return{source:t,canvas:i,draw:{x:0,y:0,width:i.width,height:i.height},padded:!1,scale:i.width/t.width}}const g=(t,h)=>h?Math.min(1,t):t;function l(t){const h=Number.parseFloat(t);return Number.isFinite(h)&&h>=1?Math.round(h):null}function y(t,h){return h.source.x===0&&h.source.y===0&&h.source.width===t.width&&h.source.height===t.height&&h.canvas.width===t.width&&h.canvas.height===t.height&&!h.padded}export{f as FITS,c as RATIOS,M as fromFractions,y as isUntouched,p as parseRatio,s as plan,u as ratioCrop,x as toFractions,b as wholeOf};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+const px=(value)=>Math.max(1,Math.round(value));
+export const RATIOS=['1:1','4:5','9:16','16:9','4:3','3:2'];
+export function parseRatio(text){
+if(typeof text==='number')return Number.isFinite(text)&&text>0?text:null;
+const value=String(text??'').trim();
+if(!value)return null;
+const pair=value.match(/^(\d*\.?\d+)\s*[:/x×]\s*(\d*\.?\d+)$/i);
+if(pair){
+const w=Number.parseFloat(pair[1]);
+const h=Number.parseFloat(pair[2]);
+return w>0&&h>0?w/h:null;
+}
+if(!/^\d*\.?\d+$/.test(value))return null;
+const single=Number.parseFloat(value);
+return Number.isFinite(single)&&single>0?single:null;
+}
+export function ratioCrop(rect,aspect){
+if(!aspect||!Number.isFinite(aspect))return{...rect};
+let width=rect.width;
+let height=rect.height;
+if(width/height>aspect)width=height*aspect;
+else height=width/aspect;
+width=Math.min(rect.width,px(width));
+height=Math.min(rect.height,px(height));
+return{
+x:rect.x+Math.round((rect.width-width)/2),
+y:rect.y+Math.round((rect.height-height)/2),
+width,
+height,
+};
+}
+export function toFractions(rect,size){
+return{
+x:rect.x/size.width,
+y:rect.y/size.height,
+width:rect.width/size.width,
+height:rect.height/size.height,
+};
+}
+export function fromFractions(fractions,size){
+const width=Math.min(size.width,px(fractions.width*size.width));
+const height=Math.min(size.height,px(fractions.height*size.height));
+return{
+x:Math.max(0,Math.min(Math.round(fractions.x*size.width),size.width-width)),
+y:Math.max(0,Math.min(Math.round(fractions.y*size.height),size.height-height)),
+width,
+height,
+};
+}
+export const wholeOf=(size)=>({x:0,y:0,width:size.width,height:size.height});
+export const FITS=['contain','cover','pad','stretch'];
+export function plan(crop,resize){
+const source={...crop};
+const mode=resize.mode??'none';
+if(mode==='percent'){
+const factor=(Number(resize.percent)||100)/100;
+return laid(source,source.width*factor,source.height*factor);
+}
+if(mode==='longest'){
+const longest=Math.max(source.width,source.height);
+const wanted=Number(resize.longest)||longest;
+const scale=limit(wanted/longest,resize.noEnlarge);
+return laid(source,source.width*scale,source.height*scale);
+}
+if(mode==='pixels'){
+return pixelPlan(source,resize);
+}
+return laid(source,source.width,source.height);
+}
+function pixelPlan(source,resize){
+const width=positive(resize.width);
+const height=positive(resize.height);
+if(!width&&!height)return laid(source,source.width,source.height);
+if(width&&!height){
+const scale=limit(width/source.width,resize.noEnlarge);
+return laid(source,source.width*scale,source.height*scale);
+}
+if(height&&!width){
+const scale=limit(height/source.height,resize.noEnlarge);
+return laid(source,source.width*scale,source.height*scale);
+}
+const fit=FITS.includes(resize.fit)?resize.fit:'contain';
+if(fit==='stretch'){
+return{
+source,
+canvas:{width,height},
+draw:{x:0,y:0,width,height},
+padded:false,
+scale:width/source.width,
+};
+}
+if(fit==='cover'){
+const tight=ratioCrop(source,width/height);
+const scale=limit(width/tight.width,resize.noEnlarge);
+return laid(tight,tight.width*scale,tight.height*scale);
+}
+const scale=limit(Math.min(width/source.width,height/source.height),resize.noEnlarge);
+if(fit==='pad'){
+const drawn={width:px(source.width*scale),height:px(source.height*scale)};
+return{
+source,
+canvas:{width,height},
+draw:{
+x:Math.round((width-drawn.width)/2),
+y:Math.round((height-drawn.height)/2),
+width:drawn.width,
+height:drawn.height,
+},
+padded:drawn.width!==width||drawn.height!==height,
+scale,
+};
+}
+return laid(source,source.width*scale,source.height*scale);
+}
+function laid(source,width,height){
+const canvas={width:px(width),height:px(height)};
+return{
+source,
+canvas,
+draw:{x:0,y:0,width:canvas.width,height:canvas.height},
+padded:false,
+scale:canvas.width/source.width,
+};
+}
+const limit=(scale,noEnlarge)=>(noEnlarge?Math.min(1,scale):scale);
+function positive(value){
+const number=Number.parseFloat(value);
+return Number.isFinite(number)&&number>=1?Math.round(number):null;
+}
+export function isUntouched(size,result){
+return result.source.x===0
+&&result.source.y===0
+&&result.source.width===size.width
+&&result.source.height===size.height
+&&result.canvas.width===size.width
+&&result.canvas.height===size.height
+&&!result.padded;
+}

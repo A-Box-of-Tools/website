@@ -1,4 +1,913 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as E}from"./shared/phrases.js";import{decode as ne,encodableTypes as oe,keepFormat as ae,release as ie,render as re,FORMATS as A,JPEG as F,PNG as T,WEBP as N,READABLE as se}from"./codecs.js";import{fromFractions as ce,isUntouched as le,parseRatio as de,plan as he,ratioCrop as ue,toFractions as pe,wholeOf as K}from"./geometry.js";import{Cropper as fe}from"./cropper.js";import{wireFilePicker as me,readingLabel as ge}from"./shared/file-picker.js";import{bytes as y,change as U,countOf as S,describePlan as G,dimensions as p,outName as we,scaleText as W}from"./files.js";import{makeZip as ve}from"./shared/zip.js";const a=e=>document.getElementById(e),n={dropzone:a("dropzone"),fileInput:a("file-input"),fileList:a("file-list"),listToolbar:a("list-toolbar"),countLabel:a("count-label"),clearAll:a("clear-all"),loadError:a("load-error"),cropEmpty:a("crop-empty"),cropControls:a("crop-controls"),stage:a("stage"),stageName:a("stage-name"),preview:a("preview"),stageNote:a("stage-note"),aspectRow:a("aspect-row"),swapAspect:a("swap-aspect"),cropX:a("crop-x"),cropY:a("crop-y"),cropW:a("crop-w"),cropH:a("crop-h"),cropMax:a("crop-max"),cropCentre:a("crop-centre"),cropReset:a("crop-reset"),applyRow:a("apply-row"),applyNote:a("apply-note"),cropApplyAll:a("crop-apply-all"),resizeMode:a("resize-mode"),pixelsFields:a("pixels-fields"),longestFields:a("longest-fields"),percentFields:a("percent-fields"),sizeW:a("size-w"),sizeH:a("size-h"),swapSize:a("swap-size"),sizePresets:a("size-presets"),fitRow:a("fit-row"),fit:a("fit"),sizeLongest:a("size-longest"),longestPresets:a("longest-presets"),sizePercent:a("size-percent"),percentPresets:a("percent-presets"),enlargeRow:a("enlarge-row"),noEnlarge:a("no-enlarge"),sizeSummary:a("size-summary"),format:a("format"),formatNote:a("format-note"),qualityField:a("quality-field"),quality:a("quality"),qualityValue:a("quality-value"),background:a("background"),planSummary:a("plan-summary"),run:a("run"),progress:a("progress"),progressBar:a("progress-bar"),progressLabel:a("progress-label"),results:a("results"),resultList:a("result-list"),downloadZip:a("download-zip"),resultsSummary:a("results-summary"),viewer:a("viewer"),viewerName:a("viewer-name"),viewerClose:a("viewer-close"),viewerImage:a("viewer-image"),viewerCaption:a("viewer-caption"),viewerFacts:a("viewer-facts"),viewerCompare:a("viewer-compare"),viewerDownload:a("viewer-download"),privacyToggle:a("privacy-toggle"),privacyPanel:a("privacy-panel"),networkCount:a("network-count"),networkDot:a("network-dot"),offlineStatus:a("offline-status"),offlineDot:a("offline-dot")};let s=[],V=1,m=!1,C=null,g=[],I=[],O=new Set([F,T]),B=!1;const w=new fe(n.stage,{onChange(e){if(Te(e),B)return;const t=z();t?.size&&(t.crop=e),$(),ke(),J(),Y()}}),Z=me({input:n.fileInput,dropzone:n.dropzone,onFiles(e){be(e)}});async function be(e){if(!e?.length||m)return;Z.busy(ge(e.length));const t=[];try{for(const o of e){if(!ye(o)){t.push(`${o.name}: not an image this tool can read.`);continue}const i={id:V,file:o,thumbUrl:URL.createObjectURL(o),size:null,crop:null,aspectKey:"free"};if(V+=1,i.size=await ze(i.thumbUrl),!i.size){URL.revokeObjectURL(i.thumbUrl),t.push(`${o.name}: this browser could not decode it.`);continue}i.crop=K(i.size),s.push(i)}}finally{Z.done()}t.length?P(t.join(`
-`)):D(),$(),R(),v()}function ye(e){return e.type?se.includes(e.type)||e.type.startsWith("image/"):/\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(e.name)}function ze(e){return new Promise(t=>{const o=new Image;o.onload=()=>t({width:o.naturalWidth,height:o.naturalHeight}),o.onerror=()=>t(null),o.src=e})}function $e(e){const t=s.findIndex(o=>o.id===e);t<0||(URL.revokeObjectURL(s[t].thumbUrl),s.splice(t,1),$(),R(),v())}n.clearAll.addEventListener("click",()=>{for(const e of s)URL.revokeObjectURL(e.thumbUrl);s=[],$(),D(),R(),v()});const z=()=>s.find(e=>e.id===C)??null;function R(){s.some(t=>t.id===C)||(C=s[0]?.id??null);const e=z();if(e?.size){n.preview.src=e.thumbUrl,n.preview.alt=`Preview of ${e.file.name}`,n.stage.style.aspectRatio=`${e.size.width} / ${e.size.height}`,n.stage.style.maxWidth=`calc(62vh * ${e.size.width/e.size.height})`,B=!0;try{w.setSource(e.size.width,e.size.height),w.setAspect(q(e.aspectKey,e)),w.setRect(e.crop)}finally{B=!1}M()}}function Ce(e){e===C||m||(C=e,R(),v())}function v(){const e=s.length>0;n.listToolbar.hidden=!e,n.clearAll.disabled=m,n.countLabel.textContent=e?`${S(s.length)}, ${y(Ee())} in total`:"",xe(),J(),Pe(),Ae(),Y(),n.run.disabled=!e||m,n.run.textContent=s.length===1?"Resize the image":"Resize the images"}const Ee=()=>s.reduce((e,t)=>e+t.file.size,0);function xe(){n.fileList.replaceChildren();const e=s.length>1;for(const t of s){const o=document.createElement("li");o.className="file-row";const i=t.id===C&&e;i&&o.classList.add("file-shown");const r=document.createElement(e?"button":"div");r.className="file-main-wrap",e&&(r.type="button",r.setAttribute("aria-pressed",String(i)),r.title=i?`${t.file.name} is the one in the crop preview`:`Draw the crop box on ${t.file.name}`,r.disabled=m,r.addEventListener("click",()=>Ce(t.id)));const c=document.createElement("img");c.className="file-thumb",c.src=t.thumbUrl,c.alt="",r.appendChild(c);const d=document.createElement("div");d.className="file-main";const u=document.createElement("p");u.className="file-name",u.textContent=t.file.name,d.appendChild(u);const l=document.createElement("p");if(l.className="file-sub",l.textContent=[A[t.file.type]?.label??(t.file.type||"image").replace("image/","").toUpperCase(),y(t.file.size),t.size?p(t.size.width,t.size.height):null].filter(Boolean).join(" \xB7 "),d.appendChild(l),t.size){const f=document.createElement("p");X(f,k(t)),d.appendChild(f)}if(r.appendChild(d),i){const f=document.createElement("span");f.className="file-badge",f.textContent="In the preview",r.appendChild(f)}o.appendChild(r);const h=document.createElement("button");h.type="button",h.className="row-remove",h.title=`Take ${t.file.name} off the list`,h.setAttribute("aria-label",`Take ${t.file.name} off the list`),h.textContent="\xD7",h.disabled=m,h.addEventListener("click",()=>$e(t.id)),o.appendChild(h),n.fileList.appendChild(o)}}function X(e,t){e.className=t.untouched?"file-note":"file-outcome",e.textContent=t.untouched?"Nothing is being changed, so this one is passed through exactly as it is.":`becomes ${p(t.canvas.width,t.canvas.height)}`}function ke(){const e=n.fileList.children;s.forEach((t,o)=>{const i=e[o]?.querySelector(".file-outcome, .file-note");i&&t.size&&X(i,k(t))})}function J(){const e=z();if(n.cropEmpty.hidden=!!s.length,n.cropControls.hidden=!e,w.setEnabled(!!e&&!m),!e){n.stageNote.hidden=!0;return}const t=s.filter(o=>o.id!==C);if(n.stageName.textContent=t.length?`Drawing on ${e.file.name}. `:"",n.applyRow.hidden=!t.length,n.applyNote.textContent=t.length?Ne(e,t.length):"",!t.length){n.stageNote.hidden=!0;return}n.stageNote.hidden=!1,n.stageNote.textContent=`Every image keeps its own box. ${Le(t)}`}function Le(e){const t=e.filter(Se);return e.length===1?t.length?`${e[0].file.name} has a box of its own.`:`${e[0].file.name} is still on the whole picture - pick it from the list above to crop that one too.`:t.length?t.length===e.length?e.length===2?"Both of the others have a box of their own.":`All ${e.length} of the others have a box of their own.`:`${t.length} of the other ${e.length} ${t.length===1?"has":"have"} a box of its own; the rest are still on the whole picture.`:`The other ${S(e.length)} are still on the whole picture - pick one from the list above to crop it.`}function Ne(e,t){return s.every(i=>i.size&&i.size.width===e.size.width&&i.size.height===e.size.height)?`Every image on the list is exactly this size, so ${t===1?"the other one gets":"they all get"} exactly this box.`:e.aspectKey==="free"?"The same relative area on each - the same fractions of its own width and height - because they are not all the same size.":`The largest ${Re(e.aspectKey)} box that fits the same relative area of each, so every result comes out the shape you locked even though they are not all the same size.`}function Se(e){return!!(e.size&&e.crop&&(e.crop.width!==e.size.width||e.crop.height!==e.size.height))}function Re(e){return e==="source"?"picture's own shape":e}function Pe(){const e=n.resizeMode.value;n.pixelsFields.hidden=e!=="pixels",n.longestFields.hidden=e!=="longest",n.percentFields.hidden=e!=="percent";const t=!!(x(n.sizeW)&&x(n.sizeH));n.fitRow.hidden=e!=="pixels"||!t,n.enlargeRow.hidden=e==="none"||e==="percent"}function Ae(){const e=n.format.value;n.qualityField.hidden=e===T,n.qualityValue.textContent=n.quality.value;const t={keep:"A JPEG stays a JPEG, a PNG stays a PNG. Anything this browser cannot write - a GIF, a BMP - comes out as PNG, which keeps transparency and flat colour.",[F]:"Small and universal, and no transparency: anything see-through is filled with the background colour.",[T]:"Lossless and transparent, and much larger than the other two on a photograph.",[N]:"Smaller than JPEG at the same quality, keeps transparency, and every current browser opens it."}[e]??"";n.formatNote.textContent=t}function Y(){const e=z();if(!e?.size){n.sizeSummary.textContent="Add an image and this will say exactly what it becomes.",n.planSummary.textContent="";return}const t=k(e),o=t.crop,i=o.width!==e.size.width||o.height!==e.size.height,r=e.file.name;if(t.untouched)n.sizeSummary.textContent=`Nothing is being changed: ${r} is ${p(e.size.width,e.size.height)} and comes back exactly as it went in, byte for byte.`;else{const l=i?"of what the box keeps":"of the original",h=t.scale>1?`enlarged to ${W(t.scale)} ${l}`:`${W(t.scale)} ${l}`;n.sizeSummary.textContent=`${r} is ${p(e.size.width,e.size.height)}.`+(i?` The box keeps ${p(o.width,o.height)} of it.`:"")+` It comes out ${p(t.canvas.width,t.canvas.height)}`+(t.padded?` - the picture at ${h}, on a background filling the rest of that frame.`:` - ${h}.`)}const c=Q(e.file.type),d=s.length===1?"":s.length===2?" The other image gets the same size and format settings, with its own crop.":` The other ${S(s.length-1)} get the same size and format settings, each with its own crop.`,u=n.format.value==="keep"&&s.every(l=>l.size&&k(l).untouched);n.planSummary.textContent=u?"Nothing is cropped, nothing is resized and the format is unchanged, so there is nothing to re-encode: every file is handed straight back byte for byte, EXIF tags and all, because none of them is ever opened up.":`${s.length===1?"The image is":`${r} is`} ${G(e.size,o,t,c).replace(/\.$/,"")} - and the EXIF and GPS tags do not survive, because a canvas holds pixels and nothing else.${d}`}const b=()=>{$(),v()};n.resizeMode.addEventListener("change",b),n.format.addEventListener("change",b),n.fit.addEventListener("change",b),n.noEnlarge.addEventListener("change",b),n.background.addEventListener("change",b);for(const e of[n.sizeW,n.sizeH,n.sizeLongest,n.sizePercent])e.addEventListener("input",b);n.quality.addEventListener("input",()=>{n.qualityValue.textContent=n.quality.value,$()}),n.swapSize.addEventListener("click",()=>{const e=n.sizeW.value;n.sizeW.value=n.sizeH.value,n.sizeH.value=e,b()}),n.sizePresets.addEventListener("click",e=>{const t=e.target.closest("button[data-w]");t&&(n.sizeW.value=t.dataset.w,n.sizeH.value=t.dataset.h,b())}),n.longestPresets.addEventListener("click",e=>{const t=e.target.closest("button[data-longest]");t&&(n.sizeLongest.value=t.dataset.longest,b())}),n.percentPresets.addEventListener("click",e=>{const t=e.target.closest("button[data-percent]");t&&(n.sizePercent.value=t.dataset.percent,b())}),n.aspectRow.addEventListener("click",e=>{const t=e.target.closest("button[data-aspect]");t&&j(t.dataset.aspect)}),n.swapAspect.addEventListener("click",()=>{const e=z();!e||!w.aspect||j(Fe(e.aspectKey))});const Fe=e=>{const t=e.match(/^(\d+):(\d+)$/);return t?`${t[2]}:${t[1]}`:e};function q(e,t){return e==="source"?t.size.width/t.size.height:e==="free"?null:de(e)}function j(e){const t=z();t?.size&&(t.aspectKey=e,M(),w.setAspect(q(e,t)))}function M(){const e=z()?.aspectKey??"free";for(const t of n.aspectRow.querySelectorAll("button[data-aspect]")){const o=t.dataset.aspect===e;t.classList.toggle("active",o),t.setAttribute("aria-pressed",String(o))}n.swapAspect.disabled=!/^\d+:\d+$/.test(e)}for(const e of[n.cropX,n.cropY,n.cropW,n.cropH])e.addEventListener("change",()=>{w.setRect({x:Number(n.cropX.value)||0,y:Number(n.cropY.value)||0,width:Number(n.cropW.value)||1,height:Number(n.cropH.value)||1})});n.cropMax.addEventListener("click",()=>w.maximize()),n.cropCentre.addEventListener("click",()=>w.centre()),n.cropReset.addEventListener("click",()=>{j("free"),w.reset()}),n.cropApplyAll.addEventListener("click",()=>{const e=z();if(!e?.size||m)return;const t=pe(e.crop,e.size);for(const o of s){if(o.id===e.id||!o.size)continue;const i=ce(t,o.size);o.aspectKey=e.aspectKey;const r=q(e.aspectKey,o);o.crop=r?ue(i,r):i}$(),v()});function Te(e){n.cropX.value=String(e.x),n.cropY.value=String(e.y),n.cropW.value=String(e.width),n.cropH.value=String(e.height)}function x(e){const t=Number.parseFloat(e.value);return Number.isFinite(t)&&t>=1?Math.round(t):null}function Ue(){return{mode:n.resizeMode.value,width:x(n.sizeW),height:x(n.sizeH),fit:n.fit.value,longest:x(n.sizeLongest)??1,percent:Number.parseFloat(n.sizePercent.value)||100,noEnlarge:n.noEnlarge.checked}}function We(e){return e.crop??K(e.size)}function k(e){const t=We(e),o=he(t,Ue());return{...o,crop:o.source,untouched:n.format.value==="keep"&&le(e.size,o)}}function Q(e){const t=n.format.value;return t==="keep"?ae(e,O):t}n.run.addEventListener("click",async()=>{if(!s.length||m)return;m=!0,$(),D(),v(),n.progress.hidden=!1;const e=[],t=[];try{for(const[o,i]of s.entries()){Ie(o,s.length,i.file.name);try{e.push(await Oe(i))}catch(r){t.push(`${i.file.name}: ${r.message}`)}await new Promise(r=>setTimeout(r,0))}}finally{m=!1,n.progress.hidden=!0,v()}t.length&&P(t.join(`
-`)),g=e,Be()});function Ie(e,t,o){n.progressBar.style.width=`${Math.round(e/t*100)}%`,n.progressLabel.textContent=`${e+1} of ${t}: ${o}`}async function Oe(e){const t=k(e),o={item:e,name:e.file.name,before:e.file.size,size:e.size};if(t.untouched)return{...o,blob:e.file,after:e.file.size,mime:e.file.type||F,crop:t.source,canvas:t.canvas,scale:1,padded:!1,untouched:!0,outName:e.file.name};const i=await ne(e.file);try{const r=Q(e.file.type),c=await re(i.bitmap,t,{mime:r,quality:Number(n.quality.value)/100,background:n.background.value});return{...o,blob:c,after:c.size,mime:r,crop:t.source,canvas:t.canvas,scale:t.scale,padded:t.padded,untouched:!1,outName:we(e.file.name,r,t.canvas.width,t.canvas.height)}}finally{ie(i.bitmap)}}function $(){n.viewer.open&&n.viewer.close();for(const e of I)URL.revokeObjectURL(e);I=[],g=[],n.resultList.replaceChildren(),n.results.hidden=!0,n.downloadZip.hidden=!0,n.resultsSummary.textContent=""}function Be(){if(n.resultList.replaceChildren(),!g.length)return;n.results.hidden=!1;for(const r of g)r.url=URL.createObjectURL(r.blob),I.push(r.url),n.resultList.appendChild(qe(r));const e=g.reduce((r,c)=>r+c.before,0),t=g.reduce((r,c)=>r+c.after,0),o=g.filter(r=>r.untouched).length,i=`${y(e)} in, ${y(t)} out - ${U(e,t)}.`;n.resultsSummary.textContent=o===g.length?"Nothing was asked for, so nothing was done: every file came back exactly as it went in.":o?`${i} ${S(o)} needed no change and were passed straight through.`:i,n.downloadZip.hidden=g.length<2,n.downloadZip.onclick=async()=>{n.downloadZip.disabled=!0;try{const r=await Promise.all(g.map(async c=>({name:c.outName,data:new Uint8Array(await c.blob.arrayBuffer())})));He(ve(r),"resized-images.zip")}finally{n.downloadZip.disabled=!1}}}function qe(e){const t=document.createElement("li");t.className="result-row",e.untouched&&t.classList.add("result-untouched");const o=document.createElement("button");o.type="button",o.className="result-open",o.title=`Look at ${e.outName} full size`,o.setAttribute("aria-label",`Look at ${e.outName} full size`),o.addEventListener("click",()=>ee(e));const i=document.createElement("img");i.className="result-thumb",i.src=e.url,i.alt="",i.loading="lazy",o.appendChild(i),t.appendChild(o);const r=document.createElement("div");r.className="result-text";const c=document.createElement("p");c.className="result-name",c.textContent=e.outName,r.appendChild(c);const d=document.createElement("p");d.className="result-headline",d.textContent=je(e),r.appendChild(d);const u=document.createElement("p");u.className="result-detail",u.textContent=_(e),r.appendChild(u),t.appendChild(r);const l=document.createElement("div");l.className="result-actions";const h=document.createElement("button");h.type="button",h.className="ghost",h.textContent="View",h.addEventListener("click",()=>ee(e)),l.appendChild(h);const f=document.createElement("a");return f.className="primary as-button",f.href=e.url,f.download=e.outName,f.textContent="Download",l.appendChild(f),t.appendChild(l),t}function je(e){return e.untouched?`${p(e.size.width,e.size.height)} \xB7 ${y(e.before)} - unchanged`:`${p(e.size.width,e.size.height)} \u2192 ${p(e.canvas.width,e.canvas.height)} \xB7 ${y(e.before)} \u2192 ${y(e.after)} \xB7 ${U(e.before,e.after)}`}function _(e){return e.untouched?"Passed through byte for byte, metadata and all: nothing about this file was being changed.":G(e.size,e.crop,e,e.mime)}let H=null,L=!1;function ee(e){H=e,L=!1,te(),n.viewer.showModal()}function te(){const e=H;if(!e)return;const t=L;n.viewerName.textContent=e.outName,n.viewerImage.src=t?e.item.thumbUrl:e.url,n.viewerImage.alt=`${t?"The original":"The result"}: ${e.name}`,n.viewerCaption.textContent=t?`The original ${e.name}, at ${p(e.size.width,e.size.height)}. Both are shown at the size this dialog has room for, which is the only fair way to compare them.`:_(e),n.viewerCompare.hidden=e.untouched,n.viewerCompare.textContent=t?"Show the result":"Show the original",n.viewerCompare.setAttribute("aria-pressed",String(t)),n.viewerDownload.href=e.url,n.viewerDownload.download=e.outName,n.viewerFacts.replaceChildren();for(const[o,i]of Me(e)){const r=document.createElement("div"),c=document.createElement("dt");c.textContent=o;const d=document.createElement("dd");d.textContent=i,r.append(c,d),n.viewerFacts.appendChild(r)}}function Me(e){const t=[["Saved as",e.outName],["Format",A[e.mime]?.label??e.mime],["Before",`${p(e.size.width,e.size.height)} \xB7 ${y(e.before)}`]];if(e.untouched)return t.push(["After","the same file, byte for byte"]),t.push(["Metadata","kept - this file was never opened up"]),t;t.push(["After",`${p(e.canvas.width,e.canvas.height)} \xB7 ${y(e.after)}`]),t.push(["File size",U(e.before,e.after)]);const o=e.crop.width!==e.size.width||e.crop.height!==e.size.height;return t.push(["Cropped",o?`${p(e.crop.width,e.crop.height)}, from ${e.crop.x} across and ${e.crop.y} down`:"no - the whole picture went through"]),t.push(["Scale",`${W(e.scale)} of ${o?"the crop":"the original"}`]),e.padded&&t.push(["Padding","yes - the picture sits on the background colour"]),A[e.mime]?.lossy&&t.push(["Quality",n.quality.value]),t.push(["Metadata","not carried over - a canvas holds pixels and nothing else"]),t}n.viewerCompare.addEventListener("click",()=>{L=!L,te()}),n.viewerClose.addEventListener("click",()=>n.viewer.close()),n.viewer.addEventListener("click",e=>{e.target===n.viewer&&n.viewer.close()}),n.viewer.addEventListener("close",()=>{H=null,L=!1,n.viewerImage.removeAttribute("src")});function He(e,t){const o=URL.createObjectURL(e),i=document.createElement("a");i.href=o,i.download=t,i.click(),setTimeout(()=>URL.revokeObjectURL(o),6e4)}function P(e){n.loadError.textContent=e,n.loadError.hidden=!1}function D(){n.loadError.textContent="",n.loadError.hidden=!0}n.privacyToggle.addEventListener("click",()=>{const e=n.privacyPanel.hidden;n.privacyPanel.hidden=!e,n.privacyToggle.setAttribute("aria-expanded",String(e))});const De=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function Ke(){const e=new Set,t=new Set,o=i=>{for(const u of i){if(u.name.startsWith("blob:")||u.name.startsWith("data:"))continue;const l=new URL(u.name,location.href);l.origin!==location.origin&&(De.test(l.hostname)?e.add(l.hostname):t.add(l.hostname))}const r=performance.getEntriesByType("resource").filter(u=>!u.name.startsWith("blob:")&&!u.name.startsWith("data:")).length,c=t.size===0,d=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given an image or a byte of one.`;n.networkCount.textContent=c?`your images have gone nowhere. ${r} files loaded, all of them this page's own.${d}`:`something contacted ${[...t].join(", ")}, which this tool never does. Treat that as worth investigating.${d}`,n.networkCount.className=c?"good":"warn",n.networkDot.className=`live-dot ${c?"good":"warn"}`};o(performance.getEntriesByType("resource"));try{new PerformanceObserver(i=>o(i.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function Ge(){const e=(t,o)=>{n.offlineStatus.textContent=t,n.offlineDot.className="live-dot",o&&(n.offlineStatus.title=o,console.info("Offline caching unavailable:",o))};if(!("serviceWorker"in navigator)){e(E("offline.none"));return}if(!window.isSecureContext){e(E("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,n.offlineStatus.textContent=E("offline.ready"),n.offlineStatus.className="good",n.offlineDot.className="live-dot good"}catch(t){e(E("offline.failed"),t.message)}}async function Ve(){if(O=await oe(),!O.has(N)){for(const e of n.format.options)e.value===N&&(e.disabled=!0,e.textContent="WebP - not supported by this browser");n.format.value===N&&(n.format.value="keep"),v()}}window.addEventListener("error",e=>{P(E("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{P(E("error.broke",{detail:e.reason?.message??e.reason}))}),M(),v(),Ve(),Ke(),Ge(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{
+decode,encodableTypes,keepFormat,release,render as renderImage,
+FORMATS,JPEG,PNG,WEBP,READABLE,
+}from'./codecs.js';
+import{
+fromFractions,isUntouched,parseRatio,plan,ratioCrop,toFractions,wholeOf,
+}from'./geometry.js';
+import{Cropper}from'./cropper.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{
+bytes as humanBytes,change,countOf,describePlan,dimensions,outName,scaleText,
+}from'./files.js';
+import{makeZip}from'./shared/zip.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+fileList:$('file-list'),
+listToolbar:$('list-toolbar'),
+countLabel:$('count-label'),
+clearAll:$('clear-all'),
+loadError:$('load-error'),
+cropEmpty:$('crop-empty'),
+cropControls:$('crop-controls'),
+stage:$('stage'),
+stageName:$('stage-name'),
+preview:$('preview'),
+stageNote:$('stage-note'),
+aspectRow:$('aspect-row'),
+swapAspect:$('swap-aspect'),
+cropX:$('crop-x'),
+cropY:$('crop-y'),
+cropW:$('crop-w'),
+cropH:$('crop-h'),
+cropMax:$('crop-max'),
+cropCentre:$('crop-centre'),
+cropReset:$('crop-reset'),
+applyRow:$('apply-row'),
+applyNote:$('apply-note'),
+cropApplyAll:$('crop-apply-all'),
+resizeMode:$('resize-mode'),
+pixelsFields:$('pixels-fields'),
+longestFields:$('longest-fields'),
+percentFields:$('percent-fields'),
+sizeW:$('size-w'),
+sizeH:$('size-h'),
+swapSize:$('swap-size'),
+sizePresets:$('size-presets'),
+fitRow:$('fit-row'),
+fit:$('fit'),
+sizeLongest:$('size-longest'),
+longestPresets:$('longest-presets'),
+sizePercent:$('size-percent'),
+percentPresets:$('percent-presets'),
+enlargeRow:$('enlarge-row'),
+noEnlarge:$('no-enlarge'),
+sizeSummary:$('size-summary'),
+format:$('format'),
+formatNote:$('format-note'),
+qualityField:$('quality-field'),
+quality:$('quality'),
+qualityValue:$('quality-value'),
+background:$('background'),
+planSummary:$('plan-summary'),
+run:$('run'),
+progress:$('progress'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+results:$('results'),
+resultList:$('result-list'),
+downloadZip:$('download-zip'),
+resultsSummary:$('results-summary'),
+viewer:$('viewer'),
+viewerName:$('viewer-name'),
+viewerClose:$('viewer-close'),
+viewerImage:$('viewer-image'),
+viewerCaption:$('viewer-caption'),
+viewerFacts:$('viewer-facts'),
+viewerCompare:$('viewer-compare'),
+viewerDownload:$('viewer-download'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let items=[];
+let nextId=1;
+let busy=false;
+let referenceId=null;
+let results=[];
+let resultUrls=[];
+let writable=new Set([JPEG,PNG]);
+let loadingPreview=false;
+const cropper=new Cropper(el.stage,{
+onChange(rect){
+writeCropFields(rect);
+if(loadingPreview)return;
+const reference=referenceItem();
+if(reference?.size)reference.crop=rect;
+clearResults();
+refreshOutcomes();
+renderCropCard();
+renderSummaries();
+},
+});
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+addFiles(files);
+},
+});
+async function addFiles(files){
+if(!files?.length||busy)return;
+picker.busy(readingLabel(files.length));
+const failures=[];
+try{
+for(const file of files){
+if(!isImage(file)){
+failures.push(`${file.name}: not an image this tool can read.`);
+continue;
+}
+const item={
+id:nextId,
+file,
+thumbUrl:URL.createObjectURL(file),
+size:null,
+crop:null,
+aspectKey:'free',
+};
+nextId+=1;
+item.size=await measure(item.thumbUrl);
+if(!item.size){
+URL.revokeObjectURL(item.thumbUrl);
+failures.push(`${file.name}: this browser could not decode it.`);
+continue;
+}
+item.crop=wholeOf(item.size);
+items.push(item);
+}
+}finally{
+picker.done();
+}
+if(failures.length)showLoadError(failures.join('\n'));
+else clearLoadError();
+clearResults();
+ensureReference();
+render();
+}
+function isImage(file){
+if(!file.type)return/\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name);
+return READABLE.includes(file.type)||file.type.startsWith('image/');
+}
+function measure(url){
+return new Promise((resolve)=>{
+const img=new Image();
+img.onload=()=>resolve({width:img.naturalWidth,height:img.naturalHeight});
+img.onerror=()=>resolve(null);
+img.src=url;
+});
+}
+function removeItem(id){
+const at=items.findIndex((i)=>i.id===id);
+if(at<0)return;
+URL.revokeObjectURL(items[at].thumbUrl);
+items.splice(at,1);
+clearResults();
+ensureReference();
+render();
+}
+el.clearAll.addEventListener('click',()=>{
+for(const item of items)URL.revokeObjectURL(item.thumbUrl);
+items=[];
+clearResults();
+clearLoadError();
+ensureReference();
+render();
+});
+const referenceItem=()=>items.find((i)=>i.id===referenceId)??null;
+function ensureReference(){
+if(!items.some((i)=>i.id===referenceId))referenceId=items[0]?.id??null;
+const reference=referenceItem();
+if(!reference?.size)return;
+el.preview.src=reference.thumbUrl;
+el.preview.alt=`Preview of ${reference.file.name}`;
+el.stage.style.aspectRatio=`${reference.size.width} / ${reference.size.height}`;
+el.stage.style.maxWidth=`calc(62vh * ${reference.size.width / reference.size.height})`;
+loadingPreview=true;
+try{
+cropper.setSource(reference.size.width,reference.size.height);
+cropper.setAspect(aspectValue(reference.aspectKey,reference));
+cropper.setRect(reference.crop);
+}finally{
+loadingPreview=false;
+}
+markAspect();
+}
+function showItem(id){
+if(id===referenceId||busy)return;
+referenceId=id;
+ensureReference();
+render();
+}
+function render(){
+const any=items.length>0;
+el.listToolbar.hidden=!any;
+el.clearAll.disabled=busy;
+el.countLabel.textContent=any
+?`${countOf(items.length)}, ${humanBytes(totalBytes())} in total`
+:'';
+renderList();
+renderCropCard();
+renderSizeFields();
+renderFormatFields();
+renderSummaries();
+el.run.disabled=!any||busy;
+el.run.textContent=items.length===1?'Resize the image':'Resize the images';
+}
+const totalBytes=()=>items.reduce((n,i)=>n+i.file.size,0);
+function renderList(){
+el.fileList.replaceChildren();
+const choosable=items.length>1;
+for(const item of items){
+const li=document.createElement('li');
+li.className='file-row';
+const shown=item.id===referenceId&&choosable;
+if(shown)li.classList.add('file-shown');
+const main=document.createElement(choosable?'button':'div');
+main.className='file-main-wrap';
+if(choosable){
+main.type='button';
+main.setAttribute('aria-pressed',String(shown));
+main.title=shown
+?`${item.file.name} is the one in the crop preview`
+:`Draw the crop box on ${item.file.name}`;
+main.disabled=busy;
+main.addEventListener('click',()=>showItem(item.id));
+}
+const thumb=document.createElement('img');
+thumb.className='file-thumb';
+thumb.src=item.thumbUrl;
+thumb.alt='';
+main.appendChild(thumb);
+const text=document.createElement('div');
+text.className='file-main';
+const name=document.createElement('p');
+name.className='file-name';
+name.textContent=item.file.name;
+text.appendChild(name);
+const sub=document.createElement('p');
+sub.className='file-sub';
+sub.textContent=[
+FORMATS[item.file.type]?.label??(item.file.type||'image').replace('image/','').toUpperCase(),
+humanBytes(item.file.size),
+item.size?dimensions(item.size.width,item.size.height):null,
+].filter(Boolean).join(' · ');
+text.appendChild(sub);
+if(item.size){
+const note=document.createElement('p');
+paintOutcome(note,previewOf(item));
+text.appendChild(note);
+}
+main.appendChild(text);
+if(shown){
+const badge=document.createElement('span');
+badge.className='file-badge';
+badge.textContent='In the preview';
+main.appendChild(badge);
+}
+li.appendChild(main);
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='row-remove';
+remove.title=`Take ${item.file.name} off the list`;
+remove.setAttribute('aria-label',`Take ${item.file.name} off the list`);
+remove.textContent='×';
+remove.disabled=busy;
+remove.addEventListener('click',()=>removeItem(item.id));
+li.appendChild(remove);
+el.fileList.appendChild(li);
+}
+}
+function paintOutcome(node,outcome){
+node.className=outcome.untouched?'file-note':'file-outcome';
+node.textContent=outcome.untouched
+?'Nothing is being changed, so this one is passed through exactly as it is.'
+:`becomes ${dimensions(outcome.canvas.width, outcome.canvas.height)}`;
+}
+function refreshOutcomes(){
+const rows=el.fileList.children;
+items.forEach((item,index)=>{
+const node=rows[index]?.querySelector('.file-outcome, .file-note');
+if(node&&item.size)paintOutcome(node,previewOf(item));
+});
+}
+function renderCropCard(){
+const reference=referenceItem();
+el.cropEmpty.hidden=Boolean(items.length);
+el.cropControls.hidden=!reference;
+cropper.setEnabled(Boolean(reference)&&!busy);
+if(!reference){
+el.stageNote.hidden=true;
+return;
+}
+const others=items.filter((i)=>i.id!==referenceId);
+el.stageName.textContent=others.length?`Drawing on ${reference.file.name}. `:'';
+el.applyRow.hidden=!others.length;
+el.applyNote.textContent=others.length
+?applyNoteText(reference,others.length)
+:'';
+if(!others.length){
+el.stageNote.hidden=true;
+return;
+}
+el.stageNote.hidden=false;
+el.stageNote.textContent=`Every image keeps its own box. ${othersNoteText(others)}`;
+}
+function othersNoteText(others){
+const cropped=others.filter(isCropped);
+if(others.length===1){
+return cropped.length
+?`${others[0].file.name} has a box of its own.`
+:`${others[0].file.name} is still on the whole picture - pick it from the list above to crop that one too.`;
+}
+if(!cropped.length){
+return`The other ${countOf(others.length)} are still on the whole picture - pick one from `
++'the list above to crop it.';
+}
+if(cropped.length===others.length){
+return others.length===2
+?'Both of the others have a box of their own.'
+:`All ${others.length} of the others have a box of their own.`;
+}
+return`${cropped.length} of the other ${others.length} ${cropped.length === 1 ? 'has' : 'have'} `
++'a box of its own; the rest are still on the whole picture.';
+}
+function applyNoteText(reference,count){
+const same=items.every((i)=>i.size
+&&i.size.width===reference.size.width&&i.size.height===reference.size.height);
+if(same){
+return`Every image on the list is exactly this size, so ${count === 1 ? 'the other one gets' : 'they all get'} `
++'exactly this box.';
+}
+return reference.aspectKey==='free'
+?'The same relative area on each - the same fractions of its own width and height - because '
++'they are not all the same size.'
+:`The largest ${aspectLabel(reference.aspectKey)} box that fits the same relative area of each, `
++'so every result comes out the shape you locked even though they are not all the same size.';
+}
+function isCropped(item){
+return Boolean(item.size&&item.crop
+&&(item.crop.width!==item.size.width||item.crop.height!==item.size.height));
+}
+function aspectLabel(key){
+return key==='source'?"picture's own shape":key;
+}
+function renderSizeFields(){
+const mode=el.resizeMode.value;
+el.pixelsFields.hidden=mode!=='pixels';
+el.longestFields.hidden=mode!=='longest';
+el.percentFields.hidden=mode!=='percent';
+const both=Boolean(field(el.sizeW)&&field(el.sizeH));
+el.fitRow.hidden=mode!=='pixels'||!both;
+el.enlargeRow.hidden=mode==='none'||mode==='percent';
+}
+function renderFormatFields(){
+const choice=el.format.value;
+el.qualityField.hidden=choice===PNG;
+el.qualityValue.textContent=el.quality.value;
+const note={
+keep:'A JPEG stays a JPEG, a PNG stays a PNG. Anything this browser cannot write - a GIF, a BMP - comes out as PNG, which keeps transparency and flat colour.',
+[JPEG]:'Small and universal, and no transparency: anything see-through is filled with the background colour.',
+[PNG]:'Lossless and transparent, and much larger than the other two on a photograph.',
+[WEBP]:'Smaller than JPEG at the same quality, keeps transparency, and every current browser opens it.',
+}[choice]??'';
+el.formatNote.textContent=note;
+}
+function renderSummaries(){
+const reference=referenceItem();
+if(!reference?.size){
+el.sizeSummary.textContent='Add an image and this will say exactly what it becomes.';
+el.planSummary.textContent='';
+return;
+}
+const outcome=previewOf(reference);
+const crop=outcome.crop;
+const cropped=crop.width!==reference.size.width||crop.height!==reference.size.height;
+const name=reference.file.name;
+if(outcome.untouched){
+el.sizeSummary.textContent=`Nothing is being changed: ${name} is `
++`${dimensions(reference.size.width, reference.size.height)} and comes back exactly as it `
++'went in, byte for byte.';
+}else{
+const from=cropped?'of what the box keeps':'of the original';
+const scale=outcome.scale>1
+?`enlarged to ${scaleText(outcome.scale)} ${from}`
+:`${scaleText(outcome.scale)} ${from}`;
+el.sizeSummary.textContent=`${name} is ${dimensions(reference.size.width, reference.size.height)}.`
++(cropped?` The box keeps ${dimensions(crop.width, crop.height)} of it.`:'')
++` It comes out ${dimensions(outcome.canvas.width, outcome.canvas.height)}`
++(outcome.padded
+?` - the picture at ${scale}, on a background filling the rest of that frame.`
+:` - ${scale}.`);
+}
+const mime=outputMime(reference.file.type);
+const rest=items.length===1
+?''
+:items.length===2
+?' The other image gets the same size and format settings, with its own crop.'
+:` The other ${countOf(items.length - 1)} get the same size and format settings, each with its own crop.`;
+const nothingAtAll=el.format.value==='keep'
+&&items.every((i)=>i.size&&previewOf(i).untouched);
+el.planSummary.textContent=nothingAtAll
+?'Nothing is cropped, nothing is resized and the format is unchanged, so there is nothing '
++'to re-encode: every file is handed straight back byte for byte, EXIF tags and all, '
++'because none of them is ever opened up.'
+:`${items.length === 1 ? 'The image is' : `${name} is`} `
++`${describePlan(reference.size, crop, outcome, mime).replace(/\.$/, '')}`
++` - and the EXIF and GPS tags do not survive, because a canvas holds pixels and nothing else.${rest}`;
+}
+const settled=()=>{
+clearResults();
+render();
+};
+el.resizeMode.addEventListener('change',settled);
+el.format.addEventListener('change',settled);
+el.fit.addEventListener('change',settled);
+el.noEnlarge.addEventListener('change',settled);
+el.background.addEventListener('change',settled);
+for(const control of[el.sizeW,el.sizeH,el.sizeLongest,el.sizePercent]){
+control.addEventListener('input',settled);
+}
+el.quality.addEventListener('input',()=>{
+el.qualityValue.textContent=el.quality.value;
+clearResults();
+});
+el.swapSize.addEventListener('click',()=>{
+const width=el.sizeW.value;
+el.sizeW.value=el.sizeH.value;
+el.sizeH.value=width;
+settled();
+});
+el.sizePresets.addEventListener('click',(event)=>{
+const button=event.target.closest('button[data-w]');
+if(!button)return;
+el.sizeW.value=button.dataset.w;
+el.sizeH.value=button.dataset.h;
+settled();
+});
+el.longestPresets.addEventListener('click',(event)=>{
+const button=event.target.closest('button[data-longest]');
+if(!button)return;
+el.sizeLongest.value=button.dataset.longest;
+settled();
+});
+el.percentPresets.addEventListener('click',(event)=>{
+const button=event.target.closest('button[data-percent]');
+if(!button)return;
+el.sizePercent.value=button.dataset.percent;
+settled();
+});
+el.aspectRow.addEventListener('click',(event)=>{
+const button=event.target.closest('button[data-aspect]');
+if(!button)return;
+applyAspect(button.dataset.aspect);
+});
+el.swapAspect.addEventListener('click',()=>{
+const reference=referenceItem();
+if(!reference||!cropper.aspect)return;
+applyAspect(flipKey(reference.aspectKey));
+});
+const flipKey=(key)=>{
+const pair=key.match(/^(\d+):(\d+)$/);
+return pair?`${pair[2]}:${pair[1]}`:key;
+};
+function aspectValue(key,item){
+if(key==='source')return item.size.width/item.size.height;
+return key==='free'?null:parseRatio(key);
+}
+function applyAspect(key){
+const reference=referenceItem();
+if(!reference?.size)return;
+reference.aspectKey=key;
+markAspect();
+cropper.setAspect(aspectValue(key,reference));
+}
+function markAspect(){
+const key=referenceItem()?.aspectKey??'free';
+for(const button of el.aspectRow.querySelectorAll('button[data-aspect]')){
+const active=button.dataset.aspect===key;
+button.classList.toggle('active',active);
+button.setAttribute('aria-pressed',String(active));
+}
+el.swapAspect.disabled=!/^\d+:\d+$/.test(key);
+}
+for(const control of[el.cropX,el.cropY,el.cropW,el.cropH]){
+control.addEventListener('change',()=>{
+cropper.setRect({
+x:Number(el.cropX.value)||0,
+y:Number(el.cropY.value)||0,
+width:Number(el.cropW.value)||1,
+height:Number(el.cropH.value)||1,
+});
+});
+}
+el.cropMax.addEventListener('click',()=>cropper.maximize());
+el.cropCentre.addEventListener('click',()=>cropper.centre());
+el.cropReset.addEventListener('click',()=>{
+applyAspect('free');
+cropper.reset();
+});
+el.cropApplyAll.addEventListener('click',()=>{
+const reference=referenceItem();
+if(!reference?.size||busy)return;
+const fractions=toFractions(reference.crop,reference.size);
+for(const item of items){
+if(item.id===reference.id||!item.size)continue;
+const rect=fromFractions(fractions,item.size);
+item.aspectKey=reference.aspectKey;
+const aspect=aspectValue(reference.aspectKey,item);
+item.crop=aspect?ratioCrop(rect,aspect):rect;
+}
+clearResults();
+render();
+});
+function writeCropFields(rect){
+el.cropX.value=String(rect.x);
+el.cropY.value=String(rect.y);
+el.cropW.value=String(rect.width);
+el.cropH.value=String(rect.height);
+}
+function field(input){
+const value=Number.parseFloat(input.value);
+return Number.isFinite(value)&&value>=1?Math.round(value):null;
+}
+function resizeSettings(){
+return{
+mode:el.resizeMode.value,
+width:field(el.sizeW),
+height:field(el.sizeH),
+fit:el.fit.value,
+longest:field(el.sizeLongest)??1,
+percent:Number.parseFloat(el.sizePercent.value)||100,
+noEnlarge:el.noEnlarge.checked,
+};
+}
+function cropFor(item){
+return item.crop??wholeOf(item.size);
+}
+function previewOf(item){
+const crop=cropFor(item);
+const laid=plan(crop,resizeSettings());
+return{
+...laid,
+crop:laid.source,
+untouched:el.format.value==='keep'&&isUntouched(item.size,laid),
+};
+}
+function outputMime(sourceType){
+const choice=el.format.value;
+return choice==='keep'?keepFormat(sourceType,writable):choice;
+}
+el.run.addEventListener('click',async()=>{
+if(!items.length||busy)return;
+busy=true;
+clearResults();
+clearLoadError();
+render();
+el.progress.hidden=false;
+const collected=[];
+const failures=[];
+try{
+for(const[index,item]of items.entries()){
+showProgress(index,items.length,item.file.name);
+try{
+collected.push(await processOne(item));
+}catch(error){
+failures.push(`${item.file.name}: ${error.message}`);
+}
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+}finally{
+busy=false;
+el.progress.hidden=true;
+render();
+}
+if(failures.length)showLoadError(failures.join('\n'));
+results=collected;
+showResults();
+});
+function showProgress(index,total,name){
+el.progressBar.style.width=`${Math.round((index / total) * 100)}%`;
+el.progressLabel.textContent=`${index + 1} of ${total}: ${name}`;
+}
+async function processOne(item){
+const laid=previewOf(item);
+const base={item,name:item.file.name,before:item.file.size,size:item.size};
+if(laid.untouched){
+return{
+...base,
+blob:item.file,
+after:item.file.size,
+mime:item.file.type||JPEG,
+crop:laid.source,
+canvas:laid.canvas,
+scale:1,
+padded:false,
+untouched:true,
+outName:item.file.name,
+};
+}
+const source=await decode(item.file);
+try{
+const mime=outputMime(item.file.type);
+const blob=await renderImage(source.bitmap,laid,{
+mime,
+quality:Number(el.quality.value)/100,
+background:el.background.value,
+});
+return{
+...base,
+blob,
+after:blob.size,
+mime,
+crop:laid.source,
+canvas:laid.canvas,
+scale:laid.scale,
+padded:laid.padded,
+untouched:false,
+outName:outName(item.file.name,mime,laid.canvas.width,laid.canvas.height),
+};
+}finally{
+release(source.bitmap);
+}
+}
+function clearResults(){
+if(el.viewer.open)el.viewer.close();
+for(const url of resultUrls)URL.revokeObjectURL(url);
+resultUrls=[];
+results=[];
+el.resultList.replaceChildren();
+el.results.hidden=true;
+el.downloadZip.hidden=true;
+el.resultsSummary.textContent='';
+}
+function showResults(){
+el.resultList.replaceChildren();
+if(!results.length)return;
+el.results.hidden=false;
+for(const result of results){
+result.url=URL.createObjectURL(result.blob);
+resultUrls.push(result.url);
+el.resultList.appendChild(resultRow(result));
+}
+const before=results.reduce((n,r)=>n+r.before,0);
+const after=results.reduce((n,r)=>n+r.after,0);
+const untouched=results.filter((r)=>r.untouched).length;
+const totals=`${humanBytes(before)} in, ${humanBytes(after)} out - ${change(before, after)}.`;
+el.resultsSummary.textContent=untouched===results.length
+?'Nothing was asked for, so nothing was done: every file came back exactly as it went in.'
+:untouched
+?`${totals} ${countOf(untouched)} needed no change and were passed straight through.`
+:totals;
+el.downloadZip.hidden=results.length<2;
+el.downloadZip.onclick=async()=>{
+el.downloadZip.disabled=true;
+try{
+const files=await Promise.all(results.map(async(r)=>({
+name:r.outName,
+data:new Uint8Array(await r.blob.arrayBuffer()),
+})));
+saveBlob(makeZip(files),'resized-images.zip');
+}finally{
+el.downloadZip.disabled=false;
+}
+};
+}
+function resultRow(result){
+const li=document.createElement('li');
+li.className='result-row';
+if(result.untouched)li.classList.add('result-untouched');
+const open=document.createElement('button');
+open.type='button';
+open.className='result-open';
+open.title=`Look at ${result.outName} full size`;
+open.setAttribute('aria-label',`Look at ${result.outName} full size`);
+open.addEventListener('click',()=>openViewer(result));
+const thumb=document.createElement('img');
+thumb.className='result-thumb';
+thumb.src=result.url;
+thumb.alt='';
+thumb.loading='lazy';
+open.appendChild(thumb);
+li.appendChild(open);
+const text=document.createElement('div');
+text.className='result-text';
+const name=document.createElement('p');
+name.className='result-name';
+name.textContent=result.outName;
+text.appendChild(name);
+const headline=document.createElement('p');
+headline.className='result-headline';
+headline.textContent=headlineOf(result);
+text.appendChild(headline);
+const detail=document.createElement('p');
+detail.className='result-detail';
+detail.textContent=detailOf(result);
+text.appendChild(detail);
+li.appendChild(text);
+const actions=document.createElement('div');
+actions.className='result-actions';
+const view=document.createElement('button');
+view.type='button';
+view.className='ghost';
+view.textContent='View';
+view.addEventListener('click',()=>openViewer(result));
+actions.appendChild(view);
+const link=document.createElement('a');
+link.className='primary as-button';
+link.href=result.url;
+link.download=result.outName;
+link.textContent='Download';
+actions.appendChild(link);
+li.appendChild(actions);
+return li;
+}
+function headlineOf(result){
+return result.untouched
+?`${dimensions(result.size.width, result.size.height)} · ${humanBytes(result.before)} - unchanged`
+:`${dimensions(result.size.width, result.size.height)} → ${dimensions(result.canvas.width, result.canvas.height)}`
++` · ${humanBytes(result.before)} → ${humanBytes(result.after)} · ${change(result.before, result.after)}`;
+}
+function detailOf(result){
+return result.untouched
+?'Passed through byte for byte, metadata and all: nothing about this file was being changed.'
+:describePlan(result.size,result.crop,result,result.mime);
+}
+let viewing=null;
+let viewingOriginal=false;
+function openViewer(result){
+viewing=result;
+viewingOriginal=false;
+paintViewer();
+el.viewer.showModal();
+}
+function paintViewer(){
+const result=viewing;
+if(!result)return;
+const original=viewingOriginal;
+el.viewerName.textContent=result.outName;
+el.viewerImage.src=original?result.item.thumbUrl:result.url;
+el.viewerImage.alt=`${original ? 'The original' : 'The result'}: ${result.name}`;
+el.viewerCaption.textContent=original
+?`The original ${result.name}, at ${dimensions(result.size.width, result.size.height)}. Both are shown at the size this dialog has room for, which is the only fair way to compare them.`
+:detailOf(result);
+el.viewerCompare.hidden=result.untouched;
+el.viewerCompare.textContent=original?'Show the result':'Show the original';
+el.viewerCompare.setAttribute('aria-pressed',String(original));
+el.viewerDownload.href=result.url;
+el.viewerDownload.download=result.outName;
+el.viewerFacts.replaceChildren();
+for(const[term,value]of viewerFacts(result)){
+const row=document.createElement('div');
+const dt=document.createElement('dt');
+dt.textContent=term;
+const dd=document.createElement('dd');
+dd.textContent=value;
+row.append(dt,dd);
+el.viewerFacts.appendChild(row);
+}
+}
+function viewerFacts(result){
+const facts=[
+['Saved as',result.outName],
+['Format',FORMATS[result.mime]?.label??result.mime],
+['Before',`${dimensions(result.size.width, result.size.height)} · ${humanBytes(result.before)}`],
+];
+if(result.untouched){
+facts.push(['After','the same file, byte for byte']);
+facts.push(['Metadata','kept - this file was never opened up']);
+return facts;
+}
+facts.push(['After',`${dimensions(result.canvas.width, result.canvas.height)} · ${humanBytes(result.after)}`]);
+facts.push(['File size',change(result.before,result.after)]);
+const cropped=result.crop.width!==result.size.width||result.crop.height!==result.size.height;
+facts.push(['Cropped',cropped
+?`${dimensions(result.crop.width, result.crop.height)}, from ${result.crop.x} across and ${result.crop.y} down`
+:'no - the whole picture went through']);
+facts.push(['Scale',`${scaleText(result.scale)} of ${cropped ? 'the crop' : 'the original'}`]);
+if(result.padded)facts.push(['Padding','yes - the picture sits on the background colour']);
+if(FORMATS[result.mime]?.lossy)facts.push(['Quality',el.quality.value]);
+facts.push(['Metadata','not carried over - a canvas holds pixels and nothing else']);
+return facts;
+}
+el.viewerCompare.addEventListener('click',()=>{
+viewingOriginal=!viewingOriginal;
+paintViewer();
+});
+el.viewerClose.addEventListener('click',()=>el.viewer.close());
+el.viewer.addEventListener('click',(event)=>{
+if(event.target===el.viewer)el.viewer.close();
+});
+el.viewer.addEventListener('close',()=>{
+viewing=null;
+viewingOriginal=false;
+el.viewerImage.removeAttribute('src');
+});
+function saveBlob(blob,name){
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=name;
+link.click();
+setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function showLoadError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function clearLoadError(){
+el.loadError.textContent='';
+el.loadError.hidden=true;
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given an image or a byte of one.`;
+el.networkCount.textContent=clean
+?`your images have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+async function checkEncoders(){
+writable=await encodableTypes();
+if(writable.has(WEBP))return;
+for(const option of el.format.options){
+if(option.value===WEBP){
+option.disabled=true;
+option.textContent='WebP - not supported by this browser';
+}
+}
+if(el.format.value===WEBP)el.format.value='keep';
+render();
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+markAspect();
+render();
+checkEncoders();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

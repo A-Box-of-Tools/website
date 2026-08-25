@@ -1,5 +1,5 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-const i=`
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+export const LONG=`
 abacus
 abdomen
 abdominal
@@ -7776,7 +7776,9 @@ zookeeper
 zoologist
 zoology
 zoom
-`.trim().split(/\s+/),n=`
+`
+.trim().split(/\s+/);
+export const SHORT=`
 acid
 acorn
 acre
@@ -9073,4 +9075,12 @@ zesty
 zippy
 zone
 zoom
-`.trim().split(/\s+/),e=[{id:"long",words:i},{id:"short",words:n}];function t(a){return(e.find(r=>r.id===a)??e[0]).words}export{i as LONG,n as SHORT,e as WORDLISTS,t as wordlist};
+`
+.trim().split(/\s+/);
+export const WORDLISTS=[
+{id:'long',words:LONG},
+{id:'short',words:SHORT},
+];
+export function wordlist(id){
+return(WORDLISTS.find((list)=>list.id===id)??WORDLISTS[0]).words;
+}

@@ -1,2 +1,312 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{ByteReader as m,Truncated as p}from"./reader.js";import{describe as S}from"./dictionary.js";import{IMPLICIT_LITTLE as y,transferSyntax as E}from"./uids.js";class M extends Error{constructor(e){super(e),this.name="NotDicom"}}const h=128,N="DICM",u=4294967295,w="fffee000",D="fffee00d",d="fffee0dd",O="7fe00010",x=new Set(["OB","OD","OF","OL","OV","OW","SQ","UC","UN","UR","UT"]),C=16384;function H(t){const e=[];if((t.length>=h+4?String.fromCharCode(...t.subarray(h,h+4)):"")!==N){const o=F(t);if(!o)throw new M("there is no DICM marker at byte 128, and the first bytes are not a DICOM element either");return e.push(`This file has no DICM marker, so it was read as a bare dataset in ${o.name}. That was worked out from its first element rather than declared.`),{hasPreamble:!1,meta:I(),syntax:o,datasetStart:0,warnings:e}}const s={little:!0,explicit:!0},i=k(t,{start:h+4,end:V(t),syntax:s}),a=R(i,"00020010");a||e.push("The file meta group names no transfer syntax, so the dataset was read as Implicit VR Little Endian, which is what the standard says to assume.");const l=E(a||y);return a&&!l.known&&e.push(`Transfer syntax ${a} is not one this tool recognises. The header below was read as Explicit VR Little Endian, which every syntax registered since 1995 uses; the pixels could not be decoded.`),{hasPreamble:!0,meta:i,syntax:l,datasetStart:i.end,warnings:e.concat(i.warnings)}}function V(t){const e=new m(t,h+4);try{const n=e.u16(),s=e.u16(),i=e.ascii(2);if(n===2&&s===0&&i==="UL"){e.u16();const a=e.u32(),l=e.at+a;if(a>0&&l<=t.length)return l}}catch(n){if(!(n instanceof p))throw n}return A(t)}function A(t){const e=new m(t,h+4);let n=e.at;try{for(;!e.done;){const s=e.at;if(e.u16()!==2)return s;e.at=s,b(e,{little:!0,explicit:!0},!1),n=e.at}}catch(s){if(!(s instanceof p))throw s}return n}const R=(t,e)=>{const n=t.byTag.get(e);return n?.value?$(String.fromCharCode(...n.value)):""},$=t=>t.replace(/[\0 ]+$/,"");function F(t){if(t.length<8)return null;const e=new m(t),n=e.u16();if(e.u16(),n===0||n>256)return null;const s=e.ascii(2),i=/^[A-Z]{2}$/.test(s)&&(x.has(s)||U.has(s));return E(i?"1.2.840.10008.1.2.1":y)}const U=new Set(["AE","AS","AT","CS","DA","DS","DT","FL","FD","IS","LO","LT","OB","OD","OF","OL","OV","OW","PN","SH","SL","SQ","SS","ST","SV","TM","UC","UI","UL","UN","UR","US","UT","UV"]),I=()=>({elements:[],byTag:new Map,warnings:[],end:0});function k(t,{start:e=0,end:n=t.length,syntax:s}){const i=new m(t,e,n);i.little=s.little;const a=I();for(;!i.done;){const l=i.at;let o;try{o=b(i,s,!0)}catch(f){if(!(f instanceof p))throw f;a.warnings.push(`The file ends part-way through the element at byte ${l}; everything before it was read.`),i.at=n;break}if(!(o.tag===D||o.tag===d)&&(a.elements.push(o),a.byTag.has(o.tag)||a.byTag.set(o.tag,o),o.stopped)){a.warnings.push(o.stopped);break}}return a.end=i.at,a}function b(t,e,n){const s=t.at,i=t.u16(),a=t.u16(),l=g(i)+g(a);if(i===65534){const v=T(t,!0);return{tag:l,vr:"na",guessedVR:!1,length:v,offset:t.at,value:null,items:null,fragments:null,offsetOfTag:s,little:!0}}let o,f=!1,c;e.explicit?(o=t.ascii(2),U.has(o)?x.has(o)?(t.skip(2),c=t.u32()):c=t.u16():(t.at=s+4,o=S(l).vr,f=!0,c=t.u32())):(o=S(l).vr,f=!0,c=t.u32());const r={tag:l,vr:o,guessedVR:f,length:c,offset:t.at,value:null,items:null,fragments:null,offsetOfTag:s,stopped:null,little:e.little};return n?(P(t,e,r),r):(c!==u&&t.skip(c),r)}function T(t,e){const n=t.little;t.little=e;const s=t.u32();return t.little=n,s}function P(t,e,n){const{tag:s,vr:i,length:a}=n;if(i==="SQ"||a===u&&i==="UN"&&s!==O){n.items=_(t,e,a);return}if(a===u){if(s===O){const f=Q(t);n.fragments=f.items,n.offsetTable=f.table;return}n.stopped=`The element ${s} declares an undefined length, which only a sequence may do. Nothing after it could be read.`,t.at=t.end;return}if(a>t.left){n.stopped=`The element at byte ${n.offsetOfTag} says its value is ${a} bytes, and only ${t.left} are left in the file.`,n.length=t.left,n.value=L(t.slice(t.left));return}const o=t.slice(a);n.value=L(o)}const L=t=>t.length<=C?t.slice():null;function _(t,e,n){const s=[],i=n===u?t.end:t.at+n;for(;t.at<i&&!t.done;){const a=t.u16(),l=t.u16(),o=g(a)+g(l),f=T(t,!0);if(o===d)break;if(o!==w){t.at-=8;break}const c=t.at,r=f===u?B(t,e,i):Math.min(c+f,t.end);s.push(k(t.bytes,{start:c,end:r,syntax:e})),t.at=f===u?r+8:r}return s}function B(t,e,n){const s=new m(t.bytes,t.at,n);s.little=e.little;let i=0;for(;!s.done;){const a=s.at;let l;try{l=b(s,e,!1)}catch(o){if(!(o instanceof p))throw o;return n}if(l.tag===D){if(i===0)return a;i-=1}else l.tag===w&&(l.length===u?i+=1:s.skip(Math.min(l.length,s.left)))}return n}function Q(t){const e=[],n=[];let s=!0;for(;!t.done;){const i=t.u16(),a=t.u16(),l=g(i)+g(a),o=T(t,!0);if(l===d)break;if(l!==w){t.at-=8;break}if(o===u||o>t.left)break;const f=t.at;if(t.skip(o),s){s=!1;for(let c=0;c+4<=o;c+=4)e.push(new DataView(t.bytes.buffer,t.bytes.byteOffset+f+c,4).getUint32(0,!0));continue}n.push({offset:f,length:o})}return{table:e,items:n}}const g=t=>t.toString(16).padStart(4,"0");function*q(t,e=0){for(const n of t.elements)if(yield{element:n,depth:e},n.items)for(const s of n.items)yield*q(s,e+1)}export{M as NotDicom,O as PIXEL_DATA,k as parseDataset,H as parseFile,q as walk};
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{ByteReader,Truncated}from'./reader.js';
+import{describe}from'./dictionary.js';
+import{IMPLICIT_LITTLE,transferSyntax}from'./uids.js';
+export class NotDicom extends Error{
+constructor(message){
+super(message);
+this.name='NotDicom';
+}
+}
+const PREAMBLE=128;
+const MAGIC='DICM';
+const UNDEFINED=0xffffffff;
+const ITEM='fffee000';
+const ITEM_END='fffee00d';
+const SEQUENCE_END='fffee0dd';
+export const PIXEL_DATA='7fe00010';
+const LONG_FORM=new Set(['OB','OD','OF','OL','OV','OW','SQ','UC','UN','UR','UT']);
+const KEEP_BYTES=16384;
+export function parseFile(bytes){
+const warnings=[];
+const magicAt=bytes.length>=PREAMBLE+4
+?String.fromCharCode(...bytes.subarray(PREAMBLE,PREAMBLE+4))
+:'';
+if(magicAt!==MAGIC){
+const guess=sniff(bytes);
+if(!guess){
+throw new NotDicom('there is no DICM marker at byte 128, and the first '
++'bytes are not a DICOM element either');
+}
+warnings.push(`This file has no DICM marker, so it was read as a bare dataset in ${
+      guess.name}. That was worked out from its first element rather than declared.`
+);
+return{
+hasPreamble:false,
+meta:emptyDataset(),
+syntax:guess,
+datasetStart:0,
+warnings,
+};
+}
+const metaSyntax={little:true,explicit:true};
+const meta=parseDataset(bytes,{
+start:PREAMBLE+4,
+end:metaEnd(bytes),
+syntax:metaSyntax,
+});
+const uid=metaValue(meta,'00020010');
+if(!uid){
+warnings.push('The file meta group names no transfer syntax, so the dataset was '
++'read as Implicit VR Little Endian, which is what the standard says to assume.');
+}
+const syntax=transferSyntax(uid||IMPLICIT_LITTLE);
+if(uid&&!syntax.known){
+warnings.push(`Transfer syntax ${uid} is not one this tool recognises. The header `
++'below was read as Explicit VR Little Endian, which every syntax registered '
++'since 1995 uses; the pixels could not be decoded.');
+}
+return{
+hasPreamble:true,
+meta,
+syntax,
+datasetStart:meta.end,
+warnings:warnings.concat(meta.warnings),
+};
+}
+function metaEnd(bytes){
+const reader=new ByteReader(bytes,PREAMBLE+4);
+try{
+const group=reader.u16();
+const element=reader.u16();
+const vr=reader.ascii(2);
+if(group===2&&element===0&&vr==='UL'){
+reader.u16();
+const declared=reader.u32();
+const end=reader.at+declared;
+if(declared>0&&end<=bytes.length)return end;
+}
+}catch(error){
+if(!(error instanceof Truncated))throw error;
+}
+return scanMetaEnd(bytes);
+}
+function scanMetaEnd(bytes){
+const reader=new ByteReader(bytes,PREAMBLE+4);
+let last=reader.at;
+try{
+while(!reader.done){
+const start=reader.at;
+if(reader.u16()!==2)return start;
+reader.at=start;
+readElement(reader,{little:true,explicit:true},false);
+last=reader.at;
+}
+}catch(error){
+if(!(error instanceof Truncated))throw error;
+}
+return last;
+}
+const metaValue=(meta,tag)=>{
+const found=meta.byTag.get(tag);
+if(!found?.value)return'';
+return trimUid(String.fromCharCode(...found.value));
+};
+const trimUid=(text)=>text.replace(/[\0 ]+$/,'');
+function sniff(bytes){
+if(bytes.length<8)return null;
+const reader=new ByteReader(bytes);
+const group=reader.u16();
+reader.u16();
+if(group===0||group>0x0100)return null;
+const maybeVR=reader.ascii(2);
+const explicit=/^[A-Z]{2}$/.test(maybeVR)
+&&(LONG_FORM.has(maybeVR)||KNOWN_VR.has(maybeVR));
+return transferSyntax(explicit?'1.2.840.10008.1.2.1':IMPLICIT_LITTLE);
+}
+const KNOWN_VR=new Set([
+'AE','AS','AT','CS','DA','DS','DT','FL','FD','IS','LO','LT',
+'OB','OD','OF','OL','OV','OW','PN','SH','SL','SQ','SS','ST',
+'SV','TM','UC','UI','UL','UN','UR','US','UT','UV',
+]);
+const emptyDataset=()=>({elements:[],byTag:new Map(),warnings:[],end:0});
+export function parseDataset(bytes,{start=0,end=bytes.length,syntax}){
+const reader=new ByteReader(bytes,start,end);
+reader.little=syntax.little;
+const dataset=emptyDataset();
+while(!reader.done){
+const at=reader.at;
+let element;
+try{
+element=readElement(reader,syntax,true);
+}catch(error){
+if(!(error instanceof Truncated))throw error;
+dataset.warnings.push(`The file ends part-way through the element at byte ${at
+      }; everything before it was read.`
+);
+reader.at=end;
+break;
+}
+if(element.tag===ITEM_END||element.tag===SEQUENCE_END)continue;
+dataset.elements.push(element);
+if(!dataset.byTag.has(element.tag))dataset.byTag.set(element.tag,element);
+if(element.stopped){
+dataset.warnings.push(element.stopped);
+break;
+}
+}
+dataset.end=reader.at;
+return dataset;
+}
+function readElement(reader,syntax,full){
+const offsetOfTag=reader.at;
+const group=reader.u16();
+const number=reader.u16();
+const tag=hex4(group)+hex4(number);
+if(group===0xfffe){
+const length=readU32(reader,true);
+return{tag,vr:'na',guessedVR:false,length,offset:reader.at,value:null,
+items:null,fragments:null,offsetOfTag,little:true};
+}
+let vr;
+let guessedVR=false;
+let length;
+if(syntax.explicit){
+vr=reader.ascii(2);
+if(!KNOWN_VR.has(vr)){
+reader.at=offsetOfTag+4;
+vr=describe(tag).vr;
+guessedVR=true;
+length=reader.u32();
+}else if(LONG_FORM.has(vr)){
+reader.skip(2);
+length=reader.u32();
+}else{
+length=reader.u16();
+}
+}else{
+vr=describe(tag).vr;
+guessedVR=true;
+length=reader.u32();
+}
+const element={tag,vr,guessedVR,length,offset:reader.at,value:null,
+items:null,fragments:null,offsetOfTag,stopped:null,little:syntax.little};
+if(!full){
+if(length!==UNDEFINED)reader.skip(length);
+return element;
+}
+readValue(reader,syntax,element);
+return element;
+}
+function readU32(reader,little){
+const was=reader.little;
+reader.little=little;
+const value=reader.u32();
+reader.little=was;
+return value;
+}
+function readValue(reader,syntax,element){
+const{tag,vr,length}=element;
+const isSequence=vr==='SQ'
+||(length===UNDEFINED&&vr==='UN'&&tag!==PIXEL_DATA);
+if(isSequence){
+element.items=readItems(reader,syntax,length);
+return;
+}
+if(length===UNDEFINED){
+if(tag===PIXEL_DATA){
+const encapsulated=readFragments(reader);
+element.fragments=encapsulated.items;
+element.offsetTable=encapsulated.table;
+return;
+}
+element.stopped=`The element ${tag} declares an undefined length, which only a `
++'sequence may do. Nothing after it could be read.';
+reader.at=reader.end;
+return;
+}
+if(length>reader.left){
+element.stopped=`The element at byte ${element.offsetOfTag} says its value is ${
+      length} bytes, and only ${reader.left} are left in the file.`
+;
+element.length=reader.left;
+element.value=keep(reader.slice(reader.left));
+return;
+}
+const bytes=reader.slice(length);
+element.value=keep(bytes);
+}
+const keep=(bytes)=>(bytes.length<=KEEP_BYTES?bytes.slice():null);
+function readItems(reader,syntax,length){
+const items=[];
+const stop=length===UNDEFINED?reader.end:reader.at+length;
+while(reader.at<stop&&!reader.done){
+const group=reader.u16();
+const number=reader.u16();
+const tag=hex4(group)+hex4(number);
+const itemLength=readU32(reader,true);
+if(tag===SEQUENCE_END)break;
+if(tag!==ITEM){
+reader.at-=8;
+break;
+}
+const from=reader.at;
+const to=itemLength===UNDEFINED
+?findItemEnd(reader,syntax,stop)
+:Math.min(from+itemLength,reader.end);
+items.push(parseDataset(reader.bytes,{start:from,end:to,syntax}));
+reader.at=itemLength===UNDEFINED?to+8:to;
+}
+return items;
+}
+function findItemEnd(reader,syntax,stop){
+const scan=new ByteReader(reader.bytes,reader.at,stop);
+scan.little=syntax.little;
+let depth=0;
+while(!scan.done){
+const at=scan.at;
+let element;
+try{
+element=readElement(scan,syntax,false);
+}catch(error){
+if(!(error instanceof Truncated))throw error;
+return stop;
+}
+if(element.tag===ITEM_END){
+if(depth===0)return at;
+depth-=1;
+}else if(element.tag===ITEM){
+if(element.length===UNDEFINED)depth+=1;
+else scan.skip(Math.min(element.length,scan.left));
+}
+}
+return stop;
+}
+function readFragments(reader){
+const table=[];
+const items=[];
+let first=true;
+while(!reader.done){
+const group=reader.u16();
+const number=reader.u16();
+const tag=hex4(group)+hex4(number);
+const length=readU32(reader,true);
+if(tag===SEQUENCE_END)break;
+if(tag!==ITEM){
+reader.at-=8;
+break;
+}
+if(length===UNDEFINED||length>reader.left)break;
+const offset=reader.at;
+reader.skip(length);
+if(first){
+first=false;
+for(let at=0;at+4<=length;at+=4){
+table.push(new DataView(reader.bytes.buffer,reader.bytes.byteOffset+offset+at,4)
+.getUint32(0,true));
+}
+continue;
+}
+items.push({offset,length});
+}
+return{table,items};
+}
+const hex4=(value)=>value.toString(16).padStart(4,'0');
+export function*walk(dataset,depth=0){
+for(const element of dataset.elements){
+yield{element,depth};
+if(element.items){
+for(const item of element.items)yield*walk(item,depth+1);
+}
+}
+}

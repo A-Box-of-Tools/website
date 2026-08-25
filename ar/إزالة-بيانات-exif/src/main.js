@@ -1,3 +1,957 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as E}from"./shared/phrases.js";import{wireFilePicker as Q,readingLabel as ee}from"./shared/file-picker.js";import{readImage as te,readBytes as ne,serialize as F,exifBytes as ae,outputType as I,KIND_NAMES as G}from"./container.js";import{serializeExif as oe,setEntryValue as ie,createEntry as le,TYPE as x}from"./tiff.js";import{describeTag as R}from"./tags.js";import{formatValue as se,readPosition as ce,buildFindings as re,badges as de,bytes as b,countTags as A,metadataSize as W,hasMetadata as V,tagGroups as ue}from"./report.js";import{makeZip as pe}from"./zip.js";const r=e=>document.getElementById(e),o={dropzone:r("dropzone"),fileInput:r("file-input"),fileList:r("file-list"),listToolbar:r("list-toolbar"),countLabel:r("count-label"),clearAll:r("clear-all"),loadError:r("load-error"),stripAll:r("strip-all"),stripStatus:r("strip-status"),keepOrientation:r("keep-orientation"),keepIcc:r("keep-icc"),keepSummary:r("keep-summary"),cleanResults:r("clean-results"),resultList:r("result-list"),downloadZip:r("download-zip"),inspectEmpty:r("inspect-empty"),inspector:r("inspector"),inspectThumb:r("inspect-thumb"),inspectName:r("inspect-name"),inspectSub:r("inspect-sub"),inspectSelect:r("inspect-select"),findingsList:r("findings-list"),blockList:r("block-list"),tagGroups:r("tag-groups"),tagsNote:r("tags-note"),addTag:r("add-tag"),addTagSelect:r("add-tag-select"),addTagValue:r("add-tag-value"),addTagGo:r("add-tag-go"),saveEdits:r("save-edits"),revertEdits:r("revert-edits"),saveStatus:r("save-status"),editError:r("edit-error"),privacyToggle:r("privacy-toggle"),privacyPanel:r("privacy-panel"),networkCount:r("network-count"),networkDot:r("network-dot"),offlineStatus:r("offline-status"),offlineDot:r("offline-dot")};let f=[],v=null,X=1,U=[];const M=Q({input:o.fileInput,dropzone:o.dropzone,onFiles(e){me(e)}});async function me(e){if(!e?.length)return;M.busy(ee(e.length));const a=[];try{for(const t of e){let n;try{n=await te(t)}catch(s){a.push(`${t.name}: ${s.message}`);continue}n.id=X,X+=1,n.name=t.name,n.size=t.size,n.drop=new Set,n.dirty=!1,n.thumbUrl=URL.createObjectURL(t);const i=await fe(n.thumbUrl);if(i&&n.doc&&(n.doc.canvas=i),n.ok&&K(n),n.ok){const s=ce(n.exif.groups.gps);n.had={exif:A(n)>0,gps:n.exif.groups.gps.length>0,thumbnail:!!n.exif.thumbnail?.length,where:s?`${s.text}.`:"Location tags without a full position."},n.textChunks=n.meta.text.map(l=>({keyword:l.keyword,value:l.value??"",unreadable:!!l.unreadable})),n.textDirty=!1}f.push(n),n.ok||a.push(`${t.name}: ${n.error}`)}}finally{M.done()}a.length?j(a.join(`
-`)):J(),v===null&&(v=f.find(t=>t.ok)?.id??null),C()}const he=()=>({ok:!0,littleEndian:!0,groups:{ifd0:[],exif:[],gps:[],interop:[],ifd1:[]},thumbnail:null});function K(e){e.exifUnreadable=!!(e.exif&&!e.exif.ok&&e.meta.exif),e.exifError=e.exifUnreadable?e.exif.error:null,e.exif?.ok||(e.exif=he())}function fe(e){return new Promise(a=>{const t=new Image;t.onload=()=>a({width:t.naturalWidth,height:t.naturalHeight}),t.onerror=()=>a(null),t.src=e})}function ge(e){const a=f.findIndex(t=>t.id===e);a<0||(URL.revokeObjectURL(f[a].thumbUrl),f.splice(a,1),v===e&&(v=f.find(t=>t.ok)?.id??null),C())}o.clearAll.addEventListener("click",()=>{for(const e of f)URL.revokeObjectURL(e.thumbUrl);f=[],v=null,_(),J(),C()});function C(){const e=f.length>0;o.listToolbar.hidden=!e,o.countLabel.textContent=e?`${f.length} photo${f.length===1?"":"s"}`:"",y(),o.stripAll.disabled=!f.some(a=>a.ok),z(),N()}function y(){o.fileList.replaceChildren();for(const e of f){const a=document.createElement("li");a.className="file-row",e.id===v&&a.classList.add("selected"),e.ok||a.classList.add("unreadable");const t=document.createElement("button");t.type="button",t.className="file-pick",t.disabled=!e.ok,t.addEventListener("click",()=>{v=e.id,C()});const n=document.createElement("img");n.className="file-thumb",n.src=e.thumbUrl,n.alt="",n.loading="lazy",t.appendChild(n);const i=document.createElement("span");i.className="file-main";const s=document.createElement("span");s.className="file-name",s.textContent=e.name,i.appendChild(s);const l=document.createElement("span");if(l.className="file-sub",l.textContent=e.ok?`${G[e.kind]} \xB7 ${b(e.size)} \xB7 about ${b(W(e))} of metadata`:e.error,i.appendChild(l),e.ok){const d=document.createElement("span");d.className="badges";for(const h of de(e)){const m=document.createElement("span");m.className=`badge badge-${h.level}`,m.textContent=h.label,d.appendChild(m)}i.appendChild(d)}t.appendChild(i),a.appendChild(t);const c=document.createElement("button");c.type="button",c.className="row-remove",c.title=`Take ${e.name} off the list`,c.setAttribute("aria-label",`Take ${e.name} off the list`),c.textContent="\xD7",c.addEventListener("click",()=>ge(e.id)),a.appendChild(c),o.fileList.appendChild(a)}}function z(){const e=[];o.keepOrientation.checked&&e.push("the orientation tag"),o.keepIcc.checked&&e.push("the colour profile"),o.keepSummary.textContent=e.length?`Everything else goes: EXIF, GPS, the maker note, XMP, IPTC, comments, the embedded thumbnail, and any block this tool could not identify. Kept: ${e.join(" and ")}.`:"Absolutely everything goes, including the orientation tag and the colour profile. The file will carry no metadata of any kind."}o.keepOrientation.addEventListener("change",z),o.keepIcc.addEventListener("change",z);const w=()=>f.find(e=>e.id===v&&e.ok)??null;function N(){const e=w();if(o.inspector.hidden=!e,o.inspectEmpty.hidden=!!e,!e)return;o.inspectSelect.replaceChildren();const a=f.filter(n=>n.ok);for(const n of a){const i=document.createElement("option");i.value=String(n.id),i.textContent=n.name,i.selected=n.id===e.id,o.inspectSelect.appendChild(i)}o.inspectSelect.parentElement.hidden=a.length<2,o.inspectThumb.src=e.thumbUrl,o.inspectThumb.hidden=!1,o.inspectName.textContent=e.name;const t=e.doc?.canvas;o.inspectSub.textContent=[G[e.kind],t?`${t.width} \xD7 ${t.height}`:null,b(e.size),V(e)?`about ${b(W(e))} of it metadata`:"no metadata found"].filter(Boolean).join(" \xB7 "),H(e),xe(e),ve(e),we(e),Y(),D()}o.inspectSelect.addEventListener("change",()=>{v=Number(o.inspectSelect.value),C()});function H(e){o.findingsList.replaceChildren();const a=re(e);if(!a.length){const t=document.createElement("li");t.className="finding finding-clean";const n=document.createElement("p");n.className="finding-title",n.textContent="Nothing in this file gives anything away";const i=document.createElement("p");i.className="finding-detail",i.textContent=e.dirty?"Everything that did has been removed. Save the photo to write it out.":"No location, no timestamps, no camera, no names. Either it never had any, or something has already stripped it.",t.append(n,i),o.findingsList.appendChild(t);return}for(const t of a){const n=document.createElement("li");n.className=`finding finding-${t.level}`;const i=document.createElement("p");i.className="finding-title",i.textContent=t.title;const s=document.createElement("p");s.className="finding-detail",s.textContent=t.detail,n.append(i,s),o.findingsList.appendChild(n)}}function be(e){const a=e.exif.groups,t=e.meta,n=[],i=()=>{for(const l of Object.keys(a))a[l]=[];e.exif.thumbnail=null};e.exifUnreadable&&n.push({title:"An EXIF block that would not parse",detail:`${b(t.exif.length)}, and this tool could not read it: ${e.exifError} Saving rewrites the EXIF block from what is listed below, so an unreadable one cannot be carried across - it goes whichever button you press.`,gone:!0,pill:"Cannot be kept"}),e.had.exif&&n.push({title:"EXIF tags",detail:`${A(e)} tags across the camera, image and location directories.`,gone:A(e)===0,label:"Remove every tag",remove:i}),e.had.gps&&n.push({title:"GPS location",detail:e.had.where,gone:a.gps.length===0,label:"Remove the location",remove:()=>{a.gps=[]}}),e.had.thumbnail&&n.push({title:"Embedded thumbnail",detail:"A small second copy of the picture, which may predate any cropping.",gone:!e.exif.thumbnail,label:"Remove the thumbnail",remove:()=>{e.exif.thumbnail=null}});const s=[["xmp","XMP packet",t.xmp!==null&&t.xmp!==void 0,()=>`${b(t.xmp.length)} of XML: usually the camera again, plus the edit history.`],["iptc","IPTC block",!!t.iptc,()=>`${b(t.iptc.length)} of caption, byline and credit fields.`],["text","Text chunks",t.text.length>0,()=>`${t.text.length} key/value pair${t.text.length===1?"":"s"}: ${t.text.map(l=>l.keyword).join(", ")}.`],["comments","Comments",t.comments.length>0,()=>`${t.comments.length} comment${t.comments.length===1?"":"s"} stored beside the picture.`],["extras","Blocks this tool cannot read",t.extras.length>0,()=>`${t.extras.map(l=>`${l.label} (${b(l.size)})`).join(", ")}. Removable without being readable.`],["icc","Colour profile",!!t.icc,()=>`${b(t.icc.length)}${t.iccName?` named "${t.iccName}"`:""}. Says nothing about you; removing it can shift the colours.`]];for(const[l,c,d,h]of s)d&&n.push({title:c,detail:h(),gone:e.drop.has(l),label:"Remove",remove:()=>e.drop.add(l)});return n}function xe(e){o.blockList.replaceChildren();const a=be(e);if(!a.length&&!e.meta.notes.length){const t=document.createElement("li");t.className="block block-none",t.textContent="This file has no metadata blocks in it at all.",o.blockList.appendChild(t);return}for(const t of a){const n=document.createElement("li");n.className=`block${t.gone?" block-gone":""}`;const i=document.createElement("div"),s=document.createElement("p");s.className="block-title",s.textContent=t.title;const l=document.createElement("p");if(l.className="block-detail",l.textContent=t.detail,i.append(s,l),n.appendChild(i),t.gone){const c=document.createElement("span");c.className="block-removed",c.textContent=t.pill??"Removed",n.appendChild(c)}else{const c=document.createElement("button");c.type="button",c.className="ghost danger",c.textContent=t.label,c.addEventListener("click",()=>{t.remove(),e.dirty=!0,N(),y()}),n.appendChild(c)}o.blockList.appendChild(n)}for(const t of e.meta.notes){const n=document.createElement("li");n.className="block block-kept";const i=document.createElement("div"),s=document.createElement("p");s.className="block-title",s.textContent=t.label;const l=document.createElement("p");l.className="block-detail",l.textContent=t.detail,i.append(s,l),n.appendChild(i);const c=document.createElement("span");c.className="block-kept-pill",c.textContent="Kept",n.appendChild(c),o.blockList.appendChild(n)}}function ve(e){o.tagGroups.replaceChildren();const a=ue(e);o.tagsNote.textContent=a.length?"Change a value and it is written back when you save. Tags with no editor can still be removed - deleting a value never needs to understand it.":"There are no EXIF tags in this photo.",e.textChunks?.length&&!e.drop.has("text")&&o.tagGroups.appendChild(ke(e));for(const t of a){const n=document.createElement("section");n.className="tag-group";const i=document.createElement("h4");i.textContent=t.title;const s=document.createElement("span");s.className="group-count",s.textContent=`${t.entries.length} tag${t.entries.length===1?"":"s"}`,i.appendChild(s),n.appendChild(i);const l=document.createElement("p");l.className="group-note",l.textContent=t.note,n.appendChild(l);const c=document.createElement("div");c.className="table-scroll";const d=document.createElement("table");d.className="tag-table";const h=document.createElement("thead"),m=document.createElement("tr");for(const g of["Tag","Value",""]){const k=document.createElement("th");k.scope="col",k.textContent=g,m.appendChild(k)}h.appendChild(m),d.appendChild(h);const p=document.createElement("tbody");for(const g of t.entries)p.appendChild(Ce(e,t.id,g));d.appendChild(p),c.appendChild(d),n.appendChild(c),o.tagGroups.appendChild(n)}}function ke(e){const a=document.createElement("section");a.className="tag-group";const t=document.createElement("h4");t.textContent="Text chunks";const n=document.createElement("span");n.className="group-count",n.textContent=`${e.textChunks.length} pair${e.textChunks.length===1?"":"s"}`,t.appendChild(n),a.appendChild(t);const i=e.textChunks.some(p=>p.unreadable),s=document.createElement("p");s.className="group-note",s.textContent=i?"This file has a compressed text chunk that would not unpack. Editing the set would drop it, so the set is read-only here - it can still be removed as a block.":"PNG stores these instead of EXIF tags. Editing any of them rewrites the set.",a.appendChild(s);const l=document.createElement("div");l.className="table-scroll";const c=document.createElement("table");c.className="tag-table";const d=document.createElement("thead"),h=document.createElement("tr");for(const p of["Keyword","Value",""]){const g=document.createElement("th");g.scope="col",g.textContent=p,h.appendChild(g)}d.appendChild(h),c.appendChild(d);const m=document.createElement("tbody");for(const p of e.textChunks){const g=document.createElement("tr"),k=document.createElement("th");if(k.scope="row",i)k.textContent=p.keyword;else{const u=document.createElement("input");u.className="tag-input",u.value=p.keyword,u.spellcheck=!1,u.setAttribute("aria-label",`Keyword for ${p.keyword}`),u.addEventListener("change",()=>{p.keyword=u.value,e.textDirty=!0,O(e)}),k.appendChild(u)}g.appendChild(k);const $=document.createElement("td");if(p.unreadable){const u=document.createElement("span");u.className="tag-readonly",u.textContent="compressed, and it would not unpack",$.appendChild(u)}else if(i){const u=document.createElement("span");u.className="tag-readonly",u.textContent=p.value,$.appendChild(u)}else{const u=document.createElement("input");u.className="tag-input",u.value=p.value,u.spellcheck=!1,u.setAttribute("aria-label",`Value for ${p.keyword}`),u.addEventListener("change",()=>{p.value=u.value,e.textDirty=!0,O(e)}),$.appendChild(u)}g.appendChild($);const T=document.createElement("td");if(T.className="tag-actions",!i){const u=document.createElement("button");u.type="button",u.className="tag-delete",u.textContent="Remove",u.setAttribute("aria-label",`Remove the ${p.keyword} text chunk`),u.addEventListener("click",()=>{const P=e.textChunks.indexOf(p);P>=0&&e.textChunks.splice(P,1),e.textDirty=!0,e.dirty=!0,N(),y()}),T.appendChild(u)}g.appendChild(T),m.appendChild(g)}return c.appendChild(m),l.appendChild(c),a.appendChild(l),a}function Ce(e,a,t){const n=R(a,t.tag),i=document.createElement("tr"),s=document.createElement("th");s.scope="row";const l=document.createElement("span");if(l.className="tag-name",l.textContent=n.name,s.appendChild(l),n.risk){const p=document.createElement("span");p.className=`tag-risk tag-risk-${n.risk}`,p.textContent=n.risk==="high"?"identifying":"revealing",n.note&&(p.title=n.note),s.appendChild(p)}const c=document.createElement("span");c.className="tag-id",c.textContent=`0x${t.tag.toString(16).padStart(4,"0")}`,s.appendChild(c),i.appendChild(s);const d=document.createElement("td");d.appendChild(ye(e,a,t)),i.appendChild(d);const h=document.createElement("td");h.className="tag-actions";const m=document.createElement("button");return m.type="button",m.className="tag-delete",m.textContent="Remove",m.setAttribute("aria-label",`Remove ${n.name}`),m.addEventListener("click",()=>{const p=e.exif.groups[a],g=p.indexOf(t);g>=0&&p.splice(g,1),e.dirty=!0,N(),y()}),h.appendChild(m),i.appendChild(h),i}function Ee(e){return typeof e.value=="string"?e.value:Array.isArray(e.value)?e.value.join(" "):typeof e.value=="number"?String(e.value):""}function ye(e,a,t){const n=R(a,t.tag);if(!n.edit){const l=document.createElement("span");return l.className="tag-readonly",l.textContent=se(a,t),l}const i=(l,c)=>{ie(t,c,e.exif.littleEndian)?(l.classList.remove("bad"),D(),O(e)):String(c).trim()===""?(l.classList.add("bad"),S(`${n.name} cannot be left blank. Use the Remove button beside it if you want the tag gone altogether.`)):(l.classList.add("bad"),S(`"${c}" is not a value this tag can hold. ${n.name} expects ${n.edit==="text"?"text":"a number"}.`))};if(n.edit==="enum"){const l=document.createElement("select");l.className="tag-input";const c=Object.entries(n.values??{});typeof t.value=="number"&&!n.values?.[t.value]&&c.push([String(t.value),`Unrecognised value (${t.value})`]);for(const[d,h]of c){const m=document.createElement("option");m.value=d,m.textContent=h,m.selected=Number(d)===t.value,l.appendChild(m)}return l.addEventListener("change",()=>i(l,l.value)),l}const s=document.createElement("input");return s.className="tag-input",s.type=n.edit==="int"?"number":"text",s.spellcheck=!1,s.value=Ee(t),s.addEventListener("change",()=>i(s,s.value)),s}const B=[{group:"ifd0",tag:270,type:x.ASCII,hint:"A sentence describing the picture"},{group:"ifd0",tag:315,type:x.ASCII,hint:"Who took it"},{group:"ifd0",tag:33432,type:x.ASCII,hint:"e.g. (c) 2026 Your Name"},{group:"ifd0",tag:305,type:x.ASCII,hint:"What produced the file"},{group:"ifd0",tag:306,type:x.ASCII,hint:"2026:08:19 14:30:00"},{group:"ifd0",tag:271,type:x.ASCII,hint:"e.g. Canon"},{group:"ifd0",tag:272,type:x.ASCII,hint:"e.g. EOS R6"},{group:"ifd0",tag:274,type:x.SHORT,hint:"1 is the right way up; 6 is rotated 90 degrees"},{group:"exif",tag:36867,type:x.ASCII,hint:"2026:08:19 14:30:00"},{group:"exif",tag:37510,type:x.UNDEFINED,hint:"Free text"},{group:"exif",tag:34855,type:x.SHORT,hint:"e.g. 400"}];function we(e){o.addTagSelect.replaceChildren();const a=B.filter(t=>!e.exif.groups[t.group].some(n=>n.tag===t.tag));if(o.addTag.hidden=a.length===0,!!a.length){for(const t of a){const n=document.createElement("option");n.value=`${t.group}:${t.tag}`,n.textContent=R(t.group,t.tag).name,o.addTagSelect.appendChild(n)}Z()}}function Z(){const e=B.find(a=>`${a.group}:${a.tag}`===o.addTagSelect.value);o.addTagValue.placeholder=e?.hint??""}o.addTagSelect.addEventListener("change",Z),o.addTagGo.addEventListener("click",()=>{const e=w();if(!e)return;const a=B.find(n=>`${n.group}:${n.tag}`===o.addTagSelect.value);if(!a)return;const t=le(a.tag,a.type,o.addTagValue.value,e.exif.littleEndian);if(!t){S(`"${o.addTagValue.value}" is not a value that tag can hold.`);return}e.exif.groups[a.group].push(t),e.dirty=!0,o.addTagValue.value="",N(),y(),o.addTag.open=!0});function O(e){e.dirty=!0,Y(),H(e),y()}function Y(){const e=w();o.saveEdits.disabled=!e?.dirty,o.revertEdits.disabled=!e?.dirty,e&&!e.dirty&&(o.saveStatus.textContent="")}function L(e,a){const{ext:t}=I(e.kind);return`${e.name.replace(/\.[^.]+$/,"")||"photo"}-${a}.${t}`}function Ne(e,a,t){const n={exif:null,xmp:null,iptc:null,comments:null,extras:null,text:null};if(t||(n.icc=null),a&&e.exif?.ok){const i=e.exif.groups.ifd0.find(s=>s.tag===274);i&&i.value!==1&&(n.exif=oe({littleEndian:e.exif.littleEndian,groups:{ifd0:[i],exif:[],gps:[],interop:[],ifd1:[]},thumbnail:null}))}return n}function $e(e){const a={exif:ae(e.exif)};for(const t of["xmp","iptc","icc","comments","extras","text"])e.drop.has(t)&&(a[t]=null);return!e.drop.has("text")&&e.textDirty&&(a.text=e.textChunks.filter(t=>!t.unreadable).map(({keyword:t,value:n})=>({keyword:t,value:n}))),a}o.stripAll.addEventListener("click",()=>{const e=o.keepOrientation.checked,a=o.keepIcc.checked,t=[];for(const i of f)if(i.ok)try{if(!V(i)){t.push({item:i,note:"Nothing to remove - this file had no metadata in it."});continue}t.push({item:i,data:F(i,Ne(i,e,a))})}catch(s){t.push({item:i,error:s.message})}Le(t);const n=t.filter(i=>i.data).length;o.stripStatus.textContent=n?`${n} photo${n===1?"":"s"} cleaned. Nothing left this machine.`:"Nothing needed removing."});function _(){for(const e of U)URL.revokeObjectURL(e);U=[],o.resultList.replaceChildren(),o.cleanResults.hidden=!0,o.downloadZip.hidden=!0,o.stripStatus.textContent=""}function Le(e){if(_(),!e.length)return;o.cleanResults.hidden=!1;for(const t of e){const n=document.createElement("li");n.className="result-row";const i=document.createElement("div"),s=document.createElement("p");s.className="result-name",s.textContent=t.item.name,i.appendChild(s);const l=document.createElement("p");if(l.className="result-detail",t.data){const c=t.item.size-t.data.length;l.textContent=`${b(t.item.size)} to ${b(t.data.length)} - ${b(Math.max(0,c))} of metadata gone. The picture itself is unchanged.`}else t.error?(l.textContent=t.error,n.classList.add("result-failed")):l.textContent=t.note;if(i.appendChild(l),n.appendChild(i),t.data){const c=URL.createObjectURL(new Blob([t.data],{type:I(t.item.kind).mime}));U.push(c);const d=document.createElement("a");d.className="primary as-button",d.href=c,d.download=L(t.item,"clean"),d.textContent="Download",n.appendChild(d)}o.resultList.appendChild(n)}const a=e.filter(t=>t.data);o.downloadZip.hidden=a.length<2,o.downloadZip.onclick=()=>{const t=pe(a.map(n=>({name:L(n.item,"clean"),data:n.data})));q(t,"photos-without-metadata.zip")}}function q(e,a){const t=URL.createObjectURL(e),n=document.createElement("a");n.href=t,n.download=a,n.click(),setTimeout(()=>URL.revokeObjectURL(t),6e4)}o.saveEdits.addEventListener("click",()=>{const e=w();if(e)try{const a=F(e,$e(e));q(new Blob([a],{type:I(e.kind).mime}),L(e,"edited")),o.saveStatus.textContent=`Saved as ${L(e,"edited")} - ${b(a.length)}.`,D()}catch(a){S(a.message)}}),o.revertEdits.addEventListener("click",async()=>{const e=w();if(!e)return;const a=e.doc?.canvas??null,t=await ne(e.bytes);Object.assign(e,t),K(e),e.doc&&a&&(e.doc.canvas=a),e.drop=new Set,e.textChunks=e.meta.text.map(n=>({keyword:n.keyword,value:n.value??"",unreadable:!!n.unreadable})),e.textDirty=!1,e.dirty=!1,C(),o.saveStatus.textContent="Back to the file as it was read."});function j(e){o.loadError.textContent=e,o.loadError.hidden=!1}function J(){o.loadError.textContent="",o.loadError.hidden=!0}function S(e){o.editError.textContent=e,o.editError.hidden=!1}function D(){o.editError.textContent="",o.editError.hidden=!0}o.privacyToggle.addEventListener("click",()=>{const e=o.privacyPanel.hidden;o.privacyPanel.hidden=!e,o.privacyToggle.setAttribute("aria-expanded",String(e))});const Se=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function Te(){const e=new Set,a=new Set,t=n=>{for(const c of n){if(c.name.startsWith("blob:")||c.name.startsWith("data:"))continue;const d=new URL(c.name,location.href);d.origin!==location.origin&&(Se.test(d.hostname)?e.add(d.hostname):a.add(d.hostname))}const i=performance.getEntriesByType("resource").filter(c=>!c.name.startsWith("blob:")&&!c.name.startsWith("data:")).length,s=a.size===0,l=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a file or a tag.`;o.networkCount.textContent=s?`your photos have gone nowhere. ${i} files loaded, all of them this page's own.${l}`:`something contacted ${[...a].join(", ")}, which this tool never does. Treat that as worth investigating.${l}`,o.networkCount.className=s?"good":"warn",o.networkDot.className=`live-dot ${s?"good":"warn"}`};t(performance.getEntriesByType("resource"));try{new PerformanceObserver(n=>t(n.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function Ie(){const e=(a,t)=>{o.offlineStatus.textContent=a,o.offlineDot.className="live-dot",t&&(o.offlineStatus.title=t,console.info("Offline caching unavailable:",t))};if(!("serviceWorker"in navigator)){e(E("offline.none"));return}if(!window.isSecureContext){e(E("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,o.offlineStatus.textContent=E("offline.ready"),o.offlineStatus.className="good",o.offlineDot.className="live-dot good"}catch(a){e(E("offline.failed"),a.message)}}window.addEventListener("error",e=>{j(E("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{j(E("error.broke",{detail:e.reason?.message??e.reason}))}),C(),Te(),Ie(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{readImage,readBytes,serialize,exifBytes,outputType,KIND_NAMES}from'./container.js';
+import{serializeExif,setEntryValue,createEntry,TYPE}from'./tiff.js';
+import{describeTag}from'./tags.js';
+import{
+formatValue,readPosition,buildFindings,badges,bytes as humanBytes,
+countTags,metadataSize,hasMetadata,tagGroups,
+}from'./report.js';
+import{makeZip}from'./zip.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+fileList:$('file-list'),
+listToolbar:$('list-toolbar'),
+countLabel:$('count-label'),
+clearAll:$('clear-all'),
+loadError:$('load-error'),
+stripAll:$('strip-all'),
+stripStatus:$('strip-status'),
+keepOrientation:$('keep-orientation'),
+keepIcc:$('keep-icc'),
+keepSummary:$('keep-summary'),
+cleanResults:$('clean-results'),
+resultList:$('result-list'),
+downloadZip:$('download-zip'),
+inspectEmpty:$('inspect-empty'),
+inspector:$('inspector'),
+inspectThumb:$('inspect-thumb'),
+inspectName:$('inspect-name'),
+inspectSub:$('inspect-sub'),
+inspectSelect:$('inspect-select'),
+findingsList:$('findings-list'),
+blockList:$('block-list'),
+tagGroups:$('tag-groups'),
+tagsNote:$('tags-note'),
+addTag:$('add-tag'),
+addTagSelect:$('add-tag-select'),
+addTagValue:$('add-tag-value'),
+addTagGo:$('add-tag-go'),
+saveEdits:$('save-edits'),
+revertEdits:$('revert-edits'),
+saveStatus:$('save-status'),
+editError:$('edit-error'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+let items=[];
+let selectedId=null;
+let nextId=1;
+let resultUrls=[];
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+addFiles(files);
+},
+});
+async function addFiles(files){
+if(!files?.length)return;
+picker.busy(readingLabel(files.length));
+const failures=[];
+try{
+for(const file of files){
+let item;
+try{
+item=await readImage(file);
+}catch(error){
+failures.push(`${file.name}: ${error.message}`);
+continue;
+}
+item.id=nextId;
+nextId+=1;
+item.name=file.name;
+item.size=file.size;
+item.drop=new Set();
+item.dirty=false;
+item.thumbUrl=URL.createObjectURL(file);
+const dims=await measure(item.thumbUrl);
+if(dims&&item.doc)item.doc.canvas=dims;
+if(item.ok)normalizeExif(item);
+if(item.ok){
+const position=readPosition(item.exif.groups.gps);
+item.had={
+exif:countTags(item)>0,
+gps:item.exif.groups.gps.length>0,
+thumbnail:Boolean(item.exif.thumbnail?.length),
+where:position?`${position.text}.`:'Location tags without a full position.',
+};
+item.textChunks=item.meta.text.map((t)=>({
+keyword:t.keyword,
+value:t.value??'',
+unreadable:Boolean(t.unreadable),
+}));
+item.textDirty=false;
+}
+items.push(item);
+if(!item.ok)failures.push(`${file.name}: ${item.error}`);
+}
+}finally{
+picker.done();
+}
+if(failures.length)showLoadError(failures.join('\n'));
+else clearLoadError();
+if(selectedId===null)selectedId=items.find((i)=>i.ok)?.id??null;
+render();
+}
+const emptyExif=()=>({
+ok:true,
+littleEndian:true,
+groups:{ifd0:[],exif:[],gps:[],interop:[],ifd1:[]},
+thumbnail:null,
+});
+function normalizeExif(item){
+item.exifUnreadable=Boolean(item.exif&&!item.exif.ok&&item.meta.exif);
+item.exifError=item.exifUnreadable?item.exif.error:null;
+if(!item.exif?.ok)item.exif=emptyExif();
+}
+function measure(url){
+return new Promise((resolve)=>{
+const img=new Image();
+img.onload=()=>resolve({width:img.naturalWidth,height:img.naturalHeight});
+img.onerror=()=>resolve(null);
+img.src=url;
+});
+}
+function removeItem(id){
+const at=items.findIndex((i)=>i.id===id);
+if(at<0)return;
+URL.revokeObjectURL(items[at].thumbUrl);
+items.splice(at,1);
+if(selectedId===id)selectedId=items.find((i)=>i.ok)?.id??null;
+render();
+}
+el.clearAll.addEventListener('click',()=>{
+for(const item of items)URL.revokeObjectURL(item.thumbUrl);
+items=[];
+selectedId=null;
+clearResults();
+clearLoadError();
+render();
+});
+function render(){
+const any=items.length>0;
+el.listToolbar.hidden=!any;
+el.countLabel.textContent=any
+?`${items.length} photo${items.length === 1 ? '' : 's'}`
+:'';
+renderList();
+el.stripAll.disabled=!items.some((i)=>i.ok);
+renderKeepSummary();
+renderInspector();
+}
+function renderList(){
+el.fileList.replaceChildren();
+for(const item of items){
+const li=document.createElement('li');
+li.className='file-row';
+if(item.id===selectedId)li.classList.add('selected');
+if(!item.ok)li.classList.add('unreadable');
+const pick=document.createElement('button');
+pick.type='button';
+pick.className='file-pick';
+pick.disabled=!item.ok;
+pick.addEventListener('click',()=>{selectedId=item.id;render();});
+const thumb=document.createElement('img');
+thumb.className='file-thumb';
+thumb.src=item.thumbUrl;
+thumb.alt='';
+thumb.loading='lazy';
+pick.appendChild(thumb);
+const main=document.createElement('span');
+main.className='file-main';
+const name=document.createElement('span');
+name.className='file-name';
+name.textContent=item.name;
+main.appendChild(name);
+const sub=document.createElement('span');
+sub.className='file-sub';
+sub.textContent=item.ok
+?`${KIND_NAMES[item.kind]} · ${humanBytes(item.size)} · about ${humanBytes(metadataSize(item))} of metadata`
+:item.error;
+main.appendChild(sub);
+if(item.ok){
+const row=document.createElement('span');
+row.className='badges';
+for(const badge of badges(item)){
+const span=document.createElement('span');
+span.className=`badge badge-${badge.level}`;
+span.textContent=badge.label;
+row.appendChild(span);
+}
+main.appendChild(row);
+}
+pick.appendChild(main);
+li.appendChild(pick);
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='row-remove';
+remove.title=`Take ${item.name} off the list`;
+remove.setAttribute('aria-label',`Take ${item.name} off the list`);
+remove.textContent='×';
+remove.addEventListener('click',()=>removeItem(item.id));
+li.appendChild(remove);
+el.fileList.appendChild(li);
+}
+}
+function renderKeepSummary(){
+const kept=[];
+if(el.keepOrientation.checked)kept.push('the orientation tag');
+if(el.keepIcc.checked)kept.push('the colour profile');
+el.keepSummary.textContent=kept.length
+?`Everything else goes: EXIF, GPS, the maker note, XMP, IPTC, comments, the embedded thumbnail, and any block this tool could not identify. Kept: ${kept.join(' and ')}.`
+:'Absolutely everything goes, including the orientation tag and the colour profile. The file will carry no metadata of any kind.';
+}
+el.keepOrientation.addEventListener('change',renderKeepSummary);
+el.keepIcc.addEventListener('change',renderKeepSummary);
+const selected=()=>items.find((i)=>i.id===selectedId&&i.ok)??null;
+function renderInspector(){
+const item=selected();
+el.inspector.hidden=!item;
+el.inspectEmpty.hidden=Boolean(item);
+if(!item)return;
+el.inspectSelect.replaceChildren();
+const readable=items.filter((i)=>i.ok);
+for(const other of readable){
+const option=document.createElement('option');
+option.value=String(other.id);
+option.textContent=other.name;
+option.selected=other.id===item.id;
+el.inspectSelect.appendChild(option);
+}
+el.inspectSelect.parentElement.hidden=readable.length<2;
+el.inspectThumb.src=item.thumbUrl;
+el.inspectThumb.hidden=false;
+el.inspectName.textContent=item.name;
+const size=item.doc?.canvas;
+el.inspectSub.textContent=[
+KIND_NAMES[item.kind],
+size?`${size.width} × ${size.height}`:null,
+humanBytes(item.size),
+hasMetadata(item)?`about ${humanBytes(metadataSize(item))} of it metadata`:'no metadata found',
+].filter(Boolean).join(' · ');
+renderFindings(item);
+renderBlocks(item);
+renderTags(item);
+renderAddTag(item);
+updateSaveButtons();
+clearEditError();
+}
+el.inspectSelect.addEventListener('change',()=>{
+selectedId=Number(el.inspectSelect.value);
+render();
+});
+function renderFindings(item){
+el.findingsList.replaceChildren();
+const findings=buildFindings(item);
+if(!findings.length){
+const li=document.createElement('li');
+li.className='finding finding-clean';
+const title=document.createElement('p');
+title.className='finding-title';
+title.textContent='Nothing in this file gives anything away';
+const detail=document.createElement('p');
+detail.className='finding-detail';
+detail.textContent=item.dirty
+?'Everything that did has been removed. Save the photo to write it out.'
+:'No location, no timestamps, no camera, no names. Either it never had any, or something has already stripped it.';
+li.append(title,detail);
+el.findingsList.appendChild(li);
+return;
+}
+for(const finding of findings){
+const li=document.createElement('li');
+li.className=`finding finding-${finding.level}`;
+const title=document.createElement('p');
+title.className='finding-title';
+title.textContent=finding.title;
+const detail=document.createElement('p');
+detail.className='finding-detail';
+detail.textContent=finding.detail;
+li.append(title,detail);
+el.findingsList.appendChild(li);
+}
+}
+function blockDescriptors(item){
+const groups=item.exif.groups;
+const meta=item.meta;
+const list=[];
+const clearGroups=()=>{
+for(const key of Object.keys(groups))groups[key]=[];
+item.exif.thumbnail=null;
+};
+if(item.exifUnreadable){
+list.push({
+title:'An EXIF block that would not parse',
+detail:`${humanBytes(meta.exif.length)}, and this tool could not read it: ${item.exifError} Saving rewrites the EXIF block from what is listed below, so an unreadable one cannot be carried across - it goes whichever button you press.`,
+gone:true,
+pill:'Cannot be kept',
+});
+}
+if(item.had.exif){
+list.push({
+title:'EXIF tags',
+detail:`${countTags(item)} tags across the camera, image and location directories.`,
+gone:countTags(item)===0,
+label:'Remove every tag',
+remove:clearGroups,
+});
+}
+if(item.had.gps){
+list.push({
+title:'GPS location',
+detail:item.had.where,
+gone:groups.gps.length===0,
+label:'Remove the location',
+remove:()=>{groups.gps=[];},
+});
+}
+if(item.had.thumbnail){
+list.push({
+title:'Embedded thumbnail',
+detail:'A small second copy of the picture, which may predate any cropping.',
+gone:!item.exif.thumbnail,
+label:'Remove the thumbnail',
+remove:()=>{item.exif.thumbnail=null;},
+});
+}
+const containerBlocks=[
+['xmp','XMP packet',meta.xmp!==null&&meta.xmp!==undefined,
+()=>`${humanBytes(meta.xmp.length)} of XML: usually the camera again, plus the edit history.`],
+['iptc','IPTC block',Boolean(meta.iptc),
+()=>`${humanBytes(meta.iptc.length)} of caption, byline and credit fields.`],
+['text','Text chunks',meta.text.length>0,
+()=>`${meta.text.length} key/value pair${meta.text.length === 1 ? '' : 's'}: ${meta.text.map((t) => t.keyword).join(', ')}.`],
+['comments','Comments',meta.comments.length>0,
+()=>`${meta.comments.length} comment${meta.comments.length === 1 ? '' : 's'} stored beside the picture.`],
+['extras','Blocks this tool cannot read',meta.extras.length>0,
+()=>`${meta.extras.map((x) => `${x.label} (${humanBytes(x.size)})`).join(', ')}. Removable without being readable.`],
+['icc','Colour profile',Boolean(meta.icc),
+()=>`${humanBytes(meta.icc.length)}${meta.iccName ? ` named "${meta.iccName}"` : ''}. Says nothing about you; removing it can shift the colours.`],
+];
+for(const[id,title,present,detail]of containerBlocks){
+if(!present)continue;
+list.push({
+title,
+detail:detail(),
+gone:item.drop.has(id),
+label:'Remove',
+remove:()=>item.drop.add(id),
+});
+}
+return list;
+}
+function renderBlocks(item){
+el.blockList.replaceChildren();
+const blocks=blockDescriptors(item);
+if(!blocks.length&&!item.meta.notes.length){
+const li=document.createElement('li');
+li.className='block block-none';
+li.textContent='This file has no metadata blocks in it at all.';
+el.blockList.appendChild(li);
+return;
+}
+for(const block of blocks){
+const li=document.createElement('li');
+li.className=`block${block.gone ? ' block-gone' : ''}`;
+const text=document.createElement('div');
+const title=document.createElement('p');
+title.className='block-title';
+title.textContent=block.title;
+const detail=document.createElement('p');
+detail.className='block-detail';
+detail.textContent=block.detail;
+text.append(title,detail);
+li.appendChild(text);
+if(block.gone){
+const pill=document.createElement('span');
+pill.className='block-removed';
+pill.textContent=block.pill??'Removed';
+li.appendChild(pill);
+}else{
+const button=document.createElement('button');
+button.type='button';
+button.className='ghost danger';
+button.textContent=block.label;
+button.addEventListener('click',()=>{
+block.remove();
+item.dirty=true;
+renderInspector();
+renderList();
+});
+li.appendChild(button);
+}
+el.blockList.appendChild(li);
+}
+for(const note of item.meta.notes){
+const li=document.createElement('li');
+li.className='block block-kept';
+const text=document.createElement('div');
+const title=document.createElement('p');
+title.className='block-title';
+title.textContent=note.label;
+const detail=document.createElement('p');
+detail.className='block-detail';
+detail.textContent=note.detail;
+text.append(title,detail);
+li.appendChild(text);
+const pill=document.createElement('span');
+pill.className='block-kept-pill';
+pill.textContent='Kept';
+li.appendChild(pill);
+el.blockList.appendChild(li);
+}
+}
+function renderTags(item){
+el.tagGroups.replaceChildren();
+const groups=tagGroups(item);
+el.tagsNote.textContent=groups.length
+?'Change a value and it is written back when you save. Tags with no editor can still be removed - deleting a value never needs to understand it.'
+:'There are no EXIF tags in this photo.';
+if(item.textChunks?.length&&!item.drop.has('text'))el.tagGroups.appendChild(textChunkGroup(item));
+for(const group of groups){
+const section=document.createElement('section');
+section.className='tag-group';
+const heading=document.createElement('h4');
+heading.textContent=group.title;
+const count=document.createElement('span');
+count.className='group-count';
+count.textContent=`${group.entries.length} tag${group.entries.length === 1 ? '' : 's'}`;
+heading.appendChild(count);
+section.appendChild(heading);
+const note=document.createElement('p');
+note.className='group-note';
+note.textContent=group.note;
+section.appendChild(note);
+const scroll=document.createElement('div');
+scroll.className='table-scroll';
+const table=document.createElement('table');
+table.className='tag-table';
+const head=document.createElement('thead');
+const headRow=document.createElement('tr');
+for(const label of['Tag','Value','']){
+const th=document.createElement('th');
+th.scope='col';
+th.textContent=label;
+headRow.appendChild(th);
+}
+head.appendChild(headRow);
+table.appendChild(head);
+const body=document.createElement('tbody');
+for(const entry of group.entries)body.appendChild(tagRow(item,group.id,entry));
+table.appendChild(body);
+scroll.appendChild(table);
+section.appendChild(scroll);
+el.tagGroups.appendChild(section);
+}
+}
+function textChunkGroup(item){
+const section=document.createElement('section');
+section.className='tag-group';
+const heading=document.createElement('h4');
+heading.textContent='Text chunks';
+const count=document.createElement('span');
+count.className='group-count';
+count.textContent=`${item.textChunks.length} pair${item.textChunks.length === 1 ? '' : 's'}`;
+heading.appendChild(count);
+section.appendChild(heading);
+const frozen=item.textChunks.some((t)=>t.unreadable);
+const note=document.createElement('p');
+note.className='group-note';
+note.textContent=frozen
+?'This file has a compressed text chunk that would not unpack. Editing the set would drop it, so the set is read-only here - it can still be removed as a block.'
+:'PNG stores these instead of EXIF tags. Editing any of them rewrites the set.';
+section.appendChild(note);
+const scroll=document.createElement('div');
+scroll.className='table-scroll';
+const table=document.createElement('table');
+table.className='tag-table';
+const head=document.createElement('thead');
+const headRow=document.createElement('tr');
+for(const label of['Keyword','Value','']){
+const th=document.createElement('th');
+th.scope='col';
+th.textContent=label;
+headRow.appendChild(th);
+}
+head.appendChild(headRow);
+table.appendChild(head);
+const body=document.createElement('tbody');
+for(const chunk of item.textChunks){
+const tr=document.createElement('tr');
+const th=document.createElement('th');
+th.scope='row';
+if(frozen){
+th.textContent=chunk.keyword;
+}else{
+const key=document.createElement('input');
+key.className='tag-input';
+key.value=chunk.keyword;
+key.spellcheck=false;
+key.setAttribute('aria-label',`Keyword for ${chunk.keyword}`);
+key.addEventListener('change',()=>{
+chunk.keyword=key.value;
+item.textDirty=true;
+markDirty(item);
+});
+th.appendChild(key);
+}
+tr.appendChild(th);
+const valueCell=document.createElement('td');
+if(chunk.unreadable){
+const span=document.createElement('span');
+span.className='tag-readonly';
+span.textContent='compressed, and it would not unpack';
+valueCell.appendChild(span);
+}else if(frozen){
+const span=document.createElement('span');
+span.className='tag-readonly';
+span.textContent=chunk.value;
+valueCell.appendChild(span);
+}else{
+const input=document.createElement('input');
+input.className='tag-input';
+input.value=chunk.value;
+input.spellcheck=false;
+input.setAttribute('aria-label',`Value for ${chunk.keyword}`);
+input.addEventListener('change',()=>{
+chunk.value=input.value;
+item.textDirty=true;
+markDirty(item);
+});
+valueCell.appendChild(input);
+}
+tr.appendChild(valueCell);
+const actions=document.createElement('td');
+actions.className='tag-actions';
+if(!frozen){
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='tag-delete';
+remove.textContent='Remove';
+remove.setAttribute('aria-label',`Remove the ${chunk.keyword} text chunk`);
+remove.addEventListener('click',()=>{
+const at=item.textChunks.indexOf(chunk);
+if(at>=0)item.textChunks.splice(at,1);
+item.textDirty=true;
+item.dirty=true;
+renderInspector();
+renderList();
+});
+actions.appendChild(remove);
+}
+tr.appendChild(actions);
+body.appendChild(tr);
+}
+table.appendChild(body);
+scroll.appendChild(table);
+section.appendChild(scroll);
+return section;
+}
+function tagRow(item,group,entry){
+const spec=describeTag(group,entry.tag);
+const tr=document.createElement('tr');
+const th=document.createElement('th');
+th.scope='row';
+const name=document.createElement('span');
+name.className='tag-name';
+name.textContent=spec.name;
+th.appendChild(name);
+if(spec.risk){
+const dot=document.createElement('span');
+dot.className=`tag-risk tag-risk-${spec.risk}`;
+dot.textContent=spec.risk==='high'?'identifying':'revealing';
+if(spec.note)dot.title=spec.note;
+th.appendChild(dot);
+}
+const id=document.createElement('span');
+id.className='tag-id';
+id.textContent=`0x${entry.tag.toString(16).padStart(4, '0')}`;
+th.appendChild(id);
+tr.appendChild(th);
+const valueCell=document.createElement('td');
+valueCell.appendChild(editorFor(item,group,entry));
+tr.appendChild(valueCell);
+const actions=document.createElement('td');
+actions.className='tag-actions';
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='tag-delete';
+remove.textContent='Remove';
+remove.setAttribute('aria-label',`Remove ${spec.name}`);
+remove.addEventListener('click',()=>{
+const list=item.exif.groups[group];
+const at=list.indexOf(entry);
+if(at>=0)list.splice(at,1);
+item.dirty=true;
+renderInspector();
+renderList();
+});
+actions.appendChild(remove);
+tr.appendChild(actions);
+return tr;
+}
+function editableText(entry){
+if(typeof entry.value==='string')return entry.value;
+if(Array.isArray(entry.value))return entry.value.join(' ');
+if(typeof entry.value==='number')return String(entry.value);
+return'';
+}
+function editorFor(item,group,entry){
+const spec=describeTag(group,entry.tag);
+if(!spec.edit){
+const span=document.createElement('span');
+span.className='tag-readonly';
+span.textContent=formatValue(group,entry);
+return span;
+}
+const commit=(control,raw)=>{
+if(setEntryValue(entry,raw,item.exif.littleEndian)){
+control.classList.remove('bad');
+clearEditError();
+markDirty(item);
+}else if(String(raw).trim()===''){
+control.classList.add('bad');
+showEditError(`${spec.name} cannot be left blank. Use the Remove button beside it if you want the tag gone altogether.`);
+}else{
+control.classList.add('bad');
+showEditError(`"${raw}" is not a value this tag can hold. ${spec.name} expects ${spec.edit === 'text' ? 'text' : 'a number'}.`);
+}
+};
+if(spec.edit==='enum'){
+const select=document.createElement('select');
+select.className='tag-input';
+const known=Object.entries(spec.values??{});
+if(typeof entry.value==='number'&&!spec.values?.[entry.value]){
+known.push([String(entry.value),`Unrecognised value (${entry.value})`]);
+}
+for(const[value,label]of known){
+const option=document.createElement('option');
+option.value=value;
+option.textContent=label;
+option.selected=Number(value)===entry.value;
+select.appendChild(option);
+}
+select.addEventListener('change',()=>commit(select,select.value));
+return select;
+}
+const input=document.createElement('input');
+input.className='tag-input';
+input.type=spec.edit==='int'?'number':'text';
+input.spellcheck=false;
+input.value=editableText(entry);
+input.addEventListener('change',()=>commit(input,input.value));
+return input;
+}
+const ADDABLE=[
+{group:'ifd0',tag:0x010e,type:TYPE.ASCII,hint:'A sentence describing the picture'},
+{group:'ifd0',tag:0x013b,type:TYPE.ASCII,hint:'Who took it'},
+{group:'ifd0',tag:0x8298,type:TYPE.ASCII,hint:'e.g. (c) 2026 Your Name'},
+{group:'ifd0',tag:0x0131,type:TYPE.ASCII,hint:'What produced the file'},
+{group:'ifd0',tag:0x0132,type:TYPE.ASCII,hint:'2026:08:19 14:30:00'},
+{group:'ifd0',tag:0x010f,type:TYPE.ASCII,hint:'e.g. Canon'},
+{group:'ifd0',tag:0x0110,type:TYPE.ASCII,hint:'e.g. EOS R6'},
+{group:'ifd0',tag:0x0112,type:TYPE.SHORT,hint:'1 is the right way up; 6 is rotated 90 degrees'},
+{group:'exif',tag:0x9003,type:TYPE.ASCII,hint:'2026:08:19 14:30:00'},
+{group:'exif',tag:0x9286,type:TYPE.UNDEFINED,hint:'Free text'},
+{group:'exif',tag:0x8827,type:TYPE.SHORT,hint:'e.g. 400'},
+];
+function renderAddTag(item){
+el.addTagSelect.replaceChildren();
+const available=ADDABLE.filter(
+(candidate)=>!item.exif.groups[candidate.group].some((e)=>e.tag===candidate.tag),
+);
+el.addTag.hidden=available.length===0;
+if(!available.length)return;
+for(const candidate of available){
+const option=document.createElement('option');
+option.value=`${candidate.group}:${candidate.tag}`;
+option.textContent=describeTag(candidate.group,candidate.tag).name;
+el.addTagSelect.appendChild(option);
+}
+syncAddTagHint();
+}
+function syncAddTagHint(){
+const candidate=ADDABLE.find((c)=>`${c.group}:${c.tag}`===el.addTagSelect.value);
+el.addTagValue.placeholder=candidate?.hint??'';
+}
+el.addTagSelect.addEventListener('change',syncAddTagHint);
+el.addTagGo.addEventListener('click',()=>{
+const item=selected();
+if(!item)return;
+const candidate=ADDABLE.find((c)=>`${c.group}:${c.tag}`===el.addTagSelect.value);
+if(!candidate)return;
+const entry=createEntry(candidate.tag,candidate.type,el.addTagValue.value,item.exif.littleEndian);
+if(!entry){
+showEditError(`"${el.addTagValue.value}" is not a value that tag can hold.`);
+return;
+}
+item.exif.groups[candidate.group].push(entry);
+item.dirty=true;
+el.addTagValue.value='';
+renderInspector();
+renderList();
+el.addTag.open=true;
+});
+function markDirty(item){
+item.dirty=true;
+updateSaveButtons();
+renderFindings(item);
+renderList();
+}
+function updateSaveButtons(){
+const item=selected();
+el.saveEdits.disabled=!item?.dirty;
+el.revertEdits.disabled=!item?.dirty;
+if(item&&!item.dirty)el.saveStatus.textContent='';
+}
+function outName(item,suffix){
+const{ext}=outputType(item.kind);
+const base=item.name.replace(/\.[^.]+$/,'')||'photo';
+return`${base}-${suffix}.${ext}`;
+}
+function stripPlan(item,keepOrientation,keepIcc){
+const plan={exif:null,xmp:null,iptc:null,comments:null,extras:null,text:null};
+if(!keepIcc)plan.icc=null;
+if(keepOrientation&&item.exif?.ok){
+const orientation=item.exif.groups.ifd0.find((e)=>e.tag===0x0112);
+if(orientation&&orientation.value!==1){
+plan.exif=serializeExif({
+littleEndian:item.exif.littleEndian,
+groups:{ifd0:[orientation],exif:[],gps:[],interop:[],ifd1:[]},
+thumbnail:null,
+});
+}
+}
+return plan;
+}
+function editPlan(item){
+const plan={exif:exifBytes(item.exif)};
+for(const id of['xmp','iptc','icc','comments','extras','text']){
+if(item.drop.has(id))plan[id]=null;
+}
+if(!item.drop.has('text')&&item.textDirty){
+plan.text=item.textChunks
+.filter((t)=>!t.unreadable)
+.map(({keyword,value})=>({keyword,value}));
+}
+return plan;
+}
+el.stripAll.addEventListener('click',()=>{
+const keepOrientation=el.keepOrientation.checked;
+const keepIcc=el.keepIcc.checked;
+const results=[];
+for(const item of items){
+if(!item.ok)continue;
+try{
+if(!hasMetadata(item)){
+results.push({item,note:'Nothing to remove - this file had no metadata in it.'});
+continue;
+}
+results.push({item,data:serialize(item,stripPlan(item,keepOrientation,keepIcc))});
+}catch(error){
+results.push({item,error:error.message});
+}
+}
+showResults(results);
+const cleaned=results.filter((r)=>r.data).length;
+el.stripStatus.textContent=cleaned
+?`${cleaned} photo${cleaned === 1 ? '' : 's'} cleaned. Nothing left this machine.`
+:'Nothing needed removing.';
+});
+function clearResults(){
+for(const url of resultUrls)URL.revokeObjectURL(url);
+resultUrls=[];
+el.resultList.replaceChildren();
+el.cleanResults.hidden=true;
+el.downloadZip.hidden=true;
+el.stripStatus.textContent='';
+}
+function showResults(results){
+clearResults();
+if(!results.length)return;
+el.cleanResults.hidden=false;
+for(const result of results){
+const li=document.createElement('li');
+li.className='result-row';
+const text=document.createElement('div');
+const name=document.createElement('p');
+name.className='result-name';
+name.textContent=result.item.name;
+text.appendChild(name);
+const detail=document.createElement('p');
+detail.className='result-detail';
+if(result.data){
+const saved=result.item.size-result.data.length;
+detail.textContent=`${humanBytes(result.item.size)} to ${humanBytes(result.data.length)} - ${humanBytes(Math.max(0, saved))} of metadata gone. The picture itself is unchanged.`;
+}else if(result.error){
+detail.textContent=result.error;
+li.classList.add('result-failed');
+}else{
+detail.textContent=result.note;
+}
+text.appendChild(detail);
+li.appendChild(text);
+if(result.data){
+const url=URL.createObjectURL(new Blob([result.data],{type:outputType(result.item.kind).mime}));
+resultUrls.push(url);
+const link=document.createElement('a');
+link.className='primary as-button';
+link.href=url;
+link.download=outName(result.item,'clean');
+link.textContent='Download';
+li.appendChild(link);
+}
+el.resultList.appendChild(li);
+}
+const cleaned=results.filter((r)=>r.data);
+el.downloadZip.hidden=cleaned.length<2;
+el.downloadZip.onclick=()=>{
+const zip=makeZip(cleaned.map((r)=>({name:outName(r.item,'clean'),data:r.data})));
+saveBlob(zip,'photos-without-metadata.zip');
+};
+}
+function saveBlob(blob,name){
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=name;
+link.click();
+setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+el.saveEdits.addEventListener('click',()=>{
+const item=selected();
+if(!item)return;
+try{
+const data=serialize(item,editPlan(item));
+saveBlob(new Blob([data],{type:outputType(item.kind).mime}),outName(item,'edited'));
+el.saveStatus.textContent=`Saved as ${outName(item, 'edited')} - ${humanBytes(data.length)}.`;
+clearEditError();
+}catch(error){
+showEditError(error.message);
+}
+});
+el.revertEdits.addEventListener('click',async()=>{
+const item=selected();
+if(!item)return;
+const canvas=item.doc?.canvas??null;
+const fresh=await readBytes(item.bytes);
+Object.assign(item,fresh);
+normalizeExif(item);
+if(item.doc&&canvas)item.doc.canvas=canvas;
+item.drop=new Set();
+item.textChunks=item.meta.text.map((t)=>({
+keyword:t.keyword,
+value:t.value??'',
+unreadable:Boolean(t.unreadable),
+}));
+item.textDirty=false;
+item.dirty=false;
+render();
+el.saveStatus.textContent='Back to the file as it was read.';
+});
+function showLoadError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function clearLoadError(){
+el.loadError.textContent='';
+el.loadError.hidden=true;
+}
+function showEditError(message){
+el.editError.textContent=message;
+el.editError.hidden=false;
+}
+function clearEditError(){
+el.editError.textContent='';
+el.editError.hidden=true;
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a file or a tag.`;
+el.networkCount.textContent=clean
+?`your photos have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+render();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();

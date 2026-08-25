@@ -1,3 +1,575 @@
-/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check (names mangled by esbuild) */
-import{phrase as p}from"./shared/phrases.js";import{decodeSvgText as J,intrinsicSize as _,looksLikeSvg as X}from"./svg.js";import{MODES as b,atDensity as C,checkLimits as M,describePlan as K,planSize as O,times as B}from"./sizing.js";import{FORMATS as v,JPEG as j,PNG as T,WEBP as $,draw as Q,encodableTypes as Y,loadAt as ee,rasterize as te}from"./render.js";import{bytes as S,countOf as z,describeSource as ne,dimensions as L,outName as oe,uniqueNames as ie}from"./files.js";import{wireFilePicker as re,readingLabel as ae}from"./shared/file-picker.js";import{makeZip as se}from"./shared/zip.js";const i=e=>document.getElementById(e),t={dropzone:i("dropzone"),fileInput:i("file-input"),fileList:i("file-list"),listToolbar:i("list-toolbar"),countLabel:i("count-label"),clearAll:i("clear-all"),loadError:i("load-error"),sizeMode:i("size-mode"),sizeScale:i("size-scale"),sizeWidth:i("size-width"),sizeHeight:i("size-height"),sizeLongest:i("size-longest"),boxWidth:i("box-width"),boxHeight:i("box-height"),boxFit:i("box-fit"),density:i("density"),sizeSummary:i("size-summary"),sizeWarning:i("size-warning"),format:i("format"),formatNote:i("format-note"),qualityField:i("quality-field"),quality:i("quality"),qualityValue:i("quality-value"),backgroundMode:i("background-mode"),backgroundColour:i("background-colour"),backgroundNote:i("background-note"),preview:i("preview"),previewCanvas:i("preview-canvas"),previewNote:i("preview-note"),previewEmpty:i("preview-empty"),run:i("run"),progress:i("progress"),progressBar:i("progress-bar"),progressLabel:i("progress-label"),results:i("results"),resultList:i("result-list"),resultsSummary:i("results-summary"),downloadZip:i("download-zip"),privacyToggle:i("privacy-toggle"),privacyPanel:i("privacy-panel"),networkCount:i("network-count"),networkDot:i("network-dot"),offlineStatus:i("offline-status"),offlineDot:i("offline-dot")},le={[b.scale]:i("scale-fields"),[b.width]:i("width-fields"),[b.height]:i("height-fields"),[b.longest]:i("longest-fields"),[b.box]:i("box-fields")};let d=[],D=1,m=!1,g=null,u=[],U=[],q=new Set([T,j]);const I=re({input:t.fileInput,dropzone:t.dropzone,onFiles(e){ce(e)}});async function ce(e){if(!e?.length||m)return;I.busy(ae(e.length));const o=[];try{for(const n of e){if(!X(n)){o.push(`${n.name}: this tool only reads SVG files. A PNG or a JPEG is already pixels; the Image Resizer is the one for those.`);continue}const r=J(await n.arrayBuffer()),a=_(r);if(!a){o.push(`${n.name}: there is no <svg> element in this file.`);continue}d.push({id:D,file:n,text:r,intrinsic:a,thumbUrl:URL.createObjectURL(n)}),D+=1}}finally{I.done()}o.length?N(o.join(`
-`)):V(),g===null&&d.length&&(g=d[0].id),k(),h(),y()}function de(e){const o=d.find(n=>n.id===e);!o||m||(URL.revokeObjectURL(o.thumbUrl),d=d.filter(n=>n.id!==e),g===e&&(g=d.length?d[0].id:null),k(),h(),y())}t.clearAll.addEventListener("click",()=>{if(!m){for(const e of d)URL.revokeObjectURL(e.thumbUrl);d=[],g=null,k(),V(),h(),y()}});const G=()=>d.find(e=>e.id===g)??null;function H(e){g!==e&&(g=e,h(),y())}function R(){const e=t.format.value,o=!v[e].alpha,n=t.backgroundMode.value==="colour";return{mode:t.sizeMode.value,scale:Number(t.sizeScale.value),width:t.sizeMode.value===b.box?Number(t.boxWidth.value):Number(t.sizeWidth.value),height:t.sizeMode.value===b.box?Number(t.boxHeight.value):Number(t.sizeHeight.value),longest:Number(t.sizeLongest.value),fit:t.boxFit.value,densities:P(),mime:e,quality:v[e].lossy?Number(t.quality.value)/100:void 0,background:n||o?t.backgroundColour.value:null}}const P=()=>[1,2,3].slice(0,Number(t.density.value)),E=e=>O(e.intrinsic,R());function h(){ue(),he(),me(),t.run.disabled=m||d.length===0||!Z(),t.run.textContent=d.length>1?`Rasterize ${z(d.length)}`:"Rasterize"}function ue(){for(const[o,n]of Object.entries(le))n.hidden=o!==t.sizeMode.value;const e=t.format.value;t.qualityField.hidden=!v[e].lossy,t.qualityValue.textContent=t.quality.value,t.backgroundColour.hidden=t.backgroundMode.value!=="colour"&&v[e].alpha;for(const o of[t.sizeMode,t.format,t.backgroundMode,t.density,t.boxFit,t.quality])o.disabled=m}function he(){t.fileList.replaceChildren(),t.listToolbar.hidden=d.length===0,t.countLabel.textContent=`${z(d.length)} chosen`,t.clearAll.disabled=m;for(const e of d){const o=document.createElement("li");o.className="file-row",e.id===g&&o.classList.add("active");const n=document.createElement("div");n.className="file-main-wrap";const r=document.createElement("img");r.className="file-thumb",r.src=e.thumbUrl,r.alt="";const a=document.createElement("div");a.className="file-main";const s=document.createElement("p");s.className="file-name",s.textContent=e.file.name;const l=document.createElement("p");l.className="file-sub",l.textContent=`${ne(e.intrinsic)} \xB7 ${S(e.file.size)}`;const c=document.createElement("p");c.className="file-out";const f=E(e),x=M(C(f,P().at(-1)));c.textContent=x.ok?`\u2192 ${L(f.width,f.height)}`:`\u2192 too big: ${x.reason}`,c.classList.toggle("warn",!x.ok),a.append(s,l,c),n.append(r,a),n.tabIndex=0,n.setAttribute("role","button"),n.setAttribute("aria-pressed",String(e.id===g)),n.title="Show this one in the preview",n.addEventListener("click",()=>H(e.id)),n.addEventListener("keydown",W=>{(W.key==="Enter"||W.key===" ")&&(W.preventDefault(),H(e.id))});const w=document.createElement("button");w.type="button",w.className="row-remove",w.textContent="\xD7",w.title=`Take ${e.file.name} off the list`,w.setAttribute("aria-label",`Take ${e.file.name} off the list`),w.disabled=m,w.addEventListener("click",()=>de(e.id)),o.append(n,w),t.fileList.append(o)}}function me(){const e=G(),o=R();t.sizeSummary.textContent=e?K(E(e),e.intrinsic,o.densities):"Add an SVG and this says what size it will come out.";const n=fe();t.sizeWarning.hidden=!n,t.sizeWarning.textContent=n?.reason??"",t.sizeWarning.classList.toggle("warn",!!(n&&!n.ok)),t.formatNote.textContent=ge(o.mime),t.backgroundNote.textContent=we(o)}function fe(){const e=P().at(-1);let o=null;for(const n of d){const r=M(C(E(n),e));if(!r.ok)return r;r.warn&&!o&&(o=r)}return o}const Z=()=>d.every(e=>M(C(E(e),P().at(-1))).ok);function ge(e){return e===T?"Lossless, and the only one of the three that every piece of software reads. Flat colour and hard edges - which is most of what a drawing is made of - compress well in it, so a rasterised logo is usually smaller as a PNG than as a JPEG anyway.":e===j?"No transparency, and lossy in the way that shows worst on exactly this kind of picture: a ring of speckle around every hard edge. Worth it for a drawing that is mostly photograph-like shading, and rarely otherwise.":q.has($)?"Transparency like a PNG, and a smaller file than either of the others at the same quality. Read by every current browser; older software and some print shops still will not open one.":"This browser cannot write WebP, so a PNG would come out instead. Pick one of the other two."}function we({mime:e,background:o}){return o?v[e].alpha?"Painted behind the whole picture, so nothing in the file is transparent.":`${v[e].label} has no transparency, so this colour is painted behind the drawing. Without it, everything that was transparent would come out black.`:"The transparent parts of the drawing stay transparent."}const pe=420;let F=0;async function y(){const e=G();if(t.preview.hidden=!e,t.previewEmpty.hidden=!!e,!e)return;const o=F+=1,n=R(),r=E(e),a=be(r,pe);try{const s=await ee(e.text,a.draw.width,a.draw.height,{stretch:a.stretch});try{if(o!==F)return;const l=Q(s.image,a,{background:n.background}),c=t.previewCanvas.getContext("2d");t.previewCanvas.width=l.width,t.previewCanvas.height=l.height,c.clearRect(0,0,l.width,l.height),c.drawImage(l,0,0),l.width=0,l.height=0}finally{s.release()}}catch(s){o===F&&N(`${e.file.name}: ${s.message}`);return}t.previewCanvas.classList.toggle("opaque",!!n.background),t.previewNote.textContent=ve(r,a,n)}function be(e,o){const n=Math.min(1,o/Math.max(e.width,e.height));if(n===1)return e;const r=a=>Math.max(1,Math.round(a*n));return{width:r(e.width),height:r(e.height),draw:{x:Math.round(e.draw.x*n),y:Math.round(e.draw.y*n),width:r(e.draw.width),height:r(e.draw.height)},padded:e.padded,stretch:e.stretch}}function ve(e,o,n){const r=o.width===e.width?"Shown at the size it will be.":`Shown at ${B(o.width/e.width)} of the ${L(e.width,e.height)} file, redrawn from the vector rather than shrunk - so this is what that size looks like.`,a=n.background?"":" The checkerboard is where the file will be transparent.";return`${r}${a}`}t.run.addEventListener("click",()=>{ye().catch(e=>{N(p("error.broke",{detail:e.message})),m=!1,t.progress.hidden=!0,h()})});async function ye(){if(m||!d.length||!Z())return;m=!0,k(),h();const e=R(),{ext:o}=v[e.mime],n=d.flatMap(s=>e.densities.map(l=>({item:s,density:l}))),r=ie(n.map(s=>oe(s.item.file.name,o,s.density)));t.progress.hidden=!1,A(0,`Drawing ${z(n.length)}\u2026`);const a=[];for(const[s,l]of n.entries()){A(s/n.length,`Drawing ${r[s]}\u2026`),await new Promise(x=>setTimeout(x,0));const c=C(O(l.item.intrinsic,e),l.density),f=await te(l.item.text,c,e);a.push({...l,plan:c,blob:f,name:r[s]})}A(1,"Done."),m=!1,u=a,ke(),h(),t.progress.hidden=!0}function A(e,o){t.progressBar.style.width=`${Math.round(e*100)}%`,t.progressLabel.textContent=o}function ke(){if(t.resultList.replaceChildren(),t.results.hidden=u.length===0,!u.length)return;const e=u.reduce((n,r)=>n+r.blob.size,0),o=new Set(u.map(n=>n.item.id)).size;t.resultsSummary.textContent=u.length===1?`${u[0].name}, ${L(u[0].plan.width,u[0].plan.height)}, ${S(e)}.`:`${z(u.length)} written from ${z(o).replace("file","drawing")}, ${S(e)} in total.`;for(const n of u)t.resultList.append(xe(n));t.downloadZip.hidden=u.length<2,t.downloadZip.onclick=()=>ze()}function xe(e){const o=document.createElement("li");o.className="result-row";const n=document.createElement("div");n.className="result-text";const r=document.createElement("p");r.className="result-name",r.textContent=e.name;const a=document.createElement("p");a.className="result-headline",a.textContent=`${L(e.plan.width,e.plan.height)}, ${S(e.blob.size)}`;const s=document.createElement("p");s.className="result-detail",s.textContent=`From ${e.item.file.name}, which draws itself at ${L(e.item.intrinsic.width,e.item.intrinsic.height)} - ${B(e.plan.width/e.item.intrinsic.width)} that`+(e.density>1?`, and the @${e.density}x of the file above it.`:"."),n.append(r,a,s);const l=document.createElement("div");l.className="result-actions";const c=document.createElement("a");return c.className="primary as-button",c.textContent="Download",c.href=Le(e.blob),c.download=e.name,l.append(c),o.append(n,l),o}async function ze(){const e=[];for(const o of u)e.push({name:o.name,data:new Uint8Array(await o.blob.arrayBuffer())});Ee(se(e),"rasterized.zip")}function Le(e){const o=URL.createObjectURL(e);return U.push(o),o}function Ee(e,o){const n=URL.createObjectURL(e),r=document.createElement("a");r.href=n,r.download=o,r.click(),setTimeout(()=>URL.revokeObjectURL(n),6e4)}function k(){for(const e of U)URL.revokeObjectURL(e);U=[],u=[],t.results.hidden=!0,t.resultList.replaceChildren(),t.resultsSummary.textContent="",t.downloadZip.hidden=!0,t.downloadZip.onclick=null}for(const e of[t.sizeMode,t.density,t.boxFit,t.format,t.backgroundMode])e.addEventListener("change",()=>{k(),h(),y()});for(const e of[t.sizeScale,t.sizeWidth,t.sizeHeight,t.sizeLongest,t.boxWidth,t.boxHeight,t.backgroundColour,t.quality])e.addEventListener("input",()=>{k(),h(),y()});for(const[e,o]of[[i("scale-presets"),"scale"],[i("width-presets"),"width"]])e.addEventListener("click",n=>{const r=n.target.closest("button[data-"+o+"]");r&&((o==="scale"?t.sizeScale:t.sizeWidth).value=r.dataset[o],k(),h(),y())});function N(e){t.loadError.textContent=e,t.loadError.hidden=!1}function V(){t.loadError.textContent="",t.loadError.hidden=!0}t.privacyToggle.addEventListener("click",()=>{const e=t.privacyPanel.hidden;t.privacyPanel.hidden=!e,t.privacyToggle.setAttribute("aria-expanded",String(e))});const Ne=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;function Ce(){const e=new Set,o=new Set,n=r=>{for(const c of r){if(c.name.startsWith("blob:")||c.name.startsWith("data:"))continue;const f=new URL(c.name,location.href);f.origin!==location.origin&&(Ne.test(f.hostname)?e.add(f.hostname):o.add(f.hostname))}const a=performance.getEntriesByType("resource").filter(c=>!c.name.startsWith("blob:")&&!c.name.startsWith("data:")).length,s=o.size===0,l=e.size===0?"":` The page's own ad, measurement and donate-button scripts loaded from ${e.size} host${e.size===1?"":"s"}; not one of them was given a file or a byte of one.`;t.networkCount.textContent=s?`your files have gone nowhere. ${a} files loaded, all of them this page's own.${l}`:`something contacted ${[...o].join(", ")}, which this tool never does. Treat that as worth investigating.${l}`,t.networkCount.className=s?"good":"warn",t.networkDot.className=`live-dot ${s?"good":"warn"}`};n(performance.getEntriesByType("resource"));try{new PerformanceObserver(r=>n(r.getEntries())).observe({type:"resource",buffered:!0})}catch{}}async function $e(){const e=(o,n)=>{t.offlineStatus.textContent=o,t.offlineDot.className="live-dot",n&&(t.offlineStatus.title=n,console.info("Offline caching unavailable:",n))};if(!("serviceWorker"in navigator)){e(p("offline.none"));return}if(!window.isSecureContext){e(p("offline.insecure"));return}try{await navigator.serviceWorker.register("sw.js"),await navigator.serviceWorker.ready,t.offlineStatus.textContent=p("offline.ready"),t.offlineStatus.className="good",t.offlineDot.className="live-dot good"}catch(o){e(p("offline.failed"),o.message)}}async function Se(){if(q=await Y(),q.has($))return;const e=t.format.querySelector(`option[value="${$}"]`);e&&(e.disabled=!0,e.textContent="WebP - this browser cannot write it"),t.format.value===$&&(t.format.value=T),h()}window.addEventListener("error",e=>{N(p("error.broke",{detail:e.message}))}),window.addEventListener("unhandledrejection",e=>{N(p("error.broke",{detail:e.reason?.message??e.reason}))}),h(),Se(),Ce(),$e(),document.getElementById("boot-warning")?.remove();
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./shared/phrases.js';
+import{
+decodeSvgText,intrinsicSize,looksLikeSvg,
+}from'./svg.js';
+import{
+MODES,atDensity,checkLimits,describePlan,planSize,times,
+}from'./sizing.js';
+import{
+FORMATS,JPEG,PNG,WEBP,draw,encodableTypes,loadAt,rasterize,
+}from'./render.js';
+import{
+bytes as humanBytes,countOf,describeSource,dimensions,outName,uniqueNames,
+}from'./files.js';
+import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
+import{makeZip}from'./shared/zip.js';
+const $=(id)=>document.getElementById(id);
+const el={
+dropzone:$('dropzone'),
+fileInput:$('file-input'),
+fileList:$('file-list'),
+listToolbar:$('list-toolbar'),
+countLabel:$('count-label'),
+clearAll:$('clear-all'),
+loadError:$('load-error'),
+sizeMode:$('size-mode'),
+sizeScale:$('size-scale'),
+sizeWidth:$('size-width'),
+sizeHeight:$('size-height'),
+sizeLongest:$('size-longest'),
+boxWidth:$('box-width'),
+boxHeight:$('box-height'),
+boxFit:$('box-fit'),
+density:$('density'),
+sizeSummary:$('size-summary'),
+sizeWarning:$('size-warning'),
+format:$('format'),
+formatNote:$('format-note'),
+qualityField:$('quality-field'),
+quality:$('quality'),
+qualityValue:$('quality-value'),
+backgroundMode:$('background-mode'),
+backgroundColour:$('background-colour'),
+backgroundNote:$('background-note'),
+preview:$('preview'),
+previewCanvas:$('preview-canvas'),
+previewNote:$('preview-note'),
+previewEmpty:$('preview-empty'),
+run:$('run'),
+progress:$('progress'),
+progressBar:$('progress-bar'),
+progressLabel:$('progress-label'),
+results:$('results'),
+resultList:$('result-list'),
+resultsSummary:$('results-summary'),
+downloadZip:$('download-zip'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
+networkCount:$('network-count'),
+networkDot:$('network-dot'),
+offlineStatus:$('offline-status'),
+offlineDot:$('offline-dot'),
+};
+const FIELDS={
+[MODES.scale]:$('scale-fields'),
+[MODES.width]:$('width-fields'),
+[MODES.height]:$('height-fields'),
+[MODES.longest]:$('longest-fields'),
+[MODES.box]:$('box-fields'),
+};
+let items=[];
+let nextId=1;
+let busy=false;
+let activeId=null;
+let results=[];
+let resultUrls=[];
+let writable=new Set([PNG,JPEG]);
+const picker=wireFilePicker({
+input:el.fileInput,
+dropzone:el.dropzone,
+onFiles(files){
+addFiles(files);
+},
+});
+async function addFiles(files){
+if(!files?.length||busy)return;
+picker.busy(readingLabel(files.length));
+const failures=[];
+try{
+for(const file of files){
+if(!looksLikeSvg(file)){
+failures.push(`${file.name}: this tool only reads SVG files. `
++'A PNG or a JPEG is already pixels; the Image Resizer is the one for those.');
+continue;
+}
+const text=decodeSvgText(await file.arrayBuffer());
+const intrinsic=intrinsicSize(text);
+if(!intrinsic){
+failures.push(`${file.name}: there is no <svg> element in this file.`);
+continue;
+}
+items.push({
+id:nextId,
+file,
+text,
+intrinsic,
+thumbUrl:URL.createObjectURL(file),
+});
+nextId+=1;
+}
+}finally{
+picker.done();
+}
+if(failures.length)showLoadError(failures.join('\n'));
+else clearLoadError();
+if(activeId===null&&items.length)activeId=items[0].id;
+clearResults();
+render();
+drawPreview();
+}
+function removeItem(id){
+const item=items.find((one)=>one.id===id);
+if(!item||busy)return;
+URL.revokeObjectURL(item.thumbUrl);
+items=items.filter((one)=>one.id!==id);
+if(activeId===id)activeId=items.length?items[0].id:null;
+clearResults();
+render();
+drawPreview();
+}
+el.clearAll.addEventListener('click',()=>{
+if(busy)return;
+for(const item of items)URL.revokeObjectURL(item.thumbUrl);
+items=[];
+activeId=null;
+clearResults();
+clearLoadError();
+render();
+drawPreview();
+});
+const activeItem=()=>items.find((item)=>item.id===activeId)??null;
+function setActive(id){
+if(activeId===id)return;
+activeId=id;
+render();
+drawPreview();
+}
+function settings(){
+const mime=el.format.value;
+const opaque=!FORMATS[mime].alpha;
+const asked=el.backgroundMode.value==='colour';
+return{
+mode:el.sizeMode.value,
+scale:Number(el.sizeScale.value),
+width:el.sizeMode.value===MODES.box?Number(el.boxWidth.value):Number(el.sizeWidth.value),
+height:el.sizeMode.value===MODES.box?Number(el.boxHeight.value):Number(el.sizeHeight.value),
+longest:Number(el.sizeLongest.value),
+fit:el.boxFit.value,
+densities:densities(),
+mime,
+quality:FORMATS[mime].lossy?Number(el.quality.value)/100:undefined,
+background:asked||opaque?el.backgroundColour.value:null,
+};
+}
+const densities=()=>[1,2,3].slice(0,Number(el.density.value));
+const planFor=(item)=>planSize(item.intrinsic,settings());
+function render(){
+renderFields();
+renderList();
+renderNotes();
+el.run.disabled=busy||items.length===0||!everythingFits();
+el.run.textContent=items.length>1?`Rasterize ${countOf(items.length)}`:'Rasterize';
+}
+function renderFields(){
+for(const[mode,panel]of Object.entries(FIELDS))panel.hidden=mode!==el.sizeMode.value;
+const mime=el.format.value;
+el.qualityField.hidden=!FORMATS[mime].lossy;
+el.qualityValue.textContent=el.quality.value;
+el.backgroundColour.hidden=el.backgroundMode.value!=='colour'&&FORMATS[mime].alpha;
+for(const control of[el.sizeMode,el.format,el.backgroundMode,el.density,el.boxFit,el.quality]){
+control.disabled=busy;
+}
+}
+function renderList(){
+el.fileList.replaceChildren();
+el.listToolbar.hidden=items.length===0;
+el.countLabel.textContent=`${countOf(items.length)} chosen`;
+el.clearAll.disabled=busy;
+for(const item of items){
+const row=document.createElement('li');
+row.className='file-row';
+if(item.id===activeId)row.classList.add('active');
+const wrap=document.createElement('div');
+wrap.className='file-main-wrap';
+const thumb=document.createElement('img');
+thumb.className='file-thumb';
+thumb.src=item.thumbUrl;
+thumb.alt='';
+const main=document.createElement('div');
+main.className='file-main';
+const name=document.createElement('p');
+name.className='file-name';
+name.textContent=item.file.name;
+const sub=document.createElement('p');
+sub.className='file-sub';
+sub.textContent=`${describeSource(item.intrinsic)} · ${humanBytes(item.file.size)}`;
+const out=document.createElement('p');
+out.className='file-out';
+const plan=planFor(item);
+const limit=checkLimits(atDensity(plan,densities().at(-1)));
+out.textContent=limit.ok
+?`→ ${dimensions(plan.width, plan.height)}`
+:`→ too big: ${limit.reason}`;
+out.classList.toggle('warn',!limit.ok);
+main.append(name,sub,out);
+wrap.append(thumb,main);
+wrap.tabIndex=0;
+wrap.setAttribute('role','button');
+wrap.setAttribute('aria-pressed',String(item.id===activeId));
+wrap.title='Show this one in the preview';
+wrap.addEventListener('click',()=>setActive(item.id));
+wrap.addEventListener('keydown',(event)=>{
+if(event.key==='Enter'||event.key===' '){
+event.preventDefault();
+setActive(item.id);
+}
+});
+const remove=document.createElement('button');
+remove.type='button';
+remove.className='row-remove';
+remove.textContent='×';
+remove.title=`Take ${item.file.name} off the list`;
+remove.setAttribute('aria-label',`Take ${item.file.name} off the list`);
+remove.disabled=busy;
+remove.addEventListener('click',()=>removeItem(item.id));
+row.append(wrap,remove);
+el.fileList.append(row);
+}
+}
+function renderNotes(){
+const item=activeItem();
+const set=settings();
+el.sizeSummary.textContent=item
+?describePlan(planFor(item),item.intrinsic,set.densities)
+:'Add an SVG and this says what size it will come out.';
+const worst=worstLimit();
+el.sizeWarning.hidden=!worst;
+el.sizeWarning.textContent=worst?.reason??'';
+el.sizeWarning.classList.toggle('warn',Boolean(worst&&!worst.ok));
+el.formatNote.textContent=formatSentence(set.mime);
+el.backgroundNote.textContent=backgroundSentence(set);
+}
+function worstLimit(){
+const largest=densities().at(-1);
+let worst=null;
+for(const item of items){
+const limit=checkLimits(atDensity(planFor(item),largest));
+if(!limit.ok)return limit;
+if(limit.warn&&!worst)worst=limit;
+}
+return worst;
+}
+const everythingFits=()=>items.every(
+(item)=>checkLimits(atDensity(planFor(item),densities().at(-1))).ok);
+function formatSentence(mime){
+if(mime===PNG){
+return'Lossless, and the only one of the three that every piece of software reads. '
++'Flat colour and hard edges - which is most of what a drawing is made of - compress well in it, '
++'so a rasterised logo is usually smaller as a PNG than as a JPEG anyway.';
+}
+if(mime===JPEG){
+return'No transparency, and lossy in the way that shows worst on exactly this kind of picture: '
++'a ring of speckle around every hard edge. Worth it for a drawing that is mostly photograph-like '
++'shading, and rarely otherwise.';
+}
+return writable.has(WEBP)
+?'Transparency like a PNG, and a smaller file than either of the others at the same quality. '
++'Read by every current browser; older software and some print shops still will not open one.'
+:'This browser cannot write WebP, so a PNG would come out instead. Pick one of the other two.';
+}
+function backgroundSentence({mime,background}){
+if(!background)return'The transparent parts of the drawing stay transparent.';
+return FORMATS[mime].alpha
+?'Painted behind the whole picture, so nothing in the file is transparent.'
+:`${FORMATS[mime].label} has no transparency, so this colour is painted behind the drawing. `
++'Without it, everything that was transparent would come out black.';
+}
+const PREVIEW_MAX=420;
+let previewToken=0;
+async function drawPreview(){
+const item=activeItem();
+el.preview.hidden=!item;
+el.previewEmpty.hidden=Boolean(item);
+if(!item)return;
+const token=(previewToken+=1);
+const set=settings();
+const full=planFor(item);
+const shown=shrinkPlan(full,PREVIEW_MAX);
+try{
+const held=await loadAt(item.text,shown.draw.width,shown.draw.height,{stretch:shown.stretch});
+try{
+if(token!==previewToken)return;
+const canvas=draw(held.image,shown,{background:set.background});
+const ctx=el.previewCanvas.getContext('2d');
+el.previewCanvas.width=canvas.width;
+el.previewCanvas.height=canvas.height;
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.drawImage(canvas,0,0);
+canvas.width=0;
+canvas.height=0;
+}finally{
+held.release();
+}
+}catch(error){
+if(token===previewToken)showLoadError(`${item.file.name}: ${error.message}`);
+return;
+}
+el.previewCanvas.classList.toggle('opaque',Boolean(set.background));
+el.previewNote.textContent=previewSentence(full,shown,set);
+}
+function shrinkPlan(plan,maxSide){
+const factor=Math.min(1,maxSide/Math.max(plan.width,plan.height));
+if(factor===1)return plan;
+const at=(n)=>Math.max(1,Math.round(n*factor));
+return{
+width:at(plan.width),
+height:at(plan.height),
+draw:{
+x:Math.round(plan.draw.x*factor),
+y:Math.round(plan.draw.y*factor),
+width:at(plan.draw.width),
+height:at(plan.draw.height),
+},
+padded:plan.padded,
+stretch:plan.stretch,
+};
+}
+function previewSentence(full,shown,set){
+const scale=shown.width===full.width
+?'Shown at the size it will be.'
+:`Shown at ${times(shown.width / full.width)} of the ${dimensions(full.width, full.height)} `
++'file, redrawn from the vector rather than shrunk - so this is what that size looks like.';
+const alpha=set.background
+?''
+:' The checkerboard is where the file will be transparent.';
+return`${scale}${alpha}`;
+}
+el.run.addEventListener('click',()=>{
+runAll().catch((error)=>{
+showLoadError(phrase('error.broke',{detail:error.message}));
+busy=false;
+el.progress.hidden=true;
+render();
+});
+});
+async function runAll(){
+if(busy||!items.length||!everythingFits())return;
+busy=true;
+clearResults();
+render();
+const set=settings();
+const{ext}=FORMATS[set.mime];
+const jobs=items.flatMap((item)=>set.densities.map((density)=>({item,density})));
+const names=uniqueNames(jobs.map((job)=>outName(job.item.file.name,ext,job.density)));
+el.progress.hidden=false;
+setProgress(0,`Drawing ${countOf(jobs.length)}…`);
+const made=[];
+for(const[index,job]of jobs.entries()){
+setProgress(index/jobs.length,`Drawing ${names[index]}…`);
+await new Promise((resolve)=>setTimeout(resolve,0));
+const plan=atDensity(planSize(job.item.intrinsic,set),job.density);
+const blob=await rasterize(job.item.text,plan,set);
+made.push({...job,plan,blob,name:names[index]});
+}
+setProgress(1,'Done.');
+busy=false;
+results=made;
+renderResults();
+render();
+el.progress.hidden=true;
+}
+function setProgress(fraction,label){
+el.progressBar.style.width=`${Math.round(fraction * 100)}%`;
+el.progressLabel.textContent=label;
+}
+function renderResults(){
+el.resultList.replaceChildren();
+el.results.hidden=results.length===0;
+if(!results.length)return;
+const total=results.reduce((n,one)=>n+one.blob.size,0);
+const sources=new Set(results.map((one)=>one.item.id)).size;
+el.resultsSummary.textContent=results.length===1
+?`${results[0].name}, ${dimensions(results[0].plan.width, results[0].plan.height)}, ${humanBytes(total)}.`
+:`${countOf(results.length)} written from ${countOf(sources).replace('file', 'drawing')}, `
++`${humanBytes(total)} in total.`;
+for(const one of results)el.resultList.append(resultRow(one));
+el.downloadZip.hidden=results.length<2;
+el.downloadZip.onclick=()=>zipAll();
+}
+function resultRow(one){
+const li=document.createElement('li');
+li.className='result-row';
+const textBlock=document.createElement('div');
+textBlock.className='result-text';
+const name=document.createElement('p');
+name.className='result-name';
+name.textContent=one.name;
+const headline=document.createElement('p');
+headline.className='result-headline';
+headline.textContent=`${dimensions(one.plan.width, one.plan.height)}, ${humanBytes(one.blob.size)}`;
+const detail=document.createElement('p');
+detail.className='result-detail';
+detail.textContent=`From ${one.item.file.name}, which draws itself at `
++`${dimensions(one.item.intrinsic.width, one.item.intrinsic.height)} - `
++`${times(one.plan.width / one.item.intrinsic.width)} that`
++(one.density>1?`, and the @${one.density}x of the file above it.`:'.');
+textBlock.append(name,headline,detail);
+const actions=document.createElement('div');
+actions.className='result-actions';
+const download=document.createElement('a');
+download.className='primary as-button';
+download.textContent='Download';
+download.href=urlFor(one.blob);
+download.download=one.name;
+actions.append(download);
+li.append(textBlock,actions);
+return li;
+}
+async function zipAll(){
+const files=[];
+for(const one of results){
+files.push({name:one.name,data:new Uint8Array(await one.blob.arrayBuffer())});
+}
+save(makeZip(files),'rasterized.zip');
+}
+function urlFor(blob){
+const url=URL.createObjectURL(blob);
+resultUrls.push(url);
+return url;
+}
+function save(blob,name){
+const url=URL.createObjectURL(blob);
+const link=document.createElement('a');
+link.href=url;
+link.download=name;
+link.click();
+setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function clearResults(){
+for(const url of resultUrls)URL.revokeObjectURL(url);
+resultUrls=[];
+results=[];
+el.results.hidden=true;
+el.resultList.replaceChildren();
+el.resultsSummary.textContent='';
+el.downloadZip.hidden=true;
+el.downloadZip.onclick=null;
+}
+for(const control of[el.sizeMode,el.density,el.boxFit,el.format,el.backgroundMode]){
+control.addEventListener('change',()=>{
+clearResults();
+render();
+drawPreview();
+});
+}
+for(const field of[el.sizeScale,el.sizeWidth,el.sizeHeight,el.sizeLongest,
+el.boxWidth,el.boxHeight,el.backgroundColour,el.quality]){
+field.addEventListener('input',()=>{
+clearResults();
+render();
+drawPreview();
+});
+}
+for(const[group,key]of[[$('scale-presets'),'scale'],[$('width-presets'),'width']]){
+group.addEventListener('click',(event)=>{
+const button=event.target.closest('button[data-'+key+']');
+if(!button)return;
+(key==='scale'?el.sizeScale:el.sizeWidth).value=button.dataset[key];
+clearResults();
+render();
+drawPreview();
+});
+}
+function showLoadError(message){
+el.loadError.textContent=message;
+el.loadError.hidden=false;
+}
+function clearLoadError(){
+el.loadError.textContent='';
+el.loadError.hidden=true;
+}
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
+const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+function monitorNetwork(){
+const platform=new Set();
+const unexplained=new Set();
+const inspect=(entries)=>{
+for(const entry of entries){
+if(entry.name.startsWith('blob:')||entry.name.startsWith('data:'))continue;
+const url=new URL(entry.name,location.href);
+if(url.origin===location.origin)continue;
+if(PLATFORM_HOSTS.test(url.hostname))platform.add(url.hostname);
+else unexplained.add(url.hostname);
+}
+const total=performance.getEntriesByType('resource')
+.filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
+const clean=unexplained.size===0;
+const platformNote=platform.size===0
+?''
+:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a file or a byte of one.`;
+el.networkCount.textContent=clean
+?`your files have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
+:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+el.networkCount.className=clean?'good':'warn';
+el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
+};
+inspect(performance.getEntriesByType('resource'));
+try{
+new PerformanceObserver((list)=>inspect(list.getEntries())).observe({type:'resource',buffered:true});
+}catch{
+}
+}
+async function registerServiceWorker(){
+const fail=(message,detail)=>{
+el.offlineStatus.textContent=message;
+el.offlineDot.className='live-dot';
+if(detail){
+el.offlineStatus.title=detail;
+console.info('Offline caching unavailable:',detail);
+}
+};
+if(!('serviceWorker'in navigator)){
+fail(phrase('offline.none'));
+return;
+}
+if(!window.isSecureContext){
+fail(phrase('offline.insecure'));
+return;
+}
+try{
+await navigator.serviceWorker.register('sw.js');
+await navigator.serviceWorker.ready;
+el.offlineStatus.textContent=phrase('offline.ready');
+el.offlineStatus.className='good';
+el.offlineDot.className='live-dot good';
+}catch(error){
+fail(phrase('offline.failed'),error.message);
+}
+}
+async function checkFormats(){
+writable=await encodableTypes();
+if(writable.has(WEBP))return;
+const option=el.format.querySelector(`option[value="${WEBP}"]`);
+if(option){
+option.disabled=true;
+option.textContent='WebP - this browser cannot write it';
+}
+if(el.format.value===WEBP)el.format.value=PNG;
+render();
+}
+window.addEventListener('error',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.message}));
+});
+window.addEventListener('unhandledrejection',(event)=>{
+showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
+});
+render();
+checkFormats();
+monitorNetwork();
+registerServiceWorker();
+document.getElementById('boot-warning')?.remove();
