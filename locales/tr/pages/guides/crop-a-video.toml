@@ -1,0 +1,21 @@
+#
+# Rehber: bir videoyu kırpma - Türkçe.
+#
+# "Kırpma" burada resmin şeklini değiştirmek demek; süreyi kısaltmak olan
+# "kesme" ayrı bir rehber ve iki kelime bu locale boyunca birbirine
+# karıştırılmıyor.
+#
+
+nav = "Video kırpma"
+title = "Bir Video Başka Bir Şekle Nasıl Kırpılır"
+description = "Bir klibi kareye, 9:16 dikeye ya da tam bir piksel kutusuna indirin. Hangi platformun hangi oranı istediği, kesme gerektirmezken kırpmanın neden yeniden kodlamak zorunda olduğu ve bunun bedeli."
+heading = "Bir video başka bir şekle nasıl kırpılır"
+lede = """
+    Kırpmak resmin şeklini değiştirir; bu da yeni kareler yazmak demektir
+    &mdash; bunun etrafından dolaşmanın bir yolu yok ve aksini iddia eden her
+    araç başka bir şey yapıyordur. Bu rehber bunun bedelini ve o bedeli iyi
+    harcamayı anlatıyor."""
+updated = "20 Ağustos 2026"
+og_title = "Bir video başka bir şekle nasıl kırpılır"
+og_description = "Hangi platformun hangi en boy oranını istediği, kesme gerektirmezken kırpmanın neden yeniden kodlamak zorunda olduğu ve bunun bedeli."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

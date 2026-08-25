@@ -1,0 +1,16 @@
+#
+# Rehber: bir resim setinden GIF yapmak - Türkçe.
+#
+
+nav = "Resimlerden GIF"
+title = "Görsellerden Nasıl Hareketli GIF Yapılır"
+description = "Bir resim setini tek bir hareketli GIF'e çevirin: bir GIF gerçekte ne kadar hızlı oynayabilir, palet ayarı neyi değiştirir ve dosyayı gerçekten küçülten üç şey."
+heading = "Görsellerden nasıl hareketli GIF yapılır"
+lede = """
+    GIF'i yapmak kolay kısım. Okumaya değen kısım, gerçekten paylaşılabilecek
+    kadar küçük bir tane elde etmektir; çünkü bir GIF'in kalite kaydırağı yoktur
+    ve boyutunu oynatan yalnızca üç şey vardır."""
+updated = "20 Ağustos 2026"
+og_title = "Görsellerden nasıl hareketli GIF yapılır"
+og_description = "Bir GIF gerçekte ne kadar hızlı oynayabilir, palet ayarı neyi değiştirir ve dosyayı gerçekten küçülten üç şey."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

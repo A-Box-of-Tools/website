@@ -1,0 +1,233 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      <a href="../../svg-yi-pnge-donusturme/">SVG'den Görsele</a>'yi açın, dosyayı
+      bırakın ve bir boyut söyleyin. Size hangi boyutu kullanacağınızı söyleyen bir
+      şey yoksa <strong>en uzun kenarda 1024 piksel</strong> iyi bir varsayılandır:
+      hemen her şeye yetecek kadar büyük, e-postayla göndermeye yetecek kadar
+      küçük. Biçimi PNG'de, arka planı saydamda bırakın ve dosyayı alın.
+    </p>
+    <p>
+      Aşağıdaki her şey, bu varsayılan yetmediğinde ne yapılacağıdır &mdash; sizin
+      için bir sayı belirtildiğinde, iş baskıya gittiğinde ya da sonuç yanlış
+      göründüğünde.
+    </p>
+  </section>
+
+  <section>
+    <h2>Boyut neden dosyanın değil sizin kararınız</h2>
+    <p>
+      Bir JPEG, ölçülmüş piksellerden oluşan bir ızgaradır; ne kadar büyük olduğunu
+      sormanın bir cevabı vardır. Bir SVG ise hiç resim değildir, bir talimatlar
+      kümesidir &mdash; buraya bir daire çiz, şu yolu şu renkte çiz &mdash; ve
+      talimatların boyutu olmaz. Bir tarayıcı onları 16 pikselde de 4000'de de
+      uygulayabilir ve sonuç ikisinde de aynı keskinliktedir; çünkü hiçbir şeyi
+      ölçeklemiyordur. Yeniden çiziyordur.
+    </p>
+    <p>
+      Dönüşümün sizin yerinize bir sayı seçememesinin ve büyük bir sayı seçmenin
+      size hiçbir şeye mal olmamasının sebebi budur. Bu, &ldquo;daha büyük
+      yap&rdquo;ın bedava olduğu tek görsel işidir.
+    </p>
+    <p>
+      Çoğu SVG dosyası bir <code>width</code> ve <code>height</code> özniteliği
+      taşır ve bir araç bunu gösterir &mdash; ama bu bir sınır değil, bir
+      varsayılandır. <code>width="24"</code> diyen bir simge, yalnızca onu çizen
+      kişinin aklında 24&nbsp;piksellik bir araç çubuğu olduğunu söyler.
+    </p>
+  </section>
+
+  <section>
+    <h2>Sayı gerçekte nereden geliyor</h2>
+    <p><strong>Bir web sitesi için.</strong> Görselin sayfada CSS pikseli cinsinden
+      kapladığı boyutu alın ve önemsediğiniz ekranların piksel yoğunluğuyla
+      çarpın. 200&nbsp;piksel genişliğindeki bir yuvadaki bir logo, bir Retina
+      dizüstü için 400&nbsp;piksellik, güncel bir telefon için 600 piksellik bir
+      dosya ister. <code>@2x</code> ve <code>@3x</code>'in anlamı budur ve onları
+      yazan bir aracın sizi aynı hesabı üç kez yapmaktan kurtarmasının sebebi de
+      budur.
+    </p>
+    <p><strong>Bir uygulama simgesi, bir mağaza kaydı ya da bir favicon için.</strong>
+      Sayı yayımlanmıştır ve hesaplanacak bir şey yoktur: mağazanın sayfası ne
+      diyorsa tam olarak o. Bir favicon için hiç piksele çevirmeyin &mdash;
+      <a href="../favicon-olusturma/">bir .ico yapın</a>; o, birkaç boyutu tek
+      dosyada tutar, çünkü bir tarayıcı sekmesi, bir yer imi ve bir Windows
+      kısayolunun hepsi başka boyut ister.
+    </p>
+    <p><strong>Baskı için.</strong> İnç cinsinden fiziksel boyutu yazıcının
+      çözünürlüğüyle çarpın. Bir kartvizite iki inç genişliğinde ve
+      300&nbsp;DPI'da girecek bir logo 600 pikseldir; aynı logo bir A4 sayfası
+      boyunca, yani 8,3&nbsp;inçte, yaklaşık 2500'dür. Matbaalar alışkanlıkla
+      300&nbsp;DPI ister; odanın öbür ucundan bakılan büyük boy bir afiş için ise
+      150 fazlasıyla yeter.
+    </p>
+    <p><strong>Bir sosyal ön izleme ya da bir OG görseli için.</strong> Platform bir
+      kutu belirtir &mdash; çoğu bağlantı ön izlemesi için
+      1200&nbsp;&times;&nbsp;630 &mdash; ve o kutu logonuzdan başka şekildedir.
+      &ldquo;Tamamla&rdquo; ayarının varlık sebebi budur: esnetilmiş ve herkese
+      denetlemediğinizi söyleyen bir logo yerine, kendi oranlarında ortalanmış bir
+      çizim ve gerisini dolduran bir arka plan rengi.
+    </p>
+    <p>
+      Bunlardan ikisi birden geçerliyse büyük olanı kullanın. Olması gerekenden
+      büyük bir PNG biraz daha büyük bir indirmedir; fazla küçük olan biri ise bir
+      sonraki bölümdeki sebeple, sonradan düzeltilemez.
+    </p>
+  </section>
+
+  <section>
+    <h2>Geri dönemezsiniz</h2>
+    <p>
+      Piksele çevirmek tek yönlüdür. Çizim bir kez PNG olduğunda, başka her resim
+      gibi piksellerden ibarettir ve sonradan büyütmek, hiç ölçülmemiş ayrıntıyı
+      uydurmak zorundadır &mdash; bir fotoğrafı büyütmekten aldığınız o yumuşak,
+      bulaşmış sonucun aynısı.
+    </p>
+    <p>
+      Bu yüzden SVG'yi saklayın. Ana kopya odur, neredeyse her zaman küçük olan
+      dosya odur ve gelecekteki her boyut ondan kusursuz çıkar. PNG, tek bir belirli
+      kullanım için bir dışa aktarımdır ve başka bir boyut gerektiğinde doğru
+      hamle, dışa aktardığınızı boyutlandırmak değil yeniden dışa aktarmaktır.
+    </p>
+    <p>
+      Bir PNG'yi SVG'ye geri dönüştürdüğünü iddia eden yazılımlar var. Yaptıkları
+      şey iz sürmektir: bir piksel ızgarasını hangi eğrilerin açıklayabileceğini
+      tahmin etmek. Düz iki renkli çizimlerde şöyle böyle çalışır, başka her şeyde
+      pahalı bir saçmalık üretir ve özgün çizimde olanı hiçbir zaman geri
+      getirmez.
+    </p>
+  </section>
+
+  <section>
+    <h2>Piksele dönüştüğü anda değişen üç şey</h2>
+    <p>
+      Yanlış görünen, piksele çevrilmiş bir SVG neredeyse her zaman şu üç sebepten
+      biri yüzünden yanlış görünür ve üçünü de dışa aktardıktan sonra değil önce
+      bilmeye değer.
+    </p>
+    <p>
+      <strong>Metin, makinede hangi yazı tipi varsa onunla çizilir.</strong> Metin
+      içeren bir SVG yazı tipini içermez &mdash; birinin adını verir ve bulmayı
+      çizicinin işine bırakır. Yazı tipi kurulu değilse bir yedeği kullanılır ve o
+      yedeğin harf biçimleri ve genişlikleri farklıdır; yani metin yeniden akabilir
+      ya da taşabilir. Yazı tipini bir web adresinden çeken bir dosyanın hâli daha
+      da kötüdür: bir <code>&lt;img&gt;</code> üzerinden piksele çevrilen bir SVG'nin
+      hiçbir şey getirmesine izin verilmez, yani hiçbir şey gelmez.
+    </p>
+    <p>
+      Çözüm her tasarımcının zaten bildiği çözümdür: SVG'yi dışa aktarmadan önce
+      <strong>metni dış hatlara çevirin</strong> (Illustrator buna Create Outlines,
+      Figma Flatten, Inkscape Object to Path diyor). Harfler geometriye dönüşür,
+      yazı tipi önemsizleşir ve resim her makinede aynı görünür. Bunu bir kopya
+      üzerinde yapın &mdash; dış hatlara çevrilmiş metin artık metin olarak
+      düzenlenemez.
+    </p>
+    <p>
+      <strong>Saç teli çizgiler grileşir ya da kaybolur.</strong> Seçtiğiniz
+      boyutta bir pikselden ince düşen bir çizgi düz bir çizgi olarak çizilemez,
+      yani silik çizilir. Zarif bir logonun 64&nbsp;pikselde soluk görünmesinin ama
+      aynı dosyanın 512'de kusursuz görünmesinin sebebi budur. Gereken küçük bir
+      boyutsa cevap başka bir dışa aktarma ayarı değil, daha kalın çizgileri olan
+      sadeleştirilmiş bir çizimdir &mdash; bir faviconun bir kelime logosu değil bir
+      sembol olmasının sebebi de aynıdır.
+    </p>
+    <p>
+      <strong>Canlandırma durur.</strong> Canlandırmalı bir SVG tek bir kareye
+      dönüşür: ilk kare neyse o. Bunu değiştiren bir dışa aktarma ayarı yoktur.
+      Harekete ihtiyacınız varsa, başka bir yolla yapılmış bir GIF'e ya da videoya
+      ihtiyacınız var demektir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Saydamlık ve hangi biçimin seçileceği</h2>
+    <p>
+      Bir sebebiniz yoksa <strong>PNG</strong>. Kayıpsızdır, saydamlığı korur ve
+      sert kenarlı düz renk &mdash; bir çizimin büyük kısmı bundan oluşur &mdash;
+      onun içinde iyi sıkışır. Piksele çevrilmiş bir logo genellikle JPEG olacağından
+      hem daha temiz hem de <em>daha küçük</em> bir PNG olur.
+    </p>
+    <p>
+      <strong>JPEG</strong>'in saydamlığı hiç yoktur. Her saydam pikselin bir renge
+      dönüşmesi gerekir ve sizin yerinize bir renk seçen olmazsa siyah olur &mdash;
+      insanların hata sandığı o siyah kutu içindeki logo sonucu buradan gelir. Ayrıca
+      tam da bu tür bir resimde en kötü görünen biçimde kayıplıdır: her sert kenarın
+      etrafında bir benek halkası. Bir şey ısrar ettiğinde kullanın.
+    </p>
+    <p>
+      <strong>WebP</strong>, PNG'nin yaptığı her şeyi daha küçük bir dosyada yapar ve
+      güncel her tarayıcı tarafından okunur. Kullanmama sebebi tarayıcıdan sonra
+      olanlardır: eski yazılımlar, bazı matbaalar ve hatırı sayılır sayıda yükleme
+      formu hâlâ bir tanesini açmıyor.
+    </p>
+    <p>
+      PNG ile bir arka plan rengi seçmek de gayet sıradan bir istektir. Saydamlık
+      yalnızca görselin üstüne düşeceği şey tahmin edemeyeceğiniz bir renk olduğunda
+      işe yarar; bunun beyaz bir sayfa olduğunu zaten biliyorsanız beyaza
+      düzleştirmek koca bir sürpriz sınıfından kurtarır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dışa aktarım boş ya da yanlış çıktığında</h2>
+    <p>
+      <strong>Boşluktan başka bir şey yok.</strong> Genellikle kök öğede eksik bir
+      <code>xmlns</code> özniteliği. Onsuz bir dosya, bir görsel etiketi açısından
+      SVG değildir ve hiçbir şey olarak çizilir. Dosyayı bir tarayıcıda açmak hızlı
+      denetimdir: tarayıcı da hiçbir şey göstermiyorsa sorun dönüştürücü değil
+      dosyadır.
+    </p>
+    <p>
+      <strong>Çizim küçük, sol üst köşede.</strong> Dosyada bir <code>width</code> ve
+      <code>height</code> var ama <code>viewBox</code> yok; yani ölçeklenecek bir
+      koordinat sistemi yok ve çizim daha büyük bir tuvalde kendi özgün birimlerini
+      koruyor. İyi bir dönüştürücü sizin için bir viewBox koyar; sizinki koymadıysa
+      kök öğeye elle
+      <code>viewBox="0 0 <em>genişlik</em> <em>yükseklik</em>"</code> eklemek bunu
+      düzeltir ve dosya düz metin olduğu için bunu yapabilirsiniz.
+    </p>
+    <p>
+      <strong>Resmin bir kısmı eksik.</strong> Dosyadaki bir şey çizimi içermek
+      yerine bir adresi göstermiş &mdash; bağlantı olarak saklanmış gömülü bir
+      fotoğraf, bir stil dosyası, bir yazı tipi. Bunları getirmeyi reddeden bir
+      çizici doğru olanı yapıyordur ve bu, bir yerden indirdiğiniz bir SVG'nin onu
+      yapana geri rapor vermesini engelleyen reddin aynısıdır. Çizim programından,
+      görseller gömülü olarak yeniden dışa aktarın.
+    </p>
+    <p>
+      <strong>Çok büyük bir boyutu reddediyor.</strong> Tarayıcılar bir tuvalin ne
+      kadar büyük olabileceğine tavan koyar ve nerede olduğu konusunda anlaşamazlar:
+      kenarda kabaca 16.000&nbsp;pikselin ötesinde hiçbir şey geri gelmez ve bir
+      iPhone ya da iPad'deki Safari çok daha erken, yaklaşık
+      4096&nbsp;&times;&nbsp;4096'da pes eder. Sizi uyaran bir araç, sizi boş bir
+      dosyadan kurtarıyordur; çünkü bir tarayıcı tükendiğinde bir hata iletisi değil
+      onu üretir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bunların hiçbirinin bir yüklemeye ihtiyacı yok</h2>
+    <p>
+      Bir SVG'yi piksele çevirmek, her tarayıcının günde binlerce kez yaptığı bir
+      şeydir &mdash; bir web sayfasında bir simge çizen mekanizmanın aynısı.
+      Çiziminizin bir PNG olarak çıkmak için bir sunucuya gidip gelmesinin teknik bir
+      sebebi yoktur ve buradaki araç onu hiçbir yere göndermez: sayfanın
+      <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi tek tek
+      sayar ve bunların hiçbiri bu siteye ait değildir.
+    </p>
+    <p>
+      Bu, SVG'de her zamankinden önemlidir; çünkü bir SVG bir resim değil bir
+      belgedir. İçinde bir betik ve uzak bir adres bulunabilir ve bir ajansın size
+      gönderdiği bir logo, sizin yazmadığınız bir dosyadır. Bir görsel etiketi
+      üzerinden çizildiğinde, belirtimin <em>güvenli durağan kip</em> dediği yerdedir:
+      betik çalışamaz ve adresle hiçbir zaman iletişim kurulmaz. Bunu web sitesi değil
+      tarayıcı zorunlu kılar.
+    </p>
+    <p>
+      Size söylenmesindense denetlemeyi tercih ederseniz sayfayı yükleyin, internet
+      bağlantısını kesin ve yine de bir şey dönüştürün.
+      <a href="../dosya-yuklemek-guvenli-mi/">Çevrimiçi dönüştürücülere dosya yüklemek
+      güvenli mi?</a> herhangi bir araçta çalıştırabileceğiniz üç denetim daha
+      anlatıyor.
+    </p>
+  </section>

@@ -1,0 +1,297 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      <a href="../../json-bicimlendirme/">Metin ve Kod</a>'u açın, JSON'u kutuya
+      yapıştırın ve okuyun. Düzen siz yazdıkça oluşur, dil metinden bulunur ve
+      aksini söylemedikçe girinti iki boşluktur. Hiçbir şey yüklenmez, çünkü
+      gidecek bir yer yoktur: ayrıştırıcı, zaten açık olan sekmede çalışan birkaç
+      yüz satırlık JavaScript'tir.
+    </p>
+    <p>
+      Aşağıdaki her şey, bir yapılandırma dosyasını alternatiflerden herhangi
+      birine yapıştırmadan önce bilmeye değen kısımdır: bir biçimlendiricinin neyi
+      değiştirmesine izin var, çoğu yine de neyi değiştiriyor ve dosya hiç
+      ayrıştırılmadığında hata nasıl okunur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Biçimlendirmek nedir, ne değildir</h2>
+    <p>
+      JSON'un neredeyse hiç söz dizimi yoktur. Bir nesne, bir dizi, bir dizge, bir
+      sayı ve üç kelime: <code>true</code>, <code>false</code> ve
+      <code>null</code>. Bu parçaların arasında boşluğun bir anlamı yoktur: şu
+      dosya
+    </p>
+    <pre><code>{"name":"thing","tags":["local","offline"]}</code></pre>
+    <p>
+      ile şu dosya
+    </p>
+    <pre><code>{
+  "name": "thing",
+  "tags": [
+    "local",
+    "offline"
+  ]
+}</code></pre>
+    <p>
+      aynı belgedir. Biçimlendirmek, birinciden ikinciye geçme işidir ve
+      <em>işin tamamı budur</em>. Bir biçimlendiricinin dosyanıza yaptığı başka
+      her şey &mdash; yeniden sıralama, yuvarlama, düşürme &mdash; belgenin
+      söylediğinde, istenmeden yapılmış bir değişikliktir.
+    </p>
+    <p>
+      Bu değişikliklerin üçü, adını anmaya değecek kadar yaygındır; çünkü sessizce
+      olurlar ve bir öğleden sonrada yazılmış bir biçimlendiricinin varsayılan
+      olarak yaptığı şeydirler.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir biçimlendiricinin değiştirmemesi gereken üç şey</h2>
+
+    <h3>Anahtarlarınızın sırası</h3>
+    <p>
+      İnsanları yakalayan budur. JavaScript'te bir JSON biçimlendiricisi yazmanın
+      apaçık yolu <code>JSON.parse</code> ve ardından girintili bir
+      <code>JSON.stringify</code> çağırmaktır; bu ikili ise tamsayıya benzeyen
+      anahtarların sırasını korumaz:
+    </p>
+    <pre><code>Object.keys(JSON.parse('{"10":"a","2":"b","x":"c"}'))
+// ['2', '10', 'x']</code></pre>
+    <p>
+      Bu, kimsenin kodundaki bir hata değildir. JavaScript nesnelerinin, tamsayıya
+      benzeyen anahtarları önce ve artan sayısal sırada koyacağı belirtilmiştir ve
+      <code>JSON.parse</code>'tan geçen her değer bir JavaScript nesnesine dönüşür.
+      Böyle kurulmuş bir biçimlendirici, kimliğe, kapı numarasına, yıla ya da HTTP
+      durum koduna göre anahtarlanmış bir dosyayı yeniden dizer ve bunu tek kelime
+      etmeden yapar.
+    </p>
+    <p>
+      Bunun önemli olup olmadığı dosyaya bağlıdır. JSON nesneleri ilkesel olarak
+      sırasızdır, yani teknik olarak bozulan bir şey yoktur &mdash; ama deponuzdaki
+      sürüme karşı fark devasa olacak, inceleme okunmaz olacak ve akışın devamında
+      bir şey dosyayı sırasıyla okuyorsa davranış değişecektir.
+    </p>
+
+    <h3>Sayılarınızın haneleri</h3>
+    <p>
+      JSON bir sayının ne kadar büyük olabileceğini söylemez, JavaScript söyler:
+      her sayı bir çift duyarlıklı sayıdır. Yani çift duyarlıklıya ayrıştırıp geri
+      yazan bir biçimlendirici, çift duyarlıklının tutamadığı her şeyi kaybeder.
+    </p>
+    <pre><code>JSON.stringify(JSON.parse('{"id":123456789012345678901}'))
+// {"id":123456789012345680000}
+
+JSON.stringify(JSON.parse('{"size":1e999}'))
+// {"size":null}</code></pre>
+    <p>
+      Yirmi bir haneli bir kimlik &mdash; bir Twitter kimliği, bir Snowflake
+      kimliği, bir banka referansı &mdash; başka bir sayı olarak geri gelir ve bir
+      çift duyarlıklı için fazla büyük bir değer <code>null</code> olarak geri
+      gelir. İki dosya da hâlâ ayrıştırılır ve hiçbiri başladığınız dosya
+      değildir.
+    </p>
+    <p>
+      Çıkış yolu, sayıları hiç ayrıştırmamaktır. Bir biçimlendiricinin belgeyi
+      düzenli yazmak için yalnızca bir sayının nerede başlayıp nerede bittiğini
+      bilmesi gerekir; değerine hiçbir zaman ihtiyacı olmaz, yani güvenli olan şey
+      haneleri yazıldıkları gibi kopyalamaktır. Buradaki aracın yaptığı da budur.
+    </p>
+
+    <h3>Yinelenen anahtarlarınız</h3>
+    <p>
+      <code>{"a": 1, "a": 2}</code> geçerli JSON'dur ve standart, ikisinden
+      hangisinin kazandığını söylemekten kaçınır. Ayrıştırıcılar pratikte anlaşamaz:
+      çoğu sonuncuyu tutar, bazıları ilkini tutar, birkaçı belgeyi reddeder.
+      Birini sessizce çıktıya veren bir biçimlendirici bu kararı sizin yerinize
+      vermiş ve çok daha yararlı olan gerçeği &mdash; iki tane olduğunu &mdash;
+      gizlemiştir; ki bu neredeyse her zaman dosyadaki bir hatadır ve görmek
+      isteyeceğiniz bir hatadır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dosya ayrıştırılmadığında</h2>
+    <p>
+      Çuvallayan JSON'un çoğu egzotik değildir. Yaklaşık altı şeyden biridir ve
+      hata, nerede olduğunu bulabileceğiniz terimlerle söylüyorsa hangisi olduğunu
+      da söyler. <code>4193. konum</code> gibi bir ofset bunu yapmaz; bir satır ve
+      bir sütun yapar.
+    </p>
+    <ul>
+      <li>
+        <strong>Sondaki virgül.</strong> <code>{"a": 1,}</code> JavaScript'te
+        yasaldır, JSON'da değildir. En yaygın tek sebep; genellikle bir listenin
+        son girdisini silmekten geriye kalır.
+      </li>
+      <li>
+        <strong>Tek tırnak.</strong> <code>{'a': 1}</code> bir JavaScript nesne
+        sabitidir, JSON değildir. Dizgeler de anahtarlar da çift tırnaklıdır ve
+        anahtarlar her zaman tırnaklıdır.
+      </li>
+      <li>
+        <strong>Tırnaksız anahtar.</strong> <code>{a: 1}</code>, aynı hatanın öbür
+        yönden hâli &mdash; genellikle bir dosyadan değil koddan bir şey
+        yapıştırmaktan gelir.
+      </li>
+      <li>
+        <strong>Yorumlar.</strong> <code>// böyle bir şey</code> de JSON değildir.
+        O, VS Code ayarlarının ve <code>tsconfig.json</code>'ın kullandığı
+        JSONC'dir ve başka hiçbir yerde ayrıştırılmaz. Bir yorumun hayatta kalması
+        gerekiyorsa alışılmış yol bir anahtardır:
+        <code>"_comment": "..."</code>.
+      </li>
+      <li>
+        <strong>Bir dizgenin içinde gerçek bir satır sonu ya da sekme.</strong>
+        Bunların <code>\n</code> ve <code>\t</code> olarak yazılması gerekir. Bir
+        kabuk komutu ya da bir sertifika elle bir değere yapıştırıldığında
+        genellikle ters giden şey budur.
+      </li>
+      <li>
+        <strong>JSON'un izin vermediği bir sayı.</strong> Baştaki sıfırlar
+        (<code>01</code>), yalın bir ondalık nokta (<code>.5</code>),
+        <code>NaN</code>, <code>Infinity</code> ve <code>+1</code>; hepsi
+        insanların yazdığı şeylerdir ve hiçbiri JSON değildir.
+      </li>
+    </ul>
+    <p>
+      Hata olmadığı hâlde hataya benzeyen bir şey: bayt sırası imiyle başlayan bir
+      dosya. Çoğu düzenleyicide görünmezdir, boşluk değildir ve belgenin ilk
+      karakterini beklenmedik kılar. Kusursuz görünen bir dosyada hata 1. satır 1.
+      sütundaysa, olan budur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Küçültmek ve genellikle ne kadar az kazandırdığı</h2>
+    <p>
+      Boşlukları sıkıp çıkarmak aynı işlemin tersidir ve neye yaradığı konusunda
+      gerçekçi olmaya değer. Boşluk son derece tekrarlıdır ve sizinle bir okuyucu
+      arasındaki her sunucu ve tarayıcı yanıtı zaten gzip ya da Brotli ile
+      sıkıştırır; onlar da tam olarak bu tür bir tekrarda çok iyidir.
+    </p>
+    <p>
+      Yani küçültülmüş JSON çoğu zaman dosya olarak yüzde otuz küçüktür ve tel
+      üzerinde yalnızca yüzde birkaç küçüktür. Ekmeğini gerçekten kazandığı yerler,
+      önünde sıkıştırma olmayanlardır: bir veritabanı sütunundaki bir değer, bir
+      günlük satırındaki bir alan, bir QR kodunun içindeki bir yük ya da birazdan
+      bir başlığa Base64'leyeceğiniz bir belge.
+    </p>
+    <p>
+      Bedeli okunurluktur ve dosya bir depoya işleniyorsa size farkları da
+      kaybettirir &mdash; tek satırlık bir dosya, içindeki herhangi bir şey
+      değiştiğinde baştan sona değişir. Düzenleyicinize girerken değil, çıkarken
+      küçültün.
+    </p>
+  </section>
+
+  <section>
+    <h2>Anahtarları sıralamak ve ne zaman sıralamamak</h2>
+    <p>
+      Her nesnenin anahtarlarını sıralamak burada varsayılan olarak uygulanmak
+      yerine bir seçenek olarak sunuluyor; çünkü bu, dosyada gerçek bir
+      değişikliktir ve değeri tamamen birazdan ne yapacağınıza bağlıdır.
+    </p>
+    <p>
+      Aynı şeyi söylemesi gereken iki belgeyi karşılaştırırken işe yarar &mdash;
+      iki ortamın yapılandırması, bir değişiklikten önceki ve sonraki bir API
+      yanıtı &mdash; ve biri anahtarlarını başka sırayla listeliyordur. Önce
+      ikisini de sıralamak, her şeyin farkını gerçekten farklı olan iki satırın
+      farkına çevirir.
+    </p>
+    <p>
+      Sıra bir işe yarıyorsa zarar verir. Bir <code>package.json</code>'ın neyin
+      önce geleceğine dair gelenekleri vardır; elle yazılmış bir yapılandırma çoğu
+      zaman ilgili ayarları gruplar; anahtarları bir araçla sıralanıp sonra
+      işlenmiş bir dosya ise devasa ve anlamsız tek bir işleme üretir. Özgün
+      dosyayı değil bir kopyayı sıralayın.
+    </p>
+    <p>
+      Bilmeye değer bir ayrıntı: buradaki sıralama kod noktalarına göre değil
+      anahtarların okunuşuna göredir; yani <code>item2</code>,
+      <code>item10</code>'dan sonra değil önce gelir. Kod noktasına göre sıralamak,
+      <code>item10</code>'u birlerin ortasına koyan şeydir; teknik olarak doğru ve
+      bir okuyucu için yararsızdır.
+    </p>
+  </section>
+
+  <section>
+    <h2>İki JSON dosyasını karşılaştırmak</h2>
+    <p>
+      Güvenilir yol, önce ikisini de aynı şekilde biçimlendirmektir. Aynı şeyi
+      söyleyen iki belge, biri küçültülmüş diğeri küçültülmemişse her satırda
+      farklı olabilir ve hiçbir karşılaştırma bunun ötesini göremez.
+    </p>
+    <p>
+      Yani: birincisini biçimlendirin, ikincisini biçimlendirin, sonra iki sonucu
+      karşılaştırın. Üç adım da burada aynı sayfadadır &mdash;
+      <em>Karşılaştır</em> sekmesinin kutuyu <em>Biçimlendir</em>'le paylaşmasının
+      sebebi tam olarak budur. İkisi anahtarlarını farklı sıralarda da
+      listeliyorsa, biçimlendirirken ikisini de sıralayın ve karşılaştırma
+      aradığınız farka çöksün.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kimsenin sayfaya koymadığı kısım</h2>
+    <p>
+      Bir JSON biçimlendirici arayın, üzerinde bir kutu olan onlarca site
+      bulacaksınız. O kutuya yapıştırmak bir yüklemedir. Panonuzda ne varsa
+      &mdash; içinde bir müşterinin adresi olan bir API yanıtı, bir bağlantı
+      dizgesi içeren bir yapılandırma dosyası, hata ayıkladığınız bir belirteç
+      &mdash; denetlemediğiniz bir makineye gönderilmiştir ve artık onların günlük
+      dosyası, onların hata raporu ve onların yedeğidir.
+    </p>
+    <p>
+      Bu, kötü niyet üzerine bir varsayım değildir. Gayet iyi niyetli bir site de
+      erişim günlükleri tutar, ölçüm çalıştırır ve bir barındırma sağlayıcısı
+      vardır. En güvenli veri hiç ayrılmamış veridir ve tamamen dizge işlemeden
+      ibaret bir iş için ayrılmasının hiçbir sebebi yoktur.
+    </p>
+    <p>
+      İki denetim; yalnızca burada değil, bu iddiada bulunan her sitede çalışır:
+    </p>
+    <ol>
+      <li>
+        <strong>Geliştirici araçlarını açın, Ağ sekmesini izleyin ve bir şey
+        biçimlendirin.</strong> Metniniz gönderiliyorsa onu taşıyan bir istek
+        vardır. Aynı anda başka hiçbir şey doğru olamaz.
+      </li>
+      <li>
+        <strong>İnternet bağlantısını kesin ve yeniden deneyin.</strong> İşi sizin
+        tarayıcınızda yapan bir araç bundan etkilenmez. Metninizi bir yere gönderen
+        bir araç anında ve tamamen çalışmayı bırakır.
+      </li>
+    </ol>
+    <p>
+      İkisinin de daha uzun bir sürümü, iki denetim daha eklenmiş hâliyle,
+      <a href="../dosya-yuklemek-guvenli-mi/">dosya yüklemek güvenli mi</a>
+      sayfasında.
+    </p>
+  </section>
+
+  <section>
+    <h2>Peki ya YAML, XML ve gerisi</h2>
+    <p>
+      Aynı sayfa XML, HTML, CSS ve YAML okur ve JSON ile bunların ilki ve
+      sonuncusu arasında dönüştürme yapar. Yukarıdan taşımaya değer iki şey var;
+      çünkü aynı savın başka bir kılıktaki hâli:
+    </p>
+    <ul>
+      <li>
+        <strong>YAML'ı JSON'a çevirmek yorumları kaybettirir</strong>; çünkü
+        JSON'un bir yorumu koyacak yeri yoktur. YAML'ın &ldquo;aynı düğüm iki
+        kez&rdquo; deme yolu olan bağlantı noktaları ve takma adlar da ifade
+        edilemez ve burada tahmin edilmek yerine reddedilir.
+      </li>
+      <li>
+        <strong><code>no</code> bir dizgedir.</strong> YAML 1.1'de
+        <code>yes</code>, <code>no</code>, <code>on</code> ve <code>off</code>
+        mantıksal değerlerdi; Norveç'i içeren bir ülke kodu listesinin eskiden
+        içinde <code>false</code> ile geri gelmesinin sebebi buydu. YAML 1.2 bundan
+        vazgeçti, bu araç da öyle &mdash; ama o kelimeler yine de tırnak içinde geri
+        yazılır; çünkü dosyayı sonra açan şey bir 1.1 okuyucusu olabilir.
+      </li>
+    </ul>
+  </section>

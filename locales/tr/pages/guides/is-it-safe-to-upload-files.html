@@ -1,0 +1,254 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      Çoğu dosya için, çoğu zaman, yüklemek sorun değildir. Saygın dönüştürücüler
+      gönderdiğinizi birkaç saat içinde siler ve tatil fotoğraflarınızla
+      ilgilenmezler.
+    </p>
+    <p>
+      Sorun yalan söylüyor olmaları değildir.
+      <strong>Söyleyip söylemediklerini anlamanızın bir yolu olmamasıdır.</strong>
+      Bir dosya makinenizden ayrıldığı anda, sonrasında olacaklarla ilgili her
+      söz, güvene dayanarak kabul ettiğiniz bir sözdür: ne kadar saklandığı, ona
+      kimin erişebildiği, silme sayacından daha uzun yaşayan bir yedeğe kopyalanıp
+      kopyalanmadığı, şirket satılırsa ya da ihlale uğrarsa başına ne geleceği.
+      Bunların hiçbiri dışarıdan görünmez.
+    </p>
+    <p>
+      Yani işe yarayan soru &ldquo;bu siteye güveniyor muyum?&rdquo; değildir.
+      <strong>&ldquo;Bu işin dosyamın buradan ayrılmasına ihtiyacı var
+      mı?&rdquo;</strong> sorusudur. Giderek artan sayıda iş için cevap hayırdır ve
+      cevap hayır olduğunda güven sorusu, cevaplamak zorunda olduğunuz bir soru
+      olmaktan çıkar.
+    </p>
+  </section>
+
+  <section>
+    <h2>&ldquo;Yükleme&rdquo; aslında ne yapıyor</h2>
+    <p>
+      Bir dönüştürücü sizden bir dosya seçmenizi isteyip ardından bir ilerleme
+      çubuğu gösterdiğinde, tarayıcınız dosyanın tamamını, baytı baytına, internet
+      üzerinden bir başkasının sahip olduğu bir bilgisayara kopyalıyordur. O
+      bilgisayar onu bir diske yazar, dönüşümü yapar, sonucu aynı diske yazar ve
+      size bir bağlantı verir.
+    </p>
+    <p>
+      O anda dosyanız, sizin seçmediğiniz en az üç yerde bulunur: sunucunun diski,
+      isteği kaydeden günlükler ve çoğu zaman indirme hızlı olsun diye sonucu
+      önbelleğe almış bir içerik dağıtım ağı. Bir silme politikasının üçüne birden
+      ulaşması gerekir. Çoğu ulaştığını söyler. Hiçbirini
+      denetleyemezsiniz.
+    </p>
+    <p>
+      Bilmeye değer bir başka şey: giden tek şey dosya değildir. Dosya adı da
+      onunla gider, dosyanın içindeki göremediğiniz her şey de. Telefondan doğrudan
+      çıkan bir fotoğraf tipik olarak çekildiği yerin tam GPS koordinatlarını,
+      saati, kameranın seri numarasını ve bazen siz kırpmadan önceki özgün
+      görüntünün gömülü bir küçük resmini taşır. Resim konusunda dikkatli olan
+      insanlar çoğu zaman bu konuda dikkatli değildir; çünkü ekranda hiçbir şey
+      bunu onlara göstermez.
+    </p>
+  </section>
+
+  <section>
+    <h2>Çoğu araç neden yine de yükleme yapıyor</h2>
+    <p>
+      Dosyalarınızı istedikleri için değil. Çünkü webin ömrünün büyük kısmında bir
+      alternatif yoktu. Bir tarayıcı video çözemez, bir görseli seçilen bir
+      kalitede yeniden kodlayamaz ya da bir dosya biçimini ayrıştıramazdı;
+      FFmpeg ve ImageMagick'i olan bir sunucu yapabilirdi. Yükleme bir iş modeli
+      değildi, işin olabileceği tek yerdi.
+    </p>
+    <p>
+      Bu, yakın zamanda ve sessizce doğru olmaktan çıktı. Tarayıcılar artık aynı
+      derlenmiş kodlayıcıları yerele yakın hızda çalıştıran WebAssembly'yi,
+      makinenizde zaten bulunan donanım video kodlayıcısını açan WebCodecs'i ve
+      görselleri doğrudan çözüp yeniden kodlayabilen bir Canvas API'sini
+      beraberinde getiriyor. Bir zamanlar bir sunucu gerektiren iş, artık dosyaya
+      zaten sahip olan cihazda çalışıyor.
+    </p>
+    <p>
+      Bir sürü araç hâlâ yükleme yapıyor ve dürüst sebepler var: kimsenin yeniden
+      yazmak istemediği mevcut bir hat, tarayıcı tarafında çözücüsü olmayan bir
+      biçim, bir telefon için gerçekten fazla ağır bir iş. Bir de daha az dürüst
+      bir sebep var: hesapların, kotaların ve ücretli kademelerin yaşadığı yer
+      sunucudur. Tamamen tarayıcınızda çalışan bir aracı ölçmek zordur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kendiniz çalıştırabileceğiniz dört denetim</h2>
+    <p>
+      Bunlar, bu araç dâhil her araçta çalışır. Hiçbiri kimsenin sözüne inanmayı
+      gerektirmez ve ilki yaklaşık on saniye sürer.
+    </p>
+
+    <h3>1. Fişi çekin</h3>
+    <p>
+      Sayfayı yükleyin, sonra wi-fi'yi kapatın ya da kabloyu çıkarın ve kullanmayı
+      deneyin. İşini sizin tarayıcınızda yapan bir araç tam olarak eskisi gibi
+      devam eder. Yükleme yapan bir araç anında durur; çünkü işi yapan şeye artık
+      ulaşılamıyordur.
+    </p>
+    <p>
+      Bu, var olan en güçlü denemedir ve taklit edilmesi en zorudur; çünkü
+      kelimelerle cevaplanamaz. Dönüşüm ya ağ olmadan tamamlanır ya tamamlanmaz.
+    </p>
+
+    <h3>2. Ağ sekmesini izleyin</h3>
+    <p>
+      Tarayıcınızın geliştirici araçlarını açın, Ağ'ı seçin, sonra aracı kullanın.
+      Sayfanın yaptığı her istek boyutuyla birlikte listelenir. 4&nbsp;MB'lik
+      fotoğrafınız yüklendiyse o listede 4&nbsp;MB'lik bir istek vardır. Sayfadan
+      çıkan en büyük şey birkaç kilobaytlık reklamsa yüklenmemiştir.
+    </p>
+    <p>
+      Boyuta göre sıralayın ve en üste bakın. İstekleri anlamanız gerekmez;
+      içlerinden birinin dosyanız boyutunda olup olmadığını fark etmeniz
+      yeterlidir.
+    </p>
+
+    <h3>3. Content-Security-Policy'yi okuyun</h3>
+    <p>
+      Sayfa kaynağını görüntüleyin ve en üstlerde
+      <code>Content-Security-Policy</code>'yi arayın. O, sayfanın iletişim
+      kurmasına izin verilen adreslerin listesidir ve sitenin iyi niyetiyle değil
+      tarayıcınız tarafından zorunlu kılınır &mdash; listede olmayan bir şeye
+      yapılan istek, kod ne denerse denesin reddedilir.
+    </p>
+    <p>
+      Önemli olan yönerge, sayfanın nereye veri gönderebileceğini belirleyen
+      <code>connect-src</code>'dir. Bulunduğunuz siteye ait bir adres sayıyorsa
+      sayfa dosyanızı oraya gönderebilir. Hiçbir şey saymıyorsa ya da yalnızca bir
+      reklam ağı gibi üçüncü tarafları sayıyorsa gönderemez.
+    </p>
+    <p>
+      Hiç Content-Security-Policy'si olmayan bir sayfa kötü bir şeyin kanıtı
+      değildir. Yalnızca bu belirli denetimin size söyleyecek bir şeyi olmadığı
+      anlamına gelir.
+    </p>
+
+    <h3>4. Kodu okuyun</h3>
+    <p>
+      En zahmetlisi, en kesin sonuç vereni. Bir araç kaynağını yayımlıyor ve onu
+      bir derleme adımı olmadan sunuyorsa, tarayıcınızın getirdiği dosyalar
+      okuyabileceğiniz dosyalardır. İçlerinde <code>fetch</code>,
+      <code>XMLHttpRequest</code> ve <code>sendBeacon</code> arayın &mdash; bir
+      sayfanın bir şey gönderebileceği üç yol &mdash; ve onlara ne verildiğine
+      bakın.
+    </p>
+    <p>
+      Çoğu insan bunu yapmayacak. Yine de yapılabilir olması önemlidir; çünkü
+      kimsenin denetleyemediği bir iddia gerçekte bir iddia değildir.
+    </p>
+  </section>
+
+  <section>
+    <h2>&ldquo;Tarayıcınızda çalışır&rdquo; ne demek değildir</h2>
+    <p>
+      Kesin konuşmaya değer; çünkü bu ifade gevşek kullanılıyor ve bu sitenin de
+      önerdiği ölçüte kendini tutması gerekiyor.
+    </p>
+    <ul>
+      <li>
+        <strong>Hiç istek yok demek değildir.</strong> Sayfanın kendisi ağ
+        üzerinden geldi ve ücretsiz araçların çoğu, biriyle konuşan reklam ya da
+        ölçüm taşır. İddia, genel olarak trafik hakkında değil,
+        <em>dosyanız</em> hakkındadır.
+      </li>
+      <li>
+        <strong>IP adresinizi gizlemez.</strong> Ziyaret ettiğiniz her site onu
+        görür, bu site dâhil. Yerel işleme, anonimlikle değil dosyalarınızın
+        içeriğiyle ilgilidir.
+      </li>
+      <li>
+        <strong>Bir şey getiren bir özellikten sağ çıkmaz.</strong> Bir web adresi
+        yapıştırmanıza izin veren bir aracın o adresle iletişim kurması gerekir ve
+        o sunucu IP adresinizi ve ne istediğinizi öğrenir. Bu, özelliğin bir
+        kusuru değil doğasıdır &mdash; ama gerçek bir istisnadır ve bir araç bunu
+        yuvarlamak yerine açıkça söylemelidir.
+      </li>
+      <li>
+        <strong>&ldquo;Dosyalarınızı siliyoruz&rdquo; ile aynı şey
+        değildir.</strong> İkinci cümle bir şirketin yapmayı seçtiği şeyle
+        ilgilidir. Birincisi teknik olarak neyin mümkün olduğuyla. Yalnızca biri
+        denetlenebilir.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Yüklemenin gerçekten sorun olmadığı durumlar</h2>
+    <p>
+      Bu, her yüklemenin bir hata olduğu savı değildir. İçerik hassas değilse ve iş
+      böyle daha kolaysa; iş gerçekten cihazınız için fazla ağırsa; biçimin
+      tarayıcı tarafında bir çözücüsü yoksa; ya da zaten bir ilişkiniz olan ve
+      koşullarını gerçekten okuduğunuz bir hizmeti kullanıyorsanız dosyayı
+      gönderin.
+    </p>
+    <p>
+      Dosya, herkese açık paylaşmayacağınız bir şey içeriyorsa daha dikkatli olun:
+      kimlik belgeleri, tıbbi taramalar, sözleşmeler, paylaşmayı istemediğiniz bir
+      adres ya da yüz içeren her şey veya konum verisine bakmadığınız bir fotoğraf.
+      Bunlar için, denetleyebileceğiniz bir aracı güvenmek zorunda olduğunuz bir
+      araca tercih etmeye değer &mdash; güvendiğinizin size ihanet etme ihtimali
+      yüksek olduğu için değil, denetlenebilir olanda sorunun hiç ortaya
+      çıkmamasından dolayı.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bu site o dört denetime nasıl cevap veriyor</h2>
+    <p>
+      Size denetleyin deyip sonra muaf tutulmak isteyen bir rehber tuhaf olurdu.
+      O hâlde, sırasıyla:
+    </p>
+    <ul>
+      <li>
+        <strong>Fişi çekin.</strong> Buradaki herhangi bir aracı açın, bağlantıyı
+        kesin, çalışmaya devam etsin. Her araç sayfasında, şu anda çevrimiçi olup
+        olmadığınızı söyleyen canlı bir gösterge var; böylece değiştiğini
+        izleyebilirsiniz.
+      </li>
+      <li>
+        <strong>Ağ sekmesi.</strong> Bir şey dönüştürün ve listeyi okuyun. Hiçbiri
+        dosyanızı, onun bir küçük resmini, adını, boyutunu ya da içinden okunan
+        herhangi bir şeyi taşımıyor. Bu sitede bunlardan birini gönderecek özel
+        bir ölçüm olayı yok.
+      </li>
+      <li>
+        <strong>Content-Security-Policy.</strong> Her sayfanın kaynağının en
+        üstünde. <code>connect-src</code>, Google'ın reklam ve ölçüm uç
+        noktalarını ve bağış düğmesini sayıyor, başka hiçbir şeyi değil.
+        <strong>O listedeki hiçbir adres bu siteye ait değil</strong>; çünkü bu
+        sitenin bir sunucusu yok &mdash; durağan dosyalardan ibaret. Bir şey
+        denese bile bir dosyanın gönderilebileceği bir yer yok.
+      </li>
+      <li>
+        <strong>Kod.</strong> Her satırı
+        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">herkese açık</a>.
+        Derleme yorumları ve boşlukları siler, başka hiçbir şeyi değil; onu
+        kendiniz çalıştırıp sonucu sunulanla karşılaştırabilirsiniz.
+      </li>
+    </ul>
+    <p>
+      İstisnalar, gömülmek yerine açıkça söyleniyor: bu site Google reklamları ve
+      bir ziyaret sayacı taşıyor; ikisi de Google'la konuşuyor ve hiçbirine
+      dosyalarınız hakkında bir şey verilmiyor; ayrıca
+      <a href="../../resimleri-videoya-donusturme/">Görsellerden Videoya</a> aracı,
+      yapıştırdığınız bir adresten bir görsel getirebiliyor ki bu da o sunucunun IP
+      adresinizi gördüğü anlamına geliyor.
+      <a href="../../gizlilik/">Gizlilik sayfası</a> ikisini de eksiksiz
+      anlatıyor.
+    </p>
+    <p>
+      Buradaki her araç böyle çalışıyor: söylediğiniz boyutu tutturan bir
+      <a href="../../resim-sikistirma/">görsel sıkıştırıcı</a>, bir
+      <a href="../../video-kirpma/">video kırpıcı</a>, bu sayfanın yukarısında
+      anlatılan gizli veri için bir
+      <a href="../../exif-verisi-silme/">EXIF görüntüleyici ve silici</a>,
+      <a href="../../resimleri-videoya-donusturme/">görsellerden videoya</a> ve
+      <a href="../../resimleri-pdfe-donusturme/">görsellerden PDF'e</a>. Hepsi
+      ücretsiz, hesap yok ve hiçbirinin dosyalarınızı gönderecek bir yeri yok.
+    </p>
+  </section>

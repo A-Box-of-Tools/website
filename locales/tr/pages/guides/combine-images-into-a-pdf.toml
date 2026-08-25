@@ -1,0 +1,17 @@
+#
+# Rehber: resimleri tek bir PDF'te birleştirme - Türkçe.
+#
+
+nav = "Resimleri PDF'te birleştirme"
+title = "Resimleri Tek Bir PDF'te Nasıl Birleştirirsiniz"
+description = "Fotoğrafları ya da taramaları tek bir PDF'e çevirin: sayfa boyutu, sıra ve döndürme, bir JPEG'in içeri girerken neden hiç kalite kaybetmesi gerekmediği ve bitmiş bir PDF'in gönderdiğiniz kişiye ne anlattığı."
+heading = "Resimler tek bir PDF'te nasıl birleştirilir"
+lede = """
+    Biri sizden &ldquo;tek bir PDF&rdquo; istedi, sizin elinizde ise on bir tane
+    kâğıt fotoğrafı var. Bu rehber, sonucu gerçekten değiştiren seçimleri
+    &mdash; sayfa boyutu, sıra, kalite ve belgenin sizin hakkınızda söyledikleri
+    &mdash; ve bunların hangilerini rahatça geçebileceğinizi anlatıyor."""
+updated = "20 Ağustos 2026"
+og_title = "Resimler tek bir PDF'te nasıl birleştirilir"
+og_description = "Sayfa boyutu, sıra ve döndürme, bir JPEG'in içeri girerken neden kalite kaybetmesi gerekmediği ve bir PDF'in gönderdiğiniz kişiye ne anlattığı."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"
