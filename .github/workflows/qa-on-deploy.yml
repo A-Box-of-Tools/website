@@ -1,12 +1,19 @@
 #
 # Asks A-Box-of-Tools/qa to re-run its suite once a deploy actually lands.
 #
-# Triggered on a push to `dist` rather than `main` or a GitHub Release:
-# `dist` is what GitHub Pages serves (see build.yml), and deploys here are
-# continuous - every push to main that changes the built output becomes one,
-# with no release or tag involved. A push to `dist` is the one event that
-# means "a visitor's browser now sees something different", which is what
-# this is meant to catch.
+# Triggered by the Build workflow finishing, rather than by the push to
+# `dist` that it makes.
+#
+# `on: push: branches: [dist]` is the obvious way to write this and it does
+# not work. build.yml publishes with the GITHUB_TOKEN that actions/checkout
+# configured, and GitHub deliberately does not let a GITHUB_TOKEN push start
+# another workflow run - otherwise a workflow that commits could trigger
+# itself forever. The symptom is silence: `dist` moves, Pages redeploys, and
+# nothing here ever runs. It was written that way first, and the only runs
+# this workflow had were manual ones.
+#
+# `workflow_run` is the trigger meant for chaining and is not suppressed. It
+# only fires for workflows defined on the default branch, which build.yml is.
 #
 # This only dispatches; it does not run the suite itself. The qa repo's own
 # report.yml runs it and publishes the result to that repo's gh-pages
@@ -28,8 +35,9 @@
 name: QA (post-deploy)
 
 on:
-  push:
-    branches: [dist]
+  workflow_run:
+    workflows: ["Build"]
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -44,6 +52,13 @@ concurrency:
 jobs:
   qa:
     runs-on: ubuntu-latest
+    # Only a build that succeeded and actually published. build.yml runs on
+    # pull requests too and skips its publish step there, so a pull request
+    # build finishing is not a deploy and there is nothing new to check.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push')
     steps:
       # GitHub Pages usually publishes within a minute of `dist` moving, but
       # that isn't guaranteed. Waiting here rather than in the qa repo keeps
