@@ -55,6 +55,14 @@ The groups are deliberate, not accidental:
     arithmetic beside it is NOT shared - gf256.js computes a remainder and
     reed-solomon.js finds errors, which are different halves of the same
     mathematics - so those two are not a group and are not meant to be.
+  - The four PDF modules are one group each across three tools. objects.js is
+    the format's grammar, reader.js opens a file somebody else wrote, filters.js
+    undoes the compression on every stream and writer.js puts the result back -
+    none of which has anything to do with what the tool then does to the
+    document. They were two copies each while only the merger and the compressor
+    existed, and undeclared; the redactor is the third, and a repair to any of
+    them - a broken cross-reference table, a stream whose /Length lies - is a
+    repair all three want.
 
 Adding a sixth copy of one of these, or a new duplicated module, means adding
 it here. `test_every_copy_is_declared` fails if a copy exists that no group
@@ -77,12 +85,22 @@ GROUPS = [
     ('mp4.js', ['images-to-video', 'timelapse-video']),
     ('qr-tables.js', ['qr-barcode', 'qr-barcode-reader']),
     ('pdf.js', ['document-scanner', 'images-to-pdf']),
+    ('objects.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
+    ('reader.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
+    ('filters.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
+    ('writer.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
 ]
 
 # Copies that are not duplicates of anything, and why. Named so that
 # test_every_copy_is_declared can tell "deliberately its own" from "forgotten".
 SINGLETONS = {
     ('mp4.js', 'crop-video'): 'its own timescale and tkhd signature',
+    # The groups are keyed by file name, and a shared name is not a shared
+    # module. Both of these are byte cursors over a format that is not PDF,
+    # and the DICOM one swaps endianness inside a single file, which nothing
+    # reading a PDF has any reason to do.
+    ('reader.js', 'gif-analyzer'): 'a GIF reader, related to the PDF one by name only',
+    ('reader.js', 'dicom-viewer'): 'a DICOM reader, related to the PDF one by name only',
 }
 
 

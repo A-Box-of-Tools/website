@@ -332,7 +332,7 @@ order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "timela
 id = "documents-and-audio"
 name = "Documents &amp; audio"
 note = "Rearrange a document or trim a recording, without sending either off to be processed."
-order = ["merge-pdf", "compress-pdf", "images-to-pdf", "document-scanner", "trim-audio", "edit-audio"]
+order = ["merge-pdf", "compress-pdf", "redact-pdf", "images-to-pdf", "document-scanner", "trim-audio", "edit-audio"]
 
 # Everything that is not a file being edited. What goes in is something you
 # typed, something you want read back, or something you want checked, and what
@@ -466,6 +466,7 @@ order = [
   "open-a-dicom-file",
   "convert-heic-to-jpg",
   "merge-and-split-pdf-files",
+  "redact-a-pdf",
   "make-a-pdf-smaller",
   "combine-images-into-a-pdf",
   "scan-a-document-with-your-phone",
