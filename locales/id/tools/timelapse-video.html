@@ -1,0 +1,162 @@
+<!--
+  tools/timelapse-video/body.html, in Indonesian.
+
+  Every id, class, data-speed and option value below is what src/main.js
+  reaches for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; file -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih sebuah video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="preview-wrap" id="preview-wrap" hidden>
+      <video id="preview" playsinline controls muted></video>
+      <canvas id="still" hidden></canvas>
+    </div>
+    <p id="preview-note" class="path-note" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Ukuran</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Bingkai</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Durasi</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Laju bingkai</dt><dd id="src-fps">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; kecepatannya -->
+  <section class="card" id="speed-card" hidden>
+    <h2><span class="step">2</span> Pilih kecepatannya</h2>
+
+    <div class="speed-row" role="group" aria-label="Seberapa jauh klipnya dipercepat">
+      <button type="button" data-speed="2">2&times;</button>
+      <button type="button" data-speed="5">5&times;</button>
+      <button type="button" data-speed="10" class="active">10&times;</button>
+      <button type="button" data-speed="20">20&times;</button>
+      <button type="button" data-speed="30">30&times;</button>
+      <button type="button" data-speed="60">60&times;</button>
+      <button type="button" data-speed="120">120&times;</button>
+      <button type="button" data-speed="300">300&times;</button>
+    </div>
+
+    <!--
+      Two ways of saying the same thing, because people arrive with one of two
+      questions: "speed this up thirty times" and "make this fit in twenty
+      seconds". Typing in either box fills in the other.
+    -->
+    <div class="numbers">
+      <label>Kecepatan
+        <span class="with-unit">
+          <input type="number" id="speed" min="1.1" max="1000" step="0.1" value="10">
+          <span class="unit">&times;</span>
+        </span>
+      </label>
+      <label>Durasi akhir
+        <span class="with-unit">
+          <input type="number" id="length" min="0.1" step="0.1">
+          <span class="unit">dtk</span>
+        </span>
+      </label>
+    </div>
+
+    <p class="interval-note" id="interval-note"></p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="fps">Diputar pada</label>
+        <select id="fps">
+          <option value="24">24 bingkai per detik</option>
+          <option value="30" selected>30 bingkai per detik</option>
+          <option value="60">60 bingkai per detik</option>
+        </select>
+        <p class="field-note">
+          Laju pemutaran klip yang sudah jadi. Ia tidak mengubah seberapa cepat
+          klipnya &mdash; itu kecepatan di atas &mdash; hanya seberapa halus
+          tampaknya.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="size">Ukuran</label>
+        <select id="size">
+          <option value="0" selected>Ukuran asli</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+        <p class="field-note" id="size-note">
+          Hanya diperkecil. Sebuah time-lapse biasanya ditonton dalam ukuran
+          kecil.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="quality">Kualitas</label>
+        <select id="quality">
+          <option value="low">File lebih kecil</option>
+          <option value="medium" selected>Seimbang</option>
+          <option value="high">Kualitas terbaik</option>
+        </select>
+        <p class="field-note">
+          Lebih tinggi daripada yang biasanya dibelanjakan alat video di sini,
+          karena bingkai berurutan sebuah time-lapse sedikit sekali kesamaannya
+          untuk dikompres.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Langkah 3 &mdash; ekspor -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Buat time-lapse-nya</h2>
+
+    <dl class="summary" id="summary">
+      <div><dt>Bingkai yang disimpan</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Satu bingkai setiap</dt><dd id="sum-interval">&mdash;</dd></div>
+      <div><dt>Durasi akhir</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Bingkai keluaran</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Yang dibaca</dt><dd id="sum-read">&mdash;</dd></div>
+      <div><dt>Sekitar</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-note" class="path-note" hidden></p>
+
+    <p class="silent-note">
+      Hasilnya tidak bersuara. Ucapan dan musik yang dipercepat tiga puluh kali
+      bukan lagi ucapan dan musik, jadi tidak ada yang layak disimpan di sini
+      &mdash; dan membuangnya adalah alasan time-lapse dari satu jam keluar
+      sebagai beberapa megabyte.
+    </p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Buat time-lapse</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline loop></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Unduh time-lapse</a>
+      </div>
+    </div>
+  </section>
+</main>

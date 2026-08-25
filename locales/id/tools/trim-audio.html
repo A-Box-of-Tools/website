@@ -1,0 +1,207 @@
+<!--
+  tools/trim-audio/body.html, in Indonesian.
+
+  Every id, class, data-speed and option value below is what src/main.js,
+  src/segments.js and src/timeline.js reach for, so they are the same in every
+  language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; rekamannya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih sebuah rekaman</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Ukuran</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Durasi</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Suara</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>Dibaca sebagai</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; penanda -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> Tandai bagian yang Anda mau
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      Putar sampai selesai dan tekan <kbd>I</kbd> di tempat sebuah bagian harus
+      dimulai dan <kbd>O</kbd> di tempat ia harus berakhir. Lakukan sebanyak yang
+      Anda mau &mdash; setiap pasangan menjadi satu baris di bawah, dan file yang
+      sudah jadi adalah baris-baris itu, satu demi satu. <kbd>U</kbd> membatalkan
+      yang terakhir, <kbd>Space</kbd> memutar dan menjeda, dan tombol panah
+      melompat lima detik. Tahan <kbd>Shift</kbd> bersama panah untuk bergeser
+      sepuluh milidetik sekali tekan.
+    </p>
+
+    <!-- Built by src/timeline.js: the waveform, a band for every part, the one
+         being marked, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <audio id="preview" class="player" controls preload="metadata"></audio>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">Putar</button>
+      <button type="button" id="back-5" class="ghost" title="Mundur lima detik">&minus;5d</button>
+      <button type="button" id="forward-5" class="ghost" title="Maju lima detik">+5d</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> Tandai awal</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> Tandai akhir</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> Batalkan</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="Kecepatan pemutaran">
+      <span class="speed-label">Kecepatan</span>
+      <button type="button" class="speed" data-speed="0.5">0,5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0,75&times;</button>
+      <button type="button" class="speed active" data-speed="1">Normal</button>
+      <button type="button" class="speed" data-speed="1.25">1,25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1,5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The parts themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>Bagian <span class="segment-count" id="segment-count">belum ada</span></h3>
+        <p class="segments-total">
+          Total tersimpan <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">Mulai</th>
+            <th scope="col">Selesai</th>
+            <th scope="col">Durasi</th>
+            <th scope="col"><span class="visually-hidden">Tindakan</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        Belum ada yang ditandai. Tekan <kbd>I</kbd> lalu <kbd>O</kbd> sambil
+        diputar, atau pakai tombol di atas.
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">Tambah baris secara manual</button>
+        <button type="button" id="reset-segments" class="ghost danger">Bersihkan semuanya</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">Muat penanda&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="Format file stempel waktu">
+          <option value="seconds" selected>detik</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">Simpan penanda</button>
+      </div>
+
+      <p class="field-note">
+        Penanda disimpan sebagai file teks biasa &mdash; satu baris satu bagian,
+        dengan format di atas &mdash; jadi sesi penandaan yang panjang selamat
+        dari tab yang tertutup, dan file yang sama bisa diserahkan ke pemotong
+        video atau ke alat lain mana pun yang membaca tata letak itu.
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>Apa yang dilakukan pada bagian yang ditandai</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>Simpan bagian itu</strong>
+          File yang sudah jadi adalah bagian yang ditandai, digabungkan berurutan.
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>Buang yang ditandai</strong>
+          Bagian yang ditandai hilang, dan semua sisanya digabungkan.
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Langkah 3 &mdash; file yang keluar -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Potong</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">Apa yang ditulis</label>
+        <select id="depth">
+          <option value="16" selected>WAV 16-bit &mdash; bisa diputar di mana-mana</option>
+          <option value="32">WAV float 32-bit &mdash; persis sampelnya</option>
+        </select>
+        <p class="field-note">
+          Sebuah WAV memuat sampelnya apa adanya, jadi menulisnya tidak mungkin
+          memakan kualitas. Ia bukan file kecil: lihat perkiraan di bawah.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fade">Lembutkan sambungannya</label>
+        <select id="fade">
+          <option value="0">Mati &mdash; potong pada sampel yang persis</option>
+          <option value="0.005" selected>5 md &mdash; cukup untuk menghentikan bunyi klik</option>
+          <option value="0.02">20 md</option>
+          <option value="0.05">50 md</option>
+        </select>
+        <p class="field-note" id="fade-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Yang disimpan</dt><dd id="sum-parts">&mdash;</dd></div>
+      <div><dt>Durasi akhir</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Mulai pada</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>Sambungan</dt><dd id="sum-joins">&mdash;</dd></div>
+      <div><dt>Suara</dt><dd id="sum-sound">&mdash;</dd></div>
+      <div><dt>Kira-kira</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Potong audio</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" class="player" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Unduh audio</a>
+      </div>
+    </div>
+  </section>
+</main>

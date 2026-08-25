@@ -1,0 +1,230 @@
+#
+# Gambar ke PDF - Bahasa Indonesia.
+#
+# Overrides for tools/images-to-pdf/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Gambar ke PDF"
+heading = "Gambar&nbsp;ke&nbsp;PDF <span class=\"h1-kw\">&mdash; pengubah JPG ke PDF</span>"
+tagline = "Masukkan gambar Anda ke dalam satu dokumen."
+
+title = "Pengubah Gambar ke PDF &mdash; JPG ke PDF Gratis, Tanpa Unggah"
+description = "Gabungkan gambar JPG, PNG, atau WebP menjadi satu PDF, gratis dan sepenuhnya di peramban Anda. Foto masuk tanpa dikodekan ulang, dan tidak ada yang diunggah."
+og_title = "Gambar ke PDF &mdash; pengubah JPG ke PDF gratis"
+og_description = "Gabungkan gambar menjadi satu PDF di perangkat Anda sendiri. Foto JPEG disalin masuk tanpa disentuh, jadi tidak ada yang kehilangan kualitas dan tidak ada yang diunggah."
+og_image_alt = "Gambar ke PDF - gabungkan gambar menjadi satu dokumen tanpa mengunggahnya"
+
+pledge = """
+    Dokumen ditulis di memori mesin ini, satu halaman sekali jalan, oleh kode
+    yang disajikan dari alamat ini. Tidak ada di sini yang bisa melakukan
+    unggahan, dan tidak ada server di ujung lain halaman ini untuk
+    menerimanya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu buat sebuah PDF. Tidak satu pun permintaan membawa gambar, gambar
+      mini, atau nama file. Atau cabut koneksi internet dan tetap buat satu."""
+
+read_first = """
+, dan <code>src/pdf.js</code> serta
+      <code>src/document.js</code> untuk seluruh penulisan file-nya, yang tidak
+      pernah menyentuh jaringan."""
+
+howto_heading = "Cara mengubah gambar menjadi PDF"
+
+card = """
+            Gabungkan gambar menjadi satu PDF, satu gambar per halaman. Foto
+            JPEG disalin masuk persis seperti adanya, jadi tidak ada yang
+            kehilangan kualitas."""
+
+[words]
+plural = "gambar"
+choose = "beberapa gambar"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "File tetap di perangkat Anda"
+
+[[privacy]]
+title = "Gambar Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Alat ini tidak menambahkan apa pun ke daftar itu:
+      ia tidak punya fitur jaringan sendiri, bahkan yang opsional sekalipun.
+      Tidak ada titik akhir di sini tempat file Anda bisa dikumpulkan, dan tidak
+      ada kode yang akan mengirimnya seandainya ada."""
+
+[[privacy]]
+title = "PDF-nya ditulis di sini."
+body = """
+ Sebuah PDF adalah daftar objek dan tabel yang
+      mencatat di mana setiap objek dimulai, dan <code>src/pdf.js</code> menulis
+      keduanya. Tidak ada pustaka yang diambil, tidak ada yang digambar di
+      server, dan file yang sudah jadi diserahkan langsung ke unduhan dari
+      memori."""
+
+[[privacy]]
+title = "Dokumen tidak diberi tahu apa pun tentang Anda."
+body = """
+ Sebagian besar alat mencap sebuah PDF
+      dengan stempel waktu dan nama program yang membuatnya. Alat ini menulis
+      judul, penulis, dan tanggal hanya kalau Anda mengetiknya; nama file gambar
+      Anda tidak pernah muncul di dalam dokumen, begitu pula apa pun tentang
+      mesin Anda."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang gambar Anda: bukan file,
+      bukan gambar mini, bukan nama, ukuran, atau jumlah. Setiap baris yang
+      membaca, mendekode, atau menulis sebuah gambar disajikan dari asal ini dan
+      terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau gambar Anda. Tidak
+      ada yang terjadi kecuali Anda mengekliknya, dan yang akan Anda tuju adalah
+      situs milik orang lain."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap berfungsi. Itulah bukti yang paling sederhana: alat yang
+      mengirim gambar Anda ke tempat lain untuk dijadikan dokumen akan
+      berhenti."""
+
+[[howto]]
+title = "Pilih gambar Anda."
+body = """
+ Jatuhkan sebuah folder ke pemilih file,
+      atau pilih file-nya sendiri. Peramban membacanya langsung dari disk Anda;
+      tidak ada yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Urutkan halamannya, dan putar yang perlu diputar."
+body = """
+ Satu gambar menjadi satu halaman, dalam
+      urutan yang ditampilkan. Seret sebuah kotak lewat pegangannya untuk
+      memindahkannya, atau pakai panahnya; tombol putar memutar sebuah halaman
+      seperempat sekali tekan, dan itulah yang biasanya dibutuhkan pindaian yang
+      miring."""
+
+[[howto]]
+title = "Pilih ukuran halaman."
+body = """
+ "Paskan halaman ke setiap gambar" membuat
+      setiap halaman persis seukuran gambarnya, tanpa ada yang terpangkas dan
+      tanpa pita putih. Ukuran bernama &mdash; A4, Letter, Legal, dan
+      seterusnya &mdash; menempatkan setiap gambar pada halaman tetap, dengan
+      margin kalau Anda mau."""
+
+[[howto]]
+title = "Buat PDF-nya dan unduh."
+body = """
+ Dokumen ditulis di mesin Anda sendiri,
+      jadi lamanya tergantung perangkat keras Anda, bukan pada antrean. File yang
+      sudah jadi diserahkan langsung ke unduhan peramban Anda."""
+
+[[faq]]
+q = "Apakah gambar saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Gambar Anda dibaca dan PDF-nya ditulis oleh peramban Anda sendiri
+        di perangkat keras Anda sendiri. Alat ini tidak punya sisi server, dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya &mdash; tidak satu pun milik situs
+        ini. Berbeda dari sebagian alat lain di sini, alat ini sama sekali tidak
+        punya fitur jaringan opsional."""
+
+[[faq]]
+q = "Apakah mengubah ke PDF menurunkan kualitas?"
+a = """
+        Tidak untuk JPEG, pada setelan bawaan. PDF bisa membawa data JPEG secara
+        langsung, jadi sebuah foto disalin ke dalam dokumen byte demi byte: ia
+        tidak pernah didekode dan tidak pernah dikompres lagi, dan gambar di dalam
+        PDF adalah gambar di dalam file. Format lain harus dikodekan ulang, karena
+        PDF tidak punya filter untuknya &mdash; kecuali Anda memilih setelan tanpa
+        kehilangan, yang menyimpannya persis dengan biaya file yang lebih
+        besar."""
+
+[[faq]]
+q = "Format gambar apa saja yang bisa saya pakai?"
+a = """
+        Gambar diam apa pun yang bisa didekode peramban Anda, yang dalam
+        praktiknya berarti JPG, PNG, WebP, GIF, AVIF, dan di perangkat Apple,
+        HEIC. Tidak ada daftar terpisah yang harus dijaga tetap mutakhir di sini,
+        karena pendekodean adalah tugas peramban, bukan tugas kami."""
+
+[[faq]]
+q = "Bisakah saya memilih ukuran halaman dan urutan halamannya?"
+a = """
+        Bisa. Halaman bisa berukuran A4, Letter, Legal, A3, A5, Tabloid, ukuran
+        yang Anda ketik, atau persis seukuran setiap gambar. Seret kotaknya untuk
+        mengurutkan ulang, urutkan berdasarkan nama atau tanggal, putar mana pun
+        seperempat putaran, dan atur margin dalam milimeter."""
+
+[[faq]]
+q = "Berapa banyak gambar yang bisa saya masukkan ke satu PDF?"
+a = """
+        Tidak ada batas yang tertanam di alat ini. Batas praktisnya adalah memori
+        mesin Anda sendiri, karena dokumen yang sudah jadi dirakit di sana sebelum
+        Anda mengunduhnya. Beberapa ratus foto ponsel pada resolusi penuh adalah
+        yang pertama merasakannya; memperkecil sisi terpanjangnya, di setelan,
+        menggeser batas itu jauh sekali."""
+
+[[faq]]
+q = "Apakah PDF-nya memuat nama file saya atau stempel waktu?"
+a = """
+        Tidak, kecuali Anda memintanya. Blok informasi dokumen dibiarkan kosong
+        kecuali nama alat ini: tidak ada nama file, tidak ada nama mesin, tidak
+        ada nama pengguna, dan tidak ada tanggal pembuatan kecuali Anda mencentang
+        kotaknya. Itu disengaja &mdash; sebuah PDF adalah sesuatu yang dikirim
+        orang kepada orang lain."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, dan tidak ada masa uji coba.
+        Situs ini memasang iklan, dan itulah yang membiayainya; iklan tidak
+        diberi apa pun tentang gambar Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim gambar Anda ke tempat lain untuk dijadikan
+        dokumen akan berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Gabungkan gambar JPG, PNG, dan WebP menjadi satu dokumen PDF. Setiap halaman ditulis di peramban Anda, jadi tidak ada gambar yang pernah diunggah."
+features = [
+  "Menggabungkan gambar JPG, PNG, WebP, GIF, dan AVIF menjadi satu PDF",
+  "Foto JPEG ditanamkan tanpa dikodekan ulang",
+  "Ukuran halaman dari A5 sampai Tabloid, atau halaman yang dipaskan ke setiap gambar",
+  "Mengurutkan ulang, memutar, mengatur margin dan warna halaman",
+  "Penyimpanan tanpa kehilangan opsional untuk pindaian dan tangkapan layar",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan gambar di sini"
+hint = "atau klik untuk menelusuri &mdash; JPEG, PNG, WebP, GIF, AVIF"

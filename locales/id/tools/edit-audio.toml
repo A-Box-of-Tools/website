@@ -1,0 +1,283 @@
+#
+# Penyunting Audio - Bahasa Indonesia.
+#
+# Overrides for tools/edit-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Penyunting Audio"
+heading = "Penyunting&nbsp;Audio <span class=\"h1-kw\">&mdash; balik, percepat, atau kuatkan sebuah trek</span>"
+tagline = "Putar terbalik, ubah kecepatannya, angkat rekaman yang pelan &mdash; semuanya di sini, di mesin Anda."
+
+title = "Balik Audio, Ubah Kecepatan &amp; Naikkan Volume &mdash; Gratis, Tanpa Unggah"
+description = "Putar sebuah trek secara terbalik, percepat atau perlambat, dan buat rekaman yang pelan menjadi lebih keras. Bisa juga mengeluarkan suara dari sebuah video. Berjalan di peramban Anda: tidak ada yang diunggah."
+og_title = "Penyunting Audio &mdash; balik, atur ulang waktu, dan kuatkan tanpa mengunggah apa pun"
+og_description = "Balik sebuah trek, ubah kecepatannya dengan atau tanpa menggeser nadanya, dan atur levelnya - lalu unduh sebuah WAV. File dibaca dan ditulis oleh peramban Anda sendiri."
+og_image_alt = "Penyunting Audio - balik, atur ulang waktu, dan kuatkan audio di peramban Anda"
+
+pledge = """
+    File Anda dibaca, disunting, dan ditulis oleh peramban Anda sendiri, di
+    perangkat keras Anda sendiri. Tidak ada di sini yang bisa mengambil atau
+    mengirim apa pun &mdash; alat ini sama sekali tidak punya fitur jaringan
+    &mdash; dan seandainya pun ada, tidak ada server di ujung lain halaman ini
+    untuk menerima sebuah rekaman."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu balik sesuatu. Tidak satu pun permintaan membawa sampel, nama file,
+      atau satu byte pun dari yang Anda pilih. Atau cabut koneksi internet dan
+      tetap sunting sebuah trek &mdash; alat yang mengirim audio Anda ke tempat
+      lain untuk diproses akan langsung berhenti."""
+
+read_first = """
+, <code>src/decode.js</code> untuk dua puluh baris
+      yang menyerahkan file Anda ke dekoder milik peramban sendiri,
+      <code>src/stretch.js</code> untuk perentang waktunya,
+      <code>src/speed.js</code> untuk pengambil sampel ulangnya, dan
+      <code>src/wav.js</code> untuk header yang dipasang di depan sampelnya.
+      Tidak satu pun mengimpor sesuatu yang bisa membuat permintaan."""
+
+howto_heading = "Cara menyunting file audio"
+
+card = """
+            Balik sebuah trek, ubah kecepatannya dengan atau tanpa menggeser
+            nadanya, dan angkat rekaman yang pelan. Bisa juga mengeluarkan suara
+            dari sebuah video."""
+
+[words]
+plural = "rekaman"
+choose = "sebuah file"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Video masuk, audio keluar"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[privacy]]
+title = "Rekaman Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Alat ini sama sekali tidak punya
+      fitur jaringan: tidak ada alamat untuk ditempelkan, tidak ada yang diunduh,
+      tidak ada mesin yang diambil saat pertama dipakai. Setiap byte yang
+      menyentuh audio Anda datang dari asal ini ketika halaman dimuat."""
+
+[[privacy]]
+title = "Dekodernya adalah yang sudah ada di peramban Anda."
+body = """
+ File diserahkan ke
+      <code>decodeAudioData</code>, kode yang sama yang memutar sebuah lagu di
+      elemen <code>&lt;audio&gt;</code>. Tidak ada yang dikirim ke sini untuk
+      membaca format Anda, dan tidak ada yang diminta dari apa pun di luar
+      halaman ini untuk membacanya."""
+
+[[privacy]]
+title = "Gambar sebuah video tidak pernah didekode sama sekali."
+body = """
+ Ketika Anda menjatuhkan sebuah video,
+      hanya jalur audionya yang diminta. Bingkainya tidak dibaca, tidak didekode,
+      tidak digambar, dan tidak dilihat &mdash; tidak ada kode di halaman ini
+      yang bisa, dan file yang keluar memuat suara dan tidak lebih."""
+
+[[privacy]]
+title = "Sampelnya dituliskan, bukan dikodekan lagi."
+body = """
+ Sebuah WAV adalah sampel yang dihitung
+      halaman ini dengan header di depannya. Tidak ada encoder dalam
+      perulangannya yang mengambil keputusan tentang rekaman Anda, dan tidak ada
+      yang bisa disebut unggahan untuk membuat hal itu terjadi."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang rekaman Anda: bukan
+      file, bukan sampel, bukan nama, ukuran, durasi, atau seberapa keras
+      suaranya. Setiap baris yang membaca, menyunting, dan menulis disajikan dari
+      asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau file Anda."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih sebuah file."
+body = """
+ Jatuhkan file MP3, WAV, FLAC, M4A, Ogg,
+      atau Opus ke pemilih file &mdash; atau sebuah video, kalau yang Anda mau
+      adalah suaranya. Peramban membacanya langsung dari disk Anda; tidak ada
+      yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Balik, kalau itu tujuan Anda datang."
+body = """
+ Satu kotak centang. Sampelnya ditulis
+      dari yang terakhir lebih dulu, dan itu persis bisa dibalik lagi: lakukan
+      dua kali dan Anda mendapatkan file yang Anda mulai, sampel demi
+      sampel."""
+
+[[howto]]
+title = "Atur kecepatannya."
+body = """
+ Seret penggesernya, ketik sebuah kelipatan,
+      atau tekan salah satu pilihan siap pakainya. Lalu pilih apa yang terjadi
+      pada nadanya: tahan di tempatnya, yang Anda inginkan untuk kuliah pada
+      1,5&times;, atau biarkan bergerak mengikuti kecepatannya, yang dilakukan
+      pita kaset dan yang membuat suara naik atau turun."""
+
+[[howto]]
+title = "Atur levelnya."
+body = """
+ Sebutkan perubahannya dalam desibel, atau minta
+      rekamannya dinaikkan sampai momen terkerasnya duduk tepat di bawah langit-
+      langit. Halaman ini mengatakan di mana momen itu akan mendarat sebelum Anda
+      menekan apa pun, dan memperingatkan Anda kalau setelan yang Anda pilih akan
+      mendorongnya melewati skala penuh."""
+
+[[howto]]
+title = "Simpan."
+body = """
+ Pekerjaannya terjadi di perangkat keras Anda sendiri,
+      jadi lamanya tergantung mesin Anda, bukan pada antrean. Yang keluar adalah
+      sebuah WAV &mdash; sampelnya sendiri, dengan header di depannya &mdash;
+      diputar dulu di halaman ini, lalu diserahkan langsung ke unduhan peramban
+      Anda."""
+
+[[faq]]
+q = "Apakah audio saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Ia dibaca, disunting, dan ditulis oleh peramban Anda sendiri di
+        perangkat keras Anda sendiri. Alat ini tidak punya sisi server, dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya &mdash; tidak satu pun milik situs
+        ini. Cabut koneksi internet dan tetap balik sebuah trek kalau Anda lebih
+        suka memeriksa daripada diberi tahu."""
+
+[[faq]]
+q = "Bisakah saya mengeluarkan audio dari sebuah video?"
+a = """
+        Bisa, dan di sini itu pekerjaan yang sama dengan membuka sebuah MP3.
+        Jatuhkan MP4, MOV, atau WebM dan hanya jalur audionya yang didekode:
+        gambarnya tidak pernah dibaca, dan yang keluar adalah file suara tanpa
+        video di dalamnya. Itu juga cara menyimpan suara dari sebuah klip tanpa
+        menyuntingnya sama sekali &mdash; biarkan setiap setelan apa adanya dan
+        tekan tombolnya."""
+
+[[faq]]
+q = "Apakah mengubah kecepatan mengubah nadanya?"
+a = """
+        Hanya kalau Anda memintanya. "Jaga nadanya" memotong rekaman menjadi
+        jendela-jendela bertumpang tindih sepanjang kira-kira lima puluh
+        milidetik dan menaruhnya kembali lebih rapat atau lebih renggang,
+        memilih setiap posisi agar gelombangnya sejajar di titik potongnya
+        &mdash; sebuah suara tetap suara yang sama pada 1,5&times;. "Biarkan
+        bergerak" mengambil sampel ulang, yang sama dengan memutar pita kaset
+        lebih cepat: dua kali kecepatan berarti persis satu oktaf naik."""
+
+[[faq]]
+q = "Kenapa ia menyimpan WAV alih-alih MP3?"
+a = """
+        Karena tidak ada peramban yang menyertakan encoder MP3, dan alat ini
+        menolak mengirim rekaman Anda ke server yang punya. Sebuah WAV sama
+        sekali tidak butuh encoder &mdash; ia adalah sampel dengan header empat
+        puluh empat byte di depannya &mdash; jadi ia sekaligus pilihan yang jujur
+        dan satu-satunya yang tidak mungkin memakan kualitas. Ukurannya lebih
+        besar: sekitar sepuluh megabyte per menit dalam stereo. Setiap pemutar,
+        ponsel, dan penyunting bisa membukanya, dan apa pun yang mau MP3 bisa
+        membuatnya dari situ."""
+
+[[faq]]
+q = "Format apa saja yang bisa saya buka?"
+a = """
+        Apa pun yang bisa didekode peramban Anda, yang dalam praktiknya berarti
+        MP3, WAV, FLAC, M4A dan AAC, Ogg Vorbis dan Opus, serta audio di dalam
+        video MP4, M4V, MOV, dan WebM. Yang tertinggal adalah daftar pendek yang
+        sama seperti di tempat lain: AVI, WMA, dan sebagian besar MKV. File yang
+        tidak mau dibaca peramban ini ditolak dengan pesan, alih-alih gagal di
+        tengah jalan."""
+
+[[faq]]
+q = "Apakah membuatnya lebih keras akan membuatnya pecah?"
+a = """
+        Hanya kalau Anda membawanya melewati skala penuh, dan halaman ini memberi
+        tahu Anda sebelum itu terjadi. Audio digital punya langit-langit yang
+        keras: sebuah sampel tidak bisa lebih keras daripada skala penuh, jadi
+        apa pun di atasnya diratakan ke langit-langit, dan begitulah bunyi suara
+        yang pecah. "Sekeras yang bisa" adalah setelan yang tidak mungkin
+        melakukan itu &mdash; ia menghitung berapa ruang yang masih dimiliki
+        rekaman itu dan memakai persis sebanyak itu. Semua di bawah langit-langit
+        hanyalah perkalian dan tidak lebih: naikkan 6 dB lalu turunkan 6 dB dan
+        sampelnya kembali ke tempat semula."""
+
+[[faq]]
+q = "Apakah membalik atau mengubah waktu menurunkan kualitas?"
+a = """
+        Membalik tidak: sampel yang sama keluar dalam urutan terbalik, dan itu
+        persis. Mengubah kecepatan menggeser setiap sampel, jadi itu aritmetika,
+        bukan penyalinan &mdash; pengambil sampel ulangnya menyaring dengan benar
+        di tengah jalan, jadi mempercepat tidak melipat nada tinggi kembali ke
+        bawah menjadi dering logam, dan jendela perentangnya ditempatkan di
+        tempat gelombangnya sejajar, bukan di mana pun aritmetikanya mendarat.
+        Tidak ada jalur yang mengodekan ulang apa pun, karena tidak ada encoder
+        di sini untuk mengodekan ulang."""
+
+[[faq]]
+q = "Adakah batas durasi file-nya?"
+a = """
+        Tidak ada batas yang tertanam di alat ini. Batas praktisnya adalah
+        memori: seluruh rekaman didekode ke halaman ini sekaligus, dan sebuah WAV
+        dirakit di memori sebelum Anda mengunduhnya, jadi satu jam stereo
+        membutuhkan ruang kerja sedikit di bawah satu gigabyte. WAV empat
+        gigabyte ditolak mentah-mentah, karena kolom ukuran milik formatnya
+        sendiri tidak bisa menggambarkannya."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang rekaman Anda."""
+
+[schema]
+browser_requirements = "Memerlukan JavaScript dan peramban dengan Web Audio, yang berarti setiap peramban masa kini. Tidak butuh dukungan kodek melebihi yang sudah dimiliki peramban untuk memutar file itu."
+description = "Balik sebuah trek audio, ubah kecepatannya dengan atau tanpa menggeser nadanya, dan atur levelnya, di peramban. Berlaku juga untuk audio di dalam sebuah video. Tidak ada yang diunggah dan hasilnya ditulis sebagai WAV, jadi tidak ada yang dikodekan ulang."
+features = [
+  "Memutar sebuah trek terbalik, persis",
+  "Mengubah kecepatan dari seperempat sampai empat kali, menjaga nadanya atau menggesernya",
+  "Menaikkan atau menurunkan level, atau menormalkannya sampai tepat di bawah skala penuh",
+  "Mengeluarkan audio dari MP4, MOV, atau WebM tanpa menyentuh gambarnya",
+  "Menulis WAV 16-bit atau float 32-bit, tanpa encoder di dalam perulangannya",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan file audio atau video di sini"
+hint = "atau klik untuk menelusuri &mdash; MP3, WAV, FLAC, M4A, Ogg, dan suara di dalam MP4, MOV, atau WebM"

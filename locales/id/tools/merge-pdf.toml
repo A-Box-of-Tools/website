@@ -1,0 +1,317 @@
+#
+# Penggabung dan Pemisah PDF - Bahasa Indonesia.
+#
+# Overrides for tools/merge-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# Token rentang halaman - odd, even, all, last - diketik ke dalam kotaknya dan
+# diurai oleh src/ranges.js, jadi tetap dalam bahasa Inggris di sini.
+#
+
+name = "Penggabung dan Pemisah PDF"
+heading = "Gabungkan&nbsp;PDF <span class=\"h1-kw\">&mdash; pisah dan urutkan halaman juga</span>"
+tagline = "Halaman dipindah-pindah tanpa perjalanan bolak-balik ke server."
+
+title = "Gabungkan PDF, Pisah &amp; Urutkan Halaman &mdash; Gratis, Tanpa Unggah"
+description = "Gabungkan PDF, pisahkan satu menjadi beberapa, dan seret halaman ke urutan yang Anda mau &mdash; semuanya di dalam peramban Anda sendiri. Tidak ada yang diunggah, tidak ada akun, dan file yang sudah jadi dibuka lagi dan dihitung sebelum ditawarkan kepada Anda."
+og_title = "Gabungkan, pisahkan &amp; urutkan halaman PDF &mdash; tidak ada yang diunggah"
+og_description = "Satukan dokumen, potong satu menjadi beberapa bagian, pindahkan halaman, putar, keluarkan. Peramban Anda sendiri yang melakukannya, jadi file-nya tidak pernah meninggalkan mesin Anda."
+og_image_alt = "Gabungkan, pisahkan, dan urutkan halaman PDF tanpa mengunggahnya"
+
+pledge = """
+    Setiap dokumen yang Anda pilih dibuka, dibongkar, dan ditulis kembali di
+    memori mesin ini, oleh kode yang disajikan dari alamat ini. Tidak ada di
+    sini yang bisa melakukan unggahan, dan tidak ada server di ujung lain
+    halaman ini untuk menerimanya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu gabungkan dua file. Tidak satu pun permintaan membawa halaman,
+      gambar, atau nama file. Atau cabut koneksi internet dan tetap gabungkan
+      keduanya."""
+
+read_first = """
+, dan <code>src/assemble.js</code> untuk seluruh
+      proses penyalinannya &mdash; bagaimana sebuah halaman diangkat dari satu
+      dokumen dan diletakkan di dokumen lain, dan apa yang sengaja ditinggalkan.
+      Ia tidak bisa menjangkau jaringan, begitu pula pembaca dan penulis di
+      sebelahnya."""
+
+howto_heading = "Cara menggabungkan, memisahkan, atau mengurutkan PDF"
+
+card = """
+            Satukan dokumen, potong satu menjadi beberapa, dan seret halaman ke
+            urutan yang Anda mau. Tautan dan markah dibangun ulang agar mengikuti
+            halaman yang ditunjuknya, dan setiap file yang sudah jadi dibuka lagi
+            dan dihitung sebelum ditawarkan kepada Anda."""
+
+[words]
+plural = "dokumen"
+choose = "beberapa PDF"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "File tetap di perangkat Anda"
+
+[[privacy]]
+title = "Dokumen Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Alat ini tidak menambahkan apa pun ke daftar itu:
+      ia tidak punya fitur jaringan sendiri, bahkan yang opsional sekalipun.
+      Tidak ada titik akhir di sini tempat file Anda bisa dikumpulkan, dan tidak
+      ada kode yang akan mengirimnya seandainya ada."""
+
+[[privacy]]
+title = "Menggabungkan adalah pekerjaan yang paling layak untuk tidak diunggah."
+body = """
+ Dokumen yang disatukan orang adalah
+      dokumen yang datang dari suatu tempat: sebuah kontrak dan halaman
+      tandatangannya, pindaian paspor dan rekening koran, surat dokter dan
+      formulir klaim. Penggabung daring memiliki semuanya, di satu tempat, sudah
+      tersusun rapi. Yang ini hanya punya sebuah halaman di peramban Anda dan
+      tidak punya belahan yang lain."""
+
+[[privacy]]
+title = "Seluruh formatnya ada di repositori ini."
+body = """
+ Sebuah PDF adalah daftar objek dan
+      tabel yang mencatat di mana setiap objek dimulai.
+      <code>src/objects.js</code> membaca sintaksisnya,
+      <code>src/reader.js</code> mengikuti tabelnya,
+      <code>src/assemble.js</code> menyalin halaman antar dokumen, dan
+      <code>src/writer.js</code> menulis hasilnya. Tidak satu pun dari keempatnya
+      mengimpor sesuatu yang bisa membuat permintaan. Tidak ada pustaka yang
+      diambil dan tidak ada yang digambar di server."""
+
+[[privacy]]
+title = "File terenkripsi ditolak, bukan dibuka."
+body = """
+ PDF dengan kata sandi ditolak,
+      termasuk jenis yang dihasilkan pemindai dengan kata sandi kosong dan yang
+      secara teknis akan terbuka. Melepas proteksi sebuah dokumen adalah
+      pekerjaan yang berbeda dari memindah-mindah halamannya, dan melakukannya
+      diam-diam akan menjadi hal yang mengejutkan bagi sebuah alat yang bertindak
+      atas nama Anda."""
+
+[[privacy]]
+title = "File yang sudah jadi tidak mengatakan apa pun tentang tempat pembuatannya."
+body = """
+ Tidak ada baris produser, tidak ada
+      tanggal pembuatan, tidak ada nama alat. Ia juga tidak membawa paket XMP
+      atau blok-blok privat yang ditinggalkan aplikasi tata letak &mdash; semua
+      itu milik dokumen yang dulu ada, bukan dokumen yang baru saja Anda bangun.
+      Apa pun di dalam halamannya sendiri disalin persis: alat ini memindahkan
+      halaman, ia tidak menulis ulang apa yang ada di atasnya."""
+
+[[privacy]]
+title = "Tindakan yang bukan \"pergi ke sebuah halaman\" tidak disalin."
+body = """
+ Sebuah PDF bisa membawa instruksi yang
+      berjalan saat ia dibuka: putar ini, kirim formulir ini ke alamat itu,
+      jalankan JavaScript ini. Halaman yang melewati alat ini menyimpan tautannya
+      ke halaman lain dan ke alamat web, dan kehilangan sisanya. Mengurutkan
+      ulang halaman milik orang lain bukan alasan untuk membawa skrip dokumennya
+      ke file baru Anda."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang dokumen Anda: bukan
+      file, bukan halaman, bukan nama, ukuran, atau jumlah halaman. Setiap baris
+      yang membaca, menyalin, atau menulis PDF disajikan dari asal ini dan
+      terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau dokumen Anda. Tidak
+      ada yang terjadi kecuali Anda mengekliknya, dan yang akan Anda tuju adalah
+      situs milik orang lain."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap berfungsi. Itulah bukti yang paling sederhana: alat yang
+      mengirim dokumen Anda ke tempat lain untuk digabungkan akan berhenti."""
+
+[[howto]]
+title = "Pilih PDF Anda."
+body = """
+ Jatuhkan ke pemilih file atau pilih sendiri,
+      dan tambahkan lagi nanti &mdash; halaman setiap file masuk ke ujung urutan
+      yang sedang berjalan, dan itulah yang membuat penggabungan dua folder
+      terpisah menjadi mungkin. Peramban membacanya langsung dari disk Anda."""
+
+[[howto]]
+title = "Urutkan halamannya sesuai keinginan Anda."
+body = """
+ Seret sebuah halaman lewat
+      pegangannya, atau geser dengan panahnya. Putar halaman yang terpindai
+      miring, keluarkan satu, atau ketik <code>1-3, 8, 12-</code> di kotaknya
+      untuk menyimpan, membuang, atau memutar sederet halaman sekaligus. Nomornya
+      berubah seiring Anda bekerja, jadi yang Anda lihat selalu sama dengan file
+      yang sudah jadi nanti."""
+
+[[howto]]
+title = "Sebutkan apakah hasilnya satu dokumen atau beberapa."
+body = """
+ Satu adalah jawaban yang biasa.
+      Sisanya adalah cara-cara memotong: setiap sekian halaman, pada nomor
+      halaman yang Anda sebutkan, satu file per halaman, atau kembali ke file
+      asal halamannya. Lebih dari satu file diserahkan sebagai satu ZIP, jadi
+      cukup sekali simpan alih-alih lima puluh kali."""
+
+[[howto]]
+title = "Bangun, lalu baca baris yang mengatakan bahwa hasilnya sudah diperiksa."
+body = """
+ Setelah dokumennya ditulis,
+      masing-masing dibuka lagi oleh pembaca yang sama di halaman ini dan
+      halamannya dihitung. Kalau itu tidak cocok dengan yang Anda minta,
+      prosesnya dilaporkan gagal dan tidak ada unduhan yang ditawarkan."""
+
+[[faq]]
+q = "Apakah PDF saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Semuanya dibaca, disalin, dan ditulis oleh peramban Anda sendiri
+        di perangkat keras Anda sendiri. Alat ini tidak punya sisi server, dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya &mdash; tidak satu pun milik situs
+        ini. Alat ini sama sekali tidak punya fitur jaringan opsional."""
+
+[[faq]]
+q = "Berapa banyak file yang bisa saya gabungkan, dan seberapa besar ukurannya?"
+a = """
+        Tidak ada batas yang tertulis di alat ini. Batasnya adalah mesin Anda
+        sendiri: dokumennya ditahan di memori selama dikerjakan, jadi sebuah
+        laptop akan menggabungkan beberapa ratus megabyte tanpa mengeluh dan akan
+        kepayahan di suatu titik di atas itu. Tidak ada yang ditagih, dicekik,
+        diberi tanda air, atau diantrekan, karena tidak ada siapa pun di ujung
+        sana untuk melakukan satu pun dari itu."""
+
+[[faq]]
+q = "Apakah menggabungkan atau memisahkan menurunkan kualitas?"
+a = """
+        Tidak. Tidak ada apa pun di sebuah halaman yang dikodekan ulang, digambar
+        ulang, atau dikompres ulang. Aliran isi setiap halaman dan setiap font,
+        gambar, serta gambar vektor yang dirujuknya disalin byte demi byte, jadi
+        teks tetap bisa dipilih dan dicari dan sebuah foto tetap foto yang sama.
+        Yang berubah hanyalah urutan halaman dan struktur di sekitarnya."""
+
+[[faq]]
+q = "Apa yang terjadi pada markah dan tautan?"
+a = """
+        Keduanya dibangun ulang, bukan dibuang. Markah yang halamannya masih ada
+        di keluaran menunjuk ke tempat halaman itu berpindah; markah yang
+        halamannya Anda buang ikut dikeluarkan, kecuali kalau ada entri yang
+        selamat di bawahnya, dan dalam hal itu ia tetap ada sebagai judul.
+        Menggabungkan beberapa file menempatkan markah setiap file di bawah judul
+        bernama file itu. Tautan antarhalaman diikuti dengan cara yang sama,
+        termasuk tujuan bernama yang ditulis Word dan LaTeX, dan tautan yang
+        sasarannya tidak ikut serta dibiarkan tanpa apa pun di belakangnya
+        alih-alih mengirim pembacanya ke tempat yang salah. Tautan ke alamat web
+        dijaga apa adanya."""
+
+[[faq]]
+q = "Apa yang tidak ikut terbawa?"
+a = """
+        Empat hal, dan alat ini mengatakannya di hasil, bukan di catatan kecil.
+        Pohon urutan baca bertanda yang dipakai pembaca layar, label halaman
+        (penomoran "iii, iv, 1, 2"), lampiran file tertanam, dan tindakan apa pun
+        yang bukan "pergi ke sebuah halaman" maupun "buka sebuah alamat web"
+        &mdash; termasuk JavaScript dokumen. Dua yang pertama menggambarkan urutan
+        yang sudah tidak ada begitu halaman dipindahkan; yang terakhir bukan
+        sesuatu yang Anda minta untuk dibawa ke file baru. Kalau penandaan sebuah
+        dokumen penting bagi Anda, simpan juga aslinya."""
+
+[[faq]]
+q = "Apakah formulir yang sudah diisi tetap selamat?"
+a = """
+        Ya. Kolom formulir dan apa yang sudah diketik ke dalamnya ikut bersama
+        halamannya, dan dokumen baru itu didaftarkan sebagai formulir sehingga
+        pembaca memperlakukannya begitu. Satu hal yang perlu diketahui saat
+        menggabungkan: dua kolom dengan nama yang sama adalah satu kolom bagi
+        pembaca mana pun, jadi kalau Anda menggabungkan dua salinan formulir yang
+        sama, mengisi sebuah kotak di satu halaman akan mengisinya juga di
+        halaman lain. Alat ini menyadari kasus itu dan mengatakannya."""
+
+[[faq]]
+q = "Bisakah ia membuka PDF yang dilindungi kata sandi?"
+a = """
+        Tidak, dan itu disengaja. Dokumen terenkripsi ditolak dengan pesan yang
+        mengatakannya, bahkan ketika kata sandinya kosong &mdash; dan begitulah
+        banyak pemindai serta mesin fotokopi menyimpan. Melepas proteksi sebuah
+        file adalah pekerjaan yang berbeda dari memindahkan halamannya, dan alat
+        yang melakukannya diam-diam berarti melakukan sesuatu yang tidak Anda
+        minta."""
+
+[[faq]]
+q = "Kenapa tidak ada pratinjau halaman?"
+a = """
+        Karena menggambar sebuah halaman berarti perender PDF yang lengkap
+        &mdash; font, gradasi, grup transparansi, mode pencampuran &mdash; yang
+        berarti satu megabyte atau lebih mesin yang harus diambil dan dijalankan
+        demi sekumpulan gambar mini. Yang ditampilkan kotaknya adalah hal-hal yang
+        benar-benar dipakai saat mengurutkan ulang: nomor halaman, bentuk dan
+        ukuran kertasnya, rotasi yang akan ditulis untuknya, dan dari file mana ia
+        berasal. Pindaian melintang di tumpukan halaman tegak tetap terlihat
+        sekilas."""
+
+[[faq]]
+q = "Apakah file yang sudah jadi bisa dibuka di mana-mana?"
+a = """
+        Ya. Keluarannya ditulis sebagai PDF 1.5 atau versi tertinggi yang
+        dibutuhkan salah satu file yang Anda berikan, dan 1.5 dipahami setiap
+        pembaca yang dirilis sejak 2003. Alat ini juga membuktikannya di perangkat
+        Anda sendiri: ia membuka lagi setiap file yang sudah jadi dan menghitung
+        halamannya dengan menelusuri pohon halaman sebelum menawarkannya kepada
+        Anda."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada batas ukuran file selain yang diizinkan memori mesin Anda
+        sendiri. Situs ini memasang iklan, dan itulah yang membiayainya; iklan
+        tidak diberi apa pun tentang dokumen Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim dokumen Anda ke tempat lain untuk
+        digabungkan akan berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Gabungkan PDF, pisahkan satu menjadi beberapa file, dan urutkan ulang, putar, atau buang halaman di peramban Anda. Halaman disalin antar dokumen secara lokal, jadi tidak ada file yang pernah diunggah."
+features = [
+  "Menggabungkan berapa pun jumlah PDF, dan membiarkan Anda terus menambah file sambil jalan",
+  "Seret halaman ke urutannya, putar, buang, atau kerjakan sederet sekaligus",
+  "Memisah menjadi satu file per halaman, setiap sekian halaman, pada nomor halaman, atau kembali ke file asal halamannya",
+  "Membangun ulang markah dan tautan internal terhadap halaman yang selamat",
+  "Menjaga kolom formulir yang sudah diisi, dan mengatakannya kalau dua di antaranya bernama sama",
+  "Membuka dan menghitung ulang setiap file yang sudah jadi sebelum menawarkannya",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa batas ukuran file",
+]
+
+[picker]
+title = "Jatuhkan PDF Anda di sini"
+hint = "atau klik untuk menelusuri &mdash; satu file atau beberapa, dan Anda bisa menambah lagi nanti"

@@ -1,0 +1,360 @@
+#
+# Hash dan Checksum - Bahasa Indonesia.
+#
+# Overrides for tools/hash-checksum/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Nama algoritma, nama perintah (sha256sum, certutil), dan nama file
+# (SHA256SUMS) tetap dalam bentuk Latinnya: itulah yang diketik dan dicari
+# orang. "Checksum" juga dipakai apa adanya - itu kata yang tertulis di halaman
+# unduhan yang sedang dilihat pembaca.
+#
+
+name = "Hash dan Checksum"
+heading = "Hash&nbsp;dan&nbsp;checksum <span class=\"h1-kw\">&mdash; MD5, SHA-1, SHA-256, SHA-512</span>"
+tagline = "Periksa sebuah unduhan terhadap angka yang dicetak penerbitnya, tanpa mengirimnya ke siapa pun."
+
+title = "Alat Checksum SHA-256 &amp; MD5 &mdash; Verifikasi Unduhan, Tanpa Unggah"
+description = "Hitung MD5, SHA-1, SHA-256, SHA-384, atau SHA-512 file apa pun dan bandingkan dengan checksum yang diterbitkan halaman unduhan. File dibaca di peramban Anda dan tidak pernah diunggah, pada ukuran berapa pun."
+og_title = "Verifikasi sebuah unduhan tanpa mengunggahnya ke siapa pun"
+og_description = "MD5, SHA-1, SHA-256, SHA-384, dan SHA-512, dihitung di peramban Anda sendiri. Tempelkan checksum yang dicetak penerbitnya dan halaman ini mengatakan apakah cocok. Tanpa batas ukuran, karena file dibaca sepotong demi sepotong."
+og_image_alt = "Hash dan Checksum - verifikasi unduhan di peramban Anda, tanpa unggah"
+
+pledge = """
+    Sebuah checksum adalah aritmetika atas byte file Anda, dan itu dikerjakan di
+    sini, di halaman ini, di prosesor Anda sendiri. File dibaca dari disk Anda
+    empat megabyte sekali jalan dan setiap potongan dibuang begitu selesai
+    dihitung, jadi tidak ada yang pernah dirakit di mana pun &mdash; tidak di
+    memori, dan pasti tidak di sebuah server. Tidak ada server di ujung lain
+    halaman ini untuk menerima sebuah file, bahkan seandainya ada sesuatu di
+    sini yang menginginkannya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu periksa sebuah file. Tidak satu pun permintaan membawa satu byte pun
+      darinya, atau namanya, atau ukurannya. Atau cabut koneksi internet dan
+      tetap periksa satu."""
+
+read_first = """
+, <code>src/md5.js</code>, <code>src/sha1.js</code>,
+      <code>src/sha256.js</code>, dan <code>src/sha512.js</code> untuk empat
+      fungsi kompresinya, <code>src/blocks.js</code> untuk pengisian yang mereka
+      pakai bersama, dan <code>src/hash.js</code> untuk perulangan yang membaca
+      file Anda sepotong demi sepotong &mdash; tidak satu pun punya baris yang
+      bisa menjangkau jaringan."""
+
+howto_heading = "Cara memeriksa unduhan terhadap checksum-nya"
+
+card = """
+            Hitung MD5, SHA-1, SHA-256, SHA-384, atau SHA-512 sebuah file dan
+            bandingkan dengan yang dicetak halaman unduhannya. Ukuran berapa
+            pun: file dibaca sepotong demi sepotong, tidak pernah ditahan
+            utuh."""
+
+[words]
+plural = "file"
+choose = "sebuah file"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa batas ukuran"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "File tetap di perangkat Anda"
+
+[[privacy]]
+title = "File Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya ada.
+      Dulu ini tertulis <code>connect-src 'none'</code>, yang mutlak; memasang
+      iklan memakan itu, dan mengatakannya adalah bagian dari kesepakatan."""
+
+[[privacy]]
+title = "File tidak pernah ditahan utuh, pada ukuran berapa pun."
+body = """
+ Ia dibaca empat megabyte sekali jalan
+      dan setiap potongan dihitung ke dalam keadaan berjalan lalu dibuang. Jadi
+      memori yang dipakai halaman ini sama saja untuk image disk empat puluh
+      gigabyte dan untuk sebuah file teks, dan tidak ada ukuran di mana ia
+      menyerah. Itu juga sebabnya <code>crypto.subtle.digest</code> milik
+      peramban tidak dipakai: ia menuntut seluruh file ada di memori sekaligus,
+      dan justru batas itulah yang tidak ingin dimiliki alat ini."""
+
+[[privacy]]
+title = "Lima algoritma, lima file di repositori ini."
+body = """
+ <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code>, dan
+      <code>src/sha512.js</code> adalah spesifikasi yang diterbitkan, ditulis
+      keluar, sekitar enam puluh baris masing-masing, dengan tabel konstantanya
+      dituliskan alih-alih dihitung supaya tidak ada bagian dari jawabannya yang
+      bisa bergantung pada peramban Anda. Masing-masing diperiksa terhadap vektor
+      uji resminya dan terhadap implementasi milik sistem operasi sebelum
+      dikirim."""
+
+[[privacy]]
+title = "Checksum yang Anda tempelkan juga tidak dikirim ke mana pun."
+body = """
+ Ia dibandingkan di sini, di halaman ini,
+      terhadap digest yang dihitung di sini. Tidak ada apa pun tentang
+      perbandingan itu &mdash; bukan nilainya, bukan apakah ia cocok, bukan nama
+      file-nya &mdash; yang dibacakan kepada siapa pun. Itu lebih penting
+      daripada kedengarannya: sebuah checksum ditambah nama file memberi tahu
+      siapa pun yang mengumpulkannya persis versi mana dari perangkat lunak mana
+      yang baru saja Anda unduh."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang file Anda: bukan
+      file-nya, bukan namanya, ukurannya, atau digest mana pun. Setiap baris yang
+      membaca atau meng-hash satu byte disajikan dari asal ini dan terdaftar di
+      repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau file Anda. Tidak ada
+      yang terjadi kecuali Anda mengekliknya, dan yang akan Anda tuju adalah
+      situs milik orang lain."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan setiap bagian
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana: alat yang
+      mengirim file Anda ke tempat lain untuk di-hash akan berhenti begitu Anda
+      mencabut koneksi."""
+
+[[howto]]
+title = "Pilih file-nya."
+body = """
+ Jatuhkan ke pemilih file, atau pilih sendiri.
+      Ia dibaca langsung dari disk Anda sepotong demi sepotong; tidak ada yang
+      dikirim ke mana pun saat Anda melakukannya, dan tidak ada ukuran di mana
+      halaman ini menyerah."""
+
+[[howto]]
+title = "Biarkan ia membaca."
+body = """
+ MD5 dan SHA-256 dihitung secara bawaan, dalam
+      satu kali jalan. Batangnya menunjukkan sudah sejauh mana ia menelusuri file
+      dan secepat apa itu berjalan &mdash; image disk yang besar memakan waktu
+      kira-kira selama menyalinnya, karena jumlah bacaannya sama."""
+
+[[howto]]
+title = "Tempelkan seharusnya berapa."
+body = """
+ Apa pun yang diberikan halaman unduhan
+      kepada Anda, dalam bentuk apa pun: hex telanjang, satu baris keluaran
+      <code>sha256sum</code>, seluruh file <code>SHA256SUMS</code>, atau atribut
+      <code>integrity</code> dari sebuah tag skrip. Algoritma mana itu mengikuti
+      panjangnya, dan kotak yang tepat mencentang dirinya sendiri."""
+
+[[howto]]
+title = "Baca jawabannya, bukan warnanya."
+body = """
+ Halaman ini mengatakan dalam satu kalimat
+      apakah ini file yang digambarkan checksum itu. Cocok berarti byte-nya sama
+      persis dengan yang diukur penerbitnya. Tidak cocok berarti tidak, dan
+      unduhannya harus diambil lagi sebelum dibuka."""
+
+[[howto]]
+title = "Ambil checksum-nya kalau Anda butuh."
+body = """
+ Salin satu, salin semuanya, atau simpan
+      sebagai file teks kecil dalam bentuk bertanda yang ditulis alat baris
+      perintah, sehingga nama algoritmanya ikut bersama angkanya."""
+
+[[faq]]
+q = "Apakah file saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Ia dibaca dari disk Anda oleh peramban Anda sendiri dan di-hash di
+        prosesor Anda sendiri, empat megabyte sekali jalan. Alat ini tidak punya
+        sisi server, dan <code>Content-Security-Policy</code> halaman ini
+        menyebut satu per satu setiap alamat yang boleh dihubunginya &mdash;
+        tidak satu pun milik situs ini. Cabut koneksi jaringan dan ia tetap
+        bekerja."""
+
+[[faq]]
+q = "Adakah batas ukurannya?"
+a = """
+        Tidak. File tidak pernah ditahan utuh: ia dibaca sepotong demi sepotong
+        dan setiap potongan dihitung lalu dibuang, jadi image disk empat puluh
+        gigabyte memakai memori beberapa megabyte yang sama dengan sebuah file
+        teks. Yang dimakannya adalah waktu, dan halaman ini memberi tahu Anda
+        berapa sambil berjalan.
+        <br><br>
+        Inilah alasan algoritmanya ditulis di sini alih-alih diserahkan ke
+        <code>crypto.subtle.digest</code> milik peramban, yang akan lebih cepat.
+        Panggilan itu mengambil seluruh pesan dalam satu penyangga dan tidak ada
+        cara memberinya sebuah file sepotong demi sepotong, jadi memakainya akan
+        menaruh file terbesar yang bisa Anda periksa pada belas kasihan berapa
+        banyak memori yang kebetulan diizinkan untuk tab ini. Di ponsel itu
+        beberapa ratus megabyte, dan file yang paling ingin diperiksa orang
+        adalah image disk."""
+
+[[faq]]
+q = "Checksum-nya cocok. Apa sebenarnya yang sudah dibuktikan?"
+a = """
+        Bahwa byte di disk Anda adalah byte yang diukur seseorang ketika ia
+        menuliskan angka itu. Tidak lebih, dan batasnya layak disebut dengan
+        tepat.
+        <br><br>
+        Itu membuktikan unduhannya tidak terpotong, tidak rusak oleh disk yang
+        buruk, dan tidak ditukar dengan sesuatu yang lain dalam perjalanan. Itu
+        <strong>tidak</strong> membuktikan file-nya aman, karena penerbit bisa
+        mengukur malware seakurat apa pun yang lain. Dan itu membuktikan sangat
+        sedikit kalau checksum-nya datang dari halaman yang sama, lewat koneksi
+        yang sama, dengan file-nya: siapa pun yang bisa mengubah yang satu bisa
+        mengubah yang lain. Sebuah checksum paling bernilai ketika ia sampai
+        kepada Anda lewat jalur yang berbeda &mdash; file <code>SHA256SUMS</code>
+        bertanda tangan, pengumuman rilis sebuah distribusi, cermin kedua, atau
+        pengelola paket yang memang sudah mengetahuinya."""
+
+[[faq]]
+q = "Tidak cocok. Sekarang bagaimana?"
+a = """
+        Unduh lagi dulu, dari tempat yang sama. Transfer yang terputus atau
+        dilanjutkan adalah penyebab yang jauh paling umum, dan salinan kedua
+        biasanya menyelesaikannya.
+        <br><br>
+        Kalau salinan kedua memberi jawaban salah yang sama, periksa apakah Anda
+        membandingkan terhadap baris yang tepat: halaman rilis mencantumkan
+        beberapa file, dan checksum untuk versi ARM tidak akan pernah cocok
+        dengan yang x86. Lalu periksa nomor versinya. Kalau semua itu sudah benar
+        dan tetap tidak cocok, jangan buka file-nya. Ambil dari cermin yang
+        berbeda dan bandingkan kedua checksum-nya satu sama lain."""
+
+[[faq]]
+q = "Saya harus pakai yang mana?"
+a = """
+        Yang mana pun yang dicetak penerbitnya. Inti dari latihan ini adalah
+        membandingkan terhadap angka mereka, dan Anda tidak bisa memilihkan angka
+        mereka untuk mereka.
+        <br><br>
+        Kalau Anda yang menghasilkan checksum alih-alih memeriksanya, pakai
+        SHA-256. MD5 dan SHA-1 keduanya rusak dalam pengertian yang penting: dua
+        file berbeda dengan digest yang sama bisa dibangun dengan sengaja, dalam
+        hitungan jam untuk MD5 dan dengan biaya sedang untuk SHA-1. Itu tidak
+        membuatnya tidak berguna terhadap kecelakaan &mdash; unduhan yang
+        terpotong tidak akan berbenturan dengan aslinya secara kebetulan &mdash;
+        tapi itu berarti keduanya tidak bisa memberi tahu Anda bahwa tidak ada
+        yang mengutak-atik. SHA-384 dan SHA-512 baik-baik saja dan dalam praktik
+        tidak lebih baik; keduanya ada di sini karena sebagian proyek
+        menerbitkannya."""
+
+[[faq]]
+q = "Kenapa MD5 ada di sini kalau ia sudah rusak?"
+a = """
+        Karena itulah yang masih dicetak. Cermin unduhan, unduhan firmware,
+        halaman perangkat lunak universitas, dan sangat banyak situs vendor
+        menerbitkan MD5 dua puluh tahun lalu dan tidak pernah menengok halaman
+        itu lagi, dan alat yang menolak menghitungnya berarti menolak menjawab
+        pertanyaan yang sebenarnya dibawa pengunjungnya.
+        <br><br>
+        Yang bisa dilakukannya sebagai gantinya adalah mengatakan apa nilai
+        jawabannya, dan itulah yang dilakukan catatan di sebelah kotak
+        centangnya. MD5 yang cocok tetap menyingkirkan kemungkinan unduhan yang
+        rusak. Ia tidak menyingkirkan kemungkinan yang disengaja."""
+
+[[faq]]
+q = "Format apa saja yang bisa saya tempelkan ke kotak pembanding?"
+a = """
+        Semua yang lazim, dan ia sendiri yang menentukan mana yang mana.
+        <br><br>
+        Hex telanjang, dengan atau tanpa spasi di dalamnya. Satu baris keluaran
+        <code>md5sum</code> atau <code>sha256sum</code>, dengan nama file
+        sesudahnya. Seluruh file <code>SHA256SUMS</code> berisi empat puluh
+        baris, dan dalam hal itu baris yang menyebut nama file Anda yang dipakai.
+        Bentuk BSD, <code>SHA256 (disk.iso) = &hellip;</code>. Label di depannya,
+        seperti <code>SHA-256: &hellip;</code>. Dan atribut integritas
+        subsumber, <code>sha384-&hellip;</code>, yang berupa base64 alih-alih hex
+        dan didekode sebelum dibandingkan.
+        <br><br>
+        Algoritma mana itu datang dari panjangnya: 32 karakter hex adalah MD5,
+        40 adalah SHA-1, 64 adalah SHA-256, 96 adalah SHA-384, dan 128 adalah
+        SHA-512. Tidak ada dua yang sama panjangnya, jadi tidak ada yang perlu
+        dipilih dan tidak ada yang bisa salah."""
+
+[[faq]]
+q = "Apakah ia memberi jawaban yang sama dengan sha256sum atau certutil?"
+a = """
+        Ya, byte demi byte. Ini adalah spesifikasi yang pasti dengan vektor uji
+        yang diterbitkan, dan setiap algoritma di sini diperiksa terhadap vektor
+        itu dan terhadap implementasi milik sistem operasi pada setiap build.
+        <br><br>
+        Satu-satunya perbedaan yang akan Anda lihat adalah penyajiannya.
+        <code>certutil -hashfile</code> di Windows mencetak dengan huruf besar
+        dan menyisipkan spasi; halaman ini mencetak huruf kecil, yang dipakai
+        hampir setiap penerbit. Perbandingannya mengabaikan keduanya, jadi
+        checksum yang disalin dari certutil cocok dengan yang huruf kecil
+        ditempelkan di sini."""
+
+[[faq]]
+q = "Bisakah saya memeriksa dua file satu sama lain?"
+a = """
+        Bisa, dengan satu langkah tambahan: periksa yang pertama, salin
+        checksum-nya, lalu pilih yang kedua dan tempelkan checksum itu ke
+        kotaknya. Kalau kedua file identik, halaman ini akan mengatakannya.
+        <br><br>
+        Itu layak diketahui untuk kasus yang diam-diam paling cocok bagi checksum
+        &mdash; memutuskan apakah salinan di drive cadangan benar-benar file yang
+        sama dengan yang di laptop, ketika keduanya mengaku berukuran sama dan
+        bertanggal sama."""
+
+[[faq]]
+q = "Apakah ia mengubah file saya?"
+a = """
+        Tidak. Alat ini hanya membaca. Tidak ada file keluaran, tidak ada
+        pengodean ulang, dan tidak ada yang ditulis kembali &mdash; satu-satunya
+        yang bisa Anda unduh adalah file teks kecil berisi daftar checksum-nya.
+        File asli Anda tidak tersentuh di disk Anda, yang juga merupakan jawaban
+        jujur atas apa yang terjadi kalau Anda menutup tab."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, dan tidak ada masa uji coba.
+        Tidak ada batas ukuran file dan tidak ada batas berapa banyak file yang
+        Anda periksa. Situs ini memasang iklan, dan itulah yang membiayainya;
+        iklan tidak diberi apa pun tentang file Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim file Anda ke tempat lain untuk di-hash akan
+        berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Hitung checksum MD5, SHA-1, SHA-256, SHA-384, atau SHA-512 file apa pun di peramban, dan bandingkan dengan nilai yang diterbitkan sebuah halaman unduhan. File dibaca sepotong demi sepotong dan tidak pernah diunggah."
+features = [
+  "MD5, SHA-1, SHA-256, SHA-384, dan SHA-512, dalam satu kali jalan atas file",
+  "Tanpa batas ukuran: file dibaca sepotong demi sepotong dan tidak pernah ditahan utuh",
+  "Tempelkan nilai yang diharapkan dalam bentuk terbitan apa pun dan ia menentukan sendiri algoritmanya",
+  "Membaca keluaran sha256sum, file SHA256SUMS, bentuk bertanda BSD, dan atribut integrity",
+  "Mengatakan dalam satu kalimat apakah file-nya cocok, bukan sekadar lewat warna",
+  "Salin satu checksum, semuanya, atau simpan sebagai file teks bertanda",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa mengubah file Anda",
+]
+
+[picker]
+title = "Jatuhkan sebuah file di sini"
+hint = "atau klik untuk menelusuri &mdash; file apa pun, ukuran berapa pun, tidak ada yang diunggah"
