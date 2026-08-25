@@ -1,0 +1,147 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصور</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل من القائمة</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the one click -->
+  <section class="card" id="strip-card">
+    <h2><span class="step">2</span> أزِل كل شيء</h2>
+
+    <p class="card-lede">
+      زرٌّ واحد، وكل صورة في القائمة. فلا يُفكّ ترميز الصورة ولا تُعاد رسماً
+      ولا ضغطاً &mdash; إذ تُنسَخ بيانات الصورة المضغوطة دون أن تُمسّ ولا
+      يُسقَط إلا ما حولها من بيانات وصفية، فيكون الناتج الصورة نفسها ولا شيء
+      معلَّق بها.
+    </p>
+
+    <div class="strip-row">
+      <button type="button" id="strip-all" class="primary big" disabled>أزِل كل البيانات الوصفية</button>
+      <span id="strip-status" class="strip-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Two things are kept by default, and both are stated on the button's own
+      line rather than buried in a settings panel. "Remove all" that quietly
+      keeps things is a broken promise; "remove all except these two, and here
+      they are" is a choice.
+    -->
+    <fieldset class="keep-options">
+      <legend>ما يُبقى عليه</legend>
+      <label class="check">
+        <input type="checkbox" id="keep-orientation" checked>
+        <span>
+          <strong>وسم الاتجاه</strong>
+          <span class="check-note">
+            تخزّن الهواتف الصورة كما رآها المستشعر وتضيف وسماً واحداً يقول أي
+            جهة هي العليا. وإزالته تجعل بعض العارضات تعرضها على جنبها. وحين
+            يُبقى عليه تُكتَب كتلة EXIF جديدة تحمل هذا الوسم ولا شيء غيره
+            &mdash; وذلك فقط حين لم تكن الصورة قائمة الجهة أصلاً.
+          </span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keep-icc" checked>
+        <span>
+          <strong>ملفّ الألوان</strong>
+          <span class="check-note">
+            ملفّ ICC يقول ماذا تعني الأرقام التي في الصورة بوصفها ألواناً. وهو
+            لا يقول عنك شيئاً. وإسقاطه قد يزيح ألوان صورة واسعة الحيّز إزاحة
+            مرئية، ولهذا يُبقى عليه ما لم تقل غير ذلك.
+          </span>
+        </span>
+      </label>
+      <p class="keep-summary" id="keep-summary"></p>
+    </fieldset>
+
+    <div id="clean-results" class="results" hidden>
+      <div class="results-head">
+        <h3>بعد التنظيف</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>نزِّل الكل في ملف zip</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; reading and editing -->
+  <section class="card" id="inspect-card">
+    <h2><span class="step">3</span> انظر في الداخل، وغيّر ما تشاء</h2>
+
+    <p id="inspect-empty" class="empty-note">
+      اختر صورة أعلاه فيظهر هنا كل ما فيها: ماذا تقول عن مكانك، ومتى، وبأي
+      جهاز. ولا يُرسَل شيء إلى أي مكان لمعرفة ذلك.
+    </p>
+
+    <div id="inspector" hidden>
+      <div class="inspect-head">
+        <div class="inspect-file">
+          <img id="inspect-thumb" class="inspect-thumb" alt="" hidden>
+          <div>
+            <p class="inspect-name" id="inspect-name"></p>
+            <p class="inspect-sub" id="inspect-sub"></p>
+          </div>
+        </div>
+        <div class="inspect-switch">
+          <label for="inspect-select" class="visually-hidden">أي صورة تُفحَص</label>
+          <select id="inspect-select"></select>
+        </div>
+      </div>
+
+      <!-- The findings: the part of this page that answers the actual question. -->
+      <section class="findings" aria-labelledby="findings-h">
+        <h3 id="findings-h">ما يفشيه هذا الملف</h3>
+        <ul id="findings-list" class="findings-list"></ul>
+      </section>
+
+      <!-- Whole blocks, each removable on its own. -->
+      <section class="blocks" aria-labelledby="blocks-h">
+        <h3 id="blocks-h">الكتل التي في هذا الملف</h3>
+        <ul id="block-list" class="block-list"></ul>
+      </section>
+
+      <!-- Every tag, editable. -->
+      <section class="tags" aria-labelledby="tags-h">
+        <h3 id="tags-h">كل وسم</h3>
+        <p class="tags-note" id="tags-note"></p>
+        <div id="tag-groups"></div>
+
+        <details class="add-tag" id="add-tag">
+          <summary>أضِف وسماً</summary>
+          <div class="add-tag-body">
+            <label for="add-tag-select">الوسم</label>
+            <select id="add-tag-select"></select>
+            <label for="add-tag-value">القيمة</label>
+            <input type="text" id="add-tag-value" spellcheck="false">
+            <button type="button" id="add-tag-go" class="ghost">أضِف</button>
+          </div>
+        </details>
+      </section>
+
+      <div class="save-row">
+        <button type="button" id="save-edits" class="primary" data-download disabled>احفظ هذه الصورة</button>
+        <button type="button" id="revert-edits" class="ghost" disabled>تراجَع عن تغييراتي</button>
+        <span id="save-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+      <p id="edit-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+</main>

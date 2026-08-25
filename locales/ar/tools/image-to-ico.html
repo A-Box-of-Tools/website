@@ -1,0 +1,181 @@
+<main>
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر صورة</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل من القائمة</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="shape-note" class="field-summary" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which standard -->
+  <section class="card" id="preset-card">
+    <h2><span class="step">2</span> قل لماذا الأيقونة</h2>
+
+    <p class="card-lede">
+      ملف الأيقونة ليس صورة واحدة بل عدة صور: الشعار نفسه مرسوماً من جديد عند
+      كل حجم يطلبه الشيء الذي يقرؤه. وأيُّ الأحجام تلك ليس مسألة ذوق &mdash;
+      فالمتصفح يريد ثلاثة منها، والتطبيق على حاسوب محمول عالي الدقة يريد عشرة،
+      وMac يريد عشرته هو، وما كُتِب قبل Windows Vista يريدها مخزَّنة على نحو
+      مختلف كل الاختلاف.
+    </p>
+
+    <!--
+      Which files to write. Windows and macOS read different containers and
+      neither will look at the other's, so this is a set of checkboxes rather
+      than a menu: wanting both is the normal case for anything shipped on both.
+    -->
+    <fieldset class="options outputs">
+      <legend>ماذا تصنع</legend>
+
+      <label class="check">
+        <input type="checkbox" id="want-ico" checked>
+        <span>
+          <strong>أيقونة Windows &mdash; <code>.ico</code></strong>
+          <span class="check-note">
+            يقرؤها كل متصفح بوصفها فافيكون، ويقرؤها Windows للتطبيق والاختصار
+            والمجلد. والأحجام لك تختارها أدناه.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="want-icns">
+        <span>
+          <strong>أيقونة macOS &mdash; <code>.icns</code></strong>
+          <span class="check-note">
+            ما تحمله حزمة تطبيق Mac. وتُسمّي Apple عشر خانات بالضبط، من 16
+            بكسلاً إلى 1024، فلا شيء يُختار: تدخل العشر جميعاً، مرسومةً من سبع
+            عمليات رسم لأن خانة Retina والحجم الذي فوقها هما الصورة نفسها.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="pack-row">
+        <input type="checkbox" id="want-pack">
+        <span>
+          <strong>بقية طقم أيقونات الموقع</strong>
+          <span class="check-note">
+            ملف ‎.ico‎ يغطي تبويب المتصفح وWindows. ولا يغطي شاشة iPhone
+            الرئيسية، ولا نافذة تثبيت Android، ولا مربّعاً مثبَّتاً في قائمة
+            ابدأ &mdash; فتلك تقرأ ملف PNG بحجم 180 بكسلاً، وبيان تطبيق ويب،
+            وملف XML، ولن ينظر أيٌّ منها داخل ملف ‎.ico‎. أشِّر على هذا فتحصل
+            عليها كلها، ومعها البيان، وكتلة HTML للّصق في صفحتك.
+          </span>
+        </span>
+      </label>
+
+      <p id="output-summary" class="field-summary"></p>
+    </fieldset>
+
+    <div id="ico-settings">
+      <div class="presets" id="preset-list" role="radiogroup" aria-label="لماذا الأيقونة"></div>
+
+      <p id="preset-note" class="field-summary"></p>
+
+      <fieldset class="options" id="size-set">
+        <legend>الأحجام التي تدخل في ملف ‎.ico‎</legend>
+        <div class="size-grid" id="size-grid"></div>
+        <p id="size-summary" class="field-summary"></p>
+      </fieldset>
+    </div>
+
+    <fieldset class="options">
+      <legend>كيف تُرسَم</legend>
+
+      <div class="option-row">
+        <label for="fit-select">إن لم تكن الصورة مربّعة</label>
+        <select id="fit-select">
+          <option value="pad" selected>احشُها إلى مربّع &mdash; وتبقى الصورة كلها</option>
+          <option value="crop">اقصص المربّع الأوسط</option>
+          <option value="stretch">مُطَّها إلى مربّع</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="background-mode">الخلفية</label>
+        <select id="background-mode">
+          <option value="transparent" selected>شفافة</option>
+          <option value="colour">لون</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="لون الخلفية" hidden>
+      </div>
+
+      <div class="option-row" id="storage-row">
+        <label for="storage-select">كيف يُخزَّن كل حجم في ملف ‎.ico‎</label>
+        <select id="storage-select">
+          <option value="auto" selected>تلقائي &mdash; المتوافق حين يكون رخيصاً، وPNG حين لا يكون</option>
+          <option value="png">PNG لكل حجم &mdash; أصغر ملف، ويحتاج إلى Vista فما فوق</option>
+          <option value="bmp">غير مضغوط لكل حجم &mdash; يُفتَح في أي شيء، وأضعاف الحجم</option>
+        </select>
+      </div>
+
+      <p id="storage-note" class="field-summary"></p>
+    </fieldset>
+
+  </section>
+
+  <!-- Step 3 &mdash; see it small, then take it -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> تحقّق منها بالحجم الذي سترى به</h2>
+
+    <p class="card-lede">
+      هذا هو الجزء الجدير بالنظر قبل أن تنزّل شيئاً. فالشعار الذي يُقرأ قراءة
+      تامة عند 512 بكسلاً يصير عرضه ستة عشر بكسلاً في تبويب المتصفح، وأجزاؤه
+      الرفيعة &mdash; خطوط الكلمة، وحدٌّ شعري، وتدرّجٌ لوني &mdash; لا تنجو من
+      ذلك. وكل مربع أدناه مرسوم بحجمه الحقيقي من الملف الذي اخترته.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-strip" id="preview-strip"></div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make-icon" class="primary big" disabled>اصنع الأيقونة</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>جاهزة</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>نزِّل كل شيء في ملف zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+
+      <!--
+        The block to paste into a page's <head>, shown rather than only zipped:
+        most people making a favicon are about to paste this into a template,
+        and a copy button is a shorter route than a download and a text editor.
+      -->
+      <div id="snippet" class="snippet" hidden>
+        <div class="snippet-head">
+          <h4>الصق هذا في <code>&lt;head&gt;</code> صفحتك</h4>
+          <button type="button" id="copy-snippet" class="ghost">انسخ</button>
+        </div>
+        <pre id="snippet-text"></pre>
+      </div>
+    </div>
+  </section>
+</main>

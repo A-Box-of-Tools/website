@@ -1,0 +1,137 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصور</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل من القائمة</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the line that actually gets pasted -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> قل إلى أين ستذهب</h2>
+
+    <p class="card-lede">
+      الـ Data URI وحدها نادراً ما تكون مراد أحد. المراد هو السطر الذي يدخل في
+      ورقة الأنماط &mdash; فاختر السطر، وتصلك الصورة داخله بين علامتَي اقتباس
+      أصلاً، وهو الجزء الذي يسهل الخطأ فيه والذي لا يفشل إلا مع ملفات SVG.
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="ما الذي يُلصَق">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>الـ Data URI وحدها</strong>
+          <span class="shape-note">
+            كل ما بعد الفاصلة هو الملف. الصقها في أي موضع يقبل عنواناً.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>قاعدة CSS</strong>
+          <span class="shape-note">
+            قاعدة كاملة، بصنف مسمّى باسم الملف. غيّر المُحدِّد إلى ما تُنسِّقه
+            حقاً.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>خاصية CSS مخصّصة</strong>
+          <span class="shape-note">
+            تُعلَن مرة في رأس ورقة الأنماط وتُستعمَل بـ
+            <code>var(--name)</code> كما تشاء. وهذه هي التي تختارها حين تظهر
+            الصورة في أكثر من قاعدة.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>وسم <code>&lt;img&gt;</code> في HTML</strong>
+          <span class="shape-note">
+            وحجم البكسل مملوء فيه، فلا تقفز الصفحة بينما يُحمَّل بقيتها.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">
+            لملف README أو لمسألة مطروحة: صورة تسافر مع النصّ بدل أن تحتاج إلى
+            مكان تُستضاف فيه.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      نصّ <code>alt</code> متروك فارغاً عن قصد. فأنت وحدك تعرف هل تحمل الصورة
+      معنى أم هي زينة، ووصفٌ مخمَّن من اسم ملف أسوأ لمن يستعمل قارئ شاشة من
+      ألا يكون هناك وصف أصلاً.
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>رمِّز ملفات SVG بـ base64 كذلك</strong>
+          <span class="check-note">
+            مُطفأ افتراضياً، لأن ملف SVG نصّ وbase64 للبايتات. والترميز بالنسبة
+            المئوية يُبقي الوسوم مقروءة في ورقة الأنماط وهو أقصر بنحو الخُمس
+            عادةً. فعِّل هذا لسلسلة الأدوات النادرة التي تصرّ على
+            <code>;base64</code>.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the result. There is no button here on purpose: encoding
+       is instant, so there is nothing for a "convert" press to wait for. -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> انسخها</h2>
+
+    <p id="empty-note" class="card-lede">
+      لم تختر شيئاً بعد. أفلِت صورة أعلاه فيظهر هنا السطر الذي تلصقه.
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">انسخ الكل</button>
+          <button type="button" id="download-all" class="ghost">نزِّل في ملف واحد</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
