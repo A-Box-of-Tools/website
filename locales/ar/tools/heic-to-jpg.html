@@ -1,0 +1,120 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر صور HEIC</h2>
+
+    <p class="card-lede">
+      من الهاتف مباشرة، أو من نسخة احتياطية، أو منسوخة من بطاقة ذاكرة. يُقرأ
+      الملف هنا، على هذا الجهاز، وتُفكّ ترميز الصورة هنا كذلك &mdash; فليس في
+      هذه الصفحة خطوة رفع ولا خلفها خادم.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل من القائمة</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; what comes out -->
+  <section class="card" id="options-card">
+    <h2><span class="step">2</span> قل ماذا تريد أن يعود إليك</h2>
+
+    <fieldset class="options">
+      <legend>الصيغة</legend>
+
+      <div class="option-row">
+        <label for="format-select">اكتب الصور بصيغة</label>
+        <select id="format-select">
+          <option value="image/jpeg" selected>JPEG &mdash; تُفتَح في كل مكان، بما في ذلك ما صُنع في هذا القرن سهواً</option>
+          <option value="image/png">PNG &mdash; بلا خسارة، وأضعاف الحجم</option>
+          <option value="image/webp">WebP &mdash; أصغر من JPEG بالجودة نفسها، وللمتصفحات الحديثة وحدها</option>
+        </select>
+      </div>
+
+      <div class="option-row" id="quality-row">
+        <label for="quality">الجودة</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="50" max="100" step="1" value="92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>تفاصيل الصورة</legend>
+
+      <label class="check">
+        <input type="checkbox" id="keep-exif" checked>
+        <span>
+          <strong>أبقِ على التاريخ والكاميرا والإعدادات</strong>
+          <span class="check-note">
+            تُنقَل كما كتبها الهاتف تماماً، فتظل الصورة المحوَّلة تُرتَّب بيوم
+            التقاطها لا بيوم تحويلها. ويشمل ذلك إحداثيات GPS حين تحملها الصورة
+            &mdash; والقائمة أعلاه تقول أي صورك تحملها. أطفئ هذا فيخرج ملف JPEG
+            وليس فيه إلا الصورة.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary">
+        وفي الحالين لا يُقرأ شيء هنا على أحد: فالاختيار عمّا يدخل في الملف الذي
+        يعود إليك، لا عمّا تفعله هذه الصفحة به. وإن أردت أن تتصفّح الوسوم
+        بالتفصيل، أو أن تزيلها من صور هي JPEG أصلاً، فـ
+        <a href="../إزالة-بيانات-exif/">عارض EXIF ومُزيله</a> هو الأداة لذلك.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> حوِّل</h2>
+
+    <div class="run-row">
+      <button type="button" id="convert-all" class="primary big" disabled>حوِّل</button>
+    </div>
+
+    <!--
+      The decoder's own status line. This page is the only one on the site that
+      carries a codec, so it is the only one with anything to report here, and
+      saying where the megabyte came from is the point: it is served from this
+      origin, it is cached with the rest of the page, and it is what makes the
+      offline promise hold on a browser that cannot open a HEIC at all.
+    -->
+    <p id="engine-status" class="engine-status" role="status" aria-live="polite"></p>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>بعد التحويل</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>نزِّل الكل في ملف zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The frame's "offline" line says only that this page keeps working. What is
+    worth saying here is what that covers: the HEIC decoder is a vendored
+    WebAssembly engine, and it is cached with the rest. A key defined here wins
+    over the frame's one - see shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">جاهزة &mdash; وفاكُّ الترميز مخبَّأ
+      كذلك، فهذا يعمل والشبكة مفصولة.</span>
+  </div>
+</main>
