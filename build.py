@@ -59,10 +59,12 @@ The build never reaches the network, whichever way it runs.
 import argparse
 import hashlib
 import html
+import os
 import re
 import shutil
 import subprocess
 import sys
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -91,11 +93,20 @@ def main(argv=None):
                         help='leave the output readable, for debugging')
     parser.add_argument('--check', action='store_true',
                         help='fail if the output differs from the committed dist branch')
+    parser.add_argument('--jobs', type=int, default=0, metavar='N',
+                        help='languages to build at once (default: one per core, '
+                             '1 to build them one at a time)')
     args = parser.parse_args(argv)
 
     out = (ROOT / args.out).resolve()
+    # 0 means "decide for me". Written as a number rather than as None so that
+    # --jobs 1 is a thing somebody can ask for and get: the languages build one
+    # after another, which is what to reach for when a traceback from inside a
+    # worker process is harder to read than the bug it is describing.
+    args.jobs = args.jobs if args.jobs > 0 else (os.cpu_count() or 1)
     try:
-        pages = build(out, clean=args.clean, minify_output=args.minify)
+        pages = build(out, clean=args.clean, minify_output=args.minify,
+                      jobs=args.jobs)
     except (sitelib.ConfigError, TemplateError, minify.MinifyError,
             cssmin.CssError) as err:
         print(f'build failed: {err}', file=sys.stderr)
@@ -110,7 +121,7 @@ def main(argv=None):
     return 0
 
 
-def build(out, clean=False, minify_output=True):
+def build(out, clean=False, minify_output=True, jobs=None):
     if clean and out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -184,11 +195,33 @@ def build(out, clean=False, minify_output=True):
     # and would advertise a German page that is still English.
     i18n.survey(locales, tools, prose, planned, site)
 
+    # One language at a time, or several at once. Each call writes only under
+    # its own out/<lang>/ - English at the root - and re-reads nothing, so the
+    # languages have nothing to say to each other and nothing to race over. The
+    # files that belong to the site rather than to a language are written
+    # outside this, below.
+    #
+    # Order is preserved by walking the futures in the order they were
+    # submitted rather than as they finish, because `written` becomes the
+    # printed list and a build that reports its pages in a different order
+    # every time is a build that looks different every time.
     written = []
-    for locale in locales:
-        written += build_locale(out, templates, locale, locales, site, tools,
-                                prose, planned, css_v, lang_v, feedback_v,
-                                offline_v, site_css, emit)
+
+    if jobs == 1 or len(locales) < 2:
+        for locale in locales:
+            written += build_locale(out, templates, locale, locales, site, tools,
+                                    prose, planned, css_v, lang_v, feedback_v,
+                                    offline_v, site_css, emit)
+    else:
+        with ProcessPoolExecutor(max_workers=jobs) as pool:
+            pending = [
+                pool.submit(build_locale, out, templates, locale, locales, site,
+                            tools, prose, planned, css_v, lang_v, feedback_v,
+                            offline_v, site_css, emit)
+                for locale in locales
+            ]
+            for future in pending:
+                written += future.result()
 
     # After every locale, because a locale only counts as finished once every
     # page in it has been rendered and had the chance to fall back. Raising
