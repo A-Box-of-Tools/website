@@ -1,0 +1,36 @@
+#
+# Guide: scanning a document with a phone camera.
+#
+# Written for the person an office has asked to "scan and return" something,
+# who has a phone and no scanner. The interesting parts are the ones nobody
+# warns them about: that the thing that makes a photograph look unscanned is
+# the uneven light rather than the angle, that a straightened page can be the
+# wrong shape and look fine, and that black and white is what makes the file
+# small enough to send.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/scan-a-document-with-your-phone"
+kind = "guide"
+nav = "Scanning with a phone"
+group = "doing-the-job"
+tool = "document-scanner"
+
+title = "How to Scan a Document With Your Phone (No App, No Upload)"
+description = "What separates a photograph of a page from a scan of one: the angle, the uneven light, and the file size. How to take the photo, what to fix afterwards, and why none of it needs a server."
+
+heading = "How to scan a document with your phone"
+lede = """
+    Somebody has asked you to &ldquo;scan and return&rdquo; a form, and you have
+    a phone and no scanner. The gap between a photograph of a page and a scan of
+    one is smaller than it looks, and it is not mostly about the angle &mdash;
+    this is what actually separates them, and what to do about each part."""
+
+updated = "25 August 2026"
+published = "2026-08-25"
+lastmod = "2026-08-25"
+
+og_title = "How to scan a document with your phone"
+og_description = "The angle, the shadow and the file size - what separates a photo of a page from a scan of one, and how to fix each without uploading the page."
+og_image_alt = "abox.tools - tools that never touch a server"

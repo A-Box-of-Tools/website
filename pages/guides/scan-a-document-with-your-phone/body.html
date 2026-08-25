@@ -1,0 +1,241 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Put the page on something that is not the same colour as the page, stand
+      over it, fill the frame, and take one photograph. Then open
+      <a href="../../document-scanner/">Document Scanner</a>, check the four
+      corners it found, choose &ldquo;colour, evened out&rdquo; or &ldquo;black
+      and white&rdquo;, and save the PDF.
+    </p>
+    <p>
+      That is the whole job. The rest of this explains what each of those steps
+      is fixing, because knowing which part is doing what is what lets you tell,
+      in three seconds, whether the thing you are about to send is going to be
+      accepted.
+    </p>
+  </section>
+
+  <section>
+    <h2>What actually separates a photo from a scan</h2>
+    <p>
+      Three things, and they are not equally important.
+    </p>
+    <ul>
+      <li>
+        <strong>The angle.</strong> A photograph is taken from wherever you were
+        standing, so the page is a quadrilateral rather than a rectangle. This is
+        the one everybody notices and the easiest to undo.
+      </li>
+      <li>
+        <strong>The light.</strong> A scanner drags an even light across the
+        page. A room does not: there is a bright patch under the lamp, a dim
+        corner away from it, and very often your own shadow across one side. This
+        is the one that actually makes a photograph look like a photograph, and
+        it is the one people try to fix with &ldquo;auto contrast&rdquo;, which
+        makes it worse.
+      </li>
+      <li>
+        <strong>The size.</strong> A twelve megapixel photograph of a page is
+        three to five megabytes. Twenty of them is a document that will bounce
+        off half the mail servers it is sent to.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Taking the photo</h2>
+    <p>
+      Five things, in order of how much difference they make:
+    </p>
+    <ul>
+      <li>
+        <strong>Fill the frame.</strong> This is the only one that cannot be
+        fixed afterwards. Detail that was not in the photograph is not in the
+        file, and a page photographed from across the room is a page nobody can
+        read at any resolution. Move closer rather than zooming: unless the phone
+        switches to a second, longer lens, zooming in is a crop of the same
+        sensor &mdash; it throws away exactly the pixels you are trying to
+        keep.
+      </li>
+      <li>
+        <strong>Put it on something a different colour.</strong> A white page on
+        a white desk has almost no edge for anything to find &mdash; not
+        software, and not you either, when you come to drag the corners by hand.
+        A dark table, a book, a coat: anything.
+      </li>
+      <li>
+        <strong>Do not stand between the page and the light.</strong> Your own
+        shadow across the page is the single most common reason a phone scan
+        looks bad. Turn ninety degrees and it goes away.
+      </li>
+      <li>
+        <strong>Let it focus, then hold still.</strong> Camera shake is not
+        recoverable by any tool, and neither is a missed focus. Tap the page on
+        the screen, wait for it to settle, then press the button.
+      </li>
+      <li>
+        <strong>Get the whole page in, corners included.</strong> Not because the
+        corners are precious, but because they are what the straightening is
+        measured from. A page running off the edge of the frame still works
+        &mdash; the edge of the photograph stands in for the edge of the page
+        &mdash; but a page with three corners in the frame and one guessed at is
+        a page that will come out slightly wrong.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Straightening: why the shape matters more than the angle</h2>
+    <p>
+      Undoing the angle is a well understood piece of arithmetic. Four corners of
+      a rectangle seen from anywhere determine the transformation that puts them
+      back, and applying it to every pixel gives a flat page. Any tool that
+      claims to straighten a page is doing that.
+    </p>
+    <p>
+      The part that goes wrong quietly is <em>how big</em> the flat page should
+      be. The obvious method is to measure the edges of the quadrilateral and use
+      their ratio &mdash; and a photograph taken at an angle foreshortens the far
+      edge, so a sheet of A4 comes out visibly squat. It still looks like a scan.
+      Every line of text on it is simply the wrong height, and nothing on the
+      screen says so.
+    </p>
+    <p>
+      The better answer is that the perspective itself carries the information:
+      given only that the camera is an ordinary one, a photograph of a rectangle
+      is enough to recover both the rectangle's true proportions and the camera's
+      focal length. The
+      <a href="../../document-scanner/">Document Scanner</a> here does that, and
+      then tells you what shape the page came out and whether that is a standard
+      sheet &mdash; so a page that says &ldquo;1:1.41, which is the shape of A4
+      or A5&rdquo; is a page you can stop thinking about.
+    </p>
+  </section>
+
+  <section>
+    <h2>The light: divide, do not stretch</h2>
+    <p>
+      Increasing the contrast of an unevenly lit page makes the bright part white
+      and the dark part black, and the writing in the dark part disappears along
+      with it. The problem was never that the contrast was too low. It is that
+      the paper is not the same brightness in one corner as it is in another, so
+      there is no single adjustment that is right for the whole page.
+    </p>
+    <p>
+      What works is to estimate how bright the paper is <em>at each point</em>
+      and divide by it. Paper is the bright majority of any small patch of a
+      page, so measuring the brightness across a grid of small tiles and taking a
+      high value in each gives the shape of the light &mdash; text is too dark
+      and too sparse to move it. Divide by that and what is left is the ink,
+      evenly lit, with the shadow gone and the paper back to white.
+    </p>
+    <p>
+      This is what &ldquo;colour, evened out&rdquo; and &ldquo;greyscale&rdquo;
+      do. Choose colour when the colour is part of the document: a stamp, a
+      signature in blue ink, a highlighted line, anything where somebody might
+      later ask whether it was original.
+    </p>
+  </section>
+
+  <section>
+    <h2>Black and white, and why the file suddenly gets small</h2>
+    <p>
+      A page stored as a photograph is millions of pixels with sixteen million
+      possible colours each, and the codec spends its effort on subtle gradients
+      that a page of text does not have. A page stored as black and white is one
+      bit per pixel &mdash; ink or paper &mdash; and compresses like the
+      overwhelmingly repetitive thing it is.
+    </p>
+    <p>
+      The difference is not small: on the same pages it is something like
+      eighteen times. A twenty page contract that runs to fifteen megabytes as
+      photographs lands under a megabyte as one-bit pages &mdash; which is the
+      difference between a document that can be emailed and one that cannot, and
+      the reason every office scanner defaults to it.
+    </p>
+    <p>
+      The catch is that there are no half tones: a photograph on the page becomes
+      a mess of dots. Use it for printed and written pages, which is what most
+      documents are, and use greyscale for anything with a picture on it.
+    </p>
+    <p>
+      One detail worth knowing, because it explains why a good tool succeeds
+      where a bad one produces a page with a black corner: the decision of ink or
+      paper has to be made <em>locally</em>. A single threshold for the whole page
+      cannot work when the paper in the shadow is darker than the ink in the
+      light &mdash; and on a photographed page it very often is. Deciding each
+      pixel against the average of its own small neighbourhood is what keeps
+      writing inside a shadow readable.
+    </p>
+  </section>
+
+  <section>
+    <h2>Several pages, one document</h2>
+    <p>
+      Photograph the pages in order, add them all at once, and they become the
+      pages of one PDF in the order they were added. Two things to watch:
+    </p>
+    <ul>
+      <li>
+        <strong>File names do not sort the way you think.</strong>
+        <code>page2.jpg</code> comes after <code>page10.jpg</code> in an
+        alphabetical sort, because the comparison is character by character.
+        Check the order in the strip before you save rather than in the PDF
+        afterwards.
+      </li>
+      <li>
+        <strong>The cleanup is one setting for the whole document</strong>, and
+        deliberately so. Pages cleaned up differently look like two documents
+        stapled together, which is exactly the impression a scan is meant to
+        avoid. Pick the mode that suits the worst page.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Before you send it</h2>
+    <ul>
+      <li>
+        <strong>Open the PDF.</strong> Not the preview &mdash; the file. Every
+        page, right way up, nothing cut off at an edge.
+      </li>
+      <li>
+        <strong>Read the smallest thing on the page.</strong> A reference number,
+        a date, an account number. If you cannot read it on screen at 100%,
+        neither can the person you are sending it to.
+      </li>
+      <li>
+        <strong>Check the corners were not cropped.</strong> What sits at the
+        edge of a form is a page number, a signature line, or the box somebody
+        will later say was missing.
+      </li>
+      <li>
+        <strong>Check what the document says about you.</strong> A PDF has fields
+        for the author, the producer and the creation date, and most tools fill
+        them in. Whether that matters depends on who is receiving it, but it is
+        worth knowing that it is there.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Why none of this needs an upload</h2>
+    <p>
+      Every step above is arithmetic on a picture your own machine has already
+      decoded: four corners, a transformation, a division, a threshold, and a
+      container written a byte at a time. There is nothing in it that a server
+      can do and a browser cannot, and nothing that needs a model downloaded to
+      do it either.
+    </p>
+    <p>
+      Which is worth pausing on, because of what these files are. People do not
+      photograph pages at random. They photograph a passport, a payslip, a lease,
+      a medical form, a contract &mdash; documents with a name, an address and an
+      account number on them, being scanned precisely because an institution
+      asked for them. Uploading one to a website to have its corners straightened
+      hands a stranger the entire document. See
+      <a href="../is-it-safe-to-upload-files/">how to tell whether a tool really
+      needs your files</a> for the four checks that separate the tools that have
+      to see your file from the ones that simply do.
+    </p>
+  </section>

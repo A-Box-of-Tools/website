@@ -56,7 +56,6 @@ name = "Documenten &amp; pdf"
 items = [
   ["Pagina's draaien &amp; bijsnijden", "een scan rechtzetten die scheef binnenkwam, of de marges eraf halen"],
   ["Afbeeldingen eruit halen", "de plaatjes weer uit een document trekken"],
-  ["Documentscanner", "een foto van een pagina, rechtgezet en opgeschoond tot een document"],
 ]
 
 [[group]]

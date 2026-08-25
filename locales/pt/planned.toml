@@ -60,7 +60,6 @@ name = "Documentos e PDF"
 items = [
   ["Girar e cortar páginas", "endireitar uma digitalização que veio deitada, ou aparar as margens"],
   ["Extrair imagens", "tirar as figuras de volta de dentro de um documento"],
-  ["Digitalizador de documentos", "a foto de uma página, endireitada e limpa, virando documento"],
 ]
 
 [[group]]
