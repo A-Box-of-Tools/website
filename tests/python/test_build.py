@@ -23,7 +23,6 @@ import unittest
 from pathlib import Path
 
 import build as buildmod
-from buildlib import mangle
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -86,32 +85,19 @@ class BlobId(unittest.TestCase):
 
 
 class EmitterSetup(unittest.TestCase):
-    SITE = {'source_url': 'https://example.test/repo',
-            'build': {'esbuild_version': '0.25.0'}}
+    SITE = {'source_url': 'https://example.test/repo'}
 
     def test_the_banner_names_the_source_and_the_check_command(self):
         emitter = buildmod.Emitter(True, self.SITE)
         self.assertIn('https://example.test/repo', emitter.js_banner)
         self.assertIn('build.py --check', emitter.js_banner)
 
-    def test_the_mangled_banner_says_so(self):
+    def test_the_banner_does_not_claim_names_were_renamed(self):
+        # Identifiers are left alone, so nothing in the output should suggest
+        # otherwise to somebody reading a deployed file against its source.
         emitter = buildmod.Emitter(True, self.SITE)
-        self.assertIn('mangled', emitter.js_mangled_banner)
+        self.assertNotIn('mangl', emitter.js_banner.lower())
 
-    def test_mangling_without_minifying_is_refused(self):
-        # Mangling is minifying, and more of it.
-        with self.assertRaises(mangle.MangleError) as caught:
-            buildmod.Emitter(False, self.SITE, mangle_names=True)
-        self.assertIn('contradict', str(caught.exception))
-
-    def test_mangling_needs_a_pinned_version(self):
-        site = {'source_url': 'https://example.test/repo'}
-        with self.assertRaises(mangle.MangleError) as caught:
-            buildmod.Emitter(True, site, mangle_names=True)
-        self.assertIn('esbuild_version', str(caught.exception))
-
-    def test_not_mangling_never_looks_for_esbuild(self):
-        self.assertIsNone(buildmod.Emitter(True, self.SITE).esbuild)
 
 
 class EmitterOutput(unittest.TestCase):
@@ -1142,7 +1128,7 @@ class BuildTheSite(unittest.TestCase):
 class BuildMinified(unittest.TestCase):
     def test_a_minified_build_produces_the_same_file_list(self):
         """The readable build is the reference the minified one is judged
-        against - the same check CI runs against the mangled output."""
+        against - the same check CI runs against the deployed output."""
         with tempfile.TemporaryDirectory() as tmp:
             plain = Path(tmp) / 'plain'
             small = Path(tmp) / 'small'
@@ -1153,35 +1139,28 @@ class BuildMinified(unittest.TestCase):
                 sorted(p.relative_to(small).as_posix() for p in small.rglob('*')))
 
 
-class BuildMangled(unittest.TestCase):
-    """What survives having every name in the file changed.
+class BuildDeployed(unittest.TestCase):
+    """The names the outside world knows this site by, in the built output.
 
-    This class exists because of one bug, and it is the kind that only the
-    deployed build can have. `gtag` is a function declaration in analytics.js;
-    esbuild renames declarations; so on the live site the global was called
-    something else and `window.gtag` was undefined. shared/feedback.js looked it
-    up by that name and returned when it found nothing, so every answer anybody
-    gave was dropped - in production only, because the readable build keeps the
-    name and so does every test stub. It worked perfectly everywhere it was
-    tested and nowhere that mattered.
+    This class exists because of one bug. `gtag` is a function declaration in
+    analytics.js, and the build used to rename declarations - so on the live
+    site the global was called something else and `window.gtag` was undefined.
+    shared/feedback.js looked it up by that name and returned when it found
+    nothing, so every answer anybody gave was dropped, in production only. It
+    worked perfectly everywhere it was tested and nowhere that mattered.
 
-    So the rule now has a test: the things the outside world knows this site by
-    - a global it publishes, an event name, a parameter name - have to still be
-    spelled that way after the mangler has been over them.
+    Renaming is gone now, which removes the cause. These stay anyway, because
+    what they actually assert is not "the mangler left this alone" but "the
+    file that gets deployed still publishes the names other people read it by"
+    - a global, an event name, three parameter names. A minifier that broke one
+    of those would fail in exactly the same silent way.
     """
 
     @classmethod
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
-        cls.out = Path(cls.tmp.name) / 'mangled'
-        try:
-            buildmod.build(cls.out, clean=True, minify_output=True,
-                           mangle_names=True)
-        except Exception as error:
-            # esbuild is not installed, or not the pinned version. CI has it and
-            # the deploy needs it; a laptop without it should not fail here.
-            cls.tmp.cleanup()
-            raise unittest.SkipTest(f'no mangled build available: {error}')
+        cls.out = Path(cls.tmp.name) / 'deployed'
+        buildmod.build(cls.out, clean=True, minify_output=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -1199,8 +1178,9 @@ class BuildMangled(unittest.TestCase):
     def test_the_feedback_event_keeps_every_name_it_is_read_by(self):
         """The event name and its three parameters are strings in a report.
 
-        A mangled parameter name would arrive at Google as a dimension nobody
-        had registered, which reports as nothing at all rather than as an error.
+        A parameter name that came out wrong would arrive at Google as a
+        dimension nobody had registered, which reports as nothing at all rather
+        than as an error.
         """
         feedback = (self.out / 'feedback.js').read_text(encoding='utf-8')
         for name in ('tool_feedback', 'tool_slug', 'verdict', 'reason'):
@@ -1210,9 +1190,9 @@ class BuildMangled(unittest.TestCase):
     def test_the_answer_is_pushed_to_the_queue_rather_than_through_a_global(self):
         """The fix itself, pinned.
 
-        `dataLayer` is a property and cannot be renamed; a global function can.
-        Reaching for the queue is what makes this work in a build where every
-        declaration has been given a one-letter name.
+        `dataLayer` is a property and cannot be renamed; a global function
+        could be. Reaching for the queue is what made this survive a build that
+        renamed declarations, and is worth keeping now that one does not.
         """
         feedback = (self.out / 'feedback.js').read_text(encoding='utf-8')
         self.assertIn('dataLayer', feedback)

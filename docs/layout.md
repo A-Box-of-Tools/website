@@ -46,7 +46,7 @@ tools/
     README.md            how this tool works and why - it documents itself
     body.html            the <main> of the page - the interface, and only that
     styles.css           the rules only this tool needs
-    src/*.js             the app itself; minified into dist/, renamed only by --mangle
+    src/*.js             the app itself; minified into dist/, never renamed
     og.png               its share card
     icon.png             its emoji on a tile, for when it is installed as an app
     icon-maskable.png    the same, drawn smaller for Android's crop
@@ -123,22 +123,28 @@ had opened still worked with the network off.
 
 ## What the build does to the output
 
-There are two builds, and the difference between them is the point.
+There is one build, and that is the point.
 
-| | `python build.py` | `python build.py --mangle` |
-|---|---|---|
-| Needs | Python 3.11+, nothing else | …and esbuild, at the pinned version |
-| HTML | comments and whitespace out | same |
-| CSS | comments and whitespace out | same |
-| JavaScript | comments and whitespace out, **nothing renamed** | renamed as well |
-| Used by | anyone, anywhere | CI, and so the deployed site |
+| | `python build.py` |
+|---|---|
+| Needs | Python 3.11+, nothing else |
+| HTML | comments and whitespace out |
+| CSS | comments and whitespace out |
+| JavaScript | comments and whitespace out, **nothing renamed** |
+| Used by | anyone, anywhere — including CI, and so the deployed site |
 
-The plain build is the default and stays the default. It produces a working,
-readable site with nothing installed, which is what makes the claims on these
-pages checkable by someone who has not already agreed to trust a toolchain.
+What you run is what is deployed. There is no second build with a toolchain in
+front of it, which is what makes the claims on these pages checkable by someone
+who has not already agreed to trust one.
 
-**Sizes.** HTML 28% smaller, CSS 39%, JavaScript 40% before renaming — about
-36% off the text weight of the site. Renaming takes more off on top of that.
+**Identifiers are never renamed.** A reader who opens a file on the live site
+finds the same statements in the same order under the same names they have in
+this repository. A served file whose every name had been replaced by a letter
+could not be read against its source by anybody, which for a site that asks to
+be checked is a worse trade than the bytes are worth.
+
+**Sizes.** HTML 28% smaller, CSS 39%, JavaScript 40% — about 36% off the text
+weight of the site.
 
 **Nothing is reordered, merged or rewritten.** No shorthand is collapsed, no
 colour re-spelled, no rule moved. Those are the transformations that make a
@@ -168,36 +174,12 @@ The CSS is also checked against a real CSS parser rather than against this
 repository's own idea of the answer: load the minified and the readable sheet
 into a browser, and every rule and every custom property comes back the same.
 
-### Renaming, and what it costs
-
-`--mangle` hands each module to **esbuild**, which has the parser and the scope
-analysis that renaming safely requires — a name is only safe to change once you
-know every place it is bound and every place it is read. That is not something
-to hand-roll: guessing at it is how a build silently corrupts a hand-written
-EXIF parser, and the failure would not show up until somebody's photo came out
-wrong. Exported names are never renamed, so the module graph is untouched;
-nothing is bundled, so every module keeps its own file.
-
-The cost is real and worth stating. It is the only step in this repository that
-needs something installed, and it is why the plain build still exists.
-
-The version is **pinned in `config/site.toml` and verified**, not merely
-requested. Two versions of esbuild need not invent the same names, and if the
-checker and the deploy disagree then `--check` reports tampering where there was
-none — worse than having no checker. The build refuses to run against any other
-version, and says which one to install.
-
-```bash
-npm install --global esbuild@0.25.0
-```
-
 ### Which command to run
 
 ```bash
-python build.py              # readable, no dependencies, the default
+python build.py              # what CI builds and what is deployed
 python build.py --no-minify  # readable and unminified, for debugging
-python build.py --mangle     # what CI builds and what is deployed
-python build.py --check      # implies --mangle: it compares against the deploy
+python build.py --check      # compares the result against the deployed branch
 ```
 
 Whichever way it runs, the build never reaches the network.
