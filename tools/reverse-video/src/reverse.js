@@ -126,6 +126,89 @@ export function chooseBitrate({ video, size, fps, quality }) {
   return Math.round(Math.min(MAX_BITRATE, Math.max(MIN_BITRATE, ceiling)));
 }
 
+/**
+ * What a frame costs when it cannot be read and has to be held as a bitmap.
+ *
+ * A mappable frame is handed over in the decoder's own 4:2:0, which is the 1.5
+ * bytes a pixel windowLimit() assumes. A bitmap is not: it is four. So a file
+ * whose frames arrive on the GPU gets a shorter window for the same budget,
+ * which is the honest trade rather than the same window at nearly three times
+ * the memory.
+ */
+const BITMAP_BYTES_PER_PIXEL = 4;
+
+/**
+ * Whether this file's frames arrive as pictures we can read.
+ *
+ * Decided by decoding a single keyframe and asking, rather than by guessing
+ * from the codec: it is a property of the machine's decoder, not of the file.
+ * A hardware HEVC decoder typically answers `null` here - the picture is on the
+ * GPU and was never in memory - and everything downstream has to know that
+ * before it chooses a window size.
+ */
+async function framesAreOpaque(video, file) {
+  const key = video.samples.findIndex((sample) => sample.isKey);
+  if (key < 0) return false;
+
+  return new Promise((resolve) => {
+    let settled = false;
+    const answer = (value) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      if (probe.state !== 'closed') probe.close();
+      resolve(value);
+    };
+    // Nothing here is worth hanging the export over: if the probe says nothing
+    // in five seconds, assume readable frames and let the real run find out.
+    const timer = setTimeout(() => answer(false), 5000);
+
+    const probe = new VideoDecoder({
+      output: (frame) => {
+        const format = frame.format;
+        frame.close();
+        answer(format === null);
+      },
+      error: () => answer(false),
+    });
+
+    try {
+      probe.configure(decoderConfig(video));
+      const sample = video.samples[key];
+      file.slice(sample.offset, sample.offset + sample.size).arrayBuffer()
+        .then((data) => {
+          probe.decode(new EncodedVideoChunk({
+            type: 'key',
+            timestamp: micros(sample.pts, video.timescale),
+            data: new Uint8Array(data),
+          }));
+          return probe.flush();
+        })
+        .catch(() => answer(false));
+    } catch {
+      answer(false);
+    }
+  });
+}
+
+/**
+ * Run a flush, but do not wait on it forever.
+ *
+ * settle() watches the queues while frames are being fed; this watches the two
+ * points where everything has already been fed and the only thing left is a
+ * codec that may never answer.
+ */
+function withStallTimeout(promise, which) {
+  let timer = null;
+  const stalled = new Promise((resolve, reject) => {
+    timer = setTimeout(() => reject(new Error(
+      `The video ${which} stopped responding partway through, without reporting a reason. `
+      + 'A shorter clip, a lower quality setting, or a different browser is worth trying.')),
+    STALL_TIMEOUT_MS);
+  });
+  return Promise.race([promise, stalled]).finally(() => clearTimeout(timer));
+}
+
 /** Wait until both queues have drained below the limit. */
 async function settle(decoder, encoder) {
   let bestSeen = decoder.decodeQueueSize + encoder.encodeQueueSize;
@@ -234,7 +317,12 @@ export async function reverseExact({
 
   const times = reversedTimes(video);
   const groups = gopRanges(video.samples);
-  const limit = windowLimit(video.codedWidth, video.codedHeight);
+  // What the decoder will actually hand back, learned from one frame rather
+  // than assumed. It decides both how a frame is taken out of the pool below
+  // and how many will fit in the budget, and those two have to agree.
+  const opaque = await framesAreOpaque(video, file);
+  const limit = windowLimit(
+    video.codedWidth, video.codedHeight, undefined, opaque ? BITMAP_BYTES_PER_PIXEL : 1.5);
 
   const canvas = document.createElement('canvas');
   canvas.width = frame.width;
@@ -321,41 +409,62 @@ export async function reverseExact({
       // that would release the pool are the ones still queued behind it. The
       // budget in windowLimit() is counted in bytes and cannot see this, and
       // at 4K it asks for about three times what the pool can spare.
-      const rect = videoFrame.visibleRect;
-      const slot = {
-        timestamp: videoFrame.timestamp,
-        format: videoFrame.format,
-        // Sized to the visible rectangle, which is what copyTo() writes out:
-        // a frame coded taller than it is shown has that padding dropped here
-        // rather than travelling with it.
-        width: rect ? rect.width : videoFrame.codedWidth,
-        height: rect ? rect.height : videoFrame.codedHeight,
-        displayWidth: videoFrame.displayWidth,
-        displayHeight: videoFrame.displayHeight,
-        colorSpace: videoFrame.colorSpace,
-        data: null,
-        layout: null,
-      };
-      kept.push(slot);
+      //
+      // Every line of this runs inside the decoder's own callback, so it is
+      // wrapped: a throw here would escape into the browser, leave `failure`
+      // unset and - the part that hangs - leave the frame unclosed, which
+      // starves the pool this whole routine exists to give back.
+      try {
+        const rect = videoFrame.visibleRect;
+        const slot = {
+          timestamp: videoFrame.timestamp,
+          format: videoFrame.format,
+          // Sized to the visible rectangle, which is what copyTo() writes out:
+          // a frame coded taller than it is shown has that padding dropped here
+          // rather than travelling with it.
+          width: rect ? rect.width : videoFrame.codedWidth,
+          height: rect ? rect.height : videoFrame.codedHeight,
+          displayWidth: videoFrame.displayWidth,
+          displayHeight: videoFrame.displayHeight,
+          colorSpace: videoFrame.colorSpace,
+          data: null,
+          layout: null,
+          bitmap: null,
+        };
+        kept.push(slot);
 
-      // Left to run rather than awaited in turn: each frame is released the
-      // moment its own copy lands, and making them queue behind one another
-      // would hold the surfaces this exists to give back.
-      const buffer = new ArrayBuffer(videoFrame.allocationSize());
-      copies.push(videoFrame.copyTo(buffer)
-        .then((layout) => {
-          slot.data = buffer;
-          slot.layout = layout;
-        })
-        .catch((error) => { failure ??= error; })
-        .finally(() => videoFrame.close()));
+        // Left to run rather than awaited in turn: each frame is released the
+        // moment its own copy lands, and making them queue behind one another
+        // would hold the surfaces this exists to give back.
+        //
+        // A frame with no `format` is one the decoder never put in memory we
+        // can read - a picture living on the GPU, which is what a hardware
+        // HEVC decoder usually returns. copyTo() cannot have it and throws, so
+        // that frame is taken out of the pool by drawing it into an
+        // ImageBitmap instead. Either way the surface goes back at once, which
+        // is the only thing the decoder cares about.
+        copies.push((slot.format === null
+          ? createImageBitmap(videoFrame).then((bitmap) => { slot.bitmap = bitmap; })
+          : (() => {
+            const buffer = new ArrayBuffer(videoFrame.allocationSize());
+            return videoFrame.copyTo(buffer).then((layout) => {
+              slot.data = buffer;
+              slot.layout = layout;
+            });
+          })())
+          .catch((error) => { failure ??= error; })
+          .finally(() => videoFrame.close()));
+      } catch (error) {
+        failure ??= error;
+        videoFrame.close();
+      }
     },
     error: (error) => { failure ??= error; },
   });
   decoder.configure(decoderConfig(video));
 
-  /** A kept frame, built back into something the canvas will draw. */
-  const rebuild = (slot) => new VideoFrame(slot.data, {
+  /** A kept frame, back in something the canvas will draw. Both kinds close(). */
+  const drawable = (slot) => (slot.bitmap ? slot.bitmap : new VideoFrame(slot.data, {
     format: slot.format,
     codedWidth: slot.width,
     codedHeight: slot.height,
@@ -364,7 +473,14 @@ export async function reverseExact({
     displayWidth: slot.displayWidth,
     displayHeight: slot.displayHeight,
     colorSpace: slot.colorSpace,
-  });
+  }));
+
+  /** Drop a kept frame that will not be drawn after all. */
+  const discard = (slot) => {
+    slot.bitmap?.close();
+    slot.bitmap = null;
+    slot.data = null;
+  };
 
   /** One held frame, drawn and encoded at the time the reversal gives it. */
   const emit = (videoFrame, index) => {
@@ -440,7 +556,10 @@ export async function reverseExact({
           }));
         }
 
-        await decoder.flush();
+        // Watched, because flush() is the other place a stalled decoder hides:
+        // settle() guards the feeding, but by here everything has been fed and
+        // a decoder that has stopped emitting simply never resolves this.
+        await withStallTimeout(decoder.flush(), 'decoder');
         // `flush` waits for the output callbacks, and each of those starts a
         // copy rather than finishing one. The pixels are only ours after this.
         await Promise.all(copies);
@@ -450,9 +569,10 @@ export async function reverseExact({
         // Last shown, first written. This is the reversal.
         kept.sort((a, b) => b.timestamp - a.timestamp);
         for (const slot of kept) {
-          if (!slot.data) continue;   // its copy failed; `failure` already holds why
-          emit(rebuild(slot), wanted.get(slot.timestamp));
-          slot.data = null;
+          // Its copy failed; `failure` already holds why.
+          if (!slot.data && !slot.bitmap) continue;
+          emit(drawable(slot), wanted.get(slot.timestamp));
+          discard(slot);
           await settle(decoder, encoder);
         }
         kept = [];
@@ -462,7 +582,7 @@ export async function reverseExact({
     }
 
     onProgress?.({ phase: 'finishing', done: drawn, total });
-    await encoder.flush();
+    await withStallTimeout(encoder.flush(), 'encoder');
     if (failure) throw failure;
     if (!encoded.length) throw new Error('No frames could be decoded from this file.');
     if (!avcC) throw new Error('The encoder never reported a decoder configuration.');
@@ -471,6 +591,7 @@ export async function reverseExact({
     // to drop here is the copies. Any still running own a frame apiece and
     // close it themselves, so they are waited for rather than abandoned.
     await Promise.allSettled(copies);
+    for (const slot of kept) discard(slot);
     kept = [];
     copies = [];
     if (decoder.state !== 'closed') decoder.close();

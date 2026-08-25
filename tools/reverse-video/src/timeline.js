@@ -131,8 +131,11 @@ export function gopRanges(samples) {
  * So the run is capped by bytes rather than by frames, and a group longer than
  * the cap is decoded more than once - see `frameWindows`.
  */
-export function windowLimit(width, height, budgetBytes = 384 << 20) {
-  const perFrame = Math.max(1, width * height * 1.5);  // 4:2:0, which is what a decoder hands back
+export function windowLimit(width, height, budgetBytes = 384 << 20, bytesPerPixel = 1.5) {
+  // 1.5 is 4:2:0, which is what a decoder hands back when it hands back pixels
+  // at all. A frame that only exists on the GPU has to be held as a bitmap
+  // instead, and the caller passes what that costs.
+  const perFrame = Math.max(1, width * height * bytesPerPixel);
   return Math.max(4, Math.min(600, Math.floor(budgetBytes / perFrame)));
 }
 
