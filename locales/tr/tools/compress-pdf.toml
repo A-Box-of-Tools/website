@@ -1,0 +1,263 @@
+#
+# PDF Sıkıştırıcı - Türkçe.
+#
+# Overrides for tools/compress-pdf/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "PDF Sıkıştırıcı"
+# İngilizcede olduğu gibi, ikinci yarı aranan ifade; ürün adı yüksek sesle
+# söylenen yarı olarak kalıyor.
+heading = "PDF&nbsp;Sıkıştırma <span class=\"h1-kw\">&mdash; bir belgeyi küçültün</span>"
+tagline = "Belgeyi hiçbir yere göndermeden küçültün."
+
+title = "PDF Sıkıştırma &mdash; Ücretsiz, Tarayıcınızda, Yüklemesiz"
+description = "Bir PDF'i yüklemeden küçültün. Dosyayı kendi tarayıcınız okur, yeniden sıkıştırır ve yeniden yazar; araç da hiçbir şeye dokunmadan önce boyutun asıl nerede olduğunu gösterir."
+og_title = "PDF sıkıştırma &mdash; ücretsiz, hiçbir şey yüklenmiyor"
+og_description = "Bir PDF'i kendi cihazınızda küçültün. Her görselin sayfada ne kadar büyük çizildiğini ölçer, böylece yalnızca kimsenin göremeyeceği pikselleri atar."
+og_image_alt = "PDF Sıkıştırma - bir belgeyi yüklemeden küçültün"
+
+pledge = """
+    Belge bu makinenin belleğinde açılır, parçalarına ayrılır ve yeniden
+    yazılır; bunu yapan kod da bu adresten sunuluyor. Buradaki hiçbir şey bir
+    yükleme yapamaz ve bu sayfanın öbür ucunda bir yüklemeyi alacak bir sunucu
+    yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir dosya sıkıştırın. Tek bir istek bile bir sayfa, bir görsel
+      ya da bir dosya adı taşımıyor. Ya da internet bağlantısını kesip yine de
+      bir tane sıkıştırın."""
+
+read_first = """
+, okuma ve yeniden yazma işinin tamamı için de
+      <code>src/reader.js</code> ile <code>src/writer.js</code> &mdash; ikisi de
+      ağa erişemez."""
+
+howto_heading = "Bir PDF nasıl küçültülür"
+
+card = """
+            İçindeki görselleri yeniden sıkıştırarak bir belgeyi küçültün. Önce
+            boyutun asıl nerede olduğunu gösterir ve elde edilecek bir şey
+            olmadığında bunu açıkça söyler."""
+
+[words]
+plural = "belgeleriniz"
+choose = "bir PDF"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[facts]]
+text = "Dosyalar cihazınızda kalır"
+
+[[privacy]]
+title = "Belgenizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Bu araç o listeye hiçbir şey eklemez: isteğe bağlı
+      olanı bile yok, kendine ait bir ağ özelliği hiç yok. Dosyalarınızın
+      toplanabileceği bir uç nokta burada yok, olsaydı bile onu oraya gönderecek
+      bir kod yok."""
+
+[[privacy]]
+title = "Biçimin tamamı bu depoda."
+body = """
+ Bir PDF, nesnelerden oluşan bir
+      liste ve her birinin nerede başladığını gösteren bir tablodur.
+      <code>src/objects.js</code> bu söz dizimini okur,
+      <code>src/reader.js</code> tabloyu izler, <code>src/writer.js</code>
+      yenisini yazar ve üçü de istek yapabilecek hiçbir şeyi içeri almaz. Hiçbir
+      kitaplık getirilmiyor ve hiçbir şey bir sunucuda çizilmiyor."""
+
+[[privacy]]
+title = "Şifreli dosyalar açılmıyor, geri çevriliyor."
+body = """
+
+      Parola konmuş bir PDF geri çevrilir; tarayıcıların boş parolayla ürettiği
+      ve teknik olarak açılabilecek türü de dahil. Bir belgenin korumasını
+      kaldırmak, onu küçültmekten farklı bir iştir ve bunu sessizce yapmak bir
+      aracın sizin adınıza yapması şaşırtıcı olurdu."""
+
+[[privacy]]
+title = "Bir şey koymuyor, çıkarıyor."
+body = """
+ Bitmiş dosyada oluşturulma tarihi,
+      üretici satırı ya da onu yapan aracın adı yer almaz. Kutu işaretliyken XMP
+      paketini ve sayfa düzeni uygulamalarının geride bıraktığı özel blokları da
+      kaybeder &mdash; EXIF aracının öne sürdüğü aynı gerekçenin başka bir kaba
+      uygulanmış hâli."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine belgeniz hakkında bir şey verilmiyor: ne bir
+      dosya, ne bir sayfa, ne bir ad, bir boyut ya da bir sayfa sayısı. Bir
+      PDF'i okuyan, çözen ya da yazan her satır bu kaynaktan sunuluyor ve depoda
+      listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de belgeniz
+      hakkında bir şey verilir. Siz tıklamadıkça hiçbir şey olmaz ve
+      tıkladığınızda gideceğiniz yer başkasının sitesidir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu: belgenizi
+      sıkıştırılmak üzere uzağa gönderen bir araç dururdu."""
+
+[[howto]]
+title = "Bir PDF seçin."
+body = """
+ Seçiciye bırakın ya da elle seçin.
+      Tarayıcı onu doğrudan diskinizden okur; siz bunu yaparken hiçbir yere
+      hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Boyutun nerede olduğuna bakın."
+body = """
+ İkinci adımın bütün
+      anlamı bu dökümde. Çubuk ağırlıklı olarak görsellerden oluşuyorsa bu
+      aracın çalışacağı bir malzeme var demektir. Ağırlıklı olarak yazı tipleri
+      ve sayfa içeriğiyse bunu söyler ve dürüst tasarruf yüzde birkaçtır
+      &mdash; buna bir dakika harcamadan önce bilmek daha iyidir."""
+
+[[howto]]
+title = "Ne kadar sıkacağını söyleyin."
+body = """
+ Adlandırılmış ayarlar
+      belirsiz notlar değil, çözünürlüklerdir: ekranda okumak için 96 DPI,
+      e-postayla göndermek için 130, hâlâ basılacak bir şey için 220. Her biri
+      görselin sayfada gerçekte ne kadar büyük çizildiğine göre ölçülür; yani
+      küçük resim olarak yerleştirilmiş bir fotoğraf, tam sayfa bir taramayla
+      aynı muameleyi görmez."""
+
+[[howto]]
+title = "Sıkıştırın ve denetlendiğini söyleyen satırı okuyun."
+body = """
+
+      Yeniden yazma bittiğinde bitmiş dosya bu sayfadaki aynı okuyucu
+      tarafından yeniden açılır ve sayfaları sayılır. Bu, orijinaliyle
+      uyuşmuyorsa çalışma başarısız olarak bildirilir ve indirme sunulmaz."""
+
+[[faq]]
+q = "PDF'im herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya, kendi donanımınızda, kendi tarayıcınız tarafından okunur,
+        yeniden sıkıştırılır ve yazılır. Bu aracın sunucu tarafı yoktur ve
+        sayfanın <code>Content-Security-Policy</code>'si iletişim kurabileceği
+        her adresi tek tek sayar &mdash; bunların hiçbiri bu siteye ait
+        değildir. Bu aracın isteğe bağlı bir ağ özelliği de hiç yoktur."""
+
+[[faq]]
+q = "PDF'im ne kadar küçülecek?"
+a = """
+        Tamamen içinde ne olduğuna bağlı; araç da bu yüzden hiçbir şeyi
+        sıkıştırmadan önce ölçüp size gösteriyor. Taranmış bir belge neredeyse
+        baştan sona fotoğraftır ve genellikle %60&ndash;90 küçülür. Bir sözleşme
+        ya da bir tez ise metin, vektör çizim ve gömülü yazı tiplerinden oluşur;
+        bunların hepsi onları üreten yazılım tarafından zaten sıkıştırılmıştır.
+        Oradaki tasarruf genellikle yüzde birkaçtır ve dosyayı yeniden
+        paketlemekten, artık başvurulmayanı atmaktan gelir. Dosyanıza bakmadan
+        sabit bir yüzde vaat eden her araç tahmin yürütüyordur."""
+
+[[faq]]
+q = "Bir PDF'i sıkıştırmak kalite kaybettirir mi?"
+a = """
+        İçindeki görseller yeniden kodlanır, dolayısıyla onlar için evet. Başka
+        hiçbir şeye dokunulmaz: metin metin kalır, seçilebilir ve aranabilir
+        hâlde; yazı tipleri bütün olarak korunur; vektör çizim aynen kopyalanır.
+        Araç ayrıca bir görseli boşuna bozmayı da reddeder &mdash; yeniden
+        kodlama orijinalinden küçük çıkmıyorsa orijinal baytlar olduğu gibi
+        belgeye geri konur."""
+
+[[faq]]
+q = "Buradaki DPI nedir, neden soruyor?"
+a = """
+        Bir PDF, her görselin sayfada ne kadar büyük çizildiğini kaydeder;
+        böylece araç etkin çözünürlüğü hesaplayabilir: yirmi santimlik bir
+        kâğıda yerleştirilmiş 4000 piksellik bir tarama inç başına 500 piksel
+        taşıyor demektir. Bunu ne bir ekran kullanabilir ne de kâğıt üzerinde
+        pek bir işe yarar; bu yüzden seçtiğiniz ayarın üzerindeki pikseller ilk
+        önce atılır &mdash; kimsenin göremeyeceği bir kaliteye mal olurlar. Bu
+        ölçüm, küçük yerleştirilmiş bir logonun tam sayfa bir taramayla aynı
+        muameleyi görmemesinin de sebebidir."""
+
+[[faq]]
+q = "Parola korumalı bir PDF'i açabilir mi?"
+a = """
+        Hayır ve bu bilinçli bir tercih. Şifreli bir belge, bunu söyleyen bir
+        mesajla geri çevrilir; parola boş olsa bile &mdash; ki pek çok tarayıcı
+        ve fotokopi makinesi böyle kaydeder. Bir dosyanın korumasını kaldırmak,
+        onu sıkıştırmaktan farklı bir iştir ve bunu sessizce yapan bir araç
+        sizin istemediğiniz bir şeyi yapıyor olurdu."""
+
+[[faq]]
+q = "Sıkıştıramadığı PDF'ler var mı?"
+a = """
+        İçlerindeki bazı görseller için evet. JPEG 2000, JBIG2 ve faks kodlu
+        (CCITT) görsellerin hiçbir tarayıcıda çözücüsü yoktur; bu yüzden
+        dokunulmadan geçirilir ve öyle bildirilir &mdash; son ikisi iki
+        seviyeli kodlayıcılardır ve zaten en küçük hâllerine yakındır. CMYK
+        görseller de olduğu gibi bırakılır, çünkü onları yeniden kodlamak bir
+        matbaanın üreteceği renkleri kaydırma riski taşır. Aracın atladığı her
+        şey, sebebiyle birlikte sonuçlarda adıyla belirtilir."""
+
+[[faq]]
+q = "Sıkıştırılmış dosya her yerde açılmaya devam eder mi?"
+a = """
+        Evet. Çıktı, 2003'ten beri sunulan her okuyucunun anladığı PDF 1.5
+        olarak yazılır ve araç bunu kendi cihazınızda kanıtlar: bitmiş dosyayı
+        size sunmadan önce yeniden açıp sayfalarını sayar. Formlar, bağlantılar,
+        yer imleri, erişilebilirlik yapısı ve gömülü ekler karşıya taşınır;
+        geride bırakılan şey, belgede artık hiçbir şeyin başvurmadığı
+        malzemedir."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok ve kendi cihazınızın
+        belleğinin izin verdiğinin ötesinde bir dosya boyutu sınırı yok. Sitede
+        reklam var, masrafı karşılayan da o; reklamlara belgeniz hakkında hiçbir
+        şey verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: belgenizi sıkıştırılmak üzere uzağa gönderen
+        bir araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "Bir PDF'i tarayıcınızda sıkıştırın. Görseller, sayfada gerçekte ne kadar büyük çizildiklerine göre yeniden sıkıştırılır ve belge yerel olarak yeniden yazılır; böylece hiçbir dosya yüklenmez."
+features = [
+  "Hiçbir şeyi sıkıştırmadan önce belgenin boyutunun asıl nerede olduğunu gösterir",
+  "Görselleri, sayfada ölçülen çözünürlüklerine göre yeniden sıkıştırır",
+  "Yeniden kodlamak küçültmeyecekse görseli olduğu gibi bırakır",
+  "Önceki bir düzenlemenin geride bıraktığı nesneleri ve isteğe bağlı üst veriyi atar",
+  "Bitmiş dosyayı sunmadan önce yeniden açıp denetler",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, dosya boyutu sınırı yok",
+]
+
+[picker]
+title = "Bir PDF'i buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; bir seferde tek belge"

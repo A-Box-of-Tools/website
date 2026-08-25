@@ -1,0 +1,245 @@
+#
+# Video Kare Yakalayıcı - Türkçe.
+#
+# Overrides for tools/grab-frame/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Video Kare Yakalayıcı"
+heading = "Video&nbsp;Kare&nbsp;Yakalayıcı <span class=\"h1-kw\">&mdash; videodan kare kaydedin</span>"
+tagline = "Herhangi bir andan tam kaliteli bir kare."
+
+title = "Videodan Kare Yakalama &mdash; Ücretsiz, Yüklemesiz, Çevrimdışı Çalışır"
+description = "Bir MP4, MOV veya WebM'in herhangi bir karesini tam boyutlu PNG ya da JPEG olarak kaydedin. Kare kare ilerleyin ya da birkaç saniyede bir alın. Tarayıcınızda çalışır: hiçbir şey yüklenmez."
+og_title = "Video Kare Yakalayıcı &mdash; klibi yüklemeden herhangi bir andan kare"
+og_description = "Anı bulun, tam kareye kadar adımlayın ve videonun kendi çözünürlüğünde kaydedin. Kareler kendi cihazınızda çözülür ve görüntü asla iki kez kodlanmaz."
+og_image_alt = "Video Kare Yakalayıcı - tarayıcınızda videodan kare kaydedin, hiçbir şey yüklenmesin"
+
+pledge = """
+    Kareler kendi tarayıcınız tarafından, kendi donanımınızda bulunur, çözülür
+    ve çizilir. Buradaki hiçbir şey bir şey getiremez ya da gönderemez &mdash;
+    bu araçta hiçbir türde ağ özelliği yok &mdash; ve olsaydı bile bu sayfanın
+    öbür ucunda bir videonun gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir kare yakalayın. Tek bir istek bile bir görsel, bir dosya adı
+      ya da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da internet bağlantısını
+      kesip yine de bir tane yakalayın &mdash; videonuzu işlenmek üzere uzağa
+      gönderen bir araç öylece dururdu."""
+
+read_first = """
+, bir MP4 içindeki kareleri bulan okuyucu için
+      <code>src/demux.js</code> ve istediğiniz kareyi çözen bölüm için
+      <code>src/frames.js</code>. İkisi de istek yapabilecek bir şeyi içeri
+      almaz."""
+
+howto_heading = "Bir videodan kare nasıl yakalanır"
+
+card = """
+            Bir klibin herhangi bir karesini, videonun kendi boyutunda görsel
+            olarak kaydedin &mdash; teker teker ya da birkaç saniyede bir."""
+
+[words]
+plural = "videolarınız"
+choose = "bir video"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Tam çözünürlük"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[privacy]]
+title = "Videolarınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu
+      sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri
+      bu siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ Bu araçta hiçbir türde ağ
+      özelliği yok: yapıştırılacak bir adres, indirilecek bir şey, ilk
+      kullanımda getirilen bir motor yok. Videonuza dokunan her bayt, sayfa
+      yüklenirken bu kaynaktan geldi."""
+
+[[privacy]]
+title = "Çözme işi yerelde."
+body = """
+ Kareler kendi tarayıcınızdaki
+      WebCodecs'ten geçer ya da klibi zaten size gösterecek olan aynı oynatma
+      motorundan. Görüntü bu makinede bir tuvale çizilir ve doğrudan bir
+      indirmeye verilir."""
+
+[[privacy]]
+title = "Dosya birkaç megabaytlık parçalar hâlinde okunuyor."
+body = """
+      Video, buradaki dosya türleri içinde belleğe güvenilir biçimde sığmayacak
+      olanıdır; bu yüzden asla bütün olarak yüklenmez. Okuyucu, istediğiniz
+      karenin çevresinden bir pencere alır &mdash; iki gigabaytlık bir klibin
+      küçük bir tanesi kadar hızlı açılmasının sebebi de budur."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine videonuz hakkında bir şey verilmiyor: ne bir
+      dosya, ne bir kare, ne bir ad, bir boyut, bir uzunluk ya da durduğunuz an.
+      Okuyan, çözen ya da çizen her satır bu kaynaktan sunuluyor ve depoda
+      listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de videonuz
+      hakkında bir şey verilir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu."""
+
+[[howto]]
+title = "Bir video seçin."
+body = """
+ Seçiciye bir MP4, MOV, M4V ya da WebM
+      bırakın veya elle seçin. Tarayıcı onu doğrudan diskinizden okur; siz bunu
+      yaparken hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Anı bulun."
+body = """
+ Oynatıp istediğiniz yerde durdurun ya da kaydırıcıyı
+      sürükleyin &mdash; bir MP4'te kaydırıcı adım başına bir kare ilerler, yani
+      gördüğünüzle kaydettiğiniz arasında yuvarlama olmaz. Ok tuşları birer kare
+      atlar, <kbd>Shift</kbd> basılıyken onar."""
+
+[[howto]]
+title = "Bir biçim seçin."
+body = """
+ PNG, kareyi çözüldüğü hâliyle tam olarak
+      saklar; burada "tam kalite" bu demektir. JPEG ve WebP daha küçüktür ve
+      videonun kendi sıkıştırmasının üzerine ikinci bir sıkıştırmadır; bu bir ön
+      izleme için sorun değildir, sonradan düzenlenecek bir şey için değildir."""
+
+[[howto]]
+title = "Bir kare ya da bir dizi yakalayın."
+body = """
+ Tek kare doğrudan
+      indirmelerinize gider. "Her N saniyede bir" klibi bir kez gezer ve her
+      işarette bir kare alır &mdash; kontak baskısı ve küçük resimler için
+      kullanışlıdır &mdash; ve bunlar yüz tane kaydetme sorusu yerine tek bir
+      ZIP olarak çıkar."""
+
+[[faq]]
+q = "Videom herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Kendi donanımınızda, kendi tarayıcınız tarafından okunur ve
+        çözülür. Bu aracın sunucu tarafı yoktur ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar &mdash; bunların hiçbiri bu siteye ait değildir. Size
+        söylenene güvenmek yerine denetlemeyi tercih ediyorsanız internet
+        bağlantısını kesin ve yine de bir kare yakalayın."""
+
+[[faq]]
+q = "&quot;Tam kalite&quot; tam olarak ne demek?"
+a = """
+        İki şey. Kare, sayfadaki ön izlemenin boyutunda değil videonun kendi
+        çözünürlüğünde kaydedilir &mdash; 4K bir klip 3840 x 2160 bir görsel
+        verir. Ve PNG seçiliyken kare, çözücüden çıktığı hâliyle tam olarak
+        saklanır; yani dosya, videonun taşıdığı görüntüyü, üzerine ikinci bir
+        sıkıştırma turu binmeden taşır. Bir oynatıcı penceresinin ekran
+        görüntüsü bunların ikisini de vermez: o, pencerenin boyutundadır ve
+        oynatıcı görüntüyü ölçekleyip renk yönetiminden geçirdikten sonra
+        alınmıştır."""
+
+[[faq]]
+q = "Hangi video biçimlerinden kare alabilirim?"
+a = """
+        MP4, M4V ve MOV içlerinde ne olursa olsun doğrudan okunur: H.264, HEVC,
+        AV1 ya da VP9 &mdash; yeter ki tarayıcınız o kodlayıcıyı çözebilsin.
+        Aracın tek tek karelere eriştiği tam yol budur. Tarayıcınızın
+        oynatabildiği başka her şey &mdash; en bilineni WebM &mdash; oynatıcı
+        aranıp gösterdiği çizilerek ele alınır; bu da yine tam boyutlu bir görsel
+        kaydeder ama sizin istediğiniz kareye değil oynatıcının seçtiği kareye
+        denk gelir. Tarayıcının ne okuyabildiği ne de oynatabildiği bir dosya, ki
+        pratikte AVI, WMV, FLV ve çoğu MKV demektir, bunu söyleyen bir mesajla
+        geri çevrilir."""
+
+[[faq]]
+q = "Kare kare ilerleyebilir miyim?"
+a = """
+        Bir MP4'te evet, tam olarak: araç dosyanın kendi kare listesini okur, yani
+        ok tuşları gerçekten içinde bulunan görüntüler arasında hareket eder
+        &mdash; kare hızı gezinen bir klipte bile, ki orada saniyenin otuzda biri
+        gibi sabit bir adım kayardı. Oynatma yolunda böyle bir liste yoktur; bu
+        yüzden bir adım yaklaşık bir kare kadar bir dürtmedir ve sayfa bunu
+        söyler."""
+
+[[faq]]
+q = "Dikey çekilmiş telefon videom neden burada doğru duruyor?"
+a = """
+        Çünkü dönüş bilinçli olarak uygulandı. Bir telefon yatay çeker ve
+        pikselleri döndürmek yerine dosyaya çeyrek dönüş yazar; dolayısıyla bir
+        çözücünün verdiği kare yan yatmıştır ve her oynatıcı onu ekranınıza
+        giderken döndürür. Bu adımı atlayan bir araç, doğru anın makul görünen
+        ama yan yatmış bir görüntüsünü kaydeder. Bu araç dönüşü parçadan okur ve
+        hiçbir şey çizilmeden önce uygular."""
+
+[[faq]]
+q = "Videonun boyutunda veya uzunluğunda bir sınır var mı?"
+a = """
+        Araçta yerleşik bir sınır yok ve dosya belleğe bir seferde tümüyle
+        okunmuyor &mdash; her seferinde birkaç megabaytlık parçalar hâlinde
+        geziliyor; uzun bir klibin kısa bir klip kadar hızlı açılmasının sebebi
+        de bu. Aldığınız kareler indirene kadar sayfada tutulur; yani pratik
+        tavan videonun kendisi değil, birkaç yüz tane 4K PNG'dir."""
+
+[[faq]]
+q = "Kareyi sonradan yeniden boyutlandırabilir veya kırpabilir miyim?"
+a = """
+        Burada değil, yan kapıda. Bu araç kareyi olduğu gibi kaydeder; boyutunu
+        ya da şeklini değiştirmek kendi kararlarını içeren ayrı bir iştir ve
+        <a href="../resim-boyutlandirma/">Görsel Boyutlandırıcı</a> ikisini de
+        yapar, o da hiçbir şey yüklemeden. Görüntüyü değiştirmeden dosyayı
+        küçültmek ise <a href="../resim-sikistirma/">Görsel Sıkıştırıcı</a>'nın
+        işi."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Sitede
+        reklam var, masrafı karşılayan da o; reklamlara videonuz hakkında hiçbir
+        şey verilmiyor."""
+
+[schema]
+browser_requirements = "JavaScript gerekir. Kare hassasiyetinde yakalama için WebCodecs destekleyen bir tarayıcı gerekir; diğerleri oynatıcıyı aramaya düşer."
+description = "Bir videonun herhangi bir karesini tarayıcıda tam boyutlu PNG, JPEG veya WebP olarak kaydedin. MP4, MOV ve M4V, WebCodecs üzerinden kare kare okunur; böylece istenen kare tam olarak kaydedilen karedir. Tarayıcının oynattığı başka her şey oynatıcıdan yakalanır. Hiçbir şey yüklenmez."
+features = [
+  "MP4, MOV, M4V ve WebM videodan kare kaydeder",
+  "H.264, HEVC, AV1 ve VP9 kaynakları, WebCodecs üzerinden çözülür",
+  "Dosyanın kendi kare listesi üzerinden kare kare ilerleme",
+  "Karenin birebir kopyası için PNG, daha küçüğü için JPEG ve WebP",
+  "Her N saniyede bir kare, hepsi birlikte ZIP olarak indirilir",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, filigran yok",
+]
+
+[picker]
+title = "Bir videoyu buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; MP4, MOV, M4V, WebM ve bu tarayıcının oynattığı her şey"

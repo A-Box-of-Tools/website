@@ -1,0 +1,236 @@
+#
+# Video Kırpıcı - Türkçe.
+#
+# Overrides for tools/crop-video/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Kırpma" burada kadrajı kesmek anlamında; klibi kısaltmak "kesme" ve o başka
+# bir araç. locale.toml'un başındaki nota bakın: bu site üçünü ayırıyor.
+#
+
+name = "Video Kırpıcı"
+heading = "Video&nbsp;Kırpma <span class=\"h1-kw\">&mdash; videoyu çevrimiçi kırpın</span>"
+tagline = "Bir klibi asıl önemli olan kısma indirin."
+
+title = "Videoyu Çevrimiçi Kırpma &mdash; Ücretsiz, Yüklemesiz, Çevrimdışı Çalışır"
+description = "Bir MP4, MOV veya WebM'i istediğiniz şekle kırpın: kare, 9:16 ya da tam piksel kutusu. Tarayıcınızda çalışır: hiçbir şey yüklenmez, ses korunur, çevrimdışı da çalışır."
+og_title = "Video Kırpıcı &mdash; bir klibi yüklemeden kırpın"
+og_description = "Klibinizin üzerine bir kutu sürükleyin ve istediğiniz şekle kırpın. Kareler kendi cihazınızda çözülüp yeniden kodlanır, orijinal ses ise el değmeden karşıya taşınır."
+og_image_alt = "Video Kırpıcı - bir klibi tarayıcınızda kırpın, hiçbir şey yüklenmesin"
+
+pledge = """
+    Her kare kendi tarayıcınız tarafından, kendi donanımınızda çözülür,
+    kırpılır ve kodlanır. Buradaki hiçbir şey bir şey getiremez ya da
+    gönderemez &mdash; bu araçta hiçbir türde ağ özelliği yok &mdash; ve
+    olsaydı bile bu sayfanın öbür ucunda bir videonun gönderilebileceği bir
+    sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir klip kırpın. Tek bir istek bile bir kare, bir dosya adı ya
+      da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da internet bağlantısını
+      kesip yine de bir tane kırpın &mdash; videonuzu işlenmek üzere uzağa
+      gönderen bir araç öylece dururdu."""
+
+read_first = """
+, bir MP4 içindeki kareleri bulan okuyucu için
+      <code>src/demux.js</code> ve onları çözüp kırpan ve kodlayan döngü için
+      <code>src/transcode.js</code>. İkisi de istek yapabilecek hiçbir şeyi
+      içeri almaz."""
+
+howto_heading = "Bir video nasıl kırpılır"
+
+card = """
+            Bir klibin üzerine kutu sürükleyip onu o şekle indirin &mdash; akış
+            için kare, telefon için dikey ya da tam piksel kutusu."""
+
+[words]
+plural = "videolarınız"
+choose = "bir video"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Sesi korur"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[privacy]]
+title = "Videolarınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu
+      sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri
+      bu siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ Bu araçta hiçbir türde ağ
+      özelliği yok: yapıştırılacak bir adres, indirilecek bir şey, ilk
+      kullanımda getirilen bir motor yok. Videonuza dokunan her bayt, sayfa
+      yüklenirken bu kaynaktan geldi."""
+
+[[privacy]]
+title = "Çözme ve kodlama yerelde."
+body = """
+ Kareler kendi tarayıcınızdaki
+      WebCodecs'ten geçer ya da klibi zaten size gösterecek olan aynı oynatma
+      motorundan. Bitmiş dosya bu makinenin belleğinde kurulur ve doğrudan bir
+      indirmeye verilir."""
+
+[[privacy]]
+title = "Ses kopyalanıyor, dinlenmiyor."
+body = """
+ MP4 yolunda ses örnekleri hiç
+      çözülmeden karşıya taşınır &mdash; buradaki hiçbir şey onları tekrar sese
+      dönüştürmez ve dönüştürse bile hiçbir şey onları bir yere iletemezdi."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine videonuz hakkında bir şey verilmiyor: ne bir
+      dosya, ne bir kare, ne bir ad, bir boyut, bir uzunluk ya da onu kırptığınız
+      şekil. Okuyan, çözen, kırpan ya da kodlayan her satır bu kaynaktan
+      sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de videonuz
+      hakkında bir şey verilir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu."""
+
+[[howto]]
+title = "Bir video seçin."
+body = """
+ Seçiciye bir MP4, MOV, M4V ya da WebM
+      bırakın veya elle seçin. Tarayıcı onu doğrudan diskinizden okur; siz bunu
+      yaparken hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Kutuyu tutmak istediğiniz yerin üzerine sürükleyin."
+body = """
+      Taşımak için içine, yeniden boyutlandırmak için herhangi bir köşesine
+      sürükleyin. Önce bir şekle kilitleyin &mdash; kare bir gönderi için 1:1,
+      telefon için 9:16, geniş kadraj için 16:9 &mdash; ya da altındaki dört
+      alana tam piksel kutusunu yazın."""
+
+[[howto]]
+title = "Ne kadar kalite harcayacağınızı seçin."
+body = """
+ Görüntünün yeniden
+      kodlanması gerekir, çünkü kırpılmış bir kare başka bir görüntüdür.
+      "Dengeli", dosyanın o alana zaten harcadığına yakın kalır; "En iyi kalite"
+      daha fazlasını harcar. Kapatmadığınız sürece ses korunur."""
+
+[[howto]]
+title = "Kırpın ve indirin."
+body = """
+ İş kendi donanımınızda olduğu için ne
+      kadar süreceği bir sıraya değil makinenize bağlıdır. Bitmiş video doğrudan
+      tarayıcınızın indirmelerine verilir."""
+
+[[faq]]
+q = "Videom herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Kendi donanımınızda, kendi tarayıcınız tarafından okunur, çözülür,
+        kırpılır ve kodlanır. Bu aracın sunucu tarafı yoktur ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar &mdash; bunların hiçbiri bu siteye ait değildir. Size
+        söylenene güvenmek yerine denetlemeyi tercih ediyorsanız internet
+        bağlantısını kesin ve yine de bir klip kırpın."""
+
+[[faq]]
+q = "Hangi video biçimlerini kırpabilirim?"
+a = """
+        MP4, M4V ve MOV içlerinde ne olursa olsun doğrudan okunur: H.264, HEVC,
+        AV1 ya da VP9 &mdash; yeter ki tarayıcınız o kodlayıcıyı çözebilsin.
+        Tarayıcınızın oynatabildiği başka her şey &mdash; en bilineni WebM
+        &mdash; bunun yerine oynatılıp sonucu kaydedilerek kırpılır; bu da
+        işe yarar ama klip ne kadar uzunsa o kadar sürer. Tarayıcının ne
+        okuyabildiği ne de oynatabildiği bir dosya, ki pratikte AVI, WMV, FLV ve
+        çoğu MKV demektir, yarı yolda başarısız olmak yerine bunu söyleyen bir
+        mesajla geri çevrilir."""
+
+[[faq]]
+q = "Videonun boyutunda veya uzunluğunda bir sınır var mı?"
+a = """
+        Araçta yerleşik bir sınır yok ve dosya belleğe bir seferde tümüyle
+        okunmuyor &mdash; her seferinde birkaç megabaytlık parçalar hâlinde
+        geziliyor. Pratik tavan, indirmeden önce bellekte kurulan bitmiş video
+        ile makinenizin onu kodlamak için harcadığı süredir."""
+
+[[faq]]
+q = "Ses hayatta kalıyor mu?"
+a = """
+        MP4 yolunda tam olarak: ses hiç çözülmeden örnek örnek kopyalanır, yani
+        dosyada ne varsa bayt bayt odur. Kayıt yolunda ise oynatmadan yakalanıp
+        yeniden kodlanır ki bu biraz kaliteye mal olur. Her iki durumda da onu
+        tümüyle dışarıda bırakan bir onay kutusu var."""
+
+[[faq]]
+q = "Kırpmak kalite kaybettirir mi?"
+a = """
+        Görüntü yeniden kodlanır, çünkü kırpılmış bir kare başka bir görüntüdür
+        ve pikselleri yeniden yazmadan onu saklamanın bir yolu yoktur. Aracın
+        yapmayacağı şey, aynı alana orijinalin harcadığından fazlasını
+        harcamaktır; bunun üzerinde yeniden kodlamak dosyayı yalnızca
+        büyütür, daha iyi göstermez."""
+
+[[faq]]
+q = "Uzunluğu da kesebilir miyim?"
+a = """
+        Burada değil, yan kapıda. Bu araç görüntünün şeklini değiştirir, başka
+        hiçbir şeyi: çıkan klip, girenle tam olarak aynı uzunlukta, zamanlaması
+        ve sesi el değmemiş hâlde olur. Kesmek ayrı bir iştir ve ayrı bir
+        araçtır &mdash; <a href="../video-kesme/">Video Kesici</a>, bir klibin
+        tutmaya değer parçalarını işaretler ve tek bir dosya olarak, tek bir
+        kareyi bile yeniden kodlamadan kaydeder."""
+
+[[faq]]
+q = "Genişlik ve yükseklik neden ikişer ikişer ilerliyor?"
+a = """
+        Bir MP4'ün içindeki kodlayıcı olan H.264, görüntüyü bloklar hâlinde
+        saklar ve bir kenarında tek sayıda piksel olan bir kareyi tarif etmenin
+        yolu yoktur. Siz kırpmayı ayarladıktan sonra onu sessizce yuvarlamak
+        yerine, kutu en baştan yalnızca çift sayılar sunar."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Sitede
+        reklam var, masrafı karşılayan da o; reklamlara videonuz hakkında hiçbir
+        şey verilmiyor."""
+
+[schema]
+browser_requirements = "JavaScript gerekir. MP4 çıktısı için WebCodecs destekleyen bir tarayıcı gerekir; diğerleri WebM kaydına düşer."
+description = "Bir videoyu tarayıcıda istediğiniz şekle ya da tam piksel kutusuna kırpın. MP4, MOV ve M4V kare kare çözülüp yeniden kodlanır, orijinal ses el değmeden karşıya taşınır; tarayıcının oynatabildiği başka her şey kaydedilerek kırpılır. Hiçbir şey yüklenmez."
+features = [
+  "MP4, MOV, M4V ve WebM videoları kırpar",
+  "H.264, HEVC, AV1 ve VP9 kaynakları, WebCodecs üzerinden çözülür",
+  "Serbest kırpma, kilitli oranlar (1:1, 4:5, 9:16, 16:9, 4:3, 3:2) veya tam piksel kutusu",
+  "Orijinal sesi yeniden kodlamadan korur",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, filigran yok",
+]
+
+[picker]
+title = "Bir videoyu buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; MP4, MOV, M4V, WebM ve bu tarayıcının oynattığı her şey"
