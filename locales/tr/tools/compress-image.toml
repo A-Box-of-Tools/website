@@ -1,0 +1,242 @@
+#
+# Görsel Sıkıştırıcı - Türkçe.
+#
+# Overrides for tools/compress-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Görsel Sıkıştırıcı"
+# İkinci yarı, insanların gerçekten arattığı ifade. İngilizcedeki gibi, ürün
+# adı yüksek sesle söylenen yarı olarak kalıyor.
+heading = "Görsel&nbsp;Sıkıştırıcı <span class=\"h1-kw\">&mdash; tam istediğiniz boyuta</span>"
+tagline = "Boyutu siz söyleyin, gerisini o hesaplasın."
+
+title = "Görseli İstenen Boyuta Sıkıştırma &mdash; Ücretsiz, Yüklemesiz"
+# 155 karakterin altında: Google açıklamayı orada kesiyor ve bu cümlenin sonu
+# sayfayı satan kısım.
+description = "JPEG, PNG veya WebP'yi tam istediğiniz boyuta sıkıştırın: 100 KB, 2 MB, ne gerekiyorsa. Tarayıcınızda çalışır, hiçbir şey yüklenmez, çevrimdışı da çalışır."
+og_title = "Bir görseli kendi seçtiğiniz boyuta sıkıştırın"
+og_description = "Hedef bir boyut söyleyin; araç oraya ulaşan en az sıkıştırmayı bulsun, sonra bunun neye mal olduğunu ölçsün. Kendi cihazınızda çalışır, hiçbir şey yüklenmez."
+og_image_alt = "Görsel Sıkıştırıcı - boyutu söyleyin, kaliteyi koruyun"
+
+pledge = """
+    Sıkıştırma, kendi tarayıcınızda, kendi donanımınızda, tarayıcının zaten
+    beraberinde getirdiği kodlayıcılarla çalışır. Bu aracın hiçbir türde ağ
+    özelliği yoktur &mdash; getirecek bir şey yok, gönderecek bir şey yok
+    &mdash; ve olsaydı bile bu sayfanın öbür ucunda bir görselin
+    gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir fotoğraf sıkıştırın. Tek bir istek bile bir görsel, bir
+      küçük resim, bir dosya adı ya da seçtiğiniz şeyden tek bir bayt taşımıyor.
+      Ya da internet bağlantısını kesip yine de bir tane sıkıştırın."""
+
+read_first = """
+, kalitenin ne kadarının harcanacağına karar veren arama için
+      <code>src/compress.js</code> ve "görsel eşleşme" rakamının arkasındaki
+      karşılaştırma için <code>src/measure.js</code>."""
+
+howto_heading = "Bir görsel belirli bir boyuta nasıl sıkıştırılır"
+
+card = """
+            İhtiyacınız olan boyutu söyleyin &mdash; 100 KB, 2 MB, ne olursa
+            &mdash; araç oraya ulaşan en az sıkıştırmayı bulsun."""
+
+[words]
+plural = "görselleriniz"
+choose = "bir görsel"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Boyut sınırı yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Görsellerinizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onları oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ <code>src/</code> içinde hiçbir yerde
+      <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. Sıkıştırmayı yapan
+      <code>canvas.toBlob</code> &mdash; yani tarayıcınızda zaten kurulu olan
+      kodlayıcı."""
+
+[[privacy]]
+title = "Sayılar ölçülüyor, rapor edilmiyor."
+body = """
+ Boyutlar, kalite değeri ve SSIM
+      karşılaştırması bu sayfada hesaplanıp size gösteriliyor. Bu depoda bir
+      dosya adı, bir boyut, bir sayı ya da bir sonuç taşıyan özel bir analitik
+      olayı yok."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri Google'dan,
+      bağış düğmesi de Buy Me a Coffee'den geliyor. Hiçbirine görselleriniz
+      hakkında bir şey verilmiyor. Bir dosyayı okuyan, sıkıştıran ya da ölçen
+      her satır bu kaynaktan sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç
+      değişmez; çünkü içinde en baştan beri bir ağ adımı yoktu. Bu, hepsinin
+      içindeki en basit kanıt."""
+
+[[howto]]
+title = "Görsellerinizi seçin."
+body = """
+ Seçiciye sürükleyip bırakın ya da elle
+      seçin. Tarayıcı onları doğrudan diskinizden okur; siz bunu yaparken
+      hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Ulaşmanız söylenen boyutu yazın."
+body = """
+ Fotoğrafınızı sürekli geri çeviren
+      yükleme formu için 100 KB, başvuru portalı için 500 KB, hızlı açılması
+      gereken bir sayfa için 2 MB. Sık kullanılan dördü düğme olarak duruyor."""
+
+[[howto]]
+title = "\"Hedefe sıkıştır\"a basın."
+body = """
+ Araç sığan en yüksek kaliteye
+      yaklaşırken her görsel birkaç kez kodlanır. Hedefin zaten altında olan
+      her şey olduğu gibi bırakılır."""
+
+[[howto]]
+title = "Neye mal olduğuna bakın, sonra indirin."
+body = """
+ Her sonuç neyle yazıldığını, hangi
+      kalitede olduğunu, boyutların değişip değişmediğini ve ölçüldüğünde
+      orijinaliyle ne kadar örtüştüğünü söyler. "Karşılaştır" iki görseli
+      yan yana koyar."""
+
+[[faq]]
+q = "Görselim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya, tarayıcınızın zaten beraberinde getirdiği JPEG, PNG ve WebP
+        kodlayıcılarıyla, kendi donanımınızda, kendi tarayıcınız tarafından
+        çözülür, sıkıştırılır ve ölçülür. Bu aracın hiçbir türde ağ özelliği
+        yoktur &mdash; hiçbir zaman bir şey getirmez ve hiçbir zaman bir şey
+        göndermez &mdash; ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar; bunların hiçbiri bu siteye ait değildir."""
+
+[[faq]]
+q = "Tam olarak istenen boyuta nasıl ulaşıyor?"
+a = """
+        Deneyerek. Bir kalite ayarını bayt sayısına çeviren bir formül yok
+        &mdash; bu tamamen görsele bağlı &mdash; bu yüzden araç görseli birkaç
+        kez kodlayıp cevabı arar. Kalite aralığının tepesinden başlar ve
+        ikiye bölerek daraltır; bu da sığan en yüksek kaliteyi yaklaşık sekiz
+        kodlamada bulur. Sayfada gördüğünüz her boyut gerçekten kodlanmış bir
+        dosyadır, tahmin değil."""
+
+[[faq]]
+q = "Buradaki \"en az kayıp\" tam olarak ne demek?"
+a = """
+        Üç somut şey. Birincisi, hedefinizin zaten altında olan bir görsel
+        yeniden kodlanmak yerine bayt bayt aynen geçirilir. İkincisi, kalite
+        çözünürlükten önce harcanır ve yalnızca sıkıştırma izlerinin görünmeye
+        başladığı tabana kadar &mdash; o noktadan sonra araç görseli
+        küçültüp kaliteyi geri yükseltir, çünkü az sayıda iyi piksel, çok
+        sayıda bozulmuş pikselden daha iyi görünür. Üçüncüsü, sığan bir sonuç
+        bulunduktan sonra arama bütçe kullanılana dek yeniden yukarı iter; yani
+        500 KB istediğinizde elinize 300 KB'lık bir dosya geçmez."""
+
+[[faq]]
+q = "Her sonuçtaki SSIM ve PSNR rakamları nedir?"
+a = """
+        Sıkıştırmanın neye mal olduğunun ölçümüdür; sonuç çözülüp orijinal
+        görselle karşılaştırılarak alınır. SSIM yerel parlaklığı, kontrastı ve
+        yapıyı karşılaştırır ki bu, değişen piksel saymaya kıyasla gözün itiraz
+        ettiği şeye çok daha yakındır; yaklaşık 0,98'in üzerinde ikisini yan
+        yana ayırt etmek zordur. PSNR ise geleneksel desibel rakamı. Her ikisi
+        de sizin cihazınızda hesaplanır ve her ikisi de gösterilir; böylece
+        düşük kayıp iddiası öne sürülmekle kalmaz, denetlenebilir olur."""
+
+[[faq]]
+q = "Hangi biçimleri okuyabiliyor ve yazabiliyor?"
+a = """
+        Tarayıcınızın çözebildiği her şeyi okur; pratikte bu JPEG, PNG, WebP,
+        GIF, BMP ve &mdash; güncel tarayıcıların çoğunda &mdash; AVIF demektir.
+        JPEG, PNG ve WebP yazar, çünkü tarayıcıların beraberinde getirdiği
+        kodlayıcılar bunlar. "Otomatik"te dosyanızın geldiği biçimi korur ve
+        yalnızca korumak yeniden boyutlandırma ya da gözle görülür bir kalite
+        düşüşü anlamına gelecekse WebP'ye geçer."""
+
+[[faq]]
+q = "Bir PNG neden çok fazla sıkıştırılamıyor?"
+a = """
+        Çünkü PNG kayıpsızdır: çevrilecek bir kalite düğmesi yoktur. Bir PNG'yi
+        küçültmenin tek yolu ona daha az piksel ya da daha az renk vermektir;
+        bu yüzden PNG seçiliyken araç hedefe yalnızca yeniden boyutlandırarak
+        ulaşır. Görsel bir fotoğrafsa JPEG ya da WebP, gözle bakınca gayet iyi
+        olduğunu göreceğiniz bir boyutta hedefinize çok daha fazla yaklaşır
+        &mdash; ve bir logo ya da saydamlığı olan bir ekran görüntüsüyse WebP,
+        JPEG'in beyazla dolduracağı saydamlığı korur."""
+
+[[faq]]
+q = "Bir görseli sıkıştırmak EXIF ve GPS verisini siler mi?"
+a = """
+        Evet, yan etki olarak. Sıkıştırmak, görseli piksellere çözüp o pikselleri
+        yeniden kodlamak demektir ve piksellerle dolu bir tuval hiçbir etiket
+        taşımaz; dolayısıyla konum, kamera modeli, zaman damgaları ve geri kalan
+        her şey yeni dosyaya hiç yazılmaz. Üst verinin gitmesini ama görselin
+        el değmemiş kalmasını istiyorsanız bunun yerine
+        <a href="../exif-verisi-silme/">EXIF Görüntüleyici ve Silici</a>'yi kullanın
+        &mdash; o, hiçbir şeyi yeniden sıkıştırmadan kabı yeniden yazar."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok.
+        Dosyaların sayısında ya da boyutunda da bir sınır yok, çünkü bunların
+        bedelini ödeyen bir sunucu yok &mdash; iş sizin kendi cihazınızda
+        oluyor. Sitede reklam var, masrafı karşılayan da o; reklamlara
+        görselleriniz hakkında hiçbir şey verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: görsellerinizi sıkıştırılmak üzere uzağa
+        gönderen bir araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "JPEG, PNG ve WebP görselleri kendi söylediğiniz bir boyuta sıkıştırın. Araç hedefe sığan en yüksek kaliteyi arar, yalnızca kalite tek başına yetmediğinde yeniden boyutlandırır ve sonucu orijinaliyle karşılaştırarak ölçer. Tamamen tarayıcıda, yüklemesiz çalışır."
+features = [
+  "Tahmin etmeniz gereken bir kalite sayısına değil, seçtiğiniz bir hedef dosya boyutuna sıkıştırır",
+  "Yapabildiği yerde tam çözünürlüğü korur, yalnızca kalite tek başına hedefe ulaşamadığında küçültür",
+  "Bütçenin tamamını harcar: sonuç, hedefin çok altında değil hemen altında çıkar",
+  "Sonucu orijinaliyle SSIM ve PSNR kullanarak ölçer",
+  "Hedefin zaten altında olan dosyalara hiç dokunmaz",
+  "Otomatik biçim seçimiyle JPEG, PNG ve WebP",
+  "Toplu işlem, tüm sonuçlar tek bir zip içinde",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Görselleri buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; JPEG, PNG, WebP ve tarayıcınızın açabildiği her şey"

@@ -1,0 +1,230 @@
+<!--
+  tools/images-to-pdf/body.html, in Traditional Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步，選圖 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選圖片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" data-sort="name" class="ghost">按名字排</button>
+        <button type="button" data-sort="date" class="ghost">按日期排</button>
+        <button type="button" data-sort="reverse" class="ghost">倒過來</button>
+        <button type="button" id="clear-all" class="ghost danger">全部移除</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      一張圖一頁，順序就是這個。抓住<span class="grip" aria-hidden="true">&#8942;&#8942;</span>手柄拖動，或者按卡片上的箭頭。
+    </p>
+
+    <ul id="image-list" class="image-list"></ul>
+  </section>
+
+  <!-- 第 2 步，頁面設定 -->
+  <section class="card">
+    <h2><span class="step">2</span> 頁面設定</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">頁面大小</label>
+        <select id="page-size">
+          <option value="fit" selected>頁面跟著每張圖走</option>
+          <option value="a4">A4，210 &times; 297 毫米</option>
+          <option value="letter">Letter，8.5 &times; 11 英寸</option>
+          <option value="legal">Legal，8.5 &times; 14 英寸</option>
+          <option value="a3">A3，297 &times; 420 毫米</option>
+          <option value="a5">A5，148 &times; 210 毫米</option>
+          <option value="tabloid">Tabloid，11 &times; 17 英寸</option>
+          <option value="custom">自己填&hellip;</option>
+        </select>
+        <div id="custom-size" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="1" max="5000" step="1" value="210"
+                 aria-label="自定義頁寬">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="1" max="5000" step="1" value="297"
+                 aria-label="自定義頁高">
+          <select id="custom-unit" aria-label="自定義頁面尺寸的單位">
+            <option value="mm" selected>毫米</option>
+            <option value="in">英寸</option>
+          </select>
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">列印解析度</label>
+        <select id="dpi">
+          <option value="72">72 DPI，螢幕</option>
+          <option value="96">96 DPI</option>
+          <option value="150" selected>150 DPI</option>
+          <option value="200">200 DPI</option>
+          <option value="300">300 DPI，印刷</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          決定同樣多的畫素鋪成多大一頁，不會動到畫面本身。
+        </p>
+      </div>
+
+      <div class="field" id="orientation-field" hidden>
+        <label for="orientation">紙張方向</label>
+        <select id="orientation">
+          <option value="auto" selected>跟著每張圖</option>
+          <option value="portrait">豎向</option>
+          <option value="landscape">橫向</option>
+        </select>
+      </div>
+
+      <div class="field" id="fit-field" hidden>
+        <label for="fit">圖片怎麼擺在頁面上</label>
+        <select id="fit">
+          <option value="contain" selected>放進頁邊距以內</option>
+          <option value="cover">鋪滿整頁（邊上會被裁掉）</option>
+          <option value="stretch">拉滿到頁邊距（會變形）</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="margin">頁邊距</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="100" step="1" value="0"
+                 aria-label="頁邊距，單位毫米">
+          <span class="unit-label">毫米</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="background">頁面底色</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          頁邊距那一圈會露出來，透明的地方也墊在下面。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="mode">圖片品質</label>
+        <select id="mode">
+          <option value="keep" selected>JPEG 原樣不動</option>
+          <option value="jpeg">全部重編成 JPEG</option>
+          <option value="lossless">無損，一點壓縮損失都沒有</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">JPEG 品質</label>
+        <select id="quality">
+          <option value="0.75">檔案小一點</option>
+          <option value="0.88" selected>均衡</option>
+          <option value="0.95">最好畫質</option>
+        </select>
+        <p class="field-note">只對那些不得不重編的圖片起作用。</p>
+      </div>
+
+      <div class="field">
+        <label for="max-side">大圖縮一縮</label>
+        <select id="max-side">
+          <option value="0" selected>不縮，保持原尺寸</option>
+          <option value="4000">最長邊 4000 畫素</option>
+          <option value="2000">最長邊 2000 畫素</option>
+          <option value="1200">最長邊 1200 畫素</option>
+        </select>
+        <p class="field-note" id="shrink-note"></p>
+      </div>
+    </div>
+
+    <details class="meta-panel">
+      <summary>文件資訊，全都可填可不填，預設全空</summary>
+      <div class="meta-body">
+        <p class="meta-note">
+          PDF 裡帶著一小塊關於它自己的資訊，多數工具不管你要不要，都往裡塞一個時間戳和自己的程式名。這一個只寫你在這裡打進去的，別的什麼都不寫：沒有檔名，沒有機器名，你不勾那個框，連日期都沒有。
+        </p>
+        <div class="settings">
+          <div class="field">
+            <label for="doc-title">標題</label>
+            <input type="text" id="doc-title" maxlength="200" spellcheck="false"
+                   placeholder="留空就不寫">
+          </div>
+          <div class="field">
+            <label for="doc-author">作者</label>
+            <input type="text" id="doc-author" maxlength="200" spellcheck="false"
+                   placeholder="留空就不寫">
+          </div>
+          <div class="field">
+            <label for="file-name">檔名</label>
+            <div class="inline-pair">
+              <input type="text" id="file-name" maxlength="120" spellcheck="false"
+                     value="images">
+              <span class="unit-label">.pdf</span>
+            </div>
+          </div>
+          <div class="field checkbox-field">
+            <label for="dated">
+              <input type="checkbox" id="dated">
+              在文件裡記下今天的日期
+            </label>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="480" height="640" aria-label="單頁預覽"></canvas>
+        <p id="preview-empty" class="preview-empty">加幾張圖，就能看到頁面了</p>
+        <div id="preview-nav" class="preview-nav" hidden>
+          <button type="button" id="preview-prev" class="ghost" aria-label="上一頁">&lsaquo;</button>
+          <span id="preview-label" class="preview-label"></span>
+          <button type="button" id="preview-next" class="ghost" aria-label="下一頁">&rsaquo;</button>
+        </div>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>頁數</dt><dd id="sum-pages">&mdash;</dd></div>
+        <div><dt>頁面大小</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>選了幾張圖</dt><dd id="sum-input">&mdash;</dd></div>
+        <div><dt>原樣抄進去的</dt><dd id="sum-copied">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 第 3 步，匯出 -->
+  <section class="card">
+    <h2><span class="step">3</span> 生成 PDF</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>生成 PDF</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>下載 PDF</a>
+      </div>
+    </div>
+  </section>
+</main>

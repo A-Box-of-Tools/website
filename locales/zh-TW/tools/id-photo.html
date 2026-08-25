@@ -1,0 +1,225 @@
+<main>
+  <!-- 第一步 &mdash; 照片 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選好照片</h2>
+
+    <p class="card-lede">
+      你瀏覽器能開啟的任何圖片都行。白天對著一面素淨的牆、從大約一米半外用手機拍
+      的那種，正是這些規定當初設想的樣子。照片直接從你的磁碟上讀，不會發到任何
+      地方。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">換一張</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第二步 &mdash; 規定 -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> 選好國家和證件</h2>
+
+    <p class="card-lede">
+      下面每一個數字都是公佈的要求，抄錄自其下注明的機構。這份清單裡沒有一條是猜
+      的，也沒有一條是去網上取的：它是 <code>src/specs.js</code> 裡的一張表，隨
+      頁面一起送來。
+    </p>
+
+    <div class="option-row">
+      <label for="spec">規格</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>數字，自己來填</summary>
+      <div class="numbers">
+        <label>寬（mm）<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>高（mm）<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>頭高，最小（mm）<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>頭高，最大（mm）<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>背景
+          <select id="custom-background">
+            <option value="white">純白</option>
+            <option value="off-white">白或米白</option>
+            <option value="light-grey" selected>純淺灰</option>
+            <option value="cream">淺灰或奶油色</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>上傳寬（px）<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>上傳高（px）<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>最小（KB）<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>最大（KB）<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        這裡的 KB 指 1024 位元組，這些表單說的也正是這個意思。
+      </p>
+    </details>
+  </section>
+
+  <!-- 第三步 &mdash; 構圖 -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> 標出臉，檢查構圖</h2>
+
+    <p id="frame-empty" class="field-summary">選好一張照片，裁切框就會出現在這裡。</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        頭頂、下巴，還有左右瞳孔。規定要量的全部就是這四個點，裁切框取自它們
+        最後停在哪裡&mdash;&mdash;哪個落偏了就拖回來，然後按<strong>套用裁切框
+        </strong>。找這四個點，靠的是量這張照片本身：你的頭在背後那面牆前的
+        輪廓，以及眼睛所在的那兩塊偏暗的地方。裡頭沒有模型，也不去取任何東西；
+        它是個起點，不是判決&mdash;&mdash;所以改它是你的事，下面那行也會說清楚
+        四個點裡哪一個它量不出來。
+      </p>
+
+      <!--
+        Where the dots come from. Choosing to place them yourself leaves them
+        exactly where they are and stops anything moving them again; moving one
+        by hand chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="這四個點是從哪裡來的">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>替我找</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>我自己放</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">按規定套用裁切框</button>
+        <button type="button" id="reset-marks" class="ghost">重新找一次臉</button>
+        <button type="button" id="whole-photo" class="ghost">能放下的最大框</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- 第四步 &mdash; 背景 -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> 背景</h2>
+
+    <p class="card-lede" id="background-lede">
+      取自裁切框頂部的一條帶子，以及兩側肩膀以上的部分，也就是畫面裡本該只有背景
+      的地方。在 CIE Lab 裡測量，而不是在 RGB 裡，因為相差四十個 RGB 單位的兩種灰
+      根本分不出來，而四十個單位的藍就是另一種顏色了。
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">你這張讀出來是<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">規定要求的是<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- 第五步 &mdash; 檔案 -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> 儲存</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">列印解析度</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; 幾乎每條規定都寫明的下限</option>
+          <option value="600">600 dpi &mdash; 好一點的沖印店會用的值</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">列印用的相紙</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>生成檔案</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>做好了</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. `{why}` is
+    filled in with one or more of the `marks.why.*` lines below, joined with
+    a semicolon; nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="marks.measured">四個點都是從照片上量出來的：頭頂取自你頭部的輪廓，瞳孔取自它們的暗，下巴取自下頜收進脖子的地方。還是看一眼，哪個落偏了就拖回來：裁切框取自它們最後停在哪裡。</span>
+    <span data-phrase="marks.rough">放好了，但不是每一處都量得出來。套用裁切框之前，請把四個點都看一遍。</span>
+    <span data-phrase="marks.none">這張照片上什麼也量不出來。四個點改為停在起始位置上&mdash;&mdash;請把它們拖到頭頂、下巴和左右瞳孔上。</span>
+    <span data-phrase="marks.manual">這四個點歸你，什麼都不會去動它們。請把每一個拖到頭頂、下巴和瞳孔上。</span>
+    <span data-phrase="marks.edited">你動過一個點，所以四個點現在都歸你了。選「替我找」會重新量一遍這張照片。</span>
+
+    <span data-phrase="marks.why.background">你背後那面牆不夠乾淨，襯不出一個頭的輪廓。</span>
+    <span data-phrase="marks.why.top">頭從照片上方出了框，沒有頭頂可找。</span>
+    <span data-phrase="marks.why.eyes">眼睛認不出來，於是兩隻都放在這麼大的頭通常長眼睛的位置。</span>
+    <span data-phrase="marks.why.chin">下巴來自頭的一般比例，而不是這個頭的輪廓。</span>
+
+    <span data-phrase="marks.button.again">重新找一次臉</span>
+    <span data-phrase="marks.button.back">把點放回去</span>
+  </div>
+</main>

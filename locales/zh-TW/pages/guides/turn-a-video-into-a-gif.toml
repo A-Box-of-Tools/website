@@ -1,0 +1,24 @@
+#
+# Guide: turning a video into a GIF - Traditional Chinese.
+#
+# Overrides for pages/guides/turn-a-video-into-a-gif/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "影片做成 GIF"
+
+title = "怎麼把影片做成 GIF（還不讓它太大）"
+description = "該挑哪一段、多寬、每秒幾幀，影片做成 GIF 為什麼會大出十倍，以及什麼時候壓根不該用 GIF。"
+
+heading = "怎麼把影片做成 GIF"
+lede = """
+    GIF 是 1987 年的格式，存的是一張張完整畫面，不是運動，所以影片做出來的
+    GIF 永遠很大。這一頁講檔案太大時該動三個設定裡的哪一個，以及每一個能\
+    換回多少。"""
+
+updated = "2026年8月20日"
+
+og_title = "怎麼把影片做成 GIF，還不讓它太大"
+og_description = "決定 GIF 大小的那三個設定，各自的代價，以及什麼時候 GIF 根本就是個錯誤答案。"
+og_image_alt = "abox.tools - 不走伺服器的工具"
