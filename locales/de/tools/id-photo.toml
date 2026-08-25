@@ -33,7 +33,8 @@ live_hint = """
 read_first = """
 , <code>src/specs.js</code> für das Regelwerk, also die
       veröffentlichten Zahlen jedes Landes samt Behörde und Datum, an dem sie
-      abgelesen wurden, <code>src/geometry.js</code> für die Rechnung, die aus vier
+      abgelesen wurden, <code>src/detect.js</code> dafür, wie die vier Punkte gefunden werden &mdash; eine Kontur und zwei dunkle Flecken, ohne jedes Modell &mdash;,
+      <code>src/geometry.js</code> für die Rechnung, die aus vier
       gesetzten Punkten einen Zuschnitt macht, und <code>src/jpeg.js</code> für die
       zwei Kopfänderungen, die die Druckauflösung in die Datei schreiben und einen zu
       kleinen Upload auf die Größe bringen, auf der ein Formular besteht."""
@@ -90,14 +91,18 @@ body = """
       wogegen Ihr Foto aus der Ferne geprüft würde."""
 
 [[privacy]]
-title = "Es gibt keine Gesichtserkennung, und das mit Absicht."
+title = "Das Gesicht wird ohne Gesichtsmodell gefunden."
 body = """
- Die vier Punkte, an
-      denen die Vorschriften gemessen werden, ziehen Sie selbst. Sie zu erkennen,
-      hieße ein Modell auszuliefern und es auf einem Bild Ihres Gesichts laufen zu
-      lassen, und ein Modell, das falsch liegt, liegt ungleichmäßig falsch: bei
-      manchen Gesichtern schlechter als bei anderen. Vier Punkte kosten acht Sekunden
-      und sind für alle exakt."""
+ Es gibt keine Gewichte
+      zum Herunterladen, keine Laufzeitumgebung für sie und nichts, was abgerufen
+      wird: Der Scheitel kommt aus der Kontur Ihres Kopfes vor der Wand dahinter,
+      die Pupillen aus den Stellen des Gesichts, die dunkler sind als ihre
+      Umgebung. Nichts daran liest Hautfarbe, und genau deshalb ist es so
+      geschrieben &mdash; ein Modell, das falsch liegt, liegt ungleichmäßig falsch,
+      bei manchen Gesichtern schlechter als bei anderen. Es ist eine Ausgangslage
+      und kein Urteil: Die Seite sagt, welchen der vier Punkte sie nicht messen
+      konnte, jeder Punkt bleibt verschiebbar, und mit
+      <em>Ich setze sie selbst</em> ist es ganz abgeschaltet."""
 
 [[privacy]]
 title = "Was Google lädt und was Google nicht bekommt."
@@ -133,11 +138,14 @@ body = """
       &bdquo;Irgendwo anders&ldquo; hinein."""
 
 [[howto]]
-title = "Ziehen Sie die vier Punkte auf Ihr Gesicht."
+title = "Prüfen Sie die vier Punkte auf Ihrem Gesicht."
 body = """
  Scheitel, Kinn und jede
-      Pupille. An diesen vier Punkten hängt alles, was die Vorschrift misst, und
-      deshalb fragt dieses Werkzeug danach, statt zu raten. Drücken Sie dann
+      Pupille &mdash; an diesen vier Punkten hängt alles, was die Vorschrift misst.
+      Gesetzt werden sie, indem das Bild selbst vermessen wird, und die Zeile
+      darunter sagt, was davon gelang und was errechnet werden musste. Ziehen Sie
+      zurecht, was danebenliegt, oder schalten Sie auf
+      <em>Ich setze sie selbst</em> und machen alle vier von Hand. Drücken Sie dann
       <em>Rahmen einpassen</em>, und der Zuschnitt landet dort, wo dieses Land ihn
       haben will."""
 
@@ -187,18 +195,43 @@ a = """
         auch mit ihr."""
 
 [[faq]]
-q = "Warum soll ich mein Gesicht selbst markieren, statt dass es gefunden wird?"
+q = "Wie findet es Scheitel, Kinn und Augen ohne Gesichtsmodell?"
 a = """
-        Weil ein Gesicht zu finden bedeutet, ein Modell auszuliefern: Gewichte zum
-        Herunterladen, eine Laufzeitumgebung, um sie auszuführen, und ein Versagen, das
-        ungleichmäßig verteilt ist. Erkenner sind bei manchen Gesichtern messbar
-        schlechter als bei anderen, und ausgerechnet die Menschen, deren Fotos ohnehin
-        am häufigsten abgelehnt werden, würden im Stich gelassen. Vier gezogene Punkte
-        kosten etwa acht Sekunden, sind exakt und sind für alle dieselben acht
-        Sekunden. Der experimentelle Gesichtserkenner des Browsers hätte in einem
-        Browser hinter einem Schalter funktioniert, und das ist keine Funktion, sondern
-        ein Werkzeug, das sich je nach dem, womit man es geöffnet hat, anders
-        verhält."""
+        Indem es etwas voraussetzen darf, was ein allgemeiner Gesichtserkenner nicht
+        voraussetzen darf: Jede dieser Vorschriften verlangt dieselbe Szene &mdash;
+        eine Person, frontal zur Kamera, vor einer schlichten, gleichmäßig
+        ausgeleuchteten Wand. Also wird die Farbe der Wand am Rand des Bildes
+        abgelesen, alles, was nicht diese Farbe ist, ist die Person, und deren oberste
+        Stelle ist der Scheitel, Haare eingeschlossen. Die Pupillen sind das beste Paar
+        von Flecken, die dunkler sind als ihre eigene Umgebung, auf gleicher Höhe und
+        beiderseits der Kopfmitte &mdash; ein rein örtlicher Vergleich, an dem nichts
+        von der Farbe eines Gesichts abhängt. Das Kinn ist das eine, was sich so nicht
+        finden lässt, denn ein Kiefer vor einem Hals ist eine weiche Kante ohne
+        Farbwechsel; es wird aus den Pupillen errechnet, die fast genau auf halber
+        Kopfhöhe sitzen, und dann an der Kontur geprüft. Alles davon ist Rechnerei in
+        <code>src/detect.js</code>: keine Gewichte, keine Laufzeitumgebung, nichts
+        Abgerufenes &mdash; und dieselbe Rechnerei für jedes Gesicht. Das Letzte ist
+        der Punkt, denn ein mitgeliefertes Modell liegt ungleichmäßig falsch, bei
+        manchen Gesichtern schlechter als bei anderen, und ausgerechnet die Menschen,
+        deren Fotos ohnehin am häufigsten abgelehnt werden, würden im Stich
+        gelassen."""
+
+[[faq]]
+q = "Wie sehr soll ich den gesetzten Punkten trauen?"
+a = """
+        Genug, um davon auszugehen; nicht genug, um nicht hinzusehen. Zu jedem der vier
+        gibt es ein Foto, bei dem er danebenliegt: Vor einer gemusterten Wand oder einem
+        Bücherregal gibt es keine Kontur, an der sich ein Kopf abheben ließe, bei einem
+        oben angeschnittenen Kopf ist der Scheitel gar nicht im Bild, und eine Brille,
+        ein dichter Pony oder geschlossene Augen können die Pupillen auf das falsche
+        Merkmal setzen. Deshalb sagt das Werkzeug ausdrücklich, welche der vier es
+        gemessen hat und welche es errechnen musste, verweigert bei einem Bild ohne
+        schlichten Hintergrund lieber die Antwort, als eine zu erfinden, und lässt jeden
+        Punkt verschiebbar. Der Zuschnitt entsteht dort, wo die Punkte am Ende liegen,
+        nie dort, wo sie angefangen haben. Wer alle vier lieber selbst setzt, findet
+        über dem Bild den Schalter <em>Ich setze sie selbst</em> &mdash; und einen Punkt
+        von Hand zu verschieben schaltet von sich aus dorthin, denn von da an gehören
+        sie Ihnen und nichts verschiebt sie mehr."""
 
 [[faq]]
 q = "Was ist die Kopfhöhenregel, und warum scheitert meine ständig daran?"
@@ -313,14 +346,15 @@ features = [
   "Ein Regelwerk veröffentlichter Vorschriften, jede mit Behörde und Lesedatum",
   "Die Geometrie aus ICAO Doc 9303: Kopfhöhe als Anteil des Bildes und Augenlinie über der Unterkante",
   "Ein Zuschnittrahmen im Format der Vorschrift, mit eingezeichnetem Augen- und Kinnband",
-  "Vier gezogene Marken für Scheitel, Kinn und beide Pupillen statt Gesichtserkennung",
+  "Scheitel, Kinn und beide Pupillen aus der Kopfkontur und der Dunkelheit der Augen gefunden, ohne mitgeliefertes Modell und ohne Abruf",
+  "Alle vier bleiben verschiebbar, und die Seite sagt, welche gemessen und welche errechnet wurden",
   "Kopfhöhe, Augenlinie, Zentrierung und Neigung mitlaufend, jeweils mit Korrekturrichtung",
   "Hintergrundfarbe und Gleichmäßigkeit in CIE Lab gemessen und getrennt ausgewiesen",
   "Druckt auf den exakten Millimeter, mit der Auflösung im JPEG-Kopf",
   "Ein Bogen in 10 x 15, 13 x 18, A4 oder Letter, gekachelt mit Schnittmarken in den Lücken",
   "Eine Upload-Datei in der vorgeschriebenen Pixelgröße, an beiden Enden ins KB-Band des Portals gebracht",
   "SSC- und UPSC-Formularfotos in 200 x 230 mit 20 bis 50 KB und Unterschriften in 140 x 60 mit 10 bis 20 KB",
-  "Läuft offline; kein Upload, kein Konto, keine Gesichtserkennung",
+  "Läuft offline; kein Upload, kein Konto, kein Gesichtsmodell",
 ]
 
 [picker]

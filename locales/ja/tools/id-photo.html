@@ -84,11 +84,33 @@
 
     <div id="frame-controls" hidden>
       <p class="stage-hint" id="mark-hint">
-        4つの点を頭頂、あご、左右の瞳へドラッグして、<strong>枠を合わせる</strong>を
-        押してください。規定が測るのはこの4点だけで、だからこそこの道具は顔検出で
-        推測せず、あなたに置いてもらいます。点は、胸から上の写真でよくある位置から
-        始まります。それは出発点であって、計測ではありません。
+        頭頂、あご、そして左右の瞳。規定が測るのはこの4点だけで、切り抜きは
+        4点が最終的にある場所から取られます。ずれて置かれた点はドラッグして直し、
+        それから<strong>枠を合わせる</strong>を押してください。4点を見つける
+        作業は、写真そのものを測ることです&mdash;背後の壁に対する頭の輪郭と、
+        目のある暗い部分。そこにモデルはなく、何も取りに行きません。判定では
+        なく出発点なので、直すのはあなたの側で、どの点が測れなかったかは下の行が
+        述べます。
       </p>
+
+      <!--
+        Where the dots come from. Choosing to place them yourself leaves them
+        exactly where they are and stops anything moving them again; moving one
+        by hand chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="4つの点がどこから来るか">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>探してもらう</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>自分で置く</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
 
       <!-- The crop box, its overlay and the four marks are all added here by
            src/cropper.js and src/marks.js. The stage is given the picture's own
@@ -101,7 +123,7 @@
 
       <div class="frame-actions">
         <button type="button" id="fit-box" class="primary">規定に合わせて枠を置く</button>
-        <button type="button" id="reset-marks" class="ghost">点を戻す</button>
+        <button type="button" id="reset-marks" class="ghost">もう一度顔を探す</button>
         <button type="button" id="whole-photo" class="ghost">収まる最大の枠</button>
       </div>
 
@@ -180,4 +202,25 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. `{why}` is
+    filled in with one or more of the `marks.why.*` lines below, joined with
+    a semicolon; nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="marks.measured">4点とも写真から測りました&mdash;頭頂は頭の輪郭から、瞳はその暗さから、あごは下顎が首に入るところから。それでも確かめて、ずれている点はドラッグしてください。切り抜きは4点が最終的にある場所から取られます。</span>
+    <span data-phrase="marks.rough">置きましたが、すべてを測れたわけではありません。枠を合わせる前に4点とも確かめてください。</span>
+    <span data-phrase="marks.none">この写真からは何も測れませんでした。点は代わりに初期位置にあります。頭頂、あご、左右の瞳へドラッグしてください。</span>
+    <span data-phrase="marks.manual">4つの点はあなたのもので、何も動かしません。それぞれを頭頂、あご、瞳へドラッグしてください。</span>
+    <span data-phrase="marks.edited">点を動かしたので、4つともあなたのものになりました。「探してもらう」を選ぶと写真をもう一度測ります。</span>
+
+    <span data-phrase="marks.why.background">背後の壁が無地でなく、頭の輪郭を切り出せません。</span>
+    <span data-phrase="marks.why.top">頭が写真の上に切れていて、探すべき頭頂がありません。</span>
+    <span data-phrase="marks.why.eyes">目を見分けられなかったため、この大きさの頭でよくある位置に両方を置きました。</span>
+    <span data-phrase="marks.why.chin">あごはこの頭の輪郭からではなく、頭の一般的な比率から求めました。</span>
+
+    <span data-phrase="marks.button.again">もう一度顔を探す</span>
+    <span data-phrase="marks.button.back">点を戻す</span>
+  </div>
 </main>

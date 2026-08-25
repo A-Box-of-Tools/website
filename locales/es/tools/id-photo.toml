@@ -31,7 +31,8 @@ live_hint = """
 read_first = """
 , <code>src/specs.js</code> para el reglamento, con las
       cifras publicadas de cada país, la autoridad de la que salen y la fecha en que
-      se leyeron, <code>src/geometry.js</code> para las cuentas que convierten cuatro
+      se leyeron, <code>src/detect.js</code> para cómo se encuentran los cuatro puntos &mdash; un contorno y dos manchas oscuras, sin modelo alguno &mdash;,
+      <code>src/geometry.js</code> para las cuentas que convierten cuatro
       puntos marcados en un recorte, y <code>src/jpeg.js</code> para las dos
       modificaciones de cabecera que meten la resolución de impresión en el archivo y
       suben una subida demasiado pequeña hasta el tamaño que exige un formulario."""
@@ -87,13 +88,18 @@ body = """
       foto en remoto."""
 
 [[privacy]]
-title = "No hay detección de caras, y es a propósito."
+title = "La cara se encuentra sin ningún modelo de caras."
 body = """
- Los cuatro puntos desde los
-      que se miden las normas los arrastras tú. Detectarlos significaría enviar un
-      modelo y ejecutarlo sobre una imagen de tu cara, y un modelo que se equivoca se
-      equivoca de forma desigual: peor con unas caras que con otras. Cuatro puntos
-      cuestan ocho segundos y son exactos para todo el mundo."""
+ No hay pesos que
+      descargar, ni motor de inferencia que los ejecute, ni nada que se pida a la
+      red: la coronilla sale del contorno de tu cabeza contra la pared que hay
+      detrás, y las pupilas de las zonas de la cara que son más oscuras que lo que
+      las rodea. Nada de eso lee el color de la piel, y esa es justamente la razón
+      de escribirlo así &mdash; un modelo que se equivoca se equivoca de forma
+      desigual, peor con unas caras que con otras. Es una posición de partida y no
+      un veredicto: la página dice cuál de los cuatro puntos no ha podido medir,
+      cada punto sigue siendo arrastrable, y con <em>Los coloco yo</em> queda
+      apagado del todo."""
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."
@@ -129,12 +135,14 @@ body = """
       sitio»."""
 
 [[howto]]
-title = "Arrastra los cuatro puntos sobre tu cara."
+title = "Comprueba los cuatro puntos sobre tu cara."
 body = """
- Coronilla, barbilla y cada
-      pupila. Esos cuatro puntos son todo lo que mide la norma, y por eso esta
-      herramienta te los pide en vez de adivinarlos. Después pulsa <em>Ajustar el
-      recuadro</em> y el recorte cae donde ese país lo quiere."""
+ Coronilla, barbilla y
+      cada pupila: esos cuatro puntos son todo lo que mide la norma. Se colocan
+      midiendo la propia foto, y la línea de debajo dice cuáles se lograron y cuáles
+      hubo que deducir. Arrastra el que haya caído mal, o cambia a
+      <em>Los coloco yo</em> y hazlos los cuatro a mano. Luego pulsa
+      <em>Ajustar el recuadro</em> y el recorte cae donde lo quiere ese país."""
 
 [[howto]]
 title = "Lee las cuatro comprobaciones, y el fondo."
@@ -181,17 +189,41 @@ a = """
         geometría de la OACI, esa entrada arranca con ella."""
 
 [[faq]]
-q = "¿Por qué me pide marcar mi propia cara en vez de encontrarla?"
+q = "¿Cómo encuentra la coronilla, la barbilla y los ojos sin un modelo de caras?"
 a = """
-        Porque encontrar una cara significa enviar un modelo: pesos que descargar, un
-        entorno de inferencia para ejecutarlos y un modo de fallo desigual. Los
-        detectores son medidamente peores con unas caras que con otras, y las personas
-        cuyas fotografías ya se rechazan más a menudo serían precisamente las que
-        saldrían perdiendo. Cuatro puntos arrastrados cuestan unos ocho segundos, son
-        exactos y son los mismos ocho segundos para todo el mundo. El detector de caras
-        experimental del navegador habría funcionado en un navegador y detrás de una
-        opción oculta, y eso no es una función: es una herramienta que funciona distinto
-        según con qué la abras."""
+        Dando por hecho algo que un detector de caras general no puede dar por hecho y
+        esta herramienta sí: todas estas normas exigen la misma escena &mdash; una
+        persona, de frente a la cámara, contra una pared lisa e iluminada por igual.
+        Así que el color de la pared se lee en el borde de la foto, todo lo que no es
+        ese color es la persona, y lo más alto de ella es la coronilla, con el pelo
+        incluido. Las pupilas se buscan como el mejor par de manchas más oscuras que
+        su propio entorno, a la misma altura y una a cada lado del centro de la cabeza:
+        una comparación local, así que nada en ella depende del color que tenga una
+        cara. La barbilla es la única que no se puede encontrar así, porque una
+        mandíbula contra un cuello es un borde suave sin cambio de color; se deduce de
+        las pupilas, que están casi exactamente a media altura de la cabeza, y luego se
+        contrasta con el contorno. Todo ello son cuentas en
+        <code>src/detect.js</code>: sin pesos, sin motor de inferencia, sin descargar
+        nada, y las mismas cuentas para cualquier cara. Eso último es lo que importa,
+        porque un detector empaquetado se equivoca de forma desigual &mdash; peor con
+        unas caras que con otras &mdash; y quienes ya ven rechazadas sus fotos más a
+        menudo son justo a quienes dejaría tirados."""
+
+[[faq]]
+q = "¿Cuánto debo fiarme de los puntos que coloca?"
+a = """
+        Lo bastante para partir de ahí, no tanto como para no mirarlos. Cada uno de los
+        cuatro tiene una foto en la que falla: una pared estampada o una estantería no
+        deja contorno contra el que recortar una cabeza, una cabeza cortada por arriba
+        no tiene coronilla en la foto, y unas gafas, un flequillo espeso o los ojos
+        cerrados pueden poner las pupilas sobre el rasgo equivocado. Por eso la
+        herramienta dice en voz alta cuáles de los cuatro midió y cuáles tuvo que
+        deducir, se niega en redondo ante una foto sin fondo liso en vez de inventarse
+        una respuesta, y deja todos los puntos arrastrables. El recorte sale de donde
+        acaben quedando, nunca de donde empezaron. Si prefieres colocar los cuatro tú,
+        el interruptor sobre la foto dice <em>Los coloco yo</em>, y mover cualquier
+        punto a mano cambia solo a esa opción: desde ese momento son tuyos y nada los
+        va a mover."""
 
 [[faq]]
 q = "¿Qué es la regla de la altura de cabeza, y por qué la mía no la cumple nunca?"
@@ -303,14 +335,15 @@ features = [
   "Un reglamento de especificaciones publicadas, cada una con su autoridad y la fecha en que se leyó",
   "La geometría del Doc 9303 de la OACI: la altura de cabeza como fracción del encuadre y la línea de ojos sobre el borde inferior",
   "Un recuadro de recorte fijado a la forma de la especificación, con la banda de ojos y la de barbilla dibujadas dentro",
-  "Cuatro marcas arrastradas (coronilla, barbilla y las dos pupilas) en vez de detección de caras",
+  "Coronilla, barbilla y las dos pupilas halladas por el contorno de la cabeza y lo oscuro de los ojos, sin modelo empaquetado y sin descargar nada",
+  "Los cuatro siguen siendo arrastrables, y la página dice cuáles midió y cuáles dedujo",
   "Altura de cabeza, línea de ojos, centrado e inclinación en vivo, cada uno diciendo hacia dónde corregir",
   "Color y uniformidad del fondo medidos en CIE Lab, con los dos informados por separado",
   "Imprime a los milímetros exactos, con la resolución escrita en la cabecera JPEG",
   "Una hoja de 10 x 15, 13 x 18, A4 o Carta, mosaicada con marcas de corte en los huecos y sin nada encima de una imagen",
   "Un archivo de subida al tamaño en píxeles obligatorio, ajustado a la banda de KB del portal por los dos extremos",
   "Fotos de formulario SSC y UPSC a 200 x 230 en 20-50 KB, y firmas a 140 x 60 en 10-20 KB",
-  "Funciona sin conexión; sin subidas, sin cuenta, sin detección de caras",
+  "Funciona sin conexión; sin subidas, sin cuenta, sin modelo de caras",
 ]
 
 [picker]

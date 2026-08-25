@@ -32,7 +32,8 @@ live_hint = """
 read_first = """
 , <code>src/specs.js</code> pour le recueil de règles
       &mdash; les chiffres publiés de chaque pays, avec l'autorité et la date de
-      relevé de chacun &mdash; <code>src/geometry.js</code> pour le calcul qui
+      relevé de chacun &mdash; <code>src/detect.js</code> pour la façon dont les quatre points sont trouvés &mdash; un contour et deux taches sombres, sans le moindre modèle &mdash;,
+      <code>src/geometry.js</code> pour le calcul qui
       transforme quatre points posés en un recadrage, et <code>src/jpeg.js</code>
       pour les deux retouches d'en-tête qui inscrivent la résolution d'impression dans
       le fichier et amènent un envoi trop léger à la taille qu'un formulaire
@@ -90,14 +91,18 @@ body = """
       distance."""
 
 [[privacy]]
-title = "Il n'y a pas de détection de visage, et c'est volontaire."
+title = "Le visage est trouvé sans modèle de visage."
 body = """
- Les quatre points
-      à partir desquels les règles se mesurent, c'est vous qui les posez. Les détecter
-      supposerait de livrer un modèle et de le faire tourner sur une image de votre
-      visage&nbsp;; or un modèle qui se trompe se trompe inégalement, moins bien sur
-      certains visages que sur d'autres. Quatre points prennent huit secondes et sont
-      exacts pour tout le monde."""
+ Aucun poids à
+      télécharger, aucun moteur d&rsquo;inférence pour les exécuter et rien qui
+      soit récupéré&nbsp;: le sommet du crâne vient du contour de votre tête sur le
+      mur derrière vous, les pupilles des zones du visage plus sombres que ce qui
+      les entoure. Rien là-dedans ne lit la couleur de peau, et c&rsquo;est
+      précisément pour cela que c&rsquo;est écrit ainsi &mdash; un modèle qui se
+      trompe se trompe inégalement, plus sur certains visages que sur d&rsquo;autres.
+      C&rsquo;est une position de départ plutôt qu&rsquo;un verdict&nbsp;: la page
+      dit lequel des quatre points elle n&rsquo;a pas pu mesurer, chaque point reste
+      déplaçable, et <em>Je les place moi-même</em> désactive tout cela."""
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
@@ -135,13 +140,15 @@ body = """
       saisit sous &laquo;&nbsp;Ailleurs dans le monde&nbsp;&raquo;."""
 
 [[howto]]
-title = "Faites glisser les quatre points sur votre visage."
+title = "Vérifiez les quatre points sur votre visage."
 body = """
- Sommet du crâne,
-      menton et chaque pupille. Ces quatre points constituent la totalité de ce que la
-      règle mesure, et c'est pour cela que cet outil vous les demande plutôt que de
-      les deviner. Appuyez ensuite sur <em>Ajuster le cadre</em> et le recadrage tombe
-      là où ce pays le veut."""
+ Sommet du crâne, menton
+      et chaque pupille&nbsp;: ces quatre points constituent la totalité de ce que la
+      règle mesure. Ils sont posés en mesurant la photo elle-même, et la ligne
+      au-dessous dit lesquels ont été mesurés et lesquels ont dû être déduits.
+      Déplacez ceux qui sont tombés à côté, ou passez à
+      <em>Je les place moi-même</em> et posez les quatre vous-même. Appuyez ensuite
+      sur <em>Ajuster le cadre</em> et le recadrage tombe là où ce pays le veut."""
 
 [[howto]]
 title = "Lisez les quatre contrôles, et le fond."
@@ -190,18 +197,43 @@ a = """
         dessus."""
 
 [[faq]]
-q = "Pourquoi me demander de marquer mon visage plutôt que de le trouver&nbsp;?"
+q = "Comment trouve-t-il le sommet du crâne, le menton et les yeux sans modèle de visage&nbsp;?"
 a = """
-        Parce que trouver un visage suppose de livrer un modèle&nbsp;: des poids à
-        télécharger, un moteur d'inférence pour les faire tourner, et un mode d'échec
-        inégal. Les détecteurs sont mesurablement moins bons sur certains visages que
-        sur d'autres, et les personnes dont les photographies sont déjà le plus souvent
-        refusées seraient précisément celles qu'il laisserait tomber. Quatre points
-        glissés prennent environ huit secondes, sont exacts, et sont les mêmes huit
-        secondes pour tout le monde. Le détecteur de visages expérimental du navigateur
-        aurait fonctionné dans un seul navigateur, derrière un drapeau&nbsp;: ce n'est
-        pas une fonctionnalité, c'est un outil qui marche différemment selon ce avec
-        quoi on l'ouvre."""
+        En supposant ce qu&rsquo;un détecteur de visage généraliste n&rsquo;a pas le
+        droit de supposer et que cet outil, lui, peut supposer&nbsp;: chacune de ces
+        règles exige la même scène &mdash; une personne, face à l&rsquo;objectif,
+        devant un mur uni et régulièrement éclairé. La couleur du mur est donc relevée
+        sur le bord de la photo, tout ce qui n&rsquo;est pas cette couleur est la
+        personne, et le haut de celle-ci est le sommet du crâne, cheveux compris. Les
+        pupilles sont cherchées comme la meilleure paire de taches plus sombres que
+        leur propre entourage, à la même hauteur et de part et d&rsquo;autre du milieu
+        de la tête&nbsp;: une comparaison purement locale, donc rien n&rsquo;y dépend
+        de la couleur d&rsquo;un visage. Le menton est le seul qui ne se trouve pas
+        ainsi, car une mâchoire devant un cou est un bord doux sans changement de
+        couleur&nbsp;; il est déduit des pupilles, qui se situent à presque exactement
+        la moitié de la hauteur d&rsquo;une tête, puis confronté au contour. Tout cela
+        est du calcul, dans <code>src/detect.js</code>&nbsp;: pas de poids, pas de
+        moteur d&rsquo;inférence, rien de récupéré, et le même calcul pour chaque
+        visage. C&rsquo;est ce dernier point qui compte, car un détecteur livré avec
+        l&rsquo;outil se trompe inégalement &mdash; plus sur certains visages que sur
+        d&rsquo;autres &mdash; et les personnes dont les photos sont déjà le plus
+        souvent refusées sont précisément celles qu&rsquo;il laisserait tomber."""
+
+[[faq]]
+q = "Quelle confiance accorder aux points qu&rsquo;il place&nbsp;?"
+a = """
+        Assez pour partir de là, pas assez pour ne pas les regarder. Chacun des quatre
+        a une photo sur laquelle il se trompe&nbsp;: un mur à motifs ou une bibliothèque
+        ne laisse aucun contour sur lequel détourer une tête, une tête coupée en haut
+        n&rsquo;a pas de sommet du crâne dans la photo, et des lunettes, une frange
+        épaisse ou des yeux fermés peuvent poser les pupilles sur le mauvais trait.
+        L&rsquo;outil dit donc explicitement lesquels des quatre il a mesurés et
+        lesquels il a dû déduire, refuse net une photo sans fond uni plutôt que
+        d&rsquo;inventer une réponse, et laisse chaque point déplaçable. Le recadrage
+        est pris là où les points finissent, jamais là où ils ont commencé. Si vous
+        préférez poser les quatre vous-même, l&rsquo;interrupteur au-dessus de la photo
+        indique <em>Je les place moi-même</em>, et déplacer un point à la main y bascule
+        tout seul&nbsp;: à partir de là ils sont les vôtres et rien ne les déplacera."""
 
 [[faq]]
 q = "C'est quoi la règle de hauteur de tête, et pourquoi la mienne échoue toujours&nbsp;?"
@@ -319,14 +351,15 @@ features = [
   "Un recueil de spécifications publiées, chacune nommant son autorité et sa date de relevé",
   "La géométrie du Doc 9303 de l'OACI : hauteur de tête en fraction du cadre, et ligne des yeux au-dessus du bord inférieur",
   "Un cadre de recadrage verrouillé à la forme de la spécification, avec la bande des yeux et celle du menton tracées dedans",
-  "Quatre repères posés à la main - sommet du crâne, menton et les deux pupilles - au lieu d'une détection de visage",
+  "Sommet du crâne, menton et les deux pupilles trouvés d&rsquo;après le contour de la tête et le sombre des yeux, sans modèle livré et sans rien récupérer",
+  "Les quatre restent déplaçables, la page disant lesquels ont été mesurés et lesquels déduits",
   "Hauteur de tête, ligne des yeux, centrage et inclinaison en direct, chacun indiquant le sens de correction",
   "Couleur et régularité du fond mesurées en CIE Lab, et rapportées séparément",
   "Impression au millimètre exact, avec la résolution inscrite dans l'en-tête JPEG",
   "Une planche 10 x 15, 13 x 18, A4 ou Letter, pavée avec repères de coupe dans les intervalles et rien par-dessus une image",
   "Un fichier d'envoi à la taille en pixels imposée, calibré sur la fourchette en Ko du portail aux deux extrémités",
   "Photos de formulaire SSC et UPSC en 200 x 230 entre 20 et 50 Ko, et signatures en 140 x 60 entre 10 et 20 Ko",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans détection de visage",
+  "Fonctionne hors ligne ; sans envoi, sans compte, sans modèle de visage",
 ]
 
 [picker]

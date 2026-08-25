@@ -31,7 +31,8 @@ live_hint = """
 read_first = """
 , <code>src/specs.js</code> voor het regelboek &mdash;
       de gepubliceerde cijfers van elk land, met de instantie en de datum waarop elk
-      cijfer gelezen is &mdash; <code>src/geometry.js</code> voor het rekenwerk dat
+      cijfer gelezen is &mdash; <code>src/detect.js</code> voor hoe de vier punten gevonden worden &mdash; een omtrek en twee donkere plekken, zonder enig model &mdash;,
+      <code>src/geometry.js</code> voor het rekenwerk dat
       vier gezette punten in een uitsnede verandert, en <code>src/jpeg.js</code> voor
       de twee wijzigingen aan de kop die de printresolutie in het bestand zetten en een
       te kleine upload optrekken naar de grootte waar een formulier op staat."""
@@ -86,13 +87,17 @@ body = """
       afstand gecontroleerd wordt."""
 
 [[privacy]]
-title = "Er zit geen gezichtsherkenning in, en dat is met opzet."
+title = "Het gezicht wordt gevonden zonder gezichtsmodel."
 body = """
- De vier punten waar de
-      regels vanaf gemeten worden sleep je zelf. Ze detecteren zou betekenen dat er een
-      model meegeleverd wordt en dat het op een beeld van je gezicht draait, en een
-      model dat fout zit, zit ongelijk fout: bij het ene gezicht slechter dan bij het
-      andere. Vier stippen kosten acht seconden en zijn voor iedereen exact."""
+ Er zijn geen gewichten
+      om te downloaden, geen inferentie-omgeving om ze in te draaien en niets dat
+      wordt opgehaald: de kruin komt uit de omtrek van je hoofd tegen de muur
+      erachter, de pupillen uit de plekken van het gezicht die donkerder zijn dan
+      wat eromheen zit. Niets daarvan leest huidskleur, en dat is precies waarom het
+      zo geschreven is &mdash; een model dat het mis heeft, heeft het ongelijk mis:
+      slechter bij sommige gezichten dan bij andere. Het is een startpositie en geen
+      oordeel: de pagina zegt welk van de vier punten ze niet kon meten, elke stip
+      blijft versleepbaar, en met <em>Ik zet ze zelf</em> staat het helemaal uit."""
 
 [[privacy]]
 title = "Wat Google laadt, en wat het niet te zien krijgt."
@@ -127,12 +132,14 @@ body = """
       hebt gekregen en er niet op staat vul je in onder &ldquo;Ergens anders&rdquo;."""
 
 [[howto]]
-title = "Sleep de vier stippen op je gezicht."
+title = "Controleer de vier stippen op je gezicht."
 body = """
- Kruin, kin en elke pupil. Die vier
-      punten zijn het hele verhaal van wat de regel meet, en daarom vraagt deze tool er
-      om in plaats van te gokken. Druk daarna op <em>Pas het kader aan</em> en de
-      uitsnede landt waar dat land hem wil."""
+ Kruin, kin en elke
+      pupil &mdash; die vier punten zijn het hele verhaal van wat de regel meet. Ze
+      worden gezet door de foto zelf op te meten, en de regel eronder zegt welke dat
+      lukte en welke afgeleid moesten worden. Sleep wat verkeerd is geland, of zet
+      hem op <em>Ik zet ze zelf</em> en doe alle vier met de hand. Druk dan op
+      <em>Pas het kader aan</em> en de uitsnede landt waar dat land hem hebben wil."""
 
 [[howto]]
 title = "Lees de vier controles, en de achtergrond."
@@ -178,17 +185,42 @@ a = """
         wereld op de ICAO-geometrie uitgeeft, begint die ingang daar ook mee."""
 
 [[faq]]
-q = "Waarom moet ik mijn eigen gezicht markeren in plaats van dat hij het vindt?"
+q = "Hoe vindt het de kruin, de kin en de ogen zonder gezichtsmodel?"
 a = """
-        Omdat een gezicht vinden betekent dat er een model meekomt: gewichten om te
-        downloaden, een runtime om ze in te draaien, en een manier van falen die
-        ongelijk is. Detectoren zijn meetbaar slechter bij het ene gezicht dan bij het
-        andere, en de mensen van wie de foto's nu al het vaakst worden afgekeurd zijn
-        precies degenen die hij in de steek zou laten. Vier gesleepte stippen kosten
-        zo'n acht seconden, zijn exact, en zijn voor iedereen dezelfde acht seconden. De
-        experimentele gezichtsdetector van de browser zou in één browser achter een vlag
-        gewerkt hebben, en dat is geen functie: dat is een tool die anders werkt
-        afhankelijk van waarin je hem opent."""
+        Door iets aan te nemen wat een algemene gezichtsdetector niet mag aannemen en
+        deze tool wel: al deze regels eisen hetzelfde tafereel &mdash; één persoon,
+        recht in de camera, tegen een egale, gelijkmatig verlichte muur. De kleur van de
+        muur wordt dus van de rand van de foto gelezen, alles wat die kleur niet is, is
+        de persoon, en het hoogste daarvan is de kruin, haar inbegrepen. De pupillen
+        worden gezocht als het beste paar plekken dat donkerder is dan zijn eigen
+        omgeving, op gelijke hoogte en aan weerszijden van het midden van het hoofd
+        &mdash; een vergelijking die plaatselijk is, dus niets erin hangt af van welke
+        kleur een gezicht heeft. De kin is de enige die zo niet te vinden is, want een
+        kaak tegen een hals is een zachte rand zonder kleurverschil; die wordt afgeleid
+        uit de pupillen, die op vrijwel precies de halve hoogte van een hoofd zitten, en
+        daarna tegen de omtrek gehouden. Het is allemaal rekenwerk, in
+        <code>src/detect.js</code>: geen gewichten, geen inferentie-omgeving, niets
+        opgehaald, en hetzelfde rekenwerk voor elk gezicht. Dat laatste is wat telt,
+        want een meegeleverde detector heeft het ongelijk mis &mdash; slechter bij
+        sommige gezichten dan bij andere &mdash; en de mensen van wie de foto&rsquo;s
+        toch al het vaakst worden afgekeurd zijn juist degenen die hij zou laten
+        vallen."""
+
+[[faq]]
+q = "Hoeveel moet ik vertrouwen op de stippen die het zet?"
+a = """
+        Genoeg om ervan uit te gaan, niet genoeg om er niet naar te kijken. Bij elk van
+        de vier hoort een foto waarop het misgaat: een muur met een motief of een
+        boekenkast laat geen omtrek over om een hoofd tegen af te steken, een hoofd dat
+        bovenaan is afgesneden heeft helemaal geen kruin in de foto, en een bril, een
+        dikke pony of dichte ogen kunnen de pupillen op het verkeerde kenmerk zetten.
+        Daarom zegt de tool hardop welke van de vier het gemeten heeft en welke het
+        moest afleiden, weigert het botweg bij een foto zonder egale achtergrond in
+        plaats van een antwoord te verzinnen, en laat het elke stip versleepbaar. De
+        uitsnede wordt genomen waar de stippen uiteindelijk staan, nooit waar ze
+        begonnen. Wil je alle vier liever zelf zetten, dan zegt de schakelaar boven de
+        foto <em>Ik zet ze zelf</em>, en een stip met de hand verplaatsen zet hem daar
+        vanzelf op: vanaf dat moment zijn ze van jou en beweegt er niets meer aan."""
 
 [[faq]]
 q = "Wat is die hoofdhoogteregel, en waarom haalt de mijne die nooit?"
@@ -303,14 +335,15 @@ features = [
   "Een regelboek met gepubliceerde specificaties, elk met de instantie en de leesdatum erbij",
   "De geometrie uit ICAO Doc 9303: hoofdhoogte als deel van het beeld, en de ooglijn boven de onderrand",
   "Een uitsnedekader vastgezet op de vorm van de specificatie, met de oog- en kinband erin getekend",
-  "Vier gesleepte markeringen - kruin, kin en beide pupillen - in plaats van gezichtsherkenning",
+  "Kruin, kin en beide pupillen gevonden aan de omtrek van het hoofd en het donker van de ogen, zonder meegeleverd model en zonder iets op te halen",
+  "Alle vier blijven versleepbaar, met de pagina die zegt welke gemeten zijn en welke afgeleid",
   "Hoofdhoogte, ooglijn, centrering en scheefstand meelopend, elk met de kant om te corrigeren",
   "Achtergrondkleur en gelijkmatigheid gemeten in CIE Lab, en apart gerapporteerd",
   "Print op de exacte millimeter, met de resolutie in de JPEG-kop geschreven",
   "Een vel van 10 x 15, 13 x 18, A4 of Letter, getegeld met snijtekens in de tussenruimtes en niets over een plaatje",
   "Een uploadbestand op het voorgeschreven pixelformaat, aan beide kanten binnen de KB-band van het portaal gebracht",
   "SSC- en UPSC-formulierfoto's op 200 x 230 in 20-50 KB, en handtekeningen op 140 x 60 in 10-20 KB",
-  "Werkt offline; geen upload, geen account, geen gezichtsherkenning",
+  "Werkt offline; geen upload, geen account, geen gezichtsmodel",
 ]
 
 [picker]

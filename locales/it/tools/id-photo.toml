@@ -31,7 +31,8 @@ live_hint = """
 read_first = """
 , <code>src/specs.js</code> per il prontuario, cioè i
       numeri pubblicati di ogni paese, con l'autorità e la data in cui ciascuno è stato
-      letto, <code>src/geometry.js</code> per i conti che trasformano quattro punti
+      letto, <code>src/detect.js</code> per come vengono trovati i quattro punti &mdash; un contorno e due macchie scure, senza nessun modello &mdash;,
+      <code>src/geometry.js</code> per i conti che trasformano quattro punti
       segnati in un ritaglio, e <code>src/jpeg.js</code> per le due modifiche
       all'intestazione che scrivono la risoluzione di stampa nel file e portano un
       caricamento troppo leggero alla dimensione su cui un modulo insiste."""
@@ -88,13 +89,18 @@ body = """
       a distanza."""
 
 [[privacy]]
-title = "Non c'è nessun riconoscimento del volto, ed è voluto."
+title = "Il volto viene trovato senza un modello di volti."
 body = """
- I quattro punti da cui
-      si misurano le norme li trascini tu. Riconoscerli vorrebbe dire spedire un
-      modello e farlo girare su un'immagine della tua faccia, e un modello che sbaglia
-      sbaglia in modo disuguale: peggio su certi volti che su altri. Quattro puntini
-      costano otto secondi e sono esatti per tutti."""
+ Non ci sono pesi da
+      scaricare, né un motore di inferenza per eseguirli, né niente che venga
+      richiesto alla rete: la sommità del capo esce dal contorno della testa contro
+      il muro dietro, le pupille dalle zone del viso più scure di quello che le
+      circonda. Niente di tutto ciò legge il colore della pelle, ed è proprio per
+      questo che è scritto così &mdash; un modello che sbaglia sbaglia in modo
+      disuguale, peggio su certi volti che su altri. È una posizione di partenza e
+      non un verdetto: la pagina dice quale dei quattro punti non è riuscita a
+      misurare, ogni puntino resta trascinabile, e con <em>Li metto io</em> è spento
+      del tutto."""
 
 [[privacy]]
 title = "Cosa carica Google, e cosa non gli arriva."
@@ -130,12 +136,14 @@ body = """
       sotto «Da qualunque altra parte»."""
 
 [[howto]]
-title = "Trascina i quattro puntini sulla tua faccia."
+title = "Controlla i quattro puntini sul tuo viso."
 body = """
- Sommità del capo, mento e
-      ciascuna pupilla. Quei quattro punti sono tutto quello che la norma misura, ed è
-      per questo che lo strumento te li chiede invece di tirare a indovinare. Poi premi
-      <em>Adatta il riquadro</em> e il ritaglio finisce dove quel paese lo vuole."""
+ Sommità del capo, mento
+      e ciascuna pupilla: quei quattro punti sono tutto quello che la norma misura.
+      Vengono messi misurando la foto stessa, e la riga sotto dice quali ci è
+      riuscita e quali ha dovuto ricavare. Trascina quello caduto male, oppure passa
+      a <em>Li metto io</em> e falli tutti e quattro a mano. Poi premi
+      <em>Adatta il riquadro</em> e il ritaglio finisce dove lo vuole quel paese."""
 
 [[howto]]
 title = "Leggi i quattro controlli, e lo sfondo."
@@ -181,17 +189,42 @@ a = """
         parte proprio da lì."""
 
 [[faq]]
-q = "Perché mi chiede di segnare la mia faccia invece di trovarla?"
+q = "Come trova la sommità del capo, il mento e gli occhi senza un modello di volti?"
 a = """
-        Perché trovare una faccia vuol dire spedire un modello: pesi da scaricare, un
-        motore di inferenza per farli girare, e un modo di sbagliare disuguale. I
-        riconoscitori sono misurabilmente peggiori su certi volti che su altri, e le
-        persone le cui fotografie vengono già respinte più spesso sarebbero proprio
-        quelle che lascerebbe indietro. Quattro puntini trascinati costano circa otto
-        secondi, sono esatti, e sono gli stessi otto secondi per chiunque. Il
-        riconoscitore di volti sperimentale del browser avrebbe funzionato in un solo
-        browser e dietro un'opzione nascosta, e quella non è una funzione: è uno
-        strumento che si comporta diversamente a seconda di con cosa lo apri."""
+        Dando per scontato qualcosa che un riconoscitore di volti generico non può dare
+        per scontato e questo strumento sì: ognuna di queste norme pretende la stessa
+        scena &mdash; una persona, di fronte all&rsquo;obiettivo, davanti a un muro
+        liscio e illuminato in modo uniforme. Il colore del muro viene quindi letto dal
+        bordo della foto, tutto ciò che non è quel colore è la persona, e la sua parte
+        più alta è la sommità del capo, capelli compresi. Le pupille si cercano come la
+        coppia migliore di macchie più scure di ciò che le circonda, alla stessa altezza
+        e ai due lati del centro della testa: un confronto locale, quindi niente in esso
+        dipende dal colore di un viso. Il mento è l&rsquo;unico che così non si trova,
+        perché una mascella davanti a un collo è un bordo morbido senza cambio di
+        colore; viene ricavato dalle pupille, che stanno quasi esattamente a metà
+        dell&rsquo;altezza di una testa, e poi confrontato con il contorno. È tutta
+        aritmetica, in <code>src/detect.js</code>: nessun peso, nessun motore di
+        inferenza, niente scaricato, e la stessa aritmetica per ogni volto.
+        Quest&rsquo;ultima parte è quella che conta, perché un riconoscitore
+        distribuito insieme allo strumento sbaglia in modo disuguale &mdash; peggio su
+        certi volti che su altri &mdash; e le persone le cui foto vengono già respinte
+        più spesso sono proprio quelle che lascerebbe a piedi."""
+
+[[faq]]
+q = "Quanto posso fidarmi dei puntini che mette?"
+a = """
+        Abbastanza per partire, non abbastanza da non guardarli. Ognuno dei quattro ha
+        una foto su cui sbaglia: un muro a motivi o una libreria non lascia nessun
+        contorno contro cui ritagliare una testa, una testa tagliata in alto non ha la
+        sommità del capo nella foto, e occhiali, una frangia folta o gli occhi chiusi
+        possono mettere le pupille sul tratto sbagliato. Perciò lo strumento dice a
+        chiare lettere quali dei quattro ha misurato e quali ha dovuto ricavare, davanti
+        a una foto senza sfondo liscio rifiuta invece di inventarsi una risposta, e
+        lascia ogni puntino trascinabile. Il ritaglio viene preso da dove finiscono i
+        puntini, mai da dove sono partiti. Se preferisci metterli tutti e quattro tu,
+        l&rsquo;interruttore sopra la foto dice <em>Li metto io</em>, e spostare un
+        puntino a mano ci passa da solo: da quel momento sono tuoi e niente li
+        sposterà."""
 
 [[faq]]
 q = "Cos'è la regola dell'altezza della testa, e perché la mia non la rispetta mai?"
@@ -304,14 +337,15 @@ features = [
   "Un prontuario di specifiche pubblicate, ognuna con la sua autorità e la data in cui è stata letta",
   "La geometria del Doc 9303 ICAO: altezza della testa come frazione dell'inquadratura e linea degli occhi sopra il bordo inferiore",
   "Un riquadro di ritaglio bloccato sulla forma della specifica, con la fascia degli occhi e quella del mento disegnate dentro",
-  "Quattro segni trascinati a mano - sommità del capo, mento e le due pupille - invece del riconoscimento del volto",
+  "Sommità del capo, mento e le due pupille trovate dal contorno della testa e dallo scuro degli occhi, senza modelli distribuiti e senza scaricare niente",
+  "Tutti e quattro restano trascinabili, con la pagina che dice quali ha misurato e quali ha ricavato",
   "Altezza della testa, linea degli occhi, centratura e inclinazione dal vivo, ognuna con la direzione in cui correggere",
   "Colore e uniformità dello sfondo misurati in CIE Lab, e riportati separatamente",
   "Stampa ai millimetri esatti, con la risoluzione scritta nell'intestazione JPEG",
   "Un foglio 10 x 15, 13 x 18, A4 o Letter, affiancato con i segni di taglio negli spazi e niente sopra un'immagine",
   "Un file da caricare alla dimensione in pixel prevista, portato dentro la fascia in KB del portale da entrambe le parti",
   "Foto per i moduli SSC e UPSC a 200 x 230 tra 20 e 50 KB, e firme a 140 x 60 tra 10 e 20 KB",
-  "Funziona offline; niente caricamenti, niente account, nessun riconoscimento del volto",
+  "Funziona offline; niente caricamenti, niente account, nessun modello di volti",
 ]
 
 [picker]
