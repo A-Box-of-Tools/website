@@ -1,0 +1,201 @@
+<!--
+  tools/svg-to-image/body.html, in Traditional Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步，選檔案 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選 SVG 檔案</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">清空列表</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步，尺寸 -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> 說清楚要多大</h2>
+
+    <p class="card-lede">
+      這是向量圖唯一替你答不了的問題。SVG 裡沒有畫素，只有畫圖的指令，你說多大它就照著畫多大。下面這個數字不是一道你在往上頂的天花板，照片才是那樣。從一個 24&nbsp;畫素的圖示出發畫到 4000 畫素，跟 24 畫素時一樣銳利。
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">尺寸怎麼定</label>
+      <select id="size-mode">
+        <option value="scale" selected>按檔案自己宣告尺寸的倍數</option>
+        <option value="width">寬度，按畫素</option>
+        <option value="height">高度，按畫素</option>
+        <option value="longest">最長的那條邊</option>
+        <option value="box">一個框，兩邊都給</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>放大倍數<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="常用倍數">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        列表上每個檔案都從自己的尺寸出發去乘，所以一批原本大小不一的圖示，彼此之間的比例關係不會亂。
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>寬度<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="常用寬度">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">高度按圖形本身的比例跟著走。</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>高度<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">寬度按圖形本身的比例跟著走。</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>最長邊<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        哪邊長哪邊就變成這個數，另一邊跟著走，所以一個寬 logo 和一個高 logo，長邊上一樣大。
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>寬<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>高<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">圖形比例不一樣的時候</label>
+        <select id="box-fit">
+          <option value="fit" selected>放進去，整張圖都在，有一邊會短一點</option>
+          <option value="pad">墊起來，正好這麼大，兩側補背景</option>
+          <option value="stretch">拉伸，正好這麼大，比例認了變形</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">順便出高分屏的那幾份</label>
+      <select id="density">
+        <option value="1" selected>不用，一張圖一個檔案</option>
+        <option value="2">加一份 @2x，給 Retina 屏</option>
+        <option value="3">@2x 和 @3x 都要，手機要的那一整套</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- 第 3 步，格式 -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> 挑格式</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">格式</label>
+        <select id="format">
+          <option value="image/png" selected>PNG，保住透明，邊緣精確</option>
+          <option value="image/jpeg">JPEG，沒有透明，照片類更小</option>
+          <option value="image/webp">WebP，透明也有，檔案還更小</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">品質，<output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          只對 JPEG 和 WebP 起作用，PNG 是無損的，沒有品質這個旋鈕。大片純色和硬邊，也就是 SVG 主要由之構成的東西，恰恰是有損編碼器最不擅長的，所以這裡的預設值比處理照片時高。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">背景</label>
+        <select id="background-mode">
+          <option value="transparent" selected>透明</option>
+          <option value="colour">一種顏色</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="背景色" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第 4 步，先看，再拿走 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> 先看一眼，再儲存</h2>
+
+    <p class="card-lede">
+      預覽由寫檔案的同一段程式碼、拿你選的那個檔案、在這臺機器上畫出來。值得盯的是一張圖變成畫素時會變的那兩件事：只有半個畫素寬的髮絲線發灰了，還有文字，它用的是這臺機器上有的字型，不是從網上取來的那個。
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">加一個 SVG，它就出現在這裡。</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>開始轉換</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>完成</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下載</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

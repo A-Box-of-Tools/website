@@ -1,0 +1,24 @@
+#
+# Guide: converting an SVG to a PNG - Traditional Chinese.
+#
+# Overrides for pages/guides/convert-an-svg-to-png/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "SVG 轉 PNG"
+
+title = "怎麼把 SVG 轉成合適尺寸的 PNG"
+description = "向量圖自己沒有畫素尺寸，所以這個數字由你定。螢幕、應用圖示和印刷各自的數字從哪裡來，以及一張圖紙變成畫素那一刻會發生什麼變化。"
+
+heading = "怎麼把 SVG 轉成合適尺寸的 PNG"
+lede = """
+    轉換是容易的那一半。真正決定結果有沒有用的，是那個沒人替你回答的問題：\
+    到底要多少畫素？這一頁講這個數字從哪裡來，以及一張圖紙在變成畫素的路上\
+    會丟掉什麼。"""
+
+updated = "2026年8月20日"
+
+og_title = "把 SVG 轉成合適尺寸的 PNG"
+og_description = "那個畫素數到底從哪裡來，以及圖紙變成畫素時會變的三件事。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

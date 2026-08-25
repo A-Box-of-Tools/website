@@ -1,0 +1,24 @@
+#
+# Guide: cropping a video - Traditional Chinese.
+#
+# Overrides for pages/guides/crop-a-video/page.toml. Prose in the .html beside
+# this file. Written in Chinese rather than translated out of the English; the
+# house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "裁影片畫面"
+
+title = "怎麼把影片畫面裁成另一個形狀"
+description = "把片子裁成方圖、9:16 豎屏，或者精確到畫素的一個框。各家平臺要哪個比例，為什麼剪時長不用重編而裁畫面非重編不可，以及這一下的代價。"
+
+heading = "怎麼把影片畫面裁成另一個形狀"
+lede = """
+    裁剪改的是畫面的形狀，也就意味著要寫出新的幀。這一步繞不過去，凡是聲稱\
+    繞過去了的工具，乾的都是別的事。這一頁講它的代價，以及怎麼把這筆錢\
+    花好。"""
+
+updated = "2026年8月20日"
+
+og_title = "怎麼把影片畫面裁成另一個形狀"
+og_description = "各家平臺要哪個比例，為什麼剪時長不用重編而裁畫面非重編不可，以及這一下的代價。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

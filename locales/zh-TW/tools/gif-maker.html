@@ -1,0 +1,174 @@
+<main>
+  <!-- 第一步 &mdash; 幀 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選擇圖片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="改變幀的顯示方式">
+          <button type="button" data-view="large" class="active" aria-pressed="true">大圖</button>
+          <button type="button" data-view="small" aria-pressed="false">小圖</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">按名稱排序</button>
+        <button type="button" data-sort="date" class="ghost">按日期排序</button>
+        <button type="button" data-sort="reverse" class="ghost">倒序</button>
+        <button type="button" id="clear-all" class="ghost danger">全部移除</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      抓住某一幀的 <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖動
+      就能重排，也可以用每一幀上的箭頭。這裡的順序就是它們播放的順序。
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">每一幀停留</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="每幀停留時間的單位">
+        <option value="seconds" selected>秒</option>
+        <option value="fps">幀每秒</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">應用到全部</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- 第二步 &mdash; 設定 -->
+  <section class="card">
+    <h2><span class="step">2</span> GIF 設定</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">尺寸</label>
+        <select id="size">
+          <option value="480" selected>480 px &mdash; 好用的預設值</option>
+          <option value="640">640 px</option>
+          <option value="320">320 px</option>
+          <option value="240">240 px</option>
+          <option value="original">跟圖片一樣</option>
+          <option value="custom">自定義&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="自定義寬度（畫素）">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="自定義高度（畫素）">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">圖片如何擺放</label>
+        <select id="fit">
+          <option value="contain" selected>整張放進去（留邊）</option>
+          <option value="cover">填滿畫面（裁掉邊緣）</option>
+          <option value="stretch">拉伸填滿（會變形）</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">背景顏色</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">顏色數</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; GIF 的上限</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; 檔案最小</option>
+        </select>
+        <p class="field-note">顏色越少，檔案越小，色帶越明顯。</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">調色盤</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>每幀各自最合適的顏色</option>
+          <option value="shared">整個 GIF 共用一套調色盤</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">抖動</label>
+        <select id="dither">
+          <option value="on" selected>開 &mdash; 漸變更平滑</option>
+          <option value="off">關 &mdash; 更平整，邊緣更乾淨</option>
+        </select>
+        <p class="field-note">做 logo、線稿和截圖時把它關掉。</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">迴圈</label>
+        <select id="loop-mode">
+          <option value="forever" selected>一直迴圈</option>
+          <option value="once">只播一次</option>
+          <option value="times">播固定次數&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="動畫播放的次數" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">透明</label>
+        <select id="transparent">
+          <option value="off" selected>壓到背景色上</option>
+          <option value="on">保留透明區域</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="第一幀的預覽"></canvas>
+        <p id="preview-empty" class="preview-empty">新增圖片後就能看到預覽</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>幀數</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>時長</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>畫面尺寸</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>播放</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 第三步 &mdash; 匯出 -->
+  <section class="card">
+    <h2><span class="step">3</span> 做出 GIF</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>做 GIF</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="做好的動畫，正在播放"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>下載 GIF</a>
+      </div>
+    </div>
+  </section>
+</main>

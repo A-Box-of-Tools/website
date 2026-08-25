@@ -1,0 +1,24 @@
+#
+# Guide: combining images into a PDF - Traditional Chinese.
+#
+# Overrides for pages/guides/combine-images-into-a-pdf/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "圖片合成 PDF"
+
+title = "怎麼把多張圖片合成一個 PDF"
+description = "把照片或者掃描件做成一個 PDF：頁面大小、順序和旋轉，JPEG 為什麼進去時可以一點不掉畫質，以及這份 PDF 會向收件人交代些什麼。"
+
+heading = "怎麼把多張圖片合成一個 PDF"
+lede = """
+    人家要“一個 PDF”，而你手上是十一張紙的照片。這一頁講那些真正改變結果的\
+    選擇：頁面大小、順序、畫質，還有這份文件會把你交代多少，以及哪些其實\
+    不用管。"""
+
+updated = "2026年8月20日"
+
+og_title = "怎麼把多張圖片合成一個 PDF"
+og_description = "頁面大小、順序和旋轉，JPEG 為什麼進去時可以不掉畫質，以及這份 PDF 會向收件人交代些什麼。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

@@ -1,0 +1,24 @@
+#
+# Guide: making a favicon and an app icon - Traditional Chinese.
+#
+# Overrides for pages/guides/make-a-favicon/page.toml. Prose in the .html
+# beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "做網站圖示"
+
+title = "怎麼做網站圖示（以及 Windows 應用圖示）"
+description = "favicon.ico 裡到底該裝哪幾個尺寸，iPhone、安卓和 Mac 另外要哪些檔案，以及為什麼一個在海報上好好的 logo，到了十六畫素就沒了。"
+
+heading = "怎麼做一個到十六畫素還看得清的網站圖示"
+lede = """
+    網站圖示不是把 logo 縮小的一張圖。它是一組固定尺寸的圖，裝在一個多數人\
+    從沒開啟過的容器裡，而其中最小的那一張，才是所有人真正看到的。這一頁講\
+    你需要哪些尺寸、旁邊還得放哪些檔案，以及 logo 縮下去撐不住時該怎麼辦。"""
+
+updated = "2026年8月20日"
+
+og_title = "做一個到十六畫素還看得清的網站圖示"
+og_description = "favicon.ico 需要哪些尺寸，iPhone 和安卓另外要哪些檔案，以及 logo 縮下去撐不住時該怎麼辦。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

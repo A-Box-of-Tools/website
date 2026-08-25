@@ -1,0 +1,20 @@
+#
+# 指南：圖片怎麼塗黑，才能讓被遮住的那塊真的沒了 - Traditional Chinese.
+#
+# Written in Chinese rather than translated out of the English; the house style
+# it follows is set out at the top of locales/zh/locale.toml.
+#
+
+nav = "給圖片塗黑"
+title = "圖片怎麼塗黑，才能讓被遮住的那塊真的沒了"
+description = "大多數軟體畫出來的黑色方塊只是壓在圖片上面，隨手就能挪開。真正的塗黑和只是遮住差在哪裡，打過碼的文字為什麼能被讀回來，以及發出去之前怎麼檢查一個檔案。"
+
+heading = "圖片怎麼塗黑，才能讓被遮住的那塊真的沒了"
+lede = """
+    遮住和刪掉在螢幕上一模一樣，實際上完全是兩回事。這裡講清楚區別，講清楚哪兩種\
+    做法留下的東西比人們以為的多，也講清楚用什麼辦法能看出自己剛才做的是哪一種。"""
+updated = "2026年8月23日"
+
+og_title = "圖片怎麼塗黑，才能讓被遮住的那塊真的沒了"
+og_description = "黑色矩形為什麼多半算不上塗黑，打過碼的文字為什麼能被讀回來，以及發出去之前怎麼檢查一個檔案。"
+og_image_alt = "abox.tools - 不碰伺服器的工具"

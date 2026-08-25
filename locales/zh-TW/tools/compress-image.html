@@ -1,0 +1,118 @@
+<!--
+  tools/compress-image/body.html, in Traditional Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步，選檔案 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選圖片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">清空列表</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步，真正要緊的那個數字 -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> 說清楚最大能有多大</h2>
+
+    <p class="card-lede">
+      別的壓縮工具這一步都做反了。它們丟給你一個畫質滑塊，讓你自己猜哪一檔能壓進人家給的限額。這裡反過來，你把限額說出來，工具去找剛好塞得進去的那個最高畫質，然後把剩下的額度用滿，不會把你要的 500 KB 壓成一個 300 KB 的檔案交回來。
+    </p>
+
+    <div class="target-row">
+      <div class="target-field">
+        <label for="target-value">每張圖的目標大小</label>
+        <div class="inline-pair">
+          <input type="number" id="target-value" value="500" min="1" step="1" inputmode="decimal">
+          <label for="target-unit" class="visually-hidden">單位</label>
+          <select id="target-unit">
+            <option value="KB" selected>KB</option>
+            <option value="MB">MB</option>
+          </select>
+        </div>
+      </div>
+
+      <!--
+        The four numbers people are actually given: an upload form that says
+        100 KB, a forum avatar or a job application at 500 KB, an email
+        attachment at 1 MB, and a web page hero at 2 MB.
+      -->
+      <div class="presets" id="presets" role="group" aria-label="常用目標大小">
+        <button type="button" class="ghost" data-bytes="102400">100 KB</button>
+        <button type="button" class="ghost" data-bytes="512000">500 KB</button>
+        <button type="button" class="ghost" data-bytes="1048576">1 MB</button>
+        <button type="button" class="ghost" data-bytes="2097152">2 MB</button>
+      </div>
+    </div>
+
+    <p id="target-summary" class="field-summary"></p>
+
+    <fieldset class="options">
+      <legend>允許它怎麼達到這個數</legend>
+
+      <div class="option-row">
+        <label for="format-select">輸出格式</label>
+        <select id="format-select">
+          <option value="auto" selected>自動，保持原格式，除非換一種明顯更划算</option>
+          <option value="keep">一律保持原格式</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/webp">WebP</option>
+          <option value="image/png">PNG（無損，所以只能從尺寸上省）</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="allow-resize" checked>
+        <span>
+          <strong>實在不行，可以把圖片做小</strong>
+          <span class="check-note">只有畫質單獨往下降、已經降到壓縮痕跡開始露出來的時候才會動它。過了那一檔，畫素少一點但個個乾淨，比畫素多一堆卻全糊了好看。關掉它就是尺寸一格不動，目標再緊也全從畫質裡出。
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- 第 3 步，按一下就完 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 壓縮</h2>
+
+    <div class="run-row">
+      <button type="button" id="compress-all" class="primary big" disabled>壓到這個大小</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>壓好了</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下載</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
