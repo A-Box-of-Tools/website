@@ -1,0 +1,172 @@
+<main>
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصورة</h2>
+
+    <p class="card-lede">
+      لقطة شاشة لكشف حساب بنكي، وصورة جواز سفر، وفاتورة عليها عنوان &mdash;
+      الصور التي يحتاج الناس إلى طمسها هي بالضبط الصور التي لا ينبغي لهم رفعها
+      إلى خادم غريب ليفعل ذلك بها. وهذه يقرؤها المتصفح من قرصك مباشرة.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">اختر صورة أخرى</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the boxes -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> غطِّ ما لا ينبغي أن يُرى</h2>
+
+    <p id="edit-empty" class="field-summary">اختر صورة فتظهر هنا لترسم عليها.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        اسحب عبر الصورة لترسم مربعاً. واسحب المربع لتحريكه، واسحب مقابضه لتغيير
+        حجمه، أو اضغط <kbd>Tab</kbd> للوصول إلى واحد واستعمل مفاتيح الأسهم
+        &mdash; و<kbd>Alt</kbd> مع الأسهم تغيّر الحجم، و<kbd>Delete</kbd>
+        يزيل. وما تراه تحت كل مربع هو الشيء الحقيقي: فالمعاينة ترسمها الشيفرة
+        نفسها التي تكتب الملف، بحجم الشاشة.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>ماذا يفعل المربع الجديد</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>سوِّده</strong>
+            <span class="check-note">
+              لون مسطَّح واحد، من حافّة إلى حافّة. ولا ينجو شيء مما كان هناك
+              &mdash; لا خطٌّ خارجي، ولا متوسط، ولا عدد المحارف. وهذا وحده من
+              الثلاثة هو المُحكَم، وهو ما تستعمله لأي شيء يُقرأ نصّاً.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>بكِّله</strong>
+            <span class="check-note">
+              تصير كل كتلة لونَ تلك الكتلة المتوسط. فتزول البكسلات الأصلية من
+              الملف، لكن شبكة المتوسطات تظل قياساً لما كان تحتها &mdash; وللنصّ
+              بخطّ عادي كفى ذلك، في أعمال منشورة، لإعادة بناء الأصل. لا بأس به
+              لوجه في زحام؛ ولا يصلح لرقم حساب.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>موِّهه</strong>
+            <span class="check-note">
+              يصير كل بكسل متوسطاً موزوناً لجيرانه. والاعتراض نفسه الذي على
+              التبكيل، وهو هنا أحدّ قليلاً: فالتمويه التفافٌ رياضي، والالتفافات
+              يمكن من حيث المبدأ عكسها. استعمله حيث تريد شيئاً مليَّناً لا
+              مخفياً.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">بأي شدّة يُطبَّق التبكيل والتمويه</label>
+          <select id="strength">
+            <option value="light">خفيفة</option>
+            <option value="medium" selected>متوسطة</option>
+            <option value="heavy">شديدة</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">أضِف مربعاً في الوسط</button>
+        <button type="button" id="undo" class="ghost" disabled>تراجَع</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>أزِل كل مربع</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the file -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> احفظ النسخة المطموسة</h2>
+
+    <p class="card-lede">
+      يُفكّ ترميز الصورة إلى بكسلات، وتُكتَب المربعات فوق تلك البكسلات، ثم
+      يُرمَّز الناتج ملفاً جديداً. فلا طبقة ولا تعليق ولا سجلّ لمواضع المربعات،
+      لأن البكسلات المغطّاة تكفّ عن الوجود قبل أن يُناوَل المرمِّز شيئاً.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">الصيغة</label>
+        <select id="format">
+          <option value="auto" selected>تلقائي &mdash; JPEG للصورة الفوتوغرافية، وPNG لما عداها</option>
+          <option value="png">PNG (بلا خسارة)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          ولا فرق يُحدثه ذلك في الطمس: فالبكسلات زائلة قبل أن يراها المرمِّز.
+          وإنما يقرّر كم يكلّف بقيةُ الصورة وكيف تُضغَط.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">الجودة</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>اطمس واحفظ</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      يجري الطمس بالحجم الكامل&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>الملف المنتهي</h3>
+        <a id="download" class="primary as-button" href="#" download>نزِّل</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        افتحه بعد ذلك وحاول تحديد النصّ المغطّى، أو الصقه في محرِّر وابحث عن
+        طبقة. لا شيء يُوجَد: هي صورة مسطَّحة واحدة، والأجزاء التي غطّيتها
+        طُمِست قبل أن تُكتَب.
+      </p>
+    </div>
+  </section>
+</main>
