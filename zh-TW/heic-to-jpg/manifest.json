@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/heic-to-jpg/",
-  "name": "HEIC \u8f6c JPG",
-  "short_name": "HEIC \u8f6c JPG",
-  "description": "iPhone \u62cd\u7684\u7167\u7247\uff0c\u6362\u6210\u4ec0\u4e48\u90fd\u6253\u5f97\u5f00\u7684\u683c\u5f0f\u3002",
+  "name": "HEIC \u8f49 JPG",
+  "short_name": "HEIC \u8f49 JPG",
+  "description": "iPhone \u62cd\u7684\u7167\u7247\uff0c\u63db\u6210\u4ec0\u9ebc\u90fd\u6253\u5f97\u958b\u7684\u683c\u5f0f\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

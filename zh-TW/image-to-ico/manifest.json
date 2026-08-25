@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/image-to-ico/",
-  "name": "\u56fe\u7247\u8f6c ICO",
-  "short_name": "\u56fe\u7247\u8f6c ICO",
-  "description": "\u8fdb\u53bb\u4e00\u5f20\u56fe\uff0c\u51fa\u6765\u7684\u662f\u6d4f\u89c8\u5668\u3001Windows \u548c Mac \u5404\u81ea\u8981\u7684\u6bcf\u4e00\u4e2a\u5c3a\u5bf8\u3002",
+  "name": "\u5716\u7247\u8f49 ICO",
+  "short_name": "\u5716\u7247\u8f49 ICO",
+  "description": "\u9032\u53bb\u4e00\u5f35\u5716\uff0c\u51fa\u4f86\u7684\u662f\u700f\u89bd\u5668\u3001Windows \u548c Mac \u5404\u81ea\u8981\u7684\u6bcf\u4e00\u500b\u5c3a\u5bf8\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

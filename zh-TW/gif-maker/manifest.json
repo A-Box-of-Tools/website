@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/gif-maker/",
-  "name": "GIF \u5236\u4f5c",
-  "short_name": "GIF \u5236\u4f5c",
-  "description": "\u628a\u4e00\u7ec4\u56fe\u7247\u53d8\u6210\u4e00\u6bb5\u52a8\u753b\u3002",
+  "name": "GIF \u88fd\u4f5c",
+  "short_name": "GIF \u88fd\u4f5c",
+  "description": "\u628a\u4e00\u7d44\u5716\u7247\u8b8a\u6210\u4e00\u6bb5\u52d5\u756b\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/tr/resim-sikistirma/",
-  "name": "Image Compressor",
-  "short_name": "Image Compressor",
-  "description": "Name the size. It works out the rest.",
+  "name": "G\u00f6rsel S\u0131k\u0131\u015ft\u0131r\u0131c\u0131",
+  "short_name": "G\u00f6rsel S\u0131k\u0131\u015ft\u0131r\u0131c\u0131",
+  "description": "Boyutu siz s\u00f6yleyin, gerisini o hesaplas\u0131n.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

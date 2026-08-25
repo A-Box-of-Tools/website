@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/resize-image/",
-  "name": "\u56fe\u7247\u7f29\u653e",
-  "short_name": "\u56fe\u7247\u7f29\u653e",
-  "description": "\u8bf4\u4e2a\u5c3a\u5bf8\uff0c\u62c9\u4e2a\u6846\uff0c\u6311\u4e2a\u683c\u5f0f\u3002",
+  "name": "\u5716\u7247\u7e2e\u653e",
+  "short_name": "\u5716\u7247\u7e2e\u653e",
+  "description": "\u8aaa\u500b\u5c3a\u5bf8\uff0c\u62c9\u500b\u6846\uff0c\u6311\u500b\u683c\u5f0f\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

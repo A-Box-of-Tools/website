@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/images-to-pdf/",
-  "name": "\u56fe\u7247\u8f6c PDF",
-  "short_name": "\u56fe\u7247\u8f6c PDF",
-  "description": "\u628a\u4f60\u7684\u56fe\u7247\u88c5\u8fdb\u4e00\u4e2a\u6587\u6863\u3002",
+  "name": "\u5716\u7247\u8f49 PDF",
+  "short_name": "\u5716\u7247\u8f49 PDF",
+  "description": "\u628a\u4f60\u7684\u5716\u7247\u88dd\u9032\u4e00\u500b\u6587\u4ef6\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

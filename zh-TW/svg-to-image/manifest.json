@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/svg-to-image/",
-  "name": "SVG \u8f6c\u56fe\u7247",
-  "short_name": "SVG \u8f6c\u56fe\u7247",
-  "description": "\u8bf4\u4e2a\u5c3a\u5bf8\u3002\u77e2\u91cf\u56fe\u672c\u6765\u5c31\u6ca1\u6709\u5c3a\u5bf8\u53ef\u4e22\u3002",
+  "name": "SVG \u8f49\u5716\u7247",
+  "short_name": "SVG \u8f49\u5716\u7247",
+  "description": "\u8aaa\u500b\u5c3a\u5bf8\u3002\u5411\u91cf\u5716\u672c\u4f86\u5c31\u6c92\u6709\u5c3a\u5bf8\u53ef\u4e1f\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

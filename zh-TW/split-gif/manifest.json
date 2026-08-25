@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/split-gif/",
-  "name": "GIF \u62c6\u5e27",
-  "short_name": "GIF \u62c6\u5e27",
-  "description": "\u6bcf\u4e00\u5e27\u90fd\u5355\u72ec\u5b58\u6210\u4e00\u5f20 PNG\u3002",
+  "name": "GIF \u62c6\u5e40",
+  "short_name": "GIF \u62c6\u5e40",
+  "description": "\u6bcf\u4e00\u5e40\u90fd\u55ae\u7368\u5b58\u6210\u4e00\u5f35 PNG\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

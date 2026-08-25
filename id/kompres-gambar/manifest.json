@@ -1,8 +1,8 @@
 {
   "id": "/id/kompres-gambar/",
-  "name": "Image Compressor",
-  "short_name": "Image Compressor",
-  "description": "Name the size. It works out the rest.",
+  "name": "Kompresor Gambar",
+  "short_name": "Kompresor Gambar",
+  "description": "Sebutkan ukurannya. Sisanya dia yang hitung.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

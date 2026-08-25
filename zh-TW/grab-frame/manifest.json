@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/grab-frame/",
-  "name": "\u89c6\u9891\u622a\u5e27",
-  "short_name": "\u89c6\u9891\u622a\u5e27",
-  "description": "\u4efb\u610f\u4f4d\u7f6e\uff0c\u4e00\u5f20\u539f\u753b\u8d28\u9759\u5e27\u3002",
+  "name": "\u5f71\u7247\u622a\u5e40",
+  "short_name": "\u5f71\u7247\u622a\u5e40",
+  "description": "\u4efb\u610f\u4f4d\u7f6e\uff0c\u4e00\u5f35\u539f\u756b\u8cea\u975c\u5e40\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",
