@@ -21,6 +21,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [ID Photo Maker](id-photo/) | `/id-photo/` | Pick the country. It applies that country's rule, exactly. |
 | [Image Redactor](redact-image/) | `/redact-image/` | What you cover is deleted from the file, not covered up in it. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
+| [DICOM Viewer](dicom-viewer/) | `/dicom-viewer/` | CT, MR, X-ray and ultrasound, with the window, the header and the measurements. |
 | [Image to ICO](image-to-ico/) | `/image-to-ico/` | One picture in. Every size a browser, Windows or a Mac asks for, out. |
 | [Image to Data URI](image-to-data-uri/) | `/image-to-data-uri/` | The whole picture as one line of text. Paste it straight into CSS or HTML. |
 | [SVG to Image](svg-to-image/) | `/svg-to-image/` | Name the size. A vector has none of its own to lose. |
