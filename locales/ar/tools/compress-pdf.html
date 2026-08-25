@@ -1,0 +1,157 @@
+<main>
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر ملف PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">اختر غيره</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the screen this tool would keep if it could keep only one -->
+  <section class="card" id="inventory-card" hidden>
+    <h2><span class="step">2</span> انظر أين يقع الحجم</h2>
+
+    <p class="card-lede">
+      &laquo;اضغط ملف PDF&raquo; عملان مختلفان يتشاركان اسماً واحداً. فالمسح
+      الضوئي رصّةُ صور فوتوغرافية، وإعادةُ ترميزها تساوي أكثر الملف. أما العقد
+      فنصٌّ وخطوط، وقد ضغطها أصلاً ما صنعه &mdash; فليس فيه ثمانون في المئة
+      مختبئة، ولا تستطيع أداةٌ إيجاد واحدة. وأيُّ الاثنين عندك ليس مسألة رأي،
+      فها هو قبل أن يُمَسّ شيء.
+    </p>
+
+    <p id="verdict" class="verdict"></p>
+
+    <div class="breakdown">
+      <div id="breakdown-bar" class="breakdown-bar" role="img" aria-labelledby="breakdown-list"></div>
+      <ul id="breakdown-list" class="breakdown-list"></ul>
+    </div>
+
+    <p id="inventory-notes" class="field-summary"></p>
+  </section>
+
+  <!-- Step 3 &mdash; how much to spend -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">3</span> قل بأي شدّة يُعصَر</h2>
+
+    <p class="card-lede">
+      ملف PDF يسجّل كم تُرسَم كل صورة كبيرةً، فتستطيع هذه الأداة قياس ما
+      تستعمله الصفحة فعلاً بدل أن تخمّن. فمسحٌ بأربعة آلاف بكسل موضوعٌ على
+      ثماني بوصات من الورق يحمل 500 بكسل في البوصة؛ وعند 150 يُطبَع كما هو
+      ويبدو على الشاشة كما هو. والبكسلات التي لا يستطيع أحد رؤيتها تُنفَق
+      أولاً، لأنها لا تكلّف شيئاً.
+    </p>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">كم من الجودة يجوز إنفاقه</legend>
+      <div class="presets" id="presets" role="radiogroup" aria-label="كم من الجودة يجوز إنفاقه">
+        <label class="preset">
+          <input type="radio" name="preset" value="smallest">
+          <span class="preset-body">
+            <strong>الأصغر</strong>
+            <span class="preset-note">96 DPI. لشيء لا يلزم إلا أن يُقرأ على شاشة.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="screen" checked>
+          <span class="preset-body">
+            <strong>جيد على الشاشة</strong>
+            <span class="preset-note">130 DPI. الجواب المعتاد لملف تحتاج إلى إرساله بالبريد.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="print">
+          <span class="preset-body">
+            <strong>ما زال جيداً على الورق</strong>
+            <span class="preset-note">220 DPI. أصغر، وسيُطبَع كما ينبغي رغم ذلك.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="gentle">
+          <span class="preset-body">
+            <strong>بالكاد تمسّ الصور</strong>
+            <span class="preset-note">بلا تصغير البتة. وأكثر الكسب يأتي من إعادة رصّ الملف.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <details class="advanced">
+      <summary>اضبط الرقمين بنفسك</summary>
+      <div class="option-row">
+        <label for="dpi-value">أقصى عدد بكسلات لكل بوصة من المساحة المرسومة</label>
+        <div class="inline-pair">
+          <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
+          <span class="unit">DPI &mdash; والصفر يترك كل صورة بمقاسها الكامل</span>
+        </div>
+      </div>
+      <div class="option-row">
+        <label for="quality-value">جودة JPEG</label>
+        <div class="inline-pair">
+          <input type="range" id="quality-value" min="30" max="95" step="1" value="68">
+          <output id="quality-out" for="quality-value">68</output>
+        </div>
+      </div>
+    </details>
+
+    <label class="check">
+      <input type="checkbox" id="strip-meta" checked>
+      <span>
+        <strong>أخرِج ما يتذكّره الملف عن مصدره</strong>
+        <span class="check-note">
+          اسمُ البرنامج الذي صنعه وإصداره، ومتى صُنِع وآخر متى حُرِّر، وحزمة
+          XMP، والكتلة الخاصة التي يتركها برنامج التنضيد وراءه ليستطيع استيراد
+          عمله هو من جديد &mdash; وهي ميغابايتات أحياناً. ولا شيء من ذلك لازم
+          لعرض المستند.
+        </span>
+      </span>
+    </label>
+
+    <p id="settings-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Step 4 &mdash; the one click -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> اضغط</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">اضغط ملف PDF هذا</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>نزِّل</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <details id="per-image" class="advanced" hidden>
+        <summary>ماذا حدث لكل صورة</summary>
+        <ul id="image-list" class="image-list"></ul>
+      </details>
+    </div>
+  </section>
+</main>
