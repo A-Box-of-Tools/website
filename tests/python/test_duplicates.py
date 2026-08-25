@@ -41,6 +41,13 @@ The groups are deliberate, not accidental:
     time-lapse has no sound worth keeping - so they share the smaller muxer.
     crop-video's writer is its own: it carries audio like the trim pair and takes
     a different timescale and tkhd signature from either.
+  - pdf.js is the PDF container writer, in the tool that puts pictures on pages
+    and the one that puts straightened pages on pages. It is the same file on
+    purpose and there is nothing in it either of them wants differently: an
+    object table, a stream, a trailer. What sits ON TOP of it is not shared and
+    should not be - images-to-pdf has to place a picture of any shape on a page
+    of any other, with fit modes and rotation and a page colour, while a
+    scanned page is already the right shape and its layout is twenty lines.
   - qr-tables.js is in the QR generator and the QR reader, and is the same file
     on purpose: it is the specification's tables and the arithmetic around them,
     and a reader that disagreed with the writer about the size of a symbol or
@@ -69,6 +76,7 @@ GROUPS = [
     ('mp4.js', ['reverse-video', 'trim-video']),
     ('mp4.js', ['images-to-video', 'timelapse-video']),
     ('qr-tables.js', ['qr-barcode', 'qr-barcode-reader']),
+    ('pdf.js', ['document-scanner', 'images-to-pdf']),
 ]
 
 # Copies that are not duplicates of anything, and why. Named so that

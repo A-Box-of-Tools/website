@@ -1,0 +1,375 @@
+/* Rules only the DICOM viewer needs. The frame around it - the header, the
+   pledge, the cards, the buttons - is shared/css/tool-frame.css. */
+
+.working {
+  margin: 1rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.picker-note,
+.card-lede {
+  margin: 0.8rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  max-width: 62ch;
+}
+
+.card-lede { margin: 0 0 1rem; }
+
+.file-name {
+  margin: 0;
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
+}
+
+.copy-status {
+  margin: 0.8rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+}
+
+.inline-label { color: var(--text-dim); font-size: 0.85rem; }
+
+.hint {
+  margin: 0.9rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.86rem;
+  max-width: 70ch;
+}
+
+/* ---------------------------------------------------------------- the series */
+
+.series-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.series-row select { max-width: min(100%, 34rem); }
+
+/* --------------------------------------------------------------- the picture */
+
+/* Black, in both colour schemes and on purpose. A medical image is read against
+   black everywhere it is read, because the eye judges a mid-grey against what
+   surrounds it: the same slice on a white page looks flatter and darker, and
+   somebody comparing this page with a workstation would be comparing two
+   different pictures. */
+.viewport {
+  position: relative;
+  margin-top: 1.1rem;
+  height: min(70vh, 620px);
+  min-height: 320px;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #000;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.viewport:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.viewport[data-mode="pan"] { cursor: grab; }
+.viewport[data-mode="window"] { cursor: ns-resize; }
+
+#canvas {
+  position: absolute;
+  display: block;
+}
+
+.marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.measure-line {
+  stroke: #ffd45e;
+  stroke-width: 1.5;
+  stroke-dasharray: 5 3;
+}
+
+/* The four corners, which is where every workstation puts these and therefore
+   where a radiologist's eye already goes. */
+.overlay {
+  position: absolute;
+  padding: 0.4rem 0.55rem;
+  color: #d7e7f7;
+  font: 12px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-line;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 90%);
+  max-width: 45%;
+  overflow-wrap: anywhere;
+}
+
+.overlay-tl { top: 0; left: 0; }
+.overlay-tr { top: 0; right: 0; text-align: right; }
+.overlay-bl { bottom: 0; left: 0; }
+.overlay-br { bottom: 0; right: 0; text-align: right; }
+
+.viewport-fail {
+  position: absolute;
+  inset: 1.5rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #c9d3e0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* -------------------------------------------------------------- the controls */
+
+.scrub {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.scrub input[type="range"] { flex: 1 1 auto; min-width: 0; }
+.scrub .ghost { flex: none; min-width: 2.6rem; }
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem 1.4rem;
+  margin-top: 1rem;
+}
+
+.modes {
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.modes label,
+.level-check {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.zoom {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.zoom input[type="range"] { width: min(220px, 40vw); }
+
+.levels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.8rem 1.2rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.level-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.level-field input[type="number"] { width: 7rem; }
+.level-field select { max-width: min(100%, 26rem); }
+
+.levels input,
+.levels select,
+.series-row select {
+  padding: 0.35rem 0.5rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+/* ----------------------------------------------------------------- the facts */
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.7rem 1.4rem;
+  margin: 0;
+}
+
+.facts > div { display: grid; gap: 0.1rem; }
+.facts dt { color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.facts dd { margin: 0; font-size: 0.95rem; overflow-wrap: anywhere; }
+
+.notes {
+  margin: 1.2rem 0 0;
+  padding-inline-start: 1.1rem;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}
+
+.notes li { margin-bottom: 0.35rem; max-width: 74ch; }
+
+/* -------------------------------------------------------------- the identity */
+
+.identity {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.identity-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 16rem) 1fr;
+  gap: 0.3rem 1rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 7px;
+  background: var(--surface-2);
+  border-inline-start: 3px solid var(--border);
+  font-size: 0.9rem;
+}
+
+/* A name or a number that is the person. The rest narrows down who they are,
+   which is the half people miss, so it is marked differently rather than not
+   at all. */
+.identity-row.direct { border-inline-start-color: var(--danger); }
+.identity-row.context { border-inline-start-color: var(--accent); }
+
+.identity-name { color: var(--text-dim); }
+.identity-value { overflow-wrap: anywhere; }
+
+.identity-clean {
+  padding: 0.6rem 0.8rem;
+  border-radius: 7px;
+  background: var(--surface-2);
+  border-inline-start: 3px solid var(--ok);
+  font-size: 0.9rem;
+}
+
+.identity-extra {
+  margin: 1rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  max-width: 74ch;
+}
+
+/* ------------------------------------------------------------------ the tags */
+
+.tag-search {
+  padding: 0.35rem 0.6rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  min-width: min(260px, 60vw);
+}
+
+/* The table is wider than a phone and there is no sensible way to make it
+   narrower: a tag number, a VR and a value are all as short as they can be
+   already. So it scrolls inside its own box rather than the page scrolling
+   sideways. */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.tags {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.tags th {
+  position: sticky;
+  top: 0;
+  text-align: start;
+  padding: 0.5rem 0.7rem;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.tags td {
+  padding: 0.35rem 0.7rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.tags tr:last-child td { border-bottom: 0; }
+
+.tag-number {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: nowrap;
+  color: var(--text-dim);
+}
+
+.tag-vr {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--text-dim);
+}
+
+/* A VR the file did not state, taken from the data dictionary instead. Worth
+   marking: it is the one column on this page that is this tool's opinion
+   rather than the file's own words. */
+.tag-vr.guessed { font-style: italic; opacity: 0.75; }
+
+.tag-name { min-width: 14rem; }
+.tag-unknown { color: var(--text-dim); font-style: italic; }
+
+.tag-value {
+  overflow-wrap: anywhere;
+  min-width: 16rem;
+}
+
+.tag-raw {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--text-dim);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+
+.meta-row .tag-number { color: var(--accent); }
+.sequence-row .tag-value { color: var(--text-dim); font-style: italic; }
+
+.more-row { margin-top: 0.9rem; }
+
+/* -------------------------------------------------------------- the messages */
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 7px;
+  background: var(--surface-2);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 560px) {
+  .identity-row { grid-template-columns: 1fr; }
+  .viewport { height: min(60vh, 420px); }
+}
