@@ -31,18 +31,11 @@ adsense_client = "ca-pub-5997711677062324"
 analytics_id = "G-SCBN29XZ31"
 
 #
-# The build. `python build.py` needs nothing but Python and produces a readable,
-# working site; that is the default and stays the default. `--mangle` renames
-# identifiers as well, which needs esbuild, and is what CI runs and what gets
-# deployed - so `--check` needs it too.
+# The build needs nothing but Python. There is no minifier to install, no
+# bundler, and nothing pinned: `python build.py` produces exactly what is
+# deployed, which is what makes `--check` worth having. Identifiers are left
+# alone deliberately - see the note at the top of build.py.
 #
-# The version is pinned rather than merely requested. Two versions of esbuild do
-# not have to invent the same names, and if the checker and the deploy disagree
-# then --check reports tampering where there was none, which is worse than
-# having no checker at all. The build refuses to run against any other version.
-#
-[build]
-esbuild_version = "0.25.0"
 
 [bmc]
 # Buy Me a Coffee. The build writes their snippet out unchanged; these are the

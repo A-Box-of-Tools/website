@@ -13,11 +13,10 @@ Python 3.11 or newer, and nothing to install: the build uses only the standard
 library. There is no lockfile and no dependency to fetch. The `package.json` at
 the root declares one thing — that the `.js` files here are ES modules, which
 is what they already were — so that `node --test` can import them; nothing
-installs it and the build never reads it. The one exception is `--mangle`,
-which renames identifiers and needs esbuild; it is what CI runs and what gets
-deployed, and it is described under
-[What the build does to the output](layout.md#what-the-build-does-to-the-output). The
-command above is not that, and never needs it.
+installs it and the build never reads it. There is no exception: the command
+above is exactly what CI runs and exactly what gets deployed. What it does to
+the output is described under
+[What the build does to the output](layout.md#what-the-build-does-to-the-output).
 
 To build and serve in one step:
 
@@ -40,10 +39,10 @@ That builds, then compares the result file by file with the `dist` branch —
 the branch GitHub Pages serves. If they differ, the deployed site is not what
 this repository says it is, and that is worth knowing.
 
-`--check` implies `--mangle`, so it needs esbuild at the pinned version: the
-deployed branch is mangled, and comparing against it any other way would report
-a difference on every file and mean nothing. The build says which version to
-install if it is missing.
+`--check` needs nothing that the build itself does not, which is the point of
+it. One command, no toolchain, no pinned version to match: if the comparison
+needed something installed at exactly the right version, a reader who could not
+get that far would have no way to check the claim at all.
 
 The output is minified, so it is not pleasant reading, but it is still
 *checkable*: the build is deterministic, so the same sources produce the same
