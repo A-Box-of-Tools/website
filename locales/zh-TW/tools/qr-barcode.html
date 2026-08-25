@@ -1,0 +1,176 @@
+<!--
+  tools/qr-barcode/body.html, in Traditional Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步，挑碼的種類 -->
+  <section class="card">
+    <h2><span class="step">1</span> 挑碼的種類</h2>
+
+    <p class="card-lede">
+      二維碼什麼都裝得下，也是手機攝像頭預設要找的東西。條形碼裝的是一串數字，而且要哪一種，通常輪不到你決定，商店、倉庫或者貨運公司要什麼就是什麼。
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">碼的種類</label>
+      <select id="symbology">
+        <optgroup label="方塊">
+          <option value="qr" selected>二維碼</option>
+        </optgroup>
+        <optgroup label="條狀">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">交叉二五碼</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- 第 2 步，碼裡裝什麼 -->
+  <section class="card">
+    <h2><span class="step">2</span> 說清楚碼裡裝什麼</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">裝的是什麼</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>這個碼裡將要裝的那串字元</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- 第 3 步，長什麼樣 -->
+  <section class="card">
+    <h2><span class="step">3</span> 決定它長什麼樣</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>二維碼</legend>
+
+      <div class="option-row">
+        <label for="level">能挨多少損傷</label>
+        <select id="level">
+          <option value="L">L，大約 7% 能修回來，碼最小</option>
+          <option value="M" selected>M，大約 15%，一般都選這個</option>
+          <option value="Q">Q，大約 25%</option>
+          <option value="H">H，大約 30%，給會被磨損的印刷品</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">留白，按模組數算</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        留白是碼的一部分，不是碼周圍的空地。規範要的是四個模組，一個被裁到邊的碼，很多掃描器根本看不見。
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>條形碼</legend>
+
+      <div class="option-row">
+        <label for="bar-width">最細的條有幾個畫素</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">條有多高，按畫素算</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>在下面印出字元</strong>
+          <span class="check-note">掃描器讀不出來的時候，得靠人來讀。零售條碼上還有幾位數字落在留白裡，那是故意的，它們標出了誰都不該裁掉的那片空白。
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>加一位校驗字元</strong>
+          <span class="check-note">Code 39 一般不帶這個。有些系統非要不可，只有你那套確實要，才加上，因為不期待它的讀取器會把它當成末尾多出來的一個字元。
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>顏色和尺寸</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">碼本身</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">碼後面</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>乾脆不要背景</strong>
+          <span class="check-note">透明，用來放在本來就有顏色的東西上。SVG 和 PNG 都保住透明。不過最後墊在它後面的那層得是淺色，否則掃描器根本量不到對比。
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">圖片尺寸，按畫素算</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- 第 4 步，拿走 -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> 拿走</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="你做出來的碼"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">下載 SVG</button>
+      <button type="button" id="download-png" class="primary">下載 PNG</button>
+      <button type="button" id="copy-png" class="ghost">複製圖片</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      該留著的是 SVG。它是以指令表達的碼，不是一堆畫素，印多大都不發虛。這一點在這裡比在別的圖片上更要緊，因為發虛的邊緣正是掃描器分辨不了的東西。
+    </p>
+  </section>
+</main>

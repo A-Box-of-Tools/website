@@ -1,0 +1,106 @@
+<main>
+  <!-- 第一步 &mdash; 檔案 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選一個 GIF</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>檔案</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>大小</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>畫面</dt><dd id="src-picture">&mdash;</dd></div>
+      <div><dt>幀數</dt><dd id="src-frames">&mdash;</dd></div>
+      <div><dt>播放時長</dt><dd id="src-duration">&mdash;</dd></div>
+      <div><dt>迴圈</dt><dd id="src-loop">&mdash;</dd></div>
+    </dl>
+
+    <p id="notice" class="path-note" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第二步 &mdash; 出來的東西 -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">2</span> 幀怎麼出</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="mode">每張 PNG 裡放</label>
+        <select id="mode">
+          <option value="composited" selected>看上去的那一幀</option>
+          <option value="stored">只要這一幀真正存下的畫素</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="background">透明區域</label>
+        <select id="background">
+          <option value="keep" selected>保持透明</option>
+          <option value="flatten">填一個顏色&hellip;</option>
+        </select>
+        <div id="colour-row" class="inline-pair" hidden>
+          <input type="color" id="colour" value="#ffffff" aria-label="用來填充透明區域的顏色">
+          <span id="colour-note">會寫進每一幀，之後取不出來。</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="every">每隔多少幀留一幀</label>
+        <div class="inline-pair">
+          <input type="number" id="every" min="1" max="100" step="1" value="1">
+          <span id="every-note">幀</span>
+        </div>
+        <p class="field-note">
+          不要全部，改成每兩幀或每五幀取一幀，適合做一覽圖或者處理長錄影。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="timing">時間清單</label>
+        <select id="timing">
+          <option value="yes" selected>ZIP 裡附上 frames.txt</option>
+          <option value="no">只要幀</option>
+        </select>
+        <p class="field-note">
+          每一幀停留了多久、放在什麼位置。一堆 PNG 擺在資料夾裡帶不走這些。
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="download-all" class="primary">打包成 ZIP 下載全部幀</button>
+      <button type="button" id="download-selected" class="ghost" hidden>下載勾選的幀</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- 第三步 &mdash; 幀本身 -->
+  <section class="card" id="frames-card" hidden>
+    <h2><span class="step">3</span> 拆出來的幀</h2>
+
+    <div class="toolbar">
+      <p class="count" id="frames-count" role="status" aria-live="polite"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="select-all" class="ghost">全選</button>
+        <button type="button" id="select-none" class="ghost">全不選</button>
+        <button type="button" id="clear" class="ghost danger">重新來過</button>
+      </div>
+    </div>
+
+    <!-- Checkboxes rather than a click-to-select grid: this is a list of files
+         somebody is about to save, and a checkbox is the one control everybody
+         already knows is safe to press. -->
+    <ul class="frames" id="frames"></ul>
+  </section>
+</main>

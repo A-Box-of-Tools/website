@@ -1,0 +1,126 @@
+<!--
+  pages/privacy/body.html, in Traditional Chinese.
+
+  Chinese keeps the English slug, so every href here is exactly the one the
+  English source wrote; only the link text is translated.
+-->
+  <section>
+    <h2>你的檔案</h2>
+    <p>
+      本站每個工具的活，都在你自己的瀏覽器裡、用你自己的硬體做完。你選一個檔案，讀它的是你早就開啟著的那個頁面。它不會發給我們，因為我們沒有伺服器可以接它。這個站就是一堆靜態檔案，沒有後端，沒有資料庫，也沒有儲存。
+    </p>
+    <p>
+      也就是說，下面這些我們從來收不到、看不見、存不下、記不了、也處理不了：
+    </p>
+    <ul>
+      <li>你的檔案，整個的和區域性的都不行</li>
+      <li>它們的縮圖或者預覽</li>
+      <li>它們的檔名、大小、尺寸、格式</li>
+      <li>你選了幾個，以及你拿它們做了什麼</li>
+      <li>從它們裡面讀出來的任何東西，EXIF 和 GPS 資料也在內</li>
+    </ul>
+    <p>
+      這不是一句關於我們意圖的承諾。每個頁面都帶著一份 <code>Content-Security-Policy</code>，把這個頁面被允許聯絡的地址全列了出來，而執行它的是瀏覽器。那些地址沒有一個是我們的。你可以在任意頁面原始碼的頂上讀這份策略，也可以開啟瀏覽器的“網路”面板盯著看：沒有哪條請求帶著你的檔案。
+    </p>
+    <p>
+      你用工具做出來的檔案，交給的是你瀏覽器自己的下載機制，你讓它存哪裡它就存哪裡。這一步我們同樣不參與。
+    </p>
+  </section>
+
+  <section>
+    <h2>唯一的例外，以及它在哪裡</h2>
+    <p>
+      <a href="../images-to-video/">圖片轉影片</a>有一個“從網址新增”的功能。你往裡粘一個地址，你的瀏覽器就會從你點名的那臺伺服器取這張圖，而<strong>那臺伺服器會看到你的 IP 地址</strong>，以及你要的是哪個檔案。這躲不掉，這個功能的性質本來就是如此。
+    </p>
+    <p>
+      它只對你自己打進去的地址生效，而且是照著“圖片能進來、資料出不去”造的，那個工具自己的頁面上有更詳細的說明。本站別的工具，沒有一個能發出一條帶著你東西的對外請求。
+    </p>
+  </section>
+
+  <section>
+    <h2>什麼被收集了，誰收集的</h2>
+    <p>
+      本站免費，靠廣告養著。這意味著這些頁面上跑著兩個 Google 的產品，大部分頁面上還跑著一個捐助按鈕。清單如下，就這麼多。
+    </p>
+
+    <h3>Google AdSense，廣告</h3>
+    <p>
+      廣告由 Google 投放，看到哪些也由它決定。為此它可能在你的瀏覽器裡設定和讀取 Cookie 或者類似的標識，並拿到你的 IP 地址、由此推出的大致位置、你的 user agent，以及你當時在哪個頁面上。視你的設定和所在地區而定，廣告可能會用 Google 手裡關於你的畫像做個性化，而那份畫像主要是從你在別的網站上的活動攢起來的。
+    </p>
+    <p>
+      這些我們一樣都收不到，也看不見，而且我們從不給 Google 任何關於你檔案的資訊。Google 自己對“它如何使用來自投放其廣告的網站的資料”的說明在<a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer nofollow">policies.google.com/technologies/partner-sites</a>。
+    </p>
+
+    <h3>Google Analytics，訪問統計</h3>
+    <p>
+      我們用 Google Analytics 4 數頁面訪問量，好知道哪些工具值得繼續做。它記錄你看了哪個頁面、大約什麼時候、一個隨機生成並存在你瀏覽器裡的標識、一個大致位置、你的裝置和瀏覽器型別，以及把你帶過來的那個站。
+    </p>
+    <p>
+      它被配置成除此之外什麼都不做，而這份配置就是一個你能讀的檔案：每個頁面旁邊的 <code>analytics.js</code> 只裝了一個頁面瀏覽計數器，一個自定義事件都沒有。本站沒有哪一處會遞給它一個檔案、一個檔名、一個尺寸或者一個數量，這裡就沒有能做這事的程式碼。
+    </p>
+
+    <h3>Buy Me a Coffee，捐助按鈕</h3>
+    <p>
+      首頁和各個工具頁上帶著一個捐助按鈕，它從 Buy Me a Coffee 的伺服器載入。載入它意味著他們的 CDN 會看到你的 IP 地址，以及你當時在本站；按鈕上的字型取自 Google Fonts，那邊同樣會看到你的 IP 地址。除此之外什麼都不發，而且你不真去點它，後面什麼都不會發生；點了，你就在他們的站上，按他們的政策來。這一頁和<a href="../terms/">條款頁</a>不畫這個按鈕。
+    </p>
+
+    <h3>託管</h3>
+    <p>
+      本站由 GitHub Pages 提供，前面擋著 Cloudflare。跟任何網站主機一樣，他們要處理你瀏覽器發出的那些請求，其中包括你的 IP 地址、請求的頁面和你的 user agent，為的是把頁面送到你手上，以及讓服務保持可用和安全。他們兩家逐訪客的日誌，我們都拿不到。
+    </p>
+  </section>
+
+  <section>
+    <h2>Cookie</h2>
+    <p>
+      我們不設定任何屬於自己的 Cookie。這裡沒有登入，沒有會話，我們記住的偏好只有一個。
+    </p>
+    <p>
+      <strong>你選的語言。</strong>你在切換器裡挑了一種語言，這個選擇會寫進你瀏覽器的本地儲存，名字叫 <code>abox-lang</code>，好讓你開啟的下一個頁面就是你要的那種語言。它不是 Cookie：它從不發給我們，也不發給別的任何人，就待在你讀這段話的這臺裝置上，清掉瀏覽器的網站資料它就沒了。你要是從來沒挑過語言，那就什麼都不會寫，一個按你瀏覽器語言顯示的頁面，是當場匹配、隨後即忘的。
+    </p>
+    <p>
+      你在這裡可能碰到的每一個 Cookie 或者類似標識，都屬於 Google，由上面說的那兩個廣告和統計指令碼設定。它們用來統計訪問，以及挑選廣告和限制同一條廣告的展示次數。
+    </p>
+    <h3>怎麼把它關掉</h3>
+    <ul>
+      <li>
+        廣告個性化可以一次對所有網站關掉，在 <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer nofollow">My Ad Center</a>。
+      </li>
+      <li>
+        Google Analytics 可以用 Google 自己的<a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer nofollow">停用瀏覽器外掛</a>在所有網站上攔掉。
+      </li>
+      <li>
+        你瀏覽器自己的設定能攔掉或者清掉第三方 Cookie，而任何內容攔截器都能讓這些指令碼從一開始就載入不了。
+      </li>
+    </ul>
+    <p>
+      全攔掉，我們沒意見。<strong>本站每個工具在這些指令碼被攔掉時照樣能用，在完全斷網時也照樣能用。</strong>這裡沒有哪樣東西被扣在廣告後面。
+    </p>
+  </section>
+
+  <section>
+    <h2>你對這些資料的權利</h2>
+    <p>
+      我們手裡沒有任何關於你的個人資料，所以沒有什麼可以給你看、給你改、給你匯出或者給你刪掉的。你向我們提請求，老實說，回來會是空的。
+    </p>
+    <p>
+      上面說的那些資料在 Google 手裡，就那部分而言，他們是自己的資料控制者。關於它的請求得找他們，透過<a href="https://myaccount.google.com/" target="_blank" rel="noopener noreferrer nofollow">你的 Google 帳號</a>，或者他們的隱私聯絡方式。
+    </p>
+  </section>
+
+  <section>
+    <h2>兒童</h2>
+    <p>
+      本站不面向兒童，也不問任何人的年齡，因為它壓根不向任何人要任何東西。我們不會在知情的情況下收集任何人的個人資料，不分年齡。
+    </p>
+  </section>
+
+  <section>
+    <h2>變更，以及怎麼找到我們</h2>
+    <p>
+      這一頁有變動，頂上的日期也跟著變，而這次改動跟別的一切一樣，都在公開的提交歷史裡。
+    </p>
+    <p>
+      有疑問可以發到 <a href="mailto:hi@abox.tools">hi@abox.tools</a>，或者在<a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">倉庫</a>裡開一個 issue，那樣答案對其他同樣在琢磨這件事的人也看得見。
+    </p>
+  </section>

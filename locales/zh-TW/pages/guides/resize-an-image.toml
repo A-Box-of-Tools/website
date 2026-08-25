@@ -1,0 +1,24 @@
+#
+# Guide: resizing an image - Traditional Chinese.
+#
+# Overrides for pages/guides/resize-an-image/page.toml. Prose in the .html
+# beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "改圖片尺寸"
+
+title = "怎麼改圖片尺寸而不把它弄壞"
+description = "改畫素尺寸時畫面到底經歷了什麼：為什麼縮小安全、放大不安全，框的比例跟照片對不上該怎麼辦，以及什麼時候其實該裁而不是縮。"
+
+heading = "怎麼改圖片尺寸而不把它弄壞"
+lede = """
+    在圖片這攤活裡，縮放是損傷在按下按鈕之前就定好的那一件，定它的是你打進去\
+    的數字和你要的那個形狀。這一頁講每個選擇對畫面做了什麼，以及哪些還救\
+    得回來。"""
+
+updated = "2026年8月20日"
+
+og_title = "改圖片尺寸而不把它弄壞"
+og_description = "為什麼縮小安全、放大不安全，框的比例對不上該怎麼辦，以及什麼時候該裁而不是縮。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

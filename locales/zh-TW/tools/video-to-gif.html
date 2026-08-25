@@ -1,0 +1,170 @@
+<!--
+  tools/video-to-gif/body.html, in Traditional Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步，選檔案 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選一段影片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>檔案</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>大小</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>畫面</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>時長</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>影片編碼</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>用什麼讀的</dt><dd id="src-path">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 第 2 步，挑段落 -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> 挑出那一段</h2>
+
+    <p class="hint">
+      放起來，把要的那一段標出來。<kbd>I</kbd> 把開始點定在播放頭這裡，<kbd>O</kbd> 定結束點，條上那兩個手柄也能直接拖。
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/range.js. -->
+    <div id="rangebar"></div>
+    <div class="rb-scale">
+      <span>0:00.000</span>
+      <span id="scale-end">&mdash;</span>
+    </div>
+
+    <div class="marks">
+      <label>開始
+        <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-in" class="ghost" title="把開始點定到播放頭這裡（I）">
+        定到播放頭
+      </button>
+
+      <label>結束
+        <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-out" class="ghost" title="把結束點定到播放頭這裡（O）">
+        定到播放頭
+      </button>
+
+      <div class="mark-actions">
+        <button type="button" id="play-section" class="ghost">放一遍這一段</button>
+        <button type="button" id="whole-clip" class="ghost">整段片子</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第 3 步，出 GIF -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 尺寸和幀率</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="width">寬度</label>
+        <select id="width">
+          <option value="240">240 px</option>
+          <option value="320">320 px</option>
+          <option value="480" selected>480 px</option>
+          <option value="640">640 px</option>
+          <option value="source">原始尺寸</option>
+          <option value="custom">精確指定&hellip;</option>
+        </select>
+        <p class="field-note">
+          高度跟著走，比例不會變。GIF 的花銷就在寬度上：寬度砍一半，畫素少四分之三。
+        </p>
+        <p class="field-note" id="width-note" hidden></p>
+      </div>
+
+      <div class="field" id="custom-width-field" hidden>
+        <label for="custom-width">精確寬度</label>
+        <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
+        <p class="field-note">單位畫素，16 到 1920 之間。</p>
+      </div>
+
+      <div class="field">
+        <label for="fps">每秒幀數</label>
+        <select id="fps">
+          <option value="5">5，最小</option>
+          <option value="10">10</option>
+          <option value="12" selected>12，夠順了</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25，最順</option>
+        </select>
+        <p class="field-note">
+          這不是影片自己的幀率，幀是從裡面抽出來的。十二幀就讀得出是在動；過了二十，檔案漲得比順滑看得出來的部分快。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="dither">抖動</label>
+        <select id="dither">
+          <option value="on" selected>開，漸變更順</option>
+          <option value="off">關，更平，更小</option>
+        </select>
+        <p class="field-note">
+          配色板裡缺哪個顏色，就拿兩個湊。用的是有序抖動，所以靜止的背景不會滿屏爬。
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="loop">
+          <input type="checkbox" id="loop" checked>
+          一直迴圈
+        </label>
+        <p class="field-note">關掉就只放一遍，然後停住。</p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>段落</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>輸出</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>幀數</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>大致體積</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="memory-note" class="field-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>做 GIF</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <img id="result-image" alt="做好的動圖，正在播放">
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>下載 GIF</a>
+      </div>
+    </div>
+  </section>
+</main>

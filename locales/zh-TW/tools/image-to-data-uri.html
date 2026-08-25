@@ -1,0 +1,132 @@
+<!--
+  tools/image-to-data-uri/body.html, in Traditional Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步，選檔案 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選圖片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">清空列表</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步，真正被粘出去的那一行 -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> 說清楚它要粘到哪裡</h2>
+
+    <p class="card-lede">
+      光給一串 data URI，其實很少有人真想要。大家要的是能直接貼進樣式表的那一行。所以先挑好這一行的樣子，圖片進去時引號已經加好了。引號這東西最容易弄錯，偏偏還只有 SVG 會因此出事。
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="要粘出去的形式">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>光要 data URI</strong>
+          <span class="shape-note">
+            逗號後面那一整串就是檔案本身。哪裡能寫網址就能粘哪裡。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>一條 CSS 規則</strong>
+          <span class="shape-note">
+            一條完整規則，類名照檔名取。選擇器換成你真正要修飾的那個就行。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>一個 CSS 自定義屬性</strong>
+          <span class="shape-note">
+            在樣式表開頭宣告一次，之後用 <code>var(--名字)</code> 想引幾次引幾次。圖片要在好幾條規則裡出現，就選這個。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>一個 HTML <code>&lt;img&gt;</code> 標籤</strong>
+          <span class="shape-note">
+            畫素尺寸已經填好，頁面其餘部分載入時不會跳來跳去。
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">
+            寫 README 或者提 issue 用：圖片跟著文字走，不用另找地方放。
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      <code>alt</code> 是故意留空的。這張圖到底有實際含義還是純裝飾，只有你知道。拿檔名瞎猜一句描述，對用讀屏軟體的人來說，比沒有描述更糟。
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>SVG 也用 base64</strong>
+          <span class="check-note">預設關著，因為 SVG 是文字，而 base64 是給位元組用的。百分號編碼能讓標記在樣式表裡還看得懂，通常還短五分之一。個別工具鏈非要 <code>;base64</code> 不可，才把這個開啟。
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the result. There is no button here on purpose: encoding
+       is instant, so there is nothing for a "convert" press to wait for. -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> 複製</h2>
+
+    <p id="empty-note" class="card-lede">
+      還沒選東西。往上面丟一張圖，能粘出去的那一行就出現在這裡。
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">全部複製</button>
+          <button type="button" id="download-all" class="ghost">存成一個檔案</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

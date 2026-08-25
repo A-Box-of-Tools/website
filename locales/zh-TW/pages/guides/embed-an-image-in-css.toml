@@ -1,0 +1,24 @@
+#
+# Guide: putting a picture inside a stylesheet - Traditional Chinese.
+#
+# Overrides for pages/guides/embed-an-image-in-css/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "把圖片嵌進 CSS"
+
+title = "CSS 裡的 data URI：什麼時候該內聯圖片，什麼時候不該"
+description = "data URI 的代價在哪裡，base64 為什麼多出三分之一而 gzip 又還不回來，SVG 為什麼絕不該用 base64，以及那個只坑內聯 SVG、還一聲不吭的引號問題。"
+
+heading = "什麼時候該把圖片塞進 CSS，什麼時候不該"
+lede = """
+    寫進樣式表裡的圖片，跟樣式表一起到：不用再發一次請求，也不用等。代價是\
+    它不再是一個檔案，沒法單獨快取，而且它周圍的東西一改，它就得重新下一遍。\
+    這一頁講這筆交易什麼時候划算，什麼時候悄悄地不划算。"""
+
+updated = "2026年8月20日"
+
+og_title = "什麼時候該把圖片塞進 CSS"
+og_description = "data URI 的代價在哪裡，SVG 為什麼絕不該用 base64，以及那個只坑內聯 SVG、還一聲不吭的引號問題。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

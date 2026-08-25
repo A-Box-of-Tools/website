@@ -1,0 +1,72 @@
+#
+# 路線圖上的計畫清單 - Traditional Chinese.
+#
+# Overrides for config/planned.toml. Only words: the group `id` stays as it is,
+# because that is what a tool's roadmap_group matches on, and the order of the
+# groups and of the items inside them is decided once, in English.
+#
+# Every group and every item has to be here. They are merged in order, so a
+# missing entry would render in English in the middle of a Chinese list with
+# nothing on the page to say which one it was - the build refuses a list whose
+# length has changed for exactly that reason.
+#
+# 條目裡的格式名（GIF、MP4、WebM、APNG、SRT、CSV、JSON）一律不譯：它們是
+# 檔案格式的名字，不是詞。
+#
+
+note = "都還沒做。列在這裡，好讓你看清這個站要往哪裡走。"
+
+[[group]]
+id = "images"
+name = "圖片"
+items = [
+  ["加文字", "壓在畫面上，或者放進畫面上方的文字條裡"],
+  ["AVIF", "只有一個瀏覽器寫得出來、其餘只能讀的格式"],
+  ["DICOM 去標識", "把病人的資訊從影像裡拿掉，影像本身一動不動"],
+]
+
+[[group]]
+id = "gif"
+name = "GIF 與動圖"
+items = [
+  ["GIF 轉 MP4 或 WebM", "同一段動畫，通常只有原來的十分之一大"],
+  ["編輯 GIF", "縮放、裁剪、旋轉、倒放，或者改播放速度"],
+  ["動態 WebP", "還是那段動畫，體積只剩零頭 —— 也是這裡唯一需要自帶編碼器的一個"],
+]
+
+[[group]]
+id = "video"
+name = "影片"
+items = [
+  ["縮放", "壓到一個真的發得出去的尺寸"],
+  ["旋轉", "給那些拍橫了的片段 —— 而且一幀都不用解碼"],
+  ["把影片靜音", "只去掉聲音，畫面原封不動"],
+  ["轉成 MP4", "不管從相機裡出來的是什麼，都變成傳得上去的那種檔案"],
+  ["壓制字幕", "把一個 SRT 檔案畫進畫面裡"],
+  ["字幕轉換", "SRT、VTT、ASS、SBV、LRC 互轉，時間軸也能整體挪"],
+]
+
+[[group]]
+id = "audio"
+name = "音訊"
+items = [
+  ["格式轉換", "MP3、WAV 和 Opus，轉哪個方向都行"],
+]
+
+[[group]]
+id = "documents"
+name = "文件與 PDF"
+items = [
+  ["旋轉與裁剪頁面", "把掃橫了的件扶正，或者切掉頁邊"],
+  ["提取圖片", "把文件裡的圖片重新取出來"],
+  ["PDF 塗黑", "把字真的刪掉，而不是在上面蓋一塊黑條"],
+  ["文件掃描", "把紙頁的照片扶正、清乾淨，變成一份文件"],
+]
+
+[[group]]
+id = "beyond"
+name = "媒體之外"
+items = [
+  ["CSV 與 JSON", "兩個方向都能轉，順手把表格匯出的東西理乾淨"],
+  ["證書與金鑰", "讀一份證書或簽名請求，不用把它貼進別人的伺服器"],
+]

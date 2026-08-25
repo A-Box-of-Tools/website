@@ -1,0 +1,24 @@
+#
+# Guide: HEIC, and how to get out of it - Traditional Chinese.
+#
+# Overrides for pages/guides/convert-heic-to-jpg/page.toml. Prose in the .html
+# beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "HEIC 轉 JPG"
+
+title = "HEIC 怎麼轉成 JPG（以及 HEIC 到底是什麼）"
+description = "iPhone 把照片存成 HEIC，而半個網際網路打不開它。這個格式是什麼，為什麼只有 Safari 解得了，轉換要拿畫質換多少，以及怎麼做到不把照片交給任何人。"
+
+heading = "手機存下的那張照片，和那個什麼都打不開的格式"
+lede = """
+    iPhone 把照片存成 HEIC，它比 JPEG 更小也更好，而大量軟體至今拒絕開啟它。\
+    這一頁講這個格式究竟是什麼，轉換要拿畫質換多少，以及為什麼幾乎每一個\
+    轉換器都要你先把照片傳上去。"""
+
+updated = "2026年8月20日"
+
+og_title = "HEIC 怎麼轉成 JPG"
+og_description = "iPhone 的照片為什麼打不開，轉換的代價是什麼，以及怎麼做到不把照片交給任何人。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

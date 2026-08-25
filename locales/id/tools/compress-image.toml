@@ -1,0 +1,253 @@
+#
+# Kompresor Gambar - Bahasa Indonesia.
+#
+# Overrides for tools/compress-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Kompresor Gambar"
+# Bagian kedua adalah frasa yang benar-benar dicari orang. Seperti dalam bahasa
+# Inggris, nama produk tetap menjadi bagian yang lantang.
+heading = "Kompresor&nbsp;Gambar <span class=\"h1-kw\">&mdash; kompres ke ukuran persis</span>"
+tagline = "Sebutkan ukurannya. Sisanya dia yang hitung."
+
+title = "Kompres Gambar ke Ukuran Tertentu &mdash; Gratis, Tanpa Unggah"
+# Di bawah 155 karakter: Google memotong deskripsi di sekitar sana, dan akhir
+# kalimat inilah yang menjual halaman ini.
+description = "Kompres JPEG, PNG, atau WebP ke ukuran persis: 100 KB, 2 MB, berapa pun. Berjalan di peramban Anda, tidak ada yang diunggah, dan tetap jalan tanpa internet."
+og_title = "Kompres gambar ke ukuran yang Anda tentukan"
+og_description = "Sebutkan ukuran targetnya, lalu alat ini mencari kompresi paling sedikit yang mencapainya dan mengukur apa biayanya. Berjalan di perangkat Anda sendiri, tidak ada yang diunggah."
+og_image_alt = "Kompresor Gambar - sebutkan ukurannya, kualitasnya tetap terjaga"
+
+pledge = """
+    Kompresi berjalan di peramban Anda sendiri, di perangkat keras Anda
+    sendiri, memakai encoder yang memang sudah dibawa peramban itu. Alat ini
+    tidak punya fitur jaringan dalam bentuk apa pun &mdash; tidak ada yang
+    diambil, tidak ada yang dikirim &mdash; dan seandainya pun ada, tidak ada
+    server di ujung lain halaman ini untuk menerima sebuah gambar."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu kompres sebuah foto. Tidak satu pun permintaan membawa gambar,
+      gambar mini, nama file, atau satu byte pun dari yang Anda pilih. Atau
+      cabut koneksi internet dan tetap kompres satu."""
+
+read_first = """
+, <code>src/compress.js</code> untuk pencarian yang
+      memutuskan berapa banyak kualitas yang dikorbankan, dan
+      <code>src/measure.js</code> untuk perbandingan di balik angka
+      "kemiripan visual"."""
+
+howto_heading = "Cara mengompres gambar ke ukuran tertentu"
+
+card = """
+            Sebutkan ukuran yang Anda butuhkan &mdash; 100 KB, 2 MB, berapa pun
+            &mdash; dan alat ini mencari kompresi paling sedikit yang
+            mencapainya."""
+
+[words]
+plural = "gambar Anda"
+choose = "sebuah gambar"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa batas ukuran"
+
+[[facts]]
+text = "Berfungsi luring"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Gambar Anda tidak punya tempat untuk pergi."
+body = """
+ Content-Security-Policy menyebutkan
+      setiap alamat yang boleh dihubungi halaman ini, dan tidak satu pun milik
+      situs ini. Tidak ada endpoint di sini tempat file Anda bisa dikumpulkan,
+      dan tidak ada kode yang akan mengirimnya seandainya endpoint itu ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada <code>fetch</code>, tidak ada
+      <code>XMLHttpRequest</code>, dan tidak ada <code>sendBeacon</code> di
+      mana pun dalam <code>src/</code>. Kompresinya adalah
+      <code>canvas.toBlob</code> &mdash; encoder yang memang sudah terpasang di
+      peramban Anda."""
+
+[[privacy]]
+title = "Angkanya diukur, bukan dilaporkan."
+body = """
+ Ukuran, angka kualitas, dan
+      perbandingan SSIM semuanya dihitung di halaman ini lalu ditampilkan
+      kepada Anda. Tidak ada event analitik khusus di repositori ini yang
+      membawa nama file, ukuran, jumlah, atau hasil."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal dari
+      Google, dan tombol donasi dari Buy Me a Coffee. Tidak satu pun diberi apa
+      pun tentang gambar Anda. Setiap baris yang membaca, mengompres, atau
+      mengukur sebuah file disajikan dari origin ini dan terdaftar di
+      repositori."""
+
+[[privacy]]
+title = "Berfungsi tanpa koneksi internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini
+      tidak berubah sedikit pun, karena memang tidak pernah ada langkah
+      jaringan di dalamnya. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih gambar Anda."
+body = """
+ Seret ke area pemilih atau pilih
+      sendiri. Peramban membacanya langsung dari disk Anda; tidak ada yang
+      dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Ketik ukuran yang diminta dari Anda."
+body = """
+ 100 KB untuk formulir unggah yang
+      terus menolak foto Anda, 500 KB untuk portal pendaftaran, 2 MB untuk
+      halaman yang harus cepat dimuat. Empat angka yang paling sering dipakai
+      tersedia sebagai tombol."""
+
+[[howto]]
+title = "Tekan \"Kompres ke target\"."
+body = """
+ Setiap gambar dikodekan beberapa kali
+      sementara alat ini menyempitkan pilihan ke kualitas tertinggi yang masih
+      muat. Apa pun yang sudah di bawah target dibiarkan apa adanya."""
+
+[[howto]]
+title = "Periksa apa biayanya, lalu unduh."
+body = """
+ Setiap hasil menyebutkan ditulis
+      sebagai apa, pada kualitas berapa, apakah dimensinya berubah, dan
+      seberapa mirip dengan aslinya saat diukur. "Bandingkan" menaruh kedua
+      gambar berdampingan."""
+
+[[faq]]
+q = "Apakah gambar saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File itu didekode, dikompres, dan diukur oleh peramban Anda
+        sendiri di perangkat keras Anda sendiri, memakai encoder JPEG, PNG, dan
+        WebP yang memang sudah dibawa peramban. Alat ini tidak punya fitur
+        jaringan dalam bentuk apa pun &mdash; tidak pernah mengambil apa pun dan
+        tidak pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebutkan setiap
+        alamat yang boleh dihubunginya, yang tidak satu pun milik situs ini."""
+
+[[faq]]
+q = "Bagaimana caranya mencapai ukuran yang persis?"
+a = """
+        Dengan mencoba. Tidak ada rumus yang mengubah setelan kualitas menjadi
+        jumlah byte &mdash; itu sepenuhnya bergantung pada gambarnya &mdash;
+        jadi alat ini mengodekan gambar beberapa kali dan mencari jawabannya.
+        Ia mulai dari puncak rentang kualitas lalu menyempit dengan membagi
+        dua, yang menemukan kualitas tertinggi yang muat dalam sekitar delapan
+        kali pengodean. Setiap ukuran yang Anda lihat di halaman ini adalah
+        file yang benar-benar sudah dikodekan, bukan perkiraan."""
+
+[[faq]]
+q = "Apa arti \"kehilangan minimal\" di sini?"
+a = """
+        Tiga hal yang spesifik. Pertama, gambar yang sudah di bawah target Anda
+        diteruskan byte demi byte, bukan dikodekan ulang. Kedua, kualitas
+        dikorbankan lebih dulu sebelum resolusi, dan hanya sampai batas bawah
+        tempat artefak kompresi mulai terlihat &mdash; setelah titik itu alat
+        ini memperkecil gambarnya dan menaikkan kembali kualitasnya, karena
+        piksel bagus yang lebih sedikit terlihat lebih baik daripada piksel
+        rusak yang lebih banyak. Ketiga, begitu hasil yang muat ditemukan,
+        pencarian mendorong kembali ke atas sampai anggarannya terpakai, jadi
+        Anda tidak mendapat file 300 KB ketika meminta 500 KB."""
+
+[[faq]]
+q = "Angka SSIM dan PSNR pada setiap hasil itu apa?"
+a = """
+        Keduanya adalah pengukuran atas apa yang dikorbankan oleh kompresi,
+        diambil dengan mendekode hasilnya lalu membandingkannya dengan gambar
+        asli. SSIM membandingkan kecerahan, kontras, dan struktur lokal, yang
+        jauh lebih dekat dengan apa yang mengganggu mata dibanding sekadar
+        menghitung piksel yang berubah; di atas sekitar 0,98 keduanya sulit
+        dibedakan saat disandingkan. PSNR adalah angka desibel yang
+        konvensional. Keduanya dihitung di perangkat Anda, dan keduanya
+        ditampilkan supaya klaim kehilangan yang kecil bisa diperiksa, bukan
+        sekadar dinyatakan."""
+
+[[faq]]
+q = "Format apa saja yang bisa dibaca dan ditulisnya?"
+a = """
+        Ia membaca apa pun yang bisa didekode peramban Anda, yang dalam praktiknya
+        berarti JPEG, PNG, WebP, GIF, BMP, dan &mdash; pada kebanyakan peramban
+        saat ini &mdash; AVIF. Ia menulis JPEG, PNG, dan WebP, karena itulah
+        encoder yang dibawa peramban. Pada "otomatis" ia mempertahankan format
+        asal file Anda, dan beralih ke WebP hanya ketika mempertahankannya akan
+        berarti pengubahan ukuran atau penurunan kualitas yang kelihatan."""
+
+[[faq]]
+q = "Kenapa PNG tidak bisa dikompres terlalu jauh?"
+a = """
+        Karena PNG bersifat lossless: tidak ada tombol kualitas untuk diputar.
+        Satu-satunya cara memperkecil PNG adalah memberinya lebih sedikit piksel
+        atau lebih sedikit warna, jadi dengan PNG terpilih alat ini mencapai
+        target semata-mata dengan mengubah ukuran. Kalau gambarnya adalah foto,
+        JPEG atau WebP akan jauh lebih mendekati target Anda pada ukuran yang
+        jelas terlihat baik-baik saja &mdash; dan kalau itu logo atau tangkapan
+        layar dengan transparansi, WebP mempertahankan transparansi yang akan
+        diisi putih oleh JPEG."""
+
+[[faq]]
+q = "Apakah mengompres gambar menghapus data EXIF dan GPS-nya?"
+a = """
+        Ya, sebagai efek samping. Mengompres berarti mendekode gambar menjadi
+        piksel lalu mengodekan piksel itu lagi, dan kanvas yang penuh piksel
+        tidak membawa tag apa pun, sehingga lokasi, model kamera, cap waktu, dan
+        segala yang lain sama sekali tidak ditulis ke file baru. Kalau Anda ingin
+        metadatanya hilang tetapi gambarnya tidak tersentuh, pakai
+        <a href="../hapus-data-exif/">Penampil &amp; Penghapus EXIF</a> saja
+        &mdash; alat itu menulis ulang wadahnya tanpa mengompres ulang apa
+        pun."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada proses masuk, tidak ada masa coba,
+        tidak ada tanda air. Tidak ada batasan jumlah maupun ukuran file juga,
+        karena tidak ada server yang membayarinya &mdash; pekerjaannya terjadi
+        di perangkat Anda sendiri. Situs ini memuat iklan, dan itulah yang
+        membiayainya; iklan-iklan itu tidak diberi apa pun tentang gambar
+        Anda."""
+
+[[faq]]
+q = "Apakah berfungsi tanpa koneksi internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim gambar Anda pergi untuk dikompres akan
+        berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Kompres gambar JPEG, PNG, dan WebP ke ukuran yang Anda sebutkan. Alat ini mencari kualitas tertinggi yang muat pada target, mengubah ukuran hanya ketika kualitas saja tidak cukup, lalu mengukur hasilnya terhadap aslinya. Berjalan sepenuhnya di peramban tanpa unggahan."
+features = [
+  "Mengompres ke ukuran file target yang Anda pilih, bukan angka kualitas yang harus Anda tebak",
+  "Mempertahankan resolusi penuh bila bisa, dan mengubah ukuran hanya ketika kualitas saja tidak sampai ke target",
+  "Memakai seluruh anggaran: hasilnya mendarat tepat di bawah target, bukan jauh di bawahnya",
+  "Mengukur hasilnya terhadap aslinya dengan SSIM dan PSNR",
+  "Membiarkan file yang sudah di bawah target sama sekali tidak tersentuh",
+  "JPEG, PNG, dan WebP, dengan pemilihan format otomatis",
+  "Bisa sekaligus banyak, semua hasil dalam satu zip",
+  "Berjalan luring; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Letakkan gambar di sini"
+hint = "atau klik untuk menelusuri &mdash; JPEG, PNG, WebP, dan apa pun yang bisa dibuka peramban Anda"

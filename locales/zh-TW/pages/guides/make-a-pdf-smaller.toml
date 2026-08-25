@@ -1,0 +1,24 @@
+#
+# Guide: making a PDF smaller - Traditional Chinese.
+#
+# Overrides for pages/guides/make-a-pdf-smaller/page.toml. Prose in the .html
+# beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "給 PDF 瘦身"
+
+title = "怎麼給 PDF 瘦身（以及有些為什麼壓不動）"
+description = "一份 PDF 的體積到底壓在哪裡，掃描件為什麼能小 80% 而合同幾乎紋絲不動，這裡的 DPI 是什麼意思，以及壓縮工具絕不該對你的文件做什麼。"
+
+heading = "怎麼給 PDF 瘦身，以及有些為什麼壓不動"
+lede = """
+    塞不進郵件附件上限的 PDF，幾乎總是一份塞滿圖片的 PDF。這一頁講怎麼判斷\
+    你手上這份是不是，壓縮要付出什麼，以及為什麼凡是承諾一個固定百分比的\
+    工具，都根本沒看過你的檔案。"""
+
+updated = "2026年8月20日"
+
+og_title = "怎麼給 PDF 瘦身"
+og_description = "一份 PDF 的體積到底壓在哪裡，掃描件為什麼能小而合同不能，以及 DPI 跟這事有什麼關係。"
+og_image_alt = "abox.tools - 不走伺服器的工具"
