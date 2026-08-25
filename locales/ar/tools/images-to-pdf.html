@@ -1,0 +1,228 @@
+<main>
+  <!-- Step 1 &mdash; images -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصور</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" data-sort="name" class="ghost">رتّب بالاسم</button>
+        <button type="button" data-sort="date" class="ghost">رتّب بالتاريخ</button>
+        <button type="button" data-sort="reverse" class="ghost">اعكس</button>
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      صورةٌ لكل صفحة، بهذا الترتيب. اسحب من المقبض
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> لتحريك صفحة،
+      أو استعمل الأسهم التي عليها.
+    </p>
+
+    <ul id="image-list" class="image-list"></ul>
+  </section>
+
+  <!-- Step 2 &mdash; the pages -->
+  <section class="card">
+    <h2><span class="step">2</span> إعداد الصفحة</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">مقاس الصفحة</label>
+        <select id="page-size">
+          <option value="fit" selected>لائم الصفحة مع كل صورة</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 مم</option>
+          <option value="letter">Letter &mdash; 8.5 &times; 11 بوصة</option>
+          <option value="legal">Legal &mdash; 8.5 &times; 14 بوصة</option>
+          <option value="a3">A3 &mdash; 297 &times; 420 مم</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 مم</option>
+          <option value="tabloid">Tabloid &mdash; 11 &times; 17 بوصة</option>
+          <option value="custom">مخصّص&hellip;</option>
+        </select>
+        <div id="custom-size" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="1" max="5000" step="1" value="210"
+                 aria-label="عرض الصفحة المخصّص">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="1" max="5000" step="1" value="297"
+                 aria-label="ارتفاع الصفحة المخصّص">
+          <select id="custom-unit" aria-label="وحدة مقاس الصفحة المخصّص">
+            <option value="mm" selected>مم</option>
+            <option value="in">بوصة</option>
+          </select>
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">دقة الطباعة</label>
+        <select id="dpi">
+          <option value="72">72 DPI &mdash; شاشة</option>
+          <option value="96">96 DPI</option>
+          <option value="150" selected>150 DPI</option>
+          <option value="200">200 DPI</option>
+          <option value="300">300 DPI &mdash; طباعة</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          يقرّر كم تكون الصفحة كبيرةً لعدد بكسلات معيّن. ولا يغيّر الصورة.
+        </p>
+      </div>
+
+      <div class="field" id="orientation-field" hidden>
+        <label for="orientation">الاتجاه</label>
+        <select id="orientation">
+          <option value="auto" selected>طابِق كل صورة</option>
+          <option value="portrait">طولي</option>
+          <option value="landscape">عرضي</option>
+        </select>
+      </div>
+
+      <div class="field" id="fit-field" hidden>
+        <label for="fit">كيف تجلس الصورة على الصفحة</label>
+        <select id="fit">
+          <option value="contain" selected>احتواء داخل الهوامش</option>
+          <option value="cover">ملء الصفحة (يقصّ الأطراف)</option>
+          <option value="stretch">مطّ حتى الهوامش (يشوّه)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="margin">الهامش</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="100" step="1" value="0"
+                 aria-label="الهامش بالمليمترات">
+          <span class="unit-label">مم</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="background">لون الصفحة</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          يظهر في الهوامش، وخلف كل ما هو شفّاف.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="mode">جودة الصور</label>
+        <select id="mode">
+          <option value="keep" selected>أبقِ صور JPEG كما هي بالضبط</option>
+          <option value="jpeg">أعِد ترميز كل شيء JPEG</option>
+          <option value="lossless">بلا خسارة &mdash; لا فقدان ضغط البتة</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">جودة JPEG</label>
+        <select id="quality">
+          <option value="0.75">ملف أصغر</option>
+          <option value="0.88" selected>متوازن</option>
+          <option value="0.95">أفضل جودة</option>
+        </select>
+        <p class="field-note">تُستعمَل للصور التي على هذه الأداة إعادة ترميزها لا غير.</p>
+      </div>
+
+      <div class="field">
+        <label for="max-side">صغِّر الصور الكبيرة</label>
+        <select id="max-side">
+          <option value="0" selected>أبداً &mdash; أبقِ المقاس الكامل</option>
+          <option value="4000">الضلع الأطول 4000 بكسل</option>
+          <option value="2000">الضلع الأطول 2000 بكسل</option>
+          <option value="1200">الضلع الأطول 1200 بكسل</option>
+        </select>
+        <p class="field-note" id="shrink-note"></p>
+      </div>
+    </div>
+
+    <details class="meta-panel">
+      <summary>تفاصيل المستند &mdash; كلها اختيارية، وكلها فارغة افتراضياً</summary>
+      <div class="meta-body">
+        <p class="meta-note">
+          ملف PDF يحمل كتلة صغيرة من المعلومات عن نفسه، ومعظم الأدوات تملؤها
+          بوقتٍ وباسم برنامج سواء طلبت ذلك أم لا. أما هذه فتكتب ما تكتبه أنت هنا
+          ولا شيء غيره: لا أسماء ملفات، ولا اسم جهاز، ولا تاريخ إلا أن تؤشّر على
+          المربع.
+        </p>
+        <div class="settings">
+          <div class="field">
+            <label for="doc-title">العنوان</label>
+            <input type="text" id="doc-title" maxlength="200" spellcheck="false"
+                   placeholder="يُترَك إن كان فارغاً">
+          </div>
+          <div class="field">
+            <label for="doc-author">المؤلف</label>
+            <input type="text" id="doc-author" maxlength="200" spellcheck="false"
+                   placeholder="يُترَك إن كان فارغاً">
+          </div>
+          <div class="field">
+            <label for="file-name">اسم الملف</label>
+            <div class="inline-pair">
+              <input type="text" id="file-name" maxlength="120" spellcheck="false"
+                     value="images">
+              <span class="unit-label">.pdf</span>
+            </div>
+          </div>
+          <div class="field checkbox-field">
+            <label for="dated">
+              <input type="checkbox" id="dated">
+              سجّل تاريخ اليوم في المستند
+            </label>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="480" height="640" aria-label="معاينة صفحة واحدة"></canvas>
+        <p id="preview-empty" class="preview-empty">أضِف صوراً لترى الصفحات</p>
+        <div id="preview-nav" class="preview-nav" hidden>
+          <button type="button" id="preview-prev" class="ghost" aria-label="الصفحة السابقة">&lsaquo;</button>
+          <span id="preview-label" class="preview-label"></span>
+          <button type="button" id="preview-next" class="ghost" aria-label="الصفحة التالية">&rsaquo;</button>
+        </div>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>الصفحات</dt><dd id="sum-pages">&mdash;</dd></div>
+        <div><dt>مقاس الصفحة</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>الصور المختارة</dt><dd id="sum-input">&mdash;</dd></div>
+        <div><dt>المنسوخة دون مساس</dt><dd id="sum-copied">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; export -->
+  <section class="card">
+    <h2><span class="step">3</span> أنشئ ملف PDF</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>أنشئ ملف PDF</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>نزِّل ملف PDF</a>
+      </div>
+    </div>
+  </section>
+</main>
