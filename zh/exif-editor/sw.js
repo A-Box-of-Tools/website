@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/exif-editor/:';
-const CACHE_NAME=CACHE_PREFIX+'2024790ddf';
+const CACHE_NAME=CACHE_PREFIX+'ff8fe1c94e';
 const ASSETS=[
 './',
 'index.html',

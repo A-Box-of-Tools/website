@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/foto-tessera/:';
-const CACHE_NAME=CACHE_PREFIX+'6769322596';
+const CACHE_NAME=CACHE_PREFIX+'3cddc28b6d';
 const ASSETS=[
 './',
 'index.html',

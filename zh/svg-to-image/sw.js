@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/svg-to-image/:';
-const CACHE_NAME=CACHE_PREFIX+'8c5d8724f9';
+const CACHE_NAME=CACHE_PREFIX+'9bb2212e7e';
 const ASSETS=[
 './',
 'index.html',

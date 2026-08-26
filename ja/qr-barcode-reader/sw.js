@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ja/qr-barcode-reader/:';
-const CACHE_NAME=CACHE_PREFIX+'047cc5740f';
+const CACHE_NAME=CACHE_PREFIX+'ccd620144a';
 const ASSETS=[
 './',
 'index.html',

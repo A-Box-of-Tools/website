@@ -1,0 +1,26 @@
+{
+  "id": "/id/stack-images/",
+  "name": "Image Stacker",
+  "short_name": "Image Stacker",
+  "description": "Twenty frames into one, without twenty uploads or a RAW converter.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

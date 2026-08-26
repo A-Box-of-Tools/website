@@ -1,0 +1,43 @@
+/* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{phrase}from'./phrases.js';
+export function wireFilePicker({input,dropzone,onFiles,idleTitle}){
+const titleEl=dropzone.querySelector('.dropzone-title');
+const idle=idleTitle??titleEl?.textContent??'';
+const hand=(files)=>{
+const picked=Array.from(files??[]);
+if(picked.length)onFiles(picked);
+};
+input.addEventListener('change',()=>{
+const picked=Array.from(input.files);
+input.value='';
+hand(picked);
+});
+for(const type of['dragenter','dragover']){
+dropzone.addEventListener(type,(event)=>{
+event.preventDefault();
+dropzone.classList.add('dragover');
+});
+}
+for(const type of['dragleave','drop']){
+dropzone.addEventListener(type,()=>dropzone.classList.remove('dragover'));
+}
+dropzone.addEventListener('drop',(event)=>{
+event.preventDefault();
+hand(event.dataTransfer?.files);
+});
+window.addEventListener('dragover',(event)=>event.preventDefault());
+window.addEventListener('drop',(event)=>event.preventDefault());
+return{
+busy(text){
+dropzone.classList.add('busy');
+if(titleEl&&text)titleEl.textContent=text;
+},
+done(){
+dropzone.classList.remove('busy');
+if(titleEl)titleEl.textContent=idle;
+},
+};
+}
+export function readingLabel(count){
+return phrase(count===1?'reading.one':'reading.many',{count});
+}
