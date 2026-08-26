@@ -1,0 +1,193 @@
+<!--
+  tools/image-to-ico/body.html, in Indonesian.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; gambarnya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih gambar</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Keluarkan semua dari daftar</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="shape-note" class="field-summary" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; standar yang mana -->
+  <section class="card" id="preset-card">
+    <h2><span class="step">2</span> Sebutkan ikonnya untuk apa</h2>
+
+    <p class="card-lede">
+      Sebuah file ikon bukan satu gambar melainkan beberapa: logo yang sama
+      digambar lagi pada setiap ukuran yang diminta oleh yang membacanya. Ukuran
+      mana saja itu bukan soal selera &mdash; sebuah peramban mau tiga di
+      antaranya, sebuah aplikasi di laptop berkepadatan tinggi mau sepuluh,
+      sebuah Mac mau sepuluh miliknya sendiri, dan sesuatu yang ditulis sebelum
+      Windows Vista mau semuanya disimpan dengan cara yang sama sekali berbeda.
+    </p>
+
+    <!--
+      Which files to write. Windows and macOS read different containers and
+      neither will look at the other's, so this is a set of checkboxes rather
+      than a menu: wanting both is the normal case for anything shipped on both.
+    -->
+    <fieldset class="options outputs">
+      <legend>Apa yang dibuat</legend>
+
+      <label class="check">
+        <input type="checkbox" id="want-ico" checked>
+        <span>
+          <strong>Ikon Windows &mdash; <code>.ico</code></strong>
+          <span class="check-note">
+            Dibaca setiap peramban sebagai favicon, dan oleh Windows untuk
+            sebuah aplikasi, sebuah pintasan, dan sebuah folder. Ukurannya Anda
+            sendiri yang pilih di bawah.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="want-icns">
+        <span>
+          <strong>Ikon macOS &mdash; <code>.icns</code></strong>
+          <span class="check-note">
+            Inilah yang dibawa sebuah paket aplikasi Mac. Apple menamai tepat
+            sepuluh slot, dari 16 piksel sampai 1024, jadi tidak ada yang perlu
+            dipilih: kesepuluhnya masuk, digambar dari tujuh render karena sebuah
+            slot Retina dan ukuran di atasnya adalah gambar yang sama.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="pack-row">
+        <input type="checkbox" id="want-pack">
+        <span>
+          <strong>Sisa set ikon sebuah situs web</strong>
+          <span class="check-note">
+            Sebuah .ico mencakup tab peramban dan Windows. Ia tidak mencakup
+            layar utama iPhone, ajakan pemasangan Android, atau ubin yang
+            disematkan ke menu mulai &mdash; ketiganya membaca PNG 180px, sebuah
+            manifes aplikasi web, dan sebuah file XML, dan tidak satu pun dari
+            mereka mau melihat ke dalam sebuah .ico. Centang ini dan Anda
+            mendapatkan semuanya juga, manifesnya, serta blok HTML untuk
+            ditempelkan ke halaman Anda.
+          </span>
+        </span>
+      </label>
+
+      <p id="output-summary" class="field-summary"></p>
+    </fieldset>
+
+    <div id="ico-settings">
+      <div class="presets" id="preset-list" role="radiogroup" aria-label="Ikonnya untuk apa"></div>
+
+      <p id="preset-note" class="field-summary"></p>
+
+      <fieldset class="options" id="size-set">
+        <legend>Ukuran yang masuk ke .ico</legend>
+        <div class="size-grid" id="size-grid"></div>
+        <p id="size-summary" class="field-summary"></p>
+      </fieldset>
+    </div>
+
+    <fieldset class="options">
+      <legend>Bagaimana ia digambar</legend>
+
+      <div class="option-row">
+        <label for="fit-select">Kalau gambarnya tidak persegi</label>
+        <select id="fit-select">
+          <option value="pad" selected>Isi sisanya sampai persegi &mdash; seluruh gambarnya terjaga</option>
+          <option value="crop">Pangkas ke persegi di bagian tengah</option>
+          <option value="stretch">Regangkan sampai persegi</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="background-mode">Latar</label>
+        <select id="background-mode">
+          <option value="transparent" selected>Transparan</option>
+          <option value="colour">Sebuah warna</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="Warna latar" hidden>
+      </div>
+
+      <div class="option-row" id="storage-row">
+        <label for="storage-select">Bagaimana tiap ukuran disimpan di dalam .ico</label>
+        <select id="storage-select">
+          <option value="auto" selected>Otomatis &mdash; kompatibel selagi murah, PNG kalau tidak</option>
+          <option value="png">PNG untuk setiap ukuran &mdash; file terkecil, butuh Vista atau lebih baru</option>
+          <option value="bmp">Tanpa kompresi untuk setiap ukuran &mdash; terbuka di mana saja, beberapa kali lipat ukurannya</option>
+        </select>
+      </div>
+
+      <p id="storage-note" class="field-summary"></p>
+    </fieldset>
+
+  </section>
+
+  <!-- Langkah 3 &mdash; lihat kecilnya, lalu ambil -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Periksa pada ukuran ia akan dilihat</h2>
+
+    <p class="card-lede">
+      Inilah bagian yang layak dilihat sebelum Anda mengunduh apa pun. Logo yang
+      terbaca sempurna pada 512 piksel lebarnya enam belas piksel di sebuah tab
+      peramban, dan bagian tipisnya &mdash; goresan pada logo kata, garis rambut
+      di tepinya, sebuah gradien &mdash; tidak selamat dari itu. Setiap kotak di
+      bawah digambar pada ukuran sebenarnya dari file yang Anda pilih.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-strip" id="preview-strip"></div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make-icon" class="primary big" disabled>Buat ikonnya</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Siap</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Unduh semuanya sebagai satu zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+
+      <!--
+        The block to paste into a page's <head>, shown rather than only zipped:
+        most people making a favicon are about to paste this into a template,
+        and a copy button is a shorter route than a download and a text editor.
+      -->
+      <div id="snippet" class="snippet" hidden>
+        <div class="snippet-head">
+          <h4>Tempelkan ini ke <code>&lt;head&gt;</code> Anda</h4>
+          <button type="button" id="copy-snippet" class="ghost">Salin</button>
+        </div>
+        <pre id="snippet-text"></pre>
+      </div>
+    </div>
+  </section>
+</main>

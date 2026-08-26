@@ -1,0 +1,290 @@
+#
+# Pengubah Ukuran Gambar - Bahasa Indonesia.
+#
+# Overrides for tools/resize-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Dua tautan silang di FAQ memakai slug Indonesia dari [slugs] di locale.toml -
+# ../hapus-data-exif/ dan ../kompres-gambar/ - karena locale yang sudah
+# diterbitkan diharuskan setiap tautan internalnya mendarat di halaman yang
+# benar-benar dibangun.
+#
+
+name = "Pengubah Ukuran Gambar"
+heading = "Pengubah&nbsp;Ukuran&nbsp;Gambar <span class=\"h1-kw\">&mdash; ubah ukuran, pangkas, dan ubah format</span>"
+tagline = "Sebutkan ukurannya. Gambar kotaknya. Pilih formatnya."
+
+title = "Ubah Ukuran Gambar &mdash; Pangkas dan Ubah Format Juga, Tanpa Unggah"
+description = "Ubah ukuran, pangkas, dan ubah format gambar JPEG, PNG, dan WebP di peramban Anda. Piksel yang persis, sebuah persentase, atau sisi terpanjang - satu gambar atau satu folder penuh. Tidak ada yang diunggah."
+og_title = "Ubah ukuran, pangkas, dan ubah format sebuah gambar tanpa mengunggahnya"
+og_description = "Tetapkan ukurannya dalam piksel atau persen, seret sebuah kotak pangkas, ubah formatnya - untuk satu gambar atau satu kumpulan penuh. Semuanya berjalan di mesin Anda sendiri."
+og_image_alt = "Pengubah Ukuran Gambar - ubah ukuran, pangkas, dan ubah format tanpa mengunggah"
+
+pledge = """
+    Pengubahan ukuran, pemangkasan, dan pergantian formatnya semua berjalan di
+    peramban Anda sendiri, di perangkat keras Anda sendiri, memakai encoder
+    gambar yang memang sudah dibawanya. Alat ini tidak punya fitur jaringan
+    dalam bentuk apa pun &mdash; tidak ada yang diambil, tidak ada yang dikirim
+    &mdash; dan seandainya pun ada, tidak ada server di ujung lain halaman ini
+    untuk menerima sebuah gambar."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu ubah ukuran sebuah foto. Tidak satu pun permintaan membawa gambar,
+      gambar mini, nama file, atau satu byte pun dari yang Anda pilih. Atau cabut
+      koneksi internet dan tetap ubah ukuran satu."""
+
+read_first = """
+, <code>src/geometry.js</code> untuk aritmetika yang
+      memutuskan apa yang disimpan dan seberapa besar hasilnya keluar, dan
+      <code>src/codecs.js</code> untuk satu panggilan <code>drawImage</code> yang
+      melakukan pemangkasan dan pengubahan ukurannya sekaligus."""
+
+howto_heading = "Cara mengubah ukuran gambar tanpa mengunggahnya"
+
+card = """
+            Piksel yang persis, sebuah persentase, atau sisi terpanjang &mdash;
+            dengan sebuah kotak pangkas dan pergantian format di tengah jalan.
+            Satu gambar atau satu folder."""
+
+[words]
+plural = "gambar"
+choose = "sebuah gambar"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Gambar Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada <code>fetch</code>, tidak ada
+      <code>XMLHttpRequest</code>, dan tidak ada <code>sendBeacon</code> di mana
+      pun di dalam <code>src/</code>. Pengubahan ukurannya adalah satu
+      <code>drawImage</code> ke sebuah kanvas dan satu
+      <code>canvas.toBlob</code> &mdash; penskala dan encoder yang memang sudah
+      terpasang di peramban Anda."""
+
+[[privacy]]
+title = "File yang tidak diminta berubah tidak diubah."
+body = """
+ Tanpa pemangkasan, tanpa pengubahan
+      ukuran, dan tanpa pergantian format, file yang Anda pilih diserahkan
+      kembali kepada Anda byte demi byte alih-alih disimpan ulang. Itu bukan
+      sekadar kesopanan: itulah sebabnya alat ini tidak bisa diam-diam mengodekan
+      ulang sebuah gambar, atau diam-diam membuang metadata gambar yang hanya
+      ingin Anda lihat."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google, dan tombol donasi dari Buy Me a Coffee. Tidak satu pun diberi
+      apa pun tentang gambar Anda. Setiap baris yang membaca, memangkas,
+      menskalakan, atau menulis sebuah file disajikan dari asal ini dan terdaftar
+      di repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini tidak
+      berubah, karena sejak awal memang tidak ada langkah jaringan di dalamnya.
+      Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih gambar Anda."
+body = """
+ Jatuhkan ke pemilih file atau pilih sendiri.
+      Peramban membacanya langsung dari disk Anda; tidak ada yang dikirim ke mana
+      pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Pangkas, kalau Anda mau."
+body = """
+ Kotaknya mulai menutupi seluruh gambar,
+      jadi membiarkannya berarti tidak memangkas apa pun. Seret, atau kunci ke
+      sebuah bentuk &mdash; 1:1 untuk foto profil, 9:16 untuk cerita, 16:9 untuk
+      gambar mini &mdash; dan tekan "Terbesar" untuk kotak terbesar yang muat.
+      Setiap gambar menyimpan kotaknya sendiri: klik baris mana pun di daftar
+      untuk menggambar di gambar itu. Kalau semuanya harus dibingkai dengan cara
+      yang sama, satu tombol juga melakukannya."""
+
+[[howto]]
+title = "Sebutkan hasilnya harus berukuran berapa."
+body = """
+ Sebuah lebar, sebuah tinggi, atau
+      keduanya; sisi terpanjang, yang membuat foto tegak dan melintang berukuran
+      sama satu sama lain; atau sekadar sebuah persentase. Biarkan salah satu dari
+      dua kotaknya kosong dan gambarnya menjaga bentuknya sendiri."""
+
+[[howto]]
+title = "Pilih formatnya, lalu tekan tombolnya."
+body = """
+ Biarkan setiap file seperti format
+      datangnya, atau tulis semuanya sebagai JPEG, PNG, atau WebP. Setiap hasil
+      mengatakan ia menjadi apa dan seberapa kecil ia jadinya; klik salah satunya
+      untuk membukanya ukuran penuh dengan setiap angka di baliknya, dan
+      aslinya di sebelahnya untuk dibandingkan. Satu kumpulan turun sebagai satu
+      zip."""
+
+[[faq]]
+q = "Apakah gambar saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File didekode, dipangkas, diskalakan, dan ditulis oleh peramban
+        Anda sendiri di perangkat keras Anda sendiri, memakai encoder JPEG, PNG,
+        dan WebP yang memang sudah dibawa peramban. Alat ini tidak punya fitur
+        jaringan dalam bentuk apa pun &mdash; ia tidak pernah mengambil apa pun
+        dan tidak pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya, dan tidak satu pun milik situs
+        ini."""
+
+[[faq]]
+q = "Apa yang terjadi kalau saya memberi lebar tapi bukan tinggi?"
+a = """
+        Tingginya mengikuti bentuk gambar itu sendiri, dan hampir selalu itulah
+        yang diinginkan: "lebar 1920" berarti "lebar 1920 dan setinggi apa pun
+        yang dihasilkannya". Isi keduanya dan keduanya bisa bertentangan dengan
+        bentuk gambarnya, dan itu satu-satunya saat pilihan "kalau bentuknya
+        tidak cocok" muncul &mdash; muat di dalam kotaknya, isi kotaknya dan
+        potong yang berlebih, isi sisanya dengan latar, atau regangkan dan terima
+        perubahan bentuknya."""
+
+[[faq]]
+q = "Apakah mengubah ukuran gambar menurunkan kualitas?"
+a = """
+        Memperkecil sebuah gambar tidak, dengan cara apa pun yang bisa Anda
+        lihat: piksel yang masuk lebih banyak daripada yang keluar, jadi detail
+        yang disimpan adalah detail sungguhan. Memperbesar tidak bisa menambahkan
+        apa yang tidak pernah difoto &mdash; hasilnya adalah salinan yang lebih
+        lembut dari gambar yang sama, bukan yang lebih tajam &mdash; dan itulah
+        sebabnya "jangan pernah membuat gambar lebih besar daripada asalnya"
+        menyala secara bawaan. Yang memang memakan sedikit biaya adalah pengodean
+        ulang sesudahnya, kalau formatnya JPEG atau WebP, dan penggeser kualitas
+        adalah tempat Anda membelanjakannya."""
+
+[[faq]]
+q = "Bisakah saya memangkas setiap gambar dengan cara berbeda?"
+a = """
+        Bisa &mdash; itulah bawaannya. Setiap gambar di daftar membawa kotaknya
+        sendiri, dalam pikselnya sendiri, dan mengeklik sebuah baris menaruh
+        gambar itu di pratinjau dengan kotaknya sendiri dan bentuk terkuncinya
+        sendiri. Apa pun yang Anda lakukan pada satu gambar tidak memengaruhi yang
+        lain. Setiap kotak juga mulai menutupi seluruh gambar, jadi gambar yang
+        tidak pernah Anda gambari sama sekali tidak dipangkas."""
+
+[[faq]]
+q = "Bisakah ia memangkas satu kumpulan penuh dengan cara yang sama sekaligus?"
+a = """
+        Bisa, dengan tombol di bawah pratinjaunya. Ia memberi setiap gambar lain
+        area relatif yang sama &mdash; pecahan yang sama dari lebar dan tingginya
+        sendiri &mdash; yang untuk sekumpulan tangkapan layar atau hasil ekspor
+        yang semuanya berukuran sama berarti persis kotak yang sama, dan halaman
+        ini mengatakannya. Dengan sebuah bentuk terkunci, ia justru memberi
+        masing-masing kotak terbesar berbentuk itu di dalam area tersebut, jadi
+        menekan 1:1 lalu tombol itu memberi Anda persegi dari satu folder berisi
+        foto tegak dan melintang yang bercampur. Setiap kotak tetap bisa disunting
+        sesudahnya."""
+
+[[faq]]
+q = "Format apa saja yang bisa dibaca dan ditulisnya?"
+a = """
+        Ia membaca apa pun yang bisa didekode peramban Anda, yang dalam praktiknya
+        berarti JPEG, PNG, WebP, GIF, BMP, dan &mdash; di sebagian besar peramban
+        masa kini &mdash; AVIF. Ia menulis JPEG, PNG, dan WebP, karena itulah
+        encoder yang dibawa peramban. Pada "biarkan formatnya", JPEG tetap JPEG
+        dan PNG tetap PNG; apa pun yang tidak bisa ditulis peramban, seperti GIF
+        atau BMP, keluar sebagai PNG, yang menjaga transparansi dan warna datar
+        tetap utuh."""
+
+[[faq]]
+q = "Apa yang terjadi pada transparansi kalau saya menyimpan sebagai JPEG?"
+a = """
+        Ia diisi dengan warna latar, karena JPEG tidak punya kanal alfa untuk
+        menyimpannya. Warnanya Anda yang pilih dan ia mulai dari putih, yang
+        diinginkan kebanyakan orang dan yang dilakukan hampir setiap alat lain
+        tanpa memberi tahu Anda. Warna yang sama dipakai di belakang bingkai yang
+        diisi. Simpan sebagai PNG atau WebP saja dan transparansinya lewat tanpa
+        disentuh."""
+
+[[faq]]
+q = "Apakah ia menghapus data EXIF dan GPS?"
+a = """
+        Apa pun yang benar-benar diprosesnya, ya, sebagai efek samping: memangkas
+        atau mengubah ukuran berarti mendekode gambarnya menjadi piksel dan
+        mengodekan piksel itu lagi, dan kanvas penuh piksel tidak membawa tag,
+        jadi lokasi, model kamera, dan stempel waktunya sama sekali tidak ditulis
+        ke file baru. File yang sama sekali tidak Anda ubah adalah kasus yang
+        berbeda &mdash; ia diserahkan kembali byte demi byte, lengkap dengan
+        tag-nya. Kalau Anda mau metadatanya hilang tapi gambarnya tidak
+        tersentuh, pakai
+        <a href="../hapus-data-exif/">Penampil dan Penghapus EXIF</a>, yang
+        menulis ulang wadahnya tanpa mengompres ulang apa pun."""
+
+[[faq]]
+q = "Apa bedanya ini dengan kompresor gambar?"
+a = """
+        Yang ini soal dimensi: Anda menyebut berapa piksel yang Anda mau dan ia
+        memberikannya. <a href="../kompres-gambar/">Kompresor Gambar</a> soal
+        ukuran file: Anda menyebut berapa kilobyte yang diizinkan dan ia mencari
+        kualitas tertinggi yang muat, mengubah ukuran hanya kalau kualitas saja
+        tidak bisa sampai ke sana. Kalau Anda diberi tahu "lebar 1200 piksel",
+        Anda berada di tempat yang tepat. Kalau Anda diberi tahu "di bawah 500
+        KB", yang satunya akan membawa Anda lebih dekat."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Tidak ada batas jumlah atau ukuran file-nya juga,
+        karena tidak ada server yang membayarnya &mdash; pekerjaannya terjadi di
+        mesin Anda sendiri. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang gambar Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim gambar Anda ke tempat lain untuk diubah
+        ukurannya akan berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Ubah ukuran, pangkas, dan ubah format gambar JPEG, PNG, dan WebP di peramban. Tetapkan ukuran piksel yang persis, sebuah persentase, atau sisi terpanjang, seret sebuah kotak pangkas atau kunci ke sebuah bentuk, dan tulis hasilnya sebagai JPEG, PNG, atau WebP. Mendukung kumpulan, dan tidak ada yang diunggah."
+features = [
+  "Mengubah ukuran lewat piksel yang persis, sisi terpanjang, atau persentase",
+  "Isi satu sisi dan sisi lainnya mengikuti bentuk gambarnya sendiri",
+  "Muat di dalam, isi lalu pangkas, isi sampai bingkai yang persis, atau regangkan",
+  "Kotak pangkas yang bisa diseret per gambar, bisa dikunci ke 1:1, 4:5, 9:16, 16:9, 4:3, atau 3:2",
+  "Memangkas setiap gambar secara berbeda, atau menerapkan satu pembingkaian ke seluruh kumpulan dalam satu klik",
+  "Membuka setiap gambar yang sudah jadi pada ukuran penuh, dengan setiap angka di baliknya dan aslinya untuk dibandingkan",
+  "Mengubah antara JPEG, PNG, dan WebP, dengan kendali kualitas dan warna latar",
+  "Tidak pernah memperbesar sebuah gambar kecuali Anda memintanya",
+  "Mengembalikan tanpa disentuh file yang tidak diminta berubah",
+  "Kumpulan, dengan semua hasilnya dalam satu zip",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan gambar di sini"
+hint = "atau klik untuk menelusuri &mdash; JPEG, PNG, WebP, dan apa pun lain yang bisa dibuka peramban Anda"

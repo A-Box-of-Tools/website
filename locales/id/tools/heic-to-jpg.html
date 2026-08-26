@@ -1,0 +1,133 @@
+<!--
+  tools/heic-to-jpg/body.html, in Indonesian.
+
+  Every id, class, option value and data-phrase key below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; file-nya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih foto HEIC Anda</h2>
+
+    <p class="card-lede">
+      Langsung dari ponselnya, dari sebuah cadangan, atau disalin dari sebuah
+      kartu memori. File-nya dibaca di sini, di mesin ini, dan gambarnya
+      didekodekan di sini juga &mdash; tidak ada langkah unggah di halaman ini
+      dan tidak ada server di belakangnya.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Keluarkan semua dari daftar</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; apa yang keluar -->
+  <section class="card" id="options-card">
+    <h2><span class="step">2</span> Sebutkan apa yang Anda mau kembali</h2>
+
+    <fieldset class="options">
+      <legend>Formatnya</legend>
+
+      <div class="option-row">
+        <label for="format-select">Tulis gambarnya sebagai</label>
+        <select id="format-select">
+          <option value="image/jpeg" selected>JPEG &mdash; terbuka di mana saja, termasuk hal-hal yang dibuat abad ini karena kekeliruan</option>
+          <option value="image/png">PNG &mdash; tanpa kehilangan, dan beberapa kali lipat ukurannya</option>
+          <option value="image/webp">WebP &mdash; lebih kecil daripada JPEG pada kualitas yang sama, dan hanya peramban masa kini</option>
+        </select>
+      </div>
+
+      <div class="option-row" id="quality-row">
+        <label for="quality">Kualitas</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="50" max="100" step="1" value="92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Detail fotonya</legend>
+
+      <label class="check">
+        <input type="checkbox" id="keep-exif" checked>
+        <span>
+          <strong>Simpan tanggal, kamera, dan setelannya</strong>
+          <span class="check-note">
+            Disalin persis seperti yang ditulis ponselnya, sehingga foto hasilnya
+            tetap terurut menurut hari pengambilannya alih-alih hari
+            pengubahannya. Ini termasuk koordinat GPS-nya kalau fotonya
+            memilikinya &mdash; daftar di atas mengatakan foto Anda yang mana
+            saja. Matikan ini dan JPEG-nya keluar tanpa apa-apa di dalamnya
+            selain gambarnya.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary">
+        Bagaimanapun juga, tidak ada di sini yang dibacakan kepada siapa pun:
+        pilihannya soal apa yang masuk ke file yang Anda dapatkan kembali, bukan
+        soal apa yang dilakukan halaman ini terhadapnya. Kalau Anda ingin
+        menelusuri tagnya dengan rinci, atau membuangnya dari foto yang sudah
+        berupa JPEG,
+        <a href="../hapus-data-exif/">Penampil &amp; Penghapus EXIF</a> adalah
+        alatnya.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Langkah 3 &mdash; satu klik itu -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Ubah</h2>
+
+    <div class="run-row">
+      <button type="button" id="convert-all" class="primary big" disabled>Ubah</button>
+    </div>
+
+    <!--
+      The decoder's own status line. This page is the only one on the site that
+      carries a codec, so it is the only one with anything to report here, and
+      saying where the megabyte came from is the point: it is served from this
+      origin, it is cached with the rest of the page, and it is what makes the
+      offline promise hold on a browser that cannot open a HEIC at all.
+    -->
+    <p id="engine-status" class="engine-status" role="status" aria-live="polite"></p>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Sudah diubah</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Unduh semuanya sebagai satu zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The frame's "offline" line says only that this page keeps working. What is
+    worth saying here is what that covers: the HEIC decoder is a vendored
+    WebAssembly engine, and it is cached with the rest. A key defined here wins
+    over the frame's one - see shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">siap &mdash; dekodernya ikut disinggahkan,
+      jadi ini bekerja dengan jaringan tercabut.</span>
+  </div>
+</main>

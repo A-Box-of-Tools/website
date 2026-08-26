@@ -1,0 +1,206 @@
+<!--
+  tools/text-tools/body.html, in Indonesian.
+
+  Every id, class, role, data-mode and option value below is what src/main.js
+  reaches for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; yang mana dari empat pekerjaan ini -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih pekerjaannya</h2>
+
+    <!--
+      A tab strip rather than four pages, because the four jobs share an input:
+      the JSON you just formatted is the JSON you want to diff against the one
+      from the other branch, and retyping it into a second tool is the thing
+      this arrangement exists to avoid. `role="tablist"` and the arrow keys are
+      wired in main.js.
+    -->
+    <div class="tabs" role="tablist" aria-label="Apa yang dilakukan pada teksnya">
+      <button type="button" role="tab" id="tab-format" class="tab" data-mode="format"
+              aria-selected="true" aria-controls="options-format">Format</button>
+      <button type="button" role="tab" id="tab-convert" class="tab" data-mode="convert"
+              aria-selected="false" tabindex="-1" aria-controls="options-convert">Ubah</button>
+      <button type="button" role="tab" id="tab-encode" class="tab" data-mode="encode"
+              aria-selected="false" tabindex="-1" aria-controls="options-encode">Kodekan</button>
+      <button type="button" role="tab" id="tab-diff" class="tab" data-mode="diff"
+              aria-selected="false" tabindex="-1" aria-controls="options-diff">Bandingkan</button>
+    </div>
+
+    <div class="settings" id="options-format" role="tabpanel" aria-labelledby="tab-format">
+      <div class="field">
+        <label for="language">Bahasa</label>
+        <select id="language">
+          <option value="auto" selected>Tentukan sendiri dari teksnya</option>
+          <option value="json">JSON</option>
+          <option value="xml">XML</option>
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
+          <option value="yaml">YAML</option>
+        </select>
+        <p class="field-note" id="language-note">
+          Tebakannya hanyalah titik awal, dan membetulkannya cukup satu klik.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="indent">Indentasi</label>
+        <select id="indent">
+          <option value="2" selected>Dua spasi</option>
+          <option value="4">Empat spasi</option>
+          <option value="tab">Sebuah tab</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="style">Tata letak</label>
+        <select id="style">
+          <option value="pretty" selected>Rapikan</option>
+          <option value="minify">Mampatkan sampai rata</option>
+        </select>
+        <p class="field-note" id="style-note"></p>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="sort-keys">
+          <input type="checkbox" id="sort-keys">
+          Urutkan kunci setiap objek
+        </label>
+        <p class="field-note">
+          Menurut cara kuncinya terbaca alih-alih menurut titik kodenya, jadi
+          <code>item2</code> datang sebelum <code>item10</code>. Hanya JSON.
+        </p>
+      </div>
+    </div>
+
+    <div class="settings" id="options-convert" role="tabpanel" aria-labelledby="tab-convert" hidden>
+      <div class="field">
+        <label for="conversion">Ubah</label>
+        <select id="conversion"></select>
+        <p class="field-note" id="conversion-note"></p>
+      </div>
+
+      <div class="field" id="root-field" hidden>
+        <label for="root-name">Nama untuk elemen terluar</label>
+        <input type="text" id="root-name" value="root" spellcheck="false" autocomplete="off">
+        <p class="field-note">
+          XML punya satu elemen di puncaknya dan JSON tidak, jadi salah satunya
+          harus dikarang.
+        </p>
+      </div>
+    </div>
+
+    <div class="settings" id="options-encode" role="tabpanel" aria-labelledby="tab-encode" hidden>
+      <div class="field">
+        <label for="codec">Pengodean</label>
+        <select id="codec"></select>
+        <p class="field-note" id="codec-note"></p>
+      </div>
+
+      <div class="field">
+        <fieldset class="modes">
+          <legend>Ke arah mana</legend>
+          <label class="mode">
+            <input type="radio" name="direction" value="encode" checked>
+            <span><strong>Kodekan</strong> Teks biasa masuk, terkodekan keluar.</span>
+          </label>
+          <label class="mode">
+            <input type="radio" name="direction" value="decode">
+            <span><strong>Dekodekan</strong> Terkodekan masuk, teks biasa keluar.</span>
+          </label>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="settings" id="options-diff" role="tabpanel" aria-labelledby="tab-diff" hidden>
+      <div class="field">
+        <label for="view">Bagaimana ditampilkan</label>
+        <select id="view">
+          <option value="split" selected>Sisi demi sisi</option>
+          <option value="unified">Satu kolom</option>
+        </select>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="only-changes">
+          <input type="checkbox" id="only-changes" checked>
+          Tampilkan hanya yang berubah, dengan tiga baris di kedua sisinya
+        </label>
+        <label class="check" for="ignore-whitespace">
+          <input type="checkbox" id="ignore-whitespace">
+          Abaikan spasi
+        </label>
+        <label class="check" for="ignore-case">
+          <input type="checkbox" id="ignore-case">
+          Abaikan huruf besar dan kecil
+        </label>
+        <label class="check" for="ignore-blank">
+          <input type="checkbox" id="ignore-blank">
+          Abaikan baris kosong
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Langkah 2 &mdash; teksnya sendiri -->
+  <section class="card">
+    <h2><span class="step">2</span> Tempelkan</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes" id="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input" id="input-label">Teks Anda</label>
+          <span class="count" id="input-count">kosong</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Tempelkan JSON, XML, HTML, CSS, atau YAML di sini - atau jatuhkan sebuah file di atas."></textarea>
+      </div>
+
+      <div class="pane" id="pane-b" hidden>
+        <div class="pane-head">
+          <label for="input-b">Yang satunya</label>
+          <span class="count" id="input-b-count">kosong</span>
+        </div>
+        <textarea id="input-b" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Tempelkan versi yang akan dibandingkan."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count" id="detected"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">Coba sebuah contoh</button>
+        <button type="button" id="swap" class="ghost" hidden>Tukar sisinya</button>
+        <button type="button" id="clear" class="ghost danger">Bersihkan</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Langkah 3 &mdash; apa yang keluar -->
+  <section class="card">
+    <h2><span class="step">3</span> Ambil hasilnya</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">Belum ada apa-apa.</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>Salin</button>
+        <a id="download" class="ghost as-button" hidden download>Unduh</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+
+    <div id="diff-view" class="diff" hidden></div>
+  </section>
+</main>

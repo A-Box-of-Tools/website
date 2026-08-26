@@ -1,0 +1,329 @@
+#
+# Gambar ke Data URI - Bahasa Indonesia.
+#
+# Overrides for tools/image-to-data-uri/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Tautan silang di FAQ memakai slug Indonesia dari [slugs] di locale.toml -
+# ../hapus-data-exif/, ../kompres-gambar/, dan ../ubah-ukuran-gambar/ - karena
+# locale yang sudah diterbitkan diharuskan setiap tautan internalnya mendarat
+# di halaman yang benar-benar dibangun.
+#
+# "data URI", "base64", "gzip", "EXIF", dan "XMP" tetap seperti adanya: itulah
+# yang diketik dan dicari orang.
+#
+
+name = "Gambar ke Data URI"
+heading = "Gambar&nbsp;ke&nbsp;Data&nbsp;URI <span class=\"h1-kw\">&mdash; kodekan gambar sebagai base64 untuk CSS atau HTML</span>"
+tagline = "Seluruh gambar sebagai satu baris teks. Tempelkan langsung ke CSS atau HTML."
+
+title = "Gambar ke Data URI &mdash; Kodekan Base64 untuk CSS, Gratis, Tanpa Unggah"
+description = "Ubah PNG, JPEG, SVG, atau WebP menjadi data URI yang bisa Anda tempelkan ke CSS atau HTML. SVG dikodekan dengan persen alih-alih base64, jadi ia tetap terbaca dan lebih pendek. Berjalan di peramban Anda; tidak ada yang diunggah."
+og_title = "Ubah sebuah gambar menjadi satu baris yang bisa Anda tempelkan ke CSS"
+og_description = "Base64 untuk gambar raster, pengodean persen untuk SVG, dan aturan CSS, properti khusus, atau tag img yang sudah jadi mengelilinginya. Berjalan di mesin Anda sendiri; tidak ada yang diunggah."
+og_image_alt = "Gambar ke Data URI - tempelkan gambarnya ke dalam lembar gaya"
+
+pledge = """
+    Pengodeannya berjalan di peramban Anda sendiri, di perangkat keras Anda
+    sendiri. Ia adalah aritmetika atas byte yang sudah dipegang halaman ini:
+    tanpa encoder, tanpa server, dan tanpa langkah jaringan untuk ditinggalkan.
+    Alat ini tidak punya fitur jaringan dalam bentuk apa pun &mdash; tidak ada
+    yang diambil, tidak ada yang dikirim &mdash; dan seandainya pun ada, tidak
+    ada server di ujung lain halaman ini untuk menerima sebuah gambar."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu jatuhkan sebuah gambar. Tidak satu pun permintaan membawa gambar,
+      gambar mini, nama file, atau satu byte pun dari yang Anda pilih. Atau cabut
+      koneksi internet dan tetap kodekan satu."""
+
+read_first = """
+, <code>src/encode.js</code> untuk dua pengodeannya
+      beserta alasan di balik masing-masing, <code>src/sniff.js</code> untuk
+      bagaimana tipe medianya dibaca dari file-nya sendiri alih-alih dari
+      namanya, dan <code>src/metadata.js</code> untuk pemeriksaan yang mengatakan
+      berapa banyak dari yang akan Anda tempelkan itu bukan gambarnya."""
+
+howto_heading = "Cara mengubah gambar menjadi data URI"
+
+card = """
+            Base64 untuk gambar raster, pengodean persen untuk SVG, dan aturan
+            CSS atau tag <code>&lt;img&gt;</code> yang sudah dibangun
+            mengelilinginya."""
+
+[words]
+plural = "gambar"
+choose = "sebuah gambar"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa pengodean ulang"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Gambar Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada <code>fetch</code>, tidak ada
+      <code>XMLHttpRequest</code>, dan tidak ada <code>sendBeacon</code> di mana
+      pun di dalam <code>src/</code>. Pengodeannya adalah <code>btoa</code> dan
+      <code>encodeURIComponent</code> &mdash; dua fungsi yang sudah dimiliki
+      peramban sejak awal; keduanya mengambil byte dan mengembalikan teks tanpa
+      pergi ke mana pun."""
+
+[[privacy]]
+title = "Pratinjaunya adalah buktinya."
+body = """
+ Gambar di sebelah setiap hasil digambar
+      dari data URI yang baru saja dibangun halaman ini, bukan dari file Anda. Ia
+      tampil karena URI-nya benar, di mesin Anda, tanpa server yang terlibat
+      &mdash; dan kalau ia tidak tampil, halaman ini mengatakannya alih-alih
+      menyerahkan sesuatu yang rusak kepada Anda."""
+
+[[privacy]]
+title = "Peringatan metadatanya berpihak pada Anda."
+body = """
+ Sebuah data URI menyalin file-nya
+      persis, jadi titik GPS sebuah foto ikut masuk ke lembar gaya Anda
+      bersamanya. Halaman ini membaca berapa banyak dari itu yang ada dan
+      memberi tahu Anda, karena alternatifnya adalah Anda mengetahuinya setelah
+      ia diserahkan ke repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google, dan tombol donasi dari Buy Me a Coffee. Tidak satu pun diberi
+      apa pun tentang gambar Anda. Setiap baris yang membaca atau mengodekan
+      sebuah file disajikan dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini tidak
+      berubah, karena sejak awal memang tidak ada langkah jaringan di dalamnya.
+      Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih gambar Anda."
+body = """
+ Jatuhkan ke pemilih file atau pilih sendiri.
+      Peramban membacanya langsung dari disk Anda; tidak ada yang dikirim ke mana
+      pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Sebutkan hasilnya akan ke mana."
+body = """
+ URI-nya sendiri, sebuah aturan CSS,
+      sebuah properti khusus, sebuah tag <code>&lt;img&gt;</code>, atau Markdown.
+      Semuanya menaruh URI-nya di dalam tanda kutip, dan itulah detail yang
+      menentukan apakah sebuah SVG sebaris berhasil atau diam-diam tidak."""
+
+[[howto]]
+title = "Baca berapa biayanya."
+body = """
+ Setiap hasil mengatakan ia menjadi berapa
+      karakter, seberapa besar itu dibanding file-nya, dan apakah menaruh sesuatu
+      seukuran itu sebaris adalah ide yang baik. Base64 menambah sepertiga;
+      apakah sepertiga itu sepadan dengan satu permintaan yang dihemat sepenuhnya
+      tergantung ukurannya, jadi halaman ini mengatakan Anda ada di sisi mana."""
+
+[[howto]]
+title = "Perhatikan peringatannya."
+body = """
+ Kalau gambarnya membawa EXIF, sebuah profil
+      warna, atau XMP, ia disebutkan namanya beserta berapa byte dari hasil Anda
+      yang berisi itu. Kalau ekstensinya bertentangan dengan format
+      sesungguhnya, halaman ini memakai formatnya dan memberi tahu Anda. Kalau
+      peramban Anda tidak bisa menggambar hasilnya, ia mengatakan itu juga."""
+
+[[howto]]
+title = "Salin, atau unduh."
+body = """
+ Satu tombol per hasil, dan satu untuk semuanya
+      sekaligus &mdash; properti khususnya keluar terbungkus dalam sebuah blok
+      <code>:root</code>, siap ditempelkan di bagian atas sebuah lembar gaya."""
+
+[[faq]]
+q = "Apakah gambar saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File dibaca dan dikodekan oleh peramban Anda sendiri di perangkat
+        keras Anda sendiri, dengan dua fungsi yang sudah dimiliki peramban. Alat
+        ini tidak punya fitur jaringan dalam bentuk apa pun &mdash; ia tidak
+        pernah mengambil apa pun dan tidak pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya, dan tidak satu pun milik situs
+        ini."""
+
+[[faq]]
+q = "Apa itu data URI?"
+a = """
+        Cara menuliskan seluruh isi sebuah file di tempat yang biasanya diisi
+        alamat web. Alih-alih <code>url("logo.png")</code>, yang menyuruh peramban
+        pergi mengambil sesuatu, Anda menulis
+        <code>url("data:image/png;base64,iVBORw0...")</code>, yang memuat
+        gambarnya sendiri. Peramban mendekodenya di tempat. Efek praktisnya adalah
+        satu permintaan lebih sedikit: gambarnya datang bersama lembar gaya atau
+        halamannya alih-alih sesudahnya."""
+
+[[faq]]
+q = "Kenapa SVG saya bukan base64?"
+a = """
+        Karena base64 adalah pengodean yang salah untuknya. Sebuah SVG adalah
+        teks, dan sebuah URL sudah bisa membawa teks &mdash; hanya segelintir
+        karakter yang harus dikaburkan. Mengodekan yang segelintir itu dengan
+        persen dan membiarkan sisanya menghasilkan URI yang biasanya seperlima
+        lebih pendek daripada base64 file yang sama, dan yang masih bisa Anda baca
+        di lembar gaya Anda: nama elemennya, warnanya, dan
+        <code>viewBox</code>-nya semua masih di sana untuk disunting. Ada sebuah
+        kotak centang untuk memaksa base64 demi rantai perkakas langka yang
+        bersikeras memintanya."""
+
+[[faq]]
+q = "Seberapa besar base64 membuat gambar saya?"
+a = """
+        Sekitar sepertiga. Tiga byte file menjadi empat karakter base64, yang
+        berarti 33% sebelum <code>data:image/png;base64,</code> di depannya. Itu
+        lantainya, dan itu tidak terhindarkan: itulah biaya menuliskan byte
+        sembarang hanya dengan karakter yang diizinkan sebuah URL. Itu juga
+        sebabnya halaman ini menampilkan jumlah karakternya di sebelah ukuran
+        file, alih-alih membiarkan Anda mengetahuinya ketika lembar gayanya sudah
+        dirilis."""
+
+[[faq]]
+q = "Kapan menaruh gambar sebaris benar-benar ide yang baik?"
+a = """
+        Ketika ia kecil dan dibutuhkan segera. Ikon 2 KB di lembar gaya yang
+        dimuat setiap halaman adalah kemenangan yang jelas: satu perjalanan
+        bolak-balik lebih sedikit, dan gambarnya sudah ada begitu CSS-nya ada.
+        Melewati sekitar 10 KB, takarannya berbalik. Gambar yang disebariskan
+        bukan lagi file terpisah, jadi ia tidak bisa disinggahkan sendiri, tidak
+        bisa diambil paralel dengan apa pun, dan diunduh utuh setiap kali file di
+        sekelilingnya berubah &mdash; foto 200 KB di sebuah lembar gaya berarti
+        200 KB yang ditambahkan ke jalur kritis setiap halaman di situs itu.
+        Halaman ini memberi tahu Anda setiap hasil jatuh di sisi mana dari garis
+        itu."""
+
+[[faq]]
+q = "Apakah gzip membatalkan tambahan dari base64?"
+a = """
+        Kurang dari yang orang duga. Base64 dari file yang sudah terkompresi
+        &mdash; dan PNG, JPEG, serta WebP semuanya begitu &mdash; sulit
+        dikompres, karena nyaris tidak ada kemubaziran tersisa untuk ditemukan
+        kompresornya; Anda biasanya mendapat kembali kira-kira sepersepuluh dari
+        sepertiga yang ditambahkan base64, bukan seluruhnya. SVG berkode persen
+        adalah kasus sebaliknya: ia masih teks, jadi ia terkompres kira-kira
+        sebaik sebelumnya, dan itu satu alasan lagi untuk tidak
+        mem-base64-kannya."""
+
+[[faq]]
+q = "Apakah ini mengubah gambar saya sama sekali?"
+a = """
+        Tidak, dan itu perbedaan yang disengaja dari kebanyakan alat di sini.
+        Tidak ada yang didekode menjadi piksel lalu dikodekan lagi: byte yang
+        datang dari disk Anda adalah byte yang masuk ke URI-nya. Sebuah JPEG tetap
+        persis JPEG yang sama, pada kualitas yang sama, dengan dimensi yang sama.
+        Itulah sebabnya hasilnya bisa disebut file yang sama alih-alih salinannya."""
+
+[[faq]]
+q = "Jadi data EXIF dan GPS saya ikut masuk ke lembar gaya juga?"
+a = """
+        Ya, dan inilah bagian yang layak dipikirkan sebelum Anda menempelkannya.
+        Karena tidak ada yang dikodekan ulang, semua yang ditulis kamera ikut
+        bepergian bersama gambarnya: lokasinya, stempel waktunya, nomor seri
+        kameranya. Pada foto ponsel itu bisa 30 KB dari file, yang menjadi 40 KB
+        base64 di jalur kritis halaman Anda, dan sebuah alamat rumah di dalam
+        sesuatu yang akan diserahkan ke sebuah repositori. Halaman ini membaca
+        berapa banyak metadata di dalam JPEG, PNG, atau WebP dan mengatakannya.
+        Untuk mengeluarkannya lebih dulu, pakai
+        <a href="../hapus-data-exif/">Penampil dan Penghapus EXIF</a>."""
+
+[[faq]]
+q = "Kenapa ia memakai tipe yang berbeda dari ekstensi file saya?"
+a = """
+        Karena ekstensinya bisa salah dan byte-nya tidak bisa. File bernama
+        <code>logo.png</code> yang sebenarnya diekspor sebagai JPEG cukup lazim
+        sehingga setiap alat gambar harus menghadapinya, dan data URI yang
+        menyatakan tipe yang salah begitu saja tidak tampil &mdash; tidak ada
+        cadangan dan tidak ada pesan galat yang layak dibaca. Jadi tipenya dibaca
+        dari beberapa byte pertama file, yang menyatakan apa ia sebenarnya secara
+        tegas di setiap format di sini, dan halaman ini memberi tahu Anda ketika
+        keduanya bertentangan."""
+
+[[faq]]
+q = "Pratinjaunya kosong. Apa yang salah?"
+a = """
+        Mungkin bukan soal URI-nya. HEIC dan TIFF sama-sama menghasilkan data URI
+        yang sepenuhnya sah tapi tidak akan digambar peramban mana pun kecuali Safari,
+        jadi gambarnya juga akan hilang di mana pun Anda menempelkannya &mdash;
+        ubah dulu ke PNG, JPEG, atau WebP dengan
+        <a href="../kompres-gambar/">Kompresor Gambar</a> atau
+        <a href="../ubah-ukuran-gambar/">Pengubah Ukuran Gambar</a>. Kalau
+        formatnya format biasa, file-nya sendiri kemungkinan besar rusak:
+        pratinjaunya digambar dari URI yang dibangun halaman ini, jadi pratinjau
+        yang kosong berarti gambarnya tidak terdekode."""
+
+[[faq]]
+q = "Adakah batas ukuran pada sebuah data URI?"
+a = """
+        Bukan batas yang akan Anda temui di CSS atau di sebuah tag
+        <code>&lt;img&gt;</code>; peramban masa kini tidak menerapkan batas
+        praktis di sana. Yang memang dibatasi peramban adalah mengetikkan data URI
+        ke bilah alamat, yang kini ditolak sebagian besar peramban untuk apa pun
+        yang tidak sepele, dengan alasan keamanan yang sama sekali tidak
+        berhubungan dengan penggunaan ini. Batas yang sebenarnya adalah yang di
+        atas: jauh sebelum ada yang rusak secara teknis, halaman tempatnya berada
+        sudah menjadi lebih lambat daripada kalau memakai file gambar biasa."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Tidak ada batas jumlah atau ukuran file-nya juga,
+        karena tidak ada server yang membayarnya &mdash; pekerjaannya terjadi di
+        mesin Anda sendiri. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang gambar Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim gambar Anda ke tempat lain untuk dikodekan
+        akan berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Ubah PNG, JPEG, SVG, WebP, GIF, atau ICO menjadi data URI yang siap ditempelkan ke CSS atau HTML. Base64 untuk format raster dan pengodean persen untuk SVG, dibungkus dalam aturan CSS, properti khusus, tag img, atau Markdown, dengan biaya ukurannya dan metadata tertanam apa pun dilaporkan. Berjalan sepenuhnya di peramban tanpa unggahan."
+features = [
+  "Data URI base64 untuk PNG, JPEG, WebP, GIF, ICO, AVIF, dan lainnya",
+  "Data URI SVG berkode persen, yang lebih pendek daripada base64 dan tetap terbaca",
+  "Aturan CSS, properti khusus CSS, tag img HTML, atau Markdown siap pakai, selalu ditandakutip dengan benar",
+  "Tipe medianya dibaca dari byte file itu sendiri, bukan dari ekstensinya",
+  "Mengatakan pengodeannya memakan berapa karakter, dan apakah menyebariskan pada ukuran itu sepadan",
+  "Memperingatkan ketika EXIF, XMP, atau profil warna akan tersalin ke lembar gaya Anda",
+  "Menyalin file byte demi byte: tanpa pengodean ulang dan tanpa kehilangan kualitas",
+  "Kumpulan, dengan semuanya disalin atau diunduh sebagai satu file",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan gambar di sini"
+hint = "atau klik untuk menelusuri &mdash; PNG, JPEG, SVG, WebP, GIF, ICO, dan lainnya"

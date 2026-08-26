@@ -1,0 +1,148 @@
+<!--
+  tools/image-to-data-uri/body.html, in Indonesian.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; file-nya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih gambar</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Keluarkan semua dari daftar</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; baris yang benar-benar ditempelkan -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> Sebutkan ia akan ke mana</h2>
+
+    <p class="card-lede">
+      Sebuah data URI yang berdiri sendiri jarang menjadi yang diinginkan orang.
+      Yang mereka inginkan adalah baris yang masuk ke lembar gaya &mdash; jadi
+      pilih barisnya, dan gambarnya datang di dalamnya sudah ditandakutip. Itulah
+      bagian yang mudah salah dan yang hanya gagal pada SVG.
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="Apa yang ditempelkan">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>Data URI-nya sendiri</strong>
+          <span class="shape-note">
+            Semua setelah komanya adalah file-nya. Tempelkan di mana pun sebuah
+            URL bisa ditaruh.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>Sebuah aturan CSS</strong>
+          <span class="shape-note">
+            Satu aturan utuh, dengan sebuah kelas bernama sesuai file-nya. Ubah
+            selektornya menjadi apa pun yang sebenarnya Anda gayakan.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>Sebuah properti khusus CSS</strong>
+          <span class="shape-note">
+            Dideklarasikan sekali di bagian atas lembar gaya dan dipakai sebagai
+            <code>var(--nama)</code> sesering yang Anda mau. Inilah yang dipilih
+            ketika gambarnya muncul di lebih dari satu aturan.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>Sebuah tag <code>&lt;img&gt;</code> HTML</strong>
+          <span class="shape-note">
+            Dengan ukuran pikselnya sudah diisikan, jadi halamannya tidak
+            melompat sementara sisanya dimuat.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">
+            Untuk sebuah README atau sebuah isu: gambar yang bepergian bersama
+            teksnya alih-alih butuh tempat untuk dititipkan.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      Teks <code>alt</code> sengaja dibiarkan kosong. Hanya Anda yang tahu apakah
+      gambarnya membawa makna atau sekadar hiasan, dan keterangan yang ditebak
+      dari sebuah nama file lebih buruk bagi orang yang memakai pembaca layar
+      daripada tidak ada keterangan sama sekali.
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>Base64-kan SVG-nya juga</strong>
+          <span class="check-note">
+            Mati secara bawaan, karena sebuah SVG adalah teks dan base64 untuk
+            byte. Pengodean persen membiarkan markahnya terbaca di lembar gaya
+            dan biasanya seperlima lebih pendek. Nyalakan untuk rantai perkakas
+            langka yang bersikeras meminta <code>;base64</code>.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Langkah 3 &mdash; hasilnya. Sengaja tidak ada tombol di sini: pengodeannya
+       seketika, jadi tidak ada yang perlu ditunggu sebuah tekanan "ubah". -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> Salin</h2>
+
+    <p id="empty-note" class="card-lede">
+      Belum ada yang dipilih. Jatuhkan sebuah gambar di atas dan baris untuk
+      ditempelkan muncul di sini.
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">Salin semua</button>
+          <button type="button" id="download-all" class="ghost">Unduh sebagai satu file</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>
