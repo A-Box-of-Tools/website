@@ -1,0 +1,285 @@
+<!--
+  tools/redact-pdf/body.html, in Japanese.
+
+  Every id, class, data-phrase key and brace placeholder below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+
+  count.*の対はそのまま2つ残します。日本語には数の区別がないので両方とも同じ文に
+  なりますが、キーはJavaScriptが探すものなので両方なければなりません。
+-->
+<main>
+  <!-- 手順1｜書類 -->
+  <section class="card">
+    <h2><span class="step">1</span> PDFを選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- 手順2｜探す -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> 何を消すか伝える</h2>
+
+    <p class="card-lede">
+      語を入力してください。氏名でも、住所でも、事件番号でもかまいません。すると出てくる
+      場所がすべて、その行とともに下に並びます。手順4までは何も取り除かれませんし、
+      選んでいないものが取り除かれることもありません。
+    </p>
+
+    <label class="find-label" for="terms">語や語句、1行に1つ</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="佐藤&#10;千代田区丸の内1-14&#10;令和7年(ワ)40219号"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">検索</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>大文字と小文字を区別</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>単語全体のみ</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>または、ふつう扱いに注意が要るものを探す</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        これはパターンで、パターンには電話番号と事件番号の区別がつきません。カード番号と
+        IBANはそれ自身の検査数字で確かめますが、ほかは提示されるだけで勝手に選ばれる
+        ことはありませんし、当たったものはひとつずつ目で見る価値があります。
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">すべて選択</button>
+        <button type="button" id="tick-none" class="ghost">すべて解除</button>
+        <button type="button" id="clear-found" class="ghost danger">一覧を空にする</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- 手順3｜ページを読む -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> ページを読み、語を拾う</h2>
+
+    <p class="card-lede">
+      これは書類に保存されているとおりの文字を、読み手がコピーするであろう順に並べた
+      ものです。その順は、印刷されている順とはかぎりません。語をクリックすれば取り除かれ、
+      もう一度クリックすれば残ります。ここで取り消し線の引かれたものが消えるものです。
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; 前へ</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">次へ &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">このページはすべて残す</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="このページの文字"></div>
+  </section>
+
+  <!-- 手順4｜実行 -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> 語を取り除く</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>語のあった場所に黒い箱を描く</strong>
+        <span class="check-note">
+          読み手に、何かが取り除かれたと分かるようにするためです。ここでの箱は飾りで
+          あって黒塗りそのものではありません。それが描かれる前に、文字はもうファイル
+          から消えています。切っておけば、語はただ消えて、占めていた幅だけが残ります。
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>同じ語を書類の残りからも取り除く</strong>
+        <span class="check-note">
+          しおり、注釈、付箋、そしてフォーム欄に入力された内容です。ページから取り除いた
+          のにしおりに残した語は、取り除いたことになりません。書類のプロパティはこの
+          設定とは別に消えますし、読み手がページの文字の代わりにコピーする置換文字も
+          同じです。どちらもその語を口にしている書類自身であって、写しを持っている別の
+          場所ではないからです。
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>添付ファイルと、動くものを捨てる</strong>
+        <span class="check-note">
+          PDFはほかのファイルを丸ごと抱え込めますし、開いたときに動くJavaScriptも
+          抱え込めます。どちらも、取り除こうとしている語を検索できる対象ではありませんし、
+          書類を読むためにどちらも必要ありません。
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">取り除く</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>ダウンロード</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">これはPDFではないので、取り除くべき文字がそもそもありません。</span>
+    <span data-phrase="load.encrypted">このPDFにはパスワードが掛かっています。書類の保護を
+      外すのは、書類から語を取り除くのとは別の仕事で、この道具はそれを黙って行いません。</span>
+    <span data-phrase="load.broken">このファイルをPDFとして開けませんでした ({detail})。</span>
+    <span data-phrase="load.nopages">開くことは開きましたが、中にページが見つかりませんでした。</span>
+    <span data-phrase="load.repaired">この書類の相互参照表が中身と合っていなかったので、
+      オブジェクトを探しながら読みました。これは修復であり、成功しました。どこかへ送る前に
+      結果をよく確かめてください。</span>
+
+    <span data-phrase="doc.sub">{pages}｜文字{words}｜{size}</span>
+    <span data-phrase="doc.notext">このうち{count}ページには文字がまったくありません。
+      そういうページはページを撮った画像で、この道具にとって取り除くものはそこにありません。
+      画像の中の語は、あった場所にそのまま残ります。</span>
+    <span data-phrase="doc.unreadable">この書類の{count}文字を文字として読めませんでした。
+      使われているフォントが、自分のグリフから文字へ戻す対応表を持っていないからです。
+      これらの文字は検索できないので、検索を信じるのではなく、それがあるページを目で見て
+      ください。</span>
+    <span data-phrase="doc.scan">いくつかのページは画像の上に見えない文字を載せています。
+      スキャナーが自分の読み取り結果をそう残すからです。その文字を取り除くと、検索とコピーが
+      見つけていたものが消えます。画像は何も変わりませんし、画像の中では語がまだ読めます。</span>
+
+    <span data-phrase="find.none">どのページでも見つかりませんでした。</span>
+    <span data-phrase="find.some">{pages}に{count}件。</span>
+    <span data-phrase="find.more">最初の{shown}件が並んでいます。残りも見つけてあり、
+      すべて選べば一緒に取り除かれます。</span>
+    <span data-phrase="find.terms">検索を押す前に、上に語を入力するかパターンを選んでください。</span>
+
+    <span data-phrase="page.of">{total}ページ中{number}ページ目</span>
+    <span data-phrase="page.picked">このページから{count}件を取り除きます</span>
+    <span data-phrase="page.notext">このページには文字がありません。空であるか、ページを
+      撮った画像です。スキャン、写真、あるいは語を図形として描いた書き出しです。この上の
+      ものは検索できませんし、この上のものをここで取り除くこともできません。</span>
+    <span data-phrase="page.unreadable">このページの{count}文字を文字として読めません
+      でした。下では&#9647;として出ていて、検索では見つかりません。</span>
+    <span data-phrase="page.scan">このページの文字は見えません。ページの画像の上に載って
+      いて、スキャンを検索できるようにするのがそのやり方です。ここで取り除くのは、検索と
+      コピーが見つけていたものです。画像のほうは語を持ったままです。</span>
+
+    <span data-phrase="run.summary">{pages}の{words}を取り除きます。</span>
+    <span data-phrase="run.nothing">まだ何も選ばれていません。手順2で語を検索するか、手順3で語をクリックしてください。</span>
+    <span data-phrase="run.editing">語を取り除いています&hellip;</span>
+    <span data-phrase="run.writing">書類を書いています&hellip;</span>
+    <span data-phrase="run.checking">できあがったファイルを開いて検索しています&hellip;</span>
+    <span data-phrase="run.failed">この書類を書き直す途中で問題が起きました ({detail})。</span>
+    <span data-phrase="run.cancelled">中止しました。何も書かれていません。</span>
+
+    <span data-phrase="result.headline">{words}を取り除きました</span>
+    <span data-phrase="result.sub">{size}｜{pages}を変更｜{boxes}</span>
+    <span data-phrase="check.good">読み手がするのと同じように、ここでもう一度開いて検索
+      しました。そのどれもできあがったファイルにはありません。</span>
+    <span data-phrase="check.partial">ここでもう一度開いて検索しました。選んだ箇所は
+      すべて消えていて、残したものはそのままあります。</span>
+    <span data-phrase="check.survived">このファイルは書かれていません。できあがった書類を
+      もう一度開いたところ、取り除いたもののうちいくつかがまだ見つかりました。つまり黒塗りは
+      完全ではありませんでした。ダウンロードは渡しません。</span>
+    <span data-phrase="check.pages">このファイルは書かれていません。できあがった書類が、
+      入ったときと違うページ数で返ってきました。語のほかにも何かが狂ったということです。
+      ダウンロードは渡しません。</span>
+
+    <span data-phrase="fact.boxes">空いた場所に{count}個描きました。</span>
+    <span data-phrase="fact.noboxes">箱はひとつも描かれていないので、語はどこにあったかを
+      示すものなしに消えました。</span>
+    <span data-phrase="fact.elsewhere">同じ語を{where}からも取り除きました。</span>
+    <span data-phrase="fact.metadata">書類のプロパティとXMPパケットを削除したので、
+      できあがったファイルは、自分を作ったものも、いつかも、以前の名前も言いません。</span>
+    <span data-phrase="fact.carried">{attachments}と{actions}を捨てました。</span>
+    <span data-phrase="fact.shared">取り除いたもののうちいくつかは、書類が複数のページで
+      使い回しているブロックが描いていたので、そのブロックを描くすべてのページから消えました。
+      選んだぶんより多く、決して少なくはありません。</span>
+    <span data-phrase="fact.overimage">取り除いた文字のうち{count}文字は、同じページの画像の
+      上に載っていました。文字の層からは消え、画像には残っています。読み手はもう検索も
+      コピーもできませんが、見ることはまだできます。</span>
+    <span data-phrase="fact.untouched">各ページのほかのすべてはバイト単位でそのまま通り
+      ました。フォントも画像も線も、再エンコードされていません。</span>
+
+    <span data-phrase="count.pages">{count}ページ</span>
+    <span data-phrase="count.page">{count}ページ</span>
+    <span data-phrase="count.words">{count}語</span>
+    <span data-phrase="count.word">{count}語</span>
+    <span data-phrase="count.pieces">文字のかたまり{count}個</span>
+    <span data-phrase="count.piece">文字のかたまり{count}個</span>
+    <span data-phrase="count.matches">{count}件</span>
+    <span data-phrase="count.match">{count}件</span>
+    <span data-phrase="count.boxes">黒い箱{count}個</span>
+    <span data-phrase="count.box">黒い箱{count}個</span>
+    <span data-phrase="count.attachments">添付{count}件</span>
+    <span data-phrase="count.attachment">添付{count}件</span>
+    <span data-phrase="count.actions">動作{count}件</span>
+    <span data-phrase="count.action">動作{count}件</span>
+    <span data-phrase="count.hosts">{count}のホスト</span>
+    <span data-phrase="count.host">{count}のホスト</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">書類はどこへも出ていません。{total}件のファイルを
+      読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれを
+      しません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform">広告・計測・寄付ボタンのためのサイト自身のスクリプトが
+      {hosts}から読み込まれました。そのどれにも、書類も、その中の語も、検索したものも
+      渡っていません。</span>
+
+    <span data-phrase="finder.email">メールアドレス</span>
+    <span data-phrase="finder.card">カード番号</span>
+    <span data-phrase="finder.iban">銀行口座 (IBAN)</span>
+    <span data-phrase="finder.nationalid">マイナンバー・社会保障番号</span>
+    <span data-phrase="finder.phone">電話番号</span>
+  </div>
+</main>
