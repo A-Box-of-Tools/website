@@ -1,0 +1,161 @@
+<!--
+  tools/gif-analyzer/body.html, in Indonesian.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!--
+    One numbered step, and then six headings without numbers.
+
+    Every other tool on this site numbers all of its cards, because every card
+    is something the visitor does. Here there is exactly one thing to do -
+    choose a file - and everything below it is the answer. Numbering the answer
+    would promise a sequence of decisions that does not exist, and would leave
+    somebody looking for step 4's button.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih sebuah GIF</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Ringkasannya, dan animasinya sebagaimana digambar peramban sendiri. -->
+  <section class="card" id="summary-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="copy-report" class="ghost">Salin laporannya</button>
+        <button type="button" id="download-report" class="ghost">Unduh laporannya</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="preview-wrap">
+        <!--
+          The browser's own decoder, drawing the file unchanged. Everything else
+          on this page is drawn by src/frames.js, so having both means a
+          disagreement between them is visible rather than hidden - and it is
+          the disagreement that would tell you this reader had a bug.
+        -->
+        <img id="preview" class="preview" alt="Animasinya, diputar sebagaimana digambar peramban ini">
+        <p class="preview-note">Dekoder milik peramban Anda sendiri, memutar file itu apa adanya.</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>Versi</dt><dd id="fact-version">&mdash;</dd></div>
+        <div><dt>Kanvas</dt><dd id="fact-canvas">&mdash;</dd></div>
+        <div><dt>Ukuran file</dt><dd id="fact-size">&mdash;</dd></div>
+        <div><dt>Bingkai</dt><dd id="fact-frames">&mdash;</dd></div>
+        <div><dt>Sebagaimana ditulis</dt><dd id="fact-written">&mdash;</dd></div>
+        <div><dt>Sebagaimana diputar</dt><dd id="fact-plays">&mdash;</dd></div>
+        <div><dt>Pengulangan</dt><dd id="fact-loops">&mdash;</dd></div>
+        <div><dt>Warna yang digambar</dt><dd id="fact-colors">&mdash;</dd></div>
+      </dl>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Temuannya. Lebih dulu, karena itulah yang dicari orang. -->
+  <section class="card" id="findings-card" hidden>
+    <h2>Apa yang menonjol</h2>
+    <p class="card-lede">
+      Semua di bawah ini diukur dari file ini. Tidak ada di sini yang berupa
+      tebakan tentang apa yang Anda maksud untuk dibuat.
+    </p>
+    <ul class="findings" id="findings"></ul>
+  </section>
+
+  <!-- Anggaran byte. -->
+  <section class="card" id="budget-card" hidden>
+    <h2>Ke mana byte-nya pergi</h2>
+    <p class="card-lede">
+      Setiap byte file berada tepat di satu baris, dan baris-barisnya berjumlah
+      sama dengan file. Kalau tidak, baris terakhirlah yang akan mengatakannya,
+      bukan batangnya yang diam-diam melar agar pas.
+    </p>
+
+    <div class="budget-bar" id="budget-bar" role="img" aria-labelledby="budget-caption"></div>
+    <p class="visually-hidden" id="budget-caption">
+      Angka yang sama dengan tabel di bawah, digambar sebagai satu batang.
+    </p>
+
+    <table class="budget">
+      <caption class="visually-hidden">Ke mana byte file ini pergi</caption>
+      <thead>
+        <tr>
+          <th scope="col">Bagian</th>
+          <th scope="col" class="num">Byte</th>
+          <th scope="col" class="num">Porsi</th>
+        </tr>
+      </thead>
+      <tbody id="budget-rows"></tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">Seluruh file</th>
+          <td class="num" id="budget-total">&mdash;</td>
+          <td class="num">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- Bingkai demi bingkai. -->
+  <section class="card" id="frames-card" hidden>
+    <div class="toolbar">
+      <h2>Bingkai demi bingkai</h2>
+      <div class="toolbar-actions">
+        <label for="frame-view" class="inline-label">Tampilkan</label>
+        <select id="frame-view">
+          <option value="composited" selected>kanvas setelah setiap bingkai</option>
+          <option value="stored">hanya yang disimpan setiap bingkai</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="card-lede" id="frames-lede"></p>
+
+    <ul class="frames" id="frames"></ul>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!-- Warnanya. -->
+  <section class="card" id="colors-card" hidden>
+    <h2>Warnanya</h2>
+    <p class="card-lede" id="colors-lede"></p>
+
+    <div id="global-palette-wrap" hidden>
+      <h3>Tabel global</h3>
+      <p class="palette-note" id="global-palette-note"></p>
+      <ul class="palette" id="global-palette"></ul>
+    </div>
+
+    <details id="local-palettes-wrap" hidden>
+      <summary id="local-palettes-summary">Tabel per bingkai</summary>
+      <div id="local-palettes"></div>
+    </details>
+  </section>
+
+  <!-- Semua di dalam file yang bukan gambar. -->
+  <section class="card" id="extras-card" hidden>
+    <h2>Apa lagi yang ada di dalamnya</h2>
+    <p class="card-lede">
+      Blok-blok yang tidak membawa gambar. Sebuah penampil melewati semuanya, dan
+      setiap salinan file tetap membawanya.
+    </p>
+    <ul class="extras" id="extras"></ul>
+  </section>
+</main>

@@ -1,0 +1,20 @@
+#
+# Panduan: mengubah SVG menjadi PNG - Bahasa Indonesia.
+#
+
+nav = "Mengubah SVG menjadi PNG"
+title = "Cara Mengubah SVG Menjadi PNG pada Ukuran yang Tepat"
+description = "Sebuah vektor tidak punya ukuran piksel miliknya sendiri, jadi angkanya Anda yang pilih. Dari mana angka itu datang untuk sebuah layar, sebuah ikon aplikasi, dan sebuah pencetak, dan apa yang berubah ketika sebuah gambar menjadi piksel."
+
+heading = "Cara mengubah SVG menjadi PNG pada ukuran yang tepat"
+lede = """
+    Mengubahnya adalah separuh yang mudah. Pertanyaan yang menentukan apakah
+    hasilnya berguna adalah pertanyaan yang jawabannya tidak diberikan siapa pun
+    kepada Anda: berapa piksel? Inilah dari mana angka itu datang, dan apa yang
+    hilang dari sebuah gambar dalam perjalanannya menjadi piksel."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Mengubah SVG menjadi PNG pada ukuran yang tepat"
+og_description = "Dari mana sebenarnya jumlah pikselnya datang, dan tiga hal yang berubah ketika sebuah gambar menjadi piksel."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

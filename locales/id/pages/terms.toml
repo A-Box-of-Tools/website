@@ -1,0 +1,20 @@
+#
+# Ketentuan Penggunaan - Bahasa Indonesia.
+#
+
+nav = "Ketentuan Penggunaan"
+
+title = "Ketentuan Penggunaan &mdash; abox.tools"
+description = "Ketentuan yang mendasari penawaran situs ini: gratis, apa adanya, tanpa akun, tanpa jaminan, dan file Anda tetap sepenuhnya milik Anda karena mereka tidak pernah dikirim kepada kami."
+
+heading = "Ketentuan Penggunaan"
+lede = """
+    Tidak ada akun untuk dibuka dan tidak ada perjanjian untuk ditandatangani,
+    jadi ini pendek. Mereka menggambarkan apa yang boleh Anda harapkan dari situs
+    ini, dan apa yang tidak dijanjikannya."""
+
+updated = "19 Agustus 2026"
+
+og_title = "Ketentuan Penggunaan &mdash; abox.tools"
+og_description = "Gratis, apa adanya, tanpa akun, tanpa jaminan. File Anda tetap sepenuhnya milik Anda."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

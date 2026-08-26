@@ -1,0 +1,24 @@
+#
+# Panduan: memverifikasi checksum sebuah file - Bahasa Indonesia.
+#
+# Perintah di dalam badan halamannya tidak diterjemahkan: itulah yang diketik
+# orang, huruf demi huruf.
+#
+
+nav = "Memverifikasi checksum"
+title = "Cara Memverifikasi Unduhan dengan Checksum-nya (dan Apa yang Dibuktikannya)"
+description = "Cara memeriksa checksum MD5 atau SHA-256 di Windows, macOS, dan Linux atau di peramban Anda, apa yang sebenarnya dibuktikan sebuah kecocokan, dan kekeliruan yang membuat seluruh latihannya sia-sia."
+
+heading = "Cara memeriksa unduhan terhadap checksum-nya"
+lede = """
+    Baris heksadesimal di bawah sebuah tautan unduhan ada di sana supaya Anda
+    bisa membuktikan file-nya tiba utuh. Membandingkannya memakan sekitar satu
+    menit. Mengetahui berapa nilai perbandingan itu &mdash; dan satu kebiasaan
+    yang membuatnya tidak bernilai sama sekali &mdash; memakan sisa halaman
+    ini."""
+
+updated = "23 Agustus 2026"
+
+og_title = "Memeriksa unduhan terhadap checksum-nya, dan apa yang dibuktikannya"
+og_description = "Untuk apa heksadesimal di bawah sebuah tautan unduhan, bagaimana membandingkannya di sistem operasi mana pun, dan kenapa mengambilnya dari halaman yang sama dengan file-nya mementahkan maksudnya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

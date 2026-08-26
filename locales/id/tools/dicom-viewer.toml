@@ -1,0 +1,413 @@
+#
+# Penampil DICOM - Bahasa Indonesia.
+#
+# Overrides for tools/dicom-viewer/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Nama tag DICOM dibiarkan dalam bahasa Inggris dengan nomornya - Pixel Spacing
+# (0028,0030), Series Instance UID (0020,000E) - karena itulah yang tertulis di
+# dalam file dan di dalam standarnya, dan pembaca yang mencarinya akan mencari
+# nama itu. Begitu juga nama sintaks transfer dan kodeknya, serta PS3.15.
+#
+# Halaman inilah tempat janji situs ini paling tajam, jadi kalimat tentang apa
+# yang ada di dalam file-nya diterjemahkan selengkap kalimat tentang ke mana ia
+# tidak pergi. Penampil yang diam-diam menampilkan gambarnya dan tidak
+# mengatakan apa pun tentang empat puluh kolom pengenal di belakangnya memenuhi
+# bunyi janjinya dan meleset dari maksudnya.
+#
+
+name = "Penampil DICOM"
+heading = "Penampil&nbsp;DICOM <span class=\"h1-kw\">&mdash; buka pindaian .dcm di peramban Anda</span>"
+tagline = "CT, MR, rontgen, dan USG, lengkap dengan jendela, headernya, dan pengukurannya."
+
+title = "Penampil DICOM &mdash; Buka File .dcm di Peramban Anda, Tanpa Unggah"
+description = "Buka pindaian CT, MR, rontgen, dan USG di peramban Anda. Jendela dan levelnya, gulir satu seri utuh, ukur dalam milimeter, baca setiap tag DICOM, dan lihat persis apa di dalam file-nya yang mengenali pasiennya. Tidak ada yang diunggah."
+og_title = "Penampil DICOM &mdash; buka sebuah pindaian tanpa mengunggahnya"
+og_description = "File .dcm yang dibuka di mesin Anda sendiri: jendela dan level, seluruh serinya tersusun berurutan, pengukuran dalam milimeter, dan setiap tag di headernya. Tanpa unggah, tanpa akun."
+og_image_alt = "Penampil DICOM - buka pindaian CT, MR, atau rontgen di peramban"
+
+pledge = """
+    Pindaiannya dibuka dan didekodekan oleh peramban Anda sendiri: headernya,
+    pikselnya, jendelanya, pengukurannya. Tidak ada server di ujung lain halaman
+    ini untuk menerima informasi kesehatan yang dilindungi, bahkan seandainya ada
+    di sini yang menginginkannya, dan tidak ada apa pun tentang file-nya - bukan
+    nama pasiennya, bukan studinya, bukan nama file-nya - yang dibacakan kepada
+    siapa pun."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu buka sebuah pindaian. Tidak satu pun permintaan membawa sebuah gambar,
+      sebuah tag, atau sebuah nama file. Atau cabut koneksi internet dan tetap
+      buka satu."""
+
+read_first = """
+, <code>src/dicom.js</code> untuk pembaca yang
+      menyusuri file-nya, <code>src/pixels.js</code> untuk pendekodean pikselnya,
+      <code>src/jpeg-lossless.js</code> untuk kodek yang dipakai kebanyakan
+      ekspor rumah sakit, dan <code>src/window.js</code> untuk jendela dan
+      levelnya &mdash; tidak satu pun punya baris yang bisa menjangkau
+      jaringan."""
+
+howto_heading = "Cara membuka file DICOM"
+
+card = """
+            Buka pindaian CT, MR, rontgen, atau USG di mesin Anda sendiri. Atur
+            jendela dan levelnya, gulir seluruh serinya, ukur dalam milimeter,
+            dan baca setiap tag di headernya."""
+
+[words]
+plural = "pindaian"
+choose = "sebuah pindaian"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "File tetap di perangkat Anda"
+
+[[privacy]]
+title = "Pindaian Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy
+      menyebut satu per satu setiap alamat yang boleh dihubungi halaman ini, dan
+      tidak satu pun milik situs ini. Tidak ada titik akhir di sini tempat file
+      Anda bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada. Dulu di sini tertulis <code>connect-src 'none'</code>, yang mutlak;
+      menambahkan iklan mengorbankan itu, dan mengatakannya adalah bagian dari
+      kesepakatannya."""
+
+[[privacy]]
+title = "Ini lebih penting di sini daripada di halaman lain."
+body = """
+
+      File DICOM bukan sebuah gambar dengan sedikit metadata di atasnya. Ia sebuah
+      rekam medis dengan sebuah gambar di dalamnya: nama pasiennya, tanggal
+      lahirnya, nomor rumah sakitnya, nomor aksesinya, dokter yang merujuk,
+      institusinya, dan nomor seri pemindainya semuanya adalah kolom di dalam
+      headernya, dan semuanya bepergian bersama file-nya ke mana pun ia pergi.
+      Mengunggah satu ke sebuah situs web untuk melihatnya berarti menyerahkan
+      semua itu kepada siapa pun yang menjalankan situs itu. Itulah hal yang
+      justru tidak dilakukan halaman ini."""
+
+[[privacy]]
+title = "Pembacanya adalah empat belas file di repositori ini."
+body = """
+ Tidak ada di sini yang
+      memakai pustaka yang diambil dari mana pun. <code>src/dicom.js</code>
+      menyusuri file-nya, <code>src/dictionary.js</code> tahu tagnya disebut apa,
+      <code>src/pixels.js</code> mengubah byte-nya kembali menjadi pengukuran,
+      <code>src/rle.js</code> dan <code>src/jpeg-lossless.js</code> membuka dua
+      bentuk terkompres yang bisa didekodekan halaman ini, dan
+      <code>src/window.js</code> memetakan yang terukur ke abu-abu di layar
+      Anda."""
+
+[[privacy]]
+title = "Pengenalnya didaftar untuk Anda, dan untuk tidak seorang pun lainnya."
+body = """
+
+      Halaman ini mencetak setiap kolom di file Anda yang menamai atau
+      mempersempit siapa orang di dalamnya, karena itu pertanyaan yang butuh
+      jawaban bagi orang yang hendak membagikan sebuah irisan dan tidak ada
+      penampil yang menjawabnya. Ia ditaruh di layar di hadapan Anda dan tidak
+      pergi ke tempat lain: tidak ada peristiwa analitik di repositori ini yang
+      membawa satu pun darinya, dan halaman ini tidak akan bisa mengirimnya
+      seandainya ada."""
+
+[[privacy]]
+title = "Ia membaca. Ia tidak menulis."
+body = """
+ Tidak ada tombol di sini yang mengubah
+      file Anda, dan tidak ada kode yang bisa. Yang bisa Anda bawa pulang adalah
+      sebuah PNG dari bingkai di layar dan sebuah salinan teks dari headernya,
+      keduanya dibangun di halaman ini dari yang sudah ada di atasnya. Berkas asli
+      Anda tetap tak tersentuh di disk Anda, dan itu juga jawaban jujur untuk apa
+      yang terjadi kalau Anda menutup tabnya."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan
+      pengukuran berasal dari Google. Tidak satu pun diberi apa pun tentang file
+      Anda: bukan pikselnya, bukan gambar mininya, bukan sebuah nama, sebuah tag,
+      seorang pasien, atau sebuah nama file. Setiap baris yang membaca,
+      mendekodekan, atau menggambar sebuah pindaian disajikan dari asal ini dan
+      terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+
+      Tombol "Buy me a coffee" di headernya digambar oleh sebuah skrip dari
+      cdnjs.buymeacoffee.com dan mengambil hurufnya dari Google Fonts. Ia sebuah
+      tautan dan tidak lebih: ia tidak melaporkan kunjungan, dan ia tidak diberi
+      apa pun tentang Anda atau file Anda. Tidak ada yang terjadi kecuali Anda
+      mengekliknya, dan yang akan Anda tuju lewat klik itu adalah situs orang
+      lain."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan setiap bagian
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana: alat yang
+      mengirim pindaian Anda pergi untuk digambar akan berhenti pada saat Anda
+      mencabut koneksi."""
+
+[[howto]]
+title = "Pilih file-nya."
+body = """
+ Satu file <code>.dcm</code>, atau seluruh folder
+      dari cakramnya &mdash; sebuah CT atau MR adalah satu file per irisan, dan
+      menjatuhkan semuanya sekaligus itulah yang menyusun kembali serinya. File
+      dibaca langsung dari disk Anda oleh peramban; tidak ada yang dikirim ke mana
+      pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Pilih serinya."
+body = """
+ Sebuah studi biasanya memuat beberapa: pindaian
+      pendahulunya, lalu setiap akuisisinya. Masing-masing disusun dalam urutan
+      pengambilan pemindainya, diperhitungkan dari letak setiap irisan di dalam
+      tubuh pasiennya alih-alih dari penomorannya, yang tidak selalu berjalan ke
+      arah yang sama."""
+
+[[howto]]
+title = "Atur jendelanya."
+body = """
+ Inilah kendali yang membuat sebuah pindaian
+      terbaca, dan yang tidak dimiliki sebuah penyunting gambar. Seret melintasi
+      gambarnya untuk melebarkan jendelanya dan ke atas atau ke bawah untuk
+      menggeser pusatnya, atau pilih salah satu jendela bernama &mdash; paru,
+      tulang, otak, jaringan lunak &mdash; pada sebuah CT, tempat satuannya sama
+      di setiap pemindai di dunia."""
+
+[[howto]]
+title = "Gulir tumpukannya."
+body = """
+ Penggeser di bawah gambarnya berpindah melalui
+      irisannya, dan tombol panah melakukan hal yang sama begitu Anda mengeklik
+      gambarnya. File multi-bingkai &mdash; sebuah lup USG, sebuah angiogram
+      &mdash; diputar dengan tombol di sebelahnya."""
+
+[[howto]]
+title = "Ukur sesuatu."
+body = """
+ Beralihlah ke Ukur lalu seret sebuah garis. Kalau
+      file-nya mengatakan seberapa jauh jarak antar pikselnya, jawabannya dalam
+      milimeter dan memperhitungkan piksel yang tidak persegi; kalau file-nya
+      tidak mengatakannya, jawabannya dalam piksel dan ia mengatakan begitu
+      alih-alih mengarang sebuah skala."""
+
+[[howto]]
+title = "Baca headernya."
+body = """
+ Setiap elemen di dalam file-nya, lengkap dengan
+      nomornya, sebutannya menurut standarnya, dan isinya, bisa dicari. Di atasnya,
+      daftar apa saja di file yang satu ini yang mengenali pasiennya &mdash; dan
+      itu jauh lebih banyak daripada namanya."""
+
+[[howto]]
+title = "Ambil yang Anda butuhkan."
+body = """
+ Bingkai di layar sebagai sebuah PNG,
+      dengan jendela yang Anda setel dan tanpa apa pun yang terbakar ke dalamnya,
+      atau seluruh headernya sebagai teks biasa. Keduanya dibangun di halaman ini
+      dari yang sudah ada di atasnya."""
+
+[[faq]]
+q = "Apakah pindaian saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File-nya dibaca, didekodekan, dan digambar oleh peramban Anda
+        sendiri di perangkat keras Anda sendiri. Alat ini tidak punya sisi server,
+        dan <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya &mdash; tidak satu pun milik situs
+        ini. Cabut koneksi jaringan dan ia tetap membuka pindaian.
+        <br><br>
+        Di sini itu lebih berarti daripada di halaman mana pun lain di situs ini.
+        File DICOM membawa nama pasiennya, tanggal lahirnya, dan nomor rumah
+        sakitnya di dalam headernya, jadi mengunggah satu ke sebuah penampil
+        berarti menyerahkan sebuah rekam medis kepada orang asing, bukan sebuah
+        gambar."""
+
+[[faq]]
+q = "File DICOM yang mana saja yang bisa dibukanya?"
+a = """
+        File tanpa kompresi dalam ketiga sintaks transfer dasarnya &mdash; implicit
+        dan explicit little endian, serta big endian yang sudah dipensiunkan
+        &mdash; ditambah deflated, RLE Lossless, baseline JPEG, dan JPEG Lossless,
+        yang dipakai untuk mengompres sebagian besar studi CT dan MR di sebuah
+        cakram rumah sakit.
+        <br><br>
+        Ia tidak bisa mendekodekan JPEG 2000, JPEG-LS, atau sintaks MPEG dan HEVC
+        yang dipakai untuk video. Semua itu butuh kodek yang berupa pustaka
+        terkompilasi berukuran megabita, dan halaman yang mengunduh satu saat
+        dibutuhkan bukanlah halaman yang jalan tanpa internet. File dalam salah
+        satunya tetap terbuka: seluruh headernya dibaca dan ditampilkan, dan
+        gambarnya diganti dengan sebaris tulisan yang menyebutkan kodeknya,
+        alih-alih dengan ikon gambar rusak yang tidak memberi tahu Anda
+        apa-apa."""
+
+[[faq]]
+q = "Apa itu &ldquo;jendela dan level&rdquo;, dan kenapa saya membutuhkannya?"
+a = """
+        Sebuah irisan CT menyimpan sekitar empat ribu nilai berbeda dan layar Anda
+        menampilkan dua ratus lima puluh enam abu-abu. Jendelanya adalah pilihan
+        bagian mana dari rentang itu yang mendapat semuanya: semua di bawahnya
+        hitam, semua di atasnya putih, dan yang di antaranya disebar ke seluruh
+        abu-abunya.
+        <br><br>
+        Itulah sebabnya file yang sama tampak seperti pindaian yang berbeda di
+        bawah dua setelan, dan sebabnya paru dan tulang tidak bisa dilihat
+        sekaligus. Pada sebuah CT angkanya adalah satuan Hounsfield, yang
+        didefinisikan secara mutlak &mdash; air adalah 0 dan udara adalah
+        &minus;1000 &mdash; jadi jendela bernama di halaman ini adalah angka yang
+        sama yang dipakai seorang radiolog di stasiun kerjanya. Pada sebuah MR atau
+        USG tidak ada skala semacam itu, dan jendela yang terbuka adalah jendela
+        yang diminta file-nya sendiri."""
+
+[[faq]]
+q = "Kenapa ia bilang pengukuran saya dalam piksel?"
+a = """
+        Karena file itu tidak mengatakan seberapa besar sebuah pikselnya. Pixel
+        Spacing (0028,0030) adalah yang membawa itu, dalam milimeter, dan sangat
+        banyak gambar USG, dokumen hasil pindaian, dan secondary capture memang
+        tidak memilikinya.
+        <br><br>
+        Kalau ia ada, pengukurannya dalam milimeter dan setiap sumbunya diukur
+        dengan jaraknya sendiri, dan itu penting pada gambar yang pikselnya tidak
+        persegi. Kalau ia tidak ada, jawaban yang jujur adalah hitungan piksel, dan
+        ini mengatakannya alih-alih memilih sebuah skala lalu menyajikan hasilnya
+        sebagai sebuah panjang."""
+
+[[faq]]
+q = "Ia membuka folder saya sebagai beberapa seri. Kenapa?"
+a = """
+        Karena memang itu isinya. Sebuah studi terdiri dari seri &mdash; pindaian
+        pendahulunya, lalu setiap akuisisi atau rekonstruksinya &mdash; dan setiap
+        file mengatakan ia milik yang mana di Series Instance UID (0020,000E).
+        Daftar pilihannya dibangun dari itu alih-alih dari foldernya, yang biasanya
+        memuat semuanya tercampur dalam satu daftar nama.
+        <br><br>
+        Di dalam sebuah seri, irisannya diurutkan menurut letak masing-masing di
+        dalam tubuh pasiennya, diperhitungkan dari Image Position dan Image
+        Orientation. Instance Number adalah kunci yang gamblang dan ia menjadi
+        cadangan alih-alih pilihan pertama: ia ditetapkan oleh apa pun yang menulis
+        file-nya dan tidak harus berjalan ke arah yang sama dengan tubuh
+        pasiennya."""
+
+[[faq]]
+q = "Apa maksud daftar &ldquo;apa yang mengenali pasiennya&rdquo;?"
+a = """
+        Itu setiap kolom di file Anda yang menamai orang di dalam pindaian itu,
+        atau yang mempersempit siapa dia mungkin, dibaca dari file ini di mesin
+        Anda. Daftarnya berasal dari PS3.15 standar DICOM &mdash; bagian yang
+        mengatakan apa saja yang harus hilang sebelum sebuah kumpulan data bisa
+        disebut sudah dinirkenalkan.
+        <br><br>
+        Ia ada di sana karena yang salah dipahami orang bukanlah bahwa sebuah
+        pindaian memuat sebuah nama. Melainkan berapa banyak lagi yang dimuatnya:
+        tanggal lahirnya, nomor aksesinya, dokter yang merujuk, institusinya, nomor
+        seri pemindainya, dan UID studinya, yang merupakan kunci sempurna kembali
+        ke arsip yang membuat file itu. Pindaian yang namanya sudah dikosongkan dan
+        tidak lebih dari itu tidaklah anonim.
+        <br><br>
+        Alat ini hanya menunjukkan kepada Anda. Ia tidak menulis apa pun dan tidak
+        mengubah apa pun, jadi ia tidak bisa mengeluarkan satu pun darinya."""
+
+[[faq]]
+q = "Bisakah ia menganonimkan sebuah pindaian?"
+a = """
+        Tidak, dan ia sengaja tidak berpura-pura bisa. Halaman ini membaca; ia
+        tidak punya kode yang menulis sebuah file DICOM. Yang dilakukannya adalah
+        memberi tahu Anda persis apa yang ada di dalam punya Anda, dan itulah
+        bagian yang sulit dicari tahu dan bagian yang salah dipahami orang.
+        <br><br>
+        Alat yang mengeluarkan pengenalnya adalah pekerjaan terpisah dengan
+        tuntutan yang jauh lebih tinggi &mdash; ia harus menulis ulang file-nya
+        tanpa menyentuh pikselnya, mengganti UID-nya secara konsisten di seluruh
+        satu studi, dan tepat soal elemen privat yang dipakai sebagian pemindai
+        untuk menyembunyikan salinan kedua namanya. Ia ada di peta jalan situs ini
+        alih-alih ditempelkan ke sebuah penampil."""
+
+[[faq]]
+q = "Bisakah ia membuka file tanpa ekstensi .dcm, atau yang rusak?"
+a = """
+        Bisa, keduanya. Ekstensinya tidak dilihat: yang diperiksa adalah file-nya
+        sendiri. Kumpulan data yang ditulis tanpa pembuka 128 byte yang biasa
+        &mdash; dan begitulah rupa sebuah pindaian yang ditarik langsung dari
+        jaringan &mdash; dibaca dengan memperhitungkan pengodeannya dari elemen
+        pertamanya, dan halamannya mengatakan bahwa itulah yang dilakukannya.
+        <br><br>
+        File yang berakhir di tengah jalan dibaca sejauh ia sampai. Semua yang
+        sebelum kerusakannya ditampilkan, dengan catatan yang menyebutkan di byte
+        mana ia berhenti. Itulah justru kasus yang paling membutuhkan sebuah
+        penampil, jadi membuang seluruh file-nya gara-gara dua belas byte
+        terakhirnya akan menjadi perilaku yang keliru."""
+
+[[faq]]
+q = "Apakah ini penampil diagnostik?"
+a = """
+        Bukan. Ia bukan perangkat medis, ia belum melewati penilaian regulasi apa
+        pun, dan tidak ada di sini yang boleh dipakai untuk membuat keputusan
+        klinis. Layar Anda tidak terkalibrasi, peramban bukan rantai penggambaran
+        yang tervalidasi, dan tidak satu pun dari keduanya bisa dibereskan dari
+        dalam sebuah halaman web.
+        <br><br>
+        Ia bagus untuk semua hal lain yang membuat orang membuka sebuah pindaian:
+        memeriksa apa yang ada di sebuah cakram, mengambil sebuah irisan untuk
+        bahan ajar atau sebuah makalah, membaca sebuah header, mencari tahu kenapa
+        program lain menolak file-nya, dan melihat apa yang dibawa sebuah pindaian
+        tentang orang di dalamnya."""
+
+[[faq]]
+q = "Apakah ia mengubah file saya?"
+a = """
+        Tidak. Alat ini hanya membaca. Tidak ada file keluaran, tidak ada
+        pengodean ulang, dan tidak ada tombol di sini yang menulis sebuah DICOM
+        &mdash; yang bisa Anda unduh adalah sebuah PNG dari bingkai di layar dan
+        salinan teks biasa dari headernya. Berkas asli Anda tetap tak tersentuh di
+        disk Anda."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis; tidak ada akun, tidak ada masuk, dan tidak ada masa uji coba.
+        Tidak ada batas ukuran file atau berapa banyak file yang Anda buka selain
+        memori mesin Anda sendiri. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang file Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia terus
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim pindaian Anda pergi untuk digambar akan
+        berhenti pada saat Anda mencabut koneksi."""
+
+[schema]
+description = "Buka pindaian DICOM (.dcm) di peramban: CT, MR, rontgen, dan USG, lengkap dengan jendela dan level, seluruh seri tersusun berurutan, pengukuran dalam milimeter, dan setiap tag di headernya. Tidak ada yang diunggah."
+features = [
+  "Membuka file CT, MR, rontgen, USG, PET, dan secondary capture",
+  "Jendela dan level dengan menyeret, dengan mengetik, atau lewat prasetel CT bernama",
+  "Seluruh folder disusun menjadi seri dan diurutkan menurut letaknya di dalam tubuh pasien",
+  "File multi-bingkai diputar sebagai sebuah lup",
+  "Mengukur dalam milimeter, dengan piksel tak persegi diperhitungkan",
+  "Membaca nilai piksel di bawah kursor dalam satuan Hounsfield",
+  "Setiap tag DICOM lengkap dengan nama dan nilainya, bisa dicari",
+  "Mendaftar apa saja di dalam file yang mengenali pasiennya, dari profil PS3.15",
+  "Mendekodekan RLE, baseline JPEG, dan JPEG Lossless tanpa pustaka pihak ketiga",
+  "Menyimpan bingkainya sebagai PNG dan headernya sebagai teks biasa",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa perubahan pada file Anda",
+]
+
+[picker]
+title = "Jatuhkan sebuah pindaian di sini"
+hint = "atau klik untuk menelusuri &mdash; satu file .dcm, atau satu folder penuh"

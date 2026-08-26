@@ -1,0 +1,204 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Buka <a href="../../potong-video/">Pemotong Video</a>, jatuhkan klipnya,
+      tekan <kbd>I</kbd> dan <kbd>O</kbd> untuk menandai setiap bagian yang Anda
+      mau &mdash; sebanyak yang Anda suka &mdash; lalu ekspor. Pada sebuah MP4,
+      MOV, atau M4V, bingkai yang Anda simpan dipindahkan ke file barunya persis
+      seperti sebelumnya &mdash; byte yang sama, setelan pengode yang sama,
+      semuanya sama &mdash; dan suaranya disalin sampel demi sampel tanpa
+      didekodekan.
+    </p>
+    <p>
+      Artinya sebuah pemotongan tidak mengorbankan kualitas apa pun dari Anda,
+      dan ia cepat: memotong satu menit dari rekaman empat gigabita memakan
+      kira-kira sebanyak biaya menulis satu menit itu ke disk, karena bingkainya
+      ditunjuk alih-alih dimuat. Satu tempat yang memperlihatkan ini adalah di
+      mana potongan Anda sebenarnya mendarat, dan itulah sisa halaman ini.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa sebuah pemotongan sama sekali tidak perlu kehilangan kualitas</h2>
+    <p>
+      Memotong tidak mengubah rupa satu bingkai pun. Setiap bingkai yang Anda
+      simpan seharusnya keluar identik dengan saat ia masuk, jadi tidak ada
+      alasan mendekodekannya lalu mengodekannya lagi &mdash; dan ada segala
+      alasan untuk tidak, karena pengodean ulang itu merugikan dan akan membuat
+      seluruh klipnya sedikit lebih buruk demi memendekkannya.
+    </p>
+    <p>
+      Jadi pemotong yang baik tidak mengodekan ulang. Ia membaca indeks
+      file-nya, memperhitungkan bingkai terkodekan mana yang jatuh di rentang
+      Anda, lalu menulis byte itu ke sebuah wadah baru dengan indeks baru di
+      depannya. Sama sekali tidak ada yang didekodekan di jalur itu.
+    </p>
+    <p>
+      Banyak alat tetap mengodekan ulang, karena mendekodekan dan mengodekan
+      ulang jauh lebih sederhana diwujudkan daripada membaca format wadahnya.
+      Anda biasanya bisa tahu Anda sedang memakai yang mana dari berapa lama
+      waktunya: penyalinan dibatasi seberapa cepat disk Anda menulis, dan
+      pengodean ulang dibatasi seberapa cepat mesin Anda mengodekan video, yang
+      seratus kali lebih lambat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Keyframe, dan kenapa potongan Anda bisa mendarat lebih awal</h2>
+    <p>
+      Inilah kekangan yang menjadi asal segala hal tentang pemotongan.
+    </p>
+    <p>
+      Video tidak disimpan sebagai runtutan gambar utuh. Itu akan sangat besar.
+      Kebanyakan bingkai disimpan sebagai keterangan tentang bedanya mereka
+      dengan tetangganya, dan itu berarti mereka tidak bisa didekodekan sendirian
+      &mdash; Anda butuh bingkai di sekitarnya. Hanya sebuah
+      <strong>keyframe</strong> yang berdiri sendiri sebagai gambar utuh, dan
+      keyframe biasanya berjarak satu sampai sepuluh detik.
+    </p>
+    <p>
+      Jadi kalau Anda menandai sebuah potongan dua detik setelah keyframe
+      terakhir, pemotong yang menyalin bingkai tidak bisa mulai di sana. Bingkai
+      di tanda Anda tidak terbaca tanpa rangkaian yang menuju ke sana. Ia harus
+      membawa seluruh bentangan dari keyframe di depan tanda Anda.
+    </p>
+    <p>
+      Yang dilakukannya soal itulah bagian yang menarik. Format file-nya punya
+      cara baku untuk berkata <em>mulai putar di titik ini</em> &mdash; bingkai
+      tambahannya ada di file-nya tapi wadahnya menyuruh pemutarnya melewatinya.
+      Setiap pemutar arus utama mematuhinya, dan klipnya mulai persis di tempat
+      yang Anda sebutkan. Pemutar yang mengabaikannya akan mulai lebih awal,
+      sejauh-jauhnya sepanjang jarak antar keyframe.
+    </p>
+    <p>
+      Alat di sini memberi tahu Anda Anda berada di kasus yang mana dan seberapa
+      jauh sebelum Anda mengekspor, jadi ia sebuah keputusan alih-alih sebuah
+      kejutan.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kapan sebaiknya menerima pengodean ulang</h2>
+    <p>
+      Ada potongan yang tepat, dan ia bekerja dengan mengodekan ulang bentangan
+      pembukanya &mdash; mendekodekan dari keyframe-nya, lalu menuliskan
+      rangkaian bingkai baru yang sungguh mulai di tempat yang Anda tandai. Ia
+      lebih lambat, dan ia mengorbankan sedikit kualitas hanya pada bentangan
+      pembuka itu.
+    </p>
+    <p>
+      Pilih itu ketika klipnya akan pergi ke tempat yang tidak akan mematuhi
+      instruksi wadahnya, atau ke tempat yang pemutarnya tidak bisa Anda
+      kendalikan: sebagian penyunting video, sebagian sistem siaran dan
+      konferensi, sebagian pemutar perangkat keras yang lebih tua. Pilih
+      penyalinannya untuk semua yang lain, dan itu hampir semuanya &mdash; sebuah
+      peramban, sebuah ponsel, sebuah lapak media sosial, sebuah pemutar media.
+    </p>
+    <p>
+      Pilihan ketiga yang tidak berbiaya: geser tanda Anda. Kalau alatnya
+      menunjukkan di mana keyframe-nya berada, menggeser potongannya ke yang
+      terdekat memberi Anda potongan yang tepat sama sekali tanpa pengodean
+      ulang. Jarang sekali selisih satu detik sepadan dengan melepaskan sebuah
+      penyalinan.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mengeluarkan sepotong dari tengah</h2>
+    <p>
+      Memotong keluar sebuah bagian adalah operasi yang berbeda dari menyimpan
+      satu bagian, dan layak diketahui bahwa ia didukung, karena banyak pemotong
+      hanya melakukan yang kedua. Tandai bagian yang tidak Anda mau, pilih untuk
+      memotongnya keluar, dan yang tersisa di kedua sisinya disambung menjadi
+      satu klip dengan suaranya dibawa seiring.
+    </p>
+    <p>
+      Sambungannya punya kekangan keyframe yang sama di titik tempat separuh
+      keduanya melanjut, karena alasan yang sama. Ia bekerja di kedua jalur MP4
+      di sini. Ia satu hal yang tidak bisa dilakukan jalur cadangan lewat
+      perekaman di bawah, karena sebuah rekaman dibuat dalam satu jalan dari satu
+      kepala pemutar.
+    </p>
+  </section>
+
+  <section>
+    <h2>Format, dan jalur cadangannya</h2>
+    <p>
+      <strong>MP4, M4V, dan MOV</strong> dibaca langsung, apa pun kodek di
+      dalamnya &mdash; H.264, HEVC, AV1, VP9. Menyalin bingkai tidak melibatkan
+      pendekodeannya, jadi jalur ini bekerja bahkan untuk kodek yang sama sekali
+      tidak punya dekoder di peramban Anda, dan itu akibat yang menyenangkan dari
+      tidak melihat gambarnya.
+    </p>
+    <p>
+      <strong>Apa pun lain yang bisa diputar peramban Anda</strong>, WebM yang
+      paling jelas, dipotong dengan memutarnya lalu merekam hasilnya. Itu
+      bekerja, dan ia punya dua ongkos: ia memakan waktu selama panjang
+      bagiannya, dan gambar serta suaranya dikodekan lagi.
+    </p>
+    <p>
+      <strong>AVI, WMV, FLV, dan kebanyakan MKV</strong> tidak bisa dibaca maupun
+      diputar peramban, dan alatnya mengatakannya alih-alih gagal di tengah
+      jalan. Ubah dulu yang itu menjadi MP4 dengan sesuatu yang menanganinya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dua hal yang diam-diam keliru di tempat lain</h2>
+    <p>
+      <strong>Rotasi.</strong> Sebuah ponsel merekam dalam lanskap lalu menulis
+      instruksi rotasi ke dalam file-nya alih-alih memutar pikselnya. Pemotong
+      yang menyalin bingkai harus membawa instruksi itu ikut, atau klip potret
+      Anda keluar miring &mdash; dan itulah cara klasik sebuah video yang
+      dipotong menjadi rusak. Jalur yang tepat di sini memutar bingkainya sambil
+      mengodekannya ulang lalu menulis file yang sama sekali tidak butuh rotasi.
+    </p>
+    <p>
+      <strong>Sinkron audio.</strong> Audio dan video disimpan sebagai aliran
+      terpisah dengan pewaktuannya sendiri, dan keduanya tidak dipotong di titik
+      yang sama. Kalau keduanya tidak disejajarkan dengan sengaja di potongannya,
+      suaranya melenceng. Pada jalur penyalinan di sini, audionya disalin sampel
+      demi sampel tanpa didekodekan, jadi ia byte demi byte sama dengan yang ada
+      di file-nya, dan sebuah tanda sunting menjaganya seiring gambarnya sampai
+      seperseribu detik.
+    </p>
+  </section>
+
+  <section>
+    <h2>Memotong bukan memangkas</h2>
+    <p>
+      Dua kata yang saling dipakai untuk yang lain. Memotong mengubah panjang
+      klipnya; memangkas mengubah bentuk gambarnya. Kalau yang Anda mau adalah
+      versi persegi dari video lanskap, atau bilah hitam hilang dari sisinya,
+      itulah <a href="../../pangkas-video/">Pemangkas Video</a> &mdash; dan tidak
+      seperti pemotongan, ia memang harus mengodekan ulang, karena alasan yang
+      dijelaskan <a href="../pangkas-video/">panduannya</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa ini tidak butuh unggahan &mdash; terutama yang ini</h2>
+    <p>
+      Video adalah jenis file yang paling dikira orang harus diunggah, karena
+      file-nya besar dan pekerjaannya terdengar berat. Pemotongan adalah kasus
+      yang paling tidak begitu: pada jalur penyalinan, file-nya nyaris tidak
+      dibaca sama sekali. Alatnya menyusuri indeksnya, memperhitungkan rentang
+      byte mana yang disimpan, lalu menuliskannya. Mengunggah file empat gigabita
+      ke sebuah server supaya ia bisa melakukan itu akan menjadi cara paling
+      lambat yang mungkin untuk mengaturnya.
+    </p>
+    <p>
+      Ia juga jenis file yang mengunggahnya paling mahal kalau Anda lebih suka
+      tidak: video membawa wajah, suara, rumah, dan lokasi dengan cara yang tidak
+      dilakukan sebuah dokumen. Alat di sini tidak punya fitur jaringan dalam
+      bentuk apa pun, dan <code>Content-Security-Policy</code> halamannya
+      menyebut satu per satu setiap alamat yang boleh dihubunginya, dan tidak
+      satu pun milik situs ini.
+    </p>
+    <p>
+      Cabut koneksi internet lalu potong sebuah klip kalau Anda lebih suka
+      memeriksa daripada diberi tahu.
+      <a href="../apakah-aman-mengunggah-file/">Amankah mengunggah file ke
+      pengubah daring?</a> memaparkan tiga pemeriksaan lain seperti itu.
+    </p>
+  </section>

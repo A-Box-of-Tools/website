@@ -1,0 +1,20 @@
+#
+# Panduan: mengubah HEIC menjadi JPG - Bahasa Indonesia.
+#
+
+nav = "HEIC ke JPG"
+title = "Cara Mengubah HEIC Menjadi JPG (dan Apa Sebenarnya HEIC Itu)"
+description = "iPhone menyimpan foto sebagai HEIC, dan separuh internet tidak bisa membukanya. Format itu apa, kenapa hanya Safari yang mendekodekannya, berapa harga pengubahannya bagi gambarnya, dan bagaimana melakukannya tanpa mengunggah fotonya kepada siapa pun."
+
+heading = "Foto yang disimpan ponsel Anda, dan format yang tidak mau dibuka apa pun"
+lede = """
+    iPhone menyimpan foto sebagai HEIC, yang lebih kecil dan lebih baik daripada
+    JPEG dan yang masih ditolak sangat banyak perangkat lunak. Inilah apa
+    sebenarnya format itu, berapa harga pengubahannya bagi gambarnya, dan kenapa
+    hampir setiap pengubah ingin Anda mengunggahnya lebih dulu."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara mengubah HEIC menjadi JPG"
+og_description = "Kenapa foto iPhone tidak mau terbuka, berapa harga pengubahannya, dan bagaimana melakukannya tanpa menyerahkan fotonya kepada siapa pun."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

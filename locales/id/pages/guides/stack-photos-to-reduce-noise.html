@@ -1,0 +1,312 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Buka <a href="../../tumpuk-gambar/">Penumpuk Gambar</a>, jatuhkan seluruh
+      burst-nya, lalu pilih metodenya menurut apa yang ingin Anda singkirkan:
+    </p>
+    <ul>
+      <li><strong>Derau</strong>, dan tidak ada yang bergerak &mdash; rata-rata.</li>
+      <li><strong>Derau</strong>, dan ada yang bergerak &mdash; sigma clipping.</li>
+      <li><strong>Orang, mobil, sebuah pesawat</strong> &mdash; median.</li>
+      <li><strong>Langit gelap yang Anda mau jadi jejak bintang</strong> &mdash; terangkan.</li>
+      <li><strong>Bidikan makro yang kedalaman bidangnya nyaris tidak ada</strong> &mdash; penumpukan fokus.</li>
+    </ul>
+    <p>
+      Biarkan penyejajarannya menyala kalau kameranya ada di tangan Anda dan
+      matikan kalau ia ada di atas tripod. File RAW bisa masuk langsung; tidak
+      perlu mengembangkannya lebih dulu.
+    </p>
+    <p>
+      Semua di bawah ini adalah kenapa kelima baris itu seperti itu.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa sebuah burst menyimpan lebih banyak daripada satu bingkai</h2>
+    <p>
+      Foto yang diambil di bawah cahaya yang buruk adalah gambarnya ditambah
+      derau, dan deraunya berbeda setiap kali. Bagian terakhir itulah yang
+      membuat penumpukan berhasil. Ambil bidikan yang sama enam belas kali dan
+      gambarnya identik di keenam belasnya sementara deraunya tidak, jadi
+      merata-ratakannya menyisakan gambarnya dan membatalkan sebagian besar
+      deraunya.
+    </p>
+    <p>
+      Peningkatannya sebesar akar jumlah bingkainya. Empat bingkai menyetengahkan
+      deraunya. Enam belas menyeperempatkannya. Seratus memangkasnya sepersepuluh.
+      Itu kurva yang kejam untuk dijalani &mdash; naik dari enam belas bingkai ke
+      enam puluh empat memberi Anda peningkatan yang sama lagi, untuk empat kali
+      pemotretannya &mdash; dan itulah sebabnya hampir setiap tumpukan yang
+      praktis berada di antara delapan dan tiga puluh bingkai.
+    </p>
+    <p>
+      Ada keuntungan kedua yang lebih tenang. Merata-ratakan enam belas bingkai
+      delapan bit memberi hasil dengan gradasi yang lebih halus daripada yang
+      dimiliki satu pun di antaranya, karena derau yang membuat setiap bingkai
+      membulat berbeda justru itulah yang membuat rata-ratanya mendarat di antara
+      tingkatannya. Menumpuk kumpulan yang berderau tidak hanya membuang derau;
+      ia memulihkan nada yang dikuantisasi hilang oleh satu bingkai.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pertanyaan yang memilih metodenya</h2>
+    <p>
+      Bukan &ldquo;apa yang ingin saya simpan&rdquo; melainkan <strong>apa yang
+      berbeda antar bingkainya</strong>. Semua yang lain mengikuti.
+    </p>
+
+    <h3>Tidak ada yang bergerak: rata-rata</h3>
+    <p>
+      Rata-rata biasa. Ia pengurangan derau paling ampuh yang tersedia pada
+      kumpulan yang satu-satunya beda antar bingkainya adalah deraunya, dan ia
+      yang paling mudah dirusak: satu bingkai yang ada burungnya menaruh sebuah
+      burung samar melintasi seluruh tumpukannya, karena sebuah rata-rata tidak
+      punya pendapat tentang nilai yang tidak sepakat dengan yang lain. Ia sekadar
+      memasukkannya.
+    </p>
+
+    <h3>Ada yang melintasi bingkainya: median</h3>
+    <p>
+      Sejajarkan selusin foto sebuah alun-alun yang ramai lalu lihat satu piksel.
+      Di sebagian besarnya ia trotoar; di satu dua di antaranya ia mantel
+      seseorang. Urutkan kedua belas nilai itu lalu ambil yang tengah dan Anda
+      mendapat trotoar, karena mantelnya tidak pernah menjadi mayoritas.
+    </p>
+    <p>
+      Lakukan itu untuk setiap piksel dan alun-alunnya keluar kosong. Inilah trik
+      di balik setiap artikel &ldquo;buang turis dari foto liburan Anda&rdquo;,
+      dan ia tidak butuh apa pun yang lebih pintar daripada sebuah burst dan
+      kesabaran. Satu hal yang dituntutnya adalah bahwa <strong>tidak ada bagian
+      pemandangannya yang ditempati lebih dari separuh waktunya</strong>. Orang
+      yang berdiri diam di delapan dari dua belas bingkai Anda adalah mayoritas di
+      piksel itu, dan mediannya akan menyimpannya.
+    </p>
+
+    <h3>Keduanya: sigma clipping</h3>
+    <p>
+      Mediannya membuang sebagian besar informasinya demi mendapatkan
+      ketegarannya &mdash; sebelas dari dua belas nilai Anda dibuang di setiap
+      pikselnya, jadi ia mengurangi derau jauh lebih sedikit daripada yang akan
+      dilakukan sebuah rata-rata atas kumpulan yang sama.
+    </p>
+    <p>
+      Sigma clipping adalah kompromi itu, dan ia biasanya bawaan yang benar untuk
+      kumpulan dunia nyata mana pun. Ia melihat setiap piksel di seluruh
+      bingkainya, memperhitungkan apa biasanya piksel itu dan seberapa banyak ia
+      berubah-ubah, lalu merata-ratakan hanya nilai yang sepakat dengan itu.
+      Sebuah mobil yang melintas di satu bingkai dikeluarkan dari piksel itu;
+      setiap bingkai lain tetap dihitung di mana-mana. Anda mendapat kekebalan
+      mediannya terhadap hal-hal yang bergerak dan sebagian besar pengurangan
+      derau rata-ratanya.
+    </p>
+    <p>
+      Ambangnya dalam simpangan baku, dan dua adalah titik mulai yang biasa.
+      Lebih rendah menolak lebih banyak, dan mulai menolak detail yang sungguhan
+      bersama mobilnya.
+    </p>
+
+    <h3>Hanya yang terang yang penting: terangkan</h3>
+    <p>
+      Simpan nilai paling terang yang pernah dimiliki setiap piksel. Foto langit
+      malam sebagai dua ratus pencahayaan sepertiga puluh detik lalu terangkan
+      mereka bersama-sama, dan setiap bintang menggambar busurnya sendiri
+      melintasi hasilnya &mdash; sebuah jejak bintang, dirakit dari pencahayaan
+      pendek yang masing-masing tidak pernah kelebihan cahaya. Metode yang sama
+      merakit sebuah kembang api dari bingkai ledakannya sendiri, dan sebuah
+      lukisan cahaya dari berjalan berkeliling ruangan gelap dengan sebuah senter.
+    </p>
+    <p>
+      Lawannya, gelapkan, adalah yang pendiam dari pasangan itu: sebuah piksel
+      hanya tetap terang kalau ia terang di <em>setiap</em> bingkainya, jadi
+      pantulan di sebuah jendela, lampu depan yang lewat, dan tetes hujan yang
+      tercahayai lampu kilat semuanya lenyap.
+    </p>
+
+    <h3>Subjeknya lebih dalam daripada fokusnya: penumpukan fokus</h3>
+    <p>
+      Bidikan makro pada f/8 punya mungkin satu milimeter yang terfokus, dan itu
+      tidak cukup untuk seekor serangga. Jawabannya adalah mengambil dua puluh
+      bingkai di sepanjang cincin fokus lalu menyimpan, dari masing-masing, hanya
+      bagian yang tajam di dalamnya. Alatnya mengukur seberapa banyak setiap
+      piksel berbeda dari tetangganya &mdash; besar di sebuah tepi, nyaris nol di
+      sebuah keburaman &mdash; lalu mengambil pemenangnya.
+    </p>
+    <p>
+      Yang ini menginginkan tripod lebih daripada yang lain mana pun, karena
+      memutar cincin fokusnya dengan tangan menggerakkan kameranya, dan bingkai
+      yang diambil dari sedikit lebih jauh bukanlah gambar yang sama pada fokus
+      yang berbeda.
+    </p>
+  </section>
+
+  <section>
+    <h2>Menyejajarkan bingkainya</h2>
+    <p>
+      Penumpukan adalah hitungan per piksel, jadi ia mengandaikan bahwa piksel
+      tertentu adalah bagian pemandangan yang sama di setiap bingkainya. Kalau
+      dipegang tangan, ia tidak: sebuah burst bergeser sejauh puluhan piksel, dan
+      merata-ratakan itu menghasilkan keburaman alih-alih gambar yang bersih.
+      Itulah alasan tunggal yang paling umum percobaan pertama menumpuk
+      mengecewakan.
+    </p>
+    <p>
+      Jadi bingkainya diukur terhadap salah satu dari mereka lalu dipindahkan
+      kembali ke tempatnya lebih dulu, sampai sepersekian piksel. Tiga setelan:
+    </p>
+    <ul>
+      <li>
+        <strong>Geser saja</strong> benar untuk hampir semua yang dipegang tangan.
+        Ia membetulkan pergeserannya dan goyangannya.
+      </li>
+      <li>
+        <strong>Geser, rotasi, dan skala</strong> untuk kumpulan yang Anda juga
+        sedikit berputar, atau yang zoomnya merayap. Ia berbiaya satu pengukuran
+        lagi per bingkai dan sama sekali tidak berbiaya apa pun ketika bingkainya
+        ternyata lurus.
+      </li>
+      <li>
+        <strong>Tidak sama sekali</strong> untuk tripod terkunci atau runtutan
+        intervalometer, tempat bingkainya sudah sejajar dan mengukurnya adalah
+        waktu yang terbuang.
+      </li>
+    </ul>
+    <p>
+      Yang tidak bisa dibetulkan penyejajaran apa pun adalah subjek yang bergerak
+      alih-alih kamera yang bergerak, dan ia juga tidak bisa membetulkan foto yang
+      diambil dari satu langkah ke kiri. Bergeser ke samping mengubah seberapa
+      banyak benda dekatnya bergeser relatif terhadap benda jauhnya, dan tidak ada
+      satu koreksi pun yang menggambarkan keduanya sekaligus. Berputar di tempat
+      tidak masalah; berjalan masalah.
+    </p>
+  </section>
+
+  <section>
+    <h2>Di mana file RAW cocok</h2>
+    <p>
+      Anda bisa menjatuhkan CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF, dan sisanya
+      langsung, dan layak dinyatakan dengan tepat apa yang terjadi pada mereka,
+      karena ia bukan yang dilakukan sebuah pengubah RAW.
+    </p>
+    <p>
+      Setiap file RAW sudah memuat sebuah <strong>JPEG berukuran penuh yang
+      digambar kameranya ketika ia mengambil bidikannya</strong>. Ia yang
+      ditampilkan punggung kameranya kepada Anda dan yang digambar sistem operasi
+      Anda sebagai gambar mininya. Penumpuknya menemukan gambar itu lalu
+      memakainya. Ia tidak mendekodekan data sensornya.
+    </p>
+    <p>
+      Dua akibatnya, satu baik dan satu layak diketahui:
+    </p>
+    <ul>
+      <li>
+        <strong>Ia cepat.</strong> Menemukan pratinjaunya berarti membaca
+        beberapa kilobita direktori lalu satu irisan, jadi bingkai 60&nbsp;MB
+        terbuka kira-kira secepat sebuah JPEG. Dua puluh di antaranya terbuka
+        dalam waktu yang akan dihabiskan sebuah pengubah RAW untuk satu.
+        Halamannya menunjukkan kepada Anda betapa sedikit file Anda yang
+        sebenarnya dibacanya.
+      </li>
+      <li>
+        <strong>Ia penggambaran kameranya, bukan penggambaran Anda.</strong>
+        Delapan bit per kanal, dengan keseimbangan putih dan gaya gambar yang
+        disetel di kameranya &mdash; bukan dua belas atau empat belas bit data
+        sensor linear yang akan Anda dapat dari sebuah pengubah.
+      </li>
+    </ul>
+    <p>
+      Untuk pengurangan derau, jejak bintang, membuang orang yang lewat, dan
+      penumpukan fokus, pertukaran itu hampir selalu layak diambil: pratinjaunya
+      beresolusi penuh dan mereka toh yang akan Anda dapat sebagai sebuah JPEG.
+      Kalau Anda mendorong bayangannya keras-keras, atau menumpuk untuk
+      astrofotografi yang bit terakhir rentang dinamisnya adalah seluruh intinya,
+      kembangkan bingkainya di sebuah pengubah RAW lebih dulu lalu tumpuk TIFF
+      atau JPEG yang diberikannya. Itu masuk dengan cara yang sama.
+    </p>
+  </section>
+
+  <section>
+    <h2>Berapa harganya untuk dijalankan</h2>
+    <p>
+      Layak diketahui karena itulah bedanya tumpukan yang memakan delapan detik
+      dengan yang memakan dua menit.
+    </p>
+    <p>
+      Enam dari ketujuh metodenya hanya pernah perlu mengingat satu hal. Sebuah
+      maksimum berjalan tidak peduli pada bingkai yang sudah dilihatnya, dan
+      begitu juga sebuah total berjalan, jadi metode itu membaca setiap bingkai
+      tepat sekali lalu memakai memori yang sama untuk seratus bingkai seperti
+      untuk dua.
+    </p>
+    <p>
+      Mediannya tidak bisa bekerja begitu, karena Anda tidak bisa tahu nilai
+      tengah sebuah kumpulan sampai Anda punya seluruhnya. Dua puluh bingkai 24
+      megapiksel adalah sekitar 1,4&nbsp;GB piksel yang ditahan sekaligus, dan
+      tidak ada peramban yang akan memberikannya kepada Anda, jadi gambarnya
+      dipotong menjadi pita mendatar lalu ditumpuk sepita demi sepita &mdash;
+      benar, dan lebih lambat, karena bingkainya dibaca lagi untuk setiap pitanya.
+    </p>
+    <p>
+      Alatnya memperhitungkan semua ini sebelum Anda menekan tombolnya lalu
+      memberi tahu Anda: seberapa besar hasilnya nanti, kira-kira berapa banyak
+      memori yang dibutuhkannya, dan berapa kali bingkai Anda akan didekodekan.
+      Kalau ia bilang jalannya akan berpita, menurunkan resolusi kerjanya satu
+      langkah memangkas memorinya menjadi seperempat dan hampir selalu
+      mengubahnya kembali menjadi satu jalan tunggal &mdash; dan kalau Anda
+      menumpuk untuk membuang derau, resolusi setengah toh sudah akan tampak lebih
+      bersih daripada resolusi penuh.
+    </p>
+  </section>
+
+  <section>
+    <h2>Memotret untuk itu</h2>
+    <p>
+      Sebagian besar kualitas sebuah tumpukan ditentukan sebelum perangkat lunak
+      mana pun melihatnya.
+    </p>
+    <ul>
+      <li>
+        <strong>Potret lebih banyak bingkai daripada dugaan Anda.</strong> Kurva
+        akarnya tidak kenal ampun di ujung bawahnya dan murah hati di ujung
+        atasnya: naik dari empat ke sembilan bingkai adalah perubahan yang lebih
+        besar dan terlihat daripada naik dari dua puluh ke empat puluh.
+      </li>
+      <li>
+        <strong>Jangan mengubah pencahayaannya antar bingkai.</strong> Penumpukan
+        mengandaikan bingkainya adalah pemandangan yang sama pada kecerahan yang
+        sama. Kunci pencahayaannya, atau alatnya akan merata-ratakan dua gambar
+        yang berbeda.
+      </li>
+      <li>
+        <strong>Untuk membuang orang, tunggu di antara bingkainya.</strong> Sebuah
+        burst yang diambil dalam dua detik menangkap orang yang sama di tempat
+        yang sama di setiap bingkainya, dan mediannya menyimpannya. Sepuluh
+        bingkai berselang beberapa detik bekerja jauh lebih baik daripada lima
+        puluh dalam sebuah burst.
+      </li>
+      <li>
+        <strong>Untuk jejak bintang, jaga selanya tetap pendek.</strong>
+        Terangkan menggambar persis yang direkam bingkainya, jadi jeda antar
+        pencahayaan menjadi sebuah garis putus yang terlihat di setiap jejaknya.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Tidak satu pun dari ini meninggalkan mesin Anda</h2>
+    <p>
+      Setumpuk dua puluh bingkai RAW adalah sekitar satu gigabita foto, dan itu
+      banyak untuk diserahkan kepada sebuah situs web demi diambil rata-ratanya.
+      <a href="../../tumpuk-gambar/">Penumpuk Gambar</a> membaca file-nya dari
+      disk Anda sendiri lalu mengerjakan hitungannya di peramban Anda sendiri.
+      Tidak ada langkah unggah, tidak ada akun, dan tidak ada antrean, dan Anda
+      bisa memeriksa klaim itu seperti Anda akan memeriksa klaim siapa pun: buka
+      panel jaringan peramban Anda selagi ia berjalan, atau sekadar cabut koneksi
+      internet lalu tetap tumpuk mereka.
+    </p>
+    <p>
+      Pertanyaan terkaitnya &mdash; bagaimana tahu, untuk alat mana pun, apakah
+      menyerahkan sebuah file kepadanya memang perlu &mdash; adalah
+      <a href="../apakah-aman-mengunggah-file/">panduannya sendiri</a>.
+    </p>
+  </section>

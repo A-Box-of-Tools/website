@@ -1,0 +1,153 @@
+<!--
+  tools/crop-video/body.html, in Indonesian.
+
+  Every id, class, data-aspect and option value below is what src/main.js and
+  src/cropper.js reach for, so they are the same in every language. Only the
+  words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; file -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih sebuah video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Ukuran</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Bingkai</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Durasi</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-audio">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; pangkasan -->
+  <section class="card" id="crop-card" hidden>
+    <h2><span class="step">2</span> Tentukan pangkasannya</h2>
+
+    <p class="stage-hint">
+      Seret di dalam kotak untuk memindahkannya, atau sudut mana pun untuk
+      mengubah ukurannya. Saat kotaknya terfokus, tombol panah menggesernya satu
+      piksel sekali tekan, <kbd>Alt</kbd>&nbsp;+&nbsp;panah mengubah ukurannya,
+      dan menahan <kbd>Shift</kbd> membuat setiap langkah menjadi sepuluh.
+    </p>
+
+    <!-- The crop box itself is added here by src/cropper.js. The stage is given
+         the video's own shape, so the box can be positioned in percentages and
+         needs no recalculating when the window is resized. -->
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <div class="crop-controls">
+      <div class="aspect-row" role="group" aria-label="Kunci pangkasan ke sebuah bentuk">
+        <button type="button" data-aspect="free" class="active">Bebas</button>
+        <button type="button" data-aspect="source">Asli</button>
+        <button type="button" data-aspect="1:1">1:1</button>
+        <button type="button" data-aspect="4:5">4:5</button>
+        <button type="button" data-aspect="9:16">9:16</button>
+        <button type="button" data-aspect="16:9">16:9</button>
+        <button type="button" data-aspect="4:3">4:3</button>
+        <button type="button" data-aspect="3:2">3:2</button>
+        <button type="button" id="swap-aspect" class="ghost" title="Balikkan bentuk yang terkunci">
+          Balik
+        </button>
+      </div>
+
+      <div class="numbers">
+        <label>Kiri<input type="number" id="crop-x" min="0" step="1"></label>
+        <label>Atas<input type="number" id="crop-y" min="0" step="1"></label>
+        <label>Lebar<input type="number" id="crop-w" min="16" step="2"></label>
+        <label>Tinggi<input type="number" id="crop-h" min="16" step="2"></label>
+        <div class="number-actions">
+          <button type="button" id="crop-max" class="ghost">Terbesar</button>
+          <button type="button" id="crop-centre" class="ghost">Tengah</button>
+          <button type="button" id="crop-reset" class="ghost">Seluruh bingkai</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="even-note">
+      Lebar dan tinggi bergerak dua-dua, karena H.264 tidak punya cara menyimpan
+      bingkai dengan sisi ganjil.
+    </p>
+  </section>
+
+  <!-- Langkah 3 &mdash; ekspor -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Pangkas</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Keluaran</label>
+        <select id="format">
+          <option value="mp4" selected>MP4 &mdash; dikodekan ulang bingkai demi bingkai</option>
+          <option value="webm">WebM &mdash; direkam sambil diputar</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="quality">Kualitas</label>
+        <select id="quality">
+          <option value="low">File lebih kecil</option>
+          <option value="medium" selected>Seimbang</option>
+          <option value="high">Kualitas terbaik</option>
+        </select>
+        <p class="field-note">
+          Tidak pernah lebih dari yang dibelanjakan aslinya untuk area yang sama
+          &mdash; mengodekan di atas itu hanya membuat file lebih besar.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="keep-audio">
+          <input type="checkbox" id="keep-audio" checked>
+          Simpan suaranya
+        </label>
+        <p class="field-note" id="audio-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Bingkai keluaran</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Yang disimpan</dt><dd id="sum-kept">&mdash;</dd></div>
+      <div><dt>Durasi</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Caranya</dt><dd id="sum-path">&mdash;</dd></div>
+    </dl>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Pangkas video</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Unduh video</a>
+      </div>
+    </div>
+  </section>
+</main>

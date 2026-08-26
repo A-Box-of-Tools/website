@@ -119,6 +119,24 @@ complete = true
 "guides/whats-inside-a-gif" = "panduan/apa-isi-di-dalam-gif"
 "guides/verify-a-file-checksum" = "panduan/memverifikasi-checksum-file"
 
+# The three that shipped after this file was first written. The tools keep
+# their Latin acronyms in the address for the reason given at the top: DICOM
+# and PDF are what a reader types, and an Indonesian spelling of either would
+# invent a word nobody searches for.
+"dicom-viewer" = "penampil-dicom"
+"document-scanner" = "pemindai-dokumen"
+"redact-pdf" = "sensor-pdf"
+"guides/open-a-dicom-file" = "panduan/membuka-file-dicom"
+"guides/redact-a-pdf" = "panduan/sensor-pdf"
+"guides/scan-a-document-with-your-phone" = "panduan/memindai-dokumen-dengan-ponsel"
+
+# The stacker, which shipped after the three above. "Tumpuk" is the ordinary
+# word for piling one thing on another, and it is what the tool does to a
+# burst; RAW keeps its Latin spelling because that is what is printed on the
+# camera menu the reader just came from.
+"stack-images" = "tumpuk-gambar"
+"guides/stack-photos-to-reduce-noise" = "panduan/tumpuk-foto-untuk-mengurangi-derau"
+
 #
 # ---------------------------------------------------------------------------
 # The hub.

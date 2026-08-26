@@ -1,0 +1,251 @@
+#
+# Video ke GIF - Bahasa Indonesia.
+#
+# Overrides for tools/video-to-gif/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Video ke GIF"
+heading = "Video&nbsp;ke&nbsp;GIF <span class=\"h1-kw\">&mdash; ubah video menjadi GIF</span>"
+tagline = "Pilih bagiannya, ukurannya, dan laju bingkainya."
+
+title = "Pengubah Video ke GIF &mdash; Gratis, Tanpa Unggah, Jalan Tanpa Internet"
+description = "Ubah sebagian MP4, MOV, atau WebM menjadi GIF bergerak. Pilih bagiannya, lebarnya, dan laju bingkainya; bingkainya dibaca dan GIF-nya ditulis di peramban Anda. Tidak ada yang diunggah."
+og_title = "Video ke GIF &mdash; buat GIF tanpa mengunggah klipnya"
+og_description = "Tandai detik yang Anda mau, pilih lebar dan laju bingkai, dan dapatkan GIF bergerak. Pengambilan bingkai, palet, titik-titik campur, dan LZW semuanya dikerjakan di perangkat Anda sendiri."
+og_image_alt = "Video ke GIF - buat GIF bergerak di peramban Anda, tanpa ada yang diunggah"
+
+pledge = """
+    Setiap bingkai dibaca, diubah ukurannya, dikuantisasi, dan ditulis oleh
+    peramban Anda sendiri, di perangkat keras Anda sendiri. Tidak ada di sini
+    yang bisa mengambil atau mengirim apa pun &mdash; alat ini sama sekali tidak
+    punya fitur jaringan &mdash; dan seandainya pun ada, tidak ada server di
+    ujung lain halaman ini untuk menerima sebuah video."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu buat sebuah GIF. Tidak satu pun permintaan membawa bingkai, nama file,
+      atau satu byte pun dari yang Anda pilih. Atau cabut koneksi internet dan
+      tetap buat satu &mdash; alat yang mengirim video Anda ke tempat lain untuk
+      diubah akan langsung berhenti."""
+
+read_first = """
+, <code>src/frames.js</code> untuk dua cara bingkai
+      dibaca dari sebuah video, <code>src/quantize.js</code> untuk paletnya, dan
+      <code>src/gif.js</code> untuk file-nya sendiri, LZW dan semuanya. Tidak
+      satu pun mengimpor sesuatu yang bisa membuat permintaan."""
+
+howto_heading = "Cara mengubah video menjadi GIF"
+
+card = """
+            Tandai detik yang Anda mau, pilih lebar dan laju bingkai, dan
+            dapatkan GIF bergerak &mdash; lengkap dengan palet dan titik-titik
+            campurnya."""
+
+[words]
+plural = "video"
+choose = "sebuah video"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Durasi berapa pun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[privacy]]
+title = "Video Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Alat ini sama sekali tidak punya
+      fitur jaringan: tidak ada alamat untuk ditempelkan, tidak ada yang diunduh,
+      tidak ada mesin yang diambil saat pertama dipakai. Setiap byte yang
+      menyentuh video Anda datang dari asal ini ketika halaman dimuat."""
+
+[[privacy]]
+title = "Pendekodean berjalan lokal."
+body = """
+ Bingkainya melewati WebCodecs di peramban
+      Anda sendiri, atau melewati mesin pemutar yang sama yang toh akan
+      menampilkan klip itu kepada Anda. Yang mana yang dipakai tertulis di bagian
+      atas halaman, karena itu mengubah cara bingkai dipilih dan Anda seharusnya
+      bisa melihatnya."""
+
+[[privacy]]
+title = "GIF-nya ditulis di sini, dalam kode yang bisa Anda baca."
+body = """
+ Palet, titik-titik campur, dan
+      kompresi LZW-nya kira-kira enam ratus baris di dalam folder alat ini
+      sendiri. Tidak ada layanan encoder, tidak ada pustaka yang diambil saat
+      dijalankan, dan tidak ada tempat di dalamnya yang bisa mengirim sebuah
+      gambar."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang video Anda: bukan file,
+      bukan bingkai, bukan nama, ukuran, durasi, atau bagian yang Anda tandai.
+      Setiap baris yang membaca, mengambil sampel, mengkuantisasi, atau
+      mengodekan disajikan dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau video Anda."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih sebuah video."
+body = """
+ Jatuhkan MP4, MOV, M4V, atau WebM ke
+      pemilih file, atau pilih sendiri. Peramban membacanya langsung dari disk
+      Anda; tidak ada yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Tandai bagiannya."
+body = """
+ Putar klipnya dan tekan <kbd>I</kbd> di
+      tempat ia harus dimulai dan <kbd>O</kbd> di tempat ia harus berakhir, atau
+      seret pegangan di batangnya. Sebuah GIF panjangnya beberapa detik &mdash;
+      inilah setelan yang menentukan file-nya kecil atau raksasa, jauh lebih
+      besar pengaruhnya daripada dua setelan lainnya."""
+
+[[howto]]
+title = "Pilih lebar dan laju bingkainya."
+body = """
+ Lebar 480 piksel dan 12 bingkai per
+      detik cocok untuk sebagian besar keperluan GIF. Melipatduakan pengurangan
+      lebar membuat pikselnya tinggal seperempat; dua belas bingkai per detik
+      sudah terbaca sebagai gerak tanpa membayar bingkai yang tidak dilihat siapa
+      pun."""
+
+[[howto]]
+title = "Buat, dan unduh."
+body = """
+ Bingkainya dibaca, satu palet berisi 256 warna
+      dipilih untuk seluruh animasi, dan setiap bingkai ditulis hanya sebagai
+      bagian gambar yang berubah. Ia diputar di halaman begitu selesai, dan itu
+      file yang sama dengan yang diberikan unduhan kepada Anda."""
+
+[[faq]]
+q = "Apakah video saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Ia dibaca, diambil sampelnya, dan diubah oleh peramban Anda
+        sendiri di perangkat keras Anda sendiri. Alat ini tidak punya sisi
+        server, dan <code>Content-Security-Policy</code> halaman ini menyebut
+        satu per satu setiap alamat yang boleh dihubunginya &mdash; tidak satu
+        pun milik situs ini. Cabut koneksi internet dan tetap buat sebuah GIF
+        kalau Anda lebih suka memeriksa daripada diberi tahu."""
+
+[[faq]]
+q = "Format video apa saja yang bisa saya ubah?"
+a = """
+        MP4, M4V, dan MOV dibaca langsung, apa pun isinya: H.264, HEVC, AV1, atau
+        VP9, selama peramban Anda bisa mendekode kodek itu. Apa pun lain yang
+        bisa diputar peramban Anda &mdash; yang paling jelas WebM &mdash; dibaca
+        dengan mencari posisi pemutar ke setiap saat, yang lebih lambat dan
+        sedikit kurang persis soal bingkai mana mendarat di mana. File yang tidak
+        bisa dibaca maupun diputar peramban, yang dalam praktiknya berarti AVI,
+        WMV, FLV, dan sebagian besar MKV, ditolak dengan pesan alih-alih gagal di
+        tengah jalan."""
+
+[[faq]]
+q = "Kenapa GIF saya begitu besar?"
+a = """
+        Karena GIF adalah format dari 1987 yang menyimpan gambar utuh, bukan
+        gerak. Tidak ada cara membuat GIF dari klip lima detik yang sekecil MP4
+        lima detik asalnya &mdash; GIF dari sebuah video lazimnya sepuluh kali
+        ukuran videonya. Tiga setelan yang benar-benar menentukannya adalah,
+        berurutan: seberapa panjang bagiannya, seberapa lebar gambarnya, dan
+        berapa bingkai per detik. Melipatduakan pengurangan lebar membuat
+        pikselnya tinggal seperempat, dan piksellah yang memakan biaya."""
+
+[[faq]]
+q = "Kenapa hanya 256 warna?"
+a = """
+        Memang begitu formatnya: sebuah GIF membawa satu tabel berisi paling
+        banyak 256 warna dan menyimpan setiap piksel sebagai angka ke dalamnya.
+        Alat ini memilih 256 itu dengan menghitung warna di setiap bingkai bagian
+        yang Anda tandai dan membaginya menjadi 256 kelompok &mdash; median cut,
+        metode standarnya &mdash; jadi paletnya pas dengan klip Anda, bukan
+        sekumpulan warna tetap. Di tempat sebuah warna tidak ada, titik-titik
+        campur mengaduk dua warna terdekat sehingga gradasi tetap gradasi
+        alih-alih menjadi garis-garis."""
+
+[[faq]]
+q = "Apa yang dilakukan setelan titik-titik campur?"
+a = """
+        Ia menukar sedikit derau dengan banyak pita warna. Kalau dinyalakan,
+        langit yang tadinya akan menjadi empat pita datar tetap berupa gradasi,
+        dengan biaya tekstur samar dan file yang lebih besar. Kalau dimatikan,
+        gambarnya lebih rata dan file-nya lebih kecil, yang cocok untuk rekaman
+        layar, seni garis, dan apa pun yang memang sudah terbuat dari warna
+        datar. Titik-titik campur yang dipakai di sini adalah jenis teratur,
+        bukan jenis penyebaran galat, jadi latar yang tidak berubah tetap diam
+        sempurna di antara bingkai alih-alih berkilat-kilat."""
+
+[[faq]]
+q = "Adakah batas durasi atau ukurannya?"
+a = """
+        Yang dibatasi adalah bagiannya, dan oleh memori, bukan oleh aturan:
+        setiap bingkainya ditahan sekaligus saat palet dipilih, jadi halaman ini
+        menghitung berapa biaya setelan Anda dan mengatakannya sebelum Anda
+        mulai. Ia menolak alih-alih membiarkan tab kehabisan memori dan lenyap.
+        Bagian yang lebih pendek, lebar yang lebih kecil, atau laju bingkai yang
+        lebih rendah, semuanya menurunkannya."""
+
+[[faq]]
+q = "Apakah suaranya ikut?"
+a = """
+        Sebuah GIF tidak bisa membawa suara. Tidak ada versi format ini yang
+        punya audio, dan itulah alasan utama web sebagian besar mengganti GIF
+        dengan video berulang tanpa suara. Kalau suaranya penting, simpan
+        videonya &mdash; <a href="../potong-video/">Pemotong Video</a> akan
+        memotong sebagian darinya tanpa mengodekan ulang satu bingkai pun."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang video Anda."""
+
+[schema]
+browser_requirements = "Memerlukan JavaScript. MP4 dan MOV memerlukan peramban dengan WebCodecs; apa pun yang bisa diputar peramban berhasil tanpa itu."
+description = "Ubah sebagian video menjadi GIF bergerak di peramban. Bingkainya diambil pada laju yang dipilih, satu palet 256 warna dipilih untuk seluruh animasi dengan median cut, dan setiap bingkai ditulis hanya sebagai daerah yang berubah. Tidak ada yang diunggah."
+features = [
+  "Mengubah video MP4, MOV, M4V, dan WebM menjadi GIF bergerak",
+  "Sumber H.264, HEVC, AV1, dan VP9, didekode lewat WebCodecs",
+  "Tandai bagiannya di lini masa, atau ketik waktu yang persis",
+  "Lebar berapa pun, 5 sampai 25 bingkai per detik, titik-titik campur teratur opsional",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan video di sini"
+hint = "atau klik untuk menelusuri &mdash; MP4, MOV, M4V, WebM, dan apa pun lain yang bisa diputar peramban ini"

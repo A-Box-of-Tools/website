@@ -1,0 +1,269 @@
+#
+# Kompres PDF - Bahasa Indonesia.
+#
+# Overrides for tools/compress-pdf/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Kompresor PDF"
+heading = "Kompres&nbsp;PDF <span class=\"h1-kw\">&mdash; perkecil ukuran PDF</span>"
+tagline = "Perkecil sebuah dokumen tanpa mengirimnya ke mana pun."
+
+title = "Kompres PDF &mdash; Gratis, di Peramban Anda, Tanpa Unggah"
+description = "Perkecil ukuran PDF tanpa mengunggahnya. File dibaca, dikompres ulang, dan ditulis kembali oleh peramban Anda sendiri, dan alat ini menunjukkan di mana ukurannya sebenarnya berada sebelum menyentuh apa pun."
+og_title = "Kompres PDF &mdash; gratis, dan tidak ada yang diunggah"
+og_description = "Perkecil PDF di perangkat Anda sendiri. Alat ini mengukur seberapa besar setiap gambar digambar di halaman, jadi yang dibuang hanya piksel yang tidak bisa dilihat siapa pun."
+og_image_alt = "Kompres PDF - perkecil dokumen tanpa mengunggahnya"
+
+pledge = """
+    Dokumen dibuka, dibongkar, dan ditulis kembali di memori mesin ini, oleh
+    kode yang disajikan dari alamat ini. Tidak ada di sini yang bisa melakukan
+    unggahan, dan tidak ada server di ujung lain halaman ini untuk
+    menerimanya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu kompres sebuah file. Tidak satu pun permintaan membawa halaman,
+      gambar, atau nama file. Atau cabut koneksi internet dan tetap kompres
+      satu."""
+
+read_first = """
+, dan <code>src/reader.js</code> serta
+      <code>src/writer.js</code> untuk seluruh proses pembacaan dan penulisan
+      ulang, yang keduanya tidak bisa menjangkau jaringan."""
+
+howto_heading = "Cara memperkecil ukuran PDF"
+
+card = """
+            Perkecil dokumen dengan mengompres ulang gambar di dalamnya. Alat
+            ini menunjukkan lebih dulu di mana ukurannya sebenarnya berada, dan
+            mengatakan terus terang kalau tidak ada yang bisa diperoleh."""
+
+[words]
+plural = "dokumen"
+choose = "sebuah PDF"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "File tetap di perangkat Anda"
+
+[[privacy]]
+title = "Dokumen Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy
+      menyebut satu per satu setiap alamat yang boleh dihubungi halaman ini, dan
+      tidak satu pun milik situs ini. Alat ini tidak menambahkan apa pun ke
+      daftar itu: ia tidak punya fitur jaringan sendiri, bahkan yang opsional
+      sekalipun. Tidak ada titik akhir di sini tempat file Anda bisa
+      dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya ada."""
+
+[[privacy]]
+title = "Seluruh formatnya ada di repositori ini."
+body = """
+ Sebuah PDF adalah daftar objek
+      dan tabel yang mencatat di mana setiap objek dimulai.
+      <code>src/objects.js</code> membaca sintaksisnya,
+      <code>src/reader.js</code> mengikuti tabelnya,
+      <code>src/writer.js</code> menulis yang baru, dan tidak satu pun dari
+      ketiganya mengimpor sesuatu yang bisa membuat permintaan. Tidak ada
+      pustaka yang diambil dan tidak ada yang digambar di server."""
+
+[[privacy]]
+title = "File terenkripsi ditolak, bukan dibuka."
+body = """
+ PDF dengan kata sandi ditolak,
+      termasuk jenis yang dihasilkan pemindai dengan kata sandi kosong dan yang
+      secara teknis akan terbuka. Melepas proteksi sebuah dokumen adalah
+      pekerjaan yang berbeda dari memperkecilnya, dan melakukannya diam-diam
+      akan menjadi hal yang mengejutkan bagi sebuah alat yang bertindak atas
+      nama Anda."""
+
+[[privacy]]
+title = "Ia mengeluarkan hal-hal, bukan memasukkan."
+body = """
+ File yang sudah jadi tidak
+      membawa tanggal pembuatan, tidak ada baris produser, dan tidak ada nama
+      alat yang membuatnya. Dengan kotaknya dicentang, ia juga kehilangan paket
+      XMP dan blok-blok privat yang ditinggalkan aplikasi tata letak &mdash;
+      argumen yang sama dengan alat EXIF, diterapkan pada wadah yang
+      berbeda."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran
+      berasal dari Google. Tidak satu pun diberi apa pun tentang dokumen Anda:
+      bukan file, bukan halaman, bukan nama, ukuran, atau jumlah halaman. Setiap
+      baris yang membaca, mendekode, atau menulis PDF disajikan dari asal ini
+      dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di
+      bagian atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil
+      hurufnya dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau dokumen Anda. Tidak
+      ada yang terjadi kecuali Anda mengekliknya, dan yang akan Anda tuju adalah
+      situs milik orang lain."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap berfungsi. Itulah bukti yang paling sederhana: alat yang
+      mengirim dokumen Anda ke tempat lain untuk dikompres akan berhenti."""
+
+[[howto]]
+title = "Pilih sebuah PDF."
+body = """
+ Jatuhkan ke pemilih file atau pilih sendiri.
+      Peramban membacanya langsung dari disk Anda; tidak ada yang dikirim ke mana
+      pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Lihat di mana ukurannya berada."
+body = """
+ Rincian inilah inti dari
+      langkah kedua. Kalau batangnya sebagian besar gambar, alat ini punya
+      sesuatu untuk dikerjakan. Kalau sebagian besar berupa font dan isi
+      halaman, ia akan mengatakannya, dan penghematan yang jujur hanya beberapa
+      persen &mdash; lebih baik tahu itu sebelum Anda menghabiskan satu
+      menit."""
+
+[[howto]]
+title = "Sebutkan seberapa keras memerasnya."
+body = """
+ Pilihan yang diberi nama
+      itu adalah resolusi, bukan nilai yang samar: 96 DPI untuk dibaca di layar,
+      130 untuk dikirim lewat email, 220 untuk sesuatu yang masih harus dicetak.
+      Masing-masing diukur terhadap seberapa besar gambar itu sebenarnya
+      digambar di halaman, sehingga foto yang ditempatkan sebagai gambar mini
+      tidak diperlakukan seperti pindaian satu halaman penuh."""
+
+[[howto]]
+title = "Kompres, lalu periksa baris yang mengatakan bahwa hasilnya sudah diperiksa."
+body = """
+ Setelah penulisan ulang selesai,
+      file yang sudah jadi dibuka lagi oleh pembaca yang sama di halaman ini dan
+      halamannya dihitung. Kalau itu tidak cocok dengan aslinya, prosesnya
+      dilaporkan gagal dan tidak ada unduhan yang ditawarkan."""
+
+[[faq]]
+q = "Apakah PDF saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File dibaca, dikompres ulang, dan ditulis oleh peramban Anda
+        sendiri di perangkat keras Anda sendiri. Alat ini tidak punya sisi
+        server, dan <code>Content-Security-Policy</code> halaman ini menyebut
+        satu per satu setiap alamat yang boleh dihubunginya &mdash; tidak satu
+        pun milik situs ini. Alat ini sama sekali tidak punya fitur jaringan
+        opsional."""
+
+[[faq]]
+q = "Seberapa kecil PDF saya nanti?"
+a = """
+        Sepenuhnya tergantung isinya, dan itulah sebabnya alat ini mengukur dan
+        menunjukkannya kepada Anda sebelum mengompres apa pun. Dokumen hasil
+        pindaian hampir seluruhnya berupa foto dan biasanya menjadi 60&ndash;90%
+        lebih kecil. Sebuah kontrak atau skripsi berisi teks, gambar vektor, dan
+        font tertanam, yang semuanya sudah dikompres oleh apa pun yang
+        membuatnya; di situ penghematannya biasanya beberapa persen saja, dari
+        mengemas ulang file dan membuang yang tidak lagi dirujuk. Alat mana pun
+        yang menjanjikan persentase tetap tanpa melihat file Anda sedang
+        menebak."""
+
+[[faq]]
+q = "Apakah mengompres PDF menurunkan kualitas?"
+a = """
+        Gambar di dalamnya dikodekan ulang, jadi ya, untuk bagian itu. Tidak ada
+        yang lain disentuh: teks tetap teks, bisa dipilih dan dicari, font tetap
+        utuh, dan gambar vektor disalin persis. Alat ini juga menolak membuat
+        sebuah gambar lebih buruk tanpa hasil &mdash; kalau pengodean ulang
+        ternyata tidak lebih kecil dari aslinya, byte aslinya dikembalikan ke
+        dokumen tanpa disentuh."""
+
+[[faq]]
+q = "Apa itu DPI di sini, dan kenapa ditanyakan?"
+a = """
+        Sebuah PDF mencatat seberapa besar setiap gambar digambar di halaman,
+        sehingga alat ini bisa menghitung resolusi efektifnya: pindaian 4000
+        piksel yang ditempatkan selebar delapan inci kertas membawa 500 piksel
+        per inci. Tidak ada layar dan sangat sedikit kertas yang bisa
+        memakainya, jadi piksel di atas setelan yang Anda pilih dibuang lebih
+        dulu &mdash; piksel itu memakan kualitas yang tidak bisa dilihat siapa
+        pun. Pengukuran itulah sebabnya logo yang ditempatkan kecil tidak
+        diperlakukan sama dengan pindaian satu halaman penuh."""
+
+[[faq]]
+q = "Bisakah ia membuka PDF yang dilindungi kata sandi?"
+a = """
+        Tidak, dan itu disengaja. Dokumen terenkripsi ditolak dengan pesan yang
+        mengatakannya, bahkan ketika kata sandinya kosong &mdash; dan begitulah
+        banyak pemindai serta mesin fotokopi menyimpan. Melepas proteksi sebuah
+        file adalah pekerjaan yang berbeda dari mengompresnya, dan alat yang
+        melakukannya diam-diam berarti melakukan sesuatu yang tidak Anda
+        minta."""
+
+[[faq]]
+q = "Adakah PDF yang tidak bisa dikompresnya?"
+a = """
+        Sebagian gambar di dalamnya, ya. Gambar JPEG 2000, JBIG2, dan berkode
+        faks (CCITT) tidak punya dekoder di peramban mana pun, jadi mereka
+        dilewatkan tanpa disentuh dan dilaporkan sebagaimana adanya &mdash; dua
+        yang terakhir adalah kodek dua tingkat dan biasanya memang sudah
+        mendekati ukuran terkecilnya. Gambar CMYK juga dibiarkan, karena
+        mengodekannya ulang berisiko menggeser warna yang akan dihasilkan
+        pencetak. Semua yang dilewati alat ini disebutkan namanya di hasil,
+        beserta alasannya."""
+
+[[faq]]
+q = "Apakah file hasil kompresi masih bisa dibuka di mana-mana?"
+a = """
+        Ya. Keluarannya ditulis sebagai PDF 1.5, yang dipahami setiap pembaca
+        yang dirilis sejak 2003, dan alat ini membuktikannya di perangkat Anda
+        sendiri: ia membuka lagi file yang sudah jadi dan menghitung halamannya
+        sebelum menawarkannya kepada Anda. Formulir, tautan, markah, struktur
+        aksesibilitas, dan lampiran tertanam ikut terbawa; yang ditinggalkan
+        adalah materi yang tidak lagi dirujuk apa pun di dalam dokumen."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada batas ukuran file selain yang diizinkan memori perangkat Anda
+        sendiri. Situs ini memasang iklan, dan itulah yang membiayainya; iklan
+        tidak diberi apa pun tentang dokumen Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim dokumen Anda ke tempat lain untuk dikompres
+        akan berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Kompres PDF di peramban Anda. Gambar dikompres ulang terhadap seberapa besar mereka sebenarnya digambar di halaman, dan dokumen ditulis ulang secara lokal, jadi tidak ada file yang pernah diunggah."
+features = [
+  "Menunjukkan di mana ukuran dokumen sebenarnya berada sebelum mengompres apa pun",
+  "Mengompres ulang gambar terhadap resolusi terukurnya di halaman",
+  "Membiarkan sebuah gambar kalau pengodean ulang tidak membuatnya lebih kecil",
+  "Membuang objek yang ditinggalkan suntingan sebelumnya, dan metadata opsional",
+  "Membuka dan memeriksa kembali file yang sudah jadi sebelum menawarkannya",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa batas ukuran file",
+]
+
+[picker]
+title = "Jatuhkan PDF di sini"
+hint = "atau klik untuk menelusuri &mdash; satu dokumen sekali jalan"

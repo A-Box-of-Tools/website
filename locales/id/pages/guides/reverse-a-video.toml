@@ -1,0 +1,20 @@
+#
+# Panduan: memutar video terbalik - Bahasa Indonesia.
+#
+
+nav = "Memutar video terbalik"
+title = "Cara Memutar Video Terbalik (Beserta Suaranya)"
+description = "Putar sebuah klip mundur: apa yang dilakukan pembalikan pada gambar dan suaranya, kenapa ia tidak bisa dilakukan tanpa pengodean ulang, kenapa ia lebih lambat daripada pemotongan, dan apa yang perlu dikerjakan lebih dulu."
+
+heading = "Cara memutar video terbalik"
+lede = """
+    Memutar sebuah klip mundur terdengar seperti suntingan paling sederhana yang
+    ada, dan justru itulah yang paling tidak disiapkan oleh sebuah file video.
+    Inilah apa yang sebenarnya harus terjadi, berapa harganya, dan satu langkah
+    yang layak dikerjakan sebelumnya."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara memutar video terbalik"
+og_description = "Kenapa sebuah dekoder tidak bisa berjalan mundur, apa yang dikorbankan pembalikan dari gambar dan suaranya, dan satu langkah yang layak dikerjakan lebih dulu."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

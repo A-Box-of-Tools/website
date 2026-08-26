@@ -1,0 +1,175 @@
+<!--
+  tools/video-to-gif/body.html, in Indonesian.
+
+  Every id, class and option value below is what src/main.js and src/range.js
+  reach for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; file -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih sebuah video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Ukuran</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Bingkai</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Durasi</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Video</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Dibaca oleh</dt><dd id="src-path">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; bagiannya -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> Pilih bagiannya</h2>
+
+    <p class="hint">
+      Putar klipnya dan tandai bagian yang Anda mau. <kbd>I</kbd> menetapkan
+      awalnya di posisi kepala pemutar, <kbd>O</kbd> menetapkan akhirnya, dan
+      kedua pegangan di batangnya bisa diseret.
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/range.js. -->
+    <div id="rangebar"></div>
+    <div class="rb-scale">
+      <span>0:00.000</span>
+      <span id="scale-end">&mdash;</span>
+    </div>
+
+    <div class="marks">
+      <label>Mulai
+        <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-in" class="ghost" title="Tetapkan awal di posisi kepala pemutar (I)">
+        Tetapkan di kepala pemutar
+      </button>
+
+      <label>Selesai
+        <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-out" class="ghost" title="Tetapkan akhir di posisi kepala pemutar (O)">
+        Tetapkan di kepala pemutar
+      </button>
+
+      <div class="mark-actions">
+        <button type="button" id="play-section" class="ghost">Putar bagiannya</button>
+        <button type="button" id="whole-clip" class="ghost">Seluruh klip</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Langkah 3 &mdash; GIF-nya -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Ukuran dan laju bingkai</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="width">Lebar</label>
+        <select id="width">
+          <option value="240">240 px</option>
+          <option value="320">320 px</option>
+          <option value="480" selected>480 px</option>
+          <option value="640">640 px</option>
+          <option value="source">Ukuran asli</option>
+          <option value="custom">Persisnya&hellip;</option>
+        </select>
+        <p class="field-note">
+          Tingginya mengikuti, jadi bentuknya tidak pernah berubah. Lebar adalah
+          biaya sebuah GIF: setengah lebar berarti seperempat piksel.
+        </p>
+        <p class="field-note" id="width-note" hidden></p>
+      </div>
+
+      <div class="field" id="custom-width-field" hidden>
+        <label for="custom-width">Lebar persis</label>
+        <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
+        <p class="field-note">Dalam piksel, antara 16 dan 1920.</p>
+      </div>
+
+      <div class="field">
+        <label for="fps">Bingkai per detik</label>
+        <select id="fps">
+          <option value="5">5 &mdash; paling kecil</option>
+          <option value="10">10</option>
+          <option value="12" selected>12 &mdash; cukup halus</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25 &mdash; paling halus</option>
+        </select>
+        <p class="field-note">
+          Bukan laju milik videonya: bingkai diambil sebagai sampel darinya. Dua
+          belas sudah terbaca sebagai gerak; di atas dua puluh, file tumbuh lebih
+          cepat daripada kehalusan yang terlihat.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="dither">Titik-titik campur</label>
+        <select id="dither">
+          <option value="on" selected>Nyala &mdash; gradasi lebih halus</option>
+          <option value="off">Mati &mdash; lebih rata, lebih kecil</option>
+        </select>
+        <p class="field-note">
+          Mengaduk dua warna palet di tempat warna yang tepat tidak ada. Jenis
+          teratur, jadi latar yang diam tidak berkilat-kilat.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="loop">
+          <input type="checkbox" id="loop" checked>
+          Ulang terus
+        </label>
+        <p class="field-note">Kalau mati, ia diputar sekali lalu berhenti.</p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Bagian</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>Keluaran</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Bingkai</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Perkiraan ukuran file</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="memory-note" class="field-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Buat GIF-nya</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <img id="result-image" alt="Animasi yang sudah jadi, sedang diputar">
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Unduh GIF</a>
+      </div>
+    </div>
+  </section>
+</main>

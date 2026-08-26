@@ -1,0 +1,383 @@
+#
+# Penyensor PDF - Bahasa Indonesia.
+#
+# Overrides for tools/redact-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Sensor" adalah kata yang dipakai orang di sini untuk menghapus bagian yang
+# tidak boleh terbaca, jadi itulah yang dipakai di seluruh halaman - termasuk di
+# slug, sensor-pdf. Nama teknis (PDF, XMP, OCR, IBAN) tetap seperti adanya.
+#
+# Satu hal yang harus dipegang saat menyunting prosa mana pun di bawah: halaman
+# ini membuat klaim yang tidak bisa dibuat alat penyensor lain, dan klaim itu
+# tidak berharga kalau dilebih-lebihkan. Yang dihapusnya adalah teks. Halaman
+# yang berupa foto sebuah halaman tidak punya teks di atasnya dan alat ini
+# mengatakannya alih-alih berpura-pura.
+#
+
+name = "Penyensor PDF"
+heading = "Sensor&nbsp;PDF <span class=\"h1-kw\">&mdash; kata-katanya keluar, bukan kotak di atasnya</span>"
+tagline = "Hurufnya dihapus dari file-nya, dan file-nya dicari sesudahnya untuk membuktikannya."
+
+title = "Sensor PDF &mdash; Hapus Teksnya Sungguhan, Gratis, Tanpa Unggah"
+description = "Keluarkan kata dari sebuah PDF alih-alih menggambar persegi hitam di atasnya. Hurufnya dihapus dari instruksi menggambar halamannya sendiri, file jadinya dibuka lagi dan dicari untuk membuktikan hurufnya sudah hilang, dan tidak ada yang diunggah."
+og_title = "Sensor sebuah PDF dengan benar &mdash; kata-katanya dihapus, bukan ditutupi"
+og_description = "Persegi hitam di kebanyakan alat duduk di atas teksnya dan bisa disalin keluar dari bawahnya. Yang ini menghapus hurufnya dari file-nya lalu mencari hasilnya untuk menunjukkan hurufnya tidak ada di sana."
+og_image_alt = "Sensor sebuah PDF dengan menghapus teksnya, bukan dengan menutupinya"
+
+pledge = """
+    Dokumen yang Anda pilih dibuka, dibaca, disunting, dan ditulis kembali di
+    dalam memori di mesin ini, oleh kode yang disajikan dari alamat ini. Tidak
+    ada di sini yang bisa membuat sebuah unggahan, dan tidak ada server di ujung
+    lain halaman ini untuk menerimanya. Baik file-nya maupun kata yang Anda cari
+    tidak meninggalkan tabnya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu sensor sesuatu. Tidak satu pun permintaan membawa sebuah halaman,
+      sebuah kata, atau sebuah nama file. Atau cabut koneksi internet dan tetap
+      sensor."""
+
+read_first = """
+, <code>src/text.js</code> untuk cara setiap kata
+      di sebuah halaman ditemukan dan dipetakan, dan <code>src/edit.js</code>
+      untuk penghapusannya sendiri &mdash; apa yang dipotong dari instruksi
+      halamannya dan apa yang ditaruh kembali supaya sisa barisnya tidak
+      bergeser. Tidak satu pun bisa menjangkau jaringan, dan begitu juga pembaca
+      dan penulis di sebelahnya."""
+
+howto_heading = "Cara menyensor PDF supaya kata-katanya sungguh hilang"
+
+card = """
+            Hapus kata dari sebuah PDF alih-alih menutupinya. Hurufnya
+            dikeluarkan dari instruksi menggambar halamannya sendiri, celahnya
+            ditahan tetap terbuka supaya tidak ada yang lain bergeser, dan file
+            jadinya dibuka lagi lalu dicari di sini untuk membuktikan kata-katanya
+            tidak ada di dalamnya."""
+
+[words]
+plural = "dokumen"
+choose = "sebuah PDF"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "File tetap di perangkat Anda"
+
+[[privacy]]
+title = "Persegi hitam bukan penyensoran, dan ini tidak menggambar satu pun di atas apa pun."
+body = """
+
+      Di hampir setiap program yang menawarkan penyensoran sebuah halaman
+      &mdash; pembaca PDF, pengolah kata, alat desain &mdash; persegi itu adalah
+      objek yang disimpan di sebelah teksnya alih-alih ke dalamnya. Teksnya masih
+      di sana, di file yang sama, di tempat yang sama, dan memilih areanya lalu
+      menekan salin menyerahkannya kembali. Kegagalan itu sudah menerbitkan
+      berkas pengadilan, laporan intelijen, dan, pada Desember 2025, nama-nama
+      yang dihitamkan di sebuah rilis besar dokumen Departemen Kehakiman yang
+      terbaca dalam hitungan jam. Alat ini menghapus hurufnya dari instruksi yang
+      menggambar halamannya. Tidak ada persegi dengan apa pun di bawahnya, karena
+      tidak ada apa pun di bawahnya."""
+
+[[privacy]]
+title = "File jadinya dibuka lagi dan dicari, di sini, sebelum ia ditawarkan kepada Anda."
+body = """
+
+      Setiap klaim di atas hanyalah alat ini menilai pekerjaannya sendiri sampai
+      hal itu terjadi. Jadi byte yang sebentar lagi menjadi unduhan Anda
+      diserahkan kembali kepada pembaca yang sama seolah-olah orang asing yang
+      mengirimnya, setiap halaman dibaca lagi, setiap markah, komentar, kolom
+      formulir, dan properti dokumen dikumpulkan, dan kata yang Anda buang
+      dicari. Jumlahnya ada di hasilnya. Kalau ada yang selamat, jalannya
+      dilaporkan gagal dan tidak ada unduhan."""
+
+[[privacy]]
+title = "Kata-katanya tidak pernah meninggalkan tabnya, dan begitu juga pencariannya."
+body = """
+ Content-Security-Policy
+      menyebut satu per satu setiap alamat yang boleh dihubungi halaman ini, dan
+      tidak satu pun milik situs ini. Alat ini tidak menambahkan apa pun ke daftar
+      itu: ia tidak punya fitur jaringan sendiri, bahkan yang opsional sekalipun.
+      Yang Anda ketik ke kotak pencarian adalah sebuah teks yang dibandingkan
+      dengan teks di dalam memori tab ini, dan tidak ada tujuan ke mana pun bagi
+      keduanya."""
+
+[[privacy]]
+title = "Penyensoran adalah pekerjaan yang paling tidak selamat sebagai sebuah unggahan."
+body = """
+
+      Apa yang disensor orang justru alasan ia tidak boleh diunggah. Keterangan
+      saksi, surat medis, rekening koran yang dikirim ke pemilik kontrakan,
+      kontrak yang memuat nama satu klien tapi hendak dikirim ke klien lain.
+      Menyerahkan itu ke server orang asing supaya bagian pribadinya dihapus
+      berarti bagian pribadinya tiba lebih dulu, utuh, dan versi itulah yang
+      mereka simpan. Halaman ini tidak punya belahan lain."""
+
+[[privacy]]
+title = "Yang tersisa disalin lewat tanpa disentuh."
+body = """
+
+      Satu-satunya byte yang berubah di sebuah halaman adalah instruksi penampil
+      teks tempat huruf yang dibuang berada. Setiap instruksi lain, dan setiap
+      fon, gambar, serta garis yang dirujuk halamannya, disalin persis seperti
+      saat ia datang &mdash; tidak ada yang digambar ulang, dikodekan ulang, atau
+      ditata ulang. Lebar dari yang dikeluarkan diukur lalu ditaruh kembali
+      sebagai instruksi jarak, sehingga sisa barisnya tetap di tempat yang
+      ditentukan dokumennya."""
+
+[[privacy]]
+title = "Ia tidak bisa mengeluarkan kata dari sebuah foto, dan ia mengatakan halaman mana saja itu."
+body = """
+
+      Halaman hasil pindaian adalah sebuah gambar. Kata di atasnya adalah piksel,
+      bukan teks, dan tidak ada di sini yang bisa menyentuhnya. Kalau pindaiannya
+      membawa lapisan teks tak kasatmata yang dihasilkan OCR sebuah pemindai,
+      alat ini akan menghapus lapisan itu &mdash; yaitu yang akan ditemukan
+      sebuah pencarian dan sebuah salinan &mdash; dan ia mengatakan terus terang
+      di halamannya bahwa gambarnya masih menampilkan kata-katanya. Menutupi
+      gambar itu pekerjaan yang berbeda;
+      <a href=\"../sensor-gambar/\">penyensor gambar</a> adalah alat yang menimpa
+      piksel."""
+
+[[privacy]]
+title = "Dokumennya berhenti mengatakan dari mana ia datang."
+body = """
+
+      Properti dan paket XMP-nya ikut hilang di setiap jalan: tidak ada baris
+      produser, tidak ada tanggal pembuatan, tidak ada penulis, tidak ada judul,
+      dan tidak ada satu pun blok pribadi yang ditinggalkan sebuah aplikasi tata
+      letak. File yang halamannya sudah dikeluarkan sebuah nama tapi propertinya
+      masih berbunyi <code>Smith settlement draft 3.docx</code> belum disensor,
+      dan itu bukan hal yang layak diserahkan kepada sebuah kotak centang."""
+
+[[privacy]]
+title = "File terenkripsi ditolak alih-alih dibuka."
+body = """
+
+      PDF yang berkata sandi ditolak, termasuk jenis yang dihasilkan pemindai
+      dengan kata sandi kosong dan yang secara teknis akan terbuka. Melepas
+      perlindungan sebuah dokumen adalah pekerjaan yang berbeda dari
+      mengeluarkan kata darinya, dan melakukannya diam-diam akan menjadi hal
+      yang mengejutkan bagi sebuah alat untuk dilakukan atas nama Anda."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan
+      pengukuran berasal dari Google. Tidak satu pun diberi apa pun tentang
+      dokumen Anda: bukan sebuah file, bukan sebuah halaman, bukan sebuah nama,
+      sebuah ukuran, sebuah jumlah halaman, atau sebuah kata yang Anda cari.
+      Setiap baris yang membaca, menyunting, atau menulis sebuah PDF disajikan
+      dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+
+      Tombol \"Buy me a coffee\" di headernya digambar oleh sebuah skrip dari
+      cdnjs.buymeacoffee.com dan mengambil hurufnya dari Google Fonts. Ia sebuah
+      tautan dan tidak lebih: ia tidak melaporkan kunjungan, dan ia tidak diberi
+      apa pun tentang Anda atau dokumen Anda. Tidak ada yang terjadi kecuali Anda
+      mengekliknya, dan yang akan Anda tuju lewat klik itu adalah situs orang
+      lain."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua di halaman ini
+      tetap berfungsi. Itulah bukti yang paling sederhana: alat yang mengirim
+      dokumen Anda pergi untuk disensor akan berhenti."""
+
+[[howto]]
+title = "Pilih PDF-nya."
+body = """
+ Satu dokumen sekali jalan, dan itu disengaja:
+      penyensoran adalah pekerjaan yang harus dilihat halaman demi halaman, dan
+      alat yang membiarkan Anda mencentang kata di satu file lalu diam-diam
+      menerapkannya ke file lain adalah persis cara hal yang keliru terkirim. Ia
+      dibaca langsung dari disk Anda oleh peramban."""
+
+[[howto]]
+title = "Sebutkan apa yang harus hilang."
+body = """
+ Ketik kata-katanya &mdash; sebuah nama,
+      sebuah alamat, sebuah nomor rujukan &mdash; dan setiap tempat ia muncul
+      didaftar lengkap dengan baris tempatnya duduk dan sebuah kotak untuk
+      dicentang. Pencari di sebelah kotaknya akan mencari alamat email, nomor
+      kartu, IBAN, nomor jaminan sosial, dan nomor telepon. Semua itu ditawarkan,
+      tidak pernah dicentangkan untuk Anda: sebuah pola tidak bisa membedakan
+      nomor telepon dari nomor rujukan."""
+
+[[howto]]
+title = "Baca halamannya dan pilih kata dari atasnya."
+body = """
+
+      Panelnya menampilkan teks dokumennya sebagaimana ia benar-benar disimpan,
+      dalam urutan yang akan disalin seorang pembaca. Klik kata mana pun untuk
+      mengeluarkannya dan klik lagi untuk menyimpannya. Semua yang tercoret
+      adalah yang akan hilang &mdash; dan itu membuat langkah ini menjadi
+      peninjauan sekaligus pemilihan, dan layak dilakukan di setiap halaman
+      sebelum Anda menekan tombolnya."""
+
+[[howto]]
+title = "Keluarkan, lalu baca baris yang mengatakan ia sudah diperiksa."
+body = """
+
+      Hurufnya dihapus, celah yang ditinggalkannya ditahan tetap terbuka, sebuah
+      kotak hitam digambar di atasnya kalau Anda memintanya, dan kata yang sama
+      dikeluarkan dari markah, komentar, kolom formulir, dan properti dokumennya.
+      Lalu file jadinya dibuka lagi di sini dan dicari. Kalau kata yang Anda buang
+      masih bisa ditemukan di dalamnya, Anda tidak mendapat unduhan dan sebuah
+      pesan yang mengatakannya."""
+
+[[faq]]
+q = "Apa bedanya ini dengan menggambar kotak hitam di sebuah pembaca PDF?"
+a = """
+        Persegi yang digambar di sebuah pembaca adalah sebuah anotasi: objek
+        dengan sebuah posisi, disimpan di sebelah halamannya. Teks di bawahnya
+        tidak tersentuh. Siapa pun yang memilih area itu lalu menekan salin, atau
+        membuka file-nya di program lain, atau menjalankan pengekstrak teks apa
+        pun di atasnya, mendapatkan kata-katanya kembali. Sebagian pembaca
+        menawarkan perintah \"redact\" yang memang menerapkan penghapusannya dengan
+        benar &mdash; dan beberapa hanya menawarkan gambarnya. Alat ini tidak
+        punya persegi untuk digeser: hurufnya dipotong dari instruksi menggambar
+        halamannya, dan kotak hitamnya, kalau Anda biarkan menyala, digambar
+        sesudahnya di atas celah yang sudah kosong."""
+
+[[faq]]
+q = "Bagaimana saya tahu kata-katanya sungguh hilang?"
+a = """
+        Karena alatnya memeriksa, di mesin Anda, dan menunjukkan jumlahnya kepada
+        Anda. Ketika file-nya sudah ditulis, ia dibuka lagi oleh pembaca yang sama
+        di halaman ini, setiap halaman dibaca, setiap markah, komentar, kolom
+        formulir, dan properti dikumpulkan, dan setiap kata yang Anda buang
+        dicari. Baris hasilnya mengatakan ada berapa dan tersisa berapa. Kalau
+        jawabannya bukan yang seharusnya, jalannya gagal dan tidak ada yang
+        ditawarkan untuk diunduh. Anda juga bisa memeriksanya sendiri sesudahnya
+        di pembaca mana pun: tekan Ctrl+F dan cari katanya."""
+
+[[faq]]
+q = "Apakah sisa halamannya bergeser ketika sebuah kata dibuang?"
+a = """
+        Tidak. Teks digambar dengan memajukan sebuah pena melintasi halamannya,
+        jadi menghapus lima huruf biasanya akan menarik sisa barisnya lima huruf
+        ke kiri. Lebar persis dari yang dibuang diukur dari metrik fonnya sendiri
+        lalu ditaruh kembali sebagai instruksi jarak, yang memindahkan penanya
+        tanpa menggambar apa pun. Kolomnya tetap sejajar dan totalnya tetap di
+        bawah judulnya."""
+
+[[faq]]
+q = "Bisakah ia menyensor dokumen hasil pindaian?"
+a = """
+        Gambarnya tidak, dan ia mengatakannya alih-alih berpura-pura. Pindaian
+        adalah foto sebuah halaman: kata-katanya adalah piksel dan tidak ada teks
+        untuk dibuang. Yang sering dibawa sebuah pindaian adalah lapisan teks tak
+        kasatmata yang ditulis OCR pemindainya di atas gambarnya supaya halamannya
+        bisa dicari &mdash; alat ini menemukan lapisan itu, membuang yang Anda
+        pilih darinya, dan memberi tahu Anda di halamannya bahwa gambarnya tidak
+        berubah. Jadi sebuah pencarian dan sebuah salinan berhenti menemukan
+        katanya, dan orang yang memandangi halamannya tetap membacanya. Untuk
+        sebuah gambar, <a href=\"../sensor-gambar/\">penyensor gambar</a> menimpa
+        pikselnya sendiri."""
+
+[[faq]]
+q = "Bagaimana dengan bagian dokumen yang tidak ada di halamannya?"
+a = """
+        Mereka ditangani, karena di situlah sebuah penyensoran biasanya bocor.
+        Kata yang sama dikeluarkan dari markah, komentar, dan catatan tempel, dari
+        yang sudah diketik ke kolom formulir, dari teks yang diberikan kepada
+        pembaca layar, dan dari teks pengganti yang disalin sebuah pembaca
+        <em>alih-alih</em> huruf di halamannya &mdash; yang terakhir itu ada
+        supaya ligatur dan kata bertanda hubung tersalin dengan benar, dan ia bisa
+        memuat satu kalimat penuh. Properti dokumen dan paket XMP-nya dihapus
+        sekalian. Lampiran dan apa pun yang berjalan ketika file-nya dibuka ikut
+        dibuang, karena keduanya tidak bisa dicari untuk kata yang sedang Anda
+        buang."""
+
+[[faq]]
+q = "Apakah dokumen saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File-nya dibaca, disunting, dan ditulis oleh peramban Anda sendiri
+        di perangkat keras Anda sendiri. Alat ini tidak punya sisi server, dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya &mdash; tidak satu pun milik situs
+        ini. Yang Anda ketik ke kotak pencarian dibandingkan dengan teks di dalam
+        memori tab ini dan juga tidak pergi ke mana pun."""
+
+[[faq]]
+q = "Kenapa saya tidak bisa menyeret sebuah kotak di atas halamannya seperti di alat lain?"
+a = """
+        Karena menggambar sebuah halaman berarti sebuah perender PDF utuh &mdash;
+        fon, gradasi, transparansi, mode paduan &mdash; yang berarti satu megabita
+        atau lebih mesin untuk diambil dan dijalankan, dan situs ini tidak
+        mengirimkan satu pun. Ternyata itu cocok dengan pekerjaannya: menyeret
+        sebuah persegi memilih <em>area kertas</em>, dan area kertas bukan hal
+        yang sama dengan teks di bawahnya, dan begitulah kegagalan kotak hitam
+        bermula. Yang Anda dapatkan sebagai gantinya adalah teks dokumennya, dalam
+        urutan baca, dengan setiap kata bisa diklik. Itu juga satu-satunya tampilan
+        yang bisa memberi tahu Anda hal yang tidak bisa dikatakan sebuah gambar
+        halaman: apakah kata di hadapan Anda memang teks."""
+
+[[faq]]
+q = "Apakah file jadinya akan terbuka di mana saja?"
+a = """
+        Ya. Keluarannya ditulis sebagai PDF 1.5 atau versi tertinggi yang
+        dibutuhkan file yang Anda berikan, dan 1.5 dipahami setiap pembaca yang
+        dirilis sejak 2003. Tidak ada di halamannya yang dikodekan ulang: fon,
+        gambar, dan gambar vektornya lewat byte demi byte, jadi sisa teksnya tetap
+        bisa dipilih dan dicari persis seperti sebelumnya."""
+
+[[faq]]
+q = "Bisakah ia membuka PDF yang dilindungi kata sandi?"
+a = """
+        Tidak, dan itu disengaja. Dokumen terenkripsi ditolak dengan sebuah pesan
+        yang mengatakannya, bahkan ketika kata sandinya kosong &mdash; dan begitulah
+        banyak pemindai dan mesin fotokopi menyimpan. Melepas perlindungan sebuah
+        file adalah pekerjaan yang berbeda dari mengeluarkan kata darinya, dan alat
+        yang melakukannya diam-diam akan melakukan sesuatu yang tidak Anda
+        minta."""
+
+[[faq]]
+q = "Apakah ada batas ukuran, dan apakah ada biayanya?"
+a = """
+        Tidak ada batas yang ditulis ke dalam alatnya. Batasnya adalah mesin Anda
+        sendiri: dokumennya ditahan di memori selagi dikerjakan, jadi sebuah laptop
+        akan menerima beberapa ratus megabita tanpa mengeluh dan akan kepayahan di
+        suatu titik di atasnya. Ia gratis, tidak ada akun, tidak ada masuk, dan
+        tidak ada masa uji coba. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang dokumen Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia terus
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim dokumen Anda pergi untuk disensor akan
+        berhenti pada saat Anda mencabut koneksi."""
+
+[schema]
+description = "Sensor sebuah PDF di peramban Anda dengan menghapus teksnya alih-alih menutupinya. Hurufnya dibuang dari aliran isi halamannya, file jadinya dibuka lagi dan dicari untuk membuktikan hurufnya sudah hilang, dan tidak ada yang diunggah."
+features = [
+  "Menghapus hurufnya dari halamannya alih-alih menggambar persegi di atasnya",
+  "Membuka lagi file jadinya dan mencarinya untuk membuktikan kata-katanya hilang",
+  "Menemukan setiap kemunculan sebuah kata, atau mencari email, nomor kartu, IBAN, dan nomor identitas nasional",
+  "Menampilkan teks dokumennya dalam urutan baca sehingga kata mana pun bisa diklik",
+  "Membuang kata yang sama dari markah, komentar, kolom formulir, dan properti",
+  "Menahan celahnya tetap terbuka supaya sisa barisnya tidak bergeser",
+  "Mengatakan halaman mana yang berupa pindaian, tempat tidak ada teks untuk dibuang",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa batas ukuran file",
+]
+
+[picker]
+title = "Jatuhkan PDF Anda di sini"
+hint = "atau klik untuk menelusuri &mdash; satu dokumen sekali jalan"

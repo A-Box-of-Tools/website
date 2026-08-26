@@ -1,0 +1,191 @@
+<!--
+  tools/hash-checksum/body.html, in Indonesian.
+
+  Every id, class, data-algorithm, data-slot, data-read and data-outcome below
+  is what src/main.js reaches for, so they are the same in every language. Only
+  the words change.
+-->
+<main>
+  <!--
+    Three steps, and the third one is the reason anybody is here.
+
+    Computing a checksum is not the job. Finding out whether the file you just
+    downloaded is the file the publisher signed is the job, and a page that
+    stops at "here is your hash" leaves the last and only difficult part -
+    comparing sixty-four characters by eye - to the visitor. So the comparison
+    is a step of its own, it accepts the checksum in whatever shape it was
+    published in, and it answers in a sentence rather than in a colour.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih sebuah file</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="run-card">
+    <h2><span class="step">2</span> Checksum-nya</h2>
+    <p class="card-lede">
+      MD5 dan SHA-256 dihitung secara bawaan, karena berdua mereka mencakup
+      hampir setiap halaman unduhan yang ada. Centang yang lain dan file dibaca
+      lagi untuknya &mdash; membaca adalah bagian yang lambat, jadi semua yang
+      dicentang sebelum file dipilih keluar dari satu kali jalan atasnya.
+    </p>
+
+    <fieldset class="algorithms">
+      <legend class="visually-hidden">Checksum mana yang dihitung</legend>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="md5" checked>
+        <span class="algorithm-name">MD5</span>
+        <span class="algorithm-note">Benturan sudah murah sejak 2004. Tetap angka yang dicetak di sebelah separuh unduhan di internet.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha1">
+        <span class="algorithm-name">SHA-1</span>
+        <span class="algorithm-note">Dipatahkan di depan umum pada 2017. Tetap cara Git menamai sebuah objek, dan tetap ada di banyak halaman rilis.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha256" checked>
+        <span class="algorithm-name">SHA-256</span>
+        <span class="algorithm-note">Arti sebuah checksum hari ini. Setiap distribusi yang menerbitkan satu menerbitkan yang ini.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha384">
+        <span class="algorithm-name">SHA-384</span>
+        <span class="algorithm-note">SHA-512 yang dipendekkan. Kebanyakan muncul di atribut integrity pada tag skrip.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha512">
+        <span class="algorithm-name">SHA-512</span>
+        <span class="algorithm-note">Lebih lebar, dan tidak lebih kuat dengan cara apa pun yang pernah penting dalam praktik. Sebagian proyek tetap menerbitkannya.</span>
+      </label>
+    </fieldset>
+
+    <div class="progress" id="progress" hidden>
+      <div class="progress-track" role="progressbar" id="progress-track"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="progress-fill" id="progress-fill"></span>
+      </div>
+      <p class="progress-line">
+        <span id="progress-text" role="status" aria-live="polite"></span>
+        <button type="button" id="stop" class="ghost danger">Hentikan</button>
+      </p>
+    </div>
+
+    <p class="stopped" id="stopped" hidden>
+      Dihentikan. Tidak ada yang dihitung untuk file ini.
+      <button type="button" id="restart" class="ghost">Mulai lagi</button>
+    </p>
+
+    <div class="results" id="results" hidden>
+      <div class="toolbar">
+        <h3 class="file-name" id="file-name">&mdash;</h3>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">Salin semuanya</button>
+          <button type="button" id="download-checksums" class="ghost">Simpan sebagai file</button>
+        </div>
+      </div>
+
+      <p class="file-facts" id="file-facts"></p>
+
+      <ul class="digests" id="digests">
+        <li class="digest" data-algorithm="md5" hidden>
+          <span class="digest-name">MD5</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>cocok</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>berbeda</span>
+          <button type="button" class="ghost" data-slot="copy">Salin</button>
+        </li>
+        <li class="digest" data-algorithm="sha1" hidden>
+          <span class="digest-name">SHA-1</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>cocok</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>berbeda</span>
+          <button type="button" class="ghost" data-slot="copy">Salin</button>
+        </li>
+        <li class="digest" data-algorithm="sha256" hidden>
+          <span class="digest-name">SHA-256</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>cocok</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>berbeda</span>
+          <button type="button" class="ghost" data-slot="copy">Salin</button>
+        </li>
+        <li class="digest" data-algorithm="sha384" hidden>
+          <span class="digest-name">SHA-384</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>cocok</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>berbeda</span>
+          <button type="button" class="ghost" data-slot="copy">Salin</button>
+        </li>
+        <li class="digest" data-algorithm="sha512" hidden>
+          <span class="digest-name">SHA-512</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>cocok</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>berbeda</span>
+          <button type="button" class="ghost" data-slot="copy">Salin</button>
+        </li>
+      </ul>
+
+      <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="compare-card">
+    <h2><span class="step">3</span> Periksa terhadap seharusnya berapa</h2>
+    <p class="card-lede">
+      Tempelkan checksum yang diberikan halaman unduhan kepada Anda. Bentuknya
+      tidak masalah &mdash; hex telanjang, keluaran <code>sha256sum</code>,
+      seluruh file <code>SHA256SUMS</code>, bentuk
+      <code>SHA256 (file) = &hellip;</code>, atau atribut <code>integrity</code>
+      dari sebuah tag skrip. Algoritma mana itu mengikuti panjangnya, jadi tidak
+      ada yang perlu dipilih.
+    </p>
+
+    <label class="visually-hidden" for="expected">Checksum yang seharusnya dimilikinya</label>
+    <textarea id="expected" rows="3" spellcheck="false" autocapitalize="off"
+              autocomplete="off"
+              placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
+
+    <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
+      <span data-read="one">Itu sebuah <b data-slot="algorithm"></b>.</span>
+      <span data-read="many">Itu sebuah daftar. Ada <b data-slot="count"></b> checksum di dalamnya.</span>
+      <span data-read="stray">Itu <b data-slot="length"></b> karakter hex, dan tidak satu pun dari ini sepanjang itu. Salinan yang kehilangan ujungnya adalah alasan yang biasa.</span>
+      <span data-read="nothing">Tidak ada di dalamnya yang tampak seperti checksum.</span>
+    </p>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-line good" data-outcome="match">
+        <span class="verdict-mark">&#10003;</span>
+        <span>Ini file yang digambarkan checksum itu. <b data-slot="algorithm"></b>-nya sama dengan yang Anda tempelkan, karakter demi karakter.</span>
+      </p>
+      <p class="verdict-line good" data-outcome="renamed">
+        <span class="verdict-mark">&#10003;</span>
+        <span>Byte-nya cocok, tapi barisnya berbeda. Yang Anda tempelkan menyebut ini <b data-slot="name"></b>, dan file yang Anda pilih bernama lain. Entah ia diganti nama dalam perjalanan kepada Anda, entah ia bukan unduhan yang Anda maksud untuk diperiksa &mdash; <b data-slot="algorithm"></b>-nya benar bagaimanapun.</span>
+      </p>
+      <p class="verdict-line bad" data-outcome="mismatch">
+        <span class="verdict-mark">&#10007;</span>
+        <span>Ini <b>bukan</b> file yang digambarkan checksum itu. <b data-slot="algorithm"></b>-nya berbeda, jadi byte-nya berbeda: unduhan yang terputus, versi yang salah, atau cermin yang membagikan sesuatu yang lain. Ambil lagi sebelum Anda menjalankannya.</span>
+      </p>
+      <p class="verdict-line" data-outcome="waiting">
+        <span class="verdict-mark">&hellip;</span>
+        <span>Sedang menghitung <b data-slot="algorithm"></b> untuk dibandingkan.</span>
+      </p>
+      <p class="verdict-line" data-outcome="nofile">
+        <span class="verdict-mark">&hellip;</span>
+        <span>Pilih sebuah file di atas dan bagian ini akan mengatakan apakah ia cocok.</span>
+      </p>
+    </div>
+  </section>
+</main>

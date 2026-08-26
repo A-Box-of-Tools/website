@@ -1,0 +1,20 @@
+#
+# Panduan: menggabungkan gambar menjadi satu PDF - Bahasa Indonesia.
+#
+
+nav = "Gambar menjadi PDF"
+title = "Cara Menggabungkan Gambar Menjadi Satu PDF"
+description = "Ubah foto atau pindaian menjadi satu PDF: ukuran halaman, urutan dan rotasinya, kenapa sebuah JPEG tidak perlu kehilangan kualitas sedikit pun dalam perjalanannya masuk, dan apa yang dikatakan sebuah PDF kepada orang yang Anda kirimi."
+
+heading = "Cara menggabungkan gambar menjadi satu PDF"
+lede = """
+    Seseorang meminta &ldquo;satu PDF&rdquo; dan Anda punya sebelas foto kertas.
+    Ini membahas pilihan yang benar-benar mengubah hasilnya &mdash; ukuran
+    halaman, urutan, kualitas, dan apa yang dikatakan dokumennya tentang Anda
+    &mdash; dan mana di antaranya yang bisa Anda abaikan."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara menggabungkan gambar menjadi satu PDF"
+og_description = "Ukuran halaman, urutan dan rotasinya, kenapa sebuah JPEG tidak perlu kehilangan kualitas dalam perjalanannya masuk, dan apa yang dikatakan sebuah PDF kepada orang yang Anda kirimi."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

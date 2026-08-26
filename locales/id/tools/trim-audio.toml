@@ -1,0 +1,329 @@
+#
+# Pemotong Audio - Bahasa Indonesia.
+#
+# Overrides for tools/trim-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pemotong Audio"
+heading = "Pemotong&nbsp;Audio <span class=\"h1-kw\">&mdash; potong audio daring</span>"
+tagline = "Tandai bagian yang layak disimpan sambil diputar. Dapatkan kembali sebagai satu file, dipotong di tempat yang Anda sebutkan."
+
+title = "Potong Audio Daring &mdash; Simpan Hanya Bagian yang Anda Mau, Tanpa Unggah"
+description = "Putar sebuah rekaman dan tandai setiap bagian yang layak disimpan sambil berjalan, lalu simpan bagian-bagian itu sebagai satu file. Potongan persis pada sampel, tanpa bunyi klik di sambungannya, tidak ada yang diunggah."
+og_title = "Pemotong Audio &mdash; simpan hanya bagian yang Anda mau, tanpa mengunggah apa pun"
+og_description = "Tekan I dan O sambil diputar untuk menandai setiap bagian yang layak disimpan. Bagian yang ditandai ditulis kembali sebagai satu file, dipotong pada sampel yang persis, tanpa ada yang diunggah."
+og_image_alt = "Pemotong Audio - tandai bagian yang Anda mau dan simpan sebagai satu rekaman, di peramban Anda"
+
+pledge = """
+    Rekaman Anda dibaca, ditandai, dipotong, dan ditulis oleh peramban Anda
+    sendiri, di perangkat keras Anda sendiri. Tidak ada di sini yang bisa
+    mengambil atau mengirim apa pun &mdash; alat ini sama sekali tidak punya
+    fitur jaringan &mdash; dan seandainya pun ada, tidak ada server di ujung lain
+    halaman ini untuk menerima sebuah rekaman."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu potong sesuatu. Tidak satu pun permintaan membawa sampel, nama file,
+      atau satu byte pun dari yang Anda pilih. Atau cabut koneksi internet dan
+      tetap potong sebuah rekaman &mdash; alat yang mengirim audio Anda ke tempat
+      lain untuk dipotong akan langsung berhenti."""
+
+read_first = """
+, <code>src/segments.js</code> untuk penanda dan file
+      tempat menyimpannya, <code>src/decode.js</code> untuk dua puluh baris yang
+      menyerahkan file Anda ke dekoder milik peramban sendiri,
+      <code>src/trim.js</code> untuk aritmetika yang mengubah sebuah penanda
+      menjadi deretan sampel beserta perulangan yang menyalinnya, dan
+      <code>src/wav.js</code> untuk header yang dipasang di depannya. Tidak satu
+      pun mengimpor sesuatu yang bisa membuat permintaan."""
+
+howto_heading = "Cara memotong file audio"
+
+card = """
+            Tandai setiap bagian yang layak disimpan sambil diputar, lalu simpan
+            sebagai satu rekaman. Potongannya mendarat pada sampel yang persis,
+            dan sambungannya tidak berbunyi klik."""
+
+[words]
+plural = "rekaman"
+choose = "sebuah rekaman"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Sebanyak apa pun bagiannya"
+
+[[facts]]
+text = "Memotong persis di tempat yang Anda tandai"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[privacy]]
+title = "Rekaman Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Alat ini sama sekali tidak punya
+      fitur jaringan: tidak ada alamat untuk ditempelkan, tidak ada yang diunduh,
+      tidak ada mesin yang diambil saat pertama dipakai. Setiap byte yang
+      menyentuh audio Anda datang dari asal ini ketika halaman dimuat."""
+
+[[privacy]]
+title = "Dekodernya adalah yang sudah ada di peramban Anda."
+body = """
+ File diserahkan ke
+      <code>decodeAudioData</code>, kode yang sama yang memutar sebuah lagu di
+      elemen <code>&lt;audio&gt;</code>. Tidak ada yang dikirim ke sini untuk
+      membaca format Anda, dan tidak ada yang diminta dari apa pun di luar
+      halaman ini untuk membacanya."""
+
+[[privacy]]
+title = "Gambar sebuah video tidak pernah didekode sama sekali."
+body = """
+ Ketika Anda menjatuhkan sebuah video,
+      hanya jalur audionya yang diminta. Bingkainya tidak dibaca, tidak didekode,
+      tidak digambar, dan tidak dilihat &mdash; tidak ada kode di halaman ini
+      yang bisa, dan file yang keluar memuat suara dan tidak lebih."""
+
+[[privacy]]
+title = "Potongannya adalah penyalinan, di memori, di mesin ini."
+body = """
+ Memotong adalah satu <code>set</code> per
+      bagian per kanal: sampel yang Anda simpan dipindahkan ke larik baru dalam
+      urutan yang Anda tetapkan. Satu-satunya sampel yang dikalikan sesuatu
+      adalah beberapa ratus di dalam setiap peredupan, dan halaman ini
+      mengatakan berapa banyak sebelum Anda menekan tombolnya."""
+
+[[privacy]]
+title = "Sampelnya dituliskan, bukan dikodekan lagi."
+body = """
+ Sebuah WAV adalah sampel yang dimuat
+      halaman ini dengan header di depannya. Tidak ada encoder dalam
+      perulangannya yang mengambil keputusan tentang rekaman Anda, dan tidak ada
+      yang bisa disebut unggahan untuk membuat hal itu terjadi."""
+
+[[privacy]]
+title = "File penanda dibuat di dalam halaman."
+body = """
+ Menyimpan penanda Anda menulis sebuah
+      file teks dari angka-angka yang sudah ada di layar, langsung ke unduhan
+      Anda. Memuatnya membacanya di sini. Tidak satu pun mendekati jaringan, dan
+      tidak satu pun membawa apa pun selain waktu."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang rekaman Anda: bukan
+      file, bukan sampel, bukan nama, ukuran, durasi, atau di mana Anda
+      memotongnya. Setiap baris yang membaca, memotong, dan menulis disajikan
+      dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau rekaman Anda."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih sebuah rekaman."
+body = """
+ Jatuhkan file MP3, WAV, FLAC, M4A, Ogg,
+      atau Opus ke pemilih file &mdash; atau sebuah video, kalau yang Anda mau
+      adalah sepotong suaranya. Peramban membacanya langsung dari disk Anda dan
+      menggambarnya sebagai bentuk gelombang; tidak ada yang dikirim ke mana pun
+      saat Anda melakukannya."""
+
+[[howto]]
+title = "Putar, dan tandai bagian yang Anda mau."
+body = """
+ Tekan <kbd>I</kbd> di tempat sebuah
+      bagian harus dimulai dan <kbd>O</kbd> di tempat ia harus berakhir. Lakukan
+      sebanyak yang Anda mau &mdash; setiap pasangan menjadi satu baris di tabel
+      di bawahnya, dan satu pita di bentuk gelombangnya. <kbd>U</kbd> menarik
+      kembali yang terakhir, <kbd>Space</kbd> memutar dan menjeda, tombol panah
+      melompat lima detik, dan menahan <kbd>Shift</kbd> bersamanya menggeser
+      sepuluh milidetik. Perlambat pemutarannya kalau momennya sulit
+      ditangkap."""
+
+[[howto]]
+title = "Rapikan penandanya."
+body = """
+ Setiap baris bisa diputar sendiri, diatur
+      ulang waktunya dengan mengetikkan waktu yang persis, dipindahkan naik atau
+      turun urutannya, atau dihapus. Kedua ujung bagian yang terpilih juga bisa
+      diseret di sepanjang bentuk gelombangnya, dan itu cara tercepat menempatkan
+      penanda pada keheningan alih-alih pada tarikan napas sebelumnya. Total di
+      bagian atas adalah durasi rekaman yang sudah jadi nanti."""
+
+[[howto]]
+title = "Simpan bagian itu, atau buang."
+body = """
+ Menyimpan adalah cara yang biasa:
+      rekaman yang sudah jadi adalah bagian yang Anda tandai, digabungkan
+      berurutan. Membuangnya adalah pekerjaan lain yang diinginkan orang dan
+      jarang ditemukan &mdash; tandai "eee"-nya, telepon yang berdering, atau
+      awal yang gagal, dan sisanya digabungkan tanpa itu semua."""
+
+[[howto]]
+title = "Potong, dan unduh."
+body = """
+ Setiap potongan mendarat pada sampel yang Anda
+      tandai; tidak ada pembulatan ke bingkai kunci di sini, karena suara tidak
+      punya bingkai kunci. Satu-satunya yang layak dipilih adalah seberapa banyak
+      peredupan yang dipasang di setiap sambungan &mdash; lima milidetik cukup
+      untuk menghentikan bunyi klik dan jauh terlalu pendek untuk terdengar
+      sebagai peredupan. Yang keluar adalah sebuah WAV, diputar dulu di halaman
+      ini, lalu diserahkan langsung ke unduhan peramban Anda."""
+
+[[faq]]
+q = "Apakah audio saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Ia dibaca, ditandai, dipotong, dan ditulis oleh peramban Anda
+        sendiri di perangkat keras Anda sendiri. Alat ini tidak punya sisi
+        server, dan <code>Content-Security-Policy</code> halaman ini menyebut
+        satu per satu setiap alamat yang boleh dihubunginya &mdash; tidak satu
+        pun milik situs ini. Cabut koneksi internet dan tetap potong sebuah
+        rekaman kalau Anda lebih suka memeriksa daripada diberi tahu."""
+
+[[faq]]
+q = "Bisakah saya menyimpan beberapa bagian dari rekaman yang sama?"
+a = """
+        Justru untuk itulah alat ini. Tekan <kbd>I</kbd> dan <kbd>O</kbd>
+        sebanyak yang Anda mau sambil diputar; setiap pasangan menjadi satu
+        baris, dan file yang sudah jadi adalah semua baris digabungkan berurutan
+        dengan segala yang lain hilang. Kebanyakan pemotong daring memberi Anda
+        satu pasang pegangan dan bertanya rentang tunggal mana yang disimpan,
+        yang cukup untuk merapikan awal dan akhir sebuah jingle dan sama sekali
+        tidak berguna untuk mendengarkan wawancara satu jam sekali lalu menyimpan
+        enam jawaban yang layak."""
+
+[[faq]]
+q = "Apakah potongannya mendarat persis di tempat yang saya tandai?"
+a = """
+        Ya, pada setiap bagian, di setiap pemutar. Inilah satu tempat di mana
+        audio lebih sederhana daripada video: rekaman yang sudah didekode adalah
+        deretan angka dan masing-masing berdiri sendiri, jadi tidak ada padanan
+        bingkai kunci untuk dibulatkan dan tidak ada alasan sebuah potongan mulai
+        lebih awal. Halaman ini menampilkan nomor sampel tempat hasilnya dimulai,
+        yaitu penanda yang Anda buat dikalikan laju sampel dan dibulatkan ke
+        sampel utuh terdekat."""
+
+[[faq]]
+q = "Kenapa sebuah sambungan bisa berbunyi klik, dan untuk apa peredupannya?"
+a = """
+        Karena memotong dari tengah satu kata ke tengah kata lain menempatkan dua
+        bentuk gelombang yang tidak berhubungan berdampingan, dan pengeras suara
+        yang diminta melompat di antara keduanya menghasilkan bunyi klik. Itu
+        bukan kesalahan potongannya &mdash; begitulah bunyi sebuah ketidak-
+        sinambungan. Perbaikannya adalah peredupan beberapa milidetik di kedua
+        sisi setiap sambungan: cukup panjang bagi konusnya untuk sampai, jauh
+        terlalu pendek untuk terdengar sebagai peredupan. Lima milidetik adalah
+        bawaannya dan bisa dimatikan. Peredupan hanya dipasang pada tepi yang
+        memang sebuah potongan, jadi tepi di paling awal atau paling akhir
+        rekaman dibiarkan persis seperti adanya."""
+
+[[faq]]
+q = "Bisakah saya membuang bagian yang jeleknya saja?"
+a = """
+        Bisa. Tandai bagian itu, lalu pilih "Buang yang ditandai": semua yang
+        <em>tidak</em> Anda tandai yang digabungkan, berurutan. Daftar penanda
+        yang sama menjawab kedua pertanyaan, jadi Anda bisa berpindah di antara
+        keduanya dan melihat durasinya berubah tanpa menandai apa pun dua
+        kali."""
+
+[[faq]]
+q = "Bisakah saya menyimpan penanda saya dan kembali lagi nanti?"
+a = """
+        Bisa. "Simpan penanda" menulis sebuah file teks biasa &mdash; satu baris
+        satu bagian, awal dan akhir dipisahkan koma &mdash; dan "Muat penanda"
+        membacanya kembali. Dua format ditawarkan, detik biasa dan
+        <code>HH:MM:SS.mmm</code>, dan keduanya adalah tata letak yang ditulis
+        pemotong video di situs ini, jadi file yang dibuat terhadap videonya bisa
+        dijatuhkan ke audionya dan sebaliknya. Menandai adalah pekerjaan yang
+        butuh ketelitian dan tidak ada yang seharusnya melakukannya dua kali."""
+
+[[faq]]
+q = "Format apa saja yang bisa saya buka?"
+a = """
+        Apa pun yang bisa didekode peramban Anda, yang dalam praktiknya berarti
+        MP3, WAV, FLAC, M4A dan AAC, Ogg Vorbis dan Opus, serta audio di dalam
+        video MP4, M4V, MOV, dan WebM. Yang tertinggal adalah daftar pendek yang
+        sama seperti di tempat lain: AVI, WMA, dan sebagian besar MKV. File yang
+        tidak mau dibaca peramban ini ditolak dengan pesan, alih-alih gagal di
+        tengah jalan."""
+
+[[faq]]
+q = "Kenapa ia menyimpan WAV alih-alih MP3?"
+a = """
+        Karena tidak ada peramban yang menyertakan encoder MP3, dan alat ini
+        menolak mengirim rekaman Anda ke server yang punya. Sebuah WAV sama
+        sekali tidak butuh encoder &mdash; ia adalah sampel dengan header pendek
+        di depannya &mdash; jadi ia sekaligus pilihan yang jujur dan satu-satunya
+        yang tidak mungkin memakan kualitas saat keluar. Ukurannya lebih besar:
+        sekitar sepuluh megabyte per menit dalam stereo. Setiap pemutar, ponsel,
+        dan penyunting bisa membukanya, dan apa pun yang mau MP3 bisa membuatnya
+        dari situ. Memotong MP3 dengan menyalin bingkainya justru akan menjaga
+        file tetap kecil, tapi juga akan memindahkan setiap potongan ke batas
+        bingkai terdekat, dan pembulatan itulah yang justru tidak ingin dilakukan
+        alat ini."""
+
+[[faq]]
+q = "Adakah batas durasi rekamannya?"
+a = """
+        Tidak ada batas yang tertanam di alat ini. Batas praktisnya adalah
+        memori: seluruh rekaman didekode ke halaman ini sekaligus, dan sebuah WAV
+        dirakit di memori sebelum Anda mengunduhnya, jadi satu jam stereo
+        membutuhkan ruang kerja sedikit di bawah satu gigabyte. WAV empat
+        gigabyte ditolak mentah-mentah, karena kolom ukuran milik formatnya
+        sendiri tidak bisa menggambarkannya."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang rekaman Anda."""
+
+[schema]
+browser_requirements = "Memerlukan JavaScript dan peramban dengan Web Audio, yang berarti setiap peramban masa kini. Tidak butuh dukungan kodek melebihi yang sudah dimiliki peramban untuk memutar file itu."
+description = "Tandai sebanyak apa pun bagian sebuah rekaman sambil diputar, lalu simpan bagian-bagian itu sebagai satu file - atau buang bagian itu dan simpan sisanya. Potongan mendarat pada sampel persis yang ditandai, dengan peredupan beberapa milidetik opsional agar sambungannya tidak berbunyi klik. Tidak ada yang diunggah dan hasilnya ditulis sebagai WAV, jadi tidak ada yang dikodekan ulang."
+features = [
+  "Menandai sebanyak apa pun bagian dengan I dan O sambil rekaman diputar",
+  "Menggabungkan bagian yang ditandai menjadi satu file, dalam urutan yang Anda pilih",
+  "Atau membuang bagian yang ditandai dan menyimpan semua sisanya",
+  "Memotong pada sampel yang persis, tanpa pembulatan ke bingkai atau bingkai kunci",
+  "Meredupkan setiap sambungan beberapa milidetik supaya tidak mungkin berbunyi klik",
+  "Menggambar bentuk gelombangnya, jadi keheningan dan jeda bisa ditandai dengan mata",
+  "Menyimpan dan memuat kembali penanda sebagai file teks biasa berisi stempel waktu",
+  "Memotong audio di dalam MP4, MOV, atau WebM tanpa menyentuh gambarnya",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan file audio atau video di sini"
+hint = "atau klik untuk menelusuri &mdash; MP3, WAV, FLAC, M4A, Ogg, dan suara di dalam MP4, MOV, atau WebM"

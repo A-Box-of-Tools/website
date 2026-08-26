@@ -1,0 +1,240 @@
+#
+# Penampil dan Penghapus EXIF - Bahasa Indonesia.
+#
+# Overrides for tools/exif-editor/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Penampil dan Penghapus EXIF"
+heading = "Penampil &amp; Penghapus&nbsp;EXIF <span class=\"h1-kw\">&mdash; hapus metadata foto</span>"
+tagline = "Lihat apa yang dikatakan sebuah foto tentang Anda. Lalu keluarkan."
+
+title = "Penampil &amp; Penghapus EXIF &mdash; Penyunting Metadata Foto Gratis"
+description = "Lihat data EXIF dan GPS yang tersembunyi di dalam sebuah foto, sunting, atau bersihkan semuanya dalam satu klik. Di peramban Anda: tidak ada yang diunggah, dan fotonya tidak pernah dikodekan ulang."
+og_title = "Penampil &amp; Penghapus EXIF &mdash; lihat, sunting, atau bersihkan"
+og_description = "Baca metadata yang tersembunyi di dalam sebuah foto dan hapus semuanya dalam satu klik. Berjalan di perangkat Anda sendiri; gambarnya sendiri tidak pernah dikodekan ulang."
+og_image_alt = "Penampil dan Penghapus EXIF - baca, sunting, atau bersihkan metadata di dalam sebuah foto"
+
+pledge = """
+    File dibuka, diurai, dan ditulis ulang oleh peramban Anda sendiri. Alat ini
+    tidak punya fitur jaringan dalam bentuk apa pun &mdash; tidak ada yang
+    diambil, tidak ada yang dikirim &mdash; dan seandainya pun ada, tidak ada
+    server di ujung lain halaman ini untuk menerima sebuah foto."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu bersihkan sebuah foto. Tidak satu pun permintaan membawa gambar,
+      gambar mini, nama file, atau tag yang kami baca dari file Anda. Atau cabut
+      koneksi internet dan tetap bersihkan satu."""
+
+read_first = """
+, <code>src/tiff.js</code> untuk pengurai EXIF-nya,
+      dan <code>src/jpeg.js</code> untuk bukti bahwa gambarnya sendiri hanya
+      pernah disalin."""
+
+howto_heading = "Cara menghapus data EXIF dari sebuah foto"
+
+card = """
+            Lihat lokasi, kamera, dan nomor seri yang tersembunyi di dalam
+            sebuah foto, sunting salah satunya, atau bersihkan semuanya dalam
+            satu klik."""
+
+[words]
+plural = "foto"
+choose = "sebuah foto"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "Tidak pernah mengodekan ulang gambarnya"
+
+[[privacy]]
+title = "Foto Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Berbeda dari alat lain di kotak ini,
+      yang satu ini tidak punya fitur "muat dari alamat web" dan sama sekali
+      tidak punya langkah jaringan opsional. Tidak ada <code>fetch</code>, tidak
+      ada <code>XMLHttpRequest</code>, dan tidak ada <code>sendBeacon</code> di
+      mana pun di dalam <code>src/</code>."""
+
+[[privacy]]
+title = "Metadata yang kami baca tidak pernah dibacakan keluar."
+body = """
+ Posisi GPS Anda ditampilkan di halaman
+      ini dan tidak pergi ke mana pun. Tidak ada peristiwa pengukuran khusus di
+      repositori ini yang membawa sebuah tag, nama file, ukuran, atau jumlah."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang foto Anda. Setiap baris
+      yang membaca, mengurai, atau menulis ulang sebuah file disajikan dari asal
+      ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau file Anda. Tidak ada
+      yang terjadi kecuali Anda mengekliknya, dan yang akan Anda tuju adalah
+      situs milik orang lain."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini tidak
+      berubah, karena sejak awal memang tidak ada langkah jaringan di dalamnya.
+      Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih foto Anda."
+body = """
+ Jatuhkan ke pemilih file atau pilih sendiri.
+      Peramban membacanya langsung dari disk Anda; tidak ada yang dikirim ke mana
+      pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Baca isinya, kalau Anda mau."
+body = """
+ Daftar temuannya menyebut hal-hal yang
+      layak diketahui &mdash; posisi GPS, stempel waktu, nomor seri &mdash;
+      sebelum tabel lengkap berisi setiap tag."""
+
+[[howto]]
+title = "Tekan \"Hapus semua metadata\"."
+body = """
+ Itulah seluruh pekerjaan bagi kebanyakan
+      orang. Setiap tag, blok XMP dan IPTC, komentar, dan gambar mini
+      tertanamnya semua hilang, pada setiap foto di daftar sekaligus."""
+
+[[howto]]
+title = "Atau sunting alih-alih menghapus."
+body = """
+ Ubah sebuah tanggal, betulkan baris hak
+      cipta, buang lokasinya dan simpan setelan kameranya &mdash; lalu simpan
+      foto itu sendiri."""
+
+[[faq]]
+q = "Apakah foto saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File dibaca, diurai, dan ditulis ulang oleh peramban Anda sendiri
+        di perangkat keras Anda sendiri. Alat ini tidak punya fitur jaringan
+        dalam bentuk apa pun &mdash; ia tidak pernah mengambil apa pun dan tidak
+        pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya, dan tidak satu pun milik situs
+        ini."""
+
+[[faq]]
+q = "Apa itu EXIF, dan apa lagi yang bersembunyi di dalam sebuah foto?"
+a = """
+        EXIF adalah blok tag yang ditulis kamera di samping gambarnya: merek dan
+        modelnya, setelan pencahayaannya, tanggal dan waktu sampai ke detik,
+        sering kali posisi GPS, dan kadang sebuah nomor seri. Foto sering membawa
+        lebih dari itu &mdash; paket XMP berisi XML dari sebuah penyunting, blok
+        IPTC berisi kolom keterangan dan penulis, sebuah profil warna, salinan
+        kecil kedua dari gambarnya sebagai gambar mini, dan catatan pembuat
+        berisi data produsen yang tidak terdokumentasi. Alat ini
+        mendaftarkan semuanya."""
+
+[[faq]]
+q = "Apakah menghapus metadata menurunkan kualitas gambar?"
+a = """
+        Tidak, dan inilah alasan utama memakai alat seperti ini alih-alih
+        menyimpan ulang fotonya. Metadata duduk di wadah yang mengelilingi gambar
+        terkompresi, bukan di dalamnya. Menghapusnya berarti menghapus butir dari
+        sebuah daftar dan menulis daftarnya kembali; data gambar terkompresinya
+        disalin byte demi byte, jadi hasilnya terdekode menjadi piksel yang sama
+        persis. Tidak ada yang didekode dan tidak ada yang dikompres ulang."""
+
+[[faq]]
+q = "Format file apa saja yang ditanganinya?"
+a = """
+        JPEG, PNG, dan WebP. HEIC dan AVIF dikenali tapi tidak ditulis ulang:
+        keduanya adalah format kotak yang dibangun dari atom bersarang dan butuh
+        pengurai yang berbeda, jadi alat ini mengatakannya alih-alih menghasilkan
+        file yang rusak. TIFF telanjang juga tidak ditangani, karena di dalam
+        TIFF metadata dan pikselnya dialamati oleh ofset yang sama."""
+
+[[faq]]
+q = "Apakah foto saya akan tampak terputar setelah metadatanya dihapus?"
+a = """
+        Bisa, dan ada setelan untuk itu. Ponsel biasanya merekam gambarnya
+        sebagaimana dilihat sensor dan menambahkan tag Orientasi yang mengatakan
+        cara memutarnya. Hapus tag itu dan sebagian penampil menampilkan foto
+        Anda miring. Pilihan "jaga tag orientasi", yang menyala secara bawaan,
+        menulis kembali blok EXIF mungil yang tidak memuat apa pun selain tag itu
+        &mdash; dan hanya ketika fotonya memang membutuhkannya. Matikan kalau Anda
+        lebih suka file-nya sama sekali tidak membawa EXIF."""
+
+[[faq]]
+q = "Apakah ia menghapus lokasi GPS?"
+a = """
+        Ya. Menghapus semuanya menghapus seluruh direktori GPS-nya, dan Anda juga
+        bisa menghapus lokasinya saja dan menyimpan sisanya. Posisinya
+        ditampilkan dalam derajat desimal lebih dulu, karena "51 derajat, 30
+        menit, 26 detik" tidak membuatnya terang bahwa sebuah foto menyebut
+        bangunan tempat ia diambil."""
+
+[[faq]]
+q = "Bisakah saya mengubah sebuah tag alih-alih menghapusnya?"
+a = """
+        Bisa. Tag teks, tanggal, ISO, orientasi, dan resolusi semuanya bisa
+        disunting, dan beberapa tag umum bisa ditambahkan ke foto yang tidak
+        punya. Satu catatan: menulis file-nya membangun ulang blok EXIF, dan
+        catatan pembuat memuat ofset ke dalam blok aslinya, jadi catatan pembuat
+        yang dibangun ulang mungkin tidak bisa dibaca lagi oleh perangkat lunak
+        milik produsennya. Hapus catatan itu atau biarkan file-nya tanpa
+        suntingan kalau hal itu penting bagi Anda."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, dan tidak ada masa uji coba.
+        Situs ini memasang iklan, dan itulah yang membiayainya; iklan tidak
+        diberi apa pun tentang foto Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim foto Anda ke tempat lain untuk diproses akan
+        berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Baca metadata EXIF, GPS, XMP, dan IPTC di dalam sebuah foto, sunting tag satu per satu, atau hapus semuanya dalam satu klik. JPEG, PNG, dan WebP, diproses di peramban tanpa mengodekan ulang gambarnya."
+features = [
+  "Menampilkan setiap tag EXIF, termasuk posisi GPS, nomor seri kamera, dan catatan pembuat",
+  "Menyunting atau menghapus tag satu per satu dan menulis file-nya kembali",
+  "Menghapus EXIF, GPS, XMP, IPTC, komentar, dan gambar mini tertanam dalam satu klik",
+  "JPEG, PNG, dan WebP",
+  "Hanya menulis ulang wadahnya, jadi gambarnya tidak pernah dikompres ulang",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan foto di sini"
+hint = "atau klik untuk menelusuri &mdash; JPEG, PNG, dan WebP"

@@ -1,0 +1,255 @@
+<!--
+  tools/id-photo/body.html, in Indonesian.
+
+  Every id, class, name, option value and data-phrase key below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; fotonya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih fotonya</h2>
+
+    <p class="card-lede">
+      Gambar apa pun yang bisa dibuka peramban Anda. Foto ponsel yang diambil di
+      depan dinding polos, di bawah cahaya siang, dari jarak sekitar satu setengah
+      meter adalah yang menjadi dasar penulisan hampir semua aturan ini &mdash;
+      dan ia dibaca langsung dari disk Anda, tidak dikirim ke mana pun.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">Pilih yang lain</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; aturannya -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> Pilih negara dan dokumennya</h2>
+
+    <p class="card-lede">
+      Setiap angka di bawah adalah persyaratan resmi, disalin dari lembaga yang
+      disebut di bawahnya. Tidak ada di daftar ini yang ditebak, dan tidak ada di
+      dalamnya yang diambil dari jaringan &mdash; ia sebuah tabel di
+      <code>src/specs.js</code>, disajikan bersama halamannya.
+    </p>
+
+    <div class="option-row">
+      <label for="spec">Spesifikasi</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>Angkanya, untuk Anda ketik sendiri</summary>
+      <div class="numbers">
+        <label>Lebar (mm)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>Tinggi (mm)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>Kepala, terkecil (mm)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>Kepala, terbesar (mm)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>Latar
+          <select id="custom-background">
+            <option value="white">Putih polos</option>
+            <option value="off-white">Putih atau putih gading</option>
+            <option value="light-grey" selected>Abu-abu muda polos</option>
+            <option value="cream">Abu-abu muda atau krem</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>Lebar unggahan (px)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>Tinggi unggahan (px)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>Terkecil (KB)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>Terbesar (KB)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        KB di sini berarti 1024 byte, dan itulah yang dimaksud formulir-formulir
+        ini dengannya.
+      </p>
+    </details>
+  </section>
+
+  <!-- Langkah 3 &mdash; pembingkaiannya -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> Tandai wajahnya, dan periksa pembingkaiannya</h2>
+
+    <p id="frame-empty" class="field-summary">Pilih sebuah foto dan kotak pangkasnya muncul di sini.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        Puncak kepala, dagu, dan masing-masing pupil. Keempat titik itulah seluruh
+        yang diukur sebuah aturan, jadi pangkasannya diambil dari di mana pun
+        mereka berakhir &mdash; seret yang mendarat keliru, lalu tekan
+        <strong>Paskan kotaknya</strong>. Menemukannya berarti membaca gambarnya
+        sendiri: tepi kepala Anda terhadap dinding di belakangnya, dan bercak
+        yang lebih gelap tempat mata berada. Tidak ada model di dalamnya dan tidak
+        ada yang diambil, dan ia sebuah posisi awal alih-alih sebuah putusan, dan
+        itulah sebabnya ia milik Anda untuk dibetulkan dan sebabnya panel di bawah
+        mengatakan mana dari keempatnya yang tidak bisa diukurnya.
+      </p>
+
+      <!--
+        Where the dots come from. Choosing "I'll place them" leaves them exactly
+        where they are and stops anything moving them again; moving one by hand
+        chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="Dari mana keempat titiknya datang">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>Carikan untuk saya</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>Saya yang menaruhnya</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">Paskan kotaknya ke aturan</button>
+        <button type="button" id="reset-marks" class="ghost">Cari wajahnya lagi</button>
+        <button type="button" id="whole-photo" class="ghost">Kotak terbesar yang muat</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Langkah 4 &mdash; latarnya -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> Latarnya</h2>
+
+    <p class="card-lede" id="background-lede">
+      Dibaca dari sebuah pita melintang di bagian atas pangkasannya dan turun di
+      kedua sisinya, di atas bahu &mdash; bagian bingkai yang seharusnya tidak
+      berisi apa pun selain latar. Diukur dalam CIE Lab alih-alih dalam RGB,
+      karena dua abu-abu berjarak empat puluh satuan RGB tidak bisa dibedakan,
+      sedangkan empat puluh satuan biru adalah warna yang berbeda.
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">Punya Anda terbaca sebagai<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">Yang diminta aturannya<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Langkah 5 &mdash; file-nya -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> Simpan</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">Resolusi cetak</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; batas bawah yang dinyatakan hampir setiap aturan</option>
+          <option value="600">600 dpi &mdash; yang akan dipakai lab foto yang bagus</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">Lembar untuk mencetak</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>Buat file-nya</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Selesai</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. The
+    `marks.why.*` lines are listed under the note, one line each, rather than
+    strung into the sentence: joining them would have meant a separator in the
+    JavaScript, and a semicolon is not the mark half these languages join with.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="marks.measured">Keempatnya diukur dari fotonya &mdash;
+      puncak kepala dari siluet kepala Anda, pupilnya dari gelapnya, dagunya dari
+      tempat rahang bertemu leher. Periksa juga, dan seret yang mendarat keliru:
+      pangkasannya diambil dari tempat mereka berakhir.</span>
+    <span data-phrase="marks.rough">Sudah ditaruh, tapi tidak semuanya terukur.
+      Periksa keempat titiknya sebelum Anda memaskan kotaknya.</span>
+    <span data-phrase="marks.none">Tidak ada yang bisa diukur pada foto ini.
+      Titik-titiknya berada di posisi awalnya sebagai gantinya &mdash; seret
+      mereka ke puncak kepala, dagu, dan masing-masing pupil.</span>
+    <span data-phrase="marks.manual">Keempat titiknya milik Anda, dan tidak ada
+      yang akan memindahkannya. Seret masing-masing ke puncak kepala, dagu, dan
+      sebuah pupil.</span>
+    <span data-phrase="marks.edited">Anda sudah memindahkan sebuah titik, jadi
+      keempatnya sekarang milik Anda. &ldquo;Carikan untuk saya&rdquo; mengukur
+      gambarnya sekali lagi.</span>
+
+    <span data-phrase="marks.why.background">Dinding di belakang Anda tidak cukup
+      polos untuk mencari tepi sebuah kepala terhadapnya.</span>
+    <span data-phrase="marks.why.top">Kepalanya keluar dari bagian atas fotonya,
+      jadi tidak ada puncak kepala yang bisa ditemukan.</span>
+    <span data-phrase="marks.why.eyes">Matanya tidak bisa dikenali, jadi keduanya
+      ditaruh di tempat kepala seukuran ini biasanya memilikinya.</span>
+    <span data-phrase="marks.why.chin">Dagunya datang dari proporsi sebuah kepala
+      alih-alih dari siluet kepala yang ini.</span>
+
+    <span data-phrase="marks.button.again">Cari wajahnya lagi</span>
+    <span data-phrase="marks.button.back">Kembalikan titiknya</span>
+  </div>
+</main>

@@ -1,0 +1,269 @@
+#
+# Pemisah GIF - Bahasa Indonesia.
+#
+# Overrides for tools/split-gif/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pemisah GIF"
+heading = "Pemisah&nbsp;GIF <span class=\"h1-kw\">&mdash; setiap bingkai jadi PNG sendiri</span>"
+tagline = "Setiap bingkai keluar sebagai PNG-nya sendiri."
+
+title = "Pemisah GIF &mdash; Setiap Bingkai jadi PNG, Gratis dan Tanpa Unggah"
+description = "Pisahkan GIF bergerak menjadi bingkai-bingkainya dan simpan masing-masing sebagai PNG, gratis dan sepenuhnya di peramban Anda. Menjaga transparansi dan waktunya. Tidak ada yang diunggah, dan jalan tanpa internet."
+og_title = "Pemisah GIF &mdash; bongkar sebuah animasi, di peramban Anda"
+og_description = "Setiap bingkai sebuah GIF sebagai PNG-nya sendiri, dengan jeda dan transparansinya utuh. File dibaca di perangkat Anda sendiri dan tidak pernah diunggah."
+og_image_alt = "Pemisah GIF - setiap bingkai sebuah GIF sebagai PNG-nya sendiri"
+
+pledge = """
+    GIF-nya dibaca, didekompresi, dan digambar oleh peramban Anda sendiri, dan
+    setiap PNG dikodekan di memori mesin ini. Tidak ada server di ujung lain
+    halaman ini untuk menerima sebuah animasi, bahkan seandainya ada sesuatu di
+    sini yang menginginkannya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu pisahkan sebuah GIF. Tidak satu pun permintaan membawa gambar,
+      bingkai, atau nama file. Atau cabut koneksi internet dan tetap pisahkan
+      satu."""
+
+read_first = """
+, <code>src/gif.js</code> untuk pembaca yang
+      mendekompresi bingkainya, dan <code>src/compose.js</code> untuk aturan yang
+      menumpuknya satu di atas yang lain &mdash; keduanya tidak punya satu baris
+      pun yang bisa menjangkau jaringan."""
+
+howto_heading = "Cara memisahkan GIF menjadi bingkai"
+
+card = """
+            Bongkar sebuah animasi: setiap bingkai sebagai PNG-nya sendiri,
+            dengan transparansi terjaga dan waktunya dicatat. GIF-nya
+            didekompresi di perangkat Anda sendiri."""
+
+[words]
+plural = "GIF"
+choose = "sebuah GIF"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "File tetap di perangkat Anda"
+
+[[privacy]]
+title = "GIF Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya ada.
+      Dulu ini tertulis <code>connect-src 'none'</code>, yang mutlak; memasang
+      iklan memakan itu, dan mengatakannya adalah bagian dari kesepakatan."""
+
+[[privacy]]
+title = "Pembaca GIF-nya adalah dua file di repositori ini."
+body = """
+ Peramban akan memutar sebuah GIF tapi
+      tidak akan menyerahkan bagian-bagiannya, jadi formatnya dibaca di sini:
+      <code>src/gif.js</code> adalah wadah dan dekompresor LZW-nya,
+      <code>src/compose.js</code> adalah aturan pembuangan yang menentukan
+      tampilan setiap bingkai begitu bingkai sebelumnya ada di bawahnya. Tidak
+      ada yang diambil untuk membuka sebuah file, dan tidak ada mesin yang
+      diunduh saat pertama dipakai."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang animasi Anda: bukan
+      file, bukan bingkai, bukan nama, ukuran, atau jumlah. Setiap baris yang
+      membaca, mendekompresi, menggambar, atau mengodekan sebuah gambar disajikan
+      dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau file Anda. Tidak ada
+      yang terjadi kecuali Anda mengekliknya, dan yang akan Anda tuju adalah
+      situs milik orang lain."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan setiap bagian
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana: alat yang
+      mengirim animasi Anda ke tempat lain untuk dibongkar akan berhenti begitu
+      Anda mencabut koneksi."""
+
+[[howto]]
+title = "Pilih GIF-nya."
+body = """
+ Jatuhkan ke pemilih file, atau pilih sendiri.
+      Peramban membacanya langsung dari disk Anda, dan halaman ini memberi tahu
+      apa yang ditemukannya: ukurannya, jumlah bingkainya, berapa lama ia
+      diputar, dan berapa kali ia berulang."""
+
+[[howto]]
+title = "Putuskan isi setiap PNG."
+body = """
+ <strong>Bingkai seperti tampilannya</strong>
+      adalah yang diinginkan hampir semua orang: gambar utuh pada momen itu dalam
+      animasi. <strong>Hanya piksel yang disimpan bingkai itu</strong> adalah
+      tambalan yang sebenarnya dibawa file, pada ukurannya sendiri dan di
+      tempatnya sendiri, yang merupakan cara GIF tetap kecil dan bukan tampilan
+      animasinya."""
+
+[[howto]]
+title = "Putuskan apa yang terjadi pada transparansinya."
+body = """
+ PNG menjaganya, dan itu bawaan yang
+      jujur. Isi dengan sebuah warna kalau bingkainya akan pergi ke tempat yang
+      mengabaikan transparansi dan akan mengubahnya menjadi hitam."""
+
+[[howto]]
+title = "Pilih bingkai yang Anda mau."
+body = """
+ Semuanya secara bawaan. "Simpan setiap
+      bingkai kedua" menipiskan rekaman yang panjang, dan kotak centang di
+      kisinya menimpanya &mdash; penomorannya tidak pernah berubah, jadi bingkai
+      42 tetap disebut bingkai 42 sesedikit apa pun tetangganya yang Anda
+      simpan."""
+
+[[howto]]
+title = "Unduh."
+body = """
+ Satu bingkai sekali jalan dari kisinya, atau semuanya
+      sebagai satu ZIP sehingga ada satu permintaan simpan alih-alih ratusan.
+      ZIP-nya bisa membawa <code>frames.txt</code> yang mencantumkan berapa lama
+      setiap bingkai ditahan, yang merupakan satu hal yang tidak bisa dikatakan
+      sendiri oleh sebuah folder berisi PNG."""
+
+[[faq]]
+q = "Apakah GIF saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File dibaca, didekompresi, dan digambar oleh peramban Anda sendiri
+        di perangkat keras Anda sendiri, dan setiap PNG dikodekan di sini di
+        memori. Alat ini tidak punya sisi server, dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya &mdash; tidak satu pun milik situs
+        ini. Cabut koneksi jaringan dan ia tetap memisahkan GIF."""
+
+[[faq]]
+q = "Kenapa satu bingkai tampak seperti potongan kecil dari gambarnya?"
+a = """
+        Karena memang itu isi file-nya. Sebuah GIF adalah gambar pertama diikuti
+        tambalan-tambalan: setiap bingkai berikutnya hanya menyimpan persegi
+        panjang yang berubah, dan segala yang lain di layar adalah apa yang
+        ditinggalkan bingkai sebelumnya di sana. Kepala orang yang berbicara di
+        depan dinding diam karena itu menyimpan satu wajah per bingkai, bukan
+        satu gambar per bingkai, dan itulah seluruh alasan format ini tidak
+        raksasa.
+        <br><br>
+        Anda melihatnya karena "Hanya piksel yang disimpan bingkai itu" sedang
+        dipilih. Beralihlah ke "Bingkai seperti tampilannya" dan setiap PNG
+        menjadi gambar utuh sebagaimana animasinya tampak pada momen itu."""
+
+[[faq]]
+q = "Apakah transparansinya terjaga?"
+a = """
+        Ya. Transparansi GIF hanya satu bit &mdash; sebuah piksel entah dicat
+        entah tidak terlihat, tanpa apa pun di antaranya &mdash; dan PNG
+        menyimpan persis itu, jadi bingkainya keluar dengan area transparannya
+        utuh. Kalau Anda lebih suka latar padat, atur "Area transparan" untuk
+        diisi dengan sebuah warna; itu ditulis ke dalam PNG dan tidak bisa
+        dibatalkan sesudahnya."""
+
+[[faq]]
+q = "Kenapa jeda bingkainya bukan angka yang saya harapkan?"
+a = """
+        Sebuah GIF menyimpan setiap jeda dalam perseratus detik, dan peramban
+        sudah membatasi apa pun di bawah dua perseratus menjadi sepersepuluh
+        detik sejak 1990-an &mdash; aturan yang ditulis untuk bola dunia berputar
+        pada zaman itu dan tidak pernah dicabut. Jadi bingkai yang file-nya
+        berkata 0,01 dtk diputar pada 0,10 dtk di mana-mana. Alat ini menampilkan
+        jeda sebagaimana ia benar-benar diputar, dan menyebutkan apa yang
+        disimpan file di sebelahnya kalau keduanya berbeda."""
+
+[[faq]]
+q = "Bisakah saya menyusun bingkainya kembali?"
+a = """
+        Bisa, dengan <a href="../buat-gif/">Pembuat GIF</a> di situs ini atau
+        dengan apa pun lain yang menerima satu folder gambar. Untuk itulah
+        <code>frames.txt</code> di dalam ZIP: memisahkan sebuah animasi membuang
+        waktunya, karena sebuah PNG tidak punya tempat untuk mencatat berapa lama
+        ia ditahan, jadi daftar itu membawa keluar jeda dan posisi setiap
+        bingkai."""
+
+[[faq]]
+q = "Bingkainya bisa disimpan dalam format apa saja?"
+a = """
+        PNG, dan sengaja hanya PNG. Satu bingkai GIF paling banyak 256 warna
+        dengan satu bit transparansi; PNG menyimpannya persis dan tanpa
+        kehilangan, sedangkan JPEG akan membuang transparansinya, mengarang warna
+        yang tidak pernah dimiliki bingkai itu, dan biasanya menghasilkan file
+        yang <em>lebih besar</em> dari gambar datar. Kalau Anda butuh JPEG,
+        ubah PNG-nya sesudahnya dengan
+        <a href="../ubah-ukuran-gambar/">Pengubah Ukuran Gambar</a>."""
+
+[[faq]]
+q = "Adakah batas berapa banyak bingkai yang akan dibacanya?"
+a = """
+        Tidak ada batas tetap. Batas praktisnya adalah memori mesin Anda sendiri:
+        sebuah GIF mengembang menjadi kira-kira satu byte per piksel per bingkai
+        saat dibaca, jadi file kecil bisa berarti memori yang sangat besar, dan
+        halaman ini berhenti membaca alih-alih membiarkan tab-nya mati. Kalau itu
+        terjadi ia mengatakannya dan menyerahkan bingkai yang sempat
+        didapatnya."""
+
+[[faq]]
+q = "Apakah ia akan membuka GIF yang rusak?"
+a = """
+        Biasanya. Unduhan yang terpotong, penanda akhir yang hilang, dan bingkai
+        terakhir yang berhenti di tengah aliran semuanya lazim, dan pembaca yang
+        menolaknya tidak berguna justru untuk file yang paling ingin dibongkar
+        orang. Bingkai mana pun yang lengkap akan kembali, dengan catatan tentang
+        apa yang salah. Hanya file yang sama sekali bukan GIF yang ditolak
+        mentah-mentah."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, dan tidak ada masa uji coba.
+        Tidak ada tanda air pada bingkainya juga. Situs ini memasang iklan, dan
+        itulah yang membiayainya; iklan tidak diberi apa pun tentang file
+        Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim animasi Anda ke tempat lain untuk diproses
+        akan berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Pisahkan GIF bergerak menjadi bingkai-bingkainya dan simpan masing-masing sebagai PNG. File-nya didekompresi di peramban Anda, jadi tidak ada animasi yang pernah diunggah."
+features = [
+  "Setiap bingkai sebuah GIF sebagai PNG-nya sendiri, dengan transparansi terjaga",
+  "Bingkai seperti tampilannya, atau hanya piksel yang disimpan bingkai itu",
+  "Jeda, posisi, ukuran, dan cara pembuangan ditampilkan untuk setiap bingkai",
+  "Simpan setiap bingkai kedua atau kelima, atau centang yang Anda mau",
+  "Satu ZIP untuk semuanya, dengan daftar waktu opsional untuk menyusun ulang animasinya",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan GIF di sini"
+hint = "atau klik untuk menelusuri &mdash; bergerak atau diam, ukuran berapa pun"

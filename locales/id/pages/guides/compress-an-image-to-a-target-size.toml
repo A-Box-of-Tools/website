@@ -1,0 +1,20 @@
+#
+# Panduan: mengompres gambar ke ukuran tertentu - Bahasa Indonesia.
+#
+
+nav = "Mengompres gambar"
+title = "Cara Mengompres Gambar ke Ukuran File yang Tepat"
+description = "Sebuah formulir unggahan meminta 500 KB dan foto Anda 4 MB. Berapa sebenarnya harga sebuah batas ukuran, setelan mana yang digerakkan lebih dulu, dan kenapa sebuah PNG tidak akan menyusut seperti JPEG."
+
+heading = "Cara mengompres gambar ke ukuran file yang tepat"
+lede = """
+    Seseorang sudah menyebutkan sebuah angka kepada Anda &mdash; 100&nbsp;KB,
+    500&nbsp;KB, 2&nbsp;MB &mdash; dan foto Anda jauh dari itu. Inilah berapa
+    harga angka itu, untuk apa membelanjakannya, dan bagaimana tahu apakah
+    hasilnya masih cukup baik untuk dikirim."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Mengompres gambar ke ukuran file yang tepat"
+og_description = "Berapa sebenarnya harga sebuah batas ukuran, setelan mana yang digerakkan lebih dulu, dan kenapa sebuah PNG tidak akan menyusut seperti JPEG."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

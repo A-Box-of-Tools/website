@@ -1,0 +1,252 @@
+#
+# Pengambil Bingkai Video - Bahasa Indonesia.
+#
+# Overrides for tools/grab-frame/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pengambil Bingkai Video"
+heading = "Pengambil&nbsp;Bingkai&nbsp;Video <span class=\"h1-kw\">&mdash; simpan bingkai dari video</span>"
+tagline = "Gambar diam berkualitas penuh dari titik mana pun."
+
+title = "Ambil Bingkai dari Video &mdash; Gratis, Tanpa Unggah, Jalan Tanpa Internet"
+description = "Simpan bingkai mana pun dari MP4, MOV, atau WebM sebagai PNG atau JPEG ukuran penuh. Melangkah bingkai demi bingkai, atau ambil satu setiap beberapa detik. Berjalan di peramban Anda: tidak ada yang diunggah."
+og_title = "Pengambil Bingkai Video &mdash; gambar diam dari titik mana pun, tanpa mengunggah klipnya"
+og_description = "Temukan momennya, melangkah ke bingkai yang persis, dan simpan pada resolusi asli videonya. Bingkainya didekode di perangkat Anda sendiri dan gambarnya tidak pernah dikodekan dua kali."
+og_image_alt = "Pengambil Bingkai Video - simpan bingkai dari video di peramban Anda, tanpa ada yang diunggah"
+
+pledge = """
+    Bingkainya dicari, didekode, dan digambar oleh peramban Anda sendiri, di
+    perangkat keras Anda sendiri. Tidak ada di sini yang bisa mengambil atau
+    mengirim apa pun &mdash; alat ini sama sekali tidak punya fitur jaringan
+    &mdash; dan seandainya pun ada, tidak ada server di ujung lain halaman ini
+    untuk menerima sebuah video."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu ambil sebuah bingkai. Tidak satu pun permintaan membawa gambar, nama
+      file, atau satu byte pun dari yang Anda pilih. Atau cabut koneksi internet
+      dan tetap ambil satu &mdash; alat yang mengirim video Anda ke tempat lain
+      untuk diproses akan langsung berhenti."""
+
+read_first = """
+, <code>src/demux.js</code> untuk pembaca yang mencari
+      bingkai di dalam MP4, dan <code>src/frames.js</code> untuk bagian yang
+      mendekode bingkai yang Anda minta. Tidak satu pun mengimpor sesuatu yang
+      bisa membuat permintaan."""
+
+howto_heading = "Cara mengambil bingkai dari video"
+
+card = """
+            Simpan bingkai mana pun dari sebuah klip sebagai gambar, pada ukuran
+            asli videonya &mdash; satu per satu, atau satu setiap beberapa
+            detik."""
+
+[words]
+plural = "video"
+choose = "sebuah video"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Resolusi penuh"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[privacy]]
+title = "Video Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Alat ini sama sekali tidak punya
+      fitur jaringan: tidak ada alamat untuk ditempelkan, tidak ada yang diunduh,
+      tidak ada mesin yang diambil saat pertama dipakai. Setiap byte yang
+      menyentuh video Anda datang dari asal ini ketika halaman dimuat."""
+
+[[privacy]]
+title = "Pendekodean berjalan lokal."
+body = """
+ Bingkainya melewati WebCodecs di peramban
+      Anda sendiri, atau melewati mesin pemutar yang sama yang toh akan
+      menampilkan klip itu kepada Anda. Gambarnya digambar ke sebuah kanvas di
+      mesin ini dan diserahkan langsung ke unduhan."""
+
+[[privacy]]
+title = "File dibaca beberapa megabyte sekali jalan."
+body = """
+ Video adalah satu-satunya jenis file
+      di sini yang tidak bisa dipastikan muat di memori, jadi ia tidak pernah
+      dimuat utuh. Pembaca mengambil sebuah jendela di sekitar bingkai apa pun
+      yang Anda minta &mdash; itu juga sebabnya klip dua gigabyte terbuka
+      secepat klip kecil."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang video Anda: bukan file,
+      bukan bingkai, bukan nama, ukuran, durasi, atau momen tempat Anda berhenti.
+      Setiap baris yang membaca, mendekode, atau menggambar disajikan dari asal
+      ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau video Anda."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih sebuah video."
+body = """
+ Jatuhkan MP4, MOV, M4V, atau WebM ke
+      pemilih file, atau pilih sendiri. Peramban membacanya langsung dari disk
+      Anda; tidak ada yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Temukan momennya."
+body = """
+ Putar dan berhentilah di tempat yang Anda
+      mau, atau seret penggeser &mdash; pada MP4 penggeser bergerak satu bingkai
+      sekali langkah, jadi tidak ada pembulatan antara yang Anda lihat dan yang
+      Anda simpan. Tombol panah melangkah satu bingkai sekali tekan, dan tahan
+      <kbd>Shift</kbd> untuk sepuluh."""
+
+[[howto]]
+title = "Pilih formatnya."
+body = """
+ PNG menyimpan bingkainya persis seperti hasil
+      dekode, dan itulah arti "kualitas penuh" di sini. JPEG dan WebP lebih kecil
+      dan merupakan kompresi kedua di atas kompresi videonya sendiri, yang tidak
+      masalah untuk pratinjau dan tidak untuk apa pun yang disunting
+      sesudahnya."""
+
+[[howto]]
+title = "Ambil satu, atau ambil serangkaian."
+body = """
+ Satu bingkai langsung masuk ke
+      unduhan Anda. "Setiap N detik" menelusuri klip sekali dan mengambil gambar
+      diam di setiap tanda &mdash; berguna untuk lembar kontak dan gambar mini
+      &mdash; dan hasilnya keluar sebagai satu ZIP, bukan seratus permintaan
+      simpan."""
+
+[[faq]]
+q = "Apakah video saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Ia dibaca dan didekode oleh peramban Anda sendiri di perangkat
+        keras Anda sendiri. Alat ini tidak punya sisi server, dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya &mdash; tidak satu pun milik situs
+        ini. Cabut koneksi internet dan tetap ambil sebuah bingkai kalau Anda
+        lebih suka memeriksa daripada diberi tahu."""
+
+[[faq]]
+q = "Apa sebenarnya arti &quot;kualitas penuh&quot;?"
+a = """
+        Dua hal. Gambar diamnya disimpan pada resolusi asli videonya, bukan pada
+        ukuran pratinjau di halaman &mdash; klip 4K memberi gambar
+        3840&nbsp;x&nbsp;2160. Dan dengan PNG dipilih, bingkainya disimpan persis
+        seperti keluar dari dekoder, jadi file itu memuat gambar yang dimuat
+        videonya, tanpa putaran kompresi kedua di atasnya. Tangkapan layar
+        jendela pemutar tidak memberi keduanya: ia seukuran jendela, diambil
+        setelah pemutar menskalakan dan mengelola warnanya."""
+
+[[faq]]
+q = "Dari format video apa saja saya bisa mengambil bingkai?"
+a = """
+        MP4, M4V, dan MOV dibaca langsung, apa pun isinya: H.264, HEVC, AV1, atau
+        VP9, selama peramban Anda bisa mendekode kodek itu. Itulah jalur yang
+        persis, tempat alat ini mengalamati bingkai satu per satu. Apa pun lain
+        yang bisa diputar peramban Anda &mdash; yang paling jelas WebM &mdash;
+        ditangani dengan mencari posisi di pemutar dan menggambar apa yang
+        ditampilkannya, yang tetap menyimpan gambar ukuran penuh tapi mendarat
+        pada bingkai yang dipilih pemutar, bukan yang Anda minta. File yang tidak
+        bisa dibaca maupun diputar peramban, yang dalam praktiknya berarti AVI,
+        WMV, FLV, dan sebagian besar MKV, ditolak dengan pesan."""
+
+[[faq]]
+q = "Bisakah saya melangkah satu bingkai sekali waktu?"
+a = """
+        Pada MP4, bisa, persis: alat ini membaca daftar bingkai milik file itu
+        sendiri, jadi tombol panah bergerak di antara gambar-gambar yang memang
+        ada di dalamnya &mdash; termasuk pada klip yang laju bingkainya
+        berubah-ubah, di mana langkah tetap seperseratus tiga puluh detik akan
+        melenceng. Di jalur pemutaran tidak ada daftar seperti itu, jadi satu
+        langkah adalah geseran kira-kira satu bingkai dan halaman ini
+        mengatakannya."""
+
+[[faq]]
+q = "Kenapa video ponsel saya yang tegak sudah menghadap benar di sini?"
+a = """
+        Karena rotasinya diterapkan dengan sengaja. Ponsel merekam melintang dan
+        menulis seperempat putaran ke dalam file alih-alih memutar pikselnya,
+        jadi bingkai yang diserahkan dekoder terbaring miring dan setiap pemutar
+        memutarnya dalam perjalanan ke layar Anda. Alat yang melewati langkah itu
+        menyimpan gambar yang masuk akal dari momen yang benar, dalam keadaan
+        miring. Alat ini membaca putaran itu dari jalurnya dan menerapkannya
+        sebelum apa pun digambar."""
+
+[[faq]]
+q = "Adakah batas ukuran atau durasi videonya?"
+a = """
+        Tidak ada batas yang tertanam di alat ini, dan file tidak dibaca ke
+        memori sekaligus &mdash; ia ditelusuri beberapa megabyte sekali jalan,
+        dan itulah sebabnya klip panjang terbuka secepat klip pendek. Gambar diam
+        yang Anda ambil ditahan di halaman sampai Anda mengunduhnya, jadi batas
+        praktisnya adalah beberapa ratus PNG 4K, bukan videonya sendiri."""
+
+[[faq]]
+q = "Bisakah saya mengubah ukuran atau memangkas gambarnya sesudahnya?"
+a = """
+        Tidak di sini, tapi di sebelah. Alat ini menyimpan bingkainya apa adanya;
+        mengubah ukuran atau bentuknya adalah pekerjaan terpisah dengan
+        keputusannya sendiri, dan
+        <a href="../ubah-ukuran-gambar/">Pengubah Ukuran Gambar</a> melakukan
+        keduanya, juga tanpa mengunggah apa pun. Memperkecil filenya tanpa
+        mengubah gambarnya adalah
+        <a href="../kompres-gambar/">Kompresor Gambar</a>."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang video Anda."""
+
+[schema]
+browser_requirements = "Memerlukan JavaScript. Pengambilan yang persis per bingkai memerlukan peramban dengan WebCodecs; selain itu kembali ke pencarian posisi di pemutar."
+description = "Simpan bingkai mana pun dari sebuah video sebagai PNG, JPEG, atau WebP ukuran penuh di peramban. MP4, MOV, dan M4V dibaca bingkai demi bingkai lewat WebCodecs sehingga bingkai persis yang diminta itulah yang disimpan; apa pun lain yang bisa diputar peramban ditangkap dari pemutarnya. Tidak ada yang diunggah."
+features = [
+  "Menyimpan gambar diam dari video MP4, MOV, M4V, dan WebM",
+  "Sumber H.264, HEVC, AV1, dan VP9, didekode lewat WebCodecs",
+  "Melangkah bingkai demi bingkai lewat daftar bingkai milik file itu sendiri",
+  "PNG untuk salinan persis bingkainya, atau JPEG dan WebP untuk yang lebih kecil",
+  "Satu gambar diam setiap N detik, diunduh bersama sebagai satu ZIP",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan video di sini"
+hint = "atau klik untuk menelusuri &mdash; MP4, MOV, M4V, WebM, dan apa pun lain yang bisa diputar peramban ini"

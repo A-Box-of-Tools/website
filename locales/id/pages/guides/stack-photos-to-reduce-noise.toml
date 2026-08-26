@@ -1,0 +1,20 @@
+#
+# Panduan: menumpuk foto untuk mengurangi derau - Bahasa Indonesia.
+#
+
+nav = "Menumpuk foto"
+title = "Cara Menumpuk Foto untuk Mengurangi Derau, atau Membuang Orang"
+description = "Menumpuk menggabungkan sebuah burst bingkai menjadi satu gambar. Metode mana yang dipakai tergantung apa yang ingin Anda hilangkan: derau, orang yang lewat, atau kedalaman bidang yang tipis pada sebuah bidikan makro. Cara kerja masing-masing, berapa harganya, dan di mana file RAW cocok."
+
+heading = "Cara menumpuk foto untuk mengurangi derau, atau membuang orang"
+lede = """
+    Sebuah burst bingkai menyimpan lebih banyak informasi daripada satu pun di
+    antaranya. Merata-ratakannya membatalkan deraunya; mengambil nilai tengah
+    setiap pikselnya menghapus apa pun yang hanya ada sebagian waktu. Anda mau
+    yang mana sepenuhnya tergantung apa yang bergerak."""
+
+updated = "25 Agustus 2026"
+
+og_title = "Cara menumpuk foto untuk mengurangi derau, atau membuang orang"
+og_description = "Rata-ratakan sebuah burst untuk membunuh derau, ambil mediannya untuk mengosongkan alun-alun yang ramai, terangkan untuk jejak bintang. Metode mana menyelesaikan masalah mana, dan di mana file RAW cocok."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

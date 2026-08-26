@@ -1,0 +1,242 @@
+#
+# Gambar ke Video - Bahasa Indonesia.
+#
+# Overrides for tools/images-to-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Gambar ke Video"
+heading = "Gambar&nbsp;ke&nbsp;Video <span class=\"h1-kw\">&mdash; buat slide MP4</span>"
+tagline = "Ubah satu folder gambar menjadi sebuah video."
+
+title = "Urutan Gambar ke MP4 &mdash; Gratis, Tanpa Unggah, Jalan Tanpa Internet"
+description = "Ubah gambar JPG, PNG, atau WebP menjadi video slide MP4, gratis dan sepenuhnya di peramban Anda. Tidak ada yang diunggah, tanpa pendaftaran, dan jalan tanpa internet."
+og_title = "Urutan Gambar ke MP4 &mdash; gratis, di peramban Anda"
+og_description = "Ubah urutan render, time-lapse, atau satu folder foto menjadi MP4. Pengodean berjalan di perangkat Anda sendiri; tidak ada yang diunggah."
+og_image_alt = "Gambar ke Video - ubah satu folder gambar menjadi slide MP4"
+
+pledge = """
+    Setiap bingkai dikodekan oleh peramban Anda sendiri dan videonya dibangun di
+    memori mesin ini. Encoder-nya tidak pernah menyentuh jaringan, dan tidak ada
+    server di ujung lain halaman ini untuk menerima sebuah gambar bahkan
+    seandainya ia menyentuhnya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu buat sebuah video. Tidak satu pun permintaan membawa gambar, gambar
+      mini, atau nama file. Atau cabut koneksi internet dan tetap buat satu."""
+
+read_first = """
+, dan <code>src/encoder.js</code> untuk perulangan
+      pengodean yang tidak pernah menyentuh jaringan."""
+
+howto_heading = "Cara mengubah gambar menjadi video"
+
+card = """
+            Ubah satu folder gambar menjadi slide MP4. Pengodean berjalan di
+            perangkat Anda sendiri, memakai perangkat keras Anda sendiri."""
+
+[words]
+plural = "gambar"
+choose = "beberapa gambar"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[facts]]
+text = "File tetap di perangkat Anda"
+
+[[privacy]]
+title = "Gambar Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya ada.
+      Dulu ini tertulis <code>connect-src 'none'</code>, yang mutlak; memasang
+      iklan memakan itu, dan mengatakannya adalah bagian dari kesepakatan."""
+
+[[privacy]]
+title = "Pengodean berjalan lokal."
+body = """
+ WebCodecs berjalan di peramban Anda dan file
+      yang sudah jadi diserahkan langsung ke unduhan. Aplikasi ini tidak punya
+      sisi server."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang gambar Anda: bukan file,
+      bukan gambar mini, bukan nama, ukuran, atau jumlah. Setiap baris yang
+      membaca, mendekode, menyusun, atau mengodekan sebuah gambar disajikan dari
+      asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau gambar Anda. Tidak
+      ada yang terjadi kecuali Anda mengekliknya, dan yang akan Anda tuju adalah
+      situs milik orang lain."""
+
+[[privacy]]
+title = "Satu pengecualian yang disengaja."
+body = """
+ Kalau Anda memakai "Tambah dari alamat
+      web", server itu dihubungi untuk mengambil gambarnya dan akan melihat
+      alamat IP Anda. Hanya gambar yang Anda tempelkan yang pernah diambil, dan
+      hanya masuk: <code>img-src</code> dibuka, <code>connect-src</code> tidak.
+      Penghitung di bawah mencantumkan setiap asal luar yang dihubungi."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semuanya kecuali
+      pemuatan lewat alamat web tetap berfungsi. Itulah bukti yang paling
+      sederhana."""
+
+[[howto]]
+title = "Pilih gambar Anda."
+body = """
+ Jatuhkan sebuah folder ke pemilih file,
+      atau pilih file-nya sendiri. Peramban membacanya langsung dari disk Anda;
+      tidak ada yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Urutkan dan atur berapa lama masing-masing ditahan."
+body = """
+ Seret untuk mengurutkan ulang. Waktu
+      tahan bisa diberikan dalam bingkai atau dalam detik, untuk semua gambar
+      sekaligus atau satu gambar sekali jalan."""
+
+[[howto]]
+title = "Pilih resolusi dan laju bingkai."
+body = """
+ "Ikuti resolusi tertinggi" mengikuti
+      gambar terbesar Anda; pilihan siap pakainya mencakup 4K, 1080p, 720p,
+      persegi, dan tegak, dan ada ukuran sesuai keinginan kalau tidak ada yang
+      cocok."""
+
+[[howto]]
+title = "Buat videonya dan unduh."
+body = """
+ Pengodean berjalan di perangkat keras
+      Anda sendiri, jadi lamanya tergantung mesin Anda, bukan pada antrean. MP4
+      yang sudah jadi diserahkan langsung ke unduhan peramban Anda."""
+
+[[faq]]
+q = "Apakah gambar saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Gambar Anda dibaca, disusun, dan dikodekan oleh peramban Anda
+        sendiri di perangkat keras Anda sendiri. Alat ini tidak punya sisi
+        server, dan <code>Content-Security-Policy</code> halaman ini menyebut
+        satu per satu setiap alamat yang boleh dihubunginya &mdash; tidak satu
+        pun milik situs ini. Satu-satunya pengecualian adalah fitur opsional
+        "tambah dari alamat web", yang mengambil gambar yang Anda tempelkan, dan
+        server itu melihat alamat IP Anda."""
+
+[[faq]]
+q = "Format gambar apa saja yang bisa saya pakai?"
+a = """
+        Format gambar diam apa pun yang bisa didekode peramban Anda, yang dalam
+        praktiknya berarti JPG, PNG, WebP, GIF, AVIF, dan di perangkat Apple,
+        HEIC. Tidak ada daftar terpisah yang harus dijaga tetap mutakhir di sini,
+        karena pendekodean adalah tugas peramban, bukan tugas kami."""
+
+[[faq]]
+q = "Format video apa yang dihasilkannya?"
+a = """
+        MP4 dengan video H.264, yang bisa diputar di hampir apa pun. Di peramban
+        tanpa WebCodecs, alat ini kembali ke perekaman WebM &mdash; rekaman yang
+        sama dalam wadah yang diterima lebih sedikit penyunting."""
+
+[[faq]]
+q = "Bisakah saya memakai ini untuk urutan render Blender atau After Effects?"
+a = """
+        Bisa &mdash; urutan render bernomor justru itulah gunanya alat ini.
+        Tambahkan bingkai yang ditulis perender Anda, biarkan waktu tahannya satu
+        bingkai masing-masing, dan atur laju bingkainya agar cocok dengan
+        render-nya. "Urutkan berdasarkan nama" menghitung seperti yang Anda
+        harapkan, jadi <code>frame_2</code> mendarat sebelum
+        <code>frame_10</code>, bukan sesudahnya.
+        <br><br>
+        Satu hal yang perlu diketahui sebelum mulai: H.264 tidak punya kanal
+        alfa, jadi transparansi diratakan ke warna latar alih-alih dibawa serta.
+        Kalau Anda perlu menjaga alfanya, susun bingkainya di penyunting Anda
+        saja."""
+
+[[faq]]
+q = "Bisakah saya membuat time-lapse dari foto?"
+a = """
+        Bisa, dan itu pekerjaan yang sama dengan urutan render: tahan setiap foto
+        selama satu bingkai dan pilih laju bingkainya. Pada 30 fps setiap tiga
+        puluh foto menjadi satu detik video; pada 12 fps foto yang sama itu
+        berjalan dua setengah detik.
+        <br><br>
+        "Urutkan berdasarkan tanggal" mengembalikan isi kamera ke urutan
+        pengambilannya, yang penting kalau nama file-nya sudah mulai lagi dari
+        0001. Foto dengan ukuran berbeda tidak masalah &mdash; "Ikuti resolusi
+        tertinggi" menetapkan ukuran video sehingga tidak ada satu pun yang
+        diperkecil."""
+
+[[faq]]
+q = "Adakah batas berapa banyak gambar, atau berapa panjang videonya?"
+a = """
+        Tidak ada batas yang tertanam di alat ini. Batas praktisnya adalah memori
+        mesin Anda sendiri, karena video yang sudah jadi dirakit di sana sebelum
+        Anda mengunduhnya. Slide 4K yang sangat besar adalah yang pertama
+        merasakannya."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, dan tidak ada masa uji coba.
+        Situs ini memasang iklan, dan itulah yang membiayainya; iklan tidak
+        diberi apa pun tentang gambar Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim gambar Anda ke tempat lain untuk diproses
+        akan berhenti begitu Anda mencabut koneksi."""
+
+[[faq]]
+q = "Bisakah saya menambahkan musik atau lagu latar?"
+a = """
+        Belum. Alat ini hanya menghasilkan video: MP4 yang ditulisnya punya satu
+        jalur video dan tidak punya jalur audio. Tambahkan lagu latar sesudahnya
+        di penyunting video kalau Anda membutuhkannya."""
+
+[schema]
+browser_requirements = "Memerlukan JavaScript. Keluaran MP4 memerlukan peramban dengan WebCodecs; selain itu kembali ke WebM."
+description = "Ubah satu folder gambar menjadi video slide MP4. Setiap langkah berjalan di peramban Anda, jadi tidak ada gambar yang pernah diunggah."
+features = [
+  "Mengubah gambar JPG, PNG, WebP, GIF, dan AVIF menjadi video",
+  "Keluaran MP4 (H.264), dengan WebM sebagai cadangan",
+  "Resolusi sampai 3840x2160, laju bingkai dari 12 sampai 60 fps",
+  "Waktu tahan per gambar dalam bingkai atau detik",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan gambar di sini"
+hint = "atau klik untuk menelusuri &mdash; JPEG, PNG, WebP, GIF, AVIF"
+
+[picker.urls]
+summary = "Tambah dari alamat web"
+button = "Unduh gambar"
+noun = "gambar"

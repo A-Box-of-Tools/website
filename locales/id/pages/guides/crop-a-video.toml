@@ -1,0 +1,24 @@
+#
+# Panduan: memangkas video - Bahasa Indonesia.
+#
+# "Pangkas" di sepanjang halaman ini, dan tidak pernah "potong": memangkas
+# mengubah bentuk gambarnya, memotong memendekkan klipnya, dan panduan
+# pemotongan ada di sebelah.
+#
+
+nav = "Memangkas video"
+title = "Cara Memangkas Video ke Bentuk Lain"
+description = "Pangkas sebuah klip menjadi persegi, potret 9:16, atau kotak piksel yang tepat. Rasio mana yang diminta tiap lapak, kenapa pemangkasan harus mengodekan ulang padahal pemotongan tidak, dan berapa harganya."
+
+heading = "Cara memangkas video ke bentuk lain"
+lede = """
+    Memangkas mengubah bentuk gambarnya, dan itu berarti menulis bingkai baru
+    &mdash; tidak ada jalan memutarnya, dan alat mana pun yang mengaku
+    sebaliknya sedang melakukan hal lain. Inilah berapa harganya, dan bagaimana
+    membelanjakannya dengan baik."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara memangkas video ke bentuk lain"
+og_description = "Rasio aspek mana yang diminta tiap lapak, kenapa pemangkasan harus mengodekan ulang padahal pemotongan tidak, dan berapa harganya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

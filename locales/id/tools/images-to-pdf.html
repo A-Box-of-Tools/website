@@ -1,0 +1,236 @@
+<!--
+  tools/images-to-pdf/body.html, in Indonesian.
+
+  Every id, class, data-sort and option value below is what src/main.js reaches
+  for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; gambar -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih gambar</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" data-sort="name" class="ghost">Urutkan berdasarkan nama</button>
+        <button type="button" data-sort="date" class="ghost">Urutkan berdasarkan tanggal</button>
+        <button type="button" data-sort="reverse" class="ghost">Balik urutan</button>
+        <button type="button" id="clear-all" class="ghost danger">Hapus semua</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Satu gambar per halaman, dalam urutan ini. Seret lewat pegangan
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> untuk memindahkan
+      sebuah halaman, atau pakai panah padanya.
+    </p>
+
+    <ul id="image-list" class="image-list"></ul>
+  </section>
+
+  <!-- Langkah 2 &mdash; halamannya -->
+  <section class="card">
+    <h2><span class="step">2</span> Penyiapan halaman</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">Ukuran halaman</label>
+        <select id="page-size">
+          <option value="fit" selected>Paskan halaman ke setiap gambar</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8,5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8,5 &times; 14 in</option>
+          <option value="a3">A3 &mdash; 297 &times; 420 mm</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+          <option value="tabloid">Tabloid &mdash; 11 &times; 17 in</option>
+          <option value="custom">Sesuai keinginan&hellip;</option>
+        </select>
+        <div id="custom-size" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="1" max="5000" step="1" value="210"
+                 aria-label="Lebar halaman sesuai keinginan">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="1" max="5000" step="1" value="297"
+                 aria-label="Tinggi halaman sesuai keinginan">
+          <select id="custom-unit" aria-label="Satuan untuk ukuran halaman sesuai keinginan">
+            <option value="mm" selected>mm</option>
+            <option value="in">in</option>
+          </select>
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">Resolusi cetak</label>
+        <select id="dpi">
+          <option value="72">72 DPI &mdash; layar</option>
+          <option value="96">96 DPI</option>
+          <option value="150" selected>150 DPI</option>
+          <option value="200">200 DPI</option>
+          <option value="300">300 DPI &mdash; cetak</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          Menentukan seberapa besar sebuah halaman untuk jumlah piksel tertentu.
+          Ia tidak mengubah gambarnya.
+        </p>
+      </div>
+
+      <div class="field" id="orientation-field" hidden>
+        <label for="orientation">Orientasi</label>
+        <select id="orientation">
+          <option value="auto" selected>Ikuti setiap gambar</option>
+          <option value="portrait">Tegak</option>
+          <option value="landscape">Melintang</option>
+        </select>
+      </div>
+
+      <div class="field" id="fit-field" hidden>
+        <label for="fit">Bagaimana gambar duduk di halaman</label>
+        <select id="fit">
+          <option value="contain" selected>Muat di dalam margin</option>
+          <option value="cover">Penuhi halaman (memangkas tepinya)</option>
+          <option value="stretch">Regangkan sampai margin (mengubah bentuk)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="margin">Margin</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="100" step="1" value="0"
+                 aria-label="Margin dalam milimeter">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="background">Warna halaman</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          Tampak di margin, dan di belakang apa pun yang tembus pandang.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="mode">Kualitas gambar</label>
+        <select id="mode">
+          <option value="keep" selected>Biarkan JPEG persis seperti adanya</option>
+          <option value="jpeg">Kodekan ulang semuanya sebagai JPEG</option>
+          <option value="lossless">Tanpa kehilangan &mdash; sama sekali tanpa kehilangan kompresi</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Kualitas JPEG</label>
+        <select id="quality">
+          <option value="0.75">File lebih kecil</option>
+          <option value="0.88" selected>Seimbang</option>
+          <option value="0.95">Kualitas terbaik</option>
+        </select>
+        <p class="field-note">Dipakai hanya untuk gambar yang harus dikodekan ulang alat ini.</p>
+      </div>
+
+      <div class="field">
+        <label for="max-side">Perkecil gambar besar</label>
+        <select id="max-side">
+          <option value="0" selected>Jangan pernah &mdash; tetap ukuran penuh</option>
+          <option value="4000">Sisi terpanjang 4000 px</option>
+          <option value="2000">Sisi terpanjang 2000 px</option>
+          <option value="1200">Sisi terpanjang 1200 px</option>
+        </select>
+        <p class="field-note" id="shrink-note"></p>
+      </div>
+    </div>
+
+    <details class="meta-panel">
+      <summary>Rincian dokumen &mdash; semuanya opsional, semuanya kosong secara bawaan</summary>
+      <div class="meta-body">
+        <p class="meta-note">
+          Sebuah PDF membawa blok kecil berisi informasi tentang dirinya, dan
+          sebagian besar alat mengisinya dengan stempel waktu dan nama program,
+          diminta atau tidak. Alat ini menulis apa yang Anda ketik di sini dan
+          tidak lebih: tidak ada nama file, tidak ada nama mesin, dan tidak ada
+          tanggal kecuali Anda mencentang kotaknya.
+        </p>
+        <div class="settings">
+          <div class="field">
+            <label for="doc-title">Judul</label>
+            <input type="text" id="doc-title" maxlength="200" spellcheck="false"
+                   placeholder="Ditinggalkan kalau kosong">
+          </div>
+          <div class="field">
+            <label for="doc-author">Penulis</label>
+            <input type="text" id="doc-author" maxlength="200" spellcheck="false"
+                   placeholder="Ditinggalkan kalau kosong">
+          </div>
+          <div class="field">
+            <label for="file-name">Nama file</label>
+            <div class="inline-pair">
+              <input type="text" id="file-name" maxlength="120" spellcheck="false"
+                     value="gambar">
+              <span class="unit-label">.pdf</span>
+            </div>
+          </div>
+          <div class="field checkbox-field">
+            <label for="dated">
+              <input type="checkbox" id="dated">
+              Catat tanggal hari ini di dalam dokumen
+            </label>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <div class="preview-row">
+      <div class="preview-frame">
+        <canvas id="preview" width="480" height="640" aria-label="Pratinjau satu halaman"></canvas>
+        <p id="preview-empty" class="preview-empty">Tambahkan gambar untuk melihat halamannya</p>
+        <div id="preview-nav" class="preview-nav" hidden>
+          <button type="button" id="preview-prev" class="ghost" aria-label="Halaman sebelumnya">&lsaquo;</button>
+          <span id="preview-label" class="preview-label"></span>
+          <button type="button" id="preview-next" class="ghost" aria-label="Halaman berikutnya">&rsaquo;</button>
+        </div>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Halaman</dt><dd id="sum-pages">&mdash;</dd></div>
+        <div><dt>Ukuran halaman</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Gambar yang dipilih</dt><dd id="sum-input">&mdash;</dd></div>
+        <div><dt>Disalin tanpa disentuh</dt><dd id="sum-copied">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Langkah 3 &mdash; ekspor -->
+  <section class="card">
+    <h2><span class="step">3</span> Buat PDF-nya</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Buat PDF</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Unduh PDF</a>
+      </div>
+    </div>
+  </section>
+</main>

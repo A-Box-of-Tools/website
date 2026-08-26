@@ -1,0 +1,274 @@
+<!--
+  tools/qr-barcode-reader/body.html, in Indonesian.
+
+  Every id, class, data-phrase key, data-fact name and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language.
+  Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; dari mana gambarnya datang -->
+  <section class="card">
+    <h2><span class="step">1</span> Tunjukkan kodenya</h2>
+
+    <p class="card-lede">
+      Sebuah foto, tangkapan layar, atau kameranya. Mana pun yang Anda pilih,
+      gambarnya dibaca di sini, di halaman ini, di mesin Anda &mdash; tidak ada
+      yang diunggah, dan sebuah bingkai kamera diperiksa lalu dibuang alih-alih
+      direkam.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div class="run-row">
+      <button type="button" id="start-camera" class="primary">Pakai kameranya</button>
+      <button type="button" id="stop-camera" class="ghost" hidden>Hentikan kameranya</button>
+    </div>
+
+    <p class="field-summary" id="pick-note">
+      Anda juga bisa menempelkan sebuah gambar langsung dengan
+      <kbd>Ctrl</kbd>+<kbd>V</kbd> &mdash; tangkapan layar dari kode yang ada di
+      layar adalah jalan masuk tercepat.
+    </p>
+
+    <p id="pick-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Kameranya, yang baru muncul setelah menyala -->
+  <section class="card" id="camera-card" hidden>
+    <h2>Kameranya</h2>
+
+    <div class="viewfinder">
+      <video id="video" playsinline muted disablepictureinpicture></video>
+      <div class="reticle" aria-hidden="true"></div>
+    </div>
+
+    <div class="camera-controls">
+      <div class="option-row" id="camera-pick-row" hidden>
+        <label for="camera-pick">Kamera yang mana</label>
+        <select id="camera-pick"></select>
+      </div>
+
+      <label class="check" id="torch-row" hidden>
+        <input type="checkbox" id="torch">
+        <span>
+          <strong>Nyalakan lampunya</strong>
+          <span class="check-note">
+            Hanya sebagian kamera yang punya, dan hanya sebagian peramban yang
+            mengizinkan sebuah halaman memintanya. Kalau tidak ditawarkan,
+            berarti tidak ada.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary" id="camera-status" role="status"></p>
+
+    <p class="field-summary">
+      Lampu kamera adalah penanda yang jujur di sini: ia menyala selagi bingkai
+      berdatangan dan padam pada saat Anda berhenti. Tidak ada apa pun di antara
+      dua titik itu yang ditulis ke disk, dan tidak ada alamat di
+      <code>Content-Security-Policy</code> halaman ini yang bisa dikirimi sebuah
+      gambar.
+    </p>
+  </section>
+
+  <!-- Langkah 2 &mdash; jawabannya -->
+  <section class="card" id="results-card" hidden>
+    <h2><span class="step">2</span> Apa yang dikatakannya</h2>
+
+    <p class="card-lede">
+      Ditampilkan, tidak pernah dibuka. Kode tercetak adalah alamat yang tidak
+      bisa dibaca siapa pun, dan justru itulah yang membuat sebuah stiker di
+      atasnya sepadan dengan repotnya seseorang &mdash; jadi seluruh teksnya ada
+      di sini untuk dilihat lebih dulu, dengan host yang sebenarnya akan dituju
+      disebutkan di barisnya sendiri.
+    </p>
+
+    <div id="results"></div>
+  </section>
+
+  <!--
+    One result. Cloned per code found, with only the values filled in from
+    script: every word in it is here, in the markup, because this file is
+    translated per language and src/*.js is one file serving all eleven.
+  -->
+  <template id="result-template">
+    <article class="result">
+      <header class="result-head">
+        <span class="result-kind"></span>
+        <span class="result-symbology"></span>
+      </header>
+
+      <pre class="result-text"></pre>
+
+      <div class="run-row">
+        <button type="button" class="primary copy">Salin teksnya</button>
+        <a class="as-button open" target="_blank" rel="noopener noreferrer nofollow" hidden>
+          Buka di tab baru
+        </a>
+      </div>
+
+      <dl class="result-rows"></dl>
+      <ul class="result-warnings"></ul>
+
+      <details class="result-facts">
+        <summary>Bagaimana yang satu ini dibaca</summary>
+
+        <dl class="facts-list">
+          <div><dt>Simbol</dt><dd data-fact="symbol"></dd></div>
+          <div data-only="qr"><dt>Versi</dt><dd data-fact="version"></dd></div>
+          <div data-only="qr"><dt>Koreksi galat</dt><dd data-fact="level"></dd></div>
+          <div data-only="qr"><dt>Masker</dt><dd data-fact="mask"></dd></div>
+          <div data-only="qr"><dt>Codeword yang diperbaiki</dt><dd data-fact="repaired"></dd></div>
+          <div data-only="qr"><dt>Ditulis sebagai</dt><dd data-fact="mode"></dd></div>
+          <div data-only="qr" data-optional><dt>Set karakter yang dinyatakan</dt><dd data-fact="eci"></dd></div>
+          <div data-only="qr" data-optional><dt>Satu dari sebuah set</dt><dd data-fact="part"></dd></div>
+          <div data-only="linear" data-optional><dt>Garis pindai yang sepakat</dt><dd data-fact="lines"></dd></div>
+          <div><dt>Karakter</dt><dd data-fact="characters"></dd></div>
+          <div><dt>Ditemukan lewat</dt><dd data-fact="how"></dd></div>
+        </dl>
+
+        <figure class="grid-figure" hidden>
+          <canvas class="grid" width="1" height="1"></canvas>
+          <figcaption>
+            Modul yang disampel halaman ini, digambar kembali. Kalau ini tampak
+            seperti kode yang Anda foto, ia membaca yang benar; kalau tampak
+            seperti semut di layar, tidak, dan jawaban di atas jangan dipercaya.
+          </figcaption>
+        </figure>
+      </details>
+    </article>
+  </template>
+
+  <!--
+    The words script needs, sitting in the markup so that a translator meets
+    them where they meet the rest of the page. A `{host}` in one of these is
+    filled in with the host that was read; nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="kind.url">Sebuah alamat web</span>
+    <span data-phrase="kind.url-plain">Sebuah alamat web, tanpa enkripsi</span>
+    <span data-phrase="kind.wifi">Sebuah jaringan Wi-Fi</span>
+    <span data-phrase="kind.vcard">Sebuah kartu kontak</span>
+    <span data-phrase="kind.mecard">Sebuah kartu kontak</span>
+    <span data-phrase="kind.email">Sebuah email</span>
+    <span data-phrase="kind.phone">Sebuah nomor telepon</span>
+    <span data-phrase="kind.sms">Sebuah pesan teks</span>
+    <span data-phrase="kind.place">Sebuah tempat di peta</span>
+    <span data-phrase="kind.otp">Sebuah rahasia autentikasi dua faktor</span>
+    <span data-phrase="kind.other-scheme">Sesuatu untuk dibuka program lain</span>
+    <span data-phrase="kind.number">Sebuah angka</span>
+    <span data-phrase="kind.text">Teks biasa</span>
+    <span data-phrase="symbology.qr">Kode QR</span>
+
+
+    <span data-phrase="field.host">Menuju</span>
+    <span data-phrase="field.port">Porta</span>
+    <span data-phrase="field.path">Jalur</span>
+    <span data-phrase="field.ssid">Nama jaringan</span>
+    <span data-phrase="field.security">Keamanan</span>
+    <span data-phrase="field.password">Kata sandi</span>
+    <span data-phrase="field.hidden">Jaringan tersembunyi</span>
+    <span data-phrase="field.name">Nama</span>
+    <span data-phrase="field.org">Organisasi</span>
+    <span data-phrase="field.title">Jabatan</span>
+    <span data-phrase="field.phone">Telepon</span>
+    <span data-phrase="field.email">Email</span>
+    <span data-phrase="field.web">Situs web</span>
+    <span data-phrase="field.address">Alamat</span>
+    <span data-phrase="field.note">Catatan</span>
+    <span data-phrase="field.to">Kepada</span>
+    <span data-phrase="field.subject">Perihal</span>
+    <span data-phrase="field.message">Pesan</span>
+    <span data-phrase="field.number">Nomor</span>
+    <span data-phrase="field.latitude">Lintang</span>
+    <span data-phrase="field.longitude">Bujur</span>
+    <span data-phrase="field.account">Akun</span>
+    <span data-phrase="field.issuer">Diterbitkan oleh</span>
+    <span data-phrase="field.secret">Rahasia</span>
+    <span data-phrase="field.scheme">Skema</span>
+
+    <span data-phrase="value.yes">Ya</span>
+    <span data-phrase="value.open-network">Terbuka &mdash; tanpa kata sandi</span>
+    <span data-phrase="value.none">Tidak ada</span>
+    <span data-phrase="value.copied">Tersalin</span>
+    <span data-phrase="value.modules">{n} modul persegi</span>
+
+    <span data-phrase="warn.userinfo">Semua sebelum @ adalah nama pengguna, bukan
+      alamat. Apa pun yang tampak dikatakan tautan ini, ia menuju {host}.</span>
+    <span data-phrase="warn.punycode">Alamat ini ditulis dalam aksara non-Latin.
+      Sebagian huruf di abjad lain berbentuk persis seperti huruf kita, dan
+      begitulah sebuah nama dibuat tampak seperti nama yang sudah Anda
+      percayai.</span>
+    <span data-phrase="warn.unicode-host">Nama host-nya mengandung karakter di
+      luar abjad Latin biasa, dan itu bisa dipakai untuk membuat satu nama tampak
+      seperti nama lain.</span>
+    <span data-phrase="warn.plain-http">Ini alamat http:// polos, jadi apa pun
+      yang Anda kirim ke sana bepergian tanpa enkripsi dan apa pun yang ada di
+      tengah bisa membacanya atau mengubahnya.</span>
+    <span data-phrase="warn.shortener">{host} adalah sebuah pengalihan. Alamat
+      yang sebenarnya akan Anda datangi tidak ada di dalam kode ini, dan mencari
+      tahu apa isinya berarti menghubungi sebuah server &mdash; dan itu tidak
+      pernah dilakukan halaman ini.</span>
+    <span data-phrase="warn.wifi-secret">Kode ini membawa sebuah kata sandi dalam
+      teks biasa. Siapa pun yang memfoto kodenya memilikinya, dan itu layak
+      diketahui sebelum satu kode naik ke dinding.</span>
+    <span data-phrase="warn.otp-secret">Ini benih untuk sebuah aplikasi
+      autentikator: siapa pun yang memegangnya bisa menghasilkan kode Anda untuk
+      akun itu tanpa batas waktu. Ia tidak meninggalkan halaman ini, dan layak
+      berhati-hati ke mana lagi ia pergi.</span>
+    <span data-phrase="warn.not-openable">Ini bukan alamat web, jadi tidak ada
+      tautan yang bisa ditawarkan. Ia tercetak utuh di atas; apakah ada sesuatu di
+      mesin Anda yang akan menindaklanjutinya adalah urusan Anda dan program
+      itu.</span>
+
+    <span data-phrase="mode.numeric">hanya angka</span>
+    <span data-phrase="mode.alphanumeric">huruf kapital dan angka</span>
+    <span data-phrase="mode.byte">byte</span>
+    <span data-phrase="mode.kanji">kanji</span>
+
+    <span data-phrase="how.local">sebuah ambang yang dihitung blok demi blok</span>
+    <span data-phrase="how.inverted">menukar gelap dengan terang</span>
+    <span data-phrase="how.global">satu ambang untuk seluruh gambar</span>
+    <span data-phrase="how.softened">melembutkan gambarnya lebih dulu</span>
+    <span data-phrase="how.dense">, memeriksa setiap baris</span>
+
+    <span data-phrase="status.reading">Membaca gambarnya&hellip;</span>
+    <span data-phrase="status.nothing">Tidak ada kode yang ditemukan di gambar
+      itu. Ia butuh seluruh simbolnya di dalam bingkai, margin putihnya termasuk,
+      dan cahaya yang cukup supaya kotak gelapnya benar-benar gelap.</span>
+    <span data-phrase="status.broken">File itu tidak bisa dibuka sebagai sebuah
+      gambar.</span>
+    <span data-phrase="status.looking">Mencari&hellip; tahan kodenya diam dan isi
+      sekitar separuh bingkai dengannya.</span>
+    <span data-phrase="status.on">Kamera menyala. Tidak ada yang sedang
+      direkam.</span>
+
+    <span data-phrase="camera.denied">Peramban menolak kamera untuk halaman ini.
+      Itu izin yang bisa Anda ubah: cari ikon kamera di bilah alamat. Memilih
+      sebuah gambar sebagai gantinya sama sekali tidak butuh izin.</span>
+    <span data-phrase="camera.none">Tidak ada kamera yang ditemukan di mesin ini.
+      Jatuhkan sebuah foto atau tangkapan layar di atas dan ia akan dibaca dengan
+      cara yang sama.</span>
+    <span data-phrase="camera.busy">Kameranya ada tapi sesuatu yang lain sedang
+      memakainya. Tutup apa pun yang membukanya &mdash; biasanya panggilan video
+      &mdash; lalu coba lagi.</span>
+    <span data-phrase="camera.insecure">Sebuah peramban hanya menyerahkan
+      kameranya kepada halaman yang disajikan lewat https, dan yang ini bukan
+      begitu saat ini.</span>
+    <span data-phrase="camera.unsupported">Peramban ini tidak punya antarmuka
+      kamera untuk diminta sebuah halaman. Semua yang lain di sini tetap
+      bekerja.</span>
+    <span data-phrase="camera.failed">Kameranya tidak bisa dinyalakan, dan
+      perambannya tidak mengatakan kenapa.</span>
+
+    <span data-phrase="live.clean">gambar Anda tidak pergi ke mana pun. {total}
+      file dimuat, semuanya milik halaman ini sendiri.</span>
+    <span data-phrase="live.dirty">sesuatu menghubungi {hosts}, dan itu tidak
+      pernah dilakukan alat ini. Anggap itu layak diselidiki.</span>
+    <span data-phrase="live.platform">Skrip iklan, pengukuran, dan tombol donasi
+      milik halaman ini dimuat dari {count} host; tidak satu pun diberi sebuah
+      gambar, sebuah bingkai, atau satu huruf pun dari apa yang dikatakan sebuah
+      kode.</span>
+  </div>
+</main>

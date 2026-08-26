@@ -1,0 +1,241 @@
+<!--
+  tools/stack-images/body.html, in Indonesian.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+-->
+<main>
+  <!-- Langkah 1 &mdash; bingkainya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih bingkainya</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      File RAW dibuka dengan membaca JPEG berukuran penuh yang sudah ditulis
+      kameranya di dalamnya &mdash; beberapa kilobita direktori, lalu satu
+      irisan. Data sensornya tidak pernah didekodekan, jadi bingkai
+      60&nbsp;MB terbuka kira-kira secepat sebuah JPEG.
+      <a href="#faq-raw">Apa artinya bagi hasilnya</a>.
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">Urutkan menurut nama</button>
+        <button type="button" id="clear-all" class="ghost danger">Buang semua</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- Langkah 2 &mdash; cara menggabungkannya -->
+  <section class="card">
+    <h2><span class="step">2</span> Cara menggabungkannya</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">Metode penumpukan</label>
+        <select id="mode">
+          <option value="mean" selected>Rata-rata &mdash; kurangi derau</option>
+          <option value="median">Median &mdash; buang orang dan mobil yang lewat</option>
+          <option value="sigma">Sigma clipping &mdash; keduanya sekaligus</option>
+          <option value="max">Terangkan &mdash; jejak bintang, kembang api, lukisan cahaya</option>
+          <option value="min">Gelapkan &mdash; buang apa pun yang terang yang bergerak</option>
+          <option value="sum">Tambahkan &mdash; tiru satu pencahayaan panjang</option>
+          <option value="focus">Penumpukan fokus &mdash; simpan apa pun yang tajam</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">Sejajarkan bingkainya</label>
+        <select id="align">
+          <option value="translate" selected>Ya &mdash; geser saja</option>
+          <option value="similarity">Ya &mdash; geser, rotasi, dan skala</option>
+          <option value="none">Tidak &mdash; pakai apa adanya</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">Resolusi kerja</label>
+        <select id="scale">
+          <option value="full" selected>Ukuran penuh</option>
+          <option value="half">Setengah &mdash; seperempat memorinya</option>
+          <option value="quarter">Seperempat &mdash; seperenam belas</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">Buang di luar</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          Lebih rendah menolak lebih banyak, dan menolak detail yang sungguhan
+          bersamanya. Dua simpangan baku adalah titik mulai yang biasa.
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">Ketajaman diukur di rentang</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          Lebih besar mengambil wilayah utuh dari satu bingkai; lebih kecil
+          mengikuti detail halus dan bisa mengacak latar yang mulus antar
+          bingkai.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">Pencahayaan</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">Simpan sebagai</label>
+        <select id="format">
+          <option value="png" selected>PNG &mdash; tanpa kehilangan</option>
+          <option value="jpeg">JPEG &mdash; file lebih kecil</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>Hasil</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>Memori kerja</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>Bingkai didekodekan</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Dibaca dari disk</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- Langkah 3 &mdash; jalankan -->
+  <section class="card">
+    <h2><span class="step">3</span> Tumpuk mereka</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>Tumpuk gambarnya</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="Hasil tumpukannya">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>Unduh gambarnya</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1 bingkai</span>
+    <span data-phrase="count.many">{count} bingkai</span>
+    <span data-phrase="count.none">Belum ada bingkai</span>
+
+    <span data-phrase="frame.reference">Rujukan</span>
+    <span data-phrase="frame.make-reference">Pakai sebagai rujukan</span>
+    <span data-phrase="frame.remove">Buang</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW &mdash; pratinjau {width} &times; {height} milik kameranya sendiri</span>
+    <span data-phrase="frame.raw-camera">{camera} &mdash; pratinjau {width} &times; {height}</span>
+    <span data-phrase="frame.raw-unreadable">Tidak ada pratinjau yang bisa ditemukan di dalam file RAW ini</span>
+    <span data-phrase="frame.read">{read} dibaca dari {total}</span>
+
+    <span data-phrase="mode.mean">Merata-ratakan setiap bingkai. Derau acak sama seringnya tinggi dan rendah, jadi merata-ratakan {count} bingkai memangkasnya kira-kira {factor} kali. Yang dipakai pada kumpulan yang stabil, dan yang akan dirusak satu burung yang lewat.</span>
+    <span data-phrase="mode.median">Mengambil nilai tengah setiap piksel. Apa pun yang hanya ada di sebagian bingkainya &mdash; seorang turis, sebuah mobil, sebuah pesawat &mdash; lenyap. Ia satu-satunya metode yang harus menahan setiap bingkai sekaligus, dan itulah sebabnya ia bisa berpita di bawah.</span>
+    <span data-phrase="mode.sigma">Mempelajari apa biasanya setiap piksel, lalu merata-ratakan hanya nilai yang sepakat. Hasil mediannya dengan pengurangan derau rata-ratanya. Ia membaca bingkainya dua kali.</span>
+    <span data-phrase="mode.max">Menyimpan nilai paling terang yang pernah dimiliki setiap piksel. Inilah yang mengubah runtutan pencahayaan pendek menjadi jejak bintang, dan yang merakit sebuah kembang api dari bingkainya sendiri.</span>
+    <span data-phrase="mode.min">Menyimpan nilai paling gelap yang pernah dimiliki setiap piksel. Sebuah piksel hanya tetap terang kalau ia terang di setiap bingkainya, jadi pantulan, lampu depan, dan tetes hujan yang tercahayai ikut hilang.</span>
+    <span data-phrase="mode.sum">Menjumlahkan bingkainya tanpa membagi: apa yang akan dikumpulkan satu pencahayaan {count} kali lebih panjang. Ia terpotong di puncaknya, persis seperti pencahayaan itu. Pakai penggeser pencahayaannya untuk mengembalikannya.</span>
+    <span data-phrase="mode.focus">Mengambil setiap bagian gambarnya dari bingkai mana pun yang bagian itu terfokus di dalamnya. Foto sebuah subjek kecil di sepanjang cincin fokus dan ini merakit bagian yang tajamnya.</span>
+
+    <span data-phrase="align.translate">Menemukan seberapa jauh setiap bingkai bergeser lalu memindahkannya kembali, sampai sepersekian piksel. Membetulkan goyangan tangan dan pergeseran tripod. Ia tidak bisa membetulkan rotasi.</span>
+    <span data-phrase="align.similarity">Juga menemukan rotasi dan skalanya. Berbiaya satu pengukuran lagi per bingkai dan sama sekali tidak berbiaya apa pun ketika bingkainya ternyata lurus. Rotasi hanya pernah dipulihkan di dalam setengah putaran.</span>
+    <span data-phrase="align.none">Menumpuk bingkainya persis seperti yang diberikan. Benar untuk tripod terkunci atau runtutan intervalometer, dan keliru untuk apa pun yang dipegang tangan.</span>
+
+    <span data-phrase="scale.note">Setiap bingkai didekodekan pada ukuran ini oleh dekoder milik peramban sendiri, jadi setelan yang lebih kecil berarti pekerjaan yang lebih sedikit sekaligus memori yang lebih sedikit.</span>
+    <span data-phrase="gain.note">Dikalikan ke dalam hasilnya di ujung sekali, setelah hitungannya dan sebelum pembulatannya.</span>
+    <span data-phrase="gain.sum-note">Menjumlahkan {count} bingkai hampir pasti akan terpotong di puncaknya. Turunkan ini ke sekitar {suggested} untuk melihat apa yang terkumpul.</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">sekitar {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count}, satu untuk setiap bingkai</span>
+    <span data-phrase="plan.decodes.passes">{count} &mdash; setiap bingkai, {passes} kali</span>
+    <span data-phrase="plan.decodes.banded">{count} &mdash; setiap bingkai, sekali untuk masing-masing {bands} pita</span>
+    <span data-phrase="plan.read">{read} dari {total} di disk</span>
+    <span data-phrase="plan.banded">Ini tidak akan muat di memori dalam satu potong, jadi gambarnya dipotong menjadi {bands} pita dan bingkainya dibaca lagi untuk masing-masingnya. Memilih {suggested} sebagai gantinya akan menjadikannya satu jalan.</span>
+    <span data-phrase="plan.banded-anyway">Ini tidak akan muat di memori dalam satu potong, jadi gambarnya dipotong menjadi {bands} pita dan bingkainya dibaca lagi untuk masing-masingnya. Lebih sedikit bingkai, atau resolusi kerja yang lebih kecil, akan menjadikannya satu jalan.</span>
+
+    <span data-phrase="progress.open">Melihat ke dalam {name}&hellip;</span>
+    <span data-phrase="progress.survey">Membaca {name}&hellip;</span>
+    <span data-phrase="progress.measure">Mengukur seberapa jauh {name} bergerak&hellip;</span>
+    <span data-phrase="progress.stack">Menumpuk &mdash; {done} dari {total} bingkai terbaca</span>
+    <span data-phrase="progress.stack-banded">Menumpuk &mdash; pita {band} dari {bands}, {done} dari {total} bingkai terbaca</span>
+    <span data-phrase="progress.encode">Menulis gambarnya&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}, {size} &mdash; {count} bingkai digabungkan dalam {seconds} detik</span>
+    <span data-phrase="result.moves">Setiap bingkai diukur lalu dipindahkan ke tempatnya.</span>
+    <span data-phrase="result.moves-some">{count} dari {total} bingkai tidak bisa diukur dengan yakin dan dibiarkan di tempatnya.</span>
+    <span data-phrase="result.moves-none">Bingkainya ditumpuk persis seperti yang diberikan.</span>
+    <span data-phrase="result.moves-clamped">{count} bingkai melaporkan rotasi yang terlalu besar untuk sebuah burst, dan dibetulkan dengan pergeseran saja.</span>
+    <span data-phrase="result.cropped">Memindahkan mereka saling menjauh meninggalkan tepi yang tidak dicapai setiap bingkainya, dan tepi itu sudah dirapikan.</span>
+
+    <span data-phrase="error.no.files">Tambahkan setidaknya satu gambar dulu.</span>
+    <span data-phrase="error.no.size">Tidak satu pun file ini bisa dibuka sebagai sebuah gambar.</span>
+    <span data-phrase="error.one.frame">Penumpukan butuh setidaknya dua bingkai.</span>
+    <span data-phrase="error.unknown">Ada yang tidak beres saat menumpuk. Kalau salah satu file ini tidak biasa, coba ia sendirian.</span>
+    <span data-phrase="error.memory">Peramban kehabisan memori. Coba resolusi kerja yang lebih kecil, atau lebih sedikit bingkai.</span>
+    <span data-phrase="error.unreadable">{name} tidak bisa dibuka sebagai sebuah gambar dan ditinggalkan.</span>
+    <span data-phrase="error.busy">Tunggu tumpukan ini selesai sebelum menambahkan bingkai lagi, atau batalkan.</span>
+  </div>
+</main>

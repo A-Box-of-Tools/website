@@ -1,0 +1,24 @@
+#
+# Panduan: menyisipkan gambar di CSS - Bahasa Indonesia.
+#
+# Potongan kode tidak diterjemahkan, termasuk nama properti khusus di dalamnya:
+# itu kode yang disalin pembacanya, bukan prosa.
+#
+
+nav = "Menyisipkan gambar di CSS"
+title = "Data URI di CSS: Kapan Menyisipkan Gambar, dan Kapan Tidak"
+description = "Berapa harga sebuah data URI, kenapa base64 menambah sepertiga dan gzip tidak mengembalikannya, kenapa sebuah SVG tidak boleh berupa base64, dan kekeliruan tanda kutip yang diam-diam merusak SVG yang disisipkan."
+
+heading = "Kapan menaruh gambar di dalam CSS Anda, dan kapan tidak"
+lede = """
+    Gambar yang ditulis ke dalam sebuah lembar gaya tiba bersamanya: tidak ada
+    permintaan kedua, tidak ada penantian. Ia juga berhenti menjadi sebuah file
+    &mdash; jadi ia tidak bisa disinggahkan sendiri, dan ia diunduh lagi setiap
+    kali apa pun di sekitarnya berubah. Inilah tempat pertukaran itu layak
+    dilakukan, dan tempat diam-diam ia tidak layak."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Kapan menaruh gambar di dalam CSS Anda"
+og_description = "Berapa harga sebuah data URI, kenapa sebuah SVG tidak boleh berupa base64, dan kekeliruan tanda kutip yang diam-diam merusak SVG yang disisipkan."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

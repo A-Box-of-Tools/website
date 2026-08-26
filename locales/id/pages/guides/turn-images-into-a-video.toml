@@ -1,0 +1,19 @@
+#
+# Panduan: mengubah gambar menjadi video - Bahasa Indonesia.
+#
+
+nav = "Gambar menjadi video"
+title = "Cara Mengubah Satu Folder Gambar Menjadi Video"
+description = "Buat tayangan slide MP4 dari foto: apa yang sebenarnya dikendalikan frame rate dan durasi, bagaimana menangani gambar yang bentuknya tidak pas, dan kenapa hasilnya tidak bersuara."
+
+heading = "Cara mengubah satu folder gambar menjadi video"
+lede = """
+    Tayangan slide itu sederhana untuk dibuat dan gampang untuk dirender dua
+    kali, karena dua setelannya tidak berarti seperti kedengarannya. Inilah apa
+    yang dikendalikan masing-masing dan apa yang sebaiknya dipilih."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara mengubah satu folder gambar menjadi video"
+og_description = "Apa yang sebenarnya dikendalikan frame rate dan durasi, bagaimana menangani gambar yang bentuknya tidak pas, dan kenapa tidak ada suaranya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

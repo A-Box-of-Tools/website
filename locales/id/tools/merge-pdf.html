@@ -1,0 +1,164 @@
+<!--
+  tools/merge-pdf/body.html, in Indonesian.
+
+  The range tokens - odd, even, all, last - are typed into the box and parsed
+  by src/ranges.js, so they stay in English. Every id, class and option value
+  is what src/main.js reaches for. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; file-nya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih PDF Anda</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <ul id="source-list" class="source-list" hidden></ul>
+  </section>
+
+  <!-- Langkah 2 &mdash; halamannya -->
+  <section class="card" id="pages-card" hidden>
+    <h2><span class="step">2</span> Susun halamannya</h2>
+
+    <p class="card-lede">
+      Setiap halaman dari setiap file yang Anda pilih, dalam urutan mereka akan
+      keluar. Seret salah satunya lewat pegangan
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> untuk
+      memindahkannya, putar dengan panahnya, atau keluarkan dengan &times;.
+      Belum ada apa pun di sini yang ditulis &mdash; dokumennya dirakit ketika
+      Anda menekan tombol di langkah 4.
+    </p>
+
+    <div class="toolbar">
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="reverse" class="ghost">Balik urutan</button>
+        <button type="button" id="rotate-all" class="ghost">Putar setiap halaman</button>
+        <button type="button" id="restore" class="ghost">Kembali ke asalnya</button>
+        <button type="button" id="clear-all" class="ghost danger">Mulai lagi</button>
+      </div>
+    </div>
+
+    <div class="range-row">
+      <label for="range">Halaman</label>
+      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+             spellcheck="false" aria-describedby="range-note">
+      <button type="button" id="range-keep" class="ghost">Simpan hanya ini</button>
+      <button type="button" id="range-drop" class="ghost">Buang yang ini</button>
+      <button type="button" id="range-turn" class="ghost">Putar yang ini</button>
+    </div>
+    <p id="range-note" class="field-note">
+      Menurut nomor di bawah, yang berubah seiring Anda bekerja. <code>odd</code>,
+      <code>even</code>, <code>all</code>, dan <code>last</code> juga berlaku.
+    </p>
+    <p id="range-error" class="error" role="alert" hidden></p>
+
+    <ul id="page-list" class="page-list"></ul>
+  </section>
+
+  <!-- Langkah 3 &mdash; satu file, atau beberapa -->
+  <section class="card" id="output-card" hidden>
+    <h2><span class="step">3</span> Satu dokumen, atau beberapa</h2>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">Bagaimana halamannya ditulis keluar</legend>
+      <div class="presets" id="split-modes" role="radiogroup" aria-label="Bagaimana halamannya ditulis keluar">
+        <label class="preset">
+          <input type="radio" name="split" value="single" checked>
+          <span class="preset-body">
+            <strong>Satu dokumen</strong>
+            <span class="preset-note">Semua di atas, dalam urutan itu, sebagai satu PDF.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="every">
+          <span class="preset-body">
+            <strong>Pisah setiap sekian halaman</strong>
+            <span class="preset-note">
+              Pindaian panjang dipotong menjadi bab-bab berisi
+              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+                     inputmode="numeric" aria-label="Jumlah halaman di setiap file">
+              halaman.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="at">
+          <span class="preset-body">
+            <strong>Pisah pada halaman&hellip;</strong>
+            <span class="preset-note">
+              Potong sebelum
+              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+                     spellcheck="false" aria-label="Nomor halaman yang dipotong sebelumnya">
+              &mdash; masing-masing memulai file baru.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="each">
+          <span class="preset-body">
+            <strong>Setiap halaman berdiri sendiri</strong>
+            <span class="preset-note">Satu PDF per halaman. Berguna untuk menarik keluar lembar tandatangan.</span>
+          </span>
+        </label>
+        <label class="preset" id="by-file-preset" hidden>
+          <input type="radio" name="split" value="file">
+          <span class="preset-body">
+            <strong>Kembali ke file asalnya</strong>
+            <span class="preset-note">Satu dokumen per file yang Anda pilih, dengan suntingan Anda tetap ada.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="keep-bookmarks" checked>
+      <span>
+        <strong>Simpan markahnya</strong>
+        <span class="check-note">
+          Kerangka yang dibawa setiap file, dibangun ulang terhadap halaman yang
+          benar-benar ada di sini: entri yang halamannya Anda buang ikut hilang,
+          dan yang babnya masih ada tetap tinggal. Menggabungkan beberapa file
+          menempatkan markah masing-masing di bawah judul bernama file itu.
+        </span>
+      </span>
+    </label>
+
+    <p id="output-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Langkah 4 &mdash; satu klik -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Satukan</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Bangun dokumennya</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Unduh</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <ul id="file-list" class="out-list" hidden></ul>
+    </div>
+  </section>
+</main>

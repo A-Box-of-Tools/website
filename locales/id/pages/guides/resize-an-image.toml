@@ -1,0 +1,20 @@
+#
+# Panduan: mengubah ukuran gambar - Bahasa Indonesia.
+#
+
+nav = "Mengubah ukuran gambar"
+title = "Cara Mengubah Ukuran Gambar Tanpa Merusaknya"
+description = "Apa yang terjadi pada sebuah gambar ketika Anda mengubah dimensi pikselnya: kenapa mengecilkan itu aman dan membesarkan tidak, apa yang dilakukan ketika kotaknya berbeda bentuk, dan kapan sebaiknya memangkas saja."
+
+heading = "Cara mengubah ukuran gambar tanpa merusaknya"
+lede = """
+    Mengubah ukuran adalah satu-satunya pekerjaan gambar yang kerusakannya
+    ditentukan sebelum Anda menekan tombolnya, oleh angka mana yang Anda ketik
+    dan bentuk mana yang Anda minta. Inilah apa yang dilakukan setiap pilihan
+    pada gambarnya, dan mana di antaranya yang bisa Anda urungkan."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Mengubah ukuran gambar tanpa merusaknya"
+og_description = "Kenapa mengecilkan itu aman dan membesarkan tidak, apa yang dilakukan ketika kotaknya berbeda bentuk, dan kapan sebaiknya memangkas saja."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

@@ -1,0 +1,25 @@
+#
+# Panduan: membuka file DICOM - Bahasa Indonesia.
+#
+# Nama kolom DICOM dan nama file di sebuah cakram rumah sakit (DICOMDIR,
+# IM000001, Instance Number, Image Position) tetap seperti adanya: itulah yang
+# tertulis di cakram dan di standarnya.
+#
+
+nav = "Membuka file DICOM"
+title = "Cara Membuka File DICOM (.dcm) Tanpa Memasang Apa Pun"
+description = "Apa isi sebuah cakram rumah sakit, kenapa file-nya tidak punya ekstensi, bagaimana membuka pindaian .dcm di sebuah peramban, apa sebenarnya yang dilakukan jendela dan level, dan apa yang dibawa sebuah pindaian tentang pasiennya selain gambarnya."
+
+heading = "Cara membuka file DICOM, dan apa isinya"
+lede = """
+    Cakram rumah sakit adalah sebuah folder berisi file tanpa ekstensi dan
+    sebuah penampil yang ditulis untuk Windows XP. File-nya DICOM, dan tidak ada
+    yang aneh tentangnya: sebuah pindaian adalah sebuah header penuh kolom dan
+    sebuah blok piksel. Inilah cara melihatnya, apa arti kendalinya, dan apa lagi
+    yang dibawa file-nya selain gambarnya."""
+
+updated = "25 Agustus 2026"
+
+og_title = "Cara membuka file DICOM tanpa memasang apa pun"
+og_description = "Apa isi sebuah cakram rumah sakit, kenapa file-nya tidak punya ekstensi, dan apa yang dibawa sebuah pindaian .dcm tentang pasiennya selain gambarnya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

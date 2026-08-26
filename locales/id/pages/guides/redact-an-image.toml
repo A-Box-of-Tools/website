@@ -1,0 +1,20 @@
+#
+# Panduan: menyensor sebuah gambar - Bahasa Indonesia.
+#
+
+nav = "Menyensor sebuah gambar"
+title = "Cara Menyensor Gambar Supaya Bagian yang Disembunyikan Sungguh Hilang"
+description = "Kotak hitam yang digambar di kebanyakan program duduk di atas gambarnya dan bisa digeser. Apa yang membedakan penyensoran sungguhan dari penutupan, kenapa teks yang dipikselasi bisa dibaca kembali, dan bagaimana memeriksa sebuah file sebelum Anda mengirimnya."
+
+heading = "Cara menyensor gambar supaya bagian yang disembunyikan sungguh hilang"
+lede = """
+    Menutupi sesuatu dan membuangnya tampak identik di layar dan sama sekali
+    bukan hal yang sama. Inilah bedanya, dua gaya yang meninggalkan lebih banyak
+    daripada dugaan orang, dan pemeriksaan yang memberi tahu Anda Anda baru saja
+    melakukan yang mana dari keduanya."""
+
+updated = "23 Agustus 2026"
+
+og_title = "Cara menyensor gambar supaya bagian yang disembunyikan sungguh hilang"
+og_description = "Kenapa persegi hitam biasanya bukan penyensoran, kenapa teks yang dipikselasi bisa dibaca kembali, dan bagaimana memeriksa sebuah file sebelum Anda mengirimnya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

@@ -1,0 +1,24 @@
+#
+# Panduan: memotong video - Bahasa Indonesia.
+#
+# "Potong" di sepanjang halaman ini: memotong memendekkan klipnya, memangkas
+# mengubah bentuk gambarnya, dan halaman ini menutup dengan menjelaskan
+# bedanya.
+#
+
+nav = "Memotong video"
+title = "Cara Memotong Video Tanpa Mengodekannya Ulang"
+description = "Memotong sebuah klip tidak perlu kehilangan satu byte pun kualitas. Kenapa sebuah potongan kadang mendarat lebih awal daripada tanda Anda, apa hubungan keyframe dengan itu, dan kapan sebaiknya menerima pengodean ulang."
+
+heading = "Cara memotong video tanpa mengodekannya ulang"
+lede = """
+    Memotong tidak mengubah rupa satu bingkai pun, jadi pemotong yang baik tidak
+    menyentuhnya &mdash; ia memindahkannya ke file baru persis seperti
+    sebelumnya. Ini menjelaskan apa yang Anda dapat dari situ, dan satu tempat
+    yang memperlihatkannya."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara memotong video tanpa mengodekannya ulang"
+og_description = "Kenapa sebuah potongan kadang mendarat lebih awal daripada tanda Anda, apa hubungan keyframe dengan itu, dan kapan sebaiknya menerima pengodean ulang."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

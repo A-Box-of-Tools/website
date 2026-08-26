@@ -1,0 +1,262 @@
+#
+# Pembuat Time-Lapse - Bahasa Indonesia.
+#
+# Overrides for tools/timelapse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Time-lapse" tetap dalam bentuk Latinnya: itulah yang diketik orang di kotak
+# pencarian dan yang tertulis di menu kamera mereka.
+#
+
+name = "Pembuat Time-Lapse"
+heading = "Pembuat&nbsp;Time&#8209;Lapse <span class=\"h1-kw\">&mdash; percepat video panjang</span>"
+tagline = "Rekaman satu jam, dalam dua puluh detik."
+
+title = "Pembuat Video Time-Lapse &mdash; Gratis, Tanpa Unggah, Jalan Tanpa Internet"
+description = "Ubah video panjang menjadi time-lapse: 10x, 60x, atau kecepatan berapa pun yang Anda ketik. Berjalan di peramban Anda, jadi tidak ada yang diunggah, tidak ada tanda air, dan jalan tanpa internet."
+og_title = "Pembuat Time-Lapse &mdash; percepat video tanpa mengunggahnya"
+og_description = "Ambil satu bingkai setiap beberapa detik dari klip panjang dan tulis kembali sebagai klip pendek. File dibaca, didekode, dan dikodekan oleh peramban Anda sendiri."
+og_image_alt = "Pembuat Time-Lapse - percepat video panjang di peramban Anda, tanpa ada yang diunggah"
+
+pledge = """
+    Setiap bingkai dipilih, didekode, dan dikodekan lagi oleh peramban Anda
+    sendiri, di perangkat keras Anda sendiri. Tidak ada di sini yang bisa
+    mengambil atau mengirim apa pun &mdash; alat ini sama sekali tidak punya
+    fitur jaringan &mdash; dan seandainya pun ada, tidak ada server di ujung lain
+    halaman ini untuk menerima sebuah video."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu buat sebuah time-lapse. Tidak satu pun permintaan membawa bingkai,
+      nama file, atau satu byte pun dari yang Anda pilih. Atau cabut koneksi
+      internet dan tetap buat satu &mdash; alat yang mengirim video Anda ke
+      tempat lain untuk diproses akan langsung berhenti."""
+
+read_first = """
+, <code>src/plan.js</code> untuk aritmetika yang
+      memutuskan setiap bingkai berasal dari saat yang mana, dan
+      <code>src/decode.js</code> untuk perulangan yang hanya membaca bagian file
+      yang dibutuhkan saat-saat itu. Tidak satu pun mengimpor sesuatu yang bisa
+      membuat permintaan."""
+
+howto_heading = "Cara membuat time-lapse dari video"
+
+card = """
+            Ubah klip panjang menjadi klip pendek &mdash; berjam-jam menjadi
+            beberapa detik &mdash; tanpa mengirimnya ke mana pun."""
+
+[words]
+plural = "video"
+choose = "sebuah video"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Kecepatan berapa pun yang Anda ketik"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[privacy]]
+title = "Video Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Alat ini sama sekali tidak punya
+      fitur jaringan: tidak ada alamat untuk ditempelkan, tidak ada yang diunduh,
+      tidak ada mesin yang diambil saat pertama dipakai. Setiap byte yang
+      menyentuh video Anda datang dari asal ini ketika halaman dimuat."""
+
+[[privacy]]
+title = "Pendekodean dan pengodean berjalan lokal."
+body = """
+ Bingkainya melewati WebCodecs di
+      peramban Anda sendiri, atau melewati mesin pemutar yang sama yang toh akan
+      menampilkan klip itu kepada Anda. File yang sudah jadi dibangun di memori
+      mesin ini dan diserahkan langsung ke unduhan."""
+
+[[privacy]]
+title = "Sebagian besar file bahkan tidak pernah dibaca."
+body = """
+ Sebuah time-lapse butuh satu bingkai
+      setiap beberapa detik, jadi alat ini membaca deretan pendek file di sekitar
+      masing-masingnya dan melewati sisanya. Itu keputusan soal kecepatan, bukan
+      soal privasi, dan tetap layak diketahui: bahkan secara lokal, sebagian
+      besar video Anda tidak pernah dibuka."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google. Tidak satu pun diberi apa pun tentang video Anda: bukan file,
+      bukan bingkai, bukan nama, ukuran, atau durasi. Setiap baris yang membaca,
+      mendekode, mengambil sampel, atau mengodekan disajikan dari asal ini dan
+      terdaftar di repositori."""
+
+[[privacy]]
+title = "Apa yang dimuat tombol donasi, dan apa yang tidak diberikan kepadanya."
+body = """
+ Tombol "Buy me a coffee" di bagian
+      atas digambar oleh skrip dari cdnjs.buymeacoffee.com dan mengambil hurufnya
+      dari Google Fonts. Ia hanyalah sebuah tautan: ia tidak melaporkan
+      kunjungan, dan tidak diberi apa pun tentang Anda atau video Anda."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan semua yang ada di
+      halaman ini tetap bekerja. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih sebuah video."
+body = """
+ Jatuhkan MP4, MOV, M4V, atau WebM ke
+      pemilih file, atau pilih sendiri. Peramban membacanya langsung dari disk
+      Anda; tidak ada yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Sebutkan berapa kali lebih cepat."
+body = """
+ Tekan salah satu kecepatannya, atau
+      ketik sendiri. Kalau Anda lebih suka menyebutkan berapa lama hasilnya nanti
+      &mdash; &ldquo;buat ini muat dalam dua puluh detik&rdquo; &mdash; ketik itu
+      saja dan kecepatannya mengikuti."""
+
+[[howto]]
+title = "Periksa selangnya."
+body = """
+ Baris di bawah kecepatan mengatakan apa yang
+      sebenarnya akan dilakukan alat ini: satu bingkai setiap sekian detik dari
+      aslinya. Itulah angka yang akan diatur seorang fotografer di kameranya, dan
+      itulah yang layak diperiksa nalarnya sebelum Anda mulai."""
+
+[[howto]]
+title = "Buat dan unduh."
+body = """
+ Pekerjaannya terjadi di perangkat keras Anda
+      sendiri, jadi lamanya tergantung mesin Anda, bukan pada antrean. Video yang
+      sudah jadi diserahkan langsung ke unduhan peramban Anda."""
+
+[[faq]]
+q = "Apakah video saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Ia dibaca, didekode, diambil sampelnya, dan dikodekan oleh
+        peramban Anda sendiri di perangkat keras Anda sendiri. Alat ini tidak
+        punya sisi server, dan <code>Content-Security-Policy</code> halaman ini
+        menyebut satu per satu setiap alamat yang boleh dihubunginya &mdash;
+        tidak satu pun milik situs ini. Cabut koneksi internet dan tetap buat
+        sebuah time-lapse kalau Anda lebih suka memeriksa daripada diberi
+        tahu."""
+
+[[faq]]
+q = "Apa sebenarnya arti kecepatannya?"
+a = """
+        Rasio antara yang masuk dan yang keluar. Pada 60&times;, rekaman satu jam
+        menjadi satu menit, pada laju bingkai berapa pun Anda memutarnya. Di
+        baliknya, alat ini mengambil satu bingkai setiap <em>kecepatan &divide;
+        laju bingkai</em> detik &mdash; 60&times; pada 30 bingkai per detik
+        berarti satu bingkai setiap dua detik &mdash; dan halaman ini menampilkan
+        selang itu sebelum Anda mulai, karena itulah angka yang mengatakan apa
+        yang sebenarnya terjadi."""
+
+[[faq]]
+q = "Format video apa saja yang bisa saya percepat?"
+a = """
+        MP4, M4V, dan MOV dibaca langsung, apa pun isinya: H.264, HEVC, AV1, atau
+        VP9, selama peramban Anda bisa mendekode kodek itu. Apa pun lain yang
+        bisa diputar peramban Anda &mdash; yang paling jelas WebM &mdash; dibaca
+        dengan mencari posisi pemutar peramban sendiri ke setiap saat, yang
+        berhasil pada setiap format yang bisa diputarnya. File yang tidak bisa
+        dibaca maupun diputar peramban, yang dalam praktiknya berarti AVI, WMV,
+        FLV, dan sebagian besar MKV, ditolak dengan pesan alih-alih gagal di
+        tengah jalan. Yang keluar selalu berupa MP4."""
+
+[[faq]]
+q = "Kenapa time-lapse-nya tidak bersuara?"
+a = """
+        Karena tidak ada yang layak disimpan. Suara yang diputar tiga puluh kali
+        terlalu cepat bukan ucapan atau musik, melainkan cicitan; dan
+        alternatifnya &mdash; menjaga suara pada kecepatan aslinya di bawah
+        gambar yang sudah melesat jauh mendahuluinya &mdash; akan menjadi klip
+        yang berbeda dari yang Anda minta. Jadi jalurnya dibuang, yang juga
+        merupakan sebagian besar alasan video satu jam keluar sebagai beberapa
+        megabyte. Kalau Anda mau audionya sendiri,
+        <a href="../sunting-audio/">Penyunting Audio</a> akan menyimpannya."""
+
+[[faq]]
+q = "Apakah lebih cepat daripada mengubah seluruh videonya?"
+a = """
+        Jauh lebih cepat, dan itulah gunanya membaca file secara langsung. Sebuah
+        bingkai hanya bisa didekode dengan mulai dari bingkai kunci di depannya,
+        tapi tidak ada yang mengharuskan bingkai di antaranya disimpan &mdash;
+        jadi time-lapse 60&times; dari satu jam mendekode beberapa ribu bingkai
+        dari seratus ribu, bukan semuanya. Ringkasannya mengatakan persis berapa
+        banyak yang akan dibacanya sebelum Anda menekan tombolnya."""
+
+[[faq]]
+q = "Apakah kualitasnya turun?"
+a = """
+        Bingkai yang disimpannya dikodekan untuk kedua kalinya, dan itu memakan
+        sedikit; hal itu tidak bisa dihindari, karena klip yang sudah jadi
+        menampilkannya pada waktu yang tidak pernah dikodekan oleh apa pun di
+        file aslinya. Yang justru dibelanjakan alat ini lebih banyak daripada
+        alat video lain di sini adalah bit rate-nya, dengan sengaja. Dua bingkai
+        berjarak dua detik jauh lebih sedikit kesamaannya daripada dua bingkai
+        berjarak sepertiga puluh detik, jadi kodek punya lebih sedikit yang bisa
+        dipakai ulang, dan angka yang disetel untuk rekaman biasa akan keluar
+        kotak-kotak."""
+
+[[faq]]
+q = "Adakah batas ukuran atau durasi videonya?"
+a = """
+        Tidak ada batas yang tertanam di alat ini, dan file tidak dibaca ke
+        memori sekaligus &mdash; ia dibaca dalam deretan pendek di sekitar setiap
+        saat, dan hanya itu. Batas praktisnya adalah time-lapse yang sudah jadi,
+        yang dirakit di memori sebelum Anda mengunduhnya, dan sebuah time-lapse
+        menurut definisinya pendek: ringkasannya menunjukkan kira-kira seberapa
+        besar ia nanti sebelum Anda mulai."""
+
+[[faq]]
+q = "Bisakah saya mempercepat hanya sebagian klip?"
+a = """
+        Tidak di sini. Alat ini mengambil keseluruhannya dari bingkai pertama
+        sampai terakhir. Potong dulu bagian yang Anda mau dengan
+        <a href="../potong-video/">Pemotong Video</a> &mdash; yang melakukannya
+        tanpa mengodekan ulang satu bingkai pun &mdash; lalu percepat
+        hasilnya."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang video Anda."""
+
+[schema]
+browser_requirements = "Memerlukan JavaScript dan peramban dengan pengodean video WebCodecs: Chrome, Edge, Safari 16.4 atau lebih baru, atau Firefox 133 atau lebih baru."
+description = "Ubah video panjang menjadi time-lapse di peramban. Satu bingkai diambil setiap beberapa detik dari aslinya dan bingkainya ditulis kembali sebagai MP4 pendek pada 24, 30, atau 60 bingkai per detik. MP4, MOV, dan M4V dibaca langsung dan hanya di sekitar saat-saat yang dibutuhkan; apa pun lain yang bisa diputar peramban dicari posisinya. Tidak ada yang diunggah."
+features = [
+  "Mempercepat video MP4, MOV, M4V, dan WebM dengan faktor apa pun dari 1,1x sampai 1000x",
+  "Sebutkan kecepatannya, atau sebutkan berapa lama hasilnya nanti",
+  "Hanya membaca bagian file yang dibutuhkan saat-saat yang dipilih",
+  "24, 30, atau 60 bingkai per detik, pada ukuran asli atau diperkecil",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun, tanpa tanda air",
+]
+
+[picker]
+title = "Jatuhkan video di sini"
+hint = "atau klik untuk menelusuri &mdash; MP4, MOV, M4V, WebM, dan apa pun lain yang bisa diputar peramban ini"
