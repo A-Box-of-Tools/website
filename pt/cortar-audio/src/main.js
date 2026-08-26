@@ -186,11 +186,11 @@ watchUntil=null;
 ticking=requestAnimationFrame(tick);
 }
 el.preview.addEventListener('play',()=>{
-el.play.textContent='Pause';
+el.play.textContent='❚❚';
 if(!ticking)ticking=requestAnimationFrame(tick);
 });
 el.preview.addEventListener('pause',()=>{
-el.play.textContent='Play';
+el.play.textContent='▶';
 playAt=el.preview.currentTime;
 timeline.setPlayhead(playAt);
 el.tlNow.textContent=formatTime(playAt);
