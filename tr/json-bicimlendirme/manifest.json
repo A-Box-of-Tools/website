@@ -1,8 +1,8 @@
 {
   "id": "/tr/json-bicimlendirme/",
-  "name": "Metin ve Kod",
-  "short_name": "Metin ve Kod",
-  "description": "D\u00fczenli yazd\u0131r\u0131n, neyin de\u011fi\u015fti\u011fini g\u00f6r\u00fcn, kodlay\u0131n ya da \u00f6b\u00fcr bi\u00e7ime \u00e7evirin. Hi\u00e7bir \u015fey bir ba\u015fkas\u0131n\u0131n sunucusuna yap\u0131\u015ft\u0131r\u0131lm\u0131yor.",
+  "name": "JSON Bi\u00e7imlendirici",
+  "short_name": "JSON Bi\u00e7imlendirici",
+  "description": "JSON, XML, HTML, CSS ve YAML; bi\u00e7imlendirilmi\u015f ya da d\u00f6n\u00fc\u015ft\u00fcr\u00fclm\u00fc\u015f. Hi\u00e7bir \u015fey bir ba\u015fkas\u0131n\u0131n sunucusuna yap\u0131\u015ft\u0131r\u0131lm\u0131yor.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

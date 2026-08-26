@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/censurar-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'ca5f7f4766';
+const CACHE_NAME=CACHE_PREFIX+'dbf5b4e27e';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/pemindai-dokumen/:';
-const CACHE_NAME=CACHE_PREFIX+'6592a07718';
+const CACHE_NAME=CACHE_PREFIX+'0b24f0fca9';
 const ASSETS=[
 './',
 'index.html',

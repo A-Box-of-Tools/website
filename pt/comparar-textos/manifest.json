@@ -1,0 +1,26 @@
+{
+  "id": "/pt/comparar-textos/",
+  "name": "Comparador de textos",
+  "short_name": "Comparador de textos",
+  "description": "Dois textos entram, cada diferen\u00e7a sai marcada, linha a linha e palavra por palavra. Nada \u00e9 colado no servidor de ningu\u00e9m.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

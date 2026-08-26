@@ -1,0 +1,26 @@
+{
+  "id": "/zh-TW/compare-text/",
+  "name": "\u6587\u5b57\u6bd4\u5c0d",
+  "short_name": "\u6587\u5b57\u6bd4\u5c0d",
+  "description": "\u5169\u6bb5\u6587\u5b57\u9032\u4f86\uff0c\u6bcf\u8655\u5dee\u7570\u90fd\u88ab\u6a19\u51fa\u4f86\uff0c\u9010\u884c\u3001\u9010\u8a5e\u3002\u6c92\u6709\u4e00\u500b\u5b57\u88ab\u8cbc\u9032\u5225\u4eba\u7684\u4f3a\u670d\u5668\u3002",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

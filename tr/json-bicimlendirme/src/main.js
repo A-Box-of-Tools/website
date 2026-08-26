@@ -3,8 +3,6 @@ import{phrase}from'./shared/phrases.js';
 import{wireFilePicker}from'./shared/file-picker.js';
 import{LANGUAGES,languageById,formatText,detectLanguage}from'./format.js';
 import{CONVERSIONS,conversionById}from'./convert.js';
-import{CODECS,codecById,CodecError}from'./encode.js';
-import{compareText,alignRows,diffWords,formatUnified}from'./diff.js';
 import{SAMPLES}from'./samples.js';
 const $=(id)=>document.getElementById(id);
 const el={
@@ -12,17 +10,11 @@ tabs:Array.from(document.querySelectorAll('.tab')),
 panels:{
 format:$('options-format'),
 convert:$('options-convert'),
-encode:$('options-encode'),
-diff:$('options-diff'),
 },
 dropzone:$('dropzone'),
 fileInput:$('file-input'),
 input:$('input'),
-inputB:$('input-b'),
-paneB:$('pane-b'),
-inputLabel:$('input-label'),
 inputCount:$('input-count'),
-inputBCount:$('input-b-count'),
 detected:$('detected'),
 language:$('language'),
 languageNote:$('language-note'),
@@ -34,19 +26,10 @@ conversion:$('conversion'),
 conversionNote:$('conversion-note'),
 rootField:$('root-field'),
 rootName:$('root-name'),
-codec:$('codec'),
-codecNote:$('codec-note'),
-view:$('view'),
-onlyChanges:$('only-changes'),
-ignoreWhitespace:$('ignore-whitespace'),
-ignoreCase:$('ignore-case'),
-ignoreBlank:$('ignore-blank'),
 sample:$('sample'),
-swap:$('swap'),
 clear:$('clear'),
 error:$('error'),
 output:$('output'),
-diffView:$('diff-view'),
 resultNote:$('result-note'),
 copy:$('copy'),
 download:$('download'),
@@ -60,12 +43,8 @@ offlineDot:$('offline-dot'),
 let mode='format';
 let result=null;
 let downloadUrl=null;
-const MAX_ROWS=4000;
 for(const conversion of CONVERSIONS){
 el.conversion.append(new Option(conversion.name,conversion.id));
-}
-for(const codec of CODECS){
-el.codec.append(new Option(codec.name,codec.id));
 }
 function setMode(next){
 mode=next;
@@ -75,13 +54,6 @@ tab.setAttribute('aria-selected',String(on));
 tab.tabIndex=on?0:-1;
 }
 for(const[name,panel]of Object.entries(el.panels))panel.hidden=name!==next;
-const comparing=next==='diff';
-el.paneB.hidden=!comparing;
-el.swap.hidden=!comparing;
-el.output.hidden=comparing;
-el.diffView.hidden=!comparing;
-el.inputLabel.textContent=comparing?'The original':'Your text';
-el.fileInput.multiple=comparing;
 el.detected.hidden=next!=='format';
 run();
 }
@@ -103,17 +75,9 @@ dropzone:el.dropzone,
 onFiles(files){loadFiles(files);},
 });
 async function loadFiles(files){
-picker.busy(`Reading ${files.length === 1 ? 'the file' : `${files.length} files`}...`);
+picker.busy('Reading the file...');
 try{
-const texts=await Promise.all(files.slice(0,2).map((file)=>file.text()));
-if(mode==='diff'&&texts.length>1){
-el.input.value=texts[0];
-el.inputB.value=texts[1];
-}else if(mode==='diff'&&el.input.value.trim()&&!el.inputB.value.trim()){
-el.inputB.value=texts[0];
-}else{
-el.input.value=texts[0];
-}
+el.input.value=await files[0].text();
 run();
 }catch(error){
 showError(`That file could not be read: ${error?.message ?? error}`);
@@ -124,30 +88,16 @@ picker.done();
 let timer=null;
 function schedule(){
 clearTimeout(timer);
-const size=el.input.value.length+el.inputB.value.length;
+const size=el.input.value.length;
 timer=setTimeout(run,size>200000?500:120);
 }
-for(const box of[el.input,el.inputB]){
-box.addEventListener('input',()=>{updateCounts();schedule();});
-}
+el.input.addEventListener('input',()=>{updateCounts();schedule();});
 for(const control of[el.language,el.indent,el.style,el.sortKeys,el.conversion,
-el.rootName,el.codec,el.view,el.onlyChanges,el.ignoreWhitespace,el.ignoreCase,
-el.ignoreBlank]){
+el.rootName]){
 control.addEventListener('change',run);
 }
-for(const radio of document.querySelectorAll('input[name="direction"]')){
-radio.addEventListener('change',run);
-}
-el.swap.addEventListener('click',()=>{
-const held=el.input.value;
-el.input.value=el.inputB.value;
-el.inputB.value=held;
-updateCounts();
-run();
-});
 el.clear.addEventListener('click',()=>{
 el.input.value='';
-el.inputB.value='';
 updateCounts();
 run();
 el.input.focus();
@@ -155,7 +105,6 @@ el.input.focus();
 el.sample.addEventListener('click',()=>{
 const sample=SAMPLES[mode];
 el.input.value=sample.a;
-if(sample.b!==undefined)el.inputB.value=sample.b;
 if(sample.language&&mode==='format')el.language.value=sample.language;
 if(sample.conversion&&mode==='convert')el.conversion.value=sample.conversion;
 updateCounts();
@@ -163,7 +112,6 @@ run();
 });
 function updateCounts(){
 el.inputCount.textContent=describe(el.input.value);
-el.inputBCount.textContent=describe(el.inputB.value);
 }
 function describe(text){
 if(text==='')return'empty';
@@ -178,18 +126,16 @@ clearError();
 clearResult();
 updateOptionVisibility();
 const text=el.input.value;
-if(mode!=='diff'&&text.trim()===''){
+if(text.trim()===''){
 el.resultNote.textContent='Nothing yet.';
 return;
 }
 try{
 if(mode==='format')runFormat(text);
-else if(mode==='convert')runConvert(text);
-else if(mode==='encode')runEncode(text);
-else runDiff(text,el.inputB.value);
+else runConvert(text);
 }catch(error){
 showError(error?.message??String(error));
-if(error?.name!=='ParseError'&&error?.name!=='CodecError')console.error(error);
+if(error?.name!=='ParseError')console.error(error);
 }
 }
 function updateOptionVisibility(){
@@ -201,7 +147,6 @@ el.styleNote.textContent=el.style.disabled
 :'';
 el.rootField.hidden=el.conversion.value!=='json-xml';
 el.conversionNote.textContent=conversionById(el.conversion.value).note;
-el.codecNote.textContent=codecById(el.codec.value).note;
 }
 function chosenLanguage(){
 if(el.language.value!=='auto')return el.language.value;
@@ -245,151 +190,6 @@ root:el.rootName.value.trim(),
 show(out,`${conversion.name} - ${out.split('\n').length - 1} lines, ${humanBytes(byteLength(out))}`,
 `converted.${conversion.output}`);
 }
-function runEncode(text){
-const codec=codecById(el.codec.value);
-const decoding=pickedDirection()==='decode';
-let out;
-try{
-out=decoding?codec.decode(text):codec.encode(text);
-}catch(error){
-if(error?.name==='TypeError'){
-throw new CodecError('Those bytes are not UTF-8 text, so there is nothing to show. '
-+'They may be a file rather than a string.');
-}
-throw error;
-}
-show(out,`${codec.name}, ${decoding ? 'decoded' : 'encoded'} - `
-+`${humanBytes(byteLength(text))} in, ${humanBytes(byteLength(out))} out`,
-decoding?'decoded.txt':'encoded.txt');
-}
-function runDiff(aText,bText){
-if(aText===''&&bText===''){
-el.resultNote.textContent='Paste something into both boxes.';
-el.diffView.replaceChildren();
-return;
-}
-const options={
-ignoreWhitespace:el.ignoreWhitespace.checked,
-ignoreCase:el.ignoreCase.checked,
-ignoreBlankLines:el.ignoreBlank.checked,
-};
-const{ops,stats}=compareText(aText,bText,options);
-const rows=alignRows(ops);
-el.diffView.replaceChildren(drawDiff(rows));
-el.diffView.classList.toggle('split',el.view.value==='split');
-const patch=formatUnified(ops,{aLabel:'original',bLabel:'changed'});
-result={text:patch,name:'changes.patch'};
-el.copy.disabled=patch==='';
-offerDownload(patch,'changes.patch');
-if(stats.identical){
-el.resultNote.textContent='These two are identical, byte for byte.';
-return;
-}
-const sameText=stats.added===0&&stats.removed===0
-?'The same, once the differences you asked to ignore are ignored.'
-:`${stats.added.toLocaleString()} added, ${stats.removed.toLocaleString()} removed`;
-el.resultNote.textContent=`${sameText} - `
-+`${Math.round(stats.similarity * 100)}% of the lines are shared.`
-+(stats.trailingDiffers?' One of them ends with a newline and the other does not.':'');
-}
-function drawDiff(rows){
-const table=document.createElement('div');
-table.className='diff-table';
-const kept=el.onlyChanges.checked?collapse(rows,3):rows.map((row)=>({row}));
-let drawn=0;
-for(const entry of kept){
-if(entry.skipped){
-const gap=document.createElement('div');
-gap.className='diff-skip';
-gap.textContent=`${entry.skipped.toLocaleString()} unchanged line`
-+`${entry.skipped === 1 ? '' : 's'}`;
-table.append(gap);
-continue;
-}
-if(drawn>=MAX_ROWS){
-const gap=document.createElement('div');
-gap.className='diff-skip';
-gap.textContent='The rest is not drawn - use Download to get the whole patch.';
-table.append(gap);
-break;
-}
-table.append(el.view.value==='split'?splitRow(entry.row):unifiedRow(entry.row));
-drawn+=1;
-}
-return table;
-}
-function collapse(rows,context){
-const keep=new Array(rows.length).fill(false);
-rows.forEach((row,index)=>{
-if(row.type==='equal')return;
-for(let i=Math.max(0,index-context);i<=Math.min(rows.length-1,index+context);i+=1){
-keep[i]=true;
-}
-});
-const out=[];
-let skipped=0;
-rows.forEach((row,index)=>{
-if(keep[index]){
-if(skipped){out.push({skipped});skipped=0;}
-out.push({row});
-return;
-}
-skipped+=1;
-});
-if(skipped)out.push({skipped});
-return out;
-}
-function splitRow(row){
-const line=document.createElement('div');
-line.className=`diff-row ${row.type}`;
-const words=row.type==='change'?diffWords(row.a.text,row.b.text):null;
-line.append(
-lineNumber(row.a?.a),
-side(row.a?row.a.text:null,words?.a,'left',row.type==='change'||row.type==='delete'),
-lineNumber(row.b?.b),
-side(row.b?row.b.text:null,words?.b,'right',row.type==='change'||row.type==='insert'),
-);
-return line;
-}
-function unifiedRow(row){
-if(row.type==='change'){
-const wrap=document.createDocumentFragment();
-wrap.append(unifiedRow({type:'delete',a:row.a,b:null}));
-wrap.append(unifiedRow({type:'insert',a:null,b:row.b}));
-return wrap;
-}
-const line=document.createElement('div');
-line.className=`diff-row ${row.type}`;
-const sign=row.type==='insert'?'+':row.type==='delete'?'-':' ';
-const text=(row.a??row.b).text;
-line.append(lineNumber(row.a?.a),lineNumber(row.b?.b));
-const cell=document.createElement('span');
-cell.className=`side ${row.type === 'insert' ? 'right marked'
-    : row.type === 'delete' ? 'left marked' : 'left'}`
-;
-cell.textContent=`${sign}${text}`;
-line.append(cell);
-return line;
-}
-function lineNumber(value){
-const cell=document.createElement('span');
-cell.className='ln';
-cell.textContent=value===undefined||value===null?'':String(value+1);
-return cell;
-}
-function side(text,words,where,marked){
-const cell=document.createElement('span');
-cell.className=`side ${where}${marked ? ' marked' : ''}`;
-if(text===null){cell.classList.add('empty');return cell;}
-if(!words){cell.textContent=text;return cell;}
-for(const part of words){
-if(part.same){cell.append(part.text);continue;}
-const mark=document.createElement('mark');
-mark.textContent=part.text;
-cell.append(mark);
-}
-return cell;
-}
 function show(text,note,name){
 el.output.textContent=text;
 el.resultNote.textContent=note;
@@ -413,7 +213,7 @@ await navigator.clipboard.writeText(result.text);
 el.copy.textContent='Copied';
 }catch{
 const range=document.createRange();
-range.selectNodeContents(mode==='diff'?el.diffView:el.output);
+range.selectNodeContents(el.output);
 const selection=window.getSelection();
 selection.removeAllRanges();
 selection.addRange(range);
@@ -423,7 +223,6 @@ setTimeout(()=>{el.copy.textContent='Copy';},2500);
 });
 function clearResult(){
 el.output.textContent='';
-el.diffView.replaceChildren();
 el.copy.disabled=true;
 el.download.hidden=true;
 result=null;
@@ -440,7 +239,6 @@ el.error.hidden=true;
 el.error.textContent='';
 }
 const indentString=()=>(el.indent.value==='tab'?'\t':' '.repeat(Number(el.indent.value)));
-const pickedDirection=()=>document.querySelector('input[name="direction"]:checked').value;
 function humanBytes(bytes){
 if(bytes<1024)return`${bytes} B`;
 if(bytes<1024*1024)return`${(bytes / 1024).toFixed(1)} KB`;
@@ -521,7 +319,6 @@ if(!el.language.querySelector(`option[value="${language.id}"]`)){
 console.warn(`the language menu is missing ${language.id}`);
 }
 }
-if(window.matchMedia('(max-width: 620px)').matches)el.view.value='unified';
 updateCounts();
 setMode('format');
 monitorNetwork();

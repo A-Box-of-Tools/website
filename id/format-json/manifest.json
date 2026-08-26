@@ -1,8 +1,8 @@
 {
   "id": "/id/format-json/",
-  "name": "Teks dan Kode",
-  "short_name": "Teks dan Kode",
-  "description": "Rapikan tata letaknya, lihat apa yang berubah, kodekan, atau ubah ke format yang lain. Tidak ada yang ditempelkan ke server orang lain.",
+  "name": "Pemformat JSON",
+  "short_name": "Pemformat JSON",
+  "description": "JSON, XML, HTML, CSS, dan YAML, diformat atau diubah. Tidak ada yang ditempelkan ke server orang lain.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

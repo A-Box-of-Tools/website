@@ -1,8 +1,8 @@
 {
   "id": "/fr/formater-du-json/",
-  "name": "Texte & code",
-  "short_name": "Texte & code",
-  "description": "Mettez-le en forme, voyez ce qui a chang\u00e9, encodez-le ou passez-le dans l'autre format. Rien n'est coll\u00e9 dans le serveur de quelqu'un d'autre.",
+  "name": "Formateur JSON",
+  "short_name": "Formateur JSON",
+  "description": "JSON, XML, HTML, CSS et YAML, mis en forme ou convertis. Rien n'est coll\u00e9 dans le serveur de quelqu'un d'autre.",
   "lang": "fr",
   "dir": "ltr",
   "start_url": "./",

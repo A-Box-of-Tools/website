@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/unir-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'d22c7b34a7';
+const CACHE_NAME=CACHE_PREFIX+'f539a8400a';
 const ASSETS=[
 './',
 'index.html',

@@ -1,8 +1,8 @@
 {
   "id": "/de/json-formatieren/",
-  "name": "Text & Code",
-  "short_name": "Text & Code",
-  "description": "Auslegen, sehen was sich ge\u00e4ndert hat, kodieren oder in das andere Format bringen. Nichts davon wird in den Server eines anderen eingef\u00fcgt.",
+  "name": "JSON-Formatierer",
+  "short_name": "JSON-Formatierer",
+  "description": "JSON, XML, HTML, CSS und YAML, formatiert oder umgewandelt. Nichts davon wird in den Server eines anderen eingef\u00fcgt.",
   "lang": "de",
   "dir": "ltr",
   "start_url": "./",

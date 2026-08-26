@@ -1,8 +1,8 @@
 {
   "id": "/it/formattare-json/",
-  "name": "Testo e codice",
-  "short_name": "Testo e codice",
-  "description": "Mettilo in ordine, guarda cos'\u00e8 cambiato, codificalo o portalo nell'altro formato. Niente finisce incollato nel server di qualcun altro.",
+  "name": "Formattatore JSON",
+  "short_name": "Formattatore JSON",
+  "description": "JSON, XML, HTML, CSS e YAML, formattati o convertiti. Niente finisce incollato nel server di qualcun altro.",
   "lang": "it",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/nl/json-formatteren/",
-  "name": "Tekst & code",
-  "short_name": "Tekst & code",
-  "description": "Netjes neerzetten, zien wat er veranderde, coderen, of omzetten naar het andere formaat. Er wordt niets in andermans server geplakt.",
+  "name": "JSON-formatter",
+  "short_name": "JSON-formatter",
+  "description": "JSON, XML, HTML, CSS en YAML, geformatteerd of omgezet. Er wordt niets in andermans server geplakt.",
   "lang": "nl",
   "dir": "ltr",
   "start_url": "./",

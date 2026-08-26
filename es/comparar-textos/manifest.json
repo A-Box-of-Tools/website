@@ -1,0 +1,26 @@
+{
+  "id": "/es/comparar-textos/",
+  "name": "Comparador de textos",
+  "short_name": "Comparador de textos",
+  "description": "Dos textos dentro, cada diferencia marcada, l\u00ednea a l\u00ednea y palabra a palabra. Nada se pega en el servidor de nadie.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

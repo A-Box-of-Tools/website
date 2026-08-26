@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/اقتصاص-الفيديو/:';
-const CACHE_NAME=CACHE_PREFIX+'b874f07be4';
+const CACHE_NAME=CACHE_PREFIX+'dd2441f469';
 const ASSETS=[
 './',
 'index.html',

@@ -1,0 +1,26 @@
+{
+  "id": "/zh/encode-text/",
+  "name": "Base64 \u7f16\u7801\u89e3\u7801",
+  "short_name": "Base64 \u7f16\u7801\u89e3\u7801",
+  "description": "Base64\u3001\u767e\u5206\u53f7\u7f16\u7801\u3001HTML \u5b9e\u4f53\u3001\u5341\u516d\u8fdb\u5236\u548c\u53cd\u659c\u6760\u8f6c\u4e49\uff0c\u53cc\u5411\u90fd\u884c\u3002\u6ca1\u6709\u4e00\u4e2a\u5b57\u88ab\u8d34\u8fdb\u522b\u4eba\u7684\u670d\u52a1\u5668\u3002",
+  "lang": "zh-Hans",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

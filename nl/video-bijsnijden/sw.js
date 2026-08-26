@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/video-bijsnijden/:';
-const CACHE_NAME=CACHE_PREFIX+'5b171dd12a';
+const CACHE_NAME=CACHE_PREFIX+'8ccc3431fb';
 const ASSETS=[
 './',
 'index.html',

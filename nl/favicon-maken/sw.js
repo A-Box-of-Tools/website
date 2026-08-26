@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/favicon-maken/:';
-const CACHE_NAME=CACHE_PREFIX+'ca87e0fbf7';
+const CACHE_NAME=CACHE_PREFIX+'88937c28fc';
 const ASSETS=[
 './',
 'index.html',
