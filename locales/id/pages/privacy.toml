@@ -1,0 +1,25 @@
+#
+# Privasi & Cookie - Bahasa Indonesia.
+#
+# Nama produk (Google AdSense, Google Analytics, Buy Me a Coffee, GitHub Pages,
+# Cloudflare) dan nama kunci penyimpanan (abox-lang) tetap seperti adanya:
+# itulah yang dilihat pembaca di setelan perambannya.
+#
+
+nav = "Privasi &amp; Cookie"
+
+title = "Privasi &amp; Cookie &mdash; abox.tools"
+description = "Apa yang dikumpulkan dan tidak dikumpulkan abox.tools. File Anda tidak pernah diunggah; iklannya, pencacah kunjungannya, dan tombol donasinya masing-masing dijelaskan selengkapnya."
+
+heading = "Privasi &amp; Cookie"
+lede = """
+    Versi singkatnya: file Anda tidak pernah diunggah, karena tidak ada tujuan
+    untuk mengunggahnya. Semua yang lain di halaman ini adalah tentang iklannya,
+    pencacah kunjungannya, dan hostingnya &mdash; bagian yang memang melibatkan
+    perusahaan lain."""
+
+updated = "22 Agustus 2026"
+
+og_title = "Privasi &amp; Cookie &mdash; abox.tools"
+og_description = "File Anda tidak pernah diunggah. Apa yang dikumpulkan, oleh siapa, dan bagaimana mematikannya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
