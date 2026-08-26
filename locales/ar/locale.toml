@@ -142,6 +142,17 @@ complete = true
 "guides/whats-inside-a-gif" = "أدلة/ماذا-يوجد-داخل-gif"
 "guides/verify-a-file-checksum" = "أدلة/التحقق-من-قيمة-تجزئة-الملف"
 
+# The three that shipped after this file was first written. The tools keep
+# their Latin acronyms in the address for the reason given at the top: DICOM
+# and PDF are what a reader types, and transliterating either would invent a
+# word nobody searches for.
+"dicom-viewer" = "عارض-dicom"
+"document-scanner" = "الماسح-الضوئي-للمستندات"
+"redact-pdf" = "طمس-pdf"
+"guides/open-a-dicom-file" = "أدلة/فتح-ملف-dicom"
+"guides/redact-a-pdf" = "أدلة/طمس-ملف-pdf"
+"guides/scan-a-document-with-your-phone" = "أدلة/مسح-مستند-بهاتفك"
+
 #
 # ---------------------------------------------------------------------------
 # The hub.

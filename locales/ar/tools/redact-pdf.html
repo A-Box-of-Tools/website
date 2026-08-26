@@ -1,0 +1,278 @@
+<main>
+  <!-- Step 1 &mdash; the document -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر ملف PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; finding it -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> قل ما الذي يجب أن يزول</h2>
+
+    <p class="card-lede">
+      اكتب الكلمات &mdash; اسماً، أو عنواناً، أو مرجعاً &mdash; فيُسرَد أدناه كل
+      موضع تظهر فيه ومعه السطر الذي تجلس عليه. ولا يُزال شيء حتى الخطوة 4، ولا
+      يُزال شيء لم تؤشّر عليه.
+    </p>
+
+    <label class="find-label" for="terms">كلمات وعبارات، واحدة في كل سطر</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="سميث&#10;14 شارع الجسر&#10;REF-40219"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">جِدها</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>طابِق حالة الأحرف</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>الكلمات الكاملة وحدها</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>أو ابحث عن الأشياء الحسّاسة عادةً</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        هذه أنماط، والنمط لا يستطيع تمييز رقم هاتف من رقم مرجع. وأرقام البطاقات
+        وأرقام IBAN تُفحَص في مقابل أرقام تحقّقها هي؛ أما البقية فتُعرَض ولا
+        يُؤشَّر عليها نيابةً عنك، وهي جديرة بأن تُقرأ واحدة واحدة.
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">أشِّر على الكل</button>
+        <button type="button" id="tick-none" class="ghost">ألغِ التأشير</button>
+        <button type="button" id="clear-found" class="ghost danger">امسح القائمة</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- Step 3 &mdash; reading the page -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> اقرأ الصفحة، والتقط الكلمات منها</h2>
+
+    <p class="card-lede">
+      هذا هو النصّ كما هو مخزَّن في المستند، بالترتيب الذي كان قارئ سينسخه به
+      &mdash; وهو ليس دائماً الترتيب الذي طُبِع به. انقر أي كلمة لإخراجها،
+      وانقرها ثانيةً لإبقائها. وكل ما هو مشطوب هنا هو ما سيزول.
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; السابقة</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">التالية &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">أبقِ كل شيء على هذه الصفحة</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="نصّ هذه الصفحة"></div>
+  </section>
+
+  <!-- Step 4 &mdash; doing it -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> أخرِج الكلمات</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>ارسم صندوقاً أسود مكان كل واحدة</strong>
+        <span class="check-note">
+          كي يرى القارئ أن شيئاً أُزيل. والصندوق زينةٌ هنا لا هو الطمس: فالحروف
+          تكون قد زالت من الملف قبل رسمه. أطفئه فتختفي الكلمات ببساطة، تاركةً
+          المساحة التي كانت تشغلها.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>أخرِج الكلمات نفسها من بقية المستند</strong>
+        <span class="check-note">
+          الإشارات المرجعية، والتعليقات، والملاحظات اللاصقة، وما كُتِب في حقول
+          الاستمارات. فالكلمة التي أُزيلت من صفحة وتُرِكت في إشارة مرجعية لم
+          تُزَل. وخصائصُ المستند تذهب مهما قال هذا، وكذلك النصُّ البديل الذي
+          ينسخه القارئ بدل الحروف التي على الصفحة &mdash; وكلاهما المستندُ يقول
+          الكلمة، لا موضعٌ آخر يحتفظ بنسخة منها.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>أسقِط المرفقات وكل ما يعمل</strong>
+        <span class="check-note">
+          ملف PDF يستطيع حمل ملفات كاملة في جوفه وJavaScript يعمل عند فتحه. ولا
+          يمكن البحث في أيٍّ منهما عن الكلمات التي تزيلها، ولا واحد منهما لازم
+          لقراءة مستند.
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">أخرِجها</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>نزِّل</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">هذا ليس ملف PDF، فليس فيه نصّ يُخرَج.</span>
+    <span data-phrase="load.encrypted">على ملف PDF هذا كلمة مرور. ونزعُ الحماية
+      عن مستند عملٌ آخر غير إخراج كلمات منه، وهذه الأداة لن تفعله من وراء
+      ظهرك.</span>
+    <span data-phrase="load.broken">لم يمكن فتح هذا الملف بوصفه PDF ({detail}).</span>
+    <span data-phrase="load.nopages">فُتِح هذا، لكن لم تُوجَد فيه صفحات.</span>
+    <span data-phrase="load.repaired">جدولُ المراجع المتقاطعة لهذا المستند لم
+      يطابق محتواه، فقُرِئ بالمسح بحثاً عن الكائنات بدلاً من ذلك. وذلك إصلاح،
+      وقد نجح &mdash; فافحص الناتج بعناية قبل أن ترسله إلى أي مكان.</span>
+
+    <span data-phrase="doc.sub">{pages} &middot; {words} من النصّ &middot; {size}</span>
+    <span data-phrase="doc.notext">{count} من هذه الصفحات ليس فيها نصّ البتة.
+      والصفحة كهذه صورةٌ لصفحة، وليس هنا ما تزيله هذه الأداة &mdash; فالكلمات
+      التي في الصورة تبقى حيث هي بالضبط.</span>
+    <span data-phrase="doc.unreadable">{count} حرفاً في هذا المستند لم يمكن
+      قراءتها محارفَ، لأن الخطوط التي تستعملها لا تحمل خريطة من رسومها رجوعاً
+      إلى النصّ. وتلك الحروف لا يمكن البحث عنها، فافحص الصفحات التي هي عليها
+      بدل أن تثق بالبحث.</span>
+    <span data-phrase="doc.scan">بعض الصفحات تحمل نصّاً غير مرئي مرصوفاً فوق
+      صورة، وهي طريقة الماسحة في تسجيل ما فهمه قارئها من الصفحة. وإزالةُ ذلك
+      النصّ تزيل ما كان البحث والنسخ سيجدانه. ولا تغيّر الصورة، وفي الصورة تبقى
+      الكلمات مقروءة.</span>
+
+    <span data-phrase="find.none">لا شيء على أي صفحة طابق.</span>
+    <span data-phrase="find.some">{count} على {pages}.</span>
+    <span data-phrase="find.more">أول {shown} مسرودة. والبقية موجودة وستُخرَج
+      إن أشّرت عليها كلها.</span>
+    <span data-phrase="find.terms">اكتب كلمة أعلاه، أو اختر نمطاً، قبل أن تضغط «جِدها».</span>
+
+    <span data-phrase="page.of">الصفحة {number} من {total}</span>
+    <span data-phrase="page.picked">{count} ستُزال من هذه الصفحة</span>
+    <span data-phrase="page.notext">لا نصّ على هذه الصفحة. فإما أنها فارغة،
+      وإما أنها صورةٌ لصفحة &mdash; مسحٌ ضوئي، أو صورة فوتوغرافية، أو تصديرٌ
+      رسم كلماته أشكالاً. ولا شيء عليها يمكن البحث فيه، ولا شيء عليها يمكن
+      إزالته هنا.</span>
+    <span data-phrase="page.unreadable">{count} حرفاً على هذه الصفحة لم يمكن
+      قراءتها محارفَ. وهي معروضة على هيئة &#9647; أدناه، ولن يجدها البحث.</span>
+    <span data-phrase="page.scan">النصّ على هذه الصفحة غير مرئي: فهو مرصوف فوق
+      صورةٍ للصفحة، وهي طريقة جعل المسح الضوئي قابلاً للبحث. والذي تخرجه هنا هو
+      ما كان البحث والنسخ سيجدانه. والصورة تحتفظ بالكلمات.</span>
+
+    <span data-phrase="run.summary">{words} على {pages} ستُخرَج.</span>
+    <span data-phrase="run.nothing">لم يُؤشَّر على شيء بعد. جِد كلمةً في الخطوة 2، أو انقر واحدة في الخطوة 3.</span>
+    <span data-phrase="run.editing">يجري إخراج الكلمات&hellip;</span>
+    <span data-phrase="run.writing">تجري كتابة المستند&hellip;</span>
+    <span data-phrase="run.checking">يجري فتح الملف المنتهي والبحث فيه&hellip;</span>
+    <span data-phrase="run.failed">حدث خطب ما أثناء إعادة كتابة هذا المستند ({detail}).</span>
+    <span data-phrase="run.cancelled">أُلغِي. ولم يُكتَب شيء.</span>
+
+    <span data-phrase="result.headline">{words} أُزيلت</span>
+    <span data-phrase="result.sub">{size} &middot; {pages} تغيّرت &middot; {boxes}</span>
+    <span data-phrase="check.good">فُتِح من جديد هنا وبُحِث فيه، كما كان قارئ
+      سيفعل: ولا واحدة منها في الملف المنتهي.</span>
+    <span data-phrase="check.partial">فُتِح من جديد هنا وبُحِث فيه: فكل موضع
+      أشّرت عليه قد زال، والمواضع التي تركتها ما زالت هناك.</span>
+    <span data-phrase="check.survived">هذا الملف لم يُكتَب. فقد فُتِح المستند
+      المنتهي من جديد وكان بعض ما أزلته ما زال يُوجَد فيه، ما يعني أن الطمس لم
+      يكتمل. ولا يُعرَض شيء للتنزيل.</span>
+    <span data-phrase="check.pages">هذا الملف لم يُكتَب. فقد عاد المستند
+      المنتهي بعدد صفحات غير الذي دخل به، فحدث خطب ما وراء الكلمات. ولا يُعرَض
+      شيء للتنزيل.</span>
+
+    <span data-phrase="fact.boxes">{count} رُسِمت فوق الفجوات.</span>
+    <span data-phrase="fact.noboxes">لم تُرسَم صناديق، فالكلمات زالت ولا شيء
+      يقول أين كانت.</span>
+    <span data-phrase="fact.elsewhere">أُخرِجت الكلمات نفسها من {where}.</span>
+    <span data-phrase="fact.metadata">أُزيلت خصائص المستند وحزمة XMP، فالملف
+      المنتهي لا يقول ما صنعه، ولا متى، ولا ماذا كان اسمه.</span>
+    <span data-phrase="fact.carried">أُسقِط {attachments} و{actions}.</span>
+    <span data-phrase="fact.shared">بعض ما أزلته كانت ترسمه كتلةٌ يعيد المستند
+      استعمالها في أكثر من صفحة، فقد زال من كل صفحة ترسمه. وذلك أكثر مما أشّرت
+      عليه، لا أقلّ منه أبداً.</span>
+    <span data-phrase="fact.overimage">{count} من الحروف التي أزلتها كانت
+      مرصوفة فوق صورةٍ للصفحة نفسها. فهي خارج طبقة النصّ وما زالت في الصورة:
+      لم يعد القارئ يستطيع البحث عنها ولا نسخها، وما زال يستطيع رؤيتها.</span>
+    <span data-phrase="fact.untouched">كل ما عدا ذلك على كل صفحة نُسِخ بايتاً
+      بايتاً. ولم يُعَد ترميز خطّ ولا صورة ولا خطّ رسم.</span>
+
+    <span data-phrase="count.pages">{count} صفحة</span>
+    <span data-phrase="count.page">صفحة واحدة</span>
+    <span data-phrase="count.words">{count} كلمة</span>
+    <span data-phrase="count.word">كلمة واحدة</span>
+    <span data-phrase="count.pieces">{count} قطعة نصّ</span>
+    <span data-phrase="count.piece">قطعة نصّ واحدة</span>
+    <span data-phrase="count.matches">{count} مطابقة</span>
+    <span data-phrase="count.match">مطابقة واحدة</span>
+    <span data-phrase="count.boxes">{count} صندوقاً أسود</span>
+    <span data-phrase="count.box">صندوق أسود واحد</span>
+    <span data-phrase="count.attachments">{count} مرفقاً</span>
+    <span data-phrase="count.attachment">مرفق واحد</span>
+    <span data-phrase="count.actions">{count} إجراءً</span>
+    <span data-phrase="count.action">إجراء واحد</span>
+    <span data-phrase="count.hosts">{count} مضيفاً</span>
+    <span data-phrase="count.host">مضيف واحد</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">مستندك لم يذهب إلى أي مكان. {total} ملفاً
+      حُمِّلت، كلها ملفات هذه الصفحة نفسها. {platform}</span>
+    <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه
+      الأداة أبداً. عُدَّ ذلك جديراً بالتحقيق. {platform}</span>
+    <span data-phrase="net.platform">نصوصُ الإعلانات والقياس وزرّ التبرّع
+      الخاصة بالصفحة حُمِّلت من {hosts}؛ ولم يُعطَ واحد منها مستنداً ولا كلمة
+      من مستند ولا شيئاً بحثت عنه.</span>
+
+    <span data-phrase="finder.email">عناوين البريد الإلكتروني</span>
+    <span data-phrase="finder.card">أرقام البطاقات</span>
+    <span data-phrase="finder.iban">الحسابات البنكية (IBAN)</span>
+    <span data-phrase="finder.nationalid">أرقام التأمين الوطني والضمان الاجتماعي</span>
+    <span data-phrase="finder.phone">أرقام الهواتف</span>
+  </div>
+</main>
