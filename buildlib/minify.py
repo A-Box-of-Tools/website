@@ -54,6 +54,14 @@ PUNCTUATORS = sorted([
     '&', '|', '^', '!', '~', '?', ':', '=', '.', '#', '@',
 ], key=len, reverse=True)
 
+# The same list, grouped by first character. The tokeniser reads the handful
+# of operators that can start with the character in front of it - longest
+# first, as above - rather than walking the whole list for every operator in
+# every file, which was most of what tokenising cost.
+PUNCT_BY_FIRST = {}
+for _punct in PUNCTUATORS:
+    PUNCT_BY_FIRST.setdefault(_punct[0], []).append(_punct)
+
 # After one of these, a `/` opens a regular expression rather than dividing.
 REGEX_OK_AFTER_WORD = frozenset("""
     return typeof instanceof in of new delete void throw case do else yield
@@ -63,7 +71,10 @@ REGEX_OK_AFTER_WORD = frozenset("""
 # ... and after any punctuator except these, which can end an expression.
 REGEX_NOT_AFTER_PUNCT = frozenset([')', ']', '}', '++', '--'])
 
-IDENT_START = re.compile(r'[A-Za-z_$\\]')
+# A set rather than the regex it spells, because it is asked about once per
+# token and the answer is one character wide.
+IDENT_START = frozenset(
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_$\\')
 IDENT = re.compile(r'[A-Za-z_$\\][A-Za-z0-9_$\\]*')
 NUMBER = re.compile(r'''
     0[xX][0-9a-fA-F_]+n?
@@ -112,18 +123,20 @@ def tokenize_js(source, where='<js>'):
             i += 1
             continue
 
-        # Comments
-        if source.startswith('//', i):
-            end = source.find('\n', i)
-            i = n if end < 0 else end
-            continue
-        if source.startswith('/*', i):
-            end = source.find('*/', i + 2)
-            if end < 0:
-                raise MinifyError(f'{where}:{line}: unterminated block comment')
-            line += source.count('\n', i, end)
-            i = end + 2
-            continue
+        # Comments - only a `/` can open one, so only a `/` pays for the look.
+        if ch == '/':
+            if source.startswith('//', i):
+                end = source.find('\n', i)
+                i = n if end < 0 else end
+                continue
+            if source.startswith('/*', i):
+                end = source.find('*/', i + 2)
+                if end < 0:
+                    raise MinifyError(
+                        f'{where}:{line}: unterminated block comment')
+                line += source.count('\n', i, end)
+                i = end + 2
+                continue
 
         start, start_line = i, line
 
@@ -143,10 +156,10 @@ def tokenize_js(source, where='<js>'):
             if not match:
                 raise MinifyError(f'{where}:{line}: cannot read number')
             i = match.end()
-        elif IDENT_START.match(ch):
+        elif ch in IDENT_START:
             i = IDENT.match(source, i).end()
         else:
-            for punct in PUNCTUATORS:
+            for punct in PUNCT_BY_FIRST.get(ch, ()):
                 if source.startswith(punct, i):
                     i += len(punct)
                     break
