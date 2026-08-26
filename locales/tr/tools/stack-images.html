@@ -1,0 +1,240 @@
+<!--
+  tools/stack-images/body.html, in Turkish.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+-->
+<main>
+  <!-- Adım 1 &mdash; kareler -->
+  <section class="card">
+    <h2><span class="step">1</span> Kareleri seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      RAW dosyaları, fotoğraf makinesinin içlerine çoktan yazdığı tam boyutlu
+      JPEG okunarak açılır: birkaç kilobaytlık dizin, sonra tek bir dilim. Sensör
+      verisi hiçbir zaman çözülmez, dolayısıyla 60&nbsp;MB'lık bir kare aşağı
+      yukarı bir JPEG kadar hızlı açılır.
+      <a href="#faq-raw">Bunun sonuç için ne anlama geldiği</a>.
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">Ada göre sırala</button>
+        <button type="button" id="clear-all" class="ghost danger">Hepsini kaldır</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- Adım 2 &mdash; nasıl birleşecekleri -->
+  <section class="card">
+    <h2><span class="step">2</span> Nasıl birleşecekler</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">Yöntem</label>
+        <select id="mode">
+          <option value="mean" selected>Ortalama &mdash; gürültüyü düşür</option>
+          <option value="median">Medyan &mdash; insanları ve geçen arabaları kaldır</option>
+          <option value="sigma">Sigma kırpma &mdash; ikisi birden</option>
+          <option value="max">Açma &mdash; yıldız izleri, havai fişek, ışıkla boyama</option>
+          <option value="min">Koyulaştırma &mdash; kımıldamış her parlak şeyi kaldır</option>
+          <option value="sum">Toplama &mdash; uzun bir pozlamayı taklit et</option>
+          <option value="focus">Odak istifleme &mdash; net olanı sakla</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">Kareleri hizala</label>
+        <select id="align">
+          <option value="translate" selected>Evet &mdash; yalnızca kaydırma</option>
+          <option value="similarity">Evet &mdash; kaydırma, döndürme ve ölçekleme</option>
+          <option value="none">Hayır &mdash; tam olduğu gibi al</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">Çalışma çözünürlüğü</label>
+        <select id="scale">
+          <option value="full" selected>Tam boyut</option>
+          <option value="half">Yarım &mdash; belleğin dörtte biri</option>
+          <option value="quarter">Çeyrek &mdash; on altıda biri</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">Şunun ötesini at</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          Düşürdükçe daha çok atar, gerçek ayrıntıyı da beraberinde atar. İki
+          standart sapma alışılmış başlangıç noktasıdır.
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">Netlik şu genişlikte ölçülür</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          Büyüğü tek bir kareden bütün bölgeleri alır; küçüğü ince ayrıntının
+          peşine düşer ve düz bir arka planı kareler arasında dağıtabilir.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">Pozlama</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">Şu biçimde kaydet</label>
+        <select id="format">
+          <option value="png" selected>PNG &mdash; kayıpsız</option>
+          <option value="jpeg">JPEG &mdash; daha küçük dosya</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>Sonuç</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>Çalışma belleği</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>Çözme sayısı</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Diskten okunan</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- Adım 3 &mdash; çalıştırma -->
+  <section class="card">
+    <h2><span class="step">3</span> İstifle</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>Görüntüleri istifle</button>
+      <button type="button" id="cancel" class="ghost" hidden>İptal</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="İstiflenmiş sonuç">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>Görüntüyü indir</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1 kare</span>
+    <span data-phrase="count.many">{count} kare</span>
+    <span data-phrase="count.none">Henüz kare yok</span>
+
+    <span data-phrase="frame.reference">Referans</span>
+    <span data-phrase="frame.make-reference">Referans yap</span>
+    <span data-phrase="frame.remove">Kaldır</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW &mdash; makinenin kendi önizlemesi, {width} &times; {height}</span>
+    <span data-phrase="frame.raw-camera">{camera} &mdash; {width} &times; {height} önizleme</span>
+    <span data-phrase="frame.raw-unreadable">Bu RAW dosyasında önizleme bulunamadı</span>
+    <span data-phrase="frame.read">{total} içinde {read} okundu</span>
+
+    <span data-phrase="mode.mean">Her karenin ortalamasını alır. Rastgele gürültü ne kadar yüksek çıkarsa o kadar da alçak çıkar, dolayısıyla {count} karenin ortalamasını almak onu kabaca {factor} kat düşürür. Sakin bir küme için doğru yöntem, tek bir geçen kuşun bozduğu yöntem de bu.</span>
+    <span data-phrase="mode.median">Her pikselin ortadaki değerini alır. Yalnızca karelerin bir kısmında bulunan her şey &mdash; bir turist, bir araba, bir uçak &mdash; yok olur. Her kareyi aynı anda tutmak zorunda olan tek yöntemdir; aşağıda şeritlere bölünebilmesinin nedeni de budur.</span>
+    <span data-phrase="mode.sigma">Her pikselin genelde ne olduğunu öğrenir, sonra yalnızca bununla uyuşan değerlerin ortalamasını alır. Medyanın sonucu, ortalamanın gürültü azaltmasıyla birlikte. Kareleri iki kez okur.</span>
+    <span data-phrase="mode.max">Her pikselin ulaştığı en parlak değeri saklar. Bir dizi kısa pozlamayı yıldız izine çeviren ve bir havai fişeği kendi patlamasının karelerinden kuran şey budur.</span>
+    <span data-phrase="mode.min">Her pikselin ulaştığı en koyu değeri saklar. Bir piksel yalnızca her karede parlaksa parlak kalır, dolayısıyla camdaki yansımalar, geçen farlar ve flaşın aydınlattığı yağmur damlaları yok olur.</span>
+    <span data-phrase="mode.sum">Kareleri bölmeden toplar: {count} kat uzun bir pozlamanın toplayacağı şey. Tıpkı o pozlamanın yapacağı gibi yanar. Pozlama kaydırıcısıyla geri getirin.</span>
+    <span data-phrase="mode.focus">Görüntünün her parçasını, o parçanın net olduğu kareden alır. Küçük bir özneyi odak halkası boyunca çekin, bu da net parçaları birleştirsin.</span>
+
+    <span data-phrase="align.translate">Her karenin ne kadar kaydığını bulur ve geri taşır, bir pikselin kesirine varan hassasiyetle. Elde tutmanın titremesini ve tripodun kaymasını düzeltir. Dönmeyi düzeltemez.</span>
+    <span data-phrase="align.similarity">Ayrıca dönmeyi ve ölçeği de bulur. Kare başına bir ölçüm fazladan maliyeti vardır, kareler düz çıkarsa hiçbir maliyeti olmaz. Dönme her zaman yalnızca yarım tur içinde geri kazanılır.</span>
+    <span data-phrase="align.none">Kareleri tam geldikleri gibi istifler. Sabit bir tripod ya da aralıklı bir dizi için doğru, elde tutulan her şey için yanlış.</span>
+
+    <span data-phrase="scale.note">Her kare tarayıcının kendi çözücüsü tarafından bu boyutta çözülür, dolayısıyla küçük bir ayar yalnızca daha az bellek değil, daha az iş demektir.</span>
+    <span data-phrase="gain.note">Hesaptan sonra, yuvarlamadan önce, en sonda sonuca çarpılır.</span>
+    <span data-phrase="gain.sum-note">{count} kareyi toplamak neredeyse kesinlikle yanacaktır. Neyin toplandığını görmek için bunu {suggested} civarına düşürün.</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">yaklaşık {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count}, kare başına bir tane</span>
+    <span data-phrase="plan.decodes.passes">{count} &mdash; her kare, {passes} kez</span>
+    <span data-phrase="plan.decodes.banded">{count} &mdash; her kare, {bands} şeridin her biri için bir kez</span>
+    <span data-phrase="plan.read">diskte {total} içinde {read}</span>
+    <span data-phrase="plan.banded">Bu belleğe tek parça sığmıyor, bu yüzden görüntü {bands} şeride kesilecek ve kareler her şerit için yeniden okunacak. {suggested} seçmek bunu tek geçişe çevirirdi.</span>
+    <span data-phrase="plan.banded-anyway">Bu belleğe tek parça sığmıyor, bu yüzden görüntü {bands} şeride kesilecek ve kareler her şerit için yeniden okunacak. Daha az kare ya da daha küçük bir çalışma çözünürlüğü bunu tek geçişe çevirirdi.</span>
+
+    <span data-phrase="progress.open">{name} içine bakılıyor&hellip;</span>
+    <span data-phrase="progress.survey">{name} okunuyor&hellip;</span>
+    <span data-phrase="progress.measure">{name} ne kadar kımıldadı, ölçülüyor&hellip;</span>
+    <span data-phrase="progress.stack">İstifleniyor &mdash; {total} karenin {done} tanesi okundu</span>
+    <span data-phrase="progress.stack-banded">İstifleniyor &mdash; {bands} şeritten {band}. şerit, {total} karenin {done} tanesi okundu</span>
+    <span data-phrase="progress.encode">Görüntü yazılıyor&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}, {size} &mdash; {count} kare {seconds} saniyede birleştirildi</span>
+    <span data-phrase="result.moves">Her kare ölçüldü ve yerine itildi.</span>
+    <span data-phrase="result.moves-some">{total} karenin {count} tanesi güvenle ölçülemedi ve olduğu yerde bırakıldı.</span>
+    <span data-phrase="result.moves-none">Kareler tam geldikleri gibi istiflendi.</span>
+    <span data-phrase="result.moves-clamped">{count} kare, bir seri için fazla büyük bir dönme bildirdi ve yalnızca kaydırmayla düzeltildi.</span>
+    <span data-phrase="result.cropped">Onları birbirinden ayırmak, her karenin ulaşamadığı kenarlar bıraktı ve oralar kırpıldı.</span>
+
+    <span data-phrase="error.no.files">Önce en az bir görüntü ekleyin.</span>
+    <span data-phrase="error.no.size">Bu dosyaların hiçbiri görüntü olarak açılamadı.</span>
+    <span data-phrase="error.one.frame">İstifleme en az iki kare ister.</span>
+    <span data-phrase="error.unknown">İstifleme sırasında bir şeyler ters gitti. Bu dosyalardan biri alışılmadıksa onu tek başına deneyin.</span>
+    <span data-phrase="error.memory">Tarayıcının belleği tükendi. Daha küçük bir çalışma çözünürlüğü ya da daha az kare deneyin.</span>
+    <span data-phrase="error.unreadable">{name} görüntü olarak açılamadı ve dışarıda kaldı.</span>
+    <span data-phrase="error.busy">Daha fazla kare eklemeden önce bu istifin bitmesini bekleyin ya da onu iptal edin.</span>
+  </div>
+</main>

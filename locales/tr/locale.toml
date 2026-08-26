@@ -84,6 +84,7 @@ complete = true
 "password-generator" = "sifre-olusturucu"
 "timelapse-video" = "time-lapse-video-olusturma"
 "hash-checksum" = "saglama-toplami-hesaplama"
+"stack-images" = "goruntu-istifleme"
 
 # The indexes and the legal pages.
 "guides" = "rehberler"
@@ -120,6 +121,8 @@ complete = true
 "guides/trim-an-audio-file" = "rehberler/ses-dosyasi-kesme"
 "guides/whats-inside-a-gif" = "rehberler/gifin-icinde-ne-var"
 "guides/verify-a-file-checksum" = "rehberler/dosya-saglama-toplamini-dogrulama"
+# Istifleyen kisi "istifleme" degil, sorunun kendisini yani gurultuyu arar.
+"guides/stack-photos-to-reduce-noise" = "rehberler/gurultuyu-azaltmak-icin-fotograf-istifleme"
 
 # The three that shipped after this file was first written. The tools keep
 # their Latin acronyms in the address for the reason given at the top: DICOM

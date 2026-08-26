@@ -1,0 +1,20 @@
+#
+# Rehber: gürültüyü azaltmak için fotoğraf istifleme - Turkish.
+#
+
+nav = "Fotoğraf istifleme"
+title = "Gürültüyü azaltmak ya da insanları kaldırmak için fotoğraflar nasıl istiflenir"
+description = "İstifleme bir seri kareyi tek görüntüde birleştirir. Hangi yöntemi kullanacağınız neyi kaybetmek istediğinize bağlıdır: gürültü, geçenler ya da bir makro çekimin sığ alan derinliği. Her birinin nasıl çalıştığı, neye mal olduğu ve RAW dosyalarının bu işin neresinde durduğu."
+
+heading = "Gürültüyü azaltmak ya da insanları kaldırmak için fotoğraflar nasıl istiflenir"
+lede = """
+    Bir seri kare, içlerinden herhangi birinin taşıdığından daha fazla bilgi taşır.
+    Ortalamalarını almak gürültüyü söndürür; her pikselin ortadaki değerini almak
+    ise yalnızca bir süre orada olmuş her şeyi siler. Hangisini istediğiniz tümüyle
+    neyin kımıldadığına bağlıdır."""
+
+updated = "25 Ağustos 2026"
+
+og_title = "Gürültüyü azaltmak ya da insanları kaldırmak için fotoğraflar nasıl istiflenir"
+og_description = "Gürültüyü öldürmek için bir serinin ortalamasını alın, kalabalık bir meydanı boşaltmak için medyanını alın, yıldız izleri için açın. Hangi yöntemin hangi sorunu çözdüğü ve RAW dosyalarının bu işin neresinde durduğu."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"
