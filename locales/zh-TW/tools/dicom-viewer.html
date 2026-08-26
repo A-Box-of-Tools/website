@@ -1,0 +1,254 @@
+<!--
+  tools/dicom-viewer/body.html, in Traditional Chinese.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  列頭「VR」保持原樣。檔案裡寫的就是這個兩字母程式碼，要在標準裡查一個標籤的人
+  搜的正是這兩個字母。
+
+  句子內部不換行：兩個漢字之間的換行會變成讀者看得見的空隙。
+-->
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> 選影像</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      把整個資料夾一次拖進來，檔案會各自歸回自己的序列，順序也會排好。什麼都不會上傳，也不會往你的檔案裡寫回任何東西。
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- 閱片區。 -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>把這一幀存成 PNG</button>
+        <button type="button" id="copy-header" class="ghost">複製頭資訊</button>
+        <button type="button" id="download-header" class="ghost">下載</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">序列</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="螢幕上的畫面，由你選的檔案繪製"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="播放畫面">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="正在顯示哪一層或者哪一幀">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">在圖上拖動會做什麼</legend>
+        <label><input type="radio" name="mode" value="window" checked> 窗寬窗位</label>
+        <label><input type="radio" name="mode" value="pan"> 平移</label>
+        <label><input type="radio" name="mode" value="measure"> 測量</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">縮放</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">100%</span>
+        <button type="button" id="reset-view" class="ghost">適應視窗</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">窗</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">窗位</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">窗寬</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> 黑白反轉</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> 把病人資訊疊在圖上</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- 這是個什麼檔案。 -->
+  <section class="card" id="facts-card" hidden>
+    <h2>這是個什麼檔案</h2>
+    <dl class="facts">
+      <div><dt>物件</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>檢查方式</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>影象</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>儲存形式</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Transfer syntax</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>畫素間距</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>數值範圍</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>檔案</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- 關於那個人寫了什麼。 -->
+  <section class="card" id="identity-card" hidden>
+    <h2>這個檔案裡什麼在指認病人</h2>
+    <p class="card-lede">
+      這些都是在這臺裝置上、從這一個檔案裡讀出來的，沒有給任何別人看。這個工具什麼都不寫，它拿不掉其中任何一項，也沒有把其中任何一項送去過哪裡。它出現在這裡，是因為一份影像帶著的遠不止一個姓名，而剩下的那些，恰恰是馬虎的匿名化之後還留在原地的東西。
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- 檔案裡的每一個標籤。 -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>檔案裡的每一個標籤</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">搜尋標籤</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="按名字、編號或者數值搜尋">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">這個檔案裡的每一個元素</caption>
+        <thead>
+          <tr>
+            <th scope="col">標籤</th>
+            <th scope="col">VR</th>
+            <th scope="col">名字</th>
+            <th scope="col">數值</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">在圖上橫著拖，窗就變寬或者變窄；上下拖，窗心就移動。兩個數字都在下面，直接輸入效果一樣。</span>
+    <span data-phrase="mode.pan">拖動可以讓圖在框裡移動。滾輪縮放，「適應視窗」把一切復位。</span>
+    <span data-phrase="mode.measure">在圖上拉一條線就能測量。檔案寫了畫素間距的，結果是毫米；沒寫的，結果是畫素，而且會明說。</span>
+
+    <span data-phrase="probe.value">第 {column} 列第 {row} 行是 {value}</span>
+    <span data-phrase="measure.pixels">{length} px | 這個檔案沒寫畫素間距，所以給不出毫米</span>
+
+    <span data-phrase="stack.position">按每一層在身體裡的位置疊好，這也正是裝置拍攝的順序。</span>
+    <span data-phrase="stack.number">按 Instance Number 疊好。這些檔案裡沒有可以拿來排序的身體位置。</span>
+    <span data-phrase="stack.gap">層與層之間的間距並不一致，所以這套序列至少缺了一層。</span>
+
+    <span data-phrase="pixels.none">這個檔案的畫素用 {codec} 壓縮過。沒有瀏覽器解得了它，這一頁也不會隨身帶一個解碼器。關於這個檔案的其他一切都在下面。</span>
+    <span data-phrase="pixels.failed">影象解不開：{reason}。下面的頭資訊已經完整讀出。</span>
+    <span data-phrase="pixels.absent">這個檔案根本沒有畫素資料。它是一份頭資訊，裡面的一切都在下面。</span>
+    <span data-phrase="pixels.jpeg">這些畫素是 baseline JPEG，所以由瀏覽器的解碼器展開，返回來的是八位深度。窗照樣能調，但裝置記錄下的精度並沒有全部留下。</span>
+
+    <span data-phrase="tags.count">{total} 個元素裡的 {shown} 個，還有 {hidden} 個。</span>
+    <span data-phrase="tags.all">這個檔案全部 {total} 個元素。</span>
+    <span data-phrase="tags.found">有 {total} 個元素匹配「{query}」。</span>
+    <span data-phrase="tags.found.one">有一個元素匹配「{query}」。</span>
+    <span data-phrase="tags.none">沒有匹配「{query}」的。</span>
+    <span data-phrase="tags.more">顯示其餘 {count} 個</span>
+    <span data-phrase="tags.private">私有元素</span>
+    <span data-phrase="tags.unknown">不在這份字典裡</span>
+    <span data-phrase="tags.guessed">檔案沒說；這是資料字典對這個標籤的說明。</span>
+
+    <span data-phrase="working.one">正在讀 {name}&hellip;</span>
+    <span data-phrase="working.many">正在讀 {total} 個裡的第 {at} 個&hellip;</span>
+    <span data-phrase="error.none">這些都讀不成 DICOM。{why} 這個工具讀的是 DICOM 格式本身，所以對別的檔案說不出什麼。</span>
+    <span data-phrase="error.skipped.one">跳過了一個檔案：{files}</span>
+    <span data-phrase="error.skipped">跳過了 {count} 個檔案：{files}</span>
+
+    <span data-phrase="series.number">序列 {number}</span>
+    <span data-phrase="series.files.one">1 個檔案</span>
+    <span data-phrase="series.files">{count} 個檔案</span>
+    <span data-phrase="stack.spacing">層間距是 {gap}。</span>
+
+    <span data-phrase="at.position">{total} 裡的第 {at}</span>
+    <span data-phrase="net.clean">你的影像沒有去任何地方。載入了 {total} 個檔案，全都是本站自己的。{platform}</span>
+    <span data-phrase="net.dirty">有東西聯絡了 {hosts}，而這個工具從不這麼做。值得去查一查。{platform}</span>
+    <span data-phrase="net.platform.one">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到影像、影像裡的畫素，或者頭資訊裡的一個字。</span>
+    <span data-phrase="net.platform.many">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到影像、影像裡的畫素，或者頭資訊裡的一個字。</span>
+    <span data-phrase="at.frame">{total} 幀裡的第 {at} 幀</span>
+    <span data-phrase="at.instance">例項 {number}</span>
+
+    <span data-phrase="window.file">來自檔案</span>
+    <span data-phrase="window.file.n">來自檔案，{n}</span>
+    <span data-phrase="window.full">這一幀的全部範圍</span>
+    <span data-phrase="window.custom">手動設定</span>
+    <span data-phrase="window.soft">軟組織</span>
+    <span data-phrase="window.lung">肺</span>
+    <span data-phrase="window.bone">骨</span>
+    <span data-phrase="window.brain">腦</span>
+    <span data-phrase="window.liver">肝</span>
+    <span data-phrase="window.mediastinum">縱隔</span>
+    <span data-phrase="window.angio">血管造影</span>
+
+    <span data-phrase="facts.frames">{count} 幀</span>
+    <span data-phrase="facts.nopixels">沒有畫素資料</span>
+    <span data-phrase="facts.nospacing">這個檔案裡沒寫</span>
+    <span data-phrase="facts.signed">有符號</span>
+    <span data-phrase="facts.unsigned">無符號</span>
+    <span data-phrase="facts.stored.one">{bits} 位，{sign}，每畫素 1 個通道，{photometric}</span>
+    <span data-phrase="facts.stored">{bits} 位，{sign}，每畫素 {samples} 個通道，{photometric}</span>
+    <span data-phrase="facts.range">{low} 到 {high}</span>
+    <span data-phrase="facts.colour">彩色 | 沒有測量值可報</span>
+
+    <span data-phrase="identity.clean">這個檔案裡沒有任何東西點名或者編號某一個人。影像通常帶著的那些標識，這裡要麼沒有，要麼是空的。</span>
+    <span data-phrase="identity.uids">它另外還帶著 {count} 個自己的識別符號，也就是檢查、序列和例項的 UID。它們都不是姓名，但每一個都是回到出片檔案庫的完美鑰匙。</span>
+    <span data-phrase="identity.private">此外還有 {count} 個私有元素，它們的含義沒有在任何地方公開過。有些裝置會在其中一個裡放病人姓名的第二份副本。</span>
+
+    <span data-phrase="copied">已複製。</span>
+    <span data-phrase="copy.failed">你的瀏覽器不讓這一頁複製。旁邊那個按鈕會把同樣的文字寫進一個檔案。</span>
+    <span data-phrase="saved">已儲存 {name}。</span>
+  </div>
+</main>

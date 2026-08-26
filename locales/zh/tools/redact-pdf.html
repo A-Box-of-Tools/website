@@ -1,0 +1,240 @@
+<!--
+  tools/redact-pdf/body.html, in Simplified Chinese.
+
+  Every id, class, data-phrase key and brace placeholder below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+
+  count.* 那几对照旧留成两条。中文不分单复数，两条会写成同一句话，但键是
+  JavaScript 要找的，两条都得在。
+
+  句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
+-->
+<main>
+  <!-- 第 1 步 | 文档 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选 PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- 第 2 步 | 找 -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> 说清什么要走</h2>
+
+    <p class="card-lede">
+      把词打进去，姓名、地址、案号都行，它们出现的每一处都会连着所在的那一行列在下面。到第 4 步之前什么都不会被拿走，你没勾的东西也永远不会被拿走。
+    </p>
+
+    <label class="find-label" for="terms">词和词组，一行一个</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="张伟&#10;中山路14号&#10;（2025）民初40219号"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">搜索</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>区分大小写</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>只匹配整词</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>或者去找那些通常比较敏感的东西</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        这些是模式，而一个模式分不清电话号码和案号。卡号和 IBAN 会用它们自己的校验位核对；其余的只是列给你看，绝不替你勾上，而且每一条命中都值得亲眼看一下。
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">全选</button>
+        <button type="button" id="tick-none" class="ghost">全不选</button>
+        <button type="button" id="clear-found" class="ghost danger">清空列表</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- 第 3 步 | 读页面 -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> 读这一页，从上面挑词</h2>
+
+    <p class="card-lede">
+      这是文档里实际存着的文字，顺序是读的人复制时会得到的顺序，而那跟它印出来的顺序不一定一样。点一个词就是拿掉它，再点一下就是留下它。这里划了横线的就是要消失的。
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; 上一页</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">下一页 &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">这一页全部保留</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="这一页的文字"></div>
+  </section>
+
+  <!-- 第 4 步 | 动手 -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> 拿掉这些词</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>在每个词原来的位置画一个黑块</strong>
+        <span class="check-note">
+          好让读的人看出有东西被拿走了。这里的黑块是装饰，不是涂黑本身，因为它被画出来之前，字早就从文件里没了。把它关掉，词就只是消失，留下它们原来占的那块空。
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>同样的词也从文档其余部分拿走</strong>
+        <span class="check-note">
+          书签、批注、便签，以及表单域里填过的内容。从页面上拿掉、却留在某个书签里的词，不算拿掉。文档属性不受这个开关影响，反正都会走；阅读器用来代替页面字符去复制的那段替换文本也一样。这两样都是文档自己在说那个词，不是别处存了一份副本。
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>丢掉附件和会运行的东西</strong>
+        <span class="check-note">
+          一份 PDF 可以在自己内部装下整个文件，也可以装下打开时就运行的 JavaScript。这两样都没法拿你要删的词去搜，而读一份文档也用不着它们。
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">拿掉</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>下载</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">这不是 PDF，所以里面根本没有可以拿掉的文字。</span>
+    <span data-phrase="load.encrypted">这份 PDF 带密码。去掉一份文档的保护，跟从里面拿走几个词是两件事，这个工具不会背着你去做。</span>
+    <span data-phrase="load.broken">这个文件打不开成 PDF（{detail}）。</span>
+    <span data-phrase="load.nopages">它是打开了，但里面找不到页面。</span>
+    <span data-phrase="load.repaired">这份文档的交叉引用表跟它的内容对不上，所以是靠一个一个找对象读出来的。这是一次修复，而且成功了。发出去之前请仔细核对结果。</span>
+
+    <span data-phrase="doc.sub">{pages} | 文字 {words} | {size}</span>
+    <span data-phrase="doc.notext">其中 {count} 页根本没有文字。这样的页面是一页纸的图像，对这个工具来说那里没有可拿的东西。图里的词还在原处。</span>
+    <span data-phrase="doc.unreadable">这份文档里有 {count} 个字符读不成文字，因为用到的字体没有带上从它的字形回到文字的对照表。这些字符搜不到，所以别信搜索，去看它们所在的那几页。</span>
+    <span data-phrase="doc.scan">有些页面在一张图上面压着看不见的文字，扫描仪就是这样记下它读出来的内容的。把那些文字拿掉，拿掉的正是搜索和复制会找到的东西。图一点不变，图里的词照样看得清。</span>
+
+    <span data-phrase="find.none">哪一页都没找到。</span>
+    <span data-phrase="find.some">{pages} 上共 {count} 处。</span>
+    <span data-phrase="find.more">列出的是前 {shown} 处。其余的也都找到了，你要是全选，它们会一起被拿掉。</span>
+    <span data-phrase="find.terms">按搜索之前，先在上面打一个词，或者选一个模式。</span>
+
+    <span data-phrase="page.of">第 {number} 页，共 {total} 页</span>
+    <span data-phrase="page.picked">这一页要拿掉 {count} 处</span>
+    <span data-phrase="page.notext">这一页上没有文字。它要么是空的，要么是一页纸的图像：一份扫描件、一张照片，或者一次把词画成了图形的导出。上面的东西搜不了，也没法在这里拿掉。</span>
+    <span data-phrase="page.unreadable">这一页有 {count} 个字符读不成文字。它们在下面显示成 &#9647;，搜索找不到。</span>
+    <span data-phrase="page.scan">这一页的文字是看不见的，它压在这一页的图上面，扫描件就是这样变得可搜索的。你在这里拿掉的，正是搜索和复制会找到的东西。图还带着那些词。</span>
+
+    <span data-phrase="run.summary">要从 {pages} 上拿掉 {words}。</span>
+    <span data-phrase="run.nothing">还什么都没勾。到第 2 步搜一个词，或者到第 3 步点一个。</span>
+    <span data-phrase="run.editing">正在拿掉这些词&hellip;</span>
+    <span data-phrase="run.writing">正在写文档&hellip;</span>
+    <span data-phrase="run.checking">正在重新打开做好的文件并搜索&hellip;</span>
+    <span data-phrase="run.failed">重写这份文档的时候出了岔子（{detail}）。</span>
+    <span data-phrase="run.cancelled">已取消。什么都没写。</span>
+
+    <span data-phrase="result.headline">拿掉了 {words}</span>
+    <span data-phrase="result.sub">{size} | 改动 {pages} | {boxes}</span>
+    <span data-phrase="check.good">像一个读者那样，在这里重新打开搜了一遍：做好的文件里一个都没有。</span>
+    <span data-phrase="check.partial">在这里重新打开搜了一遍：你勾过的每一处都没了，你留下的还在。</span>
+    <span data-phrase="check.survived">这个文件没有写出来。做好的文档重新打开之后，你拿掉的内容里还有一部分搜得到，也就是说涂黑并不彻底。什么都不给下载。</span>
+    <span data-phrase="check.pages">这个文件没有写出来。做好的文档回来时页数跟进去时不一样，说明除了那些词之外还有别的地方出了问题。什么都不给下载。</span>
+
+    <span data-phrase="fact.boxes">在空出来的位置上画了 {count} 个。</span>
+    <span data-phrase="fact.noboxes">一个黑块都没画，所以那些词是悄无声息地没了，没有任何东西指出它们原来在哪里。</span>
+    <span data-phrase="fact.elsewhere">同样的词也从{where}拿走了。</span>
+    <span data-phrase="fact.metadata">文档属性和 XMP 包已经删除，所以做好的文件不会说是什么做的它、什么时候做的，以及它以前叫什么。</span>
+    <span data-phrase="fact.carried">丢掉了 {attachments} 和 {actions}。</span>
+    <span data-phrase="fact.shared">你拿掉的内容里有一部分是由一个被文档在多页上复用的块画出来的，所以它从每一个画这个块的页面上都消失了。这比你勾的要多，绝不会更少。</span>
+    <span data-phrase="fact.overimage">拿掉的字符里有 {count} 个压在同一页的一张图上面。它们从文字层里没了，在图里还在，也就是说读的人再也搜不到、复制不走，但还看得见。</span>
+    <span data-phrase="fact.untouched">每一页上其余的一切都逐字节传了过去。没有字体、图片或者线条被重新编码。</span>
+
+    <span data-phrase="count.pages">{count} 页</span>
+    <span data-phrase="count.page">{count} 页</span>
+    <span data-phrase="count.words">{count} 个词</span>
+    <span data-phrase="count.word">{count} 个词</span>
+    <span data-phrase="count.pieces">{count} 段文字</span>
+    <span data-phrase="count.piece">{count} 段文字</span>
+    <span data-phrase="count.matches">{count} 处</span>
+    <span data-phrase="count.match">{count} 处</span>
+    <span data-phrase="count.boxes">{count} 个黑块</span>
+    <span data-phrase="count.box">{count} 个黑块</span>
+    <span data-phrase="count.attachments">{count} 个附件</span>
+    <span data-phrase="count.attachment">{count} 个附件</span>
+    <span data-phrase="count.actions">{count} 个动作</span>
+    <span data-phrase="count.action">{count} 个动作</span>
+    <span data-phrase="count.hosts">{count} 个主机</span>
+    <span data-phrase="count.host">{count} 个主机</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">你的文档没有去任何地方。加载了 {total} 个文件，全都是本站自己的。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
+    <span data-phrase="net.platform">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts}，它们谁也没拿到文档、文档里的一个词，或者你搜过的任何东西。</span>
+
+    <span data-phrase="finder.email">电子邮箱</span>
+    <span data-phrase="finder.card">卡号</span>
+    <span data-phrase="finder.iban">银行账户（IBAN）</span>
+    <span data-phrase="finder.nationalid">身份证号与社保号</span>
+    <span data-phrase="finder.phone">电话号码</span>
+  </div>
+</main>

@@ -1,0 +1,236 @@
+<!--
+  tools/stack-images/body.html, in Traditional Chinese.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+
+  句子內部不換行：兩個漢字之間的換行會變成讀者看得見的空隙。
+-->
+<main>
+  <!-- 第 1 步 | 幀 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選幀</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      RAW 檔案是靠讀相機早就寫進去的那張原尺寸 JPEG 開啟的：幾十 KB 的目錄，然後取其中一段。感測器資料從來不解碼，所以一張 60&nbsp;MB 的幀開起來跟 JPEG 差不多快。<a href="#faq-raw">這對結果意味著什麼</a>。
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">按名字排序</button>
+        <button type="button" id="clear-all" class="ghost danger">全部移除</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- 第 2 步 | 怎麼合到一起 -->
+  <section class="card">
+    <h2><span class="step">2</span> 怎麼合到一起</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">手法</label>
+        <select id="mode">
+          <option value="mean" selected>平均值 | 壓低噪點</option>
+          <option value="median">中位數 | 去掉人和開過去的車</option>
+          <option value="sigma">Sigma 裁剪 | 兩樣一起</option>
+          <option value="max">最亮 | 星軌、煙花、光繪</option>
+          <option value="min">最暗 | 去掉動過的亮東西</option>
+          <option value="sum">相加 | 模擬一次長曝光</option>
+          <option value="focus">景深合成 | 留下清楚的那部分</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">對齊各幀</label>
+        <select id="align">
+          <option value="translate" selected>對齊 | 只平移</option>
+          <option value="similarity">對齊 | 平移、旋轉、縮放</option>
+          <option value="none">不對齊 | 就照它們原樣</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">工作解析度</label>
+        <select id="scale">
+          <option value="full" selected>原尺寸</option>
+          <option value="half">一半 | 四分之一的記憶體</option>
+          <option value="quarter">四分之一 | 十六分之一</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">超出這個就丟掉</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          調低會丟得更多，也會連真的細節一起丟掉。兩個標準差是常用的起點。
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">在多大範圍內衡量清晰度</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          調大會整片整片地從某一幀裡取；調小會跟著細節走，但可能讓一塊平滑的背景在各幀之間變得斑駁。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">曝光</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">存成</label>
+        <select id="format">
+          <option value="png" selected>PNG | 無損</option>
+          <option value="jpeg">JPEG | 檔案更小</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>結果</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>工作記憶體</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>解碼次數</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>從硬碟讀了</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- 第 3 步 | 跑 -->
+  <section class="card">
+    <h2><span class="step">3</span> 堆疊</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>把這些圖堆起來</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="堆疊的結果">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>下載圖片</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1 幀</span>
+    <span data-phrase="count.many">{count} 幀</span>
+    <span data-phrase="count.none">還沒有幀</span>
+
+    <span data-phrase="frame.reference">基準</span>
+    <span data-phrase="frame.make-reference">拿它當基準</span>
+    <span data-phrase="frame.remove">移除</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW | 相機自己的預覽圖，{width} &times; {height}</span>
+    <span data-phrase="frame.raw-camera">{camera} | {width} &times; {height} 的預覽圖</span>
+    <span data-phrase="frame.raw-unreadable">這個 RAW 檔案裡沒找到預覽圖</span>
+    <span data-phrase="frame.read">讀了 {total} 裡的 {read}</span>
+
+    <span data-phrase="mode.mean">對每一幀取平均值。隨機噪點偏高和偏低的次數一樣多，所以把 {count} 幀平均一下，噪點大約降到原來的 {factor} 分之一。這是給安靜一組用的手法，也是被一隻飛過去的鳥就毀掉的那種。</span>
+    <span data-phrase="mode.median">取每個畫素的中間那個值。只在一部分幀裡出現過的東西，遊客也好、車也好、飛機也好，都會消失。它是唯一一種必須同時抱著每一幀的手法，所以下面才會被切成橫條。</span>
+    <span data-phrase="mode.sigma">先學出每個畫素通常是什麼，再只對跟這個說法一致的數值取平均。既有中位數的結果，又有平均值那種消噪能力。它會把這些幀讀兩遍。</span>
+    <span data-phrase="mode.max">留下每個畫素出現過的最亮值。把一串短曝光變成星軌、把一場煙花從它自己的幀裡重新拼起來，靠的就是它。</span>
+    <span data-phrase="mode.min">留下每個畫素出現過的最暗值。一個畫素只有在每一幀裡都亮才會保持亮，所以窗戶上的反光、開過去的車燈、被閃光燈打亮的雨滴，全都會消失。</span>
+    <span data-phrase="mode.sum">把這些幀相加，不做除法，也就是一次長 {count} 倍的曝光會收到的量。它會過曝，就像那次曝光本來也會過曝一樣。用曝光那個滑桿拉回來。</span>
+    <span data-phrase="mode.focus">影象的每一部分，都從它在那一幀裡清楚的那一幀取。沿著對焦環拍一個小東西，這個手法會把清楚的部分接起來。</span>
+
+    <span data-phrase="align.translate">算出每一幀偏了多少，再挪回去，精度到一個畫素的幾分之一。能糾正手持的抖動和三腳架的漂移，糾正不了旋轉。</span>
+    <span data-phrase="align.similarity">連旋轉和縮放也一起算出來。每幀多花一次測量，而如果這些幀本來就是正的，那就一點不多花。旋轉永遠只能在半圈範圍內還原。</span>
+    <span data-phrase="align.none">照這些幀進來的樣子直接堆。對鎖死的三腳架或者間隔拍攝是對的，對任何手持的東西都是錯的。</span>
+
+    <span data-phrase="scale.note">每一幀都是由瀏覽器自己的解碼器按這個尺寸解出來的，所以調小不只是省記憶體，是活本來就少了。</span>
+    <span data-phrase="gain.note">在算完之後、取整之前，最後一步乘進結果裡。</span>
+    <span data-phrase="gain.sum-note">把 {count} 幀相加，幾乎肯定會過曝。降到 {suggested} 上下，看看到底收到了什麼。</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">大約 {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count} 次，每幀一次</span>
+    <span data-phrase="plan.decodes.passes">{count} 次 | 每一幀 {passes} 遍</span>
+    <span data-phrase="plan.decodes.banded">{count} 次 | 每一幀，在 {bands} 個橫條上各一次</span>
+    <span data-phrase="plan.read">硬碟上 {total} 裡的 {read}</span>
+    <span data-phrase="plan.banded">這個沒法一次裝進記憶體，所以圖會被切成 {bands} 個橫條，每一條都把這些幀重讀一遍。選 {suggested} 就能一遍跑完。</span>
+    <span data-phrase="plan.banded-anyway">這個沒法一次裝進記憶體，所以圖會被切成 {bands} 個橫條，每一條都把這些幀重讀一遍。少幾幀或者把工作解析度調小，就能一遍跑完。</span>
+
+    <span data-phrase="progress.open">正在看 {name} 裡面&hellip;</span>
+    <span data-phrase="progress.survey">正在讀 {name}&hellip;</span>
+    <span data-phrase="progress.measure">正在量 {name} 偏了多少&hellip;</span>
+    <span data-phrase="progress.stack">正在堆疊 | 已讀 {total} 幀裡的 {done} 幀</span>
+    <span data-phrase="progress.stack-banded">正在堆疊 | 第 {band} 條，共 {bands} 條，已讀 {total} 幀裡的 {done} 幀</span>
+    <span data-phrase="progress.encode">正在寫出圖片&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}，{size} | {count} 幀在 {seconds} 秒裡合到了一起</span>
+    <span data-phrase="result.moves">每一幀都量過，也都推回了自己的位置。</span>
+    <span data-phrase="result.moves-some">{total} 幀裡有 {count} 幀沒法有把握地量出來，就留在原處了。</span>
+    <span data-phrase="result.moves-none">這些幀是照進來的樣子直接堆的。</span>
+    <span data-phrase="result.moves-clamped">有 {count} 幀報出的旋轉量對一串連拍來說太大了，就只用平移糾正了。</span>
+    <span data-phrase="result.cropped">把它們各自推開之後，邊上留下了不是每一幀都夠得到的地方，那些被裁掉了。</span>
+
+    <span data-phrase="error.no.files">先至少加一張圖。</span>
+    <span data-phrase="error.no.size">這些檔案沒有一個打得開成圖片。</span>
+    <span data-phrase="error.one.frame">堆疊至少要兩幀。</span>
+    <span data-phrase="error.unknown">堆疊的時候出了岔子。這裡面要是有哪個檔案比較特別，單獨試一下它。</span>
+    <span data-phrase="error.memory">瀏覽器的記憶體用完了。試試更小的工作解析度，或者少幾幀。</span>
+    <span data-phrase="error.unreadable">{name} 打不開成圖片，被撇下了。</span>
+    <span data-phrase="error.busy">再加幀之前先等這一次堆完，或者把它取消掉。</span>
+  </div>
+</main>
