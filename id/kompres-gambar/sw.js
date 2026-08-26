@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/kompres-gambar/:';
-const CACHE_NAME=CACHE_PREFIX+'763bc5c522';
+const CACHE_NAME=CACHE_PREFIX+'780c818e71';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=6c3c207eff',
+'styles.css?v=f726a3573f',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

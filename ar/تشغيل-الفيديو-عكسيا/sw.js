@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تشغيل-الفيديو-عكسيا/:';
-const CACHE_NAME=CACHE_PREFIX+'396ac60e30';
+const CACHE_NAME=CACHE_PREFIX+'7084b105b6';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5be31f078d',
+'styles.css?v=1d4d33763d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
