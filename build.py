@@ -249,12 +249,15 @@ def build(out, clean=False, minify_output=True, jobs=None):
     # printed list and a build that reports its pages in a different order
     # every time is a build that looks different every time.
     written = []
+    page_links = {}
 
     if jobs == 1 or len(locales) < 2:
         for locale in locales:
-            written += build_locale(out, templates, locale, locales, site, tools,
-                                    prose, planned, css_v, lang_v, feedback_v,
-                                    offline_v, site_css, emit)
+            done, links = build_locale(out, templates, locale, locales, site,
+                                       tools, prose, planned, css_v, lang_v,
+                                       feedback_v, offline_v, site_css, emit)
+            written += done
+            page_links.update(links)
     else:
         with ProcessPoolExecutor(max_workers=jobs) as pool:
             pending = [
@@ -264,7 +267,9 @@ def build(out, clean=False, minify_output=True, jobs=None):
                 for locale in locales
             ]
             for future in pending:
-                written += future.result()
+                done, links = future.result()
+                written += done
+                page_links.update(links)
 
     # After every locale, because a locale only counts as finished once every
     # page in it has been rendered and had the chance to fall back. Raising
@@ -354,9 +359,12 @@ def build(out, clean=False, minify_output=True, jobs=None):
     write(out / 'offline.js', offline_js)
     write(out / 'feedback.js', feedback_js)
 
-    # Last, because it reads the finished tree rather than the sources. A link
-    # is only checkable once everything it could point at has been written.
-    check_links(out, locales, site)
+    # Last, because a link is only checkable once everything it could point at
+    # has been written. The pages the parent wrote itself - the 404 - joined
+    # page_links as they were emitted, the same way the workers' pages did.
+    page_links.update({path.relative_to(out).as_posix(): found
+                       for path, found in emit.page_links.items()})
+    check_links(out, locales, site, page_links)
     return written
 
 
@@ -487,7 +495,14 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     if locale['prefix']:
         write(dest_root / 'site.css', site_css)
 
-    return written
+    # The links of every page this call wrote, keyed the way check_links names
+    # pages, carried back so the check never re-opens what was just written.
+    # Cleared as well as read: when the languages build one at a time they
+    # share one emitter, and one language's pages are not another's.
+    links = {path.relative_to(out).as_posix(): found
+             for path, found in emit.page_links.items()}
+    emit.page_links.clear()
+    return written, links
 
 
 def locale_links(locale, site, pages):
@@ -1501,7 +1516,7 @@ LINK = re.compile(r'(?:href|src)="([^"#?]+)(?:[#?][^"]*)?"')
 SKIP_LINK = ('http://', 'https://', 'mailto:', 'data:', 'blob:', '//')
 
 
-def check_links(out, locales, site):
+def check_links(out, locales, site, page_links=None):
     """Every link on a finished page has to lead to a page that was built.
 
     Added after two bugs that produced no error and no visible breakage, only
@@ -1523,6 +1538,11 @@ def check_links(out, locales, site):
     slugs in them, so broken cross-links are the expected state until it is
     translated. `complete = true` is the claim that the language is whole, and a
     link out of it that leads nowhere means it is not.
+
+    `page_links` maps each page to the links on it, gathered by the emitter as
+    the pages were written - see Emitter on what reading them back here used
+    to cost. Without it the pages are read off the disk, which is what checking
+    a tree this build did not write has to do anyway.
     """
     published = {locale['lang'] for locale in i18n.published(locales)
                  if not locale['is_base']}
@@ -1531,28 +1551,30 @@ def check_links(out, locales, site):
     unpublished = {f'{locale["lang"]}/' for locale in locales
                    if not locale['is_base'] and locale['lang'] not in published}
 
-    # Every file the build wrote, walked once. Each link is then a set lookup
-    # rather than a question for the filesystem, which is what keeps this
-    # check from being most of the build: the tree holds tens of thousands of
-    # links, and a stat call per link costs more than every render put
-    # together. The lookup is also exact where a stat is not - is_file() on
-    # Windows matches any case, so a link whose case differs from its target
-    # would pass here and 404 once GitHub Pages served it.
+    # Every file the build wrote, walked once - names only, nothing opened.
+    # Each link is then a set lookup rather than a question for the
+    # filesystem, which is what keeps this check from being most of the build:
+    # the tree holds tens of thousands of links, and a stat call per link
+    # costs more than every render put together. The lookup is also exact
+    # where a stat is not - is_file() on Windows matches any case, so a link
+    # whose case differs from its target would pass here and 404 once GitHub
+    # Pages served it.
     files = {path.relative_to(out).as_posix()
              for path in out.rglob('*') if path.is_file()}
 
+    if page_links is None:
+        page_links = {rel: LINK.findall((out / rel).read_text(encoding='utf-8'))
+                      for rel in files if rel.endswith('.html')}
+
     broken = []
-    for rel in sorted(files):
+    for rel in sorted(page_links):
         # Skip a locale that is not published yet, and the 404, whose links are
         # root-absolute for a reason templates/404.html explains.
-        if not rel.endswith('.html'):
-            continue
         if rel == '404.html' or rel.startswith(tuple(unpublished)):
             continue
 
-        text = (out / rel).read_text(encoding='utf-8')
         here = posixpath.dirname(rel)
-        for href in LINK.findall(text):
+        for href in page_links[rel]:
             if href.startswith(SKIP_LINK) or not href:
                 continue
             target = posixpath.normpath(
@@ -1621,10 +1643,17 @@ class Emitter:
     four links telling you to go and read the code should not then hand you a
     file with no way back to it, so every generated file keeps one line saying
     where it came from and how to prove it.
+
+    `page_links` records, for every page written, the links on it as written -
+    check_links' input, gathered on the way past. It used to be gathered at
+    the end instead, by reading every page back off the disk, and on Windows
+    that was half the build: the antivirus scans a freshly written file on its
+    next open, at tens of milliseconds each, a thousand pages over.
     """
 
     def __init__(self, minify_output, site):
         self.enabled = bool(minify_output)
+        self.page_links = {}
         source = site['source_url']
 
         # The same sentence in three comment syntaxes. Each minifier wraps it
@@ -1651,8 +1680,10 @@ class Emitter:
         self._css_seen = {}
 
     def html(self, path, text):
-        return write(path, minify.html(text, self.html_banner)
+        text = write(path, minify.html(text, self.html_banner)
                      if self.enabled else text)
+        self.page_links[path] = LINK.findall(text)
+        return text
 
     def js(self, path, text, where):
         return write(path, self.js_text(text, where))
