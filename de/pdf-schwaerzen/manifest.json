@@ -1,8 +1,8 @@
 {
-  "id": "/de/redact-pdf/",
-  "name": "PDF Redactor",
-  "short_name": "PDF Redactor",
-  "description": "The letters are deleted from the file, and the file is searched afterwards to prove it.",
+  "id": "/de/pdf-schwaerzen/",
+  "name": "PDF-Schw\u00e4rzer",
+  "short_name": "PDF-Schw\u00e4rzer",
+  "description": "Die Buchstaben werden aus der Datei gel\u00f6scht, und danach wird die Datei durchsucht, um es zu belegen.",
   "lang": "de",
   "dir": "ltr",
   "start_url": "./",

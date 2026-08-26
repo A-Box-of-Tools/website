@@ -1,8 +1,8 @@
 {
-  "id": "/de/stack-images/",
-  "name": "Image Stacker",
-  "short_name": "Image Stacker",
-  "description": "Twenty frames into one, without twenty uploads or a RAW converter.",
+  "id": "/de/bilder-stacken/",
+  "name": "Bild-Stacker",
+  "short_name": "Bild-Stacker",
+  "description": "Zwanzig Aufnahmen werden eine, ohne zwanzig Uploads und ohne RAW-Konverter.",
   "lang": "de",
   "dir": "ltr",
   "start_url": "./",

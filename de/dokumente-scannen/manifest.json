@@ -1,8 +1,8 @@
 {
-  "id": "/de/document-scanner/",
-  "name": "Document Scanner",
-  "short_name": "Document Scanner",
-  "description": "Photograph the page. Get back something that looks scanned.",
+  "id": "/de/dokumente-scannen/",
+  "name": "Dokumentenscanner",
+  "short_name": "Dokumentenscanner",
+  "description": "Fotografieren Sie die Seite. Zur\u00fcck kommt etwas, das wie gescannt aussieht.",
   "lang": "de",
   "dir": "ltr",
   "start_url": "./",

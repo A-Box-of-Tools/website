@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/redact-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'e03adfc9db';
+const CACHE_NAME=CACHE_PREFIX+'d01c1dd519';
 const ASSETS=[
 './',
 'index.html',
