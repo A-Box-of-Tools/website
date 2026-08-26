@@ -1,0 +1,307 @@
+<!--
+  tools/redact-pdf/body.html, in Dutch.
+
+  Every id, class, data-phrase key and brace placeholder below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+
+  De count.*-paren blijven dubbel: het Nederlands onderscheidt enkelvoud en
+  meervoud, dus ze dragen hier werkelijk twee vormen.
+-->
+<main>
+  <!-- Stap 1 &mdash; het document -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies een PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- Stap 2 &mdash; zoeken -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> Zeggen wat er weg moet</h2>
+
+    <p class="card-lede">
+      Typ de woorden, een naam, een adres, een kenmerk, en elke plek waar ze
+      voorkomen wordt hieronder met hun regel opgesomd. Tot stap 4 wordt er niets
+      weggehaald, en er wordt niets weggehaald wat je niet hebt aangevinkt.
+    </p>
+
+    <label class="find-label" for="terms">Woorden en zinsdelen, &eacute;&eacute;n per regel</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="Jansen&#10;Brugstraat 14&#10;ZK-40219"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">Zoeken</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>Let op hoofdletters</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>Alleen hele woorden</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>Of zoeken naar wat meestal gevoelig ligt</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        Dit zijn patronen, en een patroon kan een telefoonnummer niet van een
+        kenmerk onderscheiden. Kaartnummers en IBAN's worden tegen hun eigen
+        controlecijfers gecontroleerd; de rest wordt aangeboden en nooit voor je
+        aangevinkt, en elke treffer is een blik waard.
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">Alles aanvinken</button>
+        <button type="button" id="tick-none" class="ghost">Alles uitvinken</button>
+        <button type="button" id="clear-found" class="ghost danger">Lijst leegmaken</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- Stap 3 &mdash; de pagina lezen -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> De pagina lezen en er woorden vanaf pikken</h2>
+
+    <p class="card-lede">
+      Dit is de tekst zoals hij in het document is opgeslagen, in de volgorde
+      waarin een lezer hem zou kopi&euml;ren, en dat is niet altijd de volgorde
+      waarin hij gedrukt staat. Klik een woord aan om het weg te halen, en nog
+      eens om het te houden. Alles wat hier doorgestreept is, is wat er zal
+      verdwijnen.
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; Terug</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">Verder &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">Op deze pagina alles houden</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="De tekst van deze pagina"></div>
+  </section>
+
+  <!-- Stap 4 &mdash; doen -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> De woorden weghalen</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>Een zwarte balk tekenen waar elk woord stond</strong>
+        <span class="check-note">
+          Zodat een lezer ziet dat er iets is weggehaald. De balk is hier
+          versiering en niet de onleesbaarmaking: de letters zijn uit het bestand
+          verdwenen voordat hij getekend wordt. Zet hem uit, en de woorden
+          verdwijnen gewoon en laten de ruimte achter die ze innamen.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>Dezelfde woorden uit de rest van het document halen</strong>
+        <span class="check-note">
+          Bladwijzers, opmerkingen, plaknotities en wat er in formuliervakken
+          getypt is. Een woord dat van een pagina is gehaald en in een bladwijzer
+          is blijven staan, is niet weggehaald. De eigenschappen van het document
+          gaan sowieso weg, en de vervangtekst die een lezer kopieert in plaats
+          van de letters op de pagina ook: allebei zijn ze het document dat het
+          woord zegt, en niet een andere plek die er een kopie van bewaart.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>Bijlagen en alles wat draait weggooien</strong>
+        <span class="check-note">
+          Een PDF kan hele bestanden in zich dragen en JavaScript dat draait bij
+          het openen. In geen van beide is te zoeken naar de woorden die je
+          weghaalt, en om een document te lezen is geen van beide nodig.
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Weghalen</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Downloaden</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">Dit is geen PDF, dus er staat geen tekst in om weg te halen.</span>
+    <span data-phrase="load.encrypted">Deze PDF heeft een wachtwoord. De
+      beveiliging van een document afhalen is een andere klus dan er woorden uit
+      halen, en dit gereedschap doet het niet achter je rug om.</span>
+    <span data-phrase="load.broken">Dit bestand kon niet als PDF geopend worden ({detail}).</span>
+    <span data-phrase="load.nopages">Hij ging open, maar er waren geen pagina's in te vinden.</span>
+    <span data-phrase="load.repaired">De kruisverwijzingstabel van dit document
+      paste niet bij de inhoud, dus is het gelezen door naar objecten te zoeken.
+      Dat is een reparatie, en hij is gelukt. Controleer het resultaat zorgvuldig
+      voordat je het ergens heen stuurt.</span>
+
+    <span data-phrase="doc.sub">{pages} &middot; {words} tekst &middot; {size}</span>
+    <span data-phrase="doc.notext">{count} van deze pagina's hebben helemaal geen
+      tekst. Zo'n pagina is een beeld van een pagina, en voor dit gereedschap valt
+      daar niets weg te halen: de woorden in het beeld blijven precies waar ze
+      zijn.</span>
+    <span data-phrase="doc.unreadable">{count} letters van dit document konden
+      niet als tekens gelezen worden, omdat de gebruikte lettertypen geen
+      koppeling van hun glyphen terug naar tekst meebrengen. Naar deze letters is
+      niet te zoeken, dus bekijk de pagina's waar ze op staan in plaats van op de
+      zoekopdracht te vertrouwen.</span>
+    <span data-phrase="doc.scan">Sommige pagina's dragen onzichtbare tekst over
+      een beeld heen, en zo legt een scanner vast wat zijn lezer van de pagina
+      gemaakt heeft. Die tekst weghalen haalt weg wat een zoekopdracht en een
+      kopieeractie zouden vinden. Het verandert niets aan het beeld, en in het
+      beeld zijn de woorden nog steeds leesbaar.</span>
+
+    <span data-phrase="find.none">Op geen enkele pagina was er een treffer.</span>
+    <span data-phrase="find.some">{count} op {pages}.</span>
+    <span data-phrase="find.more">De eerste {shown} staan in de lijst. De rest is
+      gevonden en wordt meegehaald als je alles aanvinkt.</span>
+    <span data-phrase="find.terms">Typ hierboven een woord of kies een patroon voordat je op Zoeken drukt.</span>
+
+    <span data-phrase="page.of">Pagina {number} van {total}</span>
+    <span data-phrase="page.picked">{count} worden van deze pagina gehaald</span>
+    <span data-phrase="page.notext">Op deze pagina staat geen tekst. Of hij is
+      leeg, of hij is een beeld van een pagina: een scan, een foto, een export die
+      zijn woorden als vormen getekend heeft. Niets erop is te doorzoeken, en
+      niets erop is hier weg te halen.</span>
+    <span data-phrase="page.unreadable">{count} letters op deze pagina konden niet
+      als tekens gelezen worden. Ze staan hieronder als &#9647;, en de
+      zoekopdracht vindt ze niet.</span>
+    <span data-phrase="page.scan">De tekst op deze pagina is onzichtbaar: hij ligt
+      over een beeld van de pagina heen, en zo wordt een scan doorzoekbaar
+      gemaakt. Wat je hier weghaalt is wat een zoekopdracht en een kopieeractie
+      zouden vinden. Het beeld houdt de woorden.</span>
+
+    <span data-phrase="run.summary">{words} op {pages} worden weggehaald.</span>
+    <span data-phrase="run.nothing">Er is nog niets aangevinkt. Zoek bij stap 2 een woord, of klik er bij stap 3 een aan.</span>
+    <span data-phrase="run.editing">De woorden worden weggehaald&hellip;</span>
+    <span data-phrase="run.writing">Het document wordt geschreven&hellip;</span>
+    <span data-phrase="run.checking">Het klare bestand wordt geopend en doorzocht&hellip;</span>
+    <span data-phrase="run.failed">Er ging iets mis bij het herschrijven van dit document ({detail}).</span>
+    <span data-phrase="run.cancelled">Geannuleerd. Er is niets geschreven.</span>
+
+    <span data-phrase="result.headline">{words} weggehaald</span>
+    <span data-phrase="result.sub">{size} &middot; {pages} gewijzigd &middot; {boxes}</span>
+    <span data-phrase="check.good">Hier opnieuw geopend en doorzocht, zoals een
+      lezer het zou doen: geen daarvan staat in het klare bestand.</span>
+    <span data-phrase="check.partial">Hier opnieuw geopend en doorzocht: elk
+      voorkomen dat je hebt aangevinkt is weg, en die je hebt laten staan zijn er
+      nog.</span>
+    <span data-phrase="check.survived">Dit bestand is NIET geschreven. Het klare
+      document is opnieuw geopend, en een deel van wat je hebt weggehaald was er
+      nog steeds in te vinden. De onleesbaarmaking was dus niet volledig. Er wordt
+      niets ter download aangeboden.</span>
+    <span data-phrase="check.pages">Dit bestand is NIET geschreven. Het klare
+      document kwam terug met een ander aantal pagina's dan waarmee het erin ging,
+      dus er is meer misgegaan dan alleen de woorden. Er wordt niets ter download
+      aangeboden.</span>
+
+    <span data-phrase="fact.boxes">{count} over de gaten getekend.</span>
+    <span data-phrase="fact.noboxes">Er zijn geen balken getekend, dus de woorden
+      zijn weg zonder dat iets zegt waar ze stonden.</span>
+    <span data-phrase="fact.elsewhere">Dezelfde woorden zijn weggehaald uit {where}.</span>
+    <span data-phrase="fact.metadata">De documenteigenschappen en het XMP-pakket
+      zijn verwijderd, dus het klare bestand zegt niet wat het gemaakt heeft,
+      wanneer, of hoe het eerder heette.</span>
+    <span data-phrase="fact.carried">{attachments} en {actions} zijn weggegooid.</span>
+    <span data-phrase="fact.shared">Een deel van wat je hebt weggehaald werd
+      getekend door een blok dat het document op meer dan &eacute;&eacute;n pagina
+      hergebruikt, dus het is van elke pagina verdwenen die dat blok tekent. Dat is
+      meer dan je hebt aangevinkt, en nooit minder.</span>
+    <span data-phrase="fact.overimage">{count} van de weggehaalde letters lagen
+      over een beeld van dezelfde pagina. Uit de tekstlaag zijn ze weg en in het
+      beeld staan ze nog: een lezer kan ze niet meer zoeken of kopi&euml;ren en ziet
+      ze nog steeds.</span>
+    <span data-phrase="fact.untouched">Al het andere op elke pagina is byte voor
+      byte doorgegeven. Er is geen lettertype, geen beeld en geen lijn opnieuw
+      gecodeerd.</span>
+
+    <span data-phrase="count.pages">{count} pagina's</span>
+    <span data-phrase="count.page">{count} pagina</span>
+    <span data-phrase="count.words">{count} woorden</span>
+    <span data-phrase="count.word">{count} woord</span>
+    <span data-phrase="count.pieces">{count} tekststukken</span>
+    <span data-phrase="count.piece">{count} tekststuk</span>
+    <span data-phrase="count.matches">{count} treffers</span>
+    <span data-phrase="count.match">{count} treffer</span>
+    <span data-phrase="count.boxes">{count} zwarte balken</span>
+    <span data-phrase="count.box">{count} zwarte balk</span>
+    <span data-phrase="count.attachments">{count} bijlagen</span>
+    <span data-phrase="count.attachment">{count} bijlage</span>
+    <span data-phrase="count.actions">{count} acties</span>
+    <span data-phrase="count.action">{count} actie</span>
+    <span data-phrase="count.hosts">{count} hosts</span>
+    <span data-phrase="count.host">{count} host</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">Je document is nergens heen gegaan. {total}
+      bestanden geladen, allemaal van deze site zelf. {platform}</span>
+    <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit
+      gereedschap nooit. Dat is het waard om na te kijken. {platform}</span>
+    <span data-phrase="net.platform">De eigen scripts van de site voor
+      advertenties, meting en de donatieknop kwamen van {hosts}; geen daarvan heeft
+      een document, een woord eruit of iets waar je op gezocht hebt
+      gekregen.</span>
+
+    <span data-phrase="finder.email">E-mailadressen</span>
+    <span data-phrase="finder.card">Kaartnummers</span>
+    <span data-phrase="finder.iban">Bankrekeningen (IBAN)</span>
+    <span data-phrase="finder.nationalid">BSN &amp; socialezekerheidsnummers</span>
+    <span data-phrase="finder.phone">Telefoonnummers</span>
+  </div>
+</main>

@@ -81,6 +81,16 @@ complete = true
 # "Scannen" is wat er getypt wordt; "lezen" is wat het programma doet.
 "qr-barcode-reader" = "qr-code-scannen"
 "hash-checksum" = "checksum-controleren"
+# DICOM blijft DICOM: dat staat er op het schijfje dat het ziekenhuis meegeeft,
+# en niemand zoekt het vertaald.
+"dicom-viewer" = "dicom-viewer"
+"document-scanner" = "documenten-scannen"
+# Hetzelfde werkwoord als bij de afbeelding, want het is dezelfde belofte: de
+# tekst gaat uit het bestand, er komt geen balk overheen.
+"redact-pdf" = "pdf-onleesbaar-maken"
+# "Stacken" is het leenwoord dat fotografen schrijven en zoeken; "stapelen"
+# gaat over doosjes.
+"stack-images" = "afbeeldingen-stacken"
 
 "guides" = "gidsen"
 "roadmap" = "roadmap"
@@ -113,6 +123,11 @@ complete = true
 "guides/trim-an-audio-file" = "gidsen/een-audiobestand-inkorten"
 "guides/whats-inside-a-gif" = "gidsen/wat-zit-er-in-een-gif"
 "guides/verify-a-file-checksum" = "gidsen/de-checksum-van-een-download-controleren"
+"guides/open-a-dicom-file" = "gidsen/een-dicom-bestand-openen"
+"guides/redact-a-pdf" = "gidsen/een-pdf-onleesbaar-maken"
+"guides/scan-a-document-with-your-phone" = "gidsen/een-document-scannen-met-je-telefoon"
+# Wie stackt zoekt niet op "stacken", maar op de ruis: dat is het probleem.
+"guides/stack-photos-to-reduce-noise" = "gidsen/fotos-stacken-tegen-ruis"
 
 #
 # ---------------------------------------------------------------------------

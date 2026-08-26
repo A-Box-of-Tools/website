@@ -1,0 +1,241 @@
+<!--
+  tools/stack-images/body.html, in Dutch.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+-->
+<main>
+  <!-- Stap 1 &mdash; de frames -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies frames</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      RAW-bestanden worden geopend door het JPEG op volledig formaat te lezen dat
+      de camera er al in geschreven heeft: een paar kilobyte mappenstructuur en
+      dan &eacute;&eacute;n stuk. De sensorgegevens worden nooit gedecodeerd, dus
+      een opname van 60&nbsp;MB opent ongeveer net zo snel als een JPEG.
+      <a href="#faq-raw">Wat dat betekent voor het resultaat</a>.
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">Sorteren op naam</button>
+        <button type="button" id="clear-all" class="ghost danger">Alles verwijderen</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- Stap 2 &mdash; hoe ze samenkomen -->
+  <section class="card">
+    <h2><span class="step">2</span> Hoe ze samenkomen</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">Methode</label>
+        <select id="mode">
+          <option value="mean" selected>Gemiddelde &mdash; ruis verlagen</option>
+          <option value="median">Mediaan &mdash; mensen en langsrijdende auto's weghalen</option>
+          <option value="sigma">Sigma clipping &mdash; allebei tegelijk</option>
+          <option value="max">Oplichten &mdash; sterrensporen, vuurwerk, light painting</option>
+          <option value="min">Verdonkeren &mdash; alles helders weghalen dat bewoog</option>
+          <option value="sum">Optellen &mdash; een lange belichting nabootsen</option>
+          <option value="focus">Focus stacking &mdash; houden wat scherp was</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">Frames uitlijnen</label>
+        <select id="align">
+          <option value="translate" selected>Ja &mdash; alleen verschuiven</option>
+          <option value="similarity">Ja &mdash; verschuiven, draaien en schalen</option>
+          <option value="none">Nee &mdash; precies zo nemen als ze zijn</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">Werkresolutie</label>
+        <select id="scale">
+          <option value="full" selected>Volledig formaat</option>
+          <option value="half">Half &mdash; een kwart van het geheugen</option>
+          <option value="quarter">Kwart &mdash; een zestiende</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">Verwerpen voorbij</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          Lager verwerpt meer, en verwerpt echt detail mee. Twee
+          standaardafwijkingen zijn het gebruikelijke uitgangspunt.
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">Scherpte wordt gemeten over</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          Groter neemt hele gebieden uit &eacute;&eacute;n frame; kleiner volgt
+          fijn detail en kan een gladde achtergrond tussen de frames door
+          verrommelen.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">Belichting</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">Opslaan als</label>
+        <select id="format">
+          <option value="png" selected>PNG &mdash; verliesvrij</option>
+          <option value="jpeg">JPEG &mdash; kleiner bestand</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>Resultaat</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>Werkgeheugen</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>Decodeeracties</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Van de schijf gelezen</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- Stap 3 &mdash; laten draaien -->
+  <section class="card">
+    <h2><span class="step">3</span> Stacken</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>Afbeeldingen stacken</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="Het gestackte resultaat">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>Afbeelding downloaden</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1 frame</span>
+    <span data-phrase="count.many">{count} frames</span>
+    <span data-phrase="count.none">Nog geen frames</span>
+
+    <span data-phrase="frame.reference">Referentie</span>
+    <span data-phrase="frame.make-reference">Als referentie nemen</span>
+    <span data-phrase="frame.remove">Verwijderen</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW &mdash; het eigen voorbeeld van de camera, {width} &times; {height}</span>
+    <span data-phrase="frame.raw-camera">{camera} &mdash; voorbeeld {width} &times; {height}</span>
+    <span data-phrase="frame.raw-unreadable">In dit RAW-bestand was geen voorbeeld te vinden</span>
+    <span data-phrase="frame.read">{read} van {total} gelezen</span>
+
+    <span data-phrase="mode.mean">Middelt elk frame. Willekeurige ruis is even vaak te hoog als te laag, dus {count} frames middelen verlaagt hem ongeveer {factor} keer. De methode voor een rustige reeks, en de methode die &eacute;&eacute;n overvliegende vogel bederft.</span>
+    <span data-phrase="mode.median">Neemt de middelste waarde van elke pixel. Alles wat er maar in een deel van de frames was, een toerist, een auto, een vliegtuig, verdwijnt. Het is de enige methode die elk frame tegelijk moet vasthouden, en daarom kan hij hieronder in banden gedeeld worden.</span>
+    <span data-phrase="mode.sigma">Leert wat elke pixel meestal is, en middelt dan alleen de waarden die daarbij passen. Het resultaat van de mediaan met de ruisverlaging van het gemiddelde. Hij leest de frames twee keer.</span>
+    <span data-phrase="mode.max">Houdt de helderste waarde die elke pixel ooit had. Dat is wat van een reeks korte belichtingen sterrensporen maakt en vuurwerk uit de frames van zijn eigen explosie samenstelt.</span>
+    <span data-phrase="mode.min">Houdt de donkerste waarde die elke pixel ooit had. Een pixel blijft alleen helder als hij in elk frame helder was, dus weerspiegelingen, koplampen en aangelichte regendruppels verdwijnen.</span>
+    <span data-phrase="mode.sum">Telt de frames op zonder te delen: wat een {count} keer zo lange belichting verzameld zou hebben. Hij loopt vol, precies zoals die belichting dat zou doen. Haal het terug met de belichtingsschuif.</span>
+    <span data-phrase="mode.focus">Neemt elk deel van het beeld uit het frame waarin het scherp was. Fotografeer een klein onderwerp langs de scherpstelring, en dit zet de scherpe delen aan elkaar.</span>
+
+    <span data-phrase="align.translate">Zoekt uit hoe ver elk frame verschoven was en schuift het terug, tot op fracties van een pixel. Corrigeert wiebelen uit de hand en het wegdrijven van een statief. Draaiing kan het niet corrigeren.</span>
+    <span data-phrase="align.similarity">Zoekt daarnaast draaiing en schaal uit. Kost &eacute;&eacute;n meting meer per frame en helemaal niets als de frames recht blijken te zijn. Draaiing wordt altijd maar binnen een halve slag teruggehaald.</span>
+    <span data-phrase="align.none">Stackt de frames precies zoals ze binnenkomen. Goed voor een vast statief of een intervalreeks, verkeerd voor alles uit de hand.</span>
+
+    <span data-phrase="scale.note">Elk frame wordt door de decoder van de browser zelf op dit formaat gedecodeerd, dus een kleinere instelling is minder werk en niet alleen minder geheugen.</span>
+    <span data-phrase="gain.note">Helemaal aan het eind in het resultaat vermenigvuldigd, na het rekenwerk en voor het afronden.</span>
+    <span data-phrase="gain.sum-note">{count} frames optellen loopt vrijwel zeker vol. Zet dit terug naar ongeveer {suggested} om te zien wat er verzameld is.</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">ongeveer {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count}, &eacute;&eacute;n per frame</span>
+    <span data-phrase="plan.decodes.passes">{count} &mdash; elk frame, {passes} keer</span>
+    <span data-phrase="plan.decodes.banded">{count} &mdash; elk frame, &eacute;&eacute;n keer voor elk van de {bands} banden</span>
+    <span data-phrase="plan.read">{read} van {total} op de schijf</span>
+    <span data-phrase="plan.banded">Dit past niet in &eacute;&eacute;n stuk in het geheugen, dus het beeld wordt in {bands} banden gesneden en de frames worden voor elke band opnieuw gelezen. {suggested} kiezen zou er &eacute;&eacute;n doorgang van maken.</span>
+    <span data-phrase="plan.banded-anyway">Dit past niet in &eacute;&eacute;n stuk in het geheugen, dus het beeld wordt in {bands} banden gesneden en de frames worden voor elke band opnieuw gelezen. Minder frames of een kleinere werkresolutie zouden er &eacute;&eacute;n doorgang van maken.</span>
+
+    <span data-phrase="progress.open">Er wordt in {name} gekeken&hellip;</span>
+    <span data-phrase="progress.survey">{name} wordt gelezen&hellip;</span>
+    <span data-phrase="progress.measure">Er wordt gemeten hoe ver {name} bewogen heeft&hellip;</span>
+    <span data-phrase="progress.stack">Wordt gestackt &mdash; {done} van {total} frames gelezen</span>
+    <span data-phrase="progress.stack-banded">Wordt gestackt &mdash; band {band} van {bands}, {done} van {total} frames gelezen</span>
+    <span data-phrase="progress.encode">Het beeld wordt geschreven&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}, {size} &mdash; {count} frames in {seconds} seconden bij elkaar gerekend</span>
+    <span data-phrase="result.moves">Elk frame is opgemeten en op zijn plaats geschoven.</span>
+    <span data-phrase="result.moves-some">{count} van {total} frames waren niet met zekerheid op te meten en zijn blijven staan waar ze stonden.</span>
+    <span data-phrase="result.moves-none">De frames zijn precies zo gestackt als ze binnenkwamen.</span>
+    <span data-phrase="result.moves-clamped">{count} frames meldden een draaiing die te groot is voor een reeks, en zijn alleen door verschuiven gecorrigeerd.</span>
+    <span data-phrase="result.cropped">Ze uit elkaar schuiven liet randen achter die niet elk frame bereikte, en die zijn eraf gesneden.</span>
+
+    <span data-phrase="error.no.files">Voeg eerst minstens &eacute;&eacute;n afbeelding toe.</span>
+    <span data-phrase="error.no.size">Geen van deze bestanden was als afbeelding te openen.</span>
+    <span data-phrase="error.one.frame">Stacken vraagt minstens twee frames.</span>
+    <span data-phrase="error.unknown">Er ging iets mis bij het stacken. Als een van deze bestanden ongewoon is, probeer het dan los.</span>
+    <span data-phrase="error.memory">De browser is door zijn geheugen heen. Probeer een kleinere werkresolutie of minder frames.</span>
+    <span data-phrase="error.unreadable">{name} was niet als afbeelding te openen en is buiten beschouwing gebleven.</span>
+    <span data-phrase="error.busy">Wacht tot deze stapel klaar is voordat je meer frames toevoegt, of breek hem af.</span>
+  </div>
+</main>

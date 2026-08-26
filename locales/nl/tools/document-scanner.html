@@ -1,0 +1,388 @@
+<!--
+  tools/document-scanner/body.html, in Dutch.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main>
+  <!-- Stap 1 &mdash; de foto's -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies foto's</h2>
+
+    <p class="card-lede">
+      E&eacute;n foto per pagina, genomen van ergens erboven. De hele pagina moet
+      in beeld zijn, en de vier hoeken zouden zichtbaar moeten zijn of bijna. Al
+      het andere &mdash; de scheve hoek, de schaduw, de tafel eronder &mdash; is
+      waar dit gereedschap voor is. Voeg er meerdere toe en ze worden de pagina's
+      van &eacute;&eacute;n document, in de volgorde waarin je ze toevoegt.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">Alle pagina's opnieuw zoeken</button>
+        <button type="button" id="clear-all" class="ghost danger">Alles verwijderen</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- Stap 2 &mdash; de hoeken -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Zet de hoeken op de pagina</h2>
+
+    <p id="edit-empty" class="field-summary">
+      Kies een foto, dan verschijnt hij hier, met zijn vier hoeken voor je
+      gevonden.
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Tik ergens op de foto, en de dichtstbijzijnde hoek komt naar je vinger
+        toe; sleep hem naar de hoek van de pagina. Met <kbd>Tab</kbd> bereik je
+        een hoek via het toetsenbord, de pijltjestoetsen verplaatsen hem
+        &eacute;&eacute;n pixel en met <kbd>Shift</kbd> tien. Niets hiervan is
+        definitief: de scan wordt genomen van waar de vier hoeken uiteindelijk
+        staan.
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">Hoeken opnieuw zoeken</button>
+        <button type="button" id="whole-photo" class="ghost">Hele foto nemen</button>
+        <button type="button" id="turn-left" class="ghost">Naar links draaien</button>
+        <button type="button" id="turn-right" class="ghost">Naar rechts draaien</button>
+        <button type="button" id="undo" class="ghost" disabled>Ongedaan maken</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stap 3 &mdash; het opschonen -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> Opschonen</h2>
+
+    <p id="clean-empty" class="field-summary">
+      De rechtgetrokken pagina verschijnt hier zodra er een foto is om recht te
+      trekken.
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        Wat hieronder staat is het echte resultaat, gemaakt door dezelfde code die
+        het bestand schrijft: rechtgetrokken en met het ongelijke licht eruit
+        gedeeld. Op het scherm wordt het op schermgrootte getekend terwijl je
+        kiest; het bestand zelf ontstaat in de resolutie van de foto.
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          Wordt rechtgetrokken&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>Wat er met licht en kleur moet gebeuren</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>Kleur, gelijkgetrokken</strong>
+            <span class="check-note">
+              Het papier wordt over de pagina heen gemeten en eruit gedeeld,
+              zodat de schaduw verdwijnt en het papier weer wit wordt, terwijl
+              een stempel, een handtekening in blauwe inkt of een gemarkeerde
+              regel hun kleur houden. Dit is de modus als de kleur bij het
+              document hoort.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>Grijstinten</strong>
+            <span class="check-note">
+              Hetzelfde gelijktrekken zonder de kleur. Kleiner dan kleur en
+              vriendelijker voor een foto of een handtekening dan zwart-wit is.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>Zwart-wit</strong>
+            <span class="check-note">
+              Elke pixel wordt beoordeeld tegen zijn eigen omgeving en niet tegen
+              &eacute;&eacute;n getal voor de hele pagina, en precies dat houdt
+              het schrift binnen een schaduw leesbaar. Dit is wat een scan klein
+              maakt: een contract van twintig pagina's komt er zo onder een
+              megabyte uit en als foto's rond de vijftien. Deze modus kent geen
+              halftonen, dus niets met een foto erop zou hem moeten nemen.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>Zo laten</strong>
+            <span class="check-note">
+              Rechtgetrokken en verder niets. Voor een pagina waarbij het papier
+              zelf meetelt: iets ouds, iets kleurigs, een foto.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">Hoe sterk</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        De instelling geldt voor elke pagina. Pagina's in &eacute;&eacute;n
+        document die verschillend opgeschoond zijn, zien eruit als twee
+        documenten.
+      </p>
+    </div>
+  </section>
+
+  <!-- Stap 4 &mdash; het bestand -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> Sla het document op</h2>
+
+    <p class="card-lede">
+      De PDF ontstaat hier, in het geheugen van deze pagina, pagina voor pagina.
+      Aan de andere kant van dit gereedschap staat geen server om een loonstrook,
+      een paspoort of een contract naartoe te sturen, en in de code staat niets
+      dat dat zou doen als die er wel was.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">Paginagrootte</label>
+        <select id="page-size">
+          <option value="fit" selected>Vel aanpassen aan de pagina zelf</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8,5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8,5 &times; 14 in</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">Afdrukresolutie</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI &mdash; kantoorapparaat</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          Hoe groot een vel genoemd wordt dat uit een bepaald aantal pixels
+          bestaat. Het verandert het formaat waarop het document wordt afgedrukt,
+          en geen enkele pixel van de scan.
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">Marge</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="Marge in millimeters">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">Langste zijde</label>
+        <select id="max-side">
+          <option value="1600">1600 pixels &mdash; klein</option>
+          <option value="2400" selected>2400 pixels</option>
+          <option value="3500">3500 pixels</option>
+          <option value="0">Zo groot als de foto toelaat</option>
+        </select>
+        <p class="field-note">
+          Een bovengrens voor de rechtgetrokken pagina. De foto van een pagina
+          bevat veel meer pixels dan de pagina waard is, en 2400 op de lange rand
+          is ongeveer 200 DPI op A4.
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Kwaliteit</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          Voor de modi kleur en grijstinten, die als JPEG worden opgeslagen.
+          Zwart-witpagina's worden exact opgeslagen; voor die pagina's doet dit
+          niets.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">Documenttitel <span class="optional">(optioneel)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="Leeg gelaten draagt de PDF geen titel">
+        <p class="field-note">
+          Het enige wat er behalve de pagina's in het document geschreven wordt.
+          Geen datum, geen auteur en niets over dit apparaat. Zie
+          <code>src/document.js</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>Opslaan als PDF</button>
+      <button type="button" id="save-images" class="ghost big" disabled>Pagina's opslaan als afbeeldingen</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>Het klaar bestand</h3>
+        <a id="download" class="primary as-button" href="#" download>Downloaden</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        Open hem voordat je hem verstuurt. Wat er in het document staat is wat er
+        bij stap 3 op het scherm stond, pagina voor pagina.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">De vier hoeken zijn gevonden. Controleer ze
+      en sleep de hoeken recht die ernaast liggen.</span>
+    <span data-phrase="detect.unsure">De randen van de pagina waren niet duidelijk
+      genoeg om zeker te zijn. Deze hoeken zijn een gok: sleep ze op de pagina
+      voordat je verdergaat.</span>
+    <span data-phrase="detect.nothing">In deze foto was geen pagina te
+      onderscheiden, daarom liggen de hoeken op de randen ervan. Sleep ze op de
+      pagina.</span>
+    <span data-phrase="detect.flat">In dit beeld valt niets te vinden, het heeft
+      helemaal geen randen.</span>
+    <span data-phrase="detect.tiny">Dit beeld is te klein om er een pagina in te
+      vinden.</span>
+    <span data-phrase="detect.edited">Deze hoeken zijn nu van jou. &bdquo;Hoeken
+      opnieuw zoeken&rdquo; meet de foto van voren af aan op.</span>
+
+    <span data-phrase="corner.tl">Hoek linksboven</span>
+    <span data-phrase="corner.tr">Hoek rechtsboven</span>
+    <span data-phrase="corner.br">Hoek rechtsonder</span>
+    <span data-phrase="corner.bl">Hoek linksonder</span>
+    <span data-phrase="corner.at">{corner}, op {x} in de breedte en {y} naar
+      beneden. De pijltjestoetsen verplaatsen hem, en met Shift erbij tien pixels
+      tegelijk.</span>
+
+    <span data-phrase="page.select">Pagina {index} bewerken</span>
+    <span data-phrase="page.remove">Pagina {index} verwijderen</span>
+    <span data-phrase="page.earlier">Pagina {index} naar voren schuiven</span>
+    <span data-phrase="page.later">Pagina {index} naar achteren schuiven</span>
+    <span data-phrase="page.count">{count} pagina</span>
+    <span data-phrase="page.counts">{count} pagina's</span>
+
+    <span data-phrase="paper.a">A4 of A5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">een visitekaartje</span>
+    <span data-phrase="shape.known">De pagina kwam er als {ratio} uit, en dat is
+      de vorm van {paper}.</span>
+    <span data-phrase="shape.sideways">De pagina kwam er als {ratio} uit, en dat
+      is de vorm van {paper} in liggend formaat.</span>
+    <span data-phrase="shape.unknown">De pagina kwam er als {ratio} uit, en dat is
+      geen standaardformaat.</span>
+
+    <span data-phrase="method.perspective">De vorm is teruggerekend uit het
+      perspectief in de foto, dus het is de vorm van de pagina en niet die waarin
+      ze in beeld verscheen.</span>
+    <span data-phrase="method.edges">De foto is recht van voren genomen, dus de
+      vorm is rechtstreeks aan de randen gemeten.</span>
+
+    <span data-phrase="quality.good">{width} bij {height} pixels, ongeveer {dpi}
+      DPI op een pagina van dit formaat, genoeg om af te drukken.</span>
+    <span data-phrase="quality.fair">{width} bij {height} pixels, ongeveer {dpi}
+      DPI op een pagina van dit formaat. Op het scherm goed, op papier wat
+      slap.</span>
+    <span data-phrase="quality.low">{width} bij {height} pixels, ongeveer {dpi}
+      DPI op een pagina van dit formaat. Ga dichterbij staan als dit afgedrukt
+      moet worden.</span>
+    <span data-phrase="quality.pixels">{width} bij {height} pixels.</span>
+    <span data-phrase="coverage.note">De pagina vulde {percent}% van de
+      foto.</span>
+    <span data-phrase="coverage.small">De pagina vulde maar {percent}% van de
+      foto, dus het meeste van wat je gefotografeerd hebt was tafel. Volgende keer
+      dichterbij.</span>
+
+    <span data-phrase="strength.gentle">Zacht: het papier wordt gelijkgetrokken en
+      verder weinig. Voor een pagina met bleek potlood of een foto erop.</span>
+    <span data-phrase="strength.middling">De gebruikelijke instelling: het papier
+      wordt weer wit en gedrukte tekst weer zwart.</span>
+    <span data-phrase="strength.hard">Hard: alles wat grijs is wordt naar zwart of
+      wit geduwd. Het schoonst op een pagina met alleen gedrukte tekst en
+      vernietigend voor alles met een beeld erop.</span>
+
+    <span data-phrase="busy.page">Pagina {done} van {total}&hellip;</span>
+    <span data-phrase="busy.writing">Het document wordt geschreven&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.images">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.mono">Opgeslagen met &eacute;&eacute;n bit per pixel
+      en exact gecomprimeerd, en daarom is het zo klein.</span>
+    <span data-phrase="result.jpeg">De pagina's zijn opgeslagen als JPEG in de
+      kwaliteit die je gekozen hebt.</span>
+    <span data-phrase="result.png">De pagina's zijn opgeslagen als PNG, dat
+      verliesvrij is en dat is wat een beeld van twee kleuren wil. JPEG zou
+      tegelijk groter en rond elke letter onscherp zijn.</span>
+    <span data-phrase="result.clean">Geen datum, geen auteur, geen computernaam:
+      het enige in het document behalve de pagina's is de naam van dit
+      gereedschap.</span>
+
+    <span data-phrase="size.fit">Elk vel krijgt de grootte die zijn eigen pagina
+      werkelijk heeft, in de resolutie hierboven. Er wordt niets met balken
+      opgevuld.</span>
+    <span data-phrase="size.named">Elke pagina wordt op een vel {name} gezet,
+      binnen de marge, welke vorm ze ook gekregen heeft.</span>
+
+    <span data-phrase="error.decode">Deze browser kon {name} niet openen. Als het
+      een HEIC-foto van een iPhone is, zet hem dan eerst om.</span>
+    <span data-phrase="error.none">Kies eerst minstens &eacute;&eacute;n foto.</span>
+    <span data-phrase="error.failed">Er ging iets mis bij het maken van het
+      bestand: {detail}</span>
+  </div>
+</main>

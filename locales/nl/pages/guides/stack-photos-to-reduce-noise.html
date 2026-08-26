@@ -1,0 +1,296 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Open <a href="../../afbeeldingen-stacken/">Afbeeldingen stacken</a>, sleep de
+      hele reeks erin, en kies de methode op wat je kwijt wilt:
+    </p>
+    <ul>
+      <li><strong>Ruis</strong>, en er bewoog niets &mdash; gemiddelde.</li>
+      <li><strong>Ruis</strong>, en er bewoog iets &mdash; sigma clipping.</li>
+      <li><strong>Mensen, auto's, een vliegtuig</strong> &mdash; mediaan.</li>
+      <li><strong>Een donkere lucht die je als sterrensporen wilt</strong> &mdash; oplichten.</li>
+      <li><strong>Een macro-opname met vrijwel geen scherptediepte</strong> &mdash; focus stacking.</li>
+    </ul>
+    <p>
+      Laat het uitlijnen aan staan als de camera in je handen was en zet het uit als
+      hij op een statief stond. RAW-bestanden kunnen er rechtstreeks in; ze hoeven
+      niet eerst ontwikkeld te worden.
+    </p>
+    <p>
+      Alles hieronder gaat over waarom die vijf regels zijn wat ze zijn.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom een reeks meer bevat dan &eacute;&eacute;n frame</h2>
+    <p>
+      Een foto die bij weinig licht gemaakt is, is het beeld plus ruis, en de ruis
+      is elke keer anders. Dat laatste is wat stacken laat werken. Maak dezelfde
+      opname zestien keer en het beeld is in alle zestien identiek terwijl de ruis
+      dat niet is, dus ze middelen laat het beeld staan en heft de meeste ruis op.
+    </p>
+    <p>
+      De verbetering is de wortel van het aantal frames. Vier frames halveren de
+      ruis. Zestien brengen hem terug tot een kwart. Honderd snijden hem met tien.
+      Dat is een genadeloze kromme om op te zitten &mdash; van zestien naar
+      vierenzestig frames gaan koopt je dezelfde verbetering nog eens, voor vier keer
+      zoveel opnames &mdash; en het is de reden dat vrijwel elke praktische stapel
+      ergens tussen de acht en dertig frames zit.
+    </p>
+    <p>
+      Er is een tweede, stillere winst. Zestien acht-bits frames middelen geeft een
+      resultaat met fijnere overgangen dan er in &eacute;&eacute;n van de frames
+      zaten, want juist de ruis die elk frame anders liet afronden is wat het
+      gemiddelde tussen de niveaus in laat landen. Een ruizige reeks stacken haalt
+      niet alleen ruis weg; het haalt toon terug die een enkel frame had
+      weggekwantiseerd.
+    </p>
+  </section>
+
+  <section>
+    <h2>De vraag die de methode kiest</h2>
+    <p>
+      Niet &bdquo;wat wil ik houden&rdquo; maar <strong>wat was er anders tussen de
+      frames</strong>. De rest volgt daaruit.
+    </p>
+
+    <h3>Er bewoog niets: gemiddelde</h3>
+    <p>
+      Het gewone gemiddelde. Het is de meest doeltreffende ruisverlaging die er is
+      voor een reeks waarin het enige verschil tussen de frames de ruis is, en het
+      is het makkelijkst te bederven: &eacute;&eacute;n frame met een vogel erin
+      zet een vage vogel over de hele stapel, want een gemiddelde heeft geen mening
+      over een waarde die het niet eens is met de rest. Het telt hem gewoon mee.
+    </p>
+
+    <h3>Er kwam iets door het beeld: mediaan</h3>
+    <p>
+      Leg een stuk of twaalf foto's van een druk plein op elkaar en kijk naar
+      &eacute;&eacute;n pixel. In de meeste is hij bestrating; in een of twee is hij
+      iemands jas. Sorteer die twaalf waarden en neem de middelste, en je krijgt
+      bestrating, want de jas was nooit in de meerderheid.
+    </p>
+    <p>
+      Doe dat voor elke pixel en het plein komt er leeg uit. Dit is de truc achter
+      elk artikel over &bdquo;toeristen uit je vakantiefoto halen&rdquo;, en het
+      heeft niets slimmers nodig dan een reeks en geduld. Het ene dat het eist is
+      dat <strong>geen enkel deel van de sc&egrave;ne meer dan de helft van de tijd
+      bezet is</strong>. Iemand die in acht van je twaalf frames stil blijft staan,
+      is op die pixels de meerderheid, en de mediaan houdt hem.
+    </p>
+
+    <h3>Allebei: sigma clipping</h3>
+    <p>
+      De mediaan gooit de meeste informatie weg om zijn robuustheid te krijgen
+      &mdash; elf van je twaalf waarden worden bij elke pixel weggedaan, dus hij
+      verlaagt de ruis veel minder dan een gemiddelde van dezelfde reeks zou doen.
+    </p>
+    <p>
+      Sigma clipping is het compromis, en het is meestal de juiste standaardkeuze
+      voor elke reeks uit de praktijk. Het kijkt naar elke pixel over alle frames
+      heen, zoekt uit wat hij meestal is en hoeveel hij varieert, en middelt dan
+      alleen de waarden die daarmee overeenkomen. Een auto die door &eacute;&eacute;n
+      frame reed wordt bij die pixels uitgesloten; elk ander frame telt overal nog
+      steeds mee. Je krijgt de immuniteit van de mediaan voor dingen die bewogen en
+      het meeste van de ruisverlaging van het gemiddelde.
+    </p>
+    <p>
+      De drempel staat in standaardafwijkingen, en twee is het gebruikelijke
+      uitgangspunt. Lager verwerpt meer, en begint echt detail samen met de auto te
+      verwerpen.
+    </p>
+
+    <h3>Alleen de heldere dingen tellen: oplichten</h3>
+    <p>
+      Houd de helderste waarde die elke pixel ooit had. Fotografeer de nachthemel
+      als tweehonderd belichtingen van dertig seconden en licht ze samen op, en elke
+      ster tekent zijn eigen boog over het resultaat &mdash; een sterrenspoor,
+      samengesteld uit korte belichtingen die afzonderlijk nooit zijn volgelopen.
+      Dezelfde methode stelt vuurwerk samen uit de frames van zijn eigen explosie,
+      en een light painting uit een wandeling door een donkere kamer met een
+      zaklamp.
+    </p>
+    <p>
+      De tegenhanger, verdonkeren, is de stille van het paar: een pixel blijft alleen
+      helder als hij in <em>elk</em> frame helder was, dus weerspiegelingen in een
+      raam, langskomende koplampen en door een flits aangelichte regendruppels
+      verdwijnen allemaal.
+    </p>
+
+    <h3>Het onderwerp is dieper dan de scherpstelling: focus stacking</h3>
+    <p>
+      Een macro-opname op f/8 heeft misschien een millimeter scherp, en dat is niet
+      genoeg voor een insect. Het antwoord is twintig frames langs de scherpstelring
+      maken en van elk alleen het deel houden dat daarin scherp was. Het gereedschap
+      meet hoeveel elke pixel van zijn buren verschilt &mdash; veel op een rand,
+      bijna nul op een vervaging &mdash; en neemt de winnaar.
+    </p>
+    <p>
+      Deze wil meer dan alle andere een statief, want de scherpstelring met de hand
+      verdraaien verplaatst de camera, en een frame dat van iets verder weg genomen
+      is, is niet hetzelfde beeld op een andere scherpstelling.
+    </p>
+  </section>
+
+  <section>
+    <h2>De frames uitlijnen</h2>
+    <p>
+      Stacken is rekenwerk per pixel, dus het gaat ervan uit dat een bepaalde pixel
+      in elk frame hetzelfde deel van de sc&egrave;ne is. Uit de hand is dat niet zo:
+      een reeks drijft tientallen pixels weg, en dat middelen levert een vervaging
+      op in plaats van een schoon beeld. Dat is veruit de meest voorkomende reden dat
+      een eerste poging tot stacken tegenvalt.
+    </p>
+    <p>
+      Dus worden de frames eerst tegen &eacute;&eacute;n van hun aantal gemeten en
+      teruggeschoven, tot op een fractie van een pixel. Drie instellingen:
+    </p>
+    <ul>
+      <li>
+        <strong>Alleen verschuiven</strong> is goed voor vrijwel alles uit de hand.
+        Het corrigeert het wegdrijven en het wiebelen.
+      </li>
+      <li>
+        <strong>Verschuiven, draaien en schalen</strong> voor een reeks waarbij je
+        ook licht draaide, of waarbij een zoom wegkroop. Het kost &eacute;&eacute;n
+        meting meer per frame en helemaal niets als de frames recht blijken te zijn.
+      </li>
+      <li>
+        <strong>Geen</strong> voor een vast statief of een intervalreeks, waarbij de
+        frames al uitgelijnd zijn en ze opmeten verspilde tijd is.
+      </li>
+    </ul>
+    <p>
+      Wat geen enkele uitlijning kan herstellen is een onderwerp dat bewoog in plaats
+      van een camera die bewoog, en een foto die een stap naar links genomen is ook
+      niet. Opzij bewegen verandert hoeveel de dichtbije dingen verschuiven ten
+      opzichte van de verre, en geen enkele correctie beschrijft die twee tegelijk.
+      Op je plek draaien is prima; lopen niet.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waar RAW-bestanden in passen</h2>
+    <p>
+      Je kunt CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF en de rest er rechtstreeks in
+      slepen, en het is de moeite waard precies te zijn over wat ermee gebeurt, want
+      het is niet wat een RAW-converter doet.
+    </p>
+    <p>
+      Elk RAW-bestand bevat al een <strong>JPEG op volledig formaat dat de camera
+      gerenderd heeft toen de opname gemaakt werd</strong>. Het is wat de achterkant
+      van de camera je laat zien en wat je besturingssysteem als miniatuur tekent.
+      De stacker vindt dat beeld en gebruikt dat. Hij decodeert de sensorgegevens
+      niet.
+    </p>
+    <p>
+      Twee gevolgen, &eacute;&eacute;n goed en &eacute;&eacute;n om te weten:
+    </p>
+    <ul>
+      <li>
+        <strong>Het is snel.</strong> Het voorbeeld vinden betekent een paar kilobyte
+        mappenstructuur lezen en dan &eacute;&eacute;n stuk, dus een frame van
+        60&nbsp;MB opent ongeveer net zo snel als een JPEG. Twintig ervan openen in
+        de tijd die een RAW-converter aan &eacute;&eacute;n zou besteden. De pagina
+        laat je zien hoe weinig van je bestanden hij werkelijk gelezen heeft.
+      </li>
+      <li>
+        <strong>Het is de weergave van de camera, niet die van jou.</strong> Acht bit
+        per kanaal, met de witbalans en de beeldstijl waarop de camera stond &mdash;
+        niet de twaalf of veertien bit lineaire sensorgegevens die je van een
+        converter zou krijgen.
+      </li>
+    </ul>
+    <p>
+      Voor ruisverlaging, sterrensporen, voorbijgangers weghalen en focus stacking is
+      die afweging vrijwel altijd de moeite waard: de voorbeelden zijn op volledige
+      resolutie en ze zijn wat je toch als JPEG gekregen zou hebben. Trek je de
+      schaduwen hard omhoog, of stack je voor astrofotografie waar juist het laatste
+      stukje dynamisch bereik het hele punt is, ontwikkel de frames dan eerst in een
+      RAW-converter en stack de TIFF's of JPEG's die eruit komen. Die gaan er op
+      dezelfde manier in.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat het kost om te draaien</h2>
+    <p>
+      De moeite waard om te weten, want het is het verschil tussen een stapel die
+      acht seconden kost en &eacute;&eacute;n die twee minuten kost.
+    </p>
+    <p>
+      Zes van de zeven methoden hoeven maar &eacute;&eacute;n ding te onthouden. Een
+      lopend maximum geeft niets om de frames die het al gezien heeft, en een lopende
+      som ook niet, dus die methoden lezen elk frame precies &eacute;&eacute;n keer
+      en gebruiken voor honderd frames evenveel geheugen als voor twee.
+    </p>
+    <p>
+      De mediaan kan zo niet werken, want je kunt de middelste waarde van een reeks
+      niet weten totdat je hem helemaal hebt. Twintig frames van 24 megapixel is
+      ongeveer 1,4&nbsp;GB aan pixels die tegelijk vastgehouden worden, en dat geeft
+      geen enkele browser je, dus wordt het beeld in horizontale banden gesneden en
+      band voor band gestackt &mdash; correct, en trager, want de frames worden voor
+      elke band opnieuw gelezen.
+    </p>
+    <p>
+      Het gereedschap rekent dit allemaal uit voordat je op de knop drukt en vertelt
+      het je: hoe groot het resultaat wordt, ruwweg hoeveel geheugen het nodig heeft,
+      en hoe vaak je frames gedecodeerd worden. Zegt het dat de run in banden gaat,
+      dan deelt de werkresolutie &eacute;&eacute;n stap verlagen het geheugen door
+      vier en maakt er bijna altijd weer &eacute;&eacute;n doorgang van &mdash; en
+      stack je om ruis te verlagen, dan zou half formaat er toch al schoner
+      uitgezien hebben dan volledig.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ervoor fotograferen</h2>
+    <p>
+      Het meeste van de kwaliteit van een stapel wordt beslist voordat er software
+      aan te pas komt.
+    </p>
+    <ul>
+      <li>
+        <strong>Maak meer frames dan je denkt nodig te hebben.</strong> De
+        wortelkromme is onverbiddelijk aan de onderkant en mild aan de bovenkant: van
+        vier naar negen frames gaan is een groter zichtbaar verschil dan van twintig
+        naar veertig.
+      </li>
+      <li>
+        <strong>Verander de belichting niet tussen de frames.</strong> Stacken gaat
+        ervan uit dat de frames dezelfde sc&egrave;ne op dezelfde helderheid zijn.
+        Zet de belichting vast, of het gereedschap middelt twee verschillende
+        beelden.
+      </li>
+      <li>
+        <strong>Wacht tussen de frames als je mensen weg wilt halen.</strong> Een
+        reeks die in twee seconden gemaakt is, vangt dezelfde persoon in elk frame op
+        dezelfde plek, en de mediaan houdt hem. Tien frames met een paar seconden
+        ertussen werkt veel beter dan vijftig in een reeks.
+      </li>
+      <li>
+        <strong>Houd de gaten kort voor sterrensporen.</strong> Oplichten tekent
+        precies wat de frames vastgelegd hebben, dus een pauze tussen de belichtingen
+        wordt een zichtbare onderbreking in elk spoor.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Niets hiervan verlaat je machine</h2>
+    <p>
+      Een stapel van twintig RAW-frames is ongeveer een gigabyte aan foto's, en dat
+      is veel om aan een website te geven om er een gemiddelde van te laten nemen.
+      <a href="../../afbeeldingen-stacken/">Afbeeldingen stacken</a> leest de
+      bestanden van je eigen schijf en doet het rekenwerk in je eigen browser. Er is
+      geen uploadstap, geen account en geen wachtrij, en je kunt die bewering
+      nakijken zoals je die van wie dan ook zou nakijken: open het netwerkpaneel van
+      je browser terwijl hij draait, of trek eenvoudigweg de stekker uit het internet
+      en stack ze toch.
+    </p>
+    <p>
+      De verwante vraag &mdash; hoe je voor elk willekeurig gereedschap ziet of het
+      een bestand afgeven nodig was &mdash; heeft
+      <a href="../is-bestanden-uploaden-veilig/">een eigen gids</a>.
+    </p>
+  </section>
