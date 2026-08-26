@@ -298,3 +298,16 @@ test('the alpha channel is written opaque rather than stacked', () => {
     assert.equal(stackFlat(mode, [10, 20, 30]).alpha, 255, `${mode} lost its alpha`);
   }
 });
+
+test('an option passed as undefined falls to its default rather than landing on it', () => {
+  // Spreading { gain: undefined } over { gain: 1 } keeps the undefined, the
+  // gain turns every channel into NaN, and NaN clamps to zero: a caller that
+  // skipped one option got an all-black picture with nothing thrown anywhere
+  // near the cause. Found the hard way, so pinned.
+  const { red, alpha } = stackFlat('mean', [100, 100], {
+    gain: undefined, kappa: undefined, radius: undefined,
+  });
+  assert.equal(red, 100);
+  assert.equal(alpha, 255);
+  assert.equal(stackFlat('sigma', [50, 50, 50], { kappa: undefined }).red, 50);
+});

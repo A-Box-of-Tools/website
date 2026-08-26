@@ -73,7 +73,16 @@ export function createStack(mode, options) {
   const { width, height, frames } = options;
   if (!(width > 0) || !(height > 0)) throw new RangeError('a band with no size');
   if (!(frames > 0)) throw new RangeError('a stack of no frames');
-  return build({ kappa: 2, gain: 1, radius: 3, ...options, pixels: width * height });
+  // A field passed explicitly as undefined must fall to its default rather
+  // than land on it: spreading `{ gain: undefined }` over `{ gain: 1 }` keeps
+  // the undefined, the gain multiplies every channel into NaN, and NaN clamps
+  // to zero - a caller that skipped one option gets an all-black picture with
+  // nothing thrown anywhere near the cause.
+  const given = {};
+  for (const [key, value] of Object.entries(options)) {
+    if (value !== undefined) given[key] = value;
+  }
+  return build({ kappa: 2, gain: 1, radius: 3, ...given, pixels: width * height });
 }
 
 /**

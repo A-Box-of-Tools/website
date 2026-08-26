@@ -302,6 +302,52 @@ export function commonArea(moves, output) {
 }
 
 /**
+ * The square the alignment's refinement pass measures in, or 0 when the crop
+ * has no room for one worth trusting.
+ *
+ * The coarse measurement happens in a small square and is multiplied back up,
+ * which multiplies its sub-pixel error with it - at 6000 pixels across, a
+ * twentieth of a pixel of estimation error comes back as more than one whole
+ * pixel of blur. The refinement corrects that by correlating a window cut from
+ * the frames at output resolution, where an error of a twentieth of a pixel is
+ * an error of a twentieth of a pixel. 512 is plenty of texture to lock onto;
+ * below 64 there is too little for the peak to mean anything, and no window is
+ * the honest answer.
+ *
+ * The 16 the window keeps back from the crop is the two margins the caller
+ * shrinks the crop by; asking for a window the margin then makes impossible
+ * would be answering a different question than the one asked.
+ */
+export function refineWindow({ width, height }) {
+  const room = Math.min(width, height) - 16;
+  if (room < 64) return 0;
+  let size = 64;
+  while (size * 2 <= Math.min(room, 512)) size *= 2;
+  return size;
+}
+
+/**
+ * How far the refinement may move a frame beyond its coarse answer, in output
+ * pixels. Also how much the crop must shrink on every side, because a frame
+ * moved after the crop was decided stops covering ground the crop assumed.
+ *
+ * The bound is the coarse pass's own error budget: its sub-pixel mistake is a
+ * fraction of one alignment-square pixel, which the multiply-up turns into a
+ * handful of output pixels. Eight covers that with room to spare. A set whose
+ * frames barely moved cannot have been mismeasured by much - the error lives
+ * in the sub-pixel fraction of the shift - so it keeps a one-pixel allowance
+ * and a tripod burst is not charged sixteen rows for a correction it does not
+ * need.
+ */
+export function refineMargin(moves) {
+  let most = 0;
+  for (const move of moves) {
+    most = Math.max(most, Math.abs(move.dx ?? 0), Math.abs(move.dy ?? 0));
+  }
+  return most < 0.5 ? 1 : 8;
+}
+
+/**
  * The largest scale whose plan fits the budget without banding, or null if even
  * the smallest one does not.
  *
