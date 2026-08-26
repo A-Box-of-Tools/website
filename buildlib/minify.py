@@ -314,13 +314,13 @@ def js(source, banner=None, where='<js>'):
         out.append(''.join(parts))
 
     result = '\n'.join(out)
-    check(source, result, where)
+    check(source, result, where, tokens)
     if banner:
         result = banner + '\n' + result
     return result + '\n' if result else ''
 
 
-def check(source, minified, where):
+def check(source, minified, where, tokens=None):
     """The output must tokenise to exactly the input's tokens, in order, with a
     line break between the same pairs of them.
 
@@ -330,8 +330,13 @@ def check(source, minified, where):
     what decides where a semicolon gets inserted. Anything else means a space
     was dropped that was holding two tokens apart, or a regular expression was
     read as a division.
+
+    `tokens` is the source's own token stream, when the caller already holds
+    it - js() above always does, having just built its output from them.
+    Without it the source is tokenised here a second time, only to be compared
+    against what the first pass already produced.
     """
-    before = tokenize_js(source, where)
+    before = tokens if tokens is not None else tokenize_js(source, where)
     after = tokenize_js(minified, where + ' (minified)')
 
     if len(before) != len(after):
