@@ -1,0 +1,350 @@
+#
+# Empileur d'images - French.
+#
+# Overrides for tools/stack-images/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Empiler" est le verbe employe en photographie francaise, et "empilement" le
+# substantif ; "stacking" figure entre guillemets a la premiere occurrence
+# parce que c'est le mot des menus anglais que beaucoup ont sous les yeux. Les
+# sigles RAW (CR2, NEF, ARW, DNG) et les noms de bibliotheque (LibRaw, dcraw)
+# restent tels quels : ce sont les noms des fichiers du dossier.
+#
+# "Worker" reste aussi : il nomme une chose precise du navigateur, et un mot
+# francais serait une autre affirmation sur ce que fait la page.
+#
+
+name = "Empileur d'images"
+heading = "Empileur&nbsp;d'images <span class=\"h1-kw\">&mdash; combiner une rafale, fichiers RAW compris</span>"
+tagline = "Vingt prises n'en font plus qu'une, sans vingt envois et sans dérawtiseur."
+
+title = "Empileur d'images &mdash; moyenne, médiane et empilement de mise au point dans le navigateur"
+description = "Combinez une rafale de photographies en une seule&nbsp;: moyennez-les pour tuer le bruit, prenez la médiane pour retirer les gens d'une scène, éclaircissez pour des filés d'étoiles, ou empilez la mise au point d'une macro. Lit CR2, NEF, ARW, DNG, RAF et CR3 en extrayant l'aperçu de l'appareil lui-même. Tout se passe dans votre navigateur."
+og_title = "Empiler une rafale de photographies, fichiers RAW compris"
+og_description = "Moyenne, médiane, écrêtage sigma, éclaircir, assombrir, additionner ou empilement de mise au point &mdash; avec les prises alignées d'abord. Les fichiers RAW sont ouverts en lisant l'aperçu que l'appareil a déjà écrit, si bien qu'une prise de 60 Mo s'ouvre aussi vite qu'un JPEG. Rien n'est envoyé."
+og_image_alt = "Empileur d'images - plusieurs prises combinées en une seule, dans le navigateur"
+
+pledge = """
+    Chaque prise est ouverte, décodée, alignée, combinée et écrite par votre
+    propre navigateur, sur votre propre machine. Une pile de vingt fichiers RAW
+    de 60&nbsp;Mo, c'est environ un gigaoctet de photographies, et pas un octet
+    ne bouge&nbsp;: l'outil n'a aucune fonction réseau, et les fichiers sont lus
+    directement sur votre disque par un worker qui n'a nulle part où envoyer
+    quoi que ce soit."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les DevTools, regardez
+      l'onglet Réseau et empilez un dossier de fichiers RAW. Aucune requête ne
+      transporte une photographie, une vignette, un nom de fichier ou un modèle
+      d'appareil. Ou débranchez-vous d'internet et empilez-les quand
+      même&nbsp;: rien ne change à l'outil."""
+
+read_first = """
+, <code>src/raw.js</code> pour la façon dont un
+      fichier RAW est ouvert en lisant des kilooctets plutôt que des mégaoctets,
+      <code>src/stack.js</code> pour le calcul de chaque méthode, et
+      <code>src/plan.js</code> pour l'origine des chiffres de mémoire et de
+      décodage affichés sur la page&nbsp;: ce sont les réponses de ce fichier, et
+      non des estimations."""
+
+howto_heading = "Comment empiler une série de photographies dans votre navigateur"
+
+card = """
+            Combinez une rafale en une seule image&nbsp;: moyennez le bruit
+            jusqu'à le faire disparaître, prenez la médiane pour perdre les
+            passants, ou éclaircissez pour des filés d'étoiles. Lit les fichiers
+            RAW sans dérawtiseur."""
+
+[words]
+plural = "photographies"
+choose = "quelques photographies"
+
+[[facts]]
+text = "Aucun envoi"
+
+[[facts]]
+text = "Aucun compte"
+
+[[facts]]
+text = "Aucun filigrane"
+
+[[facts]]
+text = "Lit le RAW"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[privacy]]
+title = "Vos photographies n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page peut contacter,
+      et aucune ne nous appartient. Il n'y a ici aucun point de collecte où vos
+      fichiers pourraient atterrir, ni de code qui les enverrait s'il y en avait
+      un&nbsp;: pas de <code>fetch</code>, pas de <code>XMLHttpRequest</code>, pas
+      de <code>sendBeacon</code>, ni dans <code>src/</code> ni dans le worker."""
+
+[[privacy]]
+title = "Les fichiers RAW sont lus, pas envoyés &mdash; et à peine lus."
+body = """
+ Un fichier RAW d'appareil
+      contient déjà un JPEG pleine taille que l'appareil a développé au moment du
+      déclenchement. Cet outil le trouve en parcourant quelques entrées de
+      répertoire puis en demandant une seule tranche, ce qui, sur un fichier de
+      60&nbsp;Mo, fait généralement moins de cent kilooctets. La page vous montre
+      ce chiffre en regard de la taille de vos fichiers pendant que vous
+      travaillez. Les données du capteur ne sont jamais lues."""
+
+[[privacy]]
+title = "Le travail se fait dans un Worker sur cette machine, pas sur un serveur."
+body = """
+ C'est le seul outil d'ici
+      qui en emploie un, parce qu'empiler se compte en minutes de calcul plutôt
+      qu'en secondes, et qu'une page figée ne peut ni montrer sa progression ni
+      être annulée. Un Worker est un second fil dans ce même navigateur &mdash;
+      voir <code>src/worker.js</code>. On lui remet les fichiers eux-mêmes, ce qui
+      ne coûte rien, car une poignée de fichier n'est pas les octets&nbsp;; et il
+      a exactement la même Content-Security-Policy que la page, c'est-à-dire nulle
+      part où les envoyer."""
+
+[[privacy]]
+title = "Rien de la série n'est rapporté nulle part."
+body = """
+ Combien de prises vous avez
+      empilées, quel appareil les a écrites, de combien chacune avait bougé,
+      quelle méthode vous avez choisie et combien de temps cela a pris restent
+      dans la mémoire de cette page jusqu'à ce que vous la fermiez. Il n'existe
+      dans ce dépôt aucun événement de mesure qui transporte quoi que ce soit de
+      cela, et la seule question que ce site pose après un téléchargement envoie
+      un pouce en haut ou en bas et le nom de l'outil, rien d'autre."""
+
+[[privacy]]
+title = "Il fonctionne hors ligne."
+body = """
+ Débranchez-vous du réseau et l'outil ne
+      change pas, parce qu'il n'y a jamais eu d'étape réseau dedans. Le worker et
+      chaque module qu'il charge sont mis en cache par le service worker de cette
+      page&nbsp;: une copie installée empile donc des fichiers RAW la prise
+      débranchée."""
+
+[[howto]]
+title = "Choisissez les prises."
+body = """
+ Une rafale, une série en fourchette,
+      une séquence d'intervallomètre, ou un dossier de fichiers RAW. Chacune est
+      ouverte à mesure qu'elle arrive, et la ligne vous dit ce qui en est
+      sorti&nbsp;: pour un fichier RAW, l'appareil, la taille de l'aperçu trouvé
+      dedans, et le peu du fichier qu'il a fallu lire pour le trouver."""
+
+[[howto]]
+title = "Prenez la méthode qui correspond à ce que vous cherchez à perdre."
+body = """
+ Le bruit&nbsp;:
+      moyenne, ou écrêtage sigma si quelque chose a bougé. Des gens, des voitures
+      ou un avion qui passe&nbsp;: médiane. Un ciel noir que vous voulez en filés
+      d'étoiles&nbsp;: éclaircir. Une macro prise le long de la bague de mise au
+      point&nbsp;: empilement de mise au point. La note sous le menu dit ce que
+      chacune fait à votre nombre de prises précis."""
+
+[[howto]]
+title = "Décidez si les prises ont besoin d'être alignées."
+body = """
+ À main levée&nbsp;: oui,
+      décalage seul. À main levée et en tournant aussi&nbsp;: décalage, rotation
+      et échelle. Trépied fixe ou intervallomètre&nbsp;: non, et ce sera plus
+      rapide. Chaque prise est mesurée par rapport à la première de la liste,
+      et c'est pourquoi n'importe quelle prise peut être promue à cette
+      place."""
+
+[[howto]]
+title = "Lisez les quatre chiffres, puis appuyez sur le bouton."
+body = """
+ Avant que quoi que ce soit
+      ne s'exécute, la page indique la taille du résultat, la mémoire qu'il
+      demandera à peu près, combien de fois les prises seront décodées et quelle
+      part de vos fichiers a été lue. Si la série ne tient pas en mémoire d'un
+      seul tenant, elle le dit, et nomme la résolution de travail qui y
+      remédierait."""
+
+[[faq]]
+q = "Mes photographies sont-elles envoyées quelque part&nbsp;?"
+a = """
+        Non. Chaque prise est ouverte, décodée, alignée, empilée et écrite par
+        votre propre navigateur, sur votre propre matériel. Cet outil n'a aucune
+        fonction réseau, il ne va jamais rien chercher et n'envoie jamais rien, et
+        la <code>Content-Security-Policy</code> de la page nomme chaque adresse
+        qu'elle peut contacter, dont aucune ne nous appartient. Chargez la page
+        une fois, débranchez-vous d'internet&nbsp;: elle continue de fonctionner.
+        Cela compte ici plus que sur la plupart des outils, simplement à cause du
+        volume&nbsp;: une pile de vingt prises RAW fait environ un gigaoctet, et
+        envoyer un gigaoctet de photographies pour qu'on en fasse la moyenne est
+        précisément ce que cet outil existe pour éviter."""
+
+[[faq]]
+q = "Quels formats RAW peut-il lire, et comment&nbsp;?"
+a = """
+        <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF,
+        RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL et quelques autres,
+        soit l'essentiel de ce qu'écrivent les appareils. Ce qu'il en lit, c'est
+        l'aperçu JPEG pleine taille que l'appareil lui-même a développé au moment
+        du déclenchement&nbsp;: l'image du dos de l'appareil, et celle que votre
+        système d'exploitation dessine en vignette. Il est trouvé en parcourant la
+        structure de répertoires du fichier, ce qui coûte quelques lectures de
+        quelques kilooctets chacune, puis en prenant une seule tranche.
+        <strong>Ce n'est pas un dématriçage des données du capteur.</strong> Le
+        résultat porte la balance des blancs et le style d'image de l'appareil sur
+        huit bits par canal, plutôt que les douze ou quatorze bits de données
+        linéaires de capteur que vous donnerait un dérawtiseur."""
+
+[[faq]]
+q = "Alors pourquoi ne pas décoder correctement les données du capteur&nbsp;?"
+a = """
+        Parce que cela supposerait d'embarquer LibRaw ou dcraw&nbsp;: un second
+        moteur de plusieurs dizaines de mégaoctets, pour une seule famille de
+        formats, dont l'essentiel est fait de schémas de compression propres à
+        chaque fabricant. Cet arbitrage est débattu dans
+        <code>docs/what-can-be-built-here.md</code>, dans les sources de ce site,
+        où le RAW d'appareil figurait sur la liste des exclusions avant même que
+        cet outil n'existe. Ce qui a changé, ce n'est pas la réponse à cette
+        question, mais la découverte qu'empiler n'en a pas besoin&nbsp;: les
+        aperçus sont en pleine résolution, ils sont ce que l'appareil vous aurait
+        donné en JPEG de toute façon, et les lire est environ cent fois plus rapide
+        qu'un dématriçage. Si vous voulez les données du capteur, développez
+        d'abord les prises dans un dérawtiseur et empilez les TIFF ou les JPEG
+        qu'il produit&nbsp;: cet outil les accepte aussi."""
+
+[[faq]]
+q = "Combien de prises peut-il traiter, et de quelle taille&nbsp;?"
+a = """
+        Six des sept méthodes travaillent au fil de l'eau&nbsp;: elles gardent un
+        accumulateur et lisent chaque prise exactement une fois, si bien que cent
+        prises coûtent la même mémoire que deux et que seule la durée augmente. La
+        médiane fait exception, parce qu'on ne peut connaître la valeur centrale
+        d'un ensemble qu'une fois qu'on l'a tout entier&nbsp;: elle garde donc
+        toutes les prises à la fois, et vingt prises de 24 mégapixels font environ
+        1,4&nbsp;Go, ce qu'aucun navigateur ne vous accordera. Quand cela arrive,
+        l'image est découpée en bandes horizontales et empilée bande par bande, ce
+        qui coûte de relire les prises pour chaque bande. La page calcule tout cela
+        avant que vous n'appuyiez sur le bouton et vous montre le nombre&nbsp;: un
+        passage lent n'est donc jamais une surprise."""
+
+[[faq]]
+q = "Que fait réellement l'alignement des prises&nbsp;?"
+a = """
+        Il trouve de combien chaque prise a bougé par rapport à la première et la
+        remet en place, à une fraction de pixel près. La méthode est la corrélation
+        de phase&nbsp;: le décalage entre deux images apparaît comme une différence
+        de phase entre leurs spectres, si bien qu'une transformée de Fourier
+        chacune trouve un décalage de deux cents pixels aussi bon marché qu'un
+        décalage de deux. Le second réglage récupère en outre la rotation et
+        l'échelle, par le même tour appliqué au spectre en coordonnées
+        log-polaires. Tout cela est global &mdash; un décalage, un angle, une
+        échelle pour toute la prise &mdash;, si bien qu'il corrige un appareil qui
+        a bougé et ne peut pas corriger un sujet qui a bougé, ni une photographie
+        prise un pas plus à gauche. Une conséquence visible&nbsp;: une prise
+        décalée de vingt pixels vers la gauche n'atteint plus le bord droit, et le
+        résultat est donc rogné à la partie que toutes les prises couvrent. C'est
+        pourquoi une pile alignée revient très légèrement plus petite que les
+        prises qui y sont entrées, et c'est la seule solution de rechange à une
+        bordure sombre faite des prises qui n'étaient pas là."""
+
+[[faq]]
+q = "Quelle méthode dois-je utiliser&nbsp;?"
+a = """
+        <strong>Moyenne</strong> pour le bruit, sur une série où rien n'a
+        bougé&nbsp;: elle réduit le bruit aléatoire d'à peu près la racine carrée
+        du nombre de prises. <strong>Médiane</strong> pour retirer ce qui n'était
+        là qu'une partie du temps &mdash; l'usage classique est de photographier
+        une place animée une douzaine de fois et de l'obtenir vide.
+        <strong>Écrêtage sigma</strong> quand vous voulez les deux&nbsp;: il
+        apprend ce qu'est habituellement chaque pixel et ne moyenne que les valeurs
+        qui concordent, il a donc l'immunité de la médiane à une voiture qui passe
+        et la réduction de bruit de la moyenne. <strong>Éclaircir</strong> pour les
+        filés d'étoiles, les feux d'artifice et le light painting.
+        <strong>Assombrir</strong> pour retirer tout ce qui est clair et qui a
+        bougé. <strong>Additionner</strong> pour simuler une seule longue pose.
+        <strong>Empilement de mise au point</strong> pour une macro prise le long
+        de la bague."""
+
+[[faq]]
+q = "Pourquoi mon résultat fait-il huit bits alors que mes RAW en font quatorze&nbsp;?"
+a = """
+        Parce que ce qui est empilé, c'est l'aperçu de l'appareil lui-même, qui est
+        un JPEG. Il vaut la peine de dire qu'empiler récupère une partie de ce que
+        cela coûte&nbsp;: moyenner seize prises de huit bits donne un résultat aux
+        dégradés réellement plus fins que n'en avait aucune d'elles, parce que le
+        bruit qui faisait arrondir chaque prise différemment est précisément ce qui
+        permet à la moyenne de tomber entre les niveaux. Le calcul se fait ici en
+        virgule flottante et n'est arrondi qu'une seule fois tout à la fin, rien de
+        cela n'est donc jeté en chemin. Ce n'est pour autant pas la même chose
+        qu'empiler des données linéaires de capteur, et cet outil ne prétend pas le
+        contraire."""
+
+[[faq]]
+q = "Puis-je empiler des prises de tailles différentes, ou de plusieurs appareils&nbsp;?"
+a = """
+        Oui, même si c'est le plus souvent une erreur et qu'il vaut la peine de
+        vérifier que c'était voulu. Le résultat a la taille de la plus grande
+        prise, et toutes les autres sont mises à l'échelle pour y tenir et
+        centrées. Mélanger les appareils mélange aussi le rendu des couleurs&nbsp;:
+        une moyenne des deux est donc une moyenne de deux interprétations
+        différentes de la même lumière. Là où cela aide vraiment, c'est sur une
+        série prise à deux résolutions, ou sur un fichier RAW et un JPEG de la même
+        prise."""
+
+[[faq]]
+q = "Il dit que le passage se fera en bandes. Qu'est-ce que cela veut dire&nbsp;?"
+a = """
+        Que la mémoire de travail dont la méthode a besoin dépasse ce que l'outil
+        est prêt à réserver d'un coup&nbsp;: l'image sera donc découpée en bandes
+        horizontales et empilée bande par bande. Le résultat est exactement le
+        même&nbsp;; l'outil relit simplement les prises pour chaque bande, cela
+        prend donc plus longtemps, et la page vous dit combien de décodages cela
+        représentera. Baisser la résolution de travail d'un cran divise la mémoire
+        par quatre, ce qui transforme presque toujours un passage en bandes en un
+        seul passage&nbsp;; la note indique le réglage qui le ferait."""
+
+[[faq]]
+q = "Pourquoi cet outil emploie-t-il un Worker et aucun des autres&nbsp;?"
+a = """
+        Parce qu'il est le seul dont le travail se compte en minutes. Tous les
+        autres outils d'ici font quelque chose qui prend une seconde ou deux, et
+        sortir ce travail du fil principal y serait une cérémonie. Empiler vingt
+        grandes prises, c'est du calcul massif sur des centaines de mégaoctets, et
+        sur le fil principal cela veut dire une page figée&nbsp;: aucune barre de
+        progression qui bouge, un bouton Annuler qui ne répond pas, et pour finir
+        un navigateur qui propose de tuer l'onglet. Le Worker est un second fil
+        dans ce même navigateur, exécutant un fichier de ce même dossier, sous
+        cette même politique. Ce n'est pas un serveur et ce n'est pas une fonction
+        réseau."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni connexion, ni période d'essai, ni
+        filigrane. Il n'y a pas non plus de limite au nombre de prises empilées ni
+        à leur taille, parce qu'aucun serveur ne les paie&nbsp;: le travail se fait
+        sur votre propre machine et le seul plafond est votre propre mémoire. Le
+        site porte de la publicité, et c'est elle qui le paie&nbsp;; on ne donne
+        rien aux annonces sur vos photographies."""
+
+[schema]
+description = "Empiler une rafale de photographies dans le navigateur&nbsp;: moyenne, médiane, moyenne à écrêtage sigma, éclaircir, assombrir, additionner ou empilement de mise au point, avec les prises alignées d'abord par corrélation de phase. Lit les fichiers RAW d'appareil en extrayant l'aperçu pleine taille que l'appareil y a incorporé, aucun dérawtiseur n'est donc nécessaire. Rien n'est envoyé."
+features = [
+  "Sept méthodes&nbsp;: moyenne, médiane, moyenne à écrêtage sigma, éclaircir, assombrir, additionner et empilement de mise au point",
+  "Lit CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 et d'autres en extrayant l'aperçu pleine taille de l'appareil",
+  "Ouvre un fichier RAW de 60 Mo en en lisant environ cent kilooctets",
+  "Alignement automatique&nbsp;: décalage seul, décalage avec rotation et échelle, ou aucun",
+  "Alignement au sous-pixel par corrélation de phase, et non par recherche de décalages",
+  "Six des sept méthodes gardent un accumulateur&nbsp;: cent prises coûtent la mémoire de deux",
+  "Coût en mémoire et en décodages calculé et affiché avant le départ",
+  "Le travail s'exécute dans un Worker&nbsp;: la progression avance et Annuler répond",
+  "Sortie PNG ou JPEG&nbsp;; fonctionne hors ligne&nbsp;; aucun envoi, aucun compte",
+]
+
+[picker]
+title = "Déposez les prises ici"
+hint = "ou cliquez pour parcourir &mdash; JPEG, PNG, WebP, TIFF et RAW d'appareil"

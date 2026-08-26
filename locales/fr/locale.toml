@@ -130,6 +130,18 @@ complete = true
 "guides/whats-inside-a-gif" = "guides/ce-qu-il-y-a-dans-un-gif"
 "guides/verify-a-file-checksum" = "guides/verifier-la-somme-de-controle-d-un-telechargement"
 
+# Les quatre pages arrivees apres cette liste. Toujours la locution verbale a
+# l'infinitif que l'on tape reellement, et "visionneuse" plutot que "viewer"
+# parce que c'est le mot que le milieu medical emploie en francais.
+"dicom-viewer" = "visionneuse-dicom"
+"document-scanner" = "scanner-un-document"
+"redact-pdf" = "caviarder-un-pdf"
+"stack-images" = "empiler-des-images"
+"guides/open-a-dicom-file" = "guides/ouvrir-un-fichier-dicom"
+"guides/redact-a-pdf" = "guides/caviarder-un-pdf"
+"guides/scan-a-document-with-your-phone" = "guides/scanner-un-document-avec-son-telephone"
+"guides/stack-photos-to-reduce-noise" = "guides/empiler-des-photos-contre-le-bruit"
+
 #
 # ---------------------------------------------------------------------------
 # The hub.

@@ -1,0 +1,386 @@
+#
+# Caviardeur de PDF - French.
+#
+# Overrides for tools/redact-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Caviarder" est le verbe qu'emploie deja l'outil d'a cote pour les images, et
+# pour la meme raison : c'est le terme francais consacre, et il porte le sens
+# qui compte ici, celui d'un texte retire et non recouvert.
+#
+# La seule chose a ne pas perdre en retouchant cette prose : cette page avance
+# une affirmation que les autres outils de caviardage ne peuvent pas avancer,
+# et l'affirmation ne vaut rien si elle est exageree. Ce qui est retire, c'est
+# du texte. Une page qui est la photo d'une page ne porte pas de texte, et cet
+# outil le dit au lieu de faire semblant.
+#
+
+name = "Caviardeur de PDF"
+heading = "Caviarder&nbsp;un&nbsp;PDF <span class=\"h1-kw\">&mdash; les mots sortent, on ne les recouvre pas</span>"
+tagline = "Les lettres sont supprimées du fichier, puis le fichier est fouillé pour le prouver."
+
+title = "Caviarder un PDF &mdash; supprimer vraiment le texte, gratuit, sans envoi"
+description = "Retirez des mots d'un PDF au lieu de peindre un rectangle noir par-dessus. Les lettres sont supprimées des instructions de dessin de la page, le fichier terminé est rouvert et fouillé pour prouver qu'elles ont disparu, et rien n'est envoyé."
+og_title = "Caviarder un PDF comme il faut &mdash; les mots sont supprimés, pas recouverts"
+og_description = "Dans la plupart des outils, le rectangle noir se pose sur le texte et l'on peut copier ce qui est dessous. Celui-ci supprime les lettres du fichier puis fouille le résultat pour vous montrer qu'elles n'y sont plus."
+og_image_alt = "Caviarder un PDF en supprimant le texte, non en le recouvrant"
+
+pledge = """
+    Le document que vous choisissez est ouvert, lu, modifié et réécrit en
+    mémoire sur cette machine, par du code servi depuis cette adresse. Rien ici
+    ne peut faire d'envoi, et il n'y a au bout de cette page aucun serveur pour
+    le recevoir. Ni le fichier ni les mots que vous avez cherchés ne quittent
+    l'onglet."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les DevTools, regardez
+      l'onglet Réseau et caviardez quelque chose. Aucune requête ne transporte
+      une page, un mot ou un nom de fichier. Ou débranchez-vous d'internet et
+      caviardez quand même."""
+
+read_first = """
+, <code>src/text.js</code> pour la façon dont
+      chaque mot d'une page est trouvé et situé, et <code>src/edit.js</code> pour
+      la suppression elle-même&nbsp;: ce qui est découpé dans les instructions de
+      la page et ce qui y est remis pour que le reste de la ligne ne bouge pas.
+      Aucun des deux ne peut atteindre le réseau, et le lecteur et l'écrivain
+      d'à côté non plus."""
+
+howto_heading = "Comment caviarder un PDF pour que les mots aient vraiment disparu"
+
+card = """
+            Supprimez des mots d'un PDF au lieu de les recouvrir. Les lettres
+            sortent des instructions de dessin de la page, le vide est maintenu
+            ouvert pour que rien d'autre ne bouge, et le fichier terminé est
+            rouvert et fouillé ici pour prouver que les mots n'y sont pas."""
+
+[words]
+plural = "documents"
+choose = "un PDF"
+
+[[facts]]
+text = "Aucun envoi"
+
+[[facts]]
+text = "Aucun compte"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[facts]]
+text = "Vos fichiers restent sur votre appareil"
+
+[[privacy]]
+title = "Un rectangle noir n'est pas un caviardage, et ici on n'en peint aucun sur quoi que ce soit."
+body = """
+
+      Dans presque tous les logiciels qui proposent de caviarder une page &mdash;
+      une visionneuse PDF, un traitement de texte, un outil de mise en page
+      &mdash; le rectangle est un objet enregistré à côté du texte et non dedans.
+      Le texte est toujours là, dans le même fichier, au même endroit, et
+      sélectionner la zone puis copier vous le rend. Cet échec a publié des
+      dossiers judiciaires, des rapports de renseignement et, en décembre 2025,
+      des noms caviardés dans une publication massive de documents du ministère
+      de la Justice américain, lisibles en quelques heures. Cet outil supprime les
+      lettres des instructions qui dessinent la page. Il n'y a pas de rectangle
+      avec quelque chose dessous, parce qu'il n'y a rien dessous."""
+
+[[privacy]]
+title = "Le fichier terminé est rouvert et fouillé, ici, avant de vous être proposé."
+body = """
+
+      Tant que cela n'a pas eu lieu, tout ce qui précède n'est que cet outil
+      corrigeant sa propre copie. Les octets qui vont devenir votre téléchargement
+      sont donc rendus au même lecteur comme si un inconnu les avait envoyés,
+      chaque page est relue, chaque signet, commentaire, champ de formulaire et
+      propriété du document est collecté, et les mots que vous avez retirés sont
+      cherchés. Le décompte figure dans les résultats. Si quelque chose a survécu,
+      le passage est déclaré en échec et il n'y a pas de téléchargement."""
+
+[[privacy]]
+title = "Les mots ne quittent jamais l'onglet, la recherche non plus."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page peut contacter,
+      et aucune ne nous appartient. Cet outil n'ajoute rien à cette liste&nbsp;:
+      il n'a aucune fonction réseau propre, pas même facultative. Ce que vous
+      tapez dans le champ de recherche est une chaîne comparée à du texte présent
+      dans la mémoire de cet onglet, et ni l'une ni l'autre n'a nulle part où
+      aller."""
+
+[[privacy]]
+title = "Le caviardage est le travail qui survit le plus mal à un envoi."
+body = """
+
+      Ce que les gens caviardent est la raison même pour laquelle cela ne doit pas
+      être envoyé. Un témoignage, un courrier médical, un relevé bancaire destiné
+      à un propriétaire, un contrat portant le nom d'un client et destiné à un
+      autre. Confier cela au serveur d'un inconnu pour qu'il en retire la partie
+      privée signifie que la partie privée arrive d'abord, entière, et que c'est
+      la version qu'il conserve. Cette page n'a pas d'autre moitié."""
+
+[[privacy]]
+title = "Ce qui reste est recopié sans être touché."
+body = """
+
+      Les seuls octets qui changent sur une page sont les instructions d'affichage
+      de texte dont les lettres retirées faisaient partie. Toute autre
+      instruction, et chaque police, image et trait auxquels la page se réfère,
+      sont recopiés exactement tels qu'ils sont arrivés&nbsp;: rien n'est redessiné,
+      réencodé ni remis en page. La largeur de ce qui a été retiré est mesurée et
+      remise sous forme d'instruction d'espacement, pour que le reste de la ligne
+      demeure là où le document l'avait posé."""
+
+[[privacy]]
+title = "Il ne peut pas retirer de mots d'une photographie, et il dit de quelles pages il s'agit."
+body = """
+
+      Une page numérisée est une image. Les mots qu'elle porte sont des pixels et
+      non du texte, et rien ici ne peut y toucher. Si le scan porte la couche de
+      texte invisible que produit l'OCR d'un scanner, cet outil retire cette
+      couche &mdash; c'est-à-dire ce qu'une recherche et un copier auraient trouvé
+      &mdash; et dit clairement sur la page que l'image montre toujours les mots.
+      Recouvrir cette image est un autre travail&nbsp;; le
+      <a href=\"../caviarder-une-image/\">caviardeur d'images</a> est l'outil qui
+      écrase des pixels."""
+
+[[privacy]]
+title = "Le document cesse de dire d'où il vient."
+body = """
+
+      Les propriétés et le paquet XMP disparaissent à chaque passage&nbsp;: pas de
+      ligne de producteur, pas de date de création, pas d'auteur, pas de titre, et
+      aucun des blocs privés qu'un logiciel de mise en page laisse derrière lui.
+      Un fichier dont on a retiré un nom des pages et dont les propriétés
+      annoncent toujours <code>Accord Martin brouillon 3.docx</code> n'est pas
+      caviardé, et ce n'est pas quelque chose à laisser à une case à cocher."""
+
+[[privacy]]
+title = "Les fichiers chiffrés sont refusés plutôt qu'ouverts."
+body = """
+
+      Un PDF protégé par mot de passe est refusé, y compris celui, produit par les
+      scanners, dont le mot de passe est vide et qui s'ouvrirait techniquement.
+      Retirer sa protection à un document est un autre travail que d'en retirer
+      des mots, et le faire en silence serait une chose surprenante à faire en
+      votre nom."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts de publicité
+      et de mesure viennent de Google. Ni l'un ni l'autre ne reçoit quoi que ce
+      soit sur votre document&nbsp;: ni un fichier, ni une page, ni un nom, ni une
+      taille, ni un nombre de pages, ni un mot que vous auriez cherché. Chaque
+      ligne qui lit, modifie ou écrit un PDF est servie depuis cette origine et
+      figure dans le dépôt."""
+
+[[privacy]]
+title = "Ce que charge le bouton de don, et ce qu'on ne lui donne pas."
+body = """
+
+      Le bouton &laquo;&nbsp;Buy me a coffee&nbsp;&raquo; de l'en-tête est
+      dessiné par un script de cdnjs.buymeacoffee.com et va chercher sa police
+      chez Google Fonts. C'est un lien et rien de plus&nbsp;: il ne signale aucune
+      visite, et on ne lui donne rien sur vous ni sur vos documents. Rien ne se
+      produit tant que vous ne cliquez pas, et ce vers quoi vous cliquez alors est
+      le site de quelqu'un d'autre."""
+
+[[privacy]]
+title = "Il fonctionne hors ligne."
+body = """
+ Débranchez-vous du réseau et tout sur cette
+      page continue de fonctionner. C'est la preuve la plus simple de
+      toutes&nbsp;: un outil qui enverrait votre document ailleurs pour le
+      caviarder s'arrêterait."""
+
+[[howto]]
+title = "Choisissez le PDF."
+body = """
+ Un document à la fois, et c'est
+      volontaire&nbsp;: le caviardage est un travail qu'il faut regarder page par
+      page, et un outil qui vous laisserait cocher des mots dans un fichier pour
+      les appliquer en silence à un autre est exactement la façon dont on finit
+      par envoyer ce qu'il ne fallait pas. Le navigateur le lit directement sur
+      votre disque."""
+
+[[howto]]
+title = "Dites ce qui doit disparaître."
+body = """
+ Tapez les mots &mdash; un nom,
+      une adresse, une référence &mdash; et chaque endroit où ils apparaissent est
+      listé avec la ligne sur laquelle il se trouve et une case à cocher. Les
+      détecteurs d'à côté cherchent les adresses e-mail, les numéros de carte, les
+      IBAN, les numéros de sécurité sociale et les numéros de téléphone. Ils sont
+      proposés, jamais cochés pour vous&nbsp;: un motif ne distingue pas un numéro
+      de téléphone d'un numéro de dossier."""
+
+[[howto]]
+title = "Lisez la page et piochez-y des mots."
+body = """
+
+      Le panneau montre le texte du document tel qu'il est réellement stocké, dans
+      l'ordre où un lecteur le copierait. Cliquez sur un mot pour le retirer,
+      cliquez de nouveau pour le garder. Tout ce qui est barré est ce qui va
+      disparaître, ce qui fait de cette étape la relecture autant que la
+      sélection&nbsp;: elle vaut la peine sur chaque page avant d'appuyer sur le
+      bouton."""
+
+[[howto]]
+title = "Retirez-les, et lisez la ligne qui dit que c'est vérifié."
+body = """
+
+      Les lettres sont supprimées, le vide qu'elles laissent est maintenu ouvert,
+      un cadre noir est peint dessus si vous en avez demandé un, et les mêmes mots
+      sont retirés des signets, des commentaires, des champs de formulaire et des
+      propriétés du document. Puis le fichier terminé est rouvert ici et fouillé.
+      Si un mot que vous avez retiré s'y trouve encore, vous n'avez pas de
+      téléchargement mais un message qui le dit."""
+
+[[faq]]
+q = "En quoi est-ce différent d'un cadre noir dessiné dans une visionneuse PDF&nbsp;?"
+a = """
+        Un rectangle dessiné dans une visionneuse est une annotation&nbsp;: un
+        objet doté d'une position, enregistré à côté de la page. Le texte dessous
+        est intact. Quiconque sélectionne cette zone et copie, ou ouvre le fichier
+        dans un autre logiciel, ou y passe n'importe quel extracteur de texte,
+        récupère les mots. Certaines visionneuses proposent une commande
+        &laquo;&nbsp;caviarder&nbsp;&raquo; qui applique réellement la
+        suppression, et plusieurs ne proposent que le dessin. Cet outil n'a aucun
+        rectangle à écarter&nbsp;: les lettres sont découpées des instructions de
+        dessin de la page, et le cadre noir, si vous le laissez activé, est peint
+        ensuite sur un vide déjà vide."""
+
+[[faq]]
+q = "Comment puis-je savoir que les mots ont vraiment disparu&nbsp;?"
+a = """
+        Parce que l'outil le vérifie, sur votre machine, et vous montre le
+        décompte. Une fois le fichier écrit, il est rouvert par le lecteur même de
+        cette page, chaque page est lue, chaque signet, commentaire, champ de
+        formulaire et propriété est collecté, et chaque mot retiré est cherché. La
+        ligne de résultat indique combien il y en avait et combien il en reste. Si
+        la réponse n'est pas celle attendue, le passage échoue et rien n'est
+        proposé au téléchargement. Vous pouvez aussi le vérifier ensuite
+        vous-même dans n'importe quelle visionneuse&nbsp;: Ctrl+F, et cherchez le
+        mot."""
+
+[[faq]]
+q = "Le reste de la page bouge-t-il quand un mot est retiré&nbsp;?"
+a = """
+        Non. Le texte est dessiné en faisant avancer une plume sur la page&nbsp;:
+        supprimer cinq lettres tirerait donc normalement le reste de la ligne de
+        cinq lettres vers la gauche. La largeur exacte de ce qui a été retiré est
+        mesurée sur les métriques de la police elle-même et remise sous forme
+        d'instruction d'espacement, qui déplace la plume sans rien dessiner. Les
+        colonnes restent alignées et les totaux restent sous leur titre."""
+
+[[faq]]
+q = "Peut-il caviarder un document numérisé&nbsp;?"
+a = """
+        Pas l'image, et il le dit au lieu de faire semblant. Un scan est la photo
+        d'une page&nbsp;: les mots sont des pixels et il n'y a pas de texte à
+        retirer. Ce qu'un scan porte souvent, en revanche, c'est une couche de
+        texte invisible que l'OCR du scanner a écrite par-dessus l'image pour
+        rendre la page consultable&nbsp;; cet outil trouve cette couche, en retire
+        ce que vous choisissez, et vous dit sur la page que l'image est inchangée.
+        Une recherche et un copier cessent donc de trouver le mot, et qui regarde
+        la page le lit toujours. Pour une image, le
+        <a href=\"../caviarder-une-image/\">caviardeur d'images</a> écrase les
+        pixels eux-mêmes."""
+
+[[faq]]
+q = "Et les parties d'un document qui ne sont pas sur une page&nbsp;?"
+a = """
+        Elles sont traitées, car c'est là qu'un caviardage fuit d'ordinaire. Les
+        mêmes mots sont retirés des signets, des commentaires et des pense-bêtes,
+        de ce qui a été saisi dans les champs de formulaire, du texte remis à un
+        lecteur d'écran, et du texte de remplacement qu'une visionneuse copie
+        <em>à la place</em> des lettres de la page. Ce dernier existe pour que les
+        ligatures et les mots coupés se copient correctement, et il peut contenir
+        une phrase entière. Les propriétés du document et le paquet XMP sont
+        supprimés purement et simplement. Les pièces jointes et tout ce qui
+        s'exécute à l'ouverture du fichier sont écartés, car on ne peut chercher
+        dans ni l'un ni l'autre les mots que vous retirez."""
+
+[[faq]]
+q = "Mes documents sont-ils envoyés quelque part&nbsp;?"
+a = """
+        Non. Le fichier est lu, modifié et écrit par votre propre navigateur, sur
+        votre propre matériel. Cet outil n'a pas de partie serveur, et la
+        <code>Content-Security-Policy</code> de la page nomme chaque adresse
+        qu'elle peut contacter, dont aucune ne nous appartient. Ce que vous tapez
+        dans le champ de recherche est comparé à du texte présent dans la mémoire
+        de cet onglet et ne va nulle part non plus."""
+
+[[faq]]
+q = "Pourquoi ne puis-je pas tracer un cadre sur la page comme dans d'autres outils&nbsp;?"
+a = """
+        Parce que dessiner une page suppose un moteur PDF complet &mdash; polices,
+        dégradés, transparence, modes de fusion &mdash;, soit un mégaoctet ou plus
+        de moteur à télécharger et à exécuter, et ce site n'en embarque aucun. Cela
+        se trouve convenir au travail&nbsp;: tracer un rectangle sélectionne une
+        <em>surface de papier</em>, et une surface de papier n'est pas la même
+        chose que le texte qui se trouve dessous, ce par quoi l'échec du cadre noir
+        commence. Ce que vous obtenez à la place, c'est le texte du document, dans
+        l'ordre de lecture, chaque mot cliquable. C'est aussi la seule vue capable
+        de vous dire ce qu'une image de la page ne peut pas&nbsp;: si les mots
+        devant vous sont seulement du texte."""
+
+[[faq]]
+q = "Le fichier terminé s'ouvrira-t-il partout&nbsp;?"
+a = """
+        Oui. La sortie est écrite en PDF 1.5, ou dans la version la plus élevée
+        qu'exigeait le fichier que vous avez fourni, et la 1.5 est comprise par
+        toute visionneuse parue depuis 2003. Rien sur la page n'est réencodé&nbsp;:
+        les polices, les images et le dessin vectoriel passent octet pour octet, et
+        ce qui reste du texte demeure sélectionnable et consultable comme
+        avant."""
+
+[[faq]]
+q = "Peut-il ouvrir un PDF protégé par mot de passe&nbsp;?"
+a = """
+        Non, et c'est délibéré. Un document chiffré est refusé avec un message qui
+        le dit, même lorsque le mot de passe est vide, ce qui est la façon dont
+        enregistrent beaucoup de scanners et de photocopieurs. Retirer sa
+        protection à un fichier est un autre travail que d'en retirer des mots, et
+        un outil qui le ferait en silence ferait quelque chose que vous n'avez pas
+        demandé."""
+
+[[faq]]
+q = "Y a-t-il une limite de taille, et cela coûte-t-il quelque chose&nbsp;?"
+a = """
+        Aucune limite n'est écrite dans l'outil. La limite, c'est votre propre
+        machine&nbsp;: le document est tenu en mémoire pendant le travail, un
+        portable encaissera donc quelques centaines de mégaoctets sans broncher et
+        peinera quelque part au-dessus. C'est gratuit, il n'y a ni compte, ni
+        connexion, ni période d'essai. Le site porte de la publicité, et c'est elle
+        qui le paie&nbsp;; on ne donne rien aux annonces sur vos documents."""
+
+[[faq]]
+q = "Fonctionne-t-il hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, débranchez-vous ensuite d'internet&nbsp;:
+        elle continue de fonctionner. C'est aussi la façon la plus simple de
+        prouver que rien n'est envoyé&nbsp;: un outil qui expédierait votre
+        document ailleurs pour le caviarder s'arrêterait à l'instant où vous tirez
+        la prise."""
+
+[schema]
+description = "Caviarder un PDF dans le navigateur en supprimant le texte plutôt qu'en le recouvrant. Les lettres sont retirées du flux de contenu de la page, le fichier terminé est rouvert et fouillé pour prouver qu'elles ont disparu, et rien n'est envoyé."
+features = [
+  "Supprime les lettres de la page au lieu de peindre un rectangle par-dessus",
+  "Rouvre le fichier terminé et le fouille pour prouver que les mots ont disparu",
+  "Trouve chaque occurrence d'un mot, ou cherche e-mails, numéros de carte, IBAN et numéros d'identité",
+  "Montre le texte du document dans l'ordre de lecture, chaque mot cliquable",
+  "Retire les mêmes mots des signets, commentaires, champs de formulaire et propriétés",
+  "Maintient le vide ouvert pour que le reste de la ligne ne bouge pas",
+  "Dit quelles pages sont des scans, où il n'y a pas de texte à retirer",
+  "Fonctionne hors ligne&nbsp;; aucun envoi, aucun compte, aucune limite de taille",
+]
+
+[picker]
+title = "Déposez votre PDF ici"
+hint = "ou cliquez pour parcourir &mdash; un document à la fois"
