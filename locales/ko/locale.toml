@@ -104,6 +104,14 @@ complete = true
 # 사전에 있는 '저속 촬영'이 아니라 실제로 검색창에 치는 '타임랩스'.
 "timelapse-video" = "타임랩스-만들기"
 "hash-checksum" = "체크섬-확인"
+# DICOM은 DICOM으로 둡니다. 병원이 건네는 CD에 그렇게 적혀 있고, 번역된 말로
+# 찾는 사람은 없습니다.
+"dicom-viewer" = "dicom-뷰어"
+"document-scanner" = "문서-스캔"
+# 이미지-가리기와 같은 말입니다. 같은 약속이기 때문입니다. 글자가 파일에서
+# 빠지는 것이지, 위에 검은 칸을 덮는 것이 아닙니다.
+"redact-pdf" = "pdf-가리기"
+"stack-images" = "이미지-스택"
 
 # The indexes and the legal pages. 개인정보처리방침 is the name that page has in
 # Korean law and on every Korean site, so it is what a reader scans for.
@@ -140,6 +148,11 @@ complete = true
 "guides/trim-an-audio-file" = "가이드/오디오-파일-자르기"
 "guides/whats-inside-a-gif" = "가이드/gif-파일-구조"
 "guides/verify-a-file-checksum" = "가이드/체크섬으로-다운로드-확인하기"
+"guides/open-a-dicom-file" = "가이드/dicom-파일-여는-법"
+"guides/redact-a-pdf" = "가이드/pdf-가리기"
+"guides/scan-a-document-with-your-phone" = "가이드/휴대폰으로-문서-스캔하기"
+# 스택하는 사람이 찾는 말은 '스택'이 아니라 '노이즈'입니다. 그쪽이 문제니까요.
+"guides/stack-photos-to-reduce-noise" = "가이드/사진-스택으로-노이즈-줄이기"
 
 #
 # ---------------------------------------------------------------------------
